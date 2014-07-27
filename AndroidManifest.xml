@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.watabou.pixeldungeon"
+	android:versionCode="59"
+	android:versionName="1.7.1c"
+	android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="com.android.vending.BILLING" />
+    
+	<uses-sdk 
+	    android:minSdkVersion="8"
+	    android:targetSdkVersion="18"/>
+	
+	<uses-feature 
+	    android:glEsVersion="0x00020000"/>
+	
+	<supports-screens 
+	    android:smallScreens="false"
+	    android:normalScreens="true"
+	    android:largeScreens="true"/>
+	    <!--android:xlargeScreens="true"-->
+
+	<application
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+		android:allowBackup="false">
+		<activity
+			android:label="@string/app_name"
+			android:name=".PixelDungeon"
+			android:screenOrientation="portrait">
+			<intent-filter >
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+	</application>
+
+</manifest>
