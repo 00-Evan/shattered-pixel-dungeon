@@ -1,6 +1,7 @@
 .classpath
 .project
 project.properties
+proguard.cfg
 
 # Built application files
 *.apk
