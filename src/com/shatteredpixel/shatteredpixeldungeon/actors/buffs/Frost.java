@@ -20,11 +20,13 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.utils.Random;
 
 public class Frost extends FlavourBuff {
 
@@ -36,7 +38,8 @@ public class Frost extends FlavourBuff {
 			
 			target.paralysed = true;
 			Burning.detach( target, Burning.class );
-			
+            if (target instanceof Elemental)
+			    target.damage(Random.IntRange(0, 15), this);
 			if (target instanceof Hero) {
 				Hero hero = (Hero)target;
 				Item item = hero.belongings.randomUnequipped();

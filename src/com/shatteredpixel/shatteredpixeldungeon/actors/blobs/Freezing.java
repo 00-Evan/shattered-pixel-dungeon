@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.utils.Random;
 
 public class Freezing {
@@ -35,7 +36,11 @@ public class Freezing {
 		
 		Char ch = Actor.findChar( cell ); 
 		if (ch != null) {
-			Buff.prolong( ch, Frost.class, Frost.duration( ch ) * Random.Float( 1.0f, 1.5f ) );
+            if (Level.water[ch.pos] && !ch.flying){
+                Buff.prolong(ch, Frost.class, Frost.duration(ch) * Random.Float(3.0f, 4.5f));
+            } else {
+                Buff.prolong(ch, Frost.class, Frost.duration(ch) * Random.Float(1.0f, 1.5f));
+            }
 		}
 		
 		if (fire != null) {

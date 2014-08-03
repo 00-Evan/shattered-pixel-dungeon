@@ -24,7 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class GasesImmunity extends FlavourBuff {
 	
-	public static final float DURATION	= 5f;
+	public static final float DURATION	= 15f;
 	
 	@Override
 	public int icon() {
