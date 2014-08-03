@@ -83,7 +83,6 @@ public class Golem extends Mob {
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
 	static {
-		RESISTANCES.add( ScrollOfPsionicBlast.class );
 	}
 	
 	@Override

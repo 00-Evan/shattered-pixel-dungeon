@@ -45,10 +45,11 @@ public class ScrollOfPsionicBlast extends Scroll {
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Level.fieldOfView[mob.pos]) {
 				Buff.prolong( mob, Blindness.class, Random.Int( 3, 6 ) );
-				mob.damage( Random.IntRange( 1, mob.HT * 2 / 3 ), this );
+				mob.damage(mob.HT, this );
 			}
 		}
-		
+
+		curUser.damage(Random.IntRange(curUser.HT/3, (int)(curUser.HT*0.99)), this);
 		Buff.prolong( curUser, Blindness.class, Random.Int( 3, 6 ) );
 		Dungeon.observe();
 		
@@ -60,9 +61,9 @@ public class ScrollOfPsionicBlast extends Scroll {
 	@Override
 	public String desc() {
 		return
-			"This scroll contains destructive energy, that can be psionically channeled to inflict a " +
-			"massive damage to all creatures within a field of view. An accompanying flash of light will " +
-			"temporarily blind everybody in the area of effect including the reader of the scroll.";
+			"This scroll contains destructive energy, that can be psionically channeled to tear apart" +
+			"the minds of all visible creatures. The power unleashed by the scroll will also temporarily" +
+			"blind and massively harm the reader. if the reader is already injured they will likely die.";
 	}
 	
 	@Override

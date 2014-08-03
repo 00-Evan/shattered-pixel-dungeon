@@ -154,7 +154,6 @@ public class Statue extends Mob {
 		RESISTANCES.add( ToxicGas.class );
 		RESISTANCES.add( Poison.class );
 		RESISTANCES.add( Death.class );
-		RESISTANCES.add( ScrollOfPsionicBlast.class );
 		IMMUNITIES.add( Leech.class );
 	}
 	

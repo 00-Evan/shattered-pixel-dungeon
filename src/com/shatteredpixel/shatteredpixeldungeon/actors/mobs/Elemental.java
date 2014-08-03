@@ -100,7 +100,6 @@ public class Elemental extends Mob {
 		IMMUNITIES.add( Burning.class );
 		IMMUNITIES.add( Fire.class );
 		IMMUNITIES.add( WandOfFirebolt.class );
-		IMMUNITIES.add( ScrollOfPsionicBlast.class );
 	}
 	
 	@Override
