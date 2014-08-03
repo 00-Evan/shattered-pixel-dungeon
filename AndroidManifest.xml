@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.watabou.pixeldungeon"
 	android:versionCode="59"
-	android:versionName="1.7.1c"
+	android:versionName="0.1.0 SH"
 	android:installLocation="auto">
 
     <uses-permission android:name="android.permission.VIBRATE"/>

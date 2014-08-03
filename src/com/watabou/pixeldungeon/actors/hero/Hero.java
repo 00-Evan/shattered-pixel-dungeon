@@ -86,6 +86,7 @@ import com.watabou.pixeldungeon.levels.Terrain;
 import com.watabou.pixeldungeon.levels.features.AlchemyPot;
 import com.watabou.pixeldungeon.levels.features.Chasm;
 import com.watabou.pixeldungeon.plants.Earthroot;
+import com.watabou.pixeldungeon.plants.Sungrass;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.scenes.InterlevelScene;
 import com.watabou.pixeldungeon.scenes.SurfaceScene;
@@ -804,6 +805,11 @@ public class Hero extends Char {
 		if (armor != null) {
 			damage = armor.absorb( damage );
 		}
+
+        Sungrass.Health health = buff( Sungrass.Health.class );
+        if (health != null) {
+            health.absorb( damage );
+        }
 		
 		if (belongings.armor != null) {
 			damage = belongings.armor.proc( enemy, this, damage );

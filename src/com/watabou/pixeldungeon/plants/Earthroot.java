@@ -26,13 +26,14 @@ import com.watabou.pixeldungeon.effects.particles.EarthParticle;
 import com.watabou.pixeldungeon.items.potions.PotionOfParalyticGas;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.ui.BuffIndicator;
+import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 
 public class Earthroot extends Plant {
 
 	private static final String TXT_DESC = 
 		"When a creature touches an Earthroot, its roots " +
-		"create a kind of natural armor around it.";
+		"create a kind of immobile natural armor around it.";
 	
 	{
 		image = 5;
@@ -49,7 +50,7 @@ public class Earthroot extends Plant {
 		
 		if (Dungeon.visible[pos]) {
 			CellEmitter.bottom( pos ).start( EarthParticle.FACTORY, 0.05f, 8 );
-			Camera.main.shake( 1, 0.4f );
+			Camera.main.shake( 0.25f, 1f );
 		}
 	}
 	
@@ -98,12 +99,12 @@ public class Earthroot extends Plant {
 		}
 		
 		public int absorb( int damage ) {
-			if (damage >= level) {
+			if (damage*2 >= level) {
 				detach();
 				return damage - level;
 			} else {
-				level -= damage;
-				return 0;
+				level -= damage-damage/2;
+				return damage/2;
 			}
 		}
 		
@@ -120,7 +121,7 @@ public class Earthroot extends Plant {
 		
 		@Override
 		public String toString() {
-			return "Herbal armor";
+            return Utils.format("Herbal armor (%d)", level);
 		}
 		
 		private static final String POS		= "pos";

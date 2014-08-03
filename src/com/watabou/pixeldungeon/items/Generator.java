@@ -87,7 +87,7 @@ public class Generator {
 			ScrollOfUpgrade.class,
 			ScrollOfRecharging.class,
 			ScrollOfMagicMapping.class,
-			ScrollOfChallenge.class,
+			ScrollOfRage.class,
 			ScrollOfTerror.class,
 			ScrollOfLullaby.class,
 			ScrollOfWeaponUpgrade.class,

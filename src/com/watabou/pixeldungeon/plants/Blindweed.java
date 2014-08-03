@@ -20,6 +20,7 @@ package com.watabou.pixeldungeon.plants;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.buffs.Blindness;
+import com.watabou.pixeldungeon.actors.buffs.Cripple;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.actors.mobs.Mob.State;
@@ -32,7 +33,8 @@ import com.watabou.utils.Random;
 public class Blindweed extends Plant {
 
 	private static final String TXT_DESC = 
-		"Upon touching a Blindweed it perishes in a blinding flash of light.";
+		"Upon being touched a Blindweed perishes in a bright flash of light." +
+        "The flash is strong enough to disorient for several seconds.";
 	
 	{
 		image = 3;
@@ -44,7 +46,9 @@ public class Blindweed extends Plant {
 		super.activate( ch );
 		
 		if (ch != null) {
-			Buff.prolong( ch, Blindness.class, Random.Int( 5, 10 ) );
+            int len = Random.Int( 5, 10 );
+			Buff.prolong( ch, Blindness.class, len );
+            Buff.prolong( ch, Cripple.class, len );
 			if (ch instanceof Mob) {
 				((Mob)ch).state = State.WANDERING;
 				((Mob)ch).beckon( Dungeon.level.randomDestination() );

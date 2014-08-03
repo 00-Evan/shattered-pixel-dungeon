@@ -44,7 +44,7 @@ public abstract class Scroll extends Item {
 		ScrollOfRemoveCurse.class, 
 		ScrollOfTeleportation.class, 
 		ScrollOfUpgrade.class, 
-		ScrollOfChallenge.class,
+		ScrollOfRage.class,
 		ScrollOfTerror.class,
 		ScrollOfLullaby.class,
 		ScrollOfWeaponUpgrade.class,

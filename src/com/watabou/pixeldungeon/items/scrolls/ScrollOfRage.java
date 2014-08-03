@@ -20,25 +20,30 @@ package com.watabou.pixeldungeon.items.scrolls;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Dungeon;
+import com.watabou.pixeldungeon.actors.buffs.Amok;
+import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.buffs.Invisibility;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.utils.GLog;
 
-public class ScrollOfChallenge extends Scroll {
+public class ScrollOfRage extends Scroll {
 
 	{
-		name = "Scroll of Challenge";
+		name = "Scroll of Rage";
 	}
 	
 	@Override
 	protected void doRead() {
+
+        for (Mob mob : Dungeon.level.mobs) {
+            mob.beckon( curUser.pos );
+            if (Dungeon.level.fieldOfView[mob.pos]) {
+                Buff.prolong(mob, Amok.class, 5f);
+            }
+        }
 		
-		for (Mob mob : Dungeon.level.mobs) {
-			mob.beckon( curUser.pos );
-		}
-		
-		GLog.w( "The scroll emits a challenging roar that echoes throughout the dungeon!" );
+		GLog.w( "The scroll emits an enraging roar that echoes throughout the dungeon!" );
 		setKnown();
 		
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );		
@@ -51,7 +56,7 @@ public class ScrollOfChallenge extends Scroll {
 	@Override
 	public String desc() {
 		return 
-			"When read aloud, this scroll will unleash a challenging roar " +
-			"that will awaken all monsters and alert them to the reader's location.";
+			"When read aloud, this scroll will unleash a great roar " +
+			"that draws all enemies to the reader, and enrages nearby ones.";
 	}
 }

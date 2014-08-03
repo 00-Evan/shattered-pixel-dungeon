@@ -26,6 +26,7 @@ import com.watabou.pixeldungeon.effects.particles.ShaftParticle;
 import com.watabou.pixeldungeon.items.potions.PotionOfHealing;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.ui.BuffIndicator;
+import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 
 public class Sungrass extends Plant {
@@ -74,27 +75,50 @@ public class Sungrass extends Plant {
 	
 	public static class Health extends Buff {
 		
-		private static final float STEP = 5f;
+		private static final float STEP = 1f;
 		
 		private int pos;
+        private int healCurr = 2;
+        private int count = 5;
+        private int healTot;
 		
 		@Override
 		public boolean attachTo( Char target ) {
 			pos = target.pos;
+            healTot = target.HT;
 			return super.attachTo( target );
 		}
 		
 		@Override
-		public boolean act() {
-			if (target.pos != pos || target.HP >= target.HT) {
-				detach();
-			} else {
-				target.HP = Math.min( target.HT, target.HP + target.HT / 10 );
-				target.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-			}
-			spend( STEP );
-			return true;
-		}
+        public boolean act() {
+            if (target.pos != pos || healTot <= 0) {
+                detach();
+            }
+            if (count == 5) {
+                if (healTot <= healCurr) {
+                    target.HP = Math.min(target.HT, target.HP + healTot);
+                    target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+                    detach();
+                } else {
+                    target.HP = Math.min(target.HT, target.HP + healCurr);
+                    healTot -= healCurr;
+                    healCurr = Math.min(healCurr+healCurr-1,(int)(target.HT*0.15));
+                    target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+                }
+                count = 1;
+            } else {
+                count++;
+            }
+            spend( STEP );
+            return true;
+        }
+
+        public int absorb( int damage ) {
+            healTot -= damage;
+            if (healTot <= 0)
+                detach();
+            return damage;
+        }
 		
 		@Override
 		public int icon() {
@@ -103,7 +127,7 @@ public class Sungrass extends Plant {
 		
 		@Override
 		public String toString() {
-			return "Herbal healing";
+            return Utils.format( "Herbal Healing (%d)", healTot);
 		}
 		
 		private static final String POS	= "pos";
