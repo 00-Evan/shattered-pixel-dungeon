@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.watabou.pixeldungeon"
-	android:versionCode="59"
-	android:versionName="0.1.0 SH"
+	package="com.shatteredpixel.shatteredpixeldungeon"
+	android:versionCode="1"
+	android:versionName="0.1.0"
 	android:installLocation="auto">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -28,7 +28,7 @@
 		android:allowBackup="false">
 		<activity
 			android:label="@string/app_name"
-			android:name=".PixelDungeon"
+			android:name=".ShatteredPixelDungeon"
 			android:screenOrientation="portrait">
 			<intent-filter >
 				<action android:name="android.intent.action.MAIN" />
