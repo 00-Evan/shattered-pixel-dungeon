@@ -38,13 +38,10 @@ public class Frost extends FlavourBuff {
 			
 			target.paralysed = true;
 			Burning.detach( target, Burning.class );
-            if (target instanceof Elemental)
-			    target.damage(Random.IntRange(0, 15), this);
 			if (target instanceof Hero) {
 				Hero hero = (Hero)target;
 				Item item = hero.belongings.randomUnequipped();
 				if (item instanceof MysteryMeat) {
-					
 					item = item.detach( hero.belongings.backpack );
 					FrozenCarpaccio carpaccio = new FrozenCarpaccio(); 
 					if (!carpaccio.collect( hero.belongings.backpack )) {

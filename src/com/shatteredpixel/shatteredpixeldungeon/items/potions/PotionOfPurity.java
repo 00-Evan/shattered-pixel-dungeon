@@ -38,7 +38,7 @@ public class PotionOfPurity extends Potion {
 	private static final String TXT_FRESHNESS	= "You feel uncommon freshness in the air.";
 	private static final String TXT_NO_SMELL	= "You've stopped sensing any smells!";
 	
-	private static final int DISTANCE	= 2;
+	private static final int DISTANCE	= 5;
 	
 	{
 		name = "Potion of Purification";

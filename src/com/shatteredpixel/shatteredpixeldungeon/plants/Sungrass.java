@@ -31,7 +31,7 @@ import com.watabou.utils.Bundle;
 
 public class Sungrass extends Plant {
 
-	private static final String TXT_DESC = "Sungrass is renowned for its sap's healing properties.";
+	private static final String TXT_DESC = "Sungrass is renowned for its sap's show but effective healing properties.";
 	
 	{
 		image = 4;

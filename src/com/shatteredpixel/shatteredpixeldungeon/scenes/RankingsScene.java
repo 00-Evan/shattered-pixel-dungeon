@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndRanking;
 
 public class RankingsScene extends PixelScene {
 	
-	private static final String TXT_TITLE		= "Top Rankings";
+	private static final String TXT_TITLE		= "Top Rankings (SHATTERED)";
 	private static final String TXT_TOTAL		= "Total games played: %d";
 	private static final String TXT_NO_GAMES	= "No games have been played yet.";
 	

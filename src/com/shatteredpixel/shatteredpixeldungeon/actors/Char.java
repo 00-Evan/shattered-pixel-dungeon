@@ -19,28 +19,11 @@ package com.shatteredpixel.shatteredpixeldungeon.actors;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
@@ -246,8 +229,12 @@ public abstract class Char extends Actor {
 		if (HP <= 0) {
 			return;
 		}
-		
-		Buff.detach( this, Frost.class );
+		if (this.buff(Frost.class) != null){
+            Buff.detach( this, Frost.class );
+            if (Level.water[this.pos]) {
+                Buff.prolong(this, Paralysis.class, 1f);
+            }
+        }
 		
 		Class<?> srcClass = src.getClass();
 		if (immunities().contains( srcClass )) {

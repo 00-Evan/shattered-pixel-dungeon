@@ -36,8 +36,8 @@ public class Freezing {
 		
 		Char ch = Actor.findChar( cell ); 
 		if (ch != null) {
-            if (Level.water[ch.pos] && !ch.flying){
-                Buff.prolong(ch, Frost.class, Frost.duration(ch) * Random.Float(3.0f, 4.5f));
+            if (Level.water[ch.pos]){
+                Buff.prolong(ch, Frost.class, Frost.duration(ch) * Random.Float(5f, 7.5f));
             } else {
                 Buff.prolong(ch, Frost.class, Frost.duration(ch) * Random.Float(1.0f, 1.5f));
             }

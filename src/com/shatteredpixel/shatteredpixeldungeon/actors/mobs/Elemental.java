@@ -25,9 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFirebolt;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
 import com.watabou.utils.Random;
 
@@ -82,7 +82,10 @@ public class Elemental extends Mob {
 			}
 		} else {
 			if (buff instanceof Frost) {
-				damage( Random.NormalIntRange( 1, HT * 2 / 3 ), buff );
+                if (Level.water[this.pos])
+                    damage(Random.NormalIntRange( HT / 2, HT ), buff);
+                else
+				    damage( Random.NormalIntRange( 1, HT * 2 / 3 ), buff );
 			}
 			super.add( buff );
 		}

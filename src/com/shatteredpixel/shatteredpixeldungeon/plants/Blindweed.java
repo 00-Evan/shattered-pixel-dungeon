@@ -33,7 +33,7 @@ import com.watabou.utils.Random;
 public class Blindweed extends Plant {
 
 	private static final String TXT_DESC = 
-		"Upon being touched a Blindweed perishes in a bright flash of light." +
+		"Upon being touched a Blindweed perishes in a bright flash of light. " +
         "The flash is strong enough to disorient for several seconds.";
 	
 	{

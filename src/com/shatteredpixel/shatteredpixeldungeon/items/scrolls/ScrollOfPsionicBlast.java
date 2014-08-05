@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -44,13 +45,13 @@ public class ScrollOfPsionicBlast extends Scroll {
 		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Level.fieldOfView[mob.pos]) {
-				Buff.prolong( mob, Blindness.class, Random.Int( 3, 6 ) );
 				mob.damage(mob.HT, this );
 			}
 		}
 
-		curUser.damage(Random.IntRange(curUser.HT/3, (int)(curUser.HT*0.99)), this);
-		Buff.prolong( curUser, Blindness.class, Random.Int( 3, 6 ) );
+		curUser.damage(Random.IntRange(curUser.HT/3, (int)(curUser.HT*0.85)), this);
+        Buff.prolong( curUser, Paralysis.class, Random.Int( 2, 4 ) );
+		Buff.prolong( curUser, Blindness.class, Random.Int( 4, 8 ) );
 		Dungeon.observe();
 		
 		setKnown();
@@ -61,9 +62,9 @@ public class ScrollOfPsionicBlast extends Scroll {
 	@Override
 	public String desc() {
 		return
-			"This scroll contains destructive energy, that can be psionically channeled to tear apart" +
-			"the minds of all visible creatures. The power unleashed by the scroll will also temporarily" +
-			"blind and massively harm the reader. if the reader is already injured they will likely die.";
+			"This scroll contains destructive energy that can be psionically channeled to tear apart " +
+			"the minds of all visible creatures. The power unleashed by the scroll will also temporarily " +
+			"blind, temporarily stun, and massively harm the reader.";
 	}
 	
 	@Override
