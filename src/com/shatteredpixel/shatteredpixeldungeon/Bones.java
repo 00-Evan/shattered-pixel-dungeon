@@ -91,7 +91,7 @@ public class Bones {
 				
 				return get();
 				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				return null;
 			}
 			
