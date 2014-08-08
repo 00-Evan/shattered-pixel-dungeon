@@ -31,7 +31,7 @@ import com.watabou.utils.Bundle;
 
 public class Sungrass extends Plant {
 
-	private static final String TXT_DESC = "Sungrass is renowned for its sap's show but effective healing properties.";
+	private static final String TXT_DESC = "Sungrass is renowned for its sap's slow but effective healing properties.";
 	
 	{
 		image = 4;
@@ -43,7 +43,7 @@ public class Sungrass extends Plant {
 		super.activate( ch );
 		
 		if (ch != null) {
-			Buff.affect( ch, Health.class );
+			Buff.affect( ch, Health.class ).level = ch.HT;
 		}
 		
 		if (Dungeon.visible[pos]) {
@@ -78,31 +78,31 @@ public class Sungrass extends Plant {
 		private static final float STEP = 1f;
 		
 		private int pos;
-        private int healCurr = 2;
-        private int count = 5;
-        private int healTot;
+        private int healCurr = 1;
+        private int count = 0;
+        private int level;
 		
 		@Override
 		public boolean attachTo( Char target ) {
 			pos = target.pos;
-            healTot = target.HT;
 			return super.attachTo( target );
 		}
 		
 		@Override
         public boolean act() {
-            if (target.pos != pos || healTot <= 0) {
+            if (target.pos != pos || level <= 0) {
                 detach();
             }
             if (count == 5) {
-                if (healTot <= healCurr) {
-                    target.HP = Math.min(target.HT, target.HP + healTot);
+                if (level <= healCurr) {
+                    target.HP = Math.min(target.HT, target.HP + level);
                     target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
                     detach();
                 } else {
-                    target.HP = Math.min(target.HT, target.HP + healCurr);
-                    healTot -= healCurr;
-                    healCurr = Math.min(healCurr+healCurr-1,(int)(target.HT*0.15));
+                    target.HP = Math.min(target.HT, target.HP+(int)(healCurr*.025*target.HT));
+                    level -= (healCurr*.025*target.HT);
+                    if (healCurr < 6)
+                        healCurr ++;
                     target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
                 }
                 count = 1;
@@ -114,8 +114,8 @@ public class Sungrass extends Plant {
         }
 
         public int absorb( int damage ) {
-            healTot -= damage;
-            if (healTot <= 0)
+            level -= damage;
+            if (level <= 0)
                 detach();
             return damage;
         }
@@ -127,21 +127,35 @@ public class Sungrass extends Plant {
 		
 		@Override
 		public String toString() {
-            return Utils.format( "Herbal Healing (%d)", healTot);
+            return Utils.format( "Herbal Healing (%d)", level);
 		}
 		
 		private static final String POS	= "pos";
-		
-		@Override
+        private static final String HEALCURR = "healCurr";
+        private static final String COUNT = "count";
+        private static final String LEVEL = "level";
+
+        @Override
 		public void storeInBundle( Bundle bundle ) {
 			super.storeInBundle( bundle );
 			bundle.put( POS, pos );
+            bundle.put( HEALCURR, healCurr);
+            bundle.put( COUNT, count);
+            bundle.put( LEVEL, level);
 		}
 		
 		@Override
 		public void restoreFromBundle( Bundle bundle ) {
 			super.restoreFromBundle( bundle );
 			pos = bundle.getInt( POS );
+            //to support legacy saves from 0.1.0, TODO: remove when saves from V0.1.0 are invalidated
+                if (!bundle.contains( LEVEL )){
+                return;
+            }
+            healCurr = bundle.getInt( HEALCURR );
+            count = bundle.getInt( COUNT );
+            level = bundle.getInt( LEVEL );
+
 		}
 	}
 }
