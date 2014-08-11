@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -45,24 +46,16 @@ public class ScrollOfLullaby extends Scroll {
 		Mob affected = null;
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Level.fieldOfView[mob.pos]) {
-				Buff.affect( mob, Sleep.class );
-				if (mob.buff( Sleep.class ) != null) {
+				Buff.affect( mob, Drowsy.class );
+				if (mob.buff( Drowsy.class ) != null) {
 					affected = mob;
 					count++;
 				}
 			}
 		}
-		
-		switch (count) {
-		case 0:
-			GLog.i( "The scroll utters a soothing melody." );
-			break;
-		case 1:
-			GLog.i( "The scroll utters a soothing melody and the " + affected.name + " falls asleep!" );
-			break;
-		default:
-			GLog.i( "The scroll utters a soothing melody and the monsters fall asleep!" );
-		}
+
+		GLog.i( "The scroll utters a soothing melody. You feel very sleepy." );
+
 		setKnown();
 		
 		curUser.spendAndNext( TIME_TO_READ );
@@ -71,8 +64,7 @@ public class ScrollOfLullaby extends Scroll {
 	@Override
 	public String desc() {
 		return
-			"A soothing melody will put all creatures in your field of view into a deep sleep, " +
-			"giving you a chance to flee or make a surprise attack on them.";
+			"A soothing melody will lull all who hear it into a deep magical sleep ";
 	}
 	
 	@Override
