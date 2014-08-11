@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -821,6 +822,10 @@ public class Hero extends Char {
 	@Override
 	public void damage( int dmg, Object src ) {		
 		restoreHealth = false;
+        if (this.buff(Drowsy.class) != null){
+            Buff.detach(this, Drowsy.class);
+            GLog.i("The pain helps you resist the urge to sleep.");
+        }
 		super.damage( dmg, src );
 		
 		if (subClass == HeroSubClass.BERSERKER && 0 < HP && HP <= HT * Fury.LEVEL) {

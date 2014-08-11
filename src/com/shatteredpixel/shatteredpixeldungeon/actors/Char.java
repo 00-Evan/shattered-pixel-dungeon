@@ -235,6 +235,9 @@ public abstract class Char extends Actor {
                 Buff.prolong(this, Paralysis.class, 1f);
             }
         }
+        if (this.buff(MagicalSleep.class) != null){
+            Buff.detach(this, MagicalSleep.class);
+        }
 		
 		Class<?> srcClass = src.getClass();
 		if (immunities().contains( srcClass )) {

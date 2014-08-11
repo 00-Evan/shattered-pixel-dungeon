@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -292,7 +293,7 @@ public abstract class Mob extends Char {
 			state = State.HUNTING;
 		} else if (buff instanceof Terror) {
 			state = State.FLEEING;
-		} else if (buff instanceof Sleep) {
+		} else if (buff instanceof Sleep || buff instanceof MagicalSleep) {
 			if (sprite != null) {
 				new Flare( 4, 32 ).color( 0x44ffff, true ).show( sprite, 2f ) ;
 			}
