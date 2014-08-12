@@ -63,7 +63,7 @@ public class Item implements Bundlable {
 	public String defaultAction;
 	
 	protected String name = "smth";
-	protected int image = 0;
+	public int image = 0;
 	
 	public boolean stackable = false;
 	protected int quantity = 1;
