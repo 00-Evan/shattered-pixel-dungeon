@@ -17,12 +17,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
-public class Drowsy extends FlavourBuff {
+public class Drowsy extends Buff {
 
-    public static final float DURATION	= 4f;
+    public static final float STEP	= 5f;
+
+    private boolean placed = false;
 
     @Override
     public int icon() {
@@ -31,9 +34,17 @@ public class Drowsy extends FlavourBuff {
 
     @Override
     public boolean act(){
-        Buff.affect(target, MagicalSleep.class);
-        GLog.i("You fall into a deep magical sleep.");
-        return super.act();
+        if (placed) {
+            Buff.affect(target, MagicalSleep.class);
+            if (target instanceof Hero)
+                GLog.i("You fall into a deep magical sleep.");
+            detach();
+            return true;
+        } else {
+            placed = true;
+            spend(STEP);
+            return true;
+        }
     }
 
     @Override
