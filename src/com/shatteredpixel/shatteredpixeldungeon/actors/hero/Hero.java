@@ -57,7 +57,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
-import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
@@ -1096,17 +1095,23 @@ public class Hero extends Char {
 	public void die( Object cause  ) {
 		
 		curAction = null;
-		
-		DewVial.autoDrink( this );
-		if (isAlive()) {
-			new Flare( 8, 32 ).color( 0xFFFF66, true ).show( sprite, 2f ) ;
-			return;
-		}
+
+        Ankh ankh = (Ankh)belongings.getItem( Ankh.class );
+        if (ankh != null && ankh.isBlessed()) {
+            this.HP = HT;
+            new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
+
+            ankh.detach(belongings.backpack);
+
+            Sample.INSTANCE.play( Assets.SND_TELEPORT );
+            GLog.w( ankh.TXT_REVIVE );
+
+            return;
+        }
 		
 		Actor.fixTime();
 		super.die( cause );
-		
-		Ankh ankh = (Ankh)belongings.getItem( Ankh.class );
+
 		if (ankh == null) {
 			
 			reallyDie( cause );

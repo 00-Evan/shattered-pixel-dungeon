@@ -17,15 +17,36 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+
+import java.util.ArrayList;
 
 public class Ankh extends Item {
 
-	{
+    public static final String AC_BLESS = "BLESS";
+
+    public static final String TXT_DESC_NOBLESS = "Upon resurrection all non-equipped items are lost. " +
+                                                "Using a full dew vial, the ankh can be blessed with extra strength.";
+    public static final String TXT_DESC_BLESSED = "The ankh has been blessed and is now much stronger. " +
+                                              "The Ankh will sacrifice itself to save you in a moment of deadly peril.";
+
+    public static final String TXT_BLESS = "You bless the ankh with clean water.";
+    public static final String TXT_REVIVE = "The ankh explodes with life-giving energy!";
+
+
+
+    {
 		stackable = true;
 		name = "Ankh";
 		image = ItemSpriteSheet.ANKH;
 	}
+
+    private Boolean blessed = false;
 	
 	@Override
 	public boolean isUpgradable() {
@@ -36,13 +57,61 @@ public class Ankh extends Item {
 	public boolean isIdentified() {
 		return true;
 	}
+
+    @Override
+    public ArrayList<String> actions( Hero hero ) {
+        ArrayList<String> actions = super.actions(hero);
+        DewVial vial = hero.belongings.getItem(DewVial.class);
+        if (vial != null && vial.isFull())
+            actions.add( AC_BLESS );
+        return actions;
+    }
+
+    @Override
+    public void execute( final Hero hero, String action ) {
+        if (action.equals( AC_BLESS )) {
+
+            DewVial vial = hero.belongings.getItem(DewVial.class);
+            if (vial != null){
+                blessed = true;
+                vial.empty();
+                GLog.p( TXT_BLESS );
+                hero.spend( 1f );
+                hero.busy();
+
+                Sample.INSTANCE.play( Assets.SND_DRINK );
+                hero.sprite.operate( hero.pos );
+            }
+        } else {
+
+            super.execute( hero, action );
+
+        }
+
+    }
 	
 	@Override
 	public String info() {
-		return 
-			"The ancient symbol of immortality grants an ability to return to life after death. " +
-			"Upon resurrection all non-equipped items are lost.";
+		if (blessed)
+            return
+            "This ancient symbol of immortality grants the ability to return to life after death. " +
+            TXT_DESC_BLESSED;
+        else
+            return
+			"This ancient symbol of immortality grants the ability to return to life after death. " +
+            TXT_DESC_NOBLESS;
 	}
+
+    public Boolean isBlessed(){
+        return blessed;
+    }
+
+    private static final Glowing WHITE = new Glowing( 0xFFFFCC );
+
+    @Override
+    public Glowing glowing() {
+        return isBlessed() ? WHITE : null;
+    }
 	
 	@Override
 	public int price() {
