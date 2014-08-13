@@ -25,6 +25,7 @@ public class Blandfruit extends Food {
     public String message = "You eat the Blandfruit, bleugh!";
     public String info = "So dry and insubstantial, perhaps cooking could improve it.";
     public Potion potionAttrib = null;
+    public ItemSprite.Glowing potionGlow = null;
 
     {
         name = "Blandfruit";
@@ -37,20 +38,26 @@ public class Blandfruit extends Food {
     public void execute( Hero hero, String action ) {
         if (potionAttrib == null){
 
-            detach( hero.belongings.backpack );
+            if (action.equals( AC_EAT )) {
 
-            ((Hunger)hero.buff( Hunger.class )).satisfy( energy );
-            GLog.i(message);
+                detach(hero.belongings.backpack);
 
-            hero.sprite.operate( hero.pos );
-            hero.busy();
-            SpellSprite.show(hero, SpellSprite.FOOD);
-            Sample.INSTANCE.play( Assets.SND_EAT );
+                ((Hunger) hero.buff(Hunger.class)).satisfy(energy);
+                GLog.i(message);
 
-            hero.spend( 1f );
+                hero.sprite.operate(hero.pos);
+                hero.busy();
+                SpellSprite.show(hero, SpellSprite.FOOD);
+                Sample.INSTANCE.play(Assets.SND_EAT);
 
-            Statistics.foodEaten++;
-            Badges.validateFoodEaten();
+                hero.spend(1f);
+
+                Statistics.foodEaten++;
+                Badges.validateFoodEaten();
+            }
+
+            else super.execute(hero, action);
+
 
         } else if (action.equals( AC_EAT )){
 
@@ -84,9 +91,14 @@ public class Blandfruit extends Food {
 
         } else if (action.equals( AC_THROW )){
 
-            //need to finish this
-            GameScene.selectCell(thrower);
-            //potionAttrib.splash(hero.pos);
+            if (potionAttrib instanceof PotionOfLiquidFlame ||
+                    potionAttrib instanceof PotionOfToxicGas ||
+                    potionAttrib instanceof PotionOfParalyticGas){
+                potionAttrib.execute(hero, action);
+                detach( hero.belongings.backpack );
+            } else {
+                super.execute(hero, action);
+            }
 
         } else {
             super.execute(hero, action);
@@ -116,11 +128,10 @@ public class Blandfruit extends Food {
         //implement pixmap
         potionAttrib.image = ItemSpriteSheet.BLANDFRUIT;
 
-        //need to finish this
         if (potionAttrib instanceof PotionOfHealing){
 
             name = "Healthfruit";
-            //message = "You eat the HealthFruit, your whole body tingles.";
+            potionGlow = new ItemSprite.Glowing( 0x2EE62E );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
                     "of the Sungrass seed it was cooked with. It looks delicious and hearty, ready to be eaten!";
 
@@ -128,51 +139,51 @@ public class Blandfruit extends Food {
         } else if (potionAttrib instanceof PotionOfStrength){
 
             name = "Powerfruit";
-            //message = "";
+            potionGlow = new ItemSprite.Glowing( 0xCC0022 );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
                     "of the Rotberry seed it was cooked with. It looks delicious and powerful, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfParalyticGas){
 
             name = "Paralyzefruit";
-            //message = "";
+            potionGlow = new ItemSprite.Glowing( 0x67583D );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Earthroot seed it was cooked with. It looks delicious and firm, but eating it is probably a bad idea.";
+                    "of the Earthroot seed it was cooked with. It looks firm and volatile, I shouldn't eat this.";
 
         } else if (potionAttrib instanceof PotionOfInvisibility){
 
             name = "Invisifruit";
-            //message = "";
+            potionGlow = new ItemSprite.Glowing( 0xE5D273 );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
                     "of the Blindweed seed it was cooked with. It looks delicious and shiny, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfLiquidFlame){
 
             name = "Flamefruit";
-            //message = "";
+            potionGlow = new ItemSprite.Glowing( 0xFF7F00 );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Firebloom seed it was cooked with. It looks delicious and spicy, but eating it is probably a bad idea.";
+                    "of the Firebloom seed it was cooked with. It looks spicy and volatile, I shouldn't eat this.";
 
         } else if (potionAttrib instanceof PotionOfFrost){
 
             name = "Frostfruit";
-            //message = "";
+            potionGlow = new ItemSprite.Glowing( 0x66B3FF );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
                     "of the Icecap seed it was cooked with. It looks delicious and refreshing, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfMindVision){
 
             name = "Visionfruit";
-            //message = "";
+            potionGlow = new ItemSprite.Glowing( 0xB8E6CF );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
                     "of the Fadeleaf seed it was cooked with. It looks delicious and shadowy, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfToxicGas){
 
             name = "Toxicfruit";
-            //message = "";
+            potionGlow = new ItemSprite.Glowing( 0xA15CE5 );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Sorrowmoss seed it was cooked with. It looks delicious and crisp, but eating it is probably a bad idea.";
+                    "of the Sorrowmoss seed it was cooked with. It looks crisp and volatile, I shouldn't eat this.";
 
         } else {
 
@@ -181,11 +192,10 @@ public class Blandfruit extends Food {
         return this;
     }
 
-    private static final ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x2EE62E );
 
     @Override
     public ItemSprite.Glowing glowing() {
-        return (potionAttrib != null) ? GREEN : null;
+        return potionGlow;
     }
 
 }
