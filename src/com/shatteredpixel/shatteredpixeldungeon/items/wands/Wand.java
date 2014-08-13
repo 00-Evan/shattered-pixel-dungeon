@@ -194,7 +194,13 @@ public abstract class Wand extends KindOfWeapon {
 		stopCharging();
 		return super.detach( container );
 	}
-	
+
+    @Override
+    public Item detachAll( Bag container) {
+        stopCharging();
+        return super.detachAll( container );
+    }
+
 	public void stopCharging() {
 		if (charger != null) {
 			charger.detach();
