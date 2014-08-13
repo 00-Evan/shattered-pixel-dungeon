@@ -208,7 +208,7 @@ public class Potion extends Item {
 		}
 	}
 	
-	protected void apply( Hero hero ) {
+	public void apply( Hero hero ) {
 		shatter( hero.pos );
 	}
 	

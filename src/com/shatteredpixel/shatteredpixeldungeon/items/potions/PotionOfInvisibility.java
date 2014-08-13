@@ -35,7 +35,7 @@ public class PotionOfInvisibility extends Potion {
 	}
 	
 	@Override
-	protected void apply( Hero hero ) {
+	public void apply( Hero hero ) {
 		setKnown();
 		Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
 		GLog.i( "You see your hands turn invisible!" );
