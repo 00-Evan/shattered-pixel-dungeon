@@ -79,6 +79,8 @@ public class Ankh extends Item {
                 hero.spend( 1f );
                 hero.busy();
 
+                //TODO: add sparkle effect
+
                 Sample.INSTANCE.play( Assets.SND_DRINK );
                 hero.sprite.operate( hero.pos );
             }

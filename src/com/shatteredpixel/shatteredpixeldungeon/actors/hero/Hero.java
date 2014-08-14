@@ -1099,6 +1099,7 @@ public class Hero extends Char {
         Ankh ankh = (Ankh)belongings.getItem( Ankh.class );
         if (ankh != null && ankh.isBlessed()) {
             this.HP = HT;
+            //TODO: add sparkle effect
             new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
 
             ankh.detach(belongings.backpack);

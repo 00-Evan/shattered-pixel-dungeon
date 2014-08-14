@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -239,19 +240,33 @@ public class Heap implements Bundlable {
 		
 		float chances[] = new float[items.size()];
 		int count = 0;
+
+
+        if (items.get(0) instanceof Blandfruit && items.get(1) instanceof Seed) {
+
+            CellEmitter.center( pos ).burst( Speck.factory( Speck.EVOKE ), 3 );
+
+            Blandfruit result = new Blandfruit();
+            result.cook((Seed)items.get(1));
+
+            destroy();
+
+            return result;
+
+        }
 		
 		int index = 0;
 		for (Item item : items) {
 			if (item instanceof Seed) {
 				count += item.quantity;
 				chances[index++] = item.quantity;
-			} else {
+			}  else{
 				count = 0;
 				break;
 			}
 		}
-		
-		if (count >= SEEDS_TO_POTION) {
+
+        } else if (count >= SEEDS_TO_POTION) {
 			
 			CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 			Sample.INSTANCE.play( Assets.SND_PUFF );

@@ -52,7 +52,7 @@ public class FrozenCarpaccio extends Food {
 				Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
 				break;
 			case 1:
-				GLog.i( "You feel your skin hardens!" );
+				GLog.i( "You feel your skin harden!" );
 				Buff.affect( hero, Barkskin.class ).level( hero.HT / 4 );
 				break;
 			case 2:

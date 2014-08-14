@@ -5,12 +5,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
+import com.shatteredpixel.shatteredpixeldungeon.plants.*;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -25,6 +27,7 @@ public class Blandfruit extends Food {
 
     public String message = "You eat the Blandfruit, bleugh!";
     public String info = "So dry and insubstantial, perhaps cooking could improve it.";
+
     public Potion potionAttrib = null;
     public ItemSprite.Glowing potionGlow = null;
 
@@ -77,7 +80,7 @@ public class Blandfruit extends Food {
                         Buff.affect(hero, Invisibility.class, Invisibility.DURATION);
                         break;
                     case 1:
-                        GLog.i( "You feel your skin hardens!" );
+                        GLog.i( "You feel your skin harden!" );
                         Buff.affect( hero, Barkskin.class ).level( hero.HT / 4 );
                         break;
                     case 2:
@@ -155,7 +158,6 @@ public class Blandfruit extends Food {
             return null;
         }
 
-        //implement pixmap
         potionAttrib.image = ItemSpriteSheet.BLANDFRUIT;
 
         if (potionAttrib instanceof PotionOfHealing){
@@ -164,7 +166,6 @@ public class Blandfruit extends Food {
             potionGlow = new ItemSprite.Glowing( 0x2EE62E );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
                     "of the Sungrass seed it was cooked with. It looks delicious and hearty, ready to be eaten!";
-
 
         } else if (potionAttrib instanceof PotionOfStrength){
 
@@ -218,6 +219,39 @@ public class Blandfruit extends Food {
         }
 
         return this;
+    }
+
+    public static final String NAME = "name";
+
+    @Override
+    public void storeInBundle(Bundle bundle){
+        super.storeInBundle(bundle);
+        bundle.put(NAME name);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle){
+        super.restoreFromBundle(bundle);
+        name = bundle.getString(NAME);
+
+        if (name == "Healthfruit")
+            cook(new Sungrass.Seed());
+        else if (name == "Powerfruit")
+            //TODO: make sure this doesn't break anything
+            cook(new Wandmaker.Rotberry.Seed());
+        else if (name == "Paralyzefruit")
+            cook(new Earthroot.Seed());
+        else if (name == "Invisifruit")
+            cook(new Blindweed.Seed());
+        else if (name == "Flamefruit")
+            cook(new Firebloom.Seed());
+        else if (name == "Frostfruit")
+            cook(new Icecap.Seed());
+        else if (name == "Visionfruit")
+            cook(new Fadeleaf.Seed());
+        else if (name == "Toxicfruit")
+            cook(new Sorrowmoss.Seed());
+
     }
 
 

@@ -18,7 +18,7 @@ import com.watabou.utils.Random;
 public class BlandfruitBush extends Plant {
 
     private static final String TXT_DESC =
-            "Distant cousin of the Rotberry, the pear-shaped produce of the Blandfruit bush tastes like mushy chalk. " +
+            "Distant cousin of the Rotberry, the pear-shaped produce of the Blandfruit bush tastes like caked dust. " +
             "The fruit is gross and unsubstantial but isn't poisonous. perhaps it could be cooked.";
 
     {
@@ -30,9 +30,7 @@ public class BlandfruitBush extends Plant {
     public void activate( Char ch ) {
         super.activate( ch );
 
-        if (ch != null) {
-            //need to implement this
-        }
+        Dungeon.level.drop( new Seed(), pos ).sprite.drop();
     }
 
     @Override
@@ -48,7 +46,7 @@ public class BlandfruitBush extends Plant {
             image = ItemSpriteSheet.SEED_BLINDWEED;
 
             plantClass = BlandfruitBush.class;
-            alchemyClass = PotionOfInvisibility.class;
+            alchemyClass = null;
         }
 
         @Override
