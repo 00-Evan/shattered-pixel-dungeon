@@ -22,6 +22,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
+import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.watabou.utils.Random;
 
 public class GardenPainter extends Painter {
@@ -34,10 +35,18 @@ public class GardenPainter extends Painter {
 		
 		room.entrance().set( Room.Door.Type.REGULAR );
 		
-		int bushes = Random.Int( 3 ) == 0 ? (Random.Int( 5 ) == 0 ? 2 : 1) : 0;
-		for (int i=0; i < bushes; i++) {
-			level.plant( new Sungrass.Seed(), room.random() );
-		}
+		int bushes = Random.Int( 3 );
+	    if (bushes == 0) {
+            level.plant(new Sungrass.Seed(), room.random());
+        } else if (bushes == 1) {
+            level.plant(new BlandfruitBush.Seed(), room.random() );
+		} else {
+            bushes = Random.Int( 5 );
+            if (bushes == 0){
+                level.plant(new Sungrass.Seed(), room.random());
+                level.plant(new BlandfruitBush.Seed(), room.random() );
+            }
+        }
 		
 		Foliage light = (Foliage)level.blobs.get( Foliage.class );
 		if (light == null) {

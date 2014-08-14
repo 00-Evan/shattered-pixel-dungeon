@@ -3,7 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
@@ -16,6 +16,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 /**
  * Created by debenhame on 12/08/2014.
@@ -61,13 +62,41 @@ public class Blandfruit extends Food {
 
         } else if (action.equals( AC_EAT )){
 
-            ((Hunger)hero.buff( Hunger.class )).satisfy( Hunger.HUNGRY );
+            ((Hunger)hero.buff( Hunger.class )).satisfy(Hunger.HUNGRY);
 
             detach( hero.belongings.backpack );
 
             hero.spend( 1f );
             hero.busy();
-            potionAttrib.apply(hero);
+
+            if (potionAttrib instanceof PotionOfFrost){
+                GLog.i( "the Frostfruit takes a bit like Frozen Carpaccio." );
+                switch (Random.Int(5)) {
+                    case 0:
+                        GLog.i( "You see your hands turn invisible!" );
+                        Buff.affect(hero, Invisibility.class, Invisibility.DURATION);
+                        break;
+                    case 1:
+                        GLog.i( "You feel your skin hardens!" );
+                        Buff.affect( hero, Barkskin.class ).level( hero.HT / 4 );
+                        break;
+                    case 2:
+                        GLog.i( "Refreshing!" );
+                        Buff.detach( hero, Poison.class );
+                        Buff.detach( hero, Cripple.class );
+                        Buff.detach( hero, Weakness.class );
+                        Buff.detach( hero, Bleeding.class );
+                        break;
+                    case 3:
+                        GLog.i( "You feel better!" );
+                        if (hero.HP < hero.HT) {
+                            hero.HP = Math.min( hero.HP + hero.HT / 4, hero.HT );
+                            hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+                        }
+                        break;
+                }
+            } else
+                potionAttrib.apply(hero);
 
             Sample.INSTANCE.play( Assets.SND_EAT );
 
@@ -93,7 +122,8 @@ public class Blandfruit extends Food {
 
             if (potionAttrib instanceof PotionOfLiquidFlame ||
                     potionAttrib instanceof PotionOfToxicGas ||
-                    potionAttrib instanceof PotionOfParalyticGas){
+                    potionAttrib instanceof PotionOfParalyticGas ||
+                    potionAttrib instanceof PotionOfFrost){
                 potionAttrib.execute(hero, action);
                 detach( hero.belongings.backpack );
             } else {
@@ -184,8 +214,6 @@ public class Blandfruit extends Food {
             potionGlow = new ItemSprite.Glowing( 0xA15CE5 );
             info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
                     "of the Sorrowmoss seed it was cooked with. It looks crisp and volatile, I shouldn't eat this.";
-
-        } else {
 
         }
 
