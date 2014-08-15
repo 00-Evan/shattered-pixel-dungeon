@@ -40,9 +40,9 @@ public class Blandfruit extends Food {
 
     @Override
     public void execute( Hero hero, String action ) {
-        if (potionAttrib == null){
+        if (action.equals( AC_EAT )){
 
-            if (action.equals( AC_EAT )) {
+            if (potionAttrib == null) {
 
                 detach(hero.belongings.backpack);
 
@@ -58,81 +58,64 @@ public class Blandfruit extends Food {
 
                 Statistics.foodEaten++;
                 Badges.validateFoodEaten();
-            }
+            } else {
 
-            else super.execute(hero, action);
+                ((Hunger) hero.buff(Hunger.class)).satisfy(Hunger.HUNGRY);
 
+                detach(hero.belongings.backpack);
 
-        } else if (action.equals( AC_EAT )){
+                hero.spend(1f);
+                hero.busy();
 
-            ((Hunger)hero.buff( Hunger.class )).satisfy(Hunger.HUNGRY);
+                if (potionAttrib instanceof PotionOfFrost) {
+                    GLog.i("the Frostfruit tastes a bit like Frozen Carpaccio.");
+                    switch (Random.Int(5)) {
+                        case 0:
+                            GLog.i("You see your hands turn invisible!");
+                            Buff.affect(hero, Invisibility.class, Invisibility.DURATION);
+                            break;
+                        case 1:
+                            GLog.i("You feel your skin harden!");
+                            Buff.affect(hero, Barkskin.class).level(hero.HT / 4);
+                            break;
+                        case 2:
+                            GLog.i("Refreshing!");
+                            Buff.detach(hero, Poison.class);
+                            Buff.detach(hero, Cripple.class);
+                            Buff.detach(hero, Weakness.class);
+                            Buff.detach(hero, Bleeding.class);
+                            break;
+                        case 3:
+                            GLog.i("You feel better!");
+                            if (hero.HP < hero.HT) {
+                                hero.HP = Math.min(hero.HP + hero.HT / 4, hero.HT);
+                                hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+                            }
+                            break;
+                    }
+                } else
+                    potionAttrib.apply(hero);
 
-            detach( hero.belongings.backpack );
+                Sample.INSTANCE.play( Assets.SND_EAT );
 
-            hero.spend( 1f );
-            hero.busy();
+                hero.sprite.operate(hero.pos);
 
-            if (potionAttrib instanceof PotionOfFrost){
-                GLog.i( "the Frostfruit takes a bit like Frozen Carpaccio." );
-                switch (Random.Int(5)) {
-                    case 0:
-                        GLog.i( "You see your hands turn invisible!" );
-                        Buff.affect(hero, Invisibility.class, Invisibility.DURATION);
-                        break;
-                    case 1:
-                        GLog.i( "You feel your skin harden!" );
-                        Buff.affect( hero, Barkskin.class ).level( hero.HT / 4 );
-                        break;
-                    case 2:
-                        GLog.i( "Refreshing!" );
-                        Buff.detach( hero, Poison.class );
-                        Buff.detach( hero, Cripple.class );
-                        Buff.detach( hero, Weakness.class );
-                        Buff.detach( hero, Bleeding.class );
-                        break;
-                    case 3:
-                        GLog.i( "You feel better!" );
+                switch (hero.heroClass) {
+                    case WARRIOR:
                         if (hero.HP < hero.HT) {
-                            hero.HP = Math.min( hero.HP + hero.HT / 4, hero.HT );
-                            hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+                            hero.HP = Math.min( hero.HP + 5, hero.HT );
+                            hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
                         }
                         break;
+                    case MAGE:
+                        hero.belongings.charge( false );
+                        ScrollOfRecharging.charge(hero);
+                        break;
+                    case ROGUE:
+                    case HUNTRESS:
+                        break;
                 }
-            } else
-                potionAttrib.apply(hero);
-
-            Sample.INSTANCE.play( Assets.SND_EAT );
-
-            hero.sprite.operate(hero.pos);
-
-            switch (hero.heroClass) {
-                case WARRIOR:
-                    if (hero.HP < hero.HT) {
-                        hero.HP = Math.min( hero.HP + 5, hero.HT );
-                        hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
-                    }
-                    break;
-                case MAGE:
-                    hero.belongings.charge( false );
-                    ScrollOfRecharging.charge(hero);
-                    break;
-                case ROGUE:
-                case HUNTRESS:
-                    break;
             }
-
-        } else if (action.equals( AC_THROW )){
-
-            if (potionAttrib instanceof PotionOfLiquidFlame ||
-                    potionAttrib instanceof PotionOfToxicGas ||
-                    potionAttrib instanceof PotionOfParalyticGas ||
-                    potionAttrib instanceof PotionOfFrost){
-                potionAttrib.execute(hero, action);
-                //detaches in Potion.cast, this is an awkward workaround due to throwing being on a different thread.
-            } else {
-                super.execute(hero, action);
-            }
-
         } else {
             super.execute(hero, action);
         }
@@ -225,9 +208,23 @@ public class Blandfruit extends Food {
     public static final String NAME = "name";
 
     @Override
+    public void cast( final Hero user, int dst ) {
+        if (potionAttrib instanceof PotionOfLiquidFlame ||
+                potionAttrib instanceof PotionOfToxicGas ||
+                potionAttrib instanceof PotionOfParalyticGas ||
+                potionAttrib instanceof PotionOfFrost) {
+            potionAttrib.cast(user, dst);
+            detach( user.belongings.backpack );
+        } else {
+            super.cast(user, dst);
+        }
+
+    }
+
+    @Override
     public void storeInBundle(Bundle bundle){
         super.storeInBundle(bundle);
-        bundle.put(NAME name);
+        bundle.put( NAME, name );
     }
 
     @Override
