@@ -35,10 +35,18 @@ public class Drowsy extends Buff {
     @Override
     public boolean act(){
         if (placed) {
-            Buff.affect(target, MagicalSleep.class);
+
             if (target instanceof Hero)
-                GLog.i("You fall into a deep magical sleep.");
-            detach();
+                if (target.HP == target.HT) {
+                    GLog.i("You are too healthy, and resist the urge to sleep.");
+                    detach();
+                } else {
+                    GLog.i("You fall into a deep magical sleep.");
+                    Buff.affect(target, MagicalSleep.class);
+                    detach();
+                }
+            else
+                Buff.affect(target, MagicalSleep.class);
             return true;
         } else {
             placed = true;
