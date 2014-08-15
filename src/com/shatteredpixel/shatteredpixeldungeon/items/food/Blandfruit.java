@@ -128,7 +128,7 @@ public class Blandfruit extends Food {
                     potionAttrib instanceof PotionOfParalyticGas ||
                     potionAttrib instanceof PotionOfFrost){
                 potionAttrib.execute(hero, action);
-                detach( hero.belongings.backpack );
+                //detaches in Potion.cast, this is an awkward workaround due to throwing being on a different thread.
             } else {
                 super.execute(hero, action);
             }
@@ -154,6 +154,7 @@ public class Blandfruit extends Food {
 
         try {
             potionAttrib = (Potion)plant.newInstance();
+            potionAttrib.ownedByFruit = true;
         } catch (Exception e) {
             return null;
         }
