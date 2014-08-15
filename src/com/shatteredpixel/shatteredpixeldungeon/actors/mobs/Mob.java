@@ -294,10 +294,6 @@ public abstract class Mob extends Char {
 		} else if (buff instanceof Terror) {
 			state = State.FLEEING;
 		} else if (buff instanceof Sleep || buff instanceof MagicalSleep) {
-			if (sprite != null) {
-				//new Flare( 4, 32 ).color( 0x44ffff, true ).show( sprite, 2f ) ;
-                this.sprite().showSleep();
-			}
 			state = State.SLEEPING;
             this.sprite().showSleep();
 			postpone( Sleep.SWS );

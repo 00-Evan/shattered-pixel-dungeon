@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -823,7 +824,7 @@ public class Hero extends Char {
 		restoreHealth = false;
         if (this.buff(Drowsy.class) != null){
             Buff.detach(this, Drowsy.class);
-            GLog.i("The pain helps you resist the urge to sleep.");
+            GLog.w("The pain helps you resist the urge to sleep.");
         }
 		super.damage( dmg, src );
 		
@@ -1100,6 +1101,7 @@ public class Hero extends Char {
         if (ankh != null && ankh.isBlessed()) {
             this.HP = HT;
             new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
+            CellEmitter.get(this.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
 
             ankh.detach(belongings.backpack);
 
