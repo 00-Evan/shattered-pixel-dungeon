@@ -81,7 +81,6 @@ public class Ankh extends Item {
                 hero.spend( 1f );
                 hero.busy();
 
-                //TODO: add sparkle effect
 
                 Sample.INSTANCE.play( Assets.SND_DRINK );
                 CellEmitter.get(hero.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
