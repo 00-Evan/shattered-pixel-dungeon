@@ -23,6 +23,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -504,7 +506,8 @@ public abstract class Level implements Bundlable {
 	
 	public Heap drop( Item item, int cell ) {
 		
-		if ((map[cell] == Terrain.ALCHEMY) && !(item instanceof Plant.Seed)) {
+		if ((map[cell] == Terrain.ALCHEMY) && (item instanceof BlandfruitBush.Seed || !(item instanceof Plant.Seed ||
+                (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null && heaps.get(cell) == null)))) {
 			int n;
 			do {
 				n = cell + NEIGHBOURS8[Random.Int( 8 )];

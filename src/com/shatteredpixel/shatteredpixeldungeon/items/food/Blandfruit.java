@@ -18,6 +18,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 /**
@@ -232,22 +233,22 @@ public class Blandfruit extends Food {
         super.restoreFromBundle(bundle);
         name = bundle.getString(NAME);
 
-        if (name == "Healthfruit")
+        if (name.equals("Healthfruit"))
             cook(new Sungrass.Seed());
-        else if (name == "Powerfruit")
+        else if (name.equals("Powerfruit"))
             //TODO: make sure this doesn't break anything
             cook(new Wandmaker.Rotberry.Seed());
-        else if (name == "Paralyzefruit")
+        else if (name.equals("Paralyzefruit"))
             cook(new Earthroot.Seed());
-        else if (name == "Invisifruit")
+        else if (name.equals("Invisifruit"))
             cook(new Blindweed.Seed());
-        else if (name == "Flamefruit")
+        else if (name.equals("Flamefruit"))
             cook(new Firebloom.Seed());
-        else if (name == "Frostfruit")
+        else if (name.equals("Frostfruit"))
             cook(new Icecap.Seed());
-        else if (name == "Visionfruit")
+        else if (name.equals("Visionfruit"))
             cook(new Fadeleaf.Seed());
-        else if (name == "Toxicfruit")
+        else if (name.equals("Toxicfruit"))
             cook(new Sorrowmoss.Seed());
 
     }

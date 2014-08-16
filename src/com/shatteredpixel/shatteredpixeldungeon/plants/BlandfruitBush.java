@@ -2,15 +2,8 @@ package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.utils.Random;
 
 /**
  * Created by Evan on 13/08/2014.
@@ -30,7 +23,7 @@ public class BlandfruitBush extends Plant {
     public void activate( Char ch ) {
         super.activate( ch );
 
-        Dungeon.level.drop( new Seed(), pos ).sprite.drop();
+        Dungeon.level.drop( new Blandfruit(), pos ).sprite.drop();
     }
 
     @Override
@@ -43,7 +36,7 @@ public class BlandfruitBush extends Plant {
             plantName = "Blandfruit";
 
             name = "seed of " + plantName;
-            image = ItemSpriteSheet.SEED_BLINDWEED;
+            image = ItemSpriteSheet.SEED_BLANDFRUIT;
 
             plantClass = BlandfruitBush.class;
             alchemyClass = null;

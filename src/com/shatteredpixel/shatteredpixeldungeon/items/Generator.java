@@ -184,8 +184,9 @@ public class Generator {
 			Sungrass.Seed.class,
 			Earthroot.Seed.class,
 			Fadeleaf.Seed.class,
-			Rotberry.Seed.class };
-		Category.SEED.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 0 };
+            Rotberry.Seed.class,
+			BlandfruitBush.Seed.class};
+		Category.SEED.probs = new float[]{ 7, 7, 7, 7, 7, 7, 7, 0, 1 };
 	}
 	
 	public static void reset() {

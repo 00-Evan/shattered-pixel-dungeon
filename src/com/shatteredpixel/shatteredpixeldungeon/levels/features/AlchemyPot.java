@@ -37,10 +37,11 @@ public class AlchemyPot {
     private static final String TXT_OPTIONS	    =
             "Do you want to cook a Blandfruit with a seed, or brew a Potion from seeds?";
 	
-	private static Hero hero;
-	private static int pos;
+	public static Hero hero;
+	public static int pos;
 
-    public static boolean cookingFruit;
+    public static boolean foundFruit;
+    public static Item curItem = null;
 	
 	public static void operate( Hero hero, int pos ) {
 		
@@ -48,31 +49,30 @@ public class AlchemyPot {
 		AlchemyPot.pos = pos;
 
         Iterator<Item> items = hero.belongings.iterator();
-        Item curItem = null;
-        cookingFruit = false;
+        foundFruit = false;
         Heap heap = Dungeon.level.heaps.get( pos );
 
         if (heap == null)
-            while (items.hasNext() && cookingFruit == false){
+            while (items.hasNext() && !foundFruit){
                 curItem = items.next();
-                if (curItem instanceof Blandfruit)
-                    if (((Blandfruit) curItem).potionAttrib == null)
+                if (curItem instanceof Blandfruit && ((Blandfruit) curItem).potionAttrib == null){
                         GameScene.show(
-                            new WndOptions( TXT_POT, TXT_OPTIONS, TXT_FRUIT, TXT_POTION ){
-                                @Override
-                                protected void onSelect( int index ) {
-                                    if (index == 0)
-                                        cookingFruit = true;
+                                new WndOptions(TXT_POT, TXT_OPTIONS, TXT_FRUIT, TXT_POTION) {
+                                    @Override
+                                    protected void onSelect(int index) {
+                                        if (index == 0) {
+                                            curItem.cast( AlchemyPot.hero, AlchemyPot.pos );
+                                        } else
+                                            GameScene.selectItem(itemSelector, WndBag.Mode.SEED, TXT_SELECT_SEED);
+                                    }
                                 }
-                            }
-                        );
+                    );
+                    foundFruit = true;
+                }
             }
 
-        if (cookingFruit) {
-            curItem.cast( hero, pos );
-        } else {
+        if (!foundFruit)
             GameScene.selectItem(itemSelector, WndBag.Mode.SEED, TXT_SELECT_SEED);
-        }
 	}
 	
 	private static final WndBag.Listener itemSelector = new WndBag.Listener() {

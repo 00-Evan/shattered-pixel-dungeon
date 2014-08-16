@@ -242,12 +242,13 @@ public class Heap implements Bundlable {
 		int count = 0;
 
 
-        if (items.get(0) instanceof Blandfruit && items.get(1) instanceof Seed) {
+        if (items.size() == 2 && items.get(0) instanceof Seed && items.get(1) instanceof Blandfruit ) {
 
+            Sample.INSTANCE.play( Assets.SND_PUFF );
             CellEmitter.center( pos ).burst( Speck.factory( Speck.EVOKE ), 3 );
 
             Blandfruit result = new Blandfruit();
-            result.cook((Seed)items.get(1));
+            result.cook((Seed)items.get(0));
 
             destroy();
 
@@ -266,7 +267,7 @@ public class Heap implements Bundlable {
 			}
 		}
 
-        } else if (count >= SEEDS_TO_POTION) {
+         if (count >= SEEDS_TO_POTION) {
 			
 			CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 			Sample.INSTANCE.play( Assets.SND_PUFF );
