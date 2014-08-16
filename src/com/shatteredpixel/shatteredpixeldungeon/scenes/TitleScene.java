@@ -108,9 +108,9 @@ public class TitleScene extends PixelScene {
         source.y = h - source.height();
         add( source );
 
-        BitmapText version = new BitmapText( "v " + Game.version, font1x );
+        BitmapText version = new BitmapText( "v " + Game.version + "  ", font1x );
         version.measure();
-        version.hardlight( 0x888888 );
+        version.hardlight( 0xCCCCCC );
         version.x = w - version.width();
         version.y = h - version.height() - source.height();
         add( version );
