@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
@@ -115,6 +116,22 @@ public class Ankh extends Item {
     @Override
     public Glowing glowing() {
         return isBlessed() ? WHITE : null;
+    }
+
+    private static final String BLESSED = "blessed";
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( BLESSED, blessed );
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle( bundle );
+        //TODO: remove when saves from 0.1.1 are invalidated
+        if (bundle.contains( BLESSED ))
+            blessed	= bundle.getBoolean( BLESSED );
     }
 	
 	@Override
