@@ -193,7 +193,7 @@ public class ItemSpriteSheet {
     public static final int POUCH	    = ROW14+1;
     public static final int HOLDER	    = ROW14+2;
     public static final int BANDOLIER   = ROW14+3;
-    public static final int HOLSTER	    = ROW14+4;=
+    public static final int HOLSTER	    = ROW14+4;
 
     //Row Fifteen: Unused
 
