@@ -18,7 +18,78 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 public class ItemSpriteSheet {
-	
+
+    // Row definers
+    private static final int ROW1 = 0*16;
+    private static final int ROW2 = 1*16;
+    private static final int ROW3 = 2*16;
+    private static final int ROW4 = 3*16;
+    private static final int ROW5 = 4*16;
+    private static final int ROW6 = 5*16;
+    private static final int ROW7 = 6*16;
+    private static final int ROW8 = 7*16;
+    private static final int ROW9 = 8*16;
+    private static final int ROW10 = 9*16;
+    private static final int ROW11 = 10*16;
+    private static final int ROW12 = 11*16;
+    private static final int ROW13 = 12*16;
+    private static final int ROW14 = 13*16;
+    private static final int ROW15 = 14*16;
+    private static final int ROW16 = 15*16;
+
+    //Row One: Items which can't be obtained (inc. placeholders)
+
+    //Row Two: Miscellaneous single use items
+
+    //Row Three: Melee weapons
+    public static final int KNUCKLEDUSTER	= ROW3+0;
+    public static final int DAGGER			= ROW3+1;
+    public static final int SHORT_SWORD		= ROW3+2;
+    public static final int QUARTERSTAFF	= ROW3+3;
+    public static final int SPEAR			= ROW3+4;
+    public static final int MACE			= ROW3+5;
+    public static final int SWORD			= ROW3+6;
+    public static final int LONG_SWORD		= ROW3+7;
+    public static final int BATTLE_AXE		= ROW3+8;
+    public static final int WAR_HAMMER		= ROW3+9;
+    public static final int GLAIVE			= ROW3+10;
+
+    //Row Four: Missile weapons
+    public static final int DART			= ROW4+0;
+    public static final int BOOMERANG		= ROW4+1;
+    public static final int INCENDIARY_DART	= ROW4+2;
+    public static final int SHURIKEN		= ROW4+3;
+    public static final int CURARE_DART		= ROW4+4;
+    public static final int JAVELIN			= ROW4+5;
+    public static final int TOMAHAWK		= ROW4+6;
+
+    //Row Five: Armors
+
+    //Row Six: Wands
+
+    //Row Seven: Rings
+
+    //Row Eight: Trinkets
+
+    //Row Nine: Scrolls
+
+    //Row Ten: Potions
+
+    //Row Eleven: Seeds
+
+    //Row Twelve: Food
+
+    //Row Thirteen: Quest Items
+
+    //Row Fourteen: Containers/Bags
+
+    //Row Fifteen: Unused
+
+    //Row Sixteen: Unused
+
+
+
+
 	// Placeholders
 	public static final int WEAPON	= 5;
 	public static final int ARMOR	= 6;
@@ -29,28 +100,10 @@ public class ItemSpriteSheet {
 	public static final int SKELETON_KEY	= 8;
 	public static final int IRON_KEY		= 9;
 	public static final int GOLDEN_KEY		= 10;
-	
-	// Melee weapons
-	public static final int SHORT_SWORD		= 2;
-	public static final int KNUCKLEDUSTER	= 16;
-	public static final int QUARTERSTAFF	= 17;
-	public static final int MACE			= 18;
-	public static final int DAGGER			= 19;
-	public static final int SWORD			= 20;
-	public static final int LONG_SWORD		= 21;
-	public static final int BATTLE_AXE		= 22;
-	public static final int WAR_HAMMER		= 23;
-	public static final int SPEAR			= 29;
-	public static final int GLAIVE			= 30;
+
 	
 	// Missile weapons
-	public static final int SHURIKEN		= 15;
-	public static final int DART			= 31;
-	public static final int BOOMERANG		= 106;
-	public static final int TOMAHAWK		= 107;
-	public static final int INCENDIARY_DART	= 108;
-	public static final int CURARE_DART		= 109;
-	public static final int JAVELIN			= 110;
+
 	
 	// Armors
 	public static final int ARMOR_CLOTH		= 24;
