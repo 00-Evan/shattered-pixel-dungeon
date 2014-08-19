@@ -37,9 +37,35 @@ public class ItemSpriteSheet {
     private static final int ROW15 = 14*16;
     private static final int ROW16 = 15*16;
 
-    //Row One: Items which can't be obtained (inc. placeholders)
+    //Row One: Items which can't be obtained
+    //null warning occupies space 0, should only show up if there's a bug.
+    public static final int NULLWARN = ROW1+0;
+    public static final int DEWDROP	= ROW1+1;
+    // Heaps (containers)
+    public static final int BONES			= ROW1+2;
+    public static final int TOMB			= ROW1+3;
+    public static final int CHEST			= ROW1+4;
+    public static final int LOCKED_CHEST	= ROW1+5;
+    public static final int CRYSTAL_CHEST	= ROW1+6;
+    // Placeholders
+    public static final int WEAPON	= ROW1+7;
+    public static final int ARMOR	= ROW1+8;
+    public static final int RING	= ROW1+9;
+    public static final int SMTH	= ROW1+10;
 
     //Row Two: Miscellaneous single use items
+    public static final int GOLD	= ROW2+0;
+    public static final int TORCH	= ROW2+1;
+    public static final int STYLUS	= ROW2+2;
+    public static final int ANKH	= ROW2+3;
+    public static final int BEACON	= ROW2+4;
+    public static final int MASTERY	= ROW2+5;
+    public static final int KIT		= ROW2+6;
+    public static final int AMULET	= ROW2+7;
+    // Keys
+    public static final int IRON_KEY		= ROW2+8;
+    public static final int GOLDEN_KEY		= ROW2+9;
+    public static final int SKELETON_KEY	= ROW2+10;
 
     //Row Three: Melee weapons
     public static final int KNUCKLEDUSTER	= ROW3+0;
@@ -64,164 +90,113 @@ public class ItemSpriteSheet {
     public static final int TOMAHAWK		= ROW4+6;
 
     //Row Five: Armors
+    public static final int ARMOR_CLOTH		= ROW5+0;
+    public static final int ARMOR_LEATHER	= ROW5+1;
+    public static final int ARMOR_MAIL		= ROW5+2;
+    public static final int ARMOR_SCALE		= ROW5+3;
+    public static final int ARMOR_PLATE		= ROW5+4;
+    public static final int ARMOR_WARRIOR	= ROW5+5;
+    public static final int ARMOR_MAGE		= ROW5+6;
+    public static final int ARMOR_ROGUE		= ROW5+7;
+    public static final int ARMOR_HUNTRESS	= ROW5+8;
 
     //Row Six: Wands
+    public static final int WAND_MAGIC_MISSILE	= ROW6+0;
+    public static final int WAND_HOLLY			= ROW6+1;
+    public static final int WAND_YEW			= ROW6+2;
+    public static final int WAND_EBONY			= ROW6+3;
+    public static final int WAND_CHERRY			= ROW6+4;
+    public static final int WAND_TEAK			= ROW6+5;
+    public static final int WAND_ROWAN			= ROW6+6;
+    public static final int WAND_WILLOW			= ROW6+7;
+    public static final int WAND_MAHOGANY		= ROW6+8;
+    public static final int WAND_BAMBOO			= ROW6+9;
+    public static final int WAND_PURPLEHEART	= ROW6+10;
+    public static final int WAND_OAK			= ROW6+11;
+    public static final int WAND_BIRCH			= ROW6+12;
 
     //Row Seven: Rings
+    public static final int RING_GARNET		= ROW7+0;
+    public static final int RING_RUBY		= ROW7+1;
+    public static final int RING_TOPAZ		= ROW7+2;
+    public static final int RING_EMERALD	= ROW7+3;
+    public static final int RING_ONYX		= ROW7+4;
+    public static final int RING_OPAL		= ROW7+5;
+    public static final int RING_TOURMALINE	= ROW7+6;
+    public static final int RING_SAPPHIRE	= ROW7+7;
+    public static final int RING_AMETHYST	= ROW7+8;
+    public static final int RING_QUARTZ		= ROW7+9;
+    public static final int RING_AGATE		= ROW7+10;
+    public static final int RING_DIAMOND	= ROW7+11;
 
     //Row Eight: Trinkets
+    //ssshhh...
 
     //Row Nine: Scrolls
+    public static final int SCROLL_KAUNAN	= ROW9+0;
+    public static final int SCROLL_SOWILO	= ROW9+1;
+    public static final int SCROLL_LAGUZ	= ROW9+2;
+    public static final int SCROLL_YNGVI	= ROW9+3;
+    public static final int SCROLL_GYFU		= ROW9+4;
+    public static final int SCROLL_RAIDO	= ROW9+5;
+    public static final int SCROLL_ISAZ		= ROW9+6;
+    public static final int SCROLL_MANNAZ	= ROW9+7;
+    public static final int SCROLL_NAUDIZ	= ROW9+8;
+    public static final int SCROLL_BERKANAN	= ROW9+9;
+    public static final int SCROLL_ODAL		= ROW9+10;
+    public static final int SCROLL_TIWAZ	= ROW9+11;
 
     //Row Ten: Potions
+    public static final int POTION_CRIMSON		= ROW10+0;
+    public static final int POTION_AMBER		= ROW10+1;
+    public static final int POTION_GOLDEN		= ROW10+2;
+    public static final int POTION_JADE			= ROW10+3;
+    public static final int POTION_TURQUOISE    = ROW10+4;
+    public static final int POTION_AZURE		= ROW10+5;
+    public static final int POTION_INDIGO		= ROW10+6;
+    public static final int POTION_MAGENTA		= ROW10+7;
+    public static final int POTION_BISTRE		= ROW10+8;
+    public static final int POTION_CHARCOAL		= ROW10+9;
+    public static final int POTION_SILVER		= ROW10+10;
+    public static final int POTION_IVORY		= ROW10+11;
 
     //Row Eleven: Seeds
+    public static final int SEED_ROTBERRY	= ROW11+0;
+    public static final int SEED_FIREBLOOM	= ROW11+1;
+    public static final int SEED_BLINDWEED	= ROW11+2;
+    public static final int SEED_SUNGRASS	= ROW11+3;
+    public static final int SEED_ICECAP		= ROW11+4;
+    public static final int SEED_SORROWMOSS	= ROW11+5;
+    public static final int SEED_EARTHROOT	= ROW11+6;
+    public static final int SEED_FADELEAF	= ROW11+7;
+    public static final int SEED_BLANDFRUIT	= ROW11+8;
 
     //Row Twelve: Food
+    public static final int MEAT		= ROW12+0;
+    public static final int STEAK		= ROW12+1;
+    public static final int OVERPRICED	= ROW12+2;
+    public static final int CARPACCIO	= ROW12+3;
+    public static final int BLANDFRUIT	= ROW12+4;
+    public static final int RATION		= ROW12+5;
+    public static final int PASTY		= ROW12+6;
 
     //Row Thirteen: Quest Items
+    public static final int ROSE	= ROW13+0;
+    public static final int SKULL	= ROW13+1;
+    public static final int DUST	= ROW13+2;
+    public static final int PICKAXE	= ROW13+3;
+    public static final int ORE		= ROW13+4;
+    public static final int TOKEN	= ROW13+5;
 
     //Row Fourteen: Containers/Bags
+    public static final int VIAL	    = ROW14+0;
+    public static final int POUCH	    = ROW14+1;
+    public static final int HOLDER	    = ROW14+2;
+    public static final int BANDOLIER   = ROW14+3;
+    public static final int HOLSTER	    = ROW14+4;=
 
     //Row Fifteen: Unused
 
     //Row Sixteen: Unused
 
-
-
-
-	// Placeholders
-	public static final int WEAPON	= 5;
-	public static final int ARMOR	= 6;
-	public static final int RING	= 7;
-	public static final int SMTH	= 127;
-	
-	// Keys
-	public static final int SKELETON_KEY	= 8;
-	public static final int IRON_KEY		= 9;
-	public static final int GOLDEN_KEY		= 10;
-
-	
-	// Missile weapons
-
-	
-	// Armors
-	public static final int ARMOR_CLOTH		= 24;
-	public static final int ARMOR_LEATHER	= 25;
-	public static final int ARMOR_MAIL		= 26;
-	public static final int ARMOR_SCALE		= 27;
-	public static final int ARMOR_PLATE		= 28;
-	public static final int ARMOR_ROGUE		= 96;
-	public static final int ARMOR_WARRIOR	= 97;
-	public static final int ARMOR_MAGE		= 98;
-	public static final int ARMOR_HUNTRESS	= 99;
-	
-	// Wands
-	public static final int WAND_MAGIC_MISSILE	= 3;
-	public static final int WAND_HOLLY			= 48;
-	public static final int WAND_YEW			= 49;
-	public static final int WAND_EBONY			= 50;
-	public static final int WAND_CHERRY			= 51;
-	public static final int WAND_TEAK			= 52;
-	public static final int WAND_ROWAN			= 53;
-	public static final int WAND_WILLOW			= 54;
-	public static final int WAND_MAHOGANY		= 55;
-	public static final int WAND_BAMBOO			= 68;
-	public static final int WAND_PURPLEHEART	= 69;
-	public static final int WAND_OAK			= 70;
-	public static final int WAND_BIRCH			= 71;
-	
-	// Rings
-	public static final int RING_DIAMOND	= 32;
-	public static final int RING_OPAL		= 33;
-	public static final int RING_GARNET		= 34;
-	public static final int RING_RUBY		= 35;
-	public static final int RING_AMETHYST	= 36;
-	public static final int RING_TOPAZ		= 37;
-	public static final int RING_ONYX		= 38;
-	public static final int RING_TOURMALINE	= 39;
-	public static final int RING_EMERALD	= 72;
-	public static final int RING_SAPPHIRE	= 73;
-	public static final int RING_QUARTZ		= 74;
-	public static final int RING_AGATE		= 75;
-	
-	// Potions
-	public static final int POTION_TURQUOISE	= 56;
-	public static final int POTION_CRIMSON		= 57;
-	public static final int POTION_AZURE		= 58;
-	public static final int POTION_JADE			= 59;
-	public static final int POTION_GOLDEN		= 60;
-	public static final int POTION_MAGENTA		= 61;
-	public static final int POTION_CHARCOAL		= 62;
-	public static final int POTION_IVORY		= 63;
-	public static final int POTION_AMBER		= 64;
-	public static final int POTION_BISTRE		= 65;
-	public static final int POTION_INDIGO		= 66;
-	public static final int POTION_SILVER		= 67;
-	
-	// Scrolls
-	public static final int SCROLL_KAUNAN	= 40;
-	public static final int SCROLL_SOWILO	= 41;
-	public static final int SCROLL_LAGUZ	= 42;
-	public static final int SCROLL_YNGVI	= 43;
-	public static final int SCROLL_GYFU		= 44;
-	public static final int SCROLL_RAIDO	= 45;
-	public static final int SCROLL_ISAZ		= 46;
-	public static final int SCROLL_MANNAZ	= 47;
-	public static final int SCROLL_NAUDIZ	= 76;
-	public static final int SCROLL_BERKANAN	= 77;
-	public static final int SCROLL_ODAL		= 78;
-	public static final int SCROLL_TIWAZ	= 79;
-	
-	// Seeds
-	public static final int SEED_FIREBLOOM	= 88;
-	public static final int SEED_ICECAP		= 89;
-	public static final int SEED_SORROWMOSS	= 90;
-	public static final int SEED_BLINDWEED	= 91;
-	public static final int SEED_SUNGRASS	= 92;
-	public static final int SEED_EARTHROOT	= 93;
-	public static final int SEED_FADELEAF	= 94;
-	public static final int SEED_ROTBERRY	= 95;
-    public static final int SEED_BLANDFRUIT	= 118;
-	
-	// Quest items
-	public static final int ROSE	= 100;
-	public static final int PICKAXE	= 101;
-	public static final int ORE		= 102;
-	public static final int SKULL	= 103;
-	public static final int DUST	= 121;
-	public static final int TOKEN	= 122;
-	
-	// Heaps (containers)
-	public static final int BONES			= 0;
-	public static final int CHEST			= 11;
-	public static final int LOCKED_CHEST	= 12;
-	public static final int TOMB			= 13;
-	public static final int CRYSTAL_CHEST	= 105;
-	
-	// Food
-	public static final int RATION		= 4;
-	public static final int PASTY		= 112;
-	public static final int MEAT		= 113;
-	public static final int STEAK		= 114;
-	public static final int OVERPRICED	= 115;
-	public static final int CARPACCIO	= 116;
-    public static final int BLANDFRUIT	= 117;
-	
-	// Bags
-	public static final int POUCH	= 83;
-	public static final int HOLDER	= 104;
-	public static final int HOLSTER	= 111;
-	
-	// Misc
-	public static final int ANKH	= 1;
-	public static final int GOLD	= 14;
-	public static final int STYLUS	= 80;
-	public static final int DEWDROP	= 81;
-	public static final int MASTERY	= 82;
-	public static final int TORCH	= 84;
-	public static final int BEACON	= 85;
-	public static final int KIT		= 86;
-	public static final int AMULET	= 87;
-	public static final int VIAL	= 120;
 }
