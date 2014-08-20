@@ -21,6 +21,7 @@ import com.watabou.noosa.tweeners.PosTweener;
 import com.watabou.noosa.tweeners.Tweener;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 
@@ -55,8 +56,9 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		
 		PointF d = PointF.diff( dest, point() ); 
 		speed.set( d ).normalize().scale( SPEED );
-		
-		if (image == 31 || image == 108 || image == 109 || image == 110) {
+
+		if (image == ItemSpriteSheet.DART || image == ItemSpriteSheet.INCENDIARY_DART
+                || image == ItemSpriteSheet.CURARE_DART  || image == ItemSpriteSheet.JAVELIN) {
 			angularSpeed = 0;
 			angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);
 		} else {
