@@ -186,7 +186,7 @@ public class Generator {
 			Fadeleaf.Seed.class,
             Rotberry.Seed.class,
 			BlandfruitBush.Seed.class};
-		Category.SEED.probs = new float[]{ 7, 7, 7, 7, 7, 7, 7, 0, 1 };
+		Category.SEED.probs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 0, 1 };
 	}
 	
 	public static void reset() {
