@@ -130,7 +130,8 @@ public class ItemSpriteSheet {
     public static final int RING_DIAMOND	= ROW7+11;
 
     //Row Eight: Trinkets
-    //ssshhh...
+    public static final int TRINKET_CLOAK   = ROW8+0;
+    public static final int TRINKET_HORN    = ROW8+1;
 
     //Row Nine: Scrolls
     public static final int SCROLL_KAUNAN	= ROW9+0;
