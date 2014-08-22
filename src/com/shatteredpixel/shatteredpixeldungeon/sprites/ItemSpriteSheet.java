@@ -39,8 +39,8 @@ public class ItemSpriteSheet {
 
     //Row One: Items which can't be obtained
     //null warning occupies space 0, should only show up if there's a bug.
-    public static final int NULLWARN = ROW1+0;
-    public static final int DEWDROP	= ROW1+1;
+    public static final int NULLWARN    = ROW1+0;
+    public static final int DEWDROP	    = ROW1+1;
     // Heaps (containers)
     public static final int BONES			= ROW1+2;
     public static final int TOMB			= ROW1+3;
@@ -58,17 +58,18 @@ public class ItemSpriteSheet {
     public static final int TORCH	= ROW2+1;
     public static final int STYLUS	= ROW2+2;
     public static final int ANKH	= ROW2+3;
-    public static final int BEACON	= ROW2+4;
-    public static final int MASTERY	= ROW2+5;
-    public static final int KIT		= ROW2+6;
-    public static final int AMULET	= ROW2+7;
     // Keys
-    public static final int IRON_KEY		= ROW2+8;
-    public static final int GOLDEN_KEY		= ROW2+9;
-    public static final int SKELETON_KEY	= ROW2+10;
+    public static final int IRON_KEY		= ROW2+4;
+    public static final int GOLDEN_KEY		= ROW2+5;
+    public static final int SKELETON_KEY	= ROW2+6;
+    //Boss Rewards
+    public static final int BEACON	= ROW2+7;
+    public static final int MASTERY	= ROW2+8;
+    public static final int KIT		= ROW2+9;
+    public static final int AMULET	= ROW2+10;
 
     //Row Three: Melee weapons
-    public static final int KNUCKLEDUSTER	= ROW3+0;
+    public static final int KNUCKLEDUSTER	= ROW8+1;
     public static final int DAGGER			= ROW3+1;
     public static final int SHORT_SWORD		= ROW3+2;
     public static final int QUARTERSTAFF	= ROW3+3;
@@ -129,9 +130,15 @@ public class ItemSpriteSheet {
     public static final int RING_AGATE		= ROW7+10;
     public static final int RING_DIAMOND	= ROW7+11;
 
-    //Row Eight: Trinkets
-    public static final int TRINKET_CLOAK   = ROW8+0;
-    public static final int TRINKET_HORN    = ROW8+1;
+    //Row Eight: Artifacts
+    //ssssshhh....
+    public static final int ARTIFACT_CLOAK      = ROW8+0;
+    public static final int ARTIFACT_HORN       = ROW8+1;
+    public static final int ARTIFACT_CHALICE    = 0;
+    public static final int ARTIFACT_SANDALS    = 0;
+    public static final int ARTIFACT_ARMBAND    = 0;
+    public static final int ARTIFACT_CAPE       = 0;
+    public static final int ARTIFACT_TALISMAN   = 0;
 
     //Row Nine: Scrolls
     public static final int SCROLL_KAUNAN	= ROW9+0;
