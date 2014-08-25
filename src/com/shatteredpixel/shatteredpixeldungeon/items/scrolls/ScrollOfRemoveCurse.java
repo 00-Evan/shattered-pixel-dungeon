@@ -49,8 +49,8 @@ public class ScrollOfRemoveCurse extends Scroll {
 		procced = uncurse( curUser, 
 			curUser.belongings.weapon, 
 			curUser.belongings.armor, 
-			curUser.belongings.ring1, 
-			curUser.belongings.ring2 ) || procced;
+			curUser.belongings.misc1,
+			curUser.belongings.misc2) || procced;
 		
 		Weakness.detach( curUser, Weakness.class );
 		

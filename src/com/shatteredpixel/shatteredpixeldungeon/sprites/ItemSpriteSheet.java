@@ -69,7 +69,7 @@ public class ItemSpriteSheet {
     public static final int AMULET	= ROW2+10;
 
     //Row Three: Melee weapons
-    public static final int KNUCKLEDUSTER	= ROW8+1;
+    public static final int KNUCKLEDUSTER	= ROW3+0;
     public static final int DAGGER			= ROW3+1;
     public static final int SHORT_SWORD		= ROW3+2;
     public static final int QUARTERSTAFF	= ROW3+3;

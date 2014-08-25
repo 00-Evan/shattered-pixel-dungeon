@@ -219,11 +219,11 @@ public class WndRanking extends WndTabbed {
 			if (stuff.armor != null) {
 				addItem( stuff.armor );
 			}
-			if (stuff.ring1 != null) {
-				addItem( stuff.ring1 );
+			if (stuff.misc1 != null) {
+				addItem( stuff.misc1);
 			}
-			if (stuff.ring2 != null) {
-				addItem( stuff.ring2 );
+			if (stuff.misc2 != null) {
+				addItem( stuff.misc2);
 			}
 			
 			if (Dungeon.quickslot instanceof Item && 

@@ -21,11 +21,11 @@ import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Ring extends EquipableItem {
+public class Ring extends KindofMisc {
 
 	private static final float TIME_TO_EQUIP = 1f;
 	
@@ -112,17 +112,17 @@ public class Ring extends EquipableItem {
 	@Override
 	public boolean doEquip( Hero hero ) {
 		
-		if (hero.belongings.ring1 != null && hero.belongings.ring2 != null) {
+		if (hero.belongings.misc1 != null && hero.belongings.misc2 != null) {
 			
 			GLog.w( "you can only wear 2 rings at a time" );
 			return false;
 			
 		} else {
 			
-			if (hero.belongings.ring1 == null) {
-				hero.belongings.ring1 = this;
+			if (hero.belongings.misc1 == null) {
+				hero.belongings.misc1 = this;
 			} else {
-				hero.belongings.ring2 = this;
+				hero.belongings.misc2 = this;
 			}
 			
 			detach( hero.belongings.backpack );
@@ -155,10 +155,10 @@ public class Ring extends EquipableItem {
 			return false;
 		}
 		
-		if (hero.belongings.ring1 == this) {
-			hero.belongings.ring1 = null;
+		if (hero.belongings.misc1 == this) {
+			hero.belongings.misc1 = null;
 		} else {
-			hero.belongings.ring2 = null;
+			hero.belongings.misc2 = null;
 		}
 		
 		hero.remove( buff );
@@ -175,7 +175,7 @@ public class Ring extends EquipableItem {
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.ring1 == this || hero.belongings.ring2 == this;
+		return hero.belongings.misc1 == this || hero.belongings.misc2 == this;
 	}
 	
 	@Override
