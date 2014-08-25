@@ -44,7 +44,6 @@ public class Ankh extends Item {
 
 
     {
-		stackable = false;
 		name = "Ankh";
 		image = ItemSpriteSheet.ANKH;
 	}
