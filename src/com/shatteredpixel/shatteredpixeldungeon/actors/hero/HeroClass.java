@@ -140,11 +140,11 @@ public enum HeroClass {
 	private static void initRogue( Hero hero ) {
 		(hero.belongings.weapon = new Dagger()).identify();
 		(hero.belongings.armor = new ClothArmor()).identify();
-		(hero.belongings.ring1 = new RingOfShadows()).upgrade().identify();
+		(hero.belongings.misc1 = new RingOfShadows()).upgrade().identify();
 		new Dart( 8 ).identify().collect();
 		new Food().identify().collect();
-		
-		hero.belongings.ring1.activate( hero );
+
+		hero.belongings.misc1.activate( hero );
 		
 		if (Badges.isUnlocked( Badges.Badge.MASTERY_ROGUE )) {
 			new TomeOfMastery().collect();
