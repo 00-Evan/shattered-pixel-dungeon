@@ -76,8 +76,8 @@ public class ItemSpriteSheet {
     public static final int SPEAR			= ROW3+4;
     public static final int MACE			= ROW3+5;
     public static final int SWORD			= ROW3+6;
-    public static final int LONG_SWORD		= ROW3+7;
-    public static final int BATTLE_AXE		= ROW3+8;
+    public static final int BATTLE_AXE		= ROW3+7;
+    public static final int LONG_SWORD		= ROW3+8;
     public static final int WAR_HAMMER		= ROW3+9;
     public static final int GLAIVE			= ROW3+10;
 
