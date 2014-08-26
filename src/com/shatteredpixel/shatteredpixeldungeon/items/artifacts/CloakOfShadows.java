@@ -129,6 +129,10 @@ public class CloakOfShadows extends Artifact {
                 if (partialCharge >= 1) {
                     charge++;
                     partialCharge -= 1;
+                    if (charge == chargeCap){
+                        GLog.p("Your cloak is fully charged.");
+                        partialCharge = 0;
+                    }
                 }
             } else
                 partialCharge = 0;
@@ -153,6 +157,7 @@ public class CloakOfShadows extends Artifact {
         public boolean attachTo( Char target ) {
             if (super.attachTo( target )) {
                 target.invisible++;
+                spend(TICK);
                 return true;
             } else {
                 return false;
@@ -165,8 +170,7 @@ public class CloakOfShadows extends Artifact {
             if (charge <= 0) {
                 detach();
                 GLog.w("Your cloak has run out of energy.");
-            } else if (charge == 2)
-                GLog.w("Your cloak is almost out of energy.");
+            }
 
             exp += 10 + ((Hero)target).lvl;
 
@@ -189,7 +193,8 @@ public class CloakOfShadows extends Artifact {
 
         @Override
         public void detach() {
-            target.invisible--;
+            if (target.invisible > 0)
+                target.invisible--;
             stealthed = false;
             cooldown = 18 - (level / 2);
             super.detach();
