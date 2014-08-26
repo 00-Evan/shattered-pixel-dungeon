@@ -20,9 +20,15 @@ public class Artifact extends KindofMisc {
     protected Buff passiveBuff;
     protected Buff activeBuff;
 
+    //level is used internally to track upgrades to artifacts, size/logic varies per artifact.
     protected int level = 1;
+    //the current artifact charge
     protected int charge = 0;
-    protected int chargeCap;
+    //the % towards next charge, should roll over at a value of 1 or higher.
+    //better to keep charge as an int and use a separate float than casting.
+    protected float partialCharge = 0;
+    //the maximum charge, varies per artifact, not all artifacts use this.
+    protected int chargeCap = 0;
 
 
     public Artifact(){
@@ -119,12 +125,16 @@ public class Artifact extends KindofMisc {
     public void storeInBundle( Bundle bundle ) {
         bundle.put( "level", level );
         bundle.put( "charge", charge );
+        bundle.put( "partialcharge", partialCharge);
+        bundle.put( "chargecap", chargeCap);
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         level = bundle.getInt("level");
         charge = bundle.getInt("charge");
+        partialCharge = bundle.getFloat("partialcharge");
+        chargeCap = bundle.getInt("chargecap");
     }
 
 

@@ -2,6 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -18,9 +19,9 @@ import java.util.ArrayList;
  * Created by debenhame on 25/08/2014.
  */
 public class CloakOfShadows extends Artifact {
-    //TODO: refine requirements for entering stealth, finish bundle support, add polish
+    //TODO: testing, add polish
 
-    //TODO: known bugs: first tick of stealth sometimes too quick.
+    //TODO: known bugs: first tick of stealth sometimes too quick, test current fix.
 
     {
         name = "Cloak of Shadows";
@@ -119,7 +120,6 @@ public class CloakOfShadows extends Artifact {
     }
 
     public class cloakRecharge extends ArtifactBuff{
-        double partialCharge = 0;
         @Override
         public boolean act() {
             if (charge < chargeCap) {
@@ -204,13 +204,22 @@ public class CloakOfShadows extends Artifact {
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
-        //bundle.put("stealthed", stealthed);
+        bundle.put("stealthed", stealthed);
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
-        chargeCap = level+4;
-        //stealthed = bundle.getBoolean("stealthed");
+        stealthed = bundle.getBoolean("stealthed");
+        if (stealthed) {
+            Hero hero = Dungeon.hero;
+            activeBuff = activeBuff();
+            activeBuff.attachTo(hero);
+            if (hero.sprite.parent != null) {
+                hero.sprite.parent.add(new AlphaTweener(hero.sprite, 0.4f, 0.4f));
+            } else {
+                hero.sprite.alpha(0.4f);
+            }
+        }
     }
 }
