@@ -19,7 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakofShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Invisibility extends FlavourBuff {
@@ -57,8 +57,9 @@ public class Invisibility extends FlavourBuff {
 		if (buff != null && Dungeon.hero.visibleEnemies() > 0) {
 			buff.detach();
 		}
-        CloakofShadows.cloakStealth cloakBuff = Dungeon.hero.buff( CloakofShadows.cloakStealth.class );
+        CloakOfShadows.cloakStealth cloakBuff = Dungeon.hero.buff( CloakOfShadows.cloakStealth.class );
         if (cloakBuff != null && Dungeon.hero.visibleEnemies() > 0) {
+            cloakBuff.act();
             cloakBuff.detach();
         }
 	}

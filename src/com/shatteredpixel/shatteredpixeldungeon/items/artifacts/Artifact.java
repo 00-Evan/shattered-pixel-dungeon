@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class Artifact extends KindofMisc {
     protected Buff passiveBuff;
     protected Buff activeBuff;
 
-    protected int level = 0;
+    protected int level = 1;
     protected int charge = 0;
     protected int chargeCap;
 
@@ -113,4 +114,19 @@ public class Artifact extends KindofMisc {
     public class ArtifactBuff extends Buff {
 
     }
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        bundle.put( "level", level );
+        bundle.put( "charge", charge );
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        level = bundle.getInt("level");
+        charge = bundle.getInt("charge");
+    }
+
+
+
 }

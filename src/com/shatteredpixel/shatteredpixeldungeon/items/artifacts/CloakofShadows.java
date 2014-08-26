@@ -6,27 +6,39 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.tweeners.AlphaTweener;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
 /**
  * Created by debenhame on 25/08/2014.
  */
-public class CloakofShadows extends Artifact {
-    //TODO: add requirements for entering stealth, add levelling mechanic, add bundle support, add polish
+public class CloakOfShadows extends Artifact {
+    //TODO: refine requirements for entering stealth, finish bundle support, add polish
+
+    //TODO: known bugs: first tick of stealth sometimes too quick.
 
     {
         name = "Cloak of Shadows";
         image = ItemSpriteSheet.ARTIFACT_CLOAK;
+        level = 1;
+        charge = level+4;
+        chargeCap = level+4;
     }
 
     private boolean stealthed = false;
 
+    private int exp = 0;
+
     public static final String AC_STEALTH = "STEALTH";
 
     private static final String TXT_STATUS	= "%d/%d";
+
+    private int cooldown = 0;
 
     @Override
     public ArrayList<String> actions( Hero hero ) {
@@ -41,21 +53,43 @@ public class CloakofShadows extends Artifact {
         if (action.equals( AC_STEALTH )) {
 
             if (!stealthed){
-                stealthed = true;
-                Sample.INSTANCE.play( Assets.SND_MELD );
-                activeBuff = activeBuff();
-                activeBuff.attachTo(hero);
+                if (cooldown <= 0) {
+                    stealthed = true;
+                    Sample.INSTANCE.play(Assets.SND_MELD);
+                    activeBuff = activeBuff();
+                    activeBuff.attachTo(hero);
+                    if (hero.sprite.parent != null) {
+                        hero.sprite.parent.add(new AlphaTweener(hero.sprite, 0.4f, 0.4f));
+                    } else {
+                        hero.sprite.alpha(0.4f);
+                    }
+                    hero.sprite.operate(hero.pos);
+                    GLog.i("Your cloak blends you into the shadows.");
+                } else {
+                    GLog.i("Your cloak needs " + cooldown + " more rounds to re-energize.");
+                }
             } else {
                 stealthed = false;
-                hero.remove(activeBuff);
+                activeBuff.detach();
                 activeBuff = null;
+                hero.sprite.operate( hero.pos );
+                GLog.i("You return from behind your cloak.");
             }
 
         } else {
+            if (stealthed) {
+                stealthed = false;
+                activeBuff.detach();
+                activeBuff = null;
+                GLog.i("You return from behind your cloak.");
+            }
 
             super.execute(hero, action);
-
         }
+
+
+
+
     }
 
     @Override
@@ -71,12 +105,12 @@ public class CloakofShadows extends Artifact {
     @Override
     public String desc() {
         //TODO: add description
-        return "Need to add a description.";
+        return "Current CD = " + cooldown;
     }
 
     @Override
     public String status() {
-        return Utils.format(TXT_STATUS, charge, level+4);
+        return Utils.format(TXT_STATUS, charge, chargeCap);
     }
 
     @Override
@@ -85,19 +119,22 @@ public class CloakofShadows extends Artifact {
     }
 
     public class cloakRecharge extends ArtifactBuff{
-        int partialCharge = 0;
+        double partialCharge = 0;
         @Override
         public boolean act() {
-            if (charge < level+4) {
+            if (charge < chargeCap) {
                 if (!stealthed)
-                    partialCharge += (level + 4) / 300;
+                    partialCharge += (chargeCap * 0.00334);
 
-                if (partialCharge >= 100) {
+                if (partialCharge >= 1) {
                     charge++;
-                    partialCharge -= 100;
+                    partialCharge -= 1;
                 }
             } else
                 partialCharge = 0;
+
+            if (cooldown > 0)
+                cooldown --;
 
             spend( TICK );
 
@@ -125,8 +162,20 @@ public class CloakofShadows extends Artifact {
         @Override
         public boolean act(){
             charge--;
-            if (charge <= 0)
+            if (charge <= 0) {
                 detach();
+                GLog.w("Your cloak has run out of energy.");
+            } else if (charge == 2)
+                GLog.w("Your cloak is almost out of energy.");
+
+            exp += 10 + ((Hero)target).lvl;
+
+            if (exp >= level*50 && level < 26) {
+                exp -= level*50;
+                GLog.p("Your Cloak Grows Stronger!");
+                level++;
+                chargeCap++;
+            }
 
             spend( TICK );
 
@@ -142,7 +191,21 @@ public class CloakofShadows extends Artifact {
         public void detach() {
             target.invisible--;
             stealthed = false;
+            cooldown = 18 - (level / 2);
             super.detach();
         }
+    }
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle(bundle);
+        //bundle.put("stealthed", stealthed);
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle(bundle);
+        chargeCap = level+4;
+        //stealthed = bundle.getBoolean("stealthed");
     }
 }

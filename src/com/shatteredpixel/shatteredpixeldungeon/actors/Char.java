@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors;
 import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -395,7 +396,7 @@ public abstract class Char extends Actor {
 			sprite.remove( CharSprite.State.BURNING );
 		} else if (buff instanceof Levitation) {
 			sprite.remove( CharSprite.State.LEVITATING );
-		} else if (buff instanceof Invisibility && invisible <= 0) {
+		} else if (buff instanceof Invisibility || buff instanceof CloakOfShadows.cloakStealth && invisible <= 0) {
 			sprite.remove( CharSprite.State.INVISIBLE );
 		} else if (buff instanceof Paralysis) {
 			sprite.remove( CharSprite.State.PARALYSED );
