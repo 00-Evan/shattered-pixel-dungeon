@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.utils.Bundlable;
@@ -149,7 +150,8 @@ public abstract class Actor implements Bundlable {
 			Arrays.fill( chars, null );
 			
 			for (Actor actor : all) {
-				if (actor.time < now) {
+                //if multiple things act at the same time, hero should go first.
+				if (actor.time < now || (actor instanceof Hero && actor.time == now)) {
 					now = actor.time;
 					current = actor;
 				}
