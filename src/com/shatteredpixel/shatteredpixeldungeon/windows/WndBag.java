@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import android.graphics.RectF;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
@@ -58,7 +59,9 @@ public class WndBag extends WndTabbed {
 		WEAPON,
 		ARMOR,
 		WAND,
-		SEED
+		SEED,
+        FOOD,
+
 	}
 	
 	protected static final int COLS	= 4;
@@ -348,6 +351,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.ARMOR && (item instanceof Armor) ||
 						mode == Mode.WAND && (item instanceof Wand) ||
 						mode == Mode.SEED && (item instanceof Seed) ||
+                        mode == Mode.FOOD && (item instanceof Food) ||
 						mode == Mode.ALL
 					);
 				}

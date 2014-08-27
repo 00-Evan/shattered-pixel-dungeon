@@ -2,15 +2,21 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
@@ -20,7 +26,7 @@ import java.util.ArrayList;
  */
 public class HornOfPlenty extends Artifact {
 
-    //TODO: test for bugs, tune numbers.
+    //TODO: test for bugs, tune numbers, add sprite switching.
 
     {
         name = "Horn of Plenty";
@@ -37,6 +43,9 @@ public class HornOfPlenty extends Artifact {
     public static final String AC_EAT = "EAT";
     public static final String AC_STORE = "STORE";
 
+    protected String inventoryTitle = "Select a piece of food";
+    protected WndBag.Mode mode = WndBag.Mode.FOOD;
+
     private static final String TXT_STATUS	= "%d/%d";
 
     @Override
@@ -51,6 +60,8 @@ public class HornOfPlenty extends Artifact {
 
     @Override
     public void execute( Hero hero, String action ) {
+        super.execute(hero, action);
+
         if (action.equals(AC_EAT)){
             ((Hunger)hero.buff( Hunger.class )).satisfy( energy*charge );
 
@@ -88,15 +99,9 @@ public class HornOfPlenty extends Artifact {
             image = ItemSpriteSheet.ARTIFACT_HORN;
 
         } else if (action.equals(AC_STORE)){
-            //TODO: gamescreen to select food item to store. can store anything that is isntanceof Food.
-            /*currently thinking:
-            blandFruit = 1;
-            snack-tier = 5;
-            hungry-tier = 15;
-            starving-tier = 25;
-             */
-        } else
-            super.execute(hero, action);
+
+            GameScene.selectItem(itemSelector, mode, inventoryTitle);
+        }
     }
 
     @Override
@@ -147,5 +152,25 @@ public class HornOfPlenty extends Artifact {
         }
 
     }
+
+    protected static WndBag.Listener itemSelector = new WndBag.Listener() {
+        @Override
+        public void onSelect( Item item ) {
+            if (item != null && item instanceof Food) {
+                if (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null){
+                    GLog.w("the horn rejects your unprepared blandfruit.");
+                } else {
+                    curItem.level += ((Food)item).hornValue;
+                    if (curItem.level >= 150){
+                        curItem.level = 150;
+                        GLog.p("your horn has consumed all the food it can!");
+                    } else
+                        GLog.p("the horn consumes your food offering and grows in strength!");
+                    item.detach(Dungeon.hero.belongings.backpack);
+                }
+
+            }
+        }
+    };
 
 }

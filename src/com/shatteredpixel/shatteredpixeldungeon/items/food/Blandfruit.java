@@ -37,6 +37,7 @@ public class Blandfruit extends Food {
         stackable = false;
         image = ItemSpriteSheet.BLANDFRUIT;
         energy = (Hunger.STARVING - Hunger.HUNGRY)/2;
+        hornValue = 15;
     }
 
     @Override
