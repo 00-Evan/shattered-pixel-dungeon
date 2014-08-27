@@ -7,6 +7,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
@@ -21,14 +22,13 @@ import java.util.ArrayList;
 public class CloakOfShadows extends Artifact {
     //TODO: testing, add polish
 
-    //TODO: known bugs: first tick of stealth sometimes too quick, test current fix.
-
     {
         name = "Cloak of Shadows";
         image = ItemSpriteSheet.ARTIFACT_CLOAK;
         level = 1;
         charge = level+4;
         chargeCap = level+4;
+        defaultAction = AC_STEALTH;
     }
 
     private boolean stealthed = false;
@@ -44,7 +44,7 @@ public class CloakOfShadows extends Artifact {
     @Override
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        if (isEquipped( hero ) && charge > 0)
+        if (isEquipped( hero ))
             actions.add(AC_STEALTH);
         return actions;
     }
@@ -54,8 +54,9 @@ public class CloakOfShadows extends Artifact {
         if (action.equals( AC_STEALTH )) {
 
             if (!stealthed){
-                if (cooldown <= 0) {
+                if (cooldown <= 0 && charge > 0 && isEquipped(hero)) {
                     stealthed = true;
+                    hero.spend( 1f );
                     Sample.INSTANCE.play(Assets.SND_MELD);
                     activeBuff = activeBuff();
                     activeBuff.attachTo(hero);
@@ -66,8 +67,12 @@ public class CloakOfShadows extends Artifact {
                     }
                     hero.sprite.operate(hero.pos);
                     GLog.i("Your cloak blends you into the shadows.");
-                } else {
+                } else if (!isEquipped(hero)) {
+                    GLog.i("You need to equip your cloak to do that.");
+                } else if (cooldown > 0) {
                     GLog.i("Your cloak needs " + cooldown + " more rounds to re-energize.");
+                } else if (charge == 0){
+                    GLog.i("Your cloak is out of charge.");
                 }
             } else {
                 stealthed = false;
@@ -124,6 +129,7 @@ public class CloakOfShadows extends Artifact {
         public boolean act() {
             if (charge < chargeCap) {
                 if (!stealthed)
+                    //recharges from 0 to full in 300 turns.
                     partialCharge += (chargeCap * 0.00334);
 
                 if (partialCharge >= 1) {
@@ -133,6 +139,7 @@ public class CloakOfShadows extends Artifact {
                         GLog.p("Your cloak is fully charged.");
                         partialCharge = 0;
                     }
+                    QuickSlot.refresh();
                 }
             } else
                 partialCharge = 0;
@@ -157,7 +164,6 @@ public class CloakOfShadows extends Artifact {
         public boolean attachTo( Char target ) {
             if (super.attachTo( target )) {
                 target.invisible++;
-                spend(TICK);
                 return true;
             } else {
                 return false;
@@ -174,12 +180,15 @@ public class CloakOfShadows extends Artifact {
 
             exp += 10 + ((Hero)target).lvl;
 
+            //max level is 26 (30 charges)
             if (exp >= level*50 && level < 26) {
                 exp -= level*50;
                 GLog.p("Your Cloak Grows Stronger!");
                 level++;
                 chargeCap++;
             }
+
+            QuickSlot.refresh();
 
             spend( TICK );
 
@@ -197,6 +206,7 @@ public class CloakOfShadows extends Artifact {
                 target.invisible--;
             stealthed = false;
             cooldown = 18 - (level / 2);
+
             super.detach();
         }
     }
