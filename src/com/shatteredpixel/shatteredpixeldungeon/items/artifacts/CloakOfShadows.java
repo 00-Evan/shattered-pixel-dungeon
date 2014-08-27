@@ -138,8 +138,7 @@ public class CloakOfShadows extends Artifact {
         public boolean act() {
             if (charge < chargeCap) {
                 if (!stealthed)
-                    //recharges from 0 to full in 300 turns.
-                    partialCharge += (chargeCap * 0.00334);
+                    partialCharge += (chargeCap / (62-(level*2)));
 
                 if (partialCharge >= 1) {
                     charge++;
@@ -189,8 +188,8 @@ public class CloakOfShadows extends Artifact {
 
             exp += 10 + ((Hero)target).lvl;
 
-            //max level is 26 (30 charges)
-            if (exp >= level*50 && level < 26) {
+            //max level is 21 (25 charges)
+            if (exp >= level*50 && level < 21) {
                 exp -= level*50;
                 GLog.p("Your Cloak Grows Stronger!");
                 level++;
@@ -214,7 +213,7 @@ public class CloakOfShadows extends Artifact {
             if (target.invisible > 0)
                 target.invisible--;
             stealthed = false;
-            cooldown = 18 - (level / 2);
+            cooldown = 12 - (level / 3);
 
             super.detach();
         }
