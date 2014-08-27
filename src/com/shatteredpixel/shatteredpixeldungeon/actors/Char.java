@@ -378,7 +378,7 @@ public abstract class Char extends Actor {
 				sprite.add( CharSprite.State.LEVITATING );
 			} else if (buff instanceof Frost) {
 				sprite.add( CharSprite.State.FROZEN );
-			} else if (buff instanceof Invisibility) {
+			} else if (buff instanceof Invisibility || buff instanceof CloakOfShadows.cloakStealth) {
 				if (!(buff instanceof Shadows)) {
 					sprite.showStatus( CharSprite.POSITIVE, "invisible" );
 				}
@@ -396,7 +396,7 @@ public abstract class Char extends Actor {
 			sprite.remove( CharSprite.State.BURNING );
 		} else if (buff instanceof Levitation) {
 			sprite.remove( CharSprite.State.LEVITATING );
-		} else if (buff instanceof Invisibility || buff instanceof CloakOfShadows.cloakStealth && invisible <= 0) {
+		} else if ((buff instanceof Invisibility || buff instanceof CloakOfShadows.cloakStealth) && invisible <= 0) {
 			sprite.remove( CharSprite.State.INVISIBLE );
 		} else if (buff instanceof Paralysis) {
 			sprite.remove( CharSprite.State.PARALYSED );
@@ -424,7 +424,7 @@ public abstract class Char extends Actor {
 				sprite.add( CharSprite.State.BURNING );
 			} else if (buff instanceof Levitation) {
 				sprite.add( CharSprite.State.LEVITATING );
-			} else if (buff instanceof Invisibility) {
+			} else if (buff instanceof Invisibility || buff instanceof CloakOfShadows.cloakStealth)  {
 				sprite.add( CharSprite.State.INVISIBLE );
 			} else if (buff instanceof Paralysis) {
 				sprite.add( CharSprite.State.PARALYSED );

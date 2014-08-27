@@ -99,6 +99,15 @@ public class CloakOfShadows extends Artifact {
     }
 
     @Override
+    public void activate(Char ch){
+        super.activate(ch);
+        if (stealthed){
+            activeBuff = activeBuff();
+            activeBuff.attachTo(ch);
+        }
+    }
+
+    @Override
     protected ArtifactBuff passiveBuff() {
         return new cloakRecharge();
     }
@@ -221,15 +230,5 @@ public class CloakOfShadows extends Artifact {
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
         stealthed = bundle.getBoolean("stealthed");
-        if (stealthed) {
-            Hero hero = Dungeon.hero;
-            activeBuff = activeBuff();
-            activeBuff.attachTo(hero);
-            if (hero.sprite.parent != null) {
-                hero.sprite.parent.add(new AlphaTweener(hero.sprite, 0.4f, 0.4f));
-            } else {
-                hero.sprite.alpha(0.4f);
-            }
-        }
     }
 }
