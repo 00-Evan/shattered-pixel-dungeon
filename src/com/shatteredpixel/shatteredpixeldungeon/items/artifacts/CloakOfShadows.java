@@ -37,7 +37,8 @@ public class CloakOfShadows extends Artifact {
 
     public static final String AC_STEALTH = "STEALTH";
 
-    private static final String TXT_STATUS	= "%d/%d";
+    private static final String TXT_CHARGE  = "%d/%d";
+    private static final String TXT_CD	    = "%d";
 
     private int cooldown = 0;
 
@@ -92,10 +93,6 @@ public class CloakOfShadows extends Artifact {
 
             super.execute(hero, action);
         }
-
-
-
-
     }
 
     @Override
@@ -120,17 +117,20 @@ public class CloakOfShadows extends Artifact {
     @Override
     public String desc() {
         //TODO: add description
-        return "Current CD = " + cooldown;
+        return "";
     }
 
     @Override
     public String status() {
-        return Utils.format(TXT_STATUS, charge, chargeCap);
+        if (cooldown == 0)
+            return Utils.format(TXT_CHARGE, charge, chargeCap);
+        else
+            return  Utils.format(TXT_CD, cooldown);
     }
 
     @Override
     public String toString() {
-        return super.toString() + " (" + status() +  ")" ;
+        return super.toString() + " (" + Utils.format(TXT_CHARGE, charge, chargeCap) + ")" ;
     }
 
     public class cloakRecharge extends ArtifactBuff{
@@ -138,7 +138,7 @@ public class CloakOfShadows extends Artifact {
         public boolean act() {
             if (charge < chargeCap) {
                 if (!stealthed)
-                    partialCharge += (chargeCap / (62-(level*2)));
+                    partialCharge += (chargeCap / (52-(level*2)));
 
                 if (partialCharge >= 1) {
                     charge++;
@@ -147,13 +147,15 @@ public class CloakOfShadows extends Artifact {
                         GLog.p("Your cloak is fully charged.");
                         partialCharge = 0;
                     }
-                    QuickSlot.refresh();
+
                 }
             } else
                 partialCharge = 0;
 
             if (cooldown > 0)
                 cooldown --;
+
+            QuickSlot.refresh();
 
             spend( TICK );
 
@@ -188,8 +190,8 @@ public class CloakOfShadows extends Artifact {
 
             exp += 10 + ((Hero)target).lvl;
 
-            //max level is 21 (25 charges)
-            if (exp >= level*50 && level < 21) {
+            //max level is 16 (20 charges)
+            if (exp >= level*50 && level < 16) {
                 exp -= level*50;
                 GLog.p("Your Cloak Grows Stronger!");
                 level++;
@@ -213,8 +215,10 @@ public class CloakOfShadows extends Artifact {
             if (target.invisible > 0)
                 target.invisible--;
             stealthed = false;
-            cooldown = 12 - (level / 3);
+            cooldown = 10 - (level / 4);
 
+
+            QuickSlot.refresh();
             super.detach();
         }
     }
@@ -223,11 +227,13 @@ public class CloakOfShadows extends Artifact {
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
         bundle.put("stealthed", stealthed);
+        bundle.put("cooldown", cooldown);
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
         stealthed = bundle.getBoolean("stealthed");
+        cooldown = bundle.getInt("cooldown");
     }
 }
