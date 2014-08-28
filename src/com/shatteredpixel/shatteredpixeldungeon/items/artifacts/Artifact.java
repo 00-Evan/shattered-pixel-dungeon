@@ -21,7 +21,7 @@ public class Artifact extends KindofMisc {
     protected Buff activeBuff;
 
     //level is used internally to track upgrades to artifacts, size/logic varies per artifact.
-    protected int level = 1;
+
     //the current artifact charge
     protected int charge = 0;
     //the % towards next charge, should roll over at a value of 1 or higher.

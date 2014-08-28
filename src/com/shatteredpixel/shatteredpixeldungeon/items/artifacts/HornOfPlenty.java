@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class HornOfPlenty extends Artifact {
 
-    //TODO: test for bugs, tune numbers, add sprite switching.
+    //TODO: tune numbers, add sprite switching, add polish.
 
     {
         name = "Horn of Plenty";
@@ -131,7 +131,7 @@ public class HornOfPlenty extends Artifact {
         public boolean act() {
             if (charge < chargeCap) {
 
-                partialCharge += (1/(200-level));
+                partialCharge += (1f/(200-level));
 
                 if (partialCharge >= 1) {
                     charge++;
@@ -160,6 +160,11 @@ public class HornOfPlenty extends Artifact {
                 if (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null){
                     GLog.w("the horn rejects your unprepared blandfruit.");
                 } else {
+                    Hero hero = Dungeon.hero;
+                    hero.sprite.operate( hero.pos );
+                    hero.busy();
+                    hero.spend( TIME_TO_EAT );
+
                     curItem.level += ((Food)item).hornValue;
                     if (curItem.level >= 150){
                         curItem.level = 150;
