@@ -90,11 +90,11 @@ public class Sungrass extends Plant {
 		
 		@Override
         public boolean act() {
-            if (target.pos != pos || level <= 0) {
+            if (target.pos != pos) {
                 detach();
             }
             if (count == 5) {
-                if (level <= healCurr) {
+                if (level <= healCurr*.025*target.HT) {
                     target.HP = Math.min(target.HT, target.HP + level);
                     target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
                     detach();
@@ -109,6 +109,8 @@ public class Sungrass extends Plant {
             } else {
                 count++;
             }
+            if (level <= 0)
+                detach();
             spend( STEP );
             return true;
         }
