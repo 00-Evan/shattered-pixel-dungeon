@@ -146,61 +146,56 @@ public class Blandfruit extends Food {
 
         potionAttrib.image = ItemSpriteSheet.BLANDFRUIT;
 
+
+        info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties ";
+
         if (potionAttrib instanceof PotionOfHealing){
 
             name = "Healthfruit";
             potionGlow = new ItemSprite.Glowing( 0x2EE62E );
-            info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Sungrass seed it was cooked with. It looks delicious and hearty, ready to be eaten!";
+            info += "of the Sungrass seed it was cooked with. It looks delicious and hearty, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfStrength){
 
             name = "Powerfruit";
             potionGlow = new ItemSprite.Glowing( 0xCC0022 );
-            info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Rotberry seed it was cooked with. It looks delicious and powerful, ready to be eaten!";
+            info += "of the Rotberry seed it was cooked with. It looks delicious and powerful, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfParalyticGas){
 
             name = "Paralyzefruit";
             potionGlow = new ItemSprite.Glowing( 0x67583D );
-            info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Earthroot seed it was cooked with. It looks firm and volatile, I shouldn't eat this.";
+            info += "of the Earthroot seed it was cooked with. It looks firm and volatile, I shouldn't eat this.";
 
         } else if (potionAttrib instanceof PotionOfInvisibility){
 
             name = "Invisifruit";
             potionGlow = new ItemSprite.Glowing( 0xE5D273 );
-            info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Blindweed seed it was cooked with. It looks delicious and shiny, ready to be eaten!";
+            info += "of the Blindweed seed it was cooked with. It looks delicious and shiny, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfLiquidFlame){
 
             name = "Flamefruit";
             potionGlow = new ItemSprite.Glowing( 0xFF7F00 );
-            info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Firebloom seed it was cooked with. It looks spicy and volatile, I shouldn't eat this.";
+            info += "of the Firebloom seed it was cooked with. It looks spicy and volatile, I shouldn't eat this.";
 
         } else if (potionAttrib instanceof PotionOfFrost){
 
             name = "Frostfruit";
             potionGlow = new ItemSprite.Glowing( 0x66B3FF );
-            info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Icecap seed it was cooked with. It looks delicious and refreshing, ready to be eaten!";
+            info += "of the Icecap seed it was cooked with. It looks delicious and refreshing, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfMindVision){
 
             name = "Visionfruit";
             potionGlow = new ItemSprite.Glowing( 0xB8E6CF );
-            info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Fadeleaf seed it was cooked with. It looks delicious and shadowy, ready to be eaten!";
+            info += "of the Fadeleaf seed it was cooked with. It looks delicious and shadowy, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfToxicGas){
 
             name = "Toxicfruit";
             potionGlow = new ItemSprite.Glowing( 0xA15CE5 );
-            info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-                    "of the Sorrowmoss seed it was cooked with. It looks crisp and volatile, I shouldn't eat this.";
+            info += "of the Sorrowmoss seed it was cooked with. It looks crisp and volatile, I shouldn't eat this.";
 
         }
 
