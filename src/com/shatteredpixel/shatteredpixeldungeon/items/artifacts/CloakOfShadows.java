@@ -25,9 +25,9 @@ public class CloakOfShadows extends Artifact {
     {
         name = "Cloak of Shadows";
         image = ItemSpriteSheet.ARTIFACT_CLOAK;
-        level = 1;
-        charge = level+4;
-        chargeCap = level+4;
+        level = 0;
+        charge = level+5;
+        chargeCap = level+5;
         defaultAction = AC_STEALTH;
     }
 
@@ -138,7 +138,7 @@ public class CloakOfShadows extends Artifact {
         public boolean act() {
             if (charge < chargeCap) {
                 if (!stealthed)
-                    partialCharge += (chargeCap / (52-(level*2)));
+                    partialCharge += (chargeCap / (50-(level*2)));
 
                 if (partialCharge >= 1) {
                     charge++;
@@ -190,12 +190,12 @@ public class CloakOfShadows extends Artifact {
 
             exp += 10 + ((Hero)target).lvl;
 
-            //max level is 16 (20 charges)
-            if (exp >= level*50 && level < 16) {
-                exp -= level*50;
-                GLog.p("Your Cloak Grows Stronger!");
+            //max level is 15 (20 charges)
+            if (exp >= (level+1)*50 && level < 15) {
                 level++;
                 chargeCap++;
+                exp -= level*50;
+                GLog.p("Your Cloak Grows Stronger!");
             }
 
             QuickSlot.refresh();
@@ -215,7 +215,7 @@ public class CloakOfShadows extends Artifact {
             if (target.invisible > 0)
                 target.invisible--;
             stealthed = false;
-            cooldown = 10 - (level / 4);
+            cooldown = 10 - (level / 3);
 
 
             QuickSlot.refresh();
