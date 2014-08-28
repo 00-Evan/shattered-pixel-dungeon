@@ -27,7 +27,7 @@ public class OverpricedRation extends Food {
 		image = ItemSpriteSheet.OVERPRICED;
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 		message = "That food tasted ok.";
-        hornValue = 5;
+        hornValue = 1;
 	}
 	
 	@Override

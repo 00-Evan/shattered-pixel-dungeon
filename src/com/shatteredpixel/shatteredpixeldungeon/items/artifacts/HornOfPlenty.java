@@ -131,12 +131,16 @@ public class HornOfPlenty extends Artifact {
         public boolean act() {
             if (charge < chargeCap) {
 
-                partialCharge += (1f/(200-level));
+                //generates 0.2 food value every round, +0.02 value per level
+                //to a max of 0.8 food value per round (0.2+0.6, at level 30)
+                partialCharge += (1f*(0.2+(0.02*level)));
 
-                if (partialCharge >= 1) {
+                //charge is in increments of 36 food value.
+                if (partialCharge >= 36) {
                     charge++;
                     //TODO: change sprite based on fullness.
-                    partialCharge -= 1;
+                    //we'll do it at 3/0, 7/10, and 10/10, to relate to food items.
+                    partialCharge -= 36;
                     if (charge == chargeCap){
                         GLog.p("Your horn is full of food.");
                         partialCharge = 0;
@@ -158,7 +162,7 @@ public class HornOfPlenty extends Artifact {
         public void onSelect( Item item ) {
             if (item != null && item instanceof Food) {
                 if (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null){
-                    GLog.w("the horn rejects your unprepared blandfruit.");
+                    GLog.w("your horn rejects the unprepared blandfruit.");
                 } else {
                     Hero hero = Dungeon.hero;
                     hero.sprite.operate( hero.pos );
@@ -166,8 +170,8 @@ public class HornOfPlenty extends Artifact {
                     hero.spend( TIME_TO_EAT );
 
                     curItem.level += ((Food)item).hornValue;
-                    if (curItem.level >= 150){
-                        curItem.level = 150;
+                    if (curItem.level >= 30){
+                        curItem.level = 30;
                         GLog.p("your horn has consumed all the food it can!");
                     } else
                         GLog.p("the horn consumes your food offering and grows in strength!");

@@ -41,7 +41,7 @@ public class Food extends Item {
 	public float energy = Hunger.HUNGRY;
 	public String message = "That food tasted delicious!";
 
-    public int hornValue = 15;
+    public int hornValue = 3;
 	
 	{
 		stackable = true;
