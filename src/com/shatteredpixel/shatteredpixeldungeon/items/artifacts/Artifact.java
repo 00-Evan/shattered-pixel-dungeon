@@ -47,7 +47,13 @@ public class Artifact extends KindofMisc {
 
         if (hero.belongings.misc1 != null && hero.belongings.misc2 != null) {
 
-            GLog.w("you can only wear 2 rings at a time");
+            GLog.w("you can only wear 2 misc items at a time");
+            return false;
+
+        } else if (hero.belongings.misc1.getClass() == this.getClass()
+                || hero.belongings.misc2.getClass() == this.getClass()){
+
+            GLog.w("you cannot wear two of the same artifact");
             return false;
 
         } else {
@@ -55,7 +61,6 @@ public class Artifact extends KindofMisc {
             if (hero.belongings.misc1 == null) {
                 hero.belongings.misc1 = this;
             } else {
-                //TODO: decide if I want player to equip two of the same artifact, change logic here accordingly
                 hero.belongings.misc2 = this;
             }
 

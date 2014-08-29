@@ -114,7 +114,7 @@ public class Ring extends KindofMisc {
 		
 		if (hero.belongings.misc1 != null && hero.belongings.misc2 != null) {
 			
-			GLog.w( "you can only wear 2 rings at a time" );
+			GLog.w( "you can only wear 2 misc items at a time" );
 			return false;
 			
 		} else {
