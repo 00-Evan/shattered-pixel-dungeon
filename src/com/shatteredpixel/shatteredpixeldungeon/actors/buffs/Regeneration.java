@@ -17,8 +17,9 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMending;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 
 public class Regeneration extends Buff {
 	
@@ -31,13 +32,10 @@ public class Regeneration extends Buff {
 			if (target.HP < target.HT && !((Hero)target).isStarving()) {
 				target.HP += 1;
 			}
+
+            ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
 			
-			int bonus = 0;
-			for (Buff buff : target.buffs( RingOfMending.Rejuvenation.class )) {
-				bonus += ((RingOfMending.Rejuvenation)buff).level;
-			}
-			
-			spend( (float)(REGENERATION_DELAY / Math.pow( 1.2, bonus )) );
+			spend( REGENERATION_DELAY - regenBuff.level() );
 			
 		} else {
 			
