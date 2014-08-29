@@ -138,7 +138,7 @@ public class CloakOfShadows extends Artifact {
         public boolean act() {
             if (charge < chargeCap) {
                 if (!stealthed)
-                    partialCharge += (chargeCap / (50-(level*2)));
+                    partialCharge += (1f / (50-(level*2)));
 
                 if (partialCharge >= 1) {
                     charge++;
