@@ -32,6 +32,7 @@ public class HornOfPlenty extends Artifact {
         name = "Horn of Plenty";
         image = ItemSpriteSheet.ARTIFACT_HORN;
         level = 0;
+        levelCap = 30;
         charge = 0;
         chargeCap = 10;
     }
@@ -118,11 +119,6 @@ public class HornOfPlenty extends Artifact {
     @Override
     public String status() {
         return Utils.format(TXT_STATUS, charge, chargeCap);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + " (" + status() +  ")" ;
     }
 
     public class hornRecharge extends ArtifactBuff{

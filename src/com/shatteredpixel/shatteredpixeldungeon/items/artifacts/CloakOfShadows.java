@@ -2,7 +2,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -26,6 +25,7 @@ public class CloakOfShadows extends Artifact {
         name = "Cloak of Shadows";
         image = ItemSpriteSheet.ARTIFACT_CLOAK;
         level = 0;
+        levelCap = 15;
         charge = level+5;
         chargeCap = level+5;
         defaultAction = AC_STEALTH;
@@ -128,11 +128,6 @@ public class CloakOfShadows extends Artifact {
             return  Utils.format(TXT_CD, cooldown);
     }
 
-    @Override
-    public String toString() {
-        return super.toString() + " (" + Utils.format(TXT_CHARGE, charge, chargeCap) + ")" ;
-    }
-
     public class cloakRecharge extends ArtifactBuff{
         @Override
         public boolean act() {
@@ -191,7 +186,7 @@ public class CloakOfShadows extends Artifact {
             exp += 10 + ((Hero)target).lvl;
 
             //max level is 15 (20 charges)
-            if (exp >= (level+1)*50 && level < 15) {
+            if (exp >= (level+1)*50 && level < levelCap) {
                 level++;
                 chargeCap++;
                 exp -= level*50;
@@ -226,6 +221,7 @@ public class CloakOfShadows extends Artifact {
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
+        bundle.put("chargecap", chargeCap);
         bundle.put("stealthed", stealthed);
         bundle.put("cooldown", cooldown);
         bundle.put("exp", exp);
@@ -234,6 +230,7 @@ public class CloakOfShadows extends Artifact {
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
+        chargeCap = bundle.getInt("chargecap");
         stealthed = bundle.getBoolean("stealthed");
         cooldown = bundle.getInt("cooldown");
         exp = bundle.getInt("exp");

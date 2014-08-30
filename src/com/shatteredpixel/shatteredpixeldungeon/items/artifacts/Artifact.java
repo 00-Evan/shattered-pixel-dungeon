@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -15,20 +16,32 @@ import java.util.ArrayList;
  */
 public class Artifact extends KindofMisc {
 
+    {
+        levelKnown = true;
+    }
+
     private static final float TIME_TO_EQUIP = 1f;
+
+    private static final String TXT_TO_STRING		        = "%s";
+    private static final String TXT_TO_STRING_CHARGE		= "%s (%d/%d)";
+    private static final String TXT_TO_STRING_LVL	        = "%s%+d";
+    private static final String TXT_TO_STRING_LVL_CHARGE	= "%s%+d (%d/%d)";
 
     protected Buff passiveBuff;
     protected Buff activeBuff;
 
     //level is used internally to track upgrades to artifacts, size/logic varies per artifact.
+    //levelCap is the artifact's maximum level
+    protected int levelCap = 0;
 
     //the current artifact charge
     protected int charge = 0;
-    //the % towards next charge, should roll over at a value of 1 or higher.
+    //the build towards next charge, usually rolls over at 1.
     //better to keep charge as an int and use a separate float than casting.
     protected float partialCharge = 0;
     //the maximum charge, varies per artifact, not all artifacts use this.
     protected int chargeCap = 0;
+
 
 
     public Artifact(){
@@ -112,8 +125,31 @@ public class Artifact extends KindofMisc {
     }
 
     @Override
+    public int visiblyUpgraded() {
+        return ((level*10)/levelCap);
+    }
+
+    @Override
     public boolean isIdentified() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+
+        if (levelKnown && level != 0) {
+            if (chargeCap > 0) {
+                return Utils.format( TXT_TO_STRING_LVL_CHARGE, name(), visiblyUpgraded(), charge, chargeCap );
+            } else {
+                return Utils.format( TXT_TO_STRING_LVL, name(), visiblyUpgraded() );
+            }
+        } else {
+            if (chargeCap > 0) {
+                return Utils.format( TXT_TO_STRING_CHARGE, name(), charge, chargeCap );
+            } else {
+                return Utils.format( TXT_TO_STRING, name() );
+            }
+        }
     }
 
     protected ArtifactBuff passiveBuff() {
@@ -131,7 +167,6 @@ public class Artifact extends KindofMisc {
         bundle.put( "level", level );
         bundle.put( "charge", charge );
         bundle.put( "partialcharge", partialCharge);
-        bundle.put( "chargecap", chargeCap);
     }
 
     @Override
@@ -139,7 +174,6 @@ public class Artifact extends KindofMisc {
         level = bundle.getInt("level");
         charge = bundle.getInt("charge");
         partialCharge = bundle.getFloat("partialcharge");
-        chargeCap = bundle.getInt("chargecap");
     }
 
 
