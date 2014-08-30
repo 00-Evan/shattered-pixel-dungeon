@@ -17,7 +17,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -57,6 +60,11 @@ public class ScrollOfPsionicBlast extends Scroll {
 		setKnown();
 		
 		curUser.spendAndNext( TIME_TO_READ );
+
+        if (!curUser.isAlive()) {
+            Dungeon.fail(Utils.format(ResultDescriptions.ITEM, name, Dungeon.depth));
+            GLog.n("The Psionic Blast tears your mind apart...");
+        }
 	}
 	
 	@Override
