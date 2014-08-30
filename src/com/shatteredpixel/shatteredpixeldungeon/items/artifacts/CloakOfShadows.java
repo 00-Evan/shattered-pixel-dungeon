@@ -228,6 +228,7 @@ public class CloakOfShadows extends Artifact {
         super.storeInBundle(bundle);
         bundle.put("stealthed", stealthed);
         bundle.put("cooldown", cooldown);
+        bundle.put("exp", exp);
     }
 
     @Override
@@ -235,5 +236,6 @@ public class CloakOfShadows extends Artifact {
         super.restoreFromBundle(bundle);
         stealthed = bundle.getBoolean("stealthed");
         cooldown = bundle.getInt("cooldown");
+        exp = bundle.getInt("exp");
     }
 }
