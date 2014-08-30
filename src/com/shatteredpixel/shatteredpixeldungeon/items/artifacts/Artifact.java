@@ -50,8 +50,8 @@ public class Artifact extends KindofMisc {
             GLog.w("you can only wear 2 misc items at a time");
             return false;
 
-        } else if (hero.belongings.misc1.getClass() == this.getClass()
-                || hero.belongings.misc2.getClass() == this.getClass()){
+        } else if ((hero.belongings.misc1 != null && hero.belongings.misc1.getClass() == this.getClass())
+                || (hero.belongings.misc2 != null && hero.belongings.misc2.getClass() == this.getClass())){
 
             GLog.w("you cannot wear two of the same artifact");
             return false;
