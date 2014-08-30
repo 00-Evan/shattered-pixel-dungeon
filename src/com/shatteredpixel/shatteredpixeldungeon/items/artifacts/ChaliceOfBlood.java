@@ -1,7 +1,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -31,13 +35,21 @@ public class ChaliceOfBlood extends Artifact {
 
     @Override
     public void execute( Hero hero, String action ) {
+        super.execute(hero, action);
         if (action.equals(AC_PRICK)){
             //TODO: add warning screen if chalice would take more than 75% current hp.
 
+            hero.spendAndNext(1f);
             hero.damage((level*2)*(level*2), this);
-            level++;
-        } else
-            super.execute(hero, action);
+
+            if (!hero.isAlive()) {
+                Dungeon.fail(Utils.format(ResultDescriptions.ITEM, name, Dungeon.depth));
+                GLog.n("The Chalice sucks your life essence dry...");
+            } else
+                level++;
+
+        }
+
     }
 
     @Override
