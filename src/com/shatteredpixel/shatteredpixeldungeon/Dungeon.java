@@ -132,6 +132,8 @@ public class Dungeon {
 	public static boolean[] visible = new boolean[Level.LENGTH];
 	
 	public static boolean nightMode;
+
+    public static int version;
 	
 	public static void init() {
 
@@ -400,7 +402,7 @@ public class Dungeon {
 		try {
 			Bundle bundle = new Bundle();
 			
-			bundle.put( VERSION, Game.version );
+			bundle.put( VERSION, Game.versionCode );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
@@ -556,8 +558,7 @@ public class Dungeon {
 			quickslot = null;
 		}
 		
-		@SuppressWarnings("unused")
-		String version = bundle.getString( VERSION );
+		version = bundle.getInt( VERSION );
 		
 		hero = null;
 		hero = (Hero)bundle.get( HERO );
