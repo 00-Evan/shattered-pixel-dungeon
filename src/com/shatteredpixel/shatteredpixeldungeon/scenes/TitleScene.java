@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -41,6 +42,14 @@ public class TitleScene extends PixelScene {
 	public void create() {
 		
 		super.create();
+
+        //ShatteredPixelDungeon.version(5);
+
+        int gameversion = ShatteredPixelDungeon.version();
+
+        if (gameversion != Game.versionCode) {
+            Game.switchScene(WelcomeScene.class);
+        }
 		
 		Music.INSTANCE.play( Assets.THEME, true );
 		Music.INSTANCE.volume( 1f );

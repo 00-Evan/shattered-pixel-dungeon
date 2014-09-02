@@ -32,7 +32,7 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public ShatteredPixelDungeon() {
 		super( TitleScene.class );
-		
+		/*
 		com.watabou.utils.Bundle.addAlias( 
 			com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade.class,
 			"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfEnhancement" );
@@ -82,13 +82,13 @@ public class ShatteredPixelDungeon extends Game {
 			"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.RangersBoomerang" );
 		com.watabou.utils.Bundle.addAlias( 
 			com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfPower.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy" );
+			"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy" );*/
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
-		super.onCreate( savedInstanceState );
+		super.onCreate(savedInstanceState);
 		
 	/*	if (android.os.Build.VERSION.SDK_INT >= 19) {
 			getWindow().getDecorView().setSystemUiVisibility( 
@@ -195,6 +195,14 @@ public class ShatteredPixelDungeon extends Game {
 	public static boolean intro() {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_INTRO, true );
 	}
+
+    public static void version( int value)  {
+        Preferences.INSTANCE.put( Preferences.KEY_VERSION, value );
+    }
+
+    public static int version() {
+        return Preferences.INSTANCE.getInt( Preferences.KEY_VERSION, 0 );
+    }
 	
 	/*
 	 * <--- Preferences
