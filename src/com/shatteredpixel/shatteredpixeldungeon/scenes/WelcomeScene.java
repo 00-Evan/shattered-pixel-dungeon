@@ -34,17 +34,16 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_LastVer =
-            "Hello early adopter, thank you so much for giving Shattered PD a try in its early stages!\n\n"+
+            "Hello early adopter, thank you so much for giving Shattered PD a try in its earliest stages!\n\n"+
             "This update completely overhauls rings, and as such any existing saves will have their rings removed.\n\n"+
             "If you have a game in progress with rings that you'd rather not lose, please revert to v0.1.1a.\n\n"+
             "You can simply reinstall the 0.1.1a APK from the button on the right, your saves will not be affected.";
 
     private static final String TXT_Future =
-            "It seems that your current saves are from a future version of Shatterd Pixel Dungeon.\n\n"+
-            "If haven't been reverting to previous versions, please send a bug report as this shouldn't happen.\n\n"+
+            "It seems that your current saves are from a future version of Shattered Pixel Dungeon.\n\n"+
+            "You have either just reverted to a previous version, or something has gone buggy.\n\n"+
             "Regardless, tread with caution! Your saves may contain things which don't exist in this version, "+
             "this could cause some very weird errors to occur.";
-
 
     private static final String LNK = "goo.gl/CwrJd6";
 
