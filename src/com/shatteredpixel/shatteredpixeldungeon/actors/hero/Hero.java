@@ -22,6 +22,7 @@ import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -794,12 +795,9 @@ public class Hero extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		
-		RingOfThorns.Thorns thorns = buff( RingOfThorns.Thorns.class ); 
+		CapeOfThorns.Thorns thorns = buff( CapeOfThorns.Thorns.class );
 		if (thorns != null) {
-			int dmg = Random.IntRange( 0, damage );
-			if (dmg > 0) {
-				enemy.damage( dmg, thorns );
-			}
+			damage = thorns.proc(damage, enemy);
 		}
 		
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
