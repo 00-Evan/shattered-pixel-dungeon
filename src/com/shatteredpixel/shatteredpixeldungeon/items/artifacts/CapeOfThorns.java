@@ -50,6 +50,14 @@ public class CapeOfThorns extends Artifact {
         return "";
     }
 
+    @Override
+    public String toString(){
+        if (level > 0)
+            return Utils.format("%s%+d %d%", name, level, charge);
+        else
+            return Utils.format("%s %d%", name, charge);
+    }
+
     public class Thorns extends ArtifactBuff{
 
         @Override
