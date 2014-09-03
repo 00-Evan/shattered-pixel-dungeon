@@ -19,8 +19,11 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BanditSprite;
@@ -33,6 +36,9 @@ public class Bandit extends Thief {
 	{
 		name = "crazy bandit";
 		spriteClass = BanditSprite.class;
+
+        //1 in 30 chance to be a crazy bandit, equates to overall 1/90 chance.
+        lootChance = 0.333f;
 	}
 	
 	@Override
@@ -40,6 +46,8 @@ public class Bandit extends Thief {
 		if (super.steal( hero )) {
 			
 			Buff.prolong( enemy, Blindness.class, Random.Int( 5, 12 ) );
+            Buff.affect( enemy, Poison.class ).set(Random.Int(5, 7) * Poison.durationFactor(enemy));
+            Buff.prolong( enemy, Cripple.class, Cripple.DURATION );
 			Dungeon.observe();
 			
 			return true;
