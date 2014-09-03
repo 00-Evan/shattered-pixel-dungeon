@@ -23,7 +23,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaggler;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ThiefSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -48,7 +48,7 @@ public class Thief extends Mob {
 		EXP = 5;
 		maxLvl = 10;
 		
-		loot = RingOfHaggler.class;
+		loot = MasterThievesArmband.class;
 		lootChance = 0.01f;
 	}
 	
