@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -24,6 +25,7 @@ public class CapeOfThorns extends Artifact {
         levelCap = 10;
         charge = 0;
         chargeCap = 100;
+        defaultAction = "NONE";
         //partialcharge is unused
     }
 
@@ -34,7 +36,7 @@ public class CapeOfThorns extends Artifact {
     @Override
     public String status() {
         if (timer == 0)
-            return Utils.format("%d%", charge);
+            return Utils.format("%d%%", charge);
         else
             return Utils.format("%d", timer);
     }
@@ -55,31 +57,35 @@ public class CapeOfThorns extends Artifact {
         if (level > 0)
             return Utils.format("%s%+d %d%", name, level, charge);
         else
-            return Utils.format("%s %d%", name, charge);
+            return Utils.format("%s %d%%", name, charge);
     }
 
     public class Thorns extends ArtifactBuff{
 
         @Override
         public boolean act(){
-            if (timer > 0)
+            if (timer > 0) {
                 timer--;
-             else if (charge > 0)
-                charge--;
+                if (timer == 0)
+                    BuffIndicator.refreshHero();
+                QuickSlot.refresh();
+            }
+            spend(TICK);
             return true;
         }
 
         public int proc(int damage, Char attacker){
             if (timer == 0){
-                charge += damage/(4f - level*0.1);
+                charge += damage*(0.5+level*0.025);
                 if (charge > chargeCap){
                     charge = 0;
                     timer = 5+level;
+                    BuffIndicator.refreshHero();
                 }
             }
 
             if (timer != 0){
-                int deflected = Random.NormalIntRange(0, (int)(damage*0.66));
+                int deflected = Random.NormalIntRange((int)(damage*0.33), damage);
                 damage -= deflected;
 
                 attacker.damage(deflected, this);
@@ -93,6 +99,7 @@ public class CapeOfThorns extends Artifact {
                 }
 
             }
+            QuickSlot.refresh();
             return damage;
         }
 
