@@ -76,7 +76,6 @@ public class MasterThievesArmband extends Artifact {
                 int chargeBonus = Math.min(level*100, (value*level)/20);
 
                 return (((float)charge + chargeBonus)/value);
-            }
         }
     }
 }
