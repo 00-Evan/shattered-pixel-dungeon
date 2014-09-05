@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -64,7 +65,11 @@ public class Gold extends Item {
 		Dungeon.gold += quantity;
 		Statistics.goldCollected += quantity;
 		Badges.validateGoldCollected();
-		
+
+        MasterThievesArmband.Thievery thievery = hero.buffs(MasterThievesArmband.Thievery.class)
+		if (thievery != null)
+            thievery.collect(quantity);
+
 		GameScene.pickUp( this );
 		hero.sprite.showStatus( CharSprite.NEUTRAL, TXT_VALUE, quantity );
 		hero.spendAndNext( TIME_TO_PICK_UP );
