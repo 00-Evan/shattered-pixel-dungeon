@@ -11,6 +11,7 @@ import com.watabou.utils.Random;
  * Created by debenhame on 03/09/2014.
  */
 public class MasterThievesArmband extends Artifact {
+    //TODO: polish, numbers tweaking
 
     {
         name = "Master Thieves' Armband";
@@ -47,12 +48,12 @@ public class MasterThievesArmband extends Artifact {
             charge += gold/2;
         }
 
-        public boolean steal(Item item){
-            if (item.price() <= charge){
-                charge -= item.price();
-                exp += item.price();
+        public boolean steal(int value){
+            if (value <= charge){
+                charge -= value;
+                exp += value;
             } else {
-                float chance = stealChance(item.price());
+                float chance = stealChance(value);
                 if (Random.Float() > chance)
                     return false;
                 else {
@@ -61,11 +62,11 @@ public class MasterThievesArmband extends Artifact {
                     else
                         //removes the charge it took you to reach 100%
                         charge -= charge/chance;
-                    exp += item.price();
+                    exp += value;
                 }
             }
-            while(exp >= 1000 && level < levelCap) {
-                exp -= 1000;
+            while(exp >= 500 && level < levelCap) {
+                exp -= 500;
                 level++;
             }
             return true;

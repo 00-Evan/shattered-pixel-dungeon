@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 
 public class Shopkeeper extends Mob.NPC {
 
+    public static final String TXT_THIEF = "Thief, Thief!";
+
 	{
 		name = "shopkeeper";
 		spriteClass = ShopkeeperSprite.class;
@@ -56,7 +58,7 @@ public class Shopkeeper extends Mob.NPC {
 		flee();
 	}
 	
-	protected void flee() {
+	public void flee() {
 		for (Heap heap: Dungeon.level.heaps.values()) {
 			if (heap.type == Heap.Type.FOR_SALE) {
 				CellEmitter.get( heap.pos ).burst( ElmoParticle.FACTORY, 4 );

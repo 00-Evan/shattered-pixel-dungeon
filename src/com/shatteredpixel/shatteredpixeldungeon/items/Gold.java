@@ -66,7 +66,7 @@ public class Gold extends Item {
 		Statistics.goldCollected += quantity;
 		Badges.validateGoldCollected();
 
-        MasterThievesArmband.Thievery thievery = hero.buffs(MasterThievesArmband.Thievery.class)
+        MasterThievesArmband.Thievery thievery = hero.buff(MasterThievesArmband.Thievery.class);
 		if (thievery != null)
             thievery.collect(quantity);
 

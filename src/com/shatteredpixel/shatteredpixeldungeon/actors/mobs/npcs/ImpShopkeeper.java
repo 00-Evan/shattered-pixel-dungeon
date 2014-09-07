@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 public class ImpShopkeeper extends Shopkeeper {
 
 	private static final String TXT_GREETINGS = "Hello, friend!";
+    public static final String TXT_THIEF = "I thought I could trust you!";
+
 	
 	{
 		name = "ambitious imp";
@@ -48,7 +50,7 @@ public class ImpShopkeeper extends Shopkeeper {
 	}
 	
 	@Override
-	protected void flee() {
+    public void flee() {
 		for (Heap heap: Dungeon.level.heaps.values()) {
 			if (heap.type == Heap.Type.FOR_SALE) {
 				CellEmitter.get( heap.pos ).burst( ElmoParticle.FACTORY, 4 );
