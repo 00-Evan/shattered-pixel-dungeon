@@ -54,7 +54,7 @@ public class HornOfPlenty extends Artifact {
         ArrayList<String> actions = super.actions( hero );
         if (isEquipped( hero ) && charge > 0)
             actions.add(AC_EAT);
-        if (isEquipped( hero ) && level < 150)
+        if (isEquipped( hero ) && level < 30)
             actions.add(AC_STORE);
         return actions;
     }
