@@ -30,7 +30,7 @@ public class HornOfPlenty extends Artifact {
 
     {
         name = "Horn of Plenty";
-        image = ItemSpriteSheet.ARTIFACT_HORN;
+        image = ItemSpriteSheet.ARTIFACT_HORN1;
         level = 0;
         levelCap = 30;
         charge = 0;
@@ -97,7 +97,7 @@ public class HornOfPlenty extends Artifact {
 
             Badges.validateFoodEaten();
 
-            image = ItemSpriteSheet.ARTIFACT_HORN;
+            image = ItemSpriteSheet.ARTIFACT_HORN1;
 
         } else if (action.equals(AC_STORE)){
 

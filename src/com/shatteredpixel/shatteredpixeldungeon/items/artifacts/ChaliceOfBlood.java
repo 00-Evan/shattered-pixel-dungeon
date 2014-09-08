@@ -33,7 +33,7 @@ public class ChaliceOfBlood extends Artifact {
 
     {
         name = "Chalice of Blood";
-        image = ItemSpriteSheet.ARTIFACT_CHALICE;
+        image = ItemSpriteSheet.ARTIFACT_CHALICE1;
         level = 0;
         levelCap = 8;
         //charge & chargecap are unused
@@ -56,7 +56,7 @@ public class ChaliceOfBlood extends Artifact {
 
             int damage = (level*2)*(level*2);
 
-            if (damage > hero.HT*(3/4)) {
+            if (damage > hero.HP*0.75) {
 
                 GameScene.show(
                     new WndOptions(TXT_CHALICE, TXT_PRICK, TXT_YES, TXT_NO) {
@@ -79,15 +79,6 @@ public class ChaliceOfBlood extends Artifact {
 
         hero.spendAndNext(3f);
 
-        Earthroot.Armor armor = hero.buff(Earthroot.Armor.class);
-        if (armor != null) {
-            damage = armor.absorb(damage);
-        }
-
-        damage -= Random.IntRange(0, hero.dr());
-
-        hero.damage(damage, this);
-
         //TODO: make sure this look good
         if (damage == 0){
             GLog.i("You prick yourself, that hardly hurt at all!");
@@ -105,11 +96,27 @@ public class ChaliceOfBlood extends Artifact {
             hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
         }
 
+        Earthroot.Armor armor = hero.buff(Earthroot.Armor.class);
+        if (armor != null) {
+            damage = armor.absorb(damage);
+        }
+
+        damage -= Random.IntRange(0, hero.dr());
+
+        hero.damage(damage, this);
+
+
+
         if (!hero.isAlive()) {
             Dungeon.fail(Utils.format(ResultDescriptions.ITEM, name, Dungeon.depth));
             GLog.n("The Chalice sucks your life essence dry...");
-        } else
+        } else {
             level++;
+            if (level >= 5)
+                image = ItemSpriteSheet.ARTIFACT_CHALICE2;
+            else if (level >= 3)
+                image = ItemSpriteSheet.ARTIFACT_CHALICE3;
+        }
     }
 
 

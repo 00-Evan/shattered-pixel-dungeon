@@ -224,7 +224,6 @@ public class CloakOfShadows extends Artifact {
         bundle.put("chargecap", chargeCap);
         bundle.put("stealthed", stealthed);
         bundle.put("cooldown", cooldown);
-        bundle.put("exp", exp);
     }
 
     @Override
@@ -233,6 +232,5 @@ public class CloakOfShadows extends Artifact {
         chargeCap = bundle.getInt("chargecap");
         stealthed = bundle.getBoolean("stealthed");
         cooldown = bundle.getInt("cooldown");
-        exp = bundle.getInt("exp");
     }
 }

@@ -31,6 +31,9 @@ public class Artifact extends KindofMisc {
     protected Buff activeBuff;
 
     //level is used internally to track upgrades to artifacts, size/logic varies per artifact.
+    //already inherited from item superclass
+    //exp is used to count progress towards levels for some artifacts
+    protected int exp = 0;
     //levelCap is the artifact's maximum level
     protected int levelCap = 0;
 
@@ -164,14 +167,14 @@ public class Artifact extends KindofMisc {
 
     @Override
     public void storeInBundle( Bundle bundle ) {
-        bundle.put( "level", level );
+        bundle.put( "exp", exp );
         bundle.put( "charge", charge );
         bundle.put( "partialcharge", partialCharge);
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
-        level = bundle.getInt("level");
+        exp = bundle.getInt("exp");
         charge = bundle.getInt("charge");
         partialCharge = bundle.getFloat("partialcharge");
     }

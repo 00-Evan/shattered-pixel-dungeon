@@ -130,80 +130,88 @@ public class ItemSpriteSheet {
     public static final int RING_AGATE		= ROW7+10;
     public static final int RING_DIAMOND	= ROW7+11;
 
-    //Row Eight: Artifacts
-    //ssssshhh....
+    //Row Eight: Artifacts with Static Images
     public static final int ARTIFACT_CLOAK      = ROW8+0;
-    public static final int ARTIFACT_HORN       = ROW8+1;
-    public static final int ARTIFACT_CHALICE    = 0;
-    public static final int ARTIFACT_SANDALS    = 0;
-    public static final int ARTIFACT_ARMBAND    = 0;
-    public static final int ARTIFACT_CAPE       = 0;
+    public static final int ARTIFACT_ARMBAND    = ROW8+1;
+    public static final int ARTIFACT_CAPE       = ROW8+2;
     public static final int ARTIFACT_TALISMAN   = 0;
 
-    //Row Nine: Scrolls
-    public static final int SCROLL_KAUNAN	= ROW9+0;
-    public static final int SCROLL_SOWILO	= ROW9+1;
-    public static final int SCROLL_LAGUZ	= ROW9+2;
-    public static final int SCROLL_YNGVI	= ROW9+3;
-    public static final int SCROLL_GYFU		= ROW9+4;
-    public static final int SCROLL_RAIDO	= ROW9+5;
-    public static final int SCROLL_ISAZ		= ROW9+6;
-    public static final int SCROLL_MANNAZ	= ROW9+7;
-    public static final int SCROLL_NAUDIZ	= ROW9+8;
-    public static final int SCROLL_BERKANAN	= ROW9+9;
-    public static final int SCROLL_ODAL		= ROW9+10;
-    public static final int SCROLL_TIWAZ	= ROW9+11;
 
-    //Row Ten: Potions
-    public static final int POTION_CRIMSON		= ROW10+0;
-    public static final int POTION_AMBER		= ROW10+1;
-    public static final int POTION_GOLDEN		= ROW10+2;
-    public static final int POTION_JADE			= ROW10+3;
-    public static final int POTION_TURQUOISE    = ROW10+4;
-    public static final int POTION_AZURE		= ROW10+5;
-    public static final int POTION_INDIGO		= ROW10+6;
-    public static final int POTION_MAGENTA		= ROW10+7;
-    public static final int POTION_BISTRE		= ROW10+8;
-    public static final int POTION_CHARCOAL		= ROW10+9;
-    public static final int POTION_SILVER		= ROW10+10;
-    public static final int POTION_IVORY		= ROW10+11;
+    //Row Nine: Artifacts with Dynamic Images
+    public static final int ARTIFACT_HORN1      = ROW9+0;
+    public static final int ARTIFACT_HORN2      = ROW9+1;
+    public static final int ARTIFACT_HORN3      = ROW9+2;
+    public static final int ARTIFACT_HORN4      = ROW9+3;
+    public static final int ARTIFACT_CHALICE1   = ROW9+4;
+    public static final int ARTIFACT_CHALICE2   = ROW9+5;
+    public static final int ARTIFACT_CHALICE3   = ROW9+6;
+    public static final int ARTIFACT_SANDALS    = ROW9+7;
+    public static final int ARTIFACT_SHOES      = ROW9+8;
+    public static final int ARTIFACT_BOOTS      = ROW9+9;
+    public static final int ARTIFACT_LEGGINGS   = ROW9+10;
 
-    //Row Eleven: Seeds
-    public static final int SEED_ROTBERRY	= ROW11+0;
-    public static final int SEED_FIREBLOOM	= ROW11+1;
-    public static final int SEED_BLINDWEED	= ROW11+2;
-    public static final int SEED_SUNGRASS	= ROW11+3;
-    public static final int SEED_ICECAP		= ROW11+4;
-    public static final int SEED_SORROWMOSS	= ROW11+5;
-    public static final int SEED_EARTHROOT	= ROW11+6;
-    public static final int SEED_FADELEAF	= ROW11+7;
-    public static final int SEED_BLANDFRUIT	= ROW11+8;
+    //Row Ten: Scrolls
+    public static final int SCROLL_KAUNAN	= ROW10+0;
+    public static final int SCROLL_SOWILO	= ROW10+1;
+    public static final int SCROLL_LAGUZ	= ROW10+2;
+    public static final int SCROLL_YNGVI	= ROW10+3;
+    public static final int SCROLL_GYFU		= ROW10+4;
+    public static final int SCROLL_RAIDO	= ROW10+5;
+    public static final int SCROLL_ISAZ		= ROW10+6;
+    public static final int SCROLL_MANNAZ	= ROW10+7;
+    public static final int SCROLL_NAUDIZ	= ROW10+8;
+    public static final int SCROLL_BERKANAN	= ROW10+9;
+    public static final int SCROLL_ODAL		= ROW10+10;
+    public static final int SCROLL_TIWAZ	= ROW10+11;
 
-    //Row Twelve: Food
-    public static final int MEAT		= ROW12+0;
-    public static final int STEAK		= ROW12+1;
-    public static final int OVERPRICED	= ROW12+2;
-    public static final int CARPACCIO	= ROW12+3;
-    public static final int BLANDFRUIT	= ROW12+4;
-    public static final int RATION		= ROW12+5;
-    public static final int PASTY		= ROW12+6;
+    //Row Eleven: Potions
+    public static final int POTION_CRIMSON		= ROW11+0;
+    public static final int POTION_AMBER		= ROW11+1;
+    public static final int POTION_GOLDEN		= ROW11+2;
+    public static final int POTION_JADE			= ROW11+3;
+    public static final int POTION_TURQUOISE    = ROW11+4;
+    public static final int POTION_AZURE		= ROW11+5;
+    public static final int POTION_INDIGO		= ROW11+6;
+    public static final int POTION_MAGENTA		= ROW11+7;
+    public static final int POTION_BISTRE		= ROW11+8;
+    public static final int POTION_CHARCOAL		= ROW11+9;
+    public static final int POTION_SILVER		= ROW11+10;
+    public static final int POTION_IVORY		= ROW11+11;
 
-    //Row Thirteen: Quest Items
-    public static final int ROSE	= ROW13+0;
-    public static final int SKULL	= ROW13+1;
-    public static final int DUST	= ROW13+2;
-    public static final int PICKAXE	= ROW13+3;
-    public static final int ORE		= ROW13+4;
-    public static final int TOKEN	= ROW13+5;
+    //Row Twelve: Seeds
+    public static final int SEED_ROTBERRY	= ROW12+0;
+    public static final int SEED_FIREBLOOM	= ROW12+1;
+    public static final int SEED_BLINDWEED	= ROW12+2;
+    public static final int SEED_SUNGRASS	= ROW12+3;
+    public static final int SEED_ICECAP		= ROW12+4;
+    public static final int SEED_SORROWMOSS	= ROW12+5;
+    public static final int SEED_EARTHROOT	= ROW12+6;
+    public static final int SEED_FADELEAF	= ROW12+7;
+    public static final int SEED_BLANDFRUIT	= ROW12+8;
 
-    //Row Fourteen: Containers/Bags
-    public static final int VIAL	    = ROW14+0;
-    public static final int POUCH	    = ROW14+1;
-    public static final int HOLDER	    = ROW14+2;
-    public static final int BANDOLIER   = ROW14+3;
-    public static final int HOLSTER	    = ROW14+4;
+    //Row Theirteen: Food
+    public static final int MEAT		= ROW13+0;
+    public static final int STEAK		= ROW13+1;
+    public static final int OVERPRICED	= ROW13+2;
+    public static final int CARPACCIO	= ROW13+3;
+    public static final int BLANDFRUIT	= ROW13+4;
+    public static final int RATION		= ROW13+5;
+    public static final int PASTY		= ROW13+6;
 
-    //Row Fifteen: Unused
+    //Row Fourteen: Quest Items
+    public static final int ROSE	= ROW14+0;
+    public static final int SKULL	= ROW14+1;
+    public static final int DUST	= ROW14+2;
+    public static final int PICKAXE	= ROW14+3;
+    public static final int ORE		= ROW14+4;
+    public static final int TOKEN	= ROW14+5;
+
+    //Row Fifteen: Containers/Bags
+    public static final int VIAL	    = ROW15+0;
+    public static final int POUCH	    = ROW15+1;
+    public static final int HOLDER	    = ROW15+2;
+    public static final int BANDOLIER   = ROW15+3;
+    public static final int HOLSTER	    = ROW15+4;
 
     //Row Sixteen: Unused
 
