@@ -167,6 +167,7 @@ public class Artifact extends KindofMisc {
 
     @Override
     public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle(bundle);
         bundle.put( "exp", exp );
         bundle.put( "charge", charge );
         bundle.put( "partialcharge", partialCharge);
@@ -174,6 +175,7 @@ public class Artifact extends KindofMisc {
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle(bundle);
         exp = bundle.getInt("exp");
         charge = bundle.getInt("charge");
         partialCharge = bundle.getFloat("partialcharge");

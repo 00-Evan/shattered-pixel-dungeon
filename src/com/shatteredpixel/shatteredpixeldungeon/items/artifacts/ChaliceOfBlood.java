@@ -89,7 +89,6 @@ public class ChaliceOfBlood extends Artifact {
         //TODO: make sure this look good
         if (damage <= 0){
             GLog.i("You prick yourself, that hardly hurt at all!");
-            return;
         } else if (damage < 25){
             GLog.w("You prick yourself and the chalice feeds on you.");
             Sample.INSTANCE.play(Assets.SND_CURSED);
@@ -104,7 +103,8 @@ public class ChaliceOfBlood extends Artifact {
             hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
         }
 
-        hero.damage(damage, this);
+        if (damage > 0)
+            hero.damage(damage, this);
 
 
 
