@@ -113,9 +113,9 @@ public class ChaliceOfBlood extends Artifact {
         } else {
             level++;
             if (level >= 5)
-                image = ItemSpriteSheet.ARTIFACT_CHALICE2;
-            else if (level >= 3)
                 image = ItemSpriteSheet.ARTIFACT_CHALICE3;
+            else if (level >= 3)
+                image = ItemSpriteSheet.ARTIFACT_CHALICE2;
         }
     }
 
