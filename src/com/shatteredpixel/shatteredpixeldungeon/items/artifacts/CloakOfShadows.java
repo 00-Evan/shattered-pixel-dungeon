@@ -128,6 +128,26 @@ public class CloakOfShadows extends Artifact {
             return  Utils.format(TXT_CD, cooldown);
     }
 
+    private static final String CHARGECAP = "chargecap";
+    private static final String STEALTHED = "stealthed";
+    private static final String COOLDOWN = "cooldown";
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle(bundle);
+        bundle.put( CHARGECAP, chargeCap );
+        bundle.put( STEALTHED, stealthed );
+        bundle.put( COOLDOWN, cooldown );
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle(bundle);
+        chargeCap = bundle.getInt( CHARGECAP );
+        stealthed = bundle.getBoolean( STEALTHED );
+        cooldown = bundle.getInt( COOLDOWN );
+    }
+
     public class cloakRecharge extends ArtifactBuff{
         @Override
         public boolean act() {
@@ -216,21 +236,5 @@ public class CloakOfShadows extends Artifact {
             QuickSlot.refresh();
             super.detach();
         }
-    }
-
-    @Override
-    public void storeInBundle( Bundle bundle ) {
-        super.storeInBundle(bundle);
-        bundle.put("chargecap", chargeCap);
-        bundle.put("stealthed", stealthed);
-        bundle.put("cooldown", cooldown);
-    }
-
-    @Override
-    public void restoreFromBundle( Bundle bundle ) {
-        super.restoreFromBundle(bundle);
-        chargeCap = bundle.getInt("chargecap");
-        stealthed = bundle.getBoolean("stealthed");
-        cooldown = bundle.getInt("cooldown");
     }
 }

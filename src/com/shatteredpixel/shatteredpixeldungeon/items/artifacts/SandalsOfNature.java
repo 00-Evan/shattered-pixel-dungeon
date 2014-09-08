@@ -17,8 +17,10 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Camera;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by debenhame on 08/09/2014.
@@ -61,7 +63,7 @@ public class SandalsOfNature extends Artifact {
             if (charge > 0){
                 Buff.prolong( hero, Roots.class, 5);
                 Buff.affect( hero, Earthroot.Armor.class ).level( charge );
-                CellEmitter.bottom(hero.pos).start( EarthParticle.FACTORY, 0.05f, 8 );
+                CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8);
                 Camera.main.shake( 1, 0.4f );
                 charge = 0;
             }
@@ -87,7 +89,21 @@ public class SandalsOfNature extends Artifact {
         return "";
     }
 
-    //TODO: add bundle logic
+
+    private static final String SEEDS = "seeds";
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle(bundle);
+        bundle.put(SEEDS, seeds.toArray(new String[seeds.size()]));
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle(bundle);
+        if (bundle.contains(SEEDS))
+            Collections.addAll(seeds , bundle.getStringArray(SEEDS));
+    }
 
     public class Naturalism extends ArtifactBuff{
         public int level() { return level; }

@@ -165,20 +165,27 @@ public class Artifact extends KindofMisc {
 
     }
 
+    private static final String IMAGE = "image";
+    private static final String EXP = "exp";
+    private static final String CHARGE = "charge";
+    private static final String PARTIALCHARGE = "partialcharge";
+
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
-        bundle.put( "exp", exp );
-        bundle.put( "charge", charge );
-        bundle.put( "partialcharge", partialCharge);
+        bundle.put( IMAGE, image );
+        bundle.put( EXP , exp );
+        bundle.put( CHARGE , charge );
+        bundle.put( PARTIALCHARGE , partialCharge );
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
-        exp = bundle.getInt("exp");
-        charge = bundle.getInt("charge");
-        partialCharge = bundle.getFloat("partialcharge");
+        image = bundle.getInt( IMAGE );
+        exp = bundle.getInt( EXP );
+        charge = bundle.getInt( CHARGE );
+        partialCharge = bundle.getFloat( PARTIALCHARGE );
     }
 
 

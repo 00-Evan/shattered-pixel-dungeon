@@ -31,8 +31,6 @@ public class CapeOfThorns extends Artifact {
 
     private int timer = 0;
 
-    private int exp = 0;
-
     @Override
     public String status() {
         if (timer == 0)
