@@ -130,12 +130,6 @@ public class WelcomeScene extends PixelScene {
 
         fadeIn();
     }
-
-    @Override
-    protected void onBackPressed() {
-        //ShatteredPixelDungeon.version(Game.versionCode);
-        //Game.switchScene( TitleScene.class );
-    }
 }
 
 
