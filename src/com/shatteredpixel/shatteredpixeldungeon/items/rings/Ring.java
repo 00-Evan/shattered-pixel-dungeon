@@ -43,18 +43,18 @@ public class Ring extends KindofMisc {
 	protected Buff buff;
 	
 	private static final Class<?>[] rings = { 
-		RingOfMending.class, 
-		RingOfDetection.class, 
-		RingOfShadows.class,
+		//RingOfMending.class,
+		//RingOfDetection.class,
+		//RingOfShadows.class,
 		RingOfPower.class,
-		RingOfHerbalism.class,
+		//RingOfHerbalism.class,
 		RingOfAccuracy.class,
 		RingOfEvasion.class,
-		RingOfSatiety.class,
+		//RingOfSatiety.class,
 		RingOfHaste.class,
-		RingOfHaggler.class,
+		//RingOfHaggler.class,
 		RingOfElements.class,
-		RingOfThorns.class
+		//RingOfThorns.class
 	};
 	private static final String[] gems = 
 		{"diamond", "opal", "garnet", "ruby", "amethyst", "topaz", "onyx", "tourmaline", "emerald", "sapphire", "quartz", "agate"};

@@ -22,7 +22,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSatiety;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -71,14 +70,9 @@ public class Hunger extends Buff implements Hero.Doom {
 					
 					hero.interrupt();
 				}
-			} else {	
+			} else {
 				
-				int bonus = 0;
-				for (Buff buff : target.buffs( RingOfSatiety.Satiety.class )) {
-					bonus += ((RingOfSatiety.Satiety)buff).level;
-				}
-				
-				float newLevel = level + STEP - bonus;
+				float newLevel = level + STEP;
 				boolean statusUpdated = false;
 				if (newLevel >= STARVING) {
 					

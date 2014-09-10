@@ -39,8 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaggler;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -706,17 +704,19 @@ public class Badges {
 			displayBadge( badge );
 		}
 	}
-	
+
+    //TODO: Replace this badge
 	public static void validateRingOfHaggler() {
-		if (!local.contains( Badge.RING_OF_HAGGLER ) && new RingOfHaggler().isKnown()) {
+		if (!local.contains( Badge.RING_OF_HAGGLER )/* && new RingOfThorns().isKnown()*/) {
 			Badge badge = Badge.RING_OF_HAGGLER;
 			local.add( badge );
 			displayBadge( badge );
 		}
 	}
-	
+
+    //TODO: Replace this badge
 	public static void validateRingOfThorns() {
-		if (!local.contains( Badge.RING_OF_THORNS ) && new RingOfThorns().isKnown()) {
+		if (!local.contains( Badge.RING_OF_THORNS )/* && new RingOfThorns().isKnown()*/) {
 			Badge badge = Badge.RING_OF_THORNS;
 			local.add( badge );
 			displayBadge( badge );
