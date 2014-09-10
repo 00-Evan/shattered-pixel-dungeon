@@ -31,7 +31,8 @@ public class RingOfAccuracy extends Ring {
 	@Override
 	public String desc() {
 		return isKnown() ?
-			"This ring increases your chance to hit the enemy." :
+			"This ring increases your focus, reducing your enemy's ability to dodge your attacks. "+
+            "A cursed ring will instead make you easier to evade.":
 			super.desc();
 	}
 	

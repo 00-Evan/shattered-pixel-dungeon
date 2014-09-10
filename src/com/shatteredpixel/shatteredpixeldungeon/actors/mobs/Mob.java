@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -378,7 +379,17 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
-		return enemySeen && !paralysed ? defenseSkill : 0;
+        if (enemySeen && !paralysed) {
+            int defenseSkill = this.defenseSkill;
+            int penalty = 0;
+            for (Buff buff : enemy.buffs(RingOfAccuracy.Accuracy.class)) {
+                penalty += ((RingOfAccuracy.Accuracy) buff).level;
+            }
+            if (penalty != 0)
+                defenseSkill *= Math.pow(0.8, penalty);
+            return defenseSkill;
+        } else
+            return 0;
 	}
 	
 	@Override
