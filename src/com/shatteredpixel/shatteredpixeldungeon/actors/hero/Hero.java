@@ -71,12 +71,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfDetection;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaste;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -1084,11 +1081,8 @@ public class Hero extends Char {
 	
 	@Override
 	public int stealth() {
-		int stealth = super.stealth();
-		for (Buff buff : buffs( RingOfShadows.Shadows.class )) {
-			stealth += ((RingOfShadows.Shadows)buff).level;
-		}
-		return stealth;
+		//no logic here since removal of Ring of Shadows, may do something here in future.
+		return super.stealth();
 	}
 	
 	@Override
@@ -1236,9 +1230,12 @@ public class Hero extends Char {
 	public boolean search( boolean intentional ) {
 		
 		boolean smthFound = false;
-		
+
 		int positive = 0;
 		int negative = 0;
+
+        //holding onto this code for now as it may be useful in coding the Talisman of Foresight.
+        /*
 		for (Buff buff : buffs( RingOfDetection.Detection.class )) {
 			int bonus = ((RingOfDetection.Detection)buff).level;
 			if (bonus > positive) {
@@ -1247,6 +1244,7 @@ public class Hero extends Char {
 				negative += bonus;
 			}
 		}
+		*/
 		int distance = 1 + positive + negative;
 
 		float level = intentional ? (2 * awareness - awareness * awareness) : awareness;
