@@ -33,28 +33,95 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class AboutScene extends PixelScene {
 
-	private static final String TXT = 
-		"Code & graphics: Watabou\n" +
-		"Music: Cube_Code\n\n" + 
-		"This game is inspired by Brian Walker's Brogue. " +
-		"Try it on Windows, Mac OS or Linux - it's awesome! ;)\n\n" +
-		"Please visit official website for additional info:";
+    private static final String TTL_SHPX = "Shattered Pixel Dungeon";
+
+    private static final String TXT_SHPX =
+            "Design, Code, & Graphics: Evan\n\n" +
+            "Shattered Pixel is Evan's online home, check it out:";
+
+    private static final String LNK_SHPX = "ShatteredPixel.com";
+
+
+    private static final String TTL_WATA = "Original Pixel Dungeon";
+
+	private static final String TXT_WATA =
+		    "Code & Graphics: Watabou\n" +
+		    "Music: Cube_Code\n\n" +
+		    "Visit Watabou for more info:";
 	
-	private static final String LNK = "shatteredpixeldungeon.watabou.ru";
+	private static final String LNK_WATA = "pixeldungeon.watabou.ru";
 	
 	@Override
 	public void create() {
 		super.create();
-		
-		BitmapTextMultiline text = createMultiline( TXT, 8 );
+
+        Image shpx = Icons.SHPX.get();
+        shpx.x = align( (Camera.main.width - shpx.width()) / 2 );
+        shpx.y = align( 30 );
+        add( shpx );
+
+        new Flare( 7, 64 ).color( 0x57b300, true ).show( shpx, 0 ).angularSpeed = +20;
+
+        BitmapTextMultiline shpxtitle = createMultiline( TTL_SHPX, 8 );
+        shpxtitle.maxWidth = Math.min( Camera.main.width, 120 );
+        shpxtitle.measure();
+        shpxtitle.hardlight( 0x50a500 );
+        add( shpxtitle );
+
+        shpxtitle.x = align( (Camera.main.width - shpxtitle.width()) / 2 );
+        shpxtitle.y = align( shpx.y + shpx.height + 5 );
+
+        BitmapTextMultiline shpxtext = createMultiline( TXT_SHPX, 8 );
+        shpxtext.maxWidth = Math.min( Camera.main.width, 120 );
+        shpxtext.measure();
+        add( shpxtext );
+
+        shpxtext.x = align( (Camera.main.width - shpxtext.width()) / 2 );
+        shpxtext.y = align( shpxtitle.y + shpxtitle.height() + 12 );
+
+        BitmapTextMultiline shpxlink = createMultiline( LNK_SHPX, 8 );
+        shpxlink.maxWidth = Math.min( Camera.main.width, 120 );
+        shpxlink.measure();
+        shpxlink.hardlight( 0x57b300 );
+        add( shpxlink );
+
+        shpxlink.x = shpxtext.x;
+        shpxlink.y = shpxtext.y + shpxtext.height();
+
+        TouchArea shpxhotArea = new TouchArea( shpxlink ) {
+            @Override
+            protected void onClick( Touch touch ) {
+                Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://shatteredpixel.tumblr.com") );
+                Game.instance.startActivity( intent );
+            }
+        };
+        add( shpxhotArea );
+
+        Image wata = Icons.WATA.get();
+        wata.x = align( (Camera.main.width - wata.width()) / 2 );
+        wata.y = shpxlink.y + wata.height + 25;
+        add( wata );
+
+        new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
+
+        BitmapTextMultiline title = createMultiline( TTL_WATA, 8 );
+        title.maxWidth = Math.min( Camera.main.width, 120 );
+        title.measure();
+        title.hardlight( Window.TITLE_COLOR );
+        add( title );
+
+        title.x = align( (Camera.main.width - title.width()) / 2 );
+        title.y = align( wata.y + wata.height + 5 );
+
+		BitmapTextMultiline text = createMultiline( TXT_WATA, 8 );
 		text.maxWidth = Math.min( Camera.main.width, 120 );
 		text.measure();
 		add( text );
 		
 		text.x = align( (Camera.main.width - text.width()) / 2 );
-		text.y = align( (Camera.main.height - text.height()) / 2 );
+		text.y = align( title.y + title.height() + 12 );
 		
-		BitmapTextMultiline link = createMultiline( LNK, 8 );
+		BitmapTextMultiline link = createMultiline( LNK_WATA, 8 );
 		link.maxWidth = Math.min( Camera.main.width, 120 );
 		link.measure();
 		link.hardlight( Window.TITLE_COLOR );
@@ -66,18 +133,12 @@ public class AboutScene extends PixelScene {
 		TouchArea hotArea = new TouchArea( link ) {
 			@Override
 			protected void onClick( Touch touch ) {
-				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK ) );
+				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK_WATA ) );
 				Game.instance.startActivity( intent );
 			}
 		};
 		add( hotArea );
-		
-		Image wata = Icons.WATA.get();
-		wata.x = align( text.x + (text.width() - wata.width) / 2 );
-		wata.y = text.y - wata.height - 8;
-		add( wata );
-		
-		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
+
 		
 		Archs archs = new Archs();
 		archs.setSize( Camera.main.width, Camera.main.height );
