@@ -279,9 +279,10 @@ public class Hero extends Char {
 		
 		int bonus = 0;
 		for (Buff buff : buffs( RingOfEvasion.Evasion.class )) {
-			bonus += ((RingOfEvasion.Evasion)buff).level;
+			bonus += ((RingOfEvasion.Evasion)buff).effectiveLevel;
 		}
-		float evasion = bonus == 0 ? 1 : (float)Math.pow( 1.2, bonus );
+
+		float evasion = bonus == 0 ? 1 : (float)Math.pow( 1.15, bonus );
 		if (paralysed) {
 			evasion /= 2;
 		}

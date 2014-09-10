@@ -17,6 +17,12 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+
 public class RingOfEvasion extends Ring {
 
 	{
@@ -31,10 +37,45 @@ public class RingOfEvasion extends Ring {
 	@Override
 	public String desc() {
 		return isKnown() ?
-			"This ring increases your chance to dodge enemy attack." :
+			"This ring increases the wearer's ability to focus and anticipate the movements of an enemy. " +
+            "The longer the wearer stands still, the more focused they will become. " +
+            "A cursed ring will instead make dodging harder." :
 			super.desc();
 	}
-	
-	public class Evasion extends RingBuff {	
+
+    //yup, the only ring in the game with logic inside of its class
+	public class Evasion extends RingBuff {
+        public int effectiveLevel;
+        private int pos;
+
+        @Override
+        public boolean attachTo( Char target ) {
+
+            pos = target.pos;
+            effectiveLevel = Math.min(0, level);
+            return super.attachTo(target);
+        }
+
+        @Override
+        public boolean act() {
+
+            if (level >= 0) {
+                if (pos == target.pos && effectiveLevel < level) {
+                    effectiveLevel++;
+                } else if (pos != target.pos) {
+                    effectiveLevel = 0;
+                    pos = target.pos;
+                }
+            } else if (level < 0) {
+                if (pos == target.pos && effectiveLevel < 0) {
+                    effectiveLevel++;
+                } else if (pos != target.pos) {
+                    effectiveLevel = level;
+                    pos = target.pos;
+                }
+            }
+
+            return super.act();
+        }
 	}
 }
