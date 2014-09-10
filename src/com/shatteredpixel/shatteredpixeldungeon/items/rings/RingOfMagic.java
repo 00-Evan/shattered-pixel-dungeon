@@ -17,25 +17,25 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
-public class RingOfPower extends Ring {
+public class RingOfMagic extends Ring {
 	
 	{
-		name = "Ring of Power";
+		name = "Ring of Magic";
 	}
 	
 	@Override
 	protected RingBuff buff( ) {
-		return new Power();
+		return new Magic();
 	}
 	
 	@Override
 	public String desc() {
 		return isKnown() ?
-			"Your wands will become more powerful in the energy field " +
-			"that radiates from this ring. Degraded rings of power will instead weaken your wands." :
+			"Your wands will become more powerful in the arcane field " +
+			"that radiates from this ring. Degraded rings of magic will instead weaken your wands." :
 			super.desc();
 	}
 	
-	public class Power extends RingBuff {
+	public class Magic extends RingBuff {
 	}
 }

@@ -46,7 +46,7 @@ public class Ring extends KindofMisc {
 		//RingOfMending.class,
 		//RingOfDetection.class,
 		//RingOfShadows.class,
-		RingOfPower.class,
+		RingOfMagic.class,
 		//RingOfHerbalism.class,
 		RingOfAccuracy.class,
 		RingOfEvasion.class,

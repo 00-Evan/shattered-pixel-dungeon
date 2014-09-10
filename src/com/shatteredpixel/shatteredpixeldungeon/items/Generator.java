@@ -165,7 +165,7 @@ public class Generator {
 			//RingOfMending.class,
 			//RingOfDetection.class,
 			//RingOfShadows.class,
-			RingOfPower.class,
+			RingOfMagic.class,
 			//RingOfHerbalism.class,
 			RingOfAccuracy.class,
 			RingOfEvasion.class,

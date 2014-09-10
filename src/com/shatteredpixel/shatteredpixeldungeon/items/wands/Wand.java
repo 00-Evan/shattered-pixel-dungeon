@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfPower.Power;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMagic.Magic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -210,8 +210,8 @@ public abstract class Wand extends KindOfWeapon {
 	
 	public int level() {
 		if (charger != null) {
-			Power power = charger.target.buff( Power.class );
-			return power == null ? level : Math.max( level + power.level, 0 ); 
+			Magic magic = charger.target.buff( Magic.class );
+			return magic == null ? level : Math.max( level + magic.level, 0 );
 		} else {
 			return level;
 		}
