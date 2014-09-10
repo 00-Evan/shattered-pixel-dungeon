@@ -33,56 +33,8 @@ public class ShatteredPixelDungeon extends Game {
 	public ShatteredPixelDungeon() {
 		super( TitleScene.class );
 		/*
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfEnhancement" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfHealth.class,
-			"com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Light" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMending.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfRejuvenation" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTelekinesis.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTelekenesis" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Foliage.class,
-			"com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blooming" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows.class,
-			"com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Rejuvenation" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfNuclearBlast" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero.class,
-			"com.shatteredpixel.shatteredpixeldungeon.actors.Hero" );
-	//	com.watabou.utils.Bundle.addAlias( 
-	//		com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin.class,
-	//		"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper.class,
-			"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shopkeeper" );
-		// 1.6.1
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.items.quest.DriedRose.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.DriedRose" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage.MirrorImage" );
-		// 1.6.4
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfCleansing" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfResistance" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.RangersBoomerang" );
-		com.watabou.utils.Bundle.addAlias( 
-			com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfPower.class,
-			"com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy" );*/
+		No Aliases needed here atm, all previous aliases were from original PD, don't need to support saves from there.
+		*/
 	}
 	
 	@SuppressWarnings("deprecation")
