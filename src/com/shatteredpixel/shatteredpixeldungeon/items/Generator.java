@@ -161,21 +161,19 @@ public class Generator {
 			MysteryMeat.class };
 		Category.FOOD.probs = new float[]{ 4, 1, 0 };
 			
-		Category.RING.classes = new Class<?>[]{ 
-			//RingOfMending.class,
-			//RingOfDetection.class,
-			//RingOfShadows.class,
-			RingOfMagic.class,
-			//RingOfHerbalism.class,
-			RingOfAccuracy.class,
-			RingOfEvasion.class,
-			//RingOfSatiety.class,
-			RingOfHaste.class,
-			RingOfElements.class
-			//RingOfHaggler.class,
-			//RingOfThorns.class
-			};
-		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1 };
+		Category.RING.classes = new Class<?>[]{
+            RingOfAccuracy.class,
+            RingOfEvasion.class,
+            RingOfElements.class,
+            RingOfForce.class,
+            RingOfFuror.class,
+            RingOfHaste.class,
+            RingOfMagic.class,
+            RingOfMight.class,
+            RingOfSharpshooting.class,
+            RingOfTenacity.class,
+            RingOfWealth.class};
+		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		
 		Category.SEED.classes = new Class<?>[]{ 
 			Firebloom.Seed.class,
