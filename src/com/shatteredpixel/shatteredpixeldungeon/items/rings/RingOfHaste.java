@@ -31,7 +31,8 @@ public class RingOfHaste extends Ring {
 	@Override
 	public String desc() {
 		return isKnown() ?
-			"This ring accelerates the wearer's flow of time, allowing one to perform all actions a little faster." :
+			"This ring reduces the stress of movement on the wearer, allowing them to run" +
+            "at superhuman speeds. A cursed ring will instead weigh the wearer down.":
 			super.desc();
 	}
 	

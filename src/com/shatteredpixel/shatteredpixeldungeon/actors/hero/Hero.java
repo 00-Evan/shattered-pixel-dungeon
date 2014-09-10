@@ -328,15 +328,24 @@ public class Hero extends Char {
 	
 	@Override
 	public float speed() {
+
+        float speed = super.speed();
+
+        int hasteLevel = 0;
+        for (Buff buff : buffs( RingOfHaste.Haste.class )) {
+            hasteLevel += ((RingOfHaste.Haste)buff).level;
+        }
+
+        if (hasteLevel != 0)
+            speed *= Math.pow(1.2, hasteLevel);
 		
 		int aEnc = belongings.armor != null ? belongings.armor.STR - STR() : 0;
 		if (aEnc > 0) {
 			
-			return (float)(super.speed() * Math.pow( 1.3, -aEnc ));
+			return (float)(speed * Math.pow( 1.3, -aEnc ));
 			
 		} else {
-			
-			float speed = super.speed();
+
 			return ((HeroSprite)sprite).sprint( subClass == HeroSubClass.FREERUNNER && !isStarving() ) ? 1.6f * speed : speed;
 			
 		}
@@ -351,15 +360,6 @@ public class Hero extends Char {
 			return 1f;
 		}
 	}
-	
-	@Override
-	public void spend( float time ) {
-		int hasteLevel = 0;
-		for (Buff buff : buffs( RingOfHaste.Haste.class )) {
-			hasteLevel += ((RingOfHaste.Haste)buff).level;
-		}
-		super.spend( hasteLevel == 0 ? time : (float)(time * Math.pow( 1.1, -hasteLevel )) );
-	};
 	
 	public void spendAndNext( float time ) {
 		busy();
