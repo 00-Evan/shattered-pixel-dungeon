@@ -386,7 +386,7 @@ public abstract class Mob extends Char {
                 penalty += ((RingOfAccuracy.Accuracy) buff).level;
             }
             if (penalty != 0)
-                defenseSkill *= Math.pow(0.8, penalty);
+                defenseSkill *= Math.pow(0.75, penalty);
             return defenseSkill;
         } else
             return 0;

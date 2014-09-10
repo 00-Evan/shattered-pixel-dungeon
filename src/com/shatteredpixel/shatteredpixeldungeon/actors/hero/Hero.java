@@ -254,20 +254,10 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		
-		int bonus = 0;
-		for (Buff buff : buffs( RingOfAccuracy.Accuracy.class )) {
-			bonus += ((RingOfAccuracy.Accuracy)buff).level;
-		}
-		float accuracy = (bonus == 0) ? 1 : (float)Math.pow( 1.4, bonus );
-		if (usingRanged && Level.distance( pos, target.pos ) == 1) {
-			accuracy *= 0.5f;
-		}
-		
 		if (belongings.weapon != null) {
-			return (int)(attackSkill * accuracy * belongings.weapon.acuracyFactor( this ));
+			return (int)(attackSkill * belongings.weapon.acuracyFactor( this ));
 		} else {
-			return (int)(attackSkill * accuracy);
+			return (int)(attackSkill);
 		}
 	}
 	
