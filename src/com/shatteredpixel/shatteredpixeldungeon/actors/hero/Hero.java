@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -831,6 +832,15 @@ public class Hero extends Char {
             Buff.detach(this, Drowsy.class);
             GLog.w("The pain helps you resist the urge to sleep.");
         }
+
+        int tenacity = 0;
+        for (Buff buff : buffs(RingOfTenacity.Tenacity.class)) {
+            tenacity += ((RingOfTenacity.Tenacity)buff).level;
+        }
+        //TODO: test if this works
+        if (tenacity != 0) //(HT - HP)/HT = heroes current % missing health.
+            dmg *= Math.pow(0.9, tenacity*((float)(HT - HP)/HT));
+
 		super.damage( dmg, src );
 		
 		if (subClass == HeroSubClass.BERSERKER && 0 < HP && HP <= HT * Fury.LEVEL) {
