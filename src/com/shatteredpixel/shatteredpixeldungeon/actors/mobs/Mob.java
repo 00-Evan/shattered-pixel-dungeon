@@ -84,6 +84,7 @@ public abstract class Mob extends Char {
 	};
 	
 	private static final String STATE	= "state";
+    private static final String SEEN	= "seen";
 	private static final String TARGET	= "target";
 	
 	@Override
@@ -92,6 +93,7 @@ public abstract class Mob extends Char {
 		super.storeInBundle( bundle );
 		
 		bundle.put( STATE, state.toString() );
+        bundle.put( SEEN, enemySeen);
 		if (state != State.SLEEPING) {
 			bundle.put( TARGET, target );
 		}
@@ -103,6 +105,7 @@ public abstract class Mob extends Char {
 		super.restoreFromBundle( bundle );
 		
 		state = State.valueOf( bundle.getString( STATE ) );
+        enemySeen = bundle.getBoolean( SEEN );
 		if (state != State.SLEEPING) {
 			target = bundle.getInt( TARGET );
 		}
@@ -388,8 +391,9 @@ public abstract class Mob extends Char {
             if (penalty != 0)
                 defenseSkill *= Math.pow(0.75, penalty);
             return defenseSkill;
-        } else
+        } else {
             return 0;
+        }
 	}
 	
 	@Override
