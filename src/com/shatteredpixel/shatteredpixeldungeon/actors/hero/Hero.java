@@ -316,15 +316,15 @@ public class Hero extends Char {
 	public int damageRoll() {
 		int dmg;
         int bonus = 0;
-        for (Buff buff : buffs( RingOfEvasion.Evasion.class )) {
+        for (Buff buff : buffs( RingOfForce.Force.class )) {
             bonus += ((RingOfForce.Force)buff).level;
         }
 
 		if (belongings.weapon != null) {	
 			dmg = belongings.weapon.damageRoll( this ) + bonus;
 		} else {
-            bonus *= 1+Math.round(lvl/5f);
-			dmg = Random.NormalIntRange( 1, Math.min(1 , STR()-9+bonus ) );
+            int bonusMax = 1 + (int)(bonus * (lvl/5f));
+			dmg = Random.NormalIntRange( 1+bonus, Math.max(1+bonus , STR()-9+bonusMax ) );
 		}
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
