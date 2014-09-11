@@ -150,10 +150,6 @@ public class Sungrass extends Plant {
 		public void restoreFromBundle( Bundle bundle ) {
 			super.restoreFromBundle( bundle );
 			pos = bundle.getInt( POS );
-            //to support legacy saves from 0.1.0, TODO: remove when saves from V0.1.0 are invalidated
-                if (!bundle.contains( LEVEL )){
-                return;
-            }
             healCurr = bundle.getInt( HEALCURR );
             count = bundle.getInt( COUNT );
             level = bundle.getInt( LEVEL );

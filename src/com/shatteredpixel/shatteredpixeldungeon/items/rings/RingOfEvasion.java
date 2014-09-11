@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class RingOfEvasion extends Ring {
+    //todo: testing, numbers tweaking
 
 	{
 		name = "Ring of Evasion";

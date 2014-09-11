@@ -128,9 +128,7 @@ public class Ankh extends Item {
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle( bundle );
-        //TODO: remove when saves from 0.1.1 are invalidated
-        if (bundle.contains( BLESSED ))
-            blessed	= bundle.getBoolean( BLESSED );
+        blessed	= bundle.getBoolean( BLESSED );
     }
 	
 	@Override

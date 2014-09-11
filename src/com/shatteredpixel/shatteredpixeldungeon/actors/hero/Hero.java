@@ -355,6 +355,11 @@ public class Hero extends Char {
 			return 1f;
 		}
 	}
+
+    @Override
+    public void spend( float time ) {
+        super.spend( time );
+    };
 	
 	public void spendAndNext( float time ) {
 		busy();

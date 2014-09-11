@@ -32,7 +32,6 @@ public class Quarterstaff extends MeleeWeapon {
 	
 	@Override
 	public String desc() {
-		// TODO Auto-generated method stub
 		return "A staff of hardwood, its ends are shod with iron.";
 	}
 }
