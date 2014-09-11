@@ -4,7 +4,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
  * Created by debenhame on 10/09/2014.
  */
 public class RingOfSharpshooting extends Ring {
-    //TODO: tie this into game logic
+    //TODO: testing, numbers tweaking
     {
         name = "Ring of Sharpshooting";
     }

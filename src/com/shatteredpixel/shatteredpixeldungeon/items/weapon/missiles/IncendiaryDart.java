@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -63,6 +64,14 @@ public class IncendiaryDart extends MissileWeapon {
 		} else {
 			if (!curUser.shoot( enemy, this )) {
 				Dungeon.level.drop( this, cell ).sprite.drop();
+                //TODO: test this
+            } else {
+                int bonus = 0;
+                for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class)) {
+                    bonus += ((RingOfSharpshooting.Aim)buff).level;
+                }
+                if (Random.Float() > Math.pow(0.7, bonus))
+                    Dungeon.level.drop( this, cell ).sprite.drop();
 			}
 		}
 	}

@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -255,10 +256,16 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		if (belongings.weapon != null) {
-			return (int)(attackSkill * belongings.weapon.acuracyFactor( this ));
-		} else {
-			return (int)(attackSkill);
+        if (belongings.weapon != null && !usingRanged) {
+            return (int) (attackSkill * belongings.weapon.acuracyFactor(this));
+        } else if (usingRanged){
+            int bonus = 0;
+            for (Buff buff : buffs(RingOfSharpshooting.Aim.class)) {
+                bonus += ((RingOfSharpshooting.Aim)buff).level;
+            }
+            return (int)(attackSkill * Math.pow(1.1, bonus));
+        } else {
+			return attackSkill;
 		}
 	}
 	

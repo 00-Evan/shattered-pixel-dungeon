@@ -22,12 +22,15 @@ import java.util.ArrayList;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.utils.Random;
 
 public class MissileWeapon extends Weapon {
 
@@ -61,7 +64,15 @@ public class MissileWeapon extends Weapon {
 		} else {
 			if (!curUser.shoot( enemy, this )) {
 				miss( cell );
-			}
+                //TODO: test this
+			} else {
+                int bonus = 0;
+                for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class)) {
+                    bonus += ((RingOfSharpshooting.Aim)buff).level;
+                }
+                if (Random.Float() > Math.pow(0.7, bonus))
+                    Dungeon.level.drop( this, cell ).sprite.drop();
+            }
 		}
 	}
 	
