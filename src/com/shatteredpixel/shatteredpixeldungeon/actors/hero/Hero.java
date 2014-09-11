@@ -23,6 +23,7 @@ import java.util.HashSet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -306,10 +307,16 @@ public class Hero extends Char {
 	@Override
 	public int damageRoll() {
 		int dmg;
+        int bonus = 0;
+        for (Buff buff : buffs( RingOfEvasion.Evasion.class )) {
+            bonus += ((RingOfForce.Force)buff).level;
+        }
+
 		if (belongings.weapon != null) {	
-			dmg = belongings.weapon.damageRoll( this );
+			dmg = belongings.weapon.damageRoll( this ) + bonus;
 		} else {
-			dmg = STR() > 10 ? Random.IntRange( 1, STR() - 9 ) : 1;
+            bonus *= 1+Math.round(lvl/5f);
+			dmg = Random.NormalIntRange( 1, Math.min(1 , STR()-9+bonus ) );
 		}
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
