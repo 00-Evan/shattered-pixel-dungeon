@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Created by debenhame on 25/08/2014.
  */
 public class CloakOfShadows extends Artifact {
-    //TODO: testing, add polish
+    //TODO: final numbers tweaking, add polish
 
     {
         name = "Cloak of Shadows";

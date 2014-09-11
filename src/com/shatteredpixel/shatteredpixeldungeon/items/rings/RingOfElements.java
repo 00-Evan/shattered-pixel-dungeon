@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.watabou.utils.Random;
 
 public class RingOfElements extends Ring {
+    //TODO: need to rebalance this
 
 	{
 		name = "Ring of Elements";

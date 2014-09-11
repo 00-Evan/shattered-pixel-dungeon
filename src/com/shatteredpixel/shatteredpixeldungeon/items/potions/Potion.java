@@ -223,8 +223,6 @@ public class Potion extends Item {
     @Override
     public void cast( final Hero user, int dst ) {
             super.cast(user, dst);
-            //if this potion is owned by a fruit, finds it and detaches it.
-            //TODO: add remove code here
     }
 	
 	public boolean isKnown() {

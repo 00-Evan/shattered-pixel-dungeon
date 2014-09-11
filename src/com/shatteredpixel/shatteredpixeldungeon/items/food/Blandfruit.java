@@ -233,7 +233,6 @@ public class Blandfruit extends Food {
         if (name.equals("Healthfruit"))
             cook(new Sungrass.Seed());
         else if (name.equals("Powerfruit"))
-            //TODO: make sure this doesn't break anything
             cook(new Wandmaker.Rotberry.Seed());
         else if (name.equals("Paralyzefruit"))
             cook(new Earthroot.Seed());

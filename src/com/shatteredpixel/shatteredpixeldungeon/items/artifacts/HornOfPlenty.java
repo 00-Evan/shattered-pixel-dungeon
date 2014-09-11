@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class HornOfPlenty extends Artifact {
 
-    //TODO: tune numbers, add sprite switching, add polish.
+    //TODO: add sprite switching, add polish.
 
     {
         name = "Horn of Plenty";

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class ChaliceOfBlood extends Artifact {
     //TODO: add polish
     //TODO: add sprite switching
+    //TODO: decide on max level 8 or 10. balance accordingly.
 
     private static final String TXT_CHALICE	= "Chalice of Blood";
     private static final String TXT_YES		= "Yes, I know what I'm doing";

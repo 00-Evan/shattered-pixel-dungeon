@@ -26,6 +26,7 @@ import java.util.Collections;
  * Created by debenhame on 08/09/2014.
  */
 public class SandalsOfNature extends Artifact {
+    //todo: test, add sprite switching, number tweaking.
 
     {
         name = "Sandals of Nature";
