@@ -69,7 +69,7 @@ public class Swarm extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
+		return Random.NormalIntRange( 2, 4 );
 	}
 	
 	@Override
@@ -131,7 +131,7 @@ public class Swarm extends Mob {
 	
 	@Override
 	protected void dropLoot() {
-		if (Random.Int( 5 * (generation + 1) ) == 0) {
+		if (Random.Int( 6 * (int)Math.pow(2 , generation) ) == 0) {
 			Dungeon.level.drop( new PotionOfHealing(), pos ).sprite.drop();
 		}
 	}
