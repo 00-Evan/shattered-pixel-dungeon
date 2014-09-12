@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.watabou.noosa.Camera;
@@ -354,7 +355,14 @@ public class Hero extends Char {
 			return belongings.weapon.speedFactor( this );
 						
 		} else {
-			return 1f;
+            //Normally putting furor speed on unarmed attacks would be unnecessary
+            //But there's going to be that one guy who gets a furor+force ring combo
+            //This is for that one guy, you shall get your fists of fury!
+            int bonus = 0;
+            for (Buff buff : buffs(RingOfFuror.Furor.class)) {
+                bonus += ((RingOfFuror.Furor)buff).level;
+            }
+			return (float)(0.25 + (1 - 0.25)*Math.pow(0.8, bonus));
 		}
 	}
 

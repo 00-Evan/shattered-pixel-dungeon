@@ -4,7 +4,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
  * Created by debenhame on 10/09/2014.
  */
 public class RingOfFuror extends Ring {
-    //TODO: tie this into game logic
+    //TODO: testing
     {
         name = "Ring of Furor";
     }
@@ -17,9 +17,8 @@ public class RingOfFuror extends Ring {
     @Override
     public String desc() {
         return isKnown() ?
-                "This ring grants the wearer a sort of rising inner fury. " +
-                "Every successful attack will increase the wearers attacking speed " +
-                "until they stop fighting or miss too frequently. " +
+                "This ring grants the wearer an inner fury, allowing them to attack more rapidly. " +
+                "This fury works best in large bursts, so slow weapons benefit far more than fast ones. " +
                 "A cursed ring will instead slow the wearer's speed of attack." :
                 super.desc();
     }

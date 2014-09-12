@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -84,6 +85,8 @@ public class Weapon extends KindOfWeapon {
 	public float acuracyFactor( Hero hero ) {
 		
 		int encumbrance = STR - hero.STR();
+
+        float ACU = this.ACU;
 		
 		if (this instanceof MissileWeapon) {
 			switch (hero.heroClass) {
@@ -99,9 +102,7 @@ public class Weapon extends KindOfWeapon {
             for (Buff buff : hero.buffs(RingOfSharpshooting.Aim.class)) {
                 bonus += ((RingOfSharpshooting.Aim)buff).level;
             }
-            float ACUbonus = (float)(Math.pow(1.1, bonus));
-
-            return encumbrance > 0 ? (float)((ACU * ACUbonus) / Math.pow( 1.5, encumbrance )) : ACU * ACUbonus;
+            ACU *= (float)(Math.pow(1.1, bonus));
 		}
 		
 		return encumbrance > 0 ? (float)((ACU) / Math.pow( 1.5, encumbrance )) : ACU;
@@ -114,6 +115,13 @@ public class Weapon extends KindOfWeapon {
 		if (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS) {
 			encumrance -= 2;
 		}
+
+        int bonus = 0;
+        for (Buff buff : hero.buffs(RingOfFuror.Furor.class)) {
+            bonus += ((RingOfFuror.Furor)buff).level;
+        }
+
+        float DLY = (float)(0.25 + (this.DLY - 0.25)*Math.pow(0.8, bonus));
 		
 		return encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY;
 	}
