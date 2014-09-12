@@ -19,10 +19,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -93,9 +95,16 @@ public class Weapon extends KindOfWeapon {
 				break;
 			default:
 			}
+            int bonus = 0;
+            for (Buff buff : hero.buffs(RingOfSharpshooting.Aim.class)) {
+                bonus += ((RingOfSharpshooting.Aim)buff).level;
+            }
+            float ACUbonus = (float)(Math.pow(1.1, bonus));
+
+            return encumbrance > 0 ? (float)((ACU * ACUbonus) / Math.pow( 1.5, encumbrance )) : ACU * ACUbonus;
 		}
 		
-		return encumbrance > 0 ? (float)(ACU / Math.pow( 1.5, encumbrance )) : ACU;
+		return encumbrance > 0 ? (float)((ACU) / Math.pow( 1.5, encumbrance )) : ACU;
 	}
 	
 	@Override

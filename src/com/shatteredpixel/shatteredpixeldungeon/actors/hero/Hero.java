@@ -257,14 +257,8 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackSkill( Char target ) {
-        if (belongings.weapon != null && !usingRanged) {
+        if (belongings.weapon != null) {
             return (int) (attackSkill * belongings.weapon.acuracyFactor(this));
-        } else if (usingRanged){
-            int bonus = 0;
-            for (Buff buff : buffs(RingOfSharpshooting.Aim.class)) {
-                bonus += ((RingOfSharpshooting.Aim)buff).level;
-            }
-            return (int)(attackSkill * Math.pow(1.1, bonus));
         } else {
 			return attackSkill;
 		}

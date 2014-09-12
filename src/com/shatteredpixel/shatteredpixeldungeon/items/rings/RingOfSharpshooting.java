@@ -4,7 +4,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
  * Created by debenhame on 10/09/2014.
  */
 public class RingOfSharpshooting extends Ring {
-    //TODO: numbers tweaking, acc logic refactor, does this work with boomerang?
+    //TODO: numbers tweaking
     {
         name = "Ring of Sharpshooting";
     }
@@ -18,7 +18,7 @@ public class RingOfSharpshooting extends Ring {
     public String desc() {
         return isKnown() ?
                 "This ring enhances the wearer's precision and aim, which will " +
-                "make all projectile weapons hit harder and last longer. " +
+                "make all projectile weapons more accurate and durable. " +
                 "A cursed ring will have the opposite effect.":
                 super.desc();
     }
