@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class HornOfPlenty extends Artifact {
 
-    //TODO: add sprite switching, add polish.
+    //TODO: add polish.
 
     {
         name = "Horn of Plenty";
@@ -129,14 +129,22 @@ public class HornOfPlenty extends Artifact {
 
                 //generates 0.2 food value every round, +0.02 value per level
                 //to a max of 0.8 food value per round (0.2+0.6, at level 30)
-                partialCharge += (1f*(0.2+(0.02*level)));
+                partialCharge += 18;
 
                 //charge is in increments of 36 food value.
                 if (partialCharge >= 36) {
                     charge++;
-                    //TODO: change sprite based on fullness.
-                    //we'll do it at 3/0, 7/10, and 10/10, to relate to food items.
                     partialCharge -= 36;
+
+                    if (charge == chargeCap)
+                        image = ItemSpriteSheet.ARTIFACT_HORN4;
+                    else if (charge >= 7)
+                        image = ItemSpriteSheet.ARTIFACT_HORN3;
+                    else if (charge >= 3)
+                        image = ItemSpriteSheet.ARTIFACT_HORN2;
+                    else
+                        image = ItemSpriteSheet.ARTIFACT_HORN1;
+
                     if (charge == chargeCap){
                         GLog.p("Your horn is full of food.");
                         partialCharge = 0;
@@ -144,7 +152,6 @@ public class HornOfPlenty extends Artifact {
                 }
             } else
                 partialCharge = 0;
-
 
             spend( TICK );
 
