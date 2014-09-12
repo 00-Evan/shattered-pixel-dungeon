@@ -99,7 +99,7 @@ public class Earthroot extends Plant {
 		}
 		
 		public int absorb( int damage ) {
-			if (level >= damage-damage/2) {
+			if (level <= damage-damage/2) {
 				detach();
 				return damage - level;
 			} else {
