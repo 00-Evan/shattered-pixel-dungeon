@@ -64,7 +64,7 @@ public class MissileWeapon extends Weapon {
 		} else {
 			if (!curUser.shoot( enemy, this )) {
 				miss( cell );
-			} else {
+			} else if (!(this instanceof Boomerang)){
                 int bonus = 0;
                 for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class)) {
                     bonus += ((RingOfSharpshooting.Aim)buff).level;
