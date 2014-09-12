@@ -64,7 +64,6 @@ public class MissileWeapon extends Weapon {
 		} else {
 			if (!curUser.shoot( enemy, this )) {
 				miss( cell );
-                //TODO: test this
 			} else {
                 int bonus = 0;
                 for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class)) {

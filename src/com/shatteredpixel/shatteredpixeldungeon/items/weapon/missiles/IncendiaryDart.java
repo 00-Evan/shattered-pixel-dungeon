@@ -64,7 +64,6 @@ public class IncendiaryDart extends MissileWeapon {
 		} else {
 			if (!curUser.shoot( enemy, this )) {
 				Dungeon.level.drop( this, cell ).sprite.drop();
-                //TODO: test this
             } else {
                 int bonus = 0;
                 for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class)) {

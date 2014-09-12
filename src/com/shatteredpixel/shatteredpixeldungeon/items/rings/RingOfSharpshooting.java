@@ -4,7 +4,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
  * Created by debenhame on 10/09/2014.
  */
 public class RingOfSharpshooting extends Ring {
-    //TODO: testing, numbers tweaking
+    //TODO: numbers tweaking, acc logic refactor, does this work with boomerang?
     {
         name = "Ring of Sharpshooting";
     }
