@@ -92,7 +92,7 @@ public class CapeOfThorns extends Artifact {
 
                 if (exp >= (level+1)*10 && level < levelCap){
                     exp -= (level+1)*10;
-                    level++;
+                    upgrade();
                     GLog.p("Your Cape grows stronger!");
                 }
 

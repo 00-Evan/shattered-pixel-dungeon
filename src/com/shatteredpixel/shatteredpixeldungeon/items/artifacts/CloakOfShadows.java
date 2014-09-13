@@ -207,7 +207,7 @@ public class CloakOfShadows extends Artifact {
 
             //max level is 15 (20 charges)
             if (exp >= (level+1)*50 && level < levelCap) {
-                level++;
+                upgrade();
                 chargeCap++;
                 exp -= level*50;
                 GLog.p("Your Cloak Grows Stronger!");

@@ -113,7 +113,7 @@ public class ChaliceOfBlood extends Artifact {
             Dungeon.fail(Utils.format(ResultDescriptions.ITEM, name, Dungeon.depth));
             GLog.n("The Chalice sucks your life essence dry...");
         } else {
-            level++;
+            upgrade();
             if (level >= 5)
                 image = ItemSpriteSheet.ARTIFACT_CHALICE3;
             else if (level >= 3)

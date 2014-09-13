@@ -126,7 +126,7 @@ public class SandalsOfNature extends Artifact {
                     seeds.add(item.name());
                     if (seeds.size() >= 5+level){
                         seeds.clear();
-                        //upgrade logic
+                        upgrade();
                     }
                 }
             }
