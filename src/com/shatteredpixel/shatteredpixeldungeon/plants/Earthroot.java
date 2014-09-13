@@ -50,7 +50,7 @@ public class Earthroot extends Plant {
 		
 		if (Dungeon.visible[pos]) {
 			CellEmitter.bottom( pos ).start( EarthParticle.FACTORY, 0.05f, 8 );
-			Camera.main.shake( 0.25f, 1f );
+            Camera.main.shake( 1, 0.4f );
 		}
 	}
 	
