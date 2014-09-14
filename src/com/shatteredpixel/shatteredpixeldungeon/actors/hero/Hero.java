@@ -23,6 +23,7 @@ import java.util.HashSet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
@@ -1292,6 +1293,8 @@ public class Hero extends Char {
 		if (by >= Level.HEIGHT) {
 			by = Level.HEIGHT - 1;
 		}
+
+        TalismanOfForesight.Foresight foresight = buff( TalismanOfForesight.Foresight.class );
 		
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Level.WIDTH; x <= bx; x++, p++) {
@@ -1315,6 +1318,9 @@ public class Hero extends Char {
 						ScrollOfMagicMapping.discover( p );
 						
 						smthFound = true;
+
+                        if (foresight != null)
+                            foresight.charge();
 					}
 				}
 			}
