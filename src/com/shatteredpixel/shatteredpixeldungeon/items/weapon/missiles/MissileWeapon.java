@@ -60,7 +60,10 @@ public class MissileWeapon extends Weapon {
 	protected void onThrow( int cell ) {
 		Char enemy = Actor.findChar( cell );
 		if (enemy == null || enemy == curUser) {
-            miss( cell );
+            if (this instanceof Boomerang)
+                super.onThrow( cell );
+            else
+                miss( cell );
 		} else {
 			if (!curUser.shoot( enemy, this )) {
 				miss( cell );
@@ -81,7 +84,7 @@ public class MissileWeapon extends Weapon {
             bonus += ((RingOfSharpshooting.Aim)buff).level;
         }
 
-        if (Random.Float() > Math.pow(0.7, -bonus))
+        if (Random.Float() < Math.pow(0.6, -bonus))
             super.onThrow( cell );
 	}
 	
