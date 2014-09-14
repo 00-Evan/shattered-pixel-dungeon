@@ -23,6 +23,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
@@ -46,6 +47,7 @@ public class Generator {
 		SCROLL	( 40,	Scroll.class ),
 		WAND	( 4,	Wand.class ),
 		RING	( 2,	Ring.class ),
+        ARTIFACT( 3,    Artifact.class),
 		SEED	( 5,	Plant.Seed.class ),
 		FOOD	( 0,	Food.class ),
 		GOLD	( 50,	Gold.class );
@@ -174,6 +176,17 @@ public class Generator {
             RingOfTenacity.class,
             RingOfWealth.class};
 		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+        Category.ARTIFACT.classes = new Class<?>[]{
+            CapeOfThorns.class,
+            ChaliceOfBlood.class,
+            CloakOfShadows.class,
+            HornOfPlenty.class,
+            MasterThievesArmband.class,
+            SandalsOfNature.class,
+            TalismanOfForesight.class,
+        };
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 1, 1, 0, 1, 1 };
 		
 		Category.SEED.classes = new Class<?>[]{ 
 			Firebloom.Seed.class,
