@@ -37,6 +37,9 @@ public class SandalsOfNature extends Artifact {
         //partialcharge, chargeCap and exp are unused
     }
 
+    public static final String[] NAMES = {"Sandals of Nature", "Shoes of Nature",
+                                        "Boots of Nature", "Leggings of Nature"};
+
     public static final String AC_FEED = "FEED";
     public static final String AC_ROOT = "ROOT";
 
@@ -121,12 +124,30 @@ public class SandalsOfNature extends Artifact {
         public void onSelect( Item item ) {
             if (item != null && item instanceof Plant.Seed) {
                 if (seeds.contains(item.name())){
-                    GLog.w("The plant has already gained nutrients from that seed.");
+                    GLog.w("Your " + name + " have already gained nutrients from that seed recently.");
                 } else {
                     seeds.add(item.name());
+                    Hero hero = Dungeon.hero;
+                    hero.sprite.operate( hero.pos );
+                    hero.busy();
+                    hero.spend( 2f );
                     if (seeds.size() >= 5+level){
                         seeds.clear();
                         upgrade();
+                        if (level >= 1 && level <= 3) {
+                            GLog.p("Your " + name + " surge in size, they are now " + NAMES[level] + "!");
+                            name = NAMES[level];
+                        }
+                        if (level <= 0)
+                            image = ItemSpriteSheet.ARTIFACT_SANDALS;
+                        else if (level == 1)
+                            image = ItemSpriteSheet.ARTIFACT_SHOES;
+                        else if (level == 2)
+                            image = ItemSpriteSheet.ARTIFACT_BOOTS;
+                        else if (level >= 3)
+                            image = ItemSpriteSheet.ARTIFACT_LEGGINGS;
+                    } else {
+                        GLog.i("Your " + name + " absorb the seed, they seem healthier.");
                     }
                 }
             }

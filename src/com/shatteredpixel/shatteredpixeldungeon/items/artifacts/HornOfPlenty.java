@@ -178,7 +178,7 @@ public class HornOfPlenty extends Artifact {
                         GLog.p("your horn has consumed all the food it can!");
                     } else
                         GLog.p("the horn consumes your food offering and grows in strength!");
-                    item.detach(Dungeon.hero.belongings.backpack);
+                    item.detach(hero.belongings.backpack);
                 }
 
             }
