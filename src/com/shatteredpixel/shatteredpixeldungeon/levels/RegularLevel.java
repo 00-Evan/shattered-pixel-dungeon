@@ -25,11 +25,13 @@ import java.util.List;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.*;
@@ -590,7 +592,13 @@ public abstract class RegularLevel extends Level {
 	protected void createItems() {
 		
 		int nItems = 3;
-		while (Random.Float() < 0.3f) {
+        int bonus = 0;
+        for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
+            bonus += ((RingOfWealth.Wealth) buff).level;
+        }
+        //just incase someone gets a ridiculous ring, cap this at 75%
+        bonus = Math.min(bonus, 15);
+		while (Random.Float() < (0.3f + bonus*0.03f)) {
 			nItems++;
 		}
 		

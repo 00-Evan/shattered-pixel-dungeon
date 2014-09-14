@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWeaponUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Sample;
@@ -168,6 +171,17 @@ public abstract class Level implements Bundlable {
 				addItemToSpawn( new Stylus() );
 				Dungeon.arcaneStyli++;
 			}
+
+            int bonus = 0;
+            for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
+                bonus += ((RingOfWealth.Wealth) buff).level;
+            }
+            if (Random.Float() < Math.pow(0.95, bonus)){
+                if (Random.Int(2) == 0)
+                     addItemToSpawn( new ScrollOfWeaponUpgrade() );
+                else
+                    addItemToSpawn( new PotionOfMight() );
+            }
 			
 			if (Dungeon.depth > 1) {
 				switch (Random.Int( 10 )) {
