@@ -62,7 +62,7 @@ public enum HeroClass {
 	};
 	
 	public static final String[] ROG_PERKS = {
-		"Rogues start with a Ring of Shadows+1.",
+		"Rogues start with a Cloak of Shadows.",
 		"Rogues identify a type of a ring on equipping it.",
 		"Rogues are proficient with light armor, dodging better while wearing one.",
 		"Rogues are proficient in detecting hidden doors and traps.",
@@ -150,7 +150,7 @@ public enum HeroClass {
 			new TomeOfMastery().collect();
 		}
 		
-		Dungeon.quickslot = Dart.class;
+		Dungeon.quickslot = CloakOfShadows.class;
 		
 		new ScrollOfMagicMapping().setKnown();
 	}
