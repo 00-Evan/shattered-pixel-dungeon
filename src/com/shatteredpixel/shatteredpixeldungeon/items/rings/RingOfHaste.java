@@ -18,7 +18,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 public class RingOfHaste extends Ring {
-    //TODO: numbers tweaking
 
 	{
 		name = "Ring of Haste";

@@ -18,7 +18,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 public class RingOfMagic extends Ring {
-    //TODO: evaluate functionality, decide on numbers
 	
 	{
 		name = "Ring of Magic";

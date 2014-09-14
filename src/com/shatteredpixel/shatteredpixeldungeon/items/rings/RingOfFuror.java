@@ -4,7 +4,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
  * Created by debenhame on 10/09/2014.
  */
 public class RingOfFuror extends Ring {
-    //TODO: testing
+
     {
         name = "Ring of Furor";
     }

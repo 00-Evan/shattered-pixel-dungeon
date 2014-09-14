@@ -4,7 +4,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
  * Created by debenhame on 10/09/2014.
  */
 public class RingOfTenacity extends Ring {
-    //TODO: numbers tweaking
+
     {
         name = "Ring of Tenacity";
     }

@@ -18,7 +18,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 public class RingOfAccuracy extends Ring {
-    //TODO: numbers tweaking
 
 	{
 		name = "Ring of Accuracy";

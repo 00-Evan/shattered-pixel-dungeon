@@ -7,8 +7,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
  * Created by debenhame on 10/09/2014.
  */
 public class RingOfMight extends Ring {
-    //TODO: test this, numbers tweaking
-    //specifically, make sure this works with levelling up the ring
+
     {
         name = "Ring of Might";
     }
