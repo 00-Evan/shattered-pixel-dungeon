@@ -49,6 +49,7 @@ public class RingOfMight extends Ring {
             if (level > 0){
                 target.HT -= level*5;
             }
+            super.detach();
         }
     }
 }

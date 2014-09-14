@@ -160,8 +160,8 @@ public class Ring extends KindofMisc {
 			hero.belongings.misc2 = null;
 		}
 		
-		hero.remove( buff );
-		buff = null;
+		buff.detach();
+        buff = null;
 		
 		hero.spendAndNext( TIME_TO_EQUIP );
 		

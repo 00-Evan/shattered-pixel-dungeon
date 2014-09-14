@@ -118,6 +118,7 @@ public class CapeOfThorns extends Artifact {
         public void detach(){
             timer = 0;
             charge = 0;
+            super.detach();
         }
 
     }

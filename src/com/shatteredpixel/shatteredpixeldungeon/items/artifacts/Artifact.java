@@ -105,7 +105,7 @@ public class Artifact extends KindofMisc {
             hero.belongings.misc2 = null;
         }
 
-        hero.remove(passiveBuff);
+        passiveBuff.detach();
         passiveBuff = null;
 
         hero.spendAndNext( TIME_TO_EQUIP );
