@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -467,6 +468,14 @@ public abstract class Mob extends Char {
 	
 	@SuppressWarnings("unchecked")
 	protected void dropLoot() {
+        float lootChance = this.lootChance;
+        int bonus = 0;
+        for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
+            bonus += ((RingOfWealth.Wealth) buff).level;
+        }
+
+        lootChance *= Math.pow(1.1, bonus);
+
 		if (loot != null && Random.Float() < lootChance) {
 			Item item = null;
 			if (loot instanceof Generator.Category) {
