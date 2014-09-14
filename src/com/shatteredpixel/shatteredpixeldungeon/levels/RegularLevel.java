@@ -596,9 +596,9 @@ public abstract class RegularLevel extends Level {
         for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
             bonus += ((RingOfWealth.Wealth) buff).level;
         }
-        //just incase someone gets a ridiculous ring, cap this at 75%
-        bonus = Math.min(bonus, 15);
-		while (Random.Float() < (0.3f + bonus*0.03f)) {
+        //just incase someone gets a ridiculous ring, cap this at 80%
+        bonus = Math.min(bonus, 10);
+		while (Random.Float() < (0.3f + bonus*0.05f)) {
 			nItems++;
 		}
 		
