@@ -400,7 +400,7 @@ public abstract class Mob extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		if (!enemySeen && enemy == Dungeon.hero && ((Hero)enemy).subClass == HeroSubClass.ASSASSIN) {
-			damage += Random.Int( 1, damage );
+			damage *= 1.34f;
 			Wound.hit( this );
 		}
 		return damage;
