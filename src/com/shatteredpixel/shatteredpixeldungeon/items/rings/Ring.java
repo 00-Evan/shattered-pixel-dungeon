@@ -249,11 +249,11 @@ public class Ring extends KindofMisc {
 	
 	@Override
 	public Item random() {
-		level = Random.Int( 1, 3 );
 		if (Random.Float() < 0.3f) {
-			level = -level;
+			level = -Random.Int( 1, 3 );
 			cursed = true;
-		}
+		} else
+            level = Random.Int( 1, 2 );
 		return this;
 	}
 	
