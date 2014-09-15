@@ -134,7 +134,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_CLOAK      = ROW8+0;
     public static final int ARTIFACT_ARMBAND    = ROW8+1;
     public static final int ARTIFACT_CAPE       = ROW8+2;
-    public static final int ARTIFACT_TALISMAN   = 0;
+    public static final int ARTIFACT_TALISMAN   = ROW8+3;
 
 
     //Row Nine: Artifacts with Dynamic Images
@@ -148,7 +148,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_SANDALS    = ROW9+7;
     public static final int ARTIFACT_SHOES      = ROW9+8;
     public static final int ARTIFACT_BOOTS      = ROW9+9;
-    public static final int ARTIFACT_LEGGINGS   = ROW9+10;
+    public static final int ARTIFACT_GREAVES    = ROW9+10;
 
     //Row Ten: Scrolls
     public static final int SCROLL_KAUNAN	= ROW10+0;

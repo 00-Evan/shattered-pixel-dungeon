@@ -26,7 +26,7 @@ import java.util.Collections;
  * Created by debenhame on 08/09/2014.
  */
 public class SandalsOfNature extends Artifact {
-    //todo: test, add sprite switching, number tweaking.
+    //todo: polish, tweak the greaves sprite a little, it's too neat/needs to be more messy.
 
     {
         name = "Sandals of Nature";
@@ -38,7 +38,7 @@ public class SandalsOfNature extends Artifact {
     }
 
     public static final String[] NAMES = {"Sandals of Nature", "Shoes of Nature",
-                                        "Boots of Nature", "Leggings of Nature"};
+                                        "Boots of Nature", "Greaves of Nature"};
 
     public static final String AC_FEED = "FEED";
     public static final String AC_ROOT = "ROOT";
@@ -95,16 +95,19 @@ public class SandalsOfNature extends Artifact {
 
 
     private static final String SEEDS = "seeds";
+    private static final String NAME = "name";
 
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
+        bundle.put(NAME, name);
         bundle.put(SEEDS, seeds.toArray(new String[seeds.size()]));
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
+        name = bundle.getString( NAME );
         if (bundle.contains(SEEDS))
             Collections.addAll(seeds , bundle.getStringArray(SEEDS));
     }
@@ -131,7 +134,7 @@ public class SandalsOfNature extends Artifact {
                     hero.sprite.operate( hero.pos );
                     hero.busy();
                     hero.spend( 2f );
-                    if (seeds.size() >= 5+level){
+                    if (seeds.size() >= 2){
                         seeds.clear();
                         upgrade();
                         if (level >= 1 && level <= 3) {
@@ -145,7 +148,7 @@ public class SandalsOfNature extends Artifact {
                         else if (level == 2)
                             image = ItemSpriteSheet.ARTIFACT_BOOTS;
                         else if (level >= 3)
-                            image = ItemSpriteSheet.ARTIFACT_LEGGINGS;
+                            image = ItemSpriteSheet.ARTIFACT_GREAVES;
                     } else {
                         GLog.i("Your " + name + " absorb the seed, they seem healthier.");
                     }
