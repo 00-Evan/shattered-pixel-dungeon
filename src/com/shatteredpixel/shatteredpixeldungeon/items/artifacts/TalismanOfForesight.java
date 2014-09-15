@@ -158,7 +158,7 @@ public class TalismanOfForesight extends Artifact {
         }
 
         public void charge(){
-            charge = Math.min(charge+6, chargeCap);
+            charge = Math.min(charge+4, chargeCap);
             exp++;
             if (exp >= 5) {
                 upgrade();
