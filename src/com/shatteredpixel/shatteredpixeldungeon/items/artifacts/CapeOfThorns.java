@@ -16,8 +16,6 @@ import com.watabou.utils.Random;
  * Created by debenhame on 03/09/2014.
  */
 public class CapeOfThorns extends Artifact {
-    //TODO: testing, numbers tweaking
-    //TODO: final surface test
 
     {
         name = "Cape of Thorns";

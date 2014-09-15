@@ -20,7 +20,6 @@ import java.util.ArrayList;
  * Created by debenhame on 25/08/2014.
  */
 public class CloakOfShadows extends Artifact {
-    //TODO: final surface testing
 
     {
         name = "Cloak of Shadows";
@@ -117,11 +116,10 @@ public class CloakOfShadows extends Artifact {
     @Override
     public String desc() {
         String desc = "This light silken cloak shimmers in and out of your vision as it sways in the air. When worn, " +
-                "it can be used to hide your presence for a short time. The cloak's magic is finicky, and it will " +
-                "both run out of power quickly, and require a short cooldown between uses.\n\n";
+                "it can be used to hide your presence for a short time.\n\n";
 
         if (level < 5)
-           desc += "The cloak's magic has faded and it is not very powerful, perhaps it will regan strength though use";
+         desc += "The cloak's magic has faded and it is not very powerful, perhaps it will regain strength through use.";
         else if (level < 10)
             desc += "The cloak's power has begun to return.";
         else if (level < 15)
@@ -131,7 +129,7 @@ public class CloakOfShadows extends Artifact {
 
 
         if ( isEquipped (Dungeon.hero) )
-            desc += "\n\nThe cloak rests around your shoulders, shrouding you from the world.";
+            desc += "\n\nThe cloak rests around your shoulders.";
 
 
         return desc;

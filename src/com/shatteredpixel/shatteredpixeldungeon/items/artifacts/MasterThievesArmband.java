@@ -12,7 +12,6 @@ import com.watabou.utils.Random;
  * Created by debenhame on 03/09/2014.
  */
 public class MasterThievesArmband extends Artifact {
-    //TODO: final surface test
 
     {
         name = "Master Thieves' Armband";

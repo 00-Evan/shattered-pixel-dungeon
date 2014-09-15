@@ -20,7 +20,6 @@ import java.util.ArrayList;
  * Created by debenhame on 27/08/2014.
  */
 public class ChaliceOfBlood extends Artifact {
-    //TODO: final surface test
 
     private static final String TXT_CHALICE	= "Chalice of Blood";
     private static final String TXT_YES		= "Yes, I know what I'm doing";

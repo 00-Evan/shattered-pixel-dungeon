@@ -92,6 +92,7 @@ public class HornOfPlenty extends Artifact {
             hero.busy();
             SpellSprite.show(hero, SpellSprite.FOOD);
             Sample.INSTANCE.play( Assets.SND_EAT );
+            GLog.i("You eat from the horn.");
 
             hero.spend( TIME_TO_EAT );
 
@@ -126,17 +127,10 @@ public class HornOfPlenty extends Artifact {
             desc += "The horn is overflowing! A delicious array of fruit and veg is filling the horn up to its brim.";
 
         if ( isEquipped( Dungeon.hero ) ){
-            desc += "\n\nThe horn rests as your side, and is surprisingly lightweight, even with food in it. ";
+            desc += "\n\nThe horn rests at your side and is surprisingly lightweight, even with food in it.";
 
             if (level < 15)
-                desc += "It seems to have lost most of its power though, filling up very slowly.";
-            else if (level < 30)
-                desc += "It seems to have regained some of it's power, it fills up more quickly now.";
-            else
-                desc += "The horn seems to be at full power, generating food very quickly.";
-
-            if (level < 15)
-                desc += " Perhaps there is a way to regain the horn's power by giving it food energy.";
+                desc += " Perhaps there is a way to increase the horn's power by giving it food energy.";
         }
 
         return desc;
@@ -155,8 +149,7 @@ public class HornOfPlenty extends Artifact {
 
                 //generates 0.2 food value every round, +0.02 value per level
                 //to a max of 0.8 food value per round (0.2+0.6, at level 30)
-                //TODO: revert this to proper logic after testing
-                partialCharge += 18;
+                partialCharge += 0.2f + (0.02f*level);
 
                 //charge is in increments of 36 food value.
                 if (partialCharge >= 36) {

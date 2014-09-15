@@ -27,8 +27,6 @@ import java.util.Collections;
  */
 public class SandalsOfNature extends Artifact {
     //TODO: tweak the greaves sprite a little, it's too neat/needs to be more messy.
-    //TODO: test the description to this one, it's massive =S.
-    //TODO: final surface testing
 
     {
         name = "Sandals of Nature";
@@ -121,12 +119,12 @@ public class SandalsOfNature extends Artifact {
             desc += " You feel more attuned with nature while wearing them.";
 
             if (level > 0)
-                desc += " The footwear has gained the ability to form up into a sort of immobile armour temporarily, " +
+                desc += "\n\nThe footwear has gained the ability to form up into a sort of immobile natural armour, " +
                         "but will need to charge up for it.";
         }
 
         if (!seeds.isEmpty()){
-            desc += "\n\nYou have recently fed this Artifact the following seeds:";
+            desc += "\n\nRecently Fed Seeds:";
             String[] seedsArray = seeds.toArray(new String[seeds.size()]);
 
             for (int i = 0; i < seedsArray.length-1; i++)
@@ -179,7 +177,7 @@ public class SandalsOfNature extends Artifact {
                     hero.sprite.operate( hero.pos );
                     hero.busy();
                     hero.spend( 2f );
-                    if (seeds.size() >= 2){
+                    if (seeds.size() >= 5+level){
                         seeds.clear();
                         upgrade();
                         if (level >= 1 && level <= 3) {

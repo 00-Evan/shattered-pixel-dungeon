@@ -25,7 +25,6 @@ import java.util.ArrayList;
  */
 public class TalismanOfForesight extends Artifact {
     //TODO: shade sprite.
-    //TODO: final surface test
 
     {
         name = "Talisman of Foresight";
@@ -89,12 +88,10 @@ public class TalismanOfForesight extends Artifact {
 
     @Override
     public String desc() {
-        String desc = "A smooth stone, almost too big for your pocket or hand, with strange markings on it. " +
-                "The engravings look to be done with a tool and painted to look like an eye. " +
+        String desc = "A smooth stone, almost too big for your pocket or hand, with strange engravings on it. " +
                 "You feel like it's watching you, assessing your every move.";
         if ( isEquipped( Dungeon.hero ) ){
-            desc += "\n\nWhen you hold the talisman you feel like your senses are heightened. Sometimes there is a " +
-                    "seemingly random sense of dread, perhaps the talisman is telling you something when this happens?";
+            desc += "\n\nWhen you hold the talisman you feel like your senses are heightened.";
             if (charge == 100)
                 desc += "\n\nThe talisman is radiating energy, prodding at your mind. You wonder what would " +
                         "happen if you let it in.";
