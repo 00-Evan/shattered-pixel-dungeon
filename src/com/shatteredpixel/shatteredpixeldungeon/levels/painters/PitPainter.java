@@ -56,10 +56,12 @@ public class PitPainter extends Painter {
 		}
 		
 		level.drop( new IronKey( Dungeon.depth ), remains ).type = Type.SKELETON;
-		
-		if (Random.Int( 5 ) == 0) {
+		int loot = Random.Int( 3 );
+		if (loot == 0) {
 			level.drop( Generator.random( Generator.Category.RING ), remains );
-		} else {
+		} else if (loot == 1) {
+            level.drop( Generator.random( Generator.Category.ARTIFACT ), remains );
+        } else {
 			level.drop( Generator.random( Random.oneOf( 
 				Generator.Category.WEAPON, 
 				Generator.Category.ARMOR

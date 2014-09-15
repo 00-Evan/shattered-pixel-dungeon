@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
@@ -80,7 +81,10 @@ public class WndInfoItem extends Window {
 				info = TXT_REMAINS;
 			} else if (heap.type == Type.CRYSTAL_CHEST) {
 				title = TXT_CRYSTAL_CHEST;
-				info = Utils.format( TXT_INSIDE, Utils.indefinite( heap.peek().name() ) );
+                if (heap.peek() instanceof Artifact)
+                    info = Utils.format( TXT_INSIDE, "an artifact" );
+                else
+                    info = Utils.format( TXT_INSIDE, Utils.indefinite( heap.peek().name() ) );
 			} else {
 				title = TXT_LOCKED_CHEST;
 				info = TXT_NEED_KEY;
