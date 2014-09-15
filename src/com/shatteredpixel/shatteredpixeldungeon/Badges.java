@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Acidic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Albino;
@@ -394,12 +395,13 @@ public class Badges {
 		// 1) When an item is obtained (Item.collect)
 		// 2) When an item is upgraded (ScrollOfUpgrade, ScrollOfWeaponUpgrade, ShortSword, WandOfMagicMissile)
 		// 3) When an item is identified
-		if (!item.levelKnown) {
+
+        // Note that artifacts should never trigger this badge as they are alternatively upgraded
+		if (!item.levelKnown || item instanceof Artifact) {
 			return;
 		}
 		
 		Badge badge = null;
-		
 		if (!local.contains( Badge.ITEM_LEVEL_1 ) && item.level >= 3) {
 			badge = Badge.ITEM_LEVEL_1;
 			local.add( badge );
