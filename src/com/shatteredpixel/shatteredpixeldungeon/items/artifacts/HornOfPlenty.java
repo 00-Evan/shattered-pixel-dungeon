@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class HornOfPlenty extends Artifact {
 
-    //TODO: add polish.
+    //TODO: final surface testing
 
     {
         name = "Horn of Plenty";
@@ -112,8 +112,34 @@ public class HornOfPlenty extends Artifact {
 
     @Override
     public String desc() {
-        //TODO: add description
-        return "";
+        String desc = "This horn can't be blown into, but instead seems to fill up with food over time.\n\n";
+
+        if (charge == 0)
+            desc += "The horn is completely empty.";
+        else if (charge < 3)
+            desc += "The horn is almost empty, a few small fruits and berries sit in the back.";
+        else if (charge < 7)
+            desc += "The horn is partially filled, you can see several fruits & vegetables inside.";
+        else if (charge < 10)
+            desc += "The horn is getting quite full, several pieces of fresh produce are poking up towards the front.";
+        else
+            desc += "The horn is overflowing! A delicious array of fruit and veg is filling the horn up to its brim.";
+
+        if ( isEquipped( Dungeon.hero ) ){
+            desc += "\n\nThe horn rests as your side, and is surprisingly lightweight, even with food in it. ";
+
+            if (level < 15)
+                desc += "It seems to have lost most of its power though, filling up very slowly.";
+            else if (level < 30)
+                desc += "It seems to have regained some of it's power, it fills up more quickly now.";
+            else
+                desc += "The horn seems to be at full power, generating food very quickly.";
+
+            if (level < 15)
+                desc += " Perhaps there is a way to regain the horn's power by giving it food energy.";
+        }
+
+        return desc;
     }
 
     @Override
@@ -129,6 +155,7 @@ public class HornOfPlenty extends Artifact {
 
                 //generates 0.2 food value every round, +0.02 value per level
                 //to a max of 0.8 food value per round (0.2+0.6, at level 30)
+                //TODO: revert this to proper logic after testing
                 partialCharge += 18;
 
                 //charge is in increments of 36 food value.
@@ -146,7 +173,7 @@ public class HornOfPlenty extends Artifact {
                         image = ItemSpriteSheet.ARTIFACT_HORN1;
 
                     if (charge == chargeCap){
-                        GLog.p("Your horn is full of food.");
+                        GLog.p("Your horn is full of food!");
                         partialCharge = 0;
                     }
                 }

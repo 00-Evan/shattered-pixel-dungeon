@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Created by Evan on 24/08/2014.
  */
 public class Artifact extends KindofMisc {
-//TODO: add artifact transform method and tie it into well of transformation
+//TODO: add artifact transform method and tie it into well of transformation, potentially delayed to 0.2.1
     {
         levelKnown = true;
     }

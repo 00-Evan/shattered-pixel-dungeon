@@ -2,6 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  * Created by debenhame on 25/08/2014.
  */
 public class CloakOfShadows extends Artifact {
-    //TODO: final numbers tweaking, add polish
+    //TODO: final surface testing
 
     {
         name = "Cloak of Shadows";
@@ -28,12 +29,11 @@ public class CloakOfShadows extends Artifact {
         levelCap = 15;
         charge = level+5;
         chargeCap = level+5;
+        exp = 0;
         defaultAction = AC_STEALTH;
     }
 
     private boolean stealthed = false;
-
-    private int exp = 0;
 
     public static final String AC_STEALTH = "STEALTH";
 
@@ -80,7 +80,7 @@ public class CloakOfShadows extends Artifact {
                 activeBuff.detach();
                 activeBuff = null;
                 hero.sprite.operate( hero.pos );
-                GLog.i("You return from behind your cloak.");
+                GLog.i("You return from underneath your cloak.");
             }
 
         } else {
@@ -88,7 +88,7 @@ public class CloakOfShadows extends Artifact {
                 stealthed = false;
                 activeBuff.detach();
                 activeBuff = null;
-                GLog.i("You return from behind your cloak.");
+                GLog.i("You return from underneath your cloak.");
             }
 
             super.execute(hero, action);
@@ -116,8 +116,25 @@ public class CloakOfShadows extends Artifact {
 
     @Override
     public String desc() {
-        //TODO: add description
-        return "";
+        String desc = "This light silken cloak shimmers in and out of your vision as it sways in the air. When worn, " +
+                "it can be used to hide your presence for a short time. The cloak's magic is finicky, and it will " +
+                "both run out of power quickly, and require a short cooldown between uses.\n\n";
+
+        if (level < 5)
+           desc += "The cloak's magic has faded and it is not very powerful, perhaps it will regan strength though use";
+        else if (level < 10)
+            desc += "The cloak's power has begun to return.";
+        else if (level < 15)
+            desc += "The cloak has almost returned to full strength.";
+        else
+            desc += "The cloak is at full potential and will work for extended durations.";
+
+
+        if ( isEquipped (Dungeon.hero) )
+            desc += "\n\nThe cloak rests around your shoulders, shrouding you from the world.";
+
+
+        return desc;
     }
 
     @Override
@@ -128,6 +145,7 @@ public class CloakOfShadows extends Artifact {
             return  Utils.format(TXT_CD, cooldown);
     }
 
+    //Note: cloak needs to bundle chargecap as it is dynamic.
     private static final String CHARGECAP = "chargecap";
     private static final String STEALTHED = "stealthed";
     private static final String COOLDOWN = "cooldown";
@@ -159,7 +177,6 @@ public class CloakOfShadows extends Artifact {
                     charge++;
                     partialCharge -= 1;
                     if (charge == chargeCap){
-                        GLog.p("Your cloak is fully charged.");
                         partialCharge = 0;
                     }
 
@@ -201,11 +218,11 @@ public class CloakOfShadows extends Artifact {
             if (charge <= 0) {
                 detach();
                 GLog.w("Your cloak has run out of energy.");
+                ((Hero)target).interrupt();
             }
 
             exp += 10 + ((Hero)target).lvl;
 
-            //max level is 15 (20 charges)
             if (exp >= (level+1)*50 && level < levelCap) {
                 upgrade();
                 chargeCap++;

@@ -1,5 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -11,7 +12,7 @@ import com.watabou.utils.Random;
  * Created by debenhame on 03/09/2014.
  */
 public class MasterThievesArmband extends Artifact {
-    //TODO: polish, numbers tweaking
+    //TODO: final surface test
 
     {
         name = "Master Thieves' Armband";
@@ -39,8 +40,15 @@ public class MasterThievesArmband extends Artifact {
 
     @Override
     public String desc() {
-        //TODO: add description
-        return "";
+        String desc = "This purple velvet armband bears the mark of a master thief. This doesn't belong to you, but " +
+                "you doubt it belonged to the person you took it from either.";
+
+        if ( isEquipped (Dungeon.hero) )
+            desc += "\n\nWith the armband around your wrist you feel more dexterous and cunning. Every piece of gold " +
+                    "you find makes you desire others property more. " +
+                    "You wonder if Pixel Mart accepts the five finger discount...";
+
+        return desc;
     }
 
     public class Thievery extends ArtifactBuff{

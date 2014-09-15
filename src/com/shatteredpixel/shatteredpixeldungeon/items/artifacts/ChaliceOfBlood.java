@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by debenhame on 27/08/2014.
  */
 public class ChaliceOfBlood extends Artifact {
-    //TODO: add polish
+    //TODO: final surface test
 
     private static final String TXT_CHALICE	= "Chalice of Blood";
     private static final String TXT_YES		= "Yes, I know what I'm doing";
@@ -29,6 +29,7 @@ public class ChaliceOfBlood extends Artifact {
             "Each time you use the chalice it will drain more life energy, "+
             "if you are not careful this draining effect can easily kill you.\n\n"+
             "Are you sure you want to offer it more life energy?";
+
 
     {
         name = "Chalice of Blood";
@@ -87,7 +88,7 @@ public class ChaliceOfBlood extends Artifact {
 
         //TODO: make sure this look good
         if (damage <= 0){
-            GLog.i("You prick yourself, that hardly hurt at all!");
+            GLog.i("You prick yourself, and your blood drips into the chalice.");
         } else if (damage < 25){
             GLog.w("You prick yourself and the chalice feeds on you.");
             Sample.INSTANCE.play(Assets.SND_CURSED);
@@ -104,8 +105,6 @@ public class ChaliceOfBlood extends Artifact {
 
         if (damage > 0)
             hero.damage(damage, this);
-
-
 
         if (!hero.isAlive()) {
             Dungeon.fail(Utils.format(ResultDescriptions.ITEM, name, Dungeon.depth));
@@ -127,8 +126,33 @@ public class ChaliceOfBlood extends Artifact {
 
     @Override
     public String desc() {
-        //TODO: add description
-        return "";
+        String desc = "This shining silver chalice is oddly adorned with sharp gems at the rim. ";
+        if (level < 10)
+            desc += "The chalice is pulling your attention strangely, you feel like it wants something from you.";
+        else
+            desc += "The chalice is full and radiating energy.";
+
+        if (isEquipped (Dungeon.hero)){
+            desc += "\n\n";
+            if (level == 0)
+                desc += "As you hold the chalice, you feel oddly compelled to prick yourself on the sharp gems.";
+            else if (level < 3)
+                desc += "Some of your blood is pooled into the chalice, you can subtly feel the chalice feeding " +
+                   "energy into you. You still want to cut yourself on the chalice, even though you know it will hurt.";
+            else if (level < 6)
+                desc += "The chalice is about half full of your blood and the connection you feel to it has grown " +
+                   "stronger. you still want to hurt yourself, the chalice needs your energy, it's your friend.";
+            else if (level < 10)
+                desc += "The chalice is getting pretty full, and the life force it's feeding you is stronger than " +
+                   "ever. You should give it more energy, you need too, your friend needs your energy, it needs " +
+                   "your help. Your friend knows you have limits though, it doesn't want you to die, just bleed.";
+            else
+                desc += "The chalice is filled to the brim with your life essence. Despite how full it is it doesn't " +
+                   "seem to be able to spill. It's your best friend. It's happy with you. So happy. " +
+                   "You've done well. So well. You're being rewarded. You don't need to touch the sharp gems anymore.";
+        }
+
+        return desc;
     }
 
     public class chaliceRegen extends ArtifactBuff {

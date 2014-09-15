@@ -24,7 +24,8 @@ import java.util.ArrayList;
  * Created by debenhame on 08/09/2014.
  */
 public class TalismanOfForesight extends Artifact {
-    //TODO: shade sprite, polish.
+    //TODO: shade sprite.
+    //TODO: final surface test
 
     {
         name = "Talisman of Foresight";
@@ -60,7 +61,6 @@ public class TalismanOfForesight extends Artifact {
                 int terr = Dungeon.level.map[i];
                 if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-                    //Level.set( i, Terrain.discover( terr ) );
                     GameScene.updateMap( i );
 
                     if (Dungeon.visible[i]) {
@@ -68,6 +68,8 @@ public class TalismanOfForesight extends Artifact {
                     }
                 }
             }
+
+            GLog.p ("The Talisman floods your mind with knowledge about the current floor.");
 
             Buff.affect(hero, Awareness.class, Awareness.DURATION);
             Dungeon.observe();
@@ -87,8 +89,18 @@ public class TalismanOfForesight extends Artifact {
 
     @Override
     public String desc() {
-        //TODO: add description
-        return "";
+        String desc = "A smooth stone, almost too big for your pocket or hand, with strange markings on it. " +
+                "The engravings look to be done with a tool and painted to look like an eye. " +
+                "You feel like it's watching you, assessing your every move.";
+        if ( isEquipped( Dungeon.hero ) ){
+            desc += "\n\nWhen you hold the talisman you feel like your senses are heightened. Sometimes there is a " +
+                    "seemingly random sense of dread, perhaps the talisman is telling you something when this happens?";
+            if (charge == 100)
+                desc += "\n\nThe talisman is radiating energy, prodding at your mind. You wonder what would " +
+                        "happen if you let it in.";
+        }
+
+        return desc;
     }
 
     public class Foresight extends ArtifactBuff{
@@ -145,14 +157,18 @@ public class TalismanOfForesight extends Artifact {
             BuffIndicator.refreshHero();
 
             //fully charges in 2400 turns at lvl=0, scaling to 800 turns at lvl = 10.
-            partialCharge += (1f/24) + (((float)level)/80);
+            if (charge < 100) {
+                partialCharge += (1f / 24) + (((float) level) / 80);
 
 
-            if (partialCharge > 1 && charge < 100){
-                partialCharge--;
-                charge++;
-            } else if (charge >= 100)
-                partialCharge = 0;
+                if (partialCharge > 1 && charge < 100) {
+                    partialCharge--;
+                    charge++;
+                } else if (charge >= 100) {
+                    partialCharge = 0;
+                    GLog.p("Your Talisman is fully charged!");
+                }
+            }
 
             return true;
         }

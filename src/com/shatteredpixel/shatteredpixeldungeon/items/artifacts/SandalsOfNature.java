@@ -26,7 +26,9 @@ import java.util.Collections;
  * Created by debenhame on 08/09/2014.
  */
 public class SandalsOfNature extends Artifact {
-    //todo: polish, tweak the greaves sprite a little, it's too neat/needs to be more messy.
+    //TODO: tweak the greaves sprite a little, it's too neat/needs to be more messy.
+    //TODO: test the description to this one, it's massive =S.
+    //TODO: final surface testing
 
     {
         name = "Sandals of Nature";
@@ -89,8 +91,51 @@ public class SandalsOfNature extends Artifact {
 
     @Override
     public String desc() {
-        //TODO: add description
-        return "";
+        String desc = "";
+        if (level == 0)
+            desc += "What initially seem like sandals made of twine are actually two plants! The footwear moves ever " +
+                  "so slightly when being held. They seem very weak and pale, perhaps they need to be given nutrients?";
+        else if (level == 1)
+            desc += "The footwear has grown and now more closely resemble two tailored shoes. They seem to match the " +
+                "contours of your feet exactly. Some colour has returned to them, perhaps they can still grow further?";
+        else if (level == 2)
+            desc += "The plants have grown again and now resembles a pair of solid tall boots. They appear to be made" +
+                    " of solid bark more than vine now, yet are still very flexible. The plants seem to have " +
+                    "regained their strength, but perhaps they can still grow further";
+        else
+            desc += "Now almost tall enough to make full pants, the bark-mesh artifact seems to have reached its " +
+                    "maximum size. Perhaps the two plants don't want to merge together? The greaves are a deep brown " +
+                    "and resemble a very sturdy tree.";
+
+        if ( isEquipped ( Dungeon.hero ) ){
+            desc += "\n\n";
+            if (level == 0)
+                desc += "The sandals wrap snugly around your feet, they seem happy to be worn.";
+            else if (level == 1)
+                desc += "The shoes fit on loosely but quickly tighten to make a perfect fit.";
+            else if (level == 2)
+                desc += "The boots fit snugly and add a nice heft to your step.";
+            else
+                desc += "The greaves are thick and weighty, but very easy to move in, as if they are moving with you.";
+
+            desc += " You feel more attuned with nature while wearing them.";
+
+            if (level > 0)
+                desc += " The footwear has gained the ability to form up into a sort of immobile armour temporarily, " +
+                        "but will need to charge up for it.";
+        }
+
+        if (!seeds.isEmpty()){
+            desc += "\n\nYou have recently fed this Artifact the following seeds:";
+            String[] seedsArray = seeds.toArray(new String[seeds.size()]);
+
+            for (int i = 0; i < seedsArray.length-1; i++)
+                desc += " " + seedsArray[i].substring(8) + ",";
+
+            desc += " " + seedsArray[seedsArray.length-1].substring(8) + ".";
+        }
+
+        return desc;
     }
 
 
