@@ -35,7 +35,7 @@ public class Regeneration extends Buff {
 
             ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
 			if (regenBuff != null)
-			    spend( REGENERATION_DELAY - regenBuff.level() );
+			    spend( Math.max(REGENERATION_DELAY - regenBuff.level(), 0.5f) );
             else
                 spend( REGENERATION_DELAY );
 			

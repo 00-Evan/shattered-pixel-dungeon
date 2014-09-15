@@ -21,8 +21,6 @@ import java.util.ArrayList;
  */
 public class ChaliceOfBlood extends Artifact {
     //TODO: add polish
-    //TODO: add sprite switching
-    //TODO: decide on max level 8 or 10. balance accordingly.
 
     private static final String TXT_CHALICE	= "Chalice of Blood";
     private static final String TXT_YES		= "Yes, I know what I'm doing";
@@ -36,7 +34,7 @@ public class ChaliceOfBlood extends Artifact {
         name = "Chalice of Blood";
         image = ItemSpriteSheet.ARTIFACT_CHALICE1;
         level = 0;
-        levelCap = 8;
+        levelCap = 10;
         //charge & chargecap are unused
     }
 
@@ -114,7 +112,7 @@ public class ChaliceOfBlood extends Artifact {
             GLog.n("The Chalice sucks your life essence dry...");
         } else {
             upgrade();
-            if (level >= 5)
+            if (level >= 6)
                 image = ItemSpriteSheet.ARTIFACT_CHALICE3;
             else if (level >= 3)
                 image = ItemSpriteSheet.ARTIFACT_CHALICE2;
