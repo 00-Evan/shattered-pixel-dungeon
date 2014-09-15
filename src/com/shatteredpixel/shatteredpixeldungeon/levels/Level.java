@@ -176,7 +176,7 @@ public abstract class Level implements Bundlable {
             for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
                 bonus += ((RingOfWealth.Wealth) buff).level;
             }
-            if (Random.Float() < Math.pow(0.95, bonus)){
+            if (Random.Float() > Math.pow(0.95, bonus)){
                 if (Random.Int(2) == 0)
                      addItemToSpawn( new ScrollOfWeaponUpgrade() );
                 else
