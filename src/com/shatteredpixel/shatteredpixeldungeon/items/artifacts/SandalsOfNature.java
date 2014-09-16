@@ -172,6 +172,7 @@ public class SandalsOfNature extends Artifact {
                     GLog.w("Your " + name + " have already gained nutrients from that seed recently.");
                 } else {
                     seeds.add(item.name());
+
                     Hero hero = Dungeon.hero;
                     hero.sprite.operate( hero.pos );
                     hero.busy();
@@ -194,6 +195,7 @@ public class SandalsOfNature extends Artifact {
                     } else {
                         GLog.i("Your " + name + " absorb the seed, they seem healthier.");
                     }
+                    item.detach(hero.belongings.backpack);
                 }
             }
         }
