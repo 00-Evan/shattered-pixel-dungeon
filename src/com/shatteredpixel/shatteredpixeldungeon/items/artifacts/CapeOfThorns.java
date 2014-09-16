@@ -64,7 +64,7 @@ public class CapeOfThorns extends Artifact {
     @Override
     public String toString(){
         if (level > 0)
-            return Utils.format("%s%+d %d%", name, level, charge);
+            return Utils.format("%s+%d %d%%", name, level, charge);
         else
             return Utils.format("%s %d%%", name, charge);
     }
