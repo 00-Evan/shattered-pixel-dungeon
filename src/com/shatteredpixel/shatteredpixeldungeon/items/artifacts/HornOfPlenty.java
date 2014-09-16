@@ -26,7 +26,6 @@ import java.util.ArrayList;
  */
 public class HornOfPlenty extends Artifact {
 
-    //TODO: final surface testing
 
     {
         name = "Horn of Plenty";

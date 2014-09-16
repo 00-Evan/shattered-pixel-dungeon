@@ -26,7 +26,6 @@ import java.util.Collections;
  * Created by debenhame on 08/09/2014.
  */
 public class SandalsOfNature extends Artifact {
-    //TODO: tweak the greaves sprite a little, it's too neat/needs to be more messy.
 
     {
         name = "Sandals of Nature";

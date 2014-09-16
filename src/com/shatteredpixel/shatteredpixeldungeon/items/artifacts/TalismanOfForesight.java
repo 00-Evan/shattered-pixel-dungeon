@@ -24,7 +24,6 @@ import java.util.ArrayList;
  * Created by debenhame on 08/09/2014.
  */
 public class TalismanOfForesight extends Artifact {
-    //TODO: shade sprite.
 
     {
         name = "Talisman of Foresight";
