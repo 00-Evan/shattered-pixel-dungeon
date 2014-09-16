@@ -76,7 +76,7 @@ public class ChaliceOfBlood extends Artifact {
     private void prick(Hero hero){
         int damage = (level*2)*(level*2);
 
-        hero.spendAndNext(3f);
+
 
         Earthroot.Armor armor = hero.buff(Earthroot.Armor.class);
         if (armor != null) {
@@ -85,7 +85,9 @@ public class ChaliceOfBlood extends Artifact {
 
         damage -= Random.IntRange(0, hero.dr());
 
-        //TODO: make sure this looks good
+        hero.sprite.operate( hero.pos );
+        hero.busy();
+        hero.spend(3f);
         if (damage <= 0){
             GLog.i("You prick yourself, and your blood drips into the chalice.");
         } else if (damage < 25){
@@ -95,11 +97,11 @@ public class ChaliceOfBlood extends Artifact {
         } else if (damage < 100){
             GLog.w("Your life essence drains into the chalice.");
             Sample.INSTANCE.play(Assets.SND_CURSED);
-            hero.sprite.emitter().burst( ShadowParticle.CURSE, 9 );
+            hero.sprite.emitter().burst( ShadowParticle.CURSE, 12 );
         } else {
             GLog.w("The chalice devours your life energy.");
             Sample.INSTANCE.play(Assets.SND_CURSED);
-            hero.sprite.emitter().burst( ShadowParticle.CURSE, 12 );
+            hero.sprite.emitter().burst( ShadowParticle.CURSE, 24 );
         }
 
         if (damage > 0)
