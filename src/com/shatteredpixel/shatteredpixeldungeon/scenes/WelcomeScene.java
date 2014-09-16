@@ -41,11 +41,11 @@ public class WelcomeScene extends PixelScene {
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon.\n\n"+
-            "You have either just reverted to a previous version, or something has gone buggy.\n\n"+
+            "You have either messing around with backup software, or something has gone buggy.\n\n"+
             "Regardless, tread with caution! Your saves may contain things which don't exist in this version, "+
             "this could cause some very weird errors to occur.";
 
-    private static final String LNK = "goo.gl/CwrJd6";
+    private static final String LNK = "https://drive.google.com/folderview?id=0B1jhmo3hgqJtWWM0M2VQOGpiLTQ";
 
     @Override
     public void create() {
@@ -113,7 +113,7 @@ public class WelcomeScene extends PixelScene {
             RedButton revert = new RedButton("Revert") {
                 @Override
                 protected void onClick() {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + LNK));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LNK));
                     Game.instance.startActivity(intent);
                 }
             };
