@@ -41,16 +41,16 @@ import com.watabou.utils.Random;
 public class Generator {
 
 	public static enum Category {
-		WEAPON	( 15,	Weapon.class ),
-		ARMOR	( 10,	Armor.class ),
-		POTION	( 50,	Potion.class ),
-		SCROLL	( 40,	Scroll.class ),
-		WAND	( 4,	Wand.class ),
-		RING	( 2,	Ring.class ),
-        ARTIFACT( 3,    Artifact.class),
-		SEED	( 5,	Plant.Seed.class ),
+		WEAPON	( 150,	Weapon.class ),
+		ARMOR	( 100,	Armor.class ),
+		POTION	( 500,	Potion.class ),
+		SCROLL	( 400,	Scroll.class ),
+		WAND	( 40,	Wand.class ),
+		RING	( 15,	Ring.class ),
+        ARTIFACT( 20,    Artifact.class),
+		SEED	( 50,	Plant.Seed.class ),
 		FOOD	( 0,	Food.class ),
-		GOLD	( 50,	Gold.class );
+		GOLD	( 500,	Gold.class );
 		
 		public Class<?>[] classes;
 		public float[] probs;
