@@ -188,6 +188,17 @@ public class Artifact extends KindofMisc {
         partialCharge = bundle.getFloat( PARTIALCHARGE );
     }
 
-
-
+    @Override
+    public int price() {
+        int price = 200;
+        if (level > 0)
+            price += 30*level;
+        if (cursed && cursedKnown) {
+            price /= 2;
+        }
+        if (price < 1) {
+            price = 1;
+        }
+        return price;
+    }
 }
