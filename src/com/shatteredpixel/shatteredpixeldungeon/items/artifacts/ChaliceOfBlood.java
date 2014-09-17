@@ -53,7 +53,7 @@ public class ChaliceOfBlood extends Artifact {
         super.execute(hero, action);
         if (action.equals(AC_PRICK)){
 
-            int damage = (level*2)*(level*2);
+            int damage = 3*(level*level);
 
             if (damage > hero.HP*0.75) {
 
@@ -101,7 +101,7 @@ public class ChaliceOfBlood extends Artifact {
         } else {
             GLog.w("The chalice devours your life energy.");
             Sample.INSTANCE.play(Assets.SND_CURSED);
-            hero.sprite.emitter().burst( ShadowParticle.CURSE, 24 );
+            hero.sprite.emitter().burst( ShadowParticle.CURSE, 18 );
         }
 
         if (damage > 0)
@@ -112,7 +112,7 @@ public class ChaliceOfBlood extends Artifact {
             GLog.n("The Chalice sucks your life essence dry...");
         } else {
             upgrade();
-            if (level >= 6)
+            if (level >= 7)
                 image = ItemSpriteSheet.ARTIFACT_CHALICE3;
             else if (level >= 3)
                 image = ItemSpriteSheet.ARTIFACT_CHALICE2;
@@ -140,7 +140,7 @@ public class ChaliceOfBlood extends Artifact {
             else if (level < 3)
                 desc += "Some of your blood is pooled into the chalice, you can subtly feel the chalice feeding " +
                    "energy into you. You still want to cut yourself on the chalice, even though you know it will hurt.";
-            else if (level < 6)
+            else if (level < 7)
                 desc += "The chalice is about half full of your blood and the connection you feel to it has grown " +
                    "stronger. you still want to hurt yourself, the chalice needs your energy, it's your friend.";
             else if (level < 10)
