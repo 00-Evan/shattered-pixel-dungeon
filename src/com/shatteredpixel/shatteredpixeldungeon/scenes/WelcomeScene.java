@@ -31,11 +31,14 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_LastVer =
-            "This Patch corrects a few issues some players were having, and makes a few balance tweaks:" +
-                    "\n\n-Fixed a bug with Cape of Thorns\n-Fixed a bug with Sandals of nature" +
-                    "\n-Fixed a bug with Talisman of Foresight\n-Fixed a bug with rankings & saves" +
+            "v0.2.0a corrects a few issues some players were having, and makes a few balance tweaks:" +
+                    "\n\n-Fixed a bug with Cape of Thorns\n-Fixed a bug with Sandals of Nature" +
+                    "\n-Fixed a bug with Talisman of Foresight\n-Fixed a bug with Rankings & Saves" +
                     "\n\n-Chalice now deals 25% less damage\n-Artifacts can now be sold to Pixel Mart" +
-                    "\n-Artifacts & Rings are a little rarer now.\n\nHappy Dungeoneering!";
+                    "\n-Artifacts & Rings are a little rarer now.\n\n\n" +
+                    "v0.2.0b corrects further issues:" +
+                    "\n\n-Fixed a bug with saving/moving floors\n-Fixed a bug with randomized item properties" +
+                    "\n\n-Tweaked a few descriptions & sprites\n\nHappy Dungeoneering!";
 
     private static final String TXT_From011 =
             "Hello early adopter, thank you so much for giving Shattered PD a try in its earliest stages!\n\n"+
@@ -49,7 +52,7 @@ public class WelcomeScene extends PixelScene {
             "Regardless, tread with caution! Your saves may contain things which don't exist in this version, "+
             "this could cause some very weird errors to occur.";
 
-    private static final String LNK = "https://drive.google.com/folderview?id=0B1jhmo3hgqJtRVhLMW9McHkxXzQ";
+    private static final String LNK = "https://drive.google.com/folderview?id=0B1jhmo3hgqJtN3I4N1p2blFNVmc";
 
     @Override
     public void create() {
