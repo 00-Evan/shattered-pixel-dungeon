@@ -172,10 +172,10 @@ public class TalismanOfForesight extends Artifact {
         public void charge(){
             charge = Math.min(charge+4, chargeCap);
             exp++;
-            if (exp >= 5) {
+            if (exp >= 4) {
                 upgrade();
                 GLog.p("Your Talisman grows stronger!");
-                exp -= 5;
+                exp -= 4;
             }
         }
 
