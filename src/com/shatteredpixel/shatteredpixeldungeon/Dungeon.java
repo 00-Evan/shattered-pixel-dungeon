@@ -497,6 +497,8 @@ public class Dungeon {
 	public static void loadGame( String fileName, boolean fullLoad ) throws IOException {
 		
 		Bundle bundle = gameBundle( fileName );
+
+        version = bundle.getInt( VERSION );
 		
 		Dungeon.level = null;
 		Dungeon.depth = -1;
@@ -557,8 +559,6 @@ public class Dungeon {
 		} else {
 			quickslot = null;
 		}
-		
-		version = bundle.getInt( VERSION );
 		
 		hero = null;
 		hero = (Hero)bundle.get( HERO );
