@@ -27,7 +27,7 @@ import com.watabou.utils.Random;
 public class Blandfruit extends Food {
 
     public String message = "You eat the Blandfruit, bleugh!";
-    public String info = "So dry and insubstantial, perhaps cooking could improve it.";
+    public String info = "So dry and insubstantial, perhaps stewing it with another ingredient would improve it.";
 
     public Potion potionAttrib = null;
     public ItemSprite.Glowing potionGlow = null;
@@ -37,7 +37,7 @@ public class Blandfruit extends Food {
         stackable = false;
         image = ItemSpriteSheet.BLANDFRUIT;
         energy = (Hunger.STARVING - Hunger.HUNGRY)/2;
-        hornValue = 3; //only applies when blandfruit is cooked
+        hornValue = 6; //only applies when blandfruit is cooked
     }
 
     @Override
