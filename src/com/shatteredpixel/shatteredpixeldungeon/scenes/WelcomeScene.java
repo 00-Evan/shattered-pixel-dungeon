@@ -8,22 +8,19 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.TouchArea;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class WelcomeScene extends PixelScene {
 
     private static final String TTL_Welcome = "Welcome!";
 
-    private static final String TTL_LastVer = "Updated To v0.2.0";
+    private static final String TTL_LastVer = "v0.2.0 Patched!";
+
+    private static final String TTL_From011 = "Updated To v0.2.0";
 
     private static final String TTL_Future = "Wait What?";
 
@@ -34,6 +31,13 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_LastVer =
+            "This Patch corrects a few issues some players were having, and makes a few balance tweaks:" +
+                    "\n\n-Fixed a bug with Cape of Thorns\n-Fixed a bug with Sandals of nature" +
+                    "\n-Fixed a bug with Talisman of Foresight\n-Fixed a bug with rankings & saves" +
+                    "\n\n-Chalice now deals 25% less damage\n-Artifacts can now be sold to Pixel Mart" +
+                    "\n-Artifacts & Rings are a little rarer now.\n\nHappy Dungeoneering!";
+
+    private static final String TXT_From011 =
             "Hello early adopter, thank you so much for giving Shattered PD a try in its earliest stages!\n\n"+
             "This update completely overhauls rings, and as such any existing saves will have their rings removed.\n\n"+
             "If you have a game in progress with rings that you'd rather not lose, please revert to v0.1.1a.\n\n"+
@@ -66,16 +70,16 @@ public class WelcomeScene extends PixelScene {
             GamesInProgress.Info huntress = GamesInProgress.check( HeroClass.values()[3] );
 
             if (warrior != null || mage != null || rouge != null || huntress != null){
-                text = createMultiline( TXT_LastVer, 8 );
-                title = createMultiline( TTL_LastVer, 12 );
+                text = createMultiline(TXT_From011, 8 );
+                title = createMultiline(TTL_From011, 12 );
                 fromAlpha = true;
             } else {
                 text = createMultiline( TXT_Welcome, 8 );
                 title = createMultiline( TTL_Welcome, 16 );
             }
         } else if (gameversion <= Game.versionCode) {
-            text = createMultiline( TXT_LastVer, 8 );
-            title = createMultiline( TTL_LastVer, 12 );
+            text = createMultiline(TXT_LastVer, 6 );
+            title = createMultiline(TTL_LastVer, 12 );
         } else {
             text = createMultiline( TXT_Future, 8 );
             title = createMultiline( TTL_Future, 16 );
@@ -99,7 +103,7 @@ public class WelcomeScene extends PixelScene {
         title.x = align( (Camera.main.width - title.width()) / 2 );
         title.y = align( text.y - title.height() - 10 );
 
-        RedButton okay = new RedButton("Okay") {
+        RedButton okay = new RedButton("Okay!") {
             @Override
             protected void onClick() {
                 ShatteredPixelDungeon.version(Game.versionCode);
