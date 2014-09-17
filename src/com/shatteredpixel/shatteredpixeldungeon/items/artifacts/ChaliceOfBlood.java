@@ -128,7 +128,7 @@ public class ChaliceOfBlood extends Artifact {
     @Override
     public String desc() {
         String desc = "This shining silver chalice is oddly adorned with sharp gems at the rim. ";
-        if (level < 10)
+        if (level < levelCap)
             desc += "The chalice is pulling your attention strangely, you feel like it wants something from you.";
         else
             desc += "The chalice is full and radiating energy.";
@@ -138,18 +138,18 @@ public class ChaliceOfBlood extends Artifact {
             if (level == 0)
                 desc += "As you hold the chalice, you feel oddly compelled to prick yourself on the sharp gems.";
             else if (level < 3)
-                desc += "Some of your blood is pooled into the chalice, you can subtly feel the chalice feeding " +
+                desc += "Some of your blood is pooled into the chalice, you can subtly feel the chalice feeding life " +
                    "energy into you. You still want to cut yourself on the chalice, even though you know it will hurt.";
             else if (level < 7)
-                desc += "The chalice is about half full of your blood and the connection you feel to it has grown " +
-                   "stronger. you still want to hurt yourself, the chalice needs your energy, it's your friend.";
-            else if (level < 10)
+                desc += "The chalice is about half full of your blood and you can feel it feeding life energy " +
+                   "into you. you still want to hurt yourself, the chalice needs your energy, it's your friend.";
+            else if (level < levelCap)
                 desc += "The chalice is getting pretty full, and the life force it's feeding you is stronger than " +
                    "ever. You should give it more energy, you need too, your friend needs your energy, it needs " +
                    "your help. Your friend knows you have limits though, it doesn't want you to die, just bleed.";
             else
-                desc += "The chalice is filled to the brim with your life essence. Despite how full it is it doesn't " +
-                   "seem to be able to spill. It's your best friend. It's happy with you. So happy. " +
+                desc += "The chalice is filled to the brim with your life essence. You can feel the chalice pouring " +
+                   "life energy back into you. It's your best friend. It's happy with you. So happy. " +
                    "You've done well. So well. You're being rewarded. You don't need to touch the sharp gems anymore.";
         }
 
