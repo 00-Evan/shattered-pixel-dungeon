@@ -34,10 +34,24 @@ public class Blandfruit extends Food {
 
     {
         name = "Blandfruit";
-        stackable = false;
+        stackable = true;
         image = ItemSpriteSheet.BLANDFRUIT;
         energy = (Hunger.STARVING - Hunger.HUNGRY)/2;
         hornValue = 6; //only applies when blandfruit is cooked
+    }
+
+    @Override
+    public boolean isSimilar( Item item ) {
+        if (item instanceof Blandfruit){
+            if (potionAttrib == null){
+                if (((Blandfruit)item).potionAttrib == null)
+                    return true;
+            } else if (((Blandfruit)item).potionAttrib != null){
+                if (((Blandfruit)item).potionAttrib.getClass() == potionAttrib.getClass())
+                    return true;
+            }
+        }
+        return false;
     }
 
     @Override
