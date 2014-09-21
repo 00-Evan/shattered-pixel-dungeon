@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -351,8 +352,8 @@ public class Wandmaker extends Mob.NPC {
 			}
 			
 			@Override
-			public boolean collect( Bag container ) {
-				if (super.collect( container )) {
+			public boolean doPickUp( Hero hero ) {
+				if (super.doPickUp(hero)) {
 					
 					if (Dungeon.level != null) {
 						for (Mob mob : Dungeon.level.mobs) {
