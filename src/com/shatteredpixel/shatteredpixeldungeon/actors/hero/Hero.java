@@ -24,10 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.*;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -75,10 +72,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -175,6 +168,12 @@ public class Hero extends Char {
 	}
 
 	public int STR() {
+        int STR = this.STR;
+
+        for (Buff buff : buffs(RingOfMight.Might.class)) {
+            STR += ((RingOfMight.Might)buff).level;
+        }
+
 		return weakened ? STR - 2 : STR;
 	}
 
@@ -186,6 +185,7 @@ public class Hero extends Char {
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
+
 		super.storeInBundle( bundle );
 		
 		heroClass.storeInBundle( bundle );
@@ -1079,7 +1079,11 @@ public class Hero extends Char {
 				GLog.w( "You are crippled!" );
 			} else if (buff instanceof Bleeding) {
 				GLog.w( "You are bleeding!" );
-			}
+			} else if (buff instanceof RingOfMight.Might){
+                if (((RingOfMight.Might)buff).level > 0) {
+                    HT += ((RingOfMight.Might) buff).level * 5;
+                }
+            }
 			
 			else if (buff instanceof Light) {
 				sprite.add( CharSprite.State.ILLUMINATED );
@@ -1095,7 +1099,11 @@ public class Hero extends Char {
 		
 		if (buff instanceof Light) {
 			sprite.remove( CharSprite.State.ILLUMINATED );
-		}
+		} else if (buff instanceof RingOfMight.Might){
+            if (((RingOfMight.Might)buff).level > 0){
+                HT -= ((RingOfMight.Might) buff).level * 5;
+            }
+        }
 		
 		BuffIndicator.refreshHero();
 	}
@@ -1188,7 +1196,7 @@ public class Hero extends Char {
 			} else {
 				Sample.INSTANCE.play( Assets.SND_STEP );
 			}
-			Dungeon.level.press( step, this );
+			Dungeon.level.press(step, this);
 		}
 	}
 	
@@ -1204,7 +1212,7 @@ public class Hero extends Char {
 	@Override
 	public void onAttackComplete() {
 		
-		AttackIndicator.target( enemy );
+		AttackIndicator.target(enemy);
 		
 		attack( enemy );
 		curAction = null;

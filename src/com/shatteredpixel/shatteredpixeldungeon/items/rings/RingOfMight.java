@@ -1,7 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 
 /**
  * Created by debenhame on 10/09/2014.
@@ -27,29 +25,6 @@ public class RingOfMight extends Ring {
     }
 
     public class Might extends RingBuff {
-
-        @Override
-        public boolean attachTo( Char target ) {
-
-            if (target instanceof Hero){
-                ((Hero) target).STR += level;
-            }
-            if (level > 0){
-                target.HT += level*5;
-            }
-            return super.attachTo(target);
-        }
-
-        @Override
-        public void detach(){
-            if (target instanceof Hero){
-                ((Hero) target).STR -= level;
-            }
-            if (level > 0){
-                target.HT -= level*5;
-            }
-            super.detach();
-        }
     }
 }
 
