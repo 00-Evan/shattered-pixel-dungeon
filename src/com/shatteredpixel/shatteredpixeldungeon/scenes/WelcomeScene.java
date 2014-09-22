@@ -31,14 +31,20 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_LastVer =
-            "v0.2.0a corrects a few issues some players were having, and makes a few balance tweaks:" +
-                    "\n\n-Fixed a bug with Cape of Thorns\n-Fixed a bug with Sandals of Nature" +
-                    "\n-Fixed a bug with Talisman of Foresight\n-Fixed a bug with Rankings & Saves" +
-                    "\n\n-Chalice now deals 25% less damage\n-Artifacts can now be sold to Pixel Mart" +
-                    "\n-Artifacts & Rings are a little rarer now.\n\n\n" +
-                    "v0.2.0b corrects further issues:" +
-                    "\n\n-Fixed a bug with saving/moving floors\n-Fixed a bug with randomized item properties" +
-                    "\n\n-Tweaked a few descriptions & sprites\n\nHappy Dungeoneering!";
+            "v0.2.0a:" +
+            "\n-Fixed various artifact bugs \n-Fixed a bug with Rankings & Saves" +
+            "\n\n-Chalice now deals 25% less damage\n-Artifacts can now be sold to Pixel Mart" +
+            "\n-Artifacts & Rings are a little rarer now.\n\n\n" +
+            "v0.2.0b:" +
+            "\n-Fixed a bug with saving/moving floors\n-Fixed a bug with randomized item properties" +
+            "\n\n-Tweaked a few descriptions & sprites\n\n\n" +
+            "v0.2.0c:" +
+            "\n-Fixed a bug with the Ring of Might.\n-Fixed bugs with Scroll of Lullaby." +
+            "\n-Fixed a bug with the rankings page.\n-Fixed another save/load bug." +
+            "\n\n-Slightly reduced Horn of Plenty's power.\nSeed pouch capacity increased." +
+            "\n-Blandfruit can now stack.\n-Various descriptions/messages tweaked." +
+            "\n\nIf you are having any issues, please email me!" +
+            "\nHappy Dungeoneering!";
 
     private static final String TXT_From011 =
             "Hello early adopter, thank you so much for giving Shattered PD a try in its earliest stages!\n\n"+
