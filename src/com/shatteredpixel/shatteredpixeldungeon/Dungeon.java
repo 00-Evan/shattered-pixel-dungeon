@@ -88,7 +88,8 @@ public class Dungeon {
 		"Pixel-Mart. Spend money. Live longer.",
 		"When you're attacked by several monsters at the same time, try to retreat behind a door.",
 		"If you are burning, you can't put out the fire in the water while levitating.",
-		"There is no sense in possessing more than one Ankh at the same time, because you will lose them upon resurrecting.",
+		"There is no sense in possessing more than one unblessed Ankh at the same time, " +
+                "because you will lose them upon resurrecting.",
 		
 		"DANGER! Heavy machinery can cause injury, loss of limbs or death!",
 		
