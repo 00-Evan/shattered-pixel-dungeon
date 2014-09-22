@@ -253,7 +253,8 @@ public abstract class Level implements Bundlable {
 			if (resizingNeeded) {
 				heap.pos = adjustPos( heap.pos );
 			}
-			heaps.put( heap.pos, heap );
+            if (!heap.isEmpty())
+			    heaps.put( heap.pos, heap );
 		}
 		
 		collection = bundle.getCollection( PLANTS );

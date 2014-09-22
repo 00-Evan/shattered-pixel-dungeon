@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
@@ -340,7 +341,8 @@ public class Heap implements Bundlable {
 	public void restoreFromBundle( Bundle bundle ) {
 		pos = bundle.getInt( POS );
 		type = Type.valueOf( bundle.getString( TYPE ) );
-		items = new LinkedList<Item>( (Collection<? extends Item>) bundle.getCollection( ITEMS ) ); 
+		items = new LinkedList<Item>( (Collection<? extends Item>) bundle.getCollection( ITEMS ) );
+        items.removeAll(Collections.singleton(null));
 	}
 
 	@Override
