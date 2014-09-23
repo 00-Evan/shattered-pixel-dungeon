@@ -140,7 +140,8 @@ public enum HeroClass {
 	private static void initRogue( Hero hero ) {
 		(hero.belongings.weapon = new Dagger()).identify();
 		(hero.belongings.armor = new ClothArmor()).identify();
-		hero.belongings.misc1 = new CloakOfShadows();
+        CloakOfShadows cloak = new CloakOfShadows();
+		hero.belongings.misc1 = cloak;
 		new Dart( 8 ).identify().collect();
 		new Food().identify().collect();
 
@@ -150,7 +151,7 @@ public enum HeroClass {
 			new TomeOfMastery().collect();
 		}
 		
-		Dungeon.quickslot = CloakOfShadows.class;
+		Dungeon.quickslot = cloak;
 		
 		new ScrollOfMagicMapping().setKnown();
 	}
