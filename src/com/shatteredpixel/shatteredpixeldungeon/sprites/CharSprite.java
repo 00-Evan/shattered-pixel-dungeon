@@ -336,6 +336,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			}
 			emo = new EmoIcon.Sleep( this );
 		}
+        idle();
 	}
 	
 	public void hideSleep() {

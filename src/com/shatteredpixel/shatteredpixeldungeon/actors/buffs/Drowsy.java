@@ -17,41 +17,32 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Random;
 
 public class Drowsy extends Buff {
-
-    public static final float STEP	= 5f;
-
-    private boolean placed = false;
 
     @Override
     public int icon() {
         return BuffIndicator.DROWSY;
     }
 
-    @Override
-    public boolean act(){
-        if (placed) {
-
-            if (target instanceof Hero)
-                if (target.HP == target.HT) {
-                    GLog.i("You are too healthy, and resist the urge to sleep.");
-                } else {
-                    GLog.i("You fall into a deep magical sleep.");
-                    Buff.affect(target, MagicalSleep.class);
-                }
-            else
-                Buff.affect(target, MagicalSleep.class);
-            detach();
-            return true;
-        } else {
-            placed = true;
-            spend(STEP);
+    public boolean attachTo( Char target ) {
+        if (super.attachTo(target)) {
+            if (cooldown() == 0)
+                spend(Random.Int(3, 6));
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean act(){
+            Buff.affect(target, MagicalSleep.class);
+
+            detach();
+            return true;
     }
 
     @Override

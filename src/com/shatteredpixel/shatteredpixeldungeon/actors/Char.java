@@ -368,7 +368,7 @@ public abstract class Char extends Actor {
 
 				sprite.showStatus( CharSprite.NEGATIVE, "bleeding" );
 				
-			} else if (buff instanceof Sleep || buff instanceof MagicalSleep) {
+			} else if (buff instanceof Sleep) {
 				sprite.idle();
 			}
 			

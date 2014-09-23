@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
@@ -30,6 +31,17 @@ public class MagicalSleep extends Buff {
     @Override
     public boolean attachTo( Char target ) {
         if (super.attachTo( target )) {
+
+            if (target instanceof Hero)
+                if (target.HP == target.HT) {
+                    GLog.i("You are too healthy, and resist the urge to sleep.");
+                    detach();
+                    return true;
+                } else {
+                    GLog.i("You fall into a deep magical sleep.");
+                }
+            else if (target instanceof Mob)
+                ((Mob)target).state = Mob.State.SLEEPING;
 
             target.paralysed = true;
 
@@ -43,6 +55,7 @@ public class MagicalSleep extends Buff {
     public boolean act(){
         if (target instanceof Hero) {
             target.HP = Math.min(target.HP+1, target.HT);
+            ((Hero) target).restoreHealth = true;
             if (target.HP == target.HT) {
                 GLog.p("You wake up feeling refreshed and healthy.");
                 detach();
@@ -55,6 +68,8 @@ public class MagicalSleep extends Buff {
     @Override
     public void detach() {
         target.paralysed = false;
+        if (target instanceof Hero)
+            ((Hero) target).restoreHealth = false;
         super.detach();
     }
 
