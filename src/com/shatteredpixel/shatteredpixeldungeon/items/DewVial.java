@@ -175,7 +175,9 @@ public class DewVial extends Item {
 		return
 			"You can store excess dew in this tiny vessel for drinking it later. " +
 			"The more full the vial is, the more each dew drop will heal you. " +
-            "A full vial is as strong as a potion of healing.";
+            "A full vial is as strong as a potion of healing." +
+            "\n\nVials like this one used to be imbued with revival magic, " +
+            "but that power has long since faded.";
 	}
 	
 	@Override
