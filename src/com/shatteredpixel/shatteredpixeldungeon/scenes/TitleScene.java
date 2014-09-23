@@ -43,7 +43,7 @@ public class TitleScene extends PixelScene {
 		
 		super.create();
 
-        //ShatteredPixelDungeon.version(5);
+
 
         int gameversion = ShatteredPixelDungeon.version();
 

@@ -32,19 +32,18 @@ public class WelcomeScene extends PixelScene {
 
     private static final String TXT_LastVer =
             "v0.2.0a:" +
-            "\n-Fixed various artifact bugs \n-Fixed a bug with Rankings & Saves" +
-            "\n\n-Chalice now deals 25% less damage\n-Artifacts can now be sold to Pixel Mart" +
-            "\n-Artifacts & Rings are a little rarer now.\n\n\n" +
+            "\n-Bugfixes" +
+            "\n-Chalice now deals 25% less damage\n-Artifacts can now be sold to Pixel Mart" +
+            "\n-Artifacts & Rings are a little rarer now.\n\n" +
             "v0.2.0b:" +
-            "\n-Fixed a bug with saving/moving floors\n-Fixed a bug with randomized item properties" +
-            "\n\n-Tweaked a few descriptions & sprites\n\n\n" +
+            "\n-BugFixes" +
+            "\n-Tweaked a few descriptions & sprites\n\n" +
             "v0.2.0c:" +
             "\n-Fixed a bug with the Ring of Might.\n-Fixed bugs with Scroll of Lullaby." +
             "\n-Fixed a bug with the rankings page.\n-Fixed another save/load bug." +
-            "\n\n-Slightly reduced Horn of Plenty's power.\nSeed pouch capacity increased." +
-            "\n-Blandfruit can now stack.\n-Various descriptions/messages tweaked." +
-            "\n\nIf you are having any issues, please email me!" +
-            "\nHappy Dungeoneering!";
+            "\n\n-Reduced Horn of Plenty's power a bit.\n-Seed pouch capacity increased." +
+            "\n-Blandfruit can now stack.\n-Various messages tweaked." +
+            "\n\nIf you are having any issues further issues, please email me so I can sort them out!";
 
     private static final String TXT_From011 =
             "Hello early adopter, thank you so much for giving Shattered PD a try in its earliest stages!\n\n"+
@@ -73,25 +72,19 @@ public class WelcomeScene extends PixelScene {
 
         if (gameversion == 0){
 
-            GamesInProgress.Info warrior = GamesInProgress.check( HeroClass.values()[0] );
-            GamesInProgress.Info mage = GamesInProgress.check( HeroClass.values()[1] );
-            GamesInProgress.Info rouge = GamesInProgress.check( HeroClass.values()[2] );
-            GamesInProgress.Info huntress = GamesInProgress.check( HeroClass.values()[3] );
+            text = createMultiline( TXT_Welcome, 8 );
+            title = createMultiline( TTL_Welcome, 16 );
 
-            if (warrior != null || mage != null || rouge != null || huntress != null){
-                text = createMultiline(TXT_From011, 8 );
-                title = createMultiline(TTL_From011, 12 );
-                fromAlpha = true;
-            } else {
-                text = createMultiline( TXT_Welcome, 8 );
-                title = createMultiline( TTL_Welcome, 16 );
-            }
         } else if (gameversion <= Game.versionCode) {
+
             text = createMultiline(TXT_LastVer, 6 );
             title = createMultiline(TTL_LastVer, 12 );
+
         } else {
+
             text = createMultiline( TXT_Future, 8 );
             title = createMultiline( TTL_Future, 16 );
+
         }
 
 
