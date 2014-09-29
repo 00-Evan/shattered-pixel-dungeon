@@ -108,8 +108,21 @@ public class Goo extends Mob {
 	@Override
 	protected boolean doAttack( Char enemy ) {		
 		if (pumpedUp || Random.Int( 3 ) > 0) {
-		
-			return super.doAttack( enemy );
+
+            boolean visible = Dungeon.visible[pos];
+
+            if (visible) {
+                if (pumpedUp)
+                    ((GooSprite)sprite).pumpAttack();
+                else
+                    sprite.attack( enemy.pos );
+            } else {
+                attack( enemy );
+            }
+
+            spend( attackDelay() );
+
+            return !visible;
 
 		} else {
 			
