@@ -19,11 +19,16 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GooWarn;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -37,83 +42,103 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GooSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Goo extends Mob {
 
-	private static final float PUMP_UP_DELAY	= 2f;
-	
 	{
 		name = "Goo";
 		HP = HT = 80;
 		EXP = 10;
 		defenseSkill = 12;
 		spriteClass = GooSprite.class;
-		
+
 		loot = new LloydsBeacon();
 		lootChance = 0.333f;
 	}
-	
-	private boolean pumpedUp = false;
-	
+
+	private int pumpedUp = 0;
+
 	@Override
 	public int damageRoll() {
-		if (pumpedUp) {
+		if (pumpedUp > 0) {
+            pumpedUp = 0;
+            for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
+                int j = pos + Level.NEIGHBOURS9DIST2[i];
+                if (j >= 0 && j <= 1023 && Level.passable[j])
+                    CellEmitter.get(j).burst(ElmoParticle.FACTORY, 5);
+            }
+            Sample.INSTANCE.play( Assets.SND_BURNING );
 			return Random.NormalIntRange( 5, 30 );
 		} else {
 			return Random.NormalIntRange( 2, 12 );
 		}
 	}
-	
+
 	@Override
 	public int attackSkill( Char target ) {
-		return pumpedUp ? 30 : 15;
+		return (pumpedUp > 0) ? 30 : 15;
 	}
-	
+
 	@Override
 	public int dr() {
 		return 2;
 	}
-	
+
 	@Override
 	public boolean act() {
-		
+
 		if (Level.water[pos] && HP < HT) {
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			HP++;
 		}
-		
+
 		return super.act();
 	}
-	
+
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return pumpedUp ? distance( enemy ) <= 2 : super.canAttack(enemy);
+		return (pumpedUp > 0) ? distance( enemy ) <= 2 : super.canAttack(enemy);
 	}
-	
+
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		if (Random.Int( 3 ) == 0) {
 			Buff.affect( enemy, Ooze.class );
 			enemy.sprite.burst( 0x000000, 5 );
 		}
-		
-		if (pumpedUp) {
+
+		if (pumpedUp > 0) {
 			Camera.main.shake( 3, 0.2f );
 		}
-		
+
 		return damage;
 	}
-	
+
 	@Override
-	protected boolean doAttack( Char enemy ) {		
-		if (pumpedUp || Random.Int( 3 ) > 0) {
+	protected boolean doAttack( Char enemy ) {
+        if (pumpedUp == 1) {
+            ((GooSprite)sprite).pumpUp();
+            for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
+                int j = pos + Level.NEIGHBOURS9DIST2[i];
+                if (j >= 0 && j <= 1023 && Level.passable[j])
+                    GameScene.add(Blob.seed(j, 2, GooWarn.class));
+            }
+            pumpedUp++;
+
+            spend( attackDelay() );
+
+            return true;
+        } else if (pumpedUp >= 2 || Random.Int( 3 ) > 0) {
 
             boolean visible = Dungeon.visible[pos];
 
             if (visible) {
-                if (pumpedUp)
-                    ((GooSprite)sprite).pumpAttack();
+                if (pumpedUp >= 2) {
+                    ((GooSprite) sprite).pumpAttack();
+                }
                 else
                     sprite.attack( enemy.pos );
             } else {
@@ -125,31 +150,39 @@ public class Goo extends Mob {
             return !visible;
 
 		} else {
-			
-			pumpedUp = true;
-			spend( PUMP_UP_DELAY );
-			
+
+			pumpedUp++;
+
 			((GooSprite)sprite).pumpUp();
-			
+
+            for (int i=0; i < Level.NEIGHBOURS9DIST2.length; i++) {
+                int j = pos + Level.NEIGHBOURS9DIST2[i];
+                if (j >=0 && j <= 1023 && Level.passable[j])
+                    GameScene.add( Blob.seed( j , 2, GooWarn.class ));
+
+            }
+
 			if (Dungeon.visible[pos]) {
 				sprite.showStatus( CharSprite.NEGATIVE, "!!!" );
 				GLog.n( "Goo is pumping itself up!" );
 			}
-				
+
+            spend( attackDelay() );
+
 			return true;
 		}
 	}
-	
+
 	@Override
 	public boolean attack( Char enemy ) {
 		boolean result = super.attack( enemy );
-		pumpedUp = false;
+		pumpedUp = 0;
 		return result;
 	}
-	
+
 	@Override
 	protected boolean getCloser( int target ) {
-		pumpedUp = false;
+		pumpedUp = 0;
 		return super.getCloser( target );
 	}
 	
@@ -186,6 +219,24 @@ public class Goo extends Mob {
 			"Little known about The Goo. It's quite possible that it is not even a creature, but rather a " +
 			"conglomerate of substances from the sewers that gained rudiments of free will.";
 	}
+
+    private final String PUMPEDUP = "pumpedup";
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+
+        super.storeInBundle( bundle );
+
+        bundle.put( PUMPEDUP , pumpedUp );
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+
+        super.restoreFromBundle( bundle );
+
+        pumpedUp = bundle.getInt( PUMPEDUP );
+    }
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
 	static {
