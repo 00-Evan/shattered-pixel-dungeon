@@ -85,6 +85,20 @@ public abstract class Level implements Bundlable {
 	public static final int[] NEIGHBOURS4 = {-WIDTH, +1, +WIDTH, -1}; 
 	public static final int[] NEIGHBOURS8 = {+1, -1, +WIDTH, -WIDTH, +1+WIDTH, +1-WIDTH, -1+WIDTH, -1-WIDTH};
 	public static final int[] NEIGHBOURS9 = {0, +1, -1, +WIDTH, -WIDTH, +1+WIDTH, +1-WIDTH, -1+WIDTH, -1-WIDTH};
+
+    //Note that use of these without checking values is unsafe, mobs can be within 2 tiles of the
+    //edge of the map, unsafe use in that cause will cause an array out of bounds exception.
+    public static final int[] NEIGHBOURS8DIST2 = {+2+2*WIDTH, +1+2*WIDTH, 2*WIDTH, -1+2*WIDTH, -2+2*WIDTH,
+                                                    +2+WIDTH, +1+WIDTH, +WIDTH, -1+WIDTH, -2+WIDTH,
+                                                    +2, +1, -1, -2,
+                                                    +2-WIDTH, +1-WIDTH, -WIDTH, -1-WIDTH, -2-WIDTH,
+                                                    +2-2*WIDTH, +1-2*WIDTH, -2*WIDTH, -1-2*WIDTH, -2-2*WIDTH};
+    public static final int[] NEIGHBOURS9DIST2 = {+2+2*WIDTH, +1+2*WIDTH, 2*WIDTH, -1+2*WIDTH, -2+2*WIDTH,
+                                                    +2+WIDTH, +1+WIDTH, +WIDTH, -1+WIDTH, -2+WIDTH,
+                                                    +2, +1, 0, -1, -2,
+                                                    +2-WIDTH, +1-WIDTH, -WIDTH, -1-WIDTH, -2-WIDTH,
+                                                    +2-2*WIDTH, +1-2*WIDTH, -2*WIDTH, -1-2*WIDTH, -2-2*WIDTH};
+
 	
 	protected static final float TIME_TO_RESPAWN	= 50;
 	
