@@ -19,6 +19,20 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -339,16 +353,15 @@ public class Ghost extends Mob.NPC {
 			name = "fetid rat";
 			spriteClass = FetidRatSprite.class;
 			
-			HP = HT = 15;
-			defenseSkill = 5;
+			HP = HT = 20;
+			defenseSkill = 4;
 			
-			EXP = 0;
-			maxLvl = 5;	
+			EXP = 4;
 		}
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 2, 6 );
+			return Random.NormalIntRange( 1, 4 );
 		}
 		
 		@Override
@@ -360,6 +373,15 @@ public class Ghost extends Mob.NPC {
 		public int dr() {
 			return 2;
 		}
+
+        @Override
+        public int attackProc( Char enemy, int damage ) {
+            if (Random.Int( 3 ) == 0) {
+                Buff.affect(enemy, Ooze.class);
+            }
+
+            return damage;
+        }
 		
 		@Override
 		public int defenseProc( Char enemy, int damage ) {
@@ -392,4 +414,99 @@ public class Ghost extends Mob.NPC {
 			return IMMUNITIES;
 		}
 	}
+
+    public class GnollTrickster extends Gnoll {
+        {
+            name = "gnoll trickster";
+            spriteClass = GnollSprite.class;
+
+            HP = HT = 20;
+            defenseSkill = 4;
+
+            EXP = 5;
+
+            loot = Generator.random(CurareDart.class);
+            lootChance = 1f;
+        }
+
+        @Override
+        public int damageRoll() {
+            return Random.NormalIntRange( 1, 4 );
+        }
+
+        @Override
+        public int attackSkill( Char target ) {
+            return 14;
+        }
+
+        @Override
+        protected boolean canAttack( Char enemy ) {
+            return !Level.adjacent(pos, enemy.pos) && Ballistica.cast( pos, enemy.pos, false, true ) == enemy.pos;
+        }
+
+        @Override
+        public int attackProc( Char enemy, int damage ) {
+                if (Random.Int(3) == 0) {
+                    if (Level.flamable[enemy.pos]) {
+                        GameScene.add(Blob.seed(enemy.pos, 4, Fire.class));
+                    }
+                    Buff.affect( enemy, Burning.class ).reignite( enemy );
+                } else if (HP <= 8){
+                    Buff.prolong( enemy, Cripple.class, 2 );
+                }
+
+            return damage;
+        }
+
+        @Override
+        protected boolean getCloser( int target ) {
+            if (state == State.HUNTING) {
+                return enemySeen && getFurther( target );
+            } else {
+                return super.getCloser( target );
+            }
+        }
+
+
+
+
+    }
+
+    public class GreatCrab extends Crab {
+        {
+            name = "great crab";
+            spriteClass = CrabSprite.class;
+
+            HP = HT = 30;
+            defenseSkill = 100; //no that's not a typo
+            baseSpeed = 0.67f;
+
+            EXP = 6;
+
+        }
+
+        @Override
+        public int damageRoll() {
+            return Random.NormalIntRange( 4, 6 );
+        }
+
+        @Override
+        public int attackSkill( Char target ) {
+            return 13;
+        }
+
+        @Override
+        public int dr() {
+            return 4;
+        }
+
+        @Override
+        public void die( Object cause ) {
+            super.die( cause );
+
+            Dungeon.level.drop( new MysteryMeat(), pos );
+            Dungeon.level.drop( new MysteryMeat(), pos );
+            Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
+        }
+    }
 }
