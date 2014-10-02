@@ -150,8 +150,12 @@ public abstract class Actor implements Bundlable {
 			Arrays.fill( chars, null );
 			
 			for (Actor actor : all) {
-                //if multiple things act at the same time, hero should go first.
-				if (actor.time < now || (actor instanceof Hero && actor.time == now)) {
+                //Order of actions when time is equal:
+                //1. Hero
+                //2. Other Chars
+                //3. Other Actors (e.g. blobs)
+				if (actor.time < now || (actor instanceof Hero && actor.time == now)
+                        || (actor instanceof Char && actor.time == now && !(current instanceof Hero))) {
 					now = actor.time;
 					current = actor;
 				}
