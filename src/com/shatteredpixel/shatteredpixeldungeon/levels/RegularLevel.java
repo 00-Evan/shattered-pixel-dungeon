@@ -551,7 +551,7 @@ public abstract class RegularLevel extends Level {
 		
 		while (true) {
 			
-			if (++count > 10) {
+			if (++count > 30) {
 				return -1;
 			}
 			

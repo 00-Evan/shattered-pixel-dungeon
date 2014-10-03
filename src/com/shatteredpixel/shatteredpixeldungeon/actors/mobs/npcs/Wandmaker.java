@@ -133,10 +133,11 @@ public class Wandmaker extends Mob.NPC {
 			}
 			
 		} else {
-			tell( Quest.alternative ? TXT_DUST1 : TXT_BERRY1 );
-			Quest.given = true;
 			
 			Quest.placeItem();
+
+            if (Quest.given)
+                tell(Quest.alternative ? TXT_DUST1 : TXT_BERRY1);
 			
 			Journal.add( Journal.Feature.WANDMAKER );
 		}
@@ -287,10 +288,13 @@ public class Wandmaker extends Mob.NPC {
 					while (Dungeon.level.heaps.get( pos ) != null) {
 						pos = Dungeon.level.randomRespawnCell();
 					}
-					
-					Heap heap = Dungeon.level.drop( new CorpseDust(), pos );
-					heap.type = Heap.Type.SKELETON;
-					heap.sprite.link();
+
+                    if (pos != -1) {
+                        Heap heap = Dungeon.level.drop(new CorpseDust(), pos);
+                        heap.type = Heap.Type.SKELETON;
+                        heap.sprite.link();
+                        given = true;
+                    }
 				}
 				
 			} else {
@@ -299,7 +303,11 @@ public class Wandmaker extends Mob.NPC {
 				while (Dungeon.level.heaps.get( shrubPos ) != null) {
 					shrubPos = Dungeon.level.randomRespawnCell();
 				}
-				Dungeon.level.plant( new Rotberry.Seed(), shrubPos );
+
+                if (shrubPos != -1) {
+                    Dungeon.level.plant(new Rotberry.Seed(), shrubPos);
+                    given = true;
+                }
 				
 			}
 		}
