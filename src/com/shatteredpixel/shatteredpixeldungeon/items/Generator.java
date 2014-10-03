@@ -242,10 +242,14 @@ public class Generator {
 			
 		}
 	}
+
+    public static Armor randomArmor() throws Exception {
+        int curStr = Hero.STARTING_STR + Dungeon.potionOfStrength;
+
+        return randomArmor(curStr);
+    }
 	
-	public static Armor randomArmor() throws Exception {
-		
-		int curStr = Hero.STARTING_STR + Dungeon.potionOfStrength;
+	public static Armor randomArmor(int targetStr) throws Exception {
 		
 		Category cat = Category.ARMOR;
 		
@@ -255,13 +259,17 @@ public class Generator {
 		a1.random();
 		a2.random();
 		
-		return Math.abs( curStr - a1.STR ) < Math.abs( curStr - a2.STR ) ? a1 : a2;
+		return Math.abs( targetStr - a1.STR ) < Math.abs( targetStr - a2.STR ) ? a1 : a2;
 	}
+
+    public static Weapon randomWeapon() throws Exception {
+        int curStr = Hero.STARTING_STR + Dungeon.potionOfStrength;
+
+        return randomWeapon(curStr);
+    }
 	
-	public static Weapon randomWeapon() throws Exception {
-		
-		int curStr = Hero.STARTING_STR + Dungeon.potionOfStrength;
-		
+	public static Weapon randomWeapon(int targetStr) throws Exception {
+
 		Category cat = Category.WEAPON;
 		
 		Weapon w1 = (Weapon)cat.classes[Random.chances( cat.probs )].newInstance();
@@ -270,6 +278,6 @@ public class Generator {
 		w1.random();
 		w2.random();
 		
-		return Math.abs( curStr - w1.STR ) < Math.abs( curStr - w2.STR ) ? w1 : w2;
+		return Math.abs( targetStr - w1.STR ) < Math.abs( targetStr - w2.STR ) ? w1 : w2;
 	}
 }
