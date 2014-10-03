@@ -5,7 +5,7 @@ import com.watabou.noosa.particles.Emitter;
 /**
  * Created by Evan on 30/09/2014.
  */
-public class GooWarnParticle extends WindParticle {
+public class GooWarnParticle extends FlameParticle {
 
     public static final Emitter.Factory FACTORY = new Emitter.Factory() {
         @Override
@@ -20,6 +20,6 @@ public class GooWarnParticle extends WindParticle {
 
         float p = left / lifespan;
         color( 0x000000 );
-        am = (p < 0.5f ? p : 1 - p) * size;
+        am = (1 - p*0.9f) + 0.1f;
     }
 }
