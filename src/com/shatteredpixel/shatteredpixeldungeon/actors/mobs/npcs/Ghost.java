@@ -20,19 +20,18 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -63,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+//TODO: test this whole class a bunch
 public class Ghost extends Mob.NPC {
 
 	{
@@ -83,13 +83,25 @@ public class Ghost extends Mob.NPC {
 		"Please... Help me... Find the rose...";
 	
 	private static final String TXT_RAT1	=
-		"Hello adventurer... Once I was like you - strong and confident... " +
-		"And now I'm dead... But I can't leave this place... Not until I have my revenge... " +
-		"Slay the _fetid rat_, that has taken my life...";
-		
-	private static final String TXT_RAT2	=
-		"Please... Help me... Slay the abomination...";
+            "Hello adventurer... Once I was like you - strong and confident... " +
+                    "And now I'm dead... But I can't leave this place... Not until I have my revenge... " +
+                    "Slay the _fetid rat_, that has taken my life...";
 
+    private static final String TXT_RAT2	=
+            "Please... Help me... Slay the abomination...";
+
+    //this is totally the text that's going into production.. yeah.
+    private static final String TXT_GNOLL1	=
+            "kill a gnoll for me.";
+
+    private static final String TXT_GNOLL2	=
+            "I want that gnoll dead!";
+
+    private static final String TXT_CRAB1	=
+            "kill a crab for me";
+
+    private static final String TXT_CRAB2	=
+            "I want that crab dead!";
 	
 	public Ghost() {
 		super();
@@ -138,13 +150,19 @@ public class Ghost extends Mob.NPC {
 		
 		if (Quest.given) {
 			
-			Item item = Quest.alternative ?
-				Dungeon.hero.belongings.getItem( RatSkull.class ) :
-				Dungeon.hero.belongings.getItem( DriedRose.class );	
-			if (item != null) {
+			if (Quest.processed){
+				Item item = Dungeon.hero.belongings.getItem( DriedRose.class );
+			if (item != null)
 				GameScene.show( new WndSadGhost( this, item ) );
 			} else {
-				GameScene.show( new WndQuest( this, Quest.alternative ? TXT_RAT2 : TXT_ROSE2 ) );
+                switch (Quest.type){
+                    case 1: default:
+                        GameScene.show( new WndQuest( this, TXT_RAT2 ) ); break;
+                    case 2:
+                        GameScene.show( new WndQuest( this, TXT_GNOLL2 ) ); break;
+                    case 3:
+                        GameScene.show( new WndQuest( this, TXT_CRAB2 ) ); break;
+                }
 				
 				int newPos = -1;
 				for (int i=0; i < 10; i++) {
@@ -165,10 +183,31 @@ public class Ghost extends Mob.NPC {
 			}
 			
 		} else {
-			GameScene.show( new WndQuest( this, Quest.alternative ? TXT_RAT1 : TXT_ROSE1 ) );
-			Quest.given = true;
-			
-			Journal.add( Journal.Feature.GHOST );
+            Mob questBoss;
+            String txt_quest;
+
+            switch (Quest.type){
+                case 1: default:
+                    questBoss = new FetidRat();
+                    txt_quest = TXT_RAT1; break;
+                case 2:
+                    questBoss = new GnollTrickster();
+                    txt_quest = TXT_GNOLL1; break;
+                case 3:
+                    questBoss = new GreatCrab();
+                    txt_quest = TXT_CRAB1; break;
+            }
+
+            questBoss.state = Mob.State.WANDERING;
+            questBoss.pos = Dungeon.level.randomRespawnCell();
+
+            if (questBoss.pos != -1) {
+                GameScene.add(questBoss);
+                GameScene.show( new WndQuest( this, txt_quest ) );
+                Quest.given = true;
+                Journal.add( Journal.Feature.GHOST );
+            }
+
 		}
 	}
 	
@@ -193,16 +232,14 @@ public class Ghost extends Mob.NPC {
 	public static class Quest {
 		
 		private static boolean spawned;
-		
-		private static boolean alternative;
+
+        private static int type;
 
 		private static boolean given;
 		
 		private static boolean processed;
 		
 		private static int depth;
-		
-		private static int left2kill;
 		
 		public static Weapon weapon;
 		public static Armor armor;
@@ -217,13 +254,15 @@ public class Ghost extends Mob.NPC {
 		private static final String NODE		= "sadGhost";
 		
 		private static final String SPAWNED		= "spawned";
-		private static final String ALTERNATIVE	= "alternative";
-		private static final String LEFT2KILL	= "left2kill";
+        private static final String TYPE        = "type";
 		private static final String GIVEN		= "given";
 		private static final String PROCESSED	= "processed";
 		private static final String DEPTH		= "depth";
 		private static final String WEAPON		= "weapon";
 		private static final String ARMOR		= "armor";
+
+        //for pre-0.2.1 saves, used when restoring quest
+        private static final String ALTERNATIVE	= "alternative";
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -233,14 +272,11 @@ public class Ghost extends Mob.NPC {
 			
 			if (spawned) {
 				
-				node.put( ALTERNATIVE, alternative );
-				if (!alternative) {
-					node.put( LEFT2KILL, left2kill );
-				}
+				node.put( TYPE, type );
 				
 				node.put( GIVEN, given );
 				node.put( DEPTH, depth );
-				node.put( PROCESSED, processed );
+				node.put( PROCESSED, processed);
 				
 				node.put( WEAPON, weapon );
 				node.put( ARMOR, armor );
@@ -253,16 +289,13 @@ public class Ghost extends Mob.NPC {
 			
 			Bundle node = bundle.getBundle( NODE );
 			
-			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
+			if (!node.isNull() && !node.contains( ALTERNATIVE ) && (spawned = node.getBoolean( SPAWNED ))) {
 				
-				alternative	=  node.getBoolean( ALTERNATIVE );
-				if (!alternative) {
-					left2kill = node.getInt( LEFT2KILL );
-				}
-				
+				type = node.getInt( TYPE );
+
 				given	= node.getBoolean( GIVEN );
 				depth	= node.getInt( DEPTH );
-				processed	= node.getBoolean( PROCESSED );
+				processed = node.getBoolean( PROCESSED );
 				
 				weapon	= (Weapon)node.get( WEAPON );
 				armor	= (Armor)node.get( ARMOR );
@@ -282,60 +315,44 @@ public class Ghost extends Mob.NPC {
 				Actor.occupyCell( ghost );
 				
 				spawned = true;
-				alternative = Random.Int( 2 ) == 0;
-				if (!alternative) {
-					left2kill = 8;
-				}
+                //dungeon depth determines type of quest.
+                //depth2=fetid rat, 3=gnoll trickster, 4=great crab
+				type = Dungeon.depth-1;
 				
 				given = false;
 				processed = false;
 				depth = Dungeon.depth;
-				
-				do {
-					weapon = (Weapon)Generator.random( Generator.Category.WEAPON );
-				} while (weapon instanceof MissileWeapon);
-				armor = (Armor)Generator.random( Generator.Category.ARMOR );
-					
-				for (int i=0; i < 3; i++) {
-					Item another;
-					do {
-						another = Generator.random( Generator.Category.WEAPON );
-					} while (another instanceof MissileWeapon);
-					if (another.level > weapon.level) {
-						weapon = (Weapon)another;
-					}
-					another = Generator.random( Generator.Category.ARMOR );
-					if (another.level > armor.level) {
-						armor = (Armor)another;
-					}
-				}
+
+                //TODO: test and decide on balancing for this
+                do {
+                    weapon = Generator.randomWeapon(10);
+                } while (weapon instanceof MissileWeapon);
+                armor = Generator.randomArmor(10);
+
+                for (int i = 1; i <= 3; i++) {
+                    Item another;
+                    do {
+                        another = Generator.randomWeapon(10+i);
+                    } while (another instanceof MissileWeapon);
+                    if (another.level > weapon.level) {
+                        weapon = (Weapon) another;
+                    }
+                    another = Generator.randomArmor(10+i);
+                    if (another.level > armor.level) {
+                        armor = (Armor) another;
+                    }
+                }
+
 				weapon.identify();
 				armor.identify();
 			}
 		}
 		
-		public static void process( int pos ) {
+		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
-				if (alternative) {
-					
-					FetidRat rat = new FetidRat();
-					rat.state = Mob.State.WANDERING;
-					rat.pos = Dungeon.level.randomRespawnCell();
-					if (rat.pos != -1) {
-						GameScene.add( rat );
-						processed = true;
-					}
-					
-				} else {
-					
-					if (Random.Int( left2kill ) == 0) {
-						Dungeon.level.drop( new DriedRose(), pos ).sprite.drop();
-						processed = true;
-					} else {
-						left2kill--;
-					}
-					
-				}
+				GLog.p("Thank you... come find me...");
+                Sample.INSTANCE.play( Assets.SND_GHOST );
+                processed = true;
 			}
 		}
 		
@@ -395,7 +412,7 @@ public class Ghost extends Mob.NPC {
 		public void die( Object cause ) {
 			super.die( cause );
 			
-			Dungeon.level.drop( new RatSkull(), pos ).sprite.drop();
+			Quest.process();
 		}
 		
 		@Override
@@ -467,7 +484,12 @@ public class Ghost extends Mob.NPC {
             }
         }
 
+        @Override
+        public void die( Object cause ) {
+            super.die( cause );
 
+            Quest.process();
+        }
 
 
     }
@@ -503,6 +525,8 @@ public class Ghost extends Mob.NPC {
         @Override
         public void die( Object cause ) {
             super.die( cause );
+
+            Quest.process();
 
             Dungeon.level.drop( new MysteryMeat(), pos );
             Dungeon.level.drop( new MysteryMeat(), pos );
