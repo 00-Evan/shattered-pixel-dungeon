@@ -53,13 +53,7 @@ public class Gnoll extends Mob {
 	public int dr() {
 		return 2;
 	}
-	
-	@Override
-	public void die( Object cause ) {
-		Ghost.Quest.process( pos );
-		super.die( cause );
-	}
-	
+
 	@Override
 	public String description() {
 		return

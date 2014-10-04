@@ -50,13 +50,6 @@ public class Rat extends Mob {
 	}
 	
 	@Override
-	public void die( Object cause ) {
-		Ghost.Quest.process( pos );
-		
-		super.die( cause );
-	}
-	
-	@Override
 	public String description() {
 		return
 			"Marsupial rats are aggressive, but rather weak denizens " +
