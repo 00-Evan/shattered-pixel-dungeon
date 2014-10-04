@@ -20,6 +20,6 @@ public class GooWarnParticle extends FlameParticle {
 
         float p = left / lifespan;
         color( 0x000000 );
-        am = (1 - p*0.9f) + 0.1f;
+        am = p > 0.5f ? (1.2f - p*0.8f) : (p*3 - 0.7f);
     }
 }

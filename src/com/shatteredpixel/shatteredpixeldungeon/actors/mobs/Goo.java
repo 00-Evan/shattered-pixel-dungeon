@@ -68,7 +68,7 @@ public class Goo extends Mob {
             for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
                 int j = pos + Level.NEIGHBOURS9DIST2[i];
                 if (j >= 0 && j <= 1023 && Level.passable[j])
-                    CellEmitter.get(j).burst(ElmoParticle.FACTORY, 5);
+                    CellEmitter.get(j).burst(ElmoParticle.FACTORY, 10);
             }
             Sample.INSTANCE.play( Assets.SND_BURNING );
 			return Random.NormalIntRange( 5, 30 );

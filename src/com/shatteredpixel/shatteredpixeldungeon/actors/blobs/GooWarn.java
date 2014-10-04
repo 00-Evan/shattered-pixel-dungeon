@@ -47,7 +47,7 @@ public class GooWarn extends Blob {
     @Override
     public void use( BlobEmitter emitter ) {
         super.use( emitter );
-        emitter.start(GooWarnParticle.FACTORY, 0.1f, 0 );
+        emitter.start(GooWarnParticle.FACTORY, 0.05f, 0 );
     }
 
     @Override
