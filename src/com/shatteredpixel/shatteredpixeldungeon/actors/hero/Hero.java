@@ -1102,6 +1102,7 @@ public class Hero extends Char {
 		} else if (buff instanceof RingOfMight.Might){
             if (((RingOfMight.Might)buff).level > 0){
                 HT -= ((RingOfMight.Might) buff).level * 5;
+                HP = Math.min(HT, HP);
             }
         }
 		
