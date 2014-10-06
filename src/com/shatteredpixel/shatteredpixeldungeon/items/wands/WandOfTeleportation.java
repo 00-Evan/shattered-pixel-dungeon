@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -43,7 +44,7 @@ public class WandOfTeleportation extends Wand {
 			setKnown();
 			ScrollOfTeleportation.teleportHero( curUser );
 			
-		} else if (ch != null) {
+		} else if (ch != null && !(ch instanceof Mob.NPC)) {
 			
 			int count = 10;
 			int pos;
