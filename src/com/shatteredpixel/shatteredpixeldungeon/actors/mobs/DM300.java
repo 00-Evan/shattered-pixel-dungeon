@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
@@ -164,6 +165,7 @@ public class DM300 extends Mob {
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
 	static {
 		IMMUNITIES.add( ToxicGas.class );
+        IMMUNITIES.add( Terror.class );
 	}
 	
 	@Override
