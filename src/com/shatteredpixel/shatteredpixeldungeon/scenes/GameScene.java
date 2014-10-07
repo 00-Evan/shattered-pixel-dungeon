@@ -70,12 +70,12 @@ import com.watabou.utils.Random;
 
 public class GameScene extends PixelScene {
 	
-	private static final String TXT_WELCOME			= "Welcome to the level %d of Pixel Dungeon!";
-	private static final String TXT_WELCOME_BACK	= "Welcome back to the level %d of Pixel Dungeon!";
+	private static final String TXT_WELCOME			= "Welcome to level %d of Pixel Dungeon!";
+	private static final String TXT_WELCOME_BACK	= "Welcome back to level %d of Pixel Dungeon!";
 	private static final String TXT_NIGHT_MODE		= "Be cautious, since the dungeon is even more dangerous at night!";
 	
 	private static final String TXT_CHASM	= "Your steps echo across the dungeon.";
-	private static final String TXT_WATER	= "You hear the water splashing around you.";
+	private static final String TXT_WATER	= "You hear water splashing around you.";
 	private static final String TXT_GRASS	= "The smell of vegetation is thick in the air.";
 	private static final String TXT_SECRETS	= "The atmosphere hints that this floor hides many secrets.";
 	
@@ -224,12 +224,11 @@ public class GameScene extends PixelScene {
 		log.setRect( 0, toolbar.top(), attack.left(),  0 );
 		add( log );
 		
-		if (Dungeon.depth < Statistics.deepestFloor) {
+		if (Dungeon.depth <= Statistics.deepestFloor)
 			GLog.i( TXT_WELCOME_BACK, Dungeon.depth );
-		} else {
+		else
 			GLog.i( TXT_WELCOME, Dungeon.depth );
-			Sample.INSTANCE.play( Assets.SND_DESCEND );
-		}
+        Sample.INSTANCE.play( Assets.SND_DESCEND );
 		switch (Dungeon.level.feeling) {
 		case CHASM:
 			GLog.w( TXT_CHASM );
