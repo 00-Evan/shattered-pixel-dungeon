@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
@@ -1120,6 +1121,7 @@ public class Hero extends Char {
 		
 		curAction = null;
 
+        //todo: investigate this, what would happen if the player has a blessed & unblessed ankh?
         Ankh ankh = (Ankh)belongings.getItem( Ankh.class );
         if (ankh != null && ankh.isBlessed()) {
             this.HP = HT;
@@ -1131,6 +1133,7 @@ public class Hero extends Char {
 
             Sample.INSTANCE.play( Assets.SND_TELEPORT );
             GLog.w( ankh.TXT_REVIVE );
+            Statistics.ankhsUsed++;
 
             return;
         }
