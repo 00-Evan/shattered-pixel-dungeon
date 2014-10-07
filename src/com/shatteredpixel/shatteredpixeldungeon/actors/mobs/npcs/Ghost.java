@@ -432,7 +432,7 @@ public class Ghost extends Mob.NPC {
 		}
 	}
 
-    public class GnollTrickster extends Gnoll {
+    public static class GnollTrickster extends Gnoll {
         {
             name = "gnoll trickster";
             spriteClass = GnollSprite.class;
@@ -494,7 +494,7 @@ public class Ghost extends Mob.NPC {
 
     }
 
-    public class GreatCrab extends Crab {
+    public static class GreatCrab extends Crab {
         {
             name = "great crab";
             spriteClass = CrabSprite.class;
