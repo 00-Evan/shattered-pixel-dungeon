@@ -317,6 +317,12 @@ public class Dungeon {
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		
 		observe();
+        try {
+            saveAll();
+        } catch (Exception e) {
+            //TODO: I need to add analytics code to this or something.
+            //Silent failure is really bad, don't want to interrupt the user but I do want to know if this fails.
+        }
 	}
 	
 	public static boolean posNeeded() {
