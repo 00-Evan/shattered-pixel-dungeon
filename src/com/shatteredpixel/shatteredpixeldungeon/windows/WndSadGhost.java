@@ -31,15 +31,22 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndSadGhost extends Window {
-	
-	private static final String TXT_ROSE	= 
-		"Yes! Yes!!! This is it! Please give it to me! " +
-		"And you can take one of these items, maybe they " +
-		"will be useful to you in your journey...";
+
 	private static final String TXT_RAT	= 
-		"Yes! The ugly creature is slain and I can finally rest... " +
-		"Please take one of these items, maybe they " +
-		"will be useful to you in your journey...";
+		"Thank you, that horrid rad is slain and I can finally rest..." +
+        "I wonder what twisted magic created such a foul creature...\n\n";
+    private static final String TXT_GNOLL	=
+        "Thank you, that scheming gnoll is slain and I can finally rest..." +
+        "I wonder what twisted magic made it so smart...\n\n";
+    private static final String TXT_Crab	=
+        "Thank you, that giant crab is slain and I can finally rest..." +
+        "I wonder what twisted magic allowed it to live so long...\n\n";
+    private static final String TXT_GiveItem=
+        "Please take one of these items, they are useless to me now... " +
+        "Maybe they will help you in your journey...";
+    private static final String TXT_TotallyNotATeaser=
+        "Also... There is an item lost in this dungeon that is very dear to me..." +
+        "If you ever... find my... rose......";
 	private static final String TXT_WEAPON	= "Ghost's weapon";
 	private static final String TXT_ARMOR	= "Ghost's armor";
 	
@@ -47,17 +54,17 @@ public class WndSadGhost extends Window {
 	private static final int BTN_HEIGHT	= 18;
 	private static final float GAP		= 2;
 	
-	public WndSadGhost( final Ghost ghost, final Item item ) {
+	public WndSadGhost( final Ghost ghost, final int type ) {
 		
 		super();
 		
 		IconTitle titlebar = new IconTitle();
-		titlebar.icon( new ItemSprite( item.image(), null ) );
-		titlebar.label( Utils.capitalize( item.name() ) );
+		//titlebar.icon( new ItemSprite( item.image(), null ) );
+		//titlebar.label( Utils.capitalize( item.name() ) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 		
-		BitmapTextMultiline message = PixelScene.createMultiline( item instanceof DriedRose ? TXT_ROSE : TXT_RAT, 6 );
+		//BitmapTextMultiline message = PixelScene.createMultiline( item instanceof DriedRose ? TXT_ROSE : TXT_RAT, 6 );
 		message.maxWidth = WIDTH;
 		message.measure();
 		message.y = titlebar.bottom() + GAP;
@@ -66,7 +73,7 @@ public class WndSadGhost extends Window {
 		RedButton btnWeapon = new RedButton( TXT_WEAPON ) {
 			@Override
 			protected void onClick() {
-				selectReward( ghost, item, Ghost.Quest.weapon );
+				selectReward( ghost, Ghost.Quest.weapon );
 			}
 		};
 		btnWeapon.setRect( 0, message.y + message.height() + GAP, WIDTH, BTN_HEIGHT );
@@ -75,7 +82,7 @@ public class WndSadGhost extends Window {
 		RedButton btnArmor = new RedButton( TXT_ARMOR ) {
 			@Override
 			protected void onClick() {
-				selectReward( ghost, item, Ghost.Quest.armor );
+				selectReward( ghost, Ghost.Quest.armor );
 			}
 		};
 		btnArmor.setRect( 0, btnWeapon.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -84,11 +91,9 @@ public class WndSadGhost extends Window {
 		resize( WIDTH, (int)btnArmor.bottom() );
 	}
 	
-	private void selectReward( Ghost ghost, Item item, Item reward ) {
+	private void selectReward( Ghost ghost, Item reward ) {
 		
 		hide();
-		
-		item.detach( Dungeon.hero.belongings.backpack );
 		
 		if (reward.doPickUp( Dungeon.hero )) {
 			GLog.i( Hero.TXT_YOU_NOW_HAVE, reward.name() );

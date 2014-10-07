@@ -74,34 +74,35 @@ public class Ghost extends Mob.NPC {
 		state = State.WANDERING;
 	}
 	
-	private static final String TXT_ROSE1	=
-		"Hello adventurer... Once I was like you - strong and confident... " +
-		"And now I'm dead... But I can't leave this place... Not until I have my _dried rose_... " +
-		"It's very important to me... Some monster stole it from my body...";
-	
-	private static final String TXT_ROSE2	=
-		"Please... Help me... Find the rose...";
-	
 	private static final String TXT_RAT1	=
             "Hello adventurer... Once I was like you - strong and confident... " +
-                    "And now I'm dead... But I can't leave this place... Not until I have my revenge... " +
-                    "Slay the _fetid rat_, that has taken my life...";
+            "But I was slain by a foul beast... I can't leave this place... Not until I have my revenge... " +
+            "Slay the _fetid rat_, that has taken my life...\n\n" +
+            "It stalks this floor... Spreading filth everywhere... " +
+            "Beware its cloud of stink and acidic bite... ";
 
     private static final String TXT_RAT2	=
             "Please... Help me... Slay the abomination...";
 
-    //this is totally the text that's going into production.. yeah.
     private static final String TXT_GNOLL1	=
-            "kill a gnoll for me.";
+            "Hello adventurer... Once I was like you - strong and confident... " +
+            "But I was slain by a devious foe... I can't leave this place... Not until I have my revenge... " +
+            "Slay the _gnoll trickster_, that has taken my life...\n\n" +
+            "It is not like the other gnolls... It hides and uses thrown weapons... " +
+            "Beware its poisonous and incendiary darts... ";
 
     private static final String TXT_GNOLL2	=
-            "I want that gnoll dead!";
+            "Please... Help me... Slay the trickster...";
 
     private static final String TXT_CRAB1	=
-            "kill a crab for me";
+            "Hello adventurer... Once I was like you - strong and confident... " +
+            "But I was slain by an ancient creature... I can't leave this place... Not until I have my revenge... " +
+            "Slay the _great crab_, that has taken my life...\n\n" +
+            "It is unnaturally old... With a massive single claw and a thick shell. " +
+            "Beware its claw, the crab blocks and strikes with it...";
 
     private static final String TXT_CRAB2	=
-            "I want that crab dead!";
+            "Please... Help me... Slay the abomination...";
 	
 	public Ghost() {
 		super();
@@ -151,9 +152,7 @@ public class Ghost extends Mob.NPC {
 		if (Quest.given) {
 			
 			if (Quest.processed){
-				Item item = Dungeon.hero.belongings.getItem( DriedRose.class );
-			if (item != null)
-				GameScene.show( new WndSadGhost( this, item ) );
+				GameScene.show( new WndSadGhost( this, Quest.type ) );
 			} else {
                 switch (Quest.type){
                     case 1: default:
@@ -418,7 +417,11 @@ public class Ghost extends Mob.NPC {
 		@Override
 		public String description() {
 			return
-				"This marsupial rat is much larger, than a regular one. It is surrounded by a foul cloud.";
+				"Something is clearly wrong with this rat. Its matted fur and rotting skin are very " +
+                "different from the healthy rats you've seen previously. It's bright orange eyes " +
+                "and larger size make it especially menacing.\n\n" +
+                "The rat carries a cloud of horrible stench with it, it's overpoweringly strong up close.\n\n" +
+                "Dark ooze drips from the rat's teeth, it eats through the floor but seems to dissolve in water.";
 		}
 		
 		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
@@ -491,6 +494,11 @@ public class Ghost extends Mob.NPC {
             Quest.process();
         }
 
+        @Override
+        public String description() {
+            return
+                    "A Gnoll";
+        }
 
     }
 
@@ -531,6 +539,12 @@ public class Ghost extends Mob.NPC {
             Dungeon.level.drop( new MysteryMeat(), pos );
             Dungeon.level.drop( new MysteryMeat(), pos );
             Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
+        }
+
+        @Override
+        public String description() {
+            return
+                    "A Crab";
         }
     }
 }
