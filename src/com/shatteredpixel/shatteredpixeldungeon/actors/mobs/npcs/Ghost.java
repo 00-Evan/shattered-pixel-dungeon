@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
@@ -402,7 +403,7 @@ public class Ghost extends Mob.NPC {
 		@Override
 		public int defenseProc( Char enemy, int damage ) {
 			
-			GameScene.add( Blob.seed( pos, 20, ParalyticGas.class ) );
+			GameScene.add( Blob.seed( pos, 20, StenchGas.class ) );
 			
 			return super.defenseProc(enemy, damage);
 		}
@@ -422,16 +423,6 @@ public class Ghost extends Mob.NPC {
                 "and larger size make it especially menacing.\n\n" +
                 "The rat carries a cloud of horrible stench with it, it's overpoweringly strong up close.\n\n" +
                 "Dark ooze drips from the rat's teeth, it eats through the floor but seems to dissolve in water.";
-		}
-		
-		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-		static {
-			IMMUNITIES.add( Paralysis.class );
-		}
-		
-		@Override
-		public HashSet<Class<?>> immunities() {
-			return IMMUNITIES;
 		}
 	}
 

@@ -56,7 +56,8 @@ public class Speck extends Image {
 	public static final int TOXIC		= 107;
 	public static final int PARALYSIS	= 108;
 	public static final int DUST		= 109;
-	public static final int FORGE		= 110;
+    public static final int STENCH      = 110;
+	public static final int FORGE		= 111;
 	
 	private static final int SIZE = 7;
 	
@@ -100,6 +101,7 @@ public class Speck extends Image {
 		case TOXIC:
 		case PARALYSIS:
 		case DUST:
+        case STINK:
 			frame( film.get( STEAM ) );
 			break;
 		default:
@@ -279,6 +281,13 @@ public class Speck extends Image {
 			speed.polar( Random.Float( 2 * 3.1415926f ), Random.Float( 16, 48 ) );
 			lifespan = 0.5f;
 			break;
+
+        case STENCH:
+            hardlight( 0x383825 );
+            angularSpeed = -30;
+            angle = Random.Float( 360 );
+            lifespan = Random.Float( 1f, 3f );
+            break;
 			
 		case COIN:
 			speed.polar( -PointF.PI * Random.Float( 0.3f, 0.7f ), Random.Float( 48, 96 ) );
