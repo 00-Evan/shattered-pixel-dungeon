@@ -24,12 +24,17 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -378,7 +383,7 @@ public class Ghost extends Mob.NPC {
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 1, 4 );
+			return Random.NormalIntRange( 1, 5 );
 		}
 		
 		@Override
@@ -393,7 +398,7 @@ public class Ghost extends Mob.NPC {
 
         @Override
         public int attackProc( Char enemy, int damage ) {
-            if (Random.Int( 3 ) == 0) {
+            if (Random.Int( 2 ) == 0) {
                 Buff.affect(enemy, Ooze.class);
             }
 
@@ -440,9 +445,11 @@ public class Ghost extends Mob.NPC {
             lootChance = 1f;
         }
 
+        private int combo = 0;
+
         @Override
         public int damageRoll() {
-            return Random.NormalIntRange( 1, 4 );
+            return Random.NormalIntRange( 1, 2 );
         }
 
         @Override
@@ -452,25 +459,45 @@ public class Ghost extends Mob.NPC {
 
         @Override
         protected boolean canAttack( Char enemy ) {
-            return !Level.adjacent(pos, enemy.pos) && Ballistica.cast( pos, enemy.pos, false, true ) == enemy.pos;
+            if (!Level.adjacent(pos, enemy.pos) && Ballistica.cast( pos, enemy.pos, false, true ) == enemy.pos){
+                combo++;
+                return true;
+            } else {
+                return false;
+            }
         }
 
         @Override
         public int attackProc( Char enemy, int damage ) {
-                if (Random.Int(3) == 0) {
-                    if (Level.flamable[enemy.pos]) {
-                        GameScene.add(Blob.seed(enemy.pos, 4, Fire.class));
-                    }
-                    Buff.affect( enemy, Burning.class ).reignite( enemy );
-                } else if (HP <= 8){
-                    Buff.prolong( enemy, Cripple.class, 2 );
-                }
+            //The gnoll's attacks get more severe the more the player lets it hit them
+            int effect = Random.Int(3)+combo;
+            Burning aflame = enemy.buff(Burning.class);
 
+            if (effect <= 2) {
+
+                Buff.prolong(enemy, Cripple.class, 2f);
+
+            } else {
+
+                if (effect >=6)
+                    Buff.prolong( enemy, Paralysis.class, 3f );
+
+                if (effect >=4 && aflame == null){
+
+                    if (Level.flamable[enemy.pos])
+                        GameScene.add( Blob.seed( enemy.pos, 4, Fire.class ) );
+                    Buff.affect( enemy, Burning.class ).reignite( enemy );
+
+                } else
+                    Buff.affect( enemy, Poison.class).set(Random.Int(effect-2, effect) * Poison.durationFactor(enemy));
+
+            }
             return damage;
         }
 
         @Override
         protected boolean getCloser( int target ) {
+            combo = 0; //if he's moving, he isn't attacking, reset combo.
             if (state == State.HUNTING) {
                 return enemySeen && getFurther( target );
             } else {
@@ -491,6 +518,20 @@ public class Ghost extends Mob.NPC {
                     "A Gnoll";
         }
 
+        private static final String COMBO = "combo";
+
+        @Override
+        public void storeInBundle( Bundle bundle ) {
+            super.storeInBundle( bundle );
+            bundle.put( COMBO , combo );
+        }
+
+        @Override
+        public void restoreFromBundle( Bundle bundle ) {
+            super.restoreFromBundle( bundle );
+            combo = bundle.getInt( COMBO );
+        }
+
     }
 
     public static class GreatCrab extends Crab {
@@ -499,7 +540,7 @@ public class Ghost extends Mob.NPC {
             spriteClass = CrabSprite.class;
 
             HP = HT = 30;
-            defenseSkill = 100; //no that's not a typo
+            defenseSkill = 0; //see damage()
             baseSpeed = 0.67f;
 
             EXP = 6;
@@ -519,6 +560,19 @@ public class Ghost extends Mob.NPC {
         @Override
         public int dr() {
             return 4;
+        }
+
+        //TODO: New functionality, test this with a variety of items/effects
+        @Override
+        public void damage( int dmg, Object src ){
+            //crab blocks all attacks originating from the hero or enemy characters if it is alerted.
+            //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
+            if (enemySeen && (src instanceof Weapon || src instanceof Char)){
+                GLog.w("The crab notices the attack and blocks with its massive claw.");
+                sprite.showStatus( CharSprite.DEFAULT, "blocked" );
+            } else {
+                super.damage( dmg, src );
+            }
         }
 
         @Override
