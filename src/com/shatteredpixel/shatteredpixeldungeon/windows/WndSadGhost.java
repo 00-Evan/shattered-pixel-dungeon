@@ -17,6 +17,9 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -38,10 +41,10 @@ public class WndSadGhost extends Window {
     private static final String TXT_GNOLL	=
         "Thank you, that scheming gnoll is slain and I can finally rest..." +
         "I wonder what twisted magic made it so smart...\n\n";
-    private static final String TXT_Crab	=
+    private static final String TXT_CRAB	=
         "Thank you, that giant crab is slain and I can finally rest..." +
         "I wonder what twisted magic allowed it to live so long...\n\n";
-    private static final String TXT_GiveItem=
+    private static final String TXT_GIVEITEM=
         "Please take one of these items, they are useless to me now... " +
         "Maybe they will help you in your journey...";
     private static final String TXT_TotallyNotATeaser=
@@ -59,12 +62,30 @@ public class WndSadGhost extends Window {
 		super();
 		
 		IconTitle titlebar = new IconTitle();
-		//titlebar.icon( new ItemSprite( item.image(), null ) );
-		//titlebar.label( Utils.capitalize( item.name() ) );
+        BitmapTextMultiline message;
+        switch (type){
+            case 1:default:
+                titlebar.icon( new FetidRatSprite() );
+                titlebar.label( "DEFEATED FETID RAT" );
+                message = PixelScene.createMultiline( TXT_RAT+TXT_GIVEITEM, 6 );
+                break;
+            case 2:
+                titlebar.icon( new GnollSprite() );
+                titlebar.label( "DEFEATED GNOLL TRICKSTER" );
+                message = PixelScene.createMultiline( TXT_GNOLL+TXT_GIVEITEM, 6 );
+                break;
+            case 3:
+                titlebar.icon( new CrabSprite());
+                titlebar.label( "DEFEATED GREAT CRAB" );
+                message = PixelScene.createMultiline( TXT_CRAB+TXT_GIVEITEM, 6 );
+                break;
+
+        }
+
+
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
-		
-		//BitmapTextMultiline message = PixelScene.createMultiline( item instanceof DriedRose ? TXT_ROSE : TXT_RAT, 6 );
+
 		message.maxWidth = WIDTH;
 		message.measure();
 		message.y = titlebar.bottom() + GAP;
