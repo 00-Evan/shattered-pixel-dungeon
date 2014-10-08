@@ -31,7 +31,7 @@ public class FetidRatSprite extends RatSprite {
 		
 		if (cloud == null) {
 			cloud = emitter();
-			cloud.pour( Speck.factory( Speck.PARALYSIS ), 0.7f );
+			cloud.pour( Speck.factory( Speck.STENCH ), 0.7f );
 		}
 	}
 	
