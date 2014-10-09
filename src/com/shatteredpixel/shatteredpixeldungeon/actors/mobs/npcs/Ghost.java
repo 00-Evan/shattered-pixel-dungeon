@@ -34,9 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.*;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -61,8 +59,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
 import com.watabou.utils.Bundle;
@@ -407,7 +403,7 @@ public class Ghost extends Mob.NPC {
 		@Override
 		public int defenseProc( Char enemy, int damage ) {
 			
-			GameScene.add( Blob.seed( pos, 100, StenchGas.class ) );
+			GameScene.add( Blob.seed( pos, 20, StenchGas.class ) );
 			
 			return super.defenseProc(enemy, damage);
 		}
@@ -422,18 +418,18 @@ public class Ghost extends Mob.NPC {
 		@Override
 		public String description() {
 			return
-				"Something is clearly wrong with this rat. Its matted fur and rotting skin are very " +
-                "different from the healthy rats you've seen previously. It's bright orange eyes " +
-                "and larger size make it especially menacing.\n\n" +
+				"Something is clearly wrong with this rat. Its greasy black fur and rotting skin are very " +
+                "different from the healthy rats you've seen previously. It's blood red eyes " +
+                "make it seem especially menacing.\n\n" +
                 "The rat carries a cloud of horrible stench with it, it's overpoweringly strong up close.\n\n" +
-                "Dark ooze drips from the rat's teeth, it eats through the floor but seems to dissolve in water.";
+                "Dark ooze dribbles from the rat's mouth, it eats through the floor but seems to dissolve in water.";
 		}
 	}
 
     public static class GnollTrickster extends Gnoll {
         {
             name = "gnoll trickster";
-            spriteClass = GnollSprite.class;
+            spriteClass = GnollTricksterSprite.class;
 
             HP = HT = 20;
             defenseSkill = 4;
@@ -521,8 +517,8 @@ public class Ghost extends Mob.NPC {
 
         @Override
         public void storeInBundle( Bundle bundle ) {
-            super.storeInBundle( bundle );
-            bundle.put( COMBO , combo );
+            super.storeInBundle(bundle);
+            bundle.put(COMBO, combo);
         }
 
         @Override
@@ -536,7 +532,7 @@ public class Ghost extends Mob.NPC {
     public static class GreatCrab extends Crab {
         {
             name = "great crab";
-            spriteClass = CrabSprite.class;
+            spriteClass = GreatCrabSprite.class;
 
             HP = HT = 30;
             defenseSkill = 0; //see damage()
