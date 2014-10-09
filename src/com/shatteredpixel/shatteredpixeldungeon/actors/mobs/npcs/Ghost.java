@@ -328,7 +328,6 @@ public class Ghost extends Mob.NPC {
 				processed = false;
 				depth = Dungeon.depth;
 
-                //TODO: test and decide on balancing for this
                 do {
                     weapon = Generator.randomWeapon(10);
                 } while (weapon instanceof MissileWeapon);
@@ -355,7 +354,7 @@ public class Ghost extends Mob.NPC {
 		
 		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
-				GLog.p("Thank you... come find me...");
+				GLog.n("Sad ghost: Thank you... come find me...");
                 Sample.INSTANCE.play( Assets.SND_GHOST );
                 processed = true;
 			}
@@ -408,7 +407,7 @@ public class Ghost extends Mob.NPC {
 		@Override
 		public int defenseProc( Char enemy, int damage ) {
 			
-			GameScene.add( Blob.seed( pos, 20, StenchGas.class ) );
+			GameScene.add( Blob.seed( pos, 100, StenchGas.class ) );
 			
 			return super.defenseProc(enemy, damage);
 		}
