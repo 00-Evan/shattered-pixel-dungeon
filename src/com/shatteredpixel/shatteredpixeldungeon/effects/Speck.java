@@ -101,7 +101,7 @@ public class Speck extends Image {
 		case TOXIC:
 		case PARALYSIS:
 		case DUST:
-        case STINK:
+        case STENCH:
 			frame( film.get( STEAM ) );
 			break;
 		default:
@@ -283,7 +283,7 @@ public class Speck extends Image {
 			break;
 
         case STENCH:
-            hardlight( 0x383825 );
+            hardlight( 0x002200 );
             angularSpeed = -30;
             angle = Random.Float( 360 );
             lifespan = Random.Float( 1f, 3f );
@@ -393,6 +393,11 @@ public class Speck extends Image {
 				am = p < 0.5f ? p : 1 - p;
 				scale.set( 1 + p * 2 );
 				break;
+
+            case STENCH:
+                am = (p < 0.5f ? p : 1 - p) * 2;
+                scale.set( 1 + p * 2 );
+                break;
 				
 			case JET:
 				am = (p < 0.5f ? p : 1 - p) * 2;

@@ -37,5 +37,4 @@ public class StenchGas extends Blob {
     public String tileDesc() {
         return "A cloud of fetid stench is swirling here.";
     }
-} {
 }
