@@ -289,7 +289,9 @@ public class Ghost extends Mob.NPC {
 		public static void restoreFromBundle( Bundle bundle ) {
 			
 			Bundle node = bundle.getBundle( NODE );
-			
+
+            //TODO: may be some issues with an old quest in progress that already spawned a fetid rat
+
 			if (!node.isNull() && !node.contains( ALTERNATIVE ) && (spawned = node.getBoolean( SPAWNED ))) {
 				
 				type = node.getInt( TYPE );
@@ -473,9 +475,6 @@ public class Ghost extends Mob.NPC {
                 Buff.prolong(enemy, Cripple.class, 2f);
 
             } else {
-
-                if (effect >=6)
-                    Buff.prolong( enemy, Paralysis.class, 3f );
 
                 if (effect >=4 && aflame == null){
 
