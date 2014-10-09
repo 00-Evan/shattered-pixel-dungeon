@@ -468,22 +468,20 @@ public class Ghost extends Mob.NPC {
         public int attackProc( Char enemy, int damage ) {
             //The gnoll's attacks get more severe the more the player lets it hit them
             int effect = Random.Int(3)+combo;
-            Burning aflame = enemy.buff(Burning.class);
-
             if (effect <= 2) {
 
                 Buff.prolong(enemy, Cripple.class, 2f);
 
             } else {
 
-                if (effect >=4 && aflame == null){
+                if (effect >=4 && enemy.buff(Burning.class) == null){
 
                     if (Level.flamable[enemy.pos])
                         GameScene.add( Blob.seed( enemy.pos, 4, Fire.class ) );
                     Buff.affect( enemy, Burning.class ).reignite( enemy );
 
                 } else
-                    Buff.affect( enemy, Poison.class).set(Random.Int(effect-2, effect) * Poison.durationFactor(enemy));
+                    Buff.affect( enemy, Poison.class).set((effect-1) * Poison.durationFactor(enemy));
 
             }
             return damage;
@@ -535,11 +533,12 @@ public class Ghost extends Mob.NPC {
 
             HP = HT = 30;
             defenseSkill = 0; //see damage()
-            baseSpeed = 0.67f;
 
             EXP = 6;
 
         }
+
+        private boolean moving = true;
 
         @Override
         public int damageRoll() {
@@ -556,6 +555,20 @@ public class Ghost extends Mob.NPC {
             return 4;
         }
 
+        @Override
+        protected boolean getCloser( int target ) {
+
+            //this is used such that the crab remains slow, but still detects the player at the expected rate.
+            if (moving) {
+                moving = false;
+                return super.getCloser( target );
+            } else {
+                moving = true;
+                return false;
+            }
+
+        }
+
         //TODO: New functionality, test this with a variety of items/effects
         @Override
         public void damage( int dmg, Object src ){
@@ -563,7 +576,7 @@ public class Ghost extends Mob.NPC {
             //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
             if (enemySeen && (src instanceof Weapon || src instanceof Char)){
                 GLog.w("The crab notices the attack and blocks with its massive claw.");
-                sprite.showStatus( CharSprite.DEFAULT, "blocked" );
+                sprite.showStatus( CharSprite.NEUTRAL, "blocked" );
             } else {
                 super.damage( dmg, src );
             }
