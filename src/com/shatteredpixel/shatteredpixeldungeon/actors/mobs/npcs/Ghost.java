@@ -507,7 +507,11 @@ public class Ghost extends Mob.NPC {
         @Override
         public String description() {
             return
-                    "A Gnoll";
+                    "A strange looking creature, even by gnoll standards. It hunches forward with a wicked grin, " +
+                    "almost cradling the satchel hanging at its side. Its eyes are wide with a strange mix of " +
+                    "fear and excitement.\n\n" +
+                    "There is a large collection of poorly made darts in its satchel, they all seem to be " +
+                    "tipped with various poisonous and flammable substances.";
         }
 
         private static final String COMBO = "combo";
@@ -596,7 +600,12 @@ public class Ghost extends Mob.NPC {
         @Override
         public String description() {
             return
-                    "A Crab";
+                    "This crab is gigantic, even compared to other sewer crabs. " +
+                    "Its blue shell is covered in cracks and barnacles, showing great age. " +
+                    "It lumbers around slowly, barely keeping balance with its massive claw.\n\n" +
+                    "While the crab only has one claw, its size and hardness easily compensate. " +
+                    "The crab holds the claw infront of itself whenever it sees a threat, shielding " +
+                    "itself behind an impenetrable wall of carapace.";
         }
     }
 }
