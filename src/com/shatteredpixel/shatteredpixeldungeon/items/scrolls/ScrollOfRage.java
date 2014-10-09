@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -36,9 +37,9 @@ public class ScrollOfRage extends Scroll {
 	@Override
 	protected void doRead() {
 
-        for (Mob mob : Dungeon.level.mobs) {
+        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
             mob.beckon( curUser.pos );
-            if (Dungeon.level.fieldOfView[mob.pos]) {
+            if (Level.fieldOfView[mob.pos]) {
                 Buff.prolong(mob, Amok.class, 5f);
             }
         }
