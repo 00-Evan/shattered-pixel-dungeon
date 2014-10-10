@@ -47,4 +47,10 @@ public class Albino extends Rat {
 		
 		return damage;
 	}
+
+    @Override
+    public String description() {
+        return
+                "This is a rare breed of marsupial rat, with pure white fur and jagged teeth.";
+    }
 }

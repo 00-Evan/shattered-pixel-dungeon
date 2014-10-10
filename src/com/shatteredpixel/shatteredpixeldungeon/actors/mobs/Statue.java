@@ -144,8 +144,8 @@ public class Statue extends Mob {
 	@Override
 	public String description() {
 		return
-			"You would think that it's just another ugly statue of this dungeon, but its red glowing eyes give itself away. " +
-			"While the statue itself is made of stone, the _" + weapon.name() + "_, it's wielding, looks real.";
+			"You would think that it's just another one of this dungeon's ugly statues, but its red glowing eyes give it away." +
+			"\n\nWhile the statue itself is made of stone, the _" + weapon.name() + "_, it's wielding, looks real.";
 	}
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
