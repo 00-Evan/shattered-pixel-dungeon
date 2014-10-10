@@ -68,13 +68,24 @@ public class Dungeon {
 	
 	private static final String NO_TIPS = "The text  is indecipherable...";
 	private static final String[] TIPS = {
-		"Don't overestimate your strength, use weapons and armor you can handle.",
-		"Not all doors in the dungeon are visible at first sight. If you are stuck, search for hidden doors.",
-		"Remember, that raising your strength is not the only way to access better equipment, you can go " +
-			"the other way lowering its strength requirement with Scrolls of Upgrade.",
-		"You can spend your gold in shops on deeper levels of the dungeon. The first one is on the 6th level.",
+		"Almost all equipment has a strength requirement. Don't overestimate your strength, using equipment you can't " +
+                "handle has big penalties!\n\nRaising your strength is not the only way to access better equipment, " +
+                "you can also lower equipment strength requirements with Scrolls of Upgrade.\n\n\n" +
+                "Items you find in the dungeon will often be unidentified, each potion/scroll/ring/wand will have a" +
+                "different look each game, and equipment can be upgraded or degraded and cursed. Using an " +
+                "item for long enough will identify it. Unidentified items are unpredictable, so be careful!",
+		"Charging forward recklessly is a great way to get killed.\n\n" +
+                "Slowing down a bit to examine enemies and use the environment and items to your advantage can make a" +
+                " big difference.\n\nThe dungeon is full of traps and hidden passageways as well, keep your eyes open!",
+		"Levelling up is important!\n\nBeing at least the same level as the floor you are on is a good idea. " +
+                "Don 't be afraid to slow down a little and train yourself up.",
+        "The rogue isn't the only character that benefits from being sneaky. You can retreat to the other side of a " +
+                "door to ambush a chasing opponent for a guaranteed hit!" +
+                "\n\nAny attack on an unaware opponent is guaranteed to hit them.",
 			
-		"Beware of Goo!",
+		"Note to all sewer maintenance & cleaning crews: TURN BACK NOW. Some sort of sludge monster has made its home" +
+                " here and several crews have taken heavy losses trying to deal with it.\n\n" +
+                "Approval has been given to seal off the lower sewers, this area has been condemned, LEAVE NOW.",
 		
 		"Pixel-Mart - all you need for successful adventure!",
 		"Identify your potions and scrolls as soon as possible. Don't put it off to the moment " +
