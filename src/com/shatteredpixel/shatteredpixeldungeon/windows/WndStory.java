@@ -46,9 +46,10 @@ public class WndStory extends Window {
 	
 	static {
 		CHAPTERS.put( ID_SEWERS, 
-		"The Dungeon lies right beneath the City, its upper levels actually constitute the City's sewer system. " +
-		"Being nominally a part of the City, these levels are not that dangerous. No one will call it a safe place, " +
-		"but at least you won't need to deal with evil magic here." );
+		"The Dungeon lies right beneath the City, its upper levels actually constitute the City's sewer system.\n\n " +
+        "As dark magic has slowly seeped from below the usually harmless sewer inhabitants have become more and more " +
+        "dangerous. The city sends guard patrols down here regularly to try and maintain safety for those above, but " +
+        "they are slowly failing.\n\n This place is dangerous, but a least the dark magic at work here is relatively weak." );
 		
 		CHAPTERS.put( ID_PRISON, 
 		"Many years ago an underground prison was built here for the most dangerous criminals. At the time it seemed " +

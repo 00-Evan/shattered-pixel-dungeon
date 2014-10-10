@@ -22,13 +22,15 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 
 public class IntroScene extends PixelScene {
 
-	private static final String TEXT = 	
-		"Many heroes of all kinds ventured into the Dungeon before you. Some of them have returned with treasures and magical " +
-		"artifacts, most have never been heard of since. But none have succeeded in retrieving the Amulet of Yendor, " +
-		"which is told to be hidden in the depths of the Dungeon.\n\n" +
-		"" +
-		"You consider yourself ready for the challenge, but most importantly, you feel that fortune smiles on you. " +
-		"It's time to start your own adventure!";
+	private static final String TEXT =
+		"Ever since the fall of the Dwarven Metropolis below, this place has been more of a dungeon than a trade route. " +
+        "Many heroes of all kinds have ventured into the dungeon before you from the human city above. Some of them " +
+        "have returned with treasures and magical artifacts, most have never been heard from again.\n\n" +
+        "None, however, have dared to venture all the way down and retrieved the Amulet of Yendor, " +
+        "which is said to be hidden in the depths. Others speak of a mad dwarvern king who’s desire for power " +
+        "awoke an ancient evil. Even now dark energy radiates from the dungeon, slowly making its way up into the city.\n\n" +
+        "You’re not sure how true the stories are, but you consider yourself ready for the challenge. Most importantly, " +
+        "you feel that fortune smiles upon you. It’s time to start your own adventure in Pixel Dungeon!";
 	
 	@Override
 	public void create() {
