@@ -52,7 +52,7 @@ public class ScrollOfPsionicBlast extends Scroll {
 			}
 		}
 
-		curUser.damage(Random.IntRange(curUser.HT/3, (int)(curUser.HT*0.67)), this);
+		curUser.damage(Random.IntRange(curUser.HT/4, curUser.HT/2), this);
         Buff.prolong( curUser, Paralysis.class, Random.Int( 4, 6 ) );
 		Buff.prolong( curUser, Blindness.class, Random.Int( 6, 9 ) );
 		Dungeon.observe();
@@ -72,7 +72,7 @@ public class ScrollOfPsionicBlast extends Scroll {
 		return
 			"This scroll contains destructive energy that can be psionically channeled to tear apart " +
 			"the minds of all visible creatures. The power unleashed by the scroll will also temporarily " +
-			"blind, temporarily stun, and massively harm the reader.";
+			"blind, stun, and seriously harm the reader.";
 	}
 	
 	@Override
