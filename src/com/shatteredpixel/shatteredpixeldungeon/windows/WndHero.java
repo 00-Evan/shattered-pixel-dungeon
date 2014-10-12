@@ -19,6 +19,8 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import java.util.Locale;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.BitmapText;
@@ -102,14 +104,15 @@ public class WndHero extends WndTabbed {
 		
 		public StatsTab() {
 			
-			Hero hero = Dungeon.hero; 
+			Hero hero = Dungeon.hero;
 
-			BitmapText title = PixelScene.createText( 
-				Utils.format( TXT_TITLE, hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ), 9 );
-			title.hardlight( TITLE_COLOR );
-			title.measure();
-			add( title );
-			
+            IconTitle title = new IconTitle();
+            title.icon( HeroSprite.avatar(hero.heroClass, hero.tier()) );
+            title.label(Utils.format( TXT_TITLE, hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ), 9);
+            title.color(Window.SHPX_COLOR);
+            title.setRect( 0, 0, WIDTH, 0 );
+			add(title);
+
 			RedButton btnCatalogus = new RedButton( TXT_CATALOGUS ) {
 				@Override
 				protected void onClick() {
@@ -117,9 +120,9 @@ public class WndHero extends WndTabbed {
 					GameScene.show( new WndCatalogus() );
 				}
 			};
-			btnCatalogus.setRect( 0, title.y + title.height(), btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
+			btnCatalogus.setRect( 0, title.height(), btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
 			add( btnCatalogus );
-			
+
 			RedButton btnJournal = new RedButton( TXT_JOURNAL ) {
 				@Override
 				protected void onClick() {
@@ -127,31 +130,31 @@ public class WndHero extends WndTabbed {
 					GameScene.show( new WndJournal() );
 				}
 			};
-			btnJournal.setRect( 
-				btnCatalogus.right() + 1, btnCatalogus.top(), 
+			btnJournal.setRect(
+				btnCatalogus.right() + 1, btnCatalogus.top(),
 				btnJournal.reqWidth() + 2, btnJournal.reqHeight() + 2 );
 			add( btnJournal );
-			
+
 			pos = btnCatalogus.bottom() + GAP;
-			
+
 			statSlot( TXT_STR, hero.STR() );
 			statSlot( TXT_HEALTH, hero.HP + "/" + hero.HT );
 			statSlot( TXT_EXP, hero.exp + "/" + hero.maxExp() );
 
 			pos += GAP;
-			
+
 			statSlot( TXT_GOLD, Statistics.goldCollected );
 			statSlot( TXT_DEPTH, Statistics.deepestFloor );
-			
+
 			pos += GAP;
 		}
-		
+
 		private void statSlot( String label, String value ) {
-			
+
 			BitmapText txt = PixelScene.createText( label, 8 );
 			txt.y = pos;
 			add( txt );
-			
+
 			txt = PixelScene.createText( value, 8 );
 			txt.measure();
 			txt.x = PixelScene.align( WIDTH * 0.65f );

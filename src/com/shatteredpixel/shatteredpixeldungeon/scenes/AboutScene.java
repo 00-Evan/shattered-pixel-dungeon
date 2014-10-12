@@ -60,12 +60,12 @@ public class AboutScene extends PixelScene {
         shpx.y = align( 30 );
         add( shpx );
 
-        new Flare( 7, 64 ).color( 0x57b300, true ).show( shpx, 0 ).angularSpeed = +20;
+        new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
 
         BitmapTextMultiline shpxtitle = createMultiline( TTL_SHPX, 8 );
         shpxtitle.maxWidth = Math.min( Camera.main.width, 120 );
         shpxtitle.measure();
-        shpxtitle.hardlight( 0x50a500 );
+        shpxtitle.hardlight( Window.SHPX_COLOR );
         add( shpxtitle );
 
         shpxtitle.x = align( (Camera.main.width - shpxtitle.width()) / 2 );
@@ -82,7 +82,7 @@ public class AboutScene extends PixelScene {
         BitmapTextMultiline shpxlink = createMultiline( LNK_SHPX, 8 );
         shpxlink.maxWidth = Math.min( Camera.main.width, 120 );
         shpxlink.measure();
-        shpxlink.hardlight( 0x57b300 );
+        shpxlink.hardlight( Window.SHPX_COLOR );
         add( shpxlink );
 
         shpxlink.x = shpxtext.x;
