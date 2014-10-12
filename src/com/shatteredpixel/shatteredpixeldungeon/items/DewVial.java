@@ -158,12 +158,14 @@ public class DewVial extends Item {
         QuickSlot.refresh();
 	}
 
+    //removed as people need a bigger distinction to realize the dew vial doesn't revive.
+    /*
 	private static final Glowing WHITE = new Glowing( 0xFFFFCC );
 
 	@Override
 	public Glowing glowing() {
 		return isFull() ? WHITE : null;
-	}
+	}*/
 
 	@Override
 	public String status() {
@@ -177,7 +179,8 @@ public class DewVial extends Item {
 			"The more full the vial is, the more each dew drop will heal you. " +
             "A full vial is as strong as a potion of healing." +
             "\n\nVials like this one used to be imbued with revival magic, " +
-            "but that power has long since faded.";
+            "but that power has faded. There still seems to be some residual power " +
+            "left, perhaps a full vial can bless another revival item.";
 	}
 	
 	@Override

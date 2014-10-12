@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
+import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -578,6 +579,12 @@ public class Hero extends Char {
 						} else {
 							GLog.i( TXT_YOU_NOW_HAVE, item.name() );
 						}
+
+                        //Alright, if anyone complains about not knowing the vial doesn't revive
+                        //after this... I'm done, I'm just done.
+                        if (item instanceof DewVial) {
+                            GLog.w("Its revival power seems to have faded.");
+                        }
 					}
 					
 					if (!heap.isEmpty()) {
