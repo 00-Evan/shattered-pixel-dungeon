@@ -18,8 +18,8 @@ public class RingOfTenacity extends Ring {
     public String desc() {
         return isKnown() ?
                 "When worn, this ring will allow the wearer to resist normally mortal strikes. " +
-                "The weaker the user becomes, the more resistant they will be to physical damage. " +
-                "A cursed ring will instead make it easier for the wearer to be executed." :
+                "The more injured the user is, the more resistant they will be to damage. " +
+                "A cursed ring will instead make it easier for enemies to execute the wearer." :
                 super.desc();
     }
 

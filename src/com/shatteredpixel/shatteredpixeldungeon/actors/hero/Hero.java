@@ -842,7 +842,7 @@ public class Hero extends Char {
             tenacity += ((RingOfTenacity.Tenacity)buff).level;
         }
         if (tenacity != 0) //(HT - HP)/HT = heroes current % missing health.
-            dmg *= Math.pow(0.9, tenacity*((float)(HT - HP)/HT));
+            dmg = (int)Math.ceil((float)dmg * Math.pow(0.9, tenacity*((float)(HT - HP)/HT)));
 
 		super.damage( dmg, src );
 		
