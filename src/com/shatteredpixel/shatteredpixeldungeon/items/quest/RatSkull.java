@@ -20,6 +20,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
+//this one's still hanging around to support quests from old saves
+//TODO: remove this when saves from v0.2.1 are no longer supported
 public class RatSkull extends Item {
 	
 	{

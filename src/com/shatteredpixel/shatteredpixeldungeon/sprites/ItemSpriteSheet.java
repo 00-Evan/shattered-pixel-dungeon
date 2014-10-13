@@ -135,7 +135,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_ARMBAND    = ROW8+1;
     public static final int ARTIFACT_CAPE       = ROW8+2;
     public static final int ARTIFACT_TALISMAN   = ROW8+3;
-
+    public static final int ARTIFACT_ROSE       = ROW8+4;
 
     //Row Nine: Artifacts with Dynamic Images
     public static final int ARTIFACT_HORN1      = ROW9+0;
@@ -199,12 +199,11 @@ public class ItemSpriteSheet {
     public static final int PASTY		= ROW13+6;
 
     //Row Fourteen: Quest Items
-    public static final int ROSE	= ROW14+0;
-    public static final int SKULL	= ROW14+1;
-    public static final int DUST	= ROW14+2;
-    public static final int PICKAXE	= ROW14+3;
-    public static final int ORE		= ROW14+4;
-    public static final int TOKEN	= ROW14+5;
+    public static final int SKULL	= ROW14+0;
+    public static final int DUST	= ROW14+1;
+    public static final int PICKAXE	= ROW14+2;
+    public static final int ORE		= ROW14+3;
+    public static final int TOKEN	= ROW14+4;
 
     //Row Fifteen: Containers/Bags
     public static final int VIAL	    = ROW15+0;
