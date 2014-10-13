@@ -132,6 +132,9 @@ public abstract class Level implements Bundlable {
 	
 	public int entrance;
 	public int exit;
+
+    //when a boss level has become locked.
+    public boolean locked = false;
 	
 	public HashSet<Mob> mobs;
 	public SparseArray<Heap> heaps;
@@ -151,6 +154,7 @@ public abstract class Level implements Bundlable {
 	private static final String MAPPED		= "mapped";
 	private static final String ENTRANCE	= "entrance";
 	private static final String EXIT		= "exit";
+    private static final String LOCKED      = "locked";
 	private static final String HEAPS		= "heaps";
 	private static final String PLANTS		= "plants";
 	private static final String MOBS		= "mobs";
@@ -256,6 +260,8 @@ public abstract class Level implements Bundlable {
 		
 		entrance	= bundle.getInt( ENTRANCE );
 		exit		= bundle.getInt( EXIT );
+
+        locked      = bundle.getBoolean( LOCKED );
 		
 		weakFloorCreated = false;
 		
@@ -308,6 +314,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( MAPPED, mapped );
 		bundle.put( ENTRANCE, entrance );
 		bundle.put( EXIT, exit );
+        bundle.put( LOCKED, locked );
 		bundle.put( HEAPS, heaps.values() );
 		bundle.put( PLANTS, plants.values() );
 		bundle.put( MOBS, mobs );

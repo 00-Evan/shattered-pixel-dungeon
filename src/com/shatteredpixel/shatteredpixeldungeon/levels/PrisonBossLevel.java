@@ -309,6 +309,7 @@ public class PrisonBossLevel extends RegularLevel {
 		if (ch == Dungeon.hero && !enteredArena && roomExit.inside( cell )) {
 			
 			enteredArena = true;
+            locked = true;
 		
 			int pos;
 			do {
@@ -326,6 +327,7 @@ public class PrisonBossLevel extends RegularLevel {
 			set( arenaDoor, Terrain.LOCKED_DOOR );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observe();
+
 		}
 	}
 	
@@ -335,6 +337,7 @@ public class PrisonBossLevel extends RegularLevel {
 		if (!keyDropped && item instanceof SkeletonKey) {
 			
 			keyDropped = true;
+            locked = false;
 			
 			set( arenaDoor, Terrain.DOOR );
 			GameScene.updateMap( arenaDoor );
