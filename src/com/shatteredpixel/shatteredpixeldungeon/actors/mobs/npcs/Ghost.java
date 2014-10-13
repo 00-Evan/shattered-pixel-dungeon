@@ -22,15 +22,11 @@ import java.util.HashSet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
@@ -46,7 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -56,8 +51,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.RatSkull;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
@@ -232,7 +225,9 @@ public class Ghost extends Mob.NPC {
 	public HashSet<Class<?>> immunities() {
 		return IMMUNITIES;
 	}
-	
+
+
+
 	public static class Quest {
 		
 		private static boolean spawned;
@@ -368,8 +363,10 @@ public class Ghost extends Mob.NPC {
 			Journal.remove( Journal.Feature.GHOST );
 		}
 	}
+
+
 	
-	public static class FetidRat extends Mob {
+	public static class FetidRat extends Rat {
 
 		{
 			name = "fetid rat";
@@ -379,11 +376,6 @@ public class Ghost extends Mob.NPC {
 			defenseSkill = 4;
 			
 			EXP = 4;
-		}
-		
-		@Override
-		public int damageRoll() {
-			return Random.NormalIntRange( 1, 5 );
 		}
 		
 		@Override
@@ -431,12 +423,14 @@ public class Ghost extends Mob.NPC {
 		}
 	}
 
+
+
     public static class GnollTrickster extends Gnoll {
         {
             name = "gnoll trickster";
             spriteClass = GnollTricksterSprite.class;
 
-            HP = HT = 20;
+            HP = HT = 25;
             defenseSkill = 4;
 
             EXP = 5;
@@ -448,13 +442,8 @@ public class Ghost extends Mob.NPC {
         private int combo = 0;
 
         @Override
-        public int damageRoll() {
-            return Random.NormalIntRange( 1, 2 );
-        }
-
-        @Override
         public int attackSkill( Char target ) {
-            return 14;
+            return 16;
         }
 
         @Override
@@ -470,14 +459,11 @@ public class Ghost extends Mob.NPC {
         @Override
         public int attackProc( Char enemy, int damage ) {
             //The gnoll's attacks get more severe the more the player lets it hit them
-            int effect = Random.Int(3)+combo;
-            if (effect <= 2) {
+            int effect = Random.Int(4)+combo;
 
-                Buff.prolong(enemy, Cripple.class, 2f);
+            if (effect > 2) {
 
-            } else {
-
-                if (effect >=4 && enemy.buff(Burning.class) == null){
+                if (effect >=5 && enemy.buff(Burning.class) == null){
 
                     if (Level.flamable[enemy.pos])
                         GameScene.add( Blob.seed( enemy.pos, 4, Fire.class ) );
@@ -498,6 +484,37 @@ public class Ghost extends Mob.NPC {
             } else {
                 return super.getCloser( target );
             }
+        }
+
+        @Override
+        //If the gnoll is hit below half, he teleports away to escape!
+        public void damage( int dmg, Object src ){
+            if (HP > 12 && (HP - dmg) <= 12){
+                int count = 10;
+                int pos;
+
+                do {
+                    pos = Dungeon.level.randomRespawnCell();
+                    if (count-- <= 0) {
+                        break;
+                    }
+                } while (pos == -1);
+
+                if (pos != -1) {
+
+                    CellEmitter.get( this.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
+                    Sample.INSTANCE.play( Assets.SND_PUFF );
+
+                    this.pos = pos;
+                    sprite.place( pos );
+                    sprite.visible = Dungeon.visible[pos];
+
+                    GLog.w("The gnoll trickster blinks away!");
+
+                }
+            }
+
+            super.damage(dmg, src);
         }
 
         @Override
@@ -533,12 +550,14 @@ public class Ghost extends Mob.NPC {
 
     }
 
+
+
     public static class GreatCrab extends Crab {
         {
             name = "great crab";
             spriteClass = GreatCrabSprite.class;
 
-            HP = HT = 30;
+            HP = HT = 40;
             defenseSkill = 0; //see damage()
             baseSpeed = 1f;
 
@@ -578,7 +597,7 @@ public class Ghost extends Mob.NPC {
 
         @Override
         public void damage( int dmg, Object src ){
-            //crab blocks all attacks originating from the hero or enemy characters if it is alerted.
+            //crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
             //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
             if (enemySeen && (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
                 GLog.w("The crab notices the attack and blocks with its massive claw.");
@@ -595,7 +614,6 @@ public class Ghost extends Mob.NPC {
             Quest.process();
 
             Dungeon.level.drop( new MysteryMeat(), pos );
-            Dungeon.level.drop( new MysteryMeat(), pos );
             Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
         }
 
@@ -605,7 +623,7 @@ public class Ghost extends Mob.NPC {
                     "This crab is gigantic, even compared to other sewer crabs. " +
                     "Its blue shell is covered in cracks and barnacles, showing great age. " +
                     "It lumbers around slowly, barely keeping balance with its massive claw.\n\n" +
-                    "While the crab only has one claw, its size and hardness easily compensate. " +
+                    "While the crab only has one claw, its size easily compensates. " +
                     "The crab holds the claw infront of itself whenever it sees a threat, shielding " +
                     "itself behind an impenetrable wall of carapace.";
         }
