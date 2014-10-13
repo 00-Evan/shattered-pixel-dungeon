@@ -71,9 +71,8 @@ public class Dungeon {
 		"Almost all equipment has a strength requirement. Don't overestimate your strength, using equipment you can't " +
                 "handle has big penalties!\n\nRaising your strength is not the only way to access better equipment, " +
                 "you can also lower equipment strength requirements with Scrolls of Upgrade.\n\n\n" +
-                "Items you find in the dungeon will often be unidentified, each potion/scroll/ring/wand will have a" +
-                "different look each game, and equipment can be upgraded or degraded and cursed. Using an " +
-                "item for long enough will identify it. Unidentified items are unpredictable, so be careful!",
+                "Items found in the dungeon will often be unidentified. Some items will have unknown effects, others " +
+                "may be upgraded, or degraded and cursed! Unidentified items are unpredictable, so be careful!",
 		"Charging forward recklessly is a great way to get killed.\n\n" +
                 "Slowing down a bit to examine enemies and use the environment and items to your advantage can make a" +
                 " big difference.\n\nThe dungeon is full of traps and hidden passageways as well, keep your eyes open!",
@@ -84,7 +83,7 @@ public class Dungeon {
                 "\n\nAny attack on an unaware opponent is guaranteed to hit them.",
 			
 		"Note to all sewer maintenance & cleaning crews: TURN BACK NOW. Some sort of sludge monster has made its home" +
-                " here and several crews have taken heavy losses trying to deal with it.\n\n" +
+                " here and several crews have been lost trying to deal with it.\n\n" +
                 "Approval has been given to seal off the lower sewers, this area has been condemned, LEAVE NOW.",
 		
 		"Pixel-Mart - all you need for successful adventure!",
