@@ -1,7 +1,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.IncendiaryDart;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
@@ -43,7 +43,7 @@ public class GnollTricksterSprite extends MobSprite {
         if (!Level.adjacent(cell, ch.pos)) {
 
             ((MissileSprite)parent.recycle( MissileSprite.class )).
-                    reset( ch.pos, cell, new IncendiaryDart(), new Callback() {
+                    reset( ch.pos, cell, new CurareDart(), new Callback() {
                         @Override
                         public void call() {
                             ch.onAttackComplete();

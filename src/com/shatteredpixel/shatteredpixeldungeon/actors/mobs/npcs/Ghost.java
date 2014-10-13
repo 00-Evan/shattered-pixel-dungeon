@@ -539,10 +539,10 @@ public class Ghost extends Mob.NPC {
         public String description() {
             return
                     "A strange looking creature, even by gnoll standards. It hunches forward with a wicked grin, " +
-                    "almost cradling the satchel hanging at its side. Its eyes are wide with a strange mix of " +
+                    "almost cradling the satchel hanging over its shoulder. Its eyes are wide with a strange mix of " +
                     "fear and excitement.\n\n" +
                     "There is a large collection of poorly made darts in its satchel, they all seem to be " +
-                    "tipped with various poisonous and flammable substances.";
+                    "tipped with various harmful substances.";
         }
 
         private static final String COMBO = "combo";
