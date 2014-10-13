@@ -29,10 +29,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.*;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -336,11 +339,11 @@ public class Ghost extends Mob.NPC {
                     do {
                         another = Generator.randomWeapon(10+i);
                     } while (another instanceof MissileWeapon);
-                    if (another.level > weapon.level) {
+                    if (another.level >= weapon.level) {
                         weapon = (Weapon) another;
                     }
                     another = Generator.randomArmor(10+i);
-                    if (another.level > armor.level) {
+                    if (another.level >= armor.level) {
                         armor = (Armor) another;
                     }
                 }
@@ -537,6 +540,7 @@ public class Ghost extends Mob.NPC {
 
             HP = HT = 30;
             defenseSkill = 0; //see damage()
+            baseSpeed = 1f;
 
             EXP = 6;
 
@@ -561,24 +565,22 @@ public class Ghost extends Mob.NPC {
 
         @Override
         protected boolean getCloser( int target ) {
-
             //this is used such that the crab remains slow, but still detects the player at the expected rate.
             if (moving) {
                 moving = false;
                 return super.getCloser( target );
             } else {
                 moving = true;
-                return false;
+                return true;
             }
 
         }
 
-        //TODO: New functionality, test this with a variety of items/effects
         @Override
         public void damage( int dmg, Object src ){
             //crab blocks all attacks originating from the hero or enemy characters if it is alerted.
             //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
-            if (enemySeen && (src instanceof Weapon || src instanceof Char)){
+            if (enemySeen && (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
                 GLog.w("The crab notices the attack and blocks with its massive claw.");
                 sprite.showStatus( CharSprite.NEUTRAL, "blocked" );
             } else {
