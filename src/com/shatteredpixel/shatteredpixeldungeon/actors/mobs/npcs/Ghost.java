@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.RatSkull;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -96,7 +97,7 @@ public class Ghost extends Mob.NPC {
             "Hello adventurer... Once I was like you - strong and confident... " +
             "But I was slain by an ancient creature... I can't leave this place... Not until I have my revenge... " +
             "Slay the _great crab_, that has taken my life...\n\n" +
-            "It is unnaturally old... With a massive single claw and a thick shell. " +
+            "It is unnaturally old... With a massive single claw and a thick shell... " +
             "Beware its claw, the crab blocks and strikes with it...";
 
     private static final String TXT_CRAB2	=
@@ -149,7 +150,7 @@ public class Ghost extends Mob.NPC {
 		
 		if (Quest.given) {
 			
-			if (Quest.processed){
+			if (Quest.processed || Dungeon.hero.belongings.getItem( RatSkull.class ) != null){
 				GameScene.show( new WndSadGhost( this, Quest.type ) );
 			} else {
                 switch (Quest.type){
@@ -288,15 +289,25 @@ public class Ghost extends Mob.NPC {
 			
 			Bundle node = bundle.getBundle( NODE );
 
-            //TODO: may be some issues with an old quest in progress that already spawned a fetid rat
+			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
+                //logic for pre- 2.1.0 quests
+                if (node.contains( ALTERNATIVE )){
+                    if (node.getBoolean( ALTERNATIVE)){
+                        given = node.getBoolean( GIVEN );
+                        type = 1;
+                        processed = false;
+                    } else {
+                        type = 1;
+                        given = false;
+                        processed = false;
+                    }
+                } else {
+                    type = node.getInt(TYPE);
+                    processed = node.getBoolean( PROCESSED );
+                    given	= node.getBoolean( GIVEN );
+                }
 
-			if (!node.isNull() && !node.contains( ALTERNATIVE ) && (spawned = node.getBoolean( SPAWNED ))) {
-				
-				type = node.getInt( TYPE );
-
-				given	= node.getBoolean( GIVEN );
 				depth	= node.getInt( DEPTH );
-				processed = node.getBoolean( PROCESSED );
 				
 				weapon	= (Weapon)node.get( WEAPON );
 				armor	= (Armor)node.get( ARMOR );
