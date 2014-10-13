@@ -18,9 +18,7 @@ public class WelcomeScene extends PixelScene {
 
     private static final String TTL_Welcome = "Welcome!";
 
-    private static final String TTL_LastVer = "v0.2.0 Patched!";
-
-    private static final String TTL_From011 = "Updated To v0.2.0";
+    private static final String TTL_LastVer = "Updated To v0.2.1";
 
     private static final String TTL_Future = "Wait What?";
 
@@ -31,25 +29,11 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_LastVer =
-            "v0.2.0a:" +
-            "\n-Bugfixes" +
-            "\n-Chalice now deals 25% less damage\n-Artifacts can now be sold to Pixel Mart" +
-            "\n-Artifacts & Rings are a little rarer now.\n\n" +
-            "v0.2.0b:" +
-            "\n-BugFixes" +
-            "\n-Tweaked a few descriptions & sprites\n\n" +
-            "v0.2.0c:" +
-            "\n-Fixed a bug with the Ring of Might.\n-Fixed bugs with Scroll of Lullaby." +
-            "\n-Fixed a bug with the rankings page.\n-Fixed another save/load bug." +
-            "\n\n-Reduced Horn of Plenty's power a bit.\n-Seed pouch capacity increased." +
-            "\n-Blandfruit can now stack.\n-Various messages tweaked." +
-            "\n\nIf you are having any issues further issues, please email me so I can sort them out!";
-
-    private static final String TXT_From011 =
-            "Hello early adopter, thank you so much for giving Shattered PD a try in its earliest stages!\n\n"+
-            "This update completely overhauls rings, and as such any existing saves will have their rings removed.\n\n"+
-            "If you have a game in progress with rings that you'd rather not lose, please revert to v0.1.1a.\n\n"+
-            "You can simply reinstall the 0.1.1a APK from the button on the right, your saves will not be affected.";
+            "This update brings lots of bugfixes and significant changes to the sewers!\n\n" +
+            "Expect some new quests from the ghost, improvements to the fight with Goo, and " +
+            "much more useful early tips. The story is also being expanded on a little as well.\n\n" +
+            "This update is mainly aimed at new players, but everyone should be able to appreciate some more " +
+            "variety in the early stages of the game.";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon.\n\n"+
@@ -57,13 +41,11 @@ public class WelcomeScene extends PixelScene {
             "Regardless, tread with caution! Your saves may contain things which don't exist in this version, "+
             "this could cause some very weird errors to occur.";
 
-    private static final String LNK = "https://drive.google.com/folderview?id=0B1jhmo3hgqJtN3I4N1p2blFNVmc";
+    private static final String LNK = "https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon";
 
     @Override
     public void create() {
         super.create();
-
-        boolean fromAlpha = false;
 
         int gameversion = ShatteredPixelDungeon.version();
 
@@ -112,23 +94,19 @@ public class WelcomeScene extends PixelScene {
                 Game.switchScene(TitleScene.class);
             }
         };
-        if (fromAlpha) {
-            okay.setRect(text.x, text.y + text.height() + 5, 55, 18);
-            add(okay);
 
-            RedButton revert = new RedButton("Revert") {
-                @Override
-                protected void onClick() {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LNK));
-                    Game.instance.startActivity(intent);
-                }
-            };
-            revert.setRect(text.x + 65, text.y + text.height() + 5, 55, 18);
-            add(revert);
-        } else {
-            okay.setRect(text.x, text.y + text.height() + 5, 120, 18);
-            add(okay);
-        }
+        okay.setRect(text.x, text.y + text.height() + 5, 55, 18);
+        add(okay);
+
+        RedButton revert = new RedButton("Changes") {
+            @Override
+            protected void onClick() {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LNK));
+                Game.instance.startActivity(intent);
+            }
+        };
+        revert.setRect(text.x + 65, text.y + text.height() + 5, 55, 18);
+        add(revert);
 
         Archs archs = new Archs();
         archs.setSize( Camera.main.width, Camera.main.height );

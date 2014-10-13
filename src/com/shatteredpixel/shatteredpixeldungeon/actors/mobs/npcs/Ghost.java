@@ -61,7 +61,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-//TODO: test this whole class a bunch
 public class Ghost extends Mob.NPC {
 
 	{
