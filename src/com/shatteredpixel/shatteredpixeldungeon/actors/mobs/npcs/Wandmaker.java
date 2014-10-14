@@ -283,6 +283,7 @@ public class Wandmaker extends Mob.NPC {
 				
 				if (candidates.size() > 0) {
 					Random.element( candidates ).drop( new CorpseDust() );
+                    given = true;
 				} else {
 					int pos = Dungeon.level.randomRespawnCell();
 					while (Dungeon.level.heaps.get( pos ) != null) {
