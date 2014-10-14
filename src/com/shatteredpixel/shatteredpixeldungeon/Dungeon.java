@@ -77,7 +77,7 @@ public class Dungeon {
                 "Slowing down a bit to examine enemies and use the environment and items to your advantage can make a" +
                 " big difference.\n\nThe dungeon is full of traps and hidden passageways as well, keep your eyes open!",
 		"Levelling up is important!\n\nBeing at least the same level as the floor you are on is a good idea. " +
-                "Don 't be afraid to slow down a little and train yourself up.",
+                "Don't be afraid to slow down a little and train yourself up.",
         "The rogue isn't the only character that benefits from being sneaky. You can retreat to the other side of a " +
                 "door to ambush a chasing opponent for a guaranteed hit!" +
                 "\n\nAny attack on an unaware opponent is guaranteed to hit them.",
