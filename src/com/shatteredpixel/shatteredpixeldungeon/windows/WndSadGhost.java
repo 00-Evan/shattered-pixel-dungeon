@@ -17,9 +17,9 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -62,17 +62,17 @@ public class WndSadGhost extends Window {
         BitmapTextMultiline message;
         switch (type){
             case 1:default:
-                titlebar.icon( new FetidRatSprite() );
+                titlebar.icon( new FetidRatSprite(). );
                 titlebar.label( "DEFEATED FETID RAT" );
                 message = PixelScene.createMultiline( TXT_RAT+TXT_GIVEITEM, 6 );
                 break;
             case 2:
-                titlebar.icon( new GnollSprite() );
+                titlebar.icon( new GnollTricksterSprite() );
                 titlebar.label( "DEFEATED GNOLL TRICKSTER" );
                 message = PixelScene.createMultiline( TXT_GNOLL+TXT_GIVEITEM, 6 );
                 break;
             case 3:
-                titlebar.icon( new CrabSprite());
+                titlebar.icon( new GreatCrabSprite());
                 titlebar.label( "DEFEATED GREAT CRAB" );
                 message = PixelScene.createMultiline( TXT_CRAB+TXT_GIVEITEM, 6 );
                 break;
