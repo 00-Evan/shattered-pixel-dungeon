@@ -20,6 +20,8 @@ public class WelcomeScene extends PixelScene {
 
     private static final String TTL_LastVer = "Updated To v0.2.1";
 
+    private static final String TTL_SameVer = "v0.2.1 Hotfixed!";
+
     private static final String TTL_Future = "Wait What?";
 
     private static final String TXT_Welcome =
@@ -34,6 +36,10 @@ public class WelcomeScene extends PixelScene {
             "much more useful early tips. The story is also being expanded on a little as well.\n\n" +
             "This update is mainly aimed at new players, but everyone should be able to appreciate some more " +
             "variety in the early stages of the game.";
+
+    private static final String TXT_SameVer =
+            "This is a quick hotfix patch to address a serious issue with the new " +
+            "sewer boss level generation. All sewer boss levels generated after this patch should work correctly.";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon.\n\n"+
@@ -52,10 +58,15 @@ public class WelcomeScene extends PixelScene {
         BitmapTextMultiline text;
         BitmapTextMultiline title;
 
-        if (gameversion == 0){
+        if (gameversion == 0) {
 
-            text = createMultiline( TXT_Welcome, 8 );
-            title = createMultiline( TTL_Welcome, 16 );
+            text = createMultiline(TXT_Welcome, 8);
+            title = createMultiline(TTL_Welcome, 16);
+
+        } else if (gameversion == 9){
+
+            text = createMultiline(TXT_SameVer, 6 );
+            title = createMultiline(TTL_SameVer, 12 );
 
         } else if (gameversion <= Game.versionCode) {
 
@@ -77,8 +88,6 @@ public class WelcomeScene extends PixelScene {
         text.x = align( (Camera.main.width - text.width()) / 2 );
         text.y = align( (Camera.main.height - text.height()) / 2 );
 
-
-
         title.maxWidth = Math.min( Camera.main.width-50, 120 );
         title.measure();
         title.hardlight(Window.TITLE_COLOR);
@@ -95,18 +104,26 @@ public class WelcomeScene extends PixelScene {
             }
         };
 
-        okay.setRect(text.x, text.y + text.height() + 5, 55, 18);
-        add(okay);
+        if (gameversion == 0){
+            okay.setRect(text.x, text.y + text.height() + 5, 55, 18);
+            add(okay);
 
-        RedButton revert = new RedButton("Changes") {
-            @Override
-            protected void onClick() {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LNK));
-                Game.instance.startActivity(intent);
-            }
-        };
-        revert.setRect(text.x + 65, text.y + text.height() + 5, 55, 18);
-        add(revert);
+            RedButton changes = new RedButton("Changes") {
+                @Override
+                protected void onClick() {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LNK));
+                    Game.instance.startActivity(intent);
+                }
+            };
+
+            changes.setRect(text.x + 65, text.y + text.height() + 5, 55, 18);
+            add(changes);
+
+        } else {
+        okay.setRect(text.x, text.y + text.height() + 5, 120, 18);
+        add(okay);
+        }
+
 
         Archs archs = new Archs();
         archs.setSize( Camera.main.width, Camera.main.height );
