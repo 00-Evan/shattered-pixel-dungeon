@@ -64,13 +64,13 @@ public class SewerBossLevel extends RegularLevel {
 		int retry = 0;
 
         //start with finding an entrance room (will also contain exit)
-        //the room must be at least 4x4 and be at the top of the map(so that nothing can connect with the top)
+        //the room must be at least 4x4 and be nearer the top of the map(so that it is less likely something connects to the top)
         do {
             if (retry++ > 20) {
                 return false;
             }
             roomEntrance = Random.element( rooms );
-        } while (roomEntrance.width() < 4 || roomEntrance.height() < 4 || roomEntrance.top != 0);
+        } while (roomEntrance.width() < 4 || roomEntrance.height() < 4 || roomEntrance.top == 0 || roomEntrance.top >= 12);
 
         roomEntrance.type = Type.ENTRANCE;
         roomExit = roomEntrance;
@@ -151,6 +151,12 @@ public class SewerBossLevel extends RegularLevel {
 				r.type = Type.TUNNEL;
 			}
 		}
+
+        //make sure nothing is connecting at the top of the entrance, this would be bad.
+        for (Room r : roomEntrance.neigbours){
+            if (r.bottom == roomEntrance.top && r.type != Type.NULL)
+                return false;
+        }
 		
 		paint();
 
