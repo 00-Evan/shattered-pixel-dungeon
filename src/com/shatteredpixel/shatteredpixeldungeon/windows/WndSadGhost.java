@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class WndSadGhost extends Window {
 
 	private static final String TXT_RAT	= 
-		"Thank you, that horrid rad is slain and I can finally rest..." +
+		"Thank you, that horrid rat is slain and I can finally rest..." +
         "I wonder what twisted magic created such a foul creature...\n\n";
     private static final String TXT_GNOLL	=
         "Thank you, that scheming gnoll is slain and I can finally rest..." +
@@ -62,7 +62,7 @@ public class WndSadGhost extends Window {
         BitmapTextMultiline message;
         switch (type){
             case 1:default:
-                titlebar.icon( new FetidRatSprite(). );
+                titlebar.icon( new FetidRatSprite() );
                 titlebar.label( "DEFEATED FETID RAT" );
                 message = PixelScene.createMultiline( TXT_RAT+TXT_GIVEITEM, 6 );
                 break;
