@@ -480,7 +480,7 @@ public class Ghost extends Mob.NPC {
                     Buff.affect( enemy, Burning.class ).reignite( enemy );
 
                 } else
-                    Buff.affect( enemy, Poison.class).set((effect-1) * Poison.durationFactor(enemy));
+                    Buff.affect( enemy, Poison.class).set((effect-2) * Poison.durationFactor(enemy));
 
             }
             return damage;
