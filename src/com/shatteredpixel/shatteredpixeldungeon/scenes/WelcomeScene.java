@@ -21,7 +21,7 @@ public class WelcomeScene extends PixelScene {
 
     private static final String TTL_LastVer = "Updated To v0.2.1";
 
-    private static final String TTL_SameVer = "v0.2.1 Hotfixed!";
+    private static final String TTL_SameVer = "v0.2.1 Patched!";
 
     private static final String TTL_Future = "Wait What?";
 
@@ -39,8 +39,10 @@ public class WelcomeScene extends PixelScene {
             "variety in the early stages of the game.";
 
     private static final String TXT_SameVer =
-            "This is a quick hotfix patch to address a serious issue with the new " +
-            "sewer boss level generation. All sewer boss levels generated after this patch should work correctly.";
+            "v0.2.1a was a hotfix patch to correct a serious issue with floor 5.\n\n" +
+            "v0.2.1b corrects several less severe issues, including a bug with the Wandmaker quest and minor visual bugs. " +
+            "The Gnoll trickster boss has been made just a little less punishing as well.\n\n\n" +
+            "If you're still having issues please let me know!";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon.\n\n"+
@@ -64,7 +66,7 @@ public class WelcomeScene extends PixelScene {
             text = createMultiline(TXT_Welcome, 8);
             title = createMultiline(TTL_Welcome, 16);
 
-        } else if (gameversion == 9){
+        } else if (gameversion >= 9){
 
             text = createMultiline(TXT_SameVer, 6 );
             title = createMultiline(TTL_SameVer, 12 );
