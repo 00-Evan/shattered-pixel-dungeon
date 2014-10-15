@@ -8,6 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndChanges;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -104,25 +105,22 @@ public class WelcomeScene extends PixelScene {
             }
         };
 
-        if (gameversion == 0){
-            okay.setRect(text.x, text.y + text.height() + 5, 55, 18);
-            add(okay);
+        /* to be added in a later update
+        okay.setRect(text.x, text.y + text.height() + 5, 55, 18);
+        add(okay);
 
-            RedButton changes = new RedButton("Changes") {
-                @Override
-                protected void onClick() {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(LNK));
-                    Game.instance.startActivity(intent);
-                }
-            };
+        RedButton changes = new RedButton("Changes") {
+            @Override
+            protected void onClick() {
+                parent.add(new WndChanges());
+            }
+        };
 
-            changes.setRect(text.x + 65, text.y + text.height() + 5, 55, 18);
-            add(changes);
+        changes.setRect(text.x + 65, text.y + text.height() + 5, 55, 18);
+        add(changes);*/
 
-        } else {
         okay.setRect(text.x, text.y + text.height() + 5, 120, 18);
         add(okay);
-        }
 
 
         Archs archs = new Archs();
