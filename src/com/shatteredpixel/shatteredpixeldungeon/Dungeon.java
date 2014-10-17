@@ -124,12 +124,13 @@ public class Dungeon {
 	public static int arcaneStyli;
 	public static boolean dewVial;		// true if the dew vial can be spawned
 	public static int transmutation;	// depth number for a well of transmutation
-	
+
+    public static int challenges;
 
 	public static Hero hero;
 	public static Level level;
 	
-	// Either� Item or Class<? extends Item>
+	// Either Item or Class<? extends Item>
 	public static Object quickslot;
 	
 	public static int depth;
@@ -147,6 +148,8 @@ public class Dungeon {
     public static int version;
 	
 	public static void init() {
+
+        challenges = ShatteredPixelDungeon.challenges();
 
 		Actor.clear();
 		
@@ -185,6 +188,10 @@ public class Dungeon {
 		
 		StartScene.curClass.initHero( hero );
 	}
+
+    public static boolean isChallenged( int mask ) {
+        return (challenges & mask) != 0;
+    }
 	
 	public static Level newLevel() {
 		
@@ -375,6 +382,7 @@ public class Dungeon {
 	private static final String RN_DEPTH_FILE	= "ranger%d.dat";
 	
 	private static final String VERSION		= "version";
+    private static final String CHALLENGES	= "challenges";
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
 	private static final String DEPTH		= "depth";
@@ -420,6 +428,7 @@ public class Dungeon {
 			Bundle bundle = new Bundle();
 			
 			bundle.put( VERSION, Game.versionCode );
+            bundle.put( CHALLENGES, challenges );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
@@ -488,12 +497,8 @@ public class Dungeon {
 			Actor.fixTime();
 			saveGame( gameFile( hero.heroClass ) );
 			saveLevel();
-			
-			GamesInProgress.set( 
-				hero.heroClass,
-				depth, 
-				hero.lvl, 
-				hero.belongings.armor != null ? hero.belongings.armor.tier : 0 );
+
+            GamesInProgress.set( hero.heroClass, depth, hero.lvl );
 			
 		} else if (WndResurrect.instance != null) {
 			
@@ -516,6 +521,8 @@ public class Dungeon {
 		Bundle bundle = gameBundle( fileName );
 
         version = bundle.getInt( VERSION );
+
+        Dungeon.challenges = bundle.getInt( CHALLENGES );
 		
 		Dungeon.level = null;
 		Dungeon.depth = -1;
@@ -625,7 +632,7 @@ public class Dungeon {
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.depth = bundle.getInt( DEPTH );
 		if (info.depth == -1) {
-			info.depth = bundle.getInt( "maxDepth" );	// <-- It has to be refactored!
+			info.depth = bundle.getInt( "maxDepth" );	// FIXME
 		}
 		Hero.preview( info, bundle.getBundle( HERO ) );
 	}
@@ -638,6 +645,11 @@ public class Dungeon {
 	}
 	
 	public static void win( String desc ) {
+
+        if (challenges != 0) {
+            Badges.validateChampion();
+        }
+
 		resultDescription = desc;
 		Rankings.INSTANCE.submit( true );
 	}
