@@ -17,15 +17,20 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import javax.microedition.khronos.opengles.GL10;
+
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
+import android.view.View;
 
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 
 public class ShatteredPixelDungeon extends Game {
@@ -33,8 +38,14 @@ public class ShatteredPixelDungeon extends Game {
 	public ShatteredPixelDungeon() {
 		super( TitleScene.class );
 		/*
-		No Aliases needed here atm, all previous aliases were from original PD, don't need to support saves from there.
-		*/
+        // 1.7.2
+        com.watabou.utils.Bundle.addAlias(
+                com.shatteredpixel.shatteredpixeldungeon.plants.Dreamweed.class,
+                "com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed" );
+        com.watabou.utils.Bundle.addAlias(
+                com.shatteredpixel.shatteredpixeldungeon.plants.Dreamweed.Seed.class,
+                "com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed$Seed" );
+        */
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -51,9 +62,12 @@ public class ShatteredPixelDungeon extends Game {
 				View.SYSTEM_UI_FLAG_FULLSCREEN | 
 				View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY );
 		}*/
-		
-		Display display = instance.getWindowManager().getDefaultDisplay();
-		boolean landscape = display.getWidth() > display.getHeight();
+
+        updateImmersiveMode();
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        instance.getWindowManager().getDefaultDisplay().getMetrics( metrics );
+        boolean landscape = metrics.widthPixels > metrics.heightPixels;
 		
 		if (Preferences.INSTANCE.getBoolean( Preferences.KEY_LANDSCAPE, false ) != landscape) {
 			landscape( !landscape );
@@ -62,6 +76,21 @@ public class ShatteredPixelDungeon extends Game {
 		Music.INSTANCE.enable( music() );
 		Sample.INSTANCE.enable( soundFx() );
 	}
+
+    @Override
+    public void onWindowFocusChanged( boolean hasFocus ) {
+
+        super.onWindowFocusChanged( hasFocus );
+
+        if (hasFocus) {
+            updateImmersiveMode();
+        }
+    }
+
+    public static void switchNoFade( Class<? extends PixelScene> c ) {
+        PixelScene.noFade = true;
+        switchScene( c );
+    }
 	
 	/*
 	 * ---> Prefernces
@@ -82,6 +111,55 @@ public class ShatteredPixelDungeon extends Game {
 		Preferences.INSTANCE.put( Preferences.KEY_SCALE_UP, value );
 		switchScene( TitleScene.class );
 	}
+
+    // *** IMMERSIVE MODE ****
+
+    private static boolean immersiveModeChanged = false;
+
+    @SuppressLint("NewApi")
+    public static void immerse( boolean value ) {
+        Preferences.INSTANCE.put( Preferences.KEY_IMMERSIVE, value );
+
+        instance.runOnUiThread( new Runnable() {
+            @Override
+            public void run() {
+                updateImmersiveMode();
+                immersiveModeChanged = true;
+            }
+        } );
+    }
+
+    @Override
+    public void onSurfaceChanged( GL10 gl, int width, int height ) {
+        super.onSurfaceChanged( gl, width, height );
+
+        if (immersiveModeChanged) {
+            requestedReset = true;
+            immersiveModeChanged = false;
+        }
+    }
+
+    @SuppressLint("NewApi")
+    public static void updateImmersiveMode() {
+        if (android.os.Build.VERSION.SDK_INT >= 19) {
+            instance.getWindow().getDecorView().setSystemUiVisibility(
+                    immersed() ?
+                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                                    View.SYSTEM_UI_FLAG_FULLSCREEN |
+                                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                            :
+                            0 );
+        }
+    }
+
+    public static boolean immersed() {
+        return Preferences.INSTANCE.getBoolean( Preferences.KEY_IMMERSIVE, false );
+    }
+
+    // *****************************
 	
 	public static boolean scaleUp() {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_SCALE_UP, true );
@@ -139,6 +217,14 @@ public class ShatteredPixelDungeon extends Game {
 	public static int lastClass() {
 		return Preferences.INSTANCE.getInt( Preferences.KEY_LAST_CLASS, 0 );
 	}
+
+    public static void challenges( int value ) {
+        Preferences.INSTANCE.put( Preferences.KEY_CHALLENGES, value );
+    }
+
+    public static int challenges() {
+        return Preferences.INSTANCE.getInt( Preferences.KEY_CHALLENGES, 0 );
+    }
 	
 	public static void intro( boolean value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_INTRO, value );
