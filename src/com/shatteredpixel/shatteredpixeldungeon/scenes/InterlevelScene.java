@@ -238,6 +238,7 @@ public class InterlevelScene extends PixelScene {
 						Game.switchScene( StartScene.class );
 					};
 				} );
+                error = null;
 			}
 			break;
 		}

@@ -20,6 +20,8 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
@@ -143,12 +145,16 @@ public class AboutScene extends PixelScene {
 		Archs archs = new Archs();
 		archs.setSize( Camera.main.width, Camera.main.height );
 		addToBack( archs );
-		
+
+        ExitButton btnExit = new ExitButton();
+        btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
+        add( btnExit );
+
 		fadeIn();
 	}
 	
 	@Override
 	protected void onBackPressed() {
-		Game.switchScene( TitleScene.class );
+		ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 	}
 }

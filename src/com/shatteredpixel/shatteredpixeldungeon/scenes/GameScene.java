@@ -600,9 +600,10 @@ public class GameScene extends PixelScene {
 	private static final CellSelector.Listener defaultCellListener = new CellSelector.Listener() {
 		@Override
 		public void onSelect( Integer cell ) {
-			if (cell != -1) {
-				Dungeon.hero.handle( cell );
-			}
+            if (Dungeon.hero.handle( cell )) {
+            //	Actor.next();
+                Dungeon.hero.next();
+            }
 		}
 		@Override
 		public String prompt() {

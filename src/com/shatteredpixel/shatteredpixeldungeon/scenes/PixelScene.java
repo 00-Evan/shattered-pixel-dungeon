@@ -238,10 +238,15 @@ public class PixelScene extends Scene {
 		v.x = align( c, v.x );
 		v.y = align( c, v.y );
 	}
-	
-	protected void fadeIn() {
-		fadeIn( 0xFF000000, false );
-	}
+
+    public static boolean noFade = false;
+    protected void fadeIn() {
+        if (noFade) {
+            noFade = false;
+        } else {
+            fadeIn( 0xFF000000, false );
+        }
+    }
 	
 	protected void fadeIn( int color, boolean light ) {
 		add( new Fader( color, light ) );
