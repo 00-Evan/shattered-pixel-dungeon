@@ -81,30 +81,33 @@ public class Ghost extends Mob.NPC {
             "But I was slain by a foul beast... I can't leave this place... Not until I have my revenge... " +
             "Slay the _fetid rat_, that has taken my life...\n\n" +
             "It stalks this floor... Spreading filth everywhere... " +
-            "Beware its cloud of stink and acidic bite... ";
+            "_Beware its cloud of stink and corrosive bite, the acid dissolves in water..._ ";
 
     private static final String TXT_RAT2	=
-            "Please... Help me... Slay the abomination...";
+            "Please... Help me... Slay the abomination...\n\n" +
+            "_Fight it near water... Avoid the cloud..._";
 
     private static final String TXT_GNOLL1	=
             "Hello adventurer... Once I was like you - strong and confident... " +
             "But I was slain by a devious foe... I can't leave this place... Not until I have my revenge... " +
             "Slay the _gnoll trickster_, that has taken my life...\n\n" +
             "It is not like the other gnolls... It hides and uses thrown weapons... " +
-            "Beware its poisonous and incendiary darts... ";
+            "_Beware its poisonous and incendiary darts, don't attack from a distance..._";
 
     private static final String TXT_GNOLL2	=
-            "Please... Help me... Slay the trickster...";
+            "Please... Help me... Slay the trickster...\n\n" +
+            "_Don't let it hit you.. Get near to it..._";
 
     private static final String TXT_CRAB1	=
             "Hello adventurer... Once I was like you - strong and confident... " +
             "But I was slain by an ancient creature... I can't leave this place... Not until I have my revenge... " +
             "Slay the _great crab_, that has taken my life...\n\n" +
             "It is unnaturally old... With a massive single claw and a thick shell... " +
-            "Beware its claw, the crab blocks and strikes with it...";
+            "_Beware its claw, you must surprise the crab or it will block with it..._";
 
     private static final String TXT_CRAB2	=
-            "Please... Help me... Slay the abomination...";
+            "Please... Help me... Slay the Crustacean...\n\n" +
+            "_It will always block... When it sees you coming..._";
 	
 	public Ghost() {
 		super();
@@ -404,7 +407,7 @@ public class Ghost extends Mob.NPC {
 
         @Override
         public int attackProc( Char enemy, int damage ) {
-            if (Random.Int( 4 ) == 0) {
+            if (Random.Int( 3 ) == 0) {
                 Buff.affect(enemy, Ooze.class);
             }
 
@@ -552,7 +555,7 @@ public class Ghost extends Mob.NPC {
 
         @Override
         protected boolean getCloser( int target ) {
-            //this is used such that the crab remains slow, but still detects the player at the expected rate.
+            //this is used so that the crab remains slow, but still detects the player at the expected rate.
             if (moving) {
                 moving = false;
                 return super.getCloser( target );
@@ -568,7 +571,7 @@ public class Ghost extends Mob.NPC {
             //crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
             //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
             if (enemySeen && (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
-                GLog.w("The crab notices the attack and blocks with its massive claw.");
+                GLog.n("The crab notices the attack and blocks with its massive claw.");
                 sprite.showStatus( CharSprite.NEUTRAL, "blocked" );
             } else {
                 super.damage( dmg, src );
