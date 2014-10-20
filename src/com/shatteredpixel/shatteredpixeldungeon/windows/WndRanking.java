@@ -19,7 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import java.util.Locale;
 
-import com.shatteredpixel.shatteredpixeldungeon.ui.*;
+
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -35,6 +35,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndRanking extends WndTabbed {
@@ -139,7 +145,9 @@ public class WndRanking extends WndTabbed {
 		private static final int GAP	= 4;
 		
         private static final String TXT_TITLE	= "Level %d %s";
-		
+
+        private static final String TXT_CHALLENGES	= "Challenges";
+
 		private static final String TXT_HEALTH	= "Health";
 		private static final String TXT_STR		= "Strength";
 		
@@ -165,7 +173,22 @@ public class WndRanking extends WndTabbed {
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
 			
-			float pos = title.bottom() + GAP + GAP;
+			float pos = title.bottom();
+
+            if (Dungeon.challenges > 0) {
+                RedButton btnCatalogus = new RedButton( TXT_CHALLENGES ) {
+                    @Override
+                    protected void onClick() {
+                        Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
+                    }
+                };
+                btnCatalogus.setRect( 0, pos + GAP, btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
+                add( btnCatalogus );
+
+                pos = btnCatalogus.bottom();
+            }
+
+            pos += GAP + GAP;
 			
 			pos = statSlot( this, TXT_STR, Integer.toString( Dungeon.hero.STR ), pos );
 			pos = statSlot( this, TXT_HEALTH, Integer.toString( Dungeon.hero.HT ), pos );
