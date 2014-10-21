@@ -17,51 +17,53 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
-import java.util.HashSet;
-
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.RatSkull;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.*;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.RatSkull;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+
+import java.util.HashSet;
 
 public class Ghost extends NPC {
 
@@ -79,30 +81,33 @@ public class Ghost extends NPC {
             "But I was slain by a foul beast... I can't leave this place... Not until I have my revenge... " +
             "Slay the _fetid rat_, that has taken my life...\n\n" +
             "It stalks this floor... Spreading filth everywhere... " +
-            "Beware its cloud of stink and acidic bite... ";
+            "_Beware its cloud of stink and corrosive bite, the acid dissolves in water..._ ";
 
     private static final String TXT_RAT2	=
-            "Please... Help me... Slay the abomination...";
+            "Please... Help me... Slay the abomination...\n\n" +
+            "_Fight it near water... Avoid the stench..._";
 
     private static final String TXT_GNOLL1	=
             "Hello adventurer... Once I was like you - strong and confident... " +
             "But I was slain by a devious foe... I can't leave this place... Not until I have my revenge... " +
             "Slay the _gnoll trickster_, that has taken my life...\n\n" +
             "It is not like the other gnolls... It hides and uses thrown weapons... " +
-            "Beware its poisonous and incendiary darts... ";
+            "_Beware its poisonous and incendiary darts, don't attack from a distance..._";
 
     private static final String TXT_GNOLL2	=
-            "Please... Help me... Slay the trickster...";
+            "Please... Help me... Slay the trickster...\n\n" +
+            "_Don't let it hit you... Get near to it..._";
 
     private static final String TXT_CRAB1	=
             "Hello adventurer... Once I was like you - strong and confident... " +
             "But I was slain by an ancient creature... I can't leave this place... Not until I have my revenge... " +
             "Slay the _great crab_, that has taken my life...\n\n" +
             "It is unnaturally old... With a massive single claw and a thick shell... " +
-            "Beware its claw, the crab blocks and strikes with it...";
+            "_Beware its claw, you must surprise the crab or it will block with it..._";
 
     private static final String TXT_CRAB2	=
-            "Please... Help me... Slay the abomination...";
+            "Please... Help me... Slay the Crustacean...\n\n" +
+            "_It will always block... When it sees you coming..._";
 	
 	public Ghost() {
 		super();
@@ -388,7 +393,7 @@ public class Ghost extends NPC {
 			spriteClass = FetidRatSprite.class;
 			
 			HP = HT = 20;
-			defenseSkill = 4;
+			defenseSkill = 5;
 			
 			EXP = 4;
 
@@ -407,7 +412,7 @@ public class Ghost extends NPC {
 
         @Override
         public int attackProc( Char enemy, int damage ) {
-            if (Random.Int( 2 ) == 0) {
+            if (Random.Int( 3 ) == 0) {
                 Buff.affect(enemy, Ooze.class);
             }
 
@@ -447,8 +452,8 @@ public class Ghost extends NPC {
             name = "gnoll trickster";
             spriteClass = GnollTricksterSprite.class;
 
-            HP = HT = 25;
-            defenseSkill = 4;
+            HP = HT = 20;
+            defenseSkill = 5;
 
             EXP = 5;
 
@@ -506,37 +511,6 @@ public class Ghost extends NPC {
         }
 
         @Override
-        //If the gnoll is hit below half, he teleports away to escape!
-        public void damage( int dmg, Object src ){
-            if (HP > 12 && (HP - dmg) <= 12){
-                int count = 10;
-                int pos;
-
-                do {
-                    pos = Dungeon.level.randomRespawnCell();
-                    if (count-- <= 0) {
-                        break;
-                    }
-                } while (pos == -1);
-
-                if (pos != -1) {
-
-                    CellEmitter.get( this.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
-                    Sample.INSTANCE.play( Assets.SND_PUFF );
-
-                    this.pos = pos;
-                    sprite.place( pos );
-                    sprite.visible = Dungeon.visible[pos];
-
-                    GLog.w("The gnoll trickster blinks away!");
-
-                }
-            }
-
-            super.damage(dmg, src);
-        }
-
-        @Override
         public void die( Object cause ) {
             super.die( cause );
 
@@ -576,7 +550,7 @@ public class Ghost extends NPC {
             name = "great crab";
             spriteClass = GreatCrabSprite.class;
 
-            HP = HT = 40;
+            HP = HT = 30;
             defenseSkill = 0; //see damage()
             baseSpeed = 1f;
 
@@ -588,23 +562,8 @@ public class Ghost extends NPC {
         private boolean moving = true;
 
         @Override
-        public int damageRoll() {
-            return Random.NormalIntRange( 4, 6 );
-        }
-
-        @Override
-        public int attackSkill( Char target ) {
-            return 13;
-        }
-
-        @Override
-        public int dr() {
-            return 4;
-        }
-
-        @Override
         protected boolean getCloser( int target ) {
-            //this is used such that the crab remains slow, but still detects the player at the expected rate.
+            //this is used so that the crab remains slow, but still detects the player at the expected rate.
             if (moving) {
                 moving = false;
                 return super.getCloser( target );
@@ -620,7 +579,7 @@ public class Ghost extends NPC {
             //crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
             //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
             if (enemySeen && (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
-                GLog.w("The crab notices the attack and blocks with its massive claw.");
+                GLog.n("The crab notices the attack and blocks with its massive claw.");
                 sprite.showStatus( CharSprite.NEUTRAL, "blocked" );
             } else {
                 super.damage( dmg, src );

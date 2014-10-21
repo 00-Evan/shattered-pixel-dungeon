@@ -155,10 +155,9 @@ public class Goo extends Mob {
 
 			((GooSprite)sprite).pumpUp();
 
-            for (int i=0; i < Level.NEIGHBOURS9DIST2.length; i++) {
-                int j = pos + Level.NEIGHBOURS9DIST2[i];
-                if (j >=0 && j <= 1023 && Level.passable[j])
-                    GameScene.add( Blob.seed( j , 2, GooWarn.class ));
+            for (int i=0; i < Level.NEIGHBOURS9.length; i++) {
+                int j = pos + Level.NEIGHBOURS9[i];
+                GameScene.add( Blob.seed( j , 2, GooWarn.class ));
 
             }
 
