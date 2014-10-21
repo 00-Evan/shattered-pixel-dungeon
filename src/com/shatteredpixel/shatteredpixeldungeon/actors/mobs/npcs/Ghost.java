@@ -85,7 +85,7 @@ public class Ghost extends Mob.NPC {
 
     private static final String TXT_RAT2	=
             "Please... Help me... Slay the abomination...\n\n" +
-            "_Fight it near water... Avoid the cloud..._";
+            "_Fight it near water... Avoid the stench..._";
 
     private static final String TXT_GNOLL1	=
             "Hello adventurer... Once I was like you - strong and confident... " +
@@ -96,7 +96,7 @@ public class Ghost extends Mob.NPC {
 
     private static final String TXT_GNOLL2	=
             "Please... Help me... Slay the trickster...\n\n" +
-            "_Don't let it hit you.. Get near to it..._";
+            "_Don't let it hit you... Get near to it..._";
 
     private static final String TXT_CRAB1	=
             "Hello adventurer... Once I was like you - strong and confident... " +

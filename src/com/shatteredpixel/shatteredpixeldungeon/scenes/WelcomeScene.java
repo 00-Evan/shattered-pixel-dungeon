@@ -39,10 +39,11 @@ public class WelcomeScene extends PixelScene {
             "variety in the early stages of the game.";
 
     private static final String TXT_SameVer =
-            "v0.2.1a was a hotfix patch to correct a serious issue with floor 5.\n\n" +
-            "v0.2.1b corrects several less severe issues, including a bug with the Wandmaker quest and minor visual bugs. " +
-            "The Gnoll trickster boss has been made just a little less punishing as well.\n\n\n" +
-            "If you're still having issues please let me know!";
+            "v0.2.1c is a balance patch, all the new quest bosses have been made less punishing and it has been made more clear how to counter them. " +
+            "Players still need to understand how to beat them, but they should no longer be as crushingly tough, good luck!\n\n" +
+            "v0.2.1b corrected several less severe issues, including a bug with the Wandmaker quest and minor visual bugs. " +
+            "The Gnoll trickster boss has been made just a little less punishing as well.\n\n" +
+            "v0.2.1a was a hotfix patch to correct a serious issue with floor 5.";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon.\n\n"+
