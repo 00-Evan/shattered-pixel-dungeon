@@ -19,7 +19,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import java.util.ArrayList;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
@@ -29,7 +28,6 @@ import com.watabou.utils.Random;
 public class KindOfWeapon extends EquipableItem {
 
 	private static final String TXT_EQUIP_CURSED	= "you wince as your grip involuntarily tightens around your %s";
-	private static final String TXT_UNEQUIP_CURSED	= "you can't remove cursed %s!";
 	
 	protected static final float TIME_TO_EQUIP = 1f;
 	
@@ -75,24 +73,20 @@ public class KindOfWeapon extends EquipableItem {
 			return false;
 		}
 	}
-	
-	@Override
-	public boolean doUnequip( Hero hero, boolean collect ) {
-		
-		if (cursed) {
-			GLog.w( TXT_UNEQUIP_CURSED, name() );
-			return false;
-		}
-		
-		hero.belongings.weapon = null;
-		hero.spendAndNext( TIME_TO_EQUIP );
-		
-		if (collect && !collect( hero.belongings.backpack )) {
-			Dungeon.level.drop( this, hero.pos );
-		}
-					
-		return true;
-	}
+
+    @Override
+    public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
+        if (super.doUnequip( hero, collect, single )) {
+
+            hero.belongings.weapon = null;
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+    }
 	
 	public void activate( Hero hero ) {
 	}

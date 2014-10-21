@@ -187,7 +187,7 @@ public class Item implements Bundlable {
 		return collect( Dungeon.hero.belongings.backpack );
 	}
 	
-	public Item detach( Bag container ) {
+	public final Item detach( Bag container ) {
 		
 		if (quantity <= 0) {
 			
@@ -203,28 +203,30 @@ public class Item implements Bundlable {
 			quantity--;
 			updateQuickslot();
 			
-			try { 
-				return getClass().newInstance();
+			try {
+                Item detached = getClass().newInstance();
+                detached.onDetach( );
+                return detached;
 			} catch (Exception e) {
 				return null;
 			}
 		}
 	}
 	
-	public Item detachAll( Bag container ) {
-		for (Item item : container.items) {
-			if (item == this) {
-				container.items.remove( this );
-				QuickSlot.refresh();
-				return this;
-			} else if (item instanceof Bag) {
-				Bag bag = (Bag)item;
-				if (bag.contains( this )) {
-					detachAll( bag );
-					return this;
-				}
-			}
-		}
+	public final Item detachAll( Bag container ) {
+        for (Item item : container.items) {
+            if (item == this) {
+                container.items.remove( this );
+                item.onDetach( );
+                QuickSlot.refresh();
+                return this;
+            } else if (item instanceof Bag) {
+                Bag bag = (Bag)item;
+                if (bag.contains( this )) {
+                    return detachAll( bag );
+                }
+            }
+        }
 		
 		return this;
 	}
@@ -232,6 +234,8 @@ public class Item implements Bundlable {
 	public boolean isSimilar( Item item ) {
 		return getClass() == item.getClass();
 	}
+
+    protected void onDetach(){}
 	
 	public Item upgrade() {
 		
@@ -428,7 +432,7 @@ public class Item implements Bundlable {
 		float delay = TIME_TO_THROW;
 		if (this instanceof MissileWeapon) {
 
-			// Refactoring needed!
+			// FIXME
 			delay *= ((MissileWeapon)this).speedFactor( user );
 			if (enemy != null && enemy.buff( SnipersMark.class ) != null) {
 				delay *= 0.5f;

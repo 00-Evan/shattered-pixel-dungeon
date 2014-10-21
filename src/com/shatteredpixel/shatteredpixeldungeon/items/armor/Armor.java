@@ -37,7 +37,6 @@ import com.watabou.utils.Random;
 public class Armor extends EquipableItem {
 	
 	private static final String TXT_EQUIP_CURSED	= "your %s constricts around you painfully";
-	private static final String TXT_UNEQUIP_CURSED	= "You can't remove cursed %s!";
 		
 	private static final String TXT_IDENTIFY	= "you are now familiar enough with your %s to identify it. It is %s.";
 	
@@ -89,7 +88,7 @@ public class Armor extends EquipableItem {
 		
 		detach( hero.belongings.backpack );
 		
-		if (hero.belongings.armor == null || hero.belongings.armor.doUnequip( hero, true )) {
+		if (hero.belongings.armor == null || hero.belongings.armor.doUnequip( hero, true, false )) {
 			
 			hero.belongings.armor = this;
 			
@@ -100,8 +99,8 @@ public class Armor extends EquipableItem {
 			}
 			
 			((HeroSprite)hero.sprite).updateArmor();
-			
-			hero.spendAndNext( 2 * hero.speed() );
+
+            hero.spendAndNext( 2 * time2equip( hero ) );
 			return true;
 			
 		} else {
@@ -111,29 +110,27 @@ public class Armor extends EquipableItem {
 			
 		}
 	}
-	
-	@Override
-	public boolean doUnequip( Hero hero, boolean collect ) {
-		if (cursed) {
-			
-			GLog.w( TXT_UNEQUIP_CURSED, name() );
-			return false;
-			
-		} else {
-		
-			hero.belongings.armor = null;
-			hero.spendAndNext( hero.speed() );
-			
-			((HeroSprite)hero.sprite).updateArmor();
-			
-			if (collect && !collect( hero.belongings.backpack )) {
-				Dungeon.level.drop( this, hero.pos );
-			}
-			
-			return true;
-			
-		}
-	}
+
+    @Override
+    protected float time2equip( Hero hero ) {
+        return hero.speed();
+    }
+
+    @Override
+    public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
+        if (super.doUnequip( hero, collect, single )) {
+
+            hero.belongings.armor = null;
+            ((HeroSprite)hero.sprite).updateArmor();
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+    }
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
@@ -305,11 +302,19 @@ public class Armor extends EquipableItem {
 		}
 		return price;
 	}
-	
-	public Armor inscribe( Glyph glyph ) {
-		this.glyph = glyph;
-		return this;
-	}
+
+    public Armor inscribe( Glyph glyph ) {
+
+        if (glyph != null && this.glyph == null) {
+            DR += tier;
+        } else if (glyph == null && this.glyph != null) {
+            DR -= tier;
+        }
+
+        this.glyph = glyph;
+
+        return this;
+    }
 	
 	public boolean isInscribed() {
 		return glyph != null;

@@ -97,7 +97,8 @@ public class Artifact extends KindofMisc {
     }
 
     @Override
-    public boolean doUnequip( Hero hero, boolean collect ) {
+    public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
+        if (super.doUnequip( hero, collect, single )) {
 
         if (hero.belongings.misc1 == this) {
             hero.belongings.misc1 = null;
@@ -108,13 +109,13 @@ public class Artifact extends KindofMisc {
         passiveBuff.detach();
         passiveBuff = null;
 
-        hero.spendAndNext( TIME_TO_EQUIP );
-
-        if (collect && !collect( hero.belongings.backpack )) {
-            Dungeon.level.drop( this, hero.pos );
-        }
-
         return true;
+
+        } else {
+
+            return false;
+
+        }
     }
 
     @Override

@@ -80,7 +80,7 @@ public class WandOfTelekinesis extends Wand {
 						ch.pos = next;
 						Actor.freeCell( next );
 
-						// Refactoring needed!
+						// FIXME
 						if (ch instanceof Mob) {
 							Dungeon.level.mobPress( (Mob)ch );
 						} else {

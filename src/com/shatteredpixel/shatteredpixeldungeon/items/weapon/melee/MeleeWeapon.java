@@ -114,7 +114,16 @@ public class MeleeWeapon extends Weapon {
 			info.append( " weapon. ");
 		} else if (ACU != 1f) {
 			info.append( "This is a rather " + (ACU > 1f ? "accurate" : "inaccurate") + " weapon. " );
-		}
+        }
+        switch (imbue) {
+            case SPEED:
+                info.append( "It was balanced to make it faster. " );
+                break;
+            case ACCURACY:
+                info.append( "It was balanced to make it more accurate. " );
+                break;
+            case NONE:
+        }
 		
 		if (enchantment != null) {
 			info.append( "It is enchanted." );

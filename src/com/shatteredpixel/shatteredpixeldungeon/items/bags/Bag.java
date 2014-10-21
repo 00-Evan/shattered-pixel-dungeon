@@ -84,12 +84,11 @@ public class Bag extends Item implements Iterable<Item> {
 			return false;
 		}
 	}
-	
-	@Override
-	public Item detach( Bag container ) {
-		owner = null;
-		return super.detach( container );
-	}
+
+    @Override
+    public void onDetach( ) {
+        this.owner = null;
+    }
 	
 	@Override
 	public boolean isUpgradable() {

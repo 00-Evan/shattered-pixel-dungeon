@@ -57,7 +57,7 @@ public class MysteryMeat extends Food {
 				break;
 			case 2:
 				GLog.w( "You are not feeling well." );
-				Buff.affect( hero, Poison.class ).set( Poison.durationFactor( hero ) * hero.HT / 2 / Poison.DOT );
+				Buff.affect( hero, Poison.class ).set( Poison.durationFactor( hero ) * hero.HT / 5 );
 				break;
 			case 3:
 				GLog.w( "You are stuffed." );

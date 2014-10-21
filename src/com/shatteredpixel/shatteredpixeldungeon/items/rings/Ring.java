@@ -145,32 +145,28 @@ public class Ring extends KindofMisc {
 		buff = buff();
 		buff.attachTo( ch );
 	}
-	
-	@Override
-	public boolean doUnequip( Hero hero, boolean collect ) {
-		
-		if (cursed) {
-			GLog.w( "You can't remove cursed " + name() + "!" );
-			return false;
-		}
-		
-		if (hero.belongings.misc1 == this) {
-			hero.belongings.misc1 = null;
-		} else {
-			hero.belongings.misc2 = null;
-		}
-		
-		buff.detach();
-        buff = null;
-		
-		hero.spendAndNext( TIME_TO_EQUIP );
-		
-		if (collect && !collect( hero.belongings.backpack )) {
-			Dungeon.level.drop( this, hero.pos );
-		}
-				
-		return true;
-	}
+
+    @Override
+    public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
+        if (super.doUnequip( hero, collect, single )) {
+
+            if (hero.belongings.misc1 == this) {
+                hero.belongings.misc1 = null;
+            } else {
+                hero.belongings.misc2 = null;
+            }
+
+            hero.remove( buff );
+            buff = null;
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+    }
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {

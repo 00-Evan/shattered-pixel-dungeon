@@ -17,6 +17,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -37,8 +39,12 @@ public class WandOfAmok extends Wand {
 	protected void onZap( int cell ) {
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
-			
-			Buff.affect( ch, Amok.class, 3f + level() );
+
+            if (ch == Dungeon.hero) {
+                Buff.affect( ch, Vertigo.class, Vertigo.duration(ch) );
+            } else {
+                Buff.affect( ch, Amok.class, 3f + level() );
+            }
 
 		} else {
 			

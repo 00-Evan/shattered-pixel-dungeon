@@ -48,7 +48,6 @@ public class WandOfLightning extends Wand {
 	
 	@Override
 	protected void onZap( int cell ) {
-		// The actual effect is processed in "fx" method
 		
 		if (!curUser.isAlive()) {
 			Dungeon.fail( Utils.format( ResultDescriptions.ITEM, name, Dungeon.depth ) );

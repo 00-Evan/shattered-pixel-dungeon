@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob.State;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink;
@@ -88,13 +87,13 @@ public class RogueArmor extends ClassArmor {
 					GLog.w( TXT_FOV );
 					return;
 				}
-				
-				curUser.HP /= 2;
+
+                curUser.HP -= (curUser.HP / 3);
 				
 				for (Mob mob : Dungeon.level.mobs) {
 					if (Level.fieldOfView[mob.pos]) {
 						Buff.prolong( mob, Blindness.class, 2 );
-						mob.state = State.WANDERING;
+						mob.state = mob.WANDERING;
 						mob.sprite.emitter().burst( Speck.factory( Speck.LIGHT ), 4 );
 					}
 				}

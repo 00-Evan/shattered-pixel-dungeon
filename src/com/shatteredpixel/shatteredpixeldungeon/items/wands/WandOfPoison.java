@@ -38,7 +38,7 @@ public class WandOfPoison extends Wand {
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
 			
-			Buff.affect( ch, Poison.class ).set( Poison.durationFactor( ch ) * (1 + 2 * (float)Math.pow( 1.5, level() )) );
+			Buff.affect( ch, Poison.class ).set( Poison.durationFactor( ch ) * (5 + level()) );
 			
 		} else {
 			

@@ -17,12 +17,12 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -104,7 +104,7 @@ public class WandOfFlock extends Wand {
 			"A flick of this wand summons a flock of magic sheep, creating temporary impenetrable obstacle.";
 	}
 	
-	public static class Sheep extends Mob.NPC {
+	public static class Sheep extends NPC {
 		
 		private static final String[] QUOTES = {"Baa!", "Baa?", "Baa.", "Baa..."};
 		
