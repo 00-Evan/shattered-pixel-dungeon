@@ -23,8 +23,8 @@ import com.watabou.noosa.TextureFilm;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.watabou.utils.PointF;
 
 public class PlantSprite extends Image {
 
@@ -65,8 +65,9 @@ public class PlantSprite extends Image {
 		alpha( 1f );
 		
 		pos = plant.pos;
-		x = pos % Level.WIDTH * DungeonTilemap.SIZE;
-		y = pos / Level.WIDTH * DungeonTilemap.SIZE;
+        PointF p = DungeonTilemap.tileToWorld( plant.pos );
+        x = p.x;
+        y = p.y;
 		
 		state = State.GROWING;
 		time = DELAY;

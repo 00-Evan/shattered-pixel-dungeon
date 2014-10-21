@@ -58,10 +58,14 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 
 		if (image == ItemSpriteSheet.DART || image == ItemSpriteSheet.INCENDIARY_DART
                 || image == ItemSpriteSheet.CURARE_DART  || image == ItemSpriteSheet.JAVELIN) {
+
 			angularSpeed = 0;
 			angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);
+
 		} else {
+
 			angularSpeed = image == 15 || image == 106 ? 1440 : 720;
+
 		}
 		
 		PosTweener tweener = new PosTweener( this, dest, d.length() / SPEED );

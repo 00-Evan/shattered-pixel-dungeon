@@ -67,6 +67,7 @@ public class ItemSpriteSheet {
     public static final int MASTERY	= ROW2+8;
     public static final int KIT		= ROW2+9;
     public static final int AMULET	= ROW2+10;
+    public static final int WEIGHT  = ROW2+11;
 
     //Row Three: Melee weapons
     public static final int KNUCKLEDUSTER	= ROW3+0;
@@ -182,6 +183,7 @@ public class ItemSpriteSheet {
     public static final int SEED_ROTBERRY	= ROW12+0;
     public static final int SEED_FIREBLOOM	= ROW12+1;
     public static final int SEED_BLINDWEED	= ROW12+2;
+    public static final int SEED_DREAMWEED	= ROW12+2;
     public static final int SEED_SUNGRASS	= ROW12+3;
     public static final int SEED_ICECAP		= ROW12+4;
     public static final int SEED_SORROWMOSS	= ROW12+5;

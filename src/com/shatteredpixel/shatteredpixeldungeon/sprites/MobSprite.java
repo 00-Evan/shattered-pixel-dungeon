@@ -31,8 +31,7 @@ public class MobSprite extends CharSprite {
 	
 	@Override
 	public void update() {
-		sleeping = ch != null && ((Mob)ch).state == Mob.State.SLEEPING;
-		
+		sleeping = ch != null && ((Mob)ch).state == ((Mob)ch).SLEEPEING;
 		super.update();
 	}
 	
