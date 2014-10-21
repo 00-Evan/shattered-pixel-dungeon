@@ -359,10 +359,6 @@ public class Ghost extends NPC {
                     }
                 }
 
-                //TODO this is silly, why trap the player with bad armour? Just remove the button from the window.
-                if (Dungeon.isChallenged( Challenges.NO_ARMOR ))
-                    armor = (Armor)new ClothArmor().degrade();
-
 				weapon.identify();
 				armor.identify();
 			}

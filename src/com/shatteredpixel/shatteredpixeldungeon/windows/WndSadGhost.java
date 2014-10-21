@@ -17,18 +17,19 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
-import com.watabou.noosa.BitmapTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.BitmapTextMultiline;
 
 public class WndSadGhost extends Window {
 
@@ -43,7 +44,7 @@ public class WndSadGhost extends Window {
         "I wonder what twisted magic allowed it to live so long...\n\n";
     private static final String TXT_GIVEITEM=
         "Please take one of these items, they are useless to me now... " +
-        "Maybe they will help you in your journey...";
+            "Maybe they will help you in your journey...";
     private static final String TXT_TotallyNotATeaser=
         "Also... There is an item lost in this dungeon that is very dear to me..." +
         "If you ever... find my... rose......";
@@ -96,17 +97,21 @@ public class WndSadGhost extends Window {
 		};
 		btnWeapon.setRect( 0, message.y + message.height() + GAP, WIDTH, BTN_HEIGHT );
 		add( btnWeapon );
-		
-		RedButton btnArmor = new RedButton( TXT_ARMOR ) {
-			@Override
-			protected void onClick() {
-				selectReward( ghost, Ghost.Quest.armor );
-			}
-		};
-		btnArmor.setRect( 0, btnWeapon.bottom() + GAP, WIDTH, BTN_HEIGHT );
-		add( btnArmor );
-		
-		resize( WIDTH, (int)btnArmor.bottom() );
+
+        if (!Dungeon.isChallenged( Challenges.NO_ARMOR )) {
+            RedButton btnArmor = new RedButton(TXT_ARMOR) {
+                @Override
+                protected void onClick() {
+                    selectReward(ghost, Ghost.Quest.armor);
+                }
+            };
+            btnArmor.setRect(0, btnWeapon.bottom() + GAP, WIDTH, BTN_HEIGHT);
+            add(btnArmor);
+
+            resize(WIDTH, (int) btnArmor.bottom());
+        } else {
+            resize(WIDTH, (int) btnWeapon.bottom());
+        }
 	}
 	
 	private void selectReward( Ghost ghost, Item reward ) {
