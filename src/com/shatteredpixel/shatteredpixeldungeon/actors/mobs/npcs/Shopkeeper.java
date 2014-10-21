@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ShopkeeperSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 
-public class Shopkeeper extends Mob.NPC {
+public class Shopkeeper extends NPC {
 
     public static final String TXT_THIEF = "Thief, Thief!";
 

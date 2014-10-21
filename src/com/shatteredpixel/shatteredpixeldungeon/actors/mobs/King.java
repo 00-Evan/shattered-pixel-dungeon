@@ -246,7 +246,7 @@ public class King extends Mob {
 			
 			EXP = 0;
 			
-			state = State.WANDERING;
+			state = WANDERING;
 		}
 		
 		@Override

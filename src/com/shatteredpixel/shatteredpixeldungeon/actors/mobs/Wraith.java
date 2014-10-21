@@ -86,7 +86,7 @@ public class Wraith extends Mob {
 	
 	@Override
 	public boolean reset() {
-		state = State.WANDERING;
+		state = WANDERING;
 		return true;
 	}
 
@@ -112,7 +112,7 @@ public class Wraith extends Mob {
 			Wraith w = new Wraith();
 			w.adjustStats( Dungeon.depth );
 			w.pos = pos;
-			w.state = State.HUNTING;
+			w.state = w.HUNTING;
 			GameScene.add( w, SPAWN_DELAY );
 			
 			w.sprite.alpha( 0 );

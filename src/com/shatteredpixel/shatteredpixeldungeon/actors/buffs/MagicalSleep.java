@@ -41,7 +41,7 @@ public class MagicalSleep extends Buff {
                     GLog.i("You fall into a deep magical sleep.");
                 }
             else if (target instanceof Mob)
-                ((Mob)target).state = Mob.State.SLEEPING;
+                ((Mob)target).state = ((Mob)target).SLEEPEING;
 
             target.paralysed = true;
 

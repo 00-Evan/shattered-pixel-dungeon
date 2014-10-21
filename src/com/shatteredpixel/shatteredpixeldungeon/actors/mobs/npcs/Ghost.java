@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
@@ -27,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.RatSkull;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -61,7 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Ghost extends Mob.NPC {
+public class Ghost extends NPC {
 
 	{
 		name = "sad ghost";
@@ -69,7 +71,7 @@ public class Ghost extends Mob.NPC {
 		
 		flying = true;
 		
-		state = State.WANDERING;
+		state = WANDERING;
 	}
 	
 	private static final String TXT_RAT1	=
@@ -195,7 +197,6 @@ public class Ghost extends Mob.NPC {
                     txt_quest = TXT_CRAB1; break;
             }
 
-            questBoss.state = Mob.State.WANDERING;
             questBoss.pos = Dungeon.level.randomRespawnCell();
 
             if (questBoss.pos != -1) {
@@ -353,6 +354,10 @@ public class Ghost extends Mob.NPC {
                     }
                 }
 
+                //TODO this is silly, why trap the player with bad armour? Just remove the button from the window.
+                if (Dungeon.isChallenged( Challenges.NO_ARMOR ))
+                    armor = (Armor)new ClothArmor().degrade();
+
 				weapon.identify();
 				armor.identify();
 			}
@@ -386,6 +391,8 @@ public class Ghost extends Mob.NPC {
 			defenseSkill = 4;
 			
 			EXP = 4;
+
+            state = WANDERING;
 		}
 		
 		@Override
@@ -445,6 +452,8 @@ public class Ghost extends Mob.NPC {
 
             EXP = 5;
 
+            state = WANDERING;
+
             loot = Generator.random(CurareDart.class);
             lootChance = 1f;
         }
@@ -489,7 +498,7 @@ public class Ghost extends Mob.NPC {
         @Override
         protected boolean getCloser( int target ) {
             combo = 0; //if he's moving, he isn't attacking, reset combo.
-            if (state == State.HUNTING) {
+            if (state == HUNTING) {
                 return enemySeen && getFurther( target );
             } else {
                 return super.getCloser( target );
@@ -573,6 +582,7 @@ public class Ghost extends Mob.NPC {
 
             EXP = 6;
 
+            state = WANDERING;
         }
 
         private boolean moving = true;

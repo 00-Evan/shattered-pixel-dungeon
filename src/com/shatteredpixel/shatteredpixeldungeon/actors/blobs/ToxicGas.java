@@ -27,23 +27,24 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.utils.Random;
 
 public class ToxicGas extends Blob implements Hero.Doom {
-	
-	@Override
-	protected void evolve() {
-		super.evolve();
-		
-		int levelDamage = 5 + Dungeon.depth * 5;
-		
-		Char ch;
-		for (int i=0; i < LENGTH; i++) {
-			if (cur[i] > 0 && (ch = Actor.findChar( i )) != null) {
-				
-				int damage = (ch.HT + levelDamage) / 40;
-				if (damage < 1) {
-					damage = 1;
-				}
+
+    @Override
+    protected void evolve() {
+        super.evolve();
+
+        int levelDamage = 5 + Dungeon.depth * 5;
+
+        Char ch;
+        for (int i=0; i < LENGTH; i++) {
+            if (cur[i] > 0 && (ch = Actor.findChar( i )) != null) {
+
+                int damage = (ch.HT + levelDamage) / 40;
+                if (Random.Int( 40 ) < (ch.HT + levelDamage) % 40) {
+                    damage++;
+                }
 				
 				ch.damage( damage, this );
 			}

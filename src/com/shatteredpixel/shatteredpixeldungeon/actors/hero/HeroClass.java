@@ -77,101 +77,104 @@ public enum HeroClass {
 		"Huntresses gain more health from dewdrops.",
 		"Huntresses sense neighbouring monsters even if they are hidden behind obstacles."
 	};
-	
-	public void initHero( Hero hero ) {
-		
-		hero.heroClass = this;
-		
-		switch (this) {
-		case WARRIOR:
-			initWarrior( hero );
-			break;
-			
-		case MAGE:
-			initMage( hero );
-			break;
-			
-		case ROGUE:
-			initRogue( hero );
-			break;
-			
-		case HUNTRESS:
-			initHuntress( hero );
-			break;
-		}
-		
-		hero.updateAwareness();
-	}
-	
-	private static void initWarrior( Hero hero ) {
-		hero.STR = hero.STR + 1;
-		
-		(hero.belongings.weapon = new ShortSword()).identify();
-		(hero.belongings.armor = new ClothArmor()).identify();
-		new Dart( 8 ).identify().collect();
-		new Food().identify().collect();
-		
-		if (Badges.isUnlocked( Badges.Badge.MASTERY_WARRIOR )) {
-			new TomeOfMastery().collect();
-		}
-		
-		Dungeon.quickslot = Dart.class;
-		
-		new PotionOfStrength().setKnown();
-	}
-	
-	private static void initMage( Hero hero ) {	
-		(hero.belongings.weapon = new Knuckles()).identify();
-		(hero.belongings.armor = new ClothArmor()).identify();
-		new Food().identify().collect();
-		
-		WandOfMagicMissile wand = new WandOfMagicMissile();
-		wand.identify().collect();
-		
-		if (Badges.isUnlocked( Badges.Badge.MASTERY_MAGE )) {
-			new TomeOfMastery().collect();
-		}
-		
-		Dungeon.quickslot = wand;
-		
-		new ScrollOfIdentify().setKnown();
-	}
-	
-	private static void initRogue( Hero hero ) {
-		(hero.belongings.weapon = new Dagger()).identify();
-		(hero.belongings.armor = new ClothArmor()).identify();
-        CloakOfShadows cloak = new CloakOfShadows();
-		hero.belongings.misc1 = cloak;
-		new Dart( 8 ).identify().collect();
-		new Food().identify().collect();
 
-		hero.belongings.misc1.activate( hero );
-		
-		if (Badges.isUnlocked( Badges.Badge.MASTERY_ROGUE )) {
-			new TomeOfMastery().collect();
-		}
-		
-		Dungeon.quickslot = cloak;
-		
-		new ScrollOfMagicMapping().setKnown();
-	}
-	
-	private static void initHuntress( Hero hero ) {
-		
-		hero.HP = (hero.HT -= 5);
-		
-		(hero.belongings.weapon = new Dagger()).identify();
-		(hero.belongings.armor = new ClothArmor()).identify();
-		Boomerang boomerang = new Boomerang();
-		boomerang.identify().collect();
-		new Food().identify().collect();
-		
-		if (Badges.isUnlocked( Badges.Badge.MASTERY_HUNTRESS )) {
-			new TomeOfMastery().collect();
-		}
-		
-		Dungeon.quickslot = boomerang;
-	}
+    public void initHero( Hero hero ) {
+
+        hero.heroClass = this;
+
+        initCommon( hero );
+
+        switch (this) {
+            case WARRIOR:
+                initWarrior( hero );
+                break;
+
+            case MAGE:
+                initMage( hero );
+                break;
+
+            case ROGUE:
+                initRogue( hero );
+                break;
+
+            case HUNTRESS:
+                initHuntress( hero );
+                break;
+        }
+
+        if (Badges.isUnlocked( masteryBadge() )) {
+            new TomeOfMastery().collect();
+        }
+
+        hero.updateAwareness();
+    }
+
+    private static void initCommon( Hero hero ) {
+        (hero.belongings.armor = new ClothArmor()).identify();
+        new Food().identify().collect();
+    }
+
+    public Badges.Badge masteryBadge() {
+        switch (this) {
+            case WARRIOR:
+                return Badges.Badge.MASTERY_WARRIOR;
+            case MAGE:
+                return Badges.Badge.MASTERY_MAGE;
+            case ROGUE:
+                return Badges.Badge.MASTERY_ROGUE;
+            case HUNTRESS:
+                return Badges.Badge.MASTERY_HUNTRESS;
+        }
+        return null;
+    }
+
+    private static void initWarrior( Hero hero ) {
+        hero.STR = hero.STR + 1;
+
+        (hero.belongings.weapon = new ShortSword()).identify();
+        new Dart( 8 ).identify().collect();
+
+        Dungeon.quickslot = Dart.class;
+
+        new PotionOfStrength().setKnown();
+    }
+
+    private static void initMage( Hero hero ) {
+        (hero.belongings.weapon = new Knuckles()).identify();
+
+        WandOfMagicMissile wand = new WandOfMagicMissile();
+        wand.identify().collect();
+
+        Dungeon.quickslot = wand;
+
+        new ScrollOfIdentify().setKnown();
+    }
+
+    private static void initRogue( Hero hero ) {
+        (hero.belongings.weapon = new Dagger()).identify();
+
+        CloakOfShadows cloak = new CloakOfShadows();
+        hero.belongings.misc1 = cloak;
+        hero.belongings.misc1.activate( hero );
+
+        new Dart( 8 ).identify().collect();
+
+
+        Dungeon.quickslot = cloak;
+
+        new ScrollOfMagicMapping().setKnown();
+    }
+
+    private static void initHuntress( Hero hero ) {
+
+        hero.HP = (hero.HT -= 5);
+
+        (hero.belongings.weapon = new Dagger()).identify();
+        Boomerang boomerang = new Boomerang();
+        boomerang.identify().collect();
+
+        Dungeon.quickslot = boomerang;
+    }
 	
 	public String title() {
 		return title;

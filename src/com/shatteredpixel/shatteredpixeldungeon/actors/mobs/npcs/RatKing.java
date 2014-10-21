@@ -24,13 +24,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
 
-public class RatKing extends Mob.NPC {
+public class RatKing extends NPC {
 
 	{
 		name = "rat king";
 		spriteClass = RatKingSprite.class;
 		
-		state = State.SLEEPING;
+		state = SLEEPEING;
 	}
 	
 	@Override
@@ -64,10 +64,10 @@ public class RatKing extends Mob.NPC {
 	@Override
 	public void interact() {
 		sprite.turnTo( pos, Dungeon.hero.pos );
-		if (state == State.SLEEPING) {
+		if (state == SLEEPEING) {
 			notice();
 			yell( "I'm not sleeping!" );
-			state = State.WANDERING;
+			state = WANDERING;
 		} else {
 			yell( "What is it? I have no time for this nonsense. My kingdom won't rule itself!" );
 		}

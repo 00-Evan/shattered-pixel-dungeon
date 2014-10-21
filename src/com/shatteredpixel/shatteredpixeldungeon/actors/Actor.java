@@ -130,10 +130,12 @@ public abstract class Actor implements Bundlable {
 	public static void freeCell( int pos ) {
 		chars[pos] = null;
 	}
-	
-	protected static void next() {
-		current = null;
-	}
+
+    /*protected*/public void next() {
+        if (current == this) {
+            current = null;
+        }
+    }
 	
 	public static void process() {
 		
@@ -167,6 +169,14 @@ public abstract class Actor implements Bundlable {
 			}
 
 			if  (current != null) {
+
+                if (current instanceof Char && ((Char)current).sprite.isMoving) {
+                    // If it's character's turn to act, but its sprite
+                    // is moving, wait till the movement is over
+                    current = null;
+                    break;
+                }
+
 				doNext = current.act();
 				if (doNext && !Dungeon.hero.isAlive()) {
 					doNext = false;

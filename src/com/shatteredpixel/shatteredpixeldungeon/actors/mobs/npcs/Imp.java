@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Imp extends Mob.NPC {
+public class Imp extends NPC {
 
 	{
 		name = "ambitious imp";

@@ -43,7 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Blacksmith extends Mob.NPC {
+public class Blacksmith extends NPC {
 
 	private static final String TXT_GOLD_1 =
 		"Hey human! Wanna be useful, eh? Take dis pickaxe and mine me some _dark gold ore_, _15 pieces_ should be enough. " +
@@ -167,8 +167,8 @@ public class Blacksmith extends Mob.NPC {
 		if (item1 == item2) {
 			return "Select 2 different items, not the same item twice!";
 		}
-		
-		if (!item1.isSimilar( item2 )) {
+
+        if (item1.getClass() != item2.getClass()) {
 			return "Select 2 items of the same type!";
 		}
 		
