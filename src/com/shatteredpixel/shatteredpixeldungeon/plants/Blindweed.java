@@ -23,7 +23,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob.State;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
@@ -50,7 +49,7 @@ public class Blindweed extends Plant {
 			Buff.prolong( ch, Blindness.class, len );
             Buff.prolong( ch, Cripple.class, len );
 			if (ch instanceof Mob) {
-				((Mob)ch).state = State.WANDERING;
+				((Mob)ch).state = ((Mob)ch).WANDERING;
 				((Mob)ch).beckon( Dungeon.level.randomDestination() );
 			}
 		}
