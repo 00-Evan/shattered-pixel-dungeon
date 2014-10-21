@@ -114,7 +114,7 @@ public class TitleScene extends PixelScene {
 		btnHighscores.setPos( w / 2, btnPlay.top() );
 		add( btnHighscores );
 
-        BitmapText source = new BitmapText( "PD source v 1.7.1c", font1x );
+        BitmapText source = new BitmapText( "PD source v 1.7.2a", font1x );
         source.measure();
         source.hardlight( 0x444444 );
         source.x = w - source.width();
