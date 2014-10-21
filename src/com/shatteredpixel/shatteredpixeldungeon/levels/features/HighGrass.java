@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
@@ -39,25 +40,27 @@ public class HighGrass {
 		
 		Level.set( pos, Terrain.GRASS );
 		GameScene.updateMap( pos );
-		
-		int naturalismLevel = 0;
-        if (ch != null) {
-            SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
-            if (naturalism != null) {
-                naturalismLevel = naturalism.level()+1;
-                naturalism.charge();
+
+        if (!Dungeon.isChallenged( Challenges.NO_HERBALISM )) {
+            int naturalismLevel = 0;
+            if (ch != null) {
+                SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
+                if (naturalism != null) {
+                    naturalismLevel = naturalism.level()+1;
+                    naturalism.charge();
+                }
+            }
+
+            // Seed
+            if (Random.Int(18-((int)(naturalismLevel*3.34))) == 0) {
+                level.drop( Generator.random( Generator.Category.SEED ), pos ).sprite.drop();
+            }
+
+            // Dew
+            if (Random.Int( 6-naturalismLevel ) == 0) {
+                level.drop( new Dewdrop(), pos ).sprite.drop();
             }
         }
-		
-		// Seed
-		if (Random.Int(18-((int)(naturalismLevel*3.34))) == 0) {
-			level.drop( Generator.random( Generator.Category.SEED ), pos ).sprite.drop();
-		}
-		
-		// Dew
-		if (Random.Int( 6-naturalismLevel ) == 0) {
-			level.drop( new Dewdrop(), pos ).sprite.drop();
-		}
 
 		int leaves = 4;
 		

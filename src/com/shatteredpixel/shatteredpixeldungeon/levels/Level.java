@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -50,9 +51,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -112,8 +117,8 @@ public abstract class Level implements Bundlable {
 	public int[] map;
 	public boolean[] visited;
 	public boolean[] mapped;
-	
-	public int viewDistance = 8;
+
+    public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 3: 8;
 	
 	public static boolean[] fieldOfView = new boolean[LENGTH];
 	
@@ -397,7 +402,7 @@ public abstract class Level implements Bundlable {
 				if (mobs.size() < nMobs()) {
 
 					Mob mob = Bestiary.mutable( Dungeon.depth );
-					mob.state = Mob.State.WANDERING;
+					mob.state = mob.WANDERING;
 					mob.pos = randomRespawnCell();
 					if (Dungeon.hero.isAlive() && mob.pos != -1) {
 						GameScene.add( mob );
@@ -541,7 +546,17 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public Heap drop( Item item, int cell ) {
-		
+
+        if (Dungeon.isChallenged( Challenges.NO_FOOD ) && item instanceof Food) {
+            item = new Gold( item.price() );
+        } else
+        if (Dungeon.isChallenged( Challenges.NO_ARMOR ) && item instanceof Armor) {
+            item = new Gold( item.price() );
+        } else
+        if (Dungeon.isChallenged( Challenges.NO_HEALING ) && item instanceof PotionOfHealing) {
+            item = new Gold( item.price() );
+        }
+
 		if ((map[cell] == Terrain.ALCHEMY) && (item instanceof BlandfruitBush.Seed || !(item instanceof Plant.Seed ||
                 (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null && heaps.get(cell) == null)))) {
 			int n;
@@ -838,7 +853,6 @@ public abstract class Level implements Bundlable {
 				}
 			}
 			if (c.buff( Awareness.class ) != null) {
-
 				for (Heap heap : heaps.values()) {
 					int p = heap.pos;
 					fieldOfView[p] = true;

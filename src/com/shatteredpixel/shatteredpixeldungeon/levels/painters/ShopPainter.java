@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
+import com.shatteredpixel.shatteredpixeldungeon.items.Weightstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
@@ -95,18 +96,21 @@ public class ShopPainter extends Painter {
 			items.add( (Random.Int( 2 ) == 0 ? new Quarterstaff() : new Spear()).identify() );
 			items.add( new LeatherArmor().identify() );
 			items.add( new SeedPouch() );
+            items.add( new Weightstone() );
 			break;
 			
 		case 11:
 			items.add( (Random.Int( 2 ) == 0 ? new Sword() : new Mace()).identify() );
 			items.add( new MailArmor().identify() );
 			items.add( new ScrollHolder() );
+            items.add( new Weightstone() );
 			break;
 			
 		case 16:
 			items.add( (Random.Int( 2 ) == 0 ? new Longsword() : new BattleAxe()).identify() );
 			items.add( new ScaleArmor().identify() );
 			items.add( new WandHolster() );
+            items.add( new Weightstone() );
 			break;
 			
 		case 21:

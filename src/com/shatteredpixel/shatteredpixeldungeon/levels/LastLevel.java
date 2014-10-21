@@ -114,8 +114,6 @@ public class LastLevel extends Level {
 		switch (tile) {
 		case Terrain.WATER:
 			return "It looks like lava, but it's cold and probably safe to touch.";
-		case Terrain.EMPTY_DECO:
-			return "Candles on the floor are probably remains of some ritual that took place here.";
 		case Terrain.STATUE:
 		case Terrain.STATUE_SP:
 			return "The pillar is made of real humanoid skulls. Awesome."; 
