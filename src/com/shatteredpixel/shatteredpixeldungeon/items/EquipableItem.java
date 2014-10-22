@@ -31,6 +31,10 @@ public abstract class EquipableItem extends Item {
     public static final String AC_EQUIP		= "EQUIP";
     public static final String AC_UNEQUIP	= "UNEQUIP";
 
+    {
+        bones = true;
+    }
+
     @Override
     public void execute( Hero hero, String action ) {
         if (action.equals( AC_EQUIP )) {

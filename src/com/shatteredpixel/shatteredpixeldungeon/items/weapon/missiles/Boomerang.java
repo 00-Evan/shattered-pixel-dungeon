@@ -38,6 +38,8 @@ public class Boomerang extends MissileWeapon {
 		MAX = 4;
 		
 		stackable = false;
+
+        bones = false;
 	}
 	
 	@Override

@@ -29,6 +29,8 @@ public class Dart extends MissileWeapon {
 		
 		MIN = 1;
 		MAX = 4;
+
+        bones = false; //Finding them in bones would be semi-frequent and disappointing.
 	}
 	
 	public Dart() {

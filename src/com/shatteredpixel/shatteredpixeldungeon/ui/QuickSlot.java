@@ -142,6 +142,11 @@ public class QuickSlot extends Button implements WndBag.Listener {
 		}
 	}
 
+    public static Item getItem(){
+        Item item = select();
+        return (item != null && item.quantity() != 0)? item : null;
+    }
+
 	@Override
 	public void onSelect( Item item ) {
 		if (item != null) {

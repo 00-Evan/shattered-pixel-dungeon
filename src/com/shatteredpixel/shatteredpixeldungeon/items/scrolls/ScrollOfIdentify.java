@@ -29,6 +29,8 @@ public class ScrollOfIdentify extends InventoryScroll {
 		name = "Scroll of Identify";
 		inventoryTitle = "Select an item to identify";
 		mode = WndBag.Mode.UNIDENTIFED;
+
+        bones = true;
 	}
 	
 	@Override

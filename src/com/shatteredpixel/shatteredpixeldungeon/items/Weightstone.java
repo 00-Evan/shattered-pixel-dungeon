@@ -17,10 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import java.util.ArrayList;
-
-import com.watabou.noosa.BitmapTextMultiline;
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -33,6 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.BitmapTextMultiline;
+import com.watabou.noosa.audio.Sample;
+
+import java.util.ArrayList;
 
 public class Weightstone extends Item {
 
@@ -49,6 +49,8 @@ public class Weightstone extends Item {
         image = ItemSpriteSheet.WEIGHT;
 
         stackable = true;
+
+        bones = true;
     }
 
     @Override

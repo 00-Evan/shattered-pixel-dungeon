@@ -17,9 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import java.util.ArrayList;
-
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -30,6 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.audio.Sample;
+
+import java.util.ArrayList;
 
 public class ShortSword extends MeleeWeapon {
 	
@@ -49,6 +49,8 @@ public class ShortSword extends MeleeWeapon {
 	{
 		name = "short sword";
 		image = ItemSpriteSheet.SHORT_SWORD;
+
+        bones = false;
 	}
 	
 	public ShortSword() {

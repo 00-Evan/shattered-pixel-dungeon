@@ -17,9 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
-import java.util.ArrayList;
-
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -34,7 +31,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class WandOfMagicMissile extends Wand {
 
@@ -52,6 +52,8 @@ public class WandOfMagicMissile extends Wand {
 	{
 		name = "Wand of Magic Missile";
 		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
+
+        bones = false;
 	}
 	
 	@Override

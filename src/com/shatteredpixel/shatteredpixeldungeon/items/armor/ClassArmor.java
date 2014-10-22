@@ -17,11 +17,11 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
-import java.util.ArrayList;
-
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+
+import java.util.ArrayList;
 
 abstract public class ClassArmor extends Armor {
 	
@@ -32,6 +32,8 @@ abstract public class ClassArmor extends Armor {
 		levelKnown = true;
 		cursedKnown = true;
 		defaultAction = special();
+
+        bones = false;
 	}
 	
 	public ClassArmor() {

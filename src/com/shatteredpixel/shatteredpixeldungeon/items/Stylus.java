@@ -17,9 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import java.util.ArrayList;
-
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
@@ -28,6 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.audio.Sample;
+
+import java.util.ArrayList;
 
 public class Stylus extends Item {
 	
@@ -43,6 +43,8 @@ public class Stylus extends Item {
 		image = ItemSpriteSheet.STYLUS;
 		
 		stackable = true;
+
+        bones = true;
 	}
 	
 	@Override

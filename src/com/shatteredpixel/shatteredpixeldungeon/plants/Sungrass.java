@@ -65,6 +65,8 @@ public class Sungrass extends Plant {
 			
 			plantClass = Sungrass.class;
 			alchemyClass = PotionOfHealing.class;
+
+            bones = true;
 		}
 		
 		@Override

@@ -17,11 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -40,9 +35,14 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Item implements Bundlable {
 
@@ -76,6 +76,9 @@ public class Item implements Bundlable {
 	
 	// Unique items persist through revival
 	public boolean unique = false;
+
+    // whether an item can be included in heroes remains
+    public boolean bones = false;
 	
 	private static Comparator<Item> itemComparator = new Comparator<Item>() {	
 		@Override
