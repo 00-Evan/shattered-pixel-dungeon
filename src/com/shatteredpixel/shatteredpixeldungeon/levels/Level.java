@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWeaponUpgrade;
@@ -147,6 +148,9 @@ public abstract class Level implements Bundlable {
 	public SparseArray<Plant> plants;
 	
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<Item>();
+
+    public ArrayList<Item> fallingItems = new ArrayList<Item>();
+    public ArrayList<Potion> fallingPotions = new ArrayList<Potion>();
 	
 	public int color1 = 0x004400;
 	public int color2 = 0x88CC44;
@@ -164,6 +168,7 @@ public abstract class Level implements Bundlable {
 	private static final String PLANTS		= "plants";
 	private static final String MOBS		= "mobs";
 	private static final String BLOBS		= "blobs";
+    private static final String FALLING		= "falling";
 	
 	public void create() {
 		
@@ -307,6 +312,8 @@ public abstract class Level implements Bundlable {
 			Blob blob = (Blob)b;
 			blobs.put( blob.getClass(), blob );
 		}
+
+        fallingItems = (ArrayList)bundle.getCollection( FALLING );
 		
 		buildFlagMaps();
 		cleanWalls();
@@ -324,6 +331,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( PLANTS, plants.values() );
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );
+        bundle.put( FALLING, fallingItems);
 	}
 	
 	public int tunnelTile() {
@@ -573,6 +581,7 @@ public abstract class Level implements Bundlable {
 			heap.pos = cell;
 			if (map[cell] == Terrain.CHASM || (Dungeon.level != null && pit[cell])) {
 				GameScene.discard( heap );
+                fallingItems.add(item);
 			} else {
 				heaps.put( cell, heap );
 				GameScene.add( heap );

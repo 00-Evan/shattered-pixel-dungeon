@@ -24,6 +24,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -327,6 +334,22 @@ public class Dungeon {
 		if (respawner != null) {
 			Actor.add( level.respawner() );
 		}
+
+        for (Potion potion : level.fallingPotions){
+
+            int cell = level.randomRespawnCell();
+            while (cell == -1)
+                cell = level.randomRespawnCell();
+
+            if (potion instanceof PotionOfLiquidFlame)
+                GameScene.add(Blob.seed(cell, 2, Fire.class));
+            else if (potion instanceof PotionOfToxicGas)
+                GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
+            else if (potion instanceof PotionOfParalyticGas)
+                GameScene.add( Blob.seed( cell, 1000, ParalyticGas.class ) );
+
+        }
+        level.fallingPotions.clear();
 		
 		hero.pos = pos != -1 ? pos : level.exit;
 		
