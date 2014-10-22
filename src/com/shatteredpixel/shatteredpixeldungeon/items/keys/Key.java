@@ -60,9 +60,4 @@ public class Key extends Item {
 		return true;
 	}
 
-    @Override
-    public String status() {
-        return depth + "*";
-    }
-
 }
