@@ -17,21 +17,21 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class Dreamweed extends Plant {
+public class Dreamfoil extends Plant {
 
     private static final String TXT_DESC =
-            "Upon touching a Dreamweed it secretes a glittering cloud of confusing gas.";
+            "DESC HERE";
 
     {
         image = 3;
-        plantName = "Dreamweed";
+        plantName = "Dreamfoil";
     }
 
     @Override
@@ -39,6 +39,8 @@ public class Dreamweed extends Plant {
         super.activate( ch );
 
         if (ch != null) {
+            if (ch instanceof Mob)
+                Buff.affect(ch, MagicalSleep.class);
             //GameScene.add(Blob.seed(pos, 300 + 20 * Dungeon.depth, ConfusionGas.class));
         }
     }
@@ -50,13 +52,13 @@ public class Dreamweed extends Plant {
 
     public static class Seed extends Plant.Seed {
         {
-            plantName = "Dreamweed";
+            plantName = "Dreamfoil";
 
             name = "seed of " + plantName;
-            image = ItemSpriteSheet.SEED_DREAMWEED;
+            image = ItemSpriteSheet.SEED_SORROWMOSS;
 
-            plantClass = Dreamweed.class;
-            alchemyClass = PotionOfInvisibility.class;
+            plantClass = Dreamfoil.class;
+            alchemyClass = PotionOfPurity.class;
         }
 
         @Override
