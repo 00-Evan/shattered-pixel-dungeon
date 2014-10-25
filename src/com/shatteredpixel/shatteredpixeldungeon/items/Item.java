@@ -111,8 +111,12 @@ public class Item implements Bundlable {
 		hero.spendAndNext( TIME_TO_DROP );			
 		Dungeon.level.drop( detachAll( hero.belongings.backpack ), hero.pos ).sprite.drop( hero.pos );	
 	}
-	
-	public void doThrow( Hero hero ) {
+
+    public void syncVisuals(){
+        //do nothing by default, as most items need no visual syncing.
+    }
+
+    public void doThrow( Hero hero ) {
 		GameScene.selectCell( thrower );
 	}
 	

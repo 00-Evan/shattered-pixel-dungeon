@@ -110,9 +110,14 @@ public class Potion extends Item {
 	
 	public Potion() {
 		super();
-		image = handler.image( this );
-		color = handler.label( this );
+		syncVisuals();
 	}
+
+    @Override
+    public void syncVisuals(){
+        image = handler.image( this );
+        color = handler.label( this );
+    };
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {

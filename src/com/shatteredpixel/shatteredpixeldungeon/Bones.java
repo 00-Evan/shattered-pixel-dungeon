@@ -99,7 +99,7 @@ public class Bones {
             if (!items.isEmpty()) {
                 item = Random.element(items);
                 if (item.stackable){
-                    item.quantity(Random.NormalIntRange(1, (int)Math.sqrt(item.quantity())));
+                    item.quantity((int)Math.sqrt(item.quantity()));
                 }
             }
         }
@@ -147,9 +147,7 @@ public class Bones {
 					}
 				}
 				
-				if (item instanceof Ring) {
-					((Ring)item).syncGem();
-				}
+				item.syncVisuals();
 				
 				return item;
 			} else {

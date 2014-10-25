@@ -125,12 +125,17 @@ public abstract class Wand extends KindOfWeapon {
 		calculateDamage();
 		
 		try {
-			image = handler.image( this );
-			wood = handler.label( this );
+            syncVisuals();
 		} catch (Exception e) {
 			// Wand of Magic Missile
 		}
 	}
+
+    @Override
+    public void syncVisuals(){
+        image = handler.image( this );
+        wood = handler.label( this );
+    }
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
