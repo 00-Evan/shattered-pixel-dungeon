@@ -155,37 +155,41 @@ public class Ghost extends NPC {
 		Sample.INSTANCE.play( Assets.SND_GHOST );
 		
 		if (Quest.given) {
-			
-			if (Quest.processed || Dungeon.hero.belongings.getItem( RatSkull.class ) != null){
-				GameScene.show( new WndSadGhost( this, Quest.type ) );
-			} else {
-                switch (Quest.type){
-                    case 1: default:
-                        GameScene.show( new WndQuest( this, TXT_RAT2 ) ); break;
-                    case 2:
-                        GameScene.show( new WndQuest( this, TXT_GNOLL2 ) ); break;
-                    case 3:
-                        GameScene.show( new WndQuest( this, TXT_CRAB2 ) ); break;
+			if (Quest.weapon != null) {
+                if (Quest.processed || Dungeon.hero.belongings.getItem(RatSkull.class) != null) {
+                    GameScene.show(new WndSadGhost(this, Quest.type));
+                } else {
+                    switch (Quest.type) {
+                        case 1:
+                        default:
+                            GameScene.show(new WndQuest(this, TXT_RAT2));
+                            break;
+                        case 2:
+                            GameScene.show(new WndQuest(this, TXT_GNOLL2));
+                            break;
+                        case 3:
+                            GameScene.show(new WndQuest(this, TXT_CRAB2));
+                            break;
+                    }
+
+                    int newPos = -1;
+                    for (int i = 0; i < 10; i++) {
+                        newPos = Dungeon.level.randomRespawnCell();
+                        if (newPos != -1) {
+                            break;
+                        }
+                    }
+                    if (newPos != -1) {
+
+                        Actor.freeCell(pos);
+
+                        CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+                        pos = newPos;
+                        sprite.place(pos);
+                        sprite.visible = Dungeon.visible[pos];
+                    }
                 }
-				
-				int newPos = -1;
-				for (int i=0; i < 10; i++) {
-					newPos = Dungeon.level.randomRespawnCell();
-					if (newPos != -1) {
-						break;
-					}
-				}
-				if (newPos != -1) {
-					
-					Actor.freeCell( pos );
-					
-					CellEmitter.get( pos ).start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );
-					pos = newPos;
-					sprite.place( pos );
-					sprite.visible = Dungeon.visible[pos];
-				}
-			}
-			
+            }
 		} else {
             Mob questBoss;
             String txt_quest;
