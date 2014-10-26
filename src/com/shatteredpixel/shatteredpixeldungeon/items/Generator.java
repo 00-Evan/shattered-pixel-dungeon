@@ -196,8 +196,10 @@ public class Generator {
 			Earthroot.Seed.class,
 			Fadeleaf.Seed.class,
             Rotberry.Seed.class,
-			BlandfruitBush.Seed.class};
-		Category.SEED.probs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 0, 1 };
+			BlandfruitBush.Seed.class,
+            Dreamfoil.Seed.class,
+            Stormvine.Seed.class};
+		Category.SEED.probs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 0, 1, 3, 3 };
 	}
 	
 	public static void reset() {
