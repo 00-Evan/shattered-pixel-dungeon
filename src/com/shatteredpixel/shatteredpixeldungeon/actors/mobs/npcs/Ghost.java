@@ -487,7 +487,7 @@ public class Ghost extends NPC {
 
             if (effect > 2) {
 
-                if (effect >=5 && enemy.buff(Burning.class) == null){
+                if (effect >=6 && enemy.buff(Burning.class) == null){
 
                     if (Level.flamable[enemy.pos])
                         GameScene.add( Blob.seed( enemy.pos, 4, Fire.class ) );
@@ -503,8 +503,8 @@ public class Ghost extends NPC {
         @Override
         protected boolean getCloser( int target ) {
             combo = 0; //if he's moving, he isn't attacking, reset combo.
-            if (state == HUNTING) {
-                return enemySeen && getFurther( target );
+            if (Level.adjacent(pos, enemy.pos)) {
+                return getFurther( target );
             } else {
                 return super.getCloser( target );
             }
@@ -559,16 +559,16 @@ public class Ghost extends NPC {
             state = WANDERING;
         }
 
-        private boolean moving = true;
+        private int moving = 0;
 
         @Override
         protected boolean getCloser( int target ) {
-            //this is used so that the crab remains slow, but still detects the player at the expected rate.
-            if (moving) {
-                moving = false;
+            //this is used so that the crab remains slower, but still detects the player at the expected rate.
+            moving++;
+            if (moving < 3) {
                 return super.getCloser( target );
             } else {
-                moving = true;
+                moving = 0;
                 return true;
             }
 
