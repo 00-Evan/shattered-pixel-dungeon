@@ -48,7 +48,7 @@ public class Weapon extends KindOfWeapon {
 	public float	DLY	= 1f;	// Speed modifier
 
     public enum Imbue {
-        NONE, SPEED, ACCURACY
+        NONE, LIGHT, HEAVY
     }
     public Imbue imbue = Imbue.NONE;
 
@@ -113,9 +113,7 @@ public class Weapon extends KindOfWeapon {
             ACU *= (float)(Math.pow(1.1, bonus));
 		}
 
-        return
-                (encumbrance > 0 ? (float)(ACU / Math.pow( 1.5, encumbrance )) : ACU) *
-                        (imbue == Imbue.ACCURACY ? 1.5f : 1.0f);
+        return encumbrance > 0 ? (float)(ACU / Math.pow( 1.5, encumbrance )) : ACU;
 	}
 	
 	@Override
@@ -135,7 +133,7 @@ public class Weapon extends KindOfWeapon {
 
         return
                 (encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY) *
-                        (imbue == Imbue.SPEED ? 0.6f : 1.0f);
+                        (imbue == Imbue.LIGHT ? 0.667f : (imbue == Imbue.HEAVY ? 1.667f : 1.0f));
 	}
 	
 	@Override
@@ -150,7 +148,7 @@ public class Weapon extends KindOfWeapon {
 			}
 		}
 		
-		return damage;
+		return Math.round(damage * (imbue == Imbue.LIGHT ? 0.7f : (imbue == Imbue.HEAVY ? 1.5f : 1f)));
 	}
 	
 	public Item upgrade( boolean enchant ) {		

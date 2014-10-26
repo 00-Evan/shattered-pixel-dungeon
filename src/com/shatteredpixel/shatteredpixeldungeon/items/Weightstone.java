@@ -37,8 +37,8 @@ import java.util.ArrayList;
 public class Weightstone extends Item {
 
     private static final String TXT_SELECT_WEAPON	= "Select a weapon to balance";
-    private static final String TXT_FAST			= "you balanced your %s to make it faster";
-    private static final String TXT_ACCURATE		= "you balanced your %s to make it more accurate";
+    private static final String TXT_LIGHT			= "you balanced your %s to make it lighter";
+    private static final String TXT_HEAVY		= "you balanced your %s to make it heavier";
 
     private static final float TIME_TO_APPLY = 2;
 
@@ -89,11 +89,11 @@ public class Weightstone extends Item {
         detach( curUser.belongings.backpack );
 
         if (forSpeed) {
-            weapon.imbue = Weapon.Imbue.SPEED;
-            GLog.p( TXT_FAST, weapon.name() );
+            weapon.imbue = Weapon.Imbue.LIGHT;
+            GLog.p( TXT_LIGHT, weapon.name() );
         } else {
-            weapon.imbue = Weapon.Imbue.ACCURACY;
-            GLog.p( TXT_ACCURATE, weapon.name() );
+            weapon.imbue = Weapon.Imbue.HEAVY;
+            GLog.p( TXT_HEAVY, weapon.name() );
         }
 
         curUser.sprite.operate( curUser.pos );
@@ -111,7 +111,8 @@ public class Weightstone extends Item {
     @Override
     public String info() {
         return
-                "Using a weightstone, you can balance your melee weapon to increase its speed or accuracy.";
+                "Using a weightstone, you can balance your melee weapon to make it lighter or heavier, " +
+                "increasing either speed or damage at the expense of the other.";
     }
 
     private final WndBag.Listener itemSelector = new WndBag.Listener() {
@@ -127,8 +128,8 @@ public class Weightstone extends Item {
 
         private static final String TXT_CHOICE = "How would you like to balance your %s?";
 
-        private static final String TXT_SPEED		= "For speed";
-        private static final String TXT_ACCURACY	= "For accuracy";
+        private static final String TXT_LIGHT		= "Lighter";
+        private static final String TXT_HEAVY   	= "Heavier";
         private static final String TXT_CANCEL		= "Never mind";
 
         private static final int WIDTH			= 120;
@@ -152,8 +153,8 @@ public class Weightstone extends Item {
 
             float pos = tfMesage.y + tfMesage.height();
 
-            if (weapon.imbue != Weapon.Imbue.SPEED) {
-                RedButton btnSpeed = new RedButton( TXT_SPEED ) {
+            if (weapon.imbue != Weapon.Imbue.LIGHT) {
+                RedButton btnSpeed = new RedButton( TXT_LIGHT ) {
                     @Override
                     protected void onClick() {
                         hide();
@@ -166,8 +167,8 @@ public class Weightstone extends Item {
                 pos = btnSpeed.bottom();
             }
 
-            if (weapon.imbue != Weapon.Imbue.ACCURACY) {
-                RedButton btnAccuracy = new RedButton( TXT_ACCURACY ) {
+            if (weapon.imbue != Weapon.Imbue.HEAVY) {
+                RedButton btnAccuracy = new RedButton( TXT_HEAVY ) {
                     @Override
                     protected void onClick() {
                         hide();
