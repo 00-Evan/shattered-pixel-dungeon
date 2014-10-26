@@ -13,11 +13,13 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
  * Created by Evan on 23/10/2014.
  */
 public class Stormvine extends Plant {
+
     private static final String TXT_DESC =
-            "DESC HERE";
+            "Stormvine is an unusual sort fo vine which 'hangs' on the air. " +
+            "Gravity affects it strangely, and anything caught in the vine is confused as a result.";
 
     {
-        image = 3;
+        image = 9;
         plantName = "Stormvine";
     }
 
@@ -37,10 +39,10 @@ public class Stormvine extends Plant {
 
     public static class Seed extends Plant.Seed {
         {
-            plantName = "Dreamfoil";
+            plantName = "Stormvine";
 
             name = "seed of " + plantName;
-            image = ItemSpriteSheet.SEED_ICECAP;
+            image = ItemSpriteSheet.SEED_STORMVINE;
 
             plantClass = Stormvine.class;
             alchemyClass = PotionOfLevitation.class;

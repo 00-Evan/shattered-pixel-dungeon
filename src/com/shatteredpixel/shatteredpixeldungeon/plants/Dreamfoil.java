@@ -27,10 +27,11 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Dreamfoil extends Plant {
 
     private static final String TXT_DESC =
-            "DESC HERE";
+            "The Dreamfoil's prickly flowers contain a toxin " +
+            "which renders most weaker beings unconscious.";
 
     {
-        image = 3;
+        image = 10;
         plantName = "Dreamfoil";
     }
 
@@ -41,7 +42,6 @@ public class Dreamfoil extends Plant {
         if (ch != null) {
             if (ch instanceof Mob)
                 Buff.affect(ch, MagicalSleep.class);
-            //GameScene.add(Blob.seed(pos, 300 + 20 * Dungeon.depth, ConfusionGas.class));
         }
     }
 
@@ -55,7 +55,7 @@ public class Dreamfoil extends Plant {
             plantName = "Dreamfoil";
 
             name = "seed of " + plantName;
-            image = ItemSpriteSheet.SEED_SORROWMOSS;
+            image = ItemSpriteSheet.SEED_DREAMFOIL;
 
             plantClass = Dreamfoil.class;
             alchemyClass = PotionOfPurity.class;
