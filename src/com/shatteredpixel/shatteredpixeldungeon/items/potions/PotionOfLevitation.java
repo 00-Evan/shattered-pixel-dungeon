@@ -17,16 +17,32 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 
 public class PotionOfLevitation extends Potion {
 
 	{
 		name = "Potion of Levitation";
 	}
+
+    @Override
+    protected void shatter( int cell ) {
+
+        setKnown();
+
+        splash( cell );
+        Sample.INSTANCE.play( Assets.SND_SHATTER );
+
+        GameScene.add( Blob.seed( cell, 1000, ConfusionGas.class ) );
+    }
 	
 	@Override
 	public void apply( Hero hero ) {
@@ -39,8 +55,8 @@ public class PotionOfLevitation extends Potion {
 	public String desc() {
 		return
 			"Drinking this curious liquid will cause you to hover in the air, " +
-			"able to drift effortlessly over traps. Flames and gases " +
-			"fill the air, however, and cannot be bypassed while airborne.";
+			"able to drift effortlessly over traps and pits. Throwing this potion " +
+            "will create a cloud of unrefined gas, disorienting anything caught in it.";
 	}
 	
 	@Override
