@@ -164,11 +164,11 @@ public class Blandfruit extends Food {
     }
 
     public Item cook(Seed seed){
-        Class<? extends Item> plant = seed.alchemyClass;
+        Class<? extends Item> potion = seed.alchemyClass;
 
 
         try {
-            potionAttrib = (Potion)plant.newInstance();
+            potionAttrib = (Potion)potion.newInstance();
             potionAttrib.ownedByFruit = true;
         } catch (Exception e) {
             return null;
@@ -178,7 +178,7 @@ public class Blandfruit extends Food {
 
 
         info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-               "of the " + seed.name() + " seed it was cooked with.\n\n";
+               "of the " + seed.name() + " it was cooked with.\n\n";
 
         if (potionAttrib instanceof PotionOfHealing){
 
@@ -236,7 +236,7 @@ public class Blandfruit extends Food {
 
         } else if (potionAttrib instanceof PotionOfPurity) {
 
-            name = "Cleansefruit";
+            name = "Purefruit";
             potionGlow = new ItemSprite.Glowing( 0x8E2975 );
             info += "It looks delicious and clean, ready to be eaten!";
 
@@ -253,7 +253,8 @@ public class Blandfruit extends Food {
                 potionAttrib instanceof PotionOfToxicGas ||
                 potionAttrib instanceof PotionOfParalyticGas ||
                 potionAttrib instanceof PotionOfFrost ||
-                potionAttrib instanceof PotionOfLevitation) {
+                potionAttrib instanceof PotionOfLevitation ||
+                potionAttrib instanceof PotionOfPurity) {
             potionAttrib.cast(user, dst);
             detach( user.belongings.backpack );
         } else {
@@ -291,7 +292,7 @@ public class Blandfruit extends Food {
             cook(new Sorrowmoss.Seed());
         else if (name.equals("Floatfruit"))
             cook(new Stormvine.Seed());
-        else if (name.equals("Cleansefruit"))
+        else if (name.equals("Purefruit"))
             cook(new Dreamfoil.Seed());
 
     }
