@@ -443,6 +443,16 @@ public class Ghost extends NPC {
                 "The rat carries a cloud of horrible stench with it, it's overpoweringly strong up close.\n\n" +
                 "Dark ooze dribbles from the rat's mouth, it eats through the floor but seems to dissolve in water.";
 		}
+
+        private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+        static {
+            IMMUNITIES.add( StenchGas.class );
+        }
+
+        @Override
+        public HashSet<Class<?>> immunities() {
+            return IMMUNITIES;
+        }
 	}
 
 
