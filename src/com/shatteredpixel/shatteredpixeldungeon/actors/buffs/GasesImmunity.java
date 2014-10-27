@@ -17,10 +17,12 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import java.util.HashSet;
-
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+
+import java.util.HashSet;
 
 public class GasesImmunity extends FlavourBuff {
 	
@@ -40,5 +42,7 @@ public class GasesImmunity extends FlavourBuff {
 	static {
 		IMMUNITIES.add( Paralysis.class );
 		IMMUNITIES.add( ToxicGas.class );
+        IMMUNITIES.add( ConfusionGas.class );
+        IMMUNITIES.add( StenchGas.class );
 	}
 }
