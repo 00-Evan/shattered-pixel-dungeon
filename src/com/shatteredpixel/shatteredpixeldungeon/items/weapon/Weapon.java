@@ -124,16 +124,17 @@ public class Weapon extends KindOfWeapon {
 			encumrance -= 2;
 		}
 
+        float DLY = this.DLY * (imbue == Imbue.LIGHT ? 0.667f : (imbue == Imbue.HEAVY ? 1.667f : 1.0f));
+
         int bonus = 0;
         for (Buff buff : hero.buffs(RingOfFuror.Furor.class)) {
             bonus += ((RingOfFuror.Furor)buff).level;
         }
 
-        float DLY = (float)(0.25 + (this.DLY - 0.25)*Math.pow(0.8, bonus));
+        DLY = (float)(0.25 + (DLY - 0.25)*Math.pow(0.8, bonus));
 
         return
-                (encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY) *
-                        (imbue == Imbue.LIGHT ? 0.667f : (imbue == Imbue.HEAVY ? 1.667f : 1.0f));
+                (encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY);
 	}
 	
 	@Override
