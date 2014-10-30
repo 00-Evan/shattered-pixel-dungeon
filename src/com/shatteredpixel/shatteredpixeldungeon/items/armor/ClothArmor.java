@@ -25,6 +25,8 @@ public class ClothArmor extends Armor {
 	{	
 		name = "cloth armor";
 		image = ItemSpriteSheet.ARMOR_CLOTH;
+
+        bones = false; //Finding them in bones would be semi-frequent and disappointing.
 	}
 	
 	public ClothArmor() {
