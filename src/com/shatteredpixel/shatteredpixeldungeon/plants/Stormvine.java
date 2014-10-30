@@ -1,11 +1,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -15,8 +12,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Stormvine extends Plant {
 
     private static final String TXT_DESC =
-            "Stormvine is an unusual sort fo vine which 'hangs' on the air. " +
-            "Gravity affects it strangely, and anything caught in the vine is confused as a result.";
+            "Stormvine is an unusual sort of vine which 'hangs' on the air. " +
+            "It somehow nuffies gravity around it, and anything caught in the vine is disoriented as a result.";
 
     {
         image = 9;
