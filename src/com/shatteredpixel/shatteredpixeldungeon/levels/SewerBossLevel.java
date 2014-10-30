@@ -17,10 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.watabou.noosa.Scene;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -31,9 +27,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.noosa.Scene;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SewerBossLevel extends RegularLevel {
 
@@ -232,7 +232,7 @@ public class SewerBossLevel extends RegularLevel {
 			do {
 				pos = roomEntrance.random();
 			} while (pos == entrance || map[pos] == Terrain.SIGN);
-			drop( item, pos ).type = Heap.Type.SKELETON;
+			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
 	}
 	
