@@ -62,12 +62,11 @@ public class WndInfoCell extends Window {
 		add( info );
 		
 		StringBuilder desc = new StringBuilder( Dungeon.level.tileDesc( tile ) );
-		
-		final char newLine = '\n';
+
 		for (Blob blob:Dungeon.level.blobs.values()) {
 			if (blob.cur[cell] > 0 && blob.tileDesc() != null) {
 				if (desc.length() > 0) {
-					desc.append( newLine );
+					desc.append( "\n\n" );
 				}
 				desc.append( blob.tileDesc() );
 			}
