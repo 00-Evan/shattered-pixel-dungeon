@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -40,7 +41,7 @@ public class GasesImmunity extends FlavourBuff {
 	
 	public static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
 	static {
-		IMMUNITIES.add( Paralysis.class );
+		IMMUNITIES.add( ParalyticGas.class );
 		IMMUNITIES.add( ToxicGas.class );
         IMMUNITIES.add( ConfusionGas.class );
         IMMUNITIES.add( StenchGas.class );
