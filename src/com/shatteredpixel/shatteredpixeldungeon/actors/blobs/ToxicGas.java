@@ -49,26 +49,6 @@ public class ToxicGas extends Blob implements Hero.Doom {
 				ch.damage( damage, this );
 			}
 		}
-		
-		Blob blob = Dungeon.level.blobs.get( ParalyticGas.class );
-		if (blob != null) {
-			
-			int par[] = blob.cur;
-			
-			for (int i=0; i < LENGTH; i++) {
-				
-				int t = cur[i];
-				int p = par[i];
-				
-				if (p >= t) {
-					volume -= t;
-					cur[i] = 0;
-				} else {
-					blob.volume -= p;
-					par[i] = 0;
-				}
-			}
-		}
 	}
 	
 	@Override

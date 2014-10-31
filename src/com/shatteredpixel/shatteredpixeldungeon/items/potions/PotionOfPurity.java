@@ -17,6 +17,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -53,7 +55,9 @@ public class PotionOfPurity extends Potion {
 		
 		Blob[] blobs = {
 			Dungeon.level.blobs.get( ToxicGas.class ), 
-			Dungeon.level.blobs.get( ParalyticGas.class )
+			Dungeon.level.blobs.get( ParalyticGas.class ),
+            Dungeon.level.blobs.get( ConfusionGas.class ),
+            Dungeon.level.blobs.get( StenchGas.class )
 		};
 		
 		for (int j=0; j < blobs.length; j++) {
