@@ -151,9 +151,9 @@ public abstract class Wand extends KindOfWeapon {
 	}
 	
 	@Override
-	public boolean doUnequip( Hero hero, boolean collect ) {
+	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
         onDetach();
-        return super.doUnequip( hero, collect );
+        return super.doUnequip( hero, collect, single );
 	}
 	
 	@Override
