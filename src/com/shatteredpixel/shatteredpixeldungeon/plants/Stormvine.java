@@ -12,8 +12,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Stormvine extends Plant {
 
     private static final String TXT_DESC =
-            "Stormvine is an unusual sort of vine which 'hangs' on the air. " +
-            "It somehow nuffies gravity around it, and anything caught in the vine is disoriented as a result.";
+            "Gravity affects the Stormvine plant strangely, allowing its whispy blue tendrils " +
+            "to 'hang' on the air. Anything caught in the vine is affected by this, and becomes disoriented.";
 
     {
         image = 9;
