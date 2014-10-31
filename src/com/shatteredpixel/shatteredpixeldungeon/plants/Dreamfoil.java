@@ -20,9 +20,12 @@ package com.shatteredpixel.shatteredpixeldungeon.plants;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class Dreamfoil extends Plant {
 
@@ -42,6 +45,10 @@ public class Dreamfoil extends Plant {
         if (ch != null) {
             if (ch instanceof Mob)
                 Buff.affect(ch, MagicalSleep.class);
+            else if (ch instanceof Hero){
+                GLog.w("The poison isn't strong enough to put you to sleep, you are weakened instead.");
+                Buff.affect(ch, Weakness.class, Weakness.duration(ch));
+            }
         }
     }
 

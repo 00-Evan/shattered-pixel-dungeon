@@ -159,7 +159,7 @@ public class CityBossLevel extends Level {
 					Random.IntRange( LEFT + 1, LEFT + HALL_WIDTH - 2 ) + 
 					Random.IntRange( TOP + HALL_HEIGHT + 1, TOP + HALL_HEIGHT  + CHAMBER_HEIGHT ) * WIDTH;
 			} while (pos == entrance || map[pos] == Terrain.SIGN);
-			drop( item, pos ).type = Heap.Type.SKELETON;
+			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
 	}
 	

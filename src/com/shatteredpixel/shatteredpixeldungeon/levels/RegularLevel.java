@@ -17,11 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -34,11 +29,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.*;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 public abstract class RegularLevel extends Level {
 
@@ -632,7 +632,7 @@ public abstract class RegularLevel extends Level {
 		
 		Item item = Bones.get();
 		if (item != null) {
-			drop( item, randomDropCell() ).type = Heap.Type.SKELETON;
+			drop( item, randomDropCell() ).type = Heap.Type.REMAINS;
 		}
 	}
 	

@@ -658,6 +658,7 @@ public class Hero extends Char {
 					Camera.main.shake( 1, 0.5f );
 					break;
 				case SKELETON:
+                case REMAINS:
 					break;
 				default:
 					Sample.INSTANCE.play( Assets.SND_UNLOCK );
@@ -1318,7 +1319,7 @@ public class Hero extends Char {
 			}
 			
 			Heap heap = Dungeon.level.heaps.get( ((HeroAction.OpenChest)curAction).dst ); 
-			if (heap.type == Type.SKELETON) {
+			if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
 				Sample.INSTANCE.play( Assets.SND_BONES );
 			}
 			heap.open( this );
