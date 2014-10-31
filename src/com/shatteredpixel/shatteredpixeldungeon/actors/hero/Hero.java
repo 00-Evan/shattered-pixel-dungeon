@@ -637,7 +637,7 @@ public class Hero extends Char {
 			Heap heap = Dungeon.level.heaps.get( dst );
 			if (heap != null && 
 				(heap.type == Type.CHEST || heap.type == Type.TOMB || heap.type == Type.SKELETON ||
-				heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST)) {
+                    heap.type == Type.REMAINS || heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST)) {
 				
 				theKey = null;
 				
