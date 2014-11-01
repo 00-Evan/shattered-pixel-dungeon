@@ -211,7 +211,14 @@ public class Item implements Bundlable {
 			updateQuickslot();
 			
 			try {
+
+                //pssh, who needs copy constructors?
                 Item detached = getClass().newInstance();
+                Bundle copy = new Bundle();
+                this.storeInBundle(copy);
+                detached.restoreFromBundle(copy);
+                detached.quantity(1);
+
                 detached.onDetach( );
                 return detached;
 			} catch (Exception e) {
