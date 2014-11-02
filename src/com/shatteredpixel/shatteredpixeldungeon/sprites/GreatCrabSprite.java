@@ -19,7 +19,7 @@ public class GreatCrabSprite extends MobSprite {
         idle = new MovieClip.Animation( 5, true );
         idle.frames( frames, 16, 17, 16, 18 );
 
-        run = new MovieClip.Animation( 15, true );
+        run = new MovieClip.Animation( 10, true );
         run.frames( frames, 19, 20, 21, 22 );
 
         attack = new MovieClip.Animation( 12, false );
