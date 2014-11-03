@@ -7,8 +7,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -177,7 +175,7 @@ public class SandalsOfNature extends Artifact {
                     hero.sprite.operate( hero.pos );
                     hero.busy();
                     hero.spend( 2f );
-                    if (seeds.size() >= 5+level){
+                    if (seeds.size() >= 5+(level*2)){
                         seeds.clear();
                         upgrade();
                         if (level >= 1 && level <= 3) {
