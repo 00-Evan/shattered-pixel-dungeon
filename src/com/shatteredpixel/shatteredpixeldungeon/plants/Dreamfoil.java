@@ -18,8 +18,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -30,8 +36,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class Dreamfoil extends Plant {
 
     private static final String TXT_DESC =
-            "The Dreamfoil's prickly flowers contain a toxin " +
-            "which renders most weaker beings unconscious.";
+            "The Dreamfoil's prickly flowers contain a strange chemical which is known for its " +
+            "properties as a strong neutralizing agent. Most weaker creatures are overwhelmed " +
+            "and knocked unconscious, giving the plant its name.";
 
     {
         image = 10;
@@ -46,9 +53,15 @@ public class Dreamfoil extends Plant {
             if (ch instanceof Mob)
                 Buff.affect(ch, MagicalSleep.class);
             else if (ch instanceof Hero){
-                GLog.w("The poison isn't strong enough to put you to sleep, you are weakened instead.");
-                Buff.affect(ch, Weakness.class, Weakness.duration(ch));
-            }
+                GLog.i( "You feel refreshed." );
+                Buff.detach( ch, Poison.class );
+                Buff.detach( ch, Cripple.class );
+                Buff.detach( ch, Weakness.class );
+                Buff.detach( ch, Bleeding.class );
+                Buff.detach( ch, Drowsy.class );
+                Buff.detach( ch, Slow.class );
+                Buff.detach( ch, Vertigo.class);
+           }
         }
     }
 
