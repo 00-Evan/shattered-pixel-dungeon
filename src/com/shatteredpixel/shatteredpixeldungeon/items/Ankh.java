@@ -68,7 +68,7 @@ public class Ankh extends Item {
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions(hero);
         DewVial vial = hero.belongings.getItem(DewVial.class);
-        if (vial != null && vial.isFull())
+        if (vial != null && vial.isFull() && !blessed)
             actions.add( AC_BLESS );
         return actions;
     }
