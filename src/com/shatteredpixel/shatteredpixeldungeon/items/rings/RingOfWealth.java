@@ -19,7 +19,7 @@ public class RingOfWealth extends Ring {
         return isKnown() ?
                 "It's not clear what this ring does exactly, good luck may influence " +
                 "the life an an adventurer in many subtle ways. " +
-                "Naturally a cursed ring would give bad luck." :
+                "Naturally a degraded ring would give bad luck." :
                 super.desc();
     }
 

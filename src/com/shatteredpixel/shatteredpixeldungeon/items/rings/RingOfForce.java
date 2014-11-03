@@ -20,7 +20,7 @@ public class RingOfForce extends Ring {
                 "This ring enhances the force of the wearer's blows. " +
                 "This extra power is largely wasted when wielding weapons, " +
                 "but an unarmed attack will be made much stronger. " +
-                "A cursed ring will instead weaken the wearer's blows." :
+                "A degraded ring will instead weaken the wearer's blows." :
                  super.desc();
     }
 

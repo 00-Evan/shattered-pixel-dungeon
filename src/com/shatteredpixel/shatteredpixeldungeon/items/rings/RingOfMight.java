@@ -20,7 +20,7 @@ public class RingOfMight extends Ring {
         return isKnown() ?
                 "This ring enhances the physical traits of the wearer, " +
                 "granting them greater physical strength and constitution. " +
-                "A cursed ring will weaken the wearer." :
+                "A degraded ring will weaken the wearer." :
                 super.desc();
     }
 

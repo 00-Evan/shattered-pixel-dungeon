@@ -19,7 +19,7 @@ public class RingOfSharpshooting extends Ring {
         return isKnown() ?
                 "This ring enhances the wearer's precision and aim, which will " +
                 "make all projectile weapons more accurate and durable. " +
-                "A cursed ring will have the opposite effect.":
+                "A degraded ring will have the opposite effect.":
                 super.desc();
     }
 

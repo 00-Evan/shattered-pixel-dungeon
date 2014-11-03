@@ -17,11 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class RingOfEvasion extends Ring {
 
@@ -39,7 +35,7 @@ public class RingOfEvasion extends Ring {
 		return isKnown() ?
 			"This ring increases the wearer's ability to focus and anticipate the movements of an enemy. " +
             "The longer the wearer stands still, the more focused they will become. " +
-            "A cursed ring will instead make dodging harder." :
+            "A degraded ring will instead make dodging harder." :
 			super.desc();
 	}
 

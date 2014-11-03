@@ -32,7 +32,7 @@ public class RingOfHaste extends Ring {
 	public String desc() {
 		return isKnown() ?
 			"This ring reduces the stress of movement on the wearer, allowing them to run " +
-            "at superhuman speeds. A cursed ring will instead weigh the wearer down.":
+            "at superhuman speeds. A degraded ring will instead weigh the wearer down.":
 			super.desc();
 	}
 	
