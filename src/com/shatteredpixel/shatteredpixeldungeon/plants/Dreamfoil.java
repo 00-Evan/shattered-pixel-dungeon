@@ -36,9 +36,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class Dreamfoil extends Plant {
 
     private static final String TXT_DESC =
-            "The Dreamfoil's prickly flowers contain a strange chemical which is known for its " +
+            "The Dreamfoil's prickly flowers contain a chemical which is known for its " +
             "properties as a strong neutralizing agent. Most weaker creatures are overwhelmed " +
-            "and knocked unconscious, giving the plant its name.";
+            "and knocked unconscious, which gives the plant its namesake.";
 
     {
         image = 10;
