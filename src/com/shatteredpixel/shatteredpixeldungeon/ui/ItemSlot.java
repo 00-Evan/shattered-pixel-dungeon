@@ -47,8 +47,8 @@ public class ItemSlot extends Button {
 	
 	private static final String TXT_STRENGTH	= ":%d";
 	private static final String TXT_TYPICAL_STR	= "%d?";
-    private static final String TXT_KEY_DEPTH	= "*%d";
-	
+    private static final String TXT_KEY_DEPTH	= "\u007F%d";
+
 	private static final String TXT_LEVEL	= "%+d";
 	
 	// Special items for containers
