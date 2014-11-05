@@ -10,7 +10,7 @@ import com.watabou.noosa.ui.Component;
 /**
  * Created by debenhame on 14/10/2014.
  */
-//TODO: this is completely broken at the moment. Better to get the patch out now, get this done for next update!
+//TODO: this is completely broken at the moment. Implement soon if it's needed!
 public class WndChanges extends Window {
 
     private static final int WIDTH	= 112;

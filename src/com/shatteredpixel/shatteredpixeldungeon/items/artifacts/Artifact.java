@@ -1,6 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
  * Created by Evan on 24/08/2014.
  */
 public class Artifact extends KindofMisc {
-//TODO: add artifact transform method and tie it into well of transformation, scheduled for 0.2.2
+//TODO: add artifact transform method and tie it into well of transformation, scheduled for 0.2.3
     {
         levelKnown = true;
     }
