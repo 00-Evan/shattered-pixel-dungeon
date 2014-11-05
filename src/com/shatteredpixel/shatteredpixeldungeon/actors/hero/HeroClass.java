@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
@@ -110,8 +111,11 @@ public enum HeroClass {
     }
 
     private static void initCommon( Hero hero ) {
-        (hero.belongings.armor = new ClothArmor()).identify();
-        new Food().identify().collect();
+        if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
+            (hero.belongings.armor = new ClothArmor()).identify();
+
+        if (!Dungeon.isChallenged(Challenges.NO_FOOD))
+            new Food().identify().collect();
     }
 
     public Badges.Badge masteryBadge() {

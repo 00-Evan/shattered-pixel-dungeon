@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -139,6 +140,14 @@ public abstract class RegularLevel extends Level {
 		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
 			specials.remove( Room.Type.WEAK_FLOOR );
 		}
+        if (Dungeon.isChallenged( Challenges.NO_ARMOR )){
+            //no sense in giving an armor reward room on a run with no armor.
+            specials.remove( Room.Type.CRYPT );
+        }
+        if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
+            //sorry warden, no lucky sungrass or blandfruit seeds for you!
+            specials.remove( Room.Type.GARDEN );
+        }
 		assignRoomType();
 		
 		paint();

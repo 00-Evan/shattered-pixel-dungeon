@@ -17,12 +17,14 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Foliage;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.watabou.utils.Random;
 
 public class GardenPainter extends Painter {
@@ -34,17 +36,20 @@ public class GardenPainter extends Painter {
 		fill( level, room, 2, Terrain.GRASS );
 		
 		room.entrance().set( Room.Door.Type.REGULAR );
-		
-		int bushes = Random.Int( 3 );
-	    if (bushes == 0) {
-            level.plant(new Sungrass.Seed(), room.random());
-        } else if (bushes == 1) {
-            level.plant(new BlandfruitBush.Seed(), room.random() );
-		} else {
-            bushes = Random.Int( 5 );
-            if (bushes == 0){
+
+        if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
+            if (Random.Int(2) == 0){
                 level.plant(new Sungrass.Seed(), room.random());
-                level.plant(new BlandfruitBush.Seed(), room.random() );
+            }
+        } else {
+            int bushes = Random.Int(3);
+            if (bushes == 0) {
+                level.plant(new Sungrass.Seed(), room.random());
+            } else if (bushes == 1) {
+                level.plant(new BlandfruitBush.Seed(), room.random());
+            } else if (Random.Int(5) == 0) {
+                level.plant(new Sungrass.Seed(), room.random());
+                level.plant(new BlandfruitBush.Seed(), room.random());
             }
         }
 		

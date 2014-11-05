@@ -17,20 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWeaponUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
-import com.watabou.noosa.Scene;
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -51,29 +37,43 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWeaponUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
+import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Scene;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public abstract class Level implements Bundlable {
 	
@@ -446,7 +446,8 @@ public abstract class Level implements Bundlable {
 			itemsToSpawn.add( item );
 		}
 	}
-	
+
+    //TODO: this results in lots of empty rooms that could otherwise have a prize, should rework, also fix typo.
 	public Item itemToSpanAsPrize() {
 		if (Random.Int( itemsToSpawn.size() + 1 ) > 0) {
 			Item item = Random.element( itemsToSpawn );
@@ -555,14 +556,13 @@ public abstract class Level implements Bundlable {
 	
 	public Heap drop( Item item, int cell ) {
 
-        if (Dungeon.isChallenged( Challenges.NO_FOOD ) && item instanceof Food) {
-            item = new Gold( item.price() );
-        } else
-        if (Dungeon.isChallenged( Challenges.NO_ARMOR ) && item instanceof Armor) {
-            item = new Gold( item.price() );
-        } else
-        if (Dungeon.isChallenged( Challenges.NO_HEALING ) && item instanceof PotionOfHealing) {
-            item = new Gold( item.price() );
+        if ((Dungeon.isChallenged( Challenges.NO_FOOD ) && (item instanceof Food || item instanceof BlandfruitBush.Seed)) ||
+            (Dungeon.isChallenged( Challenges.NO_ARMOR ) && item instanceof Armor) ||
+            (Dungeon.isChallenged( Challenges.NO_HEALING ) && item instanceof PotionOfHealing) ||
+            (Dungeon.isChallenged( Challenges.NO_HERBALISM ) && (item instanceof Plant.Seed || item instanceof Dewdrop))) {
+
+            return new Heap();
+
         }
 
 		if ((map[cell] == Terrain.ALCHEMY) && (item instanceof BlandfruitBush.Seed || !(item instanceof Plant.Seed ||
