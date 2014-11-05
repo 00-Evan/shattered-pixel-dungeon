@@ -17,24 +17,24 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Music;
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class InterlevelScene extends PixelScene {
 
@@ -252,13 +252,6 @@ public class InterlevelScene extends PixelScene {
         Level level;
         ArrayList<Item> fallingItems = new ArrayList<Item>();
 
-        if (Dungeon.depth > 0) {
-            level = Dungeon.level;
-
-            fallingItems = level.fallingItems;
-            level.fallingItems = new ArrayList<Item>();
-        }
-
         Actor.fixTime();
 		if (Dungeon.hero == null) {
 			Dungeon.init();
@@ -267,6 +260,11 @@ public class InterlevelScene extends PixelScene {
 				noStory = false;
 			}
 		} else {
+            level = Dungeon.level;
+
+            fallingItems = level.fallingItems;
+            level.fallingItems = new ArrayList<Item>();
+
 			Dungeon.saveLevel();
 		}
 
