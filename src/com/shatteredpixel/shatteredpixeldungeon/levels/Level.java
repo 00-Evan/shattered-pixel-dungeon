@@ -447,16 +447,27 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
-    //TODO: this results in lots of empty rooms that could otherwise have a prize, should rework, also fix typo.
-	public Item itemToSpanAsPrize() {
-		if (Random.Int( itemsToSpawn.size() + 1 ) > 0) {
-			Item item = Random.element( itemsToSpawn );
-			itemsToSpawn.remove( item );
-			return item;
-		} else {
-			return null;
-		}
-	}
+    public Item findPrizeItem(){ return findPrizeItem(null); }
+
+    public Item findPrizeItem(Class<?extends Item> match){
+        if (itemsToSpawn.size() == 0)
+            return null;
+
+        if (match == null){
+            Item item = Random.element(itemsToSpawn);
+            itemsToSpawn.remove(item);
+            return item;
+        }
+
+        for (Item item : itemsToSpawn){
+            if (match.isInstance(item)){
+                itemsToSpawn.remove( item );
+                return item;
+            }
+        }
+
+        return null;
+    }
 	
 	private void buildFlagMaps() {
 		

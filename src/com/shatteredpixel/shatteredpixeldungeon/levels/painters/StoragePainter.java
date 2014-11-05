@@ -48,11 +48,12 @@ public class StoragePainter extends Painter {
 	}
 	
 	private static Item prize( Level level ) {
-		
-		Item prize = level.itemToSpanAsPrize();
-		if (prize != null) {
-			return prize;
-		}
+
+        if (Random.Int(2) != 0){
+            Item prize = level.findPrizeItem();
+            if (prize != null)
+                return prize;
+        }
 		
 		return Generator.random( Random.oneOf( 
 			Generator.Category.POTION, 

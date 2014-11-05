@@ -78,13 +78,10 @@ public class LibraryPainter extends Painter {
 	
 	private static Item prize( Level level ) {
 		
-		Item prize = level.itemToSpanAsPrize();
-		if (prize instanceof Scroll) {
-			return prize;
-		} else if (prize != null) {
-			level.addItemToSpawn( prize );
-		}
+		Item prize = level.findPrizeItem( Scroll.class );
+		if (prize == null)
+            prize = Generator.random( Generator.Category.SCROLL );
 		
-		return Generator.random( Generator.Category.SCROLL );
+		return prize;
 	}
 }

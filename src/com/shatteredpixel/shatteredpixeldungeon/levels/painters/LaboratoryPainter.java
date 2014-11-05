@@ -70,14 +70,11 @@ public class LaboratoryPainter extends Painter {
 	}
 	
 	private static Item prize( Level level ) {
-		
-		Item prize = level.itemToSpanAsPrize();
-		if (prize instanceof Potion) {
-			return prize;
-		} else if (prize != null) {
-			level.addItemToSpawn( prize );
-		}
-		
-		return Generator.random( Generator.Category.POTION );
+
+        Item prize = level.findPrizeItem( Potion.class );
+        if (prize == null)
+            prize = Generator.random( Generator.Category.POTION );
+
+        return prize;
 	}
 }
