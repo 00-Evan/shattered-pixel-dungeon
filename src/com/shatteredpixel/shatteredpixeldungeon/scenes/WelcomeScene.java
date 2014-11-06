@@ -33,7 +33,9 @@ public class WelcomeScene extends PixelScene {
             "There are various other small tweaks and improvements, for example, falling items will now appear on the next depth!";
 
     private static final String TXT_SameVer =
-            "no patches at present";
+            "v0.2.2a addresses an issue players were having when they tried to start a new game, " +
+            "corrects a few small inconsistencies with challenges, and makes a few small improvements to " +
+            "level generation.\n\nHappy Dungeoneering!";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon.\n\n"+
@@ -57,10 +59,15 @@ public class WelcomeScene extends PixelScene {
             text = createMultiline(TXT_Welcome, 8);
             title = createMultiline(TTL_Welcome, 16);
 
-        } else if (gameversion <= Game.versionCode) {
+        } else if (gameversion < 13) {
 
             text = createMultiline(TXT_LastVer, 6 );
             title = createMultiline(TTL_LastVer, 12 );
+
+        } else if (gameversion <= Game.versionCode) {
+
+            text = createMultiline(TXT_SameVer, 6 );
+            title = createMultiline(TTL_SameVer, 12 );
 
         } else {
 
