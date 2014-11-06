@@ -26,8 +26,8 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_LastVer =
-            "This update brings improvements from the Pixel Dungeon source, and various small improvements.\n\n" +
-            "There are now two new plants, look out for dreamfoil and stormvine! potion of levitation has been buffed as well.\n\n" +
+            "This update brings improvements from the Pixel Dungeon source, and various small tweaks.\n\n" +
+            "There are now two new plants, look out for dreamfoil and stormvine! Potions of levitation has been buffed as well.\n\n" +
             "The heroes remains system has been reworked to be more helpful and less exploitable.\n\n" +
             "Weightstones have been added, but they are reworked from the base game.\n\n" +
             "There are various other small tweaks and improvements, for example, falling items will now appear on the next depth!";
@@ -38,8 +38,8 @@ public class WelcomeScene extends PixelScene {
             "level generation.\n\nHappy Dungeoneering!";
 
     private static final String TXT_Future =
-            "It seems that your current saves are from a future version of Shattered Pixel Dungeon.\n\n"+
-            "You have either been messing around with backup software, or something has gone buggy.\n\n"+
+            "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
+            "Either you're messing around with older versions of the app, or something has gone buggy.\n\n"+
             "Regardless, tread with caution! Your saves may contain things which don't exist in this version, "+
             "this could cause some very weird errors to occur.";
 
@@ -49,7 +49,7 @@ public class WelcomeScene extends PixelScene {
     public void create() {
         super.create();
 
-        int gameversion = ShatteredPixelDungeon.version();
+        final int gameversion = ShatteredPixelDungeon.version();
 
         BitmapTextMultiline text;
         BitmapTextMultiline title;
@@ -95,7 +95,8 @@ public class WelcomeScene extends PixelScene {
         RedButton okay = new RedButton("Okay!") {
             @Override
             protected void onClick() {
-                ShatteredPixelDungeon.version(Game.versionCode);
+                if (gameversion <= Game.versionCode)
+                    ShatteredPixelDungeon.version(Game.versionCode);
                 Game.switchScene(TitleScene.class);
             }
         };
