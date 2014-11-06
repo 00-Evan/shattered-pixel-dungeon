@@ -95,8 +95,7 @@ public class WelcomeScene extends PixelScene {
         RedButton okay = new RedButton("Okay!") {
             @Override
             protected void onClick() {
-                if (gameversion <= Game.versionCode)
-                    ShatteredPixelDungeon.version(Game.versionCode);
+                ShatteredPixelDungeon.version(Game.versionCode);
                 Game.switchScene(TitleScene.class);
             }
         };
