@@ -168,8 +168,6 @@ public class SewerBossLevel extends RegularLevel {
 		paintWater();
 		paintGrass();
 		
-		placeTraps();
-		
 		return true;
 	}
 		
