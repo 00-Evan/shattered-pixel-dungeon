@@ -39,7 +39,7 @@ public class Piercing extends Enchantment {
 			int d = defender.pos - attacker.pos;
 			int pos = defender.pos + d;
 			
-			do {
+			while (pos >= 0 && pos < Level.LENGTH) {
 				
 				Char ch = Actor.findChar( pos );
 				if (ch == null) {
@@ -56,7 +56,7 @@ public class Piercing extends Enchantment {
 				ch.sprite.flash();
 				
 				pos += d;
-			} while (pos >= 0 && pos < Level.LENGTH);
+			}
 			
 			return true;
 			
