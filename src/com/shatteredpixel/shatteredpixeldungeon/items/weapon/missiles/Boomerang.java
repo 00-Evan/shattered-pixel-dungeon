@@ -116,7 +116,17 @@ public class Boomerang extends MissileWeapon {
 	
 	@Override
 	public String desc() {
-		return 
+		String info =
 			"Thrown to the enemy this flat curved wooden missile will return to the hands of its thrower.";
+        switch (imbue) {
+            case LIGHT:
+                info += "\n\nIt was balanced to be lighter. ";
+                break;
+            case HEAVY:
+                info += "\n\nIt was balanced to be heavier. ";
+                break;
+            case NONE:
+        }
+        return info;
 	}
 }
