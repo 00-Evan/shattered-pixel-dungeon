@@ -47,15 +47,17 @@ public class Bones {
         depth = Dungeon.depth;
 
         //heroes which have won the game, who die far above their farthest depth, or who are challenged drop no bones.
-        if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0)
+        if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0) {
+            depth = -1;
             return;
+        }
 
 		item = pickItem(Dungeon.hero);
-		
+
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, depth );
 		bundle.put( ITEM, item );
-		
+
 		try {
 			OutputStream output = Game.instance.openFileOutput( BONES_FILE, Game.MODE_PRIVATE );
 			Bundle.write( bundle, output );
@@ -118,30 +120,27 @@ public class Bones {
         }
         return item;
     }
-	
+
 	public static Item get() {
 		if (depth == -1) {
-
-            //challenged heroes cannot find bones.
-            if (Dungeon.challenges > 0)
-                return null;
 
 			try {
 				InputStream input = Game.instance.openFileInput( BONES_FILE ) ;
 				Bundle bundle = Bundle.read( input );
 				input.close();
-				
+
 				depth = bundle.getInt( LEVEL );
 				item = (Item)bundle.get( ITEM );
-				
+
 				return get();
-				
+
 			} catch (Exception e) {
 				return null;
 			}
-			
+
 		} else {
-			if (depth == Dungeon.depth) {
+            //heroes who are challenged cannot find bones
+			if (depth == Dungeon.depth && Dungeon.challenges == 0) {
 				Game.instance.deleteFile( BONES_FILE );
 				depth = 0;
 				
