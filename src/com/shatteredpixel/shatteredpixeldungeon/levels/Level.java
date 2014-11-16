@@ -572,7 +572,9 @@ public abstract class Level implements Bundlable {
             (Dungeon.isChallenged( Challenges.NO_HEALING ) && item instanceof PotionOfHealing) ||
             (Dungeon.isChallenged( Challenges.NO_HERBALISM ) && (item instanceof Plant.Seed || item instanceof Dewdrop))) {
 
-            return new Heap();
+            Heap heap = new Heap();
+            GameScene.add( heap );
+            return heap;
 
         }
 
