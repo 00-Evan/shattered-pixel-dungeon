@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import android.os.Build;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -25,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.noosa.BitmapText;
@@ -44,6 +46,8 @@ public class InterlevelScene extends PixelScene {
 	private static final String TXT_DESCENDING	= "Descending...";
 	private static final String TXT_ASCENDING	= "Ascending...";
 	private static final String TXT_LOADING		= "Loading...";
+    private static final String TXT_L		    = "\n\n\nDue to an issue with Android L,\nThe game may need some\n" +
+            "extra time to load initially.\n\nSorry for any inconvenience,\nGoogle should fix this shortly.";
 	private static final String TXT_RESURRECTING= "Resurrecting...";
 	private static final String TXT_RETURNING	= "Returning...";
 	private static final String TXT_FALLING		= "Falling...";
@@ -105,6 +109,15 @@ public class InterlevelScene extends PixelScene {
 		message.x = (Camera.main.width - message.width()) / 2; 
 		message.y = (Camera.main.height - message.height()) / 2;
 		add( message );
+
+        if (Build.VERSION.RELEASE.equals("5.0") && Dungeon.hero == null && Dungeon.depth == 0){
+            BitmapText Lwarn = PixelScene.createMultiline(TXT_L, 9);
+            Lwarn.hardlight(Window.TITLE_COLOR);
+            Lwarn.measure();
+            Lwarn.x = (Camera.main.width - Lwarn.width()) / 2;
+            Lwarn.y = message.y;
+            add( Lwarn );
+        }
 		
 		phase = Phase.FADE_IN;
 		timeLeft = TIME_TO_FADE;
