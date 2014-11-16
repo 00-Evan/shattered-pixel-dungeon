@@ -34,6 +34,7 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class InterlevelScene extends PixelScene {
@@ -76,7 +77,7 @@ public class InterlevelScene extends PixelScene {
 	@Override
 	public void create() {
 		super.create();
-		
+
 		String text = "";
 		switch (mode) {
 		case DESCEND:
@@ -107,7 +108,7 @@ public class InterlevelScene extends PixelScene {
 		
 		phase = Phase.FADE_IN;
 		timeLeft = TIME_TO_FADE;
-		
+
 		thread = new Thread() {
 			@Override
 			public void run() {
@@ -115,13 +116,13 @@ public class InterlevelScene extends PixelScene {
 				try {
 					
 					Generator.reset();
-					
-					Sample.INSTANCE.load( 
+
+					Sample.INSTANCE.load(
 						Assets.SND_OPEN,
 						Assets.SND_UNLOCK,
 						Assets.SND_ITEM,
-						Assets.SND_DEWDROP, 
-						Assets.SND_HIT, 
+						Assets.SND_DEWDROP,
+						Assets.SND_HIT,
 						Assets.SND_MISS,
 						Assets.SND_STEP,
 						Assets.SND_WATER,
@@ -157,7 +158,7 @@ public class InterlevelScene extends PixelScene {
 						Assets.SND_GHOST,
 						Assets.SND_SECRET,
 						Assets.SND_BONES );
-					
+
 					switch (mode) {
 					case DESCEND:
 						descend();
@@ -186,11 +187,11 @@ public class InterlevelScene extends PixelScene {
 				} catch (FileNotFoundException e) {
 					
 					error = ERR_FILE_NOT_FOUND;
-					
-				} catch (Exception e ) {
-					
+
+				} catch (IOException e ) {
+
 					error = ERR_GENERIC;
-					
+
 				}
 				
 				if (phase == Phase.STATIC && error == null) {
@@ -246,8 +247,8 @@ public class InterlevelScene extends PixelScene {
 			break;
 		}
 	}
-	
-	private void descend() throws Exception {
+
+	private void descend() throws IOException {
 
         Level level;
         ArrayList<Item> fallingItems = new ArrayList<Item>();
@@ -290,7 +291,7 @@ public class InterlevelScene extends PixelScene {
 
 	}
 	
-	private void fall() throws Exception {
+	private void fall() throws IOException {
 
         Level level = Dungeon.level;
 
@@ -321,7 +322,7 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.switchLevel( level, fallIntoPit ? level.pitCell() : level.randomRespawnCell() );
 	}
 	
-	private void ascend() throws Exception {
+	private void ascend() throws IOException {
 		Actor.fixTime();
 		
 		Dungeon.saveLevel();
@@ -330,7 +331,7 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.switchLevel( level, level.exit );
 	}
 	
-	private void returnTo() throws Exception {
+	private void returnTo() throws IOException {
 		
 		Actor.fixTime();
 		
@@ -340,7 +341,7 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.switchLevel( level, Level.resizingNeeded ? level.adjustPos( returnPos ) : returnPos );
 	}
 	
-	private void restore() throws Exception {
+	private void restore() throws IOException {
 		
 		Actor.fixTime();
 		
@@ -354,7 +355,7 @@ public class InterlevelScene extends PixelScene {
 		}
 	}
 	
-	private void resurrect() throws Exception {
+	private void resurrect() throws IOException {
 		
 		Actor.fixTime(); 
 		
