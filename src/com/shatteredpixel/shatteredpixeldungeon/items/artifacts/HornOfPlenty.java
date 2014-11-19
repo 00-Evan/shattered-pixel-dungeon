@@ -53,7 +53,7 @@ public class HornOfPlenty extends Artifact {
         ArrayList<String> actions = super.actions( hero );
         if (isEquipped( hero ) && charge > 0)
             actions.add(AC_EAT);
-        if (isEquipped( hero ) && level < 30)
+        if (isEquipped( hero ) && level < 30 && !cursed)
             actions.add(AC_STORE);
         return actions;
     }
@@ -126,10 +126,15 @@ public class HornOfPlenty extends Artifact {
             desc += "The horn is overflowing! A delicious array of fruit and veg is filling the horn up to its brim.";
 
         if ( isEquipped( Dungeon.hero ) ){
-            desc += "\n\nThe horn rests at your side and is surprisingly lightweight, even with food in it.";
+            if (!cursed) {
+                desc += "\n\nThe horn rests at your side and is surprisingly lightweight, even with food in it.";
 
-            if (level < 15)
-                desc += " Perhaps there is a way to increase the horn's power by giving it food energy.";
+                if (level < 15)
+                    desc += " Perhaps there is a way to increase the horn's power by giving it food energy.";
+            } else {
+                desc += "\n\nThe cursed horn has bound itself to your side, " +
+                        "it seems to be eager to take food rather than produce it.";
+            }
         }
 
         return desc;
@@ -144,7 +149,7 @@ public class HornOfPlenty extends Artifact {
 
         @Override
         public boolean act() {
-            if (charge < chargeCap) {
+            if (charge < chargeCap && !cursed) {
 
                 //generates 0.2 food value every round, +0.01667 value per level
                 //to a max of ~0.7 food value per round (0.2+~0.5, at level 30)

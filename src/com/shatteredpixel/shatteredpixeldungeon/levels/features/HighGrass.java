@@ -43,22 +43,29 @@ public class HighGrass {
 
         if (!Dungeon.isChallenged( Challenges.NO_HERBALISM )) {
             int naturalismLevel = 0;
+
             if (ch != null) {
                 SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
                 if (naturalism != null) {
-                    naturalismLevel = naturalism.level()+1;
-                    naturalism.charge();
+                    if (!naturalism.isCursed()) {
+                        naturalismLevel = naturalism.level() + 1;
+                        naturalism.charge();
+                    } else {
+                        naturalismLevel = -1;
+                    }
                 }
             }
 
-            // Seed
-            if (Random.Int(18-((int)(naturalismLevel*3.34))) == 0) {
-                level.drop( Generator.random( Generator.Category.SEED ), pos ).sprite.drop();
-            }
+            if (naturalismLevel >= 0) {
+                // Seed
+                if (Random.Int(18 - ((int) (naturalismLevel * 3.34))) == 0) {
+                    level.drop(Generator.random(Generator.Category.SEED), pos).sprite.drop();
+                }
 
-            // Dew
-            if (Random.Int( 6-naturalismLevel ) == 0) {
-                level.drop( new Dewdrop(), pos ).sprite.drop();
+                // Dew
+                if (Random.Int(6 - naturalismLevel) == 0) {
+                    level.drop(new Dewdrop(), pos).sprite.drop();
+                }
             }
         }
 

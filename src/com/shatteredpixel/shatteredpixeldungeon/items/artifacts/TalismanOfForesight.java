@@ -5,9 +5,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
-import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -16,7 +13,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -41,7 +37,7 @@ public class TalismanOfForesight extends Artifact {
     @Override
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        if (isEquipped( hero ) && charge == 100)
+        if (isEquipped( hero ) && charge == 100 && !cursed)
             actions.add(AC_SCRY);
         return actions;
     }
@@ -90,10 +86,14 @@ public class TalismanOfForesight extends Artifact {
         String desc = "A smooth stone, almost too big for your pocket or hand, with strange engravings on it. " +
                 "You feel like it's watching you, assessing your every move.";
         if ( isEquipped( Dungeon.hero ) ){
-            desc += "\n\nWhen you hold the talisman you feel like your senses are heightened.";
-            if (charge == 100)
-                desc += "\n\nThe talisman is radiating energy, prodding at your mind. You wonder what would " +
-                        "happen if you let it in.";
+            if (!cursed) {
+                desc += "\n\nWhen you hold the talisman you feel like your senses are heightened.";
+                if (charge == 100)
+                    desc += "\n\nThe talisman is radiating energy, prodding at your mind. You wonder what would " +
+                            "happen if you let it in.";
+            } else {
+                desc += "\n\nThe cursed talisman is intently staring into you, making it impossible to concentrate.";
+            }
         }
 
         return desc;
@@ -137,7 +137,7 @@ public class TalismanOfForesight extends Artifact {
                 }
             }
 
-            if (smthFound == true){
+            if (smthFound == true || !cursed){
                 if (warn == 0){
                     GLog.w("You feel uneasy.");
                     if (target instanceof Hero){
@@ -153,7 +153,7 @@ public class TalismanOfForesight extends Artifact {
             BuffIndicator.refreshHero();
 
             //fully charges in 2400 turns at lvl=0, scaling to 800 turns at lvl = 10.
-            if (charge < 100) {
+            if (charge < 100 && !cursed) {
                 partialCharge += (1f / 24) + (((float) level) / 80);
 
 

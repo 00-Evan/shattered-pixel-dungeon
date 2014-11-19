@@ -43,7 +43,7 @@ public class ChaliceOfBlood extends Artifact {
     @Override
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        if (isEquipped( hero ) && level < levelCap)
+        if (isEquipped( hero ) && level < levelCap && !cursed)
             actions.add(AC_PRICK);
         return actions;
     }
@@ -133,7 +133,9 @@ public class ChaliceOfBlood extends Artifact {
 
         if (isEquipped (Dungeon.hero)){
             desc += "\n\n";
-            if (level == 0)
+            if (cursed)
+                desc += "The cursed chalice has bound itself to your hand, and is slowly tugging at your life energy.";
+            else if (level == 0)
                 desc += "As you hold the chalice, you feel oddly compelled to prick yourself on the sharp gems.";
             else if (level < 3)
                 desc += "Some of your blood is pooled into the chalice, you can subtly feel the chalice feeding life " +
@@ -155,9 +157,7 @@ public class ChaliceOfBlood extends Artifact {
     }
 
     public class chaliceRegen extends ArtifactBuff {
-        public int level() {
-            return level;
-        }
+
     }
 
 }

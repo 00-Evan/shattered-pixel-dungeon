@@ -48,7 +48,7 @@ public class SandalsOfNature extends Artifact {
     @Override
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        if (isEquipped( hero ) && level < 3)
+        if (isEquipped( hero ) && level < 3 && !cursed)
             actions.add(AC_FEED);
         if (isEquipped( hero ) && charge > 0)
             actions.add(AC_ROOT);
@@ -104,8 +104,12 @@ public class SandalsOfNature extends Artifact {
 
         if ( isEquipped ( Dungeon.hero ) ){
             desc += "\n\n";
-            if (level == 0)
-                desc += "The sandals wrap snugly around your feet, they seem happy to be worn.";
+            if (level == 0) {
+                if (!cursed)
+                    desc += "The sandals wrap snugly around your feet, they seem happy to be worn.";
+                else
+                    desc += "The cursed sandals wrap tightly around your feet.";
+            }
             else if (level == 1)
                 desc += "The shoes fit on loosely but quickly tighten to make a perfect fit.";
             else if (level == 2)
@@ -113,7 +117,10 @@ public class SandalsOfNature extends Artifact {
             else
                 desc += "The greaves are thick and weighty, but very easy to move in, as if they are moving with you.";
 
-            desc += " You feel more attuned with nature while wearing them.";
+            if (!cursed)
+                desc += " You feel more attuned with nature while wearing them.";
+            else
+                desc += " They are blocking any attunement with nature.";
 
             if (level > 0)
                 desc += "\n\nThe footwear has gained the ability to form up into a sort of immobile natural armour, " +
@@ -153,11 +160,9 @@ public class SandalsOfNature extends Artifact {
     }
 
     public class Naturalism extends ArtifactBuff{
-        public int level() { return level; }
         public void charge() {
             if (charge < 25*level){
                 charge++;
-
             }
         }
     }

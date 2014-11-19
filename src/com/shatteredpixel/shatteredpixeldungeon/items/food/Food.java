@@ -17,9 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
-import java.util.ArrayList;
-
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
@@ -28,9 +25,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+
+import java.util.ArrayList;
 
 public class Food extends Item {
 
@@ -99,6 +101,18 @@ public class Food extends Item {
 			
 		}
 	}
+
+    @Override
+    public boolean doPickUp( Hero hero ){
+        Artifact.ArtifactBuff buff = hero.buff( HornOfPlenty.hornRecharge.class );
+        if (buff != null && buff.isCursed()){
+                GLog.n("Your cursed horn greedily devours the food!");
+                Sample.INSTANCE.play( Assets.SND_EAT );
+                hero.spendAndNext( TIME_TO_PICK_UP );
+                return true;
+        }
+        return super.doPickUp( hero );
+    }
 	
 	@Override
 	public String info() {

@@ -591,7 +591,9 @@ public class Hero extends Char {
 					if (item instanceof Dewdrop) {
 						
 					} else {
-						
+
+                        //TODO: this is triggering very rigidly, consider some sort of refactor
+                        //specifically, right now is causing wrong output with a cursed horn of plenty.
 						if ((item instanceof ScrollOfUpgrade && ((ScrollOfUpgrade)item).isKnown()) ||
 							(item instanceof PotionOfStrength && ((PotionOfStrength)item).isKnown())) {
 							GLog.p( TXT_YOU_NOW_HAVE, item.name() );
@@ -1368,7 +1370,7 @@ public class Hero extends Char {
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Level.WIDTH; x <= bx; x++, p++) {
 				
-				if (Dungeon.visible[p]) {
+				if (Dungeon.visible[p] && !(foresight != null && foresight.isCursed())) {
 					
 					if (intentional) {
 						sprite.parent.addToBack( new CheckedCell( p ) );

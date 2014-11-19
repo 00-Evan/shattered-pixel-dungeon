@@ -28,12 +28,13 @@ public class Regeneration extends Buff {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-			
-			if (target.HP < target.HT && !((Hero)target).isStarving()) {
+
+            ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
+
+            if (target.HP < target.HT && !((Hero)target).isStarving() && !(regenBuff != null && regenBuff.isCursed())) {
 				target.HP += 1;
 			}
 
-            ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);
 			if (regenBuff != null)
 			    spend( Math.max(REGENERATION_DELAY - regenBuff.level(), 0.5f) );
             else

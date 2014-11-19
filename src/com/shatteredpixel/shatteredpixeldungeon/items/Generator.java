@@ -316,6 +316,8 @@ public class Generator {
             cat.probs[i] = 0;
             spawnedArtifacts.add(cat.classes[i].getSimpleName());
 
+            artifact.random();
+
             return artifact;
 
         } catch (Exception e) {
