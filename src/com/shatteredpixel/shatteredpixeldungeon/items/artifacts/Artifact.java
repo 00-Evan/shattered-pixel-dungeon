@@ -138,6 +138,12 @@ public class Artifact extends KindofMisc {
         return ((level*10)/levelCap);
     }
 
+    //transfers upgrades from another artifact, in terms of displayed level
+    public void transferUpgrade(Artifact a) {
+        int transferLvl = Math.round((a.visiblyUpgraded()*levelCap)/10);
+        upgrade(transferLvl);
+    }
+
     @Override
     public String info() {
         if (cursed && cursedKnown && !isEquipped( Dungeon.hero )) {
