@@ -5,6 +5,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
@@ -111,6 +112,12 @@ public class CloakOfShadows extends Artifact {
     @Override
     protected ArtifactBuff activeBuff( ) {
         return new cloakStealth();
+    }
+
+    @Override
+    public Item upgrade() {
+        chargeCap++;
+        return super.upgrade();
     }
 
     @Override
@@ -223,7 +230,6 @@ public class CloakOfShadows extends Artifact {
 
             if (exp >= (level+1)*50 && level < levelCap) {
                 upgrade();
-                chargeCap++;
                 exp -= level*50;
                 GLog.p("Your Cloak Grows Stronger!");
             }

@@ -140,6 +140,20 @@ public class SandalsOfNature extends Artifact {
         return desc;
     }
 
+    @Override
+    public Item upgrade() {
+        if (level < 0)
+            image = ItemSpriteSheet.ARTIFACT_SANDALS;
+        else if (level == 0)
+            image = ItemSpriteSheet.ARTIFACT_SHOES;
+        else if (level == 1)
+            image = ItemSpriteSheet.ARTIFACT_BOOTS;
+        else if (level >= 2)
+            image = ItemSpriteSheet.ARTIFACT_GREAVES;
+        name = NAMES[level+1];
+        return super.upgrade();
+    }
+
 
     private static final String SEEDS = "seeds";
     private static final String NAME = "name";
@@ -184,17 +198,9 @@ public class SandalsOfNature extends Artifact {
                         seeds.clear();
                         upgrade();
                         if (level >= 1 && level <= 3) {
-                            GLog.p("Your " + name + " surge in size, they are now " + NAMES[level] + "!");
-                            name = NAMES[level];
+                            GLog.p("Your " + NAMES[level-1] + " surge in size, they are now " + NAMES[level] + "!");
                         }
-                        if (level <= 0)
-                            image = ItemSpriteSheet.ARTIFACT_SANDALS;
-                        else if (level == 1)
-                            image = ItemSpriteSheet.ARTIFACT_SHOES;
-                        else if (level == 2)
-                            image = ItemSpriteSheet.ARTIFACT_BOOTS;
-                        else if (level >= 3)
-                            image = ItemSpriteSheet.ARTIFACT_GREAVES;
+
                     } else {
                         GLog.i("Your " + name + " absorb the seed, they seem healthier.");
                     }

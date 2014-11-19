@@ -5,6 +5,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -110,13 +111,17 @@ public class ChaliceOfBlood extends Artifact {
             GLog.n("The Chalice sucks your life essence dry...");
         } else {
             upgrade();
-            if (level >= 7)
-                image = ItemSpriteSheet.ARTIFACT_CHALICE3;
-            else if (level >= 3)
-                image = ItemSpriteSheet.ARTIFACT_CHALICE2;
         }
     }
 
+    @Override
+    public Item upgrade() {
+        if (level >= 6)
+            image = ItemSpriteSheet.ARTIFACT_CHALICE3;
+        else if (level >= 2)
+            image = ItemSpriteSheet.ARTIFACT_CHALICE2;
+        return super.upgrade();
+    }
 
     @Override
     protected ArtifactBuff passiveBuff() {
