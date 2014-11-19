@@ -7,9 +7,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
@@ -125,6 +128,15 @@ public class Blandfruit extends Food {
                             }
                             break;
                     }
+                } else if (potionAttrib instanceof PotionOfLiquidFlame){
+                    GLog.i("You feel a great fire burning within you!");
+                    Buff.affect(hero, FireImbue.class);
+                } else if (potionAttrib instanceof PotionOfToxicGas) {
+                    GLog.i("You are imbued with vile toxic power!");
+                    Buff.affect(hero, ToxicImbue.class);
+                } else if (potionAttrib instanceof PotionOfParalyticGas) {
+                    GLog.i("You feel the power of the earth coursing through you!");
+                    Buff.affect(hero, EarthImbue.class);
                 } else
                     potionAttrib.apply(hero);
 
@@ -182,61 +194,61 @@ public class Blandfruit extends Food {
 
         if (potionAttrib instanceof PotionOfHealing){
 
-            name = "Healthfruit";
+            name = "Sunfruit";
             potionGlow = new ItemSprite.Glowing( 0x2EE62E );
             info += "It looks delicious and hearty, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfStrength){
 
-            name = "Powerfruit";
+            name = "Rotfruit";
             potionGlow = new ItemSprite.Glowing( 0xCC0022 );
             info += "It looks delicious and powerful, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfParalyticGas){
 
-            name = "Paralyzefruit";
+            name = "Earthfruit";
             potionGlow = new ItemSprite.Glowing( 0x67583D );
-            info += "It looks firm and volatile, eating this might be unsafe.";
+            info += "It looks delicious and firm, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfInvisibility){
 
-            name = "Invisifruit";
+            name = "Blindfruit";
             potionGlow = new ItemSprite.Glowing( 0xE5D273 );
             info += "It looks delicious and shiny, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfLiquidFlame){
 
-            name = "Flamefruit";
+            name = "Firefruit";
             potionGlow = new ItemSprite.Glowing( 0xFF7F00 );
-            info += "It looks spicy and volatile, eating this might be unsafe.";
+            info += "It looks delicious and spicy, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfFrost){
 
-            name = "Frostfruit";
+            name = "Icefruit";
             potionGlow = new ItemSprite.Glowing( 0x66B3FF );
             info += "It looks delicious and refreshing, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfMindVision){
 
-            name = "Visionfruit";
+            name = "Fadefruit";
             potionGlow = new ItemSprite.Glowing( 0xB8E6CF );
             info += "It looks delicious and shadowy, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfToxicGas){
 
-            name = "Toxicfruit";
+            name = "Sorrowfruit";
             potionGlow = new ItemSprite.Glowing( 0xA15CE5 );
-            info += "It looks crisp and volatile, eating this might be unsafe.";
+            info += "It looks delicious and crisp, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfLevitation) {
 
-            name = "Floatfruit";
+            name = "Stormfruit";
             potionGlow = new ItemSprite.Glowing( 0x1C3A57 );
             info += "It looks delicious and lightweight, ready to be eaten!";
 
         } else if (potionAttrib instanceof PotionOfPurity) {
 
-            name = "Purefruit";
+            name = "Dreamfruit";
             potionGlow = new ItemSprite.Glowing( 0x8E2975 );
             info += "It looks delicious and clean, ready to be eaten!";
 
@@ -274,25 +286,25 @@ public class Blandfruit extends Food {
         super.restoreFromBundle(bundle);
         name = bundle.getString(NAME);
 
-        if (name.equals("Healthfruit"))
+        if (name.equals("Sunfruit"))
             cook(new Sungrass.Seed());
-        else if (name.equals("Powerfruit"))
+        else if (name.equals("Rotfruit"))
             cook(new Wandmaker.Rotberry.Seed());
-        else if (name.equals("Paralyzefruit"))
+        else if (name.equals("Earthfruit"))
             cook(new Earthroot.Seed());
-        else if (name.equals("Invisifruit"))
+        else if (name.equals("Blindfruit"))
             cook(new Blindweed.Seed());
-        else if (name.equals("Flamefruit"))
+        else if (name.equals("Firefruit"))
             cook(new Firebloom.Seed());
-        else if (name.equals("Frostfruit"))
+        else if (name.equals("Icefruit"))
             cook(new Icecap.Seed());
-        else if (name.equals("Visionfruit"))
+        else if (name.equals("Fadefruit"))
             cook(new Fadeleaf.Seed());
-        else if (name.equals("Toxicfruit"))
+        else if (name.equals("Sorrowfruit"))
             cook(new Sorrowmoss.Seed());
-        else if (name.equals("Floatfruit"))
+        else if (name.equals("Stormfruit"))
             cook(new Stormvine.Seed());
-        else if (name.equals("Purefruit"))
+        else if (name.equals("Dreamfruit"))
             cook(new Dreamfoil.Seed());
 
     }
