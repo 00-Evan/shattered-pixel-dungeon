@@ -158,7 +158,7 @@ public enum HeroClass {
         (hero.belongings.weapon = new Dagger()).identify();
 
         CloakOfShadows cloak = new CloakOfShadows();
-        hero.belongings.misc1 = cloak;
+        (hero.belongings.misc1 = cloak).identify();
         hero.belongings.misc1.activate( hero );
 
         new Dart( 8 ).identify().collect();
