@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
@@ -159,6 +160,8 @@ public class Dungeon {
 	public static void init() {
 
         challenges = ShatteredPixelDungeon.challenges();
+
+        Generator.initArtifacts();
 
 		Actor.clear();
 		
@@ -484,6 +487,7 @@ public class Dungeon {
 			
 			Statistics.storeInBundle( bundle );
 			Journal.storeInBundle( bundle );
+            Generator.storeInBundle( bundle );
 			
 			if (quickslot instanceof Class) {
 				bundle.put( QUICKSLOT, ((Class<?>)quickslot).getName() );
@@ -619,6 +623,7 @@ public class Dungeon {
 		
 		Statistics.restoreFromBundle( bundle );
 		Journal.restoreFromBundle( bundle );
+        Generator.restoreFromBundle( bundle );
 	}
 	
 	public static Level loadLevel( HeroClass cl ) throws IOException {
