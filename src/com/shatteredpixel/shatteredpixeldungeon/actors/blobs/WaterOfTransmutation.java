@@ -22,8 +22,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Journal.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
@@ -70,7 +71,11 @@ public class WaterOfTransmutation extends WellWater {
 			Journal.remove( Feature.WELL_OF_TRANSMUTATION );
 			return changeSeed( (Plant.Seed)item );
 			
-		} else {
+		} else if (item instanceof Artifact) {
+
+            return changeArtifact( (Artifact)item );
+
+        } else {
 			return null;
 		}
 	}
@@ -161,6 +166,18 @@ public class WaterOfTransmutation extends WellWater {
 		
 		return n;
 	}
+
+    private Artifact changeArtifact( Artifact a ) {
+        Artifact n = Generator.randomArtifact();
+
+        if (n != null){
+            n.cursedKnown = a.cursedKnown;
+            n.cursed = a.cursed;
+            Journal.remove( Feature.WELL_OF_TRANSMUTATION );
+        }
+
+        return n;
+    }
 	
 	private Wand changeWand( Wand w ) {
 		
