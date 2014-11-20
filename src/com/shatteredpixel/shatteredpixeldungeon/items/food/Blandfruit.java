@@ -103,7 +103,7 @@ public class Blandfruit extends Food {
                 hero.busy();
 
                 if (potionAttrib instanceof PotionOfFrost) {
-                    GLog.i("the Frostfruit tastes a bit like Frozen Carpaccio.");
+                    GLog.i("the Icefruit tastes a bit like Frozen Carpaccio.");
                     switch (Random.Int(5)) {
                         case 0:
                             GLog.i("You see your hands turn invisible!");
@@ -130,18 +130,18 @@ public class Blandfruit extends Food {
                     }
                 } else if (potionAttrib instanceof PotionOfLiquidFlame){
                     GLog.i("You feel a great fire burning within you!");
-                    Buff.affect(hero, FireImbue.class);
+                    Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
                 } else if (potionAttrib instanceof PotionOfToxicGas) {
                     GLog.i("You are imbued with vile toxic power!");
-                    Buff.affect(hero, ToxicImbue.class);
+                    Buff.affect(hero, ToxicImbue.class).set(ToxicImbue.DURATION);
                 } else if (potionAttrib instanceof PotionOfParalyticGas) {
                     GLog.i("You feel the power of the earth coursing through you!");
-                    Buff.affect(hero, EarthImbue.class);
+                    Buff.affect(hero, EarthImbue.class, EarthImbue.DURATION);
                 } else
                     potionAttrib.apply(hero);
 
                 Sample.INSTANCE.play( Assets.SND_EAT );
-
+                SpellSprite.show(hero, SpellSprite.FOOD);
                 hero.sprite.operate(hero.pos);
 
                 switch (hero.heroClass) {
