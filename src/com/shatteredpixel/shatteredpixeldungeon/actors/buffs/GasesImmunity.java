@@ -38,12 +38,11 @@ public class GasesImmunity extends FlavourBuff {
 	public String toString() {
 		return "Immune to gases";
 	}
-	
-	public static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+
 	static {
-		IMMUNITIES.add( ParalyticGas.class );
-		IMMUNITIES.add( ToxicGas.class );
-        IMMUNITIES.add( ConfusionGas.class );
-        IMMUNITIES.add( StenchGas.class );
+        immunities.add( ParalyticGas.class );
+        immunities.add( ToxicGas.class );
+        immunities.add( ConfusionGas.class );
+        immunities.add( StenchGas.class );
 	}
 }

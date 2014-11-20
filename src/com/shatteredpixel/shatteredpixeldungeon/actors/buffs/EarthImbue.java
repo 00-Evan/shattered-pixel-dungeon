@@ -26,10 +26,9 @@ public class EarthImbue extends FlavourBuff {
         return "Imbued with Earth";
     }
 
-    public static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
     static {
-        IMMUNITIES.add( Paralysis.class );
-        IMMUNITIES.add( Roots.class );
-        IMMUNITIES.add( Slow.class );
+        immunities.add( Paralysis.class );
+        immunities.add( Roots.class );
+        immunities.add( Slow.class );
     }
 }

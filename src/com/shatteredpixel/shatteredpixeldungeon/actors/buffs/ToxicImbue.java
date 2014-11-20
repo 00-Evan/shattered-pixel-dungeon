@@ -32,9 +32,8 @@ public class ToxicImbue extends Buff {
         return "Imbued with Toxicity";
     }
 
-    public static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
     static {
-        IMMUNITIES.add( ToxicGas.class );
-        IMMUNITIES.add( Poison.class );
+        immunities.add( ToxicGas.class );
+        immunities.add( Poison.class );
     }
 }

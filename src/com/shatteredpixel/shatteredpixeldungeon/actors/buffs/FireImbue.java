@@ -42,8 +42,7 @@ public class FireImbue extends Buff {
         return "Imbued with Fire";
     }
 
-    public static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
     static {
-        IMMUNITIES.add( Burning.class );
+        immunities.add( Burning.class );
     }
 }
