@@ -176,21 +176,25 @@ public class Blandfruit extends Food {
     }
 
     public Item cook(Seed seed){
-        Class<? extends Item> potion = seed.alchemyClass;
-
 
         try {
-            potionAttrib = (Potion)potion.newInstance();
-            potionAttrib.ownedByFruit = true;
+            return imbuePotion((Potion)seed.alchemyClass.newInstance());
         } catch (Exception e) {
             return null;
         }
+
+    }
+
+    public Item imbuePotion(Potion potion){
+
+        potionAttrib = potion;
+        potionAttrib.ownedByFruit = true;
 
         potionAttrib.image = ItemSpriteSheet.BLANDFRUIT;
 
 
         info = "The fruit has plumped up from its time soaking in the pot and has even absorbed the properties "+
-               "of the " + seed.name() + " it was cooked with.\n\n";
+               "of the seed it was cooked with.\n\n";
 
         if (potionAttrib instanceof PotionOfHealing){
 
@@ -257,7 +261,7 @@ public class Blandfruit extends Food {
         return this;
     }
 
-    public static final String NAME = "name";
+    public static final String POTIONATTRIB = "potionattrib";
 
     @Override
     public void cast( final Hero user, int dst ) {
@@ -278,34 +282,40 @@ public class Blandfruit extends Food {
     @Override
     public void storeInBundle(Bundle bundle){
         super.storeInBundle(bundle);
-        bundle.put( NAME, name );
+        bundle.put( POTIONATTRIB , potionAttrib);
     }
 
     @Override
     public void restoreFromBundle(Bundle bundle){
         super.restoreFromBundle(bundle);
-        name = bundle.getString(NAME);
+        if (bundle.contains( POTIONATTRIB )) {
+            imbuePotion( (Potion)bundle.get( POTIONATTRIB ) );
 
-        if (name.equals("Sunfruit"))
-            cook(new Sungrass.Seed());
-        else if (name.equals("Rotfruit"))
-            cook(new Wandmaker.Rotberry.Seed());
-        else if (name.equals("Earthfruit"))
-            cook(new Earthroot.Seed());
-        else if (name.equals("Blindfruit"))
-            cook(new Blindweed.Seed());
-        else if (name.equals("Firefruit"))
-            cook(new Firebloom.Seed());
-        else if (name.equals("Icefruit"))
-            cook(new Icecap.Seed());
-        else if (name.equals("Fadefruit"))
-            cook(new Fadeleaf.Seed());
-        else if (name.equals("Sorrowfruit"))
-            cook(new Sorrowmoss.Seed());
-        else if (name.equals("Stormfruit"))
-            cook(new Stormvine.Seed());
-        else if (name.equals("Dreamfruit"))
-            cook(new Dreamfoil.Seed());
+        //TODO: legacy code for pre-v0.2.3, remove when saves from that version are no longer supported.
+        } else if (bundle.contains("name")) {
+            name = bundle.getString("name");
+
+            if (name.equals("Healthfruit"))
+                cook(new Sungrass.Seed());
+            else if (name.equals("Powerfruit"))
+                cook(new Wandmaker.Rotberry.Seed());
+            else if (name.equals("Paralyzefruit"))
+                cook(new Earthroot.Seed());
+            else if (name.equals("Invisifruit"))
+                cook(new Blindweed.Seed());
+            else if (name.equals("Flamefruit"))
+                cook(new Firebloom.Seed());
+            else if (name.equals("Frostfruit"))
+                cook(new Icecap.Seed());
+            else if (name.equals("Visionfruit"))
+                cook(new Fadeleaf.Seed());
+            else if (name.equals("Toxicfruit"))
+                cook(new Sorrowmoss.Seed());
+            else if (name.equals("Floatfruit"))
+                cook(new Stormvine.Seed());
+            else if (name.equals("Purefruit"))
+                cook(new Dreamfoil.Seed());
+        }
 
     }
 
