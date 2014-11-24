@@ -18,13 +18,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import android.graphics.RectF;
-
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.watabou.gltextures.TextureCache;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
@@ -36,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
@@ -47,6 +42,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.gltextures.TextureCache;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 
 public class WndBag extends WndTabbed {
 	
@@ -61,7 +61,7 @@ public class WndBag extends WndTabbed {
 		WAND,
 		SEED,
         FOOD,
-
+		POTION
 	}
 	
 	protected static final int COLS	= 4;
@@ -352,6 +352,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.WAND && (item instanceof Wand) ||
 						mode == Mode.SEED && (item instanceof Seed) ||
                         mode == Mode.FOOD && (item instanceof Food) ||
+						mode == Mode.POTION && (item instanceof Potion) ||
 						mode == Mode.ALL
 					);
 				}

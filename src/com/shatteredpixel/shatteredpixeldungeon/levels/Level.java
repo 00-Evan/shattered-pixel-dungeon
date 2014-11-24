@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -578,8 +579,12 @@ public abstract class Level implements Bundlable {
 
         }
 
-		if ((map[cell] == Terrain.ALCHEMY) && (item instanceof BlandfruitBush.Seed || !(item instanceof Plant.Seed ||
-                (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null && heaps.get(cell) == null)))) {
+		//TODO: test this thoroughly
+		if ((map[cell] == Terrain.ALCHEMY) && (
+				!(item instanceof Plant.Seed || item instanceof Blandfruit) ||
+				item instanceof BlandfruitBush.Seed ||
+                (item instanceof Blandfruit && (((Blandfruit) item).potionAttrib != null || heaps.get(cell) != null))||
+				Dungeon.hero.buff(AlchemistsToolkit.alchemy.class) != null && Dungeon.hero.buff(AlchemistsToolkit.alchemy.class).isCursed())) {
 			int n;
 			do {
 				n = cell + NEIGHBOURS8[Random.Int( 8 )];
