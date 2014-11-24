@@ -137,7 +137,7 @@ public class TalismanOfForesight extends Artifact {
                 }
             }
 
-            if (smthFound == true || !cursed){
+            if (smthFound == true && !cursed){
                 if (warn == 0){
                     GLog.w("You feel uneasy.");
                     if (target instanceof Hero){
