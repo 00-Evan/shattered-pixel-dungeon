@@ -152,10 +152,9 @@ public class TalismanOfForesight extends Artifact {
             }
             BuffIndicator.refreshHero();
 
-            //fully charges in 2400 turns at lvl=0, scaling to 800 turns at lvl = 10.
+            //fully charges in 2500 turns at lvl=0, scaling to 1000 turns at lvl = 10.
             if (charge < 100 && !cursed) {
-                partialCharge += (1f / 24) + (((float) level) / 80);
-
+                partialCharge += 0.04+(level*0.006);
 
                 if (partialCharge > 1 && charge < 100) {
                     partialCharge--;
@@ -170,12 +169,12 @@ public class TalismanOfForesight extends Artifact {
         }
 
         public void charge(){
-            charge = Math.min(charge+4, chargeCap);
+            charge = Math.min(charge+(2+(level/3)), chargeCap);
             exp++;
-            if (exp >= 5 && level < levelCap) {
+            if (exp >= 4 && level < levelCap) {
                 upgrade();
                 GLog.p("Your Talisman grows stronger!");
-                exp -= 5;
+                exp -= 4;
             }
         }
 
