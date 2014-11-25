@@ -2,14 +2,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Random;
 
 /**
@@ -52,10 +49,10 @@ public class CapeOfThorns extends Artifact {
             desc += "\n\n";
             if (timer == 0)
                 desc += "The cape feels reassuringly heavy on your shoulders. You're not sure if it will directly " +
-                        "help you in a fight, but it seems to be gaining energy from the battles you are in.";
+                        "help you in a fight, but it seems to be gaining energy from the physical damage you take.";
             else
                 desc += "The cape seems to be releasing some stored energy, it is radiating power at all angles. " +
-                        "You feel very confident that the cape can protect you right now.";
+                        "You feel very confident that the cape can protect you from nearby enemies right now.";
         }
 
         return desc;
@@ -87,25 +84,25 @@ public class CapeOfThorns extends Artifact {
 
         public int proc(int damage, Char attacker){
             if (timer == 0){
-                charge += damage*(0.5+level*0.025);
+                charge += damage*(0.5+level*0.05);
                 if (charge >= chargeCap){
                     charge = 0;
-                    timer = 5+level;
+                    timer = 10+level;
                     GLog.p("Your Cape begins radiating energy, you feel protected!");
                     BuffIndicator.refreshHero();
                 }
             }
 
             if (timer != 0){
-                int deflected = Random.NormalIntRange((int)(damage*0.33), damage);
+                int deflected = Random.NormalIntRange(0, damage);
                 damage -= deflected;
 
                 attacker.damage(deflected, this);
 
                 exp+= deflected;
 
-                if (exp >= (level+1)*10 && level < levelCap){
-                    exp -= (level+1)*10;
+                if (exp >= (level+1)*5 && level < levelCap){
+                    exp -= (level+1)*5;
                     upgrade();
                     GLog.p("Your Cape grows stronger!");
                 }
