@@ -1,10 +1,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Random;
 
@@ -53,6 +50,12 @@ public class MasterThievesArmband extends Artifact {
     public class Thievery extends ArtifactBuff{
         public void collect(int gold){
             charge += gold/2;
+        }
+
+        @Override
+        public void detach() {
+            charge /= 0.80;
+            super.detach();
         }
 
         public boolean steal(int value){
