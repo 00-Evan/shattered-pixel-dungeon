@@ -151,9 +151,9 @@ public class HornOfPlenty extends Artifact {
         public boolean act() {
             if (charge < chargeCap && !cursed) {
 
-                //generates 0.2 food value every round, +0.01667 value per level
-                //to a max of ~0.7 food value per round (0.2+~0.5, at level 30)
-                partialCharge += 0.2f + (0.01667f*level);
+                //generates 0.25 food value every round, +0.015 value per level
+                //to a max of 0.70 food value per round (0.25+0.5, at level 30)
+                partialCharge += 0.25f + (0.015f*level);
 
                 //charge is in increments of 36 food value.
                 if (partialCharge >= 36) {
