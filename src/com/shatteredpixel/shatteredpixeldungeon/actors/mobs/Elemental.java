@@ -83,11 +83,12 @@ public class Elemental extends Mob {
 		} else {
 			if (buff instanceof Frost) {
                 if (Level.water[this.pos])
-                    damage(Random.NormalIntRange( HT / 2, HT ), buff);
+                    damage( Random.NormalIntRange( HT / 2, HT ), buff );
                 else
 				    damage( Random.NormalIntRange( 1, HT * 2 / 3 ), buff );
 			}
-			super.add( buff );
+            if (isAlive())
+			    super.add( buff );
 		}
 	}
 	
