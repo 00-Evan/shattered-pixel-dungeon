@@ -45,7 +45,7 @@ public class CloakOfShadows extends Artifact {
     @Override
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        if (isEquipped( hero ))
+        if (isEquipped( hero ) && charge > 1)
             actions.add(AC_STEALTH);
         return actions;
     }
@@ -55,9 +55,10 @@ public class CloakOfShadows extends Artifact {
         if (action.equals( AC_STEALTH )) {
 
             if (!stealthed){
-                if (cooldown <= 0 && charge > 0 && isEquipped(hero)) {
+                if (cooldown <= 0 && charge >= 2 && isEquipped(hero)) {
                     stealthed = true;
                     hero.spend( 1f );
+                    hero.busy();
                     Sample.INSTANCE.play(Assets.SND_MELD);
                     activeBuff = activeBuff();
                     activeBuff.attachTo(hero);
@@ -72,8 +73,8 @@ public class CloakOfShadows extends Artifact {
                     GLog.i("You need to equip your cloak to do that.");
                 } else if (cooldown > 0) {
                     GLog.i("Your cloak needs " + cooldown + " more rounds to re-energize.");
-                } else if (charge == 0){
-                    GLog.i("Your cloak is out of charge.");
+                } else if (charge <= 1){
+                    GLog.i("Your cloak hasn't recharged enough to be usable yet.");
                 }
             } else {
                 stealthed = false;
