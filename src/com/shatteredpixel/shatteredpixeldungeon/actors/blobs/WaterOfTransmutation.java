@@ -173,6 +173,7 @@ public class WaterOfTransmutation extends WellWater {
         if (n != null){
             n.cursedKnown = a.cursedKnown;
             n.cursed = a.cursed;
+            n.levelKnown = a.levelKnown;
 			n.transferUpgrade(a.visiblyUpgraded());
             Journal.remove( Feature.WELL_OF_TRANSMUTATION );
         }
