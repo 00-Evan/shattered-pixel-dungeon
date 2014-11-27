@@ -1,20 +1,30 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by debenhame on 26/11/2014.
  */
 public class UnstableSpellbook extends Artifact {
-    //TODO: add levelling logic, polish, bugfixes
+    //TODO: add display logic
 
     {
         name = "unstable spellbook";
@@ -28,28 +38,57 @@ public class UnstableSpellbook extends Artifact {
     }
 
     public static final String AC_READ = "READ";
+    public static final String AC_ADD = "ADD";
+
+    private final ArrayList<String> scrolls = new ArrayList<String>();
+
+    protected String inventoryTitle = "Select a scroll";
+    protected WndBag.Mode mode = WndBag.Mode.SCROLL;
+
+    public UnstableSpellbook() {
+        super();
+
+        Class<?>[] scrollClasses = Generator.Category.SCROLL.classes;
+        float[] probs = Generator.Category.SCROLL.probs;
+        int i = Random.chances(probs);
+
+        while (i != -1){
+            scrolls.add(scrollClasses[i].getSimpleName());
+            probs[i] = 0;
+
+            i = Random.chances(probs);
+        };
+    }
 
     @Override
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
         if (isEquipped( hero ) && charge > 0)
             actions.add(AC_READ);
+        if (level < levelCap )
+            actions.add(AC_ADD);
         return actions;
     }
 
     @Override
     public void execute( Hero hero, String action ) {
         if (action.equals( AC_READ)) {
-            charge --;
 
-            Scroll scroll = null;
-            do {
-                scroll = (Scroll) Generator.random(Generator.Category.SCROLL);
-            } while (scroll != null && scroll instanceof ScrollOfPsionicBlast);
+            if (hero.buff( Blindness.class ) != null) GLog.w("You cannot read from the book while blinded.");
+            else {
+                charge--;
 
-            //TODO: prevent scrolls from being IDed here, consider merging functionality with potion's ownedByFruit if possible.
-            scroll.execute(hero, AC_READ);
+                Scroll scroll;
+                do {
+                    scroll = (Scroll) Generator.random(Generator.Category.SCROLL);
+                } while (scroll != null && scroll instanceof ScrollOfPsionicBlast);
 
+                scroll.ownedByBook = true;
+                scroll.execute(hero, AC_READ);
+            }
+
+        } else if (action.equals( AC_ADD )) {
+            GameScene.selectItem(itemSelector, mode, inventoryTitle);
         } else
             super.execute( hero, action );
     }
@@ -62,6 +101,11 @@ public class UnstableSpellbook extends Artifact {
     @Override
     public Item upgrade() {
         chargeCap = (int)((level*0.4)+1);
+
+        //for artifact transmutation.
+        if (scrolls.size() > (levelCap-level))
+            scrolls.remove(0);
+
         return super.upgrade();
     }
 
@@ -72,17 +116,21 @@ public class UnstableSpellbook extends Artifact {
 
     //needs to bundle chargecap as it is dynamic.
     private static final String CHARGECAP = "chargecap";
+    private static final String SCROLLS =   "scrolls";
 
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
         bundle.put( CHARGECAP, chargeCap );
+        bundle.put( SCROLLS, scrolls.toArray(new String[scrolls.size()]);
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
         chargeCap = bundle.getInt( CHARGECAP );
+        scrolls.clear();
+        Collections.addAll(scrolls, bundle.getStringArray(SCROLLS));
     }
 
     public class bookRecharge extends ArtifactBuff{
@@ -109,5 +157,30 @@ public class UnstableSpellbook extends Artifact {
         }
     }
 
+    protected WndBag.Listener itemSelector = new WndBag.Listener() {
+        @Override
+        public void onSelect(Item item) {
+            if (item != null && item instanceof Scroll && item.isIdentified()){
+                String scroll = item.getClass().getSimpleName();
+                Hero hero = Dungeon.hero;
+                for (int i = 0; ( i <= 1 && i < scrolls.size() ); i++){
+                    if (scrolls.get(i).equals(scroll)){
+                        hero.sprite.operate( hero.pos );
+                        hero.busy();
+                        hero.spend( 2f );
+                        Sample.INSTANCE.play(Assets.SND_BURNING);
 
+                        scrolls.remove(i);
+                        item.detach(hero.belongings.backpack);
+
+                        upgrade();
+                        GLog.i("You infuse the scroll's energy into the book.");
+                        return;
+                    }
+                }
+                if (item != null)
+                    GLog.w("You are unable to add this scroll to the book.");
+            }
+        }
+    };
 }

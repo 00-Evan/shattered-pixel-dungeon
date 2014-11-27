@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
@@ -61,7 +62,8 @@ public class WndBag extends WndTabbed {
 		WAND,
 		SEED,
         FOOD,
-		POTION
+		POTION,
+		SCROLL
 	}
 	
 	protected static final int COLS	= 4;
@@ -353,6 +355,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.SEED && (item instanceof Seed) ||
                         mode == Mode.FOOD && (item instanceof Food) ||
 						mode == Mode.POTION && (item instanceof Potion) ||
+						mode == Mode.SCROLL && (item instanceof Scroll) ||
 						mode == Mode.ALL
 					);
 				}

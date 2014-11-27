@@ -17,9 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -28,6 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class Scroll extends Item {
 
@@ -70,6 +70,8 @@ public abstract class Scroll extends Item {
 	private static ItemStatusHandler<Scroll> handler;
 	
 	private String rune;
+
+	public boolean ownedByBook = false;
 	
 	{
 		stackable = true;		
@@ -134,7 +136,7 @@ public abstract class Scroll extends Item {
 	}
 	
 	public void setKnown() {
-		if (!isKnown()) {
+		if (!isKnown() && !ownedByBook) {
 			handler.know( this );
 		}
 		
