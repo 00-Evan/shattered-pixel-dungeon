@@ -175,8 +175,9 @@ public class SandalsOfNature extends Artifact {
 
     public class Naturalism extends ArtifactBuff{
         public void charge() {
-            if (charge < 25*level){
-                charge++;
+            if (charge < target.HT){
+                //gain 1+(1*level)% of the difference between current charge and max HP.
+                charge+= (Math.round( (target.HT-charge) * (.01+ level*0.01) ));
             }
         }
     }
