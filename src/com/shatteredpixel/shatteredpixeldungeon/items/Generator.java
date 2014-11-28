@@ -188,7 +188,7 @@ public class Generator {
             MasterThievesArmband.class,
             SandalsOfNature.class,
             TalismanOfForesight.class};
-        Category.ARTIFACT.probs = new float[]{ 0, 1, 1, 1, 0, 1, 1 };
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1 };
 		
 		Category.SEED.classes = new Class<?>[]{ 
 			Firebloom.Seed.class,

@@ -63,7 +63,7 @@ public enum HeroClass {
 	};
 	
 	public static final String[] ROG_PERKS = {
-		"Rogues start with a Cloak of Shadows.",
+		"Rogues start with a unique Cloak of Shadows.",
 		"Rogues identify a type of a ring on equipping it.",
 		"Rogues are proficient with light armor, dodging better while wearing one.",
 		"Rogues are proficient in detecting hidden doors and traps.",

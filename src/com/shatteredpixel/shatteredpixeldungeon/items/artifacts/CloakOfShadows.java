@@ -31,6 +31,8 @@ public class CloakOfShadows extends Artifact {
         chargeCap = level+5;
         exp = 0;
         defaultAction = AC_STEALTH;
+
+        bones = false;
     }
 
     private boolean stealthed = false;
