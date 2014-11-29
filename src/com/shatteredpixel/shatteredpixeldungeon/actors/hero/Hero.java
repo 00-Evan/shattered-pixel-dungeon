@@ -132,11 +132,12 @@ public class Hero extends Char {
 	
 	private int attackSkill = 10;
 	private int defenseSkill = 5;
-	
+
 	public boolean ready = false;
-	public HeroAction curAction = null;
+    private boolean damageInterrupt = true;
+    public HeroAction curAction = null;
 	public HeroAction lastAction = null;
-	
+
 	private Char enemy;
 	
 	public Armor.Glyph killerGlyph = null;
@@ -478,6 +479,7 @@ public class Hero extends Char {
 	private void ready() {
 		sprite.idle();
 		curAction = null;
+        damageInterrupt = true;
 		ready = true;
 		
 		GameScene.ready();
@@ -493,6 +495,7 @@ public class Hero extends Char {
 	public void resume() {
 		curAction = lastAction;
 		lastAction = null;
+        damageInterrupt = false;
 		act();
 	}
 	
@@ -890,6 +893,8 @@ public class Hero extends Char {
 	@Override
 	public void damage( int dmg, Object src ) {		
 		restoreHealth = false;
+        if (damageInterrupt) interrupt();
+
         if (this.buff(Drowsy.class) != null){
             Buff.detach(this, Drowsy.class);
             GLog.w("The pain helps you resist the urge to sleep.");
