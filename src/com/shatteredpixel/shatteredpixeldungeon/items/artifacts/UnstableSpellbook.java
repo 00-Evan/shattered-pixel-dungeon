@@ -6,7 +6,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -32,8 +31,8 @@ public class UnstableSpellbook extends Artifact {
 
         level = 0;
         levelCap = 10;
-        charge = (int)((level*0.4)+1);
-        chargeCap = (int)((level*0.4)+1);
+        charge = ((level/2)+1);
+        chargeCap = ((level/2)+1);
         defaultAction = AC_READ;
     }
 
@@ -100,7 +99,7 @@ public class UnstableSpellbook extends Artifact {
 
     @Override
     public Item upgrade() {
-        chargeCap = (int)((level*0.4)+1);
+        chargeCap = ((level/2)+1);
 
         //for artifact transmutation.
         if (scrolls.size() > (levelCap-level))
@@ -122,7 +121,7 @@ public class UnstableSpellbook extends Artifact {
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
         bundle.put( CHARGECAP, chargeCap );
-        bundle.put( SCROLLS, scrolls.toArray(new String[scrolls.size()]);
+        bundle.put( SCROLLS, scrolls.toArray(new String[scrolls.size()]) );
     }
 
     @Override
