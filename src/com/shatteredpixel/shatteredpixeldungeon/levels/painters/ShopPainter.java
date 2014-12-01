@@ -17,8 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
-import java.util.ArrayList;
-
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ImpShopkeeper;
@@ -29,7 +27,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.Weightstone;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
@@ -38,13 +40,22 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class ShopPainter extends Painter {
 
@@ -144,6 +155,28 @@ public class ShopPainter extends Painter {
 		items.add( new OverpricedRation() );
 		
 		items.add( new Ankh() );
+
+		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
+
+		if (hourglass != null){
+			int bags = 0;
+			switch (Dungeon.depth) {
+				case 21:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
+				case 16:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.50f ); break;
+				case 11:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.25f ); break;
+				case 6:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.20f ); break;
+			}
+
+
+			for(int i = 1; i <= bags; i++){
+				items.add( new TimekeepersHourglass.sandBag());
+				hourglass.sandBags ++;
+			}
+		}
 		
 		Item[] range =items.toArray( new Item[0] );
 		Random.shuffle( range );
