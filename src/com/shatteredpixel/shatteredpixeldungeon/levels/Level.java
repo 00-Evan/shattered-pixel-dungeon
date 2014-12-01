@@ -190,15 +190,15 @@ public abstract class Level implements Bundlable {
 			addItemToSpawn( Generator.random( Generator.Category.FOOD ) );
 			if (Dungeon.posNeeded()) {
 				addItemToSpawn( new PotionOfStrength() );
-				Dungeon.potionOfStrength++;
+				Dungeon.limitedDrops.strengthPotions.count++;
 			}
 			if (Dungeon.soeNeeded()) {
 				addItemToSpawn( new ScrollOfUpgrade() );
-				Dungeon.scrollsOfUpgrade++;
+                Dungeon.limitedDrops.upgradeScrolls.count++;
 			}
 			if (Dungeon.asNeeded()) {
 				addItemToSpawn( new Stylus() );
-				Dungeon.arcaneStyli++;
+                Dungeon.limitedDrops.arcaneStyli.count++;
 			}
 
             int bonus = 0;
@@ -571,7 +571,8 @@ public abstract class Level implements Bundlable {
         if ((Dungeon.isChallenged( Challenges.NO_FOOD ) && (item instanceof Food || item instanceof BlandfruitBush.Seed)) ||
             (Dungeon.isChallenged( Challenges.NO_ARMOR ) && item instanceof Armor) ||
             (Dungeon.isChallenged( Challenges.NO_HEALING ) && item instanceof PotionOfHealing) ||
-            (Dungeon.isChallenged( Challenges.NO_HERBALISM ) && (item instanceof Plant.Seed || item instanceof Dewdrop))) {
+            (Dungeon.isChallenged( Challenges.NO_HERBALISM ) && (item instanceof Plant.Seed || item instanceof Dewdrop)) ||
+            item == null) {
 
             Heap heap = new Heap();
             GameScene.add( heap );

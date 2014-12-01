@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -124,6 +126,23 @@ public class Warlock extends Mob implements Callback {
 	public void call() {
 		next();
 	}
+
+    @Override
+    public Item createLoot(){
+        Item loot = super.createLoot();
+
+        if (loot instanceof PotionOfHealing){
+
+            //count/10 chance of not dropping potion
+            if (Random.Int(10)-Dungeon.limitedDrops.warlockHP.count < 0){
+                return null;
+            } else
+                Dungeon.limitedDrops.warlockHP.count++;
+
+        }
+
+        return loot;
+    }
 	
 	@Override
 	public String description() {

@@ -19,8 +19,10 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BatSprite;
@@ -42,7 +44,7 @@ public class Bat extends Mob {
 		flying = true;
 		
 		loot = new PotionOfHealing();
-		lootChance = 0.125f;
+		lootChance = 0.1667f; //by default, see die()
 	}
 	
 	@Override
@@ -77,6 +79,19 @@ public class Bat extends Mob {
 		
 		return damage;
 	}
+
+    @Override
+    public void die( Object cause ){
+        //sets drop chance
+        lootChance = 1f/((6 + Dungeon.limitedDrops.batHP.count ));
+        super.die( cause );
+    }
+
+    @Override
+    protected Item createLoot(){
+        Dungeon.limitedDrops.batHP.count++;
+        return super.createLoot();
+    }
 	
 	@Override
 	public String description() {

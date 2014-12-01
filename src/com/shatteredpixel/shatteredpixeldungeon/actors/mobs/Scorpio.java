@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech;
@@ -47,7 +48,7 @@ public class Scorpio extends Mob {
 		maxLvl = 25;
 		
 		loot = new PotionOfHealing();
-		lootChance = 0.125f;
+		lootChance = 0.2f;
 	}
 	
 	@Override
@@ -89,11 +90,13 @@ public class Scorpio extends Mob {
 	}
 	
 	@Override
-	protected void dropLoot() {
-		if (Random.Int( 8 ) == 0) {
-			Dungeon.level.drop( new PotionOfHealing(), pos ).sprite.drop();
-		} else if (Random.Int( 6 ) == 0) {
-			Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
+	protected Item createLoot() {
+        //5/count+5 total chance of getting healing, failing the 2nd roll drops mystery meat instead.
+		if (Random.Int( 5 + Dungeon.limitedDrops.scorpioHP.count ) <= 4) {
+            Dungeon.limitedDrops.scorpioHP.count++;
+            return (Item)loot;
+		} else {
+			return new MysteryMeat();
 		}
 	}
 	

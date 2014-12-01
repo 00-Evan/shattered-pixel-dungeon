@@ -253,7 +253,7 @@ public class Generator {
 	}
 
     public static Armor randomArmor(){
-        int curStr = Hero.STARTING_STR + Dungeon.potionOfStrength;
+        int curStr = Hero.STARTING_STR + Dungeon.limitedDrops.strengthPotions.count;
 
         return randomArmor(curStr);
     }
@@ -276,7 +276,7 @@ public class Generator {
 	}
 
     public static Weapon randomWeapon(){
-        int curStr = Hero.STARTING_STR + Dungeon.potionOfStrength;
+        int curStr = Hero.STARTING_STR + Dungeon.limitedDrops.strengthPotions.count;
 
         return randomWeapon(curStr);
     }

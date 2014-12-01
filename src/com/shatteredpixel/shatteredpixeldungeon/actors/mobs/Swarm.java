@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -47,6 +48,9 @@ public class Swarm extends Mob {
 		maxLvl = 10;
 		
 		flying = true;
+
+        loot = new PotionOfHealing();
+        lootChance = 0.2f; //by default, see die()
 	}
 	
 	private static final float SPLIT_DELAY	= 1f;
@@ -130,11 +134,17 @@ public class Swarm extends Mob {
 	}
 	
 	@Override
-	protected void dropLoot() {
-		if (Random.Int( 6 * (int)Math.pow(2 , generation) ) == 0) {
-			Dungeon.level.drop( new PotionOfHealing(), pos ).sprite.drop();
-		}
-	}
+	public void die( Object cause ){
+        //sets drop chance
+        lootChance = 1f/((5 + Dungeon.limitedDrops.swarmHP.count ) * generation );
+        super.die( cause );
+    }
+
+    @Override
+    protected Item createLoot(){
+        Dungeon.limitedDrops.swarmHP.count++;
+        return super.createLoot();
+    }
 	
 	@Override
 	public String description() {

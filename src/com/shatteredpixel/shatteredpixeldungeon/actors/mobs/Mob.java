@@ -360,9 +360,19 @@ public abstract class Mob extends Char {
 	public void die( Object cause ) {
 		
 		super.die( cause );
+
+        float lootChance = this.lootChance;
+        int bonus = 0;
+        for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
+            bonus += ((RingOfWealth.Wealth) buff).level;
+        }
+
+        lootChance *= Math.pow(1.1, bonus);
 		
-		if (Dungeon.hero.lvl <= maxLvl + 2) {
-			dropLoot();
+		if (Random.Float() < lootChance && Dungeon.hero.lvl <= maxLvl + 2) {
+            Item loot = createLoot();
+            if (loot != null)
+                Dungeon.level.drop( loot , pos ).sprite.drop();
 		}
 		
 		if (Dungeon.hero.isAlive() && !Dungeon.visible[pos]) {	
@@ -374,32 +384,22 @@ public abstract class Mob extends Char {
 	protected float lootChance = 0;
 	
 	@SuppressWarnings("unchecked")
-	protected void dropLoot() {
-        float lootChance = this.lootChance;
-        int bonus = 0;
-        for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
-            bonus += ((RingOfWealth.Wealth) buff).level;
+	protected Item createLoot() {
+        Item item;
+        if (loot instanceof Generator.Category) {
+
+            item = Generator.random( (Generator.Category)loot );
+
+        } else if (loot instanceof Class<?>) {
+
+            item = Generator.random( (Class<? extends Item>)loot );
+
+        } else {
+
+            item = (Item)loot;
+
         }
-
-        lootChance *= Math.pow(1.1, bonus);
-
-		if (loot != null && Random.Float() < lootChance) {
-			Item item = null;
-			if (loot instanceof Generator.Category) {
-				
-				item = Generator.random( (Generator.Category)loot );
-				
-			} else if (loot instanceof Class<?>) {
-				
-				item = Generator.random( (Class<? extends Item>)loot );
-				
-			} else {
-				
-				item = (Item)loot;
-				
-			}
-			Dungeon.level.drop( item, pos ).sprite.drop();
-		}
+        return item;
 	}
 	
 	public boolean reset() {

@@ -46,6 +46,9 @@ public class Skeleton extends Mob {
 		
 		EXP = 5;
 		maxLvl = 10;
+
+        loot = Generator.Category.WEAPON;
+        lootChance = 0.2f;
 	}
 	
 	@Override
@@ -81,18 +84,16 @@ public class Skeleton extends Mob {
 	}
 	
 	@Override
-	protected void dropLoot() {
-		if (Random.Int( 5 ) == 0) {
-			Item loot = Generator.random( Generator.Category.WEAPON );
-			for (int i=0; i < 2; i++) {
-				Item l = Generator.random( Generator.Category.WEAPON );
-				if (l.level < loot.level) {
-					loot = l;
-				}
-			}
-			Dungeon.level.drop( loot, pos ).sprite.drop();
-		}
-	}
+	protected Item createLoot() {
+        Item loot = Generator.random( Generator.Category.WEAPON );
+        for (int i=0; i < 2; i++) {
+            Item l = Generator.random( Generator.Category.WEAPON );
+            if (l.level < loot.level) {
+                loot = l;
+            }
+        }
+        return loot;
+    }
 	
 	@Override
 	public int attackSkill( Char target ) {

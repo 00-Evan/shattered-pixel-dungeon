@@ -76,7 +76,15 @@ public class Plant implements Bundlable {
             }
 
 			if (Random.Int( 5 - (naturalismLevel/2) ) == 0) {
-				Dungeon.level.drop( Generator.random( Generator.Category.SEED ), pos ).sprite.drop();
+                Item seed = Generator.random(Generator.Category.SEED);
+
+                if (seed instanceof BlandfruitBush.Seed) {
+                    if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
+                        Dungeon.level.drop(seed, pos).sprite.drop();
+                        Dungeon.limitedDrops.blandfruitSeed.count++;
+                    }
+                } else
+                    Dungeon.level.drop(seed, pos).sprite.drop();
 			}
 			if (Random.Int( 5 - naturalismLevel ) == 0) {
 				Dungeon.level.drop( new Dewdrop(), pos ).sprite.drop();

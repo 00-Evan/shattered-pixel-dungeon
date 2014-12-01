@@ -17,36 +17,28 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
-import com.watabou.noosa.Game;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -70,9 +62,17 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
 
 public class Dungeon {
 	
@@ -128,12 +128,28 @@ public class Dungeon {
 	
 	private static final String TXT_DEAD_END = 
 		"What are you doing here?!";
-	
-	public static int potionOfStrength;
-	public static int scrollsOfUpgrade;
-	public static int arcaneStyli;
+
 	public static boolean dewVial;		// true if the dew vial can be spawned
 	public static int transmutation;	// depth number for a well of transmutation
+
+    //enum of items which have limited spawns, records how many have spawned
+    //could all be their own separate ints, but this allows iterating, much nicer for bundling/initializing.
+	public static enum limitedDrops{
+        strengthPotions,
+        upgradeScrolls,
+        arcaneStyli,
+
+        //all unlimited health potion sources
+		swarmHP,
+		batHP,
+		warlockHP,
+		scorpioHP,
+		cookingHP,
+        
+		blandfruitSeed;
+
+		public int count = 0;
+	}
 
     public static int challenges;
 
@@ -178,9 +194,9 @@ public class Dungeon {
 		depth = 0;
 		gold = 0;
 		
-		potionOfStrength = 0;
-		scrollsOfUpgrade = 0;
-		arcaneStyli = 0;
+		for (limitedDrops a : limitedDrops.values())
+            a.count = 0;
+
 		dewVial = true;
 		transmutation = Random.IntRange( 6, 14 );
 		
@@ -374,12 +390,12 @@ public class Dungeon {
 	
 	public static boolean posNeeded() {
 		int[] quota = {4, 2, 9, 4, 14, 6, 19, 8, 24, 9};
-		return chance( quota, potionOfStrength );
+		return chance( quota, limitedDrops.strengthPotions.count );
 	}
 	
 	public static boolean soeNeeded() {
 		int[] quota = {5, 3, 10, 6, 15, 9, 20, 12, 25, 13};
-		return chance( quota, scrollsOfUpgrade );
+		return chance( quota, limitedDrops.upgradeScrolls.count );
 	}
 	
 	private static boolean chance( int[] quota, int number ) {
@@ -396,7 +412,7 @@ public class Dungeon {
 	}
 	
 	public static boolean asNeeded() {
-		return Random.Int( 12 * (1 + arcaneStyli) ) < depth;
+		return Random.Int( 12 * (1 + limitedDrops.arcaneStyli.count) ) < depth;
 	}
 	
 	private static final String RG_GAME_FILE	= "game.dat";
@@ -418,14 +434,17 @@ public class Dungeon {
 	private static final String DEPTH		= "depth";
 	private static final String QUICKSLOT	= "quickslot";
 	private static final String LEVEL		= "level";
-	private static final String POS			= "potionsOfStrength";
-	private static final String SOU			= "scrollsOfEnhancement";
-	private static final String AS			= "arcaneStyli";
+    private static final String LIMDROPS    = "limiteddrops";
 	private static final String DV			= "dewVial";
 	private static final String WT			= "transmutation";
 	private static final String CHAPTERS	= "chapters";
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
+
+    //TODO: to support pre-0.2.3 saves, remove when needed
+    private static final String POS			= "potionsOfStrength";
+    private static final String SOU			= "scrollsOfEnhancement";
+    private static final String AS			= "arcaneStyli";
 	
 	public static String gameFile( HeroClass cl ) {
 		switch (cl) {
@@ -462,12 +481,14 @@ public class Dungeon {
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
-			
-			bundle.put( POS, potionOfStrength );
-			bundle.put( SOU, scrollsOfUpgrade );
-			bundle.put( AS, arcaneStyli );
+
 			bundle.put( DV, dewVial );
 			bundle.put( WT, transmutation );
+
+            int[] dropValues = new int[limitedDrops.values().length];
+            for (limitedDrops value : limitedDrops.values())
+                dropValues[value.ordinal()] = value.count;
+            bundle.put ( LIMDROPS, dropValues );
 			
 			int count = 0;
 			int ids[] = new int[chapters.size()];
@@ -566,14 +587,26 @@ public class Dungeon {
 		Potion.restore( bundle );
 		Wand.restore( bundle );
 		Ring.restore( bundle );
-		
-		potionOfStrength = bundle.getInt( POS );
-		scrollsOfUpgrade = bundle.getInt( SOU );
-		arcaneStyli = bundle.getInt( AS );
-		dewVial = bundle.getBoolean( DV );
-		transmutation = bundle.getInt( WT );
+
 		
 		if (fullLoad) {
+
+            dewVial = bundle.getBoolean( DV );
+            transmutation = bundle.getInt( WT );
+
+            //TODO: adjust this when dropping support for pre-0.2.3 saves
+            if (bundle.contains( LIMDROPS )) {
+                int[] dropValues = bundle.getIntArray(LIMDROPS);
+                for (limitedDrops value : limitedDrops.values())
+                    value.count = value.ordinal() < dropValues.length ?
+                            dropValues[value.ordinal()] : 0;
+            } else {
+                for (limitedDrops value : limitedDrops.values())
+                    value.count = 0;
+                limitedDrops.strengthPotions.count = bundle.getInt(POS);
+                limitedDrops.upgradeScrolls.count = bundle.getInt(SOU);
+                limitedDrops.arcaneStyli.count = bundle.getInt(AS);
+            }
 			chapters = new HashSet<Integer>();
 			int ids[] = bundle.getIntArray( CHAPTERS );
 			if (ids != null) {

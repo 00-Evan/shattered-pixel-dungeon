@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -283,7 +284,7 @@ public class Heap implements Bundlable {
 		int bonus = 0;
 		if (alchemy != null){
 			bonus = alchemy.level();
-			if (Random.int(25) < 10+bonus){
+			if (Random.Int(25) < 10+bonus){
 				seeds_to_potion--;
 				if (Random.Int(30) < bonus){
 					seeds_to_potion--;
@@ -296,10 +297,12 @@ public class Heap implements Bundlable {
 			CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 			Sample.INSTANCE.play( Assets.SND_PUFF );
 
+            Item potion;
+
 			//not a buff per-se, meant to cancel out higher potion accuracy when ppl are farming for potions of exp.
 			if (bonus != 0)
 				if (Random.Int(1000/bonus) == 0)
-					return new PotionOfExperience();
+                    potion = new PotionOfExperience();
 
 			if (Random.Int( count + bonus ) == 0) {
 
@@ -310,7 +313,7 @@ public class Heap implements Bundlable {
 				Statistics.potionsCooked++;
 				Badges.validatePotionsCooked();
 
-				return Generator.random( Generator.Category.POTION );
+                potion = Generator.random( Generator.Category.POTION );
 
 			} else {
 
@@ -323,15 +326,23 @@ public class Heap implements Bundlable {
 				Badges.validatePotionsCooked();
 
 				if (itemClass == null) {
-					return Generator.random( Generator.Category.POTION );
+                    potion =  Generator.random( Generator.Category.POTION );
 				} else {
 					try {
-						return itemClass.newInstance();
+                        potion =  itemClass.newInstance();
 					} catch (Exception e) {
 						return null;
 					}
 				}
 			}
+
+            while (potion instanceof PotionOfHealing && Random.Int(15) - Dungeon.limitedDrops.cookingHP.count >= 0)
+                potion = Generator.random( Generator.Category.POTION );
+
+            if (potion instanceof PotionOfHealing)
+                Dungeon.limitedDrops.cookingHP.count++;
+
+            return potion;
 
 		} else {
 			return null;
