@@ -593,8 +593,6 @@ public class Hero extends Char {
 						
 					} else {
 
-                        //TODO: this is triggering very rigidly, consider some sort of refactor
-                        //specifically, right now is causing wrong output with a cursed horn of plenty.
 						if ((item instanceof ScrollOfUpgrade && ((ScrollOfUpgrade)item).isKnown()) ||
 							(item instanceof PotionOfStrength && ((PotionOfStrength)item).isKnown())) {
 							GLog.p( TXT_YOU_NOW_HAVE, item.name() );
