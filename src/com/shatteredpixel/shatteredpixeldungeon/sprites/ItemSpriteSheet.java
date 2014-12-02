@@ -141,7 +141,7 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_TALISMAN   = ROW8+3;
     public static final int ARTIFACT_HOURGLASS  = ROW8+4;
     public static final int ARTIFACT_TOOLKIT    = ROW8+5;
-
+    public static final int ARTIFACT_SPELLBOOK  = ROW8+6;
 
     //Row Nine: Artifacts with Dynamic Images
     public static final int ARTIFACT_HORN1      = ROW9+0;

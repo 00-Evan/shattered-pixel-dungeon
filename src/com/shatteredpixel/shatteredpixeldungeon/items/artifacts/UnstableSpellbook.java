@@ -9,6 +9,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -27,7 +28,7 @@ public class UnstableSpellbook extends Artifact {
 
     {
         name = "unstable spellbook";
-        image = 0;
+        image = ItemSpriteSheet.ARTIFACT_SPELLBOOK;
 
         level = 0;
         levelCap = 10;
