@@ -160,15 +160,17 @@ public class ShopPainter extends Painter {
 
 		if (hourglass != null){
 			int bags = 0;
+            //creates the given float percent of the remaining bags to be dropped.
+            //this way players who get the hourglass late can still max it, usually.
 			switch (Dungeon.depth) {
-				case 21:
-					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
-				case 16:
-					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.50f ); break;
-				case 11:
-					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.25f ); break;
 				case 6:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.20f ); break;
+				case 11:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.25f ); break;
+				case 16:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.50f ); break;
+				case 21:
+					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
 			}
 
 
