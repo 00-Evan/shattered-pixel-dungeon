@@ -3,6 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -18,7 +19,7 @@ public class TimekeepersHourglass extends Artifact {
 
     {
         name = "timekeeper's hourglass";
-        image = 0;
+        image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
 
         level = 0;
         levelCap = 5;
@@ -123,7 +124,7 @@ public class TimekeepersHourglass extends Artifact {
 
         {
             name = "bag of magic sand";
-            image = 0;
+            image = ItemSpriteSheet.SANDBAG;
         }
 
         @Override

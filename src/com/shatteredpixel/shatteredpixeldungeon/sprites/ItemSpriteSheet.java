@@ -41,18 +41,20 @@ public class ItemSpriteSheet {
     //null warning occupies space 0, should only show up if there's a bug.
     public static final int NULLWARN    = ROW1+0;
     public static final int DEWDROP	    = ROW1+1;
+    public static final int PETAL	    = ROW1+2;
+    public static final int SANDBAG     = ROW1+3;
     // Heaps (containers)
-    public static final int BONES			= ROW1+2;
-    public static final int REMAINS         = ROW1+3;
-    public static final int TOMB			= ROW1+4;
-    public static final int CHEST			= ROW1+5;
-    public static final int LOCKED_CHEST	= ROW1+6;
-    public static final int CRYSTAL_CHEST	= ROW1+7;
+    public static final int BONES			= ROW1+4;
+    public static final int REMAINS         = ROW1+5;
+    public static final int TOMB			= ROW1+6;
+    public static final int CHEST			= ROW1+7;
+    public static final int LOCKED_CHEST	= ROW1+8;
+    public static final int CRYSTAL_CHEST	= ROW1+9;
     // Placeholders
-    public static final int WEAPON	= ROW1+8;
-    public static final int ARMOR	= ROW1+9;
-    public static final int RING	= ROW1+10;
-    public static final int SMTH	= ROW1+11;
+    public static final int WEAPON	= ROW1+10;
+    public static final int ARMOR	= ROW1+11;
+    public static final int RING	= ROW1+12;
+    public static final int SMTH	= ROW1+13;
 
     //Row Two: Miscellaneous single use items
     public static final int GOLD	= ROW2+0;
@@ -137,7 +139,9 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_ARMBAND    = ROW8+1;
     public static final int ARTIFACT_CAPE       = ROW8+2;
     public static final int ARTIFACT_TALISMAN   = ROW8+3;
-    public static final int ARTIFACT_ROSE       = ROW8+4;
+    public static final int ARTIFACT_HOURGLASS  = ROW8+4;
+    public static final int ARTIFACT_TOOLKIT    = ROW8+5;
+
 
     //Row Nine: Artifacts with Dynamic Images
     public static final int ARTIFACT_HORN1      = ROW9+0;
@@ -151,6 +155,9 @@ public class ItemSpriteSheet {
     public static final int ARTIFACT_SHOES      = ROW9+8;
     public static final int ARTIFACT_BOOTS      = ROW9+9;
     public static final int ARTIFACT_GREAVES    = ROW9+10;
+    public static final int ARTIFACT_ROSE1      = ROW9+11;
+    public static final int ARTIFACT_ROSE2      = ROW9+12;
+    public static final int ARTIFACT_ROSE3      = ROW9+13;
 
     //Row Ten: Scrolls
     public static final int SCROLL_KAUNAN	= ROW10+0;
