@@ -17,10 +17,11 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import java.util.HashMap;
-
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.watabou.utils.Bundle;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 public class GamesInProgress {
 
@@ -41,7 +42,7 @@ public class GamesInProgress {
 				info = new Info();
 				Dungeon.preview( info, bundle );
 
-			} catch (Exception e) {
+			} catch (IOException e) {
 				info = null;
 			}
 			

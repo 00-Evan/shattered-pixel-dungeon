@@ -382,9 +382,9 @@ public class Dungeon {
 		observe();
         try {
             saveAll();
-        } catch (Exception e) {
-            //TODO: I need to add analytics code to this or something.
-            //Silent failure is really bad, don't want to interrupt the user but I do want to know if this fails.
+        } catch (IOException e) {
+			/*This only catches IO errors. Yes, this means things can do wrong, and they can go wrong catastrophically.
+			But when they do the user will get a nice 'report this issue' dialogue, and I can fix the bug.*/
         }
 	}
 	
@@ -527,7 +527,7 @@ public class Dungeon {
 			Bundle.write( bundle, output );
 			output.close();
 			
-		} catch (Exception e) {
+		} catch (IOException e) {
 
 			GamesInProgress.setUnknown( hero.heroClass );
 		}
