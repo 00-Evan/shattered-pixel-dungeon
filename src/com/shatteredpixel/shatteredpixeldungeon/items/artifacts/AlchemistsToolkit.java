@@ -8,6 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
@@ -24,7 +25,7 @@ public class AlchemistsToolkit extends Artifact {
 
     {
         name = "Alchemists Toolkit";
-        image = 0;
+        image = ItemSpriteSheet.ARTIFACT_TOOLKIT;
 
         levelCap = 10;
         //charge, chargecap, partialcharge, and exp are unused.
@@ -47,12 +48,12 @@ public class AlchemistsToolkit extends Artifact {
     public AlchemistsToolkit() {
         super();
 
-        for (int i = 1; i <= 4; i++){
+        for (int i = 1; i <= 3; i++){
             Potion potion;
             do{
                 potion = (Potion)Generator.random(Generator.Category.POTION);
-            } while (combination.contains(potion.name()) || potion instanceof PotionOfExperience);
-            combination.add(potion.name());
+            } while (combination.contains(potion.trueName()) || potion instanceof PotionOfExperience);
+            combination.add(potion.trueName());
         }
     }
 
@@ -74,7 +75,7 @@ public class AlchemistsToolkit extends Artifact {
     }
 
     public void guessBrew() {
-        if (curGuess.size() != 4)
+        if (curGuess.size() != 3)
             return;
 
         int numWrongPlace = 0;
@@ -90,10 +91,7 @@ public class AlchemistsToolkit extends Artifact {
             }
         }
 
-        int score = (numRight *2) + numWrongPlace;
-
-        if (numRight+numWrongPlace == 4)
-            score ++;
+        int score = (numRight *3) + numWrongPlace;
 
         if (score == 9)
             score ++;
@@ -114,14 +112,14 @@ public class AlchemistsToolkit extends Artifact {
                 bstGuess = new ArrayList<String>();
                 GLog.p("The mixture you've created seems perfect, you don't think there is any way to improve it!");
             } else {
-                GLog.i("you finish mixing, " + brewDesc(numWrongPlace, numRight) +
-                        "\nthis is your best brew yet!");
+                GLog.w("you finish mixing potions, " + brewDesc(numWrongPlace, numRight) +
+                        ". This is your best brew yet!");
             }
 
         } else {
 
-            GLog.i("you finish mixing, " + brewDesc(numWrongPlace, numRight) +
-                    "\nthis brew isn't as good as the current one, you throw it away.");
+            GLog.w("you finish mixing potions, " + brewDesc(numWrongPlace, numRight) +
+                    ". This brew isn't as good as the current one, you throw it away.");
         }
         curGuess = new ArrayList<String>();
 
@@ -130,12 +128,12 @@ public class AlchemistsToolkit extends Artifact {
     private String brewDesc(int numWrongPlace, int numRight){
         String result = "";
         if (numWrongPlace > 0){
-            result += "there were " + numWrongPlace + " potions that reacted well, but were added at the wrong time";
+            result += numWrongPlace + " reacted well, but were added at the wrong time";
             if (numRight > 0)
                 result += " and ";
         }
         if (numRight > 0){
-            result += "there were " + numRight + " potions that reacted perfectly";
+            result += numRight + " reacted perfectly";
         }
         return result;
     }
@@ -147,9 +145,8 @@ public class AlchemistsToolkit extends Artifact {
 
     @Override
     public String desc() {
-        String result = "This worn toolkit contains a number of regents and herbs used to improve the process of " +
-                "cooking potions. While wearing the toolkit, the number of seeds needed for alchemy will be " +
-                "reduced, and you will be more likely to create a potion relating to the seeds you use.\n\n";
+        String result = "This toolkit contains a number of regents and herbs used to improve the process of " +
+                "cooking potions.\n\n";
 
         if (isEquipped(Dungeon.hero))
             if (cursed)
@@ -163,11 +160,11 @@ public class AlchemistsToolkit extends Artifact {
         } else if (level == 10) {
             result += "The mixture you have created seems perfect, and the toolkit is working at maximum efficiency.";
         } else if (!bstGuess.isEmpty()) {
-            result += "Your current best mixture is made from: a " + bstGuess.get(0) + ", " + bstGuess.get(1) + ", "
-                    + bstGuess.get(2) + ", and " + bstGuess.get(3) + ", in that order.\n\n";
-            result += "In that mix, " + brewDesc(numWrongPlace, numRight) + ".";
+            result += "Your current best mixture is made from: " + bstGuess.get(0) + ", " + bstGuess.get(1) + ", "
+                    + bstGuess.get(2) + ", in that order.\n\n";
+            result += "Of the potions in that mix, " + brewDesc(numWrongPlace, numRight) + ".";
 
-        //would only trigger if an upgraded toolkit was gained through transmutation.
+        //would only trigger if an upgraded toolkit was gained through transmutation or bones.
         } else {
             result += "The toolkit seems to have a catalyst mixture already in it, but it isn't ideal. Unfortunately " +
                     "you have no idea what's in the mixture.";
@@ -225,10 +222,10 @@ public class AlchemistsToolkit extends Artifact {
                     item.detach(hero.belongings.backpack);
 
                     curGuess.add(item.name());
-                    if (curGuess.size() == 4){
+                    if (curGuess.size() == 3){
                         guessBrew();
                     } else {
-                        GLog.i("You mix the potion into your current brew.");
+                        GLog.i("You mix the " + item.name() + " into your current brew.");
                     }
                 } else {
                     GLog.w("Your current brew already contains that potion.");
