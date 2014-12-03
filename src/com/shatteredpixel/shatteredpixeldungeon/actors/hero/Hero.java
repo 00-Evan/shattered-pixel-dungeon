@@ -287,7 +287,7 @@ public class Hero extends Char {
 			evasion /= 2;
 		}
 		
-		int aEnc = belongings.armor != null ? belongings.armor.STR - STR() : 0;
+		int aEnc = belongings.armor != null ? belongings.armor.STR - STR() : 9 - STR();
 		
 		if (aEnc > 0) {
 			return (int)(defenseSkill * evasion / Math.pow( 1.5, aEnc ));
