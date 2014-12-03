@@ -277,32 +277,16 @@ public class Heap implements Bundlable {
 			}
 		}
 
-		//TODO: test this thoroughly
 		//alchemists toolkit gives a chance to cook a potion in two or even one seeds
-		Artifact.ArtifactBuff alchemy = Dungeon.hero.buff(AlchemistsToolkit.alchemy.class);
-		int seeds_to_potion = SEEDS_TO_POTION;
-		int bonus = 0;
-		if (alchemy != null){
-			bonus = alchemy.level();
-			if (Random.Int(25) < 10+bonus){
-				seeds_to_potion--;
-				if (Random.Int(30) < bonus){
-					seeds_to_potion--;
-				}
-			}
-		}
+		AlchemistsToolkit.alchemy alchemy = Dungeon.hero.buff(AlchemistsToolkit.alchemy.class);
+		int bonus = alchemy != null ? alchemy.level() : -1;
 
-		if (count >= seeds_to_potion) {
+		if (bonus != -1 ? alchemy.tryCook(count) : count >= SEEDS_TO_POTION) {
 
 			CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 			Sample.INSTANCE.play( Assets.SND_PUFF );
 
             Item potion;
-
-			//not a buff per-se, meant to cancel out higher potion accuracy when ppl are farming for potions of exp.
-			if (bonus != 0)
-				if (Random.Int(1000/bonus) == 0)
-                    potion = new PotionOfExperience();
 
 			if (Random.Int( count + bonus ) == 0) {
 
@@ -335,6 +319,11 @@ public class Heap implements Bundlable {
 					}
 				}
 			}
+
+			//not a buff per-se, meant to cancel out higher potion accuracy when ppl are farming for potions of exp.
+			if (bonus > 0)
+				if (Random.Int(1000/bonus) == 0)
+					return new PotionOfExperience();
 
             while (potion instanceof PotionOfHealing && Random.Int(15) - Dungeon.limitedDrops.cookingHP.count >= 0)
                 potion = Generator.random( Generator.Category.POTION );

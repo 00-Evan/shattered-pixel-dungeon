@@ -13,6 +13,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +42,8 @@ public class AlchemistsToolkit extends Artifact {
 
     public int numWrongPlace = 0;
     public int numRight = 0;
+
+    private int seedsToPotion = 0;
 
     protected String inventoryTitle = "Select a potion";
     protected WndBag.Mode mode = WndBag.Mode.POTION;
@@ -98,7 +101,7 @@ public class AlchemistsToolkit extends Artifact {
 
         if (score == 0){
 
-            GLog.i("Your brew is complete, but none of the potions you used seem to react well. " +
+            GLog.i("Your mixture is complete, but none of the potions you used seem to react well. " +
                     "The brew is useless, you throw it away.");
 
         } else if (score > level) {
@@ -128,7 +131,7 @@ public class AlchemistsToolkit extends Artifact {
     private String brewDesc(int numWrongPlace, int numRight){
         String result = "";
         if (numWrongPlace > 0){
-            result += numWrongPlace + " reacted well, but were added at the wrong time";
+            result += numWrongPlace + " reacted well, but in the wrong order";
             if (numRight > 0)
                 result += " and ";
         }
@@ -156,7 +159,7 @@ public class AlchemistsToolkit extends Artifact {
 
         if (level == 0){
             result += "The toolkit seems to be missing a key tool, a catalyst mixture. You'll have to make your own " +
-                    "out of four common potions to get the most out of the toolkit.";
+                    "out of three common potions to get the most out of the toolkit.";
         } else if (level == 10) {
             result += "The mixture you have created seems perfect, and the toolkit is working at maximum efficiency.";
         } else if (!bstGuess.isEmpty()) {
@@ -179,11 +182,15 @@ public class AlchemistsToolkit extends Artifact {
     private static final String NUMWRONGPLACE = "numwrongplace";
     private static final String NUMRIGHT = "numright";
 
+    private static final String SEEDSTOPOTION = "seedstopotion";
+
     @Override
     public void storeInBundle(Bundle bundle){
         super.storeInBundle(bundle);
         bundle.put(NUMWRONGPLACE, numWrongPlace);
         bundle.put(NUMRIGHT, numRight);
+
+        bundle.put(SEEDSTOPOTION, seedsToPotion);
 
         bundle.put(COMBINATION, combination.toArray(new String[combination.size()]));
         bundle.put(CURGUESS, curGuess.toArray(new String[curGuess.size()]));
@@ -193,8 +200,10 @@ public class AlchemistsToolkit extends Artifact {
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
-        numWrongPlace = bundle.getInt(NUMWRONGPLACE);
-        numRight = bundle.getInt(NUMRIGHT);
+        numWrongPlace = bundle.getInt( NUMWRONGPLACE );
+        numRight = bundle.getInt( NUMRIGHT );
+
+        seedsToPotion = bundle.getInt( SEEDSTOPOTION );
 
         combination.clear();
         Collections.addAll( combination, bundle.getStringArray( COMBINATION ));
@@ -204,6 +213,28 @@ public class AlchemistsToolkit extends Artifact {
 
 
     public class alchemy extends ArtifactBuff {
+
+        public boolean tryCook(int count){
+
+            //this logic is handled inside the class with a variable so that it may be stored.
+            //to prevent manipulation where a player could keep trowing in 1-2 seeds until they get lucky.
+            if (seedsToPotion == 0){
+                if (Random.Int(30) < 10+level){
+                    if (Random.Int(30) < level){
+                        seedsToPotion = 1;
+                    } else
+                        seedsToPotion = 2;
+                } else
+                    seedsToPotion = 3;
+            }
+
+            if (count >= seedsToPotion){
+                seedsToPotion = 0;
+                return true;
+            } else
+                return false;
+
+        }
 
     }
 
@@ -230,7 +261,7 @@ public class AlchemistsToolkit extends Artifact {
                 } else {
                     GLog.w("Your current brew already contains that potion.");
                 }
-            } else {
+            } else if (item != null) {
                 GLog.w("You need to select an identified potion.");
             }
         }
