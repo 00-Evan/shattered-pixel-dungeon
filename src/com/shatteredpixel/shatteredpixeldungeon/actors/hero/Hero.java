@@ -294,11 +294,6 @@ public class Hero extends Char {
 		} else {
 			
 			if (heroClass == HeroClass.ROGUE) {
-				
-				if (curAction != null && subClass == HeroSubClass.FREERUNNER && !isStarving()) {
-					evasion *= 2;
-				}
-				
 				return (int)((defenseSkill - aEnc) * evasion);
 			} else {
 				return (int)(defenseSkill * evasion);
@@ -354,7 +349,11 @@ public class Hero extends Char {
 			
 		} else {
 
-			return ((HeroSprite)sprite).sprint( subClass == HeroSubClass.FREERUNNER && !isStarving() ) ? 1.6f * speed : speed;
+			return ((HeroSprite)sprite).sprint( subClass == HeroSubClass.FREERUNNER && !isStarving() ) ?
+					invisible > 0 ?
+							2.56f * speed :
+							1.6f * speed :
+					speed;
 			
 		}
 	}
