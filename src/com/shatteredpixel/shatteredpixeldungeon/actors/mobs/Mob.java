@@ -17,8 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import java.util.HashSet;
-
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -40,6 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+
+import java.util.HashSet;
 
 public abstract class Mob extends Char {
 	
@@ -100,6 +100,7 @@ public abstract class Mob extends Char {
         } else if (state == PASSIVE) {
             bundle.put( STATE, Passive.TAG );
         }
+		bundle.put( SEEN, enemySeen );
         bundle.put( TARGET, target );
 	}
 	
@@ -120,6 +121,8 @@ public abstract class Mob extends Char {
         } else if (state.equals( Passive.TAG )) {
             this.state = PASSIVE;
         }
+
+		enemySeen = bundle.getBoolean( SEEN );
 
         target = bundle.getInt( TARGET );
     }
