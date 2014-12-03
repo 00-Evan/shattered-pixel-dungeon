@@ -282,7 +282,7 @@ public class Hero extends Char {
 			bonus += ((RingOfEvasion.Evasion)buff).effectiveLevel;
 		}
 
-		float evasion = bonus == 0 ? 1 : (float)Math.pow( 1.15, bonus );
+		float evasion = (float)Math.pow( 1.15, bonus );
 		if (paralysed) {
 			evasion /= 2;
 		}
@@ -1183,8 +1183,11 @@ public class Hero extends Char {
 	
 	@Override
 	public int stealth() {
-		//no logic here since removal of Ring of Shadows, may do something here in future.
-		return super.stealth();
+		int stealth = super.stealth();
+		for (Buff buff : buffs( RingOfEvasion.Evasion.class )) {
+			stealth += ((RingOfEvasion.Evasion)buff).effectiveLevel;
+		}
+		return stealth;
 	}
 	
 	@Override
