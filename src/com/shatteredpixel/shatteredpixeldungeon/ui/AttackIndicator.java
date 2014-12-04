@@ -69,13 +69,7 @@ public class AttackIndicator extends Tag {
 	public void update() {
 		super.update();
 		
-		if (Dungeon.hero.isAlive()) {
-			
-			if (!Dungeon.hero.ready) {
-				enable( false );
-			}		
-			
-		} else {
+		if (!Dungeon.hero.isAlive()) {
 			visible( false );
 			enable( false );
 		}
@@ -149,9 +143,10 @@ public class AttackIndicator extends Tag {
 	
 	@Override
 	protected void onClick() {
-		if (enabled) {
-			Dungeon.hero.handle( lastTarget.pos );
-		}
+            if (Dungeon.hero.curAction != null)
+                Dungeon.hero.interrupt();
+            else
+			    Dungeon.hero.handle( lastTarget.pos );
 	}
 	
 	public static void target( Char target ) {
