@@ -897,7 +897,9 @@ public class Hero extends Char {
 	@Override
 	public void damage( int dmg, Object src ) {		
 		restoreHealth = false;
-        if (damageInterrupt) interrupt();
+
+		if (!(src instanceof Hunger) && damageInterrupt)
+        	interrupt();
 
         if (this.buff(Drowsy.class) != null){
             Buff.detach(this, Drowsy.class);

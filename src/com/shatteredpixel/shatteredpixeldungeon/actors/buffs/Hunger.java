@@ -66,11 +66,9 @@ public class Hunger extends Buff implements Hero.Doom {
 			if (isStarving()) {
 
 				if (Random.Float() < 0.3f && (target.HP > 1 || !target.paralysed)) {
-					
-					GLog.n( TXT_STARVING );
+
 					hero.damage( 1, this );
-					
-					hero.interrupt();
+
 				}
 			} else {
 				
@@ -79,6 +77,7 @@ public class Hunger extends Buff implements Hero.Doom {
 				if (newLevel >= STARVING) {
 					
 					GLog.n( TXT_STARVING );
+					hero.damage( 1, this );
 					statusUpdated = true;
 					
 					hero.interrupt();
