@@ -254,6 +254,7 @@ public class Hero extends Char {
 
         rangedWeapon = wep;
         boolean result = attack( enemy );
+        Invisibility.dispel();
         rangedWeapon = null;
 
         return result;
@@ -378,7 +379,9 @@ public class Hero extends Char {
 
     @Override
     public void spend( float time ) {
-        super.spend( time );
+        TimekeepersHourglass.timeFreeze buff = buff(TimekeepersHourglass.timeFreeze.class);
+        if (!(buff != null && buff.processTime(time)))
+            super.spend( time );
     };
 	
 	public void spendAndNext( float time ) {

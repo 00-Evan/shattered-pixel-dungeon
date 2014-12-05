@@ -1,11 +1,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
@@ -17,6 +21,12 @@ import java.util.ArrayList;
 public class TimekeepersHourglass extends Artifact {
     //TODO: string, effect implementation.
 
+    private static final String TXT_HGLASS	= "Timekeeper's Hourglass";
+    private static final String TXT_STASIS	= "Put myself in stasis";
+    private static final String TXT_FREEZE	= "Freeze time around me";
+    private static final String TXT_DESC 	=
+            "...";
+
     {
         name = "timekeeper's hourglass";
         image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
@@ -27,6 +37,8 @@ public class TimekeepersHourglass extends Artifact {
         chargeCap = 5+level;
         defaultAction = AC_ACTIVATE;
     }
+
+    private static final String TXT_CHARGE  = "%d/%d";
 
     public static final String AC_ACTIVATE = "ACTIVATE";
 
@@ -44,7 +56,24 @@ public class TimekeepersHourglass extends Artifact {
     @Override
     public void execute( Hero hero, String action ) {
         if (action.equals(AC_ACTIVATE)){
-            //todo: add logic here
+            GameScene.show(
+                    new WndOptions(TXT_HGLASS, TXT_STASIS, TXT_FREEZE, TXT_DESC) {
+                        @Override
+                        protected void onSelect(int index) {
+                            if (index == 0){
+                                GLog.i("WIP");
+                            } else if (index == 1){
+                                GLog.i("everything around you slows to a halt.");
+                                GameScene.flash( 0xFFFFFF );
+                                Sample.INSTANCE.play( Assets.SND_BLAST );
+
+                                activeBuff = new timeFreeze();
+                                activeBuff.attachTo(Dungeon.hero);
+                            }
+
+                        };
+                    }
+            );
         } else
             super.execute(hero, action);
     }
@@ -69,6 +98,12 @@ public class TimekeepersHourglass extends Artifact {
     public String desc() {
         return "";
     }
+
+    @Override
+    public String status() {
+        return Utils.format(TXT_CHARGE, charge, chargeCap);
+    }
+
 
     //needs to bundle chargecap as it is dynamic.
     private static final String CHARGECAP = "chargecap";
@@ -117,7 +152,34 @@ public class TimekeepersHourglass extends Artifact {
     }
 
     public class timeFreeze extends ArtifactBuff {
-        //todo: add logic here
+        //todo: add visual effects
+
+        float partialTime = 0f;
+
+        public boolean processTime(float time){
+            partialTime += time;
+
+            while (partialTime >= 1){
+                partialTime --;
+                charge --;
+            }
+
+            QuickSlot.refresh();
+
+            if (charge <= 0){
+                detach();
+                return false;
+            } else
+                return true;
+
+        }
+
+        @Override
+        public void detach(){
+            charge = 0;
+            QuickSlot.refresh();
+            super.detach();
+        }
     }
 
     public static class sandBag extends Item {

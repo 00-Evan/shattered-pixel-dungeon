@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Invisibility extends FlavourBuff {
@@ -62,6 +63,11 @@ public class Invisibility extends FlavourBuff {
         if (cloakBuff != null && Dungeon.hero.visibleEnemies() > 0) {
             cloakBuff.act();
             cloakBuff.detach();
+        }
+        //this isn't a form of invisibilty, but it is meant to dispel at the same time as it.
+        TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+        if (timeFreeze != null && Dungeon.hero.visibleEnemies() > 0) {
+            timeFreeze.detach();
         }
 	}
 }
