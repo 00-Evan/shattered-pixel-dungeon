@@ -898,7 +898,10 @@ public class Hero extends Char {
 	}
 	
 	@Override
-	public void damage( int dmg, Object src ) {		
+	public void damage( int dmg, Object src ) {
+		if (buff(TimekeepersHourglass.timeStasis.class) != null)
+			return;
+
 		restoreHealth = false;
 
 		if (!(src instanceof Hunger) && damageInterrupt)
@@ -1123,6 +1126,10 @@ public class Hero extends Char {
 	
 	@Override
 	public void add( Buff buff ) {
+		//TODO: test this, may break some things
+		if (buff(TimekeepersHourglass.timeStasis.class) != null)
+			return;
+
 		super.add( buff );
 		
 		if (sprite != null) {

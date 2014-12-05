@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -661,6 +662,13 @@ public abstract class Level implements Bundlable {
 			Chasm.heroFall( cell );
 			return;
 		}
+
+		TimekeepersHourglass.timeFreeze timeFreeze = null;
+
+		if (ch != null)
+			timeFreeze = ch.buff(TimekeepersHourglass.timeFreeze.class);
+
+		boolean frozen = timeFreeze != null;
 		
 		boolean trap = false;
 		
@@ -670,56 +678,56 @@ public abstract class Level implements Bundlable {
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.TOXIC_TRAP:
 			trap = true;
-			ToxicTrap.trigger( cell, ch );
+			if (!frozen) ToxicTrap.trigger( cell, ch );
 			break;
 			
 		case Terrain.SECRET_FIRE_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.FIRE_TRAP:
 			trap = true;
-			FireTrap.trigger( cell, ch );
+			if (!frozen) FireTrap.trigger( cell, ch );
 			break;
 			
 		case Terrain.SECRET_PARALYTIC_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.PARALYTIC_TRAP:
 			trap = true;
-			ParalyticTrap.trigger( cell,  ch );
+			if (!frozen) ParalyticTrap.trigger( cell,  ch );
 			break;
 			
 		case Terrain.SECRET_POISON_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.POISON_TRAP:
 			trap = true;
-			PoisonTrap.trigger( cell, ch );
+			if (!frozen) PoisonTrap.trigger( cell, ch );
 			break;
 			
 		case Terrain.SECRET_ALARM_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.ALARM_TRAP:
 			trap = true;
-			AlarmTrap.trigger( cell, ch );
+			if (!frozen) AlarmTrap.trigger( cell, ch );
 			break;
 			
 		case Terrain.SECRET_LIGHTNING_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.LIGHTNING_TRAP:
 			trap = true;
-			LightningTrap.trigger( cell, ch );
+			if (!frozen) LightningTrap.trigger( cell, ch );
 			break;
 			
 		case Terrain.SECRET_GRIPPING_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.GRIPPING_TRAP:
 			trap = true;
-			GrippingTrap.trigger( cell, ch );
+			if (!frozen) GrippingTrap.trigger( cell, ch );
 			break;
 			
 		case Terrain.SECRET_SUMMONING_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.SUMMONING_TRAP:
 			trap = true;
-			SummoningTrap.trigger( cell, ch );
+			if (!frozen) SummoningTrap.trigger( cell, ch );
 			break;
 			
 		case Terrain.HIGH_GRASS:
@@ -741,13 +749,26 @@ public abstract class Level implements Bundlable {
 			break;
 		}
 		
-		if (trap) {
-			Sample.INSTANCE.play( Assets.SND_TRAP );
-			if (ch == Dungeon.hero) {
+		if (trap && !frozen) {
+
+			if (Dungeon.visible[cell])
+				Sample.INSTANCE.play( Assets.SND_TRAP );
+
+			if (ch == Dungeon.hero)
 				Dungeon.hero.interrupt();
-			}
+
 			set( cell, Terrain.INACTIVE_TRAP );
 			GameScene.updateMap( cell );
+
+		} else if (trap && frozen){
+
+			Sample.INSTANCE.play( Assets.SND_TRAP );
+
+			Level.set( cell, Terrain.discover( map[cell] ) );
+			GameScene.updateMap( cell );
+
+			timeFreeze.delayedPress(cell);
+
 		}
 		
 		Plant plant = plants.get( cell );

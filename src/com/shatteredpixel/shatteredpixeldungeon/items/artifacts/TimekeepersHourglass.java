@@ -2,6 +2,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -148,13 +150,41 @@ public class TimekeepersHourglass extends Artifact {
     }
 
     public class timeStasis extends ArtifactBuff {
-        //todo: add logic here
+        //todo: add visuals, test
+
+
+        @Override
+        public boolean attachTo(Char target) {
+            spend(charge*2);
+            ((Hero)target).spend(charge*2);
+
+            Hunger hunger = target.buff(Hunger.class);
+            if (hunger != null && !hunger.isStarving())
+                hunger.satisfy(charge*2);
+
+            charge = 0;
+
+            target.invisible++;
+
+            QuickSlot.refresh();
+
+            return super.attachTo(target);
+        }
+
+        @Override
+        public boolean act() {
+            target.invisible --;
+            detach();
+            return true;
+        }
     }
 
     public class timeFreeze extends ArtifactBuff {
         //todo: add visual effects
 
         float partialTime = 0f;
+
+        ArrayList<Integer> presses = new ArrayList<Integer>();
 
         public boolean processTime(float time){
             partialTime += time;
@@ -174,8 +204,16 @@ public class TimekeepersHourglass extends Artifact {
 
         }
 
+        public void delayedPress(int cell){
+            if (!presses.contains(cell))
+                presses.add(cell);
+        }
+
         @Override
         public void detach(){
+            for (int cell : presses)
+                Dungeon.level.press(cell, null);
+
             charge = 0;
             QuickSlot.refresh();
             super.detach();
