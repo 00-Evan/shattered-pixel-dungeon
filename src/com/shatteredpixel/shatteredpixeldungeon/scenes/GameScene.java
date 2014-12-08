@@ -22,6 +22,7 @@ import java.io.IOException;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.Visual;
@@ -80,7 +81,7 @@ public class GameScene extends PixelScene {
 	private static final String TXT_SECRETS	= "The atmosphere hints that this floor hides many secrets.";
 	
 	static GameScene scene;
-	
+
 	private SkinnedBlock water;
 	private DungeonTilemap tiles;
 	private FogOfWar fog;
@@ -312,16 +313,16 @@ public class GameScene extends PixelScene {
 			//
 		}
 	}
-	
+
 	@Override
 	public synchronized void update() {
 		if (Dungeon.hero == null) {
 			return;
 		}
-			
+
 		super.update();
 		
-		water.offset( 0, -5 * Game.elapsed );
+		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
 		
 		Actor.process();
 		
