@@ -5,8 +5,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -59,15 +61,18 @@ public class TimekeepersHourglass extends Artifact {
     public void execute( Hero hero, String action ) {
         if (action.equals(AC_ACTIVATE)){
             GameScene.show(
-                    new WndOptions(TXT_HGLASS, TXT_STASIS, TXT_FREEZE, TXT_DESC) {
+                    new WndOptions(TXT_HGLASS, TXT_DESC, TXT_STASIS, TXT_FREEZE) {
                         @Override
                         protected void onSelect(int index) {
                             if (index == 0){
                                 GLog.i("WIP");
+
+                                activeBuff = new timeStasis();
+                                activeBuff.attachTo(Dungeon.hero);
                             } else if (index == 1){
                                 GLog.i("everything around you slows to a halt.");
                                 GameScene.flash( 0xFFFFFF );
-                                Sample.INSTANCE.play( Assets.SND_BLAST );
+                                Sample.INSTANCE.play( Assets.SND_TELEPORT );
 
                                 activeBuff = new timeFreeze();
                                 activeBuff.attachTo(Dungeon.hero);
@@ -156,7 +161,7 @@ public class TimekeepersHourglass extends Artifact {
         @Override
         public boolean attachTo(Char target) {
             spend(charge*2);
-            ((Hero)target).spend(charge*2);
+            ((Hero)target).spendAndNext(charge*2);
 
             Hunger hunger = target.buff(Hunger.class);
             if (hunger != null && !hunger.isStarving())
@@ -210,9 +215,20 @@ public class TimekeepersHourglass extends Artifact {
         }
 
         @Override
+        public boolean attachTo(Char target) {
+            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+                mob.sprite.add(CharSprite.State.PARALYSED);
+            GameScene.freezeEmitters = true;
+            return super.attachTo(target);
+        }
+
+        @Override
         public void detach(){
             for (int cell : presses)
                 Dungeon.level.press(cell, null);
+            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+                mob.sprite.remove(CharSprite.State.PARALYSED);
+            GameScene.freezeEmitters = false;
 
             charge = 0;
             QuickSlot.refresh();
