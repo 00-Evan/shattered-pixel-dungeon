@@ -636,7 +636,7 @@ public abstract class Level implements Bundlable {
                 map[pos] == Terrain.EMPTY ||
                 map[pos] == Terrain.EMBERS ||
                 map[pos] == Terrain.EMPTY_DECO) {
-            set(pos, Terrain.GRASS);
+            map[pos] = Terrain.GRASS;
             GameScene.updateMap( pos );
         }
 		
