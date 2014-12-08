@@ -749,6 +749,10 @@ public class Hero extends Char {
 			if (hunger != null && !hunger.isStarving()) {
 				hunger.satisfy( -Hunger.STARVING / 10 );
 			}
+
+			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
+			if (buff != null)
+				buff.detach();
 			
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
             Game.switchScene( InterlevelScene.class );
@@ -788,6 +792,10 @@ public class Hero extends Char {
 				if (hunger != null && !hunger.isStarving()) {
 					hunger.satisfy( -Hunger.STARVING / 10 );
 				}
+
+				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
+				if (buff != null)
+					buff.detach();
 
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 				Game.switchScene( InterlevelScene.class );

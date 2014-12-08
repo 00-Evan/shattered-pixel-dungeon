@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -67,6 +68,10 @@ public class Chasm {
 		jumpConfirmed = false;
 				
 		Sample.INSTANCE.play( Assets.SND_FALLING );
+
+		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+		if (buff != null)
+			buff.detach();
 		
 		if (Dungeon.hero.isAlive()) {
 			Dungeon.hero.interrupt();

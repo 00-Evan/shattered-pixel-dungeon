@@ -37,8 +37,8 @@ public class TimekeepersHourglass extends Artifact {
 
         level = 0;
         levelCap = 5;
-        charge = 5+level;
-        chargeCap = 5+level;
+        charge = 10+level*2;
+        chargeCap = 10+level*2;
         defaultAction = AC_ACTIVATE;
     }
 
@@ -86,13 +86,20 @@ public class TimekeepersHourglass extends Artifact {
     }
 
     @Override
+    public void activate(Char ch) {
+        super.activate(ch);
+        if (activeBuff != null)
+            activeBuff.attachTo(ch);
+    }
+
+    @Override
     protected ArtifactBuff passiveBuff() {
         return new hourglassRecharge();
     }
 
     @Override
     public Item upgrade() {
-        chargeCap++;
+        chargeCap+= 2;
 
         //for artifact transmutation.
         while (level+1 > sandBags)
@@ -115,12 +122,14 @@ public class TimekeepersHourglass extends Artifact {
     //needs to bundle chargecap as it is dynamic.
     private static final String CHARGECAP = "chargecap";
     private static final String SANDBAGS =  "sandbags";
+    private static final String BUFF =      "buff";
 
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
         bundle.put( CHARGECAP, chargeCap );
         bundle.put( SANDBAGS, sandBags );
+        bundle.put( BUFF , activeBuff );
     }
 
     @Override
@@ -128,13 +137,14 @@ public class TimekeepersHourglass extends Artifact {
         super.restoreFromBundle(bundle);
         chargeCap = bundle.getInt( CHARGECAP );
         sandBags = bundle.getInt( SANDBAGS );
+        activeBuff = (ArtifactBuff)bundle.get( BUFF );
     }
 
     public class hourglassRecharge extends ArtifactBuff {
         @Override
         public boolean act() {
             if (charge < chargeCap) {
-                partialCharge += 1 / (40f - (chargeCap - charge)*3f);
+                partialCharge += 1 / (60f - (chargeCap - charge)*2f);
 
                 if (partialCharge >= 1) {
                     partialCharge --;
@@ -160,12 +170,13 @@ public class TimekeepersHourglass extends Artifact {
 
         @Override
         public boolean attachTo(Char target) {
-            spend(charge*2);
-            ((Hero)target).spendAndNext(charge*2);
+            spend(charge);
+            ((Hero)target).spendAndNext(charge);
 
+            //shouldn't punish the player for going into stasis frequently
             Hunger hunger = target.buff(Hunger.class);
             if (hunger != null && !hunger.isStarving())
-                hunger.satisfy(charge*2);
+                hunger.satisfy(charge);
 
             charge = 0;
 
@@ -182,10 +193,15 @@ public class TimekeepersHourglass extends Artifact {
             detach();
             return true;
         }
+
+        @Override
+        public void detach() {
+            super.detach();
+            Dungeon.observe();
+        }
     }
 
     public class timeFreeze extends ArtifactBuff {
-        //todo: add visual effects
 
         float partialTime = 0f;
 
@@ -194,7 +210,7 @@ public class TimekeepersHourglass extends Artifact {
         public boolean processTime(float time){
             partialTime += time;
 
-            while (partialTime >= 1){
+            while (partialTime >= 1f){
                 partialTime --;
                 charge --;
             }
@@ -233,6 +249,32 @@ public class TimekeepersHourglass extends Artifact {
             charge = 0;
             QuickSlot.refresh();
             super.detach();
+        }
+
+        private static final String PRESSES = "presses";
+        private static final String PARTIALTIME = "partialtime";
+
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+
+            int[] values = new int[presses.size()];
+            for (int i = 0; i < values.length; i ++)
+                values[i] = presses.get(i);
+            bundle.put( PRESSES , values );
+
+            bundle.put( PARTIALTIME , partialTime );
+        }
+
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+
+            int[] values = bundle.getIntArray( PRESSES );
+            for (int i = 0; i < values.length; i ++)
+                presses.add(values[i]);
+
+            partialTime = bundle.getFloat( PARTIALTIME );
         }
     }
 

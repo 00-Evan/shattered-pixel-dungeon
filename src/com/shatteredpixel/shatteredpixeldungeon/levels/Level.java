@@ -847,7 +847,8 @@ public abstract class Level implements Bundlable {
 		int cx = c.pos % WIDTH;
 		int cy = c.pos / WIDTH;
 		
-		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null && c.isAlive();
+		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
+						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
 		if (sighted) {
 			ShadowCaster.castShadow( cx, cy, fieldOfView, c.viewDistance );
 		} else {
