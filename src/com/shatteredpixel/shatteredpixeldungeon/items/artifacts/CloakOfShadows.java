@@ -86,16 +86,8 @@ public class CloakOfShadows extends Artifact {
                 GLog.i("You return from underneath your cloak.");
             }
 
-        } else {
-            if (stealthed) {
-                stealthed = false;
-                activeBuff.detach();
-                activeBuff = null;
-                GLog.i("You return from underneath your cloak.");
-            }
-
+        } else
             super.execute(hero, action);
-        }
     }
 
     @Override
@@ -105,6 +97,15 @@ public class CloakOfShadows extends Artifact {
             activeBuff = activeBuff();
             activeBuff.attachTo(ch);
         }
+    }
+
+    @Override
+    public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+        if (super.doUnequip(hero, collect, single)){
+            stealthed = false;
+            return true;
+        } else
+            return false;
     }
 
     @Override
