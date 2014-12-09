@@ -409,7 +409,7 @@ public class Hero extends Char {
 		}
 		
 		checkVisibleMobs();
-		AttackIndicator.updateState();
+
 		
 		if (curAction == null) {
 			
@@ -495,6 +495,8 @@ public class Hero extends Char {
 		curAction = null;
         damageInterrupt = true;
 		ready = true;
+
+        AttackIndicator.updateState();
 		
 		GameScene.ready();
 	}
