@@ -19,7 +19,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
@@ -338,9 +337,12 @@ public class Generator {
         Category cat = Category.ARTIFACT;
         for (int i = 0; i < cat.classes.length; i++)
             if (cat.classes[i].equals(artifact.getClass())) {
-                cat.probs[i] = 0;
-                spawnedArtifacts.add(artifact.getClass().getSimpleName());
-                return true;
+                if (cat.probs[i] == 1){
+					cat.probs[i] = 0;
+					spawnedArtifacts.add(artifact.getClass().getSimpleName());
+					return true;
+				} else
+					return false;
             }
 
         return false;
