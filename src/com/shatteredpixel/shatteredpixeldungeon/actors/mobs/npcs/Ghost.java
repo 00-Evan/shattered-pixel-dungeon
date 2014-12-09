@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.RatSkull;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
@@ -156,7 +155,7 @@ public class Ghost extends NPC {
 		
 		if (Quest.given) {
 			if (Quest.weapon != null) {
-                if (Quest.processed || Dungeon.hero.belongings.getItem(RatSkull.class) != null) {
+                if (Quest.processed) {
                     GameScene.show(new WndSadGhost(this, Quest.type));
                 } else {
                     switch (Quest.type) {
@@ -245,7 +244,6 @@ public class Ghost extends NPC {
         private static int type;
 
 		private static boolean given;
-		
 		private static boolean processed;
 		
 		private static int depth;
@@ -269,9 +267,6 @@ public class Ghost extends NPC {
 		private static final String DEPTH		= "depth";
 		private static final String WEAPON		= "weapon";
 		private static final String ARMOR		= "armor";
-
-        //for pre-0.2.1 saves, used when restoring quest
-        private static final String ALTERNATIVE	= "alternative";
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -299,22 +294,10 @@ public class Ghost extends NPC {
 			Bundle node = bundle.getBundle( NODE );
 
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
-                //logic for pre- 2.1.0 quests
-                if (node.contains( ALTERNATIVE )){
-                    if (node.getBoolean( ALTERNATIVE)){
-                        given = node.getBoolean( GIVEN );
-                        type = 1;
-                        processed = false;
-                    } else {
-                        type = 1;
-                        given = false;
-                        processed = false;
-                    }
-                } else {
-                    type = node.getInt(TYPE);
-                    processed = node.getBoolean( PROCESSED );
-                    given	= node.getBoolean( GIVEN );
-                }
+
+                type = node.getInt(TYPE);
+                given	= node.getBoolean( GIVEN );
+                processed = node.getBoolean( PROCESSED );
 
 				depth	= node.getInt( DEPTH );
 				
@@ -370,9 +353,10 @@ public class Ghost extends NPC {
 		
 		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
-				GLog.n("Sad ghost: Thank you... come find me...");
+				GLog.n("sad ghost: Thank you... come find me...");
                 Sample.INSTANCE.play( Assets.SND_GHOST );
                 processed = true;
+                Generator.Category.ARTIFACT.probs[10] = 1; //flags the dried rose as spawnable.
 			}
 		}
 		

@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
@@ -211,6 +212,19 @@ public abstract class Level implements Bundlable {
                      addItemToSpawn( new ScrollOfWeaponUpgrade() );
                 else
                     addItemToSpawn( new PotionOfMight() );
+            }
+
+            DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
+            if (rose != null){
+                //this way if a rose is dropped later in the game, player still has a chance to max it out.
+                int petalsNeeded = (int) Math.ceil((float)((Dungeon.depth / 2) - rose.droppedPetals) / 3);
+
+                for (int i=1; i <= petalsNeeded; i++) {
+                    if (rose.droppedPetals < 10) {
+                        addItemToSpawn(new DriedRose.Petal());
+                        rose.droppedPetals++;
+                    }
+                }
             }
 			
 			if (Dungeon.depth > 1) {
