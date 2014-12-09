@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
@@ -187,8 +188,13 @@ public class Generator {
             HornOfPlenty.class,
             MasterThievesArmband.class,
             SandalsOfNature.class,
-            TalismanOfForesight.class};
-        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1 };
+            TalismanOfForesight.class,
+            TimekeepersHourglass.class,
+            UnstableSpellbook.class,
+            AlchemistsToolkit.class,
+            DriedRose.class //starts with no chance of spawning, chance is set directly after beating ghost quest.
+            };
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0 };
 		
 		Category.SEED.classes = new Class<?>[]{ 
 			Firebloom.Seed.class,
@@ -342,7 +348,7 @@ public class Generator {
 
     //resets artifact probabilities, for new dungeons
     public static void initArtifacts() {
-        Category.ARTIFACT.probs = new float[]{ 0, 1, 1, 1, 0, 1, 1 };
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0 };
         spawnedArtifacts = new ArrayList<String>();
     }
 
