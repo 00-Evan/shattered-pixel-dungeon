@@ -22,6 +22,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -32,6 +33,9 @@ import java.util.HashSet;
 public abstract class Scroll extends Item {
 
 	private static final String TXT_BLINDED	= "You can't read a scroll while blinded";
+
+	private static final String TXT_CURSED	= "Your cursed spellbook prevents you from invoking this scroll's magic! " +
+											  "A scroll of remove curse might be strong enough to still work though...";
 	
 	public static final String AC_READ	= "READ";
 	
@@ -116,6 +120,10 @@ public abstract class Scroll extends Item {
 			
 			if (hero.buff( Blindness.class ) != null) {
 				GLog.w( TXT_BLINDED );
+			} else if (hero.buff(UnstableSpellbook.bookRecharge.class) != null
+					&& hero.buff(UnstableSpellbook.bookRecharge.class).isCursed()
+					&& !(this instanceof ScrollOfRemoveCurse)) {
+				GLog.n( TXT_CURSED );
 			} else {
 				curUser = hero;
 				curItem = detach( hero.belongings.backpack );

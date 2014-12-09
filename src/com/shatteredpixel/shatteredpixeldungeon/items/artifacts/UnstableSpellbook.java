@@ -63,16 +63,16 @@ public class UnstableSpellbook extends Artifact {
     @Override
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        if (isEquipped( hero ) && charge > 0)
+        if (isEquipped( hero ) && charge > 0 && !cursed)
             actions.add(AC_READ);
-        if (level < levelCap )
+        if (level < levelCap && !cursed)
             actions.add(AC_ADD);
         return actions;
     }
 
     @Override
     public void execute( Hero hero, String action ) {
-        if (action.equals( AC_READ)) {
+        if (action.equals( AC_READ )) {
 
             if (hero.buff( Blindness.class ) != null) GLog.w("You cannot read from the book while blinded.");
             else {
@@ -111,7 +111,41 @@ public class UnstableSpellbook extends Artifact {
 
     @Override
     public String desc() {
-        return "";
+        String desc = "This Tome is in surprising good condition given its age. ";
+
+        if (level < 3)
+            desc += "It emanates a strange chaotic energy. ";
+        else if (level < 7)
+            desc += "It glows with a strange chaotic energy. ";
+        else
+            desc += "It fizzes and crackles as you move the pages, surging with unstable energy. ";
+
+        desc += "It seems to contains a list of spells, but the order and position of them in the index is " +
+                "constantly shifting. if you read from this book, there's no telling what spell you might cast.";
+
+        if (isEquipped (Dungeon.hero)){
+            desc += "\n\n";
+            if (!cursed)
+                desc += "The book fits firmly at your side, sending you the occasional zip of static energy.";
+            else
+                desc += "The cursed book has bound itself to you, it is inhibiting your ability to use most scrolls.";
+
+            desc += "\n\n";
+
+            //all simple names for scrolls begin with ScrollOf, so picking a specific substring index works well here.
+            if (level < levelCap)
+                if (scrolls.size() > 1)
+                    desc += "The book's index points to some pages which are blank." +
+                            "Those pages are listed as:" + scrolls.get(0).substring(8) + " and "
+                            + scrolls.get(1).substring(8) + ". Perhaps adding to the book will increase its power";
+                else
+                    desc += "The book's index has one remaining blank page. " +
+                            "That page is listed as " + scrolls.get(0).substring(8) + ".";
+             else
+                desc += "The book's index is full, it doesn't look like you can add anything more to it.";
+        }
+
+        return desc;
     }
 
     //needs to bundle chargecap as it is dynamic.
@@ -136,8 +170,8 @@ public class UnstableSpellbook extends Artifact {
     public class bookRecharge extends ArtifactBuff{
         @Override
         public boolean act() {
-            if (charge < chargeCap) {
-                partialCharge += 1 / (200f - (chargeCap - charge)*20f);
+            if (charge < chargeCap && !cursed) {
+                partialCharge += 1 / (300f - (chargeCap - charge)*30f);
 
                 if (partialCharge >= 1) {
                     partialCharge --;
