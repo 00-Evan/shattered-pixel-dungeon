@@ -34,6 +34,8 @@ public class HornOfPlenty extends Artifact {
         levelCap = 30;
         charge = 0;
         chargeCap = 10;
+
+        defaultAction = AC_EAT;
     }
 
     private static final float TIME_TO_EAT	= 3f;
@@ -63,41 +65,46 @@ public class HornOfPlenty extends Artifact {
         super.execute(hero, action);
 
         if (action.equals(AC_EAT)){
-            ((Hunger)hero.buff( Hunger.class )).satisfy( energy*charge );
 
-            //if you get at least 100 food energy from the horn
-            if (charge >= 3){
-                switch (hero.heroClass) {
-                    case WARRIOR:
-                        if (hero.HP < hero.HT) {
-                            hero.HP = Math.min( hero.HP + 5, hero.HT );
-                            hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
-                        }
-                        break;
-                    case MAGE:
-                        hero.belongings.charge( false );
-                        ScrollOfRecharging.charge(hero);
-                        break;
-                    case ROGUE:
-                    case HUNTRESS:
-                        break;
+            if (!isEquipped(hero)) GLog.i("You need to equip your horn to do that.");
+            else if (charge == 0)  GLog.i("Your horn has no food in it to eat!");
+            else {
+                ((Hunger) hero.buff(Hunger.class)).satisfy(energy * charge);
+
+                //if you get at least 100 food energy from the horn
+                if (charge >= 3) {
+                    switch (hero.heroClass) {
+                        case WARRIOR:
+                            if (hero.HP < hero.HT) {
+                                hero.HP = Math.min(hero.HP + 5, hero.HT);
+                                hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+                            }
+                            break;
+                        case MAGE:
+                            hero.belongings.charge(false);
+                            ScrollOfRecharging.charge(hero);
+                            break;
+                        case ROGUE:
+                        case HUNTRESS:
+                            break;
+                    }
+
+                    Statistics.foodEaten++;
                 }
+                charge = 0;
 
-                Statistics.foodEaten++;
+                hero.sprite.operate(hero.pos);
+                hero.busy();
+                SpellSprite.show(hero, SpellSprite.FOOD);
+                Sample.INSTANCE.play(Assets.SND_EAT);
+                GLog.i("You eat from the horn.");
+
+                hero.spend(TIME_TO_EAT);
+
+                Badges.validateFoodEaten();
+
+                image = ItemSpriteSheet.ARTIFACT_HORN1;
             }
-            charge = 0;
-
-            hero.sprite.operate( hero.pos );
-            hero.busy();
-            SpellSprite.show(hero, SpellSprite.FOOD);
-            Sample.INSTANCE.play( Assets.SND_EAT );
-            GLog.i("You eat from the horn.");
-
-            hero.spend( TIME_TO_EAT );
-
-            Badges.validateFoodEaten();
-
-            image = ItemSpriteSheet.ARTIFACT_HORN1;
 
         } else if (action.equals(AC_STORE)){
 

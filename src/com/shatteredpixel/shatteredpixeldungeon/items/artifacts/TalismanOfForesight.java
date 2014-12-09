@@ -30,6 +30,8 @@ public class TalismanOfForesight extends Artifact {
         exp = 0;
         partialCharge = 0;
         chargeCap = 100;
+
+        defaultAction = AC_SCRY;
     }
 
     public static final String AC_SCRY = "SCRY";
@@ -46,28 +48,32 @@ public class TalismanOfForesight extends Artifact {
     public void execute( Hero hero, String action ) {
         super.execute(hero, action);
         if (action.equals(AC_SCRY)){
-            hero.sprite.operate( hero.pos );
-            hero.busy();
-            Sample.INSTANCE.play( Assets.SND_BEACON );
-            charge = 0;
-            for (int i=0; i < Level.LENGTH; i++) {
 
-                int terr = Dungeon.level.map[i];
-                if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
+            if (!isEquipped(hero))        GLog.i("You need to equip your talisman to do that.");
+            else if (charge != chargeCap) GLog.i("Your talisman isn't full charged yet.");
+            else {
+                hero.sprite.operate(hero.pos);
+                hero.busy();
+                Sample.INSTANCE.play(Assets.SND_BEACON);
+                charge = 0;
+                for (int i = 0; i < Level.LENGTH; i++) {
 
-                    GameScene.updateMap( i );
+                    int terr = Dungeon.level.map[i];
+                    if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-                    if (Dungeon.visible[i]) {
-                        GameScene.discoverTile( i, terr );
+                        GameScene.updateMap(i);
+
+                        if (Dungeon.visible[i]) {
+                            GameScene.discoverTile(i, terr);
+                        }
                     }
                 }
+
+                GLog.p("The Talisman floods your mind with knowledge about the current floor.");
+
+                Buff.affect(hero, Awareness.class, Awareness.DURATION);
+                Dungeon.observe();
             }
-
-            GLog.p ("The Talisman floods your mind with knowledge about the current floor.");
-
-            Buff.affect(hero, Awareness.class, Awareness.DURATION);
-            Dungeon.observe();
-
         }
     }
 

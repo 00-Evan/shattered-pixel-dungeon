@@ -75,6 +75,8 @@ public class UnstableSpellbook extends Artifact {
         if (action.equals( AC_READ )) {
 
             if (hero.buff( Blindness.class ) != null) GLog.w("You cannot read from the book while blinded.");
+            else if (!isEquipped( hero ))             GLog.i("You need to equip your spellbook to do that.");
+            else if (charge == 0)                     GLog.i("Your spellbook is out of energy for now.");
             else {
                 charge--;
 

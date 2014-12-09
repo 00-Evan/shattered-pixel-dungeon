@@ -9,16 +9,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WraithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
@@ -59,26 +56,30 @@ public class DriedRose extends Artifact {
     public void execute( Hero hero, String action ) {
         if (action.equals(AC_SUMMON)) {
 
-            ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
-            for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-                int p = hero.pos + Level.NEIGHBOURS8[i];
-                if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
-                    spawnPoints.add( p );
+            if (!isEquipped( hero ))      GLog.i("You need to equip your rose to do that.");
+            else if (charge != chargeCap) GLog.i("Your rose isn't fully charged yet.");
+            else {
+                ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
+                for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
+                    int p = hero.pos + Level.NEIGHBOURS8[i];
+                    if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
+                        spawnPoints.add(p);
+                    }
                 }
-            }
 
-            if (spawnPoints.size() > 0) {
-                GhostHero ghost = new GhostHero();
-                ghost.pos = Random.element(spawnPoints);
+                if (spawnPoints.size() > 0) {
+                    GhostHero ghost = new GhostHero();
+                    ghost.pos = Random.element(spawnPoints);
 
 
-                GameScene.add( ghost, 1f );
-                CellEmitter.get(ghost.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+                    GameScene.add(ghost, 1f);
+                    CellEmitter.get(ghost.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
 
-                hero.spend( 1f );
-                hero.busy();
-                hero.sprite.operate(hero.pos);
+                    hero.spend(1f);
+                    hero.busy();
+                    hero.sprite.operate(hero.pos);
 
+                }
             }
 
         } else{

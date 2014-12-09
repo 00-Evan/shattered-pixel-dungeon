@@ -57,7 +57,10 @@ public class CloakOfShadows extends Artifact {
         if (action.equals( AC_STEALTH )) {
 
             if (!stealthed){
-                if (cooldown <= 0 && charge >= 2 && isEquipped(hero)) {
+                if (!isEquipped(hero)) GLog.i("You need to equip your cloak to do that.");
+                else if (cooldown > 0) GLog.i("Your cloak needs " + cooldown + " more rounds to re-energize.");
+                else if (charge <= 1)  GLog.i("Your cloak hasn't recharged enough to be usable yet.");
+                else {
                     stealthed = true;
                     hero.spend( 1f );
                     hero.busy();
@@ -71,12 +74,6 @@ public class CloakOfShadows extends Artifact {
                     }
                     hero.sprite.operate(hero.pos);
                     GLog.i("Your cloak blends you into the shadows.");
-                } else if (!isEquipped(hero)) {
-                    GLog.i("You need to equip your cloak to do that.");
-                } else if (cooldown > 0) {
-                    GLog.i("Your cloak needs " + cooldown + " more rounds to re-energize.");
-                } else if (charge <= 1){
-                    GLog.i("Your cloak hasn't recharged enough to be usable yet.");
                 }
             } else {
                 stealthed = false;

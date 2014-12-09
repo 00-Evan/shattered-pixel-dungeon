@@ -32,6 +32,8 @@ public class SandalsOfNature extends Artifact {
         levelCap = 3;
         charge = 0;
         //partialcharge, chargeCap and exp are unused
+
+        defaultAction = AC_ROOT;
     }
 
     public static final String[] NAMES = {"Sandals of Nature", "Shoes of Nature",
@@ -60,12 +62,15 @@ public class SandalsOfNature extends Artifact {
         super.execute(hero, action);
         if (action.equals(AC_FEED)){
             GameScene.selectItem(itemSelector, mode, inventoryTitle);
-        } else if (action.equals(AC_ROOT)){
-            if (charge > 0){
-                Buff.prolong( hero, Roots.class, 5);
-                Buff.affect( hero, Earthroot.Armor.class ).level( charge );
+        } else if (action.equals(AC_ROOT) && level > 0){
+
+            if (!isEquipped( hero )) GLog.i("You need to equip them to do that.");
+            else if (charge == 0)    GLog.i("They have no energy right now.");
+            else {
+                Buff.prolong(hero, Roots.class, 5);
+                Buff.affect(hero, Earthroot.Armor.class).level(charge);
                 CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8);
-                Camera.main.shake( 1, 0.4f );
+                Camera.main.shake(1, 0.4f);
                 charge = 0;
             }
         }
