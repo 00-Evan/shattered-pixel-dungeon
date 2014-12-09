@@ -122,7 +122,7 @@ public class SewerBossLevel extends RegularLevel {
                 //look at rooms adjacent to the final found room (likely to be furthest from start)
                 ArrayList<Room> candidates = new ArrayList<Room>();
                 for (Room r : lastRoom.neigbours) {
-                    if (r.type == Type.NULL && r.connected.size() == 0) {
+                    if (r.type == Type.NULL && r.connected.size() == 0 && !r.neigbours.contains(roomEntrance)) {
                         candidates.add(r);
                     }
                 }
