@@ -146,7 +146,9 @@ public class Dungeon {
 		scorpioHP,
 		cookingHP,
         
-		blandfruitSeed;
+		blandfruitSeed,
+
+		armband;
 
 		public int count = 0;
 	}

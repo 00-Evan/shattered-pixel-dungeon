@@ -89,6 +89,15 @@ public class Thief extends Mob {
     }
 
     @Override
+    protected Item createLoot(){
+        if (Dungeon.limitedDrops.armband.count == 0) {
+            Dungeon.limitedDrops.armband.count++;
+            return super.createLoot();
+        } else
+            return new Gold(Random.NormalIntRange(100, 250));
+    }
+
+    @Override
     public int attackSkill( Char target ) {
         return 12;
     }
