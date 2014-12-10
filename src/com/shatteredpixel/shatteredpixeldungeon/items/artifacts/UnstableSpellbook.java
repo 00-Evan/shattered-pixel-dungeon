@@ -4,14 +4,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -40,6 +44,8 @@ public class UnstableSpellbook extends Artifact {
     public static final String AC_READ = "READ";
     public static final String AC_ADD = "ADD";
 
+    private static final String TXT_CHARGE  = "%d/%d";
+
     private final ArrayList<String> scrolls = new ArrayList<String>();
 
     protected String inventoryTitle = "Select a scroll";
@@ -49,7 +55,7 @@ public class UnstableSpellbook extends Artifact {
         super();
 
         Class<?>[] scrollClasses = Generator.Category.SCROLL.classes;
-        float[] probs = Generator.Category.SCROLL.probs;
+        float[] probs = Generator.Category.SCROLL.probs.clone();
         int i = Random.chances(probs);
 
         while (i != -1){
@@ -83,7 +89,11 @@ public class UnstableSpellbook extends Artifact {
                 Scroll scroll;
                 do {
                     scroll = (Scroll) Generator.random(Generator.Category.SCROLL);
-                } while (scroll != null && scroll instanceof ScrollOfPsionicBlast);
+                } while (scroll == null ||
+                        //gotta reduce the rate on these scrolls or that'll be all the item does.
+                        ((scroll instanceof ScrollOfIdentify ||
+                            scroll instanceof ScrollOfRemoveCurse ||
+                            scroll instanceof ScrollOfMagicMapping) && Random.Int(2) == 0));
 
                 scroll.ownedByBook = true;
                 scroll.execute(hero, AC_READ);
@@ -137,8 +147,8 @@ public class UnstableSpellbook extends Artifact {
             //all simple names for scrolls begin with ScrollOf, so picking a specific substring index works well here.
             if (level < levelCap)
                 if (scrolls.size() > 1)
-                    desc += "The book's index points to some pages which are blank." +
-                            "Those pages are listed as:" + scrolls.get(0).substring(8) + " and "
+                    desc += "The book's index points to some pages which are blank. " +
+                            "Those pages are listed as: " + scrolls.get(0).substring(8) + " and "
                             + scrolls.get(1).substring(8) + ". Perhaps adding to the book will increase its power";
                 else
                     desc += "The book's index has one remaining blank page. " +
@@ -148,6 +158,11 @@ public class UnstableSpellbook extends Artifact {
         }
 
         return desc;
+    }
+
+    @Override
+    public String status() {
+        return Utils.format(TXT_CHARGE, charge, chargeCap);
     }
 
     //needs to bundle chargecap as it is dynamic.
@@ -205,6 +220,7 @@ public class UnstableSpellbook extends Artifact {
                         hero.busy();
                         hero.spend( 2f );
                         Sample.INSTANCE.play(Assets.SND_BURNING);
+                        hero.sprite.emitter().burst( ElmoParticle.FACTORY, 12 );
 
                         scrolls.remove(i);
                         item.detach(hero.belongings.backpack);
