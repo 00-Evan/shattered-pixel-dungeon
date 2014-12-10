@@ -205,6 +205,17 @@ public class Artifact extends KindofMisc {
         return null;
     }
 
+    //converts class names to be more concise and readable.
+    protected String convertName(String className){
+        //removes known redundant parts of names.
+        className.replaceFirst("ScrollOf|PotionOf", "");
+
+        //inserts a space infront of every uppercase character
+        className.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2");
+
+        return className;
+    };
+
     @Override
     public Item random() {
         if (Random.Float() < 0.3f) {

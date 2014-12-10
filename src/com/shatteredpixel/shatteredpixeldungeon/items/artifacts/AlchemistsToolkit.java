@@ -6,7 +6,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -51,12 +50,14 @@ public class AlchemistsToolkit extends Artifact {
     public AlchemistsToolkit() {
         super();
 
+        Generator.Category cat = Generator.Category.POTION;
         for (int i = 1; i <= 3; i++){
-            Potion potion;
+            String potion;
             do{
-                potion = (Potion)Generator.random(Generator.Category.POTION);
-            } while (combination.contains(potion.trueName()) || potion instanceof PotionOfExperience);
-            combination.add(potion.trueName());
+                potion = convertName(cat.classes[Random.chances(cat.probs)].getSimpleName());
+                //forcing the player to use experience potions would be completely unfair.
+            } while (combination.contains(potion) || potion.equals("Experience"));
+            combination.add(potion);
         }
     }
 
@@ -242,7 +243,7 @@ public class AlchemistsToolkit extends Artifact {
         @Override
         public void onSelect(Item item) {
             if (item != null && item instanceof Potion && item.isIdentified()){
-                if (!curGuess.contains(item.name())) {
+                if (!curGuess.contains(convertName(item.getClass().getSimpleName()))) {
 
                     Hero hero = Dungeon.hero;
                     hero.sprite.operate( hero.pos );
@@ -252,7 +253,7 @@ public class AlchemistsToolkit extends Artifact {
 
                     item.detach(hero.belongings.backpack);
 
-                    curGuess.add(item.name());
+                    curGuess.add(convertName(item.getClass().getSimpleName()));
                     if (curGuess.size() == 3){
                         guessBrew();
                     } else {

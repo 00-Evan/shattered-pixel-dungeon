@@ -55,11 +55,11 @@ public class UnstableSpellbook extends Artifact {
         super();
 
         Class<?>[] scrollClasses = Generator.Category.SCROLL.classes;
-        float[] probs = Generator.Category.SCROLL.probs.clone();
+        float[] probs = Generator.Category.SCROLL.probs.clone(); //array of primitives, clone gives deep copy.
         int i = Random.chances(probs);
 
         while (i != -1){
-            scrolls.add(scrollClasses[i].getSimpleName());
+            scrolls.add(convertName(scrollClasses[i].getSimpleName()));
             probs[i] = 0;
 
             i = Random.chances(probs);
@@ -207,7 +207,7 @@ public class UnstableSpellbook extends Artifact {
         @Override
         public void onSelect(Item item) {
             if (item != null && item instanceof Scroll && item.isIdentified()){
-                String scroll = item.getClass().getSimpleName();
+                String scroll = convertName(item.getClass().getSimpleName());
                 Hero hero = Dungeon.hero;
                 for (int i = 0; ( i <= 1 && i < scrolls.size() ); i++){
                     if (scrolls.get(i).equals(scroll)){
