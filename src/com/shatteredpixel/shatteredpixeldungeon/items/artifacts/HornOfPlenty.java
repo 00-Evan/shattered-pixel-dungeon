@@ -15,7 +15,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 
@@ -30,9 +29,12 @@ public class HornOfPlenty extends Artifact {
     {
         name = "Horn of Plenty";
         image = ItemSpriteSheet.ARTIFACT_HORN1;
+
         level = 0;
         levelCap = 30;
+
         charge = 0;
+        partialCharge = 0;
         chargeCap = 10;
 
         defaultAction = AC_EAT;
@@ -47,8 +49,6 @@ public class HornOfPlenty extends Artifact {
 
     protected String inventoryTitle = "Select a piece of food";
     protected WndBag.Mode mode = WndBag.Mode.FOOD;
-
-    private static final String TXT_STATUS	= "%d/%d";
 
     @Override
     public ArrayList<String> actions( Hero hero ) {
@@ -145,11 +145,6 @@ public class HornOfPlenty extends Artifact {
         }
 
         return desc;
-    }
-
-    @Override
-    public String status() {
-        return Utils.format(TXT_STATUS, charge, chargeCap);
     }
 
     public class hornRecharge extends ArtifactBuff{

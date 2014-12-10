@@ -43,6 +43,8 @@ public class Artifact extends KindofMisc {
     //the maximum charge, varies per artifact, not all artifacts use this.
     protected int chargeCap = 0;
 
+    //used by some artifacts to keep track of duration of effects or cooldowns to use.
+    protected int cooldown = 0;
 
 
     public Artifact(){
@@ -177,6 +179,30 @@ public class Artifact extends KindofMisc {
                 return Utils.format( TXT_TO_STRING, name() );
             }
         }
+    }
+
+    @Override
+    public String status() {
+
+        //display the current cooldown
+        if (cooldown != 0)
+            return Utils.format( "%d", cooldown );
+
+        //display as percent
+        if (chargeCap == 100)
+            return Utils.format( "%d%%", charge );
+
+        //display as #/#
+        if (chargeCap > 0)
+            return Utils.format( "%d/%d", charge, chargeCap );
+
+        //if there's no cap -
+        //- but there is charge anyway, display that charge
+        if (charge != 0)
+            return Utils.format( "%d", charge );
+
+        //otherwise, if there's no charge, return null.
+        return null;
     }
 
     @Override

@@ -34,9 +34,9 @@ public class ChaliceOfBlood extends Artifact {
     {
         name = "Chalice of Blood";
         image = ItemSpriteSheet.ARTIFACT_CHALICE1;
+
         level = 0;
         levelCap = 10;
-        //charge & chargecap are unused
     }
 
     public static final String AC_PRICK = "PRICK";

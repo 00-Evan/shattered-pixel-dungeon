@@ -28,8 +28,8 @@ public class AlchemistsToolkit extends Artifact {
         name = "Alchemists Toolkit";
         image = ItemSpriteSheet.ARTIFACT_TOOLKIT;
 
+        level = 0;
         levelCap = 10;
-        //charge, chargecap, partialcharge, and exp are unused.
     }
 
     public static final String AC_BREW = "BREW";
@@ -217,7 +217,7 @@ public class AlchemistsToolkit extends Artifact {
         public boolean tryCook(int count){
 
             //this logic is handled inside the class with a variable so that it may be stored.
-            //to prevent manipulation where a player could keep trowing in 1-2 seeds until they get lucky.
+            //to prevent manipulation where a player could keep throwing in 1-2 seeds until they get lucky.
             if (seedsToPotion == 0){
                 if (Random.Int(30) < 10+level){
                     if (Random.Int(30) < level){

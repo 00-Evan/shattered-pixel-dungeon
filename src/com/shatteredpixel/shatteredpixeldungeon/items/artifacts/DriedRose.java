@@ -30,10 +30,13 @@ public class DriedRose extends Artifact {
     {
         name = "Dried Rose";
         image = ItemSpriteSheet.ARTIFACT_ROSE1;
+
         level = 0;
         levelCap = 10;
+
         charge = 100;
         chargeCap = 100;
+
         defaultAction = AC_SUMMON;
     }
 

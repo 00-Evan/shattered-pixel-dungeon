@@ -12,7 +12,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -32,17 +31,18 @@ public class TimekeepersHourglass extends Artifact {
             "...";
 
     {
-        name = "timekeeper's hourglass";
+        name = "Timekeeper's Hourglass";
         image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
 
         level = 0;
         levelCap = 5;
+
         charge = 10+level*2;
+        partialCharge = 0;
         chargeCap = 10+level*2;
+
         defaultAction = AC_ACTIVATE;
     }
-
-    private static final String TXT_CHARGE  = "%d/%d";
 
     public static final String AC_ACTIVATE = "ACTIVATE";
 
@@ -111,11 +111,6 @@ public class TimekeepersHourglass extends Artifact {
     @Override
     public String desc() {
         return "";
-    }
-
-    @Override
-    public String status() {
-        return Utils.format(TXT_CHARGE, charge, chargeCap);
     }
 
 

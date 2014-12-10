@@ -10,7 +10,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
@@ -25,11 +24,17 @@ public class CloakOfShadows extends Artifact {
     {
         name = "Cloak of Shadows";
         image = ItemSpriteSheet.ARTIFACT_CLOAK;
+
         level = 0;
-        levelCap = 15;
-        charge = level+5;
-        chargeCap = level+5;
         exp = 0;
+        levelCap = 15;
+
+        charge = level+5;
+        partialCharge = 0;
+        chargeCap = level+5;
+
+        cooldown = 0;
+
         defaultAction = AC_STEALTH;
 
         bones = false;
@@ -38,11 +43,6 @@ public class CloakOfShadows extends Artifact {
     private boolean stealthed = false;
 
     public static final String AC_STEALTH = "STEALTH";
-
-    private static final String TXT_CHARGE  = "%d/%d";
-    private static final String TXT_CD	    = "%d";
-
-    private int cooldown = 0;
 
     @Override
     public ArrayList<String> actions( Hero hero ) {
@@ -141,14 +141,6 @@ public class CloakOfShadows extends Artifact {
 
 
         return desc;
-    }
-
-    @Override
-    public String status() {
-        if (cooldown == 0)
-            return Utils.format(TXT_CHARGE, charge, chargeCap);
-        else
-            return  Utils.format(TXT_CD, cooldown);
     }
 
     //Note: cloak needs to bundle chargecap as it is dynamic.

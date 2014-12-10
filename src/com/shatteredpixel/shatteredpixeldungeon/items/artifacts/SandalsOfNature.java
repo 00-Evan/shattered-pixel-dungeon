@@ -12,7 +12,6 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Bundle;
@@ -28,10 +27,11 @@ public class SandalsOfNature extends Artifact {
     {
         name = "Sandals of Nature";
         image = ItemSpriteSheet.ARTIFACT_SANDALS;
+
         level = 0;
         levelCap = 3;
+
         charge = 0;
-        //partialcharge, chargeCap and exp are unused
 
         defaultAction = AC_ROOT;
     }
@@ -74,14 +74,6 @@ public class SandalsOfNature extends Artifact {
                 charge = 0;
             }
         }
-    }
-
-    @Override
-    public String status() {
-        if (charge > 0)
-            return Utils.format("%d", charge);
-        else
-            return null;
     }
 
     @Override

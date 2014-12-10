@@ -11,7 +11,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
@@ -24,10 +23,12 @@ public class TalismanOfForesight extends Artifact {
     {
         name = "Talisman of Foresight";
         image = ItemSpriteSheet.ARTIFACT_TALISMAN;
+
         level = 0;
-        levelCap = 10;
-        charge = 0;
         exp = 0;
+        levelCap = 10;
+
+        charge = 0;
         partialCharge = 0;
         chargeCap = 100;
 
@@ -75,11 +76,6 @@ public class TalismanOfForesight extends Artifact {
                 Dungeon.observe();
             }
         }
-    }
-
-    @Override
-    public String status() {
-            return Utils.format("%d%%", charge);
     }
 
     @Override

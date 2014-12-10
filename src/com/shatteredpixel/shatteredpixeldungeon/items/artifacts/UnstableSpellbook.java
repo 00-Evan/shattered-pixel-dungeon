@@ -15,7 +15,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -31,20 +30,21 @@ public class UnstableSpellbook extends Artifact {
     //TODO: add display logic
 
     {
-        name = "unstable spellbook";
+        name = "Unstable Spellbook";
         image = ItemSpriteSheet.ARTIFACT_SPELLBOOK;
 
         level = 0;
         levelCap = 10;
+
         charge = ((level/2)+1);
+        partialCharge = 0;
         chargeCap = ((level/2)+1);
+
         defaultAction = AC_READ;
     }
 
     public static final String AC_READ = "READ";
     public static final String AC_ADD = "ADD";
-
-    private static final String TXT_CHARGE  = "%d/%d";
 
     private final ArrayList<String> scrolls = new ArrayList<String>();
 
@@ -158,11 +158,6 @@ public class UnstableSpellbook extends Artifact {
         }
 
         return desc;
-    }
-
-    @Override
-    public String status() {
-        return Utils.format(TXT_CHARGE, charge, chargeCap);
     }
 
     //needs to bundle chargecap as it is dynamic.
