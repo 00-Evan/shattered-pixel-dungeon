@@ -350,7 +350,7 @@ public class Generator {
 
     //resets artifact probabilities, for new dungeons
     public static void initArtifacts() {
-        Category.ARTIFACT.probs = new float[]{ 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0 };
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0 };
         spawnedArtifacts = new ArrayList<String>();
     }
 
