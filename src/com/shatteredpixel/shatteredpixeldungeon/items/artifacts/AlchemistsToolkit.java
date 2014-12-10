@@ -21,7 +21,7 @@ import java.util.Collections;
  * Created by debenhame on 24/11/2014.
  */
 public class AlchemistsToolkit extends Artifact {
-    //TODO: core functionality finished, but really rough. Look to improve code quality and add general polish. TEST.
+    //TODO: sprite
 
     {
         name = "Alchemists Toolkit";
@@ -34,7 +34,6 @@ public class AlchemistsToolkit extends Artifact {
     public static final String AC_BREW = "BREW";
 
     //arrays used in containing potion collections for mix logic.
-    //strings are used so that different potions of the same class are considered equal
     public final ArrayList<String> combination = new ArrayList<String>();
     public ArrayList<String> curGuess = new ArrayList<String>();
     public ArrayList<String> bstGuess = new ArrayList<String>();

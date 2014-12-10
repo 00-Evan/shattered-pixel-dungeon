@@ -27,7 +27,6 @@ import java.util.Collections;
  * Created by debenhame on 26/11/2014.
  */
 public class UnstableSpellbook extends Artifact {
-    //TODO: add display logic
 
     {
         name = "Unstable Spellbook";
@@ -135,7 +134,7 @@ public class UnstableSpellbook extends Artifact {
         desc += "It seems to contains a list of spells, but the order and position of them in the index is " +
                 "constantly shifting. if you read from this book, there's no telling what spell you might cast.";
 
-        if (isEquipped (Dungeon.hero)){
+        if (isEquipped (Dungeon.hero)) {
             desc += "\n\n";
             if (!cursed)
                 desc += "The book fits firmly at your side, sending you the occasional zip of static energy.";
@@ -144,18 +143,18 @@ public class UnstableSpellbook extends Artifact {
 
             desc += "\n\n";
 
-            //all simple names for scrolls begin with ScrollOf, so picking a specific substring index works well here.
+        }
+
             if (level < levelCap)
                 if (scrolls.size() > 1)
                     desc += "The book's index points to some pages which are blank. " +
-                            "Those pages are listed as: " + scrolls.get(0).substring(8) + " and "
-                            + scrolls.get(1).substring(8) + ". Perhaps adding to the book will increase its power";
+                            "Those pages are listed as: " + scrolls.get(0) + " and "
+                            + scrolls.get(1) + ". Perhaps adding to the book will increase its power";
                 else
                     desc += "The book's index has one remaining blank page. " +
-                            "That page is listed as " + scrolls.get(0).substring(8) + ".";
+                            "That page is listed as " + scrolls.get(0) + ".";
              else
                 desc += "The book's index is full, it doesn't look like you can add anything more to it.";
-        }
 
         return desc;
     }

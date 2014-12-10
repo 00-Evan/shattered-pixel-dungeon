@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by debenhame on 01/12/2014.
  */
 public class TimekeepersHourglass extends Artifact {
-    //TODO: string, effect implementation.
+    //TODO: display logic, sprites.
 
     private static final String TXT_HGLASS	= "Timekeeper's Hourglass";
     private static final String TXT_STASIS	= "Put myself in stasis";
@@ -65,12 +65,14 @@ public class TimekeepersHourglass extends Artifact {
                         @Override
                         protected void onSelect(int index) {
                             if (index == 0){
-                                GLog.i("WIP");
+                                GLog.i("Everything seems to fly around you.");
+                                GameScene.flash( 0xFFFFFF );
+                                Sample.INSTANCE.play( Assets.SND_TELEPORT );
 
                                 activeBuff = new timeStasis();
                                 activeBuff.attachTo(Dungeon.hero);
                             } else if (index == 1){
-                                GLog.i("everything around you slows to a halt.");
+                                GLog.i("everything around you suddenly freezes.");
                                 GameScene.flash( 0xFFFFFF );
                                 Sample.INSTANCE.play( Assets.SND_TELEPORT );
 
@@ -160,7 +162,7 @@ public class TimekeepersHourglass extends Artifact {
     }
 
     public class timeStasis extends ArtifactBuff {
-        //todo: add visuals, test
+        //todo: add visuals
 
 
         @Override
