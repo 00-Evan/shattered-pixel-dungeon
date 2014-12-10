@@ -28,7 +28,7 @@ import java.util.HashSet;
 public class DriedRose extends Artifact {
 
     {
-        name = "dried rose";
+        name = "Dried Rose";
         image = ItemSpriteSheet.ARTIFACT_ROSE1;
         level = 0;
         levelCap = 10;
@@ -212,4 +212,143 @@ public class DriedRose extends Artifact {
         }
     }
 
+    //************************************************************************************
+    //This is a bunch strings & string arrays, used in all of the sad ghost's voice lines.
+    //************************************************************************************
+
+    public static final String GHOST_HELLO = "Hello again " + Dungeon.hero.className() + ".";
+
+    //enum, for clarity.
+    public static enum DEPTHS{
+        SEWERS,
+        PRISON,
+        CAVES,
+        CITY,
+        HALLS,
+        AMULET
+    }
+
+    //1st index - depth type, 2nd index - specific line.
+    public static final String[][] GHOST_VOICE_AMBIENT = {
+            {
+                    "These sewers were once safe, some even lived here in the winter...",
+                    "I wonder what happened to the guard patrols, did they give up?...",
+                    "I had family on the surface, I hope they are safe..."
+            },{
+                    "I've heard stories about this place, nothing good...",
+                    "This place was always more of a dungeon than a prison...",
+                    "I can't imagine what went on when this place was abandoned..."
+            },{
+                    "No human or dwarf has been here for a very long time...",
+                    "Something must have gone very wrong, for the dwarves to abandon a gold mine...",
+                    "I feel great evil lurking below..."
+            },{
+                    "The dwarves were industrious, but greedy...",
+                    "I hope the surface never ends up like this place...",
+                    "So the dwarvern metropolis really has fallen..."
+            },{
+                    "What is this place?...",
+                    "So the stories are true, we have to fight a demon god...",
+                    "I feel a great evil in this place..."
+            },{
+                    "... I don't like this place... We should leave as soon as possible..."
+            }
+    };
+
+    //1st index - depth type, 2nd index - boss or not, 3rd index - specific line.
+    public static final String[][][] GHOST_VOICE_ENEMIES = {
+            {
+                {
+                    "Let's make the sewers safe again...",
+                    "If the guards couldn't defeat them, perhaps we can...",
+                    "These crabs are extremely annoying..."
+                },{
+                    "Beware Goo!...",
+                    "Many of my friends died to this thing, time for vengeance...",
+                    "Such an abomination cannot be allowed to live..."
+                }
+            },{
+                {
+                    "What dark magic happened here?...",
+                    "To think the captives of this place are now its guardians...",
+                    "They were criminals before, now they are monsters..."
+                },{
+                    "If only he would see reason, he doesn't seem insane...",
+                    "He assumes we are hostile, if only he would stop to talk...",
+                    "The one prisoner left sane is a deadly assassin. Of course..."
+                }
+            },{
+                {
+                    "The creatures here are twisted, just like the sewers... ",
+                    "more gnolls, I hate gnolls...",
+                    "Even the bats are bloodthirsty here..."
+                },{
+                    "Only dwarves would build a mining machine that kills looters...",
+                    "That thing is huge...",
+                    "How has it survived here for so long?..."
+                }
+            },{
+                {
+                    "Dwarves aren't supposed to look that pale...",
+                    "I don't know what's worse, the dwarves, or their creations...",
+                    "They all obey their master without question, even now..."
+                },{
+                    "When people say power corrupts, this is what they mean...",
+                    "He's more a Lich than a King now...",
+                    "Looks like he's more demon than dwarf now..."
+                }
+            },{
+                {
+                    "What the heck is that thing?...",
+                    "This place is terrifying...",
+                    "What were the dwarves thinking, toying with power like this?..."
+                },{
+                    "Oh.... this doesn't look good...",
+                    "So that's what a god looks like?...",
+                    "This is going to hurt..."
+                }
+            },{
+                {
+                    "Hello source viewer, I'm writing this here as this line should never trigger. Have a nice day!"
+                },{
+                    "Hello source viewer, I'm writing this here as this line should never trigger. Have a nice day!"
+                }
+            }
+    };
+
+    //1st index - Yog or not, 2nd index - specific line.
+    public static final String[][] GHOST_VOICE_BOSSBEATEN = {
+            {
+                    "Yes!",
+                    "Victory!"
+            },{
+                    "It's over... we won...",
+                    "I can't believe it... We just killed a god..."
+            }
+    };
+
+    //1st index - boss or not, 2nd index - specific line.
+    public static final String[][] GHOST_VOICE_DEFEATED = {
+            {
+                    "Good luck...",
+                    "I will return...",
+                    "Tired... for now..."
+            },{
+                    "No... I can't....",
+                    "I'm sorry.. good luck..",
+                    "Finish it off... without me..."
+            }
+    };
+
+    public static final String[] GHOST_VOICE_HEROKILLED = {
+                    Dungeon.hero.curAction + ", nooo...",
+                    "no...",
+                    "I couldn't help them..."
+    };
+
+    public static final String[] GHOST_VOICE_BLESSEDANKH = {
+                    "Incredible!...",
+                    "Wish I had one of those...",
+                    "How did you survive that?..."
+    };
 }
