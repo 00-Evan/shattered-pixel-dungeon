@@ -60,29 +60,35 @@ public class TimekeepersHourglass extends Artifact {
     @Override
     public void execute( Hero hero, String action ) {
         if (action.equals(AC_ACTIVATE)){
-            GameScene.show(
-                    new WndOptions(TXT_HGLASS, TXT_DESC, TXT_STASIS, TXT_FREEZE) {
-                        @Override
-                        protected void onSelect(int index) {
-                            if (index == 0){
-                                GLog.i("Everything seems to fly around you.");
-                                GameScene.flash( 0xFFFFFF );
-                                Sample.INSTANCE.play( Assets.SND_TELEPORT );
 
-                                activeBuff = new timeStasis();
-                                activeBuff.attachTo(Dungeon.hero);
-                            } else if (index == 1){
-                                GLog.i("everything around you suddenly freezes.");
-                                GameScene.flash( 0xFFFFFF );
-                                Sample.INSTANCE.play( Assets.SND_TELEPORT );
+            if (!isEquipped( hero )) GLog.i("You need to equip your hourglass to do that.");
+            else if (activeBuff != null) GLog.i("Your hourglass is already in use.");
+            else if (charge <= 1) GLog.i("Your hourglass hasn't recharged enough to be usable yet.");
+            else GameScene.show(
+                        new WndOptions(TXT_HGLASS, TXT_DESC, TXT_STASIS, TXT_FREEZE) {
+                            @Override
+                            protected void onSelect(int index) {
+                                if (index == 0) {
+                                    GLog.i("Everything seems to blur while moving around you.");
+                                    GameScene.flash(0xFFFFFF);
+                                    Sample.INSTANCE.play(Assets.SND_TELEPORT);
 
-                                activeBuff = new timeFreeze();
-                                activeBuff.attachTo(Dungeon.hero);
+                                    activeBuff = new timeStasis();
+                                    activeBuff.attachTo(Dungeon.hero);
+                                } else if (index == 1) {
+                                    GLog.i("everything around you suddenly freezes.");
+                                    GameScene.flash(0xFFFFFF);
+                                    Sample.INSTANCE.play(Assets.SND_TELEPORT);
+
+                                    activeBuff = new timeFreeze();
+                                    activeBuff.attachTo(Dungeon.hero);
+                                }
+
                             }
 
-                        };
-                    }
-            );
+                            ;
+                        }
+                );
         } else
             super.execute(hero, action);
     }
@@ -92,6 +98,18 @@ public class TimekeepersHourglass extends Artifact {
         super.activate(ch);
         if (activeBuff != null)
             activeBuff.attachTo(ch);
+    }
+
+    @Override
+    public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+        if (super.doUnequip(hero, collect, single)){
+            if (activeBuff != null){
+                activeBuff.detach();
+                activeBuff = null;
+            }
+            return true;
+        } else
+            return false;
     }
 
     @Override
@@ -126,7 +144,9 @@ public class TimekeepersHourglass extends Artifact {
         super.storeInBundle(bundle);
         bundle.put( CHARGECAP, chargeCap );
         bundle.put( SANDBAGS, sandBags );
-        bundle.put( BUFF , activeBuff );
+
+        if (activeBuff != null)
+            bundle.put( BUFF , activeBuff );
     }
 
     @Override
@@ -134,7 +154,18 @@ public class TimekeepersHourglass extends Artifact {
         super.restoreFromBundle(bundle);
         chargeCap = bundle.getInt( CHARGECAP );
         sandBags = bundle.getInt( SANDBAGS );
-        activeBuff = (ArtifactBuff)bundle.get( BUFF );
+
+        //these buffs belong to hourglass, need to handle unbundling within the hourglass class.
+        if (bundle.contains( BUFF )){
+            Bundle buffBundle = bundle.getBundle( BUFF );
+
+            if (buffBundle.contains( timeFreeze.PARTIALTIME ))
+                activeBuff = new timeFreeze();
+            else
+                activeBuff = new timeStasis();
+
+            activeBuff.restoreFromBundle(buffBundle);
+        }
     }
 
     public class hourglassRecharge extends ArtifactBuff {
@@ -162,8 +193,6 @@ public class TimekeepersHourglass extends Artifact {
     }
 
     public class timeStasis extends ArtifactBuff {
-        //todo: add visuals
-
 
         @Override
         public boolean attachTo(Char target) {
@@ -180,6 +209,8 @@ public class TimekeepersHourglass extends Artifact {
             target.invisible++;
 
             QuickSlot.refresh();
+
+            Dungeon.observe();
 
             return super.attachTo(target);
         }
