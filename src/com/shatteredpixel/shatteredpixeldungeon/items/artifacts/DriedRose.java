@@ -10,9 +10,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WraithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -76,7 +78,8 @@ public class DriedRose extends Artifact {
 
 
                     GameScene.add(ghost, 1f);
-                    CellEmitter.get(ghost.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+                    CellEmitter.get(ghost.pos).start( ShaftParticle.FACTORY, 0.3f, 4 );
+                    CellEmitter.get(ghost.pos).start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
 
                     hero.spend(1f);
                     hero.busy();
@@ -146,7 +149,7 @@ public class DriedRose extends Artifact {
 
         {
             name = "sad ghost";
-            spriteClass = WraithSprite.class;
+            spriteClass = GhostSprite.class;
 
             flying = true;
 
@@ -219,7 +222,7 @@ public class DriedRose extends Artifact {
     //This is a bunch strings & string arrays, used in all of the sad ghost's voice lines.
     //************************************************************************************
 
-    public static final String GHOST_HELLO = "Hello again " + Dungeon.hero.className() + ".";
+    //public static final String GHOST_HELLO = "Hello again " + Dungeon.hero.className() + ".";
 
     //enum, for clarity.
     public static enum DEPTHS{
@@ -344,7 +347,7 @@ public class DriedRose extends Artifact {
     };
 
     public static final String[] GHOST_VOICE_HEROKILLED = {
-                    Dungeon.hero.curAction + ", nooo...",
+                    ", nooo...",
                     "no...",
                     "I couldn't help them..."
     };

@@ -40,9 +40,12 @@ public class GhostSprite extends MobSprite {
 		
 		run = new Animation( 10, true );
 		run.frames( frames, 0, 1 );
-		
-		die = new Animation( 20, false );
-		die.frames( frames, 0 );
+
+        attack = new Animation( 10, false );
+        attack.frames( frames, 0, 2, 3 );
+
+        die = new Animation( 8, false );
+        die.frames( frames, 0, 4, 5, 6, 7 );
 		
 		play( idle );
 	}
