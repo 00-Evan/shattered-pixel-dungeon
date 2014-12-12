@@ -7,6 +7,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -103,11 +104,18 @@ public class DriedRose extends Artifact {
         return "";
     }
 
-
-
     @Override
     protected ArtifactBuff passiveBuff() {
         return new roseRecharge();
+    }
+
+    @Override
+    public Item upgrade() {
+        if (level >= 9)
+            image = ItemSpriteSheet.ARTIFACT_ROSE3;
+        else if (level >= 4)
+            image = ItemSpriteSheet.ARTIFACT_ROSE2;
+        return super.upgrade();
     }
 
     private static final String TALKEDTO =      "talkedto";
@@ -136,8 +144,39 @@ public class DriedRose extends Artifact {
 
         @Override
         public boolean act() {
+
+            if (charge < chargeCap && !cursed) {
+                //TODO: investigate balancing on this.
+                partialCharge += 1/10f;
+                if (partialCharge > 1){
+                    charge++;
+                    partialCharge--;
+                    if (charge == chargeCap){
+                        partialCharge = 0f;
+                        GLog.p("Your rose is fully charged!");
+                    }
+                }
+            } else if (cursed && Random.Int(100) == 0) {
+
+                ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
+
+                for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
+                    int p = target.pos + Level.NEIGHBOURS8[i];
+                    if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
+                        spawnPoints.add(p);
+                    }
+
+                    if (spawnPoints.size() > 0) {
+                        Wraith wraith = new Wraith();
+                        wraith.pos = Random.element(spawnPoints);
+                        wraith.adjustStats(Dungeon.depth);
+
+                        GameScene.add(wraith, 1f);
+                        Sample.INSTANCE.play(Assets.SND_CURSED);
+                    }
+                }
+            }
             return super.act();
-            //TODO: decide on charging logic, put here.
         }
     }
 

@@ -44,8 +44,7 @@ public class WndSadGhost extends Window {
         "I wonder what twisted magic allowed it to live so long...\n\n";
     private static final String TXT_GIVEITEM=
         "Please take one of these items, they are useless to me now... " +
-            "Maybe they will help you in your journey...";
-    private static final String TXT_TotallyNotATeaser=
+        "Maybe they will help you in your journey...\n\n" +
         "Also... There is an item lost in this dungeon that is very dear to me..." +
         "If you ever... find my... rose......";
 	private static final String TXT_WEAPON	= "Ghost's weapon";
