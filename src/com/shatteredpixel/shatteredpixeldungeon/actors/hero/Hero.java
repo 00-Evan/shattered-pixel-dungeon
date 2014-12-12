@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
@@ -753,8 +754,10 @@ public class Hero extends Char {
 			}
 
 			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
-			if (buff != null)
-				buff.detach();
+			if (buff != null) buff.detach();
+
+            for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] ))
+                if (mob instanceof DriedRose.GhostHero) mob.destroy();
 			
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
             Game.switchScene( InterlevelScene.class );
@@ -796,8 +799,10 @@ public class Hero extends Char {
 				}
 
 				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
-				if (buff != null)
-					buff.detach();
+				if (buff != null) buff.detach();
+
+                for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] ))
+                    if (mob instanceof DriedRose.GhostHero) mob.destroy();
 
 				InterlevelScene.mode = InterlevelScene.Mode.ASCEND;
 				Game.switchScene( InterlevelScene.class );
