@@ -606,7 +606,9 @@ public class Hero extends Char {
 				Item item = heap.pickUp();
 				if (item.doPickUp( this )) {
 					
-					if (item instanceof Dewdrop || item instanceof TimekeepersHourglass.sandBag) {
+					if (item instanceof Dewdrop
+                            || item instanceof TimekeepersHourglass.sandBag
+                            || item instanceof DriedRose.Petal) {
 						
 					} else {
 

@@ -61,9 +61,9 @@ public class TimekeepersHourglass extends Artifact {
     public void execute( Hero hero, String action ) {
         if (action.equals(AC_ACTIVATE)){
 
-            if (!isEquipped( hero )) GLog.i("You need to equip your hourglass to do that.");
-            else if (activeBuff != null) GLog.i("Your hourglass is already in use.");
-            else if (charge <= 1) GLog.i("Your hourglass hasn't recharged enough to be usable yet.");
+            if (!isEquipped( hero ))        GLog.i("You need to equip your hourglass to do that.");
+            else if (activeBuff != null)    GLog.i("Your hourglass is already in use.");
+            else if (charge <= 1)           GLog.i("Your hourglass hasn't recharged enough to be usable yet.");
             else GameScene.show(
                         new WndOptions(TXT_HGLASS, TXT_DESC, TXT_STASIS, TXT_FREEZE) {
                             @Override
@@ -325,7 +325,7 @@ public class TimekeepersHourglass extends Artifact {
             TimekeepersHourglass hourglass = hero.belongings.getItem( TimekeepersHourglass.class );
             if (hourglass != null) {
                 hourglass.upgrade();
-                Sample.INSTANCE.play( Assets.SND_ITEM );
+                Sample.INSTANCE.play( Assets.SND_DEWDROP );
                 if (hourglass.level == hourglass.levelCap)
                     GLog.p("Your hourglass is filled with magical sand!");
                 else

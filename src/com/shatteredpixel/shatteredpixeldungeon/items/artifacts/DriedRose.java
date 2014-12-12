@@ -18,7 +18,9 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WraithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -42,8 +44,9 @@ public class DriedRose extends Artifact {
         defaultAction = AC_SUMMON;
     }
 
-    protected boolean talkedTo = false;
-    protected boolean firstSummon = false;
+    protected static boolean talkedTo = false;
+    protected static boolean firstSummon = false;
+    protected static boolean spawned = false;
 
     public int droppedPetals = 0;
 
@@ -61,8 +64,9 @@ public class DriedRose extends Artifact {
     public void execute( Hero hero, String action ) {
         if (action.equals(AC_SUMMON)) {
 
-            if (!isEquipped( hero ))      GLog.i("You need to equip your rose to do that.");
-            else if (charge != chargeCap) GLog.i("Your rose isn't fully charged yet.");
+            if (spawned)                    GLog.n("sad ghost: I'm already here");
+            else if (!isEquipped( hero ))   GLog.i("You need to equip your rose to do that.");
+            else if (charge != chargeCap)   GLog.i("Your rose isn't fully charged yet.");
             else {
                 ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
                 for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
@@ -76,7 +80,6 @@ public class DriedRose extends Artifact {
                     GhostHero ghost = new GhostHero();
                     ghost.pos = Random.element(spawnPoints);
 
-
                     GameScene.add(ghost, 1f);
                     CellEmitter.get(ghost.pos).start( ShaftParticle.FACTORY, 0.3f, 4 );
                     CellEmitter.get(ghost.pos).start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
@@ -85,7 +88,9 @@ public class DriedRose extends Artifact {
                     hero.busy();
                     hero.sprite.operate(hero.pos);
 
-                }
+                    spawned = true;
+                } else
+                    GLog.i("There is no free space near you.");
             }
 
         } else{
@@ -94,12 +99,46 @@ public class DriedRose extends Artifact {
     }
 
     @Override
+    public String desc() {
+        return "";
+    }
+
+
+
+    @Override
     protected ArtifactBuff passiveBuff() {
         return new roseRecharge();
     }
 
+    private static final String TALKEDTO =      "talkedto";
+    private static final String FIRSTSUMMON =   "firstsummon";
+    private static final String SPAWNED =       "spawned";
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle(bundle);
+
+        bundle.put( TALKEDTO, talkedTo );
+        bundle.put( FIRSTSUMMON, firstSummon );
+        bundle.put( SPAWNED, spawned );
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle(bundle);
+
+        talkedTo = bundle.getBoolean( TALKEDTO );
+        firstSummon = bundle.getBoolean( FIRSTSUMMON );
+        spawned = bundle.getBoolean( SPAWNED );
+    }
+
     public class roseRecharge extends ArtifactBuff {
 
+        @Override
+        public boolean act() {
+            return super.act();
+            //TODO: decide on charging logic, put here.
+        }
     }
 
     public static class Petal extends Item {
@@ -114,9 +153,8 @@ public class DriedRose extends Artifact {
         public boolean doPickUp( Hero hero ) {
             DriedRose rose = hero.belongings.getItem( DriedRose.class );
 
-
-
             if (rose != null && rose.level < rose.levelCap){
+
                 rose.upgrade();
                 if (rose.level == rose.levelCap) {
                     GLog.p("The rose is completed!");
@@ -124,11 +162,16 @@ public class DriedRose extends Artifact {
                     GLog.n("sad ghost: Thank you...");
                 } else
                     GLog.i("You add the petal to the rose.");
+
+                Sample.INSTANCE.play( Assets.SND_DEWDROP );
                 hero.spendAndNext(TIME_TO_PICK_UP);
                 return true;
+
             } else {
+
                 GLog.w("You have no rose to add this petal to.");
                 return false;
+
             }
         }
 
@@ -158,10 +201,13 @@ public class DriedRose extends Artifact {
 
         }
 
-        private static final String TXT_WELCOME = "My spirit is bound to this rose, it was very precious to me, a gift " +
-                "from my love whom I left on the surface.\n\nI cannot return to him, but thanks to you I have a second " +
-                "chance to complete my journey. When I am able I will respond to your call and fight with you.\n\n" +
-                "hopefully you may succeed where I failed...";
+        GhostHero() {
+            super();
+            if (!DriedRose.firstSummon){
+                yell ( VOICE_HELLO );
+                DriedRose.firstSummon = true;
+            }
+        }
 
         @Override
         public String defenseVerb() {
@@ -200,10 +246,10 @@ public class DriedRose extends Artifact {
 
         @Override
         public void interact() {
-            //if (!talkedTo){
-            //    talkedTo = true;
-            //    GameScene.show(new WndQuest(this, TXT_WELCOME));
-            //} else {
+            if (!DriedRose.talkedTo){
+                DriedRose.talkedTo = true;
+                GameScene.show(new WndQuest(this, VOICE_INTRODUCE ));
+            } else {
                 int curPos = pos;
 
                 moveSprite( pos, Dungeon.hero.pos );
@@ -214,28 +260,37 @@ public class DriedRose extends Artifact {
 
                 Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
                 Dungeon.hero.busy();
-            //}
+            }
         }
-    }
 
-    //************************************************************************************
-    //This is a bunch strings & string arrays, used in all of the sad ghost's voice lines.
-    //************************************************************************************
+        @Override
+        public void destroy() {
+            DriedRose.spawned = false;
+            super.destroy();
+        }
+        //************************************************************************************
+        //This is a bunch strings & string arrays, used in all of the sad ghost's voice lines.
+        //************************************************************************************
 
-    //public static final String GHOST_HELLO = "Hello again " + Dungeon.hero.className() + ".";
+        public static final String VOICE_HELLO = "Hello again.";
 
-    //enum, for clarity.
-    public static enum DEPTHS{
-        SEWERS,
-        PRISON,
-        CAVES,
-        CITY,
-        HALLS,
-        AMULET
-    }
+        private static final String VOICE_INTRODUCE = "My spirit is bound to this rose, it was very precious to me, a "+
+            "gift from my love whom I left on the surface.\n\nI cannot return to him, but thanks to you I have a " +
+            "second chance to complete my journey. When I am able I will respond to your call and fight with you.\n\n" +
+            "hopefully you may succeed where I failed...";
 
-    //1st index - depth type, 2nd index - specific line.
-    public static final String[][] GHOST_VOICE_AMBIENT = {
+        //enum, for clarity.
+        public static enum DEPTHS{
+            SEWERS,
+            PRISON,
+            CAVES,
+            CITY,
+            HALLS,
+            AMULET
+        }
+
+        //1st index - depth type, 2nd index - specific line.
+        public static final String[][] VOICE_AMBIENT = {
             {
                     "These sewers were once safe, some even lived here in the winter...",
                     "I wonder what happened to the guard patrols, did they give up?...",
@@ -259,10 +314,10 @@ public class DriedRose extends Artifact {
             },{
                     "... I don't like this place... We should leave as soon as possible..."
             }
-    };
+        };
 
-    //1st index - depth type, 2nd index - boss or not, 3rd index - specific line.
-    public static final String[][][] GHOST_VOICE_ENEMIES = {
+        //1st index - depth type, 2nd index - boss or not, 3rd index - specific line.
+        public static final String[][][] VOICE_ENEMIES = {
             {
                 {
                     "Let's make the sewers safe again...",
@@ -320,10 +375,10 @@ public class DriedRose extends Artifact {
                     "Hello source viewer, I'm writing this here as this line should never trigger. Have a nice day!"
                 }
             }
-    };
+        };
 
-    //1st index - Yog or not, 2nd index - specific line.
-    public static final String[][] GHOST_VOICE_BOSSBEATEN = {
+        //1st index - Yog or not, 2nd index - specific line.
+        public static final String[][] VOICE_BOSSBEATEN = {
             {
                     "Yes!",
                     "Victory!"
@@ -331,10 +386,10 @@ public class DriedRose extends Artifact {
                     "It's over... we won...",
                     "I can't believe it... We just killed a god..."
             }
-    };
+        };
 
-    //1st index - boss or not, 2nd index - specific line.
-    public static final String[][] GHOST_VOICE_DEFEATED = {
+        //1st index - boss or not, 2nd index - specific line.
+        public static final String[][] VOICE_DEFEATED = {
             {
                     "Good luck...",
                     "I will return...",
@@ -344,17 +399,18 @@ public class DriedRose extends Artifact {
                     "I'm sorry.. good luck..",
                     "Finish it off... without me..."
             }
-    };
+        };
 
-    public static final String[] GHOST_VOICE_HEROKILLED = {
-                    ", nooo...",
+        public static final String[] VOICE_HEROKILLED = {
+                    "nooo...",
                     "no...",
                     "I couldn't help them..."
-    };
+        };
 
-    public static final String[] GHOST_VOICE_BLESSEDANKH = {
+        public static final String[] VOICE_BLESSEDANKH = {
                     "Incredible!...",
                     "Wish I had one of those...",
                     "How did you survive that?..."
-    };
+        };
+    }
 }
