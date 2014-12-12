@@ -781,7 +781,7 @@ public abstract class Level implements Bundlable {
 			Level.set( cell, Terrain.discover( map[cell] ) );
 			GameScene.updateMap( cell );
 
-			timeFreeze.delayedPress(cell);
+			timeFreeze.setDelayedPress( cell );
 
 		}
 		

@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -256,8 +257,15 @@ public abstract class Mob extends Char {
 			return false;
 		}
 	}
-	
-	@Override
+
+    @Override
+    public void updateSpriteState() {
+        super.updateSpriteState();
+        if (Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) != null)
+            sprite.add( CharSprite.State.PARALYSED );
+    }
+
+    @Override
 	public void move( int step ) {
 		super.move( step );
 		

@@ -253,23 +253,30 @@ public class TimekeepersHourglass extends Artifact {
 
         }
 
-        public void delayedPress(int cell){
+        public void setDelayedPress(int cell){
             if (!presses.contains(cell))
                 presses.add(cell);
         }
 
+        public void triggerPresses(){
+            for (int cell : presses)
+                Dungeon.level.press(cell, null);
+
+            presses = new ArrayList<Integer>();
+        }
+
         @Override
         public boolean attachTo(Char target) {
-            for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-                mob.sprite.add(CharSprite.State.PARALYSED);
+            if (Dungeon.level != null)
+                for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
+                    mob.sprite.add(CharSprite.State.PARALYSED);
             GameScene.freezeEmitters = true;
             return super.attachTo(target);
         }
 
         @Override
         public void detach(){
-            for (int cell : presses)
-                Dungeon.level.press(cell, null);
+            triggerPresses();
             for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
                 mob.sprite.remove(CharSprite.State.PARALYSED);
             GameScene.freezeEmitters = false;

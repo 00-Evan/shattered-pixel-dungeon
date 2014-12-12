@@ -298,7 +298,9 @@ public class GameScene extends PixelScene {
 	
 	public void destroy() {
 		
-		scene = null;
+		freezeEmitters = false;
+
+        scene = null;
 		Badges.saveGlobal();
 		
 		super.destroy();
