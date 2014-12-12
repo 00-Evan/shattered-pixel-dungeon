@@ -15,6 +15,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,9 @@ public class TimekeepersHourglass extends Artifact {
     private static final String TXT_STASIS	= "Put myself in stasis";
     private static final String TXT_FREEZE	= "Freeze time around me";
     private static final String TXT_DESC 	=
-            "...";
+            "How would you like to use the hourglass's magic?\n\n" +
+            "While in stasis, time will move normally while you are frozen and completely invulnerable.\n\n" +
+            "When time is frozen, you can move as if your actions take no time. Note that attacking will break this.";
 
     {
         name = "Timekeeper's Hourglass";
@@ -52,7 +55,7 @@ public class TimekeepersHourglass extends Artifact {
     @Override
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        if (isEquipped( hero ) && charge > 0)
+        if (isEquipped( hero ) && charge > 0 && !cursed)
             actions.add(AC_ACTIVATE);
         return actions;
     }
@@ -64,12 +67,13 @@ public class TimekeepersHourglass extends Artifact {
             if (!isEquipped( hero ))        GLog.i("You need to equip your hourglass to do that.");
             else if (activeBuff != null)    GLog.i("Your hourglass is already in use.");
             else if (charge <= 1)           GLog.i("Your hourglass hasn't recharged enough to be usable yet.");
+            else if (cursed)                GLog.i("You cannot use a cursed hourglass.");
             else GameScene.show(
                         new WndOptions(TXT_HGLASS, TXT_DESC, TXT_STASIS, TXT_FREEZE) {
                             @Override
                             protected void onSelect(int index) {
                                 if (index == 0) {
-                                    GLog.i("Everything seems to blur while moving around you.");
+                                    GLog.i("The world seems to shift around you in an instant.");
                                     GameScene.flash(0xFFFFFF);
                                     Sample.INSTANCE.play(Assets.SND_TELEPORT);
 
@@ -83,10 +87,7 @@ public class TimekeepersHourglass extends Artifact {
                                     activeBuff = new timeFreeze();
                                     activeBuff.attachTo(Dungeon.hero);
                                 }
-
-                            }
-
-                            ;
+                            };
                         }
                 );
         } else
@@ -130,7 +131,24 @@ public class TimekeepersHourglass extends Artifact {
 
     @Override
     public String desc() {
-        return "";
+        String desc =
+                "This large ornate hourglass looks fairly unassuming, but you feel a great power in its finely carved" +
+                " frame. As you rotate the hourglass and watch the sand pour you can feel its magic tugging at you, " +
+                "surely invoking this magic would give you some power over time.";
+
+        if (isEquipped( Dungeon.hero )){
+            if (!cursed) {
+                desc += "\n\nThe hourglass rests at your side, the whisper of steadily pouring sand is reassuring.";
+
+                if (level < levelCap )
+                    desc +=
+                        "\n\nThe hourglass seems to have lost some sand with age. While there are no cracks, " +
+                        "there is a port on the top of the hourglass to pour sand in, if only you could find some...";
+            }else
+                desc += "\n\nThe cursed hourglass is locked to your side, " +
+                        "you can feel it trying to manipulate your flow of time.";
+        }
+        return desc;
     }
 
 
@@ -171,7 +189,7 @@ public class TimekeepersHourglass extends Artifact {
     public class hourglassRecharge extends ArtifactBuff {
         @Override
         public boolean act() {
-            if (charge < chargeCap) {
+            if (charge < chargeCap && !cursed) {
                 partialCharge += 1 / (60f - (chargeCap - charge)*2f);
 
                 if (partialCharge >= 1) {
@@ -182,7 +200,8 @@ public class TimekeepersHourglass extends Artifact {
                         partialCharge = 0;
                     }
                 }
-            }
+            } else if (cursed && Random.Int(10) == 0)
+                ((Hero) target).spend( TICK );
 
             QuickSlot.refresh();
 
@@ -323,7 +342,7 @@ public class TimekeepersHourglass extends Artifact {
         @Override
         public boolean doPickUp( Hero hero ) {
             TimekeepersHourglass hourglass = hero.belongings.getItem( TimekeepersHourglass.class );
-            if (hourglass != null) {
+            if (hourglass != null && !hourglass.cursed) {
                 hourglass.upgrade();
                 Sample.INSTANCE.play( Assets.SND_DEWDROP );
                 if (hourglass.level == hourglass.levelCap)

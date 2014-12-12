@@ -16,7 +16,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.WraithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.audio.Sample;
@@ -55,7 +54,7 @@ public class DriedRose extends Artifact {
     @Override
     public ArrayList<String> actions( Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
-        if (isEquipped( hero ) && charge == chargeCap)
+        if (isEquipped( hero ) && charge == chargeCap && !cursed)
             actions.add(AC_SUMMON);
         return actions;
     }
@@ -67,6 +66,7 @@ public class DriedRose extends Artifact {
             if (spawned)                    GLog.n("sad ghost: I'm already here");
             else if (!isEquipped( hero ))   GLog.i("You need to equip your rose to do that.");
             else if (charge != chargeCap)   GLog.i("Your rose isn't fully charged yet.");
+            else if (cursed)                GLog.i("You cannot use a cursed rose.");
             else {
                 ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
                 for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
