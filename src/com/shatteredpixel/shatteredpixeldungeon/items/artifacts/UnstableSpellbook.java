@@ -227,7 +227,8 @@ public class UnstableSpellbook extends Artifact {
                 }
                 if (item != null)
                     GLog.w("You are unable to add this scroll to the book.");
-            }
+            } else if (item instanceof Scroll && !item.isIdentified())
+                GLog.w("You're not sure what type of scroll this is yet.");
         }
     };
 }
