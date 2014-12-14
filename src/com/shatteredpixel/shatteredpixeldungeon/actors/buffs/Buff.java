@@ -27,9 +27,9 @@ public class Buff extends Actor {
 	
 	public Char target;
 
-    public static HashSet<Class<?>> resistances = new HashSet<Class<?>>();
+    public HashSet<Class<?>> resistances = new HashSet<Class<?>>();
 
-    public static HashSet<Class<?>> immunities = new HashSet<Class<?>>();
+    public HashSet<Class<?>> immunities = new HashSet<Class<?>>();
 	
 	public boolean attachTo( Char target ) {
 

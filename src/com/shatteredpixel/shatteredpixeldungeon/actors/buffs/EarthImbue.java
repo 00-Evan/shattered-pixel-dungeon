@@ -30,7 +30,7 @@ public class EarthImbue extends FlavourBuff {
         return "Imbued with Earth";
     }
 
-    static {
+    {
         immunities.add( Paralysis.class );
         immunities.add( Roots.class );
         immunities.add( Slow.class );

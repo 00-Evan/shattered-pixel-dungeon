@@ -59,7 +59,7 @@ public class ToxicImbue extends Buff {
         return "Imbued with Toxicity";
     }
 
-    static {
+    {
         immunities.add( ToxicGas.class );
         immunities.add( Poison.class );
     }

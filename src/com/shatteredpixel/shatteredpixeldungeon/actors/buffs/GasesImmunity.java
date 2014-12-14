@@ -39,7 +39,7 @@ public class GasesImmunity extends FlavourBuff {
 		return "Immune to gases";
 	}
 
-	static {
+	{
         immunities.add( ParalyticGas.class );
         immunities.add( ToxicGas.class );
         immunities.add( ConfusionGas.class );

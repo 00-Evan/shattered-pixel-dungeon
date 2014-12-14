@@ -71,7 +71,7 @@ public class FireImbue extends Buff {
         return "Imbued with Fire";
     }
 
-    static {
+    {
         immunities.add( Burning.class );
     }
 }
