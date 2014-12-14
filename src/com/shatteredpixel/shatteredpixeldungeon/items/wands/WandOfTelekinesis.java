@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -79,6 +80,9 @@ public class WandOfTelekinesis extends Wand {
 						
 						ch.pos = next;
 						Actor.freeCell( next );
+
+						if (ch instanceof Shopkeeper)
+							ch.damage( 0, this );
 
 						// FIXME
 						if (ch instanceof Mob) {
