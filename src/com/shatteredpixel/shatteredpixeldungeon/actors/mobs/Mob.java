@@ -73,6 +73,7 @@ public abstract class Mob extends Char {
 	protected static final float TIME_TO_WAKE_UP = 1f;
 	
 	public boolean hostile = true;
+	public boolean ally = false;
 	
 	// Unreachable target
 	public static final Mob DUMMY = new Mob() {
@@ -161,31 +162,60 @@ public abstract class Mob extends Char {
 	}
 	
 	protected Char chooseEnemy() {
-		
-		if (buff( Amok.class ) != null) {
-			if (enemy == Dungeon.hero || enemy == null) {
-				
-				HashSet<Mob> enemies = new HashSet<Mob>();
-				for (Mob mob:Dungeon.level.mobs) {
-					if (mob != this && Level.fieldOfView[mob.pos]) {
-						enemies.add( mob );
-					}
-				}
-				if (enemies.size() > 0) {
-					return Random.element( enemies );
-				}
-				
-			} else {
-				return enemy;
-			}
-		}
-		
+
 		Terror terror = (Terror)buff( Terror.class );
 		if (terror != null) {
 			return terror.source;
 		}
-		
-		return Dungeon.hero;
+
+		//resets target if: the target is dead, the target has been lost (wandering)
+		//or if the mob is amoked and targeting a friendly (will try to target something else)
+		if ( enemy != null &&
+				!enemy.isAlive() || state == WANDERING ||
+				(buff( Amok.class ) != null && (enemy == Dungeon.hero || (enemy instanceof Mob && ((Mob)enemy).ally))))
+			enemy = null;
+
+		//if there is no current target, find a new one.
+		if (enemy == null) {
+
+			HashSet<Char> enemies = new HashSet<Char>();
+
+			//if the mob is amoked...
+			if ( buff(Amok.class) != null ) {
+
+				//try to find an enemy mob to attack first.
+				for (Mob mob : Dungeon.level.mobs)
+					if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile)
+							enemies.add(mob);
+				if (enemies.size() > 0) return Random.element(enemies);
+
+				//try to find ally mobs to attack second.
+				for (Mob mob : Dungeon.level.mobs)
+					if (mob != this && Level.fieldOfView[mob.pos] && mob.ally)
+						enemies.add(mob);
+				if (enemies.size() > 0) return Random.element(enemies);
+
+				//if there is nothing, go for the hero.
+				return Dungeon.hero;
+
+			//if the mob is not amoked...
+			} else {
+
+				//try to find ally mobs to attack.
+				for (Mob mob : Dungeon.level.mobs)
+					if (mob != this && Level.fieldOfView[mob.pos] && mob.ally)
+						enemies.add(mob);
+
+				//and add the hero to the list of targets.
+				enemies.add(Dungeon.hero);
+
+				//target one at random.
+				return Random.element(enemies);
+
+			}
+
+		} else
+			return enemy;
 	}
 
 	protected boolean moveSprite( int from, int to ) {
@@ -307,7 +337,7 @@ public abstract class Mob extends Char {
             for (Buff buff : enemy.buffs(RingOfAccuracy.Accuracy.class)) {
                 penalty += ((RingOfAccuracy.Accuracy) buff).level;
             }
-            if (penalty != 0)
+            if (penalty != 0 && enemy == Dungeon.hero)
                 defenseSkill *= Math.pow(0.75, penalty);
             return defenseSkill;
         } else {
