@@ -244,6 +244,7 @@ public class TimekeepersHourglass extends Artifact {
         @Override
         public void detach() {
             super.detach();
+            activeBuff = null;
             Dungeon.observe();
         }
     }
@@ -303,6 +304,7 @@ public class TimekeepersHourglass extends Artifact {
             charge = 0;
             QuickSlot.refresh();
             super.detach();
+            activeBuff = null;
         }
 
         private static final String PRESSES = "presses";
