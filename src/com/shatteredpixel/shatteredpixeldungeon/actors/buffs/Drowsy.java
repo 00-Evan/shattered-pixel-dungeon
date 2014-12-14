@@ -29,7 +29,7 @@ public class Drowsy extends Buff {
     }
 
     public boolean attachTo( Char target ) {
-        if (super.attachTo(target) && !target.immunities().contains(Sleep.class)) {
+        if (!target.immunities().contains(Sleep.class) && super.attachTo(target)) {
             if (cooldown() == 0)
                 spend(Random.Int(3, 6));
             return true;
