@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.watabou.utils.Random;
 
 public class Bestiary {
@@ -178,6 +179,7 @@ public class Bestiary {
 	}
 	
 	public static boolean isUnique( Char mob ) {
-		return mob instanceof Goo || mob instanceof Tengu || mob instanceof DM300 || mob instanceof King || mob instanceof Yog;
+		return mob instanceof Goo || mob instanceof Tengu || mob instanceof DM300 || mob instanceof King || mob instanceof Yog
+			|| mob instanceof Ghost.FetidRat || mob instanceof Ghost.GnollTrickster || mob instanceof Ghost.GreatCrab;
 	}
 }
