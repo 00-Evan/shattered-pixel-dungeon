@@ -179,7 +179,8 @@ public class Bestiary {
 	}
 	
 	public static boolean isUnique( Char mob ) {
-		return mob instanceof Goo || mob instanceof Tengu || mob instanceof DM300 || mob instanceof King || mob instanceof Yog
+		return mob instanceof Goo || mob instanceof Tengu || mob instanceof DM300 || mob instanceof King
+				|| mob instanceof Yog.BurningFist || mob instanceof Yog.RottingFist
 			|| mob instanceof Ghost.FetidRat || mob instanceof Ghost.GnollTrickster || mob instanceof Ghost.GreatCrab;
 	}
 }

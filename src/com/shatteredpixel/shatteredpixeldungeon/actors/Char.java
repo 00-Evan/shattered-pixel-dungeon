@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -157,8 +158,10 @@ public abstract class Char extends Actor {
 						GLog.n( TXT_KILL, Dungeon.hero.killerGlyph.name() );
 						
 					} else {
-						if (Bestiary.isUnique( this )) {
-							Dungeon.fail( Utils.format( ResultDescriptions.BOSS, name, Dungeon.depth ) );
+						if ( this instanceof Yog ) {
+							Dungeon.fail( Utils.format( ResultDescriptions.NAMED, name, Dungeon.depth ) );
+						} if (Bestiary.isUnique( this )) {
+							Dungeon.fail( Utils.format( ResultDescriptions.UNIQUE, name, Dungeon.depth ) );
 						} else {
 							Dungeon.fail( Utils.format( ResultDescriptions.MOB, 
 								Utils.indefinite( name ), Dungeon.depth ) );
