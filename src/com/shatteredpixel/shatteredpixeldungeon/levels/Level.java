@@ -595,7 +595,6 @@ public abstract class Level implements Bundlable {
 
         }
 
-		//TODO: test this thoroughly
 		if ((map[cell] == Terrain.ALCHEMY) && (
 				!(item instanceof Plant.Seed || item instanceof Blandfruit) ||
 				item instanceof BlandfruitBush.Seed ||

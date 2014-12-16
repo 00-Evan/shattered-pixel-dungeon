@@ -23,7 +23,6 @@ import java.util.ArrayList;
  * Created by debenhame on 01/12/2014.
  */
 public class TimekeepersHourglass extends Artifact {
-    //TODO: display logic, sprites.
 
     private static final String TXT_HGLASS	= "Timekeeper's Hourglass";
     private static final String TXT_STASIS	= "Put myself in stasis";

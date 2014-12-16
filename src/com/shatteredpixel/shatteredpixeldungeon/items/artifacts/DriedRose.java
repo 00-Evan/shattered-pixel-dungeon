@@ -260,8 +260,6 @@ public class DriedRose extends Artifact {
 
     }
 
-    //TODO: needs to:
-    //have combat stats
     public static class GhostHero extends NPC {
 
         {

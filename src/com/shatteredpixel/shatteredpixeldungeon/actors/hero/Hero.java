@@ -1148,7 +1148,7 @@ public class Hero extends Char {
 	
 	@Override
 	public void add( Buff buff ) {
-		//TODO: test this, may break some things
+
 		if (buff(TimekeepersHourglass.timeStasis.class) != null)
 			return;
 

@@ -21,7 +21,6 @@ import java.util.Collections;
  * Created by debenhame on 24/11/2014.
  */
 public class AlchemistsToolkit extends Artifact {
-    //TODO: sprite
 
     {
         name = "Alchemists Toolkit";
