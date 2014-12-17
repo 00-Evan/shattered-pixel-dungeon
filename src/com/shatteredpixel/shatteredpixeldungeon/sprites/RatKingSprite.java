@@ -20,26 +20,36 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.watabou.noosa.TextureFilm;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 
+import java.util.Calendar;
+
 public class RatKingSprite extends MobSprite {
+
+	public boolean festive;
 	
 	public RatKingSprite() {
 		super();
+
+		final Calendar calendar = Calendar.getInstance();
+		//once a year the rat king feels a bit festive!
+		festive = (calendar.get(Calendar.MONTH) == 11 && calendar.get(Calendar.WEEK_OF_MONTH) > 2);
+
+		final int c = festive ? 8 : 0;
 		
 		texture( Assets.RATKING );
 		
-		TextureFilm frames = new TextureFilm( texture, 16, 16 );
+		TextureFilm frames = new TextureFilm( texture, 16, 17 );
 		
 		idle = new Animation( 2, true );
-		idle.frames( frames, 0, 0, 0, 1 );
+		idle.frames( frames, c+0, c+0, c+0, c+1 );
 		
 		run = new Animation( 10, true );
-		run.frames( frames, 2, 3, 4, 5, 6 );
+		run.frames( frames, c+2, c+3, c+4, c+5, c+6 );
 		
 		attack = new Animation( 15, false );
-		attack.frames( frames, 0 );
+		attack.frames( frames, c+0 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, 0 );
+		die.frames( frames, c+0 );
 		
 		play( idle );
 	}

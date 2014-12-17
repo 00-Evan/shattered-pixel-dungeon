@@ -74,8 +74,10 @@ public class RatKing extends NPC {
 	
 	@Override
 	public String description() {
-		return 
-			"This rat is a little bigger than a regular marsupial rat " +
+		return ((RatKingSprite)sprite).festive ?
+			"This rat is a little bigger than a regular marsupial rat. " +
+			"It's wearing a tiny festive hat instead of its usual crown. Happy Holidays!"
+		:	"This rat is a little bigger than a regular marsupial rat " +
 			"and it's wearing a tiny crown on its head.";
 	}
 }
