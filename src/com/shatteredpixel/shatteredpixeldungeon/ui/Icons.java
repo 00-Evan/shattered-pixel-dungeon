@@ -41,8 +41,6 @@ public enum Icons {
 	DEPTH,
 	SLEEP,
 	ALERT,
-	SUPPORT,
-	SUPPORTED,
 	BACKPACK,
 	SEED_POUCH,
 	SCROLL_HOLDER,
@@ -113,12 +111,6 @@ public enum Icons {
 			break;
 		case ALERT:
 			icon.frame( icon.texture.uvRect( 22, 45, 30, 53 ) );
-			break;
-		case SUPPORT:
-			icon.frame( icon.texture.uvRect( 30, 45, 46, 61 ) );
-			break;
-		case SUPPORTED:
-			icon.frame( icon.texture.uvRect( 46, 45, 62, 61 ) );
 			break;
 		case BACKPACK:
 			icon.frame( icon.texture.uvRect( 58, 0, 68, 10 ) );

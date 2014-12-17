@@ -202,14 +202,6 @@ public class ShatteredPixelDungeon extends Game {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_BRIGHTNESS, false );
 	}
 	
-	public static void donated( String value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_DONATED, value );
-	}
-	
-	public static String donated() {
-		return Preferences.INSTANCE.getString( Preferences.KEY_DONATED, "" );
-	}
-	
 	public static void lastClass( int value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_LAST_CLASS, value );
 	}
