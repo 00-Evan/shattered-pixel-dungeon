@@ -45,7 +45,7 @@ public class RankingsScene extends PixelScene {
 	
 	private static final String TXT_NO_INFO	= "No additional information";
 	
-	private static final float ROW_HEIGHT	= 30;
+	private static final float ROW_HEIGHT	= 20;
 	private static final float GAP	= 4;
 	
 	private Archs archs;
@@ -127,8 +127,8 @@ public class RankingsScene extends PixelScene {
 		
 		private static final float GAP	= 4;
 		
-		private static final int TEXT_WIN	= 0xFFFF88;
-		private static final int TEXT_LOSE	= 0xCCCCCC;
+		private static final int[] TEXT_WIN	= {0xFFFF88, 0xB2B25F};
+		private static final int[] TEXT_LOSE= {0xDDDDDD, 0x888888};
 		private static final int FLARE_WIN	= 0x888866;
 		private static final int FLARE_LOSE	= 0x666666;
 		
@@ -151,20 +151,26 @@ public class RankingsScene extends PixelScene {
 				flare.color( rec.win ? FLARE_WIN : FLARE_LOSE );
 				addToBack( flare );
 			}
-			
-			position.text( Integer.toString( pos+1 ) );
+
+			if (pos != Rankings.TABLE_SIZE-1) {
+				position.text(Integer.toString(pos + 1));
+			} else
+				position.text(" ");
 			position.measure();
 			
 			desc.text( rec.info );
+
 			desc.measure();
+
+			int odd = pos % 2;
 			
 			if (rec.win) {
 				shield.view( ItemSpriteSheet.AMULET, null );
-				position.hardlight( TEXT_WIN );
-				desc.hardlight( TEXT_WIN );
+				position.hardlight( TEXT_WIN[odd] );
+				desc.hardlight( TEXT_WIN[odd] );
 			} else {
-				position.hardlight( TEXT_LOSE );
-				desc.hardlight( TEXT_LOSE );
+				position.hardlight( TEXT_LOSE[odd] );
+				desc.hardlight( TEXT_LOSE[odd] );
 			}
 			
 			classIcon.copy( Icons.get( rec.heroClass ) );
@@ -181,7 +187,7 @@ public class RankingsScene extends PixelScene {
 			position = new BitmapText( PixelScene.font1x );
 			add( position );
 			
-			desc = createMultiline( 9 );		
+			desc = createMultiline( 9 );
 			add( desc );
 			
 			classIcon = new Image();
@@ -209,7 +215,7 @@ public class RankingsScene extends PixelScene {
 			desc.x = shield.x + shield.width + GAP;
 			desc.maxWidth = (int)(classIcon.x - desc.x);
 			desc.measure();
-			desc.y = position.y + position.baseLine() - desc.baseLine();
+			desc.y = align( shield.y + (shield.height - desc.height()) / 2 + 1 );
 		}
 		
 		@Override
