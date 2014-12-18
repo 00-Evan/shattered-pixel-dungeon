@@ -20,7 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 public class ResultDescriptions {
 
 	// Mobs
-	public static final String MOB		= "Killed by a %s on level %d";
+	public static final String MOB		= "Killed by %s on level %d";
 	public static final String UNIQUE	= "Killed by the %s on level %d";
 	public static final String NAMED	= "Killed by %s on level %d";
 	
