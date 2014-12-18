@@ -858,38 +858,37 @@ public class Hero extends Char {
 	@Override
 	public int attackProc( Char enemy, int damage ) {
         KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
-		if (wep != null) {
 
-            wep.proc( this, enemy, damage );
+		if (wep != null)  wep.proc( this, enemy, damage );
 			
-			switch (subClass) {
-			case GLADIATOR:
-				if (wep instanceof MeleeWeapon) {
-					damage += Buff.affect( this, Combo.class ).hit( enemy, damage );
-				}
-				break;
-			case BATTLEMAGE:
-				if (wep instanceof Wand) {
-					Wand wand = (Wand)wep;
-					if (wand.curCharges < wand.maxCharges && damage > 0) {
-						
-						wand.curCharges++;
-						if (Dungeon.quickslot == wand) {
-							QuickSlot.refresh();
-						}
-						
-						ScrollOfRecharging.charge( this );
-					}
-					damage += wand.curCharges;
-				}
-			case SNIPER:
-				if (rangedWeapon != null) {
-					Buff.prolong( enemy, SnipersMark.class, attackDelay() * 1.1f );
-				}
-				break;
-			default:
+		switch (subClass) {
+		case GLADIATOR:
+			if (wep instanceof MeleeWeapon || wep == null) {
+				damage += Buff.affect( this, Combo.class ).hit( enemy, damage );
 			}
+			break;
+		case BATTLEMAGE:
+			if (wep instanceof Wand) {
+				Wand wand = (Wand)wep;
+				if (wand.curCharges < wand.maxCharges && damage > 0) {
+
+					wand.curCharges++;
+					if (Dungeon.quickslot == wand) {
+						QuickSlot.refresh();
+					}
+
+					ScrollOfRecharging.charge( this );
+				}
+				damage += wand.curCharges;
+			}
+		case SNIPER:
+			if (rangedWeapon != null) {
+				Buff.prolong( enemy, SnipersMark.class, attackDelay() * 1.1f );
+			}
+			break;
+		default:
 		}
+
 		
 		return damage;
 	}
