@@ -98,7 +98,7 @@ public class DriedRose extends Artifact {
                     hero.sprite.operate(hero.pos);
 
                     if (!firstSummon) {
-                        ghost.yell(ghost.VOICE_HELLO + Dungeon.hero.className());
+                        ghost.yell(ghost.VOICE_HELLO + Dungeon.hero.givenName());
                         Sample.INSTANCE.play( Assets.SND_GHOST );
                         firstSummon = true;
                     } else

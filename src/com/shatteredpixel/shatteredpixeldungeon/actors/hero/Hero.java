@@ -241,6 +241,10 @@ public class Hero extends Char {
 	public String className() {
 		return subClass == null || subClass == HeroSubClass.NONE ? heroClass.title() : subClass.title();
 	}
+
+	public String givenName(){
+		return name.equals("you") ? className() : name;
+	}
 	
 	public void live() {
 		Buff.affect( this, Regeneration.class );	

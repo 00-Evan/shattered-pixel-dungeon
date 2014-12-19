@@ -78,7 +78,7 @@ public class Imp extends NPC {
 		
 		if (!Quest.given && Dungeon.visible[pos]) {
 			if (!seenBefore) {
-				yell( Utils.format( TXT_HEY, Dungeon.hero.className() ) );
+				yell( Utils.format( TXT_HEY, Dungeon.hero.givenName() ) );
 			}
 			seenBefore = true;
 		} else {
@@ -123,7 +123,7 @@ public class Imp extends NPC {
 			if (tokens != null && (tokens.quantity() >= 8 || (!Quest.alternative && tokens.quantity() >= 6))) {
 				GameScene.show( new WndImp( this, tokens ) );
 			} else {
-				tell( Quest.alternative ? TXT_MONKS2 : TXT_GOLEMS2, Dungeon.hero.className() );
+				tell( Quest.alternative ? TXT_MONKS2 : TXT_GOLEMS2, Dungeon.hero.givenName() );
 			}
 			
 		} else {
@@ -142,7 +142,7 @@ public class Imp extends NPC {
 	
 	public void flee() {
 		
-		yell( Utils.format( TXT_CYA, Dungeon.hero.className() ) );
+		yell( Utils.format( TXT_CYA, Dungeon.hero.givenName() ) );
 		
 		destroy();
 		sprite.die();

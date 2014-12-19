@@ -129,7 +129,7 @@ public class Wandmaker extends NPC {
 			if (item != null) {
 				GameScene.show( new WndWandmaker( this, item ) );
 			} else {
-				tell( Quest.alternative ? TXT_DUST2 : TXT_BERRY2, Dungeon.hero.className() );
+				tell( Quest.alternative ? TXT_DUST2 : TXT_BERRY2, Dungeon.hero.givenName() );
 			}
 			
 		} else {
