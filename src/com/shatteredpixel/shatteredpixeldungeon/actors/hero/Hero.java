@@ -1168,7 +1168,7 @@ public class Hero extends Char {
 				GLog.w( "You are poisoned!" );
 				interrupt();
 			} else if (buff instanceof Ooze) {
-				GLog.w( "Caustic ooze eats your flesh. Wash away it!" );
+				GLog.w( "Caustic ooze eats your flesh. Wash it away!" );
 			} else if (buff instanceof Roots) {
 				GLog.w( "You can't move!" );
 			} else if (buff instanceof Weakness) {
