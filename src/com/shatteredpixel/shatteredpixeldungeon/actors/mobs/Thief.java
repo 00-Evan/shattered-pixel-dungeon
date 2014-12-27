@@ -48,7 +48,7 @@ public class Thief extends Mob {
 		EXP = 5;
 		maxLvl = 10;
 		
-		loot = MasterThievesArmband.class;
+		loot = new MasterThievesArmband();
         lootChance = 0.01f;
 
         FLEEING = new Fleeing();
