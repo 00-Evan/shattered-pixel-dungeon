@@ -65,18 +65,18 @@ public class IconTitle extends Component {
 	
 	@Override
 	protected void layout() {
-		imIcon.x = 0;
-		imIcon.y = 0;
+		imIcon.x = this.x;
+		imIcon.y = this.y;
 		
 		tfLabel.x = PixelScene.align( PixelScene.uiCamera, imIcon.x + imIcon.width() + GAP );
 		tfLabel.maxWidth = (int)(width - tfLabel.x);
 		tfLabel.measure();
 		tfLabel.y =  PixelScene.align( PixelScene.uiCamera,
 			imIcon.height > tfLabel.height() ?
-				1+ (imIcon.height() - tfLabel.height()) / 2 :
+				imIcon.y + 1 + (imIcon.height() - tfLabel.height()) / 2 :
 				imIcon.y );
 				
-		height = Math.max( imIcon.y + imIcon.height(), tfLabel.y + tfLabel.height() );
+		height = Math.max( imIcon.height(), tfLabel.height() );
 	}
 	
 	public void icon( Image icon ) {
