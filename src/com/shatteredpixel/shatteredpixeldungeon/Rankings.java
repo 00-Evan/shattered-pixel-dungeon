@@ -43,8 +43,6 @@ public enum Rankings {
 	public ArrayList<Record> records;
 	public int lastRecord;
 	public int totalNumber;
-
-	private boolean saveNeeded = false;
 	
 	public void submit( boolean win ) {
 		
