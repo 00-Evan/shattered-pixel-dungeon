@@ -56,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
 import com.watabou.noosa.audio.Sample;
@@ -76,7 +77,7 @@ public class Ghost extends NPC {
 	}
 	
 	private static final String TXT_RAT1	=
-            "Hello adventurer... Once I was like you - strong and confident... " +
+            "Hello %s... Once I was like you - strong and confident... " +
             "But I was slain by a foul beast... I can't leave this place... Not until I have my revenge... " +
             "Slay the _fetid rat_, that has taken my life...\n\n" +
             "It stalks this floor... Spreading filth everywhere... " +
@@ -87,7 +88,7 @@ public class Ghost extends NPC {
             "_Fight it near water... Avoid the stench..._";
 
     private static final String TXT_GNOLL1	=
-            "Hello adventurer... Once I was like you - strong and confident... " +
+            "Hello %s... Once I was like you - strong and confident... " +
             "But I was slain by a devious foe... I can't leave this place... Not until I have my revenge... " +
             "Slay the _gnoll trickster_, that has taken my life...\n\n" +
             "It is not like the other gnolls... It hides and uses thrown weapons... " +
@@ -98,7 +99,7 @@ public class Ghost extends NPC {
             "_Don't let it hit you... Get near to it..._";
 
     private static final String TXT_CRAB1	=
-            "Hello adventurer... Once I was like you - strong and confident... " +
+            "Hello %s... Once I was like you - strong and confident... " +
             "But I was slain by an ancient creature... I can't leave this place... Not until I have my revenge... " +
             "Slay the _great crab_, that has taken my life...\n\n" +
             "It is unnaturally old... With a massive single claw and a thick shell... " +
@@ -196,13 +197,13 @@ public class Ghost extends NPC {
             switch (Quest.type){
                 case 1: default:
                     questBoss = new FetidRat();
-                    txt_quest = TXT_RAT1; break;
+                    txt_quest = Utils.format(TXT_RAT1, Dungeon.hero.givenName()); break;
                 case 2:
                     questBoss = new GnollTrickster();
-                    txt_quest = TXT_GNOLL1; break;
+                    txt_quest = Utils.format(TXT_GNOLL1, Dungeon.hero.givenName()); break;
                 case 3:
                     questBoss = new GreatCrab();
-                    txt_quest = TXT_CRAB1; break;
+                    txt_quest = Utils.format(TXT_CRAB1, Dungeon.hero.givenName()); break;
             }
 
             questBoss.pos = Dungeon.level.randomRespawnCell();

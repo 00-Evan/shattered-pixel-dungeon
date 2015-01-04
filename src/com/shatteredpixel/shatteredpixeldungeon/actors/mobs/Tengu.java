@@ -168,7 +168,7 @@ public class Tengu extends Mob {
 	@Override
 	public void notice() {
 		super.notice();
-		yell( "Gotcha, " + Dungeon.hero.heroClass.title() + "!" );
+		yell( "Gotcha, " + Dungeon.hero.givenName() + "!" );
 	}
 	
 	@Override

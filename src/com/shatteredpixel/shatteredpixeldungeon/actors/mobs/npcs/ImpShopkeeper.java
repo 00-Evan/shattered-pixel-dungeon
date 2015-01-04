@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class ImpShopkeeper extends Shopkeeper {
 
-	private static final String TXT_GREETINGS = "Hello, friend!";
+	private static final String TXT_GREETINGS = "Hello, %s!";
     public static final String TXT_THIEF = "I thought I could trust you!";
 
 	
@@ -42,7 +42,7 @@ public class ImpShopkeeper extends Shopkeeper {
 	protected boolean act() {
 
 		if (!seenBefore && Dungeon.visible[pos]) {
-			yell( Utils.format( TXT_GREETINGS ) );
+			yell( Utils.format( TXT_GREETINGS, Dungeon.hero.givenName() ) );
 			seenBefore = true;
 		}
 		
