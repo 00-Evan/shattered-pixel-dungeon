@@ -104,7 +104,7 @@ public class Chasm {
 			public void onDeath() {
 				Badges.validateDeathFromFalling();
 				
-				Dungeon.fail( Utils.format( ResultDescriptions.FALL, Dungeon.depth ) );
+				Dungeon.fail( ResultDescriptions.FALL );
 				GLog.n( "You fell to death..." );
 			}
 		} );

@@ -107,7 +107,7 @@ public class ChaliceOfBlood extends Artifact {
             hero.damage(damage, this);
 
         if (!hero.isAlive()) {
-            Dungeon.fail(Utils.format(ResultDescriptions.ITEM, name, Dungeon.depth));
+            Dungeon.fail(Utils.format( ResultDescriptions.ITEM, name ));
             GLog.n("The Chalice sucks your life essence dry...");
         } else {
             upgrade();

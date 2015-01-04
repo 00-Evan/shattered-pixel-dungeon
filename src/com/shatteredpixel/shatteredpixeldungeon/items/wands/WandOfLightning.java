@@ -50,7 +50,7 @@ public class WandOfLightning extends Wand {
 	protected void onZap( int cell ) {
 		
 		if (!curUser.isAlive()) {
-			Dungeon.fail( Utils.format( ResultDescriptions.ITEM, name, Dungeon.depth ) );
+			Dungeon.fail( Utils.format( ResultDescriptions.ITEM, name ) );
 			GLog.n( "You killed yourself with your own Wand of Lightning..." );
 		}
 	}

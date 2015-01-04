@@ -159,12 +159,11 @@ public abstract class Char extends Actor {
 						
 					} else {
 						if ( this instanceof Yog ) {
-							Dungeon.fail( Utils.format( ResultDescriptions.NAMED, name, Dungeon.depth ) );
+							Dungeon.fail( Utils.format( ResultDescriptions.NAMED, name) );
 						} if (Bestiary.isUnique( this )) {
-							Dungeon.fail( Utils.format( ResultDescriptions.UNIQUE, name, Dungeon.depth ) );
+							Dungeon.fail( Utils.format( ResultDescriptions.UNIQUE, name) );
 						} else {
-							Dungeon.fail( Utils.format( ResultDescriptions.MOB, 
-								Utils.indefinite( name ), Dungeon.depth ) );
+							Dungeon.fail( Utils.format( ResultDescriptions.MOB, Utils.indefinite( name )) );
 						}
 						
 						GLog.n( TXT_KILL, name );

@@ -66,7 +66,7 @@ public class WandOfFirebolt extends Wand {
 			ch.sprite.emitter().burst( FlameParticle.FACTORY, 5 );
 			
 			if (ch == curUser && !ch.isAlive()) {
-				Dungeon.fail( Utils.format( ResultDescriptions.ITEM, name, Dungeon.depth ) );
+				Dungeon.fail( Utils.format( ResultDescriptions.ITEM, name ) );
 				GLog.n( "You killed yourself with your own Wand of Firebolt..." );
 			}
 		}

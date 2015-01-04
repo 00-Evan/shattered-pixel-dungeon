@@ -45,7 +45,7 @@ public class LightningTrap {
 				Camera.main.shake( 2, 0.3f );
 				
 				if (!ch.isAlive()) {
-					Dungeon.fail( Utils.format( ResultDescriptions.TRAP, name, Dungeon.depth ) );
+					Dungeon.fail( Utils.format( ResultDescriptions.TRAP, name ) );
 					GLog.n( "You were killed by a discharge of a lightning trap..." );
 				} else {
 					((Hero)ch).belongings.charge( false );

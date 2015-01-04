@@ -138,7 +138,10 @@ public class RankingsScene extends PixelScene {
 		private Flare flare;
 		private BitmapText position;
 		private BitmapTextMultiline desc;
+		private Image steps;
+		private BitmapText depth;
 		private Image classIcon;
+		private BitmapText level;
 		
 		public Record( int pos, boolean latest, Rankings.Record rec ) {
 			super();
@@ -168,9 +171,29 @@ public class RankingsScene extends PixelScene {
 				shield.view( ItemSpriteSheet.AMULET, null );
 				position.hardlight( TEXT_WIN[odd] );
 				desc.hardlight( TEXT_WIN[odd] );
+				depth.hardlight( TEXT_WIN[odd] );
+				level.hardlight( TEXT_WIN[odd] );
 			} else {
 				position.hardlight( TEXT_LOSE[odd] );
 				desc.hardlight( TEXT_LOSE[odd] );
+				depth.hardlight( TEXT_LOSE[odd] );
+				level.hardlight( TEXT_LOSE[odd] );
+
+				if (rec.depth != 0){
+					depth.text( Integer.toString(rec.depth) );
+					depth.measure();
+					steps.copy(Icons.DEPTH_LG.get());
+
+					add(steps);
+					add(depth);
+				}
+
+			}
+
+			if (rec.herolevel != 0){
+				level.text( Integer.toString(rec.herolevel) );
+				level.measure();
+				add(level);
 			}
 			
 			classIcon.copy( Icons.get( rec.heroClass ) );
@@ -185,13 +208,22 @@ public class RankingsScene extends PixelScene {
 			add( shield );
 			
 			position = new BitmapText( PixelScene.font1x );
+			position.alpha(0.8f);
 			add( position );
 			
 			desc = createMultiline( 9 );
 			add( desc );
+
+			depth = new BitmapText( PixelScene.font1x );
+			depth.alpha(0.8f);
+
+			steps = new Image();
 			
 			classIcon = new Image();
 			add( classIcon );
+
+			level = new BitmapText( PixelScene.font1x );
+			level.alpha(0.8f);
 		}
 		
 		@Override
@@ -208,12 +240,21 @@ public class RankingsScene extends PixelScene {
 			if (flare != null) {
 				flare.point( shield.center() );
 			}
-			
-			classIcon.x = align( x + width - classIcon.width );
+
+			classIcon.x = align(x + width - classIcon.width);
 			classIcon.y = shield.y;
-			
+
+			level.x = align( classIcon.x + (classIcon.width - level.width()) / 2 );
+			level.y = align( classIcon.y + (classIcon.height - level.height()) / 2 + 1 );
+
+			steps.x = align(x + width - steps.width - classIcon.width);
+			steps.y = shield.y;
+
+			depth.x = align( steps.x + (steps.width - depth.width()) / 2 );
+			depth.y = align( steps.y + (steps.height - depth.height()) / 2 + 1 );
+
 			desc.x = shield.x + shield.width + GAP;
-			desc.maxWidth = (int)(classIcon.x - desc.x);
+			desc.maxWidth = (int)(steps.x - desc.x);
 			desc.measure();
 			desc.y = align( shield.y + (shield.height - desc.height()) / 2 + 1 );
 		}

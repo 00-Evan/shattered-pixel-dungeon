@@ -39,6 +39,7 @@ public enum Icons {
 	HUNTRESS,
 	CLOSE,
 	DEPTH,
+	DEPTH_LG,
 	SLEEP,
 	ALERT,
 	BACKPACK,
@@ -105,6 +106,9 @@ public enum Icons {
 			break;
 		case DEPTH:
 			icon.frame( icon.texture.uvRect( 45, 12, 54, 20 ) );
+			break;
+		case DEPTH_LG:
+			icon.frame( icon.texture.uvRect( 34, 46, 50, 62 ) );
 			break;
 		case SLEEP:
 			icon.frame( icon.texture.uvRect( 13, 45, 22, 53 ) );

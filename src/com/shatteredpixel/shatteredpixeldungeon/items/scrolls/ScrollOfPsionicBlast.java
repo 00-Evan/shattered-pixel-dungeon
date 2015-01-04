@@ -64,7 +64,7 @@ public class ScrollOfPsionicBlast extends Scroll {
 		curUser.spendAndNext( TIME_TO_READ );
 
         if (!curUser.isAlive()) {
-            Dungeon.fail(Utils.format(ResultDescriptions.ITEM, name, Dungeon.depth));
+            Dungeon.fail( Utils.format(ResultDescriptions.ITEM, name ));
             GLog.n("The Psionic Blast tears your mind apart...");
         }
 	}
