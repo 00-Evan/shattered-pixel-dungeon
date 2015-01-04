@@ -576,6 +576,8 @@ public class Dungeon {
 
         version = bundle.getInt( VERSION );
 
+		Generator.reset();
+
         Dungeon.challenges = bundle.getInt( CHALLENGES );
 		
 		Dungeon.level = null;
