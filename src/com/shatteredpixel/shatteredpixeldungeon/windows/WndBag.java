@@ -22,6 +22,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -63,7 +64,8 @@ public class WndBag extends WndTabbed {
 		SEED,
         FOOD,
 		POTION,
-		SCROLL
+		SCROLL,
+		EQUIPMENT
 	}
 	
 	protected static final int COLS	= 4;
@@ -356,6 +358,7 @@ public class WndBag extends WndTabbed {
                         mode == Mode.FOOD && (item instanceof Food) ||
 						mode == Mode.POTION && (item instanceof Potion) ||
 						mode == Mode.SCROLL && (item instanceof Scroll) ||
+						mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
 						mode == Mode.ALL
 					);
 				}
