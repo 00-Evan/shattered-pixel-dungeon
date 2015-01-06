@@ -13,9 +13,9 @@ public class WelcomeScene extends PixelScene {
 
     private static final String TTL_Welcome = "Welcome!";
 
-    private static final String TTL_LastVer = "Updated To v0.2.2";
+    private static final String TTL_LastVer = "v0.2.3 Update!";
 
-    private static final String TTL_SameVer = "v0.2.2 Patched!";
+    private static final String TTL_SameVer = "v0.2.3 Patched!";
 
     private static final String TTL_Future = "Wait What?";
 
@@ -26,19 +26,14 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_LastVer =
-            "This update brings improvements from the Pixel Dungeon source, and various small tweaks.\n\n" +
-            "There are now two new plants, look out for dreamfoil and stormvine! Potions of levitation has been buffed as well.\n\n" +
-            "The heroes remains system has been reworked to be more helpful and less exploitable.\n\n" +
-            "Weightstones have been added, but they are reworked from the base game.\n\n" +
-            "There are various other small tweaks and improvements, for example, falling items will now appear on the next depth!";
+            "The Artifact Booster Pack! This update brings a variety of tweaks, improvements, and new content!\n\n" +
+            "-4 new Artifacts!\n-Artifacts are now unique!\n-Artifacts can now be cursed!\n-Artifact balance tweaks\n\n" +
+            "-Cloak of Shadows is now Rogue Exclusive\n-Freerunner now runs MUCH faster while invisible\n\n" +
+            "-Dangerous blandfruit effects reworked, now more positive.\n\n-Ring of Force buffed, Ring of Evasion reworked\n\n" +
+            "-Health Potion Farming Universally Nerfed\n\n-Rankings Page Reworked\n\n-You can now donate to support the game, press the donate button for more info!";
 
     private static final String TXT_SameVer =
-            "v0.2.2a addresses an issue players were having when they tried to start a new game, " +
-            "corrects a few small inconsistencies with challenges, and makes a few small improvements to " +
-            "level generation.\n\n" +
-            "v0.2.2b addresses issues players were having on runs with challenges enabled " +
-            "and fixes a variety of other smaller bugs as well.\n\n" +
-            "Happy Dungeoneering!";
+            "...";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
@@ -62,15 +57,10 @@ public class WelcomeScene extends PixelScene {
             text = createMultiline(TXT_Welcome, 8);
             title = createMultiline(TTL_Welcome, 16);
 
-        } else if (gameversion < 13) {
+        } else if (gameversion <= Game.versionCode) {
 
             text = createMultiline(TXT_LastVer, 6 );
             title = createMultiline(TTL_LastVer, 12 );
-
-        } else if (gameversion <= Game.versionCode) {
-
-            text = createMultiline(TXT_SameVer, 6 );
-            title = createMultiline(TTL_SameVer, 12 );
 
         } else {
 
