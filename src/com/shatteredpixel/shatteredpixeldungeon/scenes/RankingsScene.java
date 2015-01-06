@@ -45,7 +45,7 @@ public class RankingsScene extends PixelScene {
 	
 	private static final String TXT_NO_INFO	= "No additional information";
 	
-	private static final float ROW_HEIGHT	= 20;
+	private static final float ROW_HEIGHT	= 18;
 	private static final float GAP	= 4;
 	
 	private Archs archs;
@@ -68,18 +68,18 @@ public class RankingsScene extends PixelScene {
 		add( archs );
 		
 		Rankings.INSTANCE.load();
+
+		BitmapText title = PixelScene.createText(TXT_TITLE, 9);
+		title.hardlight(Window.SHPX_COLOR);
+		title.measure();
+		title.x = align((w - title.width()) / 2);
+		title.y = align( GAP );
+		add(title);
 		
 		if (Rankings.INSTANCE.records.size() > 0) {
 			
 			float left = (w - Math.min( 160, w )) / 2 + GAP;
 			float top = align( (h - ROW_HEIGHT  * Rankings.INSTANCE.records.size()) / 2 );
-			
-			BitmapText title = PixelScene.createText( TXT_TITLE, 9 );
-			title.hardlight( Window.SHPX_COLOR );
-			title.measure();
-			title.x = align( (w - title.width()) / 2 );
-			title.y = align( top - title.height() - GAP );
-			add( title );
 			
 			int pos = 0;
 			
@@ -101,20 +101,20 @@ public class RankingsScene extends PixelScene {
 			}
 			
 		} else {
-			
-			BitmapText title = PixelScene.createText( TXT_NO_GAMES, 8 );
-			title.hardlight( Window.TITLE_COLOR );
-			title.measure();
-			title.x = align( (w - title.width()) / 2 );
-			title.y = align( (h - title.height()) / 2 );
-			add( title );
+
+			BitmapText noRec = PixelScene.createText(TXT_NO_GAMES, 8);
+			noRec.hardlight(Window.TITLE_COLOR);
+			noRec.measure();
+			noRec.x = align((w - noRec.width()) / 2);
+			noRec.y = align((h - noRec.height()) / 2);
+			add(noRec);
 			
 		}
 
         ExitButton btnExit = new ExitButton();
         btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
         add( btnExit );
-		
+
 		fadeIn();
 	}
 	
@@ -134,7 +134,7 @@ public class RankingsScene extends PixelScene {
 		
 		private Rankings.Record rec;
 		
-		private ItemSprite shield;
+		protected ItemSprite shield;
 		private Flare flare;
 		private BitmapText position;
 		private BitmapTextMultiline desc;
@@ -211,7 +211,7 @@ public class RankingsScene extends PixelScene {
 			position.alpha(0.8f);
 			add( position );
 			
-			desc = createMultiline( 9 );
+			desc = createMultiline( 7 );
 			add( desc );
 
 			depth = new BitmapText( PixelScene.font1x );
