@@ -46,8 +46,6 @@ public enum Rankings {
 	
 	public void submit( boolean win ) {
 		
-		load();
-		
 		Record rec = new Record();
 		
 		rec.info	= Dungeon.resultDescription;
@@ -65,6 +63,8 @@ public enum Rankings {
 		} catch (IOException e) {
 			rec.gameFile = "";
 		}
+
+		load();
 		
 		records.add( rec );
 		
@@ -160,7 +160,7 @@ public enum Rankings {
 		
 		public HeroClass heroClass;
 		public int armorTier;
-		public int herolevel; //not currently used, but I may want this here in the future.
+		public int herolevel;
 		public int depth;
 		
 		public int score;
