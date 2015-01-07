@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -45,6 +46,8 @@ public enum Rankings {
 	public int totalNumber;
 	
 	public void submit( boolean win ) {
+
+		load();
 		
 		Record rec = new Record();
 		
@@ -63,8 +66,6 @@ public enum Rankings {
 		} catch (IOException e) {
 			rec.gameFile = "";
 		}
-
-		load();
 		
 		records.add( rec );
 		
@@ -188,8 +189,17 @@ public enum Rankings {
 				}
 				info = info.split("on level")[0].trim();
 				try {
+					/* This commented code remains here as it is the single worst thing I have added to this codebase,
+					   and I must be shamed for doing something so stupid. May I remember these two lines
+					   and as a result never make the same mistake again.
 					Dungeon.loadGame(gameFile);
 					herolevel = Dungeon.hero.lvl;
+					*/
+					InputStream input = Game.instance.openFileInput( gameFile );
+					Bundle gameBundle = Bundle.read( input );
+					input.close();
+
+					herolevel = ((Hero)gameBundle.get( "hero" )).lvl;
 				} catch (Exception e){
 					herolevel = 0;
 				}
