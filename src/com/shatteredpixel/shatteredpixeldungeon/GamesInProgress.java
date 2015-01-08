@@ -42,7 +42,7 @@ public class GamesInProgress {
 				info = new Info();
 				Dungeon.preview( info, bundle );
 
-			} catch (IOException e) {
+			} catch (Exception e) {
 				info = null;
 			}
 			
