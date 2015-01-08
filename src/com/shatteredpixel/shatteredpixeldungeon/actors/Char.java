@@ -137,10 +137,6 @@ public abstract class Char extends Actor {
 				Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
 			}
 
-			if (enemy == Dungeon.hero) {
-				Dungeon.hero.interrupt();
-			}
-
 			if (buff(FireImbue.class) != null)
 				buff(FireImbue.class).proc(enemy);
 			if (buff(EarthImbue.class) != null)
