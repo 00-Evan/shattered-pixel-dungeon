@@ -33,7 +33,7 @@ public class WelcomeScene extends PixelScene {
             "-Health Potion Farming Universally Nerfed\n\n-Rankings Page Reworked\n\n-You can now donate to support the game, press the donate button for more info!";
 
     private static final String TXT_SameVer =
-            "...";
+            "v0.2.3a and v0.2.3b fix some crash bugs players were experiencing, make sure to report any issues if you are still having them!";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
@@ -57,10 +57,15 @@ public class WelcomeScene extends PixelScene {
             text = createMultiline(TXT_Welcome, 8);
             title = createMultiline(TTL_Welcome, 16);
 
-        } else if (gameversion <= Game.versionCode) {
+        } else if (gameversion < 26) {
 
             text = createMultiline(TXT_LastVer, 6 );
             title = createMultiline(TTL_LastVer, 12 );
+
+        } else if (gameversion <= Game.versionCode) {
+
+            text = createMultiline(TXT_SameVer, 6 );
+            title = createMultiline(TTL_SameVer, 12 );
 
         } else {
 
