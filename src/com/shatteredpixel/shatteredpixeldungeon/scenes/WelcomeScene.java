@@ -34,7 +34,8 @@ public class WelcomeScene extends PixelScene {
             "-Health Potion Farming Universally Nerfed\n\n-Rankings Page Reworked\n\n-You can now donate to support the game, press the donate button for more info!";
 
     private static final String TXT_SameVer =
-            "v0.2.3a and v0.2.3b fix some crash bugs players were experiencing, make sure to report any issues if you are still having them!";
+            "v0.2.3a and v0.2.3b fix some crash bugs players were experiencing, make sure to report any issues if you are still having them!\n\n" +
+            "v0.2.3c fixes numerous issues, and gives some buffs to two of the new artifacts.";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
@@ -76,14 +77,14 @@ public class WelcomeScene extends PixelScene {
         }
 
 
-        text.maxWidth = Math.min( Camera.main.width, 120 );
+        text.maxWidth = 120;
         text.measure();
         add( text );
 
         text.x = align( (Camera.main.width - text.width()) / 2 );
         text.y = align( (Camera.main.height - text.height()) / 2 );
 
-        title.maxWidth = Math.min( Camera.main.width-50, 120 );
+        title.maxWidth = text.maxWidth;
         title.measure();
         title.hardlight(Window.TITLE_COLOR);
         add( title );
@@ -118,7 +119,7 @@ public class WelcomeScene extends PixelScene {
         changes.setRect(text.x + 65, text.y + text.height() + 5, 55, 18);
         add(changes);*/
 
-        okay.setRect(text.x, text.y + text.height() + 5, 120, 18);
+        okay.setRect(text.x, text.y + text.height() + 5, text.width(), 18);
         add(okay);
 
 
