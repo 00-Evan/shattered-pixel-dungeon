@@ -193,7 +193,7 @@ public class Badges {
 	
 	private static void store( Bundle bundle, HashSet<Badge> badges ) {
 		int count = 0;
-		String names[] = new String[global.size()];
+		String names[] = new String[badges.size()];
 		
 		for (Badge badge:badges) {
 			names[count++] = badge.toString();
