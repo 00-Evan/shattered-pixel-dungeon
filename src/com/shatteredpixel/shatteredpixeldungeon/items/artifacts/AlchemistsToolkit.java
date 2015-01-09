@@ -106,6 +106,7 @@ public class AlchemistsToolkit extends Artifact {
         } else if (score > level) {
 
             level = score;
+            seedsToPotion = 0;
             bstGuess = curGuess;
             this.numRight = numRight;
             this.numWrongPlace = numWrongPlace;
@@ -218,8 +219,8 @@ public class AlchemistsToolkit extends Artifact {
             //this logic is handled inside the class with a variable so that it may be stored.
             //to prevent manipulation where a player could keep throwing in 1-2 seeds until they get lucky.
             if (seedsToPotion == 0){
-                if (Random.Int(30) < 10+level){
-                    if (Random.Int(30) < level){
+                if (Random.Int(20) < 10+level){
+                    if (Random.Int(20) < level){
                         seedsToPotion = 1;
                     } else
                         seedsToPotion = 2;
