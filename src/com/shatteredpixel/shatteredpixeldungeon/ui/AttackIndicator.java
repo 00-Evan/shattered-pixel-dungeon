@@ -25,12 +25,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
 
 public class AttackIndicator extends Tag {
 	
 	private static final float ENABLED	= 1.0f;
 	private static final float DISABLED	= 0.3f;
+
+	private static float delay = 0.5f;
 	
 	private static AttackIndicator instance;
 	
@@ -68,6 +71,14 @@ public class AttackIndicator extends Tag {
 	@Override
 	public void update() {
 		super.update();
+
+		if (lastTarget == null){
+			if (delay > 0f) delay -= Game.elapsed;
+			if (delay <= 0f) active = false;
+		} else {
+			delay = 0.5f;
+			active = true;
+		}
 		
 		if (Dungeon.hero.isAlive()) {
 
@@ -118,6 +129,7 @@ public class AttackIndicator extends Tag {
 		
 		try {
 			sprite = lastTarget.spriteClass.newInstance();
+			active = true;
 			sprite.idle();
 			sprite.paused = true;
 			add( sprite );
@@ -133,7 +145,6 @@ public class AttackIndicator extends Tag {
 	private boolean enabled = true;
 	private void enable( boolean value ) {
 		enabled = value;
-        active = value;
 		if (sprite != null) {
 			sprite.alpha( value ? ENABLED : DISABLED );
 		}
@@ -148,7 +159,7 @@ public class AttackIndicator extends Tag {
 	
 	@Override
 	protected void onClick() {
-		if (enabled) {
+		if (enabled && lastTarget != null) {
 			Dungeon.hero.handle( lastTarget.pos );
 		}
 	}
