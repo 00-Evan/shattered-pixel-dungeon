@@ -183,7 +183,7 @@ public class UnstableSpellbook extends Artifact {
         @Override
         public boolean act() {
             if (charge < chargeCap && !cursed) {
-                partialCharge += 1 / (300f - (chargeCap - charge)*30f);
+                partialCharge += 1 / (200f - (chargeCap - charge)*20f);
 
                 if (partialCharge >= 1) {
                     partialCharge --;
