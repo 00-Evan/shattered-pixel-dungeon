@@ -22,7 +22,7 @@ public class EarthImbue extends FlavourBuff {
 
     @Override
     public int icon() {
-        return BuffIndicator.IMMUNITY;
+        return BuffIndicator.ROOTS;
     }
 
     @Override

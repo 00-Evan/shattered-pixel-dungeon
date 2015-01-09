@@ -63,7 +63,7 @@ public class FireImbue extends Buff {
 
     @Override
     public int icon() {
-        return BuffIndicator.IMMUNITY;
+        return BuffIndicator.FIRE;
     }
 
     @Override
