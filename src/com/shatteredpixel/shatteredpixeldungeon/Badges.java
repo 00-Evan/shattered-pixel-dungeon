@@ -218,7 +218,7 @@ public class Badges {
 				
 				global = restore( bundle );
 				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				global = new HashSet<Badge>();
 			}
 		}
