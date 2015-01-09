@@ -136,7 +136,7 @@ public class Swarm extends Mob {
 	@Override
 	public void die( Object cause ){
         //sets drop chance
-        lootChance = 1f/((5 + Dungeon.limitedDrops.swarmHP.count ) * generation+1 );
+        lootChance = 1f/((5 + Dungeon.limitedDrops.swarmHP.count ) * (generation+1) );
         super.die( cause );
     }
 

@@ -1,6 +1,7 @@
 //TODO: update this class with relevant info as new versions come out.
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
@@ -93,6 +94,11 @@ public class WelcomeScene extends PixelScene {
         RedButton okay = new RedButton("Okay!") {
             @Override
             protected void onClick() {
+                //imports new ranking data for pre-0.2.3 saves.
+                if (gameversion < 29){
+                    Rankings.INSTANCE.load();
+                    Rankings.INSTANCE.save();
+                }
                 ShatteredPixelDungeon.version(Game.versionCode);
                 Game.switchScene(TitleScene.class);
             }
