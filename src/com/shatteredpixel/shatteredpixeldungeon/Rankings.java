@@ -207,6 +207,9 @@ public enum Rankings {
 				depth = bundle.getInt( DEPTH );
 				herolevel = bundle.getInt( LEVEL );
 			}
+
+			//to handle cases with pre-0.2.3d saves, where an updated ranking where the player died to dm-300 would cause a recorded depth of 30015.
+			if (depth == 30015) depth = 15;
 		}
 		
 		@Override
