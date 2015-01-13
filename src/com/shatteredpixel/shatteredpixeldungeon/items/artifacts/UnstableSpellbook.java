@@ -133,10 +133,12 @@ public class UnstableSpellbook extends Artifact {
             desc += "It fizzes and crackles as you move the pages, surging with unstable energy. ";
 
         desc += "It seems to contains a list of spells, but the order and position of them in the index is " +
-                "constantly shifting. if you read from this book, there's no telling what spell you might cast.";
+                "constantly shifting. If you read from this book, there's no telling what spell you might cast.";
+
+        desc += "\n\n";
 
         if (isEquipped (Dungeon.hero)) {
-            desc += "\n\n";
+
             if (!cursed)
                 desc += "The book fits firmly at your side, sending you the occasional zip of static energy.";
             else
