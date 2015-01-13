@@ -62,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
@@ -929,7 +930,7 @@ public class Hero extends Char {
 
 		restoreHealth = false;
 
-		if (!(src instanceof Hunger) && damageInterrupt)
+		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt)
         	interrupt();
 
         if (this.buff(Drowsy.class) != null){
