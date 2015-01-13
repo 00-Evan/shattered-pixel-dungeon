@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -103,6 +104,7 @@ abstract public class ClassArmor extends Armor {
 				GLog.w( TXT_NOT_EQUIPPED );
 			} else {
 				curUser = hero;
+				Invisibility.dispel();
 				doSpecial();
 			}
 			
