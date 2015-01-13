@@ -1414,11 +1414,16 @@ public class Hero extends Char {
 		}
 
         TalismanOfForesight.Foresight foresight = buff( TalismanOfForesight.Foresight.class );
+
+		//cursed talisman of foresight makes unintentionally finding things impossible.
+		if (foresight != null && foresight.isCursed()){
+			level = -1;
+		}
 		
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Level.WIDTH; x <= bx; x++, p++) {
 				
-				if (Dungeon.visible[p] && !(foresight != null && foresight.isCursed())) {
+				if (Dungeon.visible[p]) {
 					
 					if (intentional) {
 						sprite.parent.addToBack( new CheckedCell( p ) );
@@ -1438,7 +1443,7 @@ public class Hero extends Char {
 						
 						smthFound = true;
 
-                        if (foresight != null)
+                        if (foresight != null && !foresight.isCursed())
                             foresight.charge();
 					}
 				}
@@ -1449,10 +1454,11 @@ public class Hero extends Char {
 		if (intentional) {
 			sprite.showStatus( CharSprite.DEFAULT, TXT_SEARCH );
 			sprite.operate( pos );
-			if (smthFound) {
-				spendAndNext( Random.Float() < level ? TIME_TO_SEARCH : TIME_TO_SEARCH * 2 );
+			if (foresight != null && foresight.isCursed()){
+				GLog.n("You can't concentrate, searching takes a while.");
+				spendAndNext(TIME_TO_SEARCH * 3);
 			} else {
-				spendAndNext( TIME_TO_SEARCH );
+				spendAndNext(TIME_TO_SEARCH);
 			}
 			
 		}
