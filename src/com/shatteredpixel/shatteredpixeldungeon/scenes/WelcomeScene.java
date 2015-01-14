@@ -96,7 +96,7 @@ public class WelcomeScene extends PixelScene {
             @Override
             protected void onClick() {
                 //imports new ranking data for pre-0.2.3 saves.
-                if (gameversion < 29){
+                if (gameversion < 30){
                     Rankings.INSTANCE.load();
                     Rankings.INSTANCE.save();
                 }

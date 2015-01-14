@@ -180,36 +180,41 @@ public enum Rankings {
 			
 			gameFile	= bundle.getString( GAME );
 
-			//for pre 0.2.3 saves
-			if (!bundle.contains(LEVEL)){
+			//Here lies a collection of messy logic, some to account for transferring pre-0.2.3 rankings to the new
+			//system, some to account for errors in that process which were patched.
+			//commented here is info about what was added when, and why, eventually after almost everyone has
+			//dropped 0.2.2 this can be phased out.
+
+			//0.2.3, adds depth and parses info, works almost perfectly, except for the edge case in the next comment.
+			if (!bundle.contains(DEPTH)){
 				try {
 					depth = Integer.parseInt(info.replaceAll("[\\D]", ""));
 				} catch (Exception e) {
 					depth = 0;
 				}
 				info = info.split("on level")[0].trim();
+			} else
+				depth = bundle.getInt( DEPTH );
+
+			//0.2.3d, fixes a case where a player who died to dm-300 would have a recorded depth of 30015.
+			if (depth == 30015) depth = 15;
+
+			//basically every patch until 0.2.3d, extracts the hero's level from the bundle structure.
+			//the second condition in the if is important, helps account for bugged rankings from pre 0.2.3d
+			if (!bundle.contains(LEVEL) || bundle.getInt(LEVEL) == 0 && ShatteredPixelDungeon.version() < 30) {
 				try {
-					/* This commented code remains here as it is the single worst thing I have added to this codebase,
-					   and I must be shamed for doing something so stupid. May I remember these two lines
-					   and as a result never make the same mistake again.
-					Dungeon.loadGame(gameFile);
-					herolevel = Dungeon.hero.lvl;
-					*/
-					InputStream input = Game.instance.openFileInput( gameFile );
-					Bundle gameBundle = Bundle.read( input );
+
+					InputStream input = Game.instance.openFileInput(gameFile);
+					Bundle gameBundle = Bundle.read(input);
 					input.close();
 
-					herolevel = ((Hero)gameBundle.get( "hero" )).lvl;
-				} catch (Exception e){
+					herolevel = gameBundle.getBundle("hero").getInt("lvl");
+				} catch (Exception e) {
 					herolevel = 0;
 				}
-			} else {
-				depth = bundle.getInt( DEPTH );
+			} else
 				herolevel = bundle.getInt( LEVEL );
-			}
 
-			//to handle cases with pre-0.2.3d saves, where an updated ranking where the player died to dm-300 would cause a recorded depth of 30015.
-			if (depth == 30015) depth = 15;
 		}
 		
 		@Override
