@@ -103,18 +103,13 @@ public class SewerLevel extends RegularLevel {
 	}
 	
 	@Override
-	protected void createMobs() {
-		super.createMobs();
-
-		Ghost.Quest.spawn( this );
-	}
-	
-	@Override
 	protected void createItems() {
 		if (Dungeon.dewVial && Random.Int( 4 - Dungeon.depth ) == 0) {
 			addItemToSpawn( new DewVial() );
 			Dungeon.dewVial = false;
 		}
+
+		Ghost.Quest.spawn( this );
 		
 		super.createItems();
 	}

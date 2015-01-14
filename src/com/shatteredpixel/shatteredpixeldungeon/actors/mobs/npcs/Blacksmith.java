@@ -303,7 +303,7 @@ public class Blacksmith extends NPC {
 			}
 		}
 		
-		public static void spawn( Collection<Room> rooms ) {
+		public static boolean spawn( Collection<Room> rooms ) {
 			if (!spawned && Dungeon.depth > 11 && Random.Int( 15 - Dungeon.depth ) == 0) {
 				
 				Room blacksmith = null;
@@ -321,6 +321,7 @@ public class Blacksmith extends NPC {
 					}
 				}
 			}
+			return spawned;
 		}
 	}
 }

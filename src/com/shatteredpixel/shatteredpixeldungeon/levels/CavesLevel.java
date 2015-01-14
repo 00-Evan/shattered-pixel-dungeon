@@ -59,10 +59,13 @@ public class CavesLevel extends RegularLevel {
 	}
 	
 	@Override
-	protected void assignRoomType() {
-		super.assignRoomType();
-		
-		Blacksmith.Quest.spawn( rooms );
+	protected boolean build() {
+		if (!super.build()) return false;
+
+		if (!Blacksmith.Quest.spawn( rooms ) && Dungeon.depth == 14)
+			return false;
+
+		return true;
 	}
 	
 	@Override
