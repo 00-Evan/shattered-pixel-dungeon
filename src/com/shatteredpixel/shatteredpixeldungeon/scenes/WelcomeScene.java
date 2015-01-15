@@ -35,7 +35,8 @@ public class WelcomeScene extends PixelScene {
 
     private static final String TXT_SameVer =
             "v0.2.3a and v0.2.3b fix some crash bugs players were experiencing, make sure to report any issues if you are still having them!\n\n" +
-            "v0.2.3c fixes numerous issues, and gives some buffs to two of the new artifacts.";
+            "v0.2.3c fixes numerous issues, and gives some buffs to two of the new artifacts.\n\n" +
+            "v0.2.3d fixes numerous bugs, both from this release and older ones.";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
