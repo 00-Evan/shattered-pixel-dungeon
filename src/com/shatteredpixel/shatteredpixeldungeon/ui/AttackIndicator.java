@@ -33,7 +33,7 @@ public class AttackIndicator extends Tag {
 	private static final float ENABLED	= 1.0f;
 	private static final float DISABLED	= 0.3f;
 
-	private static float delay = 0.5f;
+	private static float delay = 0.75f;
 	
 	private static AttackIndicator instance;
 	
@@ -72,21 +72,22 @@ public class AttackIndicator extends Tag {
 	public void update() {
 		super.update();
 
-		if (lastTarget == null){
+		if (!bg.visible){
+			enable(false);
 			if (delay > 0f) delay -= Game.elapsed;
 			if (delay <= 0f) active = false;
 		} else {
-			delay = 0.5f;
+			delay = 0.75f;
 			active = true;
-		}
 		
-		if (Dungeon.hero.isAlive()) {
+			if (Dungeon.hero.isAlive()) {
 
-            enable(Dungeon.hero.ready);
+				enable(Dungeon.hero.ready);
 
-        } else {
-			visible( false );
-			enable( false );
+			} else {
+				visible( false );
+				enable( false );
+			}
 		}
 	}
 	
@@ -106,12 +107,14 @@ public class AttackIndicator extends Tag {
 			if (candidates.isEmpty()) {
 				lastTarget = null;
 			} else {
+				active = true;
 				lastTarget = Random.element( candidates );
 				updateImage();				
 				flash();
 			}
 		} else {
 			if (!bg.visible) {
+				active = true;
 				flash();
 			}
 		}
@@ -159,7 +162,7 @@ public class AttackIndicator extends Tag {
 	
 	@Override
 	protected void onClick() {
-		if (enabled && lastTarget != null) {
+		if (enabled) {
 			Dungeon.hero.handle( lastTarget.pos );
 		}
 	}
