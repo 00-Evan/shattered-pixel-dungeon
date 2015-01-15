@@ -148,7 +148,8 @@ public abstract class RegularLevel extends Level {
             //sorry warden, no lucky sungrass or blandfruit seeds for you!
             specials.remove( Room.Type.GARDEN );
         }
-		assignRoomType();
+		if (!assignRoomType())
+			return false;
 		
 		paint();
 		paintWater();
@@ -178,7 +179,7 @@ public abstract class RegularLevel extends Level {
 		return true;
 	}
 	
-	protected void assignRoomType() {
+	protected boolean assignRoomType() {
 		
 		int specialRooms = 0;
 
@@ -266,6 +267,8 @@ public abstract class RegularLevel extends Level {
 				count++;
 			}
 		}
+
+		return true;
 	}
 	
 	protected void paintWater() {
