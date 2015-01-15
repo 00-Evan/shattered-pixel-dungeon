@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
@@ -173,6 +174,7 @@ public class Yog extends Mob {
 		IMMUNITIES.add( Burning.class );
 		IMMUNITIES.add( ToxicGas.class );
 		IMMUNITIES.add( ScrollOfPsionicBlast.class );
+		IMMUNITIES.add( Vertigo.class );
 	}
 	
 	@Override
@@ -267,6 +269,7 @@ public class Yog extends Mob {
 			IMMUNITIES.add( Sleep.class );
 			IMMUNITIES.add( Terror.class );
 			IMMUNITIES.add( Poison.class );
+			IMMUNITIES.add( Vertigo.class );
 		}
 		
 		@Override
@@ -385,6 +388,7 @@ public class Yog extends Mob {
 			IMMUNITIES.add( Terror.class );
 			IMMUNITIES.add( Burning.class );
             IMMUNITIES.add( ScrollOfPsionicBlast.class );
+			IMMUNITIES.add( Vertigo.class );
 		}
 		
 		@Override
