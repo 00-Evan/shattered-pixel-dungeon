@@ -72,8 +72,9 @@ public class Pushing extends Actor {
 			acc.set( -speed.x / DELAY, -speed.y / DELAY );
 			
 			delay = 0;
-			
-			sprite.parent.add( this );
+
+			if (sprite.parent != null)
+				sprite.parent.add( this );
 		}
 		
 		@Override
