@@ -56,11 +56,14 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ShopPainter extends Painter {
 
 	private static int pasWidth;
 	private static int pasHeight;
+
+	private static ArrayList<Item> itemsToSpawn;
 	
 	public static void paint( Level level, Room room ) {
 		
@@ -71,10 +74,11 @@ public class ShopPainter extends Painter {
 		pasHeight = room.height() - 2;
 		int per = pasWidth * 2 + pasHeight * 2;
 		
-		Item[] range = range();
+		if (itemsToSpawn == null)
+			generateItems();
 		
-		int pos = xy2p( room, room.entrance() ) + (per - range.length) / 2;
-		for (int i=0; i < range.length; i++) {
+		int pos = xy2p( room, room.entrance() ) + (per - itemsToSpawn.size()) / 2;
+		for (Item item : itemsToSpawn) {
 			
 			Point xy = p2xy( room, (pos + per) % per );
 			int cell = xy.x + xy.y * Level.WIDTH;
@@ -85,7 +89,7 @@ public class ShopPainter extends Painter {
 				} while (level.heaps.get( cell ) != null);
 			}
 			
-			level.drop( range[i], cell ).type = Heap.Type.FOR_SALE;
+			level.drop( item, cell ).type = Heap.Type.FOR_SALE;
 			
 			pos++;
 		}
@@ -95,66 +99,68 @@ public class ShopPainter extends Painter {
 		for (Room.Door door : room.connected.values()) {
 			door.set( Room.Door.Type.REGULAR );
 		}
+
+		itemsToSpawn = null;
 	}
 	
-	private static Item[] range() {
-		
-		ArrayList<Item> items = new ArrayList<Item>();
+	private static void generateItems() {
+
+		itemsToSpawn = new ArrayList<Item>();
 		
 		switch (Dungeon.depth) {
 		
 		case 6:
-			items.add( (Random.Int( 2 ) == 0 ? new Quarterstaff() : new Spear()).identify() );
-			items.add( new LeatherArmor().identify() );
-			items.add( new SeedPouch() );
-            items.add( new Weightstone() );
+			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Quarterstaff() : new Spear()).identify() );
+			itemsToSpawn.add( new LeatherArmor().identify() );
+			itemsToSpawn.add( new SeedPouch() );
+			itemsToSpawn.add( new Weightstone() );
 			break;
 			
 		case 11:
-			items.add( (Random.Int( 2 ) == 0 ? new Sword() : new Mace()).identify() );
-			items.add( new MailArmor().identify() );
-			items.add( new ScrollHolder() );
-            items.add( new Weightstone() );
+			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Sword() : new Mace()).identify() );
+			itemsToSpawn.add( new MailArmor().identify() );
+			itemsToSpawn.add( new ScrollHolder() );
+			itemsToSpawn.add( new Weightstone() );
 			break;
 			
 		case 16:
-			items.add( (Random.Int( 2 ) == 0 ? new Longsword() : new BattleAxe()).identify() );
-			items.add( new ScaleArmor().identify() );
-			items.add( new WandHolster() );
-            items.add( new Weightstone() );
+			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Longsword() : new BattleAxe()).identify() );
+			itemsToSpawn.add( new ScaleArmor().identify() );
+			itemsToSpawn.add( new WandHolster() );
+			itemsToSpawn.add( new Weightstone() );
 			break;
 			
 		case 21:
 			switch (Random.Int( 3 )) {
 			case 0:
-				items.add( new Glaive().identify() );
+				itemsToSpawn.add( new Glaive().identify() );
 				break;
 			case 1:
-				items.add( new WarHammer().identify() );
+				itemsToSpawn.add( new WarHammer().identify() );
 				break;
 			case 2:
-				items.add( new PlateArmor().identify() );
+				itemsToSpawn.add( new PlateArmor().identify() );
 				break;
 			}
-			items.add( new Torch() );
-			items.add( new Torch() );
+			itemsToSpawn.add( new Torch() );
+			itemsToSpawn.add( new Torch() );
 			break;
 		}
-		
-		items.add( new PotionOfHealing() );
+
+		itemsToSpawn.add( new PotionOfHealing() );
 		for (int i=0; i < 3; i++) {
-			items.add( Generator.random( Generator.Category.POTION ) );
+			itemsToSpawn.add( Generator.random( Generator.Category.POTION ) );
 		}
-		
-		items.add( new ScrollOfIdentify() );
-		items.add( new ScrollOfRemoveCurse() );
-		items.add( new ScrollOfMagicMapping() );
-		items.add( Generator.random( Generator.Category.SCROLL ) );
-		
-		items.add( new OverpricedRation() );
-		items.add( new OverpricedRation() );
-		
-		items.add( new Ankh() );
+
+		itemsToSpawn.add( new ScrollOfIdentify() );
+		itemsToSpawn.add( new ScrollOfRemoveCurse() );
+		itemsToSpawn.add( new ScrollOfMagicMapping() );
+		itemsToSpawn.add( Generator.random( Generator.Category.SCROLL ) );
+
+		itemsToSpawn.add( new OverpricedRation() );
+		itemsToSpawn.add( new OverpricedRation() );
+
+		itemsToSpawn.add( new Ankh() );
 
 		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
 
@@ -175,15 +181,24 @@ public class ShopPainter extends Painter {
 
 
 			for(int i = 1; i <= bags; i++){
-				items.add( new TimekeepersHourglass.sandBag());
+				itemsToSpawn.add( new TimekeepersHourglass.sandBag());
 				hourglass.sandBags ++;
 			}
 		}
-		
-		Item[] range =items.toArray( new Item[0] );
-		Random.shuffle( range );
-		
-		return range;
+
+		//this is a hard limit, level gen allows for at most an 8x5 room, can't fit more than 39 items + 1 shopkeeper.
+		if (itemsToSpawn.size() > 39)
+			throw new RuntimeException("Shop attempted to carry more than 39 items!");
+
+		Collections.shuffle(itemsToSpawn);
+	}
+
+	public static int spaceNeeded(){
+		if (itemsToSpawn == null)
+			generateItems();
+
+		//plus one for the shopkeeper
+		return itemsToSpawn.size() + 1;
 	}
 	
 	private static void placeShopkeeper( Level level, Room room ) {

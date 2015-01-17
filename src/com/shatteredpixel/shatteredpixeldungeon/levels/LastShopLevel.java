@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ShopPainter;
 import com.watabou.noosa.Scene;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
@@ -49,6 +50,8 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	protected boolean build() {
+
+		feeling = Feeling.CHASM;
 		
 		initRooms();
 		
@@ -110,7 +113,8 @@ public class LastShopLevel extends RegularLevel {
 			}
 		}
 		
-		if (roomShop == null || shopSquare < 30) {
+		if (roomShop == null || shopSquare < 30
+				|| ((roomShop.width()-1)*(roomShop.height()-1) < ShopPainter.spaceNeeded())) {
 			return false;
 		} else {
 			roomShop.type = Imp.Quest.isCompleted() ? Room.Type.SHOP : Room.Type.STANDARD;
