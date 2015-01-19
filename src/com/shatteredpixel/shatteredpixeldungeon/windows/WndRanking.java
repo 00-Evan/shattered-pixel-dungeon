@@ -246,17 +246,10 @@ public class WndRanking extends WndTabbed {
 			if (stuff.misc2 != null) {
 				addItem( stuff.misc2);
 			}
-			
-			if (Dungeon.quickslot instanceof Item && 
-				Dungeon.hero.belongings.backpack.contains( (Item)Dungeon.quickslot )) {
-				
-				addItem( (Item)Dungeon.quickslot );
-			} else if (Dungeon.quickslot instanceof Class){
-				@SuppressWarnings("unchecked")
-				Item item = Dungeon.hero.belongings.getItem( (Class<? extends Item>)Dungeon.quickslot );
-				if (item != null) {
-					addItem( item );
-				}
+
+			//TODO: add proper visual support for mutli-quickslots
+			if (stuff.quickslot.getItem(0) != null){
+				addItem( stuff.quickslot.getItem(0) );
 			}
 		}
 		

@@ -136,9 +136,10 @@ public enum HeroClass {
         hero.STR = hero.STR + 1;
 
         (hero.belongings.weapon = new ShortSword()).identify();
-        new Dart( 8 ).identify().collect();
+        Dart darts = new Dart( 8 );
+        darts.identify().collect();
 
-        Dungeon.quickslot = Dart.class;
+        hero.belongings.quickslot.setSlot(0, darts);
 
         new PotionOfStrength().setKnown();
     }
@@ -149,7 +150,7 @@ public enum HeroClass {
         WandOfMagicMissile wand = new WandOfMagicMissile();
         wand.identify().collect();
 
-        Dungeon.quickslot = wand;
+        hero.belongings.quickslot.setSlot(0, wand);
 
         new ScrollOfIdentify().setKnown();
     }
@@ -161,10 +162,11 @@ public enum HeroClass {
         (hero.belongings.misc1 = cloak).identify();
         hero.belongings.misc1.activate( hero );
 
-        new Dart( 8 ).identify().collect();
+        Dart darts = new Dart( 8 );
+        darts.identify().collect();
 
-
-        Dungeon.quickslot = cloak;
+        hero.belongings.quickslot.setSlot(0, cloak);
+        hero.belongings.quickslot.setSlot(1, darts);
 
         new ScrollOfMagicMapping().setKnown();
     }
@@ -177,7 +179,7 @@ public enum HeroClass {
         Boomerang boomerang = new Boomerang();
         boomerang.identify().collect();
 
-        Dungeon.quickslot = boomerang;
+        hero.belongings.quickslot.setSlot(0, boomerang);
     }
 	
 	public String title() {

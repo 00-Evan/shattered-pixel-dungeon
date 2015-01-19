@@ -177,7 +177,8 @@ public class Item implements Bundlable {
 				Badges.validateItemLevelAquired( this );
 			}
 			
-			items.add( this );	
+			items.add( this );
+			Dungeon.hero.belongings.quickslot.replaceSimilar(this);
 			QuickSlot.refresh();
 			Collections.sort( items, itemComparator );
 			return true;
@@ -202,6 +203,10 @@ public class Item implements Bundlable {
 			
 		} else
 		if (quantity == 1) {
+
+			if (stackable == true){
+				Dungeon.hero.belongings.quickslot.convertToPlaceholder(this);
+			}
 
 			return detachAll( container );
 			
@@ -232,6 +237,7 @@ public class Item implements Bundlable {
             if (item == this) {
                 container.items.remove( this );
                 item.onDetach( );
+				Dungeon.hero.belongings.quickslot.clearItem( this );
                 QuickSlot.refresh();
                 return this;
             } else if (item instanceof Bag) {
@@ -390,7 +396,7 @@ public class Item implements Bundlable {
 	}
 	
 	public void updateQuickslot() {
-		if ((stackable && Dungeon.quickslot == getClass()) || Dungeon.quickslot == this) {
+		if (Dungeon.hero.belongings.quickslot.contains( this )) {
 			QuickSlot.refresh();
 		}
 	}
@@ -400,7 +406,8 @@ public class Item implements Bundlable {
 	private static final String LEVEL_KNOWN		= "levelKnown";
 	private static final String CURSED			= "cursed";
 	private static final String CURSED_KNOWN	= "cursedKnown";
-	private static final String QUICKSLOT		= "quickslot";
+	private static final String OLDSLOT			= "quickslot";
+	private static final String QUICKSLOT		= "quickslotpos";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -409,8 +416,8 @@ public class Item implements Bundlable {
 		bundle.put( LEVEL_KNOWN, levelKnown );
 		bundle.put( CURSED, cursed );
 		bundle.put( CURSED_KNOWN, cursedKnown );
-		if (this == Dungeon.quickslot) {
-			bundle.put( QUICKSLOT, true );
+		if (Dungeon.hero.belongings.quickslot.contains(this)) {
+			bundle.put( QUICKSLOT, Dungeon.hero.belongings.quickslot.getSlot(this) );
 		}
 	}
 	
@@ -428,9 +435,12 @@ public class Item implements Bundlable {
 		}
 		
 		cursed	= bundle.getBoolean( CURSED );
-		
-		if (bundle.getBoolean( QUICKSLOT )) {
-			Dungeon.quickslot = this;
+
+		//support for pre-0.2.3 saves and rankings
+		if (bundle.contains( OLDSLOT )) {
+			Dungeon.hero.belongings.quickslot.setSlot( 0 , this);
+		} else if (bundle.contains( QUICKSLOT )) {
+			Dungeon.hero.belongings.quickslot.setSlot( bundle.getInt( QUICKSLOT ), this);
 		}
 	}
 	

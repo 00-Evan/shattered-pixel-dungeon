@@ -395,7 +395,7 @@ public class WndBag extends WndTabbed {
 		protected boolean onLongClick() {
 			if (listener == null && item.defaultAction != null) {
 				hide();
-				Dungeon.quickslot = (item instanceof EquipableItem && !item.stackable) ? item : item.getClass();
+				Dungeon.hero.belongings.quickslot.setSlot( 0 , item );
 				QuickSlot.refresh();
 				return true;
 			} else {

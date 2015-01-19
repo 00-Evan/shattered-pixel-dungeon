@@ -158,9 +158,6 @@ public class Dungeon {
 	public static Hero hero;
 	public static Level level;
 	
-	// Either Item or Class<? extends Item>
-	public static Object quickslot;
-	
 	public static int depth;
 	public static int gold;
 	// Reason of death
@@ -512,10 +509,6 @@ public class Dungeon {
 			Journal.storeInBundle( bundle );
             Generator.storeInBundle( bundle );
 			
-			if (quickslot instanceof Class) {
-				bundle.put( QUICKSLOT, ((Class<?>)quickslot).getName() );
-			}
-			
 			Scroll.save( bundle );
 			Potion.save( bundle );
 			Wand.save( bundle );
@@ -640,16 +633,6 @@ public class Dungeon {
 			Badges.loadLocal( badges );
 		} else {
 			Badges.reset();
-		}
-		
-		String qsClass = bundle.getString( QUICKSLOT );
-		if (qsClass != null) {
-			try {
-				quickslot = Class.forName( qsClass );
-			} catch (ClassNotFoundException e) {
-			}
-		} else {
-			quickslot = null;
 		}
 		
 		hero = null;

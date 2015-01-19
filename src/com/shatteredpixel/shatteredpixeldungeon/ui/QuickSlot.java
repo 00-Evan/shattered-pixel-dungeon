@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
+//TODO: add proper multi-quickslot functionality.
 public class QuickSlot extends Button implements WndBag.Listener {
 
 	private static final String TXT_SELECT_ITEM = "Select an item for the quickslot";
@@ -126,20 +127,7 @@ public class QuickSlot extends Button implements WndBag.Listener {
 	
 	@SuppressWarnings("unchecked")
 	private static Item select() {
-		if (Dungeon.quickslot instanceof Item) {
-			
-			return (Item)Dungeon.quickslot;
-			
-		} else if (Dungeon.quickslot != null) {
-			
-			Item item = Dungeon.hero.belongings.getItem( (Class<? extends Item>)Dungeon.quickslot );			
-			return item != null ? item : Item.virtual( (Class<? extends Item>)Dungeon.quickslot );
-			
-		} else {
-			
-			return null;
-			
-		}
+		return Dungeon.hero.belongings.quickslot.getItem(0);
 	}
 
     public static Item getItem(){
@@ -150,7 +138,7 @@ public class QuickSlot extends Button implements WndBag.Listener {
 	@Override
 	public void onSelect( Item item ) {
 		if (item != null) {
-			Dungeon.quickslot = item.stackable ? item.getClass() : item;
+			Dungeon.hero.belongings.quickslot.setSlot( 0 , item );
 			refresh();
 		}
 	}
