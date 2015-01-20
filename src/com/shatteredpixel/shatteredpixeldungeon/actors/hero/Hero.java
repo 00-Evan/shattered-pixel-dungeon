@@ -878,7 +878,7 @@ public class Hero extends Char {
 				if (wand.curCharges < wand.maxCharges && damage > 0) {
 
 					wand.curCharges++;
-					if (belongings.quickslot.contains(wand)) {
+					if (Dungeon.quickslot.contains(wand)) {
 						QuickSlot.refresh();
 					}
 

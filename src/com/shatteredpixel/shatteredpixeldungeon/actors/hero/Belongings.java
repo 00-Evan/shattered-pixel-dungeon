@@ -41,8 +41,6 @@ public class Belongings implements Iterable<Item> {
 	
 	public Bag backpack;
 
-	public QuickSlot quickslot;
-
 	public KindOfWeapon weapon = null;
 	public Armor armor = null;
 	public KindofMisc misc1 = null;
@@ -71,8 +69,6 @@ public class Belongings implements Iterable<Item> {
 		bundle.put( ARMOR, armor );
 		bundle.put( MISC1, misc1);
 		bundle.put( MISC2, misc2);
-
-		quickslot.storePlaceholders( bundle );
 	}
 	
 	public void restoreFromBundle( Bundle bundle ) {
@@ -96,8 +92,6 @@ public class Belongings implements Iterable<Item> {
 		if (misc2 != null) {
 			misc2.activate( owner );
 		}
-
-		quickslot.restorePlaceholders(bundle);
 	}
 	
 	@SuppressWarnings("unchecked")

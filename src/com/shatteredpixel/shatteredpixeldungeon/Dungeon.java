@@ -157,6 +157,8 @@ public class Dungeon {
 
 	public static Hero hero;
 	public static Level level;
+
+	public static QuickSlot quickslot = new QuickSlot();
 	
 	public static int depth;
 	public static int gold;
@@ -189,6 +191,8 @@ public class Dungeon {
 		
 		Statistics.reset();
 		Journal.reset();
+
+		quickslot.reset();
 		
 		depth = 0;
 		gold = 0;
@@ -481,6 +485,8 @@ public class Dungeon {
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
 
+			quickslot.storePlaceholders( bundle );
+
 			bundle.put( DV, dewVial );
 			bundle.put( WT, transmutation );
 
@@ -571,6 +577,9 @@ public class Dungeon {
 
 		Generator.reset();
 
+		quickslot.reset();
+		quickslot.restorePlaceholders( bundle );
+
         Dungeon.challenges = bundle.getInt( CHALLENGES );
 		
 		Dungeon.level = null;
@@ -625,10 +634,10 @@ public class Dungeon {
 				Imp.Quest.reset();
 			}
 			
-			Room.restoreRoomsFromBundle( bundle );
+			Room.restoreRoomsFromBundle(bundle);
 		}
 		
-		Bundle badges = bundle.getBundle( BADGES );
+		Bundle badges = bundle.getBundle(BADGES);
 		if (!badges.isNull()) {
 			Badges.loadLocal( badges );
 		} else {

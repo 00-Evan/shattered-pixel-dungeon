@@ -139,7 +139,7 @@ public enum HeroClass {
         Dart darts = new Dart( 8 );
         darts.identify().collect();
 
-        hero.belongings.quickslot.setSlot(0, darts);
+        Dungeon.quickslot.setSlot(0, darts);
 
         new PotionOfStrength().setKnown();
     }
@@ -150,7 +150,7 @@ public enum HeroClass {
         WandOfMagicMissile wand = new WandOfMagicMissile();
         wand.identify().collect();
 
-        hero.belongings.quickslot.setSlot(0, wand);
+        Dungeon.quickslot.setSlot(0, wand);
 
         new ScrollOfIdentify().setKnown();
     }
@@ -165,8 +165,8 @@ public enum HeroClass {
         Dart darts = new Dart( 8 );
         darts.identify().collect();
 
-        hero.belongings.quickslot.setSlot(0, cloak);
-        hero.belongings.quickslot.setSlot(1, darts);
+        Dungeon.quickslot.setSlot(0, cloak);
+        Dungeon.quickslot.setSlot(1, darts);
 
         new ScrollOfMagicMapping().setKnown();
     }
@@ -179,7 +179,7 @@ public enum HeroClass {
         Boomerang boomerang = new Boomerang();
         boomerang.identify().collect();
 
-        hero.belongings.quickslot.setSlot(0, boomerang);
+        Dungeon.quickslot.setSlot(0, boomerang);
     }
 	
 	public String title() {

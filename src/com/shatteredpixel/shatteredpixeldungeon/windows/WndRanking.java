@@ -248,8 +248,8 @@ public class WndRanking extends WndTabbed {
 			}
 
 			//TODO: add proper visual support for mutli-quickslots
-			if (stuff.quickslot.getItem(0) != null){
-				addItem( stuff.quickslot.getItem(0) );
+			if (Dungeon.quickslot.getItem(0) != null){
+				addItem( Dungeon.quickslot.getItem(0) );
 			}
 		}
 		

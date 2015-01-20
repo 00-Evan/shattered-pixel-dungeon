@@ -127,7 +127,7 @@ public class QuickSlot extends Button implements WndBag.Listener {
 	
 	@SuppressWarnings("unchecked")
 	private static Item select() {
-		return Dungeon.hero.belongings.quickslot.getItem(0);
+		return Dungeon.quickslot.getItem(0);
 	}
 
     public static Item getItem(){
@@ -138,7 +138,7 @@ public class QuickSlot extends Button implements WndBag.Listener {
 	@Override
 	public void onSelect( Item item ) {
 		if (item != null) {
-			Dungeon.hero.belongings.quickslot.setSlot( 0 , item );
+			Dungeon.quickslot.setSlot( 0 , item );
 			refresh();
 		}
 	}

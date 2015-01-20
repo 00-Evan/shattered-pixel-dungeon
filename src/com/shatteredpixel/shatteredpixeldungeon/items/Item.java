@@ -178,7 +178,7 @@ public class Item implements Bundlable {
 			}
 			
 			items.add( this );
-			Dungeon.hero.belongings.quickslot.replaceSimilar(this);
+			Dungeon.quickslot.replaceSimilar(this);
 			QuickSlot.refresh();
 			Collections.sort( items, itemComparator );
 			return true;
@@ -205,7 +205,7 @@ public class Item implements Bundlable {
 		if (quantity == 1) {
 
 			if (stackable == true){
-				Dungeon.hero.belongings.quickslot.convertToPlaceholder(this);
+				Dungeon.quickslot.convertToPlaceholder(this);
 			}
 
 			return detachAll( container );
@@ -233,12 +233,13 @@ public class Item implements Bundlable {
 	}
 	
 	public final Item detachAll( Bag container ) {
+		Dungeon.quickslot.clearItem( this );
+		QuickSlot.refresh();
+
         for (Item item : container.items) {
             if (item == this) {
                 container.items.remove( this );
                 item.onDetach( );
-				Dungeon.hero.belongings.quickslot.clearItem( this );
-                QuickSlot.refresh();
                 return this;
             } else if (item instanceof Bag) {
                 Bag bag = (Bag)item;
@@ -396,7 +397,7 @@ public class Item implements Bundlable {
 	}
 	
 	public void updateQuickslot() {
-		if (Dungeon.hero.belongings.quickslot.contains( this )) {
+		if (Dungeon.quickslot.contains( this )) {
 			QuickSlot.refresh();
 		}
 	}
@@ -416,8 +417,8 @@ public class Item implements Bundlable {
 		bundle.put( LEVEL_KNOWN, levelKnown );
 		bundle.put( CURSED, cursed );
 		bundle.put( CURSED_KNOWN, cursedKnown );
-		if (Dungeon.hero.belongings.quickslot.contains(this)) {
-			bundle.put( QUICKSLOT, Dungeon.hero.belongings.quickslot.getSlot(this) );
+		if (Dungeon.quickslot.contains(this)) {
+			bundle.put( QUICKSLOT, Dungeon.quickslot.getSlot(this) );
 		}
 	}
 	
@@ -436,11 +437,14 @@ public class Item implements Bundlable {
 		
 		cursed	= bundle.getBoolean( CURSED );
 
-		//support for pre-0.2.3 saves and rankings
-		if (bundle.contains( OLDSLOT )) {
-			Dungeon.hero.belongings.quickslot.setSlot( 0 , this);
-		} else if (bundle.contains( QUICKSLOT )) {
-			Dungeon.hero.belongings.quickslot.setSlot( bundle.getInt( QUICKSLOT ), this);
+		//only want to populate slot on first load.
+		if (Dungeon.hero == null) {
+			//support for pre-0.2.3 saves and rankings
+			if (bundle.contains(OLDSLOT)) {
+				Dungeon.quickslot.setSlot(0, this);
+			} else if (bundle.contains(QUICKSLOT)) {
+				Dungeon.quickslot.setSlot(bundle.getInt(QUICKSLOT), this);
+			}
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
+package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.watabou.utils.Bundlable;
@@ -18,9 +18,11 @@ public class QuickSlot {
      * The one exception to this is when quantity is 0, which can
      * happen for a stackable item that has been 'used up', these are refered to a placeholders.
      */
+    //TODO: seriously reconsider using an arraylist here, may make much more sense to just use an array.
     private ArrayList<Item> slots = new ArrayList<Item>();
 
     public void setSlot(int slot, Item item){
+        slots.ensureCapacity(slot+1);
         slots.set(slot, item);
     }
 
@@ -48,8 +50,12 @@ public class QuickSlot {
                 clearSlot(i);
     }
 
-    public void clear(){
+    public void reset(){
         slots = new ArrayList<Item>();
+        slots.add(null);
+        slots.add(null);
+        slots.add(null);
+        slots.add(null);
     }
 
     public boolean contains(Item item){
@@ -58,7 +64,7 @@ public class QuickSlot {
 
     public void replaceSimilar(Item item){
         for (int i = 0; i < slots.size(); i++)
-            if (item.isSimilar(slots.get(i)))
+            if (slots.get(i) != null && item.isSimilar(slots.get(i)))
                 setSlot( i , item );
     }
 

@@ -123,8 +123,12 @@ public class Ring extends KindofMisc {
 			} else {
 				hero.belongings.misc2 = this;
 			}
-			
+
+			int slot = Dungeon.quickslot.getSlot( this );
+
 			detach( hero.belongings.backpack );
+
+			if (slot != -1) Dungeon.quickslot.setSlot( slot, this );
 			
 			activate( hero );
 			
