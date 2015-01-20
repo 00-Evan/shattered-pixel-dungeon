@@ -22,7 +22,6 @@ import java.io.IOException;
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.Visual;
@@ -57,7 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BusyIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toast;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
@@ -597,7 +596,7 @@ public class GameScene extends PixelScene {
 	
 	public static void ready() {
 		selectCell( defaultCellListener );
-		QuickSlot.cancel();
+		QuickSlotButton.cancel();
 	}
 	
 	private static final CellSelector.Listener defaultCellListener = new CellSelector.Listener() {

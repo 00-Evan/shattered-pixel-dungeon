@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
@@ -179,7 +179,7 @@ public class Item implements Bundlable {
 			
 			items.add( this );
 			Dungeon.quickslot.replaceSimilar(this);
-			QuickSlot.refresh();
+			QuickSlotButton.refresh();
 			Collections.sort( items, itemComparator );
 			return true;
 			
@@ -234,12 +234,12 @@ public class Item implements Bundlable {
 	
 	public final Item detachAll( Bag container ) {
 		Dungeon.quickslot.clearItem( this );
-		QuickSlot.refresh();
+		QuickSlotButton.refresh();
 
         for (Item item : container.items) {
             if (item == this) {
-                container.items.remove( this );
-                item.onDetach( );
+                container.items.remove(this);
+                item.onDetach();
                 return this;
             } else if (item instanceof Bag) {
                 Bag bag = (Bag)item;
@@ -398,7 +398,7 @@ public class Item implements Bundlable {
 	
 	public void updateQuickslot() {
 		if (Dungeon.quickslot.contains( this )) {
-			QuickSlot.refresh();
+			QuickSlotButton.refresh();
 		}
 	}
 	
@@ -455,7 +455,7 @@ public class Item implements Bundlable {
 		user.busy();
 		
 		Char enemy = Actor.findChar( cell );
-		QuickSlot.target( this, enemy );
+		QuickSlotButton.target(enemy);
 		
 		float delay = TIME_TO_THROW;
 		if (this instanceof MissileWeapon) {

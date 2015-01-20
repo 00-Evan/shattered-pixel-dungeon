@@ -3,6 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -75,6 +76,16 @@ public class QuickSlot {
             for (int i = 0; i < slots.size(); i++)
                 if (slots.get(i) == item)
                     setSlot( i , placeholder );
+    }
+
+    public Item randomNonePlaceholder(){
+
+        ArrayList<Item> result = new ArrayList<Item>();
+        for (int i = 0; i < slots.size(); i ++)
+            if (slots.get(i) != null && !isPlaceholder(i))
+                result.add(slots.get(i));
+
+        return Random.element(result);
     }
 
     private final String PLACEHOLDERS = "placeholders";

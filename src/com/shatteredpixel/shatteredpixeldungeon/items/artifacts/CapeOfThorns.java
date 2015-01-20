@@ -4,7 +4,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
@@ -60,7 +60,7 @@ public class CapeOfThorns extends Artifact {
                     BuffIndicator.refreshHero();
                     GLog.w("Your Cape becomes inert again.");
                 }
-                QuickSlot.refresh();
+                QuickSlotButton.refresh();
             }
             spend(TICK);
             return true;
@@ -92,7 +92,7 @@ public class CapeOfThorns extends Artifact {
                 }
 
             }
-            QuickSlot.refresh();
+            QuickSlotButton.refresh();
             return damage;
         }
 

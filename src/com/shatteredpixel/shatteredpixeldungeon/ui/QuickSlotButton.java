@@ -28,28 +28,30 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
-//TODO: add proper multi-quickslot functionality.
-public class QuickSlot extends Button implements WndBag.Listener {
+//TODO: investigate targeting with multiple quickslots
+public class QuickSlotButton extends Button implements WndBag.Listener {
 
 	private static final String TXT_SELECT_ITEM = "Select an item for the quickslot";
 	
-	private static QuickSlot instance;
+	private static QuickSlotButton[] instance = new QuickSlotButton[4];
+	private int slotNum;
 	
 	private Item itemInSlot;
 	private ItemSlot slot;
 	
-	private Image crossB;
-	private Image crossM;
+	private static Image crossB;
+	private static Image crossM;
 	
-	private boolean targeting = false;
+	private static boolean targeting = false;
 	private Item lastItem = null;
-	private Char lastTarget= null;
+	private static Char lastTarget= null;
 	
-	public QuickSlot() {
+	public QuickSlotButton( int slotNum ) {
 		super();
-		item( select() );
+		this.slotNum = slotNum;
+		item( select( slotNum ) );
 		
-		instance = this;
+		instance[slotNum] = this;
 	}
 	
 	@Override
@@ -72,18 +74,14 @@ public class QuickSlot extends Button implements WndBag.Listener {
 				if (targeting) {
 					GameScene.handleCell( lastTarget.pos );
 				} else {
-					Item item = select();
-					if (item == lastItem) {
-						useTargeting();
-					} else {
-						lastItem = item;
-					}
+					Item item = select(slotNum);
+					useTargeting();
 					item.execute( Dungeon.hero );
 				}
 			}
 			@Override
 			protected boolean onLongClick() {
-				return QuickSlot.this.onLongClick();
+				return QuickSlotButton.this.onLongClick();
 			}
 			@Override
 			protected void onTouchDown() {
@@ -124,21 +122,15 @@ public class QuickSlot extends Button implements WndBag.Listener {
 		GameScene.selectItem( this, WndBag.Mode.QUICKSLOT, TXT_SELECT_ITEM );
 		return true;
 	}
-	
-	@SuppressWarnings("unchecked")
-	private static Item select() {
-		return Dungeon.quickslot.getItem(0);
-	}
 
-    public static Item getItem(){
-        Item item = select();
-        return (item != null && item.quantity() != 0)? item : null;
-    }
+	private static Item select(int slotNum){
+		return Dungeon.quickslot.getItem( slotNum );
+	}
 
 	@Override
 	public void onSelect( Item item ) {
 		if (item != null) {
-			Dungeon.quickslot.setSlot( 0 , item );
+			Dungeon.quickslot.setSlot( slotNum , item );
 			refresh();
 		}
 	}
@@ -181,24 +173,26 @@ public class QuickSlot extends Button implements WndBag.Listener {
 	}
 	
 	public static void refresh() {
-		if (instance != null) {
-			instance.item( select() );
+		for (int i = 0; i < instance.length; i++) {
+			if (instance[i] != null) {
+				instance[i].item(select(i));
+			}
 		}
 	}
 	
-	public static void target( Item item, Char target ) {
-		if (item == instance.lastItem && target != Dungeon.hero) {
-			instance.lastTarget = target;
+	public static void target( Char target ) {
+		if (target != Dungeon.hero) {
+			lastTarget = target;
 			
 			HealthIndicator.instance.target( target );
 		}
 	}
 	
 	public static void cancel() {
-		if (instance != null && instance.targeting) {
-			instance.crossB.visible = false;
-			instance.crossM.remove();
-			instance.targeting = false;
+		if (targeting) {
+			crossB.visible = false;
+			crossM.remove();
+			targeting = false;
 		}
 	}
 }

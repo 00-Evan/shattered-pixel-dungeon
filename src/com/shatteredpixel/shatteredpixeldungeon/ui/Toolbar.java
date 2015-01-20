@@ -275,17 +275,19 @@ public class Toolbar extends Component {
 	
 	private static class QuickslotTool extends Tool {
 		
-		private QuickSlot slot;
+		private QuickSlotButton slot;
+		private int slotNum;
 		
-		public QuickslotTool( int x, int y, int width, int height ) {
+		public QuickslotTool( int x, int y, int width, int height, int slotNum ) {
 			super( x, y, width, height );
+			this.slotNum = slotNum;
 		}
 		
 		@Override
 		protected void createChildren() {
 			super.createChildren();
 			
-			slot = new QuickSlot();
+			slot = new QuickSlotButton( slotNum );
 			add( slot );
 		}
 		

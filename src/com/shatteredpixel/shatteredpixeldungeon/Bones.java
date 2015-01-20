@@ -23,7 +23,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -86,7 +86,7 @@ public class Bones {
                     item = hero.belongings.misc2;
                     break;
                 case 4:
-                    item = QuickSlot.getItem();
+                    item = Dungeon.quickslot.randomNonePlaceholder();
                     break;
             }
             if (item != null && !item.bones)

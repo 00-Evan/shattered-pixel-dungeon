@@ -21,14 +21,12 @@ import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlot;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -111,7 +109,7 @@ public class DewVial extends Item {
 				Sample.INSTANCE.play( Assets.SND_DRINK );
 				hero.sprite.operate( hero.pos );
 
-                QuickSlot.refresh();
+                QuickSlotButton.refresh();
 
 
 			} else {
@@ -125,7 +123,7 @@ public class DewVial extends Item {
 		}
 	}
 
-    public void empty() {volume = 0; QuickSlot.refresh();}
+    public void empty() {volume = 0; QuickSlotButton.refresh();}
 
 	@Override
 	public boolean isUpgradable() {
@@ -150,12 +148,12 @@ public class DewVial extends Item {
 			GLog.p( TXT_FULL );
 		}
 
-        QuickSlot.refresh();
+        QuickSlotButton.refresh();
 	}
 
 	public void fill() {
 		volume = MAX_VOLUME;
-        QuickSlot.refresh();
+        QuickSlotButton.refresh();
 	}
 
     //removed as people need a bigger distinction to realize the dew vial doesn't revive.
