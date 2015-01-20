@@ -247,7 +247,21 @@ public class WndRanking extends WndTabbed {
 				addItem( stuff.misc2);
 			}
 
-			//TODO: add proper visual support for mutli-quickslots
+			pos = 0;
+			for (int i = 0; i < 2; i++){
+				if (Dungeon.quickslot.getItem(i) != null){
+					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
+
+					slot.setPos( pos, 116 );
+
+				} else {
+					ColorBlock bg = new ColorBlock( 28, 28, 0xFF4A4D44);
+					bg.x = pos;
+					bg.y = 116;
+					add(bg);
+				}
+				pos += 29;
+			}
 			if (Dungeon.quickslot.getItem(0) != null){
 				addItem( Dungeon.quickslot.getItem(0) );
 			}
@@ -354,6 +368,50 @@ public class WndRanking extends WndTabbed {
 		@Override
 		protected void onClick() {
 			Game.scene().add( new WndItem( null, item ) );
+		}
+	}
+
+	private class QuickSlotButton extends ItemSlot{
+
+		public static final int HEIGHT	= 28;
+
+		private Item item;
+		private ColorBlock bg;
+
+		QuickSlotButton(Item item){
+			super(item);
+			this.item = item;
+		}
+
+		@Override
+		protected void createChildren() {
+			bg = new ColorBlock( HEIGHT, HEIGHT, 0xFF4A4D44 );
+			add( bg );
+
+			super.createChildren();
+		}
+
+		@Override
+		protected void layout() {
+			bg.x = x;
+			bg.y = y;
+
+			super.layout();
+		}
+
+		@Override
+		protected void onTouchDown() {
+			bg.brightness( 1.5f );
+			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
+		};
+
+		protected void onTouchUp() {
+			bg.brightness( 1.0f );
+		};
+
+		@Override
+		protected void onClick() {
+			Game.scene().add(new WndItem(null, item));
 		}
 	}
 }
