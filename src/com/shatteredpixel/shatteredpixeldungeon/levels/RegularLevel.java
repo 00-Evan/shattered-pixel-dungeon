@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ShopPainter;
@@ -635,7 +635,7 @@ public abstract class RegularLevel extends Level {
 
 		for (Item item : itemsToSpawn) {
 			int cell = randomDropCell();
-			if (item instanceof ScrollOfUpgrade) {
+			if (item instanceof Scroll) {
 				while (map[cell] == Terrain.FIRE_TRAP || map[cell] == Terrain.SECRET_FIRE_TRAP) {
 					cell = randomDropCell();
 				}
