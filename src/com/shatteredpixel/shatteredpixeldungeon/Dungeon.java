@@ -169,8 +169,6 @@ public class Dungeon {
 	
 	// Hero's field of view
 	public static boolean[] visible = new boolean[Level.LENGTH];
-	
-	public static boolean nightMode;
 
     public static int version;
 	
@@ -348,8 +346,6 @@ public class Dungeon {
 	
 	@SuppressWarnings("deprecation")
 	public static void switchLevel( final Level level, int pos ) {
-		
-		nightMode = new Date().getHours() < 7;
 		
 		Dungeon.level = level;
 		Actor.init();

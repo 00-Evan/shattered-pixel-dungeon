@@ -382,7 +382,7 @@ public abstract class Mob extends Char {
 				Badges.validateMonstersSlain();
 				Statistics.qualifiedForNoKilling = false;
 				
-				if (Dungeon.nightMode) {
+				if (Dungeon.level.feeling == Feeling.DARK) {
 					Statistics.nightHunt++;
 				} else {
 					Statistics.nightHunt = 0;

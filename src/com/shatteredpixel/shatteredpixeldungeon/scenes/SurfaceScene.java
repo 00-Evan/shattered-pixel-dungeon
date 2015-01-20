@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import java.nio.FloatBuffer;
+import java.util.Calendar;
 
 import com.watabou.gltextures.Gradient;
 import com.watabou.gltextures.SmartTexture;
@@ -82,7 +83,7 @@ public class SurfaceScene extends PixelScene {
 		window.camera = viewport;
 		add( window );
 		
-		boolean dayTime = !Dungeon.nightMode;
+		boolean dayTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 7;
 		
 		Sky sky = new Sky( dayTime );
 		sky.scale.set( WIDTH, HEIGHT );

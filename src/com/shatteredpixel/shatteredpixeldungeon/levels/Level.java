@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
+import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
@@ -84,7 +85,8 @@ public abstract class Level implements Bundlable {
 		NONE,
 		CHASM,
 		WATER,
-		GRASS
+		GRASS,
+		DARK
 	};
 	
 	public static final int WIDTH = 32;
@@ -172,6 +174,7 @@ public abstract class Level implements Bundlable {
 	private static final String MOBS		= "mobs";
 	private static final String BLOBS		= "blobs";
     private static final String FALLING		= "falling";
+	private static final String FEELING		= "feeling";
 	
 	public void create() {
 		
@@ -239,6 +242,11 @@ public abstract class Level implements Bundlable {
 					break;
 				case 2:
 					feeling = Feeling.GRASS;
+					break;
+				case 3:
+					feeling = Feeling.DARK;
+					addItemToSpawn(new Torch());
+					viewDistance = (int)Math.ceil(viewDistance/3f);
 					break;
 				}
 			}
@@ -330,6 +338,10 @@ public abstract class Level implements Bundlable {
 		}
 
         fallingItems = (ArrayList)bundle.getCollection( FALLING );
+
+		feeling = bundle.getEnum( FEELING, Feeling.class );
+		if (feeling == Feeling.DARK)
+			viewDistance = (int)Math.ceil(viewDistance/3f);
 		
 		buildFlagMaps();
 		cleanWalls();
@@ -348,6 +360,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );
         bundle.put( FALLING, fallingItems);
+		bundle.put( FEELING, feeling );
 	}
 	
 	public int tunnelTile() {
@@ -435,7 +448,7 @@ public abstract class Level implements Bundlable {
 						}
 					}
 				}
-				spend( Dungeon.nightMode || Statistics.amuletObtained ? TIME_TO_RESPAWN / 2 : TIME_TO_RESPAWN );
+				spend( Dungeon.level.feeling == Feeling.DARK || Statistics.amuletObtained ? TIME_TO_RESPAWN / 2 : TIME_TO_RESPAWN );
 				return true;
 			}
 		};
