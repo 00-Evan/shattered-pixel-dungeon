@@ -40,6 +40,8 @@ public class WndSettings extends Window {
 	private static final String TXT_SOUND	= "Sound FX";
 	
 	private static final String TXT_BRIGHTNESS	= "Brightness";
+
+	private static final String TXT_QUICKSLOT = "Second QuickSlot";
 	
 	private static final String TXT_SWITCH_PORT	= "Switch to portrait";
 	private static final String TXT_SWITCH_LAND	= "Switch to landscape";
@@ -160,8 +162,19 @@ public class WndSettings extends Window {
 			btnBrightness.setRect( 0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT );
 			btnBrightness.checked( ShatteredPixelDungeon.brightness() );
 			add( btnBrightness );
+
+			CheckBox btnQuickSlot = new CheckBox( TXT_QUICKSLOT ) {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.quickSlots(checked() ? 2 : 1);
+				}
+			};
+			btnQuickSlot.setRect( 0, btnBrightness.bottom() + GAP, WIDTH, BTN_HEIGHT );
+			btnQuickSlot.checked( ShatteredPixelDungeon.quickSlots() == 1 );
+			add( btnQuickSlot );
 			
-			resize( WIDTH, (int)btnBrightness.bottom() );
+			resize( WIDTH, (int)btnQuickSlot.bottom() );
 			
 		}
 	}
