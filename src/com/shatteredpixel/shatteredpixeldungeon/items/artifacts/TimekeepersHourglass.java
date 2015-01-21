@@ -235,13 +235,14 @@ public class TimekeepersHourglass extends Artifact {
 
         @Override
         public boolean act() {
-            target.invisible --;
             detach();
             return true;
         }
 
         @Override
         public void detach() {
+            if (target.invisible > 0)
+                target.invisible --;
             super.detach();
             activeBuff = null;
             Dungeon.observe();
@@ -326,8 +327,8 @@ public class TimekeepersHourglass extends Artifact {
             super.restoreFromBundle(bundle);
 
             int[] values = bundle.getIntArray( PRESSES );
-            for (int i = 0; i < values.length; i ++)
-                presses.add(values[i]);
+            for (int value : values)
+                presses.add(value);
 
             partialTime = bundle.getFloat( PARTIALTIME );
         }
