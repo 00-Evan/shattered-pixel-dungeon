@@ -79,11 +79,11 @@ public class SewerBossLevel extends RegularLevel {
         //now find the rest of the rooms for this boss mini-maze
         Room curRoom = null;
         Room lastRoom = roomEntrance;
-        //we make 4 rooms, last iteration is tieing the final toom to the start
+        //we make 4 rooms, last iteration is tieing the final room to the start
         for(int i = 0; i <= 4; i++){
             retry = 0;
             //find a suitable room the first four times
-            //suitable room should be empty, have a distance of 2 from the current room, and not be adjacent to the entrance.
+            //suitable room should be empty, have a distance of 2 from the current room, and not touch the entrance.
             if (i < 4) {
                 do {
                     if (retry++ > 20) {
@@ -92,7 +92,7 @@ public class SewerBossLevel extends RegularLevel {
                     curRoom = Random.element(rooms);
                     Graph.buildDistanceMap(rooms, curRoom);
                     distance = lastRoom.distance();
-                } while (curRoom.type != Type.NULL || distance != 2 || curRoom.neigbours.contains(roomEntrance));
+                } while (curRoom.type != Type.NULL || distance != 2 || !curRoom.intersect(roomEntrance).isEmpty());
 
                 curRoom.type = Type.STANDARD;
 
