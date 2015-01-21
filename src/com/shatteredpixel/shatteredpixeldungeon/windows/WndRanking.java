@@ -51,7 +51,7 @@ public class WndRanking extends WndTabbed {
 	private static final String TXT_ITEMS	= "Items";
 	private static final String TXT_BADGES	= "Badges";
 	
-	private static final int WIDTH			= 112;
+	private static final int WIDTH			= 115;
 	private static final int HEIGHT			= 144;
 	
 	private static final int TAB_WIDTH	= 40;
@@ -247,12 +247,14 @@ public class WndRanking extends WndTabbed {
 				addItem( stuff.misc2);
 			}
 
-			pos = 0;
+			pos = 29;
 			for (int i = 0; i < 2; i++){
 				if (Dungeon.quickslot.getItem(i) != null){
 					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
 
 					slot.setPos( pos, 116 );
+
+					add(slot);
 
 				} else {
 					ColorBlock bg = new ColorBlock( 28, 28, 0xFF4A4D44);
@@ -261,9 +263,6 @@ public class WndRanking extends WndTabbed {
 					add(bg);
 				}
 				pos += 29;
-			}
-			if (Dungeon.quickslot.getItem(0) != null){
-				addItem( Dungeon.quickslot.getItem(0) );
 			}
 		}
 		
