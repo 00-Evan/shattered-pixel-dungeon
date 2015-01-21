@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -168,6 +169,7 @@ public class WndSettings extends Window {
 				protected void onClick() {
 					super.onClick();
 					ShatteredPixelDungeon.quickSlots(checked() ? 2 : 1);
+					Toolbar.QuickSlots = checked() ? 2 : 1;
 				}
 			};
 			btnQuickSlot.setRect( 0, btnBrightness.bottom() + GAP, WIDTH, BTN_HEIGHT );

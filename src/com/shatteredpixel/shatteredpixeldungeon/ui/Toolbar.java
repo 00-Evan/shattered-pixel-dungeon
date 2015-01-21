@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
@@ -52,6 +53,9 @@ public class Toolbar extends Component {
 	private Tool btnResume;
 	private Tool btnInventory;
 	private Tool btnQuick;
+	private Tool btnQuick2;
+
+	public static int QuickSlots;
 	
 	private PickedUpItem pickedUp;
 	
@@ -59,6 +63,8 @@ public class Toolbar extends Component {
 	
 	public Toolbar() {
 		super();
+
+		QuickSlots = ShatteredPixelDungeon.quickSlots();
 		
 		height = btnInventory.height();
 	}
@@ -121,7 +127,9 @@ public class Toolbar extends Component {
 			};
 		} );
 		
-		add( btnQuick = new QuickslotTool( 105, 7, 22, 24 ) );
+		add( btnQuick = new QuickslotTool( 105, 7, 22, 24, 0) );
+
+		add( btnQuick2 = new QuickslotTool( 105, 7, 22, 24, 1)) ;
 		
 		add( pickedUp = new PickedUpItem() );
 	}
@@ -133,7 +141,14 @@ public class Toolbar extends Component {
 		btnInfo.setPos( btnSearch.right(), y );
 		btnResume.setPos( btnInfo.right(), y );
 		btnQuick.setPos( width - btnQuick.width(), y );
-		btnInventory.setPos( btnQuick.left() - btnInventory.width(), y );
+		btnQuick2.setPos( btnQuick.left() - btnQuick2.width(), y );
+		if (QuickSlots == 2){
+			btnQuick2.visible = btnQuick2.active = true;
+			btnInventory.setPos( btnQuick2.left() - btnInventory.width(), y );
+		} else {
+			btnQuick2.visible = btnQuick2.active = false;
+			btnInventory.setPos( btnQuick.left() - btnInventory.width(), y );
+		}
 	}
 	
 	@Override
@@ -154,6 +169,11 @@ public class Toolbar extends Component {
 		
 		if (!Dungeon.hero.isAlive()) {
 			btnInventory.enable( true );
+		}
+
+		//If we have 2 slots, and 2nd one isn't visible, or we have 1, and 2nd one is visible...
+		if ((QuickSlots == 1) == btnQuick2.visible){
+			layout();
 		}
 	}
 	
@@ -276,17 +296,10 @@ public class Toolbar extends Component {
 	private static class QuickslotTool extends Tool {
 		
 		private QuickSlotButton slot;
-		private int slotNum;
 		
 		public QuickslotTool( int x, int y, int width, int height, int slotNum ) {
 			super( x, y, width, height );
-			this.slotNum = slotNum;
-		}
-		
-		@Override
-		protected void createChildren() {
-			super.createChildren();
-			
+
 			slot = new QuickSlotButton( slotNum );
 			add( slot );
 		}
@@ -299,8 +312,8 @@ public class Toolbar extends Component {
 		
 		@Override
 		public void enable( boolean value ) {
+			super.enable( value );
 			slot.enable( value );
-			active = value;
 		}
 	}
 	
