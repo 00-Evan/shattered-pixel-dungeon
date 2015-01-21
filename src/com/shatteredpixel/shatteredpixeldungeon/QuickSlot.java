@@ -7,7 +7,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Created by debenhame on 16/01/2015.
@@ -117,7 +116,7 @@ public class QuickSlot {
 
         int i = 0;
         for (Bundlable item : placeholders){
-            while (placements[i] == false) i++;
+            while (!placements[i]) i++;
             setSlot( i, (Item)item );
             i++;
         }
