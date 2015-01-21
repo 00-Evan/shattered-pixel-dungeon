@@ -1,5 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -14,6 +15,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -190,6 +192,7 @@ public class SandalsOfNature extends Artifact {
 
                     Hero hero = Dungeon.hero;
                     hero.sprite.operate( hero.pos );
+                    Sample.INSTANCE.play( Assets.SND_PLANT );
                     hero.busy();
                     hero.spend( 2f );
                     if (seeds.size() >= 5+(level*2)){
