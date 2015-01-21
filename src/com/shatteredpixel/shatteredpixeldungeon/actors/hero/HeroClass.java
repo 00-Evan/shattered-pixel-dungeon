@@ -21,6 +21,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -166,7 +167,8 @@ public enum HeroClass {
         darts.identify().collect();
 
         Dungeon.quickslot.setSlot(0, cloak);
-        Dungeon.quickslot.setSlot(1, darts);
+        if (ShatteredPixelDungeon.quickSlots() > 1)
+            Dungeon.quickslot.setSlot(1, darts);
 
         new ScrollOfMagicMapping().setKnown();
     }
