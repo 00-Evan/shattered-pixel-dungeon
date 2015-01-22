@@ -169,7 +169,7 @@ public class Toolbar extends Component {
 			}
 		}
 		
-		btnResume.visible = Dungeon.hero.lastAction != null;
+		//btnResume.visible = Dungeon.hero.lastAction != null;
 		
 		if (!Dungeon.hero.isAlive()) {
 			btnInventory.enable( true );
