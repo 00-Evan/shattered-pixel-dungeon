@@ -252,7 +252,7 @@ public class WndRanking extends WndTabbed {
 				if (Dungeon.quickslot.getItem(i) != null){
 					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
 
-					slot.setPos( pos, 116 );
+					slot.setRect( pos, 116, 28, 28 );
 
 					add(slot);
 
