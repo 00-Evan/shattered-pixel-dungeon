@@ -31,12 +31,13 @@ public class WelcomeScene extends PixelScene {
             "-4 new Artifacts!\n-Artifacts are now unique!\n-Artifacts can now be cursed!\n-Artifact balance tweaks\n\n" +
             "-Cloak of Shadows is now Rogue Exclusive\n-Freerunner now runs MUCH faster while invisible\n\n" +
             "-Dangerous blandfruit effects reworked, now more positive.\n\n-Ring of Force buffed, Ring of Evasion reworked\n\n" +
-            "-Health Potion Farming Universally Nerfed\n\n-Rankings Page Reworked\n\n-You can now donate to support the game, press the donate button for more info!";
+            "-Second QuickSlot!\n\n-Rankings Page Reworked\n\n-You can now donate to support the game, press the donate button for more info!";
 
     private static final String TXT_SameVer =
             "v0.2.3a and v0.2.3b fix some crash bugs players were experiencing, make sure to report any issues if you are still having them!\n\n" +
             "v0.2.3c fixes numerous issues, and gives some buffs to two of the new artifacts.\n\n" +
-            "v0.2.3d fixes numerous bugs, both from this release and older ones.";
+            "v0.2.3d fixes numerous bugs, both from this release and older ones.\n\n" +
+            "v0.2.3e fixes some bugs, and adds a couple new features!\n-Second QuickSlot!\n-night mode is now a level feel, time of day no longer affects gameplay.";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
