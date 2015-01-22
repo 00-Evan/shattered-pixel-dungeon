@@ -173,7 +173,7 @@ public class WndSettings extends Window {
 				}
 			};
 			btnQuickSlot.setRect( 0, btnBrightness.bottom() + GAP, WIDTH, BTN_HEIGHT );
-			btnQuickSlot.checked( ShatteredPixelDungeon.quickSlots() == 1 );
+			btnQuickSlot.checked( ShatteredPixelDungeon.quickSlots() == 2 );
 			add( btnQuickSlot );
 			
 			resize( WIDTH, (int)btnQuickSlot.bottom() );
