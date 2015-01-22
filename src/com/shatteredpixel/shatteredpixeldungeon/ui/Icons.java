@@ -50,7 +50,8 @@ public enum Icons {
 	UNCHECKED,
     EXIT,
     CHALLENGE_OFF,
-    CHALLENGE_ON;
+    CHALLENGE_ON,
+	RESUME;
 	
 	public Image get() {
 		return get( this );
@@ -143,6 +144,9 @@ public enum Icons {
         case CHALLENGE_ON:
             icon.frame( icon.texture.uvRect( 102, 16, 126, 40 ) );
             break;
+		case RESUME:
+			icon.frame( icon.texture.uvRect( 13, 53, 24, 64 ) );
+			break;
 		}
 		return icon;
 	}
