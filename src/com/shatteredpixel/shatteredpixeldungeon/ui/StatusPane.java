@@ -57,6 +57,7 @@ public class StatusPane extends Component {
     private BitmapText keys;
 
     private DangerIndicator danger;
+    private ResumeIndicator resume;
     private LootIndicator loot;
     private BuffIndicator buffs;
     private Compass compass;
@@ -119,6 +120,9 @@ public class StatusPane extends Component {
         danger = new DangerIndicator();
         add( danger );
 
+        resume = new ResumeIndicator();
+        add ( resume );
+
         loot = new LootIndicator();
         add( loot );
 
@@ -150,6 +154,8 @@ public class StatusPane extends Component {
         danger.setPos( width - danger.width(), 20 );
 
         loot.setPos( width - loot.width(),  danger.bottom() + 2 );
+
+        resume.setPos( width - resume.width(), (loot.visible ? loot.bottom() : danger.bottom()) + 2 );
 
         buffs.setPos( 32, 11 );
 
@@ -205,6 +211,8 @@ public class StatusPane extends Component {
             lastTier = tier;
             avatar.copy( HeroSprite.avatar( Dungeon.hero.heroClass, tier ) );
         }
+
+        resume.setPos( width - resume.width(), (loot.visible ? loot.bottom() : danger.bottom()) + 2 );
     }
 
     private static class MenuButton extends Button {
