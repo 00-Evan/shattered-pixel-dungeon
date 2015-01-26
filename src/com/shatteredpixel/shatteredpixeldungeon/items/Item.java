@@ -264,6 +264,8 @@ public class Item implements Bundlable {
 		cursed = false;
 		cursedKnown = true;
 		this.level++;
+
+		updateQuickslot();
 		
 		return this;
 	}
@@ -399,7 +401,7 @@ public class Item implements Bundlable {
 	
 	public void updateQuickslot() {
 		if (Dungeon.quickslot.contains( this )) {
-			updateQuickslot();
+			QuickSlotButton.refresh();
 		}
 	}
 	
