@@ -131,7 +131,7 @@ public class DriedRose extends Artifact {
                             "could snap any moment.";
                 else if (level < 10)
                     desc+= "\n\nYou have reattached many petals and the rose has started to somehow come back to life."+
-                            " It almost looks like it's read to bloom.";
+                            " It almost looks like it's ready to bloom.";
                 else
                     desc+= "\n\nThe rose has blossomed again through some kind of magic, its connection to your spirit"+
                             " friend is stronger than ever.";
