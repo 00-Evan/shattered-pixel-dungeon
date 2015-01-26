@@ -223,7 +223,8 @@ public abstract class Level implements Bundlable {
                 int petalsNeeded = (int) Math.ceil((float)((Dungeon.depth / 2) - rose.droppedPetals) / 3);
 
                 for (int i=1; i <= petalsNeeded; i++) {
-                    if (rose.droppedPetals < 10) {
+					//the player may miss a single petal and still max their rose.
+                    if (rose.droppedPetals < 11) {
                         addItemToSpawn(new DriedRose.Petal());
                         rose.droppedPetals++;
                     }
