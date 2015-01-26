@@ -179,7 +179,7 @@ public class Item implements Bundlable {
 			}
 			
 			items.add( this );
-			Dungeon.quickslot.replaceSimilar(this);
+			if (stackable || this instanceof Boomerang) Dungeon.quickslot.replaceSimilar(this);
 			updateQuickslot();
 			Collections.sort( items, itemComparator );
 			return true;
@@ -205,7 +205,7 @@ public class Item implements Bundlable {
 		} else
 		if (quantity == 1) {
 
-			if (stackable == true || this instanceof Boomerang){
+			if (stackable || this instanceof Boomerang){
 				Dungeon.quickslot.convertToPlaceholder(this);
 			}
 

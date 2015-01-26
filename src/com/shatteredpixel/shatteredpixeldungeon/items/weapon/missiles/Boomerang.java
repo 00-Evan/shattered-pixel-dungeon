@@ -36,7 +36,7 @@ public class Boomerang extends MissileWeapon {
 		
 		MIN = 1;
 		MAX = 4;
-		
+
 		stackable = false;
 
         bones = false;
@@ -100,6 +100,8 @@ public class Boomerang extends MissileWeapon {
         if (throwEquiped) {
             owner.belongings.weapon = this;
             owner.spend( -TIME_TO_EQUIP );
+			Dungeon.quickslot.replaceSimilar(this);
+			updateQuickslot();
         } else
         if (!collect( curUser.belongings.backpack )) {
             Dungeon.level.drop( this, owner.pos ).sprite.drop();
