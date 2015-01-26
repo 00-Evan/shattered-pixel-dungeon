@@ -400,9 +400,7 @@ public class Item implements Bundlable {
 	}
 	
 	public void updateQuickslot() {
-		if (Dungeon.quickslot.contains( this )) {
 			QuickSlotButton.refresh();
-		}
 	}
 	
 	private static final String QUANTITY		= "quantity";
