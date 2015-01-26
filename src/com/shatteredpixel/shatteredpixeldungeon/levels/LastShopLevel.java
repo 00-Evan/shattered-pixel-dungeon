@@ -52,6 +52,7 @@ public class LastShopLevel extends RegularLevel {
 	protected boolean build() {
 
 		feeling = Feeling.CHASM;
+		viewDistance = 4;
 		
 		initRooms();
 		
@@ -113,8 +114,7 @@ public class LastShopLevel extends RegularLevel {
 			}
 		}
 		
-		if (roomShop == null || shopSquare < 30
-				|| ((roomShop.width()-1)*(roomShop.height()-1) < ShopPainter.spaceNeeded())) {
+		if (roomShop == null || shopSquare < 54) {
 			return false;
 		} else {
 			roomShop.type = Imp.Quest.isCompleted() ? Room.Type.SHOP : Room.Type.STANDARD;
