@@ -19,7 +19,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.audio.Sample;
@@ -106,6 +105,8 @@ public class DriedRose extends Artifact {
 
                     spawned = true;
                     charge = 0;
+                    updateQuickslot();
+
                 } else
                     GLog.i("There is no free space near you.");
             }
@@ -211,7 +212,7 @@ public class DriedRose extends Artifact {
 
             }
 
-            QuickSlotButton.refresh();
+            updateQuickslot();
 
             spend( TICK );
 

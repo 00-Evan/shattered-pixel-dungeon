@@ -10,7 +10,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
@@ -202,7 +201,7 @@ public class TimekeepersHourglass extends Artifact {
             } else if (cursed && Random.Int(10) == 0)
                 ((Hero) target).spend( TICK );
 
-            QuickSlotButton.refresh();
+            updateQuickslot();
 
             spend( TICK );
 
@@ -226,7 +225,7 @@ public class TimekeepersHourglass extends Artifact {
 
             target.invisible++;
 
-            QuickSlotButton.refresh();
+            updateQuickslot();
 
             Dungeon.observe();
 
@@ -263,7 +262,7 @@ public class TimekeepersHourglass extends Artifact {
                 charge --;
             }
 
-            QuickSlotButton.refresh();
+            updateQuickslot();
 
             if (charge <= 0){
                 detach();
@@ -302,7 +301,7 @@ public class TimekeepersHourglass extends Artifact {
             GameScene.freezeEmitters = false;
 
             charge = 0;
-            QuickSlotButton.refresh();
+            updateQuickslot();
             super.detach();
             activeBuff = null;
         }

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
@@ -60,8 +59,8 @@ public class KindOfWeapon extends EquipableItem {
 			
 			hero.belongings.weapon = this;
 			activate( hero );
-			
-			QuickSlotButton.refresh();
+
+			updateQuickslot();
 			
 			cursedKnown = true;
 			if (cursed) {

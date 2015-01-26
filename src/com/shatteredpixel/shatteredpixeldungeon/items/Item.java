@@ -180,7 +180,7 @@ public class Item implements Bundlable {
 			
 			items.add( this );
 			Dungeon.quickslot.replaceSimilar(this);
-			QuickSlotButton.refresh();
+			updateQuickslot();
 			Collections.sort( items, itemComparator );
 			return true;
 			
@@ -235,9 +235,9 @@ public class Item implements Bundlable {
 	
 	public final Item detachAll( Bag container ) {
 		Dungeon.quickslot.clearItem( this );
-		QuickSlotButton.refresh();
+		updateQuickslot();
 
-        for (Item item : container.items) {
+		for (Item item : container.items) {
             if (item == this) {
                 container.items.remove(this);
                 item.onDetach();
@@ -399,7 +399,7 @@ public class Item implements Bundlable {
 	
 	public void updateQuickslot() {
 		if (Dungeon.quickslot.contains( this )) {
-			QuickSlotButton.refresh();
+			updateQuickslot();
 		}
 	}
 	

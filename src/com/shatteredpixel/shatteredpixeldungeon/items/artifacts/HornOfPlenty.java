@@ -175,6 +175,8 @@ public class HornOfPlenty extends Artifact {
                         GLog.p("Your horn is full of food!");
                         partialCharge = 0;
                     }
+
+                    updateQuickslot();
                 }
             } else
                 partialCharge = 0;

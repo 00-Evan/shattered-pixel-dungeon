@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -109,7 +108,7 @@ public class DewVial extends Item {
 				Sample.INSTANCE.play( Assets.SND_DRINK );
 				hero.sprite.operate( hero.pos );
 
-                QuickSlotButton.refresh();
+				updateQuickslot();
 
 
 			} else {
@@ -123,7 +122,7 @@ public class DewVial extends Item {
 		}
 	}
 
-    public void empty() {volume = 0; QuickSlotButton.refresh();}
+    public void empty() {volume = 0; updateQuickslot();}
 
 	@Override
 	public boolean isUpgradable() {
@@ -148,15 +147,15 @@ public class DewVial extends Item {
 			GLog.p( TXT_FULL );
 		}
 
-        QuickSlotButton.refresh();
+		updateQuickslot();
 	}
 
 	public void fill() {
 		volume = MAX_VOLUME;
-        QuickSlotButton.refresh();
+		updateQuickslot();
 	}
 
-    //removed as people need a bigger distinction to realize the dew vial doesn't revive.
+	//removed as people need a bigger distinction to realize the dew vial doesn't revive.
     /*
 	private static final Glowing WHITE = new Glowing( 0xFFFFCC );
 

@@ -74,6 +74,7 @@ public class SandalsOfNature extends Artifact {
                 CellEmitter.bottom(hero.pos).start(EarthParticle.FACTORY, 0.05f, 8);
                 Camera.main.shake(1, 0.4f);
                 charge = 0;
+                updateQuickslot();
             }
         }
     }
@@ -177,6 +178,7 @@ public class SandalsOfNature extends Artifact {
             if (charge < target.HT){
                 //gain 1+(1*level)% of the difference between current charge and max HP.
                 charge+= (Math.round( (target.HT-charge) * (.01+ level*0.01) ));
+                updateQuickslot();
             }
         }
     }
