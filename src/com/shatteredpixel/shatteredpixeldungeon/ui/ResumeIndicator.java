@@ -1,7 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 
 /**
@@ -41,7 +40,9 @@ public class ResumeIndicator extends Tag {
 
     @Override
     public void update() {
-        if (visible != (Dungeon.hero.lastAction != null)){
+        if (!Dungeon.hero.isAlive())
+            visible = false;
+        else if (visible != (Dungeon.hero.lastAction != null)){
             visible = Dungeon.hero.lastAction != null;
             if (visible)
                 flash();

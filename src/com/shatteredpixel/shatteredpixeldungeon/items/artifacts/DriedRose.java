@@ -131,7 +131,7 @@ public class DriedRose extends Artifact {
                             "could snap any moment.";
                 else if (level < 10)
                     desc+= "\n\nYou have reattached many petals and the rose has started to somehow come back to life."+
-                            " It almost looks like it's read to bloom.";
+                            " It almost looks like it's ready to bloom.";
                 else
                     desc+= "\n\nThe rose has blossomed again through some kind of magic, its connection to your spirit"+
                             " friend is stronger than ever.";
@@ -153,12 +153,17 @@ public class DriedRose extends Artifact {
             image = ItemSpriteSheet.ARTIFACT_ROSE3;
         else if (level >= 4)
             image = ItemSpriteSheet.ARTIFACT_ROSE2;
+
+        //For upgrade transferring via well of transmutation
+        droppedPetals = Math.max( level, droppedPetals );
+
         return super.upgrade();
     }
 
     private static final String TALKEDTO =      "talkedto";
     private static final String FIRSTSUMMON =   "firstsummon";
     private static final String SPAWNED =       "spawned";
+    private static final String PETALS =        "petals";
 
     @Override
     public void storeInBundle( Bundle bundle ) {
@@ -167,6 +172,7 @@ public class DriedRose extends Artifact {
         bundle.put( TALKEDTO, talkedTo );
         bundle.put( FIRSTSUMMON, firstSummon );
         bundle.put( SPAWNED, spawned );
+        bundle.put( PETALS, droppedPetals );
     }
 
     @Override
@@ -176,6 +182,7 @@ public class DriedRose extends Artifact {
         talkedTo = bundle.getBoolean( TALKEDTO );
         firstSummon = bundle.getBoolean( FIRSTSUMMON );
         spawned = bundle.getBoolean( SPAWNED );
+        droppedPetals = bundle.getInt( PETALS );
     }
 
     public class roseRecharge extends ArtifactBuff {
@@ -232,7 +239,13 @@ public class DriedRose extends Artifact {
         public boolean doPickUp( Hero hero ) {
             DriedRose rose = hero.belongings.getItem( DriedRose.class );
 
-            if (rose != null && rose.level < rose.levelCap){
+            if (rose == null){
+                GLog.w("You have no rose to add this petal to.");
+                return false;
+            } if ( rose.level >= rose.levelCap ){
+                GLog.i("There is no room left for this petal, so you discard it.");
+                return true;
+            } else {
 
                 rose.upgrade();
                 if (rose.level == rose.levelCap) {
@@ -245,11 +258,6 @@ public class DriedRose extends Artifact {
                 Sample.INSTANCE.play( Assets.SND_DEWDROP );
                 hero.spendAndNext(TIME_TO_PICK_UP);
                 return true;
-
-            } else {
-
-                GLog.w("You have no rose to add this petal to.");
-                return false;
 
             }
         }

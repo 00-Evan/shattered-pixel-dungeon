@@ -223,7 +223,7 @@ public class CloakOfShadows extends Artifact {
             if (exp >= (level+1)*50 && level < levelCap) {
                 upgrade();
                 exp -= level*50;
-                GLog.p("Your Cloak Grows Stronger!");
+                GLog.p("Your cloak grows stronger!");
             }
 
             updateQuickslot();
