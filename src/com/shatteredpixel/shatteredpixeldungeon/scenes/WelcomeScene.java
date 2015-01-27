@@ -34,10 +34,11 @@ public class WelcomeScene extends PixelScene {
             "-Second QuickSlot!\n\n-Rankings Page Reworked\n\n-You can now donate to support the game, press the donate button for more info!";
 
     private static final String TXT_SameVer =
-            "v0.2.3a and v0.2.3b fix some crash bugs players were experiencing, make sure to report any issues if you are still having them!\n\n" +
+            "v0.2.3a and v0.2.3b fix some crash bugs players were experiencing.\n\n" +
             "v0.2.3c fixes numerous issues, and gives some buffs to two of the new artifacts.\n\n" +
             "v0.2.3d fixes numerous bugs, both from this release and older ones.\n\n" +
-            "v0.2.3e fixes some bugs, and adds a couple new features!\n-Second QuickSlot!\n-night mode is now a level feel, time of day no longer affects gameplay.";
+            "v0.2.3e fixes some bugs, and adds a couple new features!\n-Second QuickSlot!\n-night mode is now a level feel, time of day no longer affects gameplay.\n\n" +
+            "v0.2.3f fixes more bugs. Next update is 0.2.4, which will incorporate the new 1.7.5 source, degredation will not be included.";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
