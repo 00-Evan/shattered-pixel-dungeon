@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 import java.util.ArrayList;
 
 import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -34,17 +35,13 @@ public class FloatingText extends BitmapText {
 	private float timeLeft;
 	
 	private int key = -1;
-	
+
+	private float cameraZoom = -1;
+
 	private static SparseArray<ArrayList<FloatingText>> stacks = new SparseArray<ArrayList<FloatingText>>();
 	
 	public FloatingText() {
-		
 		super();
-
-		PixelScene.chooseFont( 9 );
-		font = PixelScene.font;
-		scale.set( PixelScene.scale );
-		
 		speed.y = - DISTANCE / LIFESPAN;
 	}
 	
@@ -80,6 +77,13 @@ public class FloatingText extends BitmapText {
 	public void reset( float x, float y, String text, int color ) {
 		
 		revive();
+
+		if (cameraZoom != Camera.main.zoom) {
+			cameraZoom = Camera.main.zoom;
+			PixelScene.chooseFont( 9, cameraZoom );
+			font = PixelScene.font;
+			scale.set( PixelScene.scale );
+		}
 
 		text( text );
 		hardlight( color );

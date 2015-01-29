@@ -1,6 +1,6 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2014  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,26 +26,78 @@ import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class Identification extends Group {
+public class Degradation extends Group {
 
-	private static int[] DOTS = {
-		-1, -3,
-		 0, -3,
-		+1, -3,
-		-1, -2,
-		+1, -2,
+	private static int[] WEAPON = {
+		+2, -2,
 		+1, -1,
 		 0,  0,
-		+1,  0,
-		 0, +1,
-		 0, +3
+		-1, +1,
+		-2, +2,
+		-2,  0,
+		 0, +2
 	};
 	
-	public Identification( PointF p ) {
+	private static int[] ARMOR = {
+		-2, -1,
+		-1, -1,
+		+1, -1,
+		+2, -1,
+		-2,  0,
+		-1,  0,
+		 0,  0,
+		+1,  0,
+		+2,  0,
+		-1, +1,
+		+1, +1,
+		-1, +2,
+		 0, +2,
+		+1, +2
+	};
+	
+	private static int[] RING = {
+		 0, -1,
+		-1,  0,
+		 0,  0,
+		+1,  0,
+		-1, +1,
+		+1, +1,
+		-1, +2,
+		 0, +2,
+		+1, +2
+	};
+	
+	private static int[] WAND = {
+		+2, -2,
+		+1, -1,
+		 0,  0,
+		-1, +1,
+		-2, +2,
+		+1, -2,
+		+2, -1
+	};
+	
+	public static Degradation weapon( PointF p ) {
+		return new Degradation( p, WEAPON );
+	}
+	
+	public static Degradation armor( PointF p ) {
+		return new Degradation( p, ARMOR );
+	}
+	
+	public static Degradation ring( PointF p ) {
+		return new Degradation( p, RING );
+	}
+	
+	public static Degradation wand( PointF p ) {
+		return new Degradation( p, WAND );
+	}
+	
+	private Degradation( PointF p, int[] matrix ) {
 		
-		for (int i=0; i < DOTS.length; i += 2) {
-			add( new Speck( p.x, p.y, DOTS[i], DOTS[i+1] ) );
-			add( new Speck( p.x, p.y, DOTS[i], DOTS[i+1] ) );
+		for (int i=0; i < matrix.length; i += 2) {
+			add( new Speck( p.x, p.y, matrix[i], matrix[i+1] ) );
+			add( new Speck( p.x, p.y, matrix[i], matrix[i+1] ) );
 		}
 	}
 	
@@ -65,8 +117,8 @@ public class Identification extends Group {
 	}
 	
 	public static class Speck extends PixelParticle {
-
-		private static final int COLOR = 0x4488CC;
+		
+		private static final int COLOR = 0xFF4422;
 		private static final int SIZE = 3;
 		
 		public Speck( float x0, float y0, int mx, int my ) {

@@ -1,6 +1,6 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2014  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,12 @@ import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.utils.Random;
 
-public class SparkParticle extends PixelParticle {
-
-	public static final Emitter.Factory FACTORY = new Factory() {	
+public class BlastParticle extends PixelParticle.Shrinking {
+	
+	public static final Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
-			((SparkParticle)emitter.recycle( SparkParticle.class )).reset( x, y );
+			((BlastParticle)emitter.recycle( BlastParticle.class )).reset( x, y );
 		}
 		@Override
 		public boolean lightMode() {
@@ -35,11 +35,10 @@ public class SparkParticle extends PixelParticle {
 		};
 	};
 	
-	public SparkParticle() {
+	public BlastParticle() {
 		super();
 		
-		size( 2 );
-		
+		color( 0xEE7722 );		
 		acc.set( 0, +50 );
 	}
 	
@@ -49,14 +48,15 @@ public class SparkParticle extends PixelParticle {
 		this.x = x;
 		this.y = y;
 		
-		left = lifespan = Random.Float( 0.5f, 1.0f );
+		left = lifespan = Random.Float();
 		
-		speed.polar( -Random.Float( 3.1415926f ), Random.Float( 20, 40 ) );
+		size = 8;
+		speed.polar( -Random.Float( 3.1415926f ), Random.Float( 32, 64 ) );
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		size( Random.Float( 5 * left / lifespan ) );
+		am = left > 0.8f ? (1 - left) * 5 : 1;
 	}
 }

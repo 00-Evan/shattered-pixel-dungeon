@@ -65,7 +65,7 @@ public class ShadowParticle extends PixelParticle.Shrinking {
 		size = 8;
 		left = lifespan = 0.5f;
 		
-		speed.polar( Random.Float( 2 * PointF.PI ), Random.Float( 16, 32 ) );
+		speed.polar( Random.Float( PointF.PI2 ), Random.Float( 16, 32 ) );
 		this.x = x - speed.x * lifespan;
 		this.y = y - speed.y * lifespan;
 	}

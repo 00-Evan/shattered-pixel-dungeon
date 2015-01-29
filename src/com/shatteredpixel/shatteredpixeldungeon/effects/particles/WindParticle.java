@@ -36,7 +36,7 @@ public class WindParticle extends PixelParticle {
 		}
 	};
 	
-	private static float angle = Random.Float( PointF.PI * 2 );
+	private static float angle = Random.Float( PointF.PI2 );
 	private static PointF speed = new PointF().polar( angle, 5 );
 
 	
