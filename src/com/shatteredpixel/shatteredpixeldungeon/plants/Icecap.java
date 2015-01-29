@@ -48,7 +48,6 @@ public class Icecap extends Plant {
 		
 		for (int i=0; i < Level.LENGTH; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				
 				Freezing.affect( i, fire );
 			}
 		}

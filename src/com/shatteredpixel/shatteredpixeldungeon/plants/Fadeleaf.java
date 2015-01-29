@@ -48,9 +48,7 @@ public class Fadeleaf extends Plant {
 			((Hero)ch).curAction = null;
 			
 		} else if (ch instanceof Mob) {
-			
-			// Why do I try to choose a new position 10 times?
-			// I don't remember...
+
 			int count = 10;
 			int newPos;
 			do {
