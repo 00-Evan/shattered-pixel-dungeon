@@ -17,7 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-//Special kind of buff, that doesn't perform any kind actions
+//buff which does not need to act, used as a flag for other logic.
 public class FlavourBuff extends Buff {
 	
 	@Override

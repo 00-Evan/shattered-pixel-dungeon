@@ -37,8 +37,8 @@ public class Paralysis extends FlavourBuff {
 	
 	@Override
 	public void detach() {
-		target.paralysed = false;
 		super.detach();
+		unfreeze(target);
 	}
 	
 	@Override
@@ -54,5 +54,13 @@ public class Paralysis extends FlavourBuff {
 	public static float duration( Char ch ) {
 		Resistance r = ch.buff( Resistance.class );
 		return r != null ? r.durationFactor() * DURATION : DURATION;
+	}
+
+	public static void unfreeze( Char ch ) {
+		if (ch.buff( Paralysis.class ) == null &&
+				ch.buff( Frost.class ) == null) {
+
+			ch.paralysed = false;
+		}
 	}
 }
