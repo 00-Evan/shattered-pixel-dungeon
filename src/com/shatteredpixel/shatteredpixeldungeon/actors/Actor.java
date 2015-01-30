@@ -20,6 +20,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import android.util.SparseArray;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -35,7 +37,9 @@ public abstract class Actor implements Bundlable {
 	public static final float TICK	= 1f;
 
 	private float time;
-	
+
+	private int id = 0;
+
 	protected abstract boolean act();
 	
 	protected void spend( float time ) {
@@ -59,25 +63,44 @@ public abstract class Actor implements Bundlable {
 	protected void onAdd() {}
 	
 	protected void onRemove() {}
-	
-	private static final String TIME = "time";
-	
+
+	private static final String TIME    = "time";
+	private static final String ID      = "id";
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( TIME, time );
+		bundle.put( ID, id );
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		time = bundle.getFloat( TIME );
+		id = bundle.getInt( ID );
 	}
-	
+
+	public int id() {
+		if (id > 0) {
+			return id;
+		} else {
+			int max = 0;
+			for (Actor a : all) {
+				if (a.id > max) {
+					max = a.id;
+				}
+			}
+			return (id = max + 1);
+		}
+	}
+
 	// **********************
 	// *** Static members ***
 	
 	private static HashSet<Actor> all = new HashSet<Actor>();
 	private static Actor current;
-	
+
+	private static SparseArray<Actor> ids = new SparseArray<Actor>();
+
 	private static float now = 0;
 	
 	private static Char[] chars = new Char[Level.LENGTH];
@@ -88,6 +111,8 @@ public abstract class Actor implements Bundlable {
 		
 		Arrays.fill( chars, null );
 		all.clear();
+
+		ids.clear();
 	}
 	
 	public static void fixTime() {
@@ -202,9 +227,13 @@ public abstract class Actor implements Bundlable {
 		if (all.contains( actor )) {
 			return;
 		}
-		
+
+		if (actor.id > 0) {
+			ids.put( actor.id,  actor );
+		}
+
 		all.add( actor );
-		actor.time += time;	// (+=) => (=) ?
+		actor.time += time;
 		actor.onAdd();
 		
 		if (actor instanceof Char) {
@@ -222,13 +251,21 @@ public abstract class Actor implements Bundlable {
 		if (actor != null) {
 			all.remove( actor );
 			actor.onRemove();
+
+			if (actor.id > 0) {
+				ids.remove( actor.id );
+			}
 		}
 	}
 	
 	public static Char findChar( int pos ) {
 		return chars[pos];
 	}
-	
+
+	public static Actor findById( int id ) {
+		return ids.get( id );
+	}
+
 	public static HashSet<Actor> all() {
 		return all;
 	}

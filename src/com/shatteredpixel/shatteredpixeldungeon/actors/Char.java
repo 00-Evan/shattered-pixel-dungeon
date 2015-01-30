@@ -35,11 +35,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.Camera;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public abstract class Char extends Actor {
@@ -65,7 +66,6 @@ public abstract class Char extends Actor {
 	protected float baseSpeed	= 1;
 	
 	public boolean paralysed	= false;
-	public boolean pacified		= false;
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
@@ -127,10 +127,24 @@ public abstract class Char extends Actor {
                 HeroSubClass.SNIPER ? 0 : Random.IntRange( 0, enemy.dr() );
 			
 			int dmg = damageRoll();
-			int effectiveDamage = Math.max( dmg - dr, 0 );;
+			int effectiveDamage = Math.max( dmg - dr, 0 );
 			
 			effectiveDamage = attackProc( enemy, effectiveDamage );
 			effectiveDamage = enemy.defenseProc( this, effectiveDamage );
+
+			//game screen shakes for large amounts of damage dealt to/by the player.
+			//TODO: make sure this isn't distracting
+			float shake = 0f;
+			if (enemy == Dungeon.hero) {
+				shake = Math.max(effectiveDamage / (enemy.HT / 4),
+						(float) Math.pow(effectiveDamage / (enemy.HP / 2), 2));
+			} else if (this == Dungeon.hero && effectiveDamage >= enemy.HP) {
+				shake = (float) Math.pow(effectiveDamage / (enemy.HT / 2), 2);
+			}
+
+			if (shake > 1f)
+				Camera.main.shake( GameMath.gate( 1, shake, 5), 0.3f );
+
 			enemy.damage( effectiveDamage, this );
 			
 			if (visibleFight) {
@@ -141,7 +155,7 @@ public abstract class Char extends Actor {
 				buff(FireImbue.class).proc(enemy);
 			if (buff(EarthImbue.class) != null)
 				buff(EarthImbue.class).proc(enemy);
-			
+
 			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );
 			enemy.sprite.flash();
 			
@@ -149,10 +163,11 @@ public abstract class Char extends Actor {
 				if (enemy == Dungeon.hero) {
 					
 					if (Dungeon.hero.killerGlyph != null) {
-						
-						Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, Dungeon.hero.killerGlyph.name(), Dungeon.depth ) );
-						GLog.n( TXT_KILL, Dungeon.hero.killerGlyph.name() );
-						
+
+						// FIXME
+						//    Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, Dungeon.hero.killerGlyph.name(), Dungeon.depth ) );
+						//    GLog.n( TXT_KILL, Dungeon.hero.killerGlyph.name() );
+
 					} else {
 						if ( this instanceof Yog ) {
 							Dungeon.fail( Utils.format( ResultDescriptions.NAMED, name) );
@@ -183,7 +198,7 @@ public abstract class Char extends Actor {
 					GLog.i( TXT_SMB_MISSED, enemy.name, defense, name );
 				}
 				
-				Sample.INSTANCE.play( Assets.SND_MISS );
+				Sample.INSTANCE.play(Assets.SND_MISS);
 			}
 			
 			return false;
@@ -325,8 +340,17 @@ public abstract class Char extends Actor {
 		}
 		return null;
 	}
-	
-	
+
+	public boolean isCharmedBy( Char ch ) {
+		int chID = ch.id();
+		for (Buff b : buffs) {
+			if (b instanceof Charm && ((Charm)b).object == chID) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void add( Buff buff ) {
 		
 		buffs.add( buff );
@@ -450,17 +474,11 @@ public abstract class Char extends Actor {
 	
 	public void move( int step ) {
 
-        if (buff( Vertigo.class ) != null) {
-            ArrayList<Integer> candidates = new ArrayList<Integer>();
-            for (int dir : Level.NEIGHBOURS8) {
-                int p = pos + dir;
-                if ((Level.passable[p] || Level.avoid[p]) && Actor.findChar( p ) == null) {
-                    candidates.add( p );
-                }
-            }
-
-            step = Random.element( candidates );
-        }
+		if (Level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
+			step = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
+			if (!(Level.passable[step] || Level.avoid[step]) || Actor.findChar( step ) != null)
+				return;
+		}
 
 		if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
 			Door.leave( pos );
