@@ -108,11 +108,9 @@ public class ScrollPane extends Component {
 				ScrollPane.this.onClick( p.x, p.y );
 
 			}
-		}	
-		
-		// true if dragging is in progress
+		}
+
 		private boolean dragging = false;
-		// last touch coords
 		private PointF lastPos = new PointF();
 		
 		@Override

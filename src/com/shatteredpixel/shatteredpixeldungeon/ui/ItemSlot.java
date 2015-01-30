@@ -50,8 +50,9 @@ public class ItemSlot extends Button {
     private static final String TXT_KEY_DEPTH	= "\u007F%d";
 
 	private static final String TXT_LEVEL	= "%+d";
-	
-	// Special items for containers
+    private static final String TXT_CURSED    = "";//"-";
+
+    // Special "virtual items"
 	public static final Item CHEST = new Item() {
 		public int image() { return ItemSpriteSheet.CHEST; };
 	};
@@ -172,8 +173,8 @@ public class ItemSlot extends Button {
 			int level = item.visiblyUpgraded(); 
 
 			if (level != 0) {
-				bottomRight.text( item.levelKnown ? Utils.format( TXT_LEVEL, level ) : "" );
-				bottomRight.measure();
+                bottomRight.text( item.levelKnown ? Utils.format( TXT_LEVEL, level ) : TXT_CURSED );
+                bottomRight.measure();
 				bottomRight.hardlight( level > 0 ? UPGRADED : DEGRADED );
 			} else {
 				bottomRight.text( null );

@@ -66,18 +66,18 @@ public class RedButton extends Button {
 			icon.x = x + text.x - icon.width() - 2;
 			icon.y = y + (height - icon.height()) / 2;
 		}
-	};
-	
+	}
+
 	@Override
 	protected void onTouchDown() {
 		bg.brightness( 1.2f );
 		Sample.INSTANCE.play( Assets.SND_CLICK );
-	};
+	}
 	
 	@Override
 	protected void onTouchUp() {
 		bg.resetColor();
-	};
+	}
 	
 	public void enable( boolean value ) {
 		active = value;
@@ -89,7 +89,11 @@ public class RedButton extends Button {
 		text.measure();
 		layout();
 	}
-	
+
+    public void textColor( int value ) {
+        text.hardlight( value );
+    }
+
 	public void icon( Image icon ) {
 		if (this.icon != null) {
 			remove( this.icon );

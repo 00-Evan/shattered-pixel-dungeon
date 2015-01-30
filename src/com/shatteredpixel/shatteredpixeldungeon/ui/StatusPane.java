@@ -120,11 +120,11 @@ public class StatusPane extends Component {
         danger = new DangerIndicator();
         add( danger );
 
-        resume = new ResumeIndicator();
-        add ( resume );
-
         loot = new LootIndicator();
         add( loot );
+
+        resume = new ResumeIndicator();
+        add ( resume );
 
         buffs = new BuffIndicator( Dungeon.hero );
         add( buffs );
@@ -151,20 +151,48 @@ public class StatusPane extends Component {
 
         keys.y = 6;
 
-        danger.setPos( width - danger.width(), 20 );
-
-        loot.setPos( width - loot.width(),  danger.bottom() + 2 );
-
-        resume.setPos( width - resume.width(), (loot.visible ? loot.bottom() : danger.bottom()) + 2 );
+        layoutTags();
 
         buffs.setPos( 32, 11 );
 
         btnMenu.setPos( width - btnMenu.width(), 1 );
     }
 
+    private void layoutTags() {
+
+        float pos = 18;
+
+        if (tagDanger) {
+            danger.setPos( width - danger.width(), pos );
+            pos = danger.bottom() + 1;
+        }
+
+        if (tagLoot) {
+            loot.setPos( width - loot.width(), pos );
+            pos = loot.bottom() + 1;
+        }
+
+        if (tagResume) {
+            resume.setPos( width - resume.width(), pos );
+        }
+    }
+
+    private boolean tagDanger    = false;
+    private boolean tagLoot        = false;
+    private boolean tagResume    = false;
+
     @Override
     public void update() {
         super.update();
+
+        if (tagDanger != danger.visible || tagLoot != loot.visible || tagResume != resume.visible) {
+
+            tagDanger = danger.visible;
+            tagLoot = loot.visible;
+            tagResume = resume.visible;
+
+            layoutTags();
+        }
 
         float health = (float)Dungeon.hero.HP / Dungeon.hero.HT;
 
@@ -211,8 +239,6 @@ public class StatusPane extends Component {
             lastTier = tier;
             avatar.copy( HeroSprite.avatar( Dungeon.hero.heroClass, tier ) );
         }
-
-        resume.setPos( width - resume.width(), (loot.visible ? loot.bottom() : danger.bottom()) + 2 );
     }
 
     private static class MenuButton extends Button {
