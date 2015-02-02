@@ -48,7 +48,15 @@ public class RatKingPainter extends Painter {
 			addChest( level, i * Level.WIDTH + room.left + 1, door );
 			addChest( level, i * Level.WIDTH + room.right - 1, door );
 		}
-		
+
+		while (true) {
+			Heap chest = level.heaps.get( room.random() );
+			if (chest != null) {
+				chest.type = Heap.Type.MIMIC;
+				break;
+			}
+		}
+
 		RatKing king = new RatKing();
 		king.pos = room.random( 1 );
 		level.mobs.add( king );
