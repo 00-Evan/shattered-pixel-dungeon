@@ -132,7 +132,7 @@ public class Ghost extends NPC {
 	
 	@Override
 	protected Char chooseEnemy() {
-		return DUMMY;
+		return null;
 	}
 	
 	@Override

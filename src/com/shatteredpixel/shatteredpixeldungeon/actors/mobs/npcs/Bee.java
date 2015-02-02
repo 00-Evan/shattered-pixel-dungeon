@@ -1,6 +1,6 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2014  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,75 +21,79 @@ import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.BeeSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class MirrorImage extends NPC {
+//todo: given the plan for this in shattered, should probably 'bee' a mob.
+public class Bee extends NPC {
 	
 	{
-		name = "mirror image";
-		spriteClass = MirrorSprite.class;
+		name = "golden bee";
+		spriteClass = BeeSprite.class;
 		
-		state = HUNTING;
-
+		viewDistance = 4;
+		
+		WANDERING = new Wandering();
+		
+		flying = true;
+		state = WANDERING;
 	}
+
+	private int level;
 	
-	public int tier;
-	
-	private int attack;
-	private int damage;
-	
-	private static final String TIER	= "tier";
-	private static final String ATTACK	= "attack";
-	private static final String DAMAGE	= "damage";
+	private static final String LEVEL	= "level";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
-		bundle.put( TIER, tier );
-		bundle.put( ATTACK, attack );
-		bundle.put( DAMAGE, damage );
+		bundle.put( LEVEL, level );
 	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		tier = bundle.getInt( TIER );
-		attack = bundle.getInt( ATTACK );
-		damage = bundle.getInt( DAMAGE );
+		spawn( bundle.getInt( LEVEL ) );
 	}
 	
-	public void duplicate( Hero hero ) {
-		tier = hero.tier();
-		attack = hero.attackSkill( hero );
-		damage = hero.damageRoll();
+	public void spawn( int level ) {
+		this.level = level;
+		
+		HT = (3 + level) * 5;
+		defenseSkill = 9 + level;
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return attack;
+		return defenseSkill;
 	}
 	
 	@Override
 	public int damageRoll() {
-		return damage;
+		return Random.NormalIntRange( HT / 10, HT / 4 );
 	}
 	
 	@Override
 	public int attackProc( Char enemy, int damage ) {
-		int dmg = super.attackProc( enemy, damage );
-
-		destroy();
-		sprite.die();
-		
-		return dmg;
+		if (enemy instanceof Mob) {
+			((Mob)enemy).aggro( this );
+		}
+		return damage;
+	}
+	
+	@Override
+	protected boolean act() {
+		HP--;
+		if (HP <= 0) {
+			die( null );
+			return true;
+		} else {
+			return super.act();
+		}
 	}
 	
 	protected Char chooseEnemy() {
@@ -102,24 +106,20 @@ public class MirrorImage extends NPC {
 				}
 			}
 			
-			enemy = enemies.size() > 0 ? Random.element( enemies ) : null;
+			return enemies.size() > 0 ? Random.element( enemies ) : null;
+			
+		} else {
+			
+			return enemy;
+			
 		}
-		
-		return enemy;
 	}
 	
 	@Override
 	public String description() {
 		return
-			"This illusion bears a close resemblance to you, " +
-			"but it's paler and twitches a little.";
-	}
-	
-	@Override
-	public CharSprite sprite() {
-		CharSprite s = super.sprite();
-		((MirrorSprite)s).updateArmor( tier );
-		return s;
+			"Despite their small size, golden bees tend " +
+			"to protect their master fiercely. They don't live long though.";
 	}
 
 	@Override
@@ -135,16 +135,49 @@ public class MirrorImage extends NPC {
 		
 		Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
 		Dungeon.hero.busy();
-    }
+	}
+	
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	static {
+		IMMUNITIES.add( Poison.class );
+	}
+	
+	@Override
+	public HashSet<Class<?>> immunities() {
+		return IMMUNITIES;
+	}
+	
+	private class Wandering implements AiState {
 
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( ToxicGas.class );
-        IMMUNITIES.add( Burning.class );
-    }
-
-    @Override
-    public HashSet<Class<?>> immunities() {
-        return IMMUNITIES;
+		@Override
+		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+			if (enemyInFOV) {
+				
+				enemySeen = true;
+				
+				notice();
+				state = HUNTING;
+				target = enemy.pos;
+				
+			} else {
+				
+				enemySeen = false;
+				
+				int oldPos = pos;
+				if (getCloser( Dungeon.hero.pos )) {
+					spend( 1 / speed() );
+					return moveSprite( oldPos, pos );
+				} else {
+					spend( TICK );
+				}
+				
+			}
+			return true;
+		}
+		
+		@Override
+		public String status() {
+			return Utils.format( "This %s is wandering", name );
+		}
 	}
 }
