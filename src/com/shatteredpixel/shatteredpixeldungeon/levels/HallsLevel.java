@@ -85,19 +85,12 @@ public class HallsLevel extends RegularLevel {
 				}
 				
 			} else
-			if (map[i] == Terrain.WALL) {
-				
-				int count = 0;
-				for (int j=0; j < NEIGHBOURS4.length; j++) {
-					if (map[i + NEIGHBOURS4[j]] == Terrain.WATER) {
-						count++;
-					}
-				}
-				
-				if (Random.Int( 4 ) < count) {
-					map[i] = Terrain.WALL_DECO;
-				}
-				
+			if (map[i] == Terrain.WALL &&
+				map[i-1] != Terrain.WALL_DECO && map[i-WIDTH] != Terrain.WALL_DECO &&
+				Random.Int( 20 ) == 0) {
+
+				map[i] = Terrain.WALL_DECO;
+
 			}
 		}
 		

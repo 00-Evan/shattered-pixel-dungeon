@@ -159,7 +159,7 @@ public class CavesLevel extends RegularLevel {
 		for (Room r : rooms) {
 			if (r.type == Type.STANDARD) {
 				for (Room n : r.neigbours) {
-					if (n.type == Type.STANDARD && !r.connected.containsKey( n )/* && Random.Int( 2 ) == 0*/) {
+					if (n.type == Type.STANDARD && !r.connected.containsKey( n )) {
 						Rect w = r.intersect( n );
 						if (w.left == w.right && w.bottom - w.top >= 5) {
 							

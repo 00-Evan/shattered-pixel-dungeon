@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.watabou.noosa.Scene;
+import com.watabou.noosa.tweeners.AlphaTweener;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -180,14 +181,21 @@ public class CityBossLevel extends Level {
 			
 			Mob boss = Bestiary.mob( Dungeon.depth );
 			boss.state = boss.HUNTING;
+			int count = 0;
 			do {
 				boss.pos = Random.Int( LENGTH );
 			} while (
 				!passable[boss.pos] ||
 				!outsideEntraceRoom( boss.pos ) ||
-				Dungeon.visible[boss.pos]);
+				(Dungeon.visible[boss.pos] && count++ < 20));
 			GameScene.add( boss );
-			
+
+			if (Dungeon.visible[boss.pos]) {
+				boss.notice();
+				boss.sprite.alpha( 0 );
+				boss.sprite.parent.add( new AlphaTweener( boss.sprite, 1, 0.1f ) );
+			}
+
 			set( arenaDoor, Terrain.LOCKED_DOOR );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observe();

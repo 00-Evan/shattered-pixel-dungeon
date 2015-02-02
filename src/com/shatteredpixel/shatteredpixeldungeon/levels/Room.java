@@ -239,17 +239,3 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
