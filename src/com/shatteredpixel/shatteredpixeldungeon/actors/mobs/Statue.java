@@ -121,6 +121,7 @@ public class Statue extends Mob {
 	
 	@Override
 	public void beckon( int cell ) {
+		// Do nothing
 	}
 	
 	@Override

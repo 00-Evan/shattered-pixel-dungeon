@@ -68,10 +68,9 @@ public class Spinner extends Mob {
     protected boolean act() {
         boolean result = super.act();
 
-        if (state == FLEEING && buff(Terror.class) == null &&
-                enemySeen && enemy.buff(Poison.class) == null) {
-
-            state = HUNTING;
+        if (state == FLEEING && buff( Terror.class ) == null &&
+                enemy != null && enemySeen && enemy.buff( Poison.class ) == null) {
+                state = HUNTING;
         }
         return result;
     }

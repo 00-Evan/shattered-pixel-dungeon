@@ -21,6 +21,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level.Feeling;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -75,13 +77,6 @@ public abstract class Mob extends Char {
 	
 	public boolean hostile = true;
 	public boolean ally = false;
-	
-	// Unreachable target
-	public static final Mob DUMMY = new Mob() {
-		{
-			pos = -1;
-		}
-	};
 	
 	private static final String STATE	= "state";
     private static final String SEEN	= "seen";
@@ -157,16 +152,19 @@ public abstract class Mob extends Char {
 		
 		enemy = chooseEnemy();
 		
-		boolean enemyInFOV = enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0;
+		boolean enemyInFOV = enemy != null && enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0;
 
         return state.act( enemyInFOV, justAlerted );
 	}
 	
 	protected Char chooseEnemy() {
 
-		Terror terror = (Terror)buff( Terror.class );
+		Terror terror = buff( Terror.class );
 		if (terror != null) {
-			return terror.source;
+			Char source = (Char)Actor.findById( terror.object );
+			if (source != null) {
+				return source;
+			}
 		}
 
 		//resets target if: the target is dead, the target has been lost (wandering)
@@ -257,7 +255,7 @@ public abstract class Mob extends Char {
 	}
 	
 	protected boolean canAttack( Char enemy ) {
-		return Level.adjacent( pos, enemy.pos ) && !pacified;
+		return Level.adjacent( pos, enemy.pos ) && !isCharmedBy( enemy );
 	}
 	
 	protected boolean getCloser( int target ) {
@@ -354,7 +352,11 @@ public abstract class Mob extends Char {
 		}
 		return damage;
 	}
-	
+
+	public void aggro( Char ch ) {
+		enemy = ch;
+	}
+
 	@Override
 	public void damage( int dmg, Object src ) {
 
@@ -516,7 +518,7 @@ public abstract class Mob extends Char {
 
         @Override
         public String status() {
-            return String.format( "This %s is sleeping", name );
+            return Utils.format( "This %s is sleeping", name );
         }
     }
 
@@ -553,7 +555,7 @@ public abstract class Mob extends Char {
 
         @Override
         public String status() {
-            return String.format( "This %s is wandering", name );
+            return Utils.format( "This %s is wandering", name );
         }
     }
 
@@ -592,7 +594,7 @@ public abstract class Mob extends Char {
 
         @Override
         public String status() {
-            return String.format( "This %s is hunting", name );
+            return Utils.format( "This %s is hunting", name );
         }
     }
 
@@ -627,7 +629,7 @@ public abstract class Mob extends Char {
 
         @Override
         public String status() {
-            return String.format( "This %s is fleeing", name );
+            return Utils.format( "This %s is fleeing", name );
         }
     }
 
@@ -644,7 +646,7 @@ public abstract class Mob extends Char {
 
         @Override
         public String status() {
-            return String.format( "This %s is passive", name );
+            return Utils.format( "This %s is passive", name );
         }
     }
 }

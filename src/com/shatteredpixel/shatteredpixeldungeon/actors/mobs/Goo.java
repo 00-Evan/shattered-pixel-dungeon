@@ -47,7 +47,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Goo extends Mob {
-
+//todo: will need to manually recreate stuff from 1.7.5 here
 	{
 		name = "Goo";
 		HP = HT = 80;
