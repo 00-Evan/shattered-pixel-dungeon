@@ -278,7 +278,7 @@ public class DriedRose extends Artifact {
             flying = true;
 
             state = WANDERING;
-            enemy = DUMMY;
+            enemy = null;
 
             ally = true;
         }
@@ -297,7 +297,7 @@ public class DriedRose extends Artifact {
 
         public void saySpawned(){
             int i = (Dungeon.depth - 1) / 5;
-            if (chooseEnemy() == DUMMY)
+            if (chooseEnemy() == null)
                 yell( Random.element( VOICE_AMBIENT[i] ) );
             else
                 yell( Random.element( VOICE_ENEMIES[i][ Dungeon.bossLevel() ? 1 : 0 ] ) );
@@ -352,7 +352,7 @@ public class DriedRose extends Artifact {
 
         @Override
         protected Char chooseEnemy() {
-            if (enemy == DUMMY || !enemy.isAlive() || state == WANDERING) {
+            if (enemy == null || !enemy.isAlive() || state == WANDERING) {
 
                 HashSet<Mob> enemies = new HashSet<Mob>();
                 for (Mob mob : Dungeon.level.mobs) {
@@ -360,7 +360,7 @@ public class DriedRose extends Artifact {
                         enemies.add(mob);
                     }
                 }
-                enemy = enemies.size() > 0 ? Random.element( enemies ) : DUMMY;
+                enemy = enemies.size() > 0 ? Random.element( enemies ) : null;
             }
             return enemy;
         }
