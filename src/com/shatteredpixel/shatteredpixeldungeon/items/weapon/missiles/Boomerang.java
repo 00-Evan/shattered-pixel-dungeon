@@ -16,13 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Piercing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Swing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 
@@ -68,15 +66,6 @@ public class Boomerang extends MissileWeapon {
 		MIN -= 1;
 		MAX -= 2;
 		return super.degrade();
-	}
-	
-	@Override
-	public Weapon enchant( Enchantment ench ) {
-		while (ench instanceof Piercing || ench instanceof Swing) {
-			ench = Enchantment.random();
-		}
-		
-		return super.enchant( ench );
 	}
 
     @Override

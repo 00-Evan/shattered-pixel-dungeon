@@ -45,8 +45,8 @@ public class Horror extends Weapon.Enchantment {
             if (defender == Dungeon.hero) {
                 Buff.affect( defender, Vertigo.class, Vertigo.duration(defender) );
             } else {
-                Buff.affect( defender, Terror.class, Terror.DURATION ).source = attacker;
-            }
+				Buff.affect( defender, Terror.class, Terror.DURATION ).object = attacker.id();
+			}
 			
 			return true;
 		} else {

@@ -187,7 +187,7 @@ public class MeleeWeapon extends Weapon {
 		super.random();
 		
 		if (Random.Int( 10 + level ) == 0) {
-			enchant( Enchantment.random() );
+			enchant();
 		}
 		
 		return this;
