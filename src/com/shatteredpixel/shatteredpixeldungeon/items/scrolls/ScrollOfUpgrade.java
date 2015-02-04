@@ -42,12 +42,11 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 		ScrollOfRemoveCurse.uncurse( Dungeon.hero, item );
 		item.upgrade();
-		
+
+		upgrade( curUser );
 		GLog.p( TXT_LOOKS_BETTER, item.name() );
 		
 		Badges.validateItemLevelAquired( item );
-		
-		upgrade( curUser );
 	}
 	
 	public static void upgrade( Hero hero ) {

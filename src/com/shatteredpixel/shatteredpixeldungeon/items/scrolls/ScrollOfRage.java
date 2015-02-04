@@ -17,6 +17,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -43,7 +45,17 @@ public class ScrollOfRage extends Scroll {
                 Buff.prolong(mob, Amok.class, 5f);
             }
         }
-		
+
+		for (Heap heap : Dungeon.level.heaps.values()) {
+			if (heap.type == Heap.Type.MIMIC) {
+				Mimic m = Mimic.spawnAt( heap.pos, heap.items );
+				if (m != null) {
+					m.beckon( curUser.pos );
+					heap.destroy();
+				}
+			}
+		}
+
 		GLog.w( "The scroll emits an enraging roar that echoes throughout the dungeon!" );
 		setKnown();
 		
