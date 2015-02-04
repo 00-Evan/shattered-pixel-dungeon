@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
+import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.PosTweener;
@@ -75,15 +76,16 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected TorchHalo halo;
 	
 	protected EmoIcon emo;
-	
+
+	private Tweener jumpTweener;
+	private Callback jumpCallback;
+
 	private float flashTime = 0;
 	
 	protected boolean sleeping = false;
-	
-	// Char owner
+
 	public Char ch;
 
-    // The sprite is currently in motion
     public boolean isMoving = false;
 	
 	public CharSprite() {
@@ -186,7 +188,18 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			flipHorizontal = true;
 		}
 	}
-	
+
+	public void jump( int from, int to, Callback callback ) {
+		jumpCallback = callback;
+
+		int distance = Level.distance( from, to );
+		jumpTweener = new JumpTweener( this, worldToCamera( to ), distance * 4, distance * 0.1f );
+		jumpTweener.listener = this;
+		parent.add( jumpTweener );
+
+		turnTo( from, to );
+	}
+
 	public void die() {
 		sleeping = false;
 		play( die );
@@ -227,8 +240,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			Splash.at( c, PointF.angle( from, c ), 3.1415926f / 2, blood(), n );
 		}
 	}
-	
-	// Blood color
+
 	public int blood() {
 		return 0xFFBB0000;
 	}
@@ -383,9 +395,18 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	@Override
 	public void onComplete( Tweener tweener ) {
-		if (tweener == motion) {
+		if (tweener == jumpTweener) {
 
-            isMoving = false;
+			if (visible && Level.water[ch.pos] && !ch.flying) {
+				GameScene.ripple( ch.pos );
+			}
+			if (jumpCallback != null) {
+				jumpCallback.call();
+			}
+
+		} else if (tweener == motion) {
+
+			isMoving = false;
 
 			motion.killAndErase();
 			motion = null;
@@ -413,6 +434,31 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				
 			}
 			
+		}
+	}
+
+	private static class JumpTweener extends Tweener {
+
+		public Visual visual;
+
+		public PointF start;
+		public PointF end;
+
+		public float height;
+
+		public JumpTweener( Visual visual, PointF pos, float height, float time ) {
+			super( visual, time );
+
+			this.visual = visual;
+			start = visual.point();
+			end = pos;
+
+			this.height = height;
+		}
+
+		@Override
+		protected void updateValues( float progress ) {
+			visual.point( PointF.inter( start, end, progress ).offset( 0, -height * 4 * progress * (1 - progress) ) );
 		}
 	}
 }

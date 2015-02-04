@@ -57,10 +57,10 @@ public class ItemSpriteSheet {
     public static final int SMTH	= ROW1+13;
 
     //Row Two: Miscellaneous single use items
-    public static final int GOLD	= ROW2+0;
-    public static final int TORCH	= ROW2+1;
-    public static final int STYLUS	= ROW2+2;
-    public static final int ANKH	= ROW2+3;
+    public static final int GOLD	    = ROW2+0;
+    public static final int TORCH	    = ROW2+1;
+    public static final int STYLUS	    = ROW2+2;
+    public static final int ANKH	    = ROW2+3;
     // Keys
     public static final int IRON_KEY		= ROW2+4;
     public static final int GOLDEN_KEY		= ROW2+5;
@@ -71,6 +71,8 @@ public class ItemSpriteSheet {
     public static final int KIT		= ROW2+9;
     public static final int AMULET	= ROW2+10;
     public static final int WEIGHT  = ROW2+11;
+	public static final int BOMB    = ROW2+12;
+	public static final int HONEYPOT= ROW2+14;
 
     //Row Three: Melee weapons
     public static final int KNUCKLEDUSTER	= ROW3+0;
