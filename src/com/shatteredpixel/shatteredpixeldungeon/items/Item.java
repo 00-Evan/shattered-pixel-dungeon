@@ -270,7 +270,7 @@ public class Item implements Bundlable {
 		return this;
 	}
 	
-	public Item upgrade( int n ) {
+	final public Item upgrade( int n ) {
 		for (int i=0; i < n; i++) {
 			upgrade();
 		}
@@ -285,7 +285,7 @@ public class Item implements Bundlable {
 		return this;
 	}
 	
-	public Item degrade( int n ) {
+	final public Item degrade( int n ) {
 		for (int i=0; i < n; i++) {
 			degrade();
 		}
@@ -454,17 +454,24 @@ public class Item implements Bundlable {
 		final int cell = Ballistica.cast( user.pos, dst, false, true );
 		user.sprite.zap( cell );
 		user.busy();
-		
+
+		Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+
 		Char enemy = Actor.findChar( cell );
 		QuickSlotButton.target(enemy);
-		
+
+		// FIXME!!!
 		float delay = TIME_TO_THROW;
 		if (this instanceof MissileWeapon) {
-
-			// FIXME
 			delay *= ((MissileWeapon)this).speedFactor( user );
-			if (enemy != null && enemy.buff( SnipersMark.class ) != null) {
-				delay *= 0.5f;
+			if (enemy != null) {
+				SnipersMark mark = user.buff( SnipersMark.class );
+				if (mark != null) {
+					if (mark.object == enemy.id()) {
+						delay *= 0.5f;
+					}
+					user.remove( mark );
+				}
 			}
 		}
 		final float finalDelay = delay;
