@@ -35,7 +35,9 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Armor extends EquipableItem {
-	
+
+	private static final int HITS_TO_KNOW    = 10;
+
 	private static final String TXT_EQUIP_CURSED	= "your %s constricts around you painfully";
 		
 	private static final String TXT_IDENTIFY	= "you are now familiar enough with your %s to identify it. It is %s.";
@@ -50,7 +52,7 @@ public class Armor extends EquipableItem {
 	public int STR;
 	public int DR;
 	
-	private int hitsToKnow = 10;
+	private int hitsToKnow = HITS_TO_KNOW;
 	
 	public Glyph glyph;
 	
@@ -61,21 +63,26 @@ public class Armor extends EquipableItem {
 		STR = typicalSTR();
 		DR = typicalDR();
 	}
-	
-	private static final String GLYPH	= "glyph";
-	
+
+	private static final String UNFAMILIRIARITY	= "unfamiliarity";
+	private static final String GLYPH			= "glyph";
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
+		bundle.put( UNFAMILIRIARITY, hitsToKnow );
 		bundle.put( GLYPH, glyph );
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		glyph = (Glyph)bundle.get( GLYPH );
+		if ((hitsToKnow = bundle.getInt( UNFAMILIRIARITY )) == 0) {
+			hitsToKnow = HITS_TO_KNOW;
+		}
+		inscribe( (Glyph)bundle.get( GLYPH ) );
 	}
-	
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
@@ -271,7 +278,7 @@ public class Armor extends EquipableItem {
 		}
 		
 		if (Random.Int( 10 ) == 0) {
-			inscribe( Glyph.random() );
+			inscribe();
 		}
 		
 		return this;
@@ -319,7 +326,18 @@ public class Armor extends EquipableItem {
 
         return this;
     }
-	
+
+	public Armor inscribe() {
+
+		Class<? extends Glyph> oldGlyphClass = glyph != null ? glyph.getClass() : null;
+		Glyph gl = Glyph.random();
+		while (gl.getClass() == oldGlyphClass) {
+			gl = Armor.Glyph.random();
+		}
+
+		return inscribe( gl );
+	}
+
 	public boolean isInscribed() {
 		return glyph != null;
 	}

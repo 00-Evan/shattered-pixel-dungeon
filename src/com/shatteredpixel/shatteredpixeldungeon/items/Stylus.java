@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class Stylus extends Item {
 	
 	private static final String TXT_SELECT_ARMOR	= "Select an armor to inscribe on";
-	private static final String TXT_INSCRIBED		= "you inscribed the %s on your %s";
+	private static final String TXT_INSCRIBED		= "you inscribed the your %s with the stylus";
 	
 	private static final float TIME_TO_INSCRIBE = 2;
 	
@@ -81,16 +81,10 @@ public class Stylus extends Item {
 	private void inscribe( Armor armor ) {
 		
 		detach( curUser.belongings.backpack );
+
+		GLog.w( TXT_INSCRIBED, armor.name() );
 		
-		Class<? extends Armor.Glyph> oldGlyphClass = armor.glyph != null ? armor.glyph.getClass() : null;
-		Armor.Glyph glyph = Armor.Glyph.random();
-		while (glyph.getClass() == oldGlyphClass) {
-			glyph = Armor.Glyph.random();
-		}
-		
-		GLog.w( TXT_INSCRIBED, glyph.name(), armor.name() );
-		
-		armor.inscribe( glyph );
+		armor.inscribe();
 		
 		curUser.sprite.operate( curUser.pos );
 		curUser.sprite.centerEmitter().start( PurpleParticle.BURST, 0.05f, 10 );

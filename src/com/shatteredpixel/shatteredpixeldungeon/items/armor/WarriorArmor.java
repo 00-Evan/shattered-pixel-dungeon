@@ -17,7 +17,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -98,7 +97,7 @@ public class WarriorArmor extends ClassArmor {
 
                 final int dest = cell;
                 curUser.busy();
-                ((HeroSprite)curUser.sprite).jump(curUser.pos, cell, new Callback() {
+                curUser.sprite.jump(curUser.pos, cell, new Callback() {
                     @Override
                     public void call() {
                         curUser.move(dest);
