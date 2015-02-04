@@ -33,6 +33,7 @@ public class Assets {
 	public static final String HP_BAR	= "hp_bar.png";
 	public static final String XP_BAR	= "exp_bar.png";
 	public static final String TOOLBAR	= "toolbar.png";
+	public static final String SHADOW    = "shadow.png";
 	
 	public static final String WARRIOR	= "warrior.png";
 	public static final String MAGE		= "mage.png";
@@ -83,7 +84,9 @@ public class Assets {
 	public static final String TROLL	= "blacksmith.png";
 	public static final String IMP		= "demon.png";
 	public static final String RATKING	= "ratking.png";
-	
+	public static final String BEE      = "bee.png";
+	public static final String MIMIC    = "mimic.png";
+
 	public static final String ITEMS	= "items.png";
 	public static final String PLANTS	= "plants.png";
 	
@@ -157,4 +160,7 @@ public class Assets {
 	public static final String SND_GHOST	= "snd_ghost.mp3";
 	public static final String SND_SECRET	= "snd_secret.mp3";
 	public static final String SND_BONES	= "snd_bones.mp3";
+	public static final String SND_BEE      = "snd_bee.mp3";
+	public static final String SND_DEGRADE  = "snd_degrade.mp3";
+	public static final String SND_MIMIC    = "snd_mimic.mp3";
 }

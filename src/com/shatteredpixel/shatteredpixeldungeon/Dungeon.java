@@ -75,59 +75,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 public class Dungeon {
-	
-	private static final String NO_TIPS = "The text  is indecipherable...";
-	private static final String[] TIPS = {
-		"Almost all equipment has a strength requirement. Don't overestimate your strength, using equipment you can't " +
-                "handle has big penalties!\n\nRaising your strength is not the only way to access better equipment, " +
-                "you can also lower equipment strength requirements with Scrolls of Upgrade.\n\n\n" +
-                "Items found in the dungeon will often be unidentified. Some items will have unknown effects, others " +
-                "may be upgraded, or degraded and cursed! Unidentified items are unpredictable, so be careful!",
-		"Charging forward recklessly is a great way to get killed.\n\n" +
-                "Slowing down a bit to examine enemies and use the environment and items to your advantage can make a" +
-                " big difference.\n\nThe dungeon is full of traps and hidden passageways as well, keep your eyes open!",
-		"Levelling up is important!\n\nBeing at least the same level as the floor you are on is a good idea. " +
-                "Don't be afraid to slow down a little and train yourself up.",
-        "The rogue isn't the only character that benefits from being sneaky. You can retreat to the other side of a " +
-                "door to ambush a chasing opponent for a guaranteed hit!" +
-                "\n\nAny attack on an unaware opponent is guaranteed to hit them.",
-			
-		"Note to all sewer maintenance & cleaning crews: TURN BACK NOW. Some sort of sludge monster has made its home" +
-                " here and several crews have been lost trying to deal with it.\n\n" +
-                "Approval has been given to seal off the lower sewers, this area has been condemned, LEAVE NOW.",
-		
-		"Pixel-Mart - all you need for successful adventure!",
-		"Identify your potions and scrolls as soon as possible. Don't put it off to the moment " +
-			"when you actually need them.",
-		"Being hungry doesn't hurt, but starving does hurt.",
-		"Surprise attack has a better chance to hit. For example, you can ambush your enemy behind " +
-			"a closed door when you know it is approaching.",
-		
-		"Don't let The Tengu out!",
-		
-		"Pixel-Mart. Spend money. Live longer.",
-		"When you're attacked by several monsters at the same time, try to retreat behind a door.",
-		"If you are burning, you can't put out the fire in the water while levitating.",
-		"There is no sense in possessing more than one unblessed Ankh at the same time, " +
-                "because you will lose them upon resurrecting.",
-		
-		"DANGER! Heavy machinery can cause injury, loss of limbs or death!",
-		
-		"Pixel-Mart. A safer life in dungeon.",
-		"When you upgrade an enchanted weapon, there is a chance to destroy that enchantment.",
-		"In a Well of Transmutation you can get an item, that cannot be obtained otherwise.",
-		"The only way to enchant a weapon is by upgrading it with a Scroll of Weapon Upgrade.",
-		
-		"No weapons allowed in the presence of His Majesty!",
-		
-		"Pixel-Mart. Special prices for demon hunters!",
-		"The text is written in demonic language.",
-		"The text is written in demonic language.",
-		"The text is written in demonic language."
-	};
-	
-	private static final String TXT_DEAD_END = 
-		"What are you doing here?!";
+
 
 	public static boolean dewVial;		// true if the dew vial can be spawned
 	public static int transmutation;	// depth number for a well of transmutation
@@ -314,24 +262,6 @@ public class Dungeon {
 		switchLevel( level, level.entrance );
 	}
 	
-	public static String tip() {
-		
-		if (level instanceof DeadEndLevel) {
-			
-			return TXT_DEAD_END;
-			
-		} else {
-			
-			int index = depth - 1;
-			
-			if (index < TIPS.length) {
-				return TIPS[index];
-			} else {
-				return NO_TIPS;
-			}
-		}
-	}
-	
 	public static boolean shopOnLevel() {
 		return depth == 6 || depth == 11 || depth == 16;
 	}
@@ -392,7 +322,7 @@ public class Dungeon {
 		return chance( quota, limitedDrops.strengthPotions.count );
 	}
 	
-	public static boolean soeNeeded() {
+	public static boolean souNeeded() {
 		int[] quota = {5, 3, 10, 6, 15, 9, 20, 12, 25, 13};
 		return chance( quota, limitedDrops.upgradeScrolls.count );
 	}
@@ -547,8 +477,8 @@ public class Dungeon {
 			saveGame( gameFile( hero.heroClass ) );
 			saveLevel();
 
-            GamesInProgress.set( hero.heroClass, depth, hero.lvl );
-			
+			GamesInProgress.set( hero.heroClass, depth, hero.lvl, challenges != 0 );
+
 		} else if (WndResurrect.instance != null) {
 			
 			WndResurrect.instance.hide();
@@ -688,6 +618,7 @@ public class Dungeon {
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.depth = bundle.getInt( DEPTH );
+		info.challenges = (bundle.getInt( CHALLENGES ) != 0);
 		if (info.depth == -1) {
 			info.depth = bundle.getInt( "maxDepth" );	// FIXME
 		}
@@ -702,6 +633,8 @@ public class Dungeon {
 	}
 	
 	public static void win( String desc ) {
+
+		hero.belongings.identify();
 
         if (challenges != 0) {
             Badges.validateChampion();

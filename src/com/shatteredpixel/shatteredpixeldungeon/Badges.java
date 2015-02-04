@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 
 public class Badges {
 	
@@ -168,7 +169,9 @@ public class Badges {
 	private static HashSet<Badge> local = new HashSet<Badges.Badge>();
 	
 	private static boolean saveNeeded = false;
-	
+
+	public static Callback loadingListener = null;
+
 	public static void reset() {
 		local.clear();
 		loadGlobal();

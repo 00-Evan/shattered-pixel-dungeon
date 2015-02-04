@@ -44,7 +44,8 @@ public enum Rankings {
 	public ArrayList<Record> records;
 	public int lastRecord;
 	public int totalNumber;
-	
+	public int wonNumber;
+
 	public void submit( boolean win ) {
 
 		load();
@@ -91,7 +92,10 @@ public enum Rankings {
 		}
 		
 		totalNumber++;
-		
+		if (win) {
+			wonNumber++;
+		}
+
 		Badges.validateGamesPlayed();
 		
 		save();
@@ -104,13 +108,15 @@ public enum Rankings {
 	private static final String RECORDS	= "records";
 	private static final String LATEST	= "latest";
 	private static final String TOTAL	= "total";
-	
+	private static final String WON     = "won";
+
 	public void save() {
 		Bundle bundle = new Bundle();
 		bundle.put( RECORDS, records );
 		bundle.put( LATEST, lastRecord );
 		bundle.put( TOTAL, totalNumber );
-		
+		bundle.put( WON, wonNumber );
+
 		try {
 			OutputStream output = Game.instance.openFileOutput( RANKINGS_FILE, Game.MODE_PRIVATE );
 			Bundle.write( bundle, output );
@@ -142,7 +148,17 @@ public enum Rankings {
 				totalNumber = records.size();
 			}
 
+			wonNumber = bundle.getInt( WON );
+			if (wonNumber == 0) {
+				for (Record rec : records) {
+					if (rec.win) {
+						wonNumber++;
+					}
+				}
+			}
+
 		} catch (IOException e) {
+
 		}
 	}
 	
