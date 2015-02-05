@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
+//FIXME: fix in landscape mode
 public class AboutScene extends PixelScene {
 
     private static final String TTL_SHPX = "Shattered Pixel Dungeon";

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndRanking;
 
+//FIXME: need to modify this to properly account for new landscape logic, more than just a merge.
 public class RankingsScene extends PixelScene {
 	
 	private static final String TXT_TITLE		= "Top Rankings";

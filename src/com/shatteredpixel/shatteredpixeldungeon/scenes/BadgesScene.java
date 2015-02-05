@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Music;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -30,64 +31,85 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.utils.Callback;
 
 public class BadgesScene extends PixelScene {
-	
+
 	private static final String TXT_TITLE = "Your Badges";
-	
+
+	private static final int MAX_PANE_WIDTH	= 160;
+
 	@Override
 	public void create() {
-		
+
 		super.create();
-		
+
 		Music.INSTANCE.play( Assets.THEME, true );
 		Music.INSTANCE.volume( 1f );
-		
+
 		uiCamera.visible = false;
-		
+
 		int w = Camera.main.width;
 		int h = Camera.main.height;
-		
+
 		Archs archs = new Archs();
 		archs.setSize( w, h );
 		add( archs );
-		
-		int pw = Math.min( 160, w - 6 );
+
+		int pw = Math.min( MAX_PANE_WIDTH, w - 6 );
 		int ph = h - 30;
-		
+
 		NinePatch panel = Chrome.get( Chrome.Type.WINDOW );
 		panel.size( pw, ph );
 		panel.x = (w - pw) / 2;
 		panel.y = (h - ph) / 2;
 		add( panel );
-		
+
 		BitmapText title = PixelScene.createText( TXT_TITLE, 9 );
 		title.hardlight( Window.TITLE_COLOR );
 		title.measure();
 		title.x = align( (w - title.width()) / 2 );
 		title.y = align( (panel.y - title.baseLine()) / 2 );
 		add( title );
-		
+
 		Badges.loadGlobal();
-		
+
 		ScrollPane list = new BadgesList( true );
 		add( list );
-		
-		list.setRect( 
-			panel.x + panel.marginLeft(), 
-			panel.y + panel.marginTop(), 
-			panel.innerWidth(), 
-			panel.innerHeight() );
 
-        ExitButton btnExit = new ExitButton();
-        btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-        add( btnExit );
-		
+		list.setRect(
+				panel.x + panel.marginLeft(),
+				panel.y + panel.marginTop(),
+				panel.innerWidth(),
+				panel.innerHeight() );
+
+		ExitButton btnExit = new ExitButton();
+		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
+		add( btnExit );
+
 		fadeIn();
+
+		Badges.loadingListener = new Callback() {
+			@Override
+			public void call() {
+				if (Game.scene() == BadgesScene.this) {
+					ShatteredPixelDungeon.switchNoFade( BadgesScene.class );
+				}
+			}
+		};
 	}
-	
+
+	@Override
+	public void destroy() {
+
+		Badges.saveGlobal();
+		Badges.loadingListener = null;
+
+		super.destroy();
+	}
+
 	@Override
 	protected void onBackPressed() {
-        ShatteredPixelDungeon.switchNoFade(TitleScene.class);
+		ShatteredPixelDungeon.switchNoFade( TitleScene.class );
 	}
 }

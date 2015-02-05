@@ -10,6 +10,7 @@ import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 
+//FIXME: overhaul this in this update
 public class WelcomeScene extends PixelScene {
 
     private static final String TTL_Welcome = "Welcome!";

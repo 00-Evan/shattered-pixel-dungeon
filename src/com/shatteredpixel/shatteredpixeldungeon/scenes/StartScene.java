@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndClass;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.utils.Callback;
 
 public class StartScene extends PixelScene {
 
@@ -68,10 +69,16 @@ public class StartScene extends PixelScene {
     private static final String TXT_WIN_THE_GAME =
             "To unlock \"Challenges\", win the game with any character class.";
 
-    private static final float WIDTH = 116;
-    private static final float HEIGHT = 220;
+    private static final float WIDTH_P    = 116;
+    private static final float HEIGHT_P    = 220;
+
+    private static final float WIDTH_L    = 224;
+    private static final float HEIGHT_L    = 124;
 
     private static HashMap<HeroClass, ClassShield> shields = new HashMap<HeroClass, ClassShield>();
+
+    private float buttonX;
+    private float buttonY;
 
     private GameButton btnLoad;
     private GameButton btnNewGame;
@@ -93,8 +100,17 @@ public class StartScene extends PixelScene {
         int w = Camera.main.width;
         int h = Camera.main.height;
 
-        float left = (w - WIDTH) / 2;
-        float top = (h - HEIGHT) / 2;
+        float width, height;
+        if (ShatteredPixelDungeon.landscape()) {
+            width = WIDTH_L;
+            height = HEIGHT_L;
+        } else {
+            width = WIDTH_P;
+            height = HEIGHT_P;
+        }
+
+        float left = (w - width) / 2;
+        float top = (h - height) / 2;
         float bottom = h - top;
 
         Archs archs = new Archs();
@@ -103,8 +119,11 @@ public class StartScene extends PixelScene {
 
         Image title = BannerSprites.get( Type.SELECT_YOUR_HERO );
         title.x = align( (w - title.width()) / 2 );
-        title.y = top;
+        title.y = align( top );
         add( title );
+
+        buttonX = left;
+        buttonY = bottom - BUTTON_HEIGHT;
 
         btnNewGame = new GameButton( TXT_NEW ) {
             @Override
@@ -135,43 +154,66 @@ public class StartScene extends PixelScene {
         };
         add( btnLoad );
 
+        float centralHeight = buttonY - title.y - title.height();
+
         HeroClass[] classes = {
                 HeroClass.WARRIOR, HeroClass.MAGE, HeroClass.ROGUE, HeroClass.HUNTRESS
         };
-        float shieldW = WIDTH / 2;
-        float shieldH = Math.min( (bottom - BUTTON_HEIGHT - title.y - title.height()) / 2, shieldW * 1.2f );
-        top = (bottom - BUTTON_HEIGHT + title.y + title.height() - shieldH * 2) / 2;
-        for (int i=0; i < classes.length; i++) {
-            ClassShield shield = new ClassShield( classes[i] );
-            shield.setRect(
-                    left + (i % 2) * shieldW,
-                    top + (i / 2) * shieldH,
-                    shieldW, shieldH );
+        for (HeroClass cl : classes) {
+            ClassShield shield = new ClassShield( cl );
+            shields.put( cl, shield );
             add( shield );
+        }
+        if (ShatteredPixelDungeon.landscape()) {
+            float shieldW = width / 4;
+            float shieldH = Math.min( centralHeight, shieldW );
+            top = title.y + title.height + (centralHeight - shieldH) / 2;
+            for (int i=0; i < classes.length; i++) {
+                ClassShield shield = shields.get( classes[i] );
+                shield.setRect( left + i * shieldW, top, shieldW, shieldH );
+            }
 
-            shields.put( classes[i], shield );
+            ChallengeButton challenge = new ChallengeButton();
+            challenge.setPos(
+                    w / 2 - challenge.width() / 2,
+                    top + shieldH - challenge.height() / 2 );
+            add( challenge );
+
+        } else {
+            float shieldW = width / 2;
+            float shieldH = Math.min( centralHeight / 2, shieldW * 1.2f );
+            top = title.y + title.height() + centralHeight / 2 - shieldH;
+            for (int i=0; i < classes.length; i++) {
+                ClassShield shield = shields.get( classes[i] );
+                shield.setRect(
+                        left + (i % 2) * shieldW,
+                        top + (i / 2) * shieldH,
+                        shieldW, shieldH );
+            }
+
+            ChallengeButton challenge = new ChallengeButton();
+            challenge.setPos(
+                    w / 2 - challenge.width() / 2,
+                    top + shieldH - challenge.height() / 2 );
+            add( challenge );
+
         }
 
         unlock = new Group();
         add( unlock );
-
-        ChallengeButton challenge = new ChallengeButton();
-        challenge.setPos(
-                w / 2 - challenge.width() / 2,
-                top + shieldH - challenge.height() / 2 );
-        add( challenge );
+	    
 
         if (!(huntressUnlocked = Badges.isUnlocked( Badges.Badge.BOSS_SLAIN_3 ))) {
 
             BitmapTextMultiline text = PixelScene.createMultiline( TXT_UNLOCK, 9 );
-            text.maxWidth = (int)WIDTH;
+            text.maxWidth = (int)width;
             text.measure();
 
             float pos = (bottom - BUTTON_HEIGHT) + (BUTTON_HEIGHT - text.height()) / 2;
             for (BitmapText line : text.new LineSplitter().split()) {
                 line.measure();
                 line.hardlight( 0xFFFF00 );
-                line.x = PixelScene.align( left + WIDTH / 2 - line.width() / 2 );
+                line.x = PixelScene.align( w / 2 - line.width() / 2 );
                 line.y = PixelScene.align( pos );
                 unlock.add( line );
 
@@ -187,6 +229,25 @@ public class StartScene extends PixelScene {
         updateClass( HeroClass.values()[ShatteredPixelDungeon.lastClass()] );
 
         fadeIn();
+
+        Badges.loadingListener = new Callback() {
+            @Override
+            public void call() {
+                if (Game.scene() == StartScene.this) {
+                    ShatteredPixelDungeon.switchNoFade( StartScene.class );
+                }
+            }
+        };
+    }
+
+    @Override
+    public void destroy() {
+
+        Badges.saveGlobal();
+        Badges.loadingListener = null;
+
+        super.destroy();
+
     }
 
     private void updateClass( HeroClass cl ) {
@@ -205,31 +266,27 @@ public class StartScene extends PixelScene {
 
             unlock.visible = false;
 
-            float buttonPos = (Camera.main.height + HEIGHT) / 2 - BUTTON_HEIGHT;
-
-            float left = (Camera.main.width - WIDTH) / 2;
-
             GamesInProgress.Info info = GamesInProgress.check( curClass );
             if (info != null) {
 
                 btnLoad.visible = true;
-                btnLoad.secondary( Utils.format( TXT_DPTH_LVL, info.depth, info.level ) );
+                btnLoad.secondary( Utils.format( TXT_DPTH_LVL, info.depth, info.level ), info.challenges );
                 btnNewGame.visible = true;
-                btnNewGame.secondary( TXT_ERASE );
+                btnNewGame.secondary( TXT_ERASE, false );
 
-                float w = (WIDTH - GAP) / 2;
+                float w = (Camera.main.width - GAP) / 2 - buttonX;
 
                 btnLoad.setRect(
-                        left, buttonPos, w, BUTTON_HEIGHT );
+                        buttonX, buttonY, w, BUTTON_HEIGHT );
                 btnNewGame.setRect(
-                        btnLoad.right() + GAP, buttonPos, w, BUTTON_HEIGHT );
+                        btnLoad.right() + GAP, buttonY, w, BUTTON_HEIGHT );
 
             } else {
                 btnLoad.visible = false;
 
                 btnNewGame.visible = true;
-                btnNewGame.secondary( null );
-                btnNewGame.setRect( left, buttonPos, WIDTH, BUTTON_HEIGHT );
+                btnNewGame.secondary( null, false );
+                btnNewGame.setRect( buttonX, buttonY, Camera.main.width - buttonX * 2, BUTTON_HEIGHT );
             }
 
         } else {
@@ -261,7 +318,8 @@ public class StartScene extends PixelScene {
 
     private static class GameButton extends RedButton {
 
-        private static final int SECONDARY_COLOR	= 0xCACFC2;
+        private static final int SECONDARY_COLOR_N    = 0xCACFC2;
+        private static final int SECONDARY_COLOR_H    = 0xFFFF88;
 
         private BitmapText secondary;
 
@@ -276,7 +334,6 @@ public class StartScene extends PixelScene {
             super.createChildren();
 
             secondary = createText( 6 );
-            secondary.hardlight( SECONDARY_COLOR );
             add( secondary );
         }
 
@@ -294,15 +351,23 @@ public class StartScene extends PixelScene {
             }
         }
 
-        public void secondary( String text ) {
+        public void secondary( String text, boolean highlighted ) {
             secondary.text( text );
             secondary.measure();
+
+            secondary.hardlight( highlighted ? SECONDARY_COLOR_H : SECONDARY_COLOR_N );
         }
     }
 
     private class ClassShield extends Button {
 
         private static final float MIN_BRIGHTNESS	= 0.6f;
+
+        private static final int BASIC_NORMAL        = 0x444444;
+        private static final int BASIC_HIGHLIGHTED    = 0xCACFC2;
+
+        private static final int MASTERY_NORMAL        = 0x666644;
+        private static final int MASTERY_HIGHLIGHTED= 0xFFFF88;
 
         private static final int WIDTH	= 24;
         private static final int HEIGHT	= 32;
@@ -316,6 +381,9 @@ public class StartScene extends PixelScene {
 
         private float brightness;
 
+        private int normal;
+        private int highlighted;
+
         public ClassShield( HeroClass cl ) {
             super();
 
@@ -324,8 +392,17 @@ public class StartScene extends PixelScene {
             avatar.frame( cl.ordinal() * WIDTH, 0, WIDTH, HEIGHT );
             avatar.scale.set( SCALE );
 
+            if (Badges.isUnlocked( cl.masteryBadge() )) {
+                normal = MASTERY_NORMAL;
+                highlighted = MASTERY_HIGHLIGHTED;
+            } else {
+                normal = BASIC_NORMAL;
+                highlighted = BASIC_HIGHLIGHTED;
+            }
+
             name.text( cl.name() );
             name.measure();
+            name.hardlight( normal );
 
             brightness = MIN_BRIGHTNESS;
             updateBrightness();
@@ -385,10 +462,10 @@ public class StartScene extends PixelScene {
         public void highlight( boolean value ) {
             if (value) {
                 brightness = 1.0f;
-                name.hardlight( 0xCACFC2 );
+                name.hardlight( highlighted );
             } else {
                 brightness = 0.999f;
-                name.hardlight( 0x444444 );
+                name.hardlight( normal );
             }
 
             updateBrightness();
@@ -433,7 +510,7 @@ public class StartScene extends PixelScene {
         @Override
         protected void onClick() {
             if (Badges.isUnlocked( Badges.Badge.VICTORY )) {
-                add( new WndChallenges( ShatteredPixelDungeon.challenges(), true ) {
+                StartScene.this.add(new WndChallenges(ShatteredPixelDungeon.challenges(), true) {
                     public void onBackPressed() {
                         super.onBackPressed();
                         image.copy( Icons.get( ShatteredPixelDungeon.challenges() > 0 ?
@@ -441,7 +518,7 @@ public class StartScene extends PixelScene {
                     };
                 } );
             } else {
-                add( new WndMessage( TXT_WIN_THE_GAME ) );
+                StartScene.this.add( new WndMessage( TXT_WIN_THE_GAME ) );
             }
         }
 

@@ -46,10 +46,18 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class SurfaceScene extends PixelScene {
-	
-	private static final int WIDTH	= 80;
-	private static final int HEIGHT	= 112;
-	
+
+	private static final int FRAME_WIDTH    = 88;
+	private static final int FRAME_HEIGHT    = 125;
+
+	private static final int FRAME_MARGIN_TOP    = 9;
+	private static final int FRAME_MARGIN_X        = 4;
+
+	private static final int BUTTON_HEIGHT    = 20;
+
+	private static final int SKY_WIDTH    = 80;
+	private static final int SKY_HEIGHT    = 112;
+
 	private static final int NSTARS		= 100;
 	private static final int NCLOUDS	= 5;
 	
@@ -71,12 +79,12 @@ public class SurfaceScene extends PixelScene {
 		archs.reversed = true;
 		archs.setSize( w, h );
 		add( archs );
-		
-		float vx = align( (w - WIDTH) / 2 );
-		float vy = align( (h - HEIGHT) / 2 );
-		
+
+		float vx = align( (w - SKY_WIDTH) / 2 );
+		float vy = align( (h - SKY_HEIGHT - BUTTON_HEIGHT) / 2 );
+
 		Point s = Camera.main.cameraToScreen( vx, vy );
-		viewport = new Camera( s.x, s.y, WIDTH, HEIGHT, defaultZoom );
+		viewport = new Camera( s.x, s.y, SKY_WIDTH, SKY_HEIGHT, defaultZoom );
 		Camera.add( viewport );
 		
 		Group window = new Group();
@@ -86,21 +94,21 @@ public class SurfaceScene extends PixelScene {
 		boolean dayTime = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 7;
 		
 		Sky sky = new Sky( dayTime );
-		sky.scale.set( WIDTH, HEIGHT );
+		sky.scale.set( SKY_WIDTH, SKY_HEIGHT );
 		window.add( sky );
 		
 		if (!dayTime) {
 			for (int i=0; i < NSTARS; i++) {
 				float size = Random.Float();
 				ColorBlock star = new ColorBlock( size, size, 0xFFFFFFFF );
-				star.x = Random.Float( WIDTH ) - size / 2;
-				star.y = Random.Float( HEIGHT ) - size / 2;
-				star.am = size * (1 - star.y / HEIGHT);
+				star.x = Random.Float( SKY_WIDTH ) - size / 2;
+				star.y = Random.Float( SKY_HEIGHT ) - size / 2;
+				star.am = size * (1 - star.y / SKY_HEIGHT);
 				window.add( star );
 			}
 		}
 		
-		float range = HEIGHT * 2 / 3;
+		float range = SKY_HEIGHT * 2 / 3;
 		for (int i=0; i < NCLOUDS; i++) {
 			Cloud cloud = new Cloud( (NCLOUDS - 1 - i) * (range / NCLOUDS) + Random.Float( range / NCLOUDS ), dayTime );
 			window.add( cloud );
@@ -109,7 +117,7 @@ public class SurfaceScene extends PixelScene {
 		int nPatches = (int)(sky.width() / GrassPatch.WIDTH + 1);
 		
 		for (int i=0; i < nPatches * 4; i++) {
-			GrassPatch patch = new GrassPatch( (i - 0.75f) * GrassPatch.WIDTH / 4, HEIGHT + 1, dayTime );
+			GrassPatch patch = new GrassPatch( (i - 0.75f) * GrassPatch.WIDTH / 4, SKY_HEIGHT + 1, dayTime );
 			patch.brightness( dayTime ? 0.7f : 0.4f );
 			window.add( patch );
 		}
@@ -117,20 +125,15 @@ public class SurfaceScene extends PixelScene {
 		Avatar a = new Avatar( Dungeon.hero.heroClass );
 		// Removing semitransparent contour
 		a.am = 2; a.aa = -1;
-		a.x = PixelScene.align( (WIDTH - a.width) / 2 );
-		a.y = HEIGHT - a.height + 1;
+		a.x = PixelScene.align( (SKY_WIDTH - a.width) / 2 );
+		a.y = SKY_HEIGHT - a.height;
 		window.add( a );
 		
 		final Pet pet = new Pet();
 		pet.rm = pet.gm = pet.bm = 1.2f;
-		pet.x = WIDTH / 2 + 2;
-		pet.y = HEIGHT - pet.height;
+		pet.x = SKY_WIDTH / 2 + 2;
+		pet.y = SKY_HEIGHT - pet.height;
 		window.add( pet );
-		
-		if (dayTime) {
-			a.brightness( 1.2f );
-			pet.brightness( 1.2f );
-		}
 		
 		window.add( new TouchArea( sky ) {
 			protected void onClick( Touch touch ) {
@@ -139,27 +142,32 @@ public class SurfaceScene extends PixelScene {
 		} );
 		
 		for (int i=0; i < nPatches; i++) {
-			GrassPatch patch = new GrassPatch( (i - 0.5f) * GrassPatch.WIDTH, HEIGHT, dayTime );
+			GrassPatch patch = new GrassPatch( (i - 0.5f) * GrassPatch.WIDTH, SKY_HEIGHT, dayTime );
 			patch.brightness( dayTime ? 1.0f : 0.8f );
 			window.add( patch );
 		}
 		
 		Image frame = new Image( Assets.SURFACE );
-		if (!dayTime) {
+
+		frame.frame( 0, 0, FRAME_WIDTH, FRAME_HEIGHT );
+		frame.x = vx - FRAME_MARGIN_X;
+		frame.y = vy - FRAME_MARGIN_TOP;
+		add( frame );
+
+		if (dayTime) {
+			a.brightness( 1.2f );
+			pet.brightness( 1.2f );
+		} else {
 			frame.hardlight( 0xDDEEFF );
 		}
-		frame.frame( 0, 0, 88, 125 );
-		frame.x = vx - 4;
-		frame.y = vy - 9;
-		add( frame );
-		
+
 		RedButton gameOver = new RedButton( "Game Over" ) {
 			protected void onClick() {
 				Game.switchScene( TitleScene.class );
 			}
 		};
-		gameOver.setSize( WIDTH - 10, 20 );
-		gameOver.setPos( 5 + frame.x + 4, frame.y + frame.height + 4 );
+		gameOver.setSize( SKY_WIDTH - FRAME_MARGIN_X * 2, BUTTON_HEIGHT );
+		gameOver.setPos( frame.x + FRAME_MARGIN_X * 2, frame.y + frame.height + 4 );
 		add( gameOver );
 		
 		Badges.validateHappyEnd();
@@ -269,9 +277,9 @@ public class SurfaceScene extends PixelScene {
 			lastIndex = index;
 			
 			this.y = y;
-			
-			scale.set( 1 - y / HEIGHT );
-			x = Random.Float( WIDTH + width() ) - width();
+
+			scale.set( 1 - y / SKY_HEIGHT );
+			x = Random.Float( SKY_WIDTH + width() ) - width();
 			speed.x = scale.x * (dayTime ? +8 : -8);
 			
 			if (dayTime) {
@@ -285,10 +293,10 @@ public class SurfaceScene extends PixelScene {
 		@Override
 		public void update() {
 			super.update();
-			if (speed.x > 0 && x > WIDTH) {
+			if (speed.x > 0 && x > SKY_WIDTH) {
 				x = -width();
 			} else if (speed.x < 0 && x < -width()) {
-				x = WIDTH;
+				x = SKY_WIDTH;
 			}
 		}
 	}

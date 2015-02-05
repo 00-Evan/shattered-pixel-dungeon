@@ -603,7 +603,6 @@ public class GameScene extends PixelScene {
 		@Override
 		public void onSelect( Integer cell ) {
             if (Dungeon.hero.handle( cell )) {
-            //	Actor.next();
                 Dungeon.hero.next();
             }
 		}
