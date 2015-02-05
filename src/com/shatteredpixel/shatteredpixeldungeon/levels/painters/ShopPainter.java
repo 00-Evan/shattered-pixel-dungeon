@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ImpShopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
@@ -32,14 +33,19 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.OverpricedRation;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
@@ -52,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -112,21 +119,18 @@ public class ShopPainter extends Painter {
 		case 6:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Quarterstaff() : new Spear()).identify() );
 			itemsToSpawn.add( new LeatherArmor().identify() );
-			itemsToSpawn.add( new SeedPouch() );
 			itemsToSpawn.add( new Weightstone() );
 			break;
 			
 		case 11:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Sword() : new Mace()).identify() );
 			itemsToSpawn.add( new MailArmor().identify() );
-			itemsToSpawn.add( new ScrollHolder() );
 			itemsToSpawn.add( new Weightstone() );
 			break;
 			
 		case 16:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Longsword() : new BattleAxe()).identify() );
 			itemsToSpawn.add( new ScaleArmor().identify() );
-			itemsToSpawn.add( new WandHolster() );
 			itemsToSpawn.add( new Weightstone() );
 			break;
 			
@@ -146,6 +150,9 @@ public class ShopPainter extends Painter {
 			itemsToSpawn.add( new Torch() );
 			break;
 		}
+
+		Bag bag = ChooseBag(Dungeon.hero.belongings);
+		if (bag != null) itemsToSpawn.add( bag );
 
 		itemsToSpawn.add( new PotionOfHealing() );
 		for (int i=0; i < 3; i++) {
@@ -191,6 +198,55 @@ public class ShopPainter extends Painter {
 			throw new RuntimeException("Shop attempted to carry more than 39 items!");
 
 		Collections.shuffle(itemsToSpawn);
+	}
+
+	private static Bag ChooseBag(Belongings pack){
+		//FIXME: this whole method is pretty messy to accomplish a fairly simple logic goal. Should be a better way.
+
+		//there is a bias towards giving certain bags earlier, seen here
+		int seeds = 2, scrolls = 1, potions = 1, wands = 0;
+
+		//we specifically only want to look at items in the main bag, none of the sub-bags.
+		for (Item item : pack.backpack.items){
+			if (item instanceof Plant.Seed)
+				seeds++;
+			else if (item instanceof Scroll)
+				scrolls++;
+			else if (item instanceof Potion)
+				potions++;
+			else if (item instanceof Wand)
+				wands++;
+		}
+		//...and the equipped weapon incase it's a wand
+		if (pack.weapon instanceof Wand)
+			wands++;
+
+		//kill our counts for bags that have already been dropped.
+		if (Dungeon.limitedDrops.seedBag.dropped())
+			seeds = 0;
+		if (Dungeon.limitedDrops.scrollBag.dropped())
+			scrolls = 0;
+		if (Dungeon.limitedDrops.potionBag.dropped())
+			potions = 0;
+		if (Dungeon.limitedDrops.wandBag.dropped())
+			wands = 0;
+
+		//then pick whichever valid bag has the most items available to put into it.
+		if (seeds >= scrolls && seeds >= potions && seeds >= wands && !Dungeon.limitedDrops.seedBag.dropped()) {
+			Dungeon.limitedDrops.seedBag.drop();
+			return new SeedPouch();
+		} else if (scrolls >= potions && scrolls >= wands && !Dungeon.limitedDrops.scrollBag.dropped()) {
+			Dungeon.limitedDrops.scrollBag.drop();
+			return new ScrollHolder();
+		} else if (potions >= wands && !Dungeon.limitedDrops.potionBag.dropped()) {
+			Dungeon.limitedDrops.potionBag.drop();
+			return new PotionBandolier();
+		} else if (!Dungeon.limitedDrops.wandBag.dropped()) {
+			Dungeon.limitedDrops.wandBag.drop();
+			return new WandHolster();
+		} else
+			return null;
+
 	}
 
 	public static int spaceNeeded(){

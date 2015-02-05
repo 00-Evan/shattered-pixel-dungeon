@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import android.graphics.RectF;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -27,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
@@ -67,24 +69,24 @@ public class WndBag extends WndTabbed {
 		SCROLL,
 		EQUIPMENT
 	}
-	
+
 	protected static final int COLS	= 4;
-	
+
 	protected static final int SLOT_SIZE	= 28;
 	protected static final int SLOT_MARGIN	= 1;
 	
-	protected static final int TAB_WIDTH	= 30;
+	protected static final int TAB_WIDTH	= 25;
 	
 	protected static final int TITLE_HEIGHT	= 12;
 	
 	@SuppressWarnings("unused")
-	protected static final int ROWS = 
+	protected static final int ROWS =
 		(Belongings.BACKPACK_SIZE + 4 + 1) / COLS + ((Belongings.BACKPACK_SIZE + 4 + 1) % COLS > 0 ? 1 : 0);
-	
+
 	private Listener listener;
 	private WndBag.Mode mode;
 	private String title;
-	
+
 	protected int count;
 	protected int col;
 	protected int row;
@@ -102,7 +104,7 @@ public class WndBag extends WndTabbed {
 		
 		lastMode = mode;
 		lastBag = bag;
-		
+
 		BitmapText txtTitle = PixelScene.createText( title != null ? title : Utils.capitalize( bag.name() ), 9 );
 		txtTitle.hardlight( TITLE_COLOR );
 		txtTitle.measure();
@@ -111,17 +113,18 @@ public class WndBag extends WndTabbed {
 		add( txtTitle );
 		
 		placeItems( bag );
-		
-		resize( 
-			SLOT_SIZE * COLS + SLOT_MARGIN * (COLS - 1), 
+
+		resize(
+			SLOT_SIZE * COLS + SLOT_MARGIN * (COLS - 1),
 			SLOT_SIZE * ROWS + SLOT_MARGIN * (ROWS - 1) + TITLE_HEIGHT );
-		
+
 		Belongings stuff = Dungeon.hero.belongings;
 		Bag[] bags = {
 			stuff.backpack, 
 			stuff.getItem( SeedPouch.class ), 
 			stuff.getItem( ScrollHolder.class ),
-			stuff.getItem( WandHolster.class )};
+			stuff.getItem( WandHolster.class ),
+			stuff.getItem(PotionBandolier.class)};
 		
 		for (Bag b : bags) {
 			if (b != null) {
@@ -163,7 +166,7 @@ public class WndBag extends WndTabbed {
 		placeItem( stuff.armor != null ? stuff.armor : new Placeholder( ItemSpriteSheet.ARMOR ) );
 		placeItem( stuff.misc1 != null ? stuff.misc1 : new Placeholder( ItemSpriteSheet.RING ) );
 		placeItem( stuff.misc2 != null ? stuff.misc2 : new Placeholder( ItemSpriteSheet.RING ) );
-		
+
 		// Unequipped items
 		for (Item item : container.items) {
 			placeItem( item );
@@ -266,6 +269,8 @@ public class WndBag extends WndTabbed {
 				return Icons.get( Icons.SCROLL_HOLDER );
 			} else if (bag instanceof WandHolster) {
 				return Icons.get( Icons.WAND_HOLSTER );
+			} else if (bag instanceof PotionBandolier) {
+				return Icons.get( Icons.POTION_BANDOLIER );
 			} else {
 				return Icons.get( Icons.BACKPACK );
 			}

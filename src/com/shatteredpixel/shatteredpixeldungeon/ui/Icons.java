@@ -45,6 +45,7 @@ public enum Icons {
 	BACKPACK,
 	SEED_POUCH,
 	SCROLL_HOLDER,
+	POTION_BANDOLIER,
 	WAND_HOLSTER,
 	CHECKED,
 	UNCHECKED,
@@ -129,6 +130,9 @@ public enum Icons {
 		case WAND_HOLSTER:
 			icon.frame( icon.texture.uvRect( 88, 0, 98, 10 ) );
 			break;
+		case POTION_BANDOLIER:
+			icon.frame( icon.texture.uvRect( 98, 0, 108, 10 ) );
+			break;
 		case CHECKED:
 			icon.frame( icon.texture.uvRect( 54, 12, 66, 24 ) );
 			break;
@@ -136,7 +140,7 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 66, 12, 78, 24 ) );
 			break;
         case EXIT:
-            icon.frame( icon.texture.uvRect( 98, 0, 114, 16 ) );
+            icon.frame( icon.texture.uvRect( 108, 0, 124, 16 ) );
             break;
         case CHALLENGE_OFF:
             icon.frame( icon.texture.uvRect( 78, 16, 102, 40 ) );

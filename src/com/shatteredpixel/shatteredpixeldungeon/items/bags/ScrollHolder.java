@@ -43,7 +43,7 @@ public class ScrollHolder extends Bag {
 	@Override
 	public String info() {
 		return
-			"You can place any number of scrolls into this tubular container. " +
-			"It saves room in your backpack and protects scrolls from fire.";
+			"This tubular container looks like it would hold an astronomer's charts, but your scrolls will fit just as well.\n\n" +
+			"The holder doesn't look very flammable, so your scrolls should be safe from fire inside it.";
 	}
 }

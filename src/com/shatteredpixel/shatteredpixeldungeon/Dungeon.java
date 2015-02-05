@@ -76,13 +76,12 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-
-	public static boolean dewVial;		// true if the dew vial can be spawned
 	public static int transmutation;	// depth number for a well of transmutation
 
     //enum of items which have limited spawns, records how many have spawned
-    //could all be their own separate ints, but this allows iterating, much nicer for bundling/initializing.
+    //could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
 	public static enum limitedDrops{
+	    //limited world drops
         strengthPotions,
         upgradeScrolls,
         arcaneStyli,
@@ -93,12 +92,28 @@ public class Dungeon {
 		warlockHP,
 		scorpioHP,
 		cookingHP,
-        
+	    //blandfruit, which can technically be an unlimited health potion source
 		blandfruitSeed,
 
-		armband;
+	    //doesn't use Generator, so we have to enforce one armband drop here
+		armband,
+
+	    //containers
+	    dewVial,
+	    seedBag,
+	    scrollBag,
+	    potionBag,
+	    wandBag;
 
 		public int count = 0;
+
+	    //for items which can only be dropped once, should directly access count otherwise.
+	    public boolean dropped(){
+		    return count != 0;
+	    }
+	    public void drop(){
+		    count = 1;
+	    }
 	}
 
     public static int challenges;
@@ -146,7 +161,6 @@ public class Dungeon {
 		for (limitedDrops a : limitedDrops.values())
             a.count = 0;
 
-		dewVial = true;
 		transmutation = Random.IntRange( 6, 14 );
 		
 		chapters = new HashSet<Integer>();
@@ -413,7 +427,6 @@ public class Dungeon {
 
 			quickslot.storePlaceholders( bundle );
 
-			bundle.put( DV, dewVial );
 			bundle.put( WT, transmutation );
 
             int[] dropValues = new int[limitedDrops.values().length];
@@ -523,7 +536,8 @@ public class Dungeon {
 		
 		if (fullLoad) {
 
-            dewVial = bundle.getBoolean( DV );
+			//for pre-0.2.4 saves
+            if (bundle.getBoolean(DV)) limitedDrops.dewVial.drop();
             transmutation = bundle.getInt( WT );
 
             //TODO: adjust this when dropping support for pre-0.2.3 saves
@@ -579,6 +593,14 @@ public class Dungeon {
 		Statistics.restoreFromBundle( bundle );
 		Journal.restoreFromBundle( bundle );
         Generator.restoreFromBundle( bundle );
+
+		//logic for pre 0.2.4 bags, remove when no longer supporting those saves.
+		if (version <= 32){
+			int deepest = Statistics.deepestFloor;
+			if (deepest > 15) limitedDrops.wandBag.count = 1;
+			if (deepest > 10) limitedDrops.scrollBag.count = 1;
+			if (deepest > 5)  limitedDrops.seedBag.count = 1;
+		}
 	}
 	
 	public static Level loadLevel( HeroClass cl ) throws IOException {

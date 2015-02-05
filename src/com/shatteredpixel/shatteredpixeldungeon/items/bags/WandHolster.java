@@ -64,7 +64,7 @@ public class WandHolster extends Bag {
 	@Override
 	public String info() {
 		return
-			"This slim holder is made of leather of some exotic animal. " +
-			"It allows to compactly carry up to " + size + " wands.";
+			"This slim holster is made from some exotic animal, and is designed to compactly carry up to " + size + " wands.\n\n" +
+			"The size seems a bit excessive, who would ever have that many wands?";
 	}
 }
