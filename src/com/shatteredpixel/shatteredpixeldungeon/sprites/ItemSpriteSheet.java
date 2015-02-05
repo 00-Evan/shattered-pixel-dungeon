@@ -47,14 +47,15 @@ public class ItemSpriteSheet {
     public static final int BONES			= ROW1+4;
     public static final int REMAINS         = ROW1+5;
     public static final int TOMB			= ROW1+6;
-    public static final int CHEST			= ROW1+7;
-    public static final int LOCKED_CHEST	= ROW1+8;
-    public static final int CRYSTAL_CHEST	= ROW1+9;
-    // Placeholders
-    public static final int WEAPON	= ROW1+10;
-    public static final int ARMOR	= ROW1+11;
-    public static final int RING	= ROW1+12;
-    public static final int SMTH	= ROW1+13;
+	public static final int GRAVE			= ROW1+7;
+	public static final int CHEST			= ROW1+8;
+	public static final int LOCKED_CHEST	= ROW1+9;
+	public static final int CRYSTAL_CHEST	= ROW1+10;
+	// Placeholders
+	public static final int WEAPON	= ROW1+11;
+	public static final int ARMOR	= ROW1+12;
+	public static final int RING	= ROW1+13;
+	public static final int SMTH	= ROW1+14;
 
     //Row Two: Miscellaneous single use items
     public static final int GOLD	    = ROW2+0;
