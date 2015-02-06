@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWeaponUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.*;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -116,11 +116,7 @@ public class WaterOfTransmutation extends WellWater {
 				n.degrade( -level );
 			}
 
-			//FIXME enchantment should be preserved.
-			/*if (w.isEnchanted()) {
-				n.enchant();
-			}*/
-			
+			n.enchantment = w.enchantment;
 			n.levelKnown = w.levelKnown;
 			n.cursedKnown = w.cursedKnown;
 			n.cursed = w.cursed;
@@ -197,9 +193,9 @@ public class WaterOfTransmutation extends WellWater {
 	private Scroll changeScroll( Scroll s ) {
 		if (s instanceof ScrollOfUpgrade) {
 			
-			return new ScrollOfWeaponUpgrade();
+			return new ScrollOfMagicalInfusion();
 			
-		} else if (s instanceof ScrollOfWeaponUpgrade) {
+		} else if (s instanceof ScrollOfMagicalInfusion) {
 			
 			return new ScrollOfUpgrade();
 			

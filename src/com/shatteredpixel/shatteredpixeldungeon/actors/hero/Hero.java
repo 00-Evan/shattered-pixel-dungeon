@@ -85,7 +85,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWeaponUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -625,7 +625,7 @@ public class Hero extends Char {
 					} else {
 
 						boolean important =
-								((item instanceof ScrollOfUpgrade || item instanceof ScrollOfWeaponUpgrade) && ((Scroll)item).isKnown()) ||
+								((item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion) && ((Scroll)item).isKnown()) ||
 								((item instanceof PotionOfStrength || item instanceof PotionOfMight) && ((Potion)item).isKnown());
 						if (important) {
 							GLog.p( TXT_YOU_NOW_HAVE, item.name() );

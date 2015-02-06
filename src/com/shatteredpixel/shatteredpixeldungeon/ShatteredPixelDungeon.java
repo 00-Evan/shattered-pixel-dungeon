@@ -45,11 +45,11 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shock.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Swing" );
-		/* If I rename scroll of weapon upgrade, uncomment this and correct it.
+
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfEnchantment.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWeaponUpgrade" );
-		*/
+
 
 	}
 	

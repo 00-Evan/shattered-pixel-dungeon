@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class Stylus extends Item {
 	
 	private static final String TXT_SELECT_ARMOR	= "Select an armor to inscribe on";
-	private static final String TXT_INSCRIBED		= "you inscribed the your %s with the stylus";
+	private static final String TXT_INSCRIBED		= "you inscribed your %s with the stylus";
 	
 	private static final float TIME_TO_INSCRIBE = 2;
 	

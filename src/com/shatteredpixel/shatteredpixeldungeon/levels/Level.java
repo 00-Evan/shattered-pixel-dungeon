@@ -58,7 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWeaponUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
@@ -213,7 +213,7 @@ public abstract class Level implements Bundlable {
             }
             if (Random.Float() > Math.pow(0.95, bonus)){
                 if (Random.Int(2) == 0)
-                     addItemToSpawn( new ScrollOfWeaponUpgrade() );
+                     addItemToSpawn( new ScrollOfMagicalInfusion() );
                 else
                     addItemToSpawn( new PotionOfMight() );
             }

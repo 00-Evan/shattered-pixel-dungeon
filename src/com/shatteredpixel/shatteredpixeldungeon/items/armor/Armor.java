@@ -172,10 +172,6 @@ public class Armor extends EquipableItem {
 		return super.upgrade();
 	}
 	
-	public Item safeUpgrade() {
-		return upgrade( glyph != null );
-	}
-	
 	@Override
 	public Item degrade() {
 		DR -= tier;

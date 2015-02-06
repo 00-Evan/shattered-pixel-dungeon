@@ -95,7 +95,7 @@ public class Generator {
 			ScrollOfRage.class,
 			ScrollOfTerror.class,
 			ScrollOfLullaby.class,
-			ScrollOfWeaponUpgrade.class,
+			ScrollOfMagicalInfusion.class,
 			ScrollOfPsionicBlast.class,
 			ScrollOfMirrorImage.class };
 		Category.SCROLL.probs = new float[]{ 30, 10, 15, 0, 10, 15, 12, 8, 8, 0, 3, 6 };

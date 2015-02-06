@@ -56,7 +56,7 @@ public class Weapon extends KindOfWeapon {
 
 	private int hitsToKnow = HITS_TO_KNOW;
 	
-	protected Enchantment enchantment;
+	public Enchantment enchantment;
 	
 	@Override
 	public void proc( Char attacker, Char defender, int damage ) {
@@ -223,7 +223,7 @@ public class Weapon extends KindOfWeapon {
 	public boolean isEnchanted() {
 		return enchantment != null;
 	}
-	
+
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return enchantment != null ? enchantment.glowing() : null;
