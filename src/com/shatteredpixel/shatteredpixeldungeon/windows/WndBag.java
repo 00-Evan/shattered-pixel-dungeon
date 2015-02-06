@@ -77,8 +77,6 @@ public class WndBag extends WndTabbed {
 	protected static final int SLOT_SIZE	= 28;
 	protected static final int SLOT_MARGIN	= 1;
 	
-	protected static final int TAB_WIDTH	= 25;
-	
 	protected static final int TITLE_HEIGHT	= 12;
 	
 	private Listener listener;
@@ -128,15 +126,18 @@ public class WndBag extends WndTabbed {
 			stuff.backpack, 
 			stuff.getItem( SeedPouch.class ), 
 			stuff.getItem( ScrollHolder.class ),
-			stuff.getItem( WandHolster.class ),
-			stuff.getItem(PotionBandolier.class)};
-		
+			stuff.getItem( PotionBandolier.class ),
+			stuff.getItem( WandHolster.class )};
+
 		for (Bag b : bags) {
 			if (b != null) {
 				BagTab tab = new BagTab( b );
-				tab.setSize( TAB_WIDTH, tabHeight() );
-				add( tab );
-				
+				int tab_width = (slotsWidth-((bags.length-1)*5))/bags.length;
+				tab.setSize( tab_width, tabHeight() );
+
+				//no point in showing tabs if there's just one bag
+				if (bags.length > 1) add( tab );
+
 				tab.select( b == bag );
 			}
 		}
