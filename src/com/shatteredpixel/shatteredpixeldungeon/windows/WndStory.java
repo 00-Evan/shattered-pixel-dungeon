@@ -109,7 +109,7 @@ public class WndStory extends Window {
 		super.update();
 		
 		if (delay > 0 && (delay -= Game.elapsed) <= 0) {
-			chrome.visible = tf.visible = true;
+			shadow.visible = chrome.visible = tf.visible = true;
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class WndStory extends Window {
 		if (text != null) {
 			WndStory wnd = new WndStory( text );
 			if ((wnd.delay = 0.6f) > 0) {
-				wnd.chrome.visible = wnd.tf.visible = false;
+				wnd.shadow.visible = wnd.chrome.visible = wnd.tf.visible = false;
 			}
 			
 			Game.scene().add( wnd );

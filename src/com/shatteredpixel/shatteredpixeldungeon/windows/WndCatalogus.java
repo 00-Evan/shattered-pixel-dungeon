@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -32,10 +33,13 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndCatalogus extends WndTabbed {
-	
-	private static final int WIDTH	= 112;
-	private static final int HEIGHT	= 160;
-	
+
+	private static final int WIDTH_P    = 112;
+	private static final int HEIGHT_P    = 160;
+
+	private static final int WIDTH_L    = 128;
+	private static final int HEIGHT_L    = 128;
+
 	private static final int ITEM_HEIGHT	= 18;
 	
 	private static final int TAB_WIDTH		= 50;
@@ -54,8 +58,13 @@ public class WndCatalogus extends WndTabbed {
 	public WndCatalogus() {
 		
 		super();
-		resize( WIDTH, HEIGHT );
-		
+
+		if (ShatteredPixelDungeon.landscape()) {
+			resize( WIDTH_L, HEIGHT_L );
+		} else {
+			resize( WIDTH_P, HEIGHT_P );
+		}
+
 		txtTitle = PixelScene.createText( TXT_TITLE, 9 );
 		txtTitle.hardlight( Window.TITLE_COLOR );
 		txtTitle.measure();
@@ -73,8 +82,8 @@ public class WndCatalogus extends WndTabbed {
 			}
 		};
 		add( list );
-		list.setRect( 0, txtTitle.height(), WIDTH, HEIGHT - txtTitle.height() );
-		
+		list.setRect( 0, txtTitle.height(), width, height - txtTitle.height() );
+
 		boolean showPotions = WndCatalogus.showPotions;
 		Tab[] tabs = {
 			new LabeledTab( TXT_POTIONS ) {
@@ -104,8 +113,8 @@ public class WndCatalogus extends WndTabbed {
 		
 		txtTitle.text( Utils.format( TXT_TITLE, showPotions ? TXT_POTIONS : TXT_SCROLLS ) );
 		txtTitle.measure();
-		txtTitle.x = PixelScene.align( PixelScene.uiCamera, (WIDTH - txtTitle.width()) / 2 );
-		
+		txtTitle.x = PixelScene.align( PixelScene.uiCamera, (width - txtTitle.width()) / 2 );
+
 		items.clear();
 		
 		Component content = list.content();
@@ -115,7 +124,7 @@ public class WndCatalogus extends WndTabbed {
 		float pos = 0;
 		for (Class<? extends Item> itemClass : showPotions ? Potion.getKnown() : Scroll.getKnown()) {
 			ListItem item = new ListItem( itemClass );
-			item.setRect( 0, pos, WIDTH, ITEM_HEIGHT );
+			item.setRect( 0, pos, width, ITEM_HEIGHT );
 			content.add( item );
 			items.add( item );
 			
@@ -124,14 +133,14 @@ public class WndCatalogus extends WndTabbed {
 		
 		for (Class<? extends Item> itemClass : showPotions ? Potion.getUnknown() : Scroll.getUnknown()) {
 			ListItem item = new ListItem( itemClass );
-			item.setRect( 0, pos, WIDTH, ITEM_HEIGHT );
+			item.setRect( 0, pos, width, ITEM_HEIGHT );
 			content.add( item );
 			items.add( item );
 			
 			pos += item.height();
 		}
-		
-		content.setSize( WIDTH, pos );
+
+		content.setSize( width, pos );
 	}
 	
 	private static class ListItem extends Component {
@@ -156,7 +165,7 @@ public class WndCatalogus extends WndTabbed {
 					label.hardlight( 0xCCCCCC );
 				}
 			} catch (Exception e) {
-				//
+				// Do nothing
 			}
 		}
 		

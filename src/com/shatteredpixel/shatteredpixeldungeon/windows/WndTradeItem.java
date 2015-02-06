@@ -39,7 +39,7 @@ public class WndTradeItem extends Window {
 	
 	private static final float GAP		= 2;
 	private static final int WIDTH		= 120;
-	private static final int BTN_HEIGHT	= 18;
+	private static final int BTN_HEIGHT	= 16;
 	
 	private static final String TXT_SALE		= "FOR SALE: %s - %dg";
 	private static final String TXT_BUY			= "Buy for %dg";
@@ -262,7 +262,6 @@ public class WndTradeItem extends Window {
 	}
 	
 	private int price( Item item ) {
-		// This formula is not completely correct...
 		int price = item.price() * 5 * (Dungeon.depth / 5 + 1);
 		return price;
 	}

@@ -41,7 +41,7 @@ public class WndWandmaker extends Window {
 	private static final String TXT_FARAWELL	= "Good luck in your quest, %s!";
 	
 	private static final int WIDTH		= 120;
-	private static final int BTN_HEIGHT	= 18;
+	private static final int BTN_HEIGHT	= 20;
 	private static final float GAP		= 2;
 	
 	public WndWandmaker( final Wandmaker wandmaker, final Item item ) {

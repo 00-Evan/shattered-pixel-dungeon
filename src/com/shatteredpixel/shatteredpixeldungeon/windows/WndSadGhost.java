@@ -51,7 +51,7 @@ public class WndSadGhost extends Window {
 	private static final String TXT_ARMOR	= "Ghost's armor";
 	
 	private static final int WIDTH		= 120;
-	private static final int BTN_HEIGHT	= 18;
+	private static final int BTN_HEIGHT	= 20;
 	private static final float GAP		= 2;
 	
 	public WndSadGhost( final Ghost ghost, final int type ) {

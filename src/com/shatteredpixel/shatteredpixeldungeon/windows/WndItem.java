@@ -80,7 +80,11 @@ public class WndItem extends Window {
 				}
 				btn.setPos( x, y );
 				add( btn );
-				
+
+				if (action == item.defaultAction) {
+					btn.textColor( TITLE_COLOR );
+				}
+
 				x += btn.width() + GAP;
 			}
 		}

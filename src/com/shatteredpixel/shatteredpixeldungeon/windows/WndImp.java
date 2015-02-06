@@ -38,10 +38,10 @@ public class WndImp extends Window {
 		"This is my family heirloom ring: my granddad took it off a dead paladin's finger.";
 	private static final String TXT_REWARD		= "Take the ring";
 	
-	private static final int WIDTH		= 120;
-	private static final int BTN_HEIGHT	= 18;
-	private static final float GAP		= 2;
-	
+	private static final int WIDTH      = 120;
+	private static final int BTN_HEIGHT = 20;
+	private static final int GAP        = 2;
+
 	public WndImp( final Imp imp, final DwarfToken tokens ) {
 		
 		super();

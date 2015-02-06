@@ -62,6 +62,7 @@ public class WndBag extends WndTabbed {
 		FOR_SALE,
 		WEAPON,
 		ARMOR,
+		ENCHANTABLE,
 		WAND,
 		SEED,
         FOOD,
@@ -70,7 +71,8 @@ public class WndBag extends WndTabbed {
 		EQUIPMENT
 	}
 
-	protected static final int COLS	= 4;
+	protected static final int COLS_P    = 4;
+	protected static final int COLS_L    = 6;
 
 	protected static final int SLOT_SIZE	= 28;
 	protected static final int SLOT_MARGIN	= 1;
@@ -79,13 +81,12 @@ public class WndBag extends WndTabbed {
 	
 	protected static final int TITLE_HEIGHT	= 12;
 	
-	@SuppressWarnings("unused")
-	protected static final int ROWS =
-		(Belongings.BACKPACK_SIZE + 4 + 1) / COLS + ((Belongings.BACKPACK_SIZE + 4 + 1) % COLS > 0 ? 1 : 0);
-
 	private Listener listener;
 	private WndBag.Mode mode;
 	private String title;
+
+	private int nCols;
+	private int nRows;
 
 	protected int count;
 	protected int col;
@@ -105,18 +106,22 @@ public class WndBag extends WndTabbed {
 		lastMode = mode;
 		lastBag = bag;
 
+		nCols = ShatteredPixelDungeon.landscape() ? COLS_L : COLS_P;
+		nRows = (Belongings.BACKPACK_SIZE + 4 + 1) / nCols + ((Belongings.BACKPACK_SIZE + 4 + 1) % nCols > 0 ? 1 : 0);
+
+		int slotsWidth = SLOT_SIZE * nCols + SLOT_MARGIN * (nCols - 1);
+		int slotsHeight = SLOT_SIZE * nRows + SLOT_MARGIN * (nRows - 1);
+
 		BitmapText txtTitle = PixelScene.createText( title != null ? title : Utils.capitalize( bag.name() ), 9 );
 		txtTitle.hardlight( TITLE_COLOR );
 		txtTitle.measure();
-		txtTitle.x = (int)(SLOT_SIZE * COLS + SLOT_MARGIN * (COLS - 1) - txtTitle.width()) / 2;
+		txtTitle.x = (int)(slotsWidth - txtTitle.width()) / 2;
 		txtTitle.y = (int)(TITLE_HEIGHT - txtTitle.height()) / 2;
 		add( txtTitle );
 		
 		placeItems( bag );
 
-		resize(
-			SLOT_SIZE * COLS + SLOT_MARGIN * (COLS - 1),
-			SLOT_SIZE * ROWS + SLOT_MARGIN * (ROWS - 1) + TITLE_HEIGHT );
+		resize( slotsWidth, slotsHeight + TITLE_HEIGHT );
 
 		Belongings stuff = Dungeon.hero.belongings;
 		Bag[] bags = {
@@ -167,20 +172,27 @@ public class WndBag extends WndTabbed {
 		placeItem( stuff.misc1 != null ? stuff.misc1 : new Placeholder( ItemSpriteSheet.RING ) );
 		placeItem( stuff.misc2 != null ? stuff.misc2 : new Placeholder( ItemSpriteSheet.RING ) );
 
-		// Unequipped items
+		boolean backpack = (container == Dungeon.hero.belongings.backpack);
+		if (!backpack) {
+			count = nCols;
+			col = 0;
+			row = 1;
+		}
+
+		// Items in the bag
 		for (Item item : container.items) {
 			placeItem( item );
 		}
 		
-		// Empty slots
-		while (count-4 < container.size) {
+		// Free Space
+		while (count-(backpack ? 4 : nCols) < container.size) {
 			placeItem( null );
 		}
 		
 		// Gold
 		if (container == Dungeon.hero.belongings.backpack) {
-			row = ROWS - 1;
-			col = COLS - 1;
+			row = nRows - 1;
+			col = nCols - 1;
 			placeItem( new Gold( Dungeon.gold ) );
 		}
 	}
@@ -192,7 +204,7 @@ public class WndBag extends WndTabbed {
 		
 		add( new ItemButton( item ).setPos( x, y ) );
 		
-		if (++col >= COLS) {
+		if (++col >= nCols) {
 			col = 0;
 			row++;
 		}
@@ -358,6 +370,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon || item instanceof Boomerang) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||
+						mode == Mode.ENCHANTABLE && (item instanceof MeleeWeapon || item instanceof Boomerang || item instanceof Armor) ||
 						mode == Mode.WAND && (item instanceof Wand) ||
 						mode == Mode.SEED && (item instanceof Seed) ||
                         mode == Mode.FOOD && (item instanceof Food) ||

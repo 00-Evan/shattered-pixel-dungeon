@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import java.util.Collections;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
@@ -30,10 +31,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class WndJournal extends Window {
-	
-	private static final int WIDTH	= 112;
-	private static final int HEIGHT	= 160;
-	
+
+	private static final int WIDTH        = 112;
+	private static final int HEIGHT_P    = 160;
+	private static final int HEIGHT_L    = 144;
+
 	private static final int ITEM_HEIGHT	= 18;
 	
 	private static final String TXT_TITLE	= "Journal";
@@ -44,8 +46,8 @@ public class WndJournal extends Window {
 	public WndJournal() {
 		
 		super();
-		resize( WIDTH, HEIGHT );
-		
+		resize( WIDTH, ShatteredPixelDungeon.landscape() ? HEIGHT_L : HEIGHT_P );
+
 		txtTitle = PixelScene.createText( TXT_TITLE, 9 );
 		txtTitle.hardlight( Window.TITLE_COLOR );
 		txtTitle.measure();
@@ -69,8 +71,8 @@ public class WndJournal extends Window {
 		
 		list = new ScrollPane( content );
 		add( list );
-		
-		list.setRect( 0, txtTitle.height(), WIDTH, HEIGHT - txtTitle.height() );
+
+		list.setRect( 0, txtTitle.height(), WIDTH, height - txtTitle.height() );
 	}
 	
 	private static class ListItem extends Component {
