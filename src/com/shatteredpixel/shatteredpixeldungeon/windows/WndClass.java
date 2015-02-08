@@ -57,7 +57,6 @@ public class WndClass extends WndTabbed {
             add( tabMastery );
 
             tab = new RankingTab( TXT_MASTERY, tabMastery );
-            tab.setSize( TAB_WIDTH, tabHeight() );
             add( tab );
 
             resize(
@@ -66,6 +65,8 @@ public class WndClass extends WndTabbed {
         } else {
             resize( (int)tabPerks.width, (int)tabPerks.height );
         }
+
+        layoutTabs();
 
         select( 0 );
     }

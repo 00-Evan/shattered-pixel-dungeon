@@ -39,9 +39,9 @@ public class WndTabbed extends Window {
 	}
 	
 	protected Tab add( Tab tab ) {
-		
+
 		tab.setPos( tabs.size() == 0 ? 
-			-chrome.marginLeft() + 1 : 
+			-chrome.marginLeft() :
 			tabs.get( tabs.size() - 1 ).right(), height );
 		tab.select( false );
 		super.add( tab );
@@ -99,6 +99,41 @@ public class WndTabbed extends Window {
 		for (Tab tab : tabs) {
 			add( tab );
 		}
+	}
+
+	public void layoutTabs(){
+		int fullWidth = width+chrome.marginHor();
+		int numTabs = tabs.size();
+
+		if (numTabs == 0)
+			return;
+		if (numTabs == 1) {
+			tabs.get(0).setSize(fullWidth, tabHeight());
+			return;
+		}
+
+		int spaces = numTabs-1;
+		int spacing = -1;
+
+		while (spacing == -1) {
+			for (int i = 0; i <= 5; i++){
+				if ((fullWidth - i*(spaces)) % numTabs == 0) {
+					spacing = i;
+					break;
+				}
+			}
+			if (spacing == -1) fullWidth--;
+		}
+
+		int tabWidth = (fullWidth - spacing*(numTabs-1)) / numTabs;
+
+		for (int i = 0; i < tabs.size(); i++){
+			tabs.get(i).setSize(tabWidth, tabHeight());
+			tabs.get(i).setPos( i == 0 ?
+					-chrome.marginLeft() :
+					tabs.get( i - 1 ).right() + spacing, height );
+		}
+
 	}
 	
 	protected int tabHeight() {

@@ -83,11 +83,10 @@ public class WndHero extends WndTabbed {
 				buffs.visible = buffs.active = selected;
 			};
 		} );
-		for (Tab tab : tabs) {
-			tab.setSize( TAB_WIDTH, tabHeight() );
-		}
-		
+
 		resize( WIDTH, (int)Math.max( stats.height(), buffs.height() ) );
+
+		layoutTabs();
 		
 		select( 0 );
 	}

@@ -102,9 +102,10 @@ public class WndCatalogus extends WndTabbed {
 			}
 		};
 		for (Tab tab : tabs) {
-			tab.setSize( TAB_WIDTH, tabHeight() );
 			add( tab );
 		}
+
+		layoutTabs();
 		
 		select( showPotions ? 0 : 1 );
 	}

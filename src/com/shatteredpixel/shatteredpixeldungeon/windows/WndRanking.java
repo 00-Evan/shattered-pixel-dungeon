@@ -115,9 +115,10 @@ public class WndRanking extends WndTabbed {
 			add( pages[i] );
 			
 			Tab tab = new RankingTab( labels[i], pages[i] );
-			tab.setSize( TAB_WIDTH, tabHeight() );
 			add( tab );
 		}
+
+		layoutTabs();
 		
 		select( 0 );
 	}

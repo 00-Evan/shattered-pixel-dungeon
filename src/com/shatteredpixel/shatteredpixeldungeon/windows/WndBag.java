@@ -132,15 +132,12 @@ public class WndBag extends WndTabbed {
 		for (Bag b : bags) {
 			if (b != null) {
 				BagTab tab = new BagTab( b );
-				int tab_width = (slotsWidth-((bags.length-1)*5))/bags.length;
-				tab.setSize( tab_width, tabHeight() );
-
-				//no point in showing tabs if there's just one bag
-				if (bags.length > 1) add( tab );
-
+				add( tab );
 				tab.select( b == bag );
 			}
 		}
+
+		layoutTabs();
 	}
 	
 	public static WndBag lastBag( Listener listener, Mode mode, String title ) {
