@@ -64,7 +64,7 @@ public class Mimic extends Mob {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		items = new ArrayList<Item>( (Collection<? extends Item>) bundle.getCollection( ITEMS ) ); 
+		items = new ArrayList<Item>( (Collection<Item>) ((Collection<?>) bundle.getCollection( ITEMS ) ));
 		adjustStats( bundle.getInt( LEVEL ) );
 	}
 	
