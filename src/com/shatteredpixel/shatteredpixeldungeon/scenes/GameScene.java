@@ -20,6 +20,8 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import java.io.IOException;
 
 import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -106,6 +108,10 @@ public class GameScene extends PixelScene {
 	
 	private Toolbar toolbar;
 	private Toast prompt;
+
+	private AttackIndicator attack;
+	private LootIndicator loot;
+	private ResumeIndicator resume;
 	
 	@Override
 	public void create() {
@@ -212,13 +218,23 @@ public class GameScene extends PixelScene {
 		toolbar.setRect( 0,uiCamera.height - toolbar.height(), uiCamera.width, toolbar.height() );
 		add( toolbar );
 		
-		AttackIndicator attack = new AttackIndicator();
+		attack = new AttackIndicator();
 		attack.camera = uiCamera;
-		attack.setPos( 
-			uiCamera.width - attack.width(), 
+		attack.setPos(
+			uiCamera.width - attack.width(),
 			toolbar.top() - attack.height() );
 		add( attack );
-		
+
+		loot = new LootIndicator();
+		loot.camera = uiCamera;
+		add( loot );
+
+		resume = new ResumeIndicator();
+		resume.camera = uiCamera;
+		add( resume );
+
+		layoutTags();
+
 		log = new GameLog();
 		log.camera = uiCamera;
 		log.setRect( 0, toolbar.top(), attack.left(),  0 );
@@ -330,8 +346,35 @@ public class GameScene extends PixelScene {
 		if (Dungeon.hero.ready && !Dungeon.hero.paralysed) {
 			log.newLine();
 		}
+
+		if (tagAttack != attack.active || tagLoot != loot.visible || tagResume != resume.visible) {
+
+			tagAttack = attack.active;
+			tagLoot = loot.visible;
+			tagResume = resume.visible;
+
+			layoutTags();
+		}
 		
 		cellSelector.enabled = Dungeon.hero.ready;
+	}
+
+	private boolean tagAttack    = false;
+	private boolean tagLoot        = false;
+	private boolean tagResume    = false;
+
+	private void layoutTags() {
+
+		float pos = tagAttack ? attack.top() : toolbar.top();
+
+		if (tagLoot) {
+			loot.setPos( uiCamera.width - loot.width(), pos - loot.height() );
+			pos = loot.top();
+		}
+
+		if (tagResume) {
+			resume.setPos( uiCamera.width - resume.width(), pos - resume.height() );
+		}
 	}
 	
 	@Override

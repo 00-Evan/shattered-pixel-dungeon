@@ -31,7 +31,7 @@ public class LootIndicator extends Tag {
 	public LootIndicator() {
 		super( 0x1F75CC );
 		
-		setSize( 24, 22 );
+		setSize( 24, 24 );
 		
 		visible = false;
 	}

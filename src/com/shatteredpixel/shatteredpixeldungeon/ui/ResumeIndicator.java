@@ -14,7 +14,7 @@ public class ResumeIndicator extends Tag {
     public ResumeIndicator() {
         super(0xCDD5C0);
 
-        setSize( 24, 22 );
+        setSize( 24, 24 );
 
         visible = false;
 
