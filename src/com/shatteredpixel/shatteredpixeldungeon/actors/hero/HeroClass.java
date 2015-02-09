@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -75,9 +76,11 @@ public enum HeroClass {
 	public static final String[] HUN_PERKS = {
 		"Huntresses start with 15 points of Health.",
 		"Huntresses start with a unique upgradeable boomerang.",
-		"Huntresses are proficient with missile weapons and get damage bonus for excessive strength when using them.",
+		"Huntresses are proficient with missile weapons, getting bonus damage from excess strength.",
+		"Huntresses are able to recover a single used missile weapon from each enemy.",
 		"Huntresses gain more health from dewdrops.",
-		"Huntresses sense neighbouring monsters even if they are hidden behind obstacles."
+		"Huntresses sense neighbouring monsters even if they are hidden behind obstacles.",
+		"Potions of Mind Vision are identified from the beginning."
 	};
 
     public void initHero( Hero hero ) {
@@ -182,6 +185,8 @@ public enum HeroClass {
         boomerang.identify().collect();
 
         Dungeon.quickslot.setSlot(0, boomerang);
+
+	    new PotionOfMindVision().setKnown();
     }
 	
 	public String title() {

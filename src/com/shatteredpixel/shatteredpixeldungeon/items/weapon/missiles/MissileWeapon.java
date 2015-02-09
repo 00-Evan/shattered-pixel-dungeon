@@ -23,6 +23,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -69,11 +70,15 @@ public class MissileWeapon extends Weapon {
 				miss( cell );
 			} else if (!(this instanceof Boomerang)){
                 int bonus = 0;
-                for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class)) {
+
+                for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class))
                     bonus += ((RingOfSharpshooting.Aim)buff).level;
-                }
+
+				if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
+					bonus += 4;
+
                 if (Random.Float() > Math.pow(0.7, bonus))
-                    Dungeon.level.drop( this, cell ).sprite.drop();
+                    Buff.affect(enemy, PinCushion.class).stick(this);
             }
 		}
 	}
@@ -84,6 +89,7 @@ public class MissileWeapon extends Weapon {
             bonus += ((RingOfSharpshooting.Aim)buff).level;
         }
 
+		//degraded ring of sharpshooting will even make missed shots break.
         if (Random.Float() < Math.pow(0.6, -bonus))
             super.onThrow( cell );
 	}

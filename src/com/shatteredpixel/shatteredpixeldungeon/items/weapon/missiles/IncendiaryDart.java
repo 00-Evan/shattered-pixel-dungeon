@@ -55,24 +55,10 @@ public class IncendiaryDart extends MissileWeapon {
 	@Override
 	protected void onThrow( int cell ) {
 		Char enemy = Actor.findChar( cell );
-		if (enemy == null || enemy == curUser) {
-			if (Level.flamable[cell]) {
-				GameScene.add( Blob.seed( cell, 4, Fire.class ) );
-			} else {
-				super.onThrow( cell );
-			}
-		} else {
-			if (!curUser.shoot( enemy, this )) {
-				Dungeon.level.drop( this, cell ).sprite.drop();
-            } else {
-                int bonus = 0;
-                for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class)) {
-                    bonus += ((RingOfSharpshooting.Aim)buff).level;
-                }
-                if (Random.Float() > Math.pow(0.7, bonus))
-                    Dungeon.level.drop( this, cell ).sprite.drop();
-			}
-		}
+		if ((enemy == null || enemy == curUser) && Level.flamable[cell])
+			GameScene.add( Blob.seed( cell, 4, Fire.class ) );
+		else
+			super.onThrow( cell );
 	}
 	
 	@Override
