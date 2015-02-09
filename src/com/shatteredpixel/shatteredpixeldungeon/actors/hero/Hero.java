@@ -761,11 +761,6 @@ public class Hero extends Char {
 		if (pos == stairs && pos == Dungeon.level.exit) {
 			
 			curAction = null;
-			
-			Hunger hunger = buff( Hunger.class );
-			if (hunger != null && !hunger.isStarving()) {
-				hunger.satisfy( -Hunger.STARVING / 10 );
-			}
 
 			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
 			if (buff != null) buff.detach();
