@@ -66,6 +66,6 @@ public class Javelin extends MissileWeapon {
 	
 	@Override
 	public int price() {
-		return 15 * quantity;
+		return 12 * quantity;
 	}
 }

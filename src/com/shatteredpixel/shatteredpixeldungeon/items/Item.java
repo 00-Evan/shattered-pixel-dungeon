@@ -371,8 +371,9 @@ public class Item implements Bundlable {
 		return quantity;
 	}
 	
-	public void quantity( int value ) {
+	public Item quantity( int value ) {
 		quantity = value;
+		return this;
 	}
 	
 	public int price() {

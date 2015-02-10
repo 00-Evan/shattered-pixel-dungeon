@@ -23,9 +23,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ImpShopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
+import com.shatteredpixel.shatteredpixeldungeon.items.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.Weightstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
@@ -33,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
@@ -54,6 +56,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.IncendiaryDart;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tamahawk;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
@@ -115,62 +122,87 @@ public class ShopPainter extends Painter {
 		itemsToSpawn = new ArrayList<Item>();
 		
 		switch (Dungeon.depth) {
-		
 		case 6:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Quarterstaff() : new Spear()).identify() );
+			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
+					new IncendiaryDart().quantity(Random.NormalIntRange(2, 4)) :
+					new CurareDart().quantity(Random.NormalIntRange(1, 3)));
 			itemsToSpawn.add( new LeatherArmor().identify() );
-			itemsToSpawn.add( new Weightstone() );
 			break;
 			
 		case 11:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Sword() : new Mace()).identify() );
+			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
+					new CurareDart().quantity(Random.NormalIntRange(2, 5)) :
+					new Shuriken().quantity(Random.NormalIntRange(3, 6)));
 			itemsToSpawn.add( new MailArmor().identify() );
-			itemsToSpawn.add( new Weightstone() );
 			break;
 			
 		case 16:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Longsword() : new BattleAxe()).identify() );
+			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
+					new Shuriken().quantity(Random.NormalIntRange(4, 7)) :
+					new Javelin().quantity(Random.NormalIntRange(3, 6)));
 			itemsToSpawn.add( new ScaleArmor().identify() );
-			itemsToSpawn.add( new Weightstone() );
 			break;
 			
 		case 21:
-			switch (Random.Int( 3 )) {
-			case 0:
-				itemsToSpawn.add( new Glaive().identify() );
-				break;
-			case 1:
-				itemsToSpawn.add( new WarHammer().identify() );
-				break;
-			case 2:
-				itemsToSpawn.add( new PlateArmor().identify() );
-				break;
-			}
+			itemsToSpawn.add( Random.Int( 2 ) == 0 ? new Glaive().identify() : new WarHammer().identify() );
+			itemsToSpawn.add( Random.Int(2) == 0 ?
+					new Javelin().quantity(Random.NormalIntRange(4, 7)) :
+					new Tamahawk().quantity(Random.NormalIntRange(4, 7)));
+			itemsToSpawn.add( new PlateArmor().identify() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );
 			break;
 		}
 
-		Bag bag = ChooseBag(Dungeon.hero.belongings);
-		if (bag != null) itemsToSpawn.add( bag );
+
+		ChooseBag(Dungeon.hero.belongings);
+
 
 		itemsToSpawn.add( new PotionOfHealing() );
-		for (int i=0; i < 3; i++) {
+		for (int i=0; i < 3; i++)
 			itemsToSpawn.add( Generator.random( Generator.Category.POTION ) );
-		}
 
 		itemsToSpawn.add( new ScrollOfIdentify() );
 		itemsToSpawn.add( new ScrollOfRemoveCurse() );
 		itemsToSpawn.add( new ScrollOfMagicMapping() );
 		itemsToSpawn.add( Generator.random( Generator.Category.SCROLL ) );
 
+		for (int i=0; i < 2; i++)
+			itemsToSpawn.add( Random.Int(2) == 0 ?
+					Generator.random( Generator.Category.POTION ) :
+					Generator.random( Generator.Category.SCROLL ) );
+
+
 		itemsToSpawn.add( new OverpricedRation() );
 		itemsToSpawn.add( new OverpricedRation() );
 
-		itemsToSpawn.add( new Ankh() );
+		itemsToSpawn.add( new Bomb().random() );
+		switch (Random.Int(5)){
+			case 1:
+				itemsToSpawn.add( new Bomb() );
+				break;
+			case 2:
+				itemsToSpawn.add( new Bomb().random() );
+				break;
+			case 3:
+			case 4:
+				itemsToSpawn.add( new Honeypot() );
+				break;
+		}
+
+
+		if (Dungeon.depth == 6) {
+			itemsToSpawn.add( new Ankh() );
+			itemsToSpawn.add( new Weightstone() );
+		} else {
+			itemsToSpawn.add(Random.Int(2) == 0 ? new Ankh() : new Weightstone());
+		}
+
 
 		TimekeepersHourglass hourglass = Dungeon.hero.belongings.getItem(TimekeepersHourglass.class);
-
 		if (hourglass != null){
 			int bags = 0;
             //creates the given float percent of the remaining bags to be dropped.
@@ -186,12 +218,30 @@ public class ShopPainter extends Painter {
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
 			}
 
-
 			for(int i = 1; i <= bags; i++){
 				itemsToSpawn.add( new TimekeepersHourglass.sandBag());
 				hourglass.sandBags ++;
 			}
 		}
+
+		Item rare;
+		switch (Random.Int(3)){
+			case 0:
+				rare = Generator.random( Generator.Category.WAND );
+				rare.level = 0;
+				break;
+			case 1:
+				rare = Generator.random(Generator.Category.RING);
+				rare.level = 1;
+				break;
+			case 2:
+				rare = Generator.random( Generator.Category.ARTIFACT ).identify();
+				break;
+			default:
+				rare = new Stylus();
+		}
+		rare.cursed = rare.cursedKnown = false;
+		itemsToSpawn.add( rare );
 
 		//this is a hard limit, level gen allows for at most an 8x5 room, can't fit more than 39 items + 1 shopkeeper.
 		if (itemsToSpawn.size() > 39)
@@ -200,7 +250,7 @@ public class ShopPainter extends Painter {
 		Collections.shuffle(itemsToSpawn);
 	}
 
-	private static Bag ChooseBag(Belongings pack){
+	private static void ChooseBag(Belongings pack){
 		//FIXME: this whole method is pretty messy to accomplish a fairly simple logic goal. Should be a better way.
 
 		//there is a bias towards giving certain bags earlier, seen here
@@ -234,19 +284,17 @@ public class ShopPainter extends Painter {
 		//then pick whichever valid bag has the most items available to put into it.
 		if (seeds >= scrolls && seeds >= potions && seeds >= wands && !Dungeon.limitedDrops.seedBag.dropped()) {
 			Dungeon.limitedDrops.seedBag.drop();
-			return new SeedPouch();
+			itemsToSpawn.add( new SeedPouch() );
 		} else if (scrolls >= potions && scrolls >= wands && !Dungeon.limitedDrops.scrollBag.dropped()) {
 			Dungeon.limitedDrops.scrollBag.drop();
-			return new ScrollHolder();
+			itemsToSpawn.add( new ScrollHolder() );
 		} else if (potions >= wands && !Dungeon.limitedDrops.potionBag.dropped()) {
 			Dungeon.limitedDrops.potionBag.drop();
-			return new PotionBandolier();
+			itemsToSpawn.add( new PotionBandolier() );
 		} else if (!Dungeon.limitedDrops.wandBag.dropped()) {
 			Dungeon.limitedDrops.wandBag.drop();
-			return new WandHolster();
-		} else
-			return null;
-
+			itemsToSpawn.add(new WandHolster());
+		}
 	}
 
 	public static int spaceNeeded(){

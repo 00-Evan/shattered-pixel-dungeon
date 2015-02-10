@@ -96,7 +96,7 @@ public class Stylus extends Item {
 	
 	@Override
 	public int price() {
-		return 50 * quantity;
+		return 30 * quantity;
 	}
 	
 	@Override

@@ -68,6 +68,6 @@ public class CurareDart extends MissileWeapon {
 	
 	@Override
 	public int price() {
-		return 12 * quantity;
+		return 8 * quantity;
 	}
 }
