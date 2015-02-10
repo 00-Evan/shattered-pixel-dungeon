@@ -54,6 +54,10 @@ public class QuickSlot {
         return getItem(slot) != null && getItem(slot).quantity() == 0;
     }
 
+	public Boolean isNonePlaceholder(int slot){
+		return getItem(slot) != null && getItem(slot).quantity() > 0;
+	}
+
     public void clearItem(Item item){
         if (contains(item))
             clearSlot(getSlot(item));
