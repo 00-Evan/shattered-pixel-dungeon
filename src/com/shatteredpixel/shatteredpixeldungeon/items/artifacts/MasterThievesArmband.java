@@ -46,7 +46,7 @@ public class MasterThievesArmband extends Artifact {
 
         @Override
         public void detach() {
-            charge *= 0.80;
+            charge *= 0.95;
             super.detach();
         }
 
