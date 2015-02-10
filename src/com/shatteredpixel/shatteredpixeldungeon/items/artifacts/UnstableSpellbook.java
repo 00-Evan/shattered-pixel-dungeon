@@ -69,7 +69,7 @@ public class UnstableSpellbook extends Artifact {
         ArrayList<String> actions = super.actions( hero );
         if (isEquipped( hero ) && charge > 0 && !cursed)
             actions.add(AC_READ);
-        if (level < levelCap && !cursed)
+        if (isEquipped( hero ) && level < levelCap && !cursed)
             actions.add(AC_ADD);
         return actions;
     }
