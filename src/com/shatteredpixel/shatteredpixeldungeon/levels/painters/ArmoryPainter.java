@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
@@ -63,9 +64,11 @@ public class ArmoryPainter extends Painter {
 	}
 	
 	private static Item prize( Level level ) {
-		return Generator.random( Random.oneOf( 
-			Generator.Category.ARMOR, 
-			Generator.Category.WEAPON
-		) );
+		return Random.Int( 6 ) == 0 ?
+				new Bomb().random() :
+				Generator.random( Random.oneOf(
+						Generator.Category.ARMOR,
+						Generator.Category.WEAPON
+				) );
 	}
 }
