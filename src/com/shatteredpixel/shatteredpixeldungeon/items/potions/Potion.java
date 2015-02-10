@@ -218,10 +218,12 @@ public class Potion extends Item {
 		shatter( hero.pos );
 	}
 	
-	protected void shatter( int cell ) {
-		GLog.i( "The flask shatters and " + color() + " liquid splashes harmlessly" );
-		Sample.INSTANCE.play( Assets.SND_SHATTER );
-		splash( cell );
+	public void shatter( int cell ) {
+		if (Dungeon.visible[cell]) {
+			GLog.i( "The flask shatters and " + color() + " liquid splashes harmlessly" );
+			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			splash( cell );
+		}
 	}
 
     @Override

@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -34,14 +35,16 @@ public class PotionOfLevitation extends Potion {
 	}
 
     @Override
-    protected void shatter( int cell ) {
+    public void shatter( int cell ) {
 
-        setKnown();
+	    if (Dungeon.visible[cell]) {
+		    setKnown();
 
-        splash( cell );
-        Sample.INSTANCE.play( Assets.SND_SHATTER );
+		    splash( cell );
+		    Sample.INSTANCE.play( Assets.SND_SHATTER );
+	    }
 
-        GameScene.add( Blob.seed( cell, 1000, ConfusionGas.class ) );
+	    GameScene.add( Blob.seed( cell, 1000, ConfusionGas.class ) );
     }
 	
 	@Override

@@ -47,7 +47,7 @@ public class PotionOfPurity extends Potion {
 	}
 	
 	@Override
-	protected void shatter( int cell ) {
+	public void shatter( int cell ) {
 		
 		PathFinder.buildDistanceMap( cell, BArray.not( Level.losBlocking, null ), DISTANCE );
 		
@@ -76,8 +76,10 @@ public class PotionOfPurity extends Potion {
 						blob.cur[i] = 0;
 						blob.volume -= value;
 						procd = true;
-						
-						CellEmitter.get( i ).burst( Speck.factory( Speck.DISCOVER ), 1 );
+
+						if (Dungeon.visible[i]) {
+							CellEmitter.get( i ).burst( Speck.factory( Speck.DISCOVER ), 1 );
+						}
 					}
 
 				}
@@ -87,12 +89,14 @@ public class PotionOfPurity extends Potion {
 		boolean heroAffected = PathFinder.distance[Dungeon.hero.pos] < Integer.MAX_VALUE;
 		
 		if (procd) {
-			
-			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
-			
+
+			if (Dungeon.visible[cell]) {
+				splash( cell );
+				Sample.INSTANCE.play( Assets.SND_SHATTER );
+			}
+
 			setKnown();
-			
+
 			if (heroAffected) {
 				GLog.p( TXT_FRESHNESS );
 			}

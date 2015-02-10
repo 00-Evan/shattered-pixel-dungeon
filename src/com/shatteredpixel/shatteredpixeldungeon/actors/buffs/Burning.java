@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -75,25 +74,26 @@ public class Burning extends Buff implements Hero.Doom {
 			target.damage( Random.Int( 1, 5 ), this );
 			
 			if (target instanceof Hero) {
-				
-				Item item = ((Hero)target).belongings.randomUnequipped();
+
+				Hero hero = (Hero)target;
+				Item item = hero.belongings.randomUnequipped();
 				if (item instanceof Scroll) {
 					
-					item = item.detach( ((Hero)target).belongings.backpack );
+					item = item.detach( hero.belongings.backpack );
 					GLog.w( TXT_BURNS_UP, item.toString() );
 					
-					Heap.burnFX( target.pos );
+					Heap.burnFX( hero.pos );
 					
 				} else if (item instanceof MysteryMeat) {
 					
-					item = item.detach( ((Hero)target).belongings.backpack );
+					item = item.detach( hero.belongings.backpack );
 					ChargrilledMeat steak = new ChargrilledMeat(); 
-					if (!steak.collect( ((Hero)target).belongings.backpack )) {
-						Dungeon.level.drop( steak, target.pos ).sprite.drop();
+					if (!steak.collect( hero.belongings.backpack )) {
+						Dungeon.level.drop( steak, hero.pos ).sprite.drop();
 					}
 					GLog.w( TXT_BURNS_UP, item.toString() );
 					
-					Heap.burnFX( target.pos );
+					Heap.burnFX( hero.pos );
 					
 				}
 				

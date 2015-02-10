@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -31,16 +32,16 @@ public class PotionOfToxicGas extends Potion {
 	}
 	
 	@Override
-	protected void shatter( int cell ) {
-		
-		setKnown();
-		
-		splash( cell );
-		Sample.INSTANCE.play( Assets.SND_SHATTER );
-		
-		ToxicGas gas = Blob.seed( cell, 1000, ToxicGas.class );
-		Actor.add( gas );
-		GameScene.add( gas );
+	public void shatter( int cell ) {
+
+		if (Dungeon.visible[cell]) {
+			setKnown();
+
+			splash( cell );
+			Sample.INSTANCE.play( Assets.SND_SHATTER );
+		}
+
+		GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
 	}
 	
 	@Override
