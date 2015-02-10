@@ -225,7 +225,7 @@ public class ShopPainter extends Painter {
 		}
 
 		Item rare;
-		switch (Random.Int(3)){
+		switch (Random.Int(10)){
 			case 0:
 				rare = Generator.random( Generator.Category.WAND );
 				rare.level = 0;
