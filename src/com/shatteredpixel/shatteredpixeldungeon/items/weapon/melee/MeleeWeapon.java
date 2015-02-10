@@ -153,7 +153,7 @@ public class MeleeWeapon extends Weapon {
 		} else {
 			if (cursedKnown && cursed) {
 				info.append( p );
-				info.append( "You can feel a malevolent magic lurking within " + name +"." );
+				info.append( "You can feel a malevolent magic lurking within the " + name +"." );
 			}
 		}
 		
