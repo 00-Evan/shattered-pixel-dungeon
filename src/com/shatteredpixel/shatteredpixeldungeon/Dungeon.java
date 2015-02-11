@@ -59,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
@@ -71,7 +72,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 
 public class Dungeon {
@@ -154,6 +154,7 @@ public class Dungeon {
 		Journal.reset();
 
 		quickslot.reset();
+        QuickSlotButton.reset();
 		
 		depth = 0;
 		gold = 0;
@@ -517,6 +518,7 @@ public class Dungeon {
 		Generator.reset();
 
 		quickslot.reset();
+        QuickSlotButton.reset();
 
         Dungeon.challenges = bundle.getInt( CHALLENGES );
 		

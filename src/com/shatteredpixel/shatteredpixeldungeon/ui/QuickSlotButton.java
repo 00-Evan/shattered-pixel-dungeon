@@ -57,10 +57,14 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	public void destroy() {
 		super.destroy();
 		
-		instance = new QuickSlotButton[4];
-
-		lastTarget = null;
+		reset();
 	}
+
+    public static void reset() {
+        instance = new QuickSlotButton[4];
+
+        lastTarget = null;
+    }
 	
 	@Override
 	protected void createChildren() {
