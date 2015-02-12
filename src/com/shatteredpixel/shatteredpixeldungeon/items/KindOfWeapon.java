@@ -49,11 +49,7 @@ public class KindOfWeapon extends EquipableItem {
 	@Override
 	public boolean doEquip( Hero hero ) {
 
-		int slot = Dungeon.quickslot.getSlot( this );
-
 		detachAll( hero.belongings.backpack );
-
-		if (slot != -1) Dungeon.quickslot.setSlot( slot, this );
 		
 		if (hero.belongings.weapon == null || hero.belongings.weapon.doUnequip( hero, true )) {
 			

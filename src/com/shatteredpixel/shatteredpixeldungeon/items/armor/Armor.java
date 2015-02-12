@@ -92,13 +92,9 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public boolean doEquip( Hero hero ) {
-
-		int slot = Dungeon.quickslot.getSlot( this );
 		
 		detach( hero.belongings.backpack );
 
-		if (slot != -1) Dungeon.quickslot.setSlot( slot, this );
-		
 		if (hero.belongings.armor == null || hero.belongings.armor.doUnequip( hero, true, false )) {
 			
 			hero.belongings.armor = this;
