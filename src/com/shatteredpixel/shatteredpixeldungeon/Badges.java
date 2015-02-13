@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Acidic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Albino;
@@ -69,6 +70,7 @@ public class Badges {
 		ALL_ITEMS_IDENTIFIED( "All potions, scrolls, rings & wands identified", 35, true ),
 		BAG_BOUGHT_SEED_POUCH,
 		BAG_BOUGHT_SCROLL_HOLDER,
+		BAG_BOUGHT_POTION_BANDOLIER,
 		BAG_BOUGHT_WAND_HOLSTER,
 		ALL_BAGS_BOUGHT( "All bags bought", 23 ),
 		DEATH_FROM_FIRE( "Death from fire", 24 ),
@@ -481,6 +483,8 @@ public class Badges {
 			badge = Badge.BAG_BOUGHT_SEED_POUCH;
 		} else if (bag instanceof ScrollHolder) {
 			badge = Badge.BAG_BOUGHT_SCROLL_HOLDER;
+		} else if (bag instanceof PotionBandolier) {
+			badge = Badge.BAG_BOUGHT_POTION_BANDOLIER;
 		} else if (bag instanceof WandHolster) {
 			badge = Badge.BAG_BOUGHT_WAND_HOLSTER;
 		}
@@ -490,8 +494,9 @@ public class Badges {
 			local.add( badge );
 			
 			if (!local.contains( Badge.ALL_BAGS_BOUGHT ) &&
-				local.contains( Badge.BAG_BOUGHT_SCROLL_HOLDER ) &&
 				local.contains( Badge.BAG_BOUGHT_SEED_POUCH ) &&
+				local.contains( Badge.BAG_BOUGHT_SCROLL_HOLDER ) &&
+				local.contains( Badge.BAG_BOUGHT_POTION_BANDOLIER ) &&
 				local.contains( Badge.BAG_BOUGHT_WAND_HOLSTER )) {
 						
 					badge = Badge.ALL_BAGS_BOUGHT;
