@@ -22,8 +22,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
@@ -35,7 +33,6 @@ import com.watabou.noosa.audio.Sample;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class InterlevelScene extends PixelScene {
 
@@ -212,9 +209,6 @@ public class InterlevelScene extends PixelScene {
 
 	private void descend() throws IOException {
 
-        Level level;
-        ArrayList<Item> fallingItems = new ArrayList<Item>();
-
         Actor.fixTime();
 		if (Dungeon.hero == null) {
 			Dungeon.init();
@@ -223,64 +217,31 @@ public class InterlevelScene extends PixelScene {
 				noStory = false;
 			}
 		} else {
-            level = Dungeon.level;
-
-            fallingItems = level.fallingItems;
-            level.fallingItems = new ArrayList<Item>();
-
 			Dungeon.saveLevel();
 		}
 
+		Level level;
 		if (Dungeon.depth >= Statistics.deepestFloor) {
 			level = Dungeon.newLevel();
 		} else {
 			Dungeon.depth++;
 			level = Dungeon.loadLevel( Dungeon.hero.heroClass );
 		}
-
-        for (Item item : fallingItems){
-            int cell = level.randomRespawnCell();
-            while (cell == -1)
-                cell = level.randomRespawnCell();
-
-            if (!(item instanceof Potion))
-                level.drop(item, cell);
-            else
-                level.fallingPotions.add((Potion)item);
-        }
-
 		Dungeon.switchLevel( level, level.entrance );
-
 	}
 	
 	private void fall() throws IOException {
 
-        Level level = Dungeon.level;
-
-        ArrayList<Item> fallingItems = level.fallingItems;
-        level.fallingItems = new ArrayList<Item>();
-
         Actor.fixTime();
 		Dungeon.saveLevel();
 
+		Level level;
 		if (Dungeon.depth >= Statistics.deepestFloor) {
 			level = Dungeon.newLevel();
 		} else {
 			Dungeon.depth++;
 			level = Dungeon.loadLevel( Dungeon.hero.heroClass );
 		}
-
-        for (Item item : fallingItems){
-            int cell = level.randomRespawnCell();
-            while (cell == -1)
-                cell = level.randomRespawnCell();
-
-            if (!(item instanceof Potion))
-                level.drop(item, cell);
-            else
-                level.fallingPotions.add((Potion)item);
-        }
-
 		Dungeon.switchLevel( level, fallIntoPit ? level.pitCell() : level.randomRespawnCell() );
 	}
 	

@@ -18,8 +18,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.watabou.noosa.Camera;
@@ -306,7 +309,24 @@ public class GameScene extends PixelScene {
 			break;
 		default:
 		}
-		
+
+		ArrayList<Item> dropped = Dungeon.droppedItems.get( Dungeon.depth );
+		if (dropped != null) {
+			for (Item item : dropped) {
+				int pos = Dungeon.level.randomRespawnCell();
+				if (item instanceof Potion) {
+					((Potion)item).shatter( pos );
+				} else if (item instanceof Plant.Seed) {
+					Dungeon.level.plant( (Plant.Seed)item, pos );
+				} else if (item instanceof Honeypot) {
+					(Honeypot)item.shatter( pos );
+				} else {
+					Dungeon.level.drop( item, pos );
+				}
+			}
+			Dungeon.droppedItems.remove( Dungeon.depth );
+		}
+
 		Camera.main.target = hero;
 		fadeIn();
 	}

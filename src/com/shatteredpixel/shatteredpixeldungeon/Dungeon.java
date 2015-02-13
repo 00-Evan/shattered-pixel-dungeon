@@ -19,11 +19,6 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -34,11 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
@@ -64,13 +56,16 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.SparseArray;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -133,6 +128,8 @@ public class Dungeon {
 	// Hero's field of view
 	public static boolean[] visible = new boolean[Level.LENGTH];
 
+	public static SparseArray<ArrayList<Item>> droppedItems;
+
     public static int version;
 	
 	public static void init() {
@@ -159,7 +156,9 @@ public class Dungeon {
 		
 		depth = 0;
 		gold = 0;
-		
+
+		droppedItems = new SparseArray<ArrayList<Item>>();
+
 		for (limitedDrops a : limitedDrops.values())
             a.count = 0;
 
@@ -301,24 +300,6 @@ public class Dungeon {
 			Actor.add( level.respawner() );
 		}
 
-        for (Potion potion : level.fallingPotions){
-
-            int cell = level.randomRespawnCell();
-            while (cell == -1)
-                cell = level.randomRespawnCell();
-
-            if (potion instanceof PotionOfLiquidFlame)
-                GameScene.add( Blob.seed( cell, 2, Fire.class));
-            else if (potion instanceof PotionOfToxicGas)
-                GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
-            else if (potion instanceof PotionOfParalyticGas)
-                GameScene.add( Blob.seed( cell, 1000, ParalyticGas.class ) );
-            else if (potion instanceof PotionOfLevitation)
-                GameScene.add( Blob.seed( cell, 1000, ConfusionGas.class ) );
-
-        }
-        level.fallingPotions.clear();
-		
 		hero.pos = pos != -1 ? pos : level.exit;
 		
 		Light light = hero.buff( Light.class );
@@ -328,11 +309,20 @@ public class Dungeon {
         try {
             saveAll();
         } catch (IOException e) {
-			/*This only catches IO errors. Yes, this means things can do wrong, and they can go wrong catastrophically.
+			/*This only catches IO errors. Yes, this means things can go wrong, and they can go wrong catastrophically.
 			But when they do the user will get a nice 'report this issue' dialogue, and I can fix the bug.*/
         }
 	}
-	
+
+	public static void dropToChasm( Item item ) {
+		int depth = Dungeon.depth + 1;
+		ArrayList<Item> dropped = (ArrayList<Item>)Dungeon.droppedItems.get( depth );
+		if (dropped == null) {
+			Dungeon.droppedItems.put( depth, dropped = new ArrayList<Item>() );
+		}
+		dropped.add( item );
+	}
+
 	public static boolean posNeeded() {
 		int[] quota = {4, 2, 9, 4, 14, 6, 19, 8, 24, 9};
 		return chance( quota, limitedDrops.strengthPotions.count );
@@ -377,7 +367,7 @@ public class Dungeon {
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
 	private static final String DEPTH		= "depth";
-	private static final String QUICKSLOT	= "quickslot";
+	private static final String DROPPED     = "dropped%d";
 	private static final String LEVEL		= "level";
     private static final String LIMDROPS    = "limiteddrops";
 	private static final String DV			= "dewVial";
@@ -426,6 +416,10 @@ public class Dungeon {
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
+
+			for (int d : droppedItems.keyArray()) {
+				bundle.put(String.format(DROPPED, d), droppedItems.get(d));
+			}
 
 			quickslot.storePlaceholders( bundle );
 
@@ -507,7 +501,7 @@ public class Dungeon {
 	public static void loadGame( HeroClass cl ) throws IOException {
 		loadGame( gameFile( cl ), true );
 	}
-	
+
 	public static void loadGame( String fileName ) throws IOException {
 		loadGame( fileName, false );
 	}
@@ -600,6 +594,17 @@ public class Dungeon {
 		Statistics.restoreFromBundle( bundle );
 		Journal.restoreFromBundle( bundle );
         Generator.restoreFromBundle( bundle );
+
+		droppedItems = new SparseArray<ArrayList<Item>>();
+		for (int i=2; i <= Statistics.deepestFloor + 1; i++) {
+			ArrayList<Item> dropped = new ArrayList<Item>();
+			for (Bundlable b : bundle.getCollection( String.format( DROPPED, i ) ) ) {
+				dropped.add( (Item)b );
+			}
+			if (!dropped.isEmpty()) {
+				droppedItems.put( i, dropped );
+			}
+		}
 
 		//logic for pre 0.2.4 bags, remove when no longer supporting those saves.
 		if (version <= 32){

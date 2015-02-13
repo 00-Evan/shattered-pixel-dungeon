@@ -51,7 +51,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
@@ -154,9 +153,6 @@ public abstract class Level implements Bundlable {
 	public SparseArray<Plant> plants;
 	
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<Item>();
-
-    public ArrayList<Item> fallingItems = new ArrayList<Item>();
-    public ArrayList<Potion> fallingPotions = new ArrayList<Potion>();
 	
 	public int color1 = 0x004400;
 	public int color2 = 0x88CC44;
@@ -174,7 +170,6 @@ public abstract class Level implements Bundlable {
 	private static final String PLANTS		= "plants";
 	private static final String MOBS		= "mobs";
 	private static final String BLOBS		= "blobs";
-    private static final String FALLING		= "falling";
 	private static final String FEELING		= "feeling";
 	
 	public void create() {
@@ -339,8 +334,6 @@ public abstract class Level implements Bundlable {
 			blobs.put( blob.getClass(), blob );
 		}
 
-        fallingItems = (ArrayList)bundle.getCollection( FALLING );
-
 		feeling = bundle.getEnum( FEELING, Feeling.class );
 		if (feeling == Feeling.DARK)
 			viewDistance = (int)Math.ceil(viewDistance/3f);
@@ -361,7 +354,6 @@ public abstract class Level implements Bundlable {
 		bundle.put( PLANTS, plants.values() );
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );
-        bundle.put( FALLING, fallingItems);
 		bundle.put( FEELING, feeling );
 	}
 	
@@ -634,8 +626,8 @@ public abstract class Level implements Bundlable {
 			heap = new Heap();
 			heap.pos = cell;
 			if (map[cell] == Terrain.CHASM || (Dungeon.level != null && pit[cell])) {
+				Dungeon.dropToChasm( item );
 				GameScene.discard( heap );
-                fallingItems.add(item);
 			} else {
 				heaps.put( cell, heap );
 				GameScene.add( heap );
