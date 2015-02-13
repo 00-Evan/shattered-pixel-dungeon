@@ -47,6 +47,6 @@ public class SnipersMark extends FlavourBuff {
 	
 	@Override
 	public String toString() {
-		return "Zeroed in";
+		return "Sniper's mark";
 	}
 }
