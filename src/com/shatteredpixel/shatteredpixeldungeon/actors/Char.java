@@ -132,15 +132,10 @@ public abstract class Char extends Actor {
 			effectiveDamage = attackProc( enemy, effectiveDamage );
 			effectiveDamage = enemy.defenseProc( this, effectiveDamage );
 
-			//game screen shakes for large amounts of damage dealt to/by the player.
-			//TODO: make sure this isn't distracting
+			//TODO: consider revisiting this and shaking in more cases.
 			float shake = 0f;
-			if (enemy == Dungeon.hero) {
-				shake = Math.max(effectiveDamage / (enemy.HT / 4),
-						(float) Math.pow(effectiveDamage / (enemy.HP / 2), 2));
-			} else if (this == Dungeon.hero && effectiveDamage >= enemy.HP) {
-				shake = (float) Math.pow(effectiveDamage / (enemy.HT / 2), 2);
-			}
+			if (enemy == Dungeon.hero)
+				shake = effectiveDamage / (enemy.HT / 4);
 
 			if (shake > 1f)
 				Camera.main.shake( GameMath.gate( 1, shake, 5), 0.3f );
