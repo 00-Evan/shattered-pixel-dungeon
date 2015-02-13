@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -149,7 +150,7 @@ public class Weapon extends KindOfWeapon {
 		
 		int damage = super.damageRoll( hero );
 		
-		if ((hero.rangedWeapon != null) == (hero.heroClass == HeroClass.HUNTRESS)) {
+		if (this instanceof MeleeWeapon || (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS)) {
 			int exStr = hero.STR() - STR;
 			if (exStr > 0) {
 				damage += Random.IntRange( 0, exStr );

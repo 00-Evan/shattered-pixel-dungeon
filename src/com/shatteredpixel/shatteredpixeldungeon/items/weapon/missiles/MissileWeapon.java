@@ -75,7 +75,7 @@ public class MissileWeapon extends Weapon {
                     bonus += ((RingOfSharpshooting.Aim)buff).level;
 
 				if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
-					bonus += 4;
+					bonus += 3;
 
                 if (Random.Float() > Math.pow(0.7, bonus))
                     Buff.affect(enemy, PinCushion.class).stick(this);
@@ -150,15 +150,17 @@ public class MissileWeapon extends Weapon {
 		if (Dungeon.hero.belongings.backpack.items.contains( this )) {
 			if (STR > Dungeon.hero.STR()) {
 				info.append( 
-					"Because of your inadequate strength the accuracy and speed " +
+					"\n\nBecause of your inadequate strength the accuracy and speed " +
 					"of your attack with this " + name + " is decreased." );
 			}
-			if (STR < Dungeon.hero.STR()) {
+			if (STR < Dungeon.hero.STR() && Dungeon.hero.heroClass == HeroClass.HUNTRESS) {
 				info.append( 
-					"Because of your excess strength the damage " +
+					"\n\nBecause of your excess strength the damage " +
 					"of your attack with this " + name + " is increased." );
 			}
 		}
+
+		info.append( "\n\nAs this weapon designed to be used at a distance, it is much less accurate if used at melee range.");
 		
 		if (isEquipped( Dungeon.hero )) {
 			info.append( "\n\nYou hold the " + name + " at the ready." ); 
