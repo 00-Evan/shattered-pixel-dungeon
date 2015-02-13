@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -227,6 +228,9 @@ public class Heap implements Bundlable {
 			} else if (item instanceof MysteryMeat) {
 				replace( item, ChargrilledMeat.cook( (MysteryMeat)item ) );
 				burnt = true;
+			} else if (item instanceof Bomb) {
+				explode();
+				return;
 			}
 		}
 		
@@ -248,6 +252,45 @@ public class Heap implements Bundlable {
 			
 		}
 	}
+
+	//bombs!
+	public void explode() {
+
+        //breaks open most standard containers
+		if (type == Type.MIMIC || type == Type.CHEST || type == Type.SKELETON) {
+            type = Type.HEAP;
+            sprite.link();
+            sprite.drop();
+            return;
+		}
+
+		if (type != Type.HEAP) {
+
+			return;
+
+		} else {
+
+			for (Item item : items.toArray( new Item[0] )) {
+
+				if (item instanceof Potion) {
+					items.remove( item );
+					((Potion) item).shatter(pos);
+
+				} else if (item instanceof Bomb) {
+					items.remove( item );
+					((Bomb) item).explode(pos);
+					return;
+
+				//unique and upgraded items can endure the blast
+				} else if (!(item.level > 0 || item.unique))
+					items.remove( item );
+
+			}
+
+			if (items.isEmpty())
+                destroy();
+		}
+	}
 	
 	public void freeze() {
 
@@ -267,6 +310,9 @@ public class Heap implements Bundlable {
 		for (Item item : items.toArray( new Item[0] )) {
 			if (item instanceof MysteryMeat) {
 				replace( item, FrozenCarpaccio.cook( (MysteryMeat)item ) );
+				frozen = true;
+			} else if (item instanceof Potion) {
+				((Potion) item).shatter(pos);
 				frozen = true;
 			}
 		}
