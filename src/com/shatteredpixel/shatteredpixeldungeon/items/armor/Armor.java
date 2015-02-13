@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -372,8 +373,10 @@ public class Armor extends EquipableItem {
 		
 		public boolean checkOwner( Char owner ) {
 			if (!owner.isAlive() && owner instanceof Hero) {
-				
-				((Hero)owner).killerGlyph = this;
+
+				Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, name() ) );
+				GLog.n( "%s killed you...", name() );
+
 				Badges.validateDeathFromGlyph();
 				return true;
 				

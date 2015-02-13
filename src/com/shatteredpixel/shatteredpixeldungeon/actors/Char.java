@@ -132,6 +132,16 @@ public abstract class Char extends Actor {
 			effectiveDamage = attackProc( enemy, effectiveDamage );
 			effectiveDamage = enemy.defenseProc( this, effectiveDamage );
 
+			if (visibleFight) {
+				Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
+			}
+
+			// If the enemy is already dead, interrupt the attack.
+			// This matters as defence procs can sometimes inflict self-damage, such as armor glyphs.
+			if (!enemy.isAlive()){
+				return true;
+			}
+
 			//TODO: consider revisiting this and shaking in more cases.
 			float shake = 0f;
 			if (enemy == Dungeon.hero)
@@ -141,10 +151,6 @@ public abstract class Char extends Actor {
 				Camera.main.shake( GameMath.gate( 1, shake, 5), 0.3f );
 
 			enemy.damage( effectiveDamage, this );
-			
-			if (visibleFight) {
-				Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
-			}
 
 			if (buff(FireImbue.class) != null)
 				buff(FireImbue.class).proc(enemy);
@@ -153,17 +159,10 @@ public abstract class Char extends Actor {
 
 			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );
 			enemy.sprite.flash();
-			
+
 			if (!enemy.isAlive() && visibleFight) {
 				if (enemy == Dungeon.hero) {
-					
-					if (Dungeon.hero.killerGlyph != null) {
 
-						// FIXME
-						//    Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, Dungeon.hero.killerGlyph.name(), Dungeon.depth ) );
-						//    GLog.n( TXT_KILL, Dungeon.hero.killerGlyph.name() );
-
-					} else {
 						if ( this instanceof Yog ) {
 							Dungeon.fail( Utils.format( ResultDescriptions.NAMED, name) );
 						} if (Bestiary.isUnique( this )) {
@@ -173,7 +172,6 @@ public abstract class Char extends Actor {
 						}
 						
 						GLog.n( TXT_KILL, name );
-					}
 					
 				} else {
 					GLog.i( TXT_DEFEAT, name, enemy.name );
