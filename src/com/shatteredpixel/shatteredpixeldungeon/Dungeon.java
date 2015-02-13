@@ -142,6 +142,7 @@ public class Dungeon {
         Generator.initArtifacts();
 
 		Actor.clear();
+        Actor.resetNextID();
 		
 		PathFinder.setMapSize( Level.WIDTH, Level.HEIGHT );
 		
@@ -459,6 +460,8 @@ public class Dungeon {
 			Potion.save( bundle );
 			Wand.save( bundle );
 			Ring.save( bundle );
+
+            Actor.storeNextID( bundle );
 			
 			Bundle badges = new Bundle();
 			Badges.saveLocal( badges );
@@ -516,6 +519,8 @@ public class Dungeon {
         version = bundle.getInt( VERSION );
 
 		Generator.reset();
+
+        Actor.restoreNextID( bundle );
 
 		quickslot.reset();
         QuickSlotButton.reset();

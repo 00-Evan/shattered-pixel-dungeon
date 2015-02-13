@@ -79,17 +79,12 @@ public abstract class Actor implements Bundlable {
 		id = bundle.getInt( ID );
 	}
 
+    private static int nextID = 1;
 	public int id() {
 		if (id > 0) {
 			return id;
 		} else {
-			int max = 0;
-			for (Actor a : all) {
-				if (a.id > max) {
-					max = a.id;
-				}
-			}
-			return (id = max + 1);
+			return (id = nextID++);
 		}
 	}
 
@@ -147,6 +142,20 @@ public abstract class Actor implements Bundlable {
 		
 		current = null;
 	}
+
+    private static final String NEXTID = "nextid";
+
+    public static void storeNextID( Bundle bundle){
+        bundle.put( NEXTID, nextID );
+    }
+
+    public static void restoreNextID( Bundle bundle){
+        nextID = bundle.getInt( NEXTID );
+    }
+
+    public static void resetNextID(){
+        nextID = 1;
+    }
 	
 	public static void occupyCell( Char ch ) {
 		chars[ch.pos] = ch;
@@ -228,9 +237,7 @@ public abstract class Actor implements Bundlable {
 			return;
 		}
 
-		if (actor.id > 0) {
-			ids.put( actor.id,  actor );
-		}
+		ids.put( actor.id(),  actor );
 
 		all.add( actor );
 		actor.time += time;
