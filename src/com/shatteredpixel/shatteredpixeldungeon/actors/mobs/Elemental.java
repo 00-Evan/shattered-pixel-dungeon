@@ -87,8 +87,6 @@ public class Elemental extends Mob {
                 else
 				    damage( Random.NormalIntRange( 1, HT * 2 / 3 ), buff );
 			}
-            if (isAlive())
-			    super.add( buff );
 		}
 	}
 	
