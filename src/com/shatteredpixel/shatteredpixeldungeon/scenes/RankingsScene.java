@@ -33,24 +33,28 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndRanking;
+import com.watabou.utils.GameMath;
 
 //FIXME: need to modify this to properly account for new landscape logic, more than just a merge.
 public class RankingsScene extends PixelScene {
 	
 	private static final String TXT_TITLE		= "Top Rankings";
-	private static final String TXT_TOTAL		= "Total games played: %d";
+	private static final String TXT_TOTAL		= "Games Played: ";
 	private static final String TXT_NO_GAMES	= "No games have been played yet.";
 	
 	private static final String TXT_NO_INFO	= "No additional information";
 	
-	private static final float ROW_HEIGHT	= 18;
+	private static final float ROW_HEIGHT_MAX	= 20;
+	private static final float ROW_HEIGHT_MIN	= 12;
+
+	private static final float MAX_ROW_WIDTH    = 160;
+
 	private static final float GAP	= 4;
 	
 	private Archs archs;
-	
+
 	@Override
 	public void create() {
 		
@@ -78,33 +82,59 @@ public class RankingsScene extends PixelScene {
 		add(title);
 		
 		if (Rankings.INSTANCE.records.size() > 0) {
-			
-			float left = (w - Math.min( 160, w )) / 2 + GAP;
-			float top = align( (h - ROW_HEIGHT  * Rankings.INSTANCE.records.size()) / 2 );
+
+			//attempts to give each record as much space as possible, ideally as much space as portrait mode
+			float rowHeight = GameMath.gate(ROW_HEIGHT_MIN, (uiCamera.height - 26)/Rankings.INSTANCE.records.size(), ROW_HEIGHT_MAX);
+
+			float left = (w - Math.min( MAX_ROW_WIDTH, w )) / 2 + GAP;
+			float top = align( (h - rowHeight  * Rankings.INSTANCE.records.size()) / 2 );
 			
 			int pos = 0;
 			
 			for (Rankings.Record rec : Rankings.INSTANCE.records) {
 				Record row = new Record( pos, pos == Rankings.INSTANCE.lastRecord, rec );
-				row.setRect( left, top + pos * ROW_HEIGHT, w - left * 2, ROW_HEIGHT );
-				add( row );
+				float offset =
+						rowHeight <= 14 ?
+								pos %2 == 1?
+										5 :
+										-5
+								: 0;
+				row.setRect( left+offset, top + pos * rowHeight, w - left * 2, rowHeight );
+				add(row);
 				
 				pos++;
 			}
 			
 			if (Rankings.INSTANCE.totalNumber >= Rankings.TABLE_SIZE) {
-				BitmapText total = PixelScene.createText( Utils.format( TXT_TOTAL, Rankings.INSTANCE.totalNumber ), 8 );
-				total.hardlight( Window.TITLE_COLOR );
-				total.measure();
-				total.x = align( (w - total.width()) / 2 );
-				total.y = align( top + pos * ROW_HEIGHT + GAP );
-				add( total );
-			}
+                BitmapText label = PixelScene.createText( TXT_TOTAL, 8 );
+                label.hardlight( 0xCCCCCC );
+                label.measure();
+                add( label );
+
+                BitmapText won = PixelScene.createText( Integer.toString( Rankings.INSTANCE.wonNumber ), 8 );
+                won.hardlight( Window.SHPX_COLOR );
+                won.measure();
+                add( won );
+
+                BitmapText total = PixelScene.createText( "/" + Rankings.INSTANCE.totalNumber, 8 );
+                total.hardlight( 0xCCCCCC );
+                total.measure();
+                total.x = align( (w - total.width()) / 2 );
+                total.y = align( top + pos * rowHeight + GAP );
+                add( total );
+
+                float tw = label.width() + won.width() + total.width();
+                label.x = align( (w - tw) / 2 );
+                won.x = label.x + label.width();
+                total.x = won.x + won.width();
+                label.y = won.y = total.y = align( h - label.height() - GAP );
+
+            }
 			
 		} else {
 
 			BitmapText noRec = PixelScene.createText(TXT_NO_GAMES, 8);
-			noRec.hardlight(Window.TITLE_COLOR);
+			noRec.hardlight( 0xCCCCCC );
 			noRec.measure();
 			noRec.x = align((w - noRec.width()) / 2);
 			noRec.y = align((h - noRec.height()) / 2);
