@@ -229,7 +229,9 @@ public class Heap implements Bundlable {
 				replace( item, ChargrilledMeat.cook( (MysteryMeat)item ) );
 				burnt = true;
 			} else if (item instanceof Bomb) {
-				explode();
+				items.remove( item );
+				((Bomb) item).explode( pos );
+				//stop processing the burning, it will be replaced by the explosion.
 				return;
 			}
 		}
@@ -253,10 +255,10 @@ public class Heap implements Bundlable {
 		}
 	}
 
-	//bombs!
+	//Note: should not be called to initiate an explosion, but rather by an explosion that is happening.
 	public void explode() {
 
-        //breaks open most standard containers
+        //breaks open most standard containers, mimics die.
 		if (type == Type.MIMIC || type == Type.CHEST || type == Type.SKELETON) {
             type = Type.HEAP;
             sprite.link();
@@ -279,6 +281,7 @@ public class Heap implements Bundlable {
 				} else if (item instanceof Bomb) {
 					items.remove( item );
 					((Bomb) item).explode(pos);
+					//stop processing current explosion, it will be replaced by the new one.
 					return;
 
 				//unique and upgraded items can endure the blast
@@ -313,6 +316,9 @@ public class Heap implements Bundlable {
 				frozen = true;
 			} else if (item instanceof Potion) {
 				((Potion) item).shatter(pos);
+				frozen = true;
+			} else if (item instanceof Bomb){
+				((Bomb) item).fuseLit = false;
 				frozen = true;
 			}
 		}
