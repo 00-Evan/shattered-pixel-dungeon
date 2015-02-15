@@ -34,10 +34,6 @@ public class Sign {
 	private static final String TXT_DEAD_END = 
 		"What are you doing here?!";
 
-	private static final String TXT_DEMON =
-		"The text is written in demonic language. As you stare, the symbols morph into letters and the sign bursts "
-				+ "into flame!\n\n Before the sign burns to ash, you can make out some cryptic words:\n\n";
-
 	private static final String[] TIPS = {
 		"Almost all equipment has a strength requirement. Don't overestimate your strength, using equipment you can't " +
 				"handle has big penalties!\n\nRaising your strength is not the only way to access better equipment, " +
@@ -86,9 +82,9 @@ public class Sign {
 		"Pixel-Mart. Special prices for demon hunters!",
 
 		//hmm.. I wonder what this is?
-		TXT_DEMON + "standOfF roW",
-		TXT_DEMON + "fraCtion doWnpOur",
-		TXT_DEMON + "gaffe MaSts"
+		"standOfF roW",
+		"fraCtion doWnpOur",
+		"gaffe MaSts"
 	};
 	
 	private static final String TXT_BURN =
@@ -112,6 +108,8 @@ public class Sign {
 				Level.set( pos, Terrain.EMBERS );
 				GameScene.updateMap( pos );
 				GameScene.discoverTile( pos, Terrain.SIGN );
+
+                GLog.w( TXT_BURN );
 				
 				CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
 				Sample.INSTANCE.play( Assets.SND_BURNING );
