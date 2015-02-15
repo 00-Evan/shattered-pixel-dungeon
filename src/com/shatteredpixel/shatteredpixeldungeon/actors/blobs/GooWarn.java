@@ -1,16 +1,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
+
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.GooWarnParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GooSprite;
 
 /**
  * Created by Evan on 29/09/2014.
@@ -18,6 +11,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 public class GooWarn extends Blob {
 
     //cosmetic blob, used to warn noobs that goo's pump up should, infact, be avoided.
+
+    //Thanks to Watabou for the much better particle effect, I was lazy and just re-colored flames initially
 
     protected int pos;
 
@@ -47,12 +42,12 @@ public class GooWarn extends Blob {
     @Override
     public void use( BlobEmitter emitter ) {
         super.use( emitter );
-        emitter.start(GooWarnParticle.FACTORY, 0.05f, 0 );
+        emitter.pour(GooSprite.GooParticle.FACTORY, 0.03f );
     }
 
     @Override
     public String tileDesc() {
-        return "Dark energy is building here!";
+        return "Specs of dark energy are swarming here!";
     }
 }
 

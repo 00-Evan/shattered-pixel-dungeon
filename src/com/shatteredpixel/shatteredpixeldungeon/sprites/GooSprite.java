@@ -30,9 +30,6 @@ public class GooSprite extends MobSprite {
 	
 	private Animation pump;
     private Animation pumpAttack;
-	private Animation jump;
-
-	private Emitter spray;
 
 	public GooSprite() {
 		super();
@@ -53,9 +50,6 @@ public class GooSprite extends MobSprite {
         pumpAttack = new Animation ( 20, false );
         pumpAttack.frames( frames, 4, 3, 2, 1, 0, 7);
 
-		jump = new Animation( 1, true );
-		jump.frames( frames, 6 );
-
 		attack = new Animation( 10, false );
 		attack.frames( frames, 8, 9, 10 );
 		
@@ -74,14 +68,6 @@ public class GooSprite extends MobSprite {
 	@Override
 	public void play( Animation anim, boolean force ) {
 		super.play( anim, force );
-
-		if (anim == pump) {
-			spray = centerEmitter();
-			spray.pour( GooParticle.FACTORY, 0.04f );
-		} else if (spray != null) {
-			spray.on = false;
-			spray = null;
-		}
 	}
 
 	@Override

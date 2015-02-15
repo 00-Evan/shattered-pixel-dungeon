@@ -218,8 +218,8 @@ public class Goo extends Mob {
 			"Little is known about The Goo. It's quite possible that it is not even a creature, but rather a " +
 			"conglomerate of vile substances from the sewers that somehow gained basic intelligence. " +
             "Regardless, dark magic is certainly what has allowed Goo to exist.\n\n" +
-            "You feel a chill just from being near Goo, its gelatinus nature has let it absorb lots of dark energy, " +
-            "you can feel it just from being near. If goo is able to attack with this energy you won't live for long.";
+            "Its gelatinous nature has let it absorb lots of dark energy, you feel a chill just from being near. " +
+            "If goo is able to attack with this energy you won't live for long.";
 	}
 
     private final String PUMPEDUP = "pumpedup";
