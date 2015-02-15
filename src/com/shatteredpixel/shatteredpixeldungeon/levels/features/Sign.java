@@ -106,7 +106,8 @@ public class Sign {
 			
 			if (index < TIPS.length) {
 				GameScene.show( new WndMessage( TIPS[index] ) );
-			} else {
+
+                if (index >= 21)
 				
 				Level.set( pos, Terrain.EMBERS );
 				GameScene.updateMap( pos );
@@ -114,8 +115,6 @@ public class Sign {
 				
 				CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
 				Sample.INSTANCE.play( Assets.SND_BURNING );
-				
-				GLog.w( TXT_BURN );
 				
 			}
 		}
