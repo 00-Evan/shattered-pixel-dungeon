@@ -51,7 +51,7 @@ public class Torch extends Item {
 	@Override
 	public void execute( Hero hero, String action ) {
 		
-		if (action == AC_LIGHT) {
+		if (action.equals( AC_LIGHT )) {
 			
 			hero.spend( TIME_TO_LIGHT );
 			hero.busy();
@@ -89,6 +89,6 @@ public class Torch extends Item {
 	@Override
 	public String info() {
 		return
-			"It's an indispensable item in The Demon Halls, which are notorious for their poor ambient lighting.";
+			"An adventuring staple, when a dungeon goes dark, a torch can help lead the way.";
 	}
 }
