@@ -22,6 +22,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -132,8 +133,17 @@ public class Thief extends Mob {
 
             GLog.w( TXT_STOLE, this.name, item.name() );
 
-            item.detachAll( hero.belongings.backpack );
-            this.item = item;
+
+
+	        if (item instanceof Honeypot){
+		        this.item = ((Honeypot)item).shatter(this, this.pos);
+                item.detach( hero.belongings.backpack );
+	        } else {
+                this.item = item;
+                if ( item instanceof Honeypot.ShatteredPot)
+                    ((Honeypot.ShatteredPot)item).setHolder(this);
+                item.detachAll( hero.belongings.backpack );
+            }
 
             return true;
         } else {

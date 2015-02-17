@@ -19,18 +19,20 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Bee;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Honeypot extends Item {
@@ -56,10 +58,12 @@ public class Honeypot extends Item {
 		if (action.equals( AC_SHATTER )) {
 			
 			hero.sprite.zap( hero.pos );
-			shatter( hero.pos );
 			
 			detach( hero.belongings.backpack );
-			hero.spendAndNext( TIME_TO_THROW );
+
+            shatter( hero, hero.pos ).collect();
+
+            hero.next();
 			
 		} else {
 			super.execute( hero, action );
@@ -71,14 +75,14 @@ public class Honeypot extends Item {
 		if (Level.pit[cell]) {
 			super.onThrow( cell );
 		} else {
-			shatter( cell );
+			Dungeon.level.drop(shatter( null, cell ), cell);
 		}
 	}
 	
-	private void shatter( int pos ) {
-		Sample.INSTANCE.play( Assets.SND_SHATTER );
+	public Item shatter( Char owner, int pos ) {
 		
 		if (Dungeon.visible[pos]) {
+            Sample.INSTANCE.play( Assets.SND_SHATTER );
 			Splash.at( pos, 0xffd500, 5 );
 		}
 		
@@ -100,16 +104,20 @@ public class Honeypot extends Item {
 		if (newPos != -1) {
 			Bee bee = new Bee();
 			bee.spawn( Dungeon.depth );
+			bee.setPotInfo( pos, owner );
 			bee.HP = bee.HT;
 			bee.pos = newPos;
 			
 			GameScene.add( bee );
-			Actor.addDelayed( new Pushing( bee, pos, newPos ), -1 );
+			Actor.addDelayed( new Pushing( bee, pos, newPos ), -1f );
 			
 			bee.sprite.alpha( 0 );
 			bee.sprite.parent.add( new AlphaTweener( bee.sprite, 1, 0.15f ) );
 			
 			Sample.INSTANCE.play( Assets.SND_BEE );
+			return new ShatteredPot().setBee( bee );
+		} else {
+			return this;
 		}
 	}
 	
@@ -131,6 +139,108 @@ public class Honeypot extends Item {
 	@Override
 	public String info() {
 		return
-			"There is not much honey in this small honeypot, but there is a golden bee there and it doesn't want to leave it.";
+			"This large honeypot is only really lined with honey, instead it houses a giant bee! " +
+			"These sorts of massive bees usually stay in their hives, perhaps the pot is some sort of specialized trapper's cage? " +
+			"The bee seems pretty content inside the pot with its honey, and buzzes at you warily when you look at it.";
+	}
+
+
+
+	//The bee's broken 'home', all this item does is let its bee know where it is, and who owns it (if anyone).
+	public static class ShatteredPot extends Item {
+
+		{
+			name = "shattered honeypot";
+			image = ItemSpriteSheet.SHATTPOT;
+			stackable = false;
+		}
+
+		private int myBee;
+		private int beeDepth;
+
+		public Item setBee(Char bee){
+			myBee = bee.id();
+			beeDepth = Dungeon.depth;
+            return this;
+		}
+
+		@Override
+		public boolean doPickUp(Hero hero) {
+			if ( super.doPickUp(hero) ){
+				setHolder( hero );
+				return true;
+			}else
+				return false;
+		}
+
+		@Override
+		public void doDrop(Hero hero) {
+			super.doDrop(hero);
+			updateBee( hero.pos, null );
+		}
+
+		@Override
+		protected void onThrow(int cell) {
+			super.onThrow(cell);
+			updateBee( cell, null );
+		}
+
+		public void setHolder(Char holder){
+			updateBee(holder.pos, holder );
+		}
+
+		public void goAway(){
+			updateBee( -1, null);
+		}
+
+		private void updateBee( int cell, Char holder){
+			//important, as ids are not unique between depths.
+			if (Dungeon.depth != beeDepth)
+				return;
+
+			Bee bee = (Bee)Actor.findById( myBee );
+			if (bee != null)
+				bee.setPotInfo( cell, holder );
+		}
+
+		@Override
+		public boolean isUpgradable() {
+			return false;
+		}
+
+		@Override
+		public boolean isIdentified() {
+			return true;
+		}
+
+		@Override
+		public String info() {
+			String info =
+				"The pot has been shattered, only the sticky honey that lines its walls is holding it together, and it is slowly coming apart.";
+
+			if (Actor.findById( myBee ) != null)
+				info += "\n\nDespite its broken state, the bee still seems quite fond of the pot, and is understandable quite mad.";
+			else
+				info += "\n\nNow that its bee is gone, you can't think of a use for this wad of broken clay and drying honey.";
+
+			return info;
+		}
+
+		private static final String MYBEE = "mybee";
+        private static final String BEEDEPTH = "beedepth";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( MYBEE, myBee );
+            bundle.put( BEEDEPTH, beeDepth );
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			myBee = bundle.getInt( MYBEE );
+            beeDepth = bundle.getInt( BEEDEPTH );
+		}
 	}
 }
