@@ -319,7 +319,7 @@ public class GameScene extends PixelScene {
 				} else if (item instanceof Plant.Seed) {
 					Dungeon.level.plant( (Plant.Seed)item, pos );
 				} else if (item instanceof Honeypot) {
-					(Honeypot)item.shatter( pos );
+                    Dungeon.level.drop(((Honeypot) item).shatter(null, pos), pos);
 				} else {
 					Dungeon.level.drop( item, pos );
 				}
