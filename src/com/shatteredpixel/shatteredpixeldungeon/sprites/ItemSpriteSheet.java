@@ -73,7 +73,9 @@ public class ItemSpriteSheet {
     public static final int AMULET	= ROW2+10;
     public static final int WEIGHT  = ROW2+11;
 	public static final int BOMB    = ROW2+12;
+    public static final int DBL_BOMB= ROW2+13;
 	public static final int HONEYPOT= ROW2+14;
+    public static final int SHATTPOT= ROW2+15;
 
     //Row Three: Melee weapons
     public static final int KNUCKLEDUSTER	= ROW3+0;
