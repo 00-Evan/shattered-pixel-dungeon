@@ -34,9 +34,9 @@ public class UnstableSpellbook extends Artifact {
         level = 0;
         levelCap = 10;
 
-        charge = ((level/2)+1);
+        charge = ((level/2)+3);
         partialCharge = 0;
-        chargeCap = ((level/2)+1);
+        chargeCap = ((level/2)+3);
 
         defaultAction = AC_READ;
     }
@@ -184,7 +184,7 @@ public class UnstableSpellbook extends Artifact {
         @Override
         public boolean act() {
             if (charge < chargeCap && !cursed) {
-                partialCharge += 1 / (200f - (chargeCap - charge)*20f);
+                partialCharge += 1 / (200f - (chargeCap - charge)*15f);
 
                 if (partialCharge >= 1) {
                     partialCharge --;
