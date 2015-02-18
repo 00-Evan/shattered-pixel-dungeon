@@ -153,12 +153,12 @@ public class WndBag extends WndTabbed {
 			
 		}
 	}
-	
-	public static WndBag seedPouch( Listener listener, Mode mode, String title ) {
-		SeedPouch pouch = Dungeon.hero.belongings.getItem( SeedPouch.class );
-		return pouch != null ?
-			new WndBag( pouch, listener, mode, title ) :
-			new WndBag( Dungeon.hero.belongings.backpack, listener, mode, title );
+
+	public static WndBag getBag( Class<? extends Bag> bagClass, Listener listener, Mode mode, String title ) {
+		Bag bag = Dungeon.hero.belongings.getItem( bagClass );
+		return bag != null ?
+				new WndBag( bag, listener, mode, title ) :
+				lastBag( listener, mode, title );
 	}
 	
 	protected void placeItems( Bag container ) {

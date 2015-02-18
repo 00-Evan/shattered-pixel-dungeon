@@ -22,6 +22,10 @@ import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
@@ -635,9 +639,17 @@ public class GameScene extends PixelScene {
 	public static WndBag selectItem( WndBag.Listener listener, WndBag.Mode mode, String title ) {
 		cancelCellSelector();
 		
-		WndBag wnd = mode == Mode.SEED ?
-			WndBag.seedPouch( listener, mode, title ) :
-			WndBag.lastBag( listener, mode, title );
+		WndBag wnd =
+				mode == Mode.SEED ?
+					WndBag.getBag( SeedPouch.class, listener, mode, title ) :
+				mode == Mode.SCROLL ?
+					WndBag.getBag( ScrollHolder.class, listener, mode, title ) :
+				mode == Mode.POTION ?
+					WndBag.getBag( PotionBandolier.class, listener, mode, title ) :
+				mode == Mode.WAND ?
+					WndBag.getBag( WandHolster.class, listener, mode, title ) :
+				WndBag.lastBag( listener, mode, title );
+
 		scene.add( wnd );
 		
 		return wnd;
