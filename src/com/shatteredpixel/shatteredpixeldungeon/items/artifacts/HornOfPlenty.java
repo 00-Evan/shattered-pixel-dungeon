@@ -92,6 +92,7 @@ public class HornOfPlenty extends Artifact {
                     Statistics.foodEaten++;
                 }
                 charge = 0;
+	            updateQuickslot();
 
                 hero.sprite.operate(hero.pos);
                 hero.busy();
