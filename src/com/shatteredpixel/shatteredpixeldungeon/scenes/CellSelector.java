@@ -89,7 +89,9 @@ public class CellSelector extends TouchArea {
 			startZoom = camera.zoom;
 
 			dragging = false;
-		}
+		} else if (t != touch) {
+            reset();
+        }
 	}
 	
 	@Override
@@ -150,7 +152,27 @@ public class CellSelector extends TouchArea {
 		
 		GameScene.ready();
 	}
-	
+
+    @Override
+    public void reset() {
+        super.reset();
+        another = null;
+        if (pinching){
+            pinching = false;
+
+            int zoom = Math.round( camera.zoom );
+            camera.zoom( zoom );
+            ShatteredPixelDungeon.zoom((int) (zoom - PixelScene.defaultZoom));
+        }
+    }
+
+    public void enable(boolean value){
+        if (enabled != value){
+            enabled = value;
+            reset();
+        }
+    }
+
 	public interface Listener {
 		void onSelect( Integer cell );
 		String prompt();

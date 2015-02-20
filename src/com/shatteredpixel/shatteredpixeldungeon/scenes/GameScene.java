@@ -379,8 +379,8 @@ public class GameScene extends PixelScene {
 
 			layoutTags();
 		}
-		
-		cellSelector.enabled = Dungeon.hero.ready;
+
+        cellSelector.enable(Dungeon.hero.ready);
 	}
 
 	private boolean tagAttack    = false;
