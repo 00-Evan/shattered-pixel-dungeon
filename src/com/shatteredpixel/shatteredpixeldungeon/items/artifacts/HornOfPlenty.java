@@ -92,7 +92,6 @@ public class HornOfPlenty extends Artifact {
                     Statistics.foodEaten++;
                 }
                 charge = 0;
-	            updateQuickslot();
 
                 hero.sprite.operate(hero.pos);
                 hero.busy();
@@ -105,6 +104,8 @@ public class HornOfPlenty extends Artifact {
                 Badges.validateFoodEaten();
 
                 image = ItemSpriteSheet.ARTIFACT_HORN1;
+
+	            updateQuickslot();
             }
 
         } else if (action.equals(AC_STORE)){
