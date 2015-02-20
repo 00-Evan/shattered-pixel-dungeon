@@ -168,10 +168,12 @@ public abstract class Mob extends Char {
 		}
 
 		//resets target if: the target is dead, the target has been lost (wandering)
-		//or if the mob is amoked and targeting a friendly (will try to target something else)
+		//or if the mob is amoked and targeting the hero (will try to target something else)
+		//or if the mob is not amoked, and is targeting a hostile mob
 		if ( enemy != null &&
 				!enemy.isAlive() || state == WANDERING ||
-				(buff( Amok.class ) != null && (enemy == Dungeon.hero || (enemy instanceof Mob && ((Mob)enemy).ally))))
+				(buff( Amok.class ) != null && enemy == Dungeon.hero ) ||
+				(buff( Amok.class ) == null && enemy instanceof Mob && ((Mob) enemy).hostile ))
 			enemy = null;
 
 		//if there is no current target, find a new one.

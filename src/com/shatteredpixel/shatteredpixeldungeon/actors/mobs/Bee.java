@@ -120,7 +120,7 @@ public class Bee extends Mob {
             //find all mobs near the pot
             HashSet<Char> enemies = new HashSet<Char>();
             for (Mob mob : Dungeon.level.mobs)
-                if (!(mob instanceof Bee) && Level.distance(mob.pos, potPos) <= 3 && mob.hostile)
+                if (!(mob instanceof Bee) && Level.distance(mob.pos, potPos) <= 3 && (mob.hostile || mob.ally))
                     enemies.add(mob);
 
             //pick one, if there are none, check if the hero is near the pot, go for them, otherwise go for nothing.
