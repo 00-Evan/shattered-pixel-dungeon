@@ -39,8 +39,8 @@ public class Buff extends Actor {
 		
 		this.target = target;
 		target.add( this );
-		
-		return true;
+
+        return target.buffs().contains(this);
 	}
 	
 	public void detach() {
