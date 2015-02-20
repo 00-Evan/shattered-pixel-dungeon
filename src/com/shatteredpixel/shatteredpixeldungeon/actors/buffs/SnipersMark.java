@@ -20,7 +20,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
-//TODO: consider refactoring this
 public class SnipersMark extends FlavourBuff {
 
 	public int object = 0;

@@ -125,7 +125,7 @@ public class Viscosity extends Glyph {
 				
 				target.damage( 1, this );
 				if (target == Dungeon.hero && !target.isAlive()) {
-					// FIXME
+
 					Glyph glyph = new Viscosity();
 					Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, glyph.name() ) );
 					GLog.n( "%s killed you...", glyph.name() );
