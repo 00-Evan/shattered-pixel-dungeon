@@ -85,7 +85,7 @@ public abstract class InventoryScroll extends Scroll {
 				
 				((InventoryScroll)curItem).confirmCancelation();
 				
-			} else {
+			} else if (!((Scroll)curItem).ownedByBook) {
 				
 				curItem.collect( curUser.belongings.backpack );
 				
