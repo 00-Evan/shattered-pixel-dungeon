@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
-//FIXME: fix in landscape mode
 public class AboutScene extends PixelScene {
 
     private static final String TTL_SHPX = "Shattered Pixel Dungeon";
@@ -58,32 +57,36 @@ public class AboutScene extends PixelScene {
 	public void create() {
 		super.create();
 
+		final float colWidth = Camera.main.width / (ShatteredPixelDungeon.landscape() ? 2 : 1);
+		final float colTop = (Camera.main.height / 2) - (ShatteredPixelDungeon.landscape() ? 30 : 90);
+		final float wataOffset = ShatteredPixelDungeon.landscape() ? colWidth : 0;
+
         Image shpx = Icons.SHPX.get();
-        shpx.x = align( (Camera.main.width - shpx.width()) / 2 );
-        shpx.y = align( 30 );
+        shpx.x = align( (colWidth - shpx.width()) / 2 );
+        shpx.y = align( colTop );
         add( shpx );
 
         new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
 
         BitmapTextMultiline shpxtitle = createMultiline( TTL_SHPX, 8 );
-        shpxtitle.maxWidth = Math.min( Camera.main.width, 120 );
+        shpxtitle.maxWidth = (int) Math.min( colWidth, 120 );
         shpxtitle.measure();
         shpxtitle.hardlight( Window.SHPX_COLOR );
         add( shpxtitle );
 
-        shpxtitle.x = align( (Camera.main.width - shpxtitle.width()) / 2 );
+        shpxtitle.x = align( (colWidth - shpxtitle.width()) / 2 );
         shpxtitle.y = align( shpx.y + shpx.height + 5 );
 
         BitmapTextMultiline shpxtext = createMultiline( TXT_SHPX, 8 );
-        shpxtext.maxWidth = Math.min( Camera.main.width, 120 );
+        shpxtext.maxWidth = shpxtitle.maxWidth;
         shpxtext.measure();
         add( shpxtext );
 
-        shpxtext.x = align( (Camera.main.width - shpxtext.width()) / 2 );
+        shpxtext.x = align( (colWidth - shpxtext.width()) / 2 );
         shpxtext.y = align( shpxtitle.y + shpxtitle.height() + 12 );
 
         BitmapTextMultiline shpxlink = createMultiline( LNK_SHPX, 8 );
-        shpxlink.maxWidth = Math.min( Camera.main.width, 120 );
+        shpxlink.maxWidth = shpxtitle.maxWidth;
         shpxlink.measure();
         shpxlink.hardlight( Window.SHPX_COLOR );
         add( shpxlink );
@@ -101,39 +104,41 @@ public class AboutScene extends PixelScene {
         add( shpxhotArea );
 
         Image wata = Icons.WATA.get();
-        wata.x = align( (Camera.main.width - wata.width()) / 2 );
-        wata.y = shpxlink.y + wata.height + 25;
+        wata.x = align( wataOffset + (colWidth - wata.width()) / 2 );
+        wata.y = align( ShatteredPixelDungeon.landscape() ?
+                        colTop:
+                        shpxlink.y + wata.height + 20);
         add( wata );
 
         new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
 
-        BitmapTextMultiline title = createMultiline( TTL_WATA, 8 );
-        title.maxWidth = Math.min( Camera.main.width, 120 );
-        title.measure();
-        title.hardlight( Window.TITLE_COLOR );
-        add( title );
+        BitmapTextMultiline wataTitle = createMultiline( TTL_WATA, 8 );
+        wataTitle.maxWidth = (int) Math.min( colWidth, 120 );
+        wataTitle.measure();
+        wataTitle.hardlight(Window.TITLE_COLOR);
+        add( wataTitle );
 
-        title.x = align( (Camera.main.width - title.width()) / 2 );
-        title.y = align( wata.y + wata.height + 5 );
+        wataTitle.x = align( wataOffset + (colWidth - wataTitle.width()) / 2 );
+        wataTitle.y = align( wata.y + wata.height + 11 );
 
-		BitmapTextMultiline text = createMultiline( TXT_WATA, 8 );
-		text.maxWidth = Math.min( Camera.main.width, 120 );
-		text.measure();
-		add( text );
+		BitmapTextMultiline wataText = createMultiline( TXT_WATA, 8 );
+		wataText.maxWidth = wataTitle.maxWidth;
+		wataText.measure();
+		add( wataText );
 		
-		text.x = align( (Camera.main.width - text.width()) / 2 );
-		text.y = align( title.y + title.height() + 12 );
+		wataText.x = align( wataOffset + (colWidth - wataText.width()) / 2 );
+		wataText.y = align( wataTitle.y + wataTitle.height() + 12 );
 		
-		BitmapTextMultiline link = createMultiline( LNK_WATA, 8 );
-		link.maxWidth = Math.min( Camera.main.width, 120 );
-		link.measure();
-		link.hardlight( Window.TITLE_COLOR );
-		add( link );
+		BitmapTextMultiline wataLink = createMultiline( LNK_WATA, 8 );
+		wataLink.maxWidth = wataTitle.maxWidth;
+		wataLink.measure();
+		wataLink.hardlight(Window.TITLE_COLOR);
+		add(wataLink);
 		
-		link.x = text.x;
-		link.y = text.y + text.height();
+		wataLink.x = wataText.x;
+		wataLink.y = wataText.y + wataText.height();
 		
-		TouchArea hotArea = new TouchArea( link ) {
+		TouchArea hotArea = new TouchArea( wataLink ) {
 			@Override
 			protected void onClick( Touch touch ) {
 				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK_WATA ) );
