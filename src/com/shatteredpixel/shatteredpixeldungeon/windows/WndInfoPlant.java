@@ -17,37 +17,14 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PlantSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
-public class WndInfoPlant extends Window {
-	
-	private static final float GAP	= 2;
-	
-	private static final int WIDTH = 120;
+public class WndInfoPlant extends WndTitledMessage {
 	
 	public WndInfoPlant( Plant plant ) {
 		
-		super();
-		
-		IconTitle titlebar = new IconTitle();
-		titlebar.icon( new PlantSprite( plant.image ) );
-		titlebar.label( plant.plantName );
-		titlebar.setRect( 0, 0, WIDTH, 0 );
-		add( titlebar );
-		
-		BitmapTextMultiline info = PixelScene.createMultiline( 6 );
-		add( info );
-		
-		info.text( plant.desc() );
-		info.maxWidth = WIDTH;
-		info.measure();
-		info.x = titlebar.left();
-		info.y = titlebar.bottom() + GAP;
-		
-		resize( WIDTH, (int)(info.y + info.height()) );
+		super(new PlantSprite( plant.image ), plant.plantName, plant.desc());
+
 	}
 }
