@@ -994,8 +994,10 @@ public class Hero extends Char {
 			
 			if (Actor.findChar( target ) == null) {
 				if (Level.pit[target] && !flying && !Chasm.jumpConfirmed) {
-					Chasm.heroJump( this );
-					interrupt();
+					if (!Level.solid[target]) {
+                        Chasm.heroJump(this);
+                        interrupt();
+                    }
 					return false;
 				}
 				if (Level.passable[target] || Level.avoid[target]) {
