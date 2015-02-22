@@ -41,7 +41,7 @@ public class WndTabbed extends Window {
 	protected Tab add( Tab tab ) {
 
 		tab.setPos( tabs.size() == 0 ? 
-			-chrome.marginLeft() :
+			-chrome.marginLeft() + 1 :
 			tabs.get( tabs.size() - 1 ).right(), height );
 		tab.select( false );
 		super.add( tab );
@@ -102,7 +102,8 @@ public class WndTabbed extends Window {
 	}
 
 	public void layoutTabs(){
-		int fullWidth = width+chrome.marginHor();
+        //subract two as there's extra horizontal space for those nobs on the top.
+		int fullWidth = width+chrome.marginHor()-2;
 		int numTabs = tabs.size();
 
 		if (numTabs == 0)
@@ -116,7 +117,7 @@ public class WndTabbed extends Window {
 		int spacing = -1;
 
 		while (spacing == -1) {
-			for (int i = 0; i <= 5; i++){
+			for (int i = 0; i <= 3; i++){
 				if ((fullWidth - i*(spaces)) % numTabs == 0) {
 					spacing = i;
 					break;
@@ -130,7 +131,7 @@ public class WndTabbed extends Window {
 		for (int i = 0; i < tabs.size(); i++){
 			tabs.get(i).setSize(tabWidth, tabHeight());
 			tabs.get(i).setPos( i == 0 ?
-					-chrome.marginLeft() :
+					-chrome.marginLeft() + 1 :
 					tabs.get( i - 1 ).right() + spacing, height );
 		}
 

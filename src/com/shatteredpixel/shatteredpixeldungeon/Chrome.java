@@ -52,11 +52,11 @@ public class Chrome {
 		case SCROLL:
 			return new NinePatch( Asset, 32, 32, 32, 32, 5, 11, 5, 11 );
 		case TAB_SET:
-			return new NinePatch( Asset, 64, 0, 20, 20, 6, 6, 6, 6 );
+			return new NinePatch( Asset, 64, 0, 20, 20, 6 );
 		case TAB_SELECTED:
-			return new NinePatch( Asset, 64, 22, 10, 14, 4, 7, 4, 6 );
+			return new NinePatch( Asset, 65, 22, 8, 13, 3, 7, 3, 5 );
 		case TAB_UNSELECTED:
-			return new NinePatch( Asset, 74, 22, 10, 14, 4, 7, 4, 6 );
+			return new NinePatch( Asset, 75, 22, 8, 13, 3, 7, 3, 5 );
 		default:
 			return null;
 		}
