@@ -1,17 +1,20 @@
-//TODO: update this class with relevant info as new versions come out.
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.ui.Component;
 
-//FIXME: overhaul this in this update
+//TODO: update this class with relevant info as new versions come out.
 public class WelcomeScene extends PixelScene {
 
     private static final String TTL_Welcome = "Welcome!";
@@ -56,8 +59,8 @@ public class WelcomeScene extends PixelScene {
 
         final int gameversion = ShatteredPixelDungeon.version();
 
-        BitmapTextMultiline text;
         BitmapTextMultiline title;
+        BitmapTextMultiline text;
 
         if (gameversion == 0) {
 
@@ -81,21 +84,44 @@ public class WelcomeScene extends PixelScene {
 
         }
 
+        int w = Camera.main.width;
+        int h = Camera.main.height;
 
-        text.maxWidth = 120;
-        text.measure();
-        add( text );
+        int pw = w - 10;
+        int ph = h - 50;
 
-        text.x = align( (Camera.main.width - text.width()) / 2 );
-        text.y = align( (Camera.main.height - text.height()) / 2 );
-
-        title.maxWidth = text.maxWidth;
+        title.maxWidth = pw;
         title.measure();
-        title.hardlight(Window.TITLE_COLOR);
+        title.hardlight(Window.SHPX_COLOR);
+
+        title.x = align( (w - title.width()) / 2 );
+        title.y = align( 8 );
         add( title );
 
-        title.x = align( (Camera.main.width - title.width()) / 2 );
-        title.y = align( text.y - title.height() - 10 );
+        NinePatch panel = Chrome.get(Chrome.Type.WINDOW);
+        panel.size( pw, ph );
+        panel.x = (w - pw) / 2;
+        panel.y = (h - ph) / 2;
+        add( panel );
+
+        ScrollPane list = new ScrollPane( new Component() );
+        add( list );
+        list.setRect(
+                panel.x + panel.marginLeft(),
+                panel.y + panel.marginTop(),
+                panel.innerWidth(),
+                panel.innerHeight());
+        list.scrollTo( 0, 0 );
+
+        Component content = list.content();
+        content.clear();
+
+        text.maxWidth = (int) panel.innerWidth();
+        text.measure();
+
+        content.add(text);
+
+        content.setSize( panel.innerWidth(), text.height() );
 
         RedButton okay = new RedButton("Okay!") {
             @Override
@@ -119,7 +145,7 @@ public class WelcomeScene extends PixelScene {
             }
         };
 
-        /* to be added in a later update
+        /*
         okay.setRect(text.x, text.y + text.height() + 5, 55, 18);
         add(okay);
 
@@ -133,9 +159,8 @@ public class WelcomeScene extends PixelScene {
         changes.setRect(text.x + 65, text.y + text.height() + 5, 55, 18);
         add(changes);*/
 
-        okay.setRect(text.x, text.y + text.height() + 5, text.width(), 18);
+        okay.setRect((w - pw) / 2, h - 22, pw, 18);
         add(okay);
-
 
         Archs archs = new Archs();
         archs.setSize( Camera.main.width, Camera.main.height );
