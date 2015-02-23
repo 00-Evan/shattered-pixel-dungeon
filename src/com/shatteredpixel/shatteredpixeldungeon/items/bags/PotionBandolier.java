@@ -29,7 +29,7 @@ public class PotionBandolier extends Bag {
 	@Override
 	public String info() {
 		return
-			"This thick bandoler fits around your chest like a sash, holding onto your potions for you.\n\n" +
-			"It is made of warm animal hide, which should protect your potions from the cold.";
+			"This thick bandolier fits around your chest like a sash, it has many small vials to hold your potions.\n\n" +
+			"The vials are made of tempered glass, and should be quite resistant to the cold.";
 	}
 }
