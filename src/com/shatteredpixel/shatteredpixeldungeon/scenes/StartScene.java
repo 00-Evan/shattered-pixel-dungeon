@@ -175,8 +175,8 @@ public class StartScene extends PixelScene {
 
             ChallengeButton challenge = new ChallengeButton();
             challenge.setPos(
-                    w / 2 - challenge.width() / 2,
-                    top + shieldH - challenge.height() / 2 );
+                    w/2 - challenge.width()/2,
+                    top + shieldH/2 - challenge.height()/2 );
             add( challenge );
 
         } else {
@@ -193,8 +193,8 @@ public class StartScene extends PixelScene {
 
             ChallengeButton challenge = new ChallengeButton();
             challenge.setPos(
-                    w / 2 - challenge.width() / 2,
-                    top + shieldH - challenge.height() / 2 );
+                    w/2 - challenge.width()/2,
+                    top + shieldH - challenge.height()/2 );
             add( challenge );
 
         }
