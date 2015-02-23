@@ -90,7 +90,7 @@ public class IconTitle extends Component {
 			health.setRect( tfLabel.x, Math.max( tfLabel.y + tfLabel.height(), imIcon.y + imIcon.height() - health.height() ), tfLabel.maxWidth, 0 );
 			height = health.bottom();
 		} else {
-			height = Math.max( imIcon.y + imIcon.height(), tfLabel.y + tfLabel.height() );
+			height = Math.max( imIcon.height(), tfLabel.height() );
 		}
 	}
 
