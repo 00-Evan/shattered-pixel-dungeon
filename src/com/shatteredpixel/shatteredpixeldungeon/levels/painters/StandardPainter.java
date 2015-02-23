@@ -127,7 +127,7 @@ public class StandardPainter extends Painter {
 			int pos = w > h ?
 				room.left + 1 + shift + i * 2 + (room.top + 2 + Random.Int( h-2 )) * Level.WIDTH :
 				(room.left + 2 + Random.Int( w-2 )) + (room.top + 1 + shift + i * 2) * Level.WIDTH;	
-			level.drop( i == index ? Generator.random() : new Gold(), pos ).type = Heap.Type.TOMB;
+			level.drop( i == index ? Generator.random() : new Gold().random(), pos ).type = Heap.Type.TOMB;
 		}
 	}
 	
