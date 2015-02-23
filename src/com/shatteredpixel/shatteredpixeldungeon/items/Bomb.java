@@ -17,10 +17,12 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -135,6 +137,10 @@ public class Bomb extends Item {
 					if (dmg > 0) {
 						ch.damage( dmg, this );
 					}
+
+					if (ch == Dungeon.hero && !ch.isAlive())
+						//constant is used here in the rare instance a player is killed by a double bomb.
+						Dungeon.fail(Utils.format(ResultDescriptions.ITEM, "bomb"));
 				}
 
 				//destroys items / triggers bombs caught in the blast.
