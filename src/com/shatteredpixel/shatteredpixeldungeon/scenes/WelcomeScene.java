@@ -19,9 +19,7 @@ public class WelcomeScene extends PixelScene {
 
     private static final String TTL_Welcome = "Welcome!";
 
-    private static final String TTL_LastVer = "v0.2.3 Update!";
-
-    private static final String TTL_SameVer = "v0.2.3 Patched!";
+    private static final String TTL_Update = "v0.2.4: PD 1.7.5 and Some Extras!";
 
     private static final String TTL_Future = "Wait What?";
 
@@ -31,19 +29,38 @@ public class WelcomeScene extends PixelScene {
             "Shattered Pixel Dungeon is being constantly updated, so expect more new content soon!\n\n"+
             "Happy Dungeoneering!";
 
-    private static final String TXT_LastVer =
-            "The Artifact Booster Pack! This update brings a variety of tweaks, improvements, and new content!\n\n" +
-            "-4 new Artifacts!\n-Artifacts are now unique!\n-Artifacts can now be cursed!\n-Artifact balance tweaks\n\n" +
-            "-Cloak of Shadows is now Rogue Exclusive\n-Freerunner now runs MUCH faster while invisible\n\n" +
-            "-Dangerous blandfruit effects reworked, now more positive.\n\n-Ring of Force buffed, Ring of Evasion reworked\n\n" +
-            "-Second QuickSlot!\n\n-Rankings Page Reworked\n\n-You can now donate to support the game, press the donate button for more info!";
-
-    private static final String TXT_SameVer =
-            "v0.2.3a and v0.2.3b fix some crash bugs players were experiencing.\n\n" +
-            "v0.2.3c fixes numerous issues, and gives some buffs to two of the new artifacts.\n\n" +
-            "v0.2.3d fixes numerous bugs, both from this release and older ones.\n\n" +
-            "v0.2.3e fixes some bugs, and adds a couple new features!\n-Second QuickSlot!\n-night mode is now a level feel, time of day no longer affects gameplay.\n\n" +
-            "v0.2.3f fixes more bugs. Next update is 0.2.4, which will incorporate the new 1.7.5 source, degredation will not be included.";
+    private static final String TXT_Update =
+            "v1.7.5 Source Implemented, with exceptions:\n" +
+                    "\n" +
+                    "- Degredation not implemented.\n" +
+                    "\n" +
+                    "- Badge syncing not implemented.\n" +
+                    "\n" +
+                    "- Scroll of Weapon Upgrade renamed to Magical Infusion, works on armor.\n" +
+                    "\n" +
+                    "- Scroll of Enchantment not implemented, Arcane stylus has not been removed.\n" +
+                    "\n" +
+                    "- Honey pots now shatter in a new item: shattered honeypot. A bee will defend its shattered pot to the death against anything that gets near.\n" +
+                    "\n" +
+                    "- Bombs have been reworked/nerfed: they explode after a delay, no longer stun, deal more damage at the center of the blast, affect the world (destroy items, blow up other bombs).\n" +
+                    "\n" +
+                    "\n" +
+                    "In addition, this update features the following changes:\n" +
+                    "\n" +
+                    "- The huntress has been buffed: starts with Potion of Mind Vision identified, now benefits from strength on melee attacks, and has a chance to reclaim a single used ranged weapon from each defeated enemy. \n" +
+                    "\n" +
+                    "- A new container: The Potion Bandolier! Potions can now shatter from frost, but the bandolier can protect them.\n" +
+                    "\n" +
+                    "- Shops now stock a much greater variety of items, some item prices have been rebalanced.\n" +
+                    "\n" +
+                    "- Going down stairs no longer increases hunger, going up still does.\n" +
+                    "\n" +
+                    "- Many, many bugfixes.\n" +
+                    "- Some UI improvements.\n" +
+                    "- ingame audio quality improved.\n" +
+                    "- Unstable spellbook buffed.\n" +
+                    "- Psionic blasts deal less self-damage.\n" +
+                    "- Potions of liquid flame affect a 3x3 grid.";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
@@ -67,15 +84,10 @@ public class WelcomeScene extends PixelScene {
             text = createMultiline(TXT_Welcome, 8);
             title = createMultiline(TTL_Welcome, 16);
 
-        } else if (gameversion < 26) {
-
-            text = createMultiline(TXT_LastVer, 6 );
-            title = createMultiline(TTL_LastVer, 12 );
-
         } else if (gameversion <= Game.versionCode) {
 
-            text = createMultiline(TXT_SameVer, 6 );
-            title = createMultiline(TTL_SameVer, 12 );
+            text = createMultiline(TXT_Update, 6 );
+            title = createMultiline(TTL_Update, 9 );
 
         } else {
 
