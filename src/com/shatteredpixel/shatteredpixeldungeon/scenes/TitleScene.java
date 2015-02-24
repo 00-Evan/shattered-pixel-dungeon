@@ -146,11 +146,19 @@ public class TitleScene extends PixelScene {
 			btnHighscores.setPos( w / 2, btnPlay.top() );
 		}
 
+        BitmapText source = new BitmapText( "PD v 1.7.5", font1x );
+        source.measure();
+        source.hardlight( 0x444444 );
+        source.x = w - source.width();
+        source.y = h - source.height();
+        add( source );
+
         BitmapText version = new BitmapText( "v " + Game.version + "", font1x );
         version.measure();
         version.hardlight( 0xCCCCCC );
         version.x = w - version.width();
-        version.y = h - version.height();
+        version.y = h - version.height() - source.height();
+
         add( version );
 		
 		PrefsButton btnPrefs = new PrefsButton();
