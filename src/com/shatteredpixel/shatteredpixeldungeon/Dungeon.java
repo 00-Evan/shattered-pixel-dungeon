@@ -536,9 +536,6 @@ public class Dungeon {
 		quickslot.restorePlaceholders( bundle );
 		
 		if (fullLoad) {
-
-			//for pre-0.2.4 saves
-            if (bundle.getBoolean(DV)) limitedDrops.dewVial.drop();
             transmutation = bundle.getInt( WT );
 
             //TODO: adjust this when dropping support for pre-0.2.3 saves
@@ -554,6 +551,9 @@ public class Dungeon {
                 limitedDrops.upgradeScrolls.count = bundle.getInt(SOU);
                 limitedDrops.arcaneStyli.count = bundle.getInt(AS);
             }
+            //for pre-0.2.4 saves
+            if (bundle.getBoolean(DV)) limitedDrops.dewVial.drop();
+
 			chapters = new HashSet<Integer>();
 			int ids[] = bundle.getIntArray( CHAPTERS );
 			if (ids != null) {
