@@ -313,7 +313,7 @@ public abstract class Wand extends KindOfWeapon {
 		return this;
 	}
 	
-	protected void updateLevel() {
+	public void updateLevel() {
 		maxCharges = Math.min( initialCharges() + level, 9 );
 		curCharges = Math.min( curCharges, maxCharges );
 		
