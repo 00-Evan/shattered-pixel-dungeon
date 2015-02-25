@@ -23,6 +23,7 @@ import com.watabou.noosa.Scene;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class LastLevel extends Level {
@@ -160,4 +161,16 @@ public class LastLevel extends Level {
 		super.addVisuals( scene );
 		HallsLevel.addVisuals( this, scene );
 	}
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+        for (int i=0; i < LENGTH; i++) {
+            int flags = Terrain.flags[map[i]];
+            if ((flags & Terrain.PIT) != 0){
+                passable[i] = avoid[i] = false;
+                solid[i] = true;
+            }
+        }
+    }
 }

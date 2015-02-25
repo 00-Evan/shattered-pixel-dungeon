@@ -63,9 +63,9 @@ public class DeadEndLevel extends Level {
 		entrance = SIZE * WIDTH + SIZE / 2 + 1;
 		map[entrance] = Terrain.ENTRANCE;
 		
-		exit = (SIZE / 2 + 1) * (WIDTH + 1);
+		map[(SIZE / 2 + 1) * (WIDTH + 1)] = Terrain.SIGN;
 		
-		map[exit] = Terrain.SIGN;
+		exit = 0;
 		
 		return true;
 	}
@@ -91,7 +91,7 @@ public class DeadEndLevel extends Level {
 	
 	@Override
 	public int randomRespawnCell() {
-		return -1;
+		return entrance-WIDTH;
 	}
 
 }
