@@ -27,6 +27,7 @@ public class Key extends Item {
 	
 	{
 		stackable = true;
+		unique = true;
 	}
 	
 	public int depth;

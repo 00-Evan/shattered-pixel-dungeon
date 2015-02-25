@@ -127,6 +127,11 @@ public class Bomb extends Item {
 					terrainAffected = true;
 				}
 
+				//destroys items / triggers bombs caught in the blast.
+				Heap heap = Dungeon.level.heaps.get( c );
+				if(heap != null)
+					heap.explode();
+
 				Char ch = Actor.findChar( c );
 				if (ch != null) {
 					//those not at the center of the blast take damage less consistently.
@@ -142,11 +147,6 @@ public class Bomb extends Item {
 						//constant is used here in the rare instance a player is killed by a double bomb.
 						Dungeon.fail(Utils.format(ResultDescriptions.ITEM, "bomb"));
 				}
-
-				//destroys items / triggers bombs caught in the blast.
-				Heap heap = Dungeon.level.heaps.get( c );
-				if(heap != null)
-					heap.explode();
 			}
 		}
 
