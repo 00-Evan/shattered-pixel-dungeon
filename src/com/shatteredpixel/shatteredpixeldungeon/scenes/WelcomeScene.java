@@ -30,7 +30,17 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_Update =
-            "v1.7.5 Source Implemented, with exceptions:\n" +
+            "v0.2.4a:\n" +
+                    "-Fixed bugs with floor 26.\n" +
+                    "-Fixed bombs destroying keys.\n" +
+                    "-Fixed bombs destroying items as they drop.\n" +
+                    "-Fixed dew vial rarely spawning twice.\n" +
+                    "-Fixed a bug with transmuting wands.\n" +
+                    "-Lloyd's beacon does not need to be re-set.\n" +
+                    "-Fixed a bug with renaming the sandals of nature.\n" +
+                    "\n" +
+                    "V0.2.4:\n" +
+                    "v1.7.5 Source Implemented, with exceptions:\n" +
                     "\n" +
                     "- Degredation not implemented.\n" +
                     "\n" +
@@ -55,12 +65,12 @@ public class WelcomeScene extends PixelScene {
                     "\n" +
                     "- Going down stairs no longer increases hunger, going up still does.\n" +
                     "\n" +
-                    "- Many, many bugfixes.\n" +
-                    "- Some UI improvements.\n" +
-                    "- ingame audio quality improved.\n" +
-                    "- Unstable spellbook buffed.\n" +
-                    "- Psionic blasts deal less self-damage.\n" +
-                    "- Potions of liquid flame affect a 3x3 grid.";
+                    "-Many, many bugfixes.\n" +
+                    "-Some UI improvements.\n" +
+                    "-Ingame audio quality improved.\n" +
+                    "-Unstable spellbook buffed.\n" +
+                    "-Psionic blasts deal less self-damage.\n" +
+                    "-Potions of liquid flame affect a 3x3 grid.";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
