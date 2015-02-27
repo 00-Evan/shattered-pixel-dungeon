@@ -111,7 +111,7 @@ public class UnstableSpellbook extends Artifact {
 
     @Override
     public Item upgrade() {
-        chargeCap = (((level+1)/2)+1);
+        chargeCap = (((level+1)/2)+3);
 
         //for artifact transmutation.
         while (scrolls.size() > (levelCap-1-level))
@@ -161,21 +161,17 @@ public class UnstableSpellbook extends Artifact {
         return desc;
     }
 
-    //needs to bundle chargecap as it is dynamic.
-    private static final String CHARGECAP = "chargecap";
     private static final String SCROLLS =   "scrolls";
 
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
-        bundle.put( CHARGECAP, chargeCap );
         bundle.put( SCROLLS, scrolls.toArray(new String[scrolls.size()]) );
     }
 
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
-        chargeCap = bundle.getInt( CHARGECAP );
         scrolls.clear();
         Collections.addAll(scrolls, bundle.getStringArray(SCROLLS));
     }

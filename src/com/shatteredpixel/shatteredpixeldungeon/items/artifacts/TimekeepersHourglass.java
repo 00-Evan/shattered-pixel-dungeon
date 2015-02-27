@@ -150,15 +150,12 @@ public class TimekeepersHourglass extends Artifact {
     }
 
 
-    //needs to bundle chargecap as it is dynamic.
-    private static final String CHARGECAP = "chargecap";
     private static final String SANDBAGS =  "sandbags";
     private static final String BUFF =      "buff";
 
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
-        bundle.put( CHARGECAP, chargeCap );
         bundle.put( SANDBAGS, sandBags );
 
         if (activeBuff != null)
@@ -168,7 +165,6 @@ public class TimekeepersHourglass extends Artifact {
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
-        chargeCap = bundle.getInt( CHARGECAP );
         sandBags = bundle.getInt( SANDBAGS );
 
         //these buffs belong to hourglass, need to handle unbundling within the hourglass class.

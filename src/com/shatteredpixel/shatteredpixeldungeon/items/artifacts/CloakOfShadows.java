@@ -142,15 +142,12 @@ public class CloakOfShadows extends Artifact {
         return desc;
     }
 
-    //Note: cloak needs to bundle chargecap as it is dynamic.
-    private static final String CHARGECAP = "chargecap";
     private static final String STEALTHED = "stealthed";
     private static final String COOLDOWN = "cooldown";
 
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle(bundle);
-        bundle.put( CHARGECAP, chargeCap );
         bundle.put( STEALTHED, stealthed );
         bundle.put( COOLDOWN, cooldown );
     }
@@ -158,7 +155,6 @@ public class CloakOfShadows extends Artifact {
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
-        chargeCap = bundle.getInt( CHARGECAP );
         stealthed = bundle.getBoolean( STEALTHED );
         cooldown = bundle.getInt( COOLDOWN );
     }
