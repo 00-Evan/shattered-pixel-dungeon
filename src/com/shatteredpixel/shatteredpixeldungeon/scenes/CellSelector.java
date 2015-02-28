@@ -169,7 +169,6 @@ public class CellSelector extends TouchArea {
     public void enable(boolean value){
         if (enabled != value){
             enabled = value;
-            reset();
         }
     }
 
