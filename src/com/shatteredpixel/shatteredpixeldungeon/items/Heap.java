@@ -284,12 +284,6 @@ public class Heap implements Bundlable {
 					//stop processing current explosion, it will be replaced by the new one.
 					return;
 
-                } else if (item instanceof Honeypot.ShatteredPot){
-
-                    //need to let the bee know the pot is being destroyed.
-                    ((Honeypot.ShatteredPot) item).goAway();
-                    items.remove( item );
-
 				//unique and upgraded items can endure the blast
 				} else if (!(item.level > 0 || item.unique))
 					items.remove( item );

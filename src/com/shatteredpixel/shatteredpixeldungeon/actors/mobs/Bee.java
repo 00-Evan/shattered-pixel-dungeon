@@ -133,8 +133,7 @@ public class Bee extends Mob {
 	protected boolean getCloser(int target) {
         if (enemy != null && Actor.findById(potHolder) == enemy) {
             target = enemy.pos;
-            return super.getCloser(target);
-        } else if (state == WANDERING || (potPos != -1 && Level.distance(target, potPos) > 3))
+        } else if (potPos != -1 && (state == WANDERING || Level.distance(target, potPos) > 3))
 			this.target = target = potPos;
 		return super.getCloser( target );
 	}
