@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Amok extends FlavourBuff {
@@ -25,8 +26,15 @@ public class Amok extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.AMOK;
 	}
-	
-	@Override
+
+    @Override
+    public void detach() {
+        super.detach();
+        if (target instanceof Mob)
+            ((Mob)target).aggro( null );
+    }
+
+    @Override
 	public String toString() {
 		return "Amok";
 	}
