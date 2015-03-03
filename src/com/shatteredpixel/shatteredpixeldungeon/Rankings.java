@@ -100,7 +100,7 @@ public enum Rankings {
 		
 		save();
 	}
-	
+
 	private int score( boolean win ) {
 		return (Statistics.goldCollected + Dungeon.hero.lvl * (win ? 26 : Dungeon.depth ) * 100) * (win ? 2 : 1);
 	}
@@ -161,7 +161,7 @@ public enum Rankings {
 
 		}
 	}
-	
+
 	public static class Record implements Bundlable {
 		
 		private static final String REASON	= "reason";
@@ -183,7 +183,7 @@ public enum Rankings {
 		public int score;
 		
 		public String gameFile;
-		
+
 		@Override
 		public void restoreFromBundle( Bundle bundle ) {
 			

@@ -53,7 +53,7 @@ public enum Icons {
     CHALLENGE_OFF,
     CHALLENGE_ON,
 	RESUME;
-	
+
 	public Image get() {
 		return get( this );
 	}

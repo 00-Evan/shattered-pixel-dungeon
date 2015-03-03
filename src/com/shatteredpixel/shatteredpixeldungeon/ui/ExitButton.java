@@ -27,7 +27,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 public class ExitButton extends Button {
 
-    private Image image;
+    protected Image image;
 
     public ExitButton() {
         super();

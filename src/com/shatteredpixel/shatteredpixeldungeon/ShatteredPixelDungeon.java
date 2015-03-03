@@ -146,7 +146,7 @@ public class ShatteredPixelDungeon extends Game {
         PixelScene.noFade = true;
         switchScene( c );
     }
-	
+
 	/*
 	 * ---> Prefernces
 	 */
@@ -261,7 +261,7 @@ public class ShatteredPixelDungeon extends Game {
 	public static boolean brightness() {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_BRIGHTNESS, false );
 	}
-	
+
 	public static void lastClass( int value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_LAST_CLASS, value );
 	}

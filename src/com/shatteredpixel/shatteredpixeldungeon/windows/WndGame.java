@@ -123,7 +123,7 @@ public class WndGame extends Window {
 				hide();
 			}
 		} );
-		
+
 		resize( WIDTH, pos );
 	}
 	

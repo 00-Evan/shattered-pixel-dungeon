@@ -171,7 +171,7 @@ public abstract class Level implements Bundlable {
 	private static final String MOBS		= "mobs";
 	private static final String BLOBS		= "blobs";
 	private static final String FEELING		= "feeling";
-	
+
 	public void create() {
 		
 		resizingNeeded = false;
@@ -337,7 +337,7 @@ public abstract class Level implements Bundlable {
 		feeling = bundle.getEnum( FEELING, Feeling.class );
 		if (feeling == Feeling.DARK)
 			viewDistance = (int)Math.ceil(viewDistance/3f);
-		
+
 		buildFlagMaps();
 		cleanWalls();
 	}

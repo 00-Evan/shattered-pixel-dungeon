@@ -45,7 +45,7 @@ public class WndItem extends Window {
 		titlebar.label( Utils.capitalize( item.toString() ) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
-		
+
 		if (item.levelKnown && item.level > 0) {
 			titlebar.color( ItemSlot.UPGRADED );
 		} else if (item.levelKnown && item.level < 0) {

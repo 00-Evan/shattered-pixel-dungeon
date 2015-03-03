@@ -215,7 +215,7 @@ public class Hero extends Char {
 		
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
-		
+
 		belongings.storeInBundle( bundle );
 	}
 	

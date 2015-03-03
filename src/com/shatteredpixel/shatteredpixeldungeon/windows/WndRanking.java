@@ -78,7 +78,7 @@ public class WndRanking extends WndTabbed {
 			}
 		};
 		thread.start();
-		
+
 		busy = Icons.BUSY.get();	
 		busy.origin.set( busy.width / 2, busy.height / 2 );
 		busy.angularSpeed = 720;
@@ -102,7 +102,7 @@ public class WndRanking extends WndTabbed {
 			}
 		}
 	}
-	
+
 	private void createControls() {
 		
 		String[] labels = 

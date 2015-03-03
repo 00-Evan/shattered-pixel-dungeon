@@ -201,7 +201,6 @@ public class StartScene extends PixelScene {
 
         unlock = new Group();
         add( unlock );
-	    
 
         if (!(huntressUnlocked = Badges.isUnlocked( Badges.Badge.BOSS_SLAIN_3 ))) {
 
