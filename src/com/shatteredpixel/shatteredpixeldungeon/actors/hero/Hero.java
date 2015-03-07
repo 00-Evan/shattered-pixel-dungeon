@@ -885,6 +885,7 @@ public class Hero extends Char {
 				}
 				damage += wand.curCharges;
 			}
+            break;
 		case SNIPER:
 			if (rangedWeapon != null) {
 				Buff.prolong( this, SnipersMark.class, attackDelay() * 1.1f ).object = enemy.id();
