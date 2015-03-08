@@ -136,6 +136,9 @@ public class WandOfMagicMissile extends Wand {
 				evoke( curUser );
 				
 				GLog.w( TXT_DISENCHANTED, item.name() );
+
+                Dungeon.quickslot.clearItem(WandOfMagicMissile.this);
+                WandOfMagicMissile.this.updateQuickslot();
 				
 				item.upgrade();
 				curUser.spendAndNext( TIME_TO_DISENCHANT );
