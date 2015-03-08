@@ -127,6 +127,12 @@ public class Yog extends Mob {
 			Actor.addDelayed( new Pushing( larva, pos, larva.pos ), -1 );
 		}
 
+        for (Mob mob : Dungeon.level.mobs) {
+            if (mob instanceof BurningFist || mob instanceof RottingFist || mob instanceof Larva) {
+                mob.aggro( enemy );
+            }
+        }
+
 		return super.defenseProc(enemy, damage);
 	}
 	
