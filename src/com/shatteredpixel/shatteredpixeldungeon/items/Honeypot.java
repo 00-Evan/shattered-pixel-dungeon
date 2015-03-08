@@ -219,7 +219,7 @@ public class Honeypot extends Item {
 				"The pot has been shattered, only the sticky honey that lines its walls is holding it together, and it is slowly coming apart.";
 
 			if (Actor.findById( myBee ) != null)
-				info += "\n\nDespite its broken state, the bee still seems quite fond of the pot, and is understandable quite mad.";
+				info += "\n\nDespite its broken state, the bee still seems quite fond of the pot, and is understandably quite mad.";
 			else
 				info += "\n\nNow that its bee is gone, you can't think of a use for this wad of broken clay and drying honey.";
 
