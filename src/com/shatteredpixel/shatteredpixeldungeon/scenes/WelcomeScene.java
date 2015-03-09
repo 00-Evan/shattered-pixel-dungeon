@@ -30,18 +30,13 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_Update =
-            "V0.2.4b:\n" +
-                    "-Fixed some crash issues.\n" +
-                    "-Fixed a bug with the unstable spellbook.\n" +
-                    "-Fixed some hiccups with touch input.\n" +
+            "V0.2.4c:\n" +
+                    "-Various bug and crash fixes.\n" +
+                    "-Unstable spellbook buffed again.\n" +
+                    "-UI tabs no longer move as much after appearing.\n" +
                     "\n" +
-                    "v0.2.4a:\n" +
-                    "-Fixed bugs with floor 26.\n" +
-                    "-Fixed bombs destroying items they shouldn't.\n" +
-                    "-Fixed dew vial rarely spawning twice.\n" +
-                    "-Fixed a bug with transmuting wands.\n" +
-                    "-Lloyd's beacon does not need to be re-set.\n" +
-                    "-Fixed a bug with renaming the sandals of nature.\n" +
+                    "v0.2.4a and v0.2.4b:\n" +
+                    "-Various Bug fixes and small tweaks.\n" +
                     "\n" +
                     "V0.2.4:\n" +
                     "v1.7.5 Source Implemented, with exceptions:\n" +
