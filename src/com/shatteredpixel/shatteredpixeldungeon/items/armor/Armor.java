@@ -77,7 +77,6 @@ public class Armor extends EquipableItem {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		glyph = (Glyph)bundle.get( GLYPH );
 		if ((hitsToKnow = bundle.getInt( UNFAMILIRIARITY )) == 0) {
 			hitsToKnow = HITS_TO_KNOW;
 		}
