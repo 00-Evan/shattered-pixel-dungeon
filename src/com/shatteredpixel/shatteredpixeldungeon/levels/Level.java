@@ -67,6 +67,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Sample;
@@ -602,8 +603,11 @@ public abstract class Level implements Bundlable {
 	        (Dungeon.isChallenged( Challenges.NO_SCROLLS ) && ((item instanceof Scroll && !(item instanceof ScrollOfUpgrade)) || item instanceof ScrollHolder)) ||
 			item == null) {
 
+            //create a dummy heap, give it a dummy sprite, don't add it to the game, and return it.
+            //effectively nullifies whatever the logic calling this wants to do, including dropping items.
             Heap heap = new Heap();
-            GameScene.add( heap );
+            ItemSprite sprite = heap.sprite = new ItemSprite();
+            sprite.link( heap );
             return heap;
 
         }
