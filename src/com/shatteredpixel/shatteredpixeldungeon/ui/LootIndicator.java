@@ -45,7 +45,7 @@ public class LootIndicator extends Tag {
 				Dungeon.hero.handle( Dungeon.hero.pos );
 			};
 		};
-		slot.showParams( false );
+		slot.showParams( true, false, false );
 		add( slot );
 	}
 	

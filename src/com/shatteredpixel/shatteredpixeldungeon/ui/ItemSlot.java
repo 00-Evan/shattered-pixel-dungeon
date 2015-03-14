@@ -194,14 +194,15 @@ public class ItemSlot extends Button {
 		topRight.alpha( alpha );
 		bottomRight.alpha( alpha );
 	}
-	
-	public void showParams( boolean value ) {
-		if (value) {
-			add( topRight );
-			add( bottomRight );
-		} else {
-			remove( topRight );
-			remove( bottomRight );
-		}
-	}
+
+    public void showParams( boolean TL, boolean TR, boolean BR ) {
+        if (TL) add( topLeft );
+        else remove( topLeft );
+
+        if (TR) add( topRight );
+        else remove( topRight );
+
+        if (BR) add( bottomRight );
+        else remove( bottomRight );
+    }
 }
