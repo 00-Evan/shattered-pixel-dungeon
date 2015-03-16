@@ -92,6 +92,7 @@ public class Monk extends Mob {
 			
 			if (weapon != null && !(weapon instanceof Knuckles) && !weapon.cursed) {
 				hero.belongings.weapon = null;
+				Dungeon.quickslot.clearItem( weapon );
 				Dungeon.level.drop( weapon, hero.pos ).sprite.drop();
 				GLog.w( TXT_DISARM, name, weapon.name() );
 			}
