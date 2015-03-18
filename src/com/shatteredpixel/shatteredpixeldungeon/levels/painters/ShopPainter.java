@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.MerchantsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.Weightstone;
@@ -156,6 +157,8 @@ public class ShopPainter extends Painter {
 			itemsToSpawn.add( new Torch() );
 			break;
 		}
+
+		itemsToSpawn.add( new MerchantsBeacon() );
 
 
 		ChooseBag(Dungeon.hero.belongings);
