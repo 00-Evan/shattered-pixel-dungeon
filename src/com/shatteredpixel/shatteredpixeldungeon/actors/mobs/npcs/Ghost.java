@@ -423,7 +423,7 @@ public class Ghost extends NPC {
 		public String description() {
 			return
 				"Something is clearly wrong with this rat. Its greasy black fur and rotting skin are very " +
-                "different from the healthy rats you've seen previously. It's blood red eyes " +
+                "different from the healthy rats you've seen previously. It's pale green eyes " +
                 "make it seem especially menacing.\n\n" +
                 "The rat carries a cloud of horrible stench with it, it's overpoweringly strong up close.\n\n" +
                 "Dark ooze dribbles from the rat's mouth, it eats through the floor but seems to dissolve in water.";
