@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -44,12 +45,6 @@ public class Bag extends Item implements Iterable<Item> {
 	public ArrayList<Item> items = new ArrayList<Item>();	
 	
 	public int size = 1;
-	
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		return actions;
-	}
 	
 	@Override
 	public void execute( Hero hero, String action ) {
@@ -85,11 +80,13 @@ public class Bag extends Item implements Iterable<Item> {
 		}
 	}
 
-    @Override
-    public void onDetach( ) {
-        this.owner = null;
-    }
-	
+	@Override
+	public void onDetach( ) {
+	    this.owner = null;
+	    for (Item item : items)
+		    Dungeon.quickslot.clearItem(item);
+	}
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
@@ -111,7 +108,7 @@ public class Bag extends Item implements Iterable<Item> {
 		super.storeInBundle( bundle );
 		bundle.put( ITEMS, items );
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
