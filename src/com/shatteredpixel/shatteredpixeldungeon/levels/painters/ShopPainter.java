@@ -254,46 +254,35 @@ public class ShopPainter extends Painter {
 	}
 
 	private static void ChooseBag(Belongings pack){
-		//FIXME: this whole method is pretty messy to accomplish a fairly simple logic goal. Should be a better way.
 
-		//there is a bias towards giving certain bags earlier, seen here
-		int seeds = 2, scrolls = 1, potions = 1, wands = 0;
+		int seeds = 0, scrolls = 0, potions = 0, wands = 0;
 
-		//we specifically only want to look at items in the main bag, none of the sub-bags.
-		for (Item item : pack.backpack.items){
-			if (item instanceof Plant.Seed)
+		//count up items in the main bag, for bags which haven't yet been dropped.
+		for (Item item : pack.backpack.items) {
+			if (!Dungeon.limitedDrops.seedBag.dropped() && item instanceof Plant.Seed)
 				seeds++;
-			else if (item instanceof Scroll)
+			else if (!Dungeon.limitedDrops.scrollBag.dropped() && item instanceof Scroll)
 				scrolls++;
-			else if (item instanceof Potion)
+			else if (!Dungeon.limitedDrops.potionBag.dropped() && item instanceof Potion)
 				potions++;
-			else if (item instanceof Wand)
+			else if (!Dungeon.limitedDrops.wandBag.dropped() && item instanceof Wand)
 				wands++;
 		}
-		//...and the equipped weapon incase it's a wand
-		if (pack.weapon instanceof Wand)
-			wands++;
-
-		//kill our counts for bags that have already been dropped.
-		if (Dungeon.limitedDrops.seedBag.dropped())
-			seeds = 0;
-		if (Dungeon.limitedDrops.scrollBag.dropped())
-			scrolls = 0;
-		if (Dungeon.limitedDrops.potionBag.dropped())
-			potions = 0;
-		if (Dungeon.limitedDrops.wandBag.dropped())
-			wands = 0;
 
 		//then pick whichever valid bag has the most items available to put into it.
+		//note that the order here gives a perference if counts are otherwise equal
 		if (seeds >= scrolls && seeds >= potions && seeds >= wands && !Dungeon.limitedDrops.seedBag.dropped()) {
 			Dungeon.limitedDrops.seedBag.drop();
 			itemsToSpawn.add( new SeedPouch() );
+
 		} else if (scrolls >= potions && scrolls >= wands && !Dungeon.limitedDrops.scrollBag.dropped()) {
 			Dungeon.limitedDrops.scrollBag.drop();
 			itemsToSpawn.add( new ScrollHolder() );
+
 		} else if (potions >= wands && !Dungeon.limitedDrops.potionBag.dropped()) {
 			Dungeon.limitedDrops.potionBag.drop();
 			itemsToSpawn.add( new PotionBandolier() );
+
 		} else if (!Dungeon.limitedDrops.wandBag.dropped()) {
 			Dungeon.limitedDrops.wandBag.drop();
 			itemsToSpawn.add(new WandHolster());
