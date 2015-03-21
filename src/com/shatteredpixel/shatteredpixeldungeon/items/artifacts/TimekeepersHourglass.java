@@ -209,7 +209,8 @@ public class TimekeepersHourglass extends Artifact {
 
         @Override
         public boolean attachTo(Char target) {
-            spend(charge);
+            //buffs always act last, so the stasis buff should end a turn early.
+            spend(charge-1);
             ((Hero)target).spendAndNext(charge);
 
             //shouldn't punish the player for going into stasis frequently
