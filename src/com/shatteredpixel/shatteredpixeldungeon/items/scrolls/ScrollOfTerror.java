@@ -32,6 +32,7 @@ public class ScrollOfTerror extends Scroll {
 
 	{
 		name = "Scroll of Terror";
+		initials = "Te";
 	}
 	
 	@Override

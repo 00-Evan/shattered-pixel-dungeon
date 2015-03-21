@@ -27,6 +27,8 @@ public class ScrollOfIdentify extends InventoryScroll {
 
 	{
 		name = "Scroll of Identify";
+		initials = "Id";
+
 		inventoryTitle = "Select an item to identify";
 		mode = WndBag.Mode.UNIDENTIFED;
 

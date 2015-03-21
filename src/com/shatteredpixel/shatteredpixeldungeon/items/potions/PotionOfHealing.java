@@ -31,6 +31,7 @@ public class PotionOfHealing extends Potion {
 
 	{
 		name = "Potion of Healing";
+		initials = "He";
 
         bones = true;
 	}

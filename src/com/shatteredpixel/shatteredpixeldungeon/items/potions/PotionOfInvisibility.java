@@ -32,6 +32,7 @@ public class PotionOfInvisibility extends Potion {
 	
 	{
 		name = "Potion of Invisibility";
+		initials = "In";
 	}
 	
 	@Override

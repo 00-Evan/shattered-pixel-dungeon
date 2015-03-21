@@ -35,6 +35,7 @@ public class ScrollOfMagicMapping extends Scroll {
 	
 	{
 		name = "Scroll of Magic Mapping";
+		initials = "MM";
 	}
 	
 	@Override

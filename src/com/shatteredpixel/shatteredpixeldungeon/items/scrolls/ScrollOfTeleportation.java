@@ -35,6 +35,7 @@ public class ScrollOfTeleportation extends Scroll {
 	
 	{
 		name = "Scroll of Teleportation";
+		initials = "TP";
 	}
 	
 	@Override

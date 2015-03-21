@@ -29,6 +29,7 @@ public class ScrollOfRecharging extends Scroll {
 
 	{
 		name = "Scroll of Recharging";
+		initials = "Re";
 	}
 	
 	@Override

@@ -56,6 +56,8 @@ public class Potion extends Item {
 		"Are you sure you want to throw it? In most cases it makes sense to drink it.";
 	
 	private static final float TIME_TO_DRINK = 1f;
+
+	protected String initials;
 	
 	private static final Class<?>[] potions = {
 		PotionOfHealing.class, 
@@ -268,6 +270,10 @@ public class Potion extends Item {
 			desc() :
 			"This flask contains a swirling " + color + " liquid. " +
 			"Who knows what it will do when drunk or thrown?";
+	}
+
+	public String initials(){
+		return isKnown() ? initials : null;
 	}
 	
 	@Override

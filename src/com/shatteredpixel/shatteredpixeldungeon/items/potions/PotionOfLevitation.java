@@ -32,6 +32,7 @@ public class PotionOfLevitation extends Potion {
 
 	{
 		name = "Potion of Levitation";
+		initials = "Le";
 	}
 
     @Override

@@ -44,6 +44,7 @@ public class PotionOfPurity extends Potion {
 	
 	{
 		name = "Potion of Purification";
+		initials = "Pu";
 	}
 	
 	@Override

@@ -40,7 +40,9 @@ public abstract class Scroll extends Item {
 	public static final String AC_READ	= "READ";
 	
 	protected static final float TIME_TO_READ	= 1f;
-	
+
+	protected String initials;
+
 	private static final Class<?>[] scrolls = {
 		ScrollOfIdentify.class, 
 		ScrollOfMagicMapping.class, 
@@ -168,6 +170,10 @@ public abstract class Scroll extends Item {
 			desc() :
 			"This parchment is covered with indecipherable writing, and bears a title " +
 			"of rune " + rune + ". Who knows what it will do when read aloud?";
+	}
+
+	public String initials(){
+		return isKnown() ? initials : null;
 	}
 	
 	@Override

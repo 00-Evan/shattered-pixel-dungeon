@@ -35,6 +35,7 @@ public class ScrollOfMirrorImage extends Scroll {
 	
 	{
 		name = "Scroll of Mirror Image";
+		initials = "MI";
 	}
 	
 	@Override

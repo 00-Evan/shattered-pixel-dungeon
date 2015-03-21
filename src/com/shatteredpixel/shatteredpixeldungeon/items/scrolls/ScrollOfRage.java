@@ -34,6 +34,7 @@ public class ScrollOfRage extends Scroll {
 
 	{
 		name = "Scroll of Rage";
+		initials = "Ra";
 	}
 	
 	@Override

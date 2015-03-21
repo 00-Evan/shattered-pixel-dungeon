@@ -26,6 +26,7 @@ public class PotionOfStrength extends Potion {
 
 	{
 		name = "Potion of Strength";
+		initials = "St";
 
         bones = true;
 	}

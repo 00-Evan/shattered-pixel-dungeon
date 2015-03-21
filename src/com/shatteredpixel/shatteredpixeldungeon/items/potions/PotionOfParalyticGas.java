@@ -28,6 +28,7 @@ public class PotionOfParalyticGas extends Potion {
 
 	{
 		name = "Potion of Paralytic Gas";
+		initials = "PG";
 	}
 	
 	@Override

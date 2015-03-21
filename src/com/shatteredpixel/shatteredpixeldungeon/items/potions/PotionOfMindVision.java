@@ -27,6 +27,7 @@ public class PotionOfMindVision extends Potion {
 
 	{
 		name = "Potion of Mind Vision";
+		initials = "MV";
 	}
 	
 	@Override

@@ -36,6 +36,7 @@ public class ScrollOfRemoveCurse extends Scroll {
 	
 	{
 		name = "Scroll of Remove Curse";
+		initials = "RC";
 	}
 	
 	@Override

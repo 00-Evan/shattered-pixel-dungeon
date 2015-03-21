@@ -32,6 +32,7 @@ public class PotionOfFrost extends Potion {
 	
 	{
 		name = "Potion of Frost";
+		initials = "Fr";
 	}
 	
 	@Override
