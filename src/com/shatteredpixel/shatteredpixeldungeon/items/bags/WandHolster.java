@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -51,6 +52,7 @@ public class WandHolster extends Bag {
 
 	@Override
     public void onDetach( ) {
+		super.onDetach();
         for (Item item : items) {
             ((Wand)item).stopCharging();
         }

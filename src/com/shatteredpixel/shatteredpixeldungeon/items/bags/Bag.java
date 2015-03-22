@@ -85,6 +85,7 @@ public class Bag extends Item implements Iterable<Item> {
 	    this.owner = null;
 	    for (Item item : items)
 		    Dungeon.quickslot.clearItem(item);
+		updateQuickslot();
 	}
 
 	@Override
