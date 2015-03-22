@@ -75,6 +75,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag.Mode;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 public class GameScene extends PixelScene {
@@ -129,7 +130,7 @@ public class GameScene extends PixelScene {
 		ShatteredPixelDungeon.lastClass(Dungeon.hero.heroClass.ordinal());
 		
 		super.create();
-		Camera.main.zoom( defaultZoom + ShatteredPixelDungeon.zoom() );
+		Camera.main.zoom( GameMath.gate(minZoom, defaultZoom + ShatteredPixelDungeon.zoom(), maxZoom));
 		
 		scene = this;
 		
