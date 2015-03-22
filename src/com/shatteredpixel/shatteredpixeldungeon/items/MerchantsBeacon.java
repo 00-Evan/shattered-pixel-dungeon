@@ -18,7 +18,7 @@ public class MerchantsBeacon extends Item {
 
 	{
 		name = "merchant's beacon";
-		image = ItemSpriteSheet.BEACON; //TODO: make sprite
+		image = ItemSpriteSheet.BEACON;
 
 		stackable = true;
 
@@ -56,15 +56,14 @@ public class MerchantsBeacon extends Item {
 
 	@Override
 	public int price() {
-		return 10 * quantity;
+		return 5 * quantity;
 	}
 
 	@Override
-	//todo add description
 	public String info() {
-		return "This odd piece of dwarvern technology allows you to communicate from great distances." +
+		return "This odd piece of dwarven technology allows you to communicate from great distances." +
 				"\n\nAfter being activated, this beacon will let you sell items to Pixel Mart from anywhere in the dungeon." +
-				"\n\nOnce activated, the magic within the beacon will only last for one session though, so use it wisely.";
+				"\n\nHowever, the magic within the beacon will only last for one session, so use it wisely.";
 	}
 
 }

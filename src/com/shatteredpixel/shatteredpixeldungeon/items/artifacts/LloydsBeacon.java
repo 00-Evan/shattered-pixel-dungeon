@@ -15,7 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon.items;
+package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
+//If it weren't super obvious, this is going to become an artifact soon.
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -23,8 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
@@ -65,7 +65,7 @@ public class LloydsBeacon extends Item {
 	
 	{
 		name = "lloyd's beacon";
-		image = ItemSpriteSheet.BEACON;
+		image = ItemSpriteSheet.ARTIFACT_BEACON;
 		
 		unique = true;
 	}
