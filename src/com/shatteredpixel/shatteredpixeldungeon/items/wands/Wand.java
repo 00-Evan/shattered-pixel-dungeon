@@ -64,6 +64,7 @@ public abstract class Wand extends KindOfWeapon {
 	
 	public int maxCharges = initialCharges();
 	public int curCharges = maxCharges;
+    private float partialCharge = 0f;
 	
 	protected Charger charger;
 	
@@ -198,6 +199,11 @@ public abstract class Wand extends KindOfWeapon {
 	
 	public void charge( Char owner ) {
 		if (charger == null) (charger = new Charger()).attachTo( owner );
+	}
+
+	public void charge( Char owner, float chargeScaleFactor ){
+		charge( owner );
+		charger.setScaleFactor( chargeScaleFactor );
 	}
 
     @Override
@@ -386,6 +392,7 @@ public abstract class Wand extends KindOfWeapon {
 	private static final String MAX_CHARGES			= "maxCharges";
 	private static final String CUR_CHARGES			= "curCharges";
 	private static final String CUR_CHARGE_KNOWN	= "curChargeKnown";
+	private static final String PARTIALCHARGE 		= "partialCharge";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -394,6 +401,7 @@ public abstract class Wand extends KindOfWeapon {
 		bundle.put( MAX_CHARGES, maxCharges );
 		bundle.put( CUR_CHARGES, curCharges );
 		bundle.put( CUR_CHARGE_KNOWN, curChargeKnown );
+		bundle.put( PARTIALCHARGE , partialCharge );
 	}
 	
 	@Override
@@ -405,6 +413,7 @@ public abstract class Wand extends KindOfWeapon {
 		maxCharges = bundle.getInt( MAX_CHARGES );
 		curCharges = bundle.getInt( CUR_CHARGES );
 		curChargeKnown = bundle.getBoolean( CUR_CHARGE_KNOWN );
+		partialCharge = bundle.getFloat( PARTIALCHARGE );
 	}
 	
 	protected static CellSelector.Listener zapper = new  CellSelector.Listener() {
@@ -463,34 +472,46 @@ public abstract class Wand extends KindOfWeapon {
 	
 	protected class Charger extends Buff {
 		
-		private static final float TIME_TO_CHARGE = 40f;
+		private static final float BASE_CHARGE_DELAY = 10f;
+		private static final float SCALING_CHARGE_ADDITION = 40f;
+		private static final float NORMAL_SCALE_FACTOR = 0.85f;
+
+		float scalingFactor = NORMAL_SCALE_FACTOR;
 		
 		@Override
 		public boolean attachTo( Char target ) {
 			super.attachTo( target );
-			delay();
 			
 			return true;
 		}
 		
 		@Override
 		public boolean act() {
+			if (curCharges < maxCharges)
+				gainCharge();
 			
-			if (curCharges < maxCharges) {
+			if (partialCharge >= 1 && curCharges < maxCharges) {
+				partialCharge--;
 				curCharges++;
 				updateQuickslot();
 			}
 			
-			delay();
+			spend( TICK );
 			
 			return true;
 		}
-		
-		protected void delay() {
-			float time2charge = ((Hero)target).heroClass == HeroClass.MAGE ? 
-				TIME_TO_CHARGE / (float)Math.sqrt( 1 + level ) : 
-				TIME_TO_CHARGE;
-			spend( time2charge );
+
+		private void gainCharge(){
+			int missingCharges = maxCharges - curCharges;
+
+			float turnsToCharge = (float) (BASE_CHARGE_DELAY
+					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)));
+
+			partialCharge += 1f/turnsToCharge;
+		}
+
+		private void setScaleFactor(float value){
+			this.scalingFactor = value;
 		}
 	}
 }
