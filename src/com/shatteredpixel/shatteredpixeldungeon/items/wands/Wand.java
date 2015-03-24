@@ -422,17 +422,17 @@ public abstract class Wand extends KindOfWeapon {
 		public void onSelect( Integer target ) {
 			
 			if (target != null) {
+
+				final Wand curWand = (Wand)Wand.curItem;
+
+				final int cell = Ballistica.cast( curUser.pos, target, true, curWand.hitChars );
 				
-				if (target == curUser.pos) {
+				if (target == curUser.pos || cell == curUser.pos) {
 					GLog.i( TXT_SELF_TARGET );
 					return;
 				}
 				
-				final Wand curWand = (Wand)Wand.curItem;
-				
 				curWand.setKnown();
-				
-				final int cell = Ballistica.cast( curUser.pos, target, true, curWand.hitChars );
 				curUser.sprite.zap( cell );
 
 				//targets the enemy hit for char-hitting wands, or the cell aimed at for other wands.
@@ -441,7 +441,7 @@ public abstract class Wand extends KindOfWeapon {
 				if (curWand.curCharges > 0) {
 					
 					curUser.busy();
-					
+
 					curWand.fx( cell, new Callback() {
 						@Override
 						public void call() {
