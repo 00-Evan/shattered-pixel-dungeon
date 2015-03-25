@@ -255,7 +255,7 @@ public abstract class Mob extends Char {
 	}
 	
 	protected boolean canAttack( Char enemy ) {
-		return Level.adjacent( pos, enemy.pos ) && !isCharmedBy( enemy );
+		return Level.adjacent( pos, enemy.pos );
 	}
 	
 	protected boolean getCloser( int target ) {
@@ -566,7 +566,7 @@ public abstract class Mob extends Char {
         @Override
         public boolean act( boolean enemyInFOV, boolean justAlerted ) {
             enemySeen = enemyInFOV;
-            if (enemyInFOV && canAttack( enemy )) {
+            if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
 
                 return doAttack( enemy );
 
