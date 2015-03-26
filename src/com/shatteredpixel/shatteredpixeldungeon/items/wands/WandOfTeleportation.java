@@ -40,8 +40,7 @@ public class WandOfTeleportation extends Wand {
 		Char ch = Actor.findChar( cell );
 		
 		if (ch == curUser) {
-			
-			setKnown();
+
 			ScrollOfTeleportation.teleportHero( curUser );
 			
 		} else if (ch != null && !(ch instanceof NPC)) {

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -31,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMagic.Magic;
@@ -73,76 +71,20 @@ public abstract class Wand extends KindOfWeapon {
 	private int usagesToKnow = USAGES_TO_KNOW;
 
 	protected boolean hitChars = true;
-	
-	private static final Class<?>[] wands = {
-		WandOfTeleportation.class, 
-		WandOfSlowness.class, 
-		WandOfFirebolt.class, 
-		WandOfPoison.class, 
-		WandOfRegrowth.class,
-		WandOfBlink.class,
-		WandOfLightning.class,
-		WandOfAmok.class,
-		WandOfTelekinesis.class,
-		WandOfFlock.class,
-		WandOfDisintegration.class,
-		WandOfAvalanche.class
-	};
-	private static final String[] woods = 
-		{"holly", "yew", "ebony", "cherry", "teak", "rowan", "willow", "mahogany", "bamboo", "purpleheart", "oak", "birch"};
-	private static final Integer[] images = {
-		ItemSpriteSheet.WAND_HOLLY, 
-		ItemSpriteSheet.WAND_YEW, 
-		ItemSpriteSheet.WAND_EBONY, 
-		ItemSpriteSheet.WAND_CHERRY, 
-		ItemSpriteSheet.WAND_TEAK, 
-		ItemSpriteSheet.WAND_ROWAN, 
-		ItemSpriteSheet.WAND_WILLOW, 
-		ItemSpriteSheet.WAND_MAHOGANY, 
-		ItemSpriteSheet.WAND_BAMBOO, 
-		ItemSpriteSheet.WAND_PURPLEHEART, 
-		ItemSpriteSheet.WAND_OAK, 
-		ItemSpriteSheet.WAND_BIRCH};
-	
-	private static ItemStatusHandler<Wand> handler;
-	
-	private String wood;
+
 	
 	{
 		defaultAction = AC_ZAP;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static void initWoods() {
-		handler = new ItemStatusHandler<Wand>( (Class<? extends Wand>[])wands, woods, images );
-	}
-	
-	public static void save( Bundle bundle ) {
-		handler.save( bundle );
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<Wand>( (Class<? extends Wand>[])wands, woods, images, bundle );
+
+		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
 	}
 	
 	public Wand() {
 		super();
 		
 		calculateDamage();
-		
-		try {
-            syncVisuals();
-		} catch (Exception e) {
-			// Wand of Magic Missile
-		}
-	}
 
-    @Override
-    public void syncVisuals(){
-        image = handler.image( this );
-        wood = handler.label( this );
-    }
+	}
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
@@ -227,22 +169,9 @@ public abstract class Wand extends KindOfWeapon {
 		}
 	}
 	
-	protected boolean isKnown() {
-		return handler.isKnown( this );
-	}
-	
-	public void setKnown() {
-		if (!isKnown()) {
-			handler.know( this );
-		}
-		
-		Badges.validateAllWandsIdentified();
-	}
-	
 	@Override
 	public Item identify() {
-		
-		setKnown();
+
 		curChargeKnown = true;
 		super.identify();
 		
@@ -265,13 +194,8 @@ public abstract class Wand extends KindOfWeapon {
 	}
 	
 	@Override
-	public String name() {
-		return isKnown() ? name : wood + " wand";
-	}
-	
-	@Override
 	public String info() {
-		StringBuilder info = new StringBuilder( isKnown() ? desc() : String.format( TXT_WOOD, wood ) );
+		StringBuilder info = new StringBuilder(  desc() );
 		if (Dungeon.hero.heroClass == HeroClass.MAGE) {
 			info.append( "\n\n" );
 			if (levelKnown) {
@@ -285,7 +209,7 @@ public abstract class Wand extends KindOfWeapon {
 	
 	@Override
 	public boolean isIdentified() {
-		return super.isIdentified() && isKnown() && curChargeKnown;
+		return super.isIdentified() && curChargeKnown;
 	}
 	
 	@Override
@@ -365,10 +289,6 @@ public abstract class Wand extends KindOfWeapon {
 		return this;
 	}
 	
-	public static boolean allKnown() {
-		return handler.known().size() == wands.length;
-	}
-	
 	@Override
 	public int price() {
 		int price = 75;
@@ -431,9 +351,8 @@ public abstract class Wand extends KindOfWeapon {
 					GLog.i( TXT_SELF_TARGET );
 					return;
 				}
-				
-				curWand.setKnown();
-				curUser.sprite.zap( cell );
+
+				curUser.sprite.zap(cell);
 
 				//targets the enemy hit for char-hitting wands, or the cell aimed at for other wands.
 				QuickSlotButton.target(Actor.findChar(curWand.hitChars ? cell : target));

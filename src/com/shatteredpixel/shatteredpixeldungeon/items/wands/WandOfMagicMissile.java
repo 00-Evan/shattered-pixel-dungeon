@@ -107,15 +107,6 @@ public class WandOfMagicMissile extends Wand {
 		}
 	}
 	
-	@Override
-	protected boolean isKnown() {
-		return true;
-	}
-	
-	@Override
-	public void setKnown() {
-	}
-	
 	protected int initialCharges() {
 		return 3;
 	}

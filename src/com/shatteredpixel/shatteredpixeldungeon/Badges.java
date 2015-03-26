@@ -463,9 +463,10 @@ public class Badges {
 			validateAllItemsIdentified();
 		}
 	}
-	
-	public static void validateAllWandsIdentified() {
-		if (Dungeon.hero != null && Dungeon.hero.isAlive() && 
+
+	//TODO: no longer in use, deal with new wand related badges in the badge rework.
+	/**public static void validateAllWandsIdentified() {
+		if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
 			!local.contains( Badge.ALL_WANDS_IDENTIFIED ) && Wand.allKnown()) {
 			
 			Badge badge = Badge.ALL_WANDS_IDENTIFIED;
@@ -474,7 +475,7 @@ public class Badges {
 			
 			validateAllItemsIdentified();
 		}
-	}
+	}*/
 	
 	public static void validateAllBagsBought( Item bag ) {
 		
@@ -510,8 +511,8 @@ public class Badges {
 		if (!global.contains( Badge.ALL_ITEMS_IDENTIFIED ) &&
 			global.contains( Badge.ALL_POTIONS_IDENTIFIED ) &&
 			global.contains( Badge.ALL_SCROLLS_IDENTIFIED ) &&
-			global.contains( Badge.ALL_RINGS_IDENTIFIED ) &&
-			global.contains( Badge.ALL_WANDS_IDENTIFIED )) {
+			global.contains( Badge.ALL_RINGS_IDENTIFIED )) {
+			//global.contains( Badge.ALL_WANDS_IDENTIFIED )) {
 			
 			Badge badge = Badge.ALL_ITEMS_IDENTIFIED;
 			displayBadge( badge );

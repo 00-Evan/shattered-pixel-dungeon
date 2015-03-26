@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
@@ -145,7 +144,6 @@ public class Dungeon {
 		
 		Scroll.initLabels();
 		Potion.initColors();
-		Wand.initWoods();
 		Ring.initGems();
 		
 		Statistics.reset();
@@ -452,7 +450,6 @@ public class Dungeon {
 			
 			Scroll.save( bundle );
 			Potion.save( bundle );
-			Wand.save( bundle );
 			Ring.save( bundle );
 
             Actor.storeNextID( bundle );
@@ -530,7 +527,6 @@ public class Dungeon {
 		
 		Scroll.restore( bundle );
 		Potion.restore( bundle );
-		Wand.restore( bundle );
 		Ring.restore( bundle );
 
 		quickslot.restorePlaceholders( bundle );
