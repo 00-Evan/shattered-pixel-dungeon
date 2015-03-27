@@ -112,18 +112,18 @@ public class ItemSpriteSheet {
 
     //Row Six: Wands
     public static final int WAND_MAGIC_MISSILE	= ROW6+0;
-    public static final int WAND_HOLLY			= ROW6+1;
-    public static final int WAND_YEW			= ROW6+2;
-    public static final int WAND_EBONY			= ROW6+3;
-    public static final int WAND_CHERRY			= ROW6+4;
-    public static final int WAND_TEAK			= ROW6+5;
-    public static final int WAND_ROWAN			= ROW6+6;
-    public static final int WAND_WILLOW			= ROW6+7;
-    public static final int WAND_MAHOGANY		= ROW6+8;
-    public static final int WAND_BAMBOO			= ROW6+9;
-    public static final int WAND_PURPLEHEART	= ROW6+10;
-    public static final int WAND_OAK			= ROW6+11;
-    public static final int WAND_BIRCH			= ROW6+12;
+    public static final int WAND_FIREBOLT		= ROW6+1;
+    public static final int WAND_FROST			= ROW6+2;
+    public static final int WAND_LIGHTNING		= ROW6+3;
+    public static final int WAND_DISINTEGRATION	= ROW6+4;
+    public static final int WAND_PRISMATIC_LIGHT= ROW6+5;
+    public static final int WAND_ACID			= ROW6+6;
+    public static final int WAND_CORRUPTION		= ROW6+7;
+    public static final int WAND_WARDING		= ROW6+8;
+    public static final int WAND_REGROWTH		= ROW6+9;
+    public static final int WAND_SUMMONING  	= ROW6+10;
+    public static final int WAND_AVALANCHE		= ROW6+11;
+    public static final int WAND_FORCE			= ROW6+12;
 
     //Row Seven: Rings
     public static final int RING_GARNET		= ROW7+0;

@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -41,6 +42,7 @@ public class WandOfFirebolt extends Wand {
 
 	{
 		name = "Wand of Firebolt";
+		image = ItemSpriteSheet.WAND_FIREBOLT;
 	}
 	
 	@Override

@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -32,6 +33,7 @@ public class WandOfPoison extends Wand {
 
 	{
 		name = "Wand of Poison";
+		image = ItemSpriteSheet.WAND_ACID;
 	}
 	
 	@Override

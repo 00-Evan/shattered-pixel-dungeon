@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -37,6 +38,8 @@ public class WandOfTelekinesis extends Wand {
 	
 	{
 		name = "Wand of Telekinesis";
+		image = ItemSpriteSheet.WAND_FORCE;
+
 		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
 	

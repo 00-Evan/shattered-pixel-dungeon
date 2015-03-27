@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
@@ -37,6 +38,8 @@ public class WandOfDisintegration extends Wand {
 
 	{
 		name = "Wand of Disintegration";
+		image = ItemSpriteSheet.WAND_DISINTEGRATION;
+
 		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
 	

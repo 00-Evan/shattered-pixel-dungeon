@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -42,6 +43,8 @@ public class WandOfAvalanche extends Wand {
 
 	{
 		name = "Wand of Avalanche";
+		image = ItemSpriteSheet.WAND_AVALANCHE;
+
 		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
 	

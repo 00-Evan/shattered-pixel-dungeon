@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -34,6 +35,7 @@ public class WandOfRegrowth extends Wand {
 
 	{
 		name = "Wand of Regrowth";
+		image = ItemSpriteSheet.WAND_REGROWTH;
 	}
 	
 	@Override

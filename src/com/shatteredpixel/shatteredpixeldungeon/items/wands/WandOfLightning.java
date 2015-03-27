@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
@@ -40,6 +41,7 @@ public class WandOfLightning extends Wand {
 
 	{
 		name = "Wand of Lightning";
+		image = ItemSpriteSheet.WAND_LIGHTNING;
 	}
 	
 	private ArrayList<Char> affected = new ArrayList<Char>();

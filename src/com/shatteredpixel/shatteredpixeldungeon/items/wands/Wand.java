@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMagic.Magic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -75,8 +74,6 @@ public abstract class Wand extends KindOfWeapon {
 	
 	{
 		defaultAction = AC_ZAP;
-
-		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
 	}
 	
 	public Wand() {
