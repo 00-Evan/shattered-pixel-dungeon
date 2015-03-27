@@ -35,24 +35,25 @@ public class WandOfBlink extends Wand {
 	}
 	
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap( Ballistica bolt ) {
 
 		int level = level();
-		
-		if (Ballistica.distance > level + 4) {
+
+		//TODO: don't care about this atm as this wand is marked for death, should correct this logic if I end up keeping it.
+		/*if (Ballistica.distance > level + 4) {
 			cell = Ballistica.trace[level + 3];
 		} else if (Actor.findChar( cell ) != null && Ballistica.distance > 1) {
 			cell = Ballistica.trace[Ballistica.distance - 2];
-		}
+		}*/
 		
 		curUser.sprite.visible = true;
-		appear( Dungeon.hero, cell );
+		appear( Dungeon.hero, bolt.collisionPos );
 		Dungeon.observe();
 	}
 	
 	@Override
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.whiteLight( curUser.sprite.parent, curUser.pos, cell, callback );
+	protected void fx( Ballistica bolt, Callback callback ) {
+		MagicMissile.whiteLight( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 		curUser.sprite.visible = false;
 	}

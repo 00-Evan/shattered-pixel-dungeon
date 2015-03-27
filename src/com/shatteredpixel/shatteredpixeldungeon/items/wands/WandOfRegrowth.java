@@ -37,28 +37,27 @@ public class WandOfRegrowth extends Wand {
 	}
 	
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap( Ballistica bolt ) {
 		
-		for (int i=1; i < Ballistica.distance-1; i++) {
-			int p = Ballistica.trace[i];
-			int c = Dungeon.level.map[p];
+		for (int i : bolt.subPath(1, bolt.dist)) {
+			int c = Dungeon.level.map[i];
 			if (c == Terrain.EMPTY || 
 				c == Terrain.EMBERS || 
 				c == Terrain.EMPTY_DECO) {
 				
-				Level.set( p, Terrain.GRASS );
+				Level.set( i, Terrain.GRASS );
 				
 			}
 		}
 		
-		int c = Dungeon.level.map[cell];
+		int c = Dungeon.level.map[bolt.collisionPos];
 		if (c == Terrain.EMPTY || 
 			c == Terrain.EMBERS || 
 			c == Terrain.EMPTY_DECO || 
 			c == Terrain.GRASS ||
 			c == Terrain.HIGH_GRASS) {
 			
-			GameScene.add( Blob.seed( cell, (level() + 2) * 20, Regrowth.class ) );
+			GameScene.add( Blob.seed( bolt.collisionPos, (level() + 2) * 20, Regrowth.class ) );
 			
 		} else {
 			
@@ -66,9 +65,10 @@ public class WandOfRegrowth extends Wand {
 			
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.foliage( curUser.sprite.parent, curUser.pos, cell, callback );
+
+	@Override
+	protected void fx( Ballistica bolt, Callback callback ) {
+		MagicMissile.foliage( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
 	

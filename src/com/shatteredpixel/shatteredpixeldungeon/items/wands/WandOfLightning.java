@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
@@ -47,7 +48,7 @@ public class WandOfLightning extends Wand {
 	private int nPoints;
 	
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap( Ballistica bolt ) {
 		// Everything is processed in fx() method
 		if (!curUser.isAlive()) {
 			Dungeon.fail( Utils.format( ResultDescriptions.ITEM, name ) );
@@ -87,10 +88,12 @@ public class WandOfLightning extends Wand {
 	}
 	
 	@Override
-	protected void fx( int cell, Callback callback ) {
+	protected void fx( Ballistica bolt, Callback callback ) {
 		
 		nPoints = 0;
 		points[nPoints++] = Dungeon.hero.pos;
+
+		int cell = bolt.collisionPos;
 		
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {

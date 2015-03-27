@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -66,9 +67,9 @@ public class WandOfMagicMissile extends Wand {
 	}
 	
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap( Ballistica bolt ) {
 				
-		Char ch = Actor.findChar( cell );
+		Char ch = Actor.findChar( bolt.collisionPos );
 		if (ch != null) {	
 			
 			int level = level();

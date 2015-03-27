@@ -42,20 +42,18 @@ public class WandOfAvalanche extends Wand {
 
 	{
 		name = "Wand of Avalanche";
-		hitChars = false;
+		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
 	
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap( Ballistica bolt ) {
 		
 		Sample.INSTANCE.play( Assets.SND_ROCKS );
 		
 		int level = level();
 		
-		Ballistica.distance = Math.min( Ballistica.distance, 8 + level );
-		
 		int size = 1 + level / 3;
-		PathFinder.buildDistanceMap( cell, BArray.not( Level.solid, null ), size );
+		PathFinder.buildDistanceMap( bolt.collisionPos, BArray.not( Level.solid, null ), size );
 		
 		for (int i=0; i < Level.LENGTH; i++) {
 			
@@ -85,9 +83,10 @@ public class WandOfAvalanche extends Wand {
 			GLog.n( "You killed yourself with your own Wand of Avalanche..." );
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.earth( curUser.sprite.parent, curUser.pos, cell, callback );
+
+	@Override
+	protected void fx( Ballistica bolt, Callback callback ) {
+		MagicMissile.earth( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
 	

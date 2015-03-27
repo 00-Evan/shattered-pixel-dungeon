@@ -37,24 +37,21 @@ public class WandOfDisintegration extends Wand {
 
 	{
 		name = "Wand of Disintegration";
-		hitChars = false;
+		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
 	
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap( Ballistica beam ) {
 		
 		boolean terrainAffected = false;
 		
 		int level = level();
 		
-		int maxDistance = distance();
-		Ballistica.distance = Math.min( Ballistica.distance, maxDistance );
+		int maxDistance = Math.min(distance(), beam.dist);
 		
 		ArrayList<Char> chars = new ArrayList<Char>();
 		
-		for (int i=1; i < Ballistica.distance; i++) {
-			
-			int c = Ballistica.trace[i];
+		for (int c : beam.subPath(1, maxDistance)) {
 			
 			Char ch;
 			if ((ch = Actor.findChar( c )) != null) {
@@ -98,9 +95,9 @@ public class WandOfDisintegration extends Wand {
 	}
 	
 	@Override
-	protected void fx( int cell, Callback callback ) {
+	protected void fx( Ballistica beam, Callback callback ) {
 		
-		cell = Ballistica.trace[Math.min( Ballistica.distance, distance() ) - 1];
+		int cell = beam.path.get(Math.min(beam.dist, distance()));
 		curUser.sprite.parent.add( new DeathRay( curUser.sprite.center(), DungeonTilemap.tileCenterToWorld( cell ) ) );		
 		callback.call();
 	}

@@ -70,7 +70,7 @@ public abstract class Wand extends KindOfWeapon {
 
 	private int usagesToKnow = USAGES_TO_KNOW;
 
-	protected boolean hitChars = true;
+	protected int collisionProperties = Ballistica.MAGIC_BOLT;
 
 	
 	{
@@ -125,7 +125,7 @@ public abstract class Wand extends KindOfWeapon {
 		}
 	}
 	
-	protected abstract void onZap( int cell );
+	protected abstract void onZap( Ballistica attack );
 	
 	@Override
 	public boolean collect( Bag container ) {
@@ -260,8 +260,8 @@ public abstract class Wand extends KindOfWeapon {
 		MAX = (tier * tier - tier + 10) / 2 + level;
 	}
 	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.blueLight( curUser.sprite.parent, curUser.pos, cell, callback );
+	protected void fx( Ballistica bolt, Callback callback ) {
+		MagicMissile.blueLight( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
 
@@ -345,7 +345,8 @@ public abstract class Wand extends KindOfWeapon {
 
 				final Wand curWand = (Wand)Wand.curItem;
 
-				final int cell = Ballistica.cast( curUser.pos, target, true, curWand.hitChars );
+				final Ballistica shot = new Ballistica( curUser.pos, target, curWand.collisionProperties);
+				int cell = shot.collisionPos;
 				
 				if (target == curUser.pos || cell == curUser.pos) {
 					GLog.i( TXT_SELF_TARGET );
@@ -354,17 +355,19 @@ public abstract class Wand extends KindOfWeapon {
 
 				curUser.sprite.zap(cell);
 
-				//targets the enemy hit for char-hitting wands, or the cell aimed at for other wands.
-				QuickSlotButton.target(Actor.findChar(curWand.hitChars ? cell : target));
+				//attempts to target the cell aimed at if something is there, otherwise targets the collision pos.
+				if (Actor.findChar(target) != null)
+					QuickSlotButton.target(Actor.findChar(target));
+				else
+					QuickSlotButton.target(Actor.findChar(cell));
 				
 				if (curWand.curCharges > 0) {
 					
 					curUser.busy();
 
-					curWand.fx( cell, new Callback() {
-						@Override
+                    curWand.fx( shot, new Callback() {
 						public void call() {
-							curWand.onZap( cell );
+							curWand.onZap( shot );
 							curWand.wandUsed();
 						}
 					} );

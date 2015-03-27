@@ -64,19 +64,14 @@ public class Eye extends Mob {
 		return 10;
 	}
 	
-	private int hitCell;
+	private Ballistica beam;
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		
-		hitCell = Ballistica.cast( pos, enemy.pos, true, false );
-		
-		for (int i=1; i < Ballistica.distance; i++) {
-			if (Ballistica.trace[i] == enemy.pos) {
-				return true;
-			}
-		}
-		return false;
+		beam = new Ballistica( pos, enemy.pos, Ballistica.STOP_TERRAIN);
+
+		return beam.subPath(1, beam.dist).contains(enemy.pos);
 	}
 	
 	@Override
@@ -96,14 +91,14 @@ public class Eye extends Mob {
 		
 		boolean rayVisible = false;
 		
-		for (int i=0; i < Ballistica.distance; i++) {
-			if (Dungeon.visible[Ballistica.trace[i]]) {
+		for (int i : beam.subPath(0, beam.dist)) {
+			if (Dungeon.visible[i]) {
 				rayVisible = true;
 			}
 		}
 		
 		if (rayVisible) {
-			sprite.attack( hitCell );
+			sprite.attack( beam.collisionPos );
 			return false;
 		} else {
 			attack( enemy );
@@ -114,10 +109,8 @@ public class Eye extends Mob {
 	@Override
 	public boolean attack( Char enemy ) {
 		
-		for (int i=1; i < Ballistica.distance; i++) {
-			
-			int pos = Ballistica.trace[i];
-			
+		for (int pos : beam.subPath(1, beam.dist)) {
+
 			Char ch = Actor.findChar( pos );
 			if (ch == null) {
 				continue;

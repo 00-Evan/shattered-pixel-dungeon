@@ -83,10 +83,13 @@ public class WarriorArmor extends ClassArmor {
 		public void onSelect( Integer target ) {
 			if (target != null && target != curUser.pos) {
 				
-				int cell = Ballistica.cast( curUser.pos, target, false, true );
-				if (Actor.findChar( cell ) != null && cell != curUser.pos) {
-					cell = Ballistica.trace[Ballistica.distance - 2];
-				}
+				Ballistica route = new Ballistica(curUser.pos, target, Ballistica.PROJECTILE);
+				int cell = route.collisionPos;
+
+				//can't occupy the same cell as another char, so move back one.
+				if (Actor.findChar( cell ) != null && cell != curUser.pos)
+					cell = route.path.get(route.dist-1);
+
 
                 curUser.HP -= (curUser.HP / 3);
 				if (curUser.subClass == HeroSubClass.BERSERKER && curUser.HP <= curUser.HT * Fury.LEVEL) {

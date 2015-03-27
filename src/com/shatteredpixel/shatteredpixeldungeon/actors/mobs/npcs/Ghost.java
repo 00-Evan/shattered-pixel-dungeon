@@ -467,7 +467,8 @@ public class Ghost extends NPC {
 
         @Override
         protected boolean canAttack( Char enemy ) {
-            if (!Level.adjacent(pos, enemy.pos) && Ballistica.cast( pos, enemy.pos, false, true ) == enemy.pos){
+            Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE );
+            if (!Level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos){
                 combo++;
                 return true;
             } else {

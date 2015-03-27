@@ -100,8 +100,7 @@ public abstract class Level implements Bundlable {
 	public static final int[] NEIGHBOURS8 = {+1, -1, +WIDTH, -WIDTH, +1+WIDTH, +1-WIDTH, -1+WIDTH, -1-WIDTH};
 	public static final int[] NEIGHBOURS9 = {0, +1, -1, +WIDTH, -WIDTH, +1+WIDTH, +1-WIDTH, -1+WIDTH, -1-WIDTH};
 
-    //Note that use of these without checking values is unsafe, mobs can be within 2 tiles of the
-    //edge of the map, unsafe use in that cause will cause an array out of bounds exception.
+    //make sure to check insideMap() when using these, as there's a risk something may be outside the map
     public static final int[] NEIGHBOURS8DIST2 = {+2+2*WIDTH, +1+2*WIDTH, 2*WIDTH, -1+2*WIDTH, -2+2*WIDTH,
                                                     +2+WIDTH, +1+WIDTH, +WIDTH, -1+WIDTH, -2+WIDTH,
                                                     +2, +1, -1, -2,
@@ -970,6 +969,16 @@ public abstract class Level implements Bundlable {
 	public static boolean adjacent( int a, int b ) {
 		int diff = Math.abs( a - b );
 		return diff == 1 || diff == WIDTH || diff == WIDTH + 1 || diff == WIDTH - 1;
+	}
+
+	//returns true if the input is a valid tile within the level
+	public static boolean insideMap( int tile ){
+				//outside map array
+		return !((tile <= -1 || tile >= LENGTH) ||
+				//top and bottom row
+				 (tile <= 31 || tile >= LENGTH - WIDTH) ||
+				//left and right column
+				(tile % WIDTH == 0 || tile % WIDTH == 31));
 	}
 	
 	public String tileName( int tile ) {

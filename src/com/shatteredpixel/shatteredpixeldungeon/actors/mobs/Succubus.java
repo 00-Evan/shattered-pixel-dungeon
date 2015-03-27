@@ -92,11 +92,12 @@ public class Succubus extends Mob {
 	
 	private void blink( int target ) {
 		
-		int cell = Ballistica.cast( pos, target, true, true );
-		
-		if (Actor.findChar( cell ) != null && Ballistica.distance > 1) {
-			cell = Ballistica.trace[Ballistica.distance - 2];
-		}
+		Ballistica route = new Ballistica( pos, target, Ballistica.PROJECTILE);
+		int cell = route.collisionPos;
+
+		//can't occupy the same cell as another char, so move back one.
+		if (Actor.findChar( cell ) != null && cell != this.pos)
+			cell = route.path.get(route.dist-1);
 		
 		WandOfBlink.appear( this, cell );
 		

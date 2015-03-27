@@ -17,25 +17,17 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 
@@ -45,12 +37,14 @@ public class WandOfTelekinesis extends Wand {
 	
 	{
 		name = "Wand of Telekinesis";
-		hitChars = false;
+		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
 	
 	@Override
-	protected void onZap( int cell ) {
-		
+	protected void onZap( Ballistica bolt ) {
+
+		//TODO: this whole wand is getting reworked anyway, so screw trying to correct this logic, just rewrite.
+		/*
 		boolean mapUpdated = false;
 		
 		int maxDistance = level() + 4;
@@ -131,6 +125,7 @@ public class WandOfTelekinesis extends Wand {
 		if (mapUpdated) {
 			Dungeon.observe();
 		}
+		*/
 	}
 	
 	private void transport( Heap heap ) {
@@ -159,9 +154,10 @@ public class WandOfTelekinesis extends Wand {
 		heap.sprite.link();
 		heap.sprite.drop();
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.force( curUser.sprite.parent, curUser.pos, cell, callback );
+
+	@Override
+	protected void fx( Ballistica bolt, Callback callback ) {
+		MagicMissile.force( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
 	

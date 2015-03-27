@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -35,9 +36,9 @@ public class WandOfTeleportation extends Wand {
 	}
 
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap( Ballistica bolt ) {
 		
-		Char ch = Actor.findChar( cell );
+		Char ch = Actor.findChar( bolt.collisionPos );
 		
 		if (ch == curUser) {
 
@@ -73,9 +74,10 @@ public class WandOfTeleportation extends Wand {
 			
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.coldLight( curUser.sprite.parent, curUser.pos, cell, callback );
+
+	@Override
+	protected void fx( Ballistica bolt, Callback callback ) {
+		MagicMissile.coldLight( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
 	

@@ -452,7 +452,7 @@ public class Item implements Bundlable {
 	
 	public void cast( final Hero user, int dst ) {
 		
-		final int cell = Ballistica.cast( user.pos, dst, false, true );
+		final int cell = new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
 		user.sprite.zap( cell );
 		user.busy();
 

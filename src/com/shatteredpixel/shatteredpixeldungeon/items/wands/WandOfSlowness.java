@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -34,8 +35,8 @@ public class WandOfSlowness extends Wand {
 	}
 
 	@Override
-	protected void onZap( int cell ) {
-		Char ch = Actor.findChar( cell );
+	protected void onZap( Ballistica bolt) {
+		Char ch = Actor.findChar( bolt.collisionPos );
 		if (ch != null) {
 			
 			Buff.affect( ch, Slow.class, Slow.duration( ch ) / 3 + level() );
@@ -46,9 +47,10 @@ public class WandOfSlowness extends Wand {
 			
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.slowness( curUser.sprite.parent, curUser.pos, cell, callback );
+
+	@Override
+	protected void fx( Ballistica bolt, Callback callback ) {
+		MagicMissile.slowness( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
 	

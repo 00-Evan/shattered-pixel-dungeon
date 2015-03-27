@@ -66,7 +66,7 @@ public class Goo extends Mob {
             pumpedUp = 0;
             for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
                 int j = pos + Level.NEIGHBOURS9DIST2[i];
-                if (j >= 0 && j <= 1023 && Level.passable[j])
+                if (Level.insideMap(j) && Level.passable[j])
                     CellEmitter.get(j).burst(ElmoParticle.FACTORY, 10);
             }
             Sample.INSTANCE.play( Assets.SND_BURNING );
@@ -122,7 +122,7 @@ public class Goo extends Mob {
             ((GooSprite)sprite).pumpUp();
             for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
                 int j = pos + Level.NEIGHBOURS9DIST2[i];
-                if (j >= 0 && j <= 1023 && Level.passable[j])
+                if (Level.insideMap(j) && Level.passable[j])
                     GameScene.add(Blob.seed(j, 2, GooWarn.class));
             }
             pumpedUp++;

@@ -42,15 +42,17 @@ public class WandOfFlock extends Wand {
 	}
 	
 	@Override
-	protected void onZap( int cell ) {
+	protected void onZap( Ballistica bolt ) {
 		
 		int level = level();
 		
 		int n = level + 2;
-		
+
+		//TODO: don't care about this atm as this wand is marked for death, should correct this logic if I end up keeping it
+		/**
 		if (Actor.findChar( cell ) != null && Ballistica.distance > 2) {
 			cell = Ballistica.trace[Ballistica.distance - 2];
-		}
+		}*/
 		
 		boolean[] passable = BArray.or( Level.passable, Level.avoid, null );
 		for (Actor actor : Actor.all()) {
@@ -58,6 +60,8 @@ public class WandOfFlock extends Wand {
 				passable[((Char)actor).pos] = false;
 			}
 		}
+
+		int cell = bolt.collisionPos;
 		
 		PathFinder.buildDistanceMap( cell, passable, n );
 		int dist = 0;

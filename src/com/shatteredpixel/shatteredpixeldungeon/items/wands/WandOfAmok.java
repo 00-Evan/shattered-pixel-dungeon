@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -36,8 +37,8 @@ public class WandOfAmok extends Wand {
 	}
 
 	@Override
-	protected void onZap( int cell ) {
-		Char ch = Actor.findChar( cell );
+	protected void onZap( Ballistica bolt) {
+		Char ch = Actor.findChar( bolt.collisionPos );
 		if (ch != null) {
 
             if (ch == Dungeon.hero) {
@@ -52,9 +53,10 @@ public class WandOfAmok extends Wand {
 			
 		}
 	}
-	
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.purpleLight( curUser.sprite.parent, curUser.pos, cell, callback );
+
+	@Override
+	protected void fx( Ballistica bolt, Callback callback ) {
+		MagicMissile.purpleLight( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
 	
