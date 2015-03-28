@@ -36,7 +36,7 @@ public class MagesStaff extends MeleeWeapon {
 
 	{
 		name = "Mage's Staff";
-		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
+		image = ItemSpriteSheet.MAGES_STAFF;
 
 		defaultAction = AC_ZAP;
 

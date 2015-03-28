@@ -81,14 +81,15 @@ public class ItemSpriteSheet {
     public static final int KNUCKLEDUSTER	= ROW3+0;
     public static final int DAGGER			= ROW3+1;
     public static final int SHORT_SWORD		= ROW3+2;
-    public static final int QUARTERSTAFF	= ROW3+3;
-    public static final int SPEAR			= ROW3+4;
-    public static final int MACE			= ROW3+5;
-    public static final int SWORD			= ROW3+6;
-    public static final int BATTLE_AXE		= ROW3+7;
-    public static final int LONG_SWORD		= ROW3+8;
-    public static final int WAR_HAMMER		= ROW3+9;
-    public static final int GLAIVE			= ROW3+10;
+    public static final int MAGES_STAFF     = ROW3+3;
+    public static final int QUARTERSTAFF	= ROW3+4;
+    public static final int SPEAR			= ROW3+5;
+    public static final int MACE			= ROW3+6;
+    public static final int SWORD			= ROW3+7;
+    public static final int BATTLE_AXE		= ROW3+8;
+    public static final int LONG_SWORD		= ROW3+9;
+    public static final int WAR_HAMMER		= ROW3+10;
+    public static final int GLAIVE			= ROW3+11;
 
     //Row Four: Missile weapons
     public static final int DART			= ROW4+0;
