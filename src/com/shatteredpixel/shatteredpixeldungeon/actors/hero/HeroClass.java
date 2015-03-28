@@ -28,11 +28,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShortSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
@@ -57,11 +57,11 @@ public enum HeroClass {
 	};
 	
 	public static final String[] MAG_PERKS = {
-		"Mages start with a unique Wand of Magic Missile. This wand can be later \"disenchanted\" to upgrade another wand.",
-		"Mages recharge their wands faster.",
+		"Mages start with a unique Staff, which can be imbued with the properties of a wand.",
+		"The Mage's staff can be used as a melee weapon or a wand, and charges faster than a wand.",
 		"When eaten, any piece of food restores 1 charge for all wands in the inventory.",
 		"Mages can use wands as a melee weapon.",
-		"Scrolls of Identify are identified from the beginning."
+		"Scrolls of Upgrade are identified from the beginning."
 	};
 	
 	public static final String[] ROG_PERKS = {
@@ -149,14 +149,13 @@ public enum HeroClass {
     }
 
     private static void initMage( Hero hero ) {
-        (hero.belongings.weapon = new Knuckles()).identify();
+	    MagesStaff staff = new MagesStaff(new WandOfMagicMissile());
+	    (hero.belongings.weapon = staff).identify();
+        hero.belongings.weapon.activate(hero);
 
-        WandOfMagicMissile wand = new WandOfMagicMissile();
-        wand.identify().collect();
+        Dungeon.quickslot.setSlot(0, staff);
 
-        Dungeon.quickslot.setSlot(0, wand);
-
-        new ScrollOfIdentify().setKnown();
+        new ScrollOfUpgrade().setKnown();
     }
 
     private static void initRogue( Hero hero ) {

@@ -37,6 +37,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+//TODO: final balancing choices
 public class WandOfMagicMissile extends Wand {
 
 	public static final String AC_DISENCHANT	= "DISENCHANT";
@@ -73,8 +74,8 @@ public class WandOfMagicMissile extends Wand {
 		if (ch != null) {	
 			
 			int level = level();
-			
-			ch.damage( Random.Int( 1, 6 + level * 2 ), this );
+
+			ch.damage( Random.NormalIntRange( 3+level, 6+level*2 ), this );
 			
 			ch.sprite.burst( 0xFF99CCFF, level / 2 + 2 );
 			
@@ -109,7 +110,7 @@ public class WandOfMagicMissile extends Wand {
 	}
 	
 	protected int initialCharges() {
-		return 3;
+		return 4;
 	}
 	
 	@Override
