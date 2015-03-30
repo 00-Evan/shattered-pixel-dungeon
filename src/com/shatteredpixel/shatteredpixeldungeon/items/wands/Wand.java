@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -61,7 +62,7 @@ public abstract class Wand extends KindOfWeapon {
 	
 	public int maxCharges = initialCharges();
 	public int curCharges = maxCharges;
-    private float partialCharge = 0f;
+    protected float partialCharge = 0f;
 	
 	protected Charger charger;
 	
@@ -123,7 +124,7 @@ public abstract class Wand extends KindOfWeapon {
 	}
 	
 	protected abstract void onZap( Ballistica attack );
-	
+
 	@Override
 	public boolean collect( Bag container ) {
 		if (super.collect( container )) {
@@ -395,6 +396,8 @@ public abstract class Wand extends KindOfWeapon {
 		private static final float SCALING_CHARGE_ADDITION = 40f;
 		private static final float NORMAL_SCALE_FACTOR = 0.85f;
 
+		private static final float CHARGE_BUFF_BONUS = 0.25f;
+
 		float scalingFactor = NORMAL_SCALE_FACTOR;
 		
 		@Override
@@ -427,6 +430,11 @@ public abstract class Wand extends KindOfWeapon {
 					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)));
 
 			partialCharge += 1f/turnsToCharge;
+
+			ScrollOfRecharging.Recharging bonus = target.buff(ScrollOfRecharging.Recharging.class);
+			if (bonus != null && bonus.remainder() > 0f){
+				partialCharge += CHARGE_BUFF_BONUS * bonus.remainder();
+			}
 		}
 
 		private void setScaleFactor(float value){

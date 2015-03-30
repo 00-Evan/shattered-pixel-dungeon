@@ -86,6 +86,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -102,7 +103,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
@@ -872,18 +872,10 @@ public class Hero extends Char {
 			}
 			break;
 		case BATTLEMAGE:
-			if (wep instanceof Wand) {
-				Wand wand = (Wand)wep;
-				if (wand.curCharges < wand.maxCharges && damage > 0) {
-
-					wand.curCharges++;
-					if (Dungeon.quickslot.contains(wand)) {
-						QuickSlotButton.refresh();
-					}
-
-					ScrollOfRecharging.charge( this );
-				}
-				damage += wand.curCharges;
+			if (wep instanceof Wand || wep instanceof MagesStaff) {
+				//gives wands 50% charge
+				Buff.affect( this, ScrollOfRecharging.Recharging.class, 2f);
+				ScrollOfRecharging.charge( this );
 			}
             break;
 		case SNIPER:

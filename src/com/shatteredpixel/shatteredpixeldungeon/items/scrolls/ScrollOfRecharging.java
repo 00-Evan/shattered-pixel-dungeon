@@ -17,6 +17,9 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -27,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class ScrollOfRecharging extends Scroll {
 
+	public static final float BUFF_DURATION = 30f;
+
 	{
 		name = "Scroll of Recharging";
 		initials = "Re";
@@ -34,19 +39,15 @@ public class ScrollOfRecharging extends Scroll {
 	
 	@Override
 	protected void doRead() {
-		
-		int count = curUser.belongings.charge( true );		
-		charge( curUser );
+
+		Buff.affect(curUser, Recharging.class, BUFF_DURATION);
+		charge(curUser);
 		
 		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();
-		
-		if (count > 0) {
-			GLog.i( "a surge of energy courses through your pack, recharging your wand" + (count > 1 ? "s" : "") );
-			SpellSprite.show( curUser, SpellSprite.CHARGE );
-		} else {
-			GLog.i( "a surge of energy courses through your pack, but nothing happens" );
-		}
+
+		GLog.i( "a surge of energy courses through your body, invigorating your wands.");
+		SpellSprite.show( curUser, SpellSprite.CHARGE );
 		setKnown();
 		
 		curUser.spendAndNext( TIME_TO_READ );
@@ -56,7 +57,7 @@ public class ScrollOfRecharging extends Scroll {
 	public String desc() {
 		return
 			"The raw magical power bound up in this parchment will, when released, " +
-			"recharge all of the reader's wands to full power.";
+			"charge up all the users wands over time.";
 	}
 	
 	public static void charge( Hero hero ) {
@@ -66,5 +67,29 @@ public class ScrollOfRecharging extends Scroll {
 	@Override
 	public int price() {
 		return isKnown() ? 40 * quantity : super.price();
+	}
+
+
+	public static class Recharging extends FlavourBuff {
+
+		@Override
+		public int icon() {
+			return BuffIndicator.CHARGE;
+		}
+
+		@Override
+		public String toString() {
+			return "Recharging";
+		}
+
+		//want to process partial turns for this buff, and not count it when it's expiring.
+		//firstly, if this buff has half a turn left, should give out half the benefit.
+		//secondly, recall that buffs execute in random order, so this can cause a problem where we can't simply check
+		//if this buff is still attached, must instead directly check its remaining time, and act accordingly.
+		//otherwise this causes inconsistent behaviour where this may detach before, or after, a wand charger acts.
+		public float remainder() {
+			return Math.min( 1f, this.cooldown());
+		}
+
 	}
 }
