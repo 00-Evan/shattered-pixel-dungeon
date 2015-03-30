@@ -4,6 +4,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -81,7 +82,8 @@ public class HornOfPlenty extends Artifact {
                             }
                             break;
                         case MAGE:
-                            hero.belongings.charge(false);
+                            //1 charge
+                            Buff.affect( hero, ScrollOfRecharging.Recharging.class, 4f );
                             ScrollOfRecharging.charge(hero);
                             break;
                         case ROGUE:

@@ -152,7 +152,8 @@ public class Blandfruit extends Food {
                         }
                         break;
                     case MAGE:
-                        hero.belongings.charge( false );
+                        //1 charge
+                        Buff.affect(hero, ScrollOfRecharging.Recharging.class, 4f);
                         ScrollOfRecharging.charge(hero);
                         break;
                     case ROGUE:

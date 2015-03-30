@@ -21,7 +21,6 @@ import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
@@ -47,8 +46,6 @@ public class LightningTrap {
 				if (!ch.isAlive()) {
 					Dungeon.fail( Utils.format( ResultDescriptions.TRAP, name ) );
 					GLog.n( "You were killed by a discharge of a lightning trap..." );
-				} else {
-					((Hero)ch).belongings.charge( false );
 				}
 			}
 			
