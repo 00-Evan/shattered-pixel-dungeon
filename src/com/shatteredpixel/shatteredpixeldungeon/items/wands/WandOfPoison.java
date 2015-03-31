@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -48,6 +49,11 @@ public class WandOfPoison extends Wand {
 			GLog.i( "nothing happened" );
 			
 		}
+	}
+
+	@Override
+	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+
 	}
 
 	@Override

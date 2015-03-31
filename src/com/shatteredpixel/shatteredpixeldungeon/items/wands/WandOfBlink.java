@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -50,7 +51,12 @@ public class WandOfBlink extends Wand {
 		appear( Dungeon.hero, bolt.collisionPos );
 		Dungeon.observe();
 	}
-	
+
+	@Override
+	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+
+	}
+
 	@Override
 	protected void fx( Ballistica bolt, Callback callback ) {
 		MagicMissile.whiteLight( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );

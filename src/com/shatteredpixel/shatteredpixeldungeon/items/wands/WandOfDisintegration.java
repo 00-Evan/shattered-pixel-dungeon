@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.DeathRay;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -92,7 +94,14 @@ public class WandOfDisintegration extends Wand {
 			ch.sprite.flash();
 		}
 	}
-	
+
+	@Override
+	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+		//less likely Grim proc
+		if (Random.Int(10) == 0)
+			new Death().proc( staff, attacker, defender, damage);
+	}
+
 	private int distance() {
 		return level() + 4;
 	}

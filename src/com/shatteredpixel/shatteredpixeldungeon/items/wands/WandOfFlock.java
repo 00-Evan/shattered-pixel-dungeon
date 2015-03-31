@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -96,7 +97,12 @@ public class WandOfFlock extends Wand {
 			} while (dist < n);
 		}
 	}
-	
+
+	@Override
+	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+
+	}
+
 	protected void fx( int cell, Callback callback ) {
 		MagicMissile.wool( curUser.sprite.parent, curUser.pos, cell, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );

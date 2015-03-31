@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -124,6 +125,8 @@ public abstract class Wand extends KindOfWeapon {
 	}
 	
 	protected abstract void onZap( Ballistica attack );
+
+	public abstract void onHit( MagesStaff staff, Char attacker, Char defender, int damage);
 
 	@Override
 	public boolean collect( Bag container ) {

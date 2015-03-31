@@ -20,6 +20,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shock;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Camera;
@@ -57,7 +59,13 @@ public class WandOfLightning extends Wand {
 			GLog.n( "You killed yourself with your own Wand of Lightning..." );
 		}
 	}
-	
+
+	@Override
+	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+		//acts like shocking enchantment
+		new Shock().proc(staff, attacker, defender, damage);
+	}
+
 	private void hit( Char ch, int damage ) {
 		
 		if (damage < 1) {
@@ -96,7 +104,7 @@ public class WandOfLightning extends Wand {
 		points[nPoints++] = Dungeon.hero.pos;
 
 		int cell = bolt.collisionPos;
-		
+
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
 			

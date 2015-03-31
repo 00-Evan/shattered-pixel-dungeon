@@ -123,6 +123,10 @@ public class Sungrass extends Plant {
                 detach();
             return damage;
         }
+
+		public void boost( int amount ){
+			level += amount;
+		}
 		
 		@Override
 		public int icon() {

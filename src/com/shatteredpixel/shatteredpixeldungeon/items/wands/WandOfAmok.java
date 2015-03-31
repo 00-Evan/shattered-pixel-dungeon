@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -52,6 +53,11 @@ public class WandOfAmok extends Wand {
 			GLog.i( "nothing happened" );
 			
 		}
+	}
+
+	@Override
+	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+
 	}
 
 	@Override

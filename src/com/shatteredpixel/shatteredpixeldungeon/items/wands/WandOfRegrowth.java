@@ -17,6 +17,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -30,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 public class WandOfRegrowth extends Wand {
 
@@ -69,6 +74,21 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	@Override
+	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+		//like vampiric enchantment, except with herbal healing buff
+
+		int level = Math.max( 0, 0/*staff level*/ );
+
+		// lvl 0 - 33%
+		// lvl 1 - 43%
+		// lvl 2 - 50%
+		int maxValue = damage * (level + 2) / (level + 6);
+		int effValue = Math.min( Random.IntRange(0, maxValue), attacker.HT - attacker.HP );
+
+		Buff.affect(attacker, Sungrass.Health.class).boost( effValue );
+
+	}
+
 	protected void fx( Ballistica bolt, Callback callback ) {
 		MagicMissile.foliage( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );

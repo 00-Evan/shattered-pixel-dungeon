@@ -17,6 +17,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -130,7 +132,12 @@ public class WandOfTelekinesis extends Wand {
 		}
 		*/
 	}
-	
+
+	@Override
+	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+
+	}
+
 	private void transport( Heap heap ) {
 		Item item = heap.pickUp();
 		if (item.doPickUp( curUser )) {
