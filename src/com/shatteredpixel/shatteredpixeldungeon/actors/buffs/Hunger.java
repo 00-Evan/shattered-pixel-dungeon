@@ -59,6 +59,12 @@ public class Hunger extends Buff implements Hero.Doom {
 	
 	@Override
 	public boolean act() {
+
+		if (Dungeon.level.locked){
+			spend(STEP);
+			return true;
+		}
+
 		if (target.isAlive()) {
 			
 			Hero hero = (Hero)target;
@@ -130,7 +136,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	
 	@Override
 	public int icon() {
-		if (level < HUNGRY) {
+		if (Dungeon.level.locked || level < HUNGRY) {
 			return BuffIndicator.NONE;
 		} else if (level < STARVING) {
 			return BuffIndicator.HUNGER;
@@ -141,7 +147,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	
 	@Override
 	public String toString() {
-		if (level < STARVING) {
+		if (Dungeon.level.locked || level < STARVING) {
 			return "Hungry";
 		} else {
 			return "Starving";
