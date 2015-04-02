@@ -182,11 +182,6 @@ public abstract class Level implements Bundlable {
 		mapped = new boolean[LENGTH];
 		Arrays.fill( mapped, false );
 		
-		mobs = new HashSet<Mob>();
-		heaps = new SparseArray<Heap>();
-		blobs = new HashMap<Class<? extends Blob>,Blob>();
-		plants = new SparseArray<Plant>();
-		
 		if (!Dungeon.bossLevel()) {
 			addItemToSpawn( Generator.random( Generator.Category.FOOD ) );
 			if (Dungeon.posNeeded()) {
@@ -256,6 +251,11 @@ public abstract class Level implements Bundlable {
 			
 			pitRoomNeeded = pitNeeded;
 			weakFloorCreated = false;
+
+			mobs = new HashSet<Mob>();
+			heaps = new SparseArray<Heap>();
+			blobs = new HashMap<Class<? extends Blob>,Blob>();
+			plants = new SparseArray<Plant>();
 			
 		} while (!build());
 		decorate();

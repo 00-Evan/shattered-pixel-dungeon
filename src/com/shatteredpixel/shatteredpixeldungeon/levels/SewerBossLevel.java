@@ -70,7 +70,7 @@ public class SewerBossLevel extends RegularLevel {
                 return false;
             }
             roomEntrance = Random.element( rooms );
-        } while (roomEntrance.width() < 4 || roomEntrance.height() < 4 || roomEntrance.top == 0 || roomEntrance.top >= 12);
+        } while (roomEntrance.width() != 8 || roomEntrance.height() < 5 || roomEntrance.top == 0 || roomEntrance.top >= 8);
 
         roomEntrance.type = Type.ENTRANCE;
         roomExit = roomEntrance;
@@ -92,7 +92,7 @@ public class SewerBossLevel extends RegularLevel {
                     curRoom = Random.element(rooms);
                     Graph.buildDistanceMap(rooms, curRoom);
                     distance = lastRoom.distance();
-                } while (curRoom.type != Type.NULL || distance != 2 || !curRoom.intersect(roomEntrance).isEmpty());
+                } while (curRoom.type != Type.NULL || distance != 3 || curRoom.neigbours.contains(roomEntrance));
 
                 curRoom.type = Type.STANDARD;
 
@@ -152,18 +152,22 @@ public class SewerBossLevel extends RegularLevel {
 			}
 		}
 
-        //make sure nothing is connecting at the top of the entrance, this would be bad.
-        for (Room r : roomEntrance.neigbours){
-            if (r.bottom == roomEntrance.top && r.type != Type.NULL)
-                return false;
-        }
-		
 		paint();
 
-        //TODO: not handling this through a painter is kinda iffy, separate into a painter if you use it again.
         //sticks the exit in the room entrance.
         exit = roomEntrance.top * Level.WIDTH + (roomEntrance.left + roomEntrance.right) / 2;
         map[exit] = Terrain.LOCKED_EXIT;
+
+		//make sure the exit is only visible in the entrance room.
+		int count = 0;
+		for (int i : NEIGHBOURS8){
+			//exit must have exactly 3 non-wall tiles around it.
+			if (map[exit+i] != Terrain.WALL)
+				count++;
+		}
+		if (count > 3)
+			return false;
+
 		
 		paintWater();
 		paintGrass();
@@ -184,7 +188,7 @@ public class SewerBossLevel extends RegularLevel {
 		int start = roomExit.top * WIDTH + roomExit.left + 1;
 		int end = start + roomExit.width() - 1;
 		for (int i=start; i < end; i++) {
-			if (i != exit) {
+			if (i != exit && map[i] == Terrain.WALL) {
 				map[i] = Terrain.WALL_DECO;
 				map[i + WIDTH] = Terrain.WATER;
 			} else {
