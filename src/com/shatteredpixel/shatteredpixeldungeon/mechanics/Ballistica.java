@@ -135,7 +135,7 @@ public class Ballistica {
 	//if there is an error, returns an empty arraylist instead.
 	public List<Integer> subPath(int start, int end){
 		try {
-			end = Math.max( end, path.size()-1);
+			end = Math.min( end, path.size()-1);
 			return path.subList(start, end+1);
 		} catch (Exception e){
 			return new ArrayList<>();
