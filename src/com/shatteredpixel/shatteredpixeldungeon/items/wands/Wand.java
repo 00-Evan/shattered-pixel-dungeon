@@ -46,7 +46,7 @@ import com.watabou.utils.Random;
 
 public abstract class Wand extends KindOfWeapon {
 
-	private static final int USAGES_TO_KNOW    = 40;
+	private static final int USAGES_TO_KNOW    = 10;
 
 	public static final String AC_ZAP	= "ZAP";
 	
@@ -245,7 +245,7 @@ public abstract class Wand extends KindOfWeapon {
 	}
 	
 	public void updateLevel() {
-		maxCharges = Math.min( initialCharges() + level, 9 );
+		maxCharges = Math.min( initialCharges() + level, 10 );
 		curCharges = Math.min( curCharges, maxCharges );
 		
 		calculateDamage();
