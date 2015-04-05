@@ -186,7 +186,7 @@ public class Goo extends Mob {
 	
 	@Override
 	public void move( int step ) {
-		((SewerBossLevel)Dungeon.level).seal();
+		Dungeon.level.seal();
 		super.move( step );
 	}
 	
@@ -195,7 +195,7 @@ public class Goo extends Mob {
 		
 		super.die( cause );
 		
-		((SewerBossLevel)Dungeon.level).unseal();
+		Dungeon.level.unseal();
 		
 		GameScene.bossSlain();
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();

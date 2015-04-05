@@ -167,7 +167,7 @@ public class HallsBossLevel extends Level {
 		if (!enteredArena && hero == Dungeon.hero && cell != entrance) {
 			
 			enteredArena = true;
-            locked = true;
+			seal();
 			
 			for (int i=ROOM_LEFT-1; i <= ROOM_RIGHT + 1; i++) {
 				doMagic( (ROOM_TOP - 1) * WIDTH + i );
@@ -206,7 +206,7 @@ public class HallsBossLevel extends Level {
 		
 		if (!keyDropped && item instanceof SkeletonKey) {
 			keyDropped = true;
-            locked = false;
+            unseal();
 			
 			entrance = stairs;
 			set( entrance, Terrain.ENTRANCE );

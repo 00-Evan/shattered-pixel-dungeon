@@ -136,7 +136,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	
 	@Override
 	public int icon() {
-		if (Dungeon.level.locked || level < HUNGRY) {
+		if (level < HUNGRY) {
 			return BuffIndicator.NONE;
 		} else if (level < STARVING) {
 			return BuffIndicator.HUNGER;
@@ -147,7 +147,7 @@ public class Hunger extends Buff implements Hero.Doom {
 	
 	@Override
 	public String toString() {
-		if (Dungeon.level.locked || level < STARVING) {
+		if (level < STARVING) {
 			return "Hungry";
 		} else {
 			return "Starving";
