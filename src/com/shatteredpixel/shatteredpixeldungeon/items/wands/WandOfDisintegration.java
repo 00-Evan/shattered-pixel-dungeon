@@ -42,7 +42,7 @@ public class WandOfDisintegration extends Wand {
 		name = "Wand of Disintegration";
 		image = ItemSpriteSheet.WAND_DISINTEGRATION;
 
-		collisionProperties = Ballistica.STOP_TERRAIN;
+		collisionProperties = Ballistica.WONT_STOP;
 	}
 	
 	@Override
@@ -55,28 +55,31 @@ public class WandOfDisintegration extends Wand {
 		int maxDistance = Math.min(distance(), beam.dist);
 		
 		ArrayList<Char> chars = new ArrayList<Char>();
-		
+
+		int terrainPassed = 2, terrainBonus = 0;
 		for (int c : beam.subPath(1, maxDistance)) {
 			
 			Char ch;
 			if ((ch = Actor.findChar( c )) != null) {
+
+				//we don't want to count passed terrain after the last enemy hit. That would be a lot of bonus levels.
+				//terrainPassed starts at 2, equivalent of rounding up when /3 for integer arithmetic.
+				terrainBonus += terrainPassed/3;
+				terrainPassed = 1;
+
 				chars.add( ch );
 			}
-			
-			int terr = Dungeon.level.map[c];
-			if (terr == Terrain.DOOR || terr == Terrain.BARRICADE) {
+
+			if (Level.flamable[c]) {
 				
 				Level.set( c, Terrain.EMBERS );
 				GameScene.updateMap( c );
 				terrainAffected = true;
 				
-			} else if (terr == Terrain.HIGH_GRASS) {
-				
-				Level.set( c, Terrain.GRASS );
-				GameScene.updateMap( c );
-				terrainAffected = true;
-				
 			}
+
+			if (!Level.passable[c])
+				terrainPassed++;
 			
 			CellEmitter.center( c ).burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
 		}
@@ -85,7 +88,7 @@ public class WandOfDisintegration extends Wand {
 			Dungeon.observe();
 		}
 		
-		int lvl = level + chars.size();
+		int lvl = level + chars.size() + terrainBonus;
 		int dmgMin = lvl;
 		int dmgMax = 8 + lvl * lvl / 3;
 		for (Char ch : chars) {
@@ -98,12 +101,12 @@ public class WandOfDisintegration extends Wand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//less likely Grim proc
-		if (Random.Int(10) == 0)
+		if (Random.Int(3) == 0)
 			new Death().proc( staff, attacker, defender, damage);
 	}
 
 	private int distance() {
-		return level() + 4;
+		return level()*2 + 4;
 	}
 	
 	@Override
@@ -117,7 +120,9 @@ public class WandOfDisintegration extends Wand {
 	@Override
 	public String desc() {
 		return
-			"This wand emits a beam of destructive energy, which pierces all creatures in its way. " +
-			"The more targets it hits, the more damage it inflicts to each of them.";
+			"This wand is made from a solid smooth chunk of obsidian, with a deep purple light running up its side, " +
+			"ending at the tip. It glows with destructive energy, waiting to shoot forward.\n\n" +
+			"This wand shoots a beam that pierces any obstacle, and will go farther the more it is upgraded.\n\n" +
+			"This wand deals bonus damage the more enemies and terrain it penetrates.";
 	}
 }
