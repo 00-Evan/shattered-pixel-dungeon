@@ -74,7 +74,7 @@ public class ScrollOfRecharging extends Scroll {
 
 		@Override
 		public int icon() {
-			return BuffIndicator.CHARGE;
+			return BuffIndicator.RECHARGING;
 		}
 
 		@Override
@@ -88,7 +88,7 @@ public class ScrollOfRecharging extends Scroll {
 		//if this buff is still attached, must instead directly check its remaining time, and act accordingly.
 		//otherwise this causes inconsistent behaviour where this may detach before, or after, a wand charger acts.
 		public float remainder() {
-			return Math.min( 1f, this.cooldown());
+			return Math.min(1f, this.cooldown());
 		}
 
 	}
