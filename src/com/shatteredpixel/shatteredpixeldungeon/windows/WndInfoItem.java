@@ -18,6 +18,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
@@ -90,7 +92,11 @@ public class WndInfoItem extends Window {
 				title = TTL_CRYSTAL_CHEST;
                 if (heap.peek() instanceof Artifact)
                     info = Utils.format( TXT_INSIDE, "an artifact" );
-                else
+                else if (heap.peek() instanceof Wand)
+	                info = Utils.format( TXT_INSIDE, "a wand" );
+                else if (heap.peek() instanceof Ring)
+	                info = Utils.format( TXT_INSIDE, "a ring" );
+				else
                     info = Utils.format( TXT_INSIDE, Utils.indefinite( heap.peek().name() ) );
 			} else {
 				title = TTL_LOCKED_CHEST;
