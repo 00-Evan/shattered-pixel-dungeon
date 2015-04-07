@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.ui.Button;
 
 public class WndHero extends WndTabbed {
 	
@@ -180,32 +181,55 @@ public class WndHero extends WndTabbed {
 		
 		public BuffsTab() {
 			for (Buff buff : Dungeon.hero.buffs()) {
-				buffSlot( buff );
-			}
-		}
-		
-		private void buffSlot( Buff buff ) {
-			
-			int index = buff.icon();
-			
-			if (index != BuffIndicator.NONE) {
-				
-				Image icon = new Image( icons );
-				icon.frame( film.get( index ) );
-				icon.y = pos;
-				add( icon );
-				
-				BitmapText txt = PixelScene.createText( buff.toString(), 8 );
-				txt.x = icon.width + GAP;
-				txt.y = pos + (int)(icon.height - txt.baseLine()) / 2;
-				add( txt );
-				
-				pos += GAP + icon.height;
+				if (buff.icon() != BuffIndicator.NONE) {
+					BuffSlot slot = new BuffSlot(buff);
+					slot.setRect(0, pos, WIDTH, slot.icon.height());
+					add(slot);
+					pos += GAP + slot.height();
+				}
 			}
 		}
 		
 		public float height() {
 			return pos;
+		}
+
+		private class BuffSlot extends Button{
+
+			private Buff buff;
+
+			Image icon;
+			BitmapText txt;
+
+			public BuffSlot( Buff buff ){
+				super();
+				this.buff = buff;
+				int index = buff.icon();
+
+				icon = new Image( icons );
+				icon.frame( film.get( index ) );
+				icon.y = this.y;
+				add( icon );
+
+				txt = PixelScene.createText( buff.toString(), 8 );
+				txt.x = icon.width + GAP;
+				txt.y = this.y + (int)(icon.height - txt.baseLine()) / 2;
+				add( txt );
+
+			}
+
+			@Override
+			protected void layout() {
+				super.layout();
+				icon.y = this.y;
+				txt.x = icon.width + GAP;
+				txt.y = pos + (int)(icon.height - txt.baseLine()) / 2;
+			}
+
+			@Override
+			protected void onClick() {
+				GameScene.show( new WndInfoBuff( buff ));
+			}
 		}
 	}
 }
