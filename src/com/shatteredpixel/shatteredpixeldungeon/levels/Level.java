@@ -91,15 +91,15 @@ public abstract class Level implements Bundlable {
 		WATER,
 		GRASS,
 		DARK
-	};
+	}
 	
 	public static final int WIDTH = 32;
 	public static final int HEIGHT = 32;
 	public static final int LENGTH = WIDTH * HEIGHT;
 	
-	public static final int[] NEIGHBOURS4 = {-WIDTH, +1, +WIDTH, -1}; 
-	public static final int[] NEIGHBOURS8 = {+1, -1, +WIDTH, -WIDTH, +1+WIDTH, +1-WIDTH, -1+WIDTH, -1-WIDTH};
-	public static final int[] NEIGHBOURS9 = {0, +1, -1, +WIDTH, -WIDTH, +1+WIDTH, +1-WIDTH, -1+WIDTH, -1-WIDTH};
+	public static final int[] NEIGHBOURS4 = {-WIDTH, +1, +WIDTH, -1};
+	public static final int[] NEIGHBOURS8 = {-WIDTH, +1-WIDTH, +1, +1+WIDTH, +WIDTH, -1+WIDTH, -1, -1-WIDTH};
+	public static final int[] NEIGHBOURS9 = {0, -WIDTH, +1-WIDTH, +1, +1+WIDTH, +WIDTH, -1+WIDTH, -1, -1-WIDTH};
 
     //make sure to check insideMap() when using these, as there's a risk something may be outside the map
     public static final int[] NEIGHBOURS8DIST2 = {+2+2*WIDTH, +1+2*WIDTH, 2*WIDTH, -1+2*WIDTH, -2+2*WIDTH,
