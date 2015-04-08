@@ -117,7 +117,7 @@ public class BuffIndicator extends Component {
 		for (Buff buff : ch.buffs()) {
 			if (buff.icon() != NONE) {
 				BuffIcon icon = new BuffIcon( buff );
-				icon.setRect(x + members.size() * (SIZE + 2), y, 7, 7);
+				icon.setRect(x + members.size() * (SIZE + 2), y, 9, 12);
 				add(icon);
 				newIcons.put( buff.icon(), icon );
 			}
@@ -159,8 +159,8 @@ public class BuffIndicator extends Component {
 		@Override
 		protected void layout() {
 			super.layout();
-			icon.x = this.x;
-			icon.y = this.y;
+			icon.x = this.x+1;
+			icon.y = this.y+2;
 		}
 
 		@Override

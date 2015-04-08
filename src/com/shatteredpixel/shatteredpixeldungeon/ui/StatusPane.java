@@ -68,7 +68,7 @@ public class StatusPane extends Component {
         shield = new NinePatch( Assets.STATUS, 80, 0, 30   + 18, 0 );
         add( shield );
 
-        add( new TouchArea( 0, 1, 30, 30 ) {
+        add( new TouchArea( 0, 1, 31, 31 ) {
             @Override
             protected void onClick( Touch touch ) {
                 Image sprite = Dungeon.hero.sprite;
@@ -145,7 +145,7 @@ public class StatusPane extends Component {
 
         danger.setPos( width - danger.width(), 18 );
 
-        buffs.setPos( 32, 11 );
+        buffs.setPos( 31, 9 );
 
         btnMenu.setPos( width - btnMenu.width(), 1 );
     }
