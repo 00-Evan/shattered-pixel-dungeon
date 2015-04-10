@@ -26,24 +26,28 @@ public class Effects {
 		RIPPLE,
 		LIGHTNING,
 		WOUND,
-		RAY
+		DEATH_RAY,
+		LIGHT_RAY
 	};
 	
 	public static Image get( Type type ) {
 		Image icon = new Image( Assets.EFFECTS );
 		switch (type) {
-		case RIPPLE:
-			icon.frame( icon.texture.uvRect( 0, 0, 16, 16 ) );
-			break;
-		case LIGHTNING:
-			icon.frame( icon.texture.uvRect( 16, 0, 32, 8 ) );
-			break;
-		case WOUND:
-			icon.frame( icon.texture.uvRect( 16, 8, 32, 16 ) );
-			break;
-		case RAY:
-			icon.frame( icon.texture.uvRect( 16, 16, 32, 24 ) );
-			break;
+			case RIPPLE:
+				icon.frame(icon.texture.uvRect(0, 0, 16, 16));
+				break;
+			case LIGHTNING:
+				icon.frame(icon.texture.uvRect(16, 0, 32, 8));
+				break;
+			case WOUND:
+				icon.frame(icon.texture.uvRect(16, 8, 32, 16));
+				break;
+			case DEATH_RAY:
+				icon.frame(icon.texture.uvRect(16, 16, 32, 24));
+				break;
+			case LIGHT_RAY:
+				icon.frame(icon.texture.uvRect(16, 23, 32, 31));
+				break;
 		}
 		return icon;
 	}

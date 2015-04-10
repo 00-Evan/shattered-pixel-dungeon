@@ -27,16 +27,16 @@ import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.utils.PointF;
 
-public class DeathRay extends Image {
+public class Beam extends Image {
 	
 	private static final double A = 180 / Math.PI;
 	
-	private static final float DURATION	= 0.5f;
+	private  float duration;
 	
 	private float timeLeft;
-	
-	public DeathRay( PointF s, PointF e ) {
-		super( Effects.get( Effects.Type.RAY ) );
+
+	private Beam(PointF s, PointF e, Effects.Type asset, float duration) {
+		super( Effects.get( asset ) );
 		
 		origin.set( 0, height / 2 );
 		
@@ -50,14 +50,26 @@ public class DeathRay extends Image {
 		
 		Sample.INSTANCE.play( Assets.SND_RAY );
 		
-		timeLeft = DURATION;
+		timeLeft = this.duration = duration;
+	}
+
+	public static class DeathRay extends Beam{
+		public DeathRay(PointF s, PointF e){
+			super(s, e, Effects.Type.DEATH_RAY, 0.5f);
+		}
+	}
+
+	public static class LightRay extends Beam{
+		public LightRay(PointF s, PointF e){
+			super(s, e, Effects.Type.LIGHT_RAY, 1f);
+		}
 	}
 	
 	@Override
 	public void update() {
 		super.update();
 		
-		float p = timeLeft / DURATION;
+		float p = timeLeft / duration;
 		alpha( p );
 		scale.set( scale.x, p );
 		
