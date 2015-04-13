@@ -55,6 +55,11 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.LloydsBeacon" );
 
+		// 0.3.0
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPoison" );
+
 
 	}
 	

@@ -21,13 +21,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-
-import java.util.HashSet;
 
 public class GasesImmunity extends FlavourBuff {
 	
-	public static final float DURATION	= 10f;
+	public static final float DURATION	= 15f;
 	
 	@Override
 	public int icon() {
@@ -44,5 +43,6 @@ public class GasesImmunity extends FlavourBuff {
         immunities.add( ToxicGas.class );
         immunities.add( ConfusionGas.class );
         immunities.add( StenchGas.class );
+		immunities.add( VenomGas.class );
 	}
 }

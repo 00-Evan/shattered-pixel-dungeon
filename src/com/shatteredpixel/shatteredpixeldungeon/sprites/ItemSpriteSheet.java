@@ -118,7 +118,7 @@ public class ItemSpriteSheet {
     public static final int WAND_LIGHTNING		= ROW6+3;
     public static final int WAND_DISINTEGRATION	= ROW6+4;
     public static final int WAND_PRISMATIC_LIGHT= ROW6+5;
-    public static final int WAND_ACID			= ROW6+6;
+    public static final int WAND_VENOM			= ROW6+6;
     public static final int WAND_CORRUPTION		= ROW6+7;
     public static final int WAND_WARDING		= ROW6+8;
     public static final int WAND_REGROWTH		= ROW6+9;

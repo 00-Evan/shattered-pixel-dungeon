@@ -34,7 +34,7 @@ public class WandOfPoison extends Wand {
 
 	{
 		name = "Wand of Poison";
-		image = ItemSpriteSheet.WAND_ACID;
+		image = ItemSpriteSheet.WAND_VENOM;
 	}
 	
 	@Override
