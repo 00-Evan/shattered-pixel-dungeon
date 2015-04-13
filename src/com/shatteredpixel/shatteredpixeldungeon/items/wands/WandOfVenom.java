@@ -47,9 +47,9 @@ public class WandOfVenom extends Wand {
     @Override
     public String desc() {
         return
-            "This wand has a purple body which opens to a shining green gem. " +
+            "This wand has a purple body which opens to a brilliant green gem. " +
             "A small amount of foul smelling gas leaks from the gem.\n\n" +
             "This wand shoots a bolt which explodes into a cloud of vile venomous gas at a targeted location. " +
-            "Anything caught inside this cloud will constantly take damage, increasing with time.";
+            "Anything caught inside this cloud will take continual damage, increasing with time.";
     }
 }
