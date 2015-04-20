@@ -18,15 +18,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -113,20 +114,41 @@ public class Hunger extends Buff implements Hero.Doom {
 		
 		return true;
 	}
-	
+
 	public void satisfy( float energy ) {
+		if (((Hero) target).subClass == HeroSubClass.WARLOCK)
+			return;
+
 		Artifact.ArtifactBuff buff = target.buff( HornOfPlenty.hornRecharge.class );
 		if (buff != null && buff.isCursed()){
-			energy = Math.round(energy*0.67f);
+			energy *= 0.67f;
 			GLog.n("The cursed horn steals some of the food energy as you eat.");
 		}
+
+		reduceHunger( energy );
+	}
+
+	public void consumeSoul( float energy ){
+
+		if (level >= STARVING)
+			energy *= 1.5f;
+		else if (level < HUNGRY)
+			energy *= 0.75f;
+
+		reduceHunger( energy );
+	}
+
+	private void reduceHunger( float energy ) {
+		if (Dungeon.isChallenged(Challenges.NO_FOOD))
+			return;
+
 		level -= energy;
 		if (level < 0) {
 			level = 0;
 		} else if (level > STARVING) {
 			level = STARVING;
 		}
-		
+
 		BuffIndicator.refreshHero();
 	}
 	

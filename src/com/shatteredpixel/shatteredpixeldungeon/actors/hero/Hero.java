@@ -121,10 +121,13 @@ public class Hero extends Char {
 	
 	private static final String TXT_LEAVE = "One does not simply leave Pixel Dungeon.";
 	
+	public static final int MAX_LEVEL = 30;
 	private static final String TXT_LEVEL_UP = "level up!";
 	private static final String TXT_NEW_LEVEL = 
 		"Welcome to level %d! Now you are healthier and more focused. " +
 		"It's easier for you to hit enemies and dodge their attacks.";
+	private static final String TXT_LEVEL_CAP =
+		"You can't gain any more levels, but your experiences still give you a burst of energy!";
 	
 	public static final String TXT_YOU_NOW_HAVE	= "You now have %s";
 	
@@ -1090,22 +1093,43 @@ public class Hero extends Char {
 	public void earnExp( int exp ) {
 		
 		this.exp += exp;
+
+		if (subClass == HeroSubClass.WARLOCK) {
+
+			float percent = exp/(float)maxExp();
+			int healed = Math.round(Math.min(HT - HP, HT * percent * 0.3f));
+			if (healed > 0) {
+				HP += healed;
+				sprite.emitter().burst( Speck.factory( Speck.HEALING ), (int)(percent*10) );
+			}
+
+			(buff( Hunger.class )).consumeSoul( Hunger.STARVING*percent );
+		}
 		
 		boolean levelUp = false;
 		while (this.exp >= maxExp()) {
 			this.exp -= maxExp();
-			lvl++;
-			
-			HT += 5;
-			HP += 5;			
-			attackSkill++;
-			defenseSkill++;
+			if (lvl < MAX_LEVEL) {
+				lvl++;
+				levelUp = true;
+
+				HT += 5;
+				HP += 5;
+				attackSkill++;
+				defenseSkill++;
+
+			} else {
+				//TODO: add blessed buff here
+
+				this.exp = 0;
+
+				GLog.p( "You cannot grow stronger, but your experiences do give you a surge of power!" );
+				//TODO: holy SFX
+			}
 			
 			if (lvl < 10) {
 				updateAwareness();
 			}
-			
-			levelUp = true;
 		}
 		
 		if (levelUp) {
@@ -1115,17 +1139,6 @@ public class Hero extends Char {
 			Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			
 			Badges.validateLevelReached();
-		}
-		
-		if (subClass == HeroSubClass.WARLOCK) {
-			
-			int value = Math.min( HT - HP, 1 + (Dungeon.depth - 1) / 5 );
-			if (value > 0) {
-				HP += value;
-				sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-			}
-			
-			((Hunger)buff( Hunger.class )).satisfy( 10 );
 		}
 	}
 	
