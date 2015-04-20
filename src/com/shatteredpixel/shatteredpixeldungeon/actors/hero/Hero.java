@@ -632,12 +632,6 @@ public class Hero extends Char {
 						} else {
 							GLog.i( TXT_YOU_NOW_HAVE, item.name() );
 						}
-
-                        //Alright, if anyone complains about not knowing the vial doesn't revive
-                        //after this... I'm done, I'm just done.
-                        if (item instanceof DewVial) {
-                            GLog.w("Its revival power seems to have faded.");
-                        }
 					}
 					
 					if (!heap.isEmpty()) {
