@@ -54,10 +54,10 @@ public abstract class Wand extends KindOfWeapon {
 	private static final String TXT_DAMAGE	= "When this wand is used as a melee weapon, its average damage is %d points per hit.";
 	private static final String TXT_WEAPON	= "You can use this wand as a melee weapon.";
 			
-	private static final String TXT_FIZZLES		= "your wand fizzles; it must be out of charges for now";
+	private static final String TXT_FIZZLES		= "your wand fizzles; it must not have enough charge.";
 	private static final String TXT_SELF_TARGET	= "You can't target yourself";
 
-	private static final String TXT_IDENTIFY    = "You are now familiar enough with your %s.";
+	private static final String TXT_IDENTIFY    = "You are now familiar with your %s.";
 
 	private static final float TIME_TO_ZAP	= 1f;
 	
@@ -254,6 +254,10 @@ public abstract class Wand extends KindOfWeapon {
 	protected int initialCharges() {
 		return 2;
 	}
+
+	protected int chargesPerCast() {
+		return 1;
+	}
 	
 	private void calculateDamage() {
 		int tier = 1 + level / 3;
@@ -267,8 +271,9 @@ public abstract class Wand extends KindOfWeapon {
 	}
 
 	protected void wandUsed() {
-		curCharges--;
-		if (!isIdentified() && --usagesToKnow <= 0) {
+		usagesToKnow -= chargesPerCast();
+		curCharges -= chargesPerCast();
+		if (!isIdentified() && usagesToKnow <= 0) {
 			identify();
 			GLog.w( TXT_IDENTIFY, name() );
 		} else {
@@ -362,7 +367,7 @@ public abstract class Wand extends KindOfWeapon {
 				else
 					QuickSlotButton.target(Actor.findChar(cell));
 				
-				if (curWand.curCharges > 0) {
+				if (curWand.curCharges >= curWand.chargesPerCast()) {
 					
 					curUser.busy();
 
@@ -379,9 +384,7 @@ public abstract class Wand extends KindOfWeapon {
 					
 					curUser.spendAndNext( TIME_TO_ZAP );
 					GLog.w( TXT_FIZZLES );
-					curWand.levelKnown = true;
-					
-					curWand.updateQuickslot();
+
 				}
 				
 			}
