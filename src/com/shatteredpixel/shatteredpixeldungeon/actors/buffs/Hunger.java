@@ -34,30 +34,30 @@ import com.watabou.utils.Random;
 public class Hunger extends Buff implements Hero.Doom {
 
 	private static final float STEP	= 10f;
-	
+
 	public static final float HUNGRY	= 260f;
 	public static final float STARVING	= 360f;
-	
+
 	private static final String TXT_HUNGRY		= "You are hungry.";
 	private static final String TXT_STARVING	= "You are starving!";
 	private static final String TXT_DEATH		= "You starved to death...";
-	
+
 	private float level;
 
 	private static final String LEVEL	= "level";
-	
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEVEL, level );
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		level = bundle.getFloat( LEVEL );
 	}
-	
+
 	@Override
 	public boolean act() {
 
@@ -67,9 +67,9 @@ public class Hunger extends Buff implements Hero.Doom {
 		}
 
 		if (target.isAlive()) {
-			
+
 			Hero hero = (Hero)target;
-			
+
 			if (isStarving()) {
 
 				if (Random.Float() < 0.3f && (target.HP > 1 || !target.paralysed)) {
@@ -78,40 +78,40 @@ public class Hunger extends Buff implements Hero.Doom {
 
 				}
 			} else {
-				
+
 				float newLevel = level + STEP;
 				boolean statusUpdated = false;
 				if (newLevel >= STARVING) {
-					
+
 					GLog.n( TXT_STARVING );
 					hero.damage( 1, this );
 					statusUpdated = true;
-					
+
 					hero.interrupt();
-					
+
 				} else if (newLevel >= HUNGRY && level < HUNGRY) {
-					
+
 					GLog.w( TXT_HUNGRY );
 					statusUpdated = true;
-					
+
 				}
 				level = newLevel;
-				
+
 				if (statusUpdated) {
 					BuffIndicator.refreshHero();
 				}
-				
+
 			}
-			
+
 			float step = ((Hero)target).heroClass == HeroClass.ROGUE ? STEP * 1.2f : STEP;
 			spend( target.buff( Shadows.class ) == null ? step : step * 1.5f );
-			
+
 		} else {
-			
+
 			diactivate();
-			
+
 		}
-		
+
 		return true;
 	}
 
@@ -125,7 +125,8 @@ public class Hunger extends Buff implements Hero.Doom {
 			GLog.n("The cursed horn steals some of the food energy as you eat.");
 		}
 
-		reduceHunger( energy );
+		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
+			reduceHunger( energy );
 	}
 
 	public void consumeSoul( float energy ){
@@ -135,12 +136,12 @@ public class Hunger extends Buff implements Hero.Doom {
 		else if (level < HUNGRY)
 			energy *= 0.75f;
 
-		reduceHunger( energy );
+		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
+			reduceHunger( energy );
 	}
 
-	private void reduceHunger( float energy ) {
-		if (Dungeon.isChallenged(Challenges.NO_FOOD))
-			return;
+	//directly interacts with hunger, no checks.
+	public void reduceHunger( float energy ) {
 
 		level -= energy;
 		if (level < 0) {
@@ -151,11 +152,11 @@ public class Hunger extends Buff implements Hero.Doom {
 
 		BuffIndicator.refreshHero();
 	}
-	
+
 	public boolean isStarving() {
 		return level >= STARVING;
 	}
-	
+
 	@Override
 	public int icon() {
 		if (level < HUNGRY) {
@@ -166,7 +167,7 @@ public class Hunger extends Buff implements Hero.Doom {
 			return BuffIndicator.STARVATION;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		if (level < STARVING) {
@@ -178,9 +179,9 @@ public class Hunger extends Buff implements Hero.Doom {
 
 	@Override
 	public void onDeath() {
-		
+
 		Badges.validateDeathFromHunger();
-		
+
 		Dungeon.fail( ResultDescriptions.HUNGER );
 		GLog.n( TXT_DEATH );
 	}

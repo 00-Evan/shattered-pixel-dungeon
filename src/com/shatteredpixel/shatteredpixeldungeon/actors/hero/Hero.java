@@ -798,7 +798,7 @@ public class Hero extends Char {
 				
 				Hunger hunger = buff( Hunger.class );
 				if (hunger != null && !hunger.isStarving()) {
-					hunger.satisfy( -Hunger.STARVING / 10 );
+					hunger.reduceHunger( -Hunger.STARVING / 10 );
 				}
 
 				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
