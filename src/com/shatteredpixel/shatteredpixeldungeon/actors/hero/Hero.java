@@ -1094,7 +1094,7 @@ public class Hero extends Char {
 			int healed = Math.round(Math.min(HT - HP, HT * percent * 0.3f));
 			if (healed > 0) {
 				HP += healed;
-				sprite.emitter().burst( Speck.factory( Speck.HEALING ), (int)(percent*10) );
+				sprite.emitter().burst( Speck.factory( Speck.HEALING ), percent > 0.3f ? 2 : 1 );
 			}
 
 			(buff( Hunger.class )).consumeSoul( Hunger.STARVING*percent );
