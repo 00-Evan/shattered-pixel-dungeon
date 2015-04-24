@@ -26,6 +26,7 @@ public class Effects {
 		RIPPLE,
 		LIGHTNING,
 		WOUND,
+		EXCLAMATION,
 		DEATH_RAY,
 		LIGHT_RAY
 	};
@@ -41,6 +42,9 @@ public class Effects {
 				break;
 			case WOUND:
 				icon.frame(icon.texture.uvRect(16, 8, 32, 16));
+				break;
+			case EXCLAMATION:
+				icon.frame(icon.texture.uvRect(0, 16, 6, 25));
 				break;
 			case DEATH_RAY:
 				icon.frame(icon.texture.uvRect(16, 16, 32, 24));
