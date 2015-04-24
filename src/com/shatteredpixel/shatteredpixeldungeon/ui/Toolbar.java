@@ -72,7 +72,7 @@ public class Toolbar extends Component {
 	@Override
 	protected void createChildren() {
 		
-		add( btnWait = new Tool( 0, 7, 20, 24 ) {
+		add( btnWait = new Tool( 0, 7, 20, 25 ) {
 			@Override
 			protected void onClick() {
 				Dungeon.hero.rest( false );
@@ -83,14 +83,14 @@ public class Toolbar extends Component {
 			};
 		} );
 		
-		add( btnSearch = new Tool( 20, 7, 20, 24 ) {
+		add( btnSearch = new Tool( 20, 7, 20, 25 ) {
 			@Override
 			protected void onClick() {
 				Dungeon.hero.search( true );
 			}
 		} );
 		
-		add( btnInfo = new Tool( 40, 7, 21, 24 ) {
+		add( btnInfo = new Tool( 40, 7, 21, 25 ) {
 			@Override
 			protected void onClick() {
 				GameScene.selectCell( informer );
@@ -106,7 +106,7 @@ public class Toolbar extends Component {
 		} );
 		*/
 		
-		add( btnInventory = new Tool( 82, 7, 23, 24 ) {
+		add( btnInventory = new Tool( 82, 7, 23, 25 ) {
 			private GoldIndicator gold;
 			@Override
 			protected void onClick() {
@@ -129,9 +129,9 @@ public class Toolbar extends Component {
 			};
 		} );
 		
-		add( btnQuick = new QuickslotTool( 105, 7, 22, 24, 0) );
+		add( btnQuick = new QuickslotTool( 105, 7, 22, 25, 0) );
 
-		btnQuick2 = new QuickslotTool( 105, 7, 22, 24, 1);
+		btnQuick2 = new QuickslotTool( 105, 7, 22, 25, 1);
 		
 		add( pickedUp = new PickedUpItem() );
 	}
