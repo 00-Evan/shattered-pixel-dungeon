@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
@@ -39,8 +40,8 @@ public class Slow extends Weapon.Enchantment {
 		
 		if (Random.Int( level + 4 ) >= 3) {
 			
-			Buff.prolong( defender, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow.class,
-				Random.Float( 1, 1.5f + level ) );
+			Buff.affect( defender, Chill.class,
+				Random.Float( 1, 3f ) );
 			
 			return true;
 		} else {

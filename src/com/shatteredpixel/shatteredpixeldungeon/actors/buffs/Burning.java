@@ -61,7 +61,7 @@ public class Burning extends Buff implements Hero.Doom {
 		super.restoreFromBundle(bundle);
 		left = bundle.getFloat( LEFT );
 	}
-	
+
 	@Override
 	public boolean act() {
 		
@@ -72,6 +72,7 @@ public class Burning extends Buff implements Hero.Doom {
 			}
 			
 			target.damage( Random.Int( 1, 5 ), this );
+			Buff.detach( target, Chill.class);
 			
 			if (target instanceof Hero) {
 

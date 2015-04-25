@@ -22,6 +22,7 @@ import java.util.HashSet;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
@@ -80,7 +81,7 @@ public class Elemental extends Mob {
 				HP++;
 				sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			}
-		} else if (buff instanceof Frost) {
+		} else if (buff instanceof Frost || buff instanceof Chill) {
                 if (Level.water[this.pos])
                     damage( Random.NormalIntRange( HT / 2, HT ), buff );
                 else

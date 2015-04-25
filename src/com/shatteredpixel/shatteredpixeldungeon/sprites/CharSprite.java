@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.Visual;
@@ -55,7 +56,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	private static final float FLASH_INTERVAL	= 0.05f;	
 	
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED
 	}
 	
 	protected Animation idle;
@@ -70,6 +71,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Tweener motion;
 	
 	protected Emitter burning;
+	protected Emitter chilled;
 	protected Emitter levitation;
 	
 	protected IceBlock iceBlock;
@@ -100,8 +102,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		place( ch.pos );
 		turnTo( ch.pos, Random.Int( Level.LENGTH ) );
 
-        if (parent != null)
-		    ch.updateSpriteState();
+		ch.updateSpriteState();
 	}
 	
 	public PointF worldToCamera( int cell ) {
@@ -277,6 +278,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		case ILLUMINATED:
 			GameScene.effect( halo = new TorchHalo( this ) );
 			break;
+		case CHILLED:
+			chilled = emitter();
+			chilled.pour(SnowParticle.FACTORY, 0.1f);
+			break;
 		}
 	}
 	
@@ -312,6 +317,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				halo.putOut();
 			}
 			break;
+		case CHILLED:
+			if (chilled != null){
+				chilled.on = false;
+				chilled = null;
+			}
 		}
 	}
 	

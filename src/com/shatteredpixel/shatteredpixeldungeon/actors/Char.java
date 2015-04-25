@@ -244,9 +244,6 @@ public abstract class Char extends Actor {
 		}
 		if (this.buff(Frost.class) != null){
             Buff.detach( this, Frost.class );
-            if (Level.water[this.pos]) {
-                Buff.prolong(this, Paralysis.class, 1f);
-            }
         }
         if (this.buff(MagicalSleep.class) != null){
             Buff.detach(this, MagicalSleep.class);
@@ -301,6 +298,9 @@ public abstract class Char extends Actor {
 		float timeScale = 1f;
 		if (buff( Slow.class ) != null) {
 			timeScale *= 0.5f;
+			//slowed and chilled do not stack
+		} else if (buff( Chill.class ) != null) {
+			timeScale *= buff( Chill.class ).speedFactor();
 		}
 		if (buff( Speed.class ) != null) {
 			timeScale *= 2.0f;
@@ -363,6 +363,11 @@ public abstract class Char extends Actor {
 
 				sprite.showStatus( CharSprite.NEGATIVE, "slowed" );
 				
+			} else if (buff instanceof Chill) {
+
+				sprite.showStatus( CharSprite.NEGATIVE, "chilled" );
+				sprite.add( CharSprite.State.CHILLED );
+
 			} else if (buff instanceof MindVision) {
 				
 				sprite.showStatus( CharSprite.POSITIVE, "mind" );
@@ -427,7 +432,9 @@ public abstract class Char extends Actor {
 			sprite.remove( CharSprite.State.PARALYSED );
 		} else if (buff instanceof Frost) {
 			sprite.remove( CharSprite.State.FROZEN );
-		} 
+		} else if (buff instanceof Chill) {
+			sprite.remove( CharSprite.State.CHILLED );
+		}
 	}
 	
 	public void remove( Class<? extends Buff> buffClass ) {
@@ -457,6 +464,8 @@ public abstract class Char extends Actor {
 				sprite.add( CharSprite.State.FROZEN );
 			} else if (buff instanceof Light) {
 				sprite.add( CharSprite.State.ILLUMINATED );
+			} else if (buff instanceof Chill) {
+				sprite.add( CharSprite.State.CHILLED );
 			}
 		}
 	}

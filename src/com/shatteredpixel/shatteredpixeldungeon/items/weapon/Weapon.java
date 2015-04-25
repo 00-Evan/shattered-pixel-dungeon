@@ -229,7 +229,8 @@ public class Weapon extends KindOfWeapon {
 	public ItemSprite.Glowing glowing() {
 		return enchantment != null ? enchantment.glowing() : null;
 	}
-	
+
+	//FIXME: most enchantment names are pretty broken, should refactor
 	public static abstract class Enchantment implements Bundlable {
 
 		private static final Class<?>[] enchants = new Class<?>[]{ 
