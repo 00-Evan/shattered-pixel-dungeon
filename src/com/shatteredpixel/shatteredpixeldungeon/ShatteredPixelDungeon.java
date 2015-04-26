@@ -59,6 +59,9 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPoison" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSlowness" );
 
 
 	}
