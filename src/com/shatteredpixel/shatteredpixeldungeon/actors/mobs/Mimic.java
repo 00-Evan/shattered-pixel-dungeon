@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -81,7 +82,7 @@ public class Mimic extends Mob {
 	public void adjustStats( int level ) {
 		this.level = level;
 		
-		HT = (3 + level) * 4;
+		HT = (3 + level) * 5;
 		EXP = 2 + 2 * (level - 1) / 5;
 		defenseSkill = attackSkill( null ) / 2;
 		
@@ -152,6 +153,18 @@ public class Mimic extends Mob {
 		if (Dungeon.visible[m.pos]) {
 			CellEmitter.get( pos ).burst( Speck.factory( Speck.STAR ), 10 );
 			Sample.INSTANCE.play( Assets.SND_MIMIC );
+		}
+
+		//generate an extra reward for killing the mimic
+		switch(Random.Int(5)){
+			case 0: case 1:
+				m.items.add(new Gold().random()); break;
+			case 2:
+				m.items.add(Generator.randomArmor().identify()); break;
+			case 3:
+				m.items.add(Generator.randomWeapon().identify()); break;
+			case 4:
+				m.items.add(Generator.random(Generator.Category.RING).identify()); break;
 		}
 		
 		return m;
