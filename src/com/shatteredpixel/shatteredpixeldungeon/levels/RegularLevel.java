@@ -40,6 +40,7 @@ import com.watabou.utils.Rect;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class RegularLevel extends Level {
@@ -261,7 +262,7 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 		
-		while (count < 4) {
+		while (count < 6) {
 			Room r = randomRoom( Type.TUNNEL, 1 );
 			if (r != null) {
 				r.type = Type.STANDARD;
@@ -541,19 +542,51 @@ public abstract class RegularLevel extends Level {
 	
 	@Override
 	public int nMobs() {
-		return 2 + Dungeon.depth % 5 + Random.Int( 3 );
+		switch(Dungeon.depth) {
+			case 1:
+				//mobs are not randomly spawned on floor 1.
+				return 0;
+			default:
+				return 2 + Dungeon.depth % 5 + Random.Int(5);
+		}
 	}
 	
 	@Override
 	protected void createMobs() {
-		int nMobs = nMobs();
-		for (int i=0; i < nMobs; i++) {
+		//on floor 1, 10 rats are created so the player can get level 2.
+		int mobsToSpawn = Dungeon.depth == 1 ? 10 : nMobs();
+
+		HashSet<Room> stdRooms = new HashSet<>();
+		for (Room room : rooms) {
+			if (room.type == Type.STANDARD) stdRooms.add(room);
+		}
+		Iterator<Room> stdRoomIter = stdRooms.iterator();
+
+		while (mobsToSpawn > 0) {
+			if (!stdRoomIter.hasNext())
+				stdRoomIter = stdRooms.iterator();
+			Room roomToSpawn = stdRoomIter.next();
+
 			Mob mob = Bestiary.mob( Dungeon.depth );
-			do {
-				mob.pos = randomRespawnCell();
-			} while (mob.pos == -1);
-			mobs.add( mob );
-			Actor.occupyCell( mob );
+			mob.pos = roomToSpawn.random();
+
+			if (Actor.findChar(mob.pos) == null && Level.passable[mob.pos]) {
+				mobsToSpawn--;
+				mobs.add(mob);
+				Actor.occupyCell(mob);
+
+				//TODO: perhaps externalize this logic into a method. Do I want to make mobs more likely to clump deeper down?
+				if (mobsToSpawn > 0 && Random.Int(4) == 0){
+					mob = Bestiary.mob( Dungeon.depth );
+					mob.pos = roomToSpawn.random();
+
+					if (Actor.findChar(mob.pos) == null && Level.passable[mob.pos]) {
+						mobsToSpawn--;
+						mobs.add(mob);
+						Actor.occupyCell(mob);
+					}
+				}
+			}
 		}
 	}
 	
