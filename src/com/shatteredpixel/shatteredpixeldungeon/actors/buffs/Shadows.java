@@ -29,6 +29,10 @@ public class Shadows extends Invisibility {
 	protected float left;
 	
 	private static final String LEFT	= "left";
+
+	{
+		type = buffType.SILENT;
+	}
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {

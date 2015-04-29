@@ -28,10 +28,6 @@ public class MagicalSleep extends Buff {
     private static final float STEP = 1f;
     public static final float SWS	= 1.5f;
 
-    {
-        type = buffType.NEUTRAL;
-    }
-
     @Override
     public boolean attachTo( Char target ) {
         if (super.attachTo( target ) && !target.immunities().contains(Sleep.class)) {
