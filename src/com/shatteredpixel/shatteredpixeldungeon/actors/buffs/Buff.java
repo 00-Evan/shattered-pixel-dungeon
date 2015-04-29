@@ -27,6 +27,11 @@ public class Buff extends Actor {
 	
 	public Char target;
 
+	//determines how the buff is announced when it is shown.
+	//buffs that work behind the scenes, or have other visual indicators can usually be silent.
+	public enum buffType {POSITIVE, NEGATIVE, NEUTRAL, SILENT};
+	public buffType type = buffType.SILENT;
+
     public HashSet<Class<?>> resistances = new HashSet<Class<?>>();
 
     public HashSet<Class<?>> immunities = new HashSet<Class<?>>();
@@ -40,10 +45,15 @@ public class Buff extends Actor {
 		this.target = target;
 		target.add( this );
 
-        return target.buffs().contains(this);
+        if (target.buffs().contains(this)){
+			if (target.sprite != null) fx( true );
+			return true;
+		} else
+	        return false;
 	}
 	
 	public void detach() {
+		fx( false );
 		target.remove( this );
 	}
 	
@@ -55,6 +65,14 @@ public class Buff extends Actor {
 	
 	public int icon() {
 		return BuffIndicator.NONE;
+	}
+
+	public void fx(boolean on) {
+		//do nothing by default
+	};
+
+	public String desc(){
+		return "";
 	}
 
 	public static<T extends Buff> T append( Char target, Class<T> buffClass ) {
@@ -102,9 +120,5 @@ public class Buff extends Actor {
 	
 	public static void detach( Char target, Class<? extends Buff> cl ) {
 		detach( target.buff( cl ) );
-	}
-
-	public String desc(){
-		return "";
 	}
 }

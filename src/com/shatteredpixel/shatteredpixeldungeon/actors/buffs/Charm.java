@@ -28,6 +28,10 @@ public class Charm extends FlavourBuff {
 
 	private static final String OBJECT    = "object";
 
+	{
+		type = buffType.NEGATIVE;
+	}
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );

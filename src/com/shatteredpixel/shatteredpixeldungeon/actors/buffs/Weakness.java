@@ -26,6 +26,10 @@ public class Weakness extends FlavourBuff {
 
 	private static final float DURATION = 40f;
 
+	{
+		type = buffType.NEGATIVE;
+	}
+
 	@Override
 	public int icon() {
 		return BuffIndicator.WEAKNESS;

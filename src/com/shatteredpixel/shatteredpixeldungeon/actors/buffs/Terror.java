@@ -29,6 +29,10 @@ public class Terror extends FlavourBuff {
 
 	private static final String OBJECT    = "object";
 
+	{
+		type = buffType.NEGATIVE;
+	}
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
@@ -48,7 +52,7 @@ public class Terror extends FlavourBuff {
 
 	@Override
 	public String toString() {
-		return "Terror";
+		return "Terrified";
 	}
 	
 	public static void recover( Char target ) {

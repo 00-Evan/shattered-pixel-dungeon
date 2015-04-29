@@ -22,6 +22,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 public class Cripple extends FlavourBuff {
 
 	public static final float DURATION	= 10f;
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	@Override
 	public int icon() {

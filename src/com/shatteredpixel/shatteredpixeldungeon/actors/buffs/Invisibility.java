@@ -21,11 +21,16 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Invisibility extends FlavourBuff {
 
 	public static final float DURATION	= 15f;
+
+	{
+		type = buffType.POSITIVE;
+	}
 	
 	@Override
 	public boolean attachTo( Char target ) {
@@ -48,7 +53,13 @@ public class Invisibility extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.INVISIBLE;
 	}
-	
+
+	@Override
+	public void fx(boolean on) {
+		if (on) target.sprite.add( CharSprite.State.INVISIBLE );
+		else if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
+	}
+
 	@Override
 	public String toString() {
 		return "Invisible";

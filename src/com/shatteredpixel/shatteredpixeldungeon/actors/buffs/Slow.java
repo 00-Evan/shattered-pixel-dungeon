@@ -23,6 +23,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Slow extends FlavourBuff {
 
+	{
+		type = buffType.NEGATIVE;
+	}
+
 	private static final float DURATION = 10f;
 
 	@Override

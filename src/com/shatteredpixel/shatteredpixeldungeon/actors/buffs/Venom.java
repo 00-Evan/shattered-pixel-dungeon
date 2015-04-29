@@ -14,6 +14,10 @@ public class Venom extends Poison implements Hero.Doom {
 
     private static final String DAMAGE	= "damage";
 
+    {
+        type = buffType.NEGATIVE;
+    }
+
     @Override
     public void storeInBundle( Bundle bundle ) {
         super.storeInBundle( bundle );

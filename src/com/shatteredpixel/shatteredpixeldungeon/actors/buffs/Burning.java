@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resis
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -49,6 +50,10 @@ public class Burning extends Buff implements Hero.Doom {
 	private float left;
 	
 	private static final String LEFT	= "left";
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -133,7 +138,13 @@ public class Burning extends Buff implements Hero.Doom {
 	public int icon() {
 		return BuffIndicator.FIRE;
 	}
-	
+
+	@Override
+	public void fx(boolean on) {
+		if (on) target.sprite.add(CharSprite.State.BURNING);
+		else target.sprite.remove(CharSprite.State.BURNING);
+	}
+
 	@Override
 	public String toString() {
 		return "Burning";

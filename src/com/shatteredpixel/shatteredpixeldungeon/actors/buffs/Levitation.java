@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Levitation extends FlavourBuff {
@@ -47,7 +48,13 @@ public class Levitation extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.LEVITATION;
 	}
-	
+
+	@Override
+	public void fx(boolean on) {
+		if (on) target.sprite.add(CharSprite.State.LEVITATING);
+		else target.sprite.remove(CharSprite.State.LEVITATING);
+	}
+
 	@Override
 	public String toString() {
 		return "Levitating";

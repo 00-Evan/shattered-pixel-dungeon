@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -230,6 +231,12 @@ public class CloakOfShadows extends Artifact {
         }
 
         @Override
+        public void fx(boolean on) {
+            if (on) target.sprite.add( CharSprite.State.INVISIBLE );
+            else if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
+        }
+
+        @Override
         public String toString() {
             return "Cloaked";
         }
@@ -240,7 +247,6 @@ public class CloakOfShadows extends Artifact {
                 target.invisible--;
             stealthed = false;
             cooldown = 10 - (level / 3);
-
 
             updateQuickslot();
             super.detach();

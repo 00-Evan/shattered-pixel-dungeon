@@ -1158,7 +1158,7 @@ public class Hero extends Char {
 			return;
 
 		super.add( buff );
-		
+
 		if (sprite != null) {
 			if (buff instanceof Burning) {
 				GLog.w( "You catch fire!" );
@@ -1179,7 +1179,6 @@ public class Hero extends Char {
 				GLog.w( "You are blinded!" );
 			} else if (buff instanceof Fury) {
 				GLog.w( "You become furious!" );
-				sprite.showStatus( CharSprite.POSITIVE, "furious" );
 			} else if (buff instanceof Charm) {
 				GLog.w( "You are charmed!" );
 			}  else if (buff instanceof Cripple) {
@@ -1194,10 +1193,7 @@ public class Hero extends Char {
                 GLog.w("Everything is spinning around you!");
                 interrupt();
             }
-			
-			else if (buff instanceof Light) {
-				sprite.add( CharSprite.State.ILLUMINATED );
-			}
+
 		}
 		
 		BuffIndicator.refreshHero();
@@ -1207,9 +1203,7 @@ public class Hero extends Char {
 	public void remove( Buff buff ) {
 		super.remove( buff );
 		
-		if (buff instanceof Light) {
-			sprite.remove( CharSprite.State.ILLUMINATED );
-		} else if (buff instanceof RingOfMight.Might){
+		if (buff instanceof RingOfMight.Might){
             if (((RingOfMight.Might)buff).level > 0){
                 HT -= ((RingOfMight.Might) buff).level * 5;
                 HP = Math.min(HT, HP);

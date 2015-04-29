@@ -8,6 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
@@ -18,6 +19,10 @@ import com.watabou.utils.Random;
 public class Chill extends FlavourBuff {
 
 	private static final String TXT_FREEZES = "%s freezes!";
+
+	{
+		type = buffType.NEGATIVE;
+	}
 
 	@Override
 	public boolean attachTo(Char target) {
@@ -68,6 +73,12 @@ public class Chill extends FlavourBuff {
 	@Override
 	public int icon() {
 		return BuffIndicator.FROST;
+	}
+
+	@Override
+	public void fx(boolean on) {
+		if (on) target.sprite.add(CharSprite.State.CHILLED);
+		else target.sprite.remove(CharSprite.State.CHILLED);
 	}
 
 	@Override

@@ -22,6 +22,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 public class Fury extends Buff {
 	
 	public static float LEVEL	= 0.4f;
+
+	{
+		type = buffType.POSITIVE;
+	}
 	
 	@Override
 	public boolean act() {
@@ -41,6 +45,6 @@ public class Fury extends Buff {
 	
 	@Override
 	public String toString() {
-		return "Fury";
+		return "Furious";
 	}
 }

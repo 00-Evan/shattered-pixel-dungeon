@@ -23,6 +23,10 @@ import com.watabou.utils.Random;
 
 public class Drowsy extends Buff {
 
+    {
+        type = buffType.NEUTRAL;
+    }
+
     @Override
     public int icon() {
         return BuffIndicator.DROWSY;

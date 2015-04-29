@@ -19,11 +19,16 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Paralysis extends FlavourBuff {
 
 	private static final float DURATION	= 10f;
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	@Override
 	public boolean attachTo( Char target ) {
@@ -45,7 +50,13 @@ public class Paralysis extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.PARALYSIS;
 	}
-	
+
+	@Override
+	public void fx(boolean on) {
+		if (on) target.sprite.add(CharSprite.State.PARALYSED);
+		else target.sprite.remove(CharSprite.State.PARALYSED);
+	}
+
 	@Override
 	public String toString() {
 		return "Paralysed";

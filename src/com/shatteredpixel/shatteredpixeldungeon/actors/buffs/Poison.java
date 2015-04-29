@@ -22,10 +22,11 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 
 public class Poison extends Buff implements Hero.Doom {
@@ -33,6 +34,10 @@ public class Poison extends Buff implements Hero.Doom {
 	protected float left;
 	
 	private static final String LEFT	= "left";
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -60,7 +65,16 @@ public class Poison extends Buff implements Hero.Doom {
 	public String toString() {
 		return "Poisoned";
 	}
-	
+
+	@Override
+	public boolean attachTo(Char target) {
+		if (super.attachTo(target)){
+			CellEmitter.center(target.pos).burst( PoisonParticle.SPLASH, 5 );
+			return true;
+		} else
+			return false;
+	}
+
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {

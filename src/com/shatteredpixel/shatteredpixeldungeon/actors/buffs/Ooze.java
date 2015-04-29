@@ -28,6 +28,10 @@ import com.watabou.utils.Random;
 public class Ooze extends Buff {
 	
 	private static final String TXT_HERO_KILLED = "%s killed you...";
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	@Override
 	public int icon() {

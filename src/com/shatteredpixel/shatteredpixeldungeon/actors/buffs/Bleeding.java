@@ -28,6 +28,10 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 public class Bleeding extends Buff {
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	protected int level;
 	

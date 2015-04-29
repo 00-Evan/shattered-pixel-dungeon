@@ -21,6 +21,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Amok extends FlavourBuff {
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	@Override
 	public int icon() {

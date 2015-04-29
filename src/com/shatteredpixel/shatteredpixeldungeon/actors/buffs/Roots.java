@@ -21,6 +21,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Roots extends FlavourBuff {
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	@Override
 	public boolean attachTo( Char target ) {

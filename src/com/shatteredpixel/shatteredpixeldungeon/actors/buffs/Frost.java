@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
@@ -35,6 +36,10 @@ public class Frost extends FlavourBuff {
 	private static final String TXT_FREEZES = "%s freezes!";
 
 	private static final float DURATION	= 5f;
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	@Override
 	public boolean attachTo( Char target ) {
@@ -91,7 +96,13 @@ public class Frost extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.FROST;
 	}
-	
+
+	@Override
+	public void fx(boolean on) {
+		if (on) target.sprite.add(CharSprite.State.FROZEN);
+		else target.sprite.remove(CharSprite.State.FROZEN);
+	}
+
 	@Override
 	public String toString() {
 		return "Frozen";

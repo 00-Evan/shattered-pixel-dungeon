@@ -21,6 +21,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Blindness extends FlavourBuff {
+
+	{
+		type = buffType.NEGATIVE;
+	}
 	
 	@Override
 	public void detach() {
