@@ -75,7 +75,7 @@ public class Sign {
 		"Pixel-Mart. A safer life in dungeon.",
 		"When you upgrade an enchanted weapon, there is a chance to destroy that enchantment.",
 		"In a Well of Transmutation you can get an item, that cannot be obtained otherwise.",
-		"The only way to enchant a weapon is by upgrading it with a Scroll of Weapon Upgrade.",
+		"The only way to enchant a weapon is by upgrading it with a Scroll of Magical Infusion.",
 
 		"No weapons allowed in the presence of His Majesty!",
 
