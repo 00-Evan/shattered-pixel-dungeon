@@ -119,12 +119,12 @@ public class ItemSpriteSheet {
     public static final int WAND_DISINTEGRATION	= ROW6+4;
     public static final int WAND_PRISMATIC_LIGHT= ROW6+5;
     public static final int WAND_VENOM			= ROW6+6;
-    public static final int WAND_CORRUPTION		= ROW6+7;
-    public static final int WAND_WARDING		= ROW6+8;
-    public static final int WAND_REGROWTH		= ROW6+9;
-    public static final int WAND_SUMMONING  	= ROW6+10;
-    public static final int WAND_AVALANCHE		= ROW6+11;
-    public static final int WAND_FORCE			= ROW6+12;
+    public static final int WAND_LIVING_EARTH	= ROW6+7;
+    public static final int WAND_BLASTING		= ROW6+8;
+    public static final int WAND_CORRUPTION		= ROW6+9;
+    public static final int WAND_WARDING      	= ROW6+10;
+    public static final int WAND_REGROWTH		= ROW6+11;
+    public static final int WAND_TRANSFUSION	= ROW6+12;
 
     //Row Seven: Rings
     public static final int RING_GARNET		= ROW7+0;

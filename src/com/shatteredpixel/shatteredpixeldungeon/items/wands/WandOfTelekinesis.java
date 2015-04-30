@@ -40,7 +40,7 @@ public class WandOfTelekinesis extends Wand {
 	
 	{
 		name = "Wand of Telekinesis";
-		image = ItemSpriteSheet.WAND_FORCE;
+		image = ItemSpriteSheet.WAND_BLASTING;
 
 		collisionProperties = Ballistica.STOP_TERRAIN;
 	}

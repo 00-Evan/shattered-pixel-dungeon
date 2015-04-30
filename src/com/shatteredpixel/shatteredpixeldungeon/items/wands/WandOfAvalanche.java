@@ -44,7 +44,7 @@ public class WandOfAvalanche extends Wand {
 
 	{
 		name = "Wand of Avalanche";
-		image = ItemSpriteSheet.WAND_AVALANCHE;
+		image = ItemSpriteSheet.WAND_LIVING_EARTH;
 
 		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
