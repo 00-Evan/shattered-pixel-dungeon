@@ -40,7 +40,7 @@ public class WandOfFrost extends Wand {
 			if (ch.buff(Chill.class) != null){
 				damage = Math.round(damage * ch.buff(Chill.class).speedFactor());
 			} else {
-				ch.sprite.burst(0x99FFFFFF, level / 2 + 2);
+				ch.sprite.burst( 0xFF99CCFF, level / 2 + 2 );
 			}
 
 			ch.damage(damage, this);
