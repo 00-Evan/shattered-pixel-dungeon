@@ -42,15 +42,14 @@ public class Shock extends Weapon.Enchantment {
 		
 		if (Random.Int( level + 4 ) >= 3) {
 			
-			points[0] = attacker.pos;
-			nPoints = 1;
-			
 			affected.clear();
-			affected.add( attacker );
-			
-			hit( defender, Random.Int( 1, damage / 2 ) );
-			
-			attacker.sprite.parent.add( new Lightning( points, nPoints, null ) );
+			affected.add(attacker);
+
+			arcs.clear();
+			arcs.add(new Lightning.Arc(attacker.pos, defender.pos));
+			hit(defender, Random.Int(1, damage / 2));
+
+			attacker.sprite.parent.add( new Lightning( arcs, null ) );
 			
 			return true;
 			
@@ -66,10 +65,9 @@ public class Shock extends Weapon.Enchantment {
 		return String.format( TXT_SHOCKING, weaponName );
 	}
 
-	private ArrayList<Char> affected = new ArrayList<Char>();
-	
-	private int[] points = new int[20];
-	private int nPoints;
+	private ArrayList<Char> affected = new ArrayList<>();
+
+	private ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 	
 	private void hit( Char ch, int damage ) {
 		
@@ -77,24 +75,19 @@ public class Shock extends Weapon.Enchantment {
 			return;
 		}
 		
-		affected.add( ch );
-		ch.damage( Level.water[ch.pos] && !ch.flying ? (int)(damage * 2) : damage, LightningTrap.LIGHTNING  );
+		affected.add(ch);
+		ch.damage(Level.water[ch.pos] && !ch.flying ? (int) (damage * 2) : damage, LightningTrap.LIGHTNING);
 		
-		ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
+		ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
 		ch.sprite.flash();
-		
-		points[nPoints++] = ch.pos;
 		
 		HashSet<Char> ns = new HashSet<Char>();
 		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
 			Char n = Actor.findChar( ch.pos + Level.NEIGHBOURS8[i] );
 			if (n != null && !affected.contains( n )) {
-				ns.add( n );
+				arcs.add(new Lightning.Arc(ch.pos, n.pos));
+				hit(n, Random.Int(damage / 2, damage));
 			}
-		}
-		
-		if (ns.size() > 0) {
-			hit( Random.element( ns ), Random.Int( damage / 2, damage ) );
 		}
 	}
 }

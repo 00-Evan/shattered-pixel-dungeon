@@ -46,14 +46,28 @@ public class WandOfLightning extends Wand {
 		image = ItemSpriteSheet.WAND_LIGHTNING;
 	}
 	
-	private ArrayList<Char> affected = new ArrayList<Char>();
-	
-	private int[] points = new int[20];
-	private int nPoints;
+	private ArrayList<Char> affected = new ArrayList<>();
+
+	ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 	
 	@Override
 	protected void onZap( Ballistica bolt ) {
-		// Everything is processed in fx() method
+
+		//lightning deals less damage per-target, the more targets that are hit.
+		float multipler = (0.6f + 0.4f*affected.size())/affected.size();
+		if (Level.water[bolt.collisionPos]) multipler *= 1.5f;
+
+		int min = 5+level;
+		int max = Math.round(10 + (level * level / 4f));
+
+		for (Char ch : affected){
+			ch.damage(Math.round(Random.NormalIntRange(min, max) * multipler), LightningTrap.LIGHTNING);
+
+			if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
+			ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
+			ch.sprite.flash();
+		}
+
 		if (!curUser.isAlive()) {
 			Dungeon.fail( Utils.format( ResultDescriptions.ITEM, name ) );
 			GLog.n( "You killed yourself with your own Wand of Lightning..." );
@@ -66,65 +80,63 @@ public class WandOfLightning extends Wand {
 		new Shock().proc(staff, attacker, defender, damage);
 	}
 
-	private void hit( Char ch, int damage ) {
-		
-		if (damage < 1) {
-			return;
-		}
-		
-		if (ch == Dungeon.hero) {
-			Camera.main.shake( 2, 0.3f );
-		}
+	private void arc( Char ch ) {
 		
 		affected.add( ch );
-		ch.damage( Level.water[ch.pos] && !ch.flying ? (int)(damage * 2) : damage, LightningTrap.LIGHTNING  );
-		
-		ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
-		ch.sprite.flash();
-		
-		points[nPoints++] = ch.pos;
-		
-		HashSet<Char> ns = new HashSet<Char>();
-		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-			Char n = Actor.findChar( ch.pos + Level.NEIGHBOURS8[i] );
+
+		for (int i : Level.NEIGHBOURS8) {
+			int cell = ch.pos + i;
+
+			Char n = Actor.findChar( cell );
 			if (n != null && !affected.contains( n )) {
-				ns.add( n );
+				arcs.add(new Lightning.Arc(ch.pos, n.pos));
+				arc(n);
 			}
 		}
-		
-		if (ns.size() > 0) {
-			hit( Random.element( ns ), Random.Int( damage / 2, damage ) );
+
+		if (Level.water[ch.pos] && !ch.flying){
+			for (int i : Level.NEIGHBOURS8DIST2) {
+				int cell = ch.pos + i;
+				//player can only be hit by lightning from an adjacent enemy.
+				if (!Level.insideMap(cell) || Actor.findChar(cell) == Dungeon.hero) continue;
+
+				Char n = Actor.findChar( ch.pos + i );
+				if (n != null && !affected.contains( n )) {
+					arcs.add(new Lightning.Arc(ch.pos, n.pos));
+					arc(n);
+				}
+			}
 		}
 	}
 	
 	@Override
 	protected void fx( Ballistica bolt, Callback callback ) {
-		
-		nPoints = 0;
-		points[nPoints++] = Dungeon.hero.pos;
+
+		affected.clear();
+		arcs.clear();
+		arcs.add( new Lightning.Arc(bolt.sourcePos, bolt.collisionPos));
 
 		int cell = bolt.collisionPos;
 
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
-			
-			affected.clear();
-			int lvl = level();
-			hit( ch, Random.Int( 5 + lvl / 2, 10 + lvl ) );
-
+			arc(ch);
 		} else {
-			
-			points[nPoints++] = cell;
 			CellEmitter.center( cell ).burst( SparkParticle.FACTORY, 3 );
-			
 		}
-		curUser.sprite.parent.add( new Lightning( points, nPoints, callback ) );
+
+		//don't want to wait for the effect before processing damage.
+		curUser.sprite.parent.add( new Lightning( arcs, null ) );
+		callback.call();
 	}
 	
 	@Override
 	public String desc() {
 		return
-			"This wand conjures forth deadly arcs of electricity, which deal damage " +
-			"to several creatures standing close to each other.";
+			"This wand is made out of solid metal, making it surprisingly heavy. " +
+			"Two prongs curve together at the top, and electricity arcs between them.\n\n" +
+			"This wand sends powerful lightning arcing through whatever it is shot at. " +
+			"This electricity can bounce between many adjacent foes, and is more powerful in water. " +
+			"If you’re too close, you may get shocked as well.";
 	}
 }

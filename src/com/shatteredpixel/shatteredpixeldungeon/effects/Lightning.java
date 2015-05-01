@@ -27,60 +27,36 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Lightning extends Group {
 
 	private static final float DURATION = 0.3f;
 	
 	private float life;
-	
-	private int length;
-	private float[] cx;
-	private float[] cy;
-	
-	private Image[] arcsS;
-	private Image[] arcsE;
+
+	private List<Arc> arcs;
 	
 	private Callback callback;
+
+	public Lightning(int from, int to, Callback callback){
+		this(Arrays.asList(new Arc(from, to)), callback);
+	}
 	
-	public Lightning( int[] cells, int length, Callback callback ) {
+	public Lightning( List<Arc> arcs, Callback callback ) {
 		
 		super();
-		
+
+		this.arcs = arcs;
+		for (Arc arc : this.arcs)
+			add(arc);
+
 		this.callback = callback;
-		
-		Image proto = Effects.get( Effects.Type.LIGHTNING );
-		float ox = 0;
-		float oy = proto.height / 2;
-		
-		this.length = length;
-		cx = new float[length];
-		cy = new float[length];
-		
-		for (int i=0; i < length; i++) {
-			int c = cells[i];
-			cx[i] = (c % Level.WIDTH + 0.5f) * DungeonTilemap.SIZE;
-			cy[i] = (c / Level.WIDTH + 0.5f) * DungeonTilemap.SIZE;
-		}
-		
-		arcsS = new Image[length - 1];
-		arcsE = new Image[length - 1];
-		for (int i=0; i < length - 1; i++) {
-			
-			Image arc = arcsS[i] = new Image( proto );
-			
-			arc.x = cx[i] - arc.origin.x;
-			arc.y = cy[i] - arc.origin.y;
-			arc.origin.set( ox, oy );
-			add( arc );
-			
-			arc = arcsE[i] = new Image( proto );
-			arc.origin.set( ox, oy );
-			add( arc );
-		}
 		
 		life = DURATION;
 		
@@ -91,8 +67,6 @@ public class Lightning extends Group {
 	
 	@Override
 	public void update() {
-		super.update();
-		
 		if ((life -= Game.elapsed) < 0) {
 			
 			killAndErase();
@@ -104,32 +78,11 @@ public class Lightning extends Group {
 			
 			float alpha = life / DURATION;
 			
-			for (int i=0; i < length - 1; i++) {
-				
-				float sx = cx[i];
-				float sy = cy[i];
-				float ex = cx[i+1];
-				float ey = cy[i+1];
-				
-				float x2 = (sx + ex) / 2 + Random.Float( -4, +4 );
-				float y2 = (sy + ey) / 2 + Random.Float( -4, +4 );
-				
-				float dx = x2 - sx;
-				float dy = y2 - sy;
-				Image arc = arcsS[i];
-				arc.am = alpha;
-				arc.angle = (float)(Math.atan2( dy, dx ) * A);
-				arc.scale.x = (float)Math.sqrt( dx * dx + dy * dy ) / arc.width;
-				
-				dx = ex - x2;
-				dy = ey - y2;
-				arc = arcsE[i];
-				arc.am = alpha;
-				arc.angle = (float)(Math.atan2( dy, dx ) * A);
-				arc.scale.x = (float)Math.sqrt( dx * dx + dy * dy ) / arc.width;
-				arc.x = x2 - arc.origin.x;
-				arc.y = y2 - arc.origin.x;
+			for (Arc arc : arcs) {
+				arc.alpha(alpha);
 			}
+
+			super.update();
 		}
 	}
 	
@@ -138,5 +91,53 @@ public class Lightning extends Group {
 		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
 		super.draw();
 		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+	}
+
+	//A lightning object is meant to be loaded up with arcs.
+	//these act as a means of easily expressing lighting between two points.
+	public static class Arc extends Group {
+
+		private Image arc1, arc2;
+
+		//starting and ending x/y values
+		private PointF start, end;
+
+		public Arc(int from, int to){
+			start = DungeonTilemap.tileCenterToWorld(from);
+			end = DungeonTilemap.tileCenterToWorld(to);
+
+			arc1 = new Image(Effects.get(Effects.Type.LIGHTNING));
+			arc1.x = start.x - arc1.origin.x;
+			arc1.y = start.y - arc1.origin.y;
+			arc1.origin.set( 0, arc1.height()/2 );
+			add( arc1 );
+
+			arc2 = new Image(Effects.get(Effects.Type.LIGHTNING));
+			arc2.origin.set( 0, arc2.height()/2 );
+			add( arc2 );
+
+		}
+
+		public void alpha(float alpha) {
+			arc1.am = arc2.am = alpha;
+		}
+
+		@Override
+		public void update() {
+			float x2 = (start.x + end.x) / 2 + Random.Float( -4, +4 );
+			float y2 = (start.y + end.y) / 2 + Random.Float( -4, +4 );
+
+			float dx = x2 - start.x;
+			float dy = y2 - start.y;
+			arc1.angle = (float)(Math.atan2( dy, dx ) * A);
+			arc1.scale.x = (float)Math.sqrt( dx * dx + dy * dy ) / arc1.width;
+
+			dx = end.x - x2;
+			dy = end.y - y2;
+			arc2.angle = (float)(Math.atan2( dy, dx ) * A);
+			arc2.scale.x = (float)Math.sqrt( dx * dx + dy * dy ) / arc2.width;
+			arc2.x = x2 - arc2.origin.x;
+			arc2.y = y2 - arc2.origin.x;
+		}
 	}
 }

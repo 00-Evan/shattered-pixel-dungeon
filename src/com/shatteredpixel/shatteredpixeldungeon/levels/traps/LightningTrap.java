@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class LightningTrap {
 
 	private static final String name	= "lightning trap";
@@ -48,16 +50,12 @@ public class LightningTrap {
 					GLog.n( "You were killed by a discharge of a lightning trap..." );
 				}
 			}
-			
-			int[] points = new int[2];
-			
-			points[0] = pos - Level.WIDTH;
-			points[1] = pos + Level.WIDTH;
-			ch.sprite.parent.add( new Lightning( points, 2, null ) );
-			
-			points[0] = pos - 1;
-			points[1] = pos + 1;
-			ch.sprite.parent.add( new Lightning( points, 2, null ) );
+
+			ArrayList<Lightning.Arc> arcs = new ArrayList<>();
+			arcs.add(new Lightning.Arc(pos - Level.WIDTH, pos + Level.WIDTH));
+			arcs.add(new Lightning.Arc(pos - 1, pos + 1));
+
+			ch.sprite.parent.add( new Lightning( arcs, null ) );
 		}
 		
 		CellEmitter.center( pos ).burst( SparkParticle.FACTORY, Random.IntRange( 3, 4 ) );
