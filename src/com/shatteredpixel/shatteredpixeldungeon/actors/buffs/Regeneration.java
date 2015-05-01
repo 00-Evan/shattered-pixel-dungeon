@@ -41,7 +41,7 @@ public class Regeneration extends Buff {
 				if (regenBuff.isCursed())
 					spend( REGENERATION_DELAY * 1.5f );
 				else
-					spend( Math.max(REGENERATION_DELAY - regenBuff.level(), 0.5f) );
+					spend( regenBuff.level()*0.9f );
             else
                 spend( REGENERATION_DELAY );
 			
