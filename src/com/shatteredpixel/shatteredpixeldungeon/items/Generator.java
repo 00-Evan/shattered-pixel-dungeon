@@ -50,7 +50,7 @@ public class Generator {
 		SCROLL	( 400,	Scroll.class ),
 		WAND	( 40,	Wand.class ),
 		RING	( 15,	Ring.class ),
-        ARTIFACT( 20,   Artifact.class),
+        ARTIFACT( 15,   Artifact.class),
 		SEED	( 50,	Plant.Seed.class ),
 		FOOD	( 0,	Food.class ),
 		GOLD	( 500,	Gold.class );
@@ -190,10 +190,10 @@ public class Generator {
             TalismanOfForesight.class,
             TimekeepersHourglass.class,
             UnstableSpellbook.class,
-            AlchemistsToolkit.class,
+            AlchemistsToolkit.class, //currently removed from drop tables, pending rework.
             DriedRose.class //starts with no chance of spawning, chance is set directly after beating ghost quest.
             };
-        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0 };
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0 };
 		
 		Category.SEED.classes = new Class<?>[]{ 
 			Firebloom.Seed.class,
