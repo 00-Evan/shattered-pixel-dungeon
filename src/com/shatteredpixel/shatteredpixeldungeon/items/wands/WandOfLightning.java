@@ -137,6 +137,6 @@ public class WandOfLightning extends Wand {
 			"Two prongs curve together at the top, and electricity arcs between them.\n\n" +
 			"This wand sends powerful lightning arcing through whatever it is shot at. " +
 			"This electricity can bounce between many adjacent foes, and is more powerful in water. " +
-			"If you’re too close, you may get shocked as well.";
+			"If you're too close, you may get shocked as well.";
 	}
 }
