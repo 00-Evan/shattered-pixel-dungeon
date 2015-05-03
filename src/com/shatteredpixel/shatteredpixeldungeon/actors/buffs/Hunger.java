@@ -132,9 +132,9 @@ public class Hunger extends Buff implements Hero.Doom {
 	public void consumeSoul( float energy ){
 
 		if (level >= STARVING)
-			energy *= 1.5f;
+			energy *= 1.33f;
 		else if (level < HUNGRY)
-			energy *= 0.75f;
+			energy *= 0.67f;
 
 		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
 			reduceHunger( energy );
