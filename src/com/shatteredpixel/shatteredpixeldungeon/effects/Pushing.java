@@ -45,13 +45,17 @@ public class Pushing extends Actor {
 			if (effect == null) {
 				new Effect();
 			}
-			return false;
-			
-		} else {
-			
-			Actor.remove( Pushing.this );
-			return true;
 		}
+
+		Actor.remove( Pushing.this );
+
+		//so that all pushing effects at the same time go simultaneously
+		for ( Actor actor : Actor.all() ){
+			if (actor instanceof Pushing && ((Pushing) actor).cooldown() == 0)
+				return true;
+		}
+		return false;
+
 	}
 
 	public class Effect extends Visual {
