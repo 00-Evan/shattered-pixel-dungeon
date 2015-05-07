@@ -55,13 +55,36 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.LloydsBeacon" );
 
-		// 0.3.0
+		// 0.3.0, lots of wands
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPoison" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSlowness" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFirebolt" );
+		//TODO: add when this one is implemented
+		//com.watabou.utils.Bundle.addAlias(
+		//		com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption.class,
+		//		"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAmok" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTelekinesis" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFlock" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTeleportation" );
+
 
 
 	}

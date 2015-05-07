@@ -114,22 +114,23 @@ public class Generator {
 			PotionOfMight.class,
 			PotionOfFrost.class };
 		Category.POTION.probs = new float[]{ 45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10 };
-		
-		Category.WAND.classes = new Class<?>[]{ 
-			WandOfTeleportation.class, 
-			WandOfSlowness.class,
-			WandOfFireblast.class,
-			WandOfRegrowth.class,
-			WandOfPoison.class,
-			WandOfBlink.class,
-			WandOfLightning.class,
-			WandOfAmok.class,
-			WandOfTelekinesis.class,
-			WandOfFlock.class,
+
+		//TODO: add last ones when implemented
+		Category.WAND.classes = new Class<?>[]{
 			WandOfMagicMissile.class,
+			WandOfLightning.class,
 			WandOfDisintegration.class,
-			WandOfAvalanche.class };
-		Category.WAND.probs = new float[]{ 10, 10, 15, 6, 10, 11, 15, 10, 6, 10, 0, 5, 5 };
+			WandOfFireblast.class,
+			WandOfVenom.class,
+			WandOfBlastWave.class,
+			//WandOfLivingEarth.class,
+			WandOfFrost.class,
+			WandOfPrismaticLight.class,
+			//WandOfWarding.class,
+			//WandOfTransfusion.class,
+			//WandOfCorruption.class,
+			WandOfRegrowth.class };
+		Category.WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3, 3, 3,*/ 3 };
 		
 		Category.WEAPON.classes = new Class<?>[]{ 
 			Dagger.class, 
