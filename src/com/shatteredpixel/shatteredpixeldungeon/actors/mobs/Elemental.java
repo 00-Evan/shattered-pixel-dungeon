@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFirebolt;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
@@ -102,7 +102,7 @@ public class Elemental extends Mob {
 	static {
 		IMMUNITIES.add( Burning.class );
 		IMMUNITIES.add( Fire.class );
-		IMMUNITIES.add( WandOfFirebolt.class );
+		IMMUNITIES.add( WandOfFireblast.class );
 	}
 	
 	@Override

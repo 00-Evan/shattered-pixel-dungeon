@@ -37,11 +37,10 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-//TODO: rename to fireblast
-public class WandOfFirebolt extends Wand {
+public class WandOfFireblast extends Wand {
 
 	{
-		name = "Wand of Firebolt";
+		name = "Wand of Fireblast";
 		image = ItemSpriteSheet.WAND_FIREBOLT;
 
 		collisionProperties = Ballistica.STOP_TERRAIN;

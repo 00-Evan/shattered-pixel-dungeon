@@ -118,7 +118,7 @@ public class Generator {
 		Category.WAND.classes = new Class<?>[]{ 
 			WandOfTeleportation.class, 
 			WandOfSlowness.class,
-			WandOfFirebolt.class,
+			WandOfFireblast.class,
 			WandOfRegrowth.class,
 			WandOfPoison.class,
 			WandOfBlink.class,
