@@ -33,7 +33,7 @@ public class MagesStaff extends MeleeWeapon {
 	private static final String TXT_SELECT_WAND	= "Select a wand to consume";
 
 	//TODO: decide on balancing
-	private static final float STAFF_SCALE_FACTOR = 0.70f;
+	private static final float STAFF_SCALE_FACTOR = 0.75f;
 
 	{
 		name = "Mage's Staff";
