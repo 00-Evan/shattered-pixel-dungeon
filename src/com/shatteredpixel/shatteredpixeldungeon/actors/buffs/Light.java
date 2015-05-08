@@ -62,4 +62,13 @@ public class Light extends FlavourBuff {
 	public String toString() {
 		return "Illuminated";
 	}
+
+	@Override
+	public String desc() {
+		return "Even in the Darkest Dungeon, a steady light at your side is always comforting.\n" +
+				"\n" +
+				"Light helps keep darkness at bay, allowing you to see a reasonable distance despite the environment.\n" +
+				"\n" +
+				"The light will last for " + dispTurns() + ".";
+	}
 }

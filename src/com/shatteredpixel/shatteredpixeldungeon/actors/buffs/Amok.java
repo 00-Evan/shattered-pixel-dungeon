@@ -42,4 +42,13 @@ public class Amok extends FlavourBuff {
 	public String toString() {
 		return "Amok";
 	}
+
+	@Override
+	public String desc() {
+		return "Amok causes a state of great rage and confusion in its target.\n" +
+				"\n" +
+				"When a creature is amoked, they will attack whatever is near them, whether they be friend or foe.\n" +
+				"\n" +
+				"The amok will last for " + dispTurns() + ".";
+	}
 }

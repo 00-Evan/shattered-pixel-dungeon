@@ -45,4 +45,15 @@ public class MindVision extends FlavourBuff {
 		super.detach();
 		Dungeon.observe();
 	}
+
+	@Override
+	public String desc() {
+		return "Somehow you are able to see all creatures on this floor through your mind. It's a weird feeling.\n" +
+				"\n" +
+				"All characters on this floor are visible to you as long as you have mind vision. " +
+				"Seeing a creature through mind vision counts as it being seen or nearby for " +
+				"the purposes of many magical effects.\n" +
+				"\n" +
+				"The mind vision will last for " + dispTurns() + ".";
+	}
 }

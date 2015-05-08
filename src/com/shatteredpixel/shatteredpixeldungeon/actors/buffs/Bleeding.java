@@ -94,4 +94,14 @@ public class Bleeding extends Buff {
 		
 		return true;
 	}
+
+	@Override
+	public String desc() {
+		return "That wound is leaking a worrisome amount of blood.\n" +
+				"\n" +
+				"Bleeding causes damage every turn. Each turn the damage decreases by a random amount, " +
+				"until the bleeding eventually stops.\n" +
+				"\n" +
+				"The bleeding can currently deal " + level + " max damage.";
+	}
 }

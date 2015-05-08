@@ -116,7 +116,7 @@ public class Viscosity extends Glyph {
 		
 		@Override
 		public String toString() {
-			return Utils.format( "Defered damage (%d)", damage );
+			return Utils.format( "Defered damage", damage );
 		}
 		
 		@Override
@@ -145,6 +145,16 @@ public class Viscosity extends Glyph {
 			}
 			
 			return true;
+		}
+
+		@Override
+		public String desc() {
+			return "While your armor's glyph has protected you from damage, it seems to be slowly paying you back for it.\n" +
+					"\n" +
+					"Damage is being dealt to you over time instead of immediately. " +
+					"You will take one damage per turn until there is no damage left.\n" +
+					"\n" +
+					"There is " + damage + " deffered damage left.";
 		}
 	}
 }

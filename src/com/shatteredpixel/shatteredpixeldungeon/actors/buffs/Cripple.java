@@ -36,4 +36,13 @@ public class Cripple extends FlavourBuff {
 	public String toString() {
 		return "Crippled";
 	}
+
+	@Override
+	public String desc() {
+		return "You're pretty sure legs aren't meant to bend that way.\n" +
+				"\n" +
+				"Crippled halves movement speed, making moving a tile usually take two turns instead of one.\n" +
+				"\n" +
+				"This cripple will last for " + dispTurns() + ".";
+	}
 }

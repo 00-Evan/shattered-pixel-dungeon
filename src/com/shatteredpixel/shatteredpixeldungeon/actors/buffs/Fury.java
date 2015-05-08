@@ -47,4 +47,13 @@ public class Fury extends Buff {
 	public String toString() {
 		return "Furious";
 	}
+
+	@Override
+	public String desc() {
+		return "You are angry, enemies won't like you when you're angry.\n" +
+				"\n" +
+				"A great rage burns within you, increasing the damage you deal with physical attacks by 50%. \n" +
+				"\n" +
+				"This rage will last as long as you are injured below 40% health.\n";
+	}
 }

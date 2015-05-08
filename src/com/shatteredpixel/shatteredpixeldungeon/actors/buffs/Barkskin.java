@@ -60,4 +60,14 @@ public class Barkskin extends Buff {
 	public String toString() {
 		return "Barkskin";
 	}
+
+	@Override
+	public String desc() {
+		return "Your skin is hardened, it feels rough and solid like bark.\n" +
+				"\n" +
+				"The hardened skin increases your effective armor, allowing you to better defend against physical attack. " +
+				"The armor bonus will decrease by one point each turn until it expires.\n" +
+				"\n" +
+				"Your armor is currently increased by " + level +".";
+	}
 }

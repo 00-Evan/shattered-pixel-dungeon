@@ -84,6 +84,10 @@ public class Earthroot extends Plant {
 		
 		private int pos;
 		private int level;
+
+		{
+			type = buffType.POSITIVE;
+		}
 		
 		@Override
 		public boolean attachTo( Char target ) {
@@ -123,9 +127,21 @@ public class Earthroot extends Plant {
 		
 		@Override
 		public String toString() {
-            return Utils.format("Herbal armor (%d)", level);
+            return Utils.format("Herbal armor", level);
 		}
-		
+
+		@Override
+		public String desc() {
+			return "A kind of natural, immobile armor is protecting you. " +
+					"The armor forms plates of bark and twine, wrapping around your body.\n" +
+					"\n" +
+					"This herbal armor will absorb 50% of all physical damage you take, " +
+					"until it eventually runs out of durability and collapses. The armor is also immobile, " +
+					"if you attempt to move it will break apart and be lost.\n" +
+					"\n" +
+					"The herbal armor can absorb " + level + " more damage before breaking.";
+		}
+
 		private static final String POS		= "pos";
 		private static final String LEVEL	= "level";
 		

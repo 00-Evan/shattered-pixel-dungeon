@@ -45,4 +45,14 @@ public class GasesImmunity extends FlavourBuff {
         immunities.add( StenchGas.class );
 		immunities.add( VenomGas.class );
 	}
+
+	@Override
+	public String desc() {
+		return "some strange force is filtering out the air around you, it's not causing you any harm, but it blocks " +
+				"out everything but air so effectively you can't even smell anything!\n" +
+				"\n" +
+				"You are immune to the effects of all gasses while this buff lasts.\n" +
+				"\n" +
+				"You will be immune for " + dispTurns() + ".";
+	}
 }

@@ -63,5 +63,16 @@ public class Combo extends Buff {
 		detach();
 		return true;
 	}
-	
+
+	@Override
+	public String desc() {
+		return "Through building momentum, the gladiator deals bonus damage.\n" +
+				"\n" +
+				"Your combo will keep building with quick attacks that do not miss. " +
+				"The higher your combo gets, the faster your attacks will need to be. " +
+				"failing to land a hit quickly enough will reset the combo.\n" +
+				"\n" +
+				(count <= 2 ? "Your combo has not built up enough to give you bonus damage yet." :
+				"Your combo is currently giving you " + ((count - 2) / 5f) + " % bonus damage.");
+	}
 }

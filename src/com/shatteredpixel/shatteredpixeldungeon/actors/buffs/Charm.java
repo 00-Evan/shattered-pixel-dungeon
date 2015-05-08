@@ -58,4 +58,14 @@ public class Charm extends FlavourBuff {
 		Resistance r = ch.buff( Resistance.class );
 		return r != null ? r.durationFactor() : 1;
 	}
+
+	@Override
+	public String desc() {
+		return "A charm is manipulative magic that can make enemies temporarily adore eachother.\n" +
+				"\n" +
+				"Characters affected by charm are unable to directly attack the enemy they are charmed by. " +
+				"Attacking other targets is still possible however.\n" +
+				"\n" +
+				"The charm will last for " + dispTurns() + ".";
+	}
 }
