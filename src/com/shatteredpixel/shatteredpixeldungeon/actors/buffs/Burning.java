@@ -72,13 +72,9 @@ public class Burning extends Buff implements Hero.Doom {
 		
 		if (target.isAlive()) {
 			
-			if (target instanceof Hero) {
-				Buff.prolong( target, Light.class, TICK * 1.01f );
-			}
-			
 			target.damage( Random.Int( 1, 5 ), this );
 			Buff.detach( target, Chill.class);
-			
+
 			if (target instanceof Hero) {
 
 				Hero hero = (Hero)target;
