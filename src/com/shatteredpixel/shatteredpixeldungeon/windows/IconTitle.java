@@ -45,7 +45,7 @@ public class IconTitle extends Component {
 
     public IconTitle( Item item ) {
         this(
-                new ItemSprite( item.image(), item.glowing() ),
+                new ItemSprite( item ),
                 Utils.capitalize( item.toString() ) );
 
 	}

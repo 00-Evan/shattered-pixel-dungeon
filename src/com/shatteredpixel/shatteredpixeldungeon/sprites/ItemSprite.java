@@ -59,7 +59,13 @@ public class ItemSprite extends MovieClip {
 	}
 	
 	public ItemSprite( Item item ) {
-		this( item.image(), item.glowing() );
+		super(Assets.ITEMS);
+
+		if (film == null) {
+			film = new TextureFilm( texture, SIZE, SIZE );
+		}
+
+		view (item);
 	}
 	
 	public ItemSprite( int image, Glowing glowing ) {
@@ -69,21 +75,21 @@ public class ItemSprite extends MovieClip {
 			film = new TextureFilm( texture, SIZE, SIZE );
 		}
 		
-		view( image, glowing );
+		view(image, glowing);
 	}
 	
 	public void originToCenter() {
-		origin.set(SIZE / 2 );
+		origin.set(SIZE / 2);
 	}
 	
 	public void link() {
-		link( heap );
+		link(heap);
 	}
 	
 	public void link( Heap heap ) {
 		this.heap = heap;
 		view( heap.image(), heap.glowing() );
-		place( heap.pos );
+		place(heap.pos);
 	}
 	
 	@Override
@@ -119,7 +125,7 @@ public class ItemSprite extends MovieClip {
 		dropInterval = DROP_INTERVAL;
 		
 		speed.set( 0, -100 );
-		acc.set( 0, -speed.y / DROP_INTERVAL * 2 );
+		acc.set(0, -speed.y / DROP_INTERVAL * 2);
 		
 		if (visible && heap != null && heap.peek() instanceof Gold) {
 			CellEmitter.center( heap.pos ).burst( Speck.factory( Speck.COIN ), 5 );
@@ -137,10 +143,14 @@ public class ItemSprite extends MovieClip {
 			float py = y;		
 			drop();
 			
-			place( from );
+			place(from);
 	
-			speed.offset( (px-x) / DROP_INTERVAL, (py-y) / DROP_INTERVAL );
+			speed.offset((px - x) / DROP_INTERVAL, (py - y) / DROP_INTERVAL);
 		}
+	}
+
+	public ItemSprite view(Item item){
+		return view(item.image(), item.glowing());
 	}
 	
 	public ItemSprite view( int image, Glowing glowing ) {
