@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.shatteredpixel.shatteredpixeldungeon"
-	android:versionCode="38"
-	android:versionName="0.2.4d"
+	android:versionCode="39"
+	android:versionName="0.3.0-BETA"
 	android:installLocation="auto">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
