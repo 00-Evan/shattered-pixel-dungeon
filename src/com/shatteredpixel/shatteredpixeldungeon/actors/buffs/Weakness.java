@@ -63,4 +63,13 @@ public class Weakness extends FlavourBuff {
 		Resistance r = ch.buff( Resistance.class );
 		return r != null ? r.durationFactor() * DURATION : DURATION;
 	}
+
+	@Override
+	public String desc() {
+		return "Your gear suddenly feels a lot heavier.\n" +
+				"\n" +
+				"Weakening magic is affecting you, reducing your effective strength by 2 points.\n" +
+				"\n" +
+				"This weakness will last for " + dispTurns() + ".";
+	}
 }

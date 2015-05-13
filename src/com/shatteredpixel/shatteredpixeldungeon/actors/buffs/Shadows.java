@@ -96,5 +96,15 @@ public class Shadows extends Invisibility {
 	public String toString() {
 		return "Shadowmelded";
 	}
-	
+
+	@Override
+	public String desc() {
+		return "You are blended into the shadows around you, granting you invisibility and slowing your metabolism.\n" +
+				"\n" +
+				"While you are invisible enemies are unable to attack or follow you. " +
+				"Most physical attacks and magical effects (such as scrolls and wands) will immediately cancel invisibility. " +
+				"Additionally, while shadowmelded, your rate of hunger is slowed.\n" +
+				"\n" +
+				"You will remain shadowmelded until you leave the shadows or an enemy comes into contact with you.";
+	}
 }

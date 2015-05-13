@@ -59,6 +59,16 @@ public class ToxicImbue extends Buff {
         return "Imbued with Toxicity";
     }
 
+    @Override
+    public String desc() {
+        return "You are imbued with poisonous energy!\n" +
+                "\n" +
+                "As you move around toxic gas will constantly billow forth from you, damaging your enemies. " +
+                "You are immune to toxic gas and poison for the duration of the effect.\n" +
+                "\n" +
+                "You are imbued for " + dispTurns() + ".";
+    }
+
     {
         immunities.add( ToxicGas.class );
         immunities.add( Poison.class );

@@ -71,6 +71,16 @@ public class FireImbue extends Buff {
         return "Imbued with Fire";
     }
 
+    @Override
+    public String desc() {
+        return "You are imbued with the power of fire!\n" +
+                "\n" +
+                "All physical attacks will have a chance to light enemies ablaze. " +
+                "Additionally, you are completely immune to the effects of fire.\n" +
+                "\n" +
+                "You are imbued for " + dispTurns() + ".";
+    }
+
     {
         immunities.add( Burning.class );
     }

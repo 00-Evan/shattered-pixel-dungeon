@@ -64,7 +64,17 @@ public class Invisibility extends FlavourBuff {
 	public String toString() {
 		return "Invisible";
 	}
-	
+
+	@Override
+	public String desc() {
+		return "You are completely blended into the surrounding terrain, making you impossible to see.\n" +
+				"\n" +
+				"While you are invisible enemies are unable to attack or follow you. " +
+				"Physical attacks and magical effects (such as scrolls and wands) will immediately cancel invisibility.\n" +
+				"\n" +
+				"This invisibility will last for " + dispTurns() + ".";
+	}
+
 	public static void dispel() {
 		Invisibility buff = Dungeon.hero.buff( Invisibility.class );
 		if (buff != null) {

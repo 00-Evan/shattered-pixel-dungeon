@@ -30,6 +30,15 @@ public class EarthImbue extends FlavourBuff {
         return "Imbued with Earth";
     }
 
+    @Override
+    public String desc() {
+        return "You are inbued with the power of earth!\n" +
+                "\n" +
+                "All physical attacks will command roots to lock the enemy in place while the effect lasts.\n" +
+                "\n" +
+                "You are imbued for " + dispTurns() + ".";
+    }
+
     {
         immunities.add( Paralysis.class );
         immunities.add( Roots.class );

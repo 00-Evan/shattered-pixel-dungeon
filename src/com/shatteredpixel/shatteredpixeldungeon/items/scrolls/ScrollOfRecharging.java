@@ -91,5 +91,13 @@ public class ScrollOfRecharging extends Scroll {
 			return Math.min(1f, this.cooldown());
 		}
 
+		@Override
+		public String desc() {
+			return "Energy is coursing through you, improving the rate that your wands and staffs charge.\n" +
+					"\n" +
+					"Each turn this buff will increase current charge by one quarter, in addition to regular recharge. \n" +
+					"\n" +
+					"The recharging will last for " + dispTurns() + ".";
+		}
 	}
 }

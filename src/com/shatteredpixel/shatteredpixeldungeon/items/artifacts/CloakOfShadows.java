@@ -242,6 +242,16 @@ public class CloakOfShadows extends Artifact {
         }
 
         @Override
+        public String desc() {
+            return "Your cloak of shadows is granting you invisibility while you are shrouded by it.\n" +
+                    "\n" +
+                    "While you are invisible enemies are unable to attack or follow you. " +
+                    "Most physical attacks and magical effects (such as scrolls and wands) will immediately cancel invisibility.\n" +
+                    "\n" +
+                    "You will remain cloaked until it is cancelled or your cloak runs out of charge.";
+        }
+
+        @Override
         public void detach() {
             if (target.invisible > 0)
                 target.invisible--;
