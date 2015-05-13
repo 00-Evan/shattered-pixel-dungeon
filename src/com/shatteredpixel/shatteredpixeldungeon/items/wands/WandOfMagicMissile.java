@@ -43,30 +43,12 @@ import java.util.ArrayList;
 public class WandOfMagicMissile extends Wand {
 
 	public static final String AC_DISENCHANT	= "DISENCHANT";
-	
-	private static final String TXT_SELECT_WAND	= "Select a wand to upgrade";
-	
-	private static final String TXT_DISENCHANTED = 
-		"you disenchanted the Wand of Magic Missile and used its essence to upgrade your %s";
-	
-	private static final float TIME_TO_DISENCHANT	= 2f;
-	
-	private boolean disenchantEquipped;
-	
+
 	{
 		name = "Wand of Magic Missile";
 		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
 
         bones = false;
-	}
-	
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		if (level > 0) {
-			actions.add( AC_DISENCHANT );
-		}
-		return actions;
 	}
 	
 	@Override
@@ -94,29 +76,6 @@ public class WandOfMagicMissile extends Wand {
 		partialCharge += ((maxCharges - curCharges)/20f)*staff.level;
 		SpellSprite.show(attacker, SpellSprite.CHARGE);
 	}
-
-	@Override
-	public void execute( Hero hero, String action ) {
-		if (action.equals( AC_DISENCHANT )) {
-			
-			if (hero.belongings.weapon == this) {
-				disenchantEquipped = true;
-				hero.belongings.weapon = null;
-				updateQuickslot();
-			} else {
-				disenchantEquipped = false;
-				detach( hero.belongings.backpack );
-			}
-			
-			curUser = hero;
-			GameScene.selectItem( itemSelector, WndBag.Mode.WAND, TXT_SELECT_WAND );
-			
-		} else {
-		
-			super.execute( hero, action );
-			
-		}
-	}
 	
 	protected int initialCharges() {
 		return 4;
@@ -127,34 +86,4 @@ public class WandOfMagicMissile extends Wand {
 		return
 			"This wand launches missiles of pure magical energy, dealing moderate damage to a target creature.";
 	}
-	
-	private final WndBag.Listener itemSelector = new WndBag.Listener() {
-		@Override
-		public void onSelect( Item item ) {
-			if (item != null) {
-				
-				Sample.INSTANCE.play( Assets.SND_EVOKE );
-				ScrollOfUpgrade.upgrade( curUser );
-				evoke( curUser );
-				
-				GLog.w( TXT_DISENCHANTED, item.name() );
-
-                Dungeon.quickslot.clearItem(WandOfMagicMissile.this);
-                WandOfMagicMissile.this.updateQuickslot();
-				
-				item.upgrade();
-				curUser.spendAndNext( TIME_TO_DISENCHANT );
-				
-				Badges.validateItemLevelAquired( item );
-				
-			} else {
-				if (disenchantEquipped) {
-					curUser.belongings.weapon = WandOfMagicMissile.this;
-					WandOfMagicMissile.this.updateQuickslot();
-				} else {
-					collect( curUser.belongings.backpack );
-				}
-			}
-		}
-	};
 }

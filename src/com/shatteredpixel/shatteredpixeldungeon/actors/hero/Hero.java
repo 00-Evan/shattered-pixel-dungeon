@@ -869,7 +869,7 @@ public class Hero extends Char {
 			}
 			break;
 		case BATTLEMAGE:
-			if (wep instanceof Wand || wep instanceof MagesStaff) {
+			if (wep instanceof MagesStaff) {
 				//gives wands 50% charge
 				Buff.affect( this, ScrollOfRecharging.Recharging.class, 2f);
 				ScrollOfRecharging.charge( this );

@@ -44,7 +44,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public abstract class Wand extends KindOfWeapon {
+public abstract class Wand extends Item {
 
 	private static final int USAGES_TO_KNOW    = 10;
 
@@ -78,35 +78,14 @@ public abstract class Wand extends KindOfWeapon {
 		defaultAction = AC_ZAP;
 	}
 	
-	public Wand() {
-		super();
-		
-		calculateDamage();
-
-	}
-	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if (curCharges > 0 || !curChargeKnown) {
 			actions.add( AC_ZAP );
 		}
-		if (hero.heroClass != HeroClass.MAGE) {
-			actions.remove( AC_EQUIP );
-			actions.remove( AC_UNEQUIP );
-		}
+
 		return actions;
-	}
-	
-	@Override
-	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
-        onDetach();
-        return super.doUnequip( hero, collect, single );
-	}
-	
-	@Override
-	public void activate( Hero hero ) {
-		charge( hero );
 	}
 	
 	@Override
@@ -196,16 +175,7 @@ public abstract class Wand extends KindOfWeapon {
 	
 	@Override
 	public String info() {
-		StringBuilder info = new StringBuilder(  desc() );
-		if (Dungeon.hero.heroClass == HeroClass.MAGE) {
-			info.append( "\n\n" );
-			if (levelKnown) {
-				info.append( String.format( TXT_DAMAGE, MIN + (MAX - MIN) / 2 ) );
-			} else {
-				info.append(  String.format( TXT_WEAPON ) );
-			}
-		}
-		return info.toString();
+		return desc();
 	}
 	
 	@Override
@@ -247,8 +217,6 @@ public abstract class Wand extends KindOfWeapon {
 	public void updateLevel() {
 		maxCharges = Math.min( initialCharges() + level, 10 );
 		curCharges = Math.min( curCharges, maxCharges );
-		
-		calculateDamage();
 	}
 	
 	protected int initialCharges() {
@@ -257,12 +225,6 @@ public abstract class Wand extends KindOfWeapon {
 
 	protected int chargesPerCast() {
 		return 1;
-	}
-	
-	private void calculateDamage() {
-		int tier = 1 + level / 3;
-		MIN = tier;
-		MAX = (tier * tier - tier + 10) / 2 + level;
 	}
 	
 	protected void fx( Ballistica bolt, Callback callback ) {
@@ -381,8 +343,7 @@ public abstract class Wand extends KindOfWeapon {
 					Invisibility.dispel();
 					
 				} else {
-					
-					curUser.spendAndNext( TIME_TO_ZAP );
+
 					GLog.w( TXT_FIZZLES );
 
 				}

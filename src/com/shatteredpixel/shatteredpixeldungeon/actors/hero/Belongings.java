@@ -75,10 +75,20 @@ public class Belongings implements Iterable<Item> {
 		
 		backpack.clear();
 		backpack.restoreFromBundle( bundle );
-		
-		weapon = (KindOfWeapon)bundle.get( WEAPON );
-		if (weapon != null) {
-			weapon.activate( owner );
+
+		if (bundle.get( WEAPON ) instanceof Wand){
+			//handles the case of an equipped wand from pre-0.3.0
+			Wand item = (Wand) bundle.get(WEAPON);
+			//try to add the wand to inventory
+			if (!item.collect(backpack)){
+				//if it's too full, shove it in anyway
+				backpack.items.add(item);
+			}
+		} else {
+			weapon = (KindOfWeapon) bundle.get(WEAPON);
+			if (weapon != null) {
+				weapon.activate(owner);
+			}
 		}
 		
 		armor = (Armor)bundle.get( ARMOR );

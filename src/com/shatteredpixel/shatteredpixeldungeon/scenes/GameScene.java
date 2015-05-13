@@ -21,12 +21,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.watabou.noosa.Camera;
@@ -330,6 +332,17 @@ public class GameScene extends PixelScene {
 				}
 			}
 			Dungeon.droppedItems.remove( Dungeon.depth );
+		}
+
+
+		//logic for pre 0.3.0 saves, need to give mages a staff.
+		if (Dungeon.version <= 38 && Dungeon.hero.heroClass == HeroClass.MAGE){
+			MagesStaff staff = new MagesStaff();
+			staff.identify();
+			GLog.p("You have been given a mage's staff, imbue it with a wand!");
+			if (!staff.collect(Dungeon.hero.belongings.backpack)){
+				Dungeon.level.drop(staff, Dungeon.hero.pos);
+			}
 		}
 
 		Camera.main.target = hero;
