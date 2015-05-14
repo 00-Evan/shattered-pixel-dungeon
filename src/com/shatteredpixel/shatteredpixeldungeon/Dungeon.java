@@ -133,6 +133,7 @@ public class Dungeon {
 	
 	public static void init() {
 
+		version = Game.versionCode;
         challenges = ShatteredPixelDungeon.challenges();
 
         Generator.initArtifacts();
