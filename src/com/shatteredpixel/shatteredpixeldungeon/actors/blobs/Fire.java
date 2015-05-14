@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
 public class Fire extends Blob {
@@ -91,6 +92,11 @@ public class Fire extends Blob {
 		Heap heap = Dungeon.level.heaps.get( pos );
 		if (heap != null) {
 			heap.burn();
+		}
+
+		Plant plant = Dungeon.level.plants.get( pos );
+		if (plant != null){
+			plant.wither();
 		}
 	}
 	

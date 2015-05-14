@@ -680,6 +680,7 @@ public abstract class Level implements Bundlable {
                 map[pos] == Terrain.EMBERS ||
                 map[pos] == Terrain.EMPTY_DECO) {
             map[pos] = Terrain.GRASS;
+	        flamable[pos] = true;
             GameScene.updateMap( pos );
         }
 		
