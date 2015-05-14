@@ -20,6 +20,8 @@ package com.shatteredpixel.shatteredpixeldungeon.effects.particles;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.noosa.particles.Emitter.Factory;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 
 public class BloodParticle extends PixelParticle.Shrinking {
 	
@@ -27,6 +29,17 @@ public class BloodParticle extends PixelParticle.Shrinking {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((BloodParticle)emitter.recycle( BloodParticle.class )).reset( x, y );
+		}
+	};
+
+	public static final Emitter.Factory BURST = new Factory() {
+		@Override
+		public void emit( Emitter emitter, int index, float x, float y ) {
+			((BloodParticle)emitter.recycle( BloodParticle.class )).resetBurst( x, y );
+		}
+		@Override
+		public boolean lightMode() {
+			return true;
 		}
 	};
 	
@@ -49,6 +62,18 @@ public class BloodParticle extends PixelParticle.Shrinking {
 		
 		size = 4;
 		speed.set( 0 );
+	}
+
+	public void resetBurst( float x, float y ) {
+		revive();
+
+		this.x = x;
+		this.y = y;
+
+		speed.polar( Random.Float(PointF.PI2), Random.Float( 16, 32 ) );
+		size = 5;
+
+		left = 0.5f;
 	}
 	
 	@Override

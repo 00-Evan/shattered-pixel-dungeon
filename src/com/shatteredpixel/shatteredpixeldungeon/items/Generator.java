@@ -127,10 +127,10 @@ public class Generator {
 			WandOfFrost.class,
 			WandOfPrismaticLight.class,
 			//WandOfWarding.class,
-			//WandOfTransfusion.class,
+			WandOfTransfusion.class,
 			//WandOfCorruption.class,
 			WandOfRegrowth.class };
-		Category.WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3, 3, 3,*/ 3 };
+		Category.WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, /*3,*/ 3 };
 		
 		Category.WEAPON.classes = new Class<?>[]{ 
 			Dagger.class, 

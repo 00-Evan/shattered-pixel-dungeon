@@ -28,7 +28,8 @@ public class Effects {
 		WOUND,
 		EXCLAMATION,
 		DEATH_RAY,
-		LIGHT_RAY
+		LIGHT_RAY,
+		HEALTH_RAY
 	};
 	
 	public static Image get( Type type ) {
@@ -51,6 +52,9 @@ public class Effects {
 				break;
 			case LIGHT_RAY:
 				icon.frame(icon.texture.uvRect(16, 23, 32, 31));
+				break;
+			case HEALTH_RAY:
+				icon.frame(icon.texture.uvRect(16, 30, 32, 38));
 				break;
 		}
 		return icon;
