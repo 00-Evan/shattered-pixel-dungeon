@@ -28,6 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.Bundle;
 
 public class Blob extends Actor {
+
+	{
+		actPriority = 1; //take prioerity over mobs, but not the hero
+	}
 	
 	public static final int WIDTH	= Level.WIDTH;
 	public static final int HEIGHT	= Level.HEIGHT;

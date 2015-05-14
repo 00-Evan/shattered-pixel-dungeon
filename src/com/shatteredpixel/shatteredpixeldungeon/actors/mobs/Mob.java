@@ -47,6 +47,10 @@ import com.watabou.utils.Random;
 import java.util.HashSet;
 
 public abstract class Mob extends Char {
+
+	{
+		actPriority = 2; //hero gets priority over mobs.
+	}
 	
 	private static final String	TXT_DIED	= "You hear something died in the distance";
 	

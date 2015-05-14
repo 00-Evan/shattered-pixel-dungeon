@@ -118,6 +118,10 @@ import java.util.Collections;
 import java.util.HashSet;
 
 public class Hero extends Char {
+
+	{
+		actPriority = 0; //acts at priority 0, baseline for the rest of behaviour.
+	}
 	
 	private static final String TXT_LEAVE = "One does not simply leave Pixel Dungeon.";
 	

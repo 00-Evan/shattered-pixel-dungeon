@@ -445,7 +445,12 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public Actor respawner() {
-		return new Actor() {	
+		return new Actor() {
+
+			{
+				actPriority = 1; //as if it were a buff.
+			}
+
 			@Override
 			protected boolean act() {
 				if (mobs.size() < nMobs()) {

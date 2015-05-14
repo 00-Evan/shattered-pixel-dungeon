@@ -31,6 +31,10 @@ public class Pushing extends Actor {
 	private int to;
 	
 	private Effect effect;
+
+	{
+		actPriority = Integer.MIN_VALUE; //it's a visual effect, gets priority no matter what
+	}
 	
 	public Pushing( Char ch, int from, int to ) {
 		sprite = ch.sprite;
