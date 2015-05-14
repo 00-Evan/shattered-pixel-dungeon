@@ -31,17 +31,17 @@ public enum HeroSubClass {
 		"significantly increasing his damage output." ),
 	
 	WARLOCK( "warlock", 
-		"After killing an enemy the _Warlock_ consumes its soul. " +
-		"It heals his wounds and satisfies his hunger." ),
+		"Normal food does not satisfy the _Warlock_. " +
+		"Instead, after killing an enemy, he consumes its soul to heal his wounds and satisfy hunger." ),
 	BATTLEMAGE( "battlemage", 
-		"When fighting with a wand in his hands, the _Battlemage_ inflicts additional damage depending " +
-		"on the current number of charges. Every successful hit restores 1 charge to this wand." ),
+		"When fighting with his staff, the _Battlemage_ conjures bonus effects depending on the wand " +
+		"his staff is imbued with. His staff will also gain charge through combat." ),
 	
 	ASSASSIN( "assassin", 
 		"When performing a surprise attack, the _Assassin_ inflicts additional damage to his target." ),
 	FREERUNNER( "freerunner", 
 		"The _Freerunner_ moves faster when he unencumbered and not starving, " +
-				"if he is invisible, this speed boost is much stronger." ),
+		"if he is invisible, this speed boost is much stronger." ),
 		
 	SNIPER( "sniper", 
 		"_Snipers_ are able to detect weak points in an enemy's armor, " +
