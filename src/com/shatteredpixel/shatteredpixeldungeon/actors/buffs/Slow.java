@@ -39,6 +39,15 @@ public class Slow extends FlavourBuff {
 		return "Slowed";
 	}
 
+	@Override
+	public String desc() {
+		return "Slowing magic affects the target's rate of time, to them everything is moving super-fast.\n" +
+				"\n" +
+				"A slowed character performs all actions in twice the amount of time they would normally take.\n" +
+				"\n" +
+				"This slow will last for " + dispTurns() + ".";
+	}
+
 	public static float duration( Char ch ) {
 		Resistance r = ch.buff( Resistance.class );
 		return r != null ? r.durationFactor() * DURATION : DURATION;

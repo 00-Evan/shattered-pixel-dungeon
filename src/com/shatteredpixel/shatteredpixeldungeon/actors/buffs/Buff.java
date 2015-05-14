@@ -81,8 +81,8 @@ public class Buff extends Actor {
 	}
 
 	//to handle the common case of showing how many turns are remaining in a buff description.
-	protected String dispTurns() {
-		return cooldown() == 1 ? "1 more turn" : new DecimalFormat("#.##").format(cooldown()) + " more turns";
+	protected String dispTurns(float input){
+		return input == 1 ? "1 more turn" : new DecimalFormat("#.##").format(input) + " more turns";
 	}
 
 	public static<T extends Buff> T append( Char target, Class<T> buffClass ) {

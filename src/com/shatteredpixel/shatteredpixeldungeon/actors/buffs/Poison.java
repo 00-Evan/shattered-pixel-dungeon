@@ -67,6 +67,15 @@ public class Poison extends Buff implements Hero.Doom {
 	}
 
 	@Override
+	public String desc() {
+		return "Poison works its way through the body, slowly impairing its internal functioning.\n" +
+				"\n" +
+				"Poison deals damage each turn proportional to how long until it expires.\n" +
+				"\n" +
+				"This poison will last for " + dispTurns(left)  + ".";
+	}
+
+	@Override
 	public boolean attachTo(Char target) {
 		if (super.attachTo(target)){
 			CellEmitter.center(target.pos).burst( PoisonParticle.SPLASH, 5 );

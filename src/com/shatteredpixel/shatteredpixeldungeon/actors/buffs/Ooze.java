@@ -42,7 +42,16 @@ public class Ooze extends Buff {
 	public String toString() {
 		return "Caustic ooze";
 	}
-	
+
+	@Override
+	public String desc() {
+		return "This sticky acid clings to flesh, slowly melting it away.\n" +
+				"\n" +
+				"Ooze will deal consistent damage until it is washed off in water.\n" +
+				"\n" +
+				"Ooze does not expire on its own and must be removed with water.";
+	}
+
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {

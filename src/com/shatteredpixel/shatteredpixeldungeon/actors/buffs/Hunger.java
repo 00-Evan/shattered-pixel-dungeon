@@ -178,6 +178,24 @@ public class Hunger extends Buff implements Hero.Doom {
 	}
 
 	@Override
+	public String desc() {
+		String result;
+		if (level < STARVING) {
+			result = "You can feel your stomach calling out for food, but it's not too urgent yet.\n\n";
+		} else {
+			result = "You're so hungry it hurts.\n\n";
+		}
+
+		result += "Hunger slowly increases as you spend time in the dungeon, eventually you will begin to starve. " +
+				"While starving you will slowly lose health instead of regenerating it.\n" +
+				"\n" +
+				"Rationing is important! If you have health to spare starving isn't a bad idea if it means there will " +
+				"be more food later. Effective rationing can make food last a lot longer!\n\n";
+
+		return result;
+	}
+
+	@Override
 	public void onDeath() {
 
 		Badges.validateDeathFromHunger();

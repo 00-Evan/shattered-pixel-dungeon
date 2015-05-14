@@ -66,7 +66,7 @@ public class ToxicImbue extends Buff {
                 "As you move around toxic gas will constantly billow forth from you, damaging your enemies. " +
                 "You are immune to toxic gas and poison for the duration of the effect.\n" +
                 "\n" +
-                "You are imbued for " + dispTurns() + ".";
+                "You are imbued for " + dispTurns(left) + ".";
     }
 
     {

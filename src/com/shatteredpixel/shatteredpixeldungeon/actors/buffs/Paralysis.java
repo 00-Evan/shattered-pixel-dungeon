@@ -62,6 +62,16 @@ public class Paralysis extends FlavourBuff {
 		return "Paralysed";
 	}
 
+	@Override
+	public String desc() {
+		return "Oftentimes the worst thing to do is nothing at all.\n" +
+				"\n" +
+				"Paralysis completely halts all actions, forcing the target to wait until the effect wears off. " +
+				"The pain from taking damage  can also cause characters to snap out of paralysis.\n" +
+				"\n" +
+				"This paralysis will last for " + dispTurns() + ", or until it is resisted through pain.\n";
+	}
+
 	public static float duration( Char ch ) {
 		Resistance r = ch.buff( Resistance.class );
 		return r != null ? r.durationFactor() * DURATION : DURATION;

@@ -78,7 +78,7 @@ public class FireImbue extends Buff {
                 "All physical attacks will have a chance to light enemies ablaze. " +
                 "Additionally, you are completely immune to the effects of fire.\n" +
                 "\n" +
-                "You are imbued for " + dispTurns() + ".";
+                "You are imbued for " + dispTurns(left) + ".";
     }
 
     {

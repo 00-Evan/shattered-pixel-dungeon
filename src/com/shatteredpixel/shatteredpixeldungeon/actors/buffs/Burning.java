@@ -160,7 +160,7 @@ public class Burning extends Buff implements Hero.Doom {
 				"\n" +
 				"Additionally, the fire may ignite flammable terrain or items that it comes into contact with.\n" +
 				"\n" +
-				"The burning will last for " + dispTurns() + ", or until it is resisted or extinquished.";
+				"The burning will last for " + dispTurns(left) + ", or until it is resisted or extinquished.";
 	}
 
 	@Override

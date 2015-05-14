@@ -13,6 +13,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by debenhame on 23/04/2015.
  */
@@ -86,4 +88,14 @@ public class Chill extends FlavourBuff {
 		return "Chilled";
 	}
 
+	@Override
+	public String desc() {
+		return "Not quite frozen, but still much too cold.\n" +
+				"\n" +
+				"Chilled targets perform all actions more slowly, depending on how many turns are left in the effect. " +
+				"At it's worst, this is equivalent to being slowed.\n" +
+				"\n" +
+				"This chilled will last for " + dispTurns() + ", " +
+				"and is currently reducing speed by " + new DecimalFormat("#.##").format(speedFactor()*100f) + "%";
+	}
 }
