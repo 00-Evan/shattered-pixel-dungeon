@@ -74,8 +74,7 @@ public enum HeroClass {
 	};
 	
 	public static final String[] HUN_PERKS = {
-		"Huntresses start with 15 points of Health.",
-		"Huntresses start with a unique upgradeable boomerang.",
+		"Huntresses start with 15 points of Health and a unique upgradeable boomerang.",
 		"Huntresses are proficient with missile weapons, getting bonus damage from excess strength.",
 		"Huntresses are able to recover a single used missile weapon from each enemy.",
 		"Huntresses gain more health from dewdrops.",
