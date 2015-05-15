@@ -96,6 +96,6 @@ public class Chill extends FlavourBuff {
 				"At it's worst, this is equivalent to being slowed.\n" +
 				"\n" +
 				"This chilled will last for " + dispTurns() + ", " +
-				"and is currently reducing speed by " + new DecimalFormat("#.##").format(speedFactor()*100f) + "%";
+				"and is currently reducing speed by " + new DecimalFormat("#.##").format((1f-speedFactor())*100f) + "%";
 	}
 }
