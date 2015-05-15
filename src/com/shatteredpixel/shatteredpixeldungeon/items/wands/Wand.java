@@ -46,7 +46,7 @@ import com.watabou.utils.Random;
 
 public abstract class Wand extends Item {
 
-	private static final int USAGES_TO_KNOW    = 10;
+	private static final int USAGES_TO_KNOW    = 20;
 
 	public static final String AC_ZAP	= "ZAP";
 	
