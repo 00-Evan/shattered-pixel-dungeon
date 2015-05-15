@@ -22,7 +22,6 @@ import java.util.ArrayList;
 /**
  * Created by debenhame on 13/03/2015.
  */
-//TODO: lots of refinements to make here still.
 public class MagesStaff extends MeleeWeapon {
 
 	private Wand wand;
@@ -201,7 +200,7 @@ public class MagesStaff extends MeleeWeapon {
 
 	@Override
 	public String desc() {
-		String result = "Crafted by the mage himself, this extraordinary staff is one of a kind multi-purpose magical weapon.\n" +
+		String result = "Crafted by the mage himself, this extraordinary staff is a one of a kind multi-purpose magical weapon.\n" +
 				"\n" +
 				"Rather than having an innate magic in it, this staff is instead imbued with magical energy from a wand, permanently granting it new power.\n" +
 				"\n";
@@ -225,7 +224,7 @@ public class MagesStaff extends MeleeWeapon {
 		} else if (wand instanceof WandOfRegrowth){
 			result += "The staff flourishes and grows with natural energy from the wand it is imbued with.";
 		} else if (wand instanceof WandOfTransfusion){
-			result += "The staff Courses and Flows with life energy from the wand it is imbued with.";
+			result += "The staff courses and flows with life energy from the wand it is imbued with.";
 		}
 
 		return result;
@@ -237,7 +236,7 @@ public class MagesStaff extends MeleeWeapon {
 			if (item != null) {
 
 				if (!item.isIdentified()) {
-					GLog.w("You'll need to know more about this wand first.");
+					GLog.w("You'll need to identify this wand first.");
 					return;
 				} else if (item.cursed){
 					GLog.w("You can't use a cursed wand.");
