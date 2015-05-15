@@ -8,12 +8,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
@@ -32,11 +32,10 @@ public class MagesStaff extends MeleeWeapon {
 
 	private static final String TXT_SELECT_WAND	= "Select a wand to consume";
 
-	//TODO: decide on balancing
 	private static final float STAFF_SCALE_FACTOR = 0.75f;
 
 	{
-		name = "Mage's Staff";
+		name = "staff";
 		image = ItemSpriteSheet.MAGES_STAFF;
 
 		defaultAction = AC_ZAP;
@@ -94,9 +93,9 @@ public class MagesStaff extends MeleeWeapon {
 
 	@Override
 	public void proc(Char attacker, Char defender, int damage) {
-		super.proc(attacker, defender, damage);
 		if (wand != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE)
 			wand.onHit( this, attacker, defender, damage );
+		super.proc(attacker, defender, damage);
 	}
 
 	@Override
@@ -120,12 +119,15 @@ public class MagesStaff extends MeleeWeapon {
 
 		this.wand = null;
 
-		GLog.w("TODO");
-		enchant( null );
+		GLog.p("You imbue your staff with the " + wand.name());
+
+		if (enchantment != null) {
+			GLog.w("The conflicting magics erase the enchantment on your staff.");
+			enchant(null);
+		}
 
 		//syncs the level of the two items.
-		//TODO: decide on balancing for this
-		int targetLevel = Math.round((this.level*2 + wand.level)/3f);
+		int targetLevel = Math.max(this.level, wand.level);
 
 		int staffLevelDiff = targetLevel - this.level;
 		if (staffLevelDiff > 0)
@@ -138,8 +140,6 @@ public class MagesStaff extends MeleeWeapon {
 			wand.upgrade(wandLevelDiff);
 		else if (wandLevelDiff < 0)
 			wand.degrade(Math.abs(wandLevelDiff));
-
-		GLog.p("TODO");
 
 		this.wand = wand;
 		wand.identify();
@@ -173,7 +173,7 @@ public class MagesStaff extends MeleeWeapon {
 	@Override
 	public String name(){
 		if (wand == null)
-			return super.name();
+			return "mage's staff";
 		else {
 			String name = wand.name().replace("Wand", "Staff");
 			return enchantment == null ? name : enchantment.name( name );
@@ -196,30 +196,85 @@ public class MagesStaff extends MeleeWeapon {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		//TODO: error check here?
 		wand = (Wand) bundle.get(WAND);
+	}
+
+	@Override
+	public String desc() {
+		String result = "Crafted by the mage himself, this extraordinary staff is one of a kind multi-purpose magical weapon.\n" +
+				"\n" +
+				"Rather than having an innate magic in it, this staff is instead imbued with magical energy from a wand, permanently granting it new power.\n" +
+				"\n";
+
+		if (wand instanceof WandOfMagicMissile){
+			result += "The staff radiates consistent magical energy from the wand it is imbued with.";
+		} else if (wand instanceof WandOfFireblast){
+			result += "The staff burns and sizzles with fiery energy from the wand it is imbued with.";
+		} else if (wand instanceof WandOfLightning){
+			result += "The staff fizzes and crackles with electrical energy from the wand it is imbued with.";
+		} else if (wand instanceof WandOfDisintegration){
+			result += "The staff hums with deep and powerful energy from the wand it is imbued with.";
+		} else if (wand instanceof WandOfVenom){
+			result += "The staff drips and hisses with corrosive energy from the wand it is imbued with.";
+		} else if (wand instanceof WandOfPrismaticLight){
+			result += "The staff glows and shimmers with bright energy from the wand it is imbued with.";
+		} else if (wand instanceof WandOfFrost){
+			result += "The staff chills the air with the cold energy from the wand it is imbued with.";
+		} else if (wand instanceof WandOfBlastWave){
+			result += "The staff pops and crackles with explosive energy from the wand it is imbued with.";
+		} else if (wand instanceof WandOfRegrowth){
+			result += "The staff flourishes and grows with natural energy from the wand it is imbued with.";
+		} else if (wand instanceof WandOfTransfusion){
+			result += "The staff Courses and Flows with life energy from the wand it is imbued with.";
+		}
+
+		return result;
 	}
 
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
-		public void onSelect( Item item ) {
+		public void onSelect( final Item item ) {
 			if (item != null) {
 
-				Sample.INSTANCE.play( Assets.SND_EVOKE );
-				ScrollOfUpgrade.upgrade(curUser);
-				evoke( curUser );
+				if (!item.isIdentified()) {
+					GLog.w("You'll need to know more about this wand first.");
+					return;
+				} else if (item.cursed){
+					GLog.w("You can't use a cursed wand.");
+					return;
+				}
 
-				GLog.w( "TODO" );
+				GameScene.show(
+						new WndOptions("",
+								"Are you sure you want to imbue your staff with this " + item.name() + "?\n\n" +
+										"Your staff will inherit the highest level between it and the wand, " +
+										"and all magic currently affecting the staff will be lost.",
+								"Yes, i'm sure.",
+								"No, I changed my mind") {
+							@Override
+							protected void onSelect(int index) {
+								if (index == 0) {
+									Sample.INSTANCE.play(Assets.SND_EVOKE);
+									ScrollOfUpgrade.upgrade(curUser);
+									evoke(curUser);
 
-				Dungeon.quickslot.clearItem(item);
+									Dungeon.quickslot.clearItem(item);
 
-				item.detach( curUser.belongings.backpack );
+									item.detach(curUser.belongings.backpack);
 
-				imbueWand((Wand) item, curUser);
+									imbueWand((Wand) item, curUser);
 
-				curUser.spendAndNext( 2f );
+									curUser.spendAndNext(2f);
 
-				updateQuickslot();
+									updateQuickslot();
+								}
+							}
+
+							;
+						}
+				);
+
+
 
 			}
 		}
