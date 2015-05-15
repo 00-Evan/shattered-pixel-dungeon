@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -173,10 +174,10 @@ public abstract class Mob extends Char {
 		}
 
 		//resets target if: the target is dead, the target has been lost (wandering)
-		//or if the mob is amoked and targeting the hero (will try to target something else)
+		//or if the mob is amoked/corrupted and targeting the hero (will try to target something else)
 		if ( enemy != null &&
 				!enemy.isAlive() || state == WANDERING ||
-				(buff( Amok.class ) != null && enemy == Dungeon.hero ))
+				((buff( Amok.class ) != null || buff(Corruption.class) != null) && enemy == Dungeon.hero ))
 			enemy = null;
 
 		//if there is no current target, find a new one.
@@ -184,8 +185,8 @@ public abstract class Mob extends Char {
 
 			HashSet<Char> enemies = new HashSet<Char>();
 
-			//if the mob is amoked...
-			if ( buff(Amok.class) != null ) {
+			//if the mob is amoked or corrupted...
+			if ( buff(Amok.class) != null || buff(Corruption.class) != null) {
 
 				//try to find an enemy mob to attack first.
 				for (Mob mob : Dungeon.level.mobs)
@@ -199,8 +200,9 @@ public abstract class Mob extends Char {
 						enemies.add(mob);
 				if (enemies.size() > 0) return Random.element(enemies);
 
-				//if there is nothing, go for the hero.
-				return Dungeon.hero;
+				//if there is nothing, go for the hero, unless corrupted, then go for nothing.
+				if (buff(Corruption.class) != null) return null;
+				else return Dungeon.hero;
 
 			//if the mob is not amoked...
 			} else {
@@ -359,6 +361,14 @@ public abstract class Mob extends Char {
 				Surprise.hit(this);
 			}
 		}
+
+		//become aggro'd by a corrupted enemy
+		if (enemy.buff(Corruption.class) != null) {
+			aggro(enemy);
+			target = enemy.pos;
+			state = HUNTING;
+		}
+
 		return damage;
 	}
 

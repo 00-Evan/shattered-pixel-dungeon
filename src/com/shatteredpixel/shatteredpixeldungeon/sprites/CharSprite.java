@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
+import com.shatteredpixel.shatteredpixeldungeon.effects.DarkBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
@@ -56,7 +57,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	private static final float FLASH_INTERVAL	= 0.05f;	
 	
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED
 	}
 	
 	protected Animation idle;
@@ -75,6 +76,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Emitter levitation;
 	
 	protected IceBlock iceBlock;
+	protected DarkBlock darkBlock;
 	protected TorchHalo halo;
 	
 	protected EmoIcon emo;
@@ -282,6 +284,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			chilled = emitter();
 			chilled.pour(SnowParticle.FACTORY, 0.1f);
 			break;
+		case DARKENED:
+			darkBlock = DarkBlock.darken( this );
+			break;
 		}
 	}
 	
@@ -322,6 +327,13 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				chilled.on = false;
 				chilled = null;
 			}
+		//TODO: maybe add some particles here?
+		case DARKENED:
+			if (darkBlock != null) {
+				darkBlock.lighten();
+				darkBlock = null;
+			}
+			break;
 		}
 	}
 	

@@ -8,6 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
@@ -83,8 +84,7 @@ public class WandOfTransfusion extends Wand {
 		if (ch != null && ch instanceof Mob){
 
 			//heals an ally, or charmed/corrupted enemy
-			//TODO: add corruption here
-			if (((Mob) ch).ally || ch.buff(Charm.class) != null){
+			if (((Mob) ch).ally || ch.buff(Charm.class) != null || ch.buff(Corruption.class) != null){
 
 				int missingHP = ch.HT - ch.HP;
 				//heals 30%+3%*lvl missing HP.

@@ -69,7 +69,7 @@ public abstract class Wand extends Item {
 	
 	private boolean curChargeKnown = false;
 
-	private int usagesToKnow = USAGES_TO_KNOW;
+	protected int usagesToKnow = USAGES_TO_KNOW;
 
 	protected int collisionProperties = Ballistica.MAGIC_BOLT;
 

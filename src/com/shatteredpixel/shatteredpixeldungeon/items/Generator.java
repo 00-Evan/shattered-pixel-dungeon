@@ -130,7 +130,7 @@ public class Generator {
 			WandOfTransfusion.class,
 			//WandOfCorruption.class,
 			WandOfRegrowth.class };
-		Category.WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, /*3,*/ 3 };
+		Category.WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3 };
 		
 		Category.WEAPON.classes = new Class<?>[]{ 
 			Dagger.class, 
@@ -174,12 +174,12 @@ public class Generator {
             RingOfForce.class,
             RingOfFuror.class,
             RingOfHaste.class,
-            RingOfMagic.class,
+            //RingOfMagic.class,
             RingOfMight.class,
             RingOfSharpshooting.class,
             RingOfTenacity.class,
             RingOfWealth.class};
-		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, /*1,*/ 1, 1, 1, 1 };
 
         Category.ARTIFACT.classes = new Class<?>[]{
             CapeOfThorns.class,
