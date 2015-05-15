@@ -4,7 +4,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
  * Created by debenhame on 10/09/2014.
  */
 public class RingOfWealth extends Ring {
-    //TODO: monitor this one as it goes, super hard to balance so you'll need some feedback.
+
     {
         name = "Ring of Wealth";
     }

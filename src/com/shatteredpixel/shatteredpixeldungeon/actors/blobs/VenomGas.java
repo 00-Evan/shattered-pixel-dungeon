@@ -11,7 +11,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
  * Created by Evan on 12/04/2015.
  */
 public class VenomGas extends Blob {
-    //TODO: do I want mobs to avoid this gas?
 
     @Override
     protected void evolve() {

@@ -20,7 +20,6 @@ public class WandOfVenom extends Wand {
 
     {
         name = "Wand of Venom";
-        //TODO: final sprite
         image = ItemSpriteSheet.WAND_VENOM;
 
         collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;

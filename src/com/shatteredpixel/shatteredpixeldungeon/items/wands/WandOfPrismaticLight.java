@@ -37,7 +37,6 @@ public class WandOfPrismaticLight extends Wand {
 
     {
         name = "Wand of Prismatic Light";
-        //TODO: final sprite
         image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT;
 
         collisionProperties = Ballistica.MAGIC_BOLT;
@@ -75,7 +74,6 @@ public class WandOfPrismaticLight extends Wand {
     }
 
     private void affectTarget(Char ch){
-        //TODO: final balancing
         int dmg = Random.NormalIntRange(level, (int) (8+(level*(level/5f))));
 
         //two in (5+lvl) chance of failing

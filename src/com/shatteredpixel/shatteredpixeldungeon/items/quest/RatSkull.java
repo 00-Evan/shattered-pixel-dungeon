@@ -21,7 +21,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 //this one's still hanging around to support quests from old saves
-//TODO: remove this when saves from v0.2.1 are no longer supported
+//I may reuse it at some point.
 public class RatSkull extends Item {
 	
 	{
@@ -44,7 +44,7 @@ public class RatSkull extends Item {
 	@Override
 	public String info() {
 		return
-			"It could be a nice hunting trophy, but it smells too bad to place it on a wall.";
+			"A surprisingly large rat skull. It would make a great hunting trophy, if you had a wall to mount it on.";
 	}
 	
 	@Override
