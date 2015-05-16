@@ -6,6 +6,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -14,6 +19,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * Created by Evan on 14/05/2015.
@@ -26,11 +34,21 @@ public class WandOfCorruption extends Wand {
 		image = ItemSpriteSheet.WAND_CORRUPTION;
 	}
 
+	//FIXME: sloppy
+	private static HashSet<Class> bosses = new HashSet<Class>(Arrays.asList(
+			Goo.class, Tengu.class, DM300.class, King.class, Yog.class, Yog.BurningFist.class, Yog.RottingFist.class
+	));
+
 	@Override
 	protected void onZap(Ballistica bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
 
 		if (ch != null){
+
+			if (bosses.contains(ch.getClass())){
+				GLog.w("Bosses are immune to corruption");
+				return;
+			}
 
 			int basePower = 5 + 5*level;
 			int mobPower = Random.NormalIntRange(0, ch.HT+ch.HP);
