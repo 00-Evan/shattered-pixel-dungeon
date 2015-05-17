@@ -409,8 +409,9 @@ public class Dungeon {
 	public static void saveGame( String fileName ) throws IOException {
 		try {
 			Bundle bundle = new Bundle();
-			
-			bundle.put( VERSION, Game.versionCode );
+
+			version = Game.versionCode;
+			bundle.put( VERSION, version );
             bundle.put( CHALLENGES, challenges );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
