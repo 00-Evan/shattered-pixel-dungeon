@@ -2,6 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -40,10 +41,10 @@ public class CapeOfThorns extends Artifact {
             desc += "\n\n";
             if (cooldown == 0)
                 desc += "The cape feels reassuringly heavy on your shoulders. You're not sure if it will directly " +
-                        "help you in a fight, but it seems to be gaining energy from the physical damage you take.";
+                        "help you in a fight, but it seems to be gaining energy from the damage you take.";
             else
-                desc += "The cape seems to be releasing some stored energy, it is radiating power at all angles. " +
-                        "You feel very confident that the cape can protect you from nearby enemies right now.";
+                desc += "The cape seems to be releasing some stored energy, " +
+                        "it is radiating a protective power at all angles. ";
         }
 
         return desc;
@@ -65,7 +66,7 @@ public class CapeOfThorns extends Artifact {
             return true;
         }
 
-        public int proc(int damage, Char attacker){
+        public int proc(int damage, Char attacker, Char defender){
             if (cooldown == 0){
                 charge += damage*(0.5+level*0.05);
                 if (charge >= chargeCap){
@@ -80,7 +81,9 @@ public class CapeOfThorns extends Artifact {
                 int deflected = Random.NormalIntRange(0, damage);
                 damage -= deflected;
 
-                attacker.damage(deflected, this);
+                if (attacker != null && Level.adjacent(attacker.pos, defender.pos)) {
+                    attacker.damage(deflected, this);
+                }
 
                 exp+= deflected;
 

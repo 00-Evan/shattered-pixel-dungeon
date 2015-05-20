@@ -895,11 +895,6 @@ public class Hero extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		
-		CapeOfThorns.Thorns thorns = buff( CapeOfThorns.Thorns.class );
-		if (thorns != null) {
-			damage = thorns.proc(damage, enemy);
-		}
-		
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
 		if (armor != null) {
 			damage = armor.absorb( damage );
@@ -931,6 +926,11 @@ public class Hero extends Char {
             Buff.detach(this, Drowsy.class);
             GLog.w("The pain helps you resist the urge to sleep.");
         }
+
+		CapeOfThorns.Thorns thorns = buff( CapeOfThorns.Thorns.class );
+		if (thorns != null) {
+			dmg = thorns.proc(dmg, (src instanceof Char ? (Char)src : null),  this);
+		}
 
         int tenacity = 0;
         for (Buff buff : buffs(RingOfTenacity.Tenacity.class)) {
