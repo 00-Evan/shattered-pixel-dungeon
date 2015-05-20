@@ -46,7 +46,7 @@ public class Regrowth extends Blob {
 						Level.set( i, cur[i] > 9 ? Terrain.HIGH_GRASS : Terrain.GRASS );
 						mapUpdated = true;
 						
-					} else if (c == Terrain.GRASS && cur[i] > 9) {
+					} else if (c == Terrain.GRASS && cur[i] > 9 && Dungeon.level.plants.get(i) == null ) {
 						
 						Level.set( i, Terrain.HIGH_GRASS );
 						mapUpdated = true;
@@ -54,7 +54,7 @@ public class Regrowth extends Blob {
 					}
 					
 					Char ch = Actor.findChar( i );
-					if (ch != null) {
+					if (ch != null && cur[i] > 1) {
 						Buff.prolong( ch, Roots.class, TICK );
 					}
 				}

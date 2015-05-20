@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
@@ -1117,12 +1118,11 @@ public class Hero extends Char {
 				defenseSkill++;
 
 			} else {
-				//TODO: add blessed buff here
-
+				Buff.prolong(this, Bless.class, 30f);
 				this.exp = 0;
 
 				GLog.p( "You cannot grow stronger, but your experiences do give you a surge of power!" );
-				//TODO: holy SFX
+				Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			}
 			
 			if (lvl < 10) {
