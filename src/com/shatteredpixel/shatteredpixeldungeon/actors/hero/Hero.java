@@ -1243,7 +1243,11 @@ public class Hero extends Char {
         }
 
         if (ankh != null && ankh.isBlessed()) {
-            this.HP = HT;
+            this.HP = HT/4;
+
+	        //ensures that you'll get to act first in almost any case, to prevent reviving and then instantly dieing again.
+	        Buff.detach(this, Paralysis.class);
+	        spend(-cooldown());
 
             new Flare(8, 32).color(0xFFFF66, true).show(sprite, 2f);
             CellEmitter.get(this.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
