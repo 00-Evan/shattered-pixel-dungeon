@@ -128,7 +128,7 @@ public class Generator {
 			WandOfPrismaticLight.class,
 			//WandOfWarding.class,
 			WandOfTransfusion.class,
-			//WandOfCorruption.class,
+			WandOfCorruption.class,
 			WandOfRegrowth.class };
 		Category.WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3 };
 		
@@ -174,12 +174,12 @@ public class Generator {
             RingOfForce.class,
             RingOfFuror.class,
             RingOfHaste.class,
-            //RingOfMagic.class,
+            RingOfMagic.class, //currently removed from drop tables, pending rework
             RingOfMight.class,
             RingOfSharpshooting.class,
             RingOfTenacity.class,
             RingOfWealth.class};
-		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, /*1,*/ 1, 1, 1, 1 };
+		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 };
 
         Category.ARTIFACT.classes = new Class<?>[]{
             CapeOfThorns.class,
@@ -192,9 +192,11 @@ public class Generator {
             TimekeepersHourglass.class,
             UnstableSpellbook.class,
             AlchemistsToolkit.class, //currently removed from drop tables, pending rework.
-            DriedRose.class //starts with no chance of spawning, chance is set directly after beating ghost quest.
+            DriedRose.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
+	        LloydsBeacon.class
+	        /*EtherealChains.class*/
             };
-        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0 };
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0 /*, 1*/};
 		
 		Category.SEED.classes = new Class<?>[]{ 
 			Firebloom.Seed.class,
@@ -207,8 +209,9 @@ public class Generator {
             Rotberry.Seed.class,
 			BlandfruitBush.Seed.class,
             Dreamfoil.Seed.class,
-            Stormvine.Seed.class};
-		Category.SEED.probs = new float[]{ 3, 3, 3, 3, 3, 3, 3, 0, 1, 3, 3 };
+            Stormvine.Seed.class,
+			Starflower.class};
+		Category.SEED.probs = new float[]{ 12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1 };
 	}
 	
 	public static void reset() {
