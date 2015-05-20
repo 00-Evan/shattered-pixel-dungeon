@@ -8,7 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class Starflower extends Plant{
+public class Starflower extends Plant {
 
 	private static final String TXT_DESC = "TODO";
 
@@ -18,28 +18,28 @@ public class Starflower extends Plant{
 	}
 
 	@Override
-	public void activate(Char ch){
-		super.activate(ch);
+	public void activate(Char ch) {
+		super.activate( ch );
 
 		if (ch != null) Buff.prolong(ch, Bless.class, 30f);
 
-		if ( Random.Int(1) == 0 ) {
-			Dungeon.level.drop(new  Seed(),pos);
+		if (Random.Int(5) == 0){
+			Dungeon.level.drop(new Seed(), pos);
 		}
 	}
 
 	@Override
-	public String desc(){
-		return"";
+	public String desc() {
+		return "";
 	}
 
 	public static class Seed extends Plant.Seed{
 
 		{
-			plantName="Starflower";
+			plantName = "Starflower";
 
-			name= "Seed of " + plantName;
-			image=  ItemSpriteSheet.SEED_BLANDFRUIT;
+			name = "Seed of " + plantName;
+			image = ItemSpriteSheet.SEED_BLANDFRUIT;
 
 			plantClass = Starflower.class;
 			alchemyClass = PotionOfExperience.class;
@@ -47,7 +47,7 @@ public class Starflower extends Plant{
 
 		@Override
 		public String desc() {
-			return"";
+			return "";
 		}
 	}
 }
