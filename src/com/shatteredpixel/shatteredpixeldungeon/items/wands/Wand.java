@@ -23,16 +23,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMagic.Magic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -233,8 +230,8 @@ public abstract class Wand extends Item {
 	}
 
 	protected void wandUsed() {
-		usagesToKnow -= chargesPerCast();
-		curCharges -= chargesPerCast();
+		usagesToKnow -= cursed ? 1 : chargesPerCast();
+		curCharges -= cursed ? 1 : chargesPerCast();
 		if (!isIdentified() && usagesToKnow <= 0) {
 			identify();
 			GLog.w( TXT_IDENTIFY, name() );
@@ -256,8 +253,13 @@ public abstract class Wand extends Item {
 			}
 		}
 
-		upgrade( n );
-		
+		if (Random.Float() < 0.3f){
+			upgrade( Random.Int(n) );
+			cursed = true;
+			cursedKnown = false;
+		} else
+			upgrade(n);
+
 		return this;
 	}
 	
@@ -333,16 +335,25 @@ public abstract class Wand extends Item {
 				else
 					QuickSlotButton.target(Actor.findChar(cell));
 				
-				if (curWand.curCharges >= curWand.chargesPerCast()) {
+				if (curWand.curCharges >= (curWand.cursed ? 1 : curWand.chargesPerCast())) {
 					
 					curUser.busy();
 
-                    curWand.fx( shot, new Callback() {
-						public void call() {
-							curWand.onZap( shot );
-							curWand.wandUsed();
+					if (curWand.cursed){
+						CursedWand.cursedZap(curUser, new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT));
+						if (!curWand.cursedKnown){
+							curWand.cursedKnown = true;
+							GLog.n("This " + curItem.name() + " is cursed!");
 						}
-					} );
+						curWand.wandUsed();
+					} else {
+						curWand.fx(shot, new Callback() {
+							public void call() {
+								curWand.onZap(shot);
+								curWand.wandUsed();
+							}
+						});
+					}
 					
 					Invisibility.dispel();
 					
