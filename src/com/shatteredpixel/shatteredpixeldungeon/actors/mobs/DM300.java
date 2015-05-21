@@ -21,6 +21,7 @@ import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -133,6 +134,12 @@ public class DM300 extends Mob {
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth  ), pos ).sprite.drop();
 		
 		Badges.validateBossSlain();
+
+		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+		if (beacon != null) {
+			beacon.upgrade();
+			GLog.p("Your beacon grows stronger!");
+		}
 		
 		yell( "Mission failed. Shutting down." );
 	}

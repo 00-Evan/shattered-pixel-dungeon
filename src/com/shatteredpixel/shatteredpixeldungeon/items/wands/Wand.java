@@ -353,7 +353,7 @@ public abstract class Wand extends Item {
 		
 		@Override
 		public String prompt() {
-			return "Choose direction to zap";
+			return "Choose a location to zap";
 		}
 	};
 	

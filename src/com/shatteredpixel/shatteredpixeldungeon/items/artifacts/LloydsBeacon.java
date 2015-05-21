@@ -21,12 +21,19 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -35,10 +42,11 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 
 import java.util.ArrayList;
 
-public class LloydsBeacon extends Item {
+public class LloydsBeacon extends Artifact {
 
 	private static final String TXT_PREVENTING = 
 		"Strong magic aura of this place prevents you from using the lloyd's beacon!";
@@ -50,13 +58,17 @@ public class LloydsBeacon extends Item {
 		"The lloyd's beacon is successfully set at your current location, now you can return here anytime.";
 			
 	private static final String TXT_INFO =
-		"Lloyd's beacon is an intricate magic device, that allows you to return to a place you have already been.";
+		"Lloyd's beacon is an intricate magic device, which grants the user control of teleportation magics.\n" +
+		"\n" +
+		"The beacon can be used to return to a set location, but can also expel bursts of random teleportation " +
+		"magic once it has charged from being equipped. This magic can be directed at a target or at the user themselves.";
 	
 	private static final String TXT_SET = 
 		"\n\nThis beacon was set somewhere on the level %d of Pixel Dungeon.";
 	
 	public static final float TIME_TO_USE = 1;
-	
+
+	public static final String AC_ZAP       = "ZAP";
 	public static final String AC_SET		= "SET";
 	public static final String AC_RETURN	= "RETURN";
 	
@@ -66,8 +78,14 @@ public class LloydsBeacon extends Item {
 	{
 		name = "lloyd's beacon";
 		image = ItemSpriteSheet.ARTIFACT_BEACON;
-		
-		unique = true;
+
+		level = 0;
+		levelCap = 3;
+
+		charge = 0;
+		chargeCap = 3+level;
+
+		defaultAction = AC_ZAP;
 	}
 	
 	private static final String DEPTH	= "depth";
@@ -92,6 +110,7 @@ public class LloydsBeacon extends Item {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
+		actions.add( AC_ZAP );
 		actions.add( AC_SET );
 		if (returnDepth != -1) {
 			actions.add( AC_RETURN );
@@ -101,7 +120,7 @@ public class LloydsBeacon extends Item {
 	
 	@Override
 	public void execute( Hero hero, String action ) {
-		
+
 		if (action == AC_SET || action == AC_RETURN) {
 			
 			if (Dungeon.bossLevel()) {
@@ -117,8 +136,19 @@ public class LloydsBeacon extends Item {
 				}
 			}
 		}
-		
-		if (action == AC_SET) {
+
+		if (action == AC_ZAP ){
+
+			curUser = hero;
+			int chargesToUse = Dungeon.depth > 20 ? 2 : 1;
+
+			if      (!isEquipped( hero ))       GLog.i("You need to equip the beacon to do that.");
+			else if (charge < chargesToUse)     GLog.i("Your beacon does not have enough energy right now.");
+			else {
+				GameScene.selectCell(zapper);
+			}
+
+		} else if (action == AC_SET) {
 			
 			returnDepth = Dungeon.depth;
 			returnPos = hero.pos;
@@ -158,19 +188,94 @@ public class LloydsBeacon extends Item {
 			
 		}
 	}
-	
+
+	protected CellSelector.Listener zapper = new  CellSelector.Listener() {
+
+		@Override
+		public void onSelect(Integer target) {
+
+			if (target == null) return;
+
+			Invisibility.dispel();
+			charge -= Dungeon.depth > 20 ? 2 : 1;
+			updateQuickslot();
+
+			if (Actor.findChar(target) == curUser){
+				ScrollOfTeleportation.teleportHero(curUser);
+				curUser.spendAndNext(1f);
+			} else {
+				final Ballistica bolt = new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT );
+				final Char ch = Actor.findChar(bolt.collisionPos);
+
+				if (ch == curUser){
+					ScrollOfTeleportation.teleportHero(curUser);
+					curUser.spendAndNext( 1f );
+				} else {
+					curUser.sprite.zap(bolt.collisionPos);
+					curUser.busy();
+
+					MagicMissile.force(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, new Callback() {
+						@Override
+						public void call() {
+							if (ch != null) {
+
+								int count = 10;
+								int pos;
+								do {
+									pos = Dungeon.level.randomRespawnCell();
+									if (count-- <= 0) {
+										break;
+									}
+								} while (pos == -1);
+
+								if (pos == -1) {
+
+									GLog.w(ScrollOfTeleportation.TXT_NO_TELEPORT);
+
+								} else {
+
+									ch.pos = pos;
+									ch.sprite.place(ch.pos);
+									ch.sprite.visible = Dungeon.visible[pos];
+
+								}
+							}
+							curUser.spendAndNext(1f);
+						}
+					});
+
+				}
+
+
+			}
+
+		}
+
+		@Override
+		public String prompt() {
+			return "Choose a location to zap.";
+		}
+	};
+
+	@Override
+	protected ArtifactBuff passiveBuff() {
+		return new beaconRecharge();
+	}
+
+	@Override
+	public Item upgrade() {
+		chargeCap ++;
+
+		return super.upgrade();
+	}
+
+	@Override
+	public String desc() {
+		return TXT_INFO + (returnDepth == -1 ? "" : Utils.format( TXT_SET, returnDepth ) );
+	}
+
 	public void reset() {
 		returnDepth = -1;
-	}
-	
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
 	}
 	
 	private static final Glowing WHITE = new Glowing( 0xFFFFFF );
@@ -179,9 +284,26 @@ public class LloydsBeacon extends Item {
 	public Glowing glowing() {
 		return returnDepth != -1 ? WHITE : null;
 	}
-	
-	@Override
-	public String info() {
-		return TXT_INFO + (returnDepth == -1 ? "" : Utils.format( TXT_SET, returnDepth ) );
+
+	public class beaconRecharge extends ArtifactBuff{
+		@Override
+		public boolean act() {
+			if (charge < chargeCap && !cursed) {
+				partialCharge += 1 / (100f - (chargeCap - charge)*10f);
+
+				if (partialCharge >= 1) {
+					partialCharge --;
+					charge ++;
+
+					if (charge == chargeCap){
+						partialCharge = 0;
+					}
+				}
+			}
+
+			updateQuickslot();
+			spend( TICK );
+			return true;
+		}
 	}
 }

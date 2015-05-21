@@ -20,6 +20,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -143,6 +145,12 @@ public class King extends Mob {
 		super.die( cause );
 		
 		Badges.validateBossSlain();
+
+		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+		if (beacon != null) {
+			beacon.upgrade();
+			GLog.p("Your beacon grows stronger!");
+		}
 		
 		yell( "You cannot kill me, " + Dungeon.hero.givenName() + "... I am... immortal..." );
 	}

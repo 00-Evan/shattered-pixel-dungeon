@@ -19,6 +19,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -99,6 +101,12 @@ public class Tengu extends Mob {
 		super.die( cause );
 		
 		Badges.validateBossSlain();
+
+		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+		if (beacon != null) {
+			beacon.upgrade();
+			GLog.p("Your beacon grows stronger!");
+		}
 		
 		yell( "Free at last..." );
 	}

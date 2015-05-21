@@ -274,7 +274,7 @@ public class Artifact extends KindofMisc {
     @Override
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
-        image = bundle.getInt( IMAGE );
+        if (bundle.contains( IMAGE )) image = bundle.getInt( IMAGE );
         exp = bundle.getInt( EXP );
         charge = bundle.getInt( CHARGE );
         partialCharge = bundle.getFloat( PARTIALCHARGE );
