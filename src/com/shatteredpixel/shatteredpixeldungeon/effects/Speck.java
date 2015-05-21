@@ -26,6 +26,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.particles.Emitter;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.watabou.utils.ColorMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -273,7 +274,7 @@ public class Speck extends Image {
 			break;
 
 		case VENOM:
-			hardlight( 0x330033 );
+			hardlight( 0x8844FF );
 			angularSpeed = 30;
 			angle = Random.Float( 360 );
 			lifespan = Random.Float( 1f, 3f );
@@ -414,6 +415,7 @@ public class Speck extends Image {
 				break;
 
 			case VENOM:
+				hardlight( ColorMath.interpolate( 0x8844FF, 0x00FF00 , p ));
             case STENCH:
                 am = (p < 0.5f ? p : 1 - p) * 2;
                 scale.set( 1 + p * 2 );
