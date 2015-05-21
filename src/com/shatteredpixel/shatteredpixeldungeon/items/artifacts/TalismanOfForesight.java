@@ -186,6 +186,11 @@ public class TalismanOfForesight extends Artifact {
         }
 
         @Override
+        public String desc() {
+            return "You feel very nervous, as if there is nearby unseen danger.";
+        }
+
+        @Override
         public int icon() {
             if (warn == 0)
                 return BuffIndicator.NONE;

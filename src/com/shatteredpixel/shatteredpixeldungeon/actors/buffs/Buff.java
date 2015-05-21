@@ -85,6 +85,7 @@ public class Buff extends Actor {
 		return input == 1 ? "1 more turn" : new DecimalFormat("#.##").format(input) + " more turns";
 	}
 
+	//creates a fresh instance of the buff and attaches that, this allows duplication.
 	public static<T extends Buff> T append( Char target, Class<T> buffClass ) {
 		try {
 			T buff = buffClass.newInstance();
@@ -101,6 +102,7 @@ public class Buff extends Actor {
 		return buff;
 	}
 
+	//same as append, but prevents duplication.
 	public static<T extends Buff> T affect( Char target, Class<T> buffClass ) {
 		T buff = target.buff( buffClass );
 		if (buff != null) {
@@ -115,7 +117,8 @@ public class Buff extends Actor {
 		buff.spend( duration );
 		return buff;
 	}
-	
+
+	//postpones an already active buff, or creates & attaches a new buff and delays that.
 	public static<T extends FlavourBuff> T prolong( Char target, Class<T> buffClass, float duration ) {
 		T buff = affect( target, buffClass );
 		buff.postpone( duration );

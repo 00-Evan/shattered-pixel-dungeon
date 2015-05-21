@@ -104,6 +104,16 @@ public class CapeOfThorns extends Artifact {
         }
 
         @Override
+        public String desc() {
+            return "Your cape is radiating energy, surrounding you in a field of deflective force!\n" +
+                    "\n" +
+                    "All damage you receive is reduced while the thorns effect is active. Additionally, " +
+                    "if the attacker is next to you, the reduced amount is deflected back at the attacker.\n" +
+                    "\n" +
+                    "Your cape will continue radiating energy for " + dispTurns(cooldown) + ".";
+        }
+
+        @Override
         public int icon() {
             if (cooldown == 0)
                 return BuffIndicator.NONE;

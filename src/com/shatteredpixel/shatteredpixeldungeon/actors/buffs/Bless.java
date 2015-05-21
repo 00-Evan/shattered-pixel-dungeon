@@ -8,6 +8,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
  */
 public class Bless extends FlavourBuff {
 
+	{
+		type = buffType.POSITIVE;
+	}
+
 	@Override
 	public int icon() {
 		//TODO: add icon
@@ -19,4 +23,12 @@ public class Bless extends FlavourBuff {
 		return "Blessed";
 	}
 
+	@Override
+	public String desc() {
+		return "A great burst of focus, some say it is inspired by the gods.\n" +
+				"\n" +
+				"Blessing significantly increases accuracy and evasion, making the blessed much more effective in combat.\n" +
+				"\n" +
+				"This blessing will last for  " + dispTurns() + ".";
+	}
 }

@@ -51,4 +51,13 @@ public class Roots extends FlavourBuff {
 	public String toString() {
 		return "Rooted";
 	}
+
+	@Override
+	public String desc() {
+		return "Roots(magical or natural) grab at the feet, forcing them down to the ground.\n" +
+				"\n" +
+				"Roots lock a target in place, making it impossible for them to move, but other actions are not affected.\n" +
+				"\n" +
+				"The roots will last for " + dispTurns() + ".";
+	}
 }

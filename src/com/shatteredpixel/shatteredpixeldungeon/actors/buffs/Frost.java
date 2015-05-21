@@ -107,7 +107,17 @@ public class Frost extends FlavourBuff {
 	public String toString() {
 		return "Frozen";
 	}
-	
+
+	@Override
+	public String desc() {
+		return "Not to be confused with freezing solid, this more benign freezing simply encases the target in ice.\n" +
+				"\n" +
+				"Freezing acts similarly to paralysis, making it impossible for the target to act. " +
+				"Unlike paralysis, freezing is immediately cancelled if the target takes damage, as the ice will shatter.\n" +
+				"\n" +
+				"The freeze will last for " + dispTurns() + ", or until the target takes damage.\n";
+	}
+
 	public static float duration( Char ch ) {
 		Resistance r = ch.buff( Resistance.class );
 		return r != null ? r.durationFactor() * DURATION : DURATION;
