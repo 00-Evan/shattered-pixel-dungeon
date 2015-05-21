@@ -257,7 +257,7 @@ public class Armor extends EquipableItem {
 			int n = 1;
 			if (Random.Int( 3 ) == 0) {
 				n++;
-				if (Random.Int( 3 ) == 0) {
+				if (Random.Int( 5 ) == 0) {
 					n++;
 				}
 			}

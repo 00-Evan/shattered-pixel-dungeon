@@ -247,12 +247,16 @@ public abstract class Wand extends Item {
 	
 	@Override
 	public Item random() {
-		if (Random.Float() < 0.5f) {
-			upgrade();
-			if (Random.Float() < 0.15f) {
-				upgrade();
+		int n = 0;
+
+		if (Random.Int(2) == 0) {
+			n++;
+			if (Random.Int(5) == 0) {
+				n++;
 			}
 		}
+
+		upgrade( n );
 		
 		return this;
 	}
