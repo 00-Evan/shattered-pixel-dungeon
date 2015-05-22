@@ -83,6 +83,10 @@ public class Sungrass extends Plant {
         private int healCurr = 1;
         private int count = 0;
         private int level;
+
+		{
+			type = buffType.POSITIVE;
+		}
 		
 		@Override
 		public boolean attachTo( Char target ) {
@@ -135,9 +139,19 @@ public class Sungrass extends Plant {
 		
 		@Override
 		public String toString() {
-            return Utils.format( "Herbal Healing (%d)", level);
+            return "Herbal Healing";
 		}
-		
+
+		@Override
+		public String desc() {
+			return "Sungrass possesses excellent healing properties, though its not as fast as a potion of healing.\n" +
+					"\n" +
+					"You are current slowly regenerating health from the sungrass plant. " +
+					"Taking damage while healing will reduce the healing effectiveness, and moving off the plant will break the healing effect.\n" +
+					"\n" +
+					"You can heal for " + level + " more health, or until your health is full.";
+		}
+
 		private static final String POS	= "pos";
         private static final String HEALCURR = "healCurr";
         private static final String COUNT = "count";

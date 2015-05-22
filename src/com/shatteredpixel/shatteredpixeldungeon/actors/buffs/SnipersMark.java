@@ -17,6 +17,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
@@ -47,5 +49,13 @@ public class SnipersMark extends FlavourBuff {
 	@Override
 	public String toString() {
 		return "Sniper's mark";
+	}
+
+	@Override
+	public String desc() {
+		return "The sniper is honed in on the nearby " + ((Char)Actor.findById(object)).name + ", " +
+				"gaining increased attack speed and armor penetration while attacking it.\n" +
+				"\n" +
+				"The sniper will remain honed in until she switches targets, stops attacking, or the target dies.";
 	}
 }

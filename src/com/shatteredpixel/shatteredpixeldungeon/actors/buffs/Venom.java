@@ -32,6 +32,7 @@ public class Venom extends Poison implements Hero.Doom {
     }
 
     @Override
+    //TODO: new icon?
     public int icon() {
         return BuffIndicator.POISON;
     }
@@ -39,6 +40,15 @@ public class Venom extends Poison implements Hero.Doom {
     @Override
     public String toString() {
         return "Venomed";
+    }
+
+    @Override
+    public String desc() {
+        return "Venom is a extremely caustic and dangerous poison.\n" +
+                "\n" +
+                "Unlike poison, whose damage lowers over time, venom does increasing damage the longer it stays on a target.\n" +
+                "\n" +
+                "This venom will last for " + dispTurns(left) + ", and is currently dealing " + damage + " damage.";
     }
 
     @Override

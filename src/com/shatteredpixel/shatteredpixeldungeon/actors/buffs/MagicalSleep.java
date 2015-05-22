@@ -82,4 +82,13 @@ public class MagicalSleep extends Buff {
     public String toString() {
         return "Magical Sleep";
     }
+
+    @Override
+    public String desc() {
+        return "This character has fallen into a deep magical sleep which they will not wake from naturally.\n" +
+                "\n" +
+                "Magical sleep is similar to regular sleep, except that only damage will cause the target to wake up. \n" +
+                "\n" +
+                "For the hero, magical sleep has some restorative properties, allowing them to rapidly heal while resting.";
+    }
 }
