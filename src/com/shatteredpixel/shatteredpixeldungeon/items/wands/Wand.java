@@ -340,12 +340,11 @@ public abstract class Wand extends Item {
 					curUser.busy();
 
 					if (curWand.cursed){
-						CursedWand.cursedZap(curUser, new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT));
+						CursedWand.cursedZap(curWand, curUser, new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT));
 						if (!curWand.cursedKnown){
 							curWand.cursedKnown = true;
 							GLog.n("This " + curItem.name() + " is cursed!");
 						}
-						curWand.wandUsed();
 					} else {
 						curWand.fx(shot, new Callback() {
 							public void call() {

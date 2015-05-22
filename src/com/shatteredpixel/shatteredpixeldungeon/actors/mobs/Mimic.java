@@ -82,7 +82,7 @@ public class Mimic extends Mob {
 	public void adjustStats( int level ) {
 		this.level = level;
 		
-		HT = (3 + level) * 5;
+		HP = HT = (3 + level) * 5;
 		EXP = 2 + 2 * (level - 1) / 5;
 		defenseSkill = attackSkill( null ) / 2;
 		
@@ -143,7 +143,6 @@ public class Mimic extends Mob {
 		Mimic m = new Mimic();
 		m.items = new ArrayList<Item>( items );
 		m.adjustStats( Dungeon.depth );
-		m.HP = m.HT;
 		m.pos = pos;
 		m.state = m.HUNTING;
 		GameScene.add( m, 1 );
