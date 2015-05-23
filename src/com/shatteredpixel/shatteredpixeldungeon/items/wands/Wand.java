@@ -172,7 +172,9 @@ public abstract class Wand extends Item {
 	
 	@Override
 	public String info() {
-		return desc();
+		return (cursed && cursedKnown) ?
+				desc() + "\n\nThis wand is cursed, making its magic chaotic and random." :
+				desc();
 	}
 	
 	@Override

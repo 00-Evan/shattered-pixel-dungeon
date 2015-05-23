@@ -72,7 +72,7 @@ public abstract class EquipableItem extends Item {
         super.cast( user, dst );
     }
 
-    protected static void equipCursed( Hero hero ) {
+    public static void equipCursed( Hero hero ) {
         hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
         Sample.INSTANCE.play( Assets.SND_CURSED );
     }

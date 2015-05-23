@@ -2,6 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -15,17 +16,37 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -140,7 +161,7 @@ public class CursedWand {
 			case 3:
 				cursedFX(user, bolt, new Callback() {
 					public void call() {
-						switch(Random.Int(3)){
+						switch (Random.Int(3)) {
 							case 0:
 								GameScene.add( Blob.seed( bolt.collisionPos, 800, ConfusionGas.class ) );
 								break;
@@ -160,35 +181,149 @@ public class CursedWand {
 	}
 
 	private static void uncommonEffect(final Wand wand, final Hero user, final Ballistica bolt){
-		//TODO: implement
 		switch(Random.Int(4)){
+
+			//Random plant
 			case 0:
+				cursedFX(user, bolt, new Callback() {
+					public void call() {
+						int pos = bolt.collisionPos;
+						//place the plant infront of an enemy so they walk into it.
+						if (Actor.findChar(pos) != null && bolt.dist > 1) {
+							pos = bolt.path.get(bolt.dist - 1);
+						}
+						Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), pos);
+						wand.wandUsed();
+					}
+				});
 				break;
+
+			//Health transfer
 			case 1:
+				final Char target = Actor.findChar( bolt.collisionPos );
+				if (target != null) {
+					cursedFX(user, bolt, new Callback() {
+						public void call() {
+							int damage = user.lvl * 2;
+							switch (Random.Int(2)) {
+								case 0:
+									user.HP = Math.min(user.HT, user.HP + damage);
+									user.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
+									target.damage(damage, wand);
+									target.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+									break;
+								case 1:
+									user.damage( damage, this );
+									user.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+									target.HP = Math.min(target.HT, target.HP + damage);
+									target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
+									Sample.INSTANCE.play(Assets.SND_CURSED);
+									if (!user.isAlive()) {
+										Dungeon.fail(Utils.format(ResultDescriptions.ITEM, wand.name()));
+										GLog.n("You were killed by your own " + wand.name());
+									}
+									break;
+							}
+							wand.wandUsed();
+						}
+					});
+				} else {
+					GLog.i("nothing happens");
+					wand.wandUsed();
+				}
 				break;
+
+			//Bomb explosion
 			case 2:
+				cursedFX(user, bolt, new Callback() {
+					public void call() {
+						new Bomb().explode(bolt.collisionPos);
+						wand.wandUsed();
+					}
+				});
 				break;
+
+			//shock and recharge
 			case 3:
+				LightningTrap.trigger(user.pos, user);
+				Buff.prolong(user, ScrollOfRecharging.Recharging.class, 20f);
+				ScrollOfRecharging.charge(user);
+				SpellSprite.show(user, SpellSprite.CHARGE);
+				wand.wandUsed();
 				break;
 		}
-		wand.wandUsed();
-		GLog.i("uncommon effect");
+
 	}
 
 	private static void rareEffect(final Wand wand, final Hero user, final Ballistica bolt){
-		//TODO: implement
 		switch(Random.Int(4)){
+
+			//sheep transformation
 			case 0:
+				cursedFX(user, bolt, new Callback() {
+					public void call() {
+						Char ch = Actor.findChar( bolt.collisionPos );
+						if (ch != null && ch != user){
+							WandOfFlock.Sheep sheep = new WandOfFlock.Sheep();
+							sheep.lifespan = 10;
+							sheep.pos = ch.pos;
+							ch.sprite.killAndErase();
+							Actor.remove(ch);
+							Actor.freeCell(ch.pos);
+							Dungeon.level.mobs.remove(ch);
+							HealthIndicator.instance.target(null);
+							GameScene.add(sheep);
+							CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
+						} else {
+							GLog.i("nothing happens");
+						}
+						wand.wandUsed();
+					}
+				});
 				break;
+
+			//curses!
 			case 1:
+				KindOfWeapon weapon = user.belongings.weapon;
+				Armor armor = user.belongings.armor;
+				KindofMisc misc1 = user.belongings.misc1;
+				KindofMisc misc2 = user.belongings.misc2;
+				if (weapon != null) weapon.cursed = weapon.cursedKnown = true;
+				if (armor != null)  armor.cursed = armor.cursedKnown = true;
+				if (misc1 != null)  misc1.cursed = misc1.cursedKnown = true;
+				if (misc2 != null)  misc2.cursed = misc2.cursedKnown = true;
+				EquipableItem.equipCursed(user);
+				GLog.n("Your worn equipment becomes cursed!");
+				wand.wandUsed();
 				break;
+
+			//inter-level teleportation
 			case 2:
+				if (Dungeon.depth > 1 && Dungeon.depth % 5 != 0) {
+
+					Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+					if (buff != null) buff.detach();
+
+					for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] ))
+						if (mob instanceof DriedRose.GhostHero) mob.destroy();
+
+					InterlevelScene.mode = InterlevelScene.Mode.RETURN;
+					InterlevelScene.returnDepth = Random.Int(Dungeon.depth-1)+1;
+					InterlevelScene.returnPos = -1;
+					Game.switchScene(InterlevelScene.class);
+
+				} else {
+					ScrollOfTeleportation.teleportHero(user);
+					wand.wandUsed();
+				}
 				break;
+
+			//summon monsters
 			case 3:
+				SummoningTrap.trigger( user.pos, user );
+				wand.wandUsed();
 				break;
 		}
-		wand.wandUsed();
-		GLog.i("rare effect");
 	}
 
 	private static void veryRareEffect(final Wand wand, final Hero user, final Ballistica bolt){
@@ -211,8 +346,8 @@ public class CursedWand {
 				} while (Random.Int(5) != 0);
 				new Flare(8, 32).color(0xFFFF66, true).show(user.sprite, 2f);
 				Sample.INSTANCE.play(Assets.SND_TELEPORT);
-				GLog.p("Grass explodes around you!");
-				GLog.w("You smell burning...");
+				GLog.p("grass explodes around you!");
+				GLog.w("you smell burning...");
 				wand.wandUsed();
 				break;
 
