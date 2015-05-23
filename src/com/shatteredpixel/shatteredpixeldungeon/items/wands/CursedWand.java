@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -376,8 +377,14 @@ public class CursedWand {
 			case 2:
 				try {
 					Dungeon.saveAll();
-					//TODO: consider a more elegant way to accomplish this effect.
-					throw new RuntimeException("critical wand exception");
+					GameScene.show(
+							new WndOptions("CURSED WAND ERROR", "this application will now self-destruct", "abort", "retry", "fail") {
+								@Override
+								public void hide() {
+									throw new RuntimeException("critical wand exception");
+								}
+							}
+					);
 				} catch(IOException e){
 					//oookay maybe don't kill the game if the save failed.
 					GLog.i("nothing happens");
