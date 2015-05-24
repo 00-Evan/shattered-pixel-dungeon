@@ -707,8 +707,12 @@ public abstract class Level implements Bundlable {
 	
 	public void press( int cell, Char ch ) {
 
-		if (pit[cell] && ch == Dungeon.hero) {
-			Chasm.heroFall( cell );
+		if (ch != null && pit[cell] && !ch.flying) {
+			if (ch == Dungeon.hero) {
+				Chasm.heroFall(cell);
+			} else if (ch instanceof Mob) {
+				Chasm.mobFall( (Mob)ch );
+			}
 			return;
 		}
 
