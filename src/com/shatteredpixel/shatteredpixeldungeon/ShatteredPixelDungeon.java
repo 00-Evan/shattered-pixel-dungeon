@@ -65,10 +65,9 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFirebolt" );
-		//TODO: add when this one is implemented
-		//com.watabou.utils.Bundle.addAlias(
-		//		com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption.class,
-		//		"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAmok" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAmok" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTelekinesis" );
