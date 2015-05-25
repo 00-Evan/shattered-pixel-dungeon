@@ -80,7 +80,7 @@ public class MagicMissile extends Emitter {
 		MagicMissile missile = ((MagicMissile)group.recycle( MagicMissile.class ));
 		missile.reset( from, to, callback );
 		missile.size( 4 );
-		missile.pour( FlameParticle.FACTORY, 0.01f );
+		missile.pour( FlameParticle.FACTORY, 0.02f );
 	}
 	
 	public static void earth( Group group, int from, int to, Callback callback ) {

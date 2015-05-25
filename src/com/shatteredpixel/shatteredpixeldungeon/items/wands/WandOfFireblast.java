@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -46,34 +47,14 @@ public class WandOfFireblast extends Wand {
 		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
 
+	//the actual affected cells
 	private HashSet<Integer> affectedCells;
+	//the cells to trace fire shots to, for visual effects.
+	private HashSet<Integer> visualCells;
 	private int direction = 0;
 	
 	@Override
 	protected void onZap( Ballistica bolt ) {
-
-		int level = level();
-
-		affectedCells = new HashSet<>();
-
-		int maxDist = 1 + chargesPerCast()*2;
-		int dist = Math.min(bolt.dist, maxDist);
-
-		for (int i = 0; i < Level.NEIGHBOURS8.length; i++){
-			if (bolt.sourcePos+Level.NEIGHBOURS8[i] == bolt.path.get(1)){
-				direction = i;
-				break;
-			}
-		}
-
-		float strength = maxDist;
-		for (int c : bolt.subPath(1, dist)) {
-			strength--; //as we start at dist 1, not 0.
-			affectedCells.add(c);
-			spreadFlames(c + Level.NEIGHBOURS8[left(direction)], strength - 1);
-			spreadFlames(c + Level.NEIGHBOURS8[direction], strength - 1);
-			spreadFlames(c + Level.NEIGHBOURS8[right(direction)], strength - 1);
-		}
 
 		if (Level.flamable[bolt.sourcePos]){
 			GameScene.add( Blob.seed( bolt.sourcePos, 2, Fire.class ) );
@@ -105,11 +86,15 @@ public class WandOfFireblast extends Wand {
 		if (strength >= 0 && Level.passable[cell]){
 			affectedCells.add(cell);
 			if (strength >= 1.5f) {
-				spreadFlames(cell + Level.NEIGHBOURS8[left(direction)], strength-1.5f);
-				spreadFlames(cell + Level.NEIGHBOURS8[direction], strength-1.5f);
-				spreadFlames(cell + Level.NEIGHBOURS8[right(direction)], strength-1.5f);
+				visualCells.remove(cell);
+				spreadFlames(cell + Level.NEIGHBOURS8[left(direction)], strength - 1.5f);
+				spreadFlames(cell + Level.NEIGHBOURS8[direction], strength - 1.5f);
+				spreadFlames(cell + Level.NEIGHBOURS8[right(direction)], strength - 1.5f);
+			} else {
+				visualCells.add(cell);
 			}
-		}
+		} else if (!Level.passable[cell])
+			visualCells.add(cell);
 	}
 
 	private int left(int direction){
@@ -129,10 +114,42 @@ public class WandOfFireblast extends Wand {
 
 	@Override
 	protected void fx( Ballistica bolt, Callback callback ) {
-		//TODO: add new effects
-		//MagicMissile.fire( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
+		//need to perform flame spread logic here so we can determine what cells to put flames in.
+		affectedCells = new HashSet<>();
+		visualCells = new HashSet<>();
+
+		int maxDist = 1 + chargesPerCast()*2;
+		int dist = Math.min(bolt.dist, maxDist);
+
+		for (int i = 0; i < Level.NEIGHBOURS8.length; i++){
+			if (bolt.sourcePos+Level.NEIGHBOURS8[i] == bolt.path.get(1)){
+				direction = i;
+				break;
+			}
+		}
+
+		float strength = maxDist;
+		for (int c : bolt.subPath(1, dist)) {
+			strength--; //as we start at dist 1, not 0.
+			affectedCells.add(c);
+			if (strength > 1) {
+				spreadFlames(c + Level.NEIGHBOURS8[left(direction)], strength - 1);
+				spreadFlames(c + Level.NEIGHBOURS8[direction], strength - 1);
+				spreadFlames(c + Level.NEIGHBOURS8[right(direction)], strength - 1);
+			} else {
+				visualCells.add(c);
+			}
+		}
+
+		//going to call this one manually
+		visualCells.remove(bolt.path.get(dist));
+
+		for (int cell : visualCells){
+			//this way we only get the cells at the tip, much better performance.
+			MagicMissile.fire(curUser.sprite.parent, bolt.sourcePos, cell, null);
+		}
+		MagicMissile.fire( curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
-		callback.call();
 	}
 
 	@Override
@@ -143,9 +160,11 @@ public class WandOfFireblast extends Wand {
 
 	@Override
 	public String desc() {
-		//TODO add new description
 		return
-			"This wand unleashes bursts of magical fire. It will ignite " +
-			"flammable terrain, and will damage and burn a creature it hits.";
+			"This wand is made from red-lacquered wood with golden leaf used liberally to make it look quite regal. " +
+			"It crackles and hisses at the tip, eager to unleash its powerful magic.\n" +
+			"\n" +
+			"This wand produces a blast of fire when used, extending out into a cone shape. As this wand is upgraded " +
+			"it will consume more charges, the effect becomes significantly more powerful the more charges are consumed.";
 	}
 }
