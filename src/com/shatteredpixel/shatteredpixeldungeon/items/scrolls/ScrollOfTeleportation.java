@@ -17,13 +17,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.tweeners.AlphaTweener;
 
 public class ScrollOfTeleportation extends Scroll {
 
@@ -67,13 +69,29 @@ public class ScrollOfTeleportation extends Scroll {
 			
 		} else {
 
-			WandOfBlink.appear( hero, pos );
+			appear( hero, pos );
 			Dungeon.level.press( pos, hero );
 			Dungeon.observe();
 			
 			GLog.i( TXT_TELEPORTED );
 			
 		}
+	}
+
+	public static void appear( Char ch, int pos ) {
+
+		ch.sprite.interruptMotion();
+
+		ch.move( pos );
+		ch.sprite.place( pos );
+
+		if (ch.invisible == 0) {
+			ch.sprite.alpha( 0 );
+			ch.sprite.parent.add( new AlphaTweener( ch.sprite, 1, 0.4f ) );
+		}
+
+		ch.sprite.emitter().start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
+		Sample.INSTANCE.play( Assets.SND_TELEPORT );
 	}
 	
 	@Override

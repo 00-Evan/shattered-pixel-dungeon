@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -58,7 +58,7 @@ public class Multiplicity extends Glyph {
 				MirrorImage mob = new MirrorImage();
 				mob.duplicate( (Hero)defender );
 				GameScene.add( mob );
-				WandOfBlink.appear( mob, Random.element( respawnPoints ) );
+				ScrollOfTeleportation.appear( mob, Random.element( respawnPoints ) );
 				
 				defender.damage( Random.IntRange( 1, defender.HT / 6 ), this );
 				checkOwner( defender );

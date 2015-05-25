@@ -24,7 +24,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Random;
@@ -57,7 +56,7 @@ public class ScrollOfMirrorImage extends Scroll {
 			MirrorImage mob = new MirrorImage();
 			mob.duplicate( curUser );
 			GameScene.add( mob );
-			WandOfBlink.appear( mob, respawnPoints.get( index ) );
+			ScrollOfTeleportation.appear( mob, respawnPoints.get( index ) );
 			
 			respawnPoints.remove( index );
 			nImages--;

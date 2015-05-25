@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
@@ -52,7 +53,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -283,11 +283,11 @@ public class GameScene extends PixelScene {
 		
 		switch (InterlevelScene.mode) {
 		case RESURRECT:
-			WandOfBlink.appear( Dungeon.hero, Dungeon.level.entrance );
+			ScrollOfTeleportation.appear( Dungeon.hero, Dungeon.level.entrance );
 			new Flare( 8, 32 ).color( 0xFFFF66, true ).show( hero, 2f ) ;
 			break;
 		case RETURN:
-			WandOfBlink.appear(  Dungeon.hero, Dungeon.hero.pos );
+			ScrollOfTeleportation.appear(  Dungeon.hero, Dungeon.hero.pos );
 			break;
 		case FALL:
 			Chasm.heroLand();

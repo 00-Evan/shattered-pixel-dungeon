@@ -22,7 +22,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
@@ -46,7 +46,7 @@ public class Displacement extends Glyph {
 			int pos = Random.Int( Level.LENGTH );
 			if (Dungeon.visible[pos] && Level.passable[pos] && Actor.findChar( pos ) == null) {
 				
-				WandOfBlink.appear( defender, pos );
+				ScrollOfTeleportation.appear( defender, pos );
 				Dungeon.level.press( pos, defender );
 				Dungeon.observe();
 
