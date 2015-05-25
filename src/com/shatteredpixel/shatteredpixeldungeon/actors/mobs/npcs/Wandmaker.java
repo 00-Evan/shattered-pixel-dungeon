@@ -38,16 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAmok;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPoison;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSlowness;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTelekinesis;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -229,43 +221,12 @@ public class Wandmaker extends NPC {
 				alternative = Random.Int( 2 ) == 0;
 				
 				given = false;
-				
-				switch (Random.Int( 5 )) {
-				case 0:
-					wand1 = new WandOfAvalanche();
-					break;
-				case 1:
-					wand1 = new WandOfDisintegration();
-					break;
-				case 2:
-					wand1 = new WandOfFireblast();
-					break;
-				case 3:
-					wand1 = new WandOfLightning();
-					break;
-				case 4:
-					wand1 = new WandOfPoison();
-					break;
-				}
+				//TODO: implement new logic
+				wand1 = new WandOfDisintegration();
 				wand1.random().upgrade();
 				
-				switch (Random.Int( 5 )) {
-				case 0:
-					wand2 = new WandOfAmok();
-					break;
-				case 1:
-					wand2 = new WandOfBlink();
-					break;
-				case 2:
-					wand2 = new WandOfRegrowth();
-					break;
-				case 3:
-					wand2 = new WandOfSlowness();
-					break;
-				case 4:
-					wand2 = new WandOfTelekinesis();
-					break;
-				}
+
+				wand2 = new WandOfRegrowth();
 				wand2.random().upgrade();
 			}
 		}

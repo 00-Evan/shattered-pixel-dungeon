@@ -17,53 +17,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.watabou.utils.Callback;
 
-public class WandOfBlink extends Wand {
+//TODO: pull visual logic out of here to another place, then remove
+public abstract class WandOfBlink extends Wand {
 
-	{
-		name = "Wand of Blink";
-	}
-	
-	@Override
-	protected void onZap( Ballistica bolt ) {
-
-		int level = level();
-
-		//TODO: don't care about this atm as this wand is marked for death, should correct this logic if I end up keeping it.
-		/*if (Ballistica.distance > level + 4) {
-			cell = Ballistica.trace[level + 3];
-		} else if (Actor.findChar( cell ) != null && Ballistica.distance > 1) {
-			cell = Ballistica.trace[Ballistica.distance - 2];
-		}*/
-		
-		curUser.sprite.visible = true;
-		appear( Dungeon.hero, bolt.collisionPos );
-		Dungeon.observe();
-	}
-
-	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-
-	}
-
-	@Override
-	protected void fx( Ballistica bolt, Callback callback ) {
-		MagicMissile.whiteLight( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
-		curUser.sprite.visible = false;
-	}
-	
 	public static void appear( Char ch, int pos ) {
 		
 		ch.sprite.interruptMotion();
@@ -78,12 +40,5 @@ public class WandOfBlink extends Wand {
 		
 		ch.sprite.emitter().start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );
 		Sample.INSTANCE.play( Assets.SND_TELEPORT );
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"This wand will allow you to teleport in the chosen direction. " +
-			"Creatures and inanimate obstructions will block the teleportation.";
 	}
 }

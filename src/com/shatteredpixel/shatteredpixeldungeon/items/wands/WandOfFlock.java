@@ -36,83 +36,8 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class WandOfFlock extends Wand {
-
-	{
-		name = "Wand of Flock";
-	}
-	
-	@Override
-	protected void onZap( Ballistica bolt ) {
-		
-		int level = level();
-		
-		int n = level + 2;
-
-		//TODO: don't care about this atm as this wand is marked for death, should correct this logic if I end up keeping it
-		/**
-		if (Actor.findChar( cell ) != null && Ballistica.distance > 2) {
-			cell = Ballistica.trace[Ballistica.distance - 2];
-		}*/
-		
-		boolean[] passable = BArray.or( Level.passable, Level.avoid, null );
-		for (Actor actor : Actor.all()) {
-			if (actor instanceof Char) {
-				passable[((Char)actor).pos] = false;
-			}
-		}
-
-		int cell = bolt.collisionPos;
-		
-		PathFinder.buildDistanceMap( cell, passable, n );
-		int dist = 0;
-		
-		if (Actor.findChar( cell ) != null) {
-			PathFinder.distance[cell] = Integer.MAX_VALUE;
-			dist = 1;
-		}
-		
-		float lifespan = level + 3;
-		
-	sheepLabel:
-		for (int i=0; i < n; i++) {
-			do {
-				for (int j=0; j < Level.LENGTH; j++) {
-					if (PathFinder.distance[j] == dist) {
-						
-						Sheep sheep = new Sheep();
-						sheep.lifespan = lifespan;
-						sheep.pos = j;
-						GameScene.add( sheep );
-						Dungeon.level.mobPress( sheep );
-						
-						CellEmitter.get( j ).burst( Speck.factory( Speck.WOOL ), 4 );
-						
-						PathFinder.distance[j] = Integer.MAX_VALUE;
-						
-						continue sheepLabel;
-					}
-				}
-				dist++;
-			} while (dist < n);
-		}
-	}
-
-	@Override
-	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-
-	}
-
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.wool( curUser.sprite.parent, curUser.pos, cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
-	}
-	
-	@Override
-	public String desc() {
-		return 
-			"A flick of this wand summons a flock of magic sheep, creating temporary impenetrable obstacle.";
-	}
+//TODO: pull sheep out of here, and delete
+public abstract class WandOfFlock extends Wand {
 	
 	public static class Sheep extends NPC {
 		
