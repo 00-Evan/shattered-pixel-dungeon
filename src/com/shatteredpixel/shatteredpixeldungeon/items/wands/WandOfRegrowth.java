@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-//TODO: finish visuals & polish
 public class WandOfRegrowth extends Wand {
 
 	{
@@ -54,34 +53,14 @@ public class WandOfRegrowth extends Wand {
 		collisionProperties = Ballistica.STOP_TERRAIN;
 	}
 
+	//the actual affected cells
 	private HashSet<Integer> affectedCells;
+	//the cells to trace growth particles to, for visual effects.
+	private HashSet<Integer> visualCells;
 	private int direction = 0;
 	
 	@Override
 	protected void onZap( Ballistica bolt ) {
-
-		affectedCells = new HashSet<>();
-
-		int maxDist = Math.round(1.2f + chargesPerCast()*.8f);
-		int dist = Math.min(bolt.dist, maxDist);
-
-		for (int i = 0; i < Level.NEIGHBOURS8.length; i++){
-			if (bolt.sourcePos+Level.NEIGHBOURS8[i] == bolt.path.get(1)){
-				direction = i;
-				break;
-			}
-		}
-
-		float strength = maxDist;
-		for (int c : bolt.subPath(1, dist)) {
-			strength--; //as we start at dist 1, not 0.
-			if (!Level.losBlocking[c]) {
-				affectedCells.add(c);
-				spreadRegrowth(c + Level.NEIGHBOURS8[left(direction)], strength - 1);
-				spreadRegrowth(c + Level.NEIGHBOURS8[direction], strength - 1);
-				spreadRegrowth(c + Level.NEIGHBOURS8[right(direction)], strength - 1);
-			}
-		}
 
 		//ignore tiles which can't have anything grow in them.
 		for (Iterator<Integer> i = affectedCells.iterator(); i.hasNext();) {
@@ -125,8 +104,11 @@ public class WandOfRegrowth extends Wand {
 				spreadRegrowth(cell + Level.NEIGHBOURS8[left(direction)], strength - 1.5f);
 				spreadRegrowth(cell + Level.NEIGHBOURS8[direction], strength - 1.5f);
 				spreadRegrowth(cell + Level.NEIGHBOURS8[right(direction)], strength-1.5f);
+			} else {
+				visualCells.add(cell);
 			}
-		}
+		} else if (!Level.passable[cell] || Level.losBlocking[cell])
+			visualCells.add(cell);
 	}
 
 	private void placePlants(float numPlants, float numDews, float numPods, float numStars){
@@ -180,9 +162,43 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	protected void fx( Ballistica bolt, Callback callback ) {
-		//TODO: proper effects
+
+		affectedCells = new HashSet<>();
+		visualCells = new HashSet<>();
+
+		int maxDist = Math.round(1.2f + chargesPerCast()*.8f);
+		int dist = Math.min(bolt.dist, maxDist);
+
+		for (int i = 0; i < Level.NEIGHBOURS8.length; i++){
+			if (bolt.sourcePos+Level.NEIGHBOURS8[i] == bolt.path.get(1)){
+				direction = i;
+				break;
+			}
+		}
+
+		float strength = maxDist;
+		for (int c : bolt.subPath(1, dist)) {
+			strength--; //as we start at dist 1, not 0.
+			if (!Level.losBlocking[c]) {
+				affectedCells.add(c);
+				spreadRegrowth(c + Level.NEIGHBOURS8[left(direction)], strength - 1);
+				spreadRegrowth(c + Level.NEIGHBOURS8[direction], strength - 1);
+				spreadRegrowth(c + Level.NEIGHBOURS8[right(direction)], strength - 1);
+			} else {
+				visualCells.add(c);
+			}
+		}
+
+		//going to call this one manually
+		visualCells.remove(bolt.path.get(dist));
+
+		for (int cell : visualCells){
+			//this way we only get the cells at the tip, much better performance.
+			MagicMissile.foliage(curUser.sprite.parent, bolt.sourcePos, cell, null);
+		}
+		MagicMissile.foliage( curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback );
+
 		Sample.INSTANCE.play( Assets.SND_ZAP );
-		callback.call();
 	}
 
 	@Override
@@ -194,7 +210,13 @@ public class WandOfRegrowth extends Wand {
 	@Override
 	public String desc() {
 		return
-			"\"When life ceases new life always begins to grow... The eternal cycle always remains!\"";
+				"This wand is made from a thin shaft of expertly carved wood. " +
+				"Somehow it is still alive and vibrant, bright green like a young tree's core.\n" +
+				"\n" +
+				"When used, this wand will consume all its charges to blast magical regrowth energy outward " +
+				"in a cone. This magic will cause grass, roots, and rare plants to spring to life.\n" +
+				"\n" +
+				"\"When life ceases new life always begins to grow... The eternal cycle always remains!\"";
 	}
 
 

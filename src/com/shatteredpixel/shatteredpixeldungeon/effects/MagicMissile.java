@@ -79,8 +79,8 @@ public class MagicMissile extends Emitter {
 	public static void fire( Group group, int from, int to, Callback callback ) {
 		MagicMissile missile = ((MagicMissile)group.recycle( MagicMissile.class ));
 		missile.reset( from, to, callback );
-		missile.size( 4 );
-		missile.pour( FlameParticle.FACTORY, 0.02f );
+		missile.size( 10 );
+		missile.pour( FlameParticle.FACTORY, 0.03f );
 	}
 	
 	public static void earth( Group group, int from, int to, Callback callback ) {
@@ -121,8 +121,8 @@ public class MagicMissile extends Emitter {
 	public static void foliage( Group group, int from, int to, Callback callback ) {
 		MagicMissile missile = ((MagicMissile)group.recycle( MagicMissile.class ));
 		missile.reset( from, to, callback );
-		missile.size( 4 );
-		missile.pour( LeafParticle.GENERAL, 0.01f );
+		missile.size( 10 );
+		missile.pour( LeafParticle.GENERAL, 0.03f );
 	}
 	
 	public static void slowness( Group group, int from, int to, Callback callback ) {
