@@ -193,10 +193,10 @@ public class Generator {
             UnstableSpellbook.class,
             AlchemistsToolkit.class, //currently removed from drop tables, pending rework.
             DriedRose.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
-	        LloydsBeacon.class
-	        /*EtherealChains.class*/
+	        LloydsBeacon.class,
+	        EtherealChains.class
             };
-        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0 /*, 1*/};
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0 , 1};
 		
 		Category.SEED.classes = new Class<?>[]{ 
 			Firebloom.Seed.class,

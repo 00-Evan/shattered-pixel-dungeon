@@ -65,6 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
@@ -1092,10 +1093,13 @@ public class Hero extends Char {
 	public void earnExp( int exp ) {
 		
 		this.exp += exp;
+		float percent = exp/(float)maxExp();
+
+		EtherealChains.chainsRecharge chains = buff(EtherealChains.chainsRecharge.class);
+		if (chains != null) chains.gainExp(percent);
 
 		if (subClass == HeroSubClass.WARLOCK) {
 
-			float percent = exp/(float)maxExp();
 			int healed = Math.round(Math.min(HT - HP, HT * percent * 0.3f));
 			if (healed > 0) {
 				HP += healed;
@@ -1121,7 +1125,7 @@ public class Hero extends Char {
 				Buff.prolong(this, Bless.class, 30f);
 				this.exp = 0;
 
-				GLog.p( "You cannot grow stronger, but your experiences do give you a surge of power!" );
+				GLog.p( "You cannot grow stronger, but your experiences do give you a surge of power!");
 				Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			}
 			
