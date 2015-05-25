@@ -10,7 +10,9 @@ import com.watabou.utils.Random;
 
 public class Starflower extends Plant {
 
-	private static final String TXT_DESC = "TODO";
+	private static final String TXT_DESC =
+			"An extremely rare plant, " +
+			"Starflower is said to grant holy power to whomever touches it.";
 
 	{
 		image = 11;
@@ -24,13 +26,13 @@ public class Starflower extends Plant {
 		if (ch != null) Buff.prolong(ch, Bless.class, 30f);
 
 		if (Random.Int(5) == 0){
-			Dungeon.level.drop(new Seed(), pos);
+			Dungeon.level.drop(new Seed(), pos).sprite.drop();
 		}
 	}
 
 	@Override
 	public String desc() {
-		return "";
+		return TXT_DESC;
 	}
 
 	public static class Seed extends Plant.Seed{
@@ -39,7 +41,7 @@ public class Starflower extends Plant {
 			plantName = "Starflower";
 
 			name = "Seed of " + plantName;
-			image = ItemSpriteSheet.SEED_BLANDFRUIT;
+			image = ItemSpriteSheet.SEED_STARFLOWER;
 
 			plantClass = Starflower.class;
 			alchemyClass = PotionOfExperience.class;
@@ -47,7 +49,7 @@ public class Starflower extends Plant {
 
 		@Override
 		public String desc() {
-			return "";
+			return TXT_DESC;
 		}
 	}
 }

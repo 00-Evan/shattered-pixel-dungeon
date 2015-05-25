@@ -198,15 +198,16 @@ public class ItemSpriteSheet {
     //Row Twelve: Seeds
     public static final int SEED_ROTBERRY	= ROW12+0;
     public static final int SEED_FIREBLOOM	= ROW12+1;
-    public static final int SEED_BLINDWEED	= ROW12+2;
-    public static final int SEED_SUNGRASS	= ROW12+3;
-    public static final int SEED_ICECAP		= ROW12+4;
-    public static final int SEED_STORMVINE	= ROW12+5;
-    public static final int SEED_SORROWMOSS	= ROW12+6;
-    public static final int SEED_DREAMFOIL	= ROW12+7;
-    public static final int SEED_EARTHROOT	= ROW12+8;
-    public static final int SEED_FADELEAF	= ROW12+9;
-    public static final int SEED_BLANDFRUIT	= ROW12+10;
+    public static final int SEED_STARFLOWER	= ROW12+2;
+    public static final int SEED_BLINDWEED	= ROW12+3;
+    public static final int SEED_SUNGRASS	= ROW12+4;
+    public static final int SEED_ICECAP		= ROW12+5;
+    public static final int SEED_STORMVINE	= ROW12+6;
+    public static final int SEED_SORROWMOSS	= ROW12+7;
+    public static final int SEED_DREAMFOIL	= ROW12+8;
+    public static final int SEED_EARTHROOT	= ROW12+9;
+    public static final int SEED_FADELEAF	= ROW12+10;
+    public static final int SEED_BLANDFRUIT	= ROW12+11;
 
     //Row Thirteen: Food
     public static final int MEAT		= ROW13+0;

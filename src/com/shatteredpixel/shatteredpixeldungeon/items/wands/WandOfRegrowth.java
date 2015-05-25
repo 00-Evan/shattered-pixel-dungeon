@@ -250,7 +250,8 @@ public class WandOfRegrowth extends Wand {
 
 		@Override
 		public String desc() {
-			return "";
+			return "Dewcatchers camouflage as grass to avoid attention, " +
+					"but their bulges of collected dew give them away.";
 		}
 
 		//seed is never dropped, only care about plant class
@@ -291,7 +292,8 @@ public class WandOfRegrowth extends Wand {
 
 		@Override
 		public String desc() {
-			return "";
+			return "Seed Pods look pretty, but the seeds they carry are actually " +
+					"stolen from other plants they kill with their roots.";
 		}
 
 		//seed is never dropped, only care about plant class
