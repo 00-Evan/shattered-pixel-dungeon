@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
@@ -56,7 +57,7 @@ public class MagicMissile extends Emitter {
 		width = 0;
 		height = 0;
 		
-		PointF d = PointF.diff( pt, pf ); 
+		PointF d = PointF.diff( pt, pf );
 		PointF speed = new PointF( d ).normalize().scale( SPEED );
 		sx = speed.x;
 		sy = speed.y;
@@ -150,6 +151,13 @@ public class MagicMissile extends Emitter {
 		missile.size( 4 );
 		missile.pour( ShadowParticle.MISSILE, 0.01f );
 	}
+
+	public static void rainbow( Group group, int from, int to, Callback callback ) {
+		MagicMissile missile = ((MagicMissile)group.recycle( MagicMissile.class ));
+		missile.reset( from, to, callback );
+		missile.size( 4 );
+		missile.pour( RainbowParticle.BURST, 0.01f );
+	}
 	
 	@Override
 	public void update() {
@@ -160,7 +168,7 @@ public class MagicMissile extends Emitter {
 			y += sy * d;
 			if ((time -= d) <= 0) {
 				on = false;
-				callback.call();
+				if (callback != null ) callback.call();
 			}
 		}
 	}

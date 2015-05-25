@@ -411,7 +411,7 @@ public class CursedWand {
 	}
 
 	private static void cursedFX(final Hero user, final Ballistica bolt, final Callback callback){
-		MagicMissile.shadow(user.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
+		MagicMissile.rainbow(user.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
 
