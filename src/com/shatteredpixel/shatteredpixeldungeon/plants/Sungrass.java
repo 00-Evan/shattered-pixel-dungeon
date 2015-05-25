@@ -42,7 +42,7 @@ public class Sungrass extends Plant {
 	public void activate( Char ch ) {
 		super.activate( ch );
 		
-		if (ch != null) {
+		if (ch == Dungeon.hero) {
 			Buff.affect( ch, Health.class ).level = ch.HT;
 		}
 		
