@@ -55,7 +55,7 @@ public class Venom extends Poison implements Hero.Doom {
     public boolean act() {
         if (target.isAlive()) {
             target.damage(damage, this);
-            damage = Math.min(damage+1+Dungeon.depth/10, Dungeon.depth+1);
+            damage = Math.min(damage+1+Dungeon.depth/10, ((Dungeon.depth+1)/2)+1);
 
             //want it to act after the cloud of venom it came from.
             spend( TICK+0.1f );
