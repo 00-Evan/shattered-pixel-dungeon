@@ -20,6 +20,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -38,8 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -221,13 +220,13 @@ public class Wandmaker extends NPC {
 				alternative = Random.Int( 2 ) == 0;
 				
 				given = false;
-				//TODO: implement new logic
-				wand1 = new WandOfDisintegration();
-				wand1.random().upgrade();
-				
+				wand1 = (Wand) Generator.random(Generator.Category.WAND);
+				wand1.upgrade();
 
-				wand2 = new WandOfRegrowth();
-				wand2.random().upgrade();
+				do {
+					wand2 = (Wand) Generator.random(Generator.Category.WAND);
+				} while (wand2.getClass().equals(wand1.getClass()));
+				wand2.upgrade();
 			}
 		}
 		

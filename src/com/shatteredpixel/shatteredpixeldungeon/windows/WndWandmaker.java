@@ -35,8 +35,6 @@ public class WndWandmaker extends Window {
 	private static final String TXT_MESSAGE	= 
 		"Oh, I see you have succeeded! I do hope it hasn't troubled you too much. " +
 		"As I promised, you can choose one of my high quality wands.";
-	private static final String TXT_BATTLE		= "Battle wand";
-	private static final String TXT_NON_BATTLE	= "Non-battle wand";
 	
 	private static final String TXT_FARAWELL	= "Good luck in your quest, %s!";
 	
@@ -60,25 +58,25 @@ public class WndWandmaker extends Window {
 		message.y = titlebar.bottom() + GAP;
 		add( message );
 		
-		RedButton btnBattle = new RedButton( TXT_BATTLE ) {
+		RedButton btnWand1 = new RedButton( Wandmaker.Quest.wand1.name() ) {
 			@Override
 			protected void onClick() {
 				selectReward( wandmaker, item, Wandmaker.Quest.wand1 );
 			}
 		};
-		btnBattle.setRect( 0, message.y + message.height() + GAP, WIDTH, BTN_HEIGHT );
-		add( btnBattle );
+		btnWand1.setRect(0, message.y + message.height() + GAP, WIDTH, BTN_HEIGHT);
+		add( btnWand1 );
 		
-		RedButton btnNonBattle = new RedButton( TXT_NON_BATTLE ) {
+		RedButton btnWand2 = new RedButton( Wandmaker.Quest.wand2.name() ) {
 			@Override
 			protected void onClick() {
 				selectReward( wandmaker, item, Wandmaker.Quest.wand2 );
 			}
 		};
-		btnNonBattle.setRect( 0, btnBattle.bottom() + GAP, WIDTH, BTN_HEIGHT );
-		add( btnNonBattle );
+		btnWand2.setRect(0, btnWand1.bottom() + GAP, WIDTH, BTN_HEIGHT);
+		add( btnWand2 );
 		
-		resize( WIDTH, (int)btnNonBattle.bottom() );
+		resize(WIDTH, (int) btnWand2.bottom());
 	}
 	
 	private void selectReward( Wandmaker wandmaker, Item item, Wand reward ) {
