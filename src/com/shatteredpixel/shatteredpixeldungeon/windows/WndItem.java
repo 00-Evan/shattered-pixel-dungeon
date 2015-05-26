@@ -40,9 +40,7 @@ public class WndItem extends Window {
 		
 		super();
 		
-		IconTitle titlebar = new IconTitle();
-		titlebar.icon( new ItemSprite( item ) );
-		titlebar.label( Utils.capitalize( item.toString() ) );
+		IconTitle titlebar = new IconTitle( item );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 

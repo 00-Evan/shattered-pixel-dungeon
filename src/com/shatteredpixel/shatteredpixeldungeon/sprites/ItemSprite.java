@@ -160,6 +160,7 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public ItemSprite view(Item item){
+		view(item.image(), item.glowing());
 		if (this.emitter != null) this.emitter.on = false;
 		Emitter emitter = item.emitter();
 		if (emitter != null && parent != null) {
@@ -167,15 +168,23 @@ public class ItemSprite extends MovieClip {
 			parent.add( emitter );
 			this.emitter = emitter;
 		}
-		return view(item.image(), item.glowing());
+		return this;
 	}
 	
 	public ItemSprite view( int image, Glowing glowing ) {
+		if (this.emitter != null) this.emitter.on = false;
+		emitter = null;
 		frame( film.get( image ) );
 		if ((this.glowing = glowing) == null) {
 			resetColor();
 		}
 		return this;
+	}
+
+	@Override
+	public void kill() {
+		super.kill();
+		if (emitter != null) emitter.on = false;
 	}
 
 	@Override

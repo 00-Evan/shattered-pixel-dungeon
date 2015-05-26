@@ -44,10 +44,10 @@ public class IconTitle extends Component {
     }
 
     public IconTitle( Item item ) {
-        this(
-                new ItemSprite( item ),
-                Utils.capitalize( item.toString() ) );
-
+	    ItemSprite icon = new ItemSprite();
+	    icon( icon );
+	    label( Utils.capitalize( item.toString() ) );
+	    icon.view( item );
 	}
 
 	public IconTitle( Image icon, String label ) {
