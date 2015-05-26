@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -358,6 +359,8 @@ public class Item implements Bundlable {
 	public ItemSprite.Glowing glowing() {
 		return null;
 	}
+
+	public Emitter emitter() { return null; }
 	
 	public String info() {
 		return desc();

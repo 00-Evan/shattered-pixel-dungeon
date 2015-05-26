@@ -365,6 +365,7 @@ public class Toolbar extends Component {
 				visible = 
 				active = 
 					false;
+				if (emitter != null) emitter.on = false;
 				
 			} else {
 				float p = left / DURATION; 

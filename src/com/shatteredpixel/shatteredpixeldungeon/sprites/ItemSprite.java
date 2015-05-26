@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -49,6 +50,9 @@ public class ItemSprite extends MovieClip {
 	public Heap heap;
 	
 	private Glowing glowing;
+	//FIXME: a lot of this emitter functionality isn't very well implemented.
+	//right now I want to ship 0.3.0, but should refactor in the future.
+	protected Emitter emitter;
 	private float phase;
 	private boolean glowUp;
 	
@@ -101,6 +105,12 @@ public class ItemSprite extends MovieClip {
 		dropInterval = 0;
 		
 		heap = null;
+		if (emitter != null) emitter.revive();
+	}
+
+	public void visible(boolean value){
+		this.visible = value;
+		if (emitter != null) emitter.visible = value;
 	}
 	
 	public PointF worldToCamera( int cell ) {
@@ -150,6 +160,13 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public ItemSprite view(Item item){
+		if (this.emitter != null) this.emitter.on = false;
+		Emitter emitter = item.emitter();
+		if (emitter != null && parent != null) {
+			emitter.pos( this );
+			parent.add( emitter );
+			this.emitter = emitter;
+		}
 		return view(item.image(), item.glowing());
 	}
 	
@@ -160,7 +177,7 @@ public class ItemSprite extends MovieClip {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
@@ -210,7 +227,7 @@ public class ItemSprite extends MovieClip {
 			ba = glowing.blue * value;
 		}
 	}
-	
+
 	public static int pick( int index, int x, int y ) {
 		Bitmap bmp = TextureCache.get( Assets.ITEMS ).bitmap;
 		int rows = bmp.getWidth() / SIZE;
