@@ -64,9 +64,9 @@ public class Mimic extends Mob {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
 		items = new ArrayList<Item>( (Collection<Item>) ((Collection<?>) bundle.getCollection( ITEMS ) ));
 		adjustStats( bundle.getInt( LEVEL ) );
+		super.restoreFromBundle(bundle);
 	}
 	
 	@Override
