@@ -202,6 +202,11 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	@Override
+	protected int initialCharges() {
+		return 1;
+	}
+
+	@Override
 	//consumes all available charges, needs at least one.
 	protected int chargesPerCast() {
 		return Math.max(1, curCharges);
