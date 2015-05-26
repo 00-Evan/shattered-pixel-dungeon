@@ -19,7 +19,7 @@ public class WelcomeScene extends PixelScene {
 
     private static final String TTL_Welcome = "Welcome!";
 
-    private static final String TTL_Update = "v0.2.4: PD 1.7.5 and Some Extras!";
+    private static final String TTL_Update = "v0.3.0: The Wand Rework!";
 
     private static final String TTL_Future = "Wait What?";
 
@@ -30,47 +30,65 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_Update =
-            "v0.2.4d:\n" +
-                    "-Bugfixes and general improvements.\n" +
-                    "-Added Merchant's Beacon.\n" +
-                    "-Added initials for IDed scrolls/potions.\n" +
-                    "-Lloyd's beacon now has a new sprite.\n" +
+            "Mage reworked!:\n" +
+                    "- No longer starts with knuckledusters or a wand\n" +
+                    "- Can no longer equip wands\n" +
+                    "- Now starts with a unique mages staff, empowered with magic missile to start.\n" +
+                    "- Battlemage reworked, staff now deals bonus effects when used as a melee weapon.\n" +
+                    "- Warlock reworked, gains more health and fullness from gaining exp, but food no longer restores hunger.\n" +
                     "\n" +
-                    "v0.2.4a, v0.2.4b, v0.2.4c:\n" +
-                    "-Various Bug fixes and small tweaks.\n" +
+                    "General Wand Changes:\n" +
+                    "- Wand types are now known by default.\n" +
+                    "- Wands now each have unique sprites.\n" +
+                    "- Wands now cap at 10 charges instead of 9\n" +
+                    "- Wands now recharge faster the more charges are missing, for all classes.\n" +
+                    "- Self-targeting with wands is no longer possible.\n" +
+                    "- Wand recharge effects now give charge over time, instead of instantly.\n" +
+                    "- Wands can now be cursed!\n" +
                     "\n" +
-                    "V0.2.4:\n" +
-                    "v1.7.5 Source Implemented, with exceptions:\n" +
+                    "All wands have been reworked!\n" +
                     "\n" +
-                    "- Degredation not implemented.\n" +
+                    "Removed wands:\n" +
+                    "- Flock\n" +
+                    "- Blink\n" +
+                    "- Teleportation\n" +
+                    "- Avalanche\n" +
                     "\n" +
-                    "- Badge syncing not implemented.\n" +
+                    "Reworked wands:\n" +
+                    "- Magic Missile\n" +
+                    "- Lightning\n" +
+                    "- Disintegration\n" +
+                    "- Fireblast (previously Firebolt)\n" +
+                    "- Venom (previously poison)\n" +
+                    "- Frost (previously Slowing)\n" +
+                    "- Blast Wave (previously Telekinesis)\n" +
+                    "- Corruption (previously Amok)\n" +
+                    "- Regrowth\n" +
                     "\n" +
-                    "- Scroll of Weapon Upgrade renamed to Magical Infusion, works on armor.\n" +
+                    "New Wands:\n" +
+                    "- Prismatic Light\n" +
+                    "- Transfusion\n" +
                     "\n" +
-                    "- Scroll of Enchantment not implemented, Arcane stylus has not been removed.\n" +
+                    "New Artifacts:\n" +
+                    "- Ethereal Chains\n" +
+                    "- Lloyd's Beacon\n" +
                     "\n" +
-                    "- Honey pots now shatter in a new item: shattered honeypot. A bee will defend its shattered pot to the death against anything that gets near.\n" +
+                    "Misc. Balance changes:\n" +
+                    "- Blessed Ankhs now revive at 1/4hp, but also grant initiative.\n" +
+                    "- Alchemist's Toolkit removed (will be reworked)\n" +
+                    "- Chalice of blood nerfed, now regens less hp at high levels.\n" +
+                    "- Cape of Thorns buffed, now absorbs all damage, but only deflects adjacent attacks.\n" +
+                    "- Sandals of nature adjusted, now give more seeds, less dew.\n" +
+                    "- Hunger no longer increases while fighting bosses.\n" +
+                    "- Floor 1 now spawns 10 rats every time, exactly enough to level up.\n" +
+                    "- Scrolls of recharging and mirror image are now more common.\n" +
+                    "- Mimics are now less common, stronger, & give better loot.\n" +
                     "\n" +
-                    "- Bombs have been reworked/nerfed: they explode after a delay, no longer stun, deal more damage at the center of the blast, affect the world (destroy items, blow up other bombs).\n" +
-                    "\n" +
-                    "\n" +
-                    "In addition, this update features the following changes:\n" +
-                    "\n" +
-                    "- The huntress has been buffed: starts with Potion of Mind Vision identified, now benefits from strength on melee attacks, and has a chance to reclaim a single used ranged weapon from each defeated enemy. \n" +
-                    "\n" +
-                    "- A new container: The Potion Bandolier! Potions can now shatter from frost, but the bandolier can protect them.\n" +
-                    "\n" +
-                    "- Shops now stock a much greater variety of items, some item prices have been rebalanced.\n" +
-                    "\n" +
-                    "- Going down stairs no longer increases hunger, going up still does.\n" +
-                    "\n" +
-                    "-Many, many bugfixes.\n" +
-                    "-Some UI improvements.\n" +
-                    "-Ingame audio quality improved.\n" +
-                    "-Unstable spellbook buffed.\n" +
-                    "-Psionic blasts deal less self-damage.\n" +
-                    "-Potions of liquid flame affect a 3x3 grid.";
+                    "UI tweaks:\n" +
+                    "- New app icon!\n" +
+                    "- Shading added to main game interface\n" +
+                    "- Buffs now have descriptions, tap their icons!\n" +
+                    "- Visual indicator added for surprising enemies";
 
     private static final String TXT_Future =
             "It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
