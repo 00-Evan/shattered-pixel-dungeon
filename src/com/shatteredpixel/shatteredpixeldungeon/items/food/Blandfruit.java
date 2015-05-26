@@ -260,7 +260,7 @@ public class Blandfruit extends Food {
         } else if (potionAttrib instanceof PotionOfExperience) {
 
             name = "Starfruit";
-            potionGlow = new ItemSprite.Glowing( 0xFFFFFF );
+            potionGlow = new ItemSprite.Glowing( 0xA79400 );
             info += "It looks delicious and glorious, ready to be eaten!";
 
         }
