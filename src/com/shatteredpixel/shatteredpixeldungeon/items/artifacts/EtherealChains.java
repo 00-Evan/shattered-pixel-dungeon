@@ -126,11 +126,14 @@ public class EtherealChains extends Artifact {
 						curUser.busy();
 						curUser.sprite.parent.add(new Chains(curUser.pos, target, new Callback() {
 							public void call() {
-								Actor.add(new Pushing(curUser, curUser.pos, newHeroPos));
+								Actor.add(new Pushing(curUser, curUser.pos, newHeroPos, new Callback() {
+									public void call() {
+										Dungeon.level.press(newHeroPos, curUser);
+									}
+								}));
+								curUser.spendAndNext(1f);
 								curUser.pos = newHeroPos;
 								Dungeon.observe();
-								curUser.spendAndNext(1f);
-								Dungeon.level.press(newHeroPos, curUser);
 							}
 						}));
 					}
