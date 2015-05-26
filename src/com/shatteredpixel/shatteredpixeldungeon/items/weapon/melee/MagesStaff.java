@@ -15,7 +15,12 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.ColorMath;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -185,6 +190,16 @@ public class MagesStaff extends MeleeWeapon {
 		return super.info();
 	}
 
+	@Override
+	public Emitter emitter() {
+		if (wand == null) return null;
+		Emitter emitter = new Emitter();
+		emitter.pos(12.5f, 2.5f);
+		emitter.fillTarget = false;
+		emitter.pour(StaffParticleFactory, 0.06f);
+		return emitter;
+	}
+
 	private static final String WAND = "wand";
 
 	@Override
@@ -273,10 +288,135 @@ public class MagesStaff extends MeleeWeapon {
 							;
 						}
 				);
-
-
-
 			}
 		}
 	};
+
+	private final Emitter.Factory StaffParticleFactory = new Emitter.Factory() {
+		@Override
+		//reimplementing this is needed as instance creation of new staff particles must be within this class.
+		public void emit( Emitter emitter, int index, float x, float y ) {
+			StaffParticle c = (StaffParticle)emitter.getFirstAvailable(StaffParticle.class);
+			if (c == null) {
+				c = new StaffParticle();
+				emitter.add(c);
+			}
+			c.reset(x, y);
+		}
+
+		@Override
+		//some particles need light mode, others don't
+		public boolean lightMode() {
+			return !((wand instanceof WandOfDisintegration)
+					|| (wand instanceof WandOfCorruption)
+					|| (wand instanceof WandOfRegrowth));
+		};
+	};
+
+	//determines particle effects to use based on wand the staff owns.
+	private class StaffParticle extends PixelParticle{
+
+		private float minSize;
+		private float maxSize;
+		private float sizeRandomness = 0;
+
+		public StaffParticle(){
+			super();
+		}
+
+		public void reset( float x, float y ) {
+			revive();
+
+			speed.set(0);
+
+			this.x = x;
+			this.y = y;
+
+			if (wand instanceof WandOfMagicMissile){
+				color(0xFFFFFF); am = 0.3f;
+				lifespan = left = 1f;
+				speed.polar( Random.Float(PointF.PI2), 2f );
+				minSize = 1f; maxSize = 2.5f;
+				radiateXY(1f);
+			} else if (wand instanceof WandOfLightning){
+				color(0xFFFFFF); am = 0.6f;
+				lifespan = left = 0.6f;
+				acc.set( 0, +10 ); speed.polar(-Random.Float(3.1415926f), 6f);
+				minSize = 0f; maxSize = 1.5f;
+				sizeRandomness = 1f;
+				shuffleXY(2f);
+			} else if (wand instanceof WandOfDisintegration){
+				color(0x220022); am = 0.6f;
+				lifespan = left = 0.6f;
+				acc.set(40, -40);
+				minSize = 0f; maxSize = 3f;
+				shuffleXY(2f);
+			} else if (wand instanceof WandOfFireblast) {
+				color( 0xEE7722 ); am = 0.5f;
+				lifespan = left = 0.6f;
+				acc.set(0, -40);
+				minSize = 0f; maxSize = 3f;
+				shuffleXY(2f);
+			} else if (wand instanceof WandOfVenom) {
+				color( 0x8844FF ); am = 0.6f;
+				lifespan = left = 0.6f;
+				acc.set(0, 40);
+				minSize = 0f; maxSize = 3f;
+				shuffleXY(2f);
+			} else if (wand instanceof WandOfBlastWave) {
+				color( 0x664422 ); am = 0.6f;
+				lifespan = left = 2f;
+				speed.polar(Random.Float(PointF.PI2), 0.3f);
+				minSize = 1f; maxSize = 2f;
+				radiateXY(3f);
+			} else if (wand instanceof WandOfFrost) {
+				color( 0xFFFFFF ); am = 0.5f;
+				lifespan = left = 1.2f;
+				speed.set( 0, Random.Float( 5, 8 ) );
+				minSize = 0f; maxSize = 1f;
+				shuffleXY(2f);
+			} else if (wand instanceof WandOfPrismaticLight) {
+				color( Random.Int( 0x1000000 ) ); am = 0.3f;
+				lifespan = left = 1f;
+				speed.polar(Random.Float(PointF.PI2), 2f);
+				minSize = 1f; maxSize = 2.5f;
+				radiateXY(1f);
+			} else if (wand instanceof WandOfTransfusion) {
+				color( 0xCC0000 );; am = 0.6f;
+				lifespan = left = 0.8f;
+				speed.polar( Random.Float(PointF.PI2), 2f );
+				minSize = 1f; maxSize = 2.5f;
+				radiateXY(1f);
+			} else if (wand instanceof WandOfCorruption) {
+				color( 0 ); am = 0.6f;
+				lifespan = left = 0.6f;
+				acc.set(0, 40);
+				minSize = 0f; maxSize = 3f;
+				shuffleXY(2f);
+			} else if (wand instanceof WandOfRegrowth) {
+				color( ColorMath.random(0x004400, 0x88CC44) ); am = 1f;
+				lifespan = left = 0.6f;
+				acc.set(0, 40);
+				minSize = 1f; maxSize = 2f;
+				shuffleXY(2f);
+			}
+		}
+
+		private void shuffleXY(float amt){
+			x += Random.Float(-amt, amt);
+			y += Random.Float(-amt, amt);
+		}
+
+		private void radiateXY(float amt){
+			float hypot = (float)Math.hypot(speed.x, speed.y);
+			this.x += speed.x/hypot*amt;
+			this.y += speed.y/hypot*amt;
+		}
+
+		@Override
+		public void update() {
+			super.update();
+			size(minSize + (left / lifespan)*(maxSize-minSize) + Random.Float(sizeRandomness));
+		}
+	}
 }
