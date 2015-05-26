@@ -3,6 +3,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -13,6 +16,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -31,7 +35,7 @@ public class EtherealChains extends Artifact {
 		levelCap = 5;
 		exp = 0;
 
-		charge = 0;
+		charge = 5;
 
 		defaultAction = AC_CAST;
 	}
@@ -157,10 +161,22 @@ public class EtherealChains extends Artifact {
 		return new chainsRecharge();
 	}
 
-	//TODO: description
 	@Override
 	public String desc() {
-		return super.desc();
+		String desc = "These large clanky chains glow with spiritual energy. They move with a certain heft, " +
+				"but are surprisingly almost weightless. These chains can be used to grab surfaces, pulling you " +
+				"towards terrain or pulling enemies toward you. The ethereal nature of the chains even allows them to " +
+				"extend and pull targets through walls!";
+
+		if (isEquipped( Dungeon.hero )){
+			if (!cursed) {
+				desc += "\n\nThe chains rest around your side, slowly siphoning the spiritual energy of those you defeat. " +
+						"Each charge is a link in the chain, which will extend out exactly one tile.";
+
+			}else
+				desc += "\n\nThe cursed chains are locked to your side, constantly swinging around, trying to trip or bind you";
+		}
+		return desc;
 	}
 
 	public class chainsRecharge extends ArtifactBuff{
@@ -168,8 +184,11 @@ public class EtherealChains extends Artifact {
 		@Override
 		public boolean act() {
 			int chargeTarget = 5+level;
-			if (charge < chargeTarget) {
+			if (!cursed && charge < chargeTarget) {
 				partialCharge += 1 / (40f - (chargeTarget - charge)*3f);
+			} else if (cursed && Random.Int(100) == 0){
+				Buff.prolong( target, Roots.class, 3f);
+				Buff.prolong( target, Cripple.class, 9f);
 			}
 
 			if (partialCharge >= 1) {
@@ -185,6 +204,8 @@ public class EtherealChains extends Artifact {
 		}
 
 		public void gainExp( float levelPortion ) {
+			if (cursed) return;
+
 			exp += Math.round(levelPortion*100);
 			partialCharge += levelPortion*10f;
 
