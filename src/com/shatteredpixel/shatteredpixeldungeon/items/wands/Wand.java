@@ -255,12 +255,11 @@ public abstract class Wand extends Item {
 			}
 		}
 
-		if (Random.Float() < 0.3f){
-			upgrade( Random.Int(n) );
+		upgrade(n);
+		if (Random.Float() < 0.3f) {
 			cursed = true;
 			cursedKnown = false;
-		} else
-			upgrade(n);
+		}
 
 		return this;
 	}
