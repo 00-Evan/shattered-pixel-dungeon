@@ -39,6 +39,7 @@ public class MagesStaff extends MeleeWeapon {
 
 		defaultAction = AC_ZAP;
 
+		unique = true;
 		bones = false;
 	}
 

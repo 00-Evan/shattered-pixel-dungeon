@@ -50,6 +50,7 @@ public class ShortSword extends MeleeWeapon {
 		name = "short sword";
 		image = ItemSpriteSheet.SHORT_SWORD;
 
+		unique = true;
         bones = false;
 	}
 	

@@ -37,6 +37,7 @@ public class Boomerang extends MissileWeapon {
 
 		stackable = false;
 
+        unique = true;
         bones = false;
 	}
 	
