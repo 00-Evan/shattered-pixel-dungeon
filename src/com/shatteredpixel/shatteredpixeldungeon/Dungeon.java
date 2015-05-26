@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
@@ -303,6 +304,15 @@ public class Dungeon {
 		
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
+
+		//logic for pre 0.3.0 saves, need to give mages a staff.
+		if (Dungeon.version <= 38 && Dungeon.hero.heroClass == HeroClass.MAGE){
+			MagesStaff staff = new MagesStaff();
+			staff.identify();
+			if (!staff.collect(Dungeon.hero.belongings.backpack)){
+				Dungeon.level.drop(staff, Dungeon.hero.pos);
+			}
+		}
 		
 		observe();
         try {

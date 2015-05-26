@@ -334,17 +334,6 @@ public class GameScene extends PixelScene {
 			Dungeon.droppedItems.remove( Dungeon.depth );
 		}
 
-
-		//logic for pre 0.3.0 saves, need to give mages a staff.
-		if (Dungeon.version <= 38 && Dungeon.hero.heroClass == HeroClass.MAGE){
-			MagesStaff staff = new MagesStaff();
-			staff.identify();
-			GLog.p("You have been given a mage's staff, imbue it with a wand!");
-			if (!staff.collect(Dungeon.hero.belongings.backpack)){
-				Dungeon.level.drop(staff, Dungeon.hero.pos);
-			}
-		}
-
 		Camera.main.target = hero;
 		fadeIn();
 	}

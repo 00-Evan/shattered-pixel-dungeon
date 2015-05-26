@@ -221,7 +221,9 @@ public class MagesStaff extends MeleeWeapon {
 				"Rather than having an innate magic in it, this staff is instead imbued with magical energy from a wand, permanently granting it new power.\n" +
 				"\n";
 
-		if (wand instanceof WandOfMagicMissile){
+		if (wand == null) {
+			result += "The staff is currently a slightly magical stick, it needs a wand!";
+		} else if (wand instanceof WandOfMagicMissile){
 			result += "The staff radiates consistent magical energy from the wand it is imbued with.";
 		} else if (wand instanceof WandOfFireblast){
 			result += "The staff burns and sizzles with fiery energy from the wand it is imbued with.";
