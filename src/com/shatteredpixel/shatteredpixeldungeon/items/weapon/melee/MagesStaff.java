@@ -50,10 +50,10 @@ public class MagesStaff extends MeleeWeapon {
 
 	public MagesStaff() {
 
-		//tier 1 weapon with really poor base stats.
+		//tier 1 weapon with poor base stats.
 		super(1, 1f, 1f);
 		MIN = 1;
-		MAX = 4;
+		MAX = 5;
 
 		wand = null;
 	}
