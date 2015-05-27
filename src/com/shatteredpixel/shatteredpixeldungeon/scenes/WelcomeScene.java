@@ -30,7 +30,14 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_Update =
-            "Mage reworked!:\n" +
+            "v0.3.0a:\n" +
+                    "- Buffed mage and huntress base damages to compensate for increased rat numbers on floor 1.\n" +
+                    "- fixed a couple crash bugs\n" +
+                    "- fixed a bug with artifact generation\n" +
+                    "- fixed mages staff sometimes not charging\n" +
+                    "\n" +
+                    "v0.3.0:\n" +
+                    "Mage reworked!:\n" +
                     "- No longer starts with knuckledusters or a wand\n" +
                     "- Can no longer equip wands\n" +
                     "- Now starts with a unique mages staff, empowered with magic missile to start.\n" +
