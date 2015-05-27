@@ -117,7 +117,8 @@ public abstract class Wand extends Item {
 	}
 	
 	public void charge( Char owner ) {
-		if (charger == null) (charger = new Charger()).attachTo( owner );
+		if (charger == null) charger = new Charger();
+		charger.attachTo( owner );
 	}
 
 	public void charge( Char owner, float chargeScaleFactor ){
