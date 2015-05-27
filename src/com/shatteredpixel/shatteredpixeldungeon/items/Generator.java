@@ -196,7 +196,7 @@ public class Generator {
 	        LloydsBeacon.class,
 	        EtherealChains.class
             };
-        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0 , 1};
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
 		
 		Category.SEED.classes = new Class<?>[]{ 
 			Firebloom.Seed.class,
@@ -354,7 +354,8 @@ public class Generator {
 
     //resets artifact probabilities, for new dungeons
     public static void initArtifacts() {
-        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0 };
+	    //FIXME: the duplicated logic here has caused 1 bug so far, should refactor.
+        Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
         spawnedArtifacts = new ArrayList<String>();
     }
 
