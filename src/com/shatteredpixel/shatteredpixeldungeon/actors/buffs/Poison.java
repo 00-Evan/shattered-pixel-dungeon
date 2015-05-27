@@ -77,7 +77,7 @@ public class Poison extends Buff implements Hero.Doom {
 
 	@Override
 	public boolean attachTo(Char target) {
-		if (super.attachTo(target)){
+		if (super.attachTo(target) && target.sprite != null){
 			CellEmitter.center(target.pos).burst( PoisonParticle.SPLASH, 5 );
 			return true;
 		} else
