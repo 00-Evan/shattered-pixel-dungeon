@@ -70,7 +70,7 @@ public class WandOfBlastWave extends Wand {
 		if (ch != null){
 			ch.damage(damage, this);
 
-			if (ch.isAlive() && bolt.path.size() > bolt.dist) {
+			if (ch.isAlive() && bolt.path.size() > bolt.dist+1) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
 				int strength = level + 3;
 				throwChar(ch, trajectory, strength);
