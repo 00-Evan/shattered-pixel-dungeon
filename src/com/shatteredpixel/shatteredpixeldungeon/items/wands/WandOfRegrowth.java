@@ -22,6 +22,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
@@ -116,7 +117,16 @@ public class WandOfRegrowth extends Wand {
 		Level floor = Dungeon.level;
 
 		while(cells.hasNext() && Random.Float() <= numPlants){
-			floor.plant((Plant.Seed) Generator.random(Generator.Category.SEED), cells.next());
+			Plant.Seed seed = (Plant.Seed) Generator.random(Generator.Category.SEED);
+
+			if (seed instanceof BlandfruitBush.Seed) {
+				if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
+					floor.plant(seed, cells.next());
+					Dungeon.limitedDrops.blandfruitSeed.count++;
+				}
+			} else if (seed != null)
+				floor.plant(seed, cells.next());
+
 			numPlants --;
 		}
 
