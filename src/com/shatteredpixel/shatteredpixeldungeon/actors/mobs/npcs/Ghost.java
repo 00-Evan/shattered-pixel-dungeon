@@ -499,7 +499,7 @@ public class Ghost extends NPC {
         @Override
         protected boolean getCloser( int target ) {
             combo = 0; //if he's moving, he isn't attacking, reset combo.
-            if (Level.adjacent(pos, enemy.pos)) {
+            if (enemy != null && Level.adjacent(pos, enemy.pos)) {
                 return getFurther( target );
             } else {
                 return super.getCloser( target );

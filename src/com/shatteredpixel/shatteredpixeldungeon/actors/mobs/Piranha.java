@@ -60,7 +60,8 @@ public class Piranha extends Mob {
 			//this causes pirahna to move away when a door is closed on them.
 			Dungeon.level.updateFieldOfView( this );
 			enemy = chooseEnemy();
-			if (state == this.HUNTING && !(enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0)){
+			if (state == this.HUNTING &&
+					!(enemy != null && enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0)){
 				state = this.WANDERING;
 				int oldPos = pos;
 				int i = 0;
