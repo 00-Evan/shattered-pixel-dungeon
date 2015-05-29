@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -77,11 +78,18 @@ public class ScrollOfRemoveCurse extends Scroll {
 	public static boolean uncurse( Hero hero, Item... items ) {
 		
 		boolean procced = false;
-		for (int i=0; i < items.length; i++) {
-			Item item = items[i];
+		for (Item item : items) {
 			if (item != null && item.cursed) {
 				item.cursed = false;
 				procced = true;
+			}
+			if (item instanceof Bag){
+				for (Item bagItem : ((Bag)item).items){
+					if (bagItem != null && bagItem.cursed) {
+						bagItem.cursed = false;
+						procced = true;
+					}
+				}
 			}
 		}
 		
