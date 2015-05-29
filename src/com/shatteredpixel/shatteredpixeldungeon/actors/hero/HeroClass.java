@@ -60,7 +60,6 @@ public enum HeroClass {
 		"Mages start with a unique Staff, which can be imbued with the properties of a wand.",
 		"The Mage's staff can be used as a melee weapon or a wand, and charges faster than a wand.",
 		"When eaten, any piece of food restores 1 charge for all wands in the inventory.",
-		"Mages can use wands as a melee weapon.",
 		"Scrolls of Upgrade are identified from the beginning."
 	};
 	
