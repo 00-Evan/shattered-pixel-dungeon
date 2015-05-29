@@ -105,12 +105,18 @@ public class ItemSprite extends MovieClip {
 		dropInterval = 0;
 		
 		heap = null;
-		if (emitter != null) emitter.revive();
+		if (emitter != null) {
+			emitter.killAndErase();
+			emitter = null;
+		}
 	}
 
 	public void visible(boolean value){
 		this.visible = value;
-		if (emitter != null) emitter.visible = value;
+		if (emitter != null && !visible){
+			emitter.killAndErase();
+			emitter = null;
+		}
 	}
 	
 	public PointF worldToCamera( int cell ) {
@@ -161,7 +167,7 @@ public class ItemSprite extends MovieClip {
 
 	public ItemSprite view(Item item){
 		view(item.image(), item.glowing());
-		if (this.emitter != null) this.emitter.on = false;
+		if (this.emitter != null) this.emitter.killAndErase();
 		Emitter emitter = item.emitter();
 		if (emitter != null && parent != null) {
 			emitter.pos( this );
@@ -184,7 +190,8 @@ public class ItemSprite extends MovieClip {
 	@Override
 	public void kill() {
 		super.kill();
-		if (emitter != null) emitter.on = false;
+		if (emitter != null) emitter.killAndErase();
+		emitter = null;
 	}
 
 	@Override

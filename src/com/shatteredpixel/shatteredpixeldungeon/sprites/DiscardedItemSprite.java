@@ -33,6 +33,7 @@ public class DiscardedItemSprite extends ItemSprite {
 	public void drop() {
 		scale.set( 1 );
 		am = 1;
+		if (emitter != null) emitter.killAndErase();
 	}
 	
 	@Override
