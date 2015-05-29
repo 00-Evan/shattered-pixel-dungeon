@@ -54,7 +54,7 @@ public class SnipersMark extends FlavourBuff {
 	@Override
 	public String desc() {
 		Char ch = (Char)Actor.findById(object);
-		return "The sniper is honed in " + ((ch == null) ? "on a lost target" : "on the nearby" + ch.name ) + ", " +
+		return "The sniper is honed in " + ((ch == null) ? "on a lost target" : "on the nearby " + ch.name ) + ", " +
 				"gaining increased attack speed and armor penetration while attacking it.\n" +
 				"\n" +
 				"The sniper will remain honed in until she switches targets, stops attacking, or the target dies.";
