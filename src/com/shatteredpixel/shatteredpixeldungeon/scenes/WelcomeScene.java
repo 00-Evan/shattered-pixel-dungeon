@@ -30,11 +30,12 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_Update =
-            "v0.3.0a:\n" +
+            "v0.3.0b & v0.3.0a:\n" +
+                    "- Fixed many bugs\n" +
                     "- Buffed mage and huntress base damages to compensate for increased rat numbers on floor 1.\n" +
-                    "- fixed a couple crash bugs\n" +
-                    "- fixed a bug with artifact generation\n" +
-                    "- fixed mages staff sometimes not charging\n" +
+                    "\n" +
+                    "I am still looking for bug reports and feedback on the latest update, make sure to let me know if you have any thoughts!\n" +
+                    "\n" +
                     "\n" +
                     "v0.3.0:\n" +
                     "Mage reworked!:\n" +
