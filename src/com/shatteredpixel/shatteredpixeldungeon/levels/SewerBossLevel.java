@@ -237,6 +237,12 @@ public class SewerBossLevel extends RegularLevel {
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
 	}
+
+	@Override
+	public int randomRespawnCell() {
+		return -1;
+	}
+
 	
 	public void seal() {
 		if (entrance != 0) {
