@@ -247,7 +247,7 @@ public class CursedWand {
 
 			//shock and recharge
 			case 3:
-				LightningTrap.trigger(user.pos, user);
+				new LightningTrap().set( user.pos ).activate();
 				Buff.prolong(user, ScrollOfRecharging.Recharging.class, 20f);
 				ScrollOfRecharging.charge(user);
 				SpellSprite.show(user, SpellSprite.CHARGE);
@@ -322,7 +322,7 @@ public class CursedWand {
 
 			//summon monsters
 			case 3:
-				SummoningTrap.trigger( user.pos, user );
+				new SummoningTrap().set( user.pos ).activate();
 				wand.wandUsed();
 				break;
 		}

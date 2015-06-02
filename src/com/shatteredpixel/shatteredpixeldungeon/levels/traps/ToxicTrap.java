@@ -23,13 +23,18 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
-public class ToxicTrap {
+public class ToxicTrap extends Trap{
 
 	// 0x40CC55
-	
-	public static void trigger( int pos, Char ch ) {
-		
+	{
+		name = "toxic gas trap";
+		image = 0;
+	}
+
+	@Override
+	public void activate() {
+
 		GameScene.add( Blob.seed( pos, 300 + 20 * Dungeon.depth, ToxicGas.class ) );
-		
+
 	}
 }

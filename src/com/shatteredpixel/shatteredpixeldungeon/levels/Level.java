@@ -731,56 +731,56 @@ public abstract class Level implements Bundlable {
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.TOXIC_TRAP:
 			trap = true;
-			if (!frozen) ToxicTrap.trigger( cell, ch );
+			if (!frozen) new ToxicTrap().set(cell).activate();
 			break;
 			
 		case Terrain.SECRET_FIRE_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.FIRE_TRAP:
 			trap = true;
-			if (!frozen) FireTrap.trigger( cell, ch );
+			if (!frozen) new FireTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.SECRET_PARALYTIC_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.PARALYTIC_TRAP:
 			trap = true;
-			if (!frozen) ParalyticTrap.trigger( cell,  ch );
+			if (!frozen) new ParalyticTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.SECRET_POISON_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.POISON_TRAP:
 			trap = true;
-			if (!frozen) PoisonTrap.trigger( cell, ch );
+			if (!frozen) new PoisonTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.SECRET_ALARM_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.ALARM_TRAP:
 			trap = true;
-			if (!frozen) AlarmTrap.trigger( cell, ch );
+			if (!frozen) new AlarmTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.SECRET_LIGHTNING_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.LIGHTNING_TRAP:
 			trap = true;
-			if (!frozen) LightningTrap.trigger( cell, ch );
+			if (!frozen) new LightningTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.SECRET_GRIPPING_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.GRIPPING_TRAP:
 			trap = true;
-			if (!frozen) GrippingTrap.trigger( cell, ch );
+			if (!frozen) new GrippingTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.SECRET_SUMMONING_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.SUMMONING_TRAP:
 			trap = true;
-			if (!frozen) SummoningTrap.trigger( cell, ch );
+			if (!frozen) new SummoningTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.HIGH_GRASS:
@@ -843,35 +843,35 @@ public abstract class Level implements Bundlable {
 		switch (map[cell]) {
 		
 		case Terrain.TOXIC_TRAP:
-			ToxicTrap.trigger( cell,  mob );
+			new ToxicTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.FIRE_TRAP:
-			FireTrap.trigger( cell, mob );
+			new FireTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.PARALYTIC_TRAP:
-			ParalyticTrap.trigger( cell,  mob );
+			new ParalyticTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.POISON_TRAP:
-			PoisonTrap.trigger( cell, mob );
+			new PoisonTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.ALARM_TRAP:
-			AlarmTrap.trigger( cell,  mob );
+			new AlarmTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.LIGHTNING_TRAP:
-			LightningTrap.trigger( cell, mob );
+			new LightningTrap().set( cell ).activate();
 			break;
 		
 		case Terrain.GRIPPING_TRAP:
-			GrippingTrap.trigger( cell, mob );
+			new GrippingTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.SUMMONING_TRAP:
-			SummoningTrap.trigger( cell, mob );
+			new SummoningTrap().set( cell ).activate();
 			break;
 			
 		case Terrain.DOOR:

@@ -23,13 +23,18 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
-public class ParalyticTrap {
+public class ParalyticTrap extends Trap{
 
 	// 0xCCCC55
-	
-	public static void trigger( int pos, Char ch ) {
-		
+	{
+		name = "paralytic gas trap";
+		image = 2;
+	}
+
+	@Override
+	public void activate() {
+
 		GameScene.add( Blob.seed( pos, 80 + 5 * Dungeon.depth, ParalyticGas.class ) );
-		
+
 	}
 }

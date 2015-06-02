@@ -24,14 +24,19 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
-public class FireTrap {
+public class FireTrap extends Trap {
 
 	// 0xFF7708
-	
-	public static void trigger( int pos, Char ch ) {
-		
+	{
+		name = "fire trap";
+		image = 1;
+	}
+
+	@Override
+	public void activate() {
+
 		GameScene.add( Blob.seed( pos, 2, Fire.class ) );
 		CellEmitter.get( pos ).burst( FlameParticle.FACTORY, 5 );
-		
+
 	}
 }
