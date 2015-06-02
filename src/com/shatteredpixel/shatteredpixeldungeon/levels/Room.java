@@ -115,9 +115,9 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	public void connect( Room room ) {
-		if (!connected.containsKey( room )) {	
+		if (!connected.containsKey( room )) {
 			connected.put( room, null );
-			room.connected.put( this, null );			
+			room.connected.put( this, null );
 		}
 	}
 	
@@ -135,6 +135,14 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return new Point( 
 			(left + right) / 2 + (((right - left) & 1) == 1 ? Random.Int( 2 ) : 0),
 			(top + bottom) / 2 + (((bottom - top) & 1) == 1 ? Random.Int( 2 ) : 0) );
+	}
+
+	public HashSet<Integer> getCells(){
+		HashSet<Point> points = getPoints();
+		HashSet<Integer> cells = new HashSet<>();
+		for( Point point : points)
+			cells.add(point.x + point.y*Level.WIDTH);
+		return cells;
 	}
 	
 	// **** Graph.Node interface ****
@@ -165,7 +173,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	} 
 	
 	@Override
-	public void storeInBundle( Bundle bundle ) {	
+	public void storeInBundle( Bundle bundle ) {
 		bundle.put( "left", left );
 		bundle.put( "top", top );
 		bundle.put( "right", right );
@@ -178,7 +186,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		left = bundle.getInt( "left" );
 		top = bundle.getInt( "top" );
 		right = bundle.getInt( "right" );
-		bottom = bundle.getInt( "bottom" );		
+		bottom = bundle.getInt( "bottom" );
 		type = Type.valueOf( bundle.getString( "type" ) );
 	}
 	
