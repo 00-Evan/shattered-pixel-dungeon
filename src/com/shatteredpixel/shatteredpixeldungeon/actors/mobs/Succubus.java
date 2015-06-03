@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -98,6 +99,20 @@ public class Succubus extends Mob {
 		//can't occupy the same cell as another char, so move back one.
 		if (Actor.findChar( cell ) != null && cell != this.pos)
 			cell = route.path.get(route.dist-1);
+
+		if (Level.avoid[ cell ]){
+			ArrayList<Integer> candidates = new ArrayList<Integer>();
+			for (int n : Level.NEIGHBOURS8) {
+				cell = route.collisionPos + n;
+				if (Level.passable[cell] && Actor.findChar( cell ) == null) {
+					candidates.add( cell );
+				}
+			}
+			if (candidates.size() > 0)
+				cell = Random.element(candidates);
+			else
+				return;
+		}
 		
 		ScrollOfTeleportation.appear( this, cell );
 		
