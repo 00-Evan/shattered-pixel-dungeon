@@ -63,15 +63,7 @@ public class MagesStaff extends MeleeWeapon {
         wand.identify();
         wand.cursed = false;
 		this.wand = wand;
-	}
-
-	@Override
-	public Item upgrade(boolean enchant) {
-		MIN++;
-		MAX++;
-		//does not lose strength requirement
-
-		return super.upgrade( enchant );
+		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
 	}
 
 	@Override
@@ -158,6 +150,7 @@ public class MagesStaff extends MeleeWeapon {
 			wand.degrade(Math.abs(wandLevelDiff));
 
 		this.wand = wand;
+		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
 		wand.identify();
 		wand.cursed = false;
 		wand.charge(owner);
@@ -169,15 +162,33 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
-	public Item upgrade() {
-		if (wand != null) wand.upgrade();
-		return super.upgrade();
+	public Item upgrade(boolean enchant) {
+		super.upgrade( enchant );
+		STR = 10;
+		//does not lose strength requirement
+
+		if (wand != null) {
+			wand.upgrade();
+			//gives the wand one additional charge
+			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+		}
+
+		return this;
 	}
 
 	@Override
 	public Item degrade() {
-		if (wand != null) wand.degrade();
-		return super.degrade();
+		super.degrade();
+
+		STR = 10;
+
+		if (wand != null) {
+			wand.degrade();
+			//gives the wand one additional charge
+			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+		}
+
+		return this;
 	}
 
 	@Override
@@ -223,6 +234,7 @@ public class MagesStaff extends MeleeWeapon {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		wand = (Wand) bundle.get(WAND);
+		if (wand != null) wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
 	}
 
 	@Override

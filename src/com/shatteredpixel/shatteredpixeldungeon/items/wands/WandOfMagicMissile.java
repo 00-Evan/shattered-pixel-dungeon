@@ -72,7 +72,7 @@ public class WandOfMagicMissile extends Wand {
 	}
 	
 	protected int initialCharges() {
-		return 4;
+		return 3;
 	}
 	
 	@Override
