@@ -83,7 +83,7 @@ public class WandOfBlastWave extends Wand {
 		}
 	}
 
-	private void throwChar(Char ch, Ballistica trajectory, int power){
+	private void throwChar(final Char ch, final Ballistica trajectory, int power){
 		int dist = Math.min(trajectory.dist, power);
 
 		//FIXME: sloppy
@@ -92,24 +92,26 @@ public class WandOfBlastWave extends Wand {
 
 		if (dist == 0 || ch instanceof Yog) return;
 
-		int newPos = trajectory.path.get(dist);
-
-		if (Actor.findChar(newPos) != null){
-			newPos = trajectory.path.get(--dist);
+		if (Actor.findChar(trajectory.path.get(dist)) != null){
+			dist--;
 		}
+
+		final int newPos = trajectory.path.get(dist);
 
 		if (newPos == ch.pos) return;
 
+		final int finalDist = dist;
 
-		Actor.addDelayed(new Pushing(ch, ch.pos, newPos), -1);
-		ch.pos = newPos;
-		Dungeon.level.press(newPos, ch);
-
-		if (ch.pos == trajectory.collisionPos) {
-			ch.damage(Random.NormalIntRange((dist + 1) / 2, dist), this);
-			Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((dist + 1) / 2, dist));
-		}
-
+		Actor.addDelayed(new Pushing(ch, ch.pos, newPos, new Callback() {
+			public void call() {
+				ch.pos = newPos;
+				if (ch.pos == trajectory.collisionPos) {
+					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
+					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
+					Dungeon.level.press(ch.pos, ch);
+				}
+			}
+		}), -1);
 	}
 
 	@Override
