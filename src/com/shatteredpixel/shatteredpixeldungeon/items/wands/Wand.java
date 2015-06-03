@@ -19,6 +19,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.watabou.noosa.audio.Sample;
@@ -239,6 +240,7 @@ public abstract class Wand extends Item {
 			identify();
 			GLog.w( TXT_IDENTIFY, name() );
 		} else {
+			if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 			updateQuickslot();
 		}
 

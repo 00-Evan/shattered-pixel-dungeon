@@ -58,7 +58,8 @@ public enum HeroClass {
 	
 	public static final String[] MAG_PERKS = {
 		"Mages start with a unique Staff, which can be imbued with the properties of a wand.",
-		"The Mage's staff can be used as a melee weapon or a wand, and charges faster than a wand.",
+		"The Mage's staff can be used as a melee weapon or a more powerful wand.",
+		"Mages partially identify wands after using them.",
 		"When eaten, any piece of food restores 1 charge for all wands in the inventory.",
 		"Scrolls of Upgrade are identified from the beginning."
 	};
