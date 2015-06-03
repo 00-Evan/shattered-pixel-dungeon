@@ -189,7 +189,7 @@ public class Heap implements Bundlable {
 		
 		if (sprite != null) {
 			if (type == Type.HEAP || type == Type.FOR_SALE)
-				sprite.view( item );
+				sprite.view( items.peek() );
 			else
 				sprite.view( image(), glowing() );
 		}
