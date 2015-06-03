@@ -78,8 +78,6 @@ public class PlantSprite extends Image {
 	public void update() {
 		super.update();
 		
-		visible = pos == -1 || Dungeon.visible[pos];
-		
 		switch (state) {
 		case GROWING:
 			if ((time -= Game.elapsed) <= 0) {
