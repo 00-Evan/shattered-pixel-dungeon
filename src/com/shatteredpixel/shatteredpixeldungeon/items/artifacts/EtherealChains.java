@@ -70,7 +70,12 @@ public class EtherealChains extends Artifact {
 		@Override
 		public void onSelect(Integer target) {
 			if (target != null && (Dungeon.level.visited[target] || Dungeon.level.mapped[target])){
-				final Ballistica chain = new Ballistica(curUser.pos, target, Ballistica.STOP_CHARS | Ballistica.STOP_TARGET);
+
+				//ballistica does not go through walls on pre-rework boss arenas
+				int missileProperties = (Dungeon.depth == 10 || Dungeon.depth == 15 || Dungeon.depth == 20 || Dungeon.depth == 25) ?
+						Ballistica.PROJECTILE : Ballistica.STOP_CHARS | Ballistica.STOP_TARGET;
+
+				final Ballistica chain = new Ballistica(curUser.pos, target, missileProperties);
 
 				//determine if we're grabbing an enemy, pulling to a location, or doing nothing.
 				if (Actor.findChar( chain.collisionPos ) != null){
