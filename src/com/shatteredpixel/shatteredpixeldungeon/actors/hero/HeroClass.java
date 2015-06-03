@@ -49,36 +49,36 @@ public enum HeroClass {
 	}
 	
 	public static final String[] WAR_PERKS = {
-		"Warriors start with 11 points of Strength.",
-		"Warriors start with a unique short sword. This sword can be later \"reforged\" to upgrade another melee weapon.",
-		"Warriors are less proficient with missile weapons.",
+		"The Warrior starts with 11 points of Strength.",
+		"The Warrior starts with a unique short sword. This sword can be later \"reforged\" to upgrade another melee weapon.",
+		"The Warrior is less proficient with missile weapons.",
 		"Any piece of food restores some health when eaten.",
 		"Potions of Strength are identified from the beginning.",
 	};
 	
 	public static final String[] MAG_PERKS = {
-		"Mages start with a unique Staff, which can be imbued with the properties of a wand.",
+		"The Mage starts with a unique Staff, which can be imbued with the properties of a wand.",
 		"The Mage's staff can be used as a melee weapon or a more powerful wand.",
-		"Mages partially identify wands after using them.",
+		"The Mage partially identifies wands after using them.",
 		"When eaten, any piece of food restores 1 charge for all wands in the inventory.",
 		"Scrolls of Upgrade are identified from the beginning."
 	};
 	
 	public static final String[] ROG_PERKS = {
-		"Rogues start with a unique Cloak of Shadows.",
-		"Rogues identify a type of a ring on equipping it.",
-		"Rogues are proficient with light armor, dodging better while wearing one.",
-		"Rogues are proficient in detecting hidden doors and traps.",
-		"Rogues can go without food longer.",
+		"The Rogue starts with a unique Cloak of Shadows.",
+		"The Rogue identifies a type of a ring on equipping it.",
+		"The Rogue is proficient with light armor, dodging better with excess strength.",
+		"The Rogue is more proficient in detecting hidden doors and traps.",
+		"The Rogue can go without food longer.",
 		"Scrolls of Magic Mapping are identified from the beginning."
 	};
 	
 	public static final String[] HUN_PERKS = {
-		"Huntresses start with 15 points of Health and a unique upgradeable boomerang.",
-		"Huntresses are proficient with missile weapons, getting bonus damage from excess strength.",
-		"Huntresses are able to recover a single used missile weapon from each enemy.",
-		"Huntresses gain more health from dewdrops.",
-		"Huntresses sense neighbouring monsters even if they are hidden behind obstacles.",
+		"The Huntress starts with 15 points of Health and a unique upgradeable boomerang.",
+		"The Huntress is proficient with missile weapons, getting bonus damage from excess strength.",
+		"The Huntress is able to recover a single used missile weapon from each enemy.",
+		"The Huntress gains more health from dewdrops.",
+		"The Huntress senses neighbouring monsters even if they are hidden behind obstacles.",
 		"Potions of Mind Vision are identified from the beginning."
 	};
 
