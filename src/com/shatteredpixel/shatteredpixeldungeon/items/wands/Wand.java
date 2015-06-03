@@ -60,7 +60,7 @@ public abstract class Wand extends Item {
 	
 	public int maxCharges = initialCharges();
 	public int curCharges = maxCharges;
-    protected float partialCharge = 0f;
+    public float partialCharge = 0f;
 	
 	protected Charger charger;
 	

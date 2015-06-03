@@ -98,14 +98,16 @@ public class MagesStaff extends MeleeWeapon {
 
 	@Override
 	public void proc(Char attacker, Char defender, int damage) {
-		if (wand != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE)
-			wand.onHit( this, attacker, defender, damage );
+		if (wand != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE) {
+			wand.partialCharge += 0.5f;
+			wand.onHit(this, attacker, defender, damage);
+		}
 		super.proc(attacker, defender, damage);
 	}
 
 	@Override
 	public boolean collect( Bag container ) {
-		if (super.collect( container )) {
+		if (super.collect(container)) {
 			if (container.owner != null && wand != null) {
 				wand.charge(container.owner, STAFF_SCALE_FACTOR);
 			}
@@ -286,8 +288,6 @@ public class MagesStaff extends MeleeWeapon {
 									updateQuickslot();
 								}
 							}
-
-							;
 						}
 				);
 			}
@@ -312,7 +312,7 @@ public class MagesStaff extends MeleeWeapon {
 			return !((wand instanceof WandOfDisintegration)
 					|| (wand instanceof WandOfCorruption)
 					|| (wand instanceof WandOfRegrowth));
-		};
+		}
 	};
 
 	//determines particle effects to use based on wand the staff owns.
@@ -384,7 +384,7 @@ public class MagesStaff extends MeleeWeapon {
 				minSize = 1f; maxSize = 2.5f;
 				radiateXY(1f);
 			} else if (wand instanceof WandOfTransfusion) {
-				color( 0xCC0000 );; am = 0.6f;
+				color( 0xCC0000 ); am = 0.6f;
 				lifespan = left = 0.8f;
 				speed.polar( Random.Float(PointF.PI2), 2f );
 				minSize = 1f; maxSize = 2.5f;
