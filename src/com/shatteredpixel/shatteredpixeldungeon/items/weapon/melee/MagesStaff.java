@@ -66,6 +66,15 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
+	public Item upgrade(boolean enchant) {
+		MIN++;
+		MAX++;
+		//does not lose strength requirement
+
+		return super.upgrade( enchant );
+	}
+
+	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add(AC_IMBUE);
