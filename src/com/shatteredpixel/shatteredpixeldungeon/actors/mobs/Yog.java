@@ -89,7 +89,15 @@ public class Yog extends Mob {
 		GameScene.add( fist1 );
 		GameScene.add( fist2 );
 	}
-	
+
+	@Override
+	protected boolean act() {
+		//heals 1 health per turn
+		HP = Math.min( HT, HP+1 );
+
+		return super.act();
+	}
+
 	@Override
 	public void damage( int dmg, Object src ) {
 		
