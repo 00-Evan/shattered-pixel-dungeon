@@ -18,6 +18,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTrap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
@@ -200,35 +202,40 @@ public class Toolbar extends Component {
 				return;
 			}
 			
-			if (!Dungeon.visible[cell]) {
-				GameScene.show( new WndInfoCell( cell ) );
-				return;
-			}
-			
 			if (cell == Dungeon.hero.pos) {
 				GameScene.show( new WndHero() );
 				return;
 			}
-			
-			Mob mob = (Mob)Actor.findChar( cell );
-			if (mob != null) {
-				GameScene.show( new WndInfoMob( mob ) );
-				return;
-			}
-			
-			Heap heap = Dungeon.level.heaps.get( cell );
-			if (heap != null) {
-				if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
-					GameScene.show( new WndTradeItem( heap, false ) );
-				} else {
-					GameScene.show( new WndInfoItem( heap ) );
+
+			if (Dungeon.visible[cell]) {
+
+				Mob mob = (Mob) Actor.findChar(cell);
+				if (mob != null) {
+					GameScene.show(new WndInfoMob(mob));
+					return;
 				}
-				return;
+
+				Heap heap = Dungeon.level.heaps.get(cell);
+				if (heap != null) {
+					if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
+						GameScene.show(new WndTradeItem(heap, false));
+					} else {
+						GameScene.show(new WndInfoItem(heap));
+					}
+					return;
+				}
+
 			}
 			
 			Plant plant = Dungeon.level.plants.get( cell );
 			if (plant != null) {
 				GameScene.show( new WndInfoPlant( plant ) );
+				return;
+			}
+
+			Trap trap = Dungeon.level.traps.get( cell );
+			if (trap != null && trap.visible) {
+				GameScene.show( new WndInfoTrap( trap ));
 				return;
 			}
 			

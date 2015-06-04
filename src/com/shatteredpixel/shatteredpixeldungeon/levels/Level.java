@@ -70,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
@@ -120,7 +121,8 @@ public abstract class Level implements Bundlable {
 	
 	public static boolean resizingNeeded;
 	public static int loadedMapSize;
-	
+
+	public int version;
 	public int[] map;
 	public boolean[] visited;
 	public boolean[] mapped;
@@ -152,15 +154,17 @@ public abstract class Level implements Bundlable {
 	public SparseArray<Heap> heaps;
 	public HashMap<Class<? extends Blob>,Blob> blobs;
 	public SparseArray<Plant> plants;
+	public SparseArray<Trap> traps;
 	
-	protected ArrayList<Item> itemsToSpawn = new ArrayList<Item>();
+	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 	
 	public int color1 = 0x004400;
 	public int color2 = 0x88CC44;
 	
 	protected static boolean pitRoomNeeded = false;
 	protected static boolean weakFloorCreated = false;
-	
+
+	private static final String VERSION     = "version";
 	private static final String MAP			= "map";
 	private static final String VISITED		= "visited";
 	private static final String MAPPED		= "mapped";
@@ -169,6 +173,7 @@ public abstract class Level implements Bundlable {
     private static final String LOCKED      = "locked";
 	private static final String HEAPS		= "heaps";
 	private static final String PLANTS		= "plants";
+	private static final String TRAPS       = "traps";
 	private static final String MOBS		= "mobs";
 	private static final String BLOBS		= "blobs";
 	private static final String FEELING		= "feeling";
@@ -253,10 +258,11 @@ public abstract class Level implements Bundlable {
 			pitRoomNeeded = pitNeeded;
 			weakFloorCreated = false;
 
-			mobs = new HashSet<Mob>();
-			heaps = new SparseArray<Heap>();
-			blobs = new HashMap<Class<? extends Blob>,Blob>();
-			plants = new SparseArray<Plant>();
+			mobs = new HashSet<>();
+			heaps = new SparseArray<>();
+			blobs = new HashMap<>();
+			plants = new SparseArray<>();
+			traps = new SparseArray<>();
 			
 		} while (!build());
 		decorate();
@@ -280,13 +286,17 @@ public abstract class Level implements Bundlable {
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
+
+		version = bundle.getInt( VERSION );
 		
-		mobs = new HashSet<Mob>();
-		heaps = new SparseArray<Heap>();
-		blobs = new HashMap<Class<? extends Blob>, Blob>();
-		plants = new SparseArray<Plant>();
+		mobs = new HashSet<>();
+		heaps = new SparseArray<>();
+		blobs = new HashMap<>();
+		plants = new SparseArray<>();
+		traps = new SparseArray<>();
 		
 		map		= bundle.getIntArray( MAP );
+
 		visited	= bundle.getBooleanArray( VISITED );
 		mapped	= bundle.getBooleanArray( MAPPED );
 		
@@ -298,6 +308,12 @@ public abstract class Level implements Bundlable {
 		weakFloorCreated = false;
 		
 		adjustMapSize();
+
+		//for pre-0.3.0c saves
+		//TODO: update to final value of 44 after testing
+		if (version < 43){
+			map = Terrain.convertTrapsFrom43( map, traps );
+		}
 		
 		Collection<Bundlable> collection = bundle.getCollection( HEAPS );
 		for (Bundlable h : collection) {
@@ -316,6 +332,15 @@ public abstract class Level implements Bundlable {
 				plant.pos = adjustPos( plant.pos );
 			}
 			plants.put( plant.pos, plant );
+		}
+
+		collection = bundle.getCollection( TRAPS );
+		for (Bundlable p : collection) {
+			Trap trap = (Trap)p;
+			if (resizingNeeded) {
+				trap.pos = adjustPos( trap.pos );
+			}
+			traps.put( trap.pos, trap );
 		}
 		
 		collection = bundle.getCollection( MOBS );
@@ -345,6 +370,7 @@ public abstract class Level implements Bundlable {
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
+		bundle.put( VERSION, Game.versionCode );
 		bundle.put( MAP, map );
 		bundle.put( VISITED, visited );
 		bundle.put( MAPPED, mapped );
@@ -353,6 +379,7 @@ public abstract class Level implements Bundlable {
         bundle.put( LOCKED, locked );
 		bundle.put( HEAPS, heaps.values() );
 		bundle.put( PLANTS, plants.values() );
+		bundle.put( TRAPS, traps.values() );
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );
 		bundle.put( FEELING, feeling );
@@ -700,6 +727,27 @@ public abstract class Level implements Bundlable {
 	public void uproot( int pos ) {
 		plants.delete( pos );
 	}
+
+	public Trap setTrap( Trap trap, int pos ){
+		trap.set( pos );
+		traps.put( pos, trap );
+		GameScene.add(trap);
+		return trap;
+	}
+
+	public void disarmTrap( int pos ) {
+		traps.delete(pos);
+		set(pos, Terrain.INACTIVE_TRAP);
+		GameScene.updateMap(pos);
+	}
+
+	public void discover( int cell ) {
+		set( cell, Terrain.discover( map[cell] ) );
+		Trap trap = traps.get( cell );
+		if (trap != null)
+			trap.reveal();
+		GameScene.updateMap( cell );
+	}
 	
 	public int pitCell() {
 		return randomRespawnCell();
@@ -723,64 +771,14 @@ public abstract class Level implements Bundlable {
 
 		boolean frozen = timeFreeze != null;
 		
-		boolean trap = false;
+		Trap trap = null;
 		
 		switch (map[cell]) {
 		
-		case Terrain.SECRET_TOXIC_TRAP:
+		case Terrain.SECRET_TRAP:
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
-		case Terrain.TOXIC_TRAP:
-			trap = true;
-			if (!frozen) new ToxicTrap().set(cell).activate();
-			break;
-			
-		case Terrain.SECRET_FIRE_TRAP:
-			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
-		case Terrain.FIRE_TRAP:
-			trap = true;
-			if (!frozen) new FireTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.SECRET_PARALYTIC_TRAP:
-			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
-		case Terrain.PARALYTIC_TRAP:
-			trap = true;
-			if (!frozen) new ParalyticTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.SECRET_POISON_TRAP:
-			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
-		case Terrain.POISON_TRAP:
-			trap = true;
-			if (!frozen) new PoisonTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.SECRET_ALARM_TRAP:
-			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
-		case Terrain.ALARM_TRAP:
-			trap = true;
-			if (!frozen) new AlarmTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.SECRET_LIGHTNING_TRAP:
-			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
-		case Terrain.LIGHTNING_TRAP:
-			trap = true;
-			if (!frozen) new LightningTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.SECRET_GRIPPING_TRAP:
-			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
-		case Terrain.GRIPPING_TRAP:
-			trap = true;
-			if (!frozen) new GrippingTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.SECRET_SUMMONING_TRAP:
-			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
-		case Terrain.SUMMONING_TRAP:
-			trap = true;
-			if (!frozen) new SummoningTrap().set( cell ).activate();
+		case Terrain.TRAP:
+			trap = traps.get( cell );
 			break;
 			
 		case Terrain.HIGH_GRASS:
@@ -802,23 +800,18 @@ public abstract class Level implements Bundlable {
 			break;
 		}
 		
-		if (trap && !frozen) {
-
-			if (Dungeon.visible[cell])
-				Sample.INSTANCE.play( Assets.SND_TRAP );
+		if (trap != null && !frozen) {
 
 			if (ch == Dungeon.hero)
 				Dungeon.hero.interrupt();
 
-			set( cell, Terrain.INACTIVE_TRAP );
-			GameScene.updateMap( cell );
+			trap.trigger();
 
-		} else if (trap && frozen){
+		} else if (trap != null && frozen){
 
-			Sample.INSTANCE.play( Assets.SND_TRAP );
+			Sample.INSTANCE.play(Assets.SND_TRAP);
 
-			Level.set( cell, Terrain.discover( map[cell] ) );
-			GameScene.updateMap( cell );
+			discover(cell);
 
 			timeFreeze.setDelayedPress( cell );
 
@@ -839,54 +832,20 @@ public abstract class Level implements Bundlable {
 			return;
 		}
 		
-		boolean trap = true;
+		Trap trap = null;
 		switch (map[cell]) {
 		
-		case Terrain.TOXIC_TRAP:
-			new ToxicTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.FIRE_TRAP:
-			new FireTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.PARALYTIC_TRAP:
-			new ParalyticTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.POISON_TRAP:
-			new PoisonTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.ALARM_TRAP:
-			new AlarmTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.LIGHTNING_TRAP:
-			new LightningTrap().set( cell ).activate();
-			break;
-		
-		case Terrain.GRIPPING_TRAP:
-			new GrippingTrap().set( cell ).activate();
-			break;
-			
-		case Terrain.SUMMONING_TRAP:
-			new SummoningTrap().set( cell ).activate();
+		case Terrain.TRAP:
+			trap = traps.get( cell );
 			break;
 			
 		case Terrain.DOOR:
 			Door.enter( cell );
-			
-		default:
-			trap = false;
+			break;
 		}
 		
-		if (trap) {
-			if (Dungeon.visible[cell]) {
-				Sample.INSTANCE.play( Assets.SND_TRAP );
-			}
-			set( cell, Terrain.INACTIVE_TRAP );
-			GameScene.updateMap( cell );
+		if (trap != null) {
+			trap.trigger();
 		}
 		
 		Plant plant = plants.get( cell );
@@ -1021,12 +980,7 @@ public abstract class Level implements Bundlable {
 		case Terrain.EMPTY:
 		case Terrain.EMPTY_SP:
 		case Terrain.EMPTY_DECO:
-		case Terrain.SECRET_TOXIC_TRAP:
-		case Terrain.SECRET_FIRE_TRAP:
-		case Terrain.SECRET_PARALYTIC_TRAP:
-		case Terrain.SECRET_POISON_TRAP:
-		case Terrain.SECRET_ALARM_TRAP:
-		case Terrain.SECRET_LIGHTNING_TRAP:
+		case Terrain.SECRET_TRAP:
 			return "Floor";
 		case Terrain.GRASS:
 			return "Grass";
@@ -1067,22 +1021,6 @@ public abstract class Level implements Bundlable {
 		case Terrain.STATUE:
 		case Terrain.STATUE_SP:
 			return "Statue";
-		case Terrain.TOXIC_TRAP:
-			return "Toxic gas trap";
-		case Terrain.FIRE_TRAP:
-			return "Fire trap";
-		case Terrain.PARALYTIC_TRAP:
-			return "Paralytic gas trap";
-		case Terrain.POISON_TRAP:
-			return "Poison dart trap";
-		case Terrain.ALARM_TRAP:
-			return "Alarm trap";
-		case Terrain.LIGHTNING_TRAP:
-			return "Lightning trap";
-		case Terrain.GRIPPING_TRAP:
-			return "Gripping trap";
-		case Terrain.SUMMONING_TRAP:
-			return "Summoning trap";
 		case Terrain.INACTIVE_TRAP:
 			return "Triggered trap";
 		case Terrain.BOOKSHELF:
@@ -1118,15 +1056,6 @@ public abstract class Level implements Bundlable {
 			return "The wooden barricade is firmly set but has dried over the years. Might it burn?";
 		case Terrain.SIGN:
 			return "You can't read the text from here.";
-		case Terrain.TOXIC_TRAP:
-		case Terrain.FIRE_TRAP:
-		case Terrain.PARALYTIC_TRAP:
-		case Terrain.POISON_TRAP:
-		case Terrain.ALARM_TRAP:
-		case Terrain.LIGHTNING_TRAP:
-		case Terrain.GRIPPING_TRAP:
-		case Terrain.SUMMONING_TRAP:
-			return "Stepping onto a hidden pressure plate will activate the trap.";
 		case Terrain.INACTIVE_TRAP:
 			return "The trap has been triggered before and it's not dangerous anymore.";
 		case Terrain.STATUE:

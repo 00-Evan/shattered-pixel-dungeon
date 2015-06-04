@@ -4,8 +4,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
@@ -19,23 +21,27 @@ public abstract class Trap implements Bundlable {
 	public TrapSprite sprite;
 	public boolean visible;
 
-	private static final String POS	= "pos";
-
 	public Trap set(int pos){
 		this.pos = pos;
 		return this;
 	}
 
-	public void reveal() {
+	//TODO: fade-in effect here?
+	public Trap reveal() {
 		visible = true;
-		if (sprite != null)
+		if (sprite != null) {
 			sprite.visible = true;
+			sprite.alpha( 0 );
+			sprite.parent.add( new AlphaTweener( sprite, 1, 0.6f));
+		}
+		return this;
 	}
 
-	public void hide() {
+	public Trap hide() {
 		visible = false;
 		if (sprite != null)
 			sprite.visible = false;
+		return this;
 	}
 
 	public void trigger() {
@@ -49,19 +55,23 @@ public abstract class Trap implements Bundlable {
 	public abstract void activate();
 
 	protected void disarm(){
-		//Dungeon.level.traps.delete( pos );
-		Level.set(pos, Terrain.INACTIVE_TRAP);
-		sprite.kill();
+		Dungeon.level.disarmTrap(pos);
+		if (sprite != null) sprite.kill();
 	}
+
+	private static final String POS	= "pos";
+	private static final String VISIBLE	= "visible";
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		pos = bundle.getInt( POS );
+		visible = bundle.getBoolean( VISIBLE );
 	}
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( POS, pos );
+		bundle.put( VISIBLE, visible );
 	}
 
 	public String desc() {

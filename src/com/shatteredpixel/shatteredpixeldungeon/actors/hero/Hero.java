@@ -1283,8 +1283,7 @@ public class Hero extends Char {
 				
 				visited[i] = true;
 				if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
-					Level.set( i, Terrain.discover( terr ) );						
-					GameScene.updateMap( i );
+					Dungeon.level.discover( i );
 				}
 			}
 		}
@@ -1452,9 +1451,7 @@ public class Hero extends Char {
 						
 						GameScene.discoverTile( p, oldValue );
 						
-						Level.set( p, Terrain.discover( oldValue ) );	
-						
-						GameScene.updateMap( p );
+						Dungeon.level.discover( p );
 						
 						ScrollOfMagicMapping.discover( p );
 						

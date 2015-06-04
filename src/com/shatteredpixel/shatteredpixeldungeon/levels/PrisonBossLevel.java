@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Scene;
 import com.watabou.utils.Bundle;
@@ -204,13 +205,14 @@ public class PrisonBossLevel extends RegularLevel {
 			int trapPos = Random.Int( LENGTH );
 			
 			if (map[trapPos] == Terrain.EMPTY) {
-				map[trapPos] = Terrain.POISON_TRAP;
+				map[trapPos] = Terrain.TRAP;
+				setTrap( new PoisonTrap().reveal(), trapPos );
 			}
 		}
 	}
 	
 	@Override
-	protected void decorate() {	
+	protected void decorate() {
 		
 		for (int i=WIDTH + 1; i < LENGTH - WIDTH - 1; i++) {
 			if (map[i] == Terrain.EMPTY) { 

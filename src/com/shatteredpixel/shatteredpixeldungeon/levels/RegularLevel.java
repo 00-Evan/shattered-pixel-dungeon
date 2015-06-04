@@ -32,6 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ShopPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ParalyticTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
@@ -317,36 +324,37 @@ public abstract class RegularLevel extends Level {
 		
 		int nTraps = nTraps();
 		float[] trapChances = trapChances();
-		
+
 		for (int i=0; i < nTraps; i++) {
 			
 			int trapPos = Random.Int( LENGTH );
 			
 			if (map[trapPos] == Terrain.EMPTY) {
+				map[trapPos] = Terrain.SECRET_TRAP;
 				switch (Random.chances( trapChances )) {
 				case 0:
-					map[trapPos] = Terrain.SECRET_TOXIC_TRAP;
+					setTrap( new ToxicTrap().hide(), trapPos);
 					break;
 				case 1:
-					map[trapPos] = Terrain.SECRET_FIRE_TRAP;
+					setTrap( new FireTrap().hide(), trapPos);
 					break;
 				case 2:
-					map[trapPos] = Terrain.SECRET_PARALYTIC_TRAP;
+					setTrap( new ParalyticTrap().hide(), trapPos);
 					break;
 				case 3:
-					map[trapPos] = Terrain.SECRET_POISON_TRAP;
+					setTrap( new PoisonTrap().hide(), trapPos);
 					break;
 				case 4:
-					map[trapPos] = Terrain.SECRET_ALARM_TRAP;
+					setTrap( new AlarmTrap().hide(), trapPos);
 					break;
 				case 5:
-					map[trapPos] = Terrain.SECRET_LIGHTNING_TRAP;
+					setTrap( new LightningTrap().hide(), trapPos);
 					break;
 				case 6:
-					map[trapPos] = Terrain.SECRET_GRIPPING_TRAP;
+					setTrap( new GrippingTrap().hide(), trapPos);
 					break;
 				case 7:
-					map[trapPos] = Terrain.SECRET_SUMMONING_TRAP;
+					setTrap( new LightningTrap().hide(), trapPos);
 					break;
 				}
 			}
@@ -672,7 +680,8 @@ public abstract class RegularLevel extends Level {
 		for (Item item : itemsToSpawn) {
 			int cell = randomDropCell();
 			if (item instanceof Scroll) {
-				while (map[cell] == Terrain.FIRE_TRAP || map[cell] == Terrain.SECRET_FIRE_TRAP) {
+				while ((map[cell] == Terrain.TRAP || map[cell] == Terrain.SECRET_TRAP)
+						&& traps.get( cell ) instanceof FireTrap) {
 					cell = randomDropCell();
 				}
 			}

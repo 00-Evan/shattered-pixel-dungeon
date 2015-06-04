@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -25,18 +26,29 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ParalyticTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.Random;
 
 public class TrapsPainter extends Painter {
 
 	public static void paint( Level level, Room room ) {
 		 
-		Integer traps[] = {
-			Terrain.TOXIC_TRAP, Terrain.TOXIC_TRAP, Terrain.TOXIC_TRAP, 
-			Terrain.PARALYTIC_TRAP, Terrain.PARALYTIC_TRAP, 
-			!Dungeon.bossLevel( Dungeon.depth + 1 ) ? Terrain.CHASM : Terrain.SUMMONING_TRAP };
+		Class traps[] = new Class[]{
+			ToxicTrap.class, ToxicTrap.class, ToxicTrap.class,
+			ParalyticTrap.class, ParalyticTrap.class,
+			!Dungeon.bossLevel(Dungeon.depth + 1) ? null : SummoningTrap.class};
 		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Random.element( traps ) );
+
+		Class trap = Random.element(traps);
+
+		if (trap == null){
+			fill(level, room, 1, Terrain.CHASM);
+		} else {
+			fill(level, room, 1, Terrain.TRAP);
+		}
 		
 		Room.Door door = room.entrance(); 
 		door.set( Room.Door.Type.REGULAR );
@@ -61,6 +73,16 @@ public class TrapsPainter extends Painter {
 			x = room.left + room.width() / 2;
 			y = room.top + 1;
 			fill( level, room.left + 1, y, room.width() - 1, 1 , lastRow );
+		}
+
+		for(int cell : room.getCells()) {
+			if (level.map[cell] == Terrain.TRAP){
+				try {
+					level.setTrap(((Trap) trap.newInstance()).reveal(), cell);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		
 		int pos = x + y * Level.WIDTH;

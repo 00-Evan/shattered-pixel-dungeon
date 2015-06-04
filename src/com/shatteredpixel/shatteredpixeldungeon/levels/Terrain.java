@@ -17,6 +17,9 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
+import com.watabou.utils.SparseArray;
+
 public class Terrain {
 
 	public static final int CHASM			= 0;
@@ -35,41 +38,29 @@ public class Terrain {
 	public static final int BARRICADE		= 13;
 	public static final int EMPTY_SP		= 14;
 	public static final int HIGH_GRASS		= 15;
-	public static final int EMPTY_DECO		= 24;
-	public static final int LOCKED_EXIT		= 25;
-	public static final int UNLOCKED_EXIT	= 26;
-	public static final int SIGN			= 29;
-	public static final int WELL			= 34;
-	public static final int STATUE			= 35;
-	public static final int STATUE_SP		= 36;
-	public static final int BOOKSHELF		= 41;
-	public static final int ALCHEMY			= 42;
-	public static final int CHASM_FLOOR		= 43;
-	public static final int CHASM_FLOOR_SP	= 44;
-	public static final int CHASM_WALL		= 45;
-	public static final int CHASM_WATER		= 46;
-	
-	public static final int SECRET_DOOR				= 16;
-	public static final int TOXIC_TRAP				= 17;
-	public static final int SECRET_TOXIC_TRAP		= 18;
-	public static final int FIRE_TRAP				= 19;
-	public static final int SECRET_FIRE_TRAP		= 20;
-	public static final int PARALYTIC_TRAP			= 21;
-	public static final int SECRET_PARALYTIC_TRAP	= 22;
-	public static final int INACTIVE_TRAP			= 23;
-	public static final int POISON_TRAP				= 27;
-	public static final int SECRET_POISON_TRAP		= 28;
-	public static final int ALARM_TRAP				= 30;
-	public static final int SECRET_ALARM_TRAP		= 31;
-	public static final int LIGHTNING_TRAP			= 32;
-	public static final int SECRET_LIGHTNING_TRAP	= 33;
-	public static final int GRIPPING_TRAP			= 37;
-	public static final int SECRET_GRIPPING_TRAP	= 38;
-	public static final int SUMMONING_TRAP			= 39;
-	public static final int SECRET_SUMMONING_TRAP	= 40;
-	
-	public static final int WATER_TILES	= 48;
-	public static final int WATER		= 63;
+
+	public static final int SECRET_DOOR	    = 16;
+	public static final int SECRET_TRAP     = 17;
+	public static final int TRAP            = 18;
+	public static final int INACTIVE_TRAP   = 19;
+
+	public static final int EMPTY_DECO		= 20;
+	public static final int LOCKED_EXIT		= 21;
+	public static final int UNLOCKED_EXIT	= 22;
+	public static final int SIGN			= 23;
+	public static final int WELL			= 24;
+	public static final int STATUE			= 25;
+	public static final int STATUE_SP		= 26;
+	public static final int BOOKSHELF		= 27;
+	public static final int ALCHEMY			= 28;
+
+	public static final int CHASM_FLOOR		= 29;
+	public static final int CHASM_FLOOR_SP	= 30;
+	public static final int CHASM_WALL		= 31;
+	public static final int CHASM_WATER		= 32;
+
+	public static final int WATER_TILES	    = 48;
+	public static final int WATER		    = 63;
 	
 	public static final int PASSABLE		= 0x01;
 	public static final int LOS_BLOCKING	= 0x02;
@@ -101,6 +92,12 @@ public class Terrain {
 		flags[BARRICADE]	= FLAMABLE | SOLID | LOS_BLOCKING;
 		flags[EMPTY_SP]		= flags[EMPTY]									| UNSTITCHABLE;
 		flags[HIGH_GRASS]	= PASSABLE | LOS_BLOCKING | FLAMABLE;
+
+		flags[SECRET_DOOR]  = flags[WALL]  | SECRET	            			| UNSTITCHABLE;
+		flags[SECRET_TRAP]  = flags[EMPTY] | SECRET;
+		flags[TRAP]         = AVOID;
+		flags[INACTIVE_TRAP]= flags[EMPTY];
+
 		flags[EMPTY_DECO]	= flags[EMPTY];
 		flags[LOCKED_EXIT]	= SOLID;
 		flags[UNLOCKED_EXIT]= PASSABLE;
@@ -116,52 +113,89 @@ public class Terrain {
 		flags[CHASM_FLOOR_SP]	= flags[CHASM];
 		flags[CHASM_WATER]		= flags[CHASM];
 		
-		flags[SECRET_DOOR]				= flags[WALL] | SECRET				| UNSTITCHABLE;
-		flags[TOXIC_TRAP]				= AVOID;
-		flags[SECRET_TOXIC_TRAP]		= flags[EMPTY] | SECRET;
-		flags[FIRE_TRAP]				= AVOID;
-		flags[SECRET_FIRE_TRAP]			= flags[EMPTY] | SECRET;
-		flags[PARALYTIC_TRAP]			= AVOID;
-		flags[SECRET_PARALYTIC_TRAP]	= flags[EMPTY] | SECRET;
-		flags[POISON_TRAP]				= AVOID;
-		flags[SECRET_POISON_TRAP]		= flags[EMPTY] | SECRET;
-		flags[ALARM_TRAP]				= AVOID;
-		flags[SECRET_ALARM_TRAP]		= flags[EMPTY] | SECRET;
-		flags[LIGHTNING_TRAP]			= AVOID;
-		flags[SECRET_LIGHTNING_TRAP]	= flags[EMPTY] | SECRET;
-		flags[GRIPPING_TRAP]			= AVOID;
-		flags[SECRET_GRIPPING_TRAP]		= flags[EMPTY] | SECRET;
-		flags[SUMMONING_TRAP]			= AVOID;
-		flags[SECRET_SUMMONING_TRAP]	= flags[EMPTY] | SECRET;
-		flags[INACTIVE_TRAP]			= flags[EMPTY];
-		
 		for (int i=WATER_TILES; i < WATER_TILES + 16; i++) {
 			flags[i] = flags[WATER];
 		}
 	};
-	
+
+	//TODO: everything that touches this needs new trap logic
 	public static int discover( int terr ) {
 		switch (terr) {
 		case SECRET_DOOR:
 			return DOOR;
-		case SECRET_FIRE_TRAP:
-			return FIRE_TRAP;
-		case SECRET_PARALYTIC_TRAP:
-			return PARALYTIC_TRAP;
-		case SECRET_TOXIC_TRAP:
-			return TOXIC_TRAP;
-		case SECRET_POISON_TRAP:
-			return POISON_TRAP;
-		case SECRET_ALARM_TRAP:
-			return ALARM_TRAP;
-		case SECRET_LIGHTNING_TRAP:
-			return LIGHTNING_TRAP;
-		case SECRET_GRIPPING_TRAP:
-			return GRIPPING_TRAP;
-		case SECRET_SUMMONING_TRAP:
-			return SUMMONING_TRAP;
+		case SECRET_TRAP:
+			return TRAP;
 		default:
 			return terr;
 		}
 	}
+
+	//converts terrain values from pre versioncode 44 (0.3.0c) saves
+	//TODO: remove when no longer supporting saves from 0.3.0b and under
+	public static int[] convertTrapsFrom43( int[] map, SparseArray<Trap> traps){
+		for (int i = 0; i < map.length; i++){
+
+			int c = map[i];
+
+			//non-trap tiles getting their values shifted around
+			if (c >= 24 && c <= 26) {
+				c -= 4; //24-26 becomes 20-22
+			} else if (c == 29) {
+				c = 23; //29 becomes 23
+			} else if ( c >= 34 && c <= 36) {
+				c -= 10; //34-36 becomes 24-26
+			} else if ( c >= 41 && c <= 46) {
+				c -= 14; //41-46 becomes 27-32
+			}
+
+			//trap tiles, must be converted to general trap tiles and specific traps instantiated
+			else if (c >= 17 && c <= 40){
+				//this is going to be messy...
+				Trap trap = null;
+				switch(c){
+					case 17: trap = new ToxicTrap().reveal(); break;
+					case 18: trap = new ToxicTrap().hide(); break;
+
+					case 19: trap = new FireTrap().reveal(); break;
+					case 20: trap = new FireTrap().hide(); break;
+
+					case 21: trap = new ParalyticTrap().reveal(); break;
+					case 22: trap = new ParalyticTrap().hide(); break;
+
+					case 23:
+						c = INACTIVE_TRAP;
+						trap = null;
+						break;
+
+					case 27: trap = new PoisonTrap().reveal(); break;
+					case 28: trap = new PoisonTrap().hide(); break;
+
+					case 30: trap = new AlarmTrap().reveal(); break;
+					case 31: trap = new AlarmTrap().hide(); break;
+
+					case 32: trap = new LightningTrap().reveal(); break;
+					case 33: trap = new LightningTrap().hide(); break;
+
+					case 37: trap = new GrippingTrap().reveal(); break;
+					case 38: trap = new GrippingTrap().hide(); break;
+
+					case 39: trap = new SummoningTrap().reveal(); break;
+					case 40: trap = new SummoningTrap().hide(); break;
+				}
+				if (trap != null){
+					trap.set( i );
+					traps.put( trap.pos, trap );
+					if (trap.visible)
+						c = TRAP;
+					else
+						c = SECRET_TRAP;
+ 				}
+			}
+
+			map[i] = c;
+		}
+		return map;
+	}
+
+
 }

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -93,22 +94,25 @@ public class StandardPainter extends Painter {
 	private static void paintBurned( Level level, Room room ) {
 		for (int i=room.top + 1; i < room.bottom; i++) {
 			for (int j=room.left + 1; j < room.right; j++) {
+				int cell = i * Level.WIDTH + j;
 				int t = Terrain.EMBERS;
 				switch (Random.Int( 5 )) {
 				case 0:
 					t = Terrain.EMPTY;
 					break;
 				case 1:
-					t = Terrain.FIRE_TRAP;
+					t = Terrain.TRAP;
+					level.setTrap(new FireTrap().reveal(), cell);
 					break;
 				case 2:
-					t = Terrain.SECRET_FIRE_TRAP;
+					t = Terrain.SECRET_TRAP;
+					level.setTrap(new FireTrap().hide(), cell);
 					break;
 				case 3:
 					t = Terrain.INACTIVE_TRAP;
 					break;
 				}
-				level.map[i * Level.WIDTH + j] = t;
+				level.map[cell] = t;
 			}
 		}
 	}

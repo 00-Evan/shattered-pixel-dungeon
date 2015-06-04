@@ -23,6 +23,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.Random;
 
 public class BlacksmithPainter extends Painter {
@@ -30,8 +32,14 @@ public class BlacksmithPainter extends Painter {
 	public static void paint( Level level, Room room ) {
 
 		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.FIRE_TRAP );
+		fill( level, room, 1, Terrain.TRAP );
 		fill( level, room, 2, Terrain.EMPTY_SP );
+
+		for(int cell : room.getCells()) {
+			if (level.map[cell] == Terrain.TRAP){
+				level.setTrap(new FireTrap().reveal(), cell);
+			}
+		}
 		
 		for (int i=0; i < 2; i++) {
 			int pos;

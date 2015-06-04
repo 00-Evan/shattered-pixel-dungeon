@@ -109,8 +109,7 @@ public class WandOfPrismaticLight extends Wand {
                 int terr = Dungeon.level.map[cell];
                 if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-                    Level.set( cell, Terrain.discover( terr ) );
-                    GameScene.updateMap(cell);
+                    Dungeon.level.discover( cell );
 
                     GameScene.discoverTile( cell, terr );
                     ScrollOfMagicMapping.discover(cell);

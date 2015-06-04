@@ -30,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.watabou.noosa.Camera;
@@ -107,6 +109,7 @@ public class GameScene extends PixelScene {
 	private Group terrain;
 	private Group ripples;
 	private Group plants;
+	private Group traps;
 	private Group heaps;
 	private Group mobs;
 	private Group emitters;
@@ -151,12 +154,20 @@ public class GameScene extends PixelScene {
 		tiles = new DungeonTilemap();
 		terrain.add( tiles );
 		
-		Dungeon.level.addVisuals( this );
+		Dungeon.level.addVisuals(this);
+
+		traps = new Group();
+		add(traps);
+
+		int size = Dungeon.level.traps.size();
+		for (int i=0; i < size; i++) {
+			addTrapSprite( Dungeon.level.traps.valueAt( i ) );
+		}
 		
 		plants = new Group();
 		add( plants );
 		
-		int size = Dungeon.level.plants.size();
+		size = Dungeon.level.plants.size();
 		for (int i=0; i < size; i++) {
 			addPlantSprite( Dungeon.level.plants.valueAt( i ) );
 		}
@@ -453,6 +464,11 @@ public class GameScene extends PixelScene {
 	private void addPlantSprite( Plant plant ) {
 		(plant.sprite = (PlantSprite)plants.recycle( PlantSprite.class )).reset( plant );
 	}
+
+	private void addTrapSprite( Trap trap ) {
+		(trap.sprite = (TrapSprite)traps.recycle( TrapSprite.class )).reset( trap );
+		trap.sprite.visible = trap.visible;
+	}
 	
 	private void addBlobSprite( final Blob gas ) {
 		if (gas.emitter == null) {
@@ -499,6 +515,12 @@ public class GameScene extends PixelScene {
 	public static void add( Plant plant ) {
 		if (scene != null) {
 			scene.addPlantSprite( plant );
+		}
+	}
+
+	public static void add( Trap trap ) {
+		if (scene != null) {
+			scene.addTrapSprite( trap );
 		}
 	}
 	
