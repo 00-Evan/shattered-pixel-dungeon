@@ -118,7 +118,6 @@ public class Terrain {
 		}
 	};
 
-	//TODO: everything that touches this needs new trap logic
 	public static int discover( int terr ) {
 		switch (terr) {
 		case SECRET_DOOR:

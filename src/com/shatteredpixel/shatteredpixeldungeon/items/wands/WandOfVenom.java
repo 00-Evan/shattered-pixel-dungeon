@@ -33,7 +33,6 @@ public class WandOfVenom extends Wand {
 
     @Override
     protected void fx(Ballistica bolt, Callback callback) {
-        //TODO: final visuals
         MagicMissile.poison(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
         Sample.INSTANCE.play(Assets.SND_ZAP);
     }

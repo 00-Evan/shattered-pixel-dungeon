@@ -17,32 +17,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-import java.util.ArrayList;
-
-//TODO: final balancing choices
 public class WandOfMagicMissile extends Wand {
-
-	public static final String AC_DISENCHANT	= "DISENCHANT";
 
 	{
 		name = "Wand of Magic Missile";
@@ -53,7 +36,7 @@ public class WandOfMagicMissile extends Wand {
 	protected void onZap( Ballistica bolt ) {
 				
 		Char ch = Actor.findChar( bolt.collisionPos );
-		if (ch != null) {	
+		if (ch != null) {
 			
 			int level = level();
 

@@ -26,7 +26,6 @@ public abstract class Trap implements Bundlable {
 		return this;
 	}
 
-	//TODO: fade-in effect here?
 	public Trap reveal() {
 		visible = true;
 		if (sprite != null) {

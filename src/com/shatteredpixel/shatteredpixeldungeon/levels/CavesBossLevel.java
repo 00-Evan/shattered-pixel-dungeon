@@ -128,7 +128,6 @@ public class CavesBossLevel extends Level {
 		Painter.fill( this, ROOM_LEFT, ROOM_TOP + 1, 
 			ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP, Terrain.EMPTY );
 
-		//TODO Trap refactor
 		Painter.fill( this, ROOM_LEFT, ROOM_TOP, 
 			ROOM_RIGHT - ROOM_LEFT + 1, 1, Terrain.INACTIVE_TRAP );
 		
