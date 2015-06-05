@@ -79,6 +79,16 @@ public class WandOfFrost extends Wand {
 	}
 
 	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color( 0xFFFFFF );
+		particle.am = 0.5f;
+		particle.setLifespan(1.2f);
+		particle.speed.set(0, Random.Float(5, 8));
+		particle.setSize( 0f, 1f);
+		particle.shuffleXY(2f);
+	}
+
+	@Override
 	public String desc() {
 		return "This wand seems to be made out of some kind of magical ice. It grows brighter towards its " +
 				"rounded tip. It feels very cold when held, but somehow your hand stays warm.\n\n" +

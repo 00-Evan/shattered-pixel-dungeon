@@ -159,6 +159,16 @@ public class WandOfFireblast extends Wand {
 	}
 
 	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color( 0xEE7722 );
+		particle.am = 0.5f;
+		particle.setLifespan(0.6f);
+		particle.acc.set(0, -40);
+		particle.setSize( 0f, 3f);
+		particle.shuffleXY(2f);
+	}
+
+	@Override
 	public String desc() {
 		return
 			"This wand is made from red-lacquered wood with golden leaf used liberally to make it look quite regal. " +

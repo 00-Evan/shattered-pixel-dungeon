@@ -129,7 +129,19 @@ public class WandOfLightning extends Wand {
 		curUser.sprite.parent.add( new Lightning( arcs, null ) );
 		callback.call();
 	}
-	
+
+	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color(0xFFFFFF);
+		particle.am = 0.6f;
+		particle.setLifespan(0.6f);
+		particle.acc.set(0, +10);
+		particle.speed.polar(-Random.Float(3.1415926f), 6f);
+		particle.setSize(0f, 1.5f);
+		particle.sizeJitter = 1f;
+		particle.shuffleXY(2f);
+	}
+
 	@Override
 	public String desc() {
 		return

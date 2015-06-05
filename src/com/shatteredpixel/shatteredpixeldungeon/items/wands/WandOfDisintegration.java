@@ -65,7 +65,7 @@ public class WandOfDisintegration extends Wand {
 				//we don't want to count passed terrain after the last enemy hit. That would be a lot of bonus levels.
 				//terrainPassed starts at 2, equivalent of rounding up when /3 for integer arithmetic.
 				terrainBonus += terrainPassed/3;
-				terrainPassed = 1;
+				terrainPassed = terrainPassed%3;
 
 				chars.add( ch );
 			}
@@ -116,7 +116,17 @@ public class WandOfDisintegration extends Wand {
 		curUser.sprite.parent.add(new Beam.DeathRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld( cell )));
 		callback.call();
 	}
-	
+
+	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color(0x220022);
+		particle.am = 0.6f;
+		particle.setLifespan(0.6f);
+		particle.acc.set(40, -40);
+		particle.setSize(0f, 3f);
+		particle.shuffleXY(2f);
+	}
+
 	@Override
 	public String desc() {
 		return

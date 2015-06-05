@@ -43,6 +43,15 @@ public class WandOfVenom extends Wand {
     }
 
     @Override
+    public void staffFx(MagesStaff.StaffParticle particle) {
+        particle.color( 0x8844FF ); particle.am = 0.6f;
+        particle.setLifespan(0.6f);
+        particle.acc.set(0, 40);
+        particle.setSize( 0f, 3f);
+        particle.shuffleXY(2f);
+    }
+
+    @Override
     public String desc() {
         return
             "This wand has a purple body which opens to a brilliant green gem. " +

@@ -24,6 +24,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 /**
@@ -133,6 +134,15 @@ public class WandOfBlastWave extends Wand {
 	protected void fx(Ballistica bolt, Callback callback) {
 		MagicMissile.slowness(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
 		Sample.INSTANCE.play(Assets.SND_ZAP);
+	}
+
+	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color( 0x664422 ); particle.am = 0.6f;
+		particle.setLifespan(2f);
+		particle.speed.polar(Random.Float(PointF.PI2), 0.3f);
+		particle.setSize( 1f, 2f);
+		particle.radiateXY(3f);
 	}
 
 	public static class BlastWave extends Image {

@@ -337,11 +337,11 @@ public class MagesStaff extends MeleeWeapon {
 	};
 
 	//determines particle effects to use based on wand the staff owns.
-	private class StaffParticle extends PixelParticle{
+	public class StaffParticle extends PixelParticle{
 
 		private float minSize;
 		private float maxSize;
-		private float sizeRandomness = 0;
+		public float sizeJitter = 0;
 
 		public StaffParticle(){
 			super();
@@ -355,82 +355,26 @@ public class MagesStaff extends MeleeWeapon {
 			this.x = x;
 			this.y = y;
 
-			if (wand instanceof WandOfMagicMissile){
-				color(0xFFFFFF); am = 0.3f;
-				lifespan = left = 1f;
-				speed.polar( Random.Float(PointF.PI2), 2f );
-				minSize = 1f; maxSize = 2.5f;
-				radiateXY(1f);
-			} else if (wand instanceof WandOfLightning){
-				color(0xFFFFFF); am = 0.6f;
-				lifespan = left = 0.6f;
-				acc.set( 0, +10 ); speed.polar(-Random.Float(3.1415926f), 6f);
-				minSize = 0f; maxSize = 1.5f;
-				sizeRandomness = 1f;
-				shuffleXY(2f);
-			} else if (wand instanceof WandOfDisintegration){
-				color(0x220022); am = 0.6f;
-				lifespan = left = 0.6f;
-				acc.set(40, -40);
-				minSize = 0f; maxSize = 3f;
-				shuffleXY(2f);
-			} else if (wand instanceof WandOfFireblast) {
-				color( 0xEE7722 ); am = 0.5f;
-				lifespan = left = 0.6f;
-				acc.set(0, -40);
-				minSize = 0f; maxSize = 3f;
-				shuffleXY(2f);
-			} else if (wand instanceof WandOfVenom) {
-				color( 0x8844FF ); am = 0.6f;
-				lifespan = left = 0.6f;
-				acc.set(0, 40);
-				minSize = 0f; maxSize = 3f;
-				shuffleXY(2f);
-			} else if (wand instanceof WandOfBlastWave) {
-				color( 0x664422 ); am = 0.6f;
-				lifespan = left = 2f;
-				speed.polar(Random.Float(PointF.PI2), 0.3f);
-				minSize = 1f; maxSize = 2f;
-				radiateXY(3f);
-			} else if (wand instanceof WandOfFrost) {
-				color( 0xFFFFFF ); am = 0.5f;
-				lifespan = left = 1.2f;
-				speed.set( 0, Random.Float( 5, 8 ) );
-				minSize = 0f; maxSize = 1f;
-				shuffleXY(2f);
-			} else if (wand instanceof WandOfPrismaticLight) {
-				color( Random.Int( 0x1000000 ) ); am = 0.3f;
-				lifespan = left = 1f;
-				speed.polar(Random.Float(PointF.PI2), 2f);
-				minSize = 1f; maxSize = 2.5f;
-				radiateXY(1f);
-			} else if (wand instanceof WandOfTransfusion) {
-				color( 0xCC0000 ); am = 0.6f;
-				lifespan = left = 0.8f;
-				speed.polar( Random.Float(PointF.PI2), 2f );
-				minSize = 1f; maxSize = 2.5f;
-				radiateXY(1f);
-			} else if (wand instanceof WandOfCorruption) {
-				color( 0 ); am = 0.6f;
-				lifespan = left = 0.6f;
-				acc.set(0, 40);
-				minSize = 0f; maxSize = 3f;
-				shuffleXY(2f);
-			} else if (wand instanceof WandOfRegrowth) {
-				color( ColorMath.random(0x004400, 0x88CC44) ); am = 1f;
-				lifespan = left = 0.6f;
-				acc.set(0, 40);
-				minSize = 1f; maxSize = 2f;
-				shuffleXY(2f);
-			}
+			if (wand != null)
+				wand.staffFx( this );
+
 		}
 
-		private void shuffleXY(float amt){
+		public void setSize( float minSize, float maxSize ){
+			this.minSize = minSize;
+			this.maxSize = maxSize;
+		}
+
+		public void setLifespan( float life ){
+			lifespan = left = life;
+		}
+
+		public void shuffleXY(float amt){
 			x += Random.Float(-amt, amt);
 			y += Random.Float(-amt, amt);
 		}
 
-		private void radiateXY(float amt){
+		public void radiateXY(float amt){
 			float hypot = (float)Math.hypot(speed.x, speed.y);
 			this.x += speed.x/hypot*amt;
 			this.y += speed.y/hypot*amt;
@@ -439,7 +383,7 @@ public class MagesStaff extends MeleeWeapon {
 		@Override
 		public void update() {
 			super.update();
-			size(minSize + (left / lifespan)*(maxSize-minSize) + Random.Float(sizeRandomness));
+			size(minSize + (left / lifespan)*(maxSize-minSize) + Random.Float(sizeJitter));
 		}
 	}
 }

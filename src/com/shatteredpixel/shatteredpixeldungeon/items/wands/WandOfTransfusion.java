@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.Arrays;
@@ -205,6 +206,16 @@ public class WandOfTransfusion extends Wand {
 		curUser.sprite.parent.add(
 				new Beam.HealthRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(beam.collisionPos)));
 		callback.call();
+	}
+
+	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color( 0xCC0000 );
+		particle.am = 0.6f;
+		particle.setLifespan(0.8f);
+		particle.speed.polar( Random.Float(PointF.PI2), 2f );
+		particle.setSize( 1f, 2.5f);
+		particle.radiateXY(1f);
 	}
 
 	@Override

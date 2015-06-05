@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 public abstract class Wand extends Item {
@@ -231,6 +232,14 @@ public abstract class Wand extends Item {
 	protected void fx( Ballistica bolt, Callback callback ) {
 		MagicMissile.whiteLight( curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
+	}
+
+	public void staffFx( MagesStaff.StaffParticle particle ){
+		particle.color(0xFFFFFF); particle.am = 0.3f;
+		particle.setLifespan( 1f);
+		particle.speed.polar( Random.Float(PointF.PI2), 2f );
+		particle.setSize( 1f, 2.5f );
+		particle.radiateXY(1f);
 	}
 
 	protected void wandUsed() {

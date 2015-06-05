@@ -37,8 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
+import com.watabou.utils.ColorMath;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -220,6 +220,16 @@ public class WandOfRegrowth extends Wand {
 	//consumes all available charges, needs at least one.
 	protected int chargesPerCast() {
 		return Math.max(1, curCharges);
+	}
+
+	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color( ColorMath.random(0x004400, 0x88CC44) );
+		particle.am = 1f;
+		particle.setLifespan(0.6f);
+		particle.acc.set(0, 40);
+		particle.setSize( 1f, 2f);
+		particle.shuffleXY(2f);
 	}
 
 	@Override

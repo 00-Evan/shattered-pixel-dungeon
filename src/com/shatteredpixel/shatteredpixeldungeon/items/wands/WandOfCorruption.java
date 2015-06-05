@@ -92,6 +92,16 @@ public class WandOfCorruption extends Wand {
 	}
 
 	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color( 0 );
+		particle.am = 0.6f;
+		particle.setLifespan(0.6f);
+		particle.acc.set(0, 40);
+		particle.setSize( 0f, 3f);
+		particle.shuffleXY(2f);
+	}
+
+	@Override
 	public String desc() {
 		return "This wand radiates dark energy, if that weren't already obvious from the small decorative skull shaped onto its tip.\n" +
 				"\n" +
