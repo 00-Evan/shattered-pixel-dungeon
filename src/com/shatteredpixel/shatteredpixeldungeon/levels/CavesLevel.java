@@ -144,13 +144,7 @@ public class CavesLevel extends RegularLevel {
 			}
 		}
 		
-		while (true) {
-			int pos = roomEntrance.random();
-			if (pos != entrance) {
-				map[pos] = Terrain.SIGN;
-				break;
-			}
-		}
+		placeSign();
 		
 		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
 			return;

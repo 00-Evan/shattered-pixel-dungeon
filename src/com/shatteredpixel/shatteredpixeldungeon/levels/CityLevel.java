@@ -77,13 +77,7 @@ public class CityLevel extends RegularLevel {
 			}
 		}
 		
-		while (true) {
-			int pos = roomEntrance.random();
-			if (pos != entrance) {
-				map[pos] = Terrain.SIGN;
-				break;
-			}
-		}
+		placeSign();
 	}
 	
 	@Override
