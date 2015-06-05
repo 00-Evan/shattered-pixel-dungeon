@@ -19,7 +19,9 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -49,9 +51,11 @@ public class WandOfMagicMissile extends Wand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		//regains lvl*5% of total missing charge
-		partialCharge += ((maxCharges - curCharges)/20f)*staff.level;
-		SpellSprite.show(attacker, SpellSprite.CHARGE);
+		//gain 1 turn of recharging buff per level of the wand.
+		if (level > 0) {
+			Buff.prolong( attacker, ScrollOfRecharging.Recharging.class, (float)staff.level);
+			SpellSprite.show(attacker, SpellSprite.CHARGE);
+		}
 	}
 	
 	protected int initialCharges() {
