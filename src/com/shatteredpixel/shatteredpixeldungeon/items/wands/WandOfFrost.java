@@ -6,10 +6,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -74,8 +74,19 @@ public class WandOfFrost extends Wand {
 	}
 
 	@Override
+	//TODO: balancing, this could be mighty OP
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		new Slow().proc(staff, attacker, defender, damage);
+		Chill chill = defender.buff(Chill.class);
+		if (chill != null && Random.Float() > chill.speedFactor()){
+			//need to delay this through an actor so that the freezing isn't broken by taking damage from the staff hit.
+			new FlavourBuff(){
+				{actPriority = Integer.MIN_VALUE;}
+				public boolean act() {
+					Buff.affect(target, Frost.class, Frost.duration(target) * Random.Float(1f, 2f));
+					return super.act();
+				}
+			}.attachTo(defender);
+		}
 	}
 
 	@Override
