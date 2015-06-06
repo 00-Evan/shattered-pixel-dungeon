@@ -290,8 +290,8 @@ public class Wandmaker extends NPC {
 		}
 		
 		@Override
-		public void activate( Char ch ) {
-			super.activate( ch );
+		public void activate() {
+			Char ch = Actor.findChar(pos);
 			
 			GameScene.add( Blob.seed( pos, 100, ToxicGas.class ) );
 			

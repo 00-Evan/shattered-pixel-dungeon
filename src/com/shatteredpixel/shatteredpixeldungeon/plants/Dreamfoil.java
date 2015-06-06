@@ -17,6 +17,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -46,8 +47,8 @@ public class Dreamfoil extends Plant {
     }
 
     @Override
-    public void activate( Char ch ) {
-        super.activate( ch );
+    public void activate() {
+        Char ch = Actor.findChar(pos);
 
         if (ch != null) {
             if (ch instanceof Mob)

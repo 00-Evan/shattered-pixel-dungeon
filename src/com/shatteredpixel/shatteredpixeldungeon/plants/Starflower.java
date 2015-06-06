@@ -1,6 +1,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -20,8 +21,8 @@ public class Starflower extends Plant {
 	}
 
 	@Override
-	public void activate(Char ch) {
-		super.activate( ch );
+	public void activate() {
+		Char ch = Actor.findChar(pos);
 
 		if (ch != null) Buff.prolong(ch, Bless.class, 30f);
 

@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
@@ -41,8 +42,8 @@ public class Blindweed extends Plant {
 	}
 	
 	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+	public void activate() {
+		Char ch = Actor.findChar(pos);
 		
 		if (ch != null) {
             int len = Random.Int( 5, 10 );

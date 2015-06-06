@@ -18,7 +18,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -37,8 +36,7 @@ public class Firebloom extends Plant {
 	}
 	
 	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+	public void activate() {
 		
 		GameScene.add( Blob.seed( pos, 2, Fire.class ) );
 		

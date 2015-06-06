@@ -18,6 +18,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -39,8 +40,8 @@ public class Sungrass extends Plant {
 	}
 	
 	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+	public void activate() {
+		Char ch = Actor.findChar(pos);
 		
 		if (ch == Dungeon.hero) {
 			Buff.affect( ch, Health.class ).level = ch.HT;

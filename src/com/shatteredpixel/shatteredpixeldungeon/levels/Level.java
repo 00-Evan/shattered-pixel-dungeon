@@ -819,7 +819,7 @@ public abstract class Level implements Bundlable {
 		
 		Plant plant = plants.get( cell );
 		if (plant != null) {
-			plant.activate( ch );
+			plant.trigger();
 		}
 	}
 	
@@ -850,7 +850,7 @@ public abstract class Level implements Bundlable {
 		
 		Plant plant = plants.get( cell );
 		if (plant != null) {
-			plant.activate( mob );
+			plant.trigger();
 		}
 	}
 	
