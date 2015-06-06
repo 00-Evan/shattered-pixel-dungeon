@@ -210,7 +210,7 @@ public class Generator {
 			BlandfruitBush.Seed.class,
             Dreamfoil.Seed.class,
             Stormvine.Seed.class,
-			Starflower.class};
+			Starflower.Seed.class};
 		Category.SEED.probs = new float[]{ 12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1 };
 	}
 	

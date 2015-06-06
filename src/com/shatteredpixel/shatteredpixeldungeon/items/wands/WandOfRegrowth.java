@@ -124,7 +124,7 @@ public class WandOfRegrowth extends Wand {
 					floor.plant(seed, cells.next());
 					Dungeon.limitedDrops.blandfruitSeed.count++;
 				}
-			} else if (seed != null)
+			} else
 				floor.plant(seed, cells.next());
 
 			numPlants --;
