@@ -120,9 +120,6 @@ public enum HeroClass {
 
         if (!Dungeon.isChallenged(Challenges.NO_FOOD))
             new Food().identify().collect();
-
-	    hero.HP = hero.HT = 10000;
-	    new WandOfFireblast().identify().upgrade(50).collect();
     }
 
     public Badges.Badge masteryBadge() {
