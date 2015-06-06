@@ -108,7 +108,7 @@ public class Swarm extends Mob {
 			}
 		}
 		
-		return damage;
+		return super.defenseProc(enemy, damage);
 	}
 	
 	@Override

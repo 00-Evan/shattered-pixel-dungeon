@@ -125,7 +125,7 @@ public class Thief extends Mob {
             Dungeon.level.drop( new Gold(), pos ).sprite.drop();
         }
 
-        return damage;
+        return super.defenseProc(enemy, damage);
     }
 
     protected boolean steal( Hero hero ) {
