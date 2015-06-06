@@ -34,12 +34,6 @@ public class BlacksmithPainter extends Painter {
 		fill( level, room, Terrain.WALL );
 		fill( level, room, 1, Terrain.TRAP );
 		fill( level, room, 2, Terrain.EMPTY_SP );
-
-		for(int cell : room.getCells()) {
-			if (level.map[cell] == Terrain.TRAP){
-				level.setTrap(new FireTrap().reveal(), cell);
-			}
-		}
 		
 		for (int i=0; i < 2; i++) {
 			int pos;
@@ -63,5 +57,11 @@ public class BlacksmithPainter extends Painter {
 			npc.pos = room.random( 1 );
 		} while (level.heaps.get( npc.pos ) != null);
 		level.mobs.add( npc );
+
+		for(int cell : room.getCells()) {
+			if (level.map[cell] == Terrain.TRAP){
+				level.setTrap(new FireTrap().reveal(), cell);
+			}
+		}
 	}
 }
