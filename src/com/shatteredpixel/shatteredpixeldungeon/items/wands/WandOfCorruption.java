@@ -50,14 +50,20 @@ public class WandOfCorruption extends Wand {
 				return;
 			}
 
-			int basePower = 5 + 5*level;
-			int mobPower = Random.NormalIntRange(0, ch.HT+ch.HP);
+			int basePower = 10 + 2*level;
+			int mobPower = Random.IntRange(0, ch.HT) + ch.HP*2;
+			for ( Buff buff : ch.buffs()){
+				if (buff.type == Buff.buffType.NEGATIVE){
+					mobPower *= 0.67;
+					break;
+				}
+			}
 
 			int extraCharges = 0;
 			//try to use extra charges to overpower the mob
 			while (basePower <= mobPower){
 				extraCharges++;
-				basePower += 10 + 2.5*level;
+				basePower += 5 + level;
 			}
 
 			//if we fail, lose all charges, remember we have 1 left to lose from using the wand.
@@ -106,9 +112,9 @@ public class WandOfCorruption extends Wand {
 		return "This wand radiates dark energy, if that weren't already obvious from the small decorative skull shaped onto its tip.\n" +
 				"\n" +
 				"This wand will release a blast of corrupting energy, attempting to bend enemies to your will. " +
-				"The weaker an enemy is, the easier they are to corrupt. " +
+				"Full health enemies are dramatically harder to corrupt than weakened and debuffed ones. " +
 				"Successfully corrupting an enemy restores them to full health.\n" +
 				"\n" +
-				"This wand uses at least one charge per cast, but will often use more in an attempt to overpower tougher enemies.";
+				"This wand uses at least one charge per cast, but will often use more in an attempt to overpower more healthy enemies.";
 	}
 }

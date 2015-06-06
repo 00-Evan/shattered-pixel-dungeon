@@ -12,7 +12,6 @@ public class Corruption extends Buff {
 		type = buffType.NEGATIVE;
 	}
 
-	//TODO: need to bundle this
 	private float buildToDamage = 0f;
 
 	@Override
@@ -37,9 +36,8 @@ public class Corruption extends Buff {
 	}
 
 	@Override
-	//TODO: new icon
 	public int icon() {
-		return BuffIndicator.POISON;
+		return BuffIndicator.CORRUPT;
 	}
 
 	@Override
