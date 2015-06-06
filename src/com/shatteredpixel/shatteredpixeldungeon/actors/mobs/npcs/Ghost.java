@@ -181,8 +181,6 @@ public class Ghost extends NPC {
                     }
                     if (newPos != -1) {
 
-                        Actor.freeCell(pos);
-
                         CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
                         pos = newPos;
                         sprite.place(pos);
@@ -317,7 +315,6 @@ public class Ghost extends NPC {
 					ghost.pos = level.randomRespawnCell();
 				} while (ghost.pos == -1);
 				level.mobs.add( ghost );
-				Actor.occupyCell( ghost );
 				
 				spawned = true;
                 //dungeon depth determines type of quest.

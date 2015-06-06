@@ -63,6 +63,5 @@ public class BlacksmithPainter extends Painter {
 			npc.pos = room.random( 1 );
 		} while (level.heaps.get( npc.pos ) != null);
 		level.mobs.add( npc );
-		Actor.occupyCell( npc );
 	}
 }

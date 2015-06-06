@@ -279,7 +279,6 @@ public abstract class Char extends Actor {
 	public void destroy() {
 		HP = 0;
 		Actor.remove( this );
-		Actor.freeCell( pos );
 	}
 	
 	public void die( Object src ) {
@@ -404,10 +403,7 @@ public abstract class Char extends Actor {
 			Door.leave( pos );
 		}
 
-		Actor.freeCell(pos);
 		pos = step;
-		Actor.occupyCell( this );
-
 		
 		if (flying && Dungeon.level.map[pos] == Terrain.DOOR) {
 			Door.enter( pos );

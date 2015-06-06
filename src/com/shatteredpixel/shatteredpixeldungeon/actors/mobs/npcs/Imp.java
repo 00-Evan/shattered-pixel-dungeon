@@ -217,9 +217,8 @@ public class Imp extends NPC {
 					npc.pos = level.randomRespawnCell();
 				} while (npc.pos == -1 || level.heaps.get( npc.pos ) != null);
 				level.mobs.add( npc );
-				Actor.occupyCell( npc );
 				
-				spawned = true;	
+				spawned = true;
 				alternative = Random.Int( 2 ) == 0;
 				
 				given = false;

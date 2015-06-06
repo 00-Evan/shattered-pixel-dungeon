@@ -271,7 +271,6 @@ public class CursedWand {
 							sheep.pos = ch.pos;
 							ch.sprite.killAndErase();
 							Actor.remove(ch);
-							Actor.freeCell(ch.pos);
 							Dungeon.level.mobs.remove(ch);
 							HealthIndicator.instance.target(null);
 							GameScene.add(sheep);

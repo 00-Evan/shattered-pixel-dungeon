@@ -67,6 +67,5 @@ public class StatuePainter extends Painter {
 		Statue statue = new Statue();
 		statue.pos = cx + cy * Level.WIDTH;
 		level.mobs.add( statue );
-		Actor.occupyCell( statue );
 	}
 }

@@ -48,12 +48,6 @@ public class SummoningTrap extends Trap {
 			return;
 		}
 
-		Char c = Actor.findChar( pos );
-
-		if (c != null) {
-			Actor.occupyCell( c );
-		}
-
 		int nMobs = 1;
 		if (Random.Int( 2 ) == 0) {
 			nMobs++;
@@ -79,7 +73,6 @@ public class SummoningTrap extends Trap {
 			int index = Random.index( candidates );
 
 			DUMMY.pos = candidates.get( index );
-			Actor.occupyCell( DUMMY );
 
 			respawnPoints.add( candidates.remove( index ) );
 			nMobs--;

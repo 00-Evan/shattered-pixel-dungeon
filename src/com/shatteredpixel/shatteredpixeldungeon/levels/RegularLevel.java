@@ -591,7 +591,6 @@ public abstract class RegularLevel extends Level {
 			if (Actor.findChar(mob.pos) == null && Level.passable[mob.pos]) {
 				mobsToSpawn--;
 				mobs.add(mob);
-				Actor.occupyCell(mob);
 
 				//TODO: perhaps externalize this logic into a method. Do I want to make mobs more likely to clump deeper down?
 				if (mobsToSpawn > 0 && Random.Int(4) == 0){
@@ -601,7 +600,6 @@ public abstract class RegularLevel extends Level {
 					if (Actor.findChar(mob.pos) == null && Level.passable[mob.pos]) {
 						mobsToSpawn--;
 						mobs.add(mob);
-						Actor.occupyCell(mob);
 					}
 				}
 			}

@@ -214,7 +214,6 @@ public class Wandmaker extends NPC {
 					npc.pos = room.random();
 				} while (level.map[npc.pos] == Terrain.ENTRANCE || level.map[npc.pos] == Terrain.SIGN);
 				level.mobs.add( npc );
-				Actor.occupyCell( npc );
 				
 				spawned = true;
 				alternative = Random.Int( 2 ) == 0;
