@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -128,7 +129,10 @@ public class Swarm extends Mob {
 			Buff.affect( clone, Burning.class ).reignite( clone );
 		}
 		if (buff( Poison.class ) != null) {
-			Buff.affect( clone, Poison.class ).set( 2 );
+			Buff.affect( clone, Poison.class ).set(2);
+		}
+		if (buff(Corruption.class ) != null) {
+			Buff.affect( clone, Corruption.class);
 		}
 		return clone;
 	}
