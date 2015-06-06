@@ -11,6 +11,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -36,7 +37,9 @@ public class WandOfCorruption extends Wand {
 
 	//FIXME: sloppy
 	private static HashSet<Class> bosses = new HashSet<Class>(Arrays.asList(
-			Goo.class, Tengu.class, DM300.class, King.class, Yog.class, Yog.BurningFist.class, Yog.RottingFist.class
+			Ghost.FetidRat.class, Ghost.GnollTrickster.class, Ghost.GreatCrab.class,
+			Goo.class, Tengu.class, DM300.class, King.class,
+			Yog.class, Yog.BurningFist.class, Yog.RottingFist.class
 	));
 
 	@Override
@@ -44,6 +47,11 @@ public class WandOfCorruption extends Wand {
 		Char ch = Actor.findChar(bolt.collisionPos);
 
 		if (ch != null){
+
+			if(ch.buff(Corruption.class) != null){
+				GLog.w("that character is already corrupted");
+				return;
+			}
 
 			if (bosses.contains(ch.getClass())){
 				GLog.w("Bosses are immune to corruption");
