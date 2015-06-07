@@ -64,6 +64,7 @@ public class MagesStaff extends MeleeWeapon {
         wand.cursed = false;
 		this.wand = wand;
 		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+		wand.curCharges = wand.maxCharges;
 	}
 
 	@Override
@@ -151,6 +152,7 @@ public class MagesStaff extends MeleeWeapon {
 
 		this.wand = wand;
 		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+		wand.curCharges = wand.maxCharges;
 		wand.identify();
 		wand.cursed = false;
 		wand.charge(owner);
@@ -168,9 +170,12 @@ public class MagesStaff extends MeleeWeapon {
 		//does not lose strength requirement
 
 		if (wand != null) {
+			int curCharges = wand.curCharges;
 			wand.upgrade();
 			//gives the wand one additional charge
 			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+			wand.curCharges = curCharges+1;
+			updateQuickslot();
 		}
 
 		return this;
@@ -183,9 +188,12 @@ public class MagesStaff extends MeleeWeapon {
 		STR = 10;
 
 		if (wand != null) {
+			int curCharges = wand.curCharges;
 			wand.degrade();
 			//gives the wand one additional charge
 			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+			wand.curCharges = curCharges-1;
+			updateQuickslot();
 		}
 
 		return this;
