@@ -73,6 +73,7 @@ public class BuffIndicator extends Component {
 	public static final int RECHARGING 	= 34;
 	public static final int LOCKED_FLOOR= 35;
 	public static final int CORRUPT     = 36;
+	public static final int BLESS       = 37;
 
 	public static final int SIZE	= 7;
 	

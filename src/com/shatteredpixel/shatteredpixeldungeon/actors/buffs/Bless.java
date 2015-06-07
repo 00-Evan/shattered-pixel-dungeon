@@ -14,8 +14,7 @@ public class Bless extends FlavourBuff {
 
 	@Override
 	public int icon() {
-		//TODO: add icon
-		return BuffIndicator.FIRE;
+		return BuffIndicator.BLESS;
 	}
 
 	@Override
