@@ -10,7 +10,7 @@ import com.watabou.utils.Bundle;
  */
 public class Venom extends Poison implements Hero.Doom {
 
-    private int damage = 1+ Dungeon.depth/5;
+    private int damage = 1;
 
     private static final String DAMAGE	= "damage";
 
@@ -31,8 +31,12 @@ public class Venom extends Poison implements Hero.Doom {
         damage = bundle.getInt( DAMAGE );
     }
 
+    public void set(float duration, int damage) {
+        set(duration);
+        this.damage = damage;
+    }
+
     @Override
-    //TODO: new icon?
     public int icon() {
         return BuffIndicator.POISON;
     }
@@ -55,7 +59,8 @@ public class Venom extends Poison implements Hero.Doom {
     public boolean act() {
         if (target.isAlive()) {
             target.damage(damage, this);
-            damage = Math.min(damage+1+Dungeon.depth/10, ((Dungeon.depth+1)/2)+1);
+            if (damage < ((Dungeon.depth+1)/2)+1)
+                damage++;
 
             //want it to act after the cloud of venom it came from.
             spend( TICK+0.1f );

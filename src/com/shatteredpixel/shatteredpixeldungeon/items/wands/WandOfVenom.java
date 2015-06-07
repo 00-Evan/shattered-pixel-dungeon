@@ -27,8 +27,9 @@ public class WandOfVenom extends Wand {
 
     @Override
     protected void onZap(Ballistica bolt) {
-        //TODO: final balancing
-        GameScene.add(Blob.seed(bolt.collisionPos, 40+20*level, VenomGas.class));
+        Blob venomGas = Blob.seed(bolt.collisionPos, 50 + 10 * level, VenomGas.class);
+        ((VenomGas)venomGas).setStrength(level+1);
+        GameScene.add(venomGas);
     }
 
     @Override
