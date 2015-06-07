@@ -74,6 +74,6 @@ public abstract class Trap implements Bundlable {
 	}
 
 	public String desc() {
-		return "";
+		return "Stepping onto a hidden pressure plate will activate the trap.";
 	}
 }
