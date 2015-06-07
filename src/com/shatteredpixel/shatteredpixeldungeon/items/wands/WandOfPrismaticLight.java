@@ -7,6 +7,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
@@ -77,9 +78,9 @@ public class WandOfPrismaticLight extends Wand {
     private void affectTarget(Char ch){
         int dmg = Random.NormalIntRange(level, (int) (8+(level*(level/5f))));
 
-        //two in (5+lvl) chance of failing
-        if (Random.Int(5+level) >= 2) {
-            Buff.prolong(ch, Blindness.class, 2f + (level * 0.5f));
+        //three in (5+lvl) chance of failing
+        if (Random.Int(5+level) >= 3) {
+            Buff.prolong(ch, Blindness.class, 2f + (level * 0.34f));
             ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
         }
 
@@ -136,8 +137,8 @@ public class WandOfPrismaticLight extends Wand {
 
     @Override
     public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-        //acts like stunning enchant
-        new Paralysis().proc(staff, attacker, defender, damage);
+        //cripples enemy
+        Buff.prolong( defender, Cripple.class, 1f+staff.level);
     }
 
     @Override
