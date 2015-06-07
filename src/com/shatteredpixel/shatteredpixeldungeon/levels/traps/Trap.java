@@ -47,8 +47,8 @@ public abstract class Trap implements Bundlable {
 		if (Dungeon.visible[pos]){
 			Sample.INSTANCE.play(Assets.SND_TRAP);
 		}
-		activate();
 		disarm();
+		activate();
 	}
 
 	public abstract void activate();

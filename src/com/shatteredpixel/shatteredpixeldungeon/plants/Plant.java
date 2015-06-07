@@ -59,8 +59,8 @@ public abstract class Plant implements Bundlable {
 			Buff.affect( ch, Barkskin.class ).level( ch.HT / 3 );
 		}
 
-		activate();
 		wither();
+		activate();
 	}
 	
 	public abstract void activate();
