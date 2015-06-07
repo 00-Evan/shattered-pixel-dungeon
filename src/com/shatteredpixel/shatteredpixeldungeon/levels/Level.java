@@ -470,6 +470,15 @@ public abstract class Level implements Bundlable {
 	public int nMobs() {
 		return 0;
 	}
+
+	public Mob findMob( int pos ){
+		for (Mob mob : mobs){
+			if (mob.pos == pos){
+				return mob;
+			}
+		}
+		return null;
+	}
 	
 	public Actor respawner() {
 		return new Actor() {

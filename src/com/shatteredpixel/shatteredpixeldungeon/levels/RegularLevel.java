@@ -588,7 +588,7 @@ public abstract class RegularLevel extends Level {
 			Mob mob = Bestiary.mob( Dungeon.depth );
 			mob.pos = roomToSpawn.random();
 
-			if (Actor.findChar(mob.pos) == null && Level.passable[mob.pos]) {
+			if (findMob(mob.pos) == null && Level.passable[mob.pos]) {
 				mobsToSpawn--;
 				mobs.add(mob);
 
@@ -597,7 +597,7 @@ public abstract class RegularLevel extends Level {
 					mob = Bestiary.mob( Dungeon.depth );
 					mob.pos = roomToSpawn.random();
 
-					if (Actor.findChar(mob.pos) == null && Level.passable[mob.pos]) {
+					if (findMob(mob.pos)  == null && Level.passable[mob.pos]) {
 						mobsToSpawn--;
 						mobs.add(mob);
 					}
