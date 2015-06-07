@@ -12,7 +12,10 @@ public class GooWarn extends Blob {
 
     //cosmetic blob, used to warn noobs that goo's pump up should, infact, be avoided.
 
-    //Thanks to Watabou for the much better particle effect, I was lazy and just re-colored flames initially
+    {
+        //this one needs to act after the Goo
+        actPriority = 3;
+    }
 
     protected int pos;
 
