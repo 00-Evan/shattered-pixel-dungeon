@@ -226,10 +226,12 @@ public class WandOfRegrowth extends Wand {
 	public void staffFx(MagesStaff.StaffParticle particle) {
 		particle.color( ColorMath.random(0x004400, 0x88CC44) );
 		particle.am = 1f;
-		particle.setLifespan(0.6f);
-		particle.acc.set(0, 40);
+		particle.setLifespan(1.2f);
 		particle.setSize( 1f, 2f);
-		particle.shuffleXY(2f);
+		particle.shuffleXY(1f);
+		float dst = Random.Float(11f);
+		particle.x -= dst;
+		particle.y += dst;
 	}
 
 	@Override

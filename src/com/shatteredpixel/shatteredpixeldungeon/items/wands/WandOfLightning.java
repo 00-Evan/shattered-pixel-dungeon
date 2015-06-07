@@ -140,6 +140,9 @@ public class WandOfLightning extends Wand {
 		particle.setSize(0f, 1.5f);
 		particle.sizeJitter = 1f;
 		particle.shuffleXY(2f);
+		float dst = Random.Float(2f);
+		particle.x -= dst;
+		particle.y += dst;
 	}
 
 	@Override

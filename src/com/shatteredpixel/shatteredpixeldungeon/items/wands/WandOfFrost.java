@@ -16,6 +16,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 /**
@@ -91,12 +92,14 @@ public class WandOfFrost extends Wand {
 
 	@Override
 	public void staffFx(MagesStaff.StaffParticle particle) {
-		particle.color( 0xFFFFFF );
-		particle.am = 0.5f;
-		particle.setLifespan(1.2f);
-		particle.speed.set(0, Random.Float(5, 8));
-		particle.setSize( 0f, 1f);
-		particle.shuffleXY(2f);
+		particle.color(0x88CCFF);
+		particle.am = 0.6f;
+		particle.setLifespan(1.5f);
+		float angle = Random.Float(PointF.PI2);
+		particle.speed.polar( angle, 2f);
+		particle.acc.set( 0f, 1f);
+		particle.setSize( 0f, 1.5f);
+		particle.radiateXY(Random.Float(2f));
 	}
 
 	@Override
