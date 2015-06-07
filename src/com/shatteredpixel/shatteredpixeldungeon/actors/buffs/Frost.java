@@ -88,7 +88,7 @@ public class Frost extends FlavourBuff {
 		super.detach();
 		Paralysis.unfreeze( target );
 		if (Level.water[target.pos]){
-			Buff.prolong(target, Chill.class, 6f);
+			Buff.prolong(target, Chill.class, 4f);
 		}
 	}
 	
