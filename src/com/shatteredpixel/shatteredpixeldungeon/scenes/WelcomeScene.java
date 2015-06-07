@@ -30,12 +30,23 @@ public class WelcomeScene extends PixelScene {
             "Happy Dungeoneering!";
 
     private static final String TXT_Update =
-            "v0.3.0b & v0.3.0a:\n" +
+            "v0.3.0c:\n" +
+                    "- Lots of under-the-hood changes\n" +
+                    "(let me know if you run into any bugs)\n" +
+                    "- Many bugfixes\n" +
+                    "Rebalances:\n" +
+                    "- Wand of Corruption & Venom rebalanced.\n" +
+                    "- Mages staff now has +1 max charges\n" +
+                    "- Mage now partially IDs wands on use\n" +
+                    "- Magic missile wand reduced to 3 max charges\n" +
+                    "- Warlock gets more recharge from food\n" +
+                    "- Battlemage only recharges his staff\n" +
+                    "- Many battlemage effects tweaked\n" +
+                    "- Yog Dzewa now heals 1hp per turn\n" +
+                    "\n" +
+                    "v0.3.0b & v0.3.0a:\n" +
                     "- Fixed many bugs\n" +
                     "- Buffed mage and huntress base damages to compensate for increased rat numbers on floor 1.\n" +
-                    "\n" +
-                    "I am still looking for bug reports and feedback on the latest update, make sure to let me know if you have any thoughts!\n" +
-                    "\n" +
                     "\n" +
                     "v0.3.0:\n" +
                     "Mage reworked!:\n" +

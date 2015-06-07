@@ -310,8 +310,7 @@ public abstract class Level implements Bundlable {
 		adjustMapSize();
 
 		//for pre-0.3.0c saves
-		//TODO: update to final value of 44 after testing
-		if (version < 43){
+		if (version < 44){
 			map = Terrain.convertTrapsFrom43( map, traps );
 		}
 		
