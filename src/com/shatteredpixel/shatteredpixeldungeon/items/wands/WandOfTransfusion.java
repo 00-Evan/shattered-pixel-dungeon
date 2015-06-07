@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -216,6 +217,20 @@ public class WandOfTransfusion extends Wand {
 		particle.speed.polar( Random.Float(PointF.PI2), 2f );
 		particle.setSize( 1f, 2.5f);
 		particle.radiateXY(1f);
+	}
+
+	private static final String FREECHARGE = "freecharge";
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		freeCharge = bundle.getBoolean( FREECHARGE );
+	}
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put( FREECHARGE, freeCharge );
 	}
 
 	@Override
