@@ -109,8 +109,8 @@ public class WandOfBlastWave extends Wand {
 				if (ch.pos == trajectory.collisionPos) {
 					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
 					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
-					Dungeon.level.press(ch.pos, ch);
 				}
+				Dungeon.level.press(ch.pos, ch);
 			}
 		}), -1);
 	}
