@@ -27,7 +27,7 @@ public class ParalyticTrap extends Trap{
 
 	// 0xCCCC55
 	{
-		name = "paralytic gas trap";
+		name = "Paralytic gas trap";
 		image = 2;
 	}
 

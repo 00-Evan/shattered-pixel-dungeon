@@ -27,7 +27,7 @@ public class ToxicTrap extends Trap{
 
 	// 0x40CC55
 	{
-		name = "toxic gas trap";
+		name = "Toxic gas trap";
 		image = 0;
 	}
 

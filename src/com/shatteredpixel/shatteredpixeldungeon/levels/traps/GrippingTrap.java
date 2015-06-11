@@ -29,7 +29,7 @@ import com.watabou.utils.Random;
 public class GrippingTrap extends Trap {
 
 	{
-		name = "gripping trap";
+		name = "Gripping trap";
 		image = 6;
 	}
 

@@ -29,7 +29,7 @@ public class PoisonTrap extends Trap{
 
 	// 0xBB66EE
 	{
-		name = "poison trap";
+		name = "Poison trap";
 		image = 3;
 	}
 
