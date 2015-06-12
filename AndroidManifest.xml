@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.shatteredpixel.shatteredpixeldungeon"
-	android:versionCode="44"
-	android:versionName="0.3.0c"
+	android:versionCode="45"
+	android:versionName="0.3.0d"
 	android:installLocation="auto">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
-    
-	<uses-sdk 
+
+	<uses-sdk
 	    android:minSdkVersion="8"
-	    android:targetSdkVersion="18"/>
+	    android:targetSdkVersion="21"/>
 	
-	<uses-feature 
+	<uses-feature
 	    android:glEsVersion="0x00020000"/>
 	
-	<supports-screens 
+	<supports-screens
 	    android:smallScreens="false"
 	    android:normalScreens="true"
 	    android:largeScreens="true"/>
