@@ -635,6 +635,10 @@ public abstract class Level implements Bundlable {
 	public static void set( int cell, int terrain ) {
 		Painter.set( Dungeon.level, cell, terrain );
 
+		if (terrain != Terrain.TRAP && terrain != Terrain.SECRET_TRAP){
+			Dungeon.level.traps.remove( cell );
+		}
+
 		int flags = Terrain.flags[terrain];
 		passable[cell]		= (flags & Terrain.PASSABLE) != 0;
 		losBlocking[cell]	= (flags & Terrain.LOS_BLOCKING) != 0;
