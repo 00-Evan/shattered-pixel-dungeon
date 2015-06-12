@@ -366,7 +366,8 @@ public abstract class Mob extends Char {
 		if (enemy.buff(Corruption.class) != null) {
 			aggro(enemy);
 			target = enemy.pos;
-			state = HUNTING;
+			if (state == SLEEPING || state == WANDERING)
+				state = HUNTING;
 		}
 
 		return damage;
