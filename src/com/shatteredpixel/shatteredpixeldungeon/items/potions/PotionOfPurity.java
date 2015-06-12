@@ -56,10 +56,10 @@ public class PotionOfPurity extends Potion {
 		boolean procd = false;
 		
 		Blob[] blobs = {
-			Dungeon.level.blobs.get( ToxicGas.class ), 
+			Dungeon.level.blobs.get( ToxicGas.class ),
 			Dungeon.level.blobs.get( ParalyticGas.class ),
-            Dungeon.level.blobs.get( ConfusionGas.class ),
-            Dungeon.level.blobs.get( StenchGas.class ),
+			Dungeon.level.blobs.get( ConfusionGas.class ),
+			Dungeon.level.blobs.get( StenchGas.class ),
 			Dungeon.level.blobs.get( VenomGas.class )
 		};
 		
@@ -73,7 +73,7 @@ public class PotionOfPurity extends Potion {
 			for (int i=0; i < Level.LENGTH; i++) {
 				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 					
-					int value = blob.cur[i]; 
+					int value = blob.cur[i];
 					if (value > 0) {
 						
 						blob.cur[i] = 0;
@@ -125,7 +125,7 @@ public class PotionOfPurity extends Potion {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"This reagent will quickly neutralize all harmful gases in the area of effect. " +
 			"Drinking it will give you a temporary immunity to such gases.";
 	}

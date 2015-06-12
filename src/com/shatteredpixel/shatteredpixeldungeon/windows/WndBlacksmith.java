@@ -159,7 +159,7 @@ public class WndBlacksmith extends Window {
 		protected void onClick() {};
 		
 		@Override
-		protected void layout() {	
+		protected void layout() {
 			super.layout();
 			
 			bg.x = x;

@@ -31,8 +31,8 @@ public class CheckedCell extends Image {
 
 		origin.set( 0.5f );
 		
-		point( DungeonTilemap.tileToWorld( pos ).offset( 
-			DungeonTilemap.SIZE / 2, 
+		point( DungeonTilemap.tileToWorld( pos ).offset(
+			DungeonTilemap.SIZE / 2,
 			DungeonTilemap.SIZE / 2 ) );
 		
 		alpha = 0.8f;

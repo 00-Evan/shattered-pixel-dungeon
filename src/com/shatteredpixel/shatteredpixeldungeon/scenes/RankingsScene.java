@@ -105,30 +105,30 @@ public class RankingsScene extends PixelScene {
 			}
 			
 			if (Rankings.INSTANCE.totalNumber >= Rankings.TABLE_SIZE) {
-                BitmapText label = PixelScene.createText( TXT_TOTAL, 8 );
-                label.hardlight( 0xCCCCCC );
-                label.measure();
-                add( label );
+				BitmapText label = PixelScene.createText( TXT_TOTAL, 8 );
+				label.hardlight( 0xCCCCCC );
+				label.measure();
+				add( label );
 
-                BitmapText won = PixelScene.createText( Integer.toString( Rankings.INSTANCE.wonNumber ), 8 );
-                won.hardlight( Window.SHPX_COLOR );
-                won.measure();
-                add( won );
+				BitmapText won = PixelScene.createText( Integer.toString( Rankings.INSTANCE.wonNumber ), 8 );
+				won.hardlight( Window.SHPX_COLOR );
+				won.measure();
+				add( won );
 
-                BitmapText total = PixelScene.createText( "/" + Rankings.INSTANCE.totalNumber, 8 );
-                total.hardlight( 0xCCCCCC );
-                total.measure();
-                total.x = align( (w - total.width()) / 2 );
-                total.y = align( top + pos * rowHeight + GAP );
-                add( total );
+				BitmapText total = PixelScene.createText( "/" + Rankings.INSTANCE.totalNumber, 8 );
+				total.hardlight( 0xCCCCCC );
+				total.measure();
+				total.x = align( (w - total.width()) / 2 );
+				total.y = align( top + pos * rowHeight + GAP );
+				add( total );
 
-                float tw = label.width() + won.width() + total.width();
-                label.x = align( (w - tw) / 2 );
-                won.x = label.x + label.width();
-                total.x = won.x + won.width();
-                label.y = won.y = total.y = align( h - label.height() - GAP );
+				float tw = label.width() + won.width() + total.width();
+				label.x = align( (w - tw) / 2 );
+				won.x = label.x + label.width();
+				total.x = won.x + won.width();
+				label.y = won.y = total.y = align( h - label.height() - GAP );
 
-            }
+			}
 			
 		} else {
 
@@ -141,16 +141,16 @@ public class RankingsScene extends PixelScene {
 			
 		}
 
-        ExitButton btnExit = new ExitButton();
-        btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-        add( btnExit );
+		ExitButton btnExit = new ExitButton();
+		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
+		add( btnExit );
 
 		fadeIn();
 	}
 	
 	@Override
 	protected void onBackPressed() {
-        ShatteredPixelDungeon.switchNoFade(TitleScene.class);
+		ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 	}
 	
 	public static class Record extends Button {

@@ -71,7 +71,7 @@ public class Terrain {
 	public static final int LIQUID			= 0x40;
 	public static final int PIT				= 0x80;
 	
-	public static final int UNSTITCHABLE	= 0x100; 
+	public static final int UNSTITCHABLE	= 0x100;
 	
 	public static final int[] flags = new int[256];
 	static {

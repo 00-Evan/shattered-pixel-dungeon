@@ -50,132 +50,132 @@ public class Thief extends Mob {
 		maxLvl = 10;
 		
 		loot = new MasterThievesArmband().identify();
-        lootChance = 0.01f;
+		lootChance = 0.01f;
 
-        FLEEING = new Fleeing();
-    }
+		FLEEING = new Fleeing();
+	}
 
-    private static final String ITEM = "item";
+	private static final String ITEM = "item";
 
-    @Override
-    public void storeInBundle( Bundle bundle ) {
-        super.storeInBundle( bundle );
-        bundle.put( ITEM, item );
-    }
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( ITEM, item );
+	}
 
-    @Override
-    public void restoreFromBundle( Bundle bundle ) {
-        super.restoreFromBundle( bundle );
-        item = (Item)bundle.get( ITEM );
-    }
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		item = (Item)bundle.get( ITEM );
+	}
 
-    @Override
-    public int damageRoll() {
-        return Random.NormalIntRange( 1, 7 );
-    }
+	@Override
+	public int damageRoll() {
+		return Random.NormalIntRange( 1, 7 );
+	}
 
-    @Override
-    protected float attackDelay() {
-        return 0.5f;
-    }
+	@Override
+	protected float attackDelay() {
+		return 0.5f;
+	}
 
-    @Override
-    public void die( Object cause ) {
+	@Override
+	public void die( Object cause ) {
 
-        super.die( cause );
+		super.die( cause );
 
-        if (item != null) {
-            Dungeon.level.drop( item, pos ).sprite.drop();
-            //updates position
-            if (item instanceof Honeypot.ShatteredPot) ((Honeypot.ShatteredPot)item).setHolder( this );
-        }
-    }
+		if (item != null) {
+			Dungeon.level.drop( item, pos ).sprite.drop();
+			//updates position
+			if (item instanceof Honeypot.ShatteredPot) ((Honeypot.ShatteredPot)item).setHolder( this );
+		}
+	}
 
-    @Override
-    protected Item createLoot(){
-        if (!Dungeon.limitedDrops.armband.dropped()) {
-            Dungeon.limitedDrops.armband.drop();
-            return super.createLoot();
-        } else
-            return new Gold(Random.NormalIntRange(100, 250));
-    }
+	@Override
+	protected Item createLoot(){
+		if (!Dungeon.limitedDrops.armband.dropped()) {
+			Dungeon.limitedDrops.armband.drop();
+			return super.createLoot();
+		} else
+			return new Gold(Random.NormalIntRange(100, 250));
+	}
 
-    @Override
-    public int attackSkill( Char target ) {
-        return 12;
-    }
+	@Override
+	public int attackSkill( Char target ) {
+		return 12;
+	}
 
-    @Override
-    public int dr() {
-        return 3;
-    }
+	@Override
+	public int dr() {
+		return 3;
+	}
 
-    @Override
-    public int attackProc( Char enemy, int damage ) {
-        if (item == null && enemy instanceof Hero && steal( (Hero)enemy )) {
-            state = FLEEING;
-        }
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		if (item == null && enemy instanceof Hero && steal( (Hero)enemy )) {
+			state = FLEEING;
+		}
 
-        return damage;
-    }
+		return damage;
+	}
 
-    @Override
-    public int defenseProc(Char enemy, int damage) {
-        if (state == FLEEING) {
-            Dungeon.level.drop( new Gold(), pos ).sprite.drop();
-        }
+	@Override
+	public int defenseProc(Char enemy, int damage) {
+		if (state == FLEEING) {
+			Dungeon.level.drop( new Gold(), pos ).sprite.drop();
+		}
 
-        return super.defenseProc(enemy, damage);
-    }
+		return super.defenseProc(enemy, damage);
+	}
 
-    protected boolean steal( Hero hero ) {
+	protected boolean steal( Hero hero ) {
 
-        Item item = hero.belongings.randomUnequipped();
-        if (item != null) {
+		Item item = hero.belongings.randomUnequipped();
+		if (item != null) {
 
-            GLog.w( TXT_STOLE, this.name, item.name() );
+			GLog.w( TXT_STOLE, this.name, item.name() );
 
 
 
-	        if (item instanceof Honeypot){
-		        this.item = ((Honeypot)item).shatter(this, this.pos);
-                item.detach( hero.belongings.backpack );
-	        } else {
-                this.item = item;
-                if ( item instanceof Honeypot.ShatteredPot)
-                    ((Honeypot.ShatteredPot)item).setHolder(this);
-                item.detachAll( hero.belongings.backpack );
-            }
+			if (item instanceof Honeypot){
+				this.item = ((Honeypot)item).shatter(this, this.pos);
+				item.detach( hero.belongings.backpack );
+			} else {
+				this.item = item;
+				if ( item instanceof Honeypot.ShatteredPot)
+					((Honeypot.ShatteredPot)item).setHolder(this);
+				item.detachAll( hero.belongings.backpack );
+			}
 
-            return true;
-        } else {
-            return false;
-        }
-    }
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    @Override
-    public String description() {
-        String desc =
-                "Deeper levels of the dungeon have always been a hiding place for all kinds of criminals. " +
-                        "Not all of them could keep a clear mind during their extended periods so far from daylight. Long ago, " +
-                        "these crazy thieves and bandits have forgotten who they are and why they steal.";
+	@Override
+	public String description() {
+		String desc =
+				"Deeper levels of the dungeon have always been a hiding place for all kinds of criminals. " +
+						"Not all of them could keep a clear mind during their extended periods so far from daylight. Long ago, " +
+						"these crazy thieves and bandits have forgotten who they are and why they steal.";
 
-        if (item != null) {
-            desc += String.format( TXT_CARRIES, Utils.capitalize( this.name ), item.name() );
-        }
+		if (item != null) {
+			desc += String.format( TXT_CARRIES, Utils.capitalize( this.name ), item.name() );
+		}
 
-        return desc;
-    }
+		return desc;
+	}
 
-    private class Fleeing extends Mob.Fleeing {
-        @Override
-        protected void nowhereToRun() {
-            if (buff( Terror.class ) == null) {
-                sprite.showStatus( CharSprite.NEGATIVE, TXT_RAGE );
-                state = HUNTING;
-            } else {
-                super.nowhereToRun();
-            }
-        }
-    }
+	private class Fleeing extends Mob.Fleeing {
+		@Override
+		protected void nowhereToRun() {
+			if (buff( Terror.class ) == null) {
+				sprite.showStatus( CharSprite.NEGATIVE, TXT_RAGE );
+				state = HUNTING;
+			} else {
+				super.nowhereToRun();
+			}
+		}
+	}
 }

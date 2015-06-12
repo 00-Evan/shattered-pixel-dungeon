@@ -32,132 +32,129 @@ import com.watabou.utils.Random;
 import java.util.Arrays;
 import java.util.HashSet;
 
-/**
- * Created by Evan on 10/04/2015.
- */
 public class WandOfPrismaticLight extends Wand {
 
-    {
-        name = "Wand of Prismatic Light";
-        image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT;
+	{
+		name = "Wand of Prismatic Light";
+		image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT;
 
-        collisionProperties = Ballistica.MAGIC_BOLT;
-    }
+		collisionProperties = Ballistica.MAGIC_BOLT;
+	}
 
-    //FIXME: this is sloppy
-    private static HashSet<Class> evilMobs = new HashSet<Class>(Arrays.asList(
-            //Any Location
-            Mimic.class, Wraith.class,
-            //Sewers
-            Ghost.FetidRat.class,
-            Goo.class,
-            //Prison
-            Skeleton.class , Thief.class, Bandit.class,
-            //Caves
+	//FIXME: this is sloppy
+	private static HashSet<Class> evilMobs = new HashSet<Class>(Arrays.asList(
+			//Any Location
+			Mimic.class, Wraith.class,
+			//Sewers
+			Ghost.FetidRat.class,
+			Goo.class,
+			//Prison
+			Skeleton.class , Thief.class, Bandit.class,
+			//Caves
 
-            //City
-            Warlock.class, Monk.class, Senior.class,
-            King.class, King.Undead.class,
-            //Halls
-            Succubus.class, Eye.class, Scorpio.class, Acidic.class,
-            Yog.class, Yog.RottingFist.class, Yog.BurningFist.class, Yog.Larva.class
-    ));
+			//City
+			Warlock.class, Monk.class, Senior.class,
+			King.class, King.Undead.class,
+			//Halls
+			Succubus.class, Eye.class, Scorpio.class, Acidic.class,
+			Yog.class, Yog.RottingFist.class, Yog.BurningFist.class, Yog.Larva.class
+	));
 
-    @Override
-    protected void onZap(Ballistica beam) {
-        Char ch = Actor.findChar(beam.collisionPos);
-        if (ch != null){
-           affectTarget(ch);
-        }
-        affectMap(beam);
+	@Override
+	protected void onZap(Ballistica beam) {
+		Char ch = Actor.findChar(beam.collisionPos);
+		if (ch != null){
+		   affectTarget(ch);
+		}
+		affectMap(beam);
 
-        if (curUser.viewDistance < 4)
-            Buff.prolong( curUser, Light.class, 10f+level*5);
-    }
+		if (curUser.viewDistance < 4)
+			Buff.prolong( curUser, Light.class, 10f+level*5);
+	}
 
-    private void affectTarget(Char ch){
-        int dmg = Random.NormalIntRange(level, (int) (8+(level*(level/5f))));
+	private void affectTarget(Char ch){
+		int dmg = Random.NormalIntRange(level, (int) (8+(level*(level/5f))));
 
-        //three in (5+lvl) chance of failing
-        if (Random.Int(5+level) >= 3) {
-            Buff.prolong(ch, Blindness.class, 2f + (level * 0.34f));
-            ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
-        }
+		//three in (5+lvl) chance of failing
+		if (Random.Int(5+level) >= 3) {
+			Buff.prolong(ch, Blindness.class, 2f + (level * 0.34f));
+			ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
+		}
 
-        if (evilMobs.contains(ch.getClass())){
-            ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+level );
-            Sample.INSTANCE.play(Assets.SND_BURNING);
+		if (evilMobs.contains(ch.getClass())){
+			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+level );
+			Sample.INSTANCE.play(Assets.SND_BURNING);
 
-            ch.damage((int)(dmg*1.5), this);
-        } else {
-            ch.sprite.centerEmitter().burst( RainbowParticle.BURST, 10+level );
+			ch.damage((int)(dmg*1.5), this);
+		} else {
+			ch.sprite.centerEmitter().burst( RainbowParticle.BURST, 10+level );
 
-            ch.damage(dmg, this);
-        }
+			ch.damage(dmg, this);
+		}
 
-    }
+	}
 
-    private void affectMap(Ballistica beam){
-        boolean noticed = false;
-        for (int c: beam.subPath(0, beam.dist)){
-            for (int n : Level.NEIGHBOURS9DIST2){
-                int cell = c+n;
-                if (!Level.insideMap(cell))
-                    continue;
+	private void affectMap(Ballistica beam){
+		boolean noticed = false;
+		for (int c: beam.subPath(0, beam.dist)){
+			for (int n : Level.NEIGHBOURS9DIST2){
+				int cell = c+n;
+				if (!Level.insideMap(cell))
+					continue;
 
-                if (Level.discoverable[cell])
-                    Dungeon.level.mapped[cell] = true;
+				if (Level.discoverable[cell])
+					Dungeon.level.mapped[cell] = true;
 
-                int terr = Dungeon.level.map[cell];
-                if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
+				int terr = Dungeon.level.map[cell];
+				if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-                    Dungeon.level.discover( cell );
+					Dungeon.level.discover( cell );
 
-                    GameScene.discoverTile( cell, terr );
-                    ScrollOfMagicMapping.discover(cell);
+					GameScene.discoverTile( cell, terr );
+					ScrollOfMagicMapping.discover(cell);
 
-                    noticed = true;
-                }
-            }
+					noticed = true;
+				}
+			}
 
-            CellEmitter.center(c).burst( RainbowParticle.BURST, Random.IntRange( 1, 2 ) );
-        }
-        if (noticed)
-            Sample.INSTANCE.play( Assets.SND_SECRET );
+			CellEmitter.center(c).burst( RainbowParticle.BURST, Random.IntRange( 1, 2 ) );
+		}
+		if (noticed)
+			Sample.INSTANCE.play( Assets.SND_SECRET );
 
-        Dungeon.observe();
-    }
+		Dungeon.observe();
+	}
 
-    @Override
-    protected void fx( Ballistica beam, Callback callback ) {
-        curUser.sprite.parent.add(
-                new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(beam.collisionPos)));
-        callback.call();
-    }
+	@Override
+	protected void fx( Ballistica beam, Callback callback ) {
+		curUser.sprite.parent.add(
+				new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(beam.collisionPos)));
+		callback.call();
+	}
 
-    @Override
-    public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-        //cripples enemy
-        Buff.prolong( defender, Cripple.class, 1f+staff.level);
-    }
+	@Override
+	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
+		//cripples enemy
+		Buff.prolong( defender, Cripple.class, 1f+staff.level);
+	}
 
-    @Override
-    public void staffFx(MagesStaff.StaffParticle particle) {
-        particle.color( Random.Int( 0x1000000 ) );
-        particle.am = 0.3f;
-        particle.setLifespan(1f);
-        particle.speed.polar(Random.Float(PointF.PI2), 2f);
-        particle.setSize( 1f, 2.5f);
-        particle.radiateXY(1f);
-    }
+	@Override
+	public void staffFx(MagesStaff.StaffParticle particle) {
+		particle.color( Random.Int( 0x1000000 ) );
+		particle.am = 0.3f;
+		particle.setLifespan(1f);
+		particle.speed.polar(Random.Float(PointF.PI2), 2f);
+		particle.setSize( 1f, 2.5f);
+		particle.radiateXY(1f);
+	}
 
-    @Override
-    public String desc() {
-        return
-            "This wand is made of a solid piece of translucent crystal, like a long chunk of smooth glass. " +
-            "It becomes clear towards the tip, where you can see colorful lights dancing around inside it.\n\n" +
-            "This wand shoots rays of light which damage and blind enemies and cut through the darkness of the dungeon, " +
-            "revealing hidden areas and traps. Evildoers, demons, and the undead will burn in the bright light " +
-            "of the wand, taking significant bonus damage.";
-    }
+	@Override
+	public String desc() {
+		return
+			"This wand is made of a solid piece of translucent crystal, like a long chunk of smooth glass. " +
+			"It becomes clear towards the tip, where you can see colorful lights dancing around inside it.\n\n" +
+			"This wand shoots rays of light which damage and blind enemies and cut through the darkness of the dungeon, " +
+			"revealing hidden areas and traps. Evildoers, demons, and the undead will burn in the bright light " +
+			"of the wand, taking significant bonus damage.";
+	}
 }

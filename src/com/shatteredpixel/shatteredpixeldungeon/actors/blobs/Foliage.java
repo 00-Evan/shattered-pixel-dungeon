@@ -75,7 +75,7 @@ public class Foliage extends Blob {
 	
 	@Override
 	public void use( BlobEmitter emitter ) {
-		super.use( emitter );	
+		super.use( emitter );
 		emitter.start( ShaftParticle.FACTORY, 0.9f, 0 );
 	}
 	

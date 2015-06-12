@@ -60,7 +60,7 @@ public class SewerLevel extends RegularLevel {
 	protected void decorate() {
 		
 		for (int i=0; i < WIDTH; i++) {
-			if (map[i] == Terrain.WALL &&  
+			if (map[i] == Terrain.WALL &&
 				map[i + WIDTH] == Terrain.WATER &&
 				Random.Int( 4 ) == 0) {
 				
@@ -69,8 +69,8 @@ public class SewerLevel extends RegularLevel {
 		}
 		
 		for (int i=WIDTH; i < LENGTH - WIDTH; i++) {
-			if (map[i] == Terrain.WALL && 
-				map[i - WIDTH] == Terrain.WALL && 
+			if (map[i] == Terrain.WALL &&
+				map[i - WIDTH] == Terrain.WALL &&
 				map[i + WIDTH] == Terrain.WATER &&
 				Random.Int( 2 ) == 0) {
 				
@@ -79,11 +79,11 @@ public class SewerLevel extends RegularLevel {
 		}
 		
 		for (int i=WIDTH + 1; i < LENGTH - WIDTH - 1; i++) {
-			if (map[i] == Terrain.EMPTY) { 
+			if (map[i] == Terrain.EMPTY) {
 				
-				int count = 
-					(map[i + 1] == Terrain.WALL ? 1 : 0) + 
-					(map[i - 1] == Terrain.WALL ? 1 : 0) + 
+				int count =
+					(map[i + 1] == Terrain.WALL ? 1 : 0) +
+					(map[i - 1] == Terrain.WALL ? 1 : 0) +
 					(map[i + WIDTH] == Terrain.WALL ? 1 : 0) +
 					(map[i - WIDTH] == Terrain.WALL ? 1 : 0);
 				

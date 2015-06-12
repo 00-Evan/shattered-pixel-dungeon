@@ -11,9 +11,6 @@ import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 
-/**
- * Created by debenhame on 06/04/2015.
- */
 public class WndInfoBuff extends Window {
 
 	private static final float GAP	= 2;

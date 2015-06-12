@@ -37,8 +37,8 @@ public class Bandit extends Thief {
 		name = "crazy bandit";
 		spriteClass = BanditSprite.class;
 
-        //1 in 30 chance to be a crazy bandit, equates to overall 1/90 chance.
-        lootChance = 0.333f;
+		//1 in 30 chance to be a crazy bandit, equates to overall 1/90 chance.
+		lootChance = 0.333f;
 	}
 	
 	@Override
@@ -46,8 +46,8 @@ public class Bandit extends Thief {
 		if (super.steal( hero )) {
 			
 			Buff.prolong( hero, Blindness.class, Random.Int( 5, 12 ) );
-            Buff.affect( hero, Poison.class ).set(Random.Int(5, 7) * Poison.durationFactor(enemy));
-            Buff.prolong( hero, Cripple.class, Cripple.DURATION );
+			Buff.affect( hero, Poison.class ).set(Random.Int(5, 7) * Poison.durationFactor(enemy));
+			Buff.prolong( hero, Cripple.class, Cripple.DURATION );
 			Dungeon.observe();
 			
 			return true;

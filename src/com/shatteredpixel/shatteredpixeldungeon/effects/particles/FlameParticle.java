@@ -23,7 +23,7 @@ import com.watabou.noosa.particles.Emitter.Factory;
 
 public class FlameParticle extends PixelParticle.Shrinking {
 	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((FlameParticle)emitter.recycle( FlameParticle.class )).reset( x, y );

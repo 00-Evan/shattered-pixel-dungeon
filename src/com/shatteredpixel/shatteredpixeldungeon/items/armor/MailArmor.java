@@ -33,7 +33,7 @@ public class MailArmor extends Armor {
 
 	@Override
 	public String desc() {
-		return 
+		return
 			"Interlocking metal links make for a tough but flexible suit of armor.";
 	}
 }

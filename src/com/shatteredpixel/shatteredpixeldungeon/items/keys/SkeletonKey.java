@@ -44,7 +44,7 @@ public class SkeletonKey extends Key {
 	
 	@Override
 	public String info() {
-		return 
+		return
 			"This key looks serious: its head is shaped like a skull. Probably it can open some serious door.";
 	}
 }

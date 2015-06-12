@@ -30,7 +30,7 @@ import com.watabou.utils.Random;
 
 public class MagicWellPainter extends Painter {
 
-	private static final Class<?>[] WATERS = 
+	private static final Class<?>[] WATERS =
 		{WaterOfAwareness.class, WaterOfHealth.class, WaterOfTransmutation.class};
 	
 	public static void paint( Level level, Room room ) {
@@ -42,9 +42,9 @@ public class MagicWellPainter extends Painter {
 		set( level, c.x, c.y, Terrain.WELL );
 		
 		@SuppressWarnings("unchecked")
-		Class<? extends WellWater> waterClass = 
+		Class<? extends WellWater> waterClass =
 			Dungeon.depth >= Dungeon.transmutation ?
-			WaterOfTransmutation.class :		
+			WaterOfTransmutation.class :
 			(Class<? extends WellWater>)Random.element( WATERS );
 			
 		if (waterClass == WaterOfTransmutation.class) {

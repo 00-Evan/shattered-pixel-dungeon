@@ -30,7 +30,7 @@ public class WeakFloorPainter extends Painter {
 		fill( level, room, Terrain.WALL );
 		fill( level, room, 1, Terrain.CHASM );
 		
-		Room.Door door = room.entrance(); 
+		Room.Door door = room.entrance();
 		door.set( Room.Door.Type.REGULAR );
 		
 		if (door.x == room.left) {

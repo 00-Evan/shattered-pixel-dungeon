@@ -128,16 +128,16 @@ public class Belongings implements Iterable<Item> {
 		return null;
 	}
 
-    public void countIronKeys() {
+	public void countIronKeys() {
 
-        IronKey.curDepthQuantity = 0;
+		IronKey.curDepthQuantity = 0;
 
-        for (Item item : backpack) {
-            if (item instanceof IronKey && ((IronKey)item).depth == Dungeon.depth) {
-                IronKey.curDepthQuantity += item.quantity();
-            }
-        }
-    }
+		for (Item item : backpack) {
+			if (item instanceof IronKey && ((IronKey)item).depth == Dungeon.depth) {
+				IronKey.curDepthQuantity += item.quantity();
+			}
+		}
+	}
 	
 	public void identify() {
 		for (Item item : this) {
@@ -248,7 +248,7 @@ public class Belongings implements Iterable<Item> {
 
 	@Override
 	public Iterator<Item> iterator() {
-		return new ItemIterator(); 
+		return new ItemIterator();
 	}
 	
 	private class ItemIterator implements Iterator<Item> {

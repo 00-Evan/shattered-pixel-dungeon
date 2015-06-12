@@ -142,8 +142,8 @@ public class GameScene extends PixelScene {
 		terrain = new Group();
 		add( terrain );
 		
-		water = new SkinnedBlock( 
-			Level.WIDTH * DungeonTilemap.SIZE, 
+		water = new SkinnedBlock(
+			Level.WIDTH * DungeonTilemap.SIZE,
 			Level.HEIGHT * DungeonTilemap.SIZE,
 			Dungeon.level.waterTex() );
 		terrain.add( water );
@@ -265,7 +265,7 @@ public class GameScene extends PixelScene {
 			GLog.i( TXT_WELCOME_BACK, Dungeon.depth );
 		else
 			GLog.i( TXT_WELCOME, Dungeon.depth );
-        Sample.INSTANCE.play( Assets.SND_DESCEND );
+		Sample.INSTANCE.play( Assets.SND_DESCEND );
 		switch (Dungeon.level.feeling) {
 		case CHASM:
 			GLog.w( TXT_CHASM );
@@ -281,7 +281,7 @@ public class GameScene extends PixelScene {
 			break;
 		default:
 		}
-		if (Dungeon.level instanceof RegularLevel && 
+		if (Dungeon.level instanceof RegularLevel &&
 			((RegularLevel)Dungeon.level).secretDoors > Random.IntRange( 3, 4 )) {
 			GLog.w( TXT_SECRETS );
 		}
@@ -337,7 +337,7 @@ public class GameScene extends PixelScene {
 				} else if (item instanceof Plant.Seed) {
 					Dungeon.level.plant( (Plant.Seed)item, pos );
 				} else if (item instanceof Honeypot) {
-                    Dungeon.level.drop(((Honeypot) item).shatter(null, pos), pos);
+					Dungeon.level.drop(((Honeypot) item).shatter(null, pos), pos);
 				} else {
 					Dungeon.level.drop( item, pos );
 				}
@@ -353,7 +353,7 @@ public class GameScene extends PixelScene {
 		
 		freezeEmitters = false;
 
-        scene = null;
+		scene = null;
 		Badges.saveGlobal();
 		
 		super.destroy();
@@ -387,19 +387,19 @@ public class GameScene extends PixelScene {
 
 		if (tagAttack != attack.active || tagLoot != loot.visible || tagResume != resume.visible) {
 
-            boolean atkAppearing = attack.active && !tagAttack;
-            boolean lootAppearing = loot.visible && !tagLoot;
-            boolean resAppearing = resume.visible && !tagResume;
+			boolean atkAppearing = attack.active && !tagAttack;
+			boolean lootAppearing = loot.visible && !tagLoot;
+			boolean resAppearing = resume.visible && !tagResume;
 
 			tagAttack = attack.active;
 			tagLoot = loot.visible;
 			tagResume = resume.visible;
 
 			if (atkAppearing || lootAppearing || resAppearing)
-                layoutTags();
+				layoutTags();
 		}
 
-        cellSelector.enable(Dungeon.hero.ready);
+		cellSelector.enable(Dungeon.hero.ready);
 	}
 
 	private boolean tagAttack    = false;
@@ -435,8 +435,8 @@ public class GameScene extends PixelScene {
 	}
 	
 	public void brightness( boolean value ) {
-		water.rm = water.gm = water.bm = 
-		tiles.rm = tiles.gm = tiles.bm = 
+		water.rm = water.gm = water.bm =
+		tiles.rm = tiles.gm = tiles.bm =
 			value ? 1.5f : 1.0f;
 		if (value) {
 			fog.am = +2f;
@@ -705,9 +705,9 @@ public class GameScene extends PixelScene {
 	private static final CellSelector.Listener defaultCellListener = new CellSelector.Listener() {
 		@Override
 		public void onSelect( Integer cell ) {
-            if (Dungeon.hero.handle( cell )) {
-                Dungeon.hero.next();
-            }
+			if (Dungeon.hero.handle( cell )) {
+				Dungeon.hero.next();
+			}
 		}
 		@Override
 		public String prompt() {

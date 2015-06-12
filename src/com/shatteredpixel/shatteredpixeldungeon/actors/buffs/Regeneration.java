@@ -31,7 +31,7 @@ public class Regeneration extends Buff {
 
 
 
-            if (target.HP < target.HT && !((Hero)target).isStarving()) {
+			if (target.HP < target.HT && !((Hero)target).isStarving()) {
 				target.HP += 1;
 			}
 
@@ -42,8 +42,8 @@ public class Regeneration extends Buff {
 					spend( REGENERATION_DELAY * 1.5f );
 				else
 					spend( REGENERATION_DELAY - regenBuff.level()*0.9f );
-            else
-                spend( REGENERATION_DELAY );
+			else
+				spend( REGENERATION_DELAY );
 			
 		} else {
 			

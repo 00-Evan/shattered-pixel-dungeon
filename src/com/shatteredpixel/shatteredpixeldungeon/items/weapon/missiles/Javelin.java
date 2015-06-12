@@ -53,7 +53,7 @@ public class Javelin extends MissileWeapon {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"This length of metal is weighted to keep the spike " +
 			"at its tip foremost as it sails through the air.";
 	}

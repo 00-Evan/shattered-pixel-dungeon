@@ -46,13 +46,13 @@ public class Bones {
 	
 	public static void leave() {
 
-        depth = Dungeon.depth;
+		depth = Dungeon.depth;
 
-        //heroes which have won the game, who die far above their farthest depth, or who are challenged drop no bones.
-        if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0) {
-            depth = -1;
-            return;
-        }
+		//heroes which have won the game, who die far above their farthest depth, or who are challenged drop no bones.
+		if (Statistics.amuletObtained || (Statistics.deepestFloor - 5) >= depth || Dungeon.challenges > 0) {
+			depth = -1;
+			return;
+		}
 
 		item = pickItem(Dungeon.hero);
 
@@ -69,59 +69,59 @@ public class Bones {
 		}
 	}
 
-    private static Item pickItem(Hero hero){
-        Item item = null;
-        if (Random.Int(2) == 0) {
-            switch (Random.Int(5)) {
-                case 0:
-                    item = hero.belongings.weapon;
-                    break;
-                case 1:
-                    item = hero.belongings.armor;
-                    break;
-                case 2:
-                    item = hero.belongings.misc1;
-                    break;
-                case 3:
-                    item = hero.belongings.misc2;
-                    break;
-                case 4:
-                    item = Dungeon.quickslot.randomNonePlaceholder();
-                    break;
-            }
-            if (item != null && !item.bones)
-                return pickItem(hero);
-        } else {
+	private static Item pickItem(Hero hero){
+		Item item = null;
+		if (Random.Int(2) == 0) {
+			switch (Random.Int(5)) {
+				case 0:
+					item = hero.belongings.weapon;
+					break;
+				case 1:
+					item = hero.belongings.armor;
+					break;
+				case 2:
+					item = hero.belongings.misc1;
+					break;
+				case 3:
+					item = hero.belongings.misc2;
+					break;
+				case 4:
+					item = Dungeon.quickslot.randomNonePlaceholder();
+					break;
+			}
+			if (item != null && !item.bones)
+				return pickItem(hero);
+		} else {
 
-            Iterator<Item> iterator = hero.belongings.backpack.iterator();
-            Item curItem;
-            ArrayList<Item> items = new ArrayList<Item>();
-            while (iterator.hasNext()){
-                curItem = iterator.next();
-                if (curItem.bones)
-                    items.add(curItem);
-            }
+			Iterator<Item> iterator = hero.belongings.backpack.iterator();
+			Item curItem;
+			ArrayList<Item> items = new ArrayList<Item>();
+			while (iterator.hasNext()){
+				curItem = iterator.next();
+				if (curItem.bones)
+					items.add(curItem);
+			}
 
-            if (Random.Int(3) < items.size()) {
-                item = Random.element(items);
-                if (item.stackable){
-                    if (item instanceof MissileWeapon){
-                        item.quantity(Random.NormalIntRange(1, item.quantity()));
-                    } else {
-                        item.quantity(Random.NormalIntRange(1, (item.quantity() + 1) / 2));
-                    }
-                }
-            }
-        }
-        if (item == null) {
-            if (Dungeon.gold > 50) {
-                item = new Gold( Random.NormalIntRange( 50, Dungeon.gold ) );
-            } else {
-                item = new Gold( 50 );
-            }
-        }
-        return item;
-    }
+			if (Random.Int(3) < items.size()) {
+				item = Random.element(items);
+				if (item.stackable){
+					if (item instanceof MissileWeapon){
+						item.quantity(Random.NormalIntRange(1, item.quantity()));
+					} else {
+						item.quantity(Random.NormalIntRange(1, (item.quantity() + 1) / 2));
+					}
+				}
+			}
+		}
+		if (item == null) {
+			if (Dungeon.gold > 50) {
+				item = new Gold( Random.NormalIntRange( 50, Dungeon.gold ) );
+			} else {
+				item = new Gold( 50 );
+			}
+		}
+		return item;
+	}
 
 	public static Item get() {
 		if (depth == -1) {
@@ -141,36 +141,36 @@ public class Bones {
 			}
 
 		} else {
-            //heroes who are challenged cannot find bones
+			//heroes who are challenged cannot find bones
 			if (depth == Dungeon.depth && Dungeon.challenges == 0) {
 				Game.instance.deleteFile( BONES_FILE );
 				depth = 0;
 
-                if (item instanceof Artifact){
-                    if (Generator.removeArtifact((Artifact)item)) {
-                        try {
-                            Artifact artifact = (Artifact)item.getClass().newInstance();
-                            artifact.cursed = true;
-                            artifact.cursedKnown = true;
-                            //caps displayed artifact level
-                            artifact.transferUpgrade(Math.min(
-                                    item.visiblyUpgraded(),
-                                    1 + ((Dungeon.depth * 3) / 10)));
+				if (item instanceof Artifact){
+					if (Generator.removeArtifact((Artifact)item)) {
+						try {
+							Artifact artifact = (Artifact)item.getClass().newInstance();
+							artifact.cursed = true;
+							artifact.cursedKnown = true;
+							//caps displayed artifact level
+							artifact.transferUpgrade(Math.min(
+									item.visiblyUpgraded(),
+									1 + ((Dungeon.depth * 3) / 10)));
 
-                            return item;
-                        } catch (Exception e) {
-                            return new Gold(item.price());
-                        }
-                    } else {
-                        return new Gold(item.price());
-                    }
-                }
+							return item;
+						} catch (Exception e) {
+							return new Gold(item.price());
+						}
+					} else {
+						return new Gold(item.price());
+					}
+				}
 				
 				if (item.isUpgradable()) {
 					item.cursed = true;
 					item.cursedKnown = true;
 					if (item.isUpgradable()) {
-                        //gain 1 level every 3.333 floors down plus one additional level.
+						//gain 1 level every 3.333 floors down plus one additional level.
 						int lvl = 1 + ((Dungeon.depth * 3) / 10);
 						if (lvl < item.level) {
 							item.degrade( item.level - lvl );
@@ -186,5 +186,5 @@ public class Bones {
 				return null;
 			}
 		}
-    }
+	}
 }

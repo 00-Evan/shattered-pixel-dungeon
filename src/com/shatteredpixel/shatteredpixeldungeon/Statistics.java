@@ -45,7 +45,7 @@ public class Statistics {
 		foodEaten		= 0;
 		potionsCooked	= 0;
 		piranhasKilled	= 0;
-		nightHunt		= 0;	
+		nightHunt		= 0;
 		ankhsUsed		= 0;
 		
 		duration	= 0;

@@ -62,11 +62,11 @@ public class Imp extends NPC {
 		"So please, kill... let's say _8 of them_ and a reward is yours.";
 	
 	private static final String TXT_GOLEMS2	=
-		"How is your golem safari going?";	
+		"How is your golem safari going?";
 	
 	private static final String TXT_MONKS2	=
 		"Oh, you are still alive! I knew that your kung-fu is stronger ;) " +
-		"Just don't forget to grab these monks' tokens.";	
+		"Just don't forget to grab these monks' tokens.";
 	
 	private static final String TXT_CYA	= "See you, %s!";
 	private static final String TXT_HEY	= "Psst, %s!";
@@ -136,7 +136,7 @@ public class Imp extends NPC {
 	}
 	
 	private void tell( String format, Object...args ) {
-		GameScene.show( 
+		GameScene.show(
 			new WndQuest( this, Utils.format( format, args ) ) );
 	}
 	
@@ -150,7 +150,7 @@ public class Imp extends NPC {
 	
 	@Override
 	public String description() {
-		return 
+		return
 			"Imps are lesser demons. They are notable for neither their strength nor their magic talent, " +
 			"but they are quite smart and sociable. Many imps prefer to live among non-demons.";
 	}

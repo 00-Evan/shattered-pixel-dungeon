@@ -36,7 +36,7 @@ public class HuntressArmor extends ClassArmor {
 	private static final String TXT_NO_ENEMIES 		= "No enemies in sight";
 	private static final String TXT_NOT_HUNTRESS	= "Only huntresses can use this armor!";
 	
-	private static final String AC_SPECIAL = "SPECTRAL BLADES"; 
+	private static final String AC_SPECIAL = "SPECTRAL BLADES";
 	
 	{
 		name = "huntress cloak";
@@ -58,7 +58,7 @@ public class HuntressArmor extends ClassArmor {
 		for (Mob mob : Dungeon.level.mobs) {
 			if (Level.fieldOfView[mob.pos]) {
 				
-				Callback callback = new Callback() {	
+				Callback callback = new Callback() {
 					@Override
 					public void call() {
 						curUser.attack( targets.get( this ) );

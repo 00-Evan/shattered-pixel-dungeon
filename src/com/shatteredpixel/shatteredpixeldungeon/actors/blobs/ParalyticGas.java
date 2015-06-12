@@ -33,8 +33,8 @@ public class ParalyticGas extends Blob {
 		Char ch;
 		for (int i=0; i < LENGTH; i++) {
 			if (cur[i] > 0 && (ch = Actor.findChar( i )) != null) {
-                if (!ch.immunities().contains(this.getClass()))
-				    Buff.prolong( ch, Paralysis.class, Paralysis.duration( ch ) );
+				if (!ch.immunities().contains(this.getClass()))
+					Buff.prolong( ch, Paralysis.class, Paralysis.duration( ch ) );
 			}
 		}
 	}

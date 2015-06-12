@@ -75,7 +75,7 @@ public class Blacksmith extends NPC {
 	
 	@Override
 	protected boolean act() {
-		throwItem();		
+		throwItem();
 		return super.act();
 	}
 	
@@ -86,7 +86,7 @@ public class Blacksmith extends NPC {
 		
 		if (!Quest.given) {
 			
-			GameScene.show( new WndQuest( this, 
+			GameScene.show( new WndQuest( this,
 				Quest.alternative ? TXT_BLOOD_1 : TXT_GOLD_1 ) {
 				
 				@Override
@@ -168,7 +168,7 @@ public class Blacksmith extends NPC {
 			return "Select 2 different items, not the same item twice!";
 		}
 
-        if (item1.getClass() != item2.getClass()) {
+		if (item1.getClass() != item2.getClass()) {
 			return "Select 2 items of the same type!";
 		}
 		
@@ -244,7 +244,7 @@ public class Blacksmith extends NPC {
 	
 	@Override
 	public String description() {
-		return 
+		return
 			"This troll blacksmith looks like all trolls look: he is tall and lean, and his skin resembles stone " +
 			"in both color and texture. The troll blacksmith is tinkering with unproportionally small tools.";
 	}

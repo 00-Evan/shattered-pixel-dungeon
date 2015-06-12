@@ -42,14 +42,14 @@ public class Food extends Item {
 	public float energy = Hunger.HUNGRY;
 	public String message = "That food tasted delicious!";
 
-    public int hornValue = 3;
+	public int hornValue = 3;
 	
 	{
 		stackable = true;
 		name = "ration of food";
 		image = ItemSpriteSheet.RATION;
 
-        bones = true;
+		bones = true;
 	}
 	
 	@Override
@@ -102,9 +102,9 @@ public class Food extends Item {
 		}
 	}
 
-    @Override
+	@Override
 	public String info() {
-		return 
+		return
 			"Nothing fancy here: dried meat, " +
 			"some biscuits - things like that.";
 	}

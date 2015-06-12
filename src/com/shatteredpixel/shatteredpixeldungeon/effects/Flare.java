@@ -157,8 +157,8 @@ public class Flare extends Visual {
 		texture.bind();
 		
 		script.uModel.valueM4( matrix );
-		script.lighting( 
-			rm, gm, bm, am, 
+		script.lighting(
+			rm, gm, bm, am,
 			ra, ga, ba, aa );
 		
 		script.camera( camera );

@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Fadeleaf extends Plant {
 
-	private static final String TXT_DESC = 
+	private static final String TXT_DESC =
 		"Touching a Fadeleaf will teleport any creature " +
 		"to a random place on the current level.";
 	

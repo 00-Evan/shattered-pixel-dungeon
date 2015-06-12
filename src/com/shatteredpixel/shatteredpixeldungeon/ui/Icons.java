@@ -26,13 +26,13 @@ public enum Icons {
 	SKULL,
 	BUSY,
 	COMPASS,
-	INFO, 
+	INFO,
 	PREFS,
 	WARNING,
 	TARGET,
 	MASTERY,
 	WATA,
-    SHPX,
+	SHPX,
 	WARRIOR,
 	MAGE,
 	ROGUE,
@@ -49,9 +49,9 @@ public enum Icons {
 	WAND_HOLSTER,
 	CHECKED,
 	UNCHECKED,
-    EXIT,
-    CHALLENGE_OFF,
-    CHALLENGE_ON,
+	EXIT,
+	CHALLENGE_OFF,
+	CHALLENGE_ON,
 	RESUME;
 
 	public Image get() {
@@ -88,9 +88,9 @@ public enum Icons {
 		case WATA:
 			icon.frame( icon.texture.uvRect( 30, 16, 45, 26 ) );
 			break;
-        case SHPX:
-            icon.frame( icon.texture.uvRect( 64, 44, 80, 60 ) );
-            break;
+		case SHPX:
+			icon.frame( icon.texture.uvRect( 64, 44, 80, 60 ) );
+			break;
 		case WARRIOR:
 			icon.frame( icon.texture.uvRect( 0, 29, 16, 45 ) );
 			break;
@@ -139,15 +139,15 @@ public enum Icons {
 		case UNCHECKED:
 			icon.frame( icon.texture.uvRect( 66, 12, 78, 24 ) );
 			break;
-        case EXIT:
-            icon.frame( icon.texture.uvRect( 108, 0, 124, 16 ) );
-            break;
-        case CHALLENGE_OFF:
-            icon.frame( icon.texture.uvRect( 78, 16, 102, 40 ) );
-            break;
-        case CHALLENGE_ON:
-            icon.frame( icon.texture.uvRect( 102, 16, 126, 40 ) );
-            break;
+		case EXIT:
+			icon.frame( icon.texture.uvRect( 108, 0, 124, 16 ) );
+			break;
+		case CHALLENGE_OFF:
+			icon.frame( icon.texture.uvRect( 78, 16, 102, 40 ) );
+			break;
+		case CHALLENGE_ON:
+			icon.frame( icon.texture.uvRect( 102, 16, 126, 40 ) );
+			break;
 		case RESUME:
 			icon.frame( icon.texture.uvRect( 13, 53, 24, 64 ) );
 			break;

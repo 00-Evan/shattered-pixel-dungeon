@@ -24,7 +24,7 @@ import com.watabou.utils.Random;
 
 public class WebParticle extends PixelParticle {
 	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			for (int i=0; i < 3; i++) {

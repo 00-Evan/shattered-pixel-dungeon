@@ -47,8 +47,8 @@ public class CellSelector extends TouchArea {
 			
 		} else {
 			
-			select( ((DungeonTilemap)target).screenToTile( 
-				(int)touch.current.x, 
+			select( ((DungeonTilemap)target).screenToTile(
+				(int)touch.current.x,
 				(int)touch.current.y ) );
 		}
 	}
@@ -90,8 +90,8 @@ public class CellSelector extends TouchArea {
 
 			dragging = false;
 		} else if (t != touch) {
-            reset();
-        }
+			reset();
+		}
 	}
 	
 	@Override
@@ -111,7 +111,7 @@ public class CellSelector extends TouchArea {
 			another = null;
 			lastPos.set( touch.current );
 		}
-	}	
+	}
 	
 	private boolean dragging = false;
 	private PointF lastPos = new PointF();
@@ -124,9 +124,9 @@ public class CellSelector extends TouchArea {
 		if (pinching) {
 
 			float curSpan = PointF.distance( touch.current, another.current );
-			camera.zoom( GameMath.gate( 
-				PixelScene.minZoom, 
-				startZoom * curSpan / startSpan, 
+			camera.zoom( GameMath.gate(
+				PixelScene.minZoom,
+				startZoom * curSpan / startSpan,
 				PixelScene.maxZoom ) );
 
 		} else {
@@ -138,11 +138,11 @@ public class CellSelector extends TouchArea {
 				
 			} else if (dragging) {
 				camera.scroll.offset( PointF.diff( lastPos, t.current ).invScale( camera.zoom ) );
-				lastPos.set( t.current );	
-			}	
+				lastPos.set( t.current );
+			}
 		}
 		
-	}	
+	}
 	
 	public void cancel() {
 		
@@ -153,24 +153,24 @@ public class CellSelector extends TouchArea {
 		GameScene.ready();
 	}
 
-    @Override
-    public void reset() {
-        super.reset();
-        another = null;
-        if (pinching){
-            pinching = false;
+	@Override
+	public void reset() {
+		super.reset();
+		another = null;
+		if (pinching){
+			pinching = false;
 
-            int zoom = Math.round( camera.zoom );
-            camera.zoom( zoom );
-            ShatteredPixelDungeon.zoom((int) (zoom - PixelScene.defaultZoom));
-        }
-    }
+			int zoom = Math.round( camera.zoom );
+			camera.zoom( zoom );
+			ShatteredPixelDungeon.zoom((int) (zoom - PixelScene.defaultZoom));
+		}
+	}
 
-    public void enable(boolean value){
-        if (enabled != value){
-            enabled = value;
-        }
-    }
+	public void enable(boolean value){
+		if (enabled != value){
+			enabled = value;
+		}
+	}
 
 	public interface Listener {
 		void onSelect( Integer cell );

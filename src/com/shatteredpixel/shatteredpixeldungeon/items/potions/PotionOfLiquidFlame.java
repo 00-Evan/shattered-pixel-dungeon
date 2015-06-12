@@ -45,19 +45,19 @@ public class PotionOfLiquidFlame extends Potion {
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
 
-        for (int offset : Level.NEIGHBOURS9){
-            if (Level.flamable[cell+offset]
-                    || Actor.findChar(cell+offset) != null
-                    || Dungeon.level.heaps.get(cell+offset) != null) {
+		for (int offset : Level.NEIGHBOURS9){
+			if (Level.flamable[cell+offset]
+					|| Actor.findChar(cell+offset) != null
+					|| Dungeon.level.heaps.get(cell+offset) != null) {
 
-                GameScene.add(Blob.seed(cell + offset, 2, Fire.class));
+				GameScene.add(Blob.seed(cell + offset, 2, Fire.class));
 
-            } else {
+			} else {
 
-                CellEmitter.get(cell+offset).burst(FlameParticle.FACTORY, 2);
+				CellEmitter.get(cell+offset).burst(FlameParticle.FACTORY, 2);
 
-            }
-        }
+			}
+		}
 	}
 	
 	@Override

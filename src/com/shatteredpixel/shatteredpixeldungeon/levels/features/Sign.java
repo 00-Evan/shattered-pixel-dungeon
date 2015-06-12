@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 
 public class Sign {
 
-	private static final String TXT_DEAD_END = 
+	private static final String TXT_DEAD_END =
 		"What are you doing here?!";
 
 	private static final String[] TIPS = {
@@ -103,17 +103,17 @@ public class Sign {
 			if (index < TIPS.length) {
 				GameScene.show( new WndMessage( TIPS[index] ) );
 
-                if (index >= 21) {
+				if (index >= 21) {
 
-                    Level.set( pos, Terrain.EMBERS );
-                    GameScene.updateMap( pos );
-                    GameScene.discoverTile( pos, Terrain.SIGN );
+					Level.set( pos, Terrain.EMBERS );
+					GameScene.updateMap( pos );
+					GameScene.discoverTile( pos, Terrain.SIGN );
 
-                    GLog.w( TXT_BURN );
+					GLog.w( TXT_BURN );
 
-                    CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
-                    Sample.INSTANCE.play( Assets.SND_BURNING );
-                }
+					CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
+					Sample.INSTANCE.play( Assets.SND_BURNING );
+				}
 
 			}
 		}

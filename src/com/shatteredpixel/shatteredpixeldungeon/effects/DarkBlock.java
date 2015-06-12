@@ -6,9 +6,6 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.audio.Sample;
 
-/**
- * Created by Evan on 14/05/2015.
- */
 public class DarkBlock extends Gizmo{
 
 	private CharSprite target;

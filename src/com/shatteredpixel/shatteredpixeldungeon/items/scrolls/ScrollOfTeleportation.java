@@ -29,10 +29,10 @@ import com.watabou.noosa.tweeners.AlphaTweener;
 
 public class ScrollOfTeleportation extends Scroll {
 
-	public static final String TXT_TELEPORTED = 
+	public static final String TXT_TELEPORTED =
 		"In a blink of an eye you were teleported to another location of the level.";
 	
-	public static final String TXT_NO_TELEPORT = 
+	public static final String TXT_NO_TELEPORT =
 		"Strong magic aura of this place prevents you from teleporting!";
 	
 	{

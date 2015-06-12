@@ -31,48 +31,48 @@ import java.util.Iterator;
 public class AlchemyPot {
 
 	private static final String TXT_SELECT_SEED	= "Select a seed to throw";
-    private static final String TXT_POT	        = "Alchemy Pot";
-    private static final String TXT_FRUIT	    = "Cook a Blandfruit";
-    private static final String TXT_POTION	    = "Brew a Potion";
-    private static final String TXT_OPTIONS	    =
-            "Do you want to cook a Blandfruit with a seed, or brew a Potion from seeds?";
+	private static final String TXT_POT	        = "Alchemy Pot";
+	private static final String TXT_FRUIT	    = "Cook a Blandfruit";
+	private static final String TXT_POTION	    = "Brew a Potion";
+	private static final String TXT_OPTIONS	    =
+			"Do you want to cook a Blandfruit with a seed, or brew a Potion from seeds?";
 	
 	public static Hero hero;
 	public static int pos;
 
-    public static boolean foundFruit;
-    public static Item curItem = null;
+	public static boolean foundFruit;
+	public static Item curItem = null;
 	
 	public static void operate( Hero hero, int pos ) {
 		
 		AlchemyPot.hero = hero;
 		AlchemyPot.pos = pos;
 
-        Iterator<Item> items = hero.belongings.iterator();
-        foundFruit = false;
-        Heap heap = Dungeon.level.heaps.get( pos );
+		Iterator<Item> items = hero.belongings.iterator();
+		foundFruit = false;
+		Heap heap = Dungeon.level.heaps.get( pos );
 
-        if (heap == null)
-            while (items.hasNext() && !foundFruit){
-                curItem = items.next();
-                if (curItem instanceof Blandfruit && ((Blandfruit) curItem).potionAttrib == null){
-                        GameScene.show(
-                                new WndOptions(TXT_POT, TXT_OPTIONS, TXT_FRUIT, TXT_POTION) {
-                                    @Override
-                                    protected void onSelect(int index) {
-                                        if (index == 0) {
-                                            curItem.cast( AlchemyPot.hero, AlchemyPot.pos );
-                                        } else
-                                            GameScene.selectItem(itemSelector, WndBag.Mode.SEED, TXT_SELECT_SEED);
-                                    }
-                                }
-                    );
-                    foundFruit = true;
-                }
-            }
+		if (heap == null)
+			while (items.hasNext() && !foundFruit){
+				curItem = items.next();
+				if (curItem instanceof Blandfruit && ((Blandfruit) curItem).potionAttrib == null){
+						GameScene.show(
+								new WndOptions(TXT_POT, TXT_OPTIONS, TXT_FRUIT, TXT_POTION) {
+									@Override
+									protected void onSelect(int index) {
+										if (index == 0) {
+											curItem.cast( AlchemyPot.hero, AlchemyPot.pos );
+										} else
+											GameScene.selectItem(itemSelector, WndBag.Mode.SEED, TXT_SELECT_SEED);
+									}
+								}
+					);
+					foundFruit = true;
+				}
+			}
 
-        if (!foundFruit)
-            GameScene.selectItem(itemSelector, WndBag.Mode.SEED, TXT_SELECT_SEED);
+		if (!foundFruit)
+			GameScene.selectItem(itemSelector, WndBag.Mode.SEED, TXT_SELECT_SEED);
 	}
 	
 	private static final WndBag.Listener itemSelector = new WndBag.Listener() {

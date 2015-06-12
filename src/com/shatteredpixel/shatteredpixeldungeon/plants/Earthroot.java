@@ -32,7 +32,7 @@ import com.watabou.utils.Bundle;
 
 public class Earthroot extends Plant {
 
-	private static final String TXT_DESC = 
+	private static final String TXT_DESC =
 		"When a creature touches an Earthroot, its roots " +
 		"create a kind of immobile natural armor around it.";
 	
@@ -51,7 +51,7 @@ public class Earthroot extends Plant {
 		
 		if (Dungeon.visible[pos]) {
 			CellEmitter.bottom( pos ).start( EarthParticle.FACTORY, 0.05f, 8 );
-            Camera.main.shake( 1, 0.4f );
+			Camera.main.shake( 1, 0.4f );
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class Earthroot extends Plant {
 			plantClass = Earthroot.class;
 			alchemyClass = PotionOfParalyticGas.class;
 
-            bones = true;
+			bones = true;
 		}
 		
 		@Override
@@ -128,7 +128,7 @@ public class Earthroot extends Plant {
 		
 		@Override
 		public String toString() {
-            return Utils.format("Herbal armor", level);
+			return Utils.format("Herbal armor", level);
 		}
 
 		@Override

@@ -3,9 +3,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
-/**
- * Created by Evan on 14/05/2015.
- */
 public class Corruption extends Buff {
 
 	{

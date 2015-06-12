@@ -33,7 +33,7 @@ public class ImpSprite extends MobSprite {
 		TextureFilm frames = new TextureFilm( texture, 12, 14 );
 		
 		idle = new Animation( 10, true );
-		idle.frames( frames, 
+		idle.frames( frames,
 			0, 1, 2, 3, 0, 1, 2, 3, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 			0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 3, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 4, 4, 4, 4, 4, 4, 4, 4 );
 		

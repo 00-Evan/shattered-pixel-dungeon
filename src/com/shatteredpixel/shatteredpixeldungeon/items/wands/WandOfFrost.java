@@ -19,9 +19,6 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-/**
- * Created by debenhame on 23/04/2015.
- */
 public class WandOfFrost extends Wand {
 
 	{

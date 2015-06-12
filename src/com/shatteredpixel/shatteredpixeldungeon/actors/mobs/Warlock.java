@@ -85,7 +85,7 @@ public class Warlock extends Mob implements Callback {
 			
 		} else {
 			
-			boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos]; 
+			boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
 			if (visible) {
 				((WarlockSprite)sprite).zap( enemy.pos );
 			} else {
@@ -126,22 +126,22 @@ public class Warlock extends Mob implements Callback {
 		next();
 	}
 
-    @Override
-    public Item createLoot(){
-        Item loot = super.createLoot();
+	@Override
+	public Item createLoot(){
+		Item loot = super.createLoot();
 
-        if (loot instanceof PotionOfHealing){
+		if (loot instanceof PotionOfHealing){
 
-            //count/10 chance of not dropping potion
-            if (Random.Int(10)-Dungeon.limitedDrops.warlockHP.count < 0){
-                return null;
-            } else
-                Dungeon.limitedDrops.warlockHP.count++;
+			//count/10 chance of not dropping potion
+			if (Random.Int(10)-Dungeon.limitedDrops.warlockHP.count < 0){
+				return null;
+			} else
+				Dungeon.limitedDrops.warlockHP.count++;
 
-        }
+		}
 
-        return loot;
-    }
+		return loot;
+	}
 	
 	@Override
 	public String description() {

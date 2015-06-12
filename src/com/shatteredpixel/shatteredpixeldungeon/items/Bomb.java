@@ -53,48 +53,48 @@ public class Bomb extends Item {
 
 	public Fuse fuse;
 
-    //FIXME using a static variable for this is kinda gross, should be a better way
-    private static boolean lightingFuse = false;
+	//FIXME using a static variable for this is kinda gross, should be a better way
+	private static boolean lightingFuse = false;
 
 	private static final String AC_LIGHTTHROW = "Light & Throw";
 
-    @Override
-    public boolean isSimilar(Item item) {
-        return item instanceof Bomb && this.fuse == ((Bomb) item).fuse;
-    }
+	@Override
+	public boolean isSimilar(Item item) {
+		return item instanceof Bomb && this.fuse == ((Bomb) item).fuse;
+	}
 
-    @Override
-    public ArrayList<String> actions(Hero hero) {
-        ArrayList<String> actions = super.actions( hero );
-        actions.add ( AC_LIGHTTHROW );
-        return actions;
-    }
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions( hero );
+		actions.add ( AC_LIGHTTHROW );
+		return actions;
+	}
 
-    @Override
-    public void execute(Hero hero, String action) {
-        if (action.equals( AC_LIGHTTHROW )){
-            lightingFuse = true;
-            action = AC_THROW;
-        } else
-            lightingFuse = false;
+	@Override
+	public void execute(Hero hero, String action) {
+		if (action.equals( AC_LIGHTTHROW )){
+			lightingFuse = true;
+			action = AC_THROW;
+		} else
+			lightingFuse = false;
 
-        super.execute(hero, action);
-    }
+		super.execute(hero, action);
+	}
 
-    @Override
+	@Override
 	protected void onThrow( int cell ) {
-        if (!Level.pit[ cell ] && lightingFuse) {
-            Actor.addDelayed(fuse = new Fuse().ignite(this), 2);
-        }
-        if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
-            ArrayList<Integer> candidates = new ArrayList<>();
-            for (int i : Level.NEIGHBOURS8)
-                if (Level.passable[cell + i])
-                    candidates.add(cell + i);
-            int newCell = candidates.isEmpty() ? cell : Random.element(candidates);
-            Dungeon.level.drop( this, newCell ).sprite.drop( cell );
-        } else
-            super.onThrow( cell );
+		if (!Level.pit[ cell ] && lightingFuse) {
+			Actor.addDelayed(fuse = new Fuse().ignite(this), 2);
+		}
+		if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
+			ArrayList<Integer> candidates = new ArrayList<>();
+			for (int i : Level.NEIGHBOURS8)
+				if (Level.passable[cell + i])
+					candidates.add(cell + i);
+			int newCell = candidates.isEmpty() ? cell : Random.element(candidates);
+			Dungeon.level.drop( this, newCell ).sprite.drop( cell );
+		} else
+			super.onThrow( cell );
 	}
 
 	@Override
@@ -138,8 +138,8 @@ public class Bomb extends Item {
 				Char ch = Actor.findChar( c );
 				if (ch != null) {
 					//those not at the center of the blast take damage less consistently.
-                    int minDamage = c == cell ? Dungeon.depth+5 : 1;
-                    int maxDamage = 10 + Dungeon.depth * 2;
+					int minDamage = c == cell ? Dungeon.depth+5 : 1;
+					int maxDamage = 10 + Dungeon.depth * 2;
 
 					int dmg = Random.NormalIntRange( minDamage, maxDamage ) - Random.Int( ch.dr() );
 					if (dmg > 0) {

@@ -88,10 +88,10 @@ public class PixelScene extends Scene {
 				Game.width / (defaultZoom + 1) >= minWidth &&
 				Game.height / (defaultZoom + 1) >= minHeight) {
 					defaultZoom++;
-			}	
+			}
 		}
 		minZoom = 1;
-		maxZoom = defaultZoom * 2;	
+		maxZoom = defaultZoom * 2;
 			
 		
 		Camera.reset( new PixelCamera( defaultZoom ) );
@@ -103,31 +103,31 @@ public class PixelScene extends Scene {
 		if (font1x == null) {
 			
 			// 3x5 (6)
-			font1x = Font.colorMarked( 
+			font1x = Font.colorMarked(
 				BitmapCache.get( Assets.FONTS1X ), 0x00000000, BitmapText.Font.LATIN_FULL );
 			font1x.baseLine = 6;
 			font1x.tracking = -1;
 			
 			// 5x8 (10)
-			font15x = Font.colorMarked( 
+			font15x = Font.colorMarked(
 					BitmapCache.get( Assets.FONTS15X ), 12, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font15x.baseLine = 9;
 			font15x.tracking = -1;
 			
 			// 6x10 (12)
-			font2x = Font.colorMarked( 
+			font2x = Font.colorMarked(
 				BitmapCache.get( Assets.FONTS2X ), 14, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font2x.baseLine = 11;
 			font2x.tracking = -1;
 			
 			// 7x12 (15)
-			font25x = Font.colorMarked( 
+			font25x = Font.colorMarked(
 				BitmapCache.get( Assets.FONTS25X ), 17, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font25x.baseLine = 13;
 			font25x.tracking = -1;
 			
 			// 9x15 (18)
-			font3x = Font.colorMarked( 
+			font3x = Font.colorMarked(
 				BitmapCache.get( Assets.FONTS3X ), 22, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font3x.baseLine = 17;
 			font3x.tracking = -2;
@@ -248,14 +248,14 @@ public class PixelScene extends Scene {
 		v.y = align( c, v.y );
 	}
 
-    public static boolean noFade = false;
-    protected void fadeIn() {
-        if (noFade) {
-            noFade = false;
-        } else {
-            fadeIn( 0xFF000000, false );
-        }
-    }
+	public static boolean noFade = false;
+	protected void fadeIn() {
+		if (noFade) {
+			noFade = false;
+		} else {
+			fadeIn( 0xFF000000, false );
+		}
+	}
 	
 	protected void fadeIn( int color, boolean light ) {
 		add( new Fader( color, light ) );
@@ -316,10 +316,10 @@ public class PixelScene extends Scene {
 	private static class PixelCamera extends Camera {
 		
 		public PixelCamera( float zoom ) {
-			super( 
-				(int)(Game.width - Math.ceil( Game.width / zoom ) * zoom) / 2, 
-				(int)(Game.height - Math.ceil( Game.height / zoom ) * zoom) / 2, 
-				(int)Math.ceil( Game.width / zoom ), 
+			super(
+				(int)(Game.width - Math.ceil( Game.width / zoom ) * zoom) / 2,
+				(int)(Game.height - Math.ceil( Game.height / zoom ) * zoom) / 2,
+				(int)Math.ceil( Game.width / zoom ),
 				(int)Math.ceil( Game.height / zoom ), zoom );
 		}
 		

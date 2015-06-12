@@ -80,18 +80,18 @@ public class Bat extends Mob {
 		return damage;
 	}
 
-    @Override
-    public void die( Object cause ){
-        //sets drop chance
-        lootChance = 1f/((6 + Dungeon.limitedDrops.batHP.count ));
-        super.die( cause );
-    }
+	@Override
+	public void die( Object cause ){
+		//sets drop chance
+		lootChance = 1f/((6 + Dungeon.limitedDrops.batHP.count ));
+		super.die( cause );
+	}
 
-    @Override
-    protected Item createLoot(){
-        Dungeon.limitedDrops.batHP.count++;
-        return super.createLoot();
-    }
+	@Override
+	protected Item createLoot(){
+		Dungeon.limitedDrops.batHP.count++;
+		return super.createLoot();
+	}
 	
 	@Override
 	public String description() {

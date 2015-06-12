@@ -66,7 +66,7 @@ public class Toast extends Component {
 		bg.y = y;
 		bg.size( width, height );
 		
-		close.setPos( 
+		close.setPos(
 			bg.x + bg.width() - bg.marginHor() / 2 - MARGIN_HOR - close.width(),
 			y + (height - close.height()) / 2 );
 		

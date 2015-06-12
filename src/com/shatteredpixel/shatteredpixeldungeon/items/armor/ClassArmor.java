@@ -34,7 +34,7 @@ abstract public class ClassArmor extends Armor {
 		cursedKnown = true;
 		defaultAction = special();
 
-        bones = false;
+		bones = false;
 	}
 	
 	public ClassArmor() {
@@ -108,8 +108,8 @@ abstract public class ClassArmor extends Armor {
 				doSpecial();
 			}
 			
-		} else {	
-			super.execute( hero, action );		
+		} else {
+			super.execute( hero, action );
 		}
 	}
 	

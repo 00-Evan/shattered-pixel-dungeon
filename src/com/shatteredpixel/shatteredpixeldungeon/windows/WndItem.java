@@ -36,7 +36,7 @@ public class WndItem extends Window {
 	
 	private static final int WIDTH = 120;
 	
-	public WndItem( final WndBag owner, final Item item ) {	
+	public WndItem( final WndBag owner, final Item item ) {
 		
 		super();
 		
@@ -48,7 +48,7 @@ public class WndItem extends Window {
 			titlebar.color( ItemSlot.UPGRADED );
 		} else if (item.levelKnown && item.level < 0) {
 			titlebar.color( ItemSlot.DEGRADED );
-		}	
+		}
 		
 		BitmapTextMultiline info = PixelScene.createMultiline( item.info(), 6 );
 		info.maxWidth = WIDTH;

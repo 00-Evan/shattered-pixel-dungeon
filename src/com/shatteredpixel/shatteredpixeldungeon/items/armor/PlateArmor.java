@@ -33,7 +33,7 @@ public class PlateArmor extends Armor {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"Enormous plates of metal are joined together into a suit that provides " +
 			"unmatched protection to any adventurer strong enough to bear its staggering weight.";
 	}

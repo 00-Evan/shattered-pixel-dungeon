@@ -50,9 +50,9 @@ public class Potion extends Item {
 	private static final String TXT_BENEFICIAL	= "Beneficial potion";
 	private static final String TXT_YES			= "Yes, I know what I'm doing";
 	private static final String TXT_NO			= "No, I changed my mind";
-	private static final String TXT_R_U_SURE_DRINK = 
+	private static final String TXT_R_U_SURE_DRINK =
 		"Are you sure you want to drink it? In most cases you should throw such potions at your enemies.";
-	private static final String TXT_R_U_SURE_THROW = 
+	private static final String TXT_R_U_SURE_THROW =
 		"Are you sure you want to throw it? In most cases it makes sense to drink it.";
 	
 	private static final float TIME_TO_DRINK = 1f;
@@ -60,44 +60,44 @@ public class Potion extends Item {
 	protected String initials;
 	
 	private static final Class<?>[] potions = {
-		PotionOfHealing.class, 
-		PotionOfExperience.class, 
-		PotionOfToxicGas.class, 
+		PotionOfHealing.class,
+		PotionOfExperience.class,
+		PotionOfToxicGas.class,
 		PotionOfLiquidFlame.class,
 		PotionOfStrength.class,
 		PotionOfParalyticGas.class,
 		PotionOfLevitation.class,
-		PotionOfMindVision.class, 
+		PotionOfMindVision.class,
 		PotionOfPurity.class,
 		PotionOfInvisibility.class,
 		PotionOfMight.class,
 		PotionOfFrost.class
 	};
 	private static final String[] colors = {
-		"turquoise", "crimson", "azure", "jade", "golden", "magenta", 
+		"turquoise", "crimson", "azure", "jade", "golden", "magenta",
 		"charcoal", "ivory", "amber", "bistre", "indigo", "silver"};
 	private static final Integer[] images = {
-		ItemSpriteSheet.POTION_TURQUOISE, 
-		ItemSpriteSheet.POTION_CRIMSON, 
-		ItemSpriteSheet.POTION_AZURE, 
-		ItemSpriteSheet.POTION_JADE, 
-		ItemSpriteSheet.POTION_GOLDEN, 
-		ItemSpriteSheet.POTION_MAGENTA, 
-		ItemSpriteSheet.POTION_CHARCOAL, 
-		ItemSpriteSheet.POTION_IVORY, 
-		ItemSpriteSheet.POTION_AMBER, 
-		ItemSpriteSheet.POTION_BISTRE, 
-		ItemSpriteSheet.POTION_INDIGO, 
+		ItemSpriteSheet.POTION_TURQUOISE,
+		ItemSpriteSheet.POTION_CRIMSON,
+		ItemSpriteSheet.POTION_AZURE,
+		ItemSpriteSheet.POTION_JADE,
+		ItemSpriteSheet.POTION_GOLDEN,
+		ItemSpriteSheet.POTION_MAGENTA,
+		ItemSpriteSheet.POTION_CHARCOAL,
+		ItemSpriteSheet.POTION_IVORY,
+		ItemSpriteSheet.POTION_AMBER,
+		ItemSpriteSheet.POTION_BISTRE,
+		ItemSpriteSheet.POTION_INDIGO,
 		ItemSpriteSheet.POTION_SILVER};
 	
 	private static ItemStatusHandler<Potion> handler;
 	
 	private String color;
 
-    public boolean ownedByFruit = false;
+	public boolean ownedByFruit = false;
 	
-	{	
-		stackable = true;		
+	{
+		stackable = true;
 		defaultAction = AC_DRINK;
 	}
 	
@@ -120,11 +120,11 @@ public class Potion extends Item {
 		syncVisuals();
 	}
 
-    @Override
-    public void syncVisuals(){
-        image = handler.image( this );
-        color = handler.label( this );
-    };
+	@Override
+	public void syncVisuals(){
+		image = handler.image( this );
+		color = handler.label( this );
+	};
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
@@ -138,11 +138,11 @@ public class Potion extends Item {
 		if (action.equals( AC_DRINK )) {
 			
 			if (isKnown() && (
-					this instanceof PotionOfLiquidFlame || 
-					this instanceof PotionOfToxicGas || 
+					this instanceof PotionOfLiquidFlame ||
+					this instanceof PotionOfToxicGas ||
 					this instanceof PotionOfParalyticGas)) {
 				
-					GameScene.show( 
+					GameScene.show(
 						new WndOptions( TXT_HARMFUL, TXT_R_U_SURE_DRINK, TXT_YES, TXT_NO ) {
 							@Override
 							protected void onSelect(int index) {
@@ -168,14 +168,14 @@ public class Potion extends Item {
 	public void doThrow( final Hero hero ) {
 
 		if (isKnown() && (
-			this instanceof PotionOfExperience || 
+			this instanceof PotionOfExperience ||
 			this instanceof PotionOfHealing ||
 			this instanceof PotionOfMindVision ||
 			this instanceof PotionOfStrength ||
-			this instanceof PotionOfInvisibility || 
+			this instanceof PotionOfInvisibility ||
 			this instanceof PotionOfMight)) {
 		
-			GameScene.show( 
+			GameScene.show(
 				new WndOptions( TXT_BENEFICIAL, TXT_R_U_SURE_THROW, TXT_YES, TXT_NO ) {
 					@Override
 					protected void onSelect(int index) {
@@ -229,23 +229,23 @@ public class Potion extends Item {
 		}
 	}
 
-    @Override
-    public void cast( final Hero user, int dst ) {
-            super.cast(user, dst);
-    }
+	@Override
+	public void cast( final Hero user, int dst ) {
+			super.cast(user, dst);
+	}
 	
 	public boolean isKnown() {
 		return handler.isKnown( this );
 	}
 	
 	public void setKnown() {
-        if (!ownedByFruit) {
-            if (!isKnown()) {
-                handler.know(this);
-            }
+		if (!ownedByFruit) {
+			if (!isKnown()) {
+				handler.know(this);
+			}
 
-            Badges.validateAllPotionsIdentified();
-        }
+			Badges.validateAllPotionsIdentified();
+		}
 	}
 	
 	@Override
@@ -302,14 +302,14 @@ public class Potion extends Item {
 		final int color = ItemSprite.pick( image, 8, 10 );
 		Splash.at( cell, color, 5 );
 
-        Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
-        if (fire != null)
-            fire.clear( cell );
+		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
+		if (fire != null)
+			fire.clear( cell );
 
-        Char ch = Actor.findChar(cell);
-        if (ch != null)
-            Buff.detach( ch, Burning.class );
-    }
+		Char ch = Actor.findChar(cell);
+		if (ch != null)
+			Buff.detach( ch, Burning.class );
+	}
 	
 	@Override
 	public int price() {

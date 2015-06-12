@@ -74,7 +74,7 @@ public class ScrollOfMirrorImage extends Scroll {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"The incantation on this scroll will create illusionary twins of the reader, which will chase his enemies.";
 	}
 }

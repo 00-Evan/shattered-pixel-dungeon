@@ -8,58 +8,55 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.watabou.utils.Bundle;
 
-/**
- * Created by Evan on 12/04/2015.
- */
 public class VenomGas extends Blob {
 
-    private int strength = 0;
+	private int strength = 0;
 
-    @Override
-    protected void evolve() {
-        super.evolve();
+	@Override
+	protected void evolve() {
+		super.evolve();
 
-        if (volume == 0){
-            strength = 0;
-        } else {
-            Char ch;
-            for (int i = 0; i < LENGTH; i++) {
-                if (cur[i] > 0 && (ch = Actor.findChar(i)) != null) {
-                    if (!ch.immunities().contains(this.getClass()))
-                        Buff.affect(ch, Venom.class).set(2f, strength);
-                }
-            }
-        }
-    }
+		if (volume == 0){
+			strength = 0;
+		} else {
+			Char ch;
+			for (int i = 0; i < LENGTH; i++) {
+				if (cur[i] > 0 && (ch = Actor.findChar(i)) != null) {
+					if (!ch.immunities().contains(this.getClass()))
+						Buff.affect(ch, Venom.class).set(2f, strength);
+				}
+			}
+		}
+	}
 
-    public void setStrength(int str){
-        if (str > strength)
-            strength = str;
-    }
+	public void setStrength(int str){
+		if (str > strength)
+			strength = str;
+	}
 
-    private static final String STRENGTH = "strength";
+	private static final String STRENGTH = "strength";
 
-    @Override
-    public void restoreFromBundle(Bundle bundle) {
-        super.restoreFromBundle(bundle);
-        strength = bundle.getInt( STRENGTH );
-    }
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		strength = bundle.getInt( STRENGTH );
+	}
 
-    @Override
-    public void storeInBundle(Bundle bundle) {
-        super.storeInBundle(bundle);
-        bundle.put( STRENGTH, strength );
-    }
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put( STRENGTH, strength );
+	}
 
-    @Override
-    public void use( BlobEmitter emitter ) {
-        super.use( emitter );
+	@Override
+	public void use( BlobEmitter emitter ) {
+		super.use( emitter );
 
-        emitter.pour( Speck.factory(Speck.VENOM), 0.6f );
-    }
+		emitter.pour( Speck.factory(Speck.VENOM), 0.6f );
+	}
 
-    @Override
-    public String tileDesc() {
-        return "A could of foul acidic venom is swirling here.";
-    }
+	@Override
+	public String tileDesc() {
+		return "A could of foul acidic venom is swirling here.";
+	}
 }

@@ -39,9 +39,6 @@ import com.watabou.utils.Random;
 import java.util.Arrays;
 import java.util.HashSet;
 
-/**
- * Created by debenhame on 13/05/2015.
- */
 public class WandOfTransfusion extends Wand {
 
 	{

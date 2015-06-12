@@ -32,7 +32,7 @@ public class WarHammer extends MeleeWeapon {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"Few creatures can withstand the crushing blow of this towering mass of lead and steel, " +
 			"but only the strongest of adventurers can use it effectively.";
 	}

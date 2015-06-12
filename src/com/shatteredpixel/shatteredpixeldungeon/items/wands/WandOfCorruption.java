@@ -24,9 +24,6 @@ import com.watabou.utils.Random;
 import java.util.Arrays;
 import java.util.HashSet;
 
-/**
- * Created by Evan on 14/05/2015.
- */
 //TODO: balancing
 public class WandOfCorruption extends Wand {
 

@@ -175,7 +175,7 @@ public class MagicMissile extends Emitter {
 	
 	public static class MagicParticle extends PixelParticle {
 		
-		public static final Emitter.Factory FACTORY = new Factory() {	
+		public static final Emitter.Factory FACTORY = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				((MagicParticle)emitter.recycle( MagicParticle.class )).reset( x, y );
@@ -214,7 +214,7 @@ public class MagicMissile extends Emitter {
 	
 	public static class EarthParticle extends PixelParticle.Shrinking {
 		
-		public static final Emitter.Factory FACTORY = new Factory() {	
+		public static final Emitter.Factory FACTORY = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				((EarthParticle)emitter.recycle( EarthParticle.class )).reset( x, y );
@@ -246,7 +246,7 @@ public class MagicMissile extends Emitter {
 	
 	public static class WhiteParticle extends PixelParticle {
 		
-		public static final Emitter.Factory FACTORY = new Factory() {	
+		public static final Emitter.Factory FACTORY = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				((WhiteParticle)emitter.recycle( WhiteParticle.class )).reset( x, y );
@@ -286,7 +286,7 @@ public class MagicMissile extends Emitter {
 		
 		private Emitter emitter;
 		
-		public static final Emitter.Factory FACTORY = new Factory() {	
+		public static final Emitter.Factory FACTORY = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				((SlowParticle)emitter.recycle( SlowParticle.class )).reset( x, y, emitter );
@@ -330,7 +330,7 @@ public class MagicMissile extends Emitter {
 	
 	public static class ForceParticle extends PixelParticle {
 		
-		public static final Emitter.Factory FACTORY = new Factory() {	
+		public static final Emitter.Factory FACTORY = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				((ForceParticle)emitter.recycle( ForceParticle.class )).reset( x, y );
@@ -368,7 +368,7 @@ public class MagicMissile extends Emitter {
 	
 	public static class ColdParticle extends PixelParticle.Shrinking {
 		
-		public static final Emitter.Factory FACTORY = new Factory() {	
+		public static final Emitter.Factory FACTORY = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				((ColdParticle)emitter.recycle( ColdParticle.class )).reset( x, y );

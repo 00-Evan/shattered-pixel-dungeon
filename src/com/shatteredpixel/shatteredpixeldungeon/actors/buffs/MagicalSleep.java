@@ -25,70 +25,70 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class MagicalSleep extends Buff {
 
-    private static final float STEP = 1f;
-    public static final float SWS	= 1.5f;
+	private static final float STEP = 1f;
+	public static final float SWS	= 1.5f;
 
-    @Override
-    public boolean attachTo( Char target ) {
-        if (super.attachTo( target ) && !target.immunities().contains(Sleep.class)) {
+	@Override
+	public boolean attachTo( Char target ) {
+		if (super.attachTo( target ) && !target.immunities().contains(Sleep.class)) {
 
-            if (target instanceof Hero)
-                if (target.HP == target.HT) {
-                    GLog.i("You are too healthy, and resist the urge to sleep.");
-                    detach();
-                    return true;
-                } else {
-                    GLog.i("You fall into a deep magical sleep.");
-                }
-            else if (target instanceof Mob)
-                ((Mob)target).state = ((Mob)target).SLEEPING;
+			if (target instanceof Hero)
+				if (target.HP == target.HT) {
+					GLog.i("You are too healthy, and resist the urge to sleep.");
+					detach();
+					return true;
+				} else {
+					GLog.i("You fall into a deep magical sleep.");
+				}
+			else if (target instanceof Mob)
+				((Mob)target).state = ((Mob)target).SLEEPING;
 
-            target.paralysed = true;
+			target.paralysed = true;
 
-            return true;
-        } else {
-            return false;
-        }
-    }
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    @Override
-    public boolean act(){
-        if (target instanceof Hero) {
-            target.HP = Math.min(target.HP+1, target.HT);
-            ((Hero) target).restoreHealth = true;
-            if (target.HP == target.HT) {
-                GLog.p("You wake up feeling refreshed and healthy.");
-                detach();
-            }
-        }
-        spend( STEP );
-        return true;
-    }
+	@Override
+	public boolean act(){
+		if (target instanceof Hero) {
+			target.HP = Math.min(target.HP+1, target.HT);
+			((Hero) target).restoreHealth = true;
+			if (target.HP == target.HT) {
+				GLog.p("You wake up feeling refreshed and healthy.");
+				detach();
+			}
+		}
+		spend( STEP );
+		return true;
+	}
 
-    @Override
-    public void detach() {
-        target.paralysed = false;
-        if (target instanceof Hero)
-            ((Hero) target).restoreHealth = false;
-        super.detach();
-    }
+	@Override
+	public void detach() {
+		target.paralysed = false;
+		if (target instanceof Hero)
+			((Hero) target).restoreHealth = false;
+		super.detach();
+	}
 
-    @Override
-    public int icon() {
-        return BuffIndicator.MAGIC_SLEEP;
-    }
+	@Override
+	public int icon() {
+		return BuffIndicator.MAGIC_SLEEP;
+	}
 
-    @Override
-    public String toString() {
-        return "Magical Sleep";
-    }
+	@Override
+	public String toString() {
+		return "Magical Sleep";
+	}
 
-    @Override
-    public String desc() {
-        return "This character has fallen into a deep magical sleep which they will not wake from naturally.\n" +
-                "\n" +
-                "Magical sleep is similar to regular sleep, except that only damage will cause the target to wake up. \n" +
-                "\n" +
-                "For the hero, magical sleep has some restorative properties, allowing them to rapidly heal while resting.";
-    }
+	@Override
+	public String desc() {
+		return "This character has fallen into a deep magical sleep which they will not wake from naturally.\n" +
+				"\n" +
+				"Magical sleep is similar to regular sleep, except that only damage will cause the target to wake up. \n" +
+				"\n" +
+				"For the hero, magical sleep has some restorative properties, allowing them to rapidly heal while resting.";
+	}
 }

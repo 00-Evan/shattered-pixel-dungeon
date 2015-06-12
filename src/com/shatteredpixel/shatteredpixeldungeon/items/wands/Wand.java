@@ -62,7 +62,7 @@ public abstract class Wand extends Item {
 	
 	public int maxCharges = initialCharges();
 	public int curCharges = maxCharges;
-    public float partialCharge = 0f;
+	public float partialCharge = 0f;
 	
 	protected Charger charger;
 	
@@ -128,10 +128,10 @@ public abstract class Wand extends Item {
 		charger.setScaleFactor( chargeScaleFactor );
 	}
 
-    @Override
-    public void onDetach( ) {
-        stopCharging();
-    }
+	@Override
+	public void onDetach( ) {
+		stopCharging();
+	}
 
 	public void stopCharging() {
 		if (charger != null) {

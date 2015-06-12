@@ -50,7 +50,7 @@ public class TrapsPainter extends Painter {
 			fill(level, room, 1, Terrain.TRAP);
 		}
 		
-		Room.Door door = room.entrance(); 
+		Room.Door door = room.entrance();
 		door.set( Room.Door.Type.REGULAR );
 		
 		int lastRow = level.map[room.left + 1 + (room.top + 1) * Level.WIDTH] == Terrain.CHASM ? Terrain.CHASM : Terrain.EMPTY;
@@ -101,23 +101,23 @@ public class TrapsPainter extends Painter {
 	
 	private static Item prize( Level level ) {
 
-        Item prize;
+		Item prize;
 
-        if (Random.Int(4) != 0){
-            prize = level.findPrizeItem();
-            if (prize != null)
-                return prize;
-        }
+		if (Random.Int(4) != 0){
+			prize = level.findPrizeItem();
+			if (prize != null)
+				return prize;
+		}
 		
-		prize = Generator.random( Random.oneOf(  
-			Generator.Category.WEAPON, 
-			Generator.Category.ARMOR 
+		prize = Generator.random( Random.oneOf(
+			Generator.Category.WEAPON,
+			Generator.Category.ARMOR
 		) );
 
 		for (int i=0; i < 3; i++) {
-			Item another = Generator.random( Random.oneOf(  
-				Generator.Category.WEAPON, 
-				Generator.Category.ARMOR 
+			Item another = Generator.random( Random.oneOf(
+				Generator.Category.WEAPON,
+				Generator.Category.ARMOR
 			) );
 			if (another.level > prize.level) {
 				prize = another;

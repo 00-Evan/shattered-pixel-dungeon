@@ -40,12 +40,12 @@ public class ScrollOfRage extends Scroll {
 	@Override
 	protected void doRead() {
 
-        for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-            mob.beckon( curUser.pos );
-            if (Level.fieldOfView[mob.pos]) {
-                Buff.prolong(mob, Amok.class, 5f);
-            }
-        }
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			mob.beckon( curUser.pos );
+			if (Level.fieldOfView[mob.pos]) {
+				Buff.prolong(mob, Amok.class, 5f);
+			}
+		}
 
 		for (Heap heap : Dungeon.level.heaps.values()) {
 			if (heap.type == Heap.Type.MIMIC) {
@@ -60,7 +60,7 @@ public class ScrollOfRage extends Scroll {
 		GLog.w( "The scroll emits an enraging roar that echoes throughout the dungeon!" );
 		setKnown();
 		
-		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );		
+		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
 		Sample.INSTANCE.play( Assets.SND_CHALLENGE );
 		Invisibility.dispel();
 		
@@ -69,7 +69,7 @@ public class ScrollOfRage extends Scroll {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"When read aloud, this scroll will unleash a great roar " +
 			"that draws all enemies to the reader, and enrages nearby ones.";
 	}

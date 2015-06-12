@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 public class WndGame extends Window {
 	
 	private static final String TXT_SETTINGS	= "Settings";
-    private static final String TXT_CHALLEGES	= "Challenges";
+	private static final String TXT_CHALLEGES	= "Challenges";
 	private static final String TXT_RANKINGS	= "Rankings";
 	private static final String TXT_START		= "Start New Game";
 	private static final String TXT_MENU		= "Main Menu";
@@ -58,26 +58,26 @@ public class WndGame extends Window {
 			}
 		} );
 
-        // Challenges window
-        if (Dungeon.challenges > 0) {
-            addButton( new RedButton( TXT_CHALLEGES ) {
-                @Override
-                protected void onClick() {
-                    hide();
-                    GameScene.show( new WndChallenges( Dungeon.challenges, false ) );
-                }
-            } );
-        }
+		// Challenges window
+		if (Dungeon.challenges > 0) {
+			addButton( new RedButton( TXT_CHALLEGES ) {
+				@Override
+				protected void onClick() {
+					hide();
+					GameScene.show( new WndChallenges( Dungeon.challenges, false ) );
+				}
+			} );
+		}
 
-        // Restart
-        if (!Dungeon.hero.isAlive()) {
+		// Restart
+		if (!Dungeon.hero.isAlive()) {
 			
 			RedButton btnStart;
 			addButton( btnStart = new RedButton( TXT_START ) {
 				@Override
 				protected void onClick() {
 					Dungeon.hero = null;
-                    ShatteredPixelDungeon.challenges( Dungeon.challenges );
+					ShatteredPixelDungeon.challenges( Dungeon.challenges );
 					InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 					InterlevelScene.noStory = true;
 					Game.switchScene( InterlevelScene.class );

@@ -208,9 +208,9 @@ public class BadgeBanner extends Image {
 			break;
 		case 38:
 			p.offset( 5, 5 );
-        break;
-        case 39:
-            p.offset( 5, 4 );
+		break;
+		case 39:
+			p.offset( 5, 4 );
 			break;
 		case 40:
 		case 41:
@@ -256,10 +256,10 @@ public class BadgeBanner extends Image {
 			break;
 		}
 		
-		p.x *= image.scale.x; 
+		p.x *= image.scale.x;
 		p.y *= image.scale.y;
-		p.offset( 
-			-image.origin.x * (image.scale.x - 1), 
+		p.offset(
+			-image.origin.x * (image.scale.x - 1),
 			-image.origin.y * (image.scale.y - 1) );
 		p.offset( image.point() );
 		

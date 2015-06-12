@@ -20,9 +20,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-/**
- * Created by Evan on 23/05/2015.
- */
 public class EtherealChains extends Artifact {
 
 	public static final String AC_CAST       = "CAST";

@@ -37,7 +37,7 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 		inventoryTitle = "Select an item to infuse";
 		mode = WndBag.Mode.ENCHANTABLE;
 
-        bones = true;
+		bones = true;
 	}
 	
 	@Override

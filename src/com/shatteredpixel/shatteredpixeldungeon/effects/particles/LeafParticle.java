@@ -30,7 +30,7 @@ public class LeafParticle extends PixelParticle.Shrinking {
 	public static int color2;
 	
 	
-	public static final Emitter.Factory GENERAL = new Factory() {	
+	public static final Emitter.Factory GENERAL = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			LeafParticle p = ((LeafParticle)emitter.recycle( LeafParticle.class ));
@@ -39,7 +39,7 @@ public class LeafParticle extends PixelParticle.Shrinking {
 		}
 	};
 	
-	public static final Emitter.Factory LEVEL_SPECIFIC = new Factory() {	
+	public static final Emitter.Factory LEVEL_SPECIFIC = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			LeafParticle p = ((LeafParticle)emitter.recycle( LeafParticle.class ));

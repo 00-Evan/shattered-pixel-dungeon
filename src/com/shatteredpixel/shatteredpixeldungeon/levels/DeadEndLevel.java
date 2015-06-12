@@ -53,7 +53,7 @@ public class DeadEndLevel extends Level {
 		}
 		
 		for (int i=1; i <= SIZE; i++) {
-			map[WIDTH + i] = 
+			map[WIDTH + i] =
 			map[WIDTH * SIZE + i] =
 			map[WIDTH * i + 1] =
 			map[WIDTH * i + SIZE] =
@@ -73,9 +73,9 @@ public class DeadEndLevel extends Level {
 	@Override
 	protected void decorate() {
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) { 
+			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
-			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) { 
+			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
 				map[i] = Terrain.WALL_DECO;
 			}
 		}

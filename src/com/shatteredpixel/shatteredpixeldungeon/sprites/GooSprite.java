@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 public class GooSprite extends MobSprite {
 	
 	private Animation pump;
-    private Animation pumpAttack;
+	private Animation pumpAttack;
 
 	public GooSprite() {
 		super();
@@ -47,8 +47,8 @@ public class GooSprite extends MobSprite {
 		pump = new Animation( 20, true );
 		pump.frames( frames, 4, 3, 2, 1, 0 );
 
-        pumpAttack = new Animation ( 20, false );
-        pumpAttack.frames( frames, 4, 3, 2, 1, 0, 7);
+		pumpAttack = new Animation ( 20, false );
+		pumpAttack.frames( frames, 4, 3, 2, 1, 0, 7);
 
 		attack = new Animation( 10, false );
 		attack.frames( frames, 8, 9, 10 );
@@ -63,7 +63,7 @@ public class GooSprite extends MobSprite {
 		play( pump );
 	}
 
-    public void pumpAttack() { play( pumpAttack ); }
+	public void pumpAttack() { play( pumpAttack ); }
 
 	@Override
 	public void play( Animation anim, boolean force ) {
@@ -114,13 +114,13 @@ public class GooSprite extends MobSprite {
 	}
 
 	@Override
-    public void onComplete( Animation anim ) {
-        super.onComplete(anim);
+	public void onComplete( Animation anim ) {
+		super.onComplete(anim);
 
-        if (anim == pumpAttack) {
+		if (anim == pumpAttack) {
 
-            idle();
-            ch.onAttackComplete();
-        }
-    }
+			idle();
+			ch.onAttackComplete();
+		}
+	}
 }

@@ -7,9 +7,6 @@ import com.watabou.noosa.Image;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 
-/**
- * Created by Evan on 23/05/2015.
- */
 public class Chains extends Group {
 
 	private static final double A = 180 / Math.PI;

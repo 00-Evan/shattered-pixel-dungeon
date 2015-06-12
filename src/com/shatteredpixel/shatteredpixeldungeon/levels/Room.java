@@ -106,7 +106,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	public void addNeigbour( Room other ) {
 		
 		Rect i = intersect( other );
-		if ((i.width() == 0 && i.height() >= 3) || 
+		if ((i.width() == 0 && i.height() >= 3) ||
 			(i.height() == 0 && i.width() >= 3)) {
 			neigbours.add( other );
 			other.neigbours.add( this );
@@ -132,7 +132,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	public Point center() {
-		return new Point( 
+		return new Point(
 			(left + right) / 2 + (((right - left) & 1) == 1 ? Random.Int( 2 ) : 0),
 			(top + bottom) / 2 + (((bottom - top) & 1) == 1 ? Random.Int( 2 ) : 0) );
 	}
@@ -170,7 +170,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	@Override
 	public Collection<Room> edges() {
 		return neigbours;
-	} 
+	}
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {

@@ -15,9 +15,6 @@ import com.watabou.utils.Random;
 
 import java.text.DecimalFormat;
 
-/**
- * Created by debenhame on 23/04/2015.
- */
 public class Chill extends FlavourBuff {
 
 	private static final String TXT_FREEZES = "%s freezes!";

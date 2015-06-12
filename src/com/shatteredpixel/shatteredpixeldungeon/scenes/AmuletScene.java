@@ -39,7 +39,7 @@ public class AmuletScene extends PixelScene {
 	private static final float SMALL_GAP	= 2;
 	private static final float LARGE_GAP	= 8;
 	
-	private static final String TXT = 
+	private static final String TXT =
 		"You finally hold it in your hands, the Amulet of Yendor. Using its power " +
 		"you can take over the world or bring peace and prosperity to people or whatever. " +
 		"Anyway, your life will change forever and this game will end here. " +
@@ -67,7 +67,7 @@ public class AmuletScene extends PixelScene {
 		RedButton btnExit = new RedButton( TXT_EXIT ) {
 			@Override
 			protected void onClick() {
-                Dungeon.win( ResultDescriptions.WIN );
+				Dungeon.win( ResultDescriptions.WIN );
 				Dungeon.deleteGame( Dungeon.hero.heroClass, true );
 				Game.switchScene( noText ? TitleScene.class : RankingsScene.class );
 			}

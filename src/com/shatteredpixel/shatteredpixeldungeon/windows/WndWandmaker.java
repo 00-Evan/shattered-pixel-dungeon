@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndWandmaker extends Window {
 	
-	private static final String TXT_MESSAGE	= 
+	private static final String TXT_MESSAGE	=
 		"Oh, I see you have succeeded! I do hope it hasn't troubled you too much. " +
 		"As I promised, you can choose one of my high quality wands.";
 	

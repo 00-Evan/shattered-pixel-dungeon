@@ -115,7 +115,7 @@ public class Mimic extends Mob {
 	}
 	
 	public static Mimic spawnAt( int pos, List<Item> items ) {
-		Char ch = Actor.findChar( pos ); 
+		Char ch = Actor.findChar( pos );
 		if (ch != null) {
 			ArrayList<Integer> candidates = new ArrayList<Integer>();
 			for (int n : Level.NEIGHBOURS8) {

@@ -39,38 +39,38 @@ public class Ring extends KindofMisc {
 
 	private static final float TIME_TO_EQUIP = 1f;
 	
-	private static final String TXT_IDENTIFY = 
+	private static final String TXT_IDENTIFY =
 		"you are now familiar enough with your %s to identify it. It is %s.";
 	
 	protected Buff buff;
 	
 	private static final Class<?>[] rings = {
-        RingOfAccuracy.class,
-        RingOfEvasion.class,
-        RingOfElements.class,
-        RingOfForce.class,
-        RingOfFuror.class,
-        RingOfHaste.class,
+		RingOfAccuracy.class,
+		RingOfEvasion.class,
+		RingOfElements.class,
+		RingOfForce.class,
+		RingOfFuror.class,
+		RingOfHaste.class,
 		RingOfMagic.class,
 		RingOfMight.class,
-        RingOfSharpshooting.class,
-        RingOfTenacity.class,
-        RingOfWealth.class,
+		RingOfSharpshooting.class,
+		RingOfTenacity.class,
+		RingOfWealth.class,
 	};
-	private static final String[] gems = 
+	private static final String[] gems =
 		{"diamond", "opal", "garnet", "ruby", "amethyst", "topaz", "onyx", "tourmaline", "emerald", "sapphire", "quartz", "agate"};
 	private static final Integer[] images = {
-		ItemSpriteSheet.RING_DIAMOND, 
-		ItemSpriteSheet.RING_OPAL, 
-		ItemSpriteSheet.RING_GARNET, 
-		ItemSpriteSheet.RING_RUBY, 
-		ItemSpriteSheet.RING_AMETHYST, 
-		ItemSpriteSheet.RING_TOPAZ, 
-		ItemSpriteSheet.RING_ONYX, 
-		ItemSpriteSheet.RING_TOURMALINE, 
-		ItemSpriteSheet.RING_EMERALD, 
-		ItemSpriteSheet.RING_SAPPHIRE, 
-		ItemSpriteSheet.RING_QUARTZ, 
+		ItemSpriteSheet.RING_DIAMOND,
+		ItemSpriteSheet.RING_OPAL,
+		ItemSpriteSheet.RING_GARNET,
+		ItemSpriteSheet.RING_RUBY,
+		ItemSpriteSheet.RING_AMETHYST,
+		ItemSpriteSheet.RING_TOPAZ,
+		ItemSpriteSheet.RING_ONYX,
+		ItemSpriteSheet.RING_TOURMALINE,
+		ItemSpriteSheet.RING_EMERALD,
+		ItemSpriteSheet.RING_SAPPHIRE,
+		ItemSpriteSheet.RING_QUARTZ,
 		ItemSpriteSheet.RING_AGATE};
 	
 	private static ItemStatusHandler<Ring> handler;
@@ -95,7 +95,7 @@ public class Ring extends KindofMisc {
 	
 	public Ring() {
 		super();
-        syncVisuals();
+		syncVisuals();
 	}
 	
 	public void syncVisuals() {
@@ -148,27 +148,27 @@ public class Ring extends KindofMisc {
 		buff.attachTo( ch );
 	}
 
-    @Override
-    public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
-        if (super.doUnequip( hero, collect, single )) {
+	@Override
+	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
+		if (super.doUnequip( hero, collect, single )) {
 
-            if (hero.belongings.misc1 == this) {
-                hero.belongings.misc1 = null;
-            } else {
-                hero.belongings.misc2 = null;
-            }
+			if (hero.belongings.misc1 == this) {
+				hero.belongings.misc1 = null;
+			} else {
+				hero.belongings.misc2 = null;
+			}
 
-            hero.remove( buff );
-            buff = null;
+			hero.remove( buff );
+			buff = null;
 
-            return true;
+			return true;
 
-        } else {
+		} else {
 
-            return false;
+			return false;
 
-        }
-    }
+		}
+	}
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
@@ -211,7 +211,7 @@ public class Ring extends KindofMisc {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"This metal band is adorned with a large " + gem + " gem " +
 			"that glitters in the darkness. Who knows what effect it has when worn?";
 	}
@@ -220,7 +220,7 @@ public class Ring extends KindofMisc {
 	public String info() {
 		if (isEquipped( Dungeon.hero )) {
 			
-			return desc() + "\n\n" + "The " + name() + " is on your finger" + 
+			return desc() + "\n\n" + "The " + name() + " is on your finger" +
 				(cursed ? ", and because it is cursed, you are powerless to remove it." : "." );
 			
 		} else if (cursed && cursedKnown) {
@@ -259,7 +259,7 @@ public class Ring extends KindofMisc {
 			level = -n;
 			cursed = true;
 		} else
-            level = n;
+			level = n;
 
 		return this;
 	}
@@ -309,7 +309,7 @@ public class Ring extends KindofMisc {
 
 	public class RingBuff extends Buff {
 		
-		private static final String TXT_KNOWN = "This is a %s"; 
+		private static final String TXT_KNOWN = "This is a %s";
 		
 		public int level;
 		public RingBuff() {

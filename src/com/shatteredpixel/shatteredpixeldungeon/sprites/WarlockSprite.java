@@ -55,8 +55,8 @@ public class WarlockSprite extends MobSprite {
 		turnTo( ch.pos , cell );
 		play( zap );
 		
-		MagicMissile.shadow( parent, ch.pos, cell, 
-			new Callback() {			
+		MagicMissile.shadow( parent, ch.pos, cell,
+			new Callback() {
 				@Override
 				public void call() {
 					((Warlock)ch).onZapComplete();

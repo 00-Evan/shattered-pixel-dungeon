@@ -44,41 +44,41 @@ public class HighGrass {
 		Level.set( pos, Terrain.GRASS );
 		GameScene.updateMap( pos );
 
-        if (!Dungeon.isChallenged( Challenges.NO_HERBALISM )) {
-            int naturalismLevel = 0;
+		if (!Dungeon.isChallenged( Challenges.NO_HERBALISM )) {
+			int naturalismLevel = 0;
 
-            if (ch != null) {
-                SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
-                if (naturalism != null) {
-                    if (!naturalism.isCursed()) {
-                        naturalismLevel = naturalism.level() + 1;
-                        naturalism.charge();
-                    } else {
-                        naturalismLevel = -1;
-                    }
-                }
-            }
+			if (ch != null) {
+				SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
+				if (naturalism != null) {
+					if (!naturalism.isCursed()) {
+						naturalismLevel = naturalism.level() + 1;
+						naturalism.charge();
+					} else {
+						naturalismLevel = -1;
+					}
+				}
+			}
 
-            if (naturalismLevel >= 0) {
-                // Seed, scales from 1/16 to 1/4
-                if (Random.Int(16 - ((int) (naturalismLevel * 3))) == 0) {
-                    Item seed = Generator.random(Generator.Category.SEED);
+			if (naturalismLevel >= 0) {
+				// Seed, scales from 1/16 to 1/4
+				if (Random.Int(16 - ((int) (naturalismLevel * 3))) == 0) {
+					Item seed = Generator.random(Generator.Category.SEED);
 
-                    if (seed instanceof BlandfruitBush.Seed) {
-                        if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
-                            level.drop(seed, pos).sprite.drop();
-                            Dungeon.limitedDrops.blandfruitSeed.count++;
-                        }
-                    } else
-                        level.drop(seed, pos).sprite.drop();
-                }
+					if (seed instanceof BlandfruitBush.Seed) {
+						if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
+							level.drop(seed, pos).sprite.drop();
+							Dungeon.limitedDrops.blandfruitSeed.count++;
+						}
+					} else
+						level.drop(seed, pos).sprite.drop();
+				}
 
-                // Dew, scales from 1/6 to 1/3
-                if (Random.Int(24 - naturalismLevel*3) <= 3) {
-                    level.drop(new Dewdrop(), pos).sprite.drop();
-                }
-            }
-        }
+				// Dew, scales from 1/6 to 1/3
+				if (Random.Int(24 - naturalismLevel*3) <= 3) {
+					level.drop(new Dewdrop(), pos).sprite.drop();
+				}
+			}
+		}
 
 		int leaves = 4;
 		

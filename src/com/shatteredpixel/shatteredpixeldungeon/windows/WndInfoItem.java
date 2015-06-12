@@ -37,16 +37,16 @@ public class WndInfoItem extends Window {
 	private static final String TTL_CRYSTAL_CHEST	= "Crystal chest";
 	private static final String TTL_TOMB			= "Tomb";
 	private static final String TTL_SKELETON		= "Skeletal remains";
-    private static final String TTL_REMAINS 		= "Heroes remains";
+	private static final String TTL_REMAINS 		= "Heroes remains";
 	private static final String TXT_WONT_KNOW		= "You won't know what's inside until you open it!";
 	private static final String TXT_NEED_KEY		= TXT_WONT_KNOW + " But to open it you need a golden key.";
 	private static final String TXT_INSIDE			= "You can see %s inside, but to open the chest you need a golden key.";
-	private static final String TXT_OWNER	= 
+	private static final String TXT_OWNER	=
 		"This ancient tomb may contain something useful, " +
 		"but its owner will most certainly object to checking.";
-    private static final String TXT_SKELETON =
-        "This is all that's left of some unfortunate adventurer. " +
-        "Maybe it's worth checking for any valuables.";
+	private static final String TXT_SKELETON =
+		"This is all that's left of some unfortunate adventurer. " +
+		"Maybe it's worth checking for any valuables.";
 	private static final String TXT_REMAINS =
 		"This is all that's left from one of your predecessors. " +
 		"Maybe it's worth checking for any valuables.";
@@ -65,9 +65,9 @@ public class WndInfoItem extends Window {
 			
 			int color = TITLE_COLOR;
 			if (item.levelKnown && item.level > 0) {
-				color = ItemSlot.UPGRADED;				
+				color = ItemSlot.UPGRADED;
 			} else if (item.levelKnown && item.level < 0) {
-				color = ItemSlot.DEGRADED;				
+				color = ItemSlot.DEGRADED;
 			}
 			fillFields( item.image(), item.glowing(), color, item.toString(), item.info() );
 			
@@ -83,21 +83,21 @@ public class WndInfoItem extends Window {
 				title = TTL_TOMB;
 				info = TXT_OWNER;
 			} else if (heap.type == Type.SKELETON) {
-                title = TTL_SKELETON;
-                info = TXT_SKELETON;
-            } else if (heap.type == Type.REMAINS) {
-                title = TTL_REMAINS;
-                info = TXT_REMAINS;
+				title = TTL_SKELETON;
+				info = TXT_SKELETON;
+			} else if (heap.type == Type.REMAINS) {
+				title = TTL_REMAINS;
+				info = TXT_REMAINS;
 			} else if (heap.type == Type.CRYSTAL_CHEST) {
 				title = TTL_CRYSTAL_CHEST;
-                if (heap.peek() instanceof Artifact)
-                    info = Utils.format( TXT_INSIDE, "an artifact" );
-                else if (heap.peek() instanceof Wand)
-	                info = Utils.format( TXT_INSIDE, "a wand" );
-                else if (heap.peek() instanceof Ring)
-	                info = Utils.format( TXT_INSIDE, "a ring" );
+				if (heap.peek() instanceof Artifact)
+					info = Utils.format( TXT_INSIDE, "an artifact" );
+				else if (heap.peek() instanceof Wand)
+					info = Utils.format( TXT_INSIDE, "a wand" );
+				else if (heap.peek() instanceof Ring)
+					info = Utils.format( TXT_INSIDE, "a ring" );
 				else
-                    info = Utils.format( TXT_INSIDE, Utils.indefinite( heap.peek().name() ) );
+					info = Utils.format( TXT_INSIDE, Utils.indefinite( heap.peek().name() ) );
 			} else {
 				title = TTL_LOCKED_CHEST;
 				info = TXT_NEED_KEY;
@@ -114,9 +114,9 @@ public class WndInfoItem extends Window {
 		
 		int color = TITLE_COLOR;
 		if (item.levelKnown && item.level > 0) {
-			color = ItemSlot.UPGRADED;				
+			color = ItemSlot.UPGRADED;
 		} else if (item.levelKnown && item.level < 0) {
-			color = ItemSlot.DEGRADED;				
+			color = ItemSlot.DEGRADED;
 		}
 		
 		fillFields( item.image(), item.glowing(), color, item.toString(), item.info() );

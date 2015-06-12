@@ -4,9 +4,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-/**
- * Created by debenhame on 05/02/2015.
- */
 public class PotionBandolier extends Bag {
 
 	{

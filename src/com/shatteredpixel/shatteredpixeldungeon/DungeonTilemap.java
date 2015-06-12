@@ -32,8 +32,8 @@ public class DungeonTilemap extends Tilemap {
 	private static DungeonTilemap instance;
 	
 	public DungeonTilemap() {
-		super( 
-			Dungeon.level.tilesTex(), 
+		super(
+			Dungeon.level.tilesTex(),
 			new TextureFilm( Dungeon.level.tilesTex(), SIZE, SIZE ) );
 		map( Dungeon.level.map, Level.WIDTH );
 		
@@ -76,8 +76,8 @@ public class DungeonTilemap extends Tilemap {
 	}
 	
 	public static PointF tileCenterToWorld( int pos ) {
-		return new PointF( 
-			(pos % Level.WIDTH + 0.5f) * SIZE, 
+		return new PointF(
+			(pos % Level.WIDTH + 0.5f) * SIZE,
 			(pos / Level.WIDTH + 0.5f) * SIZE );
 	}
 	

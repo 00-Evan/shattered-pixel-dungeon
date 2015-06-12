@@ -46,9 +46,9 @@ public class InterlevelScene extends PixelScene {
 	private static final String TXT_FALLING		= "Falling...";
 	
 	private static final String ERR_FILE_NOT_FOUND	= "Save file not found. If this error persists after restarting, " +
-                                                        "it may mean this save game is corrupted. Sorry about that.";
+														"it may mean this save game is corrupted. Sorry about that.";
 	private static final String ERR_IO			    = "Cannot read save file. If this error persists after restarting, " +
-                                                        "it may mean this save game is corrupted. Sorry about that.";
+														"it may mean this save game is corrupted. Sorry about that.";
 	
 	public static enum Mode {
 		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL
@@ -59,7 +59,7 @@ public class InterlevelScene extends PixelScene {
 	public static int returnPos;
 	
 	public static boolean noStory = false;
-	
+
 	public static boolean fallIntoPit;
 	
 	private enum Phase {
@@ -101,7 +101,7 @@ public class InterlevelScene extends PixelScene {
 		
 		message = PixelScene.createText( text, 9 );
 		message.measure();
-		message.x = (Camera.main.width - message.width()) / 2; 
+		message.x = (Camera.main.width - message.width()) / 2;
 		message.y = (Camera.main.height - message.height()) / 2;
 		add( message );
 		
@@ -201,7 +201,7 @@ public class InterlevelScene extends PixelScene {
 						Game.switchScene( StartScene.class );
 					};
 				} );
-                error = null;
+				error = null;
 			}
 			break;
 		}
@@ -209,7 +209,7 @@ public class InterlevelScene extends PixelScene {
 
 	private void descend() throws IOException {
 
-        Actor.fixTime();
+		Actor.fixTime();
 		if (Dungeon.hero == null) {
 			Dungeon.init();
 			if (noStory) {
@@ -232,7 +232,7 @@ public class InterlevelScene extends PixelScene {
 	
 	private void fall() throws IOException {
 
-        Actor.fixTime();
+		Actor.fixTime();
 		Dungeon.saveLevel();
 
 		Level level;
@@ -280,7 +280,7 @@ public class InterlevelScene extends PixelScene {
 	
 	private void resurrect() throws IOException {
 		
-		Actor.fixTime(); 
+		Actor.fixTime();
 		
 		if (Dungeon.level.locked) {
 			Dungeon.hero.resurrect( Dungeon.depth );

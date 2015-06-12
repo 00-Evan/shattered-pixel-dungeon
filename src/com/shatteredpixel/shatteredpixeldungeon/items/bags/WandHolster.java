@@ -51,12 +51,12 @@ public class WandHolster extends Bag {
 	}
 
 	@Override
-    public void onDetach( ) {
+	public void onDetach( ) {
 		super.onDetach();
-        for (Item item : items) {
-            ((Wand)item).stopCharging();
-        }
-    }
+		for (Item item : items) {
+			((Wand)item).stopCharging();
+		}
+	}
 	
 	@Override
 	public int price() {

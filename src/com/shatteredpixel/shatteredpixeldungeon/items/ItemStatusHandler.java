@@ -107,8 +107,8 @@ public class ItemStatusHandler<T extends Item> {
 					known.add( item );
 				}
 
-            //if there's a new item, give it a random image
-            //or.. if we're loading from an untrusted version, randomize the image to be safe.
+			//if there's a new item, give it a random image
+			//or.. if we're loading from an untrusted version, randomize the image to be safe.
 			} else {
 				
 				int index = Random.Int( labelsLeft.size() );
@@ -119,9 +119,9 @@ public class ItemStatusHandler<T extends Item> {
 				images.put( item, imagesLeft.get( index ) );
 				imagesLeft.remove( index );
 
-                if (bundle.contains( itemName + PFX_KNOWN ) && bundle.getBoolean( itemName + PFX_KNOWN )) {
-                    known.add( item );
-                }
+				if (bundle.contains( itemName + PFX_KNOWN ) && bundle.getBoolean( itemName + PFX_KNOWN )) {
+					known.add( item );
+				}
 			}
 		}
 	}

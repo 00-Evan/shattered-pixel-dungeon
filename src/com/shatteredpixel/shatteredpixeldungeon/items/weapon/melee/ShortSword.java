@@ -37,9 +37,9 @@ public class ShortSword extends MeleeWeapon {
 	
 	private static final String TXT_SELECT_WEAPON	= "Select a weapon to upgrade";
 	
-	private static final String TXT_REFORGED = 
+	private static final String TXT_REFORGED =
 		"you reforged the short sword to upgrade your %s";
-	private static final String TXT_NOT_BOOMERANG = 
+	private static final String TXT_NOT_BOOMERANG =
 		"you can't upgrade a boomerang this way";
 	
 	private static final float TIME_TO_REFORGE	= 2f;
@@ -51,7 +51,7 @@ public class ShortSword extends MeleeWeapon {
 		image = ItemSpriteSheet.SHORT_SWORD;
 
 		unique = true;
-        bones = false;
+		bones = false;
 	}
 	
 	public ShortSword() {
@@ -95,7 +95,7 @@ public class ShortSword extends MeleeWeapon {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"It is indeed quite short, just a few inches longer, than a dagger.";
 	}
 	

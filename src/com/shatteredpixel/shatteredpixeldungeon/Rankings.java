@@ -140,7 +140,7 @@ public enum Rankings {
 			
 			for (Bundlable record : bundle.getCollection( RECORDS )) {
 				records.add( (Record)record );
-			}			
+			}
 			lastRecord = bundle.getInt( LATEST );
 			
 			totalNumber = bundle.getInt( TOTAL );

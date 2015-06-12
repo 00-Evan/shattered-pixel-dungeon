@@ -92,7 +92,7 @@ public final class ShadowCaster {
 	
 					if (obs.isBlocked( a0 ) && obs.isBlocked( a1 ) && obs.isBlocked( a2 )) {
 
-                        // Do nothing
+						// Do nothing
 					} else {
 						fieldOfView[pos] = true;
 					}
@@ -126,7 +126,7 @@ public final class ShadowCaster {
 			
 			if (length > limit && o1 <= a2[length-1]) {
 
-                // Merging several blocking cells
+				// Merging several blocking cells
 				a2[length-1] = o2;
 				
 			} else {

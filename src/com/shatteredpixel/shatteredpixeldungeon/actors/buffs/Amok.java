@@ -31,14 +31,14 @@ public class Amok extends FlavourBuff {
 		return BuffIndicator.AMOK;
 	}
 
-    @Override
-    public void detach() {
-        super.detach();
-        if (target instanceof Mob)
-            ((Mob)target).aggro( null );
-    }
+	@Override
+	public void detach() {
+		super.detach();
+		if (target instanceof Mob)
+			((Mob)target).aggro( null );
+	}
 
-    @Override
+	@Override
 	public String toString() {
 		return "Amok";
 	}

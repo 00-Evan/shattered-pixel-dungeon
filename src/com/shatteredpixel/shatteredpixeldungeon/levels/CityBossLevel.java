@@ -113,19 +113,19 @@ public class CityBossLevel extends Level {
 		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 		
-		entrance = (TOP + HALL_HEIGHT + 2 + Random.Int( CHAMBER_HEIGHT - 1 )) * WIDTH + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 )); 
+		entrance = (TOP + HALL_HEIGHT + 2 + Random.Int( CHAMBER_HEIGHT - 1 )) * WIDTH + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 ));
 		map[entrance] = Terrain.ENTRANCE;
 		
 		return true;
 	}
 	
 	@Override
-	protected void decorate() {	
+	protected void decorate() {
 		
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) { 
+			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
-			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) { 
+			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
 				map[i] = Terrain.WALL_DECO;
 			}
 		}
@@ -143,7 +143,7 @@ public class CityBossLevel extends Level {
 	}
 	
 	@Override
-	protected void createMobs() {	
+	protected void createMobs() {
 	}
 	
 	public Actor respawner() {
@@ -156,8 +156,8 @@ public class CityBossLevel extends Level {
 		if (item != null) {
 			int pos;
 			do {
-				pos = 
-					Random.IntRange( LEFT + 1, LEFT + HALL_WIDTH - 2 ) + 
+				pos =
+					Random.IntRange( LEFT + 1, LEFT + HALL_WIDTH - 2 ) +
 					Random.IntRange( TOP + HALL_HEIGHT + 1, TOP + HALL_HEIGHT  + CHAMBER_HEIGHT ) * WIDTH;
 			} while (pos == entrance || map[pos] == Terrain.SIGN);
 			drop( item, pos ).type = Heap.Type.REMAINS;
@@ -177,7 +177,7 @@ public class CityBossLevel extends Level {
 		if (!enteredArena && outsideEntraceRoom( cell ) && hero == Dungeon.hero) {
 			
 			enteredArena = true;
-            seal();
+			seal();
 			
 			Mob boss = Bestiary.mob( Dungeon.depth );
 			boss.state = boss.HUNTING;
@@ -208,7 +208,7 @@ public class CityBossLevel extends Level {
 		if (!keyDropped && item instanceof SkeletonKey) {
 			
 			keyDropped = true;
-            unseal();
+			unseal();
 			
 			set( arenaDoor, Terrain.DOOR );
 			GameScene.updateMap( arenaDoor );

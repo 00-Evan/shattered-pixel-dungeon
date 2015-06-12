@@ -65,11 +65,11 @@ public class BuffIndicator extends Component {
 	public static final int BLEEDING	= 26;
 	public static final int MARK		= 27;
 	public static final int DEFERRED	= 28;
-    public static final int DROWSY      = 29;
-    public static final int MAGIC_SLEEP = 30;
-    public static final int THORNS      = 31;
-    public static final int FORESIGHT   = 32;
-    public static final int VERTIGO     = 33;
+	public static final int DROWSY      = 29;
+	public static final int MAGIC_SLEEP = 30;
+	public static final int THORNS      = 31;
+	public static final int FORESIGHT   = 32;
+	public static final int VERTIGO     = 33;
 	public static final int RECHARGING 	= 34;
 	public static final int LOCKED_FLOOR= 35;
 	public static final int CORRUPT     = 36;

@@ -84,7 +84,7 @@ public class Shaman extends Mob implements Callback {
 			
 		} else {
 			
-			boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos]; 
+			boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
 			if (visible) {
 				((ShamanSprite)sprite).zap( enemy.pos );
 			}

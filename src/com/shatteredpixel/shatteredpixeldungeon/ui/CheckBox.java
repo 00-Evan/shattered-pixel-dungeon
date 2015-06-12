@@ -38,11 +38,11 @@ public class CheckBox extends RedButton {
 		text.x = PixelScene.align( PixelScene.uiCamera, x + margin );
 		text.y = PixelScene.align( PixelScene.uiCamera, y + margin );
 
-        margin = (height - icon.height) / 2;
+		margin = (height - icon.height) / 2;
 
-        icon.x = PixelScene.align( PixelScene.uiCamera, x + width - margin - icon.width );
-        icon.y = PixelScene.align( PixelScene.uiCamera, y + margin );
-    }
+		icon.x = PixelScene.align( PixelScene.uiCamera, x + width - margin - icon.width );
+		icon.y = PixelScene.align( PixelScene.uiCamera, y + margin );
+	}
 	
 	public boolean checked() {
 		return checked;

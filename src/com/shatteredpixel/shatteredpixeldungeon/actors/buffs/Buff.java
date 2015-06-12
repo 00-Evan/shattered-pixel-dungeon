@@ -37,9 +37,9 @@ public class Buff extends Actor {
 	public enum buffType {POSITIVE, NEGATIVE, NEUTRAL, SILENT};
 	public buffType type = buffType.SILENT;
 
-    public HashSet<Class<?>> resistances = new HashSet<Class<?>>();
+	public HashSet<Class<?>> resistances = new HashSet<Class<?>>();
 
-    public HashSet<Class<?>> immunities = new HashSet<Class<?>>();
+	public HashSet<Class<?>> immunities = new HashSet<Class<?>>();
 	
 	public boolean attachTo( Char target ) {
 
@@ -50,11 +50,11 @@ public class Buff extends Actor {
 		this.target = target;
 		target.add( this );
 
-        if (target.buffs().contains(this)){
+		if (target.buffs().contains(this)){
 			if (target.sprite != null) fx( true );
 			return true;
 		} else
-	        return false;
+			return false;
 	}
 	
 	public void detach() {

@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
-/**
- * Created by debenhame on 06/02/2015.
- */
 public class PinCushion extends Buff {
 
 	private ArrayList<MissileWeapon> items = new ArrayList<MissileWeapon>();

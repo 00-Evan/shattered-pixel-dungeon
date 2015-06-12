@@ -69,7 +69,7 @@ public class IncendiaryDart extends MissileWeapon {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"The spike on each of these darts is designed to pin it to its target " +
 			"while the unstable compounds strapped to its length burst into brilliant flames.";
 	}

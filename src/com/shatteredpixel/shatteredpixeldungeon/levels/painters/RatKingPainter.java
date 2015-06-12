@@ -56,9 +56,9 @@ public class RatKingPainter extends Painter {
 	
 	private static void addChest( Level level, int pos, int door ) {
 		
-		if (pos == door - 1 || 
-			pos == door + 1 || 
-			pos == door - Level.WIDTH || 
+		if (pos == door - 1 ||
+			pos == door + 1 ||
+			pos == door - Level.WIDTH ||
 			pos == door + Level.WIDTH) {
 			return;
 		}

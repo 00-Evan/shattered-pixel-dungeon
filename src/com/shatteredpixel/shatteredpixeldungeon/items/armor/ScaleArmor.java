@@ -33,7 +33,7 @@ public class ScaleArmor extends Armor {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"The metal scales sewn onto a leather vest create a flexible, yet protective armor.";
 	}
 }

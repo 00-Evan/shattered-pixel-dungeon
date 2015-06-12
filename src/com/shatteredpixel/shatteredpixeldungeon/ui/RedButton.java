@@ -90,9 +90,9 @@ public class RedButton extends Button {
 		layout();
 	}
 
-    public void textColor( int value ) {
-        text.hardlight( value );
-    }
+	public void textColor( int value ) {
+		text.hardlight( value );
+	}
 
 	public void icon( Image icon ) {
 		if (this.icon != null) {

@@ -64,14 +64,14 @@ public class Heap implements Bundlable {
 	private static final int SEEDS_TO_POTION = 3;
 	
 	public enum Type {
-		HEAP, 
-		FOR_SALE, 
-		CHEST, 
-		LOCKED_CHEST, 
+		HEAP,
+		FOR_SALE,
+		CHEST,
+		LOCKED_CHEST,
 		CRYSTAL_CHEST,
-		TOMB, 
+		TOMB,
 		SKELETON,
-        REMAINS,
+		REMAINS,
 		MIMIC
 	}
 	public Type type = Type.HEAP;
@@ -98,8 +98,8 @@ public class Heap implements Bundlable {
 			return ItemSpriteSheet.TOMB;
 		case SKELETON:
 			return ItemSpriteSheet.BONES;
-        case REMAINS:
-            return ItemSpriteSheet.REMAINS;
+		case REMAINS:
+			return ItemSpriteSheet.REMAINS;
 		default:
 			return 0;
 		}
@@ -123,7 +123,7 @@ public class Heap implements Bundlable {
 			Wraith.spawnAround( hero.pos );
 			break;
 		case SKELETON:
-        case REMAINS:
+		case REMAINS:
 			CellEmitter.center( pos ).start( Speck.factory( Speck.RATTLE ), 0.1f, 3 );
 			for (Item item : items) {
 				if (item.cursed) {
@@ -261,12 +261,12 @@ public class Heap implements Bundlable {
 	//Note: should not be called to initiate an explosion, but rather by an explosion that is happening.
 	public void explode() {
 
-        //breaks open most standard containers, mimics die.
+		//breaks open most standard containers, mimics die.
 		if (type == Type.MIMIC || type == Type.CHEST || type == Type.SKELETON) {
-            type = Type.HEAP;
-            sprite.link();
-            sprite.drop();
-            return;
+			type = Type.HEAP;
+			sprite.link();
+			sprite.drop();
+			return;
 		}
 
 		if (type != Type.HEAP) {
@@ -294,7 +294,7 @@ public class Heap implements Bundlable {
 			}
 
 			if (items.isEmpty())
-                destroy();
+				destroy();
 		}
 	}
 	
@@ -318,7 +318,7 @@ public class Heap implements Bundlable {
 				replace( item, FrozenCarpaccio.cook( (MysteryMeat)item ) );
 				frozen = true;
 			} else if (item instanceof Potion) {
-                items.remove(item);
+				items.remove(item);
 				((Potion) item).shatter(pos);
 				frozen = true;
 			} else if (item instanceof Bomb){
@@ -332,7 +332,7 @@ public class Heap implements Bundlable {
 				destroy();
 			} else if (sprite != null) {
 				sprite.view( image(), glowing() );
-			}	
+			}
 		}
 	}
 	
@@ -345,19 +345,19 @@ public class Heap implements Bundlable {
 		int count = 0;
 
 
-        if (items.size() == 2 && items.get(0) instanceof Seed && items.get(1) instanceof Blandfruit ) {
+		if (items.size() == 2 && items.get(0) instanceof Seed && items.get(1) instanceof Blandfruit ) {
 
-            Sample.INSTANCE.play( Assets.SND_PUFF );
-            CellEmitter.center( pos ).burst( Speck.factory( Speck.EVOKE ), 3 );
+			Sample.INSTANCE.play( Assets.SND_PUFF );
+			CellEmitter.center( pos ).burst( Speck.factory( Speck.EVOKE ), 3 );
 
-            Blandfruit result = new Blandfruit();
-            result.cook((Seed)items.get(0));
+			Blandfruit result = new Blandfruit();
+			result.cook((Seed)items.get(0));
 
-            destroy();
+			destroy();
 
-            return result;
+			return result;
 
-        }
+		}
 		
 		int index = 0;
 		for (Item item : items) {
@@ -379,7 +379,7 @@ public class Heap implements Bundlable {
 			CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 			Sample.INSTANCE.play( Assets.SND_PUFF );
 
-            Item potion;
+			Item potion;
 
 			if (Random.Int( count + bonus ) == 0) {
 
@@ -390,7 +390,7 @@ public class Heap implements Bundlable {
 				Statistics.potionsCooked++;
 				Badges.validatePotionsCooked();
 
-                potion = Generator.random( Generator.Category.POTION );
+				potion = Generator.random( Generator.Category.POTION );
 
 			} else {
 
@@ -403,10 +403,10 @@ public class Heap implements Bundlable {
 				Badges.validatePotionsCooked();
 
 				if (itemClass == null) {
-                    potion =  Generator.random( Generator.Category.POTION );
+					potion =  Generator.random( Generator.Category.POTION );
 				} else {
 					try {
-                        potion =  itemClass.newInstance();
+						potion =  itemClass.newInstance();
 					} catch (Exception e) {
 						return null;
 					}
@@ -418,13 +418,13 @@ public class Heap implements Bundlable {
 				if (Random.Int(1000/bonus) == 0)
 					return new PotionOfExperience();
 
-            while (potion instanceof PotionOfHealing && Random.Int(15) - Dungeon.limitedDrops.cookingHP.count >= 0)
-                potion = Generator.random( Generator.Category.POTION );
+			while (potion instanceof PotionOfHealing && Random.Int(15) - Dungeon.limitedDrops.cookingHP.count >= 0)
+				potion = Generator.random( Generator.Category.POTION );
 
-            if (potion instanceof PotionOfHealing)
-                Dungeon.limitedDrops.cookingHP.count++;
+			if (potion instanceof PotionOfHealing)
+				Dungeon.limitedDrops.cookingHP.count++;
 
-            return potion;
+			return potion;
 
 		} else {
 			return null;
@@ -462,8 +462,8 @@ public class Heap implements Bundlable {
 	public void restoreFromBundle( Bundle bundle ) {
 		pos = bundle.getInt( POS );
 		type = Type.valueOf( bundle.getString( TYPE ) );
-        items = new LinkedList<Item>( (Collection<Item>) ((Collection<?>) bundle.getCollection( ITEMS )) );
-        items.removeAll(Collections.singleton(null));
+		items = new LinkedList<Item>( (Collection<Item>) ((Collection<?>) bundle.getCollection( ITEMS )) );
+		items.removeAll(Collections.singleton(null));
 	}
 
 	@Override

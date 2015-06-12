@@ -8,9 +8,6 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
-/**
- * Created by debenhame on 16/03/2015.
- */
 public class MerchantsBeacon extends Item {
 
 	private static final String AC_USE = "USE";

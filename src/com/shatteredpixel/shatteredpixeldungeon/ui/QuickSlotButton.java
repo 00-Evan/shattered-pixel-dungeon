@@ -59,11 +59,11 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		reset();
 	}
 
-    public static void reset() {
-        instance = new QuickSlotButton[4];
+	public static void reset() {
+		instance = new QuickSlotButton[4];
 
-        lastTarget = null;
-    }
+		lastTarget = null;
+	}
 	
 	@Override
 	protected void createChildren() {
@@ -94,7 +94,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 				icon.resetColor();
 			}
 		};
-        slot.showParams( true, false, true );
+		slot.showParams( true, false, true );
 		add( slot );
 		
 		crossB = Icons.TARGET.get();

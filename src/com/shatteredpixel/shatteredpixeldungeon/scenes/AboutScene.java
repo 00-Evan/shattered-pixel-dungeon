@@ -35,21 +35,21 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class AboutScene extends PixelScene {
 
-    private static final String TTL_SHPX = "Shattered Pixel Dungeon";
+	private static final String TTL_SHPX = "Shattered Pixel Dungeon";
 
-    private static final String TXT_SHPX =
-            "Design, Code, & Graphics: Evan\n\n" +
-            "Shattered Pixel is Evan's online home, check it out:";
+	private static final String TXT_SHPX =
+			"Design, Code, & Graphics: Evan\n\n" +
+			"Shattered Pixel is Evan's online home, check it out:";
 
-    private static final String LNK_SHPX = "ShatteredPixel.com";
+	private static final String LNK_SHPX = "ShatteredPixel.com";
 
 
-    private static final String TTL_WATA = "Original Pixel Dungeon";
+	private static final String TTL_WATA = "Original Pixel Dungeon";
 
 	private static final String TXT_WATA =
-		    "Code & Graphics: Watabou\n" +
-		    "Music: Cube_Code\n\n" +
-		    "Visit Watabou for more info:";
+			"Code & Graphics: Watabou\n" +
+			"Music: Cube_Code\n\n" +
+			"Visit Watabou for more info:";
 	
 	private static final String LNK_WATA = "pixeldungeon.watabou.ru";
 	
@@ -61,65 +61,65 @@ public class AboutScene extends PixelScene {
 		final float colTop = (Camera.main.height / 2) - (ShatteredPixelDungeon.landscape() ? 30 : 90);
 		final float wataOffset = ShatteredPixelDungeon.landscape() ? colWidth : 0;
 
-        Image shpx = Icons.SHPX.get();
-        shpx.x = align( (colWidth - shpx.width()) / 2 );
-        shpx.y = align( colTop );
-        add( shpx );
+		Image shpx = Icons.SHPX.get();
+		shpx.x = align( (colWidth - shpx.width()) / 2 );
+		shpx.y = align( colTop );
+		add( shpx );
 
-        new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
+		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
 
-        BitmapTextMultiline shpxtitle = createMultiline( TTL_SHPX, 8 );
-        shpxtitle.maxWidth = (int) Math.min( colWidth, 120 );
-        shpxtitle.measure();
-        shpxtitle.hardlight( Window.SHPX_COLOR );
-        add( shpxtitle );
+		BitmapTextMultiline shpxtitle = createMultiline( TTL_SHPX, 8 );
+		shpxtitle.maxWidth = (int) Math.min( colWidth, 120 );
+		shpxtitle.measure();
+		shpxtitle.hardlight( Window.SHPX_COLOR );
+		add( shpxtitle );
 
-        shpxtitle.x = align( (colWidth - shpxtitle.width()) / 2 );
-        shpxtitle.y = align( shpx.y + shpx.height + 5 );
+		shpxtitle.x = align( (colWidth - shpxtitle.width()) / 2 );
+		shpxtitle.y = align( shpx.y + shpx.height + 5 );
 
-        BitmapTextMultiline shpxtext = createMultiline( TXT_SHPX, 8 );
-        shpxtext.maxWidth = shpxtitle.maxWidth;
-        shpxtext.measure();
-        add( shpxtext );
+		BitmapTextMultiline shpxtext = createMultiline( TXT_SHPX, 8 );
+		shpxtext.maxWidth = shpxtitle.maxWidth;
+		shpxtext.measure();
+		add( shpxtext );
 
-        shpxtext.x = align( (colWidth - shpxtext.width()) / 2 );
-        shpxtext.y = align( shpxtitle.y + shpxtitle.height() + 12 );
+		shpxtext.x = align( (colWidth - shpxtext.width()) / 2 );
+		shpxtext.y = align( shpxtitle.y + shpxtitle.height() + 12 );
 
-        BitmapTextMultiline shpxlink = createMultiline( LNK_SHPX, 8 );
-        shpxlink.maxWidth = shpxtitle.maxWidth;
-        shpxlink.measure();
-        shpxlink.hardlight( Window.SHPX_COLOR );
-        add( shpxlink );
+		BitmapTextMultiline shpxlink = createMultiline( LNK_SHPX, 8 );
+		shpxlink.maxWidth = shpxtitle.maxWidth;
+		shpxlink.measure();
+		shpxlink.hardlight( Window.SHPX_COLOR );
+		add( shpxlink );
 
-        shpxlink.x = shpxtext.x;
-        shpxlink.y = shpxtext.y + shpxtext.height();
+		shpxlink.x = shpxtext.x;
+		shpxlink.y = shpxtext.y + shpxtext.height();
 
-        TouchArea shpxhotArea = new TouchArea( shpxlink ) {
-            @Override
-            protected void onClick( Touch touch ) {
-                Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://shatteredpixel.tumblr.com") );
-                Game.instance.startActivity( intent );
-            }
-        };
-        add( shpxhotArea );
+		TouchArea shpxhotArea = new TouchArea( shpxlink ) {
+			@Override
+			protected void onClick( Touch touch ) {
+				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://shatteredpixel.tumblr.com") );
+				Game.instance.startActivity( intent );
+			}
+		};
+		add( shpxhotArea );
 
-        Image wata = Icons.WATA.get();
-        wata.x = align( wataOffset + (colWidth - wata.width()) / 2 );
-        wata.y = align( ShatteredPixelDungeon.landscape() ?
-                        colTop:
-                        shpxlink.y + wata.height + 20);
-        add( wata );
+		Image wata = Icons.WATA.get();
+		wata.x = align( wataOffset + (colWidth - wata.width()) / 2 );
+		wata.y = align( ShatteredPixelDungeon.landscape() ?
+						colTop:
+						shpxlink.y + wata.height + 20);
+		add( wata );
 
-        new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
+		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
 
-        BitmapTextMultiline wataTitle = createMultiline( TTL_WATA, 8 );
-        wataTitle.maxWidth = (int) Math.min( colWidth, 120 );
-        wataTitle.measure();
-        wataTitle.hardlight(Window.TITLE_COLOR);
-        add( wataTitle );
+		BitmapTextMultiline wataTitle = createMultiline( TTL_WATA, 8 );
+		wataTitle.maxWidth = (int) Math.min( colWidth, 120 );
+		wataTitle.measure();
+		wataTitle.hardlight(Window.TITLE_COLOR);
+		add( wataTitle );
 
-        wataTitle.x = align( wataOffset + (colWidth - wataTitle.width()) / 2 );
-        wataTitle.y = align( wata.y + wata.height + 11 );
+		wataTitle.x = align( wataOffset + (colWidth - wataTitle.width()) / 2 );
+		wataTitle.y = align( wata.y + wata.height + 11 );
 
 		BitmapTextMultiline wataText = createMultiline( TXT_WATA, 8 );
 		wataText.maxWidth = wataTitle.maxWidth;
@@ -152,9 +152,9 @@ public class AboutScene extends PixelScene {
 		archs.setSize( Camera.main.width, Camera.main.height );
 		addToBack( archs );
 
-        ExitButton btnExit = new ExitButton();
-        btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-        add( btnExit );
+		ExitButton btnExit = new ExitButton();
+		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
+		add( btnExit );
 
 		fadeIn();
 	}

@@ -63,12 +63,12 @@ public class Wound extends Image {
 	}
 	
 	public static void hit( Char ch, float angle ) {
-        if (ch.sprite.parent != null) {
-            Wound w = (Wound) ch.sprite.parent.recycle(Wound.class);
-            ch.sprite.parent.bringToFront(w);
-            w.reset(ch.pos);
-            w.angle = angle;
-        }
+		if (ch.sprite.parent != null) {
+			Wound w = (Wound) ch.sprite.parent.recycle(Wound.class);
+			ch.sprite.parent.bringToFront(w);
+			w.reset(ch.pos);
+			w.angle = angle;
+		}
 	}
 	
 	public static void hit( int pos ) {

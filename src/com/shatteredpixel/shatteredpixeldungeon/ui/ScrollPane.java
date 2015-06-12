@@ -84,7 +84,7 @@ public class ScrollPane extends Component {
 		return content;
 	}
 	
-	public void onClick( float x, float y ) {		
+	public void onClick( float x, float y ) {
 	}
 	
 	public class TouchController extends TouchArea {
@@ -114,7 +114,7 @@ public class ScrollPane extends Component {
 		private PointF lastPos = new PointF();
 		
 		@Override
-		protected void onDrag( Touch t ) {		
+		protected void onDrag( Touch t ) {
 			if (dragging) {
 				
 				Camera c = content.camera;
@@ -134,7 +134,7 @@ public class ScrollPane extends Component {
 				}
 				
 				
-				lastPos.set( t.current );	
+				lastPos.set( t.current );
 				
 			} else if (PointF.distance( t.current, t.start ) > dragThreshold) {
 				
@@ -142,6 +142,6 @@ public class ScrollPane extends Component {
 				lastPos.set( t.current );
 				
 			}
-		}	
+		}
 	}
 }

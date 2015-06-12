@@ -23,9 +23,9 @@ import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.Random;
 
-public class EarthParticle extends PixelParticle {	
+public class EarthParticle extends PixelParticle {
 	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((EarthParticle)emitter.recycle( EarthParticle.class )).reset( x,  y );

@@ -44,12 +44,12 @@ public abstract class Scroll extends Item {
 	protected String initials;
 
 	private static final Class<?>[] scrolls = {
-		ScrollOfIdentify.class, 
-		ScrollOfMagicMapping.class, 
-		ScrollOfRecharging.class, 
-		ScrollOfRemoveCurse.class, 
-		ScrollOfTeleportation.class, 
-		ScrollOfUpgrade.class, 
+		ScrollOfIdentify.class,
+		ScrollOfMagicMapping.class,
+		ScrollOfRecharging.class,
+		ScrollOfRemoveCurse.class,
+		ScrollOfTeleportation.class,
+		ScrollOfUpgrade.class,
 		ScrollOfRage.class,
 		ScrollOfTerror.class,
 		ScrollOfLullaby.class,
@@ -57,20 +57,20 @@ public abstract class Scroll extends Item {
 		ScrollOfPsionicBlast.class,
 		ScrollOfMirrorImage.class
 	};
-	private static final String[] runes = 
+	private static final String[] runes =
 		{"KAUNAN", "SOWILO", "LAGUZ", "YNGVI", "GYFU", "RAIDO", "ISAZ", "MANNAZ", "NAUDIZ", "BERKANAN", "ODAL", "TIWAZ"};
 	private static final Integer[] images = {
-		ItemSpriteSheet.SCROLL_KAUNAN, 
-		ItemSpriteSheet.SCROLL_SOWILO, 
-		ItemSpriteSheet.SCROLL_LAGUZ, 
-		ItemSpriteSheet.SCROLL_YNGVI, 
-		ItemSpriteSheet.SCROLL_GYFU, 
-		ItemSpriteSheet.SCROLL_RAIDO, 
-		ItemSpriteSheet.SCROLL_ISAZ, 
-		ItemSpriteSheet.SCROLL_MANNAZ, 
-		ItemSpriteSheet.SCROLL_NAUDIZ, 
-		ItemSpriteSheet.SCROLL_BERKANAN, 
-		ItemSpriteSheet.SCROLL_ODAL, 
+		ItemSpriteSheet.SCROLL_KAUNAN,
+		ItemSpriteSheet.SCROLL_SOWILO,
+		ItemSpriteSheet.SCROLL_LAGUZ,
+		ItemSpriteSheet.SCROLL_YNGVI,
+		ItemSpriteSheet.SCROLL_GYFU,
+		ItemSpriteSheet.SCROLL_RAIDO,
+		ItemSpriteSheet.SCROLL_ISAZ,
+		ItemSpriteSheet.SCROLL_MANNAZ,
+		ItemSpriteSheet.SCROLL_NAUDIZ,
+		ItemSpriteSheet.SCROLL_BERKANAN,
+		ItemSpriteSheet.SCROLL_ODAL,
 		ItemSpriteSheet.SCROLL_TIWAZ};
 	
 	private static ItemStatusHandler<Scroll> handler;
@@ -80,7 +80,7 @@ public abstract class Scroll extends Item {
 	public boolean ownedByBook = false;
 	
 	{
-		stackable = true;		
+		stackable = true;
 		defaultAction = AC_READ;
 	}
 	
@@ -103,11 +103,11 @@ public abstract class Scroll extends Item {
 		syncVisuals();
 	}
 
-    @Override
-    public void syncVisuals(){
-        image = handler.image( this );
-        rune = handler.label( this );
-    };
+	@Override
+	public void syncVisuals(){
+		image = handler.image( this );
+		rune = handler.label( this );
+	};
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {

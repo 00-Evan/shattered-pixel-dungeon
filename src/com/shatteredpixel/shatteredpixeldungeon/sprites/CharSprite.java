@@ -54,7 +54,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public static final int NEUTRAL		= 0xFFFF00;
 	
 	private static final float MOVE_INTERVAL	= 0.1f;
-	private static final float FLASH_INTERVAL	= 0.05f;	
+	private static final float FLASH_INTERVAL	= 0.05f;
 	
 	public enum State {
 		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED
@@ -90,7 +90,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	public Char ch;
 
-    public boolean isMoving = false;
+	public boolean isMoving = false;
 	
 	public CharSprite() {
 		super();
@@ -145,7 +145,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		motion.listener = this;
 		parent.add( motion );
 
-        isMoving = true;
+		isMoving = true;
 		
 		turnTo( from , to );
 		
@@ -153,7 +153,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			GameScene.ripple( from );
 		}
 
-        ch.onMotionComplete();
+		ch.onMotionComplete();
 	}
 	
 	public void interruptMotion() {
@@ -380,7 +380,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			}
 			emo = new EmoIcon.Sleep( this );
 		}
-        idle();
+		idle();
 	}
 	
 	public void hideSleep() {

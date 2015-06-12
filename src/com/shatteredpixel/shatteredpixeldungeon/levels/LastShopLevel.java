@@ -105,7 +105,7 @@ public class LastShopLevel extends RegularLevel {
 		int shopSquare = 0;
 		for (Room r : rooms) {
 			if (r.type == Type.NULL && r.connected.size() > 0) {
-				r.type = Type.PASSAGE; 
+				r.type = Type.PASSAGE;
 				if (r.square() > shopSquare) {
 					roomShop = r;
 					shopSquare = r.square();
@@ -128,10 +128,10 @@ public class LastShopLevel extends RegularLevel {
 	}
 	
 	@Override
-	protected void decorate() {	
+	protected void decorate() {
 		
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) { 
+			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				
 				map[i] = Terrain.EMPTY_DECO;
 				
@@ -152,7 +152,7 @@ public class LastShopLevel extends RegularLevel {
 	}
 	
 	@Override
-	protected void createMobs() {	
+	protected void createMobs() {
 	}
 	
 	public Actor respawner() {
@@ -217,7 +217,7 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	public void addVisuals( Scene scene ) {
-        super.addVisuals( scene );
+		super.addVisuals( scene );
 		CityLevel.addVisuals( this, scene );
 	}
 }

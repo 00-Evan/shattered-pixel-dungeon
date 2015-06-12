@@ -54,11 +54,11 @@ public class GameLog extends Component implements Signal.Listener<String> {
 		if (text.startsWith( GLog.POSITIVE )) {
 			text = text.substring( GLog.POSITIVE.length() );
 			color = CharSprite.POSITIVE;
-		} else 
+		} else
 		if (text.startsWith( GLog.NEGATIVE )) {
 			text = text.substring( GLog.NEGATIVE.length() );
 			color = CharSprite.NEGATIVE;
-		} else 
+		} else
 		if (text.startsWith( GLog.WARNING )) {
 			text = text.substring( GLog.WARNING.length() );
 			color = CharSprite.WARNING;
@@ -68,7 +68,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 			color = CharSprite.NEUTRAL;
 		}
 		
-		text = Utils.capitalize( text ) + 
+		text = Utils.capitalize( text ) +
 			(PUNCTUATION.matcher( text ).matches() ? "" : ".");
 		
 		if (lastEntry != null && color == lastColor) {
@@ -96,7 +96,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 	}
 	
 	@Override
-	protected void layout() {	
+	protected void layout() {
 		float pos = y;
 		for (int i=length-1; i >= 0; i--) {
 			BitmapTextMultiline entry = (BitmapTextMultiline)members.get( i );

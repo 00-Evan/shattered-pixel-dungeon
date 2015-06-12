@@ -40,7 +40,7 @@ public class RogueArmor extends ClassArmor {
 	private static final String TXT_FOV 		= "You can only jump to an empty location in your field of view";
 	private static final String TXT_NOT_ROGUE	= "Only rogues can use this armor!";
 	
-	private static final String AC_SPECIAL = "SMOKE BOMB"; 
+	private static final String AC_SPECIAL = "SMOKE BOMB";
 	
 	{
 		name = "rogue garb";
@@ -53,7 +53,7 @@ public class RogueArmor extends ClassArmor {
 	}
 	
 	@Override
-	public void doSpecial() {			
+	public void doSpecial() {
 		GameScene.selectCell( teleporter );
 	}
 	
@@ -69,7 +69,7 @@ public class RogueArmor extends ClassArmor {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"Wearing this dark garb, a rogue can perform a trick, that is called \"smoke bomb\" " +
 			"(though no real explosives are used): he blinds enemies who could see him and jumps aside.";
 	}
@@ -80,15 +80,15 @@ public class RogueArmor extends ClassArmor {
 		public void onSelect( Integer target ) {
 			if (target != null) {
 
-				if (!Level.fieldOfView[target] || 
-					!(Level.passable[target] || Level.avoid[target]) || 
+				if (!Level.fieldOfView[target] ||
+					!(Level.passable[target] || Level.avoid[target]) ||
 					Actor.findChar( target ) != null) {
 					
 					GLog.w( TXT_FOV );
 					return;
 				}
 
-                curUser.HP -= (curUser.HP / 3);
+				curUser.HP -= (curUser.HP / 3);
 				
 				for (Mob mob : Dungeon.level.mobs) {
 					if (Level.fieldOfView[mob.pos]) {

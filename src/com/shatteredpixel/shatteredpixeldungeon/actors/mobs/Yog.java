@@ -133,11 +133,11 @@ public class Yog extends Mob {
 			Actor.addDelayed( new Pushing( larva, pos, larva.pos ), -1 );
 		}
 
-        for (Mob mob : Dungeon.level.mobs) {
-            if (mob instanceof BurningFist || mob instanceof RottingFist || mob instanceof Larva) {
-                mob.aggro( enemy );
-            }
-        }
+		for (Mob mob : Dungeon.level.mobs) {
+			if (mob instanceof BurningFist || mob instanceof RottingFist || mob instanceof Larva) {
+				mob.aggro( enemy );
+			}
+		}
 
 		return super.defenseProc(enemy, damage);
 	}
@@ -377,7 +377,7 @@ public class Yog extends Mob {
 			IMMUNITIES.add( Sleep.class );
 			IMMUNITIES.add( Terror.class );
 			IMMUNITIES.add( Burning.class );
-            IMMUNITIES.add( ScrollOfPsionicBlast.class );
+			IMMUNITIES.add( ScrollOfPsionicBlast.class );
 			IMMUNITIES.add( Vertigo.class );
 		}
 		

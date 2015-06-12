@@ -55,10 +55,10 @@ public class Ooze extends Buff {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-            if (Dungeon.depth > 4)
-			    target.damage( Dungeon.depth/5, this );
-            else if (Random.Int(2) == 0)
-                target.damage( 1, this );
+			if (Dungeon.depth > 4)
+				target.damage( Dungeon.depth/5, this );
+			else if (Random.Int(2) == 0)
+				target.damage( 1, this );
 			if (!target.isAlive() && target == Dungeon.hero) {
 				Dungeon.fail( ResultDescriptions.OOZE );
 				GLog.n( TXT_HERO_KILLED, toString() );

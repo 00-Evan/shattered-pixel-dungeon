@@ -135,16 +135,16 @@ public class MirrorImage extends NPC {
 		
 		Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
 		Dungeon.hero.busy();
-    }
+	}
 
-    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-    static {
-        IMMUNITIES.add( ToxicGas.class );
-        IMMUNITIES.add( Burning.class );
-    }
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	static {
+		IMMUNITIES.add( ToxicGas.class );
+		IMMUNITIES.add( Burning.class );
+	}
 
-    @Override
-    public HashSet<Class<?>> immunities() {
-        return IMMUNITIES;
+	@Override
+	public HashSet<Class<?>> immunities() {
+		return IMMUNITIES;
 	}
 }

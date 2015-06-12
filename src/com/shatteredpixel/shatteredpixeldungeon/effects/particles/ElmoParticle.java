@@ -23,7 +23,7 @@ import com.watabou.noosa.particles.Emitter.Factory;
 
 public class ElmoParticle extends PixelParticle.Shrinking {
 	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((ElmoParticle)emitter.recycle( ElmoParticle.class )).reset( x, y );

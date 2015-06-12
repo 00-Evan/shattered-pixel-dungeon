@@ -101,15 +101,15 @@ public class King extends Mob {
 	
 	@Override
 	protected boolean getCloser( int target ) {
-		return canTryToSummon() ? 
-			super.getCloser( CityBossLevel.pedestal( nextPedestal ) ) : 
+		return canTryToSummon() ?
+			super.getCloser( CityBossLevel.pedestal( nextPedestal ) ) :
 			super.getCloser( target );
 	}
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return canTryToSummon() ? 
-			pos == CityBossLevel.pedestal( nextPedestal ) : 
+		return canTryToSummon() ?
+			pos == CityBossLevel.pedestal( nextPedestal ) :
 			Level.adjacent( pos, enemy.pos );
 	}
 	
@@ -163,7 +163,7 @@ public class King extends Mob {
 
 		nextPedestal = !nextPedestal;
 		
-		sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );		
+		sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
 		Sample.INSTANCE.play( Assets.SND_CHALLENGE );
 		
 		boolean[] passable = Level.passable.clone();
@@ -293,7 +293,7 @@ public class King extends Mob {
 		@Override
 		public void damage( int dmg, Object src ) {
 			super.damage( dmg, src );
-			if (src instanceof ToxicGas) {		
+			if (src instanceof ToxicGas) {
 				((ToxicGas)src).clear( pos );
 			}
 		}

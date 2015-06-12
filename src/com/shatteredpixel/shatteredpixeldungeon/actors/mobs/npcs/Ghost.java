@@ -77,37 +77,37 @@ public class Ghost extends NPC {
 	}
 	
 	private static final String TXT_RAT1	=
-            "Hello %s... Once I was like you - strong and confident... " +
-            "But I was slain by a foul beast... I can't leave this place... Not until I have my revenge... " +
-            "Slay the _fetid rat_, that has taken my life...\n\n" +
-            "It stalks this floor... Spreading filth everywhere... " +
-            "_Beware its cloud of stink and corrosive bite, the acid dissolves in water..._ ";
+			"Hello %s... Once I was like you - strong and confident... " +
+			"But I was slain by a foul beast... I can't leave this place... Not until I have my revenge... " +
+			"Slay the _fetid rat_, that has taken my life...\n\n" +
+			"It stalks this floor... Spreading filth everywhere... " +
+			"_Beware its cloud of stink and corrosive bite, the acid dissolves in water..._ ";
 
-    private static final String TXT_RAT2	=
-            "Please... Help me... Slay the abomination...\n\n" +
-            "_Fight it near water... Avoid the stench..._";
+	private static final String TXT_RAT2	=
+			"Please... Help me... Slay the abomination...\n\n" +
+			"_Fight it near water... Avoid the stench..._";
 
-    private static final String TXT_GNOLL1	=
-            "Hello %s... Once I was like you - strong and confident... " +
-            "But I was slain by a devious foe... I can't leave this place... Not until I have my revenge... " +
-            "Slay the _gnoll trickster_, that has taken my life...\n\n" +
-            "It is not like the other gnolls... It hides and uses thrown weapons... " +
-            "_Beware its poisonous and incendiary darts, don't attack from a distance..._";
+	private static final String TXT_GNOLL1	=
+			"Hello %s... Once I was like you - strong and confident... " +
+			"But I was slain by a devious foe... I can't leave this place... Not until I have my revenge... " +
+			"Slay the _gnoll trickster_, that has taken my life...\n\n" +
+			"It is not like the other gnolls... It hides and uses thrown weapons... " +
+			"_Beware its poisonous and incendiary darts, don't attack from a distance..._";
 
-    private static final String TXT_GNOLL2	=
-            "Please... Help me... Slay the trickster...\n\n" +
-            "_Don't let it hit you... Get near to it..._";
+	private static final String TXT_GNOLL2	=
+			"Please... Help me... Slay the trickster...\n\n" +
+			"_Don't let it hit you... Get near to it..._";
 
-    private static final String TXT_CRAB1	=
-            "Hello %s... Once I was like you - strong and confident... " +
-            "But I was slain by an ancient creature... I can't leave this place... Not until I have my revenge... " +
-            "Slay the _great crab_, that has taken my life...\n\n" +
-            "It is unnaturally old... With a massive single claw and a thick shell... " +
-            "_Beware its claw, you must surprise the crab or it will block with it..._";
+	private static final String TXT_CRAB1	=
+			"Hello %s... Once I was like you - strong and confident... " +
+			"But I was slain by an ancient creature... I can't leave this place... Not until I have my revenge... " +
+			"Slay the _great crab_, that has taken my life...\n\n" +
+			"It is unnaturally old... With a massive single claw and a thick shell... " +
+			"_Beware its claw, you must surprise the crab or it will block with it..._";
 
-    private static final String TXT_CRAB2	=
-            "Please... Help me... Slay the Crustacean...\n\n" +
-            "_It will always block... When it sees you coming..._";
+	private static final String TXT_CRAB2	=
+			"Please... Help me... Slay the Crustacean...\n\n" +
+			"_It will always block... When it sees you coming..._";
 	
 	public Ghost() {
 		super();
@@ -156,69 +156,69 @@ public class Ghost extends NPC {
 		
 		if (Quest.given) {
 			if (Quest.weapon != null) {
-                if (Quest.processed) {
-                    GameScene.show(new WndSadGhost(this, Quest.type));
-                } else {
-                    switch (Quest.type) {
-                        case 1:
-                        default:
-                            GameScene.show(new WndQuest(this, TXT_RAT2));
-                            break;
-                        case 2:
-                            GameScene.show(new WndQuest(this, TXT_GNOLL2));
-                            break;
-                        case 3:
-                            GameScene.show(new WndQuest(this, TXT_CRAB2));
-                            break;
-                    }
+				if (Quest.processed) {
+					GameScene.show(new WndSadGhost(this, Quest.type));
+				} else {
+					switch (Quest.type) {
+						case 1:
+						default:
+							GameScene.show(new WndQuest(this, TXT_RAT2));
+							break;
+						case 2:
+							GameScene.show(new WndQuest(this, TXT_GNOLL2));
+							break;
+						case 3:
+							GameScene.show(new WndQuest(this, TXT_CRAB2));
+							break;
+					}
 
-                    int newPos = -1;
-                    for (int i = 0; i < 10; i++) {
-                        newPos = Dungeon.level.randomRespawnCell();
-                        if (newPos != -1) {
-                            break;
-                        }
-                    }
-                    if (newPos != -1) {
+					int newPos = -1;
+					for (int i = 0; i < 10; i++) {
+						newPos = Dungeon.level.randomRespawnCell();
+						if (newPos != -1) {
+							break;
+						}
+					}
+					if (newPos != -1) {
 
-                        CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-                        pos = newPos;
-                        sprite.place(pos);
-                        sprite.visible = Dungeon.visible[pos];
-                    }
-                }
-            }
+						CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+						pos = newPos;
+						sprite.place(pos);
+						sprite.visible = Dungeon.visible[pos];
+					}
+				}
+			}
 		} else {
-            Mob questBoss;
-            String txt_quest;
+			Mob questBoss;
+			String txt_quest;
 
-            switch (Quest.type){
-                case 1: default:
-                    questBoss = new FetidRat();
-                    txt_quest = Utils.format(TXT_RAT1, Dungeon.hero.givenName()); break;
-                case 2:
-                    questBoss = new GnollTrickster();
-                    txt_quest = Utils.format(TXT_GNOLL1, Dungeon.hero.givenName()); break;
-                case 3:
-                    questBoss = new GreatCrab();
-                    txt_quest = Utils.format(TXT_CRAB1, Dungeon.hero.givenName()); break;
-            }
+			switch (Quest.type){
+				case 1: default:
+					questBoss = new FetidRat();
+					txt_quest = Utils.format(TXT_RAT1, Dungeon.hero.givenName()); break;
+				case 2:
+					questBoss = new GnollTrickster();
+					txt_quest = Utils.format(TXT_GNOLL1, Dungeon.hero.givenName()); break;
+				case 3:
+					questBoss = new GreatCrab();
+					txt_quest = Utils.format(TXT_CRAB1, Dungeon.hero.givenName()); break;
+			}
 
-            questBoss.pos = Dungeon.level.randomRespawnCell();
+			questBoss.pos = Dungeon.level.randomRespawnCell();
 
-            if (questBoss.pos != -1) {
-                GameScene.add(questBoss);
-                GameScene.show( new WndQuest( this, txt_quest ) );
-                Quest.given = true;
-                Journal.add( Journal.Feature.GHOST );
-            }
+			if (questBoss.pos != -1) {
+				GameScene.add(questBoss);
+				GameScene.show( new WndQuest( this, txt_quest ) );
+				Quest.given = true;
+				Journal.add( Journal.Feature.GHOST );
+			}
 
 		}
 	}
 	
 	@Override
 	public String description() {
-		return 
+		return
 			"The ghost is barely visible. It looks like a shapeless " +
 			"spot of faint light with a sorrowful face.";
 	}
@@ -240,7 +240,7 @@ public class Ghost extends NPC {
 		
 		private static boolean spawned;
 
-        private static int type;
+		private static int type;
 
 		private static boolean given;
 		private static boolean processed;
@@ -251,7 +251,7 @@ public class Ghost extends NPC {
 		public static Armor armor;
 		
 		public static void reset() {
-			spawned = false; 
+			spawned = false;
 			
 			weapon = null;
 			armor = null;
@@ -260,7 +260,7 @@ public class Ghost extends NPC {
 		private static final String NODE		= "sadGhost";
 		
 		private static final String SPAWNED		= "spawned";
-        private static final String TYPE        = "type";
+		private static final String TYPE        = "type";
 		private static final String GIVEN		= "given";
 		private static final String PROCESSED	= "processed";
 		private static final String DEPTH		= "depth";
@@ -294,9 +294,9 @@ public class Ghost extends NPC {
 
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
 
-                type = node.getInt(TYPE);
-                given	= node.getBoolean( GIVEN );
-                processed = node.getBoolean( PROCESSED );
+				type = node.getInt(TYPE);
+				given	= node.getBoolean( GIVEN );
+				processed = node.getBoolean( PROCESSED );
 
 				depth	= node.getInt( DEPTH );
 				
@@ -317,32 +317,32 @@ public class Ghost extends NPC {
 				level.mobs.add( ghost );
 				
 				spawned = true;
-                //dungeon depth determines type of quest.
-                //depth2=fetid rat, 3=gnoll trickster, 4=great crab
+				//dungeon depth determines type of quest.
+				//depth2=fetid rat, 3=gnoll trickster, 4=great crab
 				type = Dungeon.depth-1;
 				
 				given = false;
 				processed = false;
 				depth = Dungeon.depth;
 
-                do {
-                    weapon = Generator.randomWeapon(10);
-                } while (weapon instanceof MissileWeapon);
-                armor = Generator.randomArmor(10);
+				do {
+					weapon = Generator.randomWeapon(10);
+				} while (weapon instanceof MissileWeapon);
+				armor = Generator.randomArmor(10);
 
-                for (int i = 1; i <= 3; i++) {
-                    Item another;
-                    do {
-                        another = Generator.randomWeapon(10+i);
-                    } while (another instanceof MissileWeapon);
-                    if (another.level >= weapon.level) {
-                        weapon = (Weapon) another;
-                    }
-                    another = Generator.randomArmor(10+i);
-                    if (another.level >= armor.level) {
-                        armor = (Armor) another;
-                    }
-                }
+				for (int i = 1; i <= 3; i++) {
+					Item another;
+					do {
+						another = Generator.randomWeapon(10+i);
+					} while (another instanceof MissileWeapon);
+					if (another.level >= weapon.level) {
+						weapon = (Weapon) another;
+					}
+					another = Generator.randomArmor(10+i);
+					if (another.level >= armor.level) {
+						armor = (Armor) another;
+					}
+				}
 
 				weapon.identify();
 				armor.identify();
@@ -352,9 +352,9 @@ public class Ghost extends NPC {
 		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
 				GLog.n("sad ghost: Thank you... come find me...");
-                Sample.INSTANCE.play( Assets.SND_GHOST );
-                processed = true;
-                Generator.Category.ARTIFACT.probs[10] = 1; //flags the dried rose as spawnable.
+				Sample.INSTANCE.play( Assets.SND_GHOST );
+				processed = true;
+				Generator.Category.ARTIFACT.probs[10] = 1; //flags the dried rose as spawnable.
 			}
 		}
 		
@@ -379,7 +379,7 @@ public class Ghost extends NPC {
 			
 			EXP = 4;
 
-            state = WANDERING;
+			state = WANDERING;
 		}
 		
 		@Override
@@ -392,14 +392,14 @@ public class Ghost extends NPC {
 			return 2;
 		}
 
-        @Override
-        public int attackProc( Char enemy, int damage ) {
-            if (Random.Int( 3 ) == 0) {
-                Buff.affect(enemy, Ooze.class);
-            }
+		@Override
+		public int attackProc( Char enemy, int damage ) {
+			if (Random.Int( 3 ) == 0) {
+				Buff.affect(enemy, Ooze.class);
+			}
 
-            return damage;
-        }
+			return damage;
+		}
 		
 		@Override
 		public int defenseProc( Char enemy, int damage ) {
@@ -420,184 +420,184 @@ public class Ghost extends NPC {
 		public String description() {
 			return
 				"Something is clearly wrong with this rat. Its greasy black fur and rotting skin are very " +
-                "different from the healthy rats you've seen previously. It's pale green eyes " +
-                "make it seem especially menacing.\n\n" +
-                "The rat carries a cloud of horrible stench with it, it's overpoweringly strong up close.\n\n" +
-                "Dark ooze dribbles from the rat's mouth, it eats through the floor but seems to dissolve in water.";
+				"different from the healthy rats you've seen previously. It's pale green eyes " +
+				"make it seem especially menacing.\n\n" +
+				"The rat carries a cloud of horrible stench with it, it's overpoweringly strong up close.\n\n" +
+				"Dark ooze dribbles from the rat's mouth, it eats through the floor but seems to dissolve in water.";
 		}
 
-        private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-        static {
-            IMMUNITIES.add( StenchGas.class );
-        }
+		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+		static {
+			IMMUNITIES.add( StenchGas.class );
+		}
 
-        @Override
-        public HashSet<Class<?>> immunities() {
-            return IMMUNITIES;
-        }
+		@Override
+		public HashSet<Class<?>> immunities() {
+			return IMMUNITIES;
+		}
 	}
 
 
 
-    public static class GnollTrickster extends Gnoll {
-        {
-            name = "gnoll trickster";
-            spriteClass = GnollTricksterSprite.class;
+	public static class GnollTrickster extends Gnoll {
+		{
+			name = "gnoll trickster";
+			spriteClass = GnollTricksterSprite.class;
 
-            HP = HT = 20;
-            defenseSkill = 5;
+			HP = HT = 20;
+			defenseSkill = 5;
 
-            EXP = 5;
+			EXP = 5;
 
-            state = WANDERING;
+			state = WANDERING;
 
-            loot = Generator.random(CurareDart.class);
-            lootChance = 1f;
-        }
+			loot = Generator.random(CurareDart.class);
+			lootChance = 1f;
+		}
 
-        private int combo = 0;
+		private int combo = 0;
 
-        @Override
-        public int attackSkill( Char target ) {
-            return 16;
-        }
+		@Override
+		public int attackSkill( Char target ) {
+			return 16;
+		}
 
-        @Override
-        protected boolean canAttack( Char enemy ) {
-            Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE );
-            if (!Level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos){
-                combo++;
-                return true;
-            } else {
-                return false;
-            }
-        }
+		@Override
+		protected boolean canAttack( Char enemy ) {
+			Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE );
+			if (!Level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos){
+				combo++;
+				return true;
+			} else {
+				return false;
+			}
+		}
 
-        @Override
-        public int attackProc( Char enemy, int damage ) {
-            //The gnoll's attacks get more severe the more the player lets it hit them
-            int effect = Random.Int(4)+combo;
+		@Override
+		public int attackProc( Char enemy, int damage ) {
+			//The gnoll's attacks get more severe the more the player lets it hit them
+			int effect = Random.Int(4)+combo;
 
-            if (effect > 2) {
+			if (effect > 2) {
 
-                if (effect >=6 && enemy.buff(Burning.class) == null){
+				if (effect >=6 && enemy.buff(Burning.class) == null){
 
-                    if (Level.flamable[enemy.pos])
-                        GameScene.add( Blob.seed( enemy.pos, 4, Fire.class ) );
-                    Buff.affect( enemy, Burning.class ).reignite( enemy );
+					if (Level.flamable[enemy.pos])
+						GameScene.add( Blob.seed( enemy.pos, 4, Fire.class ) );
+					Buff.affect( enemy, Burning.class ).reignite( enemy );
 
-                } else
-                    Buff.affect( enemy, Poison.class).set((effect-2) * Poison.durationFactor(enemy));
+				} else
+					Buff.affect( enemy, Poison.class).set((effect-2) * Poison.durationFactor(enemy));
 
-            }
-            return damage;
-        }
+			}
+			return damage;
+		}
 
-        @Override
-        protected boolean getCloser( int target ) {
-            combo = 0; //if he's moving, he isn't attacking, reset combo.
-            if (enemy != null && Level.adjacent(pos, enemy.pos)) {
-                return getFurther( target );
-            } else {
-                return super.getCloser( target );
-            }
-        }
+		@Override
+		protected boolean getCloser( int target ) {
+			combo = 0; //if he's moving, he isn't attacking, reset combo.
+			if (enemy != null && Level.adjacent(pos, enemy.pos)) {
+				return getFurther( target );
+			} else {
+				return super.getCloser( target );
+			}
+		}
 
-        @Override
-        public void die( Object cause ) {
-            super.die( cause );
+		@Override
+		public void die( Object cause ) {
+			super.die( cause );
 
-            Quest.process();
-        }
+			Quest.process();
+		}
 
-        @Override
-        public String description() {
-            return
-                    "A strange looking creature, even by gnoll standards. It hunches forward with a wicked grin, " +
-                    "almost cradling the satchel hanging over its shoulder. Its eyes are wide with a strange mix of " +
-                    "fear and excitement.\n\n" +
-                    "There is a large collection of poorly made darts in its satchel, they all seem to be " +
-                    "tipped with various harmful substances.";
-        }
+		@Override
+		public String description() {
+			return
+					"A strange looking creature, even by gnoll standards. It hunches forward with a wicked grin, " +
+					"almost cradling the satchel hanging over its shoulder. Its eyes are wide with a strange mix of " +
+					"fear and excitement.\n\n" +
+					"There is a large collection of poorly made darts in its satchel, they all seem to be " +
+					"tipped with various harmful substances.";
+		}
 
-        private static final String COMBO = "combo";
+		private static final String COMBO = "combo";
 
-        @Override
-        public void storeInBundle( Bundle bundle ) {
-            super.storeInBundle(bundle);
-            bundle.put(COMBO, combo);
-        }
+		@Override
+		public void storeInBundle( Bundle bundle ) {
+			super.storeInBundle(bundle);
+			bundle.put(COMBO, combo);
+		}
 
-        @Override
-        public void restoreFromBundle( Bundle bundle ) {
-            super.restoreFromBundle( bundle );
-            combo = bundle.getInt( COMBO );
-        }
+		@Override
+		public void restoreFromBundle( Bundle bundle ) {
+			super.restoreFromBundle( bundle );
+			combo = bundle.getInt( COMBO );
+		}
 
-    }
+	}
 
 
 
-    public static class GreatCrab extends Crab {
-        {
-            name = "great crab";
-            spriteClass = GreatCrabSprite.class;
+	public static class GreatCrab extends Crab {
+		{
+			name = "great crab";
+			spriteClass = GreatCrabSprite.class;
 
-            HP = HT = 30;
-            defenseSkill = 0; //see damage()
-            baseSpeed = 1f;
+			HP = HT = 30;
+			defenseSkill = 0; //see damage()
+			baseSpeed = 1f;
 
-            EXP = 6;
+			EXP = 6;
 
-            state = WANDERING;
-        }
+			state = WANDERING;
+		}
 
-        private int moving = 0;
+		private int moving = 0;
 
-        @Override
-        protected boolean getCloser( int target ) {
-            //this is used so that the crab remains slower, but still detects the player at the expected rate.
-            moving++;
-            if (moving < 3) {
-                return super.getCloser( target );
-            } else {
-                moving = 0;
-                return true;
-            }
+		@Override
+		protected boolean getCloser( int target ) {
+			//this is used so that the crab remains slower, but still detects the player at the expected rate.
+			moving++;
+			if (moving < 3) {
+				return super.getCloser( target );
+			} else {
+				moving = 0;
+				return true;
+			}
 
-        }
+		}
 
-        @Override
-        public void damage( int dmg, Object src ){
-            //crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
-            //All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
-            if (enemySeen && (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
-                GLog.n("The crab notices the attack and blocks with its massive claw.");
-                sprite.showStatus( CharSprite.NEUTRAL, "blocked" );
-            } else {
-                super.damage( dmg, src );
-            }
-        }
+		@Override
+		public void damage( int dmg, Object src ){
+			//crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
+			//All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
+			if (enemySeen && (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
+				GLog.n("The crab notices the attack and blocks with its massive claw.");
+				sprite.showStatus( CharSprite.NEUTRAL, "blocked" );
+			} else {
+				super.damage( dmg, src );
+			}
+		}
 
-        @Override
-        public void die( Object cause ) {
-            super.die( cause );
+		@Override
+		public void die( Object cause ) {
+			super.die( cause );
 
-            Quest.process();
+			Quest.process();
 
-            Dungeon.level.drop( new MysteryMeat(), pos );
-            Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
-        }
+			Dungeon.level.drop( new MysteryMeat(), pos );
+			Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
+		}
 
-        @Override
-        public String description() {
-            return
-                    "This crab is gigantic, even compared to other sewer crabs. " +
-                    "Its blue shell is covered in cracks and barnacles, showing great age. " +
-                    "It lumbers around slowly, barely keeping balance with its massive claw.\n\n" +
-                    "While the crab only has one claw, its size easily compensates. " +
-                    "The crab holds the claw infront of itself whenever it sees a threat, shielding " +
-                    "itself behind an impenetrable wall of carapace.";
-        }
-    }
+		@Override
+		public String description() {
+			return
+					"This crab is gigantic, even compared to other sewer crabs. " +
+					"Its blue shell is covered in cracks and barnacles, showing great age. " +
+					"It lumbers around slowly, barely keeping balance with its massive claw.\n\n" +
+					"While the crab only has one claw, its size easily compensates. " +
+					"The crab holds the claw infront of itself whenever it sees a threat, shielding " +
+					"itself behind an impenetrable wall of carapace.";
+		}
+	}
 }

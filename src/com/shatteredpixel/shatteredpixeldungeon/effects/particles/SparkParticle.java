@@ -24,7 +24,7 @@ import com.watabou.utils.Random;
 
 public class SparkParticle extends PixelParticle {
 
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((SparkParticle)emitter.recycle( SparkParticle.class )).reset( x, y );

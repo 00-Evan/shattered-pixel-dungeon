@@ -23,30 +23,30 @@ public enum HeroSubClass {
 
 	NONE( null, null ),
 	
-	GLADIATOR( "gladiator", 
+	GLADIATOR( "gladiator",
 		"A successful attack with a melee weapon allows the _Gladiator_ to start a combo, " +
 		"in which every next successful hit inflicts more damage." ),
-	BERSERKER( "berserker", 
+	BERSERKER( "berserker",
 		"When severely wounded, the _Berserker_ enters a state of wild fury " +
 		"significantly increasing his damage output." ),
 	
-	WARLOCK( "warlock", 
+	WARLOCK( "warlock",
 		"Normal food grants the _Warlock_ additional wand recharge, but does not satisfy his hunger. " +
 		"Instead, after killing an enemy, he consumes its soul to heal his wounds and satisfy hunger." ),
-	BATTLEMAGE( "battlemage", 
+	BATTLEMAGE( "battlemage",
 		"When fighting with his staff, the _Battlemage_ conjures bonus effects depending on the wand " +
 		"his staff is imbued with. His staff will also gain charge through combat." ),
 	
-	ASSASSIN( "assassin", 
+	ASSASSIN( "assassin",
 		"When performing a surprise attack, the _Assassin_ inflicts additional damage to his target." ),
-	FREERUNNER( "freerunner", 
+	FREERUNNER( "freerunner",
 		"The _Freerunner_ moves faster when he unencumbered and not starving, " +
 		"if he is invisible, this speed boost is much stronger." ),
 		
-	SNIPER( "sniper", 
+	SNIPER( "sniper",
 		"_Snipers_ are able to detect weak points in an enemy's armor, " +
 		"effectively ignoring it when using a missile weapon." ),
-	WARDEN( "warden", 
+	WARDEN( "warden",
 		"Having a strong connection with forces of nature gives _Wardens_ an ability to gather dewdrops and " +
 		"seeds from plants. Also trampling a high grass grants them a temporary armor buff." );
 	

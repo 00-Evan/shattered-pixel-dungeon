@@ -105,12 +105,12 @@ public class HallsBossLevel extends Level {
 		
 		map[exit] = Terrain.LOCKED_EXIT;
 		
-		Painter.fill( this, ROOM_LEFT - 1, ROOM_TOP - 1, 
+		Painter.fill( this, ROOM_LEFT - 1, ROOM_TOP - 1,
 			ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain.WALL );
-		Painter.fill( this, ROOM_LEFT, ROOM_TOP, 
+		Painter.fill( this, ROOM_LEFT, ROOM_TOP,
 			ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP + 1, Terrain.EMPTY );
 		
-		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) + 
+		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) +
 			Random.Int( ROOM_TOP + 1, ROOM_BOTTOM - 1 ) * WIDTH;
 		map[entrance] = Terrain.ENTRANCE;
 		
@@ -125,17 +125,17 @@ public class HallsBossLevel extends Level {
 	}
 	
 	@Override
-	protected void decorate() {	
+	protected void decorate() {
 		
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) { 
+			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
 			}
 		}
 	}
 	
 	@Override
-	protected void createMobs() {	
+	protected void createMobs() {
 	}
 	
 	public Actor respawner() {
@@ -206,7 +206,7 @@ public class HallsBossLevel extends Level {
 		
 		if (!keyDropped && item instanceof SkeletonKey) {
 			keyDropped = true;
-            unseal();
+			unseal();
 			
 			entrance = stairs;
 			set( entrance, Terrain.ENTRANCE );
@@ -240,7 +240,7 @@ public class HallsBossLevel extends Level {
 			return "It looks like lava, but it's cold and probably safe to touch.";
 		case Terrain.STATUE:
 		case Terrain.STATUE_SP:
-			return "The pillar is made of real humanoid skulls. Awesome."; 
+			return "The pillar is made of real humanoid skulls. Awesome.";
 		default:
 			return super.tileDesc( tile );
 		}

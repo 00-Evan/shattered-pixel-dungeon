@@ -22,7 +22,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndQuest extends WndTitledMessage {
 
-    public WndQuest( NPC questgiver, String text ) {
-        super( questgiver.sprite(), Utils.capitalize( questgiver.name ), text );
-    }
+	public WndQuest( NPC questgiver, String text ) {
+		super( questgiver.sprite(), Utils.capitalize( questgiver.name ), text );
+	}
 }

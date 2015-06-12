@@ -102,17 +102,17 @@ public abstract class Level implements Bundlable {
 	public static final int[] NEIGHBOURS8 = {-WIDTH, +1-WIDTH, +1, +1+WIDTH, +WIDTH, -1+WIDTH, -1, -1-WIDTH};
 	public static final int[] NEIGHBOURS9 = {0, -WIDTH, +1-WIDTH, +1, +1+WIDTH, +WIDTH, -1+WIDTH, -1, -1-WIDTH};
 
-    //make sure to check insideMap() when using these, as there's a risk something may be outside the map
-    public static final int[] NEIGHBOURS8DIST2 = {+2+2*WIDTH, +1+2*WIDTH, 2*WIDTH, -1+2*WIDTH, -2+2*WIDTH,
-                                                    +2+WIDTH, +1+WIDTH, +WIDTH, -1+WIDTH, -2+WIDTH,
-                                                    +2, +1, -1, -2,
-                                                    +2-WIDTH, +1-WIDTH, -WIDTH, -1-WIDTH, -2-WIDTH,
-                                                    +2-2*WIDTH, +1-2*WIDTH, -2*WIDTH, -1-2*WIDTH, -2-2*WIDTH};
-    public static final int[] NEIGHBOURS9DIST2 = {+2+2*WIDTH, +1+2*WIDTH, 2*WIDTH, -1+2*WIDTH, -2+2*WIDTH,
-                                                    +2+WIDTH, +1+WIDTH, +WIDTH, -1+WIDTH, -2+WIDTH,
-                                                    +2, +1, 0, -1, -2,
-                                                    +2-WIDTH, +1-WIDTH, -WIDTH, -1-WIDTH, -2-WIDTH,
-                                                    +2-2*WIDTH, +1-2*WIDTH, -2*WIDTH, -1-2*WIDTH, -2-2*WIDTH};
+	//make sure to check insideMap() when using these, as there's a risk something may be outside the map
+	public static final int[] NEIGHBOURS8DIST2 = {+2+2*WIDTH, +1+2*WIDTH, 2*WIDTH, -1+2*WIDTH, -2+2*WIDTH,
+													+2+WIDTH, +1+WIDTH, +WIDTH, -1+WIDTH, -2+WIDTH,
+													+2, +1, -1, -2,
+													+2-WIDTH, +1-WIDTH, -WIDTH, -1-WIDTH, -2-WIDTH,
+													+2-2*WIDTH, +1-2*WIDTH, -2*WIDTH, -1-2*WIDTH, -2-2*WIDTH};
+	public static final int[] NEIGHBOURS9DIST2 = {+2+2*WIDTH, +1+2*WIDTH, 2*WIDTH, -1+2*WIDTH, -2+2*WIDTH,
+													+2+WIDTH, +1+WIDTH, +WIDTH, -1+WIDTH, -2+WIDTH,
+													+2, +1, 0, -1, -2,
+													+2-WIDTH, +1-WIDTH, -WIDTH, -1-WIDTH, -2-WIDTH,
+													+2-2*WIDTH, +1-2*WIDTH, -2*WIDTH, -1-2*WIDTH, -2-2*WIDTH};
 
 	
 	protected static final float TIME_TO_RESPAWN	= 50;
@@ -127,7 +127,7 @@ public abstract class Level implements Bundlable {
 	public boolean[] visited;
 	public boolean[] mapped;
 
-    public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 3: 8;
+	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 3: 8;
 	
 	public static boolean[] fieldOfView = new boolean[LENGTH];
 	
@@ -147,8 +147,8 @@ public abstract class Level implements Bundlable {
 	public int entrance;
 	public int exit;
 
-    //when a boss level has become locked.
-    public boolean locked = false;
+	//when a boss level has become locked.
+	public boolean locked = false;
 	
 	public HashSet<Mob> mobs;
 	public SparseArray<Heap> heaps;
@@ -170,7 +170,7 @@ public abstract class Level implements Bundlable {
 	private static final String MAPPED		= "mapped";
 	private static final String ENTRANCE	= "entrance";
 	private static final String EXIT		= "exit";
-    private static final String LOCKED      = "locked";
+	private static final String LOCKED      = "locked";
 	private static final String HEAPS		= "heaps";
 	private static final String PLANTS		= "plants";
 	private static final String TRAPS       = "traps";
@@ -196,37 +196,37 @@ public abstract class Level implements Bundlable {
 			}
 			if (Dungeon.souNeeded()) {
 				addItemToSpawn( new ScrollOfUpgrade() );
-                Dungeon.limitedDrops.upgradeScrolls.count++;
+				Dungeon.limitedDrops.upgradeScrolls.count++;
 			}
 			if (Dungeon.asNeeded()) {
 				addItemToSpawn( new Stylus() );
-                Dungeon.limitedDrops.arcaneStyli.count++;
+				Dungeon.limitedDrops.arcaneStyli.count++;
 			}
 
-            int bonus = 0;
-            for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
-                bonus += ((RingOfWealth.Wealth) buff).level;
-            }
-            if (Random.Float() > Math.pow(0.95, bonus)){
-                if (Random.Int(2) == 0)
-                     addItemToSpawn( new ScrollOfMagicalInfusion() );
-                else
-                    addItemToSpawn( new PotionOfMight() );
-            }
+			int bonus = 0;
+			for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
+				bonus += ((RingOfWealth.Wealth) buff).level;
+			}
+			if (Random.Float() > Math.pow(0.95, bonus)){
+				if (Random.Int(2) == 0)
+					 addItemToSpawn( new ScrollOfMagicalInfusion() );
+				else
+					addItemToSpawn( new PotionOfMight() );
+			}
 
-            DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
-            if (rose != null && !rose.cursed){
-                //this way if a rose is dropped later in the game, player still has a chance to max it out.
-                int petalsNeeded = (int) Math.ceil((float)((Dungeon.depth / 2) - rose.droppedPetals) / 3);
+			DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
+			if (rose != null && !rose.cursed){
+				//this way if a rose is dropped later in the game, player still has a chance to max it out.
+				int petalsNeeded = (int) Math.ceil((float)((Dungeon.depth / 2) - rose.droppedPetals) / 3);
 
-                for (int i=1; i <= petalsNeeded; i++) {
+				for (int i=1; i <= petalsNeeded; i++) {
 					//the player may miss a single petal and still max their rose.
-                    if (rose.droppedPetals < 11) {
-                        addItemToSpawn(new DriedRose.Petal());
-                        rose.droppedPetals++;
-                    }
-                }
-            }
+					if (rose.droppedPetals < 11) {
+						addItemToSpawn(new DriedRose.Petal());
+						rose.droppedPetals++;
+					}
+				}
+			}
 			
 			if (Dungeon.depth > 1) {
 				switch (Random.Int( 10 )) {
@@ -274,7 +274,7 @@ public abstract class Level implements Bundlable {
 		createItems();
 	}
 	
-	public void reset() {	
+	public void reset() {
 		
 		for (Mob mob : mobs.toArray( new Mob[0] )) {
 			if (!mob.reset()) {
@@ -303,7 +303,7 @@ public abstract class Level implements Bundlable {
 		entrance	= bundle.getInt( ENTRANCE );
 		exit		= bundle.getInt( EXIT );
 
-        locked      = bundle.getBoolean( LOCKED );
+		locked      = bundle.getBoolean( LOCKED );
 		
 		weakFloorCreated = false;
 		
@@ -320,8 +320,8 @@ public abstract class Level implements Bundlable {
 			if (resizingNeeded) {
 				heap.pos = adjustPos( heap.pos );
 			}
-            if (!heap.isEmpty())
-			    heaps.put( heap.pos, heap );
+			if (!heap.isEmpty())
+				heaps.put( heap.pos, heap );
 		}
 		
 		collection = bundle.getCollection( PLANTS );
@@ -375,7 +375,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( MAPPED, mapped );
 		bundle.put( ENTRANCE, entrance );
 		bundle.put( EXIT, exit );
-        bundle.put( LOCKED, locked );
+		bundle.put( LOCKED, locked );
 		bundle.put( HEAPS, heaps.values() );
 		bundle.put( PLANTS, plants.values() );
 		bundle.put( TRAPS, traps.values() );
@@ -416,7 +416,7 @@ public abstract class Level implements Bundlable {
 			this.mapped = mapped;
 			
 			entrance = adjustPos( entrance );
-			exit = adjustPos( exit ); 
+			exit = adjustPos( exit );
 		} else {
 			resizingNeeded = false;
 		}
@@ -528,27 +528,27 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
-    public Item findPrizeItem(){ return findPrizeItem(null); }
+	public Item findPrizeItem(){ return findPrizeItem(null); }
 
-    public Item findPrizeItem(Class<?extends Item> match){
-        if (itemsToSpawn.size() == 0)
-            return null;
+	public Item findPrizeItem(Class<?extends Item> match){
+		if (itemsToSpawn.size() == 0)
+			return null;
 
-        if (match == null){
-            Item item = Random.element(itemsToSpawn);
-            itemsToSpawn.remove(item);
-            return item;
-        }
+		if (match == null){
+			Item item = Random.element(itemsToSpawn);
+			itemsToSpawn.remove(item);
+			return item;
+		}
 
-        for (Item item : itemsToSpawn){
-            if (match.isInstance(item)){
-                itemsToSpawn.remove( item );
-                return item;
-            }
-        }
+		for (Item item : itemsToSpawn){
+			if (match.isInstance(item)){
+				itemsToSpawn.remove( item );
+				return item;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 	
 	private void buildFlagMaps() {
 		
@@ -590,7 +590,7 @@ public abstract class Level implements Bundlable {
 				if (!pit[i - WIDTH]) {
 					int c = map[i - WIDTH];
 					if (c == Terrain.EMPTY_SP || c == Terrain.STATUE_SP) {
-						map[i] = Terrain.CHASM_FLOOR_SP;  
+						map[i] = Terrain.CHASM_FLOOR_SP;
 					} else if (water[i - WIDTH]) {
 						map[i] = Terrain.CHASM_WATER;
 					} else if ((Terrain.flags[c] & Terrain.UNSTITCHABLE) != 0) {
@@ -603,7 +603,7 @@ public abstract class Level implements Bundlable {
 		}
 	}
 	
-	private void cleanWalls() {		
+	private void cleanWalls() {
 		for (int i=0; i < LENGTH; i++) {
 			
 			boolean d = false;
@@ -653,26 +653,26 @@ public abstract class Level implements Bundlable {
 	public Heap drop( Item item, int cell ) {
 
 		//This messy if statement deals will items which should not drop in challenges primarily.
-        if ((Dungeon.isChallenged( Challenges.NO_FOOD ) && (item instanceof Food || item instanceof BlandfruitBush.Seed)) ||
-            (Dungeon.isChallenged( Challenges.NO_ARMOR ) && item instanceof Armor) ||
-            (Dungeon.isChallenged( Challenges.NO_HEALING ) && item instanceof PotionOfHealing) ||
-            (Dungeon.isChallenged( Challenges.NO_HERBALISM ) && (item instanceof Plant.Seed || item instanceof Dewdrop || item instanceof SeedPouch)) ||
-	        (Dungeon.isChallenged( Challenges.NO_SCROLLS ) && ((item instanceof Scroll && !(item instanceof ScrollOfUpgrade)) || item instanceof ScrollHolder)) ||
+		if ((Dungeon.isChallenged( Challenges.NO_FOOD ) && (item instanceof Food || item instanceof BlandfruitBush.Seed)) ||
+			(Dungeon.isChallenged( Challenges.NO_ARMOR ) && item instanceof Armor) ||
+			(Dungeon.isChallenged( Challenges.NO_HEALING ) && item instanceof PotionOfHealing) ||
+			(Dungeon.isChallenged( Challenges.NO_HERBALISM ) && (item instanceof Plant.Seed || item instanceof Dewdrop || item instanceof SeedPouch)) ||
+			(Dungeon.isChallenged( Challenges.NO_SCROLLS ) && ((item instanceof Scroll && !(item instanceof ScrollOfUpgrade)) || item instanceof ScrollHolder)) ||
 			item == null) {
 
-            //create a dummy heap, give it a dummy sprite, don't add it to the game, and return it.
-            //effectively nullifies whatever the logic calling this wants to do, including dropping items.
-            Heap heap = new Heap();
-            ItemSprite sprite = heap.sprite = new ItemSprite();
-            sprite.link( heap );
-            return heap;
+			//create a dummy heap, give it a dummy sprite, don't add it to the game, and return it.
+			//effectively nullifies whatever the logic calling this wants to do, including dropping items.
+			Heap heap = new Heap();
+			ItemSprite sprite = heap.sprite = new ItemSprite();
+			sprite.link( heap );
+			return heap;
 
-        }
+		}
 
 		if ((map[cell] == Terrain.ALCHEMY) && (
 				!(item instanceof Plant.Seed || item instanceof Blandfruit) ||
 				item instanceof BlandfruitBush.Seed ||
-                (item instanceof Blandfruit && (((Blandfruit) item).potionAttrib != null || heaps.get(cell) != null))||
+				(item instanceof Blandfruit && (((Blandfruit) item).potionAttrib != null || heaps.get(cell) != null))||
 				Dungeon.hero.buff(AlchemistsToolkit.alchemy.class) != null && Dungeon.hero.buff(AlchemistsToolkit.alchemy.class).isCursed())) {
 			int n;
 			do {
@@ -719,14 +719,14 @@ public abstract class Level implements Bundlable {
 			plant.wither();
 		}
 
-        if (map[pos] == Terrain.HIGH_GRASS ||
-                map[pos] == Terrain.EMPTY ||
-                map[pos] == Terrain.EMBERS ||
-                map[pos] == Terrain.EMPTY_DECO) {
-            map[pos] = Terrain.GRASS;
-	        flamable[pos] = true;
-            GameScene.updateMap( pos );
-        }
+		if (map[pos] == Terrain.HIGH_GRASS ||
+				map[pos] == Terrain.EMPTY ||
+				map[pos] == Terrain.EMBERS ||
+				map[pos] == Terrain.EMPTY_DECO) {
+			map[pos] = Terrain.GRASS;
+			flamable[pos] = true;
+			GameScene.updateMap( pos );
+		}
 		
 		plant = seed.couch( pos );
 		plants.put( pos, plant );

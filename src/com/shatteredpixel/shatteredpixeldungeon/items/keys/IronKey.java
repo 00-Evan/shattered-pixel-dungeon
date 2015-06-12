@@ -52,12 +52,12 @@ public class IronKey extends Key {
 		return result;
 	}
 
-    @Override
-    public void onDetach( ) {
-        if (depth == Dungeon.depth) {
-            Dungeon.hero.belongings.countIronKeys();
-        }
-    }
+	@Override
+	public void onDetach( ) {
+		if (depth == Dungeon.depth) {
+			Dungeon.hero.belongings.countIronKeys();
+		}
+	}
 	
 	@Override
 	public String toString() {
@@ -66,7 +66,7 @@ public class IronKey extends Key {
 	
 	@Override
 	public String info() {
-		return 
+		return
 			"The notches on this ancient iron key are well worn; its leather lanyard " +
 			"is battered by age. What door might it open?";
 	}

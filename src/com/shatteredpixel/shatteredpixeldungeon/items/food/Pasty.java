@@ -26,9 +26,9 @@ public class Pasty extends Food {
 		name = "pasty";
 		image = ItemSpriteSheet.PASTY;
 		energy = Hunger.STARVING;
-        hornValue = 5;
+		hornValue = 5;
 
-        bones = true;
+		bones = true;
 	}
 	
 	@Override

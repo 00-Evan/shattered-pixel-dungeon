@@ -60,7 +60,7 @@ public class Splash {
 		emitter.burst( FACTORY, n );
 	}
 	
-	private static final SplashFactory FACTORY = new SplashFactory(); 
+	private static final SplashFactory FACTORY = new SplashFactory();
 			
 	private static class SplashFactory extends Emitter.Factory {
 

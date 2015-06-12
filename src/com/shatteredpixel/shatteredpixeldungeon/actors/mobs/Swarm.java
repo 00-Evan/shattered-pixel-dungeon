@@ -50,8 +50,8 @@ public class Swarm extends Mob {
 		
 		flying = true;
 
-        loot = new PotionOfHealing();
-        lootChance = 0.2f; //by default, see die()
+		loot = new PotionOfHealing();
+		lootChance = 0.2f; //by default, see die()
 	}
 	
 	private static final float SPLIT_DELAY	= 1f;
@@ -139,16 +139,16 @@ public class Swarm extends Mob {
 	
 	@Override
 	public void die( Object cause ){
-        //sets drop chance
-        lootChance = 1f/((5 + Dungeon.limitedDrops.swarmHP.count ) * (generation+1) );
-        super.die( cause );
-    }
+		//sets drop chance
+		lootChance = 1f/((5 + Dungeon.limitedDrops.swarmHP.count ) * (generation+1) );
+		super.die( cause );
+	}
 
-    @Override
-    protected Item createLoot(){
-        Dungeon.limitedDrops.swarmHP.count++;
-        return super.createLoot();
-    }
+	@Override
+	protected Item createLoot(){
+		Dungeon.limitedDrops.swarmHP.count++;
+		return super.createLoot();
+	}
 	
 	@Override
 	public String description() {

@@ -71,7 +71,7 @@ public class HallsLevel extends RegularLevel {
 	protected void decorate() {
 		
 		for (int i=WIDTH + 1; i < LENGTH - WIDTH - 1; i++) {
-			if (map[i] == Terrain.EMPTY) { 
+			if (map[i] == Terrain.EMPTY) {
 				
 				int count = 0;
 				for (int j=0; j < NEIGHBOURS8.length; j++) {
@@ -121,7 +121,7 @@ public class HallsLevel extends RegularLevel {
 			return "It looks like lava, but it's cold and probably safe to touch.";
 		case Terrain.STATUE:
 		case Terrain.STATUE_SP:
-			return "The pillar is made of real humanoid skulls. Awesome."; 
+			return "The pillar is made of real humanoid skulls. Awesome.";
 		case Terrain.BOOKSHELF:
 			return "Books in ancient languages smoulder in the bookshelf.";
 		default:
@@ -169,8 +169,8 @@ public class HallsLevel extends RegularLevel {
 					delay = Random.Float( 2 );
 					
 					PointF p = DungeonTilemap.tileToWorld( pos );
-					((FireParticle)recycle( FireParticle.class )).reset( 
-						p.x + Random.Float( DungeonTilemap.SIZE ), 
+					((FireParticle)recycle( FireParticle.class )).reset(
+						p.x + Random.Float( DungeonTilemap.SIZE ),
 						p.y + Random.Float( DungeonTilemap.SIZE ) );
 				}
 			}

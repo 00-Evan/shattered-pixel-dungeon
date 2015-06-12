@@ -8,69 +8,66 @@ import com.watabou.utils.Bundle;
 
 import java.util.HashSet;
 
-/**
- * Created by debenhame on 19/11/2014.
- */
 public class ToxicImbue extends Buff {
 
-    public static final float DURATION	= 30f;
+	public static final float DURATION	= 30f;
 
-    protected float left;
+	protected float left;
 
-    private static final String LEFT	= "left";
+	private static final String LEFT	= "left";
 
-    @Override
-    public void storeInBundle( Bundle bundle ) {
-        super.storeInBundle( bundle );
-        bundle.put( LEFT, left );
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( LEFT, left );
 
-    }
+	}
 
-    @Override
-    public void restoreFromBundle( Bundle bundle ) {
-        super.restoreFromBundle( bundle );
-        left = bundle.getFloat( LEFT );
-    }
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		left = bundle.getFloat( LEFT );
+	}
 
-    public void set( float duration ) {
-        this.left = duration;
-    };
+	public void set( float duration ) {
+		this.left = duration;
+	};
 
 
-    @Override
-    public boolean act() {
-        GameScene.add(Blob.seed(target.pos, 50, ToxicGas.class));
+	@Override
+	public boolean act() {
+		GameScene.add(Blob.seed(target.pos, 50, ToxicGas.class));
 
-        spend(TICK);
-        left -= TICK;
-        if (left <= 0)
-            detach();
+		spend(TICK);
+		left -= TICK;
+		if (left <= 0)
+			detach();
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public int icon() {
-        return BuffIndicator.IMMUNITY;
-    }
+	@Override
+	public int icon() {
+		return BuffIndicator.IMMUNITY;
+	}
 
-    @Override
-    public String toString() {
-        return "Imbued with Toxicity";
-    }
+	@Override
+	public String toString() {
+		return "Imbued with Toxicity";
+	}
 
-    @Override
-    public String desc() {
-        return "You are imbued with poisonous energy!\n" +
-                "\n" +
-                "As you move around toxic gas will constantly billow forth from you, damaging your enemies. " +
-                "You are immune to toxic gas and poison for the duration of the effect.\n" +
-                "\n" +
-                "You are imbued for " + dispTurns(left) + ".";
-    }
+	@Override
+	public String desc() {
+		return "You are imbued with poisonous energy!\n" +
+				"\n" +
+				"As you move around toxic gas will constantly billow forth from you, damaging your enemies. " +
+				"You are immune to toxic gas and poison for the duration of the effect.\n" +
+				"\n" +
+				"You are imbued for " + dispTurns(left) + ".";
+	}
 
-    {
-        immunities.add( ToxicGas.class );
-        immunities.add( Poison.class );
-    }
+	{
+		immunities.add( ToxicGas.class );
+		immunities.add( Poison.class );
+	}
 }

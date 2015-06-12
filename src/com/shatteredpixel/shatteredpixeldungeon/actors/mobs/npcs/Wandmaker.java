@@ -55,7 +55,7 @@ import com.watabou.utils.Random;
 
 public class Wandmaker extends NPC {
 
-	{	
+	{
 		name = "old wandmaker";
 		spriteClass = WandmakerSprite.class;
 	}
@@ -126,8 +126,8 @@ public class Wandmaker extends NPC {
 			
 			Quest.placeItem();
 
-            if (Quest.given)
-                tell(Quest.alternative ? TXT_DUST1 : TXT_BERRY1);
+			if (Quest.given)
+				tell(Quest.alternative ? TXT_DUST1 : TXT_BERRY1);
 			
 			Journal.add( Journal.Feature.WANDMAKER );
 		}
@@ -139,7 +139,7 @@ public class Wandmaker extends NPC {
 	
 	@Override
 	public String description() {
-		return 
+		return
 			"This old but hale gentleman wears a slightly confused " +
 			"expression. He is protected by a magic shield.";
 	}
@@ -241,19 +241,19 @@ public class Wandmaker extends NPC {
 				
 				if (candidates.size() > 0) {
 					Random.element( candidates ).drop( new CorpseDust() );
-                    given = true;
+					given = true;
 				} else {
 					int pos = Dungeon.level.randomRespawnCell();
 					while (Dungeon.level.heaps.get( pos ) != null) {
 						pos = Dungeon.level.randomRespawnCell();
 					}
 
-                    if (pos != -1) {
-                        Heap heap = Dungeon.level.drop(new CorpseDust(), pos);
-                        heap.type = Heap.Type.SKELETON;
-                        heap.sprite.link();
-                        given = true;
-                    }
+					if (pos != -1) {
+						Heap heap = Dungeon.level.drop(new CorpseDust(), pos);
+						heap.type = Heap.Type.SKELETON;
+						heap.sprite.link();
+						given = true;
+					}
 				}
 				
 			} else {
@@ -263,10 +263,10 @@ public class Wandmaker extends NPC {
 					shrubPos = Dungeon.level.randomRespawnCell();
 				}
 
-                if (shrubPos != -1) {
-                    Dungeon.level.plant(new Rotberry.Seed(), shrubPos);
-                    given = true;
-                }
+				if (shrubPos != -1) {
+					Dungeon.level.plant(new Rotberry.Seed(), shrubPos);
+					given = true;
+				}
 				
 			}
 		}
@@ -281,7 +281,7 @@ public class Wandmaker extends NPC {
 	
 	public static class Rotberry extends Plant {
 		
-		private static final String TXT_DESC = 
+		private static final String TXT_DESC =
 			"Berries of this shrub taste like sweet, sweet death.";
 		
 		{

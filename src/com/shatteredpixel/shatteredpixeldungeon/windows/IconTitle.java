@@ -41,13 +41,13 @@ public class IconTitle extends Component {
 
 	public IconTitle() {
 		super();
-    }
+	}
 
-    public IconTitle( Item item ) {
-	    ItemSprite icon = new ItemSprite();
-	    icon( icon );
-	    label( Utils.capitalize( item.toString() ) );
-	    icon.view( item );
+	public IconTitle( Item item ) {
+		ItemSprite icon = new ItemSprite();
+		icon( icon );
+		label( Utils.capitalize( item.toString() ) );
+		icon.view( item );
 	}
 
 	public IconTitle( Image icon, String label ) {

@@ -33,7 +33,7 @@ public class SheepSprite extends MobSprite {
 		idle = new Animation( 8, true );
 		idle.frames( frames, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 0 );
 		
-		run = idle.clone();	
+		run = idle.clone();
 		attack = idle.clone();
 		
 		die = new Animation( 20, false );

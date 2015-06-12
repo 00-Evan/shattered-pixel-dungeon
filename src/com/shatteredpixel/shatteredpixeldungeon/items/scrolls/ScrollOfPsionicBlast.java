@@ -38,7 +38,7 @@ public class ScrollOfPsionicBlast extends Scroll {
 		name = "Scroll of Psionic Blast";
 		initials = "PB";
 
-        bones = true;
+		bones = true;
 	}
 	
 	@Override
@@ -56,7 +56,7 @@ public class ScrollOfPsionicBlast extends Scroll {
 		}
 
 		curUser.damage(Math.max(curUser.HT/5, curUser.HP/2), this);
-        Buff.prolong( curUser, Paralysis.class, Random.Int( 4, 6 ) );
+		Buff.prolong( curUser, Paralysis.class, Random.Int( 4, 6 ) );
 		Buff.prolong( curUser, Blindness.class, Random.Int( 6, 9 ) );
 		Dungeon.observe();
 		
@@ -64,10 +64,10 @@ public class ScrollOfPsionicBlast extends Scroll {
 		
 		curUser.spendAndNext( TIME_TO_READ );
 
-        if (!curUser.isAlive()) {
-            Dungeon.fail( Utils.format(ResultDescriptions.ITEM, name ));
-            GLog.n("The Psionic Blast tears your mind apart...");
-        }
+		if (!curUser.isAlive()) {
+			Dungeon.fail( Utils.format(ResultDescriptions.ITEM, name ));
+			GLog.n("The Psionic Blast tears your mind apart...");
+		}
 	}
 	
 	@Override

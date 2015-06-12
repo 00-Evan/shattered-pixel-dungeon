@@ -67,7 +67,7 @@ public class Sungrass extends Plant {
 			plantClass = Sungrass.class;
 			alchemyClass = PotionOfHealing.class;
 
-            bones = true;
+			bones = true;
 		}
 		
 		@Override
@@ -81,9 +81,9 @@ public class Sungrass extends Plant {
 		private static final float STEP = 1f;
 		
 		private int pos;
-        private int healCurr = 1;
-        private int count = 0;
-        private int level;
+		private int healCurr = 1;
+		private int count = 0;
+		private int level;
 
 		{
 			type = buffType.POSITIVE;
@@ -96,38 +96,38 @@ public class Sungrass extends Plant {
 		}
 		
 		@Override
-        public boolean act() {
-            if (target.pos != pos) {
-                detach();
-            }
-            if (count == 5) {
-                if (level <= healCurr*.025*target.HT) {
-                    target.HP = Math.min(target.HT, target.HP + level);
-                    target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-                    detach();
-                } else {
-                    target.HP = Math.min(target.HT, target.HP+(int)(healCurr*.025*target.HT));
-                    level -= (healCurr*.025*target.HT);
-                    if (healCurr < 6)
-                        healCurr ++;
-                    target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-                }
-                count = 1;
-            } else {
-                count++;
-            }
-            if (level <= 0)
-                detach();
-            spend( STEP );
-            return true;
-        }
+		public boolean act() {
+			if (target.pos != pos) {
+				detach();
+			}
+			if (count == 5) {
+				if (level <= healCurr*.025*target.HT) {
+					target.HP = Math.min(target.HT, target.HP + level);
+					target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+					detach();
+				} else {
+					target.HP = Math.min(target.HT, target.HP+(int)(healCurr*.025*target.HT));
+					level -= (healCurr*.025*target.HT);
+					if (healCurr < 6)
+						healCurr ++;
+					target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+				}
+				count = 1;
+			} else {
+				count++;
+			}
+			if (level <= 0)
+				detach();
+			spend( STEP );
+			return true;
+		}
 
-        public int absorb( int damage ) {
-            level -= damage;
-            if (level <= 0)
-                detach();
-            return damage;
-        }
+		public int absorb( int damage ) {
+			level -= damage;
+			if (level <= 0)
+				detach();
+			return damage;
+		}
 
 		public void boost( int amount ){
 			level += amount;
@@ -140,7 +140,7 @@ public class Sungrass extends Plant {
 		
 		@Override
 		public String toString() {
-            return "Herbal Healing";
+			return "Herbal Healing";
 		}
 
 		@Override
@@ -154,26 +154,26 @@ public class Sungrass extends Plant {
 		}
 
 		private static final String POS	= "pos";
-        private static final String HEALCURR = "healCurr";
-        private static final String COUNT = "count";
-        private static final String LEVEL = "level";
+		private static final String HEALCURR = "healCurr";
+		private static final String COUNT = "count";
+		private static final String LEVEL = "level";
 
-        @Override
+		@Override
 		public void storeInBundle( Bundle bundle ) {
 			super.storeInBundle( bundle );
 			bundle.put( POS, pos );
-            bundle.put( HEALCURR, healCurr);
-            bundle.put( COUNT, count);
-            bundle.put( LEVEL, level);
+			bundle.put( HEALCURR, healCurr);
+			bundle.put( COUNT, count);
+			bundle.put( LEVEL, level);
 		}
 		
 		@Override
 		public void restoreFromBundle( Bundle bundle ) {
 			super.restoreFromBundle( bundle );
 			pos = bundle.getInt( POS );
-            healCurr = bundle.getInt( HEALCURR );
-            count = bundle.getInt( COUNT );
-            level = bundle.getInt( LEVEL );
+			healCurr = bundle.getInt( HEALCURR );
+			count = bundle.getInt( COUNT );
+			level = bundle.getInt( LEVEL );
 
 		}
 	}

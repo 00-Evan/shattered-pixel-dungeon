@@ -79,7 +79,7 @@ public class WndRanking extends WndTabbed {
 		};
 		thread.start();
 
-		busy = Icons.BUSY.get();	
+		busy = Icons.BUSY.get();
 		busy.origin.set( busy.width / 2, busy.height / 2 );
 		busy.angularSpeed = 720;
 		busy.x = (WIDTH - busy.width) / 2;
@@ -105,9 +105,9 @@ public class WndRanking extends WndTabbed {
 
 	private void createControls() {
 		
-		String[] labels = 
+		String[] labels =
 			{TXT_STATS, TXT_ITEMS, TXT_BADGES};
-		Group[] pages = 
+		Group[] pages =
 			{new StatsTab(), new ItemsTab(), new BadgesTab()};
 		
 		for (int i=0; i < pages.length; i++) {
@@ -145,9 +145,9 @@ public class WndRanking extends WndTabbed {
 		
 		private static final int GAP	= 4;
 		
-        private static final String TXT_TITLE	= "Level %d %s";
+		private static final String TXT_TITLE	= "Level %d %s";
 
-        private static final String TXT_CHALLENGES	= "Challenges";
+		private static final String TXT_CHALLENGES	= "Challenges";
 
 		private static final String TXT_HEALTH	= "Health";
 		private static final String TXT_STR		= "Strength";
@@ -170,26 +170,26 @@ public class WndRanking extends WndTabbed {
 			IconTitle title = new IconTitle();
 			title.icon( HeroSprite.avatar( Dungeon.hero.heroClass, Dungeon.hero.tier() ) );
 			title.label( Utils.format( TXT_TITLE, Dungeon.hero.lvl, heroClass ).toUpperCase( Locale.ENGLISH ) );
-            title.color(Window.SHPX_COLOR);
+			title.color(Window.SHPX_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
 			
 			float pos = title.bottom();
 
-            if (Dungeon.challenges > 0) {
-                RedButton btnCatalogus = new RedButton( TXT_CHALLENGES ) {
-                    @Override
-                    protected void onClick() {
-                        Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
-                    }
-                };
-                btnCatalogus.setRect( 0, pos + GAP, btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
-                add( btnCatalogus );
+			if (Dungeon.challenges > 0) {
+				RedButton btnCatalogus = new RedButton( TXT_CHALLENGES ) {
+					@Override
+					protected void onClick() {
+						Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
+					}
+				};
+				btnCatalogus.setRect( 0, pos + GAP, btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
+				add( btnCatalogus );
 
-                pos = btnCatalogus.bottom();
-            }
+				pos = btnCatalogus.bottom();
+			}
 
-            pos += GAP + GAP;
+			pos += GAP + GAP;
 			
 			pos = statSlot( this, TXT_STR, Integer.toString( Dungeon.hero.STR ), pos );
 			pos = statSlot( this, TXT_HEALTH, Integer.toString( Dungeon.hero.HT ), pos );
@@ -317,7 +317,7 @@ public class WndRanking extends WndTabbed {
 		}
 		
 		@Override
-		protected void createChildren() {	
+		protected void createChildren() {
 			
 			bg = new ColorBlock( HEIGHT, HEIGHT, 0xFF4A4D44 );
 			add( bg );

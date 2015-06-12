@@ -94,20 +94,20 @@ public class ShatteredPixelDungeon extends Game {
 		super.onCreate(savedInstanceState);
 		
 	/*	if (android.os.Build.VERSION.SDK_INT >= 19) {
-			getWindow().getDecorView().setSystemUiVisibility( 
-				View.SYSTEM_UI_FLAG_LAYOUT_STABLE | 
-				View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | 
-				View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | 
-				View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | 
-				View.SYSTEM_UI_FLAG_FULLSCREEN | 
+			getWindow().getDecorView().setSystemUiVisibility(
+				View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+				View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+				View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+				View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+				View.SYSTEM_UI_FLAG_FULLSCREEN |
 				View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY );
 		}*/
 
-        updateImmersiveMode();
+		updateImmersiveMode();
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        instance.getWindowManager().getDefaultDisplay().getMetrics( metrics );
-        boolean landscape = metrics.widthPixels > metrics.heightPixels;
+		DisplayMetrics metrics = new DisplayMetrics();
+		instance.getWindowManager().getDefaultDisplay().getMetrics( metrics );
+		boolean landscape = metrics.widthPixels > metrics.heightPixels;
 		
 		if (Preferences.INSTANCE.getBoolean( Preferences.KEY_LANDSCAPE, false ) != landscape) {
 			landscape( !landscape );
@@ -121,16 +121,16 @@ public class ShatteredPixelDungeon extends Game {
 				Assets.SND_BADGE,
 				Assets.SND_GOLD,
 
-                Assets.SND_STEP,
-                Assets.SND_WATER,
-                Assets.SND_OPEN,
-                Assets.SND_UNLOCK,
-                Assets.SND_ITEM,
-                Assets.SND_DEWDROP,
-                Assets.SND_HIT,
-                Assets.SND_MISS,
+				Assets.SND_STEP,
+				Assets.SND_WATER,
+				Assets.SND_OPEN,
+				Assets.SND_UNLOCK,
+				Assets.SND_ITEM,
+				Assets.SND_DEWDROP,
+				Assets.SND_HIT,
+				Assets.SND_MISS,
 
-                Assets.SND_DESCEND,
+				Assets.SND_DESCEND,
 				Assets.SND_EAT,
 				Assets.SND_READ,
 				Assets.SND_LULLABY,
@@ -167,20 +167,20 @@ public class ShatteredPixelDungeon extends Game {
 				Assets.SND_MIMIC );
 	}
 
-    @Override
-    public void onWindowFocusChanged( boolean hasFocus ) {
+	@Override
+	public void onWindowFocusChanged( boolean hasFocus ) {
 
-        super.onWindowFocusChanged( hasFocus );
+		super.onWindowFocusChanged( hasFocus );
 
-        if (hasFocus) {
-            updateImmersiveMode();
-        }
-    }
+		if (hasFocus) {
+			updateImmersiveMode();
+		}
+	}
 
-    public static void switchNoFade( Class<? extends PixelScene> c ) {
-        PixelScene.noFade = true;
-        switchScene( c );
-    }
+	public static void switchNoFade( Class<? extends PixelScene> c ) {
+		PixelScene.noFade = true;
+		switchScene( c );
+	}
 
 	/*
 	 * ---> Prefernces
@@ -202,59 +202,59 @@ public class ShatteredPixelDungeon extends Game {
 		switchScene( TitleScene.class );
 	}
 
-    // *** IMMERSIVE MODE ****
+	// *** IMMERSIVE MODE ****
 
-    private static boolean immersiveModeChanged = false;
+	private static boolean immersiveModeChanged = false;
 
-    @SuppressLint("NewApi")
-    public static void immerse( boolean value ) {
-        Preferences.INSTANCE.put( Preferences.KEY_IMMERSIVE, value );
+	@SuppressLint("NewApi")
+	public static void immerse( boolean value ) {
+		Preferences.INSTANCE.put( Preferences.KEY_IMMERSIVE, value );
 
-        instance.runOnUiThread( new Runnable() {
-            @Override
-            public void run() {
-                updateImmersiveMode();
-                immersiveModeChanged = true;
-            }
-        } );
-    }
+		instance.runOnUiThread( new Runnable() {
+			@Override
+			public void run() {
+				updateImmersiveMode();
+				immersiveModeChanged = true;
+			}
+		} );
+	}
 
-    @Override
-    public void onSurfaceChanged( GL10 gl, int width, int height ) {
-        super.onSurfaceChanged( gl, width, height );
+	@Override
+	public void onSurfaceChanged( GL10 gl, int width, int height ) {
+		super.onSurfaceChanged( gl, width, height );
 
-        if (immersiveModeChanged) {
-            requestedReset = true;
-            immersiveModeChanged = false;
-        }
-    }
+		if (immersiveModeChanged) {
+			requestedReset = true;
+			immersiveModeChanged = false;
+		}
+	}
 
-    @SuppressLint("NewApi")
-    public static void updateImmersiveMode() {
-        if (android.os.Build.VERSION.SDK_INT >= 19) {
-	        try {
-		        // Sometime NullPointerException happens here
-		        instance.getWindow().getDecorView().setSystemUiVisibility(
-				        immersed() ?
-						        View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-								        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-								        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-								        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-								        View.SYSTEM_UI_FLAG_FULLSCREEN |
-								        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-						        :
-						        0 );
-	        } catch (Exception e) {
-		        reportException( e );
-	        }
-        }
-    }
+	@SuppressLint("NewApi")
+	public static void updateImmersiveMode() {
+		if (android.os.Build.VERSION.SDK_INT >= 19) {
+			try {
+				// Sometime NullPointerException happens here
+				instance.getWindow().getDecorView().setSystemUiVisibility(
+						immersed() ?
+								View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+										View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+										View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+										View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+										View.SYSTEM_UI_FLAG_FULLSCREEN |
+										View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+								:
+								0 );
+			} catch (Exception e) {
+				reportException( e );
+			}
+		}
+	}
 
-    public static boolean immersed() {
-        return Preferences.INSTANCE.getBoolean( Preferences.KEY_IMMERSIVE, false );
-    }
+	public static boolean immersed() {
+		return Preferences.INSTANCE.getBoolean( Preferences.KEY_IMMERSIVE, false );
+	}
 
-    // *****************************
+	// *****************************
 	
 	public static boolean scaleUp() {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_SCALE_UP, true );
@@ -305,13 +305,13 @@ public class ShatteredPixelDungeon extends Game {
 		return Preferences.INSTANCE.getInt( Preferences.KEY_LAST_CLASS, 0 );
 	}
 
-    public static void challenges( int value ) {
-        Preferences.INSTANCE.put( Preferences.KEY_CHALLENGES, value );
-    }
+	public static void challenges( int value ) {
+		Preferences.INSTANCE.put( Preferences.KEY_CHALLENGES, value );
+	}
 
-    public static int challenges() {
-        return Preferences.INSTANCE.getInt( Preferences.KEY_CHALLENGES, 0 );
-    }
+	public static int challenges() {
+		return Preferences.INSTANCE.getInt( Preferences.KEY_CHALLENGES, 0 );
+	}
 
 	public static void quickSlots( int value ){ Preferences.INSTANCE.put( Preferences.KEY_QUICKSLOTS, value ); }
 
@@ -325,13 +325,13 @@ public class ShatteredPixelDungeon extends Game {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_INTRO, true );
 	}
 
-    public static void version( int value)  {
-        Preferences.INSTANCE.put( Preferences.KEY_VERSION, value );
-    }
+	public static void version( int value)  {
+		Preferences.INSTANCE.put( Preferences.KEY_VERSION, value );
+	}
 
-    public static int version() {
-        return Preferences.INSTANCE.getInt( Preferences.KEY_VERSION, 0 );
-    }
+	public static int version() {
+		return Preferences.INSTANCE.getInt( Preferences.KEY_VERSION, 0 );
+	}
 	
 	/*
 	 * <--- Preferences

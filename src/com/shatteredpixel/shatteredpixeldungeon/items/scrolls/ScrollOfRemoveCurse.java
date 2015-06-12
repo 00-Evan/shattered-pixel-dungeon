@@ -30,9 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class ScrollOfRemoveCurse extends Scroll {
 
-	private static final String TXT_PROCCED	= 
+	private static final String TXT_PROCCED	=
 		"Your pack glows with a cleansing light, and a malevolent energy disperses.";
-	private static final String TXT_NOT_PROCCED	= 
+	private static final String TXT_NOT_PROCCED	=
 		"Your pack glows with a cleansing light, but nothing happens.";
 	
 	{
@@ -47,19 +47,19 @@ public class ScrollOfRemoveCurse extends Scroll {
 		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();
 		
-		boolean procced = uncurse( curUser, curUser.belongings.backpack.items.toArray( new Item[0] ) ); 
-		procced = uncurse( curUser, 
-			curUser.belongings.weapon, 
-			curUser.belongings.armor, 
+		boolean procced = uncurse( curUser, curUser.belongings.backpack.items.toArray( new Item[0] ) );
+		procced = uncurse( curUser,
+			curUser.belongings.weapon,
+			curUser.belongings.armor,
 			curUser.belongings.misc1,
 			curUser.belongings.misc2) || procced;
 		
 		Weakness.detach( curUser, Weakness.class );
 		
 		if (procced) {
-			GLog.p( TXT_PROCCED );			
-		} else {		
-			GLog.i( TXT_NOT_PROCCED );		
+			GLog.p( TXT_PROCCED );
+		} else {
+			GLog.i( TXT_NOT_PROCCED );
 		}
 		
 		setKnown();

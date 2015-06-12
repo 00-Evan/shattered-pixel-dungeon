@@ -38,7 +38,7 @@ public class BlastParticle extends PixelParticle.Shrinking {
 	public BlastParticle() {
 		super();
 		
-		color( 0xEE7722 );		
+		color( 0xEE7722 );
 		acc.set( 0, +50 );
 	}
 	

@@ -29,7 +29,7 @@ import com.watabou.utils.Random;
 
 public class WindParticle extends PixelParticle {
 
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((WindParticle)emitter.recycle( WindParticle.class )).reset( x, y );
@@ -103,8 +103,8 @@ public class WindParticle extends PixelParticle {
 					
 					delay = Random.Float( 5 );
 					
-					((WindParticle)recycle( WindParticle.class )).reset( 
-						x + Random.Float( DungeonTilemap.SIZE ), 
+					((WindParticle)recycle( WindParticle.class )).reset(
+						x + Random.Float( DungeonTilemap.SIZE ),
 						y + Random.Float( DungeonTilemap.SIZE ) );
 				}
 			}

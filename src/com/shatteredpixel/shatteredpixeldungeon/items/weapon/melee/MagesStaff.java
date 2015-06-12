@@ -25,9 +25,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-/**
- * Created by debenhame on 13/03/2015.
- */
 public class MagesStaff extends MeleeWeapon {
 
 	private Wand wand;
@@ -61,8 +58,8 @@ public class MagesStaff extends MeleeWeapon {
 
 	public MagesStaff(Wand wand){
 		this();
-        wand.identify();
-        wand.cursed = false;
+		wand.identify();
+		wand.cursed = false;
 		this.wand = wand;
 		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
 		wand.curCharges = wand.maxCharges;

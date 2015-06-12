@@ -63,13 +63,13 @@ public class Goo extends Mob {
 	@Override
 	public int damageRoll() {
 		if (pumpedUp > 0) {
-            pumpedUp = 0;
-            for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
-                int j = pos + Level.NEIGHBOURS9DIST2[i];
-                if (Level.insideMap(j) && Level.passable[j])
-                    CellEmitter.get(j).burst(ElmoParticle.FACTORY, 10);
-            }
-            Sample.INSTANCE.play( Assets.SND_BURNING );
+			pumpedUp = 0;
+			for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
+				int j = pos + Level.NEIGHBOURS9DIST2[i];
+				if (Level.insideMap(j) && Level.passable[j])
+					CellEmitter.get(j).burst(ElmoParticle.FACTORY, 10);
+			}
+			Sample.INSTANCE.play( Assets.SND_BURNING );
 			return Random.NormalIntRange( 5, 30 );
 		} else {
 			return Random.NormalIntRange( 2, 12 );
@@ -118,35 +118,35 @@ public class Goo extends Mob {
 
 	@Override
 	protected boolean doAttack( Char enemy ) {
-        if (pumpedUp == 1) {
-            ((GooSprite)sprite).pumpUp();
-            for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
-                int j = pos + Level.NEIGHBOURS9DIST2[i];
-                if (Level.insideMap(j) && Level.passable[j])
-                    GameScene.add(Blob.seed(j, 2, GooWarn.class));
-            }
-            pumpedUp++;
+		if (pumpedUp == 1) {
+			((GooSprite)sprite).pumpUp();
+			for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
+				int j = pos + Level.NEIGHBOURS9DIST2[i];
+				if (Level.insideMap(j) && Level.passable[j])
+					GameScene.add(Blob.seed(j, 2, GooWarn.class));
+			}
+			pumpedUp++;
 
-            spend( attackDelay() );
+			spend( attackDelay() );
 
-            return true;
-        } else if (pumpedUp >= 2 || Random.Int( 3 ) > 0) {
+			return true;
+		} else if (pumpedUp >= 2 || Random.Int( 3 ) > 0) {
 
-            boolean visible = Dungeon.visible[pos];
+			boolean visible = Dungeon.visible[pos];
 
-            if (visible) {
-                if (pumpedUp >= 2) {
-                    ((GooSprite) sprite).pumpAttack();
-                }
-                else
-                    sprite.attack( enemy.pos );
-            } else {
-                attack( enemy );
-            }
+			if (visible) {
+				if (pumpedUp >= 2) {
+					((GooSprite) sprite).pumpAttack();
+				}
+				else
+					sprite.attack( enemy.pos );
+			} else {
+				attack( enemy );
+			}
 
-            spend( attackDelay() );
+			spend( attackDelay() );
 
-            return !visible;
+			return !visible;
 
 		} else {
 
@@ -154,18 +154,18 @@ public class Goo extends Mob {
 
 			((GooSprite)sprite).pumpUp();
 
-            for (int i=0; i < Level.NEIGHBOURS9.length; i++) {
-                int j = pos + Level.NEIGHBOURS9[i];
-                GameScene.add( Blob.seed( j , 2, GooWarn.class ));
+			for (int i=0; i < Level.NEIGHBOURS9.length; i++) {
+				int j = pos + Level.NEIGHBOURS9[i];
+				GameScene.add( Blob.seed( j , 2, GooWarn.class ));
 
-            }
+			}
 
 			if (Dungeon.visible[pos]) {
 				sprite.showStatus( CharSprite.NEGATIVE, "!!!" );
 				GLog.n( "Goo is pumping itself up!" );
 			}
 
-            spend( attackDelay() );
+			spend( attackDelay() );
 
 			return true;
 		}
@@ -216,28 +216,28 @@ public class Goo extends Mob {
 		return
 			"Little is known about The Goo. It's quite possible that it is not even a creature, but rather a " +
 			"conglomerate of vile substances from the sewers that somehow gained basic intelligence. " +
-            "Regardless, dark magic is certainly what has allowed Goo to exist.\n\n" +
-            "Its gelatinous nature has let it absorb lots of dark energy, you feel a chill just from being near. " +
-            "If goo is able to attack with this energy you won't live for long.";
+			"Regardless, dark magic is certainly what has allowed Goo to exist.\n\n" +
+			"Its gelatinous nature has let it absorb lots of dark energy, you feel a chill just from being near. " +
+			"If goo is able to attack with this energy you won't live for long.";
 	}
 
-    private final String PUMPEDUP = "pumpedup";
+	private final String PUMPEDUP = "pumpedup";
 
-    @Override
-    public void storeInBundle( Bundle bundle ) {
+	@Override
+	public void storeInBundle( Bundle bundle ) {
 
-        super.storeInBundle( bundle );
+		super.storeInBundle( bundle );
 
-        bundle.put( PUMPEDUP , pumpedUp );
-    }
+		bundle.put( PUMPEDUP , pumpedUp );
+	}
 
-    @Override
-    public void restoreFromBundle( Bundle bundle ) {
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
 
-        super.restoreFromBundle( bundle );
+		super.restoreFromBundle( bundle );
 
-        pumpedUp = bundle.getInt( PUMPEDUP );
-    }
+		pumpedUp = bundle.getInt( PUMPEDUP );
+	}
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
 	static {

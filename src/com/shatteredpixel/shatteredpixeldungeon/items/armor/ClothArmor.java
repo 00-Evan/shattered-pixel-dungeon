@@ -22,11 +22,11 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ClothArmor extends Armor {
 
-	{	
+	{
 		name = "cloth armor";
 		image = ItemSpriteSheet.ARMOR_CLOTH;
 
-        bones = false; //Finding them in bones would be semi-frequent and disappointing.
+		bones = false; //Finding them in bones would be semi-frequent and disappointing.
 	}
 	
 	public ClothArmor() {

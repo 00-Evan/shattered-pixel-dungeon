@@ -4,35 +4,32 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
 
-/**
- * Created by Evan on 09/10/2014.
- */
 public class GreatCrabSprite extends MobSprite {
 
-    public GreatCrabSprite() {
-        super();
+	public GreatCrabSprite() {
+		super();
 
-        texture( Assets.CRAB );
+		texture( Assets.CRAB );
 
-        TextureFilm frames = new TextureFilm( texture, 16, 16 );
+		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 
-        idle = new MovieClip.Animation( 5, true );
-        idle.frames( frames, 16, 17, 16, 18 );
+		idle = new MovieClip.Animation( 5, true );
+		idle.frames( frames, 16, 17, 16, 18 );
 
-        run = new MovieClip.Animation( 10, true );
-        run.frames( frames, 19, 20, 21, 22 );
+		run = new MovieClip.Animation( 10, true );
+		run.frames( frames, 19, 20, 21, 22 );
 
-        attack = new MovieClip.Animation( 12, false );
-        attack.frames( frames, 23, 24, 25 );
+		attack = new MovieClip.Animation( 12, false );
+		attack.frames( frames, 23, 24, 25 );
 
-        die = new MovieClip.Animation( 12, false );
-        die.frames( frames, 26, 27, 28, 29 );
+		die = new MovieClip.Animation( 12, false );
+		die.frames( frames, 26, 27, 28, 29 );
 
-        play( idle );
-    }
+		play( idle );
+	}
 
-    @Override
-    public int blood() {
-        return 0xFFFFEA80;
-    }
+	@Override
+	public int blood() {
+		return 0xFFFFEA80;
+	}
 }

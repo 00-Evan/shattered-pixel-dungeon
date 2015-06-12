@@ -156,7 +156,7 @@ public class ItemSprite extends MovieClip {
 		} else {
 			
 			float px = x;
-			float py = y;		
+			float py = y;
 			drop();
 			
 			place(from);

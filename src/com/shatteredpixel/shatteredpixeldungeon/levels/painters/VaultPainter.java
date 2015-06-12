@@ -68,10 +68,10 @@ public class VaultPainter extends Painter {
 	}
 	
 	private static Item prize( Level level ) {
-		return Generator.random( Random.oneOf(  
-			Generator.Category.WAND, 
+		return Generator.random( Random.oneOf(
+			Generator.Category.WAND,
 			Generator.Category.RING,
-            Generator.Category.ARTIFACT
+			Generator.Category.ARTIFACT
 		) );
 	}
 }

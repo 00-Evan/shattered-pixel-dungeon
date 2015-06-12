@@ -132,9 +132,9 @@ public class WellWater extends Blob {
 		
 		for (Class<?>waterClass : waters) {
 			WellWater water = (WellWater)Dungeon.level.blobs.get( waterClass );
-			if (water != null && 
-				water.volume > 0 && 
-				water.pos == cell && 
+			if (water != null &&
+				water.volume > 0 &&
+				water.pos == cell &&
 				water.affect()) {
 				
 				Level.set( cell, Terrain.EMPTY_WELL );

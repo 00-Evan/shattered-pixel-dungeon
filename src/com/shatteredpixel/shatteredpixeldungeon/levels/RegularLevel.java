@@ -149,14 +149,14 @@ public abstract class RegularLevel extends Level {
 		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
 			specials.remove( Room.Type.WEAK_FLOOR );
 		}
-        if (Dungeon.isChallenged( Challenges.NO_ARMOR )){
-            //no sense in giving an armor reward room on a run with no armor.
-            specials.remove( Room.Type.CRYPT );
-        }
-        if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
-            //sorry warden, no lucky sungrass or blandfruit seeds for you!
-            specials.remove( Room.Type.GARDEN );
-        }
+		if (Dungeon.isChallenged( Challenges.NO_ARMOR )){
+			//no sense in giving an armor reward room on a run with no armor.
+			specials.remove( Room.Type.CRYPT );
+		}
+		if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
+			//sorry warden, no lucky sungrass or blandfruit seeds for you!
+			specials.remove( Room.Type.GARDEN );
+		}
 		if (!assignRoomType())
 			return false;
 		
@@ -203,7 +203,7 @@ public abstract class RegularLevel extends Level {
 		int specialRooms = 0;
 
 		for (Room r : rooms) {
-			if (r.type == Type.NULL && 
+			if (r.type == Type.NULL &&
 				r.connected.size() == 1) {
 
 				if (specials.size() > 0 &&
@@ -250,7 +250,7 @@ public abstract class RegularLevel extends Level {
 
 					HashSet<Room> neigbours = new HashSet<Room>();
 					for (Room n : r.neigbours) {
-						if (!r.connected.containsKey( n ) && 
+						if (!r.connected.containsKey( n ) &&
 							!Room.SPECIALS.contains( n.type ) &&
 							n.type != Type.PIT) {
 							
@@ -274,7 +274,7 @@ public abstract class RegularLevel extends Level {
 					r.type = Type.STANDARD;
 					count++;
 				} else {
-					r.type = Type.TUNNEL; 
+					r.type = Type.TUNNEL;
 				}
 			}
 		}
@@ -394,14 +394,14 @@ public abstract class RegularLevel extends Level {
 			split( new Rect( rect.left, rect.top, vw, rect.bottom ) );
 			split( new Rect( vw, rect.top, rect.right, rect.bottom ) );
 			
-		} else 
+		} else
 		if (h > maxRoomSize && w < minRoomSize) {
 
 			int vh = Random.Int( rect.top + 3, rect.bottom - 3 );
 			split( new Rect( rect.left, rect.top, rect.right, vh ) );
 			split( new Rect( rect.left, vh, rect.right, rect.bottom ) );
 			
-		} else 	
+		} else
 		if ((Math.random() <= (minRoomSize * minRoomSize / rect.square()) && w <= maxRoomSize && h <= maxRoomSize) || w < minRoomSize || h < minRoomSize) {
 
 			rooms.add( (Room)new Room().set( rect ) );
@@ -446,11 +446,11 @@ public abstract class RegularLevel extends Level {
 				
 				Rect i = r.intersect( n );
 				if (i.width() == 0) {
-					door = new Room.Door( 
-						i.left, 
+					door = new Room.Door(
+						i.left,
 						Random.Int( i.top + 1, i.bottom ) );
 				} else {
-					door = new Room.Door( 
+					door = new Room.Door(
 						Random.Int( i.left + 1, i.right ),
 						i.top);
 				}
@@ -654,12 +654,12 @@ public abstract class RegularLevel extends Level {
 	protected void createItems() {
 		
 		int nItems = 3;
-        int bonus = 0;
-        for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
-            bonus += ((RingOfWealth.Wealth) buff).level;
-        }
-        //just incase someone gets a ridiculous ring, cap this at 80%
-        bonus = Math.min(bonus, 10);
+		int bonus = 0;
+		for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
+			bonus += ((RingOfWealth.Wealth) buff).level;
+		}
+		//just incase someone gets a ridiculous ring, cap this at 80%
+		bonus = Math.min(bonus, 10);
 		while (Random.Float() < (0.3f + bonus*0.05f)) {
 			nItems++;
 		}
@@ -756,7 +756,7 @@ public abstract class RegularLevel extends Level {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 
-        rooms = new HashSet<Room>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
+		rooms = new HashSet<Room>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
 		for (Room r : rooms) {
 			if (r.type == Type.WEAK_FLOOR) {
 				weakFloorCreated = true;

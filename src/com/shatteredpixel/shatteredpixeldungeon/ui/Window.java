@@ -39,11 +39,11 @@ public class Window extends Group implements Signal.Listener<Key> {
 	protected int height;
 	
 	protected TouchArea blocker;
-    protected ShadowBox shadow;
-    protected NinePatch chrome;
+	protected ShadowBox shadow;
+	protected NinePatch chrome;
 	
 	public static final int TITLE_COLOR = 0xFFFF44;
-    public static final int SHPX_COLOR = 0x33BB33;
+	public static final int SHPX_COLOR = 0x33BB33;
 	
 	public Window() {
 		this( 0, 0, Chrome.get( Chrome.Type.WINDOW ) );
@@ -59,8 +59,8 @@ public class Window extends Group implements Signal.Listener<Key> {
 		blocker = new TouchArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
 			@Override
 			protected void onClick( Touch touch ) {
-				if (!Window.this.chrome.overlapsScreenPoint( 
-					(int)touch.current.x, 
+				if (!Window.this.chrome.overlapsScreenPoint(
+					(int)touch.current.x,
 					(int)touch.current.y )) {
 					
 					onBackPressed();
@@ -75,22 +75,22 @@ public class Window extends Group implements Signal.Listener<Key> {
 		this.width = width;
 		this.height = height;
 
-        shadow = new ShadowBox();
-        shadow.am = 0.5f;
-        shadow.camera = PixelScene.uiCamera.visible ?
-                PixelScene.uiCamera : Camera.main;
-        add( shadow );
+		shadow = new ShadowBox();
+		shadow.am = 0.5f;
+		shadow.camera = PixelScene.uiCamera.visible ?
+				PixelScene.uiCamera : Camera.main;
+		add( shadow );
 
 		chrome.x = -chrome.marginLeft();
 		chrome.y = -chrome.marginTop();
-		chrome.size( 
+		chrome.size(
 			width - chrome.x + chrome.marginRight(),
 			height - chrome.y + chrome.marginBottom() );
 		add( chrome );
 		
-		camera = new Camera( 0, 0, 
-			(int)chrome.width, 
-			(int)chrome.height, 
+		camera = new Camera( 0, 0,
+			(int)chrome.width,
+			(int)chrome.height,
 			PixelScene.defaultZoom );
 		camera.x = (int)(Game.width - camera.width * camera.zoom) / 2;
 		camera.y = (int)(Game.height - camera.height * camera.zoom) / 2;
@@ -109,7 +109,7 @@ public class Window extends Group implements Signal.Listener<Key> {
 		this.width = w;
 		this.height = h;
 		
-		chrome.size( 
+		chrome.size(
 			width + chrome.marginHor(),
 			height + chrome.marginVer() );
 		
@@ -138,10 +138,10 @@ public class Window extends Group implements Signal.Listener<Key> {
 		if (key.pressed) {
 			switch (key.code) {
 			case Keys.BACK:
-				onBackPressed();			
+				onBackPressed();
 				break;
 			case Keys.MENU:
-				onMenuPressed();			
+				onMenuPressed();
 				break;
 			}
 		}

@@ -80,7 +80,7 @@ public class LibraryPainter extends Painter {
 		
 		Item prize = level.findPrizeItem( Scroll.class );
 		if (prize == null)
-            prize = Generator.random( Generator.Category.SCROLL );
+			prize = Generator.random( Generator.Category.SCROLL );
 		
 		return prize;
 	}

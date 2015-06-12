@@ -184,8 +184,8 @@ public class Toolbar extends Component {
 	}
 	
 	public void pickup( Item item ) {
-		pickedUp.reset( item, 
-			btnInventory.centerX(), 
+		pickedUp.reset( item,
+			btnInventory.centerX(),
 			btnInventory.centerY() );
 	}
 	
@@ -240,7 +240,7 @@ public class Toolbar extends Component {
 			}
 			
 			GameScene.show( new WndInfoCell( cell ) );
-		}	
+		}
 		@Override
 		public String prompt() {
 			return "Select a cell to examine";
@@ -342,16 +342,16 @@ public class Toolbar extends Component {
 			
 			originToCenter();
 			
-			active = 
-			visible = 
+			active =
+			visible =
 				false;
 		}
 		
 		public void reset( Item item, float dstX, float dstY ) {
 			view( item );
 			
-			active = 
-			visible = 
+			active =
+			visible =
 				true;
 			
 			this.dstX = dstX - ItemSprite.SIZE / 2;
@@ -369,13 +369,13 @@ public class Toolbar extends Component {
 			
 			if ((left -= Game.elapsed) <= 0) {
 				
-				visible = 
-				active = 
+				visible =
+				active =
 					false;
 				if (emitter != null) emitter.on = false;
 				
 			} else {
-				float p = left / DURATION; 
+				float p = left / DURATION;
 				scale.set( (float)Math.sqrt( p ) );
 				float offset = DISTANCE * p;
 				x = dstX - offset;

@@ -31,8 +31,8 @@ import com.watabou.utils.SparseArray;
 public class WndStory extends Window {
 
 	private static final int WIDTH_P = 120;
-    private static final int WIDTH_L = 144;
-    private static final int MARGIN = 6;
+	private static final int WIDTH_L = 144;
+	private static final int MARGIN = 6;
 	
 	private static final float bgR	= 0.77f;
 	private static final float bgG	= 0.73f;
@@ -47,25 +47,25 @@ public class WndStory extends Window {
 	private static final SparseArray<String> CHAPTERS = new SparseArray<String>();
 	
 	static {
-		CHAPTERS.put( ID_SEWERS, 
+		CHAPTERS.put( ID_SEWERS,
 		"The Dungeon lies right beneath the City, its upper levels actually constitute the City's sewer system.\n\n " +
-        "As dark energy has crept up from below the usually harmless sewer creatures have become more and more " +
-        "dangerous. The city sends guard patrols down here to try and maintain safety for those above, but " +
-        "they are slowly failing.\n\n This place is dangerous, but at least the evil magic at work here is weak." );
+		"As dark energy has crept up from below the usually harmless sewer creatures have become more and more " +
+		"dangerous. The city sends guard patrols down here to try and maintain safety for those above, but " +
+		"they are slowly failing.\n\n This place is dangerous, but at least the evil magic at work here is weak." );
 		
-		CHAPTERS.put( ID_PRISON, 
+		CHAPTERS.put( ID_PRISON,
 		"Many years ago an underground prison was built here for the most dangerous criminals. At the time it seemed " +
 		"like a very clever idea, because this place indeed was very hard to escape. But soon dark miasma started to permeate " +
 		"from below, driving prisoners and guards insane. In the end the prison was abandoned, though some convicts " +
 		"were left locked up here." );
 		
-		CHAPTERS.put( ID_CAVES, 
+		CHAPTERS.put( ID_CAVES,
 		"The caves, which stretch down under the abandoned prison, are sparcely populated. They lie too deep to be exploited " +
 		"by the City and they are too poor in minerals to interest the dwarves. In the past there was a trade outpost " +
 		"somewhere here on the route between these two states, but it has perished since the decline of Dwarven Metropolis. " +
 		"Only omnipresent gnolls and subterranean animals dwell here now." );
 		
-		CHAPTERS.put( ID_METROPOLIS, 
+		CHAPTERS.put( ID_METROPOLIS,
 		"Dwarven Metropolis was once the greatest of dwarven city-states. In its heyday the mechanized army of dwarves " +
 		"has successfully repelled the invasion of the old god and his demon army. But it is said, that the returning warriors " +
 		"have brought seeds of corruption with them, and that victory was the beginning of the end for the underground kingdom." );
@@ -86,8 +86,8 @@ public class WndStory extends Window {
 		
 		tf = PixelScene.createMultiline( text, 7 );
 		tf.maxWidth = ShatteredPixelDungeon.landscape() ?
-                    WIDTH_L - MARGIN * 2:
-                    WIDTH_P - MARGIN *2;
+					WIDTH_L - MARGIN * 2:
+					WIDTH_P - MARGIN *2;
 		tf.measure();
 		tf.ra = bgR;
 		tf.ga = bgG;

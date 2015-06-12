@@ -82,13 +82,13 @@ public class Elemental extends Mob {
 				sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			}
 		} else if (buff instanceof Frost || buff instanceof Chill) {
-                if (Level.water[this.pos])
-                    damage( Random.NormalIntRange( HT / 2, HT ), buff );
-                else
-				    damage( Random.NormalIntRange( 1, HT * 2 / 3 ), buff );
+				if (Level.water[this.pos])
+					damage( Random.NormalIntRange( HT / 2, HT ), buff );
+				else
+					damage( Random.NormalIntRange( 1, HT * 2 / 3 ), buff );
 		} else {
-            super.add( buff );
-        }
+			super.add( buff );
+		}
 	}
 	
 	@Override

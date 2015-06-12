@@ -42,7 +42,7 @@ public class Bag extends Item implements Iterable<Item> {
 	
 	public Char owner;
 	
-	public ArrayList<Item> items = new ArrayList<Item>();	
+	public ArrayList<Item> items = new ArrayList<Item>();
 	
 	public int size = 1;
 	
@@ -61,7 +61,7 @@ public class Bag extends Item implements Iterable<Item> {
 	
 	@Override
 	public boolean collect( Bag container ) {
-		if (super.collect( container )) {	
+		if (super.collect( container )) {
 			
 			owner = container.owner;
 			
@@ -82,9 +82,9 @@ public class Bag extends Item implements Iterable<Item> {
 
 	@Override
 	public void onDetach( ) {
-	    this.owner = null;
-	    for (Item item : items)
-		    Dungeon.quickslot.clearItem(item);
+		this.owner = null;
+		for (Item item : items)
+			Dungeon.quickslot.clearItem(item);
 		updateQuickslot();
 	}
 
@@ -178,6 +178,6 @@ public class Bag extends Item implements Iterable<Item> {
 			} else {
 				items.remove( index );
 			}
-		}	
+		}
 	}
 }

@@ -5,20 +5,20 @@
 	android:versionName="0.3.0d"
 	android:installLocation="auto">
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="android.permission.VIBRATE"/>
 
 	<uses-sdk
-	    android:minSdkVersion="8"
-	    android:targetSdkVersion="21"/>
+		android:minSdkVersion="8"
+		android:targetSdkVersion="21"/>
 	
 	<uses-feature
-	    android:glEsVersion="0x00020000"/>
+		android:glEsVersion="0x00020000"/>
 	
 	<supports-screens
-	    android:smallScreens="false"
-	    android:normalScreens="true"
-	    android:largeScreens="true"/>
-	    <!--android:xlargeScreens="true"-->
+		android:smallScreens="false"
+		android:normalScreens="true"
+		android:largeScreens="true"/>
+		<!--android:xlargeScreens="true"-->
 
 	<application
 		android:icon="@drawable/ic_launcher"

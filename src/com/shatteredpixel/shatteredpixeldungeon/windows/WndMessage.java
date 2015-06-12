@@ -38,8 +38,8 @@ public class WndMessage extends Window {
 		info.x = info.y = MARGIN;
 		add( info );
 
-		resize( 
-			(int)info.width() + MARGIN * 2, 
+		resize(
+			(int)info.width() + MARGIN * 2,
 			(int)info.height() + MARGIN * 2 );
 	}
 }

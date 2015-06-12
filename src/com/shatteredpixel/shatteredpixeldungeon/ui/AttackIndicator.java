@@ -66,7 +66,7 @@ public class AttackIndicator extends Tag {
 			sprite.y = y + (height - sprite.height()) / 2;
 			PixelScene.align( sprite );
 		}
-	}	
+	}
 	
 	@Override
 	public void update() {
@@ -109,7 +109,7 @@ public class AttackIndicator extends Tag {
 			} else {
 				active = true;
 				lastTarget = Random.element( candidates );
-				updateImage();				
+				updateImage();
 				flash();
 			}
 		} else {

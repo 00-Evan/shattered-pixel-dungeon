@@ -54,7 +54,7 @@ public class WndBadge extends Window {
 			line.y = PixelScene.align( pos );
 			add( line );
 			
-			pos += line.height(); 
+			pos += line.height();
 		}
 
 		resize( (int)w, (int)(pos + MARGIN) );

@@ -45,11 +45,11 @@ public class ScrollOfLullaby extends Scroll {
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Level.fieldOfView[mob.pos]) {
 				Buff.affect( mob, Drowsy.class );
-                mob.sprite.centerEmitter().start( Speck.factory( Speck.NOTE ), 0.3f, 5 );
+				mob.sprite.centerEmitter().start( Speck.factory( Speck.NOTE ), 0.3f, 5 );
 			}
 		}
 
-        Buff.affect( curUser, Drowsy.class );
+		Buff.affect( curUser, Drowsy.class );
 
 		GLog.i( "The scroll utters a soothing melody. You feel very sleepy." );
 

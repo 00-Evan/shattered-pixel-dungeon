@@ -61,9 +61,9 @@ public class Honeypot extends Item {
 			
 			detach( hero.belongings.backpack );
 
-            shatter( hero, hero.pos ).collect();
+			shatter( hero, hero.pos ).collect();
 
-            hero.next();
+			hero.next();
 			
 		} else {
 			super.execute( hero, action );
@@ -82,7 +82,7 @@ public class Honeypot extends Item {
 	public Item shatter( Char owner, int pos ) {
 		
 		if (Dungeon.visible[pos]) {
-            Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.SND_SHATTER );
 			Splash.at( pos, 0xffd500, 5 );
 		}
 		
@@ -129,7 +129,7 @@ public class Honeypot extends Item {
 	@Override
 	public boolean isIdentified() {
 		return true;
-	}	
+	}
 	
 	@Override
 	public int price() {
@@ -161,7 +161,7 @@ public class Honeypot extends Item {
 		public Item setBee(Char bee){
 			myBee = bee.id();
 			beeDepth = Dungeon.depth;
-            return this;
+			return this;
 		}
 
 		@Override
@@ -227,20 +227,20 @@ public class Honeypot extends Item {
 		}
 
 		private static final String MYBEE = "mybee";
-        private static final String BEEDEPTH = "beedepth";
+		private static final String BEEDEPTH = "beedepth";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
 			bundle.put( MYBEE, myBee );
-            bundle.put( BEEDEPTH, beeDepth );
+			bundle.put( BEEDEPTH, beeDepth );
 		}
 
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			myBee = bundle.getInt( MYBEE );
-            beeDepth = bundle.getInt( BEEDEPTH );
+			beeDepth = bundle.getInt( BEEDEPTH );
 		}
 	}
 }

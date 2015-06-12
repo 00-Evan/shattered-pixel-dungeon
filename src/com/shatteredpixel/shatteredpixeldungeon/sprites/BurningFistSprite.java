@@ -51,7 +51,7 @@ public class BurningFistSprite extends MobSprite {
 	
 	@Override
 	public void attack( int cell ) {
-		posToShoot = cell;	
+		posToShoot = cell;
 		super.attack( cell );
 	}
 	
@@ -60,8 +60,8 @@ public class BurningFistSprite extends MobSprite {
 		if (anim == attack) {
 
 			Sample.INSTANCE.play( Assets.SND_ZAP );
-			MagicMissile.shadow( parent, ch.pos, posToShoot, 
-				new Callback() {			
+			MagicMissile.shadow( parent, ch.pos, posToShoot,
+				new Callback() {
 					@Override
 					public void call() {
 						ch.onAttackComplete();

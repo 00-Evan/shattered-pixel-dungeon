@@ -37,21 +37,21 @@ public class GardenPainter extends Painter {
 		
 		room.entrance().set( Room.Door.Type.REGULAR );
 
-        if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
-            if (Random.Int(2) == 0){
-                level.plant(new Sungrass.Seed(), room.random());
-            }
-        } else {
-            int bushes = Random.Int(3);
-            if (bushes == 0) {
-                level.plant(new Sungrass.Seed(), room.random());
-            } else if (bushes == 1) {
-                level.plant(new BlandfruitBush.Seed(), room.random());
-            } else if (Random.Int(5) == 0) {
-                level.plant(new Sungrass.Seed(), room.random());
-                level.plant(new BlandfruitBush.Seed(), room.random());
-            }
-        }
+		if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
+			if (Random.Int(2) == 0){
+				level.plant(new Sungrass.Seed(), room.random());
+			}
+		} else {
+			int bushes = Random.Int(3);
+			if (bushes == 0) {
+				level.plant(new Sungrass.Seed(), room.random());
+			} else if (bushes == 1) {
+				level.plant(new BlandfruitBush.Seed(), room.random());
+			} else if (Random.Int(5) == 0) {
+				level.plant(new Sungrass.Seed(), room.random());
+				level.plant(new BlandfruitBush.Seed(), room.random());
+			}
+		}
 		
 		Foliage light = (Foliage)level.blobs.get( Foliage.class );
 		if (light == null) {

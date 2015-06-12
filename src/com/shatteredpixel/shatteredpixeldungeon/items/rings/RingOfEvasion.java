@@ -36,46 +36,46 @@ public class RingOfEvasion extends Ring {
 	public String desc() {
 		return isKnown() ?
 			"This ring obfuscates the true position of the wearer, making them harder to detect and attack. " +
-            "This ring is much stronger while the user remains undetected, and if the user is targeted the power of " +
-            "evasion will slowly fade away, remaining undetected will restore the ring's effectiveness. " +
-            "A degraded ring will instead make the user easier to detect and strike.":
+			"This ring is much stronger while the user remains undetected, and if the user is targeted the power of " +
+			"evasion will slowly fade away, remaining undetected will restore the ring's effectiveness. " +
+			"A degraded ring will instead make the user easier to detect and strike.":
 			super.desc();
 	}
 
-    //yup, the only ring in the game with logic inside of its class
+	//yup, the only ring in the game with logic inside of its class
 	public class Evasion extends RingBuff {
-        public int effectiveLevel;
-        private int pos;
+		public int effectiveLevel;
+		private int pos;
 
-        @Override
-        public boolean attachTo( Char target ) {
+		@Override
+		public boolean attachTo( Char target ) {
 
-            pos = target.pos;
-            effectiveLevel = Math.min(0, level);
-            return super.attachTo(target);
-        }
+			pos = target.pos;
+			effectiveLevel = Math.min(0, level);
+			return super.attachTo(target);
+		}
 
-        @Override
-        public boolean act() {
+		@Override
+		public boolean act() {
 
-            boolean seen = false;
+			boolean seen = false;
 
-            for (Mob enemy : Dungeon.level.mobs.toArray(new Mob[0])){
-                if (enemy.focusingHero()) {
-                    seen = true;
-                    break;
-                }
-            }
+			for (Mob enemy : Dungeon.level.mobs.toArray(new Mob[0])){
+				if (enemy.focusingHero()) {
+					seen = true;
+					break;
+				}
+			}
 
-            if (level < 1){
-                effectiveLevel = level;
-            } else if (seen) {
-                effectiveLevel = Math.max(effectiveLevel - 1, 0);
-            } else {
-                effectiveLevel = Math.min(effectiveLevel + 1, level);
-            }
+			if (level < 1){
+				effectiveLevel = level;
+			} else if (seen) {
+				effectiveLevel = Math.max(effectiveLevel - 1, 0);
+			} else {
+				effectiveLevel = Math.min(effectiveLevel + 1, level);
+			}
 
-            return super.act();
-        }
+			return super.act();
+		}
 	}
 }

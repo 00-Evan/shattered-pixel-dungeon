@@ -106,11 +106,11 @@ public class WndHero extends WndTabbed {
 			
 			Hero hero = Dungeon.hero;
 
-            IconTitle title = new IconTitle();
-            title.icon( HeroSprite.avatar(hero.heroClass, hero.tier()) );
-            title.label(Utils.format( TXT_TITLE, hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ), 9);
-            title.color(Window.SHPX_COLOR);
-            title.setRect( 0, 0, WIDTH, 0 );
+			IconTitle title = new IconTitle();
+			title.icon( HeroSprite.avatar(hero.heroClass, hero.tier()) );
+			title.label(Utils.format( TXT_TITLE, hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ), 9);
+			title.color(Window.SHPX_COLOR);
+			title.setRect( 0, 0, WIDTH, 0 );
 			add(title);
 
 			RedButton btnCatalogus = new RedButton( TXT_CATALOGUS ) {

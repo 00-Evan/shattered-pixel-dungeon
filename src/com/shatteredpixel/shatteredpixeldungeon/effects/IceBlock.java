@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 
 public class IceBlock extends Gizmo {
 	
-	private float phase; 
+	private float phase;
 	
 	private CharSprite target;
 	

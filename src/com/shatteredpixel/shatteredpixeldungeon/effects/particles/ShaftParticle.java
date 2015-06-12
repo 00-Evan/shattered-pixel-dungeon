@@ -24,7 +24,7 @@ import com.watabou.utils.Random;
 
 public class ShaftParticle extends PixelParticle {
 	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((ShaftParticle)emitter.recycle( ShaftParticle.class )).reset( x, y );

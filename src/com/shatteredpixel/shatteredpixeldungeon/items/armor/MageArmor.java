@@ -32,9 +32,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
-public class MageArmor extends ClassArmor {	
+public class MageArmor extends ClassArmor {
 	
-	private static final String AC_SPECIAL = "MOLTEN EARTH"; 
+	private static final String AC_SPECIAL = "MOLTEN EARTH";
 	
 	private static final String TXT_NOT_MAGE	= "Only mages can use this armor!";
 	
@@ -56,7 +56,7 @@ public class MageArmor extends ClassArmor {
 	}
 	
 	@Override
-	public void doSpecial() {	
+	public void doSpecial() {
 		
 		for (Mob mob : Dungeon.level.mobs) {
 			if (Level.fieldOfView[mob.pos]) {
@@ -65,7 +65,7 @@ public class MageArmor extends ClassArmor {
 			}
 		}
 
-        curUser.HP -= (curUser.HP / 3);
+		curUser.HP -= (curUser.HP / 3);
 		
 		curUser.spend( Actor.TICK );
 		curUser.sprite.operate( curUser.pos );

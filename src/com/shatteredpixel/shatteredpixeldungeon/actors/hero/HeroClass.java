@@ -83,110 +83,110 @@ public enum HeroClass {
 		"Potions of Mind Vision are identified from the beginning."
 	};
 
-    public void initHero( Hero hero ) {
+	public void initHero( Hero hero ) {
 
-        hero.heroClass = this;
+		hero.heroClass = this;
 
-        initCommon( hero );
+		initCommon( hero );
 
-        switch (this) {
-            case WARRIOR:
-                initWarrior( hero );
-                break;
+		switch (this) {
+			case WARRIOR:
+				initWarrior( hero );
+				break;
 
-            case MAGE:
-                initMage( hero );
-                break;
+			case MAGE:
+				initMage( hero );
+				break;
 
-            case ROGUE:
-                initRogue( hero );
-                break;
+			case ROGUE:
+				initRogue( hero );
+				break;
 
-            case HUNTRESS:
-                initHuntress( hero );
-                break;
-        }
+			case HUNTRESS:
+				initHuntress( hero );
+				break;
+		}
 
-        if (Badges.isUnlocked( masteryBadge() )) {
-            new TomeOfMastery().collect();
-        }
+		if (Badges.isUnlocked( masteryBadge() )) {
+			new TomeOfMastery().collect();
+		}
 
-        hero.updateAwareness();
-    }
+		hero.updateAwareness();
+	}
 
-    private static void initCommon( Hero hero ) {
-        if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-            (hero.belongings.armor = new ClothArmor()).identify();
+	private static void initCommon( Hero hero ) {
+		if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
+			(hero.belongings.armor = new ClothArmor()).identify();
 
-        if (!Dungeon.isChallenged(Challenges.NO_FOOD))
-            new Food().identify().collect();
-    }
+		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
+			new Food().identify().collect();
+	}
 
-    public Badges.Badge masteryBadge() {
-        switch (this) {
-            case WARRIOR:
-                return Badges.Badge.MASTERY_WARRIOR;
-            case MAGE:
-                return Badges.Badge.MASTERY_MAGE;
-            case ROGUE:
-                return Badges.Badge.MASTERY_ROGUE;
-            case HUNTRESS:
-                return Badges.Badge.MASTERY_HUNTRESS;
-        }
-        return null;
-    }
+	public Badges.Badge masteryBadge() {
+		switch (this) {
+			case WARRIOR:
+				return Badges.Badge.MASTERY_WARRIOR;
+			case MAGE:
+				return Badges.Badge.MASTERY_MAGE;
+			case ROGUE:
+				return Badges.Badge.MASTERY_ROGUE;
+			case HUNTRESS:
+				return Badges.Badge.MASTERY_HUNTRESS;
+		}
+		return null;
+	}
 
-    private static void initWarrior( Hero hero ) {
-        hero.STR = hero.STR + 1;
+	private static void initWarrior( Hero hero ) {
+		hero.STR = hero.STR + 1;
 
-        (hero.belongings.weapon = new ShortSword()).identify();
-        Dart darts = new Dart( 8 );
-        darts.identify().collect();
+		(hero.belongings.weapon = new ShortSword()).identify();
+		Dart darts = new Dart( 8 );
+		darts.identify().collect();
 
-        Dungeon.quickslot.setSlot(0, darts);
+		Dungeon.quickslot.setSlot(0, darts);
 
-        new PotionOfStrength().setKnown();
-    }
+		new PotionOfStrength().setKnown();
+	}
 
-    private static void initMage( Hero hero ) {
-	    MagesStaff staff = new MagesStaff(new WandOfMagicMissile());
-	    (hero.belongings.weapon = staff).identify();
-        hero.belongings.weapon.activate(hero);
+	private static void initMage( Hero hero ) {
+		MagesStaff staff = new MagesStaff(new WandOfMagicMissile());
+		(hero.belongings.weapon = staff).identify();
+		hero.belongings.weapon.activate(hero);
 
-        Dungeon.quickslot.setSlot(0, staff);
+		Dungeon.quickslot.setSlot(0, staff);
 
-        new ScrollOfUpgrade().setKnown();
-    }
+		new ScrollOfUpgrade().setKnown();
+	}
 
-    private static void initRogue( Hero hero ) {
-        (hero.belongings.weapon = new Dagger()).identify();
+	private static void initRogue( Hero hero ) {
+		(hero.belongings.weapon = new Dagger()).identify();
 
-        CloakOfShadows cloak = new CloakOfShadows();
-        (hero.belongings.misc1 = cloak).identify();
-        hero.belongings.misc1.activate( hero );
+		CloakOfShadows cloak = new CloakOfShadows();
+		(hero.belongings.misc1 = cloak).identify();
+		hero.belongings.misc1.activate( hero );
 
-        Dart darts = new Dart( 8 );
-        darts.identify().collect();
+		Dart darts = new Dart( 8 );
+		darts.identify().collect();
 
-        Dungeon.quickslot.setSlot(0, cloak);
-        if (ShatteredPixelDungeon.quickSlots() > 1)
-            Dungeon.quickslot.setSlot(1, darts);
+		Dungeon.quickslot.setSlot(0, cloak);
+		if (ShatteredPixelDungeon.quickSlots() > 1)
+			Dungeon.quickslot.setSlot(1, darts);
 
-        new ScrollOfMagicMapping().setKnown();
-    }
+		new ScrollOfMagicMapping().setKnown();
+	}
 
-    private static void initHuntress( Hero hero ) {
+	private static void initHuntress( Hero hero ) {
 
-        hero.HP = (hero.HT -= 5);
+		hero.HP = (hero.HT -= 5);
 
-        (hero.belongings.weapon = new Dagger()).identify();
-        Boomerang boomerang = new Boomerang();
-        boomerang.identify().collect();
+		(hero.belongings.weapon = new Dagger()).identify();
+		Boomerang boomerang = new Boomerang();
+		boomerang.identify().collect();
 
-        Dungeon.quickslot.setSlot(0, boomerang);
+		Dungeon.quickslot.setSlot(0, boomerang);
 
-	    new PotionOfMindVision().setKnown();
-    }
+		new PotionOfMindVision().setKnown();
+	}
 	
 	public String title() {
 		return title;

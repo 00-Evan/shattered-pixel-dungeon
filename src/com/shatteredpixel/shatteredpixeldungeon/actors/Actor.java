@@ -83,7 +83,7 @@ public abstract class Actor implements Bundlable {
 		id = bundle.getInt( ID );
 	}
 
-    private static int nextID = 1;
+	private static int nextID = 1;
 	public int id() {
 		if (id > 0) {
 			return id;
@@ -144,25 +144,25 @@ public abstract class Actor implements Bundlable {
 		current = null;
 	}
 
-    private static final String NEXTID = "nextid";
+	private static final String NEXTID = "nextid";
 
-    public static void storeNextID( Bundle bundle){
-        bundle.put( NEXTID, nextID );
-    }
+	public static void storeNextID( Bundle bundle){
+		bundle.put( NEXTID, nextID );
+	}
 
-    public static void restoreNextID( Bundle bundle){
-        nextID = bundle.getInt( NEXTID );
-    }
+	public static void restoreNextID( Bundle bundle){
+		nextID = bundle.getInt( NEXTID );
+	}
 
-    public static void resetNextID(){
-        nextID = 1;
-    }
+	public static void resetNextID(){
+		nextID = 1;
+	}
 
-    /*protected*/public void next() {
-        if (current == this) {
-            current = null;
-        }
-    }
+	/*protected*/public void next() {
+		if (current == this) {
+			current = null;
+		}
+	}
 	
 	public static void process() {
 		
@@ -190,12 +190,12 @@ public abstract class Actor implements Bundlable {
 
 			if  (current != null) {
 
-                if (current instanceof Char && ((Char)current).sprite.isMoving) {
-                    // If it's character's turn to act, but its sprite
-                    // is moving, wait till the movement is over
-                    current = null;
-                    break;
-                }
+				if (current instanceof Char && ((Char)current).sprite.isMoving) {
+					// If it's character's turn to act, but its sprite
+					// is moving, wait till the movement is over
+					current = null;
+					break;
+				}
 
 				doNext = current.act();
 				if (doNext && !Dungeon.hero.isAlive()) {

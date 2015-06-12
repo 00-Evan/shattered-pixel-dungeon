@@ -45,7 +45,7 @@ public class Armor extends EquipableItem {
 	
 	private static final String TXT_TO_STRING	= "%s :%d";
 	
-	private static final String TXT_INCOMPATIBLE = 
+	private static final String TXT_INCOMPATIBLE =
 		"Interaction of different types of magic has erased the glyph on this armor!";
 	
 	public int tier;
@@ -107,7 +107,7 @@ public class Armor extends EquipableItem {
 			
 			((HeroSprite)hero.sprite).updateArmor();
 
-            hero.spendAndNext( 2 * time2equip( hero ) );
+			hero.spendAndNext( 2 * time2equip( hero ) );
 			return true;
 			
 		} else {
@@ -118,26 +118,26 @@ public class Armor extends EquipableItem {
 		}
 	}
 
-    @Override
-    protected float time2equip( Hero hero ) {
-        return hero.speed();
-    }
+	@Override
+	protected float time2equip( Hero hero ) {
+		return hero.speed();
+	}
 
-    @Override
-    public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
-        if (super.doUnequip( hero, collect, single )) {
+	@Override
+	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
+		if (super.doUnequip( hero, collect, single )) {
 
-            hero.belongings.armor = null;
-            ((HeroSprite)hero.sprite).updateArmor();
+			hero.belongings.armor = null;
+			((HeroSprite)hero.sprite).updateArmor();
 
-            return true;
+			return true;
 
-        } else {
+		} else {
 
-            return false;
+			return false;
 
-        }
-    }
+		}
+	}
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
@@ -209,25 +209,25 @@ public class Armor extends EquipableItem {
 		StringBuilder info = new StringBuilder( desc() );
 		
 		if (levelKnown) {
-			info.append( 
+			info.append(
 				"\n\nThis " + name + " provides damage absorption up to " +
 				"" + Math.max( DR, 0 ) + " points per attack. " );
 			
 			if (STR > Dungeon.hero.STR()) {
 				
 				if (isEquipped( Dungeon.hero )) {
-					info.append( 
+					info.append(
 						"\n\nBecause of your inadequate strength your " +
 						"movement speed and defense skill is decreased. " );
 				} else {
-					info.append( 
+					info.append(
 						"\n\nBecause of your inadequate strength wearing this armor " +
 						"will decrease your movement speed and defense skill. " );
 				}
 				
 			}
 		} else {
-			info.append( 
+			info.append(
 				"\n\nTypical " + name + " provides damage absorption up to " + typicalDR() + " points per attack " +
 				" and requires " + typicalSTR() + " points of strength. " );
 			if (typicalSTR() > Dungeon.hero.STR()) {
@@ -240,8 +240,8 @@ public class Armor extends EquipableItem {
 		}
 		
 		if (isEquipped( Dungeon.hero )) {
-			info.append( "\n\nYou are wearing the " + name + 
-				(cursed ? ", and because it is cursed, you are powerless to remove it." : ".") ); 
+			info.append( "\n\nYou are wearing the " + name +
+				(cursed ? ", and because it is cursed, you are powerless to remove it." : ".") );
 		} else {
 			if (cursedKnown && cursed) {
 				info.append( "\n\nYou can feel a malevolent magic lurking within the " + name + "." );
@@ -306,18 +306,18 @@ public class Armor extends EquipableItem {
 		return price;
 	}
 
-    public Armor inscribe( Glyph glyph ) {
+	public Armor inscribe( Glyph glyph ) {
 
-        if (glyph != null && this.glyph == null) {
-            DR += tier;
-        } else if (glyph == null && this.glyph != null) {
-            DR -= tier;
-        }
+		if (glyph != null && this.glyph == null) {
+			DR += tier;
+		} else if (glyph == null && this.glyph != null) {
+			DR -= tier;
+		}
 
-        this.glyph = glyph;
+		this.glyph = glyph;
 
-        return this;
-    }
+		return this;
+	}
 
 	public Armor inscribe() {
 
@@ -341,8 +341,8 @@ public class Armor extends EquipableItem {
 	
 	public static abstract class Glyph implements Bundlable {
 		
-		private static final Class<?>[] glyphs = new Class<?>[]{ 
-			Bounce.class, Affection.class, AntiEntropy.class, Multiplicity.class, 
+		private static final Class<?>[] glyphs = new Class<?>[]{
+			Bounce.class, Affection.class, AntiEntropy.class, Multiplicity.class,
 			Potential.class, Metabolism.class, Stench.class, Viscosity.class,
 			Displacement.class, Entanglement.class };
 		
@@ -359,11 +359,11 @@ public class Armor extends EquipableItem {
 		}
 		
 		@Override
-		public void restoreFromBundle( Bundle bundle ) {	
+		public void restoreFromBundle( Bundle bundle ) {
 		}
 
 		@Override
-		public void storeInBundle( Bundle bundle ) {	
+		public void storeInBundle( Bundle bundle ) {
 		}
 		
 		public ItemSprite.Glowing glowing() {

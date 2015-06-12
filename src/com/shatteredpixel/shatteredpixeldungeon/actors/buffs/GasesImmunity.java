@@ -39,10 +39,10 @@ public class GasesImmunity extends FlavourBuff {
 	}
 
 	{
-        immunities.add( ParalyticGas.class );
-        immunities.add( ToxicGas.class );
-        immunities.add( ConfusionGas.class );
-        immunities.add( StenchGas.class );
+		immunities.add( ParalyticGas.class );
+		immunities.add( ToxicGas.class );
+		immunities.add( ConfusionGas.class );
+		immunities.add( StenchGas.class );
 		immunities.add( VenomGas.class );
 	}
 

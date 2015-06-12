@@ -251,8 +251,8 @@ public class CavesLevel extends RegularLevel {
 					delay = Random.Float();
 					
 					PointF p = DungeonTilemap.tileToWorld( pos );
-					((Sparkle)recycle( Sparkle.class )).reset( 
-						p.x + Random.Float( DungeonTilemap.SIZE ), 
+					((Sparkle)recycle( Sparkle.class )).reset(
+						p.x + Random.Float( DungeonTilemap.SIZE ),
 						p.y + Random.Float( DungeonTilemap.SIZE ) );
 				}
 			}

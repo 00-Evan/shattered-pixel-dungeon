@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sorrowmoss extends Plant {
 
-	private static final String TXT_DESC = 
+	private static final String TXT_DESC =
 		"A Sorrowmoss is a flower (not a moss) with razor-sharp petals, coated with a deadly venom.";
 	
 	{
@@ -42,7 +42,7 @@ public class Sorrowmoss extends Plant {
 		Char ch = Actor.findChar(pos);
 		
 		if (ch != null) {
-            Buff.affect( ch, Poison.class ).set( Poison.durationFactor( ch ) * (4 + Dungeon.depth / 2) );
+			Buff.affect( ch, Poison.class ).set( Poison.durationFactor( ch ) * (4 + Dungeon.depth / 2) );
 		}
 		
 		if (Dungeon.visible[pos]) {

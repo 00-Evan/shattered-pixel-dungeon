@@ -62,7 +62,7 @@ public class ScorpioSprite extends MobSprite {
 			
 			cellToAttack = cell;
 			turnTo( ch.pos , cell );
-			play( zap );	
+			play( zap );
 			
 		} else {
 			
@@ -77,7 +77,7 @@ public class ScorpioSprite extends MobSprite {
 			idle();
 			
 			((MissileSprite)parent.recycle( MissileSprite.class )).
-			reset( ch.pos, cellToAttack, new Dart(), new Callback() {			
+			reset( ch.pos, cellToAttack, new Dart(), new Callback() {
 				@Override
 				public void call() {
 					ch.onAttackComplete();

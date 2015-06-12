@@ -73,45 +73,45 @@ public class Dungeon {
 
 	public static int transmutation;	// depth number for a well of transmutation
 
-    //enum of items which have limited spawns, records how many have spawned
-    //could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
+	//enum of items which have limited spawns, records how many have spawned
+	//could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
 	public static enum limitedDrops{
-	    //limited world drops
-        strengthPotions,
-        upgradeScrolls,
-        arcaneStyli,
+		//limited world drops
+		strengthPotions,
+		upgradeScrolls,
+		arcaneStyli,
 
-        //all unlimited health potion sources
+		//all unlimited health potion sources
 		swarmHP,
 		batHP,
 		warlockHP,
 		scorpioHP,
 		cookingHP,
-	    //blandfruit, which can technically be an unlimited health potion source
+		//blandfruit, which can technically be an unlimited health potion source
 		blandfruitSeed,
 
-	    //doesn't use Generator, so we have to enforce one armband drop here
+		//doesn't use Generator, so we have to enforce one armband drop here
 		armband,
 
-	    //containers
-	    dewVial,
-	    seedBag,
-	    scrollBag,
-	    potionBag,
-	    wandBag;
+		//containers
+		dewVial,
+		seedBag,
+		scrollBag,
+		potionBag,
+		wandBag;
 
 		public int count = 0;
 
-	    //for items which can only be dropped once, should directly access count otherwise.
-	    public boolean dropped(){
-		    return count != 0;
-	    }
-	    public void drop(){
-		    count = 1;
-	    }
+		//for items which can only be dropped once, should directly access count otherwise.
+		public boolean dropped(){
+			return count != 0;
+		}
+		public void drop(){
+			count = 1;
+		}
 	}
 
-    public static int challenges;
+	public static int challenges;
 
 	public static Hero hero;
 	public static Level level;
@@ -130,17 +130,17 @@ public class Dungeon {
 
 	public static SparseArray<ArrayList<Item>> droppedItems;
 
-    public static int version;
+	public static int version;
 	
 	public static void init() {
 
 		version = Game.versionCode;
-        challenges = ShatteredPixelDungeon.challenges();
+		challenges = ShatteredPixelDungeon.challenges();
 
-        Generator.initArtifacts();
+		Generator.initArtifacts();
 
 		Actor.clear();
-        Actor.resetNextID();
+		Actor.resetNextID();
 		
 		PathFinder.setMapSize( Level.WIDTH, Level.HEIGHT );
 		
@@ -152,7 +152,7 @@ public class Dungeon {
 		Journal.reset();
 
 		quickslot.reset();
-        QuickSlotButton.reset();
+		QuickSlotButton.reset();
 		
 		depth = 0;
 		gold = 0;
@@ -160,7 +160,7 @@ public class Dungeon {
 		droppedItems = new SparseArray<ArrayList<Item>>();
 
 		for (limitedDrops a : limitedDrops.values())
-            a.count = 0;
+			a.count = 0;
 
 		transmutation = Random.IntRange( 6, 14 );
 		
@@ -181,9 +181,9 @@ public class Dungeon {
 		StartScene.curClass.initHero( hero );
 	}
 
-    public static boolean isChallenged( int mask ) {
-        return (challenges & mask) != 0;
-    }
+	public static boolean isChallenged( int mask ) {
+		return (challenges & mask) != 0;
+	}
 	
 	public static Level newLevel() {
 		
@@ -315,12 +315,12 @@ public class Dungeon {
 		}
 		
 		observe();
-        try {
-            saveAll();
-        } catch (IOException e) {
+		try {
+			saveAll();
+		} catch (IOException e) {
 			/*This only catches IO errors. Yes, this means things can go wrong, and they can go wrong catastrophically.
 			But when they do the user will get a nice 'report this issue' dialogue, and I can fix the bug.*/
-        }
+		}
 	}
 
 	public static void dropToChasm( Item item ) {
@@ -372,23 +372,23 @@ public class Dungeon {
 	private static final String RN_DEPTH_FILE	= "ranger%d.dat";
 	
 	private static final String VERSION		= "version";
-    private static final String CHALLENGES	= "challenges";
+	private static final String CHALLENGES	= "challenges";
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
 	private static final String DEPTH		= "depth";
 	private static final String DROPPED     = "dropped%d";
 	private static final String LEVEL		= "level";
-    private static final String LIMDROPS    = "limiteddrops";
+	private static final String LIMDROPS    = "limiteddrops";
 	private static final String DV			= "dewVial";
 	private static final String WT			= "transmutation";
 	private static final String CHAPTERS	= "chapters";
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
 
-    //TODO: to support pre-0.2.3 saves, remove when needed
-    private static final String POS			= "potionsOfStrength";
-    private static final String SOU			= "scrollsOfEnhancement";
-    private static final String AS			= "arcaneStyli";
+	//TODO: to support pre-0.2.3 saves, remove when needed
+	private static final String POS			= "potionsOfStrength";
+	private static final String SOU			= "scrollsOfEnhancement";
+	private static final String AS			= "arcaneStyli";
 	
 	public static String gameFile( HeroClass cl ) {
 		switch (cl) {
@@ -422,7 +422,7 @@ public class Dungeon {
 
 			version = Game.versionCode;
 			bundle.put( VERSION, version );
-            bundle.put( CHALLENGES, challenges );
+			bundle.put( CHALLENGES, challenges );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
@@ -435,10 +435,10 @@ public class Dungeon {
 
 			bundle.put( WT, transmutation );
 
-            int[] dropValues = new int[limitedDrops.values().length];
-            for (limitedDrops value : limitedDrops.values())
-                dropValues[value.ordinal()] = value.count;
-            bundle.put ( LIMDROPS, dropValues );
+			int[] dropValues = new int[limitedDrops.values().length];
+			for (limitedDrops value : limitedDrops.values())
+				dropValues[value.ordinal()] = value.count;
+			bundle.put ( LIMDROPS, dropValues );
 			
 			int count = 0;
 			int ids[] = new int[chapters.size()];
@@ -458,13 +458,13 @@ public class Dungeon {
 			
 			Statistics.storeInBundle( bundle );
 			Journal.storeInBundle( bundle );
-            Generator.storeInBundle( bundle );
+			Generator.storeInBundle( bundle );
 			
 			Scroll.save( bundle );
 			Potion.save( bundle );
 			Ring.save( bundle );
 
-            Actor.storeNextID( bundle );
+			Actor.storeNextID( bundle );
 			
 			Bundle badges = new Bundle();
 			Badges.saveLocal( badges );
@@ -484,7 +484,7 @@ public class Dungeon {
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
 		
-		OutputStream output = Game.instance.openFileOutput( 
+		OutputStream output = Game.instance.openFileOutput(
 			Utils.format( depthFile( hero.heroClass ), depth ), Game.MODE_PRIVATE );
 		Bundle.write( bundle, output );
 		output.close();
@@ -519,16 +519,16 @@ public class Dungeon {
 		
 		Bundle bundle = gameBundle( fileName );
 
-        version = bundle.getInt( VERSION );
+		version = bundle.getInt( VERSION );
 
 		Generator.reset();
 
-        Actor.restoreNextID( bundle );
+		Actor.restoreNextID( bundle );
 
 		quickslot.reset();
-        QuickSlotButton.reset();
+		QuickSlotButton.reset();
 
-        Dungeon.challenges = bundle.getInt( CHALLENGES );
+		Dungeon.challenges = bundle.getInt( CHALLENGES );
 		
 		Dungeon.level = null;
 		Dungeon.depth = -1;
@@ -544,23 +544,23 @@ public class Dungeon {
 		quickslot.restorePlaceholders( bundle );
 		
 		if (fullLoad) {
-            transmutation = bundle.getInt( WT );
+			transmutation = bundle.getInt( WT );
 
-            //TODO: adjust this when dropping support for pre-0.2.3 saves
-            if (bundle.contains( LIMDROPS )) {
-                int[] dropValues = bundle.getIntArray(LIMDROPS);
-                for (limitedDrops value : limitedDrops.values())
-                    value.count = value.ordinal() < dropValues.length ?
-                            dropValues[value.ordinal()] : 0;
-            } else {
-                for (limitedDrops value : limitedDrops.values())
-                    value.count = 0;
-                limitedDrops.strengthPotions.count = bundle.getInt(POS);
-                limitedDrops.upgradeScrolls.count = bundle.getInt(SOU);
-                limitedDrops.arcaneStyli.count = bundle.getInt(AS);
-            }
-            //for pre-0.2.4 saves
-            if (bundle.getBoolean(DV)) limitedDrops.dewVial.drop();
+			//TODO: adjust this when dropping support for pre-0.2.3 saves
+			if (bundle.contains( LIMDROPS )) {
+				int[] dropValues = bundle.getIntArray(LIMDROPS);
+				for (limitedDrops value : limitedDrops.values())
+					value.count = value.ordinal() < dropValues.length ?
+							dropValues[value.ordinal()] : 0;
+			} else {
+				for (limitedDrops value : limitedDrops.values())
+					value.count = 0;
+				limitedDrops.strengthPotions.count = bundle.getInt(POS);
+				limitedDrops.upgradeScrolls.count = bundle.getInt(SOU);
+				limitedDrops.arcaneStyli.count = bundle.getInt(AS);
+			}
+			//for pre-0.2.4 saves
+			if (bundle.getBoolean(DV)) limitedDrops.dewVial.drop();
 
 			chapters = new HashSet<Integer>();
 			int ids[] = bundle.getIntArray( CHAPTERS );
@@ -601,7 +601,7 @@ public class Dungeon {
 		
 		Statistics.restoreFromBundle( bundle );
 		Journal.restoreFromBundle( bundle );
-        Generator.restoreFromBundle( bundle );
+		Generator.restoreFromBundle( bundle );
 
 		droppedItems = new SparseArray<ArrayList<Item>>();
 		for (int i=2; i <= Statistics.deepestFloor + 1; i++) {
@@ -669,7 +669,7 @@ public class Dungeon {
 	
 	public static void fail( String desc ) {
 		resultDescription = desc;
-		if (hero.belongings.getItem( Ankh.class ) == null) { 
+		if (hero.belongings.getItem( Ankh.class ) == null) {
 			Rankings.INSTANCE.submit( false );
 		}
 	}
@@ -678,9 +678,9 @@ public class Dungeon {
 
 		hero.belongings.identify();
 
-        if (challenges != 0) {
-            Badges.validateChampion();
-        }
+		if (challenges != 0) {
+			Badges.validateChampion();
+		}
 
 		resultDescription = desc;
 		Rankings.INSTANCE.submit( true );

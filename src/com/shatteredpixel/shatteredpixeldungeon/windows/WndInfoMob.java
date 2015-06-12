@@ -38,7 +38,7 @@ public class WndInfoMob extends WndTitledMessage {
 		
 		StringBuilder builder = new StringBuilder( mob.description() );
 
-        builder.append( "\n\n" + mob.state.status() + "." );
+		builder.append( "\n\n" + mob.state.status() + "." );
 		
 		return builder.toString();
 	}
@@ -56,7 +56,7 @@ public class WndInfoMob extends WndTitledMessage {
 			
 			name = PixelScene.createText( Utils.capitalize( mob.name ), 9 );
 			name.hardlight( TITLE_COLOR );
-			name.measure();	
+			name.measure();
 			add( name );
 			
 			image = mob.sprite();
@@ -83,7 +83,7 @@ public class WndInfoMob extends WndTitledMessage {
 
 			health.setRect(image.width + GAP, image.height - health.height(), w, health.height());
 
-			buffs.setPos( 
+			buffs.setPos(
 				name.x + name.width() + GAP-1,
 				name.y + name.baseLine() - BuffIndicator.SIZE-2 );
 

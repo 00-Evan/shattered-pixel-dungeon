@@ -37,8 +37,8 @@ public class Boomerang extends MissileWeapon {
 
 		stackable = false;
 
-        unique = true;
-        bones = false;
+		unique = true;
+		bones = false;
 	}
 	
 	@Override
@@ -69,56 +69,56 @@ public class Boomerang extends MissileWeapon {
 		return super.degrade();
 	}
 
-    @Override
-    public void proc( Char attacker, Char defender, int damage ) {
-        super.proc( attacker, defender, damage );
-        if (attacker instanceof Hero && ((Hero)attacker).rangedWeapon == this) {
-            circleBack( defender.pos, (Hero)attacker );
-        }
-    }
+	@Override
+	public void proc( Char attacker, Char defender, int damage ) {
+		super.proc( attacker, defender, damage );
+		if (attacker instanceof Hero && ((Hero)attacker).rangedWeapon == this) {
+			circleBack( defender.pos, (Hero)attacker );
+		}
+	}
 
-    @Override
-    protected void miss( int cell ) {
-        circleBack( cell, curUser );
-    }
+	@Override
+	protected void miss( int cell ) {
+		circleBack( cell, curUser );
+	}
 
-    private void circleBack( int from, Hero owner ) {
+	private void circleBack( int from, Hero owner ) {
 
-        ((MissileSprite)curUser.sprite.parent.recycle( MissileSprite.class )).
-                reset( from, curUser.pos, curItem, null );
+		((MissileSprite)curUser.sprite.parent.recycle( MissileSprite.class )).
+				reset( from, curUser.pos, curItem, null );
 
-        if (throwEquiped) {
-            owner.belongings.weapon = this;
-            owner.spend( -TIME_TO_EQUIP );
+		if (throwEquiped) {
+			owner.belongings.weapon = this;
+			owner.spend( -TIME_TO_EQUIP );
 			Dungeon.quickslot.replaceSimilar(this);
 			updateQuickslot();
-        } else
-        if (!collect( curUser.belongings.backpack )) {
-            Dungeon.level.drop( this, owner.pos ).sprite.drop();
-        }
-    }
+		} else
+		if (!collect( curUser.belongings.backpack )) {
+			Dungeon.level.drop( this, owner.pos ).sprite.drop();
+		}
+	}
 
-    private boolean throwEquiped;
+	private boolean throwEquiped;
 
-    @Override
-    public void cast( Hero user, int dst ) {
-        throwEquiped = isEquipped( user );
-        super.cast( user, dst );
-    }
+	@Override
+	public void cast( Hero user, int dst ) {
+		throwEquiped = isEquipped( user );
+		super.cast( user, dst );
+	}
 	
 	@Override
 	public String desc() {
 		String info =
 			"Thrown to the enemy this flat curved wooden missile will return to the hands of its thrower.";
-        switch (imbue) {
-            case LIGHT:
-                info += "\n\nIt was balanced to be lighter. ";
-                break;
-            case HEAVY:
-                info += "\n\nIt was balanced to be heavier. ";
-                break;
-            case NONE:
-        }
-        return info;
+		switch (imbue) {
+			case LIGHT:
+				info += "\n\nIt was balanced to be lighter. ";
+				break;
+			case HEAVY:
+				info += "\n\nIt was balanced to be heavier. ";
+				break;
+			case NONE:
+		}
+		return info;
 	}
 }

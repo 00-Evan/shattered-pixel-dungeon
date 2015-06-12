@@ -36,55 +36,55 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class Dreamfoil extends Plant {
 
-    private static final String TXT_DESC =
-            "The Dreamfoil's prickly flowers contain a chemical which is known for its " +
-            "properties as a strong neutralizing agent. Most weaker creatures are overwhelmed " +
-            "and knocked unconscious, which gives the plant its namesake.";
+	private static final String TXT_DESC =
+			"The Dreamfoil's prickly flowers contain a chemical which is known for its " +
+			"properties as a strong neutralizing agent. Most weaker creatures are overwhelmed " +
+			"and knocked unconscious, which gives the plant its namesake.";
 
-    {
-        image = 10;
-        plantName = "Dreamfoil";
-    }
+	{
+		image = 10;
+		plantName = "Dreamfoil";
+	}
 
-    @Override
-    public void activate() {
-        Char ch = Actor.findChar(pos);
+	@Override
+	public void activate() {
+		Char ch = Actor.findChar(pos);
 
-        if (ch != null) {
-            if (ch instanceof Mob)
-                Buff.affect(ch, MagicalSleep.class);
-            else if (ch instanceof Hero){
-                GLog.i( "You feel refreshed." );
-                Buff.detach( ch, Poison.class );
-                Buff.detach( ch, Cripple.class );
-                Buff.detach( ch, Weakness.class );
-                Buff.detach( ch, Bleeding.class );
-                Buff.detach( ch, Drowsy.class );
-                Buff.detach( ch, Slow.class );
-                Buff.detach( ch, Vertigo.class);
-           }
-        }
-    }
+		if (ch != null) {
+			if (ch instanceof Mob)
+				Buff.affect(ch, MagicalSleep.class);
+			else if (ch instanceof Hero){
+				GLog.i( "You feel refreshed." );
+				Buff.detach( ch, Poison.class );
+				Buff.detach( ch, Cripple.class );
+				Buff.detach( ch, Weakness.class );
+				Buff.detach( ch, Bleeding.class );
+				Buff.detach( ch, Drowsy.class );
+				Buff.detach( ch, Slow.class );
+				Buff.detach( ch, Vertigo.class);
+		   }
+		}
+	}
 
-    @Override
-    public String desc() {
-        return TXT_DESC;
-    }
+	@Override
+	public String desc() {
+		return TXT_DESC;
+	}
 
-    public static class Seed extends Plant.Seed {
-        {
-            plantName = "Dreamfoil";
+	public static class Seed extends Plant.Seed {
+		{
+			plantName = "Dreamfoil";
 
-            name = "seed of " + plantName;
-            image = ItemSpriteSheet.SEED_DREAMFOIL;
+			name = "seed of " + plantName;
+			image = ItemSpriteSheet.SEED_DREAMFOIL;
 
-            plantClass = Dreamfoil.class;
-            alchemyClass = PotionOfPurity.class;
-        }
+			plantClass = Dreamfoil.class;
+			alchemyClass = PotionOfPurity.class;
+		}
 
-        @Override
-        public String desc() {
-            return TXT_DESC;
-        }
-    }
+		@Override
+		public String desc() {
+			return TXT_DESC;
+		}
+	}
 }

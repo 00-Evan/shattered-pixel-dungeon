@@ -29,7 +29,7 @@ import com.watabou.utils.Random;
 
 public class FlowParticle extends PixelParticle {
 
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((FlowParticle)emitter.recycle( FlowParticle.class )).reset( x, y );
@@ -100,7 +100,7 @@ public class FlowParticle extends PixelParticle {
 					
 					delay = Random.Float( DELAY );
 					
-					((FlowParticle)recycle( FlowParticle.class )).reset( 
+					((FlowParticle)recycle( FlowParticle.class )).reset(
 						x + Random.Float( DungeonTilemap.SIZE ), y );
 				}
 			}

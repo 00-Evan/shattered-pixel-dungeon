@@ -94,13 +94,13 @@ public class WaterOfAwareness extends WellWater {
 	
 	@Override
 	public void use( BlobEmitter emitter ) {
-		super.use( emitter );	
+		super.use( emitter );
 		emitter.pour( Speck.factory( Speck.QUESTION ), 0.3f );
 	}
 	
 	@Override
 	public String tileDesc() {
-		return 
+		return
 			"Power of knowledge radiates from the water of this well. " +
 			"Take a sip from it to reveal all secrets of equipped items.";
 	}

@@ -25,7 +25,7 @@ public class PotionOfExperience extends Potion {
 		name = "Potion of Experience";
 		initials = "Ex";
 
-        bones = true;
+		bones = true;
 	}
 	
 	@Override

@@ -25,7 +25,7 @@ import com.watabou.utils.Random;
 
 public class EnergyParticle extends PixelParticle {
 	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((EnergyParticle)emitter.recycle( EnergyParticle.class )).reset( x, y );
@@ -59,7 +59,7 @@ public class EnergyParticle extends PixelParticle {
 		super.update();
 		
 		float p = left / lifespan;
-		am = p < 0.5f ? p * p * 4 : (1 - p) * 2; 
+		am = p < 0.5f ? p * p * 4 : (1 - p) * 2;
 		size( Random.Float( 5 * left / lifespan ) );
 	}
 }

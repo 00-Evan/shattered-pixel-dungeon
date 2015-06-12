@@ -25,7 +25,7 @@ import com.watabou.utils.Random;
 
 public class PoisonParticle extends PixelParticle {
 	
-	public static final Emitter.Factory MISSILE = new Factory() {	
+	public static final Emitter.Factory MISSILE = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((PoisonParticle)emitter.recycle( PoisonParticle.class )).resetMissile( x, y );
@@ -36,7 +36,7 @@ public class PoisonParticle extends PixelParticle {
 		};
 	};
 	
-	public static final Emitter.Factory SPLASH = new Factory() {	
+	public static final Emitter.Factory SPLASH = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((PoisonParticle)emitter.recycle( PoisonParticle.class )).resetSplash( x, y );

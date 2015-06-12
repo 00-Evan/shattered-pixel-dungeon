@@ -78,7 +78,7 @@ public class PrisonLevel extends RegularLevel {
 	protected void decorate() {
 		
 		for (int i=WIDTH + 1; i < LENGTH - WIDTH - 1; i++) {
-			if (map[i] == Terrain.EMPTY) { 
+			if (map[i] == Terrain.EMPTY) {
 				
 				float c = 0.05f;
 				if (map[i + 1] == Terrain.WALL && map[i + WIDTH] == Terrain.WALL) {
@@ -101,7 +101,7 @@ public class PrisonLevel extends RegularLevel {
 		}
 		
 		for (int i=0; i < WIDTH; i++) {
-			if (map[i] == Terrain.WALL &&  
+			if (map[i] == Terrain.WALL &&
 				(map[i + WIDTH] == Terrain.EMPTY || map[i + WIDTH] == Terrain.EMPTY_SP) &&
 				Random.Int( 6 ) == 0) {
 				
@@ -110,8 +110,8 @@ public class PrisonLevel extends RegularLevel {
 		}
 		
 		for (int i=WIDTH; i < LENGTH - WIDTH; i++) {
-			if (map[i] == Terrain.WALL && 
-				map[i - WIDTH] == Terrain.WALL && 
+			if (map[i] == Terrain.WALL &&
+				map[i - WIDTH] == Terrain.WALL &&
 				(map[i + WIDTH] == Terrain.EMPTY || map[i + WIDTH] == Terrain.EMPTY_SP) &&
 				Random.Int( 3 ) == 0) {
 				

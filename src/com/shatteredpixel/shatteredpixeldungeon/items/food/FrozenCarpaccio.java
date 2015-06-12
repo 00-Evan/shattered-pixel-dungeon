@@ -40,7 +40,7 @@ public class FrozenCarpaccio extends Food {
 		name = "frozen carpaccio";
 		image = ItemSpriteSheet.CARPACCIO;
 		energy = Hunger.STARVING - Hunger.HUNGRY;
-        hornValue = 1;
+		hornValue = 1;
 	}
 	
 	@Override
@@ -61,13 +61,13 @@ public class FrozenCarpaccio extends Food {
 				break;
 			case 2:
 				GLog.i( "Refreshing!" );
-                Buff.detach( hero, Poison.class );
-                Buff.detach( hero, Cripple.class );
-                Buff.detach( hero, Weakness.class );
-                Buff.detach( hero, Bleeding.class );
-                Buff.detach( hero, Drowsy.class );
-                Buff.detach( hero, Slow.class );
-                Buff.detach( hero, Vertigo.class);
+				Buff.detach( hero, Poison.class );
+				Buff.detach( hero, Cripple.class );
+				Buff.detach( hero, Weakness.class );
+				Buff.detach( hero, Bleeding.class );
+				Buff.detach( hero, Drowsy.class );
+				Buff.detach( hero, Slow.class );
+				Buff.detach( hero, Vertigo.class);
 				break;
 			case 3:
 				GLog.i( "You feel better!" );
@@ -82,7 +82,7 @@ public class FrozenCarpaccio extends Food {
 	
 	@Override
 	public String info() {
-		return 
+		return
 			"It's a piece of frozen raw meat. The only way to eat it is " +
 			"by cutting thin slices of it. And this way it's suprisingly good.";
 	}

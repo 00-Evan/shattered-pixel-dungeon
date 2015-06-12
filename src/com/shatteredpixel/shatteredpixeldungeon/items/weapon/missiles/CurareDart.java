@@ -55,7 +55,7 @@ public class CurareDart extends MissileWeapon {
 	
 	@Override
 	public String desc() {
-		return 
+		return
 			"These little evil darts don't do much damage but they can paralyze " +
 			"the target leaving it helpless and motionless for some time.";
 	}

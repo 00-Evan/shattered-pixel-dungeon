@@ -53,11 +53,11 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		point( DungeonTilemap.tileToWorld( from ) );
 		PointF dest = DungeonTilemap.tileToWorld( to );
 		
-		PointF d = PointF.diff( dest, point() ); 
+		PointF d = PointF.diff( dest, point() );
 		speed.set( d ).normalize().scale( SPEED );
 
 		if (image == ItemSpriteSheet.DART || image == ItemSpriteSheet.INCENDIARY_DART
-                || image == ItemSpriteSheet.CURARE_DART  || image == ItemSpriteSheet.JAVELIN) {
+				|| image == ItemSpriteSheet.CURARE_DART  || image == ItemSpriteSheet.JAVELIN) {
 
 			angularSpeed = 0;
 			angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);

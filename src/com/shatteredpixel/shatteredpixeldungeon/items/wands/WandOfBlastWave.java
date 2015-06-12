@@ -27,9 +27,6 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-/**
- * Created by debenhame on 05/05/2015.
- */
 public class WandOfBlastWave extends Wand {
 
 	{

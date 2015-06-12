@@ -25,7 +25,7 @@ import com.watabou.utils.Random;
 
 public class WoolParticle extends PixelParticle.Shrinking {
 	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((WoolParticle)emitter.recycle( WoolParticle.class )).reset( x, y );

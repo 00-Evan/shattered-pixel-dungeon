@@ -123,18 +123,18 @@ public class CavesBossLevel extends Level {
 			}
 		}
 		
-		Painter.fill( this, ROOM_LEFT - 1, ROOM_TOP - 1, 
+		Painter.fill( this, ROOM_LEFT - 1, ROOM_TOP - 1,
 			ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain.WALL );
-		Painter.fill( this, ROOM_LEFT, ROOM_TOP + 1, 
+		Painter.fill( this, ROOM_LEFT, ROOM_TOP + 1,
 			ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP, Terrain.EMPTY );
 
-		Painter.fill( this, ROOM_LEFT, ROOM_TOP, 
+		Painter.fill( this, ROOM_LEFT, ROOM_TOP,
 			ROOM_RIGHT - ROOM_LEFT + 1, 1, Terrain.INACTIVE_TRAP );
 		
 		arenaDoor = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + (ROOM_BOTTOM + 1) * WIDTH;
 		map[arenaDoor] = Terrain.DOOR;
 		
-		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) + 
+		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) +
 			Random.Int( ROOM_TOP + 1, ROOM_BOTTOM - 1 ) * WIDTH;
 		map[entrance] = Terrain.ENTRANCE;
 		
@@ -149,7 +149,7 @@ public class CavesBossLevel extends Level {
 	}
 	
 	@Override
-	protected void decorate() {	
+	protected void decorate() {
 		
 		for (int i=WIDTH + 1; i < LENGTH - WIDTH; i++) {
 			if (map[i] == Terrain.EMPTY) {
@@ -186,7 +186,7 @@ public class CavesBossLevel extends Level {
 	}
 	
 	@Override
-	protected void createMobs() {	
+	protected void createMobs() {
 	}
 	
 	public Actor respawner() {
@@ -218,7 +218,7 @@ public class CavesBossLevel extends Level {
 		if (!enteredArena && outsideEntraceRoom( cell ) && hero == Dungeon.hero) {
 			
 			enteredArena = true;
-            seal();
+			seal();
 			
 			Mob boss = Bestiary.mob( Dungeon.depth );
 			boss.state = boss.HUNTING;
@@ -246,7 +246,7 @@ public class CavesBossLevel extends Level {
 		if (!keyDropped && item instanceof SkeletonKey) {
 			
 			keyDropped = true;
-            unseal();
+			unseal();
 			
 			CellEmitter.get( arenaDoor ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
 			

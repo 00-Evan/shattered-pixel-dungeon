@@ -44,8 +44,8 @@ public class Invisibility extends FlavourBuff {
 	
 	@Override
 	public void detach() {
-        if (target.invisible > 0)
-		    target.invisible--;
+		if (target.invisible > 0)
+			target.invisible--;
 		super.detach();
 	}
 	
@@ -80,15 +80,15 @@ public class Invisibility extends FlavourBuff {
 		if (buff != null) {
 			buff.detach();
 		}
-        CloakOfShadows.cloakStealth cloakBuff = Dungeon.hero.buff( CloakOfShadows.cloakStealth.class );
-        if (cloakBuff != null) {
-            cloakBuff.act();
-            cloakBuff.detach();
-        }
-        //this isn't a form of invisibilty, but it is meant to dispel at the same time as it.
-        TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
-        if (timeFreeze != null) {
-            timeFreeze.detach();
-        }
+		CloakOfShadows.cloakStealth cloakBuff = Dungeon.hero.buff( CloakOfShadows.cloakStealth.class );
+		if (cloakBuff != null) {
+			cloakBuff.act();
+			cloakBuff.detach();
+		}
+		//this isn't a form of invisibilty, but it is meant to dispel at the same time as it.
+		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
+		if (timeFreeze != null) {
+			timeFreeze.detach();
+		}
 	}
 }

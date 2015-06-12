@@ -32,9 +32,9 @@ import com.watabou.utils.Random;
 
 public class Blindweed extends Plant {
 
-	private static final String TXT_DESC = 
+	private static final String TXT_DESC =
 		"Upon being touched a Blindweed perishes in a bright flash of light. " +
-        "The flash is strong enough to disorient for several seconds.";
+		"The flash is strong enough to disorient for several seconds.";
 	
 	{
 		image = 3;
@@ -46,9 +46,9 @@ public class Blindweed extends Plant {
 		Char ch = Actor.findChar(pos);
 		
 		if (ch != null) {
-            int len = Random.Int( 5, 10 );
+			int len = Random.Int( 5, 10 );
 			Buff.prolong( ch, Blindness.class, len );
-            Buff.prolong( ch, Cripple.class, len );
+			Buff.prolong( ch, Cripple.class, len );
 			if (ch instanceof Mob) {
 				if (((Mob)ch).state == ((Mob)ch).HUNTING) ((Mob)ch).state = ((Mob)ch).WANDERING;
 				((Mob)ch).beckon( Dungeon.level.randomDestination() );

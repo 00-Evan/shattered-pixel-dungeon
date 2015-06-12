@@ -87,12 +87,12 @@ public class DewVial extends Item {
 
 			if (volume > 0) {
 
-                int value = 1 + (Dungeon.depth - 1) / 5;
-                if (hero.heroClass == HeroClass.HUNTRESS) {
-                    value++;
-                }
-                value *= volume;
-                value = (int)Math.max(volume*volume*.01*hero.HT, value);
+				int value = 1 + (Dungeon.depth - 1) / 5;
+				if (hero.heroClass == HeroClass.HUNTRESS) {
+					value++;
+				}
+				value *= volume;
+				value = (int)Math.max(volume*volume*.01*hero.HT, value);
 				int effect = Math.min( hero.HT - hero.HP, value );
 				if (effect > 0) {
 					hero.HP += effect;
@@ -100,7 +100,7 @@ public class DewVial extends Item {
 					hero.sprite.showStatus( CharSprite.POSITIVE, TXT_VALUE, effect );
 				}
 
-                volume = 0;
+				volume = 0;
 
 				hero.spend( TIME_TO_DRINK );
 				hero.busy();
@@ -122,7 +122,7 @@ public class DewVial extends Item {
 		}
 	}
 
-    public void empty() {volume = 0; updateQuickslot();}
+	public void empty() {volume = 0; updateQuickslot();}
 
 	@Override
 	public boolean isUpgradable() {
@@ -156,7 +156,7 @@ public class DewVial extends Item {
 	}
 
 	//removed as people need a bigger distinction to realize the dew vial doesn't revive.
-    /*
+	/*
 	private static final Glowing WHITE = new Glowing( 0xFFFFCC );
 
 	@Override
@@ -174,10 +174,10 @@ public class DewVial extends Item {
 		return
 			"You can store excess dew in this tiny vessel for drinking it later. " +
 			"The more full the vial is, the more each dew drop will heal you. " +
-            "A full vial is as strong as a potion of healing." +
-            "\n\nVials like this one used to be imbued with revival magic, " +
-            "but that power has faded. There still seems to be some residual power " +
-            "left, perhaps a full vial can bless another revival item.";
+			"A full vial is as strong as a potion of healing." +
+			"\n\nVials like this one used to be imbued with revival magic, " +
+			"but that power has faded. There still seems to be some residual power " +
+			"left, perhaps a full vial can bless another revival item.";
 	}
 	
 	@Override

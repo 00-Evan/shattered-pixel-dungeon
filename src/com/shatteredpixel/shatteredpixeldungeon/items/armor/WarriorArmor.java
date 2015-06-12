@@ -41,7 +41,7 @@ public class WarriorArmor extends ClassArmor {
 	private static int LEAP_TIME	= 1;
 	private static int SHOCK_TIME	= 3;
 	
-	private static final String AC_SPECIAL = "HEROIC LEAP"; 
+	private static final String AC_SPECIAL = "HEROIC LEAP";
 	
 	private static final String TXT_NOT_WARRIOR	= "Only warriors can use this armor!";
 	
@@ -91,35 +91,35 @@ public class WarriorArmor extends ClassArmor {
 					cell = route.path.get(route.dist-1);
 
 
-                curUser.HP -= (curUser.HP / 3);
+				curUser.HP -= (curUser.HP / 3);
 				if (curUser.subClass == HeroSubClass.BERSERKER && curUser.HP <= curUser.HT * Fury.LEVEL) {
 					Buff.affect( curUser, Fury.class );
 				}
 				
 
 
-                final int dest = cell;
-                curUser.busy();
-                curUser.sprite.jump(curUser.pos, cell, new Callback() {
-                    @Override
-                    public void call() {
-                        curUser.move(dest);
-                        Dungeon.level.press(dest, curUser);
-                        Dungeon.observe();
+				final int dest = cell;
+				curUser.busy();
+				curUser.sprite.jump(curUser.pos, cell, new Callback() {
+					@Override
+					public void call() {
+						curUser.move(dest);
+						Dungeon.level.press(dest, curUser);
+						Dungeon.observe();
 
-                        for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
-                            Char mob = Actor.findChar(curUser.pos + Level.NEIGHBOURS8[i]);
-                            if (mob != null && mob != curUser) {
-                                Buff.prolong(mob, Paralysis.class, SHOCK_TIME);
-                            }
-                        }
+						for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
+							Char mob = Actor.findChar(curUser.pos + Level.NEIGHBOURS8[i]);
+							if (mob != null && mob != curUser) {
+								Buff.prolong(mob, Paralysis.class, SHOCK_TIME);
+							}
+						}
 
-                        CellEmitter.center(dest).burst(Speck.factory(Speck.DUST), 10);
-                        Camera.main.shake(2, 0.5f);
+						CellEmitter.center(dest).burst(Speck.factory(Speck.DUST), 10);
+						Camera.main.shake(2, 0.5f);
 
-                        curUser.spendAndNext(LEAP_TIME);
-                    }
-                });
+						curUser.spendAndNext(LEAP_TIME);
+					}
+				});
 			}
 		}
 		
