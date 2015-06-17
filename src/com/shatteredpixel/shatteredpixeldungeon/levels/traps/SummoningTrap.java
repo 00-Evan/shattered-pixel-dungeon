@@ -35,9 +35,7 @@ import com.watabou.utils.Random;
 public class SummoningTrap extends Trap {
 
 	private static final float DELAY = 2f;
-	
-	private static final Mob DUMMY = new Mob() {};
-	
+
 	// 0x770088
 	{
 		name = "Summoning trap";
@@ -59,8 +57,6 @@ public class SummoningTrap extends Trap {
 			}
 		}
 
-		// It's complicated here, because these traps can be activated in chain
-
 		ArrayList<Integer> candidates = new ArrayList<>();
 
 		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
@@ -75,17 +71,23 @@ public class SummoningTrap extends Trap {
 		while (nMobs > 0 && candidates.size() > 0) {
 			int index = Random.index( candidates );
 
-			DUMMY.pos = candidates.get( index );
-
 			respawnPoints.add( candidates.remove( index ) );
 			nMobs--;
 		}
 
+		ArrayList<Mob> mobs = new ArrayList<>();
+
 		for (Integer point : respawnPoints) {
 			Mob mob = Bestiary.mob( Dungeon.depth );
 			mob.state = mob.WANDERING;
+			mob.pos = point;
 			GameScene.add( mob, DELAY );
-			ScrollOfTeleportation.appear( mob, point );
+			mobs.add( mob );
+		}
+
+		//important to process the visuals and pressing of cells last, so spawned mobs have a chance to occupy cells first
+		for (Mob mob : mobs){
+			ScrollOfTeleportation.appear(mob, mob.pos);
 		}
 
 	}
