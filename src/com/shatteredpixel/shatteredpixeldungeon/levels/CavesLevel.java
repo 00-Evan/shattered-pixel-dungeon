@@ -89,6 +89,7 @@ public class CavesLevel extends RegularLevel {
 				int corner = (room.left + 1) + (room.top + 1) * WIDTH;
 				if (map[corner - 1] == Terrain.WALL && map[corner - WIDTH] == Terrain.WALL) {
 					map[corner] = Terrain.WALL;
+					traps.remove(corner);
 				}
 			}
 			
@@ -96,6 +97,7 @@ public class CavesLevel extends RegularLevel {
 				int corner = (room.right - 1) + (room.top + 1) * WIDTH;
 				if (map[corner + 1] == Terrain.WALL && map[corner - WIDTH] == Terrain.WALL) {
 					map[corner] = Terrain.WALL;
+					traps.remove(corner);
 				}
 			}
 			
@@ -103,6 +105,7 @@ public class CavesLevel extends RegularLevel {
 				int corner = (room.left + 1) + (room.bottom - 1) * WIDTH;
 				if (map[corner - 1] == Terrain.WALL && map[corner + WIDTH] == Terrain.WALL) {
 					map[corner] = Terrain.WALL;
+					traps.remove(corner);
 				}
 			}
 			
@@ -110,6 +113,7 @@ public class CavesLevel extends RegularLevel {
 				int corner = (room.right - 1) + (room.bottom - 1) * WIDTH;
 				if (map[corner + 1] == Terrain.WALL && map[corner + WIDTH] == Terrain.WALL) {
 					map[corner] = Terrain.WALL;
+					traps.remove(corner);
 				}
 			}
 
