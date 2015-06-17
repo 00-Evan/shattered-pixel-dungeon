@@ -98,7 +98,8 @@ public abstract class Actor implements Bundlable {
 	// **********************
 	// *** Static members ***
 	
-	private static HashSet<Actor> all = new HashSet<Actor>();
+	private static HashSet<Actor> all = new HashSet<>();
+	private static HashSet<Char> chars = new HashSet<>();
 	private static Actor current;
 
 	private static SparseArray<Actor> ids = new SparseArray<Actor>();
@@ -110,6 +111,7 @@ public abstract class Actor implements Bundlable {
 		now = 0;
 
 		all.clear();
+		chars.clear();
 
 		ids.clear();
 	}
@@ -234,6 +236,7 @@ public abstract class Actor implements Bundlable {
 		
 		if (actor instanceof Char) {
 			Char ch = (Char)actor;
+			chars.add( ch );
 			for (Buff buff : ch.buffs()) {
 				all.add( buff );
 				buff.onAdd();
@@ -245,6 +248,7 @@ public abstract class Actor implements Bundlable {
 		
 		if (actor != null) {
 			all.remove( actor );
+			chars.remove( actor );
 			actor.onRemove();
 
 			if (actor.id > 0) {
@@ -254,9 +258,9 @@ public abstract class Actor implements Bundlable {
 	}
 	
 	public static Char findChar( int pos ) {
-		for (Actor actor : all){
-			if (actor instanceof Char && ((Char)actor).pos == pos)
-				return (Char)actor;
+		for (Char ch : chars){
+			if (ch.pos == pos)
+				return ch;
 		}
 		return null;
 	}
@@ -268,4 +272,6 @@ public abstract class Actor implements Bundlable {
 	public static HashSet<Actor> all() {
 		return all;
 	}
+
+	public static HashSet<Char> chars() { return chars; }
 }

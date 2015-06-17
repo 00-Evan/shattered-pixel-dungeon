@@ -717,12 +717,9 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Level.LENGTH );
 		}
 		
-		for (Actor actor : Actor.all()) {
-			if (actor instanceof Char) {
-				int pos = ((Char)actor).pos;
-				if (visible[pos]) {
-					passable[pos] = false;
-				}
+		for (Char c : Actor.chars()) {
+			if (visible[c.pos]) {
+				passable[c.pos] = false;
 			}
 		}
 		
@@ -738,12 +735,9 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Level.LENGTH );
 		}
 		
-		for (Actor actor : Actor.all()) {
-			if (actor instanceof Char) {
-				int pos = ((Char)actor).pos;
-				if (visible[pos]) {
-					passable[pos] = false;
-				}
+		for (Char c : Actor.chars()) {
+			if (visible[c.pos]) {
+				passable[c.pos] = false;
 			}
 		}
 		passable[cur] = true;

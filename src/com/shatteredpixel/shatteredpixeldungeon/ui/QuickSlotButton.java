@@ -164,7 +164,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		targeting = lastTarget != null && lastTarget.isAlive() && Dungeon.visible[lastTarget.pos];
 		
 		if (targeting) {
-			if (Actor.all().contains( lastTarget )) {
+			if (Actor.chars().contains( lastTarget )) {
 				lastTarget.sprite.parent.add( crossM );
 				crossM.point( DungeonTilemap.tileToWorld( lastTarget.pos ) );
 				crossB.x = PixelScene.align( x + (width - crossB.width) / 2 );

@@ -170,10 +170,8 @@ public class King extends Mob {
 		Sample.INSTANCE.play( Assets.SND_CHALLENGE );
 		
 		boolean[] passable = Level.passable.clone();
-		for (Actor actor : Actor.all()) {
-			if (actor instanceof Char) {
-				passable[((Char)actor).pos] = false;
-			}
+		for (Char c : Actor.chars()) {
+			passable[c.pos] = false;
 		}
 		
 		int undeadsToSummon = maxArmySize() - Undead.count;
