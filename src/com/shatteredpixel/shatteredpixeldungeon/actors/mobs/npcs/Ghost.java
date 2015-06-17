@@ -467,18 +467,14 @@ public class Ghost extends NPC {
 
 		@Override
 		protected boolean canAttack( Char enemy ) {
-			Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE );
-			if (!Level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos){
-				combo++;
-				return true;
-			} else {
-				return false;
-			}
+			Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
+			return !Level.adjacent( pos, enemy.pos ) && attack.collisionPos == enemy.pos;
 		}
 
 		@Override
 		public int attackProc( Char enemy, int damage ) {
 			//The gnoll's attacks get more severe the more the player lets it hit them
+			combo++;
 			int effect = Random.Int(4)+combo;
 
 			if (effect > 2) {
@@ -499,8 +495,8 @@ public class Ghost extends NPC {
 		@Override
 		protected boolean getCloser( int target ) {
 			combo = 0; //if he's moving, he isn't attacking, reset combo.
-			if (enemy != null && Level.adjacent(pos, enemy.pos)) {
-				return getFurther( target );
+			if (state == HUNTING) {
+				return enemySeen && getFurther( target );
 			} else {
 				return super.getCloser( target );
 			}
