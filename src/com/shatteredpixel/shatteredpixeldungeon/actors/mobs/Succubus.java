@@ -113,8 +113,10 @@ public class Succubus extends Mob {
 			}
 			if (candidates.size() > 0)
 				cell = Random.element(candidates);
-			else
+			else {
+				delay = BLINK_DELAY;
 				return;
+			}
 		}
 		
 		ScrollOfTeleportation.appear( this, cell );
