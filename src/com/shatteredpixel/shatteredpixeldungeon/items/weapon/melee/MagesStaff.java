@@ -119,7 +119,7 @@ public class MagesStaff extends MeleeWeapon {
 	@Override
 	public void proc(Char attacker, Char defender, int damage) {
 		if (wand != null && Dungeon.hero.subClass == HeroSubClass.BATTLEMAGE) {
-			wand.partialCharge += 0.33f;
+			if (wand.curCharges < wand.maxCharges) wand.partialCharge += 0.33f;
 			ScrollOfRecharging.charge((Hero)attacker);
 			wand.onHit(this, attacker, defender, damage);
 		}
