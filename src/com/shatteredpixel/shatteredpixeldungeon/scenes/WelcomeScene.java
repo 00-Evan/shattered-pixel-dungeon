@@ -50,7 +50,8 @@ public class WelcomeScene extends PixelScene {
 			"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-			"v0.3.0d:\n" +
+			"v0.3.0e & v0.3.0d:\n" +
+					"- Performance improvements\n" +
 					"- Various bugfixes\n" +
 					"\n" +
 					"v0.3.0c:\n" +
