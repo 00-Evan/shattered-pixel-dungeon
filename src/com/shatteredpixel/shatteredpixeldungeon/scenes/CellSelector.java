@@ -20,10 +20,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.TouchArea;
-import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 

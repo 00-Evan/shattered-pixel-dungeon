@@ -28,9 +28,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.SystemTime;

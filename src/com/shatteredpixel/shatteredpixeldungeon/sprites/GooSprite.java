@@ -26,7 +26,6 @@ import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 
 public class GooSprite extends MobSprite {
