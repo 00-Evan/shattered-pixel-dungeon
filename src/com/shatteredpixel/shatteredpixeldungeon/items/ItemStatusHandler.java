@@ -96,7 +96,8 @@ public class ItemStatusHandler<T extends Item> {
 			Class<? extends T> item = (Class<? extends T>)(items[i]);
 			String itemName = item.toString();
 			
-			if (bundle.contains( itemName + PFX_LABEL ) && Dungeon.version > 4) {
+//			if (bundle.contains( itemName + PFX_LABEL ) && Dungeon.version > 4) {
+			if (bundle.contains(itemName + PFX_LABEL)){
 				
 				String label = bundle.getString( itemName + PFX_LABEL );
 				labels.put( item, label );
