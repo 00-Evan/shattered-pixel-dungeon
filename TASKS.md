@@ -14,6 +14,7 @@ Things have to be fixed
 - [ ] traps respawn on reentering a floor (maybe fixed)
 - [ ] new sprite for ghost needed
 - [ ] trap sprites for floors 1 to 5 have to be changed in traps.png
+- [ ] take icon of pd-ice or rework the color of the shattered-pixel-dungeon icon
 - [ ] it can be that there are doors next to the entrance
 - [ ] test the app without preset openglconfig and look what is different
 
