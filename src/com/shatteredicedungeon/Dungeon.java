@@ -309,6 +309,8 @@ public class Dungeon {
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 
 		//logic for pre 0.3.0 saves, need to give mages a staff.
+		// not necessary, because of starting with 0.3.0 source but with version 0.0.1
+		/*
 		if (Dungeon.version <= 38 && Dungeon.hero.heroClass == HeroClass.MAGE){
 			MagesStaff staff = new MagesStaff();
 			staff.identify();
@@ -316,7 +318,7 @@ public class Dungeon {
 				Dungeon.level.drop(staff, Dungeon.hero.pos);
 			}
 		}
-		
+		*/
 		observe();
 		try {
 			saveAll();

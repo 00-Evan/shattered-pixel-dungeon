@@ -5,11 +5,11 @@ A list of all currently changed things:
 - [x] the function which causes the sad ghost to be barely visible (nearly invisible with the current tileset) was removed from com/shatteredpixel/shatteredicepixeldungeon/sprites/GhostSprite.java
 - [x] added a function to switch to reverse landscape (available since android api level 9)
 - [x] fixed a bug which caused the game to choose new sprites for rings, potions and scrolls every time a saved game was loaded
+- [x] mage gains a MagesStaff everytime loading the game (fixed)
 
 Things have to be fixed
 ============
 - [ ] traps respawn on reentering a floor
-- [ ] mage gains a MagesStaff everytime loading the game
 - [ ] new sprite for ghost needed
 - [ ] trap sprites for floors 1 to 5 have to be changed in traps.png
 - [ ] it can be that there are doors next to the entrance
