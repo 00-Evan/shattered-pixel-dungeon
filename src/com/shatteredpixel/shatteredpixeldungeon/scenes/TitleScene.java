@@ -155,12 +155,20 @@ public class TitleScene extends PixelScene {
 		source.x = w - source.width();
 		source.y = h - source.height();
 		add( source );
+		
+		BitmapText sourceShattered = new BitmapText("Shattered PD v 0.3.0d", font1x);
+		sourceShattered.measure();
+		sourceShattered.hardlight(0x00FF00);
+		sourceShattered.x = w -sourceShattered.width();
+		sourceShattered.y = h - sourceShattered.height() - source.height();
+		add(sourceShattered);
 
-		BitmapText version = new BitmapText( "v " + Game.version + "", font1x );
+		BitmapText version = new BitmapText( "ice PD v " + Game.version + "", font1x );
 		version.measure();
-		version.hardlight( 0xCCCCCC );
+//		version.hardlight( 0xCCCCCC );
+		version.hardlight(0x00FFFF);
 		version.x = w - version.width();
-		version.y = h - version.height() - source.height();
+		version.y = h - version.height() - sourceShattered.height() - source.height();
 
 		add( version );
 		
