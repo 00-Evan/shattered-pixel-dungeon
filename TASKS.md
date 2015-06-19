@@ -6,8 +6,8 @@ A list of all currently changed things:
 - [x] added a function to switch to reverse landscape (available since android api level 9)
 - [x] fixed a bug which caused the game to choose new sprites for rings, potions and scrolls every time a saved game was loaded
 - [x] mage gains a MagesStaff everytime loading the game (fixed)
-- [x] on the floors 1 to 5 potion of mind vision disables the heros field of view, you can only see the small region around the enemys (should be fixed)
-- [x] also on the floors 1 to 5: the heros field of view is also disablen in the gardens, also what you see from the garden will be only updated if you exit the room, wait for the end of the gardens effect and then reenter the garden (should be fixed)
+- [x] on the floors 1 to 5 potion of mind vision disables the heros field of view, you can only see the small region around the enemys (looks like it is fixed)
+- [x] also on the floors 1 to 5: the heros field of view is also disablen in the gardens, also what you see from the garden will be only updated if you exit the room, wait for the end of the gardens effect and then reenter the garden (looks like it is fixed)
 
 Things have to be fixed
 ============

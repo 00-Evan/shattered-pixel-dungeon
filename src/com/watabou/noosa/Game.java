@@ -264,6 +264,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer,
 		return instance.scene;
 	}
 
+	@SuppressLint("NewApi")
 	protected void step() {
 
 		if (requestedReset) {
