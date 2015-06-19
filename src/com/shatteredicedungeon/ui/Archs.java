@@ -31,9 +31,14 @@ public class Archs extends Component {
 
 	private SkinnedBlock arcsBg;
 	private SkinnedBlock arcsFg;
+	
+    private SkinnedBlock arcsSn;
+    private SkinnedBlock arcsSn2;
 
 	private static float offsB = 0;
 	private static float offsF = 0;
+    private static float offsSn = 0;
+    private static float offsSn2 = 0;
 
 	public boolean reversed = false;
 
@@ -46,6 +51,14 @@ public class Archs extends Component {
 		arcsFg = new SkinnedBlock( 1, 1, Assets.ARCS_FG );
 		arcsFg.offsetTo( 0,  offsF );
 		add( arcsFg );
+
+        arcsSn = new SkinnedBlock( 1, 1, Assets.ARCS_SN );
+        arcsSn.offsetTo( 0,  offsSn );
+        add( arcsSn );
+
+        arcsSn2 = new SkinnedBlock( 1, 1, Assets.ARCS_SN );
+        arcsSn2.offsetTo( 0,  offsSn2 );
+        add( arcsSn2 );
 	}
 
 	@Override
@@ -55,6 +68,12 @@ public class Archs extends Component {
 
 		arcsFg.size( width, height );
 		arcsFg.offset( arcsFg.texture.width / 4 - (width % arcsFg.texture.width) / 2, 0 );
+
+        arcsSn.size(width, height);
+        arcsSn.offset(arcsSn.texture.width / 4 - (width % arcsSn.texture.width) / 2, 0);
+
+        arcsSn2.size(width, height);
+        arcsSn2.offset(arcsSn2.texture.width / 4 - (width % arcsSn2.texture.width) / 2, 0);
 	}
 
 	@Override
@@ -69,8 +88,13 @@ public class Archs extends Component {
 
 		arcsBg.offset( 0, shift );
 		arcsFg.offset( 0, shift * 2 );
+        arcsSn.offset( 0, shift * -2 );
+        arcsSn2.offset( shift * -1 , shift * -1 );
 
 		offsB = arcsBg.offsetY();
 		offsF = arcsFg.offsetY();
+        offsSn = arcsSn.offsetY();
+        offsSn2 = arcsSn.offsetY();
+        offsSn = arcsSn.offsetX();
 	}
 }

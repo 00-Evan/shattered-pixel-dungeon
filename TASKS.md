@@ -8,10 +8,10 @@ A list of all currently changed things:
 - [x] mage gains a MagesStaff everytime loading the game (fixed)
 - [x] on the floors 1 to 5 potion of mind vision disables the heros field of view, you can only see the small region around the enemys (looks like it is fixed)
 - [x] also on the floors 1 to 5: the heros field of view is also disablen in the gardens, also what you see from the garden will be only updated if you exit the room, wait for the end of the gardens effect and then reenter the garden (looks like it is fixed)
+- [x] take all changed sprites from pd-ice (done)
 
 Things have to be fixed
 ============
-- [ ] take all changed sprites from pd-ice
 - [ ] traps respawn on reentering a floor (maybe fixed)
 - [ ] new sprite for ghost needed
 - [ ] trap sprites for floors 1 to 5 have to be changed in traps.png
