@@ -292,7 +292,6 @@ public class Dungeon {
 		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void switchLevel( final Level level, int pos ) {
 		
 		Dungeon.level = level;
@@ -391,9 +390,9 @@ public class Dungeon {
 	private static final String BADGES		= "badges";
 
 	//TODO: to support pre-0.2.3 saves, remove when needed
-	private static final String POS			= "potionsOfStrength";
-	private static final String SOU			= "scrollsOfEnhancement";
-	private static final String AS			= "arcaneStyli";
+//	private static final String POS			= "potionsOfStrength";
+//	private static final String SOU			= "scrollsOfEnhancement";
+//	private static final String AS			= "arcaneStyli";
 	
 	public static String gameFile( HeroClass cl ) {
 		switch (cl) {
@@ -552,29 +551,29 @@ public class Dungeon {
 			transmutation = bundle.getInt( WT );
 
 			//TODO: adjust this when dropping support for pre-0.2.3 saves
-			if (bundle.contains( LIMDROPS )) {
-				int[] dropValues = bundle.getIntArray(LIMDROPS);
-				for (limitedDrops value : limitedDrops.values())
-					value.count = value.ordinal() < dropValues.length ?
-							dropValues[value.ordinal()] : 0;
-			} else {
-				for (limitedDrops value : limitedDrops.values())
-					value.count = 0;
-				limitedDrops.strengthPotions.count = bundle.getInt(POS);
-				limitedDrops.upgradeScrolls.count = bundle.getInt(SOU);
-				limitedDrops.arcaneStyli.count = bundle.getInt(AS);
-			}
+//			if (bundle.contains( LIMDROPS )) {
+//				int[] dropValues = bundle.getIntArray(LIMDROPS);
+//				for (limitedDrops value : limitedDrops.values())
+//					value.count = value.ordinal() < dropValues.length ?
+//							dropValues[value.ordinal()] : 0;
+//			} else {
+//				for (limitedDrops value : limitedDrops.values())
+//					value.count = 0;
+//				limitedDrops.strengthPotions.count = bundle.getInt(POS);
+//				limitedDrops.upgradeScrolls.count = bundle.getInt(SOU);
+//				limitedDrops.arcaneStyli.count = bundle.getInt(AS);
+//			}
 			//for pre-0.2.4 saves
-			if (bundle.getBoolean(DV)) limitedDrops.dewVial.drop();
-
-			chapters = new HashSet<Integer>();
-			int ids[] = bundle.getIntArray( CHAPTERS );
-			if (ids != null) {
-				for (int id : ids) {
-					chapters.add( id );
-				}
-			}
-			
+//			if (bundle.getBoolean(DV)) limitedDrops.dewVial.drop();
+//
+//			chapters = new HashSet<Integer>();
+//			int ids[] = bundle.getIntArray( CHAPTERS );
+//			if (ids != null) {
+//				for (int id : ids) {
+//					chapters.add( id );
+//				}
+//			}
+//			
 			Bundle quests = bundle.getBundle( QUESTS );
 			if (!quests.isNull()) {
 				Ghost.Quest.restoreFromBundle( quests );
@@ -620,12 +619,12 @@ public class Dungeon {
 		}
 
 		//logic for pre 0.2.4 bags, remove when no longer supporting those saves.
-		if (version <= 32){
-			int deepest = Statistics.deepestFloor;
-			if (deepest > 15) limitedDrops.wandBag.count = 1;
-			if (deepest > 10) limitedDrops.scrollBag.count = 1;
-			if (deepest > 5)  limitedDrops.seedBag.count = 1;
-		}
+//		if (version <= 32){
+//			int deepest = Statistics.deepestFloor;
+//			if (deepest > 15) limitedDrops.wandBag.count = 1;
+//			if (deepest > 10) limitedDrops.scrollBag.count = 1;
+//			if (deepest > 5)  limitedDrops.seedBag.count = 1;
+//		}
 	}
 	
 	public static Level loadLevel( HeroClass cl ) throws IOException {

@@ -134,6 +134,7 @@ public class Terrain {
 
 	//converts terrain values from pre versioncode 44 (0.3.0c) saves
 	//TODO: remove when no longer supporting saves from 0.3.0b and under
+	/*
 	public static int[] convertTrapsFrom43( int[] map, SparseArray<Trap> traps){
 		for (int i = 0; i < map.length; i++){
 
@@ -198,6 +199,6 @@ public class Terrain {
 		}
 		return map;
 	}
-
+*/
 
 }

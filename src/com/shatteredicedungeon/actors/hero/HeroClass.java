@@ -156,6 +156,10 @@ public enum HeroClass {
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
 
+		PotionOfMindVision mind = new PotionOfMindVision();
+		mind.identify().quantity(10);
+		mind.collect();
+		
 		Dungeon.quickslot.setSlot(0, staff);
 
 		new ScrollOfUpgrade().setKnown();
