@@ -11,6 +11,7 @@ A list of all currently changed things:
 
 Things have to be fixed
 ============
+- [ ] take all changed sprites from pd-ice
 - [ ] traps respawn on reentering a floor (maybe fixed)
 - [ ] new sprite for ghost needed
 - [ ] trap sprites for floors 1 to 5 have to be changed in traps.png
