@@ -1,16 +1,16 @@
-Pixel Dungeon
-=============
+Shattered Pixel Dungeon
+=======================
 
-Traditional roguelike game with pixel-art graphics and simple interface.
+Fork of Pixel Dungeon, a traditional roguelike game with pixel-art graphics and simple interface.
 
-Pixel Dungeon on GooglePlay: 
-https://play.google.com/store/apps/details?id=com.watabou.pixeldungeon
+Shattered Pixel Dungeon on Google Play:
+https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon
 
 Official web-site: 
-http://pixeldungeon.watabou.ru/
+http://www.shatteredpixel.com
 
 Developer's blog: 
-http://pixeldungeon.tumblr.com/
+http://shatteredpixel.tumblr.com/
 
-To build the game you will need my unnamed game library:
-https://github.com/watabou/PD-classes
+To build the game you will need my modified PD-classes library:
+https://github.com/00-Evan/PD-classes
