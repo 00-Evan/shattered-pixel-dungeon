@@ -34,6 +34,27 @@ public class TrapSprite extends Image {
 
 	private int pos = -1;
 
+	//trap colors
+	public static final int RED     = 0;
+	public static final int ORANGE  = 1;
+	public static final int YELLOW  = 2;
+	public static final int GREEN   = 3;
+	public static final int TEAL    = 4;
+	public static final int VIOLET  = 5;
+	public static final int WHITE   = 6;
+	public static final int GREY    = 7;
+	public static final int BLACK   = 8;
+
+	//trap shapes
+	public static final int DOTS        = 0;
+	public static final int WAVES       = 1;
+	public static final int GRILL       = 2;
+	public static final int STARS       = 3;
+	public static final int DIAMOND     = 4;
+	public static final int CROSSHAIR   = 5;
+	public static final int LARGE_DOT   = 6;
+
+
 	public TrapSprite() {
 		super( Assets.TRAPS );
 
@@ -53,7 +74,7 @@ public class TrapSprite extends Image {
 
 		revive();
 
-		reset( trap.image + (((Dungeon.depth-1) / 5) * 8) );
+		reset( trap.color + (trap.shape * 16) );
 		alpha( 1f );
 
 		pos = trap.pos;

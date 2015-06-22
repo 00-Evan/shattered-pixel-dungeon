@@ -28,7 +28,7 @@ public class WndInfoTrap extends WndTitledMessage {
 
 	public WndInfoTrap(Trap trap) {
 
-		super(new TrapSprite( trap.image + (((Dungeon.depth-1) / 5) * 8) ), trap.name, trap.desc());
+		super(new TrapSprite( trap.color + (trap.shape * 16) ), trap.name, trap.desc());
 
 	}
 

@@ -20,10 +20,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -31,10 +31,10 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class AlarmTrap extends Trap {
 
-	// 0xDD3333
 	{
 		name = "Alarm trap";
-		image = 4;
+		color = TrapSprite.RED;
+		shape = TrapSprite.DOTS;
 	}
 
 	@Override
@@ -50,5 +50,11 @@ public class AlarmTrap extends Trap {
 		}
 
 		Sample.INSTANCE.play( Assets.SND_ALERT );
+	}
+
+	@Override
+	public String desc() {
+		return "This trap seems to be tied to a loud alarm mechanism. " +
+				"Triggering it will likely alert everything on the level.";
 	}
 }

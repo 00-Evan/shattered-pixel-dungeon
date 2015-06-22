@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
@@ -39,7 +40,8 @@ public class LightningTrap extends Trap {
 
 	{
 		name = "Lightning trap";
-		image = 5;
+		color = TrapSprite.TEAL;
+		shape = TrapSprite.CROSSHAIR;
 	}
 
 	@Override
@@ -72,5 +74,11 @@ public class LightningTrap extends Trap {
 	//FIXME: this is bad, handle when you rework resistances, make into a category
 	public static final Electricity LIGHTNING = new Electricity();
 	public static class Electricity {
+	}
+
+	@Override
+	public String desc() {
+		return "A mechanism with a large amount of energy stored into it. " +
+				"Triggering the trap will discharge that energy into whever is nearby.";
 	}
 }

@@ -35,7 +35,9 @@ public abstract class Trap implements Bundlable {
 
 	public String name;
 
-	public int image;
+	public int color;
+	public int shape;
+
 	public int pos;
 
 	public TrapSprite sprite;

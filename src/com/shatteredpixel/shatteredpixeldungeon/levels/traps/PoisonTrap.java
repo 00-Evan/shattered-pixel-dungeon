@@ -27,13 +27,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class PoisonTrap extends Trap{
 
-	// 0xBB66EE
 	{
 		name = "Poison trap";
-		image = 3;
+		color = TrapSprite.VIOLET;
+		shape = TrapSprite.CROSSHAIR;
 	}
 
 	@Override
@@ -47,5 +48,10 @@ public class PoisonTrap extends Trap{
 
 		CellEmitter.center( pos ).burst( PoisonParticle.SPLASH, 3 );
 
+	}
+
+	@Override
+	public String desc() {
+		return "A small dart-blower must be hidden nearby, activating this trap will cause it to shoot a pointed dart at you.";
 	}
 }

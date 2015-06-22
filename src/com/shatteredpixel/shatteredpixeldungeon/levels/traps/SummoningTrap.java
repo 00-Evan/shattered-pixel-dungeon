@@ -30,16 +30,17 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.utils.Random;
 
 public class SummoningTrap extends Trap {
 
 	private static final float DELAY = 2f;
 
-	// 0x770088
 	{
 		name = "Summoning trap";
-		image = 7;
+		color = TrapSprite.TEAL;
+		shape = TrapSprite.WAVES;
 	}
 
 	@Override
@@ -90,5 +91,10 @@ public class SummoningTrap extends Trap {
 			ScrollOfTeleportation.appear(mob, mob.pos);
 		}
 
+	}
+
+	@Override
+	public String desc() {
+		return "Triggering this trap will summon a number of monsters from the surrounding floors to this location.";
 	}
 }

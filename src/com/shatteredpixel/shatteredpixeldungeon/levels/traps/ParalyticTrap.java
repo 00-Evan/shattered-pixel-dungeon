@@ -21,17 +21,17 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class ParalyticTrap extends Trap{
 
-	// 0xCCCC55
 	{
 		name = "Paralytic gas trap";
-		image = 2;
+		color = TrapSprite.YELLOW;
+		shape = TrapSprite.GRILL;
 	}
 
 	@Override
@@ -39,5 +39,10 @@ public class ParalyticTrap extends Trap{
 
 		GameScene.add( Blob.seed( pos, 80 + 5 * Dungeon.depth, ParalyticGas.class ) );
 
+	}
+
+	@Override
+	public String desc() {
+		return "Triggering this trap will set a cloud of paralytic gas loose within the surrounding area.";
 	}
 }
