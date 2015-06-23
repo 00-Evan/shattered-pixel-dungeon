@@ -50,7 +50,7 @@ public abstract class Trap implements Bundlable {
 
 	public Trap reveal() {
 		visible = true;
-		if (sprite != null) {
+		if (sprite != null && sprite.visible == false) {
 			sprite.visible = true;
 			sprite.alpha( 0 );
 			sprite.parent.add( new AlphaTweener( sprite, 1, 0.6f));
