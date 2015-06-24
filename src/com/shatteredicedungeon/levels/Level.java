@@ -398,7 +398,7 @@ public abstract class Level implements Bundlable {
 	private void adjustMapSize() {
 		// For levels saved before 1.6.3
 		// Seeing as shattered started on 1.7.1 this is never used, but the code
-		// may be resused in future.
+		// may be reused in future.
 		if (map.length < LENGTH) {
 
 			resizingNeeded = true;

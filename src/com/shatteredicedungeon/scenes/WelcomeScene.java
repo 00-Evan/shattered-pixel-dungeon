@@ -210,17 +210,17 @@ public class WelcomeScene extends PixelScene {
 			protected void onClick() {
 
 
-				if (gameversion <= 32){
-					//removes all bags bought badge from pre-0.2.4 saves.
-					Badges.disown(Badges.Badge.ALL_BAGS_BOUGHT);
-					Badges.saveGlobal();
-
-					//imports new ranking data for pre-0.2.3 saves.
-					if (gameversion <= 29){
-						Rankings.INSTANCE.load();
-						Rankings.INSTANCE.save();
-					}
-				}
+//				if (gameversion <= 32){
+//					//removes all bags bought badge from pre-0.2.4 saves.
+//					Badges.disown(Badges.Badge.ALL_BAGS_BOUGHT);
+//					Badges.saveGlobal();
+//
+//					//imports new ranking data for pre-0.2.3 saves.
+//					if (gameversion <= 29){
+//						Rankings.INSTANCE.load();
+//						Rankings.INSTANCE.save();
+//					}
+//				}
 
 				ShatteredIceDungeon.version(Game.versionCode);
 				Game.switchScene(TitleScene.class);
