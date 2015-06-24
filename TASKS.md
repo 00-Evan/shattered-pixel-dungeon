@@ -7,17 +7,20 @@ A list of all currently changed things:
 - [x] fixed a bug which caused the game to choose new sprites for rings, potions and scrolls every time a saved game was loaded
 - [x] mage gains a MagesStaff everytime loading the game (fixed)
 - [x] on the floors 1 to 5 potion of mind vision disables the heros field of view, you can only see the small region around the enemys (looks like it is fixed)
-- [x] also on the floors 1 to 5: the heros field of view is also disablen in the gardens, also what you see from the garden will be only updated if you exit the room, wait for the end of the gardens effect and then reenter the garden (looks like it is fixed)
+- [x] also on the floors 1 to 5: the heros field of view is also disabled in the gardens, also what you see from the garden will be only updated if you exit the room, wait for the end of the gardens effect and then reenter the garden (looks like it is fixed)
 - [x] take all changed sprites from pd-ice (done)
+- [x] traps respawn on reentering a floor (fixed)
 
 Things have to be fixed
 ============
-- [ ] traps respawn on reentering a floor (maybe fixed)
 - [ ] new sprite for ghost needed
 - [ ] trap sprites for floors 1 to 5 have to be changed in traps.png
 - [ ] take icon of pd-ice or rework the color of the shattered-pixel-dungeon icon
 - [ ] it can be that there are doors next to the entrance
 - [ ] test the app without preset openglconfig and look what is different
+
+- [ ] something which was changed according to remove the field of view bug and the bug of changing item sprites causes the game to crash if loading saved games after completely restarting the app. Currently the only way to handle this, is to start a new run with another character first and then loading the old game you wanted to play.
+- [ ] will release a new branch with a fix for this, but it is not the best solution (again taking the shattered-pixel-dungeon source code and starting with the same version then shattered currently is).
 
 
 Reverse landscape:
