@@ -1008,9 +1008,8 @@ public class Hero extends Char {
 		
 		if (step != -1) {
 
-			int oldPos = pos;
+			sprite.move(pos, step);
 			move(step);
-			sprite.move(oldPos, pos);
 			spend( 1 / speed() );
 			
 			return true;
