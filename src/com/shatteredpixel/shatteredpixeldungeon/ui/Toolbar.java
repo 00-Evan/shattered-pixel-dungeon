@@ -54,110 +54,149 @@ public class Toolbar extends Component {
 
 	private Tool btnWait;
 	private Tool btnSearch;
-	private Tool btnInfo;
-	private Tool btnResume;
 	private Tool btnInventory;
-	private Tool btnQuick;
-	private Tool btnQuick2;
+	private Tool[] btnQuick;
 
-	public static int QuickSlots;
+	public static int slots;
+	public static boolean flipped;
 	
 	private PickedUpItem pickedUp;
 	
 	private boolean lastEnabled = true;
+	private static boolean examining = false;
 	
 	public Toolbar() {
 		super();
 
-		QuickSlots = ShatteredPixelDungeon.quickSlots();
-		
+		slots = ShatteredPixelDungeon.quickSlots();
+		flipped = ShatteredPixelDungeon.flippedUI();
+
 		height = btnInventory.height();
 	}
 	
 	@Override
 	protected void createChildren() {
 		
-		add( btnWait = new Tool( 0, 7, 20, 25 ) {
+		add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
 			protected void onClick() {
-				Dungeon.hero.rest( false );
-			};
-			protected boolean onLongClick() {
-				Dungeon.hero.rest( true );
-				return true;
-			};
-		} );
-		
-		add( btnSearch = new Tool( 20, 7, 20, 25 ) {
-			@Override
-			protected void onClick() {
-				Dungeon.hero.search( true );
+				Dungeon.hero.rest(false);
 			}
-		} );
-		
-		add( btnInfo = new Tool( 40, 7, 21, 25 ) {
-			@Override
-			protected void onClick() {
-				GameScene.selectCell( informer );
-			}
-		} );
 
-		/*
-		add( btnResume = new Tool( 61, 7, 21, 24 ) {
-			@Override
-			protected void onClick() {
-				Dungeon.hero.resume();
-			}
-		} );
-		*/
-		
-		add( btnInventory = new Tool( 82, 7, 23, 25 ) {
-			private GoldIndicator gold;
-			@Override
-			protected void onClick() {
-				GameScene.show( new WndBag( Dungeon.hero.belongings.backpack, null, WndBag.Mode.ALL, null ) );
-			}
+			;
+
 			protected boolean onLongClick() {
-				GameScene.show( new WndCatalogus() );
+				Dungeon.hero.rest(true);
 				return true;
-			};
+			}
+
+			;
+		});
+		
+		add(btnSearch = new Tool(44, 0, 20, 26) {
+			@Override
+			protected void onClick() {
+				if (!examining) {
+					GameScene.selectCell(informer);
+					examining = true;
+				} else {
+					informer.onSelect(null);
+					Dungeon.hero.search(true);
+				}
+			}
+
+			protected boolean onLongClick() {
+				Dungeon.hero.search(true);
+				return true;
+			}
+		});
+
+		btnQuick = new Tool[4];
+
+		add( btnQuick[3] = new QuickslotTool( 64, 0, 22, 24, 3) );
+
+		add( btnQuick[2] = new QuickslotTool( 64, 0, 22, 24, 2) );
+
+		add(btnQuick[1] = new QuickslotTool(64, 0, 22, 24, 1));
+
+		add(btnQuick[0] = new QuickslotTool(64, 0, 22, 24, 0));
+		
+		add(btnInventory = new Tool(0, 0, 24, 26) {
+			private GoldIndicator gold;
+
+			@Override
+			protected void onClick() {
+				GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null, WndBag.Mode.ALL, null));
+			}
+
+			protected boolean onLongClick() {
+				GameScene.show(new WndCatalogus());
+				return true;
+			}
+
+			;
+
 			@Override
 			protected void createChildren() {
 				super.createChildren();
 				gold = new GoldIndicator();
-				add( gold );
-			};
+				add(gold);
+			}
+
+			;
+
 			@Override
 			protected void layout() {
 				super.layout();
-				gold.fill( this );
-			};
-		} );
-		
-		add( btnQuick = new QuickslotTool( 105, 7, 22, 25, 0) );
+				gold.fill(this);
+			}
 
-		btnQuick2 = new QuickslotTool( 105, 7, 22, 25, 1);
-		
-		add( pickedUp = new PickedUpItem() );
+			;
+		});
+
+		add(pickedUp = new PickedUpItem());
 	}
 	
 	@Override
 	protected void layout() {
-		btnWait.setPos( x, y );
-		btnSearch.setPos( btnWait.right(), y );
-		btnInfo.setPos( btnSearch.right(), y );
-		//btnResume.setPos( btnInfo.right(), y );
-		btnQuick.setPos( width - btnQuick.width(), y );
-		btnQuick2.setPos( btnQuick.left() - btnQuick2.width(), y );
-		if (QuickSlots == 2){
-			add(btnQuick2);
-			btnQuick2.visible = btnQuick2.active = true;
-			btnInventory.setPos( btnQuick2.left() - btnInventory.width(), y );
+
+
+		int[] visible = new int[4];
+
+		for(int i = 0; i <= 3; i++)
+			visible[i] = (int)((slots > i) ? y+2 : y+25);
+
+		for(int i = 0; i <= 3; i++)
+			btnQuick[i].visible = slots > i;
+
+		if (!flipped) {
+			btnWait.setPos(x, y);
+			btnSearch.setPos(btnWait.right(), y);
+
+			btnInventory.setPos(width - btnInventory.width(), y);
+
+			int ofs = (slots == 4 && btnInventory.left() - btnSearch.right() < 90) ? 2 : 0;
+
+			btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width() + ofs, visible[0]);
+			btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width() + ofs, visible[1]);
+			btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width() + ofs, visible[2]);
+			btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width() + ofs, visible[3]);
 		} else {
-			remove(btnQuick2);
-			btnQuick2.visible = btnQuick2.active = false;
-			btnInventory.setPos( btnQuick.left() - btnInventory.width(), y );
+			btnWait.setPos(width - btnWait.width(), y);
+			btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
+
+			btnInventory.setPos(x, y);
+
+			int ofs = (slots == 4 && btnSearch.left() - btnInventory.right() < 90) ? 2 : 0;
+
+			btnQuick[0].setPos(btnInventory.right() - ofs, visible[0]);
+			btnQuick[1].setPos(btnQuick[0].right() - ofs, visible[1]);
+			btnQuick[2].setPos(btnQuick[1].right() - ofs, visible[2]);
+			btnQuick[3].setPos(btnQuick[2].right() - ofs, visible[3]);
 		}
+
+
+
 	}
 	
 	@Override
@@ -174,14 +213,14 @@ public class Toolbar extends Component {
 			}
 		}
 		
-		//btnResume.visible = Dungeon.hero.lastAction != null;
-		
 		if (!Dungeon.hero.isAlive()) {
-			btnInventory.enable( true );
+			btnInventory.enable(true);
 		}
 
-		//If we have 2 slots, and 2nd one isn't visible, or we have 1, and 2nd one is visible...
-		if ((QuickSlots == 1) == btnQuick2.visible){
+		//check if visible slots or UI flipping has changed.
+		if ((slots == 0 && btnQuick[0].visible) || (slots != 0 && !btnQuick[slots-1].visible)){
+			layout();
+		} else if (flipped && btnWait.left() == 0 || !flipped && btnInventory.left() == 0){
 			layout();
 		}
 	}
@@ -195,6 +234,8 @@ public class Toolbar extends Component {
 	private static CellSelector.Listener informer = new CellSelector.Listener() {
 		@Override
 		public void onSelect( Integer cell ) {
+
+			examining = false;
 			
 			if (cell == null) {
 				return;
@@ -321,7 +362,7 @@ public class Toolbar extends Component {
 		@Override
 		protected void layout() {
 			super.layout();
-			slot.setRect( x + 1, y + 2, width - 2, height - 2 );
+			slot.setRect( x + 2, y + 2, width - 4, height - 3 );
 		}
 		
 		@Override

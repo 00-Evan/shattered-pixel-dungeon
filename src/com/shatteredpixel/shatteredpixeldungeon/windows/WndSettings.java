@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -45,7 +46,7 @@ public class WndSettings extends Window {
 	
 	private static final String TXT_BRIGHTNESS	= "Brightness";
 
-	private static final String TXT_QUICKSLOT = "Second QuickSlot";
+	private static final String TXT_QUICKSLOT = "QuickSlots: %s";
 	
 	private static final String TXT_SWITCH_PORT	= "Switch to portrait";
 	private static final String TXT_SWITCH_LAND	= "Switch to landscape";
@@ -108,7 +109,7 @@ public class WndSettings extends Window {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					ShatteredPixelDungeon.immerse( checked() );
+					ShatteredPixelDungeon.immerse(checked());
 				}
 			};
 			btnImmersive.setRect( 0, btnScaleUp.bottom() + GAP, WIDTH, BTN_HEIGHT );
@@ -163,23 +164,37 @@ public class WndSettings extends Window {
 					ShatteredPixelDungeon.brightness(checked());
 				}
 			};
-			btnBrightness.setRect( 0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT );
-			btnBrightness.checked( ShatteredPixelDungeon.brightness() );
-			add( btnBrightness );
+			btnBrightness.setRect(0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT);
+			btnBrightness.checked(ShatteredPixelDungeon.brightness());
+			add(btnBrightness);
 
-			CheckBox btnQuickSlot = new CheckBox( TXT_QUICKSLOT ) {
+			RedButton btnQuickSlot = new RedButton( Utils.format(TXT_QUICKSLOT, ShatteredPixelDungeon.quickSlots()) ) {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					ShatteredPixelDungeon.quickSlots(checked() ? 2 : 1);
-					Toolbar.QuickSlots = checked() ? 2 : 1;
+					int quickslots = ShatteredPixelDungeon.quickSlots()+1;
+					if (quickslots == 5) quickslots = 0;
+					ShatteredPixelDungeon.quickSlots(quickslots);
+					this.text(Utils.format(TXT_QUICKSLOT, quickslots));
+					Toolbar.slots = quickslots;
 				}
 			};
-			btnQuickSlot.setRect( 0, btnBrightness.bottom() + GAP, WIDTH, BTN_HEIGHT );
-			btnQuickSlot.checked( ShatteredPixelDungeon.quickSlots() == 2 );
-			add( btnQuickSlot );
+			btnQuickSlot.setRect(0, btnBrightness.bottom() + GAP, WIDTH, BTN_HEIGHT);
+			add(btnQuickSlot);
+
+			CheckBox btnFlipUI = new CheckBox("Flip Toolbar") {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.flippedUI(checked());
+					Toolbar.flipped = checked();
+				}
+			};
+			btnFlipUI.setRect( 0, btnQuickSlot.bottom() + GAP, WIDTH, BTN_HEIGHT );
+			btnFlipUI.checked(ShatteredPixelDungeon.flippedUI());
+			add(btnFlipUI);
 			
-			resize( WIDTH, (int)btnQuickSlot.bottom() );
+			resize( WIDTH, (int)btnFlipUI.bottom() );
 			
 		}
 	}

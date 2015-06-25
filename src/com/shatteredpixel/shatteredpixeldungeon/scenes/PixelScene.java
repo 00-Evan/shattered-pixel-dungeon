@@ -42,7 +42,7 @@ import com.watabou.utils.BitmapCache;
 public class PixelScene extends Scene {
 
 	// Minimum virtual display size for portrait orientation
-	public static final float MIN_WIDTH_P        = 128;
+	public static final float MIN_WIDTH_P        = 144;
 	public static final float MIN_HEIGHT_P        = 224;
 
 	// Minimum virtual display size for landscape orientation
