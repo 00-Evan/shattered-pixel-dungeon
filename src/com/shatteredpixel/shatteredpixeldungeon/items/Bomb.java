@@ -113,7 +113,7 @@ public class Bomb extends Item {
 		//We're blowing up, so no need for a fuse anymore.
 		this.fuse = null;
 
-		Sample.INSTANCE.play( Assets.SND_BLAST, 2 );
+		Sample.INSTANCE.play( Assets.SND_BLAST );
 
 		if (Dungeon.visible[cell]) {
 			CellEmitter.center( cell ).burst( BlastParticle.FACTORY, 30 );
