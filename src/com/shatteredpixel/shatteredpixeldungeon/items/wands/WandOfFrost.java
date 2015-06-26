@@ -48,9 +48,14 @@ public class WandOfFrost extends Wand {
 
 	@Override
 	protected void onZap(Ballistica bolt) {
+
+		Heap heap = Dungeon.level.heaps.get(bolt.collisionPos);
+		if (heap != null) {
+			heap.freeze();
+		}
+
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (ch != null){
-
 
 			int damage = Random.NormalIntRange(5+level, 10+(level*level/3));
 
@@ -77,12 +82,6 @@ public class WandOfFrost extends Wand {
 				}
 			}
 		}
-
-		Heap heap = Dungeon.level.heaps.get(bolt.collisionPos);
-		if (heap != null) {
-			heap.freeze();
-		}
-
 	}
 
 	@Override
