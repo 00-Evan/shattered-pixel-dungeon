@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -79,7 +80,8 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 					GameScene.handleCell( lastTarget.pos );
 				} else {
 					Item item = select(slotNum);
-					if (item instanceof EquipableItem)
+					//FIXME: sloppy, should have a better way to decide if an item uses targeting.
+					if (item instanceof EquipableItem || item instanceof Wand)
 						useTargeting();
 					item.execute( Dungeon.hero );
 				}
