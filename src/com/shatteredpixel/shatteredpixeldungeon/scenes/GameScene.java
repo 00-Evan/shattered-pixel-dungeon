@@ -437,17 +437,12 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
-	public void brightness( boolean value ) {
+	public void brightness( int value ) {
 		water.rm = water.gm = water.bm =
 		tiles.rm = tiles.gm = tiles.bm =
-			value ? 1.5f : 1.0f;
-		if (value) {
-			fog.am = +2f;
-			fog.aa = -1f;
-		} else {
-			fog.am = +1f;
-			fog.aa =  0f;
-		}
+			1.0f + (value/4f);
+		fog.am = 1f + (value/2f);
+		fog.aa = 0f - (value/2f);
 	}
 	
 	private void addHeapSprite( Heap heap ) {

@@ -44,7 +44,7 @@ public class WndSettings extends Window {
 	
 	private static final String TXT_SOUND	= "Sound FX";
 	
-	private static final String TXT_BRIGHTNESS	= "Brightness";
+	private static final String TXT_BRIGHTNESS	= "Brightness: %s";
 
 	private static final String TXT_QUICKSLOT = "QuickSlots: %s";
 	
@@ -156,16 +156,18 @@ public class WndSettings extends Window {
 			resize( WIDTH, (int)btnOrientation.bottom() );
 			
 		} else {
-		
-			CheckBox btnBrightness = new CheckBox( TXT_BRIGHTNESS ) {
+
+			RedButton btnBrightness = new RedButton(  Utils.format(TXT_BRIGHTNESS, ShatteredPixelDungeon.brightness()) ) {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					ShatteredPixelDungeon.brightness(checked());
+					int brightness = ShatteredPixelDungeon.brightness()+1;
+					if (brightness == 5) brightness = -2;
+					ShatteredPixelDungeon.brightness(brightness);
+					this.text(Utils.format(TXT_BRIGHTNESS, brightness));
 				}
 			};
 			btnBrightness.setRect(0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT);
-			btnBrightness.checked(ShatteredPixelDungeon.brightness());
 			add(btnBrightness);
 
 			RedButton btnQuickSlot = new RedButton( Utils.format(TXT_QUICKSLOT, ShatteredPixelDungeon.quickSlots()) ) {

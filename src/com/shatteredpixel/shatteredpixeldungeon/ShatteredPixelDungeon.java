@@ -289,15 +289,15 @@ public class ShatteredPixelDungeon extends Game {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_SOUND_FX, true );
 	}
 	
-	public static void brightness( boolean value ) {
+	public static void brightness( int value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_BRIGHTNESS, value );
 		if (scene() instanceof GameScene) {
 			((GameScene)scene()).brightness( value );
 		}
 	}
 	
-	public static boolean brightness() {
-		return Preferences.INSTANCE.getBoolean( Preferences.KEY_BRIGHTNESS, false );
+	public static int brightness() {
+		return Preferences.INSTANCE.getInt( Preferences.KEY_BRIGHTNESS, 0 );
 	}
 
 	public static void lastClass( int value ) {
