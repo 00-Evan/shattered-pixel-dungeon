@@ -52,15 +52,27 @@ enum Preferences {
 	}
 	
 	int getInt( String key, int defValue  ) {
-		return get().getInt( key, defValue );
+		try {
+			return get().getInt( key, defValue );
+		} catch (ClassCastException e) {
+			return defValue;
+		}
 	}
 	
 	boolean getBoolean( String key, boolean defValue  ) {
-		return get().getBoolean( key, defValue );
+		try {
+			return get().getBoolean(key, defValue);
+		} catch (ClassCastException e) {
+			return defValue;
+		}
 	}
 	
 	String getString( String key, String defValue  ) {
-		return get().getString( key, defValue );
+		try {
+			return get().getString( key, defValue );
+		} catch (ClassCastException e) {
+			return defValue;
+		}
 	}
 	
 	void put( String key, int value ) {
