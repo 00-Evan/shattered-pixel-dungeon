@@ -83,8 +83,6 @@ public class Toolbar extends Component {
 				Dungeon.hero.rest(false);
 			}
 
-			;
-
 			protected boolean onLongClick() {
 				Dungeon.hero.rest(true);
 				return true;
@@ -103,11 +101,6 @@ public class Toolbar extends Component {
 					informer.onSelect(null);
 					Dungeon.hero.search(true);
 				}
-			}
-
-			protected boolean onLongClick() {
-				Dungeon.hero.search(true);
-				return true;
 			}
 		});
 
