@@ -199,6 +199,7 @@ public class GameScene extends PixelScene {
 		
 		add( emitters );
 		add( effects );
+		add( emoicons );
 		
 		gases = new Group();
 		add( gases );
@@ -207,27 +208,24 @@ public class GameScene extends PixelScene {
 			blob.emitter = null;
 			addBlobSprite( blob );
 		}
-		
+
 		fog = new FogOfWar( Level.WIDTH, Level.HEIGHT );
 		fog.updateVisibility( Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped );
 		add( fog );
-		
+
 		brightness( ShatteredPixelDungeon.brightness() );
-		
+
 		spells = new Group();
 		add( spells );
 		
 		statuses = new Group();
 		add( statuses );
 		
-		add( emoicons );
-		
 		hero = new HeroSprite();
 		hero.place( Dungeon.hero.pos );
 		hero.updateArmor();
 		mobs.add( hero );
 
-		
 		add( new HealthIndicator() );
 		
 		add( cellSelector = new CellSelector( tiles ) );
@@ -438,11 +436,14 @@ public class GameScene extends PixelScene {
 	}
 	
 	public void brightness( int value ) {
-		water.rm = water.gm = water.bm =
-		tiles.rm = tiles.gm = tiles.bm =
-			1.0f + (value/4f);
-		fog.am = 1f + (value/2f);
-		fog.aa = 0f - (value/2f);
+		float shift;
+		if (value >= 0)
+			shift = value/2f;
+		else
+			shift = value/3f;
+
+		fog.am = 1f + shift;
+		fog.aa = 0f - shift;
 	}
 	
 	private void addHeapSprite( Heap heap ) {

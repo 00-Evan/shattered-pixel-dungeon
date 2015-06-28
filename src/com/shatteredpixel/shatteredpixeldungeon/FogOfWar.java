@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 public class FogOfWar extends Image {
 
 	private static final int VISIBLE	= 0x00000000;
-	private static final int VISITED	= 0xcc111111;
+	private static final int VISITED	= 0xcc000000;
 	private static final int MAPPED		= 0xcc442211;
 	private static final int INVISIBLE	= 0xFF000000;
 	
