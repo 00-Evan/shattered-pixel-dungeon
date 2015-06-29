@@ -53,6 +53,7 @@ public enum Icons {
 	CHECKED,
 	UNCHECKED,
 	EXIT,
+	NOTES,
 	CHALLENGE_OFF,
 	CHALLENGE_ON,
 	RESUME;
@@ -144,6 +145,9 @@ public enum Icons {
 			break;
 		case EXIT:
 			icon.frame( icon.texture.uvRect( 108, 0, 124, 16 ) );
+			break;
+		case NOTES:
+			icon.frame( icon.texture.uvRect( 79, 40, 94, 56 ) );
 			break;
 		case CHALLENGE_OFF:
 			icon.frame( icon.texture.uvRect( 78, 16, 102, 40 ) );

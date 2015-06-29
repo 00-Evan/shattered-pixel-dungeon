@@ -24,6 +24,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLES20;
 
+import com.shatteredpixel.shatteredpixeldungeon.ui.ChangesButton;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -83,8 +84,8 @@ public class TitleScene extends PixelScene {
 		title.x = (w - title.width()) / 2;
 		title.y = (h - height) / 2;
 		
-		placeTorch( title.x + 18, title.y + 20 );
-		placeTorch( title.x + title.width - 18, title.y + 20 );
+		placeTorch(title.x + 18, title.y + 20);
+		placeTorch(title.x + title.width - 18, title.y + 20);
 
 		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
 			private float time = 0;
@@ -97,7 +98,7 @@ public class TitleScene extends PixelScene {
 			public void draw() {
 				GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
 				super.draw();
-				GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+				GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		};
 		signs.x = title.x;
@@ -110,7 +111,7 @@ public class TitleScene extends PixelScene {
 				ShatteredPixelDungeon.switchNoFade( BadgesScene.class );
 			}
 		};
-		add( btnBadges );
+		add(btnBadges);
 		
 		DashboardItem btnAbout = new DashboardItem( TXT_ABOUT, 1 ) {
 			@Override
@@ -149,20 +150,16 @@ public class TitleScene extends PixelScene {
 			btnHighscores.setPos( w / 2, btnPlay.top() );
 		}
 
-		BitmapText source = new BitmapText( "PD v 1.7.5", font1x );
-		source.measure();
-		source.hardlight( 0x444444 );
-		source.x = w - source.width();
-		source.y = h - source.height();
-		add( source );
-
 		BitmapText version = new BitmapText( "v " + Game.version + "", font1x );
 		version.measure();
 		version.hardlight( 0xCCCCCC );
 		version.x = w - version.width();
-		version.y = h - version.height() - source.height();
-
+		version.y = h - version.height();
 		add( version );
+
+		Button changes = new ChangesButton();
+		changes.setPos( w-changes.width(), h - version.height() - changes.height());
+		add( changes );
 		
 		PrefsButton btnPrefs = new PrefsButton();
 		btnPrefs.setPos( 0, 0 );
