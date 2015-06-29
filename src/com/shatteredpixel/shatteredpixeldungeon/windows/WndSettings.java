@@ -21,9 +21,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -37,7 +39,7 @@ public class WndSettings extends Window {
 	private static final String TXT_ZOOM_OUT		= "-";
 	private static final String TXT_ZOOM_DEFAULT	= "Default Zoom";
 
-	private static final String TXT_SCALE_UP		= "Scale up UI";
+	private static final String TXT_SCALE		= "UI Scale: %dX";
 	private static final String TXT_IMMERSIVE		= "Immersive mode";
 	
 	private static final String TXT_MUSIC	= "Music";
@@ -57,6 +59,8 @@ public class WndSettings extends Window {
 	
 	private RedButton btnZoomOut;
 	private RedButton btnZoomIn;
+
+	private int setScale = PixelScene.defaultZoom;
 	
 	public WndSettings( boolean inGame ) {
 		super();
@@ -94,15 +98,16 @@ public class WndSettings extends Window {
 			
 		} else {
 			
-			CheckBox btnScaleUp = new CheckBox( TXT_SCALE_UP ) {
+			RedButton btnScaleUp = new RedButton( Utils.format(TXT_SCALE, setScale) ) {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					ShatteredPixelDungeon.scaleUp(checked());
+					setScale++;
+					if (setScale > PixelScene.maxDefaultZoom) setScale = (int)Math.ceil(Game.density);
+					this.text(Utils.format(TXT_SCALE, setScale));
 				}
 			};
 			btnScaleUp.setRect( 0, 0, WIDTH, BTN_HEIGHT );
-			btnScaleUp.checked( ShatteredPixelDungeon.scaleUp() );
 			add( btnScaleUp );
 
 			btnImmersive = new CheckBox( TXT_IMMERSIVE ) {
@@ -217,5 +222,14 @@ public class WndSettings extends Window {
 	
 	private String orientationText() {
 		return ShatteredPixelDungeon.landscape() ? TXT_SWITCH_PORT : TXT_SWITCH_LAND;
+	}
+
+	@Override
+	public void hide() {
+		super.hide();
+		if (setScale != PixelScene.defaultZoom) {
+			ShatteredPixelDungeon.scale(setScale);
+			ShatteredPixelDungeon.switchScene(TitleScene.class);
+		}
 	}
 }

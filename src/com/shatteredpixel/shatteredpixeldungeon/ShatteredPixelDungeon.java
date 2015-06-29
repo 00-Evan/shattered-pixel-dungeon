@@ -200,8 +200,8 @@ public class ShatteredPixelDungeon extends Game {
 		return width > height;
 	}
 	
-	public static void scaleUp( boolean value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_SCALE_UP, value );
+	public static void scale( int value ) {
+		Preferences.INSTANCE.put( Preferences.KEY_SCALE, value );
 		switchScene( TitleScene.class );
 	}
 
@@ -259,8 +259,8 @@ public class ShatteredPixelDungeon extends Game {
 
 	// *****************************
 	
-	public static boolean scaleUp() {
-		return Preferences.INSTANCE.getBoolean( Preferences.KEY_SCALE_UP, true );
+	public static int scale() {
+		return Preferences.INSTANCE.getInt( Preferences.KEY_SCALE, 0 );
 	}
 
 	public static void zoom( int value ) {

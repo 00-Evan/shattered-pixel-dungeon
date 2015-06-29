@@ -49,7 +49,8 @@ public class PixelScene extends Scene {
 	public static final float MIN_WIDTH_L        = 224;
 	public static final float MIN_HEIGHT_L        = 160;
 
-	public static float defaultZoom = 0;
+	public static int defaultZoom = 0;
+	public static int maxDefaultZoom = 0;
 	public static float minZoom;
 	public static float maxZoom;
 	
@@ -77,25 +78,22 @@ public class PixelScene extends Scene {
 			minHeight = MIN_HEIGHT_P;
 		}
 
-		defaultZoom = (int)Math.ceil( Game.density * 2.5 );
-		while ((
-			Game.width / defaultZoom < minWidth ||
-			Game.height / defaultZoom < minHeight
+		defaultZoom = ShatteredPixelDungeon.scale();
+		if (defaultZoom < Game.density){
+			defaultZoom = (int)Math.ceil( Game.density * 2.5 );
+			while ((
+				Game.width / defaultZoom < minWidth ||
+				Game.height / defaultZoom < minHeight
 			) && defaultZoom > 1) {
-			
-			defaultZoom--;
-		}
-			
-		if (ShatteredPixelDungeon.scaleUp()) {
-			while (
-				Game.width / (defaultZoom + 1) >= minWidth &&
-				Game.height / (defaultZoom + 1) >= minHeight) {
-					defaultZoom++;
+				defaultZoom--;
 			}
+			ShatteredPixelDungeon.scale(defaultZoom);
 		}
+
+		maxDefaultZoom = (int)Math.min(Game.width/minWidth, Game.height/minHeight);
+
 		minZoom = 1;
 		maxZoom = defaultZoom * 2;
-			
 		
 		Camera.reset( new PixelCamera( defaultZoom ) );
 		
