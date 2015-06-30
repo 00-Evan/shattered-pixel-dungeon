@@ -52,6 +52,6 @@ public class PoisonTrap extends Trap{
 
 	@Override
 	public String desc() {
-		return "A small dart-blower must be hidden nearby, activating this trap will cause it to shoot a pointed dart at you.";
+		return "A small dart-blower must be hidden nearby, activating this trap will cause it to shoot a poisoned dart at you.";
 	}
 }
