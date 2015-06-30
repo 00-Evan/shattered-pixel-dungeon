@@ -150,8 +150,7 @@ public class Bomb extends Item {
 					}
 
 					if (ch == Dungeon.hero && !ch.isAlive())
-						//constant is used here in the rare instance a player is killed by a double bomb.
-						Dungeon.fail(Utils.format(ResultDescriptions.ITEM, "bomb"));
+						Dungeon.fail("Killed by an explosion");
 				}
 			}
 		}

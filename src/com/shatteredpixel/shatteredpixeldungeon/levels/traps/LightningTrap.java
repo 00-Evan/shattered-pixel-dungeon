@@ -21,6 +21,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -68,6 +73,16 @@ public class LightningTrap extends Trap {
 			ch.sprite.parent.add( new Lightning( arcs, null ) );
 		}
 
+		Heap heap = Dungeon.level.heaps.get(pos);
+		if (heap != null){
+			//TODO: this should probably charge staffs too
+			Item item = heap.items.peek();
+			if (item instanceof Wand){
+				Wand wand = (Wand)item;
+				((Wand)item).curCharges += (int)Math.ceil((wand.curCharges - wand.maxCharges)/2f);
+			}
+		}
+
 		CellEmitter.center( pos ).burst( SparkParticle.FACTORY, Random.IntRange( 3, 4 ) );
 	}
 
@@ -79,6 +94,6 @@ public class LightningTrap extends Trap {
 	@Override
 	public String desc() {
 		return "A mechanism with a large amount of energy stored into it. " +
-				"Triggering the trap will discharge that energy into whever is nearby.";
+				"Triggering the trap will discharge that energy into whatever activates it.";
 	}
 }

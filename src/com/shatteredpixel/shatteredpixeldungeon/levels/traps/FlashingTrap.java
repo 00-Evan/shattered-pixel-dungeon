@@ -20,45 +20,55 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
-public class GrippingTrap extends Trap {
+public class FlashingTrap extends Trap {
 
 	{
-		name = "Gripping trap";
-		color = TrapSprite.GREY;
-		shape = TrapSprite.CROSSHAIR;
+		name = "Flashing trap";
+		color = TrapSprite.YELLOW;
+		shape = TrapSprite.STARS;
 	}
 
 	@Override
 	public void activate() {
+		Char ch = Actor.findChar(pos);
 
-		Char c = Actor.findChar( pos );
-
-		if (c != null) {
-			int damage = Math.max( 0,  (Dungeon.depth) - Random.IntRange( 0, c.dr() / 2 ) );
-			Buff.affect( c, Bleeding.class ).set( damage );
-			Buff.prolong( c, Cripple.class, 15f);
-			Buff.prolong( c, Roots.class, 5f);
-			Wound.hit( c );
-		} else {
-			Wound.hit( pos );
+		if (ch != null) {
+			int len = Random.Int(5, 10)+Dungeon.depth;
+			Buff.prolong( ch, Blindness.class, len );
+			Buff.prolong( ch, Cripple.class, len );
+			if (ch instanceof Mob) {
+				if (((Mob)ch).state == ((Mob)ch).HUNTING) ((Mob)ch).state = ((Mob)ch).WANDERING;
+				((Mob)ch).beckon( Dungeon.level.randomDestination() );
+			}
+			if (ch == Dungeon.hero){
+				Sample.INSTANCE.play( Assets.SND_BLAST );
+			}
 		}
 
+		if (Dungeon.visible[pos]) {
+			GameScene.flash(0xFFFFFF);
+			CellEmitter.get(pos).burst( Speck.factory(Speck.LIGHT), 4 );
+		}
 	}
 
 	@Override
 	public String desc() {
-		return "triggering this trap will send barbed claws along the ground, " +
-				"damaging the victims feet and rooting them in place.";
+		return "On activation, this trap with ignite a potent flashing powder stored within, " +
+				"temporarily blinding and crippling its victim.";
 	}
 }

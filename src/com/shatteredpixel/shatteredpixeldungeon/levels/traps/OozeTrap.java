@@ -20,45 +20,33 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
-import com.watabou.utils.Random;
 
-public class GrippingTrap extends Trap {
+public class OozeTrap extends Trap {
 
 	{
-		name = "Gripping trap";
-		color = TrapSprite.GREY;
-		shape = TrapSprite.CROSSHAIR;
+		name = "Ooze trap";
+		color = TrapSprite.GREEN;
+		shape = TrapSprite.DOTS;
 	}
 
 	@Override
 	public void activate() {
+		Char ch = Actor.findChar( pos );
 
-		Char c = Actor.findChar( pos );
-
-		if (c != null) {
-			int damage = Math.max( 0,  (Dungeon.depth) - Random.IntRange( 0, c.dr() / 2 ) );
-			Buff.affect( c, Bleeding.class ).set( damage );
-			Buff.prolong( c, Cripple.class, 15f);
-			Buff.prolong( c, Roots.class, 5f);
-			Wound.hit( c );
-		} else {
-			Wound.hit( pos );
+		if (ch != null){
+			Buff.affect(ch, Ooze.class);
+			Splash.at(sprite.center(), 0x000000, 5);
 		}
-
 	}
 
 	@Override
 	public String desc() {
-		return "triggering this trap will send barbed claws along the ground, " +
-				"damaging the victims feet and rooting them in place.";
+		return "This trap with splash out caustic ooze when activated, which will burn until it is washed away.";
 	}
 }
