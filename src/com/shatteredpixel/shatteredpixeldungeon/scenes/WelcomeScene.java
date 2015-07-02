@@ -223,8 +223,12 @@ public class WelcomeScene extends PixelScene {
 					}
 				}
 
-				ShatteredPixelDungeon.version(Game.versionCode);
-				Game.switchScene(TitleScene.class);
+				if (ShatteredPixelDungeon.version() != Game.versionCode){
+					ShatteredPixelDungeon.version(Game.versionCode);
+					Game.switchScene(TitleScene.class);
+				} else
+					ShatteredPixelDungeon.switchNoFade(TitleScene.class);
+
 			}
 		};
 
