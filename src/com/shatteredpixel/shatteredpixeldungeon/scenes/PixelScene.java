@@ -79,7 +79,7 @@ public class PixelScene extends Scene {
 		}
 
 		defaultZoom = ShatteredPixelDungeon.scale();
-		if (defaultZoom < Game.density){
+		if (defaultZoom < Math.ceil( Game.density * 2 )){
 			defaultZoom = (int)Math.ceil( Game.density * 2.5 );
 			while ((
 				Game.width / defaultZoom < minWidth ||

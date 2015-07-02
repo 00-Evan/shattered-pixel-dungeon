@@ -103,12 +103,13 @@ public class WndSettings extends Window {
 				protected void onClick() {
 					super.onClick();
 					setScale++;
-					if (setScale > PixelScene.maxDefaultZoom) setScale = (int)Math.ceil(Game.density);
+					if (setScale > PixelScene.maxDefaultZoom) setScale = (int)Math.ceil(2*Game.density);
 					this.text(Utils.format(TXT_SCALE, setScale));
 				}
 			};
 			btnScaleUp.setRect( 0, 0, WIDTH, BTN_HEIGHT );
-			add( btnScaleUp );
+			btnScaleUp.enable(PixelScene.maxDefaultZoom > Math.ceil(2*Game.density));
+			add(btnScaleUp);
 
 			btnImmersive = new CheckBox( TXT_IMMERSIVE ) {
 				@Override
