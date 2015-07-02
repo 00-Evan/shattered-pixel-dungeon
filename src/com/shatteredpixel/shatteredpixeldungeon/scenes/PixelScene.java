@@ -158,43 +158,35 @@ public class PixelScene extends Scene {
 			if (1.5 <= scale && scale < 2) {
 				font = font25x;
 				scale = (int)(pt / 14);
-			} else {
-				font = font3x;
-				scale = (int)scale;
-			}
-			
-		} else if (pt >= 14) {
-			
-			scale = pt / 14;
-			if (1.8 <= scale && scale < 2) {
+			} else if (1.25 <= scale && scale < 1.5) {
 				font = font2x;
 				scale = (int)(pt / 12);
 			} else {
+				font = font3x;
+
+				//at this point non integer scale values don't cause visual problems
+				if (scale < 2.25f)
+					scale = (int)scale;
+			}
+			
+		} else if (pt >= 14) {
+
+			scale = pt / 14;
 				font = font25x;
 				scale = (int)scale;
-			}
 			
 		} else if (pt >= 12) {
 			
 			scale = pt / 12;
-			if (1.7 <= scale && scale < 2) {
-				font = font15x;
-				scale = (int)(pt / 10);
-			} else {
 				font = font2x;
 				scale = (int)scale;
-			}
+
 			
 		} else if (pt >= 10) {
 			
 			scale = pt / 10;
-			if (1.4 <= scale && scale < 2) {
-				font = font1x;
-				scale = (int)(pt / 7);
-			} else {
 				font = font15x;
 				scale = (int)scale;
-			}
 			
 		} else {
 			
@@ -202,7 +194,7 @@ public class PixelScene extends Scene {
 			scale = Math.max( 1, (int)(pt / 7) );
 			
 		}
-		
+
 		scale /= zoom;
 	}
 	
