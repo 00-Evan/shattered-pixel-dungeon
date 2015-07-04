@@ -493,7 +493,12 @@ public abstract class RegularLevel extends Level {
 				}
 				break;
 			case UNLOCKED:
-				map[door] = Terrain.DOOR;
+				if (Dungeon.depth <= 5) {
+					map[door] = Terrain.UNLOCKED_DOOR;
+				}
+				else{
+					map[door] = Terrain.DOOR;
+					}
 				break;
 			case HIDDEN:
 				map[door] = Terrain.SECRET_DOOR;

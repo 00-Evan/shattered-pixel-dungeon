@@ -167,6 +167,7 @@ public class GameScene extends PixelScene {
 		}
 		ripples = new Group();
 		terrain.add( ripples );
+
 		tiles = new DungeonTilemap();
 		terrain.add( tiles );
 		
