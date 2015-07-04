@@ -445,6 +445,8 @@ public abstract class Level implements Bundlable {
 		return null;
 	}
 
+	public String snowTex() { return null;	}
+
 	abstract protected boolean build();
 
 	abstract protected void decorate();
@@ -1043,6 +1045,8 @@ public abstract class Level implements Bundlable {
 			return "Embers";
 		case Terrain.LOCKED_DOOR:
 			return "Locked door";
+		case Terrain.UNLOCKED_DOOR:
+			return "Unlocked door";
 		case Terrain.PEDESTAL:
 			return "Pedestal";
 		case Terrain.BARRICADE:

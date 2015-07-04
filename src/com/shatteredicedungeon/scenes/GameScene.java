@@ -98,6 +98,8 @@ public class GameScene extends PixelScene {
 	static GameScene scene;
 
 	private SkinnedBlock water;
+	private SkinnedBlock snow;
+	private SkinnedBlock snow2;
 	private DungeonTilemap tiles;
 	private FogOfWar fog;
 	private HeroSprite hero;
@@ -149,10 +151,22 @@ public class GameScene extends PixelScene {
 			Level.HEIGHT * DungeonTilemap.SIZE,
 			Dungeon.level.waterTex() );
 		terrain.add( water );
-		
+
+		if (Dungeon.depth <= 5) {
+
+			snow = new SkinnedBlock(
+					Level.WIDTH * DungeonTilemap.SIZE,
+					Level.HEIGHT * DungeonTilemap.SIZE,
+					Dungeon.level.snowTex());
+			add(snow);
+			snow2 = new SkinnedBlock(
+					Level.WIDTH * DungeonTilemap.SIZE,
+					Level.HEIGHT * DungeonTilemap.SIZE,
+					Dungeon.level.snowTex());
+			add(snow2);
+		}
 		ripples = new Group();
 		terrain.add( ripples );
-		
 		tiles = new DungeonTilemap();
 		terrain.add( tiles );
 		
@@ -181,7 +195,7 @@ public class GameScene extends PixelScene {
 		for (int i=0; i < size; i++) {
 			addHeapSprite( Dungeon.level.heaps.valueAt( i ) );
 		}
-		
+
 		emitters = new Group();
 		effects = new Group();
 		emoicons = new Group();
@@ -198,7 +212,7 @@ public class GameScene extends PixelScene {
 		
 		add( emitters );
 		add( effects );
-		
+
 		gases = new Group();
 		add( gases );
 		
@@ -380,7 +394,7 @@ public class GameScene extends PixelScene {
 		super.update();
 		
 		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
-		
+
 		Actor.process();
 		
 		if (Dungeon.hero.ready && !Dungeon.hero.paralysed) {

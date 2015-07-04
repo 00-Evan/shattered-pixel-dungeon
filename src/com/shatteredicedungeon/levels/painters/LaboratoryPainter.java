@@ -36,11 +36,11 @@ public class LaboratoryPainter extends Painter {
 
 	public static void paint( Level level, Room room ) {
 
-		fill( level, room, Terrain.WALL );
+		fill( level, room, Terrain.ALCHEMY_WALL );
 		fill( level, room, 1, Terrain.EMPTY_SP );
 		
 		Room.Door entrance = room.entrance();
-		
+
 		Point pot = null;
 		if (entrance.x == room.left) {
 			pot = new Point( room.right-1, Random.Int( 2 ) == 0 ? room.top + 1 : room.bottom - 1 );

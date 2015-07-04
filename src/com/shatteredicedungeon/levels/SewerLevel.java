@@ -50,7 +50,11 @@ public class SewerLevel extends RegularLevel {
 	public String waterTex() {
 		return Assets.WATER_SEWERS;
 	}
-	
+
+	public String snowTex() {
+		return Assets.SNOW_SEWERS;
+	}
+
 	protected boolean[] water() {
 		return Patch.generate( feeling == Feeling.WATER ? 0.60f : 0.45f, 5 );
 	}
@@ -116,7 +120,7 @@ public class SewerLevel extends RegularLevel {
 		super.addVisuals( scene );
 		addVisuals( this, scene );
 	}
-	
+
 	public static void addVisuals( Level level, Scene scene ) {
 		for (int i=0; i < LENGTH; i++) {
 			if (level.map[i] == Terrain.WALL_DECO) {
@@ -124,7 +128,7 @@ public class SewerLevel extends RegularLevel {
 			}
 		}
 	}
-	
+
 	@Override
 	public String tileName( int tile ) {
 		switch (tile) {
@@ -139,45 +143,45 @@ public class SewerLevel extends RegularLevel {
 	public String tileDesc(int tile) {
 		switch (tile) {
 		case Terrain.EMPTY_DECO:
-			return "Wet yellowish moss covers the floor.";
+			return "Cold winter snow covers the ground.";
 		case Terrain.BOOKSHELF:
-			return "The bookshelf is packed with cheap useless books. Might it burn?";
+			return "These trees look a bit dry...Might they burn?";
 		default:
 			return super.tileDesc( tile );
 		}
 	}
-	
+
 	private static class Sink extends Emitter {
-		
+
 		private int pos;
 		private float rippleDelay = 0;
-		
+
 		private static final Emitter.Factory factory = new Factory() {
-			
+
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
 				WaterParticle p = (WaterParticle)emitter.recycle( WaterParticle.class );
 				p.reset( x, y );
 			}
 		};
-		
+
 		public Sink( int pos ) {
 			super();
-			
+
 			this.pos = pos;
-			
+
 			PointF p = DungeonTilemap.tileCenterToWorld( pos );
 			pos( p.x - 2, p.y + 1, 4, 0 );
-			
+
 			pour( factory, 0.05f );
 		}
-		
+
 		@Override
 		public void update() {
 			if (visible = Dungeon.visible[pos]) {
-				
+
 				super.update();
-				
+
 				if ((rippleDelay -= Game.elapsed) <= 0) {
 					GameScene.ripple( pos + WIDTH ).y -= DungeonTilemap.SIZE / 2;
 					rippleDelay = Random.Float( 0.2f, 0.3f );
@@ -185,7 +189,7 @@ public class SewerLevel extends RegularLevel {
 			}
 		}
 	}
-	
+
 	public static final class WaterParticle extends PixelParticle {
 		
 		public WaterParticle() {

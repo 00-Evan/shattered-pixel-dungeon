@@ -61,6 +61,8 @@ public class Terrain {
 	public static final int CHASM_FLOOR_SP	= 30;
 	public static final int CHASM_WALL		= 31;
 	public static final int CHASM_WATER		= 32;
+	public static final int ALCHEMY_WALL    = 33;
+	public static final int UNLOCKED_DOOR   = 34;
 
 	public static final int WATER_TILES	    = 48;
 	public static final int WATER		    = 63;
@@ -84,12 +86,14 @@ public class Terrain {
 		flags[EMPTY_WELL]	= PASSABLE;
 		flags[WATER]		= PASSABLE | LIQUID 							| UNSTITCHABLE;
 		flags[WALL]			= LOS_BLOCKING | SOLID 							| UNSTITCHABLE;
+		flags[ALCHEMY_WALL]	= LOS_BLOCKING | SOLID 							| UNSTITCHABLE;
 		flags[DOOR]			= PASSABLE | LOS_BLOCKING | FLAMABLE | SOLID	| UNSTITCHABLE;
 		flags[OPEN_DOOR]	= PASSABLE | FLAMABLE 							| UNSTITCHABLE;
 		flags[ENTRANCE]		= PASSABLE/* | SOLID*/;
 		flags[EXIT]			= PASSABLE;
 		flags[EMBERS]		= PASSABLE;
 		flags[LOCKED_DOOR]	= LOS_BLOCKING | SOLID 							| UNSTITCHABLE;
+		flags[UNLOCKED_DOOR]= PASSABLE | LOS_BLOCKING | FLAMABLE | SOLID	| UNSTITCHABLE;
 		flags[PEDESTAL]		= PASSABLE 										| UNSTITCHABLE;
 		flags[WALL_DECO]	= flags[WALL];
 		flags[BARRICADE]	= FLAMABLE | SOLID | LOS_BLOCKING;
