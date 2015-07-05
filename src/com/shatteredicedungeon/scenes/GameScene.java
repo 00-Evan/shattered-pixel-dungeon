@@ -395,7 +395,10 @@ public class GameScene extends PixelScene {
 		super.update();
 		
 		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
-
+		if (Dungeon.depth <= 5 && !freezeEmitters) {
+			snow.offset(1 * Game.elapsed, -6 * Game.elapsed);
+			snow2.offset(2 * Game.elapsed, -10 * Game.elapsed);
+		}
 		Actor.process();
 		
 		if (Dungeon.hero.ready && !Dungeon.hero.paralysed) {
