@@ -44,8 +44,9 @@ public class Sign {
 				"Items found in the dungeon will often be unidentified. Some items will have unknown effects, others " +
 				"may be upgraded, or degraded and cursed! Unidentified items are unpredictable, so be careful!",
 		"Charging forward recklessly is a great way to get killed.\n\n" +
-				"Slowing down a bit to examine enemies and use the environment and items to your advantage can make a" +
-				" big difference.\n\nThe dungeon is full of traps and hidden passageways as well, keep your eyes open!",
+				"Slowing down a bit to examine enemies and use the environment and items to your advantage can make a " +
+				"big difference.\n\nThe dungeon is full of traps and hidden passageways as well, keep your eyes open.\n\n " +
+				"You can double tap on the examine button to search the area for secrets.",
 		"Levelling up is important!\n\nBeing about the same level as the floor you are on is a good idea. " +
 				"Hunger may keep you moving in search of more food, but don't be afraid to slow down a little and train." +
 				"\n\n\nHunger and health are both resources, and using them well can mean starving yourself in order" +

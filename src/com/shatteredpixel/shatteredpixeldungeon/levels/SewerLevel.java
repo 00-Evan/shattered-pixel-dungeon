@@ -95,6 +95,13 @@ public class SewerLevel extends RegularLevel {
 				}
 			}
 		}
+
+		//hides all doors in the entrance room on floor 2, teaches the player to search.
+		if (Dungeon.depth == 2)
+			for (Room r : roomEntrance.connected.keySet()){
+				Room.Door d = roomEntrance.connected.get(r);
+				map[d.x + d.y * WIDTH] = Terrain.SECRET_DOOR;
+			}
 		
 		placeSign();
 	}
