@@ -79,7 +79,7 @@ public class LightningTrap extends Trap {
 			Item item = heap.items.peek();
 			if (item instanceof Wand){
 				Wand wand = (Wand)item;
-				((Wand)item).curCharges += (int)Math.ceil((wand.curCharges - wand.maxCharges)/2f);
+				((Wand)item).curCharges += (int)Math.ceil((wand.maxCharges - wand.curCharges)/2f);
 			}
 		}
 
