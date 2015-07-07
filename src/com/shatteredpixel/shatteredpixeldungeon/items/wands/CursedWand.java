@@ -289,8 +289,8 @@ public class CursedWand {
 							Sheep sheep = new Sheep();
 							sheep.lifespan = 10;
 							sheep.pos = ch.pos;
+							ch.destroy();
 							ch.sprite.killAndErase();
-							Actor.remove(ch);
 							Dungeon.level.mobs.remove(ch);
 							HealthIndicator.instance.target(null);
 							GameScene.add(sheep);
