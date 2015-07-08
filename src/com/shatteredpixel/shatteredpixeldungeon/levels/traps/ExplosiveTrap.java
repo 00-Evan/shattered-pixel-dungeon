@@ -27,8 +27,8 @@ public class ExplosiveTrap extends Trap {
 
 	{
 		name = "Explosive trap";
-		color = TrapSprite.GREY;
-		shape = TrapSprite.WAVES;
+		color = TrapSprite.ORANGE;
+		shape = TrapSprite.DIAMOND;
 	}
 
 	@Override
