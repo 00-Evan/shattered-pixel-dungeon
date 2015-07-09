@@ -143,6 +143,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 	
 	public void move( int from, int to ) {
+		turnTo( from , to );
+
 		play( run );
 		
 		motion = new PosTweener( this, worldToCamera( to ), MOVE_INTERVAL );
@@ -150,8 +152,6 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		parent.add( motion );
 
 		isMoving = true;
-		
-		turnTo( from , to );
 		
 		if (visible && Level.water[from] && !ch.flying) {
 			GameScene.ripple( from );
