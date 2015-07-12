@@ -118,6 +118,7 @@ public class ShatteredPixelDungeon extends Game {
 		
 		Music.INSTANCE.enable( music() );
 		Sample.INSTANCE.enable( soundFx() );
+		Sample.INSTANCE.volume( SFXVol()/10f );
 
 		Sample.INSTANCE.load(
 				Assets.SND_CLICK,

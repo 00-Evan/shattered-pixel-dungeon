@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import java.nio.FloatBuffer;
 import java.util.Calendar;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.gltextures.Gradient;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.glwrap.Matrix;
@@ -71,7 +72,7 @@ public class SurfaceScene extends PixelScene {
 		super.create();
 		
 		Music.INSTANCE.play( Assets.HAPPY, true );
-		Music.INSTANCE.volume( 1f );
+		Music.INSTANCE.volume( ShatteredPixelDungeon.musicVol() / 10f );
 		
 		uiCamera.visible = false;
 		
