@@ -26,8 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Sample;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
@@ -41,11 +39,7 @@ public class WndSettings extends Window {
 
 	private static final String TXT_SCALE		= "UI Scale: %dX";
 	private static final String TXT_IMMERSIVE		= "Immersive mode";
-	
-	private static final String TXT_MUSIC	= "Music";
-	
-	private static final String TXT_SOUND	= "Sound FX";
-	
+
 	private static final String TXT_BRIGHTNESS	= "Brightness: %s";
 
 	private static final String TXT_QUICKSLOT = "QuickSlots: %s";
@@ -125,30 +119,17 @@ public class WndSettings extends Window {
 
 		}
 		
-		CheckBox btnMusic = new CheckBox( TXT_MUSIC ) {
-			@Override
-			protected void onClick() {
-				super.onClick();
-				ShatteredPixelDungeon.music(checked());
-			}
-		};
-		btnMusic.setRect( 0, (btnImmersive != null ? btnImmersive.bottom() : BTN_HEIGHT) + GAP, WIDTH, BTN_HEIGHT );
-		btnMusic.checked( ShatteredPixelDungeon.music() );
-		add( btnMusic );
-		
-		CheckBox btnSound = new CheckBox( TXT_SOUND ) {
-			@Override
-			protected void onClick() {
-				super.onClick();
-				ShatteredPixelDungeon.soundFx(checked());
-				Sample.INSTANCE.play( Assets.SND_CLICK );
-			}
-		};
-		btnSound.setRect( 0, btnMusic.bottom() + GAP, WIDTH, BTN_HEIGHT );
-		btnSound.checked( ShatteredPixelDungeon.soundFx() );
-		add( btnSound );
-		
 		if (!inGame) {
+
+			RedButton btnAudio = new RedButton("Audio Settings") {
+				@Override
+				protected void onClick() {
+					hide();
+					Game.scene().add(new WndAudio());
+				}
+			};
+			btnAudio.setRect( 0, btnImmersive.bottom() + GAP, WIDTH, BTN_HEIGHT );
+			add( btnAudio );
 			
 			RedButton btnOrientation = new RedButton( orientationText() ) {
 				@Override
@@ -156,7 +137,7 @@ public class WndSettings extends Window {
 					ShatteredPixelDungeon.landscape(!ShatteredPixelDungeon.landscape());
 				}
 			};
-			btnOrientation.setRect( 0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT );
+			btnOrientation.setRect( 0, btnAudio.bottom() + GAP, WIDTH, BTN_HEIGHT );
 			add( btnOrientation );
 			
 			resize( WIDTH, (int)btnOrientation.bottom() );
@@ -173,7 +154,7 @@ public class WndSettings extends Window {
 					this.text(Utils.format(TXT_BRIGHTNESS, brightness));
 				}
 			};
-			btnBrightness.setRect(0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT);
+			btnBrightness.setRect(0, btnZoomIn.bottom() + GAP, WIDTH, BTN_HEIGHT);
 			add(btnBrightness);
 
 			RedButton btnQuickSlot = new RedButton( Utils.format(TXT_QUICKSLOT, ShatteredPixelDungeon.quickSlots()) ) {

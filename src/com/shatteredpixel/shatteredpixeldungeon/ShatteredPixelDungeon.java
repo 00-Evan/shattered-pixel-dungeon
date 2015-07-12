@@ -279,6 +279,14 @@ public class ShatteredPixelDungeon extends Game {
 	public static boolean music() {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_MUSIC, true );
 	}
+
+	public static void musicVol( int value ){
+		Preferences.INSTANCE.put( Preferences.KEY_MUSIC_VOL, value );
+	}
+
+	public static int musicVol(){
+		return Preferences.INSTANCE.getInt( Preferences.KEY_MUSIC_VOL, 10 );
+	}
 	
 	public static void soundFx( boolean value ) {
 		Sample.INSTANCE.enable( value );
@@ -287,6 +295,14 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public static boolean soundFx() {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_SOUND_FX, true );
+	}
+
+	public static void SFXVol( int value ) {
+		Preferences.INSTANCE.put( Preferences.KEY_SFX_VOL, value );
+	}
+
+	public static int SFXVol() {
+		return Preferences.INSTANCE.getInt( Preferences.KEY_SFX_VOL, 10 );
 	}
 	
 	public static void brightness( int value ) {

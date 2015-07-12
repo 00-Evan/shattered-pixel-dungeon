@@ -59,6 +59,14 @@ public class WndGame extends Window {
 				hide();
 				GameScene.show( new WndSettings( true ) );
 			}
+		});
+
+		addButton( new RedButton( "Audio Settings" ) {
+			@Override
+			protected void onClick() {
+				hide();
+				GameScene.show( new WndAudio( ) );
+			}
 		} );
 
 		// Challenges window
