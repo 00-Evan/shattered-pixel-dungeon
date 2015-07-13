@@ -103,7 +103,7 @@ public class HeroSprite extends CharSprite {
 
 	@Override
 	public void update() {
-		sleeping = ((Hero)ch).restoreHealth;
+		sleeping = ch.isAlive() && ((Hero)ch).restoreHealth;
 		
 		super.update();
 	}

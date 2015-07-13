@@ -430,7 +430,7 @@ public class Hero extends Char {
 		if (curAction == null) {
 			
 			if (restoreHealth) {
-				if (isStarving() || HP >= HT || Dungeon.level.locked) {
+				if (HP >= HT || Dungeon.level.locked) {
 					restoreHealth = false;
 				} else {
 					spend( TIME_TO_REST ); next();
@@ -909,10 +909,10 @@ public class Hero extends Char {
 		if (buff(TimekeepersHourglass.timeStasis.class) != null)
 			return;
 
-		restoreHealth = false;
-
-		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt)
+		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
 			interrupt();
+			restoreHealth = false;
+		}
 
 		if (this.buff(Drowsy.class) != null){
 			Buff.detach(this, Drowsy.class);

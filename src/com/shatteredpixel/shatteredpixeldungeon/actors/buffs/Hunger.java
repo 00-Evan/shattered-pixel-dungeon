@@ -88,6 +88,7 @@ public class Hunger extends Buff implements Hero.Doom {
 				if (newLevel >= STARVING) {
 
 					GLog.n( TXT_STARVING );
+					hero.restoreHealth = false;
 					hero.damage( 1, this );
 					statusUpdated = true;
 
