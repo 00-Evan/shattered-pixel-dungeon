@@ -20,51 +20,40 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
-public class ChillingTrap extends Trap{
+public class WeakeningTrap extends Trap{
 
 	{
-		name = "Chilling trap";
-		color = TrapSprite.WHITE;
-		shape = TrapSprite.DOTS;
+		name = "Weakening trap";
+		color = TrapSprite.GREEN;
+		shape = TrapSprite.WAVES;
 	}
 
 	@Override
 	public void activate() {
 		if (Dungeon.visible[ pos ]){
-			Splash.at( sprite.center(), 0xFFB2D6FF, 5);
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			CellEmitter.get(pos).burst(ShadowParticle.UP, 5);
 		}
 
-		Heap heap = Dungeon.level.heaps.get( pos );
-		if (heap != null) heap.freeze();
-
 		Char ch = Actor.findChar( pos );
-		if (ch != null){
-			Chill.prolong(ch, Chill.class, 5f + Random.Int(Dungeon.depth));
-			ch.damage(Random.NormalIntRange(1 , Dungeon.depth), this);
-			if (!ch.isAlive() && ch == Dungeon.hero){
-				Dungeon.fail( Utils.format(ResultDescriptions.TRAP, name) );
-				GLog.n("You succumb to the chilling trap...");
-			}
+		if (ch == Dungeon.hero){
+			Buff.prolong( ch, Weakness.class, Weakness.duration(ch)*2f);
+		} else if (ch != null) {
+			Buff.prolong( ch, Slow.class, Slow.duration(ch));
 		}
 	}
 
 	@Override
 	public String desc() {
-		return "when activated, chemicals in this trap will trigger a snap-frost at its location.";
+		return "Dark magic in this trap sucks the energy out of anything that comes into contact with it.";
 	}
 }
