@@ -56,20 +56,24 @@ public class Toolbar extends Component {
 	private Tool btnSearch;
 	private Tool btnInventory;
 	private Tool[] btnQuick;
-
-	public static int slots;
-	public static boolean flipped;
 	
 	private PickedUpItem pickedUp;
 	
 	private boolean lastEnabled = true;
-	private static boolean examining = false;
+	private boolean examining = false;
+
+	private static Toolbar instance;
+
+	public enum Mode {
+		SPLIT,
+		GROUP,
+		CENTER
+	}
 	
 	public Toolbar() {
 		super();
 
-		slots = ShatteredPixelDungeon.quickSlots();
-		flipped = ShatteredPixelDungeon.flippedUI();
+		instance = this;
 
 		height = btnInventory.height();
 	}
@@ -80,10 +84,12 @@ public class Toolbar extends Component {
 		add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
 			protected void onClick() {
+				examining = false;
 				Dungeon.hero.rest(false);
 			}
 
 			protected boolean onLongClick() {
+				examining = false;
 				Dungeon.hero.rest(true);
 				return true;
 			}
@@ -155,41 +161,63 @@ public class Toolbar extends Component {
 
 
 		int[] visible = new int[4];
+		int slots = ShatteredPixelDungeon.quickSlots();
+		int ofs = (slots == 4 && (width() < 146)) ? 2 : 0;
 
 		for(int i = 0; i <= 3; i++)
 			visible[i] = (int)((slots > i) ? y+2 : y+25);
 
-		for(int i = 0; i <= 3; i++)
-			btnQuick[i].visible = slots > i;
-
-		if (!flipped) {
-			btnWait.setPos(x, y);
-			btnSearch.setPos(btnWait.right(), y);
-
-			btnInventory.setPos(width - btnInventory.width(), y);
-
-			int ofs = (slots == 4 && btnInventory.left() - btnSearch.right() < 90) ? 2 : 0;
-
-			btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width() + ofs, visible[0]);
-			btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width() + ofs, visible[1]);
-			btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width() + ofs, visible[2]);
-			btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width() + ofs, visible[3]);
-		} else {
-			btnWait.setPos(width - btnWait.width(), y);
-			btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
-
-			btnInventory.setPos(x, y);
-
-			int ofs = (slots == 4 && btnSearch.left() - btnInventory.right() < 90) ? 2 : 0;
-
-			btnQuick[0].setPos(btnInventory.right() - ofs, visible[0]);
-			btnQuick[1].setPos(btnQuick[0].right() - ofs, visible[1]);
-			btnQuick[2].setPos(btnQuick[1].right() - ofs, visible[2]);
-			btnQuick[3].setPos(btnQuick[2].right() - ofs, visible[3]);
+		for(int i = 0; i <= 3; i++) {
+			btnQuick[i].visible = btnQuick[i].active = slots > i;
 		}
 
+		float right = width;
+		switch(Mode.valueOf(ShatteredPixelDungeon.toolbarMode())){
+			case SPLIT:
+				btnWait.setPos(x, y);
+				btnSearch.setPos(btnWait.right(), y);
 
+				btnInventory.setPos(right - btnInventory.width(), y);
 
+				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width() + ofs, visible[0]);
+				btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width() + ofs, visible[1]);
+				btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width() + ofs, visible[2]);
+				btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width() + ofs, visible[3]);
+				break;
+
+			//center = group but.. well.. centered, so all we need to do is pre-emptively set the right side further in.
+			case CENTER:
+				right = width - (width - btnWait.width() - btnSearch.width() - btnInventory.width() - (slots * (btnQuick[0].width() - ofs)))/2f;
+
+			case GROUP:
+				btnWait.setPos(right - btnWait.width(), y);
+				btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
+				btnInventory.setPos(btnSearch.left() - btnInventory.width(), y);
+
+				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width() + ofs, visible[0]);
+				btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width() + ofs, visible[1]);
+				btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width() + ofs, visible[2]);
+				btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width() + ofs, visible[3]);
+				break;
+		}
+		right = width;
+
+		if (ShatteredPixelDungeon.flippedUI()) {
+
+			btnWait.setPos( (right - btnWait.right()), y);
+			btnSearch.setPos( (right - btnSearch.right()), y);
+			btnInventory.setPos( (right - btnInventory.right()), y);
+
+			for(int i = 0; i <= 3; i++) {
+				btnQuick[i].setPos( right - btnQuick[i].right(), visible[i]);
+			}
+
+		}
+
+	}
+
+	public static void updateLayout(){
+		if (instance != null) instance.layout();
 	}
 	
 	@Override
@@ -209,13 +237,6 @@ public class Toolbar extends Component {
 		if (!Dungeon.hero.isAlive()) {
 			btnInventory.enable(true);
 		}
-
-		//check if visible slots or UI flipping has changed.
-		if ((slots == 0 && btnQuick[0].visible) || (slots != 0 && !btnQuick[slots-1].visible)){
-			layout();
-		} else if (flipped && btnWait.left() == 0 || !flipped && btnInventory.left() == 0){
-			layout();
-		}
 	}
 	
 	public void pickup( Item item ) {
@@ -228,7 +249,7 @@ public class Toolbar extends Component {
 		@Override
 		public void onSelect( Integer cell ) {
 
-			examining = false;
+			instance.examining = false;
 			
 			if (cell == null) {
 				return;

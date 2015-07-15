@@ -203,7 +203,7 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public static void scale( int value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_SCALE, value );
-		switchScene( TitleScene.class );
+		resetScene();
 	}
 
 	// *** IMMERSIVE MODE ****
@@ -274,6 +274,7 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public static void music( boolean value ) {
 		Music.INSTANCE.enable( value );
+		Music.INSTANCE.volume( musicVol()/10f );
 		Preferences.INSTANCE.put( Preferences.KEY_MUSIC, value );
 	}
 	
@@ -341,6 +342,14 @@ public class ShatteredPixelDungeon extends Game {
 		Preferences.INSTANCE.put(Preferences.KEY_FLIPPEDUI, value ); }
 
 	public static boolean flippedUI(){ return Preferences.INSTANCE.getBoolean(Preferences.KEY_FLIPPEDUI, false); }
+
+	public static void toolbarMode( String value ) {
+		Preferences.INSTANCE.put( Preferences.KEY_BARMODE, value );
+	}
+
+	public static String toolbarMode() {
+		return Preferences.INSTANCE.getString(Preferences.KEY_BARMODE, !landscape() ? "SPLIT" : "GROUPED");
+	}
 	
 	public static void intro( boolean value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_INTRO, value );

@@ -22,184 +22,56 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.ui.WndDisplay;
+import com.watabou.noosa.Game;
 
 public class WndSettings extends Window {
-	
-	private static final String TXT_ZOOM_IN			= "+";
-	private static final String TXT_ZOOM_OUT		= "-";
-	private static final String TXT_ZOOM_DEFAULT	= "Default Zoom";
-
-	private static final String TXT_SCALE		= "UI Scale: %dX";
-	private static final String TXT_IMMERSIVE		= "Immersive mode";
-
-	private static final String TXT_BRIGHTNESS	= "Brightness: %s";
-
-	private static final String TXT_QUICKSLOT = "QuickSlots: %s";
-	
 	private static final String TXT_SWITCH_PORT	= "Switch to portrait";
 	private static final String TXT_SWITCH_LAND	= "Switch to landscape";
 	
 	private static final int WIDTH		= 112;
 	private static final int BTN_HEIGHT	= 20;
 	private static final int GAP 		= 2;
-	
-	private RedButton btnZoomOut;
-	private RedButton btnZoomIn;
 
 	private int setScale = PixelScene.defaultZoom;
 	
-	public WndSettings( boolean inGame ) {
+	public WndSettings() {
 		super();
 
-		CheckBox btnImmersive = null;
+		RedButton btnDisplay = new RedButton("Display"){
+			@Override
+			protected void onClick() {
+				hide();
+				Game.scene().add(new WndDisplay());
+			}
+		};
+		btnDisplay.setRect(0, 0, (WIDTH/2)-1, BTN_HEIGHT);
+		add( btnDisplay );
 
-		if (inGame) {
-			int w = BTN_HEIGHT;
-			
-			// Zoom out
-			btnZoomOut = new RedButton( TXT_ZOOM_OUT ) {
-				@Override
-				protected void onClick() {
-					zoom( Camera.main.zoom - 1 );
-				}
-			};
-			add( btnZoomOut.setRect( 0, 0, w, BTN_HEIGHT) );
-			
-			// Zoom in
-			btnZoomIn = new RedButton( TXT_ZOOM_IN ) {
-				@Override
-				protected void onClick() {
-					zoom( Camera.main.zoom + 1 );
-				}
-			};
-			add( btnZoomIn.setRect( WIDTH - w, 0, w, BTN_HEIGHT) );
-			
-			// Default zoom
-			add( new RedButton( TXT_ZOOM_DEFAULT ) {
-				@Override
-				protected void onClick() {
-					zoom( PixelScene.defaultZoom );
-				}
-			}.setRect( btnZoomOut.right(), 0, WIDTH - btnZoomIn.width() - btnZoomOut.width(), BTN_HEIGHT ) );
-			
-		} else {
-			
-			RedButton btnScaleUp = new RedButton( Utils.format(TXT_SCALE, setScale) ) {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					setScale++;
-					if (setScale > PixelScene.maxDefaultZoom) setScale = (int)Math.ceil(2*Game.density);
-					this.text(Utils.format(TXT_SCALE, setScale));
-				}
-			};
-			btnScaleUp.setRect( 0, 0, WIDTH, BTN_HEIGHT );
-			btnScaleUp.enable(PixelScene.maxDefaultZoom > Math.ceil(2*Game.density));
-			add(btnScaleUp);
+		RedButton btnAudio = new RedButton("Audio") {
+			@Override
+			protected void onClick() {
+				hide();
+				Game.scene().add(new WndAudio());
+			}
+		};
+		btnAudio.setRect( btnDisplay.right()+2, 0, (WIDTH/2)-1, BTN_HEIGHT );
+		add( btnAudio );
 
-			btnImmersive = new CheckBox( TXT_IMMERSIVE ) {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					ShatteredPixelDungeon.immerse(checked());
-				}
-			};
-			btnImmersive.setRect( 0, btnScaleUp.bottom() + GAP, WIDTH, BTN_HEIGHT );
-			btnImmersive.checked( ShatteredPixelDungeon.immersed() );
-			btnImmersive.enable( android.os.Build.VERSION.SDK_INT >= 19 );
-			add( btnImmersive );
+		RedButton btnOrientation = new RedButton( orientationText() ) {
+			@Override
+			protected void onClick() {
+				ShatteredPixelDungeon.landscape(!ShatteredPixelDungeon.landscape());
+			}
+		};
+		btnOrientation.setRect( 0, btnAudio.bottom() + GAP, WIDTH, BTN_HEIGHT );
+		add( btnOrientation );
 
-		}
-		
-		if (!inGame) {
+		resize( WIDTH, (int)btnOrientation.bottom() );
 
-			RedButton btnAudio = new RedButton("Audio Settings") {
-				@Override
-				protected void onClick() {
-					hide();
-					Game.scene().add(new WndAudio());
-				}
-			};
-			btnAudio.setRect( 0, btnImmersive.bottom() + GAP, WIDTH, BTN_HEIGHT );
-			add( btnAudio );
-			
-			RedButton btnOrientation = new RedButton( orientationText() ) {
-				@Override
-				protected void onClick() {
-					ShatteredPixelDungeon.landscape(!ShatteredPixelDungeon.landscape());
-				}
-			};
-			btnOrientation.setRect( 0, btnAudio.bottom() + GAP, WIDTH, BTN_HEIGHT );
-			add( btnOrientation );
-			
-			resize( WIDTH, (int)btnOrientation.bottom() );
-			
-		} else {
-
-			RedButton btnBrightness = new RedButton(  Utils.format(TXT_BRIGHTNESS, ShatteredPixelDungeon.brightness()) ) {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					int brightness = ShatteredPixelDungeon.brightness()+1;
-					if (brightness == 5) brightness = -2;
-					ShatteredPixelDungeon.brightness(brightness);
-					this.text(Utils.format(TXT_BRIGHTNESS, brightness));
-				}
-			};
-			btnBrightness.setRect(0, btnZoomIn.bottom() + GAP, WIDTH, BTN_HEIGHT);
-			add(btnBrightness);
-
-			RedButton btnQuickSlot = new RedButton( Utils.format(TXT_QUICKSLOT, ShatteredPixelDungeon.quickSlots()) ) {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					int quickslots = ShatteredPixelDungeon.quickSlots()+1;
-					if (quickslots == 5) quickslots = 0;
-					ShatteredPixelDungeon.quickSlots(quickslots);
-					this.text(Utils.format(TXT_QUICKSLOT, quickslots));
-					Toolbar.slots = quickslots;
-				}
-			};
-			btnQuickSlot.setRect(0, btnBrightness.bottom() + GAP, WIDTH, BTN_HEIGHT);
-			add(btnQuickSlot);
-
-			CheckBox btnFlipUI = new CheckBox("Flip Toolbar") {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					ShatteredPixelDungeon.flippedUI(checked());
-					Toolbar.flipped = checked();
-				}
-			};
-			btnFlipUI.setRect( 0, btnQuickSlot.bottom() + GAP, WIDTH, BTN_HEIGHT );
-			btnFlipUI.checked(ShatteredPixelDungeon.flippedUI());
-			add(btnFlipUI);
-			
-			resize( WIDTH, (int)btnFlipUI.bottom() );
-			
-		}
-	}
-	
-	private void zoom( float value ) {
-
-		Camera.main.zoom( value );
-		ShatteredPixelDungeon.zoom((int) (value - PixelScene.defaultZoom));
-
-		updateEnabled();
-	}
-	
-	private void updateEnabled() {
-		float zoom = Camera.main.zoom;
-		btnZoomIn.enable( zoom < PixelScene.maxZoom );
-		btnZoomOut.enable( zoom > PixelScene.minZoom );
 	}
 	
 	private String orientationText() {

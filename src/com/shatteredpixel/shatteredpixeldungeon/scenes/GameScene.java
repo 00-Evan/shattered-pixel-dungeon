@@ -346,6 +346,8 @@ public class GameScene extends PixelScene {
 			Dungeon.droppedItems.remove( Dungeon.depth );
 		}
 
+		Dungeon.hero.next();
+
 		Camera.main.target = hero;
 		fadeIn();
 	}

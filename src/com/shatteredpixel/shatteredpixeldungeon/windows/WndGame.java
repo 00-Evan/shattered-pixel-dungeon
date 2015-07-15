@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import java.io.IOException;
 
+import com.shatteredpixel.shatteredpixeldungeon.ui.*;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -29,9 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.RankingsScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class WndGame extends Window {
 	
@@ -53,15 +51,13 @@ public class WndGame extends Window {
 		
 		super();
 		
-		addButton( new RedButton( TXT_SETTINGS ) {
+		addButtons( new RedButton( "Display" ) {
 			@Override
 			protected void onClick() {
 				hide();
-				GameScene.show( new WndSettings( true ) );
+				GameScene.show( new WndDisplay() );
 			}
-		});
-
-		addButton( new RedButton( "Audio Settings" ) {
+		}, new RedButton( "Audio" ) {
 			@Override
 			protected void onClick() {
 				hide();
