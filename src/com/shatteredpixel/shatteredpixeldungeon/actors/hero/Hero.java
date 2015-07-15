@@ -431,12 +431,8 @@ public class Hero extends Char {
 		if (curAction == null) {
 			
 			if (restoreHealth) {
-				if (HP >= HT || Dungeon.level.locked) {
-					restoreHealth = false;
-				} else {
-					spend( TIME_TO_REST ); next();
-					return false;
-				}
+				spend( TIME_TO_REST ); next();
+				return false;
 			}
 			
 			ready();
