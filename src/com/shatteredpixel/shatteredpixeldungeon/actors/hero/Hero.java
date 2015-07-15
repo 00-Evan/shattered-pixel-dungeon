@@ -164,7 +164,7 @@ public class Hero extends Char {
 	
 	private Item theKey;
 	
-	public boolean restoreHealth = false;
+	public boolean resting = false;
 
 	public MissileWeapon rangedWeapon = null;
 	public Belongings belongings;
@@ -430,7 +430,7 @@ public class Hero extends Char {
 		
 		if (curAction == null) {
 			
-			if (restoreHealth) {
+			if (resting) {
 				spend( TIME_TO_REST ); next();
 				return false;
 			}
@@ -440,7 +440,7 @@ public class Hero extends Char {
 			
 		} else {
 			
-			restoreHealth = false;
+			resting = false;
 			
 			ready = false;
 			
@@ -849,12 +849,12 @@ public class Hero extends Char {
 		}
 	}
 	
-	public void rest( boolean tillHealthy ) {
+	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );
-		if (!tillHealthy) {
+		if (!fullRest) {
 			sprite.showStatus( CharSprite.DEFAULT, TXT_WAIT );
 		}
-		restoreHealth = tillHealthy;
+		resting = fullRest;
 	}
 	
 	@Override
@@ -908,7 +908,7 @@ public class Hero extends Char {
 
 		if (!(src instanceof Hunger || src instanceof Viscosity.DeferedDamage) && damageInterrupt) {
 			interrupt();
-			restoreHealth = false;
+			resting = false;
 		}
 
 		if (this.buff(Drowsy.class) != null){
@@ -955,7 +955,7 @@ public class Hero extends Char {
 		
 		if (newMob) {
 			interrupt();
-			restoreHealth = false;
+			resting = false;
 		}
 		
 		visibleEnemies = visible;

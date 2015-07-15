@@ -36,6 +36,9 @@ public class Regeneration extends Buff {
 
 			if (target.HP < target.HT && !((Hero)target).isStarving()) {
 				target.HP += 1;
+				if (target.HP == target.HT){
+					((Hero)target).resting = false;
+				}
 			}
 
 			ChaliceOfBlood.chaliceRegen regenBuff = Dungeon.hero.buff( ChaliceOfBlood.chaliceRegen.class);

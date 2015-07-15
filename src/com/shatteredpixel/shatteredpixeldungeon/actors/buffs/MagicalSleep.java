@@ -58,7 +58,7 @@ public class MagicalSleep extends Buff {
 	public boolean act(){
 		if (target instanceof Hero) {
 			target.HP = Math.min(target.HP+1, target.HT);
-			((Hero) target).restoreHealth = true;
+			((Hero) target).resting = true;
 			if (target.HP == target.HT) {
 				GLog.p("You wake up feeling refreshed and healthy.");
 				detach();
@@ -72,7 +72,7 @@ public class MagicalSleep extends Buff {
 	public void detach() {
 		target.paralysed = false;
 		if (target instanceof Hero)
-			((Hero) target).restoreHealth = false;
+			((Hero) target).resting = false;
 		super.detach();
 	}
 
