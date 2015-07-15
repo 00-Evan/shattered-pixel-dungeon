@@ -108,6 +108,12 @@ public class Toolbar extends Component {
 					Dungeon.hero.search(true);
 				}
 			}
+
+			@Override
+			protected boolean onLongClick() {
+				Dungeon.hero.search(true);
+				return true;
+			}
 		});
 
 		btnQuick = new Tool[4];
