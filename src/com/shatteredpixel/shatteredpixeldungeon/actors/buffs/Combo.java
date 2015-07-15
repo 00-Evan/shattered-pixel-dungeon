@@ -76,6 +76,6 @@ public class Combo extends Buff {
 				"failing to land a hit quickly enough will reset the combo.\n" +
 				"\n" +
 				(count <= 2 ? "Your combo has not built up enough to give you bonus damage yet." :
-				"Your combo is currently giving you " + ((count - 2) / 5f) + " % bonus damage.");
+				"Your combo is currently giving you " + ((count - 2) * 20f) + " % bonus damage.");
 	}
 }
