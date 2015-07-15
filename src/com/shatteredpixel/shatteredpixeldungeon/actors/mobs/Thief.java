@@ -137,8 +137,8 @@ public class Thief extends Mob {
 		if (item != null) {
 
 			GLog.w( TXT_STOLE, this.name, item.name() );
-
-
+			Dungeon.quickslot.clearItem( item );
+			item.updateQuickslot();
 
 			if (item instanceof Honeypot){
 				this.item = ((Honeypot)item).shatter(this, this.pos);
