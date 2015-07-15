@@ -100,6 +100,8 @@ public abstract class EquipableItem extends Item {
 		}
 
 		if (collect && !collect( hero.belongings.backpack )) {
+			onDetach();
+			Dungeon.quickslot.clearItem(this);
 			Dungeon.level.drop( this, hero.pos );
 		}
 
