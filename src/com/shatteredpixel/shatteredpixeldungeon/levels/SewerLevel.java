@@ -100,7 +100,8 @@ public class SewerLevel extends RegularLevel {
 		if (Dungeon.depth == 2)
 			for (Room r : roomEntrance.connected.keySet()){
 				Room.Door d = roomEntrance.connected.get(r);
-				map[d.x + d.y * WIDTH] = Terrain.SECRET_DOOR;
+				if (d.type == Room.Door.Type.REGULAR)
+					map[d.x + d.y * WIDTH] = Terrain.SECRET_DOOR;
 			}
 		
 		placeSign();
