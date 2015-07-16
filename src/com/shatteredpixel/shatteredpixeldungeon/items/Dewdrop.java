@@ -57,6 +57,8 @@ public class Dewdrop extends Item {
 				hero.HP += effect;
 				hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 				hero.sprite.showStatus( CharSprite.POSITIVE, TXT_VALUE, effect );
+			} else {
+				return false;
 			}
 			
 		} else if (vial != null) {
