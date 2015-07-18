@@ -46,6 +46,7 @@ public class WndDisplay extends Window {
 			@Override
 			protected void onChange() {
 				ShatteredPixelDungeon.scale(getSelectedValue());
+				ShatteredPixelDungeon.resetScene();
 			}
 		};
 		scale.setSelectedValue(PixelScene.defaultZoom);

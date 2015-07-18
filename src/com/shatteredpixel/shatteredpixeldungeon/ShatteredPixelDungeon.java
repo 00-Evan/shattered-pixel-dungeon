@@ -203,7 +203,6 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public static void scale( int value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_SCALE, value );
-		resetScene();
 	}
 
 	// *** IMMERSIVE MODE ****

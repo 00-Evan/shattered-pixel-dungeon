@@ -36,8 +36,6 @@ public class WndSettings extends Window {
 	private static final int BTN_HEIGHT	= 20;
 	private static final int GAP 		= 2;
 
-	private int setScale = PixelScene.defaultZoom;
-	
 	public WndSettings() {
 		super();
 
@@ -76,14 +74,5 @@ public class WndSettings extends Window {
 	
 	private String orientationText() {
 		return ShatteredPixelDungeon.landscape() ? TXT_SWITCH_PORT : TXT_SWITCH_LAND;
-	}
-
-	@Override
-	public void hide() {
-		super.hide();
-		if (setScale != PixelScene.defaultZoom) {
-			ShatteredPixelDungeon.scale(setScale);
-			ShatteredPixelDungeon.switchScene(TitleScene.class);
-		}
 	}
 }

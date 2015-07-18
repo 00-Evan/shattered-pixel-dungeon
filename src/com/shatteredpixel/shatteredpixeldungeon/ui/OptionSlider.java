@@ -63,7 +63,11 @@ public abstract class OptionSlider extends Component {
 		this.minVal = minVal;
 		this.maxVal = maxVal;
 
-		if (minVal > maxVal) throw new IllegalArgumentException();
+		//really shouldn't display the slider if this happens.
+		if (minVal > maxVal){
+			active = false;
+			visible = false;
+		}
 
 		sliderTicks = new ColorBlock[(maxVal - minVal) + 1];
 		for (int i = 0; i < sliderTicks.length; i++){
