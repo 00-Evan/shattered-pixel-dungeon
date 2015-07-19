@@ -22,6 +22,8 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -77,6 +79,21 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 			@Override
 			protected void onClick() {
 				if (targeting) {
+					//first try to directly target
+					if (new Ballistica(Dungeon.hero.pos, lastTarget.pos, Ballistica.PROJECTILE).collisionPos == lastTarget.pos) {
+						GameScene.handleCell(lastTarget.pos);
+						return;
+					}
+
+					//Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim basically.
+					for (int i : Level.NEIGHBOURS9DIST2) {
+						if (new Ballistica(Dungeon.hero.pos, lastTarget.pos+i, Ballistica.PROJECTILE).collisionPos == lastTarget.pos){
+							GameScene.handleCell( lastTarget.pos+i );
+							return;
+						}
+					}
+
+					//couldn't find anything, just have it directly target
 					GameScene.handleCell( lastTarget.pos );
 				} else {
 					Item item = select(slotNum);
