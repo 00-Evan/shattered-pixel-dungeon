@@ -952,6 +952,10 @@ public abstract class Level implements Bundlable {
 				}
 			}
 		}
+
+		for (Heap heap : heaps.values())
+			if (!heap.seen && fieldOfView[heap.pos])
+				heap.seen = true;
 		
 		return fieldOfView;
 	}
