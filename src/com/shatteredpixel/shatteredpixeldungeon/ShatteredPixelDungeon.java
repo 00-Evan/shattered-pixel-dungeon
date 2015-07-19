@@ -347,7 +347,7 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static String toolbarMode() {
-		return Preferences.INSTANCE.getString(Preferences.KEY_BARMODE, !landscape() ? "SPLIT" : "GROUPED");
+		return Preferences.INSTANCE.getString(Preferences.KEY_BARMODE, !landscape() ? "SPLIT" : "GROUP");
 	}
 	
 	public static void intro( boolean value ) {
