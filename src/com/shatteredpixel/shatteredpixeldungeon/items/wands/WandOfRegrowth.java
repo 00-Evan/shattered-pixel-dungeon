@@ -162,7 +162,7 @@ public class WandOfRegrowth extends Wand {
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//like vampiric enchantment, except with herbal healing buff
 
-		int level = Math.max( 0, 0/*staff level*/ );
+		int level = Math.max( 0, staff.level );
 
 		// lvl 0 - 33%
 		// lvl 1 - 43%
