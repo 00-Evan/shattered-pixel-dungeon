@@ -240,14 +240,14 @@ public class RankingsScene extends PixelScene {
 			shield = new ItemSprite( ItemSpriteSheet.TOMB, null );
 			add( shield );
 			
-			position = new BitmapText( PixelScene.font1x );
+			position = new BitmapText( PixelScene.pixelFont);
 			position.alpha(0.8f);
 			add( position );
 			
 			desc = createMultiline( 7 );
 			add( desc );
 
-			depth = new BitmapText( PixelScene.font1x );
+			depth = new BitmapText( PixelScene.pixelFont);
 			depth.alpha(0.8f);
 
 			steps = new Image();
@@ -255,7 +255,7 @@ public class RankingsScene extends PixelScene {
 			classIcon = new Image();
 			add( classIcon );
 
-			level = new BitmapText( PixelScene.font1x );
+			level = new BitmapText( PixelScene.pixelFont);
 			level.alpha(0.8f);
 		}
 		

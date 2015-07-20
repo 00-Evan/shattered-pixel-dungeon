@@ -110,11 +110,8 @@ public class Assets {
 	public static final String BUFFS_LARGE	= "large_buffs.png";
 	public static final String SPELL_ICONS	= "spell_icons.png";
 	
-	public static final String FONTS1X	= "font1x.png";
-	public static final String FONTS15X	= "font15x.png";
-	public static final String FONTS2X	= "font2x.png";
-	public static final String FONTS25X	= "font25x.png";
-	public static final String FONTS3X	= "font3x.png";
+	public static final String PIXELFONT    = "pixel_font.png";
+	public static final String FONT         = "font.png";
 	
 	public static final String THEME	= "theme.mp3";
 	public static final String TUNE		= "game.mp3";

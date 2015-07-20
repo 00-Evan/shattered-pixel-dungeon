@@ -25,6 +25,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLES20;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.watabou.glwrap.Texture;
 import com.watabou.input.Touchscreen;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapText.Font;
@@ -53,20 +54,18 @@ public class PixelScene extends Scene {
 	public static int maxDefaultZoom = 0;
 	public static float minZoom;
 	public static float maxZoom;
-	
+
 	public static Camera uiCamera;
-	
-	public static BitmapText.Font font1x;
-	public static BitmapText.Font font15x;
-	public static BitmapText.Font font2x;
-	public static BitmapText.Font font25x;
-	public static BitmapText.Font font3x;
-	
+
+	public static BitmapText.Font pixelFont;
+	public static BitmapText.Font fontLinear;
+	public static BitmapText.Font fontNearest;
+
 	@Override
 	public void create() {
-		
+
 		super.create();
-		
+
 		GameScene.scene = null;
 
 		float minWidth, minHeight;
@@ -94,56 +93,41 @@ public class PixelScene extends Scene {
 
 		minZoom = 1;
 		maxZoom = defaultZoom * 2;
-		
+
 		Camera.reset( new PixelCamera( defaultZoom ) );
-		
+
 		float uiZoom = defaultZoom;
 		uiCamera = Camera.createFullscreen( uiZoom );
 		Camera.add( uiCamera );
-		
-		if (font1x == null) {
-			
+
+		if (pixelFont == null) {
+
 			// 3x5 (6)
-			font1x = Font.colorMarked(
-				BitmapCache.get( Assets.FONTS1X ), 0x00000000, BitmapText.Font.LATIN_FULL );
-			font1x.baseLine = 6;
-			font1x.tracking = -1;
-			
-			// 5x8 (10)
-			font15x = Font.colorMarked(
-					BitmapCache.get( Assets.FONTS15X ), 12, 0x00000000, BitmapText.Font.LATIN_FULL );
-			font15x.baseLine = 9;
-			font15x.tracking = -1;
-			
-			// 6x10 (12)
-			font2x = Font.colorMarked(
-				BitmapCache.get( Assets.FONTS2X ), 14, 0x00000000, BitmapText.Font.LATIN_FULL );
-			font2x.baseLine = 11;
-			font2x.tracking = -1;
-			
-			// 7x12 (15)
-			font25x = Font.colorMarked(
-				BitmapCache.get( Assets.FONTS25X ), 17, 0x00000000, BitmapText.Font.LATIN_FULL );
-			font25x.baseLine = 13;
-			font25x.tracking = -1;
-			
+			pixelFont = Font.colorMarked(
+				BitmapCache.get( Assets.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL );
+			pixelFont.baseLine = 6;
+			pixelFont.tracking = -1;
+
 			// 9x15 (18)
-			font3x = Font.colorMarked(
-				BitmapCache.get( Assets.FONTS3X ), 22, 0x00000000, BitmapText.Font.LATIN_FULL );
-			font3x.baseLine = 17;
-			font3x.tracking = -2;
+			fontLinear = Font.colorMarked(
+					BitmapCache.get( Assets.FONT), 22, 0x00000000, BitmapText.Font.LATIN_FULL );
+			fontNearest = Font.colorMarked(
+					BitmapCache.get( "2", Assets.FONT), 22, 0x00000000, BitmapText.Font.LATIN_FULL );
+			fontLinear.baseLine = fontNearest.baseLine = 17;
+			fontLinear.tracking = fontNearest.tracking = -2;
+			fontLinear.texture.filter(Texture.LINEAR, Texture.LINEAR);
 		}
 	}
-	
+
 	@Override
 	public void destroy() {
 		super.destroy();
 		Touchscreen.event.removeAll();
 	}
-	
+
 	public static BitmapText.Font font;
 	public static float scale;
-	
+
 	public static void chooseFont( float size ) {
 		chooseFont( size, defaultZoom );
 	}
@@ -152,47 +136,19 @@ public class PixelScene extends Scene {
 
 		float pt = size * zoom;
 
-		if (pt >= 19) {
-			
-			scale = pt / 19;
-			if (1.5 <= scale && scale < 2) {
-				font = font25x;
-				scale = (int)(pt / 14);
-			} else if (1.25 <= scale && scale < 1.5) {
-				font = font2x;
-				scale = (int)(pt / 12);
-			} else {
-				font = font3x;
+		if (pt >= 38){
 
-				//at this point non integer scale values don't cause visual problems
-				if (scale < 2.25f)
-					scale = (int)scale;
-			}
-			
-		} else if (pt >= 14) {
+			font = fontNearest;
+			scale = pt / 19f;
 
-			scale = pt / 14;
-				font = font25x;
-				scale = (int)scale;
-			
 		} else if (pt >= 12) {
-			
-			scale = pt / 12;
-				font = font2x;
-				scale = (int)scale;
 
-			
-		} else if (pt >= 10) {
-			
-			scale = pt / 10;
-				font = font15x;
-				scale = (int)scale;
-			
+			font = fontLinear;
+			scale = pt / 19f;
+
 		} else {
-			
-			font = font1x;
-			scale = Math.max( 1, (int)(pt / 7) );
-			
+			font = pixelFont;
+			scale = 1f;
 		}
 
 		scale /= zoom;
