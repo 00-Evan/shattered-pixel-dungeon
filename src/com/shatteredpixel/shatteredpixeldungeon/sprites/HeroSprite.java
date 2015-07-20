@@ -51,8 +51,11 @@ public class HeroSprite extends CharSprite {
 		
 		texture( Dungeon.hero.heroClass.spritesheet() );
 		updateArmor();
-		
-		idle();
+
+		if (ch.isAlive())
+			idle();
+		else
+			die();
 	}
 	
 	public void updateArmor() {
