@@ -20,59 +20,254 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
+import com.shatteredpixel.shatteredpixeldungeon.ui.OptionSlider;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.ui.WndDisplay;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Group;
+import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
 
-public class WndSettings extends Window {
+public class WndSettings extends WndTabbed {
 	private static final String TXT_SWITCH_PORT	= "Switch to portrait";
 	private static final String TXT_SWITCH_LAND	= "Switch to landscape";
-	
-	private static final int WIDTH		= 112;
-	private static final int BTN_HEIGHT	= 20;
-	private static final int GAP 		= 2;
+
+	private static final int WIDTH		    = 112;
+	private static final int HEIGHT         = 112;
+	private static final int SLIDER_HEIGHT	= 25;
+	private static final int BTN_HEIGHT	    = 20;
+	private static final int GAP_SML 		= 2;
+	private static final int GAP_LRG 		= 10;
+
+	private ScreenTab screen;
+	private UITab ui;
+	private AudioTab audio;
 
 	public WndSettings() {
 		super();
 
-		RedButton btnDisplay = new RedButton("Display"){
-			@Override
-			protected void onClick() {
-				hide();
-				Game.scene().add(new WndDisplay());
-			}
-		};
-		btnDisplay.setRect(0, 0, (WIDTH/2)-1, BTN_HEIGHT);
-		add( btnDisplay );
+		screen = new ScreenTab();
+		add( screen );
 
-		RedButton btnAudio = new RedButton("Audio") {
-			@Override
-			protected void onClick() {
-				hide();
-				Game.scene().add(new WndAudio());
-			}
-		};
-		btnAudio.setRect( btnDisplay.right()+2, 0, (WIDTH/2)-1, BTN_HEIGHT );
-		add( btnAudio );
+		ui = new UITab();
+		add( ui );
 
-		RedButton btnOrientation = new RedButton( orientationText() ) {
-			@Override
-			protected void onClick() {
-				ShatteredPixelDungeon.landscape(!ShatteredPixelDungeon.landscape());
-			}
-		};
-		btnOrientation.setRect( 0, btnAudio.bottom() + GAP, WIDTH, BTN_HEIGHT );
-		add( btnOrientation );
+		audio = new AudioTab();
+		add( audio );
 
-		resize( WIDTH, (int)btnOrientation.bottom() );
+		add( new LabeledTab("Screen"){
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				screen.visible = screen.active = value;
+			}
+		});
+
+		add( new LabeledTab("UI"){
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				ui.visible = ui.active = value;
+			}
+		});
+
+		add( new LabeledTab("Audio"){
+			@Override
+			protected void select(boolean value) {
+				super.select(value);
+				audio.visible = audio.active = value;
+			}
+		});
+
+		resize(WIDTH, HEIGHT);
+
+		layoutTabs();
+
+		select(0);
 
 	}
-	
-	private String orientationText() {
-		return ShatteredPixelDungeon.landscape() ? TXT_SWITCH_PORT : TXT_SWITCH_LAND;
+
+	private class ScreenTab extends Group {
+
+		public ScreenTab() {
+			super();
+
+			OptionSlider scale = new OptionSlider("Display Scale",
+					(int)Math.ceil(2* Game.density)+ "X",
+					PixelScene.maxDefaultZoom + "X",
+					(int)Math.ceil(2* Game.density),
+					PixelScene.maxDefaultZoom ) {
+				@Override
+				protected void onChange() {
+					ShatteredPixelDungeon.scale(getSelectedValue());
+					ShatteredPixelDungeon.resetScene();
+				}
+			};
+			scale.setSelectedValue(PixelScene.defaultZoom);
+			if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
+				scale.setRect(0, 0, WIDTH, SLIDER_HEIGHT);
+				add(scale);
+			} else {
+				scale.setRect(0, 0, 0, 0);
+			}
+
+			CheckBox chkImmersive = new CheckBox( "Hide Software Keys" ) {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.immerse(checked());
+				}
+			};
+			chkImmersive.setRect( 0, scale.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
+			chkImmersive.checked( ShatteredPixelDungeon.immersed() );
+			chkImmersive.enable(android.os.Build.VERSION.SDK_INT >= 19);
+			add(chkImmersive);
+
+
+			RedButton btnOrientation = new RedButton( ShatteredPixelDungeon.landscape() ? TXT_SWITCH_PORT : TXT_SWITCH_LAND ) {
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.landscape(!ShatteredPixelDungeon.landscape());
+				}
+			};
+			btnOrientation.setRect(0, chkImmersive.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
+			add( btnOrientation );
+
+
+			OptionSlider brightness = new OptionSlider("Brightness", "Dark", "Bright", -2, 4) {
+				@Override
+				protected void onChange() {
+					ShatteredPixelDungeon.brightness(getSelectedValue());
+				}
+			};
+			brightness.setSelectedValue(ShatteredPixelDungeon.brightness());
+			brightness.setRect(0, btnOrientation.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
+			add(brightness);
+		}
+	}
+
+	private class UITab extends Group {
+
+		public UITab(){
+			super();
+
+			BitmapText barDesc = PixelScene.createText("Toolbar Mode:", 9);
+			barDesc.measure();
+			barDesc.x = (WIDTH-barDesc.width())/2;
+			add(barDesc);
+
+			RedButton btnSplit = new RedButton("Split"){
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.toolbarMode(Toolbar.Mode.SPLIT.name());
+					Toolbar.updateLayout();
+				}
+			};
+			btnSplit.setRect( 1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
+			add(btnSplit);
+
+			RedButton btnGrouped = new RedButton("Group"){
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.toolbarMode(Toolbar.Mode.GROUP.name());
+					Toolbar.updateLayout();
+				}
+			};
+			btnGrouped.setRect( btnSplit.right()+1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
+			add(btnGrouped);
+
+			RedButton btnCentered = new RedButton("Center"){
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.toolbarMode(Toolbar.Mode.CENTER.name());
+					Toolbar.updateLayout();
+				}
+			};
+			btnCentered.setRect(btnGrouped.right()+1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
+			add(btnCentered);
+
+			OptionSlider slots = new OptionSlider("Quickslots", "0", "4", 0, 4) {
+				@Override
+				protected void onChange() {
+					ShatteredPixelDungeon.quickSlots( getSelectedValue() );
+					Toolbar.updateLayout();
+				}
+			};
+			slots.setSelectedValue(ShatteredPixelDungeon.quickSlots());
+			slots.setRect(0, btnGrouped.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
+			add(slots);
+
+			CheckBox chkFlip = new CheckBox("Flip Toolbar"){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.flippedUI(checked());
+					Toolbar.updateLayout();
+				}
+			};
+			chkFlip.setRect(0, slots.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
+			chkFlip.checked(ShatteredPixelDungeon.flippedUI());
+			add(chkFlip);
+		}
+
+	}
+
+	private class AudioTab extends Group {
+
+		public AudioTab() {
+			OptionSlider musicVol = new OptionSlider("Music Volume", "0", "10", 0, 10) {
+				@Override
+				protected void onChange() {
+					Music.INSTANCE.volume(getSelectedValue()/10f);
+					ShatteredPixelDungeon.musicVol(getSelectedValue());
+				}
+			};
+			musicVol.setSelectedValue(ShatteredPixelDungeon.musicVol());
+			musicVol.setRect(0, 0, WIDTH, SLIDER_HEIGHT);
+			add(musicVol);
+
+			CheckBox musicMute = new CheckBox("Mute Music"){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.music(!checked());
+				}
+			};
+			musicMute.setRect(0, musicVol.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
+			musicMute.checked(!ShatteredPixelDungeon.music());
+			add(musicMute);
+
+
+			OptionSlider SFXVol = new OptionSlider("SFX Volume", "0", "10", 0, 10) {
+				@Override
+				protected void onChange() {
+					Sample.INSTANCE.volume(getSelectedValue()/10f);
+					ShatteredPixelDungeon.SFXVol(getSelectedValue());
+				}
+			};
+			SFXVol.setSelectedValue(ShatteredPixelDungeon.SFXVol());
+			SFXVol.setRect(0, musicMute.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
+			add(SFXVol);
+
+			CheckBox btnSound = new CheckBox( "Mute SFX" ) {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.soundFx(!checked());
+					Sample.INSTANCE.play( Assets.SND_CLICK );
+				}
+			};
+			btnSound.setRect(0, SFXVol.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
+			btnSound.checked(!ShatteredPixelDungeon.soundFx());
+			add( btnSound );
+
+			resize( WIDTH, (int)btnSound.bottom());
+		}
+
 	}
 }

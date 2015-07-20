@@ -51,19 +51,13 @@ public class WndGame extends Window {
 		
 		super();
 		
-		addButtons( new RedButton( "Display" ) {
+		addButton(new RedButton("Settings") {
 			@Override
 			protected void onClick() {
 				hide();
-				GameScene.show( new WndDisplay() );
+				GameScene.show(new WndSettings());
 			}
-		}, new RedButton( "Audio" ) {
-			@Override
-			protected void onClick() {
-				hide();
-				GameScene.show( new WndAudio( ) );
-			}
-		} );
+		});
 
 		// Challenges window
 		if (Dungeon.challenges > 0) {
