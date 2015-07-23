@@ -43,7 +43,7 @@ public class BlazingTrap extends Trap {
 	@Override
 	public void activate() {
 		for (int i : Level.NEIGHBOURS9DIST2){
-			if (!Level.solid[pos+i]) {
+			if (Level.insideMap(pos+i) && !Level.solid[pos+i]) {
 				if (Level.pit[pos+i] || Level.water[pos+i])
 					GameScene.add(Blob.seed(pos + i, 1, Fire.class));
 				else
