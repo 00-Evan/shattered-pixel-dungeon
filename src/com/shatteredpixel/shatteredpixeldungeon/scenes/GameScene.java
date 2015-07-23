@@ -260,11 +260,13 @@ public class GameScene extends PixelScene {
 		log.setRect( 0, toolbar.top(), attack.left(),  0 );
 		add( log );
 		
-		if (Dungeon.depth < Statistics.deepestFloor)
-			GLog.i( TXT_WELCOME_BACK, Dungeon.depth );
-		else
-			GLog.i( TXT_WELCOME, Dungeon.depth );
-		Sample.INSTANCE.play( Assets.SND_DESCEND );
+		if (Dungeon.depth <= Statistics.deepestFloor) {
+			GLog.i(TXT_WELCOME_BACK, Dungeon.depth);
+		} else {
+			GLog.i(TXT_WELCOME, Dungeon.depth);
+			Sample.INSTANCE.play(Assets.SND_DESCEND);
+		}
+
 		switch (Dungeon.level.feeling) {
 		case CHASM:
 			GLog.w( TXT_CHASM );
@@ -326,6 +328,7 @@ public class GameScene extends PixelScene {
 			break;
 		default:
 		}
+		InterlevelScene.mode = InterlevelScene.Mode.CONTINUE;
 
 		ArrayList<Item> dropped = Dungeon.droppedItems.get( Dungeon.depth );
 		if (dropped != null) {
