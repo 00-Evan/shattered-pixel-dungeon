@@ -246,7 +246,7 @@ public class Ghost extends NPC {
 		private static int type;
 
 		private static boolean given;
-		private static boolean processed;
+		public static boolean processed;
 		
 		private static int depth;
 		

@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.*;
@@ -81,6 +82,8 @@ public class Generator {
 	};
 	
 	private static HashMap<Category,Float> categoryProbs = new HashMap<Generator.Category, Float>();
+
+	private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
 	
 	static {
 		
@@ -199,7 +202,7 @@ public class Generator {
 			LloydsBeacon.class,
 			EtherealChains.class
 			};
-		Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
+		Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS;
 		
 		Category.SEED.classes = new Class<?>[]{
 			Firebloom.Seed.class,
@@ -357,8 +360,11 @@ public class Generator {
 
 	//resets artifact probabilities, for new dungeons
 	public static void initArtifacts() {
-		//FIXME: the duplicated logic here has caused 1 bug so far, should refactor.
-		Category.ARTIFACT.probs = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
+		Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS;
+
+		//checks for dried rose quest completion, adds the rose in accordingly.
+		if (Ghost.Quest.processed) Category.ARTIFACT.probs[10] = 1;
+
 		spawnedArtifacts = new ArrayList<String>();
 	}
 
