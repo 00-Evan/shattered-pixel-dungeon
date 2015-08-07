@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Invisibility extends FlavourBuff {
 
-	public static final float DURATION	= 15f;
+	public static final float DURATION	= 20f;
 
 	{
 		type = buffType.POSITIVE;
