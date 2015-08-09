@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -58,10 +59,11 @@ public class Dewdrop extends Item {
 				hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 				hero.sprite.showStatus( CharSprite.POSITIVE, TXT_VALUE, effect );
 			} else {
+				GLog.i("You already have full health.");
 				return false;
 			}
 			
-		} else if (vial != null) {
+		} else {
 			
 			vial.collectDew( this );
 			
@@ -72,9 +74,16 @@ public class Dewdrop extends Item {
 		
 		return true;
 	}
-	
+
+	@Override
+	//max of one dew in a stack
+	public Item quantity(int value) {
+		quantity = Math.min( value, 1);
+		return this;
+	}
+
 	@Override
 	public String info() {
-		return "A crystal clear dewdrop.";
+		return "A crystal clear dewdrop.\n\nDue to the magic of this place, pure water has minor restorative properties.";
 	}
 }
