@@ -413,7 +413,7 @@ public class GameScene extends PixelScene {
 		if (ShatteredPixelDungeon.flipTags()) {
 			scene.log.setRect(scene.attack.width(), scene.toolbar.top(), uiCamera.width - scene.attack.width(), 0);
 		} else {
-			scene.log.setRect(0, scene.toolbar.top(), scene.attack.left(),  0 );
+			scene.log.setRect(0, scene.toolbar.top(), uiCamera.width - scene.attack.width(),  0 );
 		}
 
 		float pos = scene.toolbar.top();
