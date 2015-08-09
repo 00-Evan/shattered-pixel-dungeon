@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 public class Shopkeeper extends NPC {
 
 	public static final String TXT_THIEF = "Thief, Thief!";
+	private int startPos = -1;
 
 	{
 		name = "shopkeeper";
@@ -43,6 +44,13 @@ public class Shopkeeper extends NPC {
 	
 	@Override
 	protected boolean act() {
+
+		if (startPos == -1) startPos = pos;
+
+		if (startPos != pos){
+			flee();
+			return true;
+		}
 		
 		throwItem();
 		
