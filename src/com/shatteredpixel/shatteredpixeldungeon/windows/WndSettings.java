@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.OptionSlider;
@@ -202,17 +203,29 @@ public class WndSettings extends WndTabbed {
 			slots.setRect(0, btnGrouped.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
 			add(slots);
 
-			CheckBox chkFlip = new CheckBox("Flip Toolbar"){
+			CheckBox chkFlipToolbar = new CheckBox("Flip Toolbar"){
 				@Override
 				protected void onClick() {
 					super.onClick();
-					ShatteredPixelDungeon.flippedUI(checked());
+					ShatteredPixelDungeon.flipToolbar(checked());
 					Toolbar.updateLayout();
 				}
 			};
-			chkFlip.setRect(0, slots.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
-			chkFlip.checked(ShatteredPixelDungeon.flippedUI());
-			add(chkFlip);
+			chkFlipToolbar.setRect(0, slots.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
+			chkFlipToolbar.checked(ShatteredPixelDungeon.flipToolbar());
+			add(chkFlipToolbar);
+
+			CheckBox chkFlipTags = new CheckBox("Flip Indicators"){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.flipTags(checked());
+					GameScene.layoutTags();
+				}
+			};
+			chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
+			chkFlipTags.checked(ShatteredPixelDungeon.flipTags());
+			add(chkFlipTags);
 		}
 
 	}

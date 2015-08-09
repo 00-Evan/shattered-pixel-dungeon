@@ -64,6 +64,10 @@ public class Tag extends Button {
 	public void flash() {
 		lightness = 1f;
 	}
+
+	public void flip(boolean value){
+		bg.flipHorizontal(value);
+	}
 	
 	@Override
 	public void update() {

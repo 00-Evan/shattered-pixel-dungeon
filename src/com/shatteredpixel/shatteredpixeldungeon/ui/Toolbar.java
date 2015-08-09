@@ -208,7 +208,7 @@ public class Toolbar extends Component {
 		}
 		right = width;
 
-		if (ShatteredPixelDungeon.flippedUI()) {
+		if (ShatteredPixelDungeon.flipToolbar()) {
 
 			btnWait.setPos( (right - btnWait.right()), y);
 			btnSearch.setPos( (right - btnSearch.right()), y);

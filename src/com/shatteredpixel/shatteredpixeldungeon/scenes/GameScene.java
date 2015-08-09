@@ -240,9 +240,6 @@ public class GameScene extends PixelScene {
 		
 		attack = new AttackIndicator();
 		attack.camera = uiCamera;
-		attack.setPos(
-			uiCamera.width - attack.width(),
-			toolbar.top() - attack.height() );
 		add( attack );
 
 		loot = new LootIndicator();
@@ -253,12 +250,11 @@ public class GameScene extends PixelScene {
 		resume.camera = uiCamera;
 		add( resume );
 
-		layoutTags();
-
 		log = new GameLog();
 		log.camera = uiCamera;
-		log.setRect( 0, toolbar.top(), attack.left(),  0 );
 		add( log );
+
+		layoutTags();
 		
 		if (Dungeon.depth < Statistics.deepestFloor) {
 			GLog.i(TXT_WELCOME_BACK, Dungeon.depth);
@@ -410,17 +406,33 @@ public class GameScene extends PixelScene {
 	private boolean tagLoot        = false;
 	private boolean tagResume    = false;
 
-	private void layoutTags() {
+	public static void layoutTags() {
 
-		float pos = tagAttack ? attack.top() : toolbar.top();
+		float tagLeft = ShatteredPixelDungeon.flipTags() ? 0 : uiCamera.width - scene.attack.width();
 
-		if (tagLoot) {
-			loot.setPos( uiCamera.width - loot.width(), pos - loot.height() );
-			pos = loot.top();
+		if (ShatteredPixelDungeon.flipTags()) {
+			scene.log.setRect(scene.attack.width(), scene.toolbar.top(), uiCamera.width - scene.attack.width(), 0);
+		} else {
+			scene.log.setRect(0, scene.toolbar.top(), scene.attack.left(),  0 );
 		}
 
-		if (tagResume) {
-			resume.setPos( uiCamera.width - resume.width(), pos - resume.height() );
+		float pos = scene.toolbar.top();
+
+		if (scene.tagAttack){
+			scene.attack.setPos( tagLeft, pos - scene.attack.height());
+			scene.attack.flip(tagLeft == 0);
+			pos = scene.attack.top();
+		}
+
+		if (scene.tagLoot) {
+			scene.loot.setPos( tagLeft, pos - scene.loot.height() );
+			scene.loot.flip(tagLeft == 0);
+			pos = scene.loot.top();
+		}
+
+		if (scene.tagResume) {
+			scene.resume.setPos( tagLeft, pos - scene.resume.height() );
+			scene.resume.flip(tagLeft == 0);
 		}
 	}
 	

@@ -337,10 +337,17 @@ public class ShatteredPixelDungeon extends Game {
 
 	public static int quickSlots(){ return Preferences.INSTANCE.getInt( Preferences.KEY_QUICKSLOTS, 4); }
 
-	public static void flippedUI( boolean value) {
-		Preferences.INSTANCE.put(Preferences.KEY_FLIPPEDUI, value ); }
+	public static void flipToolbar( boolean value) {
+		Preferences.INSTANCE.put(Preferences.KEY_FLIPTOOLBAR, value );
+	}
 
-	public static boolean flippedUI(){ return Preferences.INSTANCE.getBoolean(Preferences.KEY_FLIPPEDUI, false); }
+	public static boolean flipToolbar(){ return Preferences.INSTANCE.getBoolean(Preferences.KEY_FLIPTOOLBAR, false); }
+
+	public static void flipTags( boolean value) {
+		Preferences.INSTANCE.put(Preferences.KEY_FLIPTAGS, value );
+	}
+
+	public static boolean flipTags(){ return Preferences.INSTANCE.getBoolean(Preferences.KEY_FLIPTAGS, false); }
 
 	public static void toolbarMode( String value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_BARMODE, value );
