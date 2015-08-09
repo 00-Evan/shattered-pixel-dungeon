@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -33,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -44,6 +47,10 @@ public class Ring extends KindofMisc {
 	
 	private static final String TXT_IDENTIFY =
 		"you are now familiar enough with your %s to identify it. It is %s.";
+
+	private static final String TXT_UNEQUIP_TITLE = "Unequip one item";
+	private static final String TXT_UNEQUIP_MESSAGE =
+			"You can only wear two misc items at a time.";
 	
 	protected Buff buff;
 	
@@ -114,13 +121,30 @@ public class Ring extends KindofMisc {
 	}
 	
 	@Override
-	public boolean doEquip( Hero hero ) {
-		
+	public boolean doEquip( final Hero hero ) {
+
 		if (hero.belongings.misc1 != null && hero.belongings.misc2 != null) {
-			
-			GLog.w( "you can only wear 2 misc items at a time" );
+
+			final KindofMisc m1 = hero.belongings.misc1;
+			final KindofMisc m2 = hero.belongings.misc2;
+
+			ShatteredPixelDungeon.scene().add(
+					new WndOptions(TXT_UNEQUIP_TITLE, TXT_UNEQUIP_MESSAGE,
+							Utils.capitalize(m1.toString()),
+							Utils.capitalize(m2.toString())) {
+
+						@Override
+						protected void onSelect(int index) {
+
+							KindofMisc equipped = (index == 0 ? m1 : m2);
+							if (equipped.doUnequip(hero, true, false)) {
+								doEquip(hero);
+							}
+						}
+					});
+
 			return false;
-			
+
 		} else {
 			
 			if (hero.belongings.misc1 == null) {
