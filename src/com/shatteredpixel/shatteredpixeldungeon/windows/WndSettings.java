@@ -105,8 +105,10 @@ public class WndSettings extends WndTabbed {
 					PixelScene.maxDefaultZoom ) {
 				@Override
 				protected void onChange() {
-					ShatteredPixelDungeon.scale(getSelectedValue());
-					ShatteredPixelDungeon.resetScene();
+					if (getSelectedValue() != ShatteredPixelDungeon.scale()) {
+						ShatteredPixelDungeon.scale(getSelectedValue());
+						ShatteredPixelDungeon.resetScene();
+					}
 				}
 			};
 			scale.setSelectedValue(PixelScene.defaultZoom);
