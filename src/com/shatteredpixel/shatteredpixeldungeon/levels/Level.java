@@ -688,6 +688,7 @@ public abstract class Level implements Bundlable {
 		if (heap == null) {
 			
 			heap = new Heap();
+			heap.seen = fieldOfView[cell];
 			heap.pos = cell;
 			if (map[cell] == Terrain.CHASM || (Dungeon.level != null && pit[cell])) {
 				Dungeon.dropToChasm( item );
