@@ -117,6 +117,16 @@ public class WndSettings extends WndTabbed {
 				scale.setRect(0, 0, 0, 0);
 			}
 
+			OptionSlider brightness = new OptionSlider("Brightness", "Dark", "Bright", -2, 4) {
+				@Override
+				protected void onChange() {
+					ShatteredPixelDungeon.brightness(getSelectedValue());
+				}
+			};
+			brightness.setSelectedValue(ShatteredPixelDungeon.brightness());
+			brightness.setRect(0, scale.bottom() + GAP_SML, WIDTH, SLIDER_HEIGHT);
+			add(brightness);
+
 			CheckBox chkImmersive = new CheckBox( "Hide Software Keys" ) {
 				@Override
 				protected void onClick() {
@@ -124,8 +134,8 @@ public class WndSettings extends WndTabbed {
 					ShatteredPixelDungeon.immerse(checked());
 				}
 			};
-			chkImmersive.setRect( 0, scale.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
-			chkImmersive.checked( ShatteredPixelDungeon.immersed() );
+			chkImmersive.setRect( 0, brightness.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT );
+			chkImmersive.checked(ShatteredPixelDungeon.immersed());
 			chkImmersive.enable(android.os.Build.VERSION.SDK_INT >= 19);
 			add(chkImmersive);
 
@@ -138,17 +148,6 @@ public class WndSettings extends WndTabbed {
 			};
 			btnOrientation.setRect(0, chkImmersive.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
 			add( btnOrientation );
-
-
-			OptionSlider brightness = new OptionSlider("Brightness", "Dark", "Bright", -2, 4) {
-				@Override
-				protected void onChange() {
-					ShatteredPixelDungeon.brightness(getSelectedValue());
-				}
-			};
-			brightness.setSelectedValue(ShatteredPixelDungeon.brightness());
-			brightness.setRect(0, btnOrientation.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
-			add(brightness);
 		}
 	}
 
@@ -192,17 +191,6 @@ public class WndSettings extends WndTabbed {
 			btnCentered.setRect(btnGrouped.right()+1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
 			add(btnCentered);
 
-			OptionSlider slots = new OptionSlider("Quickslots", "0", "4", 0, 4) {
-				@Override
-				protected void onChange() {
-					ShatteredPixelDungeon.quickSlots( getSelectedValue() );
-					Toolbar.updateLayout();
-				}
-			};
-			slots.setSelectedValue(ShatteredPixelDungeon.quickSlots());
-			slots.setRect(0, btnGrouped.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
-			add(slots);
-
 			CheckBox chkFlipToolbar = new CheckBox("Flip Toolbar"){
 				@Override
 				protected void onClick() {
@@ -211,7 +199,7 @@ public class WndSettings extends WndTabbed {
 					Toolbar.updateLayout();
 				}
 			};
-			chkFlipToolbar.setRect(0, slots.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
+			chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
 			chkFlipToolbar.checked(ShatteredPixelDungeon.flipToolbar());
 			add(chkFlipToolbar);
 
@@ -226,6 +214,17 @@ public class WndSettings extends WndTabbed {
 			chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
 			chkFlipTags.checked(ShatteredPixelDungeon.flipTags());
 			add(chkFlipTags);
+
+			OptionSlider slots = new OptionSlider("Quickslots", "0", "4", 0, 4) {
+				@Override
+				protected void onChange() {
+					ShatteredPixelDungeon.quickSlots(getSelectedValue());
+					Toolbar.updateLayout();
+				}
+			};
+			slots.setSelectedValue(ShatteredPixelDungeon.quickSlots());
+			slots.setRect(0, chkFlipTags.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
+			add(slots);
 		}
 
 	}
