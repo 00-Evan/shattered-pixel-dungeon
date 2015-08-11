@@ -45,6 +45,12 @@ public class GrimTrap extends Trap {
 	}
 
 	@Override
+	public Trap hide() {
+		//cannot hide this trap
+		return reveal();
+	}
+
+	@Override
 	public void activate() {
 		Char target = Actor.findChar(pos);
 

@@ -32,6 +32,12 @@ public class WornTrap extends Trap {
 	}
 
 	@Override
+	public Trap hide() {
+		//this one can't be hidden
+		return reveal();
+	}
+
+	@Override
 	public void activate() {
 		GLog.i("nothing happens..");
 	}
