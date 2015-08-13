@@ -197,7 +197,6 @@ public class GameScene extends PixelScene {
 		
 		add( emitters );
 		add( effects );
-		add( emoicons );
 		
 		gases = new Group();
 		add( gases );
@@ -218,6 +217,8 @@ public class GameScene extends PixelScene {
 		
 		statuses = new Group();
 		add( statuses );
+
+		add( emoicons );
 		
 		hero = new HeroSprite();
 		hero.place( Dungeon.hero.pos );
