@@ -61,6 +61,7 @@ public class TitleScene extends PixelScene {
 			if (gameversion < 9)
 				ShatteredPixelDungeon.intro(true);
 			Game.switchScene(WelcomeScene.class);
+			return;
 		}
 		
 		Music.INSTANCE.play( Assets.THEME, true );
