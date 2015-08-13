@@ -272,23 +272,21 @@ public class Toolbar extends Component {
 			}
 
 			if (Dungeon.visible[cell]) {
-
 				Mob mob = (Mob) Actor.findChar(cell);
 				if (mob != null) {
 					GameScene.show(new WndInfoMob(mob));
 					return;
 				}
+			}
 
-				Heap heap = Dungeon.level.heaps.get(cell);
-				if (heap != null) {
-					if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
-						GameScene.show(new WndTradeItem(heap, false));
-					} else {
-						GameScene.show(new WndInfoItem(heap));
-					}
-					return;
+			Heap heap = Dungeon.level.heaps.get(cell);
+			if (heap != null) {
+				if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
+					GameScene.show(new WndTradeItem(heap, false));
+				} else {
+					GameScene.show(new WndInfoItem(heap));
 				}
-
+				return;
 			}
 			
 			Plant plant = Dungeon.level.plants.get( cell );
