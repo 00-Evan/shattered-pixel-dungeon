@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MonkSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Monk extends Mob {
@@ -84,21 +85,27 @@ public class Monk extends Mob {
 		
 		super.die( cause );
 	}
+
+	private int hitsToDisarm = 0;
 	
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		
-		if (Random.Int( 6 ) == 0 && enemy == Dungeon.hero) {
+		if (enemy == Dungeon.hero) {
 			
 			Hero hero = Dungeon.hero;
 			KindOfWeapon weapon = hero.belongings.weapon;
 			
 			if (weapon != null && !(weapon instanceof Knuckles) && !weapon.cursed) {
-				hero.belongings.weapon = null;
-				Dungeon.quickslot.clearItem( weapon );
-				weapon.updateQuickslot();
-				Dungeon.level.drop( weapon, hero.pos ).sprite.drop();
-				GLog.w( TXT_DISARM, name, weapon.name() );
+				if (hitsToDisarm == 0) hitsToDisarm = Random.NormalIntRange(4, 8);
+
+				if (--hitsToDisarm == 0) {
+					hero.belongings.weapon = null;
+					Dungeon.quickslot.clearItem(weapon);
+					weapon.updateQuickslot();
+					Dungeon.level.drop(weapon, hero.pos).sprite.drop();
+					GLog.w(TXT_DISARM, name, weapon.name());
+				}
 			}
 		}
 		
@@ -121,5 +128,19 @@ public class Monk extends Mob {
 	@Override
 	public HashSet<Class<?>> immunities() {
 		return IMMUNITIES;
+	}
+
+	private static String DISARMHITS = "hitsToDisarm";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(DISARMHITS, hitsToDisarm);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		hitsToDisarm = bundle.getInt(DISARMHITS);
 	}
 }
