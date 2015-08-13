@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.particles.Emitter;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -56,7 +57,21 @@ public class PrisonLevel extends RegularLevel {
 	protected boolean[] grass() {
 		return Patch.generate( feeling == Feeling.GRASS ? 0.60f : 0.40f, 3 );
 	}
-	
+
+	@Override
+	protected Class<?>[] trapClasses() {
+		return new Class[]{ ChillingTrap.class, FireTrap.class, PoisonTrap.class, SpearTrap.class, ToxicTrap.class,
+				AlarmTrap.class, FlashingTrap.class, GrippingTrap.class, ParalyticTrap.class, LightningTrap.class, OozeTrap.class,
+				ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class, };
+	}
+
+	@Override
+	protected float[] trapChances() {
+		return new float[]{ 4, 4, 4, 4,
+				2, 2, 2, 2, 2, 2,
+				1, 1, 1, 1 };
+	}
+
 	@Override
 	protected boolean assignRoomType() {
 		super.assignRoomType();

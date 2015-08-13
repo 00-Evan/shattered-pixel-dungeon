@@ -35,13 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ShopPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ParalyticTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
@@ -337,50 +331,35 @@ public abstract class RegularLevel extends Level {
 		
 		int nTraps = nTraps();
 		float[] trapChances = trapChances();
+		Class<?>[] trapClasses = trapClasses();
 
 		for (int i=0; i < nTraps; i++) {
 			
 			int trapPos = Random.Int( LENGTH );
 			
 			if (map[trapPos] == Terrain.EMPTY) {
-				map[trapPos] = Terrain.SECRET_TRAP;
-				switch (Random.chances( trapChances )) {
-				case 0:
-					setTrap( new ToxicTrap().hide(), trapPos);
-					break;
-				case 1:
-					setTrap( new FireTrap().hide(), trapPos);
-					break;
-				case 2:
-					setTrap( new ParalyticTrap().hide(), trapPos);
-					break;
-				case 3:
-					setTrap( new PoisonTrap().hide(), trapPos);
-					break;
-				case 4:
-					setTrap( new AlarmTrap().hide(), trapPos);
-					break;
-				case 5:
-					setTrap( new LightningTrap().hide(), trapPos);
-					break;
-				case 6:
-					setTrap( new GrippingTrap().hide(), trapPos);
-					break;
-				case 7:
-					setTrap( new LightningTrap().hide(), trapPos);
-					break;
+				try {
+					Trap trap = ((Trap)trapClasses[Random.chances( trapChances )].newInstance()).hide();
+					setTrap( trap, trapPos );
+					//some traps will not be hidden
+					map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
+				} catch (Exception e) {
+					throw new RuntimeException(e);
 				}
 			}
 		}
 	}
 	
 	protected int nTraps() {
-		return Dungeon.depth <= 1 ? 0 : Random.Int( 1, rooms.size() + Dungeon.depth );
+		return Random.NormalIntRange( 1, rooms.size() + Dungeon.depth );
 	}
 	
+	protected Class<?>[] trapClasses(){
+		return new Class<?>[]{WornTrap.class};
+	}
+
 	protected float[] trapChances() {
-		float[] chances = { 1, 1, 1, 1, 1, 1, 1, 1 };
-		return chances;
+		return new float[]{1};
 	}
 	
 	protected int minRoomSize = 7;

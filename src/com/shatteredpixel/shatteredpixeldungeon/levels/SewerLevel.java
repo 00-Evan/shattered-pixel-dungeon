@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.particles.Emitter;
@@ -58,7 +59,25 @@ public class SewerLevel extends RegularLevel {
 	protected boolean[] grass() {
 		return Patch.generate( feeling == Feeling.GRASS ? 0.60f : 0.40f, 4 );
 	}
-	
+
+	@Override
+	protected Class<?>[] trapClasses() {
+		return Dungeon.depth == 1 ?
+				new Class<?>[]{WornTrap.class} :
+				new Class<?>[]{ChillingTrap.class, ToxicTrap.class, WornTrap.class,
+						AlarmTrap.class, OozeTrap.class,
+						FlockTrap.class, SummoningTrap.class, TeleportationTrap.class, };
+}
+
+	@Override
+	protected float[] trapChances() {
+		return Dungeon.depth == 1 ?
+				new float[]{1} :
+				new float[]{4, 4, 4,
+						2, 2,
+						1, 1, 1};
+	}
+
 	@Override
 	protected void decorate() {
 		
