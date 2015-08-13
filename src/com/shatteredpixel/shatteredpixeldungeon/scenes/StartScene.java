@@ -59,8 +59,8 @@ public class StartScene extends PixelScene {
 	private static final String TXT_LOAD	= "Load Game";
 	private static final String TXT_NEW		= "New Game";
 
-	private static final String TXT_ERASE		= "Erase current game";
-	private static final String TXT_DPTH_LVL	= "Depth: %d, level: %d";
+	private static final String TXT_ERASE		= "Erases Progress";
+	private static final String TXT_DPTH_LVL	= "Depth: %d, Level: %d";
 
 	private static final String TXT_REALLY	= "Do you really want to start new game?";
 	private static final String TXT_WARNING	= "Your current game progress will be erased.";

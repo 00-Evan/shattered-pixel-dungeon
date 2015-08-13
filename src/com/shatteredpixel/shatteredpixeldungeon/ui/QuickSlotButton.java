@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class QuickSlotButton extends Button implements WndBag.Listener {
 
-	private static final String TXT_SELECT_ITEM = "Select an item for the quickslot";
+	private static final String TXT_SELECT_ITEM = "Select an item to quickslot";
 	
 	private static QuickSlotButton[] instance = new QuickSlotButton[4];
 	private int slotNum;
