@@ -113,6 +113,9 @@ public class StandardPainter extends Painter {
 					break;
 				case 3:
 					t = Terrain.INACTIVE_TRAP;
+					FireTrap trap = new FireTrap();
+					trap.reveal().active = false;
+					level.setTrap(trap, cell);
 					break;
 				}
 				level.map[cell] = t;
