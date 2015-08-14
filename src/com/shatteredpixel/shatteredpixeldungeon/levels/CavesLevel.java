@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Scene;
@@ -59,6 +60,22 @@ public class CavesLevel extends RegularLevel {
 	
 	protected boolean[] grass() {
 		return Patch.generate( feeling == Feeling.GRASS ? 0.55f : 0.35f, 3 );
+	}
+
+	@Override
+	protected Class<?>[] trapClasses() {
+		return new Class[]{ FireTrap.class, FrostTrap.class, PoisonTrap.class, SpearTrap.class, VenomTrap.class,
+				ExplosiveTrap.class, FlashingTrap.class, GrippingTrap.class, ParalyticTrap.class, LightningTrap.class, RockfallTrap.class, OozeTrap.class,
+				ConfusionTrap.class, FlockTrap.class, GuardianTrap.class, PitfallTrap.class, SummoningTrap.class, TeleportationTrap.class,
+				WarpingTrap.class};
+	}
+
+	@Override
+	protected float[] trapChances() {
+		return new float[]{ 8, 8, 8, 8, 8,
+				4, 4, 4, 4, 4, 4, 4,
+				2, 2, 2, 2, 2, 2,
+				1 };
 	}
 	
 	@Override

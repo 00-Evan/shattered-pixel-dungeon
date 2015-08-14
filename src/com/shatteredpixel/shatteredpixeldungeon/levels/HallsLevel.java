@@ -24,6 +24,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLES20;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Scene;
@@ -68,6 +69,22 @@ public class HallsLevel extends RegularLevel {
 	
 	protected boolean[] grass() {
 		return Patch.generate( feeling == Feeling.GRASS ? 0.55f : 0.30f, 3 );
+	}
+
+	@Override
+	protected Class<?>[] trapClasses() {
+		return new Class[]{ BlazingTrap.class, DisintegrationTrap.class, FrostTrap.class, SpearTrap.class, VenomTrap.class,
+				ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, OozeTrap.class, WeakeningTrap.class,
+				CursingTrap.class, FlockTrap.class, GrimTrap.class, GuardianTrap.class, SummoningTrap.class, TeleportationTrap.class,
+				DisarmingTrap.class, DistortionTrap.class, WarpingTrap.class};
+	}
+
+	@Override
+	protected float[] trapChances() {
+		return new float[]{ 8, 8, 8, 8, 8,
+				4, 4, 4, 4, 4,
+				2, 2, 2, 2, 2, 2,
+				1, 1, 1 };
 	}
 	
 	@Override

@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
@@ -54,6 +55,22 @@ public class CityLevel extends RegularLevel {
 	
 	protected boolean[] grass() {
 		return Patch.generate( feeling == Feeling.GRASS ? 0.60f : 0.40f, 3 );
+	}
+
+	@Override
+	protected Class<?>[] trapClasses() {
+		return new Class[]{ BlazingTrap.class, FrostTrap.class, SpearTrap.class, VenomTrap.class,
+				ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, RockfallTrap.class, OozeTrap.class, WeakeningTrap.class,
+				CursingTrap.class, FlockTrap.class, GuardianTrap.class, PitfallTrap.class, SummoningTrap.class, TeleportationTrap.class,
+				DisarmingTrap.class, WarpingTrap.class};
+	}
+
+	@Override
+	protected float[] trapChances() {
+		return new float[]{ 8, 8, 8, 8,
+				4, 4, 4, 4, 4, 4,
+				2, 2, 2, 2, 2, 2,
+				1, 1 };
 	}
 	
 	@Override
