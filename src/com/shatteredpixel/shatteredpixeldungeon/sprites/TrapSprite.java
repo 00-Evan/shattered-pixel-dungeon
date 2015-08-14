@@ -74,7 +74,7 @@ public class TrapSprite extends Image {
 
 		revive();
 
-		reset( trap.color + (trap.shape * 16) );
+		reset( (trap.active ? trap.color : BLACK) + (trap.shape * 16) );
 		alpha( 1f );
 
 		pos = trap.pos;

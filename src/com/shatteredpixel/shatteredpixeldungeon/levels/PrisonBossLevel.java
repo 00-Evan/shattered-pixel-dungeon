@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Scene;
 import com.watabou.utils.Bundle;
@@ -271,6 +272,14 @@ public class PrisonBossLevel extends RegularLevel {
 			roomExit.width() - 3,
 			roomExit.height() - 3,
 			Terrain.INACTIVE_TRAP );
+
+		for (int cell : roomExit.getCells()){
+			if (map[cell] == Terrain.INACTIVE_TRAP){
+				Trap t = new PoisonTrap().reveal();
+				t.active = false;
+				setTrap(t, cell);
+			}
+		}
 	}
 	
 	@Override

@@ -28,7 +28,9 @@ public class WndInfoTrap extends WndTitledMessage {
 
 	public WndInfoTrap(Trap trap) {
 
-		super(new TrapSprite( trap.color + (trap.shape * 16) ), trap.name, trap.desc());
+		super(new TrapSprite( trap.color + (trap.shape * 16) ),
+				(!trap.active ? "Inactive " : "") + trap.name,
+				(!trap.active ? "This trap is inactive, and can no longer be triggered.\n\n" : "") + trap.desc());
 
 	}
 

@@ -344,6 +344,18 @@ public abstract class Level implements Bundlable {
 			}
 			traps.put( trap.pos, trap );
 		}
+
+		//for pre-0.3.1 saves
+		if (version < 52){
+			for (int i=0; i < map.length; i++){
+				if (map[i] == Terrain.INACTIVE_TRAP){
+					Trap t = new WornTrap().reveal();
+					t.active = false;
+					t.pos = i;
+					traps.put( i, t);
+				}
+			}
+		}
 		
 		collection = bundle.getCollection( MOBS );
 		for (Bundlable m : collection) {
@@ -638,7 +650,7 @@ public abstract class Level implements Bundlable {
 	public static void set( int cell, int terrain ) {
 		Painter.set( Dungeon.level, cell, terrain );
 
-		if (terrain != Terrain.TRAP && terrain != Terrain.SECRET_TRAP){
+		if (terrain != Terrain.TRAP && terrain != Terrain.SECRET_TRAP && terrain != Terrain.INACTIVE_TRAP){
 			Dungeon.level.traps.remove( cell );
 		}
 
@@ -667,7 +679,7 @@ public abstract class Level implements Bundlable {
 			//effectively nullifies whatever the logic calling this wants to do, including dropping items.
 			Heap heap = new Heap();
 			ItemSprite sprite = heap.sprite = new ItemSprite();
-			sprite.link( heap );
+			sprite.link(heap);
 			return heap;
 
 		}
@@ -707,7 +719,7 @@ public abstract class Level implements Bundlable {
 			return drop( item, n );
 			
 		}
-		heap.drop( item );
+		heap.drop(item);
 		
 		if (Dungeon.level != null) {
 			press( cell, null );
@@ -741,10 +753,15 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public void uproot( int pos ) {
-		plants.delete( pos );
+		plants.delete(pos);
 	}
 
 	public Trap setTrap( Trap trap, int pos ){
+		Trap existingTrap = traps.get(pos);
+		if (existingTrap != null){
+			traps.delete( pos );
+			if(existingTrap.sprite != null) existingTrap.sprite.kill();
+		}
 		trap.set( pos );
 		traps.put( pos, trap );
 		GameScene.add(trap);
@@ -752,7 +769,6 @@ public abstract class Level implements Bundlable {
 	}
 
 	public void disarmTrap( int pos ) {
-		traps.delete(pos);
 		set(pos, Terrain.INACTIVE_TRAP);
 		GameScene.updateMap(pos);
 	}

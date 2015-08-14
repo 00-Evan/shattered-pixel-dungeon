@@ -20,6 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Sample;
@@ -120,19 +122,13 @@ public class CavesBossLevel extends Level {
 		
 		map[exit] = Terrain.LOCKED_EXIT;
 		
-		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 6 ) == 0) {
-				map[i] = Terrain.INACTIVE_TRAP;
-			}
-		}
-		
 		Painter.fill( this, ROOM_LEFT - 1, ROOM_TOP - 1,
 			ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain.WALL );
 		Painter.fill( this, ROOM_LEFT, ROOM_TOP + 1,
 			ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP, Terrain.EMPTY );
 
 		Painter.fill( this, ROOM_LEFT, ROOM_TOP,
-			ROOM_RIGHT - ROOM_LEFT + 1, 1, Terrain.INACTIVE_TRAP );
+			ROOM_RIGHT - ROOM_LEFT + 1, 1, Terrain.EMPTY_DECO );
 		
 		arenaDoor = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + (ROOM_BOTTOM + 1) * WIDTH;
 		map[arenaDoor] = Terrain.DOOR;
@@ -145,6 +141,15 @@ public class CavesBossLevel extends Level {
 		for (int i=0; i < LENGTH; i++) {
 			if (map[i] == Terrain.EMPTY && patch[i]) {
 				map[i] = Terrain.WATER;
+			}
+		}
+
+		for (int i=0; i < LENGTH; i++) {
+			if (map[i] == Terrain.EMPTY && Random.Int( 6 ) == 0) {
+				map[i] = Terrain.INACTIVE_TRAP;
+				Trap t = new ToxicTrap().reveal();
+				t.active = false;
+				setTrap(t, i);
 			}
 		}
 		

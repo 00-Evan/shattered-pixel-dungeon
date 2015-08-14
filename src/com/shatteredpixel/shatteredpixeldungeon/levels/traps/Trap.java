@@ -42,6 +42,7 @@ public abstract class Trap implements Bundlable {
 
 	public TrapSprite sprite;
 	public boolean visible;
+	public boolean active = true;
 
 	public Trap set(int pos){
 		this.pos = pos;
@@ -66,33 +67,41 @@ public abstract class Trap implements Bundlable {
 	}
 
 	public void trigger() {
-		if (Dungeon.visible[pos]){
-			Sample.INSTANCE.play(Assets.SND_TRAP);
+		if (active) {
+			if (Dungeon.visible[pos]) {
+				Sample.INSTANCE.play(Assets.SND_TRAP);
+			}
+			disarm();
+			activate();
 		}
-		disarm();
-		activate();
 	}
 
 	public abstract void activate();
 
 	protected void disarm(){
 		Dungeon.level.disarmTrap(pos);
-		if (sprite != null) sprite.kill();
+		active = false;
+		if (sprite != null) sprite.reset( this );
 	}
 
 	private static final String POS	= "pos";
 	private static final String VISIBLE	= "visible";
+	private static final String ACTIVE = "active";
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		pos = bundle.getInt( POS );
 		visible = bundle.getBoolean( VISIBLE );
+		if (bundle.contains(ACTIVE)){
+			active = bundle.getBoolean(ACTIVE);
+		}
 	}
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( POS, pos );
 		bundle.put( VISIBLE, visible );
+		bundle.put( ACTIVE, active );
 	}
 
 	public String desc() {
