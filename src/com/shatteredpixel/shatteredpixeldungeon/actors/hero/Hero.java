@@ -939,18 +939,27 @@ public class Hero extends Char {
 		ArrayList<Mob> visible = new ArrayList<Mob>();
 
 		boolean newMob = false;
-		
+
+		Mob closest = null;
 		for (Mob m : Dungeon.level.mobs) {
 			if (Level.fieldOfView[ m.pos ] && m.hostile) {
 				visible.add( m );
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;
 				}
+
+				if (closest == null){
+					closest = m;
+				} else if (distance(closest) > distance(m)) {
+					closest = m;
+				}
 			}
 		}
 
-		if (visible.size() == 1){
-			QuickSlotButton.target(visible.get(0));
+		if (closest != null && (QuickSlotButton.lastTarget == null ||
+							!QuickSlotButton.lastTarget.isAlive() ||
+							!Dungeon.visible[QuickSlotButton.lastTarget.pos])){
+			QuickSlotButton.target(closest);
 		}
 		
 		if (newMob) {

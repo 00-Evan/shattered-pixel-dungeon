@@ -48,7 +48,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	private static Image crossM;
 	
 	private static boolean targeting = false;
-	private static Char lastTarget= null;
+	public static Char lastTarget = null;
 	
 	public QuickSlotButton( int slotNum ) {
 		super();
