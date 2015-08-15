@@ -971,7 +971,7 @@ public abstract class Level implements Bundlable {
 		}
 
 		for (Heap heap : heaps.values())
-			if (!heap.seen && fieldOfView[heap.pos])
+			if (!heap.seen && fieldOfView[heap.pos] && c == Dungeon.hero)
 				heap.seen = true;
 		
 		return fieldOfView;
