@@ -331,6 +331,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				chilled.on = false;
 				chilled = null;
 			}
+			break;
 		case DARKENED:
 			if (darkBlock != null) {
 				darkBlock.lighten();
