@@ -285,7 +285,8 @@ public class CursedWand {
 				cursedFX(user, bolt, new Callback() {
 					public void call() {
 						Char ch = Actor.findChar( bolt.collisionPos );
-						if (ch != null && ch != user){
+						//TODO: this is lazy, should think of a better way to ID bosses, or have this effect be more sophisticated.
+						if (ch != null && ch != user && !Dungeon.bossLevel()){
 							Sheep sheep = new Sheep();
 							sheep.lifespan = 10;
 							sheep.pos = ch.pos;
