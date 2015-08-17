@@ -204,6 +204,7 @@ public class LloydsBeacon extends Artifact {
 
 			if (Actor.findChar(target) == curUser){
 				ScrollOfTeleportation.teleportHero(curUser);
+				Sample.INSTANCE.play(Assets.SND_TELEPORT);
 				curUser.spendAndNext(1f);
 			} else {
 				final Ballistica bolt = new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT );
@@ -211,8 +212,10 @@ public class LloydsBeacon extends Artifact {
 
 				if (ch == curUser){
 					ScrollOfTeleportation.teleportHero(curUser);
+					Sample.INSTANCE.play(Assets.SND_TELEPORT);
 					curUser.spendAndNext( 1f );
 				} else {
+					Sample.INSTANCE.play( Assets.SND_ZAP );
 					curUser.sprite.zap(bolt.collisionPos);
 					curUser.busy();
 
