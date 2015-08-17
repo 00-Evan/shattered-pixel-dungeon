@@ -157,7 +157,17 @@ public class King extends Mob {
 		
 		yell( "You cannot kill me, " + Dungeon.hero.givenName() + "... I am... immortal..." );
 	}
-	
+
+	@Override
+	public void aggro(Char ch) {
+		super.aggro(ch);
+		for (Mob mob : Dungeon.level.mobs){
+			if (mob instanceof Undead){
+				mob.aggro(ch);
+			}
+		}
+	}
+
 	private int maxArmySize() {
 		return 1 + MAX_ARMY_SIZE * (HT - HP) / HT;
 	}
