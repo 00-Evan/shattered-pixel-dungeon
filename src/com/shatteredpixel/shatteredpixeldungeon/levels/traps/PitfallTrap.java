@@ -81,6 +81,7 @@ public class PitfallTrap extends Trap {
 			}
 
 			sprite.parent.add(new WindParticle.Wind(pos));
+			sprite.killAndErase();
 			GameScene.updateMap( pos );
 		}
 	}
