@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import java.util.Arrays;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.watabou.noosa.Scene;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
@@ -119,6 +120,10 @@ public class LastLevel extends Level {
 	protected void createMobs() {
 	}
 
+	public Actor respawner() {
+		return null;
+	}
+
 	@Override
 	protected void createItems() {
 		drop( new Amulet(), pedestal );
@@ -126,7 +131,11 @@ public class LastLevel extends Level {
 
 	@Override
 	public int randomRespawnCell() {
-		return -1;
+		int cell = entrance + NEIGHBOURS8[Random.Int(8)];
+		while (!passable[cell]){
+			cell = entrance + NEIGHBOURS8[Random.Int(8)];
+		}
+		return cell;
 	}
 
 	@Override

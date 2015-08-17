@@ -237,7 +237,7 @@ public class SewerBossLevel extends RegularLevel {
 
 	@Override
 	public int randomRespawnCell() {
-		return -1;
+		return roomEntrance.random();
 	}
 
 	
