@@ -62,7 +62,7 @@ public class Fadeleaf extends Plant {
 				}
 			} while (newPos == -1);
 			
-			if (newPos != -1) {
+			if (newPos != -1 && !Dungeon.bossLevel()) {
 			
 				ch.pos = newPos;
 				ch.sprite.place( ch.pos );

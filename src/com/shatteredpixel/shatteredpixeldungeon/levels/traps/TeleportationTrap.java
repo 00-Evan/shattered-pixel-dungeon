@@ -64,7 +64,7 @@ public class TeleportationTrap extends Trap {
 				}
 			} while (pos == -1);
 
-			if (pos == -1) {
+			if (pos == -1 || Dungeon.bossLevel()) {
 
 				GLog.w(ScrollOfTeleportation.TXT_NO_TELEPORT);
 
