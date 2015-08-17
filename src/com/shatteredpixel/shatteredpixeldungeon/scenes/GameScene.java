@@ -409,6 +409,8 @@ public class GameScene extends PixelScene {
 
 	public static void layoutTags() {
 
+		if (scene == null) return;
+
 		float tagLeft = ShatteredPixelDungeon.flipTags() ? 0 : uiCamera.width - scene.attack.width();
 
 		if (ShatteredPixelDungeon.flipTags()) {
