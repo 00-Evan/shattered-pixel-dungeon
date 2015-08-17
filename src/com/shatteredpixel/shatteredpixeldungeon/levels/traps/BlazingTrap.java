@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.audio.Sample;
 
-//TODO: test fire in water/pits
 public class BlazingTrap extends Trap {
 
 	{

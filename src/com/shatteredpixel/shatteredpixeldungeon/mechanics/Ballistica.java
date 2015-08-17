@@ -42,9 +42,6 @@ public class Ballistica {
 
 	public static final int PROJECTILE =  	STOP_TARGET	| STOP_CHARS	| STOP_TERRAIN;
 
-	//TODO: consider if we want thrown items to use this, or just have them all be projectileWeapons
-	public static final int THROWN_ITEM =   STOP_TARGET | STOP_TERRAIN;
-
 	public static final int MAGIC_BOLT =    STOP_CHARS  | STOP_TERRAIN;
 
 	public static final int WONT_STOP =     0;
