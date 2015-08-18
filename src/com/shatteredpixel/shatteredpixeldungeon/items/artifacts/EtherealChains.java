@@ -207,7 +207,7 @@ public class EtherealChains extends Artifact {
 		public boolean act() {
 			int chargeTarget = 5+(level*2);
 			if (!cursed && charge < chargeTarget) {
-				partialCharge += 1 / (40f - (chargeTarget - charge)*3f);
+				partialCharge += 1 / (40f - (chargeTarget - charge)*2f);
 			} else if (cursed && Random.Int(100) == 0){
 				Buff.prolong( target, Roots.class, 3f);
 				Buff.prolong( target, Cripple.class, 9f);
