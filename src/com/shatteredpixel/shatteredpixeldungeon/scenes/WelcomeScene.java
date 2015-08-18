@@ -39,7 +39,7 @@ public class WelcomeScene extends PixelScene {
 
 	private static final String TTL_Welcome = "Welcome!";
 
-	private static final String TTL_Update = "v0.3.0: The Wand Rework!";
+	private static final String TTL_Update = "v0.3.1: It's a Trap!";
 
 	private static final String TTL_Future = "Wait What?";
 
@@ -50,88 +50,35 @@ public class WelcomeScene extends PixelScene {
 			"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-			"v0.3.0e & v0.3.0d:\n" +
-					"- Performance improvements\n" +
-					"- Various bugfixes\n" +
+			"New traps!:\n" +
+					"- Over 20 new traps + tweaks to existing ones\n" +
+					"- Trap visuals overhauled\n" +
+					"- Traps now get trickier deeper in the dungeon\n" +
+					"- Trap room reworked to make use of new traps\n" +
 					"\n" +
-					"v0.3.0c:\n" +
-					"- Lots of under-the-hood changes\n" +
-					"(let me know if you run into any bugs)\n" +
-					"- Many bugfixes\n" +
-					"Rebalances:\n" +
-					"- Wand of Corruption & Venom rebalanced.\n" +
-					"- Mages staff now has +1 max charges\n" +
-					"- Mage now partially IDs wands on use\n" +
-					"- Magic missile wand reduced to 3 max charges\n" +
-					"- Warlock gets more recharge from food\n" +
-					"- Battlemage only recharges his staff\n" +
-					"- Many battlemage effects tweaked\n" +
-					"- Yog Dzewa now heals 1hp per turn\n" +
+					"Balance changes:\n" +
+					"- Ethereal chains now gain less charge the more charges they have\n" +
+					"- Staff of regrowth grants more herbal healing\n" +
+					"- Monks now disarm less randomly, but not less frequently\n" +
+					"- Invisibility potion effect now lasts for 20 turns, up from 15\n" +
 					"\n" +
-					"v0.3.0b & v0.3.0a:\n" +
-					"- Fixed many bugs\n" +
-					"- Buffed mage and huntress base damages to compensate for increased rat numbers on floor 1.\n" +
+					"BIG UI changes:\n" +
+					"- Adjusted display scaling\n" +
+					"- Search and Examine merged into one button (double tap to search)\n" +
+					"- New max of 4 Quickslots!\n" +
+					"- Multiple toolbar modes for large display and landscape users\n" +
+					"- Ability to flip toolbar and indicators (left-handed mode)\n" +
+					"- Better settings menu\n" +
+					"- Graphics settings are now accessible ingame\n" +
+					"- More consistent text rendering\n" +
+					"- Recent changes can now be viewed from the title screen\n" +
 					"\n" +
-					"v0.3.0:\n" +
-					"Mage reworked!:\n" +
-					"- No longer starts with knuckledusters or a wand\n" +
-					"- Can no longer equip wands\n" +
-					"- Now starts with a unique mages staff, empowered with magic missile to start.\n" +
-					"- Battlemage reworked, staff now deals bonus effects when used as a melee weapon.\n" +
-					"- Warlock reworked, gains more health and fullness from gaining exp, but food no longer restores hunger.\n" +
-					"\n" +
-					"General Wand Changes:\n" +
-					"- Wand types are now known by default.\n" +
-					"- Wands now each have unique sprites.\n" +
-					"- Wands now cap at 10 charges instead of 9\n" +
-					"- Wands now recharge faster the more charges are missing, for all classes.\n" +
-					"- Self-targeting with wands is no longer possible.\n" +
-					"- Wand recharge effects now give charge over time, instead of instantly.\n" +
-					"- Wands can now be cursed!\n" +
-					"\n" +
-					"All wands have been reworked!\n" +
-					"\n" +
-					"Removed wands:\n" +
-					"- Flock\n" +
-					"- Blink\n" +
-					"- Teleportation\n" +
-					"- Avalanche\n" +
-					"\n" +
-					"Reworked wands:\n" +
-					"- Magic Missile\n" +
-					"- Lightning\n" +
-					"- Disintegration\n" +
-					"- Fireblast (previously Firebolt)\n" +
-					"- Venom (previously poison)\n" +
-					"- Frost (previously Slowing)\n" +
-					"- Blast Wave (previously Telekinesis)\n" +
-					"- Corruption (previously Amok)\n" +
-					"- Regrowth\n" +
-					"\n" +
-					"New Wands:\n" +
-					"- Prismatic Light\n" +
-					"- Transfusion\n" +
-					"\n" +
-					"New Artifacts:\n" +
-					"- Ethereal Chains\n" +
-					"- Lloyd's Beacon\n" +
-					"\n" +
-					"Misc. Balance changes:\n" +
-					"- Blessed Ankhs now revive at 1/4hp, but also grant initiative.\n" +
-					"- Alchemist's Toolkit removed (will be reworked)\n" +
-					"- Chalice of blood nerfed, now regens less hp at high levels.\n" +
-					"- Cape of Thorns buffed, now absorbs all damage, but only deflects adjacent attacks.\n" +
-					"- Sandals of nature adjusted, now give more seeds, less dew.\n" +
-					"- Hunger no longer increases while fighting bosses.\n" +
-					"- Floor 1 now spawns 10 rats every time, exactly enough to level up.\n" +
-					"- Scrolls of recharging and mirror image are now more common.\n" +
-					"- Mimics are now less common, stronger, & give better loot.\n" +
-					"\n" +
-					"UI tweaks:\n" +
-					"- New app icon!\n" +
-					"- Shading added to main game interface\n" +
-					"- Buffs now have descriptions, tap their icons!\n" +
-					"- Visual indicator added for surprising enemies";
+					"QOL improvements:\n" +
+					"- Quickslots now autotarget enemies\n" +
+					"- Resting now works while hungry & at max HP\n" +
+					"- Dew drops no longer collect when at full health with no dew vial\n" +
+					"- Items now stay visible in the fog of war\n" +
+					"- Many bugfixes\n";
 
 	private static final String TXT_Future =
 			"It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
@@ -254,6 +201,14 @@ public class WelcomeScene extends PixelScene {
 		addToBack( archs );
 
 		fadeIn();
+	}
+
+	@Override
+	protected void onBackPressed() {
+		if (ShatteredPixelDungeon.version() != Game.versionCode){
+			super.onBackPressed();
+		} else
+			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 	}
 }
 
