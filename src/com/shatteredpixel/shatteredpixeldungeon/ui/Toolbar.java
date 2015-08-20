@@ -280,7 +280,7 @@ public class Toolbar extends Component {
 			}
 
 			Heap heap = Dungeon.level.heaps.get(cell);
-			if (heap != null) {
+			if (heap != null && heap.seen) {
 				if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
 					GameScene.show(new WndTradeItem(heap, false));
 				} else {
