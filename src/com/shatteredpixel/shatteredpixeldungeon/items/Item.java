@@ -66,6 +66,7 @@ public class Item implements Bundlable {
 	public static final String AC_THROW		= "THROW";
 	
 	public String defaultAction;
+	public boolean usesTargeting;
 	
 	protected String name = "smth";
 	public int image = 0;

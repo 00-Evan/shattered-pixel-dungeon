@@ -55,6 +55,7 @@ public class EtherealChains extends Artifact {
 		charge = 5;
 
 		defaultAction = AC_CAST;
+		usesTargeting = true;
 	}
 
 	@Override

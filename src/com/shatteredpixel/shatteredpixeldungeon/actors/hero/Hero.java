@@ -936,30 +936,32 @@ public class Hero extends Char {
 	}
 	
 	private void checkVisibleMobs() {
-		ArrayList<Mob> visible = new ArrayList<Mob>();
+		ArrayList<Mob> visible = new ArrayList<>();
 
 		boolean newMob = false;
 
-		Mob closest = null;
+		Mob target = null;
 		for (Mob m : Dungeon.level.mobs) {
 			if (Level.fieldOfView[ m.pos ] && m.hostile) {
-				visible.add( m );
+				visible.add(m);
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;
 				}
 
-				if (closest == null){
-					closest = m;
-				} else if (distance(closest) > distance(m)) {
-					closest = m;
+				if (QuickSlotButton.autoAim(m) != -1){
+					if (target == null){
+						target = m;
+					} else if (distance(target) > distance(m)) {
+						target = m;
+					}
 				}
 			}
 		}
 
-		if (closest != null && (QuickSlotButton.lastTarget == null ||
+		if (target != null && (QuickSlotButton.lastTarget == null ||
 							!QuickSlotButton.lastTarget.isAlive() ||
 							!Dungeon.visible[QuickSlotButton.lastTarget.pos])){
-			QuickSlotButton.target(closest);
+			QuickSlotButton.target(target);
 		}
 		
 		if (newMob) {

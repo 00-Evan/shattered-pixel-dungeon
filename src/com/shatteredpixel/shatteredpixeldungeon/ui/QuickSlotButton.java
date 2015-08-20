@@ -79,26 +79,17 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 			@Override
 			protected void onClick() {
 				if (targeting) {
-					//first try to directly target
-					if (new Ballistica(Dungeon.hero.pos, lastTarget.pos, Ballistica.PROJECTILE).collisionPos == lastTarget.pos) {
-						GameScene.handleCell(lastTarget.pos);
-						return;
-					}
+					int cell = autoAim(lastTarget);
 
-					//Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim basically.
-					for (int i : Level.NEIGHBOURS9DIST2) {
-						if (new Ballistica(Dungeon.hero.pos, lastTarget.pos+i, Ballistica.PROJECTILE).collisionPos == lastTarget.pos){
-							GameScene.handleCell( lastTarget.pos+i );
-							return;
-						}
+					if (cell != -1){
+						GameScene.handleCell(cell);
+					} else {
+						//couldn't auto-aim, just target the position and hope for the best.
+						GameScene.handleCell( lastTarget.pos );
 					}
-
-					//couldn't find anything, just have it directly target
-					GameScene.handleCell( lastTarget.pos );
 				} else {
 					Item item = select(slotNum);
-					//FIXME: sloppy, should have a better way to decide if an item uses targeting.
-					if (item instanceof EquipableItem || item instanceof Wand)
+					if (item.usesTargeting)
 						useTargeting();
 					item.execute( Dungeon.hero );
 				}
@@ -193,6 +184,23 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 				lastTarget = null;
 			}
 		}
+	}
+
+	public static int autoAim(Char target){
+		//first try to directly target
+		if (new Ballistica(Dungeon.hero.pos, target.pos, Ballistica.PROJECTILE).collisionPos == lastTarget.pos) {
+			return target.pos;
+		}
+
+		//Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim basically.
+		for (int i : Level.NEIGHBOURS9DIST2) {
+			if (new Ballistica(Dungeon.hero.pos, lastTarget.pos+i, Ballistica.PROJECTILE).collisionPos == lastTarget.pos){
+				return target.pos+i;
+			}
+		}
+
+		//couldn't find a cell, give up.
+		return -1;
 	}
 	
 	public static void refresh() {

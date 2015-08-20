@@ -88,6 +88,7 @@ public class LloydsBeacon extends Artifact {
 		chargeCap = 3+level;
 
 		defaultAction = AC_ZAP;
+		usesTargeting = true;
 	}
 	
 	private static final String DEPTH	= "depth";

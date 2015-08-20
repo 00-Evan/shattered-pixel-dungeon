@@ -50,7 +50,10 @@ public class Bomb extends Item {
 	{
 		name = "bomb";
 		image = ItemSpriteSheet.BOMB;
+
 		defaultAction = AC_LIGHTTHROW;
+		usesTargeting = true;
+
 		stackable = true;
 	}
 

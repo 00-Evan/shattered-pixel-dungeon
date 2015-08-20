@@ -61,6 +61,7 @@ public class MagesStaff extends MeleeWeapon {
 		image = ItemSpriteSheet.MAGES_STAFF;
 
 		defaultAction = AC_ZAP;
+		usesTargeting = true;
 
 		unique = true;
 		bones = false;

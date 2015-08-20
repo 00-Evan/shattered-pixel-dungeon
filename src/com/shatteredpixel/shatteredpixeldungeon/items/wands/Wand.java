@@ -78,6 +78,7 @@ public abstract class Wand extends Item {
 	
 	{
 		defaultAction = AC_ZAP;
+		usesTargeting = true;
 	}
 	
 	@Override
