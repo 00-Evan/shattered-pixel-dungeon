@@ -60,7 +60,7 @@ public class SpearTrap extends Trap {
 		if (ch != null){
 			int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth*2);
 			damage -= Random.IntRange( 0, ch.dr());
-			ch.damage( damage , this);
+			ch.damage( Math.max(damage, 0) , this);
 			if (!ch.isAlive() && ch == Dungeon.hero){
 				Dungeon.fail(Utils.format(ResultDescriptions.TRAP, name));
 				GLog.n("You were skewered by the spear trap...");
