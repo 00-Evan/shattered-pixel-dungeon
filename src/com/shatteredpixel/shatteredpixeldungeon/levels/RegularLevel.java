@@ -738,11 +738,16 @@ public abstract class RegularLevel extends Level {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 
-		rooms = new HashSet<Room>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
+		rooms = new HashSet<>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
 		for (Room r : rooms) {
 			if (r.type == Type.WEAK_FLOOR) {
 				weakFloorCreated = true;
 				break;
+			}
+			if (r.type == Type.ENTRANCE){
+				roomEntrance = r;
+			} else if (r.type == Type.EXIT || r.type == Type.BOSS_EXIT){
+				roomExit = r;
 			}
 		}
 	}

@@ -281,6 +281,7 @@ public class SewerBossLevel extends RegularLevel {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		stairs = bundle.getInt( STAIRS );
+		roomExit = roomEntrance;
 	}
 	
 	@Override
