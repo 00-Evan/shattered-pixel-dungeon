@@ -305,7 +305,7 @@ public class Toolbar extends Component {
 		}
 		@Override
 		public String prompt() {
-			return "Select a cell to examine";
+			return "Press again to search\nPress a tile to examine";
 		}
 	};
 	
