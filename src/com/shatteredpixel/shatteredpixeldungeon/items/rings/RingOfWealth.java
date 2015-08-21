@@ -35,7 +35,7 @@ public class RingOfWealth extends Ring {
 	public String desc() {
 		return isKnown() ?
 				"It's not clear what this ring does exactly, good luck may influence " +
-				"the life an an adventurer in many subtle ways. " +
+				"the life of an adventurer in many subtle ways. " +
 				"Naturally a degraded ring would give bad luck." :
 				super.desc();
 	}
