@@ -43,8 +43,10 @@ import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class RegularLevel extends Level {
@@ -333,25 +335,36 @@ public abstract class RegularLevel extends Level {
 		float[] trapChances = trapChances();
 		Class<?>[] trapClasses = trapClasses();
 
-		for (int i=0; i < nTraps; i++) {
+		LinkedList<Integer> validCells = new LinkedList<Integer>();
+
+		for (int i = 0; i < LENGTH; i ++) {
+			if (map[i] == Terrain.EMPTY){
+				validCells.add(i);
+			}
+		}
+
+		//no more than one trap every 5 valid tiles.
+		nTraps = Math.min(nTraps, validCells.size()/5);
+
+		Collections.shuffle(validCells);
+
+		for (int i = 0; i < nTraps; i++) {
 			
-			int trapPos = Random.Int( LENGTH );
-			
-			if (map[trapPos] == Terrain.EMPTY) {
-				try {
-					Trap trap = ((Trap)trapClasses[Random.chances( trapChances )].newInstance()).hide();
-					setTrap( trap, trapPos );
-					//some traps will not be hidden
-					map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
+			int trapPos = validCells.removeFirst();
+
+			try {
+				Trap trap = ((Trap)trapClasses[Random.chances( trapChances )].newInstance()).hide();
+				setTrap( trap, trapPos );
+				//some traps will not be hidden
+				map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
 	
 	protected int nTraps() {
-		return Random.NormalIntRange( 1, rooms.size() + Dungeon.depth );
+		return Random.NormalIntRange( 1, 4+(Dungeon.depth/2) );
 	}
 	
 	protected Class<?>[] trapClasses(){
