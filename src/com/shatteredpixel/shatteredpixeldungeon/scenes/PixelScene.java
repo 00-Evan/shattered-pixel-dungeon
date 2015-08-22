@@ -43,11 +43,11 @@ import com.watabou.utils.BitmapCache;
 public class PixelScene extends Scene {
 
 	// Minimum virtual display size for portrait orientation
-	public static final float MIN_WIDTH_P        = 144;
-	public static final float MIN_HEIGHT_P        = 224;
+	public static final float MIN_WIDTH_P        = 135;
+	public static final float MIN_HEIGHT_P        = 225;
 
 	// Minimum virtual display size for landscape orientation
-	public static final float MIN_WIDTH_L        = 224;
+	public static final float MIN_WIDTH_L        = 240;
 	public static final float MIN_HEIGHT_L        = 160;
 
 	public static int defaultZoom = 0;
@@ -88,7 +88,6 @@ public class PixelScene extends Scene {
 			) && defaultZoom > 1) {
 				defaultZoom--;
 			}
-			ShatteredPixelDungeon.scale(defaultZoom);
 		}
 
 		minZoom = 1;

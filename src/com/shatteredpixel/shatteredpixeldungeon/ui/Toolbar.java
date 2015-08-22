@@ -55,7 +55,7 @@ public class Toolbar extends Component {
 	private Tool btnWait;
 	private Tool btnSearch;
 	private Tool btnInventory;
-	private Tool[] btnQuick;
+	private QuickslotTool[] btnQuick;
 	
 	private PickedUpItem pickedUp;
 	
@@ -116,7 +116,7 @@ public class Toolbar extends Component {
 			}
 		});
 
-		btnQuick = new Tool[4];
+		btnQuick = new QuickslotTool[4];
 
 		add( btnQuick[3] = new QuickslotTool( 64, 0, 22, 24, 3) );
 
@@ -165,16 +165,44 @@ public class Toolbar extends Component {
 	@Override
 	protected void layout() {
 
-
 		int[] visible = new int[4];
 		int slots = ShatteredPixelDungeon.quickSlots();
-		int ofs = (slots == 4 && (width() < 146)) ? 2 : 0;
 
 		for(int i = 0; i <= 3; i++)
 			visible[i] = (int)((slots > i) ? y+2 : y+25);
 
 		for(int i = 0; i <= 3; i++) {
 			btnQuick[i].visible = btnQuick[i].active = slots > i;
+			//decides on quickslot layout, depending on available screen size.
+			if (slots == 4 && width < 150){
+				if (width < 139){
+					if ((ShatteredPixelDungeon.flipToolbar() && i == 3) ||
+							(!ShatteredPixelDungeon.flipToolbar() && i == 0)) {
+						btnQuick[i].border(0, 0);
+						btnQuick[i].frame(88, 0, 17, 24);
+					} else {
+						btnQuick[i].border(0, 1);
+						btnQuick[i].frame(88, 0, 18, 24);
+					}
+				} else {
+					if (i == 0 && !ShatteredPixelDungeon.flipToolbar() ||
+						i == 3 && ShatteredPixelDungeon.flipToolbar()){
+						btnQuick[i].border(0, 2);
+						btnQuick[i].frame(106, 0, 19, 24);
+					} else if (i == 0 && ShatteredPixelDungeon.flipToolbar() ||
+							i == 3 && !ShatteredPixelDungeon.flipToolbar()){
+						btnQuick[i].border(2, 1);
+						btnQuick[i].frame(86, 0, 20, 24);
+					} else {
+						btnQuick[i].border(0, 1);
+						btnQuick[i].frame(88, 0, 18, 24);
+					}
+				}
+			} else {
+				btnQuick[i].border(2, 2);
+				btnQuick[i].frame(64, 0, 22, 24);
+			}
+
 		}
 
 		float right = width;
@@ -185,25 +213,26 @@ public class Toolbar extends Component {
 
 				btnInventory.setPos(right - btnInventory.width(), y);
 
-				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width() + ofs, visible[0]);
-				btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width() + ofs, visible[1]);
-				btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width() + ofs, visible[2]);
-				btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width() + ofs, visible[3]);
+				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(), visible[0]);
+				btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(), visible[1]);
+				btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(), visible[2]);
+				btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(), visible[3]);
 				break;
 
 			//center = group but.. well.. centered, so all we need to do is pre-emptively set the right side further in.
 			case CENTER:
-				right = width - (width - btnWait.width() - btnSearch.width() - btnInventory.width() - (slots * (btnQuick[0].width() - ofs)))/2f;
+				right = width - (width - btnWait.width() - btnSearch.width() - btnInventory.width() -
+						btnQuick[0].width() - btnQuick[1].width() - btnQuick[2].width() - btnQuick[3].width())/2;
 
 			case GROUP:
 				btnWait.setPos(right - btnWait.width(), y);
 				btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
 				btnInventory.setPos(btnSearch.left() - btnInventory.width(), y);
 
-				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width() + ofs, visible[0]);
-				btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width() + ofs, visible[1]);
-				btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width() + ofs, visible[2]);
-				btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width() + ofs, visible[3]);
+				btnQuick[0].setPos(btnInventory.left() - btnQuick[0].width(), visible[0]);
+				btnQuick[1].setPos(btnQuick[0].left() - btnQuick[1].width(), visible[1]);
+				btnQuick[2].setPos(btnQuick[1].left() - btnQuick[2].width(), visible[2]);
+				btnQuick[3].setPos(btnQuick[2].left() - btnQuick[3].width(), visible[3]);
 				break;
 		}
 		right = width;
@@ -318,8 +347,12 @@ public class Toolbar extends Component {
 		public Tool( int x, int y, int width, int height ) {
 			super();
 			
+			frame(x, y, width, height);
+		}
+
+		public void frame( int x, int y, int width, int height) {
 			base.frame( x, y, width, height );
-			
+
 			this.width = width;
 			this.height = height;
 		}
@@ -369,6 +402,8 @@ public class Toolbar extends Component {
 	private static class QuickslotTool extends Tool {
 		
 		private QuickSlotButton slot;
+		private int borderLeft = 2;
+		private int borderRight = 2;
 		
 		public QuickslotTool( int x, int y, int width, int height, int slotNum ) {
 			super( x, y, width, height );
@@ -376,11 +411,17 @@ public class Toolbar extends Component {
 			slot = new QuickSlotButton( slotNum );
 			add( slot );
 		}
+
+		public void border( int left, int right ){
+			borderLeft = left;
+			borderRight = right;
+			layout();
+		}
 		
 		@Override
 		protected void layout() {
 			super.layout();
-			slot.setRect( x + 2, y + 2, width - 4, height - 3 );
+			slot.setRect( x + borderLeft, y + 2, width - borderLeft-borderRight, height - 4 );
 		}
 		
 		@Override
