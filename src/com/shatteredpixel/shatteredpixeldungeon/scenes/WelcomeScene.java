@@ -50,7 +50,14 @@ public class WelcomeScene extends PixelScene {
 			"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-			"New traps!:\n" +
+			"v0.3.1a:\n" +
+					"- fixed some display scaling issues\n" +
+					"- trap spawnrate is more consistent\n" +
+					"- quickslots now only target enemies that can be hit\n" +
+					"- Various other bugfixes\n" +
+					"\n" +
+					"v0.3.1:\n" +
+					"New traps!:\n" +
 					"- Over 20 new traps + tweaks to existing ones\n" +
 					"- Trap visuals overhauled\n" +
 					"- Traps now get trickier deeper in the dungeon\n" +

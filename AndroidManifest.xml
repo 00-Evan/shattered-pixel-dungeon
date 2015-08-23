@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.shatteredpixel.shatteredpixeldungeon"
-	android:versionCode="53"
-	android:versionName="0.3.1"
+	android:versionCode="55"
+	android:versionName="0.3.1a"
 	android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.VIBRATE"/>
 
 	<uses-sdk
 		android:minSdkVersion="8"
-		android:targetSdkVersion="21"/>
+		android:targetSdkVersion="23"/>
 	
 	<uses-feature
 		android:glEsVersion="0x00020000"/>
