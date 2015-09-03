@@ -20,35 +20,21 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTrap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndCatalogus;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoCell;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoPlant;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndCatalogus;
 
 public class Toolbar extends Component {
 
@@ -283,54 +269,8 @@ public class Toolbar extends Component {
 	private static CellSelector.Listener informer = new CellSelector.Listener() {
 		@Override
 		public void onSelect( Integer cell ) {
-
 			instance.examining = false;
-			
-			if (cell == null) {
-				return;
-			}
-			
-			if (cell < 0 || cell > Level.LENGTH || (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])) {
-				GameScene.show( new WndMessage( "You don't know what is there." ) ) ;
-				return;
-			}
-			
-			if (cell == Dungeon.hero.pos) {
-				GameScene.show( new WndHero() );
-				return;
-			}
-
-			if (Dungeon.visible[cell]) {
-				Mob mob = (Mob) Actor.findChar(cell);
-				if (mob != null) {
-					GameScene.show(new WndInfoMob(mob));
-					return;
-				}
-			}
-
-			Heap heap = Dungeon.level.heaps.get(cell);
-			if (heap != null && heap.seen) {
-				if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
-					GameScene.show(new WndTradeItem(heap, false));
-				} else {
-					GameScene.show(new WndInfoItem(heap));
-				}
-				return;
-			}
-			
-			Plant plant = Dungeon.level.plants.get( cell );
-			if (plant != null) {
-				GameScene.show( new WndInfoPlant( plant ) );
-				return;
-			}
-
-			Trap trap = Dungeon.level.traps.get( cell );
-			if (trap != null && trap.visible) {
-				GameScene.show( new WndInfoTrap( trap ));
-				return;
-			}
-			
-			GameScene.show( new WndInfoCell( cell ) );
+			GameScene.examineCell( cell );
 		}
 		@Override
 		public String prompt() {
