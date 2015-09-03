@@ -48,6 +48,7 @@ public class InterlevelScene extends PixelScene {
 	private static final String TXT_RESURRECTING= "Resurrecting...";
 	private static final String TXT_RETURNING	= "Returning...";
 	private static final String TXT_FALLING		= "Falling...";
+	private static final String TXT_RESETTING   = "Resetting...";
 	
 	private static final String ERR_FILE_NOT_FOUND	= "Save file not found. If this error persists after restarting, " +
 														"it may mean this save game is corrupted. Sorry about that.";
@@ -55,7 +56,7 @@ public class InterlevelScene extends PixelScene {
 														"it may mean this save game is corrupted. Sorry about that.";
 	
 	public static enum Mode {
-		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL
+		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET
 	};
 	public static Mode mode;
 	
@@ -101,6 +102,9 @@ public class InterlevelScene extends PixelScene {
 		case FALL:
 			text = TXT_FALLING;
 			break;
+		case RESET:
+			text = TXT_RESETTING;
+			break;
 		}
 		
 		message = PixelScene.createText( text, 9 );
@@ -138,6 +142,9 @@ public class InterlevelScene extends PixelScene {
 						break;
 					case FALL:
 						fall();
+						break;
+					case RESET:
+						reset();
 						break;
 					}
 					
@@ -295,6 +302,15 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.hero.resurrect( -1 );
 			Dungeon.resetLevel();
 		}
+	}
+
+	private void reset() throws IOException {
+
+		Actor.fixTime();
+
+		Dungeon.depth--;
+		Level level = Dungeon.newLevel();
+		Dungeon.switchLevel( level, level.entrance );
 	}
 	
 	@Override
