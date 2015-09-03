@@ -52,7 +52,7 @@ public class PitfallTrap extends Trap {
 			}
 			heap.sprite.kill();
 			GameScene.discard(heap);
-			Dungeon.level.heaps.delete( pos );
+			Dungeon.level.heaps.remove( pos );
 		}
 
 		Char ch = Actor.findChar( pos );

@@ -753,13 +753,13 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public void uproot( int pos ) {
-		plants.delete(pos);
+		plants.remove(pos);
 	}
 
 	public Trap setTrap( Trap trap, int pos ){
 		Trap existingTrap = traps.get(pos);
 		if (existingTrap != null){
-			traps.delete( pos );
+			traps.remove( pos );
 			if(existingTrap.sprite != null) existingTrap.sprite.kill();
 		}
 		trap.set( pos );
