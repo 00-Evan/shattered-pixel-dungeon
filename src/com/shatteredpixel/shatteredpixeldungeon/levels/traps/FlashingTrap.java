@@ -68,7 +68,7 @@ public class FlashingTrap extends Trap {
 
 	@Override
 	public String desc() {
-		return "On activation, this trap with ignite a potent flashing powder stored within, " +
+		return "On activation, this trap will ignite a potent flashing powder stored within, " +
 				"temporarily blinding and crippling its victim.";
 	}
 }

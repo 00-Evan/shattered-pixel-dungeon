@@ -50,6 +50,6 @@ public class DistortionTrap extends Trap{
 
 	@Override
 	public String desc() {
-		return "Build from strange magic of unknown origin, this trap will shift and morph the world around you.";
+		return "Built from strange magic of unknown origin, this trap will shift and morph the world around you.";
 	}
 }

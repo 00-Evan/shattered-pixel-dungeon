@@ -55,6 +55,6 @@ public class BlazingTrap extends Trap {
 
 	@Override
 	public String desc() {
-		return  "stepping on this trap will ignite a powerful chemical mixture, setting a wide area ablaze.";
+		return  "Stepping on this trap will ignite a powerful chemical mixture, setting a wide area ablaze.";
 	}
 }

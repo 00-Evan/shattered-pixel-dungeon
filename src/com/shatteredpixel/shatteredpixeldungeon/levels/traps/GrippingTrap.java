@@ -58,7 +58,7 @@ public class GrippingTrap extends Trap {
 
 	@Override
 	public String desc() {
-		return "triggering this trap will send barbed claws along the ground, " +
+		return "Triggering this trap will send barbed claws along the ground, " +
 				"damaging the victims feet and rooting them in place.";
 	}
 }

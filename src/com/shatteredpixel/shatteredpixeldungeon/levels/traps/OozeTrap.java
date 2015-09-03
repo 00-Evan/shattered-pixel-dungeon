@@ -47,6 +47,6 @@ public class OozeTrap extends Trap {
 
 	@Override
 	public String desc() {
-		return "This trap with splash out caustic ooze when activated, which will burn until it is washed away.";
+		return "This trap will splash out caustic ooze when activated, which will burn until it is washed away.";
 	}
 }

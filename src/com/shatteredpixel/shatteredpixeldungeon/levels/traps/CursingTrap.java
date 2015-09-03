@@ -72,6 +72,6 @@ public class CursingTrap extends Trap {
 	@Override
 	public String desc() {
 		return "This trap contains the same malevolent magic found in cursed equipment. " +
-				"Trigger it will curse all worn items, and all items in the immediate area.";
+				"Triggering it will curse all worn items, and all items in the immediate area.";
 	}
 }

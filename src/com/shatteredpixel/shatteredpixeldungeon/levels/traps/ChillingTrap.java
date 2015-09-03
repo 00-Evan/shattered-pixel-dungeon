@@ -65,6 +65,6 @@ public class ChillingTrap extends Trap{
 
 	@Override
 	public String desc() {
-		return "when activated, chemicals in this trap will trigger a snap-frost at its location.";
+		return "When activated, chemicals in this trap will trigger a snap-frost at its location.";
 	}
 }

@@ -88,6 +88,6 @@ public class PitfallTrap extends Trap {
 
 	@Override
 	public String desc() {
-		return "This pressure plate rests ontop of a fairly weak floor, and will likely collapse into a pit if it is pressed.";
+		return "This pressure plate rests atop a fairly weak floor, and will likely collapse into a pit if it is pressed.";
 	}
 }

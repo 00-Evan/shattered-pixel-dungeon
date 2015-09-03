@@ -45,6 +45,6 @@ public class FireTrap extends Trap {
 
 	@Override
 	public String desc() {
-		return "stepping on this trap will ignite a chemical mixture, setting the immediate area aflame.";
+		return "Stepping on this trap will ignite a chemical mixture, setting the immediate area aflame.";
 	}
 }

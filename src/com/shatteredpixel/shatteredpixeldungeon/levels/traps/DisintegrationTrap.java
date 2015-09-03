@@ -95,7 +95,7 @@ public class DisintegrationTrap extends Trap {
 
 	@Override
 	public String desc() {
-		return "Then triggered, this trap will lance the target with beams of disintegration, " +
+		return "When triggered, this trap will lance the target with beams of disintegration, " +
 				"dealing significant damage and destroying items.";
 	}
 }
