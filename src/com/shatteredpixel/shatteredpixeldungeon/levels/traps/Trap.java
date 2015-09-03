@@ -72,6 +72,7 @@ public abstract class Trap implements Bundlable {
 				Sample.INSTANCE.play(Assets.SND_TRAP);
 			}
 			disarm();
+			reveal();
 			activate();
 		}
 	}
@@ -82,7 +83,6 @@ public abstract class Trap implements Bundlable {
 		Dungeon.level.disarmTrap(pos);
 		active = false;
 		if (sprite != null) {
-			sprite.visible = true;
 			sprite.reset( this );
 		}
 	}

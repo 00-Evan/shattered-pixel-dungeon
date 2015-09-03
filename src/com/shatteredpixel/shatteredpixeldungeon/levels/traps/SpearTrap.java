@@ -46,6 +46,7 @@ public class SpearTrap extends Trap {
 			Sample.INSTANCE.play(Assets.SND_TRAP);
 		}
 		//this trap is not disarmed by being triggered
+		reveal();
 		activate();
 	}
 
