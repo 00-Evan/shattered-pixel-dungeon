@@ -48,7 +48,7 @@ public class Frost extends FlavourBuff {
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
 			
-			target.paralysed = true;
+			target.paralysed++;
 			Buff.detach( target, Burning.class );
 			Buff.detach( target, Chill.class );
 
@@ -89,10 +89,10 @@ public class Frost extends FlavourBuff {
 	@Override
 	public void detach() {
 		super.detach();
-		Paralysis.unfreeze( target );
-		if (Level.water[target.pos]){
+		if (target.paralysed > 0)
+			target.paralysed--;
+		if (Level.water[target.pos])
 			Buff.prolong(target, Chill.class, 4f);
-		}
 	}
 	
 	@Override

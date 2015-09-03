@@ -65,7 +65,7 @@ public abstract class Char extends Actor {
 	
 	protected float baseSpeed	= 1;
 	
-	public boolean paralysed	= false;
+	public int paralysed	    = 0;
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;

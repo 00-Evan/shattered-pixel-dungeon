@@ -301,7 +301,7 @@ public class Hero extends Char {
 		}
 
 		float evasion = (float)Math.pow( 1.15, bonus );
-		if (paralysed) {
+		if (paralysed > 0) {
 			evasion /= 2;
 		}
 		
@@ -417,7 +417,7 @@ public class Hero extends Char {
 		
 		super.act();
 		
-		if (paralysed) {
+		if (paralysed > 0) {
 			
 			curAction = null;
 			
