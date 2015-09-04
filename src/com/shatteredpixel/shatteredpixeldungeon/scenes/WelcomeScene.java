@@ -50,7 +50,11 @@ public class WelcomeScene extends PixelScene {
 			"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-			"v0.3.1a:\n" +
+			"v0.3.1b:\n" +
+					"- Various bugfixes\n" +
+					"- Fixed blurry text on some displays\n" +
+					"\n" +
+					"v0.3.1a:\n" +
 					"- fixed some display scaling issues\n" +
 					"- trap spawnrate is more consistent\n" +
 					"- quickslots now only target enemies that can be hit\n" +
