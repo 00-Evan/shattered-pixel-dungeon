@@ -145,8 +145,8 @@ public class WndRanking extends WndTabbed {
 	}
 	
 	private class StatsTab extends Group {
-		
-		private static final int GAP	= 4;
+
+		private int GAP	= 4;
 		
 		private static final String TXT_TITLE	= "Level %d %s";
 
@@ -167,6 +167,8 @@ public class WndRanking extends WndTabbed {
 		
 		public StatsTab() {
 			super();
+
+			if (Dungeon.challenges > 0) GAP--;
 			
 			String heroClass = Dungeon.hero.className();
 			
@@ -186,7 +188,7 @@ public class WndRanking extends WndTabbed {
 						Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
 					}
 				};
-				btnCatalogus.setRect( 0, pos + GAP, btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
+				btnCatalogus.setRect( 0, pos, btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
 				add( btnCatalogus );
 
 				pos = btnCatalogus.bottom();
