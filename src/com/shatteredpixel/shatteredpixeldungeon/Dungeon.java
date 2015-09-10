@@ -140,8 +140,6 @@ public class Dungeon {
 		version = Game.versionCode;
 		challenges = ShatteredPixelDungeon.challenges();
 
-		Generator.initArtifacts();
-
 		Actor.clear();
 		Actor.resetNextID();
 		
@@ -175,7 +173,8 @@ public class Dungeon {
 		Imp.Quest.reset();
 		
 		Room.shuffleTypes();
-		
+
+		Generator.initArtifacts();
 		hero = new Hero();
 		hero.live();
 		

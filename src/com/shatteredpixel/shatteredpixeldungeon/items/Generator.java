@@ -202,7 +202,7 @@ public class Generator {
 			LloydsBeacon.class,
 			EtherealChains.class
 			};
-		Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS;
+		Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
 		
 		Category.SEED.classes = new Class<?>[]{
 			Firebloom.Seed.class,
@@ -360,10 +360,10 @@ public class Generator {
 
 	//resets artifact probabilities, for new dungeons
 	public static void initArtifacts() {
-		Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS;
+		Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
 
 		//checks for dried rose quest completion, adds the rose in accordingly.
-		if (Ghost.Quest.processed) Category.ARTIFACT.probs[10] = 1;
+		if (Ghost.Quest.completed()) Category.ARTIFACT.probs[10] = 1;
 
 		spawnedArtifacts = new ArrayList<String>();
 	}

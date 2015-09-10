@@ -246,7 +246,7 @@ public class Ghost extends NPC {
 		private static int type;
 
 		private static boolean given;
-		public static boolean processed;
+		private static boolean processed;
 		
 		private static int depth;
 		
@@ -370,6 +370,10 @@ public class Ghost extends NPC {
 			armor = null;
 			
 			Journal.remove( Journal.Feature.GHOST );
+		}
+
+		public static boolean completed(){
+			return spawned && processed;
 		}
 	}
 
