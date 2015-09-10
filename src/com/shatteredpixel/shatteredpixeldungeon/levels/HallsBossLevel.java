@@ -159,6 +159,7 @@ public class HallsBossLevel extends Level {
 	
 	@Override
 	public int randomRespawnCell() {
+		if (entrance == -1) return entrance;
 		int cell = entrance + NEIGHBOURS8[Random.Int(8)];
 		while (!passable[cell]){
 			cell = entrance + NEIGHBOURS8[Random.Int(8)];
