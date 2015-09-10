@@ -69,8 +69,8 @@ public class PitfallTrap extends Trap {
 		super.disarm();
 
 		//if making a pit here wouldn't block any paths, make a pit tile instead of a disarmed trap tile.
-		if (!(Dungeon.level.map[pos - Level.WIDTH] == Terrain.WALL && Dungeon.level.map[pos + Level.WIDTH] == Terrain.WALL)
-				&& !(Dungeon.level.map[pos - 1] == Terrain.WALL && Dungeon.level.map[pos + 1] == Terrain.WALL)){
+		if (!(Dungeon.level.solid[pos - Level.WIDTH] && Dungeon.level.solid[pos + Level.WIDTH])
+				&& !(Dungeon.level.solid[pos - 1]&& Dungeon.level.solid[pos + 1])){
 
 			int c = Dungeon.level.map[pos - Level.WIDTH];
 
