@@ -157,7 +157,6 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			GameScene.ripple( from );
 		}
 
-		ch.onMotionComplete();
 	}
 	
 	public void interruptMotion() {

@@ -69,7 +69,6 @@ public class TenguSprite extends MobSprite {
 			GameScene.ripple( to );
 		}
 
-		ch.onMotionComplete();
 	}
 	
 	@Override
