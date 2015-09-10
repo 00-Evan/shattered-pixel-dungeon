@@ -81,7 +81,7 @@ public class WandOfDisintegration extends Wand {
 				
 			}
 
-			if (!Level.passable[c])
+			if (Level.solid[c])
 				terrainPassed++;
 			
 			CellEmitter.center( c ).burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
