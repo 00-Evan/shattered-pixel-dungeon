@@ -77,6 +77,6 @@ public class VenomGas extends Blob {
 
 	@Override
 	public String tileDesc() {
-		return "A could of foul acidic venom is swirling here.";
+		return "A cloud of foul acidic venom is swirling here.";
 	}
 }
