@@ -75,7 +75,6 @@ public class Toast extends Component {
 		
 		text.x = close.left() - MARGIN_HOR - text.width();
 		text.y = y + (height - text.height()) / 2;
-		PixelScene.align( text );
 	}
 	
 	public void text( String txt ) {

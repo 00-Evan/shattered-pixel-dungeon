@@ -62,8 +62,8 @@ public class RedButton extends Button {
 		bg.y = y;
 		bg.size( width, height );
 		
-		text.x = x + (int)(width - text.width()) / 2;
-		text.y = y + (int)(height - text.baseLine()) / 2;
+		text.x = x + (width - text.width()) / 2;
+		text.y = y + (height - text.baseLine()) / 2;
 		
 		if (icon != null) {
 			icon.x = x + text.x - icon.width() - 2;

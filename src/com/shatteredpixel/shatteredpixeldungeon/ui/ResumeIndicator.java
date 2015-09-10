@@ -49,8 +49,8 @@ public class ResumeIndicator extends Tag {
 	protected void layout() {
 		super.layout();
 
-		icon.x = PixelScene.align( PixelScene.uiCamera, x+1 + (width - icon.width) / 2 );
-		icon.y = PixelScene.align( PixelScene.uiCamera, y + (height - icon.height) / 2 );
+		icon.x = x+1 + (width - icon.width) / 2;
+		icon.y = y + (height - icon.height) / 2;
 	}
 
 	@Override

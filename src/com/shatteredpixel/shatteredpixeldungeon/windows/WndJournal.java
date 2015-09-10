@@ -54,7 +54,7 @@ public class WndJournal extends Window {
 		txtTitle = PixelScene.createText( TXT_TITLE, 9 );
 		txtTitle.hardlight( Window.TITLE_COLOR );
 		txtTitle.measure();
-		txtTitle.x = PixelScene.align( PixelScene.uiCamera, (WIDTH - txtTitle.width()) / 2 );
+		txtTitle.x = (WIDTH - txtTitle.width()) / 2;
 		add( txtTitle );
 		
 		Component content = new Component();

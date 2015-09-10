@@ -132,8 +132,8 @@ public class StatusPane extends Component {
 
 		shield.size( width, shield.height );
 
-		avatar.x = PixelScene.align( camera(), shield.x + 15 - avatar.width / 2 );
-		avatar.y = PixelScene.align( camera(), shield.y + 16 - avatar.height / 2 );
+		avatar.x = shield.x + 15 - avatar.width / 2;
+		avatar.y = shield.y + 16 - avatar.height / 2;
 
 		compass.x = avatar.x + avatar.width / 2 - compass.origin.x;
 		compass.y = avatar.y + avatar.height / 2 - compass.origin.y;

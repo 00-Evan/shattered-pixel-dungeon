@@ -117,7 +117,7 @@ public class WndCatalogus extends WndTabbed {
 		
 		txtTitle.text( Utils.format( TXT_TITLE, showPotions ? TXT_POTIONS : TXT_SCROLLS ) );
 		txtTitle.measure();
-		txtTitle.x = PixelScene.align( PixelScene.uiCamera, (width - txtTitle.width()) / 2 );
+		txtTitle.x = (width - txtTitle.width()) / 2;
 
 		items.clear();
 		
