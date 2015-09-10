@@ -339,7 +339,15 @@ public abstract class RegularLevel extends Level {
 
 		for (int i = 0; i < LENGTH; i ++) {
 			if (map[i] == Terrain.EMPTY){
-				validCells.add(i);
+
+				if(Dungeon.depth == 1){
+					//extra check to prevent annoying inactive traps in hallways on floor 1
+					Room r = room(i);
+					if (r != null && r.type != Type.TUNNEL){
+						validCells.add(i);
+					}
+				} else
+					validCells.add(i);
 			}
 		}
 
