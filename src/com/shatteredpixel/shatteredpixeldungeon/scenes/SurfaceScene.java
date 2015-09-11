@@ -84,8 +84,8 @@ public class SurfaceScene extends PixelScene {
 		archs.setSize( w, h );
 		add( archs );
 
-		float vx = align( (w - SKY_WIDTH) / 2 );
-		float vy = align( (h - SKY_HEIGHT - BUTTON_HEIGHT) / 2 );
+		float vx = (w - SKY_WIDTH) / 2;
+		float vy = (h - SKY_HEIGHT - BUTTON_HEIGHT) / 2;
 
 		Point s = Camera.main.cameraToScreen( vx, vy );
 		viewport = new Camera( s.x, s.y, SKY_WIDTH, SKY_HEIGHT, defaultZoom );
@@ -129,7 +129,7 @@ public class SurfaceScene extends PixelScene {
 		Avatar a = new Avatar( Dungeon.hero.heroClass );
 		// Removing semitransparent contour
 		a.am = 2; a.aa = -1;
-		a.x = PixelScene.align( (SKY_WIDTH - a.width) / 2 );
+		a.x = (SKY_WIDTH - a.width);
 		a.y = SKY_HEIGHT - a.height;
 		window.add( a );
 		

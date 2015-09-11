@@ -188,11 +188,6 @@ public class PixelScene extends Scene {
 		return result;
 	}
 
-	// This one should be used for UI elements
-	public static float align( float pos ) {
-		return pos;
-	}
-
 	public static boolean noFade = false;
 	protected void fadeIn() {
 		if (noFade) {

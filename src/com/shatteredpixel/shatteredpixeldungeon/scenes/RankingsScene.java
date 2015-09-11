@@ -79,8 +79,8 @@ public class RankingsScene extends PixelScene {
 		BitmapText title = PixelScene.createText(TXT_TITLE, 9);
 		title.hardlight(Window.SHPX_COLOR);
 		title.measure();
-		title.x = align((w - title.width()) / 2);
-		title.y = align( GAP );
+		title.x = (w - title.width()) / 2;
+		title.y = GAP;
 		add(title);
 		
 		if (Rankings.INSTANCE.records.size() > 0) {
@@ -89,7 +89,7 @@ public class RankingsScene extends PixelScene {
 			float rowHeight = GameMath.gate(ROW_HEIGHT_MIN, (uiCamera.height - 26)/Rankings.INSTANCE.records.size(), ROW_HEIGHT_MAX);
 
 			float left = (w - Math.min( MAX_ROW_WIDTH, w )) / 2 + GAP;
-			float top = align( (h - rowHeight  * Rankings.INSTANCE.records.size()) / 2 );
+			float top = (h - rowHeight  * Rankings.INSTANCE.records.size()) / 2;
 			
 			int pos = 0;
 			
@@ -121,15 +121,15 @@ public class RankingsScene extends PixelScene {
 				BitmapText total = PixelScene.createText( "/" + Rankings.INSTANCE.totalNumber, 8 );
 				total.hardlight( 0xCCCCCC );
 				total.measure();
-				total.x = align( (w - total.width()) / 2 );
-				total.y = align( top + pos * rowHeight + GAP );
+				total.x = (w - total.width()) / 2;
+				total.y = top + pos * rowHeight + GAP;
 				add( total );
 
 				float tw = label.width() + won.width() + total.width();
-				label.x = align( (w - tw) / 2 );
+				label.x = (w - tw) / 2;
 				won.x = label.x + label.width();
 				total.x = won.x + won.width();
-				label.y = won.y = total.y = align( h - label.height() - GAP );
+				label.y = won.y = total.y = h - label.height() - GAP;
 
 			}
 			
@@ -138,8 +138,8 @@ public class RankingsScene extends PixelScene {
 			BitmapText noRec = PixelScene.createText(TXT_NO_GAMES, 8);
 			noRec.hardlight( 0xCCCCCC );
 			noRec.measure();
-			noRec.x = align((w - noRec.width()) / 2);
-			noRec.y = align((h - noRec.height()) / 2);
+			noRec.x = (w - noRec.width()) / 2;
+			noRec.y = (h - noRec.height()) / 2;
 			add(noRec);
 			
 		}
@@ -267,29 +267,29 @@ public class RankingsScene extends PixelScene {
 			shield.x = x;
 			shield.y = y + (height - shield.height) / 2;
 			
-			position.x = align( shield.x + (shield.width - position.width()) / 2 );
-			position.y = align( shield.y + (shield.height - position.height()) / 2 + 1 );
+			position.x = shield.x + (shield.width - position.width()) / 2;
+			position.y = shield.y + (shield.height - position.height()) / 2 + 1;
 			
 			if (flare != null) {
 				flare.point( shield.center() );
 			}
 
-			classIcon.x = align(x + width - classIcon.width);
+			classIcon.x = x + width - classIcon.width;
 			classIcon.y = shield.y;
 
-			level.x = align( classIcon.x + (classIcon.width - level.width()) / 2 );
-			level.y = align( classIcon.y + (classIcon.height - level.height()) / 2 + 1 );
+			level.x = classIcon.x + (classIcon.width - level.width()) / 2;
+			level.y = classIcon.y + (classIcon.height - level.height()) / 2 + 1;
 
-			steps.x = align(x + width - steps.width - classIcon.width);
+			steps.x = x + width - steps.width - classIcon.width;
 			steps.y = shield.y;
 
-			depth.x = align( steps.x + (steps.width - depth.width()) / 2 );
-			depth.y = align( steps.y + (steps.height - depth.height()) / 2 + 1 );
+			depth.x = steps.x + (steps.width - depth.width()) / 2;
+			depth.y = steps.y + (steps.height - depth.height()) / 2 + 1;
 
 			desc.x = shield.x + shield.width + GAP;
 			desc.maxWidth = (int)(steps.x - desc.x);
 			desc.measure();
-			desc.y = align( shield.y + (shield.height - desc.height()) / 2 + 1 );
+			desc.y = shield.y + (shield.height - desc.height()) / 2 + 1;
 		}
 		
 		@Override

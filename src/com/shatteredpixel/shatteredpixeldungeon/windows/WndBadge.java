@@ -53,8 +53,8 @@ public class WndBadge extends Window {
 		float pos = icon.y + icon.height() + MARGIN;
 		for (BitmapText line : info.new LineSplitter().split()) {
 			line.measure();
-			line.x = PixelScene.align( (w - line.width()) / 2 );
-			line.y = PixelScene.align( pos );
+			line.x = (w - line.width()) / 2;
+			line.y = pos;
 			add( line );
 			
 			pos += line.height();

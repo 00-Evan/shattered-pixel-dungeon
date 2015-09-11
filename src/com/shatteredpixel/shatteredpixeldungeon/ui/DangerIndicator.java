@@ -69,7 +69,7 @@ public class DangerIndicator extends Tag {
 	
 	private void placeNumber() {
 		number.x = right() - 11 - number.width();
-		number.y = PixelScene.align( y + (height - number.baseLine()) / 2 );
+		number.y = y + (height - number.baseLine()) / 2;
 	}
 	
 	@Override

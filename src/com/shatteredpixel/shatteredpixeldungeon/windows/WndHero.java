@@ -160,7 +160,7 @@ public class WndHero extends WndTabbed {
 
 			txt = PixelScene.createText( value, 8 );
 			txt.measure();
-			txt.x = PixelScene.align( WIDTH * 0.65f );
+			txt.x = 65;
 			txt.y = pos;
 			add( txt );
 			

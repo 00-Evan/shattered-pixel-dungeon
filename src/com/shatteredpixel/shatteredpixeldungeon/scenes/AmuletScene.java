@@ -91,8 +91,8 @@ public class AmuletScene extends PixelScene {
 		if (noText) {
 			height = amulet.height + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
 			
-			amulet.x = align( (Camera.main.width - amulet.width) / 2 );
-			amulet.y = align( (Camera.main.height - height) / 2 );
+			amulet.x = (Camera.main.width - amulet.width) / 2;
+			amulet.y = (Camera.main.height - height) / 2;
 			
 			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, amulet.y + amulet.height + LARGE_GAP );
 			btnStay.setPos( btnExit.left(), btnExit.bottom() + SMALL_GAP );
@@ -100,10 +100,10 @@ public class AmuletScene extends PixelScene {
 		} else {
 			height = amulet.height + LARGE_GAP + text.height() + LARGE_GAP + btnExit.height() + SMALL_GAP + btnStay.height();
 			
-			amulet.x = align( (Camera.main.width - amulet.width) / 2 );
-			amulet.y = align( (Camera.main.height - height) / 2 );
+			amulet.x = (Camera.main.width - amulet.width) / 2;
+			amulet.y = (Camera.main.height - height) / 2;
 			
-			text.x =  align( (Camera.main.width - text.width()) / 2 );
+			text.x = (Camera.main.width - text.width()) / 2;
 			text.y = amulet.y + amulet.height + LARGE_GAP;
 			
 			btnExit.setPos( (Camera.main.width - btnExit.width()) / 2, text.y + text.height() + LARGE_GAP );

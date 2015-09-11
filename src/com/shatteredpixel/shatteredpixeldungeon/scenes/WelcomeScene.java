@@ -138,8 +138,8 @@ public class WelcomeScene extends PixelScene {
 		title.measure();
 		title.hardlight(Window.SHPX_COLOR);
 
-		title.x = align( (w - title.width()) / 2 );
-		title.y = align( 8 );
+		title.x = (w - title.width()) / 2;
+		title.y = 8;
 		add( title );
 
 		NinePatch panel = Chrome.get(Chrome.Type.WINDOW);

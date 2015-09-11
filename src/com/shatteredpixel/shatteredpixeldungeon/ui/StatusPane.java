@@ -185,8 +185,8 @@ public class StatusPane extends Component {
 			lastLvl = Dungeon.hero.lvl;
 			level.text( Integer.toString( lastLvl ) );
 			level.measure();
-			level.x = PixelScene.align( 27.0f - level.width() / 2 );
-			level.y = PixelScene.align( 27.5f - level.baseLine() / 2 );
+			level.x = 27.0f - level.width() / 2;
+			level.y = 27.5f - level.baseLine() / 2;
 		}
 
 		int k = IronKey.curDepthQuantity;

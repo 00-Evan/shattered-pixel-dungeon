@@ -224,7 +224,7 @@ public class WndRanking extends WndTabbed {
 			
 			txt = PixelScene.createText( value, 7 );
 			txt.measure();
-			txt.x = PixelScene.align( WIDTH * 0.65f );
+			txt.x = WIDTH * 0.65f;
 			txt.y = pos;
 			parent.add( txt );
 			

@@ -92,7 +92,7 @@ public class FloatingText extends BitmapText {
 		hardlight( color );
 		
 		measure();
-		this.x = PixelScene.align( x - width() / 2 );
+		this.x = x - width() / 2;
 		this.y = y - height();
 		
 		timeLeft = LIFESPAN;
