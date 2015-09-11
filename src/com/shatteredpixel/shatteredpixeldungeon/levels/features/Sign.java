@@ -86,9 +86,9 @@ public class Sign {
 		"Pixel-Mart. Special prices for demon hunters!",
 
 		//hmm.. I wonder what this is?
-		"Laden Worts",
-		"TeeTh gun",
-		"Chafe riTzy"
+		"ConCealed mineral",
+		"sPrained Worn",
+		"Pinker soRrow"
 	};
 	
 	private static final String TXT_BURN =
