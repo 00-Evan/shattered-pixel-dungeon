@@ -51,8 +51,10 @@ public class ScrollOfTerror extends Scroll {
 			if (Level.fieldOfView[mob.pos]) {
 				Buff.affect( mob, Terror.class, Terror.DURATION ).object = curUser.id();
 
-				count++;
-				affected = mob;
+				if (mob.buff(Terror.class) != null){
+					count++;
+					affected = mob;
+				}
 			}
 		}
 		
