@@ -129,7 +129,7 @@ public class SurfaceScene extends PixelScene {
 		Avatar a = new Avatar( Dungeon.hero.heroClass );
 		// Removing semitransparent contour
 		a.am = 2; a.aa = -1;
-		a.x = (SKY_WIDTH - a.width);
+		a.x = (SKY_WIDTH - a.width) / 2;
 		a.y = SKY_HEIGHT - a.height;
 		window.add( a );
 		
