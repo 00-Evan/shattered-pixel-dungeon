@@ -172,7 +172,7 @@ public class Heap implements Bundlable {
 	
 	public void drop( Item item ) {
 		
-		if (item.stackable) {
+		if (item.stackable && type != Type.FOR_SALE) {
 			
 			for (Item i : items) {
 				if (i.isSimilar( item )) {
