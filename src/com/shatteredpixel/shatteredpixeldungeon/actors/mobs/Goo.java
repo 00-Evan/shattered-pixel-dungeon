@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GooWarn;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -159,8 +160,9 @@ public class Goo extends Mob {
 
 			for (int i=0; i < Level.NEIGHBOURS9.length; i++) {
 				int j = pos + Level.NEIGHBOURS9[i];
-				GameScene.add( Blob.seed( j , 2, GooWarn.class ));
-
+				if (Level.passable[j]) {
+					GameScene.add(Blob.seed(j, 2, GooWarn.class));
+				}
 			}
 
 			if (Dungeon.visible[pos]) {
@@ -211,6 +213,7 @@ public class Goo extends Mob {
 	@Override
 	public void notice() {
 		super.notice();
+		BossHealthBar.assignBoss(this);
 		yell( "GLURP-GLURP!" );
 	}
 	
@@ -240,6 +243,7 @@ public class Goo extends Mob {
 		super.restoreFromBundle( bundle );
 
 		pumpedUp = bundle.getInt( PUMPEDUP );
+		if (state != SLEEPING) BossHealthBar.assignBoss(this);
 	}
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();

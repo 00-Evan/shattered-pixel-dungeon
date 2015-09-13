@@ -52,8 +52,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.LarvaSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RottingFistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.YogSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Yog extends Mob {
@@ -89,6 +91,8 @@ public class Yog extends Mob {
 		
 		GameScene.add( fist1 );
 		GameScene.add( fist2 );
+
+		notice();
 	}
 
 	@Override
@@ -169,6 +173,7 @@ public class Yog extends Mob {
 	@Override
 	public void notice() {
 		super.notice();
+		BossHealthBar.assignBoss(this);
 		yell( "Hope is an illusion..." );
 	}
 	
@@ -196,7 +201,13 @@ public class Yog extends Mob {
 	public HashSet<Class<?>> immunities() {
 		return IMMUNITIES;
 	}
-	
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		BossHealthBar.assignBoss(this);
+	}
+
 	public static class RottingFist extends Mob {
 	
 		private static final int REGENERATION	= 4;

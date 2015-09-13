@@ -52,6 +52,8 @@ public class StatusPane extends Component {
 	private Image hp;
 	private Image exp;
 
+	private BossHealthBar bossHP;
+
 	private int lastLvl = -1;
 	private int lastKeys = -1;
 
@@ -104,6 +106,9 @@ public class StatusPane extends Component {
 		exp = new Image( Assets.XP_BAR );
 		add( exp );
 
+		bossHP = new BossHealthBar();
+		add( bossHP );
+
 		level = new BitmapText( PixelScene.pixelFont);
 		level.hardlight( 0xFFEBA4 );
 		add( level );
@@ -141,12 +146,14 @@ public class StatusPane extends Component {
 		hp.x = 30;
 		hp.y = 3;
 
+		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
+
 		depth.x = width - 24 - depth.width()    - 18;
 		depth.y = 6;
 
 		keys.y = 6;
 
-		danger.setPos( width - danger.width(), 18 );
+		danger.setPos( width - danger.width(), 20 );
 
 		buffs.setPos( 31, 9 );
 

@@ -233,7 +233,7 @@ public class CavesBossLevel extends Level {
 			seal();
 			
 			Mob boss = Bestiary.mob( Dungeon.depth );
-			boss.state = boss.HUNTING;
+			boss.state = boss.WANDERING;
 			do {
 				boss.pos = Random.Int( LENGTH );
 			} while (

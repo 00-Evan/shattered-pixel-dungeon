@@ -24,6 +24,7 @@ import java.util.HashSet;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -46,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Tengu extends Mob {
@@ -180,7 +182,8 @@ public class Tengu extends Mob {
 	@Override
 	public void notice() {
 		super.notice();
-		yell( "Gotcha, " + Dungeon.hero.givenName() + "!" );
+		BossHealthBar.assignBoss(this);
+		yell("Gotcha, " + Dungeon.hero.givenName() + "!");
 	}
 	
 	@Override
@@ -201,5 +204,11 @@ public class Tengu extends Mob {
 	@Override
 	public HashSet<Class<?>> resistances() {
 		return RESISTANCES;
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		BossHealthBar.assignBoss(this);
 	}
 }

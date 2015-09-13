@@ -187,7 +187,7 @@ public class CityBossLevel extends Level {
 			seal();
 			
 			Mob boss = Bestiary.mob( Dungeon.depth );
-			boss.state = boss.HUNTING;
+			boss.state = boss.WANDERING;
 			int count = 0;
 			do {
 				boss.pos = Random.Int( LENGTH );
