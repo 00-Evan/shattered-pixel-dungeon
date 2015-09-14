@@ -73,8 +73,8 @@ public class GrimTrap extends Trap {
 
 					if (finalTarget == Dungeon.hero) {
 						//almost kill the player
-						if ((finalTarget.HP/finalTarget.HT) > 0.25f){
-							finalTarget.damage((int)(finalTarget.HP*0.8f), this);
+						if (((float)finalTarget.HP/finalTarget.HT) >= 0.9f){
+							finalTarget.damage((finalTarget.HP-1), this);
 						//kill 'em
 						} else {
 							finalTarget.damage(finalTarget.HP, this);
@@ -99,7 +99,7 @@ public class GrimTrap extends Trap {
 
 	@Override
 	public String desc() {
-		return "Extremely powerful destructive magic is stored within this trap, enough to instantly kill all but the strongest heroes. " +
-				"Triggering it will send a lethal blast of magic towards the nearest character.";
+		return "Extremely powerful destructive magic is stored within this trap, enough to instantly kill all but the healthiest of heroes. " +
+				"Triggering it will send a ranged blast of lethal magic towards the nearest character.";
 	}
 }
