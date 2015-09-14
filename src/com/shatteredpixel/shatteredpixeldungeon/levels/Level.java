@@ -71,6 +71,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CustomTileVisual;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
@@ -158,6 +159,7 @@ public abstract class Level implements Bundlable {
 	public HashMap<Class<? extends Blob>,Blob> blobs;
 	public SparseArray<Plant> plants;
 	public SparseArray<Trap> traps;
+	public HashSet<CustomTileVisual> customTiles;
 	
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 	
@@ -177,6 +179,7 @@ public abstract class Level implements Bundlable {
 	private static final String HEAPS		= "heaps";
 	private static final String PLANTS		= "plants";
 	private static final String TRAPS       = "traps";
+	private static final String CUSTOM_TILES= "customTiles";
 	private static final String MOBS		= "mobs";
 	private static final String BLOBS		= "blobs";
 	private static final String FEELING		= "feeling";
@@ -266,6 +269,7 @@ public abstract class Level implements Bundlable {
 			blobs = new HashMap<>();
 			plants = new SparseArray<>();
 			traps = new SparseArray<>();
+			customTiles = new HashSet<>();
 			
 		} while (!build());
 		decorate();
@@ -297,6 +301,7 @@ public abstract class Level implements Bundlable {
 		blobs = new HashMap<>();
 		plants = new SparseArray<>();
 		traps = new SparseArray<>();
+		customTiles = new HashSet<>();
 		
 		map		= bundle.getIntArray( MAP );
 
@@ -343,6 +348,15 @@ public abstract class Level implements Bundlable {
 				trap.pos = adjustPos( trap.pos );
 			}
 			traps.put( trap.pos, trap );
+		}
+
+		collection = bundle.getCollection( CUSTOM_TILES );
+		for (Bundlable p : collection) {
+			CustomTileVisual vis = (CustomTileVisual)p;
+			if (resizingNeeded) {
+				//TODO: add proper resizing logic here
+			}
+			customTiles.add( vis );
 		}
 
 		//for pre-0.3.1 saves
@@ -394,6 +408,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( HEAPS, heaps.values() );
 		bundle.put( PLANTS, plants.values() );
 		bundle.put( TRAPS, traps.values() );
+		bundle.put( CUSTOM_TILES, customTiles );
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );
 		bundle.put( FEELING, feeling );
