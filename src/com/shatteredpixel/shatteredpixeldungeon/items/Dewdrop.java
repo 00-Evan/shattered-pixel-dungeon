@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -49,8 +50,8 @@ public class Dewdrop extends Item {
 		if (hero.HP < hero.HT || vial == null || vial.isFull()) {
 			
 			int value = 1 + (Dungeon.depth - 1) / 5;
-			if (hero.heroClass == HeroClass.HUNTRESS) {
-				value++;
+			if (hero.subClass == HeroSubClass.WARDEN) {
+				value+=2;
 			}
 			
 			int effect = Math.min( hero.HT - hero.HP, value * quantity );

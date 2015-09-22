@@ -76,10 +76,9 @@ public enum HeroClass {
 	};
 	
 	public static final String[] HUN_PERKS = {
-		"The Huntress starts with 15 points of Health and a unique upgradeable boomerang.",
+		"The Huntress starts with a unique upgradeable boomerang.",
 		"The Huntress is proficient with missile weapons, getting bonus damage from excess strength.",
 		"The Huntress is able to recover a single used missile weapon from each enemy.",
-		"The Huntress gains more health from dewdrops.",
 		"The Huntress senses neighbouring monsters even if they are hidden behind obstacles.",
 		"Potions of Mind Vision are identified from the beginning."
 	};
@@ -173,8 +172,6 @@ public enum HeroClass {
 	}
 
 	private static void initHuntress( Hero hero ) {
-
-		hero.HP = (hero.HT -= 5);
 
 		(hero.belongings.weapon = new Dagger()).identify();
 		Boomerang boomerang = new Boomerang();

@@ -47,11 +47,11 @@ public enum HeroSubClass {
 		"if he is invisible, this speed boost is much stronger." ),
 		
 	SNIPER( "sniper",
-		"_Snipers_ are able to detect weak points in an enemy's armor, " +
+		"The _Sniper_ is able to detect weak points in an enemy's armor, " +
 		"effectively ignoring it when using a missile weapon." ),
 	WARDEN( "warden",
-		"Having a strong connection with forces of nature gives _Wardens_ an ability to gather dewdrops and " +
-		"seeds from plants. Also trampling a high grass grants them a temporary armor buff." );
+		"Having a strong connection with forces of nature allows the _Warden_ to gain additional health from dew, " +
+		"armor from trampling grass, and seeds and dew from plants." );
 	
 	private String title;
 	private String desc;
