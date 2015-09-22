@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
@@ -83,22 +84,7 @@ public class Tengu extends Mob {
 	@Override
 	public void die( Object cause ) {
 		
-		Badges.Badge badgeToCheck = null;
-		switch (Dungeon.hero.heroClass) {
-		case WARRIOR:
-			badgeToCheck = Badge.MASTERY_WARRIOR;
-			break;
-		case MAGE:
-			badgeToCheck = Badge.MASTERY_MAGE;
-			break;
-		case ROGUE:
-			badgeToCheck = Badge.MASTERY_ROGUE;
-			break;
-		case HUNTRESS:
-			badgeToCheck = Badge.MASTERY_HUNTRESS;
-			break;
-		}
-		if (!Badges.isUnlocked( badgeToCheck )) {
+		if (Dungeon.hero.subClass == HeroSubClass.NONE) {
 			Dungeon.level.drop( new TomeOfMastery(), pos ).sprite.drop();
 		}
 		
