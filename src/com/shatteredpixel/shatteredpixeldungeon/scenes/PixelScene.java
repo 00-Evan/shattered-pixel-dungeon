@@ -265,8 +265,8 @@ public class PixelScene extends Scene {
 		
 		@Override
 		protected void updateMatrix() {
-			float sx = scroll.x + shakeX;
-			float sy = scroll.y + shakeY;
+			float sx = Math.round(scroll.x + shakeX);
+			float sy = Math.round(scroll.y + shakeY);
 			
 			matrix[0] = +zoom * invW2;
 			matrix[5] = -zoom * invH2;
