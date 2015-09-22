@@ -49,7 +49,7 @@ public class Gnoll extends Mob {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 11;
+		return 10;
 	}
 	
 	@Override

@@ -46,15 +46,16 @@ public class Swarm extends Mob {
 		name = "swarm of flies";
 		spriteClass = SwarmSprite.class;
 		
-		HP = HT = 80;
+		HP = HT = 50;
 		defenseSkill = 5;
-		
-		maxLvl = 10;
+
+		EXP = 3;
+		maxLvl = 9;
 		
 		flying = true;
 
 		loot = new PotionOfHealing();
-		lootChance = 0.2f; //by default, see die()
+		lootChance = 0.1667f; //by default, see die()
 	}
 	
 	private static final float SPLIT_DELAY	= 1f;
@@ -73,11 +74,12 @@ public class Swarm extends Mob {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		generation = bundle.getInt( GENERATION );
+		if (generation > 0) EXP = 0;
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 2, 4 );
+		return Random.NormalIntRange( 1, 4 );
 	}
 	
 	@Override
@@ -128,6 +130,7 @@ public class Swarm extends Mob {
 	private Swarm split() {
 		Swarm clone = new Swarm();
 		clone.generation = generation + 1;
+		clone.EXP = 0;
 		if (buff( Burning.class ) != null) {
 			Buff.affect( clone, Burning.class ).reignite( clone );
 		}
@@ -143,7 +146,7 @@ public class Swarm extends Mob {
 	@Override
 	public void die( Object cause ){
 		//sets drop chance
-		lootChance = 1f/((5 + Dungeon.limitedDrops.swarmHP.count ) * (generation+1) );
+		lootChance = 1f/((6 + 2*Dungeon.limitedDrops.swarmHP.count ) * (generation+1) );
 		super.die( cause );
 	}
 

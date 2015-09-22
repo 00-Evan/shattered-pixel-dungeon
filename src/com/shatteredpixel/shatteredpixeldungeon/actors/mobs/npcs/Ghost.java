@@ -550,7 +550,7 @@ public class Ghost extends NPC {
 			name = "great crab";
 			spriteClass = GreatCrabSprite.class;
 
-			HP = HT = 30;
+			HP = HT = 25;
 			defenseSkill = 0; //see damage()
 			baseSpeed = 1f;
 

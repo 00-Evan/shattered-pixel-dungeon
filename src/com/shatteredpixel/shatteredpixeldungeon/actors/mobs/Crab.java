@@ -36,7 +36,7 @@ public class Crab extends Mob {
 		defenseSkill = 5;
 		baseSpeed = 2f;
 		
-		EXP = 3;
+		EXP = 4;
 		maxLvl = 9;
 		
 		loot = new MysteryMeat();
