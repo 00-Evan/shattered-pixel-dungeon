@@ -68,6 +68,7 @@ public class WandOfFrost extends Wand {
 				ch.sprite.burst( 0xFF99CCFF, level / 2 + 2 );
 			}
 
+			processSoulMark(ch, chargesPerCast());
 			ch.damage(damage, this);
 
 			if (ch.isAlive()){

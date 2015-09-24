@@ -127,27 +127,12 @@ public class Hunger extends Buff implements Hero.Doom {
 	}
 
 	public void satisfy( float energy ) {
-		if (((Hero) target).subClass == HeroSubClass.WARLOCK){
-			Buff.affect( target, ScrollOfRecharging.Recharging.class, energy/50f);
-			return;
-		}
 
 		Artifact.ArtifactBuff buff = target.buff( HornOfPlenty.hornRecharge.class );
 		if (buff != null && buff.isCursed()){
 			energy *= 0.67f;
 			GLog.n("The cursed horn steals some of the food energy as you eat.");
 		}
-
-		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
-			reduceHunger( energy );
-	}
-
-	public void consumeSoul( float energy ){
-
-		if (level >= STARVING)
-			energy *= 1.33f;
-		else if (level < HUNGRY)
-			energy *= 0.67f;
 
 		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
 			reduceHunger( energy );

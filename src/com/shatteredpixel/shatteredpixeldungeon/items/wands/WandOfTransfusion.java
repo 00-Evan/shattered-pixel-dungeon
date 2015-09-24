@@ -102,6 +102,8 @@ public class WandOfTransfusion extends Wand {
 		//if we find a character..
 		if (ch != null && ch instanceof Mob){
 
+			processSoulMark(ch, chargesPerCast());
+
 			//heals an ally, or charmed/corrupted enemy
 			if (((Mob) ch).ally || ch.buff(Charm.class) != null || ch.buff(Corruption.class) != null){
 

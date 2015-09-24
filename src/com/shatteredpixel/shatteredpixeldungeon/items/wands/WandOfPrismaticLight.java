@@ -84,7 +84,8 @@ public class WandOfPrismaticLight extends Wand {
 	protected void onZap(Ballistica beam) {
 		Char ch = Actor.findChar(beam.collisionPos);
 		if (ch != null){
-		   affectTarget(ch);
+			processSoulMark(ch, chargesPerCast());
+			affectTarget(ch);
 		}
 		affectMap(beam);
 

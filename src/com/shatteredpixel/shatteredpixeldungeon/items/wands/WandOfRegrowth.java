@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
@@ -94,6 +95,11 @@ public class WandOfRegrowth extends Wand {
 					c == Terrain.EMBERS ||
 					c == Terrain.EMPTY_DECO) {
 				Level.set( i, Terrain.GRASS );
+			}
+
+			Char ch = Actor.findChar(i);
+			if (ch != null){
+				processSoulMark(ch, chargesPerCast());
 			}
 
 			GameScene.add( Blob.seed( i, 10, Regrowth.class ) );

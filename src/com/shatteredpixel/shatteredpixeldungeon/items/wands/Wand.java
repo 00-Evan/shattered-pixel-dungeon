@@ -22,7 +22,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.watabou.noosa.audio.Sample;
@@ -130,6 +133,14 @@ public abstract class Wand extends Item {
 	public void charge( Char owner, float chargeScaleFactor ){
 		charge( owner );
 		charger.setScaleFactor( chargeScaleFactor );
+	}
+
+	protected void processSoulMark(Char target, int chargesUsed){
+		if (target != Dungeon.hero &&
+				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
+				Random.Float() < .08f + (level*chargesUsed*0.04f)){
+			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION);
+		}
 	}
 
 	@Override

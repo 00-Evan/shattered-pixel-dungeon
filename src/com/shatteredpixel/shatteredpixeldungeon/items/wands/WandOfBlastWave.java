@@ -73,6 +73,7 @@ public class WandOfBlastWave extends Wand {
 			Char ch = Actor.findChar(bolt.collisionPos + i);
 
 			if (ch != null){
+				processSoulMark(ch, chargesPerCast());
 				ch.damage(damage, this);
 
 				if (ch.isAlive()) {
@@ -86,6 +87,7 @@ public class WandOfBlastWave extends Wand {
 		//throws the char at the center of the blast
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (ch != null){
+			processSoulMark(ch, chargesPerCast());
 			ch.damage(damage, this);
 
 			if (ch.isAlive() && bolt.path.size() > bolt.dist+1) {

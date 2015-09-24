@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
@@ -47,6 +48,11 @@ public class WandOfVenom extends Wand {
 		Blob venomGas = Blob.seed(bolt.collisionPos, 50 + 10 * level, VenomGas.class);
 		((VenomGas)venomGas).setStrength(level+1);
 		GameScene.add(venomGas);
+
+		Char ch = Actor.findChar(bolt.collisionPos);
+		if (ch != null){
+			processSoulMark(ch, chargesPerCast());
+		}
 	}
 
 	@Override

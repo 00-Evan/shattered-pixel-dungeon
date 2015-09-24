@@ -64,6 +64,7 @@ public class WandOfLightning extends Wand {
 		int max = Math.round(10 + (level * level / 4f));
 
 		for (Char ch : affected){
+			processSoulMark(ch, chargesPerCast());
 			ch.damage(Math.round(Random.NormalIntRange(min, max) * multipler), LightningTrap.LIGHTNING);
 
 			if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );

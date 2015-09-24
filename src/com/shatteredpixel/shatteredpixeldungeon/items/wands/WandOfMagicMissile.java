@@ -45,6 +45,7 @@ public class WandOfMagicMissile extends Wand {
 			
 			int level = level();
 
+			processSoulMark(ch, chargesPerCast());
 			ch.damage(Random.NormalIntRange(4 , 6 + level * 2), this);
 
 			ch.sprite.burst(0xFFFFFFFF, level / 2 + 2);
