@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
@@ -33,6 +34,8 @@ public class GooSprite extends MobSprite {
 	
 	private Animation pump;
 	private Animation pumpAttack;
+
+	private Emitter spray;
 
 	public GooSprite() {
 		super();
@@ -59,23 +62,40 @@ public class GooSprite extends MobSprite {
 		die = new Animation( 10, false );
 		die.frames( frames, 5, 6, 7 );
 		
-		play( idle );
+		play(idle);
+
+		spray = centerEmitter();
+		spray.autoKill = false;
+		spray.pour( GooParticle.FACTORY, 0.04f );
+		spray.on = false;
 	}
-	
+
+	@Override
+	public void link(Char ch) {
+		super.link(ch);
+		if (ch.HP*2 <= ch.HT)
+			spray(true);
+	}
+
 	public void pumpUp() {
 		play( pump );
 	}
 
-	public void pumpAttack() { play( pumpAttack ); }
-
-	@Override
-	public void play( Animation anim, boolean force ) {
-		super.play( anim, force );
-	}
+	public void pumpAttack() { play(pumpAttack); }
 
 	@Override
 	public int blood() {
 		return 0xFF000000;
+	}
+
+	public void spray(boolean on){
+		spray.on = on;
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		spray.pos(center());
 	}
 
 	public static class GooParticle extends PixelParticle.Shrinking {
@@ -124,6 +144,8 @@ public class GooSprite extends MobSprite {
 
 			idle();
 			ch.onAttackComplete();
+		} else if (anim == die) {
+			spray.killAndErase();
 		}
 	}
 }

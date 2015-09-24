@@ -53,9 +53,9 @@ import com.watabou.utils.Random;
 public class Goo extends Mob {
 	{
 		name = "Goo";
-		HP = HT = 80;
+		HP = HT = 100;
 		EXP = 10;
-		defenseSkill = 12;
+		defenseSkill = 8;
 		spriteClass = GooSprite.class;
 
 		loot = new LloydsBeacon().identify();
@@ -66,6 +66,8 @@ public class Goo extends Mob {
 
 	@Override
 	public int damageRoll() {
+		int min = (HP*2 <= HT) ? 3 : 2;
+		int max = (HP*2 <= HT) ? 12 : 8;
 		if (pumpedUp > 0) {
 			pumpedUp = 0;
 			for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
@@ -74,15 +76,23 @@ public class Goo extends Mob {
 					CellEmitter.get(j).burst(ElmoParticle.FACTORY, 10);
 			}
 			Sample.INSTANCE.play( Assets.SND_BURNING );
-			return Random.NormalIntRange( 5, 30 );
+			return Random.NormalIntRange( min*3, max*3 );
 		} else {
-			return Random.NormalIntRange( 2, 12 );
+			return Random.NormalIntRange( min, max );
 		}
 	}
 
 	@Override
 	public int attackSkill( Char target ) {
-		return (pumpedUp > 0) ? 30 : 15;
+		int attack = 10;
+		if (HP*2 <= HT) attack = 15;
+		if (pumpedUp > 0) attack *= 2;
+		return attack;
+	}
+
+	@Override
+	public int defenseSkill(Char enemy) {
+		return (int)(super.defenseSkill(enemy) * ((HP*2 <= HT)? 1.5 : 1));
 	}
 
 	@Override
@@ -95,6 +105,10 @@ public class Goo extends Mob {
 
 		if (Level.water[pos] && HP < HT) {
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+			if (HP*2 == HT) {
+				BossHealthBar.bleed(false);
+				((GooSprite)sprite).spray(false);
+			}
 			HP++;
 		}
 
@@ -134,7 +148,7 @@ public class Goo extends Mob {
 			spend( attackDelay() );
 
 			return true;
-		} else if (pumpedUp >= 2 || Random.Int( 3 ) > 0) {
+		} else if (pumpedUp >= 2 || Random.Int( (HP*2 <= HT) ? 2 : 5 ) > 0) {
 
 			boolean visible = Dungeon.visible[pos];
 
@@ -194,7 +208,21 @@ public class Goo extends Mob {
 		Dungeon.level.seal();
 		super.move( step );
 	}
-	
+
+	@Override
+	public void damage(int dmg, Object src) {
+		boolean bleeding = (HP*2 <= HT);
+		super.damage(dmg, src);
+		if ((HP*2 <= HT) && !bleeding){
+			BossHealthBar.bleed(true);
+			GLog.w("Goo Becomes Enraged!!");
+			sprite.showStatus(CharSprite.NEGATIVE, "enraged");
+			((GooSprite)sprite).spray(true);
+			yell("GLUUUURP!");
+			spend( TICK );
+		}
+	}
+
 	@Override
 	public void die( Object cause ) {
 		
@@ -244,6 +272,8 @@ public class Goo extends Mob {
 
 		pumpedUp = bundle.getInt( PUMPEDUP );
 		if (state != SLEEPING) BossHealthBar.assignBoss(this);
+		if ((HP*2 <= HT)) BossHealthBar.bleed(true);
+
 	}
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
