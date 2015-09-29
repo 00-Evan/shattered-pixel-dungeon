@@ -224,7 +224,8 @@ public class ItemSpriteSheet {
 	//Row Fourteen: Quest Items
 	public static final int SKULL	= ROW14+0;
 	public static final int DUST	= ROW14+1;
-	public static final int PICKAXE	= ROW14+2;
+	public static final int CANDLE	= ROW14+2;
+	public static final int PICKAXE	= ROW14+3;
 	public static final int ORE		= ROW14+3;
 	public static final int TOKEN	= ROW14+4;
 
