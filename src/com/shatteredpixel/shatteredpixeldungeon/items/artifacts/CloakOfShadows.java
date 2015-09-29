@@ -209,6 +209,8 @@ public class CloakOfShadows extends Artifact {
 	}
 
 	public class cloakStealth extends ArtifactBuff{
+		int turnsToCost = 0;
+
 		@Override
 		public int icon() {
 			return BuffIndicator.INVISIBLE;
@@ -226,12 +228,32 @@ public class CloakOfShadows extends Artifact {
 
 		@Override
 		public boolean act(){
-			charge--;
+			if (turnsToCost == 0) charge--;
 			if (charge <= 0) {
 				detach();
 				GLog.w("Your cloak has run out of energy.");
 				((Hero)target).interrupt();
 			}
+
+			if (turnsToCost == 0) exp += 10 + ((Hero)target).lvl;
+
+			if (exp >= (level+1)*50 && level < levelCap) {
+				upgrade();
+				exp -= level*50;
+				GLog.p("Your cloak grows stronger!");
+			}
+
+			if (turnsToCost == 0) turnsToCost = 2;
+			else    turnsToCost--;
+			updateQuickslot();
+
+			spend( TICK );
+
+			return true;
+		}
+
+		public void dispel(){
+			charge --;
 
 			exp += 10 + ((Hero)target).lvl;
 
@@ -242,10 +264,7 @@ public class CloakOfShadows extends Artifact {
 			}
 
 			updateQuickslot();
-
-			spend( TICK );
-
-			return true;
+			detach();
 		}
 
 		@Override

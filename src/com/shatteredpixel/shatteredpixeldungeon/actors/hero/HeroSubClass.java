@@ -44,7 +44,7 @@ public enum HeroSubClass {
 		"When performing a surprise attack, the _Assassin_ inflicts additional damage to his target." ),
 	FREERUNNER( "freerunner",
 		"The _Freerunner_ moves faster when he unencumbered and not starving, " +
-		"if he is invisible, this speed boost is much stronger." ),
+		"if he is invisible, this speed boost is increased." ),
 		
 	SNIPER( "sniper",
 		"The _Sniper_ is able to detect weak points in an enemy's armor, " +

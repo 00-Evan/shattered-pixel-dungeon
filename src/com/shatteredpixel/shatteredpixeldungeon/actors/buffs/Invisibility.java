@@ -85,8 +85,7 @@ public class Invisibility extends FlavourBuff {
 		}
 		CloakOfShadows.cloakStealth cloakBuff = Dungeon.hero.buff( CloakOfShadows.cloakStealth.class );
 		if (cloakBuff != null) {
-			cloakBuff.act();
-			cloakBuff.detach();
+			cloakBuff.dispel();
 		}
 		//this isn't a form of invisibilty, but it is meant to dispel at the same time as it.
 		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );

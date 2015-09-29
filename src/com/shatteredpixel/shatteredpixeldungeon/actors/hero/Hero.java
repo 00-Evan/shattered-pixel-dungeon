@@ -374,7 +374,7 @@ public class Hero extends Char {
 
 			return ((HeroSprite)sprite).sprint( subClass == HeroSubClass.FREERUNNER && !isStarving() ) ?
 					invisible > 0 ?
-							4f * speed :
+							2f * speed :
 							1.5f * speed :
 					speed;
 			
