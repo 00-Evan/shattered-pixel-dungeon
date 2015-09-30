@@ -252,8 +252,10 @@ public class Bomb extends Item {
 				}
 			}
 
-			//can't find our bomb, this should never happen, throw an exception.
-			throw new RuntimeException("Something caused a lit bomb to not be present in a heap on the level!");
+			//can't find our bomb, something must have removed it, do nothing.
+			bomb.fuse = null;
+			Actor.remove( this );
+			return true;
 		}
 	}
 
