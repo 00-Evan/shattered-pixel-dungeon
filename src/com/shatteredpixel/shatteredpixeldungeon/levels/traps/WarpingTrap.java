@@ -55,7 +55,10 @@ public class WarpingTrap extends Trap {
 
 		if (Dungeon.depth > 1 && !Dungeon.bossLevel()) {
 
-			int depth = Random.Int(Dungeon.depth - 1)+1;
+			//each depth has 1 more weight than the previous depth.
+			float[] depths = new float[Dungeon.depth-1];
+			for (int i = 1; i < Dungeon.depth; i++) depths[i-1] = i;
+			int depth = 1+Random.chances(depths);
 
 			Heap heap = Dungeon.level.heaps.get(pos);
 			if (heap != null) {

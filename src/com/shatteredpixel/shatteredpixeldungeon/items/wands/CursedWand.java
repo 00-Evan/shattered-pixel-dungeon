@@ -323,6 +323,11 @@ public class CursedWand {
 			case 2:
 				if (Dungeon.depth > 1 && !Dungeon.bossLevel()) {
 
+					//each depth has 1 more weight than the previous depth.
+					float[] depths = new float[Dungeon.depth-1];
+					for (int i = 1; i < Dungeon.depth; i++) depths[i-1] = i;
+					int depth = 1+Random.chances(depths);
+
 					Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
 					if (buff != null) buff.detach();
 
@@ -330,7 +335,7 @@ public class CursedWand {
 						if (mob instanceof DriedRose.GhostHero) mob.destroy();
 
 					InterlevelScene.mode = InterlevelScene.Mode.RETURN;
-					InterlevelScene.returnDepth = Random.Int(Dungeon.depth-1)+1;
+					InterlevelScene.returnDepth = depth;
 					InterlevelScene.returnPos = -1;
 					Game.switchScene(InterlevelScene.class);
 
