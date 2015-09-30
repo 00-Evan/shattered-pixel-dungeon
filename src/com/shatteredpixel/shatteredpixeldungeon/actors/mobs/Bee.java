@@ -118,7 +118,10 @@ public class Bee extends Mob {
 		else {
 
 			//if already targeting something, and that thing is still alive and near the pot, keeping targeting it.
-			if (enemy != null && enemy.isAlive() && Level.distance(enemy.pos, potPos) <= 3) return enemy;
+			if (enemy != null && enemy.isAlive()
+					&& Level.fieldOfView[enemy.pos] && enemy.invisible == 0
+					&& Level.distance(enemy.pos, potPos) <= 3)
+				return enemy;
 
 			//find all mobs near the pot
 			HashSet<Char> enemies = new HashSet<Char>();

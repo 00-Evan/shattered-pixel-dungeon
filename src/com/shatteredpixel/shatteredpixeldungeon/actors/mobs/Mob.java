@@ -388,6 +388,9 @@ public abstract class Mob extends Char {
 
 	public void aggro( Char ch ) {
 		enemy = ch;
+		if (state != PASSIVE){
+			state = HUNTING;
+		}
 	}
 
 	@Override
