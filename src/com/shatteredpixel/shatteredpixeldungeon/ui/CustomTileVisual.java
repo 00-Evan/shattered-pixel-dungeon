@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon.sprites;
+package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.Image;
@@ -27,27 +27,13 @@ import com.watabou.utils.Bundle;
 
 public class CustomTileVisual extends Image implements Bundlable {
 
-	private static final int TILE_SIZE = 16;
+	protected static final int TILE_SIZE = 16;
 
-	private String tx;
-	private int txX, txY;
+	protected String tx;    //string for resource file
+	protected int txX, txY; //position(in tiles) within resource file
 
-	private int tileX, tileY, tileW, tileH;
-
-	public CustomTileVisual(){
-		super();
-	}
-
-	public CustomTileVisual(String tx, int txX, int txY, int tileW, int tileH){
-		super();
-
-		this.tx = tx;
-		this.txX = txX;
-		this.txY = txY;
-
-		this.tileW = tileW;
-		this.tileH = tileH;
-	}
+	protected int tileX, tileY;   //x and y coords for texture within a level
+	protected int tileW, tileH; //width and height in tiles
 
 	public void pos(int pos) {
 		pos( pos%Level.WIDTH, pos/Level.WIDTH );
@@ -68,37 +54,18 @@ public class CustomTileVisual extends Image implements Bundlable {
 		return this;
 	}
 
-	private static final String TX  = "tx";
-	private static final String TX_X= "txX";
-	private static final String TX_Y= "txY";
-
 	private static final String TILE_X  = "tileX";
 	private static final String TILE_Y  = "tileY";
-	private static final String TILE_W  = "tileW";
-	private static final String TILE_H  = "tileH";
-
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
-		tx = bundle.getString(TX);
-		txX = bundle.getInt(TX_X);
-		txY = bundle.getInt(TX_Y);
-
 		tileX = bundle.getInt(TILE_X);
 		tileY = bundle.getInt(TILE_Y);
-		tileW = bundle.getInt(TILE_W);
-		tileH = bundle.getInt(TILE_H);
 	}
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
-		bundle.put(TX, tx);
-		bundle.put(TX_X, txX);
-		bundle.put(TX_Y, txY);
-
 		bundle.put(TILE_X, tileX);
 		bundle.put(TILE_Y, tileY);
-		bundle.put(TILE_W, tileW);
-		bundle.put(TILE_H, tileH);
 	}
 }

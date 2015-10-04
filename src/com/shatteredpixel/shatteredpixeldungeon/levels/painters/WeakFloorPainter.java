@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CustomTileVisual;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -68,8 +68,20 @@ public class WeakFloorPainter extends Painter {
 			well = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.top+2 );
 		}
 		set(level, well, Terrain.CHASM);
-		CustomTileVisual vis = new CustomTileVisual(Assets.WEAK_FLOOR, Dungeon.depth/5, 0, 1, 1);
+		CustomTileVisual vis = new HiddenWell();
 		vis.pos(well.x, well.y);
 		level.customTiles.add(vis);
+	}
+
+	public static class HiddenWell extends CustomTileVisual{
+
+		{
+			tx = Assets.WEAK_FLOOR;
+			txX = Dungeon.depth/5;
+			txY = 0;
+
+			tileW = tileH = 1;
+		}
+
 	}
 }
