@@ -79,8 +79,6 @@ public class WeakFloorPainter extends Painter {
 			tx = Assets.WEAK_FLOOR;
 			txX = Dungeon.depth/5;
 			txY = 0;
-
-			tileW = tileH = 1;
 		}
 
 	}
