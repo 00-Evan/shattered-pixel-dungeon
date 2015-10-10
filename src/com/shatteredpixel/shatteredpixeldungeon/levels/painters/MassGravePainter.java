@@ -56,7 +56,7 @@ public class MassGravePainter extends Painter {
 			int pos;
 			do {
 				pos = room.random();
-			} while (level.map[pos] != Terrain.EMPTY_SP);
+			} while (level.map[pos] != Terrain.EMPTY_SP || level.findMob(pos) != null);
 			skele.pos = pos;
 			level.mobs.add( skele );
 		}
