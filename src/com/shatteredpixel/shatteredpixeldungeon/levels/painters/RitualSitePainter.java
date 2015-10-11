@@ -33,9 +33,9 @@ public class RitualSitePainter extends Painter {
 
 	public static void paint( Level level, Room room) {
 
-		Room.Door entrance = room.entrance();
-		entrance.set(Room.Door.Type.LOCKED);
-		level.addItemToSpawn(new IronKey(Dungeon.depth));
+		for (Room.Door door : room.connected.values()) {
+			door.set( Room.Door.Type.REGULAR );
+		}
 
 		fill(level, room, Terrain.WALL);
 		fill(level, room, 1, Terrain.EMPTY);
