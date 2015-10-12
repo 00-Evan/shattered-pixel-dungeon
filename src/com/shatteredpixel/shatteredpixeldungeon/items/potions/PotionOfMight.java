@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
-public class PotionOfMight extends PotionOfStrength {
+public class PotionOfMight extends Potion {
 
 	{
 		name = "Potion of Might";
