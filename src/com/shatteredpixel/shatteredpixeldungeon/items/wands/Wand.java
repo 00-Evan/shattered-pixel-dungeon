@@ -138,7 +138,7 @@ public abstract class Wand extends Item {
 	protected void processSoulMark(Char target, int chargesUsed){
 		if (target != Dungeon.hero &&
 				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
-				Random.Float() < .08f + (level*chargesUsed*0.04f)){
+				Random.Float() < .15f + (level*chargesUsed*0.03f)){
 			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION);
 		}
 	}
