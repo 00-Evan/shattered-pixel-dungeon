@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 
@@ -86,7 +87,10 @@ public class CeremonialCandle extends Item {
 
 				NewbornElemental elemental = new NewbornElemental();
 				elemental.pos = ritualPos;
-				Dungeon.level.mobs.add( elemental );
+				elemental.state = elemental.HUNTING;
+				GameScene.add(elemental, 1);
+
+				//TODO visuals
 
 			}
 		}

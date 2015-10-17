@@ -82,14 +82,7 @@ public class PrisonLevel extends RegularLevel {
 			}
 		}
 
-		return true;
-	}
-	
-	@Override
-	protected void createItems() {
-		super.createItems();
-		
-		Wandmaker.Quest.spawn( this, roomEntrance );
+		return Wandmaker.Quest.spawn( this, roomEntrance, rooms );
 	}
 	
 	@Override

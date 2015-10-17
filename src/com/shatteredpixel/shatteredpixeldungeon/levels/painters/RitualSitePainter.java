@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -45,6 +46,13 @@ public class RitualSitePainter extends Painter {
 		vis.pos(c.x - 1, c.y - 1);
 
 		level.customTiles.add(vis);
+
+		level.addItemToSpawn(new CeremonialCandle());
+		level.addItemToSpawn(new CeremonialCandle());
+		level.addItemToSpawn(new CeremonialCandle());
+		level.addItemToSpawn(new CeremonialCandle());
+
+		CeremonialCandle.ritualPos = c.x + (Level.WIDTH * c.y);
 	}
 
 	public static class RitualMarker extends CustomTileVisual{
