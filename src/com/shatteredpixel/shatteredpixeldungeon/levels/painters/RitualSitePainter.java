@@ -47,6 +47,8 @@ public class RitualSitePainter extends Painter {
 
 		level.customTiles.add(vis);
 
+		fill(level, c.x-1, c.y-1, 3, 3, Terrain.EMPTY_DECO);
+
 		level.addItemToSpawn(new CeremonialCandle());
 		level.addItemToSpawn(new CeremonialCandle());
 		level.addItemToSpawn(new CeremonialCandle());

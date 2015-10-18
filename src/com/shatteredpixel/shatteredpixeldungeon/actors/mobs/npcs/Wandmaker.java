@@ -270,7 +270,7 @@ public class Wandmaker extends NPC {
 				node.put( GIVEN, given );
 				
 				node.put( WAND1, wand1 );
-				node.put(WAND2, wand2);
+				node.put( WAND2, wand2 );
 
 				if (type == 2){
 					node.put( RITUALPOS, CeremonialCandle.ritualPos );
@@ -288,7 +288,7 @@ public class Wandmaker extends NPC {
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
 
 				//TODO remove when pre-0.3.2 saves are no longer supported
-				if (bundle.contains(TYPE)) {
+				if (node.contains(TYPE)) {
 					type = node.getInt(TYPE);
 				} else {
 					type = node.getBoolean("alternative")? 1 : 3;
@@ -300,7 +300,7 @@ public class Wandmaker extends NPC {
 				wand2 = (Wand)node.get( WAND2 );
 
 				if (type == 2){
-					CeremonialCandle.ritualPos = bundle.getInt( RITUALPOS );
+					CeremonialCandle.ritualPos = node.getInt( RITUALPOS );
 				}
 
 			} else {
