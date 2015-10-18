@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -160,7 +161,7 @@ public class Wandmaker extends NPC {
 					item = Dungeon.hero.belongings.getItem(CorpseDust.class);
 					break;
 				case 2:
-					item = Dungeon.hero.belongings.getItem(CorpseDust.class); //TODO: elemental embers
+					item = Dungeon.hero.belongings.getItem(Embers.class);
 					break;
 				case 3:
 					item = Dungeon.hero.belongings.getItem(Rotberry.Seed.class);

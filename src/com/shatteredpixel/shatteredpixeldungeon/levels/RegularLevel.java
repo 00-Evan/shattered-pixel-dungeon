@@ -171,7 +171,7 @@ public abstract class RegularLevel extends Level {
 	protected void placeSign(){
 		while (true) {
 			int pos = roomEntrance.random();
-			if (pos != entrance && traps.get(pos) == null) {
+			if (pos != entrance && traps.get(pos) == null && findMob(pos) == null) {
 				map[pos] = Terrain.SIGN;
 				break;
 			}

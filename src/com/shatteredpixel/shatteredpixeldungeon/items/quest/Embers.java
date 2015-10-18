@@ -18,27 +18,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class EntrancePainter extends Painter {
+public class Embers extends Item {
 
-	public static void paint( Level level, Room room ) {
-		
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY );
-		
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
-		}
+	{
+		name = "elemental embers";
+		image = ItemSpriteSheet.EMBER;
 
-		do {
-			level.entrance = room.random(1);
-		} while (level.findMob(level.entrance) != null);
-		set( level, level.entrance, Terrain.ENTRANCE );
+		unique = true;
 	}
-	
+
+	@Override
+	public boolean isUpgradable() {
+		return false;
+	}
+
+	@Override
+	public boolean isIdentified() {
+		return true;
+	}
+
+	@Override
+	public String info() {
+		return
+				"ember"; //TODO
+	}
+
+	@Override
+	public ItemSprite.Glowing glowing() {
+		return new ItemSprite.Glowing(0x660000, 3f);
+	}
 }

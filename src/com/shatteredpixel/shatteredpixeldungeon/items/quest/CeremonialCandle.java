@@ -20,14 +20,18 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 
 
 public class CeremonialCandle extends Item {
@@ -40,6 +44,7 @@ public class CeremonialCandle extends Item {
 		image = ItemSpriteSheet.CANDLE;
 
 		unique = true;
+		stackable = true;
 	}
 
 	@Override
@@ -90,8 +95,10 @@ public class CeremonialCandle extends Item {
 				elemental.state = elemental.HUNTING;
 				GameScene.add(elemental, 1);
 
-				//TODO visuals
-
+				for (int i : Level.NEIGHBOURS9){
+					CellEmitter.get(ritualPos+i).burst(ElmoParticle.FACTORY, 10);
+				}
+				Sample.INSTANCE.play(Assets.SND_BURNING);
 			}
 		}
 
