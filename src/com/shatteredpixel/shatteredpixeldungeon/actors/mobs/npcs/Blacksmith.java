@@ -62,12 +62,18 @@ public class Blacksmith extends NPC {
 		"Are you kiddin' me? Where is my pickaxe?!";
 	private static final String TXT3 =
 		"Dark gold ore. 15 pieces. Seriously, is it dat hard?";
+	private static final String TXT3_50PIECES =
+		"Dark gold ore. 50 pieces. Seriously, is it dat hard?";
 	private static final String TXT4 =
 		"I said I need bat blood on the pickaxe. Chop chop!";
 	private static final String TXT_COMPLETED =
 		"Oh, you have returned... Better late dan never.";
 	private static final String TXT_GET_LOST =
 		"I'm busy. Get lost!";
+	private static final String TXT_MESS_WITH_HERO =
+		"Still here, eh? Make yeself useful and mine me some more _dark gold ore_, _50 pieces_ should be useful.";
+	private static final String TXT_MESS_WITH_HERO_COMPLETED =
+		"Thank you, now get lost!";
 	
 	private static final String TXT_LOOKS_BETTER	= "your %s certainly looks better now";
 	
@@ -153,6 +159,52 @@ public class Blacksmith extends NPC {
 		} else if (!Quest.reforged) {
 			
 			GameScene.show( new WndBlacksmith( this, Dungeon.hero ) );
+			
+		} else if (Dungeon.hero.lvl > 20) {
+			
+			// second quest (useless)
+			if(!Quest.given_twice) {
+				
+				GameScene.show( new WndQuest( this, TXT_MESS_WITH_HERO ) {
+					@Override
+					public void onBackPressed() {
+						super.onBackPressed();
+						
+						Quest.given_twice = true;
+						Quest.completed_twice = false;
+						
+						Pickaxe pick = new Pickaxe();
+						if (pick.doPickUp( Dungeon.hero )) {
+							GLog.i( Hero.TXT_YOU_NOW_HAVE, pick.name() );
+						} else {
+							Dungeon.level.drop( pick, Dungeon.hero.pos ).sprite.drop();
+						}
+					};
+				} );
+				Journal.add( Journal.Feature.TROLL );
+				
+			} else if (!Quest.completed_twice) {
+				
+				Pickaxe pick = Dungeon.hero.belongings.getItem( Pickaxe.class );
+				DarkGold gold = Dungeon.hero.belongings.getItem( DarkGold.class );
+				if (pick == null) {
+					tell( TXT2 );
+				} else if (gold == null || gold.quantity() < 50) {
+					tell( TXT3_50PIECES );
+				} else {
+					if (pick.isEquipped( Dungeon.hero )) {
+						pick.doUnequip( Dungeon.hero, false );
+					}
+					pick.detach( Dungeon.hero.belongings.backpack );
+					gold.detachAll( Dungeon.hero.belongings.backpack );
+					tell( TXT_COMPLETED );
+					
+					Quest.completed_twice = true;
+					Journal.remove( Journal.Feature.TROLL );
+				}
+			} else {
+				tell( TXT_MESS_WITH_HERO_COMPLETED );
+			}
 			
 		} else {
 			
@@ -260,12 +312,16 @@ public class Blacksmith extends NPC {
 		private static boolean given;
 		private static boolean completed;
 		private static boolean reforged;
+		private static boolean given_twice;
+		private static boolean completed_twice;
 		
 		public static void reset() {
 			spawned		= false;
 			given		= false;
 			completed	= false;
 			reforged	= false;
+			given_twice	= false;
+			completed_twice	= false;
 		}
 		
 		private static final String NODE	= "blacksmith";
@@ -275,6 +331,8 @@ public class Blacksmith extends NPC {
 		private static final String GIVEN		= "given";
 		private static final String COMPLETED	= "completed";
 		private static final String REFORGED	= "reforged";
+		private static final String GIVEN_TWICE	= "given_twice";
+		private static final String COMPLETED_TWICE	= "completed_twice";
 		
 		public static void storeInBundle( Bundle bundle ) {
 			
@@ -287,6 +345,8 @@ public class Blacksmith extends NPC {
 				node.put( GIVEN, given );
 				node.put( COMPLETED, completed );
 				node.put( REFORGED, reforged );
+				node.put( GIVEN_TWICE, given_twice );
+				node.put( COMPLETED_TWICE, completed_twice );
 			}
 			
 			bundle.put( NODE, node );
@@ -301,6 +361,8 @@ public class Blacksmith extends NPC {
 				given = node.getBoolean( GIVEN );
 				completed = node.getBoolean( COMPLETED );
 				reforged = node.getBoolean( REFORGED );
+				given_twice = node.getBoolean( GIVEN_TWICE );
+				completed_twice = node.getBoolean( COMPLETED_TWICE );
 			} else {
 				reset();
 			}
