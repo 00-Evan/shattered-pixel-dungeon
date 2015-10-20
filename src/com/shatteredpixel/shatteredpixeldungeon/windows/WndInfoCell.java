@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Image;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -48,30 +49,53 @@ public class WndInfoCell extends Window {
 		} else if (Level.pit[cell]) {
 			tile = Terrain.CHASM;
 		}
-		
-		IconTitle titlebar = new IconTitle();
-		if (tile == Terrain.WATER) {
-			Image water = new Image( Dungeon.level.waterTex() );
-			water.frame( 0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE );
-			titlebar.icon( water );
-		} else {
-			titlebar.icon( DungeonTilemap.tile( tile ) );
+
+		CustomTileVisual vis = null;
+		int x = cell % Level.WIDTH;
+		int y = cell / Level.WIDTH;
+		for (CustomTileVisual i : Dungeon.level.customTiles){
+			if ((x >= i.tileX && x < i.tileX+i.tileW) &&
+					(y >= i.tileY && y < i.tileY+i.tileH)){
+				if (i.desc() != null) {
+					vis = i;
+					break;
+				}
+			}
 		}
-		titlebar.label( Dungeon.level.tileName( tile ) );
-		titlebar.setRect( 0, 0, WIDTH, 0 );
-		add( titlebar );
-		
-		BitmapTextMultiline info = PixelScene.createMultiline( 6 );
-		add( info );
-		
-		StringBuilder desc = new StringBuilder( Dungeon.level.tileDesc( tile ) );
+
+
+		String desc = "";
+
+		IconTitle titlebar = new IconTitle();
+		if (vis != null){
+			titlebar.icon(new Image(vis));
+			titlebar.label(vis.name);
+			desc += vis.desc();
+		} else {
+
+			if (tile == Terrain.WATER) {
+				Image water = new Image(Dungeon.level.waterTex());
+				water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
+				titlebar.icon(water);
+			} else {
+				titlebar.icon(DungeonTilemap.tile(tile));
+			}
+			titlebar.label(Dungeon.level.tileName(tile));
+			desc += Dungeon.level.tileDesc(tile);
+
+		}
+		titlebar.setRect(0, 0, WIDTH, 0);
+		add(titlebar);
+
+		BitmapTextMultiline info = PixelScene.createMultiline(6);
+		add(info);
 
 		for (Blob blob:Dungeon.level.blobs.values()) {
 			if (blob.cur[cell] > 0 && blob.tileDesc() != null) {
 				if (desc.length() > 0) {
-					desc.append( "\n\n" );
+					desc += "\n\n";
 				}
-				desc.append( blob.tileDesc() );
+				desc += blob.tileDesc();
 			}
 		}
 		

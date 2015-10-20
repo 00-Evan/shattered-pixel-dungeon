@@ -32,14 +32,16 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
 
 	protected static final int TILE_SIZE = 16;
 
+	public String name;
+
 	protected String tx;    //string for resource file
 	protected int txX, txY; //position(in tiles) within resource file
 	//bundleable offsets from the standard texture xy, useful for mapping larger than 1x1 textures to many tiles
 	//(e.g. mapping a 3x3 texture to a room, where the corners are walls and the center is the floor)
-	private int ofsX = 0, ofsY = 0;
+	protected int ofsX = 0, ofsY = 0;
 
-	protected int tileX, tileY;   //x and y coords for texture within a level
-	protected int tileW = 1, tileH = 1; //width and height in tiles
+	public int tileX, tileY;   //x and y coords for texture within a level
+	public int tileW = 1, tileH = 1; //width and height in tiles
 
 	public void pos(int pos) {
 		pos( pos%Level.WIDTH, pos/Level.WIDTH );
@@ -48,6 +50,10 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
 	public void pos(int tileX, int tileY){
 		this.tileX = tileX;
 		this.tileY = tileY;
+	}
+
+	public String desc(){
+		return null;
 	}
 
 	public CustomTileVisual create() {
@@ -61,7 +67,7 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
 		return this;
 	}
 
-	//
+	//returns a number of 1x1 tiles to fill a room, based on a 3x3 texture, not dissimilar to a ninepatch.
 	public static ArrayList<CustomTileVisual> CustomTilesForRoom(Room r, Class<?extends CustomTileVisual> c){
 		ArrayList<CustomTileVisual> result = new ArrayList<>();
 

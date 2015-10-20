@@ -83,9 +83,20 @@ public class MassGravePainter extends Painter {
 
 	public static class Bones extends CustomTileVisual {
 		{
+			name = "Mass grave";
+
 			tx = Assets.PRISON_QUEST;
 			txX = 3;
 			txY = 0;
+		}
+
+		@Override
+		public String desc() {
+			if (ofsX == 1 && ofsY == 1) {
+				return "bones litter the floor, what happened here?";
+			} else {
+				return null;
+			}
 		}
 	}
 }

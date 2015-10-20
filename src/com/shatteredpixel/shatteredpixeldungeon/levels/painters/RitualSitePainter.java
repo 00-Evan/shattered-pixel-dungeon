@@ -60,11 +60,17 @@ public class RitualSitePainter extends Painter {
 	public static class RitualMarker extends CustomTileVisual{
 
 		{
+			name = "Ritual marker";
+
 			tx = Assets.PRISON_QUEST;
 			txX = txY = 0;
 			tileW = tileH = 3;
 		}
 
+		@Override
+		public String desc() {
+			return "A painted marker for some dark ritual. Candles are usually placed on the four corners.";
+		}
 	}
 
 }

@@ -76,10 +76,16 @@ public class WeakFloorPainter extends Painter {
 	public static class HiddenWell extends CustomTileVisual{
 
 		{
+			name = "Distant well";
+
 			tx = Assets.WEAK_FLOOR;
 			txX = Dungeon.depth/5;
 			txY = 0;
 		}
 
+		@Override
+		public String desc() {
+			return "You can just make out a well in the depths below, perhaps there is something down there?";
+		}
 	}
 }
