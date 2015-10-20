@@ -37,7 +37,7 @@ public class NewbornElemental extends Elemental {
 
 		defenseSkill = 12;
 
-		EXP = 4;
+		EXP = 7;
 
 		loot = new Embers();
 		lootChance = 1f;
@@ -46,7 +46,7 @@ public class NewbornElemental extends Elemental {
 	@Override
 	public int damageRoll() {
 		return super.damageRoll()/2;
-	}
+	} //8-10
 
 	@Override
 	public void add(Buff buff) {
@@ -59,6 +59,10 @@ public class NewbornElemental extends Elemental {
 
 	@Override
 	public String description() {
-		return "young fire elemental"; //TODO
+		return "Fire elementals are a byproduct of summoning greater entities. " +
+				"They are too chaotic in their nature to be controlled by even the most powerful demonologist.\n\n" +
+				"This fire elemental is freshy summoned, and is waekened as a result. " +
+				"In this state is it especially vulnerable to the cold. " +
+				"Its offensive capabilities are still great though, caution is advised.";
 	}
 }

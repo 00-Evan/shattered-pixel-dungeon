@@ -46,7 +46,7 @@ public class Embers extends Item {
 	@Override
 	public String info() {
 		return
-				"ember"; //TODO
+				"Special embers which can only be harvested from young fire elementals. They radiate thermal energy.";
 	}
 
 	@Override
