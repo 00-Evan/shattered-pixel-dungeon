@@ -108,7 +108,6 @@ public class Wandmaker extends NPC {
 			"If you can get that for me, I'll be happy to pay you with one of my finely crafted wands! " +
 			"I brought two with me, so you can take whichever one you prefer.";
 
-	//TODO
 	private static final String REMINDER_DUST	=
 		"Any luck with corpse dust, %s? Look for some barricades.";
 
@@ -434,26 +433,6 @@ public class Wandmaker extends NPC {
 				
 				plantClass = Rotberry.class;
 				alchemyClass = PotionOfStrength.class;
-			}
-			
-			@Override
-			public boolean doPickUp( Hero hero ) {
-				if (super.doPickUp(hero)) {
-					
-					if (Dungeon.level != null) {
-						for (Mob mob : Dungeon.level.mobs) {
-							mob.beckon( Dungeon.hero.pos );
-						}
-						
-						GLog.w( "The seed emits a roar that echoes throughout the dungeon!" );
-						CellEmitter.center( Dungeon.hero.pos ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-						Sample.INSTANCE.play( Assets.SND_CHALLENGE );
-					}
-					
-					return true;
-				} else {
-					return false;
-				}
 			}
 			
 			@Override

@@ -21,10 +21,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.particles.Emitter;
 
 public class RotHeartSprite extends MobSprite {
+
+	private Emitter cloud;
 
 	public RotHeartSprite(){
 		super();
@@ -33,18 +38,47 @@ public class RotHeartSprite extends MobSprite {
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 
-		idle = new MovieClip.Animation( 8, true );
+		idle = new MovieClip.Animation( 1, true );
 		idle.frames( frames, 0);
 
-		run = new MovieClip.Animation( 12, true );
-		run.frames( frames, 0, 1 );
+		run = new MovieClip.Animation( 1, true );
+		run.frames( frames, 0 );
 
-		attack = new MovieClip.Animation( 12, false );
-		attack.frames( frames, 2, 3, 0, 1 );
+		attack = new MovieClip.Animation( 1, false );
+		attack.frames( frames, 0 );
 
-		die = new MovieClip.Animation( 12, false );
-		die.frames( frames, 4, 5, 6 );
+		die = new MovieClip.Animation( 8, false );
+		die.frames( frames, 1, 2, 3, 4, 5, 6, 7, 7, 7 );
 
 		play( idle );
+	}
+
+	@Override
+	public void link( Char ch ) {
+		super.link( ch );
+
+		if (cloud == null) {
+			cloud = emitter();
+			cloud.pour( Speck.factory(Speck.TOXIC), 0.7f );
+		}
+	}
+
+	@Override
+	public void update() {
+
+		super.update();
+
+		if (cloud != null) {
+			cloud.visible = visible;
+		}
+	}
+
+	@Override
+	public void die() {
+		super.die();
+
+		if (cloud != null) {
+			cloud.on = false;
+		}
 	}
 }

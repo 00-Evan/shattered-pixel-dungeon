@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotHeart;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotLasher;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
@@ -38,7 +39,7 @@ public class RotGardenPainter extends Painter {
 		level.addItemToSpawn(new IronKey(Dungeon.depth));
 
 		fill(level, room, Terrain.WALL);
-		fill(level, room, 1, Terrain.HIGH_GRASS);
+		fill(level, room, 1, Terrain.GRASS);
 
 
 		int heartX = Random.IntRange(room.left+1, room.right-1);
@@ -54,20 +55,41 @@ public class RotGardenPainter extends Painter {
 			heartY = room.top + 1;
 		}
 
-		RotHeart heart = new RotHeart();
-		heart.pos = heartX + heartY * Level.WIDTH;
-		level.mobs.add( heart );
+		placePlant(level, heartX + heartY * Level.WIDTH, new RotHeart());
 
-		int lashers = ((room.right-room.left-1)*(room.bottom-room.top-1))/5;
+		int lashers = ((room.right-room.left-1)*(room.bottom-room.top-1))/8;
 
 		for (int i = 1; i <= lashers; i++){
 			int pos;
 			do {
 				pos = room.random();
-			} while (level.map[pos] != Terrain.HIGH_GRASS || level.findMob(pos) != null);
-			RotLasher lasher = new RotLasher();
-			lasher.pos = pos;
-			level.mobs.add( lasher );
+			} while (!validPlantPos(level, pos));
+			placePlant(level, pos, new RotLasher());
+		}
+	}
+
+	private static boolean validPlantPos(Level level, int pos){
+		if (level.map[pos] != Terrain.GRASS){
+			return false;
+		}
+
+		for (int i : Level.NEIGHBOURS9){
+			if (level.findMob(pos+i) != null){
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private static void placePlant(Level level, int pos, Mob plant){
+		plant.pos = pos;
+		level.mobs.add( plant );
+
+		for(int i : Level.NEIGHBOURS8) {
+			if (level.map[pos + i] == Terrain.GRASS){
+				set(level, pos + i, Terrain.HIGH_GRASS);
+			}
 		}
 	}
 }
