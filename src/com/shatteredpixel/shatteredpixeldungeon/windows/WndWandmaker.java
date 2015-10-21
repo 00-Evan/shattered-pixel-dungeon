@@ -20,6 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -34,9 +36,17 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndWandmaker extends Window {
-	
-	private static final String TXT_MESSAGE	=
-		"Oh, I see you have succeeded! I do hope it hasn't troubled you too much. " +
+
+	private static final String TXT_DUST =
+		"Oh, I see you have the dust! Don't worry about the wraiths, I can deal with them. " +
+		"As I promised, you can choose one of my high quality wands.";
+
+	private static final String TXT_EMBER =
+		"Oh, I see you have the embers! I do hope the fire elemental wasn't too much trouble. " +
+		"As I promised, you can choose one of my high quality wands.";
+
+	private static final String TXT_BERRY =
+		"Oh, I see you have the berry! I do hope the rotberry plant didn't trouble you too much. " +
 		"As I promised, you can choose one of my high quality wands.";
 	
 	private static final String TXT_FARAWELL	= "Good luck in your quest, %s!";
@@ -50,12 +60,21 @@ public class WndWandmaker extends Window {
 		super();
 		
 		IconTitle titlebar = new IconTitle();
-		titlebar.icon( new ItemSprite( item.image(), null ) );
-		titlebar.label( Utils.capitalize( item.name() ) );
-		titlebar.setRect( 0, 0, WIDTH, 0 );
+		titlebar.icon(new ItemSprite(item.image(), null));
+		titlebar.label(Utils.capitalize(item.name()));
+		titlebar.setRect(0, 0, WIDTH, 0);
 		add( titlebar );
-		
-		BitmapTextMultiline message = PixelScene.createMultiline( TXT_MESSAGE, 6 );
+
+		String msg = "";
+		if (item instanceof CorpseDust){
+			msg = TXT_DUST;
+		} else if (item instanceof Embers){
+			msg = TXT_EMBER;
+		} else if (item instanceof Wandmaker.Rotberry.Seed){
+			msg = TXT_BERRY;
+		}
+
+		BitmapTextMultiline message = PixelScene.createMultiline( msg, 6 );
 		message.maxWidth = WIDTH;
 		message.measure();
 		message.y = titlebar.bottom() + GAP;
