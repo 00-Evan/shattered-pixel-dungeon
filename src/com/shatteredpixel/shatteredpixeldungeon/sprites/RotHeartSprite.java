@@ -64,6 +64,11 @@ public class RotHeartSprite extends MobSprite {
 	}
 
 	@Override
+	public void turnTo(int from, int to) {
+		//do nothing
+	}
+
+	@Override
 	public void update() {
 
 		super.update();
