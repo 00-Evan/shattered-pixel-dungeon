@@ -353,9 +353,12 @@ public class Wandmaker extends NPC {
 					wand2.upgrade();
 
 					return true;
+				} else {
+					return false;
 				}
+			} else {
+				return true;
 			}
-			return false;
 		}
 		
 		private static boolean setRoom( Collection<Room> rooms) {
