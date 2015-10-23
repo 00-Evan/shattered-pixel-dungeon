@@ -238,7 +238,7 @@ public class Wandmaker extends NPC {
 	@Override
 	public String description() {
 		return
-			"This old but hale gentleman wears a slightly confused " +
+			"This old yet hale gentleman wears a slightly confused " +
 			"expression. He is protected by a magic shield.";
 	}
 	
@@ -395,11 +395,14 @@ public class Wandmaker extends NPC {
 			Journal.remove( Journal.Feature.WANDMAKER );
 		}
 	}
-	
+
+	//TODO: externalize this into its own class in 0.3.3 (when merging source)
 	public static class Rotberry extends Plant {
 		
 		private static final String TXT_DESC =
-			"Berries of this shrub taste like sweet, sweet death.";
+			"The berries of a young rotberry shrub taste like sweet, sweet death.\n" +
+			"\n" +
+			"Regularly picking the berries of a rotberry shrub is essential, otherwise it will mature";
 		
 		{
 			image = 7;
