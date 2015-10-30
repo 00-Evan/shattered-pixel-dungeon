@@ -78,13 +78,14 @@ public class Dungeon {
 
 	//enum of items which have limited spawns, records how many have spawned
 	//could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
+	//TODO: this is fairly brittle when it comes to bundling, should look into a more flexible solution.
 	public static enum limitedDrops{
 		//limited world drops
 		strengthPotions,
 		upgradeScrolls,
 		arcaneStyli,
 
-		//all unlimited health potion sources
+		//all unlimited health potion sources (except guards, which are at the bottom.
 		swarmHP,
 		batHP,
 		warlockHP,
@@ -101,7 +102,9 @@ public class Dungeon {
 		seedBag,
 		scrollBag,
 		potionBag,
-		wandBag;
+		wandBag,
+
+		guardHP;
 
 		public int count = 0;
 

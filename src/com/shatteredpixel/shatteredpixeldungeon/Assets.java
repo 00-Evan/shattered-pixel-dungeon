@@ -92,6 +92,7 @@ public class Assets {
 	public static final String MIMIC    = "mimic.png";
 	public static final String ROT_LASH = "rot_lasher.png";
 	public static final String ROT_HEART= "rot_heart.png";
+	public static final String GUARD    = "guard.png";
 
 	public static final String ITEMS	= "items.png";
 	public static final String PLANTS	= "plants.png";
