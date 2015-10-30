@@ -41,6 +41,8 @@ public class Bag extends Item implements Iterable<Item> {
 		image = 11;
 		
 		defaultAction = AC_OPEN;
+
+		unique = true;
 	}
 	
 	public Char owner;

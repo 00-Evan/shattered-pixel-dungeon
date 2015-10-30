@@ -643,6 +643,9 @@ public abstract class Mob extends Char {
 			enemySeen = enemyInFOV;
 			if (enemyInFOV) {
 				target = enemy.pos;
+			//loses target when 0-dist rolls a 6 or greater.
+			} else if (1 + Random.Int(Level.distance(pos, target)) >= 6){
+				target = -1;
 			}
 
 			int oldPos = pos;

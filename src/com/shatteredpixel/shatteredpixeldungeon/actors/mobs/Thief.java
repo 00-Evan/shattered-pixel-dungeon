@@ -134,7 +134,8 @@ public class Thief extends Mob {
 	protected boolean steal( Hero hero ) {
 
 		Item item = hero.belongings.randomUnequipped();
-		if (item != null) {
+
+		if (item != null && !item.unique ) {
 
 			GLog.w( TXT_STOLE, this.name, item.name() );
 			Dungeon.quickslot.clearItem( item );
@@ -144,10 +145,9 @@ public class Thief extends Mob {
 				this.item = ((Honeypot)item).shatter(this, this.pos);
 				item.detach( hero.belongings.backpack );
 			} else {
-				this.item = item;
+				this.item = item.detach( hero.belongings.backpack );
 				if ( item instanceof Honeypot.ShatteredPot)
 					((Honeypot.ShatteredPot)item).setHolder(this);
-				item.detachAll( hero.belongings.backpack );
 			}
 
 			return true;
@@ -174,8 +174,14 @@ public class Thief extends Mob {
 		@Override
 		protected void nowhereToRun() {
 			if (buff( Terror.class ) == null) {
-				sprite.showStatus( CharSprite.NEGATIVE, TXT_RAGE );
-				state = HUNTING;
+				if (enemySeen) {
+					sprite.showStatus(CharSprite.NEGATIVE, TXT_RAGE);
+					state = HUNTING;
+				} else {
+					GLog.n("The thief gets away with your " + item.name() + "!");
+					item = null;
+					state = WANDERING;
+				}
 			} else {
 				super.nowhereToRun();
 			}
