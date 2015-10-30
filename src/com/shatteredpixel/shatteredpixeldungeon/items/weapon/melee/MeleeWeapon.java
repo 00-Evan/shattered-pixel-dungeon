@@ -95,7 +95,7 @@ public class MeleeWeapon extends Weapon {
 		
 		if (levelKnown) {
 			info.append( "Its average damage is " +
-				Math.round((MIN + (MAX - MIN) / 2)*(imbue == Imbue.LIGHT ? 0.75f : (imbue == Imbue.HEAVY ? 1.5f : 1)))
+				Math.round((MIN + (MAX - MIN) / 2)*(imbue == Imbue.LIGHT ? 0.7f : (imbue == Imbue.HEAVY ? 1.5f : 1)))
 				+ " points per hit. " );
 		} else {
 			info.append(
