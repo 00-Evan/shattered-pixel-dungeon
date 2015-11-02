@@ -135,7 +135,7 @@ public class Thief extends Mob {
 
 		Item item = hero.belongings.randomUnequipped();
 
-		if (item != null && !item.unique ) {
+		if (item != null && !item.unique && item.level < 1 ) {
 
 			GLog.w( TXT_STOLE, this.name, item.name() );
 			Dungeon.quickslot.clearItem( item );
