@@ -57,6 +57,6 @@ public class Fury extends Buff {
 				"\n" +
 				"A great rage burns within you, increasing the damage you deal with physical attacks by 50%. \n" +
 				"\n" +
-				"This rage will last as long as you are injured below 40% health.\n";
+				"This rage will last as long as you are injured below 50% health.\n";
 	}
 }
