@@ -86,7 +86,8 @@ public class Tengu extends Mob {
 
 	@Override
 	public void damage(int dmg, Object src) {
-		if (dmg > HP) {
+		//phase 2 of the fight is over
+		if (dmg >= HP) {
 			((PrisonBossLevel)Dungeon.level).progress();
 			return;
 		}

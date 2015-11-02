@@ -303,11 +303,11 @@ public class PrisonBossLevel extends Level {
 				Dungeon.hero.sprite.interruptMotion();
 				Dungeon.hero.sprite.place(Dungeon.hero.pos);
 
+				tengu.pos = 5+28*32;
+				tengu.sprite.place(5 + 28 * 32);
+
 				changeMap(MAP_END);
 
-				tengu.pos = 5+28*32;
-				tengu.sprite.interruptMotion();
-				tengu.sprite.place(5 + 28 * 32);
 				tengu.die(Dungeon.hero);
 
 				state = State.WON;
