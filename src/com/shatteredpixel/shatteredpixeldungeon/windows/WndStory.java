@@ -57,10 +57,11 @@ public class WndStory extends Window {
 		"they are slowly failing.\n\n This place is dangerous, but at least the evil magic at work here is weak." );
 		
 		CHAPTERS.put( ID_PRISON,
-		"Many years ago an underground prison was built here for the most dangerous criminals. At the time it seemed " +
-		"like a very clever idea, because this place indeed was very hard to escape. But soon dark miasma started to permeate " +
-		"from below, driving prisoners and guards insane. In the end the prison was abandoned, though some convicts " +
-		"were left locked up here." );
+		"Many years ago a prison was built here to house dangerous criminals. " +
+		"Tightly regulated and secure, convicts from all over the land were brought here to serve time.\n\n" +
+		"But soon dark miasma started to creep from below, twisting the minds of guard and prisoner alike.\n\n" +
+		"In response to the mounting chaos, the city sealed off the entire prison. " +
+		"Nobody knows what became of those who were left for dead within these walls..." );
 		
 		CHAPTERS.put( ID_CAVES,
 		"The caves, which stretch down under the abandoned prison, are sparcely populated. They lie too deep to be exploited " +

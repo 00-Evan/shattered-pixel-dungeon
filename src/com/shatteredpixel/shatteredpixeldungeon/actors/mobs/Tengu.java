@@ -213,8 +213,9 @@ public class Tengu extends Mob {
 	@Override
 	public String description() {
 		return
-			"Tengu are members of the ancient assassins clan, which is also called Tengu. " +
-			"These assassins are noted for extensive use of shuriken and traps.";
+			"A famous assassin, named for the mask grafted to his face.\n\n" +
+			"Tengu is held down with large clasps on his wrists and knees, though he seems to have gotten rid of his chains long ago.\n\n" +
+			"He will try to use traps, deceptive magic, and precise attacks to eliminate the only thing stopping his escape: you.";
 	}
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();

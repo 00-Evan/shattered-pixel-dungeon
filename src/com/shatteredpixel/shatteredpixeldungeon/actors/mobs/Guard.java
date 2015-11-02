@@ -146,7 +146,9 @@ public class Guard extends Mob {
 
 	@Override
 	public String description() {
-		return ""; //TODO
+		return "Once keepers of the prison, these guards have long since become no different than the inmates. " +
+				"They shamble like zombies, brainlessly roaming through the halls in search of anything out of place, like you!\n\n" +
+				"They carry chains around their hip, possibly used to pull in enemies to close range.";
 	}
 
 	private final String CHAINSUSED = "chainsused";

@@ -159,9 +159,11 @@ public class Thief extends Mob {
 	@Override
 	public String description() {
 		String desc =
-				"Deeper levels of the dungeon have always been a hiding place for all kinds of criminals. " +
-						"Not all of them could keep a clear mind during their extended periods so far from daylight. Long ago, " +
-						"these crazy thieves and bandits have forgotten who they are and why they steal.";
+				"Though these inmates roam free of their cells, this place is still their prison. " +
+				"Over time, this place has taken their minds as well as their freedom. " +
+				"Long ago, these crazy thieves and bandits have forgotten who they are and why they steal.\n\n" +
+				"These enemies are more likely to steal and run than they are to fight. " +
+				"Make sure to keep them in sight, of you might never see your stolen item again.";
 
 		if (item != null) {
 			desc += String.format( TXT_CARRIES, Utils.capitalize( this.name ), item.name() );

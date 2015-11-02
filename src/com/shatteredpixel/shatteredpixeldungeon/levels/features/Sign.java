@@ -66,7 +66,12 @@ public class Sign {
 		"Surprise attack has a better chance to hit. For example, you can ambush your enemy behind " +
 				"a closed door when you know it is approaching.",
 
-		"Don't let The Tengu out!",
+		"Thomas,\n\n" +
+		"You've been a great friend, so I'm going to do you a favour. When you get to your shift tonight, check Tengu's cell, then get out.\n\n" +
+		"Doesn't matter if the prisoners try and escape, pretty soon nobody will be able to leave this place.\n\n" +
+		"That freak has to stay secured though, if he escapes there's no telling what he'll do, just make sure tengu's cell is locked, then get out.\n\n" +
+		"Don't bother looking for me after this, a captain must go down with his ship.\n" +
+		"- Warden Smith",
 
 		"Pixel-Mart. Spend money. Live longer.",
 		"When you're attacked by several monsters at the same time, try to retreat behind a door.",
