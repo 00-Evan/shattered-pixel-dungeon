@@ -79,7 +79,7 @@ public class Swarm extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 4 );
+		return Random.NormalIntRange( 1, 3 );
 	}
 	
 	@Override
@@ -119,7 +119,7 @@ public class Swarm extends Mob {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 12;
+		return 10;
 	}
 	
 	@Override
