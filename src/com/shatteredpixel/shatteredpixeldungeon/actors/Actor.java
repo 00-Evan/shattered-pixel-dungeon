@@ -102,7 +102,7 @@ public abstract class Actor implements Bundlable {
 	private static HashSet<Char> chars = new HashSet<>();
 	private static Actor current;
 
-	private static SparseArray<Actor> ids = new SparseArray<Actor>();
+	private static SparseArray<Actor> ids = new SparseArray<>();
 
 	private static float now = 0;
 	
@@ -231,7 +231,7 @@ public abstract class Actor implements Bundlable {
 		ids.put( actor.id(),  actor );
 
 		all.add( actor );
-		actor.time += time;
+		actor.time = time;
 		actor.onAdd();
 		
 		if (actor instanceof Char) {

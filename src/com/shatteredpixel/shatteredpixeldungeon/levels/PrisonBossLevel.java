@@ -21,41 +21,47 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
 import com.watabou.noosa.Scene;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Graph;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class PrisonBossLevel extends RegularLevel {
+public class PrisonBossLevel extends Level {
 
 	{
 		color1 = 0x6a723d;
 		color2 = 0x88924c;
 	}
+
+	private enum State{
+		START,
+		FIGHT_START,
+		MAZE,
+		FIGHT_ARENA,
+		WON
+	}
 	
-	private Room anteroom;
-	private int arenaDoor;
-	
-	private boolean enteredArena = false;
-	private boolean keyDropped = false;
+	private State state;
+	private Tengu tengu;
+
+	//we keep track of torches so we can kill them as needed when layouts change.
+	private ArrayList<PrisonLevel.Torch> torches = new ArrayList<>();
 	
 	@Override
 	public String tilesTex() {
@@ -67,297 +73,109 @@ public class PrisonBossLevel extends RegularLevel {
 		return Assets.WATER_PRISON;
 	}
 	
-	private static final String ARENA	= "arena";
-	private static final String DOOR	= "door";
-	private static final String ENTERED	= "entered";
-	private static final String DROPPED	= "droppped";
+	private static final String STATE	= "state";
+	private static final String TENGU	= "tengu";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( ARENA, roomExit );
-		bundle.put( DOOR, arenaDoor );
-		bundle.put( ENTERED, enteredArena );
-		bundle.put( DROPPED, keyDropped );
+		super.storeInBundle(bundle);
+		bundle.put( STATE, state );
+		bundle.put( TENGU, tengu );
 	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		roomExit = (Room)bundle.get( ARENA );
-		arenaDoor = bundle.getInt( DOOR );
-		enteredArena = bundle.getBoolean( ENTERED );
-		keyDropped = bundle.getBoolean( DROPPED );
+		super.restoreFromBundle(bundle);
+		state = bundle.getEnum( STATE, State.class );
+
+		//in some states tengu won't be in the world, in others he will be.
+		if (state == State.START || state == State.MAZE) {
+			tengu = (Tengu)bundle.get( TENGU );
+		} else {
+			for (Mob mob : mobs){
+				if (mob instanceof Tengu) {
+					tengu = (Tengu) mob;
+					break;
+				}
+			}
+		}
 	}
 	
 	@Override
 	protected boolean build() {
 		
-		initRooms();
-	
-		int distance;
-		int retry = 0;
+		map = MAP_START;
+		decorate();
 
-		do {
-			
-			if (retry++ > 10) {
-				return false;
-			}
-			
-			int innerRetry = 0;
-			do {
-				if (innerRetry++ > 10) {
-					return false;
-				}
-				roomEntrance = Random.element( rooms );
-			} while (roomEntrance.width() < 4 || roomEntrance.height() < 4);
-			
-			innerRetry = 0;
-			do {
-				if (innerRetry++ > 10) {
-					return false;
-				}
-				roomExit = Random.element( rooms );
-			} while (
-				roomExit == roomEntrance ||
-				roomExit.width() < 7 ||
-				roomExit.height() < 7 ||
-				roomExit.top == 0);
-	
-			Graph.buildDistanceMap( rooms, roomExit );
-			distance = Graph.buildPath( rooms, roomEntrance, roomExit ).size();
-			
-		} while (distance < 3);
-		
-		roomEntrance.type = Type.ENTRANCE;
-		roomExit.type = Type.BOSS_EXIT;
-		
-		List<Room> path = Graph.buildPath( rooms, roomEntrance, roomExit );
-		Graph.setPrice( path, roomEntrance.distance );
-		
-		Graph.buildDistanceMap( rooms, roomExit );
-		path = Graph.buildPath( rooms, roomEntrance, roomExit );
-		
-		anteroom = path.get( path.size() - 2 );
-		anteroom.type = Type.STANDARD;
+		buildFlagMaps();
+		cleanWalls();
 
-		Room room = roomEntrance;
-		for (Room next : path) {
-			room.connect( next );
-			room = next;
-		}
-		
-		for (Room r : rooms) {
-			if (r.type == Type.NULL && r.connected.size() > 0) {
-				r.type = Type.PASSAGE;
-			}
-		}
-		
-		paint();
-		
-		Room r = (Room)roomExit.connected.keySet().toArray()[0];
-		if (roomExit.connected.get( r ).y == roomExit.top) {
-			return false;
-		}
-		
-		paintWater();
-		paintGrass();
-		
-		placeTraps();
-		
+		state = State.START;
+		entrance = 5+2*32;
+		exit = 0;
+
+		resetTraps();
+
 		return true;
 	}
-		
-	protected boolean[] water() {
-		return Patch.generate( 0.45f, 5 );
-	}
-	
-	protected boolean[] grass() {
-		return Patch.generate( 0.30f, 4 );
-	}
-	
-	protected void paintDoors( Room r ) {
-		
-		for (Room n : r.connected.keySet()) {
-			
-			if (r.type == Type.NULL) {
-				continue;
-			}
-			
-			Point door = r.connected.get( n );
-			
-			if (r.type == Room.Type.PASSAGE && n.type == Room.Type.PASSAGE) {
-				
-				Painter.set( this, door, Terrain.EMPTY );
-				
-			} else {
-				
-				Painter.set( this, door, Terrain.DOOR );
-				
-			}
-			
-		}
-	}
-	
-	@Override
-	protected void placeTraps() {
-		
-		int nTraps = nTraps();
 
-		for (int i=0; i < nTraps; i++) {
-			
-			int trapPos = Random.Int( LENGTH );
-			
-			if (map[trapPos] == Terrain.EMPTY) {
-				map[trapPos] = Terrain.TRAP;
-				setTrap( new PoisonTrap().reveal(), trapPos );
-			}
-		}
-	}
-	
 	@Override
 	protected void decorate() {
-		
-		for (int i=WIDTH + 1; i < LENGTH - WIDTH - 1; i++) {
-			if (map[i] == Terrain.EMPTY) {
-				
-				float c = 0.15f;
-				if (map[i + 1] == Terrain.WALL && map[i + WIDTH] == Terrain.WALL) {
-					c += 0.2f;
-				}
-				if (map[i - 1] == Terrain.WALL && map[i + WIDTH] == Terrain.WALL) {
-					c += 0.2f;
-				}
-				if (map[i + 1] == Terrain.WALL && map[i - WIDTH] == Terrain.WALL) {
-					c += 0.2f;
-				}
-				if (map[i - 1] == Terrain.WALL && map[i - WIDTH] == Terrain.WALL) {
-					c += 0.2f;
-				}
-				
-				if (Random.Float() < c) {
-					map[i] = Terrain.EMPTY_DECO;
-				}
-			}
-		}
-		
-		for (int i=0; i < WIDTH; i++) {
-			if (map[i] == Terrain.WALL &&
-				(map[i + WIDTH] == Terrain.EMPTY || map[i + WIDTH] == Terrain.EMPTY_SP) &&
-				Random.Int( 4 ) == 0) {
-				
-				map[i] = Terrain.WALL_DECO;
-			}
-		}
-		
-		for (int i=WIDTH; i < LENGTH - WIDTH; i++) {
-			if (map[i] == Terrain.WALL &&
-				map[i - WIDTH] == Terrain.WALL &&
-				(map[i + WIDTH] == Terrain.EMPTY || map[i + WIDTH] == Terrain.EMPTY_SP) &&
-				Random.Int( 2 ) == 0) {
-				
-				map[i] = Terrain.WALL_DECO;
-			}
-		}
-		
-		placeSign();
-		
-		Point door = roomExit.entrance();
-		arenaDoor = door.x + door.y * WIDTH;
-		Painter.set( this, arenaDoor, Terrain.LOCKED_DOOR );
-		
-		Painter.fill( this,
-			roomExit.left + 2,
-			roomExit.top + 2,
-			roomExit.width() - 3,
-			roomExit.height() - 3,
-			Terrain.INACTIVE_TRAP );
-
-		for (int cell : roomExit.getCells()){
-			if (map[cell] == Terrain.INACTIVE_TRAP){
-				Trap t = new PoisonTrap().reveal();
-				t.active = false;
-				setTrap(t, cell);
-			}
-		}
+		//do nothing, all decorations are hard-coded.
 	}
-	
+
 	@Override
 	protected void createMobs() {
+		tengu = new Tengu(); //We want to keep track of tengu independently of other mobs, he's not always in the level.
 	}
 	
 	public Actor respawner() {
 		return null;
 	}
-	
+
 	@Override
 	protected void createItems() {
+		int keyPos = 1+8*32; //initial position at top-left room
 
-		int keyPos = anteroom.random();
-		while (!passable[keyPos]) {
-			keyPos = anteroom.random();
-		}
-		drop( new IronKey( Dungeon.depth ), keyPos ).type = Heap.Type.CHEST;
-		
-		Item item = Bones.get();
-		if (item != null) {
-			int pos;
-			do {
-				pos = roomEntrance.random();
-			} while (pos == entrance || map[pos] == Terrain.SIGN);
-			drop( item, pos ).type = Heap.Type.REMAINS;
-		}
+		//randomly assign a room.
+		keyPos += Random.Int(4)*(4*32); //one of the 4 rows
+		keyPos += Random.Int(2)*6; // one of the 2 columns
+
+		//and then a certain tile in that room.
+		keyPos += Random.Int(3) + Random.Int(3)*32;
+
+		drop(new IronKey(10), keyPos);
 	}
 
 	@Override
 	public void press( int cell, Char ch ) {
-		
-		super.press( cell, ch );
-		
-		if (ch == Dungeon.hero && !enteredArena && roomExit.inside( cell )) {
-			
-			enteredArena = true;
-			seal();
-		
-			int pos;
-			do {
-				pos = roomExit.random();
-			} while (pos == cell || Actor.findChar( pos ) != null);
-			
-			Mob boss = Bestiary.mob( Dungeon.depth );
-			boss.state = boss.HUNTING;
-			boss.pos = pos;
-			GameScene.add( boss );
-			boss.notice();
-			
-			mobPress( boss );
-			
-			set( arenaDoor, Terrain.LOCKED_DOOR );
-			GameScene.updateMap( arenaDoor );
-			Dungeon.observe();
 
+		super.press(cell, ch);
+
+		if (ch == Dungeon.hero){
+			//hero enters tengu's chamber
+			if (state == State.START
+					&& ((Room)new Room().set(2, 25, 8, 32)).inside(cell)){
+				progress();
+			}
+
+			//hero finishes the maze
+			else if (state == State.MAZE
+					&& ((Room)new Room().set(4, 1, 7, 4)).inside(cell)){
+				progress();
+			}
 		}
 	}
-	
+
 	@Override
 	public Heap drop( Item item, int cell ) {
-		
-		if (!keyDropped && item instanceof SkeletonKey) {
-			
-			keyDropped = true;
-			unseal();
-			
-			set( arenaDoor, Terrain.DOOR );
-			GameScene.updateMap( arenaDoor );
-			Dungeon.observe();
-		}
 		
 		return super.drop( item, cell );
 	}
 	
 	@Override
 	public int randomRespawnCell() {
-		return roomEntrance.random();
+		return 5+3*32;
 	}
 	
 	@Override
@@ -366,7 +184,7 @@ public class PrisonBossLevel extends RegularLevel {
 		case Terrain.WATER:
 			return "Dark cold water.";
 		default:
-			return super.tileName( tile );
+			return super.tileName(tile);
 		}
 	}
 	
@@ -376,12 +194,309 @@ public class PrisonBossLevel extends RegularLevel {
 		case Terrain.EMPTY_DECO:
 			return "There are old blood stains on the floor.";
 		default:
-			return super.tileDesc( tile );
+			return super.tileDesc(tile);
 		}
 	}
-	
+
+	private void resetTraps(){
+		for (Trap trap : traps.values()){
+			trap.sprite.kill();
+		}
+		traps.clear();
+
+		for (int i = 0; i < Level.LENGTH; i++){
+			if (map[i] == Terrain.INACTIVE_TRAP) {
+				Trap t = new SpearTrap().reveal();
+				t.active = false;
+				setTrap(t, i);
+				map[i] = Terrain.INACTIVE_TRAP;
+			}
+		}
+	}
+
+	private void changeMap(int[] map){
+		this.map = map;
+		GameScene.resetMap();
+		buildFlagMaps();
+		cleanWalls();
+
+		exit = entrance = 0;
+		for (int i = 0; i < LENGTH; i ++)
+			if (map[i] == Terrain.ENTRANCE)
+				entrance = i;
+			else if (map[i] == Terrain.EXIT)
+				exit = i;
+
+		visited = mapped = new boolean[LENGTH];
+		addVisuals(ShatteredPixelDungeon.scene());
+		resetTraps();
+
+		for (Heap h : heaps.values().toArray(new Heap[heaps.values().size()])){
+			h.destroy();
+		}
+
+		Dungeon.observe();
+	}
+
+	public void progress(){
+		switch (state){
+			//moving to the beginning of the fight
+			case START:
+				seal();
+				set(5 + 25 * 32, Terrain.LOCKED_DOOR);
+				GameScene.updateMap(5 + 25 * 32);
+
+				tengu.state = tengu.HUNTING;
+				tengu.pos = 5 + 28*32; //in the middle of the fight room
+				GameScene.add( tengu );
+				tengu.notice();
+
+				state = State.FIGHT_START;
+				break;
+
+			//halfway through, move to the maze
+			case FIGHT_START:
+
+				changeMap(MAP_MAZE);
+
+				Actor.remove(tengu);
+				mobs.remove(tengu);
+				HealthIndicator.instance.target(null);
+				tengu.sprite.kill();
+
+				GameScene.flash(0xFFFFFF);
+				Sample.INSTANCE.play(Assets.SND_BLAST);
+
+				state = State.MAZE;
+				break;
+
+			//maze beaten, moving to the arena
+			case MAZE:
+				Dungeon.hero.interrupt();
+				Dungeon.hero.pos += 106;
+				Dungeon.hero.sprite.interruptMotion();
+				Dungeon.hero.sprite.place(Dungeon.hero.pos);
+
+				changeMap(MAP_ARENA);
+
+				tengu.state = tengu.HUNTING;
+				do {
+					tengu.pos = Random.Int(LENGTH);
+				} while (solid[tengu.pos] || distance(tengu.pos, Dungeon.hero.pos) < 8);
+				GameScene.add(tengu);
+				tengu.notice();
+
+				state = State.FIGHT_ARENA;
+				break;
+
+			//arena ended, fight over.
+			case FIGHT_ARENA:
+				unseal();
+
+				CustomTileVisual vis = new exitVisual();
+				vis.pos(7, 7);
+				customTiles.add(vis);
+				((GameScene)ShatteredPixelDungeon.scene()).addCustomTile(vis);
+
+				Dungeon.hero.interrupt();
+				Dungeon.hero.pos = 5+27*32;
+				Dungeon.hero.sprite.interruptMotion();
+				Dungeon.hero.sprite.place(Dungeon.hero.pos);
+
+				changeMap(MAP_END);
+
+				tengu.pos = 5+28*32;
+				tengu.sprite.interruptMotion();
+				tengu.sprite.place(5 + 28 * 32);
+				tengu.die(Dungeon.hero);
+
+				state = State.WON;
+				break;
+		}
+	}
+
 	@Override
 	public void addVisuals( Scene scene ) {
-		PrisonLevel.addVisuals( this, scene );
+		super.addVisuals(scene);
+		//kill old torches before adding new ones
+		for (PrisonLevel.Torch t : torches.toArray(new PrisonLevel.Torch[torches.size()])){
+			t.kill();
+			torches.remove(t);
+		}
+
+		for (int i=0; i < LENGTH; i++) {
+			if (map[i] == Terrain.WALL_DECO) {
+				PrisonLevel.Torch t = new PrisonLevel.Torch( i );
+				torches.add(t);
+				scene.add( t );
+			}
+		}
+	}
+
+	private static final int W = Terrain.WALL;
+	private static final int D = Terrain.DOOR;
+	private static final int L = Terrain.LOCKED_DOOR;
+	private static final int _ = Terrain.EMPTY; //for readability
+	private static final int S = Terrain.SIGN;
+
+	private static final int T = Terrain.INACTIVE_TRAP;
+
+	private static final int E = Terrain.ENTRANCE;
+	private static final int X = Terrain.EXIT;
+
+	private static final int M = Terrain.WALL_DECO;
+
+	private static final int[] MAP_START =
+			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, _, E, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, S, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, M, W, L, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
+
+	//TODO: while this hardcoded maze is nice, it would be better to have it random each time.
+	private static final int[] MAP_MAZE =
+			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, _, _, _, W, W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					_, _, _, D, _, _, _, D, _, _, _, _, _, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, W, _, W, W,
+					W, W, W, W, _, _, _, W, W, W, W, W, W, _, W, _, W, W, W, W, W, W, W, W, W, W, W, _, W, _, W, W,
+					W, W, W, W, W, M, W, W, W, W, W, _, _, _, W, _, W, _, _, _, _, _, W, _, _, _, _, _, W, _, W, W,
+					W, W, W, W, W, D, W, W, W, W, W, W, W, _, W, _, W, _, W, W, W, W, W, W, W, W, W, _, W, _, W, W,
+					W, W, W, W, W, _, W, W, W, W, W, _, _, _, _, _, W, _, _, _, W, _, W, _, _, _, _, _, W, _, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, _, W, W, W, _, W, W, W, _, W, W, W, W, W, _, W, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, W, _, _, _, _, _, _, _, W, _, _, _, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, _, W, W, W, W, W, W, W, W, W, _, W, _, W, W, W, W, W, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, W, _, W, _, W, _, W, _, W, _, W, _, W, _, _, _, _, _, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, _, W, _, W, _, W, _, W, _, W, _, W, W, W, W, W, W, W, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, W, _, W, _, W, _, W, _, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, _, W, _, W, W, W, W, W, W, W, _, W, _, W, _, W, _, W, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, W, _, W, _, _, _, _, _, W, _, _, _, _, _, _, _, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, _, W, _, W, W, W, W, W, _, W, _, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, W, _, W, _, W, _, W, _, _, _, W, _, W, _, _, _, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, W, W, _, W, _, W, _, W, _, W, _, W, W, W, _, W, W, W, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, W, _, _, _, _, _, W, _, _, _, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, _, W, W, W, _, W, W, W, _, W, _, W, W, W, _, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, W, _, W, _, W, _, W, _, _, _, W, _, W, _, _, _, _, _, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, _, W, _, W, _, W, W, W, W, W, _, W, W, W, _, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, W, _, _, _, W, _, W, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, M, W, W, _, W, W, M, _, W, _, W, _, W, W, W, _, W, _, W, W, W, W, W, W, W, _, W, W, W, W,
+					W, W, W, W, W, _, W, W, W, _, W, _, _, _, W, _, W, _, W, _, _, _, _, _, _, _, W, _, W, _, W, W,
+					W, W, W, M, W, D, W, M, W, _, W, W, W, _, W, _, W, _, W, _, W, W, W, W, W, W, W, W, W, _, W, W,
+					W, W, W, T, T, T, T, T, W, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, W, _, _, _, _, _, W, W,
+					W, W, W, T, T, T, T, T, W, _, W, W, W, _, W, W, W, _, W, W, W, _, W, _, W, _, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, _, W, _, W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, W, W,
+					W, W, W, T, T, T, T, T, W, _, W, _, W, _, W, W, W, _, W, W, W, W, W, _, W, W, W, W, W, _, W, W,
+					W, W, W, T, T, T, T, T, W, _, _, _, _, _, _, _, W, _, _, _, _, _, W, _, _, _, _, _, W, _, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
+
+	private static final int[] MAP_ARENA =
+			{       W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W, W, W,
+					W, W, _, _, _, _, _, _, _, _, _, _, _, _, W, W, W, _, _, _, _, _, _, _, _, _, _, _, _, W, W, W,
+					W, _, _, _, _, _, W, _, _, _, _, _, _, W, W, M, W, W, _, _, _, _, _, _, W, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, W, _, _, _, _, _, W, W, _, _, _, W, W, _, _, _, _, _, W, _, _, _, _, _, W, W,
+					W, _, _, _, _, M, W, _, _, _, _, _, _, D, _, _, _, D, _, _, _, _, _, _, W, M, _, _, _, _, W, W,
+					W, _, _, W, W, W, W, _, _, _, _, _, W, W, _, _, _, W, W, _, _, _, _, _, W, W, W, W, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, _, _, _, W, W, M, W, W, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, _, W, W, _, _, _, _, _, W, W, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, W, W, _, _, _, _, _, _, _, W, W, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, W, _, _, _, W, _, W, _, _, _, W, W,
+					W, _, _, W, W, D, W, W, _, _, _, _, _, W, _, _, _, W, _, _, _, _, _, W, W, D, W, W, _, _, W, W,
+					W, _, W, W, _, _, _, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W, _, _, _, W, W, _, W, W,
+					W, _, W, M, _, _, _, M, W, _, _, _, _, _, _, M, _, _, _, _, _, _, W, M, _, _, _, M, W, _, W, W,
+					W, _, W, W, _, _, _, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W, _, _, _, W, W, _, W, W,
+					W, _, _, W, W, D, W, W, _, _, _, _, _, W, _, _, _, W, _, _, _, _, _, W, W, D, W, W, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, W, _, _, _, W, _, W, _, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, W, W, _, _, _, _, _, _, _, W, W, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, _, W, W, _, _, _, _, _, W, W, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, _, _, _, _, _, _, _, W, W, M, W, W, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, W, W, W, W, _, _, _, _, _, W, W, _, _, _, W, W, _, _, _, _, _, W, W, W, W, _, _, W, W,
+					W, _, _, _, _, M, W, _, _, _, _, _, _, D, _, _, _, D, _, _, _, _, _, _, W, M, _, _, _, _, W, W,
+					W, _, _, _, _, _, W, _, _, _, _, _, W, W, _, _, _, W, W, _, _, _, _, _, W, _, _, _, _, _, W, W,
+					W, _, _, _, _, _, W, _, _, _, _, _, _, W, W, M, W, W, _, _, _, _, _, _, W, _, _, _, _, _, W, W,
+					W, W, _, _, _, _, _, _, _, _, _, _, _, _, W, W, W, _, _, _, _, _, _, _, _, _, _, _, _, W, W, W,
+					W, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
+
+	private static final int[] MAP_END =
+			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, _, E, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, S, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, D, _, D, _, _, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, M, _, W, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, D, _, D, _, _, _, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, X, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, _, W, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, D, _, D, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, M, W, D, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
+
+
+	public static class exitVisual extends CustomTileVisual{
+
+		{
+			name = "prison exit";
+
+			tx = Assets.PRISON_EXIT;
+			txX = txY = 0;
+			tileW = tileH = 16;
+		}
+
+		@Override
+		public String desc() {
+			return super.desc();
+		}
 	}
 }

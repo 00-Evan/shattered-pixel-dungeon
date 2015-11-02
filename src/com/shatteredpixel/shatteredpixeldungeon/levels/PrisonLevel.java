@@ -151,25 +151,21 @@ public class PrisonLevel extends RegularLevel {
 		case Terrain.BOOKSHELF:
 			return "This is probably a vestige of a prison library. Might it burn?";
 		default:
-			return super.tileDesc( tile );
+			return super.tileDesc(tile);
 		}
 	}
 	
 	@Override
 	public void addVisuals( Scene scene ) {
-		super.addVisuals( scene );
-		addVisuals( this, scene );
-	}
-	
-	public static void addVisuals( Level level, Scene scene ) {
+		super.addVisuals(scene);
 		for (int i=0; i < LENGTH; i++) {
-			if (level.map[i] == Terrain.WALL_DECO) {
+			if (map[i] == Terrain.WALL_DECO) {
 				scene.add( new Torch( i ) );
 			}
 		}
 	}
 	
-	private static class Torch extends Emitter {
+	public static class Torch extends Emitter {
 		
 		private int pos;
 		

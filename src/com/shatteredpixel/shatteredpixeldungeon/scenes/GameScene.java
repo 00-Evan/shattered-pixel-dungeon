@@ -628,7 +628,14 @@ public class GameScene extends PixelScene {
 	public static void pickUp( Item item ) {
 		scene.toolbar.pickup( item );
 	}
-	
+
+	public static void resetMap() {
+		if (scene != null) {
+			scene.tiles.map(Dungeon.level.map, Level.WIDTH );
+
+		}
+	}
+
 	public static void updateMap() {
 		if (scene != null) {
 			scene.tiles.updated.set( 0, 0, Level.WIDTH, Level.HEIGHT );

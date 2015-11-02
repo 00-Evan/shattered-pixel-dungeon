@@ -579,8 +579,8 @@ public abstract class Level implements Bundlable {
 
 		return null;
 	}
-	
-	private void buildFlagMaps() {
+
+	protected void buildFlagMaps() {
 		
 		for (int i=0; i < LENGTH; i++) {
 			int flags = Terrain.flags[map[i]];
@@ -633,7 +633,7 @@ public abstract class Level implements Bundlable {
 		}
 	}
 	
-	private void cleanWalls() {
+	protected void cleanWalls() {
 		for (int i=0; i < LENGTH; i++) {
 			
 			boolean d = false;
