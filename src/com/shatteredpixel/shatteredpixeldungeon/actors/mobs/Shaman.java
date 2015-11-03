@@ -40,7 +40,7 @@ import com.watabou.utils.Random;
 
 public class Shaman extends Mob implements Callback {
 
-	private static final float TIME_TO_ZAP	= 2f;
+	private static final float TIME_TO_ZAP	= 1f;
 	
 	private static final String TXT_LIGHTNING_KILLED = "%s's lightning bolt killed you...";
 	
