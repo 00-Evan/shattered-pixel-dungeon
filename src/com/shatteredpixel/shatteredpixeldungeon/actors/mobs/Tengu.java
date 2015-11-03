@@ -215,7 +215,7 @@ public class Tengu extends Mob {
 	@Override
 	public String description() {
 		return
-			"A famous assassin, named for the mask grafted to his face.\n\n" +
+			"A famous and enigmatic assassin, named for the mask grafted to his face.\n\n" +
 			"Tengu is held down with large clasps on his wrists and knees, though he seems to have gotten rid of his chains long ago.\n\n" +
 			"He will try to use traps, deceptive magic, and precise attacks to eliminate the only thing stopping his escape: you.";
 	}
