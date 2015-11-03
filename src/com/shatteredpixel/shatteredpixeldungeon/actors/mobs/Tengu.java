@@ -95,12 +95,18 @@ public class Tengu extends Mob {
 		int beforeHitHP = HP;
 		super.damage(dmg, src);
 
+		int hpBracket = HP > HT/2 ? 12 : 20;
+
 		//phase 1 of the fight is over
 		if (beforeHitHP > HT/2 && HP <= HT/2){
 			HP = HT/2;
 			yell("Let's make this interesting...");
 			((PrisonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
+
+		//if tengu has lost a certain amount of hp, jump
+		} else if (beforeHitHP / hpBracket != HP / hpBracket) {
+			jump();
 		}
 	}
 
@@ -124,37 +130,24 @@ public class Tengu extends Mob {
 		
 		yell( "Free at last..." );
 	}
-	
-	@Override
-	protected boolean getCloser( int target ) {
-		if (Level.fieldOfView[target]) {
-			jump();
-			return true;
-		} else {
-			return super.getCloser( target );
-		}
-	}
-	
+
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos;
 	}
-	
+
+	//tengu's attack is always visible
 	@Override
-	protected boolean doAttack( Char enemy ) {
-		timeToJump--;
-		if (timeToJump <= 0) {
-			jump();
-			return true;
-		} else {
-			return super.doAttack( enemy );
-		}
-	}
-	
+	protected boolean doAttack(Char enemy) {
+		sprite.attack( enemy.pos );
+		spend( attackDelay() );
+		return true;
+}
+
 	private void jump() {
 		timeToJump = JUMP_DELAY;
 
-		for (int i=0; i < 3; i++) {
+		for (int i=0; i < 4; i++) {
 			int trapPos;
 			do {
 				trapPos = Random.Int( Level.LENGTH );
