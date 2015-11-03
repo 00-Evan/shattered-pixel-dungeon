@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -60,6 +61,9 @@ public class PrisonBossLevel extends Level {
 	private State state;
 	private Tengu tengu;
 
+	//keep track of that need to be removed as the level is changed. We dump 'em back into the level at the end.
+	private ArrayList<Item> storedItems = new ArrayList<>();
+
 	//we keep track of torches so we can kill them as needed when layouts change.
 	private ArrayList<PrisonLevel.Torch> torches = new ArrayList<>();
 	
@@ -73,14 +77,16 @@ public class PrisonBossLevel extends Level {
 		return Assets.WATER_PRISON;
 	}
 	
-	private static final String STATE	= "state";
-	private static final String TENGU	= "tengu";
+	private static final String STATE	        = "state";
+	private static final String TENGU	        = "tengu";
+	private static final String STORED_ITEMS    = "storeditems";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
-		bundle.put( STATE, state );
+		bundle.put(STATE, state);
 		bundle.put( TENGU, tengu );
+		bundle.put( STORED_ITEMS, storedItems);
 	}
 	
 	@Override
@@ -98,6 +104,10 @@ public class PrisonBossLevel extends Level {
 					break;
 				}
 			}
+		}
+
+		for (Bundlable item : bundle.getCollection(STORED_ITEMS)){
+			storedItems.add( (Item)item );
 		}
 	}
 	
@@ -135,16 +145,20 @@ public class PrisonBossLevel extends Level {
 
 	@Override
 	protected void createItems() {
-		int keyPos = 1+8*32; //initial position at top-left room
+		drop(new IronKey(10), randomPrisonCell());
+	}
+
+	private int randomPrisonCell(){
+		int pos = 1+8*32; //initial position at top-left room
 
 		//randomly assign a room.
-		keyPos += Random.Int(4)*(4*32); //one of the 4 rows
-		keyPos += Random.Int(2)*6; // one of the 2 columns
+		pos += Random.Int(4)*(4*32); //one of the 4 rows
+		pos += Random.Int(2)*6; // one of the 2 columns
 
 		//and then a certain tile in that room.
-		keyPos += Random.Int(3) + Random.Int(3)*32;
+		pos += Random.Int(3) + Random.Int(3)*32;
 
-		drop(new IronKey(10), keyPos);
+		return pos;
 	}
 
 	@Override
@@ -231,11 +245,17 @@ public class PrisonBossLevel extends Level {
 		addVisuals(ShatteredPixelDungeon.scene());
 		resetTraps();
 
-		for (Heap h : heaps.values().toArray(new Heap[heaps.values().size()])){
-			h.destroy();
-		}
-
 		Dungeon.observe();
+	}
+
+	private void clearHeaps(Room safeArea){
+		for (Heap heap : heaps.values()){
+			if (safeArea == null || !safeArea.inside(heap.pos)){
+				for (Item item : heap.items)
+					storedItems.add(item);
+				heap.destroy();
+			}
+		}
 	}
 
 	public void progress(){
@@ -258,6 +278,7 @@ public class PrisonBossLevel extends Level {
 			case FIGHT_START:
 
 				changeMap(MAP_MAZE);
+				clearHeaps((Room)new Room().set(0, 5, 8, 32)); //clear all but the entrance
 
 				Actor.remove(tengu);
 				mobs.remove(tengu);
@@ -278,6 +299,7 @@ public class PrisonBossLevel extends Level {
 				Dungeon.hero.sprite.place(Dungeon.hero.pos);
 
 				changeMap(MAP_ARENA);
+				clearHeaps(null);
 
 				tengu.state = tengu.HUNTING;
 				do {
@@ -307,8 +329,12 @@ public class PrisonBossLevel extends Level {
 				tengu.sprite.place(5 + 28 * 32);
 
 				changeMap(MAP_END);
+				clearHeaps(null);
 
 				tengu.die(Dungeon.hero);
+
+				for (Item item : storedItems)
+					drop(item, randomPrisonCell());
 
 				state = State.WON;
 				break;
