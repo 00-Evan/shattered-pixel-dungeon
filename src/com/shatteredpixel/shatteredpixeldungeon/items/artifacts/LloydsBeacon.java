@@ -29,6 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotHeart;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotLasher;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Shopkeeper;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -232,11 +236,18 @@ public class LloydsBeacon extends Artifact {
 									}
 								} while (pos == -1);
 
+
 								if (pos == -1 || Dungeon.bossLevel()) {
 
 									GLog.w(ScrollOfTeleportation.TXT_NO_TELEPORT);
 
-								} else {
+								//FIXME: sloppy, fix when adding mob properties
+								} else if (ch instanceof RotLasher || ch instanceof RotHeart
+										|| ch instanceof Shopkeeper || ch instanceof Wandmaker) {
+
+									GLog.w("The teleportation magic fails.");
+
+								} else  {
 
 									ch.pos = pos;
 									ch.sprite.place(ch.pos);

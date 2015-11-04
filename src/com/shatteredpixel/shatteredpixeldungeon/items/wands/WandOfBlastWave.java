@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotHeart;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotLasher;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -110,7 +112,7 @@ public class WandOfBlastWave extends Wand {
 		if ((ch instanceof King) || (ch instanceof Golem) || (ch instanceof Yog.RottingFist))
 			dist /= 2;
 
-		if (dist == 0 || ch instanceof Yog) return;
+		if (dist == 0 || ch instanceof Yog || ch instanceof RotLasher || ch instanceof RotHeart) return;
 
 		if (Actor.findChar(trajectory.path.get(dist)) != null){
 			dist--;
