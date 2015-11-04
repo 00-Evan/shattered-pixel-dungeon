@@ -39,7 +39,7 @@ public class WelcomeScene extends PixelScene {
 
 	private static final String TTL_Welcome = "Welcome!";
 
-	private static final String TTL_Update = "v0.3.1: It's a Trap!";
+	private static final String TTL_Update = "v0.3.2: The Prison Rework!";
 
 	private static final String TTL_Future = "Wait What?";
 
@@ -50,54 +50,44 @@ public class WelcomeScene extends PixelScene {
 			"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-			"v0.3.1d:\n" +
-					"- Bug and crash fixes\n" +
-					"- Added a health bar for bosses\n" +
-					"- Added a hint to weak floor rooms\n" +
+				"Prison Rework!:\n" +
+					"- Tengu boss fight completely redone\n" +
+					"- Corpse dust quest overhauled\n" +
+					"- Rotberry quest overhauled\n" +
+					"- NEW elemental embers quest\n" +
+					"- NEW prison mob: insane prison guards!\n" +
+					"- Thieves can escape with a stolen item\n" +
+					"- Gnoll shaman attack speed increased\n" +
 					"\n" +
-					"v0.3.1c:\n" +
-					"- Fixed text not appearing on some devices\n" +
+					"BIG BALANCE CHANGES: \n" +
+					"- Mastery Book is not attainable until floor 10, even when unlocked\n" +
+					"- Hunger damage now increases with hero level, but starts out lower \n" +
+					" \n" +
+					"Sewers rebalance: \n" +
+					"- Marsupial rat dmg and evasion reduced\n" +
+					"- Gnoll scout accuracy reduced\n" +
+					"- Sewer crabs less likely to spawn on floor 3, grant more exp\n" +
+					"- Fly swarms rebalanced, moved to the sewers\n" +
+					"- Great Crab HP reduced \n" +
+					"- Goo fight rebalanced \n" +
+					" \n" +
+					"Base Class Changes: \n" +
+					"- Mage's staff base damage increased \n" +
+					"- Huntress now starts with 20 hp \n" +
+					"- Huntress no longer heals more from dew \n" +
+					"- Rogue's cloak of shadows now drains less while invisible\n" +
+					" \n" +
+					"Subclass Changes: \n" +
+					"- Berserker now starts raging at 50% hp (up from 40%) \n" +
+					"- Warden now heals 2 extra HP from dew \n" +
+					"- Warlock completely overhauled\n" +
 					"\n" +
-					"v0.3.1b:\n" +
-					"- Various bugfixes\n" +
-					"- Fixed blurry text on some displays\n" +
-					"\n" +
-					"v0.3.1a:\n" +
-					"- fixed some display scaling issues\n" +
-					"- trap spawnrate is more consistent\n" +
-					"- quickslots now only target enemies that can be hit\n" +
-					"- Various other bugfixes\n" +
-					"\n" +
-					"v0.3.1:\n" +
-					"New traps!:\n" +
-					"- Over 20 new traps + tweaks to existing ones\n" +
-					"- Trap visuals overhauled\n" +
-					"- Traps now get trickier deeper in the dungeon\n" +
-					"- Trap room reworked to make use of new traps\n" +
-					"\n" +
-					"Balance changes:\n" +
-					"- Ethereal chains now gain less charge the more charges they have\n" +
-					"- Staff of regrowth grants more herbal healing\n" +
-					"- Monks now disarm less randomly, but not less frequently\n" +
-					"- Invisibility potion effect now lasts for 20 turns, up from 15\n" +
-					"\n" +
-					"BIG UI changes:\n" +
-					"- Adjusted display scaling\n" +
-					"- Search and Examine merged into one button (double tap to search)\n" +
-					"- New max of 4 Quickslots!\n" +
-					"- Multiple toolbar modes for large display and landscape users\n" +
-					"- Ability to flip toolbar and indicators (left-handed mode)\n" +
-					"- Better settings menu\n" +
-					"- Graphics settings are now accessible ingame\n" +
-					"- More consistent text rendering\n" +
-					"- Recent changes can now be viewed from the title screen\n" +
-					"\n" +
-					"QOL improvements:\n" +
-					"- Quickslots now autotarget enemies\n" +
-					"- Resting now works while hungry & at max HP\n" +
-					"- Dew drops no longer collect when at full health with no dew vial\n" +
-					"- Items now stay visible in the fog of war\n" +
-					"- Many bugfixes\n";
+					"Misc. changes:\n" +
+					"- Fixed 'white line' graphical artifacts\n" +
+					"- Floor locking now pauses all passive effects, not just hunger\n" +
+					"- Cursed chains now only cripple, do not root\n" +
+					"- Warping trap rebalanced, much less harsh\n" +
+					"- Various other bugfixes";
 
 	private static final String TXT_Future =
 			"It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
