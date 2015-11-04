@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -196,7 +197,7 @@ public class UnstableSpellbook extends Artifact {
 	public class bookRecharge extends ArtifactBuff{
 		@Override
 		public boolean act() {
-			if (charge < chargeCap && !cursed) {
+			if (charge < chargeCap && !cursed && target.buff(LockedFloor.class) == null) {
 				partialCharge += 1 / (150f - (chargeCap - charge)*15f);
 
 				if (partialCharge >= 1) {

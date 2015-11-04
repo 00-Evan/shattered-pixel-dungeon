@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -182,7 +183,7 @@ public class CloakOfShadows extends Artifact {
 		@Override
 		public boolean act() {
 			if (charge < chargeCap) {
-				if (!stealthed)
+				if (!stealthed && target.buff(LockedFloor.class) == null)
 					partialCharge += (1f / (60 - (chargeCap-charge)*2));
 
 				if (partialCharge >= 1) {

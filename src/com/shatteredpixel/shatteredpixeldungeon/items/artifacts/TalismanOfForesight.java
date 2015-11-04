@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -156,7 +157,7 @@ public class TalismanOfForesight extends Artifact {
 				}
 			}
 
-			if (smthFound == true && !cursed){
+			if (smthFound && !cursed){
 				if (warn == 0){
 					GLog.w("You feel uneasy.");
 					if (target instanceof Hero){
@@ -172,7 +173,7 @@ public class TalismanOfForesight extends Artifact {
 			BuffIndicator.refreshHero();
 
 			//fully charges in 2500 turns at lvl=0, scaling to 1000 turns at lvl = 10.
-			if (charge < 100 && !cursed) {
+			if (charge < 100 && !cursed && target.buff(LockedFloor.class) == null) {
 				partialCharge += 0.04+(level*0.006);
 
 				if (partialCharge > 1 && charge < 100) {

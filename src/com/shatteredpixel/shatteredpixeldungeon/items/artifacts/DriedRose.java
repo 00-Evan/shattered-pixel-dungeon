@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
@@ -207,7 +208,7 @@ public class DriedRose extends Artifact {
 		@Override
 		public boolean act() {
 
-			if (charge < chargeCap && !cursed) {
+			if (charge < chargeCap && !cursed && target.buff(LockedFloor.class) == null) {
 				//TODO: investigate balancing on this.
 				partialCharge += 10/75f;
 				if (partialCharge > 1){

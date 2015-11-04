@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -435,7 +436,8 @@ public abstract class Wand extends Item {
 			float turnsToCharge = (float) (BASE_CHARGE_DELAY
 					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)));
 
-			partialCharge += 1f/turnsToCharge;
+			if (target.buff(LockedFloor.class) == null)
+				partialCharge += 1f/turnsToCharge;
 
 			ScrollOfRecharging.Recharging bonus = target.buff(ScrollOfRecharging.Recharging.class);
 			if (bonus != null && bonus.remainder() > 0f){

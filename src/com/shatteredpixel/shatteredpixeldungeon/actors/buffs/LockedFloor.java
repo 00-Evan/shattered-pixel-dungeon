@@ -50,9 +50,8 @@ public class LockedFloor extends Buff {
 	public String desc() {
 		return "The current floor is locked, and you are unable to leave it!\n" +
 				"\n" +
-				"While a floor is locked, you will not gain hunger, or take damage from starving, " +
-				"but your current hunger state is still in effect. For example, if you are starving you won't take " +
-				"damage, but will still not regenerate health.\n" +
+				"While a floor is locked hunger, passive health regen, and passive item recharging will not function. " +
+				"The passing of time will not help or hinder you here.\n" +
 				"\n" +
 				"Additionally, if you are revived by an unblessed ankh while the floor is locked, then it will reset.\n" +
 				"\n" +
