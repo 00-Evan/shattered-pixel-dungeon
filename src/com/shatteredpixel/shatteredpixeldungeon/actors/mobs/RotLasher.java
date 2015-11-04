@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotLasherSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -57,7 +58,9 @@ public class RotLasher extends Mob {
 			sprite.die();
 			return true;
 		} else {
-			HP = Math.min(HT, HP + 2);
+			if (enemy == null || !Level.adjacent(pos, enemy.pos)) {
+				HP = Math.min(HT, HP + 3);
+			}
 			return super.act();
 		}
 	}
@@ -70,12 +73,12 @@ public class RotLasher extends Mob {
 
 	@Override
 	protected boolean getCloser(int target) {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected boolean getFurther(int target) {
-		return false;
+		return true;
 	}
 
 	@Override
