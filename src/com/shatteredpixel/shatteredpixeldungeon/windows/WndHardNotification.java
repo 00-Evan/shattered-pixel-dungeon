@@ -12,17 +12,19 @@ public class WndHardNotification extends WndTitledMessage{
 	RedButton btnOkay;
 
 	private double timeLeft;
+	private String btnMessage;
 
-	public WndHardNotification( Image icon, String title, String message, int time) {
-		this(new IconTitle(icon, title), message, time);
+	public WndHardNotification( Image icon, String title, String message, String btnMessage, int time) {
+		this(new IconTitle(icon, title), message, btnMessage, time);
 	}
 
-	public WndHardNotification(Component titlebar, String message, int time) {
+	public WndHardNotification(Component titlebar, String message, String btnMessage, int time) {
 		super(titlebar, message);
 
 		timeLeft = time;
+		this.btnMessage = btnMessage;
 
-		btnOkay = new RedButton("Okay (" + time +")"){
+		btnOkay = new RedButton(btnMessage + " (" + time +")"){
 			@Override
 			protected void onClick() {
 				hide();
@@ -42,9 +44,9 @@ public class WndHardNotification extends WndTitledMessage{
 		timeLeft -= Game.elapsed;
 		if (timeLeft <= 0 ){
 			btnOkay.enable(true);
-			btnOkay.text("Okay");
+			btnOkay.text(btnMessage);
 		} else {
-			btnOkay.text("Okay (" + (int)Math.ceil(timeLeft) + ")");
+			btnOkay.text(btnMessage + " (" + (int)Math.ceil(timeLeft) + ")");
 		}
 
 	}
