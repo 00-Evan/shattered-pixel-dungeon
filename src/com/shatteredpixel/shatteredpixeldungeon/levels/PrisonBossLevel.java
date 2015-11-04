@@ -114,7 +114,7 @@ public class PrisonBossLevel extends Level {
 	@Override
 	protected boolean build() {
 		
-		map = MAP_START;
+		map = MAP_START.clone();
 		decorate();
 
 		buildFlagMaps();
@@ -229,7 +229,7 @@ public class PrisonBossLevel extends Level {
 	}
 
 	private void changeMap(int[] map){
-		this.map = map;
+		this.map = map.clone();
 		GameScene.resetMap();
 		buildFlagMaps();
 		cleanWalls();
