@@ -170,20 +170,26 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	}
 	
 	private void useTargeting() {
-		
-		targeting = lastTarget != null && lastTarget.isAlive() && Dungeon.visible[lastTarget.pos];
-		
-		if (targeting) {
-			if (Actor.chars().contains( lastTarget )) {
-				lastTarget.sprite.parent.add( crossM );
-				crossM.point( DungeonTilemap.tileToWorld( lastTarget.pos ) );
-				crossB.x = x + (width - crossB.width) / 2;
-				crossB.y = y + (height - crossB.height) / 2;
-				crossB.visible = true;
-			} else {
-				lastTarget = null;
-			}
+
+		if (lastTarget != null &&
+				Actor.chars().contains( lastTarget ) &&
+				lastTarget.isAlive() &&
+				Dungeon.visible[lastTarget.pos]) {
+
+			targeting = true;
+			lastTarget.sprite.parent.add( crossM );
+			crossM.point( DungeonTilemap.tileToWorld( lastTarget.pos ) );
+			crossB.x = x + (width - crossB.width) / 2;
+			crossB.y = y + (height - crossB.height) / 2;
+			crossB.visible = true;
+
+		} else {
+
+			lastTarget = null;
+			targeting = false;
+
 		}
+
 	}
 
 	public static int autoAim(Char target){
