@@ -499,7 +499,7 @@ public class PrisonBossLevel extends Level {
 					W, W, M, W, W, _, W, W, _, W, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, _, _, _, W, _, W, _, _, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, _, _, _, D, _, D, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, _, _, _, W, _, W, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, _, _, _, W, _, W, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, M, W, W, _, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, _, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, M, W, D, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
