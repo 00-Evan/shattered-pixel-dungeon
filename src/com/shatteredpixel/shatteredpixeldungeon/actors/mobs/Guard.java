@@ -65,9 +65,11 @@ public class Guard extends Mob {
 		Dungeon.level.updateFieldOfView( this );
 
 		if (state == HUNTING &&
+				enemy != null &&
 				Level.fieldOfView[enemy.pos] &&
 				Level.distance( pos, enemy.pos ) < 5 && !Level.adjacent( pos, enemy.pos ) &&
 				Random.Int(3) == 0 &&
+
 				chain(enemy.pos)) {
 
 			return false;
@@ -83,7 +85,7 @@ public class Guard extends Mob {
 
 		Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
 
-		if (chain.collisionPos != Dungeon.hero.pos || Level.pit[chain.path.get(1)])
+		if (chain.collisionPos != enemy.pos || Level.pit[chain.path.get(1)])
 			return false;
 		else {
 			int newPos = -1;
@@ -97,16 +99,18 @@ public class Guard extends Mob {
 			if (newPos == -1){
 				return false;
 			} else {
-				final int newHeroPos = newPos;
+				final int newPosFinal = newPos;
 				yell("get over here!");
-				sprite.parent.add(new Chains(pos, Dungeon.hero.pos, new Callback() {
+				sprite.parent.add(new Chains(pos, enemy.pos, new Callback() {
 					public void call() {
-						Actor.addDelayed(new Pushing(Dungeon.hero, Dungeon.hero.pos, newHeroPos), -1);
-						Dungeon.hero.pos = newHeroPos;
-						Dungeon.observe();
-						Dungeon.level.press(newHeroPos, Dungeon.hero);
-						Cripple.prolong(Dungeon.hero, Cripple.class, 4f);
-						Dungeon.hero.interrupt();
+						Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal), -1);
+						enemy.pos = newPosFinal;
+						Dungeon.level.press(newPosFinal, enemy);
+						Cripple.prolong(enemy, Cripple.class, 4f);
+						if (enemy == Dungeon.hero) {
+							Dungeon.hero.interrupt();
+							Dungeon.observe();
+						}
 						next();
 					}
 				}));
