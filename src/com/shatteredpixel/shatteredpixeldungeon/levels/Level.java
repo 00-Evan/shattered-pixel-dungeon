@@ -75,7 +75,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Scene;
+import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -162,6 +162,8 @@ public abstract class Level implements Bundlable {
 	public HashSet<CustomTileVisual> customTiles;
 	
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
+
+	protected Group visuals = new Group();
 	
 	public int color1 = 0x004400;
 	public int color2 = 0x88CC44;
@@ -485,15 +487,17 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
-	public void addVisuals( Scene scene ) {
+	public Group addVisuals() {
+		visuals.clear();
 		for (int i=0; i < LENGTH; i++) {
 			if (pit[i]) {
-				scene.add( new WindParticle.Wind( i ) );
+				visuals.add( new WindParticle.Wind( i ) );
 				if (i >= WIDTH && water[i-WIDTH]) {
-					scene.add( new FlowParticle.Flow( i - WIDTH ) );
+					visuals.add( new FlowParticle.Flow( i - WIDTH ) );
 				}
 			}
 		}
+		return visuals;
 	}
 	
 	public int nMobs() {

@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.noosa.Scene;
+import com.watabou.noosa.Group;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
@@ -203,11 +203,12 @@ public class SewerBossLevel extends RegularLevel {
 	}
 	
 	@Override
-	public void addVisuals( Scene scene ) {
-		SewerLevel.addVisuals( this, scene );
+	public Group addVisuals() {
+		super.addVisuals();
+		SewerLevel.addSewerVisuals(this, visuals);
+		return visuals;
 	}
-	
-	
+
 	@Override
 	protected void createMobs() {
 		Mob mob = Bestiary.mob( Dungeon.depth );

@@ -20,7 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import com.watabou.noosa.Scene;
+import com.watabou.noosa.Group;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
@@ -264,7 +264,9 @@ public class CityBossLevel extends Level {
 	}
 	
 	@Override
-	public void addVisuals( Scene scene ) {
-		CityLevel.addVisuals( this, scene );
+	public Group addVisuals( ) {
+		super.addVisuals();
+		CityLevel.addCityVisuals(this, visuals);
+		return visuals;
 	}
 }

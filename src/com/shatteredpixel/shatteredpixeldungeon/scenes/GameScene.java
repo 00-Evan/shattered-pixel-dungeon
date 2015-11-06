@@ -118,6 +118,7 @@ public class GameScene extends PixelScene {
 	
 	private Group terrain;
 	private Group customTiles;
+	private Group levelVisuals;
 	private Group ripples;
 	private Group plants;
 	private Group traps;
@@ -167,12 +168,13 @@ public class GameScene extends PixelScene {
 
 		customTiles = new Group();
 		terrain.add(customTiles);
-		
-		Dungeon.level.addVisuals(this);
 
 		for( CustomTileVisual visual : Dungeon.level.customTiles){
 			addCustomTile(visual.create());
 		}
+		
+		levelVisuals = Dungeon.level.addVisuals();
+		add(levelVisuals);
 
 		traps = new Group();
 		add(traps);
@@ -549,7 +551,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	// -------------------------------------------------------
-	
+
 	public static void add( Plant plant ) {
 		if (scene != null) {
 			scene.addPlantSprite( plant );

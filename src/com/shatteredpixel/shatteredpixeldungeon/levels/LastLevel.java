@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import java.util.Arrays;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.watabou.noosa.Scene;
+import com.watabou.noosa.Group;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -169,9 +169,10 @@ public class LastLevel extends Level {
 	}
 
 	@Override
-	public void addVisuals( Scene scene ) {
-		super.addVisuals( scene );
-		HallsLevel.addVisuals( this, scene );
+	public Group addVisuals () {
+		super.addVisuals();
+		HallsLevel.addHallsVisuals(this, visuals);
+		return visuals;
 	}
 
 	@Override

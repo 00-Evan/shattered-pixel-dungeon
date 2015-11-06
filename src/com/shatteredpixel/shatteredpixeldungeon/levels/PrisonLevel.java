@@ -21,7 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
-import com.watabou.noosa.Scene;
+import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -156,11 +156,16 @@ public class PrisonLevel extends RegularLevel {
 	}
 	
 	@Override
-	public void addVisuals( Scene scene ) {
-		super.addVisuals(scene);
+	public Group addVisuals() {
+		super.addVisuals();
+		addPrisonVisuals(this, visuals);
+		return visuals;
+	}
+
+	public static void addPrisonVisuals(Level level, Group group){
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == Terrain.WALL_DECO) {
-				scene.add( new Torch( i ) );
+			if (level.map[i] == Terrain.WALL_DECO) {
+				group.add( new Torch( i ) );
 			}
 		}
 	}

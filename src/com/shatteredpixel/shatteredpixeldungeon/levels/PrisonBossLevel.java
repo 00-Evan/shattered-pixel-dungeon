@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
-import com.watabou.noosa.Scene;
+import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -63,9 +63,6 @@ public class PrisonBossLevel extends Level {
 
 	//keep track of that need to be removed as the level is changed. We dump 'em back into the level at the end.
 	private ArrayList<Item> storedItems = new ArrayList<>();
-
-	//we keep track of torches so we can kill them as needed when layouts change.
-	private ArrayList<PrisonLevel.Torch> torches = new ArrayList<>();
 	
 	@Override
 	public String tilesTex() {
@@ -242,7 +239,7 @@ public class PrisonBossLevel extends Level {
 				exit = i;
 
 		visited = mapped = new boolean[LENGTH];
-		addVisuals(ShatteredPixelDungeon.scene());
+		addVisuals(); //this also resets existing visuals
 		resetTraps();
 
 		Dungeon.observe();
@@ -342,21 +339,10 @@ public class PrisonBossLevel extends Level {
 	}
 
 	@Override
-	public void addVisuals( Scene scene ) {
-		super.addVisuals(scene);
-		//kill old torches before adding new ones
-		for (PrisonLevel.Torch t : torches.toArray(new PrisonLevel.Torch[torches.size()])){
-			t.kill();
-			torches.remove(t);
-		}
-
-		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == Terrain.WALL_DECO) {
-				PrisonLevel.Torch t = new PrisonLevel.Torch( i );
-				torches.add(t);
-				scene.add( t );
-			}
-		}
+	public Group addVisuals() {
+		super.addVisuals();
+		PrisonLevel.addPrisonVisuals(this, visuals);
+		return visuals;
 	}
 
 	private static final int W = Terrain.WALL;

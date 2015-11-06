@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
-import com.watabou.noosa.Scene;
+import com.watabou.noosa.Group;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
 
@@ -217,10 +217,11 @@ public class LastShopLevel extends RegularLevel {
 	protected boolean[] grass() {
 		return Patch.generate( 0.30f, 3 );
 	}
-	
+
 	@Override
-	public void addVisuals( Scene scene ) {
-		super.addVisuals( scene );
-		CityLevel.addVisuals( this, scene );
+	public Group addVisuals( ) {
+		super.addVisuals();
+		CityLevel.addCityVisuals(this, visuals);
+		return visuals;
 	}
 }

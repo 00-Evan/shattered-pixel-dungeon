@@ -20,7 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import com.watabou.noosa.Scene;
+import com.watabou.noosa.Group;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -255,7 +255,9 @@ public class HallsBossLevel extends Level {
 	}
 	
 	@Override
-	public void addVisuals( Scene scene ) {
-		HallsLevel.addVisuals( this, scene );
+	public Group addVisuals () {
+		super.addVisuals();
+		HallsLevel.addHallsVisuals( this, visuals );
+		return visuals;
 	}
 }
