@@ -200,6 +200,7 @@ public abstract class RegularLevel extends Level {
 	protected boolean assignRoomType() {
 		
 		int specialRooms = 0;
+		boolean pitMade = false;
 
 		for (Room r : rooms) {
 			if (r.type == Type.NULL &&
@@ -212,7 +213,7 @@ public abstract class RegularLevel extends Level {
 					if (pitRoomNeeded) {
 
 						r.type = Type.PIT;
-						pitRoomNeeded = false;
+						pitMade = true;
 
 						specials.remove( Type.ARMORY );
 						specials.remove( Type.CRYPT );
@@ -262,6 +263,8 @@ public abstract class RegularLevel extends Level {
 				}
 			}
 		}
+
+		if (pitRoomNeeded && !pitMade) return false;
 		
 		int count = 0;
 		for (Room r : rooms) {
