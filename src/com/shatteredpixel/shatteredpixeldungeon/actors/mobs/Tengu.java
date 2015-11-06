@@ -71,7 +71,7 @@ public class Tengu extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 6, 12 );
+		return Random.NormalIntRange( 6, 15 );
 	}
 	
 	@Override
@@ -99,7 +99,7 @@ public class Tengu extends Mob {
 
 		//phase 1 of the fight is over
 		if (beforeHitHP > HT/2 && HP <= HT/2){
-			HP = HT/2;
+			HP = (HT/2)-1;
 			yell("Let's make this interesting...");
 			((PrisonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
