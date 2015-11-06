@@ -73,6 +73,12 @@ public class Thief extends Mob {
 	}
 
 	@Override
+	public float speed() {
+		if (item != null) return (5*super.speed())/6;
+		else return super.speed();
+	}
+
+	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 1, 7 );
 	}
@@ -180,7 +186,7 @@ public class Thief extends Mob {
 					sprite.showStatus(CharSprite.NEGATIVE, TXT_RAGE);
 					state = HUNTING;
 				} else {
-					GLog.n("The thief gets away with your " + item.name() + "!");
+					if (item != null) GLog.n("The thief gets away with your " + item.name() + "!");
 					item = null;
 					state = WANDERING;
 				}
