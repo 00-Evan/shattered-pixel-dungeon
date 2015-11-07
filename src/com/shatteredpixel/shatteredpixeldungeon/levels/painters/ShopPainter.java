@@ -234,7 +234,7 @@ public class ShopPainter extends Painter {
 		switch (Random.Int(10)){
 			case 0:
 				rare = Generator.random( Generator.Category.WAND );
-				rare.level = 0;
+				if (rare.level > 0 ) rare.degrade( rare.level );
 				break;
 			case 1:
 				rare = Generator.random(Generator.Category.RING);
