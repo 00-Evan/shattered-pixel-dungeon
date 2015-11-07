@@ -210,7 +210,7 @@ public abstract class RegularLevel extends Level {
 					r.width() > 3 && r.height() > 3 &&
 					Random.Int( specialRooms * specialRooms + 2 ) == 0) {
 
-					if (pitRoomNeeded) {
+					if (pitRoomNeeded && !pitMade) {
 
 						r.type = Type.PIT;
 						pitMade = true;
