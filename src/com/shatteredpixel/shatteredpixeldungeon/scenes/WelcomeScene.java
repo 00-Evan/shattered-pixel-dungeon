@@ -50,7 +50,14 @@ public class WelcomeScene extends PixelScene {
 			"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-				"Prison Rework!:\n" +
+				"v0.3.2a:\n" +
+					"- Fixed various bugs\n" +
+					"- Thieves now flee at 5/6 speed\n" +
+					"- Reduced blind/cripple from bandits\n" +
+					"- Tengu moves less on his second phase\n" +
+					"\n" +
+					"v0.3.2:\n" +
+					"Prison Rework!:\n" +
 					"- Tengu boss fight completely redone\n" +
 					"- Corpse dust quest overhauled\n" +
 					"- Rotberry quest overhauled\n" +
