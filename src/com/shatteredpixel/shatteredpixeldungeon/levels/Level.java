@@ -163,7 +163,7 @@ public abstract class Level implements Bundlable {
 	
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
-	protected Group visuals = new Group();
+	protected Group visuals;
 	
 	public int color1 = 0x004400;
 	public int color2 = 0x88CC44;
@@ -488,7 +488,11 @@ public abstract class Level implements Bundlable {
 	}
 
 	public Group addVisuals() {
-		visuals.clear();
+		if (visuals == null || visuals.parent == null){
+			visuals = new Group();
+		} else {
+			visuals.clear();
+		}
 		for (int i=0; i < LENGTH; i++) {
 			if (pit[i]) {
 				visuals.add( new WindParticle.Wind( i ) );
