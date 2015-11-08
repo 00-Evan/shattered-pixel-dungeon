@@ -50,7 +50,11 @@ public class WelcomeScene extends PixelScene {
 			"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-				"v0.3.2a:\n" +
+				"v0.3.2b:\n" +
+					"- Fixed various bugs\n" +
+					"- Floor locking tweaked, now only pauses passive effects when avoiding battle.\n" +
+					"\n" +
+					"v0.3.2a:\n" +
 					"- Fixed various bugs\n" +
 					"- Thieves now flee at 5/6 speed\n" +
 					"- Reduced blind/cripple from bandits\n" +
