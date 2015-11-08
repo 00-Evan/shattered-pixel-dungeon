@@ -86,7 +86,7 @@ public class Tengu extends Mob {
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) {
-			int multiple = HP > HT/2 ? 3 : 5;
+			int multiple = HP > HT/2 ? 1 : 4;
 			lock.addTime(dmg*multiple);
 		}
 
