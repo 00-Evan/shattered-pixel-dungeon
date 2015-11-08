@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
@@ -39,8 +40,6 @@ public class NewbornElemental extends Elemental {
 
 		EXP = 7;
 
-		loot = new Embers();
-		lootChance = 1f;
 	}
 
 	@Override
@@ -55,6 +54,12 @@ public class NewbornElemental extends Elemental {
 		} else {
 			super.add(buff);
 		}
+	}
+
+	@Override
+	public void die(Object cause) {
+		super.die(cause);
+		Dungeon.level.drop( new Embers(), pos ).sprite.drop();
 	}
 
 	@Override

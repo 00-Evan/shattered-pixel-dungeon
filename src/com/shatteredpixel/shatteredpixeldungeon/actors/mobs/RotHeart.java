@@ -42,9 +42,6 @@ public class RotHeart extends Mob {
 
 		EXP = 4;
 
-		loot = Wandmaker.Rotberry.Seed.class;
-		lootChance = 1f;
-
 		state = PASSIVE;
 	}
 
@@ -74,11 +71,17 @@ public class RotHeart extends Mob {
 	@Override
 	public void destroy() {
 		super.destroy();
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )){
+		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])){
 			if (mob instanceof RotLasher){
 				mob.die(null);
 			}
 		}
+	}
+
+	@Override
+	public void die(Object cause) {
+		super.die(cause);
+		Dungeon.level.drop( new Wandmaker.Rotberry.Seed(), pos ).sprite.drop();
 	}
 
 	@Override
