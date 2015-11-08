@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
@@ -129,7 +130,14 @@ public class DM300 extends Mob {
 			Buff.prolong( ch, Paralysis.class, 2 );
 		}
 	}
-	
+
+	@Override
+	public void damage(int dmg, Object src) {
+		super.damage(dmg, src);
+		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+		if (lock != null) lock.addTime(dmg*1.5f);
+	}
+
 	@Override
 	public void die( Object cause ) {
 		

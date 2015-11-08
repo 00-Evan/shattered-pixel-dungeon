@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
@@ -118,6 +119,11 @@ public class Yog extends Mob {
 		dmg >>= fists.size();
 		
 		super.damage( dmg, src );
+
+
+		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+		if (lock != null) lock.addTime(dmg*0.5f);
+
 	}
 	
 	@Override
@@ -259,6 +265,13 @@ public class Yog extends Mob {
 			
 			return super.act();
 		}
+
+		@Override
+		public void damage(int dmg, Object src) {
+			super.damage(dmg, src);
+			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+			if (lock != null) lock.addTime(dmg*0.5f);
+		}
 		
 		@Override
 		public String description() {
@@ -365,6 +378,13 @@ public class Yog extends Mob {
 			}
 			
 			return super.act();
+		}
+
+		@Override
+		public void damage(int dmg, Object src) {
+			super.damage(dmg, src);
+			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+			if (lock != null) lock.addTime(dmg*0.5f);
 		}
 		
 		@Override

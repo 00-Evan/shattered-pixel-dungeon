@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
@@ -51,8 +52,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Tengu extends Mob {
-
-	private static final int JUMP_DELAY = 5;
 	
 	{
 		name = "Tengu";
@@ -66,8 +65,6 @@ public class Tengu extends Mob {
 
 		flying = true; //doesn't literally fly, but he is fleet-of-foot enough to avoid hazards
 	}
-	
-	private int timeToJump = JUMP_DELAY;
 	
 	@Override
 	public int damageRoll() {
@@ -86,6 +83,13 @@ public class Tengu extends Mob {
 
 	@Override
 	public void damage(int dmg, Object src) {
+
+		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+		if (lock != null) {
+			int multiple = HP > HT/2 ? 3 : 5;
+			lock.addTime(dmg*multiple);
+		}
+
 		//phase 2 of the fight is over
 		if (dmg >= HP) {
 			((PrisonBossLevel)Dungeon.level).progress();
@@ -145,7 +149,6 @@ public class Tengu extends Mob {
 }
 
 	private void jump() {
-		timeToJump = JUMP_DELAY;
 
 		for (int i=0; i < 4; i++) {
 			int trapPos;

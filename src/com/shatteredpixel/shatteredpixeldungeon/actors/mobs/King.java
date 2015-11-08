@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -138,6 +139,13 @@ public class King extends Mob {
 			}
 			return super.attack(enemy);
 		}
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
+		super.damage(dmg, src);
+		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+		if (lock != null) lock.addTime(dmg);
 	}
 	
 	@Override
