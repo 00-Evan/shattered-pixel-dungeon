@@ -173,7 +173,8 @@ public class HornOfPlenty extends Artifact {
 
 		@Override
 		public boolean act() {
-			if (charge < chargeCap && !cursed && target.buff(LockedFloor.class) == null) {
+			LockedFloor lock = target.buff(LockedFloor.class);
+			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
 
 				//generates 0.25 food value every round, +0.015 value per level
 				//to a max of 0.70 food value per round (0.25+0.5, at level 30)

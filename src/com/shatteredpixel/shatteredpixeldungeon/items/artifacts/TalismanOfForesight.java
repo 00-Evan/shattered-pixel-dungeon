@@ -58,7 +58,7 @@ public class TalismanOfForesight extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && charge == 100 && !cursed)
+		if (isEquipped( hero ) && charge == chargeCap && !cursed)
 			actions.add(AC_SCRY);
 		return actions;
 	}
@@ -108,7 +108,7 @@ public class TalismanOfForesight extends Artifact {
 		if ( isEquipped( Dungeon.hero ) ){
 			if (!cursed) {
 				desc += "\n\nWhen you hold the talisman you feel like your senses are heightened.";
-				if (charge == 100)
+				if (charge == chargeCap)
 					desc += "\n\nThe talisman is radiating energy, prodding at your mind. You wonder what would " +
 							"happen if you let it in.";
 			} else {
@@ -173,13 +173,14 @@ public class TalismanOfForesight extends Artifact {
 			BuffIndicator.refreshHero();
 
 			//fully charges in 2500 turns at lvl=0, scaling to 1000 turns at lvl = 10.
-			if (charge < 100 && !cursed && target.buff(LockedFloor.class) == null) {
+			LockedFloor lock = target.buff(LockedFloor.class);
+			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
 				partialCharge += 0.04+(level*0.006);
 
-				if (partialCharge > 1 && charge < 100) {
+				if (partialCharge > 1 && charge < chargeCap) {
 					partialCharge--;
 					charge++;
-				} else if (charge >= 100) {
+				} else if (charge >= chargeCap) {
 					partialCharge = 0;
 					GLog.p("Your Talisman is fully charged!");
 				}

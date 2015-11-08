@@ -201,7 +201,9 @@ public class TimekeepersHourglass extends Artifact {
 	public class hourglassRecharge extends ArtifactBuff {
 		@Override
 		public boolean act() {
-			if (charge < chargeCap && !cursed && target.buff(LockedFloor.class) == null) {
+
+			LockedFloor lock = target.buff(LockedFloor.class);
+			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
 				partialCharge += 1 / (60f - (chargeCap - charge)*2f);
 
 				if (partialCharge >= 1) {

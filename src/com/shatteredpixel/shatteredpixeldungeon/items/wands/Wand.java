@@ -436,7 +436,8 @@ public abstract class Wand extends Item {
 			float turnsToCharge = (float) (BASE_CHARGE_DELAY
 					+ (SCALING_CHARGE_ADDITION * Math.pow(scalingFactor, missingCharges)));
 
-			if (target.buff(LockedFloor.class) == null)
+			LockedFloor lock = target.buff(LockedFloor.class);
+			if (lock == null || lock.regenOn())
 				partialCharge += 1f/turnsToCharge;
 
 			ScrollOfRecharging.Recharging bonus = target.buff(ScrollOfRecharging.Recharging.class);

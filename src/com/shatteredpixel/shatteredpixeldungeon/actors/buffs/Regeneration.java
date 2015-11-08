@@ -32,12 +32,13 @@ public class Regeneration extends Buff {
 	public boolean act() {
 		if (target.isAlive()) {
 
-
-
-			if (target.HP < target.HT && !((Hero)target).isStarving() && target.buff(LockedFloor.class) == null) {
-				target.HP += 1;
-				if (target.HP == target.HT){
-					((Hero)target).resting = false;
+			if (target.HP < target.HT && !((Hero)target).isStarving()) {
+				LockedFloor lock = target.buff(LockedFloor.class);
+				if (lock == null || lock.regenOn()) {
+					target.HP += 1;
+					if (target.HP == target.HT) {
+						((Hero) target).resting = false;
+					}
 				}
 			}
 

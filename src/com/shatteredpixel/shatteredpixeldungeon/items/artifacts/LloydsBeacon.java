@@ -304,7 +304,8 @@ public class LloydsBeacon extends Artifact {
 	public class beaconRecharge extends ArtifactBuff{
 		@Override
 		public boolean act() {
-			if (charge < chargeCap && !cursed && target.buff(LockedFloor.class) == null) {
+			LockedFloor lock = target.buff(LockedFloor.class);
+			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
 				partialCharge += 1 / (100f - (chargeCap - charge)*10f);
 
 				if (partialCharge >= 1) {

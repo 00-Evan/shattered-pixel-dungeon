@@ -208,7 +208,8 @@ public class DriedRose extends Artifact {
 		@Override
 		public boolean act() {
 
-			if (charge < chargeCap && !cursed && target.buff(LockedFloor.class) == null) {
+			LockedFloor lock = target.buff(LockedFloor.class);
+			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
 				//TODO: investigate balancing on this.
 				partialCharge += 10/75f;
 				if (partialCharge > 1){

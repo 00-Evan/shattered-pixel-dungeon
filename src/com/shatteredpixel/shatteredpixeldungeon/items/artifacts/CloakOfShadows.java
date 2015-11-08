@@ -183,7 +183,8 @@ public class CloakOfShadows extends Artifact {
 		@Override
 		public boolean act() {
 			if (charge < chargeCap) {
-				if (!stealthed && target.buff(LockedFloor.class) == null)
+				LockedFloor lock = target.buff(LockedFloor.class);
+				if (!stealthed && (lock == null || lock.regenOn()))
 					partialCharge += (1f / (60 - (chargeCap-charge)*2));
 
 				if (partialCharge >= 1) {

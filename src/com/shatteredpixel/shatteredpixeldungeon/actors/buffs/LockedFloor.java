@@ -24,7 +24,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class LockedFloor extends Buff {
-	//this buff is purely meant as a visual indicator that the gameplay implications of a level seal are in effect.
+
+	//the amount of turns remaining before beneficial passive effects turn off
+	private float left = 20; //starts at 20 turns
 
 	@Override
 	public boolean act() {
@@ -33,7 +35,18 @@ public class LockedFloor extends Buff {
 		if (!Dungeon.level.locked)
 			detach();
 
+		if (left >= 1)
+			left --;
+
 		return true;
+	}
+
+	public void addTime(float time){
+		left += time;
+	}
+
+	public boolean regenOn(){
+		return left >= 1;
 	}
 
 	@Override
@@ -50,8 +63,8 @@ public class LockedFloor extends Buff {
 	public String desc() {
 		return "The current floor is locked, and you are unable to leave it!\n" +
 				"\n" +
-				"While a floor is locked hunger, passive health regen, and passive item recharging will not function. " +
-				"The passing of time will not help or hinder you here.\n" +
+				"While a floor is locked, you will not gain hunger or take damage from starving. In addition, " +
+				"if you do not work towards defeating this floor's boss, passive regeneration effects will also stop.\n " +
 				"\n" +
 				"Additionally, if you are revived by an unblessed ankh while the floor is locked, then it will reset.\n" +
 				"\n" +
