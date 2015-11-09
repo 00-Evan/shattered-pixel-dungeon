@@ -36,9 +36,12 @@ public class ShopkeeperSprite extends MobSprite {
 		
 		idle = new Animation( 10, true );
 		idle.frames( film, 1, 1, 1, 1, 1, 0, 0, 0, 0 );
-		
+
+		die = new Animation( 20, false );
+		die.frames( film, 0 );
+
 		run = idle.clone();
-		die = idle.clone();
+
 		attack = idle.clone();
 		
 		idle();
