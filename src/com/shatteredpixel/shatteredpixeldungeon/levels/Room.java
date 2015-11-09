@@ -69,6 +69,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		RAT_KING	( RatKingPainter.class ),
 		WEAK_FLOOR	( WeakFloorPainter.class ),
 		PIT			( PitPainter.class ),
+		ALTAR		( AltarPainter.class ),
 
 		//prison quests
 		MASS_GRAVE  ( MassGravePainter.class ),
