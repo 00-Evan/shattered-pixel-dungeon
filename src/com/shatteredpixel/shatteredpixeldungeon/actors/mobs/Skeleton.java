@@ -91,7 +91,7 @@ public class Skeleton extends Mob {
 		Item loot = Generator.random( Generator.Category.WEAPON );
 		for (int i=0; i < 2; i++) {
 			Item l = Generator.random( Generator.Category.WEAPON );
-			if (l.level < loot.level) {
+			if (l.level() < loot.level()) {
 				loot = l;
 			}
 		}

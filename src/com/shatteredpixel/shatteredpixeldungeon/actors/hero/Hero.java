@@ -321,7 +321,7 @@ public class Hero extends Char {
 	
 	@Override
 	public int dr() {
-		int dr = belongings.armor != null ? Math.max( belongings.armor.DR, 0 ) : 0;
+		int dr = belongings.armor != null ? Math.max( belongings.armor.DR(), 0 ) : 0;
 		Barkskin barkskin = buff( Barkskin.class );
 		if (barkskin != null) {
 			dr += barkskin.level();

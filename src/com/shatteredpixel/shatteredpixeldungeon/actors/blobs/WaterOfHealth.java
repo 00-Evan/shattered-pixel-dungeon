@@ -65,6 +65,7 @@ public class WaterOfHealth extends WellWater {
 	protected Item affectItem( Item item ) {
 		if (item instanceof DewVial && !((DewVial)item).isFull()) {
 			((DewVial)item).fill();
+			Journal.remove( Feature.WELL_OF_HEALTH );
 			return item;
 		}
 		

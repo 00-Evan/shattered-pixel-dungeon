@@ -112,7 +112,7 @@ public class WaterOfTransmutation extends WellWater {
 		
 		if (n != null) {
 			
-			int level = w.level;
+			int level = w.level();
 			if (level > 0) {
 				n.upgrade( level );
 			} else if (level < 0) {
@@ -137,9 +137,9 @@ public class WaterOfTransmutation extends WellWater {
 			n = (Ring)Generator.random( Category.RING );
 		} while (n.getClass() == r.getClass());
 		
-		n.level = 0;
+		n.level(0);
 		
-		int level = r.level;
+		int level = r.level();
 		if (level > 0) {
 			n.upgrade( level );
 		} else if (level < 0) {
@@ -173,9 +173,8 @@ public class WaterOfTransmutation extends WellWater {
 			n = (Wand)Generator.random( Category.WAND );
 		} while (n.getClass() == w.getClass());
 		
-		n.level = 0;
-		n.updateLevel();
-		n.upgrade( w.level );
+		n.level( 0 );
+		n.upgrade( w.level() );
 		
 		n.levelKnown = w.levelKnown;
 		n.cursedKnown = w.cursedKnown;

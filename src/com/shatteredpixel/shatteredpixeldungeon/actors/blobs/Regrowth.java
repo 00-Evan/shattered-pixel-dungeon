@@ -39,21 +39,24 @@ public class Regrowth extends Blob {
 		
 		if (volume > 0) {
 			
-			boolean mapUpdated = false;
-			
 			for (int i=0; i < LENGTH; i++) {
 				if (off[i] > 0) {
 					int c = Dungeon.level.map[i];
+					int c1 = c;
 					if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) {
-						
-						Level.set( i, cur[i] > 9 ? Terrain.HIGH_GRASS : Terrain.GRASS );
-						mapUpdated = true;
-						
+						c1 = cur[i] > 9 ? Terrain.HIGH_GRASS : Terrain.GRASS;
 					} else if (c == Terrain.GRASS && cur[i] > 9 && Dungeon.level.plants.get(i) == null ) {
-						
+						c1 = Terrain.HIGH_GRASS;
+					}
+
+					if (c1 != c) {
 						Level.set( i, Terrain.HIGH_GRASS );
-						mapUpdated = true;
-						
+						Dungeon.observe();
+
+						GameScene.updateMap( i );
+						if (Dungeon.visible[i]) {
+							GameScene.discoverTile( i, c );
+						}
 					}
 					
 					Char ch = Actor.findChar( i );
@@ -61,11 +64,6 @@ public class Regrowth extends Blob {
 						Buff.prolong( ch, Roots.class, TICK );
 					}
 				}
-			}
-			
-			if (mapUpdated) {
-				GameScene.updateMap();
-				Dungeon.observe();
 			}
 		}
 	}
