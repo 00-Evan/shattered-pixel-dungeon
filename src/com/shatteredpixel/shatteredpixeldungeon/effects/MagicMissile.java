@@ -48,6 +48,10 @@ public class MagicMissile extends Emitter {
 	private float time;
 	
 	public void reset( int from, int to, Callback callback ) {
+		reset( from, to, SPEED, callback );
+	}
+
+	public void reset( int from, int to, float velocity, Callback callback ) {
 		this.callback = callback;
 		
 		revive();
@@ -61,10 +65,10 @@ public class MagicMissile extends Emitter {
 		height = 0;
 		
 		PointF d = PointF.diff( pt, pf );
-		PointF speed = new PointF( d ).normalize().scale( SPEED );
+		PointF speed = new PointF( d ).normalize().scale( velocity );
 		sx = speed.x;
 		sy = speed.y;
-		time = d.length() / SPEED;
+		time = d.length() / velocity;
 	}
 	
 	public void size( float size ) {
@@ -137,7 +141,7 @@ public class MagicMissile extends Emitter {
 	public static void force( Group group, int from, int to, Callback callback ) {
 		MagicMissile missile = ((MagicMissile)group.recycle( MagicMissile.class ));
 		missile.reset( from, to, callback );
-		missile.size( 4 );
+		missile.size( 0 );
 		missile.pour( ForceParticle.FACTORY, 0.01f );
 	}
 	
@@ -330,42 +334,29 @@ public class MagicMissile extends Emitter {
 			acc.set( (emitter.x - x) * 10, (emitter.y - y) * 10 );
 		}
 	}
-	
-	public static class ForceParticle extends PixelParticle {
-		
+
+	public static class ForceParticle extends PixelParticle.Shrinking {
+
 		public static final Emitter.Factory FACTORY = new Factory() {
 			@Override
 			public void emit( Emitter emitter, int index, float x, float y ) {
-				((ForceParticle)emitter.recycle( ForceParticle.class )).reset( x, y );
+				((ForceParticle)emitter.recycle( ForceParticle.class )).reset( index, x, y );
 			}
 		};
-		
-		public ForceParticle() {
-			super();
-			
-			lifespan = 0.6f;
 
-			size( 4 );
+		public void reset( int index, float x, float y ) {
+			super.reset( x, y, 0xFFFFFF, 8, 0.5f );
+
+			speed.polar( PointF.PI2 / 8 * index, 12 );
+			this.x -= speed.x * lifespan;
+			this.y -= speed.y * lifespan;
 		}
-		
-		public void reset( float x, float y ) {
-			revive();
-			
-			this.x = x;
-			this.y = y;
-			
-			left = lifespan;
-			
-			acc.set( 0 );
-			speed.set( Random.Float( -40, +40 ), Random.Float( -40, +40 ) );
-		}
-		
+
 		@Override
 		public void update() {
 			super.update();
-			
-			am = (left / lifespan) / 2;
-			acc.set( -speed.x * 10, -speed.y * 10 );
+
+			am = (1 - left / lifespan) / 2;
 		}
 	}
 	

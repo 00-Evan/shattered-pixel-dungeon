@@ -29,13 +29,14 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.annotation.SuppressLint;
 import android.opengl.GLES20;
-import android.util.FloatMath;
 
 import com.watabou.gltextures.Gradient;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Group;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.Visual;
+import com.watabou.utils.PointF;
 
 public class Flare extends Visual {
 	
@@ -120,7 +121,16 @@ public class Flare extends Visual {
 		
 		return this;
 	}
-	
+
+	public Flare show( Group parent, PointF pos, float duration ) {
+		point( pos );
+		parent.add( this );
+
+		lifespan = this.duration = duration;
+
+		return this;
+	}
+
 	@Override
 	public void update() {
 		super.update();
