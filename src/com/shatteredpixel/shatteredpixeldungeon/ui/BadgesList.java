@@ -54,7 +54,6 @@ public class BadgesList extends ScrollPane {
 	
 	@Override
 	protected void layout() {
-		super.layout();
 		
 		float pos = 0;
 		
@@ -65,6 +64,8 @@ public class BadgesList extends ScrollPane {
 		}
 		
 		content.setSize( width, pos );
+
+		super.layout();
 	}
 	
 	@Override

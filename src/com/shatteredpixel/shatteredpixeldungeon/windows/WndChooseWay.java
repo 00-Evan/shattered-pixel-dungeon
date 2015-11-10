@@ -20,14 +20,14 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.watabou.noosa.BitmapTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HighlightedText;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.utils.Highlighter;
 
 public class WndChooseWay extends Window {
 	
@@ -41,35 +41,17 @@ public class WndChooseWay extends Window {
 	public WndChooseWay( final TomeOfMastery tome, final HeroSubClass way1, final HeroSubClass way2 ) {
 		
 		super();
-		
+
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( new ItemSprite( tome.image(), null ) );
 		titlebar.label( tome.name() );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
-		
-		Highlighter hl = new Highlighter( way1.desc() + "\n\n" + way2.desc() + "\n\n" + TXT_MESSAGE );
-		
-		BitmapTextMultiline normal = PixelScene.createMultiline( hl.text, 6 );
-		normal.maxWidth = WIDTH;
-		normal.measure();
-		normal.x = titlebar.left();
-		normal.y = titlebar.bottom() + GAP;
-		add( normal );
-		
-		if (hl.isHighlighted()) {
-			normal.mask = hl.inverted();
-			
-			BitmapTextMultiline highlighted = PixelScene.createMultiline( hl.text, 6 );
-			highlighted.maxWidth = normal.maxWidth;
-			highlighted.measure();
-			highlighted.x = normal.x;
-			highlighted.y = normal.y;
-			add( highlighted );
-	
-			highlighted.mask = hl.mask;
-			highlighted.hardlight( TITLE_COLOR );
-		}
+
+		HighlightedText hl = new HighlightedText( 6 );
+		hl.text( way1.desc() + "\n\n" + way2.desc() + "\n\n" + TXT_MESSAGE, WIDTH );
+		hl.setPos( titlebar.left(), titlebar.bottom() + GAP );
+		add( hl );
 		
 		RedButton btnWay1 = new RedButton( Utils.capitalize( way1.title() ) ) {
 			@Override
@@ -78,7 +60,7 @@ public class WndChooseWay extends Window {
 				tome.choose( way1 );
 			}
 		};
-		btnWay1.setRect( 0, normal.y + normal.height() + GAP, (WIDTH - GAP) / 2, BTN_HEIGHT );
+		btnWay1.setRect( 0, hl.bottom() + GAP, (WIDTH - GAP) / 2, BTN_HEIGHT );
 		add( btnWay1 );
 		
 		RedButton btnWay2 = new RedButton( Utils.capitalize( way2.title() ) ) {

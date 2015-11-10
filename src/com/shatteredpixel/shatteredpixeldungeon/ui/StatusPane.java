@@ -27,6 +27,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.TouchArea;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.BitmaskEmitter;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
@@ -90,8 +91,8 @@ public class StatusPane extends Component {
 		avatar = HeroSprite.avatar( Dungeon.hero.heroClass, lastTier );
 		add( avatar );
 
-		blood = new Emitter();
-		blood.pos( avatar );
+		blood = new BitmaskEmitter( avatar );
+
 		blood.pour( BloodParticle.FACTORY, 0.3f );
 		blood.autoKill = false;
 		blood.on = false;
@@ -192,8 +193,8 @@ public class StatusPane extends Component {
 			lastLvl = Dungeon.hero.lvl;
 			level.text( Integer.toString( lastLvl ) );
 			level.measure();
-			level.x = 27.0f - level.width() / 2;
-			level.y = 27.5f - level.baseLine() / 2;
+			level.x = 27.5f - level.width() / 2;
+			level.y = 28.0f - level.baseLine() / 2;
 		}
 
 		int k = IronKey.curDepthQuantity;
