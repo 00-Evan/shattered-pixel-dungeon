@@ -275,33 +275,6 @@ public class GameScene extends PixelScene {
 		add( log );
 
 		layoutTags();
-		
-		if (Dungeon.depth < Statistics.deepestFloor) {
-			GLog.i(TXT_WELCOME_BACK, Dungeon.depth);
-		} else {
-			GLog.i(TXT_WELCOME, Dungeon.depth);
-			if (InterlevelScene.mode == InterlevelScene.Mode.DESCEND) Sample.INSTANCE.play(Assets.SND_DESCEND);
-		}
-
-		switch (Dungeon.level.feeling) {
-		case CHASM:
-			GLog.w( TXT_CHASM );
-			break;
-		case WATER:
-			GLog.w( TXT_WATER );
-			break;
-		case GRASS:
-			GLog.w( TXT_GRASS );
-			break;
-		case DARK:
-			GLog.w( TXT_DARK );
-			break;
-		default:
-		}
-		if (Dungeon.level instanceof RegularLevel &&
-			((RegularLevel)Dungeon.level).secretDoors > Random.IntRange( 3, 4 )) {
-			GLog.w( TXT_SECRETS );
-		}
 
 		busy = new BusyIndicator();
 		busy.camera = uiCamera;
@@ -344,7 +317,6 @@ public class GameScene extends PixelScene {
 			break;
 		default:
 		}
-		InterlevelScene.mode = InterlevelScene.Mode.CONTINUE;
 
 		ArrayList<Item> dropped = Dungeon.droppedItems.get( Dungeon.depth );
 		if (dropped != null) {
@@ -366,7 +338,39 @@ public class GameScene extends PixelScene {
 		Dungeon.hero.next();
 
 		Camera.main.target = hero;
-		fadeIn();
+
+		if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
+			if (Dungeon.depth < Statistics.deepestFloor) {
+				GLog.h(TXT_WELCOME_BACK, Dungeon.depth);
+			} else {
+				GLog.h(TXT_WELCOME, Dungeon.depth);
+				Sample.INSTANCE.play(Assets.SND_DESCEND);
+			}
+
+			switch (Dungeon.level.feeling) {
+				case CHASM:
+					GLog.w(TXT_CHASM);
+					break;
+				case WATER:
+					GLog.w(TXT_WATER);
+					break;
+				case GRASS:
+					GLog.w(TXT_GRASS);
+					break;
+				case DARK:
+					GLog.w(TXT_DARK);
+					break;
+				default:
+			}
+			if (Dungeon.level instanceof RegularLevel &&
+					((RegularLevel) Dungeon.level).secretDoors > Random.IntRange(3, 4)) {
+				GLog.w(TXT_SECRETS);
+			}
+
+			InterlevelScene.mode = InterlevelScene.Mode.NONE;
+
+			fadeIn();
+		}
 	}
 	
 	public void destroy() {
