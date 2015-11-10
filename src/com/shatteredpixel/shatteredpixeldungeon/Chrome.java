@@ -47,7 +47,7 @@ public class Chrome {
 		case TOAST_TR:
 			return new NinePatch( Asset, 40, 0, 18, 18, 5 );
 		case BUTTON:
-			return new NinePatch( Asset, 58, 0, 4, 4, 1 );
+			return new NinePatch( Asset, 58, 0, 6, 6, 2 );
 		case TAG:
 			return new NinePatch( Asset, 22, 18, 16, 14, 3 );
 		case GEM:

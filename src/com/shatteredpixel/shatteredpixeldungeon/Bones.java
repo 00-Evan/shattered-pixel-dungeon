@@ -175,8 +175,8 @@ public class Bones {
 					if (item.isUpgradable()) {
 						//gain 1 level every 3.333 floors down plus one additional level.
 						int lvl = 1 + ((Dungeon.depth * 3) / 10);
-						if (lvl < item.level) {
-							item.degrade( item.level - lvl );
+						if (lvl < item.level()) {
+							item.degrade( item.level() - lvl );
 						}
 						item.levelKnown = false;
 					}

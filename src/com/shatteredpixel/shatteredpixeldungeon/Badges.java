@@ -411,19 +411,19 @@ public class Badges {
 		}
 		
 		Badge badge = null;
-		if (!local.contains( Badge.ITEM_LEVEL_1 ) && item.level >= 3) {
+		if (!local.contains( Badge.ITEM_LEVEL_1 ) && item.level() >= 3) {
 			badge = Badge.ITEM_LEVEL_1;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.ITEM_LEVEL_2 ) && item.level >= 6) {
+		if (!local.contains( Badge.ITEM_LEVEL_2 ) && item.level() >= 6) {
 			badge = Badge.ITEM_LEVEL_2;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.ITEM_LEVEL_3 ) && item.level >= 9) {
+		if (!local.contains( Badge.ITEM_LEVEL_3 ) && item.level() >= 9) {
 			badge = Badge.ITEM_LEVEL_3;
 			local.add( badge );
 		}
-		if (!local.contains( Badge.ITEM_LEVEL_4 ) && item.level >= 12) {
+		if (!local.contains( Badge.ITEM_LEVEL_4 ) && item.level() >= 12) {
 			badge = Badge.ITEM_LEVEL_4;
 			local.add( badge );
 		}
@@ -900,17 +900,15 @@ public class Badges {
 	public static List<Badge> filtered( boolean global ) {
 		
 		HashSet<Badge> filtered = new HashSet<Badge>( global ? Badges.global : Badges.local );
-		
-		if (!global) {
-			Iterator<Badge> iterator = filtered.iterator();
-			while (iterator.hasNext()) {
-				Badge badge = iterator.next();
-				if (badge.meta) {
-					iterator.remove();
-				}
+
+		Iterator<Badge> iterator = filtered.iterator();
+		while (iterator.hasNext()) {
+			Badge badge = iterator.next();
+			if ((!global && badge.meta) || badge.image == -1) {
+				iterator.remove();
 			}
 		}
-		
+
 		leaveBest( filtered, Badge.MONSTERS_SLAIN_1, Badge.MONSTERS_SLAIN_2, Badge.MONSTERS_SLAIN_3, Badge.MONSTERS_SLAIN_4 );
 		leaveBest( filtered, Badge.GOLD_COLLECTED_1, Badge.GOLD_COLLECTED_2, Badge.GOLD_COLLECTED_3, Badge.GOLD_COLLECTED_4 );
 		leaveBest( filtered, Badge.BOSS_SLAIN_1, Badge.BOSS_SLAIN_2, Badge.BOSS_SLAIN_3, Badge.BOSS_SLAIN_4 );
@@ -924,7 +922,13 @@ public class Badges {
 		leaveBest( filtered, Badge.DEATH_FROM_GAS, Badge.YASD );
 		leaveBest( filtered, Badge.DEATH_FROM_HUNGER, Badge.YASD );
 		leaveBest( filtered, Badge.DEATH_FROM_POISON, Badge.YASD );
+		leaveBest( filtered, Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
+		leaveBest( filtered, Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
+		leaveBest( filtered, Badge.ALL_RINGS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
+		leaveBest( filtered, Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( filtered, Badge.VICTORY, Badge.VICTORY_ALL_CLASSES );
+		leaveBest( filtered, Badge.VICTORY, Badge.HAPPY_END );
+		leaveBest( filtered, Badge.VICTORY, Badge.CHAMPION );
 		leaveBest( filtered, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4 );
 		
 		ArrayList<Badge> list = new ArrayList<Badge>( filtered );
