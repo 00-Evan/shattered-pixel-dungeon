@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HighlightedText;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndClass extends WndTabbed {
@@ -148,56 +149,35 @@ public class WndClass extends WndTabbed {
 
 		private static final int MARGIN	= 4;
 
-		private BitmapTextMultiline normal;
-		private BitmapTextMultiline highlighted;
-
 		public float height;
 		public float width;
 
 		public MasteryTab() {
 			super();
 
-			String text = null;
+			String message = null;
 			switch (cl) {
 				case WARRIOR:
-					text = HeroSubClass.GLADIATOR.desc() + "\n\n" + HeroSubClass.BERSERKER.desc();
+					message = HeroSubClass.GLADIATOR.desc() + "\n\n" + HeroSubClass.BERSERKER.desc();
 					break;
 				case MAGE:
-					text = HeroSubClass.BATTLEMAGE.desc() + "\n\n" + HeroSubClass.WARLOCK.desc();
+					message = HeroSubClass.BATTLEMAGE.desc() + "\n\n" + HeroSubClass.WARLOCK.desc();
 					break;
 				case ROGUE:
-					text = HeroSubClass.FREERUNNER.desc() + "\n\n" + HeroSubClass.ASSASSIN.desc();
+					message = HeroSubClass.FREERUNNER.desc() + "\n\n" + HeroSubClass.ASSASSIN.desc();
 					break;
 				case HUNTRESS:
-					text = HeroSubClass.SNIPER.desc() + "\n\n" + HeroSubClass.WARDEN.desc();
+					message = HeroSubClass.SNIPER.desc() + "\n\n" + HeroSubClass.WARDEN.desc();
 					break;
 			}
 
-			Highlighter hl = new Highlighter( text );
+			HighlightedText text = new HighlightedText( 6 );
+			text.text( message, WIDTH - MARGIN * 2 );
+			text.setPos( MARGIN, MARGIN );
+			add( text );
 
-			normal = PixelScene.createMultiline( hl.text, 6 );
-			normal.maxWidth = WIDTH - MARGIN * 2;
-			normal.measure();
-			normal.x = MARGIN;
-			normal.y = MARGIN;
-			add( normal );
-
-			if (hl.isHighlighted()) {
-				normal.mask = hl.inverted();
-
-				highlighted = PixelScene.createMultiline( hl.text, 6 );
-				highlighted.maxWidth = normal.maxWidth;
-				highlighted.measure();
-				highlighted.x = normal.x;
-				highlighted.y = normal.y;
-				add( highlighted );
-
-				highlighted.mask = hl.mask;
-				highlighted.hardlight( TITLE_COLOR );
-			}
-
-			height = normal.y + normal.height() + MARGIN;
-			width = normal.x + normal.width() + MARGIN;
+			height = text.bottom() + MARGIN;
+			width = text.right() + MARGIN;
 		}
 	}
 }

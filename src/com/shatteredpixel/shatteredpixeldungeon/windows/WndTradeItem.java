@@ -216,10 +216,12 @@ public class WndTradeItem extends Window {
 		add( titlebar );
 		
 		// Upgraded / degraded
-		if (item.levelKnown && item.level > 0) {
-			titlebar.color( ItemSlot.UPGRADED );
-		} else if (item.levelKnown && item.level < 0) {
-			titlebar.color( ItemSlot.DEGRADED );
+		if (item.levelKnown) {
+			if (item.level() < 0) {
+				titlebar.color( ItemSlot.DEGRADED );
+			} else if (item.level() > 0) {
+				titlebar.color( ItemSlot.UPGRADED );
+			}
 		}
 		
 		// Description
