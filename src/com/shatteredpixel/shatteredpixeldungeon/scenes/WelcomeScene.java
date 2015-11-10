@@ -156,12 +156,6 @@ public class WelcomeScene extends PixelScene {
 
 		ScrollPane list = new ScrollPane( new Component() );
 		add( list );
-		list.setRect(
-				panel.x + panel.marginLeft(),
-				panel.y + panel.marginTop(),
-				panel.innerWidth(),
-				panel.innerHeight());
-		list.scrollTo( 0, 0 );
 
 		Component content = list.content();
 		content.clear();
@@ -172,6 +166,13 @@ public class WelcomeScene extends PixelScene {
 		content.add(text);
 
 		content.setSize( panel.innerWidth(), text.height() );
+
+		list.setRect(
+				panel.x + panel.marginLeft(),
+				panel.y + panel.marginTop(),
+				panel.innerWidth(),
+				panel.innerHeight());
+		list.scrollTo(0, 0);
 
 		RedButton okay = new RedButton("Okay!") {
 			@Override
