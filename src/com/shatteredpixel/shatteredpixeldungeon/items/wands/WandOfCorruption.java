@@ -26,12 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -55,7 +50,7 @@ public class WandOfCorruption extends Wand {
 
 	//FIXME: sloppy
 	private static HashSet<Class> bosses = new HashSet<Class>(Arrays.asList(
-			Ghost.FetidRat.class, Ghost.GnollTrickster.class, Ghost.GreatCrab.class,
+			FetidRat.class, GnollTrickster.class, GreatCrab.class,
 			Goo.class, Tengu.class, DM300.class, King.class,
 			Yog.class, Yog.BurningFist.class, Yog.RottingFist.class
 	));

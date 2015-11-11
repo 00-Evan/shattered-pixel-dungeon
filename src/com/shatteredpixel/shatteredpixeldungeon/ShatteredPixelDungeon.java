@@ -87,6 +87,22 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTeleportation" );
 
+		//0.3.3
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost$FetidRat" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollTrickster.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost$GnollTrickster" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost$GreatCrab" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker$Rotberry" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry.Seed.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker$Rotberry$Seed" );
 
 
 	}

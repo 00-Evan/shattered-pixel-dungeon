@@ -23,41 +23,24 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Gnoll;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollTrickster;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
@@ -374,237 +357,6 @@ public class Ghost extends NPC {
 
 		public static boolean completed(){
 			return spawned && processed;
-		}
-	}
-
-
-	
-	public static class FetidRat extends Rat {
-
-		{
-			name = "fetid rat";
-			spriteClass = FetidRatSprite.class;
-			
-			HP = HT = 20;
-			defenseSkill = 5;
-			
-			EXP = 4;
-
-			state = WANDERING;
-		}
-		
-		@Override
-		public int attackSkill( Char target ) {
-			return 12;
-		}
-		
-		@Override
-		public int dr() {
-			return 2;
-		}
-
-		@Override
-		public int attackProc( Char enemy, int damage ) {
-			if (Random.Int( 3 ) == 0) {
-				Buff.affect(enemy, Ooze.class);
-			}
-
-			return damage;
-		}
-		
-		@Override
-		public int defenseProc( Char enemy, int damage ) {
-			
-			GameScene.add( Blob.seed( pos, 20, StenchGas.class ) );
-			
-			return super.defenseProc(enemy, damage);
-		}
-		
-		@Override
-		public void die( Object cause ) {
-			super.die( cause );
-			
-			Quest.process();
-		}
-		
-		@Override
-		public String description() {
-			return
-				"Something is clearly wrong with this rat. Its greasy black fur and rotting skin are very " +
-				"different from the healthy rats you've seen previously. It's pale green eyes " +
-				"make it seem especially menacing.\n\n" +
-				"The rat carries a cloud of horrible stench with it, it's overpoweringly strong up close.\n\n" +
-				"Dark ooze dribbles from the rat's mouth, it eats through the floor but seems to dissolve in water.";
-		}
-
-		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-		static {
-			IMMUNITIES.add( StenchGas.class );
-		}
-
-		@Override
-		public HashSet<Class<?>> immunities() {
-			return IMMUNITIES;
-		}
-	}
-
-
-
-	public static class GnollTrickster extends Gnoll {
-		{
-			name = "gnoll trickster";
-			spriteClass = GnollTricksterSprite.class;
-
-			HP = HT = 20;
-			defenseSkill = 5;
-
-			EXP = 5;
-
-			state = WANDERING;
-
-			loot = Generator.random(CurareDart.class);
-			lootChance = 1f;
-		}
-
-		private int combo = 0;
-
-		@Override
-		public int attackSkill( Char target ) {
-			return 16;
-		}
-
-		@Override
-		protected boolean canAttack( Char enemy ) {
-			Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
-			return !Level.adjacent( pos, enemy.pos ) && attack.collisionPos == enemy.pos;
-		}
-
-		@Override
-		public int attackProc( Char enemy, int damage ) {
-			//The gnoll's attacks get more severe the more the player lets it hit them
-			combo++;
-			int effect = Random.Int(4)+combo;
-
-			if (effect > 2) {
-
-				if (effect >=6 && enemy.buff(Burning.class) == null){
-
-					if (Level.flamable[enemy.pos])
-						GameScene.add( Blob.seed( enemy.pos, 4, Fire.class ) );
-					Buff.affect( enemy, Burning.class ).reignite( enemy );
-
-				} else
-					Buff.affect( enemy, Poison.class).set((effect-2) * Poison.durationFactor(enemy));
-
-			}
-			return damage;
-		}
-
-		@Override
-		protected boolean getCloser( int target ) {
-			combo = 0; //if he's moving, he isn't attacking, reset combo.
-			if (state == HUNTING) {
-				return enemySeen && getFurther( target );
-			} else {
-				return super.getCloser( target );
-			}
-		}
-
-		@Override
-		public void die( Object cause ) {
-			super.die( cause );
-
-			Quest.process();
-		}
-
-		@Override
-		public String description() {
-			return
-					"A strange looking creature, even by gnoll standards. It hunches forward with a wicked grin, " +
-					"almost cradling the satchel hanging over its shoulder. Its eyes are wide with a strange mix of " +
-					"fear and excitement.\n\n" +
-					"There is a large collection of poorly made darts in its satchel, they all seem to be " +
-					"tipped with various harmful substances.";
-		}
-
-		private static final String COMBO = "combo";
-
-		@Override
-		public void storeInBundle( Bundle bundle ) {
-			super.storeInBundle(bundle);
-			bundle.put(COMBO, combo);
-		}
-
-		@Override
-		public void restoreFromBundle( Bundle bundle ) {
-			super.restoreFromBundle( bundle );
-			combo = bundle.getInt( COMBO );
-		}
-
-	}
-
-
-
-	public static class GreatCrab extends Crab {
-		{
-			name = "great crab";
-			spriteClass = GreatCrabSprite.class;
-
-			HP = HT = 25;
-			defenseSkill = 0; //see damage()
-			baseSpeed = 1f;
-
-			EXP = 6;
-
-			state = WANDERING;
-		}
-
-		private int moving = 0;
-
-		@Override
-		protected boolean getCloser( int target ) {
-			//this is used so that the crab remains slower, but still detects the player at the expected rate.
-			moving++;
-			if (moving < 3) {
-				return super.getCloser( target );
-			} else {
-				moving = 0;
-				return true;
-			}
-
-		}
-
-		@Override
-		public void damage( int dmg, Object src ){
-			//crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
-			//All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
-			if (enemySeen && (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
-				GLog.n("The crab notices the attack and blocks with its massive claw.");
-				sprite.showStatus( CharSprite.NEUTRAL, "blocked" );
-			} else {
-				super.damage( dmg, src );
-			}
-		}
-
-		@Override
-		public void die( Object cause ) {
-			super.die( cause );
-
-			Quest.process();
-
-			Dungeon.level.drop( new MysteryMeat(), pos );
-			Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
-		}
-
-		@Override
-		public String description() {
-			return
-					"This crab is gigantic, even compared to other sewer crabs. " +
-					"Its blue shell is covered in cracks and barnacles, showing great age. " +
-					"It lumbers around slowly, barely keeping balance with its massive claw.\n\n" +
-					"While the crab only has one claw, its size easily compensates. " +
-					"The crab holds the claw infront of itself whenever it sees a threat, shielding " +
-					"itself behind an impenetrable wall of carapace.";
 		}
 	}
 }

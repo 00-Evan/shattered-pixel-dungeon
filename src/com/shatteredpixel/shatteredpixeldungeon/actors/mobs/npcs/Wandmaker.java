@@ -20,40 +20,25 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
-import com.watabou.noosa.audio.Sample;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndWandmaker;
@@ -395,55 +380,6 @@ public class Wandmaker extends NPC {
 			wand2 = null;
 			
 			Journal.remove( Journal.Feature.WANDMAKER );
-		}
-	}
-
-	//TODO: externalize this into its own class in 0.3.3 (when merging source)
-	public static class Rotberry extends Plant {
-		
-		private static final String TXT_DESC =
-			"The berries of a young rotberry shrub taste like sweet, sweet death.\n" +
-			"\n" +
-			"Regularly picking the berries of a rotberry shrub is essential, otherwise it will mature";
-		
-		{
-			image = 7;
-			plantName = "Rotberry";
-		}
-		
-		@Override
-		public void activate() {
-			Char ch = Actor.findChar(pos);
-			
-			GameScene.add( Blob.seed( pos, 100, ToxicGas.class ) );
-			
-			Dungeon.level.drop( new Seed(), pos ).sprite.drop();
-			
-			if (ch != null) {
-				Buff.prolong( ch, Roots.class, TICK * 3 );
-			}
-		}
-		
-		@Override
-		public String desc() {
-			return TXT_DESC;
-		}
-		
-		public static class Seed extends Plant.Seed {
-			{
-				plantName = "Rotberry";
-				
-				name = "seed of " + plantName;
-				image = ItemSpriteSheet.SEED_ROTBERRY;
-				
-				plantClass = Rotberry.class;
-				alchemyClass = PotionOfStrength.class;
-			}
-			
-			@Override
-			public String desc() {
-				return TXT_DESC;
-			}
 		}
 	}
 }

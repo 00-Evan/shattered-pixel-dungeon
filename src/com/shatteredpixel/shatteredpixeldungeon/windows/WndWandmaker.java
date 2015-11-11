@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -70,7 +71,7 @@ public class WndWandmaker extends Window {
 			msg = TXT_DUST;
 		} else if (item instanceof Embers){
 			msg = TXT_EMBER;
-		} else if (item instanceof Wandmaker.Rotberry.Seed){
+		} else if (item instanceof Rotberry.Seed){
 			msg = TXT_BERRY;
 		}
 
