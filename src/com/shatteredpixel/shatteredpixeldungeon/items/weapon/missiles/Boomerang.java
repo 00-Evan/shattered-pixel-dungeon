@@ -34,16 +34,23 @@ public class Boomerang extends MissileWeapon {
 		image = ItemSpriteSheet.BOOMERANG;
 		
 		STR = 10;
-		
-		MIN = 1;
-		MAX = 5;
 
 		stackable = false;
 
 		unique = true;
 		bones = false;
 	}
-	
+
+	@Override
+	public int min() {
+		return 1 + level();
+	}
+
+	@Override
+	public int max() {
+		return 5 + 2 * level();
+	}
+
 	@Override
 	public boolean isUpgradable() {
 		return true;
@@ -56,8 +63,6 @@ public class Boomerang extends MissileWeapon {
 	
 	@Override
 	public Item upgrade( boolean enchant ) {
-		MIN += 1;
-		MAX += 2;
 		super.upgrade( enchant );
 		
 		updateQuickslot();
@@ -67,8 +72,6 @@ public class Boomerang extends MissileWeapon {
 	
 	@Override
 	public Item degrade() {
-		MIN -= 1;
-		MAX -= 2;
 		return super.degrade();
 	}
 

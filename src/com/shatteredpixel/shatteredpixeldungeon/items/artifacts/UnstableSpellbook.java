@@ -49,12 +49,11 @@ public class UnstableSpellbook extends Artifact {
 		name = "Unstable Spellbook";
 		image = ItemSpriteSheet.ARTIFACT_SPELLBOOK;
 
-		level = 0;
 		levelCap = 10;
 
-		charge = ((level/2)+3);
+		charge = ((level()/2)+3);
 		partialCharge = 0;
-		chargeCap = ((level/2)+3);
+		chargeCap = ((level()/2)+3);
 
 		defaultAction = AC_READ;
 	}
@@ -87,7 +86,7 @@ public class UnstableSpellbook extends Artifact {
 		ArrayList<String> actions = super.actions( hero );
 		if (isEquipped( hero ) && charge > 0 && !cursed)
 			actions.add(AC_READ);
-		if (isEquipped( hero ) && level < levelCap && !cursed)
+		if (isEquipped( hero ) && level() < levelCap && !cursed)
 			actions.add(AC_ADD);
 		return actions;
 	}
@@ -129,10 +128,10 @@ public class UnstableSpellbook extends Artifact {
 
 	@Override
 	public Item upgrade() {
-		chargeCap = (((level+1)/2)+3);
+		chargeCap = (((level()+1)/2)+3);
 
 		//for artifact transmutation.
-		while (scrolls.size() > (levelCap-1-level))
+		while (scrolls.size() > (levelCap-1-level()))
 			scrolls.remove(0);
 
 		return super.upgrade();
@@ -142,9 +141,9 @@ public class UnstableSpellbook extends Artifact {
 	public String desc() {
 		String desc = "This Tome is in surprising good condition given its age. ";
 
-		if (level < 3)
+		if (level() < 3)
 			desc += "It emanates a strange chaotic energy. ";
-		else if (level < 7)
+		else if (level() < 7)
 			desc += "It glows with a strange chaotic energy. ";
 		else
 			desc += "It fizzes and crackles as you move the pages, surging with unstable energy. ";
@@ -165,7 +164,7 @@ public class UnstableSpellbook extends Artifact {
 
 		}
 
-			if (level < levelCap)
+			if (level() < levelCap)
 				if (scrolls.size() > 1)
 					desc += "The book's index points to some pages which are blank. " +
 							"Those pages are listed as: " + scrolls.get(0) + " and "

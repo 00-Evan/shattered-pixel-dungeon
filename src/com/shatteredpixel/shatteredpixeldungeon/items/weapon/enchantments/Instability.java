@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 
 public class Instability extends Weapon.Enchantment {
 
-	private static final String TXT_UNSTABLE	= "Unstable %s";
+	private static final String TXT_UNSTABLE	= "unstable %s";
 	
 	@Override
 	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {

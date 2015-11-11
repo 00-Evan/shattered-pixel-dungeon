@@ -49,7 +49,6 @@ public class HornOfPlenty extends Artifact {
 		name = "Horn of Plenty";
 		image = ItemSpriteSheet.ARTIFACT_HORN1;
 
-		level = 0;
 		levelCap = 30;
 
 		charge = 0;
@@ -74,7 +73,7 @@ public class HornOfPlenty extends Artifact {
 		ArrayList<String> actions = super.actions( hero );
 		if (isEquipped( hero ) && charge > 0)
 			actions.add(AC_EAT);
-		if (isEquipped( hero ) && level < 30 && !cursed)
+		if (isEquipped( hero ) && level() < 30 && !cursed)
 			actions.add(AC_STORE);
 		return actions;
 	}
@@ -158,7 +157,7 @@ public class HornOfPlenty extends Artifact {
 			if (!cursed) {
 				desc += "\n\nThe horn rests at your side and is surprisingly lightweight, even with food in it.";
 
-				if (level < 15)
+				if (level() < 15)
 					desc += " Perhaps there is a way to increase the horn's power by giving it food energy.";
 			} else {
 				desc += "\n\nThe cursed horn has bound itself to your side, " +
@@ -178,7 +177,7 @@ public class HornOfPlenty extends Artifact {
 
 				//generates 0.25 food value every round, +0.015 value per level
 				//to a max of 0.70 food value per round (0.25+0.5, at level 30)
-				partialCharge += 0.25f + (0.015f*level);
+				partialCharge += 0.25f + (0.015f*level());
 
 				//charge is in increments of 36 food value.
 				if (partialCharge >= 36) {
@@ -224,8 +223,8 @@ public class HornOfPlenty extends Artifact {
 					hero.spend( TIME_TO_EAT );
 
 					curItem.upgrade(((Food)item).hornValue);
-					if (curItem.level >= 30){
-						curItem.level = 30;
+					if (curItem.level() >= 30){
+						curItem.level(30);
 						GLog.p("your horn has consumed all the food it can!");
 					} else
 						GLog.p("the horn consumes your food offering and grows in strength!");

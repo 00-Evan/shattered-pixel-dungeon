@@ -34,7 +34,6 @@ public class CapeOfThorns extends Artifact {
 		name = "Cape of Thorns";
 		image = ItemSpriteSheet.ARTIFACT_CAPE;
 
-		level = 0;
 		levelCap = 10;
 
 		charge = 0;
@@ -85,10 +84,10 @@ public class CapeOfThorns extends Artifact {
 
 		public int proc(int damage, Char attacker, Char defender){
 			if (cooldown == 0){
-				charge += damage*(0.5+level*0.05);
+				charge += damage*(0.5+level()*0.05);
 				if (charge >= chargeCap){
 					charge = 0;
-					cooldown = 10+level;
+					cooldown = 10+level();
 					GLog.p("Your Cape begins radiating energy, you feel protected!");
 					BuffIndicator.refreshHero();
 				}
@@ -104,8 +103,8 @@ public class CapeOfThorns extends Artifact {
 
 				exp+= deflected;
 
-				if (exp >= (level+1)*5 && level < levelCap){
-					exp -= (level+1)*5;
+				if (exp >= (level()+1)*5 && level() < levelCap){
+					exp -= (level()+1)*5;
 					upgrade();
 					GLog.p("Your Cape grows stronger!");
 				}

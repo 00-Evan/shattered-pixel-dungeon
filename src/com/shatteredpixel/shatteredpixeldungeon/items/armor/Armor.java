@@ -54,7 +54,6 @@ public class Armor extends EquipableItem {
 	public int tier;
 	
 	public int STR;
-	public int DR;
 	
 	private int hitsToKnow = HITS_TO_KNOW;
 	
@@ -65,7 +64,6 @@ public class Armor extends EquipableItem {
 		this.tier = tier;
 		
 		STR = typicalSTR();
-		DR = typicalDR();
 	}
 
 	private static final String UNFAMILIRIARITY	= "unfamiliarity";
@@ -79,24 +77,24 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
+		super.restoreFromBundle(bundle);
 		if ((hitsToKnow = bundle.getInt( UNFAMILIRIARITY )) == 0) {
 			hitsToKnow = HITS_TO_KNOW;
 		}
-		inscribe( (Glyph)bundle.get( GLYPH ) );
+		inscribe((Glyph) bundle.get(GLYPH));
 	}
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
+		actions.add(isEquipped(hero) ? AC_UNEQUIP : AC_EQUIP);
 		return actions;
 	}
 	
 	@Override
 	public boolean doEquip( Hero hero ) {
 		
-		detach( hero.belongings.backpack );
+		detach(hero.belongings.backpack);
 
 		if (hero.belongings.armor == null || hero.belongings.armor.doUnequip( hero, true, false )) {
 			
@@ -147,6 +145,10 @@ public class Armor extends EquipableItem {
 		return hero.belongings.armor == this;
 	}
 	
+	public int DR(){
+		return tier * (2 + level() + (glyph == null ? 0 : 1));
+	}
+
 	@Override
 	public Item upgrade() {
 		return upgrade( false );
@@ -155,7 +157,7 @@ public class Armor extends EquipableItem {
 	public Item upgrade( boolean inscribe ) {
 		
 		if (glyph != null) {
-			if (!inscribe && Random.Int( level ) > 0) {
+			if (!inscribe && Random.Int( level() ) > 0) {
 				GLog.w( TXT_INCOMPATIBLE );
 				inscribe( null );
 			}
@@ -164,8 +166,7 @@ public class Armor extends EquipableItem {
 				inscribe( Glyph.random() );
 			}
 		};
-		
-		DR += tier;
+
 		STR--;
 		
 		return super.upgrade();
@@ -173,7 +174,6 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public Item degrade() {
-		DR -= tier;
 		STR++;
 		
 		return super.degrade();
@@ -214,7 +214,7 @@ public class Armor extends EquipableItem {
 		if (levelKnown) {
 			info.append(
 				"\n\nThis " + name + " provides damage absorption up to " +
-				"" + Math.max( DR, 0 ) + " points per attack. " );
+				"" + Math.max( DR(), 0 ) + " points per attack. " );
 			
 			if (STR > Dungeon.hero.STR()) {
 				
@@ -297,10 +297,10 @@ public class Armor extends EquipableItem {
 			price /= 2;
 		}
 		if (levelKnown) {
-			if (level > 0) {
-				price *= (level + 1);
-			} else if (level < 0) {
-				price /= (1 - level);
+			if (level() > 0) {
+				price *= (level() + 1);
+			} else if (level() < 0) {
+				price /= (1 - level());
 			}
 		}
 		if (price < 1) {
@@ -310,13 +310,6 @@ public class Armor extends EquipableItem {
 	}
 
 	public Armor inscribe( Glyph glyph ) {
-
-		if (glyph != null && this.glyph == null) {
-			DR += tier;
-		} else if (glyph == null && this.glyph != null) {
-			DR -= tier;
-		}
-
 		this.glyph = glyph;
 
 		return this;

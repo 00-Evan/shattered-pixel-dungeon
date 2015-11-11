@@ -49,7 +49,6 @@ public class EtherealChains extends Artifact {
 		name = "ethereal chains";
 		image = ItemSpriteSheet.ARTIFACT_CHAINS;
 
-		level = 0;
 		levelCap = 5;
 		exp = 0;
 
@@ -207,7 +206,7 @@ public class EtherealChains extends Artifact {
 
 		@Override
 		public boolean act() {
-			int chargeTarget = 5+(level*2);
+			int chargeTarget = 5+(level()*2);
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeTarget && !cursed && (lock == null || lock.regenOn())) {
 				partialCharge += 1 / (40f - (chargeTarget - charge)*2f);
@@ -233,13 +232,13 @@ public class EtherealChains extends Artifact {
 			exp += Math.round(levelPortion*100);
 
 			//past the soft charge cap, gaining  charge from leveling is slowed.
-			if (charge > 5+(level*2)){
-				levelPortion *= (5+((float)level*2))/charge;
+			if (charge > 5+(level()*2)){
+				levelPortion *= (5+((float)level()*2))/charge;
 			}
 			partialCharge += levelPortion*10f;
 
-			if (exp > 100+level*50 && level < levelCap){
-				exp -= 100+level*50;
+			if (exp > 100+level()*50 && level() < levelCap){
+				exp -= 100+level()*50;
 				GLog.p("Your chains grow stronger!");
 				upgrade();
 			}

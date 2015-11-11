@@ -86,11 +86,10 @@ public class LloydsBeacon extends Artifact {
 		name = "lloyd's beacon";
 		image = ItemSpriteSheet.ARTIFACT_BEACON;
 
-		level = 0;
 		levelCap = 3;
 
 		charge = 0;
-		chargeCap = 3+level;
+		chargeCap = 3+level();
 
 		defaultAction = AC_ZAP;
 		usesTargeting = true;

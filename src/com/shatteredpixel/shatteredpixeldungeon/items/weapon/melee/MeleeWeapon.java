@@ -39,19 +39,27 @@ public class MeleeWeapon extends Weapon {
 		DLY = dly;
 		
 		STR = typicalSTR();
-		
-		MIN = min();
-		MAX = max();
+
 	}
 	
-	private int min() {
+	protected int minBase() {
 		return tier;
 	}
-	
-	private int max() {
+
+	protected int maxBase() {
 		return (int)((tier * tier - tier + 10) / ACU * DLY);
 	}
-	
+
+	@Override
+	public int min() {
+		return minBase() + level();
+	}
+
+	@Override
+	public int max() {
+		return maxBase() + level() * tier;
+	}
+
 	@Override
 	public Item upgrade() {
 		return upgrade( false );
@@ -59,8 +67,6 @@ public class MeleeWeapon extends Weapon {
 	
 	public Item upgrade( boolean enchant ) {
 		STR--;
-		MIN++;
-		MAX += tier;
 		
 		return super.upgrade( enchant );
 	}
@@ -72,8 +78,6 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public Item degrade() {
 		STR++;
-		MIN--;
-		MAX -= tier;
 		return super.degrade();
 	}
 	
@@ -88,18 +92,22 @@ public class MeleeWeapon extends Weapon {
 		
 		StringBuilder info = new StringBuilder( desc() );
 		
-		String quality = levelKnown && level != 0 ? (level > 0 ? "upgraded" : "degraded") : "";
+		String quality = levelKnown && level() != 0 ? (level() > 0 ? "upgraded" : "degraded") : "";
 		info.append( p );
 		info.append( "This " + name + " is " + Utils.indefinite( quality ) );
 		info.append( " tier-" + tier + " melee weapon. " );
-		
+
 		if (levelKnown) {
+			int min = min();
+			int max = max();
 			info.append( "Its average damage is " +
-				Math.round((MIN + (MAX - MIN) / 2)*(imbue == Imbue.LIGHT ? 0.7f : (imbue == Imbue.HEAVY ? 1.5f : 1)))
+				Math.round((min + (max - min) / 2)*(imbue == Imbue.LIGHT ? 0.7f : (imbue == Imbue.HEAVY ? 1.5f : 1)))
 				+ " points per hit. " );
 		} else {
+			int min = minBase();
+			int max = maxBase();
 			info.append(
-				"Its typical average damage is " + (min() + (max() - min()) / 2) + " points per hit " +
+				"Its typical average damage is " + (min + (max - min) / 2) + " points per hit " +
 				"and usually it requires " + typicalSTR() + " points of strength. " );
 			if (typicalSTR() > Dungeon.hero.STR()) {
 				info.append( "Probably this weapon is too heavy for you. " );
@@ -173,10 +181,10 @@ public class MeleeWeapon extends Weapon {
 			price /= 2;
 		}
 		if (levelKnown) {
-			if (level > 0) {
-				price *= (level + 1);
-			} else if (level < 0) {
-				price /= (1 - level);
+			if (level() > 0) {
+				price *= (level() + 1);
+			} else if (level() < 0) {
+				price /= (1 - level());
 			}
 		}
 		if (price < 1) {
@@ -189,7 +197,7 @@ public class MeleeWeapon extends Weapon {
 	public Item random() {
 		super.random();
 		
-		if (Random.Int( 10 + level ) == 0) {
+		if (Random.Int( 10 + level() ) == 0) {
 			enchant();
 		}
 		

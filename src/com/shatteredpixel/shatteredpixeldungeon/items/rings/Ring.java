@@ -283,10 +283,10 @@ public class Ring extends KindofMisc {
 		}
 
 		if (Random.Float() < 0.3f) {
-			level = -n;
+			level(-n);
 			cursed = true;
 		} else
-			level = n;
+			level(n);
 
 		return this;
 	}
@@ -302,10 +302,10 @@ public class Ring extends KindofMisc {
 			price /= 2;
 		}
 		if (levelKnown) {
-			if (level > 0) {
-				price *= (level + 1);
-			} else if (level < 0) {
-				price /= (1 - level);
+			if (level() > 0) {
+				price *= (level() + 1);
+			} else if (level() < 0) {
+				price /= (1 - level());
 			}
 		}
 		if (price < 1) {
@@ -340,7 +340,7 @@ public class Ring extends KindofMisc {
 		
 		public int level;
 		public RingBuff() {
-			level = Ring.this.level;
+			level = Ring.this.level();
 		}
 		
 		@Override

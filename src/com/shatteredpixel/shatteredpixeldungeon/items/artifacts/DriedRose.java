@@ -55,7 +55,6 @@ public class DriedRose extends Artifact {
 		name = "Dried Rose";
 		image = ItemSpriteSheet.ARTIFACT_ROSE1;
 
-		level = 0;
 		levelCap = 10;
 
 		charge = 100;
@@ -103,7 +102,7 @@ public class DriedRose extends Artifact {
 				}
 
 				if (spawnPoints.size() > 0) {
-					GhostHero ghost = new GhostHero( level );
+					GhostHero ghost = new GhostHero( level() );
 					ghost.pos = Random.element(spawnPoints);
 
 					GameScene.add(ghost, 1f);
@@ -144,10 +143,10 @@ public class DriedRose extends Artifact {
 			if (!cursed){
 				desc += "\n\nThe rose rests in your hand, it feels strangely warm.";
 
-				if (level < 5)
+				if (level() < 5)
 					desc+= "\n\nThe rose has lost most of its petals. It feels extremely frail, like it " +
 							"could snap any moment.";
-				else if (level < 10)
+				else if (level() < 10)
 					desc+= "\n\nYou have reattached many petals and the rose has started to somehow come back to life."+
 							" It almost looks like it's ready to bloom.";
 				else
@@ -167,13 +166,13 @@ public class DriedRose extends Artifact {
 
 	@Override
 	public Item upgrade() {
-		if (level >= 9)
+		if (level() >= 9)
 			image = ItemSpriteSheet.ARTIFACT_ROSE3;
-		else if (level >= 4)
+		else if (level() >= 4)
 			image = ItemSpriteSheet.ARTIFACT_ROSE2;
 
 		//For upgrade transferring via well of transmutation
-		droppedPetals = Math.max( level, droppedPetals );
+		droppedPetals = Math.max( level(), droppedPetals );
 
 		return super.upgrade();
 	}
@@ -261,13 +260,13 @@ public class DriedRose extends Artifact {
 			if (rose == null){
 				GLog.w("You have no rose to add this petal to.");
 				return false;
-			} if ( rose.level >= rose.levelCap ){
+			} if ( rose.level() >= rose.levelCap ){
 				GLog.i("There is no room left for this petal, so you discard it.");
 				return true;
 			} else {
 
 				rose.upgrade();
-				if (rose.level == rose.levelCap) {
+				if (rose.level() == rose.levelCap) {
 					GLog.p("The rose is completed!");
 					Sample.INSTANCE.play( Assets.SND_GHOST );
 					GLog.n("sad ghost: \"Thank you...\"");

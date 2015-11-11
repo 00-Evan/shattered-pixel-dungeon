@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Random;
 
-public class MissileWeapon extends Weapon {
+abstract public class MissileWeapon extends Weapon {
 
 	private static final String TXT_MISSILES	= "Missile weapon";
 	private static final String TXT_YES			= "Yes, I know what I'm doing";
@@ -150,7 +150,7 @@ public class MissileWeapon extends Weapon {
 		
 		StringBuilder info = new StringBuilder( desc() );
 		
-		info.append( "\n\nAverage damage of this weapon equals to " + (MIN + (MAX - MIN) / 2) + " points per hit. " );
+		info.append( "\n\nAverage damage of this weapon equals to " + (min() + (max() - min()) / 2) + " points per hit. " );
 		
 		if (Dungeon.hero.belongings.backpack.items.contains( this )) {
 			if (STR > Dungeon.hero.STR()) {

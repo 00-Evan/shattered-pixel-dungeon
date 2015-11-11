@@ -34,11 +34,18 @@ public class Javelin extends MissileWeapon {
 		image = ItemSpriteSheet.JAVELIN;
 		
 		STR = 15;
-		
-		MIN = 2;
-		MAX = 15;
 	}
-	
+
+	@Override
+	public int min() {
+		return 2;
+	}
+
+	@Override
+	public int max() {
+		return 15;
+	}
+
 	public Javelin() {
 		this( 1 );
 	}

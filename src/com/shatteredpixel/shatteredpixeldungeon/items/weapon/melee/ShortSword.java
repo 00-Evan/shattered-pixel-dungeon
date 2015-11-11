@@ -61,13 +61,17 @@ public class ShortSword extends MeleeWeapon {
 		super( 1, 1f, 1f );
 		
 		STR = 11;
-		MAX = 12;
 	}
-	
+
+	@Override
+	protected int maxBase() {
+		return 12;
+	}
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (level > 0) {
+		if (level() > 0) {
 			actions.add( AC_REFORGE );
 		}
 		return actions;

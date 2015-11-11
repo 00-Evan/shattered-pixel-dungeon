@@ -42,7 +42,6 @@ public class TalismanOfForesight extends Artifact {
 		name = "Talisman of Foresight";
 		image = ItemSpriteSheet.ARTIFACT_TALISMAN;
 
-		level = 0;
 		exp = 0;
 		levelCap = 10;
 
@@ -175,7 +174,7 @@ public class TalismanOfForesight extends Artifact {
 			//fully charges in 2500 turns at lvl=0, scaling to 1000 turns at lvl = 10.
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 0.04+(level*0.006);
+				partialCharge += 0.04+(level()*0.006);
 
 				if (partialCharge > 1 && charge < chargeCap) {
 					partialCharge--;
@@ -190,9 +189,9 @@ public class TalismanOfForesight extends Artifact {
 		}
 
 		public void charge(){
-			charge = Math.min(charge+(2+(level/3)), chargeCap);
+			charge = Math.min(charge+(2+(level()/3)), chargeCap);
 			exp++;
-			if (exp >= 4 && level < levelCap) {
+			if (exp >= 4 && level() < levelCap) {
 				upgrade();
 				GLog.p("Your Talisman grows stronger!");
 				exp -= 4;

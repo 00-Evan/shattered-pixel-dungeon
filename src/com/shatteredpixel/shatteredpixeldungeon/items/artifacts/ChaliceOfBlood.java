@@ -52,7 +52,6 @@ public class ChaliceOfBlood extends Artifact {
 		name = "Chalice of Blood";
 		image = ItemSpriteSheet.ARTIFACT_CHALICE1;
 
-		level = 0;
 		levelCap = 10;
 	}
 
@@ -61,7 +60,7 @@ public class ChaliceOfBlood extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && level < levelCap && !cursed)
+		if (isEquipped( hero ) && level() < levelCap && !cursed)
 			actions.add(AC_PRICK);
 		return actions;
 	}
@@ -71,7 +70,7 @@ public class ChaliceOfBlood extends Artifact {
 		super.execute(hero, action);
 		if (action.equals(AC_PRICK)){
 
-			int damage = 3*(level*level);
+			int damage = 3*(level()*level());
 
 			if (damage > hero.HP*0.75) {
 
@@ -92,7 +91,7 @@ public class ChaliceOfBlood extends Artifact {
 	}
 
 	private void prick(Hero hero){
-		int damage = 3*(level*level);
+		int damage = 3*(level()*level());
 
 		Earthroot.Armor armor = hero.buff(Earthroot.Armor.class);
 		if (armor != null) {
@@ -133,9 +132,9 @@ public class ChaliceOfBlood extends Artifact {
 
 	@Override
 	public Item upgrade() {
-		if (level >= 6)
+		if (level() >= 6)
 			image = ItemSpriteSheet.ARTIFACT_CHALICE3;
-		else if (level >= 2)
+		else if (level() >= 2)
 			image = ItemSpriteSheet.ARTIFACT_CHALICE2;
 		return super.upgrade();
 	}
@@ -148,7 +147,7 @@ public class ChaliceOfBlood extends Artifact {
 	@Override
 	public String desc() {
 		String desc = "This shining silver chalice is oddly adorned with sharp gems at the rim. ";
-		if (level < levelCap)
+		if (level() < levelCap)
 			desc += "The chalice is pulling your attention strangely, you feel like it wants something from you.";
 		else
 			desc += "The chalice is full and radiating energy.";
@@ -157,15 +156,15 @@ public class ChaliceOfBlood extends Artifact {
 			desc += "\n\n";
 			if (cursed)
 				desc += "The cursed chalice has bound itself to your hand, and is slowly tugging at your life energy.";
-			else if (level == 0)
+			else if (level() == 0)
 				desc += "As you hold the chalice, you feel oddly compelled to prick yourself on the sharp gems.";
-			else if (level < 3)
+			else if (level() < 3)
 				desc += "Some of your blood is pooled into the chalice, you can subtly feel the chalice feeding life " +
 				   "energy into you. You still want to cut yourself on the chalice, even though you know it will hurt.";
-			else if (level < 7)
+			else if (level() < 7)
 				desc += "The chalice is about half full of your blood and you can feel it feeding life energy " +
 				   "into you. you still want to hurt yourself, the chalice needs your energy, it's your friend.";
-			else if (level < levelCap)
+			else if (level() < levelCap)
 				desc += "The chalice is getting pretty full, and the life force it's feeding you is stronger than " +
 				   "ever. You should give it more energy, you need too, your friend needs your energy, it needs " +
 				   "your help. Your friend knows you have limits though, it doesn't want you to die, just bleed.";

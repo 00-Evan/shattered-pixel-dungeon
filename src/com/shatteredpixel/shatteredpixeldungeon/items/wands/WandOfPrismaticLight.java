@@ -90,25 +90,25 @@ public class WandOfPrismaticLight extends Wand {
 		affectMap(beam);
 
 		if (curUser.viewDistance < 4)
-			Buff.prolong( curUser, Light.class, 10f+level*5);
+			Buff.prolong( curUser, Light.class, 10f+level()*5);
 	}
 
 	private void affectTarget(Char ch){
-		int dmg = Random.NormalIntRange(level, (int) (8+(level*(level/5f))));
+		int dmg = Random.NormalIntRange(level(), (int) (8+(level()*(level()/5f))));
 
 		//three in (5+lvl) chance of failing
-		if (Random.Int(5+level) >= 3) {
-			Buff.prolong(ch, Blindness.class, 2f + (level * 0.34f));
+		if (Random.Int(5+level()) >= 3) {
+			Buff.prolong(ch, Blindness.class, 2f + (level() * 0.34f));
 			ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
 		}
 
 		if (evilMobs.contains(ch.getClass())){
-			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+level );
+			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+level() );
 			Sample.INSTANCE.play(Assets.SND_BURNING);
 
 			ch.damage((int)(dmg*1.5), this);
 		} else {
-			ch.sprite.centerEmitter().burst( RainbowParticle.BURST, 10+level );
+			ch.sprite.centerEmitter().burst( RainbowParticle.BURST, 10+level() );
 
 			ch.damage(dmg, this);
 		}
@@ -156,7 +156,7 @@ public class WandOfPrismaticLight extends Wand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//cripples enemy
-		Buff.prolong( defender, Cripple.class, 1f+staff.level);
+		Buff.prolong( defender, Cripple.class, 1f+staff.level());
 	}
 
 	@Override

@@ -83,8 +83,8 @@ public class ScrollOfMagicMapping extends Scroll {
 		Invisibility.dispel();
 		
 		setKnown();
-		
-		curUser.spendAndNext( TIME_TO_READ );
+
+		readAnimation();
 	}
 	
 	@Override

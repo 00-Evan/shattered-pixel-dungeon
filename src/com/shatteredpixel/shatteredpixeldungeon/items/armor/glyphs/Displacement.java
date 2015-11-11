@@ -44,7 +44,7 @@ public class Displacement extends Glyph {
 			return damage;
 		}
 		
-		int nTries = (armor.level < 0 ? 1 : armor.level + 1) * 5;
+		int nTries = (armor.level() < 0 ? 1 : armor.level() + 1) * 5;
 		for (int i=0; i < nTries; i++) {
 			int pos = Random.Int( Level.LENGTH );
 			if (Dungeon.visible[pos] && Level.passable[pos] && Actor.findChar( pos ) == null) {

@@ -43,7 +43,7 @@ public class AntiEntropy extends Glyph {
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.level );
+		int level = Math.max( 0, armor.level() );
 		
 		if (Level.adjacent( attacker.pos, defender.pos ) && Random.Int( level + 6 ) >= 5) {
 			

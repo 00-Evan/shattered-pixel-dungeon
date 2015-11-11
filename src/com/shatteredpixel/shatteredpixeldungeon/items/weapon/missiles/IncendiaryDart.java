@@ -41,11 +41,18 @@ public class IncendiaryDart extends MissileWeapon {
 		image = ItemSpriteSheet.INCENDIARY_DART;
 		
 		STR = 12;
-		
-		MIN = 1;
-		MAX = 2;
 	}
-	
+
+	@Override
+	public int min() {
+		return 1;
+	}
+
+	@Override
+	public int max() {
+		return 2;
+	}
+
 	public IncendiaryDart() {
 		this( 1 );
 	}

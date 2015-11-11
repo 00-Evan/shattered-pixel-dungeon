@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 
 public class Stylus extends Item {
 	
-	private static final String TXT_SELECT_ARMOR	= "Select an armor to inscribe on";
+	private static final String TXT_SELECT_ARMOR	= "Select an armor to inscribe";
 	private static final String TXT_INSCRIBED		= "you inscribed your %s with the stylus";
 	
 	private static final float TIME_TO_INSCRIBE = 2;
@@ -83,17 +84,18 @@ public class Stylus extends Item {
 	
 	private void inscribe( Armor armor ) {
 		
-		detach( curUser.belongings.backpack );
+		detach(curUser.belongings.backpack);
 
-		GLog.w( TXT_INSCRIBED, armor.name() );
+		GLog.w(TXT_INSCRIBED, armor.name());
 		
 		armor.inscribe();
 		
-		curUser.sprite.operate( curUser.pos );
-		curUser.sprite.centerEmitter().start( PurpleParticle.BURST, 0.05f, 10 );
-		Sample.INSTANCE.play( Assets.SND_BURNING );
+		curUser.sprite.operate(curUser.pos);
+		curUser.sprite.centerEmitter().start(PurpleParticle.BURST, 0.05f, 10);
+		Enchanting.show(curUser, armor);
+		Sample.INSTANCE.play(Assets.SND_BURNING);
 		
-		curUser.spend( TIME_TO_INSCRIBE );
+		curUser.spend(TIME_TO_INSCRIBE);
 		curUser.busy();
 	}
 	

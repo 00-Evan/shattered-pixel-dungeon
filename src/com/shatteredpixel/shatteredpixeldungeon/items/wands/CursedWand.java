@@ -389,7 +389,7 @@ public class CursedWand {
 						do {
 							reward = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
 									Generator.Category.RING, Generator.Category.WAND));
-						} while (reward.level < 2 && !(reward instanceof MissileWeapon));
+						} while (reward.level() < 2 && !(reward instanceof MissileWeapon));
 						Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 1, 0.5f);
 						mimic.items.clear();
 						mimic.items.add(reward);
@@ -426,7 +426,7 @@ public class CursedWand {
 				do {
 					result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
 							Generator.Category.RING, Generator.Category.ARTIFACT));
-				} while (result.level < 0 && !(result instanceof MissileWeapon));
+				} while (result.level() < 0 && !(result instanceof MissileWeapon));
 				if (result.isUpgradable()) result.upgrade();
 				result.cursed = result.cursedKnown = true;
 				GLog.w("your wand transmogrifies into a different item!");

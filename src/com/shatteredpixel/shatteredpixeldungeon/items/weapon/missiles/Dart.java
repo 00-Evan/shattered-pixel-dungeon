@@ -29,13 +29,20 @@ public class Dart extends MissileWeapon {
 	{
 		name = "dart";
 		image = ItemSpriteSheet.DART;
-		
-		MIN = 1;
-		MAX = 4;
 
 		bones = false; //Finding them in bones would be semi-frequent and disappointing.
 	}
-	
+
+	@Override
+	public int min() {
+		return 1;
+	}
+
+	@Override
+	public int max() {
+		return 4;
+	}
+
 	public Dart() {
 		this( 1 );
 	}

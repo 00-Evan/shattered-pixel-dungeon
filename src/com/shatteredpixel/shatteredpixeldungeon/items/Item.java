@@ -74,7 +74,8 @@ public class Item implements Bundlable {
 	public boolean stackable = false;
 	protected int quantity = 1;
 	
-	public int level = 0;
+	private int level = 0;
+
 	public boolean levelKnown = false;
 	
 	public boolean cursed;
@@ -263,6 +264,14 @@ public class Item implements Bundlable {
 	}
 
 	protected void onDetach(){}
+
+	public int level(){
+		return level;
+	}
+
+	public void level( int value ){
+		level = value;
+	}
 	
 	public Item upgrade() {
 		

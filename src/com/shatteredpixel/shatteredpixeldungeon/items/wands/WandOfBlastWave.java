@@ -63,7 +63,7 @@ public class WandOfBlastWave extends Wand {
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 		BlastWave.blast(bolt.collisionPos);
 
-		int damage = Random.NormalIntRange(1, 6+(int)(level*level/4f));
+		int damage = Random.NormalIntRange(1, 6+(int)(level()*level()/4f));
 
 		//presses all tiles in the AOE first
 		for (int i : Level.NEIGHBOURS9){
@@ -80,7 +80,7 @@ public class WandOfBlastWave extends Wand {
 
 				if (ch.isAlive()) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
-					int strength = 1 + ((level + 1) / 3);
+					int strength = 1 + ((level() + 1) / 3);
 					throwChar(ch, trajectory, strength);
 				}
 			}
@@ -94,7 +94,7 @@ public class WandOfBlastWave extends Wand {
 
 			if (ch.isAlive() && bolt.path.size() > bolt.dist+1) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
-				int strength = level + 3;
+				int strength = level() + 3;
 				throwChar(ch, trajectory, strength);
 			}
 		}
@@ -139,7 +139,7 @@ public class WandOfBlastWave extends Wand {
 	@Override
 	//a weaker knockback, not dissimilar to the glyph of bounce, but a fair bit stronger.
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		int level = Math.max(0, staff.level);
+		int level = Math.max(0, staff.level());
 
 		// lvl 0 - 25%
 		// lvl 1 - 40%

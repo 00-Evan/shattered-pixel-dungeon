@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Random;
 
@@ -54,7 +53,7 @@ public class HighGrass {
 				SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
 				if (naturalism != null) {
 					if (!naturalism.isCursed()) {
-						naturalismLevel = naturalism.level() + 1;
+						naturalismLevel = naturalism.itemLevel() + 1;
 						naturalism.charge();
 					} else {
 						naturalismLevel = -1;

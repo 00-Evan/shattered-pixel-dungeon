@@ -52,8 +52,8 @@ public class ScrollOfRecharging extends Scroll {
 		GLog.i( "a surge of energy courses through your body, invigorating your wands.");
 		SpellSprite.show( curUser, SpellSprite.CHARGE );
 		setKnown();
-		
-		curUser.spendAndNext( TIME_TO_READ );
+
+		readAnimation();
 	}
 	
 	@Override

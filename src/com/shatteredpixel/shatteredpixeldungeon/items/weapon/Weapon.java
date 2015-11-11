@@ -39,7 +39,7 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class Weapon extends KindOfWeapon {
+abstract public class Weapon extends KindOfWeapon {
 
 	private static final int HITS_TO_KNOW    = 20;
 
@@ -165,7 +165,7 @@ public class Weapon extends KindOfWeapon {
 	
 	public Item upgrade( boolean enchant ) {
 		if (enchantment != null) {
-			if (!enchant && Random.Int( level ) > 0) {
+			if (!enchant && Random.Int( level() ) > 0) {
 				GLog.w( TXT_INCOMPATIBLE );
 				enchant( null );
 			}

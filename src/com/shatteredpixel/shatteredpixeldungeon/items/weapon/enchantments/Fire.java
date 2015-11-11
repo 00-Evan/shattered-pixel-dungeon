@@ -31,7 +31,7 @@ import com.watabou.utils.Random;
 
 public class Fire extends Weapon.Enchantment {
 
-	private static final String TXT_BLAZING	= "Blazing %s";
+	private static final String TXT_BLAZING	= "blazing %s";
 	
 	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
 	
@@ -40,7 +40,7 @@ public class Fire extends Weapon.Enchantment {
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
-		int level = Math.max( 0, weapon.level );
+		int level = Math.max( 0, weapon.level() );
 		
 		if (Random.Int( level + 3 ) >= 2) {
 			

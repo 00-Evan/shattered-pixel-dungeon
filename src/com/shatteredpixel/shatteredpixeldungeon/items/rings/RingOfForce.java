@@ -43,7 +43,7 @@ public class RingOfForce extends Ring {
 					"When unarmed, at your current strength, ";
 			int str = Dungeon.hero.STR() - 8;
 			desc += levelKnown ?
-					"average damage with this ring is " + (str/2+level + (int)(str*0.5f*level) + str*2)/2 + " points per hit.":
+					"average damage with this ring is " + (str/2+level() + (int)(str*0.5f*level()) + str*2)/2 + " points per hit.":
 					"typical average damage with this ring is" + (str/2+1 + (int)(str*0.5f) + str*2)/2 + " points per hit.";
 			desc += " Wearing a second ring of force would enhance this.";
 			return desc;

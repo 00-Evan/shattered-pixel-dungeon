@@ -338,11 +338,11 @@ public class Ghost extends NPC {
 					do {
 						another = Generator.randomWeapon(10+i);
 					} while (another instanceof MissileWeapon);
-					if (another.level >= weapon.level) {
+					if (another.level() >= weapon.level()) {
 						weapon = (Weapon) another;
 					}
 					another = Generator.randomArmor(10+i);
-					if (another.level >= armor.level) {
+					if (another.level() >= armor.level()) {
 						armor = (Armor) another;
 					}
 				}

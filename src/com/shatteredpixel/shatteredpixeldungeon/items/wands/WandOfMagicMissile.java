@@ -42,13 +42,11 @@ public class WandOfMagicMissile extends Wand {
 				
 		Char ch = Actor.findChar( bolt.collisionPos );
 		if (ch != null) {
-			
-			int level = level();
 
 			processSoulMark(ch, chargesPerCast());
-			ch.damage(Random.NormalIntRange(4 , 6 + level * 2), this);
+			ch.damage(Random.NormalIntRange(4 , 6 + level() * 2), this);
 
-			ch.sprite.burst(0xFFFFFFFF, level / 2 + 2);
+			ch.sprite.burst(0xFFFFFFFF, level() / 2 + 2);
 
 		}
 	}
@@ -56,8 +54,8 @@ public class WandOfMagicMissile extends Wand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//gain 1 turn of recharging buff per level of the wand.
-		if (level > 0) {
-			Buff.prolong( attacker, ScrollOfRecharging.Recharging.class, (float)staff.level);
+		if (level() > 0) {
+			Buff.prolong( attacker, ScrollOfRecharging.Recharging.class, (float)staff.level());
 			SpellSprite.show(attacker, SpellSprite.CHARGE);
 		}
 	}

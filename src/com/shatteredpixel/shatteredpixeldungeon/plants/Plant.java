@@ -81,7 +81,7 @@ public abstract class Plant implements Bundlable {
 			int naturalismLevel = 0;
 			SandalsOfNature.Naturalism naturalism = Dungeon.hero.buff( SandalsOfNature.Naturalism.class );
 			if (naturalism != null) {
-				naturalismLevel = naturalism.level()+1;
+				naturalismLevel = naturalism.itemLevel()+1;
 			}
 
 			if (Random.Int( 5 - (naturalismLevel/2) ) == 0) {

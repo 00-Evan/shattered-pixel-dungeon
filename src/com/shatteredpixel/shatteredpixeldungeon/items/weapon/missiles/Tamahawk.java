@@ -34,11 +34,18 @@ public class Tamahawk extends MissileWeapon {
 		image = ItemSpriteSheet.TOMAHAWK;
 		
 		STR = 17;
-		
-		MIN = 4;
-		MAX = 20;
 	}
-	
+
+	@Override
+	public int min() {
+		return 4;
+	}
+
+	@Override
+	public int max() {
+		return 20;
+	}
+
 	public Tamahawk() {
 		this( 1 );
 	}

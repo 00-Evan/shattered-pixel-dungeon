@@ -53,12 +53,11 @@ public class TimekeepersHourglass extends Artifact {
 		name = "Timekeeper's Hourglass";
 		image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
 
-		level = 0;
 		levelCap = 5;
 
-		charge = 10+level*2;
+		charge = 10+level()*2;
 		partialCharge = 0;
-		chargeCap = 10+level*2;
+		chargeCap = 10+level()*2;
 
 		defaultAction = AC_ACTIVATE;
 	}
@@ -139,7 +138,7 @@ public class TimekeepersHourglass extends Artifact {
 		chargeCap+= 2;
 
 		//for artifact transmutation.
-		while (level+1 > sandBags)
+		while (level()+1 > sandBags)
 			sandBags ++;
 
 		return super.upgrade();
@@ -156,7 +155,7 @@ public class TimekeepersHourglass extends Artifact {
 			if (!cursed) {
 				desc += "\n\nThe hourglass rests at your side, the whisper of steadily pouring sand is reassuring.";
 
-				if (level < levelCap )
+				if (level() < levelCap )
 					desc +=
 						"\n\nThe hourglass seems to have lost some sand with age. While there are no cracks, " +
 						"there is a port on the top of the hourglass to pour sand in, if only you could find some...";
@@ -363,7 +362,7 @@ public class TimekeepersHourglass extends Artifact {
 			if (hourglass != null && !hourglass.cursed) {
 				hourglass.upgrade();
 				Sample.INSTANCE.play( Assets.SND_DEWDROP );
-				if (hourglass.level == hourglass.levelCap)
+				if (hourglass.level() == hourglass.levelCap)
 					GLog.p("Your hourglass is filled with magical sand!");
 				else
 					GLog.i("you add the sand to your hourglass.");

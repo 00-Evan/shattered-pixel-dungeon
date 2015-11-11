@@ -43,13 +43,12 @@ public class CloakOfShadows extends Artifact {
 		name = "Cloak of Shadows";
 		image = ItemSpriteSheet.ARTIFACT_CLOAK;
 
-		level = 0;
 		exp = 0;
 		levelCap = 15;
 
-		charge = level+5;
+		charge = level()+5;
 		partialCharge = 0;
-		chargeCap = level+5;
+		chargeCap = level()+5;
 
 		cooldown = 0;
 
@@ -145,11 +144,11 @@ public class CloakOfShadows extends Artifact {
 		String desc = "This light silken cloak shimmers in and out of your vision as it sways in the air. When worn, " +
 				"it can be used to hide your presence for a short time.\n\n";
 
-		if (level < 5)
+		if (level() < 5)
 		 desc += "The cloak's magic has faded and it is not very powerful, perhaps it will regain strength through use.";
-		else if (level < 10)
+		else if (level() < 10)
 			desc += "The cloak's power has begun to return.";
-		else if (level < 15)
+		else if (level() < 15)
 			desc += "The cloak has almost returned to full strength.";
 		else
 			desc += "The cloak is at full potential and will work for extended durations.";
@@ -239,9 +238,9 @@ public class CloakOfShadows extends Artifact {
 
 			if (turnsToCost == 0) exp += 10 + ((Hero)target).lvl;
 
-			if (exp >= (level+1)*50 && level < levelCap) {
+			if (exp >= (level()+1)*50 && level() < levelCap) {
 				upgrade();
-				exp -= level*50;
+				exp -= level()*50;
 				GLog.p("Your cloak grows stronger!");
 			}
 
@@ -259,9 +258,9 @@ public class CloakOfShadows extends Artifact {
 
 			exp += 10 + ((Hero)target).lvl;
 
-			if (exp >= (level+1)*50 && level < levelCap) {
+			if (exp >= (level()+1)*50 && level() < levelCap) {
 				upgrade();
-				exp -= level*50;
+				exp -= level()*50;
 				GLog.p("Your cloak grows stronger!");
 			}
 
@@ -295,7 +294,7 @@ public class CloakOfShadows extends Artifact {
 			if (target.invisible > 0)
 				target.invisible--;
 			stealthed = false;
-			cooldown = 10 - (level / 3);
+			cooldown = 10 - (level() / 3);
 
 			updateQuickslot();
 			super.detach();

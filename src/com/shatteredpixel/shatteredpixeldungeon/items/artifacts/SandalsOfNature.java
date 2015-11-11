@@ -47,7 +47,6 @@ public class SandalsOfNature extends Artifact {
 		name = "Sandals of Nature";
 		image = ItemSpriteSheet.ARTIFACT_SANDALS;
 
-		level = 0;
 		levelCap = 3;
 
 		charge = 0;
@@ -69,7 +68,7 @@ public class SandalsOfNature extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && level < 3 && !cursed)
+		if (isEquipped( hero ) && level() < 3 && !cursed)
 			actions.add(AC_FEED);
 		if (isEquipped( hero ) && charge > 0)
 			actions.add(AC_ROOT);
@@ -81,7 +80,7 @@ public class SandalsOfNature extends Artifact {
 		super.execute(hero, action);
 		if (action.equals(AC_FEED)){
 			GameScene.selectItem(itemSelector, mode, inventoryTitle);
-		} else if (action.equals(AC_ROOT) && level > 0){
+		} else if (action.equals(AC_ROOT) && level() > 0){
 
 			if (!isEquipped( hero )) GLog.i("You need to equip them to do that.");
 			else if (charge == 0)    GLog.i("They have no energy right now.");
@@ -104,13 +103,13 @@ public class SandalsOfNature extends Artifact {
 	@Override
 	public String desc() {
 		String desc = "";
-		if (level == 0)
+		if (level() == 0)
 			desc += "What initially seem like sandals made of twine are actually two plants! The footwear moves ever " +
 				  "so slightly when being held. They seem very weak and pale, perhaps they need to be given nutrients?";
-		else if (level == 1)
+		else if (level() == 1)
 			desc += "The footwear has grown and now more closely resemble two tailored shoes. They seem to match the " +
 				"contours of your feet exactly. Some colour has returned to them, perhaps they can still grow further?";
-		else if (level == 2)
+		else if (level() == 2)
 			desc += "The plants have grown again and now resembles a pair of solid tall boots. They appear to be made" +
 					" of solid bark more than vine now, yet are still very flexible. The plants seem to have " +
 					"regained their strength, but perhaps they can still grow further";
@@ -121,15 +120,15 @@ public class SandalsOfNature extends Artifact {
 
 		if ( isEquipped ( Dungeon.hero ) ){
 			desc += "\n\n";
-			if (level == 0) {
+			if (level() == 0) {
 				if (!cursed)
 					desc += "The sandals wrap snugly around your feet, they seem happy to be worn.";
 				else
 					desc += "The cursed sandals wrap tightly around your feet.";
 			}
-			else if (level == 1)
+			else if (level() == 1)
 				desc += "The shoes fit on loosely but quickly tighten to make a perfect fit.";
-			else if (level == 2)
+			else if (level() == 2)
 				desc += "The boots fit snugly and add a nice heft to your step.";
 			else
 				desc += "The greaves are thick and weighty, but very easy to move in, as if they are moving with you.";
@@ -139,7 +138,7 @@ public class SandalsOfNature extends Artifact {
 			else
 				desc += " They are blocking any attunement with nature.";
 
-			if (level > 0)
+			if (level() > 0)
 				desc += "\n\nThe footwear has gained the ability to form up into a sort of immobile natural armour, " +
 						"but will need to charge up for it.";
 		}
@@ -159,15 +158,15 @@ public class SandalsOfNature extends Artifact {
 
 	@Override
 	public Item upgrade() {
-		if (level < 0)
+		if (level() < 0)
 			image = ItemSpriteSheet.ARTIFACT_SANDALS;
-		else if (level == 0)
+		else if (level() == 0)
 			image = ItemSpriteSheet.ARTIFACT_SHOES;
-		else if (level == 1)
+		else if (level() == 1)
 			image = ItemSpriteSheet.ARTIFACT_BOOTS;
-		else if (level >= 2)
+		else if (level() >= 2)
 			image = ItemSpriteSheet.ARTIFACT_GREAVES;
-		name = NAMES[level+1];
+		name = NAMES[level()+1];
 		return super.upgrade();
 	}
 
@@ -194,7 +193,7 @@ public class SandalsOfNature extends Artifact {
 		public void charge() {
 			if (charge < target.HT){
 				//gain 1+(1*level)% of the difference between current charge and max HP.
-				charge+= (Math.round( (target.HT-charge) * (.01+ level*0.01) ));
+				charge+= (Math.round( (target.HT-charge) * (.01+ level()*0.01) ));
 				updateQuickslot();
 			}
 		}
@@ -214,11 +213,11 @@ public class SandalsOfNature extends Artifact {
 					Sample.INSTANCE.play( Assets.SND_PLANT );
 					hero.busy();
 					hero.spend( 2f );
-					if (seeds.size() >= 5+(level*2)){
+					if (seeds.size() >= 5+(level()*2)){
 						seeds.clear();
 						upgrade();
-						if (level >= 1 && level <= 3) {
-							GLog.p("Your " + NAMES[level-1] + " surge in size, they are now " + NAMES[level] + "!");
+						if (level() >= 1 && level() <= 3) {
+							GLog.p("Your " + NAMES[level()-1] + " surge in size, they are now " + NAMES[level()] + "!");
 						}
 
 					} else {

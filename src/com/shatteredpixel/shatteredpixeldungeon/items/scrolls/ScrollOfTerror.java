@@ -69,8 +69,8 @@ public class ScrollOfTerror extends Scroll {
 			GLog.i( "The scroll emits a brilliant flash of red light and the monsters flee!" );
 		}
 		setKnown();
-		
-		curUser.spendAndNext( TIME_TO_READ );
+
+		readAnimation();
 	}
 	
 	@Override

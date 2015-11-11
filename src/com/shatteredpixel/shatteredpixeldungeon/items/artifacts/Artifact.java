@@ -188,7 +188,7 @@ public class Artifact extends KindofMisc {
 
 	@Override
 	public int visiblyUpgraded() {
-		return ((level*10)/levelCap);
+		return ((level()*10)/levelCap);
 	}
 
 	//transfers upgrades from another artifact, transfer level will equal the displayed level
@@ -212,7 +212,7 @@ public class Artifact extends KindofMisc {
 	@Override
 	public String toString() {
 
-		if (levelKnown && level/levelCap != 0) {
+		if (levelKnown && level()/levelCap != 0) {
 			if (chargeCap > 0) {
 				return Utils.format( TXT_TO_STRING_LVL_CHARGE, name(), visiblyUpgraded(), charge, chargeCap );
 			} else {
@@ -273,8 +273,8 @@ public class Artifact extends KindofMisc {
 	@Override
 	public int price() {
 		int price = 100;
-		if (level > 0)
-			price += 50*((level*10)/levelCap);
+		if (level() > 0)
+			price += 50*((level()*10)/levelCap);
 		if (cursed && cursedKnown) {
 			price /= 2;
 		}
@@ -293,8 +293,8 @@ public class Artifact extends KindofMisc {
 
 	public class ArtifactBuff extends Buff {
 
-		public int level() {
-			return level;
+		public int itemLevel() {
+			return level();
 		}
 
 		public boolean isCursed() {

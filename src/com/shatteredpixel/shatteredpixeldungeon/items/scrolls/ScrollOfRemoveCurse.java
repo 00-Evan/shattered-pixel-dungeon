@@ -66,8 +66,8 @@ public class ScrollOfRemoveCurse extends Scroll {
 		}
 		
 		setKnown();
-		
-		curUser.spendAndNext( TIME_TO_READ );
+
+		readAnimation();
 	}
 	
 	@Override

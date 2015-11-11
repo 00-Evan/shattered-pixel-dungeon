@@ -29,7 +29,7 @@ import com.watabou.utils.Random;
 
 public class Poison extends Weapon.Enchantment {
 
-	private static final String TXT_VENOMOUS	= "Venomous %s";
+	private static final String TXT_VENOMOUS	= "venomous %s";
 	
 	private static ItemSprite.Glowing PURPLE = new ItemSprite.Glowing( 0x4400AA );
 	
@@ -38,7 +38,7 @@ public class Poison extends Weapon.Enchantment {
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
-		int level = Math.max( 0, weapon.level );
+		int level = Math.max( 0, weapon.level() );
 		
 		if (Random.Int( level + 3 ) >= 2) {
 			

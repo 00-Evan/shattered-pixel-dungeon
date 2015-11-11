@@ -76,7 +76,7 @@ public class WandOfCorruption extends Wand {
 				return;
 			}
 
-			int basePower = 10 + 2*level;
+			int basePower = 10 + 2*level();
 			int mobPower = Random.IntRange(0, ch.HT) + ch.HP*2;
 			for ( Buff buff : ch.buffs()){
 				if (buff.type == Buff.buffType.NEGATIVE){
@@ -89,7 +89,7 @@ public class WandOfCorruption extends Wand {
 			//try to use extra charges to overpower the mob
 			while (basePower <= mobPower){
 				extraCharges++;
-				basePower += 5 + level;
+				basePower += 5 + level();
 			}
 
 			//if we fail, lose all charges, remember we have 1 left to lose from using the wand.
@@ -114,8 +114,8 @@ public class WandOfCorruption extends Wand {
 		// lvl 0 - 25%
 		// lvl 1 - 40%
 		// lvl 2 - 50%
-		if (Random.Int( level + 4 ) >= 3){
-			Buff.prolong( defender, Amok.class, 3+level);
+		if (Random.Int( level() + 4 ) >= 3){
+			Buff.prolong( defender, Amok.class, 3+level());
 		}
 	}
 

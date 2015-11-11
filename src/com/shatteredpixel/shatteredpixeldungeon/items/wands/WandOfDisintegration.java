@@ -74,8 +74,8 @@ public class WandOfDisintegration extends Wand {
 			}
 
 			if (Level.flamable[c]) {
-				
-				Level.set( c, Terrain.EMBERS );
+
+				Dungeon.level.destroy( c );
 				GameScene.updateMap( c );
 				terrainAffected = true;
 				

@@ -66,8 +66,8 @@ public class ScrollOfRage extends Scroll {
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
 		Sample.INSTANCE.play( Assets.SND_CHALLENGE );
 		Invisibility.dispel();
-		
-		curUser.spendAndNext( TIME_TO_READ );
+
+		readAnimation();
 	}
 	
 	@Override

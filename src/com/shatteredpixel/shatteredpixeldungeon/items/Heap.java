@@ -292,7 +292,7 @@ public class Heap implements Bundlable {
 					return;
 
 				//unique and upgraded items can endure the blast
-				} else if (!(item.level > 0 || item.unique))
+				} else if (!(item.level() > 0 || item.unique))
 					items.remove( item );
 
 			}
@@ -376,7 +376,7 @@ public class Heap implements Bundlable {
 
 		//alchemists toolkit gives a chance to cook a potion in two or even one seeds
 		AlchemistsToolkit.alchemy alchemy = Dungeon.hero.buff(AlchemistsToolkit.alchemy.class);
-		int bonus = alchemy != null ? alchemy.level() : -1;
+		int bonus = alchemy != null ? alchemy.itemLevel() : -1;
 
 		if (bonus != -1 ? alchemy.tryCook(count) : count >= SEEDS_TO_POTION) {
 

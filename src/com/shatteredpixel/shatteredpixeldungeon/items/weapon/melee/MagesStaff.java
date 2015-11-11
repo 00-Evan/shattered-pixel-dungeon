@@ -69,12 +69,14 @@ public class MagesStaff extends MeleeWeapon {
 
 	public MagesStaff() {
 
-		//tier 1 weapon with poor base stats.
 		super(1, 1f, 1f);
-		MIN = 1;
-		MAX = 6;
 
 		wand = null;
+	}
+
+	@Override
+	protected int maxBase() {
+		return 6;   //6 base damage instead of 10
 	}
 
 	public MagesStaff(Wand wand){
@@ -156,15 +158,15 @@ public class MagesStaff extends MeleeWeapon {
 		}
 
 		//syncs the level of the two items.
-		int targetLevel = Math.max(this.level, wand.level);
+		int targetLevel = Math.max(this.level(), wand.level());
 
-		int staffLevelDiff = targetLevel - this.level;
+		int staffLevelDiff = targetLevel - this.level();
 		if (staffLevelDiff > 0)
 			this.upgrade(staffLevelDiff);
 		else if (staffLevelDiff < 0)
 			this.degrade(Math.abs(staffLevelDiff));
 
-		int wandLevelDiff = targetLevel - wand.level;
+		int wandLevelDiff = targetLevel - wand.level();
 		if (wandLevelDiff > 0)
 			wand.upgrade(wandLevelDiff);
 		else if (wandLevelDiff < 0)

@@ -30,7 +30,6 @@ public class MasterThievesArmband extends Artifact {
 		name = "Master Thieves' Armband";
 		image = ItemSpriteSheet.ARTIFACT_ARMBAND;
 
-		level = 0;
 		levelCap = 10;
 
 		charge = 0;
@@ -84,7 +83,7 @@ public class MasterThievesArmband extends Artifact {
 					exp += value;
 				}
 			}
-			while(exp >= 600 && level < levelCap) {
+			while(exp >= 600 && level() < levelCap) {
 				exp -= 600;
 				upgrade();
 			}
@@ -93,7 +92,7 @@ public class MasterThievesArmband extends Artifact {
 
 		public float stealChance(int value){
 				//get lvl*100 gold or lvl*5% item value of free charge, whichever is less.
-				int chargeBonus = Math.min(level*100, (value*level)/20);
+				int chargeBonus = Math.min(level()*100, (value*level())/20);
 
 				return (((float)charge + chargeBonus)/value);
 		}

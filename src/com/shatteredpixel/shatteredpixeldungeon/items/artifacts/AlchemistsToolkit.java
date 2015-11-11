@@ -43,7 +43,6 @@ public class AlchemistsToolkit extends Artifact {
 		name = "Alchemists Toolkit";
 		image = ItemSpriteSheet.ARTIFACT_TOOLKIT;
 
-		level = 0;
 		levelCap = 10;
 	}
 
@@ -79,7 +78,7 @@ public class AlchemistsToolkit extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && level < levelCap && !cursed)
+		if (isEquipped( hero ) && level() < levelCap && !cursed)
 			actions.add(AC_BREW);
 		return actions;
 	}
@@ -120,15 +119,15 @@ public class AlchemistsToolkit extends Artifact {
 			GLog.i("Your mixture is complete, but none of the potions you used seem to react well. " +
 					"The brew is useless, you throw it away.");
 
-		} else if (score > level) {
+		} else if (score > level()) {
 
-			level = score;
+			level(score);
 			seedsToPotion = 0;
 			bstGuess = curGuess;
 			this.numRight = numRight;
 			this.numWrongPlace = numWrongPlace;
 
-			if (level == 10){
+			if (level() == 10){
 				bstGuess = new ArrayList<String>();
 				GLog.p("The mixture you've created seems perfect, you don't think there is any way to improve it!");
 			} else {
@@ -174,10 +173,10 @@ public class AlchemistsToolkit extends Artifact {
 			else
 				result += "The toolkit rests on your hip, the various tools inside make a light jingling sound as you move.\n\n";
 
-		if (level == 0){
+		if (level() == 0){
 			result += "The toolkit seems to be missing a key tool, a catalyst mixture. You'll have to make your own " +
 					"out of three common potions to get the most out of the toolkit.";
-		} else if (level == 10) {
+		} else if (level() == 10) {
 			result += "The mixture you have created seems perfect, and the toolkit is working at maximum efficiency.";
 		} else if (!bstGuess.isEmpty()) {
 			result += "Your current best mixture is made from: " + bstGuess.get(0) + ", " + bstGuess.get(1) + ", "
@@ -236,8 +235,8 @@ public class AlchemistsToolkit extends Artifact {
 			//this logic is handled inside the class with a variable so that it may be stored.
 			//to prevent manipulation where a player could keep throwing in 1-2 seeds until they get lucky.
 			if (seedsToPotion == 0){
-				if (Random.Int(20) < 10+level){
-					if (Random.Int(20) < level){
+				if (Random.Int(20) < 10+level()){
+					if (Random.Int(20) < level()){
 						seedsToPotion = 1;
 					} else
 						seedsToPotion = 2;

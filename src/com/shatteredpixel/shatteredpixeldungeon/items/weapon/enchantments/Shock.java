@@ -34,14 +34,14 @@ import com.watabou.utils.Random;
 
 public class Shock extends Weapon.Enchantment {
 
-	private static final String TXT_SHOCKING	= "Shocking %s";
+	private static final String TXT_SHOCKING	= "shocking %s";
 	
 	@Override
 	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		// lvl 0 - 25%
 		// lvl 1 - 40%
 		// lvl 2 - 50%
-		int level = Math.max( 0, weapon.level );
+		int level = Math.max( 0, weapon.level() );
 		
 		if (Random.Int( level + 4 ) >= 3) {
 			

@@ -51,8 +51,8 @@ public class ScrollOfTeleportation extends Scroll {
 		
 		teleportHero( curUser );
 		setKnown();
-		
-		curUser.spendAndNext( TIME_TO_READ );
+
+		readAnimation();
 	}
 	
 	public static void teleportHero( Hero  hero ) {

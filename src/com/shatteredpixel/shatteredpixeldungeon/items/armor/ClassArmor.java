@@ -39,6 +39,8 @@ abstract public class ClassArmor extends Armor {
 
 		bones = false;
 	}
+
+	private int DR;
 	
 	public ClassArmor() {
 		super( 6 );
@@ -64,7 +66,7 @@ abstract public class ClassArmor extends Armor {
 		}
 		
 		classArmor.STR = armor.STR;
-		classArmor.DR = armor.DR;
+		classArmor.DR = armor.DR();
 		
 		classArmor.inscribe( armor.glyph );
 		
@@ -118,6 +120,11 @@ abstract public class ClassArmor extends Armor {
 	
 	abstract public String special();
 	abstract public void doSpecial();
+
+	@Override
+	public int DR(){
+		return DR;
+	}
 	
 	@Override
 	public boolean isUpgradable() {

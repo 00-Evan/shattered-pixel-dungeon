@@ -28,19 +28,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
-public class KindOfWeapon extends EquipableItem {
+abstract public class KindOfWeapon extends EquipableItem {
 
 	private static final String TXT_EQUIP_CURSED	= "you wince as your grip involuntarily tightens around your %s";
 	
 	protected static final float TIME_TO_EQUIP = 1f;
 	
-	public int		MIN	= 0;
-	public int		MAX = 1;
-	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
+		actions.add(isEquipped(hero) ? AC_UNEQUIP : AC_EQUIP);
 		return actions;
 	}
 	
@@ -93,9 +90,12 @@ public class KindOfWeapon extends EquipableItem {
 	
 	public void activate( Hero hero ) {
 	}
-	
+
+	abstract public int min();
+	abstract public int max();
+
 	public int damageRoll( Hero owner ) {
-		return Random.NormalIntRange( MIN, MAX );
+		return Random.NormalIntRange( min(), max() );
 	}
 	
 	public float acuracyFactor( Hero hero ) {

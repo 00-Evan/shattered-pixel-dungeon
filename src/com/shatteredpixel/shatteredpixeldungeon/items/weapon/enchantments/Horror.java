@@ -32,7 +32,7 @@ import com.watabou.utils.Random;
 
 public class Horror extends Weapon.Enchantment {
 
-	private static final String TXT_ELDRITCH	= "Eldritch %s";
+	private static final String TXT_ELDRITCH	= "eldritch %s";
 	
 	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x222222 );
 	
@@ -41,7 +41,7 @@ public class Horror extends Weapon.Enchantment {
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
-		int level = Math.max( 0, weapon.level );
+		int level = Math.max( 0, weapon.level() );
 		
 		if (Random.Int( level + 5 ) >= 4) {
 

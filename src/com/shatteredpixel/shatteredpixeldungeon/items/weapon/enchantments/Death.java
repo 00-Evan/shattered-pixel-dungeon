@@ -31,7 +31,7 @@ import com.watabou.utils.Random;
 
 public class Death extends Weapon.Enchantment {
 
-	private static final String TXT_GRIM	= "Grim %s";
+	private static final String TXT_GRIM	= "grim %s";
 	
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 	
@@ -40,7 +40,7 @@ public class Death extends Weapon.Enchantment {
 		// lvl 0 - 8%
 		// lvl 1 ~ 9%
 		// lvl 2 ~ 10%
-		int level = Math.max( 0, weapon.level );
+		int level = Math.max( 0, weapon.level() );
 		
 		if (Random.Int( level + 100 ) >= 92) {
 			

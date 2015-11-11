@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
@@ -143,6 +144,12 @@ public abstract class Scroll extends Item {
 	}
 	
 	abstract protected void doRead();
+
+	protected void readAnimation() {
+		curUser.spend( TIME_TO_READ );
+		curUser.busy();
+		((HeroSprite)curUser.sprite).read();
+	}
 	
 	public boolean isKnown() {
 		return handler.isKnown( this );

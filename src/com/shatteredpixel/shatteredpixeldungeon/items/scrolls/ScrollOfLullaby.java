@@ -57,8 +57,8 @@ public class ScrollOfLullaby extends Scroll {
 		GLog.i( "The scroll utters a soothing melody. You feel very sleepy." );
 
 		setKnown();
-		
-		curUser.spendAndNext( TIME_TO_READ );
+
+		readAnimation();
 	}
 	
 	@Override

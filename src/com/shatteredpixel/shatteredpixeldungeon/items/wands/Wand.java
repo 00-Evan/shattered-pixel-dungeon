@@ -55,11 +55,7 @@ public abstract class Wand extends Item {
 	private static final int USAGES_TO_KNOW    = 20;
 
 	public static final String AC_ZAP	= "ZAP";
-	
-	private static final String TXT_WOOD	= "This thin %s wand is warm to the touch. Who knows what it will do when used?";
-	private static final String TXT_DAMAGE	= "When this wand is used as a melee weapon, its average damage is %d points per hit.";
-	private static final String TXT_WEAPON	= "You can use this wand as a melee weapon.";
-			
+
 	private static final String TXT_FIZZLES		= "your wand fizzles; it must not have enough charge.";
 	private static final String TXT_SELF_TARGET	= "You can't target yourself";
 
@@ -78,7 +74,6 @@ public abstract class Wand extends Item {
 	protected int usagesToKnow = USAGES_TO_KNOW;
 
 	protected int collisionProperties = Ballistica.MAGIC_BOLT;
-
 	
 	{
 		defaultAction = AC_ZAP;
@@ -139,7 +134,7 @@ public abstract class Wand extends Item {
 	protected void processSoulMark(Char target, int chargesUsed){
 		if (target != Dungeon.hero &&
 				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
-				Random.Float() < .15f + (level*chargesUsed*0.03f)){
+				Random.Float() < .15f + (level()*chargesUsed*0.03f)){
 			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION);
 		}
 	}
@@ -156,13 +151,9 @@ public abstract class Wand extends Item {
 		}
 	}
 	
-	public int level() {
-		if (charger != null) {
-			Magic magic = charger.target.buff( Magic.class );
-			return magic == null ? level : Math.max( level + magic.level, 0 );
-		} else {
-			return level;
-		}
+	public void level( int value) {
+		super.level( value );
+		updateLevel();
 	}
 	
 	@Override
@@ -233,7 +224,7 @@ public abstract class Wand extends Item {
 	}
 	
 	public void updateLevel() {
-		maxCharges = Math.min( initialCharges() + level, 10 );
+		maxCharges = Math.min( initialCharges() + level(), 10 );
 		curCharges = Math.min( curCharges, maxCharges );
 	}
 	
@@ -299,10 +290,10 @@ public abstract class Wand extends Item {
 			price /= 2;
 		}
 		if (levelKnown) {
-			if (level > 0) {
-				price *= (level + 1);
-			} else if (level < 0) {
-				price /= (1 - level);
+			if (level() > 0) {
+				price *= (level() + 1);
+			} else if (level() < 0) {
+				price /= (1 - level());
 			}
 		}
 		if (price < 1) {

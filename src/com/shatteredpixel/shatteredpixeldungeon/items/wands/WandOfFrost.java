@@ -57,7 +57,7 @@ public class WandOfFrost extends Wand {
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (ch != null){
 
-			int damage = Random.NormalIntRange(5+level, 10+(level*level/3));
+			int damage = Random.NormalIntRange(5+level(), 10+(level()*level()/3));
 
 			if (ch.buff(Frost.class) != null){
 				return; //do nothing, can't affect a frozen target
@@ -65,7 +65,7 @@ public class WandOfFrost extends Wand {
 			if (ch.buff(Chill.class) != null){
 				damage = Math.round(damage * ch.buff(Chill.class).speedFactor());
 			} else {
-				ch.sprite.burst( 0xFF99CCFF, level / 2 + 2 );
+				ch.sprite.burst( 0xFF99CCFF, level() / 2 + 2 );
 			}
 
 			processSoulMark(ch, chargesPerCast());
@@ -74,12 +74,12 @@ public class WandOfFrost extends Wand {
 			if (ch.isAlive()){
 				if (Level.water[ch.pos]){
 					//20+(10*level)% chance
-					if (Random.Int(10) >= 8-level )
+					if (Random.Int(10) >= 8-level() )
 						Buff.affect(ch, Frost.class, Frost.duration(ch)*Random.Float(2f, 4f));
 					else
-						Buff.prolong(ch, Chill.class, 6+level);
+						Buff.prolong(ch, Chill.class, 6+level());
 				} else {
-					Buff.prolong(ch, Chill.class, 4+level);
+					Buff.prolong(ch, Chill.class, 4+level());
 				}
 			}
 		}
