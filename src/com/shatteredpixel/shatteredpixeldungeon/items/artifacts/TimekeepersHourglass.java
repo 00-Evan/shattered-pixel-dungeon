@@ -228,24 +228,29 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public boolean attachTo(Char target) {
-			//buffs always act last, so the stasis buff should end a turn early.
-			spend(charge-1);
-			((Hero)target).spendAndNext(charge);
 
-			//shouldn't punish the player for going into stasis frequently
-			Hunger hunger = target.buff(Hunger.class);
-			if (hunger != null && !hunger.isStarving())
-				hunger.satisfy(charge);
+			if (super.attachTo(target)) {
+				//buffs always act last, so the stasis buff should end a turn early.
+				spend(charge - 1);
+				((Hero) target).spendAndNext(charge);
 
-			charge = 0;
+				//shouldn't punish the player for going into stasis frequently
+				Hunger hunger = target.buff(Hunger.class);
+				if (hunger != null && !hunger.isStarving())
+					hunger.satisfy(charge);
 
-			target.invisible++;
+				charge = 0;
 
-			updateQuickslot();
+				target.invisible++;
 
-			Dungeon.observe();
+				updateQuickslot();
 
-			return super.attachTo(target);
+				Dungeon.observe();
+
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		@Override
