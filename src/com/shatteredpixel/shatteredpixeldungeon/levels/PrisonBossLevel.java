@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -81,7 +82,7 @@ public class PrisonBossLevel extends Level {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
-		bundle.put(STATE, state);
+		bundle.put( STATE, state );
 		bundle.put( TENGU, tengu );
 		bundle.put( STORED_ITEMS, storedItems);
 	}
@@ -142,6 +143,10 @@ public class PrisonBossLevel extends Level {
 
 	@Override
 	protected void createItems() {
+		Item item = Bones.get();
+		if (item != null) {
+			drop( item, randomRespawnCell() ).type = Heap.Type.REMAINS;
+		}
 		drop(new IronKey(10), randomPrisonCell());
 	}
 
@@ -179,14 +184,8 @@ public class PrisonBossLevel extends Level {
 	}
 
 	@Override
-	public Heap drop( Item item, int cell ) {
-		
-		return super.drop( item, cell );
-	}
-	
-	@Override
 	public int randomRespawnCell() {
-		return 5+3*32;
+		return 5+2*32 + NEIGHBOURS8[Random.Int(8)]; //random cell adjacent to the entrance.
 	}
 	
 	@Override
