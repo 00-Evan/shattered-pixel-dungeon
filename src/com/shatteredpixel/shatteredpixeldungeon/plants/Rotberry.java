@@ -29,7 +29,7 @@ public class Rotberry extends Plant {
 	private static final String TXT_DESC =
 			"The berries of a young rotberry shrub taste like sweet, sweet death.\n" +
 					"\n" +
-					"Regularly picking the berries of a rotberry shrub is essential, otherwise it will mature";
+					"Given several days, this rotberry shrub will grow into another rot heart.";
 
 	{
 		image = 7;
