@@ -123,9 +123,15 @@ public class WandOfBlastWave extends Wand {
 		if (newPos == ch.pos) return;
 
 		final int finalDist = dist;
+		final int initialpos = ch.pos;
 
 		Actor.addDelayed(new Pushing(ch, ch.pos, newPos, new Callback() {
 			public void call() {
+				if (initialpos != ch.pos) {
+					//something cased movement before pushing resolved, cancel to be safe.
+					ch.sprite.place(ch.pos);
+					return;
+				}
 				ch.pos = newPos;
 				if (ch.pos == trajectory.collisionPos) {
 					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
