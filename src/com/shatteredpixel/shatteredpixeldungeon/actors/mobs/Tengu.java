@@ -250,6 +250,9 @@ public class Tengu extends Mob {
 
 				if (enemyInFOV) {
 					target = enemy.pos;
+				} else {
+					chooseEnemy();
+					target = enemy.pos;
 				}
 
 				spend( TICK );

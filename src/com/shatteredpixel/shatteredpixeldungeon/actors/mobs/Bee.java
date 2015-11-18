@@ -39,6 +39,8 @@ public class Bee extends Mob {
 		spriteClass = BeeSprite.class;
 		
 		viewDistance = 4;
+
+		EXP = 0;
 		
 		flying = true;
 		state = WANDERING;
@@ -118,7 +120,7 @@ public class Bee extends Mob {
 		else {
 
 			//if already targeting something, and that thing is still alive and near the pot, keeping targeting it.
-			if (enemy != null && enemy.isAlive()
+			if (enemy != null && enemy.isAlive() && Dungeon.level.mobs.contains(enemy)
 					&& Level.fieldOfView[enemy.pos] && enemy.invisible == 0
 					&& Level.distance(enemy.pos, potPos) <= 3)
 				return enemy;

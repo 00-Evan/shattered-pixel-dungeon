@@ -245,12 +245,17 @@ public class PrisonBossLevel extends Level {
 		Dungeon.observe();
 	}
 
-	private void clearHeaps(Room safeArea){
+	private void clearEntities(Room safeArea){
 		for (Heap heap : heaps.values()){
 			if (safeArea == null || !safeArea.inside(heap.pos)){
 				for (Item item : heap.items)
 					storedItems.add(item);
 				heap.destroy();
+			}
+		}
+		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])){
+			if (mob != tengu && (safeArea == null || !safeArea.inside(mob.pos))){
+				mob.destroy();
 			}
 		}
 	}
@@ -275,7 +280,7 @@ public class PrisonBossLevel extends Level {
 			case FIGHT_START:
 
 				changeMap(MAP_MAZE);
-				clearHeaps((Room)new Room().set(0, 5, 8, 32)); //clear all but the entrance
+				clearEntities((Room) new Room().set(0, 5, 8, 32)); //clear all but the entrance
 
 				Actor.remove(tengu);
 				mobs.remove(tengu);
@@ -296,7 +301,7 @@ public class PrisonBossLevel extends Level {
 				Dungeon.hero.sprite.place(Dungeon.hero.pos);
 
 				changeMap(MAP_ARENA);
-				clearHeaps(null);
+				clearEntities(null);
 
 				tengu.state = tengu.HUNTING;
 				do {
@@ -326,7 +331,7 @@ public class PrisonBossLevel extends Level {
 				tengu.sprite.place(5 + 28 * 32);
 
 				changeMap(MAP_END);
-				clearHeaps(null);
+				clearEntities(null);
 
 				tengu.die(Dungeon.hero);
 
