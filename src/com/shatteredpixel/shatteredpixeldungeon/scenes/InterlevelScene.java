@@ -230,7 +230,7 @@ public class InterlevelScene extends PixelScene {
 			}
 			GameLog.wipe();
 		} else {
-			Dungeon.saveLevel();
+			Dungeon.saveAll();
 		}
 
 		Level level;
@@ -246,7 +246,7 @@ public class InterlevelScene extends PixelScene {
 	private void fall() throws IOException {
 
 		Actor.fixTime();
-		Dungeon.saveLevel();
+		Dungeon.saveAll();
 
 		Level level;
 		if (Dungeon.depth >= Statistics.deepestFloor) {
@@ -260,8 +260,8 @@ public class InterlevelScene extends PixelScene {
 	
 	private void ascend() throws IOException {
 		Actor.fixTime();
-		
-		Dungeon.saveLevel();
+
+		Dungeon.saveAll();
 		Dungeon.depth--;
 		Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
 		Dungeon.switchLevel( level, level.exit );
@@ -270,8 +270,8 @@ public class InterlevelScene extends PixelScene {
 	private void returnTo() throws IOException {
 		
 		Actor.fixTime();
-		
-		Dungeon.saveLevel();
+
+		Dungeon.saveAll();
 		Dungeon.depth = returnDepth;
 		Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
 		Dungeon.switchLevel( level, Level.resizingNeeded ? level.adjustPos( returnPos ) : returnPos );
