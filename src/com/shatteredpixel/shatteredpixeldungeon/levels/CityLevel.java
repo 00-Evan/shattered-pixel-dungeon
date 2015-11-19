@@ -75,7 +75,7 @@ public class CityLevel extends RegularLevel {
 	
 	@Override
 	protected boolean assignRoomType() {
-		super.assignRoomType();
+		if (!super.assignRoomType()) return false;
 		
 		for (Room r : rooms) {
 			if (r.type == Type.TUNNEL) {
