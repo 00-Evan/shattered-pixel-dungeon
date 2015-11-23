@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
-public class PotionOfMight extends PotionOfStrength {
+public class PotionOfMight extends Potion {
 
 	{
 		name = "Potion of Might";
@@ -41,7 +41,7 @@ public class PotionOfMight extends PotionOfStrength {
 		hero.STR++;
 		hero.HT += 5;
 		hero.HP += 5;
-		hero.sprite.showStatus( CharSprite.POSITIVE, "+1 str, +5 ht" );
+		hero.sprite.showStatus( CharSprite.POSITIVE, "+1 str, +5 hp" );
 		GLog.p( "Newfound strength surges through your body." );
 
 		Badges.validateStrengthAttained();
