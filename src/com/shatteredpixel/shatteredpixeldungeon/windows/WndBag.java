@@ -312,8 +312,8 @@ public class WndBag extends WndTabbed {
 	
 	private class ItemButton extends ItemSlot {
 		
-		private static final int NORMAL		= 0xFF4A4D44;
-		private static final int EQUIPPED	= 0xFF63665B;
+		private static final int NORMAL		= 0x9953564D;
+		private static final int EQUIPPED	= 0x9991938C;
 		
 		private Item item;
 		private ColorBlock bg;
@@ -354,11 +354,11 @@ public class WndBag extends WndTabbed {
 
 				bg.texture( TextureCache.createSolid( item.isEquipped( Dungeon.hero ) ? EQUIPPED : NORMAL ) );
 				if (item.cursed && item.cursedKnown) {
-					bg.ra = +0.2f;
-					bg.ga = -0.1f;
+					bg.ra = +0.3f;
+					bg.ga = -0.15f;
 				} else if (!item.isIdentified()) {
-					bg.ra = 0.1f;
-					bg.ba = 0.1f;
+					bg.ra = 0.2f;
+					bg.ba = 0.2f;
 				}
 				
 				if (item.name() == null) {
