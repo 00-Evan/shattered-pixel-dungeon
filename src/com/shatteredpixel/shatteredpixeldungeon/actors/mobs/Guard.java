@@ -66,6 +66,7 @@ public class Guard extends Mob {
 
 		if (state == HUNTING &&
 				enemy != null &&
+				enemy.invisible == 0 &&
 				Level.fieldOfView[enemy.pos] &&
 				Level.distance( pos, enemy.pos ) < 5 && !Level.adjacent( pos, enemy.pos ) &&
 				Random.Int(3) == 0 &&
