@@ -92,6 +92,9 @@ public class Tengu extends Mob {
 
 		//phase 2 of the fight is over
 		if (dmg >= HP) {
+			if (state == SLEEPING) {
+				state = WANDERING;
+			}
 			((PrisonBossLevel)Dungeon.level).progress();
 			return;
 		}
