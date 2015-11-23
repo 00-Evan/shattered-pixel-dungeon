@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.effects.DarkBlock;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
@@ -60,7 +61,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	private static final float FLASH_INTERVAL	= 0.05f;
 	
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED
 	}
 	
 	protected Animation idle;
@@ -76,6 +77,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	protected Emitter burning;
 	protected Emitter chilled;
+	protected Emitter marked;
 	protected Emitter levitation;
 	
 	protected IceBlock iceBlock;
@@ -259,84 +261,94 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	public void add( State state ) {
 		switch (state) {
-		case BURNING:
-			burning = emitter();
-			burning.pour( FlameParticle.FACTORY, 0.06f );
-			if (visible) {
-				Sample.INSTANCE.play( Assets.SND_BURNING );
-			}
-			break;
-		case LEVITATING:
-			levitation = emitter();
-			levitation.pour( Speck.factory( Speck.JET ), 0.02f );
-			break;
-		case INVISIBLE:
-			PotionOfInvisibility.melt( ch );
-			break;
-		case PARALYSED:
-			paused = true;
-			break;
-		case FROZEN:
-			iceBlock = IceBlock.freeze( this );
-			paused = true;
-			break;
-		case ILLUMINATED:
-			GameScene.effect( halo = new TorchHalo( this ) );
-			break;
-		case CHILLED:
-			chilled = emitter();
-			chilled.pour(SnowParticle.FACTORY, 0.1f);
-			break;
-		case DARKENED:
-			darkBlock = DarkBlock.darken( this );
-			break;
+			case BURNING:
+				burning = emitter();
+				burning.pour( FlameParticle.FACTORY, 0.06f );
+				if (visible) {
+					Sample.INSTANCE.play( Assets.SND_BURNING );
+				}
+				break;
+			case LEVITATING:
+				levitation = emitter();
+				levitation.pour( Speck.factory( Speck.JET ), 0.02f );
+				break;
+			case INVISIBLE:
+				PotionOfInvisibility.melt( ch );
+				break;
+			case PARALYSED:
+				paused = true;
+				break;
+			case FROZEN:
+				iceBlock = IceBlock.freeze( this );
+				paused = true;
+				break;
+			case ILLUMINATED:
+				GameScene.effect( halo = new TorchHalo( this ) );
+				break;
+			case CHILLED:
+				chilled = emitter();
+				chilled.pour(SnowParticle.FACTORY, 0.1f);
+				break;
+			case DARKENED:
+				darkBlock = DarkBlock.darken( this );
+				break;
+			case MARKED:
+				marked = emitter();
+				marked.pour(ShadowParticle.UP, 0.1f);
+				break;
 		}
 	}
 	
 	public void remove( State state ) {
 		switch (state) {
-		case BURNING:
-			if (burning != null) {
-				burning.on = false;
-				burning = null;
-			}
-			break;
-		case LEVITATING:
-			if (levitation != null) {
-				levitation.on = false;
-				levitation = null;
-			}
-			break;
-		case INVISIBLE:
-			alpha( 1f );
-			break;
-		case PARALYSED:
-			paused = false;
-			break;
-		case FROZEN:
-			if (iceBlock != null) {
-				iceBlock.melt();
-				iceBlock = null;
-			}
-			paused = false;
-			break;
-		case ILLUMINATED:
-			if (halo != null) {
-				halo.putOut();
-			}
-			break;
-		case CHILLED:
-			if (chilled != null){
-				chilled.on = false;
-				chilled = null;
-			}
-			break;
-		case DARKENED:
-			if (darkBlock != null) {
-				darkBlock.lighten();
-				darkBlock = null;
-			}
-			break;
+			case BURNING:
+				if (burning != null) {
+					burning.on = false;
+					burning = null;
+				}
+				break;
+			case LEVITATING:
+				if (levitation != null) {
+					levitation.on = false;
+					levitation = null;
+				}
+				break;
+			case INVISIBLE:
+				alpha( 1f );
+				break;
+			case PARALYSED:
+				paused = false;
+				break;
+			case FROZEN:
+				if (iceBlock != null) {
+					iceBlock.melt();
+					iceBlock = null;
+				}
+				paused = false;
+				break;
+			case ILLUMINATED:
+				if (halo != null) {
+					halo.putOut();
+				}
+				break;
+			case CHILLED:
+				if (chilled != null){
+					chilled.on = false;
+					chilled = null;
+				}
+				break;
+			case DARKENED:
+				if (darkBlock != null) {
+					darkBlock.lighten();
+					darkBlock = null;
+				}
+				break;
+			case MARKED:
+				if (marked != null){
+					marked.on = false;
+					marked = null;
+				}
+				break;
 		}
 	}
 	

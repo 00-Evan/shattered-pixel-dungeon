@@ -135,7 +135,7 @@ public abstract class Wand extends Item {
 		if (target != Dungeon.hero &&
 				Dungeon.hero.subClass == HeroSubClass.WARLOCK &&
 				Random.Float() < .15f + (level()*chargesUsed*0.03f)){
-			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION);
+			SoulMark.prolong(target, SoulMark.class, SoulMark.DURATION + level());
 		}
 	}
 
