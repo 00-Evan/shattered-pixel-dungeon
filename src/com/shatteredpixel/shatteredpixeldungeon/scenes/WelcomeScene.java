@@ -44,13 +44,34 @@ public class WelcomeScene extends PixelScene {
 	private static final String TTL_Future = "Wait What?";
 
 	private static final String TXT_Welcome =
-			"Shattered Pixel Dungeon is a rework/expansion of Watabou's Pixel Dungeon.\n\n"+
-			"The goal is to enhance the game by improving existing content and adding tonnes of new stuff!\n\n"+
-			"Shattered Pixel Dungeon is being constantly updated, so expect more new content soon!\n\n"+
-			"Happy Dungeoneering!";
+				"Shattered Pixel Dungeon is a roguelike RPG, with randomly generated enemies, maps, items, and traps!\n" +
+				"\n" +
+				"Each run is a new challenging experience, but be careful, death is permanent!\n" +
+				"\n" +
+				"Shattered Pixel Dungeon is based on Watabou's Pixel Dungeon, if you're familiar with the original game, here is a list of major changes:\n" +
+				"- Mage class and wands totally reworked\n" +
+				"- Rings totally reworked, plus big changes to the rogue\n" +
+				"- A new category of item: Artifacts!\n" +
+				"- Enemy, boss, and quest changes to floors 1-10\n" +
+				"- Subclasses currently being reworked, and are only available after floor 10\n" +
+				"- Lots of balance changes, including removing degradation\n" +
+				"- Over 20 new trap types!\n" +
+				"- A redesigned UI with up to 4 quickslots\n" +
+				"- Updates with new and reworked content roughly once a month\n" +
+				"\n" +
+				"\n" +
+				"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-				"v0.3.2b:\n" +
+				"v0.3.2c:\n" +
+					"- Visual improvements from 1.9.1 source\n" +
+					"- Improved golden UI for donators\n" +
+					"- Various bug and crash fixes\n" +
+					"- Reduced gnoll shaman magic damage\n" +
+					"- Added visuals for warlock's soul mark\n" +
+					"- soul mark now lasts less time\n" +
+					"\n" +
+					"v0.3.2b:\n" +
 					"- Fixed various bugs\n" +
 					"- Floor locking tweaked, now only pauses passive effects when avoiding battle.\n" +
 					"\n" +
@@ -119,8 +140,8 @@ public class WelcomeScene extends PixelScene {
 
 		if (gameversion == 0) {
 
-			text = createMultiline(TXT_Welcome, 8);
-			title = createMultiline(TTL_Welcome, 16);
+			text = createMultiline(TXT_Welcome, 6 );
+			title = createMultiline(TTL_Welcome, 12 );
 
 		} else if (gameversion <= Game.versionCode) {
 
@@ -129,8 +150,8 @@ public class WelcomeScene extends PixelScene {
 
 		} else {
 
-			text = createMultiline( TXT_Future, 8 );
-			title = createMultiline( TTL_Future, 16 );
+			text = createMultiline( TXT_Future, 6 );
+			title = createMultiline( TTL_Future, 12 );
 
 		}
 
