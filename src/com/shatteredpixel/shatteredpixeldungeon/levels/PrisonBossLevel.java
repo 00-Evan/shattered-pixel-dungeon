@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MazePainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -286,6 +287,15 @@ public class PrisonBossLevel extends Level {
 				HealthIndicator.instance.target(null);
 				tengu.sprite.kill();
 
+				Room maze = new Room();
+				maze.set(10, 1, 31, 29);
+				maze.connected.put(null, new Room.Door(10, 2));
+				maze.connected.put(maze, new Room.Door(20, 29));
+				MazePainter.paint(this, maze);
+				GameScene.resetMap();
+				buildFlagMaps();
+				cleanWalls();
+
 				GameScene.flash(0xFFFFFF);
 				Sample.INSTANCE.play(Assets.SND_BLAST);
 
@@ -397,39 +407,38 @@ public class PrisonBossLevel extends Level {
 					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
 
-	//TODO: while this hardcoded maze is nice, it would be better to have it random each time.
 	private static final int[] MAP_MAZE =
 			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, W, _, _, _, W, W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					_, _, _, D, _, _, _, D, _, _, _, _, _, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, W, _, W, W,
-					W, W, W, W, _, _, _, W, W, W, W, W, W, _, W, _, W, W, W, W, W, W, W, W, W, W, W, _, W, _, W, W,
-					W, W, W, W, W, M, W, W, W, W, W, _, _, _, W, _, W, _, _, _, _, _, W, _, _, _, _, _, W, _, W, W,
-					W, W, W, W, W, D, W, W, W, W, W, W, W, _, W, _, W, _, W, W, W, W, W, W, W, W, W, _, W, _, W, W,
-					W, W, W, W, W, _, W, W, W, W, W, _, _, _, _, _, W, _, _, _, W, _, W, _, _, _, _, _, W, _, W, W,
-					W, W, M, W, W, _, W, W, M, W, W, W, W, _, W, W, W, _, W, W, W, _, W, W, W, W, W, _, W, _, W, W,
-					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, W, _, _, _, _, _, _, _, W, _, _, _, W, W,
-					W, _, _, _, D, _, D, _, _, _, W, _, W, W, W, W, W, W, W, W, W, _, W, _, W, W, W, W, W, _, W, W,
-					W, _, _, _, W, _, W, _, _, _, W, _, W, _, W, _, W, _, W, _, W, _, W, _, W, _, _, _, _, _, W, W,
-					W, W, M, W, W, _, W, W, M, W, W, _, W, _, W, _, W, _, W, _, W, _, W, W, W, W, W, W, W, _, W, W,
-					W, _, _, _, W, _, W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, W, _, W, _, W, _, W, _, W, W,
-					W, _, _, _, D, _, D, _, _, _, W, _, W, _, W, W, W, W, W, W, W, _, W, _, W, _, W, _, W, _, W, W,
-					W, _, _, _, W, _, W, _, _, _, W, _, _, _, W, _, W, _, _, _, _, _, W, _, _, _, _, _, _, _, W, W,
-					W, W, M, W, W, _, W, W, M, W, W, W, W, _, W, _, W, W, W, W, W, _, W, _, W, W, W, W, W, W, W, W,
-					W, _, _, _, W, _, W, _, _, _, W, _, _, _, W, _, W, _, W, _, W, _, _, _, W, _, W, _, _, _, W, W,
-					W, _, _, _, D, _, D, _, _, _, W, W, W, _, W, _, W, _, W, _, W, _, W, W, W, _, W, W, W, _, W, W,
-					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, W, _, _, _, _, _, W, _, _, _, W, W,
-					W, W, M, W, W, _, W, W, M, W, W, W, W, _, W, W, W, _, W, W, W, _, W, _, W, W, W, _, W, W, W, W,
-					W, _, _, _, W, _, W, _, _, _, W, _, W, _, W, _, W, _, W, _, _, _, W, _, W, _, _, _, _, _, W, W,
-					W, _, _, _, D, _, D, _, _, _, W, _, W, _, W, _, W, W, W, W, W, _, W, W, W, _, W, W, W, W, W, W,
-					W, _, _, _, W, _, W, _, _, _, W, _, W, _, _, _, W, _, W, _, _, _, _, _, _, _, _, _, _, _, W, W,
-					W, W, M, W, W, _, W, W, M, _, W, _, W, _, W, W, W, _, W, _, W, W, W, W, W, W, W, _, W, W, W, W,
-					W, W, W, W, W, _, W, W, W, _, W, _, _, _, W, _, W, _, W, _, _, _, _, _, _, _, W, _, W, _, W, W,
-					W, W, W, M, W, D, W, M, W, _, W, W, W, _, W, _, W, _, W, _, W, W, W, W, W, W, W, W, W, _, W, W,
-					W, W, W, T, T, T, T, T, W, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, W, _, _, _, _, _, W, W,
-					W, W, W, T, T, T, T, T, W, _, W, W, W, _, W, W, W, _, W, W, W, _, W, _, W, _, W, W, W, W, W, W,
-					W, W, W, T, T, T, T, T, W, _, W, _, W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, W, W,
-					W, W, W, T, T, T, T, T, W, _, W, _, W, _, W, W, W, _, W, W, W, W, W, _, W, W, W, W, W, _, W, W,
-					W, W, W, T, T, T, T, T, W, _, _, _, _, _, _, _, W, _, _, _, _, _, W, _, _, _, _, _, W, _, W, W,
+					W, W, W, W, _, _, _, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					_, _, _, D, _, _, _, D, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, W, _, _, _, W, W, M, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, W, W, M, W, W, W, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, W, W, D, W, W, W, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, W, W, _, W, W, W, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, M, W, W, _, W, W, M, W, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, D, _, D, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, _, _, _, W, _, W, _, _, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, M, W, W, _, W, W, M, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, W, W, _, W, W, W, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, M, W, D, W, M, W, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, T, T, T, T, T, W, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, T, T, T, T, T, W, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, T, T, T, T, T, W, _, W, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, W, W,
+					W, W, W, T, T, T, T, T, W, _, W, W, W, W, W, W, W, W, W, W, _, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, T, T, T, T, T, W, _, _, _, _, _, _, _, _, _, _, _, _, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
 
 	private static final int[] MAP_ARENA =
