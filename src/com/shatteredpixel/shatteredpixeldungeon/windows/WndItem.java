@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -37,14 +38,17 @@ public class WndItem extends Window {
 	
 	private static final float GAP	= 2;
 	
-	private static final int WIDTH = 120;
+	private static final int WIDTH_P = 120;
+	private static final int WIDTH_L = 144;
 	
 	public WndItem( final WndBag owner, final Item item ) {
 		
 		super();
-		
+
+		int width = ShatteredPixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
+
 		IconTitle titlebar = new IconTitle( item );
-		titlebar.setRect( 0, 0, WIDTH, 0 );
+		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
 
 		if (item.levelKnown && item.level() > 0) {
@@ -54,7 +58,7 @@ public class WndItem extends Window {
 		}
 		
 		BitmapTextMultiline info = PixelScene.createMultiline( item.info(), 6 );
-		info.maxWidth = WIDTH;
+		info.maxWidth = width;
 		info.measure();
 		info.x = titlebar.left();
 		info.y = titlebar.bottom() + GAP;
@@ -75,14 +79,14 @@ public class WndItem extends Window {
 					};
 				};
 				btn.setSize( Math.max( BUTTON_WIDTH, btn.reqWidth() ), BUTTON_HEIGHT );
-				if (x + btn.width() > WIDTH) {
+				if (x + btn.width() > width) {
 					x = 0;
 					y += BUTTON_HEIGHT + GAP;
 				}
 				btn.setPos( x, y );
 				add( btn );
 
-				if (action == item.defaultAction) {
+				if (action.equals(item.defaultAction)) {
 					btn.textColor( TITLE_COLOR );
 				}
 
@@ -90,6 +94,6 @@ public class WndItem extends Window {
 			}
 		}
 		
-		resize( WIDTH, (int)(y + (x > 0 ? BUTTON_HEIGHT : 0)) );
+		resize( width, (int)(y + (x > 0 ? BUTTON_HEIGHT : 0)) );
 	}
 }

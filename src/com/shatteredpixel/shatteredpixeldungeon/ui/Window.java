@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.utils.Signal;
 
+//TODO: need to do a big consistency pass on windows now that text size is consistent (larger in many cases)
 public class Window extends Group implements Signal.Listener<Key> {
 
 	protected int width;
