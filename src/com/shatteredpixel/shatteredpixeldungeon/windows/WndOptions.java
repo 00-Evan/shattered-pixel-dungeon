@@ -41,7 +41,7 @@ public class WndOptions extends Window {
 		tfTitle.measure();
 		add( tfTitle );
 		
-		BitmapTextMultiline tfMesage = PixelScene.createMultiline( message, 8 );
+		BitmapTextMultiline tfMesage = PixelScene.createMultiline( message, 6 );
 		tfMesage.maxWidth = WIDTH - MARGIN * 2;
 		tfMesage.measure();
 		tfMesage.x = MARGIN;
