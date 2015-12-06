@@ -24,7 +24,7 @@ import com.watabou.utils.Bundle;
 
 public enum HeroSubClass {
 
-	NONE( null, null ),
+	NONE( "none", null ),
 	
 	GLADIATOR( "gladiator",
 		"A successful attack with a melee weapon allows the _Gladiator_ to start a combo, " +
