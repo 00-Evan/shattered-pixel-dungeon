@@ -77,11 +77,7 @@ public enum HeroSubClass {
 	
 	public static HeroSubClass restoreInBundle( Bundle bundle ) {
 		String value = bundle.getString( SUBCLASS );
-		try {
-			return valueOf( value );
-		} catch (Exception e) {
-			return NONE;
-		}
+		return valueOf( value );
 	}
 	
 }
