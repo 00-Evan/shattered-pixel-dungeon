@@ -172,7 +172,7 @@ public class Tengu extends Mob {
 			do {
 				newPos = Random.Int(Level.LENGTH);
 			} while (
-					!Level.fieldOfView[newPos] ||
+					!(Dungeon.level.map[newPos] == Terrain.INACTIVE_TRAP || Dungeon.level.map[newPos] == Terrain.TRAP)||
 							Level.solid[newPos] ||
 							Level.adjacent(newPos, enemy.pos) ||
 							Actor.findChar(newPos) != null);
