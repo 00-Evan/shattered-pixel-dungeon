@@ -53,6 +53,8 @@ public class Guard extends Mob {
 
 		loot = null;    //see createloot.
 		lootChance = 1;
+
+		properties.add(Property.UNDEAD);
 	}
 
 	@Override

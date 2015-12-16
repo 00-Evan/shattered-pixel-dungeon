@@ -233,6 +233,7 @@ public class Yog extends Mob {
 			state = WANDERING;
 
 			properties.add(Property.BOSS);
+			properties.add(Property.UNDEAD);
 		}
 		
 		@Override

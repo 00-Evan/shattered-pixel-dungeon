@@ -69,22 +69,6 @@ public class WandOfTransfusion extends Wand {
 
 	private boolean freeCharge = false;
 
-	//FIXME: this is sloppy
-	private static HashSet<Class> undeadMobs = new HashSet<Class>(Arrays.asList(
-			//Any Location
-			Wraith.class,
-			//Sewers
-			FetidRat.class,
-			//Prison
-			Skeleton.class,
-			//City
-			Warlock.class, Monk.class, Senior.class,
-			King.class, King.Undead.class,
-			//Halls
-			Succubus.class,
-			Yog.RottingFist.class
-	));
-
 	@Override
 	protected void onZap(Ballistica beam) {
 
@@ -114,7 +98,7 @@ public class WandOfTransfusion extends Wand {
 				ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
 
 			//harms the undead
-			} else if (undeadMobs.contains(ch.getClass())){
+			} else if (ch.properties().contains(Char.Property.UNDEAD)){
 
 				//deals 30%+5%*lvl total HP.
 				int damage = (int) Math.ceil(ch.HT*(0.3f+(0.05f*level())));
