@@ -50,6 +50,8 @@ public class Mimic extends Mob {
 	{
 		name = "mimic";
 		spriteClass = MimicSprite.class;
+
+		properties.add(Property.DEMONIC);
 	}
 	
 	public ArrayList<Item> items;

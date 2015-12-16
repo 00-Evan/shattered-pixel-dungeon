@@ -59,25 +59,6 @@ public class WandOfPrismaticLight extends Wand {
 		collisionProperties = Ballistica.MAGIC_BOLT;
 	}
 
-	//FIXME: this is sloppy
-	private static HashSet<Class> evilMobs = new HashSet<Class>(Arrays.asList(
-			//Any Location
-			Mimic.class, Wraith.class,
-			//Sewers
-			FetidRat.class,
-			Goo.class,
-			//Prison
-			Skeleton.class , Thief.class, Bandit.class,
-			//Caves
-
-			//City
-			Warlock.class, Monk.class, Senior.class,
-			King.class, King.Undead.class,
-			//Halls
-			Succubus.class, Eye.class, Scorpio.class, Acidic.class,
-			Yog.class, Yog.RottingFist.class, Yog.BurningFist.class, Yog.Larva.class
-	));
-
 	@Override
 	protected void onZap(Ballistica beam) {
 		Char ch = Actor.findChar(beam.collisionPos);
@@ -100,7 +81,7 @@ public class WandOfPrismaticLight extends Wand {
 			ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
 		}
 
-		if (evilMobs.contains(ch.getClass())){
+		if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties().contains(Char.Property.UNDEAD)){
 			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+level() );
 			Sample.INSTANCE.play(Assets.SND_BURNING);
 
@@ -173,7 +154,7 @@ public class WandOfPrismaticLight extends Wand {
 			"This wand is made of a solid piece of translucent crystal, like a long chunk of smooth glass. " +
 			"It becomes clear towards the tip, where you can see colorful lights dancing around inside it.\n\n" +
 			"This wand shoots rays of light which damage and blind enemies and cut through the darkness of the dungeon, " +
-			"revealing hidden areas and traps. Evildoers, demons, and the undead will burn in the bright light " +
+			"revealing hidden areas and traps. Demonic and undead foes will burn in the bright light " +
 			"of the wand, taking significant bonus damage.";
 	}
 }

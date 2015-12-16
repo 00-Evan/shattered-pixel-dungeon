@@ -60,6 +60,8 @@ public class Eye extends Mob {
 		
 		loot = new Dewdrop();
 		lootChance = 0.5f;
+
+		properties.add(Property.DEMONIC);
 	}
 	
 	@Override

@@ -63,6 +63,7 @@ public class Goo extends Mob {
 		lootChance = 0.333f;
 
 		properties.add(Property.BOSS);
+		properties.add(Property.DEMONIC);
 	}
 
 	private int pumpedUp = 0;

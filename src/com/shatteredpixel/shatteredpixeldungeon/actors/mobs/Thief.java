@@ -56,6 +56,8 @@ public class Thief extends Mob {
 		lootChance = 0.01f;
 
 		FLEEING = new Fleeing();
+
+		properties.add(Property.DEMONIC);
 	}
 
 	private static final String ITEM = "item";

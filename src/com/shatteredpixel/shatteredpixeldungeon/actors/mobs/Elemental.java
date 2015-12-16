@@ -51,6 +51,8 @@ public class Elemental extends Mob {
 		
 		loot = new PotionOfLiquidFlame();
 		lootChance = 0.1f;
+
+		properties.add(Property.DEMONIC);
 	}
 	
 	@Override

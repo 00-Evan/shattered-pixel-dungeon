@@ -59,6 +59,8 @@ public class Succubus extends Mob {
 		
 		loot = new ScrollOfLullaby();
 		lootChance = 0.05f;
+
+		properties.add(Property.DEMONIC);
 	}
 	
 	@Override

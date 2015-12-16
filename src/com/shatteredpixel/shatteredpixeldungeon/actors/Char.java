@@ -456,7 +456,7 @@ public abstract class Char extends Actor {
 		BOSS,
 		MINIBOSS,
 		UNDEAD,
-		EVIL,
+		DEMONIC,
 		IMMOVABLE
 	}
 }
