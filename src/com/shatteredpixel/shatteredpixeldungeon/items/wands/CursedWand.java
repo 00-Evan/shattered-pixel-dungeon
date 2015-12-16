@@ -214,7 +214,14 @@ public class CursedWand {
 						if (Actor.findChar(pos) != null && bolt.dist > 1) {
 							pos = bolt.path.get(bolt.dist - 1);
 						}
-						Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), pos);
+
+						if (pos == Terrain.EMPTY ||
+								pos == Terrain.EMBERS ||
+								pos == Terrain.EMPTY_DECO ||
+								pos == Terrain.GRASS ||
+								pos == Terrain.HIGH_GRASS) {
+							Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), pos);
+						}
 						wand.wandUsed();
 					}
 				});
