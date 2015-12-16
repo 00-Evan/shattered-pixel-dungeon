@@ -61,6 +61,8 @@ public class Goo extends Mob {
 
 		loot = new LloydsBeacon().identify();
 		lootChance = 0.333f;
+
+		properties.add(Property.BOSS);
 	}
 
 	private int pumpedUp = 0;

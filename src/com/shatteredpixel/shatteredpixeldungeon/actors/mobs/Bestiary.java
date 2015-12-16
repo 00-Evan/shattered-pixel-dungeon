@@ -179,10 +179,4 @@ public class Bestiary {
 		
 		return classes[ Random.chances( chances )];
 	}
-	
-	public static boolean isUnique( Char mob ) {
-		return mob instanceof Goo || mob instanceof Tengu || mob instanceof DM300 || mob instanceof King
-				|| mob instanceof Yog.BurningFist || mob instanceof Yog.RottingFist
-			|| mob instanceof FetidRat || mob instanceof GnollTrickster || mob instanceof GreatCrab;
-	}
 }

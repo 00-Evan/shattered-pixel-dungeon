@@ -48,13 +48,6 @@ public class WandOfCorruption extends Wand {
 		image = ItemSpriteSheet.WAND_CORRUPTION;
 	}
 
-	//FIXME: sloppy
-	private static HashSet<Class> bosses = new HashSet<Class>(Arrays.asList(
-			FetidRat.class, GnollTrickster.class, GreatCrab.class,
-			Goo.class, Tengu.class, DM300.class, King.class,
-			Yog.class, Yog.BurningFist.class, Yog.RottingFist.class
-	));
-
 	@Override
 	protected void onZap(Ballistica bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
@@ -66,7 +59,7 @@ public class WandOfCorruption extends Wand {
 				return;
 			}
 
-			if (bosses.contains(ch.getClass())){
+			if (ch.properties().contains(Char.Property.BOSS) || ch.properties().contains(Char.Property.MINIBOSS)){
 				GLog.w("Bosses are immune to corruption");
 				return;
 			}

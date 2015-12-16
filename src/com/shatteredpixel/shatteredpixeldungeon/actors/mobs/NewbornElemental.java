@@ -40,6 +40,7 @@ public class NewbornElemental extends Elemental {
 
 		EXP = 7;
 
+		properties.add(Property.MINIBOSS);
 	}
 
 	@Override

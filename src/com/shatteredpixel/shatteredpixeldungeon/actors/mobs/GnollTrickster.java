@@ -50,6 +50,8 @@ public class GnollTrickster extends Gnoll {
 
 		loot = Generator.random(CurareDart.class);
 		lootChance = 1f;
+
+		properties.add(Property.MINIBOSS);
 	}
 
 	private int combo = 0;

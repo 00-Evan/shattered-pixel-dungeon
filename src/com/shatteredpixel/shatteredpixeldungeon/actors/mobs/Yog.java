@@ -71,6 +71,7 @@ public class Yog extends Mob {
 		
 		state = PASSIVE;
 
+		properties.add(Property.BOSS);
 		properties.add(Property.IMMOVABLE);
 	}
 	
@@ -230,6 +231,8 @@ public class Yog extends Mob {
 			EXP = 0;
 			
 			state = WANDERING;
+
+			properties.add(Property.BOSS);
 		}
 		
 		@Override
@@ -320,6 +323,8 @@ public class Yog extends Mob {
 			EXP = 0;
 			
 			state = WANDERING;
+
+			properties.add(Property.BOSS);
 		}
 		
 		@Override

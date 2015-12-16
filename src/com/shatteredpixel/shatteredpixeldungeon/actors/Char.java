@@ -165,7 +165,7 @@ public abstract class Char extends Actor {
 
 						if ( this instanceof Yog ) {
 							Dungeon.fail( Utils.format( ResultDescriptions.NAMED, name) );
-						} if (Bestiary.isUnique( this )) {
+						} else if (properties().contains(Property.MINIBOSS) || properties().contains(Property.BOSS)) {
 							Dungeon.fail( Utils.format( ResultDescriptions.UNIQUE, name) );
 						} else {
 							Dungeon.fail( Utils.format( ResultDescriptions.MOB, Utils.indefinite( name )) );

@@ -66,6 +66,8 @@ public class King extends Mob {
 		defenseSkill = 25;
 		
 		Undead.count = 0;
+
+		properties.add(Property.BOSS);
 	}
 	
 	private boolean nextPedestal = true;

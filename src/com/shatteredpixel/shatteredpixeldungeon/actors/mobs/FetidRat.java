@@ -44,6 +44,8 @@ public class FetidRat extends Rat {
 		EXP = 4;
 
 		state = WANDERING;
+
+		properties.add(Property.MINIBOSS);
 	}
 
 	@Override

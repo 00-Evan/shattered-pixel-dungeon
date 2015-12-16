@@ -45,6 +45,7 @@ public class RotHeart extends Mob {
 		state = PASSIVE;
 
 		properties.add(Property.IMMOVABLE);
+		properties.add(Property.MINIBOSS);
 	}
 
 	@Override

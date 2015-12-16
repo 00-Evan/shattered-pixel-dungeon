@@ -42,6 +42,8 @@ public class GreatCrab extends Crab {
 		EXP = 6;
 
 		state = WANDERING;
+
+		properties.add(Property.MINIBOSS);
 	}
 
 	private int moving = 0;
