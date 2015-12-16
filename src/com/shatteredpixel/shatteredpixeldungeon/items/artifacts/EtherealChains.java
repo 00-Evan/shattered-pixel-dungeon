@@ -110,8 +110,11 @@ public class EtherealChains extends Artifact {
 						final int newMobPos = newPos;
 						final Char affected = Actor.findChar( chain.collisionPos );
 						int chargeUse = Level.distance(affected.pos, newMobPos);
-						if (chargeUse > charge){
+						if (chargeUse > charge) {
 							GLog.w("Your chains do not have enough charge.");
+							return;
+						} else if (affected.properties().contains(Char.Property.IMMOVABLE)) {
+							GLog.w("Your chains cannot pull that target");
 							return;
 						} else {
 							charge -= chargeUse;

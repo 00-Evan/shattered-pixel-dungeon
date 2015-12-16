@@ -112,7 +112,7 @@ public class WandOfBlastWave extends Wand {
 		if ((ch instanceof King) || (ch instanceof Golem) || (ch instanceof Yog.RottingFist))
 			dist /= 2;
 
-		if (dist == 0 || ch instanceof Yog || ch instanceof RotLasher || ch instanceof RotHeart) return;
+		if (dist == 0 || ch.properties().contains(Char.Property.IMMOVABLE)) return;
 
 		if (Actor.findChar(trajectory.path.get(dist)) != null){
 			dist--;

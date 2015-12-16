@@ -40,18 +40,13 @@ public class Shopkeeper extends NPC {
 	{
 		name = "shopkeeper";
 		spriteClass = ShopkeeperSprite.class;
+
+		properties.add(Property.IMMOVABLE);
 	}
 	
 	@Override
 	protected boolean act() {
 
-		if (startPos == -1) startPos = pos;
-
-		if (startPos != pos){
-			flee();
-			return true;
-		}
-		
 		throwItem();
 		
 		sprite.turnTo( pos, Dungeon.hero.pos );

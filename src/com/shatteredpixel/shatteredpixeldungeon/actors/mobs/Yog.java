@@ -70,6 +70,8 @@ public class Yog extends Mob {
 		EXP = 50;
 		
 		state = PASSIVE;
+
+		properties.add(Property.IMMOVABLE);
 	}
 	
 	private static final String TXT_DESC =

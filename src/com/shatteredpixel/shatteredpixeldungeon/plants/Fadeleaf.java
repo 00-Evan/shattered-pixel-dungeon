@@ -51,7 +51,7 @@ public class Fadeleaf extends Plant {
 			ScrollOfTeleportation.teleportHero( (Hero)ch );
 			((Hero)ch).curAction = null;
 			
-		} else if (ch instanceof Mob) {
+		} else if (ch instanceof Mob && !ch.properties().contains(Char.Property.IMMOVABLE)) {
 
 			int count = 10;
 			int newPos;

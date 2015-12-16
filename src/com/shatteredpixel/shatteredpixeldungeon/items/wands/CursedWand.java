@@ -155,7 +155,7 @@ public class CursedWand {
 						cursedFX(user, bolt, new Callback() {
 							public void call() {
 								Char ch = Actor.findChar( bolt.collisionPos );
-								if (ch != null) {
+								if (ch != null && !ch.properties().contains(Char.Property.IMMOVABLE)) {
 									int count = 10;
 									int pos;
 									do {

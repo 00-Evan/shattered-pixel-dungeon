@@ -447,4 +447,16 @@ public abstract class Char extends Actor {
 	public HashSet<Class<?>> immunities() {
 		return EMPTY;
 	}
+
+	protected HashSet<Property> properties = new HashSet<>();
+
+	public HashSet<Property> properties() { return properties; }
+
+	public enum Property{
+		BOSS,
+		MINIBOSS,
+		UNDEAD,
+		EVIL,
+		IMMOVABLE
+	}
 }

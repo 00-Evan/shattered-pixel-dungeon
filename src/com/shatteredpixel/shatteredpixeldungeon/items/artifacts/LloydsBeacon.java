@@ -241,9 +241,7 @@ public class LloydsBeacon extends Artifact {
 
 									GLog.w(ScrollOfTeleportation.TXT_NO_TELEPORT);
 
-								//FIXME: sloppy, fix when adding mob properties
-								} else if (ch instanceof RotLasher || ch instanceof RotHeart
-										|| ch instanceof Shopkeeper || ch instanceof Wandmaker) {
+								} else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
 
 									GLog.w("The teleportation magic fails.");
 

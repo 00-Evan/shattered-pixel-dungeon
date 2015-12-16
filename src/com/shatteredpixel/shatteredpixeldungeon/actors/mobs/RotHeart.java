@@ -43,6 +43,8 @@ public class RotHeart extends Mob {
 		EXP = 4;
 
 		state = PASSIVE;
+
+		properties.add(Property.IMMOVABLE);
 	}
 
 	@Override

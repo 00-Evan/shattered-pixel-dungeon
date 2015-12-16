@@ -49,6 +49,8 @@ public class RotLasher extends Mob {
 		lootChance = 1f;
 
 		state = WANDERING = new Waiting();
+
+		properties.add(Property.IMMOVABLE);
 	}
 
 	@Override
