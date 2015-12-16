@@ -65,6 +65,7 @@ public class Guard extends Mob {
 		Dungeon.level.updateFieldOfView( this );
 
 		if (state == HUNTING &&
+				paralysed <= 0 &&
 				enemy != null &&
 				enemy.invisible == 0 &&
 				Level.fieldOfView[enemy.pos] &&
