@@ -1056,8 +1056,10 @@ public class Hero extends Char {
 			} else {
 				curAction = new HeroAction.Attack( ch );
 			}
-			
-		} else if ((heap = Dungeon.level.heaps.get( cell )) != null) {
+
+		} else if ((heap = Dungeon.level.heaps.get( cell )) != null
+				//moving to an item doesn't auto-pickup when enemies are near.
+				&& (visibleEnemies.size() == 0 || cell == pos)) {
 
 			switch (heap.type) {
 			case HEAP:
