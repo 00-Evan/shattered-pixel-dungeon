@@ -20,14 +20,13 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotLasherSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Random;
@@ -55,15 +54,19 @@ public class RotLasher extends Mob {
 
 	@Override
 	protected boolean act() {
-		if (Dungeon.level.map[pos] != Terrain.GRASS && Dungeon.level.map[pos] != Terrain.HIGH_GRASS){
+		if (enemy == null || !Level.adjacent(pos, enemy.pos)) {
+			HP = Math.min(HT, HP + 3);
+		}
+		return super.act();
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
+		if (src instanceof Burning) {
 			destroy();
 			sprite.die();
-			return true;
 		} else {
-			if (enemy == null || !Level.adjacent(pos, enemy.pos)) {
-				HP = Math.min(HT, HP + 3);
-			}
-			return super.act();
+			super.damage(dmg, src);
 		}
 	}
 
