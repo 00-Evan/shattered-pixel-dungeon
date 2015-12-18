@@ -207,9 +207,15 @@ public class ShatteredPixelDungeon extends Game {
 	 */
 	
 	public static void landscape( boolean value ) {
-		Game.instance.setRequestedOrientation( value ?
-			ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
-			ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
+		if (android.os.Build.VERSION.SDK_INT >= 9) {
+			Game.instance.setRequestedOrientation(value ?
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+		} else {
+			Game.instance.setRequestedOrientation(value ?
+					ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
+					ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
 		Preferences.INSTANCE.put( Preferences.KEY_LANDSCAPE, value );
 	}
 	
