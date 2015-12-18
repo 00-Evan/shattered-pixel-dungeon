@@ -39,7 +39,7 @@ public class WelcomeScene extends PixelScene {
 
 	private static final String TTL_Welcome = "Welcome!";
 
-	private static final String TTL_Update = "v0.3.2: The Prison Rework!";
+	private static final String TTL_Update = "v0.3.3: Google Play Games!";
 
 	private static final String TTL_Future = "Wait What?";
 
@@ -63,63 +63,29 @@ public class WelcomeScene extends PixelScene {
 				"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-				"v0.3.2c:\n" +
-					"- Visual improvements from 1.9.1 source\n" +
-					"- Improved golden UI for donators\n" +
-					"- Various bug and crash fixes\n" +
-					"- Reduced gnoll shaman magic damage\n" +
-					"- Added visuals for warlock's soul mark\n" +
-					"- soul mark now lasts less time\n" +
-					"\n" +
-					"v0.3.2b:\n" +
-					"- Fixed various bugs\n" +
-					"- Floor locking tweaked, now only pauses passive effects when avoiding battle.\n" +
-					"\n" +
-					"v0.3.2a:\n" +
-					"- Fixed various bugs\n" +
-					"- Thieves now flee at 5/6 speed\n" +
-					"- Reduced blind/cripple from bandits\n" +
-					"- Tengu moves less on his second phase\n" +
-					"\n" +
-					"v0.3.2:\n" +
-					"Prison Rework!:\n" +
-					"- Tengu boss fight completely redone\n" +
-					"- Corpse dust quest overhauled\n" +
-					"- Rotberry quest overhauled\n" +
-					"- NEW elemental embers quest\n" +
-					"- NEW prison mob: insane prison guards!\n" +
-					"- Thieves can escape with a stolen item\n" +
-					"- Gnoll shaman attack speed increased\n" +
-					"\n" +
-					"BIG BALANCE CHANGES: \n" +
-					"- Mastery Book is not attainable until floor 10, even when unlocked\n" +
-					"- Hunger damage now increases with hero level, but starts out lower \n" +
-					" \n" +
-					"Sewers rebalance: \n" +
-					"- Marsupial rat dmg and evasion reduced\n" +
-					"- Gnoll scout accuracy reduced\n" +
-					"- Sewer crabs less likely to spawn on floor 3, grant more exp\n" +
-					"- Fly swarms rebalanced, moved to the sewers\n" +
-					"- Great Crab HP reduced \n" +
-					"- Goo fight rebalanced \n" +
-					" \n" +
-					"Base Class Changes: \n" +
-					"- Mage's staff base damage increased \n" +
-					"- Huntress now starts with 20 hp \n" +
-					"- Huntress no longer heals more from dew \n" +
-					"- Rogue's cloak of shadows now drains less while invisible\n" +
-					" \n" +
-					"Subclass Changes: \n" +
-					"- Berserker now starts raging at 50% hp (up from 40%) \n" +
-					"- Warden now heals 2 extra HP from dew \n" +
-					"- Warlock completely overhauled\n" +
-					"\n" +
-					"Misc. changes:\n" +
-					"- Fixed 'white line' graphical artifacts\n" +
-					"- Floor locking now pauses all passive effects, not just hunger\n" +
-					"- Cursed chains now only cripple, do not root\n" +
-					"- Warping trap rebalanced, much less harsh\n" +
-					"- Various other bugfixes";
+				"Support for Google Play Games:\n" +
+				"- Badges can now sync across devices\n" +
+				"- Five Google Play Achievements added\n" +
+				"- Rankings sync will come in future\n" +
+				"\n" +
+				"Press the controller button in the main menu to learn more\n" +
+				"\n" +
+				"Shattered remains a 100% offline game if Google Play Games is not enabled\n" +
+				"\n" +
+				"\n" +
+				"Gameplay Changes:\n" +
+				"- Tengu's maze is now different each time\n" +
+				"- Items no longer auto-pickup when enemies are near\n" +
+				"\n" +
+				"Fixes:\n" +
+				"- Fixed several bugs with prison enemies\n" +
+				"- Fixed some landscape window size issues\n" +
+				"- Fixed other minor bugs\n" +
+				"\n" +
+				"Misc:\n" +
+				"- Added support for reverse landscape\n" +
+				"\n" +
+				"There's a lot of behind-the-scenes technical changes in this update, so let me know if you run into any issues!";
 
 	private static final String TXT_Future =
 			"It seems that your current saves are from a future version of Shattered Pixel Dungeon!\n\n"+
