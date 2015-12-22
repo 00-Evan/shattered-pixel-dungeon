@@ -39,7 +39,7 @@ public class WelcomeScene extends PixelScene {
 
 	private static final String TTL_Welcome = "Welcome!";
 
-	private static final String TTL_Update = "v0.3.3: Google Play Games!";
+	private static final String TTL_Update = "v0.3.3";
 
 	private static final String TTL_Future = "Wait What?";
 
@@ -63,16 +63,6 @@ public class WelcomeScene extends PixelScene {
 				"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
-				"Support for Google Play Games:\n" +
-				"- Badges can now sync across devices\n" +
-				"- Five Google Play Achievements added\n" +
-				"- Rankings sync will come in future\n" +
-				"\n" +
-				"Press the controller button in the main menu to learn more\n" +
-				"\n" +
-				"Shattered remains a 100% offline game if Google Play Games is not enabled\n" +
-				"\n" +
-				"\n" +
 				"Gameplay Changes:\n" +
 				"- Tengu's maze is now different each time\n" +
 				"- Items no longer auto-pickup when enemies are near\n" +
