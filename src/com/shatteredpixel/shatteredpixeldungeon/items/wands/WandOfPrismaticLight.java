@@ -68,7 +68,7 @@ public class WandOfPrismaticLight extends Wand {
 		}
 		affectMap(beam);
 
-		if (curUser.viewDistance < 4)
+		if (Dungeon.level.viewDistance < 4)
 			Buff.prolong( curUser, Light.class, 10f+level()*5);
 	}
 
