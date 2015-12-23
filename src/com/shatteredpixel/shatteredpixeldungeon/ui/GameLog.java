@@ -53,6 +53,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 		for (Entry entry : entries) {
 			lastEntry = PixelScene.createMultiline( entry.text, 6 );
 			lastEntry.hardlight( lastColor = entry.color );
+			lastEntry.measure();
 			add( lastEntry );
 		}
 	}
@@ -63,6 +64,11 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 	@Override
 	public void onSignal( String text ) {
+
+		if (length != entries.size()){
+			clear();
+			recreateLines();
+		}
 
 		int color = CharSprite.DEFAULT;
 		if (text.startsWith( GLog.POSITIVE )) {
@@ -97,6 +103,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 			lastEntry = PixelScene.createMultiline( text, 6 );
 			lastEntry.hardlight( color );
+			lastEntry.measure();
 			lastColor = color;
 			add( lastEntry );
 
@@ -108,7 +115,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 			int nLines;
 			do {
 				nLines = 0;
-				for (int i = 0; i < length; i++) {
+				for (int i = 0; i < length-1; i++) {
 					nLines += ((BitmapTextMultiline) members.get(i)).nLines;
 				}
 
