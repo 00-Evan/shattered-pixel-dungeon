@@ -167,7 +167,9 @@ public class Tengu extends Mob {
 				ScrollOfMagicMapping.discover( trapPos );
 			}
 		}
-		
+
+		if (enemy == null) enemy = chooseEnemy();
+
 		int newPos;
 		//if we're in phase 1, want to warp around within the room
 		if (HP > HT/2) {
