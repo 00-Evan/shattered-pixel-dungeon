@@ -20,6 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.noosa.TextureFilm;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
@@ -74,12 +76,15 @@ public class TenguSprite extends MobSprite {
 	@Override
 	public void attack( int cell ) {
 		if (!Level.adjacent( cell, ch.pos )) {
-			
+
+			final Char enemy = Actor.findChar(cell);
+
 			((MissileSprite)parent.recycle( MissileSprite.class )).
 				reset( ch.pos, cell, new Shuriken(), new Callback() {
 					@Override
 					public void call() {
-						ch.onAttackComplete();
+						ch.next();
+						if (enemy != null) ch.attack(enemy);
 					}
 				} );
 			

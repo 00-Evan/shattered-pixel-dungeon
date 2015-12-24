@@ -113,6 +113,8 @@ public abstract class Char extends Actor {
 	}
 	
 	public boolean attack( Char enemy ) {
+
+		if (enemy == null || !enemy.isAlive()) return false;
 		
 		boolean visibleFight = Dungeon.visible[pos] || Dungeon.visible[enemy.pos];
 		
