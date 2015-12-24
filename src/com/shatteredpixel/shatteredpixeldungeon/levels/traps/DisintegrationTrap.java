@@ -77,7 +77,7 @@ public class DisintegrationTrap extends Trap {
 						bag = (Bag)item;
 						item = Random.element(bag.items);
 					}
-					if (item.level() > 0 || item.unique) return;
+					if (item == null || item.level() > 0 || item.unique) return;
 					if (!item.stackable){
 						item.detachAll(bag);
 						GLog.w("the trap disintegrates your " + item.name() + "!");
