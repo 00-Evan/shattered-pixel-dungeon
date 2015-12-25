@@ -1058,8 +1058,10 @@ public class Hero extends Char {
 			}
 
 		} else if ((heap = Dungeon.level.heaps.get( cell )) != null
-				//moving to an item doesn't auto-pickup when enemies are near.
-				&& (visibleEnemies.size() == 0 || cell == pos)) {
+				//moving to an item doesn't auto-pickup when enemies are near...
+				&& (visibleEnemies.size() == 0 || cell == pos ||
+				//...but only for standard heaps, chests and similar open as normal.
+				(heap.type != Type.HEAP && heap.type != Type.FOR_SALE))) {
 
 			switch (heap.type) {
 			case HEAP:
