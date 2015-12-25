@@ -24,10 +24,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ThiefSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -188,6 +191,26 @@ public class Thief extends Mob {
 					sprite.showStatus(CharSprite.NEGATIVE, TXT_RAGE);
 					state = HUNTING;
 				} else {
+
+					int count = 32;
+					int newPos;
+					do {
+						newPos = Dungeon.level.randomRespawnCell();
+						if (count-- <= 0) {
+							break;
+						}
+					} while (newPos == -1 || Dungeon.visible[newPos] || Level.distance(newPos, pos) < (count/3));
+
+					if (newPos != -1) {
+
+						if (Dungeon.visible[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
+						pos = newPos;
+						sprite.place( pos );
+						sprite.visible = Dungeon.visible[pos];
+						if (Dungeon.visible[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
+
+					}
+
 					if (item != null) GLog.n("The thief gets away with your " + item.name() + "!");
 					item = null;
 					state = WANDERING;
