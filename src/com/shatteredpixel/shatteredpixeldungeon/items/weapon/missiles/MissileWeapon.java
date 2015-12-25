@@ -147,7 +147,8 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public String info() {
-		
+
+		String name = name();
 		StringBuilder info = new StringBuilder( desc() );
 		
 		info.append( "\n\nAverage damage of this weapon equals to " + (min() + (max() - min()) / 2) + " points per hit. " );

@@ -87,7 +87,7 @@ public class MeleeWeapon extends Weapon {
 	
 	@Override
 	public String info() {
-		
+		String name = name();
 		final String p = "\n\n";
 		
 		StringBuilder info = new StringBuilder( desc() );
