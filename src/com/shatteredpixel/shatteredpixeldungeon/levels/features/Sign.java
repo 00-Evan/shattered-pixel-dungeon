@@ -90,9 +90,9 @@ public class Sign {
 		"Pixel-Mart. Special prices for demon hunters!",
 
 		//hmm.. I wonder what this is?
-		"ConCealed mineral",
-		"sPrained Worn",
-		"Pinker soRrow"
+		"error RaW i work",
+		"frOthinG moBs yelp",
+		"CoCoOn furor rises"
 	};
 	
 	private static final String TXT_BURN =
