@@ -177,14 +177,13 @@ public class SandalsOfNature extends Artifact {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
-		bundle.put(NAME, name);
 		bundle.put(SEEDS, seeds.toArray(new String[seeds.size()]));
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		name = bundle.getString( NAME );
+		name = NAMES[level()+1];
 		if (bundle.contains(SEEDS))
 			Collections.addAll(seeds , bundle.getStringArray(SEEDS));
 	}
