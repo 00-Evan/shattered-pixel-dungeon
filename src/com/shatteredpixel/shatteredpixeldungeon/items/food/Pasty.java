@@ -20,23 +20,88 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+
+import java.util.Calendar;
 
 public class Pasty extends Food {
 
+	//TODO: implement fun stuff for other holidays
+	//TODO: probably should externalize this if I want to add any more festive stuff.
+	private enum Holiday{
+		NONE,
+		EASTER, //TBD
+		HALLOWEEN,//TBD
+		XMAS //3rd week of december through first week of january
+	}
+
+	private static Holiday holiday;
+
+	static{
+		final Calendar calendar = Calendar.getInstance();
+		holiday = Holiday.NONE;
+		//we add 1 to turn it into standard calendar months (1-12 instead of 0-11)
+		switch(calendar.get(Calendar.MONTH)+1){
+			case 1:
+				if (calendar.get(Calendar.WEEK_OF_MONTH) == 1){
+					holiday = Holiday.XMAS;
+				}
+				break;
+			case 12:
+				if (calendar.get(Calendar.WEEK_OF_MONTH) >= 3){
+					holiday = Holiday.XMAS;
+				}
+				break;
+		}
+	}
+
 	{
-		name = "pasty";
-		image = ItemSpriteSheet.PASTY;
+
+		switch(holiday){
+			case NONE:
+				name = "pasty";
+				image = ItemSpriteSheet.PASTY;
+			break;
+			case XMAS:
+				name = "candy cane";
+				image = ItemSpriteSheet.CANDY_CANE;
+				break;
+		}
+
 		energy = Hunger.STARVING;
 		hornValue = 5;
 
 		bones = true;
 	}
-	
+
+	@Override
+	public void execute(Hero hero, String action) {
+		super.execute(hero, action);
+		if (action.equals(AC_EAT)){
+			switch(holiday){
+				case NONE: default:
+					break; //do nothing extra
+				case XMAS:
+					Buff.affect( hero, ScrollOfRecharging.Recharging.class, 2f ); //half of a charge
+					ScrollOfRecharging.charge( hero );
+					break;
+			}
+		}
+	}
+
 	@Override
 	public String info() {
-		return "This is authentic Cornish pasty with traditional filling of beef and potato.";
+		switch(holiday){
+			case NONE: default:
+				return "This is authentic Cornish pasty with traditional filling of beef and potato.";
+			case XMAS:
+				return "A huge sugary sweet candy cane! It's big enough to fill you up, " +
+						"and the sugar might give your wands a tiny bit of extra charge too.\n\nHappy Holidays!";
+		}
 	}
 	
 	@Override

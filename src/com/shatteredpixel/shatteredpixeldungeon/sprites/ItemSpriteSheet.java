@@ -220,6 +220,7 @@ public class ItemSpriteSheet {
 	public static final int BLANDFRUIT	= ROW13+4;
 	public static final int RATION		= ROW13+5;
 	public static final int PASTY		= ROW13+6;
+	public static final int CANDY_CANE  = ROW13+7;
 
 	//Row Fourteen: Quest Items
 	public static final int SKULL	= ROW14+0;
