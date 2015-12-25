@@ -33,7 +33,7 @@ public class NewbornElementalSprite extends MobSprite{
 
 		texture( Assets.ELEMENTAL );
 
-		int ofs = 22;
+		int ofs = 21;
 
 		TextureFilm frames = new TextureFilm( texture, 12, 14 );
 
