@@ -641,11 +641,11 @@ public abstract class Mob extends Char {
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
-			if (enemyInFOV) {
-				target = enemy.pos;
 			//loses target when 0-dist rolls a 6 or greater.
-			} else if (1 + Random.Int(Level.distance(pos, target)) >= 6){
+			if (!enemyInFOV && 1 + Random.Int(Level.distance(pos, target)) >= 6){
 				target = -1;
+			} else {
+				target = enemy.pos;
 			}
 
 			int oldPos = pos;
