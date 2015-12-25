@@ -233,7 +233,7 @@ public class Ring extends KindofMisc {
 	
 	@Override
 	public String name() {
-		return isKnown() ? name : gem + " ring";
+		return isKnown() ? super.name() : gem + " ring";
 	}
 	
 	@Override
