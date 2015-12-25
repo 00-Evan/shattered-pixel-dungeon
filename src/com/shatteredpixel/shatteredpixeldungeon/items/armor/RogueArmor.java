@@ -93,7 +93,7 @@ public class RogueArmor extends ClassArmor {
 
 				curUser.HP -= (curUser.HP / 3);
 				
-				for (Mob mob : Dungeon.level.mobs) {
+				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])) {
 					if (Level.fieldOfView[mob.pos]) {
 						Buff.prolong( mob, Blindness.class, 2 );
 						if (mob.state == mob.HUNTING) mob.state = mob.WANDERING;
