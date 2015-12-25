@@ -63,6 +63,10 @@ public class WelcomeScene extends PixelScene {
 				"Happy Dungeoneering!";
 
 	private static final String TXT_Update =
+				"v0.3.3b:\n" +
+				"- Fixed start-crash on android 2.2\n" +
+				"- Fixed various crash bugs\n" +
+				"\n" +
 				"v0.3.3a:\n" +
 				"- Added a small holiday treat ;)\n" +
 				"- Thieves now disappear when they get away\n" +
