@@ -22,6 +22,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -32,6 +34,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 
 public class CeremonialCandle extends Item {
@@ -93,7 +98,23 @@ public class CeremonialCandle extends Item {
 				heapLeft.pickUp();
 
 				NewbornElemental elemental = new NewbornElemental();
-				elemental.pos = ritualPos;
+				Char ch = Actor.findChar( ritualPos );
+				if (ch != null) {
+					ArrayList<Integer> candidates = new ArrayList<>();
+					for (int n : Level.NEIGHBOURS8) {
+						int cell = ritualPos + n;
+						if ((Level.passable[cell] || Level.avoid[cell]) && Actor.findChar( cell ) == null) {
+							candidates.add( cell );
+						}
+					}
+					if (candidates.size() > 0) {
+						elemental.pos = Random.element( candidates );
+					} else {
+						elemental.pos = ritualPos;
+					}
+				} else {
+					elemental.pos = ritualPos;
+				}
 				elemental.state = elemental.HUNTING;
 				GameScene.add(elemental, 1);
 
