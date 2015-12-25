@@ -57,7 +57,7 @@ public class MagesStaff extends MeleeWeapon {
 	private static final float STAFF_SCALE_FACTOR = 0.75f;
 
 	{
-		name = "staff";
+		name = "mage's staff";
 		image = ItemSpriteSheet.MAGES_STAFF;
 
 		defaultAction = AC_ZAP;
@@ -86,6 +86,7 @@ public class MagesStaff extends MeleeWeapon {
 		this.wand = wand;
 		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
 		wand.curCharges = wand.maxCharges;
+		name = wand.name().replace("Wand", "Staff");
 	}
 
 	@Override
@@ -179,6 +180,8 @@ public class MagesStaff extends MeleeWeapon {
 		wand.cursed = false;
 		wand.charge(owner);
 
+		name = wand.name().replace("Wand", "Staff");
+
 		updateQuickslot();
 
 		return this;
@@ -228,16 +231,6 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
-	public String name(){
-		if (wand == null)
-			return "mage's staff";
-		else {
-			String name = wand.name().replace("Wand", "Staff");
-			return enchantment == null ? name : enchantment.name( name );
-		}
-	}
-
-	@Override
 	public String info() {
 		return super.info();
 	}
@@ -264,7 +257,10 @@ public class MagesStaff extends MeleeWeapon {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		wand = (Wand) bundle.get(WAND);
-		if (wand != null) wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+		if (wand != null) {
+			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+			name = wand.name().replace("Wand", "Staff");
+		}
 	}
 
 	@Override
