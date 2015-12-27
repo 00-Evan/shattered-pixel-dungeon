@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
@@ -42,45 +43,49 @@ import com.watabou.utils.Bundle;
 
 public enum HeroClass {
 
-	WARRIOR( "warrior" ), MAGE( "mage" ), ROGUE( "rogue" ), HUNTRESS( "huntress" );
+	WARRIOR( "warrior" ),
+	MAGE( "mage" ),
+	ROGUE( "rogue" ),
+	HUNTRESS( "huntress" );
 	
 	private String title;
 	
-	private HeroClass( String title ) {
+	HeroClass( String title ) {
 		this.title = title;
 	}
-	
+
+	//TODO: need to make all these Messages references non-static
 	public static final String[] WAR_PERKS = {
-		"The Warrior starts with 11 points of Strength.",
-		"The Warrior starts with a unique short sword. This sword can be later \"reforged\" to upgrade another melee weapon.",
-		"The Warrior is less proficient with missile weapons.",
-		"Any piece of food restores some health when eaten.",
-		"Potions of Strength are identified from the beginning.",
+			Messages.get(HeroClass.class, "warrior_perk1"),
+			Messages.get(HeroClass.class, "warrior_perk2"),
+			Messages.get(HeroClass.class, "warrior_perk3"),
+			Messages.get(HeroClass.class, "warrior_perk4"),
+			Messages.get(HeroClass.class, "warrior_perk5"),
 	};
 	
 	public static final String[] MAG_PERKS = {
-		"The Mage starts with a unique Staff, which can be imbued with the properties of a wand.",
-		"The Mage's staff can be used as a melee weapon or a more powerful wand.",
-		"The Mage partially identifies wands after using them.",
-		"When eaten, any piece of food restores 1 charge for all wands in the inventory.",
-		"Scrolls of Upgrade are identified from the beginning."
+			Messages.get(HeroClass.class, "mage_perk1"),
+			Messages.get(HeroClass.class, "mage_perk2"),
+			Messages.get(HeroClass.class, "mage_perk3"),
+			Messages.get(HeroClass.class, "mage_perk4"),
+			Messages.get(HeroClass.class, "mage_perk5"),
 	};
 	
 	public static final String[] ROG_PERKS = {
-		"The Rogue starts with a unique Cloak of Shadows.",
-		"The Rogue identifies a type of a ring on equipping it.",
-		"The Rogue is proficient with light armor, dodging better with excess strength.",
-		"The Rogue is more proficient in detecting hidden doors and traps.",
-		"The Rogue can go without food longer.",
-		"Scrolls of Magic Mapping are identified from the beginning."
+			Messages.get(HeroClass.class, "rogue_perk1"),
+			Messages.get(HeroClass.class, "rogue_perk2"),
+			Messages.get(HeroClass.class, "rogue_perk3"),
+			Messages.get(HeroClass.class, "rogue_perk4"),
+			Messages.get(HeroClass.class, "rogue_perk5"),
+			Messages.get(HeroClass.class, "rogue_perk6"),
 	};
 	
 	public static final String[] HUN_PERKS = {
-		"The Huntress starts with a unique upgradeable boomerang.",
-		"The Huntress is proficient with missile weapons, getting bonus damage from excess strength.",
-		"The Huntress is able to recover a single used missile weapon from each enemy.",
-		"The Huntress senses neighbouring monsters even if they are hidden behind obstacles.",
-		"Potions of Mind Vision are identified from the beginning."
+			Messages.get(HeroClass.class, "huntress_perk1"),
+			Messages.get(HeroClass.class, "huntress_perk2"),
+			Messages.get(HeroClass.class, "huntress_perk3"),
+			Messages.get(HeroClass.class, "huntress_perk4"),
+			Messages.get(HeroClass.class, "huntress_perk5"),
 	};
 
 	public void initHero( Hero hero ) {
@@ -183,7 +188,7 @@ public enum HeroClass {
 	}
 	
 	public String title() {
-		return title;
+		return Messages.get(HeroClass.class, title);
 	}
 	
 	public String spritesheet() {

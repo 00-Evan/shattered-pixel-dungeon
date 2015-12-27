@@ -94,6 +94,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.AlchemyPot;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Sign;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -124,26 +125,11 @@ public class Hero extends Char {
 		actPriority = 0; //acts at priority 0, baseline for the rest of behaviour.
 	}
 	
-	private static final String TXT_LEAVE = "One does not simply leave Pixel Dungeon.";
-	
 	public static final int MAX_LEVEL = 30;
-	private static final String TXT_LEVEL_UP = "level up!";
-	private static final String TXT_NEW_LEVEL =
-		"Welcome to level %d! Now you are healthier and more focused. " +
-		"It's easier for you to hit enemies and dodge their attacks.";
-	private static final String TXT_LEVEL_CAP =
-		"You can't gain any more levels, but your experiences still give you a burst of energy!";
-	
-	public static final String TXT_YOU_NOW_HAVE	= "You now have %s";
-	
-	private static final String TXT_SOMETHING_ELSE	= "There is something else here";
-	private static final String TXT_LOCKED_CHEST	= "This chest is locked and you don't have matching key";
-	private static final String TXT_LOCKED_DOOR		= "You don't have a matching key";
-	private static final String TXT_NOTICED_SMTH	= "You noticed something";
-	
-	private static final String TXT_WAIT	= "...";
-	private static final String TXT_SEARCH	= "search";
-	
+
+	//TODO: remove this static variable
+	public static final String TXT_YOU_NOW_HAVE	= Messages.get(Hero.class, "you_now_have");
+
 	public static final int STARTING_STR = 10;
 	
 	private static final float TIME_TO_REST		= 1f;
@@ -636,7 +622,7 @@ public class Hero extends Char {
 					}
 					
 					if (!heap.isEmpty()) {
-						GLog.i( TXT_SOMETHING_ELSE );
+						GLog.i( Messages.get(this, "something_else") );
 					}
 					curAction = null;
 				} else {
@@ -673,7 +659,7 @@ public class Hero extends Char {
 					theKey = belongings.getKey( GoldenKey.class, Dungeon.depth );
 					
 					if (theKey == null) {
-						GLog.w( TXT_LOCKED_CHEST );
+						GLog.w( Messages.get(this, "locked_chest") );
 						ready();
 						return false;
 					}
@@ -735,7 +721,7 @@ public class Hero extends Char {
 				Sample.INSTANCE.play( Assets.SND_UNLOCK );
 				
 			} else {
-				GLog.w( TXT_LOCKED_DOOR );
+				GLog.w( Messages.get(this, "locked_door") );
 				ready();
 			}
 
@@ -785,7 +771,7 @@ public class Hero extends Char {
 			if (Dungeon.depth == 1) {
 				
 				if (belongings.getItem( Amulet.class ) == null) {
-					GameScene.show( new WndMessage( TXT_LEAVE ) );
+					GameScene.show( new WndMessage( Messages.get(this, "leave") ) );
 					ready();
 				} else {
 					Dungeon.win( ResultDescriptions.WIN );
@@ -852,7 +838,7 @@ public class Hero extends Char {
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );
 		if (!fullRest) {
-			sprite.showStatus( CharSprite.DEFAULT, TXT_WAIT );
+			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "wait") );
 		}
 		resting = fullRest;
 	}
@@ -913,7 +899,7 @@ public class Hero extends Char {
 
 		if (this.buff(Drowsy.class) != null){
 			Buff.detach(this, Drowsy.class);
-			GLog.w("The pain helps you resist the urge to sleep.");
+			GLog.w( Messages.get(this, "pain_resist") );
 		}
 
 		CapeOfThorns.Thorns thorns = buff( CapeOfThorns.Thorns.class );
@@ -1122,7 +1108,7 @@ public class Hero extends Char {
 				Buff.prolong(this, Bless.class, 30f);
 				this.exp = 0;
 
-				GLog.p( "You cannot grow stronger, but your experiences do give you a surge of power!");
+				GLog.p( Messages.get(this, "level_cap"));
 				Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			}
 			
@@ -1133,8 +1119,8 @@ public class Hero extends Char {
 		
 		if (levelUp) {
 			
-			GLog.p( TXT_NEW_LEVEL, lvl );
-			sprite.showStatus( CharSprite.POSITIVE, TXT_LEVEL_UP );
+			GLog.p( Messages.get(this, "new_level"), lvl );
+			sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
 			Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			
 			Badges.validateLevelReached();
@@ -1164,6 +1150,7 @@ public class Hero extends Char {
 
 		super.add( buff );
 
+		//TODO: need to do something with these so they can be i18n-ified
 		if (sprite != null) {
 			if (buff instanceof Burning) {
 				GLog.w( "You catch fire!" );
@@ -1475,10 +1462,10 @@ public class Hero extends Char {
 
 		
 		if (intentional) {
-			sprite.showStatus( CharSprite.DEFAULT, TXT_SEARCH );
+			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "search") );
 			sprite.operate( pos );
 			if (foresight != null && foresight.isCursed()){
-				GLog.n("You can't concentrate, searching takes a while.");
+				GLog.n(Messages.get(this, "search_distracted"));
 				spendAndNext(TIME_TO_SEARCH * 3);
 			} else {
 				spendAndNext(TIME_TO_SEARCH);
@@ -1487,7 +1474,7 @@ public class Hero extends Char {
 		}
 		
 		if (smthFound) {
-			GLog.w( TXT_NOTICED_SMTH );
+			GLog.w( Messages.get(this, "noticed_smth") );
 			Sample.INSTANCE.play( Assets.SND_SECRET );
 			interrupt();
 		}

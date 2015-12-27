@@ -20,53 +20,37 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
 public enum HeroSubClass {
 
-	NONE( "none", null ),
+	NONE( null ),
 	
-	GLADIATOR( "gladiator",
-		"A successful attack with a melee weapon allows the _Gladiator_ to start a combo, " +
-		"in which every next successful hit inflicts more damage." ),
-	BERSERKER( "berserker",
-		"When severely wounded, the _Berserker_ enters a state of wild fury " +
-		"significantly increasing his damage output." ),
+	GLADIATOR( "gladiator" ),
+	BERSERKER( "berserker" ),
 	
-	WARLOCK( "warlock",
-		"When using wands on an enemy, the _Warlock_ has a chance to mark their soul. " +
-		"Marked enemies will heal him and restore his hunger whenever they take physical damage."),
-	BATTLEMAGE( "battlemage",
-		"When fighting with his staff, the _Battlemage_ conjures bonus effects depending on the wand " +
-		"his staff is imbued with. His staff will also gain charge through combat." ),
+	WARLOCK( "warlock" ),
+	BATTLEMAGE( "battlemage" ),
 	
-	ASSASSIN( "assassin",
-		"When performing a surprise attack, the _Assassin_ inflicts additional damage to his target." ),
-	FREERUNNER( "freerunner",
-		"The _Freerunner_ moves faster when he unencumbered and not starving, " +
-		"if he is invisible, this speed boost is increased." ),
+	ASSASSIN( "assassin" ),
+	FREERUNNER( "freerunner" ),
 		
-	SNIPER( "sniper",
-		"The _Sniper_ is able to detect weak points in an enemy's armor, " +
-		"effectively ignoring it when using a missile weapon." ),
-	WARDEN( "warden",
-		"Having a strong connection with forces of nature allows the _Warden_ to gain additional health from dew, " +
-		"armor from trampling grass, and seeds and dew from plants." );
+	SNIPER( "sniper" ),
+	WARDEN( "warden" );
 	
 	private String title;
-	private String desc;
 	
-	private HeroSubClass( String title, String desc ) {
+	HeroSubClass( String title ) {
 		this.title = title;
-		this.desc = desc;
 	}
 	
 	public String title() {
-		return title;
+		return Messages.get(this, title);
 	}
 	
 	public String desc() {
-		return desc;
+		return Messages.get(this, title+"_desc");
 	}
 	
 	private static final String SUBCLASS	= "subClass";
