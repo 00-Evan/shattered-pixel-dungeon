@@ -69,6 +69,13 @@ public class Tengu extends Mob {
 	}
 	
 	@Override
+	protected void onAdd() {
+		//when he's removed and re-added to the fight, his time is always set to now.
+		spend(-cooldown());
+		super.onAdd();
+	}
+
+	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 6, 15 );
 	}

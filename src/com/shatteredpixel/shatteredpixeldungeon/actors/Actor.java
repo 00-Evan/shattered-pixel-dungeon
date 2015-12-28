@@ -136,7 +136,7 @@ public abstract class Actor implements Bundlable {
 	
 	public static void init() {
 		
-		addDelayed( Dungeon.hero, -Float.MIN_VALUE );
+		add( Dungeon.hero );
 		
 		for (Mob mob : Dungeon.level.mobs) {
 			add( mob );
@@ -231,7 +231,7 @@ public abstract class Actor implements Bundlable {
 		ids.put( actor.id(),  actor );
 
 		all.add( actor );
-		actor.time = time;
+		actor.time += time;
 		actor.onAdd();
 		
 		if (actor instanceof Char) {
