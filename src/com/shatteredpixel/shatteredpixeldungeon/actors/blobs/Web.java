@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WebParticle;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
 public class Web extends Blob {
 	
@@ -66,6 +67,6 @@ public class Web extends Blob {
 	
 	@Override
 	public String tileDesc() {
-		return "Everything is covered with a thick web here.";
+		return Messages.get(this, "desc");
 	}
 }

@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
 public class ConfusionGas extends Blob {
 
@@ -51,6 +52,6 @@ public class ConfusionGas extends Blob {
 
 	@Override
 	public String tileDesc() {
-		return "A cloud of confusion gas is swirling here.";
+		return Messages.get(this, "desc");
 	}
 }

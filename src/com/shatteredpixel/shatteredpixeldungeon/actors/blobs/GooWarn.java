@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GooSprite;
 
 public class GooWarn extends Blob {
@@ -67,7 +68,7 @@ public class GooWarn extends Blob {
 
 	@Override
 	public String tileDesc() {
-		return "Specs of dark energy are swarming here!";
+		return Messages.get(this, "desc");
 	}
 }
 

@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
 public class VenomGas extends Blob {
@@ -77,6 +78,6 @@ public class VenomGas extends Blob {
 
 	@Override
 	public String tileDesc() {
-		return "A cloud of foul acidic venom is swirling here.";
+		return Messages.get(this, "desc");
 	}
 }
