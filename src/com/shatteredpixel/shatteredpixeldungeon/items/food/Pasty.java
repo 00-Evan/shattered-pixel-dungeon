@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -86,7 +87,7 @@ public class Pasty extends Food {
 				case NONE: default:
 					break; //do nothing extra
 				case XMAS:
-					Buff.affect( hero, ScrollOfRecharging.Recharging.class, 2f ); //half of a charge
+					Buff.affect( hero, Recharging.class, 2f ); //half of a charge
 					ScrollOfRecharging.charge( hero );
 					break;
 			}

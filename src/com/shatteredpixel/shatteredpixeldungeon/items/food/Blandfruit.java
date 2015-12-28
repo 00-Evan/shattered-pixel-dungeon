@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -161,7 +162,7 @@ public class Blandfruit extends Food {
 						break;
 					case MAGE:
 						//1 charge
-						Buff.affect(hero, ScrollOfRecharging.Recharging.class, 4f);
+						Buff.affect(hero, Recharging.class, 4f);
 						ScrollOfRecharging.charge(hero);
 						break;
 					case ROGUE:

@@ -24,10 +24,10 @@ import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -431,7 +431,7 @@ public abstract class Wand extends Item {
 			if (lock == null || lock.regenOn())
 				partialCharge += 1f/turnsToCharge;
 
-			ScrollOfRecharging.Recharging bonus = target.buff(ScrollOfRecharging.Recharging.class);
+			Recharging bonus = target.buff(Recharging.class);
 			if (bonus != null && bonus.remainder() > 0f){
 				partialCharge += CHARGE_BUFF_BONUS * bonus.remainder();
 			}
