@@ -54,40 +54,6 @@ public enum HeroClass {
 		this.title = title;
 	}
 
-	//TODO: need to make all these Messages references non-static
-	public static final String[] WAR_PERKS = {
-			Messages.get(HeroClass.class, "warrior_perk1"),
-			Messages.get(HeroClass.class, "warrior_perk2"),
-			Messages.get(HeroClass.class, "warrior_perk3"),
-			Messages.get(HeroClass.class, "warrior_perk4"),
-			Messages.get(HeroClass.class, "warrior_perk5"),
-	};
-	
-	public static final String[] MAG_PERKS = {
-			Messages.get(HeroClass.class, "mage_perk1"),
-			Messages.get(HeroClass.class, "mage_perk2"),
-			Messages.get(HeroClass.class, "mage_perk3"),
-			Messages.get(HeroClass.class, "mage_perk4"),
-			Messages.get(HeroClass.class, "mage_perk5"),
-	};
-	
-	public static final String[] ROG_PERKS = {
-			Messages.get(HeroClass.class, "rogue_perk1"),
-			Messages.get(HeroClass.class, "rogue_perk2"),
-			Messages.get(HeroClass.class, "rogue_perk3"),
-			Messages.get(HeroClass.class, "rogue_perk4"),
-			Messages.get(HeroClass.class, "rogue_perk5"),
-			Messages.get(HeroClass.class, "rogue_perk6"),
-	};
-	
-	public static final String[] HUN_PERKS = {
-			Messages.get(HeroClass.class, "huntress_perk1"),
-			Messages.get(HeroClass.class, "huntress_perk2"),
-			Messages.get(HeroClass.class, "huntress_perk3"),
-			Messages.get(HeroClass.class, "huntress_perk4"),
-			Messages.get(HeroClass.class, "huntress_perk5"),
-	};
-
 	public void initHero( Hero hero ) {
 
 		hero.heroClass = this;
@@ -211,13 +177,38 @@ public enum HeroClass {
 		
 		switch (this) {
 		case WARRIOR:
-			return WAR_PERKS;
+			return new String[]{
+					Messages.get(HeroClass.class, "warrior_perk1"),
+					Messages.get(HeroClass.class, "warrior_perk2"),
+					Messages.get(HeroClass.class, "warrior_perk3"),
+					Messages.get(HeroClass.class, "warrior_perk4"),
+					Messages.get(HeroClass.class, "warrior_perk5"),
+			};
 		case MAGE:
-			return MAG_PERKS;
+			return new String[]{
+					Messages.get(HeroClass.class, "mage_perk1"),
+					Messages.get(HeroClass.class, "mage_perk2"),
+					Messages.get(HeroClass.class, "mage_perk3"),
+					Messages.get(HeroClass.class, "mage_perk4"),
+					Messages.get(HeroClass.class, "mage_perk5"),
+			};
 		case ROGUE:
-			return ROG_PERKS;
+			return new String[]{
+					Messages.get(HeroClass.class, "rogue_perk1"),
+					Messages.get(HeroClass.class, "rogue_perk2"),
+					Messages.get(HeroClass.class, "rogue_perk3"),
+					Messages.get(HeroClass.class, "rogue_perk4"),
+					Messages.get(HeroClass.class, "rogue_perk5"),
+					Messages.get(HeroClass.class, "rogue_perk6"),
+			};
 		case HUNTRESS:
-			return HUN_PERKS;
+			return new String[]{
+					Messages.get(HeroClass.class, "huntress_perk1"),
+					Messages.get(HeroClass.class, "huntress_perk2"),
+					Messages.get(HeroClass.class, "huntress_perk3"),
+					Messages.get(HeroClass.class, "huntress_perk4"),
+					Messages.get(HeroClass.class, "huntress_perk5"),
+			};
 		}
 		
 		return null;

@@ -1150,39 +1150,17 @@ public class Hero extends Char {
 
 		super.add( buff );
 
-		//TODO: need to do something with these so they can be i18n-ified
 		if (sprite != null) {
-			if (buff instanceof Burning) {
-				GLog.w( "You catch fire!" );
-				interrupt();
-			} else if (buff instanceof Paralysis) {
-				GLog.w( "You are paralysed!" );
-				interrupt();
-			} else if (buff instanceof Poison) {
-				GLog.w( "You are poisoned!" );
-				interrupt();
-			} else if (buff instanceof Ooze) {
-				GLog.w( "Caustic ooze eats your flesh. Wash it away!" );
-			} else if (buff instanceof Roots) {
-				GLog.w( "You can't move!" );
-			} else if (buff instanceof Weakness) {
-				GLog.w( "You feel weakened!" );
-			} else if (buff instanceof Blindness) {
-				GLog.w( "You are blinded!" );
-			} else if (buff instanceof Fury) {
-				GLog.w( "You become furious!" );
-			} else if (buff instanceof Charm) {
-				GLog.w( "You are charmed!" );
-			}  else if (buff instanceof Cripple) {
-				GLog.w( "You are crippled!" );
-			} else if (buff instanceof Bleeding) {
-				GLog.w( "You are bleeding!" );
-			} else if (buff instanceof RingOfMight.Might){
-				if (((RingOfMight.Might)buff).level > 0) {
+			String msg = buff.heroMessage();
+			if (msg != null){
+				GLog.w(msg);
+			}
+
+			if (buff instanceof RingOfMight.Might) {
+				if (((RingOfMight.Might) buff).level > 0) {
 					HT += ((RingOfMight.Might) buff).level * 5;
 				}
-			} else if (buff instanceof Vertigo) {
-				GLog.w("Everything is spinning around you!");
+			} else if (buff instanceof Paralysis || buff instanceof Vertigo) {
 				interrupt();
 			}
 

@@ -71,6 +71,11 @@ public class Poison extends Buff implements Hero.Doom {
 	}
 
 	@Override
+	public String heroMessage() {
+		return Messages.get(this, "heromsg");
+	}
+
+	@Override
 	public String desc() {
 		return Messages.get(this, "desc", dispTurns(left));
 	}

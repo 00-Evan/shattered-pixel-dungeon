@@ -80,6 +80,10 @@ public class Buff extends Actor {
 		//do nothing by default
 	};
 
+	public String heroMessage(){
+		return null;
+	}
+
 	public String desc(){
 		return "";
 	}

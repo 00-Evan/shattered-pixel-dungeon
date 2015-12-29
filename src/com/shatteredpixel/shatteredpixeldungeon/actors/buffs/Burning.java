@@ -146,6 +146,11 @@ public class Burning extends Buff implements Hero.Doom {
 	}
 
 	@Override
+	public String heroMessage() {
+		return Messages.get(this, "heromsg");
+	}
+
+	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}

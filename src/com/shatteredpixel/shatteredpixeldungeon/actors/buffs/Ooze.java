@@ -45,6 +45,11 @@ public class Ooze extends Buff {
 	}
 
 	@Override
+	public String heroMessage() {
+		return Messages.get(this, "heromsg");
+	}
+
+	@Override
 	public String desc() {
 		return Messages.get(this, "desc");
 	}

@@ -63,6 +63,11 @@ public class Paralysis extends FlavourBuff {
 	}
 
 	@Override
+	public String heroMessage() {
+		return Messages.get(this, "heromsg");
+	}
+
+	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}
