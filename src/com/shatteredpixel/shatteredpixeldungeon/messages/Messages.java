@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.messages;
 
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class Messages {
@@ -45,8 +46,30 @@ public class Messages {
 			key += "." + k;
 		} else
 			key = k;
-		if (args.length > 0) return String.format(Locale.ENGLISH, strings.getString(key.toLowerCase()), args);
-		else return strings.getString(key.toLowerCase());
+
+		if (android.os.Build.VERSION.SDK_INT >= 9 && !strings.containsKey(key.toLowerCase())){
+			//this is so child classes can inherit properties from their parents.
+			//in cases where text is commonly grabbed as a utility from classes that aren't mean to be instantiated
+			//(e.g. flavourbuff.dispTurns()) using .class directly is probably smarter to prevent unnecessary recursive calls.
+			if (c != null && c.getSuperclass() != null){
+				return get(c.getSuperclass(), k, args);
+			} else {
+				return "!!!NO TEXT FOUND!!!";
+			}
+		} else {
+			try {
+				if (args.length > 0) return String.format(Locale.ENGLISH, strings.getString(key.toLowerCase()), args);
+				else return strings.getString(key.toLowerCase());
+			} catch (MissingResourceException e) {
+				//This silly catch block exists because android 2.2 does not support bundle.containsKey.
+				//This should only ever trigger on 2.2 devices
+				if (c != null && c.getSuperclass() != null){
+					return get(c.getSuperclass(), k, args);
+				} else {
+					return "!!!NO TEXT FOUND!!!";
+				}
+			}
+		}
 	}
 }
 
