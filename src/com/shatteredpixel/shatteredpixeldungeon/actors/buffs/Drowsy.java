@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Random;
 
@@ -54,15 +55,11 @@ public class Drowsy extends Buff {
 
 	@Override
 	public String toString() {
-		return "Drowsy";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "A magical force is making it difficult to stay awake.\n" +
-				"\n" +
-				"The hero can resist drowsiness by taking damage or by being at full health.\n" +
-				"\n" +
-				"After " + dispTurns(cooldown()+1) + ", the target will fall into a deep magical sleep.";
+		return Messages.get(this, "desc", dispTurns(cooldown()+1));
 	}
 }

@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 import java.text.DecimalFormat;
@@ -85,7 +86,9 @@ public class Buff extends Actor {
 
 	//to handle the common case of showing how many turns are remaining in a buff description.
 	protected String dispTurns(float input){
-		return input == 1 ? "1 more turn" : new DecimalFormat("#.##").format(input) + " more turns";
+		return input == 1 ?
+				Messages.get(Buff.class, "1moreturn") :
+				Messages.get(Buff.class, "#moreturns", new DecimalFormat("#.##").format(input));
 	}
 
 	//creates a fresh instance of the buff and attaches that, this allows duplication.

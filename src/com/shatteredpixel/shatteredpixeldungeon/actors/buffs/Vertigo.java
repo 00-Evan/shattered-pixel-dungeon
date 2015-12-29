@@ -18,6 +18,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Vertigo extends FlavourBuff {
@@ -35,17 +36,12 @@ public class Vertigo extends FlavourBuff {
 
 	@Override
 	public String toString() {
-		return "Vertigo";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "Walking in a straight line can be difficult when the whole world is spinning.\n" +
-				"\n" +
-				"While under the effects of vertigo, characters who attempt to move will go in a random direction, " +
-				"instead of the one they intended to go in. \n" +
-				"\n" +
-				"This Vertigo effect with last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 
 	public static float duration( Char ch ) {

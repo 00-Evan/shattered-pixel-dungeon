@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class MindVision extends FlavourBuff {
@@ -40,7 +41,7 @@ public class MindVision extends FlavourBuff {
 	
 	@Override
 	public String toString() {
-		return "Mind vision";
+		return Messages.get(this, "name");
 	}
 
 	@Override
@@ -51,12 +52,6 @@ public class MindVision extends FlavourBuff {
 
 	@Override
 	public String desc() {
-		return "Somehow you are able to see all creatures on this floor through your mind. It's a weird feeling.\n" +
-				"\n" +
-				"All characters on this floor are visible to you as long as you have mind vision. " +
-				"Seeing a creature through mind vision counts as it being seen or nearby for " +
-				"the purposes of many magical effects.\n" +
-				"\n" +
-				"The mind vision will last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 }

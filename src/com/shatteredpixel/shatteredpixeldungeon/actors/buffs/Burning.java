@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -146,7 +147,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 	@Override
 	public String toString() {
-		return "Burning";
+		return Messages.get(this, "name");
 	}
 
 	public static float duration( Char ch ) {
@@ -156,14 +157,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 	@Override
 	public String desc() {
-		return "Few things are more distressing than being engulfed in flames.\n" +
-				"\n" +
-				"Fire will deal damage every turn until it is put out by water, expires, or it is resisted. " +
-				"Fire can be extinquished by stepping into water, or from the splash of a shattering potion. \n" +
-				"\n" +
-				"Additionally, the fire may ignite flammable terrain or items that it comes into contact with.\n" +
-				"\n" +
-				"The burning will last for " + dispTurns(left) + ", or until it is resisted or extinquished.";
+		return Messages.get(this, "desc", dispTurns(left));
 	}
 
 	@Override

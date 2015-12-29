@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
@@ -85,17 +86,12 @@ public class FireImbue extends Buff {
 
 	@Override
 	public String toString() {
-		return "Imbued with Fire";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "You are imbued with the power of fire!\n" +
-				"\n" +
-				"All physical attacks will have a chance to light enemies ablaze. " +
-				"Additionally, you are completely immune to the effects of fire.\n" +
-				"\n" +
-				"You are imbued for " + dispTurns(left) + ".";
+		return Messages.get(this, "desc", dispTurns(left));
 	}
 
 	{

@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Fury extends Buff {
@@ -48,15 +49,11 @@ public class Fury extends Buff {
 	
 	@Override
 	public String toString() {
-		return "Furious";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "You are angry, enemies won't like you when you're angry.\n" +
-				"\n" +
-				"A great rage burns within you, increasing the damage you deal with physical attacks by 50%. \n" +
-				"\n" +
-				"This rage will last as long as you are injured below 50% health.\n";
+		return Messages.get(this, "desc");
 	}
 }

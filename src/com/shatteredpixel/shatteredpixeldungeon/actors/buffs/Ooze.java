@@ -23,14 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Random;
 
 public class Ooze extends Buff {
-	
-	private static final String TXT_HERO_KILLED = "%s killed you...";
 
 	{
 		type = buffType.NEGATIVE;
@@ -43,16 +41,12 @@ public class Ooze extends Buff {
 	
 	@Override
 	public String toString() {
-		return "Caustic ooze";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "This sticky acid clings to flesh, slowly melting it away.\n" +
-				"\n" +
-				"Ooze will deal consistent damage until it is washed off in water.\n" +
-				"\n" +
-				"Ooze does not expire on its own and must be removed with water.";
+		return Messages.get(this, "desc");
 	}
 
 	@Override
@@ -64,7 +58,7 @@ public class Ooze extends Buff {
 				target.damage( 1, this );
 			if (!target.isAlive() && target == Dungeon.hero) {
 				Dungeon.fail( ResultDescriptions.OOZE );
-				GLog.n( TXT_HERO_KILLED, toString() );
+				GLog.n( Messages.get(this, "ondeath") );
 			}
 			spend( TICK );
 		}

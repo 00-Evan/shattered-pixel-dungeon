@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Recharging extends FlavourBuff {
@@ -31,7 +32,7 @@ public class Recharging extends FlavourBuff {
 
 	@Override
 	public String toString() {
-		return "Recharging";
+		return Messages.get(this, "name");
 	}
 
 	//want to process partial turns for this buff, and not count it when it's expiring.
@@ -45,10 +46,6 @@ public class Recharging extends FlavourBuff {
 
 	@Override
 	public String desc() {
-		return "Energy is coursing through you, improving the rate that your wands and staffs charge.\n" +
-				"\n" +
-				"Each turn this buff will increase current charge by one quarter, in addition to regular recharge. \n" +
-				"\n" +
-				"The recharging will last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 }

@@ -23,10 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.utils.Bundle;
-
-import java.util.HashSet;
 
 public class EarthImbue extends FlavourBuff {
 
@@ -44,16 +42,12 @@ public class EarthImbue extends FlavourBuff {
 
 	@Override
 	public String toString() {
-		return "Imbued with Earth";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "You are inbued with the power of earth!\n" +
-				"\n" +
-				"All physical attacks will command roots to lock the enemy in place while the effect lasts.\n" +
-				"\n" +
-				"You are imbued for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 
 	{

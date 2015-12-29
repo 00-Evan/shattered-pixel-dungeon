@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
@@ -54,7 +55,7 @@ public class Charm extends FlavourBuff {
 	
 	@Override
 	public String toString() {
-		return "Charmed";
+		return Messages.get(this, "name");
 	}
 	
 	public static float durationFactor( Char ch ) {
@@ -64,11 +65,6 @@ public class Charm extends FlavourBuff {
 
 	@Override
 	public String desc() {
-		return "A charm is manipulative magic that can make enemies temporarily adore eachother.\n" +
-				"\n" +
-				"Characters affected by charm are unable to directly attack the enemy they are charmed by. " +
-				"Attacking other targets is still possible however.\n" +
-				"\n" +
-				"The charm will last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 }

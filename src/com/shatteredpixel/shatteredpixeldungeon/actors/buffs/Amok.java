@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Amok extends FlavourBuff {
@@ -43,15 +44,11 @@ public class Amok extends FlavourBuff {
 
 	@Override
 	public String toString() {
-		return "Amok";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "Amok causes a state of great rage and confusion in its target.\n" +
-				"\n" +
-				"When a creature is amoked, they will attack whatever is near them, whether they be friend or foe.\n" +
-				"\n" +
-				"The amok will last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 }

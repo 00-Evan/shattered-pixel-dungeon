@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
@@ -71,18 +72,11 @@ public class LockedFloor extends Buff {
 
 	@Override
 	public String toString() {
-		return "Floor is Locked";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "The current floor is locked, and you are unable to leave it!\n" +
-				"\n" +
-				"While a floor is locked, you will not gain hunger or take damage from starving. In addition, " +
-				"if you do not work towards defeating this floor's boss, passive regeneration effects will also stop.\n " +
-				"\n" +
-				"Additionally, if you are revived by an unblessed ankh while the floor is locked, then it will reset.\n" +
-				"\n" +
-				"Kill this floor's boss to break the lock.\n";
+		return Messages.get(this, "desc");
 	}
 }

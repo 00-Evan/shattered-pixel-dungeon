@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
@@ -63,17 +64,12 @@ public class Paralysis extends FlavourBuff {
 
 	@Override
 	public String toString() {
-		return "Paralysed";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "Oftentimes the worst thing to do is nothing at all.\n" +
-				"\n" +
-				"Paralysis completely halts all actions, forcing the target to wait until the effect wears off. " +
-				"The pain from taking damage  can also cause characters to snap out of paralysis.\n" +
-				"\n" +
-				"This paralysis will last for " + dispTurns() + ", or until it is resisted through pain.\n";
+		return Messages.get(this, "desc", dispTurns());
 	}
 
 	public static float duration( Char ch ) {

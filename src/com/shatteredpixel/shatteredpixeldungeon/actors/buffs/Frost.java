@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -108,17 +109,12 @@ public class Frost extends FlavourBuff {
 
 	@Override
 	public String toString() {
-		return "Frozen";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "Not to be confused with freezing solid, this more benign freezing simply encases the target in ice.\n" +
-				"\n" +
-				"Freezing acts similarly to paralysis, making it impossible for the target to act. " +
-				"Unlike paralysis, freezing is immediately cancelled if the target takes damage, as the ice will shatter.\n" +
-				"\n" +
-				"The freeze will last for " + dispTurns() + ", or until the target takes damage.\n";
+		return Messages.get(this, "desc", dispTurns());
 	}
 
 	public static float duration( Char ch ) {

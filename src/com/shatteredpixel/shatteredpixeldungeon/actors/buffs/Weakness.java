@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Weakness extends FlavourBuff {
@@ -40,7 +41,7 @@ public class Weakness extends FlavourBuff {
 	
 	@Override
 	public String toString() {
-		return "Weakened";
+		return Messages.get(this, "name");
 	}
 	
 	@Override
@@ -69,10 +70,6 @@ public class Weakness extends FlavourBuff {
 
 	@Override
 	public String desc() {
-		return "Your gear suddenly feels a lot heavier.\n" +
-				"\n" +
-				"Weakening magic is affecting you, reducing your effective strength by 2 points.\n" +
-				"\n" +
-				"This weakness will last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 }

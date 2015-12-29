@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
@@ -65,17 +66,12 @@ public class Invisibility extends FlavourBuff {
 
 	@Override
 	public String toString() {
-		return "Invisible";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "You are completely blended into the surrounding terrain, making you impossible to see.\n" +
-				"\n" +
-				"While you are invisible enemies are unable to attack or follow you. " +
-				"Physical attacks and magical effects (such as scrolls and wands) will immediately cancel invisibility.\n" +
-				"\n" +
-				"This invisibility will last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 
 	public static void dispel() {

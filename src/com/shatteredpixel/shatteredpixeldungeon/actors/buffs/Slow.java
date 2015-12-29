@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Slow extends FlavourBuff {
@@ -39,16 +40,12 @@ public class Slow extends FlavourBuff {
 	
 	@Override
 	public String toString() {
-		return "Slowed";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "Slowing magic affects the target's rate of time, to them everything is moving super-fast.\n" +
-				"\n" +
-				"A slowed character performs all actions in twice the amount of time they would normally take.\n" +
-				"\n" +
-				"This slow will last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 
 	public static float duration( Char ch ) {

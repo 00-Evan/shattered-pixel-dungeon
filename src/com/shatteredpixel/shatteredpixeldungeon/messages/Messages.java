@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.messages;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Messages {
@@ -27,24 +28,25 @@ public class Messages {
 	private static ResourceBundle strings =
 			ResourceBundle.getBundle("com.shatteredpixel.shatteredpixeldungeon.messages.messages");
 
-	public static String get(String key){
-		return get(null, key);
+	public static String get(String key, Object...args){
+		return get(null, key, args);
 	}
 
 	//stuffing static variables with results from this means the app needs to restart for locale changes to take effect.
 	//so be careful with where you're calling this, never assign its result to a static value (including enum variables)
-	public static String get(Object o, String k){
-		return get(o.getClass(), k);
+	public static String get(Object o, String k, Object...args){
+		return get(o.getClass(), k, args);
 	}
 
-	public static String get(Class c, String k){
+	public static String get(Class c, String k, Object...args){
 		String key;
 		if (c != null){
 			key = c.getName().replace("com.shatteredpixel.shatteredpixeldungeon.", "");
 			key += "." + k;
 		} else
 			key = k;
-		return strings.getString(key.toLowerCase());
+		if (args.length > 0) return String.format(Locale.ENGLISH, strings.getString(key.toLowerCase()), args);
+		else return strings.getString(key.toLowerCase());
 	}
 }
 

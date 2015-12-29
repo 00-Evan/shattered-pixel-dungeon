@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Cripple extends FlavourBuff {
@@ -37,15 +38,11 @@ public class Cripple extends FlavourBuff {
 	
 	@Override
 	public String toString() {
-		return "Crippled";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "You're pretty sure legs aren't meant to bend that way.\n" +
-				"\n" +
-				"Crippled halves movement speed, making moving a tile usually take two turns instead of one.\n" +
-				"\n" +
-				"This cripple will last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 }

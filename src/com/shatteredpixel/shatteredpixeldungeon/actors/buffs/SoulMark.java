@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
@@ -44,14 +45,11 @@ public class SoulMark extends FlavourBuff {
 
 	@Override
 	public String toString() {
-		return "Soul Marked";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "The warlock has tapped into the soul of this creature. " +
-				"He will heal and satisfy his hunger as it takes physical damage.\n" +
-				"\n" +
-				"This mark will last for " + dispTurns()  + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 }

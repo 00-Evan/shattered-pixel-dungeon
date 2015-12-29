@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Roots extends FlavourBuff {
@@ -52,15 +53,11 @@ public class Roots extends FlavourBuff {
 	
 	@Override
 	public String toString() {
-		return "Rooted";
+		return Messages.get(this, "name");
 	}
 
 	@Override
 	public String desc() {
-		return "Roots(magical or natural) grab at the feet, forcing them down to the ground.\n" +
-				"\n" +
-				"Roots lock a target in place, making it impossible for them to move, but other actions are not affected.\n" +
-				"\n" +
-				"The roots will last for " + dispTurns() + ".";
+		return Messages.get(this, "desc", dispTurns());
 	}
 }
