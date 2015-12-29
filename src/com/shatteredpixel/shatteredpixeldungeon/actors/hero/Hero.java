@@ -127,9 +127,6 @@ public class Hero extends Char {
 	
 	public static final int MAX_LEVEL = 30;
 
-	//TODO: remove this static variable
-	public static final String TXT_YOU_NOW_HAVE	= Messages.get(Hero.class, "you_now_have");
-
 	public static final int STARTING_STR = 10;
 	
 	private static final float TIME_TO_REST		= 1f;
@@ -615,9 +612,9 @@ public class Hero extends Char {
 								((item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion) && ((Scroll)item).isKnown()) ||
 								((item instanceof PotionOfStrength || item instanceof PotionOfMight) && ((Potion)item).isKnown());
 						if (important) {
-							GLog.p( TXT_YOU_NOW_HAVE, item.name() );
+							GLog.p( Messages.get(this, "you_now_have", item.name()) );
 						} else {
-							GLog.i( TXT_YOU_NOW_HAVE, item.name() );
+							GLog.i( Messages.get(this, "you_now_have", item.name()) );
 						}
 					}
 					

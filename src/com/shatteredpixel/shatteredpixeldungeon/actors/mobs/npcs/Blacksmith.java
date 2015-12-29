@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import java.util.Collection;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -29,8 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
@@ -101,7 +100,7 @@ public class Blacksmith extends NPC {
 					
 					Pickaxe pick = new Pickaxe();
 					if (pick.doPickUp( Dungeon.hero )) {
-						GLog.i( Hero.TXT_YOU_NOW_HAVE, pick.name() );
+						GLog.i( Messages.get(Dungeon.hero, "you_now_have", pick.name() ));
 					} else {
 						Dungeon.level.drop( pick, Dungeon.hero.pos ).sprite.drop();
 					}

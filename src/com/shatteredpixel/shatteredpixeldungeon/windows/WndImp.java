@@ -20,9 +20,9 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
@@ -81,7 +81,7 @@ public class WndImp extends Window {
 
 		reward.identify();
 		if (reward.doPickUp( Dungeon.hero )) {
-			GLog.i( Hero.TXT_YOU_NOW_HAVE, reward.name() );
+			GLog.i( Messages.get(Dungeon.hero, "you_now_have", reward.name()) );
 		} else {
 			Dungeon.level.drop( reward, imp.pos ).sprite.drop();
 		}

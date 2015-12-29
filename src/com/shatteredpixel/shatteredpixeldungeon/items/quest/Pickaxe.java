@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -113,7 +114,7 @@ public class Pickaxe extends Weapon {
 							
 							DarkGold gold = new DarkGold();
 							if (gold.doPickUp( Dungeon.hero )) {
-								GLog.i( Hero.TXT_YOU_NOW_HAVE, gold.name() );
+								GLog.i( Messages.get(Dungeon.hero, "you_now_have", gold.name()) );
 							} else {
 								Dungeon.level.drop( gold, hero.pos ).sprite.drop();
 							}

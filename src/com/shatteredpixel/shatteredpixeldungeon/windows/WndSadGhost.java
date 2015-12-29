@@ -22,9 +22,9 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
@@ -121,7 +121,7 @@ public class WndSadGhost extends Window {
 		hide();
 		
 		if (reward.doPickUp( Dungeon.hero )) {
-			GLog.i( Hero.TXT_YOU_NOW_HAVE, reward.name() );
+			GLog.i( Messages.get(Dungeon.hero, "you_now_have", reward.name()) );
 		} else {
 			Dungeon.level.drop( reward, ghost.pos ).sprite.drop();
 		}
