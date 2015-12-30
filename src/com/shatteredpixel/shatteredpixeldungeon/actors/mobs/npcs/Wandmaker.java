@@ -111,7 +111,7 @@ public class Wandmaker extends NPC {
 						msg = Messages.get(this, "reminder_berry", Dungeon.hero.givenName());
 						break;
 				}
-				GameScene.show(new WndQuest(this, Utils.format(msg, Dungeon.hero.givenName())));
+				GameScene.show(new WndQuest(this, msg));
 			}
 			
 		} else {
