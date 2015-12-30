@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -37,7 +38,6 @@ import com.watabou.noosa.audio.Sample;
 public class DisarmingTrap extends Trap{
 
 	{
-		name = "Disarming trap";
 		color = TrapSprite.RED;
 		shape = TrapSprite.LARGE_DOT;
 	}
@@ -78,7 +78,7 @@ public class DisarmingTrap extends Trap{
 						Dungeon.level.visited[cell+i] = true;
 					Dungeon.observe();
 
-					GLog.w("Your weapon is teleported away!");
+					GLog.w( Messages.get(this, "disarm") );
 
 					Sample.INSTANCE.play(Assets.SND_TELEPORT);
 					CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
@@ -87,10 +87,5 @@ public class DisarmingTrap extends Trap{
 
 			}
 		}
-	}
-
-	@Override
-	public String desc() {
-		return "This trap contains very specific teleportation magic, which will warp the weapon of its victim to some other location.";
 	}
 }

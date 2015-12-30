@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 public class OozeTrap extends Trap {
 
 	{
-		name = "Ooze trap";
 		color = TrapSprite.GREEN;
 		shape = TrapSprite.DOTS;
 	}
@@ -43,10 +42,5 @@ public class OozeTrap extends Trap {
 			Buff.affect(ch, Ooze.class);
 			Splash.at(sprite.center(), 0x000000, 5);
 		}
-	}
-
-	@Override
-	public String desc() {
-		return "This trap will splash out caustic ooze when activated, which will burn until it is washed away.";
 	}
 }

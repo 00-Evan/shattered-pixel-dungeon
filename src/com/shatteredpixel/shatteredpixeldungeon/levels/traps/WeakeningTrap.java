@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 public class WeakeningTrap extends Trap{
 
 	{
-		name = "Weakening trap";
 		color = TrapSprite.GREEN;
 		shape = TrapSprite.WAVES;
 	}
@@ -50,10 +49,5 @@ public class WeakeningTrap extends Trap{
 		} else if (ch != null) {
 			Buff.prolong( ch, Slow.class, Slow.duration(ch));
 		}
-	}
-
-	@Override
-	public String desc() {
-		return "Dark magic in this trap sucks the energy out of anything that comes into contact with it.";
 	}
 }

@@ -38,7 +38,6 @@ public class SummoningTrap extends Trap {
 	private static final float DELAY = 2f;
 
 	{
-		name = "Summoning trap";
 		color = TrapSprite.TEAL;
 		shape = TrapSprite.WAVES;
 	}
@@ -91,10 +90,5 @@ public class SummoningTrap extends Trap {
 			ScrollOfTeleportation.appear(mob, mob.pos);
 		}
 
-	}
-
-	@Override
-	public String desc() {
-		return "Triggering this trap will summon a number of monsters from the surrounding floors to this location.";
 	}
 }

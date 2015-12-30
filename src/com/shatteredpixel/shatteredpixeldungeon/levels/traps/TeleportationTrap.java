@@ -40,7 +40,6 @@ import java.util.LinkedList;
 public class TeleportationTrap extends Trap {
 
 	{
-		name = "Teleportation trap";
 		color = TrapSprite.TEAL;
 		shape = TrapSprite.DOTS;
 	}
@@ -88,10 +87,5 @@ public class TeleportationTrap extends Trap {
 				Dungeon.level.drop( item, cell );
 			}
 		}
-	}
-
-	@Override
-	public String desc() {
-		return "Whatever triggers this trap will be warped to some other location on this floor.";
 	}
 }

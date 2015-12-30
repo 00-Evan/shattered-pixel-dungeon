@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 public class ExplosiveTrap extends Trap {
 
 	{
-		name = "Explosive trap";
 		color = TrapSprite.ORANGE;
 		shape = TrapSprite.DIAMOND;
 	}
@@ -36,9 +35,4 @@ public class ExplosiveTrap extends Trap {
 		new Bomb().explode(pos);
 	}
 
-	@Override
-	public String desc() {
-		return "This trap contains some powdered explosive and a trigger mechanism. " +
-				"Activating it will cause an explosion in the immediate area.";
-	}
 }

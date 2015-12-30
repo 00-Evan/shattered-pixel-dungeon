@@ -35,7 +35,6 @@ import com.watabou.utils.Random;
 public class FlockTrap extends Trap {
 
 	{
-		name = "Flock trap";
 		color = TrapSprite.WHITE;
 		shape = TrapSprite.WAVES;
 	}
@@ -68,8 +67,4 @@ public class FlockTrap extends Trap {
 
 	}
 
-	@Override
-	public String desc() {
-		return "Perhaps a joke from some amateur mage, triggering this trap will create a flock of magical sheep.";
-	}
 }

@@ -36,10 +36,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 public class PitfallTrap extends Trap {
 
 	{
-		name = "Pitfall trap";
 		color = TrapSprite.RED;
 		shape = TrapSprite.DIAMOND;
-
 	}
 
 	@Override
@@ -84,10 +82,5 @@ public class PitfallTrap extends Trap {
 			sprite.kill();
 			GameScene.updateMap( pos );
 		}
-	}
-
-	@Override
-	public String desc() {
-		return "This pressure plate rests atop a fairly weak floor, and will likely collapse into a pit if it is pressed.";
 	}
 }

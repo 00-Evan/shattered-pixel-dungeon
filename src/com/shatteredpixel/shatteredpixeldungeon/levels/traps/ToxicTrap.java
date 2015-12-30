@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 public class ToxicTrap extends Trap{
 
 	{
-		name = "Toxic gas trap";
 		color = TrapSprite.GREEN;
 		shape = TrapSprite.GRILL;
 	}
@@ -39,10 +38,5 @@ public class ToxicTrap extends Trap{
 
 		GameScene.add( Blob.seed( pos, 300 + 20 * Dungeon.depth, ToxicGas.class ) );
 
-	}
-
-	@Override
-	public String desc() {
-		return "Triggering this trap will set a cloud of toxic gas loose within the surrounding area.";
 	}
 }

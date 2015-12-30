@@ -38,7 +38,6 @@ import com.watabou.utils.Random;
 public class FlashingTrap extends Trap {
 
 	{
-		name = "Flashing trap";
 		color = TrapSprite.YELLOW;
 		shape = TrapSprite.STARS;
 	}
@@ -66,9 +65,4 @@ public class FlashingTrap extends Trap {
 		}
 	}
 
-	@Override
-	public String desc() {
-		return "On activation, this trap will ignite a potent flashing powder stored within, " +
-				"temporarily blinding and crippling its victim.";
-	}
 }

@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 public class ParalyticTrap extends Trap{
 
 	{
-		name = "Paralytic gas trap";
 		color = TrapSprite.YELLOW;
 		shape = TrapSprite.GRILL;
 	}
@@ -39,10 +38,5 @@ public class ParalyticTrap extends Trap{
 
 		GameScene.add( Blob.seed( pos, 80 + 5 * Dungeon.depth, ParalyticGas.class ) );
 
-	}
-
-	@Override
-	public String desc() {
-		return "Triggering this trap will set a cloud of paralytic gas loose within the surrounding area.";
 	}
 }

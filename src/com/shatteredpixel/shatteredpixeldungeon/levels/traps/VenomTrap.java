@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 public class VenomTrap extends Trap {
 
 	{
-		name = "Venom gas trap";
 		color = TrapSprite.VIOLET;
 		shape = TrapSprite.GRILL;
 	}
@@ -43,10 +42,5 @@ public class VenomTrap extends Trap {
 
 		GameScene.add(venomGas);
 
-	}
-
-	@Override
-	public String desc() {
-		return "Triggering this trap will set a cloud of deadly venom gas loose within the immediate area.";
 	}
 }

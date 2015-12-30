@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -34,7 +35,6 @@ import com.watabou.noosa.audio.Sample;
 public class CursingTrap extends Trap {
 
 	{
-		name = "Cursing trap";
 		color = TrapSprite.VIOLET;
 		shape = TrapSprite.WAVES;
 	}
@@ -65,13 +65,7 @@ public class CursingTrap extends Trap {
 			if (misc1 != null)  misc1.cursed = misc1.cursedKnown = true;
 			if (misc2 != null)  misc2.cursed = misc2.cursedKnown = true;
 			EquipableItem.equipCursed(hero);
-			GLog.n("Your worn equipment becomes cursed!");
+			GLog.n( Messages.get(this, "curse") );
 		}
-	}
-
-	@Override
-	public String desc() {
-		return "This trap contains the same malevolent magic found in cursed equipment. " +
-				"Triggering it will curse all worn items, and all items in the immediate area.";
 	}
 }

@@ -20,13 +20,13 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class WornTrap extends Trap {
 
 	{
-		name = "Worn out trap";
 		color = TrapSprite.BLACK;
 		shape = TrapSprite.DOTS;
 	}
@@ -39,12 +39,6 @@ public class WornTrap extends Trap {
 
 	@Override
 	public void activate() {
-		GLog.i("nothing happens..");
-	}
-
-	@Override
-	public String desc() {
-		return "Due to age and possibly poor workmanship, " +
-				"it looks like this trap has worn to the point where it won't do anything when triggered.";
+		GLog.i( Messages.get(this, "nothing") );
 	}
 }

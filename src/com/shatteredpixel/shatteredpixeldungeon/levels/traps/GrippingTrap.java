@@ -34,7 +34,6 @@ import com.watabou.utils.Random;
 public class GrippingTrap extends Trap {
 
 	{
-		name = "Gripping trap";
 		color = TrapSprite.GREY;
 		shape = TrapSprite.CROSSHAIR;
 	}
@@ -54,11 +53,5 @@ public class GrippingTrap extends Trap {
 			Wound.hit( pos );
 		}
 
-	}
-
-	@Override
-	public String desc() {
-		return "Triggering this trap will send barbed claws along the ground, " +
-				"damaging the victims feet and rooting them in place.";
 	}
 }

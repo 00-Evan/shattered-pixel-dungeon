@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -40,7 +41,6 @@ import com.watabou.utils.Random;
 public class RockfallTrap extends Trap {
 
 	{
-		name = "Rockfall trap";
 		color = TrapSprite.GREY;
 		shape = TrapSprite.DIAMOND;
 	}
@@ -65,14 +65,8 @@ public class RockfallTrap extends Trap {
 
 			if (!ch.isAlive() && ch == Dungeon.hero){
 				Dungeon.fail(Utils.format(ResultDescriptions.TRAP, name));
-				GLog.n("You were crushed by the rockfall trap...");
+				GLog.n( Messages.get(this, "ondeath") );
 			}
 		}
-	}
-
-	@Override
-	public String desc() {
-		return "This trap is connected to a series of loose rocks above, " +
-				"triggering it will cause them to come crashing down.";
 	}
 }

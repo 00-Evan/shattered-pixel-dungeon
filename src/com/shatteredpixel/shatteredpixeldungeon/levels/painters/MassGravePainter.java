@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.watabou.utils.Random;
 
@@ -83,7 +84,7 @@ public class MassGravePainter extends Painter {
 
 	public static class Bones extends CustomTileVisual {
 		{
-			name = "Mass grave";
+			name = Messages.get(this, "name");
 
 			tx = Assets.PRISON_QUEST;
 			txX = 3;
@@ -93,7 +94,7 @@ public class MassGravePainter extends Painter {
 		@Override
 		public String desc() {
 			if (ofsX == 1 && ofsY == 1) {
-				return "bones litter the floor, what happened here?";
+				return Messages.get(this, "desc");
 			} else {
 				return null;
 			}

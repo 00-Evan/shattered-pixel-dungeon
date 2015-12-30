@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -32,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class AlarmTrap extends Trap {
 
 	{
-		name = "Alarm trap";
 		color = TrapSprite.RED;
 		shape = TrapSprite.DOTS;
 	}
@@ -45,16 +45,10 @@ public class AlarmTrap extends Trap {
 		}
 
 		if (Dungeon.visible[pos]) {
-			GLog.w( "The trap emits a piercing sound that echoes throughout the dungeon!" );
+			GLog.w( Messages.get(this, "alarm") );
 			CellEmitter.center( pos ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
 		}
 
 		Sample.INSTANCE.play( Assets.SND_ALERT );
-	}
-
-	@Override
-	public String desc() {
-		return "This trap seems to be tied to a loud alarm mechanism. " +
-				"Triggering it will likely alert everything on the level.";
 	}
 }

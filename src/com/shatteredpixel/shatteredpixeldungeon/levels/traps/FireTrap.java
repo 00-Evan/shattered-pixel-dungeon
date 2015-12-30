@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 public class FireTrap extends Trap {
 
 	{
-		name = "Fire trap";
 		color = TrapSprite.ORANGE;
 		shape = TrapSprite.DOTS;
 	}
@@ -41,10 +40,5 @@ public class FireTrap extends Trap {
 		GameScene.add( Blob.seed( pos, 2, Fire.class ) );
 		CellEmitter.get( pos ).burst( FlameParticle.FACTORY, 5 );
 
-	}
-
-	@Override
-	public String desc() {
-		return "Stepping on this trap will ignite a chemical mixture, setting the immediate area aflame.";
 	}
 }

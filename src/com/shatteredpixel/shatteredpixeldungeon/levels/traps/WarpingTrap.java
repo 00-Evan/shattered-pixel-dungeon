@@ -43,7 +43,6 @@ import java.util.ArrayList;
 public class WarpingTrap extends Trap {
 
 	{
-		name = "Warping trap";
 		color = TrapSprite.TEAL;
 		shape = TrapSprite.STARS;
 	}
@@ -92,10 +91,5 @@ public class WarpingTrap extends Trap {
 
 		}
 
-	}
-
-	@Override
-	public String desc() {
-		return "Whatever triggers this trap will be warped to some other location in the dungeon.";
 	}
 }

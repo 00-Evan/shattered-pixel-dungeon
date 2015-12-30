@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 public class ConfusionTrap extends Trap {
 
 	{
-		name = "Confusion gas trap";
 		color = TrapSprite.TEAL;
 		shape = TrapSprite.GRILL;
 	}
@@ -39,10 +38,5 @@ public class ConfusionTrap extends Trap {
 
 		GameScene.add(Blob.seed(pos, 300 + 20 * Dungeon.depth, ConfusionGas.class));
 
-	}
-
-	@Override
-	public String desc() {
-		return "Triggering this trap will set a cloud of confusion gas loose within the immediate area.";
 	}
 }

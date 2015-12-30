@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -39,7 +40,6 @@ import com.watabou.utils.Callback;
 public class GrimTrap extends Trap {
 
 	{
-		name = "Grim trap";
 		color = TrapSprite.GREY;
 		shape = TrapSprite.LARGE_DOT;
 	}
@@ -82,7 +82,7 @@ public class GrimTrap extends Trap {
 						Sample.INSTANCE.play(Assets.SND_CURSED);
 						if (!finalTarget.isAlive()) {
 							Dungeon.fail(Utils.format(ResultDescriptions.TRAP, name));
-							GLog.n("You were killed by the blast of a grim trap...");
+							GLog.n( Messages.get(this, "ondeath") );
 						}
 					} else {
 						finalTarget.damage(finalTarget.HP, this);
@@ -95,11 +95,5 @@ public class GrimTrap extends Trap {
 			CellEmitter.get(pos).burst(ShadowParticle.UP, 10);
 			Sample.INSTANCE.play(Assets.SND_BURNING);
 		}
-	}
-
-	@Override
-	public String desc() {
-		return "Extremely powerful destructive magic is stored within this trap, enough to instantly kill all but the healthiest of heroes. " +
-				"Triggering it will send a ranged blast of lethal magic towards the nearest character.";
 	}
 }

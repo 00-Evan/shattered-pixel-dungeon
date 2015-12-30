@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -76,7 +77,7 @@ public class WeakFloorPainter extends Painter {
 	public static class HiddenWell extends CustomTileVisual{
 
 		{
-			name = "Distant well";
+			name = Messages.get(this, "name");
 
 			tx = Assets.WEAK_FLOOR;
 			txX = Dungeon.depth/5;
@@ -85,7 +86,7 @@ public class WeakFloorPainter extends Painter {
 
 		@Override
 		public String desc() {
-			return "You can just make out a well in the depths below, perhaps there is something down there?";
+			return Messages.get(this, "desc");
 		}
 	}
 }

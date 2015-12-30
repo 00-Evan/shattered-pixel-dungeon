@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -41,7 +42,6 @@ import com.watabou.utils.Random;
 public class DisintegrationTrap extends Trap {
 
 	{
-		name = "Disintegration trap";
 		color = TrapSprite.VIOLET;
 		shape = TrapSprite.LARGE_DOT;
 	}
@@ -57,7 +57,6 @@ public class DisintegrationTrap extends Trap {
 			Sample.INSTANCE.play( Assets.SND_RAY );
 		}
 
-
 		Heap heap = Dungeon.level.heaps.get(pos);
 		if (heap != null) heap.explode();
 
@@ -68,7 +67,7 @@ public class DisintegrationTrap extends Trap {
 				Hero hero = (Hero)ch;
 				if (!hero.isAlive()){
 					Dungeon.fail(Utils.format(ResultDescriptions.TRAP, name));
-					GLog.n("You were killed by the disintegration trap...");
+					GLog.n( Messages.get(this, "ondeath") );
 				} else {
 					Item item = hero.belongings.randomUnequipped();
 					Bag bag = hero.belongings.backpack;
@@ -80,22 +79,16 @@ public class DisintegrationTrap extends Trap {
 					if (item == null || item.level() > 0 || item.unique) return;
 					if (!item.stackable){
 						item.detachAll(bag);
-						GLog.w("the trap disintegrates your " + item.name() + "!");
+						GLog.w( Messages.get(this, "one", item.name()) );
 					} else {
 						int n = Random.NormalIntRange(1, (item.quantity()+1)/2);
 						for(int i = 1; i <= n; i++)
 							item.detach(bag);
-						GLog.w("the trap disintegrates some of your " + item.name() + "!");
+						GLog.w( Messages.get(this, "some", item.name()) );
 					}
 				}
 			}
 		}
 
-	}
-
-	@Override
-	public String desc() {
-		return "When triggered, this trap will lance the target with beams of disintegration, " +
-				"dealing significant damage and destroying items.";
 	}
 }

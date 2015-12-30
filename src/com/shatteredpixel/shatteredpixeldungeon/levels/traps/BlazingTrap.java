@@ -33,7 +33,6 @@ import com.watabou.noosa.audio.Sample;
 public class BlazingTrap extends Trap {
 
 	{
-		name = "Blazing trap";
 		color = TrapSprite.ORANGE;
 		shape = TrapSprite.STARS;
 	}
@@ -51,10 +50,5 @@ public class BlazingTrap extends Trap {
 			}
 		}
 		Sample.INSTANCE.play(Assets.SND_BURNING);
-	}
-
-	@Override
-	public String desc() {
-		return  "Stepping on this trap will ignite a powerful chemical mixture, setting a wide area ablaze.";
 	}
 }

@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -35,7 +36,6 @@ import com.watabou.utils.Random;
 public class SpearTrap extends Trap {
 
 	{
-		name = "Spear trap";
 		color = TrapSprite.GREY;
 		shape = TrapSprite.DOTS;
 	}
@@ -64,14 +64,8 @@ public class SpearTrap extends Trap {
 			ch.damage( Math.max(damage, 0) , this);
 			if (!ch.isAlive() && ch == Dungeon.hero){
 				Dungeon.fail(Utils.format(ResultDescriptions.TRAP, name));
-				GLog.n("You were skewered by the spear trap...");
+				GLog.n( Messages.get(this, "ondeath") );
 			}
 		}
-	}
-
-	@Override
-	public String desc() {
-		return "The classic spear trap, primitive but effective. " +
-				"Due to their simple nature, these traps can activate many times without breaking.";
 	}
 }

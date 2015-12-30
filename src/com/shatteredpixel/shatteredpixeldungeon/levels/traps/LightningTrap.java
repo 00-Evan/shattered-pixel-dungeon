@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -44,7 +45,6 @@ import java.util.ArrayList;
 public class LightningTrap extends Trap {
 
 	{
-		name = "Lightning trap";
 		color = TrapSprite.TEAL;
 		shape = TrapSprite.CROSSHAIR;
 	}
@@ -62,7 +62,7 @@ public class LightningTrap extends Trap {
 
 				if (!ch.isAlive()) {
 					Dungeon.fail( Utils.format( ResultDescriptions.TRAP, name ) );
-					GLog.n( "You were killed by a discharge of a lightning trap..." );
+					GLog.n( Messages.get(this, "ondeath") );
 				}
 			}
 
@@ -89,11 +89,5 @@ public class LightningTrap extends Trap {
 	//FIXME: this is bad, handle when you rework resistances, make into a category
 	public static final Electricity LIGHTNING = new Electricity();
 	public static class Electricity {
-	}
-
-	@Override
-	public String desc() {
-		return "A mechanism with a large amount of energy stored into it. " +
-				"Triggering the trap will discharge that energy into whatever activates it.";
 	}
 }
