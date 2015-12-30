@@ -42,7 +42,6 @@ import com.watabou.utils.Random;
 public class Statue extends Mob {
 	
 	{
-		name = "animated statue";
 		spriteClass = StatueSprite.class;
 
 		EXP = 0;

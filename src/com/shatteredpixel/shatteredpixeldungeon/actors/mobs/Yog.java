@@ -298,7 +298,6 @@ public class Yog extends Mob {
 	public static class BurningFist extends Mob {
 		
 		{
-			name = "burning fist";
 			spriteClass = BurningFistSprite.class;
 			
 			HP = HT = 200;

@@ -41,14 +41,10 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Thief extends Mob {
-
-	protected static final String TXT_STOLE	= "%s stole %s from you!";
-	protected static final String TXT_CARRIES	= "\n\n%s is carrying a _%s_. Stolen obviously.";
 	
 	public Item item;
 	
 	{
-		name = "crazy thief";
 		spriteClass = ThiefSprite.class;
 		
 		HP = HT = 20;
