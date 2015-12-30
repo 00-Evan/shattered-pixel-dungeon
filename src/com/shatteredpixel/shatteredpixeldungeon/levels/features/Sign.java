@@ -20,6 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -32,98 +34,29 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 
 public class Sign {
-
-	private static final String TXT_DEAD_END =
-		"What are you doing here?!";
-
-	private static final String[] TIPS = {
-		"Almost all equipment has a strength requirement. Don't overestimate your strength, using equipment you can't " +
-				"handle has big penalties!\n\nRaising your strength is not the only way to access better equipment, " +
-				"you can also lower equipment strength requirements with Scrolls of Upgrade.\n\n\n" +
-				"Items found in the dungeon will often be unidentified. Some items will have unknown effects, others " +
-				"may be upgraded, or degraded and cursed! Unidentified items are unpredictable, so be careful!",
-		"Charging forward recklessly is a great way to get killed.\n\n" +
-				"Slowing down a bit to examine enemies and use the environment and items to your advantage can make a " +
-				"big difference.\n\nYou can double tap or hold on the examine button to search for secrets. " +
-				"The dungeon is full of traps and hidden passageways, keep your eyes open!",
-		"Levelling up is important!\n\nBeing about the same level as the floor you are on is a good idea. " +
-				"Hunger may keep you moving in search of more food, but don't be afraid to slow down a little and train." +
-				"\n\n\nHunger and health are both resources, and using them well can mean starving yourself in order" +
-				" to help conserve food, if you have some health to spare.",
-		"The rogue isn't the only character that benefits from being sneaky. You can retreat to the other side of a " +
-				"door to ambush a chasing opponent for a guaranteed hit!" +
-				"\n\nAny attack on an unaware opponent is guaranteed to hit them.",
-
-		"Note to all sewer maintenance & cleaning crews: TURN BACK NOW. Some sort of sludge monster has made its home" +
-				" here and several crews have been lost trying to deal with it.\n\n" +
-				"Approval has been given to seal off the lower sewers, this area has been condemned, LEAVE NOW.",
-
-		"Pixel-Mart - all you need for successful adventure!",
-		"Identify your potions and scrolls as soon as possible. Don't put it off to the moment " +
-				"when you actually need them.",
-		"Being hungry doesn't hurt, but starving does hurt.",
-		"Surprise attack has a better chance to hit. For example, you can ambush your enemy behind " +
-				"a closed door when you know it is approaching.",
-
-		"Thomas,\n\n" +
-		"You've been a great friend, so I'm going to do you a favour. When you get to your shift tonight, check Tengu's cell, then get out.\n\n" +
-		"Doesn't matter if the prisoners try and escape, pretty soon nobody will be able to leave this place.\n\n" +
-		"That freak has to stay secured though, if he escapes there's no telling what he'll do, just make sure tengu's cell is locked, then get out.\n\n" +
-		"Don't bother looking for me after this, a captain must go down with his ship.\n" +
-		"- Warden Smith",
-
-		"Pixel-Mart. Spend money. Live longer.",
-		"When you're attacked by several monsters at the same time, try to retreat behind a door.",
-		"If you are burning, you can't put out the fire in the water while levitating.",
-		"There is no sense in possessing more than one unblessed Ankh at the same time, " +
-				"because you will lose them upon resurrecting.",
-
-		"DANGER! Heavy machinery can cause injury, loss of limbs or death!",
-
-		"Pixel-Mart. A safer life in dungeon.",
-		"When you upgrade an enchanted weapon, there is a chance to destroy that enchantment.",
-		"In a Well of Transmutation you can get an item, that cannot be obtained otherwise.",
-		"The only way to enchant a weapon is by upgrading it with a Scroll of Magical Infusion.",
-
-		"No weapons allowed in the presence of His Majesty!",
-
-		"Pixel-Mart. Special prices for demon hunters!",
-
-		//hmm.. I wonder what this is?
-		"error RaW i work",
-		"frOthinG moBs yelp",
-		"CoCoOn furor rises"
-	};
-	
-	private static final String TXT_BURN =
-		"As you try to read the sign it bursts into greenish flames.";
 	
 	public static void read( int pos ) {
 		
 		if (Dungeon.level instanceof DeadEndLevel) {
 			
-			GameScene.show( new WndMessage( TXT_DEAD_END ) );
+			GameScene.show( new WndMessage( Messages.get(Sign.class, "dead_end") ) );
 			
 		} else {
-			
-			int index = Dungeon.depth - 1;
-			
-			if (index < TIPS.length) {
-				GameScene.show( new WndMessage( TIPS[index] ) );
 
-				if (index >= 21) {
+			GameScene.show( new WndMessage( Messages.get(Sign.class, "tip_"+Dungeon.depth) ) );
 
-					Dungeon.level.destroy( pos );
-					GameScene.updateMap( pos );
-					GameScene.discoverTile( pos, Terrain.SIGN );
+			if (Dungeon.level instanceof HallsLevel) {
 
-					GLog.w( TXT_BURN );
+				Dungeon.level.destroy( pos );
+				GameScene.updateMap( pos );
+				GameScene.discoverTile( pos, Terrain.SIGN );
 
-					CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
-					Sample.INSTANCE.play( Assets.SND_BURNING );
-				}
+				GLog.w( Messages.get(Sign.class, "burn") );
 
+				CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
+				Sample.INSTANCE.play( Assets.SND_BURNING );
 			}
+
 		}
 	}
 }

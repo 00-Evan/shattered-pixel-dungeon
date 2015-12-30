@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -33,13 +34,6 @@ import java.util.Iterator;
 
 public class AlchemyPot {
 
-	private static final String TXT_SELECT_SEED	= "Select a seed to throw";
-	private static final String TXT_POT	        = "Alchemy Pot";
-	private static final String TXT_FRUIT	    = "Cook a Blandfruit";
-	private static final String TXT_POTION	    = "Brew a Potion";
-	private static final String TXT_OPTIONS	    =
-			"Do you want to cook a Blandfruit with a seed, or brew a Potion from seeds?";
-	
 	public static Hero hero;
 	public static int pos;
 
@@ -60,13 +54,16 @@ public class AlchemyPot {
 				curItem = items.next();
 				if (curItem instanceof Blandfruit && ((Blandfruit) curItem).potionAttrib == null){
 						GameScene.show(
-								new WndOptions(TXT_POT, TXT_OPTIONS, TXT_FRUIT, TXT_POTION) {
+								new WndOptions(Messages.get(AlchemyPot.class, "pot"),
+											Messages.get(AlchemyPot.class, "options"),
+											Messages.get(AlchemyPot.class, "fruit"),
+											Messages.get(AlchemyPot.class, "potion")) {
 									@Override
 									protected void onSelect(int index) {
 										if (index == 0) {
 											curItem.cast( AlchemyPot.hero, AlchemyPot.pos );
 										} else
-											GameScene.selectItem(itemSelector, WndBag.Mode.SEED, TXT_SELECT_SEED);
+											GameScene.selectItem(itemSelector, WndBag.Mode.SEED, Messages.get(AlchemyPot.class, "select_seed"));
 									}
 								}
 					);
@@ -75,7 +72,7 @@ public class AlchemyPot {
 			}
 
 		if (!foundFruit)
-			GameScene.selectItem(itemSelector, WndBag.Mode.SEED, TXT_SELECT_SEED);
+			GameScene.selectItem(itemSelector, WndBag.Mode.SEED, Messages.get(AlchemyPot.class, "select_seed"));
 	}
 	
 	private static final WndBag.Listener itemSelector = new WndBag.Listener() {

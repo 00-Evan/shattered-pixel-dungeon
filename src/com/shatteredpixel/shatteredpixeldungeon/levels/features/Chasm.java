@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -39,23 +40,19 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Random;
 
 public class Chasm {
-	
-	private static final String TXT_CHASM	= "Chasm";
-	private static final String TXT_YES		= "Yes, I know what I'm doing";
-	private static final String TXT_NO		= "No, I changed my mind";
-	private static final String TXT_JUMP 	=
-		"Do you really want to jump into the chasm? A fall that far will be painful.";
-	
+
 	public static boolean jumpConfirmed = false;
 	
 	public static void heroJump( final Hero hero ) {
 		GameScene.show(
-			new WndOptions( TXT_CHASM, TXT_JUMP, TXT_YES, TXT_NO ) {
+			new WndOptions( Messages.get(Chasm.class, "chasm"),
+						Messages.get(Chasm.class, "jump"),
+						Messages.get(Chasm.class, "yes"),
+						Messages.get(Chasm.class, "no") ) {
 				@Override
 				protected void onSelect( int index ) {
 					if (index == 0) {
@@ -108,7 +105,7 @@ public class Chasm {
 				Badges.validateDeathFromFalling();
 				
 				Dungeon.fail( ResultDescriptions.FALL );
-				GLog.n( "You fell to death..." );
+				GLog.n( Messages.get(Chasm.class, "ondeath") );
 			}
 		} );
 	}
