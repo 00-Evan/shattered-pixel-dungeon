@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -34,14 +35,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 
 public class Earthroot extends Plant {
-
-	private static final String TXT_DESC =
-		"When a creature touches an Earthroot, its roots " +
-		"create a kind of immobile natural armor around it.";
 	
 	{
 		image = 5;
-		plantName = "Earthroot";
 	}
 	
 	@Override
@@ -58,27 +54,15 @@ public class Earthroot extends Plant {
 		}
 	}
 	
-	@Override
-	public String desc() {
-		return TXT_DESC;
-	}
-	
 	public static class Seed extends Plant.Seed {
 		{
-			plantName = "Earthroot";
-			
-			name = "seed of " + plantName;
+			setPlant( Earthroot.class );
+
 			image = ItemSpriteSheet.SEED_EARTHROOT;
-			
-			plantClass = Earthroot.class;
+
 			alchemyClass = PotionOfParalyticGas.class;
 
 			bones = true;
-		}
-		
-		@Override
-		public String desc() {
-			return TXT_DESC;
 		}
 	}
 	
@@ -131,19 +115,12 @@ public class Earthroot extends Plant {
 		
 		@Override
 		public String toString() {
-			return Utils.format("Herbal armor", level);
+			return Messages.get(this, "name");
 		}
 
 		@Override
 		public String desc() {
-			return "A kind of natural, immobile armor is protecting you. " +
-					"The armor forms plates of bark and twine, wrapping around your body.\n" +
-					"\n" +
-					"This herbal armor will absorb 50% of all physical damage you take, " +
-					"until it eventually runs out of durability and collapses. The armor is also immobile, " +
-					"if you attempt to move it will break apart and be lost.\n" +
-					"\n" +
-					"The herbal armor can absorb " + level + " more damage before breaking.";
+			return Messages.get(this, "desc", level);
 		}
 
 		private static final String POS		= "pos";

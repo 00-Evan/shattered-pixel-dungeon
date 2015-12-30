@@ -30,14 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
 
 public class Icecap extends Plant {
-
-	private static final String TXT_DESC =
-		"Upon being touched, an Icecap lets out a puff of freezing pollen. " +
-		"The freezing effect is much stronger if the environment is wet.";
 	
 	{
 		image = 1;
-		plantName = "Icecap";
 	}
 	
 	@Override
@@ -54,25 +49,13 @@ public class Icecap extends Plant {
 		}
 	}
 	
-	@Override
-	public String desc() {
-		return TXT_DESC;
-	}
-	
 	public static class Seed extends Plant.Seed {
 		{
-			plantName = "Icecap";
-			
-			name = "seed of " + plantName;
+			setPlant( Icecap.class );
+
 			image = ItemSpriteSheet.SEED_ICECAP;
-			
-			plantClass = Icecap.class;
+
 			alchemyClass = PotionOfFrost.class;
-		}
-		
-		@Override
-		public String desc() {
-			return TXT_DESC;
 		}
 	}
 }

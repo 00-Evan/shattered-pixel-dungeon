@@ -32,14 +32,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Fadeleaf extends Plant {
-
-	private static final String TXT_DESC =
-		"Touching a Fadeleaf will teleport any creature " +
-		"to a random place on the current level.";
 	
 	{
 		image = 6;
-		plantName = "Fadeleaf";
 	}
 	
 	@Override
@@ -69,7 +64,7 @@ public class Fadeleaf extends Plant {
 				ch.sprite.visible = Dungeon.visible[pos];
 				
 			}
-						
+
 		}
 		
 		if (Dungeon.visible[pos]) {
@@ -77,25 +72,13 @@ public class Fadeleaf extends Plant {
 		}
 	}
 	
-	@Override
-	public String desc() {
-		return TXT_DESC;
-	}
-	
 	public static class Seed extends Plant.Seed {
 		{
-			plantName = "Fadeleaf";
-			
-			name = "seed of " + plantName;
+			setPlant( Fadeleaf.class );
+
 			image = ItemSpriteSheet.SEED_FADELEAF;
-			
-			plantClass = Fadeleaf.class;
+
 			alchemyClass = PotionOfMindVision.class;
-		}
-		
-		@Override
-		public String desc() {
-			return TXT_DESC;
 		}
 	}
 }

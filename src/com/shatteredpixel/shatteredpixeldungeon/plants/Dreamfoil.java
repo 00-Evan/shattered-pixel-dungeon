@@ -34,19 +34,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class Dreamfoil extends Plant {
 
-	private static final String TXT_DESC =
-			"The Dreamfoil's prickly flowers contain a chemical which is known for its " +
-			"properties as a strong neutralizing agent. Most weaker creatures are overwhelmed " +
-			"and knocked unconscious, which gives the plant its namesake.";
-
 	{
 		image = 10;
-		plantName = "Dreamfoil";
 	}
 
 	@Override
@@ -57,7 +52,7 @@ public class Dreamfoil extends Plant {
 			if (ch instanceof Mob)
 				Buff.affect(ch, MagicalSleep.class);
 			else if (ch instanceof Hero){
-				GLog.i( "You feel refreshed." );
+				GLog.i( Messages.get(this, "refreshed") );
 				Buff.detach( ch, Poison.class );
 				Buff.detach( ch, Cripple.class );
 				Buff.detach( ch, Weakness.class );
@@ -65,29 +60,17 @@ public class Dreamfoil extends Plant {
 				Buff.detach( ch, Drowsy.class );
 				Buff.detach( ch, Slow.class );
 				Buff.detach( ch, Vertigo.class);
-		   }
+			}
 		}
-	}
-
-	@Override
-	public String desc() {
-		return TXT_DESC;
 	}
 
 	public static class Seed extends Plant.Seed {
 		{
-			plantName = "Dreamfoil";
+			setPlant(Dreamfoil.class);
 
-			name = "seed of " + plantName;
 			image = ItemSpriteSheet.SEED_DREAMFOIL;
 
-			plantClass = Dreamfoil.class;
 			alchemyClass = PotionOfPurity.class;
-		}
-
-		@Override
-		public String desc() {
-			return TXT_DESC;
 		}
 	}
 }

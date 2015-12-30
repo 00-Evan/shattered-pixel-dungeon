@@ -26,14 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Rotberry extends Plant {
 
-	private static final String TXT_DESC =
-			"The berries of a young rotberry shrub taste like sweet, sweet death.\n" +
-					"\n" +
-					"Given several days, this rotberry shrub will grow into another rot heart.";
-
 	{
 		image = 7;
-		plantName = "Rotberry";
 	}
 
 	@Override
@@ -41,25 +35,13 @@ public class Rotberry extends Plant {
 		Dungeon.level.drop( new Seed(), pos ).sprite.drop();
 	}
 
-	@Override
-	public String desc() {
-		return TXT_DESC;
-	}
-
 	public static class Seed extends Plant.Seed {
 		{
-			plantName = "Rotberry";
+			setPlant( Rotberry.class );
 
-			name = "seed of " + plantName;
 			image = ItemSpriteSheet.SEED_ROTBERRY;
 
-			plantClass = Rotberry.class;
 			alchemyClass = PotionOfStrength.class;
-		}
-
-		@Override
-		public String desc() {
-			return TXT_DESC;
 		}
 	}
 }

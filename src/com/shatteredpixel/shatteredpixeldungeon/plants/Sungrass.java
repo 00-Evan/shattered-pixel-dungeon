@@ -29,17 +29,15 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
 public class Sungrass extends Plant {
-
-	private static final String TXT_DESC = "Sungrass is renowned for its sap's slow but effective healing properties.";
 	
 	{
 		image = 4;
-		plantName = "Sungrass";
 	}
 	
 	@Override
@@ -55,27 +53,15 @@ public class Sungrass extends Plant {
 		}
 	}
 	
-	@Override
-	public String desc() {
-		return TXT_DESC;
-	}
-	
 	public static class Seed extends Plant.Seed {
 		{
-			plantName = "Sungrass";
-			
-			name = "seed of " + plantName;
+			setPlant( Sungrass.class );
+
 			image = ItemSpriteSheet.SEED_SUNGRASS;
-			
-			plantClass = Sungrass.class;
+
 			alchemyClass = PotionOfHealing.class;
 
 			bones = true;
-		}
-		
-		@Override
-		public String desc() {
-			return TXT_DESC;
 		}
 	}
 	
@@ -147,17 +133,12 @@ public class Sungrass extends Plant {
 		
 		@Override
 		public String toString() {
-			return "Herbal Healing";
+			return Messages.get(this, "name");
 		}
 
 		@Override
 		public String desc() {
-			return "Sungrass possesses excellent healing properties, though its not as fast as a potion of healing.\n" +
-					"\n" +
-					"You are current slowly regenerating health from the sungrass plant. " +
-					"Taking damage while healing will reduce the healing effectiveness, and moving off the plant will break the healing effect.\n" +
-					"\n" +
-					"You can heal for " + level + " more health, or until your health is full.";
+			return Messages.get(this, "desc", level);
 		}
 
 		private static final String POS	= "pos";

@@ -32,12 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sorrowmoss extends Plant {
 
-	private static final String TXT_DESC =
-		"A Sorrowmoss is a flower (not a moss) with razor-sharp petals, coated with a deadly venom.";
-	
 	{
 		image = 2;
-		plantName = "Sorrowmoss";
 	}
 	
 	@Override
@@ -53,25 +49,13 @@ public class Sorrowmoss extends Plant {
 		}
 	}
 	
-	@Override
-	public String desc() {
-		return TXT_DESC;
-	}
-	
 	public static class Seed extends Plant.Seed {
 		{
-			plantName = "Sorrowmoss";
-			
-			name = "seed of " + plantName;
+			setPlant( Sorrowmoss.class );
+
 			image = ItemSpriteSheet.SEED_SORROWMOSS;
-			
-			plantClass = Sorrowmoss.class;
+
 			alchemyClass = PotionOfToxicGas.class;
-		}
-		
-		@Override
-		public String desc() {
-			return TXT_DESC;
 		}
 	}
 }

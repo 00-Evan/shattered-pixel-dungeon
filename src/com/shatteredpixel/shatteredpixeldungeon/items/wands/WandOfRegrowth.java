@@ -260,7 +260,6 @@ public class WandOfRegrowth extends Wand {
 
 		{
 			image = 12;
-			plantName = "Dewcatcher";
 		}
 
 		@Override
@@ -283,16 +282,10 @@ public class WandOfRegrowth extends Wand {
 
 		}
 
-		@Override
-		public String desc() {
-			return "Dewcatchers camouflage as grass to avoid attention, " +
-					"but their bulges of collected dew give them away.";
-		}
-
 		//seed is never dropped, only care about plant class
 		public static class Seed extends Plant.Seed {
 			{
-				plantClass = Dewcatcher.class;
+				setPlant(Dewcatcher.class);
 			}
 		}
 	}
@@ -301,7 +294,6 @@ public class WandOfRegrowth extends Wand {
 
 		{
 			image = 13;
-			plantName = "Seed Pod";
 		}
 
 		@Override
@@ -324,16 +316,10 @@ public class WandOfRegrowth extends Wand {
 
 		}
 
-		@Override
-		public String desc() {
-			return "Seed Pods look pretty, but the seeds they carry are actually " +
-					"stolen from other plants they kill with their roots.";
-		}
-
 		//seed is never dropped, only care about plant class
 		public static class Seed extends Plant.Seed {
 			{
-				plantClass = Seedpod.class;
+				setPlant(Seedpod.class);
 			}
 		}
 

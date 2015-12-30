@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -47,7 +48,7 @@ import com.watabou.utils.Random;
 
 public abstract class Plant implements Bundlable {
 
-	public String plantName;
+	public String plantName = Messages.get(this, "name");
 	
 	public int image;
 	public int pos;
@@ -114,14 +115,10 @@ public abstract class Plant implements Bundlable {
 	}
 	
 	public String desc() {
-		return null;
+		return Messages.get(this, "desc");
 	}
 	
 	public static class Seed extends Item {
-		
-		public static final String AC_PLANT	= "PLANT";
-		
-		private static final String TXT_INFO = "Throw this seed to the place where you want to grow %s.\n\n%s";
 		
 		private static final float TIME_TO_PLANT = 1f;
 		
@@ -134,11 +131,17 @@ public abstract class Plant implements Bundlable {
 		protected String plantName;
 		
 		public Class<? extends Item> alchemyClass;
+
+		protected void setPlant(Class<? extends Plant> plantClass){
+			this.plantClass = plantClass;
+			plantName = Messages.get(plantClass, "name");
+			name = Messages.get(Seed.class, "seed_of", plantName);
+		}
 		
 		@Override
 		public ArrayList<String> actions( Hero hero ) {
 			ArrayList<String> actions = super.actions( hero );
-			actions.add( AC_PLANT );
+			actions.add( Messages.get( Seed.class, "ac_plant" ) );
 			return actions;
 		}
 		
@@ -153,7 +156,7 @@ public abstract class Plant implements Bundlable {
 		
 		@Override
 		public void execute( Hero hero, String action ) {
-			if (action.equals( AC_PLANT )) {
+			if (action.equals( Messages.get( Seed.class, "ac_plant" ))) {
 							
 				hero.spend( TIME_TO_PLANT );
 				hero.busy();
@@ -195,10 +198,15 @@ public abstract class Plant implements Bundlable {
 		public int price() {
 			return 10 * quantity;
 		}
-		
+
+		@Override
+		public String desc() {
+			return Messages.get(plantClass, "desc");
+		}
+
 		@Override
 		public String info() {
-			return String.format( TXT_INFO, Utils.indefinite( plantName ), desc() );
+			return Messages.get( Seed.class, "info", Utils.indefinite( plantName ), desc() );
 		}
 	}
 }
