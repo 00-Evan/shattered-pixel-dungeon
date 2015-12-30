@@ -68,6 +68,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -120,8 +121,6 @@ public abstract class Level implements Bundlable {
 
 	
 	protected static final float TIME_TO_RESPAWN	= 50;
-	
-	private static final String TXT_HIDDEN_PLATE_CLICKS = "A hidden pressure plate clicks!";
 	
 	public static boolean resizingNeeded;
 	public static int loadedMapSize;
@@ -856,7 +855,7 @@ public abstract class Level implements Bundlable {
 		switch (map[cell]) {
 		
 		case Terrain.SECRET_TRAP:
-			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
+			GLog.i( Messages.get(Level.class, "hidden_plate") );
 		case Terrain.TRAP:
 			trap = traps.get( cell );
 			break;
@@ -1059,104 +1058,104 @@ public abstract class Level implements Bundlable {
 		}
 		
 		switch (tile) {
-		case Terrain.CHASM:
-			return "Chasm";
-		case Terrain.EMPTY:
-		case Terrain.EMPTY_SP:
-		case Terrain.EMPTY_DECO:
-		case Terrain.SECRET_TRAP:
-			return "Floor";
-		case Terrain.GRASS:
-			return "Grass";
-		case Terrain.WATER:
-			return "Water";
-		case Terrain.WALL:
-		case Terrain.WALL_DECO:
-		case Terrain.SECRET_DOOR:
-			return "Wall";
-		case Terrain.DOOR:
-			return "Closed door";
-		case Terrain.OPEN_DOOR:
-			return "Open door";
-		case Terrain.ENTRANCE:
-			return "Depth entrance";
-		case Terrain.EXIT:
-			return "Depth exit";
-		case Terrain.EMBERS:
-			return "Embers";
-		case Terrain.LOCKED_DOOR:
-			return "Locked door";
-		case Terrain.PEDESTAL:
-			return "Pedestal";
-		case Terrain.BARRICADE:
-			return "Barricade";
-		case Terrain.HIGH_GRASS:
-			return "High grass";
-		case Terrain.LOCKED_EXIT:
-			return "Locked depth exit";
-		case Terrain.UNLOCKED_EXIT:
-			return "Unlocked depth exit";
-		case Terrain.SIGN:
-			return "Sign";
-		case Terrain.WELL:
-			return "Well";
-		case Terrain.EMPTY_WELL:
-			return "Empty well";
-		case Terrain.STATUE:
-		case Terrain.STATUE_SP:
-			return "Statue";
-		case Terrain.INACTIVE_TRAP:
-			return "Triggered trap";
-		case Terrain.BOOKSHELF:
-			return "Bookshelf";
-		case Terrain.ALCHEMY:
-			return "Alchemy pot";
-		default:
-			return "???";
+			case Terrain.CHASM:
+				return Messages.get(Level.class, "chasm_name");
+			case Terrain.EMPTY:
+			case Terrain.EMPTY_SP:
+			case Terrain.EMPTY_DECO:
+			case Terrain.SECRET_TRAP:
+				return Messages.get(Level.class, "floor_name");
+			case Terrain.GRASS:
+				return Messages.get(Level.class, "grass_name");
+			case Terrain.WATER:
+				return Messages.get(Level.class, "water_name");
+			case Terrain.WALL:
+			case Terrain.WALL_DECO:
+			case Terrain.SECRET_DOOR:
+				return Messages.get(Level.class, "wall_name");
+			case Terrain.DOOR:
+				return Messages.get(Level.class, "closed_door_name");
+			case Terrain.OPEN_DOOR:
+				return Messages.get(Level.class, "open_door_name");
+			case Terrain.ENTRANCE:
+				return Messages.get(Level.class, "entrace_name");
+			case Terrain.EXIT:
+				return Messages.get(Level.class, "exit_name");
+			case Terrain.EMBERS:
+				return Messages.get(Level.class, "embers_name");
+			case Terrain.LOCKED_DOOR:
+				return Messages.get(Level.class, "locked_door_name");
+			case Terrain.PEDESTAL:
+				return Messages.get(Level.class, "pedestal_name");
+			case Terrain.BARRICADE:
+				return Messages.get(Level.class, "barricade_name");
+			case Terrain.HIGH_GRASS:
+				return Messages.get(Level.class, "high_grass_name");
+			case Terrain.LOCKED_EXIT:
+				return Messages.get(Level.class, "locked_exit_name");
+			case Terrain.UNLOCKED_EXIT:
+				return Messages.get(Level.class, "unlocked_exit_name");
+			case Terrain.SIGN:
+				return Messages.get(Level.class, "sign_name");
+			case Terrain.WELL:
+				return Messages.get(Level.class, "well_name");
+			case Terrain.EMPTY_WELL:
+				return Messages.get(Level.class, "empty_well_name");
+			case Terrain.STATUE:
+			case Terrain.STATUE_SP:
+				return Messages.get(Level.class, "statue_name");
+			case Terrain.INACTIVE_TRAP:
+				return Messages.get(Level.class, "inactive_trap_name");
+			case Terrain.BOOKSHELF:
+				return Messages.get(Level.class, "bookshelf_name");
+			case Terrain.ALCHEMY:
+				return Messages.get(Level.class, "alchemy_name");
+			default:
+				return Messages.get(Level.class, "default_name");
 		}
 	}
 	
 	public String tileDesc( int tile ) {
 		
 		switch (tile) {
-		case Terrain.CHASM:
-			return "You can't see the bottom.";
-		case Terrain.WATER:
-			return "In case of burning step into the water to extinguish the fire.";
-		case Terrain.ENTRANCE:
-			return "Stairs lead up to the upper depth.";
-		case Terrain.EXIT:
-		case Terrain.UNLOCKED_EXIT:
-			return "Stairs lead down to the lower depth.";
-		case Terrain.EMBERS:
-			return "Embers cover the floor.";
-		case Terrain.HIGH_GRASS:
-			return "Dense vegetation blocks the view.";
-		case Terrain.LOCKED_DOOR:
-			return "This door is locked, you need a matching key to unlock it.";
-		case Terrain.LOCKED_EXIT:
-			return "Heavy bars block the stairs leading down.";
-		case Terrain.BARRICADE:
-			return "The wooden barricade is firmly set but has dried over the years. Might it burn?";
-		case Terrain.SIGN:
-			return "You can't read the text from here.";
-		case Terrain.INACTIVE_TRAP:
-			return "The trap has been triggered before and it's not dangerous anymore.";
-		case Terrain.STATUE:
-		case Terrain.STATUE_SP:
-			return "Someone wanted to adorn this place, but failed, obviously.";
-		case Terrain.ALCHEMY:
-			return "Drop some seeds here to cook a potion.";
-		case Terrain.EMPTY_WELL:
-			return "The well has run dry.";
-		default:
-			if (tile >= Terrain.WATER_TILES) {
-				return tileDesc( Terrain.WATER );
-			}
-			if ((Terrain.flags[tile] & Terrain.PIT) != 0) {
-				return tileDesc( Terrain.CHASM );
-			}
-			return "";
+			case Terrain.CHASM:
+				return Messages.get(Level.class, "chasm_desc");
+			case Terrain.WATER:
+				return Messages.get(Level.class, "water_desc");
+			case Terrain.ENTRANCE:
+				return Messages.get(Level.class, "entrance_desc");
+			case Terrain.EXIT:
+			case Terrain.UNLOCKED_EXIT:
+				return Messages.get(Level.class, "exit_desc");
+			case Terrain.EMBERS:
+				return Messages.get(Level.class, "embers_desc");
+			case Terrain.HIGH_GRASS:
+				return Messages.get(Level.class, "high_grass_desc");
+			case Terrain.LOCKED_DOOR:
+				return Messages.get(Level.class, "locked_door_desc");
+			case Terrain.LOCKED_EXIT:
+				return Messages.get(Level.class, "locked_exit_desc");
+			case Terrain.BARRICADE:
+				return Messages.get(Level.class, "barricade_desc");
+			case Terrain.SIGN:
+				return Messages.get(Level.class, "sign_desc");
+			case Terrain.INACTIVE_TRAP:
+				return Messages.get(Level.class, "inactive_trap_desc");
+			case Terrain.STATUE:
+			case Terrain.STATUE_SP:
+				return Messages.get(Level.class, "statue_desc");
+			case Terrain.ALCHEMY:
+				return Messages.get(Level.class, "alchemy_desc");
+			case Terrain.EMPTY_WELL:
+				return Messages.get(Level.class, "empty_well_desc");
+			default:
+				if (tile >= Terrain.WATER_TILES) {
+					return tileDesc( Terrain.WATER );
+				}
+				if ((Terrain.flags[tile] & Terrain.PIT) != 0) {
+					return tileDesc( Terrain.CHASM );
+				}
+				return Messages.get(Level.class, "default_desc");
 		}
 	}
 }
