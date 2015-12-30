@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BruteSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -33,11 +34,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Brute extends Mob {
-
-	private static final String TXT_ENRAGED = "%s becomes enraged!";
 	
 	{
-		name = "gnoll brute";
 		spriteClass = BruteSprite.class;
 		
 		HP = HT = 40;
@@ -83,20 +81,13 @@ public class Brute extends Mob {
 			enraged = true;
 			spend( TICK );
 			if (Dungeon.visible[pos]) {
-				GLog.w( TXT_ENRAGED, name );
-				sprite.showStatus( CharSprite.NEGATIVE, "enraged" );
+				GLog.w( Messages.get(this, "engraged_text") );
+				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "engraged") );
 			}
 		}
 	}
 	
-	@Override
-	public String description() {
-		return
-			"Brutes are the largest, strongest and toughest of all gnolls. When severely wounded, " +
-			"they go berserk, inflicting even more damage to their enemies.";
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( Terror.class );
 	}

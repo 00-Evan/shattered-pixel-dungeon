@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GuardSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -42,7 +43,6 @@ public class Guard extends Mob {
 	private boolean chainsUsed = false;
 
 	{
-		name = "prison guard";
 		spriteClass = GuardSprite.class;
 
 		HP = HT = 30;
@@ -104,7 +104,7 @@ public class Guard extends Mob {
 				return false;
 			} else {
 				final int newPosFinal = newPos;
-				yell("get over here!");
+				yell( Messages.get(this, "scorpion") );
 				sprite.parent.add(new Chains(pos, enemy.pos, new Callback() {
 					public void call() {
 						Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal), -1);
@@ -135,11 +135,6 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	public String defenseVerb() {
-		return "blocked";
-	}
-
-	@Override
 	protected Item createLoot() {
 		//first see if we drop armor, chance is 1/8 (0.125f)
 		if (Random.Int(8) == 0){
@@ -154,13 +149,6 @@ public class Guard extends Mob {
 		}
 
 		return null;
-	}
-
-	@Override
-	public String description() {
-		return "Once keepers of the prison, these guards have long since become no different than the inmates. " +
-				"They shamble like zombies, brainlessly roaming through the halls in search of anything out of place, like you!\n\n" +
-				"They carry chains around their hip, possibly used to pull in enemies to close range.";
 	}
 
 	private final String CHAINSUSED = "chainsused";

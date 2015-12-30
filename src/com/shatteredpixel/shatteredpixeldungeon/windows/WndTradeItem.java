@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -166,7 +167,7 @@ public class WndTradeItem extends Window {
 						} else {
 							for (Mob mob : Dungeon.level.mobs){
 								if (mob instanceof Shopkeeper) {
-									mob.yell(((Shopkeeper) mob).TXT_THIEF);
+									mob.yell(Messages.get(mob, "thief"));
 									((Shopkeeper) mob).flee();
 									break;
 								}

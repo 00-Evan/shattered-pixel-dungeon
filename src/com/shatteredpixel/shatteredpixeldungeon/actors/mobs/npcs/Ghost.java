@@ -39,10 +39,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
 import com.watabou.noosa.audio.Sample;
@@ -54,46 +54,12 @@ import java.util.HashSet;
 public class Ghost extends NPC {
 
 	{
-		name = "sad ghost";
 		spriteClass = GhostSprite.class;
 		
 		flying = true;
 		
 		state = WANDERING;
 	}
-	
-	private static final String TXT_RAT1	=
-			"Hello %s... Once I was like you - strong and confident... " +
-			"But I was slain by a foul beast... I can't leave this place... Not until I have my revenge... " +
-			"Slay the _fetid rat_, that has taken my life...\n\n" +
-			"It stalks this floor... Spreading filth everywhere... " +
-			"_Beware its cloud of stink and corrosive bite, the acid dissolves in water..._ ";
-
-	private static final String TXT_RAT2	=
-			"Please... Help me... Slay the abomination...\n\n" +
-			"_Fight it near water... Avoid the stench..._";
-
-	private static final String TXT_GNOLL1	=
-			"Hello %s... Once I was like you - strong and confident... " +
-			"But I was slain by a devious foe... I can't leave this place... Not until I have my revenge... " +
-			"Slay the _gnoll trickster_, that has taken my life...\n\n" +
-			"It is not like the other gnolls... It hides and uses thrown weapons... " +
-			"_Beware its poisonous and incendiary darts, don't attack from a distance..._";
-
-	private static final String TXT_GNOLL2	=
-			"Please... Help me... Slay the trickster...\n\n" +
-			"_Don't let it hit you... Get near to it..._";
-
-	private static final String TXT_CRAB1	=
-			"Hello %s... Once I was like you - strong and confident... " +
-			"But I was slain by an ancient creature... I can't leave this place... Not until I have my revenge... " +
-			"Slay the _great crab_, that has taken my life...\n\n" +
-			"It is unnaturally old... With a massive single claw and a thick shell... " +
-			"_Beware its claw, you must surprise the crab or it will block with it..._";
-
-	private static final String TXT_CRAB2	=
-			"Please... Help me... Slay the Crustacean...\n\n" +
-			"_It will always block... When it sees you coming..._";
 	
 	public Ghost() {
 		super();
@@ -104,11 +70,6 @@ public class Ghost extends NPC {
 	@Override
 	public int defenseSkill( Char enemy ) {
 		return 1000;
-	}
-	
-	@Override
-	public String defenseVerb() {
-		return "evaded";
 	}
 	
 	@Override
@@ -148,13 +109,13 @@ public class Ghost extends NPC {
 					switch (Quest.type) {
 						case 1:
 						default:
-							GameScene.show(new WndQuest(this, TXT_RAT2));
+							GameScene.show(new WndQuest(this, Messages.get(this, "rat_2")));
 							break;
 						case 2:
-							GameScene.show(new WndQuest(this, TXT_GNOLL2));
+							GameScene.show(new WndQuest(this, Messages.get(this, "gnoll_2")));
 							break;
 						case 3:
-							GameScene.show(new WndQuest(this, TXT_CRAB2));
+							GameScene.show(new WndQuest(this, Messages.get(this, "crab_2")));
 							break;
 					}
 
@@ -181,13 +142,13 @@ public class Ghost extends NPC {
 			switch (Quest.type){
 				case 1: default:
 					questBoss = new FetidRat();
-					txt_quest = Utils.format(TXT_RAT1, Dungeon.hero.givenName()); break;
+					txt_quest = Messages.get(this, "rat_1", Dungeon.hero.givenName()); break;
 				case 2:
 					questBoss = new GnollTrickster();
-					txt_quest = Utils.format(TXT_GNOLL1, Dungeon.hero.givenName()); break;
+					txt_quest = Messages.get(this, "gnoll_1", Dungeon.hero.givenName()); break;
 				case 3:
 					questBoss = new GreatCrab();
-					txt_quest = Utils.format(TXT_CRAB1, Dungeon.hero.givenName()); break;
+					txt_quest = Messages.get(this, "crab_1", Dungeon.hero.givenName()); break;
 			}
 
 			questBoss.pos = Dungeon.level.randomRespawnCell();
@@ -201,15 +162,8 @@ public class Ghost extends NPC {
 
 		}
 	}
-	
-	@Override
-	public String description() {
-		return
-			"The ghost is barely visible. It looks like a shapeless " +
-			"spot of faint light with a sorrowful face.";
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( Paralysis.class );
 		IMMUNITIES.add( Roots.class );
@@ -219,8 +173,6 @@ public class Ghost extends NPC {
 	public HashSet<Class<?>> immunities() {
 		return IMMUNITIES;
 	}
-
-
 
 	public static class Quest {
 		
@@ -337,7 +289,7 @@ public class Ghost extends NPC {
 		
 		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
-				GLog.n("sad ghost: Thank you... come find me...");
+				GLog.n( Messages.get(Ghost.class, "find_me") );
 				for (Mob m : Dungeon.level.mobs){
 					if (m instanceof Ghost)
 						m.beckon(Dungeon.hero.pos);

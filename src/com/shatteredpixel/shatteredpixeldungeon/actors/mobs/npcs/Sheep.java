@@ -20,15 +20,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SheepSprite;
 import com.watabou.utils.Random;
 
 public class Sheep extends NPC {
 
-	private static final String[] QUOTES = {"Baa!", "Baa?", "Baa.", "Baa..."};
+	private static final String[] LINE_KEYS = {"Baa!", "Baa?", "Baa.", "Baa..."};
 
 	{
-		name = "sheep";
 		spriteClass = SheepSprite.class;
 	}
 
@@ -56,14 +56,7 @@ public class Sheep extends NPC {
 	}
 
 	@Override
-	public String description() {
-		return
-				"This is a magic sheep. What's so magical about it? You can't kill it. " +
-						"It will stand there until it magcially fades away, all the while chewing cud with a blank stare.";
-	}
-
-	@Override
 	public void interact() {
-		yell( Random.element( QUOTES ) );
+		yell( Messages.get(this, Random.element( LINE_KEYS )) );
 	}
 }

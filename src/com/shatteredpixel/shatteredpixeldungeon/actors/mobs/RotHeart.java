@@ -34,7 +34,6 @@ import java.util.HashSet;
 public class RotHeart extends Mob {
 
 	{
-		name = "rot heart";
 		spriteClass = RotHeartSprite.class;
 
 		HP = HT = 80;
@@ -100,14 +99,6 @@ public class RotHeart extends Mob {
 	@Override
 	public int dr() {
 		return 5;
-	}
-
-	@Override
-	public String description() {
-		return
-			"A Rotberry's fruit is very unique. Instead of rotting away and providing nutrients, the fruit grows, " +
-			"hardens, and encompasses the seed. It provides protection for the internal organs which grow " +
-			"inside the fruit. This giant orb is referred to as the heart of an adult rotberry plant.";
 	}
 
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ShieldedSprite;
 public class Shielded extends Brute {
 
 	{
-		name = "shielded brute";
 		spriteClass = ShieldedSprite.class;
 		
 		defenseSkill = 20;
@@ -35,11 +34,6 @@ public class Shielded extends Brute {
 	@Override
 	public int dr() {
 		return 10;
-	}
-	
-	@Override
-	public String defenseVerb() {
-		return "blocked";
 	}
 	
 	@Override

@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WarlockSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -44,10 +45,7 @@ public class Warlock extends Mob implements Callback {
 	
 	private static final float TIME_TO_ZAP	= 1f;
 	
-	private static final String TXT_SHADOWBOLT_KILLED = "%s's shadow bolt killed you...";
-	
 	{
-		name = "dwarf warlock";
 		spriteClass = WarlockSprite.class;
 		
 		HP = HT = 70;
@@ -92,7 +90,7 @@ public class Warlock extends Mob implements Callback {
 			
 			boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
 			if (visible) {
-				((WarlockSprite)sprite).zap( enemy.pos );
+				sprite.zap( enemy.pos );
 			} else {
 				zap();
 			}
@@ -114,7 +112,7 @@ public class Warlock extends Mob implements Callback {
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
 				Dungeon.fail( Utils.format( ResultDescriptions.MOB, Utils.indefinite( name ) ) );
-				GLog.n( TXT_SHADOWBOLT_KILLED, name );
+				GLog.n( Messages.get(this, "bolt_kill") );
 			}
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
@@ -147,16 +145,8 @@ public class Warlock extends Mob implements Callback {
 
 		return loot;
 	}
-	
-	@Override
-	public String description() {
-		return
-			"When dwarves' interests have shifted from engineering to arcane arts, " +
-			"warlocks have come to power in the city. They started with elemental magic, " +
-			"but soon switched to demonology and necromancy.";
-	}
-	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+
+	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	static {
 		RESISTANCES.add( Death.class );
 	}

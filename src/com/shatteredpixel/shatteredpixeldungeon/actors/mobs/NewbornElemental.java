@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.NewbornElementalSprite;
 public class NewbornElemental extends Elemental {
 
 	{
-		name = "newborn fire elemental";
 		spriteClass = NewbornElementalSprite.class;
 
 		HT = 65;
@@ -61,14 +60,5 @@ public class NewbornElemental extends Elemental {
 	public void die(Object cause) {
 		super.die(cause);
 		Dungeon.level.drop( new Embers(), pos ).sprite.drop();
-	}
-
-	@Override
-	public String description() {
-		return "Fire elementals are a byproduct of summoning greater entities. " +
-				"They are too chaotic in their nature to be controlled by even the most powerful demonologist.\n\n" +
-				"This fire elemental is freshy summoned, and is weakened as a result. " +
-				"In this state is it especially vulnerable to the cold. " +
-				"Its offensive capabilities are still great though, caution is advised.";
 	}
 }

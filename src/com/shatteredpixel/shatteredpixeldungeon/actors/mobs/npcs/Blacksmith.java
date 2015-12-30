@@ -46,32 +46,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Blacksmith extends NPC {
-
-	private static final String TXT_GOLD_1 =
-		"Hey human! Wanna be useful, eh? Take dis pickaxe and mine me some _dark gold ore_, _15 pieces_ should be enough. " +
-		"What do you mean, how am I gonna pay? You greedy...\n" +
-		"Ok, ok, I don't have money to pay, but I can do some smithin' for you. Consider yourself lucky, " +
-		"I'm the only blacksmith around.";
-	private static final String TXT_BLOOD_1 =
-		"Hey human! Wanna be useful, eh? Take dis pickaxe and _kill a bat_ wit' it, I need its blood on the head. " +
-		"What do you mean, how am I gonna pay? You greedy...\n" +
-		"Ok, ok, I don't have money to pay, but I can do some smithin' for you. Consider yourself lucky, " +
-		"I'm the only blacksmith around.";
-	private static final String TXT2 =
-		"Are you kiddin' me? Where is my pickaxe?!";
-	private static final String TXT3 =
-		"Dark gold ore. 15 pieces. Seriously, is it dat hard?";
-	private static final String TXT4 =
-		"I said I need bat blood on the pickaxe. Chop chop!";
-	private static final String TXT_COMPLETED =
-		"Oh, you have returned... Better late dan never.";
-	private static final String TXT_GET_LOST =
-		"I'm busy. Get lost!";
-	
-	private static final String TXT_LOOKS_BETTER	= "your %s certainly looks better now";
 	
 	{
-		name = "troll blacksmith";
 		spriteClass = BlacksmithSprite.class;
 	}
 	
@@ -89,7 +65,7 @@ public class Blacksmith extends NPC {
 		if (!Quest.given) {
 			
 			GameScene.show( new WndQuest( this,
-				Quest.alternative ? TXT_BLOOD_1 : TXT_GOLD_1 ) {
+				Quest.alternative ? Messages.get(this, "blood_1") : Messages.get(this, "gold_1") ) {
 				
 				@Override
 				public void onBackPressed() {
@@ -104,7 +80,7 @@ public class Blacksmith extends NPC {
 					} else {
 						Dungeon.level.drop( pick, Dungeon.hero.pos ).sprite.drop();
 					}
-				};
+				}
 			} );
 			
 			Journal.add( Journal.Feature.TROLL );
@@ -114,15 +90,15 @@ public class Blacksmith extends NPC {
 				
 				Pickaxe pick = Dungeon.hero.belongings.getItem( Pickaxe.class );
 				if (pick == null) {
-					tell( TXT2 );
+					tell( Messages.get(this, "lost_pick") );
 				} else if (!pick.bloodStained) {
-					tell( TXT4 );
+					tell( Messages.get(this, "blood_2") );
 				} else {
 					if (pick.isEquipped( Dungeon.hero )) {
 						pick.doUnequip( Dungeon.hero, false );
 					}
 					pick.detach( Dungeon.hero.belongings.backpack );
-					tell( TXT_COMPLETED );
+					tell( Messages.get(this, "completed") );
 					
 					Quest.completed = true;
 					Quest.reforged = false;
@@ -133,16 +109,16 @@ public class Blacksmith extends NPC {
 				Pickaxe pick = Dungeon.hero.belongings.getItem( Pickaxe.class );
 				DarkGold gold = Dungeon.hero.belongings.getItem( DarkGold.class );
 				if (pick == null) {
-					tell( TXT2 );
+					tell( Messages.get(this, "lost_pick") );
 				} else if (gold == null || gold.quantity() < 15) {
-					tell( TXT3 );
+					tell( Messages.get(this, "gold_2") );
 				} else {
 					if (pick.isEquipped( Dungeon.hero )) {
 						pick.doUnequip( Dungeon.hero, false );
 					}
 					pick.detach( Dungeon.hero.belongings.backpack );
 					gold.detachAll( Dungeon.hero.belongings.backpack );
-					tell( TXT_COMPLETED );
+					tell( Messages.get(this, "completed") );
 					
 					Quest.completed = true;
 					Quest.reforged = false;
@@ -155,7 +131,7 @@ public class Blacksmith extends NPC {
 			
 		} else {
 			
-			tell( TXT_GET_LOST );
+			tell( Messages.get(this, "get_lost") );
 			
 		}
 	}
@@ -167,27 +143,27 @@ public class Blacksmith extends NPC {
 	public static String verify( Item item1, Item item2 ) {
 		
 		if (item1 == item2) {
-			return "Select 2 different items, not the same item twice!";
+			return Messages.get(Blacksmith.class, "same_item");
 		}
 
 		if (item1.getClass() != item2.getClass()) {
-			return "Select 2 items of the same type!";
+			return Messages.get(Blacksmith.class, "diff_type");
 		}
 		
 		if (!item1.isIdentified() || !item2.isIdentified()) {
-			return "I need to know what I'm working with, identify them first!";
+			return Messages.get(Blacksmith.class, "un_ided");
 		}
 		
 		if (item1.cursed || item2.cursed) {
-			return "I don't work with cursed items!";
+			return Messages.get(Blacksmith.class, "cursed");
 		}
 		
 		if (item1.level() < 0 || item2.level() < 0) {
-			return "It's a junk, the quality is too poor!";
+			return Messages.get(Blacksmith.class, "degraded");
 		}
 		
 		if (!item1.isUpgradable() || !item2.isUpgradable()) {
-			return "I can't reforge these items!";
+			return Messages.get(Blacksmith.class, "cant_reforge");
 		}
 		
 		return null;
@@ -212,7 +188,7 @@ public class Blacksmith extends NPC {
 			((EquipableItem)first).doUnequip( Dungeon.hero, true );
 		}
 		first.upgrade();
-		GLog.p( TXT_LOOKS_BETTER, first.name() );
+		GLog.p( ScrollOfUpgrade.TXT_LOOKS_BETTER, first.name() );
 		Dungeon.hero.spendAndNext( 2f );
 		Badges.validateItemLevelAquired( first );
 		
@@ -242,13 +218,6 @@ public class Blacksmith extends NPC {
 	@Override
 	public boolean reset() {
 		return true;
-	}
-	
-	@Override
-	public String description() {
-		return
-			"This troll blacksmith looks like all trolls look: he is tall and lean, and his skin resembles stone " +
-			"in both color and texture. The troll blacksmith is tinkering with unproportionally small tools.";
 	}
 
 	public static class Quest {
@@ -308,7 +277,7 @@ public class Blacksmith extends NPC {
 		public static boolean spawn( Collection<Room> rooms ) {
 			if (!spawned && Dungeon.depth > 11 && Random.Int( 15 - Dungeon.depth ) == 0) {
 				
-				Room blacksmith = null;
+				Room blacksmith;
 				for (Room r : rooms) {
 					if (r.type == Type.STANDARD && r.width() > 4 && r.height() > 4) {
 						blacksmith = r;

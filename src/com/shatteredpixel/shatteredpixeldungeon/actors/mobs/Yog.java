@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBla
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BurningFistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -62,7 +63,6 @@ import com.watabou.utils.Random;
 public class Yog extends Mob {
 	
 	{
-		name = "Yog-Dzewa";
 		spriteClass = YogSprite.class;
 		
 		HP = HT = 300;
@@ -75,11 +75,6 @@ public class Yog extends Mob {
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.DEMONIC);
 	}
-	
-	private static final String TXT_DESC =
-		"Yog-Dzewa is an Old God, a powerful entity from the realms of chaos. A century ago, the ancient dwarves " +
-		"barely won the war against its army of demons, but were unable to kill the god itself. Instead, they then " +
-		"imprisoned it in the halls below their city, believing it to be too weak to rise ever again.";
 	
 	public Yog() {
 		super();
@@ -133,7 +128,7 @@ public class Yog extends Mob {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 
-		ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
+		ArrayList<Integer> spawnPoints = new ArrayList<>();
 		
 		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
 			int p = pos + Level.NEIGHBOURS8[i];
@@ -177,23 +172,17 @@ public class Yog extends Mob {
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();
 		super.die( cause );
 		
-		yell( "..." );
+		yell( Messages.get(this, "defeated") );
 	}
 	
 	@Override
 	public void notice() {
 		super.notice();
 		BossHealthBar.assignBoss(this);
-		yell( "Hope is an illusion..." );
+		yell( Messages.get(this, "notice") );
 	}
 	
-	@Override
-	public String description() {
-		return TXT_DESC;
-			
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		
 		IMMUNITIES.add( Death.class );
@@ -223,7 +212,6 @@ public class Yog extends Mob {
 		private static final int REGENERATION	= 4;
 		
 		{
-			name = "rotting fist";
 			spriteClass = RottingFistSprite.class;
 			
 			HP = HT = 300;
@@ -280,13 +268,7 @@ public class Yog extends Mob {
 			if (lock != null) lock.addTime(dmg*0.5f);
 		}
 		
-		@Override
-		public String description() {
-			return TXT_DESC;
-				
-		}
-		
-		private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+		private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 		static {
 			RESISTANCES.add( ToxicGas.class );
 			RESISTANCES.add( Death.class );
@@ -298,7 +280,7 @@ public class Yog extends Mob {
 			return RESISTANCES;
 		}
 		
-		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 		static {
 			IMMUNITIES.add( Amok.class );
 			IMMUNITIES.add( Sleep.class );
@@ -366,7 +348,7 @@ public class Yog extends Mob {
 					
 					if (!enemy.isAlive() && enemy == Dungeon.hero) {
 						Dungeon.fail( Utils.format( ResultDescriptions.UNIQUE, name ) );
-						GLog.n( TXT_KILL, name );
+						GLog.n( Messages.get(Char.class, "kill", name) );
 					}
 					return true;
 					
@@ -397,13 +379,7 @@ public class Yog extends Mob {
 			if (lock != null) lock.addTime(dmg*0.5f);
 		}
 		
-		@Override
-		public String description() {
-			return TXT_DESC;
-				
-		}
-		
-		private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+		private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 		static {
 			RESISTANCES.add( ToxicGas.class );
 			RESISTANCES.add( Death.class );
@@ -415,7 +391,7 @@ public class Yog extends Mob {
 			return RESISTANCES;
 		}
 		
-		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 		static {
 			IMMUNITIES.add( Amok.class );
 			IMMUNITIES.add( Sleep.class );
@@ -434,7 +410,6 @@ public class Yog extends Mob {
 	public static class Larva extends Mob {
 		
 		{
-			name = "god's larva";
 			spriteClass = LarvaSprite.class;
 			
 			HP = HT = 25;
@@ -461,11 +436,6 @@ public class Yog extends Mob {
 		public int dr() {
 			return 8;
 		}
-		
-		@Override
-		public String description() {
-			return TXT_DESC;
-				
-		}
+
 	}
 }

@@ -42,7 +42,6 @@ public class Wraith extends Mob {
 	private int level;
 	
 	{
-		name = "wraith";
 		spriteClass = WraithSprite.class;
 		
 		HP = HT = 1;
@@ -83,23 +82,11 @@ public class Wraith extends Mob {
 		defenseSkill = attackSkill( null ) * 5;
 		enemySeen = true;
 	}
-	
-	@Override
-	public String defenseVerb() {
-		return "evaded";
-	}
-	
+
 	@Override
 	public boolean reset() {
 		state = WANDERING;
 		return true;
-	}
-
-	@Override
-	public String description() {
-		return
-			"A wraith is a vengeful spirit of a sinner, whose grave or tomb was disturbed. " +
-			"Being an ethereal entity, it is very hard to hit with a regular weapon.";
 	}
 	
 	public static void spawnAround( int pos ) {
@@ -131,7 +118,7 @@ public class Wraith extends Mob {
 		}
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( Death.class );
 		IMMUNITIES.add( Terror.class );

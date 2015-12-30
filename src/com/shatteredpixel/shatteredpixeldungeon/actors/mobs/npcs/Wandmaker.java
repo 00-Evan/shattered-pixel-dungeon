@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
@@ -48,60 +49,8 @@ import com.watabou.utils.Random;
 public class Wandmaker extends NPC {
 
 	{
-		name = "old wandmaker";
 		spriteClass = WandmakerSprite.class;
 	}
-
-	private static final String INTRO_WARRIOR	=
-		"Oh, what a pleasant surprise to meet a hero in such a depressing place! " +
-		"If you're up to helping an old man out, I may have a task for you.\n\n";
-
-	private static final String INTRO_ROGUE		=
-		"Oh Goodness, you startled me! I haven't met a bandit from this place that still has his sanity, " +
-		"so you must be from the surface! If you're up to helping a stranger out, I may have a task for you.\n\n";
-
-	private static final String INTRO_MAGE		=
-		"Oh, hello %s! I heard there was some ruckus regarding you and the wizards institute? " +
-		"Oh never mind, I never liked those stick-in-the-muds anyway. If you're willing, I may have a task for you.\n\n";
-
-	private static final String INTRO_HUNTRESS	=
-		"Oh, hello miss! A friendly face is a pleasant surprise down here isn't it? " +
-		"In fact, I swear I've seen your face before, but I can't put my finger on it... " +
-		"Oh never mind, if you're here for adventure, I may have a task for you.\n\n";
-
-	private static final String INTRO_1 	=
-		"I came here to find a rare ingredient for a wand, but I've gotten myself lost, " +
-		"and my magical shield is weakening. I'll need to leave soon, but can't bear to go without getting what I came for.";
-
-
-	private static final String INTRO_DUST	=
-		"I'm looking for some _corpse dust_. It's a special kind of cursed bone meal that usually shows up in places like this. " +
-		"There should be a barricaded room around here somewhere, I'm sure some dust will turn up there. " +
-		"Do be careful though, the curse the dust carries is quite potent, _get back to me as fast as you can_ and I'll cleanse it for you.\n\n";
-
-	private static final String INTRO_EMBER	=
-		"I'm looking for some _fresh embers_ from a newborn fire elemental. Elementals usually pop up when a summoning ritual isn't controlled, " +
-		"so just find some candles and a ritual site and I'm sure you can get one to pop up. " +
-		"You might want to _keep some sort of freezing item handy_ though, elementals are very powerful, but ice will take them down quite easily.\n\n";
-
-	private static final String INTRO_BERRY	=
-		"The old warden of this prison kept a _rotberry plant_, and I'm after one of its seeds. The plant has probably gone wild by now though, " +
-		"so getting it to give up a seed might be tricky. Its garden should be somewhere around here. " +
-		"Try to _keep away from its vine lashers_ if you want to stay in one piece. Using fire might be tempting but please don't, you'll kill the plant and destroy its seeds.\n\n";
-
-	private static final String INTRO_2 	=
-			"If you can get that for me, I'll be happy to pay you with one of my finely crafted wands! " +
-			"I brought two with me, so you can take whichever one you prefer.";
-
-	private static final String REMINDER_DUST	=
-		"Any luck with corpse dust, %s? Look for some barricades.";
-
-	private static final String REMINDER_EMBER	=
-		"Any luck with those embers, %s? You'll need to find four candles and the ritual site.";
-	
-	private static final String REMINDER_BERRY	=
-		"Any luck with a Rotberry seed, %s? Look for a room filled with vegetation.";
-
 	
 	@Override
 	protected boolean act() {
@@ -112,11 +61,6 @@ public class Wandmaker extends NPC {
 	@Override
 	public int defenseSkill( Char enemy ) {
 		return 1000;
-	}
-	
-	@Override
-	public String defenseVerb() {
-		return "absorbed";
 	}
 	
 	@Override
@@ -158,13 +102,13 @@ public class Wandmaker extends NPC {
 				String msg = "";
 				switch(Quest.type){
 					case 1:
-						msg = REMINDER_DUST;
+						msg = Messages.get(this, "reminder_dust", Dungeon.hero.givenName());
 						break;
 					case 2:
-						msg = REMINDER_EMBER;
+						msg = Messages.get(this, "reminder_ember", Dungeon.hero.givenName());
 						break;
 					case 3:
-						msg = REMINDER_BERRY;
+						msg = Messages.get(this, "reminder_berry", Dungeon.hero.givenName());
 						break;
 				}
 				GameScene.show(new WndQuest(this, Utils.format(msg, Dungeon.hero.givenName())));
@@ -176,55 +120,48 @@ public class Wandmaker extends NPC {
 			String msg2 = "";
 			switch(Dungeon.hero.heroClass){
 				case WARRIOR:
-					msg1 += INTRO_WARRIOR;
+					msg1 += Messages.get(this, "intro_warrior");
 					break;
 				case ROGUE:
-					msg1 += INTRO_ROGUE;
+					msg1 += Messages.get(this, "intro_rogue");
 					break;
 				case MAGE:
-					msg1 += INTRO_MAGE;
+					msg1 += Messages.get(this, "intro_mage", Dungeon.hero.givenName());
 					break;
 				case HUNTRESS:
-					msg1 += INTRO_HUNTRESS;
+					msg1 += Messages.get(this, "intro_huntress");
 					break;
 			}
 
-			msg1 += INTRO_1;
+			msg1 += Messages.get(this, "intro_1");
 
 			switch (Quest.type){
 				case 1:
-					msg2 += INTRO_DUST;
+					msg2 += Messages.get(this, "intro_dust");
 					break;
 				case 2:
-					msg2 += INTRO_EMBER;
+					msg2 += Messages.get(this, "intro_ember");
 					break;
 				case 3:
-					msg2 += INTRO_BERRY;
+					msg2 += Messages.get(this, "intro_berry");
 					break;
 			}
 
-			msg2 += INTRO_2;
+			msg2 += Messages.get(this, "intro_2");
 			final String msg2final = msg2;
 			final NPC wandmaker = this;
 
-			GameScene.show(new WndQuest(wandmaker, Utils.format(msg1, Dungeon.hero.givenName())){
+			GameScene.show(new WndQuest(wandmaker, msg1){
 				@Override
 				public void hide() {
 					super.hide();
-					GameScene.show(new WndQuest(wandmaker, Utils.format(msg2final, Dungeon.hero.givenName())));
+					GameScene.show(new WndQuest(wandmaker, msg2final));
 				}
 			});
 
 			Journal.add( Journal.Feature.WANDMAKER );
 			Quest.given = true;
 		}
-	}
-	
-	@Override
-	public String description() {
-		return
-			"This old yet hale gentleman wears a slightly confused " +
-			"expression. He is protected by a magic shield.";
 	}
 	
 	public static class Quest {

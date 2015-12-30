@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon.Enchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -147,13 +148,11 @@ public class Statue extends Mob {
 
 	@Override
 	public String description() {
-		return
-			"You would think that it's just another one of this dungeon's ugly statues, but its red glowing eyes give it away." +
-			"\n\nWhile the statue itself is made of stone, the _" + weapon.name() + "_, it's wielding, looks real.";
+		return Messages.get(this, "desc", weapon.name());
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		RESISTANCES.add( ToxicGas.class );
 		RESISTANCES.add( Poison.class );

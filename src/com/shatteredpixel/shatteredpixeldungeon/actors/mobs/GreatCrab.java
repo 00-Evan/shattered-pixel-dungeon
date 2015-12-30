@@ -26,13 +26,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class GreatCrab extends Crab {
+
 	{
-		name = "great crab";
 		spriteClass = GreatCrabSprite.class;
 
 		HP = HT = 25;
@@ -66,8 +67,8 @@ public class GreatCrab extends Crab {
 		//crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
 		//All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
 		if (enemySeen && (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
-			GLog.n("The crab notices the attack and blocks with its massive claw.");
-			sprite.showStatus( CharSprite.NEUTRAL, "blocked" );
+			GLog.n( Messages.get(this, "noticed") );
+			sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, "blocked") );
 		} else {
 			super.damage( dmg, src );
 		}
@@ -81,16 +82,5 @@ public class GreatCrab extends Crab {
 
 		Dungeon.level.drop( new MysteryMeat(), pos );
 		Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
-	}
-
-	@Override
-	public String description() {
-		return
-				"This crab is gigantic, even compared to other sewer crabs. " +
-						"Its blue shell is covered in cracks and barnacles, showing great age. " +
-						"It lumbers around slowly, barely keeping balance with its massive claw.\n\n" +
-						"While the crab only has one claw, its size easily compensates. " +
-						"The crab holds the claw infront of itself whenever it sees a threat, shielding " +
-						"itself behind an impenetrable wall of carapace.";
 	}
 }

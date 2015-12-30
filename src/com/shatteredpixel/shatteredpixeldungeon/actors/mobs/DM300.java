@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
@@ -55,7 +56,6 @@ import com.watabou.utils.Random;
 public class DM300 extends Mob {
 	
 	{
-		name = "DM-300";
 		spriteClass = DM300Sprite.class;
 		
 		HP = HT = 200;
@@ -101,7 +101,7 @@ public class DM300 extends Mob {
 			sprite.emitter().burst( ElmoParticle.FACTORY, 5 );
 			
 			if (Dungeon.visible[step] && Dungeon.hero.isAlive()) {
-				GLog.n( "DM-300 repairs itself!" );
+				GLog.n( Messages.get(this, "repair") );
 			}
 		}
 		
@@ -156,25 +156,17 @@ public class DM300 extends Mob {
 			GLog.p("Your beacon grows stronger!");
 		}
 		
-		yell( "Mission failed. Shutting down." );
+		yell( Messages.get(this, "defeated") );
 	}
 	
 	@Override
 	public void notice() {
 		super.notice();
 		BossHealthBar.assignBoss(this);
-		yell( "Unauthorised personnel detected." );
+		yell( Messages.get(this, "notice") );
 	}
 	
-	@Override
-	public String description() {
-		return
-			"This machine was created by the Dwarves several centuries ago. Later, Dwarves started to replace machines with " +
-			"golems, elementals and even demons. Eventually it led their civilization to the decline. The DM-300 and similar " +
-			"machines were typically used for construction and mining, and in some cases, for city defense.";
-	}
-	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	static {
 		RESISTANCES.add( Death.class );
 		RESISTANCES.add( ScrollOfPsionicBlast.class );
@@ -185,7 +177,7 @@ public class DM300 extends Mob {
 		return RESISTANCES;
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( ToxicGas.class );
 		IMMUNITIES.add( Terror.class );

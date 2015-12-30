@@ -34,7 +34,6 @@ import com.watabou.utils.Random;
 public class Golem extends Mob {
 	
 	{
-		name = "golem";
 		spriteClass = GolemSprite.class;
 		
 		HP = HT = 85;
@@ -63,28 +62,14 @@ public class Golem extends Mob {
 	public int dr() {
 		return 12;
 	}
-	
-	@Override
-	public String defenseVerb() {
-		return "blocked";
-	}
-	
+
 	@Override
 	public void die( Object cause ) {
 		Imp.Quest.process( this );
 		
 		super.die( cause );
 	}
-	
-	@Override
-	public String description() {
-		return
-			"The Dwarves tried to combine their knowledge of mechanisms with their newfound power of elemental binding. " +
-			"They used spirits of earth as the \"soul\" for the mechanical bodies of golems, which were believed to be " +
-			"most controllable of all. Despite this, the tiniest mistake in the ritual could cause an outbreak.";
-	}
-	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	static {
 	}
 	
@@ -93,7 +78,7 @@ public class Golem extends Mob {
 		return RESISTANCES;
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( Amok.class );
 		IMMUNITIES.add( Terror.class );

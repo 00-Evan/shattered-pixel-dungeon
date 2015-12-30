@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -52,8 +53,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Goo extends Mob {
+
 	{
-		name = "Goo";
 		HP = HT = 100;
 		EXP = 10;
 		defenseSkill = 8;
@@ -184,8 +185,8 @@ public class Goo extends Mob {
 			}
 
 			if (Dungeon.visible[pos]) {
-				sprite.showStatus( CharSprite.NEGATIVE, "!!!" );
-				GLog.n( "Goo is pumping itself up!" );
+				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "!!!") );
+				GLog.n( Messages.get(this, "pumpup") );
 			}
 
 			spend( attackDelay() );
@@ -219,10 +220,10 @@ public class Goo extends Mob {
 		super.damage(dmg, src);
 		if ((HP*2 <= HT) && !bleeding){
 			BossHealthBar.bleed(true);
-			GLog.w("Goo Becomes Enraged!!");
-			sprite.showStatus(CharSprite.NEGATIVE, "enraged");
+			GLog.w( Messages.get(this, "enraged_text") );
+			sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
 			((GooSprite)sprite).spray(true);
-			yell("GLUUUURP!");
+			yell(Messages.get(this, "gluuurp"));
 			spend( TICK );
 		}
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
@@ -241,24 +242,14 @@ public class Goo extends Mob {
 		
 		Badges.validateBossSlain();
 		
-		yell( "glurp... glurp..." );
+		yell( Messages.get(this, "defeated") );
 	}
 	
 	@Override
 	public void notice() {
 		super.notice();
 		BossHealthBar.assignBoss(this);
-		yell( "GLURP-GLURP!" );
-	}
-	
-	@Override
-	public String description() {
-		return
-			"Little is known about The Goo. It's quite possible that it is not even a creature, but rather a " +
-			"conglomerate of vile substances from the sewers that somehow gained basic intelligence. " +
-			"Regardless, dark magic is certainly what has allowed Goo to exist.\n\n" +
-			"Its gelatinous nature has let it absorb lots of dark energy, you feel a chill just from being near. " +
-			"If goo is able to attack with this energy you won't live for long.";
+		yell( Messages.get(this, "notice") );
 	}
 
 	private final String PUMPEDUP = "pumpedup";
@@ -282,7 +273,7 @@ public class Goo extends Mob {
 
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	static {
 		RESISTANCES.add( ToxicGas.class );
 		RESISTANCES.add( Death.class );

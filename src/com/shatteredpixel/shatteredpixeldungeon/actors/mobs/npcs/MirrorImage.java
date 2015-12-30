@@ -37,11 +37,9 @@ import com.watabou.utils.Random;
 public class MirrorImage extends NPC {
 	
 	{
-		name = "mirror image";
 		spriteClass = MirrorSprite.class;
 		
 		state = HUNTING;
-
 	}
 	
 	public int tier;
@@ -98,7 +96,7 @@ public class MirrorImage extends NPC {
 	protected Char chooseEnemy() {
 		
 		if (enemy == null || !enemy.isAlive()) {
-			HashSet<Mob> enemies = new HashSet<Mob>();
+			HashSet<Mob> enemies = new HashSet<>();
 			for (Mob mob:Dungeon.level.mobs) {
 				if (mob.hostile && Level.fieldOfView[mob.pos]) {
 					enemies.add( mob );
@@ -109,13 +107,6 @@ public class MirrorImage extends NPC {
 		}
 		
 		return enemy;
-	}
-	
-	@Override
-	public String description() {
-		return
-			"This illusion bears a close resemblance to you, " +
-			"but it's paler and twitches a little.";
 	}
 	
 	@Override
@@ -140,7 +131,7 @@ public class MirrorImage extends NPC {
 		Dungeon.hero.busy();
 	}
 
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( ToxicGas.class );
 		IMMUNITIES.add( Burning.class );

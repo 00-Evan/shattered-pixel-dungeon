@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level.Feeling;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -56,6 +57,7 @@ import java.util.HashSet;
 public abstract class Mob extends Char {
 
 	{
+		name = Messages.get(this, "name");
 		actPriority = 2; //hero gets priority over mobs.
 	}
 	
@@ -184,7 +186,7 @@ public abstract class Mob extends Char {
 		if ( enemy == null || !enemy.isAlive() || state == WANDERING ||
 				((buff( Amok.class ) != null || buff(Corruption.class) != null) && enemy == Dungeon.hero )) {
 
-			HashSet<Char> enemies = new HashSet<Char>();
+			HashSet<Char> enemies = new HashSet<>();
 
 			//if the mob is amoked or corrupted...
 			if ( buff(Amok.class) != null || buff(Corruption.class) != null) {
@@ -241,7 +243,7 @@ public abstract class Mob extends Char {
 		super.add( buff );
 		if (buff instanceof Amok) {
 			if (sprite != null) {
-				sprite.showStatus( CharSprite.NEGATIVE, TXT_RAGE );
+				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "rage") );
 			}
 			state = HUNTING;
 		} else if (buff instanceof Terror) {
@@ -257,7 +259,7 @@ public abstract class Mob extends Char {
 	public void remove( Buff buff ) {
 		super.remove( buff );
 		if (buff instanceof Terror) {
-			sprite.showStatus( CharSprite.NEGATIVE, TXT_RAGE );
+			sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "rage") );
 			state = HUNTING;
 		}
 	}
@@ -426,7 +428,7 @@ public abstract class Mob extends Char {
 
 			int exp = exp();
 			if (exp > 0) {
-				Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, TXT_EXP, exp );
+				Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "exp", exp) );
 				Dungeon.hero.earnExp( exp );
 			}
 		}
@@ -456,7 +458,7 @@ public abstract class Mob extends Char {
 		}
 		
 		if (Dungeon.hero.isAlive() && !Dungeon.visible[pos]) {
-			GLog.i( TXT_DIED );
+			GLog.i( Messages.get(this, "dead") );
 		}
 	}
 	
@@ -497,7 +499,7 @@ public abstract class Mob extends Char {
 	}
 	
 	public String description() {
-		return "Real description is coming soon!";
+		return Messages.get(this, "desc");
 	}
 	
 	public void notice() {
@@ -514,8 +516,8 @@ public abstract class Mob extends Char {
 	}
 
 	public interface AiState {
-		public boolean act( boolean enemyInFOV, boolean justAlerted );
-		public String status();
+		boolean act( boolean enemyInFOV, boolean justAlerted );
+		String status();
 	}
 
 	protected class Sleeping implements AiState {
@@ -554,7 +556,7 @@ public abstract class Mob extends Char {
 
 		@Override
 		public String status() {
-			return Utils.format( "This %s is sleeping", name );
+			return Messages.get(this, "status", name );
 		}
 	}
 
@@ -591,7 +593,7 @@ public abstract class Mob extends Char {
 
 		@Override
 		public String status() {
-			return Utils.format( "This %s is wandering", name );
+			return Messages.get(this, "status", name );
 		}
 	}
 
@@ -630,7 +632,7 @@ public abstract class Mob extends Char {
 
 		@Override
 		public String status() {
-			return Utils.format( "This %s is hunting", name );
+			return Messages.get(this, "status", name );
 		}
 	}
 
@@ -668,7 +670,7 @@ public abstract class Mob extends Char {
 
 		@Override
 		public String status() {
-			return Utils.format( "This %s is fleeing", name );
+			return Messages.get(this, "status", name );
 		}
 	}
 
@@ -685,7 +687,7 @@ public abstract class Mob extends Char {
 
 		@Override
 		public String status() {
-			return Utils.format( "This %s is passive", name );
+			return Messages.get(this, "status", name );
 		}
 	}
 }

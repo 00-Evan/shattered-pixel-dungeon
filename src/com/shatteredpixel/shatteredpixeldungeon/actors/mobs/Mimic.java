@@ -48,7 +48,6 @@ public class Mimic extends Mob {
 	private int level;
 	
 	{
-		name = "mimic";
 		spriteClass = MimicSprite.class;
 
 		properties.add(Property.DEMONIC);
@@ -69,7 +68,7 @@ public class Mimic extends Mob {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
-		items = new ArrayList<Item>( (Collection<Item>) ((Collection<?>) bundle.getCollection( ITEMS ) ));
+		items = new ArrayList<>( (Collection<Item>) ((Collection<?>) bundle.getCollection( ITEMS ) ));
 		adjustStats( bundle.getInt( LEVEL ) );
 		super.restoreFromBundle(bundle);
 	}
@@ -112,17 +111,10 @@ public class Mimic extends Mob {
 		return true;
 	}
 
-	@Override
-	public String description() {
-		return
-			"Mimics are magical creatures which can take any shape they wish. In dungeons they almost always " +
-			"choose a shape of a treasure chest, because they know how to beckon an adventurer.";
-	}
-	
 	public static Mimic spawnAt( int pos, List<Item> items ) {
 		Char ch = Actor.findChar( pos );
 		if (ch != null) {
-			ArrayList<Integer> candidates = new ArrayList<Integer>();
+			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : Level.NEIGHBOURS8) {
 				int cell = pos + n;
 				if ((Level.passable[cell] || Level.avoid[cell]) && Actor.findChar( cell ) == null) {
@@ -146,7 +138,7 @@ public class Mimic extends Mob {
 		}
 		
 		Mimic m = new Mimic();
-		m.items = new ArrayList<Item>( items );
+		m.items = new ArrayList<>( items );
 		m.adjustStats( Dungeon.depth );
 		m.pos = pos;
 		m.state = m.HUNTING;
@@ -174,7 +166,7 @@ public class Mimic extends Mob {
 		return m;
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( ScrollOfPsionicBlast.class );
 	}

@@ -24,12 +24,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
 
 public class RatKing extends NPC {
 
 	{
-		name = "rat king";
 		spriteClass = RatKingSprite.class;
 		
 		state = SLEEPING;
@@ -68,19 +68,17 @@ public class RatKing extends NPC {
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		if (state == SLEEPING) {
 			notice();
-			yell( "I'm not sleeping!" );
+			yell( Messages.get(this, "not_sleeping") );
 			state = WANDERING;
 		} else {
-			yell( "What is it? I have no time for this nonsense. My kingdom won't rule itself!" );
+			yell( Messages.get(this, "what_is_it") );
 		}
 	}
 	
 	@Override
 	public String description() {
 		return ((RatKingSprite)sprite).festive ?
-			"This rat is a little bigger than a regular marsupial rat. " +
-			"It's wearing a tiny festive hat instead of its usual crown. Happy Holidays!"
-		:	"This rat is a little bigger than a regular marsupial rat " +
-			"and it's wearing a tiny crown on its head.";
+				Messages.get(this, "desc_festive")
+				: super.description();
 	}
 }

@@ -47,7 +47,6 @@ public class Succubus extends Mob {
 	private int delay = 0;
 	
 	{
-		name = "succubus";
 		spriteClass = SuccubusSprite.class;
 		
 		HP = HT = 80;
@@ -106,7 +105,7 @@ public class Succubus extends Mob {
 			cell = route.path.get(route.dist-1);
 
 		if (Level.avoid[ cell ]){
-			ArrayList<Integer> candidates = new ArrayList<Integer>();
+			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : Level.NEIGHBOURS8) {
 				cell = route.collisionPos + n;
 				if (Level.passable[cell] && Actor.findChar( cell ) == null) {
@@ -136,14 +135,7 @@ public class Succubus extends Mob {
 		return 10;
 	}
 	
-	@Override
-	public String description() {
-		return
-			"The succubi are demons that look like seductive (in a slightly gothic way) girls. Using its magic, the succubus " +
-			"can charm a hero, who will become unable to attack anything until the charm wears off.";
-	}
-	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	static {
 		RESISTANCES.add( Leech.class );
 	}
@@ -153,7 +145,7 @@ public class Succubus extends Mob {
 		return RESISTANCES;
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( Sleep.class );
 	}

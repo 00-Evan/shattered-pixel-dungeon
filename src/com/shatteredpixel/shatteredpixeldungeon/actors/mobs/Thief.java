@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ThiefSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -149,7 +150,7 @@ public class Thief extends Mob {
 
 		if (item != null && !item.unique && item.level() < 1 ) {
 
-			GLog.w( TXT_STOLE, this.name, item.name() );
+			GLog.w( Messages.get(this, "stole", item.name()) );
 			Dungeon.quickslot.clearItem( item );
 			item.updateQuickslot();
 
@@ -170,15 +171,10 @@ public class Thief extends Mob {
 
 	@Override
 	public String description() {
-		String desc =
-				"Though these inmates roam free of their cells, this place is still their prison. " +
-				"Over time, this place has taken their minds as well as their freedom. " +
-				"Long ago, these crazy thieves and bandits have forgotten who they are and why they steal.\n\n" +
-				"These enemies are more likely to steal and run than they are to fight. " +
-				"Make sure to keep them in sight, or you might never see your stolen item again.";
+		String desc = super.description();
 
 		if (item != null) {
-			desc += String.format( TXT_CARRIES, Utils.capitalize( this.name ), item.name() );
+			desc += Messages.get(this, "carries", item.name() );
 		}
 
 		return desc;
@@ -189,7 +185,7 @@ public class Thief extends Mob {
 		protected void nowhereToRun() {
 			if (buff( Terror.class ) == null && buff( Corruption.class ) == null) {
 				if (enemySeen) {
-					sprite.showStatus(CharSprite.NEGATIVE, TXT_RAGE);
+					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "rage"));
 					state = HUNTING;
 				} else {
 
@@ -212,7 +208,7 @@ public class Thief extends Mob {
 
 					}
 
-					if (item != null) GLog.n("The thief gets away with your " + item.name() + "!");
+					if (item != null) GLog.n( Messages.get(this, "escapes", item.name()));
 					item = null;
 					state = WANDERING;
 				}

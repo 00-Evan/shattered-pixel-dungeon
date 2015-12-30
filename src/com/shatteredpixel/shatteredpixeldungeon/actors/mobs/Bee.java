@@ -35,7 +35,6 @@ import com.watabou.utils.Random;
 public class Bee extends Mob {
 	
 	{
-		name = "golden bee";
 		spriteClass = BeeSprite.class;
 		
 		viewDistance = 4;
@@ -126,7 +125,7 @@ public class Bee extends Mob {
 				return enemy;
 
 			//find all mobs near the pot
-			HashSet<Char> enemies = new HashSet<Char>();
+			HashSet<Char> enemies = new HashSet<>();
 			for (Mob mob : Dungeon.level.mobs)
 				if (!(mob instanceof Bee) && Level.distance(mob.pos, potPos) <= 3 && (mob.hostile || mob.ally))
 					enemies.add(mob);
@@ -145,15 +144,8 @@ public class Bee extends Mob {
 			this.target = target = potPos;
 		return super.getCloser( target );
 	}
-
-	@Override
-	public String description() {
-		return
-			"Despite their small size, golden bees tend " +
-			"to protect their home fiercely. This one is very mad, better keep your distance.";
-	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( Poison.class );
 		IMMUNITIES.add( Amok.class );

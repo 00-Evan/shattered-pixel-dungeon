@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -54,7 +55,6 @@ import com.watabou.utils.Random;
 public class Tengu extends Mob {
 	
 	{
-		name = "Tengu";
 		spriteClass = TenguSprite.class;
 		
 		HP = HT = 120;
@@ -116,7 +116,7 @@ public class Tengu extends Mob {
 		//phase 1 of the fight is over
 		if (beforeHitHP > HT/2 && HP <= HT/2){
 			HP = (HT/2)-1;
-			yell("Let's make this interesting...");
+			yell(Messages.get(this, "interesting"));
 			((PrisonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
 
@@ -144,7 +144,7 @@ public class Tengu extends Mob {
 			GLog.p("Your beacon grows stronger!");
 		}
 		
-		yell( "Free at last..." );
+		yell( Messages.get(this, "defeated") );
 	}
 
 	@Override
@@ -216,18 +216,10 @@ public class Tengu extends Mob {
 		BossHealthBar.assignBoss(this);
 		if (HP <= HT/2) BossHealthBar.bleed(true);
 		if (HP == HT) {
-			yell("You're mine, " + Dungeon.hero.givenName() + "!");
+			yell(Messages.get(this, "notice_mine", Dungeon.hero.givenName()));
 		} else {
-			yell("Face me, " + Dungeon.hero.givenName() + "!");
+			yell(Messages.get(this, "notice_face", Dungeon.hero.givenName()));
 		}
-	}
-	
-	@Override
-	public String description() {
-		return
-			"A famous and enigmatic assassin, named for the mask grafted to his face.\n\n" +
-			"Tengu is held down with large clasps on his wrists and knees, though he seems to have gotten rid of his chains long ago.\n\n" +
-			"He will try to use traps, deceptive magic, and precise attacks to eliminate the only thing stopping his escape: you.";
 	}
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();

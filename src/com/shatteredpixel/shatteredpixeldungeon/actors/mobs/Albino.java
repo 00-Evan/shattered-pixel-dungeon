@@ -30,7 +30,6 @@ import com.watabou.utils.Random;
 public class Albino extends Rat {
 
 	{
-		name = "albino rat";
 		spriteClass = AlbinoSprite.class;
 		
 		HP = HT = 15;
@@ -49,11 +48,5 @@ public class Albino extends Rat {
 		}
 		
 		return damage;
-	}
-
-	@Override
-	public String description() {
-		return
-				"This is a rare breed of marsupial rat, with pure white fur and jagged teeth.";
 	}
 }

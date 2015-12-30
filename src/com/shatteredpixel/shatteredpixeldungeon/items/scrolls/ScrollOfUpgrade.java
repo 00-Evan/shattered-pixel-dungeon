@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ScrollOfUpgrade extends InventoryScroll {
 
-	private static final String TXT_LOOKS_BETTER	= "your %s certainly looks better now";
+	public static final String TXT_LOOKS_BETTER	= "your %s certainly looks better now";
 	
 	{
 		name = "Scroll of Upgrade";

@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import java.util.HashSet;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
@@ -42,10 +43,7 @@ public class Shaman extends Mob implements Callback {
 
 	private static final float TIME_TO_ZAP	= 1f;
 	
-	private static final String TXT_LIGHTNING_KILLED = "%s's lightning bolt killed you...";
-	
 	{
-		name = "gnoll shaman";
 		spriteClass = ShamanSprite.class;
 		
 		HP = HT = 18;
@@ -89,7 +87,7 @@ public class Shaman extends Mob implements Callback {
 			
 			boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
 			if (visible) {
-				((ShamanSprite)sprite).zap( enemy.pos );
+				sprite.zap( enemy.pos );
 			}
 			
 			spend( TIME_TO_ZAP );
@@ -110,7 +108,7 @@ public class Shaman extends Mob implements Callback {
 					
 					if (!enemy.isAlive()) {
 						Dungeon.fail( Utils.format( ResultDescriptions.MOB, Utils.indefinite( name ) ) );
-						GLog.n( TXT_LIGHTNING_KILLED, name );
+						GLog.n( Messages.get(this, "zap_kill") );
 					}
 				}
 			} else {
@@ -125,16 +123,8 @@ public class Shaman extends Mob implements Callback {
 	public void call() {
 		next();
 	}
-	
-	@Override
-	public String description() {
-		return
-			"The most intelligent gnolls can master shamanistic magic. Gnoll shamans prefer " +
-			"battle spells to compensate for lack of might, not hesitating to use them " +
-			"on those who question their status in a tribe.";
-	}
-	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+
+	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	static {
 		RESISTANCES.add( LightningTrap.Electricity.class );
 	}

@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -44,15 +45,6 @@ import com.watabou.utils.Random;
 import java.util.HashSet;
 
 public abstract class Char extends Actor {
-
-	protected static final String TXT_HIT		= "%s hit %s";
-	protected static final String TXT_KILL		= "%s killed you...";
-	protected static final String TXT_DEFEAT	= "%s defeated %s";
-	
-	private static final String TXT_YOU_MISSED	= "%s %s your attack";
-	private static final String TXT_SMB_MISSED	= "%s %s %s's attack";
-	
-	private static final String TXT_OUT_OF_PARALYSIS	= "The pain snapped %s out of paralysis";
 	
 	public int pos = 0;
 	
@@ -72,7 +64,7 @@ public abstract class Char extends Actor {
 	
 	public int viewDistance	= 8;
 	
-	private HashSet<Buff> buffs = new HashSet<Buff>();
+	private HashSet<Buff> buffs = new HashSet<>();
 	
 	@Override
 	protected boolean act() {
@@ -121,7 +113,7 @@ public abstract class Char extends Actor {
 		if (hit( this, enemy, false )) {
 			
 			if (visibleFight) {
-				GLog.i( TXT_HIT, name, enemy.name );
+				GLog.i( Messages.get(Char.class, "hit", name, enemy.name) );
 			}
 			
 			// FIXME
@@ -173,10 +165,10 @@ public abstract class Char extends Actor {
 							Dungeon.fail( Utils.format( ResultDescriptions.MOB, Utils.indefinite( name )) );
 						}
 						
-						GLog.n( TXT_KILL, name );
+						GLog.n( Messages.get(Char.class, "kill", name) );
 					
 				} else {
-					GLog.i( TXT_DEFEAT, name, enemy.name );
+					GLog.i( Messages.get(Char.class, "defeat", name, enemy.name) );
 				}
 			}
 			
@@ -188,9 +180,9 @@ public abstract class Char extends Actor {
 				String defense = enemy.defenseVerb();
 				enemy.sprite.showStatus( CharSprite.NEUTRAL, defense );
 				if (this == Dungeon.hero) {
-					GLog.i( TXT_YOU_MISSED, enemy.name, defense );
+					GLog.i( Messages.get(Char.class, "you_missed", enemy.name, defense) );
 				} else {
-					GLog.i( TXT_SMB_MISSED, enemy.name, defense, name );
+					GLog.i( Messages.get(Char.class, "smb_missed", enemy.name, defense, name) );
 				}
 				
 				Sample.INSTANCE.play(Assets.SND_MISS);
@@ -218,7 +210,7 @@ public abstract class Char extends Actor {
 	}
 	
 	public String defenseVerb() {
-		return "dodged";
+		return Messages.get(this, "def_verb");
 	}
 	
 	public int dr() {
@@ -264,7 +256,7 @@ public abstract class Char extends Actor {
 			if (Random.Int( dmg ) >= Random.Int( HP )) {
 				Buff.detach( this, Paralysis.class );
 				if (Dungeon.visible[pos]) {
-					GLog.i( TXT_OUT_OF_PARALYSIS, name );
+					GLog.i( Messages.get(Char.class, "out_of_paralysis", name) );
 				}
 			}
 		}
@@ -318,7 +310,7 @@ public abstract class Char extends Actor {
 	
 	@SuppressWarnings("unchecked")
 	public <T extends Buff> HashSet<T> buffs( Class<T> c ) {
-		HashSet<T> filtered = new HashSet<T>();
+		HashSet<T> filtered = new HashSet<>();
 		for (Buff b : buffs) {
 			if (c.isInstance( b )) {
 				filtered.add( (T)b );
@@ -381,7 +373,7 @@ public abstract class Char extends Actor {
 	
 	@Override
 	protected void onRemove() {
-		for (Buff buff : buffs.toArray( new Buff[0] )) {
+		for (Buff buff : buffs.toArray(new Buff[buffs.size()])) {
 			buff.detach();
 		}
 	}
@@ -440,7 +432,7 @@ public abstract class Char extends Actor {
 		next();
 	}
 	
-	private static final HashSet<Class<?>> EMPTY = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> EMPTY = new HashSet<>();
 	
 	public HashSet<Class<?>> resistances() {
 		return EMPTY;

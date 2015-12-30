@@ -31,17 +31,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MonkSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Monk extends Mob {
-
-	public static final String TXT_DISARM	= "%s has knocked the %s from your hands!";
 	
 	{
-		name = "dwarf monk";
 		spriteClass = MonkSprite.class;
 		
 		HP = HT = 70;
@@ -77,11 +75,6 @@ public class Monk extends Mob {
 	}
 	
 	@Override
-	public String defenseVerb() {
-		return "parried";
-	}
-	
-	@Override
 	public void die( Object cause ) {
 		Imp.Quest.process( this );
 		
@@ -106,7 +99,7 @@ public class Monk extends Mob {
 					Dungeon.quickslot.clearItem(weapon);
 					weapon.updateQuickslot();
 					Dungeon.level.drop(weapon, hero.pos).sprite.drop();
-					GLog.w(TXT_DISARM, name, weapon.name());
+					GLog.w(Messages.get(this, "diarm", weapon.name()));
 				}
 			}
 		}
@@ -114,14 +107,7 @@ public class Monk extends Mob {
 		return damage;
 	}
 	
-	@Override
-	public String description() {
-		return
-			"These monks are fanatics, who devoted themselves to protecting their city's secrets from all aliens. " +
-			"They don't use any armor or weapons, relying solely on the art of hand-to-hand combat.";
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		IMMUNITIES.add( Amok.class );
 		IMMUNITIES.add( Terror.class );
