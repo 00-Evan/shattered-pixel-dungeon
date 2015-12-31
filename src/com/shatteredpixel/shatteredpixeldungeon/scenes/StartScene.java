@@ -119,10 +119,10 @@ public class StartScene extends PixelScene {
 			protected void onClick() {
 				if (GamesInProgress.check( curClass ) != null) {
 					StartScene.this.add( new WndOptions(
-							Messages.get(this, "really"),
-							Messages.get(this, "warning"),
-							Messages.get(this, "yes"),
-							Messages.get(this, "no") ) {
+							Messages.get(StartScene.class, "really"),
+							Messages.get(StartScene.class, "warning"),
+							Messages.get(StartScene.class, "yes"),
+							Messages.get(StartScene.class, "no") ) {
 						@Override
 						protected void onSelect( int index ) {
 							if (index == 0) {
