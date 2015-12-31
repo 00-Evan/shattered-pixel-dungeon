@@ -20,22 +20,13 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import java.util.Locale;
-
-
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Group;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
@@ -45,20 +36,21 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Button;
+
+import java.util.Locale;
 
 public class WndRanking extends WndTabbed {
-	
-	private static final String TXT_ERROR		= "Unable to load additional information";
-	
-	private static final String TXT_STATS	= "Stats";
-	private static final String TXT_ITEMS	= "Items";
-	private static final String TXT_BADGES	= "Badges";
-	
+
 	private static final int WIDTH			= 115;
 	private static final int HEIGHT			= 144;
-	
-	private static final int TAB_WIDTH	= 40;
-	
+
 	private Thread thread;
 	private String error = null;
 	
@@ -76,7 +68,7 @@ public class WndRanking extends WndTabbed {
 					Badges.loadGlobal();
 					Dungeon.loadGame( gameFile );
 				} catch (Exception e ) {
-					error = TXT_ERROR;
+					error = Messages.get(WndRanking.class, "error");
 				}
 			}
 		};
@@ -101,15 +93,15 @@ public class WndRanking extends WndTabbed {
 				createControls();
 			} else {
 				hide();
-				Game.scene().add( new WndError( TXT_ERROR ) );
+				Game.scene().add( new WndError( error ) );
 			}
 		}
 	}
-
+	
 	private void createControls() {
 		
 		String[] labels =
-			{TXT_STATS, TXT_ITEMS, TXT_BADGES};
+			{Messages.get(this, "stats"), Messages.get(this, "items"), Messages.get(this, "badges")};
 		Group[] pages =
 			{new StatsTab(), new ItemsTab(), new BadgesTab()};
 		
@@ -147,24 +139,7 @@ public class WndRanking extends WndTabbed {
 	private class StatsTab extends Group {
 
 		private int GAP	= 4;
-		
-		private static final String TXT_TITLE	= "Level %d %s";
 
-		private static final String TXT_CHALLENGES	= "Challenges";
-
-		private static final String TXT_HEALTH	= "Health";
-		private static final String TXT_STR		= "Strength";
-		
-		private static final String TXT_DURATION	= "Game Duration";
-		
-		private static final String TXT_DEPTH	= "Maximum Depth";
-		private static final String TXT_ENEMIES	= "Mobs Killed";
-		private static final String TXT_GOLD	= "Gold Collected";
-		
-		private static final String TXT_FOOD	= "Food Eaten";
-		private static final String TXT_ALCHEMY	= "Potions Cooked";
-		private static final String TXT_ANKHS	= "Ankhs Used";
-		
 		public StatsTab() {
 			super();
 
@@ -174,7 +149,7 @@ public class WndRanking extends WndTabbed {
 			
 			IconTitle title = new IconTitle();
 			title.icon( HeroSprite.avatar( Dungeon.hero.heroClass, Dungeon.hero.tier() ) );
-			title.label( Utils.format( TXT_TITLE, Dungeon.hero.lvl, heroClass ).toUpperCase( Locale.ENGLISH ) );
+			title.label( Messages.get(this, "title", Dungeon.hero.lvl, heroClass ).toUpperCase( Locale.ENGLISH ) );
 			title.color(Window.SHPX_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
@@ -182,7 +157,7 @@ public class WndRanking extends WndTabbed {
 			float pos = title.bottom();
 
 			if (Dungeon.challenges > 0) {
-				RedButton btnCatalogus = new RedButton( TXT_CHALLENGES ) {
+				RedButton btnCatalogus = new RedButton( Messages.get(this, "challenges") ) {
 					@Override
 					protected void onClick() {
 						Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
@@ -196,24 +171,24 @@ public class WndRanking extends WndTabbed {
 
 			pos += GAP + GAP;
 			
-			pos = statSlot( this, TXT_STR, Integer.toString( Dungeon.hero.STR ), pos );
-			pos = statSlot( this, TXT_HEALTH, Integer.toString( Dungeon.hero.HT ), pos );
+			pos = statSlot( this, Messages.get(this, "str"), Integer.toString( Dungeon.hero.STR ), pos );
+			pos = statSlot( this, Messages.get(this, "health"), Integer.toString( Dungeon.hero.HT ), pos );
 			
 			pos += GAP;
 			
-			pos = statSlot( this, TXT_DURATION, Integer.toString( (int)Statistics.duration ), pos );
+			pos = statSlot( this, Messages.get(this, "duration"), Integer.toString( (int)Statistics.duration ), pos );
 			
 			pos += GAP;
 			
-			pos = statSlot( this, TXT_DEPTH, Integer.toString( Statistics.deepestFloor ), pos );
-			pos = statSlot( this, TXT_ENEMIES, Integer.toString( Statistics.enemiesSlain ), pos );
-			pos = statSlot( this, TXT_GOLD, Integer.toString( Statistics.goldCollected ), pos );
+			pos = statSlot( this, Messages.get(this, "depth"), Integer.toString( Statistics.deepestFloor ), pos );
+			pos = statSlot( this, Messages.get(this, "enemies"), Integer.toString( Statistics.enemiesSlain ), pos );
+			pos = statSlot( this, Messages.get(this, "gold"), Integer.toString( Statistics.goldCollected ), pos );
 			
 			pos += GAP;
-			
-			pos = statSlot( this, TXT_FOOD, Integer.toString( Statistics.foodEaten ), pos );
-			pos = statSlot( this, TXT_ALCHEMY, Integer.toString( Statistics.potionsCooked ), pos );
-			pos = statSlot( this, TXT_ANKHS, Integer.toString( Statistics.ankhsUsed ), pos );
+
+			pos = statSlot( this, Messages.get(this, "food"), Integer.toString( Statistics.foodEaten ), pos );
+			pos = statSlot( this, Messages.get(this, "alchemy"), Integer.toString( Statistics.potionsCooked ), pos );
+			pos = statSlot( this, Messages.get(this, "ankhs"), Integer.toString( Statistics.ankhsUsed ), pos );
 		}
 		
 		private float statSlot( Group parent, String label, String value, float pos ) {

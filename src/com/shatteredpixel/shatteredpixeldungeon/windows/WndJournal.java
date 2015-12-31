@@ -20,18 +20,19 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import java.util.Collections;
-
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.ui.Component;
+
+import java.util.Collections;
 
 public class WndJournal extends Window {
 
@@ -41,8 +42,6 @@ public class WndJournal extends Window {
 
 	private static final int ITEM_HEIGHT	= 18;
 	
-	private static final String TXT_TITLE	= "Journal";
-	
 	private BitmapText txtTitle;
 	private ScrollPane list;
 	
@@ -51,7 +50,7 @@ public class WndJournal extends Window {
 		super();
 		resize( WIDTH, ShatteredPixelDungeon.landscape() ? HEIGHT_L : HEIGHT_P );
 
-		txtTitle = PixelScene.createText( TXT_TITLE, 9 );
+		txtTitle = PixelScene.createText( Messages.get(this, "title"), 9 );
 		txtTitle.hardlight( Window.TITLE_COLOR );
 		txtTitle.measure();
 		txtTitle.x = (WIDTH - txtTitle.width()) / 2;

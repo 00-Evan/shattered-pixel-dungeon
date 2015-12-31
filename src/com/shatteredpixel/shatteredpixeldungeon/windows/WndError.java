@@ -20,14 +20,13 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 
 public class WndError extends WndTitledMessage {
 
-	private static final String TXT_TITLE =  "ERROR";
-	
 	public WndError( String message ) {
-		super( Icons.WARNING.get(), TXT_TITLE, message );
+		super( Icons.WARNING.get(), Messages.get(WndError.class, "title"), message );
 	}
 
 }

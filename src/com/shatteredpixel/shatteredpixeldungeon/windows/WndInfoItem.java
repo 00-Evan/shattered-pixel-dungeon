@@ -21,40 +21,22 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.BitmapTextMultiline;
 
 public class WndInfoItem extends Window {
-	
-	private static final String TTL_CHEST           = "Chest";
-	private static final String TTL_LOCKED_CHEST	= "Locked chest";
-	private static final String TTL_CRYSTAL_CHEST	= "Crystal chest";
-	private static final String TTL_TOMB			= "Tomb";
-	private static final String TTL_SKELETON		= "Skeletal remains";
-	private static final String TTL_REMAINS 		= "Heroes remains";
-	private static final String TXT_WONT_KNOW		= "You won't know what's inside until you open it!";
-	private static final String TXT_NEED_KEY		= TXT_WONT_KNOW + " But to open it you need a golden key.";
-	private static final String TXT_INSIDE			= "You can see %s inside, but to open the chest you need a golden key.";
-	private static final String TXT_OWNER	=
-		"This ancient tomb may contain something useful, " +
-		"but its owner will most certainly object to checking.";
-	private static final String TXT_SKELETON =
-		"This is all that's left of some unfortunate adventurer. " +
-		"Maybe it's worth checking for any valuables.";
-	private static final String TXT_REMAINS =
-		"This is all that's left from one of your predecessors. " +
-		"Maybe it's worth checking for any valuables.";
-	
+
 	private static final float GAP	= 2;
 	
 	private static final int WIDTH_P = 120;
@@ -82,30 +64,30 @@ public class WndInfoItem extends Window {
 			String info;
 			
 			if (heap.type == Type.CHEST || heap.type == Type.MIMIC) {
-				title = TTL_CHEST;
-				info = TXT_WONT_KNOW;
+				title = Messages.get(this, "chest");
+				info = Messages.get(this, "wont_know");
 			} else if (heap.type == Type.TOMB) {
-				title = TTL_TOMB;
-				info = TXT_OWNER;
+				title = Messages.get(this, "tomb");
+				info = Messages.get(this, "owner");
 			} else if (heap.type == Type.SKELETON) {
-				title = TTL_SKELETON;
-				info = TXT_SKELETON;
+				title = Messages.get(this, "skeleton");
+				info = Messages.get(this, "skeleton_desc");
 			} else if (heap.type == Type.REMAINS) {
-				title = TTL_REMAINS;
-				info = TXT_REMAINS;
+				title = Messages.get(this, "remains");
+				info = Messages.get(this, "remains_desc");
 			} else if (heap.type == Type.CRYSTAL_CHEST) {
-				title = TTL_CRYSTAL_CHEST;
+				title = Messages.get(this, "crystal_chest");
 				if (heap.peek() instanceof Artifact)
-					info = Utils.format( TXT_INSIDE, "an artifact" );
+					info = Messages.get(this, "inside", Messages.get(this, "artifact") );
 				else if (heap.peek() instanceof Wand)
-					info = Utils.format( TXT_INSIDE, "a wand" );
+					info = Messages.get(this, "inside", Messages.get(this, "wand") );
 				else if (heap.peek() instanceof Ring)
-					info = Utils.format( TXT_INSIDE, "a ring" );
+					info = Messages.get(this, "inside", Messages.get(this, "ring") );
 				else
-					info = Utils.format( TXT_INSIDE, Utils.indefinite( heap.peek().name() ) );
+					info = Messages.get(this, "inside", Utils.indefinite( heap.peek().name() ) );
 			} else {
-				title = TTL_LOCKED_CHEST;
-				info = TXT_NEED_KEY;
+				title = Messages.get(this, "locked_chest");
+				info = Messages.get(this, "need_key");
 			}
 			
 			fillFields( heap.image(), heap.glowing(), TITLE_COLOR, title, info );

@@ -20,8 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class WndInfoTrap extends WndTitledMessage {
@@ -29,8 +29,8 @@ public class WndInfoTrap extends WndTitledMessage {
 	public WndInfoTrap(Trap trap) {
 
 		super(new TrapSprite( trap.color + (trap.shape * 16) ),
-				(!trap.active ? "Inactive " : "") + trap.name,
-				(!trap.active ? "This trap is inactive, and can no longer be triggered.\n\n" : "") + trap.desc());
+				trap.name,
+				(!trap.active ? Messages.get(WndInfoTrap.class, "inactive") : "") + trap.desc());
 
 	}
 

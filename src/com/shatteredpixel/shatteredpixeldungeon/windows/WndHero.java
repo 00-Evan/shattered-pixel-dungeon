@@ -20,9 +20,17 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import java.util.Locale;
-
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -30,31 +38,13 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.ui.Button;
 
+import java.util.Locale;
+
 public class WndHero extends WndTabbed {
-	
-	private static final String TXT_STATS	= "Stats";
-	private static final String TXT_BUFFS	= "Buffs";
-	
-	private static final String TXT_EXP		= "Experience";
-	private static final String TXT_STR		= "Strength";
-	private static final String TXT_HEALTH	= "Health";
-	private static final String TXT_GOLD	= "Gold Collected";
-	private static final String TXT_DEPTH	= "Maximum Depth";
-	
+
 	private static final int WIDTH		= 100;
-	private static final int TAB_WIDTH	= 40;
 	
 	private StatsTab stats;
 	private BuffsTab buffs;
@@ -75,13 +65,13 @@ public class WndHero extends WndTabbed {
 		buffs = new BuffsTab();
 		add( buffs );
 		
-		add( new LabeledTab( TXT_STATS ) {
+		add( new LabeledTab( Messages.get(this, "stats") ) {
 			protected void select( boolean value ) {
 				super.select( value );
 				stats.visible = stats.active = selected;
 			};
 		} );
-		add( new LabeledTab( TXT_BUFFS ) {
+		add( new LabeledTab( Messages.get(this, "buffs") ) {
 			protected void select( boolean value ) {
 				super.select( value );
 				buffs.visible = buffs.active = selected;
@@ -96,11 +86,7 @@ public class WndHero extends WndTabbed {
 	}
 	
 	private class StatsTab extends Group {
-		
-		private static final String TXT_TITLE		= "Level %d %s";
-		private static final String TXT_CATALOGUS	= "Catalogus";
-		private static final String TXT_JOURNAL		= "Journal";
-		
+
 		private static final int GAP = 5;
 		
 		private float pos;
@@ -111,22 +97,22 @@ public class WndHero extends WndTabbed {
 
 			IconTitle title = new IconTitle();
 			title.icon( HeroSprite.avatar(hero.heroClass, hero.tier()) );
-			title.label(Utils.format( TXT_TITLE, hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ), 9);
+			title.label( Messages.get(this, "title", hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ) );
 			title.color(Window.SHPX_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add(title);
 
-			RedButton btnCatalogus = new RedButton( TXT_CATALOGUS ) {
+			RedButton btnCatalogs = new RedButton( Messages.get(this, "catalogs") ) {
 				@Override
 				protected void onClick() {
 					hide();
 					GameScene.show( new WndCatalogus() );
 				}
 			};
-			btnCatalogus.setRect( 0, title.height(), btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
-			add( btnCatalogus );
+			btnCatalogs.setRect( 0, title.height(), btnCatalogs.reqWidth() + 2, btnCatalogs.reqHeight() + 2 );
+			add( btnCatalogs );
 
-			RedButton btnJournal = new RedButton( TXT_JOURNAL ) {
+			RedButton btnJournal = new RedButton( Messages.get(this, "journal") ) {
 				@Override
 				protected void onClick() {
 					hide();
@@ -134,20 +120,20 @@ public class WndHero extends WndTabbed {
 				}
 			};
 			btnJournal.setRect(
-				btnCatalogus.right() + 1, btnCatalogus.top(),
+				btnCatalogs.right() + 1, btnCatalogs.top(),
 				btnJournal.reqWidth() + 2, btnJournal.reqHeight() + 2 );
 			add( btnJournal );
 
-			pos = btnCatalogus.bottom() + GAP;
+			pos = btnCatalogs.bottom() + GAP;
 
-			statSlot( TXT_STR, hero.STR() );
-			statSlot( TXT_HEALTH, hero.HP + "/" + hero.HT );
-			statSlot( TXT_EXP, hero.exp + "/" + hero.maxExp() );
+			statSlot( Messages.get(this, "str"), hero.STR() );
+			statSlot( Messages.get(this, "health"), hero.HP + "/" + hero.HT );
+			statSlot( Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp() );
 
 			pos += GAP;
 
-			statSlot( TXT_GOLD, Statistics.goldCollected );
-			statSlot( TXT_DEPTH, Statistics.deepestFloor );
+			statSlot( Messages.get(this, "gold"), Statistics.goldCollected );
+			statSlot( Messages.get(this, "depth"), Statistics.deepestFloor );
 
 			pos += GAP;
 		}

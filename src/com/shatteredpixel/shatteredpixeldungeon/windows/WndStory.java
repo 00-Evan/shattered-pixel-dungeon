@@ -20,15 +20,16 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.TouchArea;
-import com.shatteredpixel.shatteredpixeldungeon.Chrome;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.utils.SparseArray;
 
 public class WndStory extends Window {
@@ -44,41 +45,17 @@ public class WndStory extends Window {
 	public static final int ID_SEWERS		= 0;
 	public static final int ID_PRISON		= 1;
 	public static final int ID_CAVES		= 2;
-	public static final int ID_METROPOLIS	= 3;
+	public static final int ID_CITY     	= 3;
 	public static final int ID_HALLS		= 4;
 	
 	private static final SparseArray<String> CHAPTERS = new SparseArray<String>();
 	
 	static {
-		CHAPTERS.put( ID_SEWERS,
-		"The Dungeon lies right beneath the City, its upper levels actually constitute the City's sewer system.\n\n " +
-		"As dark energy has crept up from below the usually harmless sewer creatures have become more and more " +
-		"dangerous. The city sends guard patrols down here to try and maintain safety for those above, but " +
-		"they are slowly failing.\n\n This place is dangerous, but at least the evil magic at work here is weak." );
-		
-		CHAPTERS.put( ID_PRISON,
-		"Many years ago a prison was built here to house dangerous criminals. " +
-		"Tightly regulated and secure, convicts from all over the land were brought here to serve time.\n\n" +
-		"But soon dark miasma started to creep from below, twisting the minds of guard and prisoner alike.\n\n" +
-		"In response to the mounting chaos, the city sealed off the entire prison. " +
-		"Nobody knows what became of those who were left for dead within these walls..." );
-		
-		CHAPTERS.put( ID_CAVES,
-		"The caves, which stretch down under the abandoned prison, are sparcely populated. They lie too deep to be exploited " +
-		"by the City and they are too poor in minerals to interest the dwarves. In the past there was a trade outpost " +
-		"somewhere here on the route between these two states, but it has perished since the decline of Dwarven Metropolis. " +
-		"Only omnipresent gnolls and subterranean animals dwell here now." );
-		
-		CHAPTERS.put( ID_METROPOLIS,
-		"Dwarven Metropolis was once the greatest of dwarven city-states. In its heyday the mechanized army of dwarves " +
-		"has successfully repelled the invasion of the old god and his demon army. But it is said, that the returning warriors " +
-		"have brought seeds of corruption with them, and that victory was the beginning of the end for the underground kingdom." );
-		
-		CHAPTERS.put( ID_HALLS,
-		"In the past these levels were the outskirts of Metropolis. After the costly victory in the war with the old god " +
-		"dwarves were too weakened to clear them of remaining demons. Gradually demons have tightened their grip on this place " +
-		"and now it's called Demon Halls.\n\n" +
-		"Very few adventurers have ever descended this far..." );
+		CHAPTERS.put( ID_SEWERS, "sewers" );
+		CHAPTERS.put( ID_PRISON, "prison" );
+		CHAPTERS.put( ID_CAVES, "caves" );
+		CHAPTERS.put( ID_CITY, "city" );
+		CHAPTERS.put( ID_HALLS, "halls" );
 	};
 	
 	private BitmapTextMultiline tf;
@@ -127,7 +104,7 @@ public class WndStory extends Window {
 			return;
 		}
 		
-		String text = CHAPTERS.get( id );
+		String text = Messages.get(WndStory.class, CHAPTERS.get( id ));
 		if (text != null) {
 			WndStory wnd = new WndStory( text );
 			if ((wnd.delay = 0.6f) > 0) {

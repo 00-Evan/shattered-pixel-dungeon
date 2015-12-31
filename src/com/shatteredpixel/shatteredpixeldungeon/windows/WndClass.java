@@ -20,19 +20,18 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.BitmapTextMultiline;
-import com.watabou.noosa.Group;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HighlightedText;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.BitmapTextMultiline;
+import com.watabou.noosa.Group;
 
 public class WndClass extends WndTabbed {
-
-	private static final String TXT_MASTERY	= "Mastery";
 
 	private static final int WIDTH			= 110;
 
@@ -60,7 +59,7 @@ public class WndClass extends WndTabbed {
 			tabMastery = new MasteryTab();
 			add( tabMastery );
 
-			tab = new RankingTab( TXT_MASTERY, tabMastery );
+			tab = new RankingTab( Messages.get(this, "mastery"), tabMastery );
 			add( tab );
 
 			resize(

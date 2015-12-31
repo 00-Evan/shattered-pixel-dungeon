@@ -20,19 +20,16 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.ui.HighlightedText;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.HighlightedText;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.watabou.utils.Highlighter;
 
 public class WndChooseWay extends Window {
-	
-	private static final String TXT_MESSAGE	= "Which way will you follow?";
-	private static final String TXT_CANCEL	= "I'll decide later";
 	
 	private static final int WIDTH		= 120;
 	private static final int BTN_HEIGHT	= 18;
@@ -49,7 +46,7 @@ public class WndChooseWay extends Window {
 		add( titlebar );
 
 		HighlightedText hl = new HighlightedText( 6 );
-		hl.text( way1.desc() + "\n\n" + way2.desc() + "\n\n" + TXT_MESSAGE, WIDTH );
+		hl.text( way1.desc() + "\n\n" + way2.desc() + "\n\n" + Messages.get(this, "message"), WIDTH );
 		hl.setPos( titlebar.left(), titlebar.bottom() + GAP );
 		add( hl );
 		
@@ -73,7 +70,7 @@ public class WndChooseWay extends Window {
 		btnWay2.setRect( btnWay1.right() + GAP, btnWay1.top(), btnWay1.width(), BTN_HEIGHT );
 		add( btnWay2 );
 		
-		RedButton btnCancel = new RedButton( TXT_CANCEL ) {
+		RedButton btnCancel = new RedButton( Messages.get(this, "cancel") ) {
 			@Override
 			protected void onClick() {
 				hide();

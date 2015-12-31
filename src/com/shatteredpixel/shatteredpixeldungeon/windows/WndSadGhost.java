@@ -36,23 +36,6 @@ import com.watabou.noosa.BitmapTextMultiline;
 
 public class WndSadGhost extends Window {
 
-	private static final String TXT_RAT	=
-		"Thank you, that horrid rat is slain and I can finally rest..." +
-		"I wonder what twisted magic created such a foul creature...\n\n";
-	private static final String TXT_GNOLL	=
-		"Thank you, that scheming gnoll is slain and I can finally rest..." +
-		"I wonder what twisted magic made it so smart...\n\n";
-	private static final String TXT_CRAB	=
-		"Thank you, that giant crab is slain and I can finally rest..." +
-		"I wonder what twisted magic allowed it to live so long...\n\n";
-	private static final String TXT_GIVEITEM=
-		"Please take one of these items, they are useless to me now... " +
-		"Maybe they will help you in your journey...\n\n" +
-		"Also... There is an item lost in this dungeon that is very dear to me..." +
-		"If you ever... find my... rose......";
-	private static final String TXT_WEAPON	= "Ghost's weapon";
-	private static final String TXT_ARMOR	= "Ghost's armor";
-	
 	private static final int WIDTH		= 120;
 	private static final int BTN_HEIGHT	= 20;
 	private static final float GAP		= 2;
@@ -66,22 +49,21 @@ public class WndSadGhost extends Window {
 		switch (type){
 			case 1:default:
 				titlebar.icon( new FetidRatSprite() );
-				titlebar.label( "DEFEATED FETID RAT" );
-				message = PixelScene.createMultiline( TXT_RAT+TXT_GIVEITEM, 6 );
+				titlebar.label( Messages.get(this, "rat_title") );
+				message = PixelScene.createMultiline( Messages.get(this, "rat")+Messages.get(this, "give_item"), 6 );
 				break;
 			case 2:
 				titlebar.icon( new GnollTricksterSprite() );
-				titlebar.label( "DEFEATED GNOLL TRICKSTER" );
-				message = PixelScene.createMultiline( TXT_GNOLL+TXT_GIVEITEM, 6 );
+				titlebar.label( Messages.get(this, "gnoll_title") );
+				message = PixelScene.createMultiline( Messages.get(this, "gnoll")+Messages.get(this, "give_item"), 6 );
 				break;
 			case 3:
 				titlebar.icon( new GreatCrabSprite());
-				titlebar.label( "DEFEATED GREAT CRAB" );
-				message = PixelScene.createMultiline( TXT_CRAB+TXT_GIVEITEM, 6 );
+				titlebar.label( Messages.get(this, "crab_title") );
+				message = PixelScene.createMultiline( Messages.get(this, "crab")+Messages.get(this, "give_item"), 6 );
 				break;
 
 		}
-
 
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
@@ -91,7 +73,7 @@ public class WndSadGhost extends Window {
 		message.y = titlebar.bottom() + GAP;
 		add( message );
 		
-		RedButton btnWeapon = new RedButton( TXT_WEAPON ) {
+		RedButton btnWeapon = new RedButton( Messages.get(this, "weapon") ) {
 			@Override
 			protected void onClick() {
 				selectReward( ghost, Ghost.Quest.weapon );
@@ -101,7 +83,7 @@ public class WndSadGhost extends Window {
 		add( btnWeapon );
 
 		if (!Dungeon.isChallenged( Challenges.NO_ARMOR )) {
-			RedButton btnArmor = new RedButton(TXT_ARMOR) {
+			RedButton btnArmor = new RedButton( Messages.get(this, "armor") ) {
 				@Override
 				protected void onClick() {
 					selectReward(ghost, Ghost.Quest.armor);
@@ -126,7 +108,7 @@ public class WndSadGhost extends Window {
 			Dungeon.level.drop( reward, ghost.pos ).sprite.drop();
 		}
 		
-		ghost.yell( "Farewell, adventurer!" );
+		ghost.yell( Messages.get(this, "farewell") );
 		ghost.die( null );
 		
 		Ghost.Quest.complete();

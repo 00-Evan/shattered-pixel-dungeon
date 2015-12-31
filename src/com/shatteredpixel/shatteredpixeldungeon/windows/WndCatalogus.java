@@ -20,20 +20,20 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import java.util.ArrayList;
-
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.ui.Component;
+
+import java.util.ArrayList;
 
 public class WndCatalogus extends WndTabbed {
 
@@ -45,16 +45,10 @@ public class WndCatalogus extends WndTabbed {
 
 	private static final int ITEM_HEIGHT	= 18;
 	
-	private static final int TAB_WIDTH		= 50;
-	
-	private static final String TXT_POTIONS	= "Potions";
-	private static final String TXT_SCROLLS	= "Scrolls";
-	private static final String TXT_TITLE	= "Catalogus";
-	
 	private BitmapText txtTitle;
 	private ScrollPane list;
 	
-	private ArrayList<ListItem> items = new ArrayList<WndCatalogus.ListItem>();
+	private ArrayList<ListItem> items = new ArrayList<>();
 	
 	private static boolean showPotions = true;
 	
@@ -68,7 +62,7 @@ public class WndCatalogus extends WndTabbed {
 			resize( WIDTH_P, HEIGHT_P );
 		}
 
-		txtTitle = PixelScene.createText( TXT_TITLE, 9 );
+		txtTitle = PixelScene.createText( Messages.get(this, "title"), 9 );
 		txtTitle.hardlight( Window.TITLE_COLOR );
 		txtTitle.measure();
 		add( txtTitle );
@@ -89,14 +83,14 @@ public class WndCatalogus extends WndTabbed {
 
 		boolean showPotions = WndCatalogus.showPotions;
 		Tab[] tabs = {
-			new LabeledTab( TXT_POTIONS ) {
+			new LabeledTab( Messages.get(this, "potions") ) {
 				protected void select( boolean value ) {
 					super.select( value );
 					WndCatalogus.showPotions = value;
 					updateList();
 				};
 			},
-			new LabeledTab( TXT_SCROLLS ) {
+			new LabeledTab( Messages.get(this, "scrolls") ) {
 				protected void select( boolean value ) {
 					super.select( value );
 					WndCatalogus.showPotions = !value;
@@ -115,7 +109,7 @@ public class WndCatalogus extends WndTabbed {
 	
 	private void updateList() {
 		
-		txtTitle.text( Utils.format( TXT_TITLE, showPotions ? TXT_POTIONS : TXT_SCROLLS ) );
+		txtTitle.text( Messages.get(this, "title", showPotions ? Messages.get(this, "potions") : Messages.get(this, "scrolls") ) );
 		txtTitle.measure();
 		txtTitle.x = (width - txtTitle.width()) / 2;
 

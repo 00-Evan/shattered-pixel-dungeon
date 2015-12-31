@@ -20,15 +20,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import java.util.ArrayList;
-
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.noosa.BitmapText;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.BitmapText;
+
+import java.util.ArrayList;
 
 public class WndChallenges extends Window {
 
@@ -36,8 +36,6 @@ public class WndChallenges extends Window {
 	private static final int TTL_HEIGHT    = 12;
 	private static final int BTN_HEIGHT    = 18;
 	private static final int GAP        = 1;
-
-	private static final String TITLE	= "Challenges";
 
 	private boolean editable;
 	private ArrayList<CheckBox> boxes;
@@ -48,7 +46,7 @@ public class WndChallenges extends Window {
 
 		this.editable = editable;
 
-		BitmapText title = PixelScene.createText( TITLE, 9 );
+		BitmapText title = PixelScene.createText( Messages.get(this, "title"), 9 );
 		title.hardlight( TITLE_COLOR );
 		title.measure();
 		title.x = (WIDTH - title.width()) / 2;

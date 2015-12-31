@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
@@ -35,8 +36,6 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 
 public class WndSettings extends WndTabbed {
-	private static final String TXT_SWITCH_PORT	= "Switch to portrait";
-	private static final String TXT_SWITCH_LAND	= "Switch to landscape";
 
 	private static final int WIDTH		    = 112;
 	private static final int HEIGHT         = 112;
@@ -61,7 +60,7 @@ public class WndSettings extends WndTabbed {
 		audio = new AudioTab();
 		add( audio );
 
-		add( new LabeledTab("Screen"){
+		add( new LabeledTab(Messages.get(this, "screen")){
 			@Override
 			protected void select(boolean value) {
 				super.select(value);
@@ -69,7 +68,7 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
-		add( new LabeledTab("UI"){
+		add( new LabeledTab(Messages.get(this, "ui")){
 			@Override
 			protected void select(boolean value) {
 				super.select(value);
@@ -77,7 +76,7 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
-		add( new LabeledTab("Audio"){
+		add( new LabeledTab(Messages.get(this, "audio")){
 			@Override
 			protected void select(boolean value) {
 				super.select(value);
@@ -98,7 +97,7 @@ public class WndSettings extends WndTabbed {
 		public ScreenTab() {
 			super();
 
-			OptionSlider scale = new OptionSlider("Display Scale",
+			OptionSlider scale = new OptionSlider(Messages.get(this, "scale"),
 					(int)Math.ceil(2* Game.density)+ "X",
 					PixelScene.maxDefaultZoom + "X",
 					(int)Math.ceil(2* Game.density),
@@ -119,7 +118,8 @@ public class WndSettings extends WndTabbed {
 				scale.setRect(0, 0, 0, 0);
 			}
 
-			OptionSlider brightness = new OptionSlider("Brightness", "Dark", "Bright", -2, 4) {
+			OptionSlider brightness = new OptionSlider(Messages.get(this, "brightness"),
+					Messages.get(this, "dark"), Messages.get(this, "bright"), -2, 4) {
 				@Override
 				protected void onChange() {
 					ShatteredPixelDungeon.brightness(getSelectedValue());
@@ -129,7 +129,7 @@ public class WndSettings extends WndTabbed {
 			brightness.setRect(0, scale.bottom() + GAP_SML, WIDTH, SLIDER_HEIGHT);
 			add(brightness);
 
-			CheckBox chkImmersive = new CheckBox( "Hide Software Keys" ) {
+			CheckBox chkImmersive = new CheckBox( Messages.get(this, "soft_keys") ) {
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -142,7 +142,9 @@ public class WndSettings extends WndTabbed {
 			add(chkImmersive);
 
 
-			RedButton btnOrientation = new RedButton( ShatteredPixelDungeon.landscape() ? TXT_SWITCH_PORT : TXT_SWITCH_LAND ) {
+			RedButton btnOrientation = new RedButton( ShatteredPixelDungeon.landscape() ?
+					Messages.get(this, "portrait")
+					: Messages.get(this, "landscape") ) {
 				@Override
 				protected void onClick() {
 					ShatteredPixelDungeon.landscape(!ShatteredPixelDungeon.landscape());
@@ -158,12 +160,12 @@ public class WndSettings extends WndTabbed {
 		public UITab(){
 			super();
 
-			BitmapText barDesc = PixelScene.createText("Toolbar Mode:", 9);
+			BitmapText barDesc = PixelScene.createText(Messages.get(this, "mode"), 9);
 			barDesc.measure();
 			barDesc.x = (WIDTH-barDesc.width())/2;
 			add(barDesc);
 
-			RedButton btnSplit = new RedButton("Split"){
+			RedButton btnSplit = new RedButton(Messages.get(this, "split")){
 				@Override
 				protected void onClick() {
 					ShatteredPixelDungeon.toolbarMode(Toolbar.Mode.SPLIT.name());
@@ -173,7 +175,7 @@ public class WndSettings extends WndTabbed {
 			btnSplit.setRect( 1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
 			add(btnSplit);
 
-			RedButton btnGrouped = new RedButton("Group"){
+			RedButton btnGrouped = new RedButton(Messages.get(this, "group")){
 				@Override
 				protected void onClick() {
 					ShatteredPixelDungeon.toolbarMode(Toolbar.Mode.GROUP.name());
@@ -183,7 +185,7 @@ public class WndSettings extends WndTabbed {
 			btnGrouped.setRect( btnSplit.right()+1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
 			add(btnGrouped);
 
-			RedButton btnCentered = new RedButton("Center"){
+			RedButton btnCentered = new RedButton(Messages.get(this, "center")){
 				@Override
 				protected void onClick() {
 					ShatteredPixelDungeon.toolbarMode(Toolbar.Mode.CENTER.name());
@@ -193,7 +195,7 @@ public class WndSettings extends WndTabbed {
 			btnCentered.setRect(btnGrouped.right()+1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
 			add(btnCentered);
 
-			CheckBox chkFlipToolbar = new CheckBox("Flip Toolbar"){
+			CheckBox chkFlipToolbar = new CheckBox(Messages.get(this, "flip_toolbar")){
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -205,7 +207,7 @@ public class WndSettings extends WndTabbed {
 			chkFlipToolbar.checked(ShatteredPixelDungeon.flipToolbar());
 			add(chkFlipToolbar);
 
-			CheckBox chkFlipTags = new CheckBox("Flip Indicators"){
+			CheckBox chkFlipTags = new CheckBox(Messages.get(this, "flip_indicators")){
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -217,7 +219,7 @@ public class WndSettings extends WndTabbed {
 			chkFlipTags.checked(ShatteredPixelDungeon.flipTags());
 			add(chkFlipTags);
 
-			OptionSlider slots = new OptionSlider("Quickslots", "0", "4", 0, 4) {
+			OptionSlider slots = new OptionSlider(Messages.get(this, "quickslots"), "0", "4", 0, 4) {
 				@Override
 				protected void onChange() {
 					ShatteredPixelDungeon.quickSlots(getSelectedValue());
@@ -234,7 +236,7 @@ public class WndSettings extends WndTabbed {
 	private class AudioTab extends Group {
 
 		public AudioTab() {
-			OptionSlider musicVol = new OptionSlider("Music Volume", "0", "10", 0, 10) {
+			OptionSlider musicVol = new OptionSlider(Messages.get(this, "music_vol"), "0", "10", 0, 10) {
 				@Override
 				protected void onChange() {
 					Music.INSTANCE.volume(getSelectedValue()/10f);
@@ -245,7 +247,7 @@ public class WndSettings extends WndTabbed {
 			musicVol.setRect(0, 0, WIDTH, SLIDER_HEIGHT);
 			add(musicVol);
 
-			CheckBox musicMute = new CheckBox("Mute Music"){
+			CheckBox musicMute = new CheckBox(Messages.get(this, "music_mute")){
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -257,7 +259,7 @@ public class WndSettings extends WndTabbed {
 			add(musicMute);
 
 
-			OptionSlider SFXVol = new OptionSlider("SFX Volume", "0", "10", 0, 10) {
+			OptionSlider SFXVol = new OptionSlider(Messages.get(this, "sfx_vol"), "0", "10", 0, 10) {
 				@Override
 				protected void onChange() {
 					Sample.INSTANCE.volume(getSelectedValue()/10f);
@@ -268,7 +270,7 @@ public class WndSettings extends WndTabbed {
 			SFXVol.setRect(0, musicMute.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
 			add(SFXVol);
 
-			CheckBox btnSound = new CheckBox( "Mute SFX" ) {
+			CheckBox btnSound = new CheckBox( Messages.get(this, "sfx_mute") ) {
 				@Override
 				protected void onClick() {
 					super.onClick();
