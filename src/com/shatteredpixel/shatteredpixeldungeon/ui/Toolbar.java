@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
@@ -277,7 +278,7 @@ public class Toolbar extends Component {
 		}
 		@Override
 		public String prompt() {
-			return "Press again to search\nPress a cell for info";
+			return Messages.get(Toolbar.class, "examine_prompt");
 		}
 	};
 	
