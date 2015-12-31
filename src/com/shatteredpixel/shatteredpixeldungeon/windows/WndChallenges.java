@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.BitmapText;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -57,9 +58,9 @@ public class WndChallenges extends Window {
 		boxes = new ArrayList<CheckBox>();
 
 		float pos = TTL_HEIGHT;
-		for (int i=0; i < Challenges.NAMES.length; i++) {
+		for (int i=0; i < Challenges.NAME_IDS.length; i++) {
 
-			CheckBox cb = new CheckBox( Challenges.NAMES[i] );
+			CheckBox cb = new CheckBox( Messages.get(Challenges.class, Challenges.NAME_IDS[i]) );
 			cb.checked( (checked & Challenges.MASKS[i]) != 0 );
 			cb.active = editable;
 
