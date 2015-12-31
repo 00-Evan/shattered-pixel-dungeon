@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
@@ -41,12 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndRanking;
 import com.watabou.utils.GameMath;
 
 public class RankingsScene extends PixelScene {
-	
-	private static final String TXT_TITLE		= "Top Rankings";
-	private static final String TXT_TOTAL		= "Games Played: ";
-	private static final String TXT_NO_GAMES	= "No games have been played yet.";
-	
-	private static final String TXT_NO_INFO	= "No additional information";
 	
 	private static final float ROW_HEIGHT_MAX	= 20;
 	private static final float ROW_HEIGHT_MIN	= 12;
@@ -76,7 +71,7 @@ public class RankingsScene extends PixelScene {
 		
 		Rankings.INSTANCE.load();
 
-		BitmapText title = PixelScene.createText(TXT_TITLE, 9);
+		BitmapText title = PixelScene.createText( Messages.get(this, "title"), 9);
 		title.hardlight(Window.SHPX_COLOR);
 		title.measure();
 		title.x = (w - title.width()) / 2;
@@ -108,7 +103,7 @@ public class RankingsScene extends PixelScene {
 			}
 			
 			if (Rankings.INSTANCE.totalNumber >= Rankings.TABLE_SIZE) {
-				BitmapText label = PixelScene.createText( TXT_TOTAL, 8 );
+				BitmapText label = PixelScene.createText( Messages.get(this, "total") + " ", 8 );
 				label.hardlight( 0xCCCCCC );
 				label.measure();
 				add( label );
@@ -135,7 +130,7 @@ public class RankingsScene extends PixelScene {
 			
 		} else {
 
-			BitmapText noRec = PixelScene.createText(TXT_NO_GAMES, 8);
+			BitmapText noRec = PixelScene.createText(Messages.get(this, "no_games"), 8);
 			noRec.hardlight( 0xCCCCCC );
 			noRec.measure();
 			noRec.x = (w - noRec.width()) / 2;
@@ -297,7 +292,7 @@ public class RankingsScene extends PixelScene {
 			if (rec.gameFile.length() > 0) {
 				parent.add( new WndRanking( rec.gameFile ) );
 			} else {
-				parent.add( new WndError( TXT_NO_INFO ) );
+				parent.add( new WndError( Messages.get(this, "no_info") ) );
 			}
 		}
 	}

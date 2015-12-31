@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
@@ -43,22 +44,9 @@ public class InterlevelScene extends PixelScene {
 
 	private static final float TIME_TO_FADE = 0.3f;
 	
-	private static final String TXT_DESCENDING	= "Descending...";
-	private static final String TXT_ASCENDING	= "Ascending...";
-	private static final String TXT_LOADING		= "Loading...";
-	private static final String TXT_RESURRECTING= "Resurrecting...";
-	private static final String TXT_RETURNING	= "Returning...";
-	private static final String TXT_FALLING		= "Falling...";
-	private static final String TXT_RESETTING   = "Resetting...";
-	
-	private static final String ERR_FILE_NOT_FOUND	= "Save file not found. If this error persists after restarting, " +
-														"it may mean this save game is corrupted. Sorry about that.";
-	private static final String ERR_IO			    = "Cannot read save file. If this error persists after restarting, " +
-														"it may mean this save game is corrupted. Sorry about that.";
-	
-	public static enum Mode {
+	public enum Mode {
 		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE
-	};
+	}
 	public static Mode mode;
 	
 	public static int returnDepth;
@@ -70,7 +58,7 @@ public class InterlevelScene extends PixelScene {
 	
 	private enum Phase {
 		FADE_IN, STATIC, FADE_OUT
-	};
+	}
 	private Phase phase;
 	private float timeLeft;
 	
@@ -83,30 +71,7 @@ public class InterlevelScene extends PixelScene {
 	public void create() {
 		super.create();
 
-		String text = "";
-		switch (mode) {
-		case DESCEND:
-			text = TXT_DESCENDING;
-			break;
-		case ASCEND:
-			text = TXT_ASCENDING;
-			break;
-		case CONTINUE:
-			text = TXT_LOADING;
-			break;
-		case RESURRECT:
-			text = TXT_RESURRECTING;
-			break;
-		case RETURN:
-			text = TXT_RETURNING;
-			break;
-		case FALL:
-			text = TXT_FALLING;
-			break;
-		case RESET:
-			text = TXT_RESETTING;
-			break;
-		}
+		String text = Messages.get(Mode.class, mode.name());
 		
 		message = PixelScene.createText( text, 9 );
 		message.measure();
@@ -202,8 +167,8 @@ public class InterlevelScene extends PixelScene {
 		case STATIC:
 			if (error != null) {
 				String errorMsg;
-				if (error instanceof FileNotFoundException) errorMsg = ERR_FILE_NOT_FOUND;
-				else if (error instanceof IOException) errorMsg = ERR_IO;
+				if (error instanceof FileNotFoundException) errorMsg = Messages.get(this, "file_not_found");
+				else if (error instanceof IOException) errorMsg = Messages.get(this, "io_error");
 
 				else throw new RuntimeException("fatal error occured while moving between floors", error);
 
@@ -211,7 +176,7 @@ public class InterlevelScene extends PixelScene {
 					public void onBackPressed() {
 						super.onBackPressed();
 						Game.switchScene( StartScene.class );
-					};
+					}
 				} );
 				error = null;
 			}

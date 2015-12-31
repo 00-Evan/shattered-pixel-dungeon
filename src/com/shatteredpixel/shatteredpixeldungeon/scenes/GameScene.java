@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
@@ -93,16 +94,7 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 public class GameScene extends PixelScene {
-	
-	private static final String TXT_WELCOME			= "Welcome to the level %d of Pixel Dungeon!";
-	private static final String TXT_WELCOME_BACK	= "Welcome back to the level %d of Pixel Dungeon!";
-	
-	private static final String TXT_CHASM	= "Your steps echo across the dungeon.";
-	private static final String TXT_WATER	= "You hear water splashing around you.";
-	private static final String TXT_GRASS	= "The smell of vegetation is thick in the air.";
-	private static final String TXT_DARK	= "You can hear enemies moving in the darkness...";
-	private static final String TXT_SECRETS	= "The atmosphere hints that this floor hides many secrets.";
-	
+
 	static GameScene scene;
 
 	private SkinnedBlock water;
@@ -341,30 +333,30 @@ public class GameScene extends PixelScene {
 
 		if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
 			if (Dungeon.depth < Statistics.deepestFloor) {
-				GLog.h(TXT_WELCOME_BACK, Dungeon.depth);
+				GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth);
 			} else {
-				GLog.h(TXT_WELCOME, Dungeon.depth);
+				GLog.h(Messages.get(this, "welcome"), Dungeon.depth);
 				Sample.INSTANCE.play(Assets.SND_DESCEND);
 			}
 
 			switch (Dungeon.level.feeling) {
 				case CHASM:
-					GLog.w(TXT_CHASM);
+					GLog.w(Messages.get(this, "chasm"));
 					break;
 				case WATER:
-					GLog.w(TXT_WATER);
+					GLog.w(Messages.get(this, "water"));
 					break;
 				case GRASS:
-					GLog.w(TXT_GRASS);
+					GLog.w(Messages.get(this, "grass"));
 					break;
 				case DARK:
-					GLog.w(TXT_DARK);
+					GLog.w(Messages.get(this, "dark"));
 					break;
 				default:
 			}
 			if (Dungeon.level instanceof RegularLevel &&
 					((RegularLevel) Dungeon.level).secretDoors > Random.IntRange(3, 4)) {
-				GLog.w(TXT_SECRETS);
+				GLog.w(Messages.get(this, "secrets"));
 			}
 
 			InterlevelScene.mode = InterlevelScene.Mode.NONE;

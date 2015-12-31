@@ -25,6 +25,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLES20;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ChangesButton;
@@ -45,11 +46,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.PrefsButton;
 
 public class TitleScene extends PixelScene {
-
-	private static final String TXT_PLAY		= "Play";
-	private static final String TXT_HIGHSCORES	= "Rankings";
-	private static final String TXT_BADGES		= "Badges";
-	private static final String TXT_ABOUT		= "About";
 	
 	@Override
 	public void create() {
@@ -99,7 +95,7 @@ public class TitleScene extends PixelScene {
 		signs.y = title.y;
 		add( signs );
 		
-		DashboardItem btnBadges = new DashboardItem( TXT_BADGES, 3 ) {
+		DashboardItem btnBadges = new DashboardItem( Messages.get(this, "badges"), 3 ) {
 			@Override
 			protected void onClick() {
 				ShatteredPixelDungeon.switchNoFade( BadgesScene.class );
@@ -107,7 +103,7 @@ public class TitleScene extends PixelScene {
 		};
 		add(btnBadges);
 		
-		DashboardItem btnAbout = new DashboardItem( TXT_ABOUT, 1 ) {
+		DashboardItem btnAbout = new DashboardItem( Messages.get(this, "about"), 1 ) {
 			@Override
 			protected void onClick() {
 				ShatteredPixelDungeon.switchNoFade( AboutScene.class );
@@ -115,7 +111,7 @@ public class TitleScene extends PixelScene {
 		};
 		add( btnAbout );
 		
-		DashboardItem btnPlay = new DashboardItem( TXT_PLAY, 0 ) {
+		DashboardItem btnPlay = new DashboardItem( Messages.get(this, "play"), 0 ) {
 			@Override
 			protected void onClick() {
 				ShatteredPixelDungeon.switchNoFade( StartScene.class );
@@ -123,25 +119,25 @@ public class TitleScene extends PixelScene {
 		};
 		add( btnPlay );
 		
-		DashboardItem btnHighscores = new DashboardItem( TXT_HIGHSCORES, 2 ) {
+		DashboardItem btnRankings = new DashboardItem( Messages.get(this, "rankings"), 2 ) {
 			@Override
 			protected void onClick() {
 				ShatteredPixelDungeon.switchNoFade( RankingsScene.class );
 			}
 		};
-		add( btnHighscores );
+		add( btnRankings );
 
 		if (ShatteredPixelDungeon.landscape()) {
 			float y = (h + height) / 2 - DashboardItem.SIZE;
-			btnHighscores    .setPos( w / 2 - btnHighscores.width(), y );
-			btnBadges        .setPos( w / 2, y );
-			btnPlay            .setPos( btnHighscores.left() - btnPlay.width(), y );
+			btnRankings     .setPos( w / 2 - btnRankings.width(), y );
+			btnBadges       .setPos( w / 2, y );
+			btnPlay         .setPos( btnRankings.left() - btnPlay.width(), y );
 			btnAbout        .setPos( btnBadges.right(), y );
 		} else {
 			btnBadges.setPos( w / 2 - btnBadges.width(), (h + height) / 2 - DashboardItem.SIZE );
 			btnAbout.setPos( w / 2, (h + height) / 2 - DashboardItem.SIZE );
 			btnPlay.setPos( w / 2 - btnPlay.width(), btnAbout.top() - DashboardItem.SIZE );
-			btnHighscores.setPos( w / 2, btnPlay.top() );
+			btnRankings.setPos( w / 2, btnPlay.top() );
 		}
 
 		BitmapText version = new BitmapText( "v " + Game.version + "", pixelFont);

@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBadge;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -41,8 +42,6 @@ import com.watabou.utils.Random;
 import java.util.List;
 
 public class BadgesScene extends PixelScene {
-
-	private static final String TXT_TITLE = "Your Badges";
 
 	@Override
 	public void create() {
@@ -72,7 +71,7 @@ public class BadgesScene extends PixelScene {
 		float left = (w - size * nCols) / 2;
 		float top = (h - size * nRows) / 2;
 
-		BitmapText title = PixelScene.createText( TXT_TITLE, 9 );
+		BitmapText title = PixelScene.createText( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
 		title.measure();
 		title.x = (w - title.width()) / 2 ;

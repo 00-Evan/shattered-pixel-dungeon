@@ -24,6 +24,7 @@ import java.nio.FloatBuffer;
 import java.util.Calendar;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.gltextures.Gradient;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.glwrap.Matrix;
@@ -142,7 +143,7 @@ public class SurfaceScene extends PixelScene {
 		window.add( new TouchArea( sky ) {
 			protected void onClick( Touch touch ) {
 				pet.jump();
-			};
+			}
 		} );
 		
 		for (int i=0; i < nPatches; i++) {
@@ -165,7 +166,7 @@ public class SurfaceScene extends PixelScene {
 			frame.hardlight( 0xDDEEFF );
 		}
 
-		RedButton gameOver = new RedButton( "Game Over" ) {
+		RedButton gameOver = new RedButton( Messages.get(this, "exit") ) {
 			protected void onClick() {
 				Game.switchScene( TitleScene.class );
 			}

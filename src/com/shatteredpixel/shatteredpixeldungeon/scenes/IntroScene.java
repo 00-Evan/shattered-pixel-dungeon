@@ -20,25 +20,17 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 
 public class IntroScene extends PixelScene {
-
-	private static final String TEXT =
-		"Many heroes have ventured into the dungeon before you from the city above. Some " +
-		"have returned with treasures and magical artifacts, most have never been heard from again.\n\n" +
-		"None, however, have ventured to the bottom and retrieved the Amulet of Yendor, " +
-		"which is said to be guarded by an ancient evil in the depths. " +
-		"Even now dark energy radiates from below, making its way up into the city.\n\n" +
-		"You consider yourself ready for the challenge. Most importantly, " +
-		"you feel that fortune smiles upon you. It's time to start your own adventure!";
 	
 	@Override
 	public void create() {
 		super.create();
 		
-		add( new WndStory( TEXT ) {
+		add( new WndStory( Messages.get(this, "text") ) {
 			@Override
 			public void hide() {
 				super.hide();
