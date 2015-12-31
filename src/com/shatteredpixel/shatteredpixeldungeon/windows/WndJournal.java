@@ -88,7 +88,7 @@ public class WndJournal extends Window {
 		public ListItem( Journal.Feature f, int d ) {
 			super();
 			
-			feature.text( f.desc );
+			feature.text( f.desc() );
 			feature.measure();
 			
 			depth.text( Integer.toString( d ) );
