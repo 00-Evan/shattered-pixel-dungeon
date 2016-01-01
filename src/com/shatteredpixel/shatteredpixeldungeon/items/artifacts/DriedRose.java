@@ -52,7 +52,6 @@ import java.util.HashSet;
 public class DriedRose extends Artifact {
 
 	{
-		name = "Dried Rose";
 		image = ItemSpriteSheet.ARTIFACT_ROSE1;
 
 		levelCap = 10;
@@ -248,7 +247,6 @@ public class DriedRose extends Artifact {
 	public static class Petal extends Item {
 
 		{
-			name = "dried petal";
 			stackable = true;
 			image = ItemSpriteSheet.PETAL;
 		}

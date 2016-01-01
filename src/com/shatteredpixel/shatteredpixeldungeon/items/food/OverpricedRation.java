@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class OverpricedRation extends Food {
 
 	{
-		name = "overpriced food ration";
 		image = ItemSpriteSheet.OVERPRICED;
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 		message = "That food tasted ok.";

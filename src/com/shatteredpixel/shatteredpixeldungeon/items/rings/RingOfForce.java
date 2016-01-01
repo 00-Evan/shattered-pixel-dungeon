@@ -24,10 +24,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 
 public class RingOfForce extends Ring {
 
-	{
-		name = "Ring of Force";
-	}
-
 	@Override
 	protected RingBuff buff( ) {
 		return new Force();

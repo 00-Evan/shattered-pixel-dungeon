@@ -61,7 +61,6 @@ import java.util.HashSet;
 public class WandOfTransfusion extends Wand {
 
 	{
-		name = "Wand of Transfusion";
 		image = ItemSpriteSheet.WAND_TRANSFUSION;
 
 		collisionProperties = Ballistica.PROJECTILE;

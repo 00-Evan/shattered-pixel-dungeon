@@ -39,7 +39,6 @@ public class ScrollOfRemoveCurse extends Scroll {
 		"Your pack glows with a cleansing light, but nothing happens.";
 	
 	{
-		name = "Scroll of Remove Curse";
 		initials = "RC";
 	}
 	

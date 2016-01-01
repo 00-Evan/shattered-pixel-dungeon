@@ -33,8 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class Potential extends Glyph {
-
-	private static final String TXT_POTENTIAL	= "%s of potential";
 	
 	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing( 0x66CCEE );
 	
@@ -60,11 +58,6 @@ public class Potential extends Glyph {
 		}
 		
 		return damage;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_POTENTIAL, weaponName );
 	}
 
 	@Override

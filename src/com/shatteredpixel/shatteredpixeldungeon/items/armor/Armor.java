@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.*;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -90,7 +91,7 @@ public class Armor extends EquipableItem {
 		actions.add(isEquipped(hero) ? AC_UNEQUIP : AC_EQUIP);
 		return actions;
 	}
-	
+
 	@Override
 	public boolean doEquip( Hero hero ) {
 		
@@ -347,11 +348,11 @@ public class Armor extends EquipableItem {
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
 		
 		public String name() {
-			return name( "glyph" );
+			return name( Messages.get(this, "glyph") );
 		}
 		
 		public String name( String armorName ) {
-			return armorName;
+			return Messages.get(this, "name", armorName);
 		}
 		
 		@Override
@@ -370,7 +371,7 @@ public class Armor extends EquipableItem {
 			if (!owner.isAlive() && owner instanceof Hero) {
 
 				Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, name() ) );
-				GLog.n( "%s killed you...", name() );
+				GLog.n( Messages.get(this, "killed", name()) );
 
 				Badges.validateDeathFromGlyph();
 				return true;

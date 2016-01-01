@@ -33,7 +33,6 @@ import com.watabou.utils.Random;
 public class WandOfMagicMissile extends Wand {
 
 	{
-		name = "Wand of Magic Missile";
 		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
 	}
 	

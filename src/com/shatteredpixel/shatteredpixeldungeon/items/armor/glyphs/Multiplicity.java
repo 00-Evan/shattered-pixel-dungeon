@@ -36,8 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class Multiplicity extends Glyph {
-
-	private static final String TXT_MULTIPLICITY	= "%s of multiplicity";
 	
 	private static ItemSprite.Glowing PINK = new ItemSprite.Glowing( 0xCCAA88 );
 	
@@ -70,11 +68,6 @@ public class Multiplicity extends Glyph {
 		}
 		
 		return damage;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_MULTIPLICITY, weaponName );
 	}
 
 	@Override

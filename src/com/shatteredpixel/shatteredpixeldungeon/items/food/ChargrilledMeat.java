@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class ChargrilledMeat extends Food {
 
 	{
-		name = "chargrilled meat";
 		image = ItemSpriteSheet.STEAK;
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 		hornValue = 1;

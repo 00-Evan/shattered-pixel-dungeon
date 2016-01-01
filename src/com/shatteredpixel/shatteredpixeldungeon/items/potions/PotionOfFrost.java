@@ -34,7 +34,6 @@ public class PotionOfFrost extends Potion {
 	private static final int DISTANCE	= 2;
 	
 	{
-		name = "Potion of Frost";
 		initials = "Fr";
 	}
 	

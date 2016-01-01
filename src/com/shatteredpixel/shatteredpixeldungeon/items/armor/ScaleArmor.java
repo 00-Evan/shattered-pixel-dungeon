@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class ScaleArmor extends Armor {
 
 	{
-		name = "scale armor";
 		image = ItemSpriteSheet.ARMOR_SCALE;
 	}
 	

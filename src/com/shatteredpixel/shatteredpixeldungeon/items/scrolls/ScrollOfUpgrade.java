@@ -33,7 +33,6 @@ public class ScrollOfUpgrade extends InventoryScroll {
 	public static final String TXT_LOOKS_BETTER	= "your %s certainly looks better now";
 	
 	{
-		name = "Scroll of Upgrade";
 		initials = "Up";
 
 		inventoryTitle = "Select an item to upgrade";

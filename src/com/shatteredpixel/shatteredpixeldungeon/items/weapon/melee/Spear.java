@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Spear extends MeleeWeapon {
 
 	{
-		name = "spear";
 		image = ItemSpriteSheet.SPEAR;
 	}
 	

@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -244,7 +245,7 @@ abstract public class Weapon extends KindOfWeapon {
 		public abstract boolean proc( Weapon weapon, Char attacker, Char defender, int damage );
 		
 		public String name( String weaponName ) {
-			return weaponName;
+			return Messages.get(this, "name", weaponName);
 		}
 		
 		@Override

@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 public class PotionOfParalyticGas extends Potion {
 
 	{
-		name = "Potion of Paralytic Gas";
 		initials = "PG";
 	}
 	

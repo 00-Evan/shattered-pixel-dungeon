@@ -45,7 +45,6 @@ import com.watabou.utils.Random;
 public class WandOfLightning extends Wand {
 
 	{
-		name = "Wand of Lightning";
 		image = ItemSpriteSheet.WAND_LIGHTNING;
 	}
 	

@@ -22,10 +22,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 public class RingOfTenacity extends Ring {
 
-	{
-		name = "Ring of Tenacity";
-	}
-
 	@Override
 	protected RingBuff buff( ) {
 		return new Tenacity();

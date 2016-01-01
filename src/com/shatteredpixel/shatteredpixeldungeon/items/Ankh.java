@@ -47,7 +47,6 @@ public class Ankh extends Item {
 
 
 	{
-		name = "Ankh";
 		image = ItemSpriteSheet.ANKH;
 
 		//You tell the ankh no, don't revive me, and then it comes back to revive you again in another run.

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.util.Calendar;
@@ -64,11 +65,11 @@ public class Pasty extends Food {
 
 		switch(holiday){
 			case NONE:
-				name = "pasty";
+				name = Messages.get(this, "pasty");
 				image = ItemSpriteSheet.PASTY;
 			break;
 			case XMAS:
-				name = "candy cane";
+				name = Messages.get(this, "cane");
 				image = ItemSpriteSheet.CANDY_CANE;
 				break;
 		}

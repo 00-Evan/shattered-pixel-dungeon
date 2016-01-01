@@ -36,7 +36,6 @@ public class ScrollOfMirrorImage extends Scroll {
 	private static final int NIMAGES	= 3;
 	
 	{
-		name = "Scroll of Mirror Image";
 		initials = "MI";
 	}
 	

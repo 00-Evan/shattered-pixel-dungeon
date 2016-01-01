@@ -36,7 +36,6 @@ public class Amulet extends Item {
 	private static final String AC_END = "END THE GAME";
 	
 	{
-		name = "Amulet of Yendor";
 		image = ItemSpriteSheet.AMULET;
 		
 		unique = true;

@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Knuckles extends MeleeWeapon {
 
 	{
-		name = "knuckleduster";
 		image = ItemSpriteSheet.KNUCKLEDUSTER;
 	}
 	

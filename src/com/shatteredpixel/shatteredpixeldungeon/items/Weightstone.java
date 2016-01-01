@@ -48,7 +48,6 @@ public class Weightstone extends Item {
 	private static final String AC_APPLY = "APPLY";
 
 	{
-		name = "weightstone";
 		image = ItemSpriteSheet.WEIGHT;
 
 		stackable = true;

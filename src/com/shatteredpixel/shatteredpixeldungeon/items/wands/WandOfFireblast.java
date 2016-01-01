@@ -44,7 +44,6 @@ import java.util.HashSet;
 public class WandOfFireblast extends Wand {
 
 	{
-		name = "Wand of Fireblast";
 		image = ItemSpriteSheet.WAND_FIREBOLT;
 
 		collisionProperties = Ballistica.STOP_TERRAIN;

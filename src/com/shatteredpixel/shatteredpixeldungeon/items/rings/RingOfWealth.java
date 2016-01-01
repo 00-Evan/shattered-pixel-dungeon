@@ -22,10 +22,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 public class RingOfWealth extends Ring {
 
-	{
-		name = "Ring of Wealth";
-	}
-
 	@Override
 	protected RingBuff buff( ) {
 		return new Wealth();

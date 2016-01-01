@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -50,8 +51,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class Item implements Bundlable {
-
-	private static final String TXT_PACK_FULL = "Your pack is too full for the %s";
 	
 	private static final String TXT_TO_STRING		= "%s";
 	private static final String TXT_TO_STRING_X		= "%s x%d";
@@ -68,7 +67,7 @@ public class Item implements Bundlable {
 	public String defaultAction;
 	public boolean usesTargeting;
 	
-	protected String name = "smth";
+	protected String name = Messages.get(this, "name");
 	public int image = 0;
 	
 	public boolean stackable = false;
@@ -192,7 +191,7 @@ public class Item implements Bundlable {
 			
 		} else {
 			
-			GLog.n( TXT_PACK_FULL, name() );
+			GLog.n( Messages.get(Item.class, "pack_full", name()) );
 			return false;
 			
 		}
@@ -514,7 +513,7 @@ public class Item implements Bundlable {
 		}
 		@Override
 		public String prompt() {
-			return "Choose direction of throw";
+			return Messages.get(Item.class, "prompt");
 		}
 	};
 }

@@ -30,7 +30,6 @@ import com.watabou.utils.Random;
 public class Tamahawk extends MissileWeapon {
 
 	{
-		name = "tomahawk";
 		image = ItemSpriteSheet.TOMAHAWK;
 		
 		STR = 17;

@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class PotionOfMight extends Potion {
 
 	{
-		name = "Potion of Might";
 		initials = "Mi";
 
 		bones = true;

@@ -33,8 +33,6 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 public class Affection extends Glyph {
-
-	private static final String TXT_AFFECTION	= "%s of affection";
 	
 	private static ItemSprite.Glowing PINK = new ItemSprite.Glowing( 0xFF4488 );
 	
@@ -57,11 +55,6 @@ public class Affection extends Glyph {
 		}
 		
 		return damage;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_AFFECTION, weaponName );
 	}
 
 	@Override

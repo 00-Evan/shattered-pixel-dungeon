@@ -32,8 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Random;
 
 public class Metabolism extends Glyph {
-
-	private static final String TXT_METABOLISM	= "%s of metabolism";
 	
 	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0xCC0000 );
 	
@@ -63,11 +61,6 @@ public class Metabolism extends Glyph {
 		}
 		
 		return damage;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_METABOLISM, weaponName );
 	}
 
 	@Override

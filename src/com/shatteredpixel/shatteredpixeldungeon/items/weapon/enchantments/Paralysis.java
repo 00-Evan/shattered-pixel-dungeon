@@ -28,8 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class Paralysis extends Weapon.Enchantment {
-
-	private static final String TXT_STUNNING = "stunning %s";
 	
 	private static ItemSprite.Glowing YELLOW = new ItemSprite.Glowing( 0xCCAA44 );
 	
@@ -55,10 +53,4 @@ public class Paralysis extends Weapon.Enchantment {
 	public Glowing glowing() {
 		return YELLOW;
 	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_STUNNING, weaponName );
-	}
-
 }

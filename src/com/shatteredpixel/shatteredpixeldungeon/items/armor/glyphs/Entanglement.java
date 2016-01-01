@@ -34,8 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class Entanglement extends Glyph {
-
-	private static final String TXT_ENTANGLEMENT	= "%s of entanglement";
 	
 	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x448822 );
 	
@@ -54,11 +52,6 @@ public class Entanglement extends Glyph {
 		}
 
 		return damage;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_ENTANGLEMENT, weaponName );
 	}
 
 	@Override

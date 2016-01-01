@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class ScrollHolder extends Bag {
 
 	{
-		name = "scroll holder";
 		image = ItemSpriteSheet.HOLDER;
 		
 		size = 12;

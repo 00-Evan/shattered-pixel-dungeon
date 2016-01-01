@@ -28,12 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class IronKey extends Key {
 
-	private static final String TXT_FROM_DEPTH = "iron key from depth %d";
-
 	public static int curDepthQuantity = 0;
 	
 	{
-		name = "iron key";
 		image = ItemSpriteSheet.IRON_KEY;
 	}
 	
@@ -60,11 +57,6 @@ public class IronKey extends Key {
 		if (depth == Dungeon.depth) {
 			Dungeon.hero.belongings.countIronKeys();
 		}
-	}
-	
-	@Override
-	public String toString() {
-		return Utils.format( TXT_FROM_DEPTH, depth );
 	}
 	
 	@Override

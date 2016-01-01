@@ -43,7 +43,6 @@ public class Stylus extends Item {
 	private static final String AC_INSCRIBE = "INSCRIBE";
 	
 	{
-		name = "arcane stylus";
 		image = ItemSpriteSheet.STYLUS;
 		
 		stackable = true;

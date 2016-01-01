@@ -39,7 +39,6 @@ public class ScrollOfTeleportation extends Scroll {
 		"Strong magic aura of this place prevents you from teleporting!";
 	
 	{
-		name = "Scroll of Teleportation";
 		initials = "TP";
 	}
 	

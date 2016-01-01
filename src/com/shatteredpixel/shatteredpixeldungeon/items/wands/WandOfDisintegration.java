@@ -42,7 +42,6 @@ import com.watabou.utils.Random;
 public class WandOfDisintegration extends Wand {
 
 	{
-		name = "Wand of Disintegration";
 		image = ItemSpriteSheet.WAND_DISINTEGRATION;
 
 		collisionProperties = Ballistica.WONT_STOP;

@@ -37,7 +37,6 @@ import com.watabou.utils.Callback;
 public class WandOfVenom extends Wand {
 
 	{
-		name = "Wand of Venom";
 		image = ItemSpriteSheet.WAND_VENOM;
 
 		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;

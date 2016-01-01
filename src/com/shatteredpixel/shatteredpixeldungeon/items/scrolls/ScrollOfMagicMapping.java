@@ -37,7 +37,6 @@ public class ScrollOfMagicMapping extends Scroll {
 	private static final String TXT_LAYOUT = "You are now aware of the level layout.";
 	
 	{
-		name = "Scroll of Magic Mapping";
 		initials = "MM";
 	}
 	

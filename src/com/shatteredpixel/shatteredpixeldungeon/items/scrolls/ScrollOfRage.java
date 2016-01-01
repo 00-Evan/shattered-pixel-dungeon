@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class ScrollOfRage extends Scroll {
 
 	{
-		name = "Scroll of Rage";
 		initials = "Ra";
 	}
 	

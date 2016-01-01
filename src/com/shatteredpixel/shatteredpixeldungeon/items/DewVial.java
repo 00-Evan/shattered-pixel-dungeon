@@ -51,7 +51,6 @@ public class DewVial extends Item {
 	private static final String TXT_EMPTY		= "Your dew vial is empty!";
 
 	{
-		name = "dew vial";
 		image = ItemSpriteSheet.VIAL;
 
 		defaultAction = AC_DRINK;

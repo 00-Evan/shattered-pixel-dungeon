@@ -43,7 +43,6 @@ public class Honeypot extends Item {
 	public static final String AC_SHATTER	= "SHATTER";
 	
 	{
-		name = "honeypot";
 		image = ItemSpriteSheet.HONEYPOT;
 
 		defaultAction = AC_THROW;
@@ -156,7 +155,6 @@ public class Honeypot extends Item {
 	public static class ShatteredPot extends Item {
 
 		{
-			name = "shattered honeypot";
 			image = ItemSpriteSheet.SHATTPOT;
 			stackable = false;
 		}

@@ -21,10 +21,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 public class RingOfHaste extends Ring {
-
-	{
-		name = "Ring of Haste";
-	}
 	
 	@Override
 	protected RingBuff buff( ) {

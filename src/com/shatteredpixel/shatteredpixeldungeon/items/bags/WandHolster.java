@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class WandHolster extends Bag {
 
 	{
-		name = "wand holster";
 		image = ItemSpriteSheet.HOLSTER;
 		
 		size = 12;

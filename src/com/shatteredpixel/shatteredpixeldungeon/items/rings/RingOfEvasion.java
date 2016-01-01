@@ -25,10 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 
 public class RingOfEvasion extends Ring {
-
-	{
-		name = "Ring of Evasion";
-	}
 	
 	@Override
 	protected RingBuff buff( ) {

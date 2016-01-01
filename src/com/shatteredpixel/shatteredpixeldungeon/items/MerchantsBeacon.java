@@ -34,7 +34,6 @@ public class MerchantsBeacon extends Item {
 
 
 	{
-		name = "merchant's beacon";
 		image = ItemSpriteSheet.BEACON;
 
 		stackable = true;

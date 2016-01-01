@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 public class PotionOfLiquidFlame extends Potion {
 
 	{
-		name = "Potion of Liquid Flame";
 		initials = "LF";
 	}
 	

@@ -22,10 +22,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 public class RingOfSharpshooting extends Ring {
 
-	{
-		name = "Ring of Sharpshooting";
-	}
-
 	@Override
 	protected RingBuff buff( ) {
 		return new Aim();

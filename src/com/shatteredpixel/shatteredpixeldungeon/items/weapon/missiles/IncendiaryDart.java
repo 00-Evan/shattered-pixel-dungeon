@@ -37,7 +37,6 @@ import com.watabou.utils.Random;
 public class IncendiaryDart extends MissileWeapon {
 
 	{
-		name = "incendiary dart";
 		image = ItemSpriteSheet.INCENDIARY_DART;
 		
 		STR = 12;

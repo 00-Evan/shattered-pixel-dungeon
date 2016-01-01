@@ -35,7 +35,6 @@ public class ScrollOfRecharging extends Scroll {
 	public static final float BUFF_DURATION = 30f;
 
 	{
-		name = "Scroll of Recharging";
 		initials = "Re";
 	}
 	

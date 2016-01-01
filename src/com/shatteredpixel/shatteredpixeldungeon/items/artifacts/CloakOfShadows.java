@@ -40,7 +40,6 @@ import java.util.ArrayList;
 public class CloakOfShadows extends Artifact {
 
 	{
-		name = "Cloak of Shadows";
 		image = ItemSpriteSheet.ARTIFACT_CLOAK;
 
 		exp = 0;

@@ -22,10 +22,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 public class RingOfFuror extends Ring {
 
-	{
-		name = "Ring of Furor";
-	}
-
 	@Override
 	protected RingBuff buff( ) {
 		return new Furor();

@@ -53,7 +53,6 @@ import java.util.HashSet;
 public class WandOfPrismaticLight extends Wand {
 
 	{
-		name = "Wand of Prismatic Light";
 		image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT;
 
 		collisionProperties = Ballistica.MAGIC_BOLT;

@@ -21,10 +21,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 public class RingOfAccuracy extends Ring {
-
-	{
-		name = "Ring of Accuracy";
-	}
 	
 	@Override
 	protected RingBuff buff( ) {

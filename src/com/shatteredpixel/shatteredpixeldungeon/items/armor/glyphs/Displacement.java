@@ -32,8 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class Displacement extends Glyph {
-
-	private static final String TXT_DISPLACEMENT	= "%s of displacement";
 	
 	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing( 0x66AAFF );
 	
@@ -58,11 +56,6 @@ public class Displacement extends Glyph {
 		}
 		
 		return damage;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_DISPLACEMENT, weaponName );
 	}
 
 	@Override

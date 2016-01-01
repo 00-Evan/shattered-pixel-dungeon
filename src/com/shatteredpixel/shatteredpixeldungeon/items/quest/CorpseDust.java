@@ -40,7 +40,6 @@ import java.util.ArrayList;
 public class CorpseDust extends Item {
 	
 	{
-		name = "corpse dust";
 		image = ItemSpriteSheet.DUST;
 		
 		cursed = true;

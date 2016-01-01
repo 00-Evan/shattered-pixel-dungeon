@@ -50,7 +50,6 @@ public class TimekeepersHourglass extends Artifact {
 			"When time is frozen, you can move as if your actions take no time. Note that attacking will break this.";
 
 	{
-		name = "Timekeeper's Hourglass";
 		image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
 
 		levelCap = 5;
@@ -357,7 +356,6 @@ public class TimekeepersHourglass extends Artifact {
 	public static class sandBag extends Item {
 
 		{
-			name = "bag of magic sand";
 			image = ItemSpriteSheet.SANDBAG;
 		}
 

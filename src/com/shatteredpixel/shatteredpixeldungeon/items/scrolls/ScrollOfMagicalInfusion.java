@@ -35,7 +35,6 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 	private static final String TXT_INFUSE	= "your %s is infused with arcane energy!";
 	
 	{
-		name = "Scroll of Magical Infusion";
 		initials = "MaI";
 
 		inventoryTitle = "Select an item to infuse";

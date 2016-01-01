@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 public class Boomerang extends MissileWeapon {
 
 	{
-		name = "boomerang";
 		image = ItemSpriteSheet.BOOMERANG;
 		
 		STR = 10;

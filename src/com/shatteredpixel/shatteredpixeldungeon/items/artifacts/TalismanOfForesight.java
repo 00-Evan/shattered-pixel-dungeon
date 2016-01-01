@@ -39,7 +39,6 @@ import java.util.ArrayList;
 public class TalismanOfForesight extends Artifact {
 
 	{
-		name = "Talisman of Foresight";
 		image = ItemSpriteSheet.ARTIFACT_TALISMAN;
 
 		exp = 0;

@@ -42,7 +42,6 @@ public class MageArmor extends ClassArmor {
 	private static final String TXT_NOT_MAGE	= "Only mages can use this armor!";
 	
 	{
-		name = "mage robe";
 		image = ItemSpriteSheet.ARMOR_MAGE;
 	}
 	

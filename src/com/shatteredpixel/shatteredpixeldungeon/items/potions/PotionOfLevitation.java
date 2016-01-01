@@ -34,7 +34,6 @@ import com.watabou.noosa.audio.Sample;
 public class PotionOfLevitation extends Potion {
 
 	{
-		name = "Potion of Levitation";
 		initials = "Le";
 	}
 

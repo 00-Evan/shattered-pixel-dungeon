@@ -46,7 +46,6 @@ import java.util.Collections;
 public class UnstableSpellbook extends Artifact {
 
 	{
-		name = "Unstable Spellbook";
 		image = ItemSpriteSheet.ARTIFACT_SPELLBOOK;
 
 		levelCap = 10;

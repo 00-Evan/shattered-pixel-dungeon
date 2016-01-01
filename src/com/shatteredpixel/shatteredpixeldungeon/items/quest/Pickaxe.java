@@ -54,7 +54,6 @@ public class Pickaxe extends Weapon {
 	private static final Glowing BLOODY = new Glowing( 0x550000 );
 	
 	{
-		name = "pickaxe";
 		image = ItemSpriteSheet.PICKAXE;
 		
 		unique = true;

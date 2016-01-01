@@ -27,8 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 
 public class Luck extends Weapon.Enchantment {
 
-	private static final String TXT_LUCKY	= "lucky %s";
-	
 	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x00FF00 );
 	
 	@Override
@@ -46,11 +44,6 @@ public class Luck extends Weapon.Enchantment {
 		} else {
 			return false;
 		}
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_LUCKY, weaponName );
 	}
 
 	@Override

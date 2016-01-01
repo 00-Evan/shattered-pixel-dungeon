@@ -31,8 +31,6 @@ import com.watabou.utils.Random;
 
 public class Fire extends Weapon.Enchantment {
 
-	private static final String TXT_BLAZING	= "blazing %s";
-	
 	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
 	
 	@Override
@@ -64,10 +62,4 @@ public class Fire extends Weapon.Enchantment {
 	public Glowing glowing() {
 		return ORANGE;
 	}
-	
-	@Override
-	public String name( String weaponName ) {
-		return String.format( TXT_BLAZING, weaponName );
-	}
-
 }

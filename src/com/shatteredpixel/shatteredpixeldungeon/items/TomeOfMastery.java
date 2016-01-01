@@ -48,7 +48,6 @@ public class TomeOfMastery extends Item {
 	
 	{
 		stackable = false;
-		name = "Tome of Mastery";
 		image = ItemSpriteSheet.MASTERY;
 		
 		unique = true;

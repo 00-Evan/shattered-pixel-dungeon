@@ -35,8 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class AntiEntropy extends Glyph {
-
-	private static final String TXT_ANTI_ENTROPY	= "%s of anti-entropy";
 	
 	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing( 0x0000FF );
 	
@@ -56,11 +54,6 @@ public class AntiEntropy extends Glyph {
 		}
 		
 		return damage;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_ANTI_ENTROPY, weaponName );
 	}
 
 	@Override

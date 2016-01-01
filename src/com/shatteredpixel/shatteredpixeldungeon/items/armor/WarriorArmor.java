@@ -49,7 +49,6 @@ public class WarriorArmor extends ClassArmor {
 	private static final String TXT_NOT_WARRIOR	= "Only warriors can use this armor!";
 	
 	{
-		name = "warrior suit of armor";
 		image = ItemSpriteSheet.ARMOR_WARRIOR;
 	}
 	

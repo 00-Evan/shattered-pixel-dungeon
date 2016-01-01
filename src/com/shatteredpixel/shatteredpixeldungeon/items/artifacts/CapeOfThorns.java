@@ -31,7 +31,6 @@ import com.watabou.utils.Random;
 public class CapeOfThorns extends Artifact {
 
 	{
-		name = "Cape of Thorns";
 		image = ItemSpriteSheet.ARTIFACT_CAPE;
 
 		levelCap = 10;

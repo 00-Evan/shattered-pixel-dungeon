@@ -46,7 +46,6 @@ public class EtherealChains extends Artifact {
 	public static final String AC_CAST       = "CAST";
 
 	{
-		name = "ethereal chains";
 		image = ItemSpriteSheet.ARTIFACT_CHAINS;
 
 		levelCap = 5;

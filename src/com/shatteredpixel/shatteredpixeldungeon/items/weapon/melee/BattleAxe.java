@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class BattleAxe extends MeleeWeapon {
 
 	{
-		name = "battle axe";
 		image = ItemSpriteSheet.BATTLE_AXE;
 	}
 	

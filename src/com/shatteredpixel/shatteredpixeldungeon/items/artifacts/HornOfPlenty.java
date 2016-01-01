@@ -47,7 +47,6 @@ public class HornOfPlenty extends Artifact {
 
 
 	{
-		name = "Horn of Plenty";
 		image = ItemSpriteSheet.ARTIFACT_HORN1;
 
 		levelCap = 30;

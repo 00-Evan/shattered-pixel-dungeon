@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class ScrollOfTerror extends Scroll {
 
 	{
-		name = "Scroll of Terror";
 		initials = "Te";
 	}
 	

@@ -46,7 +46,6 @@ public class RogueArmor extends ClassArmor {
 	private static final String AC_SPECIAL = "SMOKE BOMB";
 	
 	{
-		name = "rogue garb";
 		image = ItemSpriteSheet.ARMOR_ROGUE;
 	}
 	

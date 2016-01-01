@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class DarkGold extends Item {
 	
 	{
-		name = "dark gold ore";
 		image = ItemSpriteSheet.ORE;
 		
 		stackable = true;

@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class SeedPouch extends Bag {
 
 	{
-		name = "seed pouch";
 		image = ItemSpriteSheet.POUCH;
 		
 		size = 12;

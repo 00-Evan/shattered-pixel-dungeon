@@ -34,7 +34,6 @@ public class PotionOfInvisibility extends Potion {
 	private static final float ALPHA	= 0.4f;
 	
 	{
-		name = "Potion of Invisibility";
 		initials = "In";
 	}
 	

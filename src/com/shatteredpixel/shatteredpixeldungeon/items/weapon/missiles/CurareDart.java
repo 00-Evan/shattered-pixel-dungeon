@@ -32,7 +32,6 @@ public class CurareDart extends MissileWeapon {
 	public static final float DURATION	= 3f;
 	
 	{
-		name = "curare dart";
 		image = ItemSpriteSheet.CURARE_DART;
 		
 		STR = 14;

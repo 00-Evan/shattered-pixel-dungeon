@@ -44,7 +44,6 @@ public class ArmorKit extends Item {
 	private static final String AC_APPLY = "APPLY";
 	
 	{
-		name = "armor kit";
 		image = ItemSpriteSheet.KIT;
 		
 		unique = true;

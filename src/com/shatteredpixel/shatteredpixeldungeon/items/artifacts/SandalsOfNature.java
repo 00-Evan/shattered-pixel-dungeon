@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -44,7 +45,6 @@ import java.util.Collections;
 public class SandalsOfNature extends Artifact {
 
 	{
-		name = "Sandals of Nature";
 		image = ItemSpriteSheet.ARTIFACT_SANDALS;
 
 		levelCap = 3;
@@ -53,9 +53,6 @@ public class SandalsOfNature extends Artifact {
 
 		defaultAction = AC_ROOT;
 	}
-
-	public static final String[] NAMES = {"Sandals of Nature", "Shoes of Nature",
-										"Boots of Nature", "Greaves of Nature"};
 
 	public static final String AC_FEED = "FEED";
 	public static final String AC_ROOT = "ROOT";
@@ -166,7 +163,7 @@ public class SandalsOfNature extends Artifact {
 			image = ItemSpriteSheet.ARTIFACT_BOOTS;
 		else if (level() >= 2)
 			image = ItemSpriteSheet.ARTIFACT_GREAVES;
-		name = NAMES[level()+1];
+		name = Messages.get(this, "name_" + level()+1);
 		return super.upgrade();
 	}
 
@@ -183,7 +180,7 @@ public class SandalsOfNature extends Artifact {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		name = NAMES[level()];
+		if (level() > 0) name = Messages.get(this, "name_" + level());
 		if (bundle.contains(SEEDS))
 			Collections.addAll(seeds , bundle.getStringArray(SEEDS));
 	}
@@ -216,7 +213,7 @@ public class SandalsOfNature extends Artifact {
 						seeds.clear();
 						upgrade();
 						if (level() >= 1 && level() <= 3) {
-							GLog.p("Your " + NAMES[level()-1] + " surge in size, they are now " + NAMES[level()] + "!");
+							GLog.p("Your footwear surges in size, they are now " + name + "!");
 						}
 
 					} else {

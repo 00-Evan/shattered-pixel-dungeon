@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Dagger extends MeleeWeapon {
 	
 	{
-		name = "dagger";
 		image = ItemSpriteSheet.DAGGER;
 	}
 	

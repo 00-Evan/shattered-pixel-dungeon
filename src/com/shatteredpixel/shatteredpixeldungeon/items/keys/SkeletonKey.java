@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class SkeletonKey extends Key {
 	
 	{
-		name = "skeleton key";
 		image = ItemSpriteSheet.SKELETON_KEY;
 		stackable = false;
 	}

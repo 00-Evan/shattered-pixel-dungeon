@@ -32,8 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class Stench extends Glyph {
-
-	private static final String TXT_STENCH	= "%s of stench";
 	
 	private static ItemSprite.Glowing GREEN = new ItemSprite.Glowing( 0x22CC44 );
 	
@@ -49,11 +47,6 @@ public class Stench extends Glyph {
 		}
 		
 		return damage;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_STENCH, weaponName );
 	}
 	
 	@Override

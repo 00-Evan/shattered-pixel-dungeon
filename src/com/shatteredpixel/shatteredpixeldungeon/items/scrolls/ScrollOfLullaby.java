@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class ScrollOfLullaby extends Scroll {
 
 	{
-		name = "Scroll of Lullaby";
 		initials = "Lu";
 	}
 	

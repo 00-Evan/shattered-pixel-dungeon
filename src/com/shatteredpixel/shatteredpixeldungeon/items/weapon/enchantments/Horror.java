@@ -32,8 +32,6 @@ import com.watabou.utils.Random;
 
 public class Horror extends Weapon.Enchantment {
 
-	private static final String TXT_ELDRITCH	= "eldritch %s";
-	
 	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x222222 );
 	
 	@Override
@@ -61,10 +59,4 @@ public class Horror extends Weapon.Enchantment {
 	public Glowing glowing() {
 		return GREY;
 	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_ELDRITCH, weaponName );
-	}
-
 }

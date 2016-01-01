@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class WarHammer extends MeleeWeapon {
 
 	{
-		name = "war hammer";
 		image = ItemSpriteSheet.WAR_HAMMER;
 	}
 	

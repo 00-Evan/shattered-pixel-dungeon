@@ -30,8 +30,6 @@ import com.watabou.utils.Random;
 
 public class Slow extends Weapon.Enchantment {
 
-	private static final String TXT_CHILLING = "chilling %s";
-	
 	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing( 0x0044FF );
 	
 	@Override
@@ -55,11 +53,6 @@ public class Slow extends Weapon.Enchantment {
 	@Override
 	public Glowing glowing() {
 		return BLUE;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_CHILLING, weaponName );
 	}
 
 }

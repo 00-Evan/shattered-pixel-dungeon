@@ -36,7 +36,6 @@ public class Torch extends Item {
 	public static final float TIME_TO_LIGHT = 1;
 	
 	{
-		name = "torch";
 		image = ItemSpriteSheet.TORCH;
 		
 		stackable = true;

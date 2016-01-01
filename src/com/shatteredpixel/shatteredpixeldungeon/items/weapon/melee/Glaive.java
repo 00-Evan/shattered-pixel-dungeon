@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Glaive extends MeleeWeapon {
 
 	{
-		name = "glaive";
 		image = ItemSpriteSheet.GLAIVE;
 	}
 	

@@ -47,7 +47,6 @@ public class PotionOfPurity extends Potion {
 	private static final int DISTANCE	= 5;
 	
 	{
-		name = "Potion of Purification";
 		initials = "Pu";
 	}
 	

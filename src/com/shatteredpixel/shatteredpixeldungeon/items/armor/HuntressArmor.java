@@ -42,7 +42,6 @@ public class HuntressArmor extends ClassArmor {
 	private static final String AC_SPECIAL = "SPECTRAL BLADES";
 	
 	{
-		name = "huntress cloak";
 		image = ItemSpriteSheet.ARMOR_HUNTRESS;
 	}
 	

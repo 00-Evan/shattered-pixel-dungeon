@@ -32,10 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.watabou.utils.Random;
 
 public class RingOfElements extends Ring {
-
-	{
-		name = "Ring of Elements";
-	}
 	
 	@Override
 	protected RingBuff buff( ) {

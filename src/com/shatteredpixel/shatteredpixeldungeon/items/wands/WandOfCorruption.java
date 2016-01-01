@@ -44,7 +44,6 @@ import java.util.HashSet;
 public class WandOfCorruption extends Wand {
 
 	{
-		name = "Wand of Corruption";
 		image = ItemSpriteSheet.WAND_CORRUPTION;
 	}
 

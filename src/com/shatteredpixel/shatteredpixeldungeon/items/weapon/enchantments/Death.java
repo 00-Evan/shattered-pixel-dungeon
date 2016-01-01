@@ -30,8 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class Death extends Weapon.Enchantment {
-
-	private static final String TXT_GRIM	= "grim %s";
 	
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 	
@@ -63,11 +61,6 @@ public class Death extends Weapon.Enchantment {
 	@Override
 	public Glowing glowing() {
 		return BLACK;
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_GRIM, weaponName );
 	}
 
 }

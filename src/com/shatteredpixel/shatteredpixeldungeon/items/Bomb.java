@@ -43,7 +43,6 @@ import java.util.ArrayList;
 public class Bomb extends Item {
 	
 	{
-		name = "bomb";
 		image = ItemSpriteSheet.BOMB;
 
 		defaultAction = AC_LIGHTTHROW;
@@ -258,7 +257,6 @@ public class Bomb extends Item {
 	public static class DoubleBomb extends Bomb{
 
 		{
-			name = "two bombs";
 			image = ItemSpriteSheet.DBL_BOMB;
 			stackable = false;
 		}

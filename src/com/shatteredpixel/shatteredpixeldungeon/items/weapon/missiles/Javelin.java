@@ -30,7 +30,6 @@ import com.watabou.utils.Random;
 public class Javelin extends MissileWeapon {
 
 	{
-		name = "javelin";
 		image = ItemSpriteSheet.JAVELIN;
 		
 		STR = 15;

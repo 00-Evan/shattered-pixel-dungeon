@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Mace extends MeleeWeapon {
 
 	{
-		name = "mace";
 		image = ItemSpriteSheet.MACE;
 	}
 	

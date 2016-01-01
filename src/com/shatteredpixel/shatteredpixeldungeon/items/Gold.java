@@ -44,7 +44,6 @@ public class Gold extends Item {
 	private static final String TXT_VALUE	= "%+d";
 	
 	{
-		name = "gold";
 		image = ItemSpriteSheet.GOLD;
 		stackable = true;
 	}

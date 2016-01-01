@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class PotionBandolier extends Bag {
 
 	{
-		name = "potion bandolier";
 		image = ItemSpriteSheet.BANDOLIER;
 
 		size = 12;

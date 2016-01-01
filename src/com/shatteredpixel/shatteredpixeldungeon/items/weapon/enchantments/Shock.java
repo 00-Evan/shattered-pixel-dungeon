@@ -34,8 +34,6 @@ import com.watabou.utils.Random;
 
 public class Shock extends Weapon.Enchantment {
 
-	private static final String TXT_SHOCKING	= "shocking %s";
-	
 	@Override
 	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		// lvl 0 - 25%
@@ -61,11 +59,6 @@ public class Shock extends Weapon.Enchantment {
 			return false;
 			
 		}
-	}
-	
-	@Override
-	public String name( String weaponName ) {
-		return String.format( TXT_SHOCKING, weaponName );
 	}
 
 	private ArrayList<Char> affected = new ArrayList<>();

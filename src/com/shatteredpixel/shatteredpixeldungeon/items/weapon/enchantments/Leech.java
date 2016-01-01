@@ -30,8 +30,6 @@ import com.watabou.utils.Random;
 
 public class Leech extends Weapon.Enchantment {
 
-	private static final String TXT_VAMPIRIC	= "vampiric %s";
-	
 	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0x660022 );
 	
 	@Override
@@ -62,10 +60,4 @@ public class Leech extends Weapon.Enchantment {
 	public Glowing glowing() {
 		return RED;
 	}
-	
-	@Override
-	public String name( String weaponName ) {
-		return String.format( TXT_VAMPIRIC, weaponName );
-	}
-
 }

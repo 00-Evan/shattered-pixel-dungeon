@@ -49,7 +49,6 @@ public class ChaliceOfBlood extends Artifact {
 
 
 	{
-		name = "Chalice of Blood";
 		image = ItemSpriteSheet.ARTIFACT_CHALICE1;
 
 		levelCap = 10;

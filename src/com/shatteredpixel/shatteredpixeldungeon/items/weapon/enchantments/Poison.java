@@ -29,8 +29,6 @@ import com.watabou.utils.Random;
 
 public class Poison extends Weapon.Enchantment {
 
-	private static final String TXT_VENOMOUS	= "venomous %s";
-	
 	private static ItemSprite.Glowing PURPLE = new ItemSprite.Glowing( 0x4400AA );
 	
 	@Override
@@ -55,10 +53,4 @@ public class Poison extends Weapon.Enchantment {
 	public Glowing glowing() {
 		return PURPLE;
 	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_VENOMOUS, weaponName );
-	}
-
 }

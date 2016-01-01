@@ -83,7 +83,6 @@ public class LloydsBeacon extends Artifact {
 	private int returnPos;
 	
 	{
-		name = "lloyd's beacon";
 		image = ItemSpriteSheet.ARTIFACT_BEACON;
 
 		levelCap = 3;

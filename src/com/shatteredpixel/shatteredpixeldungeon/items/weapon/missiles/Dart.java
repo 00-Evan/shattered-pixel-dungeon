@@ -27,7 +27,6 @@ import com.watabou.utils.Random;
 public class Dart extends MissileWeapon {
 
 	{
-		name = "dart";
 		image = ItemSpriteSheet.DART;
 
 		bones = false; //Finding them in bones would be semi-frequent and disappointing.

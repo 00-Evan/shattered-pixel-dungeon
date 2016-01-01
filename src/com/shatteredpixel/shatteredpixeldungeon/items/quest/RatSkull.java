@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class RatSkull extends Item {
 	
 	{
-		name = "giant rat skull";
 		image = ItemSpriteSheet.SKULL;
 		
 		unique = true;
