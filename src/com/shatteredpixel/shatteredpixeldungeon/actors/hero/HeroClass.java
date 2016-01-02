@@ -25,6 +25,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -87,6 +91,11 @@ public enum HeroClass {
 
 		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
 			new Food().identify().collect();
+
+		new SeedPouch().collect();
+		new WandHolster().collect();
+		new PotionBandolier().collect();
+		new ScrollHolder().collect();
 	}
 
 	public Badges.Badge masteryBadge() {

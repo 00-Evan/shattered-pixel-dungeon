@@ -41,11 +41,5 @@ public class ScrollHolder extends Bag {
 	public int price() {
 		return 50;
 	}
-	
-	@Override
-	public String info() {
-		return
-			"This tubular container looks like it would hold an astronomer's charts, but your scrolls will fit just as well.\n\n" +
-			"The holder doesn't look very flammable, so your scrolls should be safe from fire inside it.";
-	}
+
 }

@@ -42,10 +42,4 @@ public class PotionBandolier extends Bag {
 		return 50;
 	}
 
-	@Override
-	public String info() {
-		return
-			"This thick bandolier fits around your chest like a sash, it has many small vials to hold your potions.\n\n" +
-			"The vials are made of tempered glass, and should be quite resistant to the cold.";
-	}
 }
