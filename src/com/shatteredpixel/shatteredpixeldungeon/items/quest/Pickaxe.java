@@ -49,8 +49,6 @@ public class Pickaxe extends Weapon {
 	
 	public static final float TIME_TO_MINE = 2;
 	
-	private static final String TXT_NO_VEIN = "There is no dark gold vein near you to mine";
-	
 	private static final Glowing BLOODY = new Glowing( 0x550000 );
 	
 	{
@@ -88,7 +86,7 @@ public class Pickaxe extends Weapon {
 		if (action == AC_MINE) {
 			
 			if (Dungeon.depth < 11 || Dungeon.depth > 15) {
-				GLog.w( TXT_NO_VEIN );
+				GLog.w( Messages.get(this, "no_vein") );
 				return;
 			}
 			
@@ -132,7 +130,7 @@ public class Pickaxe extends Weapon {
 				}
 			}
 			
-			GLog.w( TXT_NO_VEIN );
+			GLog.w( Messages.get(this, "no_vein") );
 			
 		} else {
 			
@@ -179,10 +177,5 @@ public class Pickaxe extends Weapon {
 	public Glowing glowing() {
 		return bloodStained ? BLOODY : null;
 	}
-	
-	@Override
-	public String info() {
-		return
-			"This is a large and sturdy tool for breaking rocks. Probably it can be used as a weapon.";
-	}
+
 }

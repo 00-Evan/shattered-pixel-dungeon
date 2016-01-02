@@ -44,12 +44,6 @@ public class RatSkull extends Item {
 	}
 	
 	@Override
-	public String info() {
-		return
-			"A surprisingly large rat skull. It would make a great hunting trophy, if you had a wall to mount it on.";
-	}
-	
-	@Override
 	public int price() {
 		return 100;
 	}

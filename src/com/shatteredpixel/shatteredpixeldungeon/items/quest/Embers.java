@@ -43,12 +43,6 @@ public class Embers extends Item {
 	}
 
 	@Override
-	public String info() {
-		return
-				"Special embers which can only be harvested from young fire elementals. They radiate thermal energy.";
-	}
-
-	@Override
 	public ItemSprite.Glowing glowing() {
 		return new ItemSprite.Glowing(0x660000, 3f);
 	}

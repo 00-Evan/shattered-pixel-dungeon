@@ -81,14 +81,6 @@ public class CorpseDust extends Item {
 		}
 	}
 
-	@Override
-	public String info() {
-		return
-			"The ball of corpse dust doesn't differ outwardly from a regular dust ball. But you " +
-			"can feel a malevolent energy lurking within it.\n\n" +
-			"Getting rid of it as soon as possible would be a good idea.";
-	}
-
 	public static class DustGhostSpawner extends Buff {
 
 		int spawnPower = 0;
