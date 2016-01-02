@@ -27,15 +27,6 @@ public class RingOfTenacity extends Ring {
 		return new Tenacity();
 	}
 
-	@Override
-	public String desc() {
-		return isKnown() ?
-				"When worn, this ring will allow the wearer to resist normally mortal strikes. " +
-				"The more injured the user is, the more resistant they will be to damage. " +
-				"A degraded ring will instead make it easier for enemies to execute the wearer." :
-				super.desc();
-	}
-
 	public class Tenacity extends RingBuff {
 	}
 }

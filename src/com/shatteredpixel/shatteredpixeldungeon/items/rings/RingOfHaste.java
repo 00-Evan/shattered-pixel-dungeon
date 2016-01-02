@@ -27,14 +27,6 @@ public class RingOfHaste extends Ring {
 		return new Haste();
 	}
 	
-	@Override
-	public String desc() {
-		return isKnown() ?
-			"This ring reduces the stress of movement on the wearer, allowing them to run " +
-			"at superhuman speeds. A degraded ring will instead weigh the wearer down.":
-			super.desc();
-	}
-	
 	public class Haste extends RingBuff {
 	}
 }

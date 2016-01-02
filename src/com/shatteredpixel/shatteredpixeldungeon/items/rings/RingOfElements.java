@@ -37,14 +37,6 @@ public class RingOfElements extends Ring {
 	protected RingBuff buff( ) {
 		return new Resistance();
 	}
-	
-	@Override
-	public String desc() {
-		return isKnown() ?
-			"This ring provides resistance to different elements, such as fire, " +
-			"electricity, gases etc. Also it decreases duration of negative effects." :
-			super.desc();
-	}
 
 	private static final HashSet<Class<?>> EMPTY = new HashSet<Class<?>>();
 	private static final HashSet<Class<?>> FULL;
