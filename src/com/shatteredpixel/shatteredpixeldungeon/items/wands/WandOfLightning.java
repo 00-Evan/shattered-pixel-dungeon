@@ -26,6 +26,7 @@ import java.util.HashSet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shock;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Camera;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -73,7 +74,7 @@ public class WandOfLightning extends Wand {
 
 		if (!curUser.isAlive()) {
 			Dungeon.fail( Utils.format( ResultDescriptions.ITEM, name ) );
-			GLog.n( "You killed yourself with your own Wand of Lightning..." );
+			GLog.n(Messages.get(this, "ondeath"));
 		}
 	}
 
@@ -147,14 +148,5 @@ public class WandOfLightning extends Wand {
 		particle.x -= dst;
 		particle.y += dst;
 	}
-
-	@Override
-	public String desc() {
-		return
-			"This wand is made out of solid metal, making it surprisingly heavy. " +
-			"Two prongs curve together at the top, and electricity arcs between them.\n\n" +
-			"This wand sends powerful lightning arcing through whatever it is shot at. " +
-			"This electricity can bounce between many adjacent foes, and is more powerful in water. " +
-			"If you're too close, you may get shocked as well.";
-	}
+	
 }

@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -181,7 +182,7 @@ public class WandOfTransfusion extends Wand {
 
 		if (!curUser.isAlive()){
 			Dungeon.fail( Utils.format(ResultDescriptions.ITEM, name) );
-			GLog.n("You killed yourself with your own Wand of Transfusion...");
+			GLog.n( Messages.get(this, "ondeath") );
 		}
 	}
 
@@ -198,7 +199,7 @@ public class WandOfTransfusion extends Wand {
 		if (Random.Int( level() + 10 ) >= 9){
 			//grants a free use of the staff
 			freeCharge = true;
-			GLog.p("Your staff is charged with the life energy of your enemy!");
+			GLog.p( Messages.get(this, "charged") );
 			attacker.sprite.emitter().burst(BloodParticle.BURST, 20);
 		}
 	}
@@ -236,11 +237,6 @@ public class WandOfTransfusion extends Wand {
 
 	@Override
 	public String desc() {
-		return "A fairly plainly shaped wand, it stands out due to its magenta hue and pitch black gem at the tip.\n" +
-				"\n" +
-				"This wand will take some of your life energy and blast it at a target. This effect is very versatile: " +
-				"allies will be healed, enemies will be temporarily charmed, and hostile undead will take considerable damage. " +
-				"The life force effect can also be potent at dispelling curses as well. " +
-				"The life energy drain is significant though, using this wand will deal damage to you in addition to consuming charges.";
+		return "";
 	}
 }

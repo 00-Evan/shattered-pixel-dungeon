@@ -62,10 +62,5 @@ public class WandOfMagicMissile extends Wand {
 	protected int initialCharges() {
 		return 3;
 	}
-	
-	@Override
-	public String desc() {
-		return
-			"This wand launches missiles of pure magical energy, dealing moderate damage to a target creature.";
-	}
+
 }

@@ -118,12 +118,4 @@ public class WandOfFrost extends Wand {
 		particle.radiateXY(Random.Float(2f));
 	}
 
-	@Override
-	public String desc() {
-		return "This wand seems to be made out of some kind of magical ice. It grows brighter towards its " +
-				"rounded tip. It feels very cold when held, but somehow your hand stays warm.\n\n" +
-				"This wand shoots blasts of icy energy toward your foes, dealing significant damage and chilling, " +
-				"which reduces speed. The effect seems stronger in water. Chilled and frozen enemies " +
-				"take less damage from this wand, as they are already cold.";
-	}
 }

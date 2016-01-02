@@ -62,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
@@ -250,7 +251,7 @@ public class CursedWand {
 									Sample.INSTANCE.play(Assets.SND_CURSED);
 									if (!user.isAlive()) {
 										Dungeon.fail(Utils.format(ResultDescriptions.ITEM, wand.name()));
-										GLog.n("You were killed by your own " + wand.name());
+										GLog.n(Messages.get(CursedWand.class, "ondeath", wand.name()));
 									}
 									break;
 							}
@@ -258,7 +259,7 @@ public class CursedWand {
 						}
 					});
 				} else {
-					GLog.i("nothing happens");
+					GLog.i(Messages.get(CursedWand.class, "nothing"));
 					wand.wandUsed();
 				}
 				break;
@@ -307,7 +308,7 @@ public class CursedWand {
 							GameScene.add(sheep);
 							CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
 						} else {
-							GLog.i("nothing happens");
+							GLog.i(Messages.get(CursedWand.class, "nothing"));
 						}
 						wand.wandUsed();
 					}
@@ -325,7 +326,7 @@ public class CursedWand {
 				if (misc1 != null)  misc1.cursed = misc1.cursedKnown = true;
 				if (misc2 != null)  misc2.cursed = misc2.cursedKnown = true;
 				EquipableItem.equipCursed(user);
-				GLog.n("Your worn equipment becomes cursed!");
+				GLog.n( Messages.get(CursedWand.class, "cursed") );
 				wand.wandUsed();
 				break;
 
@@ -383,8 +384,8 @@ public class CursedWand {
 				} while (Random.Int(5) != 0);
 				new Flare(8, 32).color(0xFFFF66, true).show(user.sprite, 2f);
 				Sample.INSTANCE.play(Assets.SND_TELEPORT);
-				GLog.p("grass explodes around you!");
-				GLog.w("you smell burning...");
+				GLog.p(Messages.get(CursedWand.class, "grass"));
+				GLog.w(Messages.get(CursedWand.class, "fire"));
 				wand.wandUsed();
 				break;
 
@@ -413,17 +414,23 @@ public class CursedWand {
 			case 2:
 				try {
 					Dungeon.saveAll();
-					GameScene.show(
-							new WndOptions("CURSED WAND ERROR", "this application will now self-destruct", "abort", "retry", "fail") {
-								@Override
-								public void hide() {
-									throw new RuntimeException("critical wand exception");
+					if(!Messages.get(CursedWand.class, "nothing").equals("nothing happens")){
+						//Don't bother doing this joke to none-english speakers, I doubt it would translate.
+						GLog.i(Messages.get(CursedWand.class, "nothing"));
+						wand.wandUsed();
+					} else {
+						GameScene.show(
+								new WndOptions("CURSED WAND ERROR", "this application will now self-destruct", "abort", "retry", "fail") {
+									@Override
+									public void hide() {
+										throw new RuntimeException("critical wand exception");
+									}
 								}
-							}
-					);
+						);
+					}
 				} catch(IOException e){
 					//oookay maybe don't kill the game if the save failed.
-					GLog.i("nothing happens");
+					GLog.i(Messages.get(CursedWand.class, "nothing"));
 					wand.wandUsed();
 				}
 				break;
@@ -439,7 +446,7 @@ public class CursedWand {
 				} while (result.level() < 0 && !(result instanceof MissileWeapon));
 				if (result.isUpgradable()) result.upgrade();
 				result.cursed = result.cursedKnown = true;
-				GLog.w("your wand transmogrifies into a different item!");
+				GLog.w( Messages.get(CursedWand.class, "transmogrify") );
 				Dungeon.level.drop(result, user.pos).sprite.drop();
 				wand.wandUsed();
 				break;

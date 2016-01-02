@@ -81,7 +81,7 @@ public class WandOfRegrowth extends Wand {
 		float numPlants, numDews, numPods, numStars;
 
 		int chrgUsed = chargesPerCast();
-		//numbers greater than n*100% means n garunteed plants, e.g. 210% = 2 plants w/10% chance for 3 plants.
+		//numbers greater than n*100% means n guaranteed plants, e.g. 210% = 2 plants w/10% chance for 3 plants.
 		numPlants = 0.2f + chrgUsed*chrgUsed*0.020f; //scales from 22% to 220%
 		numDews = 0.05f + chrgUsed*chrgUsed*0.016f; //scales from 6.6% to 165%
 		numPods = 0.02f + chrgUsed*chrgUsed*0.013f; //scales from 3.3% to 135%
@@ -241,19 +241,6 @@ public class WandOfRegrowth extends Wand {
 		particle.x -= dst;
 		particle.y += dst;
 	}
-
-	@Override
-	public String desc() {
-		return
-				"This wand is made from a thin shaft of expertly carved wood. " +
-				"Somehow it is still alive and vibrant, bright green like a young tree's core.\n" +
-				"\n" +
-				"When used, this wand will consume all its charges to blast magical regrowth energy outward " +
-				"in a cone. This magic will cause grass, roots, and rare plants to spring to life.\n" +
-				"\n" +
-				"\"When life ceases new life always begins to grow... The eternal cycle always remains!\"";
-	}
-
 
 	public static class Dewcatcher extends Plant{
 

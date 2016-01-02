@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -54,12 +55,12 @@ public class WandOfCorruption extends Wand {
 		if (ch != null){
 
 			if(ch.buff(Corruption.class) != null){
-				GLog.w("that character is already corrupted");
+				GLog.w( Messages.get(this, "already_corrupted") );
 				return;
 			}
 
 			if (ch.properties().contains(Char.Property.BOSS) || ch.properties().contains(Char.Property.MINIBOSS)){
-				GLog.w("Bosses are immune to corruption");
+				GLog.w( Messages.get(this, "boss") );
 				return;
 			}
 
@@ -82,7 +83,7 @@ public class WandOfCorruption extends Wand {
 			//if we fail, lose all charges, remember we have 1 left to lose from using the wand.
 			if (extraCharges >= curCharges){
 				curCharges = 1;
-				GLog.w("The corrupting power was not strong enough, nothing happens.");
+				GLog.w( Messages.get(this, "fail") );
 				return;
 			}
 
@@ -122,14 +123,4 @@ public class WandOfCorruption extends Wand {
 		particle.shuffleXY(2f);
 	}
 
-	@Override
-	public String desc() {
-		return "This wand radiates dark energy, if that weren't already obvious from the small decorative skull shaped onto its tip.\n" +
-				"\n" +
-				"This wand will release a blast of corrupting energy, attempting to bend enemies to your will. " +
-				"Full health enemies are dramatically harder to corrupt than weakened and debuffed ones. " +
-				"Successfully corrupting an enemy restores them to full health.\n" +
-				"\n" +
-				"This wand uses at least one charge per cast, but will often use more in an attempt to overpower more healthy enemies.";
-	}
 }

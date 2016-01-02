@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -100,7 +101,7 @@ public class WandOfBlastWave extends Wand {
 
 		if (!curUser.isAlive()) {
 			Dungeon.fail( Utils.format(ResultDescriptions.ITEM, name) );
-			GLog.n("You killed yourself with your own Wand of Blast Wave...");
+			GLog.n( Messages.get( this, "ondeath") );
 		}
 	}
 
@@ -211,14 +212,5 @@ public class WandOfBlastWave extends Wand {
 			b.reset(pos);
 		}
 
-	}
-
-	@Override
-	public String desc() {
-		return "This wand is made of a sort of marbled stone, with gold trim and a round black gem at the tip. " +
-				"It feels very weighty in your hand.\n" +
-				"\n" +
-				"This wand shoots a bolt which violently detonates at a target location. There is no smoke and fire, " +
-				"but the force of this blast is enough to knock even the biggest of foes around.";
 	}
 }

@@ -147,13 +147,4 @@ public class WandOfPrismaticLight extends Wand {
 		particle.radiateXY(1f);
 	}
 
-	@Override
-	public String desc() {
-		return
-			"This wand is made of a solid piece of translucent crystal, like a long chunk of smooth glass. " +
-			"It becomes clear towards the tip, where you can see colorful lights dancing around inside it.\n\n" +
-			"This wand shoots rays of light which damage and blind enemies and cut through the darkness of the dungeon, " +
-			"revealing hidden areas and traps. Demonic and undead foes will burn in the bright light " +
-			"of the wand, taking significant bonus damage.";
-	}
 }
