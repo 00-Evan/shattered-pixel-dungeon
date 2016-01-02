@@ -43,10 +43,5 @@ public class SkeletonKey extends Key {
 	public boolean isSimilar( Item item ) {
 		return false;
 	}
-	
-	@Override
-	public String info() {
-		return
-			"This key looks serious: its head is shaped like a skull. Probably it can open some serious door.";
-	}
+
 }

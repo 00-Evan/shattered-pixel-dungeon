@@ -36,11 +36,5 @@ public class GoldenKey extends Key {
 		super();
 		this.depth = depth;
 	}
-	
-	@Override
-	public String info() {
-		return
-			"The notches on this golden key are tiny and intricate. " +
-			"Maybe it can open some chest lock?";
-	}
+
 }
