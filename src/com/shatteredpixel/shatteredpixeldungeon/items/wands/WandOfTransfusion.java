@@ -235,8 +235,4 @@ public class WandOfTransfusion extends Wand {
 		bundle.put( FREECHARGE, freeCharge );
 	}
 
-	@Override
-	public String desc() {
-		return "";
-	}
 }
