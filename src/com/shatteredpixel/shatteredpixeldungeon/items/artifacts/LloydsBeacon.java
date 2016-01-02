@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
@@ -238,7 +239,7 @@ public class LloydsBeacon extends Artifact {
 
 								if (pos == -1 || Dungeon.bossLevel()) {
 
-									GLog.w(ScrollOfTeleportation.TXT_NO_TELEPORT);
+									GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 
 								} else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
 

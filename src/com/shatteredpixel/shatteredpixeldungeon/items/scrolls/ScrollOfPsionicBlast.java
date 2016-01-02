@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
@@ -38,8 +39,6 @@ import com.watabou.utils.Random;
 public class ScrollOfPsionicBlast extends Scroll {
 
 	{
-		initials = "PB";
-
 		bones = true;
 	}
 	
@@ -68,16 +67,8 @@ public class ScrollOfPsionicBlast extends Scroll {
 
 		if (!curUser.isAlive()) {
 			Dungeon.fail( Utils.format(ResultDescriptions.ITEM, name ));
-			GLog.n("The Psionic Blast tears your mind apart...");
+			GLog.n( Messages.get(this, "ondeath") );
 		}
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"This scroll contains destructive energy that can be psionically channeled to tear apart " +
-			"the minds of all visible creatures. The power unleashed by the scroll will also temporarily " +
-			"blind, stun, and seriously harm the reader.";
 	}
 	
 	@Override

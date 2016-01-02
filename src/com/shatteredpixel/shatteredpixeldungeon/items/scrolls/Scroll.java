@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -35,17 +36,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public abstract class Scroll extends Item {
-
-	private static final String TXT_BLINDED	= "You can't read a scroll while blinded";
-
-	private static final String TXT_CURSED	= "Your cursed spellbook prevents you from invoking this scroll's magic! " +
-											  "A scroll of remove curse might be strong enough to still work though...";
 	
 	public static final String AC_READ	= "READ";
 	
 	protected static final float TIME_TO_READ	= 1f;
 
-	protected String initials;
+	protected String initials = Messages.get(this, "initials");
 
 	private static final Class<?>[] scrolls = {
 		ScrollOfIdentify.class,
@@ -90,7 +86,7 @@ public abstract class Scroll extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void initLabels() {
-		handler = new ItemStatusHandler<Scroll>( (Class<? extends Scroll>[])scrolls, runes, images );
+		handler = new ItemStatusHandler<>( (Class<? extends Scroll>[])scrolls, runes, images );
 	}
 	
 	public static void save( Bundle bundle ) {
@@ -99,7 +95,7 @@ public abstract class Scroll extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<Scroll>( (Class<? extends Scroll>[])scrolls, runes, images, bundle );
+		handler = new ItemStatusHandler<>( (Class<? extends Scroll>[])scrolls, runes, images, bundle );
 	}
 	
 	public Scroll() {
@@ -125,11 +121,11 @@ public abstract class Scroll extends Item {
 		if (action.equals( AC_READ )) {
 			
 			if (hero.buff( Blindness.class ) != null) {
-				GLog.w( TXT_BLINDED );
+				GLog.w( Messages.get(this, "blinded") );
 			} else if (hero.buff(UnstableSpellbook.bookRecharge.class) != null
 					&& hero.buff(UnstableSpellbook.bookRecharge.class).isCursed()
 					&& !(this instanceof ScrollOfRemoveCurse)) {
-				GLog.n( TXT_CURSED );
+				GLog.n( Messages.get(this, "cursed") );
 			} else {
 				curUser = hero;
 				curItem = detach( hero.belongings.backpack );
@@ -168,18 +164,21 @@ public abstract class Scroll extends Item {
 		setKnown();
 		return super.identify();
 	}
+
+	public String rune() {
+		return Messages.get(Scroll.class, rune);
+	}
 	
 	@Override
 	public String name() {
-		return isKnown() ? name : "scroll \"" + rune + "\"";
+		return isKnown() ? name : Messages.get(this, "unknown_name", rune());
 	}
 	
 	@Override
 	public String info() {
 		return isKnown() ?
 			desc() :
-			"This parchment is covered with indecipherable writing, and bears a title " +
-			"of rune " + rune + ". Who knows what it will do when read aloud?";
+			Messages.get(this, "unknown_desc", rune());
 	}
 
 	public String initials(){

@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -32,10 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class ScrollOfTerror extends Scroll {
-
-	{
-		initials = "Te";
-	}
 	
 	@Override
 	protected void doRead() {
@@ -59,26 +56,19 @@ public class ScrollOfTerror extends Scroll {
 		
 		switch (count) {
 		case 0:
-			GLog.i( "The scroll emits a brilliant flash of red light" );
+			GLog.i( Messages.get(this, "none") );
 			break;
 		case 1:
-			GLog.i( "The scroll emits a brilliant flash of red light and the " + affected.name + " flees!" );
+			GLog.i( Messages.get(this, "one", affected.name) );
 			break;
 		default:
-			GLog.i( "The scroll emits a brilliant flash of red light and the monsters flee!" );
+			GLog.i( Messages.get(this, "many") );
 		}
 		setKnown();
 
 		readAnimation();
 	}
-	
-	@Override
-	public String desc() {
-		return
-			"A flash of red light will overwhelm all creatures in your field of view with terror, " +
-			"and they will turn and flee. Attacking a fleeing enemy will dispel the effect.";
-	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 50 * quantity : super.price();

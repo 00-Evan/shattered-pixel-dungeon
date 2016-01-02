@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -31,16 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.tweeners.AlphaTweener;
 
 public class ScrollOfTeleportation extends Scroll {
-
-	public static final String TXT_TELEPORTED =
-		"In a blink of an eye you were teleported to another location of the level.";
-	
-	public static final String TXT_NO_TELEPORT =
-		"Strong magic aura of this place prevents you from teleporting!";
-	
-	{
-		initials = "TP";
-	}
 	
 	@Override
 	protected void doRead() {
@@ -67,7 +58,7 @@ public class ScrollOfTeleportation extends Scroll {
 		
 		if (pos == -1 || Dungeon.bossLevel()) {
 			
-			GLog.w( TXT_NO_TELEPORT );
+			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			
 		} else {
 
@@ -75,7 +66,7 @@ public class ScrollOfTeleportation extends Scroll {
 			Dungeon.level.press( pos, hero );
 			Dungeon.observe();
 			
-			GLog.i( TXT_TELEPORTED );
+			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 			
 		}
 	}
@@ -94,15 +85,6 @@ public class ScrollOfTeleportation extends Scroll {
 
 		ch.sprite.emitter().start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
 		Sample.INSTANCE.play( Assets.SND_TELEPORT );
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"The spell on this parchment instantly transports the reader " +
-			"to a random location on the dungeon level. It can be used " +
-			"to escape a dangerous situation, but the unlucky reader might " +
-			"find himself in an even more dangerous place.";
 	}
 	
 	@Override

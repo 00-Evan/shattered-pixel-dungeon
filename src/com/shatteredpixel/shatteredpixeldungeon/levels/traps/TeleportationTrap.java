@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -65,7 +65,7 @@ public class TeleportationTrap extends Trap {
 
 			if (pos == -1 || Dungeon.bossLevel()) {
 
-				GLog.w(ScrollOfTeleportation.TXT_NO_TELEPORT);
+				GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 
 			} else {
 

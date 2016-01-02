@@ -188,7 +188,7 @@ public class Blacksmith extends NPC {
 			((EquipableItem)first).doUnequip( Dungeon.hero, true );
 		}
 		first.upgrade();
-		GLog.p( ScrollOfUpgrade.TXT_LOOKS_BETTER, first.name() );
+		GLog.p( Messages.get(ScrollOfUpgrade.class, "look_better", first.name()) );
 		Dungeon.hero.spendAndNext( 2f );
 		Badges.validateItemLevelAquired( first );
 		

@@ -25,17 +25,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ScrollOfUpgrade extends InventoryScroll {
-
-	public static final String TXT_LOOKS_BETTER	= "your %s certainly looks better now";
 	
 	{
-		initials = "Up";
-
-		inventoryTitle = "Select an item to upgrade";
 		mode = WndBag.Mode.UPGRADEABLE;
 
 		bones = true;
@@ -48,7 +44,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 		item.upgrade();
 
 		upgrade( curUser );
-		GLog.p( TXT_LOOKS_BETTER, item.name() );
+		GLog.p( Messages.get(this, "look_better", item.name()) );
 		
 		Badges.validateItemLevelAquired( item );
 	}
@@ -56,14 +52,5 @@ public class ScrollOfUpgrade extends InventoryScroll {
 	public static void upgrade( Hero hero ) {
 		hero.sprite.emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
 	}
-	
-	@Override
-	public String desc() {
-		return
-			"This scroll will upgrade a single item, improving its quality. A wand will " +
-			"increase in power and in number of charges; a weapon will inflict more damage " +
-			"or find its mark more frequently; a suit of armor will deflect additional blows; " +
-			"the effect of a ring on its wearer will intensify. Weapons and armor will also " +
-			"require less strength to use, and any curses on the item will be lifted.";
-	}
+
 }

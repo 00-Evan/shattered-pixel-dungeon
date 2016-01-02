@@ -35,10 +35,6 @@ public class ScrollOfMirrorImage extends Scroll {
 
 	private static final int NIMAGES	= 3;
 	
-	{
-		initials = "MI";
-	}
-	
 	@Override
 	protected void doRead() {
 		
@@ -73,10 +69,5 @@ public class ScrollOfMirrorImage extends Scroll {
 
 		readAnimation();
 	}
-	
-	@Override
-	public String desc() {
-		return
-			"The incantation on this scroll will create illusionary twins of the reader, which will chase his enemies.";
-	}
+
 }

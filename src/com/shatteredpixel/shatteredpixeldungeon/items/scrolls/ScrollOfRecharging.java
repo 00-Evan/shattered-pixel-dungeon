@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -33,10 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class ScrollOfRecharging extends Scroll {
 
 	public static final float BUFF_DURATION = 30f;
-
-	{
-		initials = "Re";
-	}
 	
 	@Override
 	protected void doRead() {
@@ -47,18 +44,11 @@ public class ScrollOfRecharging extends Scroll {
 		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();
 
-		GLog.i( "a surge of energy courses through your body, invigorating your wands.");
+		GLog.i( Messages.get(this, "surge") );
 		SpellSprite.show( curUser, SpellSprite.CHARGE );
 		setKnown();
 
 		readAnimation();
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"The raw magical power bound up in this parchment will, when released, " +
-			"charge up all the users wands over time.";
 	}
 	
 	public static void charge( Hero hero ) {

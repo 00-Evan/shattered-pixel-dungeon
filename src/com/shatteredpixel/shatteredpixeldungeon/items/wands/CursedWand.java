@@ -167,7 +167,7 @@ public class CursedWand {
 										}
 									} while (pos == -1);
 									if (pos == -1 || Dungeon.bossLevel()) {
-										GLog.w(ScrollOfTeleportation.TXT_NO_TELEPORT);
+										GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 									} else {
 										ch.pos = pos;
 										ch.sprite.place(ch.pos);

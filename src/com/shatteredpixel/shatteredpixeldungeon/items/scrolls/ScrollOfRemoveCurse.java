@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -32,15 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class ScrollOfRemoveCurse extends Scroll {
-
-	private static final String TXT_PROCCED	=
-		"Your pack glows with a cleansing light, and a malevolent energy disperses.";
-	private static final String TXT_NOT_PROCCED	=
-		"Your pack glows with a cleansing light, but nothing happens.";
-	
-	{
-		initials = "RC";
-	}
 	
 	@Override
 	protected void doRead() {
@@ -59,22 +51,14 @@ public class ScrollOfRemoveCurse extends Scroll {
 		Weakness.detach( curUser, Weakness.class );
 		
 		if (procced) {
-			GLog.p( TXT_PROCCED );
+			GLog.p( Messages.get(this, "cleansed") );
 		} else {
-			GLog.i( TXT_NOT_PROCCED );
+			GLog.i( Messages.get(this, "not_cleansed") );
 		}
 		
 		setKnown();
 
 		readAnimation();
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"The incantation on this scroll will instantly strip from " +
-			"the reader's weapon, armor, rings and carried items any evil " +
-			"enchantments that might prevent the wearer from removing them.";
 	}
 	
 	public static boolean uncurse( Hero hero, Item... items ) {

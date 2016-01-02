@@ -27,17 +27,13 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ScrollOfMagicalInfusion extends InventoryScroll {
-
-	private static final String TXT_INFUSE	= "your %s is infused with arcane energy!";
 	
 	{
-		initials = "MaI";
-
-		inventoryTitle = "Select an item to infuse";
 		mode = WndBag.Mode.ENCHANTABLE;
 
 		bones = true;
@@ -52,19 +48,12 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 		else
 			((Armor)item).upgrade(true);
 		
-		GLog.p( TXT_INFUSE, item.name() );
+		GLog.p( Messages.get(this, "infuse", item.name()) );
 		
 		Badges.validateItemLevelAquired(item);
 
 		curUser.sprite.emitter().start(Speck.factory(Speck.UP), 0.2f, 3);
 		Enchanting.show(curUser, item);
 	}
-	
-	@Override
-	public String desc() {
-		return
-			"This scroll will infuse a weapon or armor with powerful magical energy.\n\n" +
-			"In addition to being upgraded, A weapon will gain a magical enchantment, or armor will be imbued with a magical glyph.\n\n" +
-			"If the item already has an enchantment or glyph, it will never be erased by this scroll.";
-	}
+
 }
