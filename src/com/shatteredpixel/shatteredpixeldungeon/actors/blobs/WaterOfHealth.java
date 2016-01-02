@@ -38,9 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class WaterOfHealth extends WellWater {
-
-	private static final String TXT_PROCCED =
-		"As you take a sip, you feel your wounds heal completely.";
 	
 	@Override
 	protected boolean affectHero( Hero hero ) {
@@ -55,7 +52,7 @@ public class WaterOfHealth extends WellWater {
 
 		Dungeon.hero.interrupt();
 	
-		GLog.p( TXT_PROCCED );
+		GLog.p( Messages.get(this, "procced") );
 		
 		Journal.remove( Feature.WELL_OF_HEALTH );
 		

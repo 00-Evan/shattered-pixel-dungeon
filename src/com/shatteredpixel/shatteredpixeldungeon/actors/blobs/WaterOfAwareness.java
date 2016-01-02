@@ -42,11 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class WaterOfAwareness extends WellWater {
 
-	private static final String TXT_PROCCED =
-		"As you take a sip, you feel the knowledge pours into your mind. " +
-		"Now you know everything about your equipped items. Also you sense " +
-		"all items on the level and know all its secrets.";
-	
 	@Override
 	protected boolean affectHero( Hero hero ) {
 		
@@ -73,7 +68,7 @@ public class WaterOfAwareness extends WellWater {
 
 		Dungeon.hero.interrupt();
 	
-		GLog.p( TXT_PROCCED );
+		GLog.p( Messages.get(this, "procced") );
 		
 		Journal.remove( Feature.WELL_OF_AWARENESS );
 		
