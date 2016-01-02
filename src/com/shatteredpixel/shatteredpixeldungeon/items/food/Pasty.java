@@ -99,10 +99,9 @@ public class Pasty extends Food {
 	public String info() {
 		switch(holiday){
 			case NONE: default:
-				return "This is authentic Cornish pasty with traditional filling of beef and potato.";
+				return Messages.get(this, "pasty_desc");
 			case XMAS:
-				return "A huge sugary sweet candy cane! It's big enough to fill you up, " +
-						"and the sugar might give your wands a tiny bit of extra charge too.\n\nHappy Holidays!";
+				return Messages.get(this, "cane_desc");
 		}
 	}
 	

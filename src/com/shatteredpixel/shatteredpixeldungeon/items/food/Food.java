@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -44,7 +45,7 @@ public class Food extends Item {
 	public static final String AC_EAT	= "EAT";
 	
 	public float energy = Hunger.HUNGRY;
-	public String message = "That food tasted delicious!";
+	public String message = Messages.get(this, "eat_msg");
 
 	public int hornValue = 3;
 	
@@ -68,7 +69,7 @@ public class Food extends Item {
 			
 			detach( hero.belongings.backpack );
 			
-			((Hunger)hero.buff( Hunger.class )).satisfy( energy );
+			(hero.buff( Hunger.class )).satisfy( energy );
 			GLog.i( message );
 			
 			switch (hero.heroClass) {
@@ -103,13 +104,6 @@ public class Food extends Item {
 			super.execute( hero, action );
 			
 		}
-	}
-
-	@Override
-	public String info() {
-		return
-			"Nothing fancy here: dried meat, " +
-			"some biscuits - things like that.";
 	}
 	
 	@Override

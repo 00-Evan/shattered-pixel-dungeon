@@ -379,7 +379,7 @@ public class Item implements Bundlable {
 	}
 	
 	public String desc() {
-		return "";
+		return Messages.get(this, "desc");
 	}
 	
 	public int quantity() {

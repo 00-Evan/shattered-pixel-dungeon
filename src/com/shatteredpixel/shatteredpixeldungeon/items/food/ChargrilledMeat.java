@@ -32,11 +32,6 @@ public class ChargrilledMeat extends Food {
 	}
 	
 	@Override
-	public String info() {
-		return "It looks like a decent steak.";
-	}
-	
-	@Override
 	public int price() {
 		return 5 * quantity;
 	}
