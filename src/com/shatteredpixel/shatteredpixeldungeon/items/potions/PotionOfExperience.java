@@ -25,8 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 public class PotionOfExperience extends Potion {
 
 	{
-		initials = "Ex";
-
 		bones = true;
 	}
 	
@@ -34,13 +32,6 @@ public class PotionOfExperience extends Potion {
 	public void apply( Hero hero ) {
 		setKnown();
 		hero.earnExp( hero.maxExp() );
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"The storied experiences of multitudes of battles reduced to liquid form, " +
-			"this draught will instantly raise your experience level.";
 	}
 	
 	@Override

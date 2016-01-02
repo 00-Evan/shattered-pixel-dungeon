@@ -32,10 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
 public class PotionOfLiquidFlame extends Potion {
-
-	{
-		initials = "LF";
-	}
 	
 	@Override
 	public void shatter( int cell ) {
@@ -60,13 +56,6 @@ public class PotionOfLiquidFlame extends Potion {
 
 			}
 		}
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"This flask contains an unstable compound which will burst " +
-			"violently into flame upon exposure to open air.";
 	}
 	
 	@Override

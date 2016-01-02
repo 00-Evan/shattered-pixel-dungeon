@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -48,19 +49,10 @@ import com.watabou.utils.Bundle;
 public class Potion extends Item {
 	
 	public static final String AC_DRINK	= "DRINK";
-	
-	private static final String TXT_HARMFUL		= "Harmful potion!";
-	private static final String TXT_BENEFICIAL	= "Beneficial potion";
-	private static final String TXT_YES			= "Yes, I know what I'm doing";
-	private static final String TXT_NO			= "No, I changed my mind";
-	private static final String TXT_R_U_SURE_DRINK =
-		"Are you sure you want to drink it? In most cases you should throw such potions at your enemies.";
-	private static final String TXT_R_U_SURE_THROW =
-		"Are you sure you want to throw it? In most cases it makes sense to drink it.";
-	
+
 	private static final float TIME_TO_DRINK = 1f;
 
-	protected String initials;
+	protected String initials = Messages.get(this, "initials");
 	
 	private static final Class<?>[] potions = {
 		PotionOfHealing.class,
@@ -106,7 +98,7 @@ public class Potion extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void initColors() {
-		handler = new ItemStatusHandler<Potion>( (Class<? extends Potion>[])potions, colors, images );
+		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors, images );
 	}
 	
 	public static void save( Bundle bundle ) {
@@ -115,7 +107,7 @@ public class Potion extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<Potion>( (Class<? extends Potion>[])potions, colors, images, bundle );
+		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors, images, bundle );
 	}
 	
 	public Potion() {
@@ -146,7 +138,9 @@ public class Potion extends Item {
 					this instanceof PotionOfParalyticGas)) {
 				
 					GameScene.show(
-						new WndOptions( TXT_HARMFUL, TXT_R_U_SURE_DRINK, TXT_YES, TXT_NO ) {
+						new WndOptions( Messages.get(Potion.class, "harmful"),
+								Messages.get(Potion.class, "sure_drink"),
+								Messages.get(Potion.class, "yes"), Messages.get(Potion.class, "no") ) {
 							@Override
 							protected void onSelect(int index) {
 								if (index == 0) {
@@ -179,7 +173,9 @@ public class Potion extends Item {
 			this instanceof PotionOfMight)) {
 		
 			GameScene.show(
-				new WndOptions( TXT_BENEFICIAL, TXT_R_U_SURE_THROW, TXT_YES, TXT_NO ) {
+				new WndOptions( Messages.get(Potion.class, "beneficial"),
+						Messages.get(Potion.class, "sure_throw"),
+						Messages.get(Potion.class, "yes"), Messages.get(Potion.class, "no") ) {
 					@Override
 					protected void onSelect(int index) {
 						if (index == 0) {
@@ -226,7 +222,7 @@ public class Potion extends Item {
 	
 	public void shatter( int cell ) {
 		if (Dungeon.visible[cell]) {
-			GLog.i( "The flask shatters and " + color() + " liquid splashes harmlessly" );
+			GLog.i( Messages.get(Potion.class, "shatter", color()) );
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 			splash( cell );
 		}
@@ -259,20 +255,19 @@ public class Potion extends Item {
 	}
 	
 	protected String color() {
-		return color;
+		return Messages.get(Potion.class, color);
 	}
 	
 	@Override
 	public String name() {
-		return isKnown() ? name : color + " potion";
+		return isKnown() ? super.name() : Messages.get(Potion.class, "unknown_name", color());
 	}
 	
 	@Override
 	public String info() {
 		return isKnown() ?
 			desc() :
-			"This flask contains a swirling " + color + " liquid. " +
-			"Who knows what it will do when drunk or thrown?";
+			Messages.get(Potion.class, "unknown_desc", color());
 	}
 
 	public String initials(){

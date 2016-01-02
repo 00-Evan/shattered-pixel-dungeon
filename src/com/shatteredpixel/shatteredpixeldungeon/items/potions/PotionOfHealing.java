@@ -28,13 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class PotionOfHealing extends Potion {
 
 	{
-		initials = "He";
-
 		bones = true;
 	}
 	
@@ -42,7 +41,7 @@ public class PotionOfHealing extends Potion {
 	public void apply( Hero hero ) {
 		setKnown();
 		heal( Dungeon.hero );
-		GLog.p( "Your wounds heal completely." );
+		GLog.p( Messages.get(this, "heal") );
 	}
 	
 	public static void heal( Hero hero ) {
@@ -55,13 +54,7 @@ public class PotionOfHealing extends Potion {
 		
 		hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
 	}
-	
-	@Override
-	public String desc() {
-		return
-			"An elixir that will instantly return you to full health and cure poison.";
-	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 30 * quantity : super.price();

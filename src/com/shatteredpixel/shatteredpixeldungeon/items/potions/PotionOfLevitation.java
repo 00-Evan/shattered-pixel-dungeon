@@ -27,15 +27,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
 public class PotionOfLevitation extends Potion {
-
-	{
-		initials = "Le";
-	}
 
 	@Override
 	public void shatter( int cell ) {
@@ -54,15 +51,7 @@ public class PotionOfLevitation extends Potion {
 	public void apply( Hero hero ) {
 		setKnown();
 		Buff.affect( hero, Levitation.class, Levitation.DURATION );
-		GLog.i( "You float into the air!" );
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"Drinking this curious liquid will cause you to hover in the air, " +
-			"able to drift effortlessly over traps and pits. Throwing this potion " +
-			"will create a cloud of unrefined gas, disorienting anything caught in it.";
+		GLog.i( Messages.get(this, "float") );
 	}
 	
 	@Override
