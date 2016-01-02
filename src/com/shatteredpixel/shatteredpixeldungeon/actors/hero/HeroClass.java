@@ -91,11 +91,6 @@ public enum HeroClass {
 
 		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
 			new Food().identify().collect();
-
-		new SeedPouch().collect();
-		new WandHolster().collect();
-		new PotionBandolier().collect();
-		new ScrollHolder().collect();
 	}
 
 	public Badges.Badge masteryBadge() {
