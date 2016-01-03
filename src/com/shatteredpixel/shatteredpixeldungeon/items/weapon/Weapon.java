@@ -44,10 +44,6 @@ abstract public class Weapon extends KindOfWeapon {
 
 	private static final int HITS_TO_KNOW    = 20;
 
-	private static final String TXT_IDENTIFY		=
-		"You are now familiar enough with your %s to identify it. It is %s.";
-	private static final String TXT_INCOMPATIBLE	=
-		"Interaction of different types of magic has negated the enchantment on this weapon!";
 	private static final String TXT_TO_STRING		= "%s :%d";
 	
 	public int		STR	= 10;
@@ -73,7 +69,7 @@ abstract public class Weapon extends KindOfWeapon {
 		if (!levelKnown) {
 			if (--hitsToKnow <= 0) {
 				levelKnown = true;
-				GLog.i( TXT_IDENTIFY, name(), toString() );
+				GLog.i( Messages.get(Weapon.class, "identify", name(), toString()) );
 				Badges.validateItemLevelAquired( this );
 			}
 		}
@@ -167,7 +163,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public Item upgrade( boolean enchant ) {
 		if (enchantment != null) {
 			if (!enchant && Random.Int( level() ) > 0) {
-				GLog.w( TXT_INCOMPATIBLE );
+				GLog.w( Messages.get(Weapon.class, "incompatible") );
 				enchant( null );
 			}
 		} else {

@@ -61,13 +61,6 @@ public class Tamahawk extends MissileWeapon {
 	}
 	
 	@Override
-	public String desc() {
-		return
-			"This throwing axe is not that heavy, but it still " +
-			"requires significant strength to be used effectively.";
-	}
-	
-	@Override
 	public Item random() {
 		quantity = Random.Int( 5, 12 );
 		return this;

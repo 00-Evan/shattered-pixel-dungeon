@@ -31,9 +31,5 @@ public class BattleAxe extends MeleeWeapon {
 	public BattleAxe() {
 		super( 4, 1.2f, 1f );
 	}
-	
-	@Override
-	public String desc() {
-		return "The enormous steel head of this battle axe puts considerable heft behind each stroke.";
-	}
+
 }

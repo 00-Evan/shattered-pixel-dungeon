@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.*;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -52,12 +53,9 @@ public class MagesStaff extends MeleeWeapon {
 	public static final String AC_IMBUE = "IMBUE";
 	public static final String AC_ZAP	= "ZAP";
 
-	private static final String TXT_SELECT_WAND	= "Select a wand to consume";
-
 	private static final float STAFF_SCALE_FACTOR = 0.75f;
 
 	{
-		name = "mage's staff";
 		image = ItemSpriteSheet.MAGES_STAFF;
 
 		defaultAction = AC_ZAP;
@@ -86,7 +84,7 @@ public class MagesStaff extends MeleeWeapon {
 		this.wand = wand;
 		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
 		wand.curCharges = wand.maxCharges;
-		name = wand.name().replace("Wand", "Staff");
+		name = wand.name().replace(Messages.get(this, "wand"), Messages.get(this, "staff"));
 	}
 
 	@Override
@@ -109,7 +107,7 @@ public class MagesStaff extends MeleeWeapon {
 		if (action.equals(AC_IMBUE)) {
 
 			curUser = hero;
-			GameScene.selectItem(itemSelector, WndBag.Mode.WAND, TXT_SELECT_WAND);
+			GameScene.selectItem(itemSelector, WndBag.Mode.WAND, Messages.get(this, "prompt"));
 
 		} else if (action.equals(AC_ZAP)){
 			if (wand == null)
@@ -151,10 +149,10 @@ public class MagesStaff extends MeleeWeapon {
 
 		this.wand = null;
 
-		GLog.p("You imbue your staff with the " + wand.name());
+		GLog.p( Messages.get(this, "imbue", wand.name()));
 
 		if (enchantment != null) {
-			GLog.w("The conflicting magics erase the enchantment on your staff.");
+			GLog.w( Messages.get(this, "conflict") );
 			enchant(null);
 		}
 
@@ -180,12 +178,11 @@ public class MagesStaff extends MeleeWeapon {
 		wand.cursed = false;
 		wand.charge(owner);
 
-		name = wand.name().replace("Wand", "Staff");
+		name = wand.name().replace(Messages.get(this, "wand"), Messages.get(this, "staff"));
 
 		updateQuickslot();
 
 		return this;
-
 	}
 
 	@Override
@@ -259,42 +256,8 @@ public class MagesStaff extends MeleeWeapon {
 		wand = (Wand) bundle.get(WAND);
 		if (wand != null) {
 			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-			name = wand.name().replace("wand", "staff");
+			name = wand.name().replace(Messages.get(this, "wand"), Messages.get(this, "staff"));
 		}
-	}
-
-	@Override
-	public String desc() {
-		String result = "Crafted by the mage himself, this extraordinary staff is a one of a kind multi-purpose magical weapon.\n" +
-				"\n" +
-				"Rather than having an innate magic in it, this staff is instead imbued with magical energy from a wand, permanently granting it new power.\n" +
-				"\n";
-
-		if (wand == null) {
-			result += "The staff is currently a slightly magical stick, it needs a wand!";
-		} else if (wand instanceof WandOfMagicMissile){
-			result += "The staff radiates consistent magical energy from the wand it is imbued with.";
-		} else if (wand instanceof WandOfFireblast){
-			result += "The staff burns and sizzles with fiery energy from the wand it is imbued with.";
-		} else if (wand instanceof WandOfLightning){
-			result += "The staff fizzes and crackles with electrical energy from the wand it is imbued with.";
-		} else if (wand instanceof WandOfDisintegration){
-			result += "The staff hums with deep and powerful energy from the wand it is imbued with.";
-		} else if (wand instanceof WandOfVenom){
-			result += "The staff drips and hisses with corrosive energy from the wand it is imbued with.";
-		} else if (wand instanceof WandOfPrismaticLight){
-			result += "The staff glows and shimmers with bright energy from the wand it is imbued with.";
-		} else if (wand instanceof WandOfFrost){
-			result += "The staff chills the air with the cold energy from the wand it is imbued with.";
-		} else if (wand instanceof WandOfBlastWave){
-			result += "The staff pops and crackles with explosive energy from the wand it is imbued with.";
-		} else if (wand instanceof WandOfRegrowth){
-			result += "The staff flourishes and grows with natural energy from the wand it is imbued with.";
-		} else if (wand instanceof WandOfTransfusion){
-			result += "The staff courses and flows with life energy from the wand it is imbued with.";
-		}
-
-		return result;
 	}
 
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {
@@ -303,20 +266,18 @@ public class MagesStaff extends MeleeWeapon {
 			if (item != null) {
 
 				if (!item.isIdentified()) {
-					GLog.w("You'll need to identify this wand first.");
+					GLog.w(Messages.get(this, "id_first"));
 					return;
 				} else if (item.cursed){
-					GLog.w("You can't use a cursed wand.");
+					GLog.w(Messages.get(this, "cursed"));
 					return;
 				}
 
 				GameScene.show(
 						new WndOptions("",
-								"Are you sure you want to imbue your staff with this " + item.name() + "?\n\n" +
-										"Your staff will inherit the highest level between it and the wand, " +
-										"and all magic currently affecting the staff will be lost.",
-								"Yes, i'm sure.",
-								"No, I changed my mind") {
+								Messages.get(this, "warning"),
+								Messages.get(this, "yes"),
+								Messages.get(this, "no")) {
 							@Override
 							protected void onSelect(int index) {
 								if (index == 0) {

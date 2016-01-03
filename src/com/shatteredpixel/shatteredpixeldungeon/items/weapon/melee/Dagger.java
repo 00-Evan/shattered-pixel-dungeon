@@ -31,9 +31,5 @@ public class Dagger extends MeleeWeapon {
 	public Dagger() {
 		super( 1, 1.2f, 1f );
 	}
-	
-	@Override
-	public String desc() {
-		return "A simple iron dagger with a well worn wooden handle.";
-	}
+
 }

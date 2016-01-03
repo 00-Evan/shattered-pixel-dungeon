@@ -31,9 +31,5 @@ public class Mace extends MeleeWeapon {
 	public Mace() {
 		super( 3, 1f, 0.8f );
 	}
-	
-	@Override
-	public String desc() {
-		return "The iron head of this weapon inflicts substantial damage.";
-	}
+
 }

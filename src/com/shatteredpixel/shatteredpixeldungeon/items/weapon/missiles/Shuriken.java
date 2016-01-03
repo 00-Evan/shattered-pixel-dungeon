@@ -54,13 +54,6 @@ public class Shuriken extends MissileWeapon {
 	}
 	
 	@Override
-	public String desc() {
-		return
-			"Star-shaped pieces of metal with razor-sharp blades do significant damage " +
-			"when they hit a target. They can be thrown at very high rate.";
-	}
-	
-	@Override
 	public Item random() {
 		quantity = Random.Int( 5, 15 );
 		return this;

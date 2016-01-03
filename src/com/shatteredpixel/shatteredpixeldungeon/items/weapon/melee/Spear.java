@@ -31,9 +31,5 @@ public class Spear extends MeleeWeapon {
 	public Spear() {
 		super( 2, 1f, 1.5f );
 	}
-	
-	@Override
-	public String desc() {
-		return "A slender wooden rod tipped with sharpened iron.";
-	}
+
 }

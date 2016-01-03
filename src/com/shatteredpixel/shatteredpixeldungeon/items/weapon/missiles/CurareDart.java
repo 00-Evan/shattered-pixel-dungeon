@@ -63,13 +63,6 @@ public class CurareDart extends MissileWeapon {
 	}
 	
 	@Override
-	public String desc() {
-		return
-			"These little evil darts don't do much damage but they can paralyze " +
-			"the target leaving it helpless and motionless for some time.";
-	}
-	
-	@Override
 	public Item random() {
 		quantity = Random.Int( 2, 5 );
 		return this;

@@ -179,7 +179,7 @@ public abstract class Wand extends Item {
 	@Override
 	public String info() {
 		return (cursed && cursedKnown) ?
-				desc() + Messages.get(Wand.class, "cursed") :
+				desc() + "\n\n" + Messages.get(Wand.class, "cursed") :
 				desc();
 	}
 	

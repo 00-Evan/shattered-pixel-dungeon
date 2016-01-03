@@ -77,13 +77,6 @@ public class IncendiaryDart extends MissileWeapon {
 	}
 	
 	@Override
-	public String desc() {
-		return
-			"The spike on each of these darts is designed to pin it to its target " +
-			"while the unstable compounds strapped to its length burst into brilliant flames.";
-	}
-	
-	@Override
 	public Item random() {
 		quantity = Random.Int( 3, 6 );
 		return this;

@@ -202,31 +202,30 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public String info() {
-		String name = name();
 		String info = desc();
 		
 		if (levelKnown) {
-			info += Messages.get(Armor.class, "curr_absorb", name, Math.max( DR(), 0 ));
+			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", Math.max( DR(), 0 ));
 			
 			if (STR > Dungeon.hero.STR()) {
-				info += Messages.get(Armor.class, "too_heavy");
+				info += "\n\n" + Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
-			info += Messages.get(Armor.class, "avg_absorb", name, typicalDR(), typicalSTR());
+			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", typicalDR(), typicalSTR());
 
 			if (typicalSTR() > Dungeon.hero.STR()) {
-				info += Messages.get(Armor.class, "probably_too_heavy");
+				info += "\n\n" + Messages.get(Armor.class, "probably_too_heavy");
 			}
 		}
 		
 		if (glyph != null) {
-			info += Messages.get(Armor.class, "inscribed", glyph.name());
+			info += "\n\n" +  Messages.get(Armor.class, "inscribed", glyph.name());
 		}
 		
 		if (cursed && isEquipped( Dungeon.hero )) {
-			info += Messages.get(Armor.class, "cursed_word");
+			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
-			info += Messages.get(Armor.class, "cursed");
+			info += "\n\n" + Messages.get(Armor.class, "cursed");
 		}
 		
 		return info;

@@ -52,13 +52,6 @@ public class Dart extends MissileWeapon {
 	}
 	
 	@Override
-	public String desc() {
-		return
-			"These simple metal spikes are weighted to fly true and " +
-			"sting their prey with a flick of the wrist.";
-	}
-	
-	@Override
 	public Item random() {
 		quantity = Random.Int( 5, 15 );
 		return this;

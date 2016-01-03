@@ -32,18 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Random;
 
 abstract public class MissileWeapon extends Weapon {
 
-	private static final String TXT_MISSILES	= "Missile weapon";
-	private static final String TXT_YES			= "Yes, I know what I'm doing";
-	private static final String TXT_NO			= "No, I changed my mind";
-	private static final String TXT_R_U_SURE	=
-		"Do you really want to equip it as a melee weapon?";
-	
 	{
 		stackable = true;
 		levelKnown = true;
@@ -55,8 +50,8 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (hero.heroClass != HeroClass.HUNTRESS && hero.heroClass != HeroClass.ROGUE) {
-			actions.remove( AC_EQUIP );
+		actions.remove( AC_EQUIP );
+		if (!isEquipped( hero )) {
 			actions.remove( AC_UNEQUIP );
 		}
 		return actions;
@@ -115,22 +110,6 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
-	public boolean doEquip( final Hero hero ) {
-		GameScene.show(
-			new WndOptions( TXT_MISSILES, TXT_R_U_SURE, TXT_YES, TXT_NO ) {
-				@Override
-				protected void onSelect(int index) {
-					if (index == 0) {
-						MissileWeapon.super.doEquip( hero );
-					}
-				};
-			}
-		);
-		
-		return false;
-	}
-	
-	@Override
 	public Item random() {
 		return this;
 	}
@@ -148,30 +127,16 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	public String info() {
 
-		String name = name();
-		StringBuilder info = new StringBuilder( desc() );
+		String info = desc();
 		
-		info.append( "\n\nAverage damage of this weapon equals to " + (min() + (max() - min()) / 2) + " points per hit. " );
-		
-		if (Dungeon.hero.belongings.backpack.items.contains( this )) {
-			if (STR > Dungeon.hero.STR()) {
-				info.append(
-					"\n\nBecause of your inadequate strength the accuracy and speed " +
-					"of your attack with this " + name + " is decreased." );
-			}
-			if (STR < Dungeon.hero.STR() && Dungeon.hero.heroClass == HeroClass.HUNTRESS) {
-				info.append(
-					"\n\nBecause of your excess strength the damage " +
-					"of your attack with this " + name + " is increased." );
-			}
+		info += "\n\n" + Messages.get( Weapon.class, "avg_dmg",(min() + (max() - min()) / 2));
+
+		if (STR > Dungeon.hero.STR()) {
+			info += Messages.get(Weapon.class, "too_heavy");
 		}
 
-		info.append( "\n\nAs this weapon is designed to be used at a distance, it is much less accurate if used at melee range.");
+		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");
 		
-		if (isEquipped( Dungeon.hero )) {
-			info.append( "\n\nYou hold the " + name + " at the ready." );
-		}
-		
-		return info.toString();
+		return info;
 	}
 }
