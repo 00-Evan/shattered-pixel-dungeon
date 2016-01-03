@@ -20,8 +20,9 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.messages;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /*
@@ -33,8 +34,43 @@ import java.util.ResourceBundle;
  */
 public class Messages {
 
-	private static ResourceBundle strings =
-			ResourceBundle.getBundle("com.shatteredpixel.shatteredpixeldungeon.messages.messages");
+	private static String[] prop_files = new String[]{
+			"com.shatteredpixel.shatteredpixeldungeon.messages.actors.actors",
+			"com.shatteredpixel.shatteredpixeldungeon.messages.items.items",
+			"com.shatteredpixel.shatteredpixeldungeon.messages.levels.levels",
+			"com.shatteredpixel.shatteredpixeldungeon.messages.plants.plants",
+			"com.shatteredpixel.shatteredpixeldungeon.messages.scenes.scenes",
+			"com.shatteredpixel.shatteredpixeldungeon.messages.ui.ui",
+			"com.shatteredpixel.shatteredpixeldungeon.messages.windows.windows",
+			"com.shatteredpixel.shatteredpixeldungeon.messages.misc"
+	};
+
+	/*
+		use hashmap for two reasons. Firstly because android 2.2 doesn't support resourcebundle.containskey(),
+		secondly so I can read in and combine multiple properties files,
+		resulting in a more clean structure for organizing all the strings, instead of one big file.
+
+		..Yes R.string would do this for me, but that's not multiplatform
+	 */
+	private static HashMap<String, String> strings;
+
+	static{
+		setup();
+	}
+
+	public static void setup(){
+		strings = new HashMap<>();
+		Locale locale = Locale.getDefault(); //TODO:load in locale from a preference, use default only if none set.
+
+		for (String file : prop_files) {
+			ResourceBundle bundle = ResourceBundle.getBundle( file, locale);
+			Enumeration<String> keys = bundle.getKeys();
+			while (keys.hasMoreElements()) {
+				String key = keys.nextElement();
+				strings.put(key, bundle.getString(key));
+			}
+		}
+	}
 
 	public static String get(String key, Object...args){
 		return get(null, key, args);
@@ -54,7 +90,7 @@ public class Messages {
 		} else
 			key = k;
 
-		if (android.os.Build.VERSION.SDK_INT >= 9 && !strings.containsKey(key.toLowerCase())){
+		if (!strings.containsKey(key.toLowerCase())){
 			//this is so child classes can inherit properties from their parents.
 			//in cases where text is commonly grabbed as a utility from classes that aren't mean to be instantiated
 			//(e.g. flavourbuff.dispTurns()) using .class directly is probably smarter to prevent unnecessary recursive calls.
@@ -64,18 +100,8 @@ public class Messages {
 				return "!!!NO TEXT FOUND!!!";
 			}
 		} else {
-			try {
-				if (args.length > 0) return String.format(Locale.ENGLISH, strings.getString(key.toLowerCase()), args);
-				else return strings.getString(key.toLowerCase());
-			} catch (MissingResourceException e) {
-				//This silly catch block exists because android 2.2 does not support bundle.containsKey.
-				//This should only ever trigger on 2.2 devices
-				if (c != null && c.getSuperclass() != null){
-					return get(c.getSuperclass(), k, args);
-				} else {
-					return "!!!NO TEXT FOUND!!!";
-				}
-			}
+			if (args.length > 0) return String.format(Locale.ENGLISH, strings.get(key.toLowerCase()), args);
+			else return strings.get(key.toLowerCase());
 		}
 	}
 }

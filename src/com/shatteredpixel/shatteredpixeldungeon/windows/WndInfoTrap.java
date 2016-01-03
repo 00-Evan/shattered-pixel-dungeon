@@ -30,7 +30,7 @@ public class WndInfoTrap extends WndTitledMessage {
 
 		super(new TrapSprite( trap.color + (trap.shape * 16) ),
 				trap.name,
-				(!trap.active ? Messages.get(WndInfoTrap.class, "inactive") : "") + trap.desc());
+				(!trap.active ? Messages.get(WndInfoTrap.class, "inactive") + "\n\n" : "") + trap.desc());
 
 	}
 
