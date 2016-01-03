@@ -42,7 +42,7 @@ public class Messages {
 			"com.shatteredpixel.shatteredpixeldungeon.messages.scenes.scenes",
 			"com.shatteredpixel.shatteredpixeldungeon.messages.ui.ui",
 			"com.shatteredpixel.shatteredpixeldungeon.messages.windows.windows",
-			"com.shatteredpixel.shatteredpixeldungeon.messages.misc"
+			"com.shatteredpixel.shatteredpixeldungeon.messages.misc.misc"
 	};
 
 	/*
