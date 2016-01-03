@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -40,9 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class RogueArmor extends ClassArmor {
 	
-	private static final String TXT_FOV 		= "You can only jump to an empty location in your field of view";
-	private static final String TXT_NOT_ROGUE	= "Only rogues can use this armor!";
-	
 	private static final String AC_SPECIAL = "SMOKE BOMB";
 	
 	{
@@ -59,23 +57,6 @@ public class RogueArmor extends ClassArmor {
 		GameScene.selectCell( teleporter );
 	}
 	
-	@Override
-	public boolean doEquip( Hero hero ) {
-		if (hero.heroClass == HeroClass.ROGUE) {
-			return super.doEquip( hero );
-		} else {
-			GLog.w( TXT_NOT_ROGUE );
-			return false;
-		}
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"Wearing this dark garb, a rogue can perform a trick, that is called \"smoke bomb\" " +
-			"(though no real explosives are used): he blinds enemies who could see him and jumps aside.";
-	}
-	
 	protected static CellSelector.Listener teleporter = new  CellSelector.Listener() {
 		
 		@Override
@@ -86,7 +67,7 @@ public class RogueArmor extends ClassArmor {
 					!(Level.passable[target] || Level.avoid[target]) ||
 					Actor.findChar( target ) != null) {
 					
-					GLog.w( TXT_FOV );
+					GLog.w( Messages.get(RogueArmor.class, "fov") );
 					return;
 				}
 
@@ -112,7 +93,7 @@ public class RogueArmor extends ClassArmor {
 		
 		@Override
 		public String prompt() {
-			return "Choose a location to jump to";
+			return Messages.get(RogueArmor.class, "prompt");
 		}
 	};
 }

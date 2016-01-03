@@ -32,9 +32,4 @@ public class MailArmor extends Armor {
 		super( 3 );
 	}
 
-	@Override
-	public String desc() {
-		return
-			"Interlocking metal links make for a tough but flexible suit of armor.";
-	}
 }

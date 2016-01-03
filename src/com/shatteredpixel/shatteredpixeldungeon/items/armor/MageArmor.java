@@ -39,8 +39,6 @@ public class MageArmor extends ClassArmor {
 	
 	private static final String AC_SPECIAL = "MOLTEN EARTH";
 	
-	private static final String TXT_NOT_MAGE	= "Only mages can use this armor!";
-	
 	{
 		image = ItemSpriteSheet.ARMOR_MAGE;
 	}
@@ -48,13 +46,6 @@ public class MageArmor extends ClassArmor {
 	@Override
 	public String special() {
 		return AC_SPECIAL;
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"Wearing this gorgeous robe, a mage can cast a spell of molten earth: all the enemies " +
-			"in his field of view will be set on fire and unable to move at the same time.";
 	}
 	
 	@Override
@@ -76,14 +67,5 @@ public class MageArmor extends ClassArmor {
 		curUser.sprite.centerEmitter().start( ElmoParticle.FACTORY, 0.15f, 4 );
 		Sample.INSTANCE.play( Assets.SND_READ );
 	}
-	
-	@Override
-	public boolean doEquip( Hero hero ) {
-		if (hero.heroClass == HeroClass.MAGE) {
-			return super.doEquip( hero );
-		} else {
-			GLog.w( TXT_NOT_MAGE );
-			return false;
-		}
-	}
+
 }

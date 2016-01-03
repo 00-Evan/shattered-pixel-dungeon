@@ -43,14 +43,7 @@ public class Armor extends EquipableItem {
 
 	private static final int HITS_TO_KNOW    = 10;
 
-	private static final String TXT_EQUIP_CURSED	= "your %s constricts around you painfully";
-		
-	private static final String TXT_IDENTIFY	= "you are now familiar enough with your %s to identify it. It is %s.";
-	
 	private static final String TXT_TO_STRING	= "%s :%d";
-	
-	private static final String TXT_INCOMPATIBLE =
-		"Interaction of different types of magic has erased the glyph on this armor!";
 	
 	public int tier;
 	
@@ -104,7 +97,7 @@ public class Armor extends EquipableItem {
 			cursedKnown = true;
 			if (cursed) {
 				equipCursed( hero );
-				GLog.n( TXT_EQUIP_CURSED, toString() );
+				GLog.n( Messages.get(Armor.class, "equip_cursed", toString()) );
 			}
 			
 			((HeroSprite)hero.sprite).updateArmor();
@@ -159,7 +152,7 @@ public class Armor extends EquipableItem {
 		
 		if (glyph != null) {
 			if (!inscribe && Random.Int( level() ) > 0) {
-				GLog.w( TXT_INCOMPATIBLE );
+				GLog.w( Messages.get(Armor.class, "incompatible") );
 				inscribe( null );
 			}
 		} else {
@@ -189,7 +182,7 @@ public class Armor extends EquipableItem {
 		if (!levelKnown) {
 			if (--hitsToKnow <= 0) {
 				levelKnown = true;
-				GLog.w( TXT_IDENTIFY, name(), toString() );
+				GLog.w( Messages.get(Armor.class, "identify", name(), toString()) );
 				Badges.validateItemLevelAquired( this );
 			}
 		}
@@ -210,49 +203,33 @@ public class Armor extends EquipableItem {
 	@Override
 	public String info() {
 		String name = name();
-		StringBuilder info = new StringBuilder( desc() );
+		String info = desc();
 		
 		if (levelKnown) {
-			info.append(
-				"\n\nThis " + name + " provides damage absorption up to " +
-				"" + Math.max( DR(), 0 ) + " points per attack. " );
+			info += Messages.get(Armor.class, "curr_absorb", name, Math.max( DR(), 0 ));
 			
 			if (STR > Dungeon.hero.STR()) {
-				
-				if (isEquipped( Dungeon.hero )) {
-					info.append(
-						"\n\nBecause of your inadequate strength your " +
-						"movement speed and defense skill is decreased. " );
-				} else {
-					info.append(
-						"\n\nBecause of your inadequate strength wearing this armor " +
-						"will decrease your movement speed and defense skill. " );
-				}
-				
+				info += Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
-			info.append(
-				"\n\nTypical " + name + " provides damage absorption up to " + typicalDR() + " points per attack " +
-				" and requires " + typicalSTR() + " points of strength. " );
+			info += Messages.get(Armor.class, "avg_absorb", name, typicalDR(), typicalSTR());
+
 			if (typicalSTR() > Dungeon.hero.STR()) {
-				info.append( "Probably this armor is too heavy for you. " );
+				info += Messages.get(Armor.class, "probably_too_heavy");
 			}
 		}
 		
 		if (glyph != null) {
-			info.append( "It is inscribed." );
+			info += Messages.get(Armor.class, "inscribed", glyph.name());
 		}
 		
-		if (isEquipped( Dungeon.hero )) {
-			info.append( "\n\nYou are wearing the " + name +
-				(cursed ? ", and because it is cursed, you are powerless to remove it." : ".") );
-		} else {
-			if (cursedKnown && cursed) {
-				info.append( "\n\nYou can feel a malevolent magic lurking within the " + name + "." );
-			}
+		if (cursed && isEquipped( Dungeon.hero )) {
+			info += Messages.get(Armor.class, "cursed_word");
+		} else if (cursedKnown && cursed) {
+			info += Messages.get(Armor.class, "cursed");
 		}
 		
-		return info.toString();
+		return info;
 	}
 	
 	@Override

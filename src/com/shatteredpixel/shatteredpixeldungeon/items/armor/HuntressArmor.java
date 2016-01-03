@@ -29,15 +29,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 
 public class HuntressArmor extends ClassArmor {
-	
-	private static final String TXT_NO_ENEMIES 		= "No enemies in sight";
-	private static final String TXT_NOT_HUNTRESS	= "Only huntresses can use this armor!";
 	
 	private static final String AC_SPECIAL = "SPECTRAL BLADES";
 	
@@ -79,7 +77,7 @@ public class HuntressArmor extends ClassArmor {
 		}
 		
 		if (targets.size() == 0) {
-			GLog.w( TXT_NO_ENEMIES );
+			GLog.w( Messages.get(this, "no_enemies") );
 			return;
 		}
 		
@@ -88,22 +86,5 @@ public class HuntressArmor extends ClassArmor {
 		curUser.sprite.zap( curUser.pos );
 		curUser.busy();
 	}
-	
-	@Override
-	public boolean doEquip( Hero hero ) {
-		if (hero.heroClass == HeroClass.HUNTRESS) {
-			return super.doEquip( hero );
-		} else {
-			GLog.w( TXT_NOT_HUNTRESS );
-			return false;
-		}
-	}
-	
-	@Override
-	public String desc() {
-		return
-			"A huntress in such cloak can create a fan of spectral blades. Each of these blades " +
-			"will target a single enemy in the huntress's field of view, inflicting damage depending " +
-			"on her currently equipped melee weapon.";
-	}
+
 }

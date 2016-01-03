@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
@@ -104,9 +105,9 @@ abstract public class ClassArmor extends Armor {
 		if (action == special()) {
 			
 			if (hero.HP < 3) {
-				GLog.w( TXT_LOW_HEALTH );
+				GLog.w( Messages.get(this, "low_hp") );
 			} else if (!isEquipped( hero )) {
-				GLog.w( TXT_NOT_EQUIPPED );
+				GLog.w( Messages.get(this, "not_equipped") );
 			} else {
 				curUser = hero;
 				Invisibility.dispel();
@@ -140,9 +141,5 @@ abstract public class ClassArmor extends Armor {
 	public int price() {
 		return 0;
 	}
-	
-	@Override
-	public String desc() {
-		return "The thing looks awesome!";
-	}
+
 }
