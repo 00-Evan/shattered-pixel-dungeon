@@ -164,7 +164,7 @@ public class Hero extends Char {
 	
 	public Hero() {
 		super();
-		name = "you";
+		name = Messages.get(this, "name");
 		
 		HP = HT = 20;
 		STR = STARTING_STR;
@@ -238,7 +238,7 @@ public class Hero extends Char {
 	}
 
 	public String givenName(){
-		return name.equals("you") ? className() : name;
+		return name.equals(Messages.get(this, "name")) ? className() : name;
 	}
 	
 	public void live() {
