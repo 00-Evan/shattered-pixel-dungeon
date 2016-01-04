@@ -140,16 +140,6 @@ public class Honeypot extends Item {
 	public int price() {
 		return 30 * quantity;
 	}
-	
-	@Override
-	public String info() {
-		return
-			"This large honeypot is only really lined with honey, instead it houses a giant bee! " +
-			"These sorts of massive bees usually stay in their hives, perhaps the pot is some sort of specialized trapper's cage? " +
-			"The bee seems pretty content inside the pot with its honey, and buzzes at you warily when you look at it.";
-	}
-
-
 
 	//The bee's broken 'home', all this item does is let its bee know where it is, and who owns it (if anyone).
 	public static class ShatteredPot extends Item {
@@ -215,19 +205,6 @@ public class Honeypot extends Item {
 		@Override
 		public boolean isIdentified() {
 			return true;
-		}
-
-		@Override
-		public String info() {
-			String info =
-				"The pot has been shattered, only the sticky honey that lines its walls is holding it together, and it is slowly coming apart.";
-
-			if (Actor.findById( myBee ) != null)
-				info += "\n\nDespite its broken state, the bee still seems quite fond of the pot, and is understandably quite mad.";
-			else
-				info += "\n\nNow that its bee is gone, you can't think of a use for this wad of broken clay and drying honey.";
-
-			return info;
 		}
 
 		private static final String MYBEE = "mybee";

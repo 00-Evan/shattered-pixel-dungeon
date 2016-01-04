@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -28,8 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 
 public abstract class EquipableItem extends Item {
-
-	private static final String TXT_UNEQUIP_CURSED	= "You can't remove cursed %s!";
 
 	public static final String AC_EQUIP		= "EQUIP";
 	public static final String AC_UNEQUIP	= "UNEQUIP";
@@ -89,7 +88,7 @@ public abstract class EquipableItem extends Item {
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 
 		if (cursed) {
-			GLog.w(TXT_UNEQUIP_CURSED, name());
+			GLog.w(Messages.get(EquipableItem.class, "unequip_cursed"));
 			return false;
 		}
 

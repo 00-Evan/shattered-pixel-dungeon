@@ -75,11 +75,4 @@ public class MerchantsBeacon extends Item {
 		return 5 * quantity;
 	}
 
-	@Override
-	public String info() {
-		return "This odd piece of dwarven technology allows you to communicate from great distances." +
-				"\n\nAfter being activated, this beacon will let you sell items to Pixel Mart from anywhere in the dungeon." +
-				"\n\nHowever, the magic within the beacon will only last for one session, so use it wisely.";
-	}
-
 }

@@ -22,6 +22,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -35,8 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ArmorKit extends Item {
-	
-	private static final String TXT_SELECT_ARMOR	= "Select an armor to upgrade";
+
 	private static final String TXT_UPGRADED		= "you applied the armor kit to upgrade your %s";
 	
 	private static final float TIME_TO_UPGRADE = 2;
@@ -61,7 +62,7 @@ public class ArmorKit extends Item {
 		if (action == AC_APPLY) {
 
 			curUser = hero;
-			GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR, TXT_SELECT_ARMOR );
+			GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt") );
 			
 		} else {
 			
@@ -88,7 +89,7 @@ public class ArmorKit extends Item {
 		curUser.spend( TIME_TO_UPGRADE );
 		curUser.busy();
 		
-		GLog.w( TXT_UPGRADED, armor.name() );
+		GLog.w( Messages.get(this, "upgraded", armor.name()) );
 		
 		ClassArmor classArmor = ClassArmor.upgrade( curUser, armor );
 		if (curUser.belongings.armor == armor) {
@@ -105,14 +106,6 @@ public class ArmorKit extends Item {
 		
 		curUser.sprite.operate( curUser.pos );
 		Sample.INSTANCE.play( Assets.SND_EVOKE );
-	}
-	
-	@Override
-	public String info() {
-		return
-			"Using this kit of small tools and materials anybody can transform any armor into an \"epic armor\", " +
-			"which will keep all properties of the original armor, but will also provide its wearer a special ability " +
-			"depending on his class. No skills in tailoring, leatherworking or blacksmithing are required.";
 	}
 	
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {

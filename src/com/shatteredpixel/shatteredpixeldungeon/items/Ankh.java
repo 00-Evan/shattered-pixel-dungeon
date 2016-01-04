@@ -24,6 +24,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -35,16 +37,6 @@ import java.util.ArrayList;
 public class Ankh extends Item {
 
 	public static final String AC_BLESS = "BLESS";
-
-	public static final String TXT_DESC_NOBLESS = "Upon resurrection all non-equipped items are lost. " +
-												"Using a full dew vial, the ankh can be blessed with extra strength.";
-	public static final String TXT_DESC_BLESSED = "The ankh has been blessed and is now much stronger. " +
-											  "The Ankh will sacrifice itself to save you in a moment of deadly peril.";
-
-	public static final String TXT_BLESS = "You bless the ankh with clean water.";
-	public static final String TXT_REVIVE = "The ankh explodes with life-giving energy!";
-
-
 
 	{
 		image = ItemSpriteSheet.ANKH;
@@ -83,7 +75,7 @@ public class Ankh extends Item {
 			if (vial != null){
 				blessed = true;
 				vial.empty();
-				GLog.p( TXT_BLESS );
+				GLog.p( Messages.get(this, "bless") );
 				hero.spend( 1f );
 				hero.busy();
 
@@ -101,15 +93,11 @@ public class Ankh extends Item {
 	}
 	
 	@Override
-	public String info() {
+	public String desc() {
 		if (blessed)
-			return
-			"This ancient symbol of immortality grants the ability to return to life after death. " +
-			TXT_DESC_BLESSED;
+			return Messages.get(this, "desc_blessed");
 		else
-			return
-			"This ancient symbol of immortality grants the ability to return to life after death. " +
-			TXT_DESC_NOBLESS;
+			return super.desc();
 	}
 
 	public Boolean isBlessed(){

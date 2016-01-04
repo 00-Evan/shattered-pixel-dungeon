@@ -62,8 +62,6 @@ import java.util.LinkedList;
 
 public class Heap implements Bundlable {
 
-	private static final String TXT_MIMIC = "This is a mimic!";
-
 	private static final int SEEDS_TO_POTION = 3;
 	
 	public enum Type {
@@ -117,7 +115,6 @@ public class Heap implements Bundlable {
 		switch (type) {
 		case MIMIC:
 			if (Mimic.spawnAt(pos, items) != null) {
-				GLog.n(TXT_MIMIC);
 				destroy();
 			} else {
 				type = Type.CHEST;

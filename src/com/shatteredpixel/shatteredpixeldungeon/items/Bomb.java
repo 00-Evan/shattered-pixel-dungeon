@@ -21,6 +21,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -100,7 +102,7 @@ public class Bomb extends Item {
 	@Override
 	public boolean doPickUp(Hero hero) {
 		if (fuse != null) {
-			GLog.w("You quickly snuff the bomb's fuse.");
+			GLog.w( Messages.get(this, "snuff_fuse") );
 			fuse = null;
 		}
 		return super.doPickUp(hero);
@@ -147,7 +149,7 @@ public class Bomb extends Item {
 					}
 
 					if (ch == Dungeon.hero && !ch.isAlive())
-						Dungeon.fail("Killed by an explosion");
+						Dungeon.fail( Messages.get(this, "ondeath") );
 				}
 			}
 		}
@@ -189,11 +191,11 @@ public class Bomb extends Item {
 	}
 	
 	@Override
-	public String info() {
-		return
-			"A fairly hefty black powder bomb. An explosion from this would certainly do damage to anything nearby." +
-				(fuse != null ? "\n\nThe bomb's fuse is burning away, keep your distance or put it out!" :
-					"\n\nIt looks like the fuse will take a couple rounds to burn down once it is lit.");
+	public String desc() {
+		if (fuse == null)
+			return super.desc();
+		else
+			return Messages.get(this, "desc_burning");
 	}
 
 	private static final String FUSE = "fuse";
@@ -262,18 +264,13 @@ public class Bomb extends Item {
 		}
 
 		@Override
-		public String info() {
-			return
-				"A stack of two hefty black powder bombs, looks like you get one free!";
-		}
-
-		@Override
 		public boolean doPickUp(Hero hero) {
 			Bomb bomb = new Bomb();
 			bomb.quantity(2);
 			if (bomb.doPickUp(hero)) {
-				//isaaaaac....
-				hero.sprite.showStatus(CharSprite.NEUTRAL, "1+1 free!");
+				//isaaaaac.... (don't bother doing this when not in english)
+				if (Messages.get(this, "name").equals("two bombs"))
+					hero.sprite.showStatus(CharSprite.NEUTRAL, "1+1 free!");
 				return true;
 			}
 			return false;

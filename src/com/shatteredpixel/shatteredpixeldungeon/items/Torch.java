@@ -87,10 +87,5 @@ public class Torch extends Item {
 	public int price() {
 		return 10 * quantity;
 	}
-	
-	@Override
-	public String info() {
-		return
-			"An adventuring staple, when a dungeon goes dark, a torch can help lead the way.";
-	}
+
 }

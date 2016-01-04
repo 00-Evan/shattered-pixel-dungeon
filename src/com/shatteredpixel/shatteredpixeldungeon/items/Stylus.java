@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -34,9 +36,6 @@ import com.watabou.noosa.audio.Sample;
 import java.util.ArrayList;
 
 public class Stylus extends Item {
-	
-	private static final String TXT_SELECT_ARMOR	= "Select an armor to inscribe";
-	private static final String TXT_INSCRIBED		= "you inscribed your %s with the stylus";
 	
 	private static final float TIME_TO_INSCRIBE = 2;
 	
@@ -59,10 +58,10 @@ public class Stylus extends Item {
 	
 	@Override
 	public void execute( Hero hero, String action ) {
-		if (action == AC_INSCRIBE) {
+		if (action.equals(AC_INSCRIBE)) {
 
 			curUser = hero;
-			GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR, TXT_SELECT_ARMOR );
+			GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt") );
 			
 		} else {
 			
@@ -85,8 +84,8 @@ public class Stylus extends Item {
 		
 		detach(curUser.belongings.backpack);
 
-		GLog.w(TXT_INSCRIBED, armor.name());
-		
+		GLog.w( Messages.get(this, "inscribed"));
+
 		armor.inscribe();
 		
 		curUser.sprite.operate(curUser.pos);
@@ -102,15 +101,7 @@ public class Stylus extends Item {
 	public int price() {
 		return 30 * quantity;
 	}
-	
-	@Override
-	public String info() {
-		return
-			"This arcane stylus is made of some dark, very hard stone. Using it you can inscribe " +
-			"a magical glyph on your armor, but you have no power over choosing what glyph it will be, " +
-			"the stylus will decide it for you.";
-	}
-	
+
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( Item item ) {

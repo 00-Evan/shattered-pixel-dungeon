@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -38,10 +39,6 @@ import com.watabou.noosa.audio.Sample;
 import java.util.ArrayList;
 
 public class Weightstone extends Item {
-
-	private static final String TXT_SELECT_WEAPON	= "Select a weapon to balance";
-	private static final String TXT_LIGHT			= "you balanced your %s to make it lighter";
-	private static final String TXT_HEAVY		= "you balanced your %s to make it heavier";
 
 	private static final float TIME_TO_APPLY = 2;
 
@@ -67,7 +64,7 @@ public class Weightstone extends Item {
 		if (action == AC_APPLY) {
 
 			curUser = hero;
-			GameScene.selectItem( itemSelector, WndBag.Mode.WEAPON, TXT_SELECT_WEAPON );
+			GameScene.selectItem( itemSelector, WndBag.Mode.WEAPON, Messages.get(this, "select") );
 
 		} else {
 
@@ -92,10 +89,10 @@ public class Weightstone extends Item {
 
 		if (forSpeed) {
 			weapon.imbue = Weapon.Imbue.LIGHT;
-			GLog.p( TXT_LIGHT, weapon.name() );
+			GLog.p( Messages.get(this, "light") );
 		} else {
 			weapon.imbue = Weapon.Imbue.HEAVY;
-			GLog.p( TXT_HEAVY, weapon.name() );
+			GLog.p( Messages.get(this, "heavy") );
 		}
 
 		curUser.sprite.operate( curUser.pos );
@@ -110,13 +107,6 @@ public class Weightstone extends Item {
 		return 40 * quantity;
 	}
 
-	@Override
-	public String info() {
-		return
-				"Using a weightstone, you can balance your melee weapon to make it lighter or heavier, " +
-				"increasing either speed or damage at the expense of the other.";
-	}
-
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( Item item ) {
@@ -127,12 +117,6 @@ public class Weightstone extends Item {
 	};
 
 	public class WndBalance extends Window {
-
-		private static final String TXT_CHOICE = "How would you like to balance your %s?";
-
-		private static final String TXT_LIGHT		= "Lighter";
-		private static final String TXT_HEAVY   	= "Heavier";
-		private static final String TXT_CANCEL		= "Never mind";
 
 		private static final int WIDTH			= 120;
 		private static final int MARGIN 		= 2;
@@ -146,7 +130,7 @@ public class Weightstone extends Item {
 			titlebar.setRect( 0, 0, WIDTH, 0 );
 			add( titlebar );
 
-			BitmapTextMultiline tfMesage = PixelScene.createMultiline( Utils.format( TXT_CHOICE, weapon.name() ), 8 );
+			BitmapTextMultiline tfMesage = PixelScene.createMultiline( Messages.get(this, "choice"), 8 );
 			tfMesage.maxWidth = WIDTH - MARGIN * 2;
 			tfMesage.measure();
 			tfMesage.x = MARGIN;
@@ -156,7 +140,7 @@ public class Weightstone extends Item {
 			float pos = tfMesage.y + tfMesage.height();
 
 			if (weapon.imbue != Weapon.Imbue.LIGHT) {
-				RedButton btnSpeed = new RedButton( TXT_LIGHT ) {
+				RedButton btnSpeed = new RedButton( Messages.get(this, "light") ) {
 					@Override
 					protected void onClick() {
 						hide();
@@ -170,7 +154,7 @@ public class Weightstone extends Item {
 			}
 
 			if (weapon.imbue != Weapon.Imbue.HEAVY) {
-				RedButton btnAccuracy = new RedButton( TXT_HEAVY ) {
+				RedButton btnAccuracy = new RedButton( Messages.get(this, "heavy") ) {
 					@Override
 					protected void onClick() {
 						hide();
@@ -183,7 +167,7 @@ public class Weightstone extends Item {
 				pos = btnAccuracy.bottom();
 			}
 
-			RedButton btnCancel = new RedButton( TXT_CANCEL ) {
+			RedButton btnCancel = new RedButton( Messages.get(this, "cancel") ) {
 				@Override
 				protected void onClick() {
 					hide();

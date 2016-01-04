@@ -38,9 +38,6 @@ import com.watabou.utils.Random;
 
 public class Gold extends Item {
 
-	private static final String TXT_COLLECT	= "Collect gold coins to spend them later in a shop.";
-	private static final String TXT_INFO	= "A pile of %d gold coins. " + TXT_COLLECT;
-	private static final String TXT_INFO_1	= "One gold coin. " + TXT_COLLECT;
 	private static final String TXT_VALUE	= "%+d";
 	
 	{
@@ -89,18 +86,6 @@ public class Gold extends Item {
 	@Override
 	public boolean isIdentified() {
 		return true;
-	}
-	
-	@Override
-	public String info() {
-		switch (quantity) {
-		case 0:
-			return TXT_COLLECT;
-		case 1:
-			return TXT_INFO_1;
-		default:
-			return Utils.format( TXT_INFO, quantity );
-		}
 	}
 	
 	@Override

@@ -96,11 +96,5 @@ public class Amulet extends Item {
 	public boolean isUpgradable() {
 		return false;
 	}
-	
-	@Override
-	public String info() {
-		return
-			"The Amulet of Yendor is the most powerful known artifact of unknown origin. It is said that the amulet " +
-			"is able to fulfil any wish if its owner's will-power is strong enough to \"persuade\" it to do it.";
-	}
+
 }

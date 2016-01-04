@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -42,13 +43,7 @@ public class DewVial extends Item {
 
 	private static final float TIME_TO_DRINK = 1f;
 
-	private static final String TXT_VALUE	= "%+dHP";
 	private static final String TXT_STATUS	= "%d/%d";
-
-	private static final String TXT_AUTO_DRINK	= "The dew vial was emptied to heal your wounds.";
-	private static final String TXT_COLLECTED	= "You collected a dewdrop into your dew vial.";
-	private static final String TXT_FULL		= "Your dew vial is full!";
-	private static final String TXT_EMPTY		= "Your dew vial is empty!";
 
 	{
 		image = ItemSpriteSheet.VIAL;
@@ -99,7 +94,7 @@ public class DewVial extends Item {
 				if (effect > 0) {
 					hero.HP += effect;
 					hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), volume > 5 ? 2 : 1 );
-					hero.sprite.showStatus( CharSprite.POSITIVE, TXT_VALUE, effect );
+					hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "value", effect) );
 				}
 
 				volume = 0;
@@ -114,7 +109,7 @@ public class DewVial extends Item {
 
 
 			} else {
-				GLog.w( TXT_EMPTY );
+				GLog.w( Messages.get(this, "empty") );
 			}
 
 		} else {
@@ -142,11 +137,11 @@ public class DewVial extends Item {
 
 	public void collectDew( Dewdrop dew ) {
 
-		GLog.i( TXT_COLLECTED );
+		GLog.i( Messages.get(this, "collected") );
 		volume += dew.quantity;
 		if (volume >= MAX_VOLUME) {
 			volume = MAX_VOLUME;
-			GLog.p( TXT_FULL );
+			GLog.p( Messages.get(this, "full") );
 		}
 
 		updateQuickslot();
@@ -157,29 +152,9 @@ public class DewVial extends Item {
 		updateQuickslot();
 	}
 
-	//removed as people need a bigger distinction to realize the dew vial doesn't revive.
-	/*
-	private static final Glowing WHITE = new Glowing( 0xFFFFCC );
-
-	@Override
-	public Glowing glowing() {
-		return isFull() ? WHITE : null;
-	}*/
-
 	@Override
 	public String status() {
 		return Utils.format( TXT_STATUS, volume, MAX_VOLUME );
-	}
-
-	@Override
-	public String info() {
-		return
-			"You can store excess dew in this tiny vessel for drinking it later. " +
-			"The more full the vial is, the more each dew drop will heal you. " +
-			"A full vial is as strong as a potion of healing." +
-			"\n\nVials like this one used to be imbued with revival magic, " +
-			"but that power has faded. There still seems to be some residual power " +
-			"left, perhaps a full vial can bless another revival item.";
 	}
 	
 	@Override

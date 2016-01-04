@@ -25,12 +25,11 @@ import java.util.ArrayList;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
 abstract public class KindOfWeapon extends EquipableItem {
-
-	private static final String TXT_EQUIP_CURSED	= "you wince as your grip involuntarily tightens around your %s";
 	
 	protected static final float TIME_TO_EQUIP = 1f;
 	
@@ -61,7 +60,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 			cursedKnown = true;
 			if (cursed) {
 				equipCursed( hero );
-				GLog.n( TXT_EQUIP_CURSED, name() );
+				GLog.n( Messages.get(KindOfWeapon.class, "cursed", name()) );
 			}
 			
 			hero.spendAndNext( TIME_TO_EQUIP );

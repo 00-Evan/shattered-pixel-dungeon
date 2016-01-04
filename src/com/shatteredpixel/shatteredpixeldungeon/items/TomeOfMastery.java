@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import java.util.ArrayList;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -39,8 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChooseWay;
 
 public class TomeOfMastery extends Item {
-
-	private static final String TXT_BLINDED	= "You can't read while blinded";
 	
 	public static final float TIME_TO_READ = 10;
 	
@@ -63,11 +62,6 @@ public class TomeOfMastery extends Item {
 	@Override
 	public void execute( Hero hero, String action ) {
 		if (action.equals( AC_READ )) {
-			
-			if (hero.buff( Blindness.class ) != null) {
-				GLog.w( TXT_BLINDED );
-				return;
-			}
 			
 			curUser = hero;
 			
@@ -116,14 +110,6 @@ public class TomeOfMastery extends Item {
 		return true;
 	}
 	
-	@Override
-	public String info() {
-		return
-			"This worn leather book is not that thick, but you feel somehow, " +
-			"that you can gather a lot from it. Remember though that reading " +
-			"this tome may require some time.";
-	}
-	
 	public void choose( HeroSubClass way ) {
 		
 		detach( curUser.belongings.backpack );
@@ -138,7 +124,7 @@ public class TomeOfMastery extends Item {
 		
 		SpellSprite.show( curUser, SpellSprite.MASTERY );
 		curUser.sprite.emitter().burst( Speck.factory( Speck.MASTERY ), 12 );
-		GLog.w( "You have chosen the way of the %s!", Utils.capitalize( way.title() ) );
+		GLog.w( Messages.get(this, "way", way.title()) );
 		
 		if (way == HeroSubClass.BERSERKER && curUser.HP <= curUser.HT * Fury.LEVEL) {
 			Buff.affect( curUser, Fury.class );

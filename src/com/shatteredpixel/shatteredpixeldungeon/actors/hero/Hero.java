@@ -1218,7 +1218,7 @@ public class Hero extends Char {
 			ankh.detach(belongings.backpack);
 
 			Sample.INSTANCE.play( Assets.SND_TELEPORT );
-			GLog.w( ankh.TXT_REVIVE );
+			GLog.w( Messages.get(this, "revive") );
 			Statistics.ankhsUsed++;
 
 			return;
