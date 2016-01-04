@@ -240,10 +240,9 @@ public class Ring extends KindofMisc {
 
 		String desc = isKnown()? desc() : Messages.get(this, "unknown_desc", gem());
 
-		if (isEquipped( Dungeon.hero )) {
+		if (cursed && isEquipped( Dungeon.hero )) {
 			
-			desc += "\n\n" + Messages.get(Ring.class, "on_finger", name());
-			if (cursed) desc += " " + Messages.get(Ring.class, "cursed_worn");
+			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
 			
 		} else if (cursed && cursedKnown) {
 

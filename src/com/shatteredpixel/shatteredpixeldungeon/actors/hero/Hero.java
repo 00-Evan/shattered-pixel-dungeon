@@ -324,12 +324,11 @@ public class Hero extends Char {
 		if (wep != null) {
 			dmg = wep.damageRoll( this ) + bonus;
 		} else {
-			int str = STR() - 8;
-			dmg = bonus == 0 ?
-					str > 1 ? Random.NormalIntRange( 1, str ) : 1
-					: bonus > 0 ?
-							str > 0 ? Random.NormalIntRange( str/2+bonus, (int)(str*0.5f*bonus) + str*2 ) : 1
-							: 0;
+			if (bonus != 0){
+				dmg = Random.NormalIntRange( RingOfForce.min(bonus, STR()), RingOfForce.max(bonus, STR()) );
+			} else {
+				dmg = Random.NormalIntRange(1, Math.max(STR()-8, 1));
+			}
 		}
 		if (dmg < 0) dmg = 0;
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
