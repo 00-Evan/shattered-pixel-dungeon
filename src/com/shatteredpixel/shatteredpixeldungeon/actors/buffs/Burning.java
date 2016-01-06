@@ -75,8 +75,10 @@ public class Burning extends Buff implements Hero.Doom {
 	public boolean act() {
 		
 		if (target.isAlive()) {
-			
-			target.damage( Random.Int( 1, 5 ), this );
+
+			//maximum damage scales from 6 to 2 depending on remaining hp.
+			int maxDmg = 3 + Math.round( 4 * target.HP / (float)target.HT );
+			target.damage( Random.Int( 1, maxDmg ), this );
 			Buff.detach( target, Chill.class);
 
 			if (target instanceof Hero) {
@@ -121,7 +123,6 @@ public class Burning extends Buff implements Hero.Doom {
 		left -= TICK;
 		
 		if (left <= 0 ||
-			Random.Float() > (2 + (float)target.HP / target.HT) / 3 ||
 			(Level.water[target.pos] && !target.flying)) {
 			
 			detach();
