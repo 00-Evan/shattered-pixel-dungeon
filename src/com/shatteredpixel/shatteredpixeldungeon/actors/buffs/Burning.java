@@ -47,7 +47,6 @@ import com.watabou.utils.Random;
 public class Burning extends Buff implements Hero.Doom {
 
 	private static final String TXT_BURNS_UP		= "%s burns up!";
-	private static final String TXT_BURNED_TO_DEATH	= "You burned to death...";
 	
 	private static final float DURATION = 8f;
 	
@@ -88,7 +87,7 @@ public class Burning extends Buff implements Hero.Doom {
 				if (item instanceof Scroll) {
 					
 					item = item.detach( hero.belongings.backpack );
-					GLog.w( TXT_BURNS_UP, item.toString() );
+					GLog.w( Messages.get(this, "burnsup", item.toString()) );
 					
 					Heap.burnFX( hero.pos );
 					
@@ -99,7 +98,7 @@ public class Burning extends Buff implements Hero.Doom {
 					if (!steak.collect( hero.belongings.backpack )) {
 						Dungeon.level.drop( steak, hero.pos ).sprite.drop();
 					}
-					GLog.w( TXT_BURNS_UP, item.toString() );
+					GLog.w( Messages.get(this, "burnsup", item.toString()) );
 					
 					Heap.burnFX( hero.pos );
 					
@@ -172,6 +171,6 @@ public class Burning extends Buff implements Hero.Doom {
 		Badges.validateDeathFromFire();
 		
 		Dungeon.fail( ResultDescriptions.BURNING );
-		GLog.n( TXT_BURNED_TO_DEATH );
+		GLog.n( Messages.get(this, "ondeath") );
 	}
 }

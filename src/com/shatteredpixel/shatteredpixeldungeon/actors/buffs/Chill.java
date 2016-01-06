@@ -38,8 +38,6 @@ import java.text.DecimalFormat;
 
 public class Chill extends FlavourBuff {
 
-	private static final String TXT_FREEZES = "%s freezes!";
-
 	{
 		type = buffType.NEGATIVE;
 	}
@@ -60,7 +58,7 @@ public class Chill extends FlavourBuff {
 				if (item instanceof Potion) {
 
 					item = item.detach( hero.belongings.backpack );
-					GLog.w(TXT_FREEZES, item.toString());
+					GLog.w( Messages.get(this, "freezes", item.toString()) );
 					((Potion) item).shatter(hero.pos);
 
 				} else if (item instanceof MysteryMeat) {
@@ -70,7 +68,7 @@ public class Chill extends FlavourBuff {
 					if (!carpaccio.collect( hero.belongings.backpack )) {
 						Dungeon.level.drop( carpaccio, target.pos ).sprite.drop();
 					}
-					GLog.w(TXT_FREEZES, item.toString());
+					GLog.w( Messages.get(this, "freezes", item.toString()) );
 
 				}
 			} else if (target instanceof Thief && ((Thief)target).item instanceof Potion) {
