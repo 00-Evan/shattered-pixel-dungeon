@@ -20,7 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
-import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -34,6 +33,12 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 
 public class Sign {
+
+	private static final String[] teaser_texts = new String[]{
+		"error RaW i work",
+		"frOthinG moBs yelp",
+		"CoCoOn furor rises"
+	};
 	
 	public static void read( int pos ) {
 		
@@ -43,9 +48,15 @@ public class Sign {
 			
 		} else {
 
-			GameScene.show( new WndMessage( Messages.get(Sign.class, "tip_"+Dungeon.depth) ) );
+			if (Dungeon.depth <= 21) {
+				GameScene.show( new WndMessage( Messages.get(Sign.class, "tip_"+Dungeon.depth) ) );
+			} else {
 
-			if (Dungeon.level instanceof HallsLevel) {
+				//if we are at depths 22-24 and in english
+				if (Dungeon.depth-21 < 3 &&
+						Messages.get(Sign.class, "burn").equals("As you try to read the sign it bursts into greenish flames.")){
+					GameScene.show( new WndMessage(teaser_texts[Dungeon.depth-21]));
+				}
 
 				Dungeon.level.destroy( pos );
 				GameScene.updateMap( pos );
