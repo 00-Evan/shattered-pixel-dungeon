@@ -33,7 +33,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class ScrollOfTerror extends Scroll {
-	
+
+	{
+		initials = 10;
+	}
+
 	@Override
 	protected void doRead() {
 		

@@ -33,7 +33,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class ScrollOfRemoveCurse extends Scroll {
-	
+
+	{
+		initials = 8;
+	}
+
 	@Override
 	protected void doRead() {
 		

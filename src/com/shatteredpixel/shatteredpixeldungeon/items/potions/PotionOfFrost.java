@@ -32,6 +32,10 @@ import com.watabou.utils.PathFinder;
 public class PotionOfFrost extends Potion {
 	
 	private static final int DISTANCE	= 2;
+
+	{
+		initials = 1;
+	}
 	
 	@Override
 	public void shatter( int cell ) {

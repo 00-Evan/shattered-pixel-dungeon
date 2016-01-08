@@ -28,7 +28,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
 public class PotionOfParalyticGas extends Potion {
-	
+
+	{
+		initials = 8;
+	}
+
 	@Override
 	public void shatter( int cell ) {
 

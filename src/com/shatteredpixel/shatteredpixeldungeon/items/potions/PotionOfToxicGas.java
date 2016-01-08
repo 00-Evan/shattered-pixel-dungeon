@@ -29,6 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
 public class PotionOfToxicGas extends Potion {
 
+	{
+		initials = 11;
+	}
+
 	@Override
 	public void shatter( int cell ) {
 

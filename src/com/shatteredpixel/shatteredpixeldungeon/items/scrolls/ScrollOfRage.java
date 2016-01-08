@@ -35,7 +35,11 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class ScrollOfRage extends Scroll {
-	
+
+	{
+		initials = 6;
+	}
+
 	@Override
 	protected void doRead() {
 

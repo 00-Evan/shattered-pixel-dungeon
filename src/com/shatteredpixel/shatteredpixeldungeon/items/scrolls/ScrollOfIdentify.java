@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 public class ScrollOfIdentify extends InventoryScroll {
 
 	{
+		initials = 0;
 		mode = WndBag.Mode.UNIDENTIFED;
 
 		bones = true;

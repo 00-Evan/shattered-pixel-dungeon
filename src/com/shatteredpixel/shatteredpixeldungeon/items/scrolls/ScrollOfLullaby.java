@@ -33,7 +33,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class ScrollOfLullaby extends Scroll {
-	
+
+	{
+		initials = 1;
+	}
+
 	@Override
 	protected void doRead() {
 		

@@ -32,7 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
 public class PotionOfLiquidFlame extends Potion {
-	
+
+	{
+		initials = 5;
+	}
+
 	@Override
 	public void shatter( int cell ) {
 

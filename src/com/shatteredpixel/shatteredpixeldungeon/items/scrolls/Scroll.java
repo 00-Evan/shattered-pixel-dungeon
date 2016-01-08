@@ -41,7 +41,7 @@ public abstract class Scroll extends Item {
 	
 	protected static final float TIME_TO_READ	= 1f;
 
-	protected String initials = Messages.get(this, "initials");
+	protected int initials;
 
 	private static final Class<?>[] scrolls = {
 		ScrollOfIdentify.class,
@@ -181,7 +181,7 @@ public abstract class Scroll extends Item {
 			Messages.get(this, "unknown_desc", rune());
 	}
 
-	public String initials(){
+	public Integer initials(){
 		return isKnown() ? initials : null;
 	}
 	

@@ -28,7 +28,11 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class PotionOfMindVision extends Potion {
-	
+
+	{
+		initials = 7;
+	}
+
 	@Override
 	public void apply( Hero hero ) {
 		setKnown();

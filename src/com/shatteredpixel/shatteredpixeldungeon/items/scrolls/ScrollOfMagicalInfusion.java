@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 public class ScrollOfMagicalInfusion extends InventoryScroll {
 	
 	{
+		initials = 2;
 		mode = WndBag.Mode.ENCHANTABLE;
 
 		bones = true;

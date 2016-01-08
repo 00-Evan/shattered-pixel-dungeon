@@ -52,7 +52,7 @@ public class Potion extends Item {
 
 	private static final float TIME_TO_DRINK = 1f;
 
-	protected String initials = Messages.get(this, "initials");
+	protected Integer initials;
 	
 	private static final Class<?>[] potions = {
 		PotionOfHealing.class,
@@ -270,7 +270,7 @@ public class Potion extends Item {
 			Messages.get(Potion.class, "unknown_desc", color());
 	}
 
-	public String initials(){
+	public Integer initials(){
 		return isKnown() ? initials : null;
 	}
 	

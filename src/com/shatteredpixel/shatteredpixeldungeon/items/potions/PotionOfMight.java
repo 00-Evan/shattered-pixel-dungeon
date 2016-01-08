@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class PotionOfMight extends Potion {
 
 	{
+		initials = 6;
+
 		bones = true;
 	}
 	

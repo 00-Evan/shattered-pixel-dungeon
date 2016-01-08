@@ -32,7 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.tweeners.AlphaTweener;
 
 public class ScrollOfTeleportation extends Scroll {
-	
+
+	{
+		initials = 9;
+	}
+
 	@Override
 	protected void doRead() {
 

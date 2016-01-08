@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 public class PotionOfExperience extends Potion {
 
 	{
+		initials = 0;
+
 		bones = true;
 	}
 	

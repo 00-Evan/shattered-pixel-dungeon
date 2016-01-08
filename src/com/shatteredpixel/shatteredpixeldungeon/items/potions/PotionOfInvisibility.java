@@ -33,7 +33,11 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class PotionOfInvisibility extends Potion {
 
 	private static final float ALPHA	= 0.4f;
-	
+
+	{
+		initials = 3;
+	}
+
 	@Override
 	public void apply( Hero hero ) {
 		setKnown();

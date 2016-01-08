@@ -35,6 +35,10 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class ScrollOfMagicMapping extends Scroll {
 
+	{
+		initials = 3;
+	}
+
 	@Override
 	protected void doRead() {
 		

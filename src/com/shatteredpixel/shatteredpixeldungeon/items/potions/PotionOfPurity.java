@@ -43,7 +43,11 @@ import com.watabou.utils.PathFinder;
 public class PotionOfPurity extends Potion {
 	
 	private static final int DISTANCE	= 5;
-	
+
+	{
+		initials = 9;
+	}
+
 	@Override
 	public void shatter( int cell ) {
 		

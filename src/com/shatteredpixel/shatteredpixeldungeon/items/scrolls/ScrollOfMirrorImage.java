@@ -33,6 +33,10 @@ import com.watabou.utils.Random;
 
 public class ScrollOfMirrorImage extends Scroll {
 
+	{
+		initials = 4;
+	}
+
 	private static final int NIMAGES	= 3;
 	
 	@Override

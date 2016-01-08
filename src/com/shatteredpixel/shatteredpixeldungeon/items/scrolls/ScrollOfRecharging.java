@@ -34,7 +34,11 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class ScrollOfRecharging extends Scroll {
 
 	public static final float BUFF_DURATION = 30f;
-	
+
+	{
+		initials = 7;
+	}
+
 	@Override
 	protected void doRead() {
 

@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 public class ScrollOfUpgrade extends InventoryScroll {
 	
 	{
+		initials = 11;
 		mode = WndBag.Mode.UPGRADEABLE;
 
 		bones = true;
