@@ -66,10 +66,9 @@ public class Dreamfoil extends Plant {
 
 	public static class Seed extends Plant.Seed {
 		{
-			setPlant(Dreamfoil.class);
-
 			image = ItemSpriteSheet.SEED_DREAMFOIL;
 
+			plantClass = Dreamfoil.class;
 			alchemyClass = PotionOfPurity.class;
 		}
 	}

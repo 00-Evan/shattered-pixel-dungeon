@@ -39,10 +39,9 @@ public class BlandfruitBush extends Plant {
 
 	public static class Seed extends Plant.Seed {
 		{
-			setPlant( BlandfruitBush.class );
-
 			image = ItemSpriteSheet.SEED_BLANDFRUIT;
 
+			plantClass = BlandfruitBush.class;
 			alchemyClass = null;
 		}
 

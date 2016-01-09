@@ -271,7 +271,7 @@ public class WandOfRegrowth extends Wand {
 		//seed is never dropped, only care about plant class
 		public static class Seed extends Plant.Seed {
 			{
-				setPlant(Dewcatcher.class);
+				plantClass = Dewcatcher.class;
 			}
 		}
 	}
@@ -305,7 +305,7 @@ public class WandOfRegrowth extends Wand {
 		//seed is never dropped, only care about plant class
 		public static class Seed extends Plant.Seed {
 			{
-				setPlant(Seedpod.class);
+				plantClass = Seedpod.class;
 			}
 		}
 

@@ -56,10 +56,9 @@ public class Earthroot extends Plant {
 	
 	public static class Seed extends Plant.Seed {
 		{
-			setPlant( Earthroot.class );
-
 			image = ItemSpriteSheet.SEED_EARTHROOT;
 
+			plantClass = Earthroot.class;
 			alchemyClass = PotionOfParalyticGas.class;
 
 			bones = true;

@@ -55,10 +55,9 @@ public class Sungrass extends Plant {
 	
 	public static class Seed extends Plant.Seed {
 		{
-			setPlant( Sungrass.class );
-
 			image = ItemSpriteSheet.SEED_SUNGRASS;
 
+			plantClass = Sungrass.class;
 			alchemyClass = PotionOfHealing.class;
 
 			bones = true;

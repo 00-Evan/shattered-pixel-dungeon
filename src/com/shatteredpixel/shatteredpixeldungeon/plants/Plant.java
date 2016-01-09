@@ -128,15 +128,8 @@ public abstract class Plant implements Bundlable {
 		}
 		
 		protected Class<? extends Plant> plantClass;
-		protected String plantName;
 		
 		public Class<? extends Item> alchemyClass;
-
-		protected void setPlant(Class<? extends Plant> plantClass){
-			this.plantClass = plantClass;
-			plantName = Messages.get(plantClass, "name");
-			name = Messages.get(Seed.class, "seed_of", plantName);
-		}
 		
 		@Override
 		public ArrayList<String> actions( Hero hero ) {
@@ -206,7 +199,7 @@ public abstract class Plant implements Bundlable {
 
 		@Override
 		public String info() {
-			return Messages.get( Seed.class, "info", Utils.indefinite( plantName ), desc() );
+			return Messages.get( Seed.class, "info", desc() );
 		}
 	}
 }

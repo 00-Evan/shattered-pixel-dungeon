@@ -47,10 +47,9 @@ public class Firebloom extends Plant {
 	
 	public static class Seed extends Plant.Seed {
 		{
-			setPlant( Firebloom.class );
-
 			image = ItemSpriteSheet.SEED_FIREBLOOM;
 
+			plantClass = Firebloom.class;
 			alchemyClass = PotionOfLiquidFlame.class;
 		}
 	}

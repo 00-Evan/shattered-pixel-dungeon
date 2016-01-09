@@ -37,10 +37,9 @@ public class Rotberry extends Plant {
 
 	public static class Seed extends Plant.Seed {
 		{
-			setPlant( Rotberry.class );
-
 			image = ItemSpriteSheet.SEED_ROTBERRY;
 
+			plantClass = Rotberry.class;
 			alchemyClass = PotionOfStrength.class;
 		}
 	}

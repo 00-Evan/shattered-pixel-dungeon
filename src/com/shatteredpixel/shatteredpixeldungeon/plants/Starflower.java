@@ -49,10 +49,9 @@ public class Starflower extends Plant {
 	public static class Seed extends Plant.Seed{
 
 		{
-			setPlant( Starflower.class );
-
 			image = ItemSpriteSheet.SEED_STARFLOWER;
 
+			plantClass = Starflower.class;
 			alchemyClass = PotionOfExperience.class;
 		}
 	}

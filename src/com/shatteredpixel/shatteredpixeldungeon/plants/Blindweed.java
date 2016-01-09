@@ -60,10 +60,9 @@ public class Blindweed extends Plant {
 	
 	public static class Seed extends Plant.Seed {
 		{
-			setPlant(Blindweed.class);
-
 			image = ItemSpriteSheet.SEED_BLINDWEED;
 
+			plantClass = Blindweed.class;
 			alchemyClass = PotionOfInvisibility.class;
 		}
 	}

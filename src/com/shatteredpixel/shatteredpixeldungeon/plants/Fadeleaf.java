@@ -74,10 +74,9 @@ public class Fadeleaf extends Plant {
 	
 	public static class Seed extends Plant.Seed {
 		{
-			setPlant( Fadeleaf.class );
-
 			image = ItemSpriteSheet.SEED_FADELEAF;
 
+			plantClass = Fadeleaf.class;
 			alchemyClass = PotionOfMindVision.class;
 		}
 	}

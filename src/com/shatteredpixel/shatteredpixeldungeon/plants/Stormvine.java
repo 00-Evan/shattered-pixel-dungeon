@@ -44,10 +44,9 @@ public class Stormvine extends Plant {
 
 	public static class Seed extends Plant.Seed {
 		{
-			setPlant( Stormvine.class );
-
 			image = ItemSpriteSheet.SEED_STORMVINE;
 
+			plantClass = Stormvine.class;
 			alchemyClass = PotionOfLevitation.class;
 		}
 	}
