@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -95,7 +96,7 @@ public class UnstableSpellbook extends Artifact {
 		if (action.equals( AC_READ )) {
 
 			if (hero.buff( Blindness.class ) != null) GLog.w("You cannot read from the book while blinded.");
-			else if (!isEquipped( hero ))             GLog.i("You need to equip your spellbook to do that.");
+			else if (!isEquipped( hero ))             GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge == 0)                     GLog.i("Your spellbook is out of energy for now.");
 			else if (cursed)                          GLog.i("Your cannot read from a cursed spellbook.");
 			else {

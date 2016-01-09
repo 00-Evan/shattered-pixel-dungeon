@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -65,7 +66,6 @@ public class HornOfPlenty extends Artifact {
 	public static final String AC_EAT = "EAT";
 	public static final String AC_STORE = "STORE";
 
-	protected String inventoryTitle = "Select a piece of food";
 	protected WndBag.Mode mode = WndBag.Mode.FOOD;
 
 	@Override
@@ -84,8 +84,8 @@ public class HornOfPlenty extends Artifact {
 
 		if (action.equals(AC_EAT)){
 
-			if (!isEquipped(hero)) GLog.i("You need to equip your horn to do that.");
-			else if (charge == 0)  GLog.i("Your horn has no food in it to eat!");
+			if (!isEquipped(hero)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+			else if (charge == 0)  GLog.i( Messages.get(this, "no_food") );
 			else {
 				((Hunger) hero.buff(Hunger.class)).satisfy(energy * charge);
 
@@ -116,7 +116,7 @@ public class HornOfPlenty extends Artifact {
 				hero.busy();
 				SpellSprite.show(hero, SpellSprite.FOOD);
 				Sample.INSTANCE.play(Assets.SND_EAT);
-				GLog.i("You eat from the horn.");
+				GLog.i( Messages.get(this, "eat") );
 
 				hero.spend(TIME_TO_EAT);
 
@@ -129,7 +129,7 @@ public class HornOfPlenty extends Artifact {
 
 		} else if (action.equals(AC_STORE)){
 
-			GameScene.selectItem(itemSelector, mode, inventoryTitle);
+			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
 		}
 	}
 
@@ -140,28 +140,14 @@ public class HornOfPlenty extends Artifact {
 
 	@Override
 	public String desc() {
-		String desc = "This horn can't be blown into, but instead seems to fill up with food over time.\n\n";
-
-		if (charge == 0)
-			desc += "The horn is completely empty.";
-		else if (charge < 3)
-			desc += "The horn is almost empty, a few small fruits and berries sit in the back.";
-		else if (charge < 7)
-			desc += "The horn is partially filled, you can see several fruits & vegetables inside.";
-		else if (charge < 10)
-			desc += "The horn is getting quite full, several pieces of fresh produce are poking up towards the front.";
-		else
-			desc += "The horn is overflowing! A delicious array of fruit and veg is filling the horn up to its brim.";
+		String desc = super.desc();
 
 		if ( isEquipped( Dungeon.hero ) ){
 			if (!cursed) {
-				desc += "\n\nThe horn rests at your side and is surprisingly lightweight, even with food in it.";
-
-				if (level() < 15)
-					desc += " Perhaps there is a way to increase the horn's power by giving it food energy.";
+				if (level() < levelCap)
+					desc += "\n\n" +Messages.get(this, "desc_hint");
 			} else {
-				desc += "\n\nThe cursed horn has bound itself to your side, " +
-						"it seems to be eager to take food rather than produce it.";
+				desc += "\n\n" +Messages.get(this, "desc_cursed");
 			}
 		}
 
@@ -194,7 +180,7 @@ public class HornOfPlenty extends Artifact {
 						image = ItemSpriteSheet.ARTIFACT_HORN1;
 
 					if (charge == chargeCap){
-						GLog.p("Your horn is full of food!");
+						GLog.p( Messages.get(this, "full") );
 						partialCharge = 0;
 					}
 
@@ -215,7 +201,7 @@ public class HornOfPlenty extends Artifact {
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof Food) {
 				if (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null){
-					GLog.w("your horn rejects the unprepared blandfruit.");
+					GLog.w( Messages.get(HornOfPlenty.class, "reject") );
 				} else {
 					Hero hero = Dungeon.hero;
 					hero.sprite.operate( hero.pos );
@@ -225,9 +211,9 @@ public class HornOfPlenty extends Artifact {
 					curItem.upgrade(((Food)item).hornValue);
 					if (curItem.level() >= 30){
 						curItem.level(30);
-						GLog.p("your horn has consumed all the food it can!");
+						GLog.p( Messages.get(HornOfPlenty.class, "maxlevel") );
 					} else
-						GLog.p("the horn consumes your food offering and grows in strength!");
+						GLog.p( Messages.get(HornOfPlenty.class, "levelup") );
 					item.detach(hero.belongings.backpack);
 				}
 

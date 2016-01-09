@@ -79,7 +79,7 @@ public class SandalsOfNature extends Artifact {
 			GameScene.selectItem(itemSelector, mode, inventoryTitle);
 		} else if (action.equals(AC_ROOT) && level() > 0){
 
-			if (!isEquipped( hero )) GLog.i("You need to equip them to do that.");
+			if (!isEquipped( hero )) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge == 0)    GLog.i("They have no energy right now.");
 			else {
 				Buff.prolong(hero, Roots.class, 5);
@@ -101,39 +101,23 @@ public class SandalsOfNature extends Artifact {
 	public String desc() {
 		String desc = "";
 		if (level() == 0)
-			desc += "What initially seem like sandals made of twine are actually two plants! The footwear moves ever " +
-				  "so slightly when being held. They seem very weak and pale, perhaps they need to be given nutrients?";
+			desc += "What initially seem like sandals made of twine are actually two plants! They seem very weak and pale, perhaps they need to be given nutrients?";
 		else if (level() == 1)
-			desc += "The footwear has grown and now more closely resemble two tailored shoes. They seem to match the " +
-				"contours of your feet exactly. Some colour has returned to them, perhaps they can still grow further?";
+			desc += "The footwear has grown and now more closely resemble two tailored shoes. Some colour has returned to them, perhaps they can still grow further?";
 		else if (level() == 2)
-			desc += "The plants have grown again and now resembles a pair of solid tall boots. They appear to be made" +
-					" of solid bark more than vine now, yet are still very flexible. The plants seem to have " +
+			desc += "The plants have grown again and now resembles a pair of solid boots made from bark.The plants seem to have " +
 					"regained their strength, but perhaps they can still grow further";
 		else
-			desc += "Now almost tall enough to make full pants, the bark-mesh artifact seems to have reached its " +
-					"maximum size. Perhaps the two plants don't want to merge together? The greaves are a deep brown " +
+			desc += "The plants seem to have reached their maximum size, they resemble a pair of armored greaves. The greaves are a deep brown " +
 					"and resemble a very sturdy tree.";
 
 		if ( isEquipped ( Dungeon.hero ) ){
 			desc += "\n\n";
-			if (level() == 0) {
-				if (!cursed)
-					desc += "The sandals wrap snugly around your feet, they seem happy to be worn.";
-				else
-					desc += "The cursed sandals wrap tightly around your feet.";
-			}
-			else if (level() == 1)
-				desc += "The shoes fit on loosely but quickly tighten to make a perfect fit.";
-			else if (level() == 2)
-				desc += "The boots fit snugly and add a nice heft to your step.";
-			else
-				desc += "The greaves are thick and weighty, but very easy to move in, as if they are moving with you.";
 
 			if (!cursed)
-				desc += " You feel more attuned with nature while wearing them.";
+				desc += " You feel more attuned with nature while wearing this artifact.";
 			else
-				desc += " They are blocking any attunement with nature.";
+				desc += " The cursed sandals are blocking any attunement with nature.";
 
 			if (level() > 0)
 				desc += "\n\nThe footwear has gained the ability to form up into a sort of immobile natural armour, " +
@@ -169,7 +153,6 @@ public class SandalsOfNature extends Artifact {
 
 
 	private static final String SEEDS = "seeds";
-	private static final String NAME = "name";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -200,7 +183,7 @@ public class SandalsOfNature extends Artifact {
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof Plant.Seed) {
 				if (seeds.contains(item.name())){
-					GLog.w("Your " + name + " have already gained nutrients from that seed recently.");
+					GLog.w("Your footwear have already gained nutrients from that seed recently.");
 				} else {
 					seeds.add(item.name());
 
@@ -217,7 +200,7 @@ public class SandalsOfNature extends Artifact {
 						}
 
 					} else {
-						GLog.i("Your " + name + " absorb the seed, they seem healthier.");
+						GLog.i("The footwear absorbs the seed, they seem healthier.");
 					}
 					item.detach(hero.belongings.backpack);
 				}

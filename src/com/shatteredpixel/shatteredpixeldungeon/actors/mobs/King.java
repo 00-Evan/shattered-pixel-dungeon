@@ -160,7 +160,6 @@ public class King extends Mob {
 		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
 		if (beacon != null) {
 			beacon.upgrade();
-			GLog.p("Your beacon grows stronger!");
 		}
 		
 		yell( Messages.get(this, "defeated") );

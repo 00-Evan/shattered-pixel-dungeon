@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -74,9 +75,9 @@ public class CloakOfShadows extends Artifact {
 		if (action.equals( AC_STEALTH )) {
 
 			if (!stealthed){
-				if (!isEquipped(hero)) GLog.i("You need to equip your cloak to do that.");
-				else if (cooldown > 0) GLog.i("Your cloak needs " + cooldown + " more rounds to re-energize.");
-				else if (charge <= 1)  GLog.i("Your cloak hasn't recharged enough to be usable yet.");
+				if (!isEquipped(hero)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+				else if (cooldown > 0) GLog.i( Messages.get(this, "cooldown", cooldown) );
+				else if (charge <= 1)  GLog.i( Messages.get(this, "no_charge") );
 				else {
 					stealthed = true;
 					hero.spend( 1f );
@@ -90,14 +91,12 @@ public class CloakOfShadows extends Artifact {
 						hero.sprite.alpha(0.4f);
 					}
 					hero.sprite.operate(hero.pos);
-					GLog.i("Your cloak blends you into the shadows.");
 				}
 			} else {
 				stealthed = false;
 				activeBuff.detach();
 				activeBuff = null;
 				hero.sprite.operate( hero.pos );
-				GLog.i("You return from underneath your cloak.");
 			}
 
 		} else
@@ -136,28 +135,6 @@ public class CloakOfShadows extends Artifact {
 	public Item upgrade() {
 		chargeCap++;
 		return super.upgrade();
-	}
-
-	@Override
-	public String desc() {
-		String desc = "This light silken cloak shimmers in and out of your vision as it sways in the air. When worn, " +
-				"it can be used to hide your presence for a short time.\n\n";
-
-		if (level() < 5)
-		 desc += "The cloak's magic has faded and it is not very powerful, perhaps it will regain strength through use.";
-		else if (level() < 10)
-			desc += "The cloak's power has begun to return.";
-		else if (level() < 15)
-			desc += "The cloak has almost returned to full strength.";
-		else
-			desc += "The cloak is at full potential and will work for extended durations.";
-
-
-		if ( isEquipped (Dungeon.hero) )
-			desc += "\n\nThe cloak rests around your shoulders.";
-
-
-		return desc;
 	}
 
 	private static final String STEALTHED = "stealthed";
@@ -231,7 +208,7 @@ public class CloakOfShadows extends Artifact {
 			if (turnsToCost == 0) charge--;
 			if (charge <= 0) {
 				detach();
-				GLog.w("Your cloak has run out of energy.");
+				GLog.w( Messages.get(this, "no_charge") );
 				((Hero)target).interrupt();
 			}
 
@@ -240,7 +217,7 @@ public class CloakOfShadows extends Artifact {
 			if (exp >= (level()+1)*50 && level() < levelCap) {
 				upgrade();
 				exp -= level()*50;
-				GLog.p("Your cloak grows stronger!");
+				GLog.p( Messages.get(this, "levelup") );
 			}
 
 			if (turnsToCost == 0) turnsToCost = 2;
@@ -260,7 +237,7 @@ public class CloakOfShadows extends Artifact {
 			if (exp >= (level()+1)*50 && level() < levelCap) {
 				upgrade();
 				exp -= level()*50;
-				GLog.p("Your cloak grows stronger!");
+				GLog.p( Messages.get(this, "levelup") );
 			}
 
 			updateQuickslot();
@@ -275,17 +252,12 @@ public class CloakOfShadows extends Artifact {
 
 		@Override
 		public String toString() {
-			return "Cloaked";
+			return Messages.get(this, "name");
 		}
 
 		@Override
 		public String desc() {
-			return "Your cloak of shadows is granting you invisibility while you are shrouded by it.\n" +
-					"\n" +
-					"While you are invisible enemies are unable to attack or follow you. " +
-					"Most physical attacks and magical effects (such as scrolls and wands) will immediately cancel invisibility.\n" +
-					"\n" +
-					"You will remain cloaked until it is cancelled or your cloak runs out of charge.";
+			return Messages.get(this, "desc");
 		}
 
 		@Override

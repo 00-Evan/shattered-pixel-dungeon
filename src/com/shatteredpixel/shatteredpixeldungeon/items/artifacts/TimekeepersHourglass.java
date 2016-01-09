@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -40,14 +41,6 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class TimekeepersHourglass extends Artifact {
-
-	private static final String TXT_HGLASS	= "Timekeeper's Hourglass";
-	private static final String TXT_STASIS	= "Put myself in stasis";
-	private static final String TXT_FREEZE	= "Freeze time around me";
-	private static final String TXT_DESC 	=
-			"How would you like to use the hourglass's magic?\n\n" +
-			"While in stasis, time will move normally while you are frozen and completely invulnerable.\n\n" +
-			"When time is frozen, you can move as if your actions take no time. Note that attacking will break this.";
 
 	{
 		image = ItemSpriteSheet.ARTIFACT_HOURGLASS;
@@ -78,23 +71,26 @@ public class TimekeepersHourglass extends Artifact {
 	public void execute( Hero hero, String action ) {
 		if (action.equals(AC_ACTIVATE)){
 
-			if (!isEquipped( hero ))        GLog.i("You need to equip your hourglass to do that.");
-			else if (activeBuff != null)    GLog.i("Your hourglass is already in use.");
-			else if (charge <= 1)           GLog.i("Your hourglass hasn't recharged enough to be usable yet.");
-			else if (cursed)                GLog.i("You cannot use a cursed hourglass.");
+			if (!isEquipped( hero ))        GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+			else if (activeBuff != null)    GLog.i( Messages.get(this, "in_use") );
+			else if (charge <= 1)           GLog.i( Messages.get(this, "no_charge") );
+			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
 			else GameScene.show(
-						new WndOptions(TXT_HGLASS, TXT_DESC, TXT_STASIS, TXT_FREEZE) {
+						new WndOptions( Messages.get(this, "name"),
+								Messages.get(this, "prompt"),
+								Messages.get(this, "stasis"),
+								Messages.get(this, "freeze")) {
 							@Override
 							protected void onSelect(int index) {
 								if (index == 0) {
-									GLog.i("The world seems to shift around you in an instant.");
+									GLog.i( Messages.get(this, "onstasis") );
 									GameScene.flash(0xFFFFFF);
 									Sample.INSTANCE.play(Assets.SND_TELEPORT);
 
 									activeBuff = new timeStasis();
 									activeBuff.attachTo(Dungeon.hero);
 								} else if (index == 1) {
-									GLog.i("everything around you suddenly freezes.");
+									GLog.i( Messages.get(this, "onfreeze") );
 									GameScene.flash(0xFFFFFF);
 									Sample.INSTANCE.play(Assets.SND_TELEPORT);
 
@@ -145,22 +141,15 @@ public class TimekeepersHourglass extends Artifact {
 
 	@Override
 	public String desc() {
-		String desc =
-				"This large ornate hourglass looks fairly unassuming, but you feel a great power in its finely carved" +
-				" frame. As you rotate the hourglass and watch the sand pour you can feel its magic tugging at you, " +
-				"surely invoking this magic would give you some power over time.";
+		String desc = super.desc();
 
 		if (isEquipped( Dungeon.hero )){
 			if (!cursed) {
-				desc += "\n\nThe hourglass rests at your side, the whisper of steadily pouring sand is reassuring.";
-
 				if (level() < levelCap )
-					desc +=
-						"\n\nThe hourglass seems to have lost some sand with age. While there are no cracks, " +
-						"there is a port on the top of the hourglass to pour sand in, if only you could find some...";
-			}else
-				desc += "\n\nThe cursed hourglass is locked to your side, " +
-						"you can feel it trying to manipulate your flow of time.";
+					desc += "\n\n" + Messages.get(this, "desc_hint");
+
+			} else
+				desc += "\n\n" + Messages.get(this, "desc_cursed");
 		}
 		return desc;
 	}
@@ -366,21 +355,15 @@ public class TimekeepersHourglass extends Artifact {
 				hourglass.upgrade();
 				Sample.INSTANCE.play( Assets.SND_DEWDROP );
 				if (hourglass.level() == hourglass.levelCap)
-					GLog.p("Your hourglass is filled with magical sand!");
+					GLog.p( Messages.get(this, "maxlevel") );
 				else
-					GLog.i("you add the sand to your hourglass.");
+					GLog.i( Messages.get(this, "levelup") );
 				hero.spendAndNext(TIME_TO_PICK_UP);
 				return true;
 			} else {
-				GLog.w("You have no hourglass to place this sand into.");
+				GLog.w( Messages.get(this, "no_hourglass") );
 				return false;
 			}
-		}
-
-		@Override
-		public String desc(){
-			return "This small bag of finely ground sand should work perfectly with your hourglass.\n\n" +
-					"It seems odd that the shopkeeper would have this specific item right when you need it.";
 		}
 
 		@Override

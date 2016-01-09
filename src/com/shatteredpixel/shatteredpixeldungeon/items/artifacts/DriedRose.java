@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -88,7 +89,7 @@ public class DriedRose extends Artifact {
 		if (action.equals(AC_SUMMON)) {
 
 			if (spawned)                    GLog.n("sad ghost: \"I'm already here\"");
-			else if (!isEquipped( hero ))   GLog.i("You need to equip your rose to do that.");
+			else if (!isEquipped( hero ))   GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge != chargeCap)   GLog.i("Your rose isn't fully charged yet.");
 			else if (cursed)                GLog.i("You cannot use a cursed rose.");
 			else {
@@ -140,19 +141,12 @@ public class DriedRose extends Artifact {
 
 		if (isEquipped( Dungeon.hero )){
 			if (!cursed){
-				desc += "\n\nThe rose rests in your hand, it feels strangely warm.";
 
-				if (level() < 5)
-					desc+= "\n\nThe rose has lost most of its petals. It feels extremely frail, like it " +
-							"could snap any moment.";
-				else if (level() < 10)
-					desc+= "\n\nYou have reattached many petals and the rose has started to somehow come back to life."+
-							" It almost looks like it's ready to bloom.";
-				else
-					desc+= "\n\nThe rose has blossomed again through some kind of magic, its connection to your spirit"+
-							" friend is stronger than ever.";
+				if (level() < levelCap)
+					desc+= "\n\nIt seems to be missing some petals. Perhaps reattaching them out strengthen the rose.";
+
 			} else
-				desc += "\n\nThe cursed rose is bound to you hand, it feels eerily cold.";
+				desc += "\n\nThe cursed rose is bound to your hand, it feels eerily cold.";
 		}
 
 		return desc;

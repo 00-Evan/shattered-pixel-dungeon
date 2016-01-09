@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -39,7 +40,7 @@ public class CapeOfThorns extends Artifact {
 		chargeCap = 100;
 		cooldown = 0;
 
-		defaultAction = "NONE";
+		defaultAction = "NONE"; //so it can be quickslotted
 	}
 
 	@Override
@@ -49,17 +50,13 @@ public class CapeOfThorns extends Artifact {
 
 	@Override
 	public String desc() {
-		String desc = "These collapsed sheets of metal from the DM-300 have formed together into a rigid wearable " +
-				"cape. The metal is old and coated in thick flakes of rust. It seems to store a deep energy, " +
-				"perhaps it has some of the DM-300's power?";
+		String desc = Messages.get(this, "desc");
 		if (isEquipped( Dungeon.hero )) {
 			desc += "\n\n";
 			if (cooldown == 0)
-				desc += "The cape feels reassuringly heavy on your shoulders. You're not sure if it will directly " +
-						"help you in a fight, but it seems to be gaining energy from the damage you take.";
+				desc += Messages.get(this, "desc_inactive");
 			else
-				desc += "The cape seems to be releasing some stored energy, " +
-						"it is radiating a protective power at all angles. ";
+				desc += Messages.get(this, "desc_active");
 		}
 
 		return desc;
@@ -73,7 +70,7 @@ public class CapeOfThorns extends Artifact {
 				cooldown--;
 				if (cooldown == 0) {
 					BuffIndicator.refreshHero();
-					GLog.w("Your Cape becomes inert again.");
+					GLog.w( Messages.get(this, "inert") );
 				}
 				updateQuickslot();
 			}
@@ -87,7 +84,7 @@ public class CapeOfThorns extends Artifact {
 				if (charge >= chargeCap){
 					charge = 0;
 					cooldown = 10+level();
-					GLog.p("Your Cape begins radiating energy, you feel protected!");
+					GLog.p( Messages.get(this, "radiating") );
 					BuffIndicator.refreshHero();
 				}
 			}
@@ -105,7 +102,7 @@ public class CapeOfThorns extends Artifact {
 				if (exp >= (level()+1)*5 && level() < levelCap){
 					exp -= (level()+1)*5;
 					upgrade();
-					GLog.p("Your Cape grows stronger!");
+					GLog.p( Messages.get(this, "levelup") );
 				}
 
 			}
@@ -115,17 +112,12 @@ public class CapeOfThorns extends Artifact {
 
 		@Override
 		public String toString() {
-				return "Thorns";
+				return Messages.get(this, "name");
 		}
 
 		@Override
 		public String desc() {
-			return "Your cape is radiating energy, surrounding you in a field of deflective force!\n" +
-					"\n" +
-					"All damage you receive is reduced while the thorns effect is active. Additionally, " +
-					"if the attacker is next to you, the reduced amount is deflected back at the attacker.\n" +
-					"\n" +
-					"Your cape will continue radiating energy for " + dispTurns(cooldown) + ".";
+			return Messages.get(this, "desc", dispTurns(cooldown));
 		}
 
 		@Override

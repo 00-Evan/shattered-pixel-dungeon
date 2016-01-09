@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
@@ -43,10 +44,6 @@ public class Artifact extends KindofMisc {
 	private static final String TXT_TO_STRING_CHARGE		= "%s (%d/%d)";
 	private static final String TXT_TO_STRING_LVL	        = "%s%+d";
 	private static final String TXT_TO_STRING_LVL_CHARGE	= "%s%+d (%d/%d)";
-
-	private static final String TXT_UNEQUIP_TITLE = "Unequip one item";
-	private static final String TXT_UNEQUIP_MESSAGE =
-			"You can only wear two misc items at a time.";
 
 	protected Buff passiveBuff;
 	protected Buff activeBuff;
@@ -87,7 +84,7 @@ public class Artifact extends KindofMisc {
 		if ((hero.belongings.misc1 != null && hero.belongings.misc1.getClass() == this.getClass())
 				|| (hero.belongings.misc2 != null && hero.belongings.misc2.getClass() == this.getClass())){
 
-			GLog.w("you cannot wear two of the same artifact");
+			GLog.w( Messages.get(Artifact.class, "cannot_wear_two") );
 			return false;
 
 		} else if (hero.belongings.misc1 != null && hero.belongings.misc2 != null) {
@@ -97,7 +94,8 @@ public class Artifact extends KindofMisc {
 			final Artifact art = this;
 
 			ShatteredPixelDungeon.scene().add(
-					new WndOptions(TXT_UNEQUIP_TITLE, TXT_UNEQUIP_MESSAGE,
+					new WndOptions(Messages.get(Artifact.class, "unequip_title"),
+							Messages.get(Artifact.class, "unequip_message"),
 							Utils.capitalize(m1.toString()),
 							Utils.capitalize(m2.toString())) {
 
@@ -134,7 +132,7 @@ public class Artifact extends KindofMisc {
 			identify();
 			if (cursed) {
 				equipCursed( hero );
-				GLog.n( "the " + this.name + " painfully binds itself to you" );
+				GLog.n( Messages.get(Artifact.class, "cursed_worn") );
 			}
 
 			hero.spendAndNext( TIME_TO_EQUIP );
@@ -200,7 +198,7 @@ public class Artifact extends KindofMisc {
 	public String info() {
 		if (cursed && cursedKnown && !isEquipped( Dungeon.hero )) {
 
-			return desc() + "\n\nYou can feel a malevolent magic lurking within the " + name() + ".";
+			return desc() + "\n\n" + Messages.get(Artifact.class, "curse_known");
 
 		} else {
 

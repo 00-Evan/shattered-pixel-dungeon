@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -43,13 +44,10 @@ public class MasterThievesArmband extends Artifact {
 
 	@Override
 	public String desc() {
-		String desc = "This purple velvet armband bears the mark of a master thief. This doesn't belong to you, but " +
-				"you doubt it belonged to the person you took it from either.";
+		String desc = super.desc();
 
 		if ( isEquipped (Dungeon.hero) )
-			desc += "\n\nWith the armband around your wrist you feel more dexterous and cunning. Every piece of gold " +
-					"you find makes you desire others property more. " +
-					"You wonder if Pixel Mart accepts the five finger discount...";
+			desc += "\n\n" + Messages.get(this, "desc_worn");
 
 		return desc;
 	}
