@@ -189,9 +189,7 @@ public class PixelScene extends Scene {
 	}
 
 	public static RenderedText renderText( int size ) {
-		RenderedText result = new RenderedText( size*defaultZoom);
-		result.scale.set(1/(float)defaultZoom);
-		return result;
+		return renderText("", size);
 	}
 
 	public static RenderedText renderText( String text, int size ) {
