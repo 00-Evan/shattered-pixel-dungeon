@@ -33,8 +33,8 @@ import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.Scene;
-import com.watabou.noosa.Visual;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
@@ -185,6 +185,18 @@ public class PixelScene extends Scene {
 		BitmapTextMultiline result = new BitmapTextMultiline( text, font );
 		result.scale.set( scale );
 		
+		return result;
+	}
+
+	public static RenderedText renderText( int size ) {
+		RenderedText result = new RenderedText( size*defaultZoom);
+		result.scale.set(1/(float)defaultZoom);
+		return result;
+	}
+
+	public static RenderedText renderText( String text, int size ) {
+		RenderedText result = new RenderedText( text, size*defaultZoom);
+		result.scale.set(1/(float)defaultZoom);
 		return result;
 	}
 
