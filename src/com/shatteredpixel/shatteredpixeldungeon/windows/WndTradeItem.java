@@ -146,7 +146,7 @@ public class WndTradeItem extends Window {
 						if(thievery.steal(price)){
 							Hero hero = Dungeon.hero;
 							Item item = heap.pickUp();
-							GLog.i( Messages.get(this, "stole", item.name()) );
+							GLog.i( Messages.get(WndTradeItem.class, "stole", item.name()) );
 							hide();
 
 							if (!item.doPickUp( hero )) {
