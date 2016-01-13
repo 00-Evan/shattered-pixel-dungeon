@@ -27,14 +27,8 @@ import android.opengl.GLES20;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.glwrap.Texture;
 import com.watabou.input.Touchscreen;
-import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.*;
 import com.watabou.noosa.BitmapText.Font;
-import com.watabou.noosa.BitmapTextMultiline;
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.Scene;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
@@ -193,8 +187,20 @@ public class PixelScene extends Scene {
 	}
 
 	public static RenderedText renderText( String text, int size ) {
-		RenderedText result = new RenderedText( text, size*defaultZoom);
-		result.scale.set(1/(float)defaultZoom);
+		int zoom = Math.min(defaultZoom, 5);
+		RenderedText result = new RenderedText( text, size*zoom);
+		result.scale.set(1/(float)zoom);
+		return result;
+	}
+
+	public static RenderedTextMultiline renderMultiline( int size ){
+		return renderMultiline("", size);
+	}
+
+	public static RenderedTextMultiline renderMultiline( String text, int size ){
+		int zoom = Math.min(defaultZoom, 5);
+		RenderedTextMultiline result = new RenderedTextMultiline( text, size*zoom);
+		result.zoom(1/(float)zoom);
 		return result;
 	}
 
