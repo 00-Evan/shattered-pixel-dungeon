@@ -29,6 +29,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.BitmaskEmitter;
 import com.watabou.noosa.particles.Emitter;
@@ -313,7 +314,7 @@ public class StartScene extends PixelScene {
 		private static final int SECONDARY_COLOR_N    = 0xCACFC2;
 		private static final int SECONDARY_COLOR_H    = 0xFFFF88;
 
-		private BitmapText secondary;
+		private RenderedText secondary;
 
 		public GameButton( String primary ) {
 			super( primary );
@@ -325,7 +326,7 @@ public class StartScene extends PixelScene {
 		protected void createChildren() {
 			super.createChildren();
 
-			secondary = createText( 6 );
+			secondary = renderText( 6 );
 			add( secondary );
 		}
 
@@ -345,7 +346,6 @@ public class StartScene extends PixelScene {
 
 		public void secondary( String text, boolean highlighted ) {
 			secondary.text( text );
-			secondary.measure();
 
 			secondary.hardlight( highlighted ? SECONDARY_COLOR_H : SECONDARY_COLOR_N );
 		}
@@ -368,7 +368,7 @@ public class StartScene extends PixelScene {
 		private HeroClass cl;
 
 		private Image avatar;
-		private BitmapText name;
+		private RenderedText name;
 		private Emitter emitter;
 
 		private float brightness;
@@ -392,8 +392,7 @@ public class StartScene extends PixelScene {
 				highlighted = BASIC_HIGHLIGHTED;
 			}
 
-			name.text( cl.name() );
-			name.measure();
+			name.text( cl.title().toUpperCase() );
 			name.hardlight( normal );
 
 			brightness = MIN_BRIGHTNESS;
@@ -408,7 +407,7 @@ public class StartScene extends PixelScene {
 			avatar = new Image( Assets.AVATARS );
 			add( avatar );
 
-			name = PixelScene.createText( 9 );
+			name = PixelScene.renderText( 9 );
 			add( name );
 
 			emitter = new BitmaskEmitter( avatar );

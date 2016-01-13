@@ -31,9 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
-import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 
@@ -62,7 +62,7 @@ public class InterlevelScene extends PixelScene {
 	private Phase phase;
 	private float timeLeft;
 	
-	private BitmapText message;
+	private RenderedText message;
 	
 	private Thread thread;
 	private Exception error = null;
@@ -73,8 +73,7 @@ public class InterlevelScene extends PixelScene {
 
 		String text = Messages.get(Mode.class, mode.name());
 		
-		message = PixelScene.createText( text, 9 );
-		message.measure();
+		message = PixelScene.renderText( text, 9 );
 		message.x = (Camera.main.width - message.width()) / 2;
 		message.y = (Camera.main.height - message.height()) / 2;
 		add( message );

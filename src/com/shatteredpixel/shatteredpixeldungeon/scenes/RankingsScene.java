@@ -25,6 +25,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -71,9 +72,8 @@ public class RankingsScene extends PixelScene {
 		
 		Rankings.INSTANCE.load();
 
-		BitmapText title = PixelScene.createText( Messages.get(this, "title"), 9);
+		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9);
 		title.hardlight(Window.SHPX_COLOR);
-		title.measure();
 		title.x = (w - title.width()) / 2;
 		title.y = GAP;
 		add(title);
@@ -103,19 +103,16 @@ public class RankingsScene extends PixelScene {
 			}
 			
 			if (Rankings.INSTANCE.totalNumber >= Rankings.TABLE_SIZE) {
-				BitmapText label = PixelScene.createText( Messages.get(this, "total") + " ", 8 );
+				RenderedText label = PixelScene.renderText( Messages.get(this, "total") + " ", 8 );
 				label.hardlight( 0xCCCCCC );
-				label.measure();
 				add( label );
 
-				BitmapText won = PixelScene.createText( Integer.toString( Rankings.INSTANCE.wonNumber ), 8 );
+				RenderedText won = PixelScene.renderText( Integer.toString( Rankings.INSTANCE.wonNumber ), 8 );
 				won.hardlight( Window.SHPX_COLOR );
-				won.measure();
 				add( won );
 
-				BitmapText total = PixelScene.createText( "/" + Rankings.INSTANCE.totalNumber, 8 );
+				RenderedText total = PixelScene.renderText( "/" + Rankings.INSTANCE.totalNumber, 8 );
 				total.hardlight( 0xCCCCCC );
-				total.measure();
 				total.x = (w - total.width()) / 2;
 				total.y = top + pos * rowHeight + GAP;
 				add( total );
@@ -130,9 +127,8 @@ public class RankingsScene extends PixelScene {
 			
 		} else {
 
-			BitmapText noRec = PixelScene.createText(Messages.get(this, "no_games"), 8);
+			RenderedText noRec = PixelScene.renderText(Messages.get(this, "no_games"), 8);
 			noRec.hardlight( 0xCCCCCC );
-			noRec.measure();
 			noRec.x = (w - noRec.width()) / 2;
 			noRec.y = (h - noRec.height()) / 2;
 			add(noRec);

@@ -23,10 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBadge;
-import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
@@ -71,9 +71,8 @@ public class BadgesScene extends PixelScene {
 		float left = (w - size * nCols) / 2;
 		float top = (h - size * nRows) / 2;
 
-		BitmapText title = PixelScene.createText( Messages.get(this, "title"), 9 );
+		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
-		title.measure();
 		title.x = (w - title.width()) / 2 ;
 		title.y = (top - title.baseLine()) / 2 ;
 		add(title);

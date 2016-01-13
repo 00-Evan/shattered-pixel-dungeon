@@ -20,13 +20,23 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import java.util.Locale;
+
+
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
@@ -36,21 +46,12 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Group;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Button;
-
-import java.util.Locale;
 
 public class WndRanking extends WndTabbed {
-
+	
 	private static final int WIDTH			= 115;
 	private static final int HEIGHT			= 144;
-
+	
 	private Thread thread;
 	private String error = null;
 	
@@ -139,7 +140,7 @@ public class WndRanking extends WndTabbed {
 	private class StatsTab extends Group {
 
 		private int GAP	= 4;
-
+		
 		public StatsTab() {
 			super();
 
@@ -185,7 +186,7 @@ public class WndRanking extends WndTabbed {
 			pos = statSlot( this, Messages.get(this, "gold"), Integer.toString( Statistics.goldCollected ), pos );
 			
 			pos += GAP;
-
+			
 			pos = statSlot( this, Messages.get(this, "food"), Integer.toString( Statistics.foodEaten ), pos );
 			pos = statSlot( this, Messages.get(this, "alchemy"), Integer.toString( Statistics.potionsCooked ), pos );
 			pos = statSlot( this, Messages.get(this, "ankhs"), Integer.toString( Statistics.ankhsUsed ), pos );
@@ -193,12 +194,11 @@ public class WndRanking extends WndTabbed {
 		
 		private float statSlot( Group parent, String label, String value, float pos ) {
 			
-			BitmapText txt = PixelScene.createText( label, 7 );
+			RenderedText txt = PixelScene.renderText( label, 7 );
 			txt.y = pos;
 			parent.add( txt );
 			
-			txt = PixelScene.createText( value, 7 );
-			txt.measure();
+			txt = PixelScene.renderText( value, 7 );
 			txt.x = WIDTH * 0.65f;
 			txt.y = pos;
 			parent.add( txt );
@@ -278,7 +278,7 @@ public class WndRanking extends WndTabbed {
 		
 		private ItemSlot slot;
 		private ColorBlock bg;
-		private BitmapText name;
+		private RenderedText name;
 		
 		public ItemButton( Item item ) {
 			
@@ -305,7 +305,7 @@ public class WndRanking extends WndTabbed {
 			slot = new ItemSlot();
 			add( slot );
 			
-			name = PixelScene.createText( "?", 7 );
+			name = PixelScene.renderText( "?", 7 );
 			add( name );
 			
 			super.createChildren();
@@ -323,12 +323,10 @@ public class WndRanking extends WndTabbed {
 			
 			String str = Utils.capitalize( item.name() );
 			name.text( str );
-			name.measure();
 			if (name.width() > width - name.x) {
 				do {
 					str = str.substring( 0, str.length() - 1 );
 					name.text( str + "..." );
-					name.measure();
 				} while (name.width() > width - name.x);
 			}
 			

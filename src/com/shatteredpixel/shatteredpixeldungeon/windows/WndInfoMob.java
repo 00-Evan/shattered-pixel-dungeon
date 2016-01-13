@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -51,15 +52,14 @@ public class WndInfoMob extends WndTitledMessage {
 		private static final int GAP	= 2;
 		
 		private CharSprite image;
-		private BitmapText name;
+		private RenderedText name;
 		private HealthBar health;
 		private BuffIndicator buffs;
 		
 		public MobTitle( Mob mob ) {
 			
-			name = PixelScene.createText( Utils.capitalize( mob.name ), 9 );
+			name = PixelScene.renderText( Utils.capitalize( mob.name ), 9 );
 			name.hardlight( TITLE_COLOR );
-			name.measure();
 			add( name );
 			
 			image = mob.sprite();

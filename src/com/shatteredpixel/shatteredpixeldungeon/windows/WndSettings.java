@@ -29,9 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.OptionSlider;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
-import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 
@@ -160,8 +160,7 @@ public class WndSettings extends WndTabbed {
 		public UITab(){
 			super();
 
-			BitmapText barDesc = PixelScene.createText(Messages.get(this, "mode"), 9);
-			barDesc.measure();
+			RenderedText barDesc = PixelScene.renderText(Messages.get(this, "mode"), 9);
 			barDesc.x = (WIDTH-barDesc.width())/2;
 			add(barDesc);
 

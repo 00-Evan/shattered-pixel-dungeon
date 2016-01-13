@@ -20,20 +20,20 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import java.util.ArrayList;
+
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.ui.Component;
-
-import java.util.ArrayList;
 
 public class WndCatalogus extends WndTabbed {
 
@@ -45,7 +45,7 @@ public class WndCatalogus extends WndTabbed {
 
 	private static final int ITEM_HEIGHT	= 18;
 	
-	private BitmapText txtTitle;
+	private RenderedText txtTitle;
 	private ScrollPane list;
 	
 	private ArrayList<ListItem> items = new ArrayList<>();
@@ -62,9 +62,8 @@ public class WndCatalogus extends WndTabbed {
 			resize( WIDTH_P, HEIGHT_P );
 		}
 
-		txtTitle = PixelScene.createText( Messages.get(this, "title"), 9 );
+		txtTitle = PixelScene.renderText( Messages.get(this, "title"), 9 );
 		txtTitle.hardlight( Window.TITLE_COLOR );
-		txtTitle.measure();
 		add( txtTitle );
 		
 		list = new ScrollPane( new Component() ) {
@@ -110,7 +109,6 @@ public class WndCatalogus extends WndTabbed {
 	private void updateList() {
 		
 		txtTitle.text( Messages.get(this, "title", showPotions ? Messages.get(this, "potions") : Messages.get(this, "scrolls") ) );
-		txtTitle.measure();
 		txtTitle.x = (width - txtTitle.width()) / 2;
 
 		items.clear();
@@ -148,7 +146,7 @@ public class WndCatalogus extends WndTabbed {
 		private boolean identified;
 		
 		private ItemSprite sprite;
-		private BitmapText label;
+		private RenderedText label;
 		
 		public ListItem( Class<? extends Item> cl ) {
 			super();
@@ -173,7 +171,7 @@ public class WndCatalogus extends WndTabbed {
 			sprite = new ItemSprite();
 			add( sprite );
 			
-			label = PixelScene.createText( 8 );
+			label = PixelScene.renderText( 8 );
 			add( label );
 		}
 		

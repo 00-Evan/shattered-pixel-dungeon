@@ -24,6 +24,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.RenderedText;
 
 public class WndList extends Window {
 	
@@ -47,11 +48,10 @@ public class WndList extends Window {
 				pos += GAP;
 			}
 			
-			BitmapText dot = PixelScene.createText( DOT, 6 );
+			RenderedText dot = PixelScene.renderText( DOT, 6 );
 			dot.x = MARGIN;
 			dot.y = pos;
 			if (dotWidth == 0) {
-				dot.measure();
 				dotWidth = dot.width();
 			}
 			add( dot );

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -32,14 +33,13 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 public class RedButton extends Button {
 	
 	protected NinePatch bg;
-	protected BitmapText text;
+	protected RenderedText text;
 	protected Image icon;
 			
 	public RedButton( String label ) {
 		super();
 		
 		text.text( label );
-		text.measure();
 	}
 	
 	@Override
@@ -49,7 +49,7 @@ public class RedButton extends Button {
 		bg = Chrome.get( Chrome.Type.BUTTON );
 		add( bg );
 		
-		text = PixelScene.createText( 9 );
+		text = PixelScene.renderText( 9 );
 		add( text );
 	}
 	
@@ -89,7 +89,6 @@ public class RedButton extends Button {
 	
 	public void text( String value ) {
 		text.text( value );
-		text.measure();
 		layout();
 	}
 

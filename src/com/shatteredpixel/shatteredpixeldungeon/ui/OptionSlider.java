@@ -34,9 +34,9 @@ public abstract class OptionSlider extends Component {
 
 	private TouchArea touchArea;
 
-	private BitmapText title;
-	private BitmapText minTxt;
-	private BitmapText maxTxt;
+	private RenderedText title;
+	private RenderedText minTxt;
+	private RenderedText maxTxt;
 
 	//values are expressed internally as ints, but they can easily be interpreted as something else externally.
 	private int minVal;
@@ -54,11 +54,8 @@ public abstract class OptionSlider extends Component {
 		super();
 
 		this.title.text(title);
-		this.title.measure();
 		this.minTxt.text(minTxt);
-		this.minTxt.measure();
 		this.maxTxt.text(maxTxt);
-		this.maxTxt.measure();
 
 		this.minVal = minVal;
 		this.maxVal = maxVal;
@@ -95,9 +92,9 @@ public abstract class OptionSlider extends Component {
 		add( BG = Chrome.get(Chrome.Type.BUTTON));
 		BG.alpha(0.5f);
 
-		add(title = PixelScene.createText(9));
-		add(this.minTxt = PixelScene.createText(6));
-		add(this.maxTxt = PixelScene.createText(6));
+		add(title = PixelScene.renderText(9));
+		add(this.minTxt = PixelScene.renderText(6));
+		add(this.maxTxt = PixelScene.renderText(6));
 
 		add(sliderBG = new ColorBlock(1, 1, 0xFF222222));
 		sliderNode = Chrome.get(Chrome.Type.BUTTON);

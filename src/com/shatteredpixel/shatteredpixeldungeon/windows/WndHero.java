@@ -20,30 +20,30 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import java.util.Locale;
+
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.gltextures.SmartTexture;
+import com.watabou.gltextures.TextureCache;
+import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.TextureFilm;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.gltextures.SmartTexture;
-import com.watabou.gltextures.TextureCache;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Group;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.ui.Button;
 
-import java.util.Locale;
-
 public class WndHero extends WndTabbed {
-
+	
 	private static final int WIDTH		= 100;
 	
 	private StatsTab stats;
@@ -86,7 +86,7 @@ public class WndHero extends WndTabbed {
 	}
 	
 	private class StatsTab extends Group {
-
+		
 		private static final int GAP = 5;
 		
 		private float pos;
@@ -97,7 +97,10 @@ public class WndHero extends WndTabbed {
 
 			IconTitle title = new IconTitle();
 			title.icon( HeroSprite.avatar(hero.heroClass, hero.tier()) );
-			title.label( Messages.get(this, "title", hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ) );
+			if (hero.givenName().equals(hero.className()))
+				title.label( Messages.get(this, "title", hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ) );
+			else
+				title.label((hero.givenName() + "\n" + Messages.get(this, "title", hero.lvl, hero.className())).toUpperCase(Locale.ENGLISH));
 			title.color(Window.SHPX_COLOR);
 			title.setRect( 0, 0, WIDTH, 0 );
 			add(title);
@@ -140,12 +143,11 @@ public class WndHero extends WndTabbed {
 
 		private void statSlot( String label, String value ) {
 
-			BitmapText txt = PixelScene.createText( label, 8 );
+			RenderedText txt = PixelScene.renderText( label, 8 );
 			txt.y = pos;
 			add( txt );
 
-			txt = PixelScene.createText( value, 8 );
-			txt.measure();
+			txt = PixelScene.renderText( value, 8 );
 			txt.x = 65;
 			txt.y = pos;
 			add( txt );
@@ -188,7 +190,7 @@ public class WndHero extends WndTabbed {
 			private Buff buff;
 
 			Image icon;
-			BitmapText txt;
+			RenderedText txt;
 
 			public BuffSlot( Buff buff ){
 				super();
@@ -200,7 +202,7 @@ public class WndHero extends WndTabbed {
 				icon.y = this.y;
 				add( icon );
 
-				txt = PixelScene.createText( buff.toString(), 8 );
+				txt = PixelScene.renderText( buff.toString(), 8 );
 				txt.x = icon.width + GAP;
 				txt.y = this.y + (int)(icon.height - txt.baseLine()) / 2;
 				add( txt );

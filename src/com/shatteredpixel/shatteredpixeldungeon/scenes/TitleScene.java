@@ -34,6 +34,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
@@ -214,14 +215,13 @@ public class TitleScene extends PixelScene {
 		private static final int IMAGE_SIZE	= 32;
 		
 		private Image image;
-		private BitmapText label;
+		private RenderedText label;
 		
 		public DashboardItem( String text, int index ) {
 			super();
 			
 			image.frame( image.texture.uvRect( index * IMAGE_SIZE, 0, (index + 1) * IMAGE_SIZE, IMAGE_SIZE ) );
 			this.label.text( text );
-			this.label.measure();
 			
 			setSize( SIZE, SIZE );
 		}
@@ -233,7 +233,7 @@ public class TitleScene extends PixelScene {
 			image = new Image( Assets.DASHBOARD );
 			add( image );
 			
-			label = createText( 9 );
+			label = renderText( 9 );
 			add( label );
 		}
 		
