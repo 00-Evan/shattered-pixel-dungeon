@@ -20,16 +20,16 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
+import com.watabou.noosa.Image;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.noosa.BitmapTextMultiline;
-import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndInfoCell extends Window {
 	
@@ -85,7 +85,7 @@ public class WndInfoCell extends Window {
 		titlebar.setRect(0, 0, WIDTH, 0);
 		add(titlebar);
 
-		BitmapTextMultiline info = PixelScene.createMultiline(6);
+		RenderedTextMultiline info = PixelScene.renderMultiline(6);
 		add(info);
 
 		for (Blob blob:Dungeon.level.blobs.values()) {
@@ -98,11 +98,9 @@ public class WndInfoCell extends Window {
 		}
 		
 		info.text( desc );
-		info.maxWidth = WIDTH;
-		info.measure();
-		info.x = titlebar.left();
-		info.y = titlebar.bottom() + GAP;
+		info.maxWidth(WIDTH);
+		info.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		
-		resize( WIDTH, (int)(info.y + info.height()) );
+		resize( WIDTH, (int)(info.top() + info.height()) );
 	}
 }

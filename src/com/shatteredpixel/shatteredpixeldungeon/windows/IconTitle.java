@@ -20,8 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -37,7 +37,7 @@ public class IconTitle extends Component {
 	private static final float GAP = 2;
 
 	protected Image imIcon;
-	protected BitmapTextMultiline tfLabel;
+	protected RenderedTextMultiline tfLabel;
 	protected HealthBar health;
 
 	private float healthLvl = Float.NaN;
@@ -65,7 +65,7 @@ public class IconTitle extends Component {
 		imIcon = new Image();
 		add( imIcon );
 
-		tfLabel = PixelScene.createMultiline( FONT_SIZE );
+		tfLabel = PixelScene.renderMultiline( (int)FONT_SIZE );
 		tfLabel.hardlight( Window.TITLE_COLOR );
 		add( tfLabel );
 
@@ -81,15 +81,13 @@ public class IconTitle extends Component {
 		imIcon.x = x;
 		imIcon.y = y;
 
-		tfLabel.x = imIcon.x + imIcon.width() + GAP;
-		tfLabel.maxWidth = (int)(width - tfLabel.x);
-		tfLabel.measure();
-		tfLabel.y = imIcon.height > tfLabel.height() ?
-				imIcon.y + (imIcon.height() - tfLabel.baseLine()) / 2 :
-				imIcon.y;
+		tfLabel.setPos(imIcon.x + imIcon.width() + GAP, imIcon.height > tfLabel.height() ?
+						imIcon.y + (imIcon.height() - tfLabel.height()) / 2 :
+						imIcon.y);
+		tfLabel.maxWidth((int)(width - tfLabel.left()));
 
 		if (health.visible) {
-			health.setRect( tfLabel.x, Math.max( tfLabel.y + tfLabel.height(), imIcon.y + imIcon.height() - health.height() ), tfLabel.maxWidth, 0 );
+			health.setRect( tfLabel.left(), Math.max( tfLabel.top() + tfLabel.height(), imIcon.y + imIcon.height() - health.height() ), tfLabel.maxWidth(), 0 );
 			height = health.bottom();
 		} else {
 			height = Math.max( imIcon.height(), tfLabel.height() );

@@ -30,10 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.watabou.noosa.BitmapTextMultiline;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
@@ -130,14 +129,12 @@ public class Weightstone extends Item {
 			titlebar.setRect( 0, 0, WIDTH, 0 );
 			add( titlebar );
 
-			BitmapTextMultiline tfMesage = PixelScene.createMultiline( Messages.get(this, "choice"), 8 );
-			tfMesage.maxWidth = WIDTH - MARGIN * 2;
-			tfMesage.measure();
-			tfMesage.x = MARGIN;
-			tfMesage.y = titlebar.bottom() + MARGIN;
+			RenderedTextMultiline tfMesage = PixelScene.renderMultiline( Messages.get(this, "choice"), 8 );
+			tfMesage.maxWidth(WIDTH - MARGIN * 2);
+			tfMesage.setPos(MARGIN, titlebar.bottom() + MARGIN);
 			add( tfMesage );
 
-			float pos = tfMesage.y + tfMesage.height();
+			float pos = tfMesage.top() + tfMesage.height();
 
 			if (weapon.imbue != Weapon.Imbue.LIGHT) {
 				RedButton btnSpeed = new RedButton( Messages.get(this, "light") ) {

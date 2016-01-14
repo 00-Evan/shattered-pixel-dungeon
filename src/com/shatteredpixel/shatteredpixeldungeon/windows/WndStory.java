@@ -27,8 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.input.Touchscreen.Touch;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.TouchArea;
 import com.watabou.utils.SparseArray;
 
@@ -58,25 +58,19 @@ public class WndStory extends Window {
 		CHAPTERS.put( ID_HALLS, "halls" );
 	};
 	
-	private BitmapTextMultiline tf;
+	private RenderedTextMultiline tf;
 	
 	private float delay;
 	
 	public WndStory( String text ) {
 		super( 0, 0, Chrome.get( Chrome.Type.SCROLL ) );
 		
-		tf = PixelScene.createMultiline( text, 7 );
-		tf.maxWidth = ShatteredPixelDungeon.landscape() ?
+		tf = PixelScene.renderMultiline( text, 7 );
+		tf.maxWidth(ShatteredPixelDungeon.landscape() ?
 					WIDTH_L - MARGIN * 2:
-					WIDTH_P - MARGIN *2;
-		tf.measure();
-		tf.ra = bgR;
-		tf.ga = bgG;
-		tf.ba = bgB;
-		tf.rm = -bgR;
-		tf.gm = -bgG;
-		tf.bm = -bgB;
-		tf.x = MARGIN;
+					WIDTH_P - MARGIN *2);
+		tf.invert();
+		tf.setPos(MARGIN, 0);
 		add( tf );
 		
 		add( new TouchArea( chrome ) {

@@ -22,10 +22,10 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
@@ -161,7 +161,7 @@ public class RankingsScene extends PixelScene {
 		protected ItemSprite shield;
 		private Flare flare;
 		private BitmapText position;
-		private BitmapTextMultiline desc;
+		private RenderedTextMultiline desc;
 		private Image steps;
 		private BitmapText depth;
 		private Image classIcon;
@@ -187,7 +187,7 @@ public class RankingsScene extends PixelScene {
 			
 			desc.text( rec.info );
 
-			desc.measure();
+			//desc.measure();
 
 			int odd = pos % 2;
 			
@@ -235,7 +235,7 @@ public class RankingsScene extends PixelScene {
 			position.alpha(0.8f);
 			add( position );
 			
-			desc = createMultiline( 7 );
+			desc = renderMultiline( 7 );
 			add( desc );
 
 			depth = new BitmapText( PixelScene.pixelFont);
@@ -277,10 +277,8 @@ public class RankingsScene extends PixelScene {
 			depth.x = steps.x + (steps.width - depth.width()) / 2;
 			depth.y = steps.y + (steps.height - depth.height()) / 2 + 1;
 
-			desc.x = shield.x + shield.width + GAP;
-			desc.maxWidth = (int)(steps.x - desc.x);
-			desc.measure();
-			desc.y = shield.y + (shield.height - desc.height()) / 2 + 1;
+			desc.setPos(shield.x + shield.width + GAP, shield.y + (shield.height - desc.height()) / 2 + 1);
+			desc.maxWidth((int)(steps.x - desc.left()));
 		}
 		
 		@Override

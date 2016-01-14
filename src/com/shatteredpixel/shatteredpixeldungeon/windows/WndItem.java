@@ -21,15 +21,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndItem extends Window {
 
@@ -46,7 +44,7 @@ public class WndItem extends Window {
 		super();
 
 		int width = ShatteredPixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
-
+		
 		IconTitle titlebar = new IconTitle( item );
 		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
@@ -57,14 +55,12 @@ public class WndItem extends Window {
 			titlebar.color( ItemSlot.DEGRADED );
 		}
 		
-		BitmapTextMultiline info = PixelScene.createMultiline( item.info(), 6 );
-		info.maxWidth = width;
-		info.measure();
-		info.x = titlebar.left();
-		info.y = titlebar.bottom() + GAP;
+		RenderedTextMultiline info = PixelScene.renderMultiline( item.info(), 6 );
+		info.maxWidth(width);
+		info.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( info );
 	
-		float y = info.y + info.height() + GAP;
+		float y = info.top() + info.height() + GAP;
 		float x = 0;
 		
 		if (Dungeon.hero.isAlive() && owner != null) {

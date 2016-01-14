@@ -23,13 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import java.util.HashMap;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.BitmaskEmitter;
 import com.watabou.noosa.particles.Emitter;
@@ -198,20 +197,12 @@ public class StartScene extends PixelScene {
 
 		if (!(huntressUnlocked = Badges.isUnlocked( Badges.Badge.BOSS_SLAIN_3 ))) {
 
-			BitmapTextMultiline text = PixelScene.createMultiline( Messages.get(this, "unlock"), 9 );
-			text.maxWidth = (int)width;
-			text.measure();
+			RenderedTextMultiline text = PixelScene.renderMultiline( Messages.get(this, "unlock"), 9 );
+			text.maxWidth((int)width);
+			text.hardlight( 0xFFFF00 );
+			text.setPos(w / 2 - text.width() / 2, (bottom - BUTTON_HEIGHT) + (BUTTON_HEIGHT - text.height()) / 2);
+			unlock.add(text);
 
-			float pos = (bottom - BUTTON_HEIGHT) + (BUTTON_HEIGHT - text.height()) / 2;
-			for (BitmapText line : text.new LineSplitter().split()) {
-				line.measure();
-				line.hardlight( 0xFFFF00 );
-				line.x = w / 2 - line.width() / 2;
-				line.y = pos;
-				unlock.add( line );
-
-				pos += line.height();
-			}
 		}
 
 		ExitButton btnExit = new ExitButton();

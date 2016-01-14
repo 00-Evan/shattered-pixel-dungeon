@@ -21,22 +21,22 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.watabou.noosa.BitmapTextMultiline;
+import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndInfoItem extends Window {
-
+	
 	private static final float GAP	= 2;
 	
 	private static final int WIDTH_P = 120;
@@ -119,13 +119,11 @@ public class WndInfoItem extends Window {
 		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
 		
-		BitmapTextMultiline txtInfo = PixelScene.createMultiline( info, 6 );
-		txtInfo.maxWidth = width;
-		txtInfo.measure();
-		txtInfo.x = titlebar.left();
-		txtInfo.y = titlebar.bottom() + GAP;
+		RenderedTextMultiline txtInfo = PixelScene.renderMultiline( info, 6 );
+		txtInfo.maxWidth(width);
+		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );
 		
-		resize( width, (int)(txtInfo.y + txtInfo.height()) );
+		resize( width, (int)(txtInfo.top() + txtInfo.height()) );
 	}
 }

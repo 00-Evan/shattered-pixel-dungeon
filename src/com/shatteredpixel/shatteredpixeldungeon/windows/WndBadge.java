@@ -20,13 +20,12 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Image;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndBadge extends Window {
 	
@@ -40,27 +39,19 @@ public class WndBadge extends Window {
 		Image icon = BadgeBanner.image( badge.image );
 		icon.scale.set( 2 );
 		add( icon );
-		
-		BitmapTextMultiline info = PixelScene.createMultiline( badge.desc(), 8 );
-		info.maxWidth = WIDTH - MARGIN * 2;
-		info.measure();
+
+		//TODO: this used to be centered, should probably figure that out.
+		RenderedTextMultiline info = PixelScene.renderMultiline( badge.desc(), 8 );
+		info.maxWidth(WIDTH - MARGIN * 2);
+		add(info);
 		
 		float w = Math.max( icon.width(), info.width() ) + MARGIN * 2;
 		
 		icon.x = (w - icon.width()) / 2;
 		icon.y = MARGIN;
-		
-		float pos = icon.y + icon.height() + MARGIN;
-		for (BitmapText line : info.new LineSplitter().split()) {
-			line.measure();
-			line.x = (w - line.width()) / 2;
-			line.y = pos;
-			add( line );
-			
-			pos += line.height();
-		}
 
-		resize( (int)w, (int)(pos + MARGIN) );
+		info.setPos((w - info.width()) / 2, icon.y + icon.height() + MARGIN);
+		resize( (int)w, (int)(info.bottom() + MARGIN) );
 		
 		BadgeBanner.highlight( icon, badge.image );
 	}

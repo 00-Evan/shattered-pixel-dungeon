@@ -20,22 +20,22 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.RenderedTextMultiline;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.watabou.noosa.BitmapTextMultiline;
-import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Component;
 
 public class WndBlacksmith extends Window {
 
@@ -60,10 +60,9 @@ public class WndBlacksmith extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 		
-		BitmapTextMultiline message = PixelScene.createMultiline( Messages.get(this, "prompt"), 6 );
-		message.maxWidth = WIDTH;
-		message.measure();
-		message.y = titlebar.bottom() + GAP;
+		RenderedTextMultiline message = PixelScene.renderMultiline( Messages.get(this, "prompt"), 6 );
+		message.maxWidth( WIDTH);
+		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );
 		
 		btnItem1 = new ItemButton() {
@@ -73,7 +72,7 @@ public class WndBlacksmith extends Window {
 				GameScene.selectItem( itemSelector, WndBag.Mode.UPGRADEABLE, Messages.get(WndBlacksmith.class, "select") );
 			}
 		};
-		btnItem1.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.y + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
+		btnItem1.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
 		add( btnItem1 );
 		
 		btnItem2 = new ItemButton() {

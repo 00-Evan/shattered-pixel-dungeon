@@ -27,8 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.TextureFilm;
 
 public class WndInfoBuff extends Window {
@@ -56,13 +56,11 @@ public class WndInfoBuff extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 
-		BitmapTextMultiline txtInfo = PixelScene.createMultiline(buff.desc(), 6);
-		txtInfo.maxWidth = WIDTH;
-		txtInfo.measure();
-		txtInfo.x = titlebar.left();
-		txtInfo.y = titlebar.bottom() + GAP;
+		RenderedTextMultiline txtInfo = PixelScene.renderMultiline(buff.desc(), 6);
+		txtInfo.maxWidth(width);
+		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );
 
-		resize( WIDTH, (int)(txtInfo.y + txtInfo.height()) );
+		resize( WIDTH, (int)(txtInfo.top() + txtInfo.height()) );
 	}
 }

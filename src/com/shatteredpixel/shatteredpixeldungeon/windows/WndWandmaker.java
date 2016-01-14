@@ -20,21 +20,21 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
-import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.watabou.noosa.BitmapTextMultiline;
+import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndWandmaker extends Window {
 
@@ -61,10 +61,9 @@ public class WndWandmaker extends Window {
 			msg = Messages.get(this, "berry");
 		}
 
-		BitmapTextMultiline message = PixelScene.createMultiline( msg, 6 );
-		message.maxWidth = WIDTH;
-		message.measure();
-		message.y = titlebar.bottom() + GAP;
+		RenderedTextMultiline message = PixelScene.renderMultiline( msg, 6 );
+		message.maxWidth(WIDTH);
+		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );
 		
 		RedButton btnWand1 = new RedButton( Wandmaker.Quest.wand1.name() ) {
@@ -73,7 +72,7 @@ public class WndWandmaker extends Window {
 				selectReward( wandmaker, item, Wandmaker.Quest.wand1 );
 			}
 		};
-		btnWand1.setRect(0, message.y + message.height() + GAP, WIDTH, BTN_HEIGHT);
+		btnWand1.setRect(0, message.top() + message.height() + GAP, WIDTH, BTN_HEIGHT);
 		add( btnWand1 );
 		
 		RedButton btnWand2 = new RedButton( Wandmaker.Quest.wand2.name() ) {

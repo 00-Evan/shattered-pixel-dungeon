@@ -21,7 +21,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -40,16 +39,15 @@ public class WndOptions extends Window {
 
 		int width = ShatteredPixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
 
-		BitmapTextMultiline tfTitle = PixelScene.createMultiline( title, 9 );
+		RenderedTextMultiline tfTitle = PixelScene.renderMultiline( title, 9 );
 		tfTitle.hardlight( TITLE_COLOR );
-		tfTitle.x = tfTitle.y = MARGIN;
-		tfTitle.maxWidth = width - MARGIN * 2;
-		tfTitle.measure();
+		tfTitle.setPos(MARGIN, MARGIN);
+		tfTitle.maxWidth(width - MARGIN * 2);
 		add( tfTitle );
 		
 		RenderedTextMultiline tfMesage = PixelScene.renderMultiline( 6 );
 		tfMesage.text(message, width - MARGIN * 2);
-		tfMesage.setPos( MARGIN, tfTitle.y + tfTitle.height() + MARGIN );
+		tfMesage.setPos( MARGIN, tfTitle.top() + tfTitle.height() + MARGIN );
 		add( tfMesage );
 		
 		float pos = tfMesage.bottom() + MARGIN;
