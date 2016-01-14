@@ -181,7 +181,7 @@ public class Thief extends Mob {
 		protected void nowhereToRun() {
 			if (buff( Terror.class ) == null && buff( Corruption.class ) == null) {
 				if (enemySeen) {
-					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "rage"));
+					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
 					state = HUNTING;
 				} else {
 
