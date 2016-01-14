@@ -57,7 +57,7 @@ public class WndInfoBuff extends Window {
 		add( titlebar );
 
 		RenderedTextMultiline txtInfo = PixelScene.renderMultiline(buff.desc(), 6);
-		txtInfo.maxWidth(width);
+		txtInfo.maxWidth(WIDTH);
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );
 
