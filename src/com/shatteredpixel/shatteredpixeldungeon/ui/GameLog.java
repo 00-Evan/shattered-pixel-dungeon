@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import com.watabou.noosa.BitmapTextMultiline;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -37,7 +37,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 	private static final Pattern PUNCTUATION = Pattern.compile( ".*[.,;?! ]$" );
 
-	private BitmapTextMultiline lastEntry;
+	private RenderedTextMultiline lastEntry;
 	private int lastColor;
 
 	private static ArrayList<Entry> entries = new ArrayList<Entry>();
@@ -51,9 +51,8 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 	private void recreateLines() {
 		for (Entry entry : entries) {
-			lastEntry = PixelScene.createMultiline( entry.text, 6 );
+			lastEntry = PixelScene.renderMultiline( entry.text, 6 );
 			lastEntry.hardlight( lastColor = entry.color );
-			lastEntry.measure();
 			add( lastEntry );
 		}
 	}
@@ -95,15 +94,13 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 			String lastMessage = lastEntry.text();
 			lastEntry.text( lastMessage.length() == 0 ? text : lastMessage + " " + text );
-			lastEntry.measure();
 
 			entries.get( entries.size() - 1 ).text = lastEntry.text();
 
 		} else {
 
-			lastEntry = PixelScene.createMultiline( text, 6 );
+			lastEntry = PixelScene.renderMultiline( text, 6 );
 			lastEntry.hardlight( color );
-			lastEntry.measure();
 			lastColor = color;
 			add( lastEntry );
 
@@ -116,7 +113,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 			do {
 				nLines = 0;
 				for (int i = 0; i < length-1; i++) {
-					nLines += ((BitmapTextMultiline) members.get(i)).nLines;
+					nLines += ((RenderedTextMultiline) members.get(i)).nLines;
 				}
 
 				if (nLines > MAX_LINES) {
@@ -137,11 +134,9 @@ public class GameLog extends Component implements Signal.Listener<String> {
 	protected void layout() {
 		float pos = y;
 		for (int i=length-1; i >= 0; i--) {
-			BitmapTextMultiline entry = (BitmapTextMultiline)members.get( i );
-			entry.maxWidth = (int)width;
-			entry.measure();
-			entry.x = x;
-			entry.y = pos - entry.height();
+			RenderedTextMultiline entry = (RenderedTextMultiline)members.get( i );
+			entry.maxWidth((int)width);
+			entry.setPos(x, pos-entry.height());
 			pos -= entry.height();
 		}
 	}

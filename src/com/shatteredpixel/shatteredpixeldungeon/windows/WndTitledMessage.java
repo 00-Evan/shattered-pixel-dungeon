@@ -21,8 +21,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HighlightedText;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
@@ -47,7 +48,7 @@ public class WndTitledMessage extends Window {
 		titlebar.setRect( 0, 0, width, 0 );
 		add(titlebar);
 
-		HighlightedText text = new HighlightedText( 6 );
+		RenderedTextMultiline text = PixelScene.renderMultiline( 6 );
 		text.text( message, width );
 		text.setPos( titlebar.left(), titlebar.bottom() + GAP );
 		add( text );

@@ -20,8 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -33,7 +33,7 @@ public class Toast extends Component {
 
 	protected NinePatch bg;
 	protected SimpleButton close;
-	protected BitmapText text;
+	protected RenderedTextMultiline text;
 
 	public Toast( String text ) {
 		super();
@@ -57,7 +57,7 @@ public class Toast extends Component {
 		};
 		add( close );
 
-		text = PixelScene.createMultiline(8);
+		text = PixelScene.renderMultiline(8);
 		add( text );
 	}
 	
@@ -72,14 +72,12 @@ public class Toast extends Component {
 		close.setPos(
 			bg.x + bg.width() - bg.marginHor() / 2 - MARGIN_HOR - close.width(),
 			y + (height - close.height()) / 2 );
-		
-		text.x = close.left() - MARGIN_HOR - text.width();
-		text.y = y + (height - text.height()) / 2;
+
+		text.setPos(close.left() - MARGIN_HOR - text.width(), y + (height - text.height()) / 2);
 	}
 	
 	public void text( String txt ) {
 		text.text( txt );
-		text.measure();
 	}
 	
 	protected void onClose() {};

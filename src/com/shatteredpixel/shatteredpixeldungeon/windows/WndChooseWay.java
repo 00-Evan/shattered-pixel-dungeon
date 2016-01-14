@@ -20,14 +20,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HighlightedText;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndChooseWay extends Window {
 	
@@ -45,7 +46,7 @@ public class WndChooseWay extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 
-		HighlightedText hl = new HighlightedText( 6 );
+		RenderedTextMultiline hl = PixelScene.renderMultiline( 6 );
 		hl.text( way1.desc() + "\n\n" + way2.desc() + "\n\n" + Messages.get(this, "message"), WIDTH );
 		hl.setPos( titlebar.left(), titlebar.bottom() + GAP );
 		add( hl );

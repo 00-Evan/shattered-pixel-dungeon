@@ -21,11 +21,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HighlightedText;
 import com.watabou.noosa.BitmapTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndOptions extends Window {
 
@@ -47,7 +47,7 @@ public class WndOptions extends Window {
 		tfTitle.measure();
 		add( tfTitle );
 		
-		HighlightedText tfMesage = new HighlightedText( 6 );
+		RenderedTextMultiline tfMesage = PixelScene.renderMultiline( 6 );
 		tfMesage.text(message, width - MARGIN * 2);
 		tfMesage.setPos( MARGIN, tfTitle.y + tfTitle.height() + MARGIN );
 		add( tfMesage );
