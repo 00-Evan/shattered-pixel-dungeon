@@ -61,7 +61,7 @@ public class UnstableSpellbook extends Artifact {
 	public static final String AC_READ = "READ";
 	public static final String AC_ADD = "ADD";
 
-	private final ArrayList<String> scrolls = new ArrayList<String>();
+	private final ArrayList<Class> scrolls = new ArrayList<Class>();
 
 	protected String inventoryTitle = "Select a scroll";
 	protected WndBag.Mode mode = WndBag.Mode.SCROLL;
@@ -74,7 +74,7 @@ public class UnstableSpellbook extends Artifact {
 		int i = Random.chances(probs);
 
 		while (i != -1){
-			scrolls.add(convertName(scrollClasses[i].getSimpleName()));
+			scrolls.add(scrollClasses[i]);
 			probs[i] = 0;
 
 			i = Random.chances(probs);
@@ -160,18 +160,13 @@ public class UnstableSpellbook extends Artifact {
 			else
 				desc += "The cursed book has bound itself to you, it is inhibiting your ability to use most scrolls.";
 
-			desc += "\n\n";
-
 		}
 
 			if (level() < levelCap)
-				if (scrolls.size() > 1)
-					desc += "The book's index points to some pages which are blank. " +
-							"Those pages are listed as: " + scrolls.get(0) + " and "
-							+ scrolls.get(1) + ". Perhaps adding to the book will increase its power";
-				else
-					desc += "The book's index has one remaining blank page. " +
-							"That page is listed as " + scrolls.get(0) + ".";
+				if (scrolls.size() > 0) {
+					desc += "\n\n" + "The book's index points to the following blank pages:\n " + Messages.get(scrolls.get(0), "name");
+					if (scrolls.size() > 1) desc += "\n" + Messages.get(scrolls.get(1), "name");
+				}
 			 else
 				desc += "The book's index is full, it doesn't look like you can add anything more to it.";
 
@@ -183,14 +178,20 @@ public class UnstableSpellbook extends Artifact {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
-		bundle.put( SCROLLS, scrolls.toArray(new String[scrolls.size()]) );
+		bundle.put( SCROLLS, scrolls.toArray(new Class[scrolls.size()]) );
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		scrolls.clear();
-		Collections.addAll(scrolls, bundle.getStringArray(SCROLLS));
+		Collections.addAll(scrolls, bundle.getClassArray(SCROLLS));
+		if (scrolls.contains(null)){
+			//compatability with pre-0.3.4, just give them a maxed book.
+			scrolls.clear();
+			level(levelCap);
+			chargeCap = 8;
+		}
 	}
 
 	public class bookRecharge extends ArtifactBuff{
@@ -222,10 +223,9 @@ public class UnstableSpellbook extends Artifact {
 		@Override
 		public void onSelect(Item item) {
 			if (item != null && item instanceof Scroll && item.isIdentified()){
-				String scroll = convertName(item.getClass().getSimpleName());
 				Hero hero = Dungeon.hero;
 				for (int i = 0; ( i <= 1 && i < scrolls.size() ); i++){
-					if (scrolls.get(i).equals(scroll)){
+					if (scrolls.get(i).equals(item.getClass())){
 						hero.sprite.operate( hero.pos );
 						hero.busy();
 						hero.spend( 2f );
