@@ -60,7 +60,7 @@ public class SandalsOfNature extends Artifact {
 	protected String inventoryTitle = "Select a seed";
 	protected WndBag.Mode mode = WndBag.Mode.SEED;
 
-	public ArrayList<String> seeds = new ArrayList<String>();
+	public ArrayList<Class> seeds = new ArrayList<>();
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
@@ -125,13 +125,7 @@ public class SandalsOfNature extends Artifact {
 		}
 
 		if (!seeds.isEmpty()){
-			desc += "\n\nRecently Fed Seeds:";
-			String[] seedsArray = seeds.toArray(new String[seeds.size()]);
-
-			for (int i = 0; i < seedsArray.length-1; i++)
-				desc += " " + seedsArray[i].substring(8) + ",";
-
-			desc += " " + seedsArray[seedsArray.length-1].substring(8) + ".";
+			desc += "\n\nYou have fed the footwear " + seeds.size() + " seeds.";
 		}
 
 		return desc;
@@ -147,7 +141,7 @@ public class SandalsOfNature extends Artifact {
 			image = ItemSpriteSheet.ARTIFACT_BOOTS;
 		else if (level() >= 2)
 			image = ItemSpriteSheet.ARTIFACT_GREAVES;
-		name = Messages.get(this, "name_" + level()+1);
+		name = Messages.get(this, "name_" + (level()+1));
 		return super.upgrade();
 	}
 
@@ -157,7 +151,7 @@ public class SandalsOfNature extends Artifact {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
-		bundle.put(SEEDS, seeds.toArray(new String[seeds.size()]));
+		bundle.put(SEEDS, seeds.toArray(new Class[seeds.size()]));
 	}
 
 	@Override
@@ -165,7 +159,7 @@ public class SandalsOfNature extends Artifact {
 		super.restoreFromBundle(bundle);
 		if (level() > 0) name = Messages.get(this, "name_" + level());
 		if (bundle.contains(SEEDS))
-			Collections.addAll(seeds , bundle.getStringArray(SEEDS));
+			Collections.addAll(seeds , bundle.getClassArray(SEEDS));
 	}
 
 	public class Naturalism extends ArtifactBuff{
@@ -182,10 +176,10 @@ public class SandalsOfNature extends Artifact {
 		@Override
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof Plant.Seed) {
-				if (seeds.contains(item.name())){
+				if (seeds.contains(item.getClass())){
 					GLog.w("Your footwear have already gained nutrients from that seed recently.");
 				} else {
-					seeds.add(item.name());
+					seeds.add(item.getClass());
 
 					Hero hero = Dungeon.hero;
 					hero.sprite.operate( hero.pos );
