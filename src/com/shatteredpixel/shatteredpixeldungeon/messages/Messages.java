@@ -55,12 +55,12 @@ public class Messages {
 	private static HashMap<String, String> strings;
 
 	static{
-		setup();
+		setup(Locale.getDefault().getLanguage());
 	}
 
-	public static void setup(){
+	public static void setup( String region ){
 		strings = new HashMap<>();
-		Locale locale = Locale.getDefault(); //TODO:load in locale from a preference, use default only if none set.
+		Locale locale = new Locale(region); //TODO:load in locale from a preference, use default only if none set.
 
 		for (String file : prop_files) {
 			ResourceBundle bundle = ResourceBundle.getBundle( file, locale);
