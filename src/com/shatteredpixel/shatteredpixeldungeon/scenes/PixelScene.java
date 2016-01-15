@@ -187,9 +187,11 @@ public class PixelScene extends Scene {
 	}
 
 	public static RenderedText renderText( String text, int size ) {
+		//rendering above 5x is a waste of resources, can just scale from there.
 		int zoom = Math.min(defaultZoom, 5);
 		RenderedText result = new RenderedText( text, size*zoom);
-		result.scale.set(1/(float)zoom);
+		//adding 0.001f helps with smoothness on lower resolution devices.
+		result.scale.set(1/(float)zoom + .001f);
 		return result;
 	}
 
@@ -200,7 +202,7 @@ public class PixelScene extends Scene {
 	public static RenderedTextMultiline renderMultiline( String text, int size ){
 		int zoom = Math.min(defaultZoom, 5);
 		RenderedTextMultiline result = new RenderedTextMultiline( text, size*zoom);
-		result.zoom(1/(float)zoom);
+		result.zoom(1/(float)zoom + .001f);
 		return result;
 	}
 
