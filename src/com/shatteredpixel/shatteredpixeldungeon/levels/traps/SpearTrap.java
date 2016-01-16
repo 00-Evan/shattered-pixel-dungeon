@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -47,6 +49,7 @@ public class SpearTrap extends Trap {
 		}
 		//this trap is not disarmed by being triggered
 		reveal();
+		Level.set(pos, Terrain.TRAP);
 		activate();
 	}
 
