@@ -57,6 +57,7 @@ public class ItemSlot extends Button {
 	protected BitmapText topRight;
 	protected BitmapText bottomRight;
 	protected Image      bottomRightIcon;
+	protected boolean    iconVisible = true;
 	
 	private static final String TXT_STRENGTH	= ":%d";
 	private static final String TXT_TYPICAL_STR	= "%d?";
@@ -205,7 +206,7 @@ public class ItemSlot extends Button {
 				} else {
 					iconInt = ((Potion) item).initials();
 				}
-				if (iconInt != null) {
+				if (iconInt != null && iconVisible) {
 					bottomRightIcon = new Image(Assets.CONS_ICONS);
 					int left = iconInt*7;
 					int top = item instanceof Potion ? 0 : 8;
@@ -242,5 +243,6 @@ public class ItemSlot extends Button {
 
 		if (BR) add( bottomRight );
 		else remove( bottomRight );
+		iconVisible = BR;
 	}
 }
