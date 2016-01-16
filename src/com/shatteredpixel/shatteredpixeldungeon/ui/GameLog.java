@@ -87,9 +87,6 @@ public class GameLog extends Component implements Signal.Listener<String> {
 			color = CharSprite.NEUTRAL;
 		}
 
-		text = Utils.capitalize( text ) +
-				(PUNCTUATION.matcher( text ).matches() ? "" : ".");
-
 		if (lastEntry != null && color == lastColor && lastEntry.nLines < MAX_LINES) {
 
 			String lastMessage = lastEntry.text();
