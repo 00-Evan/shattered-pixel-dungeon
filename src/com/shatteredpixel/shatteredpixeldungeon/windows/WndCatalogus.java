@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -146,7 +147,7 @@ public class WndCatalogus extends WndTabbed {
 		private boolean identified;
 		
 		private ItemSprite sprite;
-		private RenderedText label;
+		private RenderedTextMultiline label;
 		
 		public ListItem( Class<? extends Item> cl ) {
 			super();
@@ -170,17 +171,17 @@ public class WndCatalogus extends WndTabbed {
 		protected void createChildren() {
 			sprite = new ItemSprite();
 			add( sprite );
-			
-			label = PixelScene.renderText( 8 );
+
+			label = PixelScene.renderMultiline( 8 );
 			add( label );
 		}
 		
 		@Override
 		protected void layout() {
 			sprite.y = y + (height - sprite.height) / 2;
-			
-			label.x = sprite.x + sprite.width;
-			label.y = y + (height - label.baseLine()) / 2;
+
+			label.maxWidth((int)(width - sprite.width));
+			label.setPos(sprite.x + sprite.width,  y + (height - label.height()) / 2);
 		}
 		
 		public boolean onClick( float x, float y ) {
