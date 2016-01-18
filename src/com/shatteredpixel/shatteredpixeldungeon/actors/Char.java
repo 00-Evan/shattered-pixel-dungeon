@@ -112,10 +112,6 @@ public abstract class Char extends Actor {
 		
 		if (hit( this, enemy, false )) {
 			
-			if (visibleFight) {
-				GLog.i( Messages.get(Char.class, "hit", name, enemy.name) );
-			}
-			
 			// FIXME
 			int dr = this instanceof Hero && ((Hero)this).rangedWeapon != null && ((Hero)this).subClass ==
 				HeroSubClass.SNIPER ? 0 : Random.IntRange( 0, enemy.dr() );
@@ -167,8 +163,8 @@ public abstract class Char extends Actor {
 						
 						GLog.n( Messages.get(Char.class, "kill", name) );
 					
-				} else {
-					GLog.i( Messages.get(Char.class, "defeat", name, enemy.name) );
+				} else if (this == Dungeon.hero) {
+					GLog.i( Messages.get(Char.class, "defeat", enemy.name) );
 				}
 			}
 			
@@ -179,11 +175,6 @@ public abstract class Char extends Actor {
 			if (visibleFight) {
 				String defense = enemy.defenseVerb();
 				enemy.sprite.showStatus( CharSprite.NEUTRAL, defense );
-				if (this == Dungeon.hero) {
-					GLog.i( Messages.get(Char.class, "you_missed", enemy.name, defense) );
-				} else {
-					GLog.i( Messages.get(Char.class, "smb_missed", enemy.name, defense, name) );
-				}
 				
 				Sample.INSTANCE.play(Assets.SND_MISS);
 			}
