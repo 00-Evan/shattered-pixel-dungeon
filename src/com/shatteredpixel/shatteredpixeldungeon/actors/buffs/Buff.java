@@ -90,9 +90,7 @@ public class Buff extends Actor {
 
 	//to handle the common case of showing how many turns are remaining in a buff description.
 	protected String dispTurns(float input){
-		return input == 1 ?
-				Messages.get(Buff.class, "1moreturn") :
-				Messages.get(Buff.class, "#moreturns", new DecimalFormat("#.##").format(input));
+		return new DecimalFormat("#.##").format(input);
 	}
 
 	//creates a fresh instance of the buff and attaches that, this allows duplication.
