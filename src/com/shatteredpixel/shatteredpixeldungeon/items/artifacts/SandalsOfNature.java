@@ -57,7 +57,6 @@ public class SandalsOfNature extends Artifact {
 	public static final String AC_FEED = "FEED";
 	public static final String AC_ROOT = "ROOT";
 
-	protected String inventoryTitle = "Select a seed";
 	protected WndBag.Mode mode = WndBag.Mode.SEED;
 
 	public ArrayList<Class> seeds = new ArrayList<>();
@@ -76,11 +75,11 @@ public class SandalsOfNature extends Artifact {
 	public void execute( Hero hero, String action ) {
 		super.execute(hero, action);
 		if (action.equals(AC_FEED)){
-			GameScene.selectItem(itemSelector, mode, inventoryTitle);
+			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
 		} else if (action.equals(AC_ROOT) && level() > 0){
 
 			if (!isEquipped( hero )) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-			else if (charge == 0)    GLog.i("They have no energy right now.");
+			else if (charge == 0)    GLog.i( Messages.get(this, "no_charge") );
 			else {
 				Buff.prolong(hero, Roots.class, 5);
 				Buff.affect(hero, Earthroot.Armor.class).level(charge);
@@ -99,33 +98,22 @@ public class SandalsOfNature extends Artifact {
 
 	@Override
 	public String desc() {
-		String desc = "";
-		if (level() == 0)
-			desc += "What initially seem like sandals made of twine are actually two plants! They seem very weak and pale, perhaps they need to be given nutrients?";
-		else if (level() == 1)
-			desc += "The footwear has grown and now more closely resemble two tailored shoes. Some colour has returned to them, perhaps they can still grow further?";
-		else if (level() == 2)
-			desc += "The plants have grown again and now resembles a pair of solid boots made from bark.The plants seem to have " +
-					"regained their strength, but perhaps they can still grow further";
-		else
-			desc += "The plants seem to have reached their maximum size, they resemble a pair of armored greaves. The greaves are a deep brown " +
-					"and resemble a very sturdy tree.";
+		String desc = Messages.get(this, "desc_" + (level()+1));
 
 		if ( isEquipped ( Dungeon.hero ) ){
 			desc += "\n\n";
 
 			if (!cursed)
-				desc += " You feel more attuned with nature while wearing this artifact.";
+				desc += Messages.get(this, "desc_hint");
 			else
-				desc += " The cursed sandals are blocking any attunement with nature.";
+				desc += Messages.get(this, "desc_cursed");
 
 			if (level() > 0)
-				desc += "\n\nThe footwear has gained the ability to form up into a sort of immobile natural armour, " +
-						"but will need to charge up for it.";
+				desc += "\n\n" + Messages.get(this, "desc_ability");
 		}
 
 		if (!seeds.isEmpty()){
-			desc += "\n\nYou have fed the footwear " + seeds.size() + " seeds.";
+			desc += "\n\n" + Messages.get(this, "desc_seeds", seeds.size());
 		}
 
 		return desc;
@@ -177,7 +165,7 @@ public class SandalsOfNature extends Artifact {
 		public void onSelect( Item item ) {
 			if (item != null && item instanceof Plant.Seed) {
 				if (seeds.contains(item.getClass())){
-					GLog.w("Your footwear have already gained nutrients from that seed recently.");
+					GLog.w( Messages.get(SandalsOfNature.class, "already_fed") );
 				} else {
 					seeds.add(item.getClass());
 
@@ -190,11 +178,11 @@ public class SandalsOfNature extends Artifact {
 						seeds.clear();
 						upgrade();
 						if (level() >= 1 && level() <= 3) {
-							GLog.p("Your footwear surges in size, they are now " + name + "!");
+							GLog.p( Messages.get(SandalsOfNature.class, "levelup") );
 						}
 
 					} else {
-						GLog.i("The footwear absorbs the seed, they seem healthier.");
+						GLog.i( Messages.get(SandalsOfNature.class, "absorb_seed") );
 					}
 					item.detach(hero.belongings.backpack);
 				}
