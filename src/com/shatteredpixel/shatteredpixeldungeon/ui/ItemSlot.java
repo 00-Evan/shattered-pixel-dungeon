@@ -142,6 +142,11 @@ public class ItemSlot extends Button {
 	}
 	
 	public void item( Item item ) {
+		if (bottomRightIcon != null){
+			remove(bottomRightIcon);
+			bottomRightIcon = null;
+		}
+
 		if (item == null) {
 			
 			active = false;
