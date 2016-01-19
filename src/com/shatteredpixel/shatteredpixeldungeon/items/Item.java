@@ -118,8 +118,10 @@ public class Item implements Bundlable {
 		Dungeon.level.drop( detachAll( hero.belongings.backpack ), hero.pos ).sprite.drop( hero.pos );
 	}
 
-	public void syncVisuals(){
-		//do nothing by default, as most items need no visual syncing.
+	//'syncs' an item to be consistent between two separate game instances.
+	public void sync(){
+		//resets the name incase the language has changed.
+		name = Messages.get(this, "name");
 	}
 
 	public void doThrow( Hero hero ) {

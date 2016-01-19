@@ -99,10 +99,11 @@ public class Ring extends KindofMisc {
 	
 	public Ring() {
 		super();
-		syncVisuals();
+		sync();
 	}
 	
-	public void syncVisuals() {
+	public void sync() {
+		super.sync();
 		image	= handler.image( this );
 		gem		= handler.label( this );
 	}

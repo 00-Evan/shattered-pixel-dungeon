@@ -112,11 +112,12 @@ public class Potion extends Item {
 	
 	public Potion() {
 		super();
-		syncVisuals();
+		sync();
 	}
 
 	@Override
-	public void syncVisuals(){
+	public void sync(){
+		super.sync();
 		image = handler.image( this );
 		color = handler.label( this );
 	};

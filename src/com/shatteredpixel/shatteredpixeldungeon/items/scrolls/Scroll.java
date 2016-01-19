@@ -100,11 +100,12 @@ public abstract class Scroll extends Item {
 	
 	public Scroll() {
 		super();
-		syncVisuals();
+		sync();
 	}
 
 	@Override
-	public void syncVisuals(){
+	public void sync(){
+		super.sync();
 		image = handler.image( this );
 		rune = handler.label( this );
 	};
