@@ -88,10 +88,10 @@ public class DriedRose extends Artifact {
 	public void execute( Hero hero, String action ) {
 		if (action.equals(AC_SUMMON)) {
 
-			if (spawned)                    GLog.n("sad ghost: \"I'm already here\"");
+			if (spawned)                    GLog.i( Messages.get(this, "spawned") );
 			else if (!isEquipped( hero ))   GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-			else if (charge != chargeCap)   GLog.i("Your rose isn't fully charged yet.");
-			else if (cursed)                GLog.i("You cannot use a cursed rose.");
+			else if (charge != chargeCap)   GLog.i( Messages.get(this, "no_charge") );
+			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
 			else {
 				ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
 				for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
@@ -114,7 +114,7 @@ public class DriedRose extends Artifact {
 					hero.sprite.operate(hero.pos);
 
 					if (!firstSummon) {
-						ghost.yell(ghost.VOICE_HELLO + Dungeon.hero.givenName());
+						ghost.yell( Messages.get(GhostHero.class, "hello", Dungeon.hero.givenName()) );
 						Sample.INSTANCE.play( Assets.SND_GHOST );
 						firstSummon = true;
 					} else
@@ -125,7 +125,7 @@ public class DriedRose extends Artifact {
 					updateQuickslot();
 
 				} else
-					GLog.i("There is no free space near you.");
+					GLog.i( Messages.get(this, "no_space") );
 			}
 
 		} else{
@@ -135,18 +135,16 @@ public class DriedRose extends Artifact {
 
 	@Override
 	public String desc() {
-		String desc =
-				"Is this the rose that the ghost mentioned before disappearing? It seems to hold some spiritual power,"+
-				" perhaps it can be used to channel the energy of that lost warrior.";
+		String desc = super.desc();
 
 		if (isEquipped( Dungeon.hero )){
 			if (!cursed){
 
 				if (level() < levelCap)
-					desc+= "\n\nIt seems to be missing some petals. Perhaps reattaching them out strengthen the rose.";
+					desc+= "\n\n" + Messages.get(this, "desc_hint");
 
 			} else
-				desc += "\n\nThe cursed rose is bound to your hand, it feels eerily cold.";
+				desc += "\n\n" + Messages.get(this, "desc_cursed");
 		}
 
 		return desc;
@@ -202,14 +200,13 @@ public class DriedRose extends Artifact {
 
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				//TODO: investigate balancing on this.
 				partialCharge += 10/75f;
 				if (partialCharge > 1){
 					charge++;
 					partialCharge--;
 					if (charge == chargeCap){
 						partialCharge = 0f;
-						GLog.p("Your rose is fully charged!");
+						GLog.p( Messages.get(DriedRose.class, "charged") );
 					}
 				}
 			} else if (cursed && Random.Int(100) == 0) {
@@ -250,20 +247,18 @@ public class DriedRose extends Artifact {
 			DriedRose rose = hero.belongings.getItem( DriedRose.class );
 
 			if (rose == null){
-				GLog.w("You have no rose to add this petal to.");
+				GLog.w( Messages.get(this, "no_rose") );
 				return false;
 			} if ( rose.level() >= rose.levelCap ){
-				GLog.i("There is no room left for this petal, so you discard it.");
+				GLog.i( Messages.get(this, "no_room") );
 				return true;
 			} else {
 
 				rose.upgrade();
 				if (rose.level() == rose.levelCap) {
-					GLog.p("The rose is completed!");
-					Sample.INSTANCE.play( Assets.SND_GHOST );
-					GLog.n("sad ghost: \"Thank you...\"");
+					GLog.p( Messages.get(this, "maxlevel") );
 				} else
-					GLog.i("You add the petal to the rose.");
+					GLog.i( Messages.get(this, "levelup") );
 
 				Sample.INSTANCE.play( Assets.SND_DEWDROP );
 				hero.spendAndNext(TIME_TO_PICK_UP);
@@ -272,17 +267,11 @@ public class DriedRose extends Artifact {
 			}
 		}
 
-		@Override
-		public String info() {
-			return "A frail dried up petal, which has somehow survived this far into the dungeon.";
-		}
-
 	}
 
 	public static class GhostHero extends NPC {
 
 		{
-			name = "sad ghost";
 			spriteClass = GhostSprite.class;
 
 			flying = true;
@@ -306,6 +295,7 @@ public class DriedRose extends Artifact {
 		}
 
 		public void saySpawned(){
+			if (!name.equals("sad ghost")) return; //don't say anything if not on english
 			int i = (Dungeon.depth - 1) / 5;
 			if (chooseEnemy() == null)
 				yell( Random.element( VOICE_AMBIENT[i] ) );
@@ -320,11 +310,13 @@ public class DriedRose extends Artifact {
 		}
 
 		public void sayDefeated(){
+			if (!name.equals("sad ghost")) return; //don't say anything if not on english
 			yell( Random.element( VOICE_DEFEATED[ Dungeon.bossLevel() ? 1 : 0 ] ) );
 			Sample.INSTANCE.play( Assets.SND_GHOST );
 		}
 
 		public void sayHeroKilled(){
+			if (!name.equals("sad ghost")) return; //don't say anything if not on english
 			yell(Random.element(VOICE_HEROKILLED));
 			Sample.INSTANCE.play( Assets.SND_GHOST );
 		}
@@ -332,11 +324,6 @@ public class DriedRose extends Artifact {
 		public void sayBossBeaten(){
 			yell( Random.element( VOICE_BOSSBEATEN[ Dungeon.depth==25 ? 1 : 0 ] ) );
 			Sample.INSTANCE.play( Assets.SND_GHOST );
-		}
-
-		@Override
-		public String defenseVerb() {
-			return "evaded";
 		}
 
 		@Override
@@ -403,7 +390,7 @@ public class DriedRose extends Artifact {
 		public void interact() {
 			if (!DriedRose.talkedTo){
 				DriedRose.talkedTo = true;
-				GameScene.show(new WndQuest(this, VOICE_INTRODUCE ));
+				GameScene.show(new WndQuest(this, Messages.get(this, "introduce") ));
 			} else {
 				int curPos = pos;
 
@@ -430,13 +417,6 @@ public class DriedRose extends Artifact {
 			super.destroy();
 		}
 
-		@Override
-		public String description() {
-			return
-					"A frail looking ethereal figure with a humanoid shape. Its power seems tied to the rose I have." +
-					"\n\nThis ghost may not be much, but it seems to be my only true friend down here.";
-		}
-
 		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
 		static {
 			IMMUNITIES.add( ToxicGas.class );
@@ -451,8 +431,6 @@ public class DriedRose extends Artifact {
 		//************************************************************************************
 		//This is a bunch strings & string arrays, used in all of the sad ghost's voice lines.
 		//************************************************************************************
-
-		public static final String VOICE_HELLO = "Hello again ";
 
 		private static final String VOICE_INTRODUCE = "My spirit is bound to this rose, it was very precious to me, a "+
 			"gift from my love whom I left on the surface.\n\nI cannot return to him, but thanks to you I have a " +
