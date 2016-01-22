@@ -20,7 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
@@ -108,7 +107,7 @@ public class RedButton extends Button {
 	}
 	
 	public float reqWidth() {
-		return text.width() + 4;
+		return text.width() + 3;
 	}
 	
 	public float reqHeight() {
