@@ -180,7 +180,7 @@ public class HornOfPlenty extends Artifact {
 						image = ItemSpriteSheet.ARTIFACT_HORN1;
 
 					if (charge == chargeCap){
-						GLog.p( Messages.get(this, "full") );
+						GLog.p( Messages.get(HornOfPlenty.class, "full") );
 						partialCharge = 0;
 					}
 
