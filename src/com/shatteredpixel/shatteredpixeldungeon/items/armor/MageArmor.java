@@ -37,15 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class MageArmor extends ClassArmor {
 	
-	private static final String AC_SPECIAL = "MOLTEN EARTH";
-	
 	{
 		image = ItemSpriteSheet.ARMOR_MAGE;
-	}
-	
-	@Override
-	public String special() {
-		return AC_SPECIAL;
 	}
 	
 	@Override

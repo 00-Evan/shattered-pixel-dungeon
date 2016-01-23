@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
@@ -66,7 +67,7 @@ public class WndItem extends Window {
 		if (Dungeon.hero.isAlive() && owner != null) {
 			for (final String action:item.actions( Dungeon.hero )) {
 				
-				RedButton btn = new RedButton( action ) {
+				RedButton btn = new RedButton( Messages.get(item, "ac_" + action) ) {
 					@Override
 					protected void onClick() {
 						item.execute( Dungeon.hero, action );

@@ -70,14 +70,6 @@ public class Artifact extends KindofMisc {
 	public Artifact(){
 		super();
 	}
-
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
-		return actions;
-	}
-
 	@Override
 	public boolean doEquip( final Hero hero ) {
 

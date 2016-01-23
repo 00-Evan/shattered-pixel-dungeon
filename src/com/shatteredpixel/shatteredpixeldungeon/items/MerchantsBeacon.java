@@ -32,7 +32,6 @@ public class MerchantsBeacon extends Item {
 
 	private static final String AC_USE = "USE";
 
-
 	{
 		image = ItemSpriteSheet.BEACON;
 

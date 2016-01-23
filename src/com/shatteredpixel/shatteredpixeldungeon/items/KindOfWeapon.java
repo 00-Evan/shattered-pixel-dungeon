@@ -34,13 +34,6 @@ abstract public class KindOfWeapon extends EquipableItem {
 	protected static final float TIME_TO_EQUIP = 1f;
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add(isEquipped(hero) ? AC_UNEQUIP : AC_EQUIP);
-		return actions;
-	}
-	
-	@Override
 	public boolean isEquipped( Hero hero ) {
 		return hero.belongings.weapon == this;
 	}

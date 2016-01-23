@@ -119,6 +119,8 @@ public abstract class Plant implements Bundlable {
 	}
 	
 	public static class Seed extends Item {
+
+		public static final String AC_PLANT	= "PLANT";
 		
 		private static final float TIME_TO_PLANT = 1f;
 		
@@ -134,7 +136,7 @@ public abstract class Plant implements Bundlable {
 		@Override
 		public ArrayList<String> actions( Hero hero ) {
 			ArrayList<String> actions = super.actions( hero );
-			actions.add( Messages.get( Seed.class, "ac_plant" ) );
+			actions.add( AC_PLANT );
 			return actions;
 		}
 		
@@ -149,7 +151,7 @@ public abstract class Plant implements Bundlable {
 		
 		@Override
 		public void execute( Hero hero, String action ) {
-			if (action.equals( Messages.get( Seed.class, "ac_plant" ))) {
+			if (action.equals( AC_PLANT )) {
 							
 				hero.spend( TIME_TO_PLANT );
 				hero.busy();

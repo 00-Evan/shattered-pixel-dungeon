@@ -29,14 +29,13 @@ import com.watabou.utils.Bundle;
 import java.util.ArrayList;
 
 abstract public class ClassArmor extends Armor {
-	
-	private static final String TXT_LOW_HEALTH		= "Your health is too low!";
-	private static final String TXT_NOT_EQUIPPED	= "You need to be wearing this armor to use its special power!";
+
+	private static final String AC_SPECIAL = "SPECIAL";
 	
 	{
 		levelKnown = true;
 		cursedKnown = true;
-		defaultAction = special();
+		defaultAction = AC_SPECIAL;
 
 		bones = false;
 	}
@@ -95,14 +94,14 @@ abstract public class ClassArmor extends Armor {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		if (hero.HP >= 3 && isEquipped( hero )) {
-			actions.add( special() );
+			actions.add( AC_SPECIAL );
 		}
 		return actions;
 	}
 	
 	@Override
 	public void execute( Hero hero, String action ) {
-		if (action == special()) {
+		if (action.equals(AC_SPECIAL)) {
 			
 			if (hero.HP < 3) {
 				GLog.w( Messages.get(this, "low_hp") );
@@ -118,8 +117,7 @@ abstract public class ClassArmor extends Armor {
 			super.execute( hero, action );
 		}
 	}
-	
-	abstract public String special();
+
 	abstract public void doSpecial();
 
 	@Override

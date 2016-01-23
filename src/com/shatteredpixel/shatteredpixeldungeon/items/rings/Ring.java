@@ -109,13 +109,6 @@ public class Ring extends KindofMisc {
 	}
 	
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( isEquipped( hero ) ? AC_UNEQUIP : AC_EQUIP );
-		return actions;
-	}
-	
-	@Override
 	public boolean doEquip( final Hero hero ) {
 
 		if (hero.belongings.misc1 != null && hero.belongings.misc2 != null) {

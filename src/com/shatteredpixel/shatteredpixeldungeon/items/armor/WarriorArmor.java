@@ -44,18 +44,11 @@ public class WarriorArmor extends ClassArmor {
 	
 	private static int LEAP_TIME	= 1;
 	private static int SHOCK_TIME	= 3;
-	
-	private static final String AC_SPECIAL = "HEROIC LEAP";
-	
+
 	{
 		image = ItemSpriteSheet.ARMOR_WARRIOR;
 	}
-	
-	@Override
-	public String special() {
-		return AC_SPECIAL;
-	}
-	
+
 	@Override
 	public void doSpecial() {
 		GameScene.selectCell( leaper );

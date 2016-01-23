@@ -58,7 +58,7 @@ public class Bomb extends Item {
 	//FIXME using a static variable for this is kinda gross, should be a better way
 	private static boolean lightingFuse = false;
 
-	private static final String AC_LIGHTTHROW = "Light & Throw";
+	private static final String AC_LIGHTTHROW = "LIGHTTHROW";
 
 	@Override
 	public boolean isSimilar(Item item) {

@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Amulet extends Item {
 	
-	private static final String AC_END = "END THE GAME";
+	private static final String AC_END = "END";
 	
 	{
 		image = ItemSpriteSheet.AMULET;
@@ -50,7 +50,7 @@ public class Amulet extends Item {
 	
 	@Override
 	public void execute( Hero hero, String action ) {
-		if (action == AC_END) {
+		if (action.equals(AC_END)) {
 			
 			showAmuletScene( false );
 			

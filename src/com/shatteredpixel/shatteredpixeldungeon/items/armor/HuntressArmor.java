@@ -36,19 +36,13 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 
 public class HuntressArmor extends ClassArmor {
-	
-	private static final String AC_SPECIAL = "SPECTRAL BLADES";
+
 	
 	{
 		image = ItemSpriteSheet.ARMOR_HUNTRESS;
 	}
 	
 	private HashMap<Callback, Mob> targets = new HashMap<Callback, Mob>();
-	
-	@Override
-	public String special() {
-		return AC_SPECIAL;
-	}
 	
 	@Override
 	public void doSpecial() {

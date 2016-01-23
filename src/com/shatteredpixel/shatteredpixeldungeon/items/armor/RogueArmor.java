@@ -41,15 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class RogueArmor extends ClassArmor {
 	
-	private static final String AC_SPECIAL = "SMOKE BOMB";
-	
 	{
 		image = ItemSpriteSheet.ARMOR_ROGUE;
-	}
-	
-	@Override
-	public String special() {
-		return AC_SPECIAL;
 	}
 	
 	@Override

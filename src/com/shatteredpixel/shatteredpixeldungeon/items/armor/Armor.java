@@ -79,13 +79,6 @@ public class Armor extends EquipableItem {
 	}
 
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add(isEquipped(hero) ? AC_UNEQUIP : AC_EQUIP);
-		return actions;
-	}
-
-	@Override
 	public boolean doEquip( Hero hero ) {
 		
 		detach(hero.belongings.backpack);
