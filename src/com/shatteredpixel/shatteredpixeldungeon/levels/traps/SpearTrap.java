@@ -66,7 +66,7 @@ public class SpearTrap extends Trap {
 			damage -= Random.IntRange( 0, ch.dr());
 			ch.damage( Math.max(damage, 0) , this);
 			if (!ch.isAlive() && ch == Dungeon.hero){
-				Dungeon.fail(Utils.format(ResultDescriptions.TRAP, name));
+				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "ondeath") );
 			}
 		}

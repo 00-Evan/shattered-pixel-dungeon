@@ -185,7 +185,7 @@ public class RankingsScene extends PixelScene {
 				position.text(" ");
 			position.measure();
 			
-			desc.text( rec.info );
+			desc.text( rec.deathDesc() );
 
 			//desc.measure();
 
@@ -277,8 +277,8 @@ public class RankingsScene extends PixelScene {
 			depth.x = steps.x + (steps.width - depth.width()) / 2;
 			depth.y = steps.y + (steps.height - depth.height()) / 2 + 1;
 
-			desc.setPos(shield.x + shield.width + GAP, shield.y + (shield.height - desc.height()) / 2 + 1);
 			desc.maxWidth((int)(steps.x - desc.left()));
+			desc.setPos(shield.x + shield.width + GAP, shield.y + (shield.height - desc.height()) / 2 + 1);
 		}
 		
 		@Override

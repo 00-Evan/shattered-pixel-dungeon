@@ -126,8 +126,6 @@ public class Dungeon {
 	
 	public static int depth;
 	public static int gold;
-	// Reason of death
-	public static String resultDescription;
 	
 	public static HashSet<Integer> chapters;
 	
@@ -672,14 +670,13 @@ public class Dungeon {
 		Hero.preview( info, bundle.getBundle( HERO ) );
 	}
 	
-	public static void fail( String desc ) {
-		resultDescription = desc;
+	public static void fail( Class cause ) {
 		if (hero.belongings.getItem( Ankh.class ) == null) {
-			Rankings.INSTANCE.submit( false );
+			Rankings.INSTANCE.submit( false, cause );
 		}
 	}
 	
-	public static void win( String desc ) {
+	public static void win( Class cause ) {
 
 		hero.belongings.identify();
 
@@ -687,8 +684,7 @@ public class Dungeon {
 			Badges.validateChampion();
 		}
 
-		resultDescription = desc;
-		Rankings.INSTANCE.submit( true );
+		Rankings.INSTANCE.submit( true, cause );
 	}
 	
 	public static void observe() {

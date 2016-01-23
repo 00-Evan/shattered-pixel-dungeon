@@ -68,7 +68,7 @@ public class ScrollOfPsionicBlast extends Scroll {
 		curUser.spendAndNext( TIME_TO_READ ); //no animation here, the flash interrupts it anyway.
 
 		if (!curUser.isAlive()) {
-			Dungeon.fail( Utils.format(ResultDescriptions.ITEM, name ));
+			Dungeon.fail( getClass() );
 			GLog.n( Messages.get(this, "ondeath") );
 		}
 	}

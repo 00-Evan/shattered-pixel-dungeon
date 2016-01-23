@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
@@ -49,13 +50,13 @@ public enum Rankings {
 	public int totalNumber;
 	public int wonNumber;
 
-	public void submit( boolean win ) {
+	public void submit( boolean win, Class cause ) {
 
 		load();
 		
 		Record rec = new Record();
 		
-		rec.info	= Dungeon.resultDescription;
+		rec.cause = cause;
 		rec.win		= win;
 		rec.heroClass	= Dungeon.hero.heroClass;
 		rec.armorTier	= Dungeon.hero.tier();
@@ -166,16 +167,20 @@ public enum Rankings {
 	}
 
 	public static class Record implements Bundlable {
-		
+
+		//pre 0.3.4
+		public String info;
 		private static final String REASON	= "reason";
+
+		private static final String CAUSE   = "cause";
 		private static final String WIN		= "win";
 		private static final String SCORE	= "score";
 		private static final String TIER	= "tier";
 		private static final String LEVEL	= "level";
 		private static final String DEPTH	= "depth";
 		private static final String GAME	= "gameFile";
-		
-		public String info;
+
+		public Class cause;
 		public boolean win;
 		
 		public HeroClass heroClass;
@@ -187,10 +192,28 @@ public enum Rankings {
 		
 		public String gameFile;
 
+		public String deathDesc(){
+			if (cause == null && (info == null || info.equals("")))
+				return "Killed by Something";
+			else if (cause == null){
+				return info; //pre 0.3.4 saves
+			} else {
+				String result = Messages.get(cause, "rankings_desc", (Messages.get(cause, "name")));
+				if (result.contains("!!!NO TEXT FOUND!!!")){
+					return "Killed By Something";
+				} else {
+					return result;
+				}
+			}
+		}
+
 		@Override
 		public void restoreFromBundle( Bundle bundle ) {
-			
+
+			//pre-0.3.4
 			info	= bundle.getString( REASON );
+
+			cause   = bundle.getClass( CAUSE );
 			win		= bundle.getBoolean( WIN );
 			score	= bundle.getInt( SCORE );
 			
@@ -239,7 +262,9 @@ public enum Rankings {
 		@Override
 		public void storeInBundle( Bundle bundle ) {
 			
-			bundle.put( REASON, info );
+			if (info != null && !info.equals("")) bundle.put( REASON, info );
+			else bundle.put( CAUSE, cause );
+
 			bundle.put( WIN, win );
 			bundle.put( SCORE, score );
 			

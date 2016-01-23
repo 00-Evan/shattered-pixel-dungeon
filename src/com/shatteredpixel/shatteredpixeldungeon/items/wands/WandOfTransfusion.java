@@ -173,7 +173,6 @@ public class WandOfTransfusion extends Wand {
 		}
 	}
 
-
 	//this wand costs health too
 	private void damageHero(){
 		// 15% of max hp
@@ -181,7 +180,7 @@ public class WandOfTransfusion extends Wand {
 		curUser.damage(damage, this);
 
 		if (!curUser.isAlive()){
-			Dungeon.fail( Utils.format(ResultDescriptions.ITEM, name) );
+			Dungeon.fail( getClass() );
 			GLog.n( Messages.get(this, "ondeath") );
 		}
 	}

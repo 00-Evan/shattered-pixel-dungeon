@@ -81,7 +81,7 @@ public class GrimTrap extends Trap {
 						}
 						Sample.INSTANCE.play(Assets.SND_CURSED);
 						if (!finalTarget.isAlive()) {
-							Dungeon.fail(Utils.format(ResultDescriptions.TRAP, name));
+							Dungeon.fail( getClass() );
 							GLog.n( Messages.get(this, "ondeath") );
 						}
 					} else {

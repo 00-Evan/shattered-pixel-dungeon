@@ -111,7 +111,7 @@ public class Warlock extends Mob implements Callback {
 			enemy.damage( dmg, this );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
-				Dungeon.fail( Utils.format( ResultDescriptions.MOB, Utils.indefinite( name ) ) );
+				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "bolt_kill") );
 			}
 		} else {

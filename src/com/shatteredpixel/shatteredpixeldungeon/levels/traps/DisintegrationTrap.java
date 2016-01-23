@@ -66,7 +66,7 @@ public class DisintegrationTrap extends Trap {
 			if (ch == Dungeon.hero){
 				Hero hero = (Hero)ch;
 				if (!hero.isAlive()){
-					Dungeon.fail(Utils.format(ResultDescriptions.TRAP, name));
+					Dungeon.fail( getClass() );
 					GLog.n( Messages.get(this, "ondeath") );
 				} else {
 					Item item = hero.belongings.randomUnequipped();

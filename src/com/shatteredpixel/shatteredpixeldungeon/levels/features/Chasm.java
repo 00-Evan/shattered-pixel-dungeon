@@ -59,7 +59,7 @@ public class Chasm {
 						jumpConfirmed = true;
 						hero.resume();
 					}
-				};
+				}
 			}
 		);
 	}
@@ -104,7 +104,7 @@ public class Chasm {
 			public void onDeath() {
 				Badges.validateDeathFromFalling();
 				
-				Dungeon.fail( ResultDescriptions.FALL );
+				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(Chasm.class, "ondeath") );
 			}
 		} );

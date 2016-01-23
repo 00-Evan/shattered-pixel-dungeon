@@ -55,7 +55,7 @@ public class Bleeding extends Buff {
 	
 	public void set( int level ) {
 		this.level = level;
-	};
+	}
 	
 	@Override
 	public int icon() {
@@ -80,7 +80,7 @@ public class Bleeding extends Buff {
 				}
 				
 				if (target == Dungeon.hero && !target.isAlive()) {
-					Dungeon.fail( ResultDescriptions.BLEEDING );
+					Dungeon.fail( getClass() );
 					GLog.n( Messages.get(this, "ondeath") );
 				}
 				

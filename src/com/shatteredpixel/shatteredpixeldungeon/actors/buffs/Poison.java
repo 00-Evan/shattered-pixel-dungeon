@@ -58,7 +58,7 @@ public class Poison extends Buff implements Hero.Doom {
 	
 	public void set( float duration ) {
 		this.left = duration;
-	};
+	}
 	
 	@Override
 	public int icon() {
@@ -118,7 +118,7 @@ public class Poison extends Buff implements Hero.Doom {
 	public void onDeath() {
 		Badges.validateDeathFromPoison();
 		
-		Dungeon.fail( ResultDescriptions.POISON );
+		Dungeon.fail( getClass() );
 		GLog.n( "You died from poison..." );
 	}
 }

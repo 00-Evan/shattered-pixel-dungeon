@@ -104,7 +104,7 @@ public class Viscosity extends Glyph {
 		
 		public void prolong( int damage ) {
 			this.damage += damage;
-		};
+		}
 		
 		@Override
 		public int icon() {
@@ -124,7 +124,7 @@ public class Viscosity extends Glyph {
 				if (target == Dungeon.hero && !target.isAlive()) {
 
 					Glyph glyph = new Viscosity();
-					Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, glyph.name() ) );
+					Dungeon.fail( glyph.getClass() );
 					GLog.n( Messages.get(Glyph.class, "killed", glyph.name()) );
 					
 					Badges.validateDeathFromGlyph();

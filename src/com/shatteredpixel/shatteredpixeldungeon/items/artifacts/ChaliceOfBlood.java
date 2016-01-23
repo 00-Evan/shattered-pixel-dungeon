@@ -74,7 +74,7 @@ public class ChaliceOfBlood extends Artifact {
 						protected void onSelect(int index) {
 							if (index == 0)
 								prick(Dungeon.hero);
-						};
+						}
 					}
 				);
 
@@ -108,7 +108,7 @@ public class ChaliceOfBlood extends Artifact {
 		hero.damage(damage, this);
 
 		if (!hero.isAlive()) {
-			Dungeon.fail(Utils.format( ResultDescriptions.ITEM, name ));
+			Dungeon.fail( getClass() );
 			GLog.n( Messages.get(this, "ondeath") );
 		} else {
 			upgrade();

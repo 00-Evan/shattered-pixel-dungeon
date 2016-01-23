@@ -250,7 +250,7 @@ public class CursedWand {
 									target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
 									Sample.INSTANCE.play(Assets.SND_CURSED);
 									if (!user.isAlive()) {
-										Dungeon.fail(Utils.format(ResultDescriptions.ITEM, wand.name()));
+										Dungeon.fail( wand.getClass() );
 										GLog.n(Messages.get(CursedWand.class, "ondeath", wand.name()));
 									}
 									break;

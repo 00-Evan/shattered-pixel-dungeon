@@ -152,7 +152,7 @@ public class Armor extends EquipableItem {
 			if (inscribe) {
 				inscribe( Glyph.random() );
 			}
-		};
+		}
 
 		STR--;
 		
@@ -339,7 +339,7 @@ public class Armor extends EquipableItem {
 		public boolean checkOwner( Char owner ) {
 			if (!owner.isAlive() && owner instanceof Hero) {
 
-				Dungeon.fail( Utils.format( ResultDescriptions.GLYPH, name() ) );
+				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "killed", name()) );
 
 				Badges.validateDeathFromGlyph();

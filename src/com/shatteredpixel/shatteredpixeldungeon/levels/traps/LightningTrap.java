@@ -61,7 +61,7 @@ public class LightningTrap extends Trap {
 				Camera.main.shake( 2, 0.3f );
 
 				if (!ch.isAlive()) {
-					Dungeon.fail( Utils.format( ResultDescriptions.TRAP, name ) );
+					Dungeon.fail( getClass() );
 					GLog.n( Messages.get(this, "ondeath") );
 				}
 			}

@@ -42,6 +42,6 @@ public class ResultDescriptions {
 	public static final String BLEEDING	= "Bled to Death";
 	public static final String OOZE		= "Melted Away";
 	public static final String FALL		= "Died on Impact";
-	
+
 	public static final String WIN	= "Obtained the Amulet of Yendor";
 }

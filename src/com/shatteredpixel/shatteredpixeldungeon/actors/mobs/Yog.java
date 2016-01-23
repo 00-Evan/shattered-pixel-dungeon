@@ -346,7 +346,7 @@ public class Yog extends Mob {
 					enemy.sprite.flash();
 					
 					if (!enemy.isAlive() && enemy == Dungeon.hero) {
-						Dungeon.fail( Utils.format( ResultDescriptions.UNIQUE, name ) );
+						Dungeon.fail( getClass() );
 						GLog.n( Messages.get(Char.class, "kill", name) );
 					}
 					return true;

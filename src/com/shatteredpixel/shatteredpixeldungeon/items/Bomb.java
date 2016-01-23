@@ -149,7 +149,7 @@ public class Bomb extends Item {
 					}
 
 					if (ch == Dungeon.hero && !ch.isAlive())
-						Dungeon.fail( Messages.get(this, "ondeath") );
+						Dungeon.fail( getClass() );
 				}
 			}
 		}

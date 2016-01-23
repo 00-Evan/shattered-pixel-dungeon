@@ -770,7 +770,7 @@ public class Hero extends Char {
 					GameScene.show( new WndMessage( Messages.get(this, "leave") ) );
 					ready();
 				} else {
-					Dungeon.win( ResultDescriptions.WIN );
+					Dungeon.win( Amulet.class );
 					Dungeon.deleteGame( Dungeon.hero.heroClass, true );
 					Game.switchScene( SurfaceScene.class );
 				}

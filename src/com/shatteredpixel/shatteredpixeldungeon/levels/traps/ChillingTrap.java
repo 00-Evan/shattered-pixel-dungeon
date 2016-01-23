@@ -57,7 +57,7 @@ public class ChillingTrap extends Trap{
 			Chill.prolong(ch, Chill.class, 5f + Random.Int(Dungeon.depth));
 			ch.damage(Random.NormalIntRange(1 , Dungeon.depth), this);
 			if (!ch.isAlive() && ch == Dungeon.hero){
-				Dungeon.fail( Utils.format(ResultDescriptions.TRAP, name) );
+				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "ondeath") );
 			}
 		}

@@ -62,7 +62,7 @@ public class Ooze extends Buff {
 			else if (Random.Int(2) == 0)
 				target.damage( 1, this );
 			if (!target.isAlive() && target == Dungeon.hero) {
-				Dungeon.fail( ResultDescriptions.OOZE );
+				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "ondeath") );
 			}
 			spend( TICK );

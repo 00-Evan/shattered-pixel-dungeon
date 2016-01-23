@@ -153,15 +153,8 @@ public abstract class Char extends Actor {
 			if (!enemy.isAlive() && visibleFight) {
 				if (enemy == Dungeon.hero) {
 
-						if ( this instanceof Yog ) {
-							Dungeon.fail( Utils.format( ResultDescriptions.NAMED, name) );
-						} else if (properties().contains(Property.MINIBOSS) || properties().contains(Property.BOSS)) {
-							Dungeon.fail( Utils.format( ResultDescriptions.UNIQUE, name) );
-						} else {
-							Dungeon.fail( Utils.format( ResultDescriptions.MOB, Utils.indefinite( name )) );
-						}
-						
-						GLog.n( Messages.get(Char.class, "kill", name) );
+					Dungeon.fail( getClass() );
+					GLog.n( Messages.get(Char.class, "kill", name) );
 					
 				} else if (this == Dungeon.hero) {
 					GLog.i( Messages.get(Char.class, "defeat", enemy.name) );

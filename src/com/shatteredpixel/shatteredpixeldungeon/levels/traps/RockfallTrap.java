@@ -64,7 +64,7 @@ public class RockfallTrap extends Trap {
 			Buff.prolong( ch, Paralysis.class, Paralysis.duration(ch)*2);
 
 			if (!ch.isAlive() && ch == Dungeon.hero){
-				Dungeon.fail(Utils.format(ResultDescriptions.TRAP, name));
+				Dungeon.fail( getClass() );
 				GLog.n( Messages.get(this, "ondeath") );
 			}
 		}

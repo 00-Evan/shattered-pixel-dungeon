@@ -100,7 +100,7 @@ public class WandOfBlastWave extends Wand {
 		}
 
 		if (!curUser.isAlive()) {
-			Dungeon.fail( Utils.format(ResultDescriptions.ITEM, name) );
+			Dungeon.fail( getClass() );
 			GLog.n( Messages.get( this, "ondeath") );
 		}
 	}
