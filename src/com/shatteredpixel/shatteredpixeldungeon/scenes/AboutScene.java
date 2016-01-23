@@ -26,10 +26,11 @@ import android.net.Uri;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.watabou.input.Touchscreen.Touch;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.TouchArea;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
@@ -41,18 +42,15 @@ public class AboutScene extends PixelScene {
 	private static final String TTL_SHPX = "Shattered Pixel Dungeon";
 
 	private static final String TXT_SHPX =
-			"Design, Code, & Graphics: Evan\n\n" +
-			"Shattered Pixel is Evan's online home, check it out:";
+			"Design, Code, & Graphics: Evan";
 
 	private static final String LNK_SHPX = "ShatteredPixel.com";
 
-
-	private static final String TTL_WATA = "Original Pixel Dungeon";
+	private static final String TTL_WATA = "Pixel Dungeon";
 
 	private static final String TXT_WATA =
 			"Code & Graphics: Watabou\n" +
-			"Music: Cube_Code\n\n" +
-			"Visit Watabou for more info:";
+			"Music: Cube_Code";
 	
 	private static final String LNK_WATA = "pixeldungeon.watabou.ru";
 	
@@ -71,33 +69,27 @@ public class AboutScene extends PixelScene {
 
 		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
 
-		BitmapTextMultiline shpxtitle = createMultiline( TTL_SHPX, 8 );
-		shpxtitle.maxWidth = (int) Math.min( colWidth, 120 );
-		shpxtitle.measure();
+		RenderedText shpxtitle = renderText( TTL_SHPX, 8 );
 		shpxtitle.hardlight( Window.SHPX_COLOR );
 		add( shpxtitle );
 
 		shpxtitle.x = (colWidth - shpxtitle.width()) / 2;
 		shpxtitle.y = shpx.y + shpx.height + 5;
 
-		BitmapTextMultiline shpxtext = createMultiline( TXT_SHPX, 8 );
-		shpxtext.maxWidth = shpxtitle.maxWidth;
-		shpxtext.measure();
+		RenderedTextMultiline shpxtext = renderMultiline( TXT_SHPX, 8 );
+		shpxtext.maxWidth((int)Math.min(colWidth, 120));
 		add( shpxtext );
 
-		shpxtext.x = (colWidth - shpxtext.width()) / 2;
-		shpxtext.y = shpxtitle.y + shpxtitle.height() + 12;
+		shpxtext.setPos((colWidth - shpxtext.width()) / 2, shpxtitle.y + shpxtitle.height() + 12);
 
-		BitmapTextMultiline shpxlink = createMultiline( LNK_SHPX, 8 );
-		shpxlink.maxWidth = shpxtitle.maxWidth;
-		shpxlink.measure();
+		RenderedTextMultiline shpxlink = renderMultiline( LNK_SHPX, 8 );
+		shpxlink.maxWidth(shpxtext.maxWidth());
 		shpxlink.hardlight( Window.SHPX_COLOR );
 		add( shpxlink );
 
-		shpxlink.x = shpxtext.x;
-		shpxlink.y = shpxtext.y + shpxtext.height();
+		shpxlink.setPos((colWidth - shpxlink.width()) / 2, shpxtext.bottom() + 6);
 
-		TouchArea shpxhotArea = new TouchArea( shpxlink ) {
+		TouchArea shpxhotArea = new TouchArea( shpxlink.left(), shpxlink.top(), shpxlink.width(), shpxlink.height() ) {
 			@Override
 			protected void onClick( Touch touch ) {
 				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK_SHPX ) );
@@ -110,38 +102,32 @@ public class AboutScene extends PixelScene {
 		wata.x = wataOffset + (colWidth - wata.width()) / 2;
 		wata.y = ShatteredPixelDungeon.landscape() ?
 						colTop:
-						shpxlink.y + wata.height + 20;
+						shpxlink.top() + wata.height + 20;
 		add( wata );
 
 		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
 
-		BitmapTextMultiline wataTitle = createMultiline( TTL_WATA, 8 );
-		wataTitle.maxWidth = (int) Math.min( colWidth, 120 );
-		wataTitle.measure();
+		RenderedText wataTitle = renderText( TTL_WATA, 8 );
 		wataTitle.hardlight(Window.TITLE_COLOR);
 		add( wataTitle );
 
 		wataTitle.x = wataOffset + (colWidth - wataTitle.width()) / 2;
 		wataTitle.y = wata.y + wata.height + 11;
 
-		BitmapTextMultiline wataText = createMultiline( TXT_WATA, 8 );
-		wataText.maxWidth = wataTitle.maxWidth;
-		wataText.measure();
+		RenderedTextMultiline wataText = renderMultiline( TXT_WATA, 8 );
+		wataText.maxWidth((int)Math.min(colWidth, 120));
 		add( wataText );
+
+		wataText.setPos(wataOffset + (colWidth - wataText.width()) / 2, wataTitle.y + wataTitle.height() + 12);
 		
-		wataText.x = wataOffset + (colWidth - wataText.width()) / 2;
-		wataText.y = wataTitle.y + wataTitle.height() + 12;
-		
-		BitmapTextMultiline wataLink = createMultiline( LNK_WATA, 8 );
-		wataLink.maxWidth = wataTitle.maxWidth;
-		wataLink.measure();
+		RenderedTextMultiline wataLink = renderMultiline( LNK_WATA, 8 );
+		wataLink.maxWidth((int)Math.min(colWidth, 120));
 		wataLink.hardlight(Window.TITLE_COLOR);
 		add(wataLink);
 		
-		wataLink.x = wataText.x;
-		wataLink.y = wataText.y + wataText.height();
+		wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2 , wataText.bottom() + 6);
 		
-		TouchArea hotArea = new TouchArea( wataLink ) {
+		TouchArea hotArea = new TouchArea( wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height() ) {
 			@Override
 			protected void onClick( Touch touch ) {
 				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK_WATA ) );
