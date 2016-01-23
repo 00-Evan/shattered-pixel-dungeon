@@ -185,7 +185,7 @@ public class RankingsScene extends PixelScene {
 				position.text(" ");
 			position.measure();
 			
-			desc.text( rec.deathDesc() );
+			desc.text( rec.desc() );
 
 			//desc.measure();
 

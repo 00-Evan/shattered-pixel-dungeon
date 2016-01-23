@@ -22,7 +22,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ResultDescriptions;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -33,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -123,9 +121,8 @@ public class Viscosity extends Glyph {
 				target.damage( 1, this );
 				if (target == Dungeon.hero && !target.isAlive()) {
 
-					Glyph glyph = new Viscosity();
-					Dungeon.fail( glyph.getClass() );
-					GLog.n( Messages.get(Glyph.class, "killed", glyph.name()) );
+					Dungeon.fail( getClass() );
+					GLog.n( Messages.get(this, "ondeath") );
 					
 					Badges.validateDeathFromGlyph();
 				}

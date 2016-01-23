@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -192,7 +192,7 @@ public enum Rankings {
 		
 		public String gameFile;
 
-		public String deathDesc(){
+		public String desc(){
 			if (cause == null && (info == null || info.equals("")))
 				return "Killed by Something";
 			else if (cause == null){
@@ -206,7 +206,7 @@ public enum Rankings {
 				}
 			}
 		}
-
+		
 		@Override
 		public void restoreFromBundle( Bundle bundle ) {
 
