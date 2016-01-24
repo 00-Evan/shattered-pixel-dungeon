@@ -72,7 +72,7 @@ public class LanguageButton extends Button {
 
 	@Override
 	protected void onClick() {
-		parent.add( new WndOptions("Languages", "Select a language(No, this menu isn't finished)", "English", "Русский язык(97%)", "Português(97%)", "中文(97%)", "Deutsch(70%)", "한국어(70%)", "Polski(60%)" ) {
+		parent.add( new WndOptions("Languages", "Select a language(No, this menu isn't finished)", "English", "Русский язык(99%)", "Português(99%)", "中文(99%)", "Deutsch(80%)", "한국어(70%)", "Polski(55%)" ) {
 			@Override
 			protected void onSelect(int index) {
 				switch(index){
