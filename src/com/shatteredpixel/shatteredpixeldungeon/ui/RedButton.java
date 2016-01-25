@@ -36,9 +36,15 @@ public class RedButton extends Button {
 	protected Image icon;
 			
 	public RedButton( String label ) {
+		this(label, 9);
+	}
+
+	public RedButton( String label, int size ){
 		super();
-		
+
+		text = PixelScene.renderText( size );
 		text.text( label );
+		add( text );
 	}
 	
 	@Override
@@ -47,9 +53,6 @@ public class RedButton extends Button {
 		
 		bg = Chrome.get( Chrome.Type.BUTTON );
 		add( bg );
-		
-		text = PixelScene.renderText( 9 );
-		add( text );
 	}
 	
 	@Override

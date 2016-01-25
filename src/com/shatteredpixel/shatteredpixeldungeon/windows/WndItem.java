@@ -67,7 +67,7 @@ public class WndItem extends Window {
 		if (Dungeon.hero.isAlive() && owner != null) {
 			for (final String action:item.actions( Dungeon.hero )) {
 				
-				RedButton btn = new RedButton( Messages.get(item, "ac_" + action) ) {
+				RedButton btn = new RedButton( Messages.get(item, "ac_" + action), 8 ) {
 					@Override
 					protected void onClick() {
 						item.execute( Dungeon.hero, action );
