@@ -78,7 +78,7 @@ public class WndItem extends Window {
 				btn.setSize( Math.max( BUTTON_WIDTH, btn.reqWidth() ), BUTTON_HEIGHT );
 				if (x + btn.width() > width) {
 					x = 0;
-					y += BUTTON_HEIGHT + GAP;
+					y += BUTTON_HEIGHT + 1;
 				}
 				btn.setPos( x, y );
 				add( btn );
@@ -87,7 +87,7 @@ public class WndItem extends Window {
 					btn.textColor( TITLE_COLOR );
 				}
 
-				x += btn.width() + GAP;
+				x += btn.width() + 1;
 			}
 		}
 		

@@ -110,7 +110,7 @@ public class RedButton extends Button {
 	}
 	
 	public float reqWidth() {
-		return text.width() + 2.5f;
+		return text.width() + 2f;
 	}
 	
 	public float reqHeight() {
