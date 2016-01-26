@@ -21,13 +21,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
@@ -84,7 +84,7 @@ public class WndInfoItem extends Window {
 				else if (heap.peek() instanceof Ring)
 					info = Messages.get(this, "inside", Messages.get(this, "ring") );
 				else
-					info = Messages.get(this, "inside", Utils.indefinite( heap.peek().name() ) );
+					info = ""; //This shouldn't happen
 			} else {
 				title = Messages.get(this, "locked_chest");
 				info = Messages.get(this, "need_key");

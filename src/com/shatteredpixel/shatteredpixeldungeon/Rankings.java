@@ -20,21 +20,19 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.Game;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.SystemTime;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.noosa.Game;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.SystemTime;
 
 public enum Rankings {
 	
@@ -64,7 +62,7 @@ public enum Rankings {
 		rec.depth		= Dungeon.depth;
 		rec.score	= score( win );
 		
-		String gameFile = Utils.format( DETAILS_FILE, SystemTime.now );
+		String gameFile = Messages.format( DETAILS_FILE, SystemTime.now );
 		try {
 			Dungeon.saveGame( gameFile );
 			rec.gameFile = gameFile;

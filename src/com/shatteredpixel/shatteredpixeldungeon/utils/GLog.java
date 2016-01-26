@@ -20,9 +20,9 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.utils;
 
-import com.watabou.utils.Signal;
-
 import android.util.Log;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.utils.Signal;
 
 public class GLog {
 
@@ -38,7 +38,7 @@ public class GLog {
 	public static void i( String text, Object... args ) {
 		
 		if (args.length > 0) {
-			text = Utils.format( text, args );
+			text = Messages.format( text, args );
 		}
 		
 		Log.i( TAG, text );

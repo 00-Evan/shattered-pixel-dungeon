@@ -29,13 +29,21 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Horror;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Instability;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Luck;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shock;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -177,7 +185,7 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public String toString() {
-		return levelKnown ? Utils.format( TXT_TO_STRING, super.toString(), STR ) : super.toString();
+		return levelKnown ? Messages.format( TXT_TO_STRING, super.toString(), STR ) : super.toString();
 	}
 	
 	@Override

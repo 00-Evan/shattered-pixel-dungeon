@@ -20,9 +20,24 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import java.util.HashMap;
-
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites.Type;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndClass;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -33,25 +48,9 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.BitmaskEmitter;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Button;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites.Type;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndClass;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Callback;
+
+import java.util.HashMap;
 
 public class StartScene extends PixelScene {
 
@@ -254,7 +253,7 @@ public class StartScene extends PixelScene {
 			if (info != null) {
 
 				btnLoad.visible = true;
-				btnLoad.secondary( Utils.format( Messages.get(this, "depth_level"), info.depth, info.level ), info.challenges );
+				btnLoad.secondary( Messages.format( Messages.get(this, "depth_level"), info.depth, info.level ), info.challenges );
 				btnNewGame.visible = true;
 				btnNewGame.secondary( Messages.get(this, "erase"), false );
 

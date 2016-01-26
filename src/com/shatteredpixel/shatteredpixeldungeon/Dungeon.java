@@ -52,11 +52,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
@@ -488,7 +488,7 @@ public class Dungeon {
 		bundle.put( LEVEL, level );
 		
 		OutputStream output = Game.instance.openFileOutput(
-			Utils.format( depthFile( hero.heroClass ), depth ), Game.MODE_PRIVATE );
+			Messages.format( depthFile( hero.heroClass ), depth ), Game.MODE_PRIVATE );
 		Bundle.write( bundle, output );
 		output.close();
 	}
@@ -631,7 +631,7 @@ public class Dungeon {
 		Dungeon.level = null;
 		Actor.clear();
 		
-		InputStream input = Game.instance.openFileInput( Utils.format( depthFile( cl ), depth ) ) ;
+		InputStream input = Game.instance.openFileInput( Messages.format( depthFile( cl ), depth ) ) ;
 		Bundle bundle = Bundle.read( input );
 		input.close();
 		
@@ -644,7 +644,7 @@ public class Dungeon {
 		
 		if (deleteLevels) {
 			int depth = 1;
-			while (Game.instance.deleteFile( Utils.format( depthFile( cl ), depth ) )) {
+			while (Game.instance.deleteFile( Messages.format( depthFile( cl ), depth ) )) {
 				depth++;
 			}
 		}

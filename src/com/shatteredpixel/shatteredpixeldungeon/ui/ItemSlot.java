@@ -27,17 +27,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
@@ -170,7 +166,7 @@ public class ItemSlot extends Button {
 				if (item.levelKnown || (isWeapon && !(item instanceof MeleeWeapon))) {
 					
 					int str = isArmor ? ((Armor)item).STR : ((Weapon)item).STR;
-					topRight.text( Utils.format( TXT_STRENGTH, str ) );
+					topRight.text( Messages.format( TXT_STRENGTH, str ) );
 					if (str > Dungeon.hero.STR()) {
 						topRight.hardlight( DEGRADED );
 					} else {
@@ -179,7 +175,7 @@ public class ItemSlot extends Button {
 					
 				} else {
 					
-					topRight.text( Utils.format( TXT_TYPICAL_STR, isArmor ?
+					topRight.text( Messages.format( TXT_TYPICAL_STR, isArmor ?
 						((Armor)item).typicalSTR() :
 						((MeleeWeapon)item).typicalSTR() ) );
 					topRight.hardlight( WARNING );
@@ -188,7 +184,7 @@ public class ItemSlot extends Button {
 				topRight.measure();
 
 			} else if (item instanceof Key && !(item instanceof SkeletonKey)) {
-				topRight.text(Utils.format(TXT_KEY_DEPTH, ((Key) item).depth));
+				topRight.text(Messages.format(TXT_KEY_DEPTH, ((Key) item).depth));
 				topRight.measure();
 			} else {
 				
@@ -199,7 +195,7 @@ public class ItemSlot extends Button {
 			int level = item.visiblyUpgraded();
 
 			if (level != 0) {
-				bottomRight.text( item.levelKnown ? Utils.format( TXT_LEVEL, level ) : TXT_CURSED );
+				bottomRight.text( item.levelKnown ? Messages.format( TXT_LEVEL, level ) : TXT_CURSED );
 				bottomRight.measure();
 				bottomRight.hardlight( level > 0 ? UPGRADED : DEGRADED );
 			} else if (item instanceof Scroll || item instanceof Potion) {

@@ -81,6 +81,10 @@ public class Messages {
 		}
 	}
 
+	public static String format( String format, Object...args ) {
+		return String.format( Locale.ENGLISH, format, args );
+	}
+
 	public static String get(String key, Object...args){
 		return get(null, key, args);
 	}
@@ -109,7 +113,7 @@ public class Messages {
 				return "!!!NO TEXT FOUND!!!";
 			}
 		} else {
-			if (args.length > 0) return String.format(Locale.ENGLISH, strings.get(key.toLowerCase()), args);
+			if (args.length > 0) return format(strings.get(key.toLowerCase()), args);
 			else return strings.get(key.toLowerCase());
 		}
 	}

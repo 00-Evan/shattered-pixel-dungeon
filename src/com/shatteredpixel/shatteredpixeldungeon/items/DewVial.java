@@ -20,20 +20,19 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import java.util.ArrayList;
-
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+
+import java.util.ArrayList;
 
 public class DewVial extends Item {
 
@@ -154,7 +153,7 @@ public class DewVial extends Item {
 
 	@Override
 	public String status() {
-		return Utils.format( TXT_STATUS, volume, MAX_VOLUME );
+		return Messages.format( TXT_STATUS, volume, MAX_VOLUME );
 	}
 	
 	@Override

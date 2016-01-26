@@ -26,12 +26,20 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.*;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Affection;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiEntropy;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Bounce;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Displacement;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Entanglement;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Metabolism;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Multiplicity;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stench;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -182,7 +190,7 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public String toString() {
-		return levelKnown ? Utils.format( TXT_TO_STRING, super.toString(), STR ) : super.toString();
+		return levelKnown ? Messages.format( TXT_TO_STRING, super.toString(), STR ) : super.toString();
 	}
 	
 	@Override

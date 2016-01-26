@@ -39,7 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
@@ -345,15 +344,15 @@ public class Item implements Bundlable {
 		
 		if (levelKnown && level != 0) {
 			if (quantity > 1) {
-				return Utils.format( TXT_TO_STRING_LVL_X, name(), level, quantity );
+				return Messages.format( TXT_TO_STRING_LVL_X, name(), level, quantity );
 			} else {
-				return Utils.format( TXT_TO_STRING_LVL, name(), level );
+				return Messages.format( TXT_TO_STRING_LVL, name(), level );
 			}
 		} else {
 			if (quantity > 1) {
-				return Utils.format( TXT_TO_STRING_X, name(), quantity );
+				return Messages.format( TXT_TO_STRING_X, name(), quantity );
 			} else {
-				return Utils.format( TXT_TO_STRING, name() );
+				return Messages.format( TXT_TO_STRING, name() );
 			}
 		}
 	}
