@@ -84,7 +84,7 @@ public class MagesStaff extends MeleeWeapon {
 		this.wand = wand;
 		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
 		wand.curCharges = wand.maxCharges;
-		name = wand.name().replace(Messages.get(this, "wand"), Messages.get(this, "staff"));
+		name = Messages.get(wand, "staff_name");
 	}
 
 	@Override
@@ -178,7 +178,7 @@ public class MagesStaff extends MeleeWeapon {
 		wand.cursed = false;
 		wand.charge(owner);
 
-		name = wand.name().replace(Messages.get(this, "wand"), Messages.get(this, "staff"));
+		name = Messages.get(wand, "staff_name");
 
 		updateQuickslot();
 
@@ -256,7 +256,7 @@ public class MagesStaff extends MeleeWeapon {
 		wand = (Wand) bundle.get(WAND);
 		if (wand != null) {
 			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-			name = wand.name().replace(Messages.get(this, "wand"), Messages.get(this, "staff"));
+			name = Messages.get(wand, "staff_name");
 		}
 	}
 
@@ -266,18 +266,18 @@ public class MagesStaff extends MeleeWeapon {
 			if (item != null) {
 
 				if (!item.isIdentified()) {
-					GLog.w(Messages.get(this, "id_first"));
+					GLog.w(Messages.get(MagesStaff.class, "id_first"));
 					return;
 				} else if (item.cursed){
-					GLog.w(Messages.get(this, "cursed"));
+					GLog.w(Messages.get(MagesStaff.class, "cursed"));
 					return;
 				}
 
 				GameScene.show(
 						new WndOptions("",
-								Messages.get(this, "warning"),
-								Messages.get(this, "yes"),
-								Messages.get(this, "no")) {
+								Messages.get(MagesStaff.class, "warning"),
+								Messages.get(MagesStaff.class, "yes"),
+								Messages.get(MagesStaff.class, "no")) {
 							@Override
 							protected void onSelect(int index) {
 								if (index == 0) {
