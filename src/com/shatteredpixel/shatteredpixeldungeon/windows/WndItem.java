@@ -108,6 +108,7 @@ public class WndItem extends Window {
 		if (line == null || line.size() == 0 || extraWidth == 0) return;
 		if (line.size() == 1){
 			line.get(0).setSize(line.get(0).width()+extraWidth, BUTTON_HEIGHT);
+			line.get(0).setPos( 0 , y );
 			return;
 		}
 		ArrayList<RedButton> lineByWidths = new ArrayList<>(line);
