@@ -72,7 +72,7 @@ public class LanguageButton extends Button {
 
 	@Override
 	protected void onClick() {
-		parent.add( new WndOptions("Languages", "Select a language(No, this menu isn't finished)", "English", "Русский язык(99%)", "Português(99%)", "中文(99%)", "Deutsch(80%)", "한국어(80%)", "Polski(55%)", "Français(40%)" ) {
+		parent.add( new WndOptions("Languages", "Select a language(proper menu soon)", "English", "Русский язык(99%)", "Português(99%)", "中文(99%)", "한국어(99%)", "Deutsch(93%)", "Polski(55%)", "Français(40%)", "Español(40%)" ) {
 			@Override
 			protected void onSelect(int index) {
 				switch(index){
@@ -89,10 +89,10 @@ public class LanguageButton extends Button {
 						Messages.setup("zh");
 						break;
 					case 4:
-						Messages.setup("de");
+						Messages.setup("ko");
 						break;
 					case 5:
-						Messages.setup("ko");
+						Messages.setup("de");
 						break;
 					case 6:
 						Messages.setup("pl");
@@ -100,6 +100,8 @@ public class LanguageButton extends Button {
 					case 7:
 						Messages.setup("fr");
 						break;
+					case 8:
+						Messages.setup("es");
 				}
 				ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 				RenderedText.clearCache();
