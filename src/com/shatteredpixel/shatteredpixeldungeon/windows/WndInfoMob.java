@@ -20,7 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.watabou.noosa.BitmapText;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthBar;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndInfoMob extends WndTitledMessage {
 	
@@ -58,7 +57,7 @@ public class WndInfoMob extends WndTitledMessage {
 		
 		public MobTitle( Mob mob ) {
 			
-			name = PixelScene.renderText( Utils.capitalize( mob.name ), 9 );
+			name = PixelScene.renderText( Messages.titleCase( mob.name ), 9 );
 			name.hardlight( TITLE_COLOR );
 			add( name );
 			

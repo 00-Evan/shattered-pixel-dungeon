@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndWandmaker extends Window {
@@ -48,7 +47,7 @@ public class WndWandmaker extends Window {
 		
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon(new ItemSprite(item.image(), null));
-		titlebar.label(Utils.capitalize(item.name()));
+		titlebar.label(Messages.titleCase(item.name()));
 		titlebar.setRect(0, 0, WIDTH, 0);
 		add( titlebar );
 

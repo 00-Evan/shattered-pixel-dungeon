@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndWandmaker;
 import com.watabou.utils.Bundle;

@@ -20,8 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
-import java.util.ArrayList;
-
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -35,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -119,8 +116,8 @@ public class Ring extends KindofMisc {
 			ShatteredPixelDungeon.scene().add(
 					new WndOptions(Messages.get(Ring.class, "unequip_title"),
 							Messages.get(Ring.class, "unequip_message"),
-							Utils.capitalize(m1.toString()),
-							Utils.capitalize(m2.toString())) {
+							Messages.titleCase(m1.toString()),
+							Messages.titleCase(m2.toString())) {
 
 						@Override
 						protected void onSelect(int index) {

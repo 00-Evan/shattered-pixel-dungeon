@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.ui.Component;
@@ -28,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class IconTitle extends Component {
 
@@ -49,7 +49,7 @@ public class IconTitle extends Component {
 	public IconTitle( Item item ) {
 		ItemSprite icon = new ItemSprite();
 		icon( icon );
-		label( Utils.capitalize( item.toString() ) );
+		label( Messages.titleCase( item.toString() ) );
 		icon.view( item );
 	}
 

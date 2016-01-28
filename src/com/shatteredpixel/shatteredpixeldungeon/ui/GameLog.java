@@ -28,7 +28,6 @@ import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.utils.Signal;
 
 public class GameLog extends Component implements Signal.Listener<String> {

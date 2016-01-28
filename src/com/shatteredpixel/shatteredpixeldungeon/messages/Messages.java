@@ -20,8 +20,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.messages;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -81,16 +83,14 @@ public class Messages {
 		}
 	}
 
-	public static String format( String format, Object...args ) {
-		return String.format( Locale.ENGLISH, format, args );
-	}
+	/**
+	 * Resource grabbing methods
+	 */
 
 	public static String get(String key, Object...args){
 		return get(null, key, args);
 	}
 
-	//stuffing static variables with results from this means the app needs to restart for locale changes to take effect.
-	//so be careful with where you're calling this, never assign its result to a static value (including enum variables)
 	public static String get(Object o, String k, Object...args){
 		return get(o.getClass(), k, args);
 	}
@@ -116,6 +116,49 @@ public class Messages {
 			if (args.length > 0) return format(strings.get(key.toLowerCase()), args);
 			else return strings.get(key.toLowerCase());
 		}
+	}
+
+	/**
+	 * String Utility Methods
+	 */
+
+	public static String format( String format, Object...args ) {
+		return String.format( Locale.ENGLISH, format, args );
+	}
+
+	public static String capitalize( String str ){
+		return Character.toTitleCase( str.charAt( 0 ) ) + str.substring( 1 );
+	}
+
+	//Words which should not be capitalized in title case, mostly prepositions which appear ingame
+	//This list is not comprehensive!
+	private static final HashSet<String> noCaps = new HashSet<>(
+			Arrays.asList(new String[]{
+					//English
+					"a", "of",
+					//French
+					"à", "avec", "de", "du", "des",
+					//Portugese
+					"a", "de", "des", "da", "das", "do", "dos",
+					//German
+					"der", "des",
+					//Russian
+					"с", //Not an english c, looks just like it though.
+			})
+	);
+
+	public static String titleCase( String str ){
+		String result = "";
+		//split by any unicode space character
+		for (String word : str.split("(?<=\\p{Zs})")){
+			if (noCaps.contains(word.trim().toLowerCase())){
+				result += word;
+			} else {
+				result += capitalize(word);
+			}
+		}
+		//first character is always capitalized.
+		return capitalize(result);
 	}
 }
 

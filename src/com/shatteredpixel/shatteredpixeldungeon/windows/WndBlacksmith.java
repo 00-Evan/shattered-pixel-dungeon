@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndBlacksmith extends Window {
 
@@ -56,7 +55,7 @@ public class WndBlacksmith extends Window {
 		
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( troll.sprite() );
-		titlebar.label( Utils.capitalize( troll.name ) );
+		titlebar.label( Messages.titleCase( troll.name ) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 		

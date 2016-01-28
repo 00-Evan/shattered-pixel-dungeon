@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndImp extends Window {
@@ -45,7 +44,7 @@ public class WndImp extends Window {
 		
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( new ItemSprite( tokens.image(), null ) );
-		titlebar.label( Utils.capitalize( tokens.name() ) );
+		titlebar.label( Messages.titleCase( tokens.name() ) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 		

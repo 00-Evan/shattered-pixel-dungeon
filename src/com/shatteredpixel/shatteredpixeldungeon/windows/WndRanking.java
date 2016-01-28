@@ -45,7 +45,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 
 public class WndRanking extends WndTabbed {
 	
@@ -321,7 +320,7 @@ public class WndRanking extends WndTabbed {
 			name.x = slot.right() + 2;
 			name.y = y + (height - name.baseLine()) / 2;
 			
-			String str = Utils.capitalize( item.name() );
+			String str = Messages.titleCase( item.name() );
 			name.text( str );
 			if (name.width() > width - name.x) {
 				do {

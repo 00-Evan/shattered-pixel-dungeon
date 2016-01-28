@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndTradeItem extends Window {
@@ -200,7 +199,7 @@ public class WndTradeItem extends Window {
 		titlebar.icon( new ItemSprite( item ) );
 		titlebar.label( forSale ?
 			Messages.get(this, "sale", item.toString(), price( item ) ) :
-			Utils.capitalize( item.toString() ) );
+			Messages.titleCase( item.toString() ) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 		

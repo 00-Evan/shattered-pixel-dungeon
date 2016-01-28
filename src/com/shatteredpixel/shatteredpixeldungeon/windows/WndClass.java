@@ -27,8 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndClass extends WndTabbed {
@@ -51,7 +49,7 @@ public class WndClass extends WndTabbed {
 		tabPerks = new PerksTab();
 		add( tabPerks );
 
-		Tab tab = new RankingTab( Utils.capitalize( cl.title() ), tabPerks );
+		Tab tab = new RankingTab( cl.title().toUpperCase(), tabPerks );
 		tab.setSize( TAB_WIDTH, tabHeight() );
 		add( tab );
 

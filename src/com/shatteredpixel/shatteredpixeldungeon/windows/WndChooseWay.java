@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndChooseWay extends Window {
@@ -51,7 +50,7 @@ public class WndChooseWay extends Window {
 		hl.setPos( titlebar.left(), titlebar.bottom() + GAP );
 		add( hl );
 		
-		RedButton btnWay1 = new RedButton( Utils.capitalize( way1.title() ) ) {
+		RedButton btnWay1 = new RedButton( way1.title().toUpperCase() ) {
 			@Override
 			protected void onClick() {
 				hide();
@@ -61,7 +60,7 @@ public class WndChooseWay extends Window {
 		btnWay1.setRect( 0, hl.bottom() + GAP, (WIDTH - GAP) / 2, BTN_HEIGHT );
 		add( btnWay1 );
 		
-		RedButton btnWay2 = new RedButton( Utils.capitalize( way2.title() ) ) {
+		RedButton btnWay2 = new RedButton( way2.title().toUpperCase() ) {
 			@Override
 			protected void onClick() {
 				hide();

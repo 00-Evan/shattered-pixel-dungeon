@@ -22,9 +22,9 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
@@ -52,7 +52,7 @@ public class WndInfoBuff extends Window {
 		buffIcon.frame( film.get(buff.icon()) );
 
 		titlebar.icon( buffIcon );
-		titlebar.label( Utils.capitalize(buff.toString()), Window.TITLE_COLOR );
+		titlebar.label( Messages.titleCase(buff.toString()), Window.TITLE_COLOR );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 

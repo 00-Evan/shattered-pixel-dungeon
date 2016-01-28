@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndInfoItem extends Window {
@@ -115,7 +114,7 @@ public class WndInfoItem extends Window {
 
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( new ItemSprite( image, glowing ) );
-		titlebar.label( Utils.capitalize( title ), titleColor );
+		titlebar.label( Messages.titleCase( title ), titleColor );
 		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
 		

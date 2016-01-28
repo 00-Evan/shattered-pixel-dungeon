@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -48,7 +49,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
@@ -113,7 +113,7 @@ public class WndBag extends WndTabbed {
 		int slotsWidth = SLOT_SIZE * nCols + SLOT_MARGIN * (nCols - 1);
 		int slotsHeight = SLOT_SIZE * nRows + SLOT_MARGIN * (nRows - 1);
 
-		RenderedText txtTitle = PixelScene.renderText( title != null ? title : Utils.capitalize( bag.name() ), 9 );
+		RenderedText txtTitle = PixelScene.renderText( title != null ? title : Messages.titleCase( bag.name() ), 9 );
 		txtTitle.hardlight( TITLE_COLOR );
 		txtTitle.x = (int)(slotsWidth - txtTitle.width()) / 2;
 		txtTitle.y = (int)(TITLE_HEIGHT - txtTitle.height()) / 2;

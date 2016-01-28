@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.utils.Utils;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -86,8 +85,8 @@ public class Artifact extends KindofMisc {
 			ShatteredPixelDungeon.scene().add(
 					new WndOptions(Messages.get(Artifact.class, "unequip_title"),
 							Messages.get(Artifact.class, "unequip_message"),
-							Utils.capitalize(m1.toString()),
-							Utils.capitalize(m2.toString())) {
+							Messages.titleCase(m1.toString()),
+							Messages.titleCase(m2.toString())) {
 
 						@Override
 						protected void onSelect(int index) {
