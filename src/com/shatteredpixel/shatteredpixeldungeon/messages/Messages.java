@@ -36,6 +36,82 @@ import java.util.ResourceBundle;
  */
 public class Messages {
 
+	public enum Languages {
+		ENGLISH("english",      "en", Status.REVIEWED),
+
+		RUSSIAN("русский",      "ru", Status.UNREVIEWED),
+		CHINESE("中文",          "zh", Status.UNREVIEWED), //Simplified
+		PORTUGUESE("português", "pt", Status.UNREVIEWED), //Brazillian
+		KOREAN("한국어",         "ko", Status.UNREVIEWED),
+
+		GERMAN("deutsch",       "de", Status.INCOMPLETE),
+
+		POLISH("polski",        "pl", Status.UNFINISHED),
+		SPANISH("español",      "es", Status.UNFINISHED),
+		FRENCH("français",      "fr", Status.UNFINISHED);
+
+		private String name;
+		private String code;
+		private Status status;
+
+		Languages(String name, String code, Status status){
+			this.name = name;
+			this.code = code;
+			this.status = status;
+		}
+
+		public String nativeName(){
+			return name;
+		}
+
+		public String code(){
+			return code;
+		}
+
+		public Status status(){
+			return status;
+		}
+
+		public static Languages matchLocale(Locale locale){
+			String code = locale.getLanguage();
+			for (Languages lang : Languages.values()){
+				if (lang.code().equals(code))
+					return lang;
+			}
+			return ENGLISH;
+		}
+
+		public enum Status{
+			//below 50% complete languages are not added.
+			UNFINISHED, //50-80% complete
+			INCOMPLETE, //80-99% complete
+			UNREVIEWED, //100% complete
+			REVIEWED    //100% reviewed
+		}
+
+	}
+
+
+	/*
+		use hashmap for two reasons. Firstly because android 2.2 doesn't support resourcebundle.containskey(),
+		secondly so I can read in and combine multiple properties files,
+		resulting in a more clean structure for organizing all the strings, instead of one big file.
+
+		..Yes R.string would do this for me, but that's not multiplatform
+	 */
+	private static HashMap<String, String> strings;
+	private static Languages lang;
+
+	public static Languages lang(){
+		return lang;
+	}
+
+
+
+	/**
+	 * Setup Methods
+	 */
+
 	private static String[] prop_files = new String[]{
 			"com.shatteredpixel.shatteredpixeldungeon.messages.actors.actors",
 			"com.shatteredpixel.shatteredpixeldungeon.messages.items.items",
@@ -47,22 +123,15 @@ public class Messages {
 			"com.shatteredpixel.shatteredpixeldungeon.messages.misc.misc"
 	};
 
-	/*
-		use hashmap for two reasons. Firstly because android 2.2 doesn't support resourcebundle.containskey(),
-		secondly so I can read in and combine multiple properties files,
-		resulting in a more clean structure for organizing all the strings, instead of one big file.
-
-		..Yes R.string would do this for me, but that's not multiplatform
-	 */
-	private static HashMap<String, String> strings;
-
 	static{
-		setup(Locale.getDefault().getLanguage());
+		//TODO:load in locale from a preference, use default only if none set.
+		setup(Languages.matchLocale(Locale.getDefault()));
 	}
 
-	public static void setup( String region ){
+	public static void setup( Languages lang ){
 		strings = new HashMap<>();
-		Locale locale = new Locale(region); //TODO:load in locale from a preference, use default only if none set.
+		Messages.lang = lang;
+		Locale locale = new Locale(lang.code());
 
 		for (String file : prop_files) {
 			ResourceBundle bundle = ResourceBundle.getBundle( file, locale);
@@ -82,6 +151,8 @@ public class Messages {
 			}
 		}
 	}
+
+
 
 	/**
 	 * Resource grabbing methods
@@ -117,6 +188,8 @@ public class Messages {
 			else return strings.get(key.toLowerCase());
 		}
 	}
+
+
 
 	/**
 	 * String Utility Methods
@@ -161,4 +234,3 @@ public class Messages {
 		return capitalize(result);
 	}
 }
-

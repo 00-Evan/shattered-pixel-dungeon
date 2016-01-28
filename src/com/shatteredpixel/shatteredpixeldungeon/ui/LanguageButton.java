@@ -21,12 +21,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
@@ -47,8 +45,23 @@ public class LanguageButton extends Button {
 	protected void createChildren() {
 		super.createChildren();
 
-		image = Icons.INFO.get();
+		image = Icons.get(Icons.LANGS);
 		add( image );
+		updateIcon();
+	}
+
+	private void updateIcon(){
+		switch(Messages.lang().status()){
+			case UNFINISHED:
+				image.tint(1, 0, 0, .4f);
+				break;
+			case INCOMPLETE:
+				image.tint(1, .5f, 0, .4f);
+				break;
+			case UNREVIEWED:
+				image.tint(1, 0.5f, 0, .25f);
+				break;
+		}
 	}
 
 	@Override
@@ -68,41 +81,29 @@ public class LanguageButton extends Button {
 	@Override
 	protected void onTouchUp() {
 		image.resetColor();
+		updateIcon();
 	}
 
 	@Override
 	protected void onClick() {
-		parent.add( new WndOptions("Languages", "Select a language(proper menu soon)", "English", "Русский язык(99%)", "Português(99%)", "中文(99%)", "한국어(99%)", "Deutsch(93%)", "Polski(55%)", "Français(40%)", "Español(40%)" ) {
+		final Messages.Languages[] langs = Messages.Languages.values();
+		final String[] names = new String[langs.length];
+		for (int i = 0; i < names.length; i++){
+			names[i] = Messages.titleCase(langs[i].nativeName());
+			switch(langs[i].status()){
+				case UNFINISHED:
+					names[i] += " - UNFINISHED";
+					break;
+				case INCOMPLETE:
+					names[i] += " - INCOMPLETE";
+					break;
+			}
+		}
+		parent.add( new WndOptions("Languages", "Select a language(proper menu soon)", names ) {
 			@Override
 			protected void onSelect(int index) {
-				switch(index){
-					case 0:
-						Messages.setup("");
-						break;
-					case 1:
-						Messages.setup("ru");
-						break;
-					case 2:
-						Messages.setup("pt");
-						break;
-					case 3:
-						Messages.setup("zh");
-						break;
-					case 4:
-						Messages.setup("ko");
-						break;
-					case 5:
-						Messages.setup("de");
-						break;
-					case 6:
-						Messages.setup("pl");
-						break;
-					case 7:
-						Messages.setup("fr");
-						break;
-					case 8:
-						Messages.setup("es");
-				}
+				Messages.setup(langs[index]);
+				updateIcon();
 				ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 				RenderedText.clearCache();
 			}
