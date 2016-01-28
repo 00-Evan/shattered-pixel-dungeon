@@ -150,10 +150,10 @@ public abstract class Char extends Actor {
 				if (enemy == Dungeon.hero) {
 
 					Dungeon.fail( getClass() );
-					GLog.n( Messages.get(Char.class, "kill", name) );
+					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name)) );
 					
 				} else if (this == Dungeon.hero) {
-					GLog.i( Messages.get(Char.class, "defeat", enemy.name) );
+					GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)) );
 				}
 			}
 			
