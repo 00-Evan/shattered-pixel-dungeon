@@ -20,9 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import com.watabou.noosa.Game;
-
 import android.content.SharedPreferences;
+import com.watabou.noosa.Game;
 
 enum Preferences {
 
@@ -42,6 +41,7 @@ enum Preferences {
 	public static final String KEY_FLIPTOOLBAR	= "flipped_ui";
 	public static final String KEY_FLIPTAGS 	= "flip_tags";
 	public static final String KEY_BARMODE		= "toolbar_mode";
+	public static final String KEY_LANG         = "language";
 	public static final String KEY_INTRO		= "intro";
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	public static final String KEY_VERSION      = "version";

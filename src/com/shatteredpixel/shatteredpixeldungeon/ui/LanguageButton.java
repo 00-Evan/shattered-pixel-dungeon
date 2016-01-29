@@ -24,11 +24,15 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 public class LanguageButton extends Button {
 
@@ -52,14 +56,11 @@ public class LanguageButton extends Button {
 
 	private void updateIcon(){
 		switch(Messages.lang().status()){
-			case UNFINISHED:
-				image.tint(1, 0, 0, .4f);
-				break;
 			case INCOMPLETE:
-				image.tint(1, .5f, 0, .4f);
+				image.tint(1, 0, 0, .5f);
 				break;
 			case UNREVIEWED:
-				image.tint(1, 0.5f, 0, .25f);
+				image.tint(1, .5f, 0, .5f);
 				break;
 		}
 	}
@@ -86,27 +87,58 @@ public class LanguageButton extends Button {
 
 	@Override
 	protected void onClick() {
-		final Messages.Languages[] langs = Messages.Languages.values();
-		final String[] names = new String[langs.length];
-		for (int i = 0; i < names.length; i++){
-			names[i] = Messages.titleCase(langs[i].nativeName());
-			switch(langs[i].status()){
-				case UNFINISHED:
-					names[i] += " - UNFINISHED";
-					break;
-				case INCOMPLETE:
-					names[i] += " - INCOMPLETE";
-					break;
+		final ArrayList<Messages.Languages> langs = new ArrayList<>(Arrays.asList(Messages.Languages.values()));
+
+		Messages.Languages nativeLang = Messages.Languages.matchLocale(Locale.getDefault());
+		langs.remove(nativeLang);
+		//move the native language to the top.
+		langs.add(0, nativeLang);
+
+		parent.add(new WndLangs(langs));
+	}
+
+	public static class WndLangs extends Window{
+
+		private int WIDTH = 60;
+		private int BTN_HEIGHT = 14;
+
+		WndLangs(final List<Messages.Languages> langs){
+			super();
+
+			int y = 0;
+			for (int i = 0; i < langs.size(); i++){
+				final int langIndex = i;
+				RedButton btn = new RedButton(Messages.titleCase(langs.get(i).nativeName())){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						Messages.setup(langs.get(langIndex));
+						ShatteredPixelDungeon.language(langs.get(langIndex));
+						RenderedText.clearCache();
+						ShatteredPixelDungeon.switchNoFade(TitleScene.class);
+					}
+				};
+				if (ShatteredPixelDungeon.language() == langs.get(i)){
+					btn.textColor(TITLE_COLOR);
+				} else {
+					switch (langs.get(i).status()) {
+						case INCOMPLETE:
+							btn.textColor(0x999999);
+							break;
+						case UNREVIEWED:
+							btn.textColor(0xCCCCCC);
+							break;
+					}
+				}
+				btn.setSize(WIDTH, BTN_HEIGHT);
+				btn.setPos(0, y);
+				add(btn);
+				y += 16;
 			}
+			resize(WIDTH, y-2);
+
 		}
-		parent.add( new WndOptions("Languages", "Select a language(proper menu soon)", names ) {
-			@Override
-			protected void onSelect(int index) {
-				Messages.setup(langs[index]);
-				updateIcon();
-				ShatteredPixelDungeon.switchNoFade(TitleScene.class);
-				RenderedText.clearCache();
-			}
-		});
+
+
 	}
 }

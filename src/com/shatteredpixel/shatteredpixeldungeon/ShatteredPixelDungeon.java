@@ -20,21 +20,22 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-
-import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Music;
-import com.watabou.noosa.audio.Sample;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
+
+import javax.microedition.khronos.opengles.GL10;
+import java.util.Locale;
 
 public class ShatteredPixelDungeon extends Game {
 	
@@ -337,6 +338,16 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public static int brightness() {
 		return Preferences.INSTANCE.getInt( Preferences.KEY_BRIGHTNESS, 0 );
+	}
+
+	public static void language(Messages.Languages lang) {
+		Preferences.INSTANCE.put( Preferences.KEY_LANG, lang.code());
+	}
+
+	public static Messages.Languages language() {
+		String code = Preferences.INSTANCE.getString(Preferences.KEY_LANG, null);
+		if (code == null) return Messages.Languages.matchLocale(Locale.getDefault());
+		else return Messages.Languages.matchCode(code);
 	}
 
 	public static void lastClass( int value ) {

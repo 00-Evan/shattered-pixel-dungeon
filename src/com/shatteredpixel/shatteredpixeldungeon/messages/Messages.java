@@ -20,6 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.messages;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -37,7 +39,7 @@ import java.util.ResourceBundle;
 public class Messages {
 
 	public enum Languages {
-		ENGLISH("english",      "en", Status.REVIEWED),
+		ENGLISH("english",      "", Status.REVIEWED),
 
 		RUSSIAN("русский",      "ru", Status.UNREVIEWED),
 		CHINESE("中文",          "zh", Status.UNREVIEWED), //Simplified
@@ -45,10 +47,9 @@ public class Messages {
 		KOREAN("한국어",         "ko", Status.UNREVIEWED),
 
 		GERMAN("deutsch",       "de", Status.INCOMPLETE),
-
-		POLISH("polski",        "pl", Status.UNFINISHED),
-		SPANISH("español",      "es", Status.UNFINISHED),
-		FRENCH("français",      "fr", Status.UNFINISHED);
+		POLISH("polski",        "pl", Status.INCOMPLETE),
+		SPANISH("español",      "es", Status.INCOMPLETE),
+		FRENCH("français",      "fr", Status.INCOMPLETE);
 
 		private String name;
 		private String code;
@@ -73,7 +74,10 @@ public class Messages {
 		}
 
 		public static Languages matchLocale(Locale locale){
-			String code = locale.getLanguage();
+			return matchCode(locale.getLanguage());
+		}
+
+		public static Languages matchCode(String code){
 			for (Languages lang : Languages.values()){
 				if (lang.code().equals(code))
 					return lang;
@@ -82,9 +86,8 @@ public class Messages {
 		}
 
 		public enum Status{
-			//below 50% complete languages are not added.
-			UNFINISHED, //50-80% complete
-			INCOMPLETE, //80-99% complete
+			//below 60% complete languages are not added.
+			INCOMPLETE, //60-99% complete
 			UNREVIEWED, //100% complete
 			REVIEWED    //100% reviewed
 		}
@@ -124,8 +127,7 @@ public class Messages {
 	};
 
 	static{
-		//TODO:load in locale from a preference, use default only if none set.
-		setup(Languages.matchLocale(Locale.getDefault()));
+		setup(ShatteredPixelDungeon.language());
 	}
 
 	public static void setup( Languages lang ){
