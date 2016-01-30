@@ -20,8 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -74,9 +74,9 @@ public class WndItem extends Window {
 				RedButton btn = new RedButton( Messages.get(item, "ac_" + action), 8 ) {
 					@Override
 					protected void onClick() {
-						item.execute( Dungeon.hero, action );
 						hide();
 						owner.hide();
+						item.execute( Dungeon.hero, action );
 					};
 				};
 				btn.setSize( btn.reqWidth(), BUTTON_HEIGHT );
