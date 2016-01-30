@@ -20,15 +20,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-
-import com.watabou.noosa.RenderedTextMultiline;
-import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.RenderedTextMultiline;
+import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Signal;
+
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class GameLog extends Component implements Signal.Listener<String> {
 
@@ -43,7 +43,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 	public GameLog() {
 		super();
-		GLog.update.add( this );
+		GLog.update.replace( this );
 
 		recreateLines();
 	}
