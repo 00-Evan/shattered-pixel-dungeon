@@ -7,6 +7,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -18,23 +19,13 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final String TXT_Welcome =
-			"Shattered Pixel Dungeon is a roguelike RPG, with randomly generated enemies, levels, items, and traps!\n" +
-					"\n" +
-					"Each run is a new challenging experience, but be careful, death is permanent!\n" +
-					"\n" +
-					"Happy Dungeoneering!";
-
-	private static final String TXT_Update =
-			"add something here on next update.";
-
 	@Override
 	public void create() {
 		super.create();
 
 		final int previousVersion = ShatteredPixelDungeon.version();
 
-		if (ShatteredPixelDungeon.versionCode == previousVersion) {
+		if (ShatteredPixelDungeon.versionCode != previousVersion) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
 		}
@@ -75,7 +66,7 @@ public class WelcomeScene extends PixelScene {
 		signs.y = title.y;
 		add( signs );
 
-		DarkRedButton okay = new DarkRedButton("Continue"){
+		DarkRedButton okay = new DarkRedButton(Messages.get(this, "continue")){
 			@Override
 			protected void onClick() {
 				super.onClick();
@@ -85,7 +76,7 @@ public class WelcomeScene extends PixelScene {
 		};
 
 		if (previousVersion != 0){
-			DarkRedButton changes = new DarkRedButton("Changelist"){
+			DarkRedButton changes = new DarkRedButton(Messages.get(this, "changelist")){
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -108,9 +99,11 @@ public class WelcomeScene extends PixelScene {
 
 		RenderedTextMultiline text = PixelScene.renderMultiline(6);
 		if (previousVersion == 0) {
-			text.text(TXT_Welcome, w - 20);
+			text.text(Messages.get(this, "welcome_msg"), w - 20);
+		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
+			text.text(Messages.get(this, "update_msg"), w - 20);
 		} else {
-			text.text(TXT_Update, w - 20);
+			text.text(Messages.get(this, "what_msg"), w - 20);
 		}
 		float textSpace = h - title.y - (title.height() - 10) - okay.height() - 2;
 		text.setPos(10, title.y+(title.height() - 10) + ((textSpace - text.height()) / 2));
