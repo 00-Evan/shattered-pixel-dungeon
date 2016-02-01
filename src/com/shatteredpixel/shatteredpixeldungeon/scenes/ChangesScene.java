@@ -20,17 +20,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
-import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Camera;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.ui.Component;
 
@@ -104,50 +102,34 @@ public class ChangesScene extends PixelScene {
 			"Regardless, tread with caution! Your saves may contain things which don't exist in this version, "+
 			"this could cause some very weird errors to occur.";
 
-	private static final String LNK = "https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon";
-
 	@Override
 	public void create() {
 		super.create();
 
-		final int gameversion = ShatteredPixelDungeon.version();
-
-		RenderedTextMultiline title;
-		RenderedTextMultiline text;
-
-		if (gameversion == 0) {
-
-			text = renderMultiline(TXT_Welcome, 6 );
-			title = renderMultiline(TTL_Welcome, 12 );
-
-		} else if (gameversion <= Game.versionCode) {
-
-			text = renderMultiline(TXT_Update, 6 );
-			title = renderMultiline(TTL_Update, 9 );
-
-		} else {
-
-			text = renderMultiline( TXT_Future, 6 );
-			title = renderMultiline( TTL_Future, 12 );
-
-		}
-
 		int w = Camera.main.width;
 		int h = Camera.main.height;
 
-		int pw = w - 10;
-		int ph = h - 50;
+		RenderedText title = PixelScene.renderText( "Recent Changes", 9 );
+		title.hardlight(Window.TITLE_COLOR);
+		title.x = (w - title.width()) / 2 ;
+		title.y = 4;
+		add(title);
 
-		title.maxWidth(pw);
-		title.hardlight(Window.SHPX_COLOR);
+		ExitButton btnExit = new ExitButton();
+		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
+		add( btnExit );
 
-		title.setPos( (w - title.width()) / 2 , 8 );
-		add( title );
+		RenderedTextMultiline text = renderMultiline(TXT_Update, 6 );
+
+
+		int pw = w - 6;
+		int ph = h - 20;
+
 
 		NinePatch panel = Chrome.get(Chrome.Type.WINDOW);
 		panel.size( pw, ph );
 		panel.x = (w - pw) / 2;
-		panel.y = (h - ph) / 2;
+		panel.y = title.y + title.height() + 2;
 		add( panel );
 
 		ScrollPane list = new ScrollPane( new Component() );
@@ -169,49 +151,6 @@ public class ChangesScene extends PixelScene {
 				panel.innerHeight());
 		list.scrollTo(0, 0);
 
-		RedButton okay = new RedButton("Okay!") {
-			@Override
-			protected void onClick() {
-
-
-				if (gameversion <= 32){
-					//removes all bags bought badge from pre-0.2.4 saves.
-					Badges.disown(Badges.Badge.ALL_BAGS_BOUGHT);
-					Badges.saveGlobal();
-
-					//imports new ranking data for pre-0.2.3 saves.
-					if (gameversion <= 29){
-						Rankings.INSTANCE.load();
-						Rankings.INSTANCE.save();
-					}
-				}
-
-				if (ShatteredPixelDungeon.version() != Game.versionCode){
-					ShatteredPixelDungeon.version(Game.versionCode);
-					Game.switchScene(TitleScene.class);
-				} else
-					ShatteredPixelDungeon.switchNoFade(TitleScene.class);
-
-			}
-		};
-
-		/*
-		okay.setRect(text.x, text.y + text.height() + 5, 55, 18);
-		add(okay);
-
-		RedButton changes = new RedButton("Changes") {
-			@Override
-			protected void onClick() {
-				parent.add(new WndChanges());
-			}
-		};
-
-		changes.setRect(text.x + 65, text.y + text.height() + 5, 55, 18);
-		add(changes);*/
-
-		okay.setRect((w - pw) / 2, h - 22, pw, 18);
-		add(okay);
-
 		Archs archs = new Archs();
 		archs.setSize( Camera.main.width, Camera.main.height );
 		addToBack( archs );
@@ -221,10 +160,7 @@ public class ChangesScene extends PixelScene {
 
 	@Override
 	protected void onBackPressed() {
-		if (ShatteredPixelDungeon.version() != Game.versionCode){
-			super.onBackPressed();
-		} else
-			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
+		ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 	}
 }
 
