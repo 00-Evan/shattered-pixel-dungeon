@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -111,10 +110,10 @@ public class EtherealChains extends Artifact {
 						final Char affected = Actor.findChar( chain.collisionPos );
 						int chargeUse = Level.distance(affected.pos, newMobPos);
 						if (chargeUse > charge) {
-							GLog.w( Messages.get(this, "no_charge") );
+							GLog.w( Messages.get(EtherealChains.class, "no_charge") );
 							return;
 						} else if (affected.properties().contains(Char.Property.IMMOVABLE)) {
-							GLog.w( Messages.get(this, "cant_pull") );
+							GLog.w( Messages.get(EtherealChains.class, "cant_pull") );
 							return;
 						} else {
 							charge -= chargeUse;
@@ -145,12 +144,12 @@ public class EtherealChains extends Artifact {
 						if (!Level.solid[i] && Actor.findChar(i) == null) newPos = i;
 						}
 					if (newPos == -1) {
-						GLog.w( Messages.get(this, "does_nothing") );
+						GLog.w( Messages.get(EtherealChains.class, "does_nothing") );
 					} else {
 						final int newHeroPos = newPos;
 						int chargeUse = Level.distance(curUser.pos, newHeroPos);
 						if (chargeUse > charge){
-							GLog.w( Messages.get(this, "no_charge") );
+							GLog.w( Messages.get(EtherealChains.class, "no_charge") );
 							return;
 						} else {
 							charge -= chargeUse;
@@ -172,7 +171,7 @@ public class EtherealChains extends Artifact {
 					}
 
 				} else {
-					GLog.i( Messages.get(this, "nothing_to_grab") );
+					GLog.i( Messages.get(EtherealChains.class, "nothing_to_grab") );
 				}
 
 			}
@@ -181,7 +180,7 @@ public class EtherealChains extends Artifact {
 
 		@Override
 		public String prompt() {
-			return Messages.get(this, "prompt");
+			return Messages.get(EtherealChains.class, "prompt");
 		}
 	};
 
