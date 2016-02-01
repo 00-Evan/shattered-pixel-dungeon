@@ -22,19 +22,15 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import android.opengl.GLES20;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ChangesButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LanguageButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.PrefsButton;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndHardNotification;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -52,7 +48,6 @@ public class TitleScene extends PixelScene {
 	public void create() {
 		
 		super.create();
-
 
 		Music.INSTANCE.play( Assets.THEME, true );
 		Music.INSTANCE.volume( ShatteredPixelDungeon.musicVol() / 10f );
@@ -163,45 +158,6 @@ public class TitleScene extends PixelScene {
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( w - btnExit.width(), 0 );
 		add( btnExit );
-
-		int gameversion = ShatteredPixelDungeon.version();
-
-		if (gameversion != Game.versionCode) {
-			if (gameversion < 65){
-				//TODO special code for 0.3.2 update to notify people about mastery book changes. Remove when not needed
-				Badges.loadGlobal();
-
-				if (Badges.isUnlocked(Badges.Badge.MASTERY_WARRIOR) ||
-						Badges.isUnlocked(Badges.Badge.MASTERY_ROGUE) ||
-						Badges.isUnlocked(Badges.Badge.MASTERY_MAGE) ||
-						Badges.isUnlocked(Badges.Badge.MASTERY_HUNTRESS) ){
-					add(new WndHardNotification(new ItemSprite(ItemSpriteSheet.MASTERY, null),
-						"Mastery Book Changes",
-						"v0.3.2 brings new prison content and some big balance changes to subclasses:\n" +
-						"\n" +
-						"_The Book of Mastery is no longer given at floor 1, it is only dropped by Tengu._\n" +
-						"\n" +
-						"There have been balance tweaks to accommodate this, so the difficulty should be similar.\n" +
-						"\n" +
-						"This change is necessary to allow for more interesting subclasses in the future, " +
-						"apologies for any frustration.",
-						"See All Changes", 10){
-							@Override
-							public void hide() {
-								super.hide();
-								Game.switchScene(ChangesScene.class);
-							}
-						}
-					);
-				} else {
-					Game.switchScene(ChangesScene.class);
-					return;
-				}
-			} else {
-				Game.switchScene(ChangesScene.class);
-				return;
-			}
-		}
 		
 		fadeIn();
 	}

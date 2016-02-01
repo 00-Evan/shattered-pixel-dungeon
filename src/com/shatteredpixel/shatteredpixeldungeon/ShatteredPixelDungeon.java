@@ -40,7 +40,7 @@ import java.util.Locale;
 public class ShatteredPixelDungeon extends Game {
 	
 	public ShatteredPixelDungeon() {
-		super( TitleScene.class );
+		super( WelcomeScene.class );
 
 		// 0.2.4
 		com.watabou.utils.Bundle.addAlias(
