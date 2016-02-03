@@ -106,7 +106,8 @@ public class WndSettings extends WndTabbed {
 				protected void onChange() {
 					if (getSelectedValue() != ShatteredPixelDungeon.scale()) {
 						ShatteredPixelDungeon.scale(getSelectedValue());
-						ShatteredPixelDungeon.resetScene();
+						PixelScene.windowOnCreate = WndSettings.class;
+						ShatteredPixelDungeon.switchNoFade((Class<? extends PixelScene>) ShatteredPixelDungeon.scene().getClass());
 					}
 				}
 			};

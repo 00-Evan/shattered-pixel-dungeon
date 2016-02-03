@@ -20,19 +20,26 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import android.opengl.GLES20;
-
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.watabou.glwrap.Texture;
-import com.watabou.input.Touchscreen;
-import com.watabou.noosa.*;
-import com.watabou.noosa.BitmapText.Font;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.glwrap.Texture;
+import com.watabou.input.Touchscreen;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.BitmapText.Font;
+import com.watabou.noosa.BitmapTextMultiline;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.RenderedTextMultiline;
+import com.watabou.noosa.Scene;
 import com.watabou.utils.BitmapCache;
+
+import javax.microedition.khronos.opengles.GL10;
 
 public class PixelScene extends Scene {
 
@@ -50,6 +57,8 @@ public class PixelScene extends Scene {
 	public static float maxZoom;
 
 	public static Camera uiCamera;
+
+	public static Class<?extends Window> windowOnCreate;
 
 	//stylized pixel font
 	public static BitmapText.Font pixelFont;

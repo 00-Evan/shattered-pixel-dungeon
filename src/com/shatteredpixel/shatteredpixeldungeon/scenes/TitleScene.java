@@ -158,7 +158,16 @@ public class TitleScene extends PixelScene {
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( w - btnExit.width(), 0 );
 		add( btnExit );
-		
+
+		if (windowOnCreate != null){
+			try{
+				add(windowOnCreate.newInstance());
+			} catch (Exception e){
+				ShatteredPixelDungeon.reportException(e);
+			}
+			windowOnCreate = null;
+		}
+
 		fadeIn();
 	}
 	

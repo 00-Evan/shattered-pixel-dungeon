@@ -21,18 +21,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndLangs;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 
 public class LanguageButton extends Button {
 
@@ -87,58 +80,7 @@ public class LanguageButton extends Button {
 
 	@Override
 	protected void onClick() {
-		final ArrayList<Messages.Languages> langs = new ArrayList<>(Arrays.asList(Messages.Languages.values()));
-
-		Messages.Languages nativeLang = Messages.Languages.matchLocale(Locale.getDefault());
-		langs.remove(nativeLang);
-		//move the native language to the top.
-		langs.add(0, nativeLang);
-
-		parent.add(new WndLangs(langs));
+		parent.add(new WndLangs());
 	}
 
-	public static class WndLangs extends Window{
-
-		private int WIDTH = 60;
-		private int BTN_HEIGHT = 14;
-
-		WndLangs(final List<Messages.Languages> langs){
-			super();
-
-			int y = 0;
-			for (int i = 0; i < langs.size(); i++){
-				final int langIndex = i;
-				RedButton btn = new RedButton(Messages.titleCase(langs.get(i).nativeName())){
-					@Override
-					protected void onClick() {
-						super.onClick();
-						Messages.setup(langs.get(langIndex));
-						ShatteredPixelDungeon.language(langs.get(langIndex));
-						RenderedText.clearCache();
-						ShatteredPixelDungeon.switchNoFade(TitleScene.class);
-					}
-				};
-				if (ShatteredPixelDungeon.language() == langs.get(i)){
-					btn.textColor(TITLE_COLOR);
-				} else {
-					switch (langs.get(i).status()) {
-						case INCOMPLETE:
-							btn.textColor(0x999999);
-							break;
-						case UNREVIEWED:
-							btn.textColor(0xCCCCCC);
-							break;
-					}
-				}
-				btn.setSize(WIDTH, BTN_HEIGHT);
-				btn.setPos(0, y);
-				add(btn);
-				y += 16;
-			}
-			resize(WIDTH, y-2);
-
-		}
-
-
-	}
 }
