@@ -20,12 +20,12 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.TouchArea;
 import com.watabou.noosa.ui.Component;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
@@ -116,7 +116,7 @@ public class ScrollPane extends Component {
 		}
 
 		@Override
-		protected void onClick( Touch touch ) {
+		protected void onTouchUp( Touch touch ) {
 			if (dragging) {
 
 				dragging = false;

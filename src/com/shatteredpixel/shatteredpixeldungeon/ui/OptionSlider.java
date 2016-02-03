@@ -23,11 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.input.Touchscreen;
-import com.watabou.noosa.*;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.TouchArea;
 import com.watabou.noosa.ui.Component;
-import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
 public abstract class OptionSlider extends Component {
@@ -101,8 +102,11 @@ public abstract class OptionSlider extends Component {
 		sliderNode.size(5, 9);
 
 		touchArea = new TouchArea(0, 0, 0, 0){
+			boolean pressed = false;
+
 			@Override
 			protected void onTouchDown(Touchscreen.Touch touch) {
+				pressed = true;
 				PointF p = camera().screenToCamera((int) touch.current.x, (int) touch.current.y);
 				sliderNode.x = GameMath.gate(sliderBG.x-2, p.x, sliderBG.x+sliderBG.width()-2);
 				sliderNode.brightness(1.5f);
@@ -110,20 +114,25 @@ public abstract class OptionSlider extends Component {
 
 			@Override
 			protected void onDrag(Touchscreen.Touch touch) {
-				PointF p = camera().screenToCamera((int) touch.current.x, (int) touch.current.y);
-				sliderNode.x = GameMath.gate(sliderBG.x-2, p.x, sliderBG.x+sliderBG.width()-2);
+				if (pressed) {
+					PointF p = camera().screenToCamera((int) touch.current.x, (int) touch.current.y);
+					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x, sliderBG.x + sliderBG.width() - 2);
+				}
 			}
 
 			@Override
 			protected void onTouchUp(Touchscreen.Touch touch) {
-				PointF p = camera().screenToCamera((int) touch.current.x, (int) touch.current.y);
-				sliderNode.x = GameMath.gate(sliderBG.x-2, p.x, sliderBG.x+sliderBG.width()-2);
-				sliderNode.resetColor();
+				if (pressed) {
+					PointF p = camera().screenToCamera((int) touch.current.x, (int) touch.current.y);
+					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x, sliderBG.x + sliderBG.width() - 2);
+					sliderNode.resetColor();
 
-				//sets the selected value
-				selectedVal = minVal + Math.round(sliderNode.x/tickDist);
-				sliderNode.x = (int)(x + tickDist*(selectedVal-minVal));
-				onChange();
+					//sets the selected value
+					selectedVal = minVal + Math.round(sliderNode.x / tickDist);
+					sliderNode.x = (int) (x + tickDist * (selectedVal - minVal));
+					onChange();
+					pressed = false;
+				}
 			}
 		};
 		add(touchArea);
