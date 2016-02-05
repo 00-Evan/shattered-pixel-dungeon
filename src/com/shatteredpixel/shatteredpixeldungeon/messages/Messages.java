@@ -40,11 +40,11 @@ public class Messages {
 
 	public enum Languages {
 		ENGLISH("english",      "", Status.REVIEWED),
+		RUSSIAN("русский",      "ru", Status.REVIEWED),
+		KOREAN("한국어",         "ko", Status.REVIEWED),
 
-		RUSSIAN("русский",      "ru", Status.UNREVIEWED),
 		CHINESE("中文",          "zh", Status.UNREVIEWED), //Simplified
 		PORTUGUESE("português", "pt", Status.UNREVIEWED), //Brazillian
-		KOREAN("한국어",         "ko", Status.UNREVIEWED),
 
 		GERMAN("deutsch",       "de", Status.INCOMPLETE),
 		POLISH("polski",        "pl", Status.INCOMPLETE),
