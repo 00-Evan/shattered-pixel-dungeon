@@ -346,7 +346,13 @@ public class ShatteredPixelDungeon extends Game {
 
 	public static Messages.Languages language() {
 		String code = Preferences.INSTANCE.getString(Preferences.KEY_LANG, null);
-		if (code == null) return Messages.Languages.matchLocale(Locale.getDefault());
+		if (code == null){
+			Messages.Languages lang = Messages.Languages.matchLocale(Locale.getDefault());
+			if (lang.status() == Messages.Languages.Status.REVIEWED)
+				return lang;
+			else
+				return Messages.Languages.ENGLISH;
+		}
 		else return Messages.Languages.matchCode(code);
 	}
 
