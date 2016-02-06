@@ -20,13 +20,13 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Group;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Group;
 import com.watabou.noosa.RenderedTextMultiline;
 
 public class WndClass extends WndTabbed {
@@ -95,8 +95,6 @@ public class WndClass extends WndTabbed {
 		private static final int MARGIN	= 4;
 		private static final int GAP	= 4;
 
-		private static final String DOT	= "\u007F";
-
 		public float height;
 		public float width;
 
@@ -114,7 +112,7 @@ public class WndClass extends WndTabbed {
 					pos += GAP;
 				}
 
-				BitmapText dot = PixelScene.createText( DOT, 6 );
+				BitmapText dot = PixelScene.createText( "-", 6 );
 				dot.x = MARGIN;
 				dot.y = pos;
 				if (dotWidth == 0) {
