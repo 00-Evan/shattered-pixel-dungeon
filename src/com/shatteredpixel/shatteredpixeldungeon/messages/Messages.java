@@ -38,63 +38,6 @@ import java.util.ResourceBundle;
  */
 public class Messages {
 
-	public enum Languages {
-		ENGLISH("english",      "", Status.REVIEWED),
-		RUSSIAN("русский",      "ru", Status.REVIEWED),
-		KOREAN("한국어",         "ko", Status.REVIEWED),
-
-		CHINESE("中文",          "zh", Status.UNREVIEWED), //Simplified
-		PORTUGUESE("português", "pt", Status.UNREVIEWED), //Brazillian
-
-		GERMAN("deutsch",       "de", Status.INCOMPLETE),
-		POLISH("polski",        "pl", Status.INCOMPLETE),
-		SPANISH("español",      "es", Status.INCOMPLETE),
-		FRENCH("français",      "fr", Status.INCOMPLETE);
-
-		private String name;
-		private String code;
-		private Status status;
-
-		Languages(String name, String code, Status status){
-			this.name = name;
-			this.code = code;
-			this.status = status;
-		}
-
-		public String nativeName(){
-			return name;
-		}
-
-		public String code(){
-			return code;
-		}
-
-		public Status status(){
-			return status;
-		}
-
-		public static Languages matchLocale(Locale locale){
-			return matchCode(locale.getLanguage());
-		}
-
-		public static Languages matchCode(String code){
-			for (Languages lang : Languages.values()){
-				if (lang.code().equals(code))
-					return lang;
-			}
-			return ENGLISH;
-		}
-
-		public enum Status{
-			//below 60% complete languages are not added.
-			INCOMPLETE, //60-99% complete
-			UNREVIEWED, //100% complete
-			REVIEWED    //100% reviewed
-		}
-
-	}
-
-
 	/*
 		use hashmap for two reasons. Firstly because android 2.2 doesn't support resourcebundle.containskey(),
 		secondly so I can read in and combine multiple properties files,

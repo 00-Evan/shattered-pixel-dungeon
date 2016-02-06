@@ -20,20 +20,16 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import android.content.Intent;
-import android.net.Uri;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.input.Touchscreen;
 import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.RenderedTextMultiline;
-import com.watabou.noosa.TouchArea;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,9 +47,9 @@ public class WndLangs extends Window {
 	public WndLangs(){
 		super();
 
-		final ArrayList<Messages.Languages> langs = new ArrayList<>(Arrays.asList(Messages.Languages.values()));
+		final ArrayList<Languages> langs = new ArrayList<>(Arrays.asList(Languages.values()));
 
-		Messages.Languages nativeLang = Messages.Languages.matchLocale(Locale.getDefault());
+		Languages nativeLang = Languages.matchLocale(Locale.getDefault());
 		langs.remove(nativeLang);
 		//move the native language to the top.
 		langs.add(0, nativeLang);
@@ -104,40 +100,41 @@ public class WndLangs extends Window {
 		title.hardlight(TITLE_COLOR);
 		add(title);
 
-		RenderedTextMultiline info = PixelScene.renderMultiline( 6 );
-		switch(Messages.lang().status()){
-			case REVIEWED:
-				info.text(Messages.get(this, "completed"), WIDTH-TEXT_LEFT);
-				break;
-			case UNREVIEWED:
-				info.text(Messages.get(this, "unreviewed"), WIDTH-TEXT_LEFT);
-				break;
-			case INCOMPLETE:
-				info.text(Messages.get(this, "unfinished"), WIDTH-TEXT_LEFT);
-				break;
-		}
-		info.setPos(TEXT_LEFT, title.height() + 2);
-		add(info);
+		if (Messages.lang() == Languages.ENGLISH){
 
-		RedButton creditsBtn = new RedButton(Messages.titleCase(Messages.get(this, "credits")));
-		creditsBtn.setSize(creditsBtn.reqWidth()+2, 16);
-		creditsBtn.setPos(TEXT_LEFT + (TEXT_WIDTH - creditsBtn.width())/2f, y - 18);
-		add(creditsBtn);
+			RenderedTextMultiline info = PixelScene.renderMultiline(6);
+			info.text("This is the source language, written by the developer.", WIDTH - TEXT_LEFT);
+			info.setPos(TEXT_LEFT, title.height() + 2);
+			add(info);
 
-		RenderedTextMultiline transifex_text = PixelScene.renderMultiline(6);
-		transifex_text.text(Messages.get(this, "transifex"), WIDTH-TEXT_LEFT);
-		transifex_text.setPos(TEXT_LEFT, creditsBtn.top() - 2 - transifex_text.height());
-		add(transifex_text);
+		} else {
 
-		TouchArea transifex_link = new TouchArea(transifex_text.left(), transifex_text.top(),
-				transifex_text.width(), transifex_text.height()){
-			@Override
-			protected void onClick(Touchscreen.Touch touch) {
-				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://www.transifex.com/shattered-pixel/shattered-pixel-dungeon/" ) );
-				Game.instance.startActivity( intent );
+			RenderedTextMultiline info = PixelScene.renderMultiline(6);
+			switch (Messages.lang().status()) {
+				case REVIEWED:
+					info.text(Messages.get(this, "completed"), WIDTH - TEXT_LEFT);
+					break;
+				case UNREVIEWED:
+					info.text(Messages.get(this, "unreviewed"), WIDTH - TEXT_LEFT);
+					break;
+				case INCOMPLETE:
+					info.text(Messages.get(this, "unfinished"), WIDTH - TEXT_LEFT);
+					break;
 			}
-		};
-		add(transifex_link);
+			info.setPos(TEXT_LEFT, title.height() + 2);
+			add(info);
+
+			RedButton creditsBtn = new RedButton(Messages.titleCase(Messages.get(this, "credits")));
+			creditsBtn.setSize(creditsBtn.reqWidth() + 2, 16);
+			creditsBtn.setPos(TEXT_LEFT + (TEXT_WIDTH - creditsBtn.width()) / 2f, y - 18);
+			add(creditsBtn);
+
+			RenderedTextMultiline transifex_text = PixelScene.renderMultiline(6);
+			transifex_text.text(Messages.get(this, "transifex"), WIDTH - TEXT_LEFT);
+			transifex_text.setPos(TEXT_LEFT, creditsBtn.top() - 2 - transifex_text.height());
+			add(transifex_text);
+
+		}
 
 	}
 

@@ -26,10 +26,10 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
@@ -340,20 +340,20 @@ public class ShatteredPixelDungeon extends Game {
 		return Preferences.INSTANCE.getInt( Preferences.KEY_BRIGHTNESS, 0 );
 	}
 
-	public static void language(Messages.Languages lang) {
+	public static void language(Languages lang) {
 		Preferences.INSTANCE.put( Preferences.KEY_LANG, lang.code());
 	}
 
-	public static Messages.Languages language() {
+	public static Languages language() {
 		String code = Preferences.INSTANCE.getString(Preferences.KEY_LANG, null);
 		if (code == null){
-			Messages.Languages lang = Messages.Languages.matchLocale(Locale.getDefault());
-			if (lang.status() == Messages.Languages.Status.REVIEWED)
+			Languages lang = Languages.matchLocale(Locale.getDefault());
+			if (lang.status() == Languages.Status.REVIEWED)
 				return lang;
 			else
-				return Messages.Languages.ENGLISH;
+				return Languages.ENGLISH;
 		}
-		else return Messages.Languages.matchCode(code);
+		else return Languages.matchCode(code);
 	}
 
 	public static void lastClass( int value ) {
