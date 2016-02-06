@@ -28,7 +28,7 @@ public enum Languages {
 	KOREAN("한국어",         "ko", Status.REVIEWED, new String[]{"Flameblast12"}, new String[]{"Ddojin0115", "Eeeei", "lsiebnie", "WondarRabb1t"}),
 
 	//Simplified
-	CHINESE("中文",          "zh", Status.UNREVIEWED, new String[]{"Jinkeloid"}, new String[]{"931451545", "HoofBumpBlurryface", "Lyn_0401", "ShatteredFlameBlast", "Tempest102"}),
+	CHINESE("中文",          "zh", Status.UNREVIEWED, new String[]{"Jinkeloid"}, new String[]{"931451545", "HoofBumpBlurryface", "Lyn-0401", "ShatteredFlameBlast", "Tempest102"}),
 	//Brazillian
 	PORTUGUESE("português", "pt", Status.UNREVIEWED, new String[]{"Matheus208"}, new String[]{"JST", "Try31"}),
 

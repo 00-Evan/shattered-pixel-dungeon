@@ -151,17 +151,17 @@ public class WndLangs extends Window {
 					Window credits = new Window();
 
 					RenderedTextMultiline title = PixelScene.renderMultiline(9);
-					title.text(Messages.titleCase(Messages.get(WndLangs.class, "credits")) , 60);
+					title.text(Messages.titleCase(Messages.get(WndLangs.class, "credits")) , 65);
 					title.hardlight(SHPX_COLOR);
-					title.setPos((60 - title.width())/2, 0);
+					title.setPos((65 - title.width())/2, 0);
 					credits.add(title);
 
 					RenderedTextMultiline text = PixelScene.renderMultiline(6);
-					text.text(creds, 60);
+					text.text(creds, 65);
 					text.setPos(0, title.bottom() + 2);
 					credits.add(text);
 
-					credits.resize(60, (int)text.bottom());
+					credits.resize(65, (int)text.bottom());
 					parent.add(credits);
 				}
 			};
