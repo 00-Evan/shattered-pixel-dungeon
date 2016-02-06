@@ -27,13 +27,15 @@ public enum Languages {
 	RUSSIAN("русский",      "ru", Status.REVIEWED, new String[]{"ConsideredHamster", "Inevielle", "Yarikonline"}, new String[]{"HerrGotlieb", "Shamahan"}),
 	KOREAN("한국어",         "ko", Status.REVIEWED, new String[]{"Flameblast12"}, new String[]{"Ddojin0115", "Eeeei", "lsiebnie", "WondarRabb1t"}),
 
-	CHINESE("中文",          "zh", Status.UNREVIEWED, null, null), //Simplified
-	PORTUGUESE("português", "pt", Status.UNREVIEWED, null, null), //Brazillian
+	//Simplified
+	CHINESE("中文",          "zh", Status.UNREVIEWED, new String[]{"Jinkeloid"}, new String[]{"931451545", "HoofBumpBlurryface", "Lyn_0401", "ShatteredFlameBlast", "Tempest102"}),
+	//Brazillian
+	PORTUGUESE("português", "pt", Status.UNREVIEWED, new String[]{"Matheus208"}, new String[]{"JST", "Try31"}),
 
-	GERMAN("deutsch",       "de", Status.INCOMPLETE, null, null),
-	POLISH("polski",        "pl", Status.INCOMPLETE, null, null),
-	SPANISH("español",      "es", Status.INCOMPLETE, null, null),
-	FRENCH("français",      "fr", Status.INCOMPLETE, null, null);
+	GERMAN("deutsch",       "de", Status.INCOMPLETE, new String[]{"Davedude", "KrystalCroft"}, new String[]{"DarkPixel", "ErichME", "Sarius", "Zap0", "Oragothen"}),
+	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "Scharnvirk", "Wawrzyn"}),
+	SPANISH("español",      "es", Status.INCOMPLETE, null, new String[]{"CorvosUtopy", "LucasCamilo", "Luuciano96", "Prancer", "Talruin", "Ctrijueque", "Grayscales", "Jonismack1", "Pixeled4life"}),
+	FRENCH("français",      "fr", Status.INCOMPLETE, null, new String[]{"Kultissim", "Minikrob"});
 
 	public enum Status{
 		//below 60% complete languages are not added.
@@ -66,6 +68,16 @@ public enum Languages {
 
 	public Status status(){
 		return status;
+	}
+
+	public String[] reviewers() {
+		if (reviewers == null) return new String[]{};
+		else return reviewers.clone();
+	}
+
+	public String[] translators() {
+		if (translators == null) return new String[]{};
+		else return translators.clone();
 	}
 
 	public static Languages matchLocale(Locale locale){

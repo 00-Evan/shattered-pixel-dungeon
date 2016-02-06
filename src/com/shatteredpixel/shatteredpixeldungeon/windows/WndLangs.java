@@ -54,6 +54,8 @@ public class WndLangs extends Window {
 		//move the native language to the top.
 		langs.add(0, nativeLang);
 
+		final Languages currLang = Messages.lang();
+
 		//language buttons layout
 		int y = 0;
 		for (int i = 0; i < langs.size(); i++){
@@ -69,7 +71,7 @@ public class WndLangs extends Window {
 					ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 				}
 			};
-			if (Messages.lang() == langs.get(i)){
+			if (currLang == langs.get(i)){
 				btn.textColor(TITLE_COLOR);
 			} else {
 				switch (langs.get(i).status()) {
@@ -94,13 +96,13 @@ public class WndLangs extends Window {
 		add(separator);
 
 		//language info layout.
-		RenderedText title = PixelScene.renderText( Messages.titleCase(Messages.lang().nativeName()) , 9 );
+		RenderedText title = PixelScene.renderText( Messages.titleCase(currLang.nativeName()) , 9 );
 		title.x = TEXT_LEFT + (TEXT_WIDTH - title.width())/2f;
 		title.y = 0;
 		title.hardlight(TITLE_COLOR);
 		add(title);
 
-		if (Messages.lang() == Languages.ENGLISH){
+		if (currLang == Languages.ENGLISH){
 
 			RenderedTextMultiline info = PixelScene.renderMultiline(6);
 			info.text("This is the source language, written by the developer.", WIDTH - TEXT_LEFT);
@@ -110,7 +112,7 @@ public class WndLangs extends Window {
 		} else {
 
 			RenderedTextMultiline info = PixelScene.renderMultiline(6);
-			switch (Messages.lang().status()) {
+			switch (currLang.status()) {
 				case REVIEWED:
 					info.text(Messages.get(this, "completed"), WIDTH - TEXT_LEFT);
 					break;
@@ -124,7 +126,45 @@ public class WndLangs extends Window {
 			info.setPos(TEXT_LEFT, title.height() + 2);
 			add(info);
 
-			RedButton creditsBtn = new RedButton(Messages.titleCase(Messages.get(this, "credits")));
+			RedButton creditsBtn = new RedButton(Messages.titleCase(Messages.get(this, "credits"))){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					String creds = "";
+					String[] reviewers = currLang.reviewers();
+					String[] translators = currLang.translators();
+					if (reviewers.length > 0){
+						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "reviewers")) + "_\n";
+						for (String reviewer : reviewers){
+							creds += "-" + reviewer + "\n";
+						}
+						creds += "\n";
+					}
+
+					if (translators.length > 0){
+						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "translators")) + "_";
+						for (String translator : translators){
+							creds += "\n-" + translator;
+						}
+					}
+
+					Window credits = new Window();
+
+					RenderedTextMultiline title = PixelScene.renderMultiline(9);
+					title.text(Messages.titleCase(Messages.get(WndLangs.class, "credits")) , 60);
+					title.hardlight(SHPX_COLOR);
+					title.setPos((60 - title.width())/2, 0);
+					credits.add(title);
+
+					RenderedTextMultiline text = PixelScene.renderMultiline(6);
+					text.text(creds, 60);
+					text.setPos(0, title.bottom() + 2);
+					credits.add(text);
+
+					credits.resize(60, (int)text.bottom());
+					parent.add(credits);
+				}
+			};
 			creditsBtn.setSize(creditsBtn.reqWidth() + 2, 16);
 			creditsBtn.setPos(TEXT_LEFT + (TEXT_WIDTH - creditsBtn.width()) / 2f, y - 18);
 			add(creditsBtn);
