@@ -36,7 +36,7 @@ public class WelcomeScene extends PixelScene {
 		int h = Camera.main.height;
 
 		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
-		title.brightness(0.5f);
+		title.brightness(0.6f);
 		add( title );
 
 		float height = title.height +
@@ -107,7 +107,6 @@ public class WelcomeScene extends PixelScene {
 		}
 		float textSpace = h - title.y - (title.height() - 10) - okay.height() - 2;
 		text.setPos(10, title.y+(title.height() - 10) + ((textSpace - text.height()) / 2));
-		text.hardlight(0xAAAAAA);
 		add(text);
 
 	}
