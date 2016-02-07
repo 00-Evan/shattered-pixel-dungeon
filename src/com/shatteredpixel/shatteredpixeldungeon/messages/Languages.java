@@ -31,8 +31,8 @@ public enum Languages {
 	CHINESE("中文",          "zh", Status.UNREVIEWED, new String[]{"Jinkeloid"}, new String[]{"931451545", "HoofBumpBlurryface", "Lyn-0401", "ShatteredFlameBlast", "Tempest102"}),
 	//Brazillian
 	PORTUGUESE("português", "pt", Status.UNREVIEWED, new String[]{"Matheus208"}, new String[]{"JST", "Try31"}),
+	GERMAN("deutsch",       "de", Status.UNREVIEWED, new String[]{"Davedude", "KrystalCroft"}, new String[]{"DarkPixel", "ErichME", "Sarius", "Zap0", "Oragothen"}),
 
-	GERMAN("deutsch",       "de", Status.INCOMPLETE, new String[]{"Davedude", "KrystalCroft"}, new String[]{"DarkPixel", "ErichME", "Sarius", "Zap0", "Oragothen"}),
 	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "Scharnvirk", "Wawrzyn"}),
 	SPANISH("español",      "es", Status.INCOMPLETE, null, new String[]{"CorvosUtopy", "LucasCamilo", "Luuciano96", "Prancer", "Talruin", "Ctrijueque", "Grayscales", "Jonismack1", "Pixeled4life"}),
 	FRENCH("français",      "fr", Status.INCOMPLETE, null, new String[]{"Kultissim", "Minikrob"});

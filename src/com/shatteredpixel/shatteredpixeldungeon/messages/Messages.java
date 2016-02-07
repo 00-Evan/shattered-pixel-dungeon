@@ -153,29 +153,35 @@ public class Messages {
 	private static final HashSet<String> noCaps = new HashSet<>(
 			Arrays.asList(new String[]{
 					//English
-					"a", "of",
-					//French
-					"à", "avec", "de", "du", "des",
-					//Portugese
-					"a", "de", "des", "da", "das", "do", "dos",
+					"a", "of", "by",
 					//German
-					"der", "des",
-					//Russian
-					"с", //Not an english c, looks just like it though.
+					"der", "des", "von",
 			})
 	);
 
 	public static String titleCase( String str ){
-		String result = "";
-		//split by any unicode space character
-		for (String word : str.split("(?<=\\p{Zs})")){
-			if (noCaps.contains(word.trim().toLowerCase())){
-				result += word;
-			} else {
-				result += capitalize(word);
-			}
+		//These languages don't do capitalization
+		if (lang == Languages.CHINESE || lang == Languages.KOREAN){
+			return str;
 		}
-		//first character is always capitalized.
-		return capitalize(result);
+
+		//These languages capitalize every word except for a few exceptions
+		//...Yes technically German is just every noun, but this should be close enough.
+		if (lang == Languages.ENGLISH || lang == Languages.GERMAN){
+			String result = "";
+			//split by any unicode space character
+			for (String word : str.split("(?<=\\p{Zs})")){
+				if (noCaps.contains(word.trim().toLowerCase().replaceAll(":", ""))){
+					result += word;
+				} else {
+					result += capitalize(word);
+				}
+			}
+			//first character is always capitalized.
+			return capitalize(result);
+		}
+
+		//Otherwise, the language uses sentence case
+		return capitalize(str);
 	}
 }
