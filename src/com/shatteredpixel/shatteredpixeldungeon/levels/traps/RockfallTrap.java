@@ -46,25 +46,37 @@ public class RockfallTrap extends Trap {
 	@Override
 	public void activate() {
 
-		if (Dungeon.visible[ pos ]){
-			CellEmitter.get( pos - Level.WIDTH ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
-			Camera.main.shake( 3, 0.7f );
-			Sample.INSTANCE.play( Assets.SND_ROCKS );
-		}
+		boolean seen = false;
 
-		Char ch = Actor.findChar( pos );
+		for (int i : Level.NEIGHBOURS9){
 
-		if (ch != null){
-			int damage = Random.NormalIntRange(5+Dungeon.depth, 10+Dungeon.depth*3);
-			damage -= Random.IntRange( 0, ch.dr());
-			ch.damage( Math.max(damage, 0) , this);
+			if (Level.solid[pos+i])
+				continue;
 
-			Buff.prolong( ch, Paralysis.class, Paralysis.duration(ch)*2);
+			if (Dungeon.visible[ pos+i ]){
+				CellEmitter.get( pos + i - Level.WIDTH ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
+				if (!seen) {
+					Camera.main.shake(3, 0.7f);
+					Sample.INSTANCE.play(Assets.SND_ROCKS);
+					seen = true;
+				}
+			}
 
-			if (!ch.isAlive() && ch == Dungeon.hero){
-				Dungeon.fail( getClass() );
-				GLog.n( Messages.get(this, "ondeath") );
+			Char ch = Actor.findChar( pos+i );
+
+			if (ch != null){
+				int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth*2);
+				damage -= Random.IntRange( 0, ch.dr());
+				ch.damage( Math.max(damage, 0) , this);
+
+				Buff.prolong( ch, Paralysis.class, Paralysis.duration(ch)/2);
+
+				if (!ch.isAlive() && ch == Dungeon.hero){
+					Dungeon.fail( getClass() );
+					GLog.n( Messages.get(this, "ondeath") );
+				}
 			}
 		}
+
 	}
 }
