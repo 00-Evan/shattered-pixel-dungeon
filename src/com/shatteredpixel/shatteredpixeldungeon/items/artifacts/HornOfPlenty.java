@@ -61,8 +61,6 @@ public class HornOfPlenty extends Artifact {
 
 	private static final float TIME_TO_EAT	= 3f;
 
-	private float energy = 36f;
-
 	public static final String AC_EAT = "EAT";
 	public static final String AC_STORE = "STORE";
 
@@ -87,7 +85,7 @@ public class HornOfPlenty extends Artifact {
 			if (!isEquipped(hero)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge == 0)  GLog.i( Messages.get(this, "no_food") );
 			else {
-				((Hunger) hero.buff(Hunger.class)).satisfy(energy * charge);
+				hero.buff(Hunger.class).satisfy((Hunger.STARVING/10) * charge);
 
 				//if you get at least 100 food energy from the horn
 				if (charge >= 3) {
