@@ -141,8 +141,12 @@ public class WndLangs extends Window {
 						creds += "\n";
 					}
 
-					if (translators.length > 0){
+					if (reviewers.length > 0 || translators.length > 0){
 						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "translators")) + "_";
+						//reviewers are also translators
+						for (String reviewer : reviewers){
+							creds += "\n-" + reviewer;
+						}
 						for (String translator : translators){
 							creds += "\n-" + translator;
 						}

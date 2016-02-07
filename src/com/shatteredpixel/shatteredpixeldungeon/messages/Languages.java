@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public enum Languages {
 	ENGLISH("english",      "", Status.REVIEWED, null, null),
-	RUSSIAN("русский",      "ru", Status.REVIEWED, new String[]{"ConsideredHamster", "Inevielle", "Yarikonline"}, new String[]{"HerrGotlieb", "Shamahan"}),
+	RUSSIAN("русский",      "ru", Status.REVIEWED, new String[]{"ConsideredHamster", "Inevielle", "yarikonline"}, new String[]{"HerrGotlieb", "Shamahan"}),
 	KOREAN("한국어",         "ko", Status.REVIEWED, new String[]{"Flameblast12"}, new String[]{"Ddojin0115", "Eeeei", "lsiebnie", "WondarRabb1t"}),
 
 	//Simplified
