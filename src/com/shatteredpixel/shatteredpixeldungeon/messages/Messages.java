@@ -153,9 +153,7 @@ public class Messages {
 	private static final HashSet<String> noCaps = new HashSet<>(
 			Arrays.asList(new String[]{
 					//English
-					"a", "of", "by",
-					//German
-					"der", "des", "von",
+					"a", "of", "by", "to",
 			})
 	);
 
@@ -165,9 +163,8 @@ public class Messages {
 			return str;
 		}
 
-		//These languages capitalize every word except for a few exceptions
-		//...Yes technically German is just every noun, but this should be close enough.
-		if (lang == Languages.ENGLISH || lang == Languages.GERMAN){
+		//English capitalizes every word except for a few exceptions
+		if (lang == Languages.ENGLISH){
 			String result = "";
 			//split by any unicode space character
 			for (String word : str.split("(?<=\\p{Zs})")){
