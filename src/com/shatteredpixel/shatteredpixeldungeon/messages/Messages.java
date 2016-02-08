@@ -153,7 +153,7 @@ public class Messages {
 	private static final HashSet<String> noCaps = new HashSet<>(
 			Arrays.asList(new String[]{
 					//English
-					"a", "of", "by", "to", "the"
+					"a", "of", "by", "to", "the", "x"
 			})
 	);
 
@@ -168,7 +168,7 @@ public class Messages {
 			String result = "";
 			//split by any unicode space character
 			for (String word : str.split("(?<=\\p{Zs})")){
-				if (noCaps.contains(word.trim().toLowerCase().replaceAll(":", ""))){
+				if (noCaps.contains(word.trim().toLowerCase().replaceAll(":|[0-9]", ""))){
 					result += word;
 				} else {
 					result += capitalize(word);
