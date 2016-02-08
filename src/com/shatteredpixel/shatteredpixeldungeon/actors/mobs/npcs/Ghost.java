@@ -27,17 +27,27 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollTrickster;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -263,23 +273,41 @@ public class Ghost extends NPC {
 				processed = false;
 				depth = Dungeon.depth;
 
-				do {
-					weapon = Generator.randomWeapon(10);
-				} while (weapon instanceof MissileWeapon);
-				armor = Generator.randomArmor(10);
+				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
+				float itemTierRoll = Random.Float();
+				if (itemTierRoll < 0.5f){
+					weapon = Random.Int(2) == 0 ? new Spear() : new Quarterstaff();
+					armor = new LeatherArmor();
+				} else if (itemTierRoll < 0.8f){
+					weapon = Random.Int(2) == 0 ? new Mace() : new Sword();
+					armor = new MailArmor();
+				} else if (itemTierRoll < 0.95f){
+					weapon = Random.Int(2) == 0 ? new BattleAxe() : new Longsword();
+					armor = new ScaleArmor();
+				} else {
+					weapon = Random.Int(2) == 0 ? new WarHammer() : new Glaive();
+					armor = new PlateArmor();
+				}
 
-				for (int i = 1; i <= 3; i++) {
-					Item another;
-					do {
-						another = Generator.randomWeapon(10+i);
-					} while (another instanceof MissileWeapon);
-					if (another.level() >= weapon.level()) {
-						weapon = (Weapon) another;
-					}
-					another = Generator.randomArmor(10+i);
-					if (another.level() >= armor.level()) {
-						armor = (Armor) another;
-					}
+				//50%:+0, 30%:+1, 15%:+2, 5%:+3
+				float itemLevelRoll = Random.Float();
+				int itemLevel;
+				if (itemLevelRoll < 0.5f){
+					itemLevel = 0;
+				} else if (itemLevelRoll < 0.8f){
+					itemLevel = 1;
+				} else if (itemLevelRoll < 0.95f){
+					itemLevel = 2;
+				} else {
+					itemLevel = 3;
+				}
+				weapon.upgrade(itemLevel);
+				armor.upgrade(itemLevel);
+
+				//10% to be enchanted
+				if (Random.Int(10) == 0){
+					weapon.enchant();
+					armor.inscribe();
 				}
 
 				weapon.identify();
