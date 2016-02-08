@@ -158,11 +158,6 @@ public class Messages {
 	);
 
 	public static String titleCase( String str ){
-		//These languages don't do capitalization
-		if (lang == Languages.CHINESE || lang == Languages.KOREAN){
-			return str;
-		}
-
 		//English capitalizes every word except for a few exceptions
 		if (lang == Languages.ENGLISH){
 			String result = "";
@@ -178,7 +173,7 @@ public class Messages {
 			return capitalize(result);
 		}
 
-		//Otherwise, the language uses sentence case
+		//Otherwise, use sentence case
 		return capitalize(str);
 	}
 }
