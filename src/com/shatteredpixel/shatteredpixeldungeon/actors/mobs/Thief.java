@@ -145,7 +145,7 @@ public class Thief extends Mob {
 
 		if (item != null && !item.unique && item.level() < 1 ) {
 
-			GLog.w( Messages.get(this, "stole", item.name()) );
+			GLog.w( Messages.get(Thief.class, "stole", item.name()) );
 			Dungeon.quickslot.clearItem( item );
 			item.updateQuickslot();
 
