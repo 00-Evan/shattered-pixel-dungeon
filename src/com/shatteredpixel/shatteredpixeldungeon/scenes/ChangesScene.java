@@ -37,40 +37,55 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-				"v0.3.3b:\n" +
-				"- Fixed start-crash on android 2.2\n" +
-				"- Fixed various crash bugs\n" +
-				"\n" +
-				"v0.3.3a:\n" +
-				"- Added a small holiday treat ;)\n" +
-				"- Thieves now disappear when they get away\n" +
-				"- Fixed chests not opening with enemies nearby\n" +
-				"- Fixed numerous bugs and crashes\n" +
-				"\n" +
-				"v0.3.3:\n" +
-				"Support for Google Play Games:\n" +
-				"- Badges can now sync across devices\n" +
-				"- Five Google Play Achievements added\n" +
-				"- Rankings sync will come in future\n" +
-				"\n" +
-				"Press the controller button in the main menu to learn more\n" +
-				"\n" +
-				"Shattered remains a 100% offline game if Google Play Games is not enabled\n" +
-				"\n" +
-				"\n" +
-				"Gameplay Changes:\n" +
-				"- Tengu's maze is now different each time\n" +
-				"- Items no longer auto-pickup when enemies are near\n" +
-				"\n" +
-				"Fixes:\n" +
-				"- Fixed several bugs with prison enemies\n" +
-				"- Fixed some landscape window size issues\n" +
-				"- Fixed other minor bugs\n" +
-				"\n" +
-				"Misc:\n" +
-				"- Added support for reverse landscape\n" +
-				"\n" +
-				"There's a lot of behind-the-scenes technical changes in this update, so let me know if you run into any issues!";
+			"_v0.3.4:_\n" +
+			"- Shattered now supports multiple languages\n" +
+			"- New font\n" +
+			"- Bugfixes\n" +
+			"\n" +
+			"Balance Changes:\n" +
+			"- Hunger now builds ~10% slower\n" +
+			"- Sad Ghost no longer gives tier 1 loot\n" +
+			"- Sad Ghost gives tier 4/5 loot less often\n" +
+			"- Burning now deals less damage at low HP\n" +
+			"- Weakness no longer discharges wands\n" +
+			"- Rockfall traps rebalanced\n" +
+			"\n" +
+			"_v0.3.3:_\n" +
+			"- Support for Google Play Games\n" +
+			"- Tengu's maze is now different each time\n" +
+			"- Items no longer auto-pickup when enemies are near\n" +
+			"- Added support for reverse landscape\n" +
+			"\n" +
+			"_v0.3.2:_\n" +
+			"- Prison reworked: new enemies, quests, bosses, etc.\n" +
+			"- Mastery Book is now only available after floor 10\n" +
+			"- Hunger damage now increases with hero level\n" +
+			"- Earlygame balance changes\n" +
+			"- Warlock subclass overhauled\n" +
+			"\n" +
+			"_v0.3.1:_\n" +
+			"- Traps reworked, over 20 new traps\n" +
+			"- UI and QOL upgrades, inc. 4 quickslots\n" +
+			"\n" +
+			"_v0.3.0:_\n" +
+			"- Wands completely reworked\n" +
+			"- Mage class reworked, now starts with a unique staff\n" +
+			"- Battlemage subclass reworked\n" +
+			"- Warlock subclass reworked\n" +
+			"\n" +
+			"_v0.2.4:_ Small improvements and tweaks\n" +
+			"\n" +
+			"_v0.2.3:_ Artifact additions & improvements\n" +
+			"\n" +
+			"_v0.2.2:_ Small improvements and tweaks\n" +
+			"\n" +
+			"_v0.2.1:_ Sewer improvements\n" +
+			"\n" +
+			"_v0.2.0:_ Added artifacts, reworked rings\n" +
+			"\n" +
+			"_v0.1.1:_ Added blandfruit, reworked dew vial\n" +
+			"\n" +
+			"_v0.1.0:_ Improvements to potions/scrolls";
 
 	@Override
 	public void create() {
