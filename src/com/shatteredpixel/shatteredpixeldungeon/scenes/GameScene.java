@@ -615,9 +615,13 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static Ripple ripple( int pos ) {
-		Ripple ripple = (Ripple)scene.ripples.recycle( Ripple.class );
-		ripple.reset( pos );
-		return ripple;
+		if (scene != null) {
+			Ripple ripple = (Ripple) scene.ripples.recycle(Ripple.class);
+			ripple.reset(pos);
+			return ripple;
+		} else {
+			return null;
+		}
 	}
 	
 	public static SpellSprite spellSprite() {
