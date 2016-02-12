@@ -37,6 +37,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.Scene;
+import com.watabou.noosa.Visual;
 import com.watabou.utils.BitmapCache;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -200,7 +201,7 @@ public class PixelScene extends Scene {
 		int zoom = Math.min(defaultZoom, 5);
 		RenderedText result = new RenderedText( text, size*zoom);
 		//adding 0.001f helps with smoothness on lower resolution devices.
-		result.scale.set(1/(float)zoom + .001f);
+		result.scale.set(1/(float)zoom);
 		return result;
 	}
 
@@ -211,8 +212,28 @@ public class PixelScene extends Scene {
 	public static RenderedTextMultiline renderMultiline( String text, int size ){
 		int zoom = Math.min(defaultZoom, 5);
 		RenderedTextMultiline result = new RenderedTextMultiline( text, size*zoom);
-		result.zoom(1/(float)zoom + .001f);
+		result.zoom(1/(float)zoom);
 		return result;
+	}
+
+	/**
+	 * These three methods align UI elements to device pixels.
+	 * e.g. if we have a scale of 3x then valid positions are #.0, #.33, #.67
+	 */
+
+	public static float align( Camera camera, float pos ) {
+		return Math.round(pos * camera.zoom) / camera.zoom;
+	}
+
+	// This one should be used for UI elements
+	public static float align( float pos ) {
+		return Math.round(pos * defaultZoom) / (float)defaultZoom;
+	}
+
+	public static void align( Visual v ) {
+		Camera c = v.camera();
+		v.x = align( c, v.x );
+		v.y = align( c, v.y );
 	}
 
 	public static boolean noFade = false;
