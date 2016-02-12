@@ -20,6 +20,17 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -31,16 +42,6 @@ import com.watabou.noosa.particles.BitmaskEmitter;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 
 public class StatusPane extends Component {
 
@@ -138,11 +139,13 @@ public class StatusPane extends Component {
 
 		shield.size( width, shield.height );
 
-		avatar.x = shield.x + 15 - avatar.width / 2;
-		avatar.y = shield.y + 16 - avatar.height / 2;
+		avatar.x = shield.x + 15 - avatar.width / 2f;
+		avatar.y = shield.y + 16 - avatar.height / 2f;
+		PixelScene.align(avatar);
 
-		compass.x = avatar.x + avatar.width / 2 - compass.origin.x;
-		compass.y = avatar.y + avatar.height / 2 - compass.origin.y;
+		compass.x = avatar.x + avatar.width / 2f - compass.origin.x;
+		compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
+		PixelScene.align(compass);
 
 		hp.x = 30;
 		hp.y = 3;
@@ -193,8 +196,9 @@ public class StatusPane extends Component {
 			lastLvl = Dungeon.hero.lvl;
 			level.text( Integer.toString( lastLvl ) );
 			level.measure();
-			level.x = 27.5f - level.width() / 2;
-			level.y = 28.0f - level.baseLine() / 2;
+			level.x = 27.5f - level.width() / 2f;
+			level.y = 28.0f - level.baseLine() / 2f;
+			PixelScene.align(level);
 		}
 
 		int k = IronKey.curDepthQuantity;

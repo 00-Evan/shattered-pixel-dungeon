@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndClass;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
@@ -43,7 +44,6 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.BitmaskEmitter;
 import com.watabou.noosa.particles.Emitter;
@@ -108,6 +108,7 @@ public class StartScene extends PixelScene {
 		Image title = BannerSprites.get( Type.SELECT_YOUR_HERO );
 		title.x = (w - title.width()) / 2;
 		title.y = top;
+		align( title );
 		add( title );
 
 		buttonX = left;
@@ -163,6 +164,7 @@ public class StartScene extends PixelScene {
 			for (int i=0; i < classes.length; i++) {
 				ClassShield shield = shields.get( classes[i] );
 				shield.setRect( left + i * shieldW, top, shieldW, shieldH );
+				align(shield);
 			}
 
 			ChallengeButton challenge = new ChallengeButton();
@@ -181,12 +183,14 @@ public class StartScene extends PixelScene {
 						left + (i % 2) * shieldW,
 						top + (i / 2) * shieldH,
 						shieldW, shieldH );
+				align(shield);
 			}
 
 			ChallengeButton challenge = new ChallengeButton();
 			challenge.setPos(
 					w/2 - challenge.width()/2,
 					top + shieldH - challenge.height()/2 );
+			align(challenge);
 			add( challenge );
 
 		}
@@ -200,6 +204,7 @@ public class StartScene extends PixelScene {
 			text.maxWidth((int)width);
 			text.hardlight( 0xFFFF00 );
 			text.setPos(w / 2 - text.width() / 2, (bottom - BUTTON_HEIGHT) + (BUTTON_HEIGHT - text.height()) / 2);
+			align(text);
 			unlock.add(text);
 
 		}
@@ -332,6 +337,8 @@ public class StartScene extends PixelScene {
 			} else {
 				text.y = y + (height - text.baseLine()) / 2;
 			}
+			align(text);
+			align(secondary);
 		}
 
 		public void secondary( String text, boolean highlighted ) {
@@ -411,9 +418,11 @@ public class StartScene extends PixelScene {
 
 			avatar.x = x + (width - avatar.width()) / 2;
 			avatar.y = y + (height - avatar.height() - name.height()) / 2;
+			align(avatar);
 
 			name.x = x + (width - name.width()) / 2;
 			name.y = avatar.y + avatar.height() + SCALE;
+			align(name);
 
 		}
 

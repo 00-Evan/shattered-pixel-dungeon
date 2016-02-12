@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndRanking;
@@ -37,7 +38,6 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.GameMath;
@@ -76,6 +76,7 @@ public class RankingsScene extends PixelScene {
 		title.hardlight(Window.SHPX_COLOR);
 		title.x = (w - title.width()) / 2;
 		title.y = GAP;
+		align(title);
 		add(title);
 		
 		if (Rankings.INSTANCE.records.size() > 0) {
@@ -122,6 +123,10 @@ public class RankingsScene extends PixelScene {
 				won.x = label.x + label.width();
 				total.x = won.x + won.width();
 				label.y = won.y = total.y = h - label.height() - GAP;
+
+				align(label);
+				align(total);
+				align(won);
 
 			}
 			
@@ -256,10 +261,12 @@ public class RankingsScene extends PixelScene {
 			super.layout();
 			
 			shield.x = x;
-			shield.y = y + (height - shield.height) / 2;
+			shield.y = y + (height - shield.height) / 2f;
+			align(shield);
 			
-			position.x = shield.x + (shield.width - position.width()) / 2;
-			position.y = shield.y + (shield.height - position.height()) / 2 + 1;
+			position.x = shield.x + (shield.width - position.width()) / 2f;
+			position.y = shield.y + (shield.height - position.height()) / 2f + 1;
+			align(position);
 			
 			if (flare != null) {
 				flare.point( shield.center() );
@@ -268,17 +275,20 @@ public class RankingsScene extends PixelScene {
 			classIcon.x = x + width - classIcon.width;
 			classIcon.y = shield.y;
 
-			level.x = classIcon.x + (classIcon.width - level.width()) / 2;
-			level.y = classIcon.y + (classIcon.height - level.height()) / 2 + 1;
+			level.x = classIcon.x + (classIcon.width - level.width()) / 2f;
+			level.y = classIcon.y + (classIcon.height - level.height()) / 2f + 1;
+			align(level);
 
 			steps.x = x + width - steps.width - classIcon.width;
 			steps.y = shield.y;
 
-			depth.x = steps.x + (steps.width - depth.width()) / 2;
-			depth.y = steps.y + (steps.height - depth.height()) / 2 + 1;
+			depth.x = steps.x + (steps.width - depth.width()) / 2f;
+			depth.y = steps.y + (steps.height - depth.height()) / 2f + 1;
+			align(depth);
 
 			desc.maxWidth((int)(steps.x - (shield.x + shield.width + GAP)));
-			desc.setPos(shield.x + shield.width + GAP, shield.y + (shield.height - desc.height()) / 2 + 1);
+			desc.setPos(shield.x + shield.width + GAP, shield.y + (shield.height - desc.height()) / 2f + 1);
+			align(desc);
 		}
 		
 		@Override

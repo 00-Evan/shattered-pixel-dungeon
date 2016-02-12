@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.glwrap.Texture;
 import com.watabou.input.Touchscreen;
@@ -35,9 +36,9 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.Scene;
 import com.watabou.noosa.Visual;
+import com.watabou.noosa.ui.Component;
 import com.watabou.utils.BitmapCache;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -217,23 +218,25 @@ public class PixelScene extends Scene {
 	}
 
 	/**
-	 * These three methods align UI elements to device pixels.
+	 * These methods align UI elements to device pixels.
 	 * e.g. if we have a scale of 3x then valid positions are #.0, #.33, #.67
 	 */
+
+	public static float align( float pos ) {
+		return Math.round(pos * defaultZoom) / (float)defaultZoom;
+	}
 
 	public static float align( Camera camera, float pos ) {
 		return Math.round(pos * camera.zoom) / camera.zoom;
 	}
 
-	// This one should be used for UI elements
-	public static float align( float pos ) {
-		return Math.round(pos * defaultZoom) / (float)defaultZoom;
+	public static void align( Visual v ) {
+		v.x = align( v.x );
+		v.y = align( v.y );
 	}
 
-	public static void align( Visual v ) {
-		Camera c = v.camera();
-		v.x = align( c, v.x );
-		v.y = align( c, v.y );
+	public static void align( Component c ){
+		c.setPos(align(c.left()), align(c.top()));
 	}
 
 	public static boolean noFade = false;
@@ -252,8 +255,8 @@ public class PixelScene extends Scene {
 	public static void showBadge( Badges.Badge badge ) {
 		BadgeBanner banner = BadgeBanner.show( badge.image );
 		banner.camera = uiCamera;
-		banner.x = (banner.camera.width - banner.width) / 2 ;
-		banner.y = (banner.camera.height - banner.height) / 3 ;
+		banner.x = align( banner.camera, (banner.camera.width - banner.width) / 2 );
+		banner.y = align( banner.camera, (banner.camera.height - banner.height) / 3 );
 		Game.scene().add( banner );
 	}
 	
@@ -313,8 +316,8 @@ public class PixelScene extends Scene {
 		
 		@Override
 		protected void updateMatrix() {
-			float sx = Math.round(scroll.x + shakeX);
-			float sy = Math.round(scroll.y + shakeY);
+			float sx = align( this, scroll.x + shakeX );
+			float sy = align( this, scroll.y + shakeY );
 			
 			matrix[0] = +zoom * invW2;
 			matrix[5] = -zoom * invH2;

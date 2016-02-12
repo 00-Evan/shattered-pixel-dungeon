@@ -20,15 +20,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import java.util.ArrayList;
-
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.utils.SparseArray;
+
+import java.util.ArrayList;
 
 public class FloatingText extends RenderedText {
 
@@ -89,10 +89,9 @@ public class FloatingText extends RenderedText {
 
 		text( text );
 		hardlight( color );
-		
-		//measure();
-		this.x = x - width() / 2;
-		this.y = y - height();
+
+		this.x = PixelScene.align( Camera.main, x - width() / 2);
+		this.y = PixelScene.align( Camera.main, y - height());
 		
 		timeLeft = LIFESPAN;
 	}

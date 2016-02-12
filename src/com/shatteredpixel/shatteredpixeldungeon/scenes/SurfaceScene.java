@@ -20,11 +20,15 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import java.nio.FloatBuffer;
-import java.util.Calendar;
-
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.watabou.gltextures.Gradient;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.glwrap.Matrix;
@@ -40,15 +44,11 @@ import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.TouchArea;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+
+import java.nio.FloatBuffer;
+import java.util.Calendar;
 
 public class SurfaceScene extends PixelScene {
 
@@ -85,8 +85,8 @@ public class SurfaceScene extends PixelScene {
 		archs.setSize( w, h );
 		add( archs );
 
-		float vx = (w - SKY_WIDTH) / 2;
-		float vy = (h - SKY_HEIGHT - BUTTON_HEIGHT) / 2;
+		float vx = align((w - SKY_WIDTH) / 2f);
+		float vy = align((h - SKY_HEIGHT - BUTTON_HEIGHT) / 2f);
 
 		Point s = Camera.main.cameraToScreen( vx, vy );
 		viewport = new Camera( s.x, s.y, SKY_WIDTH, SKY_HEIGHT, defaultZoom );
@@ -132,12 +132,14 @@ public class SurfaceScene extends PixelScene {
 		a.am = 2; a.aa = -1;
 		a.x = (SKY_WIDTH - a.width) / 2;
 		a.y = SKY_HEIGHT - a.height;
+		align(a);
 		window.add( a );
 		
 		final Pet pet = new Pet();
 		pet.rm = pet.gm = pet.bm = 1.2f;
 		pet.x = SKY_WIDTH / 2 + 2;
 		pet.y = SKY_HEIGHT - pet.height;
+		align(pet);
 		window.add( pet );
 		
 		window.add( new TouchArea( sky ) {

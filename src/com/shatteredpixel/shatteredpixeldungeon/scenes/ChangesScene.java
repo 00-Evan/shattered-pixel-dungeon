@@ -25,12 +25,12 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.RenderedTextMultiline;
 import com.watabou.noosa.ui.Component;
 
 //TODO: update this class with relevant info as new versions come out.
@@ -98,6 +98,7 @@ public class ChangesScene extends PixelScene {
 		title.hardlight(Window.TITLE_COLOR);
 		title.x = (w - title.width()) / 2 ;
 		title.y = 4;
+		align(title);
 		add(title);
 
 		ExitButton btnExit = new ExitButton();

@@ -20,20 +20,20 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import java.util.Collections;
-
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.ui.Component;
+
+import java.util.Collections;
 
 public class WndJournal extends Window {
 
@@ -54,6 +54,7 @@ public class WndJournal extends Window {
 		txtTitle = PixelScene.renderText( Messages.get(this, "title"), 9 );
 		txtTitle.hardlight( Window.TITLE_COLOR );
 		txtTitle.x = (WIDTH - txtTitle.width()) / 2;
+		PixelScene.align(txtTitle);
 		add( txtTitle );
 		
 		Component content = new Component();
@@ -117,10 +118,12 @@ public class WndJournal extends Window {
 			
 			depth.x = icon.x - 1 - depth.width();
 			depth.y = y + (height - depth.height()) / 2;
+			PixelScene.align(depth);
 			
 			icon.y = depth.y - 1;
 			
 			feature.y = depth.y + depth.baseLine() - feature.baseLine();
+			PixelScene.align(feature);
 		}
 	}
 }

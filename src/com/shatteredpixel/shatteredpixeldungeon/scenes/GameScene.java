@@ -556,8 +556,8 @@ public class GameScene extends PixelScene {
 	
 	private void showBanner( Banner banner ) {
 		banner.camera = uiCamera;
-		banner.x = (uiCamera.width - banner.width) / 2 ;
-		banner.y = (uiCamera.height - banner.height) / 3 ;
+		banner.x = align( uiCamera, (uiCamera.width - banner.width) / 2 );
+		banner.y = align( uiCamera, (uiCamera.height - banner.height) / 3 );
 		add( banner );
 	}
 	

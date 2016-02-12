@@ -20,11 +20,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.RenderedTextMultiline;
-import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.ui.Component;
 
 public class Toast extends Component {
 
@@ -70,10 +69,12 @@ public class Toast extends Component {
 		bg.size( width, height );
 		
 		close.setPos(
-			bg.x + bg.width() - bg.marginHor() / 2 - MARGIN_HOR - close.width(),
-			y + (height - close.height()) / 2 );
+			bg.x + bg.width() - bg.marginHor() / 2f - MARGIN_HOR - close.width(),
+			y + (height - close.height()) / 2f );
+		PixelScene.align(close);
 
 		text.setPos(close.left() - MARGIN_HOR - text.width(), y + (height - text.height()) / 2);
+		PixelScene.align(text);
 	}
 	
 	public void text( String txt ) {

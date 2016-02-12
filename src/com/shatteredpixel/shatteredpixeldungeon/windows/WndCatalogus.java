@@ -20,21 +20,21 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import java.util.ArrayList;
-
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.RenderedTextMultiline;
-import com.watabou.noosa.ui.Component;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.ui.Component;
+
+import java.util.ArrayList;
 
 public class WndCatalogus extends WndTabbed {
 
@@ -111,6 +111,7 @@ public class WndCatalogus extends WndTabbed {
 		
 		txtTitle.text( Messages.get(this, "title", showPotions ? Messages.get(this, "potions") : Messages.get(this, "scrolls") ) );
 		txtTitle.x = (width - txtTitle.width()) / 2;
+		PixelScene.align(txtTitle);
 
 		items.clear();
 		
@@ -182,6 +183,7 @@ public class WndCatalogus extends WndTabbed {
 
 			label.maxWidth((int)(width - sprite.width));
 			label.setPos(sprite.x + sprite.width,  y + (height - label.height()) / 2);
+			PixelScene.align(label);
 		}
 		
 		public boolean onClick( float x, float y ) {

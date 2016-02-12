@@ -22,10 +22,10 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedTextMultiline;
-import com.watabou.noosa.ui.Component;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.ui.Component;
 
 public class WndTitledMessage extends Window {
 

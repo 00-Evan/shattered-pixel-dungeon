@@ -20,14 +20,14 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Chrome;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 
 public class RedButton extends Button {
 	
@@ -66,10 +66,12 @@ public class RedButton extends Button {
 		
 		text.x = x + (width - text.width()) / 2;
 		text.y = y + (height - text.baseLine()) / 2;
+		PixelScene.align(text);
 		
 		if (icon != null) {
 			icon.x = x + text.x - icon.width() - 2;
 			icon.y = y + (height - icon.height()) / 2;
+			PixelScene.align(icon);
 		}
 	}
 
