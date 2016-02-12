@@ -145,7 +145,8 @@ public class Messages {
 	}
 
 	public static String capitalize( String str ){
-		return Character.toTitleCase( str.charAt( 0 ) ) + str.substring( 1 );
+		if (str.length() == 0)  return str;
+		else                    return Character.toTitleCase( str.charAt( 0 ) ) + str.substring( 1 );
 	}
 
 	//Words which should not be capitalized in title case, mostly prepositions which appear ingame
