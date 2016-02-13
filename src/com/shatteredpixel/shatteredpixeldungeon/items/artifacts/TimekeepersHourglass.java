@@ -83,14 +83,14 @@ public class TimekeepersHourglass extends Artifact {
 							@Override
 							protected void onSelect(int index) {
 								if (index == 0) {
-									GLog.i( Messages.get(this, "onstasis") );
+									GLog.i( Messages.get(TimekeepersHourglass.class, "onstasis") );
 									GameScene.flash(0xFFFFFF);
 									Sample.INSTANCE.play(Assets.SND_TELEPORT);
 
 									activeBuff = new timeStasis();
 									activeBuff.attachTo(Dungeon.hero);
 								} else if (index == 1) {
-									GLog.i( Messages.get(this, "onfreeze") );
+									GLog.i( Messages.get(TimekeepersHourglass.class, "onfreeze") );
 									GameScene.flash(0xFFFFFF);
 									Sample.INSTANCE.play(Assets.SND_TELEPORT);
 
