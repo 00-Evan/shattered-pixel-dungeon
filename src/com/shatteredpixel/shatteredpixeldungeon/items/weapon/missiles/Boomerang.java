@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 
+import java.util.ArrayList;
+
 public class Boomerang extends MissileWeapon {
 
 	{
@@ -40,6 +42,13 @@ public class Boomerang extends MissileWeapon {
 
 		unique = true;
 		bones = false;
+	}
+
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions( hero );
+		if (!isEquipped(hero)) actions.add(AC_EQUIP);
+		return actions;
 	}
 
 	@Override
