@@ -104,7 +104,7 @@ public class EtherealChains extends Artifact {
 						}
 					}
 					if (newPos == -1){
-						GLog.w( Messages.get(this, "does_nothing") );
+						GLog.w( Messages.get(EtherealChains.class, "does_nothing") );
 					} else {
 						final int newMobPos = newPos;
 						final Char affected = Actor.findChar( chain.collisionPos );
