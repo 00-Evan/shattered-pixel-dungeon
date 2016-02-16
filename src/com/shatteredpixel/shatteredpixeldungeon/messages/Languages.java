@@ -31,11 +31,12 @@ public enum Languages {
 	CHINESE("中文",          "zh", Status.UNREVIEWED, new String[]{"Jinkeloid(zdx00793)"}, new String[]{"931451545", "HoofBumpBlurryface", "Lyn-0401", "ShatteredFlameBlast", "Tempest102"}),
 	//Brazillian
 	PORTUGUESE("português", "pt", Status.UNREVIEWED, new String[]{"Matheus208"}, new String[]{"JST", "Try31"}),
-	GERMAN("deutsch",       "de", Status.UNREVIEWED, new String[]{"Davedude", "KrystalCroft"}, new String[]{"DarkPixel", "ErichME", "Sarius", "Zap0", "Oragothen"}),
+	GERMAN("deutsch",       "de", Status.UNREVIEWED, new String[]{"Davedude", "KrystalCroft"}, new String[]{"Dallukas", "DarkPixel", "ErichME", "Sarius", "ThunfischGott", "Zap0", "Oragothen"}),
+	FRENCH("français",      "fr", Status.UNREVIEWED, null, new String[]{"Alsydis", "Basttee", "Canc42", "Go11um", "Kultissim", "Minikrob", "Solthaar"}),
 
-	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "Scharnvirk", "Wawrzyn"}),
-	SPANISH("español",      "es", Status.INCOMPLETE, null, new String[]{"CorvosUtopy", "LucasCamilo", "Luuciano96", "Prancer", "Talruin", "Ctrijueque", "Grayscales", "Jonismack1", "Pixeled4life"}),
-	FRENCH("français",      "fr", Status.INCOMPLETE, null, new String[]{"Kultissim", "Minikrob"});
+	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "Scharnvirk", "Wawrzyn", "Dusakus", "Michaub"}),
+	SPANISH("español",      "es", Status.INCOMPLETE, null, new String[]{"CorvosUtopy", "LucasCamilo", "Luuciano96", "Pecheneg", "Prancer", "Talruin", "Alfongad", "Ctrijueque", "Grayscales", "Jonismack1", "Pixeled4life"}),
+	ITALIAN("italiano",		"it", Status.INCOMPLETE, null, new String[]{"4est", "Bizzolino", "Funnydwarf", "Nessunluogo", "Umby000"});
 
 	public enum Status{
 		//below 60% complete languages are not added.
