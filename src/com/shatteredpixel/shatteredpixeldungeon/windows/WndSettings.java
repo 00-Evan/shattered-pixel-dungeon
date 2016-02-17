@@ -163,6 +163,7 @@ public class WndSettings extends WndTabbed {
 
 			RenderedText barDesc = PixelScene.renderText(Messages.get(this, "mode"), 9);
 			barDesc.x = (WIDTH-barDesc.width())/2;
+			PixelScene.align(barDesc);
 			add(barDesc);
 
 			RedButton btnSplit = new RedButton(Messages.get(this, "split")){

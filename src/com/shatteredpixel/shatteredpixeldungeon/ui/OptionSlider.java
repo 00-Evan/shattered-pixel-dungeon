@@ -143,6 +143,7 @@ public abstract class OptionSlider extends Component {
 	protected void layout() {
 		title.x = x + (width-title.width())/2;
 		title.y = y+2;
+		PixelScene.align(title);
 		sliderBG.y = y + height() - 8;
 		sliderBG.x = x+2;
 		sliderBG.size(width-5, 1);
