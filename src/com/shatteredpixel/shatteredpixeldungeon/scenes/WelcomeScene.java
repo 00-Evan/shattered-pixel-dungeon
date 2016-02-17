@@ -19,6 +19,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class WelcomeScene extends PixelScene {
 
+	private static int LATEST_UPDATE = 90;
+
 	@Override
 	public void create() {
 		super.create();
@@ -101,7 +103,11 @@ public class WelcomeScene extends PixelScene {
 		if (previousVersion == 0) {
 			text.text(Messages.get(this, "welcome_msg"), w - 20);
 		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
-			text.text(Messages.get(this, "update_msg"), w - 20);
+			if (previousVersion < LATEST_UPDATE){
+				text.text(Messages.get(this, "update_msg"), w - 20);
+			} else {
+				text.text(Messages.get(this, "patch_msg"), w - 20);
+			}
 		} else {
 			text.text(Messages.get(this, "what_msg"), w - 20);
 		}
