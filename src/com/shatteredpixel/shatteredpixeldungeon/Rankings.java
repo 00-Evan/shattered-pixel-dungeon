@@ -47,6 +47,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
 public enum Rankings {
 	
@@ -231,7 +232,7 @@ public enum Rankings {
 
 			//conversion logic for pre-0.3.4 saves
 			if (bundle.contains( REASON )){
-				String info = bundle.getString( REASON ).toLowerCase();
+				String info = bundle.getString( REASON ).toLowerCase(Locale.ENGLISH);
 				if (info.equals("obtained the amulet of yendor"))   cause = Amulet.class;
 				else if (info.contains("goo"))                      cause = Goo.class;
 				else if (info.contains("tengu"))                    cause = Tengu.class;

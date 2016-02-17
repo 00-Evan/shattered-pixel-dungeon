@@ -119,7 +119,7 @@ public class Messages {
 		} else
 			key = k;
 
-		if (!strings.containsKey(key.toLowerCase())){
+		if (strings.containsKey(key.toLowerCase(Locale.ENGLISH))){
 			//this is so child classes can inherit properties from their parents.
 			//in cases where text is commonly grabbed as a utility from classes that aren't mean to be instantiated
 			//(e.g. flavourbuff.dispTurns()) using .class directly is probably smarter to prevent unnecessary recursive calls.
@@ -129,8 +129,8 @@ public class Messages {
 				return "!!!NO TEXT FOUND!!!";
 			}
 		} else {
-			if (args.length > 0) return format(strings.get(key.toLowerCase()), args);
-			else return strings.get(key.toLowerCase());
+			if (args.length > 0) return format(strings.get(key.toLowerCase(Locale.ENGLISH)), args);
+			else return strings.get(key.toLowerCase(Locale.ENGLISH));
 		}
 	}
 
@@ -164,7 +164,7 @@ public class Messages {
 			String result = "";
 			//split by any unicode space character
 			for (String word : str.split("(?<=\\p{Zs})")){
-				if (noCaps.contains(word.trim().toLowerCase().replaceAll(":|[0-9]", ""))){
+				if (noCaps.contains(word.trim().toLowerCase(Locale.ENGLISH).replaceAll(":|[0-9]", ""))){
 					result += word;
 				} else {
 					result += capitalize(word);
