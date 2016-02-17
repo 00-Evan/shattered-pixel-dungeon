@@ -220,7 +220,7 @@ public class LloydsBeacon extends Artifact {
 
 								} else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
 
-									GLog.w( Messages.get(this, "tele_fail") );
+									GLog.w( Messages.get(LloydsBeacon.class, "tele_fail") );
 
 								} else  {
 
@@ -243,7 +243,7 @@ public class LloydsBeacon extends Artifact {
 
 		@Override
 		public String prompt() {
-			return Messages.get(this, "prompt");
+			return Messages.get(LloydsBeacon.class, "prompt");
 		}
 	};
 
