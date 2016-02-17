@@ -120,6 +120,9 @@ public class Messages {
 			key = k;
 
 		if (strings.containsKey(key.toLowerCase(Locale.ENGLISH))){
+			if (args.length > 0) return format(strings.get(key.toLowerCase(Locale.ENGLISH)), args);
+			else return strings.get(key.toLowerCase(Locale.ENGLISH));
+		} else {
 			//this is so child classes can inherit properties from their parents.
 			//in cases where text is commonly grabbed as a utility from classes that aren't mean to be instantiated
 			//(e.g. flavourbuff.dispTurns()) using .class directly is probably smarter to prevent unnecessary recursive calls.
@@ -128,9 +131,6 @@ public class Messages {
 			} else {
 				return "!!!NO TEXT FOUND!!!";
 			}
-		} else {
-			if (args.length > 0) return format(strings.get(key.toLowerCase(Locale.ENGLISH)), args);
-			else return strings.get(key.toLowerCase(Locale.ENGLISH));
 		}
 	}
 
