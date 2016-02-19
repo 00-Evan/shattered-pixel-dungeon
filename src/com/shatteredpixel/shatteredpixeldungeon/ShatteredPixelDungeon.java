@@ -113,16 +113,6 @@ public class ShatteredPixelDungeon extends Game {
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
 		super.onCreate(savedInstanceState);
-		
-	/*	if (android.os.Build.VERSION.SDK_INT >= 19) {
-			getWindow().getDecorView().setSystemUiVisibility(
-				View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-				View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-				View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-				View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-				View.SYSTEM_UI_FLAG_FULLSCREEN |
-				View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY );
-		}*/
 
 		updateImmersiveMode();
 
@@ -188,7 +178,11 @@ public class ShatteredPixelDungeon extends Game {
 				Assets.SND_DEGRADE,
 				Assets.SND_MIMIC );
 
-		RenderedText.setFont("font.ttf");
+		if (classicFont()) {
+			RenderedText.setFont("pixelfont.ttf");
+		} else {
+			RenderedText.setFont("font.ttf");
+		}
 	}
 
 	@Override
@@ -357,6 +351,19 @@ public class ShatteredPixelDungeon extends Game {
 				return Languages.ENGLISH;
 		}
 		else return Languages.matchCode(code);
+	}
+
+	public static void classicFont(boolean classic){
+		Preferences.INSTANCE.put(Preferences.KEY_CLASSICFONT, classic);
+		if (classic) {
+			RenderedText.setFont("pixelfont.ttf");
+		} else {
+			RenderedText.setFont("font.ttf");
+		}
+	}
+
+	public static boolean classicFont(){
+		return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT, true);
 	}
 
 	public static void lastClass( int value ) {

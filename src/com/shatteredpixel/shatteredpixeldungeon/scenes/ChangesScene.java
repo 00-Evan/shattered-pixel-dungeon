@@ -37,7 +37,12 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-			"_v0.3.4a_\n" +
+			"_v0.3.4b:_\n" +
+			"- New font is now optional\n" +
+			"- Fixed crash issues with Italian language\n" +
+			"- Translation Updates\n" +
+			"\n" +
+			"_v0.3.4a:_\n" +
 			"- Various bugfixes\n" +
 			"- Fixed text issues on Turkish devices\n" +
 			"- Huntress can equip her boomerang again\n" +
@@ -59,14 +64,11 @@ public class ChangesScene extends PixelScene {
 			"\n" +
 			"_v0.3.3:_\n" +
 			"- Support for Google Play Games\n" +
-			"- Tengu's maze is now different each time\n" +
-			"- Items no longer auto-pickup when enemies are near\n" +
-			"- Added support for reverse landscape\n" +
 			"\n" +
 			"_v0.3.2:_\n" +
-			"- Prison reworked: new enemies, quests, bosses, etc.\n" +
-			"- Mastery Book is now only available after floor 10\n" +
-			"- Hunger damage now increases with hero level\n" +
+			"- Prison rework: new enemies, quests, bosses, etc.\n" +
+			"- Mastery Book only available after floor 10\n" +
+			"- Hunger damage now scales with hero level\n" +
 			"- Earlygame balance changes\n" +
 			"- Warlock subclass overhauled\n" +
 			"\n" +
@@ -76,7 +78,7 @@ public class ChangesScene extends PixelScene {
 			"\n" +
 			"_v0.3.0:_\n" +
 			"- Wands completely reworked\n" +
-			"- Mage class reworked, now starts with a unique staff\n" +
+			"- Mage reworked, starts with a unique staff\n" +
 			"- Battlemage subclass reworked\n" +
 			"- Warlock subclass reworked\n" +
 			"\n" +

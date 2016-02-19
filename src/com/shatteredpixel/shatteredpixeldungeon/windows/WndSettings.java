@@ -38,15 +38,18 @@ import com.watabou.noosa.audio.Sample;
 public class WndSettings extends WndTabbed {
 
 	private static final int WIDTH		    = 112;
-	private static final int HEIGHT         = 112;
+	private static final int HEIGHT         = 124;
 	private static final int SLIDER_HEIGHT	= 25;
 	private static final int BTN_HEIGHT	    = 20;
-	private static final int GAP_SML 		= 2;
-	private static final int GAP_LRG 		= 10;
+	private static final int GAP_TINY 		= 2;
+	private static final int GAP_SML 		= 5;
+	private static final int GAP_LRG 		= 12;
 
 	private ScreenTab screen;
 	private UITab ui;
 	private AudioTab audio;
+
+	private static int last_index = 0;
 
 	public WndSettings() {
 		super();
@@ -65,6 +68,7 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				screen.visible = screen.active = value;
+				if (value) last_index = 0;
 			}
 		});
 
@@ -73,6 +77,7 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				ui.visible = ui.active = value;
+				if (value) last_index = 1;
 			}
 		});
 
@@ -81,6 +86,7 @@ public class WndSettings extends WndTabbed {
 			protected void select(boolean value) {
 				super.select(value);
 				audio.visible = audio.active = value;
+				if (value) last_index = 2;
 			}
 		});
 
@@ -88,7 +94,7 @@ public class WndSettings extends WndTabbed {
 
 		layoutTabs();
 
-		select(0);
+		select(last_index);
 
 	}
 
@@ -173,7 +179,7 @@ public class WndSettings extends WndTabbed {
 					Toolbar.updateLayout();
 				}
 			};
-			btnSplit.setRect( 1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
+			btnSplit.setRect( 1, barDesc.y + barDesc.baseLine()+GAP_TINY, 36, 16);
 			add(btnSplit);
 
 			RedButton btnGrouped = new RedButton(Messages.get(this, "group")){
@@ -183,7 +189,7 @@ public class WndSettings extends WndTabbed {
 					Toolbar.updateLayout();
 				}
 			};
-			btnGrouped.setRect( btnSplit.right()+1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
+			btnGrouped.setRect( btnSplit.right()+1, barDesc.y + barDesc.baseLine()+GAP_TINY, 36, 16);
 			add(btnGrouped);
 
 			RedButton btnCentered = new RedButton(Messages.get(this, "center")){
@@ -193,7 +199,7 @@ public class WndSettings extends WndTabbed {
 					Toolbar.updateLayout();
 				}
 			};
-			btnCentered.setRect(btnGrouped.right()+1, barDesc.y + barDesc.height(), 36, BTN_HEIGHT);
+			btnCentered.setRect(btnGrouped.right()+1, barDesc.y + barDesc.baseLine()+GAP_TINY, 36, 16);
 			add(btnCentered);
 
 			CheckBox chkFlipToolbar = new CheckBox(Messages.get(this, "flip_toolbar")){
@@ -204,11 +210,11 @@ public class WndSettings extends WndTabbed {
 					Toolbar.updateLayout();
 				}
 			};
-			chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
+			chkFlipToolbar.setRect(0, btnGrouped.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
 			chkFlipToolbar.checked(ShatteredPixelDungeon.flipToolbar());
 			add(chkFlipToolbar);
 
-			CheckBox chkFlipTags = new CheckBox(Messages.get(this, "flip_indicators")){
+			final CheckBox chkFlipTags = new CheckBox(Messages.get(this, "flip_indicators")){
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -216,7 +222,7 @@ public class WndSettings extends WndTabbed {
 					GameScene.layoutTags();
 				}
 			};
-			chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
+			chkFlipTags.setRect(0, chkFlipToolbar.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
 			chkFlipTags.checked(ShatteredPixelDungeon.flipTags());
 			add(chkFlipTags);
 
@@ -228,8 +234,21 @@ public class WndSettings extends WndTabbed {
 				}
 			};
 			slots.setSelectedValue(ShatteredPixelDungeon.quickSlots());
-			slots.setRect(0, chkFlipTags.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
+			slots.setRect(0, chkFlipTags.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
 			add(slots);
+
+			CheckBox chkFont = new CheckBox(Messages.get(this, "classic_font")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					ShatteredPixelDungeon.classicFont(checked());
+					PixelScene.windowOnCreate = WndSettings.class;
+					ShatteredPixelDungeon.switchNoFade((Class<? extends PixelScene>) ShatteredPixelDungeon.scene().getClass());
+				}
+			};
+			chkFont.setRect(0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
+			chkFont.checked(ShatteredPixelDungeon.classicFont());
+			add(chkFont);
 		}
 
 	}
