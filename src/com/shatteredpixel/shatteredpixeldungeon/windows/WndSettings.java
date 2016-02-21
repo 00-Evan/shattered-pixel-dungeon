@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -237,18 +238,20 @@ public class WndSettings extends WndTabbed {
 			slots.setRect(0, chkFlipTags.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
 			add(slots);
 
-			CheckBox chkFont = new CheckBox(Messages.get(this, "classic_font")){
+			CheckBox chkFont = new CheckBox(Messages.get(this, "smooth_font")){
 				@Override
 				protected void onClick() {
 					super.onClick();
-					ShatteredPixelDungeon.classicFont(checked());
+					ShatteredPixelDungeon.classicFont(!checked());
 					PixelScene.windowOnCreate = WndSettings.class;
 					ShatteredPixelDungeon.switchNoFade((Class<? extends PixelScene>) ShatteredPixelDungeon.scene().getClass());
 				}
 			};
 			chkFont.setRect(0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
-			chkFont.checked(ShatteredPixelDungeon.classicFont());
-			add(chkFont);
+			chkFont.checked(!ShatteredPixelDungeon.classicFont());
+			Languages lang = ShatteredPixelDungeon.language();
+			if (lang != Languages.RUSSIAN && lang != Languages.CHINESE && lang != Languages.KOREAN)
+				add(chkFont);
 		}
 
 	}

@@ -339,6 +339,10 @@ public class ShatteredPixelDungeon extends Game {
 
 	public static void language(Languages lang) {
 		Preferences.INSTANCE.put( Preferences.KEY_LANG, lang.code());
+		if (lang == Languages.RUSSIAN || lang == Languages.CHINESE || lang == Languages.KOREAN)
+			RenderedText.setFont("font.ttf");
+		else if (classicFont())
+			RenderedText.setFont("pixelfont.ttf");
 	}
 
 	public static Languages language() {
@@ -363,7 +367,11 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static boolean classicFont(){
-		return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT, true);
+		Languages lang = ShatteredPixelDungeon.language();
+		if (lang == Languages.RUSSIAN || lang == Languages.CHINESE || lang == Languages.KOREAN)
+			return false;
+		else
+			return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT, true);
 	}
 
 	public static void lastClass( int value ) {
