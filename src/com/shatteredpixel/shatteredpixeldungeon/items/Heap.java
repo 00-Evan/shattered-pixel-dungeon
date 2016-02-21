@@ -49,7 +49,6 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
@@ -253,7 +252,7 @@ public class Heap implements Bundlable {
 			if (isEmpty()) {
 				destroy();
 			} else if (sprite != null) {
-				sprite.view( image(), glowing() );
+				sprite.view( items.peek() );
 			}
 			
 		}
@@ -294,8 +293,11 @@ public class Heap implements Bundlable {
 
 			}
 
-			if (items.isEmpty())
+			if (isEmpty()){
 				destroy();
+			} else if (sprite != null) {
+				sprite.view( items.peek() );
+			}
 		}
 	}
 	
@@ -332,7 +334,7 @@ public class Heap implements Bundlable {
 			if (isEmpty()) {
 				destroy();
 			} else if (sprite != null) {
-				sprite.view( image(), glowing() );
+				sprite.view( items.peek() );
 			}
 		}
 	}
