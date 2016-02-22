@@ -41,18 +41,15 @@ public class ChangesScene extends PixelScene {
 			"- New font is now optional\n" +
 			"- Fixed crash issues with Italian language\n" +
 			"- Translation Updates\n" +
+			"- Bugfixes\n" +
 			"\n" +
 			"_v0.3.4a:_\n" +
-			"- Various bugfixes\n" +
-			"- Fixed text issues on Turkish devices\n" +
 			"- Huntress can equip her boomerang again\n" +
-			"- Translation Updates\n" +
 			"- Added Italian (currently incomplete)\n" +
 			"\n" +
 			"_v0.3.4:_\n" +
 			"- Shattered now supports multiple languages\n" +
 			"- New font\n" +
-			"- Bugfixes\n" +
 			"\n" +
 			"Balance Changes:\n" +
 			"- Hunger now builds ~10% slower\n" +

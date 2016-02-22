@@ -27,7 +27,7 @@ public class WelcomeScene extends PixelScene {
 
 		final int previousVersion = ShatteredPixelDungeon.version();
 
-		if (ShatteredPixelDungeon.versionCode == previousVersion) {
+		if (ShatteredPixelDungeon.versionCode != previousVersion) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
 		}
@@ -100,17 +100,24 @@ public class WelcomeScene extends PixelScene {
 		}
 
 		RenderedTextMultiline text = PixelScene.renderMultiline(6);
+		String message;
 		if (previousVersion == 0) {
-			text.text(Messages.get(this, "welcome_msg"), w - 20);
+			message = Messages.get(this, "welcome_msg");
 		} else if (previousVersion <= ShatteredPixelDungeon.versionCode) {
 			if (previousVersion < LATEST_UPDATE){
-				text.text(Messages.get(this, "update_msg"), w - 20);
+				message = Messages.get(this, "update_intro");
+				message += "\n\n" + Messages.get(this, "update_msg");
 			} else {
-				text.text(Messages.get(this, "patch_msg"), w - 20);
+				//TODO: change the messages here in accordance with the type of patch.
+				message = Messages.get(this, "patch_intro");
+				message += "\n\n" + Messages.get(this, "patch_msg");
+				message += "\n\n" + Messages.get(this, "patch_bugfixes");
+				message += "\n" + Messages.get(this, "patch_translations");
 			}
 		} else {
-			text.text(Messages.get(this, "what_msg"), w - 20);
+			message = Messages.get(this, "what_msg");
 		}
+		text.text(message, w-20);
 		float textSpace = h - title.y - (title.height() - 10) - okay.height() - 2;
 		text.setPos(10, title.y+(title.height() - 10) + ((textSpace - text.height()) / 2));
 		add(text);
