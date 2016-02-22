@@ -27,7 +27,7 @@ public class WelcomeScene extends PixelScene {
 
 		final int previousVersion = ShatteredPixelDungeon.version();
 
-		if (ShatteredPixelDungeon.versionCode != previousVersion) {
+		if (ShatteredPixelDungeon.versionCode == previousVersion) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
 		}
