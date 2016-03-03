@@ -392,7 +392,7 @@ public class GameScene extends PixelScene {
 
 	@Override
 	public synchronized void update() {
-		if (Dungeon.hero == null) {
+		if (Dungeon.hero == null || scene == null) {
 			return;
 		}
 
