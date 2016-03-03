@@ -20,8 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
-import java.util.Arrays;
-
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -29,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.Bundle;
+
+import java.util.Arrays;
 
 public class Blob extends Actor {
 
@@ -191,6 +191,12 @@ public class Blob extends Actor {
 	public void clear( int cell ) {
 		volume -= cur[cell];
 		cur[cell] = 0;
+	}
+
+	public void fullyClear(){
+		volume = 0;
+		cur = new int[LENGTH];
+		off = new int[LENGTH];
 	}
 	
 	public String tileDesc() {

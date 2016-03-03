@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -242,6 +243,9 @@ public class PrisonBossLevel extends Level {
 				exit = i;
 
 		visited = mapped = new boolean[LENGTH];
+		for (Blob blob: blobs.values()){
+			blob.fullyClear();
+		}
 		addVisuals(); //this also resets existing visuals
 		resetTraps();
 
