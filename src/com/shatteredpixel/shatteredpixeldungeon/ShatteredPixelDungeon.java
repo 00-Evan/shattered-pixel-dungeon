@@ -195,9 +195,13 @@ public class ShatteredPixelDungeon extends Game {
 		}
 	}
 
-	public static void switchNoFade( Class<? extends PixelScene> c ) {
+	public static void switchNoFade(Class<? extends PixelScene> c){
+		switchNoFade(c, null);
+	}
+
+	public static void switchNoFade(Class<? extends PixelScene> c, SceneChangeCallback callback) {
 		PixelScene.noFade = true;
-		switchScene( c );
+		switchScene( c, callback );
 	}
 
 	/*

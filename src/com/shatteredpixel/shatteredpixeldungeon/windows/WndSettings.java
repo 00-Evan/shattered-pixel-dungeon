@@ -113,8 +113,17 @@ public class WndSettings extends WndTabbed {
 				protected void onChange() {
 					if (getSelectedValue() != ShatteredPixelDungeon.scale()) {
 						ShatteredPixelDungeon.scale(getSelectedValue());
-						PixelScene.windowOnCreate = WndSettings.class;
-						ShatteredPixelDungeon.switchNoFade((Class<? extends PixelScene>) ShatteredPixelDungeon.scene().getClass());
+						ShatteredPixelDungeon.switchNoFade((Class<? extends PixelScene>) ShatteredPixelDungeon.scene().getClass(), new Game.SceneChangeCallback() {
+							@Override
+							public void beforeCreate() {
+								//do nothing
+							}
+
+							@Override
+							public void afterCreate() {
+								Game.scene().add(new WndSettings());
+							}
+						});
 					}
 				}
 			};
@@ -242,9 +251,17 @@ public class WndSettings extends WndTabbed {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					ShatteredPixelDungeon.classicFont(!checked());
-					PixelScene.windowOnCreate = WndSettings.class;
-					ShatteredPixelDungeon.switchNoFade((Class<? extends PixelScene>) ShatteredPixelDungeon.scene().getClass());
+					ShatteredPixelDungeon.switchNoFade((Class<? extends PixelScene>) ShatteredPixelDungeon.scene().getClass(), new Game.SceneChangeCallback() {
+						@Override
+						public void beforeCreate() {
+							ShatteredPixelDungeon.classicFont(!checked());
+						}
+
+						@Override
+						public void afterCreate() {
+							Game.scene().add(new WndSettings());
+						}
+					});
 				}
 			};
 			chkFont.setRect(0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);

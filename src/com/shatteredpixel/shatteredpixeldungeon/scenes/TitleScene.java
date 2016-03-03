@@ -159,15 +159,6 @@ public class TitleScene extends PixelScene {
 		btnExit.setPos( w - btnExit.width(), 0 );
 		add( btnExit );
 
-		if (windowOnCreate != null){
-			try{
-				add(windowOnCreate.newInstance());
-			} catch (Exception e){
-				ShatteredPixelDungeon.reportException(e);
-			}
-			windowOnCreate = null;
-		}
-
 		fadeIn();
 	}
 	

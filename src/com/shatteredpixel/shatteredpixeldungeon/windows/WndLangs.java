@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 
 import java.util.ArrayList;
@@ -65,10 +66,17 @@ public class WndLangs extends Window {
 				protected void onClick() {
 					super.onClick();
 					Messages.setup(langs.get(langIndex));
-					ShatteredPixelDungeon.language(langs.get(langIndex));
-					RenderedText.clearCache();
-					PixelScene.windowOnCreate = WndLangs.class;
-					ShatteredPixelDungeon.switchNoFade(TitleScene.class);
+					ShatteredPixelDungeon.switchNoFade(TitleScene.class, new Game.SceneChangeCallback() {
+						@Override
+						public void beforeCreate() {
+							ShatteredPixelDungeon.language(langs.get(langIndex));
+							RenderedText.clearCache();
+						}
+						@Override
+						public void afterCreate() {
+							Game.scene().add(new WndLangs());
+						}
+					});
 				}
 			};
 			if (currLang == langs.get(i)){

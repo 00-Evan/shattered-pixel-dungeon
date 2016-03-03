@@ -336,15 +336,6 @@ public class GameScene extends PixelScene {
 
 		Camera.main.target = hero;
 
-		if (windowOnCreate != null){
-			try{
-				add(windowOnCreate.newInstance());
-			} catch (Exception e){
-				ShatteredPixelDungeon.reportException(e);
-			}
-			windowOnCreate = null;
-		}
-
 		if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
 			if (Dungeon.depth < Statistics.deepestFloor) {
 				GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth);
