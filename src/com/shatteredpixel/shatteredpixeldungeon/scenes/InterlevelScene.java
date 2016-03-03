@@ -76,6 +76,7 @@ public class InterlevelScene extends PixelScene {
 		message = PixelScene.renderText( text, 9 );
 		message.x = (Camera.main.width - message.width()) / 2;
 		message.y = (Camera.main.height - message.height()) / 2;
+		align(message);
 		add( message );
 		
 		phase = Phase.FADE_IN;
