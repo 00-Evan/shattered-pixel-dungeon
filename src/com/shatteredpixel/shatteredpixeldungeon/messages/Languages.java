@@ -24,17 +24,17 @@ import java.util.Locale;
 
 public enum Languages {
 	ENGLISH("english",      "", Status.REVIEWED, null, null),
-	RUSSIAN("русский",      "ru", Status.REVIEWED, new String[]{"ConsideredHamster", "Inevielle", "yarikonline"}, new String[]{"HerrGotlieb", "Shamahan"}),
+	RUSSIAN("русский",      "ru", Status.REVIEWED, new String[]{"ConsideredHamster", "Inevielle", "yarikonline"}, new String[]{"AttHawk46", "HerrGotlieb", "Shamahan"}),
 	KOREAN("한국어",         "ko", Status.REVIEWED, new String[]{"Flameblast12"}, new String[]{"Ddojin0115", "Eeeei", "lsiebnie", "WondarRabb1t"}),
 	CHINESE("中文",          "zh", Status.REVIEWED, new String[]{"Jinkeloid(zdx00793)"}, new String[]{"931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401", "ShatteredFlameBlast", "Tempest102"}),
 
+	GERMAN("deutsch",       "de", Status.UNREVIEWED, new String[]{"Davedude", "KrystalCroft", "Dallukas"}, new String[]{"DarkPixel", "ErichME", "Sarius", "ThunfischGott", "Zap0", "Oragothen"}),
 	PORTUGUESE("português", "pt", Status.UNREVIEWED, new String[]{"Matheus208"}, new String[]{"JST", "Try31"}),
-	GERMAN("deutsch",       "de", Status.UNREVIEWED, new String[]{"Davedude", "KrystalCroft"}, new String[]{"Dallukas", "DarkPixel", "ErichME", "Sarius", "ThunfischGott", "Zap0", "Oragothen"}),
-	FRENCH("français",      "fr", Status.UNREVIEWED, null, new String[]{"Alsydis", "Basttee", "Canc42", "Go11um", "Kultissim", "Minikrob", "Solthaar"}),
+	FRENCH("français",      "fr", Status.UNREVIEWED, new String[]{"Canc42", "Kultissim", "Emether"}, new String[]{"Alsydis", "Basttee", "Go11um", "Minikrob", "Solthaar"}),
+	ITALIAN("italiano",		"it", Status.UNREVIEWED, new String[]{"Bizzolino", "Funnydwarf"}, new String[]{"4est", "DaniMare", "Danzl", "Nessunluogo", "Umby000"}),
 
-	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "Scharnvirk", "Wawrzyn", "Dusakus", "Michaub"}),
-	SPANISH("español",      "es", Status.INCOMPLETE, null, new String[]{"CorvosUtopy", "Kiroto", "LucasCamilo", "Luuciano96", "Pecheneg", "Prancer", "Talruin", "Alfongad", "Ctrijueque", "Grayscales", "Jonismack1", "Pixeled4life"}),
-	ITALIAN("italiano",		"it", Status.INCOMPLETE, null, new String[]{"4est", "DaniMare", "Danzl", "Bizzolino", "Funnydwarf", "Nessunluogo", "Umby000"});
+	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "MJedi", "Scharnvirk", "Wawrzyn", "Dusakus", "Michaub", "Ozziezombie"}),
+	SPANISH("español",      "es", Status.INCOMPLETE, null, new String[]{"CorvosUtopy", "Dewstend", "Kiroto", "LucasCamilo", "Luuciano96", "Pecheneg", "Prancer", "STKmonoqui", "Talruin", "Alfongad", "Ctrijueque", "Dhg121", "Grayscales", "Jonismack1", "Pixeled4life"});
 
 	public enum Status{
 		//below 60% complete languages are not added.
