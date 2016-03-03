@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.glwrap.Texture;
 import com.watabou.input.Touchscreen;
 import com.watabou.noosa.BitmapText;
@@ -59,8 +58,6 @@ public class PixelScene extends Scene {
 	public static float maxZoom;
 
 	public static Camera uiCamera;
-
-	public static Class<?extends Window> windowOnCreate;
 
 	//stylized pixel font
 	public static BitmapText.Font pixelFont;
@@ -198,11 +195,8 @@ public class PixelScene extends Scene {
 	}
 
 	public static RenderedText renderText( String text, int size ) {
-		//rendering above 6x is a waste of resources, can just scale from there.
-		int zoom = Math.min(defaultZoom, 6);
-		RenderedText result = new RenderedText( text, size*zoom);
-		//adding 0.001f helps with smoothness on lower resolution devices.
-		result.scale.set(1/(float)zoom);
+		RenderedText result = new RenderedText( text, size*defaultZoom);
+		result.scale.set(1/(float)defaultZoom);
 		return result;
 	}
 
@@ -211,9 +205,8 @@ public class PixelScene extends Scene {
 	}
 
 	public static RenderedTextMultiline renderMultiline( String text, int size ){
-		int zoom = Math.min(defaultZoom, 6);
-		RenderedTextMultiline result = new RenderedTextMultiline( text, size*zoom);
-		result.zoom(1/(float)zoom);
+		RenderedTextMultiline result = new RenderedTextMultiline( text, size*defaultZoom);
+		result.zoom(1/(float)defaultZoom);
 		return result;
 	}
 
