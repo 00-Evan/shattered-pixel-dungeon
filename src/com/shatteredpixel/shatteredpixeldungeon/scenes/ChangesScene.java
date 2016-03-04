@@ -37,19 +37,13 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-			"_v0.3.4b:_\n" +
-			"- New font is now optional\n" +
-			"- Fixed crash issues with Italian language\n" +
-			"- Translation Updates\n" +
+			"_v0.3.4c:_\n" +
+			"- Performance improvements\n" +
 			"- Bugfixes\n" +
-			"\n" +
-			"_v0.3.4a:_\n" +
-			"- Huntress can equip her boomerang again\n" +
-			"- Added Italian (currently incomplete)\n" +
+			"- Translation updates\n" +
 			"\n" +
 			"_v0.3.4:_\n" +
 			"- Shattered now supports multiple languages\n" +
-			"- New font\n" +
 			"\n" +
 			"Balance Changes:\n" +
 			"- Hunger now builds ~10% slower\n" +

@@ -110,9 +110,10 @@ public class WelcomeScene extends PixelScene {
 			} else {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = Messages.get(this, "patch_intro");
-				message += "\n\n" + Messages.get(this, "patch_msg");
 				message += "\n\n" + Messages.get(this, "patch_bugfixes");
 				message += "\n" + Messages.get(this, "patch_translations");
+				message += "\n\n" + Messages.get(this, "patch_msg");
+
 			}
 		} else {
 			message = Messages.get(this, "what_msg");
