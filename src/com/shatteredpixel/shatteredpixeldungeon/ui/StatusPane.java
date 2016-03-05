@@ -45,12 +45,13 @@ import com.watabou.noosa.ui.Component;
 
 public class StatusPane extends Component {
 
-	private NinePatch shield;
+	private NinePatch bg;
 	private Image avatar;
 	private Emitter blood;
 
 	private int lastTier = 0;
 
+	private Image shield;
 	private Image hp;
 	private Image exp;
 
@@ -72,8 +73,8 @@ public class StatusPane extends Component {
 	@Override
 	protected void createChildren() {
 
-		shield = new NinePatch( Assets.STATUS, 80, 0, 30   + 18, 0 );
-		add( shield );
+		bg = new NinePatch( Assets.STATUS, 80, 0, 30   + 18, 0 );
+		add( bg );
 
 		add( new TouchArea( 0, 1, 31, 31 ) {
 			@Override
@@ -101,6 +102,9 @@ public class StatusPane extends Component {
 
 		compass = new Compass( Dungeon.level.exit );
 		add( compass );
+
+		shield = new Image( Assets.SHLD_BAR );
+		add(shield);
 
 		hp = new Image( Assets.HP_BAR );
 		add( hp );
@@ -137,18 +141,18 @@ public class StatusPane extends Component {
 
 		height = 32;
 
-		shield.size( width, shield.height );
+		bg.size( width, bg.height );
 
-		avatar.x = shield.x + 15 - avatar.width / 2f;
-		avatar.y = shield.y + 16 - avatar.height / 2f;
+		avatar.x = bg.x + 15 - avatar.width / 2f;
+		avatar.y = bg.y + 16 - avatar.height / 2f;
 		PixelScene.align(avatar);
 
 		compass.x = avatar.x + avatar.width / 2f - compass.origin.x;
 		compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
 		PixelScene.align(compass);
 
-		hp.x = 30;
-		hp.y = 3;
+		hp.x = shield.x = 30;
+		hp.y = shield.y = 3;
 
 		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
 
@@ -168,12 +172,14 @@ public class StatusPane extends Component {
 	public void update() {
 		super.update();
 
-		float health = (float)Dungeon.hero.HP / Dungeon.hero.HT;
+		float health = Dungeon.hero.HP;
+		float shield = Dungeon.hero.SHLD;
+		float max = Math.max(health+shield, Dungeon.hero.HT);
 
 		if (health == 0) {
 			avatar.tint( 0x000000, 0.6f );
 			blood.on = false;
-		} else if (health < 0.25f) {
+		} else if ((health/Dungeon.hero.HT) < 0.25f) {
 			avatar.tint( 0xcc0000, 0.4f );
 			blood.on = true;
 		} else {
@@ -181,7 +187,9 @@ public class StatusPane extends Component {
 			blood.on = false;
 		}
 
-		hp.scale.x = health;
+		hp.scale.x = health/max;
+		this.shield.scale.x = (health+shield)/max;
+
 		exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
 
 		if (Dungeon.hero.lvl != lastLvl) {

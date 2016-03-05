@@ -20,28 +20,35 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.ui.Component;
 
 public class HealthBar extends Component {
 
 	private static final int COLOR_BG	= 0xFFCC0000;
-	private static final int COLOR_LVL	= 0xFF00EE00;
+	private static final int COLOR_HP	= 0xFF00EE00;
+	private static final int COLOR_SHLD = 0xFFBBEEBB;
 	
 	private static final int HEIGHT	= 2;
 	
-	private ColorBlock hpBg;
-	private ColorBlock hpLvl;
+	private ColorBlock Bg;
+	private ColorBlock Shld;
+	private ColorBlock Hp;
 	
-	private float level;
+	private float health;
+	private float shield;
 	
 	@Override
 	protected void createChildren() {
-		hpBg = new ColorBlock( 1, 1, COLOR_BG );
-		add( hpBg );
+		Bg = new ColorBlock( 1, 1, COLOR_BG );
+		add( Bg );
+
+		Shld = new ColorBlock( 1, 1, COLOR_SHLD );
+		add( Shld );
 		
-		hpLvl = new ColorBlock( 1, 1, COLOR_LVL );
-		add( hpLvl );
+		Hp = new ColorBlock( 1, 1, COLOR_HP );
+		add( Hp );
 		
 		height = HEIGHT;
 	}
@@ -49,17 +56,31 @@ public class HealthBar extends Component {
 	@Override
 	protected void layout() {
 		
-		hpBg.x = hpLvl.x = x;
-		hpBg.y = hpLvl.y = y;
+		Bg.x = Shld.x = Hp.x = x;
+		Bg.y = Shld.y = Hp.y = y;
 		
-		hpBg.size( width, HEIGHT );
-		hpLvl.size( width * level, HEIGHT );
+		Bg.size( width, HEIGHT );
+		Shld.size( width * shield, HEIGHT );
+		Hp.size( width * health, HEIGHT );
 		
 		height = HEIGHT;
 	}
 	
 	public void level( float value ) {
-		level = value;
+		level( value, 0f );
+	}
+
+	public void level( float health, float shield ){
+		this.health = health;
+		this.shield = shield;
 		layout();
+	}
+
+	public void level(Char c){
+		float health = c.HP;
+		float shield = c.SHLD;
+		float max = Math.max(health+shield, c.HT);
+
+		level(health/max, (health+shield)/max);
 	}
 }

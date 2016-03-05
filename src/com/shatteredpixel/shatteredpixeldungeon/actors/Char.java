@@ -22,7 +22,19 @@ package com.shatteredpixel.shatteredpixeldungeon.actors;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -31,8 +43,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
@@ -50,6 +62,7 @@ public abstract class Char extends Actor {
 	
 	public int HT;
 	public int HP;
+	public int SHLD;
 	
 	protected float baseSpeed	= 1;
 	
@@ -71,6 +84,7 @@ public abstract class Char extends Actor {
 	private static final String POS			= "pos";
 	private static final String TAG_HP		= "HP";
 	private static final String TAG_HT		= "HT";
+	private static final String TAG_SHLD    = "SHLD";
 	private static final String BUFFS		= "buffs";
 	
 	@Override
@@ -81,6 +95,7 @@ public abstract class Char extends Actor {
 		bundle.put( POS, pos );
 		bundle.put( TAG_HP, HP );
 		bundle.put( TAG_HT, HT );
+		bundle.put( TAG_SHLD, SHLD );
 		bundle.put( BUFFS, buffs );
 	}
 	
@@ -92,6 +107,7 @@ public abstract class Char extends Actor {
 		pos = bundle.getInt( POS );
 		HP = bundle.getInt( TAG_HP );
 		HT = bundle.getInt( TAG_HT );
+		SHLD = bundle.getInt( TAG_SHLD );
 		
 		for (Bundlable b : bundle.getCollection( BUFFS )) {
 			if (b != null) {
@@ -240,8 +256,16 @@ public abstract class Char extends Actor {
 				}
 			}
 		}
-		
-		HP -= dmg;
+
+		if (SHLD >= dmg){
+			SHLD -= dmg;
+		} else if (SHLD > 0) {
+			HP -= (dmg - SHLD);
+			SHLD = 0;
+		} else {
+			HP -= dmg;
+		}
+
 		if (dmg > 0 || src instanceof Char) {
 			sprite.showStatus( HP > HT / 2 ?
 				CharSprite.WARNING :
