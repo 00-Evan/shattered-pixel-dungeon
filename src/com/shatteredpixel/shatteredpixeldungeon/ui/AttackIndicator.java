@@ -96,13 +96,15 @@ public class AttackIndicator extends Tag {
 	}
 	
 	private void checkEnemies() {
-		
+
 		int heroPos = Dungeon.hero.pos;
 		candidates.clear();
 		int v = Dungeon.hero.visibleEnemies();
 		for (int i=0; i < v; i++) {
 			Mob mob = Dungeon.hero.visibleEnemy( i );
-			if (Level.adjacent( heroPos, mob.pos )) {
+			if (Dungeon.hero.belongings.weapon != null ?
+					Level.distance( heroPos, mob.pos ) <= Dungeon.hero.belongings.weapon.reachFactor(Dungeon.hero)
+					: Level.adjacent( heroPos, mob.pos )) {
 				candidates.add( mob );
 			}
 		}

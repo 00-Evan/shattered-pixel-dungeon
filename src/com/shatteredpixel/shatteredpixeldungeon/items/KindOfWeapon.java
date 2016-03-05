@@ -20,9 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import java.util.ArrayList;
-
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -96,6 +93,10 @@ abstract public class KindOfWeapon extends EquipableItem {
 	
 	public float speedFactor( Hero hero ) {
 		return 1f;
+	}
+
+	public int reachFactor( Hero hero ){
+		return 1;
 	}
 	
 	public void proc( Char attacker, Char defender, int damage ) {

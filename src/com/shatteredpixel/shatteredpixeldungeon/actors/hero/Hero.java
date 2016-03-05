@@ -75,8 +75,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -800,7 +800,11 @@ public class Hero extends Char {
 
 		enemy = action.target;
 
-		if (Level.adjacent( pos, enemy.pos ) && enemy.isAlive() && !isCharmedBy( enemy )) {
+		boolean inRange = belongings.weapon != null ?
+				Level.distance( pos, enemy.pos ) <= belongings.weapon.reachFactor(this)
+				: Level.adjacent( pos, enemy.pos );
+
+		if (inRange && enemy.isAlive() && !isCharmedBy( enemy )) {
 			
 			spend( attackDelay() );
 			sprite.attack( enemy.pos );
