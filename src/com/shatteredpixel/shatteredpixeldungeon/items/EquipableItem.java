@@ -20,13 +20,13 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 
 import java.util.ArrayList;
 
@@ -107,11 +107,11 @@ public abstract class EquipableItem extends Item {
 			hero.spend( time2equip( hero ) );
 		}
 
-		if (collect && !collect( hero.belongings.backpack )) {
+		if (!collect || !collect( hero.belongings.backpack )) {
 			onDetach();
 			Dungeon.quickslot.clearItem(this);
 			updateQuickslot();
-			Dungeon.level.drop( this, hero.pos );
+			if (collect) Dungeon.level.drop( this, hero.pos );
 		}
 
 		return true;
