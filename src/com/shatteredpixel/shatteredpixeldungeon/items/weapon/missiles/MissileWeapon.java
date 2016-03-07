@@ -20,8 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
-import java.util.ArrayList;
-
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -33,9 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 abstract public class MissileWeapon extends Weapon {
 
@@ -74,8 +72,13 @@ abstract public class MissileWeapon extends Weapon {
 				if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
 					bonus += 3;
 
-				if (Random.Float() > Math.pow(0.7, bonus))
-					Buff.affect(enemy, PinCushion.class).stick(this);
+				if (Random.Float() > Math.pow(0.7, bonus)){
+					if (enemy.isAlive())
+						Buff.affect(enemy, PinCushion.class).stick(this);
+					else
+						Dungeon.level.drop( this, enemy.pos).sprite.drop();
+				}
+
 			}
 		}
 	}
