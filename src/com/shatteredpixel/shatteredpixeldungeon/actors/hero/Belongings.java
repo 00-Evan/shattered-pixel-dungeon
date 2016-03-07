@@ -20,12 +20,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
-import java.util.Iterator;
-
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -36,6 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+
+import java.util.Iterator;
 
 public class Belongings implements Iterable<Item> {
 
@@ -96,6 +96,9 @@ public class Belongings implements Iterable<Item> {
 		}
 		
 		armor = (Armor)bundle.get( ARMOR );
+		if (armor != null){
+			armor.activate( owner );
+		}
 		
 		misc1 = (KindofMisc)bundle.get(MISC1);
 		if (misc1 != null) {

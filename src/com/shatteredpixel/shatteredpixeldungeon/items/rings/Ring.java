@@ -22,26 +22,22 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
+import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Ring extends KindofMisc {
 
 	private static final int TICKS_TO_KNOW    = 200;
-
-	private static final float TIME_TO_EQUIP = 1f;
 	
 	protected Buff buff;
 	
@@ -105,57 +101,6 @@ public class Ring extends KindofMisc {
 		gem		= handler.label( this );
 	}
 	
-	@Override
-	public boolean doEquip( final Hero hero ) {
-
-		if (hero.belongings.misc1 != null && hero.belongings.misc2 != null) {
-
-			final KindofMisc m1 = hero.belongings.misc1;
-			final KindofMisc m2 = hero.belongings.misc2;
-
-			ShatteredPixelDungeon.scene().add(
-					new WndOptions(Messages.get(Ring.class, "unequip_title"),
-							Messages.get(Ring.class, "unequip_message"),
-							Messages.titleCase(m1.toString()),
-							Messages.titleCase(m2.toString())) {
-
-						@Override
-						protected void onSelect(int index) {
-
-							KindofMisc equipped = (index == 0 ? m1 : m2);
-							if (equipped.doUnequip(hero, true, false)) {
-								doEquip(hero);
-							}
-						}
-					});
-
-			return false;
-
-		} else {
-			
-			if (hero.belongings.misc1 == null) {
-				hero.belongings.misc1 = this;
-			} else {
-				hero.belongings.misc2 = this;
-			}
-
-			detach( hero.belongings.backpack );
-			
-			activate( hero );
-			
-			cursedKnown = true;
-			if (cursed) {
-				equipCursed( hero );
-				GLog.n( Messages.get(this, "cursed", this) );
-			}
-			
-			hero.spendAndNext( TIME_TO_EQUIP );
-			return true;
-			
-		}
-
-	}
-	
 	public void activate( Char ch ) {
 		buff = buff();
 		buff.attachTo( ch );
@@ -164,12 +109,6 @@ public class Ring extends KindofMisc {
 	@Override
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
-
-			if (hero.belongings.misc1 == this) {
-				hero.belongings.misc1 = null;
-			} else {
-				hero.belongings.misc2 = null;
-			}
 
 			hero.remove( buff );
 			buff = null;
@@ -181,11 +120,6 @@ public class Ring extends KindofMisc {
 			return false;
 
 		}
-	}
-	
-	@Override
-	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.misc1 == this || hero.belongings.misc2 == this;
 	}
 	
 	@Override

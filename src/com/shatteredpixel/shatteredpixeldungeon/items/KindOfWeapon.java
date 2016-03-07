@@ -76,9 +76,6 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 		}
 	}
-	
-	public void activate( Hero hero ) {
-	}
 
 	abstract public int min();
 	abstract public int max();

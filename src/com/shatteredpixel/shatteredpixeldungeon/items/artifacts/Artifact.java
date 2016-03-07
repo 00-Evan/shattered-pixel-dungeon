@@ -21,7 +21,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -29,13 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Artifact extends KindofMisc {
-
-	private static final float TIME_TO_EQUIP = 1f;
 
 	private static final String TXT_TO_STRING		        = "%s";
 	private static final String TXT_TO_STRING_CHARGE		= "%s (%d/%d)";
@@ -63,10 +59,6 @@ public class Artifact extends KindofMisc {
 	//used by some artifacts to keep track of duration of effects or cooldowns to use.
 	protected int cooldown = 0;
 
-
-	public Artifact(){
-		super();
-	}
 	@Override
 	public boolean doEquip( final Hero hero ) {
 
@@ -76,56 +68,18 @@ public class Artifact extends KindofMisc {
 			GLog.w( Messages.get(Artifact.class, "cannot_wear_two") );
 			return false;
 
-		} else if (hero.belongings.misc1 != null && hero.belongings.misc2 != null) {
-
-			final KindofMisc m1 = hero.belongings.misc1;
-			final KindofMisc m2 = hero.belongings.misc2;
-			final Artifact art = this;
-
-			ShatteredPixelDungeon.scene().add(
-					new WndOptions(Messages.get(Artifact.class, "unequip_title"),
-							Messages.get(Artifact.class, "unequip_message"),
-							Messages.titleCase(m1.toString()),
-							Messages.titleCase(m2.toString())) {
-
-						@Override
-						protected void onSelect(int index) {
-
-							KindofMisc equipped = (index == 0 ? m1 : m2);
-							if (equipped.doUnequip(hero, true, false)) {
-								int slot = Dungeon.quickslot.getSlot( art );
-								doEquip(hero);
-								if (slot != -1) {
-									Dungeon.quickslot.setSlot( slot, art );
-									updateQuickslot();
-								}
-							}
-						}
-					});
-
-			return false;
-
 		} else {
 
-			if (hero.belongings.misc1 == null) {
-				hero.belongings.misc1 = this;
+			if (super.doEquip( hero )){
+
+				identify();
+				return true;
+
 			} else {
-				hero.belongings.misc2 = this;
+
+				return false;
+
 			}
-
-			detach( hero.belongings.backpack );
-
-			activate( hero );
-
-			cursedKnown = true;
-			identify();
-			if (cursed) {
-				equipCursed( hero );
-				GLog.n( Messages.get(Artifact.class, "cursed_worn") );
-			}
-
-			hero.spendAndNext( TIME_TO_EQUIP );
-			return true;
 
 		}
 
@@ -140,32 +94,21 @@ public class Artifact extends KindofMisc {
 	public boolean doUnequip( Hero hero, boolean collect, boolean single ) {
 		if (super.doUnequip( hero, collect, single )) {
 
-		if (hero.belongings.misc1 == this) {
-			hero.belongings.misc1 = null;
-		} else {
-			hero.belongings.misc2 = null;
-		}
+			passiveBuff.detach();
+			passiveBuff = null;
 
-		passiveBuff.detach();
-		passiveBuff = null;
+			if (activeBuff != null){
+				activeBuff.detach();
+				activeBuff = null;
+			}
 
-		if (activeBuff != null){
-			activeBuff.detach();
-			activeBuff = null;
-		}
-
-		return true;
+			return true;
 
 		} else {
 
 			return false;
 
 		}
-	}
-
-	@Override
-	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.misc1 == this || hero.belongings.misc2 == this;
 	}
 
 	@Override
