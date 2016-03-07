@@ -113,14 +113,8 @@ abstract public class Weapon extends KindOfWeapon {
 		float ACU = this.ACU;
 		
 		if (this instanceof MissileWeapon) {
-			switch (hero.heroClass) {
-			case WARRIOR:
-				encumbrance += 3;
-				break;
-			case HUNTRESS:
+			if (hero.heroClass == HeroClass.HUNTRESS) {
 				encumbrance -= 2;
-				break;
-			default:
 			}
 			int bonus = 0;
 			for (Buff buff : hero.buffs(RingOfSharpshooting.Aim.class)) {

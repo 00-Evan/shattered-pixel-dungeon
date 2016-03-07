@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
@@ -257,13 +258,14 @@ public abstract class Char extends Actor {
 			}
 		}
 
-		if (SHLD >= dmg){
+		//FIXME: when I add proper damage properties, should add an IGNORES_SHIELDS property to use here.
+		if (src instanceof Hunger || SHLD == 0){
+			HP -= dmg;
+		} else if (SHLD >= dmg){
 			SHLD -= dmg;
 		} else if (SHLD > 0) {
 			HP -= (dmg - SHLD);
 			SHLD = 0;
-		} else {
-			HP -= dmg;
 		}
 
 		if (dmg > 0 || src instanceof Char) {

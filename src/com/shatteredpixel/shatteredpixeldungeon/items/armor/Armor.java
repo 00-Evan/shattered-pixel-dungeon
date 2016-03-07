@@ -23,7 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Affection;
@@ -40,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -57,6 +62,7 @@ public class Armor extends EquipableItem {
 	private int hitsToKnow = HITS_TO_KNOW;
 	
 	public Glyph glyph;
+	private boolean sigil;
 	
 	public Armor( int tier ) {
 		
@@ -99,6 +105,7 @@ public class Armor extends EquipableItem {
 			}
 			
 			((HeroSprite)hero.sprite).updateArmor();
+			activate(hero);
 
 			hero.spendAndNext( 2 * time2equip( hero ) );
 			return true;
@@ -112,6 +119,12 @@ public class Armor extends EquipableItem {
 	}
 
 	@Override
+	public void activate(Char ch) {
+		if (Dungeon.hero.heroClass == HeroClass.WARRIOR)
+			Buff.affect(ch, BrokenSigil.SigilShield.class).setArmor(this);
+	}
+
+	@Override
 	protected float time2equip( Hero hero ) {
 		return hero.speed();
 	}
@@ -122,6 +135,9 @@ public class Armor extends EquipableItem {
 
 			hero.belongings.armor = null;
 			((HeroSprite)hero.sprite).updateArmor();
+
+			BrokenSigil.SigilShield sigil = hero.buff(BrokenSigil.SigilShield.class);
+			if (sigil != null) sigil.setArmor(null);
 
 			return true;
 
@@ -228,7 +244,18 @@ public class Armor extends EquipableItem {
 		
 		return info;
 	}
-	
+
+	@Override
+	public Emitter emitter() {
+		//if (!sigil) return super.emitter();
+		if (Dungeon.hero.heroClass != HeroClass.WARRIOR) return super.emitter();
+		Emitter emitter = new Emitter();
+		emitter.pos(10f, 6f);
+		emitter.fillTarget = false;
+		emitter.pour(Speck.factory( Speck.LIGHT ), 1f);
+		return emitter;
+	}
+
 	@Override
 	public Item random() {
 		if (Random.Float() < 0.4) {

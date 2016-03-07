@@ -20,113 +20,16 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.watabou.noosa.audio.Sample;
-
-import java.util.ArrayList;
 
 public class ShortSword extends MeleeWeapon {
 	
-	public static final String AC_REFORGE	= "REFORGE";
-	
-	private static final String TXT_SELECT_WEAPON	= "Select a weapon to upgrade";
-	
-	private static final String TXT_REFORGED =
-		"you reforged the short sword to upgrade your %s";
-	private static final String TXT_NOT_BOOMERANG =
-		"you can't upgrade a boomerang this way";
-	
-	private static final float TIME_TO_REFORGE	= 2f;
-	
-	private boolean  equipped;
-	
 	{
 		image = ItemSpriteSheet.SHORT_SWORD;
-
-		unique = true;
-		bones = false;
 	}
 	
 	public ShortSword() {
 		super( 1, 1f, 1f );
-		
-		STR = 11;
 	}
 
-	@Override
-	protected int maxBase() {
-		return 12;
-	}
-
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		if (level() > 0) {
-			actions.add( AC_REFORGE );
-		}
-		return actions;
-	}
-	
-	@Override
-	public void execute( Hero hero, String action ) {
-		if (action == AC_REFORGE) {
-			
-			if (hero.belongings.weapon == this) {
-				equipped = true;
-				hero.belongings.weapon = null;
-			} else {
-				equipped = false;
-				detach( hero.belongings.backpack );
-			}
-			
-			curUser = hero;
-			
-			GameScene.selectItem( itemSelector, WndBag.Mode.WEAPON, TXT_SELECT_WEAPON );
-			
-		} else {
-			
-			super.execute( hero, action );
-			
-		}
-	}
-	
-	private final WndBag.Listener itemSelector = new WndBag.Listener() {
-		@Override
-		public void onSelect( Item item ) {
-			if (item != null && !(item instanceof Boomerang)) {
-				
-				Sample.INSTANCE.play( Assets.SND_EVOKE );
-				ScrollOfUpgrade.upgrade( curUser );
-				evoke( curUser );
-				
-				GLog.w( TXT_REFORGED, item.name() );
-				
-				((MeleeWeapon)item).safeUpgrade();
-				curUser.spendAndNext( TIME_TO_REFORGE );
-				
-				Badges.validateItemLevelAquired( item );
-				
-			} else {
-				
-				if (item instanceof Boomerang) {
-					GLog.w( TXT_NOT_BOOMERANG );
-				}
-				
-				if (equipped) {
-					curUser.belongings.weapon = ShortSword.this;
-				} else {
-					collect( curUser.belongings.backpack );
-				}
-			}
-		}
-	};
 }
