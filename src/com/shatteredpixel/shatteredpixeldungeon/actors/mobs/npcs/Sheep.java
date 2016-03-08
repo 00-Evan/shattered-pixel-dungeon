@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SheepSprite;
 import com.watabou.utils.Random;
@@ -53,6 +54,10 @@ public class Sheep extends NPC {
 
 	@Override
 	public void damage( int dmg, Object src ) {
+	}
+
+	@Override
+	public void add( Buff buff ) {
 	}
 
 	@Override
