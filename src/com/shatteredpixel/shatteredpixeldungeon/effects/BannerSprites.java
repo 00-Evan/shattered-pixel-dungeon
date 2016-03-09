@@ -20,8 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import com.watabou.noosa.Image;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.watabou.noosa.Image;
 
 public class BannerSprites {
 
@@ -49,7 +49,7 @@ public class BannerSprites {
 				icon.frame( icon.texture.uvRect( 0, 140, 128, 161 ) );
 				break;
 			case PIXEL_DUNGEON_SIGNS:
-				icon.frame( icon.texture.uvRect( 0, 161, 128, 218 ) );
+				icon.frame( icon.texture.uvRect( 0, 161, 128, 231 ) );
 				break;
 		}
 		return icon;
