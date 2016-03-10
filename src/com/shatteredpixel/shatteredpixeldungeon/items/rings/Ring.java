@@ -92,11 +92,11 @@ public class Ring extends KindofMisc {
 	
 	public Ring() {
 		super();
-		sync();
+		reset();
 	}
 	
-	public void sync() {
-		super.sync();
+	public void reset() {
+		super.reset();
 		image	= handler.image( this );
 		gem		= handler.label( this );
 	}

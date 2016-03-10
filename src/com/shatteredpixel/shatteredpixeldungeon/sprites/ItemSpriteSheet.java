@@ -46,39 +46,40 @@ public class ItemSpriteSheet {
 	public static final int DEWDROP	    = ROW1+1;
 	public static final int PETAL	    = ROW1+2;
 	public static final int SANDBAG     = ROW1+3;
+	public static final int DBL_BOMB    = ROW1+4;
 	// Heaps (containers)
-	public static final int BONES			= ROW1+4;
-	public static final int REMAINS         = ROW1+5;
-	public static final int TOMB			= ROW1+6;
-	public static final int GRAVE			= ROW1+7;
-	public static final int CHEST			= ROW1+8;
-	public static final int LOCKED_CHEST	= ROW1+9;
-	public static final int CRYSTAL_CHEST	= ROW1+10;
+	public static final int BONES			= ROW1+5;
+	public static final int REMAINS         = ROW1+6;
+	public static final int TOMB			= ROW1+7;
+	public static final int GRAVE			= ROW1+8;
+	public static final int CHEST			= ROW1+9;
+	public static final int LOCKED_CHEST	= ROW1+10;
+	public static final int CRYSTAL_CHEST	= ROW1+11;
 	// Placeholders
-	public static final int WEAPON	= ROW1+11;
-	public static final int ARMOR	= ROW1+12;
-	public static final int RING	= ROW1+13;
-	public static final int SMTH	= ROW1+14;
+	public static final int WEAPON	= ROW1+12;
+	public static final int ARMOR	= ROW1+13;
+	public static final int RING	= ROW1+14;
+	public static final int SMTH	= ROW1+15;
 
 	//Row Two: Miscellaneous single use items
 	public static final int GOLD	    = ROW2+0;
 	public static final int TORCH	    = ROW2+1;
 	public static final int STYLUS	    = ROW2+2;
 	public static final int ANKH	    = ROW2+3;
+	public static final int WEIGHT      = ROW2+4;
+	public static final int BOMB        = ROW2+5;
+	public static final int HONEYPOT    = ROW2+6;
+	public static final int SHATTPOT    = ROW2+7;
+	public static final int SIGIL       = ROW2+8;
 	// Keys
-	public static final int IRON_KEY		= ROW2+4;
-	public static final int GOLDEN_KEY		= ROW2+5;
-	public static final int SKELETON_KEY	= ROW2+6;
+	public static final int IRON_KEY		= ROW2+9;
+	public static final int GOLDEN_KEY		= ROW2+10;
+	public static final int SKELETON_KEY	= ROW2+11;
 	//Boss Rewards
-	public static final int BEACON	= ROW2+7;
-	public static final int MASTERY	= ROW2+8;
-	public static final int KIT		= ROW2+9;
-	public static final int AMULET	= ROW2+10;
-	public static final int WEIGHT  = ROW2+11;
-	public static final int BOMB    = ROW2+12;
-	public static final int DBL_BOMB= ROW2+13;
-	public static final int HONEYPOT= ROW2+14;
-	public static final int SHATTPOT= ROW2+15;
+	public static final int BEACON	= ROW2+12;
+	public static final int MASTERY	= ROW2+13;
+	public static final int KIT		= ROW2+14;
+	public static final int AMULET	= ROW2+15;
 
 	//Row Three: Melee weapons
 	public static final int KNUCKLEDUSTER	= ROW3+0;

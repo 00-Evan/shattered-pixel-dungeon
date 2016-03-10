@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSigil;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -49,11 +48,14 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class Armor extends EquipableItem {
 
 	private static final int HITS_TO_KNOW    = 10;
 
 	private static final String TXT_TO_STRING	= "%s :%d";
+	private static final String AC_DETACH       = "DETACH";
 	
 	public int tier;
 	
@@ -73,11 +75,14 @@ public class Armor extends EquipableItem {
 
 	private static final String UNFAMILIRIARITY	= "unfamiliarity";
 	private static final String GLYPH			= "glyph";
+	private static final String SIGIL           = "sigil";
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( UNFAMILIRIARITY, hitsToKnow );
 		bundle.put( GLYPH, glyph );
+		bundle.put( SIGIL, sigil );
 	}
 
 	@Override
@@ -87,6 +92,44 @@ public class Armor extends EquipableItem {
 			hitsToKnow = HITS_TO_KNOW;
 		}
 		inscribe((Glyph) bundle.get(GLYPH));
+		sigil = bundle.getBoolean(SIGIL);
+		if (sigil) unique = true;
+	}
+
+	@Override
+	public void reset() {
+		super.reset();
+		//armor can be kept in bones between runs, the sigil cannot.
+		sigil = false;
+	}
+
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		if (sigil) actions.add(AC_DETACH);
+		return actions;
+	}
+
+	@Override
+	public void execute(Hero hero, String action) {
+		if (action.equals(AC_DETACH) && sigil){
+			sigil = false;
+			BrokenSigil.SigilShield sigilBuff = hero.buff(BrokenSigil.SigilShield.class);
+			if (sigilBuff != null) sigilBuff.setArmor(null);
+
+			BrokenSigil sigil = new BrokenSigil();
+			if (level() > 0){
+				sigil.upgrade();
+				degrade();
+			}
+			GLog.i( Messages.get(Armor.class, "detach_sigil") );
+			hero.sprite.operate(hero.pos);
+			if (!sigil.collect()){
+				Dungeon.level.drop(sigil, hero.pos);
+			}
+		} else {
+			super.execute(hero, action);
+		}
 	}
 
 	@Override
@@ -120,8 +163,18 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public void activate(Char ch) {
-		if (Dungeon.hero.heroClass == HeroClass.WARRIOR)
-			Buff.affect(ch, BrokenSigil.SigilShield.class).setArmor(this);
+		if (sigil) Buff.affect(ch, BrokenSigil.SigilShield.class).setArmor(this);
+	}
+
+	public void affixSigil(BrokenSigil sigil){
+		this.sigil = true;
+		if (sigil.level() > 0){
+			//doesn't override existing glyphs, but doesn't create one either
+			upgrade(glyph != null);
+		}
+		if (isEquipped(Dungeon.hero)){
+			Buff.affect(Dungeon.hero, BrokenSigil.SigilShield.class).setArmor(this);
+		}
 	}
 
 	@Override
@@ -136,8 +189,8 @@ public class Armor extends EquipableItem {
 			hero.belongings.armor = null;
 			((HeroSprite)hero.sprite).updateArmor();
 
-			BrokenSigil.SigilShield sigil = hero.buff(BrokenSigil.SigilShield.class);
-			if (sigil != null) sigil.setArmor(null);
+			BrokenSigil.SigilShield sigilBuff = hero.buff(BrokenSigil.SigilShield.class);
+			if (sigilBuff != null) sigilBuff.setArmor(null);
 
 			return true;
 
@@ -247,8 +300,7 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public Emitter emitter() {
-		//if (!sigil) return super.emitter();
-		if (Dungeon.hero.heroClass != HeroClass.WARRIOR) return super.emitter();
+		if (!sigil) return super.emitter();
 		Emitter emitter = new Emitter();
 		emitter.pos(10f, 6f);
 		emitter.fillTarget = false;

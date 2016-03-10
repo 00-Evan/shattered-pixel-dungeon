@@ -181,7 +181,7 @@ public class Bones {
 					}
 				}
 				
-				item.sync();
+				item.reset();
 				
 				return item;
 			} else {

@@ -268,10 +268,6 @@ public class LloydsBeacon extends Artifact {
 		}
 		return desc;
 	}
-
-	public void reset() {
-		returnDepth = -1;
-	}
 	
 	private static final Glowing WHITE = new Glowing( 0xFFFFFF );
 	
