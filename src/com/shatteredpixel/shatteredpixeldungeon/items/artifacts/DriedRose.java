@@ -349,7 +349,7 @@ public class DriedRose extends Artifact {
 
 		@Override
 		protected Char chooseEnemy() {
-			if (enemy == null || !enemy.isAlive() || state == WANDERING) {
+			if (enemy == null || !enemy.isAlive() || !Dungeon.level.mobs.contains(enemy) || state == WANDERING) {
 
 				HashSet<Mob> enemies = new HashSet<Mob>();
 				for (Mob mob : Dungeon.level.mobs) {
