@@ -26,9 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -104,8 +101,7 @@ public class WandOfBlastWave extends Wand {
 	private void throwChar(final Char ch, final Ballistica trajectory, int power){
 		int dist = Math.min(trajectory.dist, power);
 
-		//FIXME: sloppy
-		if ((ch instanceof King) || (ch instanceof Golem) || (ch instanceof Yog.RottingFist))
+		if (ch.properties().contains(Char.Property.BOSS))
 			dist /= 2;
 
 		if (dist == 0 || ch.properties().contains(Char.Property.IMMOVABLE)) return;
