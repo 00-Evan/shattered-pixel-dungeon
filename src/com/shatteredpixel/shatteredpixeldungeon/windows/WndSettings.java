@@ -267,7 +267,7 @@ public class WndSettings extends WndTabbed {
 			chkFont.setRect(0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
 			chkFont.checked(!ShatteredPixelDungeon.classicFont());
 			Languages lang = ShatteredPixelDungeon.language();
-			if (lang != Languages.RUSSIAN && lang != Languages.CHINESE && lang != Languages.KOREAN)
+			if (lang != Languages.CHINESE && lang != Languages.KOREAN)
 				add(chkFont);
 		}
 
