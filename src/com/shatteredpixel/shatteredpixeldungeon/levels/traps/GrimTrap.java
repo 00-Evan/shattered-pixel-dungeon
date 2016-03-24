@@ -65,6 +65,7 @@ public class GrimTrap extends Trap {
 
 		if (target != null){
 			final Char finalTarget = target;
+			final GrimTrap trap = this;
 			MagicMissile.shadow(target.sprite.parent, pos, target.pos, new Callback() {
 				@Override
 				public void call() {
@@ -72,21 +73,22 @@ public class GrimTrap extends Trap {
 					if (finalTarget == Dungeon.hero) {
 						//almost kill the player
 						if (((float)finalTarget.HP/finalTarget.HT) >= 0.9f){
-							finalTarget.damage((finalTarget.HP-1), this);
+							finalTarget.damage((finalTarget.HP-1), trap);
 						//kill 'em
 						} else {
-							finalTarget.damage(finalTarget.HP, this);
+							finalTarget.damage(finalTarget.HP, trap);
 						}
 						Sample.INSTANCE.play(Assets.SND_CURSED);
 						if (!finalTarget.isAlive()) {
-							Dungeon.fail( getClass() );
-							GLog.n( Messages.get(this, "ondeath") );
+							Dungeon.fail( GrimTrap.class );
+							GLog.n( Messages.get(GrimTrap.class, "ondeath") );
 						}
 					} else {
 						finalTarget.damage(finalTarget.HP, this);
 						Sample.INSTANCE.play(Assets.SND_BURNING);
 					}
 					finalTarget.sprite.emitter().burst(ShadowParticle.UP, 10);
+					if (!finalTarget.isAlive()) finalTarget.next();
 				}
 			});
 		} else {
