@@ -20,16 +20,16 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import com.watabou.noosa.Game;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AmuletScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.Game;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Amulet extends Item {
 	
@@ -68,7 +68,7 @@ public class Amulet extends Item {
 			if (!Statistics.amuletObtained) {
 				Statistics.amuletObtained = true;
 				Badges.validateVictory();
-
+				hero.spend(-TIME_TO_PICK_UP);
 				showAmuletScene( true );
 			}
 			
