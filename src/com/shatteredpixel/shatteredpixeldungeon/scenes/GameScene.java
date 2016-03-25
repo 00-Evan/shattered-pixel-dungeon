@@ -82,6 +82,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoMob;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoPlant;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoTrap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
@@ -97,6 +98,7 @@ import com.watabou.utils.Random;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class GameScene extends PixelScene {
 
@@ -764,42 +766,73 @@ public class GameScene extends PixelScene {
 			return;
 		}
 
-		if (cell == Dungeon.hero.pos) {
-			GameScene.show( new WndHero() );
-			return;
-		}
+		ArrayList<String> names = new ArrayList<>();
+		final ArrayList<Object> objects = new ArrayList<>();
 
-		if (Dungeon.visible[cell]) {
-			Mob mob = (Mob) Actor.findChar(cell);
-			if (mob != null) {
-				GameScene.show(new WndInfoMob(mob));
-				return;
+		if (cell == Dungeon.hero.pos) {
+			objects.add(Dungeon.hero);
+			names.add(Dungeon.hero.className().toUpperCase(Locale.ENGLISH));
+		} else {
+			if (Dungeon.visible[cell]) {
+				Mob mob = (Mob) Actor.findChar(cell);
+				if (mob != null) objects.add(mob);
+				names.add(Messages.titleCase( mob.name ));
 			}
 		}
 
 		Heap heap = Dungeon.level.heaps.get(cell);
-		if (heap != null && heap.seen) {
+		if (heap != null) {
+			objects.add(heap);
+			names.add(Messages.titleCase( heap.peek().toString() ));
+		}
+
+		Plant plant = Dungeon.level.plants.get( cell );
+		if (plant != null) {
+			objects.add(plant);
+			names.add(Messages.titleCase( plant.plantName ));
+		}
+
+		Trap trap = Dungeon.level.traps.get( cell );
+		if (trap != null) {
+			objects.add(trap);
+			names.add(Messages.titleCase( trap.name ));
+		}
+
+		if (objects.isEmpty()) {
+			GameScene.show(new WndInfoCell(cell));
+		} else if (objects.size() == 1){
+			examineObject(objects.get(0));
+		} else {
+			GameScene.show(new WndOptions(Messages.get(GameScene.class, "choose_examine"),
+					Messages.get(GameScene.class, "multiple_examine"), names.toArray(new String[names.size()])){
+				@Override
+				protected void onSelect(int index) {
+					examineObject(objects.get(index));
+				}
+			});
+
+		}
+	}
+
+	public static void examineObject(Object o){
+		if (o == Dungeon.hero){
+			GameScene.show( new WndHero() );
+		} else if ( o instanceof Mob ){
+			GameScene.show(new WndInfoMob((Mob) o));
+		} else if ( o instanceof Heap ){
+			Heap heap = (Heap)o;
 			if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
 				GameScene.show(new WndTradeItem(heap, false));
 			} else {
 				GameScene.show(new WndInfoItem(heap));
 			}
-			return;
+		} else if ( o instanceof Plant ){
+			GameScene.show( new WndInfoPlant((Plant) o) );
+		} else if ( o instanceof Trap ){
+			GameScene.show( new WndInfoTrap((Trap) o));
+		} else {
+			GameScene.show( new WndMessage( Messages.get(GameScene.class, "dont_know") ) ) ;
 		}
-
-		Plant plant = Dungeon.level.plants.get( cell );
-		if (plant != null) {
-			GameScene.show( new WndInfoPlant( plant ) );
-			return;
-		}
-
-		Trap trap = Dungeon.level.traps.get( cell );
-		if (trap != null && trap.visible) {
-			GameScene.show( new WndInfoTrap( trap ));
-			return;
-		}
-
-		GameScene.show( new WndInfoCell( cell ) );
 	}
 
 	
