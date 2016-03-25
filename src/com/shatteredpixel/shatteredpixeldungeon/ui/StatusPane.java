@@ -176,7 +176,7 @@ public class StatusPane extends Component {
 		float shield = Dungeon.hero.SHLD;
 		float max = Math.max(health+shield, Dungeon.hero.HT);
 
-		if (health == 0) {
+		if (!Dungeon.hero.isAlive()) {
 			avatar.tint( 0x000000, 0.6f );
 			blood.on = false;
 		} else if ((health/Dungeon.hero.HT) < 0.25f) {
