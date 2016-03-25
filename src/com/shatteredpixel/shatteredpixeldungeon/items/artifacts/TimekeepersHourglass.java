@@ -286,11 +286,11 @@ public class TimekeepersHourglass extends Artifact {
 				presses.add(cell);
 		}
 
-		public void triggerPresses(){
+		private void triggerPresses(){
 			for (int cell : presses)
 				Dungeon.level.press(cell, null);
 
-			presses = new ArrayList<Integer>();
+			presses = new ArrayList<>();
 		}
 
 		@Override
@@ -304,7 +304,6 @@ public class TimekeepersHourglass extends Artifact {
 
 		@Override
 		public void detach(){
-			triggerPresses();
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
 				mob.sprite.remove(CharSprite.State.PARALYSED);
 			GameScene.freezeEmitters = false;
@@ -313,6 +312,7 @@ public class TimekeepersHourglass extends Artifact {
 			updateQuickslot();
 			super.detach();
 			activeBuff = null;
+			triggerPresses();
 		}
 
 		private static final String PRESSES = "presses";

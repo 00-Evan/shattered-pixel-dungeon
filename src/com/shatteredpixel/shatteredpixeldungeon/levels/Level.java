@@ -60,20 +60,21 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.*;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -842,13 +843,6 @@ public abstract class Level implements Bundlable {
 			}
 			return;
 		}
-
-		TimekeepersHourglass.timeFreeze timeFreeze = null;
-
-		if (ch != null)
-			timeFreeze = ch.buff(TimekeepersHourglass.timeFreeze.class);
-
-		boolean frozen = timeFreeze != null;
 		
 		Trap trap = null;
 		
@@ -878,22 +872,26 @@ public abstract class Level implements Bundlable {
 			Door.enter( cell );
 			break;
 		}
-		
-		if (trap != null && !frozen) {
 
-			if (ch == Dungeon.hero)
-				Dungeon.hero.interrupt();
+		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
 
-			trap.trigger();
+		if (trap != null) {
+			if (timeFreeze == null) {
 
-		} else if (trap != null && frozen){
+				if (ch == Dungeon.hero)
+					Dungeon.hero.interrupt();
 
-			Sample.INSTANCE.play(Assets.SND_TRAP);
+				trap.trigger();
 
-			discover(cell);
+			} else {
 
-			timeFreeze.setDelayedPress( cell );
+				Sample.INSTANCE.play(Assets.SND_TRAP);
 
+				discover(cell);
+
+				timeFreeze.setDelayedPress(cell);
+
+			}
 		}
 		
 		Plant plant = plants.get( cell );
