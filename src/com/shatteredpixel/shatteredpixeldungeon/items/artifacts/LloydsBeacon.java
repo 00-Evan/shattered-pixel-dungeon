@@ -19,7 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
-//If it weren't super obvious, this is going to become an artifact soon.
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -41,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -126,9 +126,15 @@ public class LloydsBeacon extends Artifact {
 			curUser = hero;
 			int chargesToUse = Dungeon.depth > 20 ? 2 : 1;
 
-			if      (!isEquipped( hero ))       GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-			else if (charge < chargesToUse)     GLog.i( Messages.get(this, "no_charge") );
-			else {
+			if (!isEquipped( hero )) {
+				GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+				QuickSlotButton.cancel();
+
+			} else if (charge < chargesToUse) {
+				GLog.i( Messages.get(this, "no_charge") );
+				QuickSlotButton.cancel();
+
+			} else {
 				GameScene.selectCell(zapper);
 			}
 

@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -71,10 +72,19 @@ public class EtherealChains extends Artifact {
 
 			curUser = hero;
 
-			if      (!isEquipped( hero ))       GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-			else if (charge < 1)                GLog.i( Messages.get(this, "no_charge") );
-			else if (cursed)                    GLog.w( Messages.get(this, "cursed") );
-			else {
+			if (!isEquipped( hero )) {
+				GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+				QuickSlotButton.cancel();
+
+			} else if (charge < 1) {
+				GLog.i( Messages.get(this, "no_charge") );
+				QuickSlotButton.cancel();
+
+			} else if (cursed) {
+				GLog.w( Messages.get(this, "cursed") );
+				QuickSlotButton.cancel();
+
+			} else {
 				GameScene.selectCell(caster);
 			}
 
