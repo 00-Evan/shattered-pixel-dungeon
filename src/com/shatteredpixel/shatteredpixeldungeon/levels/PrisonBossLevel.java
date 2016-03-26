@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MazePainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
@@ -263,6 +264,12 @@ public class PrisonBossLevel extends Level {
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])){
 			if (mob != tengu && (safeArea == null || !safeArea.inside(mob.pos))){
 				mob.destroy();
+			}
+		}
+		for (Plant plant : plants.values()){
+			if (safeArea == null || !safeArea.inside(plant.pos)){
+				plants.remove(plant.pos);
+				plant.sprite.kill();
 			}
 		}
 	}
