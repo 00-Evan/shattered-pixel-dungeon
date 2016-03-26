@@ -52,7 +52,7 @@ public class Guard extends Mob {
 		maxLvl = 14;
 
 		loot = null;    //see createloot.
-		lootChance = 1;
+		lootChance = 0.25f;
 
 		properties.add(Property.DEMONIC);
 	}
@@ -136,13 +136,13 @@ public class Guard extends Mob {
 
 	@Override
 	protected Item createLoot() {
-		//first see if we drop armor, chance is 1/8 (0.125f)
-		if (Random.Int(8) == 0){
+		//first see if we drop armor, overall chance is 1/8
+		if (Random.Int(2) == 0){
 			return Generator.randomArmor();
-		//otherwise, we may drop a health potion. Chance is 1/(7+potions dropped)
-		//including the chance for armor before it, effective droprate is ~1/(8 + (1.15*potions dropped))
+		//otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + potions dropped))
+		//with 0 potions dropped that simplifies to 1/8
 		} else {
-			if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) == 0){
+			if (Random.Int(7 + Dungeon.limitedDrops.guardHP.count) < 7){
 				Dungeon.limitedDrops.guardHP.drop();
 				return new PotionOfHealing();
 			}
