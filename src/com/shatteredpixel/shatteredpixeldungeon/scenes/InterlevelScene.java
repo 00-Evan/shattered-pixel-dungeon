@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
@@ -279,6 +280,8 @@ public class InterlevelScene extends PixelScene {
 
 		Dungeon.depth--;
 		Level level = Dungeon.newLevel();
+		//FIXME this only partially addresses issues regarding weak floors.
+		RegularLevel.weakFloorCreated = false;
 		Dungeon.switchLevel( level, level.entrance );
 	}
 	
