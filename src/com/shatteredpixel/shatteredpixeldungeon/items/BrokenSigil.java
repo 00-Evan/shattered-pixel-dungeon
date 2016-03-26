@@ -77,9 +77,8 @@ public class BrokenSigil extends Item {
 		public boolean act() {
 			if (armor == null) detach();
 			else if (armor.isEquipped((Hero)target)) {
-				int maxShield = 1 + armor.tier + armor.level();
-				if (target.SHLD < maxShield){
-					partialShield += 1/(30*Math.pow(0.9f, (maxShield - target.SHLD)));
+				if (target.SHLD < maxShield()){
+					partialShield += 1/(30*Math.pow(0.9f, (maxShield() - target.SHLD)));
 				}
 			}
 			while (partialShield >= 1){
@@ -92,6 +91,10 @@ public class BrokenSigil extends Item {
 
 		public void setArmor(Armor arm){
 			armor = arm;
+		}
+
+		public int maxShield() {
+			return 1 + armor.tier + armor.level();
 		}
 	}
 }

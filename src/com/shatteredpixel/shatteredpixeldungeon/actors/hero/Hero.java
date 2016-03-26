@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
@@ -321,6 +322,9 @@ public class Hero extends Char {
 			}
 		}
 		if (dmg < 0) dmg = 0;
+		if (subClass == HeroSubClass.BERSERKER){
+			dmg = Buff.affect(this, Berserk.class).damageFactor(dmg);
+		}
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
 	
@@ -905,10 +909,6 @@ public class Hero extends Char {
 			dmg = (int)Math.ceil((float)dmg * Math.pow(0.9, tenacity*((float)(HT - HP)/HT)));
 
 		super.damage( dmg, src );
-		
-		if (subClass == HeroSubClass.BERSERKER && 0 < HP && HP <= HT * Fury.LEVEL) {
-			Buff.affect( this, Fury.class );
-		}
 	}
 	
 	private void checkVisibleMobs() {
@@ -1081,6 +1081,7 @@ public class Hero extends Char {
 
 		EtherealChains.chainsRecharge chains = buff(EtherealChains.chainsRecharge.class);
 		if (chains != null) chains.gainExp(percent);
+		if (subClass == HeroSubClass.BERSERKER) Buff.affect(this, Berserk.class).recover(percent);
 		
 		boolean levelUp = false;
 		while (this.exp >= maxExp()) {
@@ -1288,7 +1289,12 @@ public class Hero extends Char {
 		
 		Dungeon.deleteGame( Dungeon.hero.heroClass, true );
 	}
-	
+
+	@Override
+	public boolean isAlive() {
+		return super.isAlive() || (subClass == HeroSubClass.BERSERKER && Buff.affect(this, Berserk.class).berserking());
+	}
+
 	@Override
 	public void move( int step ) {
 		super.move( step );
