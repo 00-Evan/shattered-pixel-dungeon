@@ -130,7 +130,7 @@ public class WndHero extends WndTabbed {
 			pos = btnCatalogs.bottom() + GAP;
 
 			statSlot( Messages.get(this, "str"), hero.STR() );
-			statSlot( Messages.get(this, "health"), hero.HP + "/" + hero.HT );
+			statSlot( Messages.get(this, "health"), (hero.HP + hero.SHLD) + "/" + hero.HT );
 			statSlot( Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp() );
 
 			pos += GAP;
