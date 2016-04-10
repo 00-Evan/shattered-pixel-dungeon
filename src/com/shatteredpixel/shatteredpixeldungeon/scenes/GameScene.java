@@ -775,8 +775,10 @@ public class GameScene extends PixelScene {
 		} else {
 			if (Dungeon.visible[cell]) {
 				Mob mob = (Mob) Actor.findChar(cell);
-				if (mob != null) objects.add(mob);
-				names.add(Messages.titleCase( mob.name ));
+				if (mob != null) {
+					objects.add(mob);
+					names.add(Messages.titleCase( mob.name ));
+				}
 			}
 		}
 
