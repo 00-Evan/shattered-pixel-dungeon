@@ -1,6 +1,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSigil.SigilShield;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal.WarriorShield;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
@@ -14,10 +14,10 @@ public class Berserk extends Buff {
 	}
 	private State state = State.NORMAL;
 
-	private static final int EXHAUSTION_START = 40;
+	private static final int EXHAUSTION_START = 30;
 	private int exhaustion;
 
-	private static final float LEVEL_RECOVER_START = 2f;
+	private static final float LEVEL_RECOVER_START = 3f;
 	private float levelRecovery;
 
 	private static final String STATE = "state";
@@ -78,7 +78,7 @@ public class Berserk extends Buff {
 	public boolean berserking(){
 		if (target.HP == 0 && state == State.NORMAL){
 
-			SigilShield sigil = target.buff(SigilShield.class);
+			WarriorShield sigil = target.buff(WarriorShield.class);
 			if (sigil != null){
 				state = State.BERSERK;
 				BuffIndicator.refreshHero();

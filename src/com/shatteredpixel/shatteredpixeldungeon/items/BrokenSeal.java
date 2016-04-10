@@ -14,7 +14,7 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
-public class BrokenSigil extends Item {
+public class BrokenSeal extends Item {
 
 	public static final String AC_AFFIX = "AFFIX";
 
@@ -54,21 +54,21 @@ public class BrokenSigil extends Item {
 			if (item != null && item instanceof Armor) {
 				Armor armor = (Armor)item;
 				if (!armor.levelKnown){
-					GLog.w(Messages.get(BrokenSigil.class, "unknown_armor"));
+					GLog.w(Messages.get(BrokenSeal.class, "unknown_armor"));
 				} else if (armor.cursed || armor.level() < 0){
-					GLog.w(Messages.get(BrokenSigil.class, "degraded_armor"));
+					GLog.w(Messages.get(BrokenSeal.class, "degraded_armor"));
 				} else {
-					GLog.p(Messages.get(BrokenSigil.class, "affix"));
+					GLog.p(Messages.get(BrokenSeal.class, "affix"));
 					Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 					Sample.INSTANCE.play(Assets.SND_UNLOCK);
-					armor.affixSigil((BrokenSigil)curItem);
+					armor.affixSigil((BrokenSeal)curItem);
 					curItem.detach(Dungeon.hero.belongings.backpack);
 				}
 			}
 		}
 	};
 
-	public static class SigilShield extends Buff {
+	public static class WarriorShield extends Buff {
 
 		private Armor armor;
 		private float partialShield;

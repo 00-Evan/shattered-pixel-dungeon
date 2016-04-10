@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSigil;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Affection;
@@ -114,10 +114,10 @@ public class Armor extends EquipableItem {
 	public void execute(Hero hero, String action) {
 		if (action.equals(AC_DETACH) && sigil){
 			sigil = false;
-			BrokenSigil.SigilShield sigilBuff = hero.buff(BrokenSigil.SigilShield.class);
+			BrokenSeal.WarriorShield sigilBuff = hero.buff(BrokenSeal.WarriorShield.class);
 			if (sigilBuff != null) sigilBuff.setArmor(null);
 
-			BrokenSigil sigil = new BrokenSigil();
+			BrokenSeal sigil = new BrokenSeal();
 			if (level() > 0){
 				sigil.upgrade();
 				degrade();
@@ -163,17 +163,17 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public void activate(Char ch) {
-		if (sigil) Buff.affect(ch, BrokenSigil.SigilShield.class).setArmor(this);
+		if (sigil) Buff.affect(ch, BrokenSeal.WarriorShield.class).setArmor(this);
 	}
 
-	public void affixSigil(BrokenSigil sigil){
+	public void affixSigil(BrokenSeal sigil){
 		this.sigil = true;
 		if (sigil.level() > 0){
 			//doesn't override existing glyphs, but doesn't create one either
 			upgrade(glyph != null);
 		}
 		if (isEquipped(Dungeon.hero)){
-			Buff.affect(Dungeon.hero, BrokenSigil.SigilShield.class).setArmor(this);
+			Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(this);
 		}
 	}
 
@@ -189,7 +189,7 @@ public class Armor extends EquipableItem {
 			hero.belongings.armor = null;
 			((HeroSprite)hero.sprite).updateArmor();
 
-			BrokenSigil.SigilShield sigilBuff = hero.buff(BrokenSigil.SigilShield.class);
+			BrokenSeal.WarriorShield sigilBuff = hero.buff(BrokenSeal.WarriorShield.class);
 			if (sigilBuff != null) sigilBuff.setArmor(null);
 
 			return true;
