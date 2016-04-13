@@ -76,7 +76,14 @@ public class Ghost extends NPC {
 
 		Sample.INSTANCE.load( Assets.SND_GHOST );
 	}
-	
+
+	@Override
+	protected boolean act() {
+		if (Quest.completed())
+			target = Dungeon.hero.pos;
+		return super.act();
+	}
+
 	@Override
 	public int defenseSkill( Char enemy ) {
 		return 1000;
@@ -84,7 +91,7 @@ public class Ghost extends NPC {
 	
 	@Override
 	public float speed() {
-		return 0.5f;
+		return Quest.completed() ? 2f : 0.5f;
 	}
 	
 	@Override
@@ -318,10 +325,6 @@ public class Ghost extends NPC {
 		public static void process() {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
 				GLog.n( Messages.get(Ghost.class, "find_me") );
-				for (Mob m : Dungeon.level.mobs){
-					if (m instanceof Ghost)
-						m.beckon(Dungeon.hero.pos);
-				}
 				Sample.INSTANCE.play( Assets.SND_GHOST );
 				processed = true;
 				Generator.Category.ARTIFACT.probs[10] = 1; //flags the dried rose as spawnable.
