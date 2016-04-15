@@ -64,7 +64,7 @@ public class Armor extends EquipableItem {
 	private int hitsToKnow = HITS_TO_KNOW;
 	
 	public Glyph glyph;
-	private boolean sigil;
+	private boolean seal;
 	
 	public Armor( int tier ) {
 		
@@ -75,14 +75,14 @@ public class Armor extends EquipableItem {
 
 	private static final String UNFAMILIRIARITY	= "unfamiliarity";
 	private static final String GLYPH			= "glyph";
-	private static final String SIGIL           = "sigil";
+	private static final String SEAL            = "seal";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( UNFAMILIRIARITY, hitsToKnow );
 		bundle.put( GLYPH, glyph );
-		bundle.put( SIGIL, sigil );
+		bundle.put( SEAL, seal);
 	}
 
 	@Override
@@ -92,28 +92,28 @@ public class Armor extends EquipableItem {
 			hitsToKnow = HITS_TO_KNOW;
 		}
 		inscribe((Glyph) bundle.get(GLYPH));
-		sigil = bundle.getBoolean(SIGIL);
-		if (sigil) unique = true;
+		seal = bundle.getBoolean(SEAL);
+		if (seal) unique = true;
 	}
 
 	@Override
 	public void reset() {
 		super.reset();
-		//armor can be kept in bones between runs, the sigil cannot.
-		sigil = false;
+		//armor can be kept in bones between runs, the seal cannot.
+		seal = false;
 	}
 
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		if (sigil) actions.add(AC_DETACH);
+		if (seal) actions.add(AC_DETACH);
 		return actions;
 	}
 
 	@Override
 	public void execute(Hero hero, String action) {
-		if (action.equals(AC_DETACH) && sigil){
-			sigil = false;
+		if (action.equals(AC_DETACH) && seal){
+			seal = false;
 			BrokenSeal.WarriorShield sigilBuff = hero.buff(BrokenSeal.WarriorShield.class);
 			if (sigilBuff != null) sigilBuff.setArmor(null);
 
@@ -163,11 +163,11 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public void activate(Char ch) {
-		if (sigil) Buff.affect(ch, BrokenSeal.WarriorShield.class).setArmor(this);
+		if (seal) Buff.affect(ch, BrokenSeal.WarriorShield.class).setArmor(this);
 	}
 
-	public void affixSigil(BrokenSeal sigil){
-		this.sigil = true;
+	public void affixSeal(BrokenSeal sigil){
+		this.seal = true;
 		if (sigil.level() > 0){
 			//doesn't override existing glyphs, but doesn't create one either
 			upgrade(glyph != null);
@@ -293,6 +293,8 @@ public class Armor extends EquipableItem {
 			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
 			info += "\n\n" + Messages.get(Armor.class, "cursed");
+		} else if (seal) {
+			info += "\n\n" + Messages.get(Armor.class, "seal_attached");
 		}
 		
 		return info;
@@ -300,11 +302,11 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public Emitter emitter() {
-		if (!sigil) return super.emitter();
+		if (!seal) return super.emitter();
 		Emitter emitter = new Emitter();
 		emitter.pos(10f, 6f);
 		emitter.fillTarget = false;
-		emitter.pour(Speck.factory( Speck.LIGHT ), 1f);
+		emitter.pour(Speck.factory( Speck.LIGHT, 0xFFCC0000 ), 0.6f);
 		return emitter;
 	}
 
@@ -343,6 +345,7 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public int price() {
+		if (seal) return 0;
 		int price = 10 * (1 << (tier - 1));
 		if (glyph != null) {
 			price *= 1.5;

@@ -21,14 +21,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import android.annotation.SuppressLint;
-import android.util.FloatMath;
 import android.util.SparseArray;
-
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.particles.Emitter;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -439,10 +437,18 @@ public class Speck extends Image {
 	}
 
 	public static Emitter.Factory factory( final int type ) {
-		return factory( type, false );
+		return factory( type, false, 0 );
 	}
 
 	public static Emitter.Factory factory( final int type, final boolean lightMode ) {
+		return factory( type, lightMode, 0 );
+	}
+
+	public static Emitter.Factory factory( final int type, final int tint ) {
+		return factory( type, false, tint );
+	}
+
+	public static Emitter.Factory factory( final int type, final boolean lightMode, final int tint ) {
 
 		Emitter.Factory factory = factories.get( type );
 
@@ -452,6 +458,7 @@ public class Speck extends Image {
 				public void emit ( Emitter emitter, int index, float x, float y ) {
 					Speck p = (Speck)emitter.recycle( Speck.class );
 					p.reset( index, x, y, type );
+					if (tint != 0 ) p.tint( tint );
 				}
 				@Override
 				public boolean lightMode() {

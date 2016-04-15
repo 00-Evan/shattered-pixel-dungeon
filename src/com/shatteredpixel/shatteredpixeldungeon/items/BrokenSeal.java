@@ -61,7 +61,7 @@ public class BrokenSeal extends Item {
 					GLog.p(Messages.get(BrokenSeal.class, "affix"));
 					Dungeon.hero.sprite.operate(Dungeon.hero.pos);
 					Sample.INSTANCE.play(Assets.SND_UNLOCK);
-					armor.affixSigil((BrokenSeal)curItem);
+					armor.affixSeal((BrokenSeal)curItem);
 					curItem.detach(Dungeon.hero.belongings.backpack);
 				}
 			}

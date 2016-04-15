@@ -109,7 +109,7 @@ public enum HeroClass {
 		Dart darts = new Dart( 8 );
 		darts.identify().collect();
 
-		new BrokenSeal().collect();
+		hero.belongings.armor.affixSeal(new BrokenSeal());
 
 		Dungeon.quickslot.setSlot(0, darts);
 
