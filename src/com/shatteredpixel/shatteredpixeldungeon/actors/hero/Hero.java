@@ -592,9 +592,10 @@ public class Hero extends Char {
 			
 			Heap heap = Dungeon.level.heaps.get( pos );
 			if (heap != null) {
-				Item item = heap.pickUp();
+				Item item = heap.peek();
 				if (item.doPickUp( this )) {
-					
+					heap.pickUp();
+
 					if (item instanceof Dewdrop
 							|| item instanceof TimekeepersHourglass.sandBag
 							|| item instanceof DriedRose.Petal) {
@@ -610,13 +611,13 @@ public class Hero extends Char {
 							GLog.i( Messages.get(this, "you_now_have", item.name()) );
 						}
 					}
-					
+
 					if (!heap.isEmpty()) {
 						GLog.i( Messages.get(this, "something_else") );
 					}
 					curAction = null;
 				} else {
-					Dungeon.level.drop( item, pos ).sprite.drop();
+					heap.sprite.drop();
 					ready();
 				}
 			} else {

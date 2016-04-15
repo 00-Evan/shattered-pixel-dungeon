@@ -21,12 +21,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import android.graphics.Bitmap;
-
-import com.watabou.gltextures.TextureCache;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.MovieClip;
-import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
@@ -38,6 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.gltextures.TextureCache;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.MovieClip;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -139,6 +138,11 @@ public class ItemSprite extends MovieClip {
 
 		if (heap.isEmpty()) {
 			return;
+		} else if (heap.size() == 1){
+			// normally this would happen for any heap, however this is not applied to heaps greater than 1 in size
+			// in order to preserve an amusing visual bug/feature that used to trigger for heaps with size > 1
+			// where as long as the player continually taps, the heap sails up into the air.
+			place(heap.pos);
 		}
 			
 		dropInterval = DROP_INTERVAL;
