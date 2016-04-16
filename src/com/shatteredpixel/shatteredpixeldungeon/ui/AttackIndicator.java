@@ -36,7 +36,7 @@ public class AttackIndicator extends Tag {
 	private static final float ENABLED	= 1.0f;
 	private static final float DISABLED	= 0.3f;
 
-	private static float delay = 0.75f;
+	private static float delay;
 	
 	private static AttackIndicator instance;
 	

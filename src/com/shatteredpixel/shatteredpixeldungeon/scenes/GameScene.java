@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PlantSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BusyIndicator;
@@ -135,6 +136,7 @@ public class GameScene extends PixelScene {
 
 	private AttackIndicator attack;
 	private LootIndicator loot;
+	private ActionIndicator action;
 	private ResumeIndicator resume;
 	
 	@Override
@@ -264,6 +266,10 @@ public class GameScene extends PixelScene {
 		loot = new LootIndicator();
 		loot.camera = uiCamera;
 		add( loot );
+
+		action = new ActionIndicator();
+		action.camera = uiCamera;
+		add( action );
 
 		resume = new ResumeIndicator();
 		resume.camera = uiCamera;
@@ -408,25 +414,31 @@ public class GameScene extends PixelScene {
 			log.newLine();
 		}
 
-		if (tagAttack != attack.active || tagLoot != loot.visible || tagResume != resume.visible) {
+		if (tagAttack != attack.active ||
+				tagLoot != loot.visible ||
+				tagAction != action.visible ||
+				tagResume != resume.visible) {
 
-			boolean atkAppearing = attack.active && !tagAttack;
-			boolean lootAppearing = loot.visible && !tagLoot;
-			boolean resAppearing = resume.visible && !tagResume;
+			//we only want to change the layout when new tags pop in, not when existing ones leave.
+			boolean tagAppearing = (attack.active && !tagAttack) ||
+									(loot.visible && !tagLoot) ||
+									(action.visible && !tagAction) ||
+									(resume.visible && !tagResume);
 
 			tagAttack = attack.active;
 			tagLoot = loot.visible;
+			tagAction = action.visible;
 			tagResume = resume.visible;
 
-			if (atkAppearing || lootAppearing || resAppearing)
-				layoutTags();
+			if (tagAppearing) layoutTags();
 		}
 
 		cellSelector.enable(Dungeon.hero.ready);
 	}
 
 	private boolean tagAttack    = false;
-	private boolean tagLoot        = false;
+	private boolean tagLoot      = false;
+	private boolean tagAction    = false;
 	private boolean tagResume    = false;
 
 	public static void layoutTags() {
@@ -453,6 +465,12 @@ public class GameScene extends PixelScene {
 			scene.loot.setPos( tagLeft, pos - scene.loot.height() );
 			scene.loot.flip(tagLeft == 0);
 			pos = scene.loot.top();
+		}
+
+		if (scene.tagAction) {
+			scene.action.setPos( tagLeft, pos - scene.action.height() );
+			scene.action.flip(tagLeft == 0);
+			pos = scene.action.top();
 		}
 
 		if (scene.tagResume) {
