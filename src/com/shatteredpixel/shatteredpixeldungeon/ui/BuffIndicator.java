@@ -20,6 +20,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoBuff;
 import com.watabou.gltextures.SmartTexture;
@@ -29,16 +33,13 @@ import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.watabou.utils.SparseArray;
 
 public class BuffIndicator extends Component {
 
 	public static final int NONE	= -1;
-	
+
+	//TODO consider creating an enum to store both index, and tint. Saves making separate images for color differences.
 	public static final int MIND_VISION	= 0;
 	public static final int LEVITATION	= 1;
 	public static final int FIRE		= 2;
@@ -79,6 +80,9 @@ public class BuffIndicator extends Component {
 	public static final int BLESS       = 37;
 	public static final int RAGE		= 38;
 	public static final int SACRIFICE	= 39;
+	public static final int ANGERED     = 40;
+	public static final int EXHAUSTED   = 41;
+	public static final int RECOVERING  = 42;
 
 	public static final int SIZE	= 7;
 	

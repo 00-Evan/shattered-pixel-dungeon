@@ -1,12 +1,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal.WarriorShield;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
-/**
- * Created by Evan on 20/03/2016.
- */
 public class Berserk extends Buff {
 
 	private enum State{
@@ -47,6 +50,7 @@ public class Berserk extends Buff {
 				target.SHLD -= Math.min(target.SHLD, 2);
 				if (target.SHLD == 0) {
 					target.die(this);
+					Dungeon.fail(this.getClass());
 				}
 			} else {
 				state = State.EXHAUSTED;
@@ -67,10 +71,14 @@ public class Berserk extends Buff {
 	}
 
 	public int damageFactor(int dmg){
-		float percentMissing = 1f - target.HP/(float)target.HT;
-		float bonus = 1f + (percentMissing * percentMissing);
+		float bonus;
 
-		if (state == State.EXHAUSTED) bonus *= (50 - exhaustion) / 50f;
+		if (state == State.EXHAUSTED) {
+			bonus = (50 - exhaustion) / 50f;
+		} else {
+			float percentMissing = 1f - target.HP/(float)target.HT;
+			bonus = 1f + (percentMissing * percentMissing);
+		}
 
 		return Math.round(dmg * bonus);
 	}
@@ -83,6 +91,10 @@ public class Berserk extends Buff {
 				state = State.BERSERK;
 				BuffIndicator.refreshHero();
 				target.SHLD = sigil.maxShield() * 5;
+
+				SpellSprite.show(target, SpellSprite.BERSERK);
+				Sample.INSTANCE.play( Assets.SND_CHALLENGE );
+				GameScene.flash(0xFF0000);
 			}
 
 		}
@@ -105,13 +117,13 @@ public class Berserk extends Buff {
 	public int icon() {
 		switch (state){
 			case NORMAL: default:
-				return BuffIndicator.NONE;
+				return BuffIndicator.ANGERED;
 			case BERSERK:
 				return BuffIndicator.FURY;
 			case EXHAUSTED:
-				return BuffIndicator.FURY;
+				return BuffIndicator.EXHAUSTED;
 			case RECOVERING:
-				return BuffIndicator.FURY;
+				return BuffIndicator.RECOVERING;
 		}
 	}
 
@@ -119,27 +131,28 @@ public class Berserk extends Buff {
 	public String toString() {
 		switch (state){
 			case NORMAL: default:
-				return "";
+				return Messages.get(this, "angered");
 			case BERSERK:
-				return "BERSERK!";
+				return Messages.get(this, "berserk");
 			case EXHAUSTED:
-				return "Exhausted";
+				return Messages.get(this, "exhausted");
 			case RECOVERING:
-				return "Recovering";
+				return Messages.get(this, "recovering");
 		}
 	}
 
 	@Override
 	public String desc() {
+		float dispDamage = damageFactor(10000)/100f;
 		switch (state){
 			case NORMAL: default:
-				return "";
+				return Messages.get(this, "angered_desc", dispDamage);
 			case BERSERK:
-				return "Berserking, you're invincible!";
+				return Messages.get(this, "berserk_desc");
 			case EXHAUSTED:
-				return "Exhausted! Damage down!";
+				return Messages.get(this, "exhausted_desc", exhaustion , dispDamage);
 			case RECOVERING:
-				return "Recovering from rage, can't do it again.";
+				return Messages.get(this, "recovering_desc", levelRecovery, dispDamage);
 		}
 	}
 }
