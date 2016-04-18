@@ -1,6 +1,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -10,6 +11,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndItem;
 import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
@@ -18,12 +20,17 @@ public class BrokenSeal extends Item {
 
 	public static final String AC_AFFIX = "AFFIX";
 
+	//only to be used from the quickslot, for tutorial purposes mostly.
+	public static final String AC_INFO = "INFO_WINDOW";
+
 	{
 		image = ItemSpriteSheet.SIGIL;
 
 		cursedKnown = levelKnown = true;
 		unique = true;
 		bones = false;
+
+		defaultAction = AC_INFO;
 	}
 
 	@Override
@@ -38,6 +45,8 @@ public class BrokenSeal extends Item {
 		if (action.equals(AC_AFFIX)){
 			curItem = this;
 			GameScene.selectItem(armorSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"));
+		} else if (action.equals(AC_INFO)) {
+			GameScene.show(new WndItem(null, this, true));
 		} else {
 			super.execute(hero, action);
 		}
@@ -63,6 +72,7 @@ public class BrokenSeal extends Item {
 					Sample.INSTANCE.play(Assets.SND_UNLOCK);
 					armor.affixSeal((BrokenSeal)curItem);
 					curItem.detach(Dungeon.hero.belongings.backpack);
+					Badges.validateTutorial();
 				}
 			}
 		}

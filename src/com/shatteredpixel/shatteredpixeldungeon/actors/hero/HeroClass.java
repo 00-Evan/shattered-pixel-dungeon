@@ -24,7 +24,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -109,15 +108,29 @@ public enum HeroClass {
 		Dart darts = new Dart( 8 );
 		darts.identify().collect();
 
-		hero.belongings.armor.affixSeal(new BrokenSeal());
-
-		Dungeon.quickslot.setSlot(0, darts);
+		if ( Badges.global.contains(Badges.Badge.TUTORIAL_WARRIOR) ){
+			hero.belongings.armor.affixSeal(new BrokenSeal());
+			Dungeon.quickslot.setSlot(0, darts);
+		} else {
+			BrokenSeal seal = new BrokenSeal();
+			seal.collect();
+			Dungeon.quickslot.setSlot(0, seal);
+			Dungeon.quickslot.setSlot(1, darts);
+		}
 
 		new PotionOfHealing().setKnown();
 	}
 
 	private static void initMage( Hero hero ) {
-		MagesStaff staff = new MagesStaff(new WandOfMagicMissile());
+		MagesStaff staff;
+
+		if ( Badges.global.contains(Badges.Badge.TUTORIAL_MAGE) ){
+			staff = new MagesStaff(new WandOfMagicMissile());
+		} else {
+			staff = new MagesStaff();
+			new WandOfMagicMissile().identify().collect();
+		}
+
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
 
@@ -137,8 +150,7 @@ public enum HeroClass {
 		darts.identify().collect();
 
 		Dungeon.quickslot.setSlot(0, cloak);
-		if (ShatteredPixelDungeon.quickSlots() > 1)
-			Dungeon.quickslot.setSlot(1, darts);
+		Dungeon.quickslot.setSlot(1, darts);
 
 		new ScrollOfMagicMapping().setKnown();
 	}

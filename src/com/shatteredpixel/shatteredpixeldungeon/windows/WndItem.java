@@ -42,8 +42,12 @@ public class WndItem extends Window {
 	
 	private static final int WIDTH_P = 120;
 	private static final int WIDTH_L = 144;
+
+	public WndItem( final WndBag owner, final Item item ){
+		this( owner, item, owner != null );
+	}
 	
-	public WndItem( final WndBag owner, final Item item ) {
+	public WndItem( final WndBag owner, final Item item , final boolean options ) {
 		
 		super();
 
@@ -67,7 +71,7 @@ public class WndItem extends Window {
 		float y = info.top() + info.height() + GAP;
 		float x = 0;
 		
-		if (Dungeon.hero.isAlive() && owner != null) {
+		if (Dungeon.hero.isAlive() && options) {
 			ArrayList<RedButton> line = new ArrayList<>();
 			for (final String action:item.actions( Dungeon.hero )) {
 				
@@ -75,7 +79,7 @@ public class WndItem extends Window {
 					@Override
 					protected void onClick() {
 						hide();
-						owner.hide();
+						if (owner != null) owner.hide();
 						item.execute( Dungeon.hero, action );
 					};
 				};

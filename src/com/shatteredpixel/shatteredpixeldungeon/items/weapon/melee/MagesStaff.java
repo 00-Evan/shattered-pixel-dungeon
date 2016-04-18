@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -38,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -111,8 +113,11 @@ public class MagesStaff extends MeleeWeapon {
 			GameScene.selectItem(itemSelector, WndBag.Mode.WAND, Messages.get(this, "prompt"));
 
 		} else if (action.equals(AC_ZAP)){
-			if (wand == null)
+
+			if (wand == null) {
+				GameScene.show(new WndItem(null, this, true));
 				return;
+			}
 
 			wand.execute(hero, AC_ZAP);
 		} else
@@ -230,7 +235,13 @@ public class MagesStaff extends MeleeWeapon {
 
 	@Override
 	public String info() {
-		return super.info();
+		String info = super.info();
+
+		if (wand == null){
+			info += "\n\n" + Messages.get(this, "no_wand");
+		}
+
+		return info;
 	}
 
 	@Override
@@ -274,32 +285,39 @@ public class MagesStaff extends MeleeWeapon {
 					return;
 				}
 
-				GameScene.show(
-						new WndOptions("",
-								Messages.get(MagesStaff.class, "warning"),
-								Messages.get(MagesStaff.class, "yes"),
-								Messages.get(MagesStaff.class, "no")) {
-							@Override
-							protected void onSelect(int index) {
-								if (index == 0) {
-									Sample.INSTANCE.play(Assets.SND_EVOKE);
-									ScrollOfUpgrade.upgrade(curUser);
-									evoke(curUser);
-
-									Dungeon.quickslot.clearItem(item);
-
-									item.detach(curUser.belongings.backpack);
-
-									imbueWand((Wand) item, curUser);
-
-									curUser.spendAndNext(2f);
-
-									updateQuickslot();
+				if (wand == null){
+					applyWand((Wand)item);
+				} else {
+					GameScene.show(
+							new WndOptions("",
+									Messages.get(MagesStaff.class, "warning"),
+									Messages.get(MagesStaff.class, "yes"),
+									Messages.get(MagesStaff.class, "no")) {
+								@Override
+								protected void onSelect(int index) {
+									if (index == 0) {
+										applyWand((Wand)item);
+									}
 								}
 							}
-						}
-				);
+					);
+				}
 			}
+		}
+
+		private void applyWand(Wand wand){
+			Sample.INSTANCE.play(Assets.SND_EVOKE);
+			ScrollOfUpgrade.upgrade(curUser);
+			evoke(curUser);
+
+			Dungeon.quickslot.clearItem(wand);
+
+			wand.detach(curUser.belongings.backpack);
+			Badges.validateTutorial();
+
+			imbueWand((Wand) wand, curUser);
+
+			updateQuickslot();
 		}
 	};
 

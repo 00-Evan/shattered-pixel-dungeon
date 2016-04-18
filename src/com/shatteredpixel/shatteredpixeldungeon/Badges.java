@@ -20,6 +20,28 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Acidic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Albino;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bandit;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Senior;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shielded;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Game;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,29 +50,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.noosa.Game;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Acidic;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Albino;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bandit;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Senior;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shielded;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
 
 public class Badges {
 	
@@ -126,6 +125,8 @@ public class Badges {
 		RARE_SENIOR,
 		RARE_ACIDIC,
 		RARE( 37, true ),
+		TUTORIAL_WARRIOR,
+		TUTORIAL_MAGE,
 		VICTORY_WARRIOR,
 		VICTORY_MAGE,
 		VICTORY_ROGUE,
@@ -165,7 +166,7 @@ public class Badges {
 		public String desc(){
 			return Messages.get(this, name());
 		}
-
+		
 		Badge() {
 			this( -1 );
 		}
@@ -188,6 +189,7 @@ public class Badges {
 	
 	private static HashSet<Badge> restore( Bundle bundle ) {
 		HashSet<Badge> badges = new HashSet<Badge>();
+		if (bundle == null) return badges;
 		
 		String[] names = bundle.getStringArray( BADGES );
 		for (int i=0; i < names.length; i++) {
@@ -803,7 +805,29 @@ public class Badges {
 			displayBadge( badge );
 		}
 	}
-	
+
+	public static void validateTutorial(){
+		Badge badge = null;
+		switch (Dungeon.hero.heroClass){
+			case WARRIOR:
+				badge = Badge.TUTORIAL_WARRIOR;
+				break;
+			case MAGE:
+				badge = Badge.TUTORIAL_MAGE;
+				break;
+			case ROGUE:
+				break;
+			case HUNTRESS:
+				break;
+		}
+
+		local.add( badge );
+		if (!global.contains( badge )) {
+			global.add( badge );
+			saveNeeded = true;
+		}
+	}
+
 	public static void validateNoKilling() {
 		if (!local.contains( Badge.NO_MONSTERS_SLAIN ) && Statistics.completedWithNoKilling) {
 			Badge badge = Badge.NO_MONSTERS_SLAIN;
