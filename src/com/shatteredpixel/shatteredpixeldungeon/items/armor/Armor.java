@@ -150,7 +150,7 @@ public class Armor extends EquipableItem {
 			((HeroSprite)hero.sprite).updateArmor();
 			activate(hero);
 
-			hero.spendAndNext( 2 * time2equip( hero ) );
+			hero.spendAndNext( time2equip( hero ) );
 			return true;
 			
 		} else {
@@ -179,7 +179,7 @@ public class Armor extends EquipableItem {
 
 	@Override
 	protected float time2equip( Hero hero ) {
-		return hero.speed();
+		return 2 / hero.speed();
 	}
 
 	@Override
