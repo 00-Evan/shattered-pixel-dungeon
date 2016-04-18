@@ -62,6 +62,7 @@ public class Speck extends Image {
 	public static final int STENCH      = 111;
 	public static final int FORGE		= 112;
 	public static final int CONFUSION	= 113;
+	public static final int RED_LIGHT   = 114;
 	
 	private static final int SIZE = 7;
 	
@@ -90,6 +91,7 @@ public class Speck extends Image {
 		this.type = type;
 		switch (type) {
 		case DISCOVER:
+		case RED_LIGHT:
 			frame( film.get( LIGHT ) );
 			break;
 		case EVOKE:
@@ -169,7 +171,9 @@ public class Speck extends Image {
 			acc.set( -speed.x, 0 );
 			lifespan = 0.5f;
 			break;
-			
+
+		case RED_LIGHT:
+			tint(0xFFCC0000);
 		case LIGHT:
 			angle = Random.Float( 360 );
 			angularSpeed = 90;
@@ -351,7 +355,8 @@ public class Speck extends Image {
 			case HEALING:
 				am = p < 0.5f ? 1 : 2 - p * 2;
 				break;
-				
+
+			case RED_LIGHT:
 			case LIGHT:
 				am = scale.set( p < 0.2f ? p * 5f : (1 - p) * 1.25f ).x;
 				break;
@@ -437,18 +442,10 @@ public class Speck extends Image {
 	}
 
 	public static Emitter.Factory factory( final int type ) {
-		return factory( type, false, 0 );
+		return factory( type, false );
 	}
 
 	public static Emitter.Factory factory( final int type, final boolean lightMode ) {
-		return factory( type, lightMode, 0 );
-	}
-
-	public static Emitter.Factory factory( final int type, final int tint ) {
-		return factory( type, false, tint );
-	}
-
-	public static Emitter.Factory factory( final int type, final boolean lightMode, final int tint ) {
 
 		Emitter.Factory factory = factories.get( type );
 
@@ -458,7 +455,6 @@ public class Speck extends Image {
 				public void emit ( Emitter emitter, int index, float x, float y ) {
 					Speck p = (Speck)emitter.recycle( Speck.class );
 					p.reset( index, x, y, type );
-					if (tint != 0 ) p.tint( tint );
 				}
 				@Override
 				public boolean lightMode() {
