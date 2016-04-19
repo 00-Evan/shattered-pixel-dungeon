@@ -104,7 +104,15 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc");
+		String desc = Messages.get(this, "desc");
+
+		if (count >= 10)    desc += "\n\n" + Messages.get(this, "fury_desc");
+		else if (count >= 8)desc += "\n\n" + Messages.get(this, "crush_desc");
+		else if (count >= 6)desc += "\n\n" + Messages.get(this, "slam_desc");
+		else if (count >= 4)desc += "\n\n" + Messages.get(this, "cleave_desc");
+		else if (count >= 2)desc += "\n\n" + Messages.get(this, "clobber_desc");
+
+		return desc;
 	}
 
 	private static final String COUNT = "count";
@@ -167,7 +175,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			if (enemy == null || userPos == cell || (Dungeon.hero.belongings.weapon != null ?
 					Level.distance( userPos, enemy.pos ) > Dungeon.hero.belongings.weapon.reachFactor(Dungeon.hero)
 					: !Level.adjacent( userPos, enemy.pos ))){
-				GLog.w( "TODO" );
+				GLog.w( Messages.get(Combo.class, "bad_target") );
 			} else {
 				target.sprite.attack(cell, new Callback() {
 					@Override
@@ -206,10 +214,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 						int dmgReroll = target.damageRoll();
 						if (dmgReroll > dmg) dmg = dmgReroll;
 					}
-					dmg *= 2;
+					dmg = Math.round(dmg*2.5f);
 					break;
 				case FURY:
-					dmg = Math.round(dmg*.35f);
+					dmg = Math.round(dmg*.4f);
 					break;
 			}
 
