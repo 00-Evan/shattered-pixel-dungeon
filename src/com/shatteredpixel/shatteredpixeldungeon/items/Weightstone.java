@@ -60,14 +60,13 @@ public class Weightstone extends Item {
 
 	@Override
 	public void execute( Hero hero, String action ) {
-		if (action == AC_APPLY) {
+
+		super.execute( hero, action );
+
+		if (action.equals(AC_APPLY)) {
 
 			curUser = hero;
 			GameScene.selectItem( itemSelector, WndBag.Mode.WEAPON, Messages.get(this, "select") );
-
-		} else {
-
-			super.execute( hero, action );
 
 		}
 	}

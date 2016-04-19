@@ -57,6 +57,7 @@ public class ChaliceOfBlood extends Artifact {
 	@Override
 	public void execute(Hero hero, String action ) {
 		super.execute(hero, action);
+
 		if (action.equals(AC_PRICK)){
 
 			int damage = 3*(level()*level());

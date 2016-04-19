@@ -112,6 +112,9 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public void execute(Hero hero, String action) {
+
+		super.execute(hero, action);
+
 		if (action.equals(AC_DETACH) && seal){
 			seal = false;
 			BrokenSeal.WarriorShield sigilBuff = hero.buff(BrokenSeal.WarriorShield.class);
@@ -127,8 +130,6 @@ public class Armor extends EquipableItem {
 			if (!sigil.collect()){
 				Dungeon.level.drop(sigil, hero.pos);
 			}
-		} else {
-			super.execute(hero, action);
 		}
 	}
 

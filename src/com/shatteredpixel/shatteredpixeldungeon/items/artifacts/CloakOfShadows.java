@@ -22,7 +22,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -72,6 +71,9 @@ public class CloakOfShadows extends Artifact {
 
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute(hero, action);
+
 		if (action.equals( AC_STEALTH )) {
 
 			if (!stealthed){
@@ -99,8 +101,7 @@ public class CloakOfShadows extends Artifact {
 				hero.sprite.operate( hero.pos );
 			}
 
-		} else
-			super.execute(hero, action);
+		}
 	}
 
 	@Override

@@ -20,14 +20,10 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
-import java.util.ArrayList;
-
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.tweeners.AlphaTweener;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -35,8 +31,12 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class Honeypot extends Item {
 	
@@ -60,6 +60,9 @@ public class Honeypot extends Item {
 	
 	@Override
 	public void execute( final Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals( AC_SHATTER )) {
 			
 			hero.sprite.zap( hero.pos );
@@ -69,9 +72,7 @@ public class Honeypot extends Item {
 			shatter( hero, hero.pos ).collect();
 
 			hero.next();
-			
-		} else {
-			super.execute( hero, action );
+
 		}
 	}
 	

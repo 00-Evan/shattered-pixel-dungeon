@@ -86,6 +86,9 @@ public class DriedRose extends Artifact {
 
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute(hero, action);
+
 		if (action.equals(AC_SUMMON)) {
 
 			if (spawned)                    GLog.i( Messages.get(this, "spawned") );
@@ -128,8 +131,6 @@ public class DriedRose extends Artifact {
 					GLog.i( Messages.get(this, "no_space") );
 			}
 
-		} else{
-			super.execute(hero, action);
 		}
 	}
 

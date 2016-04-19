@@ -59,6 +59,9 @@ public class TomeOfMastery extends Item {
 	
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals( AC_READ )) {
 			
 			curUser = hero;
@@ -84,10 +87,6 @@ public class TomeOfMastery extends Item {
 				break;
 			}
 			GameScene.show( new WndChooseWay( this, way1, way2 ) );
-			
-		} else {
-			
-			super.execute( hero, action );
 			
 		}
 	}

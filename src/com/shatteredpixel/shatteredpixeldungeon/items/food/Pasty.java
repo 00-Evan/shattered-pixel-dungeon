@@ -83,6 +83,7 @@ public class Pasty extends Food {
 	@Override
 	public void execute(Hero hero, String action) {
 		super.execute(hero, action);
+
 		if (action.equals(AC_EAT)){
 			switch(holiday){
 				case NONE: default:

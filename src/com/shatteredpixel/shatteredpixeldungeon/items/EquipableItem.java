@@ -49,6 +49,9 @@ public abstract class EquipableItem extends Item {
 
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals( AC_EQUIP )) {
 			//In addition to equipping itself, item reassigns itself to the quickslot
 			//This is a special case as the item is being removed from inventory, but is staying with the hero.
@@ -60,8 +63,6 @@ public abstract class EquipableItem extends Item {
 			}
 		} else if (action.equals( AC_UNEQUIP )) {
 			doUnequip( hero, true );
-		} else {
-			super.execute( hero, action );
 		}
 	}
 

@@ -65,6 +65,9 @@ public class Food extends Item {
 	
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals( AC_EAT )) {
 			
 			detach( hero.belongings.backpack );
@@ -98,10 +101,6 @@ public class Food extends Item {
 			
 			Statistics.foodEaten++;
 			Badges.validateFoodEaten();
-			
-		} else {
-		
-			super.execute( hero, action );
 			
 		}
 	}

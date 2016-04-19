@@ -20,10 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.quest;
 
-import java.util.ArrayList;
-
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.noosa.audio.Sample;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -35,13 +31,17 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+
+import java.util.ArrayList;
 
 public class Pickaxe extends Weapon {
 	
@@ -82,6 +82,8 @@ public class Pickaxe extends Weapon {
 	
 	@Override
 	public void execute( final Hero hero, String action ) {
+
+		super.execute( hero, action );
 		
 		if (action == AC_MINE) {
 			
@@ -131,10 +133,6 @@ public class Pickaxe extends Weapon {
 			}
 			
 			GLog.w( Messages.get(this, "no_vein") );
-			
-		} else {
-			
-			super.execute( hero, action );
 			
 		}
 	}

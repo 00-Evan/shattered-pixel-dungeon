@@ -79,6 +79,9 @@ public class DewVial extends Item {
 
 	@Override
 	public void execute( final Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals( AC_DRINK )) {
 
 			if (volume > 0) {
@@ -110,10 +113,6 @@ public class DewVial extends Item {
 			} else {
 				GLog.w( Messages.get(this, "empty") );
 			}
-
-		} else {
-
-			super.execute( hero, action );
 
 		}
 	}

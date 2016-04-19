@@ -119,6 +119,9 @@ public abstract class Scroll extends Item {
 	
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals( AC_READ )) {
 			
 			if (hero.buff( Blindness.class ) != null) {
@@ -132,10 +135,6 @@ public abstract class Scroll extends Item {
 				curItem = detach( hero.belongings.backpack );
 				doRead();
 			}
-			
-		} else {
-		
-			super.execute( hero, action );
 			
 		}
 	}

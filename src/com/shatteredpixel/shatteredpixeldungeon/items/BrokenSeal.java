@@ -42,13 +42,14 @@ public class BrokenSeal extends Item {
 
 	@Override
 	public void execute(Hero hero, String action) {
+
+		super.execute(hero, action);
+
 		if (action.equals(AC_AFFIX)){
 			curItem = this;
 			GameScene.selectItem(armorSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt"));
 		} else if (action.equals(AC_INFO)) {
 			GameScene.show(new WndItem(null, this, true));
-		} else {
-			super.execute(hero, action);
 		}
 	}
 

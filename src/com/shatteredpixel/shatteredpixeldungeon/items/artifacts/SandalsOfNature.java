@@ -74,8 +74,11 @@ public class SandalsOfNature extends Artifact {
 	@Override
 	public void execute( Hero hero, String action ) {
 		super.execute(hero, action);
+
 		if (action.equals(AC_FEED)){
+
 			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
+
 		} else if (action.equals(AC_ROOT) && level() > 0){
 
 			if (!isEquipped( hero )) GLog.i( Messages.get(Artifact.class, "need_to_equip") );

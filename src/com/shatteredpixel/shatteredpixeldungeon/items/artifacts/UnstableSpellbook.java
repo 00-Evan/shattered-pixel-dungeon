@@ -92,6 +92,9 @@ public class UnstableSpellbook extends Artifact {
 
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals( AC_READ )) {
 
 			if (hero.buff( Blindness.class ) != null) GLog.w( Messages.get(this, "blinded") );
@@ -116,8 +119,7 @@ public class UnstableSpellbook extends Artifact {
 
 		} else if (action.equals( AC_ADD )) {
 			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
-		} else
-			super.execute( hero, action );
+		}
 	}
 
 	@Override

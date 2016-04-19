@@ -101,6 +101,9 @@ abstract public class ClassArmor extends Armor {
 	
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals(AC_SPECIAL)) {
 			
 			if (hero.HP < 3) {
@@ -113,8 +116,6 @@ abstract public class ClassArmor extends Armor {
 				doSpecial();
 			}
 			
-		} else {
-			super.execute( hero, action );
 		}
 	}
 

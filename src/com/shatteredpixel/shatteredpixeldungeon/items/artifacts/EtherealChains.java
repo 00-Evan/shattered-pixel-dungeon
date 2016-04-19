@@ -68,6 +68,9 @@ public class EtherealChains extends Artifact {
 
 	@Override
 	public void execute(Hero hero, String action) {
+
+		super.execute(hero, action);
+
 		if (action.equals(AC_CAST)){
 
 			curUser = hero;
@@ -88,8 +91,7 @@ public class EtherealChains extends Artifact {
 				GameScene.selectCell(caster);
 			}
 
-		} else
-			super.execute(hero, action);
+		}
 	}
 
 	private CellSelector.Listener caster = new CellSelector.Listener(){

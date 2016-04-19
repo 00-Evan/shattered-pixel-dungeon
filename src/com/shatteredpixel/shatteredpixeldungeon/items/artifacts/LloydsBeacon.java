@@ -105,6 +105,8 @@ public class LloydsBeacon extends Artifact {
 	@Override
 	public void execute( Hero hero, String action ) {
 
+		super.execute( hero, action );
+
 		if (action == AC_SET || action == AC_RETURN) {
 			
 			if (Dungeon.bossLevel()) {
@@ -171,10 +173,6 @@ public class LloydsBeacon extends Artifact {
 				Game.switchScene( InterlevelScene.class );
 			}
 			
-			
-		} else {
-			
-			super.execute( hero, action );
 			
 		}
 	}

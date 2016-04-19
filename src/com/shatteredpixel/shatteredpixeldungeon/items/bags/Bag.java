@@ -20,9 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -32,6 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Bag extends Item implements Iterable<Item> {
 
@@ -53,13 +53,12 @@ public class Bag extends Item implements Iterable<Item> {
 	
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals( AC_OPEN )) {
 			
 			GameScene.show( new WndBag( this, null, WndBag.Mode.ALL, null ) );
-			
-		} else {
-		
-			super.execute( hero, action );
 			
 		}
 	}

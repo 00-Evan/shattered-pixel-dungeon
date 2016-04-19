@@ -131,6 +131,9 @@ public class Potion extends Item {
 	
 	@Override
 	public void execute( final Hero hero, String action ) {
+
+		super.execute( hero, action );
+
 		if (action.equals( AC_DRINK )) {
 			
 			if (isKnown() && (
@@ -154,10 +157,6 @@ public class Potion extends Item {
 				} else {
 					drink( hero );
 				}
-			
-		} else {
-			
-			super.execute( hero, action );
 			
 		}
 	}

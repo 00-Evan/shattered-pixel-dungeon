@@ -69,6 +69,9 @@ public class TimekeepersHourglass extends Artifact {
 
 	@Override
 	public void execute( Hero hero, String action ) {
+
+		super.execute(hero, action);
+
 		if (action.equals(AC_ACTIVATE)){
 
 			if (!isEquipped( hero ))        GLog.i( Messages.get(Artifact.class, "need_to_equip") );
@@ -100,8 +103,7 @@ public class TimekeepersHourglass extends Artifact {
 							};
 						}
 				);
-		} else
-			super.execute(hero, action);
+		}
 	}
 
 	@Override

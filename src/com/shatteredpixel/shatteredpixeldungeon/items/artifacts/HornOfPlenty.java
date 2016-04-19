@@ -78,6 +78,7 @@ public class HornOfPlenty extends Artifact {
 
 	@Override
 	public void execute( Hero hero, String action ) {
+
 		super.execute(hero, action);
 
 		if (action.equals(AC_EAT)){
@@ -128,6 +129,7 @@ public class HornOfPlenty extends Artifact {
 		} else if (action.equals(AC_STORE)){
 
 			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
+
 		}
 	}
 
