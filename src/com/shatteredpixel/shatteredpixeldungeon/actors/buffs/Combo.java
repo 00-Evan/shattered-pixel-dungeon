@@ -20,18 +20,30 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 public class Combo extends Buff implements ActionIndicator.Action {
 	
@@ -68,6 +80,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	public void miss(){
 		misses++;
+		comboTime = 3f;
 		if (misses >= 2){
 			detach();
 		}
@@ -95,11 +108,15 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	private static final String COUNT = "count";
+	private static final String TIME  = "combotime";
+	private static final String MISSES= "misses";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(COUNT, count);
+		bundle.put(TIME, comboTime);
+		bundle.put(MISSES, misses);
 	}
 
 	@Override
@@ -107,6 +124,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		super.restoreFromBundle(bundle);
 		count = bundle.getInt( COUNT );
 		if (count >= 2) ActionIndicator.setAction(this);
+		comboTime = bundle.getFloat( TIME );
+		misses = bundle.getInt( MISSES );
 	}
 
 	@Override
@@ -129,7 +148,174 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public void doAction() {
-		ActionIndicator.clearAction(this);
-		//TODO
+		GameScene.selectCell(finisher);
 	}
+
+	private enum finisherType{
+		CLOBBER, CLEAVE, SLAM, CRUSH, FURY;
+	}
+
+	private CellSelector.Listener finisher = new CellSelector.Listener() {
+
+		private finisherType type;
+
+		@Override
+		public void onSelect(Integer cell) {
+			if (cell == null) return;
+			final Char enemy = Actor.findChar( cell );
+			int userPos = target.pos;
+			if (enemy == null || userPos == cell || (Dungeon.hero.belongings.weapon != null ?
+					Level.distance( userPos, enemy.pos ) > Dungeon.hero.belongings.weapon.reachFactor(Dungeon.hero)
+					: !Level.adjacent( userPos, enemy.pos ))){
+				GLog.w( "TODO" );
+			} else {
+				target.sprite.attack(cell, new Callback() {
+					@Override
+					public void call() {
+						if (count >= 10)    type = finisherType.FURY;
+						else if (count >= 8)type = finisherType.CRUSH;
+						else if (count >= 6)type = finisherType.SLAM;
+						else if (count >= 4)type = finisherType.CLEAVE;
+						else                type = finisherType.CLOBBER;
+						doAttack(enemy);
+					}
+				});
+			}
+		}
+
+		private void doAttack(final Char enemy){
+
+			AttackIndicator.target(enemy);
+
+			int dmg = target.damageRoll();
+
+			//variance in damage dealt
+			switch(type){
+				case CLOBBER:
+					dmg = Math.round(dmg*0.5f);
+					break;
+				case CLEAVE:
+					dmg = Math.round(dmg*1.4f);
+					break;
+				case SLAM:
+					dmg = Math.round(dmg*1.6f);
+					break;
+				case CRUSH:
+					//rolls 4 times, takes the highest roll
+					for (int i = 1; i < 4; i++) {
+						int dmgReroll = target.damageRoll();
+						if (dmgReroll > dmg) dmg = dmgReroll;
+					}
+					dmg *= 2;
+					break;
+				case FURY:
+					dmg = Math.round(dmg*.35f);
+					break;
+			}
+
+			dmg -= Random.IntRange( 0, enemy.dr() );
+			dmg = target.attackProc(enemy, dmg);
+			dmg = enemy.defenseProc(target, dmg);
+			enemy.damage( dmg, this );
+
+			//special effects
+			switch (type){
+				case CLOBBER:
+					if (enemy.isAlive()){
+						if (!enemy.properties().contains(Char.Property.IMMOVABLE)){
+							for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
+								int ofs = Level.NEIGHBOURS8[i];
+								if (enemy.pos - target.pos == ofs) {
+									int newPos = enemy.pos + ofs;
+									if ((Level.passable[newPos] || Level.avoid[newPos]) && Actor.findChar( newPos ) == null) {
+
+										Actor.addDelayed( new Pushing( enemy, enemy.pos, newPos ), -1 );
+
+										enemy.pos = newPos;
+										// FIXME
+										if (enemy instanceof Mob) {
+											Dungeon.level.mobPress( (Mob)enemy );
+										} else {
+											Dungeon.level.press( newPos, enemy );
+										}
+
+									}
+									break;
+								}
+							}
+						}
+						Buff.prolong(enemy, Paralysis.class, Random.NormalIntRange(0, 2));
+					}
+					break;
+				case SLAM:
+					target.SHLD += dmg/2;
+					break;
+				default:
+					//nothing
+					break;
+			}
+
+			if (target.buff(FireImbue.class) != null)
+				target.buff(FireImbue.class).proc(enemy);
+			if (target.buff(EarthImbue.class) != null)
+				target.buff(EarthImbue.class).proc(enemy);
+
+			Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
+			enemy.sprite.bloodBurstA( target.sprite.center(), dmg );
+			enemy.sprite.flash();
+
+			if (!enemy.isAlive()){
+				GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)) );
+			}
+
+			Hero hero = (Hero)target;
+
+			//Post-attack behaviour
+			switch(type){
+				case CLEAVE:
+					if (!enemy.isAlive()) {
+						//combo isn't reset, but rather increments with a cleave kill
+						hit();
+					} else {
+						detach();
+						ActionIndicator.clearAction(Combo.this);
+					}
+					hero.spendAndNext(hero.attackDelay());
+					break;
+
+				case FURY:
+					count--;
+					//fury attacks as many times as you have combo count
+					if (count > 0 && enemy.isAlive()){
+						target.sprite.attack(enemy.pos, new Callback() {
+							@Override
+							public void call() {
+								doAttack(enemy);
+							}
+						});
+					} else {
+						detach();
+						ActionIndicator.clearAction(Combo.this);
+						hero.spendAndNext(hero.attackDelay());
+					}
+					break;
+
+				default:
+					detach();
+					ActionIndicator.clearAction(Combo.this);
+					hero.spendAndNext(hero.attackDelay());
+					break;
+			}
+
+		}
+
+		@Override
+		public String prompt() {
+			if (count >= 10)    return Messages.get(Combo.class, "fury_prompt");
+			else if (count >= 8)return Messages.get(Combo.class, "crush_prompt");
+			else if (count >= 6)return Messages.get(Combo.class, "slam_prompt");
+			else if (count >= 4)return Messages.get(Combo.class, "cleave_prompt");
+			else                return Messages.get(Combo.class, "clobber_prompt");
+		}
+	};
 }

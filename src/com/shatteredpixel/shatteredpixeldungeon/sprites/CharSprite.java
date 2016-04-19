@@ -459,8 +459,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public void onComplete( Animation anim ) {
 		
 		if (animCallback != null) {
-			animCallback.call();
+			Callback executing = animCallback;
 			animCallback = null;
+			executing.call();
 		} else {
 			
 			if (anim == attack) {
