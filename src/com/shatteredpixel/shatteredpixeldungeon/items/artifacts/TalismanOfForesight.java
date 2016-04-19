@@ -89,6 +89,8 @@ public class TalismanOfForesight extends Artifact {
 
 				GLog.p( Messages.get(this, "scry") );
 
+				updateQuickslot();
+
 				Buff.affect(hero, Awareness.class, Awareness.DURATION);
 				Dungeon.observe();
 			}

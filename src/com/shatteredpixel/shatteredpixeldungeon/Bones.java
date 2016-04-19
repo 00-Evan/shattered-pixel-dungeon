@@ -168,7 +168,7 @@ public class Bones {
 					}
 				}
 				
-				if (item.isUpgradable()) {
+				if (item.isUpgradable() || item instanceof Artifact) {
 					item.cursed = true;
 					item.cursedKnown = true;
 					if (item.isUpgradable()) {
