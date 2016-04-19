@@ -159,7 +159,7 @@ public class Bones {
 									item.visiblyUpgraded(),
 									1 + ((Dungeon.depth * 3) / 10)));
 
-							return item;
+							return artifact;
 						} catch (Exception e) {
 							return new Gold(item.price());
 						}
@@ -168,7 +168,7 @@ public class Bones {
 					}
 				}
 				
-				if (item.isUpgradable() || item instanceof Artifact) {
+				if (item.isUpgradable()) {
 					item.cursed = true;
 					item.cursedKnown = true;
 					if (item.isUpgradable()) {
