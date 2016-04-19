@@ -70,8 +70,9 @@ public class ActionIndicator extends Tag {
 		updateIcon();
 	}
 
-	public static void clearAction(){
-		action = null;
+	public static void clearAction(Action action){
+		if (ActionIndicator.action == action)
+			ActionIndicator.action = null;
 	}
 
 	public static void updateIcon(){

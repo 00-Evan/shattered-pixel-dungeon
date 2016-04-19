@@ -78,7 +78,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -845,11 +844,6 @@ public class Hero extends Char {
 		if (wep != null)  wep.proc( this, enemy, damage );
 			
 		switch (subClass) {
-		case GLADIATOR:
-			if (wep instanceof MeleeWeapon || wep == null) {
-				damage += Buff.affect( this, Combo.class ).hit( enemy, damage );
-			}
-			break;
 		case SNIPER:
 			if (rangedWeapon != null) {
 				Buff.prolong( this, SnipersMark.class, attackDelay() * 1.1f ).object = enemy.id();
@@ -1330,7 +1324,17 @@ public class Hero extends Char {
 		
 		AttackIndicator.target(enemy);
 		
-		attack( enemy );
+		boolean hit = attack( enemy );
+
+		if (subClass == HeroSubClass.GLADIATOR){
+			if (hit) {
+				Buff.affect( this, Combo.class ).hit();
+			} else {
+				Combo combo = buff(Combo.class);
+				if (combo != null) combo.miss();
+			}
+		}
+
 		curAction = null;
 		
 		Invisibility.dispel();

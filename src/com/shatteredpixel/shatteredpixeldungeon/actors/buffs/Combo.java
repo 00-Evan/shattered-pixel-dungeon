@@ -21,14 +21,23 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
-public class Combo extends Buff {
+public class Combo extends Buff implements ActionIndicator.Action {
 	
-	public int count = 0;
+	private int count = 0;
+	private float comboTime = 0f;
+	private int misses = 0;
 	
 	@Override
 	public int icon() {
@@ -40,37 +49,87 @@ public class Combo extends Buff {
 		return Messages.get(this, "name");
 	}
 	
-	public int hit( Char enemy, int damage ) {
+	public void hit() {
 		
 		count++;
+		comboTime = 3f;
+		misses = 0;
 		
-		if (count >= 3) {
-			
+		if (count >= 2) {
+
+			ActionIndicator.setAction( this );
 			Badges.validateMasteryCombo( count );
-			
+
 			GLog.p( Messages.get(this, "combo", count) );
-			postpone( 1.41f - count / 10f );
-			return (int)(damage * (count - 2) / 5f);
-			
-		} else {
-			
-			postpone( 1.1f );
-			return 0;
 			
 		}
+
 	}
-	
+
+	public void miss(){
+		misses++;
+		if (misses >= 2){
+			detach();
+		}
+	}
+
+	@Override
+	public void detach() {
+		super.detach();
+		ActionIndicator.clearAction(this);
+	}
+
 	@Override
 	public boolean act() {
-		detach();
+		comboTime-=TICK;
+		spend(TICK);
+		if (comboTime <= 0) {
+			detach();
+		}
 		return true;
 	}
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc") +
-				(count <= 2 ?
-						Messages.get(this, "notenough") :
-						Messages.get(this, "bonusdmg", ((count - 2) * 20f)));
+		return Messages.get(this, "desc");
+	}
+
+	private static final String COUNT = "count";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(COUNT, count);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		count = bundle.getInt( COUNT );
+		if (count >= 2) ActionIndicator.setAction(this);
+	}
+
+	@Override
+	public Image getIcon() {
+		Image icon;
+		if (((Hero)target).belongings.weapon != null){
+			icon = new ItemSprite(Dungeon.hero.belongings.weapon);
+		} else {
+			icon = new ItemSprite(new Item(){ {image = ItemSpriteSheet.WEAPON; }});
+		}
+
+		if (count >= 10)    icon.tint(0xFFFF0000);
+		else if (count >= 8)icon.tint(0xFFFFCC00);
+		else if (count >= 6)icon.tint(0xFFFFFF00);
+		else if (count >= 4)icon.tint(0xFFCCFF00);
+		else                icon.tint(0xFF00FF00);
+
+		return icon;
+	}
+
+	@Override
+	public void doAction() {
+		ActionIndicator.clearAction(this);
+		//TODO
 	}
 }
