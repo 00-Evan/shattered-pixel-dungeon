@@ -21,6 +21,13 @@ public class ActionIndicator extends Tag {
 	}
 
 	@Override
+	public void destroy() {
+		super.destroy();
+		instance = null;
+		action = null;
+	}
+
+	@Override
 	protected void layout() {
 		super.layout();
 
@@ -28,6 +35,8 @@ public class ActionIndicator extends Tag {
 			icon.x = x + (width - icon.width()) / 2;
 			icon.y = y + (height - icon.height()) / 2;
 			PixelScene.align(icon);
+			if (!members.contains(icon))
+				add(icon);
 		}
 	}
 
@@ -43,6 +52,7 @@ public class ActionIndicator extends Tag {
 
 		if (!visible && action != null){
 			visible = true;
+			updateIcon();
 			flash();
 		} else {
 			visible = action != null;
