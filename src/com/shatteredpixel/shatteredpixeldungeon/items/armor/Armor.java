@@ -64,7 +64,7 @@ public class Armor extends EquipableItem {
 	private int hitsToKnow = HITS_TO_KNOW;
 	
 	public Glyph glyph;
-	private boolean seal;
+	public boolean seal;
 	
 	public Armor( int tier ) {
 		
@@ -167,9 +167,9 @@ public class Armor extends EquipableItem {
 		if (seal) Buff.affect(ch, BrokenSeal.WarriorShield.class).setArmor(this);
 	}
 
-	public void affixSeal(BrokenSeal sigil){
+	public void affixSeal(BrokenSeal seal){
 		this.seal = true;
-		if (sigil.level() > 0){
+		if (seal.level() > 0){
 			//doesn't override existing glyphs, but doesn't create one either
 			upgrade(glyph != null);
 		}
