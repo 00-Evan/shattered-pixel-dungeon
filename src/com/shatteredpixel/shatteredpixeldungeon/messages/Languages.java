@@ -32,9 +32,10 @@ public enum Languages {
 	PORTUGUESE("português", "pt", Status.UNREVIEWED, new String[]{"Matheus208"}, new String[]{"JST", "Try31"}),
 	FRENCH("français",      "fr", Status.UNREVIEWED, new String[]{"Canc42", "Kultissim", "Emether"}, new String[]{"Alsydis", "Basttee", "Go11um", "Minikrob", "Solthaar"}),
 	ITALIAN("italiano",		"it", Status.UNREVIEWED, new String[]{"Bizzolino", "Funnydwarf"}, new String[]{"4est", "DaniMare", "Danzl", "Nessunluogo", "Umby000"}),
+	SPANISH("español",      "es", Status.UNREVIEWED, null, new String[]{"CorvosUtopy", "Dewstend", "Kiroto", "LucasCamilo", "Luuciano96", "Pecheneg", "Prancer", "STKmonoqui", "Talruin", "Alfongad", "Ctrijueque", "Dhg121", "Grayscales", "Jonismack1", "Pixeled4life"}),
+	HUNGARIAN("magyar",     "hu", Status.UNREVIEWED, null, new String[]{"Clarovani", "Dorheim"}),
 
-	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "MJedi", "Scharnvirk", "Wawrzyn", "Dusakus", "Michaub", "Ozziezombie"}),
-	SPANISH("español",      "es", Status.INCOMPLETE, null, new String[]{"CorvosUtopy", "Dewstend", "Kiroto", "LucasCamilo", "Luuciano96", "Pecheneg", "Prancer", "STKmonoqui", "Talruin", "Alfongad", "Ctrijueque", "Dhg121", "Grayscales", "Jonismack1", "Pixeled4life"});
+	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "MJedi", "Scharnvirk", "Wawrzyn", "Dusakus", "Michaub", "Ozziezombie"});
 
 	public enum Status{
 		//below 60% complete languages are not added.
