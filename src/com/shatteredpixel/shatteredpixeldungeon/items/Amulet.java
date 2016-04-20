@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AmuletScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -66,7 +67,16 @@ public class Amulet extends Item {
 				Statistics.amuletObtained = true;
 				Badges.validateVictory();
 				hero.spend(-TIME_TO_PICK_UP);
-				showAmuletScene( true );
+
+				//add a delayed actor here so pickup behaviour can fully process.
+				Actor.addDelayed(new Actor(){
+					@Override
+					protected boolean act() {
+						Actor.remove(this);
+						showAmuletScene( true );
+						return false;
+					}
+				}, -5);
 			}
 			
 			return true;
