@@ -117,18 +117,18 @@ public class Armor extends EquipableItem {
 
 		if (action.equals(AC_DETACH) && seal){
 			seal = false;
-			BrokenSeal.WarriorShield sigilBuff = hero.buff(BrokenSeal.WarriorShield.class);
-			if (sigilBuff != null) sigilBuff.setArmor(null);
+			BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield.class);
+			if (sealBuff != null) sealBuff.setArmor(null);
 
-			BrokenSeal sigil = new BrokenSeal();
+			BrokenSeal seal = new BrokenSeal();
 			if (level() > 0){
-				sigil.upgrade();
+				seal.upgrade();
 				degrade();
 			}
-			GLog.i( Messages.get(Armor.class, "detach_sigil") );
+			GLog.i( Messages.get(Armor.class, "detach_seal") );
 			hero.sprite.operate(hero.pos);
-			if (!sigil.collect()){
-				Dungeon.level.drop(sigil, hero.pos);
+			if (!seal.collect()){
+				Dungeon.level.drop(seal, hero.pos);
 			}
 		}
 	}
@@ -190,8 +190,8 @@ public class Armor extends EquipableItem {
 			hero.belongings.armor = null;
 			((HeroSprite)hero.sprite).updateArmor();
 
-			BrokenSeal.WarriorShield sigilBuff = hero.buff(BrokenSeal.WarriorShield.class);
-			if (sigilBuff != null) sigilBuff.setArmor(null);
+			BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield.class);
+			if (sealBuff != null) sealBuff.setArmor(null);
 
 			return true;
 

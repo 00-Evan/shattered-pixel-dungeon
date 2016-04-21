@@ -70,7 +70,7 @@ public class ItemSpriteSheet {
 	public static final int BOMB        = ROW2+5;
 	public static final int HONEYPOT    = ROW2+6;
 	public static final int SHATTPOT    = ROW2+7;
-	public static final int SIGIL       = ROW2+8;
+	public static final int SEAL       = ROW2+8;
 	// Keys
 	public static final int IRON_KEY		= ROW2+9;
 	public static final int GOLDEN_KEY		= ROW2+10;

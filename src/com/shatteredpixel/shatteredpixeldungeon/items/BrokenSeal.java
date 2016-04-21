@@ -24,7 +24,7 @@ public class BrokenSeal extends Item {
 	public static final String AC_INFO = "INFO_WINDOW";
 
 	{
-		image = ItemSpriteSheet.SIGIL;
+		image = ItemSpriteSheet.SEAL;
 
 		cursedKnown = levelKnown = true;
 		unique = true;

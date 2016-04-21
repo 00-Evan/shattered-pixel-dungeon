@@ -86,11 +86,11 @@ public class Berserk extends Buff {
 	public boolean berserking(){
 		if (target.HP == 0 && state == State.NORMAL){
 
-			WarriorShield sigil = target.buff(WarriorShield.class);
-			if (sigil != null){
+			WarriorShield shield = target.buff(WarriorShield.class);
+			if (shield != null){
 				state = State.BERSERK;
 				BuffIndicator.refreshHero();
-				target.SHLD = sigil.maxShield() * 5;
+				target.SHLD = shield.maxShield() * 5;
 
 				SpellSprite.show(target, SpellSprite.BERSERK);
 				Sample.INSTANCE.play( Assets.SND_CHALLENGE );
