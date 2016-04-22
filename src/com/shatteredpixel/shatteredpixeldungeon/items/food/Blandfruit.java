@@ -79,32 +79,33 @@ public class Blandfruit extends Food {
 	@Override
 	public void execute( Hero hero, String action ) {
 
+		if (action.equals( AC_EAT ) && potionAttrib == null) {
+
+			GLog.w( Messages.get(this, "raw"));
+			return;
+
+		}
+
 		super.execute(hero, action);
 
-		if (action.equals( AC_EAT )){
-			if (potionAttrib == null) {
+		if (action.equals( AC_EAT ) && potionAttrib != null){
 
-				GLog.w( Messages.get(this, "raw"));
-
+			if (potionAttrib instanceof PotionOfFrost) {
+				GLog.i(Messages.get(this, "ice_msg"));
+				FrozenCarpaccio.effect(hero);
+			} else if (potionAttrib instanceof PotionOfLiquidFlame){
+				GLog.i(Messages.get(this, "fire_msg"));
+				Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
+			} else if (potionAttrib instanceof PotionOfToxicGas) {
+				GLog.i(Messages.get(this, "toxic_msg"));
+				Buff.affect(hero, ToxicImbue.class).set(ToxicImbue.DURATION);
+			} else if (potionAttrib instanceof PotionOfParalyticGas) {
+				GLog.i(Messages.get(this, "para_msg"));
+				Buff.affect(hero, EarthImbue.class, EarthImbue.DURATION);
 			} else {
-
-				super.execute(hero, action);
-
-				if (potionAttrib instanceof PotionOfFrost) {
-					GLog.i(Messages.get(this, "ice_msg"));
-					FrozenCarpaccio.effect(hero);
-				} else if (potionAttrib instanceof PotionOfLiquidFlame){
-					GLog.i(Messages.get(this, "fire_msg"));
-					Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
-				} else if (potionAttrib instanceof PotionOfToxicGas) {
-					GLog.i(Messages.get(this, "toxic_msg"));
-					Buff.affect(hero, ToxicImbue.class).set(ToxicImbue.DURATION);
-				} else if (potionAttrib instanceof PotionOfParalyticGas) {
-					GLog.i(Messages.get(this, "para_msg"));
-					Buff.affect(hero, EarthImbue.class, EarthImbue.DURATION);
-				} else
-					potionAttrib.apply(hero);
+				potionAttrib.apply(hero);
 			}
+
 		}
 	}
 

@@ -109,12 +109,15 @@ public enum HeroClass {
 		darts.identify().collect();
 
 		if ( Badges.global.contains(Badges.Badge.TUTORIAL_WARRIOR) ){
-			hero.belongings.armor.affixSeal(new BrokenSeal());
+			if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
+				hero.belongings.armor.affixSeal(new BrokenSeal());
 			Dungeon.quickslot.setSlot(0, darts);
 		} else {
-			BrokenSeal seal = new BrokenSeal();
-			seal.collect();
-			Dungeon.quickslot.setSlot(0, seal);
+			if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
+				BrokenSeal seal = new BrokenSeal();
+				seal.collect();
+				Dungeon.quickslot.setSlot(0, seal);
+			}
 			Dungeon.quickslot.setSlot(1, darts);
 		}
 
