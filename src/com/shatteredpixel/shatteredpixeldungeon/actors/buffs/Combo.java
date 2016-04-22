@@ -171,10 +171,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		public void onSelect(Integer cell) {
 			if (cell == null) return;
 			final Char enemy = Actor.findChar( cell );
-			int userPos = target.pos;
-			if (enemy == null || userPos == cell || (Dungeon.hero.belongings.weapon != null ?
-					Level.distance( userPos, enemy.pos ) > Dungeon.hero.belongings.weapon.reachFactor(Dungeon.hero)
-					: !Level.adjacent( userPos, enemy.pos ))){
+			if (enemy == null || !((Hero)target).canAttack(enemy) || target.isCharmedBy( enemy )){
 				GLog.w( Messages.get(Combo.class, "bad_target") );
 			} else {
 				target.sprite.attack(cell, new Callback() {

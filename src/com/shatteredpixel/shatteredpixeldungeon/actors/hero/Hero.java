@@ -95,6 +95,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
@@ -103,6 +104,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -353,6 +355,27 @@ public class Hero extends Char {
 							1.5f * speed :
 					speed;
 			
+		}
+	}
+
+	public boolean canAttack(Char enemy){
+		if (enemy == null || pos == enemy.pos)
+			return false;
+
+		//can always attack adjacent enemies
+		if (Level.adjacent(pos, enemy.pos))
+			return true;
+
+		KindOfWeapon wep = Dungeon.hero.belongings.weapon;
+
+		if (wep != null && Level.distance( pos, enemy.pos ) <= wep.reachFactor(this)){
+
+			PathFinder.buildDistanceMap(enemy.pos, BArray.not(Level.solid, null), wep.reachFactor(this));
+
+			return PathFinder.distance[pos] <= wep.reachFactor(this);
+
+		} else {
+			return false;
 		}
 	}
 	
@@ -804,11 +827,7 @@ public class Hero extends Char {
 
 		enemy = action.target;
 
-		boolean inRange = belongings.weapon != null ?
-				Level.distance( pos, enemy.pos ) <= belongings.weapon.reachFactor(this)
-				: Level.adjacent( pos, enemy.pos );
-
-		if (inRange && enemy.isAlive() && !isCharmedBy( enemy )) {
+		if (enemy.isAlive() && canAttack( enemy ) && !isCharmedBy( enemy )) {
 			
 			spend( attackDelay() );
 			sprite.attack( enemy.pos );

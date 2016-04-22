@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.noosa.Game;
@@ -97,14 +96,11 @@ public class AttackIndicator extends Tag {
 	
 	private void checkEnemies() {
 
-		int heroPos = Dungeon.hero.pos;
 		candidates.clear();
 		int v = Dungeon.hero.visibleEnemies();
 		for (int i=0; i < v; i++) {
 			Mob mob = Dungeon.hero.visibleEnemy( i );
-			if (Dungeon.hero.belongings.weapon != null ?
-					Level.distance( heroPos, mob.pos ) <= Dungeon.hero.belongings.weapon.reachFactor(Dungeon.hero)
-					: Level.adjacent( heroPos, mob.pos )) {
+			if ( Dungeon.hero.canAttack( mob) ) {
 				candidates.add( mob );
 			}
 		}
