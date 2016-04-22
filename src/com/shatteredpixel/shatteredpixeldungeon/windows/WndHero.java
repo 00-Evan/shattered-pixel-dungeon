@@ -44,7 +44,7 @@ import java.util.Locale;
 
 public class WndHero extends WndTabbed {
 	
-	private static final int WIDTH		= 100;
+	private static final int WIDTH		= 115;
 	
 	private StatsTab stats;
 	private BuffsTab buffs;
@@ -112,7 +112,7 @@ public class WndHero extends WndTabbed {
 					GameScene.show( new WndCatalogus() );
 				}
 			};
-			btnCatalogs.setRect( 0, title.height(), btnCatalogs.reqWidth() + 2, btnCatalogs.reqHeight() + 2 );
+			btnCatalogs.setRect( 0, title.height()+1, 57, btnCatalogs.reqHeight() + 2 );
 			add( btnCatalogs );
 
 			RedButton btnJournal = new RedButton( Messages.get(this, "journal") ) {
@@ -124,13 +124,14 @@ public class WndHero extends WndTabbed {
 			};
 			btnJournal.setRect(
 				btnCatalogs.right() + 1, btnCatalogs.top(),
-				btnJournal.reqWidth() + 2, btnJournal.reqHeight() + 2 );
+				57, btnJournal.reqHeight() + 2 );
 			add( btnJournal );
 
 			pos = btnCatalogs.bottom() + GAP;
 
 			statSlot( Messages.get(this, "str"), hero.STR() );
-			statSlot( Messages.get(this, "health"), (hero.HP + hero.SHLD) + "/" + hero.HT );
+			if (hero.SHLD > 0) statSlot( Messages.get(this, "health"), hero.HP + "+" + hero.SHLD + "/" + hero.HT );
+			else statSlot( Messages.get(this, "health"), (hero.HP) + "/" + hero.HT );
 			statSlot( Messages.get(this, "exp"), hero.exp + "/" + hero.maxExp() );
 
 			pos += GAP;
@@ -148,7 +149,7 @@ public class WndHero extends WndTabbed {
 			add( txt );
 
 			txt = PixelScene.renderText( value, 8 );
-			txt.x = WIDTH * 0.65f;
+			txt.x = WIDTH * 0.6f;
 			txt.y = pos;
 			PixelScene.align(txt);
 			add( txt );

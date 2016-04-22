@@ -51,7 +51,8 @@ public class StatusPane extends Component {
 
 	private int lastTier = 0;
 
-	private Image shield;
+	private Image rawShielding;
+	private Image shieldedHP;
 	private Image hp;
 	private Image exp;
 
@@ -103,8 +104,12 @@ public class StatusPane extends Component {
 		compass = new Compass( Dungeon.level.exit );
 		add( compass );
 
-		shield = new Image( Assets.SHLD_BAR );
-		add(shield);
+		rawShielding = new Image( Assets.SHLD_BAR );
+		rawShielding.alpha(0.5f);
+		add(rawShielding);
+
+		shieldedHP = new Image( Assets.SHLD_BAR );
+		add(shieldedHP);
 
 		hp = new Image( Assets.HP_BAR );
 		add( hp );
@@ -151,8 +156,8 @@ public class StatusPane extends Component {
 		compass.y = avatar.y + avatar.height / 2f - compass.origin.y;
 		PixelScene.align(compass);
 
-		hp.x = shield.x = 30;
-		hp.y = shield.y = 3;
+		hp.x = shieldedHP.x = rawShielding.x = 30;
+		hp.y = shieldedHP.y = rawShielding.y = 3;
 
 		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
 
@@ -174,12 +179,12 @@ public class StatusPane extends Component {
 
 		float health = Dungeon.hero.HP;
 		float shield = Dungeon.hero.SHLD;
-		float max = Math.max(health+shield, Dungeon.hero.HT);
+		float max = Dungeon.hero.HT;
 
 		if (!Dungeon.hero.isAlive()) {
 			avatar.tint( 0x000000, 0.6f );
 			blood.on = false;
-		} else if ((health/Dungeon.hero.HT) < 0.25f) {
+		} else if ((health/max) < 0.25f) {
 			avatar.tint( 0xcc0000, 0.4f );
 			blood.on = true;
 		} else {
@@ -187,8 +192,9 @@ public class StatusPane extends Component {
 			blood.on = false;
 		}
 
-		hp.scale.x = health/max;
-		this.shield.scale.x = (health+shield)/max;
+		hp.scale.x = Math.max( 0, (health-shield)/max);
+		shieldedHP.scale.x = health/max;
+		rawShielding.scale.x = shield/max;
 
 		exp.scale.x = (width / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
 
