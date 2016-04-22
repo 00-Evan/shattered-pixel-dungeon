@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
@@ -45,6 +46,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -454,6 +457,52 @@ public class Heap implements Bundlable {
 		}
 		items.clear();
 		items = null;
+	}
+
+	@Override
+	public String toString(){
+		switch(type){
+			case CHEST:
+			case MIMIC:
+				return Messages.get(this, "chest");
+			case LOCKED_CHEST:
+				return Messages.get(this, "locked_chest");
+			case CRYSTAL_CHEST:
+				return Messages.get(this, "crystal_chest");
+			case TOMB:
+				return Messages.get(this, "tomb");
+			case SKELETON:
+				return Messages.get(this, "skeleton");
+			case REMAINS:
+				return Messages.get(this, "remains");
+			default:
+				return peek().toString();
+		}
+	}
+
+	public String info(){
+		switch(type){
+			case CHEST:
+			case MIMIC:
+				return Messages.get(this, "chest_desc");
+			case LOCKED_CHEST:
+				return Messages.get(this, "locked_chest_desc");
+			case CRYSTAL_CHEST:
+				if (peek() instanceof Artifact)
+					return Messages.get(this, "crystal_chest_desc", Messages.get(this, "artifact") );
+				else if (peek() instanceof Wand)
+					return Messages.get(this, "crystal_chest_desc", Messages.get(this, "wand") );
+				else
+					return Messages.get(this, "crystal_chest_desc", Messages.get(this, "ring") );
+			case TOMB:
+				return Messages.get(this, "tomb_desc");
+			case SKELETON:
+				return Messages.get(this, "skeleton_desc");
+			case REMAINS:
+				return Messages.get(this, "remains_desc");
+			default:
+				return peek().info();
+		}
 	}
 
 	private static final String POS		= "pos";

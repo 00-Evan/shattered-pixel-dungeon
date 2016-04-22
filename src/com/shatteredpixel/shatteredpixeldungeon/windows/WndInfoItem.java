@@ -22,11 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -58,39 +54,9 @@ public class WndInfoItem extends Window {
 			fillFields( item.image(), item.glowing(), color, item.toString(), item.info() );
 			
 		} else {
-			
-			String title;
-			String info;
-			
-			if (heap.type == Type.CHEST || heap.type == Type.MIMIC) {
-				title = Messages.get(this, "chest");
-				info = Messages.get(this, "wont_know");
-			} else if (heap.type == Type.TOMB) {
-				title = Messages.get(this, "tomb");
-				info = Messages.get(this, "owner");
-			} else if (heap.type == Type.SKELETON) {
-				title = Messages.get(this, "skeleton");
-				info = Messages.get(this, "skeleton_desc");
-			} else if (heap.type == Type.REMAINS) {
-				title = Messages.get(this, "remains");
-				info = Messages.get(this, "remains_desc");
-			} else if (heap.type == Type.CRYSTAL_CHEST) {
-				title = Messages.get(this, "crystal_chest");
-				if (heap.peek() instanceof Artifact)
-					info = Messages.get(this, "inside", Messages.get(this, "artifact") );
-				else if (heap.peek() instanceof Wand)
-					info = Messages.get(this, "inside", Messages.get(this, "wand") );
-				else if (heap.peek() instanceof Ring)
-					info = Messages.get(this, "inside", Messages.get(this, "ring") );
-				else
-					info = ""; //This shouldn't happen
-			} else {
-				title = Messages.get(this, "locked_chest");
-				info = Messages.get(this, "need_key");
-			}
-			
-			fillFields( heap.image(), heap.glowing(), TITLE_COLOR, title, info );
-			
+
+			fillFields( heap.image(), heap.glowing(), TITLE_COLOR, heap.toString(), heap.info() );
+
 		}
 	}
 	
