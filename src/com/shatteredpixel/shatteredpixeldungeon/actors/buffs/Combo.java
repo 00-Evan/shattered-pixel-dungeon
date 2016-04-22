@@ -64,7 +64,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	public void hit() {
 		
 		count++;
-		comboTime = 3f;
+		comboTime = 4f;
 		misses = 0;
 		
 		if (count >= 2) {
@@ -80,7 +80,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	public void miss(){
 		misses++;
-		comboTime = 3f;
+		comboTime = 4f;
 		if (misses >= 2){
 			detach();
 		}

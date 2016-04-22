@@ -89,7 +89,7 @@ public class BrokenSeal extends Item {
 			if (armor == null) detach();
 			else if (armor.isEquipped((Hero)target)) {
 				if (target.SHLD < maxShield()){
-					partialShield += 1/(30*Math.pow(0.9f, (maxShield() - target.SHLD)));
+					partialShield += 1/(30*Math.pow(0.9f, (maxShield() - target.SHLD - 1)));
 				}
 			}
 			while (partialShield >= 1){
