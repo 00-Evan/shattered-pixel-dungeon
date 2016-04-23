@@ -38,12 +38,13 @@ import java.util.Locale;
 
 public class WndLangs extends Window {
 
-	private int WIDTH = 120;
+	private int WIDTH_P = 120;
+	private int WIDTH_L = 171;
+
+	private int MIN_HEIGHT = 110;
+
 	private int BTN_WIDTH = 50;
 	private int BTN_HEIGHT = 14;
-
-	private int TEXT_LEFT = 55;
-	private int TEXT_WIDTH = WIDTH - TEXT_LEFT;
 
 	public WndLangs(){
 		super();
@@ -92,20 +93,28 @@ public class WndLangs extends Window {
 				}
 			}
 			btn.setSize(BTN_WIDTH, BTN_HEIGHT);
-			btn.setPos(0, y);
+			if (ShatteredPixelDungeon.landscape() && i % 2 == 1){
+				btn.setPos(BTN_WIDTH+1, y-15);
+			} else {
+				btn.setPos(0, y);
+				y += 15;
+			}
+
 			add(btn);
-			y += 15;
 		}
-		y--;
-		resize(WIDTH, y);
+		y = Math.max(MIN_HEIGHT, y+1);
+		resize(ShatteredPixelDungeon.landscape() ? WIDTH_L : WIDTH_P, y);
+
+		int textLeft = width - 65;
+		int textWidth = width - textLeft;
 
 		ColorBlock separator = new ColorBlock(1, y, 0xFF000000);
-		separator.x = (BTN_WIDTH + TEXT_LEFT)/2f;
+		separator.x = textLeft - 2.5f;
 		add(separator);
 
 		//language info layout.
 		RenderedText title = PixelScene.renderText( Messages.titleCase(currLang.nativeName()) , 9 );
-		title.x = TEXT_LEFT + (TEXT_WIDTH - title.width())/2f;
+		title.x = textLeft + (textWidth - title.width())/2f;
 		title.y = 0;
 		title.hardlight(TITLE_COLOR);
 		add(title);
@@ -113,8 +122,8 @@ public class WndLangs extends Window {
 		if (currLang == Languages.ENGLISH){
 
 			RenderedTextMultiline info = PixelScene.renderMultiline(6);
-			info.text("This is the source language, written by the developer.", WIDTH - TEXT_LEFT);
-			info.setPos(TEXT_LEFT, title.height() + 2);
+			info.text("This is the source language, written by the developer.", width - textLeft);
+			info.setPos(textLeft, title.height() + 2);
 			add(info);
 
 		} else {
@@ -122,16 +131,16 @@ public class WndLangs extends Window {
 			RenderedTextMultiline info = PixelScene.renderMultiline(6);
 			switch (currLang.status()) {
 				case REVIEWED:
-					info.text(Messages.get(this, "completed"), WIDTH - TEXT_LEFT);
+					info.text(Messages.get(this, "completed"), width - textLeft);
 					break;
 				case UNREVIEWED:
-					info.text(Messages.get(this, "unreviewed"), WIDTH - TEXT_LEFT);
+					info.text(Messages.get(this, "unreviewed"), width - textLeft);
 					break;
 				case INCOMPLETE:
-					info.text(Messages.get(this, "unfinished"), WIDTH - TEXT_LEFT);
+					info.text(Messages.get(this, "unfinished"), width - textLeft);
 					break;
 			}
-			info.setPos(TEXT_LEFT, title.height() + 2);
+			info.setPos(textLeft, title.height() + 2);
 			add(info);
 
 			RedButton creditsBtn = new RedButton(Messages.titleCase(Messages.get(this, "credits"))){
@@ -178,12 +187,12 @@ public class WndLangs extends Window {
 				}
 			};
 			creditsBtn.setSize(creditsBtn.reqWidth() + 2, 16);
-			creditsBtn.setPos(TEXT_LEFT + (TEXT_WIDTH - creditsBtn.width()) / 2f, y - 18);
+			creditsBtn.setPos(textLeft + (textWidth - creditsBtn.width()) / 2f, y - 18);
 			add(creditsBtn);
 
 			RenderedTextMultiline transifex_text = PixelScene.renderMultiline(6);
-			transifex_text.text(Messages.get(this, "transifex"), WIDTH - TEXT_LEFT);
-			transifex_text.setPos(TEXT_LEFT, creditsBtn.top() - 2 - transifex_text.height());
+			transifex_text.text(Messages.get(this, "transifex"), width - textLeft);
+			transifex_text.setPos(textLeft, creditsBtn.top() - 2 - transifex_text.height());
 			add(transifex_text);
 
 		}
