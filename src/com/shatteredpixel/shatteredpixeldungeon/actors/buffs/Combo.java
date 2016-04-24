@@ -253,7 +253,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					}
 					break;
 				case SLAM:
-					target.SHLD += dmg/2;
+					target.SHLD = Math.max( target.SHLD, dmg/2);
 					break;
 				default:
 					//nothing
