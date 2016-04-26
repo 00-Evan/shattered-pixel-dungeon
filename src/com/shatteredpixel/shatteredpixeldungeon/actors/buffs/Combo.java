@@ -214,7 +214,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					dmg = Math.round(dmg*2.5f);
 					break;
 				case FURY:
-					dmg = Math.round(dmg*0.4f);
+					dmg = Math.round(dmg*0.6f);
 					break;
 			}
 
