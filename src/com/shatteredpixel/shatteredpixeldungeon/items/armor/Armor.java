@@ -64,7 +64,7 @@ public class Armor extends EquipableItem {
 	private int hitsToKnow = HITS_TO_KNOW;
 	
 	public Glyph glyph;
-	public boolean seal;
+	private BrokenSeal seal;
 	
 	public Armor( int tier ) {
 		
@@ -92,21 +92,25 @@ public class Armor extends EquipableItem {
 			hitsToKnow = HITS_TO_KNOW;
 		}
 		inscribe((Glyph) bundle.get(GLYPH));
-		seal = bundle.getBoolean(SEAL);
-		if (seal) unique = true;
+		//TODO holdover from beta releases, remove in 0.4.0
+		if (bundle.getBoolean(SEAL)){
+			seal = new BrokenSeal();
+			if (level() > 0) seal.level(1);
+		} else
+			seal = (BrokenSeal)bundle.get(SEAL);
 	}
 
 	@Override
 	public void reset() {
 		super.reset();
 		//armor can be kept in bones between runs, the seal cannot.
-		seal = false;
+		seal = null;
 	}
 
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		if (seal) actions.add(AC_DETACH);
+		if (seal != null) actions.add(AC_DETACH);
 		return actions;
 	}
 
@@ -115,14 +119,11 @@ public class Armor extends EquipableItem {
 
 		super.execute(hero, action);
 
-		if (action.equals(AC_DETACH) && seal){
-			seal = false;
+		if (action.equals(AC_DETACH) && seal != null){
 			BrokenSeal.WarriorShield sealBuff = hero.buff(BrokenSeal.WarriorShield.class);
 			if (sealBuff != null) sealBuff.setArmor(null);
 
-			BrokenSeal seal = new BrokenSeal();
-			if (level() > 0){
-				seal.upgrade();
+			if (seal.level() > 0){
 				degrade();
 			}
 			GLog.i( Messages.get(Armor.class, "detach_seal") );
@@ -130,6 +131,7 @@ public class Armor extends EquipableItem {
 			if (!seal.collect()){
 				Dungeon.level.drop(seal, hero.pos);
 			}
+			seal = null;
 		}
 	}
 
@@ -164,11 +166,11 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public void activate(Char ch) {
-		if (seal) Buff.affect(ch, BrokenSeal.WarriorShield.class).setArmor(this);
+		if (seal != null) Buff.affect(ch, BrokenSeal.WarriorShield.class).setArmor(this);
 	}
 
 	public void affixSeal(BrokenSeal seal){
-		this.seal = true;
+		this.seal = seal;
 		if (seal.level() > 0){
 			//doesn't override existing glyphs, but doesn't create one either
 			upgrade(glyph != null);
@@ -176,6 +178,10 @@ public class Armor extends EquipableItem {
 		if (isEquipped(Dungeon.hero)){
 			Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(this);
 		}
+	}
+
+	public BrokenSeal checkSeal(){
+		return seal;
 	}
 
 	@Override
@@ -228,6 +234,9 @@ public class Armor extends EquipableItem {
 				inscribe( Glyph.random() );
 			}
 		}
+
+		if (seal != null && seal.level() == 0)
+			seal.upgrade();
 
 		STR--;
 		
@@ -294,7 +303,7 @@ public class Armor extends EquipableItem {
 			info += "\n\n" + Messages.get(Armor.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
 			info += "\n\n" + Messages.get(Armor.class, "cursed");
-		} else if (seal) {
+		} else if (seal != null) {
 			info += "\n\n" + Messages.get(Armor.class, "seal_attached");
 		}
 		
@@ -303,7 +312,7 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public Emitter emitter() {
-		if (!seal) return super.emitter();
+		if (seal == null) return super.emitter();
 		Emitter emitter = new Emitter();
 		emitter.pos(10f, 6f);
 		emitter.fillTarget = false;
@@ -346,7 +355,6 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public int price() {
-		if (seal) return 0;
 		int price = 10 * (1 << (tier - 1));
 		if (glyph != null) {
 			price *= 1.5;

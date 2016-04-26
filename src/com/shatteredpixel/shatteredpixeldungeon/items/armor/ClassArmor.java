@@ -20,8 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -56,9 +54,9 @@ abstract public class ClassArmor extends Armor {
 		switch (owner.heroClass) {
 		case WARRIOR:
 			classArmor = new WarriorArmor();
-			classArmor.seal = armor.seal;
-			if (armor.seal && armor.isEquipped(owner)){
-				Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(classArmor);
+			BrokenSeal seal = armor.checkSeal();
+			if (seal != null) {
+				classArmor.affixSeal(seal);
 			}
 			break;
 		case ROGUE:
