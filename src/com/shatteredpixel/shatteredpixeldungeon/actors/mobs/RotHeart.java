@@ -66,6 +66,11 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
+	public void beckon(int cell) {
+		//do nothing
+	}
+
+	@Override
 	protected boolean getCloser(int target) {
 		return false;
 	}
