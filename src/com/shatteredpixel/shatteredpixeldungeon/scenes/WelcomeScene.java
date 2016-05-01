@@ -19,7 +19,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class WelcomeScene extends PixelScene {
 
-	private static int LATEST_UPDATE = 90;
+	private static int LATEST_UPDATE = 97;
 
 	@Override
 	public void create() {
@@ -112,7 +112,7 @@ public class WelcomeScene extends PixelScene {
 				message = Messages.get(this, "patch_intro");
 				message += "\n\n" + Messages.get(this, "patch_bugfixes");
 				message += "\n" + Messages.get(this, "patch_translations");
-				message += "\n\n" + Messages.get(this, "patch_msg");
+				message += "\n" + Messages.get(this, "patch_balance");
 
 			}
 		} else {

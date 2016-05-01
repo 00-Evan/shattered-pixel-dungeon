@@ -37,41 +37,48 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-			"_v0.3.4c:_\n" +
-			"- Performance improvements\n" +
-			"- Bugfixes\n" +
-			"- Translation updates\n" +
+			"_v0.3.5:_\n" +
+			"Warrior Rework:\n" +
+			"- Starting STR down to 10, from 11\n" +
+			"- Short sword dmg down to 1-10, from 1-12\n" +
+			"- Short sword can no longer be reforged\n" +
+			"- Now IDs potions of health, not STR\n" +
+			"- Now starts with a unique seal for armor\n" +
+			"- Seal grants shielding ontop of health\n" +
+			"- Seal allows for one upgrade transfer\n" +
 			"\n" +
-			"_v0.3.4:_\n" +
-			"- Shattered now supports multiple languages\n" +
+			"Berserker Rework:\n" +
+			"- Bonus damage now scales with lost HP, instead of a flat 50% at 50% hp\n" +
+			"- Berserker can now endure through death for a short time, with caveats\n" +
 			"\n" +
-			"Balance Changes:\n" +
-			"- Hunger now builds ~10% slower\n" +
-			"- Sad Ghost no longer gives tier 1 loot\n" +
-			"- Sad Ghost gives tier 4/5 loot less often\n" +
-			"- Burning now deals less damage at low HP\n" +
-			"- Weakness no longer discharges wands\n" +
-			"- Rockfall traps rebalanced\n" +
+			"Gladiator Rework:\n" +
+			"- Combo no longer grants bonus damage\n" +
+			"- Combo is now easier to stack\n" +
+			"- Combo now unlocks special finisher moves\n" +
 			"\n" +
-			"_v0.3.3:_\n" +
-			"- Support for Google Play Games\n" +
+			"Balance Tweaks:\n" +
+			"- Spears can now reach enemies 1 tile away\n" +
+			"- Wand of Blast Wave now pushes bosses less\n" +
+			"\n" +
+			"Misc:\n" +
+			"- Can now examine multiple things in one tile\n" +
+			"- Classic font added for Russian language\n" +
+			"- Added Hungarian language\n" +
+			"- Translation Updates\n" +
+			"- Various bugfixes\n" +
+			"\n"+
+			"_v0.3.4:_ Multiple language support\n" +
+			"\n" +
+			"_v0.3.3:_ Support for Google Play Games\n" +
 			"\n" +
 			"_v0.3.2:_\n" +
-			"- Prison rework: new enemies, quests, bosses, etc.\n" +
+			"- Prison rework: new enemies, quests, etc.\n" +
 			"- Mastery Book only available after floor 10\n" +
 			"- Hunger damage now scales with hero level\n" +
-			"- Earlygame balance changes\n" +
-			"- Warlock subclass overhauled\n" +
 			"\n" +
-			"_v0.3.1:_\n" +
-			"- Traps reworked, over 20 new traps\n" +
-			"- UI and QOL upgrades, inc. 4 quickslots\n" +
+			"_v0.3.1:_ Traps reworked & UI upgrades\n" +
 			"\n" +
-			"_v0.3.0:_\n" +
-			"- Wands completely reworked\n" +
-			"- Mage reworked, starts with a unique staff\n" +
-			"- Battlemage subclass reworked\n" +
-			"- Warlock subclass reworked\n" +
+			"_v0.3.0:_ Wands & Mage completely reworked\n" +
 			"\n" +
 			"_v0.2.4:_ Small improvements and tweaks\n" +
 			"\n" +
