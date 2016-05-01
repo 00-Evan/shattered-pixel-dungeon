@@ -367,7 +367,8 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static boolean classicFont(){
-		return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT, true);
+		return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT,
+				(language() != Languages.KOREAN && language() != Languages.CHINESE));
 	}
 
 	public static void lastClass( int value ) {

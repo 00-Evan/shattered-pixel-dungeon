@@ -22,7 +22,6 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -266,9 +265,7 @@ public class WndSettings extends WndTabbed {
 			};
 			chkFont.setRect(0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
 			chkFont.checked(!ShatteredPixelDungeon.classicFont());
-			Languages lang = ShatteredPixelDungeon.language();
-			if (lang != Languages.CHINESE && lang != Languages.KOREAN)
-				add(chkFont);
+			add(chkFont);
 		}
 
 	}
