@@ -17,7 +17,7 @@ public class Berserk extends Buff {
 	}
 	private State state = State.NORMAL;
 
-	private static final int EXHAUSTION_START = 30;
+	private static final int EXHAUSTION_START = 40;
 	private int exhaustion;
 
 	private static final float LEVEL_RECOVER_START = 3f;
@@ -77,7 +77,7 @@ public class Berserk extends Buff {
 			bonus = (50 - exhaustion) / 50f;
 		} else {
 			float percentMissing = 1f - target.HP/(float)target.HT;
-			bonus = 1f + (percentMissing * percentMissing);
+			bonus = 1f + (float)Math.pow(percentMissing, 3);
 		}
 
 		return Math.round(dmg * bonus);

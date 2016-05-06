@@ -197,18 +197,21 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			//variance in damage dealt
 			switch(type){
 				case CLOBBER:
-					dmg = Math.round(dmg*0.5f);
+					dmg = Math.round(dmg*0.6f);
 					break;
 				case CLEAVE:
-					dmg = Math.round(dmg*1.4f);
+					dmg = Math.round(dmg*1.5f);
 					break;
 				case SLAM:
+					//rolls 2 times, takes the highest roll
+					int dmgReroll = target.damageRoll();
+					if (dmgReroll > dmg) dmg = dmgReroll;
 					dmg = Math.round(dmg*1.6f);
 					break;
 				case CRUSH:
 					//rolls 4 times, takes the highest roll
 					for (int i = 1; i < 4; i++) {
-						int dmgReroll = target.damageRoll();
+						dmgReroll = target.damageRoll();
 						if (dmgReroll > dmg) dmg = dmgReroll;
 					}
 					dmg = Math.round(dmg*2.5f);
@@ -249,7 +252,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 								}
 							}
 						}
-						Buff.prolong(enemy, Paralysis.class, Random.NormalIntRange(0, 2));
+						Buff.prolong(enemy, Paralysis.class, Random.NormalIntRange(1, 4));
 					}
 					break;
 				case SLAM:
@@ -279,8 +282,9 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			switch(type){
 				case CLEAVE:
 					if (!enemy.isAlive()) {
-						//combo isn't reset, but rather increments with a cleave kill
+						//combo isn't reset, but rather increments with a cleave kill, and grants more time.
 						hit();
+						comboTime = 10f;
 					} else {
 						detach();
 						ActionIndicator.clearAction(Combo.this);
