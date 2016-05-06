@@ -29,6 +29,7 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
+//FIXME: this should be upgradeable, fix in 0.4.0
 abstract public class ClassArmor extends Armor {
 
 	private static final String AC_SPECIAL = "SPECIAL";
@@ -69,7 +70,8 @@ abstract public class ClassArmor extends Armor {
 			classArmor = new HuntressArmor();
 			break;
 		}
-		
+
+		classArmor.level(armor.level());
 		classArmor.STR = armor.STR;
 		classArmor.DR = armor.DR();
 		
@@ -98,6 +100,7 @@ abstract public class ClassArmor extends Armor {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
+		actions.remove( AC_DETACH );
 		if (hero.HP >= 3 && isEquipped( hero )) {
 			actions.add( AC_SPECIAL );
 		}

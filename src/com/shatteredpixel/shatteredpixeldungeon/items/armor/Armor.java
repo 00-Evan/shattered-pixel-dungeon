@@ -55,7 +55,7 @@ public class Armor extends EquipableItem {
 	private static final int HITS_TO_KNOW    = 10;
 
 	private static final String TXT_TO_STRING	= "%s :%d";
-	private static final String AC_DETACH       = "DETACH";
+	protected static final String AC_DETACH       = "DETACH";
 	
 	public int tier;
 	
