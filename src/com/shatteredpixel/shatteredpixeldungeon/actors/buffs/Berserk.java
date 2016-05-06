@@ -50,7 +50,7 @@ public class Berserk extends Buff {
 				target.SHLD -= Math.min(target.SHLD, 2);
 				if (target.SHLD == 0) {
 					target.die(this);
-					Dungeon.fail(this.getClass());
+					if (!target.isAlive()) Dungeon.fail(this.getClass());
 				}
 			} else {
 				state = State.EXHAUSTED;
