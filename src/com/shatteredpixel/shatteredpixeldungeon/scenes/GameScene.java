@@ -801,7 +801,7 @@ public class GameScene extends PixelScene {
 		}
 
 		Heap heap = Dungeon.level.heaps.get(cell);
-		if (heap != null) {
+		if (heap != null && heap.seen) {
 			objects.add(heap);
 			names.add(Messages.titleCase( heap.toString() ));
 		}
@@ -813,7 +813,7 @@ public class GameScene extends PixelScene {
 		}
 
 		Trap trap = Dungeon.level.traps.get( cell );
-		if (trap != null) {
+		if (trap != null && trap.visible) {
 			objects.add(trap);
 			names.add(Messages.titleCase( trap.name ));
 		}
