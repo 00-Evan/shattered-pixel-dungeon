@@ -37,6 +37,14 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
+			"_v0.3.5a:_\n" +
+			"- Reduced warrior shield charge earlygame\n" +
+			"- Reduced berserker damage at higher HP\n" +
+			"- Increased berserk exhaust damage penalty\n" +
+			"- Increased power of 2,4,6 combo finishers\n" +
+			"- Translation updates\n" +
+			"- Various bugfixes\n" +
+			"\n" +
 			"_v0.3.5:_\n" +
 			"Warrior Rework:\n" +
 			"- Starting STR down to 10, from 11\n" +
@@ -64,17 +72,12 @@ public class ChangesScene extends PixelScene {
 			"- Can now examine multiple things in one tile\n" +
 			"- Classic font added for Russian language\n" +
 			"- Added Hungarian language\n" +
-			"- Translation Updates\n" +
-			"- Various bugfixes\n" +
 			"\n"+
 			"_v0.3.4:_ Multiple language support\n" +
 			"\n" +
 			"_v0.3.3:_ Support for Google Play Games\n" +
 			"\n" +
-			"_v0.3.2:_\n" +
-			"- Prison rework: new enemies, quests, etc.\n" +
-			"- Mastery Book only available after floor 10\n" +
-			"- Hunger damage now scales with hero level\n" +
+			"_v0.3.2:_ Prison Rework & Balance Changes\n" +
 			"\n" +
 			"_v0.3.1:_ Traps reworked & UI upgrades\n" +
 			"\n" +
