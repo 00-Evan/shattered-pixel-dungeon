@@ -33,10 +33,10 @@ public enum Languages {
 	FRENCH("français",      "fr", Status.UNREVIEWED, new String[]{"Canc42", "Kultissim", "Emether"}, new String[]{"Alsydis", "Basttee", "Go11um", "Minikrob", "Solthaar"}),
 	ITALIAN("italiano",		"it", Status.UNREVIEWED, new String[]{"Bizzolino", "Funnydwarf"}, new String[]{"4est", "DaniMare", "Danzl", "Nessunluogo", "Umby000"}),
 	SPANISH("español",      "es", Status.UNREVIEWED, new String[]{"Grayscales", "Kiroto"}, new String[]{"Alesxanderk", "CorvosUtopy", "Dewstend", "Dyrran", "Fervoreking", "Alfongad", "Ctrijueque", "Dhg121", "Jonismack1"}),
+	HUNGARIAN("magyar",     "hu", Status.UNREVIEWED, new String[]{"Dorheim"}, new String[]{"Clarovani"}),
 
 	GERMAN("deutsch",       "de", Status.INCOMPLETE, new String[]{"Davedude", "KrystalCroft", "Dallukas"}, new String[]{"DarkPixel", "ErichME", "Sarius", "ThunfischGott", "Zap0", "Oragothen"}),
-	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "MJedi", "Scharnvirk", "Dusakus", "Michaub", "Ozziezombie", "Szymex73"}),
-	HUNGARIAN("magyar",     "hu", Status.INCOMPLETE, new String[]{"Dorheim"}, new String[]{"Clarovani"});
+	POLISH("polski",        "pl", Status.INCOMPLETE, null, new String[]{"Darden", "Deksippos", "MJedi", "Scharnvirk", "Dusakus", "Michaub", "Ozziezombie", "Szymex73"});
 
 	public enum Status{
 		//below 60% complete languages are not added.
