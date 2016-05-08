@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015  Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2015 Evan Debenham
+ * Copyright (C) 2014-2016 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +20,14 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import java.util.Arrays;
-
 import android.graphics.Bitmap;
-
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Texture;
 import com.watabou.noosa.Image;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+
+import java.util.Arrays;
 
 public class FogOfWar extends Image {
 

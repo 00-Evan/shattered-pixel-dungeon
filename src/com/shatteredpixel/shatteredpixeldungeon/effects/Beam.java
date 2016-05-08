@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015  Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2015 Evan Debenham
+ * Copyright (C) 2014-2016 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +20,14 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import javax.microedition.khronos.opengles.GL10;
-
 import android.opengl.GLES20;
-
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.utils.PointF;
+
+import javax.microedition.khronos.opengles.GL10;
 
 public class Beam extends Image {
 	
