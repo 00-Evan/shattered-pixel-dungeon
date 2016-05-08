@@ -108,7 +108,7 @@ public enum HeroClass {
 		Dart darts = new Dart( 8 );
 		darts.identify().collect();
 
-		if ( Badges.global.contains(Badges.Badge.TUTORIAL_WARRIOR) ){
+		if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR) ){
 			if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
 				hero.belongings.armor.affixSeal(new BrokenSeal());
 			Dungeon.quickslot.setSlot(0, darts);
@@ -127,7 +127,7 @@ public enum HeroClass {
 	private static void initMage( Hero hero ) {
 		MagesStaff staff;
 
-		if ( Badges.global.contains(Badges.Badge.TUTORIAL_MAGE) ){
+		if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_MAGE) ){
 			staff = new MagesStaff(new WandOfMagicMissile());
 		} else {
 			staff = new MagesStaff();

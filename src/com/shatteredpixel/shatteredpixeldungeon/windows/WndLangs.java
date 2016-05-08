@@ -117,6 +117,7 @@ public class WndLangs extends Window {
 		title.x = textLeft + (textWidth - title.width())/2f;
 		title.y = 0;
 		title.hardlight(TITLE_COLOR);
+		PixelScene.align(title);
 		add(title);
 
 		if (currLang == Languages.ENGLISH){

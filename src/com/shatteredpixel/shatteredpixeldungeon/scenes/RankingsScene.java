@@ -136,6 +136,7 @@ public class RankingsScene extends PixelScene {
 			noRec.hardlight( 0xCCCCCC );
 			noRec.x = (w - noRec.width()) / 2;
 			noRec.y = (h - noRec.height()) / 2;
+			align(noRec);
 			add(noRec);
 			
 		}
