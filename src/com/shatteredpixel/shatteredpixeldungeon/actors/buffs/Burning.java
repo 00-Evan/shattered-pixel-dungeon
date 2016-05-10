@@ -86,7 +86,7 @@ public class Burning extends Buff implements Hero.Doom {
 				if (item instanceof Scroll) {
 					
 					item = item.detach( hero.belongings.backpack );
-					GLog.w( Messages.get(this, "burnsup", item.toString()) );
+					GLog.w( Messages.get(this, "burnsup", Messages.capitalize(item.toString())) );
 					
 					Heap.burnFX( hero.pos );
 					
