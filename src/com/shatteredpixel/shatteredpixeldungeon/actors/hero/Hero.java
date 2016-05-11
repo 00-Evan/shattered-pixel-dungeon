@@ -280,7 +280,7 @@ public class Hero extends Char {
 			evasion /= 2;
 		}
 		
-		int aEnc = belongings.armor != null ? belongings.armor.STR - STR() : 9 - STR();
+		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 9 - STR();
 		
 		if (aEnc > 0) {
 			return (int)(defenseSkill * evasion / Math.pow( 1.5, aEnc ));
@@ -342,7 +342,7 @@ public class Hero extends Char {
 		if (hasteLevel != 0)
 			speed *= Math.pow(1.2, hasteLevel);
 		
-		int aEnc = belongings.armor != null ? belongings.armor.STR - STR() : 0;
+		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 0;
 		if (aEnc > 0) {
 			
 			return (float)(speed * Math.pow( 1.3, -aEnc ));

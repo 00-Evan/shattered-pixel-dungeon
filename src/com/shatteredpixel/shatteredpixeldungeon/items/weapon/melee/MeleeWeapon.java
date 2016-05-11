@@ -37,9 +37,6 @@ public class MeleeWeapon extends Weapon {
 		
 		ACU = acu;
 		DLY = dly;
-		
-		STR = typicalSTR();
-
 	}
 	
 	protected int minBase() {
@@ -65,24 +62,14 @@ public class MeleeWeapon extends Weapon {
 		return upgrade( false );
 	}
 	
-	public Item upgrade( boolean enchant ) {
-		STR--;
-		
-		return super.upgrade( enchant );
-	}
-	
 	public Item safeUpgrade() {
 		return upgrade( enchantment != null );
 	}
-	
-	@Override
-	public Item degrade() {
-		STR++;
-		return super.degrade();
-	}
-	
-	public int typicalSTR() {
-		return 8 + tier * 2;
+
+	public int STRReq(int lvl){
+		lvl = Math.max(0, lvl);
+		//strength req decreases at +1,+3,+6,+10,etc.
+		return (8 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
 	
 	@Override
@@ -101,8 +88,8 @@ public class MeleeWeapon extends Weapon {
 		} else {
 			int min = minBase();
 			int max = maxBase();
-			info += " " + Messages.get(MeleeWeapon.class, "unknown", (min + (max - min) / 2), typicalSTR());
-			if (typicalSTR() > Dungeon.hero.STR()) {
+			info += " " + Messages.get(MeleeWeapon.class, "unknown", (min + (max - min) / 2), STRReq(0));
+			if (STRReq(0) > Dungeon.hero.STR()) {
 				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
 			}
 		}
@@ -120,7 +107,7 @@ public class MeleeWeapon extends Weapon {
 		String stats_desc = Messages.get(this, "stats_desc");
 		if (!stats_desc.equals("")) info+= "\n\n" + stats_desc;
 
-		if (levelKnown && STR > Dungeon.hero.STR()) {
+		if (levelKnown && STRReq() > Dungeon.hero.STR()) {
 			info += "\n\n" + Messages.get(Weapon.class, "too_heavy");
 		}
 

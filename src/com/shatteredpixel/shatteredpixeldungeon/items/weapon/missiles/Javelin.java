@@ -31,8 +31,6 @@ public class Javelin extends MissileWeapon {
 
 	{
 		image = ItemSpriteSheet.JAVELIN;
-		
-		STR = 15;
 	}
 
 	@Override
@@ -42,6 +40,11 @@ public class Javelin extends MissileWeapon {
 
 	@Override
 	public int max() {
+		return 15;
+	}
+
+	@Override
+	public int STRReq(int lvl) {
 		return 15;
 	}
 

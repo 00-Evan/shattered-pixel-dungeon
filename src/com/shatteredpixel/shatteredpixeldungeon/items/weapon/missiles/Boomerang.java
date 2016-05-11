@@ -35,8 +35,6 @@ public class Boomerang extends MissileWeapon {
 
 	{
 		image = ItemSpriteSheet.BOOMERANG;
-		
-		STR = 10;
 
 		stackable = false;
 
@@ -59,6 +57,12 @@ public class Boomerang extends MissileWeapon {
 	@Override
 	public int max() {
 		return 5 + 2 * level();
+	}
+
+	@Override
+	public int STRReq(int lvl) {
+		lvl = Math.max(0, lvl);
+		return 10 - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
 
 	@Override

@@ -57,8 +57,7 @@ public class Pickaxe extends Weapon {
 		unique = true;
 		
 		defaultAction = AC_MINE;
-		
-		STR = 14;
+
 	}
 	
 	public boolean bloodStained = false;
@@ -71,6 +70,11 @@ public class Pickaxe extends Weapon {
 	@Override
 	public int max() {
 		return 12;
+	}
+
+	@Override
+	public int STRReq(int lvl) {
+		return 14;
 	}
 
 	@Override

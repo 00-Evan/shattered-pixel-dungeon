@@ -36,8 +36,6 @@ public class IncendiaryDart extends MissileWeapon {
 
 	{
 		image = ItemSpriteSheet.INCENDIARY_DART;
-		
-		STR = 12;
 	}
 
 	@Override
@@ -48,6 +46,11 @@ public class IncendiaryDart extends MissileWeapon {
 	@Override
 	public int max() {
 		return 2;
+	}
+
+	@Override
+	public int STRReq(int lvl) {
+		return 12;
 	}
 
 	public IncendiaryDart() {

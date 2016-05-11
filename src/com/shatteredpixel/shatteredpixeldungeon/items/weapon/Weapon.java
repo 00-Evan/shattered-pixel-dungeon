@@ -53,8 +53,7 @@ abstract public class Weapon extends KindOfWeapon {
 	private static final int HITS_TO_KNOW    = 20;
 
 	private static final String TXT_TO_STRING		= "%s :%d";
-	
-	public int		STR	= 10;
+
 	public float	ACU	= 1;	// Accuracy modifier
 	public float	DLY	= 1f;	// Speed modifier
 
@@ -108,7 +107,7 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public float acuracyFactor( Hero hero ) {
 		
-		int encumbrance = STR - hero.STR();
+		int encumbrance = STRReq() - hero.STR();
 
 		float ACU = this.ACU;
 		
@@ -129,7 +128,7 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public float speedFactor( Hero hero ) {
 
-		int encumrance = STR - hero.STR();
+		int encumrance = STRReq() - hero.STR();
 		if (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS) {
 			encumrance -= 2;
 		}
@@ -153,7 +152,7 @@ abstract public class Weapon extends KindOfWeapon {
 		int damage = super.damageRoll( hero );
 		
 		if (this instanceof MeleeWeapon || (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS)) {
-			int exStr = hero.STR() - STR;
+			int exStr = hero.STR() - STRReq();
 			if (exStr > 0) {
 				damage += Random.IntRange( 0, exStr );
 			}
@@ -161,6 +160,12 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		return Math.round(damage * (imbue == Imbue.LIGHT ? 0.7f : (imbue == Imbue.HEAVY ? 1.5f : 1f)));
 	}
+
+	public int STRReq(){
+		return STRReq(level());
+	}
+
+	public abstract int STRReq(int lvl);
 	
 	public Item upgrade( boolean enchant ) {
 		if (enchantment != null) {
@@ -179,7 +184,7 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public String toString() {
-		return levelKnown ? Messages.format( TXT_TO_STRING, super.toString(), STR ) : super.toString();
+		return levelKnown ? Messages.format( TXT_TO_STRING, super.toString(), STRReq() ) : super.toString();
 	}
 	
 	@Override

@@ -59,18 +59,13 @@ public class Armor extends EquipableItem {
 	
 	public int tier;
 	
-	public int STR;
-	
 	private int hitsToKnow = HITS_TO_KNOW;
 	
 	public Glyph glyph;
 	private BrokenSeal seal;
 	
 	public Armor( int tier ) {
-		
 		this.tier = tier;
-		
-		STR = typicalSTR();
 	}
 
 	private static final String UNFAMILIRIARITY	= "unfamiliarity";
@@ -92,12 +87,7 @@ public class Armor extends EquipableItem {
 			hitsToKnow = HITS_TO_KNOW;
 		}
 		inscribe((Glyph) bundle.get(GLYPH));
-		//TODO holdover from beta releases, remove in 0.4.0
-		if (bundle.getBoolean(SEAL)){
-			seal = new BrokenSeal();
-			if (level() > 0) seal.level(1);
-		} else
-			seal = (BrokenSeal)bundle.get(SEAL);
+		seal = (BrokenSeal)bundle.get(SEAL);
 	}
 
 	@Override
@@ -238,16 +228,7 @@ public class Armor extends EquipableItem {
 		if (seal != null && seal.level() == 0)
 			seal.upgrade();
 
-		STR--;
-		
 		return super.upgrade();
-	}
-	
-	@Override
-	public Item degrade() {
-		STR++;
-		
-		return super.degrade();
 	}
 	
 	public int proc( Char attacker, Char defender, int damage ) {
@@ -269,7 +250,7 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public String toString() {
-		return levelKnown ? Messages.format( TXT_TO_STRING, super.toString(), STR ) : super.toString();
+		return levelKnown ? Messages.format( TXT_TO_STRING, super.toString(), STRReq() ) : super.toString();
 	}
 	
 	@Override
@@ -284,13 +265,13 @@ public class Armor extends EquipableItem {
 		if (levelKnown) {
 			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", Math.max( DR(), 0 ));
 			
-			if (STR > Dungeon.hero.STR()) {
+			if (STRReq() > Dungeon.hero.STR()) {
 				info += "\n\n" + Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
-			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", typicalDR(), typicalSTR());
+			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", typicalDR(), STRReq(0));
 
-			if (typicalSTR() > Dungeon.hero.STR()) {
+			if (STRReq(0) > Dungeon.hero.STR()) {
 				info += "\n\n" + Messages.get(Armor.class, "probably_too_heavy");
 			}
 		}
@@ -344,9 +325,15 @@ public class Armor extends EquipableItem {
 		
 		return this;
 	}
-	
-	public int typicalSTR() {
-		return 7 + tier * 2;
+
+	public int STRReq(){
+		return STRReq(level());
+	}
+
+	public int STRReq(int lvl){
+		lvl = Math.max(0, lvl);
+		//strength req decreases at +1,+3,+6,+10,etc.
+		return (7 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
 	
 	public int typicalDR() {

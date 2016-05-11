@@ -131,7 +131,7 @@ abstract public class MissileWeapon extends Weapon {
 		
 		info += "\n\n" + Messages.get( Weapon.class, "avg_dmg",(min() + (max() - min()) / 2));
 
-		if (STR > Dungeon.hero.STR()) {
+		if (STRReq() > Dungeon.hero.STR()) {
 			info += Messages.get(Weapon.class, "too_heavy");
 		}
 

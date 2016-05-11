@@ -196,8 +196,6 @@ public class MagesStaff extends MeleeWeapon {
 	@Override
 	public Item upgrade(boolean enchant) {
 		super.upgrade( enchant );
-		STR = 10;
-		//does not lose strength requirement
 
 		if (wand != null) {
 			int curCharges = wand.curCharges;
@@ -214,8 +212,6 @@ public class MagesStaff extends MeleeWeapon {
 	@Override
 	public Item degrade() {
 		super.degrade();
-
-		STR = 10;
 
 		if (wand != null) {
 			int curCharges = wand.curCharges;

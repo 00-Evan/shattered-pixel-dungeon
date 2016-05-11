@@ -42,6 +42,11 @@ public class Dart extends MissileWeapon {
 		return 4;
 	}
 
+	@Override
+	public int STRReq(int lvl) {
+		return 10;
+	}
+
 	public Dart() {
 		this( 1 );
 	}

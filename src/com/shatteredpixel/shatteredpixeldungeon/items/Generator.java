@@ -375,7 +375,7 @@ public class Generator {
 			a1.random();
 			a2.random();
 
-			return Math.abs(targetStr - a1.STR) < Math.abs(targetStr - a2.STR) ? a1 : a2;
+			return Math.abs(targetStr - a1.STRReq()) < Math.abs(targetStr - a2.STRReq()) ? a1 : a2;
 		} catch (Exception e) {
 			return null;
 		}
@@ -398,7 +398,7 @@ public class Generator {
 			w1.random();
 			w2.random();
 
-			return Math.abs( targetStr - w1.STR ) < Math.abs( targetStr - w2.STR ) ? w1 : w2;
+			return Math.abs( targetStr - w1.STRReq() ) < Math.abs( targetStr - w2.STRReq() ) ? w1 : w2;
 		} catch (Exception e) {
 			return null;
 		}
