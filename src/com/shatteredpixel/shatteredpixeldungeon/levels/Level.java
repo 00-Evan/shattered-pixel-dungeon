@@ -67,7 +67,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
@@ -360,18 +359,6 @@ public abstract class Level implements Bundlable {
 				//TODO: add proper resizing logic here
 			}
 			customTiles.add( vis );
-		}
-
-		//for pre-0.3.1 saves
-		if (version < 52){
-			for (int i=0; i < map.length; i++){
-				if (map[i] == Terrain.INACTIVE_TRAP){
-					Trap t = new WornTrap().reveal();
-					t.active = false;
-					t.pos = i;
-					traps.put( i, t);
-				}
-			}
 		}
 		
 		collection = bundle.getCollection( MOBS );

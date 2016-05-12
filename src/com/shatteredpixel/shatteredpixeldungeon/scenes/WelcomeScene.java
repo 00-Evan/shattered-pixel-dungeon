@@ -22,8 +22,6 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import android.opengl.GLES20;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
@@ -146,17 +144,6 @@ public class WelcomeScene extends PixelScene {
 	}
 
 	private void updateVersion(int previousVersion){
-		if (previousVersion <= 32){
-			//removes all bags bought badge from pre-0.2.4 saves.
-			Badges.disown(Badges.Badge.ALL_BAGS_BOUGHT);
-			Badges.saveGlobal();
-
-			//imports new ranking data for pre-0.2.3 saves.
-			if (previousVersion <= 29){
-				Rankings.INSTANCE.load();
-				Rankings.INSTANCE.save();
-			}
-		}
 		ShatteredPixelDungeon.version(ShatteredPixelDungeon.versionCode);
 	}
 
