@@ -44,7 +44,7 @@ public class MeleeWeapon extends Weapon {
 	}
 
 	protected int maxBase() {
-		return (int)((tier * tier - tier + 10) / ACU * DLY);
+		return (int)((tier + 1) * 5 / ACU * DLY);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class MeleeWeapon extends Weapon {
 
 	@Override
 	public int max() {
-		return maxBase() + level() * tier;
+		return maxBase() + level() * (tier + 1);
 	}
 
 	@Override
