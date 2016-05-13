@@ -44,46 +44,48 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Potion extends Item {
-	
-	public static final String AC_DRINK	= "DRINK";
+
+	public static final String AC_DRINK = "DRINK";
 
 	private static final float TIME_TO_DRINK = 1f;
 
 	protected Integer initials;
-	
+
 	private static final Class<?>[] potions = {
-		PotionOfHealing.class,
-		PotionOfExperience.class,
-		PotionOfToxicGas.class,
-		PotionOfLiquidFlame.class,
-		PotionOfStrength.class,
-		PotionOfParalyticGas.class,
-		PotionOfLevitation.class,
-		PotionOfMindVision.class,
-		PotionOfPurity.class,
-		PotionOfInvisibility.class,
-		PotionOfMight.class,
-		PotionOfFrost.class
+			PotionOfHealing.class,
+			PotionOfExperience.class,
+			PotionOfToxicGas.class,
+			PotionOfLiquidFlame.class,
+			PotionOfStrength.class,
+			PotionOfParalyticGas.class,
+			PotionOfLevitation.class,
+			PotionOfMindVision.class,
+			PotionOfPurity.class,
+			PotionOfInvisibility.class,
+			PotionOfMight.class,
+			PotionOfFrost.class
 	};
-	private static final String[] colors = {
-		"turquoise", "crimson", "azure", "jade", "golden", "magenta",
-		"charcoal", "ivory", "amber", "bistre", "indigo", "silver"};
-	private static final Integer[] images = {
-		ItemSpriteSheet.POTION_TURQUOISE,
-		ItemSpriteSheet.POTION_CRIMSON,
-		ItemSpriteSheet.POTION_AZURE,
-		ItemSpriteSheet.POTION_JADE,
-		ItemSpriteSheet.POTION_GOLDEN,
-		ItemSpriteSheet.POTION_MAGENTA,
-		ItemSpriteSheet.POTION_CHARCOAL,
-		ItemSpriteSheet.POTION_IVORY,
-		ItemSpriteSheet.POTION_AMBER,
-		ItemSpriteSheet.POTION_BISTRE,
-		ItemSpriteSheet.POTION_INDIGO,
-		ItemSpriteSheet.POTION_SILVER};
+
+	private static final HashMap<String, Integer> colors = new HashMap<String, Integer>() {
+		{
+			put("crimson",ItemSpriteSheet.POTION_CRIMSON);
+			put("amber",ItemSpriteSheet.POTION_AMBER);
+			put("golden",ItemSpriteSheet.POTION_GOLDEN);
+			put("jade",ItemSpriteSheet.POTION_JADE);
+			put("turquoise",ItemSpriteSheet.POTION_TURQUOISE);
+			put("azure",ItemSpriteSheet.POTION_AZURE);
+			put("indigo",ItemSpriteSheet.POTION_INDIGO);
+			put("magenta",ItemSpriteSheet.POTION_MAGENTA);
+			put("bistre",ItemSpriteSheet.POTION_BISTRE);
+			put("charcoal",ItemSpriteSheet.POTION_CHARCOAL);
+			put("silver",ItemSpriteSheet.POTION_SILVER);
+			put("ivory",ItemSpriteSheet.POTION_IVORY);
+		}
+	};
 	
 	private static ItemStatusHandler<Potion> handler;
 	
@@ -98,7 +100,7 @@ public class Potion extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void initColors() {
-		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors, images );
+		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors );
 	}
 	
 	public static void save( Bundle bundle ) {
@@ -107,7 +109,7 @@ public class Potion extends Item {
 	
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors, images, bundle );
+		handler = new ItemStatusHandler<>( (Class<? extends Potion>[])potions, colors, bundle );
 	}
 	
 	public Potion() {

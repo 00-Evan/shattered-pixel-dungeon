@@ -35,6 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.util.HashMap;
+
 public class Ring extends KindofMisc {
 
 	private static final int TICKS_TO_KNOW    = 200;
@@ -54,21 +56,23 @@ public class Ring extends KindofMisc {
 		RingOfTenacity.class,
 		RingOfWealth.class,
 	};
-	private static final String[] gems =
-		{"diamond", "opal", "garnet", "ruby", "amethyst", "topaz", "onyx", "tourmaline", "emerald", "sapphire", "quartz", "agate"};
-	private static final Integer[] images = {
-		ItemSpriteSheet.RING_DIAMOND,
-		ItemSpriteSheet.RING_OPAL,
-		ItemSpriteSheet.RING_GARNET,
-		ItemSpriteSheet.RING_RUBY,
-		ItemSpriteSheet.RING_AMETHYST,
-		ItemSpriteSheet.RING_TOPAZ,
-		ItemSpriteSheet.RING_ONYX,
-		ItemSpriteSheet.RING_TOURMALINE,
-		ItemSpriteSheet.RING_EMERALD,
-		ItemSpriteSheet.RING_SAPPHIRE,
-		ItemSpriteSheet.RING_QUARTZ,
-		ItemSpriteSheet.RING_AGATE};
+
+	private static final HashMap<String, Integer> gems = new HashMap<String, Integer>() {
+		{
+			put("garnet",ItemSpriteSheet.RING_GARNET);
+			put("ruby",ItemSpriteSheet.RING_RUBY);
+			put("topaz",ItemSpriteSheet.RING_TOPAZ);
+			put("emerald",ItemSpriteSheet.RING_EMERALD);
+			put("onyx",ItemSpriteSheet.RING_ONYX);
+			put("opal",ItemSpriteSheet.RING_OPAL);
+			put("tourmaline",ItemSpriteSheet.RING_TOURMALINE);
+			put("sapphire",ItemSpriteSheet.RING_SAPPHIRE);
+			put("amethyst",ItemSpriteSheet.RING_AMETHYST);
+			put("quartz",ItemSpriteSheet.RING_QUARTZ);
+			put("agate",ItemSpriteSheet.RING_AGATE);
+			put("diamond",ItemSpriteSheet.RING_DIAMOND);
+		}
+	};
 	
 	private static ItemStatusHandler<Ring> handler;
 	
@@ -78,7 +82,7 @@ public class Ring extends KindofMisc {
 	
 	@SuppressWarnings("unchecked")
 	public static void initGems() {
-		handler = new ItemStatusHandler<>( (Class<? extends Ring>[])rings, gems, images );
+		handler = new ItemStatusHandler<>( (Class<? extends Ring>[])rings, gems );
 	}
 	
 	public static void save( Bundle bundle ) {
@@ -87,7 +91,7 @@ public class Ring extends KindofMisc {
 	
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
-		handler = new ItemStatusHandler<>( (Class<? extends Ring>[])rings, gems, images, bundle );
+		handler = new ItemStatusHandler<>( (Class<? extends Ring>[])rings, gems, bundle );
 	}
 	
 	public Ring() {
