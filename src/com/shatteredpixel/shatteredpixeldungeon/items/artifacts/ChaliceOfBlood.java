@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -121,6 +122,13 @@ public class ChaliceOfBlood extends Artifact {
 		else if (level() >= 2)
 			image = ItemSpriteSheet.ARTIFACT_CHALICE2;
 		return super.upgrade();
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (level() >= 7) image = ItemSpriteSheet.ARTIFACT_CHALICE3;
+		else if (level() >= 3) image = ItemSpriteSheet.ARTIFACT_CHALICE2;
 	}
 
 	@Override

@@ -241,7 +241,6 @@ public class Artifact extends KindofMisc {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle(bundle);
-		bundle.put( IMAGE, image );
 		bundle.put( EXP , exp );
 		bundle.put( CHARGE , charge );
 		bundle.put( PARTIALCHARGE , partialCharge );
@@ -250,7 +249,6 @@ public class Artifact extends KindofMisc {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		if (bundle.contains( IMAGE )) image = bundle.getInt( IMAGE );
 		exp = bundle.getInt( EXP );
 		charge = bundle.getInt( CHARGE );
 		partialCharge = bundle.getFloat( PARTIALCHARGE );

@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
@@ -154,6 +155,14 @@ public class HornOfPlenty extends Artifact {
 		return desc;
 	}
 
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (charge == chargeCap)image = ItemSpriteSheet.ARTIFACT_HORN4;
+		else if (charge >= 7)   image = ItemSpriteSheet.ARTIFACT_HORN3;
+		else if (charge >= 3)   image = ItemSpriteSheet.ARTIFACT_HORN2;
+	}
+
 	public class hornRecharge extends ArtifactBuff{
 
 		@Override
@@ -170,14 +179,10 @@ public class HornOfPlenty extends Artifact {
 					charge++;
 					partialCharge -= 36;
 
-					if (charge == chargeCap)
-						image = ItemSpriteSheet.ARTIFACT_HORN4;
-					else if (charge >= 7)
-						image = ItemSpriteSheet.ARTIFACT_HORN3;
-					else if (charge >= 3)
-						image = ItemSpriteSheet.ARTIFACT_HORN2;
-					else
-						image = ItemSpriteSheet.ARTIFACT_HORN1;
+					if (charge == chargeCap)image = ItemSpriteSheet.ARTIFACT_HORN4;
+					else if (charge >= 7)   image = ItemSpriteSheet.ARTIFACT_HORN3;
+					else if (charge >= 3)   image = ItemSpriteSheet.ARTIFACT_HORN2;
+					else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
 
 					if (charge == chargeCap){
 						GLog.p( Messages.get(HornOfPlenty.class, "full") );
@@ -220,5 +225,4 @@ public class HornOfPlenty extends Artifact {
 			}
 		}
 	};
-
 }
