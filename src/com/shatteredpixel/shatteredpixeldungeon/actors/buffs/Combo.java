@@ -142,7 +142,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		if (((Hero)target).belongings.weapon != null){
 			icon = new ItemSprite(Dungeon.hero.belongings.weapon.image, null);
 		} else {
-			icon = new ItemSprite(new Item(){ {image = ItemSpriteSheet.WEAPON; }});
+			icon = new ItemSprite(new Item(){ {image = ItemSpriteSheet.WEAPON_HOLDER; }});
 		}
 
 		if (count >= 10)    icon.tint(0xFFFF0000);

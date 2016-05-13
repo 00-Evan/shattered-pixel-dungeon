@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class ShortSword extends MeleeWeapon {
 	
 	{
-		image = ItemSpriteSheet.SHORT_SWORD;
+		image = ItemSpriteSheet.WORN_SHORTSWORD;
 	}
 	
 	public ShortSword() {

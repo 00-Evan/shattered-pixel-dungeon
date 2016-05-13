@@ -61,7 +61,7 @@ public class ItemSprite extends MovieClip {
 	private float dropInterval;
 	
 	public ItemSprite() {
-		this( ItemSpriteSheet.SMTH, null );
+		this( ItemSpriteSheet.SOMETHING, null );
 	}
 	
 	public ItemSprite( Item item ) {
