@@ -22,13 +22,13 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class ShortSword extends MeleeWeapon {
-	
+public class WornShortsword extends MeleeWeapon {
+
 	{
 		image = ItemSpriteSheet.WORN_SHORTSWORD;
 	}
-	
-	public ShortSword() {
+
+	public WornShortsword() {
 		super( 1, 1f, 1f );
 	}
 

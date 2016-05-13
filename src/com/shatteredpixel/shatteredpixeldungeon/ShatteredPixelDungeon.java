@@ -106,6 +106,10 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry.Seed.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker$Rotberry$Seed" );
 
+		//0.4.0
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShortSword" );
 
 	}
 	
