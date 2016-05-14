@@ -27,15 +27,26 @@ public class Spear extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.SPEAR;
+
+		tier = 2;
+		DLY = 1.5f; //0.67x speed
 	}
 
 	@Override
 	public int reachFactor(Hero hero) {
-		return 2;
+		return 2; //extra reach
 	}
 
-	public Spear() {
-		super( 2, 1f, 1.5f );
+	@Override
+	public int min(int lvl) {
+		return  tier +  //base unchanged
+				2*lvl;  //+2 per level, up from +1
+	}
+
+	@Override
+	public int max(int lvl) {
+		return  20 +    //20 base, up from 15
+				lvl*4;  //+4 per level, up from +3
 	}
 
 }

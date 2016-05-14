@@ -26,10 +26,15 @@ public class Knuckles extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.KNUCKLEDUSTER;
+
+		tier = 1;
+		DLY = 0.5f; //2x speed
 	}
-	
-	public Knuckles() {
-		super( 1, 1f, 0.5f );
+
+	@Override
+	public int max(int lvl) {
+		return  6 +     //6 base, down from 10
+				lvl*2;  //+1 per level, down from +2
 	}
 
 }

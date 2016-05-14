@@ -261,7 +261,7 @@ public class Hero extends Char {
 
 		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
 		if (wep != null) {
-			return (int)(attackSkill * accuracy * wep.acuracyFactor( this ));
+			return (int)(attackSkill * accuracy * wep.accuracyFactor( this ));
 		} else {
 			return (int)(attackSkill * accuracy);
 		}

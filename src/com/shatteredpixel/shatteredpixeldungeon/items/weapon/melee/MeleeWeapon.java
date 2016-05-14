@@ -28,33 +28,18 @@ import com.watabou.utils.Random;
 
 public class MeleeWeapon extends Weapon {
 	
-	private int tier;
-	
-	public MeleeWeapon( int tier, float acu, float dly ) {
-		super();
-		
-		this.tier = tier;
-		
-		ACU = acu;
-		DLY = dly;
-	}
-	
-	protected int minBase() {
-		return tier;
-	}
+	protected int tier;
 
-	protected int maxBase() {
-		return (int)((tier + 1) * 5 / ACU * DLY);
+	@Override
+	public int min(int lvl) {
+		return  tier +  //base
+				lvl;    //level scaling
 	}
 
 	@Override
-	public int min() {
-		return minBase() + level();
-	}
-
-	@Override
-	public int max() {
-		return maxBase() + level() * (tier + 1);
+	public int max(int lvl) {
+		return  5*(tier+1) +    //base
+				lvl*(tier+1);   //level scaling
 	}
 
 	@Override
@@ -86,8 +71,8 @@ public class MeleeWeapon extends Weapon {
 			float dmgfactor = (imbue == Imbue.LIGHT ? 0.7f : imbue == Imbue.HEAVY ? 1.5f : 1);
 			info += " " + Messages.get(Weapon.class, "avg_dmg", Math.round((min + (max - min) / 2)*dmgfactor));
 		} else {
-			int min = minBase();
-			int max = maxBase();
+			int min = min(0);
+			int max = max(0);
 			info += " " + Messages.get(MeleeWeapon.class, "unknown", (min + (max - min) / 2), STRReq(0));
 			if (STRReq(0) > Dungeon.hero.STR()) {
 				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");

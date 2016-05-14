@@ -77,14 +77,22 @@ abstract public class KindOfWeapon extends EquipableItem {
 		}
 	}
 
-	abstract public int min();
-	abstract public int max();
+	public int min(){
+		return min(level());
+	}
+
+	public int max(){
+		return max(level());
+	}
+
+	abstract public int min(int lvl);
+	abstract public int max(int lvl);
 
 	public int damageRoll( Hero owner ) {
 		return Random.NormalIntRange( min(), max() );
 	}
 	
-	public float acuracyFactor( Hero hero ) {
+	public float accuracyFactor(Hero hero ) {
 		return 1f;
 	}
 	

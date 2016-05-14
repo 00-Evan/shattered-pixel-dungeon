@@ -27,10 +27,8 @@ public class NewShortsword extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.SHORTSWORD;
-	}
 
-	public NewShortsword() {
-		super( 2, 1f, 1f );
+		tier = 2;
 	}
 
 }

@@ -26,10 +26,15 @@ public class Mace extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.MACE;
+
+		tier = 3;
+		ACC = 1.2f; //20% boost to accuracy
 	}
-	
-	public Mace() {
-		super( 3, 1f, 0.8f );
+
+	@Override
+	public int max(int lvl) {
+		return  16 +            //16 base, down from 20
+				lvl*(tier+1);   //scaling unchanged
 	}
 
 }

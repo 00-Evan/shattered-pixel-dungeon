@@ -61,6 +61,8 @@ public class MagesStaff extends MeleeWeapon {
 	{
 		image = ItemSpriteSheet.MAGES_STAFF;
 
+		tier = 1;
+
 		defaultAction = AC_ZAP;
 		usesTargeting = true;
 
@@ -69,15 +71,13 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	public MagesStaff() {
-
-		super(1, 1f, 1f);
-
 		wand = null;
 	}
 
 	@Override
-	protected int maxBase() {
-		return 6;   //6 base damage instead of 10
+	public int max(int lvl) {
+		return  6 +             //6 base damage, down from 10
+				lvl*(tier+1);   //scaling unaffected
 	}
 
 	public MagesStaff(Wand wand){

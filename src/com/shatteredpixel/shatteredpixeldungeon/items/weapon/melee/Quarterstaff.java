@@ -26,10 +26,16 @@ public class Quarterstaff extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.QUARTERSTAFF;
+
+		tier = 2;
 	}
-	
-	public Quarterstaff() {
-		super( 2, 1f, 1f );
+
+	@Override
+	public int max(int lvl) {
+		return  12 +            //12 base, down from 15
+				lvl*(tier+1);   //scaling unchanged
 	}
+
+	//TODO add defence bonus code
 
 }

@@ -26,10 +26,15 @@ public class Dagger extends MeleeWeapon {
 	
 	{
 		image = ItemSpriteSheet.DAGGER;
+
+		tier = 1;
+		ACC = 1.25f; //25% boost to accuracy
 	}
-	
-	public Dagger() {
-		super( 1, 1.2f, 1f );
+
+	@Override
+	public int max(int lvl) {
+		return  8 +             //8 base, down from 10
+				lvl*(tier+1);   //scaling unchanged
 	}
 
 }

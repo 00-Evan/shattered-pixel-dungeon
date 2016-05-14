@@ -26,10 +26,15 @@ public class BattleAxe extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.BATTLE_AXE;
+
+		tier = 4;
+		ACC = 1.175f; //17.5% boost to accuracy
 	}
-	
-	public BattleAxe() {
-		super( 4, 1.2f, 1f );
+
+	@Override
+	public int max(int lvl) {
+		return  20 +            //20 base, down from 25
+				lvl*(tier+1);   //scaling unchanged
 	}
 
 }

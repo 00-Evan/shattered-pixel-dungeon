@@ -6,10 +6,8 @@ public class Greatsword extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.GREATSWORD;
-	}
 
-	public Greatsword() {
-		super( 5, 1f, 1f );
+		tier=5;
 	}
 
 }

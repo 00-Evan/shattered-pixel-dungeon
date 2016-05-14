@@ -50,18 +50,21 @@ public class Boomerang extends MissileWeapon {
 	}
 
 	@Override
-	public int min() {
-		return 1 + level();
+	public int min(int lvl) {
+		return  1 +
+				lvl;
 	}
 
 	@Override
-	public int max() {
-		return 5 + 2 * level();
+	public int max(int lvl) {
+		return  5 +     //half the base damage of a tier-1 weapon
+				2 * lvl;//scales the same as a tier 1 weapon
 	}
 
 	@Override
 	public int STRReq(int lvl) {
 		lvl = Math.max(0, lvl);
+		//strength req decreases at +1,+3,+6,+10,etc.
 		return 10 - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
 

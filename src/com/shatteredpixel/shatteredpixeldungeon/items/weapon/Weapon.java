@@ -54,7 +54,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	private static final String TXT_TO_STRING		= "%s :%d";
 
-	public float	ACU	= 1;	// Accuracy modifier
+	public float    ACC = 1;	// Accuracy modifier
 	public float	DLY	= 1f;	// Speed modifier
 
 	public enum Imbue {
@@ -105,11 +105,11 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	@Override
-	public float acuracyFactor( Hero hero ) {
+	public float accuracyFactor( Hero hero ) {
 		
 		int encumbrance = STRReq() - hero.STR();
 
-		float ACU = this.ACU;
+		float ACC = this.ACC;
 		
 		if (this instanceof MissileWeapon) {
 			if (hero.heroClass == HeroClass.HUNTRESS) {
@@ -119,10 +119,10 @@ abstract public class Weapon extends KindOfWeapon {
 			for (Buff buff : hero.buffs(RingOfSharpshooting.Aim.class)) {
 				bonus += ((RingOfSharpshooting.Aim)buff).level;
 			}
-			ACU *= (float)(Math.pow(1.1, bonus));
+			ACC *= (float)(Math.pow(1.1, bonus));
 		}
 
-		return encumbrance > 0 ? (float)(ACU / Math.pow( 1.5, encumbrance )) : ACU;
+		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
 	
 	@Override

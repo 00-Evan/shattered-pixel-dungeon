@@ -63,18 +63,18 @@ public class Pickaxe extends Weapon {
 	public boolean bloodStained = false;
 
 	@Override
-	public int min() {
-		return 3;
+	public int min(int lvl) {
+		return 2;   //tier 2
 	}
 
 	@Override
-	public int max() {
-		return 12;
+	public int max(int lvl) {
+		return 15;  //tier 2
 	}
 
 	@Override
 	public int STRReq(int lvl) {
-		return 14;
+		return 14;  //tier 3
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class Pickaxe extends Weapon {
 
 		super.execute( hero, action );
 		
-		if (action == AC_MINE) {
+		if (action.equals(AC_MINE)) {
 			
 			if (Dungeon.depth < 11 || Dungeon.depth > 15) {
 				GLog.w( Messages.get(this, "no_vein") );

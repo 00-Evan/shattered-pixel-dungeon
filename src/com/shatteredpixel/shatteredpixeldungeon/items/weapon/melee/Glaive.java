@@ -20,16 +20,33 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Glaive extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.GLAIVE;
+
+		tier = 5;
+		DLY = 1.5f; //0.67x speed
 	}
-	
-	public Glaive() {
-		super( 5, 1f, 1f );
+
+	@Override
+	public int reachFactor(Hero hero) {
+		return 2; //extra reach
+	}
+
+	@Override
+	public int min(int lvl) {
+		return  tier +  //base unchanged
+				2*lvl;  //+2 per level, up from +1
+	}
+
+	@Override
+	public int max(int lvl) {
+		return  40 +    //40 base, up from 30
+				lvl*8;  //+8 per level, up from +6
 	}
 
 }
