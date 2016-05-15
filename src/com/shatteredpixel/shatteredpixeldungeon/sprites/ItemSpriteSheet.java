@@ -82,7 +82,7 @@ public class ItemSpriteSheet {
 
 	private static final int WEP_TIER2      =                               xy(9, 7);   //8 slots
 	public static final int SHORTSWORD      = WEP_TIER2+0;
-	public static final int HAND_AXE        = WEP_TIER2+0;
+	public static final int HAND_AXE        = WEP_TIER2+1;
 	public static final int SPEAR           = WEP_TIER2+2;
 	public static final int QUARTERSTAFF    = WEP_TIER2+3;
 
