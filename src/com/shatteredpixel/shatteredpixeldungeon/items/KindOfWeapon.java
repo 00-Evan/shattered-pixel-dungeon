@@ -103,6 +103,10 @@ abstract public class KindOfWeapon extends EquipableItem {
 	public int reachFactor( Hero hero ){
 		return 1;
 	}
+
+	public int defenceFactor( Hero hero ) {
+		return 0;
+	}
 	
 	public void proc( Char attacker, Char defender, int damage ) {
 	}
