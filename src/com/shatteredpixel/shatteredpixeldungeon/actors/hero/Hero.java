@@ -849,6 +849,10 @@ public class Hero extends Char {
 
 		}
 	}
+
+	public Char enemy(){
+		return enemy;
+	}
 	
 	public void rest( boolean fullRest ) {
 		spendAndNext( TIME_TO_REST );

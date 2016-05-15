@@ -382,6 +382,10 @@ public abstract class Mob extends Char {
 		return damage;
 	}
 
+	public boolean surprisedBy( Char enemy ){
+		return !enemySeen && enemy == Dungeon.hero;
+	}
+
 	public void aggro( Char ch ) {
 		enemy = ch;
 		if (state != PASSIVE){

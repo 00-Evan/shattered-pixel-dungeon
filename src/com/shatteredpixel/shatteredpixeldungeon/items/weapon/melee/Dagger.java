@@ -20,7 +20,11 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
 public class Dagger extends MeleeWeapon {
 	
@@ -28,7 +32,6 @@ public class Dagger extends MeleeWeapon {
 		image = ItemSpriteSheet.DAGGER;
 
 		tier = 1;
-		ACC = 1.25f; //25% boost to accuracy
 	}
 
 	@Override
@@ -37,4 +40,13 @@ public class Dagger extends MeleeWeapon {
 				lvl*(tier+1);   //scaling unchanged
 	}
 
+	@Override
+	public int damageRoll(Hero hero) {
+		Char enemy = hero.enemy();
+		if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero))
+			//deals avg damage to max on surprise, instead of min to max.
+			return Random.NormalIntRange((min() + max())/2, max());
+		else
+			return super.damageRoll(hero);
+	}
 }
