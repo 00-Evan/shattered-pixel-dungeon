@@ -40,13 +40,13 @@ public class Glaive extends MeleeWeapon {
 	@Override
 	public int min(int lvl) {
 		return  tier +  //base unchanged
-				2*lvl;  //+2 per level, up from +1
+				lvl*2;  //+2 per level, up from +1
 	}
 
 	@Override
 	public int max(int lvl) {
-		return  40 +    //40 base, up from 30
-				lvl*8;  //+8 per level, up from +6
+		return  Math.round(6.67f*(tier+1)) +    //40 base, up from 30
+				lvl*Math.round(1.33f*(tier+1)); //+8 per level, up from +6
 	}
 
 }

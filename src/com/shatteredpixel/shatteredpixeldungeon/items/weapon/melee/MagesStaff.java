@@ -76,7 +76,7 @@ public class MagesStaff extends MeleeWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return  6 +             //6 base damage, down from 10
+		return  3*(tier+1) +    //6 base damage, down from 10
 				lvl*(tier+1);   //scaling unaffected
 	}
 
