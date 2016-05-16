@@ -34,7 +34,7 @@ public class Knuckles extends MeleeWeapon {
 	@Override
 	public int max(int lvl) {
 		return  3*(tier+1) +    //6 base, down from 10
-				lvl;            //+1 per level, down from +2
+				lvl*tier;       //+1 per level, down from +2
 	}
 
 }
