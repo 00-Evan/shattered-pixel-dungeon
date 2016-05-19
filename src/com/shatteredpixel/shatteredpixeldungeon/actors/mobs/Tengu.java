@@ -92,25 +92,23 @@ public class Tengu extends Mob {
 	@Override
 	public void damage(int dmg, Object src) {
 
+		int beforeHitHP = HP;
+		super.damage(dmg, src);
+		dmg = beforeHitHP - HP;
+
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null) {
-			int multiple = HP > HT/2 ? 1 : 4;
+			int multiple = beforeHitHP > HT/2 ? 1 : 4;
 			lock.addTime(dmg*multiple);
 		}
 
 		//phase 2 of the fight is over
-		if (dmg >= HP) {
-			if (state == SLEEPING) {
-				state = WANDERING;
-			}
+		if (HP == 0 && beforeHitHP <= HT/2) {
 			((PrisonBossLevel)Dungeon.level).progress();
 			return;
 		}
 
-		int beforeHitHP = HP;
-		super.damage(dmg, src);
-
-		int hpBracket = HP > HT/2 ? 12 : 20;
+		int hpBracket = beforeHitHP > HT/2 ? 12 : 20;
 
 		//phase 1 of the fight is over
 		if (beforeHitHP > HT/2 && HP <= HT/2){
@@ -123,6 +121,11 @@ public class Tengu extends Mob {
 		} else if (beforeHitHP / hpBracket != HP / hpBracket) {
 			jump();
 		}
+	}
+
+	@Override
+	public boolean isAlive() {
+		return HP > 0 || Dungeon.level.mobs.contains(this); //Tengu has special death rules, see prisonbosslevel.progress()
 	}
 
 	@Override
