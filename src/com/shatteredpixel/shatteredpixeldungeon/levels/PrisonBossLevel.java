@@ -181,7 +181,7 @@ public class PrisonBossLevel extends Level {
 
 			//hero finishes the maze
 			else if (state == State.MAZE
-					&& ((Room)new Room().set(4, 1, 7, 4)).inside(cell)){
+					&& ((Room)new Room().set(4, 0, 7, 4)).inside(cell)){
 				progress();
 			}
 		}
