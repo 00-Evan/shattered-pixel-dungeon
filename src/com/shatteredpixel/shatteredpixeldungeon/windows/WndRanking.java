@@ -316,9 +316,11 @@ public class WndRanking extends WndTabbed {
 			bg.y = y;
 			
 			slot.setRect( x, y, HEIGHT, HEIGHT );
+			PixelScene.align(slot);
 			
 			name.x = slot.right() + 2;
 			name.y = y + (height - name.baseLine()) / 2;
+			PixelScene.align(name);
 			
 			String str = Messages.titleCase( item.name() );
 			name.text( str );
