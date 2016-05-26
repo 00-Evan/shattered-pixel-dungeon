@@ -232,7 +232,7 @@ public abstract class Char extends Actor {
 	
 	public void damage( int dmg, Object src ) {
 		
-		if (HP <= 0 || dmg < 0) {
+		if (!isAlive() || dmg < 0) {
 			return;
 		}
 		if (this.buff(Frost.class) != null){
