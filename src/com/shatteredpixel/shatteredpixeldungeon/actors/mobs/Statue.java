@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon.Enchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.watabou.utils.Bundle;
@@ -99,10 +100,15 @@ public class Statue extends Mob {
 	protected float attackDelay() {
 		return weapon.DLY;
 	}
-	
+
+	@Override
+	protected boolean canAttack(Char enemy) {
+		return Level.distance( pos, enemy.pos ) <= weapon.RCH;
+	}
+
 	@Override
 	public int dr() {
-		return Dungeon.depth;
+		return Dungeon.depth + weapon.defenceFactor(null);
 	}
 	
 	@Override

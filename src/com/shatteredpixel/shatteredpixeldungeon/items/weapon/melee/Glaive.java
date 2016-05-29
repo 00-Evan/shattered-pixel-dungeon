@@ -20,7 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Glaive extends MeleeWeapon {
@@ -30,11 +29,7 @@ public class Glaive extends MeleeWeapon {
 
 		tier = 5;
 		DLY = 1.5f; //0.67x speed
-	}
-
-	@Override
-	public int reachFactor(Hero hero) {
-		return 2; //extra reach
+		RCH = 2;    //extra reach
 	}
 
 	@Override

@@ -54,8 +54,9 @@ abstract public class Weapon extends KindOfWeapon {
 
 	private static final String TXT_TO_STRING		= "%s :%d";
 
-	public float    ACC = 1;	// Accuracy modifier
+	public float    ACC = 1f;	// Accuracy modifier
 	public float	DLY	= 1f;	// Speed modifier
+	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
 
 	public enum Imbue {
 		NONE, LIGHT, HEAVY
@@ -145,7 +146,12 @@ abstract public class Weapon extends KindOfWeapon {
 		return
 				(encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY);
 	}
-	
+
+	@Override
+	public int reachFactor(Hero hero) {
+		return RCH;
+	}
+
 	@Override
 	public int damageRoll( Hero hero ) {
 		

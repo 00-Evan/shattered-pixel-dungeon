@@ -20,7 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Whip extends MeleeWeapon {
@@ -29,6 +28,7 @@ public class Whip extends MeleeWeapon {
 		image = ItemSpriteSheet.WHIP;
 
 		tier = 3;
+		RCH = 3;    //lots of extra reach
 	}
 
 	@Override
@@ -37,8 +37,4 @@ public class Whip extends MeleeWeapon {
 				lvl*(tier);     //+3 per level, down from +4
 	}
 
-	@Override
-	public int reachFactor(Hero hero) {
-		return 3;   //lots of extra reach
-	}
 }
