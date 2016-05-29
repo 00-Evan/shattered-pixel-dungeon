@@ -319,7 +319,7 @@ public class Hero extends Char {
 			dmg = wep.damageRoll( this ) + bonus;
 		} else {
 			if (bonus != 0){
-				dmg = Random.NormalIntRange( RingOfForce.min(bonus, STR()), RingOfForce.max(bonus, STR()) );
+				dmg = RingOfForce.damageRoll(this);
 			} else {
 				dmg = Random.NormalIntRange(1, Math.max(STR()-8, 1));
 			}
