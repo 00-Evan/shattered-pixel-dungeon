@@ -78,6 +78,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -347,7 +348,7 @@ public class Hero extends Char {
 		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 0;
 		if (aEnc > 0) {
 			
-			return (float)(speed * Math.pow( 1.3, -aEnc ));
+			return (float)(speed / Math.pow( 1.2, aEnc ));
 			
 		} else {
 
@@ -358,6 +359,15 @@ public class Hero extends Char {
 					speed;
 			
 		}
+	}
+
+	public boolean encumbered(){
+		return (belongings.weapon != null
+				&& belongings.weapon instanceof Weapon
+				&& STR() < ((Weapon)belongings.weapon).STRReq())
+				||
+				(belongings.armor != null
+				&& STR() < belongings.armor.STRReq());
 	}
 
 	public boolean canAttack(Char enemy){

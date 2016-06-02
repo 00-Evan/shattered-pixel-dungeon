@@ -339,7 +339,8 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
-		if (enemySeen && paralysed == 0) {
+		boolean seen = enemySeen || (enemy == Dungeon.hero && Dungeon.hero.encumbered());
+		if (seen && paralysed == 0) {
 			int defenseSkill = this.defenseSkill;
 			int penalty = 0;
 			for (Buff buff : enemy.buffs(RingOfAccuracy.Accuracy.class)) {
@@ -355,7 +356,7 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
-		if (!enemySeen && enemy == Dungeon.hero) {
+		if (!enemySeen && enemy == Dungeon.hero && !Dungeon.hero.encumbered()) {
 			if (((Hero)enemy).subClass == HeroSubClass.ASSASSIN) {
 				damage *= 1.34f;
 				Wound.hit(this);
