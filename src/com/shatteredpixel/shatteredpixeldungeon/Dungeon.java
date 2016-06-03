@@ -326,30 +326,39 @@ public class Dungeon {
 	}
 
 	public static boolean posNeeded() {
-		int[] quota = {4, 2, 9, 4, 14, 6, 19, 8, 24, 9};
-		return chance( quota, limitedDrops.strengthPotions.count );
+		//2 POS each floor set
+		int posLeftThisSet = 2 - (limitedDrops.strengthPotions.count - (depth / 5) * 2);
+		if (posLeftThisSet <= 0) return false;
+
+		int floorThisSet = (depth % 5);
+
+		//pos drops every two floors, (numbers 1-2, and 3-4) with a 50% chance for the earlier one each time.
+		int targetPOSLeft = 2 - floorThisSet/2;
+		if (floorThisSet % 2 == 1 && Random.Int(2) == 0) targetPOSLeft --;
+
+		if (targetPOSLeft < posLeftThisSet) return true;
+		else return false;
+
 	}
 	
 	public static boolean souNeeded() {
-		int[] quota = {5, 3, 10, 6, 15, 9, 20, 12, 25, 13};
-		return chance( quota, limitedDrops.upgradeScrolls.count );
-	}
-	
-	private static boolean chance( int[] quota, int number ) {
-		
-		for (int i=0; i < quota.length; i += 2) {
-			int qDepth = quota[i];
-			if (depth <= qDepth) {
-				int qNumber = quota[i + 1];
-				return Random.Float() < (float)(qNumber - number) / (qDepth - depth + 1);
-			}
-		}
-		
-		return false;
+		//3 SOU each floor set
+		int souLeftThisSet = 3 - (limitedDrops.upgradeScrolls.count - (depth / 5) * 3);
+		if (souLeftThisSet <= 0) return false;
+
+		int floorThisSet = (depth % 5);
+		//chance is floors left / scrolls left
+		return Random.Int(5 - floorThisSet) < souLeftThisSet;
 	}
 	
 	public static boolean asNeeded() {
-		return Random.Int( 12 * (1 + limitedDrops.arcaneStyli.count) ) < depth;
+		//1 AS each floor set
+		int asLeftThisSet = 1 - (limitedDrops.arcaneStyli.count - (depth / 5));
+		if (asLeftThisSet <= 0) return false;
+
+		int floorThisSet = (depth % 5);
+		//chance is floors left / scrolls left
+		return Random.Int(5 - floorThisSet) < asLeftThisSet;
 	}
 	
 	private static final String RG_GAME_FILE	= "game.dat";
