@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ScorpioSprite;
@@ -107,7 +107,7 @@ public class Scorpio extends Mob {
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	static {
-		RESISTANCES.add( Leech.class );
+		RESISTANCES.add( Vampiric.class );
 		RESISTANCES.add( Poison.class );
 	}
 	

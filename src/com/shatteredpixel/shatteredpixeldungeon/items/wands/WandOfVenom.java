@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -62,7 +62,8 @@ public class WandOfVenom extends Wand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		new Poison().proc(staff, attacker, defender, damage);
+		//acts like venomous enchantment
+		new Venomous().proc(staff, attacker, defender, damage);
 	}
 
 	@Override

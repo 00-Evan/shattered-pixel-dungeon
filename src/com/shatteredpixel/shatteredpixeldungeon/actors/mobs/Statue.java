@@ -28,8 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon.Enchantment;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -160,8 +160,8 @@ public class Statue extends Mob {
 	static {
 		RESISTANCES.add( ToxicGas.class );
 		RESISTANCES.add( Poison.class );
-		RESISTANCES.add( Death.class );
-		IMMUNITIES.add( Leech.class );
+		RESISTANCES.add( Grim.class );
+		IMMUNITIES.add( Vampiric.class );
 	}
 	
 	@Override

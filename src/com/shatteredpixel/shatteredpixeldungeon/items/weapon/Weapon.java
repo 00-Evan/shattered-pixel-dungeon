@@ -29,16 +29,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Horror;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Instability;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Luck;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shock;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -243,12 +243,11 @@ abstract public class Weapon extends KindOfWeapon {
 		return enchantment != null ? enchantment.glowing() : null;
 	}
 
-	//FIXME: most enchantment names are pretty broken, should refactor
 	public static abstract class Enchantment implements Bundlable {
 
 		private static final Class<?>[] enchants = new Class<?>[]{
-			Fire.class, Poison.class, Death.class, Paralysis.class, Leech.class,
-			Slow.class, Shock.class, Instability.class, Horror.class, Luck.class };
+			Blazing.class, Venomous.class, Grim.class, Stunning.class, Vampiric.class,
+			Chilling.class, Shocking.class, Unstable.class, Eldritch.class, Lucky.class };
 		private static final float[] chances= new float[]{ 10, 10, 1, 2, 1, 2, 6, 3, 2, 2 };
 			
 		public abstract boolean proc( Weapon weapon, Char attacker, Char defender, int damage );

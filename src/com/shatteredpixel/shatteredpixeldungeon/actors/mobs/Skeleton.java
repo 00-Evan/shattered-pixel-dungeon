@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
@@ -110,7 +110,7 @@ public class Skeleton extends Mob {
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
-		IMMUNITIES.add( Death.class );
+		IMMUNITIES.add( Grim.class );
 	}
 	
 	@Override

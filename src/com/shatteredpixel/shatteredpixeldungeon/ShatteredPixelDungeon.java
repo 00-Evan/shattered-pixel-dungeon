@@ -45,10 +45,10 @@ public class ShatteredPixelDungeon extends Game {
 
 		// 0.2.4
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shock.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Piercing" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shock.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Swing" );
 
 		com.watabou.utils.Bundle.addAlias(
@@ -107,9 +107,42 @@ public class ShatteredPixelDungeon extends Game {
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker$Rotberry$Seed" );
 
 		//0.4.0
+		//equipment
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShortSword" );
+		//enchants/glyphs
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Fire" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Horror" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Instability" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Luck" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Paralysis" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Poison" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shock" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Slow" );
+
 
 	}
 	

@@ -21,45 +21,43 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
-public class Fire extends Weapon.Enchantment {
+public class Vampiric extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
+	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0x660022 );
 	
 	@Override
 	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		// lvl 0 - 33%
-		// lvl 1 - 50%
-		// lvl 2 - 60%
+		
 		int level = Math.max( 0, weapon.level() );
 		
-		if (Random.Int( level + 3 ) >= 2) {
-			
-			if (Random.Int( 2 ) == 0) {
-				Buff.affect( defender, Burning.class ).reignite( defender );
-			}
-			defender.damage( Random.Int( 1, level + 2 ), this );
-			
-			defender.sprite.emitter().burst( FlameParticle.FACTORY, level + 1 );
+		// lvl 0 - 33%
+		// lvl 1 - 43%
+		// lvl 2 - 50%
+		int maxValue = damage * (level + 2) / (level + 6);
+		int effValue = Math.min( Random.IntRange( 0, maxValue ), attacker.HT - attacker.HP );
+		
+		if (effValue > 0) {
+		
+			attacker.HP += effValue;
+			attacker.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
+			attacker.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( effValue ) );
 			
 			return true;
 			
 		} else {
-			
 			return false;
-			
 		}
 	}
 	
 	@Override
 	public Glowing glowing() {
-		return ORANGE;
+		return RED;
 	}
 }

@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -231,7 +231,7 @@ public class King extends Mob {
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	static {
 		RESISTANCES.add( ToxicGas.class );
-		RESISTANCES.add( Death.class );
+		RESISTANCES.add( Grim.class );
 		RESISTANCES.add( ScrollOfPsionicBlast.class );
 		RESISTANCES.add( WandOfDisintegration.class );
 	}
@@ -324,7 +324,7 @@ public class King extends Mob {
 
 		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 		static {
-			IMMUNITIES.add( Death.class );
+			IMMUNITIES.add( Grim.class );
 			IMMUNITIES.add( Paralysis.class );
 		}
 		

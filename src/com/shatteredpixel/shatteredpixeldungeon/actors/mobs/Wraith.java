@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WraithSprite;
@@ -120,7 +120,7 @@ public class Wraith extends Mob {
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
-		IMMUNITIES.add( Death.class );
+		IMMUNITIES.add( Grim.class );
 		IMMUNITIES.add( Terror.class );
 	}
 	

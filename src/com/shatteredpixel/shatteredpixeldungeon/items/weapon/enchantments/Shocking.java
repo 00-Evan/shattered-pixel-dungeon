@@ -32,7 +32,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class Shock extends Weapon.Enchantment {
+public class Shocking extends Weapon.Enchantment {
 
 	@Override
 	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {

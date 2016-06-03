@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -109,9 +110,8 @@ public class WandOfFireblast extends Wand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		//acts like blazing enchantment, package conflict.....
-		new com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Fire()
-				.proc( staff, attacker, defender, damage);
+		//acts like blazing enchantment
+		new Blazing().proc( staff, attacker, defender, damage);
 	}
 
 	@Override

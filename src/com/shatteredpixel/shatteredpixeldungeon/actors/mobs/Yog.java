@@ -40,7 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -183,7 +183,7 @@ public class Yog extends Mob {
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
 		
-		IMMUNITIES.add( Death.class );
+		IMMUNITIES.add( Grim.class );
 		IMMUNITIES.add( Terror.class );
 		IMMUNITIES.add( Amok.class );
 		IMMUNITIES.add( Charm.class );
@@ -269,7 +269,7 @@ public class Yog extends Mob {
 		private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 		static {
 			RESISTANCES.add( ToxicGas.class );
-			RESISTANCES.add( Death.class );
+			RESISTANCES.add( Grim.class );
 			RESISTANCES.add( ScrollOfPsionicBlast.class );
 		}
 		
@@ -379,7 +379,7 @@ public class Yog extends Mob {
 		private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 		static {
 			RESISTANCES.add( ToxicGas.class );
-			RESISTANCES.add( Death.class );
+			RESISTANCES.add( Grim.class );
 
 		}
 		
