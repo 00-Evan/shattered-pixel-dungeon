@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
@@ -160,7 +161,7 @@ public enum HeroClass {
 
 	private static void initHuntress( Hero hero ) {
 
-		(hero.belongings.weapon = new Dagger()).identify();
+		(hero.belongings.weapon = new Knuckles()).identify();
 		Boomerang boomerang = new Boomerang();
 		boomerang.identify().collect();
 
