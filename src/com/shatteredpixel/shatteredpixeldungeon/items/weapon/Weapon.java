@@ -180,7 +180,7 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	public Item upgrade( boolean enchant ) {
 		if (enchantment != null) {
-			if (!enchant && Random.Int( level() ) > 0) {
+			if (!enchant && Random.Float() > Math.pow(0.9, level())) {
 				GLog.w( Messages.get(Weapon.class, "incompatible") );
 				enchant( null );
 			}

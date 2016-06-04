@@ -215,7 +215,7 @@ public class Armor extends EquipableItem {
 	public Item upgrade( boolean inscribe ) {
 		
 		if (glyph != null) {
-			if (!inscribe && Random.Int( level() ) > 0) {
+			if (!inscribe && Random.Float() > Math.pow(0.9, level())) {
 				GLog.w( Messages.get(Armor.class, "incompatible") );
 				inscribe( null );
 			}
