@@ -142,6 +142,9 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Slow" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Bounce" );
 
 
 	}

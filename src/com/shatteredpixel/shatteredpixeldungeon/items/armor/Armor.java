@@ -31,12 +31,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Affection;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiEntropy;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Bounce;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Displacement;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Entanglement;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Metabolism;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Multiplicity;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stench;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -391,7 +391,7 @@ public class Armor extends EquipableItem {
 	public static abstract class Glyph implements Bundlable {
 		
 		private static final Class<?>[] glyphs = new Class<?>[]{
-			Bounce.class, Affection.class, AntiEntropy.class, Multiplicity.class,
+			Repulsion.class, Affection.class, AntiEntropy.class, Multiplicity.class,
 			Potential.class, Metabolism.class, Stench.class, Viscosity.class,
 			Displacement.class, Entanglement.class };
 		
@@ -415,10 +415,8 @@ public class Armor extends EquipableItem {
 		public void storeInBundle( Bundle bundle ) {
 		}
 		
-		public ItemSprite.Glowing glowing() {
-			return ItemSprite.Glowing.WHITE;
-		}
-		
+		public abstract ItemSprite.Glowing glowing();
+
 		public boolean checkOwner( Char owner ) {
 			if (!owner.isAlive() && owner instanceof Hero) {
 

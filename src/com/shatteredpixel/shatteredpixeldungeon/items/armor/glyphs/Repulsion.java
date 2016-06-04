@@ -28,9 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Bounce extends Glyph {
+public class Repulsion extends Glyph {
+
+	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF );
 	
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
@@ -67,4 +70,8 @@ public class Bounce extends Glyph {
 		return damage;
 	}
 
+	@Override
+	public ItemSprite.Glowing glowing() {
+		return WHITE;
+	}
 }
