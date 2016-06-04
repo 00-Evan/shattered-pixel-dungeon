@@ -469,10 +469,14 @@ public class Item implements Bundlable {
 			}
 		}
 	}
+
+	protected int throwPos( Hero user, int dst){
+		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
+	}
 	
 	public void cast( final Hero user, int dst ) {
 		
-		final int cell = new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
+		final int cell = throwPos( user, dst );
 		user.sprite.zap( cell );
 		user.busy();
 

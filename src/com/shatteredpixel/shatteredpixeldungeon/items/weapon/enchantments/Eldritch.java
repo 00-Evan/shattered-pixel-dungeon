@@ -35,7 +35,7 @@ public class Eldritch extends Weapon.Enchantment {
 	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x222222 );
 	
 	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
@@ -48,11 +48,10 @@ public class Eldritch extends Weapon.Enchantment {
 			} else {
 				Buff.affect( defender, Terror.class, Terror.DURATION ).object = attacker.id();
 			}
-			
-			return true;
-		} else {
-			return false;
+
 		}
+
+		return damage;
 	}
 	
 	@Override

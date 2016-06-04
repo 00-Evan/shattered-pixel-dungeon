@@ -60,9 +60,9 @@ public class CurareDart extends MissileWeapon {
 	}
 	
 	@Override
-	public void proc( Char attacker, Char defender, int damage ) {
+	public int proc( Char attacker, Char defender, int damage ) {
 		Buff.prolong( defender, Paralysis.class, DURATION );
-		super.proc( attacker, defender, damage );
+		return super.proc( attacker, defender, damage );
 	}
 	
 	@Override

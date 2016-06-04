@@ -152,11 +152,12 @@ public class Pickaxe extends Weapon {
 	}
 	
 	@Override
-	public void proc( Char attacker, Char defender, int damage ) {
+	public int proc( Char attacker, Char defender, int damage ) {
 		if (!bloodStained && defender instanceof Bat && (defender.HP <= damage)) {
 			bloodStained = true;
 			updateQuickslot();
 		}
+		return damage;
 	}
 	
 	private static final String BLOODSTAINED = "bloodStained";

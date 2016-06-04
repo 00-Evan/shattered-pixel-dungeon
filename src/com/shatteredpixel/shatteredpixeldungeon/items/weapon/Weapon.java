@@ -31,14 +31,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Dazzling;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vorpal;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -68,10 +71,10 @@ abstract public class Weapon extends KindOfWeapon {
 	public Enchantment enchantment;
 	
 	@Override
-	public void proc( Char attacker, Char defender, int damage ) {
+	public int proc( Char attacker, Char defender, int damage ) {
 		
 		if (enchantment != null) {
-			enchantment.proc( this, attacker, defender, damage );
+			damage = enchantment.proc( this, attacker, defender, damage );
 		}
 		
 		if (!levelKnown) {
@@ -81,6 +84,8 @@ abstract public class Weapon extends KindOfWeapon {
 				Badges.validateItemLevelAquired( this );
 			}
 		}
+
+		return damage;
 	}
 
 	private static final String UNFAMILIRIARITY	= "unfamiliarity";
@@ -149,7 +154,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int reachFactor(Hero hero) {
-		return RCH;
+		return enchantment instanceof Projecting ? RCH+1 : RCH;
 	}
 
 	@Override
@@ -246,11 +251,15 @@ abstract public class Weapon extends KindOfWeapon {
 	public static abstract class Enchantment implements Bundlable {
 
 		private static final Class<?>[] enchants = new Class<?>[]{
-			Blazing.class, Venomous.class, Grim.class, Stunning.class, Vampiric.class,
-			Chilling.class, Shocking.class, Unstable.class, Eldritch.class, Lucky.class };
-		private static final float[] chances= new float[]{ 10, 10, 1, 2, 1, 2, 6, 3, 2, 2 };
+			Blazing.class, Venomous.class, Vorpal.class, Shocking.class,
+			Chilling.class, Eldritch.class, Lucky.class, Projecting.class, Unstable.class, Dazzling.class,
+			Grim.class, Stunning.class, Vampiric.class,};
+		private static final float[] chances= new float[]{
+			10, 10, 10, 10,
+			5, 5, 5, 5, 5, 5,
+			2, 2, 2 };
 			
-		public abstract boolean proc( Weapon weapon, Char attacker, Char defender, int damage );
+		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 		
 		public String name( String weaponName ) {
 			return Messages.get(this, "name", weaponName);
@@ -264,9 +273,7 @@ abstract public class Weapon extends KindOfWeapon {
 		public void storeInBundle( Bundle bundle ) {
 		}
 		
-		public ItemSprite.Glowing glowing() {
-			return ItemSprite.Glowing.WHITE;
-		}
+		public abstract ItemSprite.Glowing glowing();
 		
 		@SuppressWarnings("unchecked")
 		public static Enchantment random() {

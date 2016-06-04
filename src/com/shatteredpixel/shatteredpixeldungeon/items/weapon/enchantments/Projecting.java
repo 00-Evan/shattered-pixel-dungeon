@@ -21,41 +21,23 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
-import com.watabou.utils.Random;
 
-public class Vampiric extends Weapon.Enchantment {
+public class Projecting extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0x660022 );
-	
+	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x888888 );
+
 	@Override
-	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		
-		int level = Math.max( 0, weapon.level() );
-		
-		// lvl 0 - 20%
-		// lvl 1 - 21.5%
-		// lvl 2 - 23%
-		int maxValue = Math.round(damage * ((level + 10) / (float)(level + 50)));
-		int effValue = Math.min( Random.IntRange( 0, maxValue ), attacker.HT - attacker.HP );
-		
-		if (effValue > 0) {
-		
-			attacker.HP += effValue;
-			attacker.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
-			attacker.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( effValue ) );
-			
-		}
-
+	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
+		//Does nothing as a proc, instead increases weapon range.
+		//See weapon.reachFactor, and MissileWeapon.throwPos;
 		return damage;
 	}
-	
+
 	@Override
-	public Glowing glowing() {
-		return RED;
+	public ItemSprite.Glowing glowing() {
+		return GREY;
 	}
+
 }

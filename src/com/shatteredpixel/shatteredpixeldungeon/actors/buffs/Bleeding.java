@@ -53,7 +53,7 @@ public class Bleeding extends Buff {
 	}
 	
 	public void set( int level ) {
-		this.level = level;
+		this.level = Math.max(this.level, level);
 	}
 	
 	@Override

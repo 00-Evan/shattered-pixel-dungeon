@@ -34,13 +34,17 @@ public class Grim extends Weapon.Enchantment {
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 	
 	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		// lvl 0 - 8%
-		// lvl 1 ~ 9%
-		// lvl 2 ~ 10%
+	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+
 		int level = Math.max( 0, weapon.level() );
+
+		//half of the attack damage is removed from enemy hp for the purpose of calculating proc chance
+		int enemyHealth = defender.HP - (Math.max(defender.HP/2, damage));
+
+		//scales from 0 - 20% based on how low hp the enemy is, plus 1% per level
+		int chance = Math.round(((defender.HT - enemyHealth) / (float)defender.HT)*20 + level);
 		
-		if (Random.Int( level + 100 ) >= 92) {
+		if (Random.Int( 100 ) < chance) {
 			
 			defender.damage( defender.HP, this );
 			defender.sprite.emitter().burst( ShadowParticle.UP, 5 );
@@ -49,13 +53,9 @@ public class Grim extends Weapon.Enchantment {
 				Badges.validateGrimWeapon();
 			}
 			
-			return true;
-			
-		} else {
-			
-			return false;
-			
 		}
+
+		return damage;
 	}
 	
 	@Override

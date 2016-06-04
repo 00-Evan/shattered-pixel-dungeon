@@ -108,7 +108,8 @@ abstract public class KindOfWeapon extends EquipableItem {
 		return 0;
 	}
 	
-	public void proc( Char attacker, Char defender, int damage ) {
+	public int proc( Char attacker, Char defender, int damage ) {
+		return damage;
 	}
 	
 }

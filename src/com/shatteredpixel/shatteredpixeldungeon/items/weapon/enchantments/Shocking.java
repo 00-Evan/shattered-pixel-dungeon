@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -34,31 +35,35 @@ import java.util.HashSet;
 
 public class Shocking extends Weapon.Enchantment {
 
+	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.5f );
+
 	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		// lvl 0 - 25%
-		// lvl 1 - 40%
-		// lvl 2 - 50%
+	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+		// lvl 0 - 33%
+		// lvl 1 - 50%
+		// lvl 2 - 60%
 		int level = Math.max( 0, weapon.level() );
 		
-		if (Random.Int( level + 4 ) >= 3) {
+		if (Random.Int( level + 3 ) >= 2) {
 			
 			affected.clear();
 			affected.add(attacker);
 
 			arcs.clear();
 			arcs.add(new Lightning.Arc(attacker.pos, defender.pos));
-			hit(defender, Random.Int(1, damage / 2));
+			hit(defender, Random.Int(1, damage / 3));
 
 			attacker.sprite.parent.add( new Lightning( arcs, null ) );
 			
-			return true;
-			
-		} else {
-			
-			return false;
-			
 		}
+
+		return damage;
+
+	}
+
+	@Override
+	public ItemSprite.Glowing glowing() {
+		return WHITE;
 	}
 
 	private ArrayList<Char> affected = new ArrayList<>();

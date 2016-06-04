@@ -34,7 +34,7 @@ public class Blazing extends Weapon.Enchantment {
 	private static ItemSprite.Glowing ORANGE = new ItemSprite.Glowing( 0xFF4400 );
 	
 	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
@@ -49,13 +49,10 @@ public class Blazing extends Weapon.Enchantment {
 			
 			defender.sprite.emitter().burst( FlameParticle.FACTORY, level + 1 );
 			
-			return true;
-			
-		} else {
-			
-			return false;
-			
 		}
+
+		return damage;
+
 	}
 	
 	@Override

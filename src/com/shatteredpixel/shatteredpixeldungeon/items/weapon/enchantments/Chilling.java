@@ -30,29 +30,28 @@ import com.watabou.utils.Random;
 
 public class Chilling extends Weapon.Enchantment {
 
-	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing( 0x0044FF );
+	private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing( 0x00FFFF );
 	
 	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		// lvl 0 - 25%
-		// lvl 1 - 40%
-		// lvl 2 - 50%
+	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+		// lvl 0 - 20%
+		// lvl 1 - 33%
+		// lvl 2 - 43%
 		int level = Math.max( 0, weapon.level() );
 		
-		if (Random.Int( level + 4 ) >= 3) {
+		if (Random.Int( level + 5 ) >= 4) {
 			
-			Buff.affect( defender, Chill.class,
-				Random.Float( 1, 3f ) );
-			
-			return true;
-		} else {
-			return false;
+			Buff.prolong( defender, Chill.class,
+				Random.Float( 2f, 3f ) );
+
 		}
+
+		return damage;
 	}
 	
 	@Override
 	public Glowing glowing() {
-		return BLUE;
+		return TEAL;
 	}
 
 }

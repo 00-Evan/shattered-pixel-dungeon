@@ -30,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
 
@@ -50,6 +52,19 @@ abstract public class MissileWeapon extends Weapon {
 		ArrayList<String> actions = super.actions( hero );
 		actions.remove( AC_EQUIP );
 		return actions;
+	}
+
+	@Override
+	protected int throwPos(Hero user, int dst) {
+		int defaultPos = super.throwPos(user, dst);
+		if (defaultPos == dst) return dst;
+		else if (enchantment instanceof Projecting){
+			Ballistica ProjectingTrajectory = new Ballistica( user.pos, dst, Ballistica.STOP_TARGET );
+			if (ProjectingTrajectory.dist <= 4) return ProjectingTrajectory.collisionPos;
+			else return super.throwPos(user, dst);
+		} else {
+			return super.throwPos(user, dst);
+		}
 	}
 
 	@Override
@@ -95,9 +110,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
-	public void proc( Char attacker, Char defender, int damage ) {
-		
-		super.proc( attacker, defender, damage );
+	public int proc( Char attacker, Char defender, int damage ) {
 		
 		Hero hero = (Hero)attacker;
 		if (hero.rangedWeapon == null && stackable) {
@@ -107,6 +120,9 @@ abstract public class MissileWeapon extends Weapon {
 				detach( null );
 			}
 		}
+
+		return super.proc( attacker, defender, damage );
+
 	}
 	
 	@Override
