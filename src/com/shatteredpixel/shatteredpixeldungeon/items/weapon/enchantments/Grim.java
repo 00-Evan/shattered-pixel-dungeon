@@ -38,8 +38,8 @@ public class Grim extends Weapon.Enchantment {
 
 		int level = Math.max( 0, weapon.level() );
 
-		//half of the attack damage is removed from enemy hp for the purpose of calculating proc chance
-		int enemyHealth = defender.HP - (Math.max(defender.HP/2, damage));
+		int enemyHealth = defender.HP - damage;
+		if (enemyHealth == 0) return damage; //no point in proccing if they're already dead.
 
 		//scales from 0 - 20% based on how low hp the enemy is, plus 1% per level
 		int chance = Math.round(((defender.HT - enemyHealth) / (float)defender.HT)*20 + level);
