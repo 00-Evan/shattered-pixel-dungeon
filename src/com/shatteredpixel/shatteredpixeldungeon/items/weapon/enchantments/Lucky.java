@@ -35,9 +35,9 @@ public class Lucky extends Weapon.Enchantment {
 		int level = Math.max( 0, weapon.level() );
 
 		if (Random.Int(100) < (50 + level)){
-			return weapon.max();
+			return weapon.max() - defender.dr()/2;
 		} else {
-			return weapon.min();
+			return weapon.min() - defender.dr()/2;
 		}
 	}
 
