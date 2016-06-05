@@ -145,10 +145,10 @@ abstract public class MissileWeapon extends Weapon {
 
 		String info = desc();
 		
-		info += "\n\n" + Messages.get( Weapon.class, "avg_dmg",(min() + (max() - min()) / 2));
+		info += "\n\n" + Messages.get( MissileWeapon.class, "stats", min(), max(), STRReq());
 
 		if (STRReq() > Dungeon.hero.STR()) {
-			info += Messages.get(Weapon.class, "too_heavy");
+			info += " " + Messages.get(Weapon.class, "too_heavy");
 		}
 
 		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");

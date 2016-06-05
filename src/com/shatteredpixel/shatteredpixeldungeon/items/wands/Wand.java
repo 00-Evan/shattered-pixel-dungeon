@@ -160,19 +160,6 @@ public abstract class Wand extends Item {
 		
 		return this;
 	}
-	
-	@Override
-	public String toString() {
-		
-		StringBuilder sb = new StringBuilder( super.toString() );
-		
-		String status = status();
-		if (status != null) {
-			sb.append( " (" + status +  ")" );
-		}
-		
-		return sb.toString();
-	}
 
 	@Override
 	public String info() {

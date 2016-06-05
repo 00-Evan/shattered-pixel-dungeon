@@ -59,21 +59,14 @@ public class MeleeWeapon extends Weapon {
 	
 	@Override
 	public String info() {
-		String name = name();
-		
+
 		String info = desc();
 
-		info += "\n\n" + Messages.get(MeleeWeapon.class, "tier", tier);
-
 		if (levelKnown) {
-			int min = min();
-			int max = max();
 			float dmgfactor = (imbue == Imbue.LIGHT ? 0.7f : imbue == Imbue.HEAVY ? 1.5f : 1);
-			info += " " + Messages.get(Weapon.class, "avg_dmg", Math.round((min + (max - min) / 2)*dmgfactor));
+			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, Math.round(min()*dmgfactor), Math.round(max()*dmgfactor), STRReq());
 		} else {
-			int min = min(0);
-			int max = max(0);
-			info += " " + Messages.get(MeleeWeapon.class, "unknown", (min + (max - min) / 2), STRReq(0));
+			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
 			if (STRReq(0) > Dungeon.hero.STR()) {
 				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
 			}
@@ -89,7 +82,8 @@ public class MeleeWeapon extends Weapon {
 			case NONE:
 		}
 
-		String stats_desc = Messages.get(this, "stats_desc");
+		//defense-granting weapons include the DR amount, otherwise the value is discarded.
+		String stats_desc = Messages.get(this, "stats_desc", defenceFactor(Dungeon.hero));
 		if (!stats_desc.equals("")) info+= "\n\n" + stats_desc;
 
 		if (levelKnown && STRReq() > Dungeon.hero.STR()) {

@@ -254,11 +254,7 @@ public class Armor extends EquipableItem {
 		
 		return damage;
 	}
-	
-	@Override
-	public String toString() {
-		return levelKnown ? Messages.format( TXT_TO_STRING, super.toString(), STRReq() ) : super.toString();
-	}
+
 
 	@Override
 	public String name() {
@@ -270,7 +266,7 @@ public class Armor extends EquipableItem {
 		String info = desc();
 		
 		if (levelKnown) {
-			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", Math.max( DR(), 0 ));
+			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DR(), STRReq());
 			
 			if (STRReq() > Dungeon.hero.STR()) {
 				info += "\n\n" + Messages.get(Armor.class, "too_heavy");

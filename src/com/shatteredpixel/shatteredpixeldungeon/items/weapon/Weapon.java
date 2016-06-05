@@ -194,11 +194,6 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	@Override
-	public String toString() {
-		return levelKnown ? Messages.format( TXT_TO_STRING, super.toString(), STRReq() ) : super.toString();
-	}
-	
-	@Override
 	public String name() {
 		return enchantment == null ? super.name() : enchantment.name( super.name() );
 	}

@@ -33,11 +33,6 @@ import com.watabou.utils.Random;
 
 public class Artifact extends KindofMisc {
 
-	private static final String TXT_TO_STRING		        = "%s";
-	private static final String TXT_TO_STRING_CHARGE		= "%s (%d/%d)";
-	private static final String TXT_TO_STRING_LVL	        = "%s%+d";
-	private static final String TXT_TO_STRING_LVL_CHARGE	= "%s%+d (%d/%d)";
-
 	protected Buff passiveBuff;
 	protected Buff activeBuff;
 
@@ -136,24 +131,6 @@ public class Artifact extends KindofMisc {
 
 			return desc();
 
-		}
-	}
-
-	@Override
-	public String toString() {
-
-		if (levelKnown && level()/levelCap != 0) {
-			if (chargeCap > 0) {
-				return Messages.format( TXT_TO_STRING_LVL_CHARGE, name(), visiblyUpgraded(), charge, chargeCap );
-			} else {
-				return Messages.format( TXT_TO_STRING_LVL, name(), visiblyUpgraded() );
-			}
-		} else {
-			if (chargeCap > 0) {
-				return Messages.format( TXT_TO_STRING_CHARGE, name(), charge, chargeCap );
-			} else {
-				return Messages.format( TXT_TO_STRING, name() );
-			}
 		}
 	}
 

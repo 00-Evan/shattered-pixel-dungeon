@@ -154,9 +154,5 @@ public class DewVial extends Item {
 	public String status() {
 		return Messages.format( TXT_STATUS, volume, MAX_VOLUME );
 	}
-	
-	@Override
-	public String toString() {
-		return super.toString() + " (" + status() +  ")" ;
-	}
+
 }
