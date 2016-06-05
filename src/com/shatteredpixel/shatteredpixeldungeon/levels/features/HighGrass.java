@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Camouflage;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -84,10 +85,22 @@ public class HighGrass {
 
 		int leaves = 4;
 		
-		// Barkskin
-		if (ch instanceof Hero && ((Hero)ch).subClass == HeroSubClass.WARDEN) {
-			Buff.affect( ch, Barkskin.class ).level( ch.HT / 3 );
-			leaves = 8;
+
+		if (ch instanceof Hero) {
+			Hero hero = (Hero)ch;
+
+			// Barkskin
+			if (hero.subClass == HeroSubClass.WARDEN) {
+				Buff.affect(ch, Barkskin.class).level(ch.HT / 3);
+				leaves += 4;
+			}
+
+			//Camouflage
+			if (hero.belongings.armor != null && hero.belongings.armor.glyph != null
+					&& hero.belongings.armor.glyph instanceof Camouflage){
+				Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings.armor.level());
+				leaves += 4;
+			}
 		}
 		
 		CellEmitter.get( pos ).burst( LeafParticle.LEVEL_SPECIFIC, leaves );

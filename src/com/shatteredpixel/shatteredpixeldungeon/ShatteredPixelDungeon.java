@@ -145,7 +145,9 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Bounce" );
-
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Displacement" );
 
 	}
 	

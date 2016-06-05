@@ -21,39 +21,27 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
-import com.watabou.utils.Random;
 
-public class Affection extends Glyph {
-	
-	private static ItemSprite.Glowing PINK = new ItemSprite.Glowing( 0xFF4488 );
-	
+public class Obfuscation extends Armor.Glyph {
+
+	private static ItemSprite.Glowing GREY = new ItemSprite.Glowing( 0x888888 );
+
 	@Override
-	public int proc( Armor armor, Char attacker, Char defender, int damage) {
-
-		//TODO balancing
-		int level = Math.max(0, armor.level());
-		
-		if (Random.Int( level / 2 + 10 ) >= 9) {
-			
-			int duration = Random.IntRange( 2, 5 );
-
-			Buff.affect( attacker, Charm.class, Charm.durationFactor( attacker ) * duration ).object = defender.id();
-			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
-
-		}
-		
+	public int proc(Armor armor, Char attacker, Char defender, int damage) {
+		//no proc effect, see hero.stealth for effect.
 		return damage;
 	}
 
 	@Override
-	public Glowing glowing() {
-		return PINK;
+	public int tierDRAdjust() {
+		return -1;
 	}
+
+	@Override
+	public ItemSprite.Glowing glowing() {
+		return GREY;
+	}
+
 }

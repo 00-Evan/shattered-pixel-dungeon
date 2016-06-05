@@ -30,14 +30,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Affection;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiEntropy;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Displacement;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Camouflage;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Entanglement;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Metabolism;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Multiplicity;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Obfuscation;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stench;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Thorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -204,7 +207,11 @@ public class Armor extends EquipableItem {
 	}
 	
 	public int DR(){
-		return tier * (2 + level() + (glyph == null ? 0 : 1));
+		int effectiveTier = tier;
+		if (glyph != null) effectiveTier += glyph.tierDRAdjust();
+		effectiveTier = Math.max(0, effectiveTier);
+
+		return effectiveTier * (2 + level());
 	}
 
 	@Override
@@ -252,7 +259,7 @@ public class Armor extends EquipableItem {
 	public String toString() {
 		return levelKnown ? Messages.format( TXT_TO_STRING, super.toString(), STRReq() ) : super.toString();
 	}
-	
+
 	@Override
 	public String name() {
 		return glyph == null ? super.name() : glyph.name( super.name() );
@@ -332,8 +339,12 @@ public class Armor extends EquipableItem {
 
 	public int STRReq(int lvl){
 		lvl = Math.max(0, lvl);
+		int effectiveTier = tier;
+		if (glyph != null) effectiveTier += glyph.tierSTRAdjust();
+		effectiveTier = Math.max(0, effectiveTier);
+
 		//strength req decreases at +1,+3,+6,+10,etc.
-		return (8 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		return (8 + effectiveTier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
 	
 	public int typicalDR() {
@@ -391,11 +402,14 @@ public class Armor extends EquipableItem {
 	public static abstract class Glyph implements Bundlable {
 		
 		private static final Class<?>[] glyphs = new Class<?>[]{
-			Repulsion.class, Affection.class, AntiEntropy.class, Multiplicity.class,
-			Potential.class, Metabolism.class, Stench.class, Viscosity.class,
-			Displacement.class, Entanglement.class };
+				Obfuscation.class, Swiftness.class, Stone.class, Potential.class,
+				Brimstone.class, Viscosity.class, Entanglement.class, Repulsion.class, Camouflage.class, Flow.class,
+				Affection.class, AntiMagic.class, Thorns.class };
 		
-		private static final float[] chances= new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		private static final float[] chances= new float[]{
+				10, 10, 10, 10,
+				5, 5, 5, 500, 5, 5,
+				2, 2, 2 };
 			
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
 		
@@ -416,6 +430,14 @@ public class Armor extends EquipableItem {
 		}
 		
 		public abstract ItemSprite.Glowing glowing();
+
+		public int tierDRAdjust(){
+			return 0;
+		}
+
+		public int tierSTRAdjust(){
+			return 0;
+		}
 
 		public boolean checkOwner( Char owner ) {
 			if (!owner.isAlive() && owner instanceof Hero) {

@@ -39,7 +39,7 @@ public class RingOfElements extends Ring {
 	}
 
 	private static final HashSet<Class<?>> EMPTY = new HashSet<Class<?>>();
-	private static final HashSet<Class<?>> FULL;
+	public static final HashSet<Class<?>> FULL;
 	static {
 		FULL = new HashSet<Class<?>>();
 		FULL.add( Burning.class );

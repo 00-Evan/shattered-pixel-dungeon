@@ -27,9 +27,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
@@ -44,8 +46,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Burning extends Buff implements Hero.Doom {
-
-	private static final String TXT_BURNS_UP		= "%s burns up!";
 	
 	private static final float DURATION = 8f;
 	
@@ -76,37 +76,55 @@ public class Burning extends Buff implements Hero.Doom {
 
 			//maximum damage scales from 6 to 2 depending on remaining hp.
 			int maxDmg = 3 + Math.round( 4 * target.HP / (float)target.HT );
-			target.damage( Random.Int( 1, maxDmg ), this );
+			int damage = Random.Int( 1, maxDmg );
 			Buff.detach( target, Chill.class);
 
 			if (target instanceof Hero) {
 
 				Hero hero = (Hero)target;
-				Item item = hero.belongings.randomUnequipped();
-				if (item instanceof Scroll) {
-					
-					item = item.detach( hero.belongings.backpack );
-					GLog.w( Messages.get(this, "burnsup", Messages.capitalize(item.toString())) );
-					
-					Heap.burnFX( hero.pos );
-					
-				} else if (item instanceof MysteryMeat) {
-					
-					item = item.detach( hero.belongings.backpack );
-					ChargrilledMeat steak = new ChargrilledMeat();
-					if (!steak.collect( hero.belongings.backpack )) {
-						Dungeon.level.drop( steak, hero.pos ).sprite.drop();
+
+				if (hero.belongings.armor != null && hero.belongings.armor.glyph != null
+						&& hero.belongings.armor.glyph instanceof Brimstone){
+
+					int heal = hero.belongings.armor.level()/2;
+					if (heal > 0 && hero.HP < hero.HT) {
+						hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+						hero.HP = Math.min(hero.HT, hero.HP + heal);
 					}
-					GLog.w( Messages.get(this, "burnsup", item.toString()) );
-					
-					Heap.burnFX( hero.pos );
-					
+
+				} else {
+
+					hero.damage( damage, this );
+					Item item = hero.belongings.randomUnequipped();
+					if (item instanceof Scroll) {
+
+						item = item.detach( hero.belongings.backpack );
+						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(item.toString())) );
+
+						Heap.burnFX( hero.pos );
+
+					} else if (item instanceof MysteryMeat) {
+
+						item = item.detach( hero.belongings.backpack );
+						ChargrilledMeat steak = new ChargrilledMeat();
+						if (!steak.collect( hero.belongings.backpack )) {
+							Dungeon.level.drop( steak, hero.pos ).sprite.drop();
+						}
+						GLog.w( Messages.get(this, "burnsup", item.toString()) );
+
+						Heap.burnFX( hero.pos );
+
+					}
+
 				}
 				
-			} else if (target instanceof Thief && ((Thief)target).item instanceof Scroll) {
-				
-				((Thief)target).item = null;
-				target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
+			} else {
+				target.damage( damage, this );
+			}
+
+			if (target instanceof Thief && ((Thief)target).item instanceof Scroll) {
+					((Thief)target).item = null;
+					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
 			}
 
 		} else {

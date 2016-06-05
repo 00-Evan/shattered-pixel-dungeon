@@ -98,7 +98,7 @@ public class WandOfBlastWave extends Wand {
 		}
 	}
 
-	private void throwChar(final Char ch, final Ballistica trajectory, int power){
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power){
 		int dist = Math.min(trajectory.dist, power);
 
 		if (ch.properties().contains(Char.Property.BOSS))
@@ -135,7 +135,7 @@ public class WandOfBlastWave extends Wand {
 	}
 
 	@Override
-	//a weaker knockback, not dissimilar to the glyph of bounce, but a fair bit stronger.
+	//behaves just like glyph of Repulsion
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		int level = Math.max(0, staff.level());
 

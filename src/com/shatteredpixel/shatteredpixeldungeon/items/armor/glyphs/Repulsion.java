@@ -20,18 +20,14 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Repulsion extends Glyph {
+public class Repulsion extends Armor.Glyph {
 
 	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF );
 	
@@ -39,32 +35,11 @@ public class Repulsion extends Glyph {
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
 		int level = Math.max( 0, armor.level() );
-		
-		if (Level.adjacent( attacker.pos, defender.pos )
-				&& !defender.properties().contains(Char.Property.IMMOVABLE)
-				&& Random.Int( level + 5) >= 4) {
-			
-			for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-				int ofs = Level.NEIGHBOURS8[i];
-				if (attacker.pos - defender.pos == ofs) {
-					int newPos = attacker.pos + ofs;
-					if ((Level.passable[newPos] || Level.avoid[newPos]) && Actor.findChar( newPos ) == null) {
-						
-						Actor.addDelayed( new Pushing( attacker, attacker.pos, newPos ), -1 );
-						
-						attacker.pos = newPos;
-						// FIXME
-						if (attacker instanceof Mob) {
-							Dungeon.level.mobPress( (Mob)attacker );
-						} else {
-							Dungeon.level.press( newPos, attacker );
-						}
-						
-					}
-					break;
-				}
-			}
 
+		if (Random.Int( level + 5 ) >= 4){
+			int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
+			Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, Ballistica.MAGIC_BOLT);
+			WandOfBlastWave.throwChar(attacker, trajectory, 2);
 		}
 		
 		return damage;

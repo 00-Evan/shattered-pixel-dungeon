@@ -54,6 +54,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Obfuscation;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
@@ -286,12 +291,15 @@ public class Hero extends Char {
 		if (aEnc > 0) {
 			return (int)(defenseSkill * evasion / Math.pow( 1.5, aEnc ));
 		} else {
-			
-			if (heroClass == HeroClass.ROGUE) {
-				return (int)((defenseSkill - aEnc) * evasion);
-			} else {
-				return (int)(defenseSkill * evasion);
-			}
+
+			bonus = 0;
+			if (heroClass == HeroClass.ROGUE) bonus += -aEnc;
+
+			if (belongings.armor != null && belongings.armor.glyph != null
+					&& belongings.armor.glyph instanceof Swiftness)
+				bonus += belongings.armor.level()*2;
+
+			return Math.round((defenseSkill + bonus) * evasion);
 		}
 	}
 	
@@ -344,8 +352,19 @@ public class Hero extends Char {
 
 		if (hasteLevel != 0)
 			speed *= Math.pow(1.2, hasteLevel);
+
+		Armor armor = belongings.armor;
+
+		if (armor != null && armor.glyph != null){
+
+			if (armor.glyph instanceof  Swiftness) {
+				speed *= (1.1f + 0.01f * belongings.armor.level());
+			} else if (armor.glyph instanceof Flow && Level.water[pos]){
+				speed *= (1.5f + 0.05f * belongings.armor.level());
+			}
+		}
 		
-		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 0;
+		int aEnc = armor != null ? armor.STRReq() - STR() : 0;
 		if (aEnc > 0) {
 			
 			return (float)(speed / Math.pow( 1.2, aEnc ));
@@ -938,6 +957,12 @@ public class Hero extends Char {
 		if (tenacity != 0) //(HT - HP)/HT = heroes current % missing health.
 			dmg = (int)Math.ceil((float)dmg * Math.pow(0.9, tenacity*((float)(HT - HP)/HT)));
 
+		//TODO improve this when I have proper damage source logic
+		if (belongings.armor != null && belongings.armor.glyph != null
+				&& belongings.armor.glyph instanceof AntiMagic && RingOfElements.FULL.contains(src.getClass())){
+			dmg -= Random.IntRange(0, belongings.armor.DR()/2);
+		}
+
 		super.damage( dmg, src );
 	}
 	
@@ -1209,6 +1234,10 @@ public class Hero extends Char {
 		int stealth = super.stealth();
 		for (Buff buff : buffs( RingOfEvasion.Evasion.class )) {
 			stealth += ((RingOfEvasion.Evasion)buff).effectiveLevel;
+		}
+		if (belongings.armor != null && belongings.armor.glyph != null
+				&& belongings.armor.glyph instanceof Obfuscation){
+			stealth += belongings.armor.level();
 		}
 		return stealth;
 	}
