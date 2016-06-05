@@ -281,6 +281,7 @@ public class Armor extends EquipableItem {
 		
 		if (glyph != null) {
 			info += "\n\n" +  Messages.get(Armor.class, "inscribed", glyph.name());
+			info += " " + glyph.desc();
 		}
 		
 		if (cursed && isEquipped( Dungeon.hero )) {
@@ -404,7 +405,7 @@ public class Armor extends EquipableItem {
 		
 		private static final float[] chances= new float[]{
 				10, 10, 10, 10,
-				5, 5, 5, 500, 5, 5,
+				5, 5, 5, 5, 5, 5,
 				2, 2, 2 };
 			
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
@@ -415,6 +416,10 @@ public class Armor extends EquipableItem {
 		
 		public String name( String armorName ) {
 			return Messages.get(this, "name", armorName);
+		}
+
+		public String desc() {
+			return Messages.get(this, "desc");
 		}
 		
 		@Override
