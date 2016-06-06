@@ -48,9 +48,9 @@ public enum HeroClass {
 	MAGE( "mage" ),
 	ROGUE( "rogue" ),
 	HUNTRESS( "huntress" );
-	
+
 	private String title;
-	
+
 	HeroClass( String title ) {
 		this.title = title;
 	}
