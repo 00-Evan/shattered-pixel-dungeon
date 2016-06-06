@@ -269,13 +269,13 @@ public class Armor extends EquipableItem {
 			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DR(), STRReq());
 			
 			if (STRReq() > Dungeon.hero.STR()) {
-				info += "\n\n" + Messages.get(Armor.class, "too_heavy");
+				info += " " + Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
 			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", typicalDR(), STRReq(0));
 
 			if (STRReq(0) > Dungeon.hero.STR()) {
-				info += "\n\n" + Messages.get(Armor.class, "probably_too_heavy");
+				info += " " + Messages.get(Armor.class, "probably_too_heavy");
 			}
 		}
 		
