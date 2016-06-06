@@ -23,14 +23,32 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
 public class Unstable extends Weapon.Enchantment {
 
 	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF );
-	
+
+	private static Class<?extends Weapon.Enchantment>[] randomEnchants = new Class[]{
+			Blazing.class,
+			Chilling.class,
+			Dazzling.class,
+			Eldritch.class,
+			Grim.class,
+			Lucky.class,
+			Shocking.class,
+			Stunning.class,
+			Vampiric.class,
+			Vorpal.class
+	};
+
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		return random().proc( weapon, attacker, defender, damage );
+		try {
+			return Random.oneOf(randomEnchants).newInstance().proc( weapon, attacker, defender, damage );
+		} catch (Exception e) {
+			return damage;
+		}
 	}
 
 	@Override
