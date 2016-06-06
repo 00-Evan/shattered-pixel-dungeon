@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
@@ -41,8 +42,8 @@ public class Chilling extends Weapon.Enchantment {
 		
 		if (Random.Int( level + 5 ) >= 4) {
 			
-			Buff.prolong( defender, Chill.class,
-				Random.Float( 2f, 3f ) );
+			Buff.prolong( defender, Chill.class, Random.Float( 2f, 3f ) );
+			Splash.at( defender.sprite.center(), 0xFFB2D6FF, 5);
 
 		}
 

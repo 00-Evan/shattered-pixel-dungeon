@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
@@ -42,6 +44,7 @@ public class Venomous extends Weapon.Enchantment {
 		if (Random.Int( level + 3 ) >= 2) {
 			
 			Buff.affect( defender, Poison.class ).extend( Poison.durationFactor( defender ) * ((level/2) + 1) );
+			CellEmitter.center(defender.pos).burst( PoisonParticle.SPLASH, 5 );
 
 		}
 

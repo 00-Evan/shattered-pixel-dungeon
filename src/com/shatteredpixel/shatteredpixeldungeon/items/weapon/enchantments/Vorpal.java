@@ -23,8 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 public class Vorpal extends Weapon.Enchantment {
@@ -41,6 +43,8 @@ public class Vorpal extends Weapon.Enchantment {
 		if (Random.Int( level + 3 ) >= 2) {
 
 			Buff.affect(defender, Bleeding.class).set(damage/4);
+			Splash.at( defender.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
+					defender.sprite.blood(), 10 );
 
 		}
 
