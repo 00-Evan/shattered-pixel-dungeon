@@ -168,6 +168,15 @@ public class Generator {
 			
 			return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
 		}
+	}
+
+	//TODO decide on balancing here
+	private static final float[][] floorSetTierProbs = new float[][] {
+			{0, 70, 20,  8,  2},
+			{0, 25, 50, 20,  5},
+			{0, 10, 40, 40, 10},
+			{0,  5, 20, 50, 25},
+			{0,  2,  8, 20, 70}
 	};
 	
 	private static HashMap<Category,Float> categoryProbs = new HashMap<Generator.Category, Float>();
@@ -226,7 +235,8 @@ public class Generator {
 			WandOfCorruption.class,
 			WandOfRegrowth.class };
 		Category.WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3 };
-		
+
+		//TODO overhaul these
 		Category.WEAPON.classes = new Class<?>[]{
 			Dagger.class,
 			Knuckles.class,
@@ -252,7 +262,8 @@ public class Generator {
 			MailArmor.class,
 			ScaleArmor.class,
 			PlateArmor.class };
-		Category.ARMOR.probs = new float[]{ 1, 1, 1, 1, 1 };
+		//this changes depending on the floor set, see randomArmor
+		Category.ARMOR.probs = new float[]{ 0, 0, 0, 0, 0 };
 		
 		Category.FOOD.classes = new Class<?>[]{
 			Food.class,
@@ -355,23 +366,17 @@ public class Generator {
 	}
 
 	public static Armor randomArmor(){
-		int curStr = Hero.STARTING_STR + Dungeon.limitedDrops.strengthPotions.count;
-
-		return randomArmor(curStr);
+		return randomArmor(Dungeon.depth / 5);
 	}
 	
-	public static Armor randomArmor(int targetStr) {
-		
-		Category cat = Category.ARMOR;
+	public static Armor randomArmor(int floorSet) {
+
+		floorSet = Math.min(floorSet, floorSetTierProbs.length-1);
 
 		try {
-			Armor a1 = (Armor) cat.classes[Random.chances(cat.probs)].newInstance();
-			Armor a2 = (Armor) cat.classes[Random.chances(cat.probs)].newInstance();
-
-			a1.random();
-			a2.random();
-
-			return Math.abs(targetStr - a1.STRReq()) < Math.abs(targetStr - a2.STRReq()) ? a1 : a2;
+			Armor a = (Armor)Category.ARMOR.classes[Random.chances(floorSetTierProbs[floorSet])].newInstance();
+			a.random();
+			return a;
 		} catch (Exception e) {
 			return null;
 		}
