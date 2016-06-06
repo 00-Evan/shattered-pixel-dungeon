@@ -255,11 +255,19 @@ abstract public class Weapon extends KindOfWeapon {
 			2, 2, 2 };
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
-		
+
+		public String name() {
+			return name( Messages.get(this, "enchant"));
+		}
+
 		public String name( String weaponName ) {
 			return Messages.get(this, "name", weaponName);
 		}
-		
+
+		public String desc() {
+			return Messages.get(this, "desc");
+		}
+
 		@Override
 		public void restoreFromBundle( Bundle bundle ) {
 		}

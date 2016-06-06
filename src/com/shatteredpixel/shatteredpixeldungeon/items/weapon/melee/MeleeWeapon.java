@@ -65,6 +65,9 @@ public class MeleeWeapon extends Weapon {
 		if (levelKnown) {
 			float dmgfactor = (imbue == Imbue.LIGHT ? 0.7f : imbue == Imbue.HEAVY ? 1.5f : 1);
 			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, Math.round(min()*dmgfactor), Math.round(max()*dmgfactor), STRReq());
+			if (STRReq() > Dungeon.hero.STR()) {
+				info += " " + Messages.get(Weapon.class, "too_heavy");
+			}
 		} else {
 			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(0), max(0), STRReq(0));
 			if (STRReq(0) > Dungeon.hero.STR()) {
@@ -72,28 +75,29 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 
-		switch (imbue) {
-			case LIGHT:
-				info += " " + Messages.get(Weapon.class, "lighter");
-				break;
-			case HEAVY:
-				info += " " + Messages.get(Weapon.class, "heavier");
-				break;
-			case NONE:
-		}
-
 		//defense-granting weapons include the DR amount, otherwise the value is discarded.
 		String stats_desc = Messages.get(this, "stats_desc", defenceFactor(Dungeon.hero));
 		if (!stats_desc.equals("")) info+= "\n\n" + stats_desc;
 
-		if (levelKnown && STRReq() > Dungeon.hero.STR()) {
-			info += "\n\n" + Messages.get(Weapon.class, "too_heavy");
+		switch (imbue) {
+			case LIGHT:
+				info += "\n\n" + Messages.get(Weapon.class, "lighter");
+				break;
+			case HEAVY:
+				info += "\n\n" + Messages.get(Weapon.class, "heavier");
+				break;
+			case NONE:
+		}
+
+		if (enchantment != null){
+			info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());
+			info += " " + Messages.get(enchantment, "desc");
 		}
 
 		if (cursed && isEquipped( Dungeon.hero )) {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "cursed_worn");
+			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "cursed");
+			info += "\n\n" + Messages.get(Weapon.class, "cursed");
 		}
 		
 		return info;

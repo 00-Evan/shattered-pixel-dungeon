@@ -142,6 +142,7 @@ public class Boomerang extends MissileWeapon {
 				break;
 			case NONE:
 		}
+
 		return info;
 	}
 }

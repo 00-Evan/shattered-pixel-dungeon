@@ -151,6 +151,17 @@ abstract public class MissileWeapon extends Weapon {
 			info += " " + Messages.get(Weapon.class, "too_heavy");
 		}
 
+		if (enchantment != null){
+			info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());
+			info += " " + Messages.get(enchantment, "desc");
+		}
+
+		if (cursed && isEquipped( Dungeon.hero )) {
+			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
+		} else if (cursedKnown && cursed) {
+			info += "\n\n" + Messages.get(Weapon.class, "cursed");
+		}
+
 		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");
 		
 		return info;
