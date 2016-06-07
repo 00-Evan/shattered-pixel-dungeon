@@ -895,7 +895,7 @@ public class Hero extends Char {
 	public int attackProc( Char enemy, int damage ) {
 		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
 
-		if (wep != null)  wep.proc( this, enemy, damage );
+		if (wep != null) damage = wep.proc( this, enemy, damage );
 			
 		switch (subClass) {
 		case SNIPER:

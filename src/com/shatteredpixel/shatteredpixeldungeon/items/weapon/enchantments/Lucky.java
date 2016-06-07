@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -35,10 +36,14 @@ public class Lucky extends Weapon.Enchantment {
 		int level = Math.max( 0, weapon.level() );
 
 		if (Random.Int(100) < (50 + level)){
-			return weapon.max() - defender.dr()/2;
+			int exStr = 0;
+			if (attacker == Dungeon.hero) exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq());
+			damage = weapon.max() + exStr - Random.IntRange(0, defender.dr());
 		} else {
-			return weapon.min() - defender.dr()/2;
+			damage = weapon.min() - Random.IntRange(0, defender.dr());
 		}
+
+		return Math.max(0, damage);
 	}
 
 	@Override
