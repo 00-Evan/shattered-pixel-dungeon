@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -57,7 +58,6 @@ public class Armor extends EquipableItem {
 
 	private static final int HITS_TO_KNOW    = 10;
 
-	private static final String TXT_TO_STRING	= "%s :%d";
 	protected static final String AC_DETACH       = "DETACH";
 	
 	public int tier;
@@ -270,6 +270,8 @@ public class Armor extends EquipableItem {
 			
 			if (STRReq() > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Armor.class, "too_heavy");
+			} else if (Dungeon.hero.heroClass == HeroClass.ROGUE && Dungeon.hero.STR() > STRReq()){
+				info += " " + Messages.get(Armor.class, "excess_str");
 			}
 		} else {
 			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", typicalDR(), STRReq(0));

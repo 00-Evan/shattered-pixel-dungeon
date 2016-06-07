@@ -149,6 +149,8 @@ abstract public class MissileWeapon extends Weapon {
 
 		if (STRReq() > Dungeon.hero.STR()) {
 			info += " " + Messages.get(Weapon.class, "too_heavy");
+		} else if (Dungeon.hero.heroClass == HeroClass.HUNTRESS && Dungeon.hero.STR() > STRReq()){
+			info += " " + Messages.get(Weapon.class, "excess_str", Dungeon.hero.STR() - STRReq());
 		}
 
 		if (enchantment != null){
