@@ -280,7 +280,7 @@ public class Ring extends KindofMisc {
 			if (!isIdentified() && --ticksToKnow <= 0) {
 				String gemName = name();
 				identify();
-				GLog.w( Messages.get(Ring.class, "identify", gemName, Ring.this.toString()) );
+				GLog.w( Messages.get(Ring.class, "identify", Ring.this.toString()) );
 				Badges.validateItemLevelAquired( Ring.this );
 			}
 			
