@@ -67,9 +67,9 @@ public class RingOfForce extends Ring {
 		String desc = super.desc();
 		float tier = tier(Dungeon.hero.STR());
 		if (levelKnown) {
-			desc += "\n\n" + Messages.get(this, "avg_dmg", (min(level(), tier) + max(level(), tier))/2);
+			desc += "\n\n" + Messages.get(this, "avg_dmg", min(level(), tier), max(level(), tier));
 		} else {
-			desc += "\n\n" + Messages.get(this, "typical_avg_dmg", (min(1, tier) + max(1, tier))/2);
+			desc += "\n\n" + Messages.get(this, "typical_avg_dmg", min(1, tier), max(1, tier));
 		}
 
 		return desc;
