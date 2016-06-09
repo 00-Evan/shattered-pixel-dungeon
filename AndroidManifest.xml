@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.shatteredpixel.shatteredpixeldungeon"
 	android:versionCode="99"
-	android:versionName="0.3.5a"
+	android:versionName="0.4.0-INDEV"
 	android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.VIBRATE"/>

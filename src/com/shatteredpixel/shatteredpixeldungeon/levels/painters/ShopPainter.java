@@ -53,11 +53,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HandAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
@@ -127,7 +127,7 @@ public class ShopPainter extends Painter {
 		
 		switch (Dungeon.depth) {
 		case 6:
-			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Quarterstaff() : new Spear()).identify() );
+			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new NewShortsword().identify() : new HandAxe()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
 					new IncendiaryDart().quantity(Random.NormalIntRange(2, 4)) :
 					new CurareDart().quantity(Random.NormalIntRange(1, 3)));
@@ -135,7 +135,7 @@ public class ShopPainter extends Painter {
 			break;
 			
 		case 11:
-			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Sword() : new Mace()).identify() );
+			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Sword().identify() : new Mace()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
 					new CurareDart().quantity(Random.NormalIntRange(2, 5)) :
 					new Shuriken().quantity(Random.NormalIntRange(3, 6)));
@@ -143,7 +143,7 @@ public class ShopPainter extends Painter {
 			break;
 			
 		case 16:
-			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Longsword() : new BattleAxe()).identify() );
+			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Longsword().identify() : new BattleAxe()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
 					new Shuriken().quantity(Random.NormalIntRange(4, 7)) :
 					new Javelin().quantity(Random.NormalIntRange(3, 6)));
@@ -151,7 +151,7 @@ public class ShopPainter extends Painter {
 			break;
 			
 		case 21:
-			itemsToSpawn.add( Random.Int( 2 ) == 0 ? new Glaive().identify() : new WarHammer().identify() );
+			itemsToSpawn.add( Random.Int( 2 ) == 0 ? new Greatsword().identify() : new WarHammer().identify() );
 			itemsToSpawn.add( Random.Int(2) == 0 ?
 					new Javelin().quantity(Random.NormalIntRange(4, 7)) :
 					new Tamahawk().quantity(Random.NormalIntRange(4, 7)));
