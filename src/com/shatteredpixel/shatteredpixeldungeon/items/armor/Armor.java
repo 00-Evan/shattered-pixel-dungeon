@@ -27,9 +27,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Stench;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Affection;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
@@ -222,9 +224,19 @@ public class Armor extends EquipableItem {
 	public Item upgrade( boolean inscribe ) {
 		
 		if (glyph != null) {
-			if (!inscribe && Random.Float() > Math.pow(0.9, level())) {
-				GLog.w( Messages.get(Armor.class, "incompatible") );
+			if (inscribe && glyph.curse()){
+				inscribe( Glyph.random() );
+			} else if (!inscribe && Random.Float() > Math.pow(0.9, level())) {
+				if (!glyph.curse())
+					GLog.w( Messages.get(Armor.class, "incompatible") );
+				else if (cursedKnown) {
+					GLog.p(Messages.get(Item.class, "remove_curse"));
+					Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+				}
 				inscribe( null );
+			} else if (!inscribe && glyph.curse() && cursed && cursedKnown){
+				GLog.p( Messages.get(Item.class, "weaken_curse") );
+				Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 			}
 		} else {
 			if (inscribe) {
@@ -258,7 +270,7 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public String name() {
-		return glyph == null ? super.name() : glyph.name( super.name() );
+		return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.name( super.name() ) : super.name();
 	}
 	
 	@Override
@@ -281,7 +293,7 @@ public class Armor extends EquipableItem {
 			}
 		}
 		
-		if (glyph != null) {
+		if (glyph != null  && (cursedKnown || !glyph.curse())) {
 			info += "\n\n" +  Messages.get(Armor.class, "inscribed", glyph.name());
 			info += " " + glyph.desc();
 		}
@@ -309,26 +321,26 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public Item random() {
-		if (Random.Float() < 0.4) {
-			int n = 1;
-			if (Random.Int( 3 ) == 0) {
-				n++;
-				if (Random.Int( 5 ) == 0) {
-					n++;
-				}
-			}
-			if (Random.Int( 2 ) == 0) {
-				upgrade( n );
-			} else {
-				degrade( n );
-				cursed = true;
-			}
+		float roll = Random.Float();
+		if (roll < 0.3f){
+			//30% chance to be level 0 and cursed
+			inscribe(Glyph.randomCurse());
+			cursed = true;
+			return this;
+		} else if (roll < 0.75f){
+			//45% chance to be level 0
+		} else if (roll < 0.95f){
+			//15% chance to be +1
+			upgrade(0);
+		} else {
+			//5% chance to be +2
+			upgrade(2);
 		}
-		
-		if (Random.Int( 10 ) == 0) {
+
+		//if not cursed, 16.67% chance to be inscribed (11.67% overall)
+		if (Random.Int(6) == 0)
 			inscribe();
-		}
-		
+
 		return this;
 	}
 
@@ -395,7 +407,7 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public ItemSprite.Glowing glowing() {
-		return glyph != null ? glyph.glowing() : null;
+		return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.glowing() : null;
 	}
 	
 	public static abstract class Glyph implements Bundlable {
@@ -404,16 +416,22 @@ public class Armor extends EquipableItem {
 				Obfuscation.class, Swiftness.class, Stone.class, Potential.class,
 				Brimstone.class, Viscosity.class, Entanglement.class, Repulsion.class, Camouflage.class, Flow.class,
 				Affection.class, AntiMagic.class, Thorns.class };
-		
 		private static final float[] chances= new float[]{
 				10, 10, 10, 10,
 				5, 5, 5, 5, 5, 5,
 				2, 2, 2 };
+
+		private static final Class<?>[] curses = new Class<?>[]{
+				Stench.class
+		};
 			
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
 		
 		public String name() {
-			return name( Messages.get(this, "glyph") );
+			if (!curse())
+				return name( Messages.get(this, "glyph") );
+			else
+				return name( Messages.get(Item.class, "curse"));
 		}
 		
 		public String name( String armorName ) {
@@ -422,6 +440,10 @@ public class Armor extends EquipableItem {
 
 		public String desc() {
 			return Messages.get(this, "desc");
+		}
+
+		public boolean curse() {
+			return false;
 		}
 		
 		@Override
@@ -455,11 +477,20 @@ public class Armor extends EquipableItem {
 				return false;
 			}
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		public static Glyph random() {
 			try {
 				return ((Class<Glyph>)glyphs[ Random.chances( chances ) ]).newInstance();
+			} catch (Exception e) {
+				return null;
+			}
+		}
+
+		@SuppressWarnings("unchecked")
+		public static Glyph randomCurse(){
+			try {
+				return ((Class<Glyph>)Random.oneOf(curses)).newInstance();
 			} catch (Exception e) {
 				return null;
 			}

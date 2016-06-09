@@ -21,14 +21,18 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Fragile;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Dazzling;
@@ -115,12 +119,12 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		int encumbrance = STRReq() - hero.STR();
 
+		if (enchantment instanceof Wayward)
+			encumbrance = Math.max(3, encumbrance+3);
+
 		float ACC = this.ACC;
 		
 		if (this instanceof MissileWeapon) {
-			if (hero.heroClass == HeroClass.HUNTRESS) {
-				encumbrance -= 2;
-			}
 			int bonus = 0;
 			for (Buff buff : hero.buffs(RingOfSharpshooting.Aim.class)) {
 				bonus += ((RingOfSharpshooting.Aim)buff).level;
@@ -180,9 +184,19 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	public Item upgrade( boolean enchant ) {
 		if (enchantment != null) {
-			if (!enchant && Random.Float() > Math.pow(0.9, level())) {
-				GLog.w( Messages.get(Weapon.class, "incompatible") );
+			if (enchant && enchantment.curse()){
+				enchant( Enchantment.random() );
+			} else if (!enchant && Random.Float() > Math.pow(0.9, level())) {
+				if (!enchantment.curse())
+					GLog.w( Messages.get(Weapon.class, "incompatible") );
+				else {
+					GLog.p(Messages.get(Item.class, "remove_curse"));
+					Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+				}
 				enchant( null );
+			} else if (!enchant && enchantment.curse() && cursed && cursedKnown){
+				GLog.p( Messages.get(Item.class, "weaken_curse") );
+				Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 			}
 		} else {
 			if (enchant) {
@@ -195,26 +209,31 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public String name() {
-		return enchantment == null ? super.name() : enchantment.name( super.name() );
+		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( super.name() ) : super.name;
 	}
 	
 	@Override
 	public Item random() {
-		if (Random.Float() < 0.4) {
-			int n = 1;
-			if (Random.Int( 3 ) == 0) {
-				n++;
-				if (Random.Int( 5 ) == 0) {
-					n++;
-				}
-			}
-			if (Random.Int( 2 ) == 0) {
-				upgrade( n );
-			} else {
-				degrade( n );
-				cursed = true;
-			}
+		float roll = Random.Float();
+		if (roll < 0.3f){
+			//30% chance to be level 0 and cursed
+			enchant(Enchantment.randomCurse());
+			cursed = true;
+			return this;
+		} else if (roll < 0.75f){
+			//45% chance to be level 0
+		} else if (roll < 0.95f){
+			//15% chance to be +1
+			upgrade(0);
+		} else {
+			//5% chance to be +2
+			upgrade(2);
 		}
+
+		//if not cursed, 10% chance to be enchanted (7% overall)
+		if (Random.Int(10) == 0)
+			enchant();
+
 		return this;
 	}
 	
@@ -240,7 +259,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public ItemSprite.Glowing glowing() {
-		return enchantment != null ? enchantment.glowing() : null;
+		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
 	}
 
 	public static abstract class Enchantment implements Bundlable {
@@ -253,11 +272,18 @@ abstract public class Weapon extends KindOfWeapon {
 			10, 10, 10, 10,
 			5, 5, 5, 5, 5, 5,
 			2, 2, 2 };
+
+		private static final Class<?>[] curses = new Class<?>[]{
+				Fragile.class, Wayward.class
+		};
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
 		public String name() {
-			return name( Messages.get(this, "enchant"));
+			if (!curse())
+				return name( Messages.get(this, "enchant"));
+			else
+				return name( Messages.get(Item.class, "curse"));
 		}
 
 		public String name( String weaponName ) {
@@ -266,6 +292,10 @@ abstract public class Weapon extends KindOfWeapon {
 
 		public String desc() {
 			return Messages.get(this, "desc");
+		}
+
+		public boolean curse() {
+			return false;
 		}
 
 		@Override
@@ -282,6 +312,15 @@ abstract public class Weapon extends KindOfWeapon {
 		public static Enchantment random() {
 			try {
 				return ((Class<Enchantment>)enchants[ Random.chances( chances ) ]).newInstance();
+			} catch (Exception e) {
+				return null;
+			}
+		}
+
+		@SuppressWarnings("unchecked")
+		public static Enchantment randomCurse(){
+			try {
+				return ((Class<Enchantment>)Random.oneOf(curses)).newInstance();
 			} catch (Exception e) {
 				return null;
 			}

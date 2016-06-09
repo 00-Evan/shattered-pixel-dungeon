@@ -142,12 +142,25 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Slow" );
+
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Bounce" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Displacement" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiEntropy" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Entanglement.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Metabolism" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Entanglement.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Multiplicity" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stench" );
 
 	}
 	

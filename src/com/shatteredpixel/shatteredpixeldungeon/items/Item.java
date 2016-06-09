@@ -278,7 +278,6 @@ public class Item implements Bundlable {
 	public Item upgrade() {
 		
 		cursed = false;
-		cursedKnown = true;
 		this.level++;
 
 		updateQuickslot();

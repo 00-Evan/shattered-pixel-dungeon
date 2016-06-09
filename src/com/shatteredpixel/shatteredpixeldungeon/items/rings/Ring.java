@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
@@ -128,6 +129,11 @@ public class Ring extends KindofMisc {
 	
 	@Override
 	public Item upgrade() {
+
+		if (cursed && cursedKnown) {
+			GLog.p( Messages.get(Item.class, "weaken_curse") );
+			Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+		}
 		
 		super.upgrade();
 		

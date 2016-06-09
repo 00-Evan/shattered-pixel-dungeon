@@ -27,7 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -72,6 +74,22 @@ public class ScrollOfRemoveCurse extends Scroll {
 			if (item != null && item.cursed) {
 				item.cursed = false;
 				procced = true;
+			}
+			if (item instanceof Weapon){
+				Weapon w = (Weapon) item;
+				if (w.enchantment != null && w.enchantment.curse()){
+					w.enchant(null);
+					w.cursed = false;
+					procced = true;
+				}
+			}
+			if (item instanceof Armor){
+				Armor a = (Armor) item;
+				if (a.glyph != null && a.glyph.curse()){
+					a.inscribe(null);
+					a.cursed = false;
+					procced = true;
+				}
 			}
 			if (item instanceof Bag){
 				for (Item bagItem : ((Bag)item).items){

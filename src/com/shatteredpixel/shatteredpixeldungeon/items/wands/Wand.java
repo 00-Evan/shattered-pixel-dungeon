@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -184,6 +185,11 @@ public abstract class Wand extends Item {
 	
 	@Override
 	public Item upgrade() {
+
+		if (cursed && cursedKnown) {
+			GLog.p( Messages.get(Item.class, "remove_curse") );
+			Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+		}
 
 		super.upgrade();
 		

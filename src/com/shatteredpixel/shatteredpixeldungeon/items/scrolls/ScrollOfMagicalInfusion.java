@@ -43,7 +43,6 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 	@Override
 	protected void onItemSelected( Item item ) {
 
-		ScrollOfRemoveCurse.uncurse(Dungeon.hero, item);
 		if (item instanceof Weapon)
 			((Weapon)item).upgrade(true);
 		else
