@@ -170,8 +170,8 @@ public class Armor extends EquipableItem {
 	public void affixSeal(BrokenSeal seal){
 		this.seal = seal;
 		if (seal.level() > 0){
-			//doesn't override existing glyphs, but doesn't create one either
-			upgrade(glyph != null);
+			//doesn't trigger upgrading logic such as affecting curses/glyphs
+			level(level()+1);
 		}
 		if (isEquipped(Dungeon.hero)){
 			Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(this);
