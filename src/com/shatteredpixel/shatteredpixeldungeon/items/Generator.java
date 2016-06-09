@@ -332,7 +332,7 @@ public class Generator {
 		}
 	}
 
-	private static final Category[] wepTiers = new Category[]{
+	public static final Category[] wepTiers = new Category[]{
 			Category.WEP_T1,
 			Category.WEP_T2,
 			Category.WEP_T3,

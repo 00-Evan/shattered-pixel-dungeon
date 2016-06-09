@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
@@ -47,8 +48,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.watabou.utils.Random;
 
 public class WaterOfTransmutation extends WellWater {
 	
@@ -87,59 +90,34 @@ public class WaterOfTransmutation extends WellWater {
 		emitter.start( Speck.factory( Speck.CHANGE ), 0.2f, 0 );
 	}
 	
-	private MeleeWeapon changeWeapon( MeleeWeapon w ) {
+	private Weapon changeWeapon( MeleeWeapon w ) {
 		
-		MeleeWeapon n = null;
-		
-		if (w instanceof Knuckles) {
-			n = new Dagger();
-		} else if (w instanceof Dagger) {
-			n = new Knuckles();
-		}
-		
-		else if (w instanceof Spear) {
-			n = new Quarterstaff();
-		} else if (w instanceof Quarterstaff) {
-			n = new Spear();
-		}
-		
-		else if (w instanceof Sword) {
-			n = new Mace();
-		} else if (w instanceof Mace) {
-			n = new Sword();
-		}
-		
-		else if (w instanceof Longsword) {
-			n = new BattleAxe();
-		} else if (w instanceof BattleAxe) {
-			n = new Longsword();
-		}
-		
-		else if (w instanceof Glaive) {
-			n = new WarHammer();
-		} else if (w instanceof WarHammer) {
-			n = new Glaive();
-		}
-		
-		if (n != null) {
-			
-			int level = w.level();
-			if (level > 0) {
-				n.upgrade( level );
-			} else if (level < 0) {
-				n.degrade( -level );
-			}
+		Weapon n;
+		Category c = Generator.wepTiers[w.tier-1];
 
-			n.enchantment = w.enchantment;
-			n.levelKnown = w.levelKnown;
-			n.cursedKnown = w.cursedKnown;
-			n.cursed = w.cursed;
-			n.imbue = w.imbue;
-			
-			return n;
-		} else {
-			return null;
+		do {
+			try {
+				n = (Weapon)c.classes[Random.chances(c.probs)].newInstance();
+			} catch (Exception e) {
+				return null;
+			}
+		} while (!(n instanceof MeleeWeapon) || n.getClass() == w.getClass());
+
+		int level = w.level();
+		if (level > 0) {
+			n.upgrade( level );
+		} else if (level < 0) {
+			n.degrade( -level );
 		}
+
+		n.enchantment = w.enchantment;
+		n.levelKnown = w.levelKnown;
+		n.cursedKnown = w.cursedKnown;
+		n.cursed = w.cursed;
+		n.imbue = w.imbue;
+
+		return n;
+
 	}
 	
 	private Ring changeRing( Ring r ) {
