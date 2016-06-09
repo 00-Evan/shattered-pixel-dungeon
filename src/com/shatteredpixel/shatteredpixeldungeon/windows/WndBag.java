@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -60,6 +61,7 @@ public class WndBag extends WndTabbed {
 	public static enum Mode {
 		ALL,
 		UNIDENTIFED,
+		UNIDED_OR_CURSED,
 		UPGRADEABLE,
 		QUICKSLOT,
 		FOR_SALE,
@@ -367,6 +369,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.FOR_SALE && (item.price() > 0) && (!item.isEquipped( Dungeon.hero ) || !item.cursed) ||
 						mode == Mode.UPGRADEABLE && item.isUpgradable() ||
 						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
+						mode == Mode.UNIDED_OR_CURSED && (item instanceof EquipableItem && (!item.isIdentified() || item.cursed)) ||
 						mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon || item instanceof Boomerang) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||
@@ -379,6 +382,17 @@ public class WndBag extends WndTabbed {
 						mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
 						mode == Mode.ALL
 					);
+					//extra logic for cursed weapons or armor
+					if (!active && mode == Mode.UNIDED_OR_CURSED){
+						if (item instanceof Weapon){
+							Weapon w = (Weapon) item;
+							enable(w.enchantment != null && w.enchantment.curse());
+						}
+						if (item instanceof Armor){
+							Armor a = (Armor) item;
+							enable(a.glyph != null && a.glyph.curse());
+						}
+					}
 				}
 			} else {
 				bg.color( NORMAL );
