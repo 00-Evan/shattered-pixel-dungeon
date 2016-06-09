@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
@@ -68,13 +69,17 @@ public class CryptPainter extends Painter {
 	}
 	
 	private static Item prize( Level level ) {
-		
-		Item prize = Generator.random( Generator.Category.ARMOR );
 
-		for (int i=0; i < 3; i++) {
-			Item another = Generator.random( Generator.Category.ARMOR );
-			if (another.level() > prize.level()) {
-				prize = another;
+		//1 floor set higher than normal
+		Armor prize = Generator.randomArmor( (Dungeon.depth / 5) + 1);
+
+		//if it isn't already cursed, give it a free upgrade
+		if (!prize.cursed){
+			prize.upgrade();
+			//curse the armor, unless it has a glyph
+			if (prize.glyph != null){
+				prize.cursed = prize.cursedKnown = true;
+				prize.inscribe(Armor.Glyph.randomCurse());
 			}
 		}
 		

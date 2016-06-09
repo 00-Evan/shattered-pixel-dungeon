@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -86,25 +87,22 @@ public class PoolPainter extends Painter {
 
 		Item prize;
 
-		if (Random.Int(3) != 0){
+		if (Random.Int(3) == 0){
 			prize = level.findPrizeItem();
 			if (prize != null)
 				return prize;
 		}
 
-		prize = Generator.random( Random.oneOf(
-				Generator.Category.WEAPON,
-				Generator.Category.ARMOR
-		) );
+		//1 floor set higher in probability
+		if (Random.Int(2) == 0){
+			prize = Generator.randomWeapon((Dungeon.depth / 5)+1);
+		} else {
+			prize = Generator.randomArmor((Dungeon.depth / 5)+1);
+		}
 
-		for (int i=0; i < 4; i++) {
-			Item another = Generator.random( Random.oneOf(
-					Generator.Category.WEAPON,
-					Generator.Category.ARMOR
-			) );
-			if (another.level() > prize.level()) {
-				prize = another;
-			}
+		//if not cursed, 50% chance for an extra update.
+		if (!prize.cursed && Random.Int(0) == 1){
+			prize.upgrade();
 		}
 
 		return prize;

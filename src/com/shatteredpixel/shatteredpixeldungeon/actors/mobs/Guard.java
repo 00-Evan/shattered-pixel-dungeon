@@ -45,7 +45,7 @@ public class Guard extends Mob {
 	{
 		spriteClass = GuardSprite.class;
 
-		HP = HT = 30;
+		HP = HT = 40;
 		defenseSkill = 10;
 
 		EXP = 6;
@@ -131,7 +131,7 @@ public class Guard extends Mob {
 
 	@Override
 	public int dr() {
-		return 7;
+		return 9;
 	}
 
 	@Override
