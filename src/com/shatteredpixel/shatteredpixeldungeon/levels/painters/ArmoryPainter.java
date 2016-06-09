@@ -53,7 +53,7 @@ public class ArmoryPainter extends Painter {
 			set( level, statue, Terrain.STATUE );
 		}
 		
-		int n = Random.IntRange( 2, 3 );
+		int n = Random.IntRange( 1, 2 );
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {

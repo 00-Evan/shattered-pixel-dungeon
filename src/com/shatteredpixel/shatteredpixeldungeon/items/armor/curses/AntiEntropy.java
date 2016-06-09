@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
+package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -35,18 +35,18 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.watabou.utils.Random;
 
 public class AntiEntropy extends Glyph {
-	
-	private static ItemSprite.Glowing BLUE = new ItemSprite.Glowing( 0x0000FF );
+
+	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 	
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.level() );
-		
-		if (Level.adjacent( attacker.pos, defender.pos ) && Random.Int( level + 6 ) >= 5) {
-			
-			Buff.prolong( attacker, Frost.class, Frost.duration( attacker ) * Random.Float( 1f, 1.5f ));
-			CellEmitter.get( attacker.pos ).start( SnowParticle.FACTORY, 0.2f, 6 );
+		if (Random.Int( 8 ) == 0) {
+
+			if (Level.adjacent( attacker.pos, defender.pos )) {
+				Buff.prolong(attacker, Frost.class, Frost.duration(attacker) * Random.Float(0.5f, 1f));
+				CellEmitter.get(attacker.pos).start(SnowParticle.FACTORY, 0.2f, 6);
+			}
 			
 			Buff.affect( defender, Burning.class ).reignite( defender );
 			defender.sprite.emitter().burst( FlameParticle.FACTORY, 5 );
@@ -58,6 +58,11 @@ public class AntiEntropy extends Glyph {
 
 	@Override
 	public Glowing glowing() {
-		return BLUE;
+		return BLACK;
+	}
+
+	@Override
+	public boolean curse() {
+		return true;
 	}
 }

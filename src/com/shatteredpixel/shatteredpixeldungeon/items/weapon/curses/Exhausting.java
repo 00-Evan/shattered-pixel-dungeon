@@ -18,39 +18,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
-public class Stench extends Armor.Glyph {
+public class Exhausting extends Weapon.Enchantment {
 
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 
 	@Override
-	public int proc(Armor armor, Char attacker, Char defender, int damage) {
+	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 
-		if ( Random.Int( 8 ) == 0) {
-
-			GameScene.add( Blob.seed( attacker.pos, 250, ToxicGas.class ) );
-
+		if (attacker == Dungeon.hero && Random.Int(20) == 0) {
+			Buff.affect(attacker, Weakness.class, Random.Float(5f, 25f));
 		}
 
 		return damage;
 	}
 
 	@Override
-	public ItemSprite.Glowing glowing() {
-		return BLACK;
+	public boolean curse() {
+		return true;
 	}
 
 	@Override
-	public boolean curse() {
-		return true;
+	public ItemSprite.Glowing glowing() {
+		return BLACK;
 	}
 }

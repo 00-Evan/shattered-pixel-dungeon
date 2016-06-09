@@ -77,8 +77,7 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 
-		//defense-granting weapons include the DR amount, otherwise the value is discarded.
-		String stats_desc = Messages.get(this, "stats_desc", defenceFactor(Dungeon.hero));
+		String stats_desc = Messages.get(this, "stats_desc");
 		if (!stats_desc.equals("")) info+= "\n\n" + stats_desc;
 
 		switch (imbue) {

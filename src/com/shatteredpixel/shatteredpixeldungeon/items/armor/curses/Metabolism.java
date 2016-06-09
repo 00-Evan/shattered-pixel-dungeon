@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
+package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
@@ -32,16 +32,16 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Random;
 
 public class Metabolism extends Glyph {
-	
-	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0xCC0000 );
+
+	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 	
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.level() );
-		if (Random.Int( level / 2 + 5 ) >= 4) {
-			
-			int healing = Math.min( defender.HT - defender.HP, Random.Int( 1, defender.HT / 5 ) );
+		if (Random.Int( 6 ) == 0) {
+
+			//assumes using up 10% of starving, and healing of 1 hp per 10 turns;
+			int healing = Math.min((int)Hunger.STARVING/100, defender.HT - defender.HP);
 
 			if (healing > 0) {
 				
@@ -49,7 +49,7 @@ public class Metabolism extends Glyph {
 				
 				if (hunger != null && !hunger.isStarving()) {
 					
-					hunger.reduceHunger( -Hunger.STARVING / 10 );
+					hunger.reduceHunger( healing * -10 );
 					BuffIndicator.refreshHero();
 					
 					defender.HP += healing;
@@ -65,6 +65,11 @@ public class Metabolism extends Glyph {
 
 	@Override
 	public Glowing glowing() {
-		return RED;
+		return BLACK;
+	}
+
+	@Override
+	public boolean curse() {
+		return true;
 	}
 }

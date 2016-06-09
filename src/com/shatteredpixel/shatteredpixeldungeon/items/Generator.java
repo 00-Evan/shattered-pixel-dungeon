@@ -46,13 +46,13 @@ import java.util.HashMap;
 public class Generator {
 
 	public static enum Category {
-		WEAPON	( 150,	Weapon.class ),
+		WEAPON	( 100,	Weapon.class ),
 		WEP_T1	( 0, 	Weapon.class),
 		WEP_T2	( 0,	Weapon.class),
 		WEP_T3	( 0, 	Weapon.class),
 		WEP_T4	( 0, 	Weapon.class),
 		WEP_T5	( 0, 	Weapon.class),
-		ARMOR	( 100,	Armor.class ),
+		ARMOR	( 60,	Armor.class ),
 		POTION	( 500,	Potion.class ),
 		SCROLL	( 400,	Scroll.class ),
 		WAND	( 40,	Wand.class ),
