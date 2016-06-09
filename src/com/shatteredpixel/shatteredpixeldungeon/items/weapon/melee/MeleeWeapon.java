@@ -125,15 +125,5 @@ public class MeleeWeapon extends Weapon {
 		}
 		return price;
 	}
-	
-	@Override
-	public Item random() {
-		super.random();
-		
-		if (Random.Int( 10 + level() ) == 0) {
-			enchant();
-		}
-		
-		return this;
-	}
+
 }
