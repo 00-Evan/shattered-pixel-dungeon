@@ -63,8 +63,7 @@ public class MeleeWeapon extends Weapon {
 		String info = desc();
 
 		if (levelKnown) {
-			float dmgfactor = (imbue == Imbue.LIGHT ? 0.7f : imbue == Imbue.HEAVY ? 1.5f : 1);
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, Math.round(min()*dmgfactor), Math.round(max()*dmgfactor), STRReq());
+			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, imbue.damageFactor(min()), imbue.damageFactor(max()), STRReq());
 			if (STRReq() > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Weapon.class, "too_heavy");
 			} else if (Dungeon.hero.STR() > STRReq()){

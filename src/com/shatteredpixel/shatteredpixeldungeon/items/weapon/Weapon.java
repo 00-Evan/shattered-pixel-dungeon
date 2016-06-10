@@ -68,7 +68,25 @@ abstract public class Weapon extends KindOfWeapon {
 	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
 
 	public enum Imbue {
-		NONE, LIGHT, HEAVY
+		NONE	(1.0f, 1.00f),
+		LIGHT	(0.7f, 0.67f),
+		HEAVY	(1.5f, 1.67f);
+
+		private float damageFactor;
+		private float delayFactor;
+
+		Imbue(float dmg, float dly){
+			damageFactor = dmg;
+			delayFactor = dly;
+		}
+
+		public int damageFactor(int dmg){
+			return Math.round(dmg * damageFactor);
+		}
+
+		public float delayFactor(float dly){
+			return dly * delayFactor;
+		}
 	}
 	public Imbue imbue = Imbue.NONE;
 
@@ -145,7 +163,7 @@ abstract public class Weapon extends KindOfWeapon {
 			encumrance -= 2;
 		}
 
-		float DLY = this.DLY * (imbue == Imbue.LIGHT ? 0.667f : (imbue == Imbue.HEAVY ? 1.667f : 1.0f));
+		float DLY = imbue.delayFactor(this.DLY);
 
 		int bonus = 0;
 		for (Buff buff : hero.buffs(RingOfFuror.Furor.class)) {
@@ -175,7 +193,7 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 		}
 		
-		return Math.round(damage * (imbue == Imbue.LIGHT ? 0.7f : (imbue == Imbue.HEAVY ? 1.5f : 1f)));
+		return imbue.damageFactor(damage);
 	}
 
 	public int STRReq(){

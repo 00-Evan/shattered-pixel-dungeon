@@ -38,9 +38,9 @@ public class Lucky extends Weapon.Enchantment {
 		if (Random.Int(100) < (50 + level)){
 			int exStr = 0;
 			if (attacker == Dungeon.hero) exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq());
-			damage = weapon.max() + exStr - Random.IntRange(0, defender.dr());
+			damage = weapon.imbue.damageFactor(weapon.max()) + exStr - Random.IntRange(0, defender.dr());
 		} else {
-			damage = weapon.min() - Random.IntRange(0, defender.dr());
+			damage = weapon.imbue.damageFactor(weapon.min()) - Random.IntRange(0, defender.dr());
 		}
 
 		return Math.max(0, damage);
