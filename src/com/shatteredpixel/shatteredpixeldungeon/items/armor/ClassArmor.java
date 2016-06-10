@@ -140,12 +140,21 @@ abstract public class ClassArmor extends Armor {
 	@Override
 	public int STRReq(int lvl) {
 		lvl = Math.max(0, lvl);
-		return (7 + armorTier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		int effectiveTier = armorTier;
+		if (glyph != null) effectiveTier += glyph.tierSTRAdjust();
+		effectiveTier = Math.max(0, effectiveTier);
+
+		//strength req decreases at +1,+3,+6,+10,etc.
+		return (8 + effectiveTier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
 
 	@Override
 	public int DR(){
-		return armorTier * (2 + level() + (glyph == null ? 0 : 1));
+		int effectiveTier = armorTier;
+		if (glyph != null) effectiveTier += glyph.tierDRAdjust();
+		effectiveTier = Math.max(0, effectiveTier);
+
+		return effectiveTier * (2 + level());
 	}
 	
 	@Override

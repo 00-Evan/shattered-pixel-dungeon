@@ -135,6 +135,16 @@ public class Artifact extends KindofMisc {
 	}
 
 	@Override
+	public String toString() {
+
+		if (levelKnown && level()/levelCap != 0) {
+			return Messages.format( TXT_TO_STRING_LVL, name(), visiblyUpgraded() );
+		} else {
+			return name();
+		}
+	}
+
+	@Override
 	public String status() {
 
 		//display the current cooldown
