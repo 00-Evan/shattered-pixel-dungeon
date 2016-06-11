@@ -66,62 +66,64 @@ public class CursingTrap extends Trap {
 		}
 
 		if (Dungeon.hero.pos == pos){
-			Hero hero = Dungeon.hero;
-
-			//items the trap wants to curse because it will create a more negative effect
-			ArrayList<Item> priorityCurse = new ArrayList<>();
-			//items the trap can curse if nothing else is available.
-			ArrayList<Item> canCurse = new ArrayList<>();
-
-			KindOfWeapon weapon = hero.belongings.weapon;
-			if (weapon instanceof Weapon && !weapon.cursed){
-				if (((Weapon) weapon).enchantment == null)
-					priorityCurse.add(weapon);
-				else
-					canCurse.add(weapon);
-			}
-
-			Armor armor = hero.belongings.armor;
-			if (!armor.cursed){
-				if (armor.glyph == null)
-					priorityCurse.add(armor);
-				else
-					canCurse.add(armor);
-			}
-
-			KindofMisc misc1 = hero.belongings.misc1;
-			if (misc1 instanceof Artifact){
-				priorityCurse.add(misc1);
-			} else if (misc1 instanceof Ring){
-				canCurse.add(misc1);
-			}
-
-			KindofMisc misc2 = hero.belongings.misc2;
-			if (misc2 instanceof Artifact){
-				priorityCurse.add(misc2);
-			} else if (misc2 instanceof Ring){
-				canCurse.add(misc2);
-			}
-
-			Collections.shuffle(priorityCurse);
-			Collections.shuffle(canCurse);
-
-			int numCurses = Random.Int(3) == 0 ? 1 : 2;
-
-			for (int i = 0; i < numCurses; i++){
-				if (!priorityCurse.isEmpty()){
-					curse(priorityCurse.remove(0));
-				} else if (!canCurse.isEmpty()){
-					curse(canCurse.remove(0));
-				}
-			}
-
-			EquipableItem.equipCursed(hero);
-			GLog.n( Messages.get(this, "curse") );
+			curse(Dungeon.hero);
 		}
 	}
 
-	private void curse(Item item){
+	public static void curse(Hero hero){
+		//items the trap wants to curse because it will create a more negative effect
+		ArrayList<Item> priorityCurse = new ArrayList<>();
+		//items the trap can curse if nothing else is available.
+		ArrayList<Item> canCurse = new ArrayList<>();
+
+		KindOfWeapon weapon = hero.belongings.weapon;
+		if (weapon instanceof Weapon && !weapon.cursed){
+			if (((Weapon) weapon).enchantment == null)
+				priorityCurse.add(weapon);
+			else
+				canCurse.add(weapon);
+		}
+
+		Armor armor = hero.belongings.armor;
+		if (!armor.cursed){
+			if (armor.glyph == null)
+				priorityCurse.add(armor);
+			else
+				canCurse.add(armor);
+		}
+
+		KindofMisc misc1 = hero.belongings.misc1;
+		if (misc1 instanceof Artifact){
+			priorityCurse.add(misc1);
+		} else if (misc1 instanceof Ring){
+			canCurse.add(misc1);
+		}
+
+		KindofMisc misc2 = hero.belongings.misc2;
+		if (misc2 instanceof Artifact){
+			priorityCurse.add(misc2);
+		} else if (misc2 instanceof Ring){
+			canCurse.add(misc2);
+		}
+
+		Collections.shuffle(priorityCurse);
+		Collections.shuffle(canCurse);
+
+		int numCurses = Random.Int(3) == 0 ? 1 : 2;
+
+		for (int i = 0; i < numCurses; i++){
+			if (!priorityCurse.isEmpty()){
+				curse(priorityCurse.remove(0));
+			} else if (!canCurse.isEmpty()){
+				curse(canCurse.remove(0));
+			}
+		}
+
+		EquipableItem.equipCursed(hero);
+		GLog.n( Messages.get(CursingTrap.class, "curse") );
+	}
+
+	private static void curse(Item item){
 		item.cursed = item.cursedKnown = true;
 
 		if (item instanceof Weapon){
