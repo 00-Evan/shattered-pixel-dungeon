@@ -157,13 +157,6 @@ public class MagesStaff extends MeleeWeapon {
 
 		this.wand = null;
 
-		GLog.p( Messages.get(this, "imbue", wand.name()));
-
-		if (enchantment != null) {
-			GLog.w( Messages.get(this, "conflict") );
-			enchant(null);
-		}
-
 		//syncs the level of the two items.
 		int targetLevel = Math.max(this.level(), wand.level());
 
@@ -184,13 +177,17 @@ public class MagesStaff extends MeleeWeapon {
 		wand.curCharges = wand.maxCharges;
 		wand.identify();
 		wand.cursed = false;
-		wand.charge(owner);
+		if (owner != null) wand.charge(owner);
 
 		name = Messages.get(wand, "staff_name");
 
 		updateQuickslot();
 
 		return this;
+	}
+
+	public Class<?extends Wand> wandClass(){
+		return wand != null ? wand.getClass() : null;
 	}
 
 	@Override
@@ -313,7 +310,8 @@ public class MagesStaff extends MeleeWeapon {
 			wand.detach(curUser.belongings.backpack);
 			Badges.validateTutorial();
 
-			imbueWand((Wand) wand, curUser);
+			GLog.p( Messages.get(MagesStaff.class, "imbue", wand.name()));
+			imbueWand( wand, curUser );
 
 			updateQuickslot();
 		}

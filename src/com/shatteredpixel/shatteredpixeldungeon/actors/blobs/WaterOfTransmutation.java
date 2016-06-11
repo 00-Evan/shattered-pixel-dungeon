@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.Journal.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
@@ -43,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
@@ -58,7 +60,9 @@ public class WaterOfTransmutation extends WellWater {
 	@Override
 	protected Item affectItem( Item item ) {
 		
-		if (item instanceof MeleeWeapon) {
+		if (item instanceof MagesStaff) {
+			item = changeStaff( (MagesStaff)item );
+		} else if (item instanceof MeleeWeapon) {
 			item = changeWeapon( (MeleeWeapon)item );
 		} else if (item instanceof Scroll) {
 			item = changeScroll( (Scroll)item );
@@ -88,6 +92,23 @@ public class WaterOfTransmutation extends WellWater {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 		emitter.start( Speck.factory( Speck.CHANGE ), 0.2f, 0 );
+	}
+
+	private MagesStaff changeStaff( MagesStaff staff ){
+		Class<?extends Wand> wandClass = staff.wandClass();
+
+		if (wandClass == null){
+			return null;
+		} else {
+			Wand n;
+			do {
+				n = (Wand)Generator.random(Category.WAND);
+			} while (n.getClass() == wandClass);
+			n.level(0);
+			staff.imbueWand(n, null);
+		}
+
+		return staff;
 	}
 	
 	private Weapon changeWeapon( MeleeWeapon w ) {
