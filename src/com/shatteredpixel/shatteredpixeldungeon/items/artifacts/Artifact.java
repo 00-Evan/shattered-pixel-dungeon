@@ -113,7 +113,7 @@ public class Artifact extends KindofMisc {
 
 	@Override
 	public int visiblyUpgraded() {
-		return ((level()*10)/levelCap);
+		return levelKnown ? Math.round((level()*10)/(float)levelCap): 0;
 	}
 
 	//transfers upgrades from another artifact, transfer level will equal the displayed level
@@ -131,16 +131,6 @@ public class Artifact extends KindofMisc {
 
 			return desc();
 
-		}
-	}
-
-	@Override
-	public String toString() {
-
-		if (levelKnown && level()/levelCap != 0) {
-			return Messages.format( TXT_TO_STRING_LVL, name(), visiblyUpgraded() );
-		} else {
-			return name();
 		}
 	}
 
