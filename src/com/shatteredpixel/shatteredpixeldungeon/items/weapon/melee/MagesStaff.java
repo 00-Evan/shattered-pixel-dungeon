@@ -155,6 +155,7 @@ public class MagesStaff extends MeleeWeapon {
 
 	public Item imbueWand(Wand wand, Char owner){
 
+		wand.cursed = false;
 		this.wand = null;
 
 		//syncs the level of the two items.
@@ -176,7 +177,6 @@ public class MagesStaff extends MeleeWeapon {
 		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
 		wand.curCharges = wand.maxCharges;
 		wand.identify();
-		wand.cursed = false;
 		if (owner != null) wand.charge(owner);
 
 		name = Messages.get(wand, "staff_name");

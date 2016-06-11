@@ -186,12 +186,16 @@ public abstract class Wand extends Item {
 	@Override
 	public Item upgrade() {
 
-		if (cursed && cursedKnown) {
-			GLog.p( Messages.get(Item.class, "remove_curse") );
-			Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-		}
+		boolean cursedPreUpgrade = cursed;
 
 		super.upgrade();
+
+		if (cursedPreUpgrade && Random.Float() > Math.pow(0.9, level())){
+			GLog.p( Messages.get(Item.class, "remove_curse") );
+			Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+		} else {
+			cursed = cursedPreUpgrade;
+		}
 		
 		updateLevel();
 		curCharges = Math.min( curCharges + 1, maxCharges );
