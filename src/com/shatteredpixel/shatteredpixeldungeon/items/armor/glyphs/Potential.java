@@ -42,7 +42,7 @@ public class Potential extends Glyph {
 
 		if (Random.Int( level + 10 ) >= 9) {
 
-			defender.damage( Random.IntRange( defender.HT/20, defender.HT/10 ), LightningTrap.LIGHTNING );
+			defender.damage( Random.NormalIntRange( 1, defender.HT/10 ), LightningTrap.LIGHTNING );
 			
 			checkOwner( defender );
 			if (defender == Dungeon.hero) {
