@@ -297,7 +297,7 @@ public class Hero extends Char {
 
 			if (belongings.armor != null && belongings.armor.glyph != null
 					&& belongings.armor.glyph instanceof Swiftness)
-				bonus += belongings.armor.level()*2;
+				bonus += 5 + belongings.armor.level()*1.5f;
 
 			return Math.round((defenseSkill + bonus) * evasion);
 		}
