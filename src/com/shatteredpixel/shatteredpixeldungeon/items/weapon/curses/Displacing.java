@@ -18,36 +18,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon.plants;
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
-public class Fadeleaf extends Plant {
-	
-	{
-		image = 6;
-	}
-	
+public class Displacing extends Weapon.Enchantment {
+
+	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
+
 	@Override
-	public void activate() {
-		Char ch = Actor.findChar(pos);
-		
-		if (ch instanceof Hero) {
-			
-			ScrollOfTeleportation.teleportHero( (Hero)ch );
-			((Hero)ch).curAction = null;
-			
-		} else if (ch instanceof Mob && !ch.properties().contains(Char.Property.IMMOVABLE)) {
+	public int proc(Weapon weapon, Char attacker, Char defender, int damage ) {
 
+		if (Random.Int(12) == 0 && !defender.properties().contains(Char.Property.IMMOVABLE)){
 			int count = 10;
 			int newPos;
 			do {
@@ -56,28 +44,31 @@ public class Fadeleaf extends Plant {
 					break;
 				}
 			} while (newPos == -1);
-			
+
 			if (newPos != -1 && !Dungeon.bossLevel()) {
-			
-				ch.pos = newPos;
-				ch.sprite.place( ch.pos );
-				ch.sprite.visible = Dungeon.visible[ch.pos];
-				
+
+				if (Dungeon.visible[defender.pos]) {
+					CellEmitter.get( defender.pos ).start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );
+				}
+
+				defender.pos = newPos;
+				defender.sprite.place( defender.pos );
+				defender.sprite.visible = Dungeon.visible[defender.pos];
+
 			}
+		}
 
-		}
-		
-		if (Dungeon.visible[pos]) {
-			CellEmitter.get( pos ).start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );
-		}
+		return damage;
 	}
-	
-	public static class Seed extends Plant.Seed {
-		{
-			image = ItemSpriteSheet.SEED_FADELEAF;
 
-			plantClass = Fadeleaf.class;
-			alchemyClass = PotionOfMindVision.class;
-		}
+	@Override
+	public boolean curse() {
+		return true;
 	}
+
+	@Override
+	public ItemSprite.Glowing glowing() {
+		return BLACK;
+	}
+
 }

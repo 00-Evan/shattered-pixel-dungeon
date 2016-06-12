@@ -32,8 +32,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Exhausting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Fragile;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Sacrificial;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
@@ -294,7 +296,7 @@ abstract public class Weapon extends KindOfWeapon {
 			2, 2, 2 };
 
 		private static final Class<?>[] curses = new Class<?>[]{
-				Annoying.class, Exhausting.class, Fragile.class, Wayward.class
+				Annoying.class, Displacing.class, Exhausting.class, Fragile.class, Sacrificial.class, Wayward.class
 		};
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
