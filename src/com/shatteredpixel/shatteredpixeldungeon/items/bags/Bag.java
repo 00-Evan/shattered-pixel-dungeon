@@ -65,16 +65,18 @@ public class Bag extends Item implements Iterable<Item> {
 	
 	@Override
 	public boolean collect( Bag container ) {
+
+		for (Item item : container.items.toArray( new Item[0] )) {
+			if (grab( item )) {
+				item.detachAll( container );
+				if (!item.collect( this ))
+					item.collect( container );
+			}
+		}
+
 		if (super.collect( container )) {
 			
 			owner = container.owner;
-			
-			for (Item item : container.items.toArray( new Item[0] )) {
-				if (grab( item )) {
-					item.detachAll( container );
-					item.collect( this );
-				}
-			}
 			
 			Badges.validateAllBagsBought( this );
 			
