@@ -106,10 +106,10 @@ public class MeleeWeapon extends Weapon {
 	@Override
 	public int price() {
 		int price = 20 * (1 << (tier - 1));
-		if (enchantment != null) {
+		if (hasGoodEnchant()) {
 			price *= 1.5;
 		}
-		if (cursed && cursedKnown) {
+		if (cursedKnown && (cursed || hasCurseEnchant())) {
 			price /= 2;
 		}
 		if (levelKnown) {

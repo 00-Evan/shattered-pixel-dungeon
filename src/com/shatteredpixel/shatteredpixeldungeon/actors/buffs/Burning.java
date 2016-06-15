@@ -83,8 +83,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 				Hero hero = (Hero)target;
 
-				if (hero.belongings.armor != null && hero.belongings.armor.glyph != null
-						&& hero.belongings.armor.glyph instanceof Brimstone){
+				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Brimstone.class)){
 
 					int heal = hero.belongings.armor.level()/2;
 					if (heal > 0 && hero.HP < hero.HT) {

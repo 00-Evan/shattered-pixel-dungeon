@@ -295,8 +295,7 @@ public class Hero extends Char {
 			bonus = 0;
 			if (heroClass == HeroClass.ROGUE) bonus += -aEnc;
 
-			if (belongings.armor != null && belongings.armor.glyph != null
-					&& belongings.armor.glyph instanceof Swiftness)
+			if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
 				bonus += 5 + belongings.armor.level()*1.5f;
 
 			return Math.round((defenseSkill + bonus) * evasion);
@@ -355,11 +354,11 @@ public class Hero extends Char {
 
 		Armor armor = belongings.armor;
 
-		if (armor != null && armor.glyph != null){
+		if (armor != null){
 
-			if (armor.glyph instanceof  Swiftness) {
+			if (armor.hasGlyph(Swiftness.class)) {
 				speed *= (1.1f + 0.01f * belongings.armor.level());
-			} else if (armor.glyph instanceof Flow && Level.water[pos]){
+			} else if (armor.hasGlyph(Flow.class) && Level.water[pos]){
 				speed *= (1.5f + 0.05f * belongings.armor.level());
 			}
 		}
@@ -958,8 +957,8 @@ public class Hero extends Char {
 			dmg = (int)Math.ceil((float)dmg * Math.pow(0.9, tenacity*((float)(HT - HP)/HT)));
 
 		//TODO improve this when I have proper damage source logic
-		if (belongings.armor != null && belongings.armor.glyph != null
-				&& belongings.armor.glyph instanceof AntiMagic && RingOfElements.FULL.contains(src.getClass())){
+		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
+				&& RingOfElements.FULL.contains(src.getClass())){
 			dmg -= Random.IntRange(0, belongings.armor.DR()/2);
 		}
 
@@ -1235,8 +1234,7 @@ public class Hero extends Char {
 		for (Buff buff : buffs( RingOfEvasion.Evasion.class )) {
 			stealth += ((RingOfEvasion.Evasion)buff).effectiveLevel;
 		}
-		if (belongings.armor != null && belongings.armor.glyph != null
-				&& belongings.armor.glyph instanceof Obfuscation){
+		if (belongings.armor != null && belongings.armor.hasGlyph(Obfuscation.class)){
 			stealth += belongings.armor.level();
 		}
 		return stealth;

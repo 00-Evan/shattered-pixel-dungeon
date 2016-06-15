@@ -40,7 +40,7 @@ public class RingOfEvasion extends Ring {
 		public boolean attachTo( Char target ) {
 
 			pos = target.pos;
-			effectiveLevel = Math.min(0, level);
+			effectiveLevel = Math.min(0, level());
 			return super.attachTo(target);
 		}
 
@@ -56,12 +56,12 @@ public class RingOfEvasion extends Ring {
 				}
 			}
 
-			if (level < 1){
-				effectiveLevel = level;
+			if (level() < 1){
+				effectiveLevel = level();
 			} else if (seen) {
 				effectiveLevel = Math.max(effectiveLevel - 1, 0);
 			} else {
-				effectiveLevel = Math.min(effectiveLevel + 1, level);
+				effectiveLevel = Math.min(effectiveLevel + 1, level());
 			}
 
 			return super.act();

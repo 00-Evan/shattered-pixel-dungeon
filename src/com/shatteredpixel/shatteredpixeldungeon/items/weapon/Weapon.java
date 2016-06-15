@@ -141,7 +141,7 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		int encumbrance = STRReq() - hero.STR();
 
-		if (enchantment instanceof Wayward)
+		if (hasEnchant(Wayward.class))
 			encumbrance = Math.max(3, encumbrance+3);
 
 		float ACC = this.ACC;
@@ -180,7 +180,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int reachFactor(Hero hero) {
-		return enchantment instanceof Projecting ? RCH+1 : RCH;
+		return hasEnchant(Projecting.class) ? RCH+1 : RCH;
 	}
 
 	@Override

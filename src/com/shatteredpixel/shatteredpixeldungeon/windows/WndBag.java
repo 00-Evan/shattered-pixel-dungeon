@@ -386,11 +386,11 @@ public class WndBag extends WndTabbed {
 					if (!active && mode == Mode.UNIDED_OR_CURSED){
 						if (item instanceof Weapon){
 							Weapon w = (Weapon) item;
-							enable(w.enchantment != null && w.enchantment.curse());
+							enable(w.hasCurseEnchant());
 						}
 						if (item instanceof Armor){
 							Armor a = (Armor) item;
-							enable(a.glyph != null && a.glyph.curse());
+							enable(a.hasCurseGlyph());
 						}
 					}
 				}

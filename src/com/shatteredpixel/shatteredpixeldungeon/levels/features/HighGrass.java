@@ -96,8 +96,7 @@ public class HighGrass {
 			}
 
 			//Camouflage
-			if (hero.belongings.armor != null && hero.belongings.armor.glyph != null
-					&& hero.belongings.armor.glyph instanceof Camouflage){
+			if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Camouflage.class)){
 				Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings.armor.level());
 				leaves += 4;
 			}

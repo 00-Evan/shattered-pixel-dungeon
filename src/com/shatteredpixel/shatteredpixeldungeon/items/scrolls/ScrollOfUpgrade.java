@@ -75,7 +75,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 			a.upgrade();
 
-			if (hadCursedGlyph && a.glyph == null){
+			if (hadCursedGlyph && !a.hasCurseGlyph()){
 				removeCurse( Dungeon.hero );
 			} else if (wasCursed && !a.cursed){
 				weakenCurse( Dungeon.hero );

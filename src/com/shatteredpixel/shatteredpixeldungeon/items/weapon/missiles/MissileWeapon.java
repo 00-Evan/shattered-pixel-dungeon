@@ -58,7 +58,7 @@ abstract public class MissileWeapon extends Weapon {
 	protected int throwPos(Hero user, int dst) {
 		int defaultPos = super.throwPos(user, dst);
 		if (defaultPos == dst) return dst;
-		else if (enchantment instanceof Projecting){
+		else if (hasEnchant(Projecting.class)){
 			Ballistica ProjectingTrajectory = new Ballistica( user.pos, dst, Ballistica.STOP_TARGET );
 			if (ProjectingTrajectory.dist <= 4) return ProjectingTrajectory.collisionPos;
 			else return super.throwPos(user, dst);
