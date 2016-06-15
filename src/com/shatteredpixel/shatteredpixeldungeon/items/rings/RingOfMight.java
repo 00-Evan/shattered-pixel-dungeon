@@ -21,7 +21,53 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+
 public class RingOfMight extends Ring {
+
+	@Override
+	public boolean doEquip(Hero hero) {
+		if (super.doEquip(hero)){
+			hero.HT += level()*5;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
+
+		if (super.doUnequip(hero, collect, single)){
+			hero.HT -= level()*5;
+			hero.HP = Math.min(hero.HP, hero.HT);
+			return false;
+		} else {
+			return false;
+		}
+
+	}
+
+	@Override
+	public Item upgrade() {
+		if (buff != null && buff.target != null){
+			buff.target.HT += 5;
+		}
+		return super.upgrade();
+	}
+
+	@Override
+	public void level(int value) {
+		if (buff != null && buff.target != null){
+			buff.target.HT -= level()*5;
+		}
+		super.level(value);
+		if (buff != null && buff.target != null){
+			buff.target.HT += level()*5;
+			buff.target.HP = Math.min(buff.target.HP, buff.target.HT);
+		}
+	}
 
 	@Override
 	protected RingBuff buff( ) {

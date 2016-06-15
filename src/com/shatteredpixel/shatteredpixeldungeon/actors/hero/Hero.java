@@ -176,9 +176,7 @@ public class Hero extends Char {
 	public int STR() {
 		int STR = this.STR;
 
-		for (Buff buff : buffs(RingOfMight.Might.class)) {
-			STR += ((RingOfMight.Might)buff).level;
-		}
+		STR += RingOfMight.getBonus(this, RingOfMight.Might.class);
 
 		return weakened ? STR - 2 : STR;
 	}
@@ -276,10 +274,7 @@ public class Hero extends Char {
 	@Override
 	public int defenseSkill( Char enemy ) {
 		
-		int bonus = 0;
-		for (Buff buff : buffs( RingOfEvasion.Evasion.class )) {
-			bonus += ((RingOfEvasion.Evasion)buff).effectiveLevel;
-		}
+		int bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion.class);
 
 		float evasion = (float)Math.pow( 1.15, bonus );
 		if (paralysed > 0) {
@@ -318,10 +313,7 @@ public class Hero extends Char {
 	public int damageRoll() {
 		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
 		int dmg;
-		int bonus = 0;
-		for (Buff buff : buffs( RingOfForce.Force.class )) {
-			bonus += ((RingOfForce.Force)buff).level;
-		}
+		int bonus = RingOfForce.getBonus(this, RingOfForce.Force.class);
 
 		if (wep != null) {
 			dmg = wep.damageRoll( this ) + bonus;
@@ -344,10 +336,7 @@ public class Hero extends Char {
 
 		float speed = super.speed();
 
-		int hasteLevel = 0;
-		for (Buff buff : buffs( RingOfHaste.Haste.class )) {
-			hasteLevel += ((RingOfHaste.Haste)buff).level;
-		}
+		int hasteLevel = RingOfHaste.getBonus(this, RingOfHaste.Haste.class);
 
 		if (hasteLevel != 0)
 			speed *= Math.pow(1.2, hasteLevel);
@@ -419,10 +408,7 @@ public class Hero extends Char {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			int bonus = 0;
-			for (Buff buff : buffs(RingOfFuror.Furor.class)) {
-				bonus += ((RingOfFuror.Furor)buff).level;
-			}
+			int bonus = RingOfFuror.getBonus(this, RingOfFuror.Furor.class);
 			return (float)(0.25 + (1 - 0.25)*Math.pow(0.8, bonus));
 		}
 	}
@@ -949,10 +935,7 @@ public class Hero extends Char {
 			dmg = thorns.proc(dmg, (src instanceof Char ? (Char)src : null),  this);
 		}
 
-		int tenacity = 0;
-		for (Buff buff : buffs(RingOfTenacity.Tenacity.class)) {
-			tenacity += ((RingOfTenacity.Tenacity)buff).level;
-		}
+		int tenacity = RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
 		if (tenacity != 0) //(HT - HP)/HT = heroes current % missing health.
 			dmg = (int)Math.ceil((float)dmg * Math.pow(0.9, tenacity*((float)(HT - HP)/HT)));
 
@@ -1201,11 +1184,7 @@ public class Hero extends Char {
 				GLog.w(msg);
 			}
 
-			if (buff instanceof RingOfMight.Might) {
-				if (((RingOfMight.Might) buff).level > 0) {
-					HT += ((RingOfMight.Might) buff).level * 5;
-				}
-			} else if (buff instanceof Paralysis || buff instanceof Vertigo) {
+			if (buff instanceof Paralysis || buff instanceof Vertigo) {
 				interrupt();
 			}
 
@@ -1217,14 +1196,7 @@ public class Hero extends Char {
 	@Override
 	public void remove( Buff buff ) {
 		super.remove( buff );
-		
-		if (buff instanceof RingOfMight.Might){
-			if (((RingOfMight.Might)buff).level > 0){
-				HT -= ((RingOfMight.Might) buff).level * 5;
-				HP = Math.min(HT, HP);
-			}
-		}
-		
+
 		BuffIndicator.refreshHero();
 	}
 	

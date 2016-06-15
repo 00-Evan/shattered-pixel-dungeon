@@ -21,7 +21,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
@@ -38,10 +37,7 @@ public class RingOfForce extends Ring {
 	}
 
 	public static int damageRoll( Hero hero ){
-		int level = 0;
-		for (Buff buff : hero.buffs( RingOfForce.Force.class )) {
-			level += ((RingOfForce.Force)buff).level;
-		}
+		int level = getBonus(hero, Force.class);
 		float tier = tier(hero.STR());
 		return Random.NormalIntRange(min(level, tier), max(level, tier));
 	}

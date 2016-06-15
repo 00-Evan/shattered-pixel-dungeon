@@ -34,13 +34,11 @@ public class RingOfEvasion extends Ring {
 	//yup, the only ring in the game with logic inside of its class
 	public class Evasion extends RingBuff {
 		public int effectiveLevel;
-		private int pos;
 
 		@Override
 		public boolean attachTo( Char target ) {
 
-			pos = target.pos;
-			effectiveLevel = Math.min(0, level());
+			effectiveLevel = Math.min(0, RingOfEvasion.this.level());
 			return super.attachTo(target);
 		}
 
@@ -56,15 +54,20 @@ public class RingOfEvasion extends Ring {
 				}
 			}
 
-			if (level() < 1){
-				effectiveLevel = level();
+			if (RingOfEvasion.this.level() < 1){
+				effectiveLevel = RingOfEvasion.this.level();
 			} else if (seen) {
 				effectiveLevel = Math.max(effectiveLevel - 1, 0);
 			} else {
-				effectiveLevel = Math.min(effectiveLevel + 1, level());
+				effectiveLevel = Math.min(effectiveLevel + 1, RingOfEvasion.this.level());
 			}
 
 			return super.act();
+		}
+
+		@Override
+		public int level() {
+			return effectiveLevel;
 		}
 	}
 }

@@ -239,6 +239,14 @@ public class Ring extends KindofMisc {
 		}
 	}
 
+	public static int getBonus(Char target, Class<?extends RingBuff> type){
+		int bonus = 0;
+		for (RingBuff buff : target.buffs(type)) {
+			bonus += buff.level();
+		}
+		return bonus;
+	}
+
 	public class RingBuff extends Buff {
 		
 		@Override
@@ -270,5 +278,6 @@ public class Ring extends KindofMisc {
 		public int level(){
 			return Ring.this.level();
 		}
+
 	}
 }

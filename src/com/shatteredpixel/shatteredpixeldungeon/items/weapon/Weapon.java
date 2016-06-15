@@ -147,10 +147,7 @@ abstract public class Weapon extends KindOfWeapon {
 		float ACC = this.ACC;
 		
 		if (this instanceof MissileWeapon) {
-			int bonus = 0;
-			for (Buff buff : hero.buffs(RingOfSharpshooting.Aim.class)) {
-				bonus += ((RingOfSharpshooting.Aim)buff).level;
-			}
+			int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim.class);
 			ACC *= (float)(Math.pow(1.1, bonus));
 		}
 
@@ -167,10 +164,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 		float DLY = imbue.delayFactor(this.DLY);
 
-		int bonus = 0;
-		for (Buff buff : hero.buffs(RingOfFuror.Furor.class)) {
-			bonus += ((RingOfFuror.Furor)buff).level;
-		}
+		int bonus = RingOfFuror.getBonus(hero, RingOfFuror.Furor.class);
 
 		DLY = (float)(0.25 + (DLY - 0.25)*Math.pow(0.8, bonus));
 

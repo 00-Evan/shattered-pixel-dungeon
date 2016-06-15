@@ -211,10 +211,7 @@ public abstract class Level implements Bundlable {
 				Dungeon.limitedDrops.arcaneStyli.count++;
 			}
 
-			int bonus = 0;
-			for (Buff buff : Dungeon.hero.buffs(RingOfWealth.Wealth.class)) {
-				bonus += ((RingOfWealth.Wealth) buff).level;
-			}
+			int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
 			if (Random.Float() > Math.pow(0.95, bonus)){
 				if (Random.Int(2) == 0)
 					 addItemToSpawn( new ScrollOfMagicalInfusion() );

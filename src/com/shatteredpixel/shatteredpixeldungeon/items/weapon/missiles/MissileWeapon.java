@@ -79,10 +79,8 @@ abstract public class MissileWeapon extends Weapon {
 			if (!curUser.shoot( enemy, this )) {
 				miss( cell );
 			} else if (!(this instanceof Boomerang)){
-				int bonus = 0;
 
-				for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class))
-					bonus += ((RingOfSharpshooting.Aim)buff).level;
+				int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
 
 				if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
 					bonus += 3;
@@ -99,10 +97,7 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	protected void miss( int cell ) {
-		int bonus = 0;
-		for (Buff buff : curUser.buffs(RingOfSharpshooting.Aim.class)) {
-			bonus += ((RingOfSharpshooting.Aim)buff).level;
-		}
+		int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
 
 		//degraded ring of sharpshooting will even make missed shots break.
 		if (Random.Float() < Math.pow(0.6, -bonus))
