@@ -39,6 +39,6 @@ public class Quarterstaff extends MeleeWeapon {
 
 	@Override
 	public int defenceFactor(Hero hero) {
-		return 2+level();       //2 extra defence, plus 1 per level;
+		return 2;	//2 extra defence
 	}
 }

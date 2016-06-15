@@ -40,6 +40,6 @@ public class Sai extends MeleeWeapon {
 
 	@Override
 	public int defenceFactor(Hero hero) {
-		return 3+level();       //3 extra defence, plus 1 per level;
+		return 3;	//3 extra defence
 	}
 }
