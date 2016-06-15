@@ -127,28 +127,6 @@ public class Ring extends KindofMisc {
 		}
 	}
 	
-	@Override
-	public Item upgrade() {
-
-		if (cursed && cursedKnown) {
-			GLog.p( Messages.get(Item.class, "weaken_curse") );
-			Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-		}
-		
-		super.upgrade();
-		
-		if (buff != null) {
-			
-			Char owner = buff.target;
-			buff.detach();
-			if ((buff = buff()) != null) {
-				buff.attachTo( owner );
-			}
-		}
-		
-		return this;
-	}
-	
 	public boolean isKnown() {
 		return handler.isKnown( this );
 	}
@@ -263,11 +241,6 @@ public class Ring extends KindofMisc {
 
 	public class RingBuff extends Buff {
 		
-		public int level;
-		public RingBuff() {
-			level = Ring.this.level();
-		}
-		
 		@Override
 		public boolean attachTo( Char target ) {
 
@@ -284,7 +257,6 @@ public class Ring extends KindofMisc {
 		public boolean act() {
 			
 			if (!isIdentified() && --ticksToKnow <= 0) {
-				String gemName = name();
 				identify();
 				GLog.w( Messages.get(Ring.class, "identify", Ring.this.toString()) );
 				Badges.validateItemLevelAquired( Ring.this );
@@ -293,6 +265,10 @@ public class Ring extends KindofMisc {
 			spend( TICK );
 			
 			return true;
+		}
+
+		public int level(){
+			return Ring.this.level();
 		}
 	}
 }

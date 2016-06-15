@@ -68,7 +68,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			}
 			if (item instanceof Weapon){
 				Weapon w = (Weapon) item;
-				if (w.enchantment != null && w.enchantment.curse()){
+				if (w.hasCurseEnchant()){
 					w.enchant(null);
 					w.cursed = false;
 					procced = true;
@@ -76,7 +76,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			}
 			if (item instanceof Armor){
 				Armor a = (Armor) item;
-				if (a.glyph != null && a.glyph.curse()){
+				if (a.hasCurseGlyph()){
 					a.inscribe(null);
 					a.cursed = false;
 					procced = true;

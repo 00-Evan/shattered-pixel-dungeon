@@ -227,26 +227,11 @@ public class Armor extends EquipableItem {
 	}
 	
 	public Item upgrade( boolean inscribe ) {
-		
-		if (glyph != null) {
-			if (inscribe && glyph.curse()){
-				inscribe( Glyph.random() );
-			} else if (!inscribe && Random.Float() > Math.pow(0.9, level())) {
-				if (!glyph.curse())
-					GLog.w( Messages.get(Armor.class, "incompatible") );
-				else if (cursedKnown) {
-					GLog.p(Messages.get(Item.class, "remove_curse"));
-					Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-				}
-				inscribe( null );
-			} else if (!inscribe && glyph.curse() && cursed && cursedKnown){
-				GLog.p( Messages.get(Item.class, "weaken_curse") );
-				Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-			}
-		} else {
-			if (inscribe) {
-				inscribe( Glyph.random() );
-			}
+
+		if (inscribe && (glyph == null || glyph.curse())){
+			inscribe( Glyph.random() );
+		} else if (!inscribe && Random.Float() > Math.pow(0.9, level())){
+			inscribe(null);
 		}
 
 		if (seal != null && seal.level() == 0)
@@ -406,8 +391,16 @@ public class Armor extends EquipableItem {
 		return inscribe( gl );
 	}
 
-	public boolean isInscribed() {
-		return glyph != null;
+	public boolean hasGlyph(Class<?extends Glyph> type) {
+		return glyph != null && glyph.getClass() == type;
+	}
+
+	public boolean hasGoodGlyph(){
+		return glyph != null && !glyph.curse();
+	}
+
+	public boolean hasCurseGlyph(){
+		return glyph != null && glyph.curse();
 	}
 	
 	@Override

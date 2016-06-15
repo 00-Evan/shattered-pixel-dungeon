@@ -273,6 +273,8 @@ public class Item implements Bundlable {
 
 	public void level( int value ){
 		level = value;
+
+		updateQuickslot();
 	}
 	
 	public Item upgrade() {

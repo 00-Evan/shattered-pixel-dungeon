@@ -205,25 +205,11 @@ abstract public class Weapon extends KindOfWeapon {
 	public abstract int STRReq(int lvl);
 	
 	public Item upgrade( boolean enchant ) {
-		if (enchantment != null) {
-			if (enchant && enchantment.curse()){
-				enchant( Enchantment.random() );
-			} else if (!enchant && Random.Float() > Math.pow(0.9, level())) {
-				if (!enchantment.curse())
-					GLog.w( Messages.get(Weapon.class, "incompatible") );
-				else {
-					GLog.p(Messages.get(Item.class, "remove_curse"));
-					Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-				}
-				enchant( null );
-			} else if (!enchant && enchantment.curse() && cursed && cursedKnown){
-				GLog.p( Messages.get(Item.class, "weaken_curse") );
-				Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-			}
-		} else {
-			if (enchant) {
-				enchant( );
-			}
+
+		if (enchant && (enchantment == null || enchantment.curse())){
+			enchant( Enchantment.random() );
+		} else if (!enchant && Random.Float() > Math.pow(0.9, level())){
+			enchant(null);
 		}
 		
 		return super.upgrade();
@@ -275,8 +261,15 @@ abstract public class Weapon extends KindOfWeapon {
 		return enchant( ench );
 	}
 
-	public boolean isEnchanted() {
-		return enchantment != null;
+	public boolean hasEnchant(Class<?extends Enchantment> type) {
+		return enchantment != null && enchantment.getClass() == type;
+	}
+
+	public boolean hasGoodEnchant(){
+		return enchantment != null && !enchantment.curse();
+	}
+
+	public boolean hasCurseEnchant(){		return enchantment != null && enchantment.curse();
 	}
 
 	@Override

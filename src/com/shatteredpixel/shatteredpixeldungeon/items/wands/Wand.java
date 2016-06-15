@@ -186,17 +186,11 @@ public abstract class Wand extends Item {
 	@Override
 	public Item upgrade() {
 
-		boolean cursedPreUpgrade = cursed;
-
 		super.upgrade();
 
-		if (cursedPreUpgrade && Random.Float() > Math.pow(0.9, level())){
-			GLog.p( Messages.get(Item.class, "remove_curse") );
-			Dungeon.hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-		} else {
-			cursed = cursedPreUpgrade;
-		}
-		
+		if (Random.Float() > Math.pow(0.9, level()))
+			cursed = false;
+
 		updateLevel();
 		curCharges = Math.min( curCharges + 1, maxCharges );
 		updateQuickslot();
