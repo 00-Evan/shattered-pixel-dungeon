@@ -78,6 +78,9 @@ public class EmoIcon extends Image {
 			
 			origin.set( width / 2, height / 2 );
 			scale.set( Random.Float( 1, maxSize ) );
+
+			x = owner.x + owner.width - width / 2;
+			y = owner.y - height;
 		}
 	}
 	
@@ -94,6 +97,9 @@ public class EmoIcon extends Image {
 			
 			origin.set( 2.5f, height - 2.5f );
 			scale.set( Random.Float( 1, maxSize ) );
+
+			x = owner.x + owner.width - width / 2;
+			y = owner.y - height;
 		}
 	}
 
