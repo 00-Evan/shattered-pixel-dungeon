@@ -42,7 +42,7 @@ public class RingOfMight extends Ring {
 		if (super.doUnequip(hero, collect, single)){
 			hero.HT -= level()*5;
 			hero.HP = Math.min(hero.HP, hero.HT);
-			return false;
+			return true;
 		} else {
 			return false;
 		}
