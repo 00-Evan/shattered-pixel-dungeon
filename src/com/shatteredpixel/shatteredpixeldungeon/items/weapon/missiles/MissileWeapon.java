@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
 
@@ -55,13 +55,10 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	@Override
-	protected int throwPos(Hero user, int dst) {
-		int defaultPos = super.throwPos(user, dst);
-		if (defaultPos == dst) return dst;
-		else if (hasEnchant(Projecting.class)){
-			Ballistica ProjectingTrajectory = new Ballistica( user.pos, dst, Ballistica.STOP_TARGET );
-			if (ProjectingTrajectory.dist <= 4) return ProjectingTrajectory.collisionPos;
-			else return super.throwPos(user, dst);
+	public int throwPos(Hero user, int dst) {
+		if (hasEnchant(Projecting.class)
+				&& !Level.solid[dst] && Level.distance(user.pos, dst) <= 4){
+			return dst;
 		} else {
 			return super.throwPos(user, dst);
 		}
