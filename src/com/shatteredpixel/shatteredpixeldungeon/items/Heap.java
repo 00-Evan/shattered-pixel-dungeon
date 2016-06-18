@@ -45,7 +45,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
@@ -223,7 +227,8 @@ public class Heap implements Bundlable {
 		boolean evaporated = false;
 		
 		for (Item item : items.toArray( new Item[0] )) {
-			if (item instanceof Scroll) {
+			if (item instanceof Scroll
+					&& !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
 				items.remove( item );
 				burnt = true;
 			} else if (item instanceof Dewdrop) {
@@ -321,7 +326,8 @@ public class Heap implements Bundlable {
 			if (item instanceof MysteryMeat) {
 				replace( item, FrozenCarpaccio.cook( (MysteryMeat)item ) );
 				frozen = true;
-			} else if (item instanceof Potion) {
+			} else if (item instanceof Potion
+					&& !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
 				items.remove(item);
 				((Potion) item).shatter(pos);
 				frozen = true;

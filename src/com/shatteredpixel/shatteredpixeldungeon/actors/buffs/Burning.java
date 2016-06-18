@@ -36,6 +36,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements.Resistance;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -95,7 +97,8 @@ public class Burning extends Buff implements Hero.Doom {
 
 					hero.damage( damage, this );
 					Item item = hero.belongings.randomUnequipped();
-					if (item instanceof Scroll) {
+					if (item instanceof Scroll
+							&& !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
 
 						item = item.detach( hero.belongings.backpack );
 						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(item.toString())) );

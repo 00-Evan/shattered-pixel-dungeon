@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -55,7 +57,8 @@ public class Chill extends FlavourBuff {
 
 				Hero hero = (Hero)target;
 				Item item = hero.belongings.randomUnequipped();
-				if (item instanceof Potion) {
+				if (item instanceof Potion
+						&& !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
 
 					item = item.detach( hero.belongings.backpack );
 					GLog.w( Messages.get(this, "freezes", item.toString()) );
