@@ -40,14 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -282,18 +275,26 @@ public class Ghost extends NPC {
 
 				//50%:tier2, 30%:tier3, 15%:tier4, 5%:tier5
 				float itemTierRoll = Random.Float();
-				if (itemTierRoll < 0.5f){
-					weapon = Random.Int(2) == 0 ? new Spear() : new Quarterstaff();
+				int wepTier;
+
+				if (itemTierRoll < 0.5f) {
+					wepTier = 2;
 					armor = new LeatherArmor();
-				} else if (itemTierRoll < 0.8f){
-					weapon = Random.Int(2) == 0 ? new Mace() : new Sword();
+				} else if (itemTierRoll < 0.8f) {
+					wepTier = 3;
 					armor = new MailArmor();
-				} else if (itemTierRoll < 0.95f){
-					weapon = Random.Int(2) == 0 ? new BattleAxe() : new Longsword();
+				} else if (itemTierRoll < 0.95f) {
+					wepTier = 4;
 					armor = new ScaleArmor();
 				} else {
-					weapon = Random.Int(2) == 0 ? new WarHammer() : new Glaive();
+					wepTier = 5;
 					armor = new PlateArmor();
+				}
+
+				try {
+					weapon = (Weapon)Generator.wepTiers[wepTier-1].classes[Random.chances(Generator.wepTiers[wepTier-1].probs)].newInstance();
+				} catch (Exception e){
+					weapon = new NewShortsword();
 				}
 
 				//50%:+0, 30%:+1, 15%:+2, 5%:+3
