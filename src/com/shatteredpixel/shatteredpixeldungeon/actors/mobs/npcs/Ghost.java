@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -292,7 +293,9 @@ public class Ghost extends NPC {
 				}
 
 				try {
-					weapon = (Weapon)Generator.wepTiers[wepTier-1].classes[Random.chances(Generator.wepTiers[wepTier-1].probs)].newInstance();
+					do {
+						weapon = (Weapon) Generator.wepTiers[wepTier - 1].classes[Random.chances(Generator.wepTiers[wepTier - 1].probs)].newInstance();
+					} while (!(weapon instanceof MeleeWeapon));
 				} catch (Exception e){
 					weapon = new NewShortsword();
 				}
