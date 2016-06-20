@@ -203,7 +203,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 
 		//Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim basically.
 		for (int i : Level.NEIGHBOURS9DIST2) {
-			if (item.throwPos(Dungeon.hero, target.pos) == target.pos){
+			if (item.throwPos(Dungeon.hero, target.pos+i) == target.pos){
 				return target.pos+i;
 			}
 		}
