@@ -37,41 +37,52 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-			"_v0.3.5a:_\n" +
-			"- Reduced warrior shield charge earlygame\n" +
-			"- Reduced berserker damage at higher HP\n" +
-			"- Increased berserk exhaust damage penalty\n" +
-			"- Increased power of 2,4,6 combo finishers\n" +
+			"_v0.4.0:_\n" +
+			"New Equipment Content:\n" +
+			"- 13 new weapons, 12 rebalanced weapons\n" +
+			"- 3 new enchants, 10 rebalanced enchants\n" +
+			"- 8 new glyphs, 5 rebalanced glyphs\n" +
+			"- 12 new curse effects\n" +
+			"\n" +
+			"Equipment Curses:\n" +
+			"- Curses now give negative effects\n" +
+			"- Curses no longer give negative levels\n" +
+			"- Upgrades now weaken curses\n" +
+			"- Remove curse scrolls now affect 1 item\n" +
+			"\n" +
+			"Equipment Balance:\n" +
+			"- Tier 2-4 weapons do more base damage\n" +
+			"- All weapons gain more dmg from upgrades\n" +
+			"- Upgrades now remove enchants less often\n" +
+			"- Upgrades reduce str requirements less\n" +
+			"- All armors require 1 more str\n" +
+			"- Encumbered characters can't sneak attack\n" +
+			"\n" +
+			"Droprate Changes:\n" +
+			"- Powerful equipment less common early\n" +
+			"- +3 and +2 equipment less common\n" +
+			"- Equipment curses more common\n" +
+			"- Tier 1 equipment no longer drops\n" +
+			"- Arcane styli slightly more common\n" +
+			"- Better item drops on floors 22-24\n" +
+			"\n" +
+			"Class Balance:\n" +
+			"- Huntress now starts with knuckleduster\n" +
+			"- Assassin sneak bonus damage reduced\n" +
+			"- Fixed a bug where berserker was immune when enraged\n" +
+			"- Gladiator's clobber now inflicts vertigo, not stun\n" +
+			"\n" +
+			"Enemy Balance:\n" +
+			"- Tengu damage increased\n" +
+			"- Prison Guard health and DR increased\n" +
+			"\n" +
+			"Misc:\n" +
+			"- Scrolls of upgrade no longer burn\n" +
+			"- Potions of strength no longer freeze\n" +
 			"- Translation updates\n" +
 			"- Various bugfixes\n" +
 			"\n" +
-			"_v0.3.5:_\n" +
-			"Warrior Rework:\n" +
-			"- Starting STR down to 10, from 11\n" +
-			"- Short sword dmg down to 1-10, from 1-12\n" +
-			"- Short sword can no longer be reforged\n" +
-			"- Now IDs potions of health, not STR\n" +
-			"- Now starts with a unique seal for armor\n" +
-			"- Seal grants shielding ontop of health\n" +
-			"- Seal allows for one upgrade transfer\n" +
-			"\n" +
-			"Berserker Rework:\n" +
-			"- Bonus damage now scales with lost HP, instead of a flat 50% at 50% hp\n" +
-			"- Berserker can now endure through death for a short time, with caveats\n" +
-			"\n" +
-			"Gladiator Rework:\n" +
-			"- Combo no longer grants bonus damage\n" +
-			"- Combo is now easier to stack\n" +
-			"- Combo now unlocks special finisher moves\n" +
-			"\n" +
-			"Balance Tweaks:\n" +
-			"- Spears can now reach enemies 1 tile away\n" +
-			"- Wand of Blast Wave now pushes bosses less\n" +
-			"\n" +
-			"Misc:\n" +
-			"- Can now examine multiple things in one tile\n" +
-			"- Classic font added for Russian language\n" +
-			"- Added Hungarian language\n" +
+			"_v0.3.5:_ Reworked Warrior & subclasses\n" +
 			"\n"+
 			"_v0.3.4:_ Multiple language support\n" +
 			"\n" +
