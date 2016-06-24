@@ -69,7 +69,7 @@ public class GrimTrap extends Trap {
 			MagicMissile.shadow(target.sprite.parent, pos, target.pos, new Callback() {
 				@Override
 				public void call() {
-
+					if (!finalTarget.isAlive()) return;
 					if (finalTarget == Dungeon.hero) {
 						//almost kill the player
 						if (((float)finalTarget.HP/finalTarget.HT) >= 0.9f){
