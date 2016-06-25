@@ -93,15 +93,17 @@ public class PoolPainter extends Painter {
 				return prize;
 		}
 
-		//1 floor set higher in probability
-		if (Random.Int(2) == 0){
-			prize = Generator.randomWeapon((Dungeon.depth / 5)+1);
-		} else {
-			prize = Generator.randomArmor((Dungeon.depth / 5)+1);
-		}
+		//1 floor set higher in probability, never cursed
+		do {
+			if (Random.Int(2) == 0) {
+				prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
+			} else {
+				prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
+			}
+		} while (prize.cursed);
 
-		//if not cursed, 50% chance for an extra update.
-		if (!prize.cursed && Random.Int(0) == 1){
+		//33% chance for an extra update.
+		if (Random.Int(3) == 1){
 			prize.upgrade();
 		}
 
