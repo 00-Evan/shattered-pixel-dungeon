@@ -196,7 +196,7 @@ public abstract class Level implements Bundlable {
 		mapped = new boolean[LENGTH];
 		Arrays.fill( mapped, false );
 		
-		if (!Dungeon.bossLevel()) {
+		if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
 			addItemToSpawn( Generator.random( Generator.Category.FOOD ) );
 			if (Dungeon.posNeeded()) {
 				addItemToSpawn( new PotionOfStrength() );
