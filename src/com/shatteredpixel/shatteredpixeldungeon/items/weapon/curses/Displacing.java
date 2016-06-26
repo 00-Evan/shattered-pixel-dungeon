@@ -55,6 +55,8 @@ public class Displacing extends Weapon.Enchantment {
 				defender.sprite.place( defender.pos );
 				defender.sprite.visible = Dungeon.visible[defender.pos];
 
+				return 0;
+
 			}
 		}
 
