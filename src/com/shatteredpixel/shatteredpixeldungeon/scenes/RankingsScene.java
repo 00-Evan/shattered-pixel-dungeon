@@ -297,7 +297,7 @@ public class RankingsScene extends PixelScene {
 			if (rec.gameFile.length() > 0) {
 				parent.add( new WndRanking( rec.gameFile ) );
 			} else {
-				parent.add( new WndError( Messages.get(this, "no_info") ) );
+				parent.add( new WndError( Messages.get(RankingsScene.class, "no_info") ) );
 			}
 		}
 	}
