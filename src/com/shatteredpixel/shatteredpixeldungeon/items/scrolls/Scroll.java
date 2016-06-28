@@ -95,7 +95,11 @@ public abstract class Scroll extends Item {
 	public static void save( Bundle bundle ) {
 		handler.save( bundle );
 	}
-	
+
+	public static void saveSelectively( Bundle bundle, ArrayList<Item> items ) {
+		handler.saveSelectively( bundle, items );
+	}
+
 	@SuppressWarnings("unchecked")
 	public static void restore( Bundle bundle ) {
 		handler = new ItemStatusHandler<>( (Class<? extends Scroll>[])scrolls, runes, bundle );

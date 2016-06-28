@@ -22,6 +22,8 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import android.opengl.GLES20;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
@@ -144,6 +146,27 @@ public class WelcomeScene extends PixelScene {
 	}
 
 	private void updateVersion(int previousVersion){
+		//rankings conversion
+		if (previousVersion < 108){
+			Rankings.INSTANCE.load();
+			for (Rankings.Record rec : Rankings.INSTANCE.records){
+				try{
+					Dungeon.loadGame(rec.gameFile, false);
+					rec.gameID = rec.gameFile.replaceAll("\\D", "");
+
+					Rankings.INSTANCE.saveGameData(rec);
+				} catch (Exception e){
+					rec.gameID = rec.gameFile.replaceAll("\\D", "");
+					rec.gameData = null;
+				}
+
+				String file = rec.gameFile;
+				rec.gameFile = "";
+				Game.instance.deleteFile(file);
+			}
+			Rankings.INSTANCE.save();
+		}
+
 		ShatteredPixelDungeon.version(ShatteredPixelDungeon.versionCode);
 	}
 

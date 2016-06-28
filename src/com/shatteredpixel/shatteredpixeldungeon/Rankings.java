@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
@@ -33,6 +34,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -56,7 +61,6 @@ public enum Rankings {
 	public static final int TABLE_SIZE	= 11;
 	
 	public static final String RANKINGS_FILE = "rankings.dat";
-	public static final String DETAILS_FILE = "game_%d.dat";
 	
 	public ArrayList<Record> records;
 	public int lastRecord;
@@ -77,13 +81,9 @@ public enum Rankings {
 		rec.depth		= Dungeon.depth;
 		rec.score	= score( win );
 		
-		String gameFile = Messages.format( DETAILS_FILE, SystemTime.now );
-		try {
-			Dungeon.saveGame( gameFile );
-			rec.gameFile = gameFile;
-		} catch (IOException e) {
-			rec.gameFile = "";
-		}
+		INSTANCE.saveGameData(rec);
+
+		rec.gameID = String.valueOf(SystemTime.now);
 		
 		records.add( rec );
 		
@@ -92,17 +92,12 @@ public enum Rankings {
 		lastRecord = records.indexOf( rec );
 		int size = records.size();
 		while (size > TABLE_SIZE) {
-			
-			Record removedGame;
+
 			if (lastRecord == size - 1) {
-				removedGame = records.remove( size - 2 );
+				records.remove( size - 2 );
 				lastRecord--;
 			} else {
-				removedGame = records.remove( size - 1 );
-			}
-			
-			if (removedGame.gameFile.length() > 0) {
-				Game.instance.deleteFile( removedGame.gameFile );
+				records.remove( size - 1 );
 			}
 
 			size = records.size();
@@ -121,7 +116,63 @@ public enum Rankings {
 	private int score( boolean win ) {
 		return (Statistics.goldCollected + Dungeon.hero.lvl * (win ? 26 : Dungeon.depth ) * 100) * (win ? 2 : 1);
 	}
-	
+
+	public static final String HERO = "hero";
+	public static final String STATS = "stats";
+	public static final String BADGES = "badges";
+	public static final String HANDLERS = "handlers";
+
+	public void saveGameData(Record rec){
+		rec.gameData = new Bundle();
+
+		//save the hero and belongings
+		ArrayList<Item> allItems = (ArrayList<Item>) Dungeon.hero.belongings.backpack.items.clone();
+		//remove items that won't show up in the rankings screen
+		for (Item item : Dungeon.hero.belongings.backpack.items.toArray( new Item[0])) {
+			if (!Dungeon.quickslot.contains(item)) Dungeon.hero.belongings.backpack.items.remove(item);
+		}
+		rec.gameData.put( HERO, Dungeon.hero );
+
+		//save stats
+		Bundle stats = new Bundle();
+		Statistics.storeInBundle(stats);
+		rec.gameData.put( STATS, stats);
+
+		//save badges
+		Bundle badges = new Bundle();
+		Badges.saveLocal(badges);
+		rec.gameData.put( BADGES, badges);
+
+		//save handler information
+		Bundle handler = new Bundle();
+		Scroll.saveSelectively(handler, Dungeon.hero.belongings.backpack.items);
+		Potion.saveSelectively(handler, Dungeon.hero.belongings.backpack.items);
+		Ring.saveSelectively(handler, Dungeon.hero.belongings.backpack.items);
+		rec.gameData.put( HANDLERS, handler);
+
+		//restore items now that we're done saving
+		Dungeon.hero.belongings.backpack.items = allItems;
+	}
+
+	public void loadGameData(Record rec){
+		Bundle data = rec.gameData;
+
+		Dungeon.hero = null;
+		Dungeon.quickslot.reset();
+
+		Bundle handler = data.getBundle(HANDLERS);
+		Scroll.restore(handler);
+		Potion.restore(handler);
+		Ring.restore(handler);
+
+		Badges.loadLocal(data.getBundle(BADGES));
+
+		Dungeon.hero = (Hero)data.get(HERO);
+
+		Statistics.restoreFromBundle(data.getBundle(STATS));
+
+	}
+
 	private static final String RECORDS	= "records";
 	private static final String LATEST	= "latest";
 	private static final String TOTAL	= "total";
@@ -148,7 +199,7 @@ public enum Rankings {
 			return;
 		}
 		
-		records = new ArrayList<Rankings.Record>();
+		records = new ArrayList<>();
 		
 		try {
 			InputStream input = Game.instance.openFileInput( RANKINGS_FILE );
@@ -185,13 +236,18 @@ public enum Rankings {
 		public String info;
 		private static final String REASON	= "reason";
 
+		//pre 0.4.1
+		public String gameFile;
+		private static final String FILE    = "gameFile";
+
 		private static final String CAUSE   = "cause";
 		private static final String WIN		= "win";
 		private static final String SCORE	= "score";
 		private static final String TIER	= "tier";
 		private static final String LEVEL	= "level";
 		private static final String DEPTH	= "depth";
-		private static final String GAME	= "gameFile";
+		private static final String DATA	= "gameData";
+		private static final String ID      = "gameID";
 
 		public Class cause;
 		public boolean win;
@@ -201,9 +257,10 @@ public enum Rankings {
 		public int herolevel;
 		public int depth;
 		
+		public Bundle gameData;
+		public String gameID;
+
 		public int score;
-		
-		public String gameFile;
 
 		public String desc(){
 			if (cause == null) {
@@ -260,7 +317,12 @@ public enum Rankings {
 			heroClass	= HeroClass.restoreInBundle( bundle );
 			armorTier	= bundle.getInt( TIER );
 			
-			gameFile	= bundle.getString( GAME );
+			if (bundle.contains(FILE)) {
+				gameFile = bundle.getString(FILE);
+			} else {
+				gameData = bundle.getBundle(DATA);
+				gameID = bundle.getString(ID);
+			}
 
 			depth = bundle.getInt( DEPTH );
 			herolevel = bundle.getInt( LEVEL );
@@ -281,7 +343,8 @@ public enum Rankings {
 			bundle.put( LEVEL, herolevel );
 			bundle.put( DEPTH, depth );
 			
-			bundle.put( GAME, gameFile );
+			bundle.put( DATA, gameData );
+			bundle.put( ID, gameID);
 		}
 	}
 

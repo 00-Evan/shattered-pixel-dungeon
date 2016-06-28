@@ -24,8 +24,10 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class ItemStatusHandler<T extends Item> {
 
@@ -80,7 +82,21 @@ public class ItemStatusHandler<T extends Item> {
 		}
 	}
 
+	public void saveSelectively( Bundle bundle, ArrayList<Item> itemsToSave ){
+		List<Class<? extends T>> items = Arrays.asList(this.items);
+		for (Item item : itemsToSave){
+			if (items.contains(item.getClass())){
+				Class<? extends T> cls = items.get(items.indexOf(item.getClass()));
+				String itemName = cls.toString();
+				bundle.put( itemName + PFX_LABEL, itemLabels.get( cls ) );
+				bundle.put( itemName + PFX_KNOWN, known.contains( cls ) );
+			}
+		}
+	}
+
 	private void restore( Bundle bundle, ArrayList<String> labelsLeft  ) {
+
+		ArrayList<Class<? extends T>> unlabelled = new ArrayList<>();
 
 		for (int i=0; i < items.length; i++) {
 
@@ -99,14 +115,22 @@ public class ItemStatusHandler<T extends Item> {
 
 			} else {
 
-				int index = Random.Int( labelsLeft.size() );
+				unlabelled.add(items[i]);
 
-				itemLabels.put( item, labelsLeft.get( index ) );
-				labelsLeft.remove( index );
+			}
+		}
 
-				if (bundle.contains( itemName + PFX_KNOWN ) && bundle.getBoolean( itemName + PFX_KNOWN )) {
-					known.add( item );
-				}
+		for (Class<? extends T> item : unlabelled){
+
+			String itemName = item.toString();
+
+			int index = Random.Int( labelsLeft.size() );
+
+			itemLabels.put( item, labelsLeft.get( index ) );
+			labelsLeft.remove( index );
+
+			if (bundle.contains( itemName + PFX_KNOWN ) && bundle.getBoolean( itemName + PFX_KNOWN )) {
+				known.add( item );
 			}
 		}
 	}

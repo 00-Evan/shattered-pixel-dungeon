@@ -294,8 +294,8 @@ public class RankingsScene extends PixelScene {
 		
 		@Override
 		protected void onClick() {
-			if (rec.gameFile.length() > 0) {
-				parent.add( new WndRanking( rec.gameFile ) );
+			if (rec.gameData != null) {
+				parent.add( new WndRanking( rec ) );
 			} else {
 				parent.add( new WndError( Messages.get(RankingsScene.class, "no_info") ) );
 			}
