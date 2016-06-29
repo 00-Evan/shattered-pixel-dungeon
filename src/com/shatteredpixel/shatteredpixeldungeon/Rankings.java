@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
@@ -35,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -125,11 +127,19 @@ public enum Rankings {
 	public void saveGameData(Record rec){
 		rec.gameData = new Bundle();
 
+		Belongings belongings = Dungeon.hero.belongings;
+
 		//save the hero and belongings
-		ArrayList<Item> allItems = (ArrayList<Item>) Dungeon.hero.belongings.backpack.items.clone();
+		ArrayList<Item> allItems = (ArrayList<Item>) belongings.backpack.items.clone();
 		//remove items that won't show up in the rankings screen
-		for (Item item : Dungeon.hero.belongings.backpack.items.toArray( new Item[0])) {
-			if (!Dungeon.quickslot.contains(item)) Dungeon.hero.belongings.backpack.items.remove(item);
+		for (Item item : belongings.backpack.items.toArray( new Item[0])) {
+			if (item instanceof Bag){
+				for (Item bagItem : ((Bag) item).items.toArray( new Item[0])){
+					if (Dungeon.quickslot.contains(bagItem)) belongings.backpack.items.add(bagItem);
+				}
+				belongings.backpack.items.remove(item);
+			} else if (!Dungeon.quickslot.contains(item))
+				belongings.backpack.items.remove(item);
 		}
 		rec.gameData.put( HERO, Dungeon.hero );
 
@@ -145,13 +155,16 @@ public enum Rankings {
 
 		//save handler information
 		Bundle handler = new Bundle();
-		Scroll.saveSelectively(handler, Dungeon.hero.belongings.backpack.items);
-		Potion.saveSelectively(handler, Dungeon.hero.belongings.backpack.items);
-		Ring.saveSelectively(handler, Dungeon.hero.belongings.backpack.items);
+		Scroll.saveSelectively(handler, belongings.backpack.items);
+		Potion.saveSelectively(handler, belongings.backpack.items);
+		//include worn rings
+		if (belongings.misc1 != null) belongings.backpack.items.add(belongings.misc1);
+		if (belongings.misc2 != null) belongings.backpack.items.add(belongings.misc2);
+		Ring.saveSelectively(handler, belongings.backpack.items);
 		rec.gameData.put( HANDLERS, handler);
 
 		//restore items now that we're done saving
-		Dungeon.hero.belongings.backpack.items = allItems;
+		belongings.backpack.items = allItems;
 	}
 
 	public void loadGameData(Record rec){
