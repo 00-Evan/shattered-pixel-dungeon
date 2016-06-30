@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -98,7 +99,8 @@ public class Chasm {
 		Camera.main.shake( 4, 0.2f );
 		
 		Buff.prolong( hero, Cripple.class, Cripple.DURATION );
-		hero.damage( Random.IntRange( hero.HP / 2, hero.HT / 2 ), new Hero.Doom() {
+		Buff.affect( hero, Bleeding.class).set( hero.HT / 3 );
+		hero.damage( Random.NormalIntRange( hero.HP / 3, hero.HT / 3 ), new Hero.Doom() {
 			@Override
 			public void onDeath() {
 				Badges.validateDeathFromFalling();
