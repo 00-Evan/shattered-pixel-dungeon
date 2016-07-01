@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.NewbornElementalSprite;
+import com.watabou.utils.Random;
 
 public class NewbornElemental extends Elemental {
 
@@ -44,8 +45,8 @@ public class NewbornElemental extends Elemental {
 
 	@Override
 	public int damageRoll() {
-		return super.damageRoll()/2;
-	} //8-10
+		return Random.NormalIntRange(10, 15);
+	}
 
 	@Override
 	public void add(Buff buff) {

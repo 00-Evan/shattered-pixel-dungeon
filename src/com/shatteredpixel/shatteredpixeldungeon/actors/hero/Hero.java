@@ -298,11 +298,17 @@ public class Hero extends Char {
 	}
 	
 	@Override
-	public int dr() {
+	public int drRoll() {
 		int dr = 0;
 		Barkskin bark = buff(Barkskin.class);
 
-		if (belongings.armor != null)   dr += Math.max( belongings.armor.DR(), 0);
+		if (belongings.armor != null) {
+			dr += Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+			if (STR() < belongings.armor.STRReq()){
+				dr -= 2*(belongings.armor.STRReq() - STR());
+				dr = Math.max(dr, 0);
+			}
+		}
 		if (belongings.weapon != null)  dr += Math.max( belongings.weapon.defenceFactor( this ), 0 );
 		if (bark != null)               dr += bark.level();
 
@@ -368,13 +374,9 @@ public class Hero extends Char {
 		}
 	}
 
-	public boolean encumbered(){
-		return (belongings.weapon != null
-				&& belongings.weapon instanceof Weapon
-				&& STR() < ((Weapon)belongings.weapon).STRReq())
-				||
-				(belongings.armor != null
-				&& STR() < belongings.armor.STRReq());
+	public boolean canSurpriseAttack(){
+		return !(belongings.weapon != null && belongings.weapon instanceof Weapon
+				&& STR() < ((Weapon)belongings.weapon).STRReq());
 	}
 
 	public boolean canAttack(Char enemy){
@@ -942,7 +944,7 @@ public class Hero extends Char {
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
 				&& RingOfElements.FULL.contains(src.getClass())){
-			dmg -= Random.IntRange(0, belongings.armor.DR()/2);
+			dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/2;
 		}
 
 		super.damage( dmg, src );

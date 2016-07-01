@@ -89,7 +89,7 @@ public class King extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 20, 38 );
+		return Random.NormalIntRange( 25, 40 );
 	}
 	
 	@Override
@@ -98,8 +98,8 @@ public class King extends Mob {
 	}
 	
 	@Override
-	public int dr() {
-		return 14;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 14);
 	}
 	
 	@Override
@@ -283,7 +283,7 @@ public class King extends Mob {
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 12, 16 );
+			return Random.NormalIntRange( 16, 20 );
 		}
 		
 		@Override
@@ -318,8 +318,8 @@ public class King extends Mob {
 		}
 		
 		@Override
-		public int dr() {
-			return 5;
+		public int drRoll() {
+			return Random.NormalIntRange(0, 5);
 		}
 
 		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

@@ -54,8 +54,8 @@ public class FetidRat extends Rat {
 	}
 
 	@Override
-	public int dr() {
-		return 2;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 2);
 	}
 
 	@Override

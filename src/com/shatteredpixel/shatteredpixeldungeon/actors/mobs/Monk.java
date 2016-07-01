@@ -56,7 +56,7 @@ public class Monk extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 12, 16 );
+		return Random.NormalIntRange( 16, 20 );
 	}
 	
 	@Override
@@ -70,8 +70,8 @@ public class Monk extends Mob {
 	}
 	
 	@Override
-	public int dr() {
-		return 2;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 2);
 	}
 	
 	@Override

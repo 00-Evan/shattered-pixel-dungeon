@@ -46,7 +46,7 @@ public class Rat extends Mob {
 	}
 	
 	@Override
-	public int dr() {
-		return 1;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 1);
 	}
 }

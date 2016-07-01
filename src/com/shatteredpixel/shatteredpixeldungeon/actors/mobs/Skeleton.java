@@ -68,7 +68,7 @@ public class Skeleton extends Mob {
 		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
 			Char ch = findChar( pos + Level.NEIGHBOURS8[i] );
 			if (ch != null && ch.isAlive()) {
-				int damage = Math.max( 0,  damageRoll() - Random.IntRange( 0, ch.dr() / 2 ) );
+				int damage = Math.max( 0,  damageRoll() - (ch.drRoll() / 2) );
 				ch.damage( damage, this );
 				if (ch == Dungeon.hero && !ch.isAlive()) {
 					heroKilled = true;
@@ -104,8 +104,8 @@ public class Skeleton extends Mob {
 	}
 	
 	@Override
-	public int dr() {
-		return 5;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 5);
 	}
 	
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

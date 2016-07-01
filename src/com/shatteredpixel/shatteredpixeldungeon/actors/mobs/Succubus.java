@@ -64,7 +64,7 @@ public class Succubus extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 15, 25 );
+		return Random.NormalIntRange( 22, 30 );
 	}
 	
 	@Override
@@ -131,8 +131,8 @@ public class Succubus extends Mob {
 	}
 	
 	@Override
-	public int dr() {
-		return 10;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 10);
 	}
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();

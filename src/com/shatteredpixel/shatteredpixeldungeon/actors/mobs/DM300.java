@@ -70,7 +70,7 @@ public class DM300 extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 18, 24 );
+		return Random.NormalIntRange( 20, 25 );
 	}
 	
 	@Override
@@ -79,8 +79,8 @@ public class DM300 extends Mob {
 	}
 	
 	@Override
-	public int dr() {
-		return 10;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 10);
 	}
 	
 	@Override

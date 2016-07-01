@@ -35,7 +35,7 @@ public class Senior extends Monk {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 12, 20 );
+		return Random.NormalIntRange( 16, 24 );
 	}
 	
 	@Override

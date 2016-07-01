@@ -143,7 +143,7 @@ public class Bomb extends Item {
 					int minDamage = c == cell ? Dungeon.depth+5 : 1;
 					int maxDamage = 10 + Dungeon.depth * 2;
 
-					int dmg = Random.NormalIntRange( minDamage, maxDamage ) - Random.Int( ch.dr() );
+					int dmg = Random.NormalIntRange( minDamage, maxDamage ) - ch.drRoll();
 					if (dmg > 0) {
 						ch.damage( dmg, this );
 					}

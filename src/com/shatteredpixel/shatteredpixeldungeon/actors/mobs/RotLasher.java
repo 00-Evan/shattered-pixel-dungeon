@@ -86,7 +86,7 @@ public class RotLasher extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(4, 12);
+		return Random.NormalIntRange(6, 12);
 	}
 
 	@Override
@@ -95,8 +95,8 @@ public class RotLasher extends Mob {
 	}
 
 	@Override
-	public int dr() {
-		return 8;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 8);
 	}
 
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

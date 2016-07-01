@@ -82,7 +82,7 @@ public class Thief extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 7 );
+		return Random.NormalIntRange( 1, 8 );
 	}
 
 	@Override
@@ -117,8 +117,8 @@ public class Thief extends Mob {
 	}
 
 	@Override
-	public int dr() {
-		return 3;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 3);
 	}
 
 	@Override

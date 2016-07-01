@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotHeartSprite;
+import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
@@ -103,8 +104,8 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
-	public int dr() {
-		return 5;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 5);
 	}
 
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

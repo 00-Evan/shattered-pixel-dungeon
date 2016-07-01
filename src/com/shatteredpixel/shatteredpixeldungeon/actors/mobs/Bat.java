@@ -51,7 +51,7 @@ public class Bat extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 6, 12 );
+		return Random.NormalIntRange( 8, 15 );
 	}
 	
 	@Override
@@ -60,8 +60,8 @@ public class Bat extends Mob {
 	}
 	
 	@Override
-	public int dr() {
-		return 4;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 4);
 	}
 	
 	@Override

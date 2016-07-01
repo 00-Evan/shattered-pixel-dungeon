@@ -221,7 +221,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					break;
 			}
 
-			dmg -= Random.IntRange( 0, enemy.dr() );
+			dmg -= enemy.drRoll();
 			dmg = target.attackProc(enemy, dmg);
 			dmg = enemy.defenseProc(target, dmg);
 			enemy.damage( dmg, this );

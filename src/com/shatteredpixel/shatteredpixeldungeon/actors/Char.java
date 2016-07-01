@@ -127,7 +127,7 @@ public abstract class Char extends Actor {
 			
 			// FIXME
 			int dr = this instanceof Hero && ((Hero)this).rangedWeapon != null && ((Hero)this).subClass ==
-				HeroSubClass.SNIPER ? 0 : Random.IntRange( 0, enemy.dr() );
+				HeroSubClass.SNIPER ? 0 : enemy.drRoll();
 			
 			int dmg = damageRoll();
 			int effectiveDamage = Math.max( dmg - dr, 0 );
@@ -210,7 +210,7 @@ public abstract class Char extends Actor {
 		return Messages.get(this, "def_verb");
 	}
 	
-	public int dr() {
+	public int drRoll() {
 		return 0;
 	}
 	

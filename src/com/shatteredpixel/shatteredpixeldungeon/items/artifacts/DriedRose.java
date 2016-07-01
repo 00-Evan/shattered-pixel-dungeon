@@ -377,9 +377,9 @@ public class DriedRose extends Artifact {
 		}
 
 		@Override
-		public int dr() {
+		public int drRoll() {
 			//defence is equal to the level of rose.
-			return (HT-10)/3;
+			return Random.NormalIntRange(0, (HT-10)/3);
 		}
 
 		@Override

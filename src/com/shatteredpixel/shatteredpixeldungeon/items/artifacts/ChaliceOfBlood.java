@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -92,7 +91,7 @@ public class ChaliceOfBlood extends Artifact {
 			damage = armor.absorb(damage);
 		}
 
-		damage -= Random.IntRange(0, hero.dr());
+		damage -= hero.drRoll();
 
 		hero.sprite.operate( hero.pos );
 		hero.busy();

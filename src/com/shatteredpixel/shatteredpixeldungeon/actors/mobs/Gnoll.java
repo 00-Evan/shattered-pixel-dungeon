@@ -51,7 +51,7 @@ public class Gnoll extends Mob {
 	}
 	
 	@Override
-	public int dr() {
-		return 2;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 2);
 	}
 }

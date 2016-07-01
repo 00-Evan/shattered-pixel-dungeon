@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShieldedSprite;
+import com.watabou.utils.Random;
 
 public class Shielded extends Brute {
 
@@ -32,8 +33,8 @@ public class Shielded extends Brute {
 	}
 	
 	@Override
-	public int dr() {
-		return 10;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 10);
 	}
 	
 	@Override

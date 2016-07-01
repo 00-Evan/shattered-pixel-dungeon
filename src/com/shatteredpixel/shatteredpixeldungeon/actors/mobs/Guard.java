@@ -59,7 +59,7 @@ public class Guard extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange(4, 10);
+		return Random.NormalIntRange(5, 10);
 	}
 
 	@Override
@@ -130,8 +130,8 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	public int dr() {
-		return 9;
+	public int drRoll() {
+		return Random.NormalIntRange(0, 8);
 	}
 
 	@Override
