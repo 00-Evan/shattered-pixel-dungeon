@@ -65,10 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
@@ -638,7 +635,8 @@ public class Hero extends Char {
 
 					if (item instanceof Dewdrop
 							|| item instanceof TimekeepersHourglass.sandBag
-							|| item instanceof DriedRose.Petal) {
+							|| item instanceof DriedRose.Petal
+							|| item instanceof Key) {
 						//Do Nothing
 					} else {
 
@@ -682,18 +680,14 @@ public class Hero extends Char {
 			
 			Heap heap = Dungeon.level.heaps.get( dst );
 			if (heap != null && (heap.type != Type.HEAP && heap.type != Type.FOR_SALE)) {
-
-				theKey = null;
 				
-				if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST) {
+				if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST
+						&& belongings.specialKeys[Dungeon.depth] < 1) {
 
-					theKey = belongings.getKey( GoldenKey.class, Dungeon.depth );
-					
-					if (theKey == null) {
 						GLog.w( Messages.get(this, "locked_chest") );
 						ready();
 						return false;
-					}
+
 				}
 				
 				switch (heap.type) {
@@ -731,20 +725,22 @@ public class Hero extends Char {
 		int doorCell = action.dst;
 		if (Level.adjacent( pos, doorCell )) {
 			
-			theKey = null;
+			boolean hasKey = false;
 			int door = Dungeon.level.map[doorCell];
 			
-			if (door == Terrain.LOCKED_DOOR) {
+			if (door == Terrain.LOCKED_DOOR
+					&& belongings.ironKeys[Dungeon.depth] > 0) {
 				
-				theKey = belongings.getKey( IronKey.class, Dungeon.depth );
+				hasKey = true;
 				
-			} else if (door == Terrain.LOCKED_EXIT) {
-				
-				theKey = belongings.getKey( SkeletonKey.class, Dungeon.depth );
+			} else if (door == Terrain.LOCKED_EXIT
+					&& belongings.specialKeys[Dungeon.depth] > 0) {
+
+				hasKey = true;
 				
 			}
 			
-			if (theKey != null) {
+			if (hasKey) {
 				
 				spend( Key.TIME_TO_UNLOCK );
 				sprite.operate( doorCell );
@@ -1382,28 +1378,28 @@ public class Hero extends Char {
 	public void onOperateComplete() {
 		
 		if (curAction instanceof HeroAction.Unlock) {
-			
-			if (theKey != null) {
-				theKey.detach( belongings.backpack );
-				theKey = null;
-			}
-			
+
 			int doorCell = ((HeroAction.Unlock)curAction).dst;
 			int door = Dungeon.level.map[doorCell];
+
+			if (door == Terrain.LOCKED_DOOR){
+				belongings.ironKeys[Dungeon.depth]--;
+				Level.set( doorCell, Terrain.DOOR );
+			} else {
+				belongings.specialKeys[Dungeon.depth]--;
+				Level.set( doorCell, Terrain.UNLOCKED_EXIT );
+			}
 			
 			Level.set( doorCell, door == Terrain.LOCKED_DOOR ? Terrain.DOOR : Terrain.UNLOCKED_EXIT );
 			GameScene.updateMap( doorCell );
 			
 		} else if (curAction instanceof HeroAction.OpenChest) {
-			
-			if (theKey != null) {
-				theKey.detach( belongings.backpack );
-				theKey = null;
-			}
-			
+
 			Heap heap = Dungeon.level.heaps.get( ((HeroAction.OpenChest)curAction).dst );
 			if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
 				Sample.INSTANCE.play( Assets.SND_BONES );
+			} else if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST){
+				belongings.specialKeys[Dungeon.depth]--;
 			}
 			heap.open( this );
 		}

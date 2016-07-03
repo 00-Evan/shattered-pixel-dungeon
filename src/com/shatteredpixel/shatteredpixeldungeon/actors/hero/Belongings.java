@@ -21,7 +21,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
@@ -49,6 +48,9 @@ public class Belongings implements Iterable<Item> {
 	public Armor armor = null;
 	public KindofMisc misc1 = null;
 	public KindofMisc misc2 = null;
+
+	public int[] ironKeys = new int[26];
+	public int[] specialKeys = new int[26]; //golden or boss keys
 	
 	public Belongings( Hero owner ) {
 		this.owner = owner;
@@ -63,7 +65,10 @@ public class Belongings implements Iterable<Item> {
 	private static final String WEAPON		= "weapon";
 	private static final String ARMOR		= "armor";
 	private static final String MISC1       = "misc1";
-	private static final String MISC2        = "misc2";
+	private static final String MISC2       = "misc2";
+
+	private static final String IRON_KEYS       = "ironKeys";
+	private static final String SPECIAL_KEYS    = "specialKeys";
 	
 	public void storeInBundle( Bundle bundle ) {
 		
@@ -73,12 +78,29 @@ public class Belongings implements Iterable<Item> {
 		bundle.put( ARMOR, armor );
 		bundle.put( MISC1, misc1);
 		bundle.put( MISC2, misc2);
+
+		bundle.put( IRON_KEYS, ironKeys);
+		bundle.put( SPECIAL_KEYS, specialKeys);
 	}
 	
 	public void restoreFromBundle( Bundle bundle ) {
+
+		if (bundle.contains(IRON_KEYS)) ironKeys = bundle.getIntArray( IRON_KEYS );
+		if (bundle.contains(SPECIAL_KEYS)) specialKeys = bundle.getIntArray( SPECIAL_KEYS );
 		
 		backpack.clear();
 		backpack.restoreFromBundle( bundle );
+
+		//removing keys, from pre-0.4.1 saves
+		for (Item item : backpack.items.toArray(new Item[0])){
+			if (item instanceof Key){
+				item.detachAll(backpack);
+				if (item instanceof IronKey)
+					ironKeys[((Key) item).depth] += item.quantity();
+				else
+					specialKeys[((Key) item).depth] += item.quantity();
+			}
+		}
 
 		if (bundle.get( WEAPON ) instanceof Wand){
 			//handles the case of an equipped wand from pre-0.3.0
@@ -121,29 +143,6 @@ public class Belongings implements Iterable<Item> {
 		}
 		
 		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <T extends Key> T getKey( Class<T> kind, int depth ) {
-		
-		for (Item item : backpack) {
-			if (item.getClass() == kind && ((Key)item).depth == depth) {
-				return (T)item;
-			}
-		}
-		
-		return null;
-	}
-
-	public void countIronKeys() {
-
-		IronKey.curDepthQuantity = 0;
-
-		for (Item item : backpack) {
-			if (item instanceof IronKey && ((IronKey)item).depth == Dungeon.depth) {
-				IronKey.curDepthQuantity += item.quantity();
-			}
-		}
 	}
 	
 	public void identify() {

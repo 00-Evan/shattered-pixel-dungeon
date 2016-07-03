@@ -22,15 +22,14 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -63,18 +62,18 @@ public class StatusPane extends Component {
 
 	private BitmapText level;
 	private BitmapText depth;
-	private BitmapText keys;
 
 	private DangerIndicator danger;
 	private BuffIndicator buffs;
 	private Compass compass;
 
+	private JournalButton btnJournal;
 	private MenuButton btnMenu;
 
 	@Override
 	protected void createChildren() {
 
-		bg = new NinePatch( Assets.STATUS, 80, 0, 30   + 18, 0 );
+		bg = new NinePatch( Assets.STATUS, 85, 0, 45, 0 );
 		add( bg );
 
 		add( new TouchArea( 0, 1, 31, 31 ) {
@@ -85,8 +84,11 @@ public class StatusPane extends Component {
 					Camera.main.focusOn( sprite );
 				}
 				GameScene.show( new WndHero() );
-			};
+			}
 		} );
+
+		btnJournal = new JournalButton();
+		add( btnJournal );
 
 		btnMenu = new MenuButton();
 		add( btnMenu );
@@ -129,11 +131,6 @@ public class StatusPane extends Component {
 		depth.measure();
 		add( depth );
 
-		Dungeon.hero.belongings.countIronKeys();
-		keys = new BitmapText( PixelScene.pixelFont);
-		keys.hardlight( 0xCACFC2 );
-		add( keys );
-
 		danger = new DangerIndicator();
 		add( danger );
 
@@ -161,14 +158,14 @@ public class StatusPane extends Component {
 
 		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
 
-		depth.x = width - 24 - depth.width()    - 18;
-		depth.y = 6;
-
-		keys.y = 6;
+		depth.x = width - 35.5f - depth.width() / 2f;
+		depth.y = 8f - depth.baseLine() / 2f;
 
 		danger.setPos( width - danger.width(), 20 );
 
 		buffs.setPos( 31, 9 );
+
+		btnJournal.setPos( width - 42, 1 );
 
 		btnMenu.setPos( width - btnMenu.width(), 1 );
 	}
@@ -215,19 +212,85 @@ public class StatusPane extends Component {
 			PixelScene.align(level);
 		}
 
-		int k = IronKey.curDepthQuantity;
-		if (k != lastKeys) {
-			lastKeys = k;
-			keys.text( Integer.toString( lastKeys ) );
-			keys.measure();
-			keys.x = width - 8 - keys.width()    - 18;
-		}
-
 		int tier = Dungeon.hero.tier();
 		if (tier != lastTier) {
 			lastTier = tier;
 			avatar.copy( HeroSprite.avatar( Dungeon.hero.heroClass, tier ) );
 		}
+	}
+
+	private static class JournalButton extends Button {
+
+		private Image bg;
+		private Image icon;
+
+		public JournalButton() {
+			super();
+
+			width = bg.width + 13; //includes the depth display to the left
+			height = bg.height + 4;
+		}
+
+		@Override
+		protected void createChildren() {
+			super.createChildren();
+
+			bg = new Image( Assets.MENU, 2, 2, 13, 11 );
+			add( bg );
+
+			icon = new Image( Assets.MENU, 32, 1, 10, 6);
+			add( icon );
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+
+			bg.x = x + 13;
+			bg.y = y + 2;
+
+			icon.x = bg.x + 2;
+			icon.y = bg.y + 3;
+		}
+
+		@Override
+		public void update() {
+			super.update();
+
+
+			for (int i = 1; i <= Dungeon.depth; i++){
+				if (Dungeon.hero.belongings.ironKeys[i] > 0){
+
+					if (i == Dungeon.depth){
+						icon.resetColor();
+					} else {
+						icon.brightness(0);
+						icon.alpha(0.67f);
+					}
+					return;
+				}
+			}
+
+			icon.brightness(0);
+			icon.alpha(0.33f);
+		}
+
+		@Override
+		protected void onTouchDown() {
+			bg.brightness( 1.5f );
+			Sample.INSTANCE.play( Assets.SND_CLICK );
+		}
+
+		@Override
+		protected void onTouchUp() {
+			bg.resetColor();
+		}
+
+		@Override
+		protected void onClick() {
+			GameScene.show( new WndJournal() );
+		}
+
 	}
 
 	private static class MenuButton extends Button {
@@ -245,7 +308,7 @@ public class StatusPane extends Component {
 		protected void createChildren() {
 			super.createChildren();
 
-			image = new Image( Assets.STATUS, 114, 3, 12, 11 );
+			image = new Image( Assets.MENU, 17, 2, 12, 11 );
 			add( image );
 		}
 

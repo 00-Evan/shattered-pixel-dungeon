@@ -34,6 +34,7 @@ public class Assets {
 	public static final String CHROME	= "chrome.png";
 	public static final String ICONS	= "icons.png";
 	public static final String STATUS	= "status_pane.png";
+	public static final String MENU		= "menu_button.png";
 	public static final String HP_BAR	= "hp_bar.png";
 	public static final String SHLD_BAR = "shield_bar.png";
 	public static final String XP_BAR	= "exp_bar.png";

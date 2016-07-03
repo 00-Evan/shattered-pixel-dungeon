@@ -20,10 +20,13 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.keys;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
-public class Key extends Item {
+public abstract class Key extends Item {
 
 	public static final float TIME_TO_UNLOCK = 1f;
 	
@@ -38,7 +41,15 @@ public class Key extends Item {
 	public boolean isSimilar( Item item ) {
 		return item.getClass() == getClass() && ((Key)item).depth == depth;
 	}
-	
+
+	@Override
+	public boolean doPickUp(Hero hero) {
+		//TODO add a pickup animation to the journal
+		Sample.INSTANCE.play( Assets.SND_ITEM );
+		hero.spendAndNext( TIME_TO_PICK_UP );
+		return true;
+	}
+
 	private static final String DEPTH = "depth";
 	
 	@Override

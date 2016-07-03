@@ -21,7 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.keys;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class IronKey extends Key {
@@ -31,7 +31,13 @@ public class IronKey extends Key {
 	{
 		image = ItemSpriteSheet.IRON_KEY;
 	}
-	
+
+	@Override
+	public boolean doPickUp(Hero hero) {
+		Dungeon.hero.belongings.ironKeys[Dungeon.depth]++;
+		return super.doPickUp(hero);
+	}
+
 	public IronKey() {
 		this( 0 );
 	}
@@ -39,22 +45,6 @@ public class IronKey extends Key {
 	public IronKey( int depth ) {
 		super();
 		this.depth = depth;
-	}
-	
-	@Override
-	public boolean collect( Bag bag ) {
-		boolean result = super.collect( bag );
-		if (result && depth == Dungeon.depth && Dungeon.hero != null) {
-			Dungeon.hero.belongings.countIronKeys();
-		}
-		return result;
-	}
-
-	@Override
-	public void onDetach( ) {
-		if (depth == Dungeon.depth) {
-			Dungeon.hero.belongings.countIronKeys();
-		}
 	}
 
 }
