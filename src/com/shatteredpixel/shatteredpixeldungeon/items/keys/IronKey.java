@@ -34,7 +34,7 @@ public class IronKey extends Key {
 
 	@Override
 	public boolean doPickUp(Hero hero) {
-		Dungeon.hero.belongings.ironKeys[Dungeon.depth]++;
+		Dungeon.hero.belongings.ironKeys[depth]++;
 		return super.doPickUp(hero);
 	}
 
