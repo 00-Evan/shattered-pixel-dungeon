@@ -265,7 +265,7 @@ public class StatusPane extends Component {
 						icon.resetColor();
 					} else {
 						icon.brightness(0);
-						icon.alpha(0.67f);
+						icon.alpha(1f);
 					}
 					return;
 				}
