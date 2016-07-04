@@ -58,7 +58,6 @@ public class StatusPane extends Component {
 	private BossHealthBar bossHP;
 
 	private int lastLvl = -1;
-	private int lastKeys = -1;
 
 	private BitmapText level;
 	private BitmapText depth;
@@ -222,6 +221,7 @@ public class StatusPane extends Component {
 	private static class JournalButton extends Button {
 
 		private Image bg;
+		//used to display key state to the player
 		private Image icon;
 
 		public JournalButton() {
@@ -238,7 +238,7 @@ public class StatusPane extends Component {
 			bg = new Image( Assets.MENU, 2, 2, 13, 11 );
 			add( bg );
 
-			icon = new Image( Assets.MENU, 32, 1, 10, 6);
+			icon = new Image( Assets.MENU, 31, 0, 11, 7);
 			add( icon );
 		}
 
@@ -249,41 +249,69 @@ public class StatusPane extends Component {
 			bg.x = x + 13;
 			bg.y = y + 2;
 
-			icon.x = bg.x + 2;
-			icon.y = bg.y + 3;
+			icon.x = bg.x + (bg.width() - icon.width())/2f;
+			icon.y = bg.y + (bg.height() - icon.height())/2f;
+			PixelScene.align(icon);
 		}
 
 		@Override
 		public void update() {
 			super.update();
+			updateKeyDisplay();
+		}
 
+		public void updateKeyDisplay() {
+			boolean foundKeys = false;
+			boolean blackKey = false;
+			boolean specialKey = false;
+			int ironKeys = 0;
+			for (int i = 1; i <= Dungeon.depth; i++) {
+				if (Dungeon.hero.belongings.ironKeys[i] > 0 || Dungeon.hero.belongings.specialKeys[i] > 0) {
+					foundKeys = true;
 
-			for (int i = 1; i <= Dungeon.depth; i++){
-				if (Dungeon.hero.belongings.ironKeys[i] > 0){
+					if (i < Dungeon.depth){
+						blackKey = true;
 
-					if (i == Dungeon.depth){
-						icon.resetColor();
 					} else {
-						icon.brightness(0);
-						icon.alpha(1f);
+						if (Dungeon.hero.belongings.specialKeys[i] > 0){
+							specialKey = true;
+						}
+						ironKeys = Dungeon.hero.belongings.ironKeys[i];
 					}
-					return;
 				}
 			}
 
-			icon.brightness(0);
-			icon.alpha(0.33f);
+			if (!foundKeys){
+				icon.frame(31, 0, 11, 7);
+			} else {
+				int left = 46, top = 0, width = 0, height = 7;
+				if (blackKey){
+					left = 43;
+					width += 3;
+				}
+				if (specialKey){
+					top = 8;
+					width += 3;
+				}
+				width += ironKeys*3;
+				width = Math.min( width, 9);
+				icon.frame(left, top, width, height);
+			}
+			layout();
+
 		}
 
 		@Override
 		protected void onTouchDown() {
 			bg.brightness( 1.5f );
+			icon.brightness( 1.5f );
 			Sample.INSTANCE.play( Assets.SND_CLICK );
 		}
 
 		@Override
 		protected void onTouchUp() {
 			bg.resetColor();
+			icon.resetColor();
 		}
 
 		@Override
