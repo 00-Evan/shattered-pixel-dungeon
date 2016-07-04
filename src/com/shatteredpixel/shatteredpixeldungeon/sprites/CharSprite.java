@@ -37,6 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibili
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.Visual;
@@ -117,8 +119,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		final int csize = DungeonTilemap.SIZE;
 		
 		return new PointF(
-			((cell % Level.WIDTH) + 0.5f) * csize - width * 0.5f,
-			((cell / Level.WIDTH) + 1.0f) * csize - height
+			PixelScene.align(Camera.main, ((cell % Level.WIDTH) + 0.5f) * csize - width * 0.5f),
+			PixelScene.align(Camera.main, ((cell / Level.WIDTH) + 1.0f) * csize - height)
 		);
 	}
 	
