@@ -45,7 +45,7 @@ public class AssassinsBlade extends MeleeWeapon {
 		Char enemy = hero.enemy();
 		if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero))
 			//deals avg damage to max on surprise, instead of min to max.
-			return Random.NormalIntRange((min() + max())/2, max());
+			return imbue.damageFactor(Random.NormalIntRange((min() + max())/2, max()));
 		else
 			return super.damageRoll(hero);
 	}
