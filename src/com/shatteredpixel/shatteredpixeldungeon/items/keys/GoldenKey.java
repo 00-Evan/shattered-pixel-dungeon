@@ -32,7 +32,7 @@ public class GoldenKey extends Key {
 
 	@Override
 	public boolean doPickUp(Hero hero) {
-		Dungeon.hero.belongings.specialKeys[depth]++;
+		Dungeon.hero.belongings.specialKeys[depth] += quantity();
 		return super.doPickUp(hero);
 	}
 
