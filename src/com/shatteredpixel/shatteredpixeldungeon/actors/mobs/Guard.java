@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -138,7 +139,13 @@ public class Guard extends Mob {
 	protected Item createLoot() {
 		//first see if we drop armor, overall chance is 1/8
 		if (Random.Int(2) == 0){
-			return Generator.randomArmor();
+			Armor loot;
+			do{
+				loot = Generator.randomArmor();
+				//50% chance of re-rolling tier 4 or 5 items
+			} while (loot.tier >= 4 && Random.Int(2) == 0);
+			loot.level(0);
+			return loot;
 		//otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + potions dropped))
 		//with 0 potions dropped that simplifies to 1/8
 		} else {

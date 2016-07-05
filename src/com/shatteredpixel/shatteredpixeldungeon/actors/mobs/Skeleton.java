@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
@@ -88,13 +89,12 @@ public class Skeleton extends Mob {
 	
 	@Override
 	protected Item createLoot() {
-		Item loot = Generator.random( Generator.Category.WEAPON );
-		for (int i=0; i < 2; i++) {
-			Item l = Generator.random( Generator.Category.WEAPON );
-			if (l.level() < loot.level()) {
-				loot = l;
-			}
-		}
+		Item loot;
+		do {
+			loot = Generator.random(Generator.Category.WEAPON);
+			//50% chance of re-rolling tier 4 or 5 items
+		} while (loot instanceof MeleeWeapon && ((MeleeWeapon) loot).tier >= 4 && Random.Int(2) == 0);
+		loot.level(0);
 		return loot;
 	}
 	
