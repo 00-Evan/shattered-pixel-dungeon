@@ -388,7 +388,11 @@ public class Hero extends Char {
 
 		if (wep != null && Level.distance( pos, enemy.pos ) <= wep.reachFactor(this)){
 
-			PathFinder.buildDistanceMap(enemy.pos, BArray.not(Level.solid, null), wep.reachFactor(this));
+			boolean[] passable = BArray.not(Level.solid, null);
+			for (Mob m : Dungeon.level.mobs)
+				passable[m.pos] = false;
+
+			PathFinder.buildDistanceMap(enemy.pos, passable, wep.reachFactor(this));
 
 			return PathFinder.distance[pos] <= wep.reachFactor(this);
 
