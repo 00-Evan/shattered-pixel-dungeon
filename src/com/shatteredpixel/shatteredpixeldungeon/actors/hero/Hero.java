@@ -935,7 +935,7 @@ public class Hero extends Char {
 
 		int tenacity = RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
 		if (tenacity != 0) //(HT - HP)/HT = heroes current % missing health.
-			dmg = (int)Math.ceil((float)dmg * Math.pow(0.9, tenacity*((float)(HT - HP)/HT)));
+			dmg = (int)Math.ceil((float)dmg * Math.pow(0.85, tenacity*((float)(HT - HP)/HT)));
 
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
