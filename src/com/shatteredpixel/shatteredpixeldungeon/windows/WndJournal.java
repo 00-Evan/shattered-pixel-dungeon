@@ -23,12 +23,16 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
@@ -41,7 +45,7 @@ public class WndJournal extends Window {
 	private static final int HEIGHT_P    = 160;
 	private static final int HEIGHT_L    = 144;
 
-	private static final int ITEM_HEIGHT	= 18;
+	private static final int ITEM_HEIGHT	= 14;
 	
 	private RenderedText txtTitle;
 	private ScrollPane list;
@@ -62,8 +66,44 @@ public class WndJournal extends Window {
 		Collections.sort( Journal.records );
 		
 		float pos = 0;
+
+		//Keys
+		for (int i = Dungeon.hero.belongings.ironKeys.length-1; i > 0; i--){
+			if (Dungeon.hero.belongings.specialKeys[i] > 0){
+				String text;
+				if (i % 5 == 0)
+					text = Messages.capitalize(Messages.get(SkeletonKey.class, "name"));
+				else
+					text = Messages.capitalize(Messages.get(GoldenKey.class, "name"));
+
+				if (Dungeon.hero.belongings.specialKeys[i] > 1){
+					text += " x" + Dungeon.hero.belongings.specialKeys[i];
+				}
+				ListItem item = new ListItem( text, i );
+				item.setRect( 0, pos, WIDTH, ITEM_HEIGHT );
+				content.add( item );
+
+				pos += item.height();
+			}
+			if (Dungeon.hero.belongings.ironKeys[i] > 0){
+				String text = Messages.capitalize(Messages.get(IronKey.class, "name"));
+
+				if (Dungeon.hero.belongings.ironKeys[i] > 1){
+					text += " x" + Dungeon.hero.belongings.ironKeys[i];
+				}
+
+				ListItem item = new ListItem( text, i );
+				item.setRect( 0, pos, WIDTH, ITEM_HEIGHT );
+				content.add( item );
+
+				pos += item.height();
+			}
+
+		}
+
+		//Journal entries
 		for (Journal.Record rec : Journal.records) {
-			ListItem item = new ListItem( rec.feature, rec.depth );
+			ListItem item = new ListItem( rec.feature.desc(), rec.depth );
 			item.setRect( 0, pos, WIDTH, ITEM_HEIGHT );
 			content.add( item );
 			
@@ -82,13 +122,13 @@ public class WndJournal extends Window {
 		
 		private RenderedText feature;
 		private BitmapText depth;
-		
+		private ColorBlock line;
 		private Image icon;
 		
-		public ListItem( Journal.Feature f, int d ) {
+		public ListItem( String text, int d ) {
 			super();
 			
-			feature.text( f.desc() );
+			feature.text( text );
 			
 			depth.text( Integer.toString( d ) );
 			depth.measure();
@@ -101,11 +141,14 @@ public class WndJournal extends Window {
 		
 		@Override
 		protected void createChildren() {
-			feature = PixelScene.renderText( 9 );
+			feature = PixelScene.renderText( 7 );
 			add( feature );
 			
 			depth = new BitmapText( PixelScene.pixelFont);
 			add( depth );
+
+			line = new ColorBlock( 1, 1, 0xFF222222);
+			add(line);
 			
 			icon = Icons.get( Icons.DEPTH );
 			add( icon );
@@ -117,12 +160,17 @@ public class WndJournal extends Window {
 			icon.x = width - icon.width;
 			
 			depth.x = icon.x - 1 - depth.width();
-			depth.y = y + (height - depth.height()) / 2;
+			depth.y = y + (height() - depth.height() + 1) / 2f;
 			PixelScene.align(depth);
 			
-			icon.y = depth.y - 1;
+			icon.y = y + (height() - icon.height()) / 2f;
+			PixelScene.align(icon);
+
+			line.size(width, 1);
+			line.x = 0;
+			line.y = y;
 			
-			feature.y = depth.y + depth.baseLine() - feature.baseLine();
+			feature.y = y + (height() - feature.baseLine()) / 2f;
 			PixelScene.align(feature);
 		}
 	}
