@@ -33,7 +33,12 @@ public class RingOfForce extends Ring {
 	}
 
 	private static float tier(int str){
-		return Math.max(1, (str - 8)/2f);
+		float tier = Math.max(1, (str - 8)/2f);
+		//each str point after 18 is half as effective
+		if (tier > 5){
+			tier = 5 + (tier - 5) / 2f;
+		}
+		return tier;
 	}
 
 	public static int damageRoll( Hero hero ){
