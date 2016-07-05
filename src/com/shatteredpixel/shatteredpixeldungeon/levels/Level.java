@@ -198,25 +198,28 @@ public abstract class Level implements Bundlable {
 		
 		if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
 			addItemToSpawn( Generator.random( Generator.Category.FOOD ) );
+
+			int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
+
 			if (Dungeon.posNeeded()) {
-				addItemToSpawn( new PotionOfStrength() );
+				if (Random.Float() > Math.pow(0.925, bonus))
+					addItemToSpawn( new PotionOfMight() );
+				else
+					addItemToSpawn( new PotionOfStrength() );
 				Dungeon.limitedDrops.strengthPotions.count++;
 			}
 			if (Dungeon.souNeeded()) {
-				addItemToSpawn( new ScrollOfUpgrade() );
+				if (Random.Float() > Math.pow(0.925, bonus))
+					addItemToSpawn( new ScrollOfMagicalInfusion() );
+				else
+					addItemToSpawn( new ScrollOfUpgrade() );
 				Dungeon.limitedDrops.upgradeScrolls.count++;
 			}
 			if (Dungeon.asNeeded()) {
+				if (Random.Float() > Math.pow(0.925, bonus))
+					addItemToSpawn( new Stylus() );
 				addItemToSpawn( new Stylus() );
 				Dungeon.limitedDrops.arcaneStyli.count++;
-			}
-
-			int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
-			if (Random.Float() > Math.pow(0.95, bonus)){
-				if (Random.Int(2) == 0)
-					 addItemToSpawn( new ScrollOfMagicalInfusion() );
-				else
-					addItemToSpawn( new PotionOfMight() );
 			}
 
 			DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
