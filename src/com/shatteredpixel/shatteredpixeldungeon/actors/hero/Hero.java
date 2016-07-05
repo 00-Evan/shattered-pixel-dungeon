@@ -81,6 +81,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -372,8 +373,16 @@ public class Hero extends Char {
 	}
 
 	public boolean canSurpriseAttack(){
-		return !(belongings.weapon != null && belongings.weapon instanceof Weapon
-				&& STR() < ((Weapon)belongings.weapon).STRReq());
+		if (belongings.weapon == null || !(belongings.weapon instanceof Weapon))
+			return true;
+
+		if (STR() < ((Weapon)belongings.weapon).STRReq())
+			return false;
+
+		if (belongings.weapon instanceof Flail && rangedWeapon == null)
+			return false;
+
+		return true;
 	}
 
 	public boolean canAttack(Char enemy){

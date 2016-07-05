@@ -29,6 +29,7 @@ public class Flail extends MeleeWeapon {
 
 		tier = 4;
 		DLY = 1.25f; //0.8x speed
+		//also cannot surprise attack, see Hero.canSurpriseAttack
 	}
 
 	@Override
