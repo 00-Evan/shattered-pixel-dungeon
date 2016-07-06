@@ -43,11 +43,11 @@ public class CloakOfShadows extends Artifact {
 		image = ItemSpriteSheet.ARTIFACT_CLOAK;
 
 		exp = 0;
-		levelCap = 15;
+		levelCap = 14;
 
-		charge = level()+5;
+		charge = level()+6;
 		partialCharge = 0;
-		chargeCap = level()+5;
+		chargeCap = level()+6;
 
 		cooldown = 0;
 
@@ -154,6 +154,12 @@ public class CloakOfShadows extends Artifact {
 		super.restoreFromBundle(bundle);
 		stealthed = bundle.getBoolean( STEALTHED );
 		cooldown = bundle.getInt( COOLDOWN );
+
+		//for pre-0.4.1 saves which may have over-levelled cloaks
+		if (level() == 15){
+			level(14);
+			chargeCap = 20;
+		}
 	}
 
 	public class cloakRecharge extends ArtifactBuff{
@@ -162,7 +168,7 @@ public class CloakOfShadows extends Artifact {
 			if (charge < chargeCap) {
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (!stealthed && (lock == null || lock.regenOn()))
-					partialCharge += (1f / (60 - (chargeCap-charge)*2));
+					partialCharge += (1f / (50 - (chargeCap-charge)));
 
 				if (partialCharge >= 1) {
 					charge++;
@@ -216,9 +222,9 @@ public class CloakOfShadows extends Artifact {
 
 			if (turnsToCost == 0) exp += 10 + ((Hero)target).lvl;
 
-			if (exp >= (level()+1)*50 && level() < levelCap) {
+			if (exp >= (level()+1)*40 && level() < levelCap) {
 				upgrade();
-				exp -= level()*50;
+				exp -= level()*40;
 				GLog.p( Messages.get(this, "levelup") );
 			}
 
@@ -236,9 +242,9 @@ public class CloakOfShadows extends Artifact {
 
 			exp += 10 + ((Hero)target).lvl;
 
-			if (exp >= (level()+1)*50 && level() < levelCap) {
+			if (exp >= (level()+1)*40 && level() < levelCap) {
 				upgrade();
-				exp -= level()*50;
+				exp -= level()*40;
 				GLog.p( Messages.get(this, "levelup") );
 			}
 
@@ -267,7 +273,7 @@ public class CloakOfShadows extends Artifact {
 			if (target.invisible > 0)
 				target.invisible--;
 			stealthed = false;
-			cooldown = 10 - (level() / 3);
+			cooldown = 6 - (level() / 4);
 
 			updateQuickslot();
 			super.detach();

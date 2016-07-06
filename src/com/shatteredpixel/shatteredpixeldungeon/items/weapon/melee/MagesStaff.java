@@ -76,7 +76,7 @@ public class MagesStaff extends MeleeWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return  3*(tier+1) +    //6 base damage, down from 10
+		return  4*(tier+1) +    //8 base damage, down from 10
 				lvl*(tier+1);   //scaling unaffected
 	}
 
@@ -160,6 +160,9 @@ public class MagesStaff extends MeleeWeapon {
 
 		//syncs the level of the two items.
 		int targetLevel = Math.max(this.level(), wand.level());
+
+		//if the staff's level is being overridden by the wand, preserve 1 upgrade
+		if (wand.level() >= this.level() && this.level() > 0) targetLevel++;
 
 		int staffLevelDiff = targetLevel - this.level();
 		if (staffLevelDiff > 0)
