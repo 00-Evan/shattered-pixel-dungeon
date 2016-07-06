@@ -30,6 +30,7 @@ public class RingOfMight extends Ring {
 	public boolean doEquip(Hero hero) {
 		if (super.doEquip(hero)){
 			hero.HT += level()*5;
+			hero.HP = Math.min(hero.HP, hero.HT);
 			return true;
 		} else {
 			return false;
