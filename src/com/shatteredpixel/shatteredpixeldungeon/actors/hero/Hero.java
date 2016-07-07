@@ -274,7 +274,7 @@ public class Hero extends Char {
 		
 		int bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion.class);
 
-		float evasion = (float)Math.pow( 1.15, bonus );
+		float evasion = (float)Math.pow( 1.125, bonus );
 		if (paralysed > 0) {
 			evasion /= 2;
 		}
@@ -1214,9 +1214,9 @@ public class Hero extends Char {
 	@Override
 	public int stealth() {
 		int stealth = super.stealth();
-		for (Buff buff : buffs( RingOfEvasion.Evasion.class )) {
-			stealth += ((RingOfEvasion.Evasion)buff).effectiveLevel;
-		}
+
+		stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion.class);
+
 		if (belongings.armor != null && belongings.armor.hasGlyph(Obfuscation.class)){
 			stealth += belongings.armor.level();
 		}
