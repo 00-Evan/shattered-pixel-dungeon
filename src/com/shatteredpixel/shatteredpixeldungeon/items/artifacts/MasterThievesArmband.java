@@ -80,17 +80,16 @@ public class MasterThievesArmband extends Artifact {
 					exp += value;
 				}
 			}
-			while(exp >= 600 && level() < levelCap) {
-				exp -= 600;
+			while(exp >= (250 + 50*level()) && level() < levelCap) {
+				exp -= (250 + 50*level());
 				upgrade();
 			}
 			return true;
 		}
 
 		public float stealChance(int value){
-				//get lvl*100 gold or lvl*5% item value of free charge, whichever is less.
-				int chargeBonus = Math.min(level()*100, (value*level())/20);
-
+				//get lvl*50 gold or lvl*3.33% item value of free charge, whichever is less.
+				int chargeBonus = Math.min(level()*50, (value*level())/30);
 				return (((float)charge + chargeBonus)/value);
 		}
 	}

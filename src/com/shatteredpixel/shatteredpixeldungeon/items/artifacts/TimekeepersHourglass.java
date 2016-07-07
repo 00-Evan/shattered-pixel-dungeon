@@ -75,8 +75,13 @@ public class TimekeepersHourglass extends Artifact {
 		if (action.equals(AC_ACTIVATE)){
 
 			if (!isEquipped( hero ))        GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-			else if (activeBuff != null)    GLog.i( Messages.get(this, "in_use") );
-			else if (charge <= 1)           GLog.i( Messages.get(this, "no_charge") );
+			else if (activeBuff != null) {
+				if (activeBuff instanceof timeStasis) { //do nothing
+				} else {
+					activeBuff.detach();
+					GLog.i( Messages.get(this, "deactivate") );
+				}
+			} else if (charge <= 1)         GLog.i( Messages.get(this, "no_charge") );
 			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
 			else GameScene.show(
 						new WndOptions( Messages.get(this, "name"),
@@ -220,16 +225,18 @@ public class TimekeepersHourglass extends Artifact {
 		public boolean attachTo(Char target) {
 
 			if (super.attachTo(target)) {
+
+				int usedCharge = Math.min(charge, 5);
 				//buffs always act last, so the stasis buff should end a turn early.
-				spend(charge - 1);
-				((Hero) target).spendAndNext(charge);
+				spend(usedCharge - 1);
+				((Hero) target).spendAndNext(usedCharge);
 
 				//shouldn't punish the player for going into stasis frequently
 				Hunger hunger = target.buff(Hunger.class);
 				if (hunger != null && !hunger.isStarving())
-					hunger.satisfy(charge);
+					hunger.satisfy(usedCharge);
 
-				charge = 0;
+				charge -= usedCharge;
 
 				target.invisible++;
 
@@ -310,7 +317,6 @@ public class TimekeepersHourglass extends Artifact {
 				mob.sprite.remove(CharSprite.State.PARALYSED);
 			GameScene.freezeEmitters = false;
 
-			charge = 0;
 			updateQuickslot();
 			super.detach();
 			activeBuff = null;

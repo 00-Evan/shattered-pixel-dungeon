@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -165,19 +164,18 @@ public class HornOfPlenty extends Artifact {
 
 	public class hornRecharge extends ArtifactBuff{
 
-		@Override
-		public boolean act() {
-			LockedFloor lock = target.buff(LockedFloor.class);
-			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
+		public void gainCharge(float levelPortion) {
+			if (charge < chargeCap) {
 
-				//generates 0.25 food value every round, +0.015 value per level
-				//to a max of 0.70 food value per round (0.25+0.5, at level 30)
-				partialCharge += 0.25f + (0.015f*level());
+				//generates 0.25x max hunger value every hero level, +0.025x max value per horn level
+				//to a max of exactly max hunger value per hero level (0.25+0.75, at horn level 30)
+				//This means that a standard ration will be recovered in 10 hero levels
+				partialCharge += Hunger.STARVING * levelPortion * (0.25f + (0.025f*level()));
 
-				//charge is in increments of 36 food value.
-				if (partialCharge >= 36) {
+				//charge is in increments of 1/10 max hunger value.
+				while (partialCharge >= Hunger.STARVING/10) {
 					charge++;
-					partialCharge -= 36;
+					partialCharge -= Hunger.STARVING/10;
 
 					if (charge == chargeCap)image = ItemSpriteSheet.ARTIFACT_HORN4;
 					else if (charge >= 7)   image = ItemSpriteSheet.ARTIFACT_HORN3;
@@ -193,10 +191,6 @@ public class HornOfPlenty extends Artifact {
 				}
 			} else
 				partialCharge = 0;
-
-			spend( TICK );
-
-			return true;
 		}
 
 	}

@@ -176,7 +176,7 @@ public class SandalsOfNature extends Artifact {
 					Sample.INSTANCE.play( Assets.SND_PLANT );
 					hero.busy();
 					hero.spend( 2f );
-					if (seeds.size() >= 5+(level()*2)){
+					if (seeds.size() >= 3+(level()*3)){
 						seeds.clear();
 						upgrade();
 						if (level() >= 1 && level() <= 3) {

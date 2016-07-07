@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
@@ -1129,6 +1130,10 @@ public class Hero extends Char {
 
 		EtherealChains.chainsRecharge chains = buff(EtherealChains.chainsRecharge.class);
 		if (chains != null) chains.gainExp(percent);
+
+		HornOfPlenty.hornRecharge horn = buff(HornOfPlenty.hornRecharge.class);
+		if (horn != null) horn.gainCharge(percent);
+
 		if (subClass == HeroSubClass.BERSERKER) Buff.affect(this, Berserk.class).recover(percent);
 		
 		boolean levelUp = false;
