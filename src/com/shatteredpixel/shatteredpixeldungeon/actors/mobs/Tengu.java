@@ -125,7 +125,7 @@ public class Tengu extends Mob {
 
 	@Override
 	public boolean isAlive() {
-		return HP > 0 || Dungeon.level.mobs.contains(this); //Tengu has special death rules, see prisonbosslevel.progress()
+		return Dungeon.level.mobs.contains(this); //Tengu has special death rules, see prisonbosslevel.progress()
 	}
 
 	@Override
