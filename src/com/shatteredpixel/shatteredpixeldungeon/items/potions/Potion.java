@@ -228,7 +228,7 @@ public class Potion extends Item {
 	
 	public void shatter( int cell ) {
 		if (Dungeon.visible[cell]) {
-			GLog.i( Messages.get(Potion.class, "shatter", color()) );
+			GLog.i( Messages.get(Potion.class, "shatter") );
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 			splash( cell );
 		}
@@ -260,20 +260,16 @@ public class Potion extends Item {
 		return this;
 	}
 	
-	protected String color() {
-		return Messages.get(Potion.class, color);
-	}
-	
 	@Override
 	public String name() {
-		return isKnown() ? super.name() : Messages.get(Potion.class, "unknown_name", color());
+		return isKnown() ? super.name() : Messages.get(Potion.class, color);
 	}
 	
 	@Override
 	public String info() {
 		return isKnown() ?
 			desc() :
-			Messages.get(Potion.class, "unknown_desc", color());
+			Messages.get(Potion.class, "unknown_desc");
 	}
 
 	public Integer initials(){

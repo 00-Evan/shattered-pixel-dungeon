@@ -171,21 +171,17 @@ public abstract class Scroll extends Item {
 		setKnown();
 		return super.identify();
 	}
-
-	public String rune() {
-		return Messages.get(Scroll.class, rune);
-	}
 	
 	@Override
 	public String name() {
-		return isKnown() ? name : Messages.get(this, "unknown_name", rune());
+		return isKnown() ? name : Messages.get(Scroll.class, rune);
 	}
 	
 	@Override
 	public String info() {
 		return isKnown() ?
 			desc() :
-			Messages.get(this, "unknown_desc", rune());
+			Messages.get(this, "unknown_desc");
 	}
 
 	public Integer initials(){
