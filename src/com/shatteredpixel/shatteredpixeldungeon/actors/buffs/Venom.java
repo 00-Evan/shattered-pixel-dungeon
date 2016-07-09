@@ -51,7 +51,7 @@ public class Venom extends Poison implements Hero.Doom {
 
 	public void set(float duration, int damage) {
 		set(duration);
-		this.damage = damage;
+		if (this.damage < damage) this.damage = damage;
 	}
 
 	@Override

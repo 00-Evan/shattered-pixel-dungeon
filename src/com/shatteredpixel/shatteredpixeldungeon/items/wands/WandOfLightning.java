@@ -55,10 +55,11 @@ public class WandOfLightning extends Wand {
 
 		//lightning deals less damage per-target, the more targets that are hit.
 		float multipler = 0.4f + (0.6f/affected.size());
-		if (Level.water[bolt.collisionPos]) multipler *= 1.5f;
+		//if the main target is in water, all affected take full damage
+		if (Level.water[bolt.collisionPos]) multipler = 1f;
 
-		int min = 5+level();
-		int max = Math.round(10 + (level() * level() / 4f));
+		int min = 5 + level();
+		int max = 10 + 5*level();
 
 		for (Char ch : affected){
 			processSoulMark(ch, chargesPerCast());

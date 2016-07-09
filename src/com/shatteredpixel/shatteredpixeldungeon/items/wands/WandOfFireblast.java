@@ -68,17 +68,21 @@ public class WandOfFireblast extends Wand {
 			Char ch = Actor.findChar( cell );
 			if (ch != null) {
 
-				ch.damage(Random.NormalIntRange(1, (int) (8 + (level() * level() * (1 + chargesPerCast()) / 6f))), this);
+				int min = 1+level();
+				int max = Math.round(5 + 3*level());
+
+				//1x/1.5x/2.25x damage
+				int damage = (int)Math.round(Random.NormalIntRange(min, max) * Math.pow(1.5f, chargesPerCast()-1));
+
+				ch.damage(damage, this);
 				Buff.affect( ch, Burning.class ).reignite( ch );
 				switch(chargesPerCast()){
 					case 1:
-						Buff.affect(ch, Cripple.class, 3f); break;
+						break; //no effects
 					case 2:
-						Buff.affect(ch, Cripple.class, 6f); break;
+						Buff.affect(ch, Cripple.class, 4f); break;
 					case 3:
-						Buff.affect(ch, Paralysis.class, 3f); break;
-					case 4:
-						Buff.affect(ch, Paralysis.class, 6f); break;
+						Buff.affect(ch, Paralysis.class, 4f); break;
 				}
 			}
 		}
@@ -120,7 +124,8 @@ public class WandOfFireblast extends Wand {
 		affectedCells = new HashSet<>();
 		visualCells = new HashSet<>();
 
-		int maxDist = 1 + chargesPerCast()*2;
+		// 4/6/9 distance
+		int maxDist = (int)(4 * Math.pow(1.5,(chargesPerCast()-1)));
 		int dist = Math.min(bolt.dist, maxDist);
 
 		for (int i = 0; i < Level.NEIGHBOURS8.length; i++){
@@ -156,8 +161,8 @@ public class WandOfFireblast extends Wand {
 
 	@Override
 	protected int chargesPerCast() {
-		//consumes 40% of current charges, rounded up, with a minimum of one.
-		return Math.max(1, (int)Math.ceil(curCharges*0.4f));
+		//consumes 30% of current charges, rounded up, with a minimum of one.
+		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
 	}
 
 	@Override

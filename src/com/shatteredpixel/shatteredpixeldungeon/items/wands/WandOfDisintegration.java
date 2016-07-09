@@ -90,8 +90,8 @@ public class WandOfDisintegration extends Wand {
 		}
 		
 		int lvl = level + chars.size() + terrainBonus;
-		int dmgMin = lvl;
-		int dmgMax = (int) (8 + lvl * lvl / 3f);
+		int dmgMin = 2 + lvl;
+		int dmgMax = 8 + 4*lvl;
 		for (Char ch : chars) {
 			processSoulMark(ch, chargesPerCast());
 			ch.damage( Random.NormalIntRange( dmgMin, dmgMax ), this );

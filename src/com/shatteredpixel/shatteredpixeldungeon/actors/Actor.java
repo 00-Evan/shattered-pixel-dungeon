@@ -55,7 +55,7 @@ public abstract class Actor implements Bundlable {
 		}
 	}
 	
-	protected float cooldown() {
+	public float cooldown() {
 		return time - now;
 	}
 	

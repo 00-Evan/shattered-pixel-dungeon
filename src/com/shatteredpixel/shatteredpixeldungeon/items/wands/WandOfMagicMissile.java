@@ -43,7 +43,7 @@ public class WandOfMagicMissile extends Wand {
 		if (ch != null) {
 
 			processSoulMark(ch, chargesPerCast());
-			ch.damage(Random.NormalIntRange(3 + level() , 6 + level() * 2), this);
+			ch.damage(Random.NormalIntRange(2 + level() , 8 + level() * 2), this);
 
 			ch.sprite.burst(0xFFFFFFFF, level() / 2 + 2);
 

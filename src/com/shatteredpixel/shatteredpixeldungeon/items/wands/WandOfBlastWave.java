@@ -56,7 +56,7 @@ public class WandOfBlastWave extends Wand {
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 		BlastWave.blast(bolt.collisionPos);
 
-		int damage = Random.NormalIntRange(1, 6+(int)(level()*level()/4f));
+		int damage = Random.NormalIntRange(1 + level(), 5+3*level());
 
 		//presses all tiles in the AOE first
 		for (int i : Level.NEIGHBOURS9){
@@ -69,11 +69,11 @@ public class WandOfBlastWave extends Wand {
 
 			if (ch != null){
 				processSoulMark(ch, chargesPerCast());
-				ch.damage(damage, this);
+				ch.damage(Math.round(damage * 0.667f), this);
 
 				if (ch.isAlive()) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
-					int strength = 1 + ((level() + 1) / 3);
+					int strength = 1 + Math.round(level() / 2f);
 					throwChar(ch, trajectory, strength);
 				}
 			}
