@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -41,7 +42,8 @@ public class Dazzling extends Weapon.Enchantment {
 
 		if (Random.Int( level + 5 ) >= 4) {
 
-			Buff.prolong( defender, Blindness.class, Random.Float( 1, 1.5f + level ) );
+			Buff.prolong( defender, Blindness.class, Random.Float( 1f, 1f + level ) );
+			Buff.prolong( defender, Cripple.class, Random.Float( 1f, 1f + level/2f ) );
 			defender.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
 
 		}
