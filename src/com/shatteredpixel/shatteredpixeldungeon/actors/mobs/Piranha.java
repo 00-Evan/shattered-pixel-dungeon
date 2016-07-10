@@ -57,6 +57,7 @@ public class Piranha extends Mob {
 	protected boolean act() {
 		if (!Level.water[pos]) {
 			die( null );
+			sprite.killAndErase();
 			return true;
 		} else {
 			//this causes pirahna to move away when a door is closed on them.
