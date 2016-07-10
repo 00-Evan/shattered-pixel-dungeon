@@ -237,6 +237,8 @@ public class MagesStaff extends MeleeWeapon {
 
 		if (wand == null){
 			info += "\n\n" + Messages.get(this, "no_wand");
+		} else {
+			info += "\n\n" + Messages.get(this, "has_wand", Messages.get(wand, "name")) + " " + wand.statsDesc();
 		}
 
 		return info;
@@ -286,9 +288,15 @@ public class MagesStaff extends MeleeWeapon {
 				if (wand == null){
 					applyWand((Wand)item);
 				} else {
+					final int newLevel =
+							item.level() >= level() ?
+									level() > 0 ?
+										item.level() + 1
+										: item.level()
+									: level();
 					GameScene.show(
 							new WndOptions("",
-									Messages.get(MagesStaff.class, "warning"),
+									Messages.get(MagesStaff.class, "warning", newLevel),
 									Messages.get(MagesStaff.class, "yes"),
 									Messages.get(MagesStaff.class, "no")) {
 								@Override

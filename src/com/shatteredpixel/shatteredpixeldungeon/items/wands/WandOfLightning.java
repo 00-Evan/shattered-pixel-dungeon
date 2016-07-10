@@ -40,7 +40,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class WandOfLightning extends Wand {
+public class WandOfLightning extends DamageWand {
 
 	{
 		image = ItemSpriteSheet.WAND_LIGHTNING;
@@ -49,6 +49,14 @@ public class WandOfLightning extends Wand {
 	private ArrayList<Char> affected = new ArrayList<>();
 
 	ArrayList<Lightning.Arc> arcs = new ArrayList<>();
+
+	public int min(int lvl){
+		return 5+lvl;
+	}
+
+	public int max(int lvl){
+		return 10+5*lvl;
+	}
 	
 	@Override
 	protected void onZap( Ballistica bolt ) {
@@ -63,7 +71,7 @@ public class WandOfLightning extends Wand {
 
 		for (Char ch : affected){
 			processSoulMark(ch, chargesPerCast());
-			ch.damage(Math.round(Random.NormalIntRange(min, max) * multipler), LightningTrap.LIGHTNING);
+			ch.damage(Math.round(damageRoll() * multipler), LightningTrap.LIGHTNING);
 
 			if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
 			ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );

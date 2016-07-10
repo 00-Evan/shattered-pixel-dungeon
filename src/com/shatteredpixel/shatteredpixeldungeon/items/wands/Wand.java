@@ -163,10 +163,19 @@ public abstract class Wand extends Item {
 
 	@Override
 	public String info() {
-		return (cursed && cursedKnown) ?
-				desc() + "\n\n" + Messages.get(Wand.class, "cursed") :
-				desc();
+		String desc = desc();
+
+		desc += "\n\n" + statsDesc();
+
+		if (cursed && cursedKnown)
+			desc += "\n\n" + Messages.get(Wand.class, "cursed");
+
+		return desc;
 	}
+
+	public String statsDesc(){
+		return Messages.get(this, "stats_desc");
+	};
 	
 	@Override
 	public boolean isIdentified() {

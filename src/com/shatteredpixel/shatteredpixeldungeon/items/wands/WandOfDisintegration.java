@@ -38,12 +38,21 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class WandOfDisintegration extends Wand {
+public class WandOfDisintegration extends DamageWand {
 
 	{
 		image = ItemSpriteSheet.WAND_DISINTEGRATION;
 
 		collisionProperties = Ballistica.WONT_STOP;
+	}
+
+
+	public int min(int lvl){
+		return 2+lvl;
+	}
+
+	public int max(int lvl){
+		return 8+4*lvl;
 	}
 	
 	@Override
@@ -90,11 +99,9 @@ public class WandOfDisintegration extends Wand {
 		}
 		
 		int lvl = level + chars.size() + terrainBonus;
-		int dmgMin = 2 + lvl;
-		int dmgMax = 8 + 4*lvl;
 		for (Char ch : chars) {
 			processSoulMark(ch, chargesPerCast());
-			ch.damage( Random.NormalIntRange( dmgMin, dmgMax ), this );
+			ch.damage( damageRoll(lvl), this );
 			ch.sprite.centerEmitter().burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
 			ch.sprite.flash();
 		}

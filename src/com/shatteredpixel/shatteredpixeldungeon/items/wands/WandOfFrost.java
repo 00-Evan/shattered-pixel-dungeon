@@ -39,10 +39,18 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class WandOfFrost extends Wand {
+public class WandOfFrost extends DamageWand {
 
 	{
 		image = ItemSpriteSheet.WAND_FROST;
+	}
+
+	public int min(int lvl){
+		return 2+lvl;
+	}
+
+	public int max(int lvl){
+		return 8+5*lvl;
 	}
 
 	@Override
@@ -56,7 +64,7 @@ public class WandOfFrost extends Wand {
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (ch != null){
 
-			int damage = Random.NormalIntRange(5+level(), 10+5*level());
+			int damage = damageRoll();
 
 			if (ch.buff(Frost.class) != null){
 				return; //do nothing, can't affect a frozen target

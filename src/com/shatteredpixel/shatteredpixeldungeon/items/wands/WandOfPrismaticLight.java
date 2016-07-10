@@ -46,12 +46,20 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class WandOfPrismaticLight extends Wand {
+public class WandOfPrismaticLight extends DamageWand {
 
 	{
 		image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT;
 
 		collisionProperties = Ballistica.MAGIC_BOLT;
+	}
+
+	public int min(int lvl){
+		return 1+lvl;
+	}
+
+	public int max(int lvl){
+		return 5+3*lvl;
 	}
 
 	@Override
@@ -68,7 +76,7 @@ public class WandOfPrismaticLight extends Wand {
 	}
 
 	private void affectTarget(Char ch){
-		int dmg = Random.NormalIntRange(1+level(), 5+3*level());
+		int dmg = damageRoll();
 
 		//three in (5+lvl) chance of failing
 		if (Random.Int(5+level()) >= 3) {

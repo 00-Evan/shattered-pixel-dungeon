@@ -43,7 +43,7 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class WandOfBlastWave extends Wand {
+public class WandOfBlastWave extends DamageWand {
 
 	{
 		image = ItemSpriteSheet.WAND_BLAST_WAVE;
@@ -51,12 +51,20 @@ public class WandOfBlastWave extends Wand {
 		collisionProperties = Ballistica.PROJECTILE;
 	}
 
+	public int min(int lvl){
+		return 1+lvl;
+	}
+
+	public int max(int lvl){
+		return 5+3*lvl;
+	}
+
 	@Override
 	protected void onZap(Ballistica bolt) {
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 		BlastWave.blast(bolt.collisionPos);
 
-		int damage = Random.NormalIntRange(1 + level(), 5+3*level());
+		int damage = damageRoll();
 
 		//presses all tiles in the AOE first
 		for (int i : Level.NEIGHBOURS9){

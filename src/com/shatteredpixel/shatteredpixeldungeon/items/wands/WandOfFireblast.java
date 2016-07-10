@@ -34,20 +34,30 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
-import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class WandOfFireblast extends Wand {
+public class WandOfFireblast extends DamageWand {
 
 	{
 		image = ItemSpriteSheet.WAND_FIREBOLT;
 
 		collisionProperties = Ballistica.STOP_TERRAIN;
+	}
+
+	//1x/1.5x/2.25x damage
+	public int min(int lvl){
+		return (int)Math.round((1+lvl) * Math.pow(1.5f, chargesPerCast()-1));
+	}
+
+	//1x/1.5x/2.25x damage
+	public int max(int lvl){
+		return (int)Math.round((5+3*lvl) * Math.pow(1.5f, chargesPerCast()-1));
 	}
 
 	//the actual affected cells
@@ -68,11 +78,7 @@ public class WandOfFireblast extends Wand {
 			Char ch = Actor.findChar( cell );
 			if (ch != null) {
 
-				int min = 1+level();
-				int max = Math.round(5 + 3*level());
-
-				//1x/1.5x/2.25x damage
-				int damage = (int)Math.round(Random.NormalIntRange(min, max) * Math.pow(1.5f, chargesPerCast()-1));
+				int damage = damageRoll();
 
 				ch.damage(damage, this);
 				Buff.affect( ch, Burning.class ).reignite( ch );
@@ -163,6 +169,14 @@ public class WandOfFireblast extends Wand {
 	protected int chargesPerCast() {
 		//consumes 30% of current charges, rounded up, with a minimum of one.
 		return Math.max(1, (int)Math.ceil(curCharges*0.3f));
+	}
+
+	@Override
+	public String statsDesc() {
+		if (levelKnown)
+			return Messages.get(this, "stats_desc", chargesPerCast(), min(), max());
+		else
+			return Messages.get(this, "stats_desc", chargesPerCast(), min(0), max(0));
 	}
 
 	@Override

@@ -255,7 +255,7 @@ public class Generator {
 			WandOfTransfusion.class,
 			WandOfCorruption.class,
 			WandOfRegrowth.class };
-		Category.WAND.probs = new float[]{ 4, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3 };
+		Category.WAND.probs = new float[]{ 5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3 };
 
 		//see generator.randomWeapon
 		Category.WEAPON.classes = new Class<?>[]{};
