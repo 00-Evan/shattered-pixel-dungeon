@@ -34,7 +34,7 @@ public class Corruption extends Buff {
 
 	@Override
 	public boolean act() {
-		buildToDamage += target.HT/100f;
+		buildToDamage += target.HT/200f;
 
 		int damage = (int)buildToDamage;
 		buildToDamage -= damage;

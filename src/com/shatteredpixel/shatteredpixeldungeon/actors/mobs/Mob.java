@@ -180,15 +180,24 @@ public abstract class Mob extends Char {
 			}
 		}
 
-		//resets target if: there is no current target, the target is dead, the target has been lost (wandering)
-		//or if the mob is amoked/corrupted and targeting the hero (will try to target something else)
-		if ( enemy == null || !enemy.isAlive() || state == WANDERING ||
-				((buff( Amok.class ) != null || buff(Corruption.class) != null) && enemy == Dungeon.hero )) {
+		//find a new enemy if..
+		boolean newEnemy = false;
+		//we have no enemy, or the current one is dead
+		if ( enemy == null || !enemy.isAlive() || state == WANDERING)
+			newEnemy = true;
+		//We are amoked and current enemy is the hero
+		else if (buff( Amok.class ) != null && enemy == Dungeon.hero)
+			newEnemy = true;
+		//We are corrupted, and current enemy is either the hero or another corrupted character.
+		else if (buff(Corruption.class) != null && (enemy == Dungeon.hero || enemy.buff(Corruption.class) != null))
+			newEnemy = true;
+
+		if ( newEnemy ) {
 
 			HashSet<Char> enemies = new HashSet<>();
 
-			//if the mob is amoked or corrupted...
-			if ( buff(Amok.class) != null || buff(Corruption.class) != null) {
+			//if the mob is amoked...
+			if ( buff(Amok.class) != null) {
 
 				//try to find an enemy mob to attack first.
 				for (Mob mob : Dungeon.level.mobs)
@@ -202,11 +211,21 @@ public abstract class Mob extends Char {
 						enemies.add(mob);
 				if (enemies.size() > 0) return Random.element(enemies);
 
-				//if there is nothing, go for the hero, unless corrupted, then go for nothing.
-				if (buff(Corruption.class) != null) return null;
+				//if there is nothing, go for the hero
 				else return Dungeon.hero;
 
-			//if the mob is not amoked...
+			//if the mob is corrupted...
+			} else if (buff(Corruption.class) != null) {
+
+				//look for enemy mobs to attack, which are also not corrupted
+				for (Mob mob : Dungeon.level.mobs)
+					if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile && mob.buff(Corruption.class) == null)
+						enemies.add(mob);
+				if (enemies.size() > 0) return Random.element(enemies);
+
+				//otherwise go for nothing
+				return null;
+
 			} else {
 
 				//try to find ally mobs to attack.
