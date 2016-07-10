@@ -90,7 +90,7 @@ public class Guard extends Mob {
 
 		Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
 
-		if (chain.collisionPos != enemy.pos || Level.pit[chain.path.get(1)])
+		if (chain.collisionPos != enemy.pos || chain.path.size() < 2 || Level.pit[chain.path.get(1)])
 			return false;
 		else {
 			int newPos = -1;
