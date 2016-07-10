@@ -59,11 +59,9 @@ public class WandOfMagicMissile extends DamageWand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		//gain 1 turn of recharging buff per level of the wand.
-		if (level() > 0) {
-			Buff.prolong( attacker, Recharging.class, (float)staff.level());
-			SpellSprite.show(attacker, SpellSprite.CHARGE);
-		}
+		Buff.prolong( attacker, Recharging.class, 1 + staff.level()/2f);
+		SpellSprite.show(attacker, SpellSprite.CHARGE);
+
 	}
 	
 	protected int initialCharges() {

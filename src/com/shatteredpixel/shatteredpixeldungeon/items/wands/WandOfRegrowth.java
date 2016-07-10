@@ -165,7 +165,7 @@ public class WandOfRegrowth extends Wand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		//like vampiric enchantment, except with herbal healing buff
+		//like pre-nerf vampiric enchantment, except with herbal healing buff
 
 		int level = Math.max( 0, staff.level() );
 

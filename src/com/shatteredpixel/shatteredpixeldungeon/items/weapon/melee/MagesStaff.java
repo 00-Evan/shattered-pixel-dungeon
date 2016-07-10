@@ -137,6 +137,15 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
+	public int reachFactor(Hero hero) {
+		int reach = super.reachFactor(hero);
+		if (wand instanceof WandOfDisintegration && hero.subClass == HeroSubClass.BATTLEMAGE){
+			reach++;
+		}
+		return reach;
+	}
+
+	@Override
 	public boolean collect( Bag container ) {
 		if (super.collect(container)) {
 			if (container.owner != null && wand != null) {
