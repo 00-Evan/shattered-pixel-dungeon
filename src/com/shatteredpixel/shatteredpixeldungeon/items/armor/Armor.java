@@ -173,6 +173,7 @@ public class Armor extends EquipableItem {
 		if (seal.level() > 0){
 			//doesn't trigger upgrading logic such as affecting curses/glyphs
 			level(level()+1);
+			Badges.validateItemLevelAquired(this);
 		}
 		if (isEquipped(Dungeon.hero)){
 			Buff.affect(Dungeon.hero, BrokenSeal.WarriorShield.class).setArmor(this);
