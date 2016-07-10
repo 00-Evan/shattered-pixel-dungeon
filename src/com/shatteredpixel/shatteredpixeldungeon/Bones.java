@@ -152,12 +152,13 @@ public class Bones {
 					if (Generator.removeArtifact((Artifact)item)) {
 						try {
 							Artifact artifact = (Artifact)item.getClass().newInstance();
-							artifact.cursed = true;
-							artifact.cursedKnown = true;
 							//caps displayed artifact level
 							artifact.transferUpgrade(Math.min(
 									item.visiblyUpgraded(),
 									1 + ((Dungeon.depth * 3) / 10)));
+
+							artifact.cursed = true;
+							artifact.cursedKnown = true;
 
 							return artifact;
 						} catch (Exception e) {
