@@ -281,6 +281,11 @@ public class MagesStaff extends MeleeWeapon {
 		}
 	}
 
+	@Override
+	public int price() {
+		return 0;
+	}
+
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( final Item item ) {

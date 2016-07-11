@@ -366,7 +366,9 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public int price() {
-		int price = 20 * (1 << (tier - 1));
+		if (seal != null) return 0;
+
+		int price = 20 * tier;
 		if (hasGoodGlyph()) {
 			price *= 1.5;
 		}

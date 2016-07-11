@@ -162,6 +162,11 @@ public class CloakOfShadows extends Artifact {
 		}
 	}
 
+	@Override
+	public int price() {
+		return 0;
+	}
+
 	public class cloakRecharge extends ArtifactBuff{
 		@Override
 		public boolean act() {
