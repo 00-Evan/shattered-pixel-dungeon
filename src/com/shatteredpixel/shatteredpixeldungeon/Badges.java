@@ -815,16 +815,16 @@ public class Badges {
 			case MAGE:
 				badge = Badge.TUTORIAL_MAGE;
 				break;
-			case ROGUE:
-				break;
-			case HUNTRESS:
+			default:
 				break;
 		}
 
-		local.add( badge );
-		if (!global.contains( badge )) {
-			global.add( badge );
-			saveNeeded = true;
+		if (badge != null) {
+			local.add(badge);
+			if (!global.contains(badge)) {
+				global.add(badge);
+				saveNeeded = true;
+			}
 		}
 	}
 
