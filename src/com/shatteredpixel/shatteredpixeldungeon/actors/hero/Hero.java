@@ -695,7 +695,7 @@ public class Hero extends Char {
 			Heap heap = Dungeon.level.heaps.get( dst );
 			if (heap != null && (heap.type != Type.HEAP && heap.type != Type.FOR_SALE)) {
 				
-				if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST
+				if ((heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST)
 						&& belongings.specialKeys[Dungeon.depth] < 1) {
 
 						GLog.w( Messages.get(this, "locked_chest") );
