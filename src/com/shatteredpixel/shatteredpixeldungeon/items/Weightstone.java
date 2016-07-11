@@ -102,7 +102,7 @@ public class Weightstone extends Item {
 
 	@Override
 	public int price() {
-		return 40 * quantity;
+		return 50 * quantity;
 	}
 
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {

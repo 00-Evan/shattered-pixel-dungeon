@@ -181,7 +181,7 @@ public class Artifact extends KindofMisc {
 	public int price() {
 		int price = 100;
 		if (level() > 0)
-			price += 50*((level()*10)/levelCap);
+			price += 20*visiblyUpgraded();
 		if (cursed && cursedKnown) {
 			price /= 2;
 		}

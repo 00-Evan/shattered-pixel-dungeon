@@ -127,4 +127,8 @@ public class ScrollOfUpgrade extends InventoryScroll {
 		hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 	}
 
+	@Override
+	public int price() {
+		return isKnown() ? 50 * quantity : super.price();
+	}
 }

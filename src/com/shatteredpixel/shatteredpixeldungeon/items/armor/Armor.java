@@ -366,19 +366,15 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public int price() {
-		int price = 10 * (1 << (tier - 1));
-		if (hasCurseGlyph()) {
+		int price = 20 * (1 << (tier - 1));
+		if (hasGoodGlyph()) {
 			price *= 1.5;
 		}
 		if (cursedKnown && (cursed || hasCurseGlyph())) {
 			price /= 2;
 		}
-		if (levelKnown) {
-			if (level() > 0) {
-				price *= (level() + 1);
-			} else if (level() < 0) {
-				price /= (1 - level());
-			}
+		if (levelKnown && level() > 0) {
+			price *= (level() + 1);
 		}
 		if (price < 1) {
 			price = 1;

@@ -70,4 +70,8 @@ public class ScrollOfRage extends Scroll {
 		readAnimation();
 	}
 
+	@Override
+	public int price() {
+		return isKnown() ? 30 * quantity : super.price();
+	}
 }

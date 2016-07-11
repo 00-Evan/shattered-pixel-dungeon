@@ -21,7 +21,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -56,4 +55,8 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 		Enchanting.show(curUser, item);
 	}
 
+	@Override
+	public int price() {
+		return isKnown() ? 100 * quantity : super.price();
+	}
 }

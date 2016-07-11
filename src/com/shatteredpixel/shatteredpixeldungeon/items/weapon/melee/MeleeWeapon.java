@@ -24,7 +24,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.watabou.utils.Random;
 
 public class MeleeWeapon extends Weapon {
 	
@@ -112,12 +111,8 @@ public class MeleeWeapon extends Weapon {
 		if (cursedKnown && (cursed || hasCurseEnchant())) {
 			price /= 2;
 		}
-		if (levelKnown) {
-			if (level() > 0) {
-				price *= (level() + 1);
-			} else if (level() < 0) {
-				price /= (1 - level());
-			}
+		if (levelKnown && level() > 0) {
+			price *= (level() + 1);
 		}
 		if (price < 1) {
 			price = 1;

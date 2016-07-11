@@ -75,6 +75,6 @@ public class ScrollOfTerror extends Scroll {
 
 	@Override
 	public int price() {
-		return isKnown() ? 50 * quantity : super.price();
+		return isKnown() ? 30 * quantity : super.price();
 	}
 }
