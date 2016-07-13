@@ -265,7 +265,7 @@ public class StatusPane extends Component {
 			boolean blackKey = false;
 			boolean specialKey = false;
 			int ironKeys = 0;
-			for (int i = 1; i <= Dungeon.depth; i++) {
+			for (int i = 1; i <= Math.min(Dungeon.depth, 25); i++) {
 				if (Dungeon.hero.belongings.ironKeys[i] > 0 || Dungeon.hero.belongings.specialKeys[i] > 0) {
 					foundKeys = true;
 
