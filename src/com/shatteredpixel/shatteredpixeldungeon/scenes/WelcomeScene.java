@@ -61,14 +61,15 @@ public class WelcomeScene extends PixelScene {
 		title.brightness(0.6f);
 		add( title );
 
-		float height = title.height +
-				(ShatteredPixelDungeon.landscape() ? 48 : 96);
+		float topRegion = Math.max(95f, h*0.45f);
 
-		title.x = (w - title.width()) / 2;
-		title.y = (h - height) / 2;
+		title.x = (w - title.width()) / 2f;
+		if (ShatteredPixelDungeon.landscape())
+			title.y = (topRegion - title.height()) / 2f;
+		else
+			title.y = 16 + (topRegion - title.height() - 16) / 2f;
 
-		placeTorch(title.x + 18, title.y + 20);
-		placeTorch(title.x + title.width - 18, title.y + 20);
+		align(title);
 
 		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
 			private float time = 0;
@@ -84,7 +85,7 @@ public class WelcomeScene extends PixelScene {
 				GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		};
-		signs.x = title.x;
+		signs.x = title.x + (title.width() - signs.width())/2f;
 		signs.y = title.y;
 		add( signs );
 
@@ -140,7 +141,7 @@ public class WelcomeScene extends PixelScene {
 		}
 		text.text(message, w-20);
 		float textSpace = h - title.y - (title.height() - 10) - okay.height() - 2;
-		text.setPos(10, title.y+(title.height() - 10) + ((textSpace - text.height()) / 2));
+		text.setPos((w - text.width()) / 2f, title.y+(title.height() - 10) + ((textSpace - text.height()) / 2));
 		add(text);
 
 	}

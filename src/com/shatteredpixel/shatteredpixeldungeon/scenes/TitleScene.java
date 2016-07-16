@@ -64,14 +64,18 @@ public class TitleScene extends PixelScene {
 		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
 		add( title );
 
-		float height = title.height +
-				(ShatteredPixelDungeon.landscape() ? DashboardItem.SIZE : DashboardItem.SIZE * 2);
+		float topRegion = Math.max(95f, h*0.45f);
 
-		title.x = (w - title.width()) / 2;
-		title.y = (h - height) / 2;
-		
-		placeTorch(title.x + 18, title.y + 20);
-		placeTorch(title.x + title.width - 18, title.y + 20);
+		title.x = (w - title.width()) / 2f;
+		if (ShatteredPixelDungeon.landscape())
+			title.y = (topRegion - title.height()) / 2f;
+		else
+			title.y = 16 + (topRegion - title.height() - 16) / 2f;
+
+		align(title);
+
+		placeTorch(title.x + 22, title.y + 46);
+		placeTorch(title.x + title.width - 22, title.y + 46);
 
 		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
 			private float time = 0;
@@ -87,7 +91,7 @@ public class TitleScene extends PixelScene {
 				GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 			}
 		};
-		signs.x = title.x;
+		signs.x = title.x + (title.width() - signs.width())/2f;
 		signs.y = title.y;
 		add( signs );
 		
@@ -124,16 +128,15 @@ public class TitleScene extends PixelScene {
 		add( btnRankings );
 
 		if (ShatteredPixelDungeon.landscape()) {
-			float y = (h + height) / 2 - DashboardItem.SIZE;
-			btnRankings     .setPos( w / 2 - btnRankings.width(), y );
-			btnBadges       .setPos( w / 2, y );
-			btnPlay         .setPos( btnRankings.left() - btnPlay.width(), y );
-			btnAbout        .setPos( btnBadges.right(), y );
+			btnRankings     .setPos( w / 2 - btnRankings.width(), topRegion );
+			btnBadges       .setPos( w / 2, topRegion );
+			btnPlay         .setPos( btnRankings.left() - btnPlay.width(), topRegion );
+			btnAbout        .setPos( btnBadges.right(), topRegion );
 		} else {
-			btnBadges.setPos( w / 2 - btnBadges.width(), (h + height) / 2 - DashboardItem.SIZE );
-			btnAbout.setPos( w / 2, (h + height) / 2 - DashboardItem.SIZE );
-			btnPlay.setPos( w / 2 - btnPlay.width(), btnAbout.top() - DashboardItem.SIZE );
+			btnPlay.setPos( w / 2 - btnPlay.width(), topRegion );
 			btnRankings.setPos( w / 2, btnPlay.top() );
+			btnBadges.setPos( w / 2 - btnBadges.width(), btnPlay.top() + DashboardItem.SIZE );
+			btnAbout.setPos( w / 2, btnBadges.top() );
 		}
 
 		BitmapText version = new BitmapText( "v " + Game.version + "", pixelFont);

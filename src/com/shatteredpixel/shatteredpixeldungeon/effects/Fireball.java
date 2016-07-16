@@ -67,6 +67,7 @@ public class Fireball extends Component {
 			public void emit(Emitter emitter, int index, float x, float y) {
 				Flame p = (Flame)emitter.recycle( Flame.class );
 				p.reset();
+				p.heightLimit(Fireball.this.y - 30);
 				p.x = x - p.width / 2;
 				p.y = y - p.height / 2;
 			}
@@ -129,6 +130,7 @@ public class Fireball extends Component {
 		private static float ACC	= -20f;
 		
 		private float timeLeft;
+		private float heightLimit;
 		
 		public Flame() {
 			
@@ -144,11 +146,21 @@ public class Fireball extends Component {
 			timeLeft = LIFESPAN;
 			speed.set( 0, SPEED );
 		}
+
+		public void heightLimit(float limit){
+			heightLimit = limit;
+		}
 		
 		@Override
 		public void update() {
 			
 			super.update();
+
+			if (y < heightLimit){
+				y = heightLimit;
+				speed.set(Random.Float(-20, 20), 0);
+				acc.set(0, 0);
+			}
 			
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				
