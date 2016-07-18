@@ -185,7 +185,7 @@ public enum Rankings {
 		Statistics.restoreFromBundle(data.getBundle(STATS));
 
 	}
-
+	
 	private static final String RECORDS	= "records";
 	private static final String LATEST	= "latest";
 	private static final String TOTAL	= "total";
@@ -330,12 +330,9 @@ public enum Rankings {
 			heroClass	= HeroClass.restoreInBundle( bundle );
 			armorTier	= bundle.getInt( TIER );
 			
-			if (bundle.contains(FILE)) {
-				gameFile = bundle.getString(FILE);
-			} else {
-				gameData = bundle.getBundle(DATA);
-				gameID = bundle.getString(ID);
-			}
+			if (bundle.contains(FILE))  gameFile = bundle.getString(FILE);
+			if (bundle.contains(DATA))  gameData = bundle.getBundle(DATA);
+			if (bundle.contains(ID))    gameID = bundle.getString(ID);
 
 			depth = bundle.getInt( DEPTH );
 			herolevel = bundle.getInt( LEVEL );
@@ -356,8 +353,8 @@ public enum Rankings {
 			bundle.put( LEVEL, herolevel );
 			bundle.put( DEPTH, depth );
 			
-			bundle.put( DATA, gameData );
-			bundle.put( ID, gameID);
+			if (gameData != null) bundle.put( DATA, gameData );
+			bundle.put( ID, gameID );
 		}
 	}
 
