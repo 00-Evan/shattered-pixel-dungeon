@@ -70,7 +70,7 @@ public class Bleeding extends Buff {
 	public boolean act() {
 		if (target.isAlive()) {
 			
-			if ((level = Random.Int( level / 2, level )) > 0) {
+			if ((level = Random.NormalIntRange( level / 2, level )) > 0) {
 				
 				target.damage( level, this );
 				if (target.sprite.visible) {
