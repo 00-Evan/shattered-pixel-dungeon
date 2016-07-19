@@ -132,7 +132,7 @@ public class WandOfTransfusion extends Wand {
 				if (lvldiffFromBase < 0){
 					item.upgrade(-lvldiffFromBase);
 					CellEmitter.get(cell).start(Speck.factory(Speck.UP), 0.2f, 3);
-					Sample.INSTANCE.play(Assets.SND_EVOKE);
+					Sample.INSTANCE.play(Assets.SND_BURNING);
 				}
 			}
 

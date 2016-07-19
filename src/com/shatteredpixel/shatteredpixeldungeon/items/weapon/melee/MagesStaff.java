@@ -26,10 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
@@ -326,8 +326,8 @@ public class MagesStaff extends MeleeWeapon {
 		}
 
 		private void applyWand(Wand wand){
-			Sample.INSTANCE.play(Assets.SND_EVOKE);
-			ScrollOfUpgrade.upgrade(curUser);
+			Sample.INSTANCE.play(Assets.SND_BURNING);
+			curUser.sprite.emitter().burst( ElmoParticle.FACTORY, 12 );
 			evoke(curUser);
 
 			Dungeon.quickslot.clearItem(wand);
