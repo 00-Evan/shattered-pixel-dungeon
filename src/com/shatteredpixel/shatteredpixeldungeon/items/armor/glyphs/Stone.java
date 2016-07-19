@@ -35,11 +35,6 @@ public class Stone extends Armor.Glyph {
 	}
 
 	@Override
-	public int tierDRAdjust() {
-		return 1;
-	}
-
-	@Override
 	public int tierSTRAdjust() {
 		return 1;
 	}

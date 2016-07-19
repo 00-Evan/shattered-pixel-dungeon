@@ -230,7 +230,10 @@ public class Armor extends EquipableItem {
 	}
 
 	public int DRMin(int lvl){
-		return lvl;
+		if (glyph != null && glyph instanceof Stone)
+			return 2 + 2*lvl;
+		else
+			return lvl;
 	}
 
 	@Override
