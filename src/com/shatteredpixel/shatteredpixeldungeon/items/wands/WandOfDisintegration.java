@@ -97,7 +97,7 @@ public class WandOfDisintegration extends DamageWand {
 			Dungeon.observe();
 		}
 		
-		int lvl = level + chars.size() + terrainBonus;
+		int lvl = level + (chars.size()-1) + terrainBonus;
 		for (Char ch : chars) {
 			processSoulMark(ch, chargesPerCast());
 			ch.damage( damageRoll(lvl), this );
