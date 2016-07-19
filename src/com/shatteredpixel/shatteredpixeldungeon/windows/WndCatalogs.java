@@ -20,7 +20,6 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -28,44 +27,54 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
 
-public class WndCatalogus extends WndTabbed {
+public class WndCatalogs extends WndTabbed {
 
-	private static final int WIDTH_P    = 112;
-	private static final int HEIGHT_P    = 160;
+	private static final int WIDTH    = 112;
+	private static final int HEIGHT    = 141;
 
-	private static final int WIDTH_L    = 128;
-	private static final int HEIGHT_L    = 128;
+	private static final int ITEM_HEIGHT	= 17;
 
-	private static final int ITEM_HEIGHT	= 18;
-	
-	private RenderedText txtTitle;
+	private RedButton btnJournal;
+	private RedButton btnTitle;
 	private ScrollPane list;
 	
 	private ArrayList<ListItem> items = new ArrayList<>();
 	
 	private static boolean showPotions = true;
 	
-	public WndCatalogus() {
+	public WndCatalogs() {
 		
 		super();
 
-		if (ShatteredPixelDungeon.landscape()) {
-			resize( WIDTH_L, HEIGHT_L );
-		} else {
-			resize( WIDTH_P, HEIGHT_P );
-		}
+		resize( WIDTH, HEIGHT );
 
-		txtTitle = PixelScene.renderText( Messages.get(this, "title"), 9 );
-		txtTitle.hardlight( Window.TITLE_COLOR );
-		add( txtTitle );
+		btnJournal = new RedButton( Messages.get(WndJournal.class, "title"), 9 ){
+			@Override
+			protected void onClick() {
+				hide();
+				GameScene.show(new WndJournal());
+			}
+		};
+		btnJournal.setRect(0, 0, WIDTH/2f - 1, btnJournal.reqHeight());
+		PixelScene.align( btnJournal );
+		add( btnJournal );
+
+		//does nothing, we're already in the catalog
+		btnTitle = new RedButton( Messages.get(this, "title"), 9 );
+		btnTitle.textColor( Window.TITLE_COLOR );
+		btnTitle.setRect(WIDTH/2f+1, 0, WIDTH/2f - 1, btnTitle.reqHeight());
+		PixelScene.align(btnTitle);
+		add( btnTitle );
 		
 		list = new ScrollPane( new Component() ) {
 			@Override
@@ -79,21 +88,21 @@ public class WndCatalogus extends WndTabbed {
 			}
 		};
 		add( list );
-		list.setRect( 0, txtTitle.height(), width, height - txtTitle.height() );
+		list.setRect( 0, btnTitle.height() + 1, width, height - btnTitle.height() - 1 );
 
-		boolean showPotions = WndCatalogus.showPotions;
+		boolean showPotions = WndCatalogs.showPotions;
 		Tab[] tabs = {
 			new LabeledTab( Messages.get(this, "potions") ) {
 				protected void select( boolean value ) {
 					super.select( value );
-					WndCatalogus.showPotions = value;
+					WndCatalogs.showPotions = value;
 					updateList();
 				};
 			},
 			new LabeledTab( Messages.get(this, "scrolls") ) {
 				protected void select( boolean value ) {
 					super.select( value );
-					WndCatalogus.showPotions = !value;
+					WndCatalogs.showPotions = !value;
 					updateList();
 				};
 			}
@@ -108,10 +117,6 @@ public class WndCatalogus extends WndTabbed {
 	}
 	
 	private void updateList() {
-		
-		txtTitle.text( Messages.get(this, "title", showPotions ? Messages.get(this, "potions") : Messages.get(this, "scrolls") ) );
-		txtTitle.x = (width - txtTitle.width()) / 2;
-		PixelScene.align(txtTitle);
 
 		items.clear();
 		
@@ -149,6 +154,7 @@ public class WndCatalogus extends WndTabbed {
 		
 		private ItemSprite sprite;
 		private RenderedTextMultiline label;
+		private ColorBlock line;
 		
 		public ListItem( Class<? extends Item> cl ) {
 			super();
@@ -157,10 +163,10 @@ public class WndCatalogus extends WndTabbed {
 				item = cl.newInstance();
 				if (identified = item.isIdentified()) {
 					sprite.view( item.image(), null );
-					label.text( item.name() );
+					label.text( Messages.titleCase(item.name()) );
 				} else {
-					sprite.view( 127, null );
-					label.text( item.trueName() );
+					sprite.view( ItemSpriteSheet.SOMETHING, null );
+					label.text( Messages.titleCase(item.trueName()) );
 					label.hardlight( 0xCCCCCC );
 				}
 			} catch (Exception e) {
@@ -173,16 +179,24 @@ public class WndCatalogus extends WndTabbed {
 			sprite = new ItemSprite();
 			add( sprite );
 
-			label = PixelScene.renderMultiline( 8 );
+			label = PixelScene.renderMultiline( 7 );
 			add( label );
+
+			line = new ColorBlock( 1, 1, 0xFF222222);
+			add(line);
 		}
 		
 		@Override
 		protected void layout() {
-			sprite.y = y + (height - sprite.height) / 2;
+			sprite.y = y + 1 + (height - 1 - sprite.height) / 2f;
+			PixelScene.align(sprite);
 
-			label.maxWidth((int)(width - sprite.width));
-			label.setPos(sprite.x + sprite.width,  y + (height - label.height()) / 2);
+			line.size(width, 1);
+			line.x = 0;
+			line.y = y;
+
+			label.maxWidth((int)(width - sprite.width - 1));
+			label.setPos(sprite.x + sprite.width + 1,  y + 1 + (height - 1 - label.height()) / 2f);
 			PixelScene.align(label);
 		}
 		

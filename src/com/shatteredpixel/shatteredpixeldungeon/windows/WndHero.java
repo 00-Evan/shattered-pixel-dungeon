@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -105,29 +104,7 @@ public class WndHero extends WndTabbed {
 			title.setRect( 0, 0, WIDTH, 0 );
 			add(title);
 
-			RedButton btnCatalogs = new RedButton( Messages.get(this, "catalogs") ) {
-				@Override
-				protected void onClick() {
-					hide();
-					GameScene.show( new WndCatalogus() );
-				}
-			};
-			btnCatalogs.setRect( 0, title.height()+1, 57, btnCatalogs.reqHeight() + 2 );
-			add( btnCatalogs );
-
-			RedButton btnJournal = new RedButton( Messages.get(this, "journal") ) {
-				@Override
-				protected void onClick() {
-					hide();
-					GameScene.show( new WndJournal() );
-				}
-			};
-			btnJournal.setRect(
-				btnCatalogs.right() + 1, btnCatalogs.top(),
-				57, btnJournal.reqHeight() + 2 );
-			add( btnJournal );
-
-			pos = btnCatalogs.bottom() + GAP;
+			pos = title.bottom() + 2*GAP;
 
 			statSlot( Messages.get(this, "str"), hero.STR() );
 			if (hero.SHLD > 0) statSlot( Messages.get(this, "health"), hero.HP + "+" + hero.SHLD + "/" + hero.HT );

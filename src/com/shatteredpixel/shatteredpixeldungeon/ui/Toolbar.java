@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndCatalogus;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndCatalogs;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
@@ -122,7 +122,7 @@ public class Toolbar extends Component {
 			}
 
 			protected boolean onLongClick() {
-				GameScene.show(new WndCatalogus());
+				GameScene.show(new WndCatalogs());
 				return true;
 			}
 
