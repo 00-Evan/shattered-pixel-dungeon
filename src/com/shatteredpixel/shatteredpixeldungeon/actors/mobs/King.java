@@ -283,7 +283,7 @@ public class King extends Mob {
 		
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 16, 20 );
+			return Random.NormalIntRange( 15, 25 );
 		}
 		
 		@Override

@@ -76,7 +76,7 @@ public class Tengu extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 10, 16 );
+		return Random.NormalIntRange( 6, 20 );
 	}
 	
 	@Override

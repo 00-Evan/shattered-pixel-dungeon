@@ -70,8 +70,8 @@ public class Goo extends Mob {
 
 	@Override
 	public int damageRoll() {
-		int min = (HP*2 <= HT) ? 3 : 2;
-		int max = (HP*2 <= HT) ? 12 : 8;
+		int min = 1;
+		int max = (HP*2 <= HT) ? 15 : 10;
 		if (pumpedUp > 0) {
 			pumpedUp = 0;
 			for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {

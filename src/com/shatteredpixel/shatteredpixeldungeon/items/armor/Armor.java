@@ -230,11 +230,7 @@ public class Armor extends EquipableItem {
 	}
 
 	public int DRMin(int lvl){
-		int effectiveTier = tier;
-		if (glyph != null) effectiveTier += glyph.tierDRAdjust();
-		effectiveTier = Math.max(0, effectiveTier);
-
-		return (effectiveTier-1)/2 + lvl;
+		return lvl;
 	}
 
 	@Override

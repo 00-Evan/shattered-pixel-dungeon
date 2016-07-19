@@ -60,7 +60,7 @@ public class Warlock extends Mob implements Callback {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 14, 24 );
+		return Random.NormalIntRange( 16, 22 );
 	}
 	
 	@Override
