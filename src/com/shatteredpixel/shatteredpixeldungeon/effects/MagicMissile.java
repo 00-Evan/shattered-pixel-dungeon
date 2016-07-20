@@ -192,6 +192,17 @@ public class MagicMissile extends Emitter {
 				return true;
 			};
 		};
+
+		public static final Emitter.Factory ATTRACTING = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((MagicParticle)emitter.recycle( MagicParticle.class )).resetAttract( x, y );
+			}
+			@Override
+			public boolean lightMode() {
+				return true;
+			};
+		};
 		
 		public MagicParticle() {
 			super();
@@ -209,6 +220,17 @@ public class MagicMissile extends Emitter {
 			this.y = y;
 			
 			left = lifespan;
+		}
+
+		public void resetAttract( float x, float y) {
+			revive();
+
+			//size = 8;
+			left = lifespan;
+
+			speed.polar( Random.Float( PointF.PI2 ), Random.Float( 16, 32 ) );
+			this.x = x - speed.x * lifespan;
+			this.y = y - speed.y * lifespan;
 		}
 		
 		@Override
