@@ -49,6 +49,7 @@ public class ItemSlot extends Button {
 	private static final float DISABLED	= 0.3f;
 	
 	protected ItemSprite icon;
+	protected Item       item;
 	protected BitmapText topLeft;
 	protected BitmapText topRight;
 	protected BitmapText bottomRight;
@@ -84,6 +85,8 @@ public class ItemSlot extends Button {
 	
 	public ItemSlot() {
 		super();
+		icon.visible(false);
+		enable(false);
 	}
 	
 	public ItemSlot( Item item ) {
@@ -138,89 +141,107 @@ public class ItemSlot extends Button {
 	}
 	
 	public void item( Item item ) {
+		if (this.item == item) {
+			updateText();
+			return;
+		}
+
+		this.item = item;
+
+		if (item == null) {
+			
+			active = false;
+			icon.visible(false);
+
+			updateText();
+			
+		} else {
+			
+			active = true;
+			icon.visible(true);
+
+			icon.view( item );
+			updateText();
+		}
+	}
+
+	private void updateText(){
+
 		if (bottomRightIcon != null){
 			remove(bottomRightIcon);
 			bottomRightIcon = null;
 		}
 
-		if (item == null) {
-			
-			active = false;
+		if (item == null){
 			topLeft.visible = topRight.visible = bottomRight.visible = false;
-			icon.visible(false);
-			
+			return;
 		} else {
-			
-			active = true;
 			topLeft.visible = topRight.visible = bottomRight.visible = true;
-			icon.visible(true);
-			
-			icon.view( item );
-			
-			topLeft.text( item.status()  );
-			
-			boolean isArmor = item instanceof Armor;
-			boolean isWeapon = item instanceof Weapon;
-			if (isArmor || isWeapon) {
-				
-				if (item.levelKnown || (isWeapon && !(item instanceof MeleeWeapon))) {
-					
-					int str = isArmor ? ((Armor)item).STRReq() : ((Weapon)item).STRReq();
-					topRight.text( Messages.format( TXT_STRENGTH, str ) );
-					if (str > Dungeon.hero.STR()) {
-						topRight.hardlight( DEGRADED );
-					} else {
-						topRight.resetColor();
-					}
-					
+		}
+
+		topLeft.text( item.status() );
+
+		boolean isArmor = item instanceof Armor;
+		boolean isWeapon = item instanceof Weapon;
+		if (isArmor || isWeapon) {
+
+			if (item.levelKnown || (isWeapon && !(item instanceof MeleeWeapon))) {
+
+				int str = isArmor ? ((Armor)item).STRReq() : ((Weapon)item).STRReq();
+				topRight.text( Messages.format( TXT_STRENGTH, str ) );
+				if (str > Dungeon.hero.STR()) {
+					topRight.hardlight( DEGRADED );
 				} else {
-					
-					topRight.text( Messages.format( TXT_TYPICAL_STR, isArmor ?
+					topRight.resetColor();
+				}
+
+			} else {
+
+				topRight.text( Messages.format( TXT_TYPICAL_STR, isArmor ?
 						((Armor)item).STRReq(0) :
 						((Weapon)item).STRReq(0) ) );
-					topRight.hardlight( WARNING );
-					
-				}
-				topRight.measure();
+				topRight.hardlight( WARNING );
 
-			} else if (item instanceof Key && !(item instanceof SkeletonKey)) {
-				topRight.text(Messages.format(TXT_KEY_DEPTH, ((Key) item).depth));
-				topRight.measure();
-			} else {
-				
-				topRight.text( null );
-				
 			}
-	
-			int level = item.visiblyUpgraded();
+			topRight.measure();
 
-			if (level != 0) {
-				bottomRight.text( item.levelKnown ? Messages.format( TXT_LEVEL, level ) : TXT_CURSED );
-				bottomRight.measure();
-				bottomRight.hardlight( level > 0 ? UPGRADED : DEGRADED );
-			} else if (item instanceof Scroll || item instanceof Potion) {
-				bottomRight.text( null );
+		} else if (item instanceof Key && !(item instanceof SkeletonKey)) {
+			topRight.text(Messages.format(TXT_KEY_DEPTH, ((Key) item).depth));
+			topRight.measure();
+		} else {
 
-				Integer iconInt;
-				if (item instanceof Scroll){
-					iconInt = ((Scroll) item).initials();
-				} else {
-					iconInt = ((Potion) item).initials();
-				}
-				if (iconInt != null && iconVisible) {
-					bottomRightIcon = new Image(Assets.CONS_ICONS);
-					int left = iconInt*7;
-					int top = item instanceof Potion ? 0 : 8;
-					bottomRightIcon.frame(left, top, 7, 8);
-					add(bottomRightIcon);
-				}
+			topRight.text( null );
 
-			} else {
-				bottomRight.text( null );
-			}
-			
-			layout();
 		}
+
+		int level = item.visiblyUpgraded();
+
+		if (level != 0) {
+			bottomRight.text( item.levelKnown ? Messages.format( TXT_LEVEL, level ) : TXT_CURSED );
+			bottomRight.measure();
+			bottomRight.hardlight( level > 0 ? UPGRADED : DEGRADED );
+		} else if (item instanceof Scroll || item instanceof Potion) {
+			bottomRight.text( null );
+
+			Integer iconInt;
+			if (item instanceof Scroll){
+				iconInt = ((Scroll) item).initials();
+			} else {
+				iconInt = ((Potion) item).initials();
+			}
+			if (iconInt != null && iconVisible) {
+				bottomRightIcon = new Image(Assets.CONS_ICONS);
+				int left = iconInt*7;
+				int top = item instanceof Potion ? 0 : 8;
+				bottomRightIcon.frame(left, top, 7, 8);
+				add(bottomRightIcon);
+			}
+
+		} else {
+			bottomRight.text( null );
+		}
+
+		layout();
 	}
 	
 	public void enable( boolean value ) {

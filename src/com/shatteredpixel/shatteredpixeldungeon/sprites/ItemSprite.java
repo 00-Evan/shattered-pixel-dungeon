@@ -174,7 +174,6 @@ public class ItemSprite extends MovieClip {
 
 	public ItemSprite view(Item item){
 		view(item.image(), item.glowing());
-		if (this.emitter != null) this.emitter.killAndErase();
 		Emitter emitter = item.emitter();
 		if (emitter != null && parent != null) {
 			emitter.pos( this );
@@ -185,7 +184,7 @@ public class ItemSprite extends MovieClip {
 	}
 	
 	public ItemSprite view( int image, Glowing glowing ) {
-		if (this.emitter != null) this.emitter.on = false;
+		if (this.emitter != null) this.emitter.killAndErase();
 		emitter = null;
 		frame( film.get( image ) );
 		if ((this.glowing = glowing) == null) {
