@@ -108,14 +108,17 @@ public class Guard extends Mob {
 				yell( Messages.get(this, "scorpion") );
 				sprite.parent.add(new Chains(pos, enemy.pos, new Callback() {
 					public void call() {
-						Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal), -1);
-						enemy.pos = newPosFinal;
-						Dungeon.level.press(newPosFinal, enemy);
-						Cripple.prolong(enemy, Cripple.class, 4f);
-						if (enemy == Dungeon.hero) {
-							Dungeon.hero.interrupt();
-							Dungeon.observe();
-						}
+						Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback(){
+							public void call() {
+								enemy.pos = newPosFinal;
+								Dungeon.level.press(newPosFinal, enemy);
+								Cripple.prolong(enemy, Cripple.class, 4f);
+								if (enemy == Dungeon.hero) {
+									Dungeon.hero.interrupt();
+									Dungeon.observe();
+								}
+							}
+						}), -1);
 						next();
 					}
 				}));
