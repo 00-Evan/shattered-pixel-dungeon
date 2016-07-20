@@ -125,9 +125,16 @@ public class Burning extends Buff implements Hero.Doom {
 				target.damage( damage, this );
 			}
 
-			if (target instanceof Thief && ((Thief)target).item instanceof Scroll) {
-					((Thief)target).item = null;
+			if (target instanceof Thief) {
+
+				Item item = ((Thief) target).item;
+
+				if (item instanceof Scroll &&
+						!(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
 					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
+					((Thief)target).item = null;
+				}
+
 			}
 
 		} else {

@@ -74,13 +74,16 @@ public class Frost extends FlavourBuff {
 					GLog.w( Messages.get(this, "freezes", item.toString()) );
 
 				}
-			} else if (target instanceof Thief && ((Thief)target).item instanceof Potion) {
+			} else if (target instanceof Thief) {
 
-				((Potion) ((Thief)target).item).shatter( target.pos );
-				((Thief) target).item = null;
+				Item item = ((Thief) target).item;
+
+				if (item instanceof Potion && !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
+					((Potion) ((Thief) target).item).shatter(target.pos);
+					((Thief) target).item = null;
+				}
 
 			}
-
 
 			return true;
 		} else {
