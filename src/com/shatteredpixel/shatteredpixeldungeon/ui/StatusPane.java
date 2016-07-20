@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -68,6 +69,8 @@ public class StatusPane extends Component {
 
 	private JournalButton btnJournal;
 	private MenuButton btnMenu;
+
+	private Toolbar.PickedUpItem pickedUp;
 
 	@Override
 	protected void createChildren() {
@@ -135,6 +138,8 @@ public class StatusPane extends Component {
 
 		buffs = new BuffIndicator( Dungeon.hero );
 		add( buffs );
+
+		add( pickedUp = new Toolbar.PickedUpItem());
 	}
 
 	@Override
@@ -216,6 +221,13 @@ public class StatusPane extends Component {
 			lastTier = tier;
 			avatar.copy( HeroSprite.avatar( Dungeon.hero.heroClass, tier ) );
 		}
+	}
+
+	public void pickup( Item item ) {
+		pickedUp.reset( item,
+				btnJournal.icon.x + btnJournal.icon.width()/2f,
+				btnJournal.icon.y + btnJournal.icon.height()/2f,
+				true );
 	}
 
 	private static class JournalButton extends Button {

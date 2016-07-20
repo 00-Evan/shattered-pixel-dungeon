@@ -109,6 +109,8 @@ public class GameScene extends PixelScene {
 	private DungeonTilemap tiles;
 	private FogOfWar fog;
 	private HeroSprite hero;
+
+	private StatusPane pane;
 	
 	private GameLog log;
 	
@@ -248,11 +250,11 @@ public class GameScene extends PixelScene {
 		add( new HealthIndicator() );
 		
 		add( cellSelector = new CellSelector( tiles ) );
-		
-		StatusPane sb = new StatusPane();
-		sb.camera = uiCamera;
-		sb.setSize( uiCamera.width, 0 );
-		add( sb );
+
+		pane = new StatusPane();
+		pane.camera = uiCamera;
+		pane.setSize( uiCamera.width, 0 );
+		add( pane );
 		
 		toolbar = new Toolbar();
 		toolbar.camera = uiCamera;
@@ -284,7 +286,7 @@ public class GameScene extends PixelScene {
 		busy = new BusyIndicator();
 		busy.camera = uiCamera;
 		busy.x = 1;
-		busy.y = sb.bottom() + 1;
+		busy.y = pane.bottom() + 1;
 		add( busy );
 		
 		switch (InterlevelScene.mode) {
@@ -654,6 +656,10 @@ public class GameScene extends PixelScene {
 	
 	public static void pickUp( Item item ) {
 		scene.toolbar.pickup( item );
+	}
+
+	public static void pickUpJournal( Item item ) {
+		scene.pane.pickup( item );
 	}
 
 	public static void resetMap() {
