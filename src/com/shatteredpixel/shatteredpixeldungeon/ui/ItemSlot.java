@@ -149,15 +149,15 @@ public class ItemSlot extends Button {
 		this.item = item;
 
 		if (item == null) {
-			
-			active = false;
+
+			enable(false);
 			icon.visible(false);
 
 			updateText();
 			
 		} else {
 			
-			active = true;
+			enable(true);
 			icon.visible(true);
 
 			icon.view( item );
