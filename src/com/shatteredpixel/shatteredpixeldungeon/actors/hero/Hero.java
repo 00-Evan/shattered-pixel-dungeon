@@ -308,8 +308,8 @@ public class Hero extends Char {
 				dr = Math.max(dr, 0);
 			}
 		}
-		if (belongings.weapon != null)  dr += Math.max( belongings.weapon.defenceFactor( this ), 0 );
-		if (bark != null)               dr += bark.level();
+		if (belongings.weapon != null)  dr += Random.NormalIntRange( 0 , belongings.weapon.defenseFactor( this ) );
+		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
 
 		return dr;
 	}

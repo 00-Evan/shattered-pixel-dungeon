@@ -104,7 +104,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 		return 1;
 	}
 
-	public int defenceFactor( Hero hero ) {
+	public int defenseFactor(Hero hero ) {
 		return 0;
 	}
 	
