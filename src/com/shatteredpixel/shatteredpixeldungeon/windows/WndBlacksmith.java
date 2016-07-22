@@ -147,6 +147,7 @@ public class WndBlacksmith extends Window {
 					ItemButton.this.onClick();
 				}
 			};
+			slot.enable(true);
 			add( slot );
 		}
 		
