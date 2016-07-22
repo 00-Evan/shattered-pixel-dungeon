@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -171,6 +172,8 @@ public enum Rankings {
 		Bundle data = rec.gameData;
 
 		Dungeon.hero = null;
+		Dungeon.level = null;
+		Generator.reset();
 		Dungeon.quickslot.reset();
 
 		Bundle handler = data.getBundle(HANDLERS);
