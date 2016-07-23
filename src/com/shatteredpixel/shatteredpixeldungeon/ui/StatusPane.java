@@ -164,6 +164,7 @@ public class StatusPane extends Component {
 
 		depth.x = width - 35.5f - depth.width() / 2f;
 		depth.y = 8f - depth.baseLine() / 2f;
+		PixelScene.align(depth);
 
 		danger.setPos( width - danger.width(), 20 );
 
