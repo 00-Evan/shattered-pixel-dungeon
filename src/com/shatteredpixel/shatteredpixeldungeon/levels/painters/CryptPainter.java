@@ -77,7 +77,7 @@ public class CryptPainter extends Painter {
 		if (!prize.cursed){
 			prize.upgrade();
 			//curse the armor, unless it has a glyph
-			if (prize.glyph == null){
+			if (!prize.hasGoodGlyph()){
 				prize.cursed = prize.cursedKnown = true;
 				prize.inscribe(Armor.Glyph.randomCurse());
 			}
