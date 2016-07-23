@@ -397,6 +397,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				emo.killAndErase();
 			}
 			emo = new EmoIcon.Sleep( this );
+			emo.visible = visible;
 		}
 		idle();
 	}
@@ -416,6 +417,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				emo.killAndErase();
 			}
 			emo = new EmoIcon.Alert( this );
+			emo.visible = visible;
 		}
 	}
 	
