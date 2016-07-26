@@ -37,50 +37,68 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-			"_v0.4.0:_\n" +
-			"New Equipment Content:\n" +
-			"- 13 new weapons, 12 rebalanced weapons\n" +
-			"- 3 new enchants, 10 rebalanced enchants\n" +
-			"- 8 new glyphs, 5 rebalanced glyphs\n" +
-			"- 12 new curse effects\n" +
+			"_0.4.1:_\n" +
+			"Armor Balance Changes:\n" +
+			"- Armor now has a min damage block value\n" +
+			"- Armor gains more blocking from upgrades\n" +
+			"- Prison+ enemy damage increased\n" +
+			"- Evil Eyes reworked\n" +
 			"\n" +
-			"Equipment Curses:\n" +
-			"- Curses now give negative effects\n" +
-			"- Curses no longer give negative levels\n" +
-			"- Upgrades now weaken curses\n" +
-			"- Remove curse scrolls now affect 1 item\n" +
+			"Wand Balance Changes:\n" +
+			"- All wands damage adjusted/increased\n" +
+			"- Upgraded wands appear slightly less often\n" +
+			"- Wand of Lightning bonus damage reduced\n" +
+			"- Wand of Fireblast uses fewer charges\n" +
+			"- Wand of Venom damage increases over time\n" +
+			"- Wand of Pris-Light bonus damage reduced\n" +
+			"- Corrupted enemies live longer & no longer attack eachother\n" +
+			"- Wands in the holster now charge faster\n" +
 			"\n" +
-			"Equipment Balance:\n" +
-			"- Tier 2-4 weapons do more base damage\n" +
-			"- All weapons gain more dmg from upgrades\n" +
-			"- Upgrades now remove enchants less often\n" +
-			"- Upgrades reduce str requirements less\n" +
-			"- All armors require 1 more str\n" +
-			"- Encumbered characters can't sneak attack\n" +
+			"Class Balance Changes:\n" +
+			"- Mage's Staff melee damage increased\n" +
+			"- Mage's Staff can now preserve one upgrade\n" +
+			"- Cloak of Shadows buffed at lower levels\n" +
+			"- Some Battlemage effects changed\n" +
 			"\n" +
-			"Droprate Changes:\n" +
-			"- Powerful equipment less common early\n" +
-			"- +3 and +2 equipment less common\n" +
-			"- Equipment curses more common\n" +
-			"- Tier 1 equipment no longer drops\n" +
-			"- Arcane styli slightly more common\n" +
-			"- Better item drops on floors 22-24\n" +
+			"Ring Balance Changes:\n" +
+			"- Ring of Force weaker at 18+ strength\n" +
+			"- Ring of Tenacity reduces more damage\n" +
+			"- Ring of Wealth secret rewards adjusted\n" +
+			"- Ring of Evasion now works consistently\n" +
 			"\n" +
-			"Class Balance:\n" +
-			"- Huntress now starts with knuckleduster\n" +
-			"- Assassin sneak bonus damage reduced\n" +
-			"- Fixed a bug where berserker was immune when enraged\n" +
-			"- Gladiator's clobber now inflicts vertigo, not stun\n" +
+			"Artifact Balance Changes:\n" +
+			"- Dried Rose charges faster, ghost HP up\n" +
+			"- Horn of Plenty now charges on exp gain\n" +
+			"- Master Thieves Armband levels faster\n" +
+			"- Sandals of Nature level faster\n" +
+			"- Hourglass uses fewer charges at a time\n" +
 			"\n" +
-			"Enemy Balance:\n" +
-			"- Tengu damage increased\n" +
-			"- Prison Guard health and DR increased\n" +
+			"Various Item Balance Changes:\n" +
+			"- Many shop prices adjusted\n" +
+			"- Pirahna rooms no longer give cursed gear\n" +
+			"- Brimstone glyph healing reduced\n" +
+			"- Lucky enchant deals max dmg more often\n" +
+			"- Dazzling enchant now cripples & blinds\n"+
+			"- Flail now can't surprise attack\n" +
+			"- Extra reach weapons no longer penetrate\n" +
 			"\n" +
-			"Misc:\n" +
-			"- Scrolls of upgrade no longer burn\n" +
-			"- Potions of strength no longer freeze\n" +
+			"Misc Changes:\n" +
+			"- Added a new journal button with key display\n" +
+			"- Keys now exist in the journal, not inventory\n" +
+			"- Improved donator menu button visuals\n" +
+			"- Chasms now deal less damage, but bleed\n" +
+			"- Increased the efficiency of data storage\n" +
 			"- Translation updates\n" +
 			"- Various bugfixes\n" +
+			"\n" +
+			"_v0.4.0:_\n" +
+			"- Changes to weapons, enchants & glyphs.\n" +
+			"- Curses now give negative effects\n" +
+			"- Curses now harder to remove\n" +
+			"- Upgrades reduce str requirements less\n" +
+			"- Huntress now starts with knuckleduster\n" +
+			"- Assassin sneak bonus damage reduced\n" +
+			"- Gladiator's clobber now inflicts vertigo\n" +
 			"\n" +
 			"_v0.3.5:_ Reworked Warrior & subclasses\n" +
 			"\n"+
