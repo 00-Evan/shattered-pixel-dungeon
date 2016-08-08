@@ -148,6 +148,10 @@ public class Hunger extends Buff implements Hero.Doom {
 		return level >= STARVING;
 	}
 
+	public int hunger() {
+		return (int)Math.ceil(level);
+	}
+
 	@Override
 	public int icon() {
 		if (level < HUNGRY) {

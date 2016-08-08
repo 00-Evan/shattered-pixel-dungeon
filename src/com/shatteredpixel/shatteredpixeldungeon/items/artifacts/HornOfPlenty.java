@@ -54,7 +54,7 @@ public class HornOfPlenty extends Artifact {
 
 		charge = 0;
 		partialCharge = 0;
-		chargeCap = 10;
+		chargeCap = 10 + visiblyUpgraded();
 
 		defaultAction = AC_EAT;
 	}
@@ -86,30 +86,32 @@ public class HornOfPlenty extends Artifact {
 			if (!isEquipped(hero)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge == 0)  GLog.i( Messages.get(this, "no_food") );
 			else {
-				hero.buff(Hunger.class).satisfy((Hunger.STARVING/10) * charge);
+				//consume as many
+				int chargesToUse = Math.max( 1, hero.buff(Hunger.class).hunger() / (int)(Hunger.STARVING/10));
+				if (chargesToUse > charge) chargesToUse = charge;
+				hero.buff(Hunger.class).satisfy((Hunger.STARVING/10) * chargesToUse);
 
-				//if you get at least 100 food energy from the horn
-				if (charge >= 3) {
-					switch (hero.heroClass) {
-						case WARRIOR:
-							if (hero.HP < hero.HT) {
-								hero.HP = Math.min(hero.HP + 5, hero.HT);
-								hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-							}
-							break;
-						case MAGE:
-							//1 charge
-							Buff.affect( hero, Recharging.class, 4f );
-							ScrollOfRecharging.charge(hero);
-							break;
-						case ROGUE:
-						case HUNTRESS:
-							break;
-					}
-
-					Statistics.foodEaten++;
+				//if you get at least 80 food energy from the horn
+				switch (hero.heroClass) {
+					case WARRIOR:
+						if (hero.HP < hero.HT) {
+							hero.HP = Math.min(hero.HP + 5, hero.HT);
+							hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+						}
+						break;
+					case MAGE:
+						//1 charge
+						Buff.affect( hero, Recharging.class, 4f );
+						ScrollOfRecharging.charge(hero);
+						break;
+					case ROGUE:
+					case HUNTRESS:
+						break;
 				}
-				charge = 0;
+
+				Statistics.foodEaten++;
+
+				charge -= chargesToUse;
 
 				hero.sprite.operate(hero.pos);
 				hero.busy();
@@ -121,7 +123,9 @@ public class HornOfPlenty extends Artifact {
 
 				Badges.validateFoodEaten();
 
-				image = ItemSpriteSheet.ARTIFACT_HORN1;
+				if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
+				else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
+				else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
 
 				updateQuickslot();
 			}
@@ -155,11 +159,18 @@ public class HornOfPlenty extends Artifact {
 	}
 
 	@Override
+	public Item upgrade() {
+		super.upgrade();
+		chargeCap = 10 + visiblyUpgraded();
+		return this;
+	}
+
+	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		if (charge == chargeCap)image = ItemSpriteSheet.ARTIFACT_HORN4;
-		else if (charge >= 7)   image = ItemSpriteSheet.ARTIFACT_HORN3;
-		else if (charge >= 3)   image = ItemSpriteSheet.ARTIFACT_HORN2;
+		if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
+		else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
+		else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
 	}
 
 	public class hornRecharge extends ArtifactBuff{
@@ -167,19 +178,19 @@ public class HornOfPlenty extends Artifact {
 		public void gainCharge(float levelPortion) {
 			if (charge < chargeCap) {
 
-				//generates 0.25x max hunger value every hero level, +0.025x max value per horn level
-				//to a max of exactly max hunger value per hero level (0.25+0.75, at horn level 30)
-				//This means that a standard ration will be recovered in 10 hero levels
-				partialCharge += Hunger.STARVING * levelPortion * (0.25f + (0.025f*level()));
+				//generates 0.25x max hunger value every hero level, +0.035x max value per horn level
+				//to a max of 1.3x max hunger value per hero level
+				//This means that a standard ration will be recovered in ~7.15 hero levels
+				partialCharge += Hunger.STARVING * levelPortion * (0.25f + (0.035f*level()));
 
 				//charge is in increments of 1/10 max hunger value.
 				while (partialCharge >= Hunger.STARVING/10) {
 					charge++;
 					partialCharge -= Hunger.STARVING/10;
 
-					if (charge == chargeCap)image = ItemSpriteSheet.ARTIFACT_HORN4;
-					else if (charge >= 7)   image = ItemSpriteSheet.ARTIFACT_HORN3;
-					else if (charge >= 3)   image = ItemSpriteSheet.ARTIFACT_HORN2;
+					if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
+					else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
+					else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
 					else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
 
 					if (charge == chargeCap){
