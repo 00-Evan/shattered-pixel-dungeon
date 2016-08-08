@@ -185,19 +185,31 @@ public abstract class Mob extends Char {
 		//we have no enemy, or the current one is dead
 		if ( enemy == null || !enemy.isAlive() || state == WANDERING)
 			newEnemy = true;
-		//We are amoked and current enemy is the hero
-		else if (buff( Amok.class ) != null && enemy == Dungeon.hero)
-			newEnemy = true;
 		//We are corrupted, and current enemy is either the hero or another corrupted character.
 		else if (buff(Corruption.class) != null && (enemy == Dungeon.hero || enemy.buff(Corruption.class) != null))
+			newEnemy = true;
+		//We are amoked and current enemy is the hero
+		else if (buff( Amok.class ) != null && enemy == Dungeon.hero)
 			newEnemy = true;
 
 		if ( newEnemy ) {
 
 			HashSet<Char> enemies = new HashSet<>();
 
+			//if the mob is corrupted...
+			if ( buff(Corruption.class) != null) {
+
+				//look for enemy mobs to attack, which are also not corrupted
+				for (Mob mob : Dungeon.level.mobs)
+					if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile && mob.buff(Corruption.class) == null)
+						enemies.add(mob);
+				if (enemies.size() > 0) return Random.element(enemies);
+
+				//otherwise go for nothing
+				return null;
+
 			//if the mob is amoked...
-			if ( buff(Amok.class) != null) {
+			} else if ( buff(Amok.class) != null) {
 
 				//try to find an enemy mob to attack first.
 				for (Mob mob : Dungeon.level.mobs)
@@ -213,18 +225,6 @@ public abstract class Mob extends Char {
 
 				//if there is nothing, go for the hero
 				else return Dungeon.hero;
-
-			//if the mob is corrupted...
-			} else if (buff(Corruption.class) != null) {
-
-				//look for enemy mobs to attack, which are also not corrupted
-				for (Mob mob : Dungeon.level.mobs)
-					if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile && mob.buff(Corruption.class) == null)
-						enemies.add(mob);
-				if (enemies.size() > 0) return Random.element(enemies);
-
-				//otherwise go for nothing
-				return null;
 
 			} else {
 
