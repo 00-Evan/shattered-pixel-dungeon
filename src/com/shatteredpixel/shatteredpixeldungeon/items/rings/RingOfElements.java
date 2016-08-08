@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
@@ -45,6 +46,7 @@ public class RingOfElements extends Ring {
 		FULL.add( Burning.class );
 		FULL.add( ToxicGas.class );
 		FULL.add( Poison.class );
+		FULL.add( Venom.class );
 		FULL.add( LightningTrap.Electricity.class );
 		FULL.add( Warlock.class );
 		FULL.add( Eye.class );
