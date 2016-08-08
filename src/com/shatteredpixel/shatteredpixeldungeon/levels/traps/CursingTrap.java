@@ -85,7 +85,7 @@ public class CursingTrap extends Trap {
 		}
 
 		Armor armor = hero.belongings.armor;
-		if (!armor.cursed){
+		if (armor != null && !armor.cursed){
 			if (armor.glyph == null)
 				priorityCurse.add(armor);
 			else
