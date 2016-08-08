@@ -156,15 +156,6 @@ abstract public class ClassArmor extends Armor {
 
 		return effectiveTier * (2 + lvl);
 	}
-
-	@Override
-	public int DRMin(int lvl){
-		int effectiveTier = armorTier;
-		if (glyph != null) effectiveTier += glyph.tierDRAdjust();
-		effectiveTier = Math.max(0, effectiveTier);
-
-		return (effectiveTier-1)/2 + lvl;
-	}
 	
 	@Override
 	public boolean isIdentified() {
