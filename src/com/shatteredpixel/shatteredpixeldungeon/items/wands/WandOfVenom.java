@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -48,9 +49,11 @@ public class WandOfVenom extends Wand {
 		((VenomGas)venomGas).setStrength(level()+1);
 		GameScene.add(venomGas);
 
-		Char ch = Actor.findChar(bolt.collisionPos);
-		if (ch != null){
-			processSoulMark(ch, chargesPerCast());
+		for (int i : Level.NEIGHBOURS9) {
+			Char ch = Actor.findChar(bolt.collisionPos + i);
+			if (ch != null) {
+				processSoulMark(ch, chargesPerCast());
+			}
 		}
 	}
 
