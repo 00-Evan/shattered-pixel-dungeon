@@ -98,7 +98,7 @@ public class WndGame extends Window {
 						try {
 							Dungeon.saveAll();
 						} catch (IOException e) {
-							// Do nothing
+							ShatteredPixelDungeon.reportException(e);
 						}
 						Game.switchScene(TitleScene.class);
 					}

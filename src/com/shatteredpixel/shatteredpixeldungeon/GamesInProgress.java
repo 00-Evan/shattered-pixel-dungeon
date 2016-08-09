@@ -45,6 +45,7 @@ public class GamesInProgress {
 				Dungeon.preview( info, bundle );
 
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				info = null;
 			}
 			

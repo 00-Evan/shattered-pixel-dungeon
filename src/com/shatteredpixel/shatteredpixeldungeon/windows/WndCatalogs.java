@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -170,7 +171,7 @@ public class WndCatalogs extends WndTabbed {
 					label.hardlight( 0xCCCCCC );
 				}
 			} catch (Exception e) {
-				// Do nothing
+				ShatteredPixelDungeon.reportException(e);
 			}
 		}
 		

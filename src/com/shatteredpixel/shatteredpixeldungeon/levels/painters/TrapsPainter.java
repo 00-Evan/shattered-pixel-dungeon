@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -99,7 +100,7 @@ public class TrapsPainter extends Painter {
 				try {
 					level.setTrap(((Trap) trapClass.newInstance()).reveal(), cell);
 				} catch (Exception e) {
-					e.printStackTrace();
+					ShatteredPixelDungeon.reportException(e);
 				}
 			}
 		}

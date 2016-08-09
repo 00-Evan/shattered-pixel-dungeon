@@ -196,6 +196,7 @@ public class Badges {
 			try {
 				badges.add( Badge.valueOf( names[i] ) );
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 			}
 		}
 	
@@ -230,6 +231,7 @@ public class Badges {
 				global = restore( bundle );
 				
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				global = new HashSet<Badge>();
 			}
 		}
@@ -247,7 +249,7 @@ public class Badges {
 				output.close();
 				saveNeeded = false;
 			} catch (IOException e) {
-				
+				ShatteredPixelDungeon.reportException(e);
 			}
 		}
 	}

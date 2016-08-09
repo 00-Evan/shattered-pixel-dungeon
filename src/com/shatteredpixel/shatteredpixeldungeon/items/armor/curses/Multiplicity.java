@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -72,6 +73,7 @@ public class Multiplicity extends Armor.Glyph {
 							m.restoreFromBundle(store);
 							m.HP = m.HT;
 						} catch (Exception e) {
+							ShatteredPixelDungeon.reportException(e);
 							m = null;
 						}
 					}

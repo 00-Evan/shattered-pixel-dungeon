@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -490,6 +491,7 @@ public class Armor extends EquipableItem {
 			try {
 				return ((Class<Glyph>)glyphs[ Random.chances( chances ) ]).newInstance();
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				return null;
 			}
 		}
@@ -499,6 +501,7 @@ public class Armor extends EquipableItem {
 			try {
 				return ((Class<Glyph>)Random.oneOf(curses)).newInstance();
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				return null;
 			}
 		}

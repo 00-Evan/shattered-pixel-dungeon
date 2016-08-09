@@ -67,7 +67,7 @@ public class Bones {
 			Bundle.write( bundle, output );
 			output.close();
 		} catch (IOException e) {
-
+			ShatteredPixelDungeon.reportException(e);
 		}
 	}
 
@@ -139,6 +139,7 @@ public class Bones {
 				return get();
 
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				return null;
 			}
 
@@ -162,6 +163,7 @@ public class Bones {
 
 							return artifact;
 						} catch (Exception e) {
+							ShatteredPixelDungeon.reportException(e);
 							return new Gold(item.price());
 						}
 					} else {

@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -319,6 +320,7 @@ abstract public class Weapon extends KindOfWeapon {
 			try {
 				return ((Class<Enchantment>)enchants[ Random.chances( chances ) ]).newInstance();
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				return null;
 			}
 		}
@@ -328,6 +330,7 @@ abstract public class Weapon extends KindOfWeapon {
 			try {
 				return ((Class<Enchantment>)Random.oneOf(curses)).newInstance();
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				return null;
 			}
 		}

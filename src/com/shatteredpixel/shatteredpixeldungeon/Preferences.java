@@ -60,6 +60,7 @@ enum Preferences {
 		try {
 			return get().getInt( key, defValue );
 		} catch (ClassCastException e) {
+			ShatteredPixelDungeon.reportException(e);
 			return defValue;
 		}
 	}
@@ -68,6 +69,7 @@ enum Preferences {
 		try {
 			return get().getBoolean(key, defValue);
 		} catch (ClassCastException e) {
+			ShatteredPixelDungeon.reportException(e);
 			return defValue;
 		}
 	}
@@ -76,6 +78,7 @@ enum Preferences {
 		try {
 			return get().getString( key, defValue );
 		} catch (ClassCastException e) {
+			ShatteredPixelDungeon.reportException(e);
 			return defValue;
 		}
 	}

@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
@@ -125,6 +126,7 @@ public class Blandfruit extends Food {
 		try {
 			return imbuePotion((Potion)seed.alchemyClass.newInstance());
 		} catch (Exception e) {
+			ShatteredPixelDungeon.reportException(e);
 			return null;
 		}
 

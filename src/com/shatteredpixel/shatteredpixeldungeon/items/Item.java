@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
@@ -236,6 +237,7 @@ public class Item implements Bundlable {
 				detached.onDetach( );
 				return detached;
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				return null;
 			}
 		}
@@ -404,6 +406,7 @@ public class Item implements Bundlable {
 			return item;
 			
 		} catch (Exception e) {
+			ShatteredPixelDungeon.reportException(e);
 			return null;
 		}
 	}

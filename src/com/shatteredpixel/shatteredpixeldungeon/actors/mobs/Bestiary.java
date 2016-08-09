@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.utils.Random;
 
 public class Bestiary {
@@ -30,6 +31,7 @@ public class Bestiary {
 		try {
 			return cl.newInstance();
 		} catch (Exception e) {
+			ShatteredPixelDungeon.reportException(e);
 			return null;
 		}
 	}
@@ -55,6 +57,7 @@ public class Bestiary {
 		try {
 			return cl.newInstance();
 		} catch (Exception e) {
+			ShatteredPixelDungeon.reportException(e);
 			return null;
 		}
 	}

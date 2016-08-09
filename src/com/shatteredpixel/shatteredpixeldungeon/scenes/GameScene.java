@@ -396,7 +396,7 @@ public class GameScene extends PixelScene {
 			Dungeon.saveAll();
 			Badges.saveGlobal();
 		} catch (IOException e) {
-			//
+			ShatteredPixelDungeon.reportException(e);
 		}
 	}
 

@@ -86,7 +86,7 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
 					result.add(vis);
 				}
 			}
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (Exception e) {
 			throw new RuntimeException("Something went wrong while making a bunch of tile visuals for a room!", e);
 		}
 

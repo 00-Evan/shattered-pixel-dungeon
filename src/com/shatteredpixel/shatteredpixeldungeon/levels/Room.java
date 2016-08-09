@@ -109,6 +109,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 			try {
 				paint = painter.getMethod( "paint", Level.class, Room.class );
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				paint = null;
 			}
 		}

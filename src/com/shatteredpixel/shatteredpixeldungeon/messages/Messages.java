@@ -89,7 +89,9 @@ public class Messages {
 				if (android.os.Build.VERSION.SDK_INT == 8) {
 					try {
 						value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
-					} catch (Exception e) {}
+					} catch (Exception e) {
+						ShatteredPixelDungeon.reportException(e);
+					}
 				}
 
 				strings.put(key, value);

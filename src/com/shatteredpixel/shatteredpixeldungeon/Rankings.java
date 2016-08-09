@@ -208,6 +208,7 @@ public enum Rankings {
 			Bundle.write( bundle, output );
 			output.close();
 		} catch (IOException e) {
+			ShatteredPixelDungeon.reportException(e);
 		}
 	}
 	
@@ -244,7 +245,7 @@ public enum Rankings {
 			}
 
 		} catch (IOException e) {
-
+			ShatteredPixelDungeon.reportException(e);
 		}
 	}
 
