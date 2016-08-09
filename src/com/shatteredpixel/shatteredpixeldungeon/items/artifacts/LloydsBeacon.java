@@ -57,8 +57,8 @@ public class LloydsBeacon extends Artifact {
 	public static final String AC_SET		= "SET";
 	public static final String AC_RETURN	= "RETURN";
 	
-	private int returnDepth	= -1;
-	private int returnPos;
+	public int returnDepth	= -1;
+	public int returnPos;
 	
 	{
 		image = ItemSpriteSheet.ARTIFACT_BEACON;
