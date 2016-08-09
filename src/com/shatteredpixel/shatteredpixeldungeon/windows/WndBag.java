@@ -418,7 +418,7 @@ public class WndBag extends WndTabbed {
 				
 			} else {
 				
-				WndBag.this.add( new WndItem( WndBag.this, item ) );
+				GameScene.show(new WndItem( WndBag.this, item ) );
 				
 			}
 		}
