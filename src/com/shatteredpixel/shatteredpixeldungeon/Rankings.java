@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -175,6 +176,7 @@ public enum Rankings {
 		Dungeon.level = null;
 		Generator.reset();
 		Dungeon.quickslot.reset();
+		QuickSlotButton.reset();
 
 		Bundle handler = data.getBundle(HANDLERS);
 		Scroll.restore(handler);
