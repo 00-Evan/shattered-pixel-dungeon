@@ -193,6 +193,10 @@ public class ItemSprite extends MovieClip {
 		return this;
 	}
 
+	public void frame( int image ){
+		frame( film.get( image ));
+	}
+
 	@Override
 	public void kill() {
 		super.kill();
