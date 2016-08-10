@@ -79,7 +79,7 @@ public class WndItem extends Window {
 					@Override
 					protected void onClick() {
 						hide();
-						if (owner != null) owner.hide();
+						if (owner != null && owner.parent != null) owner.hide();
 						item.execute( Dungeon.hero, action );
 					};
 				};
