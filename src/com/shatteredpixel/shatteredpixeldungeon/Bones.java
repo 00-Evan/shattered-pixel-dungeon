@@ -138,8 +138,7 @@ public class Bones {
 
 				return get();
 
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
+			} catch (IOException e) {
 				return null;
 			}
 

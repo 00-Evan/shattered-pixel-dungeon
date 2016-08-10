@@ -245,7 +245,6 @@ public enum Rankings {
 			}
 
 		} catch (IOException e) {
-			ShatteredPixelDungeon.reportException(e);
 		}
 	}
 

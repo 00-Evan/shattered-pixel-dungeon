@@ -230,8 +230,7 @@ public class Badges {
 				
 				global = restore( bundle );
 				
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
+			} catch (IOException e) {
 				global = new HashSet<Badge>();
 			}
 		}
