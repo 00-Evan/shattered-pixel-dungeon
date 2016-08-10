@@ -106,7 +106,13 @@ public class Eye extends Mob {
 			beamCooldown--;
 		return super.act();
 	}
-	
+
+	@Override
+	protected Char chooseEnemy() {
+		if (beamCharged) return enemy;
+		return super.chooseEnemy();
+	}
+
 	@Override
 	protected boolean doAttack( Char enemy ) {
 
