@@ -37,7 +37,15 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-			"_0.4.1:_\n" +
+			"_v0.4.1a:_\n" +
+			"- Various bug and crash fixes\n" +
+			"- Evil eyes now resist damage while charging\n" +
+			"- Runic blade damage decreased\n" +
+			"- Flail damage increased\n" +
+			"- Ring of Force damage increased\n" +
+			"- Horn of Plenty adjusted, now stronger\n" +
+			"\n" +
+			"_v0.4.1:_\n" +
 			"Armor Balance Changes:\n" +
 			"- Armor now has a min damage block value\n" +
 			"- Armor gains more blocking from upgrades\n" +
@@ -88,17 +96,12 @@ public class ChangesScene extends PixelScene {
 			"- Improved donator menu button visuals\n" +
 			"- Chasms now deal less damage, but bleed\n" +
 			"- Increased the efficiency of data storage\n" +
-			"- Translation updates\n" +
-			"- Various bugfixes\n" +
 			"\n" +
 			"_v0.4.0:_\n" +
 			"- Changes to weapons, enchants & glyphs.\n" +
 			"- Curses now give negative effects\n" +
 			"- Curses now harder to remove\n" +
 			"- Upgrades reduce str requirements less\n" +
-			"- Huntress now starts with knuckleduster\n" +
-			"- Assassin sneak bonus damage reduced\n" +
-			"- Gladiator's clobber now inflicts vertigo\n" +
 			"\n" +
 			"_v0.3.5:_ Reworked Warrior & subclasses\n" +
 			"\n"+
