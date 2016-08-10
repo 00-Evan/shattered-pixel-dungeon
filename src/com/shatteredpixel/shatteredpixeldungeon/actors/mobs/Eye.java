@@ -138,6 +138,12 @@ public class Eye extends Mob {
 
 	}
 
+	@Override
+	public void damage(int dmg, Object src) {
+		if (beamCharged) dmg /= 4;
+		super.damage(dmg, src);
+	}
+
 	public void deathGaze(){
 		if (!beamCharged || beamCooldown > 0 || beam == null)
 			return;
@@ -163,7 +169,7 @@ public class Eye extends Mob {
 			}
 
 			if (hit( this, ch, true )) {
-				ch.damage( Random.NormalIntRange( 30, 40 ), this );
+				ch.damage( Random.NormalIntRange( 30, 50 ), this );
 
 				if (Dungeon.visible[pos]) {
 					ch.sprite.flash();
