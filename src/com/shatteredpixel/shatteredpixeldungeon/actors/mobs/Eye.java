@@ -109,7 +109,7 @@ public class Eye extends Mob {
 
 	@Override
 	protected Char chooseEnemy() {
-		if (beamCharged) return enemy;
+		if (beamCharged && enemy != null) return enemy;
 		return super.chooseEnemy();
 	}
 
@@ -241,7 +241,7 @@ public class Eye extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			//always attack if the beam is charged, no exceptions
-			if (beamCharged)
+			if (beamCharged && enemy != null)
 				enemyInFOV = true;
 			return super.act(enemyInFOV, justAlerted);
 		}
