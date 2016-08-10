@@ -105,13 +105,16 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		
 		private Method paint;
 		
-		private Type( Class<? extends Painter> painter ) {
-			try {
-				paint = painter.getMethod( "paint", Level.class, Room.class );
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
+		Type( Class<? extends Painter> painter ) {
+			if (painter == null)
 				paint = null;
-			}
+			else
+				try {
+					paint = painter.getMethod( "paint", Level.class, Room.class );
+				} catch (Exception e) {
+					ShatteredPixelDungeon.reportException(e);
+					paint = null;
+				}
 		}
 		
 		public void paint( Level level, Room room ) {
