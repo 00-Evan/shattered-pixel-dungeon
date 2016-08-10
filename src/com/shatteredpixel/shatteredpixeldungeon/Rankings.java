@@ -48,7 +48,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.SystemTime;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.UUID;
 
 public enum Rankings {
 	
@@ -87,7 +87,7 @@ public enum Rankings {
 		
 		INSTANCE.saveGameData(rec);
 
-		rec.gameID = String.valueOf(SystemTime.now);
+		rec.gameID = UUID.randomUUID().toString();
 		
 		records.add( rec );
 		
