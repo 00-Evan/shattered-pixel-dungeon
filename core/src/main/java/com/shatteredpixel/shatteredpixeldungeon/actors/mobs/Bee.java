@@ -121,18 +121,18 @@ public class Bee extends Mob {
 			//if already targeting something, and that thing is still alive and near the pot, keeping targeting it.
 			if (enemy != null && enemy.isAlive() && Dungeon.level.mobs.contains(enemy)
 					&& Level.fieldOfView[enemy.pos] && enemy.invisible == 0
-					&& Level.distance(enemy.pos, potPos) <= 3)
+					&& Dungeon.level.distance(enemy.pos, potPos) <= 3)
 				return enemy;
 
 			//find all mobs near the pot
 			HashSet<Char> enemies = new HashSet<>();
 			for (Mob mob : Dungeon.level.mobs)
-				if (!(mob instanceof Bee) && Level.distance(mob.pos, potPos) <= 3 && (mob.hostile || mob.ally))
+				if (!(mob instanceof Bee) && Dungeon.level.distance(mob.pos, potPos) <= 3 && (mob.hostile || mob.ally))
 					enemies.add(mob);
 
 			//pick one, if there are none, check if the hero is near the pot, go for them, otherwise go for nothing.
 			if (enemies.size() > 0) return Random.element(enemies);
-			else return (Level.distance(Dungeon.hero.pos, potPos) <= 3) ? Dungeon.hero : null ;
+			else return (Dungeon.level.distance(Dungeon.hero.pos, potPos) <= 3) ? Dungeon.hero : null ;
 		}
 	}
 
@@ -140,7 +140,7 @@ public class Bee extends Mob {
 	protected boolean getCloser(int target) {
 		if (enemy != null && Actor.findById(potHolder) == enemy) {
 			target = enemy.pos;
-		} else if (potPos != -1 && (state == WANDERING || Level.distance(target, potPos) > 3))
+		} else if (potPos != -1 && (state == WANDERING || Dungeon.level.distance(target, potPos) > 3))
 			this.target = target = potPos;
 		return super.getCloser( target );
 	}

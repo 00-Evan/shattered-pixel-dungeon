@@ -125,8 +125,8 @@ public class ItemSprite extends MovieClip {
 		final int csize = DungeonTilemap.SIZE;
 		
 		return new PointF(
-			cell % Level.WIDTH * csize + (csize - SIZE) * 0.5f,
-			cell / Level.WIDTH * csize + (csize - SIZE) * 0.5f
+			cell % Dungeon.level.width() * csize + (csize - SIZE) * 0.5f,
+			cell / Dungeon.level.width() * csize + (csize - SIZE) * 0.5f
 		);
 	}
 	

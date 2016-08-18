@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
@@ -64,7 +65,7 @@ public class GnollTrickster extends Gnoll {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		Ballistica attack = new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE);
-		return !Level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos;
+		return !Dungeon.level.adjacent(pos, enemy.pos) && attack.collisionPos == enemy.pos;
 	}
 
 	@Override

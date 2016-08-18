@@ -57,7 +57,7 @@ public class GrimTrap extends Trap {
 			for (Char ch : Actor.chars()){
 				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
 				if (bolt.collisionPos == ch.pos &&
-						(target == null || Level.distance(pos, ch.pos) < Level.distance(pos, target.pos))){
+						(target == null || Dungeon.level.distance(pos, ch.pos) < Dungeon.level.distance(pos, target.pos))){
 					target = ch;
 				}
 			}

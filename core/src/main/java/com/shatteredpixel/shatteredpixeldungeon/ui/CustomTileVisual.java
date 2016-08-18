@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.watabou.noosa.Image;
@@ -44,7 +45,7 @@ public abstract class CustomTileVisual extends Image implements Bundlable {
 	public int tileW = 1, tileH = 1; //width and height in tiles
 
 	public void pos(int pos) {
-		pos( pos%Level.WIDTH, pos/Level.WIDTH );
+		pos( pos% Dungeon.level.width(), pos/Dungeon.level.width() );
 	}
 
 	public void pos(int tileX, int tileY){

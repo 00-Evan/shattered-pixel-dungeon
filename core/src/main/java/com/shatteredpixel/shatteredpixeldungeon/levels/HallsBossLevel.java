@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Group;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class HallsBossLevel extends Level {
@@ -46,7 +47,10 @@ public class HallsBossLevel extends Level {
 		
 		viewDistance = 3;
 	}
-	
+
+	private static final int WIDTH = 32;
+	private static final int HEIGHT = 32;
+
 	private static final int ROOM_LEFT		= WIDTH / 2 - 1;
 	private static final int ROOM_RIGHT		= WIDTH / 2 + 1;
 	private static final int ROOM_TOP		= HEIGHT / 2 - 1;
@@ -96,13 +100,13 @@ public class HallsBossLevel extends Level {
 			Painter.fill( this, 2 + i * 4, top, 4, bottom - top + 1, Terrain.EMPTY );
 			
 			if (i == 2) {
-				exit = (i * 4 + 3) + (top - 1) * WIDTH ;
+				exit = (i * 4 + 3) + (top - 1) * width() ;
 			}
 			
 			for (int j=0; j < 4; j++) {
 				if (Random.Int( 2 ) == 0) {
 					int y = Random.IntRange( top + 1, bottom - 1 );
-					map[i*4+j + y*WIDTH] = Terrain.WALL_DECO;
+					map[i*4+j + y*width()] = Terrain.WALL_DECO;
 				}
 			}
 		}
@@ -115,11 +119,11 @@ public class HallsBossLevel extends Level {
 			ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP + 1, Terrain.EMPTY );
 		
 		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) +
-			Random.Int( ROOM_TOP + 1, ROOM_BOTTOM - 1 ) * WIDTH;
+			Random.Int( ROOM_TOP + 1, ROOM_BOTTOM - 1 ) * width();
 		map[entrance] = Terrain.ENTRANCE;
 		
-		boolean[] patch = Patch.generate( 0.45f, 6 );
-		for (int i=0; i < LENGTH; i++) {
+		boolean[] patch = Patch.generate( this, 0.45f, 6 );
+		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.EMPTY && patch[i]) {
 				map[i] = Terrain.WATER;
 			}
@@ -131,7 +135,7 @@ public class HallsBossLevel extends Level {
 	@Override
 	protected void decorate() {
 		
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
 			}
@@ -152,7 +156,7 @@ public class HallsBossLevel extends Level {
 		if (item != null) {
 			int pos;
 			do {
-				pos = Random.IntRange( ROOM_LEFT, ROOM_RIGHT ) + Random.IntRange( ROOM_TOP + 1, ROOM_BOTTOM ) * WIDTH;
+				pos = Random.IntRange( ROOM_LEFT, ROOM_RIGHT ) + Random.IntRange( ROOM_TOP + 1, ROOM_BOTTOM ) * width();
 			} while (pos == entrance || map[pos] == Terrain.SIGN);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
@@ -161,9 +165,9 @@ public class HallsBossLevel extends Level {
 	@Override
 	public int randomRespawnCell() {
 		if (entrance == -1) return entrance;
-		int cell = entrance + NEIGHBOURS8[Random.Int(8)];
+		int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		while (!passable[cell]){
-			cell = entrance + NEIGHBOURS8[Random.Int(8)];
+			cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		}
 		return cell;
 	}
@@ -179,12 +183,12 @@ public class HallsBossLevel extends Level {
 			seal();
 			
 			for (int i=ROOM_LEFT-1; i <= ROOM_RIGHT + 1; i++) {
-				doMagic( (ROOM_TOP - 1) * WIDTH + i );
-				doMagic( (ROOM_BOTTOM + 1) * WIDTH + i );
+				doMagic( (ROOM_TOP - 1) * width() + i );
+				doMagic( (ROOM_BOTTOM + 1) * width() + i );
 			}
 			for (int i=ROOM_TOP; i < ROOM_BOTTOM + 1; i++) {
-				doMagic( i * WIDTH + ROOM_LEFT - 1 );
-				doMagic( i * WIDTH + ROOM_RIGHT + 1 );
+				doMagic( i * width() + ROOM_LEFT - 1 );
+				doMagic( i * width() + ROOM_RIGHT + 1 );
 			}
 			doMagic( entrance );
 			GameScene.updateMap();
@@ -193,7 +197,7 @@ public class HallsBossLevel extends Level {
 			
 			Yog boss = new Yog();
 			do {
-				boss.pos = Random.Int( LENGTH );
+				boss.pos = Random.Int( length() );
 			} while (
 				!passable[boss.pos] ||
 				Dungeon.visible[boss.pos]);

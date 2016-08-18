@@ -77,7 +77,7 @@ public class Shaman extends Mob implements Callback {
 	@Override
 	protected boolean doAttack( Char enemy ) {
 
-		if (Level.distance( pos, enemy.pos ) <= 1) {
+		if (Dungeon.level.distance( pos, enemy.pos ) <= 1) {
 			
 			return super.doAttack( enemy );
 			

@@ -57,7 +57,7 @@ public class ArmoryPainter extends Painter {
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
-				pos = room.random();
+				pos = level.pointToCell(room.random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
 			level.drop( prize( level ), pos );
 		}

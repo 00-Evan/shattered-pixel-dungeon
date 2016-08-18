@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 
 public class DisarmingTrap extends Trap{
 
@@ -52,7 +53,7 @@ public class DisarmingTrap extends Trap{
 			if (cell != -1) {
 				Item item = heap.pickUp();
 				Dungeon.level.drop( item, cell ).seen = true;
-				for (int i : Level.NEIGHBOURS9)
+				for (int i : PathFinder.NEIGHBOURS9)
 					Dungeon.level.visited[cell+i] = true;
 				Dungeon.observe();
 
@@ -74,7 +75,7 @@ public class DisarmingTrap extends Trap{
 					weapon.updateQuickslot();
 
 					Dungeon.level.drop(weapon, cell).seen = true;
-					for (int i : Level.NEIGHBOURS9)
+					for (int i : PathFinder.NEIGHBOURS9)
 						Dungeon.level.visited[cell+i] = true;
 					Dungeon.observe();
 

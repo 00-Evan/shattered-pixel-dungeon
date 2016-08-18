@@ -53,9 +53,9 @@ public class PitPainter extends Painter {
 		}
 		set( level, well, Terrain.EMPTY_WELL );
 		
-		int remains = room.random();
+		int remains = level.pointToCell(room.random());
 		while (level.map[remains] == Terrain.EMPTY_WELL) {
-			remains = room.random();
+			remains = level.pointToCell(room.random());
 		}
 		
 		level.drop( new IronKey( Dungeon.depth ), remains ).type = Type.SKELETON;

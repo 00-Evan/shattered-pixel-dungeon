@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
@@ -66,8 +67,8 @@ public class Skeleton extends Mob {
 		super.die( cause );
 		
 		boolean heroKilled = false;
-		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-			Char ch = findChar( pos + Level.NEIGHBOURS8[i] );
+		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+			Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
 			if (ch != null && ch.isAlive()) {
 				int damage = Math.max( 0,  damageRoll() - (ch.drRoll() / 2) );
 				ch.damage( damage, this );

@@ -33,12 +33,8 @@ import java.util.Arrays;
 public class Blob extends Actor {
 
 	{
-		actPriority = 1; //take prioerity over mobs, but not the hero
+		actPriority = 1; //take priority over mobs, but not the hero
 	}
-	
-	public static final int WIDTH	= Level.WIDTH;
-	public static final int HEIGHT	= Level.HEIGHT;
-	public static final int LENGTH	= Level.LENGTH;
 	
 	public int volume = 0;
 	
@@ -47,16 +43,9 @@ public class Blob extends Actor {
 	
 	public BlobEmitter emitter;
 	
-	protected Blob() {
-		
-		cur = new int[LENGTH];
-		off = new int[LENGTH];
-		
-		volume = 0;
-	}
-	
 	private static final String CUR		= "cur";
 	private static final String START	= "start";
+	private static final String LENGTH	= "length";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -65,19 +54,20 @@ public class Blob extends Actor {
 		if (volume > 0) {
 		
 			int start;
-			for (start=0; start < LENGTH; start++) {
+			for (start=0; start < Dungeon.level.length(); start++) {
 				if (cur[start] > 0) {
 					break;
 				}
 			}
 			int end;
-			for (end=LENGTH-1; end > start; end--) {
+			for (end=Dungeon.level.length()-1; end > start; end--) {
 				if (cur[end] > 0) {
 					break;
 				}
 			}
 			
 			bundle.put( START, start );
+			bundle.put( LENGTH, cur.length );
 			bundle.put( CUR, trim( start, end + 1 ) );
 			
 		}
@@ -94,6 +84,13 @@ public class Blob extends Actor {
 	public void restoreFromBundle( Bundle bundle ) {
 		
 		super.restoreFromBundle( bundle );
+
+		if (bundle.contains(LENGTH)) {
+			cur = new int[bundle.getInt(LENGTH)];
+		} else {
+			//compatability with pre-0.4.2
+			cur = new int[1024];
+		}
 		
 		int[] data = bundle.getIntArray( CUR );
 		if (data != null) {
@@ -102,18 +99,6 @@ public class Blob extends Actor {
 				cur[i + start] = data[i];
 				volume += data[i];
 			}
-		}
-		
-		if (Level.resizingNeeded) {
-			int[] cur = new int[Level.LENGTH];
-			Arrays.fill( cur, 0 );
-			
-			int loadedMapSize = Level.loadedMapSize;
-			for (int i=0; i < loadedMapSize; i++) {
-				System.arraycopy( this.cur, i * loadedMapSize, cur, i * Level.WIDTH, loadedMapSize );
-			}
-			
-			this.cur = cur;
 		}
 	}
 	
@@ -144,10 +129,10 @@ public class Blob extends Actor {
 		
 		boolean[] notBlocking = BArray.not( Level.solid, null );
 		
-		for (int i=1; i < HEIGHT-1; i++) {
+		for (int i=1; i < Dungeon.level.height()-1; i++) {
 			
-			int from = i * WIDTH + 1;
-			int to = from + WIDTH - 2;
+			int from = i * Dungeon.level.width() + 1;
+			int to = from + Dungeon.level.width() - 2;
 			
 			for (int pos=from; pos < to; pos++) {
 				if (notBlocking[pos]) {
@@ -163,12 +148,12 @@ public class Blob extends Actor {
 						sum += cur[pos+1];
 						count++;
 					}
-					if (notBlocking[pos-WIDTH]) {
-						sum += cur[pos-WIDTH];
+					if (notBlocking[pos-Dungeon.level.width()]) {
+						sum += cur[pos-Dungeon.level.width()];
 						count++;
 					}
-					if (notBlocking[pos+WIDTH]) {
-						sum += cur[pos+WIDTH];
+					if (notBlocking[pos+Dungeon.level.width()]) {
+						sum += cur[pos+Dungeon.level.width()];
 						count++;
 					}
 					
@@ -182,8 +167,11 @@ public class Blob extends Actor {
 			}
 		}
 	}
-	
-	public void seed( int cell, int amount ) {
+
+	public void seed( Level level, int cell, int amount ) {
+		if (cur == null) cur = new int[level.length()];
+		if (off == null) off = new int[cur.length];
+
 		cur[cell] += amount;
 		volume += amount;
 	}
@@ -195,8 +183,8 @@ public class Blob extends Actor {
 
 	public void fullyClear(){
 		volume = 0;
-		cur = new int[LENGTH];
-		off = new int[LENGTH];
+		cur = new int[Dungeon.level.length()];
+		off = new int[Dungeon.level.length()];
 	}
 	
 	public String tileDesc() {
@@ -213,7 +201,7 @@ public class Blob extends Actor {
 				Dungeon.level.blobs.put( type, gas );
 			}
 			
-			gas.seed( cell, amount );
+			gas.seed( Dungeon.level, cell, amount );
 			
 			return gas;
 			

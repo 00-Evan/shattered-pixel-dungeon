@@ -49,8 +49,8 @@ public class WndInfoCell extends Window {
 		}
 
 		CustomTileVisual vis = null;
-		int x = cell % Level.WIDTH;
-		int y = cell / Level.WIDTH;
+		int x = cell % Dungeon.level.width();
+		int y = cell / Dungeon.level.width();
 		for (CustomTileVisual i : Dungeon.level.customTiles){
 			if ((x >= i.tileX && x < i.tileX+i.tileW) &&
 					(y >= i.tileY && y < i.tileY+i.tileH)){

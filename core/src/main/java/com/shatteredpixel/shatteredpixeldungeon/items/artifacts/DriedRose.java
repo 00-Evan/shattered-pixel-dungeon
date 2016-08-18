@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -100,8 +101,8 @@ public class DriedRose extends Artifact {
 			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
 			else {
 				ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
-				for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
-					int p = hero.pos + Level.NEIGHBOURS8[i];
+				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+					int p = hero.pos + PathFinder.NEIGHBOURS8[i];
 					if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
 						spawnPoints.add(p);
 					}
@@ -217,8 +218,8 @@ public class DriedRose extends Artifact {
 
 				ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
 
-				for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
-					int p = target.pos + Level.NEIGHBOURS8[i];
+				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+					int p = target.pos + PathFinder.NEIGHBOURS8[i];
 					if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
 						spawnPoints.add(p);
 					}
@@ -347,7 +348,7 @@ public class DriedRose extends Artifact {
 
 		@Override
 		protected boolean getCloser( int target ) {
-			if (state == WANDERING || Level.distance(target, Dungeon.hero.pos) > 6)
+			if (state == WANDERING || Dungeon.level.distance(target, Dungeon.hero.pos) > 6)
 				this.target = target = Dungeon.hero.pos;
 			return super.getCloser( target );
 		}

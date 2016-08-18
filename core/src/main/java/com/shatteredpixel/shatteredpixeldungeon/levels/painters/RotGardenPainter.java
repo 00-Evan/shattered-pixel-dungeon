@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class RotGardenPainter extends Painter {
@@ -55,14 +56,14 @@ public class RotGardenPainter extends Painter {
 			heartY = room.top + 1;
 		}
 
-		placePlant(level, heartX + heartY * Level.WIDTH, new RotHeart());
+		placePlant(level, heartX + heartY * level.width(), new RotHeart());
 
 		int lashers = ((room.right-room.left-1)*(room.bottom-room.top-1))/8;
 
 		for (int i = 1; i <= lashers; i++){
 			int pos;
 			do {
-				pos = room.random();
+				pos = level.pointToCell(room.random());
 			} while (!validPlantPos(level, pos));
 			placePlant(level, pos, new RotLasher());
 		}
@@ -73,7 +74,7 @@ public class RotGardenPainter extends Painter {
 			return false;
 		}
 
-		for (int i : Level.NEIGHBOURS9){
+		for (int i : PathFinder.NEIGHBOURS9){
 			if (level.findMob(pos+i) != null){
 				return false;
 			}
@@ -86,7 +87,7 @@ public class RotGardenPainter extends Painter {
 		plant.pos = pos;
 		level.mobs.add( plant );
 
-		for(int i : Level.NEIGHBOURS8) {
+		for(int i : PathFinder.NEIGHBOURS8) {
 			if (level.map[pos + i] == Terrain.GRASS){
 				set(level, pos + i, Terrain.HIGH_GRASS);
 			}

@@ -53,7 +53,7 @@ public class RitualSitePainter extends Painter {
 		level.addItemToSpawn(new CeremonialCandle());
 		level.addItemToSpawn(new CeremonialCandle());
 
-		CeremonialCandle.ritualPos = c.x + (Level.WIDTH * c.y);
+		CeremonialCandle.ritualPos = c.x + (level.width() * c.y);
 	}
 
 	public static class RitualMarker extends CustomTileVisual{

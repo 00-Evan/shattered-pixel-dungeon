@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class RockfallTrap extends Trap {
@@ -48,13 +49,13 @@ public class RockfallTrap extends Trap {
 
 		boolean seen = false;
 
-		for (int i : Level.NEIGHBOURS9){
+		for (int i : PathFinder.NEIGHBOURS9){
 
 			if (Level.solid[pos+i])
 				continue;
 
 			if (Dungeon.visible[ pos+i ]){
-				CellEmitter.get( pos + i - Level.WIDTH ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
+				CellEmitter.get( pos + i - Dungeon.level.width() ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
 				if (!seen) {
 					Camera.main.shake(3, 0.7f);
 					Sample.INSTANCE.play(Assets.SND_ROCKS);

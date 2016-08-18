@@ -68,11 +68,11 @@ public class CityLevel extends RegularLevel {
 	}
 	
 	protected boolean[] water() {
-		return Patch.generate( feeling == Feeling.WATER ? 0.65f : 0.45f, 4 );
+		return Patch.generate( this, feeling == Feeling.WATER ? 0.65f : 0.45f, 4 );
 	}
 	
 	protected boolean[] grass() {
-		return Patch.generate( feeling == Feeling.GRASS ? 0.60f : 0.40f, 3 );
+		return Patch.generate( this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 3 );
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class CityLevel extends RegularLevel {
 	@Override
 	protected void decorate() {
 		
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
 			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
@@ -167,7 +167,7 @@ public class CityLevel extends RegularLevel {
 	}
 
 	public static void addCityVisuals( Level level, Group group ) {
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < level.length(); i++) {
 			if (level.map[i] == Terrain.WALL_DECO) {
 				group.add( new Smoke( i ) );
 			}

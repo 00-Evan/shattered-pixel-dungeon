@@ -259,7 +259,7 @@ public class Wandmaker extends NPC {
 				if (setRoom( rooms )){
 					Wandmaker npc = new Wandmaker();
 					do {
-						npc.pos = room.random();
+						npc.pos = Dungeon.level.pointToCell(room.random());
 					} while (level.map[npc.pos] == Terrain.ENTRANCE || level.map[npc.pos] == Terrain.SIGN);
 					level.mobs.add( npc );
 

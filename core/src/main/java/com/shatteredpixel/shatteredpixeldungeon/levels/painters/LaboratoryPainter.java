@@ -54,14 +54,14 @@ public class LaboratoryPainter extends Painter {
 		set( level, pot, Terrain.ALCHEMY );
 		
 		Alchemy alchemy = new Alchemy();
-		alchemy.seed( pot.x + Level.WIDTH * pot.y, 1 );
+		alchemy.seed( level, pot.x + level.width() * pot.y, 1 );
 		level.blobs.put( Alchemy.class, alchemy );
 		
 		int n = Random.IntRange( 2, 3 );
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
-				pos = room.random();
+				pos = level.pointToCell(room.random());
 			} while (
 				level.map[pos] != Terrain.EMPTY_SP ||
 				level.heaps.get( pos ) != null);

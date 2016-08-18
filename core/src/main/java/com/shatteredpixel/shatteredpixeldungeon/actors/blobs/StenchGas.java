@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -35,7 +36,7 @@ public class StenchGas extends Blob {
 		super.evolve();
 
 		Char ch;
-		for (int i=0; i < LENGTH; i++) {
+		for (int i = 0; i < Dungeon.level.length(); i++) {
 			if (cur[i] > 0 && (ch = Actor.findChar(i)) != null) {
 				if (!ch.immunities().contains(this.getClass()))
 					Buff.prolong( ch, Paralysis.class, Paralysis.duration( ch )/5 );

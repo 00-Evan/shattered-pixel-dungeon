@@ -47,7 +47,7 @@ public class Swap extends Actor {
 		this.ch1 = ch1;
 		this.ch2 = ch2;
 
-		delay = Level.distance( ch1.pos,  ch2.pos ) * 0.1f;
+		delay = Dungeon.level.distance( ch1.pos,  ch2.pos ) * 0.1f;
 
 		eff1 = new Effect( ch1.sprite, ch1.pos, ch2.pos );
 		eff2 = new Effect( ch2.sprite, ch2.pos, ch1.pos );

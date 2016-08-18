@@ -29,9 +29,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
+import com.watabou.utils.PathFinder;
 
 public class QuickSlotButton extends Button implements WndBag.Listener {
 	
@@ -202,10 +204,11 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		}
 
 		//Otherwise pick nearby tiles to try and 'angle' the shot, auto-aim basically.
-		for (int i : Level.NEIGHBOURS9DIST2) {
-			if (item.throwPos(Dungeon.hero, target.pos+i) == target.pos){
-				return target.pos+i;
-			}
+		PathFinder.buildDistanceMap( target.pos, BArray.not( new boolean[Dungeon.level.length()], null ), 2 );
+		for (int i = 0; i < PathFinder.distance.length; i++) {
+			if (PathFinder.distance[i] < Integer.MAX_VALUE
+					&& item.throwPos(Dungeon.hero, i) == target.pos)
+				return i;
 		}
 
 		//couldn't find a cell, give up.

@@ -72,7 +72,8 @@ public class Guard extends Mob {
 				enemy != null &&
 				enemy.invisible == 0 &&
 				Level.fieldOfView[enemy.pos] &&
-				Level.distance( pos, enemy.pos ) < 5 && !Level.adjacent( pos, enemy.pos ) &&
+				Dungeon.level.distance( pos, enemy.pos ) < 5 &&
+				!Dungeon.level.adjacent( pos, enemy.pos ) &&
 				Random.Int(3) == 0 &&
 
 				chain(enemy.pos)) {

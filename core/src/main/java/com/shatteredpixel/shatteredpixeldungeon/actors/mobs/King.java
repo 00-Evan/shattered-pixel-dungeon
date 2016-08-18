@@ -105,20 +105,20 @@ public class King extends Mob {
 	@Override
 	protected boolean getCloser( int target ) {
 		return canTryToSummon() ?
-			super.getCloser( CityBossLevel.pedestal( nextPedestal ) ) :
+			super.getCloser( ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) ) :
 			super.getCloser( target );
 	}
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		return canTryToSummon() ?
-			pos == CityBossLevel.pedestal( nextPedestal ) :
-			Level.adjacent( pos, enemy.pos );
+			pos == ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) :
+			Dungeon.level.adjacent( pos, enemy.pos );
 	}
 	
 	private boolean canTryToSummon() {
 		if (Undead.count < maxArmySize()) {
-			Char ch = Actor.findChar( CityBossLevel.pedestal( nextPedestal ) );
+			Char ch = Actor.findChar( ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) );
 			return ch == this || ch == null;
 		} else {
 			return false;
@@ -127,11 +127,11 @@ public class King extends Mob {
 	
 	@Override
 	public boolean attack( Char enemy ) {
-		if (canTryToSummon() && pos == CityBossLevel.pedestal( nextPedestal )) {
+		if (canTryToSummon() && pos == ((CityBossLevel)Dungeon.level).pedestal( nextPedestal )) {
 			summon();
 			return true;
 		} else {
-			if (Actor.findChar( CityBossLevel.pedestal( nextPedestal ) ) == enemy) {
+			if (Actor.findChar( ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) ) == enemy) {
 				nextPedestal = !nextPedestal;
 			}
 			return super.attack(enemy);
@@ -199,7 +199,7 @@ public class King extends Mob {
 	undeadLabel:
 		for (int i=0; i < undeadsToSummon; i++) {
 			do {
-				for (int j=0; j < Level.LENGTH; j++) {
+				for (int j=0; j < Dungeon.level.length(); j++) {
 					if (PathFinder.distance[j] == dist) {
 						
 						Undead undead = new Undead();

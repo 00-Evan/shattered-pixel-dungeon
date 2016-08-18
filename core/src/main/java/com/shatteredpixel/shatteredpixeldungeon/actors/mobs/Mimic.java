@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -115,7 +116,7 @@ public class Mimic extends Mob {
 		Char ch = Actor.findChar( pos );
 		if (ch != null) {
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int n : Level.NEIGHBOURS8) {
+			for (int n : PathFinder.NEIGHBOURS8) {
 				int cell = pos + n;
 				if ((Level.passable[cell] || Level.avoid[cell]) && Actor.findChar( cell ) == null) {
 					candidates.add( cell );

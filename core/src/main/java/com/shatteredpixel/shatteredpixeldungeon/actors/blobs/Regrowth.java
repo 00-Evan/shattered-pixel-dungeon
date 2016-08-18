@@ -39,7 +39,7 @@ public class Regrowth extends Blob {
 		
 		if (volume > 0) {
 			
-			for (int i=0; i < LENGTH; i++) {
+			for (int i=0; i < Dungeon.level.length(); i++) {
 				if (off[i] > 0) {
 					int c = Dungeon.level.map[i];
 					int c1 = c;

@@ -67,7 +67,7 @@ public class StatuePainter extends Painter {
 		}
 		
 		Statue statue = new Statue();
-		statue.pos = cx + cy * Level.WIDTH;
+		statue.pos = cx + cy * level.width();
 		level.mobs.add( statue );
 	}
 }

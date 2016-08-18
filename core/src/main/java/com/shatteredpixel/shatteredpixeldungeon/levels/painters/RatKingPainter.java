@@ -38,20 +38,20 @@ public class RatKingPainter extends Painter {
 		
 		Room.Door entrance = room.entrance();
 		entrance.set( Room.Door.Type.HIDDEN );
-		int door = entrance.x + entrance.y * Level.WIDTH;
+		int door = entrance.x + entrance.y * level.width();
 		
 		for (int i=room.left + 1; i < room.right; i++) {
-			addChest( level, (room.top + 1) * Level.WIDTH + i, door );
-			addChest( level, (room.bottom - 1) * Level.WIDTH + i, door );
+			addChest( level, (room.top + 1) * level.width() + i, door );
+			addChest( level, (room.bottom - 1) * level.width() + i, door );
 		}
 		
 		for (int i=room.top + 2; i < room.bottom - 1; i++) {
-			addChest( level, i * Level.WIDTH + room.left + 1, door );
-			addChest( level, i * Level.WIDTH + room.right - 1, door );
+			addChest( level, i * level.width() + room.left + 1, door );
+			addChest( level, i * level.width() + room.right - 1, door );
 		}
 
 		RatKing king = new RatKing();
-		king.pos = room.random( 1 );
+		king.pos = level.pointToCell(room.random( 1 ));
 		level.mobs.add( king );
 	}
 	
@@ -59,8 +59,8 @@ public class RatKingPainter extends Painter {
 		
 		if (pos == door - 1 ||
 			pos == door + 1 ||
-			pos == door - Level.WIDTH ||
-			pos == door + Level.WIDTH) {
+			pos == door - level.width() ||
+			pos == door + level.width()) {
 			return;
 		}
 		

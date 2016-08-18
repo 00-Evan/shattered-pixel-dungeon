@@ -62,11 +62,11 @@ public class SewerLevel extends RegularLevel {
 	}
 	
 	protected boolean[] water() {
-		return Patch.generate( feeling == Feeling.WATER ? 0.60f : 0.45f, 5 );
+		return Patch.generate( this, feeling == Feeling.WATER ? 0.60f : 0.45f, 5 );
 	}
 	
 	protected boolean[] grass() {
-		return Patch.generate( feeling == Feeling.GRASS ? 0.60f : 0.40f, 4 );
+		return Patch.generate( this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 4 );
 	}
 
 	@Override
@@ -90,33 +90,33 @@ public class SewerLevel extends RegularLevel {
 	@Override
 	protected void decorate() {
 		
-		for (int i=0; i < WIDTH; i++) {
+		for (int i=0; i < width(); i++) {
 			if (map[i] == Terrain.WALL &&
-				map[i + WIDTH] == Terrain.WATER &&
+				map[i + width()] == Terrain.WATER &&
 				Random.Int( 4 ) == 0) {
 				
 				map[i] = Terrain.WALL_DECO;
 			}
 		}
 		
-		for (int i=WIDTH; i < LENGTH - WIDTH; i++) {
+		for (int i=width(); i < length() - width(); i++) {
 			if (map[i] == Terrain.WALL &&
-				map[i - WIDTH] == Terrain.WALL &&
-				map[i + WIDTH] == Terrain.WATER &&
+				map[i - width()] == Terrain.WALL &&
+				map[i + width()] == Terrain.WATER &&
 				Random.Int( 2 ) == 0) {
 				
 				map[i] = Terrain.WALL_DECO;
 			}
 		}
 		
-		for (int i=WIDTH + 1; i < LENGTH - WIDTH - 1; i++) {
+		for (int i=width() + 1; i < length() - width() - 1; i++) {
 			if (map[i] == Terrain.EMPTY) {
 				
 				int count =
 					(map[i + 1] == Terrain.WALL ? 1 : 0) +
 					(map[i - 1] == Terrain.WALL ? 1 : 0) +
-					(map[i + WIDTH] == Terrain.WALL ? 1 : 0) +
-					(map[i - WIDTH] == Terrain.WALL ? 1 : 0);
+					(map[i + width()] == Terrain.WALL ? 1 : 0) +
+					(map[i - width()] == Terrain.WALL ? 1 : 0);
 				
 				if (Random.Int( 16 ) < count * count) {
 					map[i] = Terrain.EMPTY_DECO;
@@ -129,7 +129,7 @@ public class SewerLevel extends RegularLevel {
 			for (Room r : roomEntrance.connected.keySet()){
 				Room.Door d = roomEntrance.connected.get(r);
 				if (d.type == Room.Door.Type.REGULAR)
-					map[d.x + d.y * WIDTH] = Terrain.SECRET_DOOR;
+					map[d.x + d.y * width()] = Terrain.SECRET_DOOR;
 			}
 		
 		placeSign();
@@ -155,7 +155,7 @@ public class SewerLevel extends RegularLevel {
 	}
 	
 	public static void addSewerVisuals( Level level, Group group ) {
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < level.length(); i++) {
 			if (level.map[i] == Terrain.WALL_DECO) {
 				group.add( new Sink( i ) );
 			}
@@ -216,7 +216,7 @@ public class SewerLevel extends RegularLevel {
 				super.update();
 				
 				if ((rippleDelay -= Game.elapsed) <= 0) {
-					Ripple ripple = GameScene.ripple( pos + WIDTH );
+					Ripple ripple = GameScene.ripple( pos + Dungeon.level.width() );
 					if (ripple != null) {
 						ripple.y -= DungeonTilemap.SIZE / 2;
 						rippleDelay = Random.Float(0.2f, 0.3f);

@@ -97,7 +97,7 @@ public class StandardPainter extends Painter {
 	private static void paintBurned( Level level, Room room ) {
 		for (int i=room.top + 1; i < room.bottom; i++) {
 			for (int j=room.left + 1; j < room.right; j++) {
-				int cell = i * Level.WIDTH + j;
+				int cell = i * level.width() + j;
 				int t = Terrain.EMBERS;
 				switch (Random.Int( 5 )) {
 				case 0:
@@ -135,8 +135,8 @@ public class StandardPainter extends Painter {
 		int shift = Random.Int( 2 );
 		for (int i=0; i < nGraves; i++) {
 			int pos = w > h ?
-				room.left + 1 + shift + i * 2 + (room.top + 2 + Random.Int( h-2 )) * Level.WIDTH :
-				(room.left + 2 + Random.Int( w-2 )) + (room.top + 1 + shift + i * 2) * Level.WIDTH;
+				room.left + 1 + shift + i * 2 + (room.top + 2 + Random.Int( h-2 )) * level.width() :
+				(room.left + 2 + Random.Int( w-2 )) + (room.top + 1 + shift + i * 2) * level.width();
 			level.drop( i == index ? Generator.random() : new Gold().random(), pos ).type = Heap.Type.TOMB;
 		}
 	}
@@ -176,14 +176,14 @@ public class StandardPainter extends Painter {
 		if (Random.Int(2) != 0){
 			Item prize = level.findPrizeItem();
 			if (prize != null) {
-				level.drop(prize, (room.center().x + center.y * level.WIDTH));
+				level.drop(prize, (room.center().x + center.y * level.width()));
 				return;
 			}
 		}
 
 		level.drop(Generator.random( Random.oneOf(
 				Generator.Category.POTION,
-				Generator.Category.SCROLL)), (room.center().x + center.y * level.WIDTH));
+				Generator.Category.SCROLL)), (room.center().x + center.y * level.width()));
 	}
 	
 	private static void paintBridge( Level level, Room room ) {

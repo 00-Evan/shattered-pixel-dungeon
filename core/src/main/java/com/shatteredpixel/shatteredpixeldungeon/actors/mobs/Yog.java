@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.YogSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -83,8 +84,8 @@ public class Yog extends Mob {
 		BurningFist fist2 = new BurningFist();
 		
 		do {
-			fist1.pos = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
-			fist2.pos = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
+			fist1.pos = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+			fist2.pos = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
 		} while (!Level.passable[fist1.pos] || !Level.passable[fist2.pos] || fist1.pos == fist2.pos);
 		
 		GameScene.add( fist1 );
@@ -128,8 +129,8 @@ public class Yog extends Mob {
 
 		ArrayList<Integer> spawnPoints = new ArrayList<>();
 		
-		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-			int p = pos + Level.NEIGHBOURS8[i];
+		for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
+			int p = pos + PathFinder.NEIGHBOURS8[i];
 			if (Actor.findChar( p ) == null && (Level.passable[p] || Level.avoid[p])) {
 				spawnPoints.add( p );
 			}
@@ -332,7 +333,7 @@ public class Yog extends Mob {
 		@Override
 		public boolean attack( Char enemy ) {
 			
-			if (!Level.adjacent( pos, enemy.pos )) {
+			if (!Dungeon.level.adjacent( pos, enemy.pos )) {
 				spend( attackDelay() );
 				
 				if (hit( this, enemy, true )) {
@@ -362,8 +363,8 @@ public class Yog extends Mob {
 		@Override
 		public boolean act() {
 			
-			for (int i=0; i < Level.NEIGHBOURS9.length; i++) {
-				GameScene.add( Blob.seed( pos + Level.NEIGHBOURS9[i], 2, Fire.class ) );
+			for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
+				GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS9[i], 2, Fire.class ) );
 			}
 			
 			return super.act();

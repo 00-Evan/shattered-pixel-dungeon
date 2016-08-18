@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -52,7 +53,7 @@ public class RotLasher extends Mob {
 
 	@Override
 	protected boolean act() {
-		if (enemy == null || !Level.adjacent(pos, enemy.pos)) {
+		if (enemy == null || !Dungeon.level.adjacent(pos, enemy.pos)) {
 			HP = Math.min(HT, HP + 3);
 		}
 		return super.act();

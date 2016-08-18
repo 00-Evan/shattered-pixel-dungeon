@@ -101,7 +101,7 @@ public class CorpseDust extends Item {
 				spawnPower -= powerNeeded;
 				int pos = 0;
 				do{
-					pos = Random.Int(Level.LENGTH);
+					pos = Random.Int(Dungeon.level.length());
 				} while (!Dungeon.visible[pos] || !Level.passable[pos] || Actor.findChar( pos ) != null);
 				Wraith.spawnAt(pos);
 				Sample.INSTANCE.play(Assets.SND_CURSED);

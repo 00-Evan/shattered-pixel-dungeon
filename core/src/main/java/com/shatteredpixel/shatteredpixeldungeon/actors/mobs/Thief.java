@@ -191,7 +191,7 @@ public class Thief extends Mob {
 						if (count-- <= 0) {
 							break;
 						}
-					} while (newPos == -1 || Dungeon.visible[newPos] || Level.distance(newPos, pos) < (count/3));
+					} while (newPos == -1 || Dungeon.visible[newPos] || Dungeon.level.distance(newPos, pos) < (count/3));
 
 					if (newPos != -1) {
 

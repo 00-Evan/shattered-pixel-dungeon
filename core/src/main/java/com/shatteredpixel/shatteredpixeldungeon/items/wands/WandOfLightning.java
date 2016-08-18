@@ -33,9 +33,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -94,28 +96,24 @@ public class WandOfLightning extends DamageWand {
 		
 		affected.add( ch );
 
-		for (int i : Level.NEIGHBOURS8) {
-			int cell = ch.pos + i;
+		int dist;
+		if (Level.water[ch.pos] && !ch.flying)
+			dist = 2;
+		else
+			dist = 1;
 
-			Char n = Actor.findChar( cell );
-			if (n != null && !affected.contains( n )) {
-				arcs.add(new Lightning.Arc(ch.pos, n.pos));
-				arc(n);
-			}
-		}
-
-		if (Level.water[ch.pos] && !ch.flying){
-			for (int i : Level.NEIGHBOURS8DIST2) {
-				int cell = ch.pos + i;
-				//player can only be hit by lightning from an adjacent enemy.
-				if (!Level.insideMap(cell) || Actor.findChar(cell) == Dungeon.hero) continue;
-
-				Char n = Actor.findChar( ch.pos + i );
-				if (n != null && !affected.contains( n )) {
-					arcs.add(new Lightning.Arc(ch.pos, n.pos));
-					arc(n);
+			PathFinder.buildDistanceMap( ch.pos, BArray.not( Level.solid, null ), dist );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE){
+					Char n = Actor.findChar( i );
+					if (n == Dungeon.hero && PathFinder.distance[i] > 1)
+						//the hero is only zapped if they are adjacent
+						continue;
+					else if (n != null && !affected.contains( n )) {
+						arcs.add(new Lightning.Arc(ch.pos, n.pos));
+						arc(n);
+					}
 				}
-			}
 		}
 	}
 	

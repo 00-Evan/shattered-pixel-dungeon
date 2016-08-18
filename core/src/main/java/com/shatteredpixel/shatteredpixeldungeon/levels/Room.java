@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.AltarPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ArmoryPainter;
@@ -133,14 +134,13 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	
 	public Type type = Type.NULL;
 	
-	public int random() {
+	public Point random() {
 		return random( 0 );
 	}
 	
-	public int random( int m ) {
-		int x = Random.Int( left + 1 + m, right - m );
-		int y = Random.Int( top + 1 + m, bottom - m );
-		return x + y * Level.WIDTH;
+	public Point random( int m ) {
+		return new Point( Random.Int( left + 1 + m, right - m ),
+				Random.Int( top + 1 + m, bottom - m ));
 	}
 	
 	public void addNeigbour( Room other ) {
@@ -165,24 +165,14 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return connected.values().iterator().next();
 	}
 	
-	public boolean inside( int p ) {
-		int x = p % Level.WIDTH;
-		int y = p / Level.WIDTH;
-		return x > left && y > top && x < right && y < bottom;
+	public boolean inside( Point p ) {
+		return p.x > left && p.y > top && p.x < right && p.y < bottom;
 	}
 	
 	public Point center() {
 		return new Point(
 			(left + right) / 2 + (((right - left) & 1) == 1 ? Random.Int( 2 ) : 0),
 			(top + bottom) / 2 + (((bottom - top) & 1) == 1 ? Random.Int( 2 ) : 0) );
-	}
-
-	public HashSet<Integer> getCells(){
-		HashSet<Point> points = getPoints();
-		HashSet<Integer> cells = new HashSet<>();
-		for( Point point : points)
-			cells.add(point.x + point.y*Level.WIDTH);
-		return cells;
 	}
 	
 	// **** Graph.Node interface ****

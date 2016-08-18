@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -35,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SuccubusSprite;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -81,7 +83,7 @@ public class Succubus extends Mob {
 	
 	@Override
 	protected boolean getCloser( int target ) {
-		if (Level.fieldOfView[target] && Level.distance( pos, target ) > 2 && delay <= 0) {
+		if (Level.fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && delay <= 0) {
 			
 			blink( target );
 			spend( -1 / speed() );
@@ -106,7 +108,7 @@ public class Succubus extends Mob {
 
 		if (Level.avoid[ cell ]){
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int n : Level.NEIGHBOURS8) {
+			for (int n : PathFinder.NEIGHBOURS8) {
 				cell = route.collisionPos + n;
 				if (Level.passable[cell] && Actor.findChar( cell ) == null) {
 					candidates.add( cell );

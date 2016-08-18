@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.mechanics;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -58,7 +59,7 @@ public class Ballistica {
 	}
 
 	private void build( int from, int to, boolean stopTarget, boolean stopChars, boolean stopTerrain ) {
-		int w = Level.WIDTH;
+		int w = Dungeon.level.width();
 
 		int x0 = from % w;
 		int x1 = to % w;
@@ -98,7 +99,7 @@ public class Ballistica {
 		int cell = from;
 
 		int err = dA / 2;
-		while (Level.insideMap(cell)) {
+		while (Dungeon.level.insideMap(cell)) {
 
 			//if we're in a wall, collide with the previous cell along the path.
 			if (stopTerrain && cell != sourcePos && !Level.passable[cell] && !Level.avoid[cell]) {

@@ -75,7 +75,7 @@ public class TalismanOfForesight extends Artifact {
 				hero.busy();
 				Sample.INSTANCE.play(Assets.SND_BEACON);
 				charge = 0;
-				for (int i = 0; i < Level.LENGTH; i++) {
+				for (int i = 0; i < Dungeon.level.length(); i++) {
 
 					int terr = Dungeon.level.map[i];
 					if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
@@ -130,27 +130,27 @@ public class TalismanOfForesight extends Artifact {
 
 			int distance = 3;
 
-			int cx = target.pos % Level.WIDTH;
-			int cy = target.pos / Level.WIDTH;
+			int cx = target.pos % Dungeon.level.width();
+			int cy = target.pos / Dungeon.level.width();
 			int ax = cx - distance;
 			if (ax < 0) {
 				ax = 0;
 			}
 			int bx = cx + distance;
-			if (bx >= Level.WIDTH) {
-				bx = Level.WIDTH - 1;
+			if (bx >= Dungeon.level.width()) {
+				bx = Dungeon.level.width() - 1;
 			}
 			int ay = cy - distance;
 			if (ay < 0) {
 				ay = 0;
 			}
 			int by = cy + distance;
-			if (by >= Level.HEIGHT) {
-				by = Level.HEIGHT - 1;
+			if (by >= Dungeon.level.height()) {
+				by = Dungeon.level.height() - 1;
 			}
 
 			for (int y = ay; y <= by; y++) {
-				for (int x = ax, p = ax + y * Level.WIDTH; x <= bx; x++, p++) {
+				for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
 
 					if (Dungeon.visible[p] && Level.secret[p] && Dungeon.level.map[p] != Terrain.SECRET_DOOR)
 							smthFound = true;

@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -77,8 +78,8 @@ public class TrapSprite extends Image {
 		alpha( 1f );
 
 		pos = trap.pos;
-		x = (pos % Level.WIDTH) * DungeonTilemap.SIZE;
-		y = (pos / Level.WIDTH) * DungeonTilemap.SIZE;
+		x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE;
+		y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE;
 
 	}
 

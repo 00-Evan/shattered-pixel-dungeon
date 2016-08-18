@@ -22,7 +22,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GooSprite;
 
@@ -39,7 +41,7 @@ public class GooWarn extends Blob {
 
 	@Override
 	protected void evolve() {
-		for (int i=0; i < LENGTH; i++) {
+		for (int i = 0; i < Dungeon.level.length(); i++) {
 
 			int offv = cur[i] > 0 ? cur[i] - 1 : 0;
 			off[i] = offv;
@@ -52,7 +54,9 @@ public class GooWarn extends Blob {
 
 	}
 
-	public void seed( int cell, int amount ) {
+	public void seed(Level level, int cell, int amount ) {
+		if (cur == null) cur = new int[level.length()];
+		if (off == null) off = new int[cur.length];
 		int diff = amount - cur[cell];
 		if (diff > 0) {
 			cur[cell] = amount;

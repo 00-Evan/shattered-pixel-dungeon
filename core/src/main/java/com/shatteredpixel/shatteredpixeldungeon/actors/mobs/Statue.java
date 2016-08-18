@@ -103,7 +103,7 @@ public class Statue extends Mob {
 
 	@Override
 	protected boolean canAttack(Char enemy) {
-		return Level.distance( pos, enemy.pos ) <= weapon.RCH;
+		return Dungeon.level.distance( pos, enemy.pos ) <= weapon.RCH;
 	}
 
 	@Override

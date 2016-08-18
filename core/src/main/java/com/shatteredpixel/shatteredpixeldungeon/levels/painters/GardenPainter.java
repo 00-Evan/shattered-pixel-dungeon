@@ -42,17 +42,17 @@ public class GardenPainter extends Painter {
 
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
 			if (Random.Int(2) == 0){
-				level.plant(new Sungrass.Seed(), room.random());
+				level.plant(new Sungrass.Seed(), level.pointToCell(room.random()));
 			}
 		} else {
 			int bushes = Random.Int(3);
 			if (bushes == 0) {
-				level.plant(new Sungrass.Seed(), room.random());
+				level.plant(new Sungrass.Seed(), level.pointToCell(room.random()));
 			} else if (bushes == 1) {
-				level.plant(new BlandfruitBush.Seed(), room.random());
+				level.plant(new BlandfruitBush.Seed(), level.pointToCell(room.random()));
 			} else if (Random.Int(5) == 0) {
-				level.plant(new Sungrass.Seed(), room.random());
-				level.plant(new BlandfruitBush.Seed(), room.random());
+				level.plant(new Sungrass.Seed(), level.pointToCell(room.random()));
+				level.plant(new BlandfruitBush.Seed(), level.pointToCell(room.random()));
 			}
 		}
 		
@@ -62,7 +62,7 @@ public class GardenPainter extends Painter {
 		}
 		for (int i=room.top + 1; i < room.bottom; i++) {
 			for (int j=room.left + 1; j < room.right; j++) {
-				light.seed( j + Level.WIDTH * i, 1 );
+				light.seed( level, j + level.width() * i, 1 );
 			}
 		}
 		level.blobs.put( Foliage.class, light );

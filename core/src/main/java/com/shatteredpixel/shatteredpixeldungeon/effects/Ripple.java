@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.Game;
@@ -38,8 +39,8 @@ public class Ripple extends Image {
 	public void reset( int p ) {
 		revive();
 		
-		x = (p % Level.WIDTH) * DungeonTilemap.SIZE;
-		y = (p / Level.WIDTH) * DungeonTilemap.SIZE;
+		x = (p % Dungeon.level.width()) * DungeonTilemap.SIZE;
+		y = (p / Dungeon.level.width()) * DungeonTilemap.SIZE;
 		
 		origin.set( width / 2, height / 2 );
 		scale.set( 0 );

@@ -50,8 +50,8 @@ public class DisintegrationTrap extends Trap {
 		if (Dungeon.visible[ pos ]) {
 			sprite.parent.add( new Beam.DeathRay( DungeonTilemap.tileCenterToWorld(pos-1),
 					DungeonTilemap.tileCenterToWorld(pos+1)));
-			sprite.parent.add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos - Level.WIDTH),
-					DungeonTilemap.tileCenterToWorld(pos + Level.WIDTH)));
+			sprite.parent.add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos - Dungeon.level.width()),
+					DungeonTilemap.tileCenterToWorld(pos + Dungeon.level.width())));
 			Sample.INSTANCE.play( Assets.SND_RAY );
 		}
 

@@ -285,7 +285,7 @@ public abstract class Mob extends Char {
 	}
 	
 	protected boolean canAttack( Char enemy ) {
-		return Level.adjacent( pos, enemy.pos );
+		return Dungeon.level.adjacent( pos, enemy.pos );
 	}
 	
 	protected boolean getCloser( int target ) {
@@ -662,7 +662,7 @@ public abstract class Mob extends Char {
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
 			enemySeen = enemyInFOV;
 			//loses target when 0-dist rolls a 6 or greater.
-			if (enemy == null || !enemyInFOV && 1 + Random.Int(Level.distance(pos, target)) >= 6){
+			if (enemy == null || !enemyInFOV && 1 + Random.Int(Dungeon.level.distance(pos, target)) >= 6){
 				target = -1;
 			} else {
 				target = enemy.pos;

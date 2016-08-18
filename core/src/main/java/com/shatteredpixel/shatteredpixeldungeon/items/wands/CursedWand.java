@@ -356,7 +356,7 @@ public class CursedWand {
 
 			//great forest fire!
 			case 0:
-				for (int i = 0; i < Level.LENGTH; i++){
+				for (int i = 0; i < Dungeon.level.length(); i++){
 					int c = Dungeon.level.map[i];
 					if (c == Terrain.EMPTY ||
 							c == Terrain.EMBERS ||

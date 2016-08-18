@@ -44,7 +44,7 @@ public class StoragePainter extends Painter {
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
-				pos = room.random();
+				pos = level.pointToCell(room.random());
 			} while (level.map[pos] != floor);
 			if (honeyPot){
 				level.drop( new Honeypot(), pos);

@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class CityBossLevel extends Level {
@@ -49,6 +50,8 @@ public class CityBossLevel extends Level {
 	private static final int HALL_WIDTH		= 7;
 	private static final int HALL_HEIGHT	= 15;
 	private static final int CHAMBER_HEIGHT	= 3;
+
+	private static final int WIDTH = 32;
 	
 	private static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
 	private static final int CENTER	= LEFT + HALL_WIDTH / 2;
@@ -95,8 +98,8 @@ public class CityBossLevel extends Level {
 		
 		int y = TOP + 1;
 		while (y < TOP + HALL_HEIGHT) {
-			map[y * WIDTH + CENTER - 2] = Terrain.STATUE_SP;
-			map[y * WIDTH + CENTER + 2] = Terrain.STATUE_SP;
+			map[y * width() + CENTER - 2] = Terrain.STATUE_SP;
+			map[y * width() + CENTER + 2] = Terrain.STATUE_SP;
 			y += 2;
 		}
 		
@@ -107,17 +110,17 @@ public class CityBossLevel extends Level {
 			map[i] = Terrain.EMPTY_SP;
 		}
 		
-		exit = (TOP - 1) * WIDTH + CENTER;
+		exit = (TOP - 1) * width() + CENTER;
 		map[exit] = Terrain.LOCKED_EXIT;
 		
-		arenaDoor = (TOP + HALL_HEIGHT) * WIDTH + CENTER;
+		arenaDoor = (TOP + HALL_HEIGHT) * width() + CENTER;
 		map[arenaDoor] = Terrain.DOOR;
 		
 		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, CHAMBER_HEIGHT, Terrain.EMPTY );
 		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 		
-		entrance = (TOP + HALL_HEIGHT + 2 + Random.Int( CHAMBER_HEIGHT - 1 )) * WIDTH + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 ));
+		entrance = (TOP + HALL_HEIGHT + 2 + Random.Int( CHAMBER_HEIGHT - 1 )) * width() + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 ));
 		map[entrance] = Terrain.ENTRANCE;
 		
 		return true;
@@ -126,7 +129,7 @@ public class CityBossLevel extends Level {
 	@Override
 	protected void decorate() {
 		
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
 			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
@@ -134,15 +137,15 @@ public class CityBossLevel extends Level {
 			}
 		}
 		
-		int sign = arenaDoor + WIDTH + 1;
+		int sign = arenaDoor + width() + 1;
 		map[sign] = Terrain.SIGN;
 	}
 	
-	public static int pedestal( boolean left ) {
+	public int pedestal( boolean left ) {
 		if (left) {
-			return (TOP + HALL_HEIGHT / 2) * WIDTH + CENTER - 2;
+			return (TOP + HALL_HEIGHT / 2) * width() + CENTER - 2;
 		} else {
-			return (TOP + HALL_HEIGHT / 2) * WIDTH + CENTER + 2;
+			return (TOP + HALL_HEIGHT / 2) * width() + CENTER + 2;
 		}
 	}
 	
@@ -162,7 +165,7 @@ public class CityBossLevel extends Level {
 			do {
 				pos =
 					Random.IntRange( LEFT + 1, LEFT + HALL_WIDTH - 2 ) +
-					Random.IntRange( TOP + HALL_HEIGHT + 1, TOP + HALL_HEIGHT  + CHAMBER_HEIGHT ) * WIDTH;
+					Random.IntRange( TOP + HALL_HEIGHT + 1, TOP + HALL_HEIGHT  + CHAMBER_HEIGHT ) * width();
 			} while (pos == entrance || map[pos] == Terrain.SIGN);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
@@ -170,9 +173,9 @@ public class CityBossLevel extends Level {
 	
 	@Override
 	public int randomRespawnCell() {
-		int cell = entrance + NEIGHBOURS8[Random.Int(8)];
+		int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		while (!passable[cell]){
-			cell = entrance + NEIGHBOURS8[Random.Int(8)];
+			cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		}
 		return cell;
 	}
@@ -191,7 +194,7 @@ public class CityBossLevel extends Level {
 			boss.state = boss.WANDERING;
 			int count = 0;
 			do {
-				boss.pos = Random.Int( LENGTH );
+				boss.pos = Random.Int( length() );
 			} while (
 				!passable[boss.pos] ||
 				!outsideEntraceRoom( boss.pos ) ||
@@ -227,7 +230,7 @@ public class CityBossLevel extends Level {
 	}
 	
 	private boolean outsideEntraceRoom( int cell ) {
-		return cell / WIDTH < arenaDoor / WIDTH;
+		return cell / width() < arenaDoor / width();
 	}
 	
 	@Override

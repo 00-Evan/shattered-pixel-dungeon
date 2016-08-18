@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -81,11 +82,11 @@ public class HallsLevel extends RegularLevel {
 	}
 	
 	protected boolean[] water() {
-		return Patch.generate( feeling == Feeling.WATER ? 0.55f : 0.40f, 6 );
+		return Patch.generate( this, feeling == Feeling.WATER ? 0.55f : 0.40f, 6 );
 	}
 	
 	protected boolean[] grass() {
-		return Patch.generate( feeling == Feeling.GRASS ? 0.55f : 0.30f, 3 );
+		return Patch.generate( this, feeling == Feeling.GRASS ? 0.55f : 0.30f, 3 );
 	}
 
 	@Override
@@ -107,12 +108,12 @@ public class HallsLevel extends RegularLevel {
 	@Override
 	protected void decorate() {
 		
-		for (int i=WIDTH + 1; i < LENGTH - WIDTH - 1; i++) {
+		for (int i=width() + 1; i < length() - width() - 1; i++) {
 			if (map[i] == Terrain.EMPTY) {
 				
 				int count = 0;
-				for (int j=0; j < NEIGHBOURS8.length; j++) {
-					if ((Terrain.flags[map[i + NEIGHBOURS8[j]]] & Terrain.PASSABLE) > 0) {
+				for (int j=0; j < PathFinder.NEIGHBOURS8.length; j++) {
+					if ((Terrain.flags[map[i + PathFinder.NEIGHBOURS8[j]]] & Terrain.PASSABLE) > 0) {
 						count++;
 					}
 				}
@@ -123,7 +124,7 @@ public class HallsLevel extends RegularLevel {
 				
 			} else
 			if (map[i] == Terrain.WALL &&
-				map[i-1] != Terrain.WALL_DECO && map[i-WIDTH] != Terrain.WALL_DECO &&
+				map[i-1] != Terrain.WALL_DECO && map[i-width()] != Terrain.WALL_DECO &&
 				Random.Int( 20 ) == 0) {
 
 				map[i] = Terrain.WALL_DECO;
@@ -174,7 +175,7 @@ public class HallsLevel extends RegularLevel {
 	}
 	
 	public static void addHallsVisuals( Level level, Group group ) {
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < level.length(); i++) {
 			if (level.map[i] == Terrain.WATER) {
 				group.add( new Stream( i ) );
 			}

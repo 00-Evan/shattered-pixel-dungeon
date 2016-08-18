@@ -63,7 +63,7 @@ public class LightningTrap extends Trap {
 			}
 
 			ArrayList<Lightning.Arc> arcs = new ArrayList<>();
-			arcs.add(new Lightning.Arc(pos - Level.WIDTH, pos + Level.WIDTH));
+			arcs.add(new Lightning.Arc(pos - Dungeon.level.width(), pos + Dungeon.level.width()));
 			arcs.add(new Lightning.Arc(pos - 1, pos + 1));
 
 			ch.sprite.parent.add( new Lightning( arcs, null ) );

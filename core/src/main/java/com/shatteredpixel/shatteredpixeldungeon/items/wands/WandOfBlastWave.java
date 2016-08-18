@@ -40,6 +40,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -67,12 +68,12 @@ public class WandOfBlastWave extends DamageWand {
 		int damage = damageRoll();
 
 		//presses all tiles in the AOE first
-		for (int i : Level.NEIGHBOURS9){
+		for (int i : PathFinder.NEIGHBOURS9){
 			Dungeon.level.press(bolt.collisionPos+i, Actor.findChar(bolt.collisionPos+i));
 		}
 
 		//throws other chars around the center.
-		for (int i  : Level.NEIGHBOURS8){
+		for (int i  : PathFinder.NEIGHBOURS8){
 			Char ch = Actor.findChar(bolt.collisionPos + i);
 
 			if (ch != null){
@@ -186,8 +187,8 @@ public class WandOfBlastWave extends DamageWand {
 		public void reset(int pos) {
 			revive();
 
-			x = (pos % Level.WIDTH) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
-			y = (pos / Level.WIDTH) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
+			x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
+			y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
 
 			time = TIME_TO_FADE;
 		}

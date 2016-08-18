@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class Bomb extends Item {
 		}
 		if (Actor.findChar( cell ) != null && !(Actor.findChar( cell ) instanceof Hero) ){
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int i : Level.NEIGHBOURS8)
+			for (int i : PathFinder.NEIGHBOURS8)
 				if (Level.passable[cell + i])
 					candidates.add(cell + i);
 			int newCell = candidates.isEmpty() ? cell : Random.element(candidates);
@@ -119,9 +120,9 @@ public class Bomb extends Item {
 		}
 
 		boolean terrainAffected = false;
-		for (int n : Level.NEIGHBOURS9) {
+		for (int n : PathFinder.NEIGHBOURS9) {
 			int c = cell + n;
-			if (c >= 0 && c < Level.LENGTH) {
+			if (c >= 0 && c < Dungeon.level.length()) {
 				if (Dungeon.visible[c]) {
 					CellEmitter.get( c ).burst( SmokeParticle.FACTORY, 4 );
 				}

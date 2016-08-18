@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
@@ -75,7 +76,7 @@ public class TenguSprite extends MobSprite {
 	
 	@Override
 	public void attack( int cell ) {
-		if (!Level.adjacent( cell, ch.pos )) {
+		if (!Dungeon.level.adjacent( cell, ch.pos )) {
 
 			final Char enemy = Actor.findChar(cell);
 

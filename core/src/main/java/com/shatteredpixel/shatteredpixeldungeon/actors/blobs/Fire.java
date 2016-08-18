@@ -40,8 +40,8 @@ public class Fire extends Blob {
 
 		boolean[] flamable = Level.flamable;
 		
-		int from = WIDTH + 1;
-		int to = Level.LENGTH - WIDTH - 1;
+		int from = Dungeon.level.width() + 1;
+		int to = Dungeon.level.length() - Dungeon.level.width() - 1;
 		
 		boolean observe = false;
 		
@@ -68,7 +68,11 @@ public class Fire extends Blob {
 				
 			} else {
 				
-				if (flamable[pos] && (cur[pos-1] > 0 || cur[pos+1] > 0 || cur[pos-WIDTH] > 0 || cur[pos+WIDTH] > 0)) {
+				if (flamable[pos]
+						&& (cur[pos-1] > 0
+						|| cur[pos+1] > 0
+						|| cur[pos-Dungeon.level.width()] > 0
+						|| cur[pos+Dungeon.level.width()] > 0)) {
 					fire = 4;
 					burn( pos );
 				} else {
@@ -103,7 +107,9 @@ public class Fire extends Blob {
 		}
 	}
 	
-	public void seed( int cell, int amount ) {
+	public void seed( Level level, int cell, int amount ) {
+		if (cur == null) cur = new int[level.length()];
+		if (off == null) off = new int[cur.length];
 		if (cur[cell] == 0) {
 			volume += amount;
 			cur[cell] = amount;

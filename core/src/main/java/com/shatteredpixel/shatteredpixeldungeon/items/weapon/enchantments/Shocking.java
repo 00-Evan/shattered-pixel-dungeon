@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -83,8 +84,8 @@ public class Shocking extends Weapon.Enchantment {
 		ch.sprite.flash();
 		
 		HashSet<Char> ns = new HashSet<Char>();
-		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-			Char n = Actor.findChar( ch.pos + Level.NEIGHBOURS8[i] );
+		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+			Char n = Actor.findChar( ch.pos + PathFinder.NEIGHBOURS8[i] );
 			if (n != null && !affected.contains( n )) {
 				arcs.add(new Lightning.Arc(ch.pos, n.pos));
 				hit(n, Random.Int(damage / 2, damage));

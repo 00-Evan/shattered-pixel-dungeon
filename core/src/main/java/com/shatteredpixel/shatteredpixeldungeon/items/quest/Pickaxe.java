@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
@@ -96,9 +97,9 @@ public class Pickaxe extends Weapon {
 				return;
 			}
 			
-			for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
+			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 				
-				final int pos = hero.pos + Level.NEIGHBOURS8[i];
+				final int pos = hero.pos + PathFinder.NEIGHBOURS8[i];
 				if (Dungeon.level.map[pos] == Terrain.WALL_DECO) {
 				
 					hero.spend( TIME_TO_MINE );

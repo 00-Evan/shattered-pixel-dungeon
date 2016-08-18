@@ -46,6 +46,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
@@ -115,8 +116,8 @@ public class LloydsBeacon extends Artifact {
 				return;
 			}
 			
-			for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-				if (Actor.findChar( hero.pos + Level.NEIGHBOURS8[i] ) != null) {
+			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+				if (Actor.findChar( hero.pos + PathFinder.NEIGHBOURS8[i] ) != null) {
 					GLog.w( Messages.get(this, "creatures") );
 					return;
 				}

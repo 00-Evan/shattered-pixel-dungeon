@@ -20,6 +20,7 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
@@ -43,7 +44,7 @@ public class AntiEntropy extends Glyph {
 
 		if (Random.Int( 8 ) == 0) {
 
-			if (Level.adjacent( attacker.pos, defender.pos )) {
+			if (Dungeon.level.adjacent( attacker.pos, defender.pos )) {
 				Buff.prolong(attacker, Frost.class, Frost.duration(attacker) * Random.Float(0.5f, 1f));
 				CellEmitter.get(attacker.pos).start(SnowParticle.FACTORY, 0.2f, 6);
 			}

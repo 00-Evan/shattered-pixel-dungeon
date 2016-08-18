@@ -43,6 +43,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Combo extends Buff implements ActionIndicator.Action {
@@ -231,8 +232,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				case CLOBBER:
 					if (enemy.isAlive()){
 						if (!enemy.properties().contains(Char.Property.IMMOVABLE)){
-							for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-								int ofs = Level.NEIGHBOURS8[i];
+							for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+								int ofs = PathFinder.NEIGHBOURS8[i];
 								if (enemy.pos - target.pos == ofs) {
 									int newPos = enemy.pos + ofs;
 									if ((Level.passable[newPos] || Level.avoid[newPos]) && Actor.findChar( newPos ) == null) {

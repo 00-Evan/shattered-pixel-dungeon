@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class TrapsPainter extends Painter {
@@ -73,7 +74,7 @@ public class TrapsPainter extends Painter {
 		Room.Door door = room.entrance();
 		door.set( Room.Door.Type.REGULAR );
 		
-		int lastRow = level.map[room.left + 1 + (room.top + 1) * Level.WIDTH] == Terrain.CHASM ? Terrain.CHASM : Terrain.EMPTY;
+		int lastRow = level.map[room.left + 1 + (room.top + 1) * level.width()] == Terrain.CHASM ? Terrain.CHASM : Terrain.EMPTY;
 
 		int x = -1;
 		int y = -1;
@@ -95,7 +96,8 @@ public class TrapsPainter extends Painter {
 			fill( level, room.left + 1, y, room.width() - 1, 1 , lastRow );
 		}
 
-		for(int cell : room.getCells()) {
+		for(Point p : room.getPoints()) {
+			int cell = level.pointToCell(p);
 			if (level.map[cell] == Terrain.TRAP){
 				try {
 					level.setTrap(((Trap) trapClass.newInstance()).reveal(), cell);
@@ -105,7 +107,7 @@ public class TrapsPainter extends Painter {
 			}
 		}
 		
-		int pos = x + y * Level.WIDTH;
+		int pos = x + y * level.width();
 		if (Random.Int( 3 ) == 0) {
 			if (lastRow == Terrain.CHASM) {
 				set( level, pos, Terrain.EMPTY );

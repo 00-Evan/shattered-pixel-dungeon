@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class BlacksmithPainter extends Painter {
@@ -39,7 +40,7 @@ public class BlacksmithPainter extends Painter {
 		for (int i=0; i < 2; i++) {
 			int pos;
 			do {
-				pos = room.random();
+				pos = level.pointToCell(room.random());
 			} while (level.map[pos] != Terrain.EMPTY_SP);
 			level.drop(
 				Generator.random( Random.oneOf(
@@ -55,11 +56,12 @@ public class BlacksmithPainter extends Painter {
 		
 		Blacksmith npc = new Blacksmith();
 		do {
-			npc.pos = room.random( 1 );
+			npc.pos = level.pointToCell(room.random( 1 ));
 		} while (level.heaps.get( npc.pos ) != null);
 		level.mobs.add( npc );
 
-		for(int cell : room.getCells()) {
+		for(Point p : room.getPoints()) {
+			int cell = level.pointToCell(p);
 			if (level.map[cell] == Terrain.TRAP){
 				level.setTrap(new FireTrap().reveal(), cell);
 			}

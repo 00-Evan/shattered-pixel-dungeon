@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 
 public class WandOfVenom extends Wand {
 
@@ -49,7 +50,7 @@ public class WandOfVenom extends Wand {
 		((VenomGas)venomGas).setStrength(level()+1);
 		GameScene.add(venomGas);
 
-		for (int i : Level.NEIGHBOURS9) {
+		for (int i : PathFinder.NEIGHBOURS9) {
 			Char ch = Actor.findChar(bolt.collisionPos + i);
 			if (ch != null) {
 				processSoulMark(ch, chargesPerCast());

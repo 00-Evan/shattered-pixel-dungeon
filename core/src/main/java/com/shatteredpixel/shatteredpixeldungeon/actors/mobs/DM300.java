@@ -106,11 +106,11 @@ public class DM300 extends Mob {
 		}
 		
 		int[] cells = {
-			step-1, step+1, step-Level.WIDTH, step+Level.WIDTH,
-			step-1-Level.WIDTH,
-			step-1+Level.WIDTH,
-			step+1-Level.WIDTH,
-			step+1+Level.WIDTH
+			step-1, step+1, step-Dungeon.level.width(), step+Dungeon.level.width(),
+			step-1-Dungeon.level.width(),
+			step-1+Dungeon.level.width(),
+			step+1-Dungeon.level.width(),
+			step+1+Dungeon.level.width()
 		};
 		int cell = cells[Random.Int( cells.length )];
 		

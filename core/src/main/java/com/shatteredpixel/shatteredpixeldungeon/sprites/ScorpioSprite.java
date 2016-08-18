@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.TextureFilm;
@@ -61,7 +62,7 @@ public class ScorpioSprite extends MobSprite {
 	
 	@Override
 	public void attack( int cell ) {
-		if (!Level.adjacent( cell, ch.pos )) {
+		if (!Dungeon.level.adjacent( cell, ch.pos )) {
 			
 			cellToAttack = cell;
 			turnTo( ch.pos , cell );

@@ -166,7 +166,7 @@ public class Tengu extends Mob {
 		for (int i=0; i < 4; i++) {
 			int trapPos;
 			do {
-				trapPos = Random.Int( Level.LENGTH );
+				trapPos = Random.Int( Dungeon.level.length() );
 			} while (!Level.fieldOfView[trapPos] || Level.solid[trapPos]);
 			
 			if (Dungeon.level.map[trapPos] == Terrain.INACTIVE_TRAP) {
@@ -182,20 +182,20 @@ public class Tengu extends Mob {
 		//if we're in phase 1, want to warp around within the room
 		if (HP > HT/2) {
 			do {
-				newPos = Random.Int(Level.LENGTH);
+				newPos = Random.Int(Dungeon.level.length());
 			} while (
 					!(Dungeon.level.map[newPos] == Terrain.INACTIVE_TRAP || Dungeon.level.map[newPos] == Terrain.TRAP)||
 							Level.solid[newPos] ||
-							Level.adjacent(newPos, enemy.pos) ||
+							Dungeon.level.adjacent(newPos, enemy.pos) ||
 							Actor.findChar(newPos) != null);
 
 		//otherwise go wherever, as long as it's a little bit away
 		} else {
 			do {
-				newPos = Random.Int(Level.LENGTH);
+				newPos = Random.Int(Dungeon.level.length());
 			} while (
 					Level.solid[newPos] ||
-					Level.distance(newPos, enemy.pos) < 8 ||
+					Dungeon.level.distance(newPos, enemy.pos) < 8 ||
 					Actor.findChar(newPos) != null);
 		}
 		

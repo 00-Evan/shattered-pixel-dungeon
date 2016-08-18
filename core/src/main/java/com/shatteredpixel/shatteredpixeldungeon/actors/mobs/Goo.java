@@ -43,10 +43,12 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GooSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
@@ -74,10 +76,10 @@ public class Goo extends Mob {
 		int max = (HP*2 <= HT) ? 15 : 10;
 		if (pumpedUp > 0) {
 			pumpedUp = 0;
-			for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
-				int j = pos + Level.NEIGHBOURS9DIST2[i];
-				if (Level.insideMap(j) && Level.passable[j])
-					CellEmitter.get(j).burst(ElmoParticle.FACTORY, 10);
+			PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE)
+					CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
 			}
 			Sample.INSTANCE.play( Assets.SND_BURNING );
 			return Random.NormalIntRange( min*3, max*3 );
@@ -142,10 +144,10 @@ public class Goo extends Mob {
 	protected boolean doAttack( Char enemy ) {
 		if (pumpedUp == 1) {
 			((GooSprite)sprite).pumpUp();
-			for (int i = 0; i < Level.NEIGHBOURS9DIST2.length; i++) {
-				int j = pos + Level.NEIGHBOURS9DIST2[i];
-				if (Level.insideMap(j) && Level.passable[j])
-					GameScene.add(Blob.seed(j, 2, GooWarn.class));
+			PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE)
+					GameScene.add(Blob.seed(i, 2, GooWarn.class));
 			}
 			pumpedUp++;
 
@@ -176,9 +178,9 @@ public class Goo extends Mob {
 
 			((GooSprite)sprite).pumpUp();
 
-			for (int i=0; i < Level.NEIGHBOURS9.length; i++) {
-				int j = pos + Level.NEIGHBOURS9[i];
-				if (Level.passable[j]) {
+			for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
+				int j = pos + PathFinder.NEIGHBOURS9[i];
+				if (!Level.solid[j]) {
 					GameScene.add(Blob.seed(j, 2, GooWarn.class));
 				}
 			}

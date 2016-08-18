@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.DarkBlock;
@@ -109,7 +110,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		ch.sprite = this;
 		
 		place( ch.pos );
-		turnTo( ch.pos, Random.Int( Level.LENGTH ) );
+		turnTo( ch.pos, Random.Int( Dungeon.level.length() ) );
 
 		ch.updateSpriteState();
 	}
@@ -119,8 +120,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		final int csize = DungeonTilemap.SIZE;
 		
 		return new PointF(
-			PixelScene.align(Camera.main, ((cell % Level.WIDTH) + 0.5f) * csize - width * 0.5f),
-			PixelScene.align(Camera.main, ((cell / Level.WIDTH) + 1.0f) * csize - height)
+			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width * 0.5f),
+			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height)
 		);
 	}
 	
@@ -191,8 +192,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 	
 	public void turnTo( int from, int to ) {
-		int fx = from % Level.WIDTH;
-		int tx = to % Level.WIDTH;
+		int fx = from % Dungeon.level.width();
+		int tx = to % Dungeon.level.width();
 		if (tx > fx) {
 			flipHorizontal = false;
 		} else if (tx < fx) {
@@ -203,7 +204,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public void jump( int from, int to, Callback callback ) {
 		jumpCallback = callback;
 
-		int distance = Level.distance( from, to );
+		int distance = Dungeon.level.distance( from, to );
 		jumpTweener = new JumpTweener( this, worldToCamera( to ), distance * 4, distance * 0.1f );
 		jumpTweener.listener = this;
 		parent.add( jumpTweener );

@@ -34,20 +34,26 @@ public class PathFinder {
 	private static int size = 0;
 
 	private static int[] dir;
+
+	//performance-light shortcuts for some common pathfinder cases
+	public static int[] NEIGHBOURS4;
+	public static int[] NEIGHBOURS8;
+	public static int[] NEIGHBOURS9;
 	
 	public static void setMapSize( int width, int height ) {
 		
 		int size = width * height;
-		
-		if (PathFinder.size != size) {
 			
-			PathFinder.size = size;
-			distance = new int[size];
-			goals = new boolean[size];
-			queue = new int[size];
-			
-			dir = new int[]{-1, +1, -width, +width, -width-1, -width+1, +width-1, +width+1};
-		}
+		PathFinder.size = size;
+		distance = new int[size];
+		goals = new boolean[size];
+		queue = new int[size];
+
+		dir = new int[]{-1, +1, -width, +width, -width-1, -width+1, +width-1, +width+1};
+
+		NEIGHBOURS4 = new int[]{-width, +1, +width, -1};
+		NEIGHBOURS8 = new int[]{-width, +1-width, +1, +1+width, +width, -1+width, -1, -1-width};
+		NEIGHBOURS9 = new int[]{0, -width, +1-width, +1, +1+width, +width, -1+width, -1, -1-width};
 	}
 	
 	public static Path find( int from, int to, boolean[] passable ) {

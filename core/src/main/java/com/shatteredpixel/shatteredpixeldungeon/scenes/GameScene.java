@@ -158,8 +158,8 @@ public class GameScene extends PixelScene {
 		add( terrain );
 
 		water = new SkinnedBlock(
-			Level.WIDTH * DungeonTilemap.SIZE,
-			Level.HEIGHT * DungeonTilemap.SIZE,
+			Dungeon.level.width() * DungeonTilemap.SIZE,
+			Dungeon.level.height() * DungeonTilemap.SIZE,
 			Dungeon.level.waterTex() );
 		terrain.add( water );
 		
@@ -228,7 +228,7 @@ public class GameScene extends PixelScene {
 			addBlobSprite( blob );
 		}
 
-		fog = new FogOfWar( Level.WIDTH, Level.HEIGHT );
+		fog = new FogOfWar( Dungeon.level.width(), Dungeon.level.height() );
 		fog.updateVisibility( Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped );
 		add( fog );
 
@@ -664,20 +664,20 @@ public class GameScene extends PixelScene {
 
 	public static void resetMap() {
 		if (scene != null) {
-			scene.tiles.map(Dungeon.level.map, Level.WIDTH );
+			scene.tiles.map(Dungeon.level.map, Dungeon.level.width() );
 
 		}
 	}
 
 	public static void updateMap() {
 		if (scene != null) {
-			scene.tiles.updated.set( 0, 0, Level.WIDTH, Level.HEIGHT );
+			scene.tiles.updated.set( 0, 0, Dungeon.level.width(), Dungeon.level.height() );
 		}
 	}
 	
 	public static void updateMap( int cell ) {
 		if (scene != null) {
-			scene.tiles.updated.union( cell % Level.WIDTH, cell / Level.WIDTH );
+			scene.tiles.updated.union( cell % Dungeon.level.width(), cell / Dungeon.level.width() );
 		}
 	}
 	
@@ -785,7 +785,7 @@ public class GameScene extends PixelScene {
 			return;
 		}
 
-		if (cell < 0 || cell > Level.LENGTH || (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])) {
+		if (cell < 0 || cell > Dungeon.level.length() || (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])) {
 			GameScene.show( new WndMessage( Messages.get(GameScene.class, "dont_know") ) ) ;
 			return;
 		}

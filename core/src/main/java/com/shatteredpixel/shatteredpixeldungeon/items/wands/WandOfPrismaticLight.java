@@ -41,8 +41,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -100,10 +102,8 @@ public class WandOfPrismaticLight extends DamageWand {
 	private void affectMap(Ballistica beam){
 		boolean noticed = false;
 		for (int c: beam.subPath(0, beam.dist)){
-			for (int n : Level.NEIGHBOURS9DIST2){
+			for (int n : PathFinder.NEIGHBOURS9){
 				int cell = c+n;
-				if (!Level.insideMap(cell))
-					continue;
 
 				if (Level.discoverable[cell])
 					Dungeon.level.mapped[cell] = true;

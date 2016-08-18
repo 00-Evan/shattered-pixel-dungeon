@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -48,8 +49,8 @@ public class Multiplicity extends Glyph {
 			
 			ArrayList<Integer> respawnPoints = new ArrayList<Integer>();
 			
-			for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-				int p = defender.pos + Level.NEIGHBOURS8[i];
+			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+				int p = defender.pos + PathFinder.NEIGHBOURS8[i];
 				if (Actor.findChar( p ) == null && (Level.passable[p] || Level.avoid[p])) {
 					respawnPoints.add( p );
 				}

@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 
 import java.util.HashSet;
 
@@ -100,9 +101,9 @@ public class WandOfFireblast extends DamageWand {
 			affectedCells.add(cell);
 			if (strength >= 1.5f) {
 				visualCells.remove(cell);
-				spreadFlames(cell + Level.NEIGHBOURS8[left(direction)], strength - 1.5f);
-				spreadFlames(cell + Level.NEIGHBOURS8[direction], strength - 1.5f);
-				spreadFlames(cell + Level.NEIGHBOURS8[right(direction)], strength - 1.5f);
+				spreadFlames(cell + PathFinder.NEIGHBOURS8[left(direction)], strength - 1.5f);
+				spreadFlames(cell + PathFinder.NEIGHBOURS8[direction], strength - 1.5f);
+				spreadFlames(cell + PathFinder.NEIGHBOURS8[right(direction)], strength - 1.5f);
 			} else {
 				visualCells.add(cell);
 			}
@@ -134,8 +135,8 @@ public class WandOfFireblast extends DamageWand {
 		int maxDist = (int)(4 * Math.pow(1.5,(chargesPerCast()-1)));
 		int dist = Math.min(bolt.dist, maxDist);
 
-		for (int i = 0; i < Level.NEIGHBOURS8.length; i++){
-			if (bolt.sourcePos+Level.NEIGHBOURS8[i] == bolt.path.get(1)){
+		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++){
+			if (bolt.sourcePos+PathFinder.NEIGHBOURS8[i] == bolt.path.get(1)){
 				direction = i;
 				break;
 			}
@@ -146,9 +147,9 @@ public class WandOfFireblast extends DamageWand {
 			strength--; //as we start at dist 1, not 0.
 			affectedCells.add(c);
 			if (strength > 1) {
-				spreadFlames(c + Level.NEIGHBOURS8[left(direction)], strength - 1);
-				spreadFlames(c + Level.NEIGHBOURS8[direction], strength - 1);
-				spreadFlames(c + Level.NEIGHBOURS8[right(direction)], strength - 1);
+				spreadFlames(c + PathFinder.NEIGHBOURS8[left(direction)], strength - 1);
+				spreadFlames(c + PathFinder.NEIGHBOURS8[direction], strength - 1);
+				spreadFlames(c + PathFinder.NEIGHBOURS8[right(direction)], strength - 1);
 			} else {
 				visualCells.add(c);
 			}

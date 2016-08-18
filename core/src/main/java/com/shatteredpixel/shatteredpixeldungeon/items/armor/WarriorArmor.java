@@ -35,6 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
+
 public class WarriorArmor extends ClassArmor {
 	
 	private static int LEAP_TIME	= 1;
@@ -74,8 +76,8 @@ public class WarriorArmor extends ClassArmor {
 						Dungeon.level.press(dest, curUser);
 						Dungeon.observe();
 
-						for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
-							Char mob = Actor.findChar(curUser.pos + Level.NEIGHBOURS8[i]);
+						for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+							Char mob = Actor.findChar(curUser.pos + PathFinder.NEIGHBOURS8[i]);
 							if (mob != null && mob != curUser) {
 								Buff.prolong(mob, Paralysis.class, SHOCK_TIME);
 							}

@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -65,8 +66,8 @@ public class PlantSprite extends Image {
 		alpha( 1f );
 		
 		pos = plant.pos;
-		x = (pos % Level.WIDTH) * DungeonTilemap.SIZE;
-		y = (pos / Level.WIDTH) * DungeonTilemap.SIZE;
+		x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE;
+		y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE;
 
 		state = State.GROWING;
 		time = DELAY;

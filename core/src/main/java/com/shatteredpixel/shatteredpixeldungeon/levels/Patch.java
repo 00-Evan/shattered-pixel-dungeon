@@ -20,19 +20,20 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.watabou.utils.Random;
 
 public class Patch {
 	
-	private static boolean[] cur = new boolean[Level.LENGTH];
-	private static boolean[] off = new boolean[Level.LENGTH];
-	
-	public static boolean[] generate( float seed, int nGen ) {
+	public static boolean[] generate( Level level, float seed, int nGen ) {
 		
-		int w = Level.WIDTH;
-		int h = Level.HEIGHT;
+		int w = level.width();
+		int h = level.width();
+
+		boolean[] cur = new boolean[level.length()];
+		boolean[] off = new boolean[level.length()];
 		
-		for (int i=0; i < Level.LENGTH; i++) {
+		for (int i=0; i < level.length(); i++) {
 			off[i] = Random.Float() < seed;
 		}
 		

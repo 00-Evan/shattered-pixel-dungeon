@@ -56,7 +56,7 @@ public class MassGravePainter extends Painter {
 
 			int pos;
 			do {
-				pos = room.random();
+				pos = level.pointToCell(room.random());
 			} while (level.map[pos] != Terrain.EMPTY_SP || level.findMob(pos) != null);
 			skele.pos = pos;
 			level.mobs.add( skele );
@@ -75,7 +75,7 @@ public class MassGravePainter extends Painter {
 		for (Item item : items){
 			int pos;
 			do {
-				pos = room.random();
+				pos = level.pointToCell(room.random());
 			} while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get(pos) != null);
 			Heap h = level.drop(item, pos);
 			h.type = Heap.Type.SKELETON;

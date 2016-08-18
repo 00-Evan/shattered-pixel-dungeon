@@ -68,7 +68,7 @@ public class PoolPainter extends Painter {
 			
 		}
 		
-		int pos = x + y * Level.WIDTH;
+		int pos = x + y * level.width();
 		level.drop( prize( level ), pos ).type =
 			Random.Int( 3 ) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
 		set( level, pos, Terrain.PEDESTAL );
@@ -78,7 +78,7 @@ public class PoolPainter extends Painter {
 		for (int i=0; i < NPIRANHAS; i++) {
 			Piranha piranha = new Piranha();
 			do {
-				piranha.pos = room.random();
+				piranha.pos = level.pointToCell(room.random());
 			} while (level.map[piranha.pos] != Terrain.WATER|| level.findMob( piranha.pos ) != null);
 			level.mobs.add( piranha );
 		}

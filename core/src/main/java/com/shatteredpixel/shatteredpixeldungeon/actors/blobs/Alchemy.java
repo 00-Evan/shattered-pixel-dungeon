@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.utils.Bundle;
 
 public class Alchemy extends Blob {
@@ -35,8 +36,8 @@ public class Alchemy extends Blob {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		
-		for (int i=0; i < LENGTH; i++) {
+
+		for (int i=0; i < cur.length; i++) {
 			if (cur[i] > 0) {
 				pos = i;
 				break;
@@ -54,7 +55,10 @@ public class Alchemy extends Blob {
 	}
 	
 	@Override
-	public void seed( int cell, int amount ) {
+	public void seed( Level level, int cell, int amount ) {
+		if (cur == null) cur = new int[level.length()];
+		if (off == null) off = new int[cur.length];
+
 		cur[pos] = 0;
 		pos = cell;
 		volume = cur[pos] = amount;

@@ -70,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -99,11 +100,11 @@ public class ShopPainter extends Painter {
 		for (Item item : itemsToSpawn) {
 			
 			Point xy = p2xy( room, (pos + per) % per );
-			int cell = xy.x + xy.y * Level.WIDTH;
+			int cell = xy.x + xy.y * level.width();
 			
 			if (level.heaps.get( cell ) != null) {
 				do {
-					cell = room.random();
+					cell = level.pointToCell(room.random());
 				} while (level.heaps.get( cell ) != null);
 			}
 			
@@ -304,7 +305,7 @@ public class ShopPainter extends Painter {
 		
 		int pos;
 		do {
-			pos = room.random();
+			pos = level.pointToCell(room.random());
 		} while (level.heaps.get( pos ) != null);
 		
 		Mob shopkeeper = level instanceof LastShopLevel ? new ImpShopkeeper() : new Shopkeeper();
@@ -312,8 +313,8 @@ public class ShopPainter extends Painter {
 		level.mobs.add( shopkeeper );
 		
 		if (level instanceof LastShopLevel) {
-			for (int i=0; i < Level.NEIGHBOURS9.length; i++) {
-				int p = shopkeeper.pos + Level.NEIGHBOURS9[i];
+			for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
+				int p = shopkeeper.pos + PathFinder.NEIGHBOURS9[i];
 				if (level.map[p] == Terrain.EMPTY_SP) {
 					level.map[p] = Terrain.WATER;
 				}

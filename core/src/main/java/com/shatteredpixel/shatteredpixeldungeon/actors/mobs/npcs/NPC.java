@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public abstract class NPC extends Mob {
@@ -41,7 +42,7 @@ public abstract class NPC extends Mob {
 		if (heap != null) {
 			int n;
 			do {
-				n = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
+				n = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
 			} while (!Level.passable[n] && !Level.avoid[n]);
 			Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( pos );
 		}

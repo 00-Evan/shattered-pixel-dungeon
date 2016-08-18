@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -58,8 +59,8 @@ public class SummoningTrap extends Trap {
 
 		ArrayList<Integer> candidates = new ArrayList<>();
 
-		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-			int p = pos + Level.NEIGHBOURS8[i];
+		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+			int p = pos + PathFinder.NEIGHBOURS8[i];
 			if (Actor.findChar( p ) == null && (Level.passable[p] || Level.avoid[p])) {
 				candidates.add( p );
 			}

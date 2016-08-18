@@ -134,7 +134,7 @@ public class LastShopLevel extends RegularLevel {
 	@Override
 	protected void decorate() {
 		
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				
 				map[i] = Terrain.EMPTY_DECO;
@@ -169,7 +169,7 @@ public class LastShopLevel extends RegularLevel {
 		if (item != null) {
 			int pos;
 			do {
-				pos = roomEntrance.random();
+				pos = pointToCell(roomEntrance.random());
 			} while (pos == entrance || map[pos] == Terrain.SIGN);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
@@ -177,7 +177,7 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	public int randomRespawnCell() {
-		return roomEntrance.random();
+		return pointToCell( roomEntrance.random() );
 	}
 	
 	@Override
@@ -216,12 +216,12 @@ public class LastShopLevel extends RegularLevel {
 
 	@Override
 	protected boolean[] water() {
-		return Patch.generate( 0.35f, 4 );
+		return Patch.generate( this, 0.35f, 4 );
 	}
 
 	@Override
 	protected boolean[] grass() {
-		return Patch.generate( 0.30f, 3 );
+		return Patch.generate( this, 0.30f, 3 );
 	}
 
 	@Override

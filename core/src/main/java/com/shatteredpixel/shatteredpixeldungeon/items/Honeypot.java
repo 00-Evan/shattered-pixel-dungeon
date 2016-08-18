@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class Honeypot extends Item {
 			ArrayList<Integer> candidates = new ArrayList<Integer>();
 			boolean[] passable = Level.passable;
 			
-			for (int n : Level.NEIGHBOURS4) {
+			for (int n : PathFinder.NEIGHBOURS4) {
 				int c = pos + n;
 				if (passable[c] && Actor.findChar( c ) == null) {
 					candidates.add( c );

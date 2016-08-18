@@ -44,6 +44,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -175,13 +176,13 @@ public class PrisonBossLevel extends Level {
 		if (ch == Dungeon.hero){
 			//hero enters tengu's chamber
 			if (state == State.START
-					&& ((Room)new Room().set(2, 25, 8, 32)).inside(cell)){
+					&& ((Room)new Room().set(2, 25, 8, 32)).inside(cellToPoint(cell))){
 				progress();
 			}
 
 			//hero finishes the maze
 			else if (state == State.MAZE
-					&& ((Room)new Room().set(4, 0, 7, 4)).inside(cell)){
+					&& ((Room)new Room().set(4, 0, 7, 4)).inside(cellToPoint(cell))){
 				progress();
 			}
 		}
@@ -189,7 +190,7 @@ public class PrisonBossLevel extends Level {
 
 	@Override
 	public int randomRespawnCell() {
-		return 5+2*32 + NEIGHBOURS8[Random.Int(8)]; //random cell adjacent to the entrance.
+		return 5+2*32 + PathFinder.NEIGHBOURS8[Random.Int(8)]; //random cell adjacent to the entrance.
 	}
 	
 	@Override
@@ -220,7 +221,7 @@ public class PrisonBossLevel extends Level {
 		}
 		traps.clear();
 
-		for (int i = 0; i < Level.LENGTH; i++){
+		for (int i = 0; i < Dungeon.level.length(); i++){
 			if (map[i] == Terrain.INACTIVE_TRAP) {
 				Trap t = new SpearTrap().reveal();
 				t.active = false;
@@ -237,13 +238,13 @@ public class PrisonBossLevel extends Level {
 		cleanWalls();
 
 		exit = entrance = 0;
-		for (int i = 0; i < LENGTH; i ++)
+		for (int i = 0; i < length(); i ++)
 			if (map[i] == Terrain.ENTRANCE)
 				entrance = i;
 			else if (map[i] == Terrain.EXIT)
 				exit = i;
 
-		visited = mapped = new boolean[LENGTH];
+		visited = mapped = new boolean[length()];
 		for (Blob blob: blobs.values()){
 			blob.fullyClear();
 		}
@@ -255,19 +256,19 @@ public class PrisonBossLevel extends Level {
 
 	private void clearEntities(Room safeArea){
 		for (Heap heap : heaps.values()){
-			if (safeArea == null || !safeArea.inside(heap.pos)){
+			if (safeArea == null || !safeArea.inside(cellToPoint(heap.pos))){
 				for (Item item : heap.items)
 					storedItems.add(item);
 				heap.destroy();
 			}
 		}
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])){
-			if (mob != tengu && (safeArea == null || !safeArea.inside(mob.pos))){
+			if (mob != tengu && (safeArea == null || !safeArea.inside(cellToPoint(mob.pos)))){
 				mob.destroy();
 			}
 		}
 		for (Plant plant : plants.values()){
-			if (safeArea == null || !safeArea.inside(plant.pos)){
+			if (safeArea == null || !safeArea.inside(cellToPoint(plant.pos))){
 				plants.remove(plant.pos);
 				plant.sprite.kill();
 			}
@@ -328,7 +329,7 @@ public class PrisonBossLevel extends Level {
 
 				tengu.state = tengu.HUNTING;
 				do {
-					tengu.pos = Random.Int(LENGTH);
+					tengu.pos = Random.Int(length());
 				} while (solid[tengu.pos] || distance(tengu.pos, Dungeon.hero.pos) < 8);
 				GameScene.add(tengu);
 				tengu.notice();

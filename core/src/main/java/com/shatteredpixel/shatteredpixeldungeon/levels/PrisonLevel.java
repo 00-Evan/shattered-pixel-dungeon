@@ -66,11 +66,11 @@ public class PrisonLevel extends RegularLevel {
 	}
 	
 	protected boolean[] water() {
-		return Patch.generate( feeling == Feeling.WATER ? 0.65f : 0.45f, 4 );
+		return Patch.generate( this, feeling == Feeling.WATER ? 0.65f : 0.45f, 4 );
 	}
 	
 	protected boolean[] grass() {
-		return Patch.generate( feeling == Feeling.GRASS ? 0.60f : 0.40f, 3 );
+		return Patch.generate( this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 3 );
 	}
 
 	@Override
@@ -103,20 +103,20 @@ public class PrisonLevel extends RegularLevel {
 	@Override
 	protected void decorate() {
 		
-		for (int i=WIDTH + 1; i < LENGTH - WIDTH - 1; i++) {
+		for (int i=width() + 1; i < length() - width() - 1; i++) {
 			if (map[i] == Terrain.EMPTY) {
 				
 				float c = 0.05f;
-				if (map[i + 1] == Terrain.WALL && map[i + WIDTH] == Terrain.WALL) {
+				if (map[i + 1] == Terrain.WALL && map[i + width()] == Terrain.WALL) {
 					c += 0.2f;
 				}
-				if (map[i - 1] == Terrain.WALL && map[i + WIDTH] == Terrain.WALL) {
+				if (map[i - 1] == Terrain.WALL && map[i + width()] == Terrain.WALL) {
 					c += 0.2f;
 				}
-				if (map[i + 1] == Terrain.WALL && map[i - WIDTH] == Terrain.WALL) {
+				if (map[i + 1] == Terrain.WALL && map[i - width()] == Terrain.WALL) {
 					c += 0.2f;
 				}
-				if (map[i - 1] == Terrain.WALL && map[i - WIDTH] == Terrain.WALL) {
+				if (map[i - 1] == Terrain.WALL && map[i - width()] == Terrain.WALL) {
 					c += 0.2f;
 				}
 				
@@ -126,19 +126,19 @@ public class PrisonLevel extends RegularLevel {
 			}
 		}
 		
-		for (int i=0; i < WIDTH; i++) {
+		for (int i=0; i < width(); i++) {
 			if (map[i] == Terrain.WALL &&
-				(map[i + WIDTH] == Terrain.EMPTY || map[i + WIDTH] == Terrain.EMPTY_SP) &&
+				(map[i + width()] == Terrain.EMPTY || map[i + width()] == Terrain.EMPTY_SP) &&
 				Random.Int( 6 ) == 0) {
 				
 				map[i] = Terrain.WALL_DECO;
 			}
 		}
 		
-		for (int i=WIDTH; i < LENGTH - WIDTH; i++) {
+		for (int i=width(); i < length() - width(); i++) {
 			if (map[i] == Terrain.WALL &&
-				map[i - WIDTH] == Terrain.WALL &&
-				(map[i + WIDTH] == Terrain.EMPTY || map[i + WIDTH] == Terrain.EMPTY_SP) &&
+				map[i - width()] == Terrain.WALL &&
+				(map[i + width()] == Terrain.EMPTY || map[i + width()] == Terrain.EMPTY_SP) &&
 				Random.Int( 3 ) == 0) {
 				
 				map[i] = Terrain.WALL_DECO;
@@ -178,7 +178,7 @@ public class PrisonLevel extends RegularLevel {
 	}
 
 	public static void addPrisonVisuals(Level level, Group group){
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < level.length(); i++) {
 			if (level.map[i] == Terrain.WALL_DECO) {
 				group.add( new Torch( i ) );
 			}

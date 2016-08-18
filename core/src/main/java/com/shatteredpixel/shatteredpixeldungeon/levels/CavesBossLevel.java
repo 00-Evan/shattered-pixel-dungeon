@@ -41,6 +41,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class CavesBossLevel extends Level {
@@ -51,7 +52,10 @@ public class CavesBossLevel extends Level {
 		
 		viewDistance = 6;
 	}
-	
+
+	private static final int WIDTH = 32;
+	private static final int HEIGHT = 32;
+
 	private static final int ROOM_LEFT		= WIDTH / 2 - 2;
 	private static final int ROOM_RIGHT		= WIDTH / 2 + 2;
 	private static final int ROOM_TOP		= HEIGHT / 2 - 2;
@@ -103,21 +107,21 @@ public class CavesBossLevel extends Level {
 				right = ROOM_RIGHT + 3;
 			} else {
 				left = ROOM_LEFT - 3;
-				right = Random.Int( ROOM_RIGHT + 3, WIDTH - 1 );
+				right = Random.Int( ROOM_RIGHT + 3, width() - 1 );
 			}
 			if (Random.Int( 2 ) == 0) {
 				top = Random.Int( 2, ROOM_TOP - 3 );
 				bottom = ROOM_BOTTOM + 3;
 			} else {
 				top = ROOM_LEFT - 3;
-				bottom = Random.Int( ROOM_TOP + 3, HEIGHT - 1 );
+				bottom = Random.Int( ROOM_TOP + 3, height() - 1 );
 			}
 			
 			Painter.fill( this, left, top, right - left + 1, bottom - top + 1, Terrain.EMPTY );
 			
 			if (top < topMost) {
 				topMost = top;
-				exit = Random.Int( left, right ) + (top - 1) * WIDTH;
+				exit = Random.Int( left, right ) + (top - 1) * width();
 			}
 		}
 		
@@ -131,21 +135,21 @@ public class CavesBossLevel extends Level {
 		Painter.fill( this, ROOM_LEFT, ROOM_TOP,
 			ROOM_RIGHT - ROOM_LEFT + 1, 1, Terrain.EMPTY_DECO );
 		
-		arenaDoor = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + (ROOM_BOTTOM + 1) * WIDTH;
+		arenaDoor = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + (ROOM_BOTTOM + 1) * width();
 		map[arenaDoor] = Terrain.DOOR;
 		
 		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) +
-			Random.Int( ROOM_TOP + 1, ROOM_BOTTOM - 1 ) * WIDTH;
+			Random.Int( ROOM_TOP + 1, ROOM_BOTTOM - 1 ) * width();
 		map[entrance] = Terrain.ENTRANCE;
 		
-		boolean[] patch = Patch.generate( 0.45f, 6 );
-		for (int i=0; i < LENGTH; i++) {
+		boolean[] patch = Patch.generate( this, 0.45f, 6 );
+		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.EMPTY && patch[i]) {
 				map[i] = Terrain.WATER;
 			}
 		}
 
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 6 ) == 0) {
 				map[i] = Terrain.INACTIVE_TRAP;
 				Trap t = new ToxicTrap().reveal();
@@ -160,7 +164,7 @@ public class CavesBossLevel extends Level {
 	@Override
 	protected void decorate() {
 		
-		for (int i=WIDTH + 1; i < LENGTH - WIDTH; i++) {
+		for (int i=width() + 1; i < length() - width(); i++) {
 			if (map[i] == Terrain.EMPTY) {
 				int n = 0;
 				if (map[i+1] == Terrain.WALL) {
@@ -169,10 +173,10 @@ public class CavesBossLevel extends Level {
 				if (map[i-1] == Terrain.WALL) {
 					n++;
 				}
-				if (map[i+WIDTH] == Terrain.WALL) {
+				if (map[i+width()] == Terrain.WALL) {
 					n++;
 				}
-				if (map[i-WIDTH] == Terrain.WALL) {
+				if (map[i-width()] == Terrain.WALL) {
 					n++;
 				}
 				if (Random.Int( 8 ) <= n) {
@@ -181,7 +185,7 @@ public class CavesBossLevel extends Level {
 			}
 		}
 		
-		for (int i=0; i < LENGTH; i++) {
+		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
 				map[i] = Terrain.WALL_DECO;
 			}
@@ -189,7 +193,7 @@ public class CavesBossLevel extends Level {
 		
 		int sign;
 		do {
-			sign = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + Random.Int( ROOM_TOP, ROOM_BOTTOM ) * WIDTH;
+			sign = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + Random.Int( ROOM_TOP, ROOM_BOTTOM ) * width();
 		} while (sign == entrance || map[sign] == Terrain.INACTIVE_TRAP);
 		map[sign] = Terrain.SIGN;
 	}
@@ -208,7 +212,7 @@ public class CavesBossLevel extends Level {
 		if (item != null) {
 			int pos;
 			do {
-				pos = Random.IntRange( ROOM_LEFT, ROOM_RIGHT ) + Random.IntRange( ROOM_TOP + 1, ROOM_BOTTOM ) * WIDTH;
+				pos = Random.IntRange( ROOM_LEFT, ROOM_RIGHT ) + Random.IntRange( ROOM_TOP + 1, ROOM_BOTTOM ) * width();
 			} while (pos == entrance || map[pos] == Terrain.SIGN);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
@@ -216,9 +220,9 @@ public class CavesBossLevel extends Level {
 	
 	@Override
 	public int randomRespawnCell() {
-		int cell = entrance + NEIGHBOURS8[Random.Int(8)];
+		int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		while (!passable[cell]){
-			cell = entrance + NEIGHBOURS8[Random.Int(8)];
+			cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		}
 		return cell;
 	}
@@ -236,7 +240,7 @@ public class CavesBossLevel extends Level {
 			Mob boss = Bestiary.mob( Dungeon.depth );
 			boss.state = boss.WANDERING;
 			do {
-				boss.pos = Random.Int( LENGTH );
+				boss.pos = Random.Int( length() );
 			} while (
 				!passable[boss.pos] ||
 				!outsideEntraceRoom( boss.pos ) ||
@@ -272,8 +276,8 @@ public class CavesBossLevel extends Level {
 	}
 	
 	private boolean outsideEntraceRoom( int cell ) {
-		int cx = cell % WIDTH;
-		int cy = cell / WIDTH;
+		int cx = cell % width();
+		int cy = cell / width();
 		return cx < ROOM_LEFT-1 || cx > ROOM_RIGHT+1 || cy < ROOM_TOP-1 || cy > ROOM_BOTTOM+1;
 	}
 	

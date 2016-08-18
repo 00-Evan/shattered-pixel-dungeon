@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class WellWater extends Blob {
@@ -39,8 +40,8 @@ public class WellWater extends Blob {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		
-		for (int i=0; i < LENGTH; i++) {
+
+		for (int i=0; i < cur.length; i++) {
 			if (cur[i] > 0) {
 				pos = i;
 				break;
@@ -99,7 +100,7 @@ public class WellWater extends Blob {
 				
 				int newPlace;
 				do {
-					newPlace = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
+					newPlace = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
 				} while (!Level.passable[newPlace] && !Level.avoid[newPlace]);
 				Dungeon.level.drop( heap.pickUp(), newPlace ).sprite.drop( pos );
 				
@@ -123,7 +124,9 @@ public class WellWater extends Blob {
 	}
 	
 	@Override
-	public void seed( int cell, int amount ) {
+	public void seed( Level level, int cell, int amount ) {
+		if (cur == null) cur = new int[level.length()];
+		if (off == null) off = new int[cur.length];
 		cur[pos] = 0;
 		pos = cell;
 		volume = cur[pos] = amount;

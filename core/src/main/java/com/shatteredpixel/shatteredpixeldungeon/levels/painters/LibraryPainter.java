@@ -61,10 +61,10 @@ public class LibraryPainter extends Painter {
 			b = new Point( entrance.x-1, room.bottom-1 );
 			fill( level, room.left + 1, room.top+1, room.width() - 1, 1 , Terrain.BOOKSHELF );
 		}
-		if (a != null && level.map[a.x + a.y * Level.WIDTH] == Terrain.EMPTY) {
+		if (a != null && level.map[a.x + a.y * level.width()] == Terrain.EMPTY) {
 			set( level, a, Terrain.STATUE );
 		}
-		if (b != null && level.map[b.x + b.y * Level.WIDTH] == Terrain.EMPTY) {
+		if (b != null && level.map[b.x + b.y * level.width()] == Terrain.EMPTY) {
 			set( level, b, Terrain.STATUE );
 		}
 		
@@ -72,7 +72,7 @@ public class LibraryPainter extends Painter {
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
-				pos = room.random();
+				pos = level.pointToCell(room.random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
 			Item item;
 			if (i == 0)

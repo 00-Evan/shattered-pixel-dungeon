@@ -129,7 +129,7 @@ public class Dungeon {
 	public static HashSet<Integer> chapters;
 	
 	// Hero's field of view
-	public static boolean[] visible = new boolean[Level.LENGTH];
+	public static boolean[] visible;
 
 	public static SparseArray<ArrayList<Item>> droppedItems;
 
@@ -142,8 +142,6 @@ public class Dungeon {
 
 		Actor.clear();
 		Actor.resetNextID();
-		
-		PathFinder.setMapSize( Level.WIDTH, Level.HEIGHT );
 		
 		Scroll.initLabels();
 		Potion.initColors();
@@ -203,8 +201,6 @@ public class Dungeon {
 			}
 		}
 		
-		Arrays.fill( visible, false );
-		
 		Level level;
 		switch (depth) {
 		case 1:
@@ -261,7 +257,8 @@ public class Dungeon {
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
 		}
-		
+
+		visible = new boolean[level.length()];
 		level.create();
 		
 		Statistics.qualifiedForNoKilling = !bossLevel();
@@ -272,8 +269,6 @@ public class Dungeon {
 	public static void resetLevel() {
 		
 		Actor.clear();
-		
-		Arrays.fill( visible, false );
 		
 		level.reset();
 		switchLevel( level, level.entrance );
@@ -296,6 +291,9 @@ public class Dungeon {
 		
 		Dungeon.level = level;
 		Actor.init();
+
+		PathFinder.setMapSize(level.width(), level.height());
+		visible = new boolean[level.length()];
 		
 		Actor respawner = level.respawner();
 		if (respawner != null) {
@@ -531,10 +529,6 @@ public class Dungeon {
 		Dungeon.level = null;
 		Dungeon.depth = -1;
 		
-		if (fullLoad) {
-			PathFinder.setMapSize( Level.WIDTH, Level.HEIGHT );
-		}
-		
 		Scroll.restore( bundle );
 		Potion.restore( bundle );
 		Ring.restore( bundle );
@@ -677,18 +671,17 @@ public class Dungeon {
 		GameScene.afterObserve();
 	}
 	
-	private static boolean[] passable = new boolean[Level.LENGTH];
-	
 	public static int findPath( Char ch, int from, int to, boolean pass[], boolean[] visible ) {
 		
-		if (Level.adjacent( from, to )) {
+		if (level.adjacent( from, to )) {
 			return Actor.findChar( to ) == null && (pass[to] || Level.avoid[to]) ? to : -1;
 		}
-		
+
+		boolean[] passable = new boolean[Dungeon.level.length()];
 		if (ch.flying || ch.buff( Amok.class ) != null) {
 			BArray.or( pass, Level.avoid, passable );
 		} else {
-			System.arraycopy( pass, 0, passable, 0, Level.LENGTH );
+			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
 		
 		for (Char c : Actor.chars()) {
@@ -702,11 +695,12 @@ public class Dungeon {
 	}
 	
 	public static int flee( Char ch, int cur, int from, boolean pass[], boolean[] visible ) {
-		
+
+		boolean[] passable = new boolean[Dungeon.level.length()];
 		if (ch.flying) {
 			BArray.or( pass, Level.avoid, passable );
 		} else {
-			System.arraycopy( pass, 0, passable, 0, Level.LENGTH );
+			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
 		
 		for (Char c : Actor.chars()) {

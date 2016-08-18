@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Corrosion extends Armor.Glyph {
@@ -39,7 +40,7 @@ public class Corrosion extends Armor.Glyph {
 
 		if (Random.Int(10) == 0){
 			int pos = defender.pos;
-			for (int i : Level.NEIGHBOURS9){
+			for (int i : PathFinder.NEIGHBOURS9){
 				Splash.at(pos+i, 0x000000, 5);
 				if (Actor.findChar(pos+i) != null)
 					Buff.affect(Actor.findChar(pos+i), Ooze.class);

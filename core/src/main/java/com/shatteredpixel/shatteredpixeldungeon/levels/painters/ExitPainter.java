@@ -35,7 +35,7 @@ public class ExitPainter extends Painter {
 			door.set( Room.Door.Type.REGULAR );
 		}
 		
-		level.exit = room.random( 1 );
+		level.exit = level.pointToCell(room.random( 1 ));
 		set( level, level.exit, Terrain.EXIT );
 	}
 	

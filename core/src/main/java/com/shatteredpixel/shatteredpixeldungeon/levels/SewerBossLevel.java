@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Group;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -159,12 +160,12 @@ public class SewerBossLevel extends RegularLevel {
 		paint();
 
 		//sticks the exit in the room entrance.
-		exit = roomEntrance.top * Level.WIDTH + (roomEntrance.left + roomEntrance.right) / 2;
+		exit = roomEntrance.top * width() + (roomEntrance.left + roomEntrance.right) / 2;
 		map[exit] = Terrain.LOCKED_EXIT;
 
 		//make sure the exit is only visible in the entrance room.
 		int count = 0;
-		for (int i : NEIGHBOURS8){
+		for (int i : PathFinder.NEIGHBOURS8){
 			//exit must have exactly 3 non-wall tiles around it.
 			if (map[exit+i] != Terrain.WALL)
 				count++;
@@ -180,23 +181,23 @@ public class SewerBossLevel extends RegularLevel {
 	}
 		
 	protected boolean[] water() {
-		return Patch.generate( 0.5f, 5 );
+		return Patch.generate( this, 0.5f, 5 );
 	}
 	
 	protected boolean[] grass() {
-		return Patch.generate( 0.40f, 4 );
+		return Patch.generate( this, 0.40f, 4 );
 	}
 	
 	@Override
 	protected void decorate() {
-		int start = roomExit.top * WIDTH + roomExit.left + 1;
+		int start = roomExit.top * width() + roomExit.left + 1;
 		int end = start + roomExit.width() - 1;
 		for (int i=start; i < end; i++) {
 			if (i != exit && map[i] == Terrain.WALL) {
 				map[i] = Terrain.WALL_DECO;
-				map[i + WIDTH] = Terrain.WATER;
+				map[i + width()] = Terrain.WATER;
 			} else {
-				map[i + WIDTH] = Terrain.EMPTY;
+				map[i + width()] = Terrain.EMPTY;
 			}
 		}
 		
@@ -217,7 +218,7 @@ public class SewerBossLevel extends RegularLevel {
 		do {
 			room = Random.element(rooms);
 		} while (room.type != Type.STANDARD);
-		mob.pos = room.random();
+		mob.pos = pointToCell(room.random());
 		mobs.add( mob );
 	}
 	
@@ -231,7 +232,7 @@ public class SewerBossLevel extends RegularLevel {
 		if (item != null) {
 			int pos;
 			do {
-				pos = roomEntrance.random();
+				pos = pointToCell(roomEntrance.random());
 			} while (pos == entrance || map[pos] == Terrain.SIGN);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
@@ -239,7 +240,7 @@ public class SewerBossLevel extends RegularLevel {
 
 	@Override
 	public int randomRespawnCell() {
-		return roomEntrance.random();
+		return pointToCell(roomEntrance.random());
 	}
 
 	

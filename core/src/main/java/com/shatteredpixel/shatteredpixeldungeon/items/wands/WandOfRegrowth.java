@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.ColorMath;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -110,9 +111,9 @@ public class WandOfRegrowth extends Wand {
 		if (strength >= 0 && Level.passable[cell] && !Level.losBlocking[cell]){
 			affectedCells.add(cell);
 			if (strength >= 1.5f) {
-				spreadRegrowth(cell + Level.NEIGHBOURS8[left(direction)], strength - 1.5f);
-				spreadRegrowth(cell + Level.NEIGHBOURS8[direction], strength - 1.5f);
-				spreadRegrowth(cell + Level.NEIGHBOURS8[right(direction)], strength-1.5f);
+				spreadRegrowth(cell + PathFinder.NEIGHBOURS8[left(direction)], strength - 1.5f);
+				spreadRegrowth(cell + PathFinder.NEIGHBOURS8[direction], strength - 1.5f);
+				spreadRegrowth(cell + PathFinder.NEIGHBOURS8[right(direction)], strength-1.5f);
 			} else {
 				visualCells.add(cell);
 			}
@@ -187,8 +188,8 @@ public class WandOfRegrowth extends Wand {
 		int maxDist = Math.round(1.2f + chargesPerCast()*.8f);
 		int dist = Math.min(bolt.dist, maxDist);
 
-		for (int i = 0; i < Level.NEIGHBOURS8.length; i++){
-			if (bolt.sourcePos+Level.NEIGHBOURS8[i] == bolt.path.get(1)){
+		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++){
+			if (bolt.sourcePos+PathFinder.NEIGHBOURS8[i] == bolt.path.get(1)){
 				direction = i;
 				break;
 			}
@@ -199,9 +200,9 @@ public class WandOfRegrowth extends Wand {
 			strength--; //as we start at dist 1, not 0.
 			if (!Level.losBlocking[c]) {
 				affectedCells.add(c);
-				spreadRegrowth(c + Level.NEIGHBOURS8[left(direction)], strength - 1);
-				spreadRegrowth(c + Level.NEIGHBOURS8[direction], strength - 1);
-				spreadRegrowth(c + Level.NEIGHBOURS8[right(direction)], strength - 1);
+				spreadRegrowth(c + PathFinder.NEIGHBOURS8[left(direction)], strength - 1);
+				spreadRegrowth(c + PathFinder.NEIGHBOURS8[direction], strength - 1);
+				spreadRegrowth(c + PathFinder.NEIGHBOURS8[right(direction)], strength - 1);
 			} else {
 				visualCells.add(c);
 			}
@@ -254,7 +255,7 @@ public class WandOfRegrowth extends Wand {
 			int nDrops = Random.NormalIntRange(2, 8);
 
 			ArrayList<Integer> candidates = new ArrayList<Integer>();
-			for (int i : Level.NEIGHBOURS8){
+			for (int i : PathFinder.NEIGHBOURS8){
 				if (Level.passable[pos+i]){
 					candidates.add(pos+i);
 				}
@@ -288,7 +289,7 @@ public class WandOfRegrowth extends Wand {
 			int nSeeds = Random.NormalIntRange(1, 5);
 
 			ArrayList<Integer> candidates = new ArrayList<Integer>();
-			for (int i : Level.NEIGHBOURS8){
+			for (int i : PathFinder.NEIGHBOURS8){
 				if (Level.passable[pos+i]){
 					candidates.add(pos+i);
 				}

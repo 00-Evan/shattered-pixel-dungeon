@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class VaultPainter extends Painter {
@@ -41,7 +42,7 @@ public class VaultPainter extends Painter {
 		
 		int cx = (room.left + room.right) / 2;
 		int cy = (room.top + room.bottom) / 2;
-		int c = cx + cy * Level.WIDTH;
+		int c = cx + cy * level.width();
 		
 		switch (Random.Int( 3 )) {
 		
@@ -57,7 +58,7 @@ public class VaultPainter extends Painter {
 				i2 = prize( level );
 			} while (i1.getClass() == i2.getClass());
 			level.drop( i1, c ).type = Type.CRYSTAL_CHEST;
-			level.drop( i2, c + Level.NEIGHBOURS8[Random.Int( 8 )]).type = Type.CRYSTAL_CHEST;
+			level.drop( i2, c + PathFinder.NEIGHBOURS8[Random.Int( 8 )]).type = Type.CRYSTAL_CHEST;
 			level.addItemToSpawn( new GoldenKey( Dungeon.depth ) );
 			break;
 			
