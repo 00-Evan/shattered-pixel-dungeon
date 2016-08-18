@@ -221,7 +221,7 @@ public class PrisonBossLevel extends Level {
 		}
 		traps.clear();
 
-		for (int i = 0; i < Dungeon.level.length(); i++){
+		for (int i = 0; i < length(); i++){
 			if (map[i] == Terrain.INACTIVE_TRAP) {
 				Trap t = new SpearTrap().reveal();
 				t.active = false;
