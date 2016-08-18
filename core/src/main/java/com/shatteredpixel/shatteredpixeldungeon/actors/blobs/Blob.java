@@ -91,6 +91,7 @@ public class Blob extends Actor {
 			//compatability with pre-0.4.2
 			cur = new int[1024];
 		}
+		off = new int[cur.length];
 		
 		int[] data = bundle.getIntArray( CUR );
 		if (data != null) {
