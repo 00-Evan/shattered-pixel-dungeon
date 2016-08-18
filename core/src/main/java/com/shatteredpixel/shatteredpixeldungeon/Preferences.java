@@ -55,30 +55,53 @@ enum Preferences {
 		}
 		return prefs;
 	}
+
+	int getInt( String key, int defValue ) {
+		return getInt(key, defValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
 	
-	int getInt( String key, int defValue  ) {
+	int getInt( String key, int defValue, int min, int max ) {
 		try {
-			return get().getInt( key, defValue );
+			int i = get().getInt( key, defValue );
+			if (i < min || i > max){
+				put(key, defValue);
+				return defValue;
+			} else {
+				return i;
+			}
 		} catch (ClassCastException e) {
 			ShatteredPixelDungeon.reportException(e);
+			put(key, defValue);
 			return defValue;
 		}
 	}
 	
-	boolean getBoolean( String key, boolean defValue  ) {
+	boolean getBoolean( String key, boolean defValue ) {
 		try {
 			return get().getBoolean(key, defValue);
 		} catch (ClassCastException e) {
 			ShatteredPixelDungeon.reportException(e);
+			put(key, defValue);
 			return defValue;
 		}
 	}
+
+	String getString( String key, String defValue ) {
+		return getString(key, defValue, Integer.MAX_VALUE);
+	}
 	
-	String getString( String key, String defValue  ) {
+	String getString( String key, String defValue, int maxLength ) {
 		try {
-			return get().getString( key, defValue );
+			String s = get().getString( key, defValue );
+			if (s.length() > maxLength) {
+				put(key, defValue);
+				return defValue;
+			} else {
+				return s;
+			}
 		} catch (ClassCastException e) {
 			ShatteredPixelDungeon.reportException(e);
+			put(key, defValue);
 			return defValue;
 		}
 	}

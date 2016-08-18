@@ -30,6 +30,8 @@ public class Challenges {
 	public static final int DARKNESS			= 32;
 	public static final int NO_SCROLLS		    = 64;
 
+	public static final int MAX_VALUE           = 127;
+
 	public static final String[] NAME_IDS = {
 			"no_food",
 			"no_armor",

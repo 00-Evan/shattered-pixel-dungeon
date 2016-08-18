@@ -365,7 +365,7 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static int musicVol(){
-		return Preferences.INSTANCE.getInt( Preferences.KEY_MUSIC_VOL, 10 );
+		return Preferences.INSTANCE.getInt( Preferences.KEY_MUSIC_VOL, 10, 0, 10 );
 	}
 	
 	public static void soundFx( boolean value ) {
@@ -382,7 +382,7 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static int SFXVol() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_SFX_VOL, 10 );
+		return Preferences.INSTANCE.getInt( Preferences.KEY_SFX_VOL, 10, 0, 10 );
 	}
 	
 	public static void brightness( int value ) {
@@ -393,7 +393,7 @@ public class ShatteredPixelDungeon extends Game {
 	}
 	
 	public static int brightness() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_BRIGHTNESS, 0 );
+		return Preferences.INSTANCE.getInt( Preferences.KEY_BRIGHTNESS, 0, -2, 4 );
 	}
 
 	public static void language(Languages lang) {
@@ -431,7 +431,7 @@ public class ShatteredPixelDungeon extends Game {
 	}
 	
 	public static int lastClass() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_LAST_CLASS, 0 );
+		return Preferences.INSTANCE.getInt( Preferences.KEY_LAST_CLASS, 0, 0, 3 );
 	}
 
 	public static void challenges( int value ) {
@@ -439,12 +439,12 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static int challenges() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_CHALLENGES, 0 );
+		return Preferences.INSTANCE.getInt( Preferences.KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
 	}
 
 	public static void quickSlots( int value ){ Preferences.INSTANCE.put( Preferences.KEY_QUICKSLOTS, value ); }
 
-	public static int quickSlots(){ return Preferences.INSTANCE.getInt( Preferences.KEY_QUICKSLOTS, 4); }
+	public static int quickSlots(){ return Preferences.INSTANCE.getInt( Preferences.KEY_QUICKSLOTS, 4, 0, 4); }
 
 	public static void flipToolbar( boolean value) {
 		Preferences.INSTANCE.put(Preferences.KEY_FLIPTOOLBAR, value );
