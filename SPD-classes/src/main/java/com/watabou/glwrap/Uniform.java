@@ -23,9 +23,13 @@ package com.watabou.glwrap;
 
 import android.opengl.GLES20;
 
+import java.util.Arrays;
+
 public class Uniform {
 
 	private int location;
+
+	private float[] recentValue;
 	
 	public Uniform( int location ) {
 		this.location = location;
@@ -43,27 +47,36 @@ public class Uniform {
 		GLES20.glDisableVertexAttribArray( location );
 	}
 	
-	public void value( int value ) {
-		GLES20.glUniform1i( location, value );
-	}
-	
 	public void value1f( float value ) {
+		if (sameFloat(new float[]{value})) return;
 		GLES20.glUniform1f( location, value );
 	}
 	
 	public void value2f( float v1, float v2 ) {
+		if (sameFloat(new float[]{v1, v2})) return;
 		GLES20.glUniform2f( location, v1, v2 );
 	}
 	
 	public void value4f( float v1, float v2, float v3, float v4 ) {
+		if (sameFloat(new float[]{v1, v2, v3, v4})) return;
 		GLES20.glUniform4f( location, v1, v2, v3, v4 );
 	}
 	
 	public void valueM3( float[] value ) {
+		if (sameFloat(value)) return;
 		GLES20.glUniformMatrix3fv( location, 1, false, value, 0 );
 	}
 	
 	public void valueM4( float[] value ) {
+		if (sameFloat(value)) return;
 		GLES20.glUniformMatrix4fv( location, 1, false, value, 0 );
+	}
+
+	private boolean sameFloat(float[] newValue){
+		if (Arrays.equals(recentValue, newValue))
+			return true;
+
+		recentValue = newValue;
+		return false;
 	}
 }
