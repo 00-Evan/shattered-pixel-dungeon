@@ -21,6 +21,8 @@
 
 package com.watabou.glwrap;
 
+import android.opengl.GLES20;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -37,6 +39,7 @@ public class Quad {
 	
 	private static ShortBuffer indices;
 	private static int indexSize = 0;
+	private static int bufferIndex = -1;
 	
 	public static FloatBuffer create() {
 		return ByteBuffer.
@@ -51,12 +54,31 @@ public class Quad {
 			order( ByteOrder.nativeOrder() ).
 			asFloatBuffer();
 	}
+
+	//sets up for drawing up to 32k quads in one command, shouldn't ever need to exceed this
+	public static void setupIndices(){
+		ShortBuffer indices = getIndices( Short.MAX_VALUE );
+		if (bufferIndex == -1){
+			int[] buf = new int[1];
+			GLES20.glGenBuffers(1, buf, 0);
+			bufferIndex = buf[0];
+		}
+		GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, bufferIndex);
+		GLES20.glBufferData(GLES20.GL_ELEMENT_ARRAY_BUFFER, (indices.capacity()*2), indices, GLES20.GL_STATIC_DRAW);
+		GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+
+	public static void bindIndices(){
+		GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, bufferIndex);
+	}
+
+	public static void releaseIndices(){
+		GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
 	
 	public static ShortBuffer getIndices( int size ) {
 		
 		if (size > indexSize) {
-			
-			// TODO: Optimize it!
 			
 			indexSize = size;
 			indices = ByteBuffer.

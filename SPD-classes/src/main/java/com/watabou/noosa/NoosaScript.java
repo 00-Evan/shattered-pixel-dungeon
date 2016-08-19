@@ -55,6 +55,9 @@ public class NoosaScript extends Script {
 		uColorA	= uniform( "uColorA" );
 		aXY		= attribute( "aXYZW" );
 		aUV		= attribute( "aUV" );
+
+		Quad.setupIndices();
+		Quad.bindIndices();
 		
 	}
 	
@@ -75,11 +78,13 @@ public class NoosaScript extends Script {
 		
 		vertices.position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
-		
+
+		Quad.releaseIndices();
 		GLES20.glDrawElements( GLES20.GL_TRIANGLES, size, GLES20.GL_UNSIGNED_SHORT, indices );
-		
+		Quad.bindIndices();
 	}
-	
+
+	//FIXME need to do some voodoo to get this working properly on android 2.2
 	public void drawQuad( FloatBuffer vertices ) {
 		
 		vertices.position( 0 );
@@ -88,7 +93,7 @@ public class NoosaScript extends Script {
 		vertices.position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 
-		GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE, GLES20.GL_UNSIGNED_SHORT, Quad.getIndices( 1 ) );
+		GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE, GLES20.GL_UNSIGNED_SHORT, 0 );
 		
 	}
 	
@@ -104,11 +109,7 @@ public class NoosaScript extends Script {
 		vertices.position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 
-		GLES20.glDrawElements(
-			GLES20.GL_TRIANGLES,
-			Quad.SIZE * size,
-			GLES20.GL_UNSIGNED_SHORT,
-			Quad.getIndices( size ) );
+		GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * size, GLES20.GL_UNSIGNED_SHORT, 0 );
 		
 	}
 	
