@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
@@ -98,5 +99,10 @@ public class DungeonTilemap extends Tilemap {
 	@Override
 	public boolean overlapsScreenPoint( int x, int y ) {
 		return true;
+	}
+
+	@Override
+	protected boolean needsRender(int pos) {
+		return Level.discoverable[pos] && Dungeon.level.map[pos] != Terrain.WATER;
 	}
 }
