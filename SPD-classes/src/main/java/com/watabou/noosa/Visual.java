@@ -235,7 +235,7 @@ public class Visual extends Gizmo {
 	public boolean isVisible() {
 		Camera c = camera();
 
-		if (c == null) return false;
+		if (c == null || !visible) return false;
 
 		float cx = c.scroll.x;
 		float cy = c.scroll.y;
