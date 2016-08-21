@@ -26,6 +26,7 @@ import java.nio.FloatBuffer;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Quad;
+import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.Rect;
 
 import android.graphics.RectF;
@@ -47,6 +48,7 @@ public class Tilemap extends Visual {
 	protected short[] bufferPositions;
 	protected short bufferLength;
 	protected FloatBuffer quads;
+	protected Vertexbuffer buffer;
 	
 	public Rect updated;
 	
@@ -96,7 +98,6 @@ public class Tilemap extends Visual {
 			float x2 = x1 + cellW;
 
 			int pos = i * mapWidth + updated.left;
-			quads.position( 16 * pos );
 
 			for (int j=updated.left; j < updated.right; j++) {
 
@@ -155,6 +156,15 @@ public class Tilemap extends Visual {
 
 		super.draw();
 
+		if (!updated.isEmpty()) {
+			updateVertices();
+			quads.limit(bufferLength*16);
+			if (buffer == null)
+				buffer = new Vertexbuffer(quads);
+			else
+				buffer.updateVertices(quads);
+		}
+
 		NoosaScript script = NoosaScript.get();
 
 		texture.bind();
@@ -164,15 +174,16 @@ public class Tilemap extends Visual {
 			rm, gm, bm, am,
 			ra, ga, ba, aa );
 
-		if (!updated.isEmpty()) {
-			quads.limit(quads.capacity());
-			updateVertices();
-			quads.limit(bufferLength);
-		}
-
 		script.camera( camera );
-		script.drawQuadSet( quads, bufferLength );
+		script.drawQuadSet( buffer, bufferLength, 0 );
 
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		if (buffer != null)
+			buffer.delete();
 	}
 
 	protected boolean needsRender(int pos){

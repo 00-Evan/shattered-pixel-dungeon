@@ -27,6 +27,7 @@ import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Quad;
+import com.watabou.glwrap.Vertexbuffer;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;
@@ -38,6 +39,7 @@ public class BitmapText extends Visual {
 
 	protected float[] vertices = new float[16];
 	protected FloatBuffer quads;
+	protected Vertexbuffer buffer;
 	
 	public int realLength;
 	
@@ -59,15 +61,6 @@ public class BitmapText extends Visual {
 	}
 	
 	@Override
-	public void destroy() {
-		text = null;
-		font = null;
-		vertices = null;
-		quads = null;
-		super.destroy();
-	}
-	
-	@Override
 	protected void updateMatrix() {
 		// "origin" field is ignored
 		Matrix.setIdentity( matrix );
@@ -80,14 +73,19 @@ public class BitmapText extends Visual {
 	public void draw() {
 		
 		super.draw();
+
+		if (dirty) {
+			updateVertices();
+			quads.limit(quads.position());
+			if (buffer == null)
+				buffer = new Vertexbuffer(quads);
+			else
+				buffer.updateVertices(quads);
+		}
 		
 		NoosaScript script = NoosaScript.get();
 		
 		font.texture.bind();
-		
-		if (dirty) {
-			updateVertices();
-		}
 		
 		script.camera( camera() );
 		
@@ -95,10 +93,17 @@ public class BitmapText extends Visual {
 		script.lighting(
 			rm, gm, bm, am,
 			ra, ga, ba, aa );
-		script.drawQuadSet( quads, realLength );
+		script.drawQuadSet( buffer, realLength, 0 );
 		
 	}
-	
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		if (buffer != null)
+			buffer.delete();
+	}
+
 	protected void updateVertices() {
 		
 		width = 0;

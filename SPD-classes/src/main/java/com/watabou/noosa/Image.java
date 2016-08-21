@@ -28,6 +28,7 @@ import android.graphics.RectF;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.glwrap.Quad;
+import com.watabou.glwrap.Vertexbuffer;
 
 public class Image extends Visual {
 
@@ -39,6 +40,7 @@ public class Image extends Visual {
 	
 	protected float[] vertices;
 	protected FloatBuffer verticesBuffer;
+	protected Vertexbuffer buffer;
 	
 	protected boolean dirty;
 	
@@ -149,6 +151,16 @@ public class Image extends Visual {
 		
 		super.draw();
 
+		if (dirty) {
+			verticesBuffer.position( 0 );
+			verticesBuffer.put( vertices );
+			if (buffer == null)
+				buffer = new Vertexbuffer( verticesBuffer );
+			else
+				buffer.updateVertices( verticesBuffer );
+			dirty = false;
+		}
+
 		NoosaScript script = NoosaScript.get();
 		
 		texture.bind();
@@ -159,13 +171,15 @@ public class Image extends Visual {
 		script.lighting(
 			rm, gm, bm, am,
 			ra, ga, ba, aa );
+
+		script.drawQuad( buffer );
 		
-		if (dirty) {
-			verticesBuffer.position( 0 );
-			verticesBuffer.put( vertices );
-			dirty = false;
-		}
-		script.drawQuad( verticesBuffer );
-		
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		if (buffer != null)
+			buffer.delete();
 	}
 }

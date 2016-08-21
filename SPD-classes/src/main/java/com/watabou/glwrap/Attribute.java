@@ -48,4 +48,8 @@ public class Attribute {
 	public void vertexPointer( int size, int stride, FloatBuffer ptr ) {
 		GLES20.glVertexAttribPointer( location, size, GLES20.GL_FLOAT, false, stride * Float.SIZE / 8, ptr );
 	}
+
+	public void vertexBuffer( int size, int stride, int offset) {
+		GLES20.glVertexAttribPointer( location, size, GLES20.GL_FLOAT, false, stride * Float.SIZE / 8, offset * Float.SIZE / 8 );
+	}
 }

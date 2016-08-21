@@ -28,6 +28,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.watabou.glscripts.Script;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.Keys;
 import com.watabou.input.Touchscreen;
 import com.watabou.noosa.audio.Music;
@@ -242,9 +243,11 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
 		
 		GLES20.glEnable( GL10.GL_SCISSOR_TEST );
-		
+
+		//refreshes texture and vertex data stored on the gpu
 		TextureCache.reload();
 		RenderedText.reloadCache();
+		Vertexbuffer.refreshAllBuffers();
 	}
 	
 	protected void destroyGame() {

@@ -26,6 +26,7 @@ import java.nio.FloatBuffer;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Quad;
+import com.watabou.glwrap.Vertexbuffer;
 
 import android.graphics.RectF;
 
@@ -34,7 +35,8 @@ public class NinePatch extends Visual {
 	public SmartTexture texture;
 	
 	protected float[] vertices;
-	protected FloatBuffer verticesBuffer;
+	protected FloatBuffer quads;
+	protected Vertexbuffer buffer;
 	
 	protected RectF outterF;
 	protected RectF innerF;
@@ -49,6 +51,8 @@ public class NinePatch extends Visual {
 
 	protected boolean flipHorizontal;
 	protected boolean flipVertical;
+
+	protected boolean dirty;
 	
 	public NinePatch( Object tx, int margin ) {
 		this( tx, margin, margin, margin, margin );
@@ -73,7 +77,7 @@ public class NinePatch extends Visual {
 		nHeight = height = h;
 		
 		vertices = new float[16];
-		verticesBuffer = Quad.createSet( 9 );
+		quads = Quad.createSet( 9 );
 
 		marginLeft	= left;
 		marginRight	= right;
@@ -88,7 +92,7 @@ public class NinePatch extends Visual {
 	
 	protected void updateVertices() {
 
-		verticesBuffer.position( 0 );
+		quads.position( 0 );
 		
 		float right = width - marginRight;
 		float bottom = height - marginBottom;
@@ -105,33 +109,35 @@ public class NinePatch extends Visual {
 
 		Quad.fill( vertices,
 				0, marginLeft, 0, marginTop, outleft, inleft, outtop, intop );
-		verticesBuffer.put( vertices );
+		quads.put( vertices );
 		Quad.fill( vertices,
 				marginLeft, right, 0, marginTop, inleft, inright, outtop, intop );
-		verticesBuffer.put( vertices );
+		quads.put( vertices );
 		Quad.fill( vertices,
 				right, width, 0, marginTop, inright, outright, outtop, intop );
-		verticesBuffer.put( vertices );
+		quads.put( vertices );
 
 		Quad.fill( vertices,
 				0, marginLeft, marginTop, bottom, outleft, inleft, intop, inbottom );
-		verticesBuffer.put( vertices );
+		quads.put( vertices );
 		Quad.fill( vertices,
 				marginLeft, right, marginTop, bottom, inleft, inright, intop, inbottom );
-		verticesBuffer.put( vertices );
+		quads.put( vertices );
 		Quad.fill( vertices,
 				right, width, marginTop, bottom, inright, outright, intop, inbottom );
-		verticesBuffer.put( vertices );
+		quads.put( vertices );
 
 		Quad.fill( vertices,
 				0, marginLeft, bottom, height, outleft, inleft, inbottom, outbottom );
-		verticesBuffer.put( vertices );
+		quads.put( vertices );
 		Quad.fill( vertices,
 				marginLeft, right, bottom, height, inleft, inright, inbottom, outbottom );
-		verticesBuffer.put( vertices );
+		quads.put( vertices );
 		Quad.fill( vertices,
 				right, width, bottom, height, inright, outright, inbottom, outbottom );
-		verticesBuffer.put( vertices );
+		quads.put( vertices );
+
+		dirty = true;
 	}
 	
 	public int marginLeft() {
@@ -195,6 +201,14 @@ public class NinePatch extends Visual {
 		
 		super.draw();
 
+		if (dirty){
+			if (buffer == null)
+				buffer = new Vertexbuffer(quads);
+			else
+				buffer.updateVertices(quads);
+			dirty = false;
+		}
+
 		NoosaScript script = NoosaScript.get();
 		
 		texture.bind();
@@ -206,7 +220,14 @@ public class NinePatch extends Visual {
 			rm, gm, bm, am,
 			ra, ga, ba, aa );
 		
-		script.drawQuadSet( verticesBuffer, 9 );
+		script.drawQuadSet( buffer, 9, 0 );
 		
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		if (buffer != null)
+			buffer.delete();
 	}
 }
