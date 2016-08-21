@@ -93,7 +93,7 @@ enum Preferences {
 	String getString( String key, String defValue, int maxLength ) {
 		try {
 			String s = get().getString( key, defValue );
-			if (s.length() > maxLength) {
+			if (s != null && s.length() > maxLength) {
 				put(key, defValue);
 				return defValue;
 			} else {
