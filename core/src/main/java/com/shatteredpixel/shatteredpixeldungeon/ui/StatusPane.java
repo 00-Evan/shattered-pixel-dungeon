@@ -231,6 +231,8 @@ public class StatusPane extends Component {
 				true );
 	}
 
+	public static boolean needsKeyUpdate = false;
+
 	private static class JournalButton extends Button {
 
 		private Image bg;
@@ -253,6 +255,7 @@ public class StatusPane extends Component {
 
 			icon = new Image( Assets.MENU, 31, 0, 11, 7);
 			add( icon );
+			needsKeyUpdate = true;
 		}
 
 		@Override
@@ -270,10 +273,13 @@ public class StatusPane extends Component {
 		@Override
 		public void update() {
 			super.update();
-			updateKeyDisplay();
+			if (needsKeyUpdate)
+				updateKeyDisplay();
 		}
 
 		public void updateKeyDisplay() {
+			needsKeyUpdate = false;
+
 			boolean foundKeys = false;
 			boolean blackKey = false;
 			boolean specialKey = false;

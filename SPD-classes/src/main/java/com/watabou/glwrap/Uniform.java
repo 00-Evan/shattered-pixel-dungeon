@@ -29,9 +29,9 @@ public class Uniform {
 
 	private int location;
 
-	private float[] recentValue;
+	private float[] prevVal = new float[4];
 	
-	public Uniform( int location ) {
+	public Uniform(int location) {
 		this.location = location;
 	}
 	
@@ -40,43 +40,44 @@ public class Uniform {
 	}
 	
 	public void enable() {
-		GLES20.glEnableVertexAttribArray( location );
+		GLES20.glEnableVertexAttribArray(location);
 	}
 	
 	public void disable() {
-		GLES20.glDisableVertexAttribArray( location );
+		GLES20.glDisableVertexAttribArray(location);
 	}
 	
-	public void value1f( float value ) {
-		if (sameFloat(new float[]{value})) return;
-		GLES20.glUniform1f( location, value );
+	public void value1f(float value) {
+		GLES20.glUniform1f(location, value);
 	}
 	
-	public void value2f( float v1, float v2 ) {
-		if (sameFloat(new float[]{v1, v2})) return;
-		GLES20.glUniform2f( location, v1, v2 );
+	public void value2f(float v1, float v2) {
+		GLES20.glUniform2f(location, v1, v2);
 	}
 	
-	public void value4f( float v1, float v2, float v3, float v4 ) {
-		if (sameFloat(new float[]{v1, v2, v3, v4})) return;
-		GLES20.glUniform4f( location, v1, v2, v3, v4 );
-	}
-	
-	public void valueM3( float[] value ) {
-		if (sameFloat(value)) return;
-		GLES20.glUniformMatrix3fv( location, 1, false, value, 0 );
-	}
-	
-	public void valueM4( float[] value ) {
-		if (sameFloat(value)) return;
-		GLES20.glUniformMatrix4fv( location, 1, false, value, 0 );
-	}
+	public void value4f(float v1, float v2, float v3, float v4) {
+		if (v1 == prevVal[0] &&
+				v2 == prevVal[1] &&
+				v3 == prevVal[2] &&
+				v4 == prevVal[3])
+			return;
 
-	private boolean sameFloat(float[] newValue){
-		if (Arrays.equals(recentValue, newValue))
-			return true;
+		prevVal[0] = v1;
+		prevVal[1] = v2;
+		prevVal[2] = v3;
+		prevVal[3] = v4;
+		GLES20.glUniform4f(location, v1, v2, v3, v4);
+	}
+	
+	public void valueM3(float[] value) {
+		GLES20.glUniformMatrix3fv(location, 1, false, value, 0);
+	}
+	
+	public void valueM4(float[] value) {
+		if (Arrays.equals(prevVal, value))
+			return;
 
-		recentValue = newValue;
-		return false;
+		System.arraycopy(value, 0, prevVal, 0, 4);
+		GLES20.glUniformMatrix4fv(location, 1, false, value, 0);
 	}
 }
