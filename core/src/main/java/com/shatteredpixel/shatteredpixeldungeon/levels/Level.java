@@ -74,6 +74,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -544,6 +545,8 @@ public abstract class Level implements Bundlable {
 
 	protected void buildFlagMaps() {
 
+		fieldOfView = new boolean[length()];
+
 		passable	= new boolean[length()];
 		losBlocking	= new boolean[length()];
 		flamable	= new boolean[length()];
@@ -896,10 +899,8 @@ public abstract class Level implements Bundlable {
 		}
 	}
 	
-	public boolean[] updateFieldOfView( Char c ) {
+	public void updateFieldOfView( Char c, boolean[] fieldOfView ) {
 
-		fieldOfView = new boolean[length()];
-		
 		int cx = c.pos % width();
 		int cy = c.pos / width();
 		
@@ -907,10 +908,13 @@ public abstract class Level implements Bundlable {
 						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
 		if (sighted) {
 			ShadowCaster.castShadow( cx, cy, fieldOfView, c.viewDistance );
+		} else {
+			BArray.setFalse(fieldOfView);
 		}
 		
 		int sense = 1;
-		if (c.isAlive()) {
+		//Currently only the hero can get mind vision
+		if (c.isAlive() && c == Dungeon.hero) {
 			for (Buff b : c.buffs( MindVision.class )) {
 				sense = Math.max( ((MindVision)b).distance, sense );
 			}
@@ -926,15 +930,12 @@ public abstract class Level implements Bundlable {
 			int len = bx - ax + 1;
 			int pos = ax + ay * width();
 			for (int y = ay; y <= by; y++, pos+=width()) {
-				Arrays.fill( fieldOfView, pos, pos + len, true );
-			}
-			
-			for (int i=0; i < length(); i++) {
-				fieldOfView[i] &= discoverable[i];
+				System.arraycopy(discoverable, pos, fieldOfView, pos, len);
 			}
 		}
-		
-		if (c.isAlive()) {
+
+		//Currently only the hero can get mind vision or awareness
+		if (c.isAlive() && c == Dungeon.hero) {
 			if (c.buff( MindVision.class ) != null) {
 				for (Mob mob : mobs) {
 					int p = mob.pos;
@@ -948,7 +949,7 @@ public abstract class Level implements Bundlable {
 					fieldOfView[p + width()] = true;
 					fieldOfView[p - width()] = true;
 				}
-			} else if (c == Dungeon.hero && ((Hero)c).heroClass == HeroClass.HUNTRESS) {
+			} else if (((Hero)c).heroClass == HeroClass.HUNTRESS) {
 				for (Mob mob : mobs) {
 					int p = mob.pos;
 					if (distance( c.pos, p) == 2) {
@@ -980,11 +981,12 @@ public abstract class Level implements Bundlable {
 			}
 		}
 
-		for (Heap heap : heaps.values())
-			if (!heap.seen && fieldOfView[heap.pos] && c == Dungeon.hero)
-				heap.seen = true;
-		
-		return fieldOfView;
+		if (c == Dungeon.hero) {
+			for (Heap heap : heaps.values())
+				if (!heap.seen && fieldOfView[heap.pos])
+					heap.seen = true;
+		}
+
 	}
 	
 	public int distance( int a, int b ) {

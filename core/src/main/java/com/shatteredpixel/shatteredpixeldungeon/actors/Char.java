@@ -79,7 +79,7 @@ public abstract class Char extends Actor {
 	
 	@Override
 	protected boolean act() {
-		Dungeon.level.updateFieldOfView( this );
+		Dungeon.level.updateFieldOfView( this, Level.fieldOfView );
 		return false;
 	}
 	

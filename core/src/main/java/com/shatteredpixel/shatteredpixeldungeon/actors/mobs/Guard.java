@@ -65,7 +65,7 @@ public class Guard extends Mob {
 
 	@Override
 	protected boolean act() {
-		Dungeon.level.updateFieldOfView( this );
+		Dungeon.level.updateFieldOfView( this, Level.fieldOfView );
 
 		if (state == HUNTING &&
 				paralysed <= 0 &&

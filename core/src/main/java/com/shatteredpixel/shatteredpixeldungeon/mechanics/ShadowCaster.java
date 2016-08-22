@@ -22,18 +22,13 @@ package com.shatteredpixel.shatteredpixeldungeon.mechanics;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-
-import java.util.Arrays;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 
 public final class ShadowCaster {
 
 	private static final int MAX_DISTANCE = 8;
-	
-	private static int distance;
-	private static int limits[];
-	
-	private static boolean[] losBlocking;
-	private static boolean[] fieldOfView;
+
+	private static boolean[] falseArray;
 	
 	private static int[][] rounding;
 	static {
@@ -46,30 +41,28 @@ public final class ShadowCaster {
 		}
 	}
 	
-	private static Obstacles obs = new Obstacles();
-	
 	public static void castShadow( int x, int y, boolean[] fieldOfView, int distance ) {
 
-		losBlocking = Level.losBlocking;
-		
-		ShadowCaster.distance = distance;
-		limits = rounding[distance];
-		
-		ShadowCaster.fieldOfView = fieldOfView;
-		Arrays.fill( fieldOfView, false );
+		BArray.setFalse(fieldOfView);
+
 		fieldOfView[y * Dungeon.level.width() + x] = true;
-		
-		scanSector( x, y, +1, +1, 0, 0 );
-		scanSector( x, y, -1, +1, 0, 0 );
-		scanSector( x, y, +1, -1, 0, 0 );
-		scanSector( x, y, -1, -1, 0, 0 );
-		scanSector( x, y, 0, 0, +1, +1 );
-		scanSector( x, y, 0, 0, -1, +1 );
-		scanSector( x, y, 0, 0, +1, -1 );
-		scanSector( x, y, 0, 0, -1, -1 );
+
+		boolean[] losBlocking = Level.losBlocking;
+		Obstacles obs = new Obstacles();
+
+		scanSector( distance, fieldOfView, losBlocking, obs, x, y, +1, +1, 0, 0 );
+		scanSector( distance, fieldOfView, losBlocking, obs, x, y, -1, +1, 0, 0 );
+		scanSector( distance, fieldOfView, losBlocking, obs, x, y, +1, -1, 0, 0 );
+		scanSector( distance, fieldOfView, losBlocking, obs, x, y, -1, -1, 0, 0 );
+		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, +1 );
+		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, +1 );
+		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, -1 );
+		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, -1 );
+
 	}
-	
-	private static void scanSector( int cx, int cy, int m1, int m2, int m3, int m4 ) {
+
+	//TODO: This is still fairly expensive, look into further optimizing this
+	private static void scanSector( int distance, boolean[] fieldOfView, boolean[] losBlocking, Obstacles obs, int cx, int cy, int m1, int m2, int m3, int m4 ) {
 		
 		obs.reset();
 		
@@ -77,7 +70,7 @@ public final class ShadowCaster {
 
 			float dq2 = 0.5f / p;
 			
-			int pp = limits[p];
+			int pp = rounding[distance][p];
 			for (int q=0; q <= pp; q++) {
 				
 				int x = cx + q * m1 + p * m3;
@@ -112,8 +105,8 @@ public final class ShadowCaster {
 	private static final class Obstacles {
 		
 		private static int SIZE = (MAX_DISTANCE+1) * (MAX_DISTANCE+1) / 2;
-		private static float[] a1 = new float[SIZE];
-		private static float[] a2 = new float[SIZE];
+		private float[] a1 = new float[SIZE];
+		private float[] a2 = new float[SIZE];
 		
 		private int length;
 		private int limit;
