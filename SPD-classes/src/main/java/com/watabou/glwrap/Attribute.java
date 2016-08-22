@@ -24,6 +24,7 @@ package com.watabou.glwrap;
 import java.nio.FloatBuffer;
 
 import android.opengl.GLES20;
+import android.os.Build;
 
 public class Attribute {
 
@@ -50,6 +51,10 @@ public class Attribute {
 	}
 
 	public void vertexBuffer( int size, int stride, int offset) {
-		GLES20.glVertexAttribPointer( location, size, GLES20.GL_FLOAT, false, stride * Float.SIZE / 8, offset * Float.SIZE / 8 );
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			GLES20.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * Float.SIZE / 8, offset * Float.SIZE / 8);
+		} else {
+			FroyoGLES20Fix.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * Float.SIZE / 8, offset * Float.SIZE / 8);
+		}
 	}
 }
