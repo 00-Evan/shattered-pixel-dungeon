@@ -101,7 +101,14 @@ public class Tilemap extends Visual {
 
 			for (int j=updated.left; j < updated.right; j++) {
 
-				if (needsRender(pos)) {
+				//Currently if a none-rendered tile becomes rendered it will mess with culling in draw()
+				//However shifting the whole array is expensive, even with selective updating
+				//So right now I'm accepting this as an engine limitation, but support could be added.
+
+				//It's also worth noting that nothing is stopping the game from rendering tiles
+				//which will need to be visible in future as transparent, and accepting the small
+				//performance cost of rendering them before they become visible
+				if (needsRender(pos) || bufferPositions[pos] != -1) {
 					int bufferPos = bufferPositions[pos];
 					if (bufferPos == -1){
 						bufferPos = bufferPositions[pos] = bufferLength;
@@ -150,6 +157,11 @@ public class Tilemap extends Visual {
 		
 		updated.setEmpty();
 	}
+
+	int topLeft, bottomRight, length;
+
+	//check these before updating, allows for cached values when the camera isn't moving.
+	Integer camX, camY, camW, camH;
 	
 	@Override
 	public void draw() {
@@ -165,6 +177,46 @@ public class Tilemap extends Visual {
 				buffer.updateVertices(quads);
 		}
 
+		Camera c = Camera.main;
+
+		//If one is null they all are
+		if (camX == null
+				|| camX != (int)c.scroll.x/16
+				|| camY != (int)c.scroll.y/16
+				|| camW != (int)Math.ceil(c.width/cellW)
+				|| camH != (int)Math.ceil(c.height/cellH)){
+			camX = (int)c.scroll.x/16;
+			camY = (int)c.scroll.y/16;
+			camW = (int)Math.ceil(c.width/cellW);
+			camH = (int)Math.ceil(c.height/cellH);
+
+			if (camX > mapWidth
+					|| camY > mapHeight
+					|| camW + camW < 0
+					|| camH + camH < 0)
+				return;
+
+			//determines the top-left visible tile, the bottom-right one, and the buffer length
+			//between them, this culls a good number of none-visible tiles while keeping to 1 draw
+			topLeft = Math.max(camX, 0)
+					+ Math.max(camY*mapWidth, 0);
+			while(bufferPositions[topLeft] == -1)
+				topLeft++;
+
+			bottomRight = Math.min(camX+camW, mapWidth-1)
+					+ Math.min((camY+camH)*mapWidth, mapHeight*(mapWidth-1));
+			while(bufferPositions[bottomRight] == -1)
+				bottomRight--;
+
+			length = bufferPositions[bottomRight] - bufferPositions[topLeft] + 1;
+		}
+
+		if (camX > mapWidth
+				|| camY > mapHeight
+				|| camW + camW < 0
+				|| camH + camH < 0)
+			return;
+
 		NoosaScript script = NoosaScript.get();
 
 		texture.bind();
@@ -175,7 +227,8 @@ public class Tilemap extends Visual {
 			ra, ga, ba, aa );
 
 		script.camera( camera );
-		script.drawQuadSet( buffer, bufferLength, 0 );
+
+		script.drawQuadSet( buffer, length, bufferPositions[topLeft] );
 
 	}
 
