@@ -664,14 +664,28 @@ public class Dungeon {
 		}
 		
 		level.updateFieldOfView(hero, visible);
-		
-		BArray.or( level.visited, visible, level.visited );
+
+		int cx = hero.pos % level.width();
+		int cy = hero.pos / level.width();
+
+		//Add one to account for hero's previous position
+		int viewDist = hero.viewDistance+1;
+		int ax = Math.max( 0, cx - viewDist );
+		int bx = Math.min( cx + viewDist, level.width() - 1 );
+		int ay = Math.max( 0, cy - viewDist );
+		int by = Math.min( cy + viewDist, level.height() - 1 );
+
+		int len = bx - ax + 1;
+		int pos = ax + ay * level.width();
+		for (int y = ay; y <= by; y++, pos+=level.width()) {
+			BArray.or( level.visited, visible, pos, len, level.visited );
+		}
 		
 		GameScene.afterObserve();
 	}
 	
 	public static int findPath( Char ch, int from, int to, boolean pass[], boolean[] visible ) {
-		
+
 		if (level.adjacent( from, to )) {
 			return Actor.findChar( to ) == null && (pass[to] || Level.avoid[to]) ? to : -1;
 		}
@@ -690,7 +704,7 @@ public class Dungeon {
 		}
 		
 		return PathFinder.getStep( from, to, passable );
-		
+
 	}
 	
 	public static int flee( Char ch, int cur, int from, boolean pass[], boolean[] visible ) {
