@@ -157,9 +157,9 @@ public class NoosaScript extends Script {
 		buffer.release();
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * length, GLES20.GL_UNSIGNED_SHORT, Quad.SIZE * offset );
+			GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * length, GLES20.GL_UNSIGNED_SHORT, Quad.SIZE * Short.SIZE/8 * offset );
 		} else {
-			FroyoGLES20Fix.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * length, GLES20.GL_UNSIGNED_SHORT, Quad.SIZE * offset );
+			FroyoGLES20Fix.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * length, GLES20.GL_UNSIGNED_SHORT, Quad.SIZE * Short.SIZE/8 * offset );
 		}
 	}
 	
