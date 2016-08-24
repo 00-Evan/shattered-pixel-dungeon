@@ -125,7 +125,7 @@ public class WandOfPrismaticLight extends DamageWand {
 		if (noticed)
 			Sample.INSTANCE.play( Assets.SND_SECRET );
 
-		Dungeon.observe();
+		GameScene.updateFog();
 	}
 
 	@Override

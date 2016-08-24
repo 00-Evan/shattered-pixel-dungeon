@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -55,7 +56,7 @@ public class DisarmingTrap extends Trap{
 				Dungeon.level.drop( item, cell ).seen = true;
 				for (int i : PathFinder.NEIGHBOURS9)
 					Dungeon.level.visited[cell+i] = true;
-				Dungeon.observe();
+				GameScene.updateFog();
 
 				Sample.INSTANCE.play(Assets.SND_TELEPORT);
 				CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
@@ -77,7 +78,7 @@ public class DisarmingTrap extends Trap{
 					Dungeon.level.drop(weapon, cell).seen = true;
 					for (int i : PathFinder.NEIGHBOURS9)
 						Dungeon.level.visited[cell+i] = true;
-					Dungeon.observe();
+					GameScene.updateFog();
 
 					GLog.w( Messages.get(this, "disarm") );
 

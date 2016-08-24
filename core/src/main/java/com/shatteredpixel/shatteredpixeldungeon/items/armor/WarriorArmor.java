@@ -75,6 +75,7 @@ public class WarriorArmor extends ClassArmor {
 						curUser.move(dest);
 						Dungeon.level.press(dest, curUser);
 						Dungeon.observe();
+						GameScene.updateFog();
 
 						for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 							Char mob = Actor.findChar(curUser.pos + PathFinder.NEIGHBOURS8[i]);

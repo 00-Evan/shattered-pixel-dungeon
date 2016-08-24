@@ -409,7 +409,7 @@ public class GameScene extends PixelScene {
 		super.update();
 		
 		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
-		
+
 		Actor.process();
 		
 		if (Dungeon.hero.ready && Dungeon.hero.paralysed == 0) {
@@ -665,8 +665,8 @@ public class GameScene extends PixelScene {
 	public static void resetMap() {
 		if (scene != null) {
 			scene.tiles.map(Dungeon.level.map, Dungeon.level.width() );
-
 		}
+		updateFog();
 	}
 
 	public static void updateMap() {
@@ -691,11 +691,21 @@ public class GameScene extends PixelScene {
 		cancelCellSelector();
 		scene.addToFront( wnd );
 	}
+
+	public static void updateFog(){
+		if (scene != null)
+			scene.fog.updated.set(0, 0, Dungeon.level.width()+1, Dungeon.level.height()+1);
+	}
+
+	public static void updateFog(int x, int y, int w, int h){
+		if (scene != null) {
+			scene.fog.updated.union(x, y);
+			scene.fog.updated.union(x + w, y + h);
+		}
+	}
 	
 	public static void afterObserve() {
 		if (scene != null) {
-			scene.fog.updateVisibility( Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped );
-			
 			for (Mob mob : Dungeon.level.mobs) {
 				mob.sprite.visible = Dungeon.visible[mob.pos];
 			}

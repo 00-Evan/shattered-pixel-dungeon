@@ -23,7 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
@@ -656,8 +658,12 @@ public class Dungeon {
 
 		Rankings.INSTANCE.submit( true, cause );
 	}
+
+	public static void observe(){
+		observe( hero.viewDistance+1 );
+	}
 	
-	public static void observe() {
+	public static void observe( int dist ) {
 
 		if (level == null) {
 			return;
@@ -668,19 +674,22 @@ public class Dungeon {
 		int cx = hero.pos % level.width();
 		int cy = hero.pos / level.width();
 
-		//Add one to account for hero's previous position
-		int viewDist = hero.viewDistance+1;
-		int ax = Math.max( 0, cx - viewDist );
-		int bx = Math.min( cx + viewDist, level.width() - 1 );
-		int ay = Math.max( 0, cy - viewDist );
-		int by = Math.min( cy + viewDist, level.height() - 1 );
+		int ax = Math.max( 0, cx - dist );
+		int bx = Math.min( cx + dist, level.width() - 1 );
+		int ay = Math.max( 0, cy - dist );
+		int by = Math.min( cy + dist, level.height() - 1 );
 
 		int len = bx - ax + 1;
 		int pos = ax + ay * level.width();
 		for (int y = ay; y <= by; y++, pos+=level.width()) {
 			BArray.or( level.visited, visible, pos, len, level.visited );
 		}
-		
+
+		if (hero.buff(MindVision.class) != null || hero.buff(Awareness.class) != null)
+			GameScene.updateFog();
+		else
+			GameScene.updateFog(ax, ay, len, by-ay);
+
 		GameScene.afterObserve();
 	}
 	

@@ -77,6 +77,7 @@ public class RogueArmor extends ClassArmor {
 				Sample.INSTANCE.play( Assets.SND_PUFF );
 				Dungeon.level.press( target, curUser );
 				Dungeon.observe();
+				GameScene.updateFog();
 				
 				curUser.spendAndNext( Actor.TICK );
 			}

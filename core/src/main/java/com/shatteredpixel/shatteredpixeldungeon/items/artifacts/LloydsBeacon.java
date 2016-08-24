@@ -160,6 +160,7 @@ public class LloydsBeacon extends Artifact {
 				ScrollOfTeleportation.appear( hero, returnPos );
 				Dungeon.level.press( returnPos, hero );
 				Dungeon.observe();
+				GameScene.updateFog();
 			} else {
 
 				Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);

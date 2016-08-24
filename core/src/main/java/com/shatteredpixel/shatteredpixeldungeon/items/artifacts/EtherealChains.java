@@ -141,6 +141,7 @@ public class EtherealChains extends Artifact {
 								}));
 								affected.pos = newMobPos;
 								Dungeon.observe();
+								GameScene.updateFog();
 								curUser.spendAndNext(1f);
 							}
 						}));
@@ -178,6 +179,7 @@ public class EtherealChains extends Artifact {
 								curUser.spendAndNext(1f);
 								curUser.pos = newHeroPos;
 								Dungeon.observe();
+								GameScene.updateFog();
 							}
 						}));
 					}

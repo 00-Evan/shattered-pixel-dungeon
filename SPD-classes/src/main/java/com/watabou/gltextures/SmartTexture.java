@@ -40,6 +40,14 @@ public class SmartTexture extends Texture {
 	public Bitmap bitmap;
 	
 	public Atlas atlas;
+
+	protected SmartTexture( ) {
+		super();
+		//useful for subclasses which want to manage their own texture data
+		// in cases where android.graphics.bitmap isn't fast enough.
+
+		//subclasses which use this MUST also override reload()
+	}
 	
 	public SmartTexture( Bitmap bitmap ) {
 		this( bitmap, NEAREST, CLAMP, false );
@@ -92,8 +100,9 @@ public class SmartTexture extends Texture {
 	public void delete() {
 		
 		super.delete();
-		
-		bitmap.recycle();
+
+		if (bitmap != null)
+			bitmap.recycle();
 		bitmap = null;
 	}
 	

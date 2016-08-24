@@ -69,7 +69,7 @@ public class ScrollOfMagicMapping extends Scroll {
 				}
 			}
 		}
-		Dungeon.observe();
+		GameScene.updateFog();
 		
 		GLog.i( Messages.get(this, "layout") );
 		if (noticed) {

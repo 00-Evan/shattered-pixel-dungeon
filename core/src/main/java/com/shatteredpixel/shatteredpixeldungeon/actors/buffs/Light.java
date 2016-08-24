@@ -47,7 +47,7 @@ public class Light extends FlavourBuff {
 	@Override
 	public void detach() {
 		target.viewDistance = Dungeon.level.viewDistance;
-		Dungeon.observe();
+		Dungeon.observe(DISTANCE+1);
 		super.detach();
 	}
 	

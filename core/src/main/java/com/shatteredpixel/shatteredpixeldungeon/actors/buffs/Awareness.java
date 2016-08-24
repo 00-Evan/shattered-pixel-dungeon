@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
 public class Awareness extends FlavourBuff {
 
@@ -30,5 +31,6 @@ public class Awareness extends FlavourBuff {
 	public void detach() {
 		super.detach();
 		Dungeon.observe();
+		GameScene.updateFog();
 	}
 }

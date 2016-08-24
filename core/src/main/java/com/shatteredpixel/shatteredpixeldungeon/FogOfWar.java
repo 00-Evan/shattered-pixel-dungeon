@@ -20,14 +20,17 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import android.graphics.Bitmap;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import android.opengl.GLES20;
+
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Texture;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Rect;
 
-import java.util.Arrays;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 
 public class FogOfWar extends Image {
 
@@ -36,13 +39,13 @@ public class FogOfWar extends Image {
 	private static final int MAPPED		= 0xcc442211;
 	private static final int INVISIBLE	= 0xFF000000;
 	
-	private int[] pixels;
-	
 	private int pWidth;
 	private int pHeight;
 	
 	private int width2;
 	private int height2;
+
+	public Rect updated;
 	
 	public FogOfWar( int mapWidth, int mapHeight ) {
 		
@@ -65,59 +68,129 @@ public class FogOfWar extends Image {
 		width = width2 * size;
 		height = height2 * size;
 		
-		texture( new FogTexture() );
+		texture( new FogTexture(width2, height2) );
 		
 		scale.set(
 			DungeonTilemap.SIZE,
 			DungeonTilemap.SIZE );
 		
 		x = y = -size / 2;
+
+		updated = new Rect(0, 0, pWidth, pHeight);
 	}
 	
 	public void updateVisibility( boolean[] visible, boolean[] visited, boolean[] mapped ) {
-		
-		if (pixels == null) {
-			pixels = new int[width2 * height2];
-			Arrays.fill( pixels, INVISIBLE );
-		}
-		
-		for (int i=1; i < pHeight - 1; i++) {
-			int pos = (pWidth - 1) * i;
-			for (int j=1; j < pWidth - 1; j++) {
-				pos++;
-				int c = INVISIBLE;
-				if (visible[pos] && visible[pos - (pWidth - 1)] &&
-					visible[pos - 1] && visible[pos - (pWidth - 1) - 1]) {
-					c = VISIBLE;
+
+		if (updated.isEmpty())
+			return;
+
+		FogTexture fog = (FogTexture)texture;
+
+		for (int i=updated.top; i < updated.bottom; i++) {
+			int cell = (pWidth - 1) * i + updated.left;
+			fog.pixels.position((width2) * i + updated.left);
+			for (int j=updated.left; j < updated.right; j++) {
+				if (cell < pWidth || cell >= Dungeon.level.length()) {
+					fog.pixels.put(INVISIBLE);
 				} else
-				if (visited[pos] && visited[pos - (pWidth - 1)] &&
-					visited[pos - 1] && visited[pos - (pWidth - 1) - 1]) {
-					c = VISITED;
+				if (visible[cell] && visible[cell - (pWidth - 1)] &&
+					visible[cell - 1] && visible[cell - (pWidth - 1) - 1]) {
+					fog.pixels.put(VISIBLE);
+				} else
+				if (visited[cell] && visited[cell - (pWidth - 1)] &&
+					visited[cell - 1] && visited[cell - (pWidth - 1) - 1]) {
+					fog.pixels.put(VISITED);
 				}
 				else
-				if (mapped[pos] && mapped[pos - (pWidth - 1)] &&
-					mapped[pos - 1] && mapped[pos - (pWidth - 1) - 1]) {
-					c = MAPPED;
+				if (mapped[cell] && mapped[cell - (pWidth - 1)] &&
+					mapped[cell - 1] && mapped[cell - (pWidth - 1) - 1]) {
+					fog.pixels.put(MAPPED);
+				} else {
+					fog.pixels.put(INVISIBLE);
 				}
-				pixels[i * width2 + j] = c;
+				cell++;
 			}
 		}
-		
-		texture.pixels( width2, height2, pixels );
+
+		if (updated.width() == pWidth && updated.height() == pHeight)
+			fog.update();
+		else
+			fog.update(updated.top, updated.bottom);
+		updated.setEmpty();
+
 	}
-	
+
+	//provides a native intbuffer implementation because android.graphics.bitmap is too slow
+	//TODO perhaps should spin this off into something like FastEditTexture in SPD-classes
 	private class FogTexture extends SmartTexture {
+
+		private IntBuffer pixels;
 		
-		public FogTexture() {
-			super( Bitmap.createBitmap( width2, height2, Bitmap.Config.ARGB_8888 ) );
+		public FogTexture(int w, int h) {
+			super();
+			width = w;
+			height = h;
+			pixels = ByteBuffer.
+					allocateDirect( w * h * 4 ).
+					order( ByteOrder.nativeOrder() ).
+					asIntBuffer();
+
 			filter( Texture.LINEAR, Texture.LINEAR );
 			TextureCache.add( FogOfWar.class, this );
 		}
 		
 		@Override
 		public void reload() {
-			super.reload();
-			GameScene.afterObserve();
+			int[] ids = new int[1];
+			GLES20.glGenTextures( 1, ids, 0 );
+			id = ids[0];
+			filter( Texture.LINEAR, Texture.LINEAR );
+			update();
 		}
+
+		public void update(){
+			bind();
+			pixels.position(0);
+			GLES20.glTexImage2D(
+					GLES20.GL_TEXTURE_2D,
+					0,
+					GLES20.GL_RGBA,
+					width,
+					height,
+					0,
+					GLES20.GL_RGBA,
+					GLES20.GL_UNSIGNED_BYTE,
+					pixels );
+		}
+
+		//allows partially updating the texture
+		public void update(int top, int bottom){
+			bind();
+			pixels.position(top*width);
+			GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D,
+					0,
+					0,
+					top,
+					width,
+					bottom - top,
+					GLES20.GL_RGBA,
+					GLES20.GL_UNSIGNED_BYTE,
+					pixels);
+		}
+
+		@Override
+		public void delete() {
+			super.delete();
+		}
+	}
+
+	@Override
+	public void draw() {
+
+		if (!updated.isEmpty()){
+			updateVisibility(Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped);
+		}
+
+		super.draw();
 	}
 }
