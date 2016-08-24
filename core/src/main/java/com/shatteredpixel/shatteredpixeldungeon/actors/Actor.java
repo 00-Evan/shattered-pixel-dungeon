@@ -164,6 +164,10 @@ public abstract class Actor implements Bundlable {
 			current = null;
 		}
 	}
+
+	public static boolean processing(){
+		return current != null;
+	}
 	
 	public static void process() {
 		
@@ -191,7 +195,8 @@ public abstract class Actor implements Bundlable {
 
 			if  (current != null) {
 
-				if (current instanceof Char && ((Char)current).sprite.isMoving) {
+				if (current instanceof Char &&
+						((Char) current).sprite != null && ((Char)current).sprite.isMoving) {
 					// If it's character's turn to act, but its sprite
 					// is moving, wait till the movement is over
 					current = null;

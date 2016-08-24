@@ -400,6 +400,8 @@ public class GameScene extends PixelScene {
 		}
 	}
 
+	private Thread t;
+
 	@Override
 	public synchronized void update() {
 		if (Dungeon.hero == null || scene == null) {
@@ -410,7 +412,17 @@ public class GameScene extends PixelScene {
 		
 		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
 
-		Actor.process();
+		if (!Actor.processing() && (t == null || !t.isAlive())) {
+			t = new Thread() {
+				@Override
+				public void run() {
+					Actor.process();
+				}
+			};
+			//if cpu time is limited, game should prefer drawing the current frame
+			t.setPriority(Thread.MIN_PRIORITY);
+			t.start();
+		}
 		
 		if (Dungeon.hero.ready && Dungeon.hero.paralysed == 0) {
 			log.newLine();
