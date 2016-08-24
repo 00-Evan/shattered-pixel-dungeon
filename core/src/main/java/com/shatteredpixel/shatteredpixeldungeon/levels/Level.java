@@ -105,6 +105,7 @@ public abstract class Level implements Bundlable {
 
 	protected int width;
 	protected int height;
+	protected int length;
 	
 	protected static final float TIME_TO_RESPAWN	= 50;
 
@@ -278,6 +279,7 @@ public abstract class Level implements Bundlable {
 
 	protected void setupSize(){
 		width = height = 32;
+		length = width * height;
 	}
 	
 	public void reset() {
@@ -300,6 +302,7 @@ public abstract class Level implements Bundlable {
 			height = bundle.getInt("height");
 		} else
 			width = height = 32; //default sizes
+		length = width * height;
 		PathFinder.setMapSize(width(), height());
 		
 		mobs = new HashSet<>();
@@ -410,7 +413,7 @@ public abstract class Level implements Bundlable {
 	}
 
 	public int length() {
-		return width() * height();
+		return length;
 	}
 	
 	public String tilesTex() {
