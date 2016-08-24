@@ -278,7 +278,8 @@ public abstract class Level implements Bundlable {
 	}
 
 	protected void setupSize(){
-		width = height = 32;
+		if (width == 0 || height == 0)
+			width = height = 32;
 		length = width * height;
 	}
 	
@@ -413,6 +414,8 @@ public abstract class Level implements Bundlable {
 	}
 
 	public int length() {
+		if (length == 0)
+			setupSize();
 		return length;
 	}
 	
