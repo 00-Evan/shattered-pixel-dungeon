@@ -87,6 +87,8 @@ public class RenderedText extends Image {
 	private String text;
 	private CachedText cache;
 
+	private boolean needsRender = false;
+
 	public RenderedText( ){
 		text = null;
 	}
@@ -100,13 +102,15 @@ public class RenderedText extends Image {
 		this.text = text;
 		this.size = size;
 
-		render();
+		needsRender = true;
+		measure();
 	}
 
 	public void text( String text ){
 		this.text = text;
 
-		render();
+		needsRender = true;
+		measure();
 	}
 
 	public String text(){
@@ -115,14 +119,16 @@ public class RenderedText extends Image {
 
 	public void size( int size ){
 		this.size = size;
-		render();
+		needsRender = true;
+		measure();
 	}
 
 	public float baseLine(){
 		return size * scale.y;
 	}
 
-	private void render(){
+	private void measure(){
+
 		if ( text == null || text.equals("") ) {
 			text = "";
 			width=height=0;
@@ -131,6 +137,27 @@ public class RenderedText extends Image {
 		} else {
 			visible = true;
 		}
+
+		painter.setTextSize(size);
+		painter.setAntiAlias(true);
+
+		if (font != null) {
+			painter.setTypeface(font);
+		} else {
+			painter.setTypeface(Typeface.DEFAULT);
+		}
+
+		//paint outer strokes
+		painter.setARGB(0xff, 0, 0, 0);
+		painter.setStyle(Paint.Style.STROKE);
+		painter.setStrokeWidth(size / 5f);
+
+		width = (painter.measureText(text)+ (size/5f));
+		height = (-painter.ascent() + painter.descent()+ (size/5f));
+	}
+
+	private void render(){
+		needsRender = false;
 
 		if (cache != null)
 			cache.activeTexts.remove(this);
@@ -143,25 +170,13 @@ public class RenderedText extends Image {
 			cache.activeTexts.add(this);
 		} else {
 
-			painter.setTextSize(size);
-			painter.setAntiAlias(true);
+			measure();
 
-			if (font != null) {
-				painter.setTypeface(font);
-			} else {
-				painter.setTypeface(Typeface.DEFAULT);
-			}
-
-			//paint outer strokes
-			painter.setARGB(0xff, 0, 0, 0);
-			painter.setStyle(Paint.Style.STROKE);
-			painter.setStrokeWidth(size / 5f);
-
-			int right = (int)(painter.measureText(text)+ (size/5f));
-			int bottom = (int)(-painter.ascent() + painter.descent()+ (size/5f));
+			if (width == 0 || height == 0)
+				return;
 
 			//bitmap has to be in a power of 2 for some devices (as we're using openGL methods to render to texture)
-			Bitmap bitmap = Bitmap.createBitmap(Integer.highestOneBit(right)*2, Integer.highestOneBit(bottom)*2, Bitmap.Config.ARGB_4444);
+			Bitmap bitmap = Bitmap.createBitmap(Integer.highestOneBit((int)width)*2, Integer.highestOneBit((int)height)*2, Bitmap.Config.ARGB_4444);
 			bitmap.eraseColor(0x00000000);
 
 			canvas.setBitmap(bitmap);
@@ -175,7 +190,7 @@ public class RenderedText extends Image {
 
 			texture = new SmartTexture(bitmap, Texture.NEAREST, Texture.CLAMP, true);
 
-			RectF rect = texture.uvRect(0, 0, right, bottom);
+			RectF rect = texture.uvRect(0, 0, (int)width, (int)height);
 			frame(rect);
 
 			cache = new CachedText();
@@ -193,6 +208,13 @@ public class RenderedText extends Image {
 		super.updateMatrix();
 		//the y value is set at the top of the character, not at the top of accents.
 		Matrix.translate( matrix, 0, -Math.round((baseLine()*0.15f)/scale.y) );
+	}
+
+	@Override
+	public void draw() {
+		if (needsRender)
+			render();
+		super.draw();
 	}
 
 	@Override
