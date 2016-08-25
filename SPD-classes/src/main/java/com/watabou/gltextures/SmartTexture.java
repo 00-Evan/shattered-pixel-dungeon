@@ -42,11 +42,10 @@ public class SmartTexture extends Texture {
 	public Atlas atlas;
 
 	protected SmartTexture( ) {
-		super();
 		//useful for subclasses which want to manage their own texture data
 		// in cases where android.graphics.bitmap isn't fast enough.
 
-		//subclasses which use this MUST also override reload()
+		//subclasses which use this MUST also override some mix of reload/generate/bind
 	}
 	
 	public SmartTexture( Bitmap bitmap ) {
@@ -54,23 +53,38 @@ public class SmartTexture extends Texture {
 	}
 
 	public SmartTexture( Bitmap bitmap, int filtering, int wrapping, boolean premultiplied ) {
-		
-		super();
-		
-		bitmap( bitmap, premultiplied );
-		filter( filtering, filtering );
-		wrap( wrapping, wrapping );
-		
+
+		this.bitmap = bitmap;
+		width = bitmap.getWidth();
+		height = bitmap.getHeight();
+		this.fModeMin = this.fModeMax = filtering;
+		this.wModeH = this.wModeV = wrapping;
+		this.premultiplied = premultiplied;
+
 	}
-	
+
+	@Override
+	protected void generate() {
+		super.generate();
+		bitmap( bitmap, premultiplied );
+		filter( fModeMin, fModeMax );
+		wrap( wModeH, wModeV );
+	}
+
 	@Override
 	public void filter(int minMode, int maxMode) {
-		super.filter( fModeMin = minMode, fModeMax = maxMode);
+		fModeMin = minMode;
+		fModeMax = maxMode;
+		if (id != -1)
+			super.filter( fModeMin = minMode, fModeMax = maxMode);
 	}
 	
 	@Override
 	public void wrap( int s, int t ) {
-		super.wrap( wModeH = s, wModeV = t );
+		wModeH = s;
+		wModeV = t;
+		if (id != -1)
+			super.wrap( wModeH = s, wModeV = t );
 	}
 	
 	@Override
@@ -91,9 +105,8 @@ public class SmartTexture extends Texture {
 	}
 	
 	public void reload() {
-		id = new SmartTexture( bitmap, NEAREST, CLAMP, premultiplied ).id;
-		filter( fModeMin, fModeMax );
-		wrap( wModeH, wModeV );
+		id = -1;
+		generate();
 	}
 	
 	@Override

@@ -38,24 +38,25 @@ public class Texture {
 	public static final int MIRROR	= GLES20.GL_MIRRORED_REPEAT;
 	public static final int CLAMP	= GLES20.GL_CLAMP_TO_EDGE;
 	
-	public int id;
+	public int id = -1;
 	private static int bound_id = 0; //id of the currently bound texture
 	
 	public boolean premultiplied = false;
-	
-	public Texture() {
+
+	protected void generate(){
 		int[] ids = new int[1];
 		GLES20.glGenTextures( 1, ids, 0 );
 		id = ids[0];
-		
-		bind();
 	}
 	
-	public static void activate( int index ) {
+	public static void activ1ate( int index ) {
 		GLES20.glActiveTexture( GLES20.GL_TEXTURE0 + index );
 	}
 	
 	public void bind() {
+		if (id == -1){
+			generate();
+		}
 		if (id != bound_id) {
 			GLES20.glBindTexture( GLES20.GL_TEXTURE_2D, id );
 			bound_id = id;

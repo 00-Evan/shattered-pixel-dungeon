@@ -135,21 +135,25 @@ public class FogOfWar extends Image {
 					order( ByteOrder.nativeOrder() ).
 					asIntBuffer();
 
-			filter( Texture.LINEAR, Texture.LINEAR );
 			TextureCache.add( FogOfWar.class, this );
 		}
-		
+
 		@Override
-		public void reload() {
+		protected void generate() {
 			int[] ids = new int[1];
 			GLES20.glGenTextures( 1, ids, 0 );
 			id = ids[0];
-			filter( Texture.LINEAR, Texture.LINEAR );
+		}
+
+		@Override
+		public void reload() {
+			generate();
 			update();
 		}
 
 		public void update(){
 			bind();
+			filter( Texture.LINEAR, Texture.LINEAR );
 			pixels.position(0);
 			GLES20.glTexImage2D(
 					GLES20.GL_TEXTURE_2D,
@@ -166,6 +170,7 @@ public class FogOfWar extends Image {
 		//allows partially updating the texture
 		public void update(int top, int bottom){
 			bind();
+			filter( Texture.LINEAR, Texture.LINEAR );
 			pixels.position(top*width);
 			GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D,
 					0,
