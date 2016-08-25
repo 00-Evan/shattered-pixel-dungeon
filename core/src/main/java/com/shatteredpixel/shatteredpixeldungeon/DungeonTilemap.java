@@ -103,6 +103,6 @@ public class DungeonTilemap extends Tilemap {
 
 	@Override
 	protected boolean needsRender(int pos) {
-		return Level.discoverable[pos] && Dungeon.level.map[pos] != Terrain.WATER;
+		return (Level.discoverable[pos] || Dungeon.level.map[pos] == Terrain.CHASM) && Dungeon.level.map[pos] != Terrain.WATER;
 	}
 }
