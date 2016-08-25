@@ -78,6 +78,7 @@ public class Tilemap extends Visual {
 		bufferPositions = new short[size];
 		for (int i = 0; i < bufferPositions.length; i++)
 			bufferPositions[i] = -1;
+		bufferLength = 0;
 
 		width = cellW * mapWidth;
 		height = cellH * mapHeight;
