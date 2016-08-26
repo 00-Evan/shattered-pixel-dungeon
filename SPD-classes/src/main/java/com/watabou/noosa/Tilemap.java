@@ -50,7 +50,10 @@ public class Tilemap extends Visual {
 	protected FloatBuffer quads;
 	protected Vertexbuffer buffer;
 	
-	public Rect updated;
+	private volatile Rect updated;
+	private Rect updating;
+	private int topLeftUpdating;
+	private int bottomRightUpdating;
 	
 	public Tilemap( Object tx, TextureFilm tileset ) {
 		
@@ -88,19 +91,34 @@ public class Tilemap extends Visual {
 		updated.set( 0, 0, mapWidth, mapHeight );
 	}
 
+	public synchronized void updateMap(){
+		updated.set( 0, 0, mapWidth, mapHeight );
+	}
+
+	public synchronized void updateMapCell(int cell){
+		updated.union( cell % mapWidth, cell / mapWidth );
+	}
+
+	private synchronized void moveToUpdating(){
+		updating = new Rect(updated);
+		updated.setEmpty();
+	}
+
 	protected void updateVertices() {
 
-		float y1 = cellH * updated.top;
+		moveToUpdating();
+
+		float y1 = cellH * updating.top;
 		float y2 = y1 + cellH;
 
-		for (int i=updated.top; i < updated.bottom; i++) {
+		for (int i=updating.top; i < updating.bottom; i++) {
 
-			float x1 = cellW * updated.left;
+			float x1 = cellW * updating.left;
 			float x2 = x1 + cellW;
 
-			int pos = i * mapWidth + updated.left;
+			int pos = i * mapWidth + updating.left;
 
-			for (int j=updated.left; j < updated.right; j++) {
+			for (int j=updating.left; j < updating.right; j++) {
 
 				//Currently if a none-rendered tile becomes rendered it will mess with culling in draw()
 				//However shifting the whole array is expensive, even with selective updating
@@ -115,6 +133,11 @@ public class Tilemap extends Visual {
 						bufferPos = bufferPositions[pos] = bufferLength;
 						bufferLength ++;
 					}
+
+					if (topLeftUpdating == 0)
+						topLeftUpdating = bufferPos;
+
+					bottomRightUpdating = bufferPos + 1;
 
 					quads.position(bufferPos*16);
 					RectF uv = tileset.get( data[pos] );
@@ -155,8 +178,7 @@ public class Tilemap extends Visual {
 			y1 = y2;
 			y2 += cellH;
 		}
-		
-		updated.setEmpty();
+
 	}
 
 	int topLeft, bottomRight, length;
@@ -175,7 +197,11 @@ public class Tilemap extends Visual {
 			if (buffer == null)
 				buffer = new Vertexbuffer(quads);
 			else
-				buffer.updateVertices(quads);
+				buffer.updateVertices(quads,
+						topLeftUpdating*16,
+						bottomRightUpdating*16);
+			topLeftUpdating = 0;
+			updating.setEmpty();
 		}
 
 		Camera c = Camera.main;

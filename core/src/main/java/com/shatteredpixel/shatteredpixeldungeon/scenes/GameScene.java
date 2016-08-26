@@ -681,15 +681,16 @@ public class GameScene extends PixelScene {
 		updateFog();
 	}
 
+	//updates the whole map
 	public static void updateMap() {
 		if (scene != null) {
-			scene.tiles.updated.set( 0, 0, Dungeon.level.width(), Dungeon.level.height() );
+			scene.tiles.updateMap();
 		}
 	}
 	
 	public static void updateMap( int cell ) {
 		if (scene != null) {
-			scene.tiles.updated.union( cell % Dungeon.level.width(), cell / Dungeon.level.width() );
+			scene.tiles.updateMapCell( cell );
 		}
 	}
 	
