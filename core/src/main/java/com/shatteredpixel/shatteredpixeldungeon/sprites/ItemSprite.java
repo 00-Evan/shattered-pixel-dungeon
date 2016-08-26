@@ -131,7 +131,8 @@ public class ItemSprite extends MovieClip {
 	}
 	
 	public void place( int p ) {
-		point( worldToCamera( p ) );
+		if (Dungeon.level != null)
+			point( worldToCamera( p ) );
 	}
 	
 	public void drop() {
