@@ -45,7 +45,8 @@ public class FogOfWar extends Image {
 	private int width2;
 	private int height2;
 
-	public Rect updated;
+	private volatile Rect updated;
+	private Rect updating;
 	
 	public FogOfWar( int mapWidth, int mapHeight ) {
 		
@@ -78,18 +79,31 @@ public class FogOfWar extends Image {
 
 		updated = new Rect(0, 0, pWidth, pHeight);
 	}
-	
-	public void updateVisibility( boolean[] visible, boolean[] visited, boolean[] mapped ) {
 
-		if (updated.isEmpty())
-			return;
+	public synchronized void updateFog(){
+		updated.set( 0, 0, pWidth, pWidth );
+	}
+
+	public synchronized void updateFogArea(int x, int y, int w, int h){
+		updated.union(x, y);
+		updated.union(x + w, y + h);
+	}
+
+	public synchronized void moveToUpdating(){
+		updating = new Rect(updated);
+		updated.setEmpty();
+	}
+	
+	private void updateTexture( boolean[] visible, boolean[] visited, boolean[] mapped ) {
+
+		moveToUpdating();
 
 		FogTexture fog = (FogTexture)texture;
 
-		for (int i=updated.top; i < updated.bottom; i++) {
-			int cell = (pWidth - 1) * i + updated.left;
-			fog.pixels.position((width2) * i + updated.left);
-			for (int j=updated.left; j < updated.right; j++) {
+		for (int i=updating.top; i < updating.bottom; i++) {
+			int cell = (pWidth - 1) * i + updating.left;
+			fog.pixels.position((width2) * i + updating.left);
+			for (int j=updating.left; j < updating.right; j++) {
 				if (cell < pWidth || cell >= Dungeon.level.length()) {
 					fog.pixels.put(INVISIBLE);
 				} else
@@ -112,11 +126,10 @@ public class FogOfWar extends Image {
 			}
 		}
 
-		if (updated.width() == pWidth && updated.height() == pHeight)
+		if (updating.width() == pWidth && updating.height() == pHeight)
 			fog.update();
 		else
-			fog.update(updated.top, updated.bottom);
-		updated.setEmpty();
+			fog.update(updating.top, updating.bottom);
 
 	}
 
@@ -193,7 +206,8 @@ public class FogOfWar extends Image {
 	public void draw() {
 
 		if (!updated.isEmpty()){
-			updateVisibility(Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped);
+			updateTexture(Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped);
+			updating.setEmpty();
 		}
 
 		super.draw();

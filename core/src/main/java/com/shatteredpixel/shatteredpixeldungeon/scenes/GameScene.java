@@ -229,7 +229,6 @@ public class GameScene extends PixelScene {
 		}
 
 		fog = new FogOfWar( Dungeon.level.width(), Dungeon.level.height() );
-		fog.updateVisibility( Dungeon.visible, Dungeon.level.visited, Dungeon.level.mapped );
 		add( fog );
 
 		brightness( ShatteredPixelDungeon.brightness() );
@@ -707,13 +706,12 @@ public class GameScene extends PixelScene {
 
 	public static void updateFog(){
 		if (scene != null)
-			scene.fog.updated.set(0, 0, Dungeon.level.width()+1, Dungeon.level.height()+1);
+			scene.fog.updateFog();
 	}
 
 	public static void updateFog(int x, int y, int w, int h){
 		if (scene != null) {
-			scene.fog.updated.union(x, y);
-			scene.fog.updated.union(x + w, y + h);
+			scene.fog.updateFogArea(x, y, w, h);
 		}
 	}
 	
