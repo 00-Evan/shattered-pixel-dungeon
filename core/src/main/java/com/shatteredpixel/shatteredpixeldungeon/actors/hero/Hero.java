@@ -1048,7 +1048,7 @@ public class Hero extends Char {
 				passable[i] = p[i] && (v[i] || m[i]);
 			}
 			
-			step = Dungeon.findPath( this, pos, target, passable, Level.fieldOfView );
+			step = Dungeon.findStep( this, pos, target, passable, Level.fieldOfView );
 		}
 		
 		if (step != -1) {

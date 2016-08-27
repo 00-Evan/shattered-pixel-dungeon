@@ -294,7 +294,7 @@ public abstract class Mob extends Char {
 			return false;
 		}
 		
-		int step = Dungeon.findPath( this, pos, target,
+		int step = Dungeon.findStep( this, pos, target,
 			Level.passable,
 			Level.fieldOfView );
 		if (step != -1) {

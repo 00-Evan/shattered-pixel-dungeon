@@ -118,7 +118,7 @@ public class Piranha extends Mob {
 			return false;
 		}
 		
-		int step = Dungeon.findPath( this, pos, target,
+		int step = Dungeon.findStep( this, pos, target,
 			Level.water,
 			Level.fieldOfView );
 		if (step != -1) {

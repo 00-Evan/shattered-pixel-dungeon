@@ -692,14 +692,43 @@ public class Dungeon {
 
 		GameScene.afterObserve();
 	}
+
+	//we store this to avoid having to re-allocate the array with each pathfind
+	private static boolean[] passable;
+
+	private static void setupPassable(){
+		if (passable == null || passable.length != Dungeon.level.length())
+			passable = new boolean[Dungeon.level.length()];
+		else
+			BArray.setFalse(passable);
+	}
+
+	public static PathFinder.Path findPath(Char ch, int from, int to, boolean pass[], boolean[] visible ) {
+
+		setupPassable();
+		if (ch.flying || ch.buff( Amok.class ) != null) {
+			BArray.or( pass, Level.avoid, passable );
+		} else {
+			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
+		}
+
+		for (Char c : Actor.chars()) {
+			if (visible[c.pos]) {
+				passable[c.pos] = false;
+			}
+		}
+
+		return PathFinder.find( from, to, passable );
+
+	}
 	
-	public static int findPath( Char ch, int from, int to, boolean pass[], boolean[] visible ) {
+	public static int findStep(Char ch, int from, int to, boolean pass[], boolean[] visible ) {
 
 		if (level.adjacent( from, to )) {
 			return Actor.findChar( to ) == null && (pass[to] || Level.avoid[to]) ? to : -1;
 		}
 
-		boolean[] passable = new boolean[Dungeon.level.length()];
+		setupPassable();
 		if (ch.flying || ch.buff( Amok.class ) != null) {
 			BArray.or( pass, Level.avoid, passable );
 		} else {
@@ -718,7 +747,7 @@ public class Dungeon {
 	
 	public static int flee( Char ch, int cur, int from, boolean pass[], boolean[] visible ) {
 
-		boolean[] passable = new boolean[Dungeon.level.length()];
+		setupPassable();
 		if (ch.flying) {
 			BArray.or( pass, Level.avoid, passable );
 		} else {
