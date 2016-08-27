@@ -45,12 +45,13 @@ public class BlazingTrap extends Trap {
 	public void activate() {
 		PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE)
+			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				if (Level.pit[i] || Level.water[i])
-					GameScene.add(Blob.seed( i, 1, Fire.class));
+					GameScene.add(Blob.seed(i, 1, Fire.class));
 				else
-					GameScene.add(Blob.seed( i, 5, Fire.class));
+					GameScene.add(Blob.seed(i, 5, Fire.class));
 				CellEmitter.get(i).burst(FlameParticle.FACTORY, 5);
+			}
 		}
 		Sample.INSTANCE.play(Assets.SND_BURNING);
 	}
