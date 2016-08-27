@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -29,21 +30,26 @@ import com.watabou.noosa.audio.Sample;
 
 public class Door {
 
-	public static void enter( int pos ) {
+	public static void enter( int pos, Char ch ) {
 		Level.set( pos, Terrain.OPEN_DOOR );
 		GameScene.updateMap( pos );
-		Dungeon.observe();
-		
-		if (Dungeon.visible[pos]) {
+
+		if (ch == Dungeon.hero){
+			//don't obsserve here as that already happens on hero move
 			Sample.INSTANCE.play( Assets.SND_OPEN );
+		} else if (Dungeon.visible[pos]) {
+			Sample.INSTANCE.play( Assets.SND_OPEN );
+			Dungeon.observe();
 		}
 	}
 	
-	public static void leave( int pos ) {
+	public static void leave( int pos, Char ch ) {
 		if (Dungeon.level.heaps.get( pos ) == null) {
 			Level.set( pos, Terrain.DOOR );
 			GameScene.updateMap( pos );
-			Dungeon.observe();
+
+			if (ch != Dungeon.hero && Dungeon.visible[pos])
+				Dungeon.observe();
 		}
 	}
 }

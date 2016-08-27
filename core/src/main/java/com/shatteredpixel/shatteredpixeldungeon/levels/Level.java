@@ -843,7 +843,7 @@ public abstract class Level implements Bundlable {
 			break;
 			
 		case Terrain.DOOR:
-			Door.enter( cell );
+			Door.enter( cell, ch );
 			break;
 		}
 
@@ -891,7 +891,7 @@ public abstract class Level implements Bundlable {
 			break;
 			
 		case Terrain.DOOR:
-			Door.enter( cell );
+			Door.enter( cell, mob );
 			break;
 		}
 		

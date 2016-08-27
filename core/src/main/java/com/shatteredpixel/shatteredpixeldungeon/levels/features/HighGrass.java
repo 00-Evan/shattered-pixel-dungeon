@@ -103,6 +103,8 @@ public class HighGrass {
 		}
 		
 		CellEmitter.get( pos ).burst( LeafParticle.LEVEL_SPECIFIC, leaves );
-		Dungeon.observe();
+		//observe already happens when hero moves
+		if (ch != Dungeon.hero)
+			Dungeon.observe();
 	}
 }
