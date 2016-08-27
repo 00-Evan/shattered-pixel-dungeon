@@ -159,6 +159,10 @@ public class Hero extends Char {
 	public int exp = 0;
 	
 	private ArrayList<Mob> visibleEnemies;
+
+	//This list is maintained so that some logic checks can be skipped
+	// for enemies we know we aren't seeing normally, resultign in better performance
+	public ArrayList<Mob> mindVisionEnemies = new ArrayList<>();
 	
 	public Hero() {
 		super();
@@ -975,7 +979,7 @@ public class Hero extends Char {
 					newMob = true;
 				}
 
-				if (QuickSlotButton.autoAim(m) != -1){
+				if (!mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) != -1){
 					if (target == null){
 						target = m;
 					} else if (distance(target) > distance(m)) {
@@ -995,7 +999,7 @@ public class Hero extends Char {
 			interrupt();
 			resting = false;
 		}
-		
+
 		visibleEnemies = visible;
 	}
 	

@@ -607,10 +607,13 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
+	//FIXME this is a temporary fix here to avoid changing the tiles texture
+	//This logic will be changed in 0.4.3 anyway
+	private static int[] N4Indicies = new int[]{0, 2, 3, 1};
 	private int getWaterTile( int pos ) {
 		int t = Terrain.WATER_TILES;
 		for (int j=0; j < PathFinder.NEIGHBOURS4.length; j++) {
-			if ((Terrain.flags[map[pos + PathFinder.NEIGHBOURS4[j]]] & Terrain.UNSTITCHABLE) != 0) {
+			if ((Terrain.flags[map[pos + PathFinder.NEIGHBOURS4[N4Indicies[j]]]] & Terrain.UNSTITCHABLE) != 0) {
 				t += 1 << j;
 			}
 		}
@@ -942,47 +945,36 @@ public abstract class Level implements Bundlable {
 
 		//Currently only the hero can get mind vision or awareness
 		if (c.isAlive() && c == Dungeon.hero) {
+			Dungeon.hero.mindVisionEnemies.clear();
 			if (c.buff( MindVision.class ) != null) {
 				for (Mob mob : mobs) {
 					int p = mob.pos;
-					fieldOfView[p] = true;
-					fieldOfView[p + 1] = true;
-					fieldOfView[p - 1] = true;
-					fieldOfView[p + width() + 1] = true;
-					fieldOfView[p + width() - 1] = true;
-					fieldOfView[p - width() + 1] = true;
-					fieldOfView[p - width() - 1] = true;
-					fieldOfView[p + width()] = true;
-					fieldOfView[p - width()] = true;
+
+					if (!fieldOfView[p]){
+						Dungeon.hero.mindVisionEnemies.add(mob);
+					}
+					for (int i : PathFinder.NEIGHBOURS9)
+						fieldOfView[p+i] = true;
+
 				}
 			} else if (((Hero)c).heroClass == HeroClass.HUNTRESS) {
 				for (Mob mob : mobs) {
 					int p = mob.pos;
 					if (distance( c.pos, p) == 2) {
-						fieldOfView[p] = true;
-						fieldOfView[p + 1] = true;
-						fieldOfView[p - 1] = true;
-						fieldOfView[p + width() + 1] = true;
-						fieldOfView[p + width() - 1] = true;
-						fieldOfView[p - width() + 1] = true;
-						fieldOfView[p - width() - 1] = true;
-						fieldOfView[p + width()] = true;
-						fieldOfView[p - width()] = true;
+
+						if (!fieldOfView[p]){
+							Dungeon.hero.mindVisionEnemies.add(mob);
+						}
+						for (int i : PathFinder.NEIGHBOURS9)
+							fieldOfView[p+i] = true;
 					}
 				}
 			}
 			if (c.buff( Awareness.class ) != null) {
 				for (Heap heap : heaps.values()) {
 					int p = heap.pos;
-					fieldOfView[p] = true;
-					fieldOfView[p + 1] = true;
-					fieldOfView[p - 1] = true;
-					fieldOfView[p + width() + 1] = true;
-					fieldOfView[p + width() - 1] = true;
-					fieldOfView[p - width() + 1] = true;
-					fieldOfView[p - width() - 1] = true;
-					fieldOfView[p + width()] = true;
-					fieldOfView[p - width()] = true;
+					for (int i : PathFinder.NEIGHBOURS9)
+						fieldOfView[p+i] = true;
 				}
 			}
 		}
