@@ -98,7 +98,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	public Char ch;
 
-	public boolean isMoving = false;
+	//used to prevent the actor associated with this sprite from acting until movement completes
+	public volatile boolean isMoving = false;
 	
 	public CharSprite() {
 		super();
@@ -453,6 +454,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		} else if (tweener == motion) {
 
 			isMoving = false;
+			synchronized (this){
+				notify();
+			}
 
 			motion.killAndErase();
 			motion = null;
