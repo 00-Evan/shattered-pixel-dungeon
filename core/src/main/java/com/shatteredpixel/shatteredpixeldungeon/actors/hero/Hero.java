@@ -1424,6 +1424,7 @@ public class Hero extends Char {
 			} else if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST){
 				belongings.specialKeys[Dungeon.depth]--;
 			}
+			StatusPane.needsKeyUpdate = true;
 			heap.open( this );
 		}
 		curAction = null;
@@ -1551,7 +1552,8 @@ public class Hero extends Char {
 
 	@Override
 	public void next() {
-		super.next();
+		if (isAlive())
+			super.next();
 	}
 
 	public static interface Doom {
