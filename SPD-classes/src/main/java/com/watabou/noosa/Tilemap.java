@@ -51,6 +51,7 @@ public class Tilemap extends Visual {
 	protected Vertexbuffer buffer;
 	
 	private volatile Rect updated;
+	private boolean fullUpdate;
 	private Rect updating;
 	private int topLeftUpdating;
 	private int bottomRightUpdating;
@@ -94,10 +95,7 @@ public class Tilemap extends Visual {
 	//forces a full update, including new buffer and culling recalculation
 	public synchronized void updateMap(){
 		updated.set( 0, 0, mapWidth, mapHeight );
-		if (buffer != null) {
-			buffer.delete();
-		}
-		buffer = null;
+		fullUpdate = true;
 		camX = null;
 	}
 
@@ -202,10 +200,16 @@ public class Tilemap extends Visual {
 			quads.limit(bufferLength*16);
 			if (buffer == null)
 				buffer = new Vertexbuffer(quads);
-			else
-				buffer.updateVertices(quads,
-						topLeftUpdating*16,
-						bottomRightUpdating*16);
+			else {
+				if (fullUpdate) {
+					buffer.updateVertices(quads);
+					fullUpdate = false;
+				} else {
+					buffer.updateVertices(quads,
+							topLeftUpdating * 16,
+							bottomRightUpdating * 16);
+				}
+			}
 			topLeftUpdating = 0;
 			updating.setEmpty();
 		}
