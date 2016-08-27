@@ -103,14 +103,14 @@ public class RenderedText extends Image {
 		this.size = size;
 
 		needsRender = true;
-		measure();
+		measure(this);
 	}
 
 	public void text( String text ){
 		this.text = text;
 
 		needsRender = true;
-		measure();
+		measure(this);
 	}
 
 	public String text(){
@@ -120,25 +120,25 @@ public class RenderedText extends Image {
 	public void size( int size ){
 		this.size = size;
 		needsRender = true;
-		measure();
+		measure(this);
 	}
 
 	public float baseLine(){
 		return size * scale.y;
 	}
 
-	private void measure(){
+	private static synchronized void measure(RenderedText r){
 
-		if ( text == null || text.equals("") ) {
-			text = "";
-			width=height=0;
-			visible = false;
+		if ( r.text == null || r.text.equals("") ) {
+			r.text = "";
+			r.width=r.height=0;
+			r.visible = false;
 			return;
 		} else {
-			visible = true;
+			r.visible = true;
 		}
 
-		painter.setTextSize(size);
+		painter.setTextSize(r.size);
 		painter.setAntiAlias(true);
 
 		if (font != null) {
@@ -150,56 +150,56 @@ public class RenderedText extends Image {
 		//paint outer strokes
 		painter.setARGB(0xff, 0, 0, 0);
 		painter.setStyle(Paint.Style.STROKE);
-		painter.setStrokeWidth(size / 5f);
+		painter.setStrokeWidth(r.size / 5f);
 
-		width = (painter.measureText(text)+ (size/5f));
-		height = (-painter.ascent() + painter.descent()+ (size/5f));
+		r.width = (painter.measureText(r.text)+ (r.size/5f));
+		r.height = (-painter.ascent() + painter.descent()+ (r.size/5f));
 	}
 
-	private void render(){
-		needsRender = false;
+	private static synchronized void render(RenderedText r){
+		r.needsRender = false;
 
-		if (cache != null)
-			cache.activeTexts.remove(this);
+		if (r.cache != null)
+			r.cache.activeTexts.remove(r);
 
-		String key = "text:" + size + " " + text;
+		String key = "text:" + r.size + " " + r.text;
 		if (textCache.containsKey(key)){
-			cache = textCache.get(key);
-			texture = cache.texture;
-			frame(cache.rect);
-			cache.activeTexts.add(this);
+			r.cache = textCache.get(key);
+			r.texture = r.cache.texture;
+			r.frame(r.cache.rect);
+			r.cache.activeTexts.add(r);
 		} else {
 
-			measure();
+			measure(r);
 
-			if (width == 0 || height == 0)
+			if (r.width == 0 || r.height == 0)
 				return;
 
 			//bitmap has to be in a power of 2 for some devices (as we're using openGL methods to render to texture)
-			Bitmap bitmap = Bitmap.createBitmap(Integer.highestOneBit((int)width)*2, Integer.highestOneBit((int)height)*2, Bitmap.Config.ARGB_4444);
+			Bitmap bitmap = Bitmap.createBitmap(Integer.highestOneBit((int)r.width)*2, Integer.highestOneBit((int)r.height)*2, Bitmap.Config.ARGB_4444);
 			bitmap.eraseColor(0x00000000);
 
 			canvas.setBitmap(bitmap);
-			canvas.drawText(text, (size/10f), size, painter);
+			canvas.drawText(r.text, (r.size/10f), r.size, painter);
 
 			//paint inner text
 			painter.setARGB(0xff, 0xff, 0xff, 0xff);
 			painter.setStyle(Paint.Style.FILL);
 
-			canvas.drawText(text, (size/10f), size, painter);
+			canvas.drawText(r.text, (r.size/10f), r.size, painter);
 
-			texture = new SmartTexture(bitmap, Texture.NEAREST, Texture.CLAMP, true);
+			r.texture = new SmartTexture(bitmap, Texture.NEAREST, Texture.CLAMP, true);
 
-			RectF rect = texture.uvRect(0, 0, (int)width, (int)height);
-			frame(rect);
+			RectF rect = r.texture.uvRect(0, 0, (int)r.width, (int)r.height);
+			r.frame(rect);
 
-			cache = new CachedText();
-			cache.rect = rect;
-			cache.texture = texture;
-			cache.length = text.length();
-			cache.activeTexts = new HashSet<>();
-			cache.activeTexts.add(this);
-			textCache.put("text:" + size + " " + text, cache);
+			r.cache = new CachedText();
+			r.cache.rect = rect;
+			r.cache.texture = r.texture;
+			r.cache.length = r.text.length();
+			r.cache.activeTexts = new HashSet<>();
+			r.cache.activeTexts.add(r);
+			textCache.put("text:" + r.size + " " + r.text, r.cache);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class RenderedText extends Image {
 	@Override
 	public void draw() {
 		if (needsRender)
-			render();
+			render(this);
 		super.draw();
 	}
 
@@ -242,7 +242,7 @@ public class RenderedText extends Image {
 		clearCache();
 	}
 
-	private class CachedText{
+	private static class CachedText{
 		public SmartTexture texture;
 		public RectF rect;
 		public int length;
