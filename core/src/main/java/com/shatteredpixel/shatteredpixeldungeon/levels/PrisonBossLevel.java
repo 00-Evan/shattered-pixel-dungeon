@@ -233,7 +233,6 @@ public class PrisonBossLevel extends Level {
 
 	private void changeMap(int[] map){
 		this.map = map.clone();
-		GameScene.resetMap();
 		buildFlagMaps();
 		cleanWalls();
 
@@ -251,6 +250,8 @@ public class PrisonBossLevel extends Level {
 		addVisuals(); //this also resets existing visuals
 		resetTraps();
 
+
+		GameScene.resetMap();
 		Dungeon.observe();
 	}
 
@@ -307,9 +308,9 @@ public class PrisonBossLevel extends Level {
 				maze.connected.put(null, new Room.Door(10, 2));
 				maze.connected.put(maze, new Room.Door(20, 29));
 				MazePainter.paint(this, maze);
-				GameScene.resetMap();
 				buildFlagMaps();
 				cleanWalls();
+				GameScene.resetMap();
 
 				GameScene.flash(0xFFFFFF);
 				Sample.INSTANCE.play(Assets.SND_BLAST);

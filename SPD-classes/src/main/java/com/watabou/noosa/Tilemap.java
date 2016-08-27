@@ -88,11 +88,17 @@ public class Tilemap extends Visual {
 
 		quads = Quad.createSet( size );
 
-		updated.set( 0, 0, mapWidth, mapHeight );
+		updateMap();
 	}
 
+	//forces a full update, including new buffer and culling recalculation
 	public synchronized void updateMap(){
 		updated.set( 0, 0, mapWidth, mapHeight );
+		if (buffer != null) {
+			buffer.delete();
+		}
+		buffer = null;
+		camX = null;
 	}
 
 	public synchronized void updateMapCell(int cell){
