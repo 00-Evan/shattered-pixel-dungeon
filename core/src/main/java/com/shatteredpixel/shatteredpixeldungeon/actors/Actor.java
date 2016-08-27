@@ -204,8 +204,11 @@ public abstract class Actor implements Bundlable {
 					// If it's character's turn to act, but its sprite
 					// is moving, wait till the movement is over
 					try {
-						synchronized (((Char)acting).sprite) {
-							((Char) acting).sprite.wait();
+						//yes, we're busy-waiting. This is insignificantly slower than using
+						//a lock/semaphore but results in more readable code.
+						while (((Char)acting).sprite.isMoving) {
+							//tries every ~0.1 milliseconds
+							Thread.sleep(0, 100000);
 						}
 					} catch (InterruptedException e) {
 						ShatteredPixelDungeon.reportException(e);

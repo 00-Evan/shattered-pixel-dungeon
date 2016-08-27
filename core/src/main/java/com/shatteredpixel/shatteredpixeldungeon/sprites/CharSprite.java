@@ -453,14 +453,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 		} else if (tweener == motion) {
 
-			isMoving = false;
-			synchronized (this){
-				notify();
-			}
-
 			motion.killAndErase();
 			motion = null;
 			ch.onMotionComplete();
+
+			isMoving = false;
 		}
 	}
 
