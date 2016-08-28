@@ -1012,7 +1012,7 @@ public class Hero extends Char {
 	}
 	
 	private boolean getCloser( final int target ) {
-		
+
 		if (rooted) {
 			Camera.main.shake( 1, 1f );
 			return false;
@@ -1021,7 +1021,7 @@ public class Hero extends Char {
 		int step = -1;
 		
 		if (Dungeon.level.adjacent( pos, target )) {
-			
+
 			if (Actor.findChar( target ) == null) {
 				if (Level.pit[target] && !flying && !Level.solid[target]) {
 					if (!Chasm.jumpConfirmed){
@@ -1038,7 +1038,7 @@ public class Hero extends Char {
 			}
 			
 		} else {
-		
+
 			int len = Dungeon.level.length();
 			boolean[] p = Level.passable;
 			boolean[] v = Dungeon.level.visited;
@@ -1047,10 +1047,10 @@ public class Hero extends Char {
 			for (int i=0; i < len; i++) {
 				passable[i] = p[i] && (v[i] || m[i]);
 			}
-			
+
 			step = Dungeon.findStep( this, pos, target, passable, Level.fieldOfView );
 		}
-		
+
 		if (step != -1) {
 
 			sprite.move(pos, step);
@@ -1126,7 +1126,7 @@ public class Hero extends Char {
 			
 		}
 
-		return act();
+		return true;
 	}
 	
 	public void earnExp( int exp ) {
