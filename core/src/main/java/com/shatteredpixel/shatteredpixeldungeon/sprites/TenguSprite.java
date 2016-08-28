@@ -102,8 +102,12 @@ public class TenguSprite extends MobSprite {
 	@Override
 	public void onComplete( Animation anim ) {
 		if (anim == run) {
-			idle();
-			isMoving = false;
+			synchronized (this){
+				isMoving = false;
+				idle();
+
+				notifyAll();
+			}
 		} else {
 			super.onComplete( anim );
 		}
