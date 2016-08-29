@@ -419,7 +419,7 @@ public class GameScene extends PixelScene {
 				}
 			};
 			//if cpu time is limited, game should prefer drawing the current frame
-			t.setPriority(Thread.MIN_PRIORITY);
+			t.setPriority(Thread.NORM_PRIORITY-1);
 			t.start();
 		}
 		
