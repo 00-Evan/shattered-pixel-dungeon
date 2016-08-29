@@ -28,8 +28,6 @@ import java.util.Arrays;
 public class Uniform {
 
 	private int location;
-
-	private float[] prevVal = new float[4];
 	
 	public Uniform(int location) {
 		this.location = location;
@@ -56,16 +54,6 @@ public class Uniform {
 	}
 	
 	public void value4f(float v1, float v2, float v3, float v4) {
-		if (v1 == prevVal[0] &&
-				v2 == prevVal[1] &&
-				v3 == prevVal[2] &&
-				v4 == prevVal[3])
-			return;
-
-		prevVal[0] = v1;
-		prevVal[1] = v2;
-		prevVal[2] = v3;
-		prevVal[3] = v4;
 		GLES20.glUniform4f(location, v1, v2, v3, v4);
 	}
 	
@@ -74,10 +62,6 @@ public class Uniform {
 	}
 	
 	public void valueM4(float[] value) {
-		if (Arrays.equals(prevVal, value))
-			return;
-
-		System.arraycopy(value, 0, prevVal, 0, 4);
 		GLES20.glUniformMatrix4fv(location, 1, false, value, 0);
 	}
 }

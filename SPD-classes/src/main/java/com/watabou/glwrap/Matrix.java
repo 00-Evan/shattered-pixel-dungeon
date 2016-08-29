@@ -44,14 +44,16 @@ public class Matrix {
 		} while (n > 0);
 
 	}
+
+	private static float[] identity = new float[]{
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1
+	};
 	
 	public static void setIdentity( float[] m ) {
-		for (int i=0 ; i < 16 ; i++) {
-			m[i] = 0f;
-		}
-		for (int i = 0; i < 16; i += 5) {
-			m[i] = 1f;
-		}
+		System.arraycopy(identity, 0, m, 0, identity.length);
 	}
 
 	public static void rotate( float[] m, float a ) {

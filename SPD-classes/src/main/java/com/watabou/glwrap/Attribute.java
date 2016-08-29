@@ -47,14 +47,14 @@ public class Attribute {
 	}
 	
 	public void vertexPointer( int size, int stride, FloatBuffer ptr ) {
-		GLES20.glVertexAttribPointer( location, size, GLES20.GL_FLOAT, false, stride * Float.SIZE / 8, ptr );
+		GLES20.glVertexAttribPointer( location, size, GLES20.GL_FLOAT, false, stride * 4, ptr );
 	}
 
 	public void vertexBuffer( int size, int stride, int offset) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			GLES20.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * Float.SIZE / 8, offset * Float.SIZE / 8);
+			GLES20.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * 4, offset * 4);
 		} else {
-			FroyoGLES20Fix.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * Float.SIZE / 8, offset * Float.SIZE / 8);
+			FroyoGLES20Fix.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * 4, offset * 4);
 		}
 	}
 }

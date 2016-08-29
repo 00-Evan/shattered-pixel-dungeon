@@ -79,18 +79,22 @@ public class Visual extends Gizmo {
 	public void draw() {
 		updateMatrix();
 	}
-	
+
+	//FIXME this is recomputing a lot of stuff every frame
+	// would be far better to redo this only when changes happen
 	protected void updateMatrix() {
 		Matrix.setIdentity( matrix );
 		Matrix.translate( matrix, x, y );
-		Matrix.translate( matrix, origin.x, origin.y );
+		if (origin.x != 0 || origin.y != 0)
+			Matrix.translate( matrix, origin.x, origin.y );
 		if (angle != 0) {
 			Matrix.rotate( matrix, angle );
 		}
 		if (scale.x != 1 || scale.y != 1) {
 			Matrix.scale( matrix, scale.x, scale.y );
 		}
-		Matrix.translate( matrix, -origin.x, -origin.y );
+		if (origin.x != 0 || origin.y != 0)
+			Matrix.translate( matrix, -origin.x, -origin.y );
 	}
 	
 	public PointF point() {
@@ -128,20 +132,19 @@ public class Visual extends Gizmo {
 	}
 	
 	protected void updateMotion() {
-		
-		float elapsed = Game.elapsed;
-		
-		float d = (GameMath.speed( speed.x, acc.x ) - speed.x) / 2;
-		speed.x += d;
-		x += speed.x * elapsed;
-		speed.x += d;
-		
-		d = (GameMath.speed( speed.y, acc.y ) - speed.y) / 2;
-		speed.y += d;
-		y += speed.y * elapsed;
-		speed.y += d;
-		
-		angle += angularSpeed * elapsed;
+
+		if (acc.x != 0)
+			speed.x += acc.x * Game.elapsed;
+		if (speed.x != 0)
+			x += speed.x * Game.elapsed;
+
+		if (acc.y != 0)
+			speed.y += acc.y * Game.elapsed;
+		if (speed.y != 0)
+			y += speed.y * Game.elapsed;
+
+		if (angularSpeed != 0)
+			angle += angularSpeed * Game.elapsed;
 	}
 	
 	public void alpha( float value ) {
