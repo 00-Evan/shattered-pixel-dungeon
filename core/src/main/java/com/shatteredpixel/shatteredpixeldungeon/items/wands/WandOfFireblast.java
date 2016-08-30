@@ -70,10 +70,6 @@ public class WandOfFireblast extends DamageWand {
 	@Override
 	protected void onZap( Ballistica bolt ) {
 
-		if (Level.flamable[bolt.sourcePos]){
-			GameScene.add( Blob.seed( bolt.sourcePos, 2, Fire.class ) );
-		}
-
 		for( int cell : affectedCells){
 			GameScene.add( Blob.seed( cell, 1+chargesPerCast(), Fire.class ) );
 			Char ch = Actor.findChar( cell );

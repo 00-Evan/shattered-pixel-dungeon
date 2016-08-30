@@ -146,7 +146,7 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		if (this instanceof MissileWeapon) {
 			int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim.class);
-			ACC *= (float)(Math.pow(1.1, bonus));
+			ACC *= (float)(Math.pow(1.2, bonus));
 		}
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;

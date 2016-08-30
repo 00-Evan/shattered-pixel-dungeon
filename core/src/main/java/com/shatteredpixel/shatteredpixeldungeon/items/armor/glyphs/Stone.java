@@ -30,13 +30,13 @@ public class Stone extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect
+		//no proc effect, see armor.DrMin
 		return damage;
 	}
 
 	@Override
-	public int tierSTRAdjust() {
-		return 1;
+	public float tierSTRAdjust() {
+		return 1.5f;
 	}
 
 	@Override

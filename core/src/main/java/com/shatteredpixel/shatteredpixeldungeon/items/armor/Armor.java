@@ -356,12 +356,12 @@ public class Armor extends EquipableItem {
 
 	public int STRReq(int lvl){
 		lvl = Math.max(0, lvl);
-		int effectiveTier = tier;
+		float effectiveTier = tier;
 		if (glyph != null) effectiveTier += glyph.tierSTRAdjust();
 		effectiveTier = Math.max(0, effectiveTier);
 
 		//strength req decreases at +1,+3,+6,+10,etc.
-		return (8 + effectiveTier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+		return (8 + Math.round(effectiveTier * 2)) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
 	}
 	
 	@Override
@@ -468,7 +468,7 @@ public class Armor extends EquipableItem {
 			return 0;
 		}
 
-		public int tierSTRAdjust(){
+		public float tierSTRAdjust(){
 			return 0;
 		}
 

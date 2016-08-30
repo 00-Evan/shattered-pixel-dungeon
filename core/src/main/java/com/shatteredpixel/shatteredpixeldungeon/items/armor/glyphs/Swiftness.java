@@ -40,7 +40,7 @@ public class Swiftness extends Armor.Glyph {
 	}
 
 	@Override
-	public int tierSTRAdjust() {
+	public float tierSTRAdjust() {
 		return -1;
 	}
 

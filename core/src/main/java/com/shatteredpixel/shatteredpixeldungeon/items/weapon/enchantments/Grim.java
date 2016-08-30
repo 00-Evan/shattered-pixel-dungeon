@@ -41,8 +41,8 @@ public class Grim extends Weapon.Enchantment {
 		int enemyHealth = defender.HP - damage;
 		if (enemyHealth == 0) return damage; //no point in proccing if they're already dead.
 
-		//scales from 0 - 20% based on how low hp the enemy is, plus 1% per level
-		int chance = Math.round(((defender.HT - enemyHealth) / (float)defender.HT)*20 + level);
+		//scales from 0 - 30% based on how low hp the enemy is, plus 1% per level
+		int chance = Math.round(((defender.HT - enemyHealth) / (float)defender.HT)*30 + level);
 		
 		if (Random.Int( 100 ) < chance) {
 			
