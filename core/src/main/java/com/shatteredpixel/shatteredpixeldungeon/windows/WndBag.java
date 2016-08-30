@@ -411,7 +411,11 @@ public class WndBag extends WndTabbed {
 		
 		@Override
 		protected void onClick() {
-			if (listener != null) {
+			if (!lastBag.contains(item) && !item.isEquipped(Dungeon.hero)){
+
+				hide();
+
+			} else if (listener != null) {
 				
 				hide();
 				listener.onSelect( item );
