@@ -1013,6 +1013,9 @@ public class Hero extends Char {
 	
 	private boolean getCloser( final int target ) {
 
+		if (target == pos)
+			return false;
+
 		if (rooted) {
 			Camera.main.shake( 1, 1f );
 			return false;
@@ -1021,6 +1024,8 @@ public class Hero extends Char {
 		int step = -1;
 		
 		if (Dungeon.level.adjacent( pos, target )) {
+
+			path = null;
 
 			if (Actor.findChar( target ) == null) {
 				if (Level.pit[target] && !flying && !Level.solid[target]) {
@@ -1039,16 +1044,40 @@ public class Hero extends Char {
 			
 		} else {
 
-			int len = Dungeon.level.length();
-			boolean[] p = Level.passable;
-			boolean[] v = Dungeon.level.visited;
-			boolean[] m = Dungeon.level.mapped;
-			boolean[] passable = new boolean[len];
-			for (int i=0; i < len; i++) {
-				passable[i] = p[i] && (v[i] || m[i]);
+			boolean newPath = false;
+			if (path == null || path.isEmpty())
+				newPath = true;
+			else if (path.getLast() != target)
+				newPath = true;
+			else {
+				//checks 2 cells ahead for validity.
+				//Note that this is shorter than for mobs, so that mobs usually yield to the hero
+				for (int i = 0; i < Math.min(path.size(), 2); i++){
+					int cell = path.get(i);
+					if (!Level.passable[cell] || ((i != path.size()-1) && Dungeon.visible[cell] && Actor.findChar(cell) != null)) {
+						newPath = true;
+						break;
+					}
+				}
 			}
 
-			step = Dungeon.findStep( this, pos, target, passable, Level.fieldOfView );
+			if (newPath) {
+
+				int len = Dungeon.level.length();
+				boolean[] p = Level.passable;
+				boolean[] v = Dungeon.level.visited;
+				boolean[] m = Dungeon.level.mapped;
+				boolean[] passable = new boolean[len];
+				for (int i = 0; i < len; i++) {
+					passable[i] = p[i] && (v[i] || m[i]);
+				}
+
+				path = Dungeon.findPath(this, pos, target, passable, Level.fieldOfView);
+			}
+
+			if (path == null) return false;
+			step = path.removeFirst();
+
 		}
 
 		if (step != -1) {

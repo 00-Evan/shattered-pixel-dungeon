@@ -67,7 +67,8 @@ public abstract class Char extends Actor {
 	public int SHLD;
 	
 	protected float baseSpeed	= 1;
-	
+	protected PathFinder.Path path;
+
 	public int paralysed	    = 0;
 	public boolean rooted		= false;
 	public boolean flying		= false;
