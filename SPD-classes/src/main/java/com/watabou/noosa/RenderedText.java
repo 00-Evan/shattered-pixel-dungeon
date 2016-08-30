@@ -214,7 +214,8 @@ public class RenderedText extends Image {
 	public void draw() {
 		if (needsRender)
 			render(this);
-		super.draw();
+		if (texture != null)
+			super.draw();
 	}
 
 	@Override
