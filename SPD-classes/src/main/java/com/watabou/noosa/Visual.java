@@ -240,10 +240,18 @@ public class Visual extends Gizmo {
 
 		if (c == null || !visible) return false;
 
-		float cx = c.scroll.x;
-		float cy = c.scroll.y;
-		float w = width();
-		float h = height();
-		return x + w >= cx && y + h >= cy && x < cx + c.width && y < cy + c.height;
+		//x coord
+		if (x > c.scroll.x + c.width)
+			return false;
+		else if (!(x >= c.scroll.x || x + width() >= c.scroll.x))
+			return false;
+
+		//y coord
+		if (y > c.scroll.y + c.height)
+			return false;
+		else if (!(y >= c.scroll.y || y + height() >= c.scroll.y))
+			return false;
+
+		return true;
 	}
 }

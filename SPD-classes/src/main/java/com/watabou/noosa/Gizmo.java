@@ -64,7 +64,7 @@ public class Gizmo {
 		if (camera != null) {
 			return camera;
 		} else if (parent != null) {
-			return parent.camera();
+			return this.camera = parent.camera();
 		} else {
 			return null;
 		}
