@@ -19,4 +19,4 @@
 -dontwarn **
 -keep class com.shatteredpixel.** { *; }
 -keep class com.watabou.** { *; }
--keepattributes LineNumberTable
+-keepattributes SourceFile,LineNumberTable
