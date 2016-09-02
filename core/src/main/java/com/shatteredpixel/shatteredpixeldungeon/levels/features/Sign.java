@@ -55,7 +55,7 @@ public class Sign {
 
 				//if we are at depths 22-24 and in english
 				if (Dungeon.depth-21 <= 3 && Messages.lang() == Languages.ENGLISH){
-					GameScene.show( new WndMessage(teaser_texts[Dungeon.depth-21]));
+					GameScene.show( new WndMessage(teaser_texts[Dungeon.depth-22]));
 				}
 
 				Dungeon.level.destroy( pos );
