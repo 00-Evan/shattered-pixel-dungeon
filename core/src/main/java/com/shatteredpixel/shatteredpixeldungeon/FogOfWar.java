@@ -104,7 +104,7 @@ public class FogOfWar extends Image {
 			int cell = (pWidth - 1) * i + updating.left;
 			fog.pixels.position((width2) * i + updating.left);
 			for (int j=updating.left; j < updating.right; j++) {
-				if (cell < pWidth || cell >= Dungeon.level.length()) {
+				if (cell < pWidth || cell >= Dungeon.level.length() || j == 0 || j == pWidth-1) {
 					fog.pixels.put(INVISIBLE);
 				} else
 				if (visible[cell] && visible[cell - (pWidth - 1)] &&
