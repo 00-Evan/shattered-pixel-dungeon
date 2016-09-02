@@ -55,7 +55,8 @@ public class Shadows extends Invisibility {
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
 			Sample.INSTANCE.play( Assets.SND_MELD );
-			Dungeon.observe();
+			if (Dungeon.level != null)
+				Dungeon.observe();
 			return true;
 		} else {
 			return false;
