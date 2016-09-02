@@ -1045,7 +1045,7 @@ public class Hero extends Char {
 		} else {
 
 			boolean newPath = false;
-			if (path == null || path.isEmpty())
+			if (path == null || path.isEmpty() || !Dungeon.level.adjacent(pos, path.getFirst()))
 				newPath = true;
 			else if (path.getLast() != target)
 				newPath = true;
