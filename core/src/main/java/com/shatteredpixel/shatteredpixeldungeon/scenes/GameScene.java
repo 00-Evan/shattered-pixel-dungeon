@@ -751,7 +751,8 @@ public class GameScene extends PixelScene {
 	
 	public static void selectCell( CellSelector.Listener listener ) {
 		cellSelector.listener = listener;
-		scene.prompt( listener.prompt() );
+		if (scene != null)
+			scene.prompt( listener.prompt() );
 	}
 	
 	private static boolean cancelCellSelector() {
