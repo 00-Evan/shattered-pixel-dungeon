@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
@@ -51,8 +53,6 @@ public class Halo extends Image {
 		}
 		
 		texture( CACHE_KEY );
-		
-		origin.set( RADIUS );
 	}
 	
 	public Halo( float radius, int color, float brightness ) {
@@ -65,8 +65,9 @@ public class Halo extends Image {
 	}
 	
 	public Halo point( float x, float y ) {
-		this.x = x - RADIUS;
-		this.y = y - RADIUS;
+		this.x = x - (width()/2f);
+		this.y = y - (height()/2f);
+		PixelScene.align(this);
 		return this;
 	}
 	
