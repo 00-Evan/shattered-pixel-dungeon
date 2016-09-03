@@ -148,6 +148,9 @@ public class Image extends Visual {
 	
 	@Override
 	public void draw() {
+
+		if (texture == null)
+			return;
 		
 		super.draw();
 
