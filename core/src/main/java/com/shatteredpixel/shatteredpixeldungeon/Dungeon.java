@@ -426,7 +426,7 @@ public class Dungeon {
 			bundle.put( DEPTH, depth );
 
 			for (int d : droppedItems.keyArray()) {
-				bundle.put(String.format(DROPPED, d), droppedItems.get(d));
+				bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
 			}
 
 			quickslot.storePlaceholders( bundle );
@@ -589,7 +589,7 @@ public class Dungeon {
 		droppedItems = new SparseArray<ArrayList<Item>>();
 		for (int i=2; i <= Statistics.deepestFloor + 1; i++) {
 			ArrayList<Item> dropped = new ArrayList<Item>();
-			for (Bundlable b : bundle.getCollection( String.format( DROPPED, i ) ) ) {
+			for (Bundlable b : bundle.getCollection( Messages.format( DROPPED, i ) ) ) {
 				dropped.add( (Item)b );
 			}
 			if (!dropped.isEmpty()) {
