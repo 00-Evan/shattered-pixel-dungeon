@@ -81,9 +81,10 @@ public class Eye extends Mob {
 	}
 	
 	private Ballistica beam;
+	private int beamTarget = -1;
 	private int beamCooldown;
 	public boolean beamCharged;
-	
+
 	@Override
 	protected boolean canAttack( Char enemy ) {
 
@@ -92,6 +93,7 @@ public class Eye extends Mob {
 
 			if (enemy.invisible == 0 && Level.fieldOfView[enemy.pos] && aim.subPath(1, aim.dist).contains(enemy.pos)){
 				beam = aim;
+				beamTarget = aim.collisionPos;
 				return true;
 			} else
 				//if the beam is charged, it has to attack, will aim at previous location of hero.
@@ -102,6 +104,10 @@ public class Eye extends Mob {
 
 	@Override
 	protected boolean act() {
+		if (beam == null && beamTarget != -1) {
+			beam = new Ballistica(pos, beamTarget, Ballistica.STOP_TERRAIN);
+			sprite.turnTo(pos, beamTarget);
+		}
 		if (beamCooldown > 0)
 			beamCooldown--;
 		return super.act();
@@ -190,6 +196,7 @@ public class Eye extends Mob {
 		}
 
 		beam = null;
+		beamTarget = -1;
 		sprite.idle();
 	}
 
@@ -200,8 +207,7 @@ public class Eye extends Mob {
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
-		if (beam != null)
-			bundle.put( BEAM_TARGET, beam.collisionPos);
+		bundle.put( BEAM_TARGET, beamTarget);
 		bundle.put( BEAM_COOLDOWN, beamCooldown );
 		bundle.put( BEAM_CHARGED, beamCharged );
 	}
@@ -210,7 +216,7 @@ public class Eye extends Mob {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		if (bundle.contains(BEAM_TARGET))
-			beam = new Ballistica(pos, bundle.getInt(BEAM_TARGET), Ballistica.STOP_TERRAIN);
+			beamTarget = bundle.getInt(BEAM_TARGET);
 		beamCooldown = bundle.getInt(BEAM_COOLDOWN);
 		beamCharged = bundle.getBoolean(BEAM_CHARGED);
 	}
