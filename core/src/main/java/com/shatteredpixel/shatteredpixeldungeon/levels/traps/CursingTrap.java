@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -77,7 +78,7 @@ public class CursingTrap extends Trap {
 		ArrayList<Item> canCurse = new ArrayList<>();
 
 		KindOfWeapon weapon = hero.belongings.weapon;
-		if (weapon instanceof Weapon && !weapon.cursed){
+		if (weapon instanceof Weapon && !weapon.cursed && !(weapon instanceof Boomerang)){
 			if (((Weapon) weapon).enchantment == null)
 				priorityCurse.add(weapon);
 			else

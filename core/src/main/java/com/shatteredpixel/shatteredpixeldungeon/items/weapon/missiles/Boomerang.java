@@ -125,7 +125,7 @@ public class Boomerang extends MissileWeapon {
 
 	@Override
 	public void cast( Hero user, int dst ) {
-		throwEquiped = isEquipped( user );
+		throwEquiped = isEquipped( user ) && !cursed;
 		if (throwEquiped) Dungeon.quickslot.convertToPlaceholder(this);
 		super.cast( user, dst );
 	}
