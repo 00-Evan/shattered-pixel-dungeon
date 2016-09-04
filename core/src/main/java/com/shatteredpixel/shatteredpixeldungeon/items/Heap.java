@@ -187,7 +187,7 @@ public class Heap implements Bundlable {
 			
 		}
 		
-		if (item instanceof Dewdrop) {
+		if (item instanceof Dewdrop && type != Type.FOR_SALE) {
 			items.add( item );
 		} else {
 			items.addFirst( item );
