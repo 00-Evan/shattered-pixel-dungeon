@@ -45,7 +45,7 @@ public class Sungrass extends Plant {
 		Char ch = Actor.findChar(pos);
 		
 		if (ch == Dungeon.hero) {
-			Buff.affect( ch, Health.class ).level = ch.HT;
+			Buff.affect( ch, Health.class ).boost(ch.HT);
 		}
 		
 		if (Dungeon.visible[pos]) {
@@ -75,12 +75,6 @@ public class Sungrass extends Plant {
 
 		{
 			type = buffType.POSITIVE;
-		}
-		
-		@Override
-		public boolean attachTo( Char target ) {
-			pos = target.pos;
-			return super.attachTo( target );
 		}
 		
 		@Override
@@ -122,6 +116,7 @@ public class Sungrass extends Plant {
 
 		public void boost( int amount ){
 			level += amount;
+			pos = target.pos;
 		}
 		
 		@Override

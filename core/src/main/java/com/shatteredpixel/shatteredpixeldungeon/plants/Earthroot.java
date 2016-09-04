@@ -103,8 +103,8 @@ public class Earthroot extends Plant {
 		public void level( int value ) {
 			if (level < value) {
 				level = value;
-				pos = target.pos;
 			}
+			pos = target.pos;
 		}
 		
 		@Override
