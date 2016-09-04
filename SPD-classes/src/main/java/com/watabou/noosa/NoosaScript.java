@@ -210,12 +210,11 @@ public class NoosaScript extends Script {
 		"}" +
 		
 		"//\n" +
-		
-		"precision mediump float;" +
-		"varying vec2 vUV;" +
-		"uniform sampler2D uTex;" +
-		"uniform vec4 uColorM;" +
-		"uniform vec4 uColorA;" +
+
+		"varying mediump vec2 vUV;" +
+		"uniform lowp sampler2D uTex;" +
+		"uniform lowp vec4 uColorM;" +
+		"uniform lowp vec4 uColorA;" +
 		"void main() {" +
 		"  gl_FragColor = texture2D( uTex, vUV ) * uColorM + uColorA;" +
 		"}";
