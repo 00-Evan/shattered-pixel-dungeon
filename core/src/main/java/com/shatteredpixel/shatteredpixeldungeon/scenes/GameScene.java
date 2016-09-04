@@ -718,7 +718,8 @@ public class GameScene extends PixelScene {
 	public static void afterObserve() {
 		if (scene != null) {
 			for (Mob mob : Dungeon.level.mobs) {
-				mob.sprite.visible = Dungeon.visible[mob.pos];
+				if (mob.sprite != null)
+					mob.sprite.visible = Dungeon.visible[mob.pos];
 			}
 		}
 	}
