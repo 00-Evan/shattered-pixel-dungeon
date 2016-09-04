@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
@@ -71,7 +72,9 @@ public class WandOfFireblast extends DamageWand {
 	protected void onZap( Ballistica bolt ) {
 
 		for( int cell : affectedCells){
-			GameScene.add( Blob.seed( cell, 1+chargesPerCast(), Fire.class ) );
+
+			if (Level.flamable[cell] || !Dungeon.level.adjacent(bolt.sourcePos, cell))
+				GameScene.add( Blob.seed( cell, 1+chargesPerCast(), Fire.class ) );
 			Char ch = Actor.findChar( cell );
 			if (ch != null) {
 
@@ -97,9 +100,9 @@ public class WandOfFireblast extends DamageWand {
 			affectedCells.add(cell);
 			if (strength >= 1.5f) {
 				visualCells.remove(cell);
-				spreadFlames(cell + PathFinder.NEIGHBOURS8[left(direction)], strength - 1.5f);
-				spreadFlames(cell + PathFinder.NEIGHBOURS8[direction], strength - 1.5f);
-				spreadFlames(cell + PathFinder.NEIGHBOURS8[right(direction)], strength - 1.5f);
+				spreadFlames(cell + PathFinder.CIRCLE[left(direction)], strength - 1.5f);
+				spreadFlames(cell + PathFinder.CIRCLE[direction], strength - 1.5f);
+				spreadFlames(cell + PathFinder.CIRCLE[right(direction)], strength - 1.5f);
 			} else {
 				visualCells.add(cell);
 			}
@@ -131,8 +134,8 @@ public class WandOfFireblast extends DamageWand {
 		int maxDist = (int)(4 * Math.pow(1.5,(chargesPerCast()-1)));
 		int dist = Math.min(bolt.dist, maxDist);
 
-		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++){
-			if (bolt.sourcePos+PathFinder.NEIGHBOURS8[i] == bolt.path.get(1)){
+		for (int i = 0; i < PathFinder.CIRCLE.length; i++){
+			if (bolt.sourcePos+PathFinder.CIRCLE[i] == bolt.path.get(1)){
 				direction = i;
 				break;
 			}
@@ -143,9 +146,9 @@ public class WandOfFireblast extends DamageWand {
 			strength--; //as we start at dist 1, not 0.
 			affectedCells.add(c);
 			if (strength > 1) {
-				spreadFlames(c + PathFinder.NEIGHBOURS8[left(direction)], strength - 1);
-				spreadFlames(c + PathFinder.NEIGHBOURS8[direction], strength - 1);
-				spreadFlames(c + PathFinder.NEIGHBOURS8[right(direction)], strength - 1);
+				spreadFlames(c + PathFinder.CIRCLE[left(direction)], strength - 1);
+				spreadFlames(c + PathFinder.CIRCLE[direction], strength - 1);
+				spreadFlames(c + PathFinder.CIRCLE[right(direction)], strength - 1);
 			} else {
 				visualCells.add(c);
 			}

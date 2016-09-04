@@ -41,6 +41,10 @@ public class PathFinder {
 	public static int[] NEIGHBOURS4;
 	public static int[] NEIGHBOURS8;
 	public static int[] NEIGHBOURS9;
+
+	//similar to NEIGHBOURS8, but the order is circular.
+	//Useful for some logic functions, but is slower due to lack of array-access order.
+	public static int[] CIRCLE;
 	
 	public static void setMapSize( int width, int height ) {
 		
@@ -59,6 +63,8 @@ public class PathFinder {
 		NEIGHBOURS4 = new int[]{-width, -1, +1, +width};
 		NEIGHBOURS8 = new int[]{-width-1, -width, -width+1, -1, +1, +width-1, +width, +width+1};
 		NEIGHBOURS9 = new int[]{-width-1, -width, -width+1, -1, 0, +1, +width-1, +width, +width+1};
+
+		CIRCLE = new int[]{-width-1, -width, -width+1, +1, +width+1, +width, +width-1, -1};
 	}
 
 	//TODO currently this isn't used, and all pathfinding is recomputed each step.
