@@ -48,7 +48,7 @@ public class RenderedText extends Image {
 	private static LinkedHashMap<String, CachedText> textCache =
 			new LinkedHashMap<String, CachedText>(700, 0.75f, true){
 				private int cachedChars = 0;
-				private final int MAX_CACHED = 500;
+				private final int MAX_CACHED = 1000;
 
 				@Override
 				public CachedText put(String key, CachedText value) {
