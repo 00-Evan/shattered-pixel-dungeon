@@ -254,14 +254,11 @@ public class Tilemap extends Visual {
 				|| camH + camH < 0)
 			return;
 
-		NoosaScript script = NoosaScript.get();
+		NoosaScript script = NoosaScriptNoLighting.get();
 
 		texture.bind();
 
 		script.uModel.valueM4( matrix );
-		script.lighting(
-			rm, gm, bm, am,
-			ra, ga, ba, aa );
 
 		script.camera( camera );
 

@@ -22,6 +22,8 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.NoosaScript;
+import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.ui.Component;
 
@@ -39,12 +41,22 @@ public class Archs extends Component {
 
 	@Override
 	protected void createChildren() {
-		arcsBg = new SkinnedBlock( 1, 1, Assets.ARCS_BG );
+		arcsBg = new SkinnedBlock( 1, 1, Assets.ARCS_BG ){
+			@Override
+			protected NoosaScript script() {
+				return NoosaScriptNoLighting.get();
+			}
+		};
 		arcsBg.autoAdjust = true;
 		arcsBg.offsetTo( 0,  offsB );
 		add( arcsBg );
 
-		arcsFg = new SkinnedBlock( 1, 1, Assets.ARCS_FG );
+		arcsFg = new SkinnedBlock( 1, 1, Assets.ARCS_FG ){
+			@Override
+			protected NoosaScript script() {
+				return NoosaScriptNoLighting.get();
+			}
+		};
 		arcsFg.autoAdjust = true;
 		arcsFg.offsetTo( 0,  offsF );
 		add( arcsFg );

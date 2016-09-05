@@ -26,6 +26,8 @@ import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Texture;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.NoosaScript;
+import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.utils.Rect;
 
 import java.nio.ByteBuffer;
@@ -200,6 +202,11 @@ public class FogOfWar extends Image {
 		public void delete() {
 			super.delete();
 		}
+	}
+
+	@Override
+	protected NoosaScript script() {
+		return NoosaScriptNoLighting.get();
 	}
 
 	@Override

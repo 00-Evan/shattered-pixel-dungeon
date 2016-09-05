@@ -89,6 +89,8 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.NoosaScript;
+import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
@@ -160,14 +162,19 @@ public class GameScene extends PixelScene {
 		water = new SkinnedBlock(
 			Dungeon.level.width() * DungeonTilemap.SIZE,
 			Dungeon.level.height() * DungeonTilemap.SIZE,
-			Dungeon.level.waterTex() );
+			Dungeon.level.waterTex() ){
+			@Override
+			protected NoosaScript script() {
+				return NoosaScriptNoLighting.get();
+			}
+		};
 		terrain.add( water );
-		
-		ripples = new Group();
-		terrain.add( ripples );
 		
 		tiles = new DungeonTilemap();
 		terrain.add( tiles );
+
+		ripples = new Group();
+		terrain.add( ripples );
 
 		customTiles = new Group();
 		terrain.add(customTiles);

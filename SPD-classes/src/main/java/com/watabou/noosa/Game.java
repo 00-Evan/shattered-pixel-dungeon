@@ -216,6 +216,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		step();
 
 		NoosaScript.get().resetCamera();
+		NoosaScriptNoLighting.get().resetCamera();
 		GLES20.glScissor( 0, 0, width, height );
 		GLES20.glClear( GLES20.GL_COLOR_BUFFER_BIT );
 		draw();
