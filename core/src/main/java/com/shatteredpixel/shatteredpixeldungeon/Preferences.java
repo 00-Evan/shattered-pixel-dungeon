@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import android.content.SharedPreferences;
 import com.watabou.noosa.Game;
+import com.watabou.utils.GameMath;
 
 enum Preferences {
 
@@ -64,8 +65,9 @@ enum Preferences {
 		try {
 			int i = get().getInt( key, defValue );
 			if (i < min || i > max){
-				put(key, defValue);
-				return defValue;
+				int val = (int)GameMath.gate(min, i, max);
+				put(key, val);
+				return val;
 			} else {
 				return i;
 			}
