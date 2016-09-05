@@ -36,10 +36,21 @@ import java.nio.IntBuffer;
 
 public class FogOfWar extends Image {
 
-	private static final int VISIBLE	= 0x00000000;
-	private static final int VISITED	= 0xcc000000;
-	private static final int MAPPED		= 0xcc442211;
-	private static final int INVISIBLE	= 0xFF000000;
+	private static final int VISIBLE[]	= new int[]{0xAA000000, 0x55000000, //-2 and -1 brightness
+													0x00000000, //0 brightness
+													0x00000000, 0x00000000}; //1 and 2 brightness
+
+	private static final int VISITED[]	= new int[]{0xEE000000, 0xDD000000,
+													0xCC000000,
+													0x99000000, 0x66000000};
+
+	private static final int MAPPED[]   = new int[]{0xEE442211, 0xDD442211,
+													0xCC442211,
+													0x99442211, 0x66442211};
+
+	private static final int INVISIBLE[]= new int[]{0xFF000000, 0xFF000000,
+													0xFF000000,
+													0xFF000000, 0xFF000000};
 	
 	private int pWidth;
 	private int pHeight;
@@ -102,27 +113,29 @@ public class FogOfWar extends Image {
 
 		FogTexture fog = (FogTexture)texture;
 
+		int brightness = ShatteredPixelDungeon.brightness() + 2;
+
 		for (int i=updating.top; i < updating.bottom; i++) {
 			int cell = (pWidth - 1) * i + updating.left;
 			fog.pixels.position((width2) * i + updating.left);
 			for (int j=updating.left; j < updating.right; j++) {
 				if (cell < pWidth || cell >= Dungeon.level.length() || j == 0 || j == pWidth-1) {
-					fog.pixels.put(INVISIBLE);
+					fog.pixels.put(INVISIBLE[brightness]);
 				} else
 				if (visible[cell] && visible[cell - (pWidth - 1)] &&
 					visible[cell - 1] && visible[cell - (pWidth - 1) - 1]) {
-					fog.pixels.put(VISIBLE);
+					fog.pixels.put(VISIBLE[brightness]);
 				} else
 				if (visited[cell] && visited[cell - (pWidth - 1)] &&
 					visited[cell - 1] && visited[cell - (pWidth - 1) - 1]) {
-					fog.pixels.put(VISITED);
+					fog.pixels.put(VISITED[brightness]);
 				}
 				else
 				if (mapped[cell] && mapped[cell - (pWidth - 1)] &&
 					mapped[cell - 1] && mapped[cell - (pWidth - 1) - 1]) {
-					fog.pixels.put(MAPPED);
+					fog.pixels.put(MAPPED[brightness]);
 				} else {
-					fog.pixels.put(INVISIBLE);
+					fog.pixels.put(INVISIBLE[brightness]);
 				}
 				cell++;
 			}

@@ -387,13 +387,11 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public static void brightness( int value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_BRIGHTNESS, value );
-		if (scene() instanceof GameScene) {
-			((GameScene)scene()).brightness( value );
-		}
+		GameScene.updateFog();
 	}
 	
 	public static int brightness() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_BRIGHTNESS, 0, -2, 4 );
+		return Preferences.INSTANCE.getInt( Preferences.KEY_BRIGHTNESS, 0, -2, 2 );
 	}
 
 	public static void language(Languages lang) {

@@ -238,8 +238,6 @@ public class GameScene extends PixelScene {
 		fog = new FogOfWar( Dungeon.level.width(), Dungeon.level.height() );
 		add( fog );
 
-		brightness( ShatteredPixelDungeon.brightness() );
-
 		spells = new Group();
 		add( spells );
 		
@@ -511,17 +509,6 @@ public class GameScene extends PixelScene {
 		if (Dungeon.hero.ready) {
 			selectItem( null, WndBag.Mode.ALL, null );
 		}
-	}
-	
-	public void brightness( int value ) {
-		float shift;
-		if (value >= 0)
-			shift = value/2f;
-		else
-			shift = value/3f;
-
-		fog.am = 1f + shift;
-		fog.aa = 0f - shift;
 	}
 
 	public void addCustomTile( CustomTileVisual visual){

@@ -135,7 +135,7 @@ public class WndSettings extends WndTabbed {
 			}
 
 			OptionSlider brightness = new OptionSlider(Messages.get(this, "brightness"),
-					Messages.get(this, "dark"), Messages.get(this, "bright"), -2, 4) {
+					Messages.get(this, "dark"), Messages.get(this, "bright"), -2, 2) {
 				@Override
 				protected void onChange() {
 					ShatteredPixelDungeon.brightness(getSelectedValue());
