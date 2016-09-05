@@ -30,20 +30,6 @@ import com.watabou.glscripts.Script;
 // if this script is to be used many times try to block them together
 public class NoosaScriptNoLighting extends NoosaScript {
 
-	public NoosaScriptNoLighting() {
-
-		compile( shader() );
-
-		//we can use the same components as regular noosascript
-		NoosaScript n = NoosaScript.get();
-		uCamera	= n.uCamera;
-		uModel	= n.uModel;
-		uTex	= n.uTex;
-		aXY		= n.aXY;
-		aUV		= n.aUV;
-
-	}
-
 	@Override
 	public void lighting(float rm, float gm, float bm, float am, float ra, float ga, float ba, float aa) {
 		//Does nothing

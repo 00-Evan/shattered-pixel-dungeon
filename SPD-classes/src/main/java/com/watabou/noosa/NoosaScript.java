@@ -48,6 +48,7 @@ public class NoosaScript extends Script {
 	
 	public NoosaScript() {
 
+		super();
 		compile( shader() );
 		
 		uCamera	= uniform( "uCamera" );
