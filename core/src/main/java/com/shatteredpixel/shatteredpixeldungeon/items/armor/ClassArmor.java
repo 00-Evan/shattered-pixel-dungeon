@@ -29,7 +29,6 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
-//FIXME: this should be upgradeable, fix in 0.4.0
 abstract public class ClassArmor extends Armor {
 
 	private static final String AC_SPECIAL = "SPECIAL";

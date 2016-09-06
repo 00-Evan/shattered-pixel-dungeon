@@ -61,7 +61,7 @@ public final class ShadowCaster {
 
 	}
 
-	//TODO: This is still fairly expensive, look into further optimizing this
+	//FIXME This is is the primary performance bottleneck for game logic, need to optimize or rewrite
 	private static void scanSector( int distance, boolean[] fieldOfView, boolean[] losBlocking, Obstacles obs, int cx, int cy, int m1, int m2, int m3, int m4 ) {
 		
 		obs.reset();

@@ -192,7 +192,6 @@ public class Generator {
 		}
 	}
 
-	//TODO decide on balancing here
 	private static final float[][] floorSetTierProbs = new float[][] {
 			{0, 70, 20,  8,  2},
 			{0, 25, 50, 20,  5},

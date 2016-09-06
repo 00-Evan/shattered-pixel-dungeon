@@ -196,6 +196,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		return autoAim(target, new Item());
 	}
 
+	//FIXME: this is currently very expensive, should either optimize ballistica or this, or both
 	public static int autoAim(Char target, Item item){
 
 		//first try to directly target

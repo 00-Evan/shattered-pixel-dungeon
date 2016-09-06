@@ -36,8 +36,6 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-
-//TODO: balancing
 public class WandOfCorruption extends Wand {
 
 	{

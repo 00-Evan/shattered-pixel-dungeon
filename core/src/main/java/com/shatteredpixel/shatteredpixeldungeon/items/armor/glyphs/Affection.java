@@ -37,7 +37,6 @@ public class Affection extends Glyph {
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		//TODO balancing
 		int level = Math.max(0, armor.level());
 		
 		if (Random.Int( level / 2 + 10 ) >= 9) {

@@ -67,10 +67,6 @@ public class PathFinder {
 		CIRCLE = new int[]{-width-1, -width, -width+1, +1, +width+1, +width, +width-1, -1};
 	}
 
-	//TODO currently this isn't used, and all pathfinding is recomputed each step.
-	// Computing each step is performance expensive, but pre-computing a path leads to incorrect
-	// pathing in cases where passable changes. Need to look into a compromise, something that's
-	// correct but is less costly
 	public static Path find( int from, int to, boolean[] passable ) {
 
 		if (!buildDistanceMap( from, to, passable )) {
