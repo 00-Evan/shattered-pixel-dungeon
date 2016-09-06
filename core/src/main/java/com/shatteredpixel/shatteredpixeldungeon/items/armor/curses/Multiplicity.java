@@ -68,9 +68,9 @@ public class Multiplicity extends Armor.Glyph {
 						m = Bestiary.mutable(Dungeon.depth % 5 == 0 ? Dungeon.depth - 1 : Dungeon.depth);
 					} else {
 						try {
-							m = (Mob)defender.getClass().newInstance();
+							m = (Mob)attacker.getClass().newInstance();
 							Bundle store = new Bundle();
-							defender.storeInBundle(store);
+							attacker.storeInBundle(store);
 							m.restoreFromBundle(store);
 							m.HP = m.HT;
 						} catch (Exception e) {
