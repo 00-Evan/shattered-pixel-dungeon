@@ -20,6 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import android.opengl.GLES20;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.NoosaScript;
@@ -45,6 +47,14 @@ public class Archs extends Component {
 			@Override
 			protected NoosaScript script() {
 				return NoosaScriptNoLighting.get();
+			}
+
+			@Override
+			public void draw() {
+				//arch bg has no alpha component, this improves performance
+				GLES20.glBlendFunc(GLES20.GL_ONE, GLES20.GL_ZERO);
+				super.draw();
+				GLES20.glBlendFunc( GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA );
 			}
 		};
 		arcsBg.autoAdjust = true;

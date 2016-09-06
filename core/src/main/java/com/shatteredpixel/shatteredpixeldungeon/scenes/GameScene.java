@@ -20,6 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import android.opengl.GLES20;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -163,9 +165,18 @@ public class GameScene extends PixelScene {
 			Dungeon.level.width() * DungeonTilemap.SIZE,
 			Dungeon.level.height() * DungeonTilemap.SIZE,
 			Dungeon.level.waterTex() ){
+
 			@Override
 			protected NoosaScript script() {
 				return NoosaScriptNoLighting.get();
+			}
+
+			@Override
+			public void draw() {
+				//water has no alpha component, this improves performance
+				GLES20.glBlendFunc( GLES20.GL_ONE, GLES20.GL_ZERO );
+				super.draw();
+				GLES20.glBlendFunc( GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA );
 			}
 		};
 		terrain.add( water );
