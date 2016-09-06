@@ -36,10 +36,15 @@ public class ConfusionGas extends Blob {
 		super.evolve();
 
 		Char ch;
-		for (int i = 0; i < Dungeon.level.length(); i++) {
-			if (cur[i] > 0 && (ch = Actor.findChar( i )) != null) {
-				if (!ch.immunities().contains(this.getClass()))
-					Buff.prolong( ch, Vertigo.class, 2 );
+		int cell;
+
+		for (int i = area.left; i < area.right; i++){
+			for (int j = area.top; j < area.bottom; j++){
+				cell = i + j*Dungeon.level.width();
+				if (cur[cell] > 0 && (ch = Actor.findChar( cell )) != null) {
+					if (!ch.immunities().contains(this.getClass()))
+						Buff.prolong( ch, Vertigo.class, 2 );
+				}
 			}
 		}
 	}

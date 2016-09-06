@@ -37,29 +37,29 @@ public class Foliage extends Blob {
 	@Override
 	protected void evolve() {
 
-		int from = Dungeon.level.width() + 1;
-		int to = Dungeon.level.length() - Dungeon.level.width() - 1;
-		
 		int[] map = Dungeon.level.map;
-		boolean regrowth = false;
 		
 		boolean visible = false;
-		
-		for (int pos=from; pos < to; pos++) {
-			if (cur[pos] > 0) {
-				
-				off[pos] = cur[pos];
-				volume += off[pos];
-				
-				if (map[pos] == Terrain.EMBERS) {
-					map[pos] = Terrain.GRASS;
-					regrowth = true;
+
+		int cell;
+		for (int i = area.left; i < area.right; i++) {
+			for (int j = area.top; j < area.bottom; j++) {
+				cell = i + j*Dungeon.level.width();
+				if (cur[cell] > 0) {
+
+					off[cell] = cur[cell];
+					volume += off[cell];
+
+					if (map[cell] == Terrain.EMBERS) {
+						map[cell] = Terrain.GRASS;
+						GameScene.updateMap(cell);
+					}
+
+					visible = visible || Dungeon.visible[cell];
+
+				} else {
+					off[cell] = 0;
 				}
-				
-				visible = visible || Dungeon.visible[pos];
-				
-			} else {
-				off[pos] = 0;
 			}
 		}
 		
@@ -67,11 +67,7 @@ public class Foliage extends Blob {
 		if (hero.isAlive() && hero.visibleEnemies() == 0 && cur[hero.pos] > 0) {
 			Buff.affect( hero, Shadows.class ).prolong();
 		}
-		
-		if (regrowth) {
-			GameScene.updateMap();
-		}
-		
+
 		if (visible) {
 			Journal.add( Journal.Feature.GARDEN );
 		}

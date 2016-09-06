@@ -52,6 +52,7 @@ public class WellWater extends Blob {
 	@Override
 	protected void evolve() {
 		volume = off[pos] = cur[pos];
+		area.union(pos%Dungeon.level.width(), pos/Dungeon.level.width());
 		
 		if (Dungeon.visible[pos]) {
 			if (this instanceof WaterOfAwareness) {
@@ -125,11 +126,14 @@ public class WellWater extends Blob {
 	
 	@Override
 	public void seed( Level level, int cell, int amount ) {
-		if (cur == null) cur = new int[level.length()];
-		if (off == null) off = new int[cur.length];
+		super.seed(level, cell, amount);
+
 		cur[pos] = 0;
 		pos = cell;
 		volume = cur[pos] = amount;
+
+		area.setEmpty();
+		area.union(cell%level.width(), cell/level.width());
 	}
 	
 	public static void affectCell( int cell ) {

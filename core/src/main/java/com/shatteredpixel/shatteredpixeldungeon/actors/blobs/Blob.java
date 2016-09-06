@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Rect;
 
 import java.util.Arrays;
 
@@ -42,7 +43,9 @@ public class Blob extends Actor {
 	protected int[] off;
 	
 	public BlobEmitter emitter;
-	
+
+	public Rect area = new Rect();
+
 	private static final String CUR		= "cur";
 	private static final String START	= "start";
 	private static final String LENGTH	= "length";
@@ -110,16 +113,29 @@ public class Blob extends Actor {
 		
 		if (volume > 0) {
 
+			if (area.isEmpty())
+				setupArea();
+
 			volume = 0;
+
 			evolve();
-			
 			int[] tmp = off;
 			off = cur;
 			cur = tmp;
 			
+		} else {
+			area.setEmpty();
 		}
 		
 		return true;
+	}
+
+	public void setupArea(){
+		for (int cell=0; cell < cur.length; cell++) {
+			if (cur[cell] != 0){
+				area.union(cell%Dungeon.level.width(), cell/Dungeon.level.width());
+			}
+		}
 	}
 	
 	public void use( BlobEmitter emitter ) {
@@ -128,42 +144,50 @@ public class Blob extends Actor {
 	
 	protected void evolve() {
 		
-		boolean[] notBlocking = BArray.not( Level.solid, null );
-		
-		for (int i=1; i < Dungeon.level.height()-1; i++) {
-			
-			int from = i * Dungeon.level.width() + 1;
-			int to = from + Dungeon.level.width() - 2;
-			
-			for (int pos=from; pos < to; pos++) {
-				if (notBlocking[pos]) {
+		boolean[] blocking = Level.solid;
+		int cell;
+		for (int i=area.top-1; i <= area.bottom; i++) {
+			for (int j = area.left-1; j <= area.right; j++) {
+				cell = j + i*Dungeon.level.width();
+				if (!blocking[cell]) {
 					
 					int count = 1;
-					int sum = cur[pos];
+					int sum = cur[cell];
 					
-					if (notBlocking[pos-1]) {
-						sum += cur[pos-1];
+					if (!blocking[cell-1]) {
+						sum += cur[cell-1];
 						count++;
 					}
-					if (notBlocking[pos+1]) {
-						sum += cur[pos+1];
+					if (!blocking[cell+1]) {
+						sum += cur[cell+1];
 						count++;
 					}
-					if (notBlocking[pos-Dungeon.level.width()]) {
-						sum += cur[pos-Dungeon.level.width()];
+					if (!blocking[cell-Dungeon.level.width()]) {
+						sum += cur[cell-Dungeon.level.width()];
 						count++;
 					}
-					if (notBlocking[pos+Dungeon.level.width()]) {
-						sum += cur[pos+Dungeon.level.width()];
+					if (!blocking[cell+Dungeon.level.width()]) {
+						sum += cur[cell+Dungeon.level.width()];
 						count++;
 					}
 					
 					int value = sum >= count ? (sum / count) - 1 : 0;
-					off[pos] = value;
+					off[cell] = value;
+
+					if (value > 0){
+						if (i < area.top)
+							area.top = i;
+						else if (i >= area.bottom)
+							area.bottom = i+1;
+						if (j < area.left)
+							area.left = j;
+						else if (j >= area.right)
+							area.right = j+1;
+					}
 					
 					volume += value;
 				} else {
-					off[pos] = 0;
+					off[cell] = 0;
 				}
 			}
 		}
@@ -175,6 +199,8 @@ public class Blob extends Actor {
 
 		cur[cell] += amount;
 		volume += amount;
+
+		area.union(cell%level.width(), cell/level.width());
 	}
 	
 	public void clear( int cell ) {
@@ -184,6 +210,7 @@ public class Blob extends Actor {
 
 	public void fullyClear(){
 		volume = 0;
+		area.setEmpty();
 		cur = new int[Dungeon.level.length()];
 		off = new int[Dungeon.level.length()];
 	}

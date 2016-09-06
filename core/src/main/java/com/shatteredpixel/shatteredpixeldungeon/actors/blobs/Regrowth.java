@@ -38,33 +38,32 @@ public class Regrowth extends Blob {
 		super.evolve();
 		
 		if (volume > 0) {
-			
-			for (int i=0; i < Dungeon.level.length(); i++) {
-				if (off[i] > 0) {
-					int c = Dungeon.level.map[i];
-					int c1 = c;
-					if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) {
-						c1 = cur[i] > 9 ? Terrain.HIGH_GRASS : Terrain.GRASS;
-					} else if (c == Terrain.GRASS && cur[i] > 9 && Dungeon.level.plants.get(i) == null ) {
-						c1 = Terrain.HIGH_GRASS;
-					}
-
-					if (c1 != c) {
-						Level.set( i, Terrain.HIGH_GRASS );
-						Dungeon.observe();
-
-						GameScene.updateMap( i );
-						if (Dungeon.visible[i]) {
-							GameScene.discoverTile( i, c );
+			int cell;
+			for (int i = area.left; i < area.right; i++) {
+				for (int j = area.top; j < area.bottom; j++) {
+					cell = i + j*Dungeon.level.width();
+					if (off[cell] > 0) {
+						int c = Dungeon.level.map[cell];
+						int c1 = c;
+						if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) {
+							c1 = cur[cell] > 9 ? Terrain.HIGH_GRASS : Terrain.GRASS;
+						} else if (c == Terrain.GRASS && cur[cell] > 9 && Dungeon.level.plants.get(cell) == null ) {
+							c1 = Terrain.HIGH_GRASS;
 						}
-					}
-					
-					Char ch = Actor.findChar( i );
-					if (ch != null && cur[i] > 1) {
-						Buff.prolong( ch, Roots.class, TICK );
+
+						if (c1 != c) {
+							Level.set( cell, c1 );
+							GameScene.updateMap( cell );
+						}
+
+						Char ch = Actor.findChar( cell );
+						if (ch != null && off[cell] > 1) {
+							Buff.prolong( ch, Roots.class, TICK );
+						}
 					}
 				}
 			}
+			Dungeon.observe();
 		}
 	}
 	

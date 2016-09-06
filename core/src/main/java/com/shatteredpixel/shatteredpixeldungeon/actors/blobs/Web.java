@@ -24,6 +24,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WebParticle;
@@ -34,19 +35,22 @@ public class Web extends Blob {
 	
 	@Override
 	protected void evolve() {
-		
-		for (int i = 0; i < Dungeon.level.length(); i++) {
-			
-			int offv = cur[i] > 0 ? cur[i] - 1 : 0;
-			off[i] = offv;
-			
-			if (offv > 0) {
-				
-				volume += offv;
-				
-				Char ch = Actor.findChar( i );
-				if (ch != null) {
-					Buff.prolong( ch, Roots.class, TICK );
+
+		int cell;
+
+		for (int i = area.left; i < area.right; i++){
+			for (int j = area.top; j < area.bottom; j++){
+				cell = i + j*Dungeon.level.width();
+				off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
+
+				if (off[cell] > 0) {
+
+					volume += off[cell];
+
+					Char ch = Actor.findChar( cell );
+					if (ch != null) {
+						Buff.prolong( ch, Roots.class, TICK );
+					}
 				}
 			}
 		}
@@ -57,16 +61,6 @@ public class Web extends Blob {
 		super.use( emitter );
 		
 		emitter.pour( WebParticle.FACTORY, 0.4f );
-	}
-	
-	public void seed(Level level, int cell, int amount ) {
-		if (cur == null) cur = new int[level.length()];
-		if (off == null) off = new int[cur.length];
-		int diff = amount - cur[cell];
-		if (diff > 0) {
-			cur[cell] = amount;
-			volume += diff;
-		}
 	}
 	
 	@Override

@@ -39,52 +39,51 @@ public class Fire extends Blob {
 	protected void evolve() {
 
 		boolean[] flamable = Level.flamable;
-		
-		int from = Dungeon.level.width() + 1;
-		int to = Dungeon.level.length() - Dungeon.level.width() - 1;
-		
+		int cell;
+		int fire;
+
 		boolean observe = false;
-		
-		for (int pos=from; pos < to; pos++) {
-			
-			int fire;
-			
-			if (cur[pos] > 0) {
-				
-				burn( pos );
-				
-				fire = cur[pos] - 1;
-				if (fire <= 0 && flamable[pos]) {
-					
-					int oldTile = Dungeon.level.map[pos];
-					Dungeon.level.destroy( pos );
-					
-					observe = true;
-					GameScene.updateMap( pos );
-					if (Dungeon.visible[pos]) {
-						GameScene.discoverTile( pos, oldTile );
+
+		for (int i = area.left-1; i <= area.right; i++) {
+			for (int j = area.top-1; j <= area.bottom; j++) {
+				cell = i + j*Dungeon.level.width();
+				if (cur[cell] > 0) {
+
+					burn( cell );
+
+					fire = cur[cell] - 1;
+					if (fire <= 0 && flamable[cell]) {
+
+						int oldTile = Dungeon.level.map[cell];
+						Dungeon.level.destroy( cell );
+
+						observe = true;
+						GameScene.updateMap( cell );
+						if (Dungeon.visible[cell]) {
+							GameScene.discoverTile( cell, oldTile );
+						}
 					}
-				}
-				
-			} else {
-				
-				if (flamable[pos]
-						&& (cur[pos-1] > 0
-						|| cur[pos+1] > 0
-						|| cur[pos-Dungeon.level.width()] > 0
-						|| cur[pos+Dungeon.level.width()] > 0)) {
-					fire = 4;
-					burn( pos );
+
 				} else {
-					fire = 0;
+
+					if (flamable[cell]
+							&& (cur[cell-1] > 0
+							|| cur[cell+1] > 0
+							|| cur[cell-Dungeon.level.width()] > 0
+							|| cur[cell+Dungeon.level.width()] > 0)) {
+						fire = 4;
+						burn( cell );
+						area.union(i, j);
+					} else {
+						fire = 0;
+					}
+
 				}
 
+				volume += (off[cell] = fire);
 			}
-			
-			volume += (off[pos] = fire);
-
 		}
-		
+
 		if (observe) {
 			Dungeon.observe();
 		}
@@ -104,15 +103,6 @@ public class Fire extends Blob {
 		Plant plant = Dungeon.level.plants.get( pos );
 		if (plant != null){
 			plant.wither();
-		}
-	}
-	
-	public void seed( Level level, int cell, int amount ) {
-		if (cur == null) cur = new int[level.length()];
-		if (off == null) off = new int[cur.length];
-		if (cur[cell] == 0) {
-			volume += amount;
-			cur[cell] = amount;
 		}
 	}
 	

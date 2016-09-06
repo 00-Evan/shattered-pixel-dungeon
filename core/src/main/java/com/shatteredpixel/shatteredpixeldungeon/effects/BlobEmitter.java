@@ -44,15 +44,22 @@ public class BlobEmitter extends Emitter {
 		if (blob.volume <= 0) {
 			return;
 		}
+
+		if (blob.area.isEmpty())
+			blob.setupArea();
 		
 		int[] map = blob.cur;
 		float size = DungeonTilemap.SIZE;
-		
-		for (int i=0; i < Dungeon.level.length(); i++) {
-			if (map[i] > 0 && Dungeon.visible[i]) {
-				float x = ((i % Dungeon.level.width()) + Random.Float()) * size;
-				float y = ((i / Dungeon.level.width()) + Random.Float()) * size;
-				factory.emit( this, index, x, y );
+
+		int cell;
+		for (int i = blob.area.left; i < blob.area.right; i++) {
+			for (int j = blob.area.top; j < blob.area.bottom; j++) {
+				cell = i + j*Dungeon.level.width();
+				if (map[cell] > 0 && Dungeon.visible[cell]) {
+					float x = (i + Random.Float()) * size;
+					float y = (j + Random.Float()) * size;
+					factory.emit(this, index, x, y);
+				}
 			}
 		}
 	}
