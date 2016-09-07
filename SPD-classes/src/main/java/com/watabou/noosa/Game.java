@@ -217,7 +217,6 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 
 		NoosaScript.get().resetCamera();
 		NoosaScriptNoLighting.get().resetCamera();
-		GLES20.glScissor( 0, 0, width, height );
 		GLES20.glClear( GLES20.GL_COLOR_BUFFER_BIT );
 		draw();
 	}
@@ -239,11 +238,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	@Override
 	public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
 		GLES20.glEnable( GL10.GL_BLEND );
-		// For premultiplied alpha:
-		// GLES20.glBlendFunc( GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA );
 		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
-		
-		GLES20.glEnable( GL10.GL_SCISSOR_TEST );
 
 		//refreshes texture and vertex data stored on the gpu
 		TextureCache.reload();
