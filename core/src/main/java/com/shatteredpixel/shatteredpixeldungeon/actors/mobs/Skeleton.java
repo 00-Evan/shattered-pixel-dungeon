@@ -108,14 +108,5 @@ public class Skeleton extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 5);
 	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Grim.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
-	}
+
 }
