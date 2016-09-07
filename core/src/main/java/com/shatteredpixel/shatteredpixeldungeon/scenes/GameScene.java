@@ -427,7 +427,7 @@ public class GameScene extends PixelScene {
 		
 		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
 
-		if (!Actor.processing() && (t == null || !t.isAlive())) {
+		if (!Actor.processing() && (t == null || !t.isAlive()) && Dungeon.hero.isAlive()) {
 			t = new Thread() {
 				@Override
 				public void run() {
