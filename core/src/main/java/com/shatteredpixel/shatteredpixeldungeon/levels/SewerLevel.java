@@ -206,7 +206,7 @@ public class SewerLevel extends RegularLevel {
 			PointF p = DungeonTilemap.tileCenterToWorld( pos );
 			pos( p.x - 2, p.y + 1, 4, 0 );
 			
-			pour( factory, 0.05f );
+			pour( factory, 0.1f );
 		}
 		
 		@Override
@@ -219,7 +219,7 @@ public class SewerLevel extends RegularLevel {
 					Ripple ripple = GameScene.ripple( pos + Dungeon.level.width() );
 					if (ripple != null) {
 						ripple.y -= DungeonTilemap.SIZE / 2;
-						rippleDelay = Random.Float(0.2f, 0.3f);
+						rippleDelay = Random.Float(0.4f, 0.6f);
 					}
 				}
 			}
