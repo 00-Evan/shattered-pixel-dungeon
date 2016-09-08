@@ -154,19 +154,19 @@ public class Blob extends Actor {
 					int count = 1;
 					int sum = cur[cell];
 					
-					if (!blocking[cell-1]) {
+					if (j > area.left && !blocking[cell-1]) {
 						sum += cur[cell-1];
 						count++;
 					}
-					if (!blocking[cell+1]) {
+					if (j < area.right && !blocking[cell+1]) {
 						sum += cur[cell+1];
 						count++;
 					}
-					if (!blocking[cell-Dungeon.level.width()]) {
+					if (i > area.top && !blocking[cell-Dungeon.level.width()]) {
 						sum += cur[cell-Dungeon.level.width()];
 						count++;
 					}
-					if (!blocking[cell+Dungeon.level.width()]) {
+					if (i < area.bottom && !blocking[cell+Dungeon.level.width()]) {
 						sum += cur[cell+Dungeon.level.width()];
 						count++;
 					}
