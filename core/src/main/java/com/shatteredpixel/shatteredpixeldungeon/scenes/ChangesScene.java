@@ -37,71 +37,35 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-			"_v0.4.1a:_\n" +
-			"- Various bug and crash fixes\n" +
-			"- Evil eyes now resist damage while charging\n" +
-			"- Runic blade damage decreased\n" +
-			"- Flail damage increased\n" +
-			"- Ring of Force damage increased\n" +
-			"- Horn of Plenty adjusted, now stronger\n" +
+			"_v0.4.2:_\n" +
+			"Optimizations:\n" +
+			"- Many general performance improvements\n" +
+			"- Game now uses 2 CPU cores, up from 1\n" +
+			"- Reduced hitching on many devices\n" +
+			"- Framerate improvements for older devices\n" +
+			"\n" +
+			"Balance Changes:\n" +
+			"- Spear and Glaive damage reduced\n" +
+			"- Runic blade damage reduced\n" +
+			"- Grim enchant now procs more often\n" +
+			"- Glyph of stone adds more weight\n" +
+			"- Glyph of potential procs less often\n" +
+			"- Wand of Fireblast less dangerous to caster\n" +
+			"- Wand of Pris. Light reveal area reduced\n" +
+			"- Ring of Wealth slightly more effective\n" +
+			"- Ring of Sharpshooting gives more accuracy\n" +
 			"\n" +
 			"_v0.4.1:_\n" +
-			"Armor Balance Changes:\n" +
-			"- Armor now has a min damage block value\n" +
-			"- Armor gains more blocking from upgrades\n" +
-			"- Prison+ enemy damage increased\n" +
+			"- Armor effectiveness increased\n" +
+			"- Enemy damage increased to compensate\n" +
 			"- Evil Eyes reworked\n" +
-			"\n" +
-			"Wand Balance Changes:\n" +
 			"- All wands damage adjusted/increased\n" +
-			"- Upgraded wands appear slightly less often\n" +
-			"- Wand of Lightning bonus damage reduced\n" +
-			"- Wand of Fireblast uses fewer charges\n" +
-			"- Wand of Venom damage increases over time\n" +
-			"- Wand of Pris-Light bonus damage reduced\n" +
-			"- Corrupted enemies live longer & no longer attack eachother\n" +
-			"- Wands in the holster now charge faster\n" +
-			"\n" +
-			"Class Balance Changes:\n" +
-			"- Mage's Staff melee damage increased\n" +
-			"- Mage's Staff can now preserve one upgrade\n" +
-			"- Cloak of Shadows buffed at lower levels\n" +
-			"- Some Battlemage effects changed\n" +
-			"\n" +
-			"Ring Balance Changes:\n" +
-			"- Ring of Force weaker at 18+ strength\n" +
-			"- Ring of Tenacity reduces more damage\n" +
-			"- Ring of Wealth secret rewards adjusted\n" +
-			"- Ring of Evasion now works consistently\n" +
-			"\n" +
-			"Artifact Balance Changes:\n" +
-			"- Dried Rose charges faster, ghost HP up\n" +
-			"- Horn of Plenty now charges on exp gain\n" +
-			"- Master Thieves Armband levels faster\n" +
-			"- Sandals of Nature level faster\n" +
-			"- Hourglass uses fewer charges at a time\n" +
-			"\n" +
-			"Various Item Balance Changes:\n" +
+			"- Various wand mechanics adjusted\n" +
+			"- Balance on many items adjusted\n" +
 			"- Many shop prices adjusted\n" +
-			"- Pirahna rooms no longer give cursed gear\n" +
-			"- Brimstone glyph healing reduced\n" +
-			"- Lucky enchant deals max dmg more often\n" +
-			"- Dazzling enchant now cripples & blinds\n"+
-			"- Flail now can't surprise attack\n" +
-			"- Extra reach weapons no longer penetrate\n" +
+			"- Added a new journal button w/key display\n" +
 			"\n" +
-			"Misc Changes:\n" +
-			"- Added a new journal button with key display\n" +
-			"- Keys now exist in the journal, not inventory\n" +
-			"- Improved donator menu button visuals\n" +
-			"- Chasms now deal less damage, but bleed\n" +
-			"- Increased the efficiency of data storage\n" +
-			"\n" +
-			"_v0.4.0:_\n" +
-			"- Changes to weapons, enchants & glyphs.\n" +
-			"- Curses now give negative effects\n" +
-			"- Curses now harder to remove\n" +
-			"- Upgrades reduce str requirements less\n" +
+			"_v0.4.0:_ Reworked Equipment & enchants/curses.\n" +
 			"\n" +
 			"_v0.3.5:_ Reworked Warrior & subclasses\n" +
 			"\n"+
