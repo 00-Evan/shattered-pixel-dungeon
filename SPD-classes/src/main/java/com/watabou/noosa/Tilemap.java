@@ -241,7 +241,7 @@ public class Tilemap extends Visual {
 				topLeft++;
 
 			bottomRight = Math.min(camX+camW, mapWidth-1)
-					+ Math.min((camY+camH)*mapWidth, mapHeight*(mapWidth-1));
+					+ Math.min((camY+camH)*mapWidth, (mapHeight-1)*mapWidth);
 			while(bufferPositions[bottomRight] == -1)
 				bottomRight--;
 
