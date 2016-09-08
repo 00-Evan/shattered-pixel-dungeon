@@ -36,9 +36,9 @@ import com.watabou.noosa.audio.Sample;
 public class Sign {
 
 	private static final String[] teaser_texts = new String[]{
-		"error RaW i work",
-		"frOthinG moBs yelp",
-		"CoCoOn furor rises"
+		"...",
+		"...",
+		"..."
 	};
 	
 	public static void read( int pos ) {
