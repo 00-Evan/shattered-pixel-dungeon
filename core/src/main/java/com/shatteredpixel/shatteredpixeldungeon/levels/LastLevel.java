@@ -34,8 +34,6 @@ import java.util.Arrays;
 
 public class LastLevel extends Level {
 
-	private static final int SIZE = 30;
-
 	{
 		color1 = 0x801500;
 		color2 = 0xa68521;
@@ -44,6 +42,15 @@ public class LastLevel extends Level {
 	}
 
 	private int pedestal;
+
+	@Override
+	protected void setupSize() {
+		if (width == 0 || height == 0) {
+			width = 16;
+			height = 64;
+		}
+		length = width * height;
+	}
 
 	@Override
 	public String tilesTex() {
@@ -72,21 +79,20 @@ public class LastLevel extends Level {
 
 		Arrays.fill( map, Terrain.CHASM );
 
-		Painter.fill( this, 7, 31, 19, 1, Terrain.WALL );
-		Painter.fill( this, 15, 10, 3, 21, Terrain.EMPTY);
-		Painter.fill( this, 13, 30, 7, 1, Terrain.EMPTY);
-		Painter.fill( this, 14, 29, 5, 1, Terrain.EMPTY);
+		int mid = width/2;
 
-		Painter.fill( this, 14, 9, 5, 7, Terrain.EMPTY);
-		Painter.fill( this, 13, 10, 7, 5, Terrain.EMPTY);
+		Painter.fill( this, 0, height-1, width, 1, Terrain.WALL );
+		Painter.fill( this, mid - 1, 10, 3, (height-11), Terrain.EMPTY);
+		Painter.fill( this, mid - 2, height - 3, 5, 1, Terrain.EMPTY);
+		Painter.fill( this, mid - 3, height - 2, 7, 1, Terrain.EMPTY);
 
-		//Painter.fill( this, 2, 2, SIZE-2, SIZE-2, Terrain.EMPTY );
-		//Painter.fill( this, SIZE/2, SIZE/2, 3, 3, Terrain.EMPTY_SP );
+		Painter.fill( this, mid - 2, 9, 5, 7, Terrain.EMPTY);
+		Painter.fill( this, mid - 3, 10, 7, 5, Terrain.EMPTY);
 
-		entrance = SIZE * width() + SIZE / 2 + 1;
+		entrance = (height-2) * width() + mid;
 		map[entrance] = Terrain.ENTRANCE;
 
-		pedestal = (SIZE / 2 + 1) * (width() + 1) - 4*width();
+		pedestal = 12*(width()) + mid;
 		map[pedestal] = Terrain.PEDESTAL;
 		map[pedestal-1-width()] = map[pedestal+1-width()] = map[pedestal-1+width()] = map[pedestal+1+width()] = Terrain.STATUE_SP;
 
