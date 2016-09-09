@@ -41,7 +41,7 @@ import java.util.UUID;
 
 public class WelcomeScene extends PixelScene {
 
-	private static int LATEST_UPDATE = 125;
+	private static int LATEST_UPDATE = 126;
 
 	@Override
 	public void create() {
