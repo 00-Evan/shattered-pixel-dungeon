@@ -179,6 +179,17 @@ public class NoosaScript extends Script {
 		if (camera != lastCamera && camera.matrix != null) {
 			lastCamera = camera;
 			uCamera.valueM4( camera.matrix );
+
+			if (!camera.fullScreen) {
+				GLES20.glEnable( GLES20.GL_SCISSOR_TEST );
+				GLES20.glScissor(
+						camera.x,
+						Game.height - camera.screenHeight - camera.y,
+						camera.screenWidth,
+						camera.screenHeight);
+			} else {
+				GLES20.glDisable( GLES20.GL_SCISSOR_TEST );
+			}
 		}
 	}
 	

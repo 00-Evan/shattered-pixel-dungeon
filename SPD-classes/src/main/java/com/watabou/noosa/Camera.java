@@ -36,7 +36,9 @@ public class Camera extends Gizmo {
 	protected static float invH2;
 	
 	public static Camera main;
-	
+
+	public boolean fullScreen;
+
 	public float zoom;
 	
 	public int x;
@@ -101,10 +103,12 @@ public class Camera extends Gizmo {
 	public static Camera createFullscreen( float zoom ) {
 		int w = (int)Math.ceil( Game.width / zoom );
 		int h = (int)Math.ceil( Game.height / zoom );
-		return new Camera(
-			(int)(Game.width - w * zoom) / 2,
-			(int)(Game.height - h * zoom) / 2,
-			w, h, zoom );
+		Camera c = new Camera(
+				(int)(Game.width - w * zoom) / 2,
+				(int)(Game.height - h * zoom) / 2,
+				w, h, zoom );
+		c.fullScreen = true;
+		return c;
 	}
 	
 	public Camera( int x, int y, int width, int height, float zoom ) {

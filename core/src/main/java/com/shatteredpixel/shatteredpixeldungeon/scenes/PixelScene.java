@@ -305,6 +305,7 @@ public class PixelScene extends Scene {
 				(int)(Game.height - Math.ceil( Game.height / zoom ) * zoom) / 2,
 				(int)Math.ceil( Game.width / zoom ),
 				(int)Math.ceil( Game.height / zoom ), zoom );
+			fullScreen = true;
 		}
 		
 		@Override
