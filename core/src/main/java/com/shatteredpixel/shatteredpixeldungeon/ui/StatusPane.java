@@ -75,7 +75,7 @@ public class StatusPane extends Component {
 	@Override
 	protected void createChildren() {
 
-		bg = new NinePatch( Assets.STATUS, 85, 0, 45, 0 );
+		bg = new NinePatch( Assets.STATUS, 0, 0, 128, 36, 85, 0, 45, 0 );
 		add( bg );
 
 		add( new TouchArea( 0, 1, 31, 31 ) {
