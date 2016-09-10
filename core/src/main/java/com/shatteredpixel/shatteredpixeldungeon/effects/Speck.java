@@ -416,15 +416,15 @@ public class Speck extends Image {
 			case PARALYSIS:
 			case CONFUSION:
 			case DUST:
-				am = p < 0.5f ? p : 1 - p;
-				scale.set( 1 + p * 2 );
+				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 0.5f );
+				scale.set( 1 + p );
 				break;
 
 			case VENOM:
 				hardlight( ColorMath.interpolate( 0x8844FF, 0x00FF00 , p ));
 			case STENCH:
-				am = (p < 0.5f ? p : 1 - p) * 2;
-				scale.set( 1 + p * 2 );
+				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 0.5f );
+				scale.set( 1 + p );
 				break;
 				
 			case JET:

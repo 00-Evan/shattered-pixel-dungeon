@@ -54,7 +54,7 @@ public class StenchGas extends Blob {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 
-		emitter.pour( Speck.factory(Speck.STENCH), 0.6f );
+		emitter.pour( Speck.factory(Speck.STENCH), 0.4f );
 	}
 
 	@Override

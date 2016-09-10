@@ -61,7 +61,7 @@ public class ToxicGas extends Blob implements Hero.Doom {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 
-		emitter.pour( Speck.factory( Speck.TOXIC ), 0.6f );
+		emitter.pour( Speck.factory( Speck.TOXIC ), 0.4f );
 	}
 	
 	@Override

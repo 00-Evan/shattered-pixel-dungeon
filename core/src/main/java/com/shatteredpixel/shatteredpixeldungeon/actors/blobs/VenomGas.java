@@ -79,7 +79,7 @@ public class VenomGas extends Blob {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 
-		emitter.pour( Speck.factory(Speck.VENOM), 0.6f );
+		emitter.pour( Speck.factory(Speck.VENOM), 0.4f );
 	}
 
 	@Override

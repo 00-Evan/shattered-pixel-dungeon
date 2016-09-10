@@ -53,7 +53,7 @@ public class ParalyticGas extends Blob {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 		
-		emitter.pour( Speck.factory( Speck.PARALYSIS ), 0.6f );
+		emitter.pour( Speck.factory( Speck.PARALYSIS ), 0.4f );
 	}
 	
 	@Override
