@@ -227,10 +227,10 @@ public class Tilemap extends Visual {
 			camW = (int)Math.ceil(c.width/cellW);
 			camH = (int)Math.ceil(c.height/cellH);
 
-			if (camX > mapWidth
-					|| camY > mapHeight
-					|| camW + camW < 0
-					|| camH + camH < 0)
+			if (camX >= mapWidth
+					|| camY >= mapHeight
+					|| camW + camW <= 0
+					|| camH + camH <= 0)
 				return;
 
 			//determines the top-left visible tile, the bottom-right one, and the buffer length
@@ -248,10 +248,10 @@ public class Tilemap extends Visual {
 			length = bufferPositions[bottomRight] - bufferPositions[topLeft] + 1;
 		}
 
-		if (camX > mapWidth
-				|| camY > mapHeight
-				|| camW + camW < 0
-				|| camH + camH < 0)
+		if (camX >= mapWidth
+				|| camY >= mapHeight
+				|| camW + camW <= 0
+				|| camH + camH <= 0)
 			return;
 
 		NoosaScript script = NoosaScriptNoLighting.get();
