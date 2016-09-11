@@ -37,6 +37,10 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
+			"_v0.4.2a:_\n" +
+			"- Various crash fixes\n" +
+			"- Improved visual clarity on gas particles\n" +
+			"\n" +
 			"_v0.4.2:_\n" +
 			"Optimizations:\n" +
 			"- Many general performance improvements\n" +
