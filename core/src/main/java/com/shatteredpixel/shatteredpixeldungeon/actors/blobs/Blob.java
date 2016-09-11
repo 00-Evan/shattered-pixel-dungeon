@@ -149,45 +149,47 @@ public class Blob extends Actor {
 		for (int i=area.top-1; i <= area.bottom; i++) {
 			for (int j = area.left-1; j <= area.right; j++) {
 				cell = j + i*Dungeon.level.width();
-				if (!blocking[cell]) {
-					
-					int count = 1;
-					int sum = cur[cell];
-					
-					if (j > area.left && !blocking[cell-1]) {
-						sum += cur[cell-1];
-						count++;
-					}
-					if (j < area.right && !blocking[cell+1]) {
-						sum += cur[cell+1];
-						count++;
-					}
-					if (i > area.top && !blocking[cell-Dungeon.level.width()]) {
-						sum += cur[cell-Dungeon.level.width()];
-						count++;
-					}
-					if (i < area.bottom && !blocking[cell+Dungeon.level.width()]) {
-						sum += cur[cell+Dungeon.level.width()];
-						count++;
-					}
-					
-					int value = sum >= count ? (sum / count) - 1 : 0;
-					off[cell] = value;
+				if (Dungeon.level.insideMap(cell)) {
+					if (!blocking[cell]) {
 
-					if (value > 0){
-						if (i < area.top)
-							area.top = i;
-						else if (i >= area.bottom)
-							area.bottom = i+1;
-						if (j < area.left)
-							area.left = j;
-						else if (j >= area.right)
-							area.right = j+1;
+						int count = 1;
+						int sum = cur[cell];
+
+						if (j > area.left && !blocking[cell-1]) {
+							sum += cur[cell-1];
+							count++;
+						}
+						if (j < area.right && !blocking[cell+1]) {
+							sum += cur[cell+1];
+							count++;
+						}
+						if (i > area.top && !blocking[cell-Dungeon.level.width()]) {
+							sum += cur[cell-Dungeon.level.width()];
+							count++;
+						}
+						if (i < area.bottom && !blocking[cell+Dungeon.level.width()]) {
+							sum += cur[cell+Dungeon.level.width()];
+							count++;
+						}
+
+						int value = sum >= count ? (sum / count) - 1 : 0;
+						off[cell] = value;
+
+						if (value > 0){
+							if (i < area.top)
+								area.top = i;
+							else if (i >= area.bottom)
+								area.bottom = i+1;
+							if (j < area.left)
+								area.left = j;
+							else if (j >= area.right)
+								area.right = j+1;
+						}
+
+						volume += value;
+					} else {
+						off[cell] = 0;
 					}
-					
-					volume += value;
-				} else {
-					off[cell] = 0;
 				}
 			}
 		}

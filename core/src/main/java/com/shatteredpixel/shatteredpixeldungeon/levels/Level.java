@@ -1001,12 +1001,10 @@ public abstract class Level implements Bundlable {
 
 	//returns true if the input is a valid tile within the level
 	public boolean insideMap( int tile ){
-				//outside map array
-		return !((tile < 0 || tile >= length()) ||
-				//top and bottom row
-				 (tile < width() || tile >= length() - width()) ||
+				//top and bottom row and beyond
+		return !((tile < width || tile >= length - width) ||
 				//left and right column
-				(tile % width() == 0 || tile % width() == width()-1));
+				(tile % width == 0 || tile % width == width-1));
 	}
 
 	public Point cellToPoint( int cell ){
