@@ -51,8 +51,13 @@ public class GardenPainter extends Painter {
 			} else if (bushes == 1) {
 				level.plant(new BlandfruitBush.Seed(), level.pointToCell(room.random()));
 			} else if (Random.Int(5) == 0) {
-				level.plant(new Sungrass.Seed(), level.pointToCell(room.random()));
-				level.plant(new BlandfruitBush.Seed(), level.pointToCell(room.random()));
+				int plant1, plant2;
+				plant1 = level.pointToCell(room.random());
+				level.plant(new Sungrass.Seed(), plant1);
+				do {
+					plant2 = level.pointToCell(room.random());
+				} while (plant2 == plant1);
+				level.plant(new BlandfruitBush.Seed(), plant2);
 			}
 		}
 		
