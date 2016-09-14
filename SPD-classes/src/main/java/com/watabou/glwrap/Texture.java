@@ -49,7 +49,7 @@ public class Texture {
 		id = ids[0];
 	}
 	
-	public static void activ1ate( int index ) {
+	public static void activate( int index ) {
 		GLES20.glActiveTexture( GLES20.GL_TEXTURE0 + index );
 	}
 	
