@@ -31,8 +31,9 @@ package com.watabou.glwrap;
 //...I don't know what google engineer forgot to put the java hooks in android 2.2 back in 2010,
 // but you know who you are and this class is your fault.
 
-//Note that compiled binares are included with this source,
-// so the android NDK is not needed to compile this project
+//Compiled binaries for the FroyoGLES20Fix lib are included in this project, which means that
+// the android NDK is not required for building Shattered Pixel Dungeon.
+// see SPD-classes/src/main/jniSources/README.txt for more details.
 
 //DO NOT REFERENCE THIS CLASS ON DEVICES API 9 AND ABOVE, use android.opengl.GLES20 instead.
 @SuppressWarnings("JniMissingFunction")
