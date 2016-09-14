@@ -29,8 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.watabou.gltextures.Gradient;
 import com.watabou.gltextures.SmartTexture;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Quad;
 import com.watabou.input.Touchscreen.Touch;
@@ -205,7 +205,7 @@ public class SurfaceScene extends PixelScene {
 		public Sky( boolean dayTime ) {
 			super( 0, 0, 1, 1 );
 
-			texture = new Gradient( dayTime ? day : night );
+			texture = TextureCache.createGradient( dayTime ? day : night );
 			
 			float[] vertices = new float[16];
 			verticesBuffer = Quad.create();

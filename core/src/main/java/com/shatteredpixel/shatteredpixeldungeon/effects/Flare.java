@@ -22,8 +22,8 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import android.annotation.SuppressLint;
 import android.opengl.GLES20;
-import com.watabou.gltextures.Gradient;
 import com.watabou.gltextures.SmartTexture;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NoosaScript;
@@ -56,7 +56,7 @@ public class Flare extends Visual {
 		super( 0, 0, 0, 0 );
 
 		int gradient[] = {0xFFFFFFFF, 0x00FFFFFF};
-		texture = new Gradient( gradient );
+		texture = TextureCache.createGradient( gradient );
 		
 		this.nRays = nRays;
 		
