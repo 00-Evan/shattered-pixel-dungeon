@@ -54,7 +54,7 @@ public class ColorMath {
 		} else if (p >= 1) {
 			return colors[colors.length-1];
 		}
-		int segment = (int)(colors.length * p);
+		int segment = (int)((colors.length-1) * p);
 		return interpolate( colors[segment], colors[segment+1], (p * (colors.length - 1)) % 1 );
 	}
 	
