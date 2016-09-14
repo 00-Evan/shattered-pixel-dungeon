@@ -1400,8 +1400,6 @@ public class Hero extends Char {
 	public void onMotionComplete() {
 		Dungeon.observe();
 		search( false );
-			
-		super.onMotionComplete();
 	}
 	
 	@Override

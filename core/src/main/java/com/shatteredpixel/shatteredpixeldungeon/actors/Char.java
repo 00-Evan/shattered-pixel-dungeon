@@ -432,7 +432,9 @@ public abstract class Char extends Actor {
 	}
 	
 	public void onMotionComplete() {
-		next();
+		//Does nothing by default
+		//The main actor thread already accounts for motion,
+		// so calling next() here isn't necessary (see Actor.process)
 	}
 	
 	public void onAttackComplete() {
