@@ -557,7 +557,7 @@ public class Hero extends Char {
 		curAction = lastAction;
 		lastAction = null;
 		damageInterrupt = false;
-		act();
+		next();
 	}
 	
 	private boolean actMove( HeroAction.Move action ) {
