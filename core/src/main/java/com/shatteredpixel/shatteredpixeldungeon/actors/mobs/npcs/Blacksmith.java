@@ -60,7 +60,7 @@ public class Blacksmith extends NPC {
 	}
 	
 	@Override
-	public void interact() {
+	public boolean interact() {
 		
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		
@@ -136,6 +136,8 @@ public class Blacksmith extends NPC {
 			tell( Messages.get(this, "get_lost") );
 			
 		}
+
+		return false;
 	}
 	
 	private void tell( String text ) {

@@ -118,7 +118,7 @@ public class MirrorImage extends NPC {
 	}
 
 	@Override
-	public void interact() {
+	public boolean interact() {
 		
 		int curPos = pos;
 		
@@ -130,6 +130,8 @@ public class MirrorImage extends NPC {
 		
 		Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
 		Dungeon.hero.busy();
+
+		return true;
 	}
 
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

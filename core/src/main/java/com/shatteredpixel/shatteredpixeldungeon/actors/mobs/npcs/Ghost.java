@@ -108,7 +108,7 @@ public class Ghost extends NPC {
 	}
 	
 	@Override
-	public void interact() {
+	public boolean interact() {
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		
 		Sample.INSTANCE.play( Assets.SND_GHOST );
@@ -173,6 +173,8 @@ public class Ghost extends NPC {
 			}
 
 		}
+
+		return false;
 	}
 
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();

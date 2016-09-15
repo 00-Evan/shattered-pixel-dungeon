@@ -63,7 +63,7 @@ public class RatKing extends NPC {
 	}
 	
 	@Override
-	public void interact() {
+	public boolean interact() {
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		if (state == SLEEPING) {
 			notice();
@@ -72,6 +72,7 @@ public class RatKing extends NPC {
 		} else {
 			yell( Messages.get(this, "what_is_it") );
 		}
+		return true;
 	}
 	
 	@Override

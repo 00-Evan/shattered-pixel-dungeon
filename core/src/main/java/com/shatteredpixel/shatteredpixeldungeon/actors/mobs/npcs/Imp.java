@@ -85,7 +85,7 @@ public class Imp extends NPC {
 	}
 	
 	@Override
-	public void interact() {
+	public boolean interact() {
 		
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		if (Quest.given) {
@@ -106,6 +106,8 @@ public class Imp extends NPC {
 			
 			Journal.add( Journal.Feature.IMP );
 		}
+
+		return false;
 	}
 	
 	private void tell( String text ) {

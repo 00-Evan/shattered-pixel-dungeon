@@ -78,7 +78,7 @@ public class Wandmaker extends NPC {
 	}
 	
 	@Override
-	public void interact() {
+	public boolean interact() {
 		
 		sprite.turnTo( pos, Dungeon.hero.pos );
 		if (Quest.given) {
@@ -163,6 +163,8 @@ public class Wandmaker extends NPC {
 			Journal.add( Journal.Feature.WANDMAKER );
 			Quest.given = true;
 		}
+
+		return false;
 	}
 	
 	public static class Quest {

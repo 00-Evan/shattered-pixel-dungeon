@@ -392,10 +392,11 @@ public class DriedRose extends Artifact {
 		}
 
 		@Override
-		public void interact() {
+		public boolean interact() {
 			if (!DriedRose.talkedTo){
 				DriedRose.talkedTo = true;
 				GameScene.show(new WndQuest(this, Messages.get(this, "introduce") ));
+				return false;
 			} else {
 				int curPos = pos;
 
@@ -407,6 +408,7 @@ public class DriedRose extends Artifact {
 
 				Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
 				Dungeon.hero.busy();
+				return true;
 			}
 		}
 
