@@ -320,7 +320,7 @@ public abstract class Char extends Actor {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends Buff> HashSet<T> buffs( Class<T> c ) {
+	public synchronized <T extends Buff> HashSet<T> buffs( Class<T> c ) {
 		HashSet<T> filtered = new HashSet<>();
 		for (Buff b : buffs) {
 			if (c.isInstance( b )) {
@@ -329,9 +329,9 @@ public abstract class Char extends Actor {
 		}
 		return filtered;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public <T extends Buff> T buff( Class<T> c ) {
+	public synchronized  <T extends Buff> T buff( Class<T> c ) {
 		for (Buff b : buffs) {
 			if (c.isInstance( b )) {
 				return (T)b;
