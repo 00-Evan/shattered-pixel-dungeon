@@ -266,6 +266,8 @@ public class PrisonBossLevel extends Level {
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])){
 			if (mob != tengu && (safeArea == null || !safeArea.inside(cellToPoint(mob.pos)))){
 				mob.destroy();
+				if (mob.sprite != null)
+					mob.sprite.killAndErase();
 			}
 		}
 		for (Plant plant : plants.values()){
