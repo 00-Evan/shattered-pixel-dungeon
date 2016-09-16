@@ -7,6 +7,5 @@ building from source can still do so.
 
 There is no functional difference between using the provided .so files, and compiling your own.
 
-In order to compile these files you will need the Android NDK.
-
-TODO: provide build instructions, or a build script, or make a gradle task.
+These sources can be compiled through the gradle task SPD-classes:ndkBuild on a system with the
+Android NDK installed and configured.
