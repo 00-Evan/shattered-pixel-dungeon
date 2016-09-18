@@ -37,6 +37,8 @@ public class Window extends Group implements Signal.Listener<Key> {
 
 	protected int width;
 	protected int height;
+
+	protected int yOffset;
 	
 	protected TouchArea blocker;
 	protected ShadowBox shadow;
@@ -46,15 +48,21 @@ public class Window extends Group implements Signal.Listener<Key> {
 	public static final int SHPX_COLOR = 0x33BB33;
 	
 	public Window() {
-		this( 0, 0, Chrome.get( Chrome.Type.WINDOW ) );
+		this( 0, 0, 0, Chrome.get( Chrome.Type.WINDOW ) );
 	}
 	
 	public Window( int width, int height ) {
-		this( width, height, Chrome.get( Chrome.Type.WINDOW ) );
+		this( width, height, 0, Chrome.get( Chrome.Type.WINDOW ) );
+	}
+
+	public Window( int width, int height, NinePatch chrome ) {
+		this(width, height, 0, chrome);
 	}
 			
-	public Window( int width, int height, NinePatch chrome ) {
+	public Window( int width, int height, int yOffset, NinePatch chrome ) {
 		super();
+
+		this.yOffset = yOffset;
 		
 		blocker = new TouchArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
 			@Override
@@ -94,6 +102,7 @@ public class Window extends Group implements Signal.Listener<Key> {
 			PixelScene.defaultZoom );
 		camera.x = (int)(Game.width - camera.width * camera.zoom) / 2;
 		camera.y = (int)(Game.height - camera.height * camera.zoom) / 2;
+		camera.y -= yOffset * camera.zoom;
 		camera.scroll.set( chrome.x, chrome.y );
 		Camera.add( camera );
 
@@ -116,6 +125,15 @@ public class Window extends Group implements Signal.Listener<Key> {
 		camera.resize( (int)chrome.width, (int)chrome.height );
 		camera.x = (int)(Game.width - camera.screenWidth()) / 2;
 		camera.y = (int)(Game.height - camera.screenHeight()) / 2;
+		camera.y += yOffset * camera.zoom;
+
+		shadow.boxRect( camera.x / camera.zoom, camera.y / camera.zoom, chrome.width(), chrome.height );
+	}
+
+	public void offset( int yOffset ){
+		camera.y -= this.yOffset * camera.zoom;
+		this.yOffset = yOffset;
+		camera.y += yOffset * camera.zoom;
 
 		shadow.boxRect( camera.x / camera.zoom, camera.y / camera.zoom, chrome.width(), chrome.height );
 	}
