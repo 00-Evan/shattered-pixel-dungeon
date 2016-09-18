@@ -243,6 +243,10 @@ public class RenderedText extends Image {
 		clearCache();
 	}
 
+	public static Typeface getFont(){
+		return font;
+	}
+
 	private static class CachedText{
 		public SmartTexture texture;
 		public RectF rect;
