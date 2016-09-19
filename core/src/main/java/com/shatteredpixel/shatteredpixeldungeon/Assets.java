@@ -126,9 +126,9 @@ public class Assets {
 	public static final String FONT1X       = "font1x.png";
 	public static final String FONT2X       = "font2x.png";
 	
-	public static final String THEME	= "theme.mp3";
-	public static final String TUNE		= "game.mp3";
-	public static final String HAPPY	= "surface.mp3";
+	public static final String THEME	= "theme.ogg";
+	public static final String TUNE		= "game.ogg";
+	public static final String HAPPY	= "surface.ogg";
 	
 	public static final String SND_CLICK	= "snd_click.mp3";
 	public static final String SND_BADGE	= "snd_badge.mp3";
