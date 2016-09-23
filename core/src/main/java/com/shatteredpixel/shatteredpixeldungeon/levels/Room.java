@@ -61,13 +61,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 
 public class Room extends Rect implements Graph.Node, Bundlable {
 	
-	public HashSet<Room> neigbours = new HashSet<Room>();
-	public HashMap<Room, Door> connected = new HashMap<Room, Door>();
+	public ArrayList<Room> neigbours = new ArrayList<Room>();
+	public LinkedHashMap<Room, Door> connected = new LinkedHashMap<Room, Door>();
 	
 	public int distance;
 	public int price = 1;
@@ -126,8 +125,13 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 			}
 		}
 	};
+
+	private static final ArrayList<Type> ALL_SPEC = new ArrayList<Type>( Arrays.asList(
+		Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
+		Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
+	) );
 	
-	public static final ArrayList<Type> SPECIALS = new ArrayList<Type>( Arrays.asList(
+	public static ArrayList<Type> SPECIALS = new ArrayList<Type>( Arrays.asList(
 		Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
 		Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
 	) );
@@ -221,6 +225,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	public static void shuffleTypes() {
+		SPECIALS = (ArrayList<Type>)ALL_SPEC.clone();
 		int size = SPECIALS.size();
 		for (int i=0; i < size - 1; i++) {
 			int j = Random.Int( i, size );
