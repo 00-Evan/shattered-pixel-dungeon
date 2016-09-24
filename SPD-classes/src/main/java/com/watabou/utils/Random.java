@@ -26,34 +26,64 @@ import java.util.HashMap;
 
 public class Random {
 
-	public static float Float( float min, float max ) {
-		return (float)(min + Math.random() * (max - min));
+	private static java.util.Random rand = new java.util.Random();
+
+	public static void seed( ){
+		rand = new java.util.Random();
 	}
-	
-	public static float Float( float max ) {
-		return (float)(Math.random() * max);
+
+	public static void seed( long seed ){
+		rand.setSeed(seed);
 	}
-	
+
+	//returns a uniformly distributed float in the range [0, 1)
 	public static float Float() {
-		return (float)Math.random();
+		return rand.nextFloat();
 	}
-	
+
+	//returns a uniformly distributed float in the range [0, max)
+	public static float Float( float max ) {
+		return Float() * max;
+	}
+
+	//returns a uniformly distributed float in the range [min, max)
+	public static float Float( float min, float max ) {
+		return min + Float(max - min);
+	}
+
+	//returns a uniformly distributed int in the range [0, max)
 	public static int Int( int max ) {
-		return max > 0 ? (int)(Math.random() * max) : 0;
+		return max > 0 ? rand.nextInt(max) : 0;
 	}
-	
+
+	//returns a uniformly distributed int in the range [min, max)
 	public static int Int( int min, int max ) {
-		return min + (int)(Math.random() * (max - min));
+		return min + Int(max - min);
 	}
-	
+
+	//returns a uniformly distributed int in the range [min, max]
 	public static int IntRange( int min, int max ) {
-		return min + (int)(Math.random() * (max - min + 1));
+		return min + Int(max - min + 1);
 	}
-	
+
+	//returns a triangularly distributed int in the range [min, max]
 	public static int NormalIntRange( int min, int max ) {
-		return min + (int)((Math.random() + Math.random()) * (max - min + 1) / 2f);
+		return min + (int)((Float() + Float()) * (max - min + 1) / 2f);
 	}
-	
+
+	//returns a uniformly distributed long in the range [-2^63, 2^63)
+	public static long Long() {
+		return rand.nextLong();
+	}
+
+	//returns a uniformly distributed long in the range [0, max)
+	public static long Long( long max ) {
+		long result = Long();
+		if (result < 0) result += Long.MAX_VALUE;
+		return result % max;
+	}
+
+	//returns an index from chances, the probability of each index is the weight values in changes
 	public static int chances( float[] chances ) {
 		
 		int length = chances.length;
@@ -76,6 +106,7 @@ public class Random {
 	}
 	
 	@SuppressWarnings("unchecked")
+	//returns a key element from chances, the probability of each key is the weight value it maps to
 	public static <K> K chances( HashMap<K,Float> chances ) {
 		
 		int size = chances.size();
@@ -102,12 +133,12 @@ public class Random {
 	}
 	
 	public static int index( Collection<?> collection ) {
-		return (int)(Math.random() * collection.size());
+		return Int(collection.size());
 	}
 
 	@SafeVarargs
-	public static<T> T oneOf( T... array ) {
-		return array[(int)(Math.random() * array.length)];
+	public static<T> T oneOf(T... array ) {
+		return array[Int(array.length)];
 	}
 	
 	public static<T> T element( T[] array ) {
@@ -115,7 +146,7 @@ public class Random {
 	}
 	
 	public static<T> T element( T[] array, int max ) {
-		return array[(int)(Math.random() * max)];
+		return array[Int(max)];
 	}
 	
 	@SuppressWarnings("unchecked")

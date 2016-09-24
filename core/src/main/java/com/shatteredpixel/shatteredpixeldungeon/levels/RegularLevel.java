@@ -407,7 +407,7 @@ public abstract class RegularLevel extends Level {
 			split( new Rect( rect.left, vh, rect.right, rect.bottom ) );
 			
 		} else
-		if ((Math.random() <= (minRoomSize * minRoomSize / rect.square()) && w <= maxRoomSize && h <= maxRoomSize) || w < minRoomSize || h < minRoomSize) {
+		if ((Random.Float() <= (minRoomSize * minRoomSize / rect.square()) && w <= maxRoomSize && h <= maxRoomSize) || w < minRoomSize || h < minRoomSize) {
 
 			rooms.add( (Room)new Room().set( rect ) );
 			

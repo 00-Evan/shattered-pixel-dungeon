@@ -173,6 +173,8 @@ public abstract class Level implements Bundlable {
 
 	public void create() {
 
+		Random.seed( Dungeon.seedCurDepth() );
+
 		setupSize();
 		PathFinder.setMapSize(width(), height());
 		passable	= new boolean[length()];
@@ -275,6 +277,8 @@ public abstract class Level implements Bundlable {
 		
 		createMobs();
 		createItems();
+
+		Random.seed();
 	}
 
 	protected void setupSize(){

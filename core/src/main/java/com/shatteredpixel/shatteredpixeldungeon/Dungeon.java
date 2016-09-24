@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
@@ -70,7 +71,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 public class Dungeon {
@@ -136,18 +136,30 @@ public class Dungeon {
 	public static SparseArray<ArrayList<Item>> droppedItems;
 
 	public static int version;
+
+	public static long seed;
 	
 	public static void init() {
 
 		version = Game.versionCode;
 		challenges = ShatteredPixelDungeon.challenges();
 
+		seed = DungeonSeed.randomSeed();
+
 		Actor.clear();
 		Actor.resetNextID();
 		
-		Scroll.initLabels();
-		Potion.initColors();
-		Ring.initGems();
+		Random.seed( seed );
+
+			Scroll.initLabels();
+			Potion.initColors();
+			Ring.initGems();
+
+			transmutation = Random.IntRange( 6, 14 );
+
+			Room.shuffleTypes();
+
+		Random.seed();
 		
 		Statistics.reset();
 		Journal.reset();
@@ -162,8 +174,6 @@ public class Dungeon {
 
 		for (limitedDrops a : limitedDrops.values())
 			a.count = 0;
-
-		transmutation = Random.IntRange( 6, 14 );
 		
 		chapters = new HashSet<Integer>();
 		
@@ -171,8 +181,6 @@ public class Dungeon {
 		Wandmaker.Quest.reset();
 		Blacksmith.Quest.reset();
 		Imp.Quest.reset();
-		
-		Room.shuffleTypes();
 
 		Generator.initArtifacts();
 		hero = new Hero();
@@ -275,6 +283,19 @@ public class Dungeon {
 		level.reset();
 		switchLevel( level, level.entrance );
 	}
+
+	public static long seedCurDepth(){
+		return seedForDepth(depth);
+	}
+
+	public static long seedForDepth(int depth){
+		Random.seed( seed );
+		for (int i = 0; i < depth; i ++)
+			Random.Long(); //we don't care about these values, just need to go through them
+		long result = Random.Long();
+		Random.seed();
+		return result;
+	}
 	
 	public static boolean shopOnLevel() {
 		return depth == 6 || depth == 11 || depth == 16;
@@ -375,6 +396,7 @@ public class Dungeon {
 	private static final String RN_DEPTH_FILE	= "ranger%d.dat";
 	
 	private static final String VERSION		= "version";
+	private static final String SEED		= "seed";
 	private static final String CHALLENGES	= "challenges";
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
@@ -420,6 +442,7 @@ public class Dungeon {
 
 			version = Game.versionCode;
 			bundle.put( VERSION, version );
+			bundle.put( SEED, seed );
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
@@ -518,6 +541,8 @@ public class Dungeon {
 		Bundle bundle = gameBundle( fileName );
 
 		version = bundle.getInt( VERSION );
+
+		seed = bundle.contains( SEED ) ? bundle.getLong( SEED ) : DungeonSeed.randomSeed();
 
 		Generator.reset();
 

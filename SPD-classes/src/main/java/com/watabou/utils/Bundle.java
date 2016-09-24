@@ -75,6 +75,10 @@ public class Bundle {
 	public int getInt( String key ) {
 		return data.optInt( key );
 	}
+
+	public long getLong( String key ) {
+		return data.optLong( key );
+	}
 	
 	public float getFloat( String key ) {
 		return (float)data.optDouble( key, 0.0 );
@@ -232,6 +236,14 @@ public class Bundle {
 	}
 	
 	public void put( String key, int value ) {
+		try {
+			data.put( key, value );
+		} catch (JSONException e) {
+
+		}
+	}
+
+	public void put( String key, long value ) {
 		try {
 			data.put( key, value );
 		} catch (JSONException e) {
