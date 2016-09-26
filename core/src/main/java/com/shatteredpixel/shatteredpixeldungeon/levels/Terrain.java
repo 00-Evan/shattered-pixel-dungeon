@@ -65,13 +65,7 @@ public class Terrain {
 	public static final int BOOKSHELF		= 27;
 	public static final int ALCHEMY			= 28;
 
-	public static final int CHASM_FLOOR		= 29;
-	public static final int CHASM_FLOOR_SP	= 30;
-	public static final int CHASM_WALL		= 31;
-	public static final int CHASM_WATER		= 32;
-
-	public static final int WATER_TILES	    = 48;
-	public static final int WATER		    = 63;
+	public static final int WATER		    = 29;
 	
 	public static final int PASSABLE		= 0x01;
 	public static final int LOS_BLOCKING	= 0x02;
@@ -118,15 +112,7 @@ public class Terrain {
 		flags[STATUE_SP]	= flags[STATUE] 								| UNSTITCHABLE;
 		flags[BOOKSHELF]	= flags[BARRICADE]								| UNSTITCHABLE;
 		flags[ALCHEMY]		= PASSABLE;
-		
-		flags[CHASM_WALL]		= flags[CHASM];
-		flags[CHASM_FLOOR]		= flags[CHASM];
-		flags[CHASM_FLOOR_SP]	= flags[CHASM];
-		flags[CHASM_WATER]		= flags[CHASM];
-		
-		for (int i=WATER_TILES; i < WATER_TILES + 16; i++) {
-			flags[i] = flags[WATER];
-		}
+
 	};
 
 	public static int discover( int terr ) {
@@ -138,6 +124,27 @@ public class Terrain {
 		default:
 			return terr;
 		}
+	}
+
+	//converts terrain values from pre versioncode 120 (0.4.3) saves
+	//TODO: remove when no longer supporting saves from 0.4.2b and under
+	public static int[] convertTilesFrom129(int[] map){
+		for (int i = 0; i < map.length; i++){
+
+			int c = map[i];
+
+			if (c >= 29){
+				if (c <= 32){
+					c = 0; //chasm tiles
+				} else {
+					c = 29; //water tiles
+				}
+			}
+
+			map[i] = c;
+
+		}
+		return map;
 	}
 
 	//converts terrain values from pre versioncode 44 (0.3.0c) saves

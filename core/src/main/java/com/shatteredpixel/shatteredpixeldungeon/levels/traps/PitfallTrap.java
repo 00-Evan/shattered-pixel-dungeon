@@ -70,14 +70,7 @@ public class PitfallTrap extends Trap {
 		if (!(Dungeon.level.solid[pos - Dungeon.level.width()] && Dungeon.level.solid[pos + Dungeon.level.width()])
 				&& !(Dungeon.level.solid[pos - 1]&& Dungeon.level.solid[pos + 1])){
 
-			int c = Dungeon.level.map[pos - Dungeon.level.width()];
-
-			if (c == Terrain.WALL || c == Terrain.WALL_DECO) {
-				Level.set(pos, Terrain.CHASM_WALL);
-			} else {
-				Level.set( pos, Terrain.CHASM_FLOOR );
-			}
-
+			Level.set(pos, Terrain.CHASM);
 			sprite.parent.add(new WindParticle.Wind(pos));
 			sprite.kill();
 			GameScene.updateMap( pos );

@@ -249,7 +249,7 @@ public class SewerBossLevel extends RegularLevel {
 
 			super.seal();
 			
-			set( entrance, Terrain.WATER_TILES );
+			set( entrance, Terrain.WATER );
 			GameScene.updateMap( entrance );
 			GameScene.ripple( entrance );
 			
