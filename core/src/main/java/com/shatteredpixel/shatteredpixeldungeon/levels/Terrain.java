@@ -76,29 +76,27 @@ public class Terrain {
 	public static final int LIQUID			= 0x40;
 	public static final int PIT				= 0x80;
 	
-	public static final int UNSTITCHABLE	= 0x100;
-	
 	public static final int[] flags = new int[256];
 	static {
-		flags[CHASM]		= AVOID	| PIT									| UNSTITCHABLE;
+		flags[CHASM]		= AVOID	| PIT;
 		flags[EMPTY]		= PASSABLE;
 		flags[GRASS]		= PASSABLE | FLAMABLE;
 		flags[EMPTY_WELL]	= PASSABLE;
-		flags[WATER]		= PASSABLE | LIQUID 							| UNSTITCHABLE;
-		flags[WALL]			= LOS_BLOCKING | SOLID 							| UNSTITCHABLE;
-		flags[DOOR]			= PASSABLE | LOS_BLOCKING | FLAMABLE | SOLID	| UNSTITCHABLE;
-		flags[OPEN_DOOR]	= PASSABLE | FLAMABLE 							| UNSTITCHABLE;
+		flags[WATER]		= PASSABLE | LIQUID;
+		flags[WALL]			= LOS_BLOCKING | SOLID;
+		flags[DOOR]			= PASSABLE | LOS_BLOCKING | FLAMABLE | SOLID;
+		flags[OPEN_DOOR]	= PASSABLE | FLAMABLE;
 		flags[ENTRANCE]		= PASSABLE/* | SOLID*/;
 		flags[EXIT]			= PASSABLE;
 		flags[EMBERS]		= PASSABLE;
-		flags[LOCKED_DOOR]	= LOS_BLOCKING | SOLID 							| UNSTITCHABLE;
-		flags[PEDESTAL]		= PASSABLE 										| UNSTITCHABLE;
+		flags[LOCKED_DOOR]	= LOS_BLOCKING | SOLID;
+		flags[PEDESTAL]		= PASSABLE;
 		flags[WALL_DECO]	= flags[WALL];
 		flags[BARRICADE]	= FLAMABLE | SOLID | LOS_BLOCKING;
-		flags[EMPTY_SP]		= flags[EMPTY]									| UNSTITCHABLE;
+		flags[EMPTY_SP]		= flags[EMPTY];
 		flags[HIGH_GRASS]	= PASSABLE | LOS_BLOCKING | FLAMABLE;
 
-		flags[SECRET_DOOR]  = flags[WALL]  | SECRET	            			| UNSTITCHABLE;
+		flags[SECRET_DOOR]  = flags[WALL]  | SECRET;
 		flags[SECRET_TRAP]  = flags[EMPTY] | SECRET;
 		flags[TRAP]         = AVOID;
 		flags[INACTIVE_TRAP]= flags[EMPTY];
@@ -109,8 +107,8 @@ public class Terrain {
 		flags[SIGN]			= PASSABLE | FLAMABLE;
 		flags[WELL]			= AVOID;
 		flags[STATUE]		= SOLID;
-		flags[STATUE_SP]	= flags[STATUE] 								| UNSTITCHABLE;
-		flags[BOOKSHELF]	= flags[BARRICADE]								| UNSTITCHABLE;
+		flags[STATUE_SP]	= flags[STATUE];
+		flags[BOOKSHELF]	= flags[BARRICADE];
 		flags[ALCHEMY]		= PASSABLE;
 
 	};

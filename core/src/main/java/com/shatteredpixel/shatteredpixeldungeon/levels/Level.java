@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -595,24 +596,17 @@ public abstract class Level implements Bundlable {
 	}
 
 	public void destroy( int pos ) {
-		if ((Terrain.flags[map[pos]] & Terrain.UNSTITCHABLE) == 0) {
 
-			set( pos, Terrain.EMBERS );
-
-		} else {
-			boolean flood = false;
+		if (!DungeonTilemap.waterStitcheable.contains(map[pos])) {
 			for (int j = 0; j < PathFinder.NEIGHBOURS4.length; j++) {
 				if (water[pos + PathFinder.NEIGHBOURS4[j]]) {
-					flood = true;
-					break;
+					set(pos, Terrain.WATER);
+					return;
 				}
 			}
-			if (flood) {
-				set( pos, Terrain.WATER );
-			} else {
-				set( pos, Terrain.EMBERS );
-			}
 		}
+
+		set( pos, Terrain.EMBERS );
 	}
 
 	protected void cleanWalls() {
