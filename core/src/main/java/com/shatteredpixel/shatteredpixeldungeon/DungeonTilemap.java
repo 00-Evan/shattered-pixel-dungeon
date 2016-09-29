@@ -31,6 +31,7 @@ import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +45,6 @@ public class DungeonTilemap extends Tilemap {
 	//Used to map dungeon tiles to their default visual values
 	public static SparseIntArray defaultVisuals = new SparseIntArray(32);
 	static {
-		defaultVisuals = new SparseIntArray(32);
 		defaultVisuals.put(Terrain.CHASM,           0);
 		defaultVisuals.put(Terrain.EMPTY,           1);
 		defaultVisuals.put(Terrain.GRASS,           2);
@@ -78,6 +78,26 @@ public class DungeonTilemap extends Tilemap {
 		defaultVisuals.put(Terrain.ALCHEMY,         24);
 
 		defaultVisuals.put(Terrain.WATER,           63);
+	}
+
+	//These alt visuals will trigger 50% of the time
+	public static SparseIntArray commonAltVisuals = new SparseIntArray(32);
+	static {
+		commonAltVisuals.put(1,                 38);
+		commonAltVisuals.put(2,                 39);
+		commonAltVisuals.put(4,                 40);
+		commonAltVisuals.put(9,                 41);
+		commonAltVisuals.put(12,                42);
+		commonAltVisuals.put(14,                43);
+		commonAltVisuals.put(15,                44);
+		commonAltVisuals.put(16,                45);
+		commonAltVisuals.put(23,                46);
+	}
+
+	//These alt visuals trigger 10% of the time (and also override common alts when they show up)
+	public static SparseIntArray rareAltVisuals = new SparseIntArray(32);
+	static {
+		rareAltVisuals.put(1,                   47);
 	}
 
 	//These tiles can stitch with water
@@ -118,11 +138,19 @@ public class DungeonTilemap extends Tilemap {
 	}
 
 	private int[] map;
+	private float[] tileVariance;
 
 	public DungeonTilemap() {
 		super(
 			Dungeon.level.tilesTex(),
 			new TextureFilm( Dungeon.level.tilesTex(), SIZE, SIZE ) );
+
+		Random.seed( Dungeon.seedCurDepth());
+		tileVariance = new float[Dungeon.level.map.length];
+		for (int i = 0; i < tileVariance.length; i++)
+			tileVariance[i] = Random.Float();
+		Random.seed();
+
 		map( Dungeon.level.map, Dungeon.level.width() );
 		
 		instance = this;
@@ -153,19 +181,30 @@ public class DungeonTilemap extends Tilemap {
 	}
 
 	private int setCellVisuals(int pos, int tile){
+		int visual = defaultVisuals.get(tile);
+
 		if (tile == Terrain.WATER){
-			tile = defaultVisuals.get(tile);
 			for (int i = 0; i < PathFinder.CIRCLE4.length; i++){
 				if (waterStitcheable.contains(map[pos + PathFinder.CIRCLE4[i]])) {
 					//equivalent to: cell -= 2^i
-					tile -= (1 << i);
+					visual -= (1 << i);
 				}
 			}
-			return tile;
-		} else if (tile == Terrain.CHASM && pos >= mapWidth){
-			return chasmStitcheable.get(map[pos - mapWidth], defaultVisuals.get(tile));
+			return visual;
+
+		} else if (tile == Terrain.CHASM && pos >= mapWidth) {
+			return chasmStitcheable.get(map[pos - mapWidth], visual);
+
+		} else if (tileVariance[pos] > 0.9f
+				&& rareAltVisuals.indexOfKey(visual) >= 0){
+			return rareAltVisuals.get(visual);
+
+		} else if (tileVariance[pos] > 0.5f
+			&& commonAltVisuals.indexOfKey(visual) >= 0) {
+			return commonAltVisuals.get(visual);
 		}
-		return defaultVisuals.get(tile);
+
+		return visual;
 	}
 
 	public int screenToTile(int x, int y ) {
