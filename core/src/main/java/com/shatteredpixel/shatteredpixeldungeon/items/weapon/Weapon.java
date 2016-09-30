@@ -164,7 +164,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 		int bonus = RingOfFuror.getBonus(hero, RingOfFuror.Furor.class);
 
-		DLY = (float)(0.25 + (DLY - 0.25)*Math.pow(0.8, bonus));
+		DLY = (float)(0.2 + (DLY - 0.2)*Math.pow(0.85, bonus));
 
 		return
 				(encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY);

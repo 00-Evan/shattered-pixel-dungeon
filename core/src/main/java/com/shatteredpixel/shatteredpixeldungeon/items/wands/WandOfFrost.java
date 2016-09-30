@@ -70,9 +70,9 @@ public class WandOfFrost extends DamageWand {
 				return; //do nothing, can't affect a frozen target
 			}
 			if (ch.buff(Chill.class) != null){
-				//5% less damage per turn of chill remaining
+				//7.5% less damage per turn of chill remaining
 				float chill = ch.buff(Chill.class).cooldown();
-				damage = (int)Math.round(damage * Math.pow(0.95f, chill));
+				damage = (int)Math.round(damage * Math.pow(0.925f, chill));
 			} else {
 				ch.sprite.burst( 0xFF99CCFF, level() / 2 + 2 );
 			}

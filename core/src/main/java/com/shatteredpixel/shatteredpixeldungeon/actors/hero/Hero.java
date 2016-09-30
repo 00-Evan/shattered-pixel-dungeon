@@ -427,7 +427,7 @@ public class Hero extends Char {
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
 			int bonus = RingOfFuror.getBonus(this, RingOfFuror.Furor.class);
-			return (float)(0.25 + (1 - 0.25)*Math.pow(0.8, bonus));
+			return (float)(0.2 + (1 - 0.2)*Math.pow(0.85, bonus));
 		}
 	}
 
