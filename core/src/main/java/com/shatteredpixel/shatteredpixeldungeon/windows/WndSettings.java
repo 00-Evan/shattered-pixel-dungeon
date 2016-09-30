@@ -158,20 +158,24 @@ public class WndSettings extends WndTabbed {
 				@Override
 				protected void onClick() {
 					super.onClick();
-					checked( !checked() );
-					ShatteredPixelDungeon.scene().add(new WndOptions(
-							Messages.get(ScreenTab.class, "saver"),
-							Messages.get(ScreenTab.class, "saver_desc"),
-							Messages.get(ScreenTab.class, "okay"),
-							Messages.get(ScreenTab.class, "cancel")){
-						@Override
-						protected void onSelect(int index) {
-							if (index == 0){
-								checked( !checked() );
-								ShatteredPixelDungeon.powerSaver(checked());
+					if (checked()) {
+						checked(!checked());
+						ShatteredPixelDungeon.scene().add(new WndOptions(
+								Messages.get(ScreenTab.class, "saver"),
+								Messages.get(ScreenTab.class, "saver_desc"),
+								Messages.get(ScreenTab.class, "okay"),
+								Messages.get(ScreenTab.class, "cancel")) {
+							@Override
+							protected void onSelect(int index) {
+								if (index == 0) {
+									checked(!checked());
+									ShatteredPixelDungeon.powerSaver(checked());
+								}
 							}
-						}
-					});
+						});
+					} else {
+						ShatteredPixelDungeon.powerSaver(checked());
+					}
 				}
 			};
 			chkSaver.setRect( 0, chkImmersive.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT );

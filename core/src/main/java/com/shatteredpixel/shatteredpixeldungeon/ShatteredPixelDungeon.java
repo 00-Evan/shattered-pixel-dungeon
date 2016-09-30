@@ -340,8 +340,8 @@ public class ShatteredPixelDungeon extends Game {
 
 			int maxZoom = (int)Math.min(dispWidth/renderWidth, dispHeight/renderHeight);
 
-			renderWidth *= GameMath.gate( 2, (float)Math.ceil(maxZoom/2f), 4);
-			renderHeight *= GameMath.gate( 2, (float)Math.ceil(maxZoom/2f), 4);
+			renderWidth *= Math.max( 2, Math.round(maxZoom/2f));
+			renderHeight *= Math.max( 2, Math.round(maxZoom/2f));
 
 			if (dispRatio > renderWidth / renderHeight){
 				renderWidth = renderHeight * dispRatio;
