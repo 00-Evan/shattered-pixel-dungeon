@@ -24,6 +24,7 @@ package com.watabou.input;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.watabou.noosa.Game;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
@@ -96,6 +97,9 @@ public class Touchscreen {
 			
 			float x = e.getX( index );
 			float y = e.getY( index );
+
+			x /= (Game.dispWidth / (float)Game.width);
+			y /= (Game.dispHeight / (float)Game.height);
 			
 			start = new PointF( x, y );
 			current = new PointF( x, y );
@@ -104,7 +108,13 @@ public class Touchscreen {
 		}
 		
 		public void update( MotionEvent e, int index ) {
-			current.set( e.getX( index ), e.getY( index ) );
+			float x = e.getX( index );
+			float y = e.getY( index );
+
+			x /= (Game.dispWidth / (float)Game.width);
+			y /= (Game.dispHeight / (float)Game.height);
+
+			current.set( x, y );
 		}
 		
 		public Touch up() {

@@ -53,8 +53,12 @@ import android.view.View;
 public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTouchListener {
 
 	public static Game instance;
+
+	//actual size of the display
+	public static int dispWidth;
+	public static int dispHeight;
 	
-	// Actual size of the screen
+	// Size of the EGL surface view
 	public static int width;
 	public static int height;
 	
@@ -107,6 +111,8 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		DisplayMetrics m = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics( m );
 		density = m.density;
+		dispHeight = m.heightPixels;
+		dispWidth = m.widthPixels;
 		
 		try {
 			version = getPackageManager().getPackageInfo( getPackageName(), 0 ).versionName;

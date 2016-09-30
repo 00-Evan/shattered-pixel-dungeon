@@ -127,12 +127,9 @@ public class WndSettings extends WndTabbed {
 				}
 			};
 			scale.setSelectedValue(PixelScene.defaultZoom);
-			if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom) {
-				scale.setRect(0, 0, WIDTH, SLIDER_HEIGHT);
+			scale.setRect(0, 0, WIDTH, SLIDER_HEIGHT);
+			if ((int)Math.ceil(2* Game.density) < PixelScene.maxDefaultZoom)
 				add(scale);
-			} else {
-				scale.setRect(0, 0, 0, 0);
-			}
 
 			OptionSlider brightness = new OptionSlider(Messages.get(this, "brightness"),
 					Messages.get(this, "dark"), Messages.get(this, "bright"), -2, 2) {
@@ -142,7 +139,7 @@ public class WndSettings extends WndTabbed {
 				}
 			};
 			brightness.setSelectedValue(ShatteredPixelDungeon.brightness());
-			brightness.setRect(0, scale.bottom() + GAP_SML, WIDTH, SLIDER_HEIGHT);
+			brightness.setRect(0, scale.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
 			add(brightness);
 
 			CheckBox chkImmersive = new CheckBox( Messages.get(this, "soft_keys") ) {
@@ -152,11 +149,34 @@ public class WndSettings extends WndTabbed {
 					ShatteredPixelDungeon.immerse(checked());
 				}
 			};
-			chkImmersive.setRect( 0, brightness.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT );
+			chkImmersive.setRect( 0, brightness.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
 			chkImmersive.checked(ShatteredPixelDungeon.immersed());
 			chkImmersive.enable(android.os.Build.VERSION.SDK_INT >= 19);
 			add(chkImmersive);
 
+			CheckBox chkSaver = new CheckBox( Messages.get(this, "saver") ) {
+				@Override
+				protected void onClick() {
+					super.onClick();
+					checked( !checked() );
+					ShatteredPixelDungeon.scene().add(new WndOptions(
+							Messages.get(ScreenTab.class, "saver"),
+							Messages.get(ScreenTab.class, "saver_desc"),
+							Messages.get(ScreenTab.class, "okay"),
+							Messages.get(ScreenTab.class, "cancel")){
+						@Override
+						protected void onSelect(int index) {
+							if (index == 0){
+								checked( !checked() );
+								ShatteredPixelDungeon.powerSaver(checked());
+							}
+						}
+					});
+				}
+			};
+			chkSaver.setRect( 0, chkImmersive.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT );
+			chkSaver.checked(ShatteredPixelDungeon.powerSaver());
+			if (PixelScene.maxScreenZoom >= 2) add(chkSaver);
 
 			RedButton btnOrientation = new RedButton( ShatteredPixelDungeon.landscape() ?
 					Messages.get(this, "portrait")
@@ -166,7 +186,7 @@ public class WndSettings extends WndTabbed {
 					ShatteredPixelDungeon.landscape(!ShatteredPixelDungeon.landscape());
 				}
 			};
-			btnOrientation.setRect(0, chkImmersive.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT);
+			btnOrientation.setRect(0, chkSaver.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
 			add( btnOrientation );
 		}
 	}

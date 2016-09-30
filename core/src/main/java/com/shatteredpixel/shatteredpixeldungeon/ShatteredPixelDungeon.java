@@ -20,8 +20,8 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -34,6 +34,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.GameMath;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.Locale;
@@ -172,7 +173,10 @@ public class ShatteredPixelDungeon extends Game {
 		updateImmersiveMode();
 
 		DisplayMetrics metrics = new DisplayMetrics();
-		instance.getWindowManager().getDefaultDisplay().getMetrics( metrics );
+		if (immersed() && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1)
+			getWindowManager().getDefaultDisplay().getRealMetrics( metrics );
+		else
+			getWindowManager().getDefaultDisplay().getMetrics( metrics );
 		boolean landscape = metrics.widthPixels > metrics.heightPixels;
 		
 		if (Preferences.INSTANCE.getBoolean( Preferences.KEY_LANDSCAPE, false ) != landscape) {
@@ -274,6 +278,7 @@ public class ShatteredPixelDungeon extends Game {
 					ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 		Preferences.INSTANCE.put( Preferences.KEY_LANDSCAPE, value );
+		((ShatteredPixelDungeon)instance).updateDisplaySize();
 	}
 	
 	public static boolean landscape() {
@@ -284,11 +289,8 @@ public class ShatteredPixelDungeon extends Game {
 		Preferences.INSTANCE.put( Preferences.KEY_SCALE, value );
 	}
 
-	// *** IMMERSIVE MODE ****
-
 	private static boolean immersiveModeChanged = false;
 
-	@SuppressLint("NewApi")
 	public static void immerse( boolean value ) {
 		Preferences.INSTANCE.put( Preferences.KEY_IMMERSIVE, value );
 
@@ -297,13 +299,18 @@ public class ShatteredPixelDungeon extends Game {
 			public void run() {
 				updateImmersiveMode();
 				immersiveModeChanged = true;
+				//ensures surfacechanged is called if the view was previously set to be fixed.
+				((ShatteredPixelDungeon)instance).view.getHolder().setSizeFromLayout();
 			}
 		} );
 	}
 
 	@Override
 	public void onSurfaceChanged( GL10 gl, int width, int height ) {
+
 		super.onSurfaceChanged( gl, width, height );
+
+		updateDisplaySize();
 
 		if (immersiveModeChanged) {
 			requestedReset = true;
@@ -311,7 +318,59 @@ public class ShatteredPixelDungeon extends Game {
 		}
 	}
 
-	@SuppressLint("NewApi")
+	private void updateDisplaySize(){
+		DisplayMetrics m = new DisplayMetrics();
+		if (immersed() && Build.VERSION.SDK_INT >= 19)
+			getWindowManager().getDefaultDisplay().getRealMetrics( m );
+		else
+			getWindowManager().getDefaultDisplay().getMetrics( m );
+		dispHeight = m.heightPixels;
+		dispWidth = m.widthPixels;
+
+		float dispRatio = dispWidth / (float)dispHeight;
+
+		float renderWidth = dispRatio > 1 ? PixelScene.MIN_WIDTH_L : PixelScene.MIN_WIDTH_P;
+		float renderHeight = dispRatio > 1 ? PixelScene.MIN_HEIGHT_L : PixelScene.MIN_HEIGHT_P;
+
+		//force power saver in this case as all devices must run at at least 2x scale.
+		if (dispWidth < renderWidth*2 || dispHeight < renderHeight*2)
+			Preferences.INSTANCE.put( Preferences.KEY_POWER_SAVER, true );
+
+		if (powerSaver()){
+
+			int maxZoom = (int)Math.min(dispWidth/renderWidth, dispHeight/renderHeight);
+
+			renderWidth *= GameMath.gate( 2, (float)Math.ceil(maxZoom/2f), 4);
+			renderHeight *= GameMath.gate( 2, (float)Math.ceil(maxZoom/2f), 4);
+
+			if (dispRatio > renderWidth / renderHeight){
+				renderWidth = renderHeight * dispRatio;
+			} else {
+				renderHeight = renderWidth / dispRatio;
+			}
+
+			final int finalW = Math.round(renderWidth);
+			final int finalH = Math.round(renderHeight);
+			if (finalW != width || finalH != height){
+
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						view.getHolder().setFixedSize(finalW, finalH);
+					}
+				});
+
+			}
+		} else {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					view.getHolder().setSizeFromLayout();
+				}
+			});
+		}
+	}
+
 	public static void updateImmersiveMode() {
 		if (android.os.Build.VERSION.SDK_INT >= 19) {
 			try {
@@ -336,7 +395,14 @@ public class ShatteredPixelDungeon extends Game {
 		return Preferences.INSTANCE.getBoolean( Preferences.KEY_IMMERSIVE, false );
 	}
 
-	// *****************************
+	public static boolean powerSaver(){
+		return Preferences.INSTANCE.getBoolean( Preferences.KEY_POWER_SAVER, false );
+	}
+
+	public static void powerSaver( boolean value ){
+		Preferences.INSTANCE.put( Preferences.KEY_POWER_SAVER, value );
+		((ShatteredPixelDungeon)instance).updateDisplaySize();
+	}
 	
 	public static int scale() {
 		return Preferences.INSTANCE.getInt( Preferences.KEY_SCALE, 0 );

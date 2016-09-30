@@ -54,18 +54,18 @@ public abstract class OptionSlider extends Component {
 	public OptionSlider(String title, String minTxt, String maxTxt, int minVal, int maxVal){
 		super();
 
+		//shouldn't function if this happens.
+		if (minVal > maxVal){
+			minVal = maxVal;
+			active = false;
+		}
+
 		this.title.text(title);
 		this.minTxt.text(minTxt);
 		this.maxTxt.text(maxTxt);
 
 		this.minVal = minVal;
 		this.maxVal = maxVal;
-
-		//really shouldn't display the slider if this happens.
-		if (minVal > maxVal){
-			active = false;
-			visible = false;
-		}
 
 		sliderTicks = new ColorBlock[(maxVal - minVal) + 1];
 		for (int i = 0; i < sliderTicks.length; i++){
