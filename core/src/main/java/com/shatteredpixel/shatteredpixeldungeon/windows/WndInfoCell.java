@@ -76,7 +76,7 @@ public class WndInfoCell extends Window {
 				water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
 				titlebar.icon(water);
 			} else {
-				titlebar.icon(DungeonTilemap.tile(tile));
+				titlebar.icon(DungeonTilemap.tile( cell, tile ));
 			}
 			titlebar.label(Dungeon.level.tileName(tile));
 			desc += Dungeon.level.tileDesc(tile);

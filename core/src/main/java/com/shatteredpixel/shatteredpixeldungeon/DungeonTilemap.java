@@ -168,7 +168,7 @@ public class DungeonTilemap extends Tilemap {
 	public synchronized void updateMap() {
 		super.updateMap();
 		for (int i = 0; i < data.length; i++)
-			data[i] = setCellVisuals(i ,map[i]);
+			data[i] = getTileVisual(i ,map[i]);
 	}
 
 	@Override
@@ -177,10 +177,10 @@ public class DungeonTilemap extends Tilemap {
 		super.updateMapCell(cell - mapWidth - 1);
 		super.updateMapCell(cell + mapWidth + 1);
 		for (int i : PathFinder.NEIGHBOURS9)
-			data[cell+i] = setCellVisuals(cell+i, map[cell+i]);
+			data[cell+i] = getTileVisual(cell+i, map[cell+i]);
 	}
 
-	private int setCellVisuals(int pos, int tile){
+	private int getTileVisual(int pos, int tile){
 		int visual = defaultVisuals.get(tile);
 
 		if (tile == Terrain.WATER){
@@ -227,7 +227,7 @@ public class DungeonTilemap extends Tilemap {
 	
 	public void discover( int pos, int oldValue ) {
 		
-		final Image tile = tile( oldValue );
+		final Image tile = tile( pos, oldValue );
 		tile.point( tileToWorld( pos ) );
 
 		parent.add( tile );
@@ -250,9 +250,9 @@ public class DungeonTilemap extends Tilemap {
 			(pos / Dungeon.level.width() + 0.5f) * SIZE );
 	}
 	
-	public static Image tile( int index ) {
+	public static Image tile( int pos, int tile ) {
 		Image img = new Image( instance.texture );
-		img.frame( instance.tileset.get( defaultVisuals.get(index) ) );
+		img.frame( instance.tileset.get( instance.getTileVisual( pos, tile ) ) );
 		return img;
 	}
 	
