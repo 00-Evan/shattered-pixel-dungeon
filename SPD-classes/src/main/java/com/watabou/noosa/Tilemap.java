@@ -245,7 +245,10 @@ public class Tilemap extends Visual {
 			while(bottomRight >= topLeft && bufferPositions[bottomRight] == -1)
 				bottomRight--;
 
-			length = bufferPositions[bottomRight] - bufferPositions[topLeft] + 1;
+			if (topLeft >= bufferPositions.length || bottomRight <= 0)
+				length = 0;
+			else
+				length = bufferPositions[bottomRight] - bufferPositions[topLeft] + 1;
 		}
 
 		if (camX >= mapWidth

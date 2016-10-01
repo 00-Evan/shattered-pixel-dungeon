@@ -32,18 +32,20 @@ public class Vertexbuffer {
 	private FloatBuffer vertices;
 	private int updateStart, updateEnd;
 
-	private static ArrayList<Vertexbuffer> buffers = new ArrayList<>();
+	private static final ArrayList<Vertexbuffer> buffers = new ArrayList<>();
 
 	public Vertexbuffer( FloatBuffer vertices ) {
-		int[] ptr = new int[1];
-		GLES20.glGenBuffers( 1, ptr, 0 );
-		id = ptr[0];
+		synchronized (buffers) {
+			int[] ptr = new int[1];
+			GLES20.glGenBuffers(1, ptr, 0);
+			id = ptr[0];
 
-		this.vertices = vertices;
-		buffers.add(this);
+			this.vertices = vertices;
+			buffers.add(this);
 
-		updateStart = 0;
-		updateEnd = vertices.limit();
+			updateStart = 0;
+			updateEnd = vertices.limit();
+		}
 	}
 
 	//For flagging the buffer for a full update without changing anything
@@ -96,14 +98,18 @@ public class Vertexbuffer {
 	}
 
 	public void delete(){
-		GLES20.glDeleteBuffers(1, new int[]{id}, 0);
-		buffers.remove(this);
+		synchronized (buffers) {
+			GLES20.glDeleteBuffers(1, new int[]{id}, 0);
+			buffers.remove(this);
+		}
 	}
 
 	public static void refreshAllBuffers(){
-		for (Vertexbuffer buf : buffers) {
-			buf.updateVertices();
-			buf.updateGLData();
+		synchronized (buffers) {
+			for (Vertexbuffer buf : buffers) {
+				buf.updateVertices();
+				buf.updateGLData();
+			}
 		}
 	}
 

@@ -336,7 +336,8 @@ public class Hero extends Char {
 		}
 		if (dmg < 0) dmg = 0;
 		if (subClass == HeroSubClass.BERSERKER){
-			dmg = Buff.affect(this, Berserk.class).damageFactor(dmg);
+			berserk = Buff.affect(this, Berserk.class);
+			dmg = berserk.damageFactor(dmg);
 		}
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
@@ -1168,7 +1169,10 @@ public class Hero extends Char {
 		HornOfPlenty.hornRecharge horn = buff(HornOfPlenty.hornRecharge.class);
 		if (horn != null) horn.gainCharge(percent);
 
-		if (subClass == HeroSubClass.BERSERKER) Buff.affect(this, Berserk.class).recover(percent);
+		if (subClass == HeroSubClass.BERSERKER){
+			berserk = Buff.affect(this, Berserk.class);
+			berserk.recover(percent);
+		}
 		
 		boolean levelUp = false;
 		while (this.exp >= maxExp()) {
@@ -1370,13 +1374,17 @@ public class Hero extends Char {
 		Dungeon.deleteGame( Dungeon.hero.heroClass, true );
 	}
 
+	//effectively cache this buff to prevent having to call buff(Berserk.class) a bunch.
+	//This is relevant because we call isAlive during drawing, which has both performance
+	//and concurrent modification implications if that method calls buff(Berserk.class)
+	private Berserk berserk;
+
 	@Override
 	public boolean isAlive() {
-		if (subClass == HeroSubClass.BERSERKER){
-			Berserk berserk = buff(Berserk.class);
-			if (berserk != null && berserk.berserking()){
-				return true;
-			}
+		if (subClass == HeroSubClass.BERSERKER
+				&& berserk != null
+				&& berserk.berserking()){
+			return true;
 		}
 		return super.isAlive();
 	}

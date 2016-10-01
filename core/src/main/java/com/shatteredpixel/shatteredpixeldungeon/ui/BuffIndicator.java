@@ -145,6 +145,11 @@ public class BuffIndicator extends Component {
 						super.updateValues( progress );
 						image.scale.set( 1 + 5 * progress );
 					};
+
+					@Override
+					protected void onComplete() {
+						image.killAndErase();
+					}
 				} );
 			}
 		}
@@ -176,7 +181,8 @@ public class BuffIndicator extends Component {
 
 		@Override
 		protected void onClick() {
-			GameScene.show(new WndInfoBuff(buff));
+			if (buff.icon() != NONE)
+				GameScene.show(new WndInfoBuff(buff));
 		}
 	}
 	
