@@ -67,24 +67,28 @@ public class SmartTexture extends Texture {
 	protected void generate() {
 		super.generate();
 		bitmap( bitmap, premultiplied );
-		filter( fModeMin, fModeMax );
-		wrap( wModeH, wModeV );
+		super.filter( fModeMin, fModeMax );
+		super.wrap( wModeH, wModeV );
 	}
 
 	@Override
 	public void filter(int minMode, int maxMode) {
+		if (fModeMin == minMode && fModeMax == maxMode) return;
+
 		fModeMin = minMode;
 		fModeMax = maxMode;
 		if (id != -1)
-			super.filter( fModeMin = minMode, fModeMax = maxMode);
+			super.filter( fModeMin, fModeMax );
 	}
-	
+
 	@Override
 	public void wrap( int s, int t ) {
+		if (wModeH == s && wModeV == t) return;
+
 		wModeH = s;
 		wModeV = t;
 		if (id != -1)
-			super.wrap( wModeH = s, wModeV = t );
+			super.wrap( wModeH, wModeV );
 	}
 	
 	@Override

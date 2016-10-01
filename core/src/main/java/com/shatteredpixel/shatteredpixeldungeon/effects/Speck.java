@@ -423,7 +423,7 @@ public class Speck extends Image {
 			case VENOM:
 				hardlight( ColorMath.interpolate( 0x8844FF, 0x00FF00 , p ));
 			case STENCH:
-				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 0.5f );
+				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) );
 				scale.set( 1 + p );
 				break;
 				

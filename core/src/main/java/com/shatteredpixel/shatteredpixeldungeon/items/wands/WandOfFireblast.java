@@ -96,7 +96,7 @@ public class WandOfFireblast extends DamageWand {
 
 	//burn... BURNNNNN!.....
 	private void spreadFlames(int cell, float strength){
-		if (strength >= 0 && Level.passable[cell]){
+		if (strength >= 0 && (Level.passable[cell] || Level.flamable[cell])){
 			affectedCells.add(cell);
 			if (strength >= 1.5f) {
 				visualCells.remove(cell);

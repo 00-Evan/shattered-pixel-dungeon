@@ -159,6 +159,12 @@ public class HornOfPlenty extends Artifact {
 	}
 
 	@Override
+	public void level(int value) {
+		super.level(value);
+		chargeCap = 10 + visiblyUpgraded();
+	}
+
+	@Override
 	public Item upgrade() {
 		super.upgrade();
 		chargeCap = 10 + visiblyUpgraded();

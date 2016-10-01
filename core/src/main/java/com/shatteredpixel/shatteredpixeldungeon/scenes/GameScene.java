@@ -806,6 +806,7 @@ public class GameScene extends PixelScene {
 	public static void ready() {
 		selectCell( defaultCellListener );
 		QuickSlotButton.cancel();
+		scene.toolbar.examining = false;
 	}
 
 	public static void examineCell( Integer cell ) {

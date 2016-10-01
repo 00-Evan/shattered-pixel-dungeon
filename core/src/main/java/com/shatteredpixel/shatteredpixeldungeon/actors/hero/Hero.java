@@ -1335,6 +1335,7 @@ public class Hero extends Char {
 		Bones.leave();
 		
 		Dungeon.observe();
+		GameScene.updateFog();
 				
 		Dungeon.hero.belongings.identify();
 

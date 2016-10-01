@@ -413,13 +413,13 @@ public abstract class Char extends Actor {
 		}
 
 		if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
-			Door.leave( pos, this );
+			Door.leave( pos );
 		}
 
 		pos = step;
 		
 		if (flying && Dungeon.level.map[pos] == Terrain.DOOR) {
-			Door.enter( pos, this );
+			Door.enter( pos );
 		}
 		
 		if (this != Dungeon.hero) {

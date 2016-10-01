@@ -32,10 +32,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.utils.Random;
 
 public class Fire extends Blob {
-	
+
 	@Override
 	protected void evolve() {
 
@@ -53,7 +52,7 @@ public class Fire extends Blob {
 					burn( cell );
 
 					fire = cur[cell] - 1;
-					if (flamable[cell] && Random.Int(fire+1) == 0) {
+					if (fire <= 0 && flamable[cell]) {
 
 						int oldTile = Dungeon.level.map[cell];
 						Dungeon.level.destroy( cell );

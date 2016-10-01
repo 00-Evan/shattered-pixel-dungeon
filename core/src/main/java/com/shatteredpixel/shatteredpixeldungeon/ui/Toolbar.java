@@ -47,7 +47,7 @@ public class Toolbar extends Component {
 	private PickedUpItem pickedUp;
 	
 	private boolean lastEnabled = true;
-	private boolean examining = false;
+	public boolean examining = false;
 
 	private static Toolbar instance;
 
@@ -249,8 +249,8 @@ public class Toolbar extends Component {
 	public void update() {
 		super.update();
 		
-		if (lastEnabled != Dungeon.hero.ready) {
-			lastEnabled = Dungeon.hero.ready;
+		if (lastEnabled != (Dungeon.hero.ready && Dungeon.hero.isAlive())) {
+			lastEnabled = (Dungeon.hero.ready && Dungeon.hero.isAlive());
 			
 			for (Gizmo tool : members) {
 				if (tool instanceof Tool) {

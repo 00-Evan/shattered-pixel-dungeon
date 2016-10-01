@@ -240,4 +240,13 @@ public class Blob extends Actor {
 			return null;
 		}
 	}
+
+	public static int volumeAt( int cell, Class<? extends Blob> type){
+		Blob gas = Dungeon.level.blobs.get( type );
+		if (gas == null) {
+			return 0;
+		} else {
+			return gas.cur[cell];
+		}
+	}
 }
