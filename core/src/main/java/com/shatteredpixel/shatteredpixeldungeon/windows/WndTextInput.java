@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 
 //This class makes use of the android EditText component to handle text input
@@ -89,15 +90,19 @@ public class WndTextInput extends Window {
 		textInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
 		textInput.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES );
 
+		//this accounts for the game resolution differing from the display resolution in power saver mode
+		final float scaledZoom;
+		scaledZoom = camera.zoom * (Game.dispWidth / (float)Game.width);
+
 		//sets different visual style depending on whether this is a single or multi line input.
 		final float inputHeight;
 		if (multiLine) {
 
 			textInput.setSingleLine(false);
 			//This is equivalent to PixelScene.renderText(6)
-			textInput.setTextSize( TypedValue.COMPLEX_UNIT_PX, 6*camera.zoom);
+			textInput.setTextSize( TypedValue.COMPLEX_UNIT_PX, 6*scaledZoom);
 			//8 lines of text (+1 line for padding)
-			inputHeight = 9*textInput.getLineHeight() / camera.zoom;
+			inputHeight = 9*textInput.getLineHeight() / scaledZoom;
 
 		} else {
 
@@ -119,9 +124,9 @@ public class WndTextInput extends Window {
 			textInput.setGravity(Gravity.CENTER);
 
 			//This is equivalent to PixelScene.renderText(9)
-			textInput.setTextSize( TypedValue.COMPLEX_UNIT_PX, 9*camera.zoom);
+			textInput.setTextSize( TypedValue.COMPLEX_UNIT_PX, 9*scaledZoom);
 			//1 line of text (+1 line for padding)
-			inputHeight = 2*textInput.getLineHeight() / camera.zoom;
+			inputHeight = 2*textInput.getLineHeight() / scaledZoom;
 
 		}
 
@@ -158,7 +163,7 @@ public class WndTextInput extends Window {
 		//The layout of the TextEdit is in display pixel space, not ingame pixel space
 		// resize the window first so we can know the screen-space coordinates for the text input.
 		resize( width, (int)pos );
-		final int inputTop = camera.cameraToScreen(0, txtTitle.bottom() + MARGIN).y;
+		final int inputTop = (int)(camera.cameraToScreen(0, txtTitle.bottom() + MARGIN).y * (Game.dispWidth / (float)Game.width));
 
 		//The text input exists in a separate view ontop of the normal game view.
 		// It visually appears to be a part of the game window but is infact a separate
@@ -167,8 +172,8 @@ public class WndTextInput extends Window {
 			@Override
 			public void run() {
 				FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(
-						(int)((width - MARGIN*2)*camera.zoom),
-						(int)(inputHeight * camera.zoom),
+						(int)((width - MARGIN*2)*scaledZoom),
+						(int)(inputHeight * scaledZoom),
 						Gravity.CENTER_HORIZONTAL);
 				layout.setMargins(0, inputTop, 0, 0);
 				ShatteredPixelDungeon.instance.addContentView(textInput, layout);
