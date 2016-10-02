@@ -174,10 +174,11 @@ public class DungeonTilemap extends Tilemap {
 	@Override
 	public synchronized void updateMapCell(int cell) {
 		//update in a 3x3 grid to accound for neighbours which might also be affected
-		super.updateMapCell(cell - mapWidth - 1);
-		super.updateMapCell(cell + mapWidth + 1);
+		super.updateMapCell(Math.max( 0, cell - mapWidth - 1));
+		super.updateMapCell(Math.min( size-1, cell + mapWidth + 1));
 		for (int i : PathFinder.NEIGHBOURS9)
-			data[cell+i] = getTileVisual(cell+i, map[cell+i]);
+			if (cell+i >= 0 && cell+i <= 1023)
+				data[cell+i] = getTileVisual(cell+i, map[cell+i]);
 	}
 
 	private int getTileVisual(int pos, int tile){
