@@ -110,6 +110,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -1050,11 +1051,12 @@ public class Hero extends Char {
 			else if (path.getLast() != target)
 				newPath = true;
 			else {
-				//checks 2 cells ahead for validity.
+				//looks ahead for path validity, up to length-1 or 2.
 				//Note that this is shorter than for mobs, so that mobs usually yield to the hero
-				for (int i = 0; i < Math.min(path.size(), 2); i++){
+				int lookAhead = (int) GameMath.gate(0, path.size()-1, 2);
+				for (int i = 0; i < lookAhead; i++){
 					int cell = path.get(i);
-					if (!Level.passable[cell] || ((i != path.size()-1) && Dungeon.visible[cell] && Actor.findChar(cell) != null)) {
+					if (!Level.passable[cell] || (Dungeon.visible[cell] && Actor.findChar(cell) != null)) {
 						newPath = true;
 						break;
 					}
