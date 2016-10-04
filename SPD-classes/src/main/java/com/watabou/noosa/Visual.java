@@ -52,6 +52,9 @@ public class Visual extends Gizmo {
 	
 	public float angle;
 	public float angularSpeed;
+
+	private float lastX, lastY, lastW, lastH, lastA;
+	private PointF lastScale = new PointF(), lastOrigin = new PointF();
 	
 	public Visual( float x, float y, float width, float height ) {
 		this.x = x;
@@ -76,12 +79,34 @@ public class Visual extends Gizmo {
 	}
 	
 	@Override
+	//TODO caching the last value of all these variables does improve performance a bunch
+	// by letting us skip many calls to updateMatrix, but it is quite messy. It would be better to
+	// control their editing and have a single boolean to tell if the matrix needs updating.
 	public void draw() {
-		updateMatrix();
+		if (lastX != x ||
+				lastY != y ||
+				lastW != width ||
+				lastH != height ||
+				lastA != angle ||
+				lastScale.x != scale.x ||
+				lastScale.y != scale.y ||
+				lastOrigin.x != origin.x ||
+				lastOrigin.y != origin.y){
+
+			lastX = x;
+			lastY = y;
+			lastW = width;
+			lastH = height;
+			lastA = angle;
+			lastScale.x = scale.x;
+			lastScale.y = scale.y;
+			lastOrigin.x = origin.x;
+			lastOrigin.y = origin.y;
+
+			updateMatrix();
+		}
 	}
 
-	//FIXME this is recomputing a lot of stuff every frame
-	// would be far better to redo this only when changes happen
 	protected void updateMatrix() {
 		Matrix.setIdentity( matrix );
 		Matrix.translate( matrix, x, y );
