@@ -312,9 +312,9 @@ public abstract class Mob extends Char {
 				newPath = true;
 			else if (path.getLast() != target) {
 				//if the new target is adjacent to the end of the path, adjust for that
-				//rather than scrapping the whole path. Unless the path is very long,
-				//in which case re-checking will likely result in a much better path
-				if (Dungeon.level.adjacent(target, path.getLast()) && path.size() < viewDistance) {
+				//rather than scrapping the whole path. Unless the path is too long,
+				//in which case re-checking will likely result in a better path
+				if (Dungeon.level.adjacent(target, path.getLast()) && path.size() < Dungeon.level.distance(pos, target)) {
 					int last = path.removeLast();
 
 					if (path.isEmpty()) {
