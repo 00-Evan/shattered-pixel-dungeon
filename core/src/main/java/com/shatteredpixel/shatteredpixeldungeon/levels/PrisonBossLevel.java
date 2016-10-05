@@ -345,7 +345,7 @@ public class PrisonBossLevel extends Level {
 				unseal();
 
 				CustomTileVisual vis = new exitVisual();
-				vis.pos(7, 7);
+				vis.pos(11, 8);
 				customTiles.add(vis);
 				((GameScene)ShatteredPixelDungeon.scene()).addCustomTile(vis);
 
@@ -537,7 +537,15 @@ public class PrisonBossLevel extends Level {
 
 			tx = Assets.PRISON_EXIT;
 			txX = txY = 0;
-			tileW = tileH = 16;
+			tileW = 12;
+			tileH = 15;
+		}
+
+		//for compatibility with pre-0.4.3 saves
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			pos(11, 8);
 		}
 
 		@Override
