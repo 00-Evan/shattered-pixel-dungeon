@@ -30,11 +30,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ShopPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornTrap;
@@ -690,13 +693,20 @@ public abstract class RegularLevel extends Level {
 		}
 
 		for (Item item : itemsToSpawn) {
-			int cell = randomDropCell();
-			if (item instanceof Scroll) {
-				while ((map[cell] == Terrain.TRAP || map[cell] == Terrain.SECRET_TRAP)
-						&& traps.get( cell ) instanceof FireTrap) {
-					cell = randomDropCell();
+			int cell;
+			do {
+				cell = randomDropCell();
+				if (item instanceof Scroll) {
+					while (traps.get(cell) instanceof FireTrap) {
+						cell = randomDropCell();
+					}
+
+				} else if (item instanceof Potion) {
+					while (traps.get(cell) instanceof ChillingTrap) {
+						cell = randomDropCell();
+					}
 				}
-			}
+			} while (traps.get(cell) instanceof ExplosiveTrap);
 			drop( item, cell ).type = Heap.Type.HEAP;
 		}
 		
