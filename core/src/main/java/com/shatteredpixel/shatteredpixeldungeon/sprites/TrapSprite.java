@@ -56,7 +56,7 @@ public class TrapSprite extends Image {
 
 
 	public TrapSprite() {
-		super( Assets.TRAPS );
+		super( Assets.TERRAIN_FEATURES );
 
 		if (frames == null) {
 			frames = new TextureFilm( texture, 16, 16 );

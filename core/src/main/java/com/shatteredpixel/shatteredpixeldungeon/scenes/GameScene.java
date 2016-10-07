@@ -71,6 +71,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TerrainFeaturesTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toast;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -111,6 +112,7 @@ public class GameScene extends PixelScene {
 
 	private SkinnedBlock water;
 	private DungeonTilemap tiles;
+	private TerrainFeaturesTilemap terrainFeatures;
 	private FogOfWar fog;
 	private HeroSprite hero;
 
@@ -193,30 +195,17 @@ public class GameScene extends PixelScene {
 		for( CustomTileVisual visual : Dungeon.level.customTiles){
 			addCustomTile(visual.create());
 		}
+
+		terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.plants, Dungeon.level.traps);
+		terrain.add(terrainFeatures);
 		
 		levelVisuals = Dungeon.level.addVisuals();
 		add(levelVisuals);
-
-		traps = new Group();
-		add(traps);
-
-		int size = Dungeon.level.traps.size();
-		for (int i=0; i < size; i++) {
-			addTrapSprite( Dungeon.level.traps.valueAt( i ) );
-		}
-		
-		plants = new Group();
-		add( plants );
-		
-		size = Dungeon.level.plants.size();
-		for (int i=0; i < size; i++) {
-			addPlantSprite( Dungeon.level.plants.valueAt( i ) );
-		}
 		
 		heaps = new Group();
 		add( heaps );
 		
-		size = Dungeon.level.heaps.size();
+		int size = Dungeon.level.heaps.size();
 		for (int i=0; i < size; i++) {
 			addHeapSprite( Dungeon.level.heaps.valueAt( i ) );
 		}
@@ -541,12 +530,11 @@ public class GameScene extends PixelScene {
 	}
 	
 	private void addPlantSprite( Plant plant ) {
-		(plant.sprite = (PlantSprite)plants.recycle( PlantSprite.class )).reset( plant );
+
 	}
 
 	private void addTrapSprite( Trap trap ) {
-		(trap.sprite = (TrapSprite)traps.recycle( TrapSprite.class )).reset( trap );
-		trap.sprite.visible = trap.visible;
+
 	}
 	
 	private void addBlobSprite( final Blob gas ) {
@@ -689,12 +677,14 @@ public class GameScene extends PixelScene {
 	public static void updateMap() {
 		if (scene != null) {
 			scene.tiles.updateMap();
+			scene.terrainFeatures.updateMap();
 		}
 	}
 	
 	public static void updateMap( int cell ) {
 		if (scene != null) {
 			scene.tiles.updateMapCell( cell );
+			scene.terrainFeatures.updateMapCell( cell );
 		}
 	}
 	

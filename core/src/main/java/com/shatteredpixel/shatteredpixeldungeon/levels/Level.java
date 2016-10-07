@@ -734,19 +734,19 @@ public abstract class Level implements Bundlable {
 				map[pos] == Terrain.EMPTY_DECO) {
 			map[pos] = Terrain.GRASS;
 			flamable[pos] = true;
-			GameScene.updateMap( pos );
 		}
 		
 		plant = seed.couch( pos );
 		plants.put( pos, plant );
 		
-		GameScene.add( plant );
+		GameScene.updateMap( pos );
 		
 		return plant;
 	}
 	
 	public void uproot( int pos ) {
 		plants.remove(pos);
+		GameScene.updateMap( pos );
 	}
 
 	public Trap setTrap( Trap trap, int pos ){
@@ -757,7 +757,7 @@ public abstract class Level implements Bundlable {
 		}
 		trap.set( pos );
 		traps.put( pos, trap );
-		GameScene.add(trap);
+		GameScene.updateMap( pos );
 		return trap;
 	}
 

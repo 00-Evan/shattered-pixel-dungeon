@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.PlantSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -52,8 +51,6 @@ public abstract class Plant implements Bundlable {
 	
 	public int image;
 	public int pos;
-	
-	public PlantSprite sprite;
 
 	public void trigger(){
 
@@ -71,8 +68,7 @@ public abstract class Plant implements Bundlable {
 	
 	public void wither() {
 		Dungeon.level.uproot( pos );
-		
-		sprite.kill();
+
 		if (Dungeon.visible[pos]) {
 			CellEmitter.get( pos ).burst( LeafParticle.GENERAL, 6 );
 		}
@@ -142,7 +138,7 @@ public abstract class Plant implements Bundlable {
 		
 		@Override
 		protected void onThrow( int cell ) {
-			if (Dungeon.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell]) {
+			if (Dungeon.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell] || Dungeon.level.traps.get(cell) != null) {
 				super.onThrow( cell );
 			} else {
 				Dungeon.level.plant( this, cell );

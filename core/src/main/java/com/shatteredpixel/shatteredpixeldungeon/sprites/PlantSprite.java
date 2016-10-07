@@ -44,7 +44,7 @@ public class PlantSprite extends Image {
 	private int pos = -1;
 	
 	public PlantSprite() {
-		super( Assets.PLANTS );
+		super( Assets.TERRAIN_FEATURES );
 		
 		if (frames == null) {
 			frames = new TextureFilm( texture, 16, 16 );

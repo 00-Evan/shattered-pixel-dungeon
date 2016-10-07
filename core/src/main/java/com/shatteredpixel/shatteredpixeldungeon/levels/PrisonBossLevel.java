@@ -216,9 +216,6 @@ public class PrisonBossLevel extends Level {
 	}
 
 	private void resetTraps(){
-		for (Trap trap : traps.values()){
-			trap.sprite.kill();
-		}
 		traps.clear();
 
 		for (int i = 0; i < length(); i++){
@@ -273,7 +270,6 @@ public class PrisonBossLevel extends Level {
 		for (Plant plant : plants.values()){
 			if (safeArea == null || !safeArea.inside(cellToPoint(plant.pos))){
 				plants.remove(plant.pos);
-				plant.sprite.kill();
 			}
 		}
 	}

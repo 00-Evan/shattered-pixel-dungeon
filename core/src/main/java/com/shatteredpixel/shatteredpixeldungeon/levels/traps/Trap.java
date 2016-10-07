@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -54,6 +55,7 @@ public abstract class Trap implements Bundlable {
 			sprite.alpha( 0 );
 			sprite.parent.add( new AlphaTweener( sprite, 1, 0.6f));
 		}
+		GameScene.updateMap(pos);
 		return this;
 	}
 
@@ -61,6 +63,7 @@ public abstract class Trap implements Bundlable {
 		visible = false;
 		if (sprite != null)
 			sprite.visible = false;
+		GameScene.updateMap(pos);
 		return this;
 	}
 

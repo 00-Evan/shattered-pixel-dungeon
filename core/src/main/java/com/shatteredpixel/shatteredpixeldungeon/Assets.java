@@ -97,9 +97,8 @@ public class Assets {
 	public static final String ROT_HEART= "rot_heart.png";
 	public static final String GUARD    = "guard.png";
 
-	public static final String ITEMS	= "items.png";
-	public static final String PLANTS	= "plants.png";
-	public static final String TRAPS    = "traps.png";
+	public static final String ITEMS	        = "items.png";
+	public static final String TERRAIN_FEATURES	= "terrain_features.png";
 	
 	public static final String TILES_SEWERS	= "tiles0.png";
 	public static final String TILES_PRISON	= "tiles1.png";
