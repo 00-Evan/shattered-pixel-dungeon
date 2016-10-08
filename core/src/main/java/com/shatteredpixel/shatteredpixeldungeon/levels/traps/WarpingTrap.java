@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -43,8 +42,8 @@ import java.util.ArrayList;
 public class WarpingTrap extends Trap {
 
 	{
-		color = TrapSprite.TEAL;
-		shape = TrapSprite.STARS;
+		color = TEAL;
+		shape = STARS;
 	}
 
 	@Override

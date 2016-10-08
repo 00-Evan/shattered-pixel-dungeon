@@ -24,13 +24,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class VenomTrap extends Trap {
 
 	{
-		color = TrapSprite.VIOLET;
-		shape = TrapSprite.GRILL;
+		color = VIOLET;
+		shape = GRILL;
 	}
 
 	@Override

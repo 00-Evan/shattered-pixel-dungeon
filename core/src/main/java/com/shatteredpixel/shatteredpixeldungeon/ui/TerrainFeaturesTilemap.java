@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
@@ -33,6 +32,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
+//TODO add in a proper set of vfx for plants growing/withering, grass burning, discovering traps
 public class TerrainFeaturesTilemap extends Tilemap {
 
 	public static final int SIZE = 16;
@@ -99,7 +99,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
 			if (!trap.visible)
 				return -1;
 			else
-				return (trap.active ? trap.color : TrapSprite.BLACK) + (trap.shape * 16);
+				return (trap.active ? trap.color : Trap.BLACK) + (trap.shape * 16);
 		}
 
 		if (plants.get(pos) != null){

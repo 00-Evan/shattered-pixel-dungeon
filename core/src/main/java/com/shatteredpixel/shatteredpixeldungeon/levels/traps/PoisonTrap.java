@@ -27,13 +27,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class PoisonTrap extends Trap{
 
 	{
-		color = TrapSprite.VIOLET;
-		shape = TrapSprite.CROSSHAIR;
+		color = VIOLET;
+		shape = CROSSHAIR;
 	}
 
 	@Override

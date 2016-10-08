@@ -28,13 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class GrippingTrap extends Trap {
 
 	{
-		color = TrapSprite.GREY;
-		shape = TrapSprite.CROSSHAIR;
+		color = GREY;
+		shape = CROSSHAIR;
 	}
 
 	@Override

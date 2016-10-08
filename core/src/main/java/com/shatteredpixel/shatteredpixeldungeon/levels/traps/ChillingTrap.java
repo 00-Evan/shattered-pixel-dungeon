@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -36,14 +35,14 @@ import com.watabou.utils.Random;
 public class ChillingTrap extends Trap{
 
 	{
-		color = TrapSprite.WHITE;
-		shape = TrapSprite.DOTS;
+		color = WHITE;
+		shape = DOTS;
 	}
 
 	@Override
 	public void activate() {
 		if (Dungeon.visible[ pos ]){
-			Splash.at( sprite.center(), 0xFFB2D6FF, 5);
+			Splash.at( pos, 0xFFB2D6FF, 5);
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
 

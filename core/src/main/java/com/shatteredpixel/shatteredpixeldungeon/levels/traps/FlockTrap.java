@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
@@ -37,8 +36,8 @@ import com.watabou.utils.Random;
 public class FlockTrap extends Trap {
 
 	{
-		color = TrapSprite.WHITE;
-		shape = TrapSprite.WAVES;
+		color = WHITE;
+		shape = WAVES;
 	}
 
 

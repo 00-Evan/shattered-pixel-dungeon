@@ -24,20 +24,18 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class PitfallTrap extends Trap {
 
 	{
-		color = TrapSprite.RED;
-		shape = TrapSprite.DIAMOND;
+		color = RED;
+		shape = DIAMOND;
 	}
 
 	@Override
@@ -71,8 +69,6 @@ public class PitfallTrap extends Trap {
 				&& !(Dungeon.level.solid[pos - 1]&& Dungeon.level.solid[pos + 1])){
 
 			Level.set(pos, Terrain.CHASM);
-			sprite.parent.add(new WindParticle.Wind(pos));
-			sprite.kill();
 			GameScene.updateMap( pos );
 		}
 	}

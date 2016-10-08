@@ -21,10 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.PlantSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TerrainFeaturesTilemap;
 
 public class WndInfoPlant extends WndTitledMessage {

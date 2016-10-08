@@ -28,13 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class WeakeningTrap extends Trap{
 
 	{
-		color = TrapSprite.GREEN;
-		shape = TrapSprite.WAVES;
+		color = GREEN;
+		shape = WAVES;
 	}
 
 	@Override

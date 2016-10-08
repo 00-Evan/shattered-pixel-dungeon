@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -30,9 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -40,17 +39,17 @@ import com.watabou.utils.Random;
 public class DisintegrationTrap extends Trap {
 
 	{
-		color = TrapSprite.VIOLET;
-		shape = TrapSprite.LARGE_DOT;
+		color = VIOLET;
+		shape = LARGE_DOT;
 	}
 
 	@Override
 	public void activate() {
 
 		if (Dungeon.visible[ pos ]) {
-			sprite.parent.add( new Beam.DeathRay( DungeonTilemap.tileCenterToWorld(pos-1),
+			ShatteredPixelDungeon.scene().add( new Beam.DeathRay( DungeonTilemap.tileCenterToWorld(pos-1),
 					DungeonTilemap.tileCenterToWorld(pos+1)));
-			sprite.parent.add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos - Dungeon.level.width()),
+			ShatteredPixelDungeon.scene().add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos - Dungeon.level.width()),
 					DungeonTilemap.tileCenterToWorld(pos + Dungeon.level.width())));
 			Sample.INSTANCE.play( Assets.SND_RAY );
 		}

@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -37,15 +36,15 @@ import com.watabou.utils.Random;
 public class FrostTrap extends Trap {
 
 	{
-		color = TrapSprite.WHITE;
-		shape = TrapSprite.STARS;
+		color = WHITE;
+		shape = STARS;
 	}
 
 	@Override
 	public void activate() {
 
 		if (Dungeon.visible[ pos ]){
-			Splash.at( sprite.center(), 0xFFB2D6FF, 10);
+			Splash.at( pos, 0xFFB2D6FF, 10);
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
 

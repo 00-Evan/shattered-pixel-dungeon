@@ -31,15 +31,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 public class FlashingTrap extends Trap {
 
 	{
-		color = TrapSprite.YELLOW;
-		shape = TrapSprite.STARS;
+		color = YELLOW;
+		shape = STARS;
 	}
 
 	@Override

@@ -24,13 +24,31 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
 public abstract class Trap implements Bundlable {
+
+	//trap colors
+	public static final int RED     = 0;
+	public static final int ORANGE  = 1;
+	public static final int YELLOW  = 2;
+	public static final int GREEN   = 3;
+	public static final int TEAL    = 4;
+	public static final int VIOLET  = 5;
+	public static final int WHITE   = 6;
+	public static final int GREY    = 7;
+	public static final int BLACK   = 8;
+
+	//trap shapes
+	public static final int DOTS        = 0;
+	public static final int WAVES       = 1;
+	public static final int GRILL       = 2;
+	public static final int STARS       = 3;
+	public static final int DIAMOND     = 4;
+	public static final int CROSSHAIR   = 5;
+	public static final int LARGE_DOT   = 6;
 
 	public String name = Messages.get(this, "name");
 
@@ -39,7 +57,6 @@ public abstract class Trap implements Bundlable {
 
 	public int pos;
 
-	public TrapSprite sprite;
 	public boolean visible;
 	public boolean active = true;
 
@@ -50,19 +67,12 @@ public abstract class Trap implements Bundlable {
 
 	public Trap reveal() {
 		visible = true;
-		if (sprite != null && sprite.visible == false) {
-			sprite.visible = true;
-			sprite.alpha( 0 );
-			sprite.parent.add( new AlphaTweener( sprite, 1, 0.6f));
-		}
 		GameScene.updateMap(pos);
 		return this;
 	}
 
 	public Trap hide() {
 		visible = false;
-		if (sprite != null)
-			sprite.visible = false;
 		GameScene.updateMap(pos);
 		return this;
 	}
@@ -83,9 +93,6 @@ public abstract class Trap implements Bundlable {
 	protected void disarm(){
 		Dungeon.level.disarmTrap(pos);
 		active = false;
-		if (sprite != null) {
-			sprite.reset( this );
-		}
 	}
 
 	private static final String POS	= "pos";

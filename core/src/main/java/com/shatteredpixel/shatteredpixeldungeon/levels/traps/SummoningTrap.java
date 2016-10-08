@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -38,8 +37,8 @@ public class SummoningTrap extends Trap {
 	private static final float DELAY = 2f;
 
 	{
-		color = TrapSprite.TEAL;
-		shape = TrapSprite.WAVES;
+		color = TEAL;
+		shape = WAVES;
 	}
 
 	@Override

@@ -25,13 +25,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class OozeTrap extends Trap {
 
 	{
-		color = TrapSprite.GREEN;
-		shape = TrapSprite.DOTS;
+		color = GREEN;
+		shape = DOTS;
 	}
 
 	@Override
@@ -40,7 +39,7 @@ public class OozeTrap extends Trap {
 
 		if (ch != null){
 			Buff.affect(ch, Ooze.class);
-			Splash.at(sprite.center(), 0x000000, 5);
+			Splash.at( pos, 0x000000, 5);
 		}
 	}
 }

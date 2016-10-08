@@ -753,7 +753,6 @@ public abstract class Level implements Bundlable {
 		Trap existingTrap = traps.get(pos);
 		if (existingTrap != null){
 			traps.remove( pos );
-			if(existingTrap.sprite != null) existingTrap.sprite.kill();
 		}
 		trap.set( pos );
 		traps.put( pos, trap );

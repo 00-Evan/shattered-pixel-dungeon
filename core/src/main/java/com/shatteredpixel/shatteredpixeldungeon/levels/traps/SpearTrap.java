@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -36,8 +35,8 @@ import com.watabou.utils.Random;
 public class SpearTrap extends Trap {
 
 	{
-		color = TrapSprite.GREY;
-		shape = TrapSprite.DOTS;
+		color = GREY;
+		shape = DOTS;
 	}
 
 	@Override

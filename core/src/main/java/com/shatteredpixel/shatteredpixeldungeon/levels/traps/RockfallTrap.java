@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
@@ -40,8 +39,8 @@ import com.watabou.utils.Random;
 public class RockfallTrap extends Trap {
 
 	{
-		color = TrapSprite.GREY;
-		shape = TrapSprite.DIAMOND;
+		color = GREY;
+		shape = DIAMOND;
 	}
 
 	@Override

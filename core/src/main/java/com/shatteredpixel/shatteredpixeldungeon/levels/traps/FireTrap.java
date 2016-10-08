@@ -25,13 +25,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TrapSprite;
 
 public class FireTrap extends Trap {
 
 	{
-		color = TrapSprite.ORANGE;
-		shape = TrapSprite.DOTS;
+		color = ORANGE;
+		shape = DOTS;
 	}
 
 	@Override
