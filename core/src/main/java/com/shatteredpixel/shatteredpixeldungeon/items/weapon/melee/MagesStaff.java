@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -37,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndItem;
@@ -193,7 +195,15 @@ public class MagesStaff extends MeleeWeapon {
 
 		name = Messages.get(wand, "staff_name");
 
-		updateQuickslot();
+		//This is necessary to reset any particles.
+		//FIXME this is gross, should implement a better way to fully reset quickslot visuals
+		int slot = Dungeon.quickslot.getSlot(this);
+		if (slot != -1){
+			Dungeon.quickslot.clearSlot(slot);
+			updateQuickslot();
+			Dungeon.quickslot.setSlot( slot, this );
+			updateQuickslot();
+		}
 
 		return this;
 	}
@@ -257,9 +267,9 @@ public class MagesStaff extends MeleeWeapon {
 	public Emitter emitter() {
 		if (wand == null) return null;
 		Emitter emitter = new Emitter();
-		emitter.pos(12.5f, 2.5f);
+		emitter.pos(12.5f, 3);
 		emitter.fillTarget = false;
-		emitter.pour(StaffParticleFactory, 0.06f);
+		emitter.pour(StaffParticleFactory, 0.1f);
 		return emitter;
 	}
 

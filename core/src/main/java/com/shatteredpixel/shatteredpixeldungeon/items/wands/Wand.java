@@ -242,8 +242,8 @@ public abstract class Wand extends Item {
 		particle.color(0xFFFFFF); particle.am = 0.3f;
 		particle.setLifespan( 1f);
 		particle.speed.polar( Random.Float(PointF.PI2), 2f );
-		particle.setSize( 1f, 2.5f );
-		particle.radiateXY(1f);
+		particle.setSize( 1f, 2f );
+		particle.radiateXY(0.5f);
 	}
 
 	protected void wandUsed() {

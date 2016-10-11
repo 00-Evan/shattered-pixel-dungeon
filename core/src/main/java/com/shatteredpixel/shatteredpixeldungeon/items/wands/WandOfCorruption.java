@@ -111,10 +111,10 @@ public class WandOfCorruption extends Wand {
 	public void staffFx(MagesStaff.StaffParticle particle) {
 		particle.color( 0 );
 		particle.am = 0.6f;
-		particle.setLifespan(0.8f);
-		particle.acc.set(0, 20);
-		particle.setSize( 0f, 3f);
-		particle.shuffleXY(2f);
+		particle.setLifespan(2f);
+		particle.speed.set(0, 5);
+		particle.setSize( 0.5f, 2f);
+		particle.shuffleXY(1f);
 	}
 
 }

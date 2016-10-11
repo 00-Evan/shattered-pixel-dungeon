@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.ColorMath;
 import com.watabou.utils.PathFinder;
 
 public class WandOfVenom extends Wand {
@@ -72,11 +73,12 @@ public class WandOfVenom extends Wand {
 
 	@Override
 	public void staffFx(MagesStaff.StaffParticle particle) {
-		particle.color( 0x8844FF ); particle.am = 0.6f;
-		particle.setLifespan(0.6f);
-		particle.acc.set(0, 40);
-		particle.setSize( 0f, 3f);
-		particle.shuffleXY(2f);
+		particle.color( ColorMath.random( 0x8844FF, 0x00FF00) );
+		particle.am = 0.6f;
+		particle.setLifespan( 1f );
+		particle.acc.set(0, 20);
+		particle.setSize( 0.5f, 2f);
+		particle.shuffleXY( 1f );
 	}
 
 }

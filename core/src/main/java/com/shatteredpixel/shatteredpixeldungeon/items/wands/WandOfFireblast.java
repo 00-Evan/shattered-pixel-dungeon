@@ -186,7 +186,7 @@ public class WandOfFireblast extends DamageWand {
 		particle.setLifespan(0.6f);
 		particle.acc.set(0, -40);
 		particle.setSize( 0f, 3f);
-		particle.shuffleXY(2f);
+		particle.shuffleXY( 1.5f );
 	}
 
 }

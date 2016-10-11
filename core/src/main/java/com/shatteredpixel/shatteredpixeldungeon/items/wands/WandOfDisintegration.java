@@ -127,10 +127,10 @@ public class WandOfDisintegration extends DamageWand {
 	public void staffFx(MagesStaff.StaffParticle particle) {
 		particle.color(0x220022);
 		particle.am = 0.6f;
-		particle.setLifespan(0.6f);
-		particle.acc.set(40, -40);
-		particle.setSize(0f, 3f);
-		particle.shuffleXY(2f);
+		particle.setLifespan(1f);
+		particle.acc.set(10, -10);
+		particle.setSize( 0.5f, 3f);
+		particle.shuffleXY(1f);
 	}
 
 }

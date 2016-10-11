@@ -209,10 +209,10 @@ public class WandOfTransfusion extends Wand {
 	public void staffFx(MagesStaff.StaffParticle particle) {
 		particle.color( 0xCC0000 );
 		particle.am = 0.6f;
-		particle.setLifespan(0.8f);
+		particle.setLifespan(1f);
 		particle.speed.polar( Random.Float(PointF.PI2), 2f );
-		particle.setSize( 1f, 2.5f);
-		particle.radiateXY(1f);
+		particle.setSize( 1f, 2f);
+		particle.radiateXY(0.5f);
 	}
 
 	private static final String FREECHARGE = "freecharge";
