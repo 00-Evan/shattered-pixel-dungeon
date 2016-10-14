@@ -667,6 +667,7 @@ public class GameScene extends PixelScene {
 	public static void resetMap() {
 		if (scene != null) {
 			scene.tiles.map(Dungeon.level.map, Dungeon.level.width() );
+			scene.terrainFeatures.map(Dungeon.level.map, Dungeon.level.width() );
 		}
 		updateFog();
 	}
