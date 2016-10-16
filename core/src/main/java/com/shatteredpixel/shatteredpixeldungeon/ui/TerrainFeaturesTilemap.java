@@ -22,15 +22,21 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.tweeners.AlphaTweener;
+import com.watabou.noosa.tweeners.ScaleTweener;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
+
+import static com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap.tileToWorld;
 
 //TODO add in a proper set of vfx for plants growing/withering, grass burning, discovering traps
 public class TerrainFeaturesTilemap extends Tilemap {
@@ -121,6 +127,23 @@ public class TerrainFeaturesTilemap extends Tilemap {
 		Image img = new Image( instance.texture );
 		img.frame( instance.tileset.get( instance.getTileVisual( pos, tile ) ) );
 		return img;
+	}
+
+	public void growPlant( final int pos ){
+		final Image plant = tile( pos, map[pos] );
+		plant.origin.set( 8, 12 );
+		plant.scale.set( 0 );
+		plant.point( DungeonTilemap.tileToWorld( pos ) );
+
+		parent.add( plant );
+
+		parent.add( new ScaleTweener( plant, new PointF(1, 1), 0.2f ) {
+			protected void onComplete() {
+				plant.killAndErase();
+				killAndErase();
+				updateMapCell(pos);
+			}
+		} );
 	}
 
 	@Override

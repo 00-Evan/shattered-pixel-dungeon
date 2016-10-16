@@ -739,7 +739,7 @@ public abstract class Level implements Bundlable {
 		plant = seed.couch( pos );
 		plants.put( pos, plant );
 		
-		GameScene.updateMap( pos );
+		GameScene.plantSeed( pos );
 		
 		return plant;
 	}

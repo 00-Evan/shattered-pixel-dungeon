@@ -54,14 +54,11 @@ public class Fire extends Blob {
 					fire = cur[cell] - 1;
 					if (fire <= 0 && flamable[cell]) {
 
-						int oldTile = Dungeon.level.map[cell];
 						Dungeon.level.destroy( cell );
 
 						observe = true;
 						GameScene.updateMap( cell );
-						if (Dungeon.visible[cell]) {
-							GameScene.discoverTile( cell, oldTile );
-						}
+
 					}
 
 				} else {

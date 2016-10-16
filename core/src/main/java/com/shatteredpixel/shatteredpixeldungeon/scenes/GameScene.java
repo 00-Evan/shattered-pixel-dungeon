@@ -686,6 +686,12 @@ public class GameScene extends PixelScene {
 			scene.terrainFeatures.updateMapCell( cell );
 		}
 	}
+
+	public static void plantSeed( int cell ) {
+		if (scene != null) {
+			scene.terrainFeatures.growPlant( cell );
+		}
+	}
 	
 	public static void discoverTile( int pos, int oldValue ) {
 		if (scene != null) {
