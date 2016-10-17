@@ -37,42 +37,38 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-			"_v0.4.2b:_\n" +
-			"- Various bug fixes\n" +
-			"- Improved visual clarity of low hp warning\n" +
-			"\n" +
-			"_v0.4.2a:_\n" +
-			"- Improved visual clarity on gas particles\n" +
-			"\n" +
-			"_v0.4.2:_\n" +
-			"Optimizations:\n" +
-			"- Many general performance improvements\n" +
-			"- Game now uses 2 CPU cores, up from 1\n" +
-			"- Reduced hitching on many devices\n" +
-			"- Framerate improvements for older devices\n" +
+			"_v0.4.3:_\n" +
+			"General Improvements:\n" +
+			"- Added rankings and hall of heroes sync\n" +
+			"- Added Power Saver mode in settings\n" +
+			"- Install size reduced by ~20%\n" +
+			"- Game now supports small screen devices\n" +
+			"- Performance improvements\n" +
+			"- Improved variety of level visuals\n" +
+			"- Adjusted mage staff visuals\n" +
+			"- Many bugfixes\n" +
 			"\n" +
 			"Balance Changes:\n" +
-			"- Spear and Glaive damage reduced\n" +
-			"- Runic blade damage reduced\n" +
-			"- Grim enchant now procs more often\n" +
-			"- Glyph of stone adds more weight\n" +
-			"- Glyph of potential procs less often\n" +
-			"- Wand of Fireblast less dangerous to caster\n" +
-			"- Wand of Pris. Light reveal area reduced\n" +
-			"- Ring of Wealth slightly more effective\n" +
-			"- Ring of Sharpshooting gives more accuracy\n" +
+			"- Flail damage increased\n" +
+			"- Wand of Frost chilled damage reduced\n" +
+			"- Ring of Furor speed bonus reduced\n" +
+			"- Reduced bleed on sacrificial curse\n" +
+			"\n" +
+			"_v0.4.2:_\n" +
+			"- Reduced hitching on many devices\n" +
+			"- Framerate improvements for older devices\n" +
+			"- Various balance changes\n" +
 			"\n" +
 			"_v0.4.1:_\n" +
 			"- Armor effectiveness increased\n" +
 			"- Enemy damage increased to compensate\n" +
 			"- Evil Eyes reworked\n" +
-			"- All wands damage adjusted/increased\n" +
 			"- Various wand mechanics adjusted\n" +
 			"- Balance on many items adjusted\n" +
 			"- Many shop prices adjusted\n" +
 			"- Added a new journal button w/key display\n" +
 			"\n" +
-			"_v0.4.0:_ Reworked Equipment & enchants/curses.\n" +
+			"_v0.4.0:_ Reworked equips, enchants & curses\n" +
 			"\n" +
 			"_v0.3.5:_ Reworked Warrior & subclasses\n" +
 			"\n"+
