@@ -243,7 +243,7 @@ public class ShatteredPixelDungeon extends Game {
 		if (classicFont()) {
 			RenderedText.setFont("pixelfont.ttf");
 		} else {
-			RenderedText.setFont("font.ttf");
+			RenderedText.setFont( null );
 		}
 	}
 
@@ -484,7 +484,7 @@ public class ShatteredPixelDungeon extends Game {
 		if (classic) {
 			RenderedText.setFont("pixelfont.ttf");
 		} else {
-			RenderedText.setFont("font.ttf");
+			RenderedText.setFont( null );
 		}
 	}
 

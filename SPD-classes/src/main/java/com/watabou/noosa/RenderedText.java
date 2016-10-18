@@ -239,7 +239,8 @@ public class RenderedText extends Image {
 	}
 
 	public static void setFont(String asset){
-		font = Typeface.createFromAsset(Game.instance.getAssets(), asset);
+		if (asset == null) font = null;
+		else font = Typeface.createFromAsset(Game.instance.getAssets(), asset);
 		clearCache();
 	}
 

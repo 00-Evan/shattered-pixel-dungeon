@@ -270,7 +270,7 @@ public class WndSettings extends WndTabbed {
 			slots.setRect(0, chkFlipTags.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
 			add(slots);
 
-			CheckBox chkFont = new CheckBox(Messages.get(this, "smooth_font")){
+			CheckBox chkFont = new CheckBox(Messages.get(this, "system_font")){
 				@Override
 				protected void onClick() {
 					super.onClick();
