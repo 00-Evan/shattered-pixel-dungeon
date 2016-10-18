@@ -171,16 +171,19 @@ public class ShatteredPixelDungeon extends Game {
 		super.onCreate(savedInstanceState);
 
 		updateImmersiveMode();
-
-		DisplayMetrics metrics = new DisplayMetrics();
-		if (immersed() && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1)
-			getWindowManager().getDefaultDisplay().getRealMetrics( metrics );
-		else
-			getWindowManager().getDefaultDisplay().getMetrics( metrics );
-		boolean landscape = metrics.widthPixels > metrics.heightPixels;
 		
-		if (Preferences.INSTANCE.getBoolean( Preferences.KEY_LANDSCAPE, false ) != landscape) {
-			landscape( !landscape );
+		if (Preferences.INSTANCE.contains( Preferences.KEY_LANDSCAPE )){
+			landscape ( Preferences.INSTANCE.getBoolean( Preferences.KEY_LANDSCAPE, false));
+
+		} else {
+			DisplayMetrics metrics = new DisplayMetrics();
+			if (immersed() && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1)
+				getWindowManager().getDefaultDisplay().getRealMetrics( metrics );
+			else
+				getWindowManager().getDefaultDisplay().getMetrics( metrics );
+			boolean landscape = metrics.widthPixels > metrics.heightPixels;
+
+			landscape( landscape );
 		}
 		
 		Music.INSTANCE.enable( music() );

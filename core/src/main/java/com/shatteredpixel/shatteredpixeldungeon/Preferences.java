@@ -58,6 +58,10 @@ enum Preferences {
 		return prefs;
 	}
 
+	boolean contains( String key ){
+		return get().contains( key );
+	}
+
 	int getInt( String key, int defValue ) {
 		return getInt(key, defValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
