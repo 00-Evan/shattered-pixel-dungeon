@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Obfuscation;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
@@ -1084,9 +1085,18 @@ public class Hero extends Char {
 
 		if (step != -1) {
 
+			int moveTime = 1;
+			if (belongings.armor != null && belongings.armor.hasGlyph(Stone.class) &&
+							(Dungeon.level.map[pos] == Terrain.DOOR
+							|| Dungeon.level.map[pos] == Terrain.OPEN_DOOR
+							|| Dungeon.level.map[step] == Terrain.DOOR
+							|| Dungeon.level.map[step] == Terrain.OPEN_DOOR )){
+				moveTime *= 2;
+			}
 			sprite.move(pos, step);
 			move(step);
-			spend( 1 / speed() );
+
+			spend( moveTime / speed() );
 			
 			return true;
 
