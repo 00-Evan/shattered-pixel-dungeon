@@ -87,12 +87,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Brimstone.class)){
 
-					float heal = hero.belongings.armor.level()/5f;
-					if (Random.Float() < heal % 1) heal++;
-					if (heal >= 1 && hero.HP < hero.HT) {
-						hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), (int)heal);
-						hero.HP = Math.min(hero.HT, hero.HP + (int)heal);
-					}
+					Buff.affect(target, Brimstone.BrimstoneShield.class);
 
 				} else {
 
@@ -138,6 +133,11 @@ public class Burning extends Buff implements Hero.Doom {
 			}
 
 		} else {
+
+			Brimstone.BrimstoneShield brimShield = target.buff(Brimstone.BrimstoneShield.class);
+			if (brimShield != null)
+				brimShield.startDecay();
+
 			detach();
 		}
 		
