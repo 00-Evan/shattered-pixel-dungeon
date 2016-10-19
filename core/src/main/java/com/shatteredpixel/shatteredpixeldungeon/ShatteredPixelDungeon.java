@@ -163,6 +163,14 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stench" );
 
+		com.watabou.utils.Bundle.exceptionReporter =
+				new com.watabou.utils.Bundle.BundleExceptionCallback() {
+					@Override
+					public void call(Throwable t) {
+						ShatteredPixelDungeon.reportException(t);
+					}
+				};
+
 	}
 	
 	@SuppressWarnings("deprecation")
