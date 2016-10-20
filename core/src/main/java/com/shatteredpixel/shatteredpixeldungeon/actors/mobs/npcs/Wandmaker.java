@@ -262,7 +262,9 @@ public class Wandmaker extends NPC {
 					Wandmaker npc = new Wandmaker();
 					do {
 						npc.pos = level.pointToCell(room.random());
-					} while (level.map[npc.pos] == Terrain.ENTRANCE || level.map[npc.pos] == Terrain.SIGN);
+						//Wandmaker must never spawn in the center.
+						//If he does, and the room is 3x3, there is no room for the stairs.
+					} while (npc.pos == level.pointToCell(room.center()));
 					level.mobs.add( npc );
 
 					spawned = true;
