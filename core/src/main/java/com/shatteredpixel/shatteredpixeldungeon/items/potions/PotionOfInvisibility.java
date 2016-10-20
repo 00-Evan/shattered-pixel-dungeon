@@ -32,8 +32,6 @@ import com.watabou.noosa.tweeners.AlphaTweener;
 
 public class PotionOfInvisibility extends Potion {
 
-	private static final float ALPHA	= 0.4f;
-
 	{
 		initials = 3;
 	}
@@ -50,12 +48,5 @@ public class PotionOfInvisibility extends Potion {
 	public int price() {
 		return isKnown() ? 40 * quantity : super.price();
 	}
-	
-	public static void melt( Char ch ) {
-		if (ch.sprite.parent != null) {
-			ch.sprite.parent.add( new AlphaTweener( ch.sprite, ALPHA, 0.4f ) );
-		} else {
-			ch.sprite.alpha( ALPHA );
-		}
-	}
+
 }

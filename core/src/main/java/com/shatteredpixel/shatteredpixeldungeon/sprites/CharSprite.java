@@ -45,6 +45,7 @@ import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.tweeners.PosTweener;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.Callback;
@@ -86,6 +87,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected IceBlock iceBlock;
 	protected DarkBlock darkBlock;
 	protected TorchHalo halo;
+	protected AlphaTweener invisible;
 	
 	protected EmoIcon emo;
 
@@ -277,7 +279,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				levitation.pour( Speck.factory( Speck.JET ), 0.02f );
 				break;
 			case INVISIBLE:
-				PotionOfInvisibility.melt( ch );
+				if (parent != null){
+					if (invisible != null) invisible.killAndErase();
+					invisible = new AlphaTweener( this, 0.4f, 0.4f );
+					parent.add(invisible);
+				} else
+					alpha( 0.4f );
 				break;
 			case PARALYSED:
 				paused = true;
@@ -318,6 +325,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				}
 				break;
 			case INVISIBLE:
+				if (invisible != null) {
+					invisible.killAndErase();
+					invisible = null;
+				}
 				alpha( 1f );
 				break;
 			case PARALYSED:
