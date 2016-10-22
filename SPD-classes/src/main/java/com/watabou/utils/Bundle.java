@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PushbackInputStream;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -118,7 +119,7 @@ public class Bundle {
 			}
 			
 			Class<?> cl = Class.forName( clName );
-			if (cl != null) {
+			if (cl != null && (!cl.isMemberClass() || Modifier.isStatic(cl.getModifiers()))) {
 				Bundlable object = (Bundlable)cl.newInstance();
 				object.restoreFromBundle( this );
 				return object;
@@ -367,11 +368,16 @@ public class Bundle {
 	public void put( String key, Collection<? extends Bundlable> collection ) {
 		JSONArray array = new JSONArray();
 		for (Bundlable object : collection) {
+			//Skip none-static inner classes as they can't be instantiated through bundle restoring
+			//Classes which make use of none-static inner classes must manage instantiation manually
 			if (object != null) {
-				Bundle bundle = new Bundle();
-				bundle.put(CLASS_NAME, object.getClass().getName());
-				object.storeInBundle(bundle);
-				array.put(bundle.data);
+				Class cl = object.getClass();
+				if (!cl.isMemberClass() || Modifier.isStatic(cl.getModifiers())) {
+					Bundle bundle = new Bundle();
+					bundle.put(CLASS_NAME, cl.getName());
+					object.storeInBundle(bundle);
+					array.put(bundle.data);
+				}
 			}
 		}
 		try {
