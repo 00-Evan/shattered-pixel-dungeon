@@ -548,7 +548,7 @@ public class GameScene extends PixelScene {
 		sprite.link( mob );
 	}
 	
-	private void prompt( String text ) {
+	private synchronized void prompt( String text ) {
 		
 		if (prompt != null) {
 			prompt.killAndErase();

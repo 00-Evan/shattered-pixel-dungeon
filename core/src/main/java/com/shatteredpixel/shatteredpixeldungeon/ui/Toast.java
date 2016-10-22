@@ -81,8 +81,7 @@ public class Toast extends Component {
 	public synchronized void kill() {
 		super.kill();
 		//need to also destroy the text so that memory is freed
-		if (text != null)
-			text.destroy();
+		text.destroy();
 	}
 
 	public void text( String txt ) {
