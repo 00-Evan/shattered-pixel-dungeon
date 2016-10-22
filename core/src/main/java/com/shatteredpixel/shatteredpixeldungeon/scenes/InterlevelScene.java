@@ -67,6 +67,7 @@ public class InterlevelScene extends PixelScene {
 	
 	private Thread thread;
 	private Exception error = null;
+	private float waitingTime;
 	
 	@Override
 	public void create() {
@@ -132,11 +133,14 @@ public class InterlevelScene extends PixelScene {
 			}
 		};
 		thread.start();
+		waitingTime = 0f;
 	}
 	
 	@Override
 	public void update() {
 		super.update();
+
+		waitingTime += Game.elapsed;
 		
 		float p = timeLeft / TIME_TO_FADE;
 		
@@ -180,6 +184,11 @@ public class InterlevelScene extends PixelScene {
 					}
 				} );
 				error = null;
+			} else if ((int)waitingTime == 10){
+				waitingTime = 11f;
+				ShatteredPixelDungeon.reportException(
+						new RuntimeException("waited more than 10 seconds on levelgen. Seed:" + Dungeon.seed + " depth:" + Dungeon.depth)
+				);
 			}
 			break;
 		}
