@@ -208,6 +208,7 @@ public class Blob extends Actor {
 	}
 	
 	public void clear( int cell ) {
+		if (volume == 0) return;
 		volume -= cur[cell];
 		cur[cell] = 0;
 	}
