@@ -122,15 +122,15 @@ public class ChangesScene extends PixelScene {
 
 		RenderedTextMultiline text = renderMultiline(TXT_Update, 6 );
 
+		NinePatch panel = Chrome.get(Chrome.Type.TOAST);
 
-		int pw = w - 6;
-		int ph = h - 20;
+		int pw = 135 + panel.marginLeft() + panel.marginRight() - 2;
+		int ph = h - 16;
 
-
-		NinePatch panel = Chrome.get(Chrome.Type.WINDOW);
 		panel.size( pw, ph );
-		panel.x = (w - pw) / 2;
-		panel.y = title.y + title.height() + 2;
+		panel.x = (w - pw) / 2f;
+		panel.y = title.y + title.height();
+		align( panel );
 		add( panel );
 
 		ScrollPane list = new ScrollPane( new Component() );
@@ -143,13 +143,13 @@ public class ChangesScene extends PixelScene {
 
 		content.add(text);
 
-		content.setSize( panel.innerWidth(), text.height() );
+		content.setSize( panel.innerWidth(), (int)Math.ceil(text.height()) );
 
 		list.setRect(
 				panel.x + panel.marginLeft(),
-				panel.y + panel.marginTop(),
+				panel.y + panel.marginTop() - 1,
 				panel.innerWidth(),
-				panel.innerHeight());
+				panel.innerHeight() + 2);
 		list.scrollTo(0, 0);
 
 		Archs archs = new Archs();
