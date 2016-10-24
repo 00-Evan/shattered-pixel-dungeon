@@ -37,36 +37,42 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
+			"_v0.4.3a:_\n" +
+			"_-_ Added a halloween treat\n" +
+			"_-_ Reworked glyph of brimstone\n" +
+			"\t \tnow grants shielding instead of healing\n" +
+			"_-_ Reworked glyph of stone\n" +
+			"\t \tnow reduces speed in doorways\n" +
+			"_-_ Power saver less blurry on some devices\n" +
+			"_-_ Translation updates\n" +
+			"_-_ Bugfixes\n" +
+			"\n" +
 			"_v0.4.3:_\n" +
 			"General Improvements:\n" +
-			"- Added rankings and hall of heroes sync\n" +
-			"- Added Power Saver mode in settings\n" +
-			"- Install size reduced by ~20%\n" +
-			"- Game now supports small screen devices\n" +
-			"- Performance improvements\n" +
-			"- Improved variety of level visuals\n" +
-			"- Adjusted mage staff visuals\n" +
-			"- Many bugfixes\n" +
+			"_-_ Added rankings and hall of heroes sync\n" +
+			"_-_ Added Power Saver mode in settings\n" +
+			"_-_ Download size reduced by ~20%\n" +
+			"_-_ Game now supports small screen devices\n" +
+			"_-_ Performance improvements\n" +
+			"_-_ Improved variety of level visuals\n" +
 			"\n" +
 			"Balance Changes:\n" +
-			"- Flail damage increased\n" +
-			"- Wand of Frost chilled damage reduced\n" +
-			"- Ring of Furor speed bonus reduced\n" +
-			"- Reduced bleed on sacrificial curse\n" +
+			"_-_ Flail max damage increased by ~15%\n" +
+			"_-_ Wand of Frost damage reduction increased\n" +
+			"\t \tfrom 5% per turn of chill to 7.5%\n" +
+			"_-_ Ring of Furor speed bonus reduced by\n" +
+			"\t \t~15% to ~0%, from slow to fast weapons\n" +
+			"_-_ Reduced sacrificial curse bleed by ~33%\n" +
 			"\n" +
 			"_v0.4.2:_\n" +
-			"- Reduced hitching on many devices\n" +
-			"- Framerate improvements for older devices\n" +
-			"- Various balance changes\n" +
+			"_-_ Reduced hitching on many devices\n" +
+			"_-_ Framerate improvements for older devices\n" +
+			"_-_ Various balance changes\n" +
 			"\n" +
 			"_v0.4.1:_\n" +
-			"- Armor effectiveness increased\n" +
-			"- Enemy damage increased to compensate\n" +
-			"- Evil Eyes reworked\n" +
-			"- Various wand mechanics adjusted\n" +
-			"- Balance on many items adjusted\n" +
-			"- Many shop prices adjusted\n" +
-			"- Added a new journal button w/key display\n" +
+			"_-_ Armor effectiveness increased\n" +
+			"_-_ Evil Eyes reworked\n" +
+			"_-_ Balance on many items adjusted\n" +
 			"\n" +
 			"_v0.4.0:_ Reworked equips, enchants & curses\n" +
 			"\n" +
