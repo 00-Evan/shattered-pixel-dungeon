@@ -89,7 +89,7 @@ public class WndInfoCell extends Window {
 		add(info);
 
 		for (Blob blob:Dungeon.level.blobs.values()) {
-			if (blob.cur[cell] > 0 && blob.tileDesc() != null) {
+			if (blob.volume > 0 && blob.cur[cell] > 0 && blob.tileDesc() != null) {
 				if (desc.length() > 0) {
 					desc += "\n\n";
 				}

@@ -66,7 +66,7 @@ public class PotionOfPurity extends Potion {
 		for (int j=0; j < blobs.length; j++) {
 			
 			Blob blob = blobs[j];
-			if (blob == null) {
+			if (blob == null || blob.volume == 0) {
 				continue;
 			}
 			
