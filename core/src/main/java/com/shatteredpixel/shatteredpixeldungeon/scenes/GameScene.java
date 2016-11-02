@@ -156,8 +156,6 @@ public class GameScene extends PixelScene {
 		super.create();
 		Camera.main.zoom( GameMath.gate(minZoom, defaultZoom + ShatteredPixelDungeon.zoom(), maxZoom));
 
-		scene = this;
-
 		terrain = new Group();
 		add( terrain );
 
@@ -380,6 +378,8 @@ public class GameScene extends PixelScene {
 
 			fadeIn();
 		}
+
+		scene = this;
 	}
 	
 	public void destroy() {
