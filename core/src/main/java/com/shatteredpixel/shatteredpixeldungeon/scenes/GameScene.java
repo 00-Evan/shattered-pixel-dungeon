@@ -556,6 +556,7 @@ public class GameScene extends PixelScene {
 	private synchronized void prompt( String text ) {
 		
 		if (prompt != null) {
+			prompt.destroy();
 			prompt.killAndErase();
 			prompt = null;
 		}

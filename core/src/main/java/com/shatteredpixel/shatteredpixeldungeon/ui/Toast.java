@@ -77,13 +77,6 @@ public class Toast extends Component {
 		PixelScene.align(text);
 	}
 
-	@Override
-	public synchronized void kill() {
-		super.kill();
-		//need to also destroy the text so that memory is freed
-		text.destroy();
-	}
-
 	public void text( String txt ) {
 		text.text( txt );
 	}
