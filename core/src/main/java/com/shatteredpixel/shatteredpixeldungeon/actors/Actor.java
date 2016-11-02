@@ -221,8 +221,18 @@ public abstract class Actor implements Bundlable {
 			} else {
 				doNext = false;
 			}
-			
-		} while (doNext);
+
+			if (!doNext){
+				synchronized (Thread.currentThread()) {
+					try {
+						Thread.currentThread().wait();
+					} catch (InterruptedException e) {
+						ShatteredPixelDungeon.reportException(e);
+					}
+				}
+			}
+
+		} while (true);
 	}
 	
 	public static void add( Actor actor ) {

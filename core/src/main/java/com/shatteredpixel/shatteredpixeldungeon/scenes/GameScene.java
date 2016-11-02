@@ -155,7 +155,7 @@ public class GameScene extends PixelScene {
 		
 		super.create();
 		Camera.main.zoom( GameMath.gate(minZoom, defaultZoom + ShatteredPixelDungeon.zoom(), maxZoom));
-		
+
 		scene = this;
 
 		terrain = new Group();
@@ -402,7 +402,12 @@ public class GameScene extends PixelScene {
 		}
 	}
 
-	private Thread t;
+	private final Thread t = new Thread() {
+		@Override
+		public void run() {
+			Actor.process();
+		}
+	};
 
 	@Override
 	public synchronized void update() {
@@ -414,16 +419,16 @@ public class GameScene extends PixelScene {
 		
 		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
 
-		if (!Actor.processing() && (t == null || !t.isAlive()) && Dungeon.hero.isAlive()) {
-			t = new Thread() {
-				@Override
-				public void run() {
-					Actor.process();
+		if (!Actor.processing() && Dungeon.hero.isAlive()) {
+			if (!t.isAlive()) {
+				//if cpu time is limited, game should prefer drawing the current frame
+				t.setPriority(Thread.NORM_PRIORITY - 1);
+				t.start();
+			} else {
+				synchronized (t) {
+					t.notify();
 				}
-			};
-			//if cpu time is limited, game should prefer drawing the current frame
-			t.setPriority(Thread.NORM_PRIORITY-1);
-			t.start();
+			}
 		}
 		
 		if (Dungeon.hero.ready && Dungeon.hero.paralysed == 0) {
