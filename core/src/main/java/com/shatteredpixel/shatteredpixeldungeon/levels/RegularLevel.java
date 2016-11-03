@@ -283,12 +283,14 @@ public abstract class RegularLevel extends Level {
 				}
 			}
 		}
-		
+
 		while (count < 6) {
-			Room r = randomRoom( Type.TUNNEL, 1 );
+			Room r = randomRoom( Type.TUNNEL, 20 );
 			if (r != null) {
 				r.type = Type.STANDARD;
 				count++;
+			} else {
+				return false;
 			}
 		}
 
