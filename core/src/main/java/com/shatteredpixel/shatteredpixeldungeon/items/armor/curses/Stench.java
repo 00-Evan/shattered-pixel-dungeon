@@ -37,7 +37,7 @@ public class Stench extends Armor.Glyph {
 
 		if ( Random.Int( 8 ) == 0) {
 
-			GameScene.add( Blob.seed( attacker.pos, 250, ToxicGas.class ) );
+			GameScene.add( Blob.seed( defender.pos, 250, ToxicGas.class ) );
 
 		}
 
