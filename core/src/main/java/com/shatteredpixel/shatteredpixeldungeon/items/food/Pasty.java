@@ -59,10 +59,7 @@ public class Pasty extends Food {
 					holiday = Holiday.HWEEN;
 				break;
 			case Calendar.NOVEMBER:
-				if (calendar.get(Calendar.DAY_OF_MONTH) == 1 ||
-								//halloween treat is releasing late in 2016, give it a bit more time
-								(calendar.get(Calendar.YEAR) == 2016
-								&& calendar.get(Calendar.WEEK_OF_MONTH) == 1))
+				if (calendar.get(Calendar.DAY_OF_MONTH) == 1)
 					holiday = Holiday.HWEEN;
 				break;
 			case Calendar.DECEMBER:
