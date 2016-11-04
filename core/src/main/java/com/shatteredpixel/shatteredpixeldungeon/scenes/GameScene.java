@@ -156,6 +156,8 @@ public class GameScene extends PixelScene {
 		super.create();
 		Camera.main.zoom( GameMath.gate(minZoom, defaultZoom + ShatteredPixelDungeon.zoom(), maxZoom));
 
+		scene = this;
+
 		terrain = new Group();
 		add( terrain );
 
@@ -379,7 +381,6 @@ public class GameScene extends PixelScene {
 			fadeIn();
 		}
 
-		scene = this;
 	}
 	
 	public void destroy() {
@@ -807,7 +808,7 @@ public class GameScene extends PixelScene {
 	public static void ready() {
 		selectCell( defaultCellListener );
 		QuickSlotButton.cancel();
-		if (scene != null) scene.toolbar.examining = false;
+		if (scene != null && scene.toolbar != null) scene.toolbar.examining = false;
 	}
 
 	public static void examineCell( Integer cell ) {
