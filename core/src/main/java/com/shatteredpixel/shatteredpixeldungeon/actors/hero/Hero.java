@@ -1393,10 +1393,9 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isAlive() {
-		if (subClass == HeroSubClass.BERSERKER
-				&& berserk != null
-				&& berserk.berserking()){
-			return true;
+		if (subClass == HeroSubClass.BERSERKER){
+			if (berserk == null) berserk = Buff.affect(this, Berserk.class);
+			if (berserk.berserking()) return true;
 		}
 		return super.isAlive();
 	}

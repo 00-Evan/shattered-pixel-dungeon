@@ -119,7 +119,7 @@ public class Berserk extends Buff {
 
 		}
 
-		return state == State.BERSERK;
+		return state == State.BERSERK && target.SHLD > 0;
 	}
 
 	public void recover(float percent){
