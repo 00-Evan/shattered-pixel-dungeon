@@ -45,11 +45,11 @@ public class Pasty extends Food {
 	private static Holiday holiday;
 
 	static{
+
+		holiday = Holiday.NONE;
+
 		final Calendar calendar = Calendar.getInstance();
 		switch(calendar.get(Calendar.MONTH)){
-			default:
-				holiday = Holiday.NONE;
-				break;
 			case Calendar.JANUARY:
 				if (calendar.get(Calendar.WEEK_OF_MONTH) == 1)
 					holiday = Holiday.XMAS;
@@ -98,7 +98,7 @@ public class Pasty extends Food {
 
 		if (action.equals(AC_EAT)){
 			switch(holiday){
-				case NONE: default:
+				case NONE:
 					break; //do nothing extra
 				case HWEEN:
 					//heals for 10% max hp
