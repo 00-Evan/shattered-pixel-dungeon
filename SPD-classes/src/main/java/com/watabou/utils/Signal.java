@@ -71,11 +71,9 @@ public class Signal<T> {
 		canceled = false;
 		for (Listener<T> listener : listeners) {
 
-			if (listeners.contains( listener )) {
-				listener.onSignal( t );
-				if (canceled) {
-					return;
-				}
+			listener.onSignal( t );
+			if (canceled) {
+				return;
 			}
 			
 		}
