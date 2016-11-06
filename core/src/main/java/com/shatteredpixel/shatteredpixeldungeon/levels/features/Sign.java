@@ -36,9 +36,9 @@ import com.watabou.noosa.audio.Sample;
 public class Sign {
 
 	private static final String[] teaser_texts = new String[]{
-		"...",
-		"...",
-		"..."
+		"G<@8R9BER4RA8JRC8EFC86G<I8 _0_",
+		"G;8RJ4??FR4E8RF;<9G<A: _5_",
+		"G;8R7HA:8BARJ<??R58RF;4GG8E87 _0_"
 	};
 	
 	public static void read( int pos ) {
