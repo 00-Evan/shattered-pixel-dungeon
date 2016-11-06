@@ -109,7 +109,7 @@ public class CursingTrap extends Trap {
 		Collections.shuffle(priorityCurse);
 		Collections.shuffle(canCurse);
 
-		int numCurses = Random.Int(3) == 0 ? 1 : 2;
+		int numCurses = Random.Int(2) == 0 ? 1 : 2;
 
 		for (int i = 0; i < numCurses; i++){
 			if (!priorityCurse.isEmpty()){
