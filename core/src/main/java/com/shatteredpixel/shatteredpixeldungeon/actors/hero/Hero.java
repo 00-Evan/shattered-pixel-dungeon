@@ -965,6 +965,10 @@ public class Hero extends Char {
 			dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/2;
 		}
 
+		if (subClass == HeroSubClass.BERSERKER && berserk == null){
+			berserk = Buff.affect(this, Berserk.class);
+		}
+
 		super.damage( dmg, src );
 	}
 	
@@ -1393,9 +1397,10 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isAlive() {
-		if (subClass == HeroSubClass.BERSERKER){
-			if (berserk == null) berserk = Buff.affect(this, Berserk.class);
-			if (berserk.berserking()) return true;
+		if (subClass == HeroSubClass.BERSERKER
+				&& berserk != null
+				&& berserk.berserking()){
+			return true;
 		}
 		return super.isAlive();
 	}
