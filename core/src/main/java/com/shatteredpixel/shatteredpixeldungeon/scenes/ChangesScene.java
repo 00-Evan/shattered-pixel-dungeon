@@ -37,15 +37,19 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
+			"_v0.4.3b:_\n" +
+			"_-_ Thrown potions now land before shattering\n" +
+			"_-_ Fixed the game rarely freezing on descent\n" +
+			"_-_ Fixed the attack indicator sometimes freezing\n" +
+			"_-_ Various other bugfixes\n" +
+			"_-_ Minor performance improvements\n" +
+			"\n" +
 			"_v0.4.3a:_\n" +
-			"_-_ Added a halloween treat\n" +
 			"_-_ Reworked glyph of brimstone\n" +
 			"\t \tnow grants shielding instead of healing\n" +
 			"_-_ Reworked glyph of stone\n" +
 			"\t \tnow reduces speed in doorways\n" +
-			"_-_ Power saver less blurry on some devices\n" +
-			"_-_ Translation updates\n" +
-			"_-_ Bugfixes\n" +
+			"_-_ Power saver looks less blurry on some devices\n" +
 			"\n" +
 			"_v0.4.3:_\n" +
 			"General Improvements:\n" +
@@ -61,7 +65,7 @@ public class ChangesScene extends PixelScene {
 			"_-_ Wand of Frost damage reduction increased\n" +
 			"\t \tfrom 5% per turn of chill to 7.5%\n" +
 			"_-_ Ring of Furor speed bonus reduced by\n" +
-			"\t \t~15% to ~0%, from slow to fast weapons\n" +
+			"\t \t~15% for slow weapons, ~0% for fast weapons\n" +
 			"_-_ Reduced sacrificial curse bleed by ~33%\n" +
 			"\n" +
 			"_v0.4.2:_\n" +
