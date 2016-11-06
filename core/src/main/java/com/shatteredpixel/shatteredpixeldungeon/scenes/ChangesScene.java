@@ -37,12 +37,12 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
+			"_v0.4.3c:_\n" +
+			"_-_ Additional bugfixes\n" +
+			"\n" +
 			"_v0.4.3b:_\n" +
-			"_-_ Thrown potions now land before shattering\n" +
-			"_-_ Fixed the game rarely freezing on descent\n" +
-			"_-_ Fixed the attack indicator sometimes freezing\n" +
-			"_-_ Various other bugfixes\n" +
-			"_-_ Minor performance improvements\n" +
+			"_-_ Thrown potions now trigger traps and plants\n" +
+			"_-_ Various bugfixes\n" +
 			"\n" +
 			"_v0.4.3a:_\n" +
 			"_-_ Reworked glyph of brimstone\n" +
@@ -55,9 +55,7 @@ public class ChangesScene extends PixelScene {
 			"General Improvements:\n" +
 			"_-_ Added rankings and hall of heroes sync\n" +
 			"_-_ Added Power Saver mode in settings\n" +
-			"_-_ Download size reduced by ~20%\n" +
 			"_-_ Game now supports small screen devices\n" +
-			"_-_ Performance improvements\n" +
 			"_-_ Improved variety of level visuals\n" +
 			"\n" +
 			"Balance Changes:\n" +
@@ -69,14 +67,12 @@ public class ChangesScene extends PixelScene {
 			"_-_ Reduced sacrificial curse bleed by ~33%\n" +
 			"\n" +
 			"_v0.4.2:_\n" +
-			"_-_ Reduced hitching on many devices\n" +
-			"_-_ Framerate improvements for older devices\n" +
+			"_-_ Improved performance on many devices\n" +
 			"_-_ Various balance changes\n" +
 			"\n" +
 			"_v0.4.1:_\n" +
 			"_-_ Armor effectiveness increased\n" +
 			"_-_ Evil Eyes reworked\n" +
-			"_-_ Balance on many items adjusted\n" +
 			"\n" +
 			"_v0.4.0:_ Reworked equips, enchants & curses\n" +
 			"\n" +
