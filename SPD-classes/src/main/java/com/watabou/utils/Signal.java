@@ -68,14 +68,19 @@ public class Signal<T> {
 	
 	public synchronized void dispatch( T t ) {
 
-		canceled = false;
-		for (Listener<T> listener : listeners) {
+		@SuppressWarnings("unchecked")
+		Listener<T>[] list = listeners.toArray( new Listener[0] );
 
-			listener.onSignal( t );
-			if (canceled) {
-				return;
+		canceled = false;
+		for (Listener<T> listener : list) {
+
+			if (listeners.contains(listener)) {
+				listener.onSignal(t);
+				if (canceled) {
+					return;
+				}
 			}
-			
+
 		}
 	}
 	
