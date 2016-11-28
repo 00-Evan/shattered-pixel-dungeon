@@ -28,6 +28,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.watabou.glscripts.Script;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.glwrap.ScreenConfigChooser;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.Keys;
 import com.watabou.input.Touchscreen;
@@ -42,6 +43,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.AudioManager;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
@@ -129,7 +131,13 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		
 		view = new GLSurfaceView( this );
 		view.setEGLContextClientVersion( 2 );
-		view.setEGLConfigChooser( 5, 6, 5, 0, 0, 0 );
+
+		//Versions of android below 4.0.0 are forced to RGB 565 for performance reasons.
+		//Otherwise try to use RGB888 for best quality, but use RGB565 if it is what's available.
+		view.setEGLConfigChooser( new ScreenConfigChooser(
+						Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN,
+						false ));
+
 		view.setRenderer( this );
 		view.setOnTouchListener( this );
 		setContentView( view );
@@ -320,11 +328,11 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		Game.timeScale = 1f;
 		Game.timeTotal = 0f;
 	}
-	
+
 	protected void update() {
 		Game.elapsed = Game.timeScale * step * 0.001f;
 		Game.timeTotal += Game.elapsed;
-		
+
 		synchronized (motionEvents) {
 			Touchscreen.processTouchEvents( motionEvents );
 			motionEvents.clear();
