@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BusyIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
+import com.shatteredpixel.shatteredpixeldungeon.ui.DungeonWallsTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
@@ -111,6 +112,7 @@ public class GameScene extends PixelScene {
 	private SkinnedBlock water;
 	private DungeonTilemap tiles;
 	private TerrainFeaturesTilemap terrainFeatures;
+	private DungeonWallsTilemap walls;
 	private FogOfWar fog;
 	private HeroSprite hero;
 
@@ -232,6 +234,9 @@ public class GameScene extends PixelScene {
 			blob.emitter = null;
 			addBlobSprite( blob );
 		}
+
+		walls = new DungeonWallsTilemap();
+		add(walls);
 
 		fog = new FogOfWar( Dungeon.level.width(), Dungeon.level.height() );
 		add( fog );
@@ -675,6 +680,7 @@ public class GameScene extends PixelScene {
 		if (scene != null) {
 			scene.tiles.map(Dungeon.level.map, Dungeon.level.width() );
 			scene.terrainFeatures.map(Dungeon.level.map, Dungeon.level.width() );
+			scene.walls.map(Dungeon.level.map, Dungeon.level.width() );
 		}
 		updateFog();
 	}
@@ -684,6 +690,7 @@ public class GameScene extends PixelScene {
 		if (scene != null) {
 			scene.tiles.updateMap();
 			scene.terrainFeatures.updateMap();
+			scene.walls.updateMap();
 		}
 	}
 	
@@ -691,6 +698,7 @@ public class GameScene extends PixelScene {
 		if (scene != null) {
 			scene.tiles.updateMapCell( cell );
 			scene.terrainFeatures.updateMapCell( cell );
+			scene.walls.updateMapCell( cell );
 		}
 	}
 

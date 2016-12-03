@@ -24,6 +24,7 @@ import android.util.SparseIntArray;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
@@ -45,59 +46,59 @@ public class DungeonTilemap extends Tilemap {
 	//Used to map dungeon tiles to their default visual values
 	public static SparseIntArray defaultVisuals = new SparseIntArray(32);
 	static {
-		defaultVisuals.put(Terrain.CHASM,           0);
-		defaultVisuals.put(Terrain.EMPTY,           1);
-		defaultVisuals.put(Terrain.GRASS,           2);
-		defaultVisuals.put(Terrain.EMPTY_WELL,      3);
-		defaultVisuals.put(Terrain.WALL,            4);
-		defaultVisuals.put(Terrain.DOOR,            5);
-		defaultVisuals.put(Terrain.OPEN_DOOR,       6);
-		defaultVisuals.put(Terrain.ENTRANCE,        7);
-		defaultVisuals.put(Terrain.EXIT,            8);
-		defaultVisuals.put(Terrain.EMBERS,          9);
-		defaultVisuals.put(Terrain.LOCKED_DOOR,     10);
-		defaultVisuals.put(Terrain.PEDESTAL,        11);
-		defaultVisuals.put(Terrain.WALL_DECO,       12);
-		defaultVisuals.put(Terrain.BARRICADE,       13);
-		defaultVisuals.put(Terrain.EMPTY_SP,        14);
-		defaultVisuals.put(Terrain.HIGH_GRASS,      15);
+		defaultVisuals.put(Terrain.CHASM,           DungeonTileSheet.CHASM);
+		defaultVisuals.put(Terrain.EMPTY,           DungeonTileSheet.FLOOR);
+		defaultVisuals.put(Terrain.GRASS,           DungeonTileSheet.GRASS);
+		defaultVisuals.put(Terrain.EMPTY_WELL,      DungeonTileSheet.EMPTY_WELL);
+		defaultVisuals.put(Terrain.WALL,            DungeonTileSheet.FLAT_WALL);
+		defaultVisuals.put(Terrain.DOOR,            DungeonTileSheet.FLAT_DOOR);
+		defaultVisuals.put(Terrain.OPEN_DOOR,       DungeonTileSheet.FLAT_DOOR_OPEN);
+		defaultVisuals.put(Terrain.ENTRANCE,        DungeonTileSheet.ENTRANCE);
+		defaultVisuals.put(Terrain.EXIT,            DungeonTileSheet.EXIT);
+		defaultVisuals.put(Terrain.EMBERS,          DungeonTileSheet.EMBERS);
+		defaultVisuals.put(Terrain.LOCKED_DOOR,     DungeonTileSheet.FLAT_DOOR_LOCKED);
+		defaultVisuals.put(Terrain.PEDESTAL,        DungeonTileSheet.PEDESTAL);
+		defaultVisuals.put(Terrain.WALL_DECO,       DungeonTileSheet.FLAT_WALL_DECO);
+		defaultVisuals.put(Terrain.BARRICADE,       DungeonTileSheet.BARRICADE);
+		defaultVisuals.put(Terrain.EMPTY_SP,        DungeonTileSheet.FLOOR_SP);
+		defaultVisuals.put(Terrain.HIGH_GRASS,      DungeonTileSheet.HIGH_GRASS);
 
 		defaultVisuals.put(Terrain.SECRET_DOOR,     defaultVisuals.get(Terrain.WALL));
 		defaultVisuals.put(Terrain.SECRET_TRAP,     defaultVisuals.get(Terrain.EMPTY));
 		defaultVisuals.put(Terrain.TRAP,            defaultVisuals.get(Terrain.EMPTY));
 		defaultVisuals.put(Terrain.INACTIVE_TRAP,   defaultVisuals.get(Terrain.EMPTY));
 
-		defaultVisuals.put(Terrain.EMPTY_DECO,      16);
-		defaultVisuals.put(Terrain.LOCKED_EXIT,     17);
-		defaultVisuals.put(Terrain.UNLOCKED_EXIT,   18);
-		defaultVisuals.put(Terrain.SIGN,            19);
-		defaultVisuals.put(Terrain.WELL,            20);
-		defaultVisuals.put(Terrain.STATUE,          21);
-		defaultVisuals.put(Terrain.STATUE_SP,       22);
-		defaultVisuals.put(Terrain.BOOKSHELF,       23);
-		defaultVisuals.put(Terrain.ALCHEMY,         24);
+		defaultVisuals.put(Terrain.EMPTY_DECO,      DungeonTileSheet.FLOOR_DECO);
+		defaultVisuals.put(Terrain.LOCKED_EXIT,     DungeonTileSheet.LOCKED_EXIT);
+		defaultVisuals.put(Terrain.UNLOCKED_EXIT,   DungeonTileSheet.UNLOCKED_EXIT);
+		defaultVisuals.put(Terrain.SIGN,            DungeonTileSheet.SIGN);
+		defaultVisuals.put(Terrain.WELL,            DungeonTileSheet.WELL);
+		defaultVisuals.put(Terrain.STATUE,          DungeonTileSheet.STATUE);
+		defaultVisuals.put(Terrain.STATUE_SP,       DungeonTileSheet.STATUE_SP);
+		defaultVisuals.put(Terrain.BOOKSHELF,       DungeonTileSheet.BOOKSHELF);
+		defaultVisuals.put(Terrain.ALCHEMY,         DungeonTileSheet.ALCHEMY_POT);
 
-		defaultVisuals.put(Terrain.WATER,           63);
+		defaultVisuals.put(Terrain.WATER,           DungeonTileSheet.WATER);
 	}
 
 	//These alt visuals will trigger 50% of the time
 	public static SparseIntArray commonAltVisuals = new SparseIntArray(32);
 	static {
-		commonAltVisuals.put(1,                 38);
-		commonAltVisuals.put(2,                 39);
-		commonAltVisuals.put(4,                 40);
-		commonAltVisuals.put(9,                 41);
-		commonAltVisuals.put(12,                42);
-		commonAltVisuals.put(14,                43);
-		commonAltVisuals.put(15,                44);
-		commonAltVisuals.put(16,                45);
-		commonAltVisuals.put(23,                46);
+		commonAltVisuals.put(DungeonTileSheet.FLOOR,            DungeonTileSheet.FLOOR_ALT_1);
+		commonAltVisuals.put(DungeonTileSheet.GRASS,            DungeonTileSheet.GRASS_ALT);
+		commonAltVisuals.put(DungeonTileSheet.FLAT_WALL,        DungeonTileSheet.FLAT_WALL_ALT);
+		commonAltVisuals.put(DungeonTileSheet.EMBERS,           DungeonTileSheet.EMBERS_ALT);
+		commonAltVisuals.put(DungeonTileSheet.FLAT_WALL_DECO,   DungeonTileSheet.FLAT_WALL_DECO_ALT);
+		commonAltVisuals.put(DungeonTileSheet.FLOOR_SP,         DungeonTileSheet.FLOOR_SP_ALT);
+		commonAltVisuals.put(DungeonTileSheet.HIGH_GRASS,       DungeonTileSheet.HIGH_GRASS_ALT);
+		commonAltVisuals.put(DungeonTileSheet.FLOOR_DECO,       DungeonTileSheet.FLOOR_DECO_ALT);
+		commonAltVisuals.put(DungeonTileSheet.BOOKSHELF,        DungeonTileSheet.BOOKSHELF_ALT);
 	}
 
 	//These alt visuals trigger 10% of the time (and also override common alts when they show up)
 	public static SparseIntArray rareAltVisuals = new SparseIntArray(32);
 	static {
-		rareAltVisuals.put(1,                   47);
+		rareAltVisuals.put(DungeonTileSheet.FLOOR,              DungeonTileSheet.FLOOR_ALT_2);
 	}
 
 	//These tiles can stitch with water
@@ -106,35 +107,36 @@ public class DungeonTilemap extends Tilemap {
 			Terrain.ENTRANCE, Terrain.EXIT, Terrain.EMBERS,
 			Terrain.BARRICADE, Terrain.HIGH_GRASS, Terrain.SECRET_TRAP,
 			Terrain.TRAP, Terrain.INACTIVE_TRAP, Terrain.EMPTY_DECO,
-			Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.ALCHEMY
+			Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.ALCHEMY,
+			Terrain.DOOR, Terrain.OPEN_DOOR, Terrain.LOCKED_DOOR
 	);
 
 	//tiles that can stitch with chasms (from above), and which visual represents the stitching
 	public static SparseIntArray chasmStitcheable = new SparseIntArray(32);
 	static {
 		//floor
-		chasmStitcheable.put( Terrain.EMPTY, 32 );
-		chasmStitcheable.put( Terrain.GRASS, 32 );
-		chasmStitcheable.put( Terrain.EMPTY_WELL, 32 );
-		chasmStitcheable.put( Terrain.HIGH_GRASS, 32 );
-		chasmStitcheable.put( Terrain.EMPTY_DECO, 32 );
-		chasmStitcheable.put( Terrain.SIGN, 32 );
-		chasmStitcheable.put( Terrain.EMPTY_WELL, 32 );
-		chasmStitcheable.put( Terrain.STATUE, 32 );
+		chasmStitcheable.put( Terrain.EMPTY,        DungeonTileSheet.CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.GRASS,        DungeonTileSheet.CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.EMPTY_WELL,   DungeonTileSheet.CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.HIGH_GRASS,   DungeonTileSheet.CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.EMPTY_DECO,   DungeonTileSheet.CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.SIGN,         DungeonTileSheet.CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.EMPTY_WELL,   DungeonTileSheet.CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.STATUE,       DungeonTileSheet.CHASM_FLOOR );
 
 		//special floor
-		chasmStitcheable.put( Terrain.EMPTY_SP, 33 );
-		chasmStitcheable.put( Terrain.STATUE_SP, 33 );
+		chasmStitcheable.put( Terrain.EMPTY_SP,     DungeonTileSheet.CHASM_FLOOR_SP );
+		chasmStitcheable.put( Terrain.STATUE_SP,    DungeonTileSheet.CHASM_FLOOR_SP );
 
 		//wall
-		chasmStitcheable.put( Terrain.WALL, 34 );
-		chasmStitcheable.put( Terrain.DOOR, 34 );
-		chasmStitcheable.put( Terrain.OPEN_DOOR, 34 );
-		chasmStitcheable.put( Terrain.LOCKED_DOOR, 34 );
-		chasmStitcheable.put( Terrain.WALL_DECO, 34 );
+		chasmStitcheable.put( Terrain.WALL,         DungeonTileSheet.CHASM_WALL );
+		chasmStitcheable.put( Terrain.DOOR,         DungeonTileSheet.CHASM_WALL );
+		chasmStitcheable.put( Terrain.OPEN_DOOR,    DungeonTileSheet.CHASM_WALL );
+		chasmStitcheable.put( Terrain.LOCKED_DOOR,  DungeonTileSheet.CHASM_WALL );
+		chasmStitcheable.put( Terrain.WALL_DECO,    DungeonTileSheet.CHASM_WALL );
 
 		//water
-		chasmStitcheable.put( Terrain.WATER, 35 );
+		chasmStitcheable.put( Terrain.WATER,        DungeonTileSheet.CHASM_WATER );
 	}
 
 	private int[] map;
@@ -168,7 +170,7 @@ public class DungeonTilemap extends Tilemap {
 	public synchronized void updateMap() {
 		super.updateMap();
 		for (int i = 0; i < data.length; i++)
-			data[i] = getTileVisual(i ,map[i]);
+			data[i] = getTileVisual(i ,map[i], false);
 	}
 
 	@Override
@@ -178,31 +180,69 @@ public class DungeonTilemap extends Tilemap {
 			super.updateMapCell(cell - mapWidth - 1);
 			super.updateMapCell(cell + mapWidth + 1);
 			for (int i : PathFinder.NEIGHBOURS9)
-				data[cell + i] = getTileVisual(cell + i, map[cell + i]);
+				data[cell + i] = getTileVisual(cell + i, map[cell + i], false);
 
 		//unless we're at the level's edge, then just do the one tile.
 		} else {
 			super.updateMapCell(cell);
-			data[cell] = getTileVisual(cell, map[cell]);
+			data[cell] = getTileVisual(cell, map[cell], false);
 		}
 	}
 
-	private int getTileVisual(int pos, int tile){
+	//These tiles count as wall for the purposes of wall stitching
+	public static List wallStitcheable = Arrays.asList(
+			Terrain.WALL, Terrain.WALL_DECO, Terrain.SECRET_DOOR,
+			Terrain.LOCKED_EXIT, Terrain.UNLOCKED_EXIT
+	);
+
+	private int getTileVisual(int pos, int tile, boolean flat) {
 		int visual = defaultVisuals.get(tile);
 
-		if (tile == Terrain.WATER){
-			for (int i = 0; i < PathFinder.CIRCLE4.length; i++){
+		if (tile == Terrain.WATER) {
+			for (int i = 0; i < PathFinder.CIRCLE4.length; i++) {
 				if (waterStitcheable.contains(map[pos + PathFinder.CIRCLE4[i]])) {
-					//equivalent to: cell -= 2^i
-					visual -= (1 << i);
+					//equivalent to: cell += 2^i
+					visual += (1 << i);
 				}
 			}
 			return visual;
 
 		} else if (tile == Terrain.CHASM && pos >= mapWidth) {
 			return chasmStitcheable.get(map[pos - mapWidth], visual);
+		}
 
-		} else if (tileVariance[pos] > 0.9f
+		if (!flat) {
+			if ((tile == Terrain.DOOR || tile == Terrain.LOCKED_DOOR || tile == Terrain.OPEN_DOOR) && map[pos - mapWidth] == Terrain.WALL) {
+				return DungeonTileSheet.RAISED_DOOR_SIDEWAYS;
+			} else if (tile == Terrain.DOOR) {
+				return DungeonTileSheet.RAISED_DOOR;
+			} else if (tile == Terrain.OPEN_DOOR) {
+				return DungeonTileSheet.RAISED_DOOR_OPEN;
+			} else if (tile == Terrain.LOCKED_DOOR) {
+				return DungeonTileSheet.RAISED_DOOR_LOCKED;
+			} else if (tile == Terrain.WALL || tile == Terrain.WALL_DECO){
+				if (tile == Terrain.WALL) {
+					if (pos + mapWidth < size && (map[pos + mapWidth] == Terrain.DOOR || map[pos + mapWidth] == Terrain.LOCKED_DOOR || map[pos + mapWidth] == Terrain.OPEN_DOOR)){
+						visual = DungeonTileSheet.RAISED_WALL_DOOR;
+					} else {
+						visual = DungeonTileSheet.RAISED_WALL;
+					}
+				} else
+					visual = DungeonTileSheet.RAISED_WALL_DECO;
+
+				if (tileVariance[pos] > 0.5f)
+					visual += 16;
+
+				if (pos % mapWidth != 0 && !wallStitcheable.contains(map[pos - 1]))
+					visual += 2;
+				if (pos % mapWidth != mapWidth-1 && !wallStitcheable.contains(map[pos + 1]))
+					visual += 1;
+
+				return visual;
+			}
+		}
+
+		if (tileVariance[pos] > 0.9f
 				&& rareAltVisuals.indexOfKey(visual) >= 0){
 			return rareAltVisuals.get(visual);
 
@@ -259,7 +299,7 @@ public class DungeonTilemap extends Tilemap {
 	
 	public static Image tile( int pos, int tile ) {
 		Image img = new Image( instance.texture );
-		img.frame( instance.tileset.get( instance.getTileVisual( pos, tile ) ) );
+		img.frame( instance.tileset.get( instance.getTileVisual( pos, tile, true ) ) );
 		return img;
 	}
 	
