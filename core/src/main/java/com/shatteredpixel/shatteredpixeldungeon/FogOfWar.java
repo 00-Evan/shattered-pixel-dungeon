@@ -51,6 +51,9 @@ public class FogOfWar extends Image {
 	private static final int INVISIBLE[]= new int[]{0xFF000000, 0xFF000000,
 													0xFF000000,
 													0xFF000000, 0xFF000000};
+
+	private int mapWidth;
+	private int mapHeight;
 	
 	private int pWidth;
 	private int pHeight;
@@ -60,13 +63,18 @@ public class FogOfWar extends Image {
 
 	private volatile Rect updated;
 	private Rect updating;
-	
+
+	private static final int PIX_PER_TILE = 2;
+
 	public FogOfWar( int mapWidth, int mapHeight ) {
 		
 		super();
+
+		this.mapWidth = mapWidth;
+		this.mapHeight = mapHeight;
 		
-		pWidth = mapWidth + 1;
-		pHeight = mapHeight + 1;
+		pWidth = mapWidth * PIX_PER_TILE;
+		pHeight = mapHeight * PIX_PER_TILE;
 		
 		width2 = 1;
 		while (width2 < pWidth) {
@@ -78,23 +86,21 @@ public class FogOfWar extends Image {
 			height2 <<= 1;
 		}
 		
-		float size = DungeonTilemap.SIZE;
+		float size = DungeonTilemap.SIZE / PIX_PER_TILE;
 		width = width2 * size;
 		height = height2 * size;
 		
 		texture( new FogTexture(width2, height2) );
 		
 		scale.set(
-			DungeonTilemap.SIZE,
-			DungeonTilemap.SIZE );
-		
-		x = y = -size / 2;
+			DungeonTilemap.SIZE / PIX_PER_TILE,
+			DungeonTilemap.SIZE / PIX_PER_TILE);
 
-		updated = new Rect(0, 0, pWidth, pHeight);
+		updated = new Rect(0, 0, mapWidth, mapHeight);
 	}
 
 	public synchronized void updateFog(){
-		updated.set( 0, 0, pWidth, pWidth );
+		updated.set( 0, 0, mapWidth, mapHeight );
 	}
 
 	public synchronized void updateFogArea(int x, int y, int w, int h){
@@ -116,36 +122,39 @@ public class FogOfWar extends Image {
 		int brightness = ShatteredPixelDungeon.brightness() + 2;
 
 		for (int i=updating.top; i < updating.bottom; i++) {
-			int cell = (pWidth - 1) * i + updating.left;
-			fog.pixels.position((width2) * i + updating.left);
+			int cell = mapWidth * i + updating.left;
+			//fog.pixels.position((width2) * i + updating.left);
 			for (int j=updating.left; j < updating.right; j++) {
-				if (cell < pWidth || cell >= Dungeon.level.length() || j == 0 || j == pWidth-1) {
-					fog.pixels.put(INVISIBLE[brightness]);
-				} else
-				if (visible[cell] && visible[cell - (pWidth - 1)] &&
-					visible[cell - 1] && visible[cell - (pWidth - 1) - 1]) {
-					fog.pixels.put(VISIBLE[brightness]);
-				} else
-				if (visited[cell] && visited[cell - (pWidth - 1)] &&
-					visited[cell - 1] && visited[cell - (pWidth - 1) - 1]) {
-					fog.pixels.put(VISITED[brightness]);
-				}
-				else
-				if (mapped[cell] && mapped[cell - (pWidth - 1)] &&
-					mapped[cell - 1] && mapped[cell - (pWidth - 1) - 1]) {
-					fog.pixels.put(MAPPED[brightness]);
+				if (cell >= Dungeon.level.length()) {
+					//do nothing
+				} else if (visible[cell]) {
+					fillCell(j, i, VISIBLE[brightness]);
+				} else if (visited[cell]) {
+					fillCell(j, i, VISITED[brightness]);
+				} else if (mapped[cell] ) {
+					fillCell(j, i, MAPPED[brightness]);
 				} else {
-					fog.pixels.put(INVISIBLE[brightness]);
+					fillCell(j, i, INVISIBLE[brightness]);
 				}
 				cell++;
 			}
 		}
 
-		if (updating.width() == pWidth && updating.height() == pHeight)
+		if (updating.width() == mapWidth && updating.height() == mapWidth)
 			fog.update();
 		else
-			fog.update(updating.top, updating.bottom);
+			fog.update(updating.top * PIX_PER_TILE, updating.bottom * PIX_PER_TILE);
 
+	}
+
+	private void fillCell( int x, int y, int color){
+		FogTexture fog = (FogTexture)texture;
+		for (int i = 0; i < PIX_PER_TILE; i++){
+			fog.pixels.position(((y * PIX_PER_TILE)+i)*width2 + x * PIX_PER_TILE);
+			for (int j = 0; j < PIX_PER_TILE; j++) {
+				fog.pixels.put(color);
+			}
+		}
 	}
 
 	//provides a native intbuffer implementation because android.graphics.bitmap is too slow
@@ -182,6 +191,7 @@ public class FogOfWar extends Image {
 		public void update(){
 			bind();
 			filter( Texture.LINEAR, Texture.LINEAR );
+			wrap( Texture.CLAMP, Texture.CLAMP);
 			pixels.position(0);
 			GLES20.glTexImage2D(
 					GLES20.GL_TEXTURE_2D,
@@ -199,6 +209,7 @@ public class FogOfWar extends Image {
 		public void update(int top, int bottom){
 			bind();
 			filter( Texture.LINEAR, Texture.LINEAR );
+			wrap( Texture.CLAMP, Texture.CLAMP);
 			pixels.position(top*width);
 			GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D,
 					0,
