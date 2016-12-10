@@ -596,16 +596,6 @@ public abstract class Level implements Bundlable {
 	}
 
 	public void destroy( int pos ) {
-
-		if (!DungeonTilemap.waterStitcheable.contains(map[pos])) {
-			for (int j = 0; j < PathFinder.NEIGHBOURS4.length; j++) {
-				if (water[pos + PathFinder.NEIGHBOURS4[j]]) {
-					set(pos, Terrain.WATER);
-					return;
-				}
-			}
-		}
-
 		set( pos, Terrain.EMBERS );
 	}
 

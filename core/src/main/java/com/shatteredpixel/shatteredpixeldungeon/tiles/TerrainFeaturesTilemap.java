@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon.ui;
+package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -29,14 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
-import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.tweeners.ScaleTweener;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
-
-import static com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap.tileToWorld;
 
 //TODO add in a proper set of vfx for plants growing/withering, grass burning, discovering traps
 public class TerrainFeaturesTilemap extends Tilemap {
@@ -46,7 +42,6 @@ public class TerrainFeaturesTilemap extends Tilemap {
 	private static TerrainFeaturesTilemap instance;
 
 	private int[] map;
-	private float[] tileVariance;
 
 	private SparseArray<Plant> plants;
 	private SparseArray<Trap> traps;
@@ -56,12 +51,6 @@ public class TerrainFeaturesTilemap extends Tilemap {
 
 		this.plants = plants;
 		this.traps = traps;
-
-		Random.seed( Dungeon.seedCurDepth());
-		tileVariance = new float[Dungeon.level.map.length];
-		for (int i = 0; i < tileVariance.length; i++)
-			tileVariance[i] = Random.Float();
-		Random.seed();
 
 		map( Dungeon.level.map, Dungeon.level.width() );
 
@@ -113,11 +102,11 @@ public class TerrainFeaturesTilemap extends Tilemap {
 		}
 
 		if (tile == Terrain.HIGH_GRASS){
-			return 9 + 16*((Dungeon.depth-1)/5) + (tileVariance[pos] > 0.5f ? 1 : 0);
+			return 9 + 16*((Dungeon.depth-1)/5) + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.GRASS) {
-			return 11 + 16*((Dungeon.depth-1)/5) + (tileVariance[pos] > 0.5f ? 1 : 0);
+			return 11 + 16*((Dungeon.depth-1)/5) + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.EMBERS) {
-			return 13 + (tileVariance[pos] > 0.5f ? 1 : 0);
+			return 13 + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		}
 
 		return -1;

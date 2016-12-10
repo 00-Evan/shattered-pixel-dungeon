@@ -18,12 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon.ui;
+package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.PathFinder;
@@ -38,25 +37,12 @@ public class DungeonWallsTilemap extends Tilemap {
 
 	private static DungeonWallsTilemap instance;
 
-	//These tiles count as wall for the purposes of wall stitching
-	public static List wallStitcheable = Arrays.asList(
-			Terrain.WALL, Terrain.WALL_DECO, Terrain.SECRET_DOOR,
-			Terrain.LOCKED_EXIT, Terrain.UNLOCKED_EXIT
-	);
-
 	private int[] map;
-	private float[] tileVariance;
 
 	public DungeonWallsTilemap(){
 		super(
 				Dungeon.level.tilesTex(),
 				new TextureFilm( Dungeon.level.tilesTex(), SIZE, SIZE ) );
-
-		Random.seed( Dungeon.seedCurDepth());
-		tileVariance = new float[Dungeon.level.map.length];
-		for (int i = 0; i < tileVariance.length; i++)
-			tileVariance[i] = Random.Float();
-		Random.seed();
 
 		map( Dungeon.level.map, Dungeon.level.width() );
 
@@ -96,8 +82,8 @@ public class DungeonWallsTilemap extends Tilemap {
 
 	private int getTileVisual(int pos, int tile){
 
-		if (wallStitcheable.contains(tile)) {
-			if (pos + mapWidth < size && !wallStitcheable.contains(map[pos + mapWidth])){
+		if (DungeonTileSheet.wallStitcheable.contains(tile)) {
+			if (pos + mapWidth < size && !DungeonTileSheet.wallStitcheable.contains(map[pos + mapWidth])){
 
 				if (map[pos + mapWidth] == Terrain.DOOR){
 					return DungeonTileSheet.DOOR_SIDEWAYS;
@@ -108,18 +94,18 @@ public class DungeonWallsTilemap extends Tilemap {
 			} else {
 				//otherwise, need to stitch with right, bottom-right, bottom-left, and left.
 				int visual = DungeonTileSheet.WALLS_INTERNAL;
-				if (pos % mapWidth != 0 && !wallStitcheable.contains(map[pos - 1]))
+				if (pos % mapWidth != 0 && !DungeonTileSheet.wallStitcheable.contains(map[pos - 1]))
 					visual += 8;
-				if (pos % mapWidth != 0 && pos + mapWidth < size && !wallStitcheable.contains(map[pos - 1 + mapWidth]))
+				if (pos % mapWidth != 0 && pos + mapWidth < size && !DungeonTileSheet.wallStitcheable.contains(map[pos - 1 + mapWidth]))
 					visual += 4;
-				if ((pos+1) % mapWidth != 0 && pos + mapWidth < size && !wallStitcheable.contains(map[pos + 1 + mapWidth]))
+				if ((pos+1) % mapWidth != 0 && pos + mapWidth < size && !DungeonTileSheet.wallStitcheable.contains(map[pos + 1 + mapWidth]))
 					visual += 2;
-				if ((pos+1) % mapWidth != 0 && !wallStitcheable.contains(map[pos + 1]))
+				if ((pos+1) % mapWidth != 0 && !DungeonTileSheet.wallStitcheable.contains(map[pos + 1]))
 					visual += 1;
 				return visual;
 			}
 
-		} else if (Dungeon.level.insideMap(pos) && wallStitcheable.contains(map[pos+mapWidth])) {
+		} else if (Dungeon.level.insideMap(pos) && DungeonTileSheet.wallStitcheable.contains(map[pos+mapWidth])) {
 
 			int visual;
 			if (map[pos] == Terrain.DOOR || map[pos] == Terrain.LOCKED_DOOR)
@@ -129,9 +115,9 @@ public class DungeonWallsTilemap extends Tilemap {
 			else
 				visual = DungeonTileSheet.WALL_OVERHANG;
 
-			if (!wallStitcheable.contains(map[pos - 1 + mapWidth]))
+			if (!DungeonTileSheet.wallStitcheable.contains(map[pos - 1 + mapWidth]))
 				visual += 2;
-			if (!wallStitcheable.contains(map[pos + 1 + mapWidth]))
+			if (!DungeonTileSheet.wallStitcheable.contains(map[pos + 1 + mapWidth]))
 				visual += 1;
 
 			return visual;
@@ -157,6 +143,6 @@ public class DungeonWallsTilemap extends Tilemap {
 
 	@Override
 	protected boolean needsRender(int pos) {
-		return data[pos] != -1;
+		return data[pos] != -1 && Level.discoverable[pos];
 	}
 }
