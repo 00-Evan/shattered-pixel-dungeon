@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import android.opengl.GLES20;
 
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Texture;
