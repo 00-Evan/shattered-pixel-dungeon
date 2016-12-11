@@ -21,8 +21,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
@@ -31,22 +29,14 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
-public class DungeonTilemap extends Tilemap {
+public abstract class DungeonTilemap extends Tilemap {
 
 	public static final int SIZE = 16;
-	
-	private static DungeonTilemap instance;
 
-	private int[] map;
+	protected int[] map;
 
-	public DungeonTilemap() {
-		super(
-			Dungeon.level.tilesTex(),
-			new TextureFilm( Dungeon.level.tilesTex(), SIZE, SIZE ) );
-
-		map( Dungeon.level.map, Dungeon.level.width() );
-		
-		instance = this;
+	public DungeonTilemap(String tex) {
+		super(tex, new TextureFilm( tex, SIZE, SIZE ) );
 	}
 
 	@Override
@@ -80,56 +70,7 @@ public class DungeonTilemap extends Tilemap {
 		}
 	}
 
-	private int getTileVisual(int pos, int tile, boolean flat) {
-		int visual = DungeonTileSheet.directVisuals.get(tile, -1);
-
-		if (tile == Terrain.WATER) {
-			return DungeonTileSheet.getWaterTile(
-					map[pos + PathFinder.CIRCLE4[0]],
-					map[pos + PathFinder.CIRCLE4[1]],
-					map[pos + PathFinder.CIRCLE4[2]],
-					map[pos + PathFinder.CIRCLE4[3]]
-			);
-
-		} else if (tile == Terrain.CHASM && pos >= mapWidth) {
-			return DungeonTileSheet.chasmStitcheable.get(map[pos - mapWidth], DungeonTileSheet.CHASM);
-		}
-
-		if (!flat) {
-			if ((tile == Terrain.DOOR || tile == Terrain.LOCKED_DOOR || tile == Terrain.OPEN_DOOR) && map[pos - mapWidth] == Terrain.WALL) {
-				return DungeonTileSheet.RAISED_DOOR_SIDEWAYS;
-			} else if (tile == Terrain.DOOR) {
-				return DungeonTileSheet.RAISED_DOOR;
-			} else if (tile == Terrain.OPEN_DOOR) {
-				return DungeonTileSheet.RAISED_DOOR_OPEN;
-			} else if (tile == Terrain.LOCKED_DOOR) {
-				return DungeonTileSheet.RAISED_DOOR_LOCKED;
-			} else if (tile == Terrain.WALL || tile == Terrain.WALL_DECO){
-				if (tile == Terrain.WALL) {
-					if (pos + mapWidth < size && (map[pos + mapWidth] == Terrain.DOOR || map[pos + mapWidth] == Terrain.LOCKED_DOOR || map[pos + mapWidth] == Terrain.OPEN_DOOR)){
-						visual = DungeonTileSheet.RAISED_WALL_DOOR;
-					} else {
-						visual = DungeonTileSheet.RAISED_WALL;
-					}
-				} else
-					visual = DungeonTileSheet.RAISED_WALL_DECO;
-
-				visual = DungeonTileSheet.getVisualWithAlts(visual, pos);
-
-				if (pos % mapWidth != 0 && !DungeonTileSheet.wallStitcheable.contains(map[pos - 1]))
-					visual += 2;
-				if (pos % mapWidth != mapWidth-1 && !DungeonTileSheet.wallStitcheable.contains(map[pos + 1]))
-					visual += 1;
-
-				return visual;
-			}
-		} else {
-			if (visual == -1)
-				visual = DungeonTileSheet.directFlatVisuals.get(tile);
-		}
-
-		return DungeonTileSheet.getVisualWithAlts(visual, pos);
-	}
+	protected abstract int getTileVisual(int pos, int tile, boolean flat);
 
 	public int screenToTile(int x, int y ) {
 		Point p = camera().screenToCamera( x, y ).
@@ -151,7 +92,8 @@ public class DungeonTilemap extends Tilemap {
 	
 	public void discover( int pos, int oldValue ) {
 		
-		final Image tile = tile( pos, oldValue );
+		final Image tile = new Image( texture );
+		tile.frame( tileset.get( getTileVisual( pos, oldValue, false)));
 		tile.point( tileToWorld( pos ) );
 
 		parent.add( tile );
@@ -174,20 +116,9 @@ public class DungeonTilemap extends Tilemap {
 			(pos / Dungeon.level.width() + 0.5f) * SIZE );
 	}
 	
-	public static Image tile( int pos, int tile ) {
-		Image img = new Image( instance.texture );
-		img.frame( instance.tileset.get( instance.getTileVisual( pos, tile, true ) ) );
-		return img;
-	}
-	
 	@Override
 	public boolean overlapsScreenPoint( int x, int y ) {
 		return true;
 	}
 
-	@Override
-	protected boolean needsRender(int pos) {
-		return (Level.discoverable[pos] || data[pos] == DungeonTileSheet.CHASM)
-				&& data[pos] != DungeonTileSheet.WATER;
-	}
 }

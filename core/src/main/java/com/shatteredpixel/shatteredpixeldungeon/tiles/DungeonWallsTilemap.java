@@ -31,56 +31,17 @@ import com.watabou.utils.Random;
 import java.util.Arrays;
 import java.util.List;
 
-public class DungeonWallsTilemap extends Tilemap {
-
-	public static final int SIZE = 16;
-
-	private static DungeonWallsTilemap instance;
-
-	private int[] map;
+public class DungeonWallsTilemap extends DungeonTilemap {
 
 	public DungeonWallsTilemap(){
-		super(
-				Dungeon.level.tilesTex(),
-				new TextureFilm( Dungeon.level.tilesTex(), SIZE, SIZE ) );
-
+		super(Dungeon.level.tilesTex());
 		map( Dungeon.level.map, Dungeon.level.width() );
-
-		instance = this;
 	}
 
 	@Override
-	//we need to retain two arrays, map is the dungeon tilemap which we can reference.
-	// Data is our own internal image representation of the tiles, which may differ.
-	public void map(int[] data, int cols) {
-		map = data;
-		super.map(new int[data.length], cols);
-	}
+	protected int getTileVisual(int pos, int tile, boolean flat){
 
-	@Override
-	public synchronized void updateMap() {
-		super.updateMap();
-		for (int i = 0; i < data.length; i++)
-			data[i] = getTileVisual(i ,map[i]);
-	}
-
-	@Override
-	public synchronized void updateMapCell(int cell) {
-		//update in a 3x3 grid to account for neighbours which might also be affected
-		if (Dungeon.level.insideMap(cell)) {
-			super.updateMapCell(cell - mapWidth - 1);
-			super.updateMapCell(cell + mapWidth + 1);
-			for (int i : PathFinder.NEIGHBOURS9)
-				data[cell + i] = getTileVisual(cell + i, map[cell + i]);
-
-			//unless we're at the level's edge, then just do the one tile.
-		} else {
-			super.updateMapCell(cell);
-			data[cell] = getTileVisual(cell, map[cell]);
-		}
-	}
-
-	private int getTileVisual(int pos, int tile){
+		if (flat) return -1;
 
 		if (DungeonTileSheet.wallStitcheable.contains(tile)) {
 			if (pos + mapWidth < size && !DungeonTileSheet.wallStitcheable.contains(map[pos + mapWidth])){
@@ -89,38 +50,26 @@ public class DungeonWallsTilemap extends Tilemap {
 					return DungeonTileSheet.DOOR_SIDEWAYS;
 				} else if (map[pos + mapWidth] == Terrain.LOCKED_DOOR){
 					return DungeonTileSheet.DOOR_SIDEWAYS_LOCKED;
+				} else {
+					return -1;
 				}
 
 			} else {
-				//otherwise, need to stitch with right, bottom-right, bottom-left, and left.
-				int visual = DungeonTileSheet.WALLS_INTERNAL;
-				if (pos % mapWidth != 0 && !DungeonTileSheet.wallStitcheable.contains(map[pos - 1]))
-					visual += 8;
-				if (pos % mapWidth != 0 && pos + mapWidth < size && !DungeonTileSheet.wallStitcheable.contains(map[pos - 1 + mapWidth]))
-					visual += 4;
-				if ((pos+1) % mapWidth != 0 && pos + mapWidth < size && !DungeonTileSheet.wallStitcheable.contains(map[pos + 1 + mapWidth]))
-					visual += 2;
-				if ((pos+1) % mapWidth != 0 && !DungeonTileSheet.wallStitcheable.contains(map[pos + 1]))
-					visual += 1;
-				return visual;
+				return DungeonTileSheet.stitchInternalWallTile(
+						(pos+1) % mapWidth != 0 ?                           map[pos + 1] : -1,
+						(pos+1) % mapWidth != 0 && pos + mapWidth < size ?  map[pos + 1 + mapWidth] : -1,
+						pos % mapWidth != 0 && pos + mapWidth < size ?      map[pos - 1 + mapWidth] : -1,
+						pos % mapWidth != 0 ?                               map[pos - 1] : -1
+				);
 			}
 
 		} else if (Dungeon.level.insideMap(pos) && DungeonTileSheet.wallStitcheable.contains(map[pos+mapWidth])) {
 
-			int visual;
-			if (map[pos] == Terrain.DOOR || map[pos] == Terrain.LOCKED_DOOR)
-				visual = DungeonTileSheet.DOOR_SIDEWAYS_OVERHANG;
-			else if (map[pos] == Terrain.OPEN_DOOR)
-				visual = DungeonTileSheet.DOOR_SIDEWAYS_OVERHANG_OPEN;
-			else
-				visual = DungeonTileSheet.WALL_OVERHANG;
-
-			if (!DungeonTileSheet.wallStitcheable.contains(map[pos - 1 + mapWidth]))
-				visual += 2;
-			if (!DungeonTileSheet.wallStitcheable.contains(map[pos + 1 + mapWidth]))
-				visual += 1;
-
-			return visual;
+			return DungeonTileSheet.stitchWallOverhangTile(
+					tile,
+					map[pos + 1 + mapWidth],
+					map[pos - 1 + mapWidth]
+			);
 
 		} else if (Dungeon.level.insideMap(pos) && (map[pos+mapWidth] == Terrain.DOOR || map[pos+mapWidth] == Terrain.LOCKED_DOOR) ) {
 			return DungeonTileSheet.DOOR_OVERHANG;

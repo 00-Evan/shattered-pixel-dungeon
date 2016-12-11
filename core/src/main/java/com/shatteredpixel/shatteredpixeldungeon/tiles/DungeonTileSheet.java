@@ -37,11 +37,14 @@ public class DungeonTileSheet {
 		return x + WIDTH*y;
 	}
 
+	//used in cases like map-edge decision making.
+	public static final int NULL_TILE       = -1;
+
 
 
 	/**********************************************************************
 	 * Floor Tiles
-	 ************************/
+	 **********************************************************************/
 
 	private static final int GROUND         =                               xy(1, 1);   //32 slots
 	public static final int FLOOR           = GROUND +0;
@@ -94,7 +97,7 @@ public class DungeonTileSheet {
 	);
 
 	//+1 for ground above, +2 for ground right, +4 for ground below, +8 for ground left.
-	public static int getWaterTile(int top, int right, int bottom, int left){
+	public static int stitchWaterTile(int top, int right, int bottom, int left){
 		int result = WATER;
 		if (waterStitcheable.contains(top))     result += 1;
 		if (waterStitcheable.contains(right))   result += 2;
@@ -144,7 +147,9 @@ public class DungeonTileSheet {
 		chasmStitcheable.put( Terrain.WATER,        CHASM_WATER );
 	}
 
-
+	public static int stitchChasmTile(int above){
+		return chasmStitcheable.get(above, CHASM);
+	}
 
 	/**********************************************************************
 	 Flat Wall Tiles
@@ -165,9 +170,6 @@ public class DungeonTileSheet {
 	public static final int LOCKED_EXIT         = FLAT_DOORS+4;
 
 
-	public static SparseIntArray defaultFlatVisuals = new SparseIntArray(32);
-
-
 
 	/**********************************************************************
 	 * Raised Wall Tiles, Lower Layer
@@ -183,6 +185,26 @@ public class DungeonTileSheet {
 	public static final int RAISED_WALL_ALT         = RAISED_WALLS+16;
 	public static final int RAISED_WALL_DECO_ALT    = RAISED_WALLS+20;
 
+	//These tiles count as wall for the purposes of wall stitching
+	public static List wallStitcheable = Arrays.asList(
+			Terrain.WALL, Terrain.WALL_DECO, Terrain.SECRET_DOOR,
+			Terrain.LOCKED_EXIT, Terrain.UNLOCKED_EXIT, NULL_TILE
+	);
+
+	public static int getRaisedWallTile(int tile, int pos, int right, int below, int left){
+		int result;
+		if (doorTiles.contains(below))      result = RAISED_WALL_DOOR;
+		else if (tile == Terrain.WALL)      result = RAISED_WALL;
+		else if (tile == Terrain.WALL_DECO) result = RAISED_WALL_DECO;
+		else    return -1;
+
+		result = getVisualWithAlts(result, pos);
+
+		if (wallStitcheable.contains(right)) result += 1;
+		if (wallStitcheable.contains(left)) result += 2;
+		return result;
+	}
+
 	private static final int RAISED_DOORS           =                       xy(1, 10);  //16 slots
 	public static final int RAISED_DOOR             = RAISED_DOORS+0;
 	public static final int RAISED_DOOR_OPEN        = RAISED_DOORS+1;
@@ -191,10 +213,16 @@ public class DungeonTileSheet {
 	public static final int RAISED_DOOR_SIDEWAYS    = RAISED_DOORS+3;
 
 
-	//These tiles count as wall for the purposes of wall stitching
-	public static List wallStitcheable = Arrays.asList(
-			Terrain.WALL, Terrain.WALL_DECO, Terrain.SECRET_DOOR,
-			Terrain.LOCKED_EXIT, Terrain.UNLOCKED_EXIT
+	public static int getRaisedDoorTile(int tile, int below){
+		if (wallStitcheable.contains(below))    return RAISED_DOOR_SIDEWAYS;
+		else if (tile == Terrain.DOOR)          return DungeonTileSheet.RAISED_DOOR;
+		else if (tile == Terrain.OPEN_DOOR)     return DungeonTileSheet.RAISED_DOOR_OPEN;
+		else if (tile == Terrain.LOCKED_DOOR)   return DungeonTileSheet.RAISED_DOOR_LOCKED;
+		else return -1;
+	}
+
+	public static List doorTiles = Arrays.asList(
+			Terrain.DOOR, Terrain.LOCKED_DOOR, Terrain.OPEN_DOOR
 	);
 
 
@@ -203,20 +231,41 @@ public class DungeonTileSheet {
 	 * Raised Wall Tiles, Upper Layer
 	 **********************************************************************/
 
-	//+1 for wall right, +2 for wall right-below, +4 for wall left-below, +8 for wall left.
+	//+1 for open right, +2 for open right-below, +4 for open left-below, +8 for open left.
 	public static final int WALLS_INTERNAL              =                   xy(1, 12);  //16 slots
 
-	//+1 for walls to the down-right, +2 for walls to the down-left
+	public static int stitchInternalWallTile(int right, int rightBelow, int leftBelow, int left){
+		int result = WALLS_INTERNAL;
+		if (!wallStitcheable.contains(right))        result += 1;
+		if (!wallStitcheable.contains(rightBelow))   result += 2;
+		if (!wallStitcheable.contains(leftBelow))    result += 4;
+		if (!wallStitcheable.contains(left))         result += 8;
+		return result;
+	}
+
+	//+1 for open to the down-right, +2 for open to the down-left
 	private static final int WALLS_OVERHANG             =                   xy(1, 13);  //16 slots
 	public static final int WALL_OVERHANG               = WALLS_OVERHANG+0;
 	public static final int DOOR_SIDEWAYS_OVERHANG      = WALL_OVERHANG+4;
 	public static final int DOOR_SIDEWAYS_OVERHANG_OPEN = WALL_OVERHANG+8;
+
+	public static int stitchWallOverhangTile(int tile, int rightBelow, int leftBelow){
+		int visual;
+		if (tile == Terrain.DOOR || tile == Terrain.LOCKED_DOOR)    visual = DOOR_SIDEWAYS_OVERHANG;
+		else if (tile == Terrain.OPEN_DOOR)                         visual = DOOR_SIDEWAYS_OVERHANG_OPEN;
+		else                                                        visual = WALL_OVERHANG;
+
+		if (!wallStitcheable.contains(rightBelow))  visual += 1;
+		if (!wallStitcheable.contains(leftBelow))   visual += 2;
+
+		return visual;
+	}
+
 	//no attachment to adjacent walls
 	public static final int DOOR_OVERHANG               = WALL_OVERHANG+12;
 	public static final int DOOR_OVERHANG_OPEN          = WALL_OVERHANG+13;
 	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+14;
 	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+15;
-
 
 	/**********************************************************************
 	 * Logic for the selection of tile visuals

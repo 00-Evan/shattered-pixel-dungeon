@@ -25,6 +25,7 @@ import android.opengl.GLES20;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.FogOfWar;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -110,7 +111,7 @@ public class GameScene extends PixelScene {
 	static GameScene scene;
 
 	private SkinnedBlock water;
-	private DungeonTilemap tiles;
+	private DungeonTerrainTilemap tiles;
 	private TerrainFeaturesTilemap terrainFeatures;
 	private DungeonWallsTilemap walls;
 	private FogOfWar fog;
@@ -185,7 +186,7 @@ public class GameScene extends PixelScene {
 
 		DungeonTileSheet.setupVariance(Dungeon.level.map.length, Dungeon.seedCurDepth());
 		
-		tiles = new DungeonTilemap();
+		tiles = new DungeonTerrainTilemap();
 		terrain.add( tiles );
 
 		ripples = new Group();

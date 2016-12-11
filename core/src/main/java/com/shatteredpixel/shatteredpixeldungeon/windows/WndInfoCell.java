@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -76,7 +77,7 @@ public class WndInfoCell extends Window {
 				water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
 				titlebar.icon(water);
 			} else {
-				titlebar.icon(DungeonTilemap.tile( cell, tile ));
+				titlebar.icon(DungeonTerrainTilemap.tile( cell, tile ));
 			}
 			titlebar.label(Dungeon.level.tileName(tile));
 			desc += Dungeon.level.tileDesc(tile);

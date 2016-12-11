@@ -34,19 +34,15 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.SparseArray;
 
 //TODO add in a proper set of vfx for plants growing/withering, grass burning, discovering traps
-public class TerrainFeaturesTilemap extends Tilemap {
-
-	public static final int SIZE = 16;
+public class TerrainFeaturesTilemap extends DungeonTilemap {
 
 	private static TerrainFeaturesTilemap instance;
-
-	private int[] map;
 
 	private SparseArray<Plant> plants;
 	private SparseArray<Trap> traps;
 
 	public TerrainFeaturesTilemap(SparseArray<Plant> plants, SparseArray<Trap> traps) {
-		super(Assets.TERRAIN_FEATURES, new TextureFilm( Assets.TERRAIN_FEATURES, SIZE, SIZE ));
+		super(Assets.TERRAIN_FEATURES);
 
 		this.plants = plants;
 		this.traps = traps;
@@ -56,38 +52,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
 		instance = this;
 	}
 
-	@Override
-	//we need to retain two arrays, map is the dungeon tilemap which we can reference.
-	// Data is our own internal image representation of the tiles, which may differ.
-	public void map(int[] data, int cols) {
-		map = data;
-		super.map(new int[data.length], cols);
-	}
-
-	@Override
-	public synchronized void updateMap() {
-		super.updateMap();
-		for (int i = 0; i < data.length; i++)
-			data[i] = getTileVisual(i ,map[i]);
-	}
-
-	@Override
-	public synchronized void updateMapCell(int cell) {
-		//update in a 3x3 grid to account for neighbours which might also be affected
-		if (Dungeon.level.insideMap(cell)) {
-			super.updateMapCell(cell - mapWidth - 1);
-			super.updateMapCell(cell + mapWidth + 1);
-			for (int i : PathFinder.NEIGHBOURS9)
-				data[cell + i] = getTileVisual(cell + i, map[cell + i]);
-
-			//unless we're at the level's edge, then just do the one tile.
-		} else {
-			super.updateMapCell(cell);
-			data[cell] = getTileVisual(cell, map[cell]);
-		}
-	}
-
-	private int getTileVisual(int pos, int tile){
+	protected int getTileVisual(int pos, int tile, boolean flat){
 		if (traps.get(pos) != null){
 			Trap trap = traps.get(pos);
 			if (!trap.visible)
@@ -113,7 +78,7 @@ public class TerrainFeaturesTilemap extends Tilemap {
 
 	public static Image tile(int pos, int tile ) {
 		Image img = new Image( instance.texture );
-		img.frame( instance.tileset.get( instance.getTileVisual( pos, tile ) ) );
+		img.frame( instance.tileset.get( instance.getTileVisual( pos, tile, true ) ) );
 		return img;
 	}
 
@@ -132,16 +97,6 @@ public class TerrainFeaturesTilemap extends Tilemap {
 				updateMapCell(pos);
 			}
 		} );
-	}
-
-	@Override
-	public boolean overlapsPoint( float x, float y ) {
-		return true;
-	}
-
-	@Override
-	public boolean overlapsScreenPoint( int x, int y ) {
-		return true;
 	}
 
 	@Override
