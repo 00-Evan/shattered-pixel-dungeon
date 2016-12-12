@@ -176,7 +176,7 @@ public class DungeonTileSheet {
 	 **********************************************************************/
 
 	private static final int RAISED_WALLS           =                       xy(1, 8);   //32 slots
-	//+1 for walls to the right, +2 for walls to the left
+	//+1 for open to the right, +2 for open to the left
 	public static final int RAISED_WALL             = RAISED_WALLS+0;
 	public static final int RAISED_WALL_DECO        = RAISED_WALLS+4;
 	//wall that appears behind a top/bottom doorway
@@ -200,8 +200,8 @@ public class DungeonTileSheet {
 
 		result = getVisualWithAlts(result, pos);
 
-		if (wallStitcheable.contains(right)) result += 1;
-		if (wallStitcheable.contains(left)) result += 2;
+		if (!wallStitcheable.contains(right)) result += 1;
+		if (!wallStitcheable.contains(left)) result += 2;
 		return result;
 	}
 
