@@ -193,15 +193,15 @@ public class DungeonTileSheet {
 
 	public static int getRaisedWallTile(int tile, int pos, int right, int below, int left){
 		int result;
-		if (doorTiles.contains(below))      result = RAISED_WALL_DOOR;
-		else if (tile == Terrain.WALL)      result = RAISED_WALL;
-		else if (tile == Terrain.WALL_DECO) result = RAISED_WALL_DECO;
-		else    return -1;
+		if (doorTiles.contains(below))                                  result = RAISED_WALL_DOOR;
+		else if (tile == Terrain.WALL || tile == Terrain.SECRET_DOOR)   result = RAISED_WALL;
+		else if (tile == Terrain.WALL_DECO)                             result = RAISED_WALL_DECO;
+		else                                                            return -1;
 
 		result = getVisualWithAlts(result, pos);
 
-		if (!wallStitcheable.contains(right)) result += 1;
-		if (!wallStitcheable.contains(left)) result += 2;
+		if (!wallStitcheable.contains(right))   result += 1;
+		if (!wallStitcheable.contains(left))    result += 2;
 		return result;
 	}
 

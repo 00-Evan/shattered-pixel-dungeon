@@ -92,6 +92,6 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 
 	@Override
 	protected boolean needsRender(int pos) {
-		return data[pos] != -1 && Level.discoverable[pos];
+		return data[pos] != -1;
 	}
 }
