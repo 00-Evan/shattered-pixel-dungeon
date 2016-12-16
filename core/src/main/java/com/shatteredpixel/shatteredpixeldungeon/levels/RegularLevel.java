@@ -507,7 +507,7 @@ public abstract class RegularLevel extends Level {
 				secretDoors++;
 				break;
 			case BARRICADE:
-				map[door] = Random.Int( 3 ) == 0 ? Terrain.BOOKSHELF : Terrain.BARRICADE;
+				map[door] = Terrain.BARRICADE;
 				break;
 			case LOCKED:
 				map[door] = Terrain.LOCKED_DOOR;

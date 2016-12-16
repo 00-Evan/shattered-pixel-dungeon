@@ -38,34 +38,15 @@ public class LibraryPainter extends Painter {
 	public static void paint( Level level, Room room ) {
 		
 		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY );
+		fill( level, room, 1, Terrain.EMPTY_SP );
 		
 		Room.Door entrance = room.entrance();
 		Point a = null;
 		Point b = null;
-		
-		if (entrance.x == room.left) {
-			a = new Point( room.left+1, entrance.y-1 );
-			b = new Point( room.left+1, entrance.y+1 );
-			fill( level, room.right - 1, room.top + 1, 1, room.height() - 1 , Terrain.BOOKSHELF );
-		} else if (entrance.x == room.right) {
-			a = new Point( room.right-1, entrance.y-1 );
-			b = new Point( room.right-1, entrance.y+1 );
-			fill( level, room.left+1, room.top + 1, 1, room.height() - 1 , Terrain.BOOKSHELF );
-		} else if (entrance.y == room.top) {
-			a = new Point( entrance.x+1, room.top+1 );
-			b = new Point( entrance.x-1, room.top+1 );
-			fill( level, room.left + 1, room.bottom-1, room.width() - 1, 1 , Terrain.BOOKSHELF );
-		} else if (entrance.y == room.bottom) {
-			a = new Point( entrance.x+1, room.bottom-1 );
-			b = new Point( entrance.x-1, room.bottom-1 );
-			fill( level, room.left + 1, room.top+1, room.width() - 1, 1 , Terrain.BOOKSHELF );
-		}
-		if (a != null && level.map[a.x + a.y * level.width()] == Terrain.EMPTY) {
-			set( level, a, Terrain.STATUE );
-		}
-		if (b != null && level.map[b.x + b.y * level.width()] == Terrain.EMPTY) {
-			set( level, b, Terrain.STATUE );
+
+		fill( level, room.left + 1, room.top+1, room.width() - 1, 1 , Terrain.BOOKSHELF );
+		if (entrance.y == room.top){
+			set( level, entrance.x, entrance.y + 1, Terrain.EMPTY_SP );
 		}
 		
 		int n = Random.IntRange( 2, 3 );
@@ -73,7 +54,7 @@ public class LibraryPainter extends Painter {
 			int pos;
 			do {
 				pos = level.pointToCell(room.random());
-			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
+			} while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get( pos ) != null);
 			Item item;
 			if (i == 0)
 				item = Random.Int(2) == 0 ? new ScrollOfIdentify() : new ScrollOfRemoveCurse();

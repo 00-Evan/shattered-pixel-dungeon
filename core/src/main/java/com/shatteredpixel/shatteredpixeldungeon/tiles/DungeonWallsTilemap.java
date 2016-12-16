@@ -50,12 +50,13 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 					return DungeonTileSheet.DOOR_SIDEWAYS;
 				} else if (map[pos + mapWidth] == Terrain.LOCKED_DOOR){
 					return DungeonTileSheet.DOOR_SIDEWAYS_LOCKED;
-				} else {
-					return -1;
+				} else if (map[pos + mapWidth] == Terrain.OPEN_DOOR){
+					return DungeonTileSheet.NULL_TILE;
 				}
 
 			} else {
 				return DungeonTileSheet.stitchInternalWallTile(
+						tile,
 						(pos+1) % mapWidth != 0 ?                           map[pos + 1] : -1,
 						(pos+1) % mapWidth != 0 && pos + mapWidth < size ?  map[pos + 1 + mapWidth] : -1,
 						pos % mapWidth != 0 && pos + mapWidth < size ?      map[pos - 1 + mapWidth] : -1,
@@ -63,11 +64,14 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 				);
 			}
 
-		} else if (Dungeon.level.insideMap(pos) && DungeonTileSheet.wallStitcheable.contains(map[pos+mapWidth])) {
+		}
+
+		if (Dungeon.level.insideMap(pos) && DungeonTileSheet.wallStitcheable.contains(map[pos+mapWidth])) {
 
 			return DungeonTileSheet.stitchWallOverhangTile(
 					tile,
 					map[pos + 1 + mapWidth],
+					map[pos + mapWidth],
 					map[pos - 1 + mapWidth]
 			);
 
@@ -75,6 +79,8 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 			return DungeonTileSheet.DOOR_OVERHANG;
 		} else if (Dungeon.level.insideMap(pos) && map[pos+mapWidth] == Terrain.OPEN_DOOR ) {
 			return DungeonTileSheet.DOOR_OVERHANG_OPEN;
+		} else if (pos + mapWidth < size && map[pos+mapWidth] == Terrain.BARRICADE){
+			return DungeonTileSheet.BARRICADE_OVERHANG;
 		}
 
 		return -1;

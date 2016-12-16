@@ -184,13 +184,13 @@ public class GameScene extends PixelScene {
 		};
 		terrain.add( water );
 
+		ripples = new Group();
+		terrain.add( ripples );
+
 		DungeonTileSheet.setupVariance(Dungeon.level.map.length, Dungeon.seedCurDepth());
 		
 		tiles = new DungeonTerrainTilemap();
 		terrain.add( tiles );
-
-		ripples = new Group();
-		terrain.add( ripples );
 
 		customTiles = new Group();
 		terrain.add(customTiles);

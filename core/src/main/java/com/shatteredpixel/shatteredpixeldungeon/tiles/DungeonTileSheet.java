@@ -72,10 +72,6 @@ public class DungeonTileSheet {
 	public static final int EMPTY_WELL      = GROUND +22;
 	public static final int ALCHEMY_POT     = GROUND +23;
 	public static final int PEDESTAL        = GROUND +24;
-	public static final int BARRICADE       = GROUND +25;
-	public static final int BOOKSHELF       = GROUND +26;
-
-	public static final int BOOKSHELF_ALT   = GROUND +28;
 
 
 
@@ -152,43 +148,48 @@ public class DungeonTileSheet {
 	}
 
 	/**********************************************************************
-	 Flat Wall Tiles
+	 Flat Tiles
 	 **********************************************************************/
 
 	private static final int FLAT_WALLS         =                           xy(1, 5);   //16 slots
 	public static final int FLAT_WALL           = FLAT_WALLS+0;
 	public static final int FLAT_WALL_DECO      = FLAT_WALLS+1;
+	public static final int FLAT_BOOKSHELF      = FLAT_WALLS+2;
 
-	public static final int FLAT_WALL_ALT       = FLAT_WALLS+3;
-	public static final int FLAT_WALL_DECO_ALT  = FLAT_WALLS+4;
+	public static final int FLAT_WALL_ALT       = FLAT_WALLS+4;
+	public static final int FLAT_WALL_DECO_ALT  = FLAT_WALLS+5;
+	public static final int FLAT_BOOKSHELF_ALT  = FLAT_WALLS+6;
 
-	private static final int FLAT_DOORS         =                           xy(1,6);    //16 slots
+	private static final int FLAT_DOORS         =                           xy(1, 6);   //16 slots
 	public static final int FLAT_DOOR           = FLAT_DOORS+0;
 	public static final int FLAT_DOOR_OPEN      = FLAT_DOORS+1;
 	public static final int FLAT_DOOR_LOCKED    = FLAT_DOORS+2;
 	public static final int UNLOCKED_EXIT       = FLAT_DOORS+3;
 	public static final int LOCKED_EXIT         = FLAT_DOORS+4;
 
+	public static final int FLAT_BARRICADE      =                           xy(1, 7);
 
 
 	/**********************************************************************
-	 * Raised Wall Tiles, Lower Layer
+	 * Raised Tiles, Lower Layer
 	 **********************************************************************/
 
-	private static final int RAISED_WALLS           =                       xy(1, 8);   //32 slots
+	private static final int RAISED_WALLS               =                   xy(1, 8);   //32 slots
 	//+1 for open to the right, +2 for open to the left
-	public static final int RAISED_WALL             = RAISED_WALLS+0;
-	public static final int RAISED_WALL_DECO        = RAISED_WALLS+4;
+	public static final int RAISED_WALL                 = RAISED_WALLS+0;
+	public static final int RAISED_WALL_DECO            = RAISED_WALLS+4;
 	//wall that appears behind a top/bottom doorway
-	public static final int RAISED_WALL_DOOR        = RAISED_WALLS+8;
+	public static final int RAISED_WALL_DOOR            = RAISED_WALLS+8;
+	public static final int RAISED_WALL_BOOKSHELF       = RAISED_WALLS+12;
 
-	public static final int RAISED_WALL_ALT         = RAISED_WALLS+16;
-	public static final int RAISED_WALL_DECO_ALT    = RAISED_WALLS+20;
+	public static final int RAISED_WALL_ALT             = RAISED_WALLS+16;
+	public static final int RAISED_WALL_DECO_ALT        = RAISED_WALLS+20;
+	public static final int RAISED_WALL_BOOKSHELF_ALT   = RAISED_WALLS+28;
 
 	//These tiles count as wall for the purposes of wall stitching
 	public static List wallStitcheable = Arrays.asList(
 			Terrain.WALL, Terrain.WALL_DECO, Terrain.SECRET_DOOR,
-			Terrain.LOCKED_EXIT, Terrain.UNLOCKED_EXIT, NULL_TILE
+			Terrain.LOCKED_EXIT, Terrain.UNLOCKED_EXIT, Terrain.BOOKSHELF, NULL_TILE
 	);
 
 	public static int getRaisedWallTile(int tile, int pos, int right, int below, int left){
@@ -196,6 +197,7 @@ public class DungeonTileSheet {
 		if (doorTiles.contains(below))                                  result = RAISED_WALL_DOOR;
 		else if (tile == Terrain.WALL || tile == Terrain.SECRET_DOOR)   result = RAISED_WALL;
 		else if (tile == Terrain.WALL_DECO)                             result = RAISED_WALL_DECO;
+		else if (tile == Terrain.BOOKSHELF)                             result = RAISED_WALL_BOOKSHELF;
 		else                                                            return -1;
 
 		result = getVisualWithAlts(result, pos);
@@ -225,17 +227,25 @@ public class DungeonTileSheet {
 			Terrain.DOOR, Terrain.LOCKED_DOOR, Terrain.OPEN_DOOR
 	);
 
+	public static final int RAISED_BARRICADE        = xy(1, 11);
+
 
 
 	/**********************************************************************
-	 * Raised Wall Tiles, Upper Layer
+	 * Raised Tiles, Upper Layer
 	 **********************************************************************/
 
 	//+1 for open right, +2 for open right-below, +4 for open left-below, +8 for open left.
-	public static final int WALLS_INTERNAL              =                   xy(1, 12);  //16 slots
+	public static final int WALLS_INTERNAL              =                   xy(1, 12);  //32 slots
+	private static final int WALL_INTERNAL              = WALLS_INTERNAL+0;
+	private static final int WALL_INTERNAL_WOODEN       = WALLS_INTERNAL+16;
 
-	public static int stitchInternalWallTile(int right, int rightBelow, int leftBelow, int left){
-		int result = WALLS_INTERNAL;
+	public static int stitchInternalWallTile(int tile, int right, int rightBelow, int leftBelow, int left){
+		int result;
+
+		if (tile == Terrain.BOOKSHELF)  result = WALL_INTERNAL_WOODEN;
+		else                            result = WALL_INTERNAL;
+
 		if (!wallStitcheable.contains(right))        result += 1;
 		if (!wallStitcheable.contains(rightBelow))   result += 2;
 		if (!wallStitcheable.contains(leftBelow))    result += 4;
@@ -244,15 +254,17 @@ public class DungeonTileSheet {
 	}
 
 	//+1 for open to the down-right, +2 for open to the down-left
-	private static final int WALLS_OVERHANG             =                   xy(1, 13);  //16 slots
+	private static final int WALLS_OVERHANG             =                   xy(1, 14);  //32 slots
 	public static final int WALL_OVERHANG               = WALLS_OVERHANG+0;
-	public static final int DOOR_SIDEWAYS_OVERHANG      = WALL_OVERHANG+4;
-	public static final int DOOR_SIDEWAYS_OVERHANG_OPEN = WALL_OVERHANG+8;
+	public static final int DOOR_SIDEWAYS_OVERHANG      = WALLS_OVERHANG+4;
+	public static final int DOOR_SIDEWAYS_OVERHANG_OPEN = WALLS_OVERHANG+8;
+	public static final int WALL_OVERHANG_WOODEN        = WALLS_OVERHANG+12;
 
-	public static int stitchWallOverhangTile(int tile, int rightBelow, int leftBelow){
+	public static int stitchWallOverhangTile(int tile, int rightBelow, int below, int leftBelow){
 		int visual;
 		if (tile == Terrain.DOOR || tile == Terrain.LOCKED_DOOR)    visual = DOOR_SIDEWAYS_OVERHANG;
 		else if (tile == Terrain.OPEN_DOOR)                         visual = DOOR_SIDEWAYS_OVERHANG_OPEN;
+		else if (below == Terrain.BOOKSHELF)                        visual = WALL_OVERHANG_WOODEN;
 		else                                                        visual = WALL_OVERHANG;
 
 		if (!wallStitcheable.contains(rightBelow))  visual += 1;
@@ -262,10 +274,12 @@ public class DungeonTileSheet {
 	}
 
 	//no attachment to adjacent walls
-	public static final int DOOR_OVERHANG               = WALL_OVERHANG+12;
-	public static final int DOOR_OVERHANG_OPEN          = WALL_OVERHANG+13;
-	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+14;
-	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+15;
+	public static final int DOOR_OVERHANG               = WALL_OVERHANG+16;
+	public static final int DOOR_OVERHANG_OPEN          = WALL_OVERHANG+17;
+	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+18;
+	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+19;
+
+	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+21;
 
 	/**********************************************************************
 	 * Logic for the selection of tile visuals
@@ -281,7 +295,6 @@ public class DungeonTileSheet {
 		directVisuals.put(Terrain.EXIT,             EXIT);
 		directVisuals.put(Terrain.EMBERS,           EMBERS);
 		directVisuals.put(Terrain.PEDESTAL,         PEDESTAL);
-		directVisuals.put(Terrain.BARRICADE,        BARRICADE);
 		directVisuals.put(Terrain.EMPTY_SP,         FLOOR_SP);
 		directVisuals.put(Terrain.HIGH_GRASS,       HIGH_GRASS);
 
@@ -296,7 +309,6 @@ public class DungeonTileSheet {
 		directVisuals.put(Terrain.WELL,             WELL);
 		directVisuals.put(Terrain.STATUE,           STATUE);
 		directVisuals.put(Terrain.STATUE_SP,        STATUE_SP);
-		directVisuals.put(Terrain.BOOKSHELF,        BOOKSHELF);
 		directVisuals.put(Terrain.ALCHEMY,          ALCHEMY_POT);
 
 	}
@@ -309,6 +321,8 @@ public class DungeonTileSheet {
 		directFlatVisuals.put(Terrain.OPEN_DOOR,        FLAT_DOOR_OPEN);
 		directFlatVisuals.put(Terrain.LOCKED_DOOR,      FLAT_DOOR_LOCKED);
 		directFlatVisuals.put(Terrain.WALL_DECO,        FLAT_WALL_DECO);
+		directFlatVisuals.put(Terrain.BOOKSHELF,        FLAT_BOOKSHELF);
+		directFlatVisuals.put(Terrain.BARRICADE,        FLAT_BARRICADE);
 
 		directFlatVisuals.put(Terrain.SECRET_DOOR,      directFlatVisuals.get(Terrain.WALL));
 	}
@@ -331,19 +345,19 @@ public class DungeonTileSheet {
 	//These alt visuals will trigger 50% of the time (45% of the time if a rare alt is also present)
 	public static SparseIntArray commonAltVisuals = new SparseIntArray(32);
 	static {
-		commonAltVisuals.put(FLOOR,             FLOOR_ALT_1);
-		commonAltVisuals.put(GRASS,             GRASS_ALT);
-		commonAltVisuals.put(FLAT_WALL,         FLAT_WALL_ALT);
-		commonAltVisuals.put(EMBERS,            EMBERS_ALT);
-		commonAltVisuals.put(FLAT_WALL_DECO,    FLAT_WALL_DECO_ALT);
-		commonAltVisuals.put(FLOOR_SP,          FLOOR_SP_ALT);
-		commonAltVisuals.put(HIGH_GRASS,        HIGH_GRASS_ALT);
-		commonAltVisuals.put(FLOOR_DECO,        FLOOR_DECO_ALT);
+		commonAltVisuals.put(FLOOR,                 FLOOR_ALT_1);
+		commonAltVisuals.put(GRASS,                 GRASS_ALT);
+		commonAltVisuals.put(FLAT_WALL,             FLAT_WALL_ALT);
+		commonAltVisuals.put(EMBERS,                EMBERS_ALT);
+		commonAltVisuals.put(FLAT_WALL_DECO,        FLAT_WALL_DECO_ALT);
+		commonAltVisuals.put(FLOOR_SP,              FLOOR_SP_ALT);
+		commonAltVisuals.put(HIGH_GRASS,            HIGH_GRASS_ALT);
+		commonAltVisuals.put(FLOOR_DECO,            FLOOR_DECO_ALT);
+		commonAltVisuals.put(FLAT_BOOKSHELF,        FLAT_BOOKSHELF_ALT);
 
-		commonAltVisuals.put(BOOKSHELF,         BOOKSHELF_ALT);
-
-		commonAltVisuals.put(RAISED_WALL,       RAISED_WALL_ALT);
-		commonAltVisuals.put(RAISED_WALL_DECO,  RAISED_WALL_DECO_ALT);
+		commonAltVisuals.put(RAISED_WALL,           RAISED_WALL_ALT);
+		commonAltVisuals.put(RAISED_WALL_DECO,      RAISED_WALL_DECO_ALT);
+		commonAltVisuals.put(RAISED_WALL_BOOKSHELF, RAISED_WALL_BOOKSHELF_ALT);
 	}
 
 	//These alt visuals trigger 5% of the time (and also override common alts when they show up)

@@ -38,7 +38,8 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 		if (!flat) {
 			if ((DungeonTileSheet.doorTiles.contains(tile))) {
 				return DungeonTileSheet.getRaisedDoorTile(tile, map[pos - mapWidth]);
-			} else if (tile == Terrain.WALL || tile == Terrain.WALL_DECO || tile == Terrain.SECRET_DOOR){
+			} else if (tile == Terrain.WALL || tile == Terrain.WALL_DECO
+					|| tile == Terrain.SECRET_DOOR || tile == Terrain.BOOKSHELF){
 				return DungeonTileSheet.getRaisedWallTile(
 						tile,
 						pos,
@@ -46,8 +47,10 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 						pos + mapWidth < size ?     map[pos + mapWidth] : -1,
 						pos % mapWidth != 0 ?       map[pos - 1] : -1
 						);
+			} else if (tile == Terrain.BARRICADE) {
+				return DungeonTileSheet.RAISED_BARRICADE;
 			} else {
-				return -1;
+				return DungeonTileSheet.NULL_TILE;
 			}
 		} else {
 			return DungeonTileSheet.getVisualWithAlts(
