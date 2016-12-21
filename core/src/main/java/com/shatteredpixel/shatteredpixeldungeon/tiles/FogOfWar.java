@@ -18,11 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import android.opengl.GLES20;
 
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Texture;
@@ -37,24 +38,37 @@ import java.nio.IntBuffer;
 
 public class FogOfWar extends Image {
 
-	private static final int VISIBLE[]	= new int[]{0xAA000000, 0x55000000, //-2 and -1 brightness
-													0x00000000, //0 brightness
-													0x00000000, 0x00000000}; //1 and 2 brightness
+	//first index is visibility type, second is brightness level
+	private static final int FOG_COLORS[][] = new int[][]{{
+			//visible
+			0xAA000000, 0x55000000, //-2 and -1 brightness
+			0x00000000, //0 brightness
+			0x00000000, 0x00000000 //1 and 2 brightness
+			}, {
+			//visited
+			0xEE000000, 0xDD000000,
+			0xCC000000,
+			0x99000000, 0x66000000
+			}, {
+			//mapped
+			0xEE442211, 0xDD442211,
+			0xCC442211,
+			0x99442211, 0x66442211
+			}, {
+			//invisible
+			0xFF000000, 0xFF000000,
+			0xFF000000,
+			0xFF000000, 0xFF000000
+			}};
 
-	private static final int VISITED[]	= new int[]{0xEE000000, 0xDD000000,
-													0xCC000000,
-													0x99000000, 0x66000000};
-
-	private static final int MAPPED[]   = new int[]{0xEE442211, 0xDD442211,
-													0xCC442211,
-													0x99442211, 0x66442211};
-
-	private static final int INVISIBLE[]= new int[]{0xFF000000, 0xFF000000,
-													0xFF000000,
-													0xFF000000, 0xFF000000};
+	private static final int VISIBLE    =   0;
+	private static final int VISITED    =   1;
+	private static final int MAPPED     =   2;
+	private static final int INVISIBLE  =   3;
 
 	private int mapWidth;
 	private int mapHeight;
+	private int mapLength;
 	
 	private int pWidth;
 	private int pHeight;
@@ -73,6 +87,7 @@ public class FogOfWar extends Image {
 
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
+		mapLength = mapHeight * mapWidth;
 		
 		pWidth = mapWidth * PIX_PER_TILE;
 		pHeight = mapHeight * PIX_PER_TILE;
@@ -113,30 +128,100 @@ public class FogOfWar extends Image {
 		updating = new Rect(updated);
 		updated.setEmpty();
 	}
+
+	private boolean[] visible;
+	private boolean[] visited;
+	private boolean[] mapped;
+	private int brightness;
 	
 	private void updateTexture( boolean[] visible, boolean[] visited, boolean[] mapped ) {
+		this.visible = visible;
+		this.visited = visited;
+		this.mapped = mapped;
+		this.brightness = ShatteredPixelDungeon.brightness() + 2;
 
 		moveToUpdating();
 
 		FogTexture fog = (FogTexture)texture;
 
-		int brightness = ShatteredPixelDungeon.brightness() + 2;
-
+		int cellIndex;
+		int[] colorArray = new int[PIX_PER_TILE*PIX_PER_TILE];
 		for (int i=updating.top; i < updating.bottom; i++) {
 			int cell = mapWidth * i + updating.left;
-			//fog.pixels.position((width2) * i + updating.left);
 			for (int j=updating.left; j < updating.right; j++) {
-				if (cell >= Dungeon.level.length()) {
-					//do nothing
-				} else if (visible[cell]) {
-					fillCell(j, i, VISIBLE[brightness]);
-				} else if (visited[cell]) {
-					fillCell(j, i, VISITED[brightness]);
-				} else if (mapped[cell] ) {
-					fillCell(j, i, MAPPED[brightness]);
-				} else {
-					fillCell(j, i, INVISIBLE[brightness]);
+
+				if (cell >= Dungeon.level.length()) continue; //do nothing
+
+				if (!visible[cell] && !visited[cell] && !mapped[cell]){
+					fillCell(j, i, FOG_COLORS[INVISIBLE][brightness]);
+					cell++;
+					continue;
 				}
+
+				//triggers on wall tiles or sideways doors
+				if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell]) ||
+						( DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell])
+								&& cell + mapWidth < mapLength
+								&& DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + mapWidth]))) {
+					cellIndex = getColorIndexForCell(cell);
+
+					if (cell + mapWidth < mapLength){
+						if (!DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + mapWidth])
+								&& getColorIndexForCell(cell + mapWidth) > cellIndex) {
+							cellIndex = getColorIndexForCell(cell + mapWidth);
+						}
+
+						if (cell % mapWidth != 0){
+							if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell - 1])){
+								if (getColorIndexForCell(cell - 1 + mapWidth) > cellIndex)
+									colorArray[0] = colorArray[2] = FOG_COLORS[getColorIndexForCell(cell - 1 + mapWidth)][brightness];
+								else
+									colorArray[0] = colorArray[2] = FOG_COLORS[cellIndex][brightness];
+							} else {
+								if (getColorIndexForCell(cell - 1) > cellIndex)
+									colorArray[0] = colorArray[2] = FOG_COLORS[getColorIndexForCell(cell - 1)][brightness];
+								else
+									colorArray[0] = colorArray[2] = FOG_COLORS[cellIndex][brightness];
+							}
+						} else {
+							colorArray[0] = colorArray[2] = FOG_COLORS[cellIndex][brightness];
+						}
+
+						if ((cell+1) % mapWidth != 0){
+							if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + 1])){
+								if (getColorIndexForCell(cell + 1 + mapWidth) > cellIndex)
+									colorArray[1] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + 1 + mapWidth)][brightness];
+								else
+									colorArray[1] = colorArray[3] = FOG_COLORS[cellIndex][brightness];
+							} else {
+								if (getColorIndexForCell(cell + 1) > cellIndex)
+									colorArray[1] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + 1)][brightness];
+								else
+									colorArray[1] = colorArray[3] = FOG_COLORS[cellIndex][brightness];
+							}
+						} else {
+							colorArray[1] = colorArray[3] = FOG_COLORS[cellIndex][brightness];
+						}
+
+					} else {
+						if (cell % mapWidth != 0 && getColorIndexForCell(cell - 1) > cellIndex) {
+							colorArray[0] = colorArray[2] = FOG_COLORS[getColorIndexForCell(cell - 1)][brightness];
+						} else {
+							colorArray[0] = colorArray[2] = FOG_COLORS[cellIndex][brightness];
+						}
+
+						if ((cell+1) % mapWidth != 0 && getColorIndexForCell(cell + 1) > cellIndex) {
+							colorArray[1] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + 1)][brightness];
+						} else {
+							colorArray[1] = colorArray[3] = FOG_COLORS[cellIndex][brightness];
+						}
+					}
+
+					fillCell(j, i, colorArray);
+				} else {
+					fillCell(j, i, FOG_COLORS[getColorIndexForCell(cell)][brightness]);
+				}
+
 				cell++;
 			}
 		}
@@ -146,6 +231,29 @@ public class FogOfWar extends Image {
 		else
 			fog.update(updating.top * PIX_PER_TILE, updating.bottom * PIX_PER_TILE);
 
+	}
+
+	private int getColorIndexForCell( int cell ){
+
+		if (visible[cell]) {
+			return VISIBLE;
+		} else if (visited[cell]) {
+			return VISITED;
+		} else if (mapped[cell] ) {
+			return MAPPED;
+		} else {
+			return INVISIBLE;
+		}
+	}
+
+	private void fillCell( int x, int y, int[] colors){
+		FogTexture fog = (FogTexture)texture;
+		for (int i = 0; i < PIX_PER_TILE; i++){
+			fog.pixels.position(((y * PIX_PER_TILE)+i)*width2 + x * PIX_PER_TILE);
+			for (int j = 0; j < PIX_PER_TILE; j++) {
+				fog.pixels.put(colors[i*PIX_PER_TILE + j]);
+			}
+		}
 	}
 
 	private void fillCell( int x, int y, int color){

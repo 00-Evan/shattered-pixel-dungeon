@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.FogOfWar;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.FogOfWar;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -59,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.DiscardedItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.WallBlockingTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
@@ -114,6 +115,7 @@ public class GameScene extends PixelScene {
 	private DungeonTerrainTilemap tiles;
 	private TerrainFeaturesTilemap terrainFeatures;
 	private DungeonWallsTilemap walls;
+	private WallBlockingTilemap wallBlocking;
 	private FogOfWar fog;
 	private HeroSprite hero;
 
@@ -240,6 +242,9 @@ public class GameScene extends PixelScene {
 
 		walls = new DungeonWallsTilemap();
 		add(walls);
+
+		wallBlocking = new WallBlockingTilemap();
+		add (wallBlocking);
 
 		fog = new FogOfWar( Dungeon.level.width(), Dungeon.level.height() );
 		add( fog );
@@ -723,13 +728,16 @@ public class GameScene extends PixelScene {
 	}
 
 	public static void updateFog(){
-		if (scene != null)
+		if (scene != null) {
 			scene.fog.updateFog();
+			scene.wallBlocking.updateMap();
+		}
 	}
 
 	public static void updateFog(int x, int y, int w, int h){
 		if (scene != null) {
 			scene.fog.updateFogArea(x, y, w, h);
+			scene.wallBlocking.updateArea(x, y, w, h);
 		}
 	}
 	
