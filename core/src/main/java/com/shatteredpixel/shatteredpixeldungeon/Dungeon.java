@@ -697,24 +697,30 @@ public class Dungeon {
 		
 		level.updateFieldOfView(hero, visible);
 
-		int cx = hero.pos % level.width();
-		int cy = hero.pos / level.width();
+		if (hero.buff(MindVision.class) != null || hero.buff(Awareness.class) != null) {
+			BArray.or( level.visited, visible, 0, visible.length, level.visited );
 
-		int ax = Math.max( 0, cx - dist );
-		int bx = Math.min( cx + dist, level.width() - 1 );
-		int ay = Math.max( 0, cy - dist );
-		int by = Math.min( cy + dist, level.height() - 1 );
+			GameScene.updateFog();
+		} else {
 
-		int len = bx - ax + 1;
-		int pos = ax + ay * level.width();
-		for (int y = ay; y <= by; y++, pos+=level.width()) {
-			BArray.or( level.visited, visible, pos, len, level.visited );
+			int cx = hero.pos % level.width();
+			int cy = hero.pos / level.width();
+
+			int ax = Math.max( 0, cx - dist );
+			int bx = Math.min( cx + dist, level.width() - 1 );
+			int ay = Math.max( 0, cy - dist );
+			int by = Math.min( cy + dist, level.height() - 1 );
+
+			int len = bx - ax + 1;
+			int pos = ax + ay * level.width();
+
+			for (int y = ay; y <= by; y++, pos+=level.width()) {
+				BArray.or( level.visited, visible, pos, len, level.visited );
+			}
+
+			GameScene.updateFog(ax, ay, len, by-ay);
 		}
 
-		if (hero.buff(MindVision.class) != null || hero.buff(Awareness.class) != null)
-			GameScene.updateFog();
-		else
-			GameScene.updateFog(ax, ay, len, by-ay);
 
 		GameScene.afterObserve();
 	}
