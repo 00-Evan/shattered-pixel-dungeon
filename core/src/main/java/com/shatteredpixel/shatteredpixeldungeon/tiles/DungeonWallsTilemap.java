@@ -66,13 +66,13 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 
 		}
 
-		if (Dungeon.level.insideMap(pos) && DungeonTileSheet.wallStitcheable.contains(map[pos+mapWidth])) {
+		if (pos + mapWidth < size && DungeonTileSheet.wallStitcheable.contains(map[pos+mapWidth])) {
 
 			return DungeonTileSheet.stitchWallOverhangTile(
 					tile,
-					map[pos + 1 + mapWidth],
-					map[pos + mapWidth],
-					map[pos - 1 + mapWidth]
+					(pos+1) % mapWidth != 0 ?   map[pos + 1 + mapWidth] : -1,
+												map[pos + mapWidth],
+					pos % mapWidth != 0 ?       map[pos - 1 + mapWidth] : -1
 			);
 
 		} else if (Dungeon.level.insideMap(pos) && (map[pos+mapWidth] == Terrain.DOOR || map[pos+mapWidth] == Terrain.LOCKED_DOOR) ) {

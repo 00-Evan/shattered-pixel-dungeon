@@ -55,20 +55,26 @@ public class WallBlockingTilemap extends Tilemap {
 		if (fogHidden(cell) && fogHidden(cell - mapWidth)){
 			curr = BLOCK_NONE;
 
-		} else if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell])) {
+		} else if (wall(cell)) {
 			if (cell + mapWidth < Dungeon.level.map.length) {
-				if (!DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + mapWidth])) {
-					if (fogHidden(cell + mapWidth)) {
-						curr = BLOCK_ALL;
-					} else {
+				if (!wall(cell + mapWidth)) {
+					if (!fogHidden(cell + mapWidth)){
 						curr = BLOCK_NONE;
+					} else if ((cell + 1) % mapWidth != 0 && !fogHidden(cell + 1)
+							&& !door(cell + 1) && !(wall(cell + 1) && wall(cell + 1 + mapWidth))){
+						curr = BLOCK_NONE;
+					} else if (cell % mapWidth != 0 && !fogHidden(cell - 1)
+							&& !door(cell - 1) && !(wall(cell - 1) && wall(cell - 1 + mapWidth))){
+						curr = BLOCK_NONE;
+					} else {
+						curr = BLOCK_ALL;
 					}
 				} else {
 					curr = BLOCK_NONE;
 
 					if ((cell + 1) % mapWidth != 0) {
 
-						if (!DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + 1])){
+						if (!wall(cell + 1) && !door(cell + 1)){
 							if (fogHidden(cell + 1)) {
 								curr += 1;
 							}
@@ -82,7 +88,7 @@ public class WallBlockingTilemap extends Tilemap {
 
 					if (cell % mapWidth != 0) {
 
-						if (!DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell - 1])){
+						if (!wall(cell - 1) && !door(cell - 1)){
 							if (fogHidden(cell - 1)) {
 								curr += 2;
 							}
@@ -120,7 +126,20 @@ public class WallBlockingTilemap extends Tilemap {
 
 	private boolean fogHidden(int cell){
 		if (cell < 0 || cell >= Dungeon.level.length()) return false;
-		return (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]);
+		if (wall(cell) && cell + mapWidth < Dungeon.level.length() && !wall(cell + mapWidth)){
+			return (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])
+					|| (!Dungeon.level.visited[cell + mapWidth] && !Dungeon.level.mapped[cell + mapWidth]);
+		} else {
+			return (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]);
+		}
+	}
+
+	private boolean wall(int cell){
+		return DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell]);
+	}
+
+	private boolean door(int cell ) {
+		return DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell]);
 	}
 
 	public synchronized void updateArea(int x, int y, int w, int h) {

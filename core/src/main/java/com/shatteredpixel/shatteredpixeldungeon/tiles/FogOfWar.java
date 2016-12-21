@@ -167,12 +167,17 @@ public class FogOfWar extends Image {
 
 					if (cell + mapWidth < mapLength){
 						if (!DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + mapWidth])
-								&& getColorIndexForCell(cell + mapWidth) > cellIndex) {
-							cellIndex = getColorIndexForCell(cell + mapWidth);
+								&& !DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell + mapWidth])){
+								if (getColorIndexForCell(cell + mapWidth) > cellIndex)
+									cellIndex = getColorIndexForCell(cell + mapWidth);
+							fillCell(j, i, FOG_COLORS[cellIndex][brightness]);
+							cell++;
+							continue;
 						}
 
 						if (cell % mapWidth != 0){
-							if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell - 1])){
+							if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell - 1])
+									|| DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell - 1])){
 								if (getColorIndexForCell(cell - 1 + mapWidth) > cellIndex)
 									colorArray[0] = colorArray[2] = FOG_COLORS[getColorIndexForCell(cell - 1 + mapWidth)][brightness];
 								else
@@ -188,7 +193,8 @@ public class FogOfWar extends Image {
 						}
 
 						if ((cell+1) % mapWidth != 0){
-							if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + 1])){
+							if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + 1])
+									|| DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell + 1])){
 								if (getColorIndexForCell(cell + 1 + mapWidth) > cellIndex)
 									colorArray[1] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + 1 + mapWidth)][brightness];
 								else
@@ -218,6 +224,12 @@ public class FogOfWar extends Image {
 					}
 
 					fillCell(j, i, colorArray);
+				} else if (DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell])) {
+
+					colorArray[0] = colorArray[1] = FOG_COLORS[getColorIndexForCell(cell)][brightness];
+					colorArray[2] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + mapWidth)][brightness];
+					fillCell(j, i, colorArray);
+
 				} else {
 					fillCell(j, i, FOG_COLORS[getColorIndexForCell(cell)][brightness]);
 				}
