@@ -72,17 +72,37 @@ public abstract class DungeonTilemap extends Tilemap {
 
 	protected abstract int getTileVisual(int pos, int tile, boolean flat);
 
-	public int screenToTile(int x, int y ) {
-		Point p = camera().screenToCamera( x, y ).
+	public int screenToTile(int x, int y ){
+		return screenToTile(x, y, false);
+	}
+
+	//wall assist is used to make raised perspective tapping a bit easier.
+	// If the pressed tile is a wall tile, the tap can be 'bumped' down into a none-wall tile.
+	// currently this happens if the bottom 1/4 of the wall tile is pressed.
+	public int screenToTile(int x, int y, boolean wallAssist ) {
+		PointF p = camera().screenToCamera( x, y ).
 			offset( this.point().negate() ).
-			invScale( SIZE ).
-			floor();
-		return p.x >= 0
-				&& p.x < Dungeon.level.width()
-				&& p.y >= 0
-				&& p.y < Dungeon.level.height() ?
-					p.x + p.y * Dungeon.level.width()
-					: -1;
+			invScale( SIZE );
+		if (p.x < 0 || p.x >= Dungeon.level.width()
+				|| p.y < 0
+				|| p.y >= Dungeon.level.height())
+			return -1;
+
+		int cell = (int)p.x + (int)p.y * Dungeon.level.width();
+
+		if (wallAssist
+				&& map != null
+				&& DungeonTileSheet.wallStitcheable.contains(map[cell])){
+
+			if (cell + mapWidth < size
+					&& p.y % 1 >= 0.75f
+					&& !DungeonTileSheet.wallStitcheable.contains(map[cell + mapWidth])){
+				cell += mapWidth;
+			}
+
+		}
+
+		return cell;
 	}
 	
 	@Override
