@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
@@ -49,7 +50,7 @@ public class CityBossLevel extends Level {
 	private static final int TOP			= 2;
 	private static final int HALL_WIDTH		= 7;
 	private static final int HALL_HEIGHT	= 15;
-	private static final int CHAMBER_HEIGHT	= 3;
+	private static final int CHAMBER_HEIGHT	= 4;
 
 	private static final int WIDTH = 32;
 	
@@ -117,10 +118,12 @@ public class CityBossLevel extends Level {
 		map[arenaDoor] = Terrain.DOOR;
 		
 		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, CHAMBER_HEIGHT, Terrain.EMPTY );
+		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, 1, Terrain.BOOKSHELF);
+		map[arenaDoor + width()] = Terrain.EMPTY;
 		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 		
-		entrance = (TOP + HALL_HEIGHT + 2 + Random.Int( CHAMBER_HEIGHT - 1 )) * width() + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 ));
+		entrance = (TOP + HALL_HEIGHT + 3 + Random.Int( CHAMBER_HEIGHT - 2 )) * width() + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 ));
 		map[entrance] = Terrain.ENTRANCE;
 		
 		return true;
@@ -128,16 +131,18 @@ public class CityBossLevel extends Level {
 	
 	@Override
 	protected void decorate() {
-		
-		for (int i=0; i < length(); i++) {
+
+		for (int i=0; i < length() - width(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
-			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
+			} else if (map[i] == Terrain.WALL
+					&& DungeonTileSheet.floorTile(map[i + width()])
+					&& Random.Int( 21 - Dungeon.depth ) == 0) {
 				map[i] = Terrain.WALL_DECO;
 			}
 		}
 		
-		int sign = arenaDoor + width() + 1;
+		int sign = arenaDoor + 2*width() + 1;
 		map[sign] = Terrain.SIGN;
 	}
 	

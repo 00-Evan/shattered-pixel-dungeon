@@ -22,6 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
@@ -107,10 +108,12 @@ public class CityLevel extends RegularLevel {
 	@Override
 	protected void decorate() {
 		
-		for (int i=0; i < length(); i++) {
+		for (int i=0; i < length() - width(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
-			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
+			} else if (map[i] == Terrain.WALL
+					&& DungeonTileSheet.floorTile(map[i + width()])
+					&& Random.Int( 21 - Dungeon.depth ) == 0) {
 				map[i] = Terrain.WALL_DECO;
 			}
 		}
@@ -193,7 +196,7 @@ public class CityLevel extends RegularLevel {
 			this.pos = pos;
 			
 			PointF p = DungeonTilemap.tileCenterToWorld( pos );
-			pos( p.x - 4, p.y - 2, 4, 0 );
+			pos( p.x - 6, p.y - 4, 12, 12 );
 			
 			pour( factory, 0.2f );
 		}
@@ -212,7 +215,7 @@ public class CityLevel extends RegularLevel {
 			super();
 			
 			color( 0x000000 );
-			speed.set( Random.Float( 8 ), -Random.Float( 8 ) );
+			speed.set( Random.Float( -2, 4 ), -Random.Float( 3, 6 ) );
 		}
 		
 		public void reset( float x, float y ) {
@@ -229,7 +232,7 @@ public class CityLevel extends RegularLevel {
 			super.update();
 			float p = left / lifespan;
 			am = p > 0.8f ? 1 - p : p * 0.25f;
-			size( 8 - p * 4 );
+			size( 6 - p * 3 );
 		}
 	}
 }

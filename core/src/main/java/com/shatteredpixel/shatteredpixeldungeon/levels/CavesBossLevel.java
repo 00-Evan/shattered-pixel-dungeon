@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
@@ -184,9 +185,11 @@ public class CavesBossLevel extends Level {
 				}
 			}
 		}
-		
-		for (int i=0; i < length(); i++) {
-			if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
+
+		for (int i=0; i < length() - width(); i++) {
+			if (map[i] == Terrain.WALL
+					&& DungeonTileSheet.floorTile(map[i + width()])
+					&& Random.Int( 3 ) == 0) {
 				map[i] = Terrain.WALL_DECO;
 			}
 		}

@@ -103,6 +103,10 @@ public class DungeonTileSheet {
 	}
 
 
+	public static boolean floorTile(int tile){
+		return tile < CHASM;
+	}
+
 
 	/**********************************************************************
 	 * Chasm Tiles
