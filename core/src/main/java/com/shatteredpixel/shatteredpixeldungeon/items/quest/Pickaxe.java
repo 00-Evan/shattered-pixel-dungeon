@@ -56,6 +56,7 @@ public class Pickaxe extends Weapon {
 		image = ItemSpriteSheet.PICKAXE;
 		
 		unique = true;
+		bones = false;
 		
 		defaultAction = AC_MINE;
 
