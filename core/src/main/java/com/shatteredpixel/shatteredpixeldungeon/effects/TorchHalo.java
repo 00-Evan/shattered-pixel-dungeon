@@ -33,7 +33,7 @@ public class TorchHalo extends Halo {
 	private float phase = 0;
 	
 	public TorchHalo( CharSprite sprite ) {
-		super( 24, 0xFFDDCC, 0.15f );
+		super( 20, 0xFFDDCC, 0.2f );
 		target = sprite;
 		am = 0;
 	}

@@ -45,10 +45,10 @@ public class Halo extends Image {
 			Bitmap bmp = Bitmap.createBitmap( RADIUS * 2, RADIUS * 2, Bitmap.Config.ARGB_8888 );
 			Canvas canvas = new Canvas( bmp );
 			Paint paint = new Paint();
-			paint.setColor( 0xFFFFFFFF );
-			canvas.drawCircle( RADIUS, RADIUS, RADIUS * 0.75f, paint );
-			paint.setColor( 0x88FFFFFF );
-			canvas.drawCircle( RADIUS, RADIUS, RADIUS, paint );
+			paint.setColor( 0x0AFFFFFF );
+			for (int i = 0; i < 50; i++) {
+				canvas.drawCircle(RADIUS, RADIUS, RADIUS * (i+1)/50f, paint);
+			}
 			TextureCache.add( CACHE_KEY, new SmartTexture( bmp ) );
 		}
 		

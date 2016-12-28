@@ -84,10 +84,10 @@ public class WandmakerSprite extends MobSprite {
 		
 		public Shield() {
 			
-			super( 14, 0xBBAACC, 1f );
+			super( 9, 0xBBAACC, 1f );
 			
-			am = -1;
-			aa = +1;
+			am = -0.33f;
+			aa = +0.33f;
 			
 			phase = 1;
 		}
