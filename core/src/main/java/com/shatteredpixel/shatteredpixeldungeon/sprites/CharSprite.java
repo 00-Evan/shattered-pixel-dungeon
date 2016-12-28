@@ -22,7 +22,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.DarkBlock;
 import com.shatteredpixel.shatteredpixeldungeon.effects.EmoIcon;
@@ -34,14 +34,16 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.TorchHalo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.glwrap.Matrix;
+import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
+import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -124,7 +126,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		
 		return new PointF(
 			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width * 0.5f),
-			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height)
+			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height - csize * 0.33f)
 		);
 	}
 	
@@ -447,7 +449,52 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			emo.killAndErase();
 		}
 	}
-	
+
+	//FIXME shadows are really sloppily implemented here, there is surely a neater way to do this.
+	private float[] shadowMatrix;
+
+	@Override
+	protected void updateMatrix() {
+		super.updateMatrix();
+		shadowMatrix = Matrix.clone(matrix);
+		Matrix.translate(shadowMatrix, -width()/13.333f, height()*0.825f);
+		Matrix.scale(shadowMatrix, 1.15f, 0.2f);
+	}
+
+	@Override
+	public void draw() {
+		if (texture == null || (!dirty && buffer == null))
+			return;
+
+		if (dirty) {
+			verticesBuffer.position( 0 );
+			verticesBuffer.put( vertices );
+			if (buffer == null)
+				buffer = new Vertexbuffer( verticesBuffer );
+			else
+				buffer.updateVertices( verticesBuffer );
+			dirty = false;
+		}
+
+		NoosaScript script = script();
+
+		texture.bind();
+
+		script.camera( camera() );
+
+		updateMatrix();
+
+		script.uModel.valueM4( shadowMatrix );
+		script.lighting(
+				0, 0, 0, am*.5f,
+				0, 0, 0, aa*.5f );
+
+		script.drawQuad( buffer );
+
+		super.draw();
+
+	}
+
 	@Override
 	public void onComplete( Tweener tweener ) {
 		if (tweener == jumpTweener) {
