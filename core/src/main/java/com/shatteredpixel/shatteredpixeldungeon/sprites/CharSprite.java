@@ -394,6 +394,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		if (chilled != null) {
 			chilled.visible = visible;
 		}
+		if (marked != null) {
+			marked.visible = visible;
+		}
 		if (sleeping) {
 			showSleep();
 		} else {
