@@ -228,23 +228,24 @@ public class GameScene extends PixelScene {
 				mob.beckon( Dungeon.hero.pos );
 			}
 		}
-		
-		add( emitters );
-		add( effects );
-		
-		gases = new Group();
-		add( gases );
-		
-		for (Blob blob : Dungeon.level.blobs.values()) {
-			blob.emitter = null;
-			addBlobSprite( blob );
-		}
 
 		walls = new DungeonWallsTilemap();
 		add(walls);
 
 		wallBlocking = new WallBlockingTilemap();
 		add (wallBlocking);
+
+		add( emitters );
+		add( effects );
+
+		gases = new Group();
+		add( gases );
+
+		for (Blob blob : Dungeon.level.blobs.values()) {
+			blob.emitter = null;
+			addBlobSprite( blob );
+		}
+
 
 		fog = new FogOfWar( Dungeon.level.width(), Dungeon.level.height() );
 		add( fog );
@@ -707,6 +708,8 @@ public class GameScene extends PixelScene {
 			scene.tiles.updateMapCell( cell );
 			scene.terrainFeatures.updateMapCell( cell );
 			scene.walls.updateMapCell( cell );
+			scene.fog.updateFogCell( cell );
+			scene.wallBlocking.updateMapCell( cell );
 		}
 	}
 

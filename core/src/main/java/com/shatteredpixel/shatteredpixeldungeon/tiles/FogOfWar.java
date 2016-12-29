@@ -119,6 +119,10 @@ public class FogOfWar extends Image {
 		updated.set( 0, 0, mapWidth, mapHeight );
 	}
 
+	public synchronized void updateFogCell( int cell ){
+		updated.set( cell % mapWidth , cell / mapHeight, (cell % mapWidth)+1, (cell / mapHeight)+1 );
+	}
+
 	public synchronized void updateFogArea(int x, int y, int w, int h){
 		updated.union(x, y);
 		updated.union(x + w, y + h);
