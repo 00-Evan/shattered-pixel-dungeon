@@ -460,8 +460,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected void updateMatrix() {
 		super.updateMatrix();
 		shadowMatrix = Matrix.clone(matrix);
-		Matrix.translate(shadowMatrix, -width()/13.333f, height()*0.825f);
-		Matrix.scale(shadowMatrix, 1.15f, 0.2f);
+		Matrix.translate(shadowMatrix, -width()/13.333f, height()*0.7625f);
+		Matrix.scale(shadowMatrix, 1.15f, 0.25f);
 	}
 
 	@Override
