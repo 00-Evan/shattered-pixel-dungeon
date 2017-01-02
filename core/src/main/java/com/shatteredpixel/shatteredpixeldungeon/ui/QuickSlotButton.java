@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -175,8 +176,13 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 				Dungeon.visible[lastTarget.pos]) {
 
 			targeting = true;
-			lastTarget.sprite.parent.addToFront( crossM );
-			crossM.point( DungeonTilemap.tileToWorld( lastTarget.pos ) );
+			CharSprite sprite = lastTarget.sprite;
+			
+			sprite.parent.addToFront( crossM );
+			
+			crossM.x = sprite.x + ( sprite.width() - crossM.width())/2f;
+			crossM.y = sprite.y + ( sprite.height() - crossM.height())/2f;
+			
 			crossB.x = x + (width - crossB.width) / 2;
 			crossB.y = y + (height - crossB.height) / 2;
 			crossB.visible = true;
