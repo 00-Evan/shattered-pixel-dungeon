@@ -242,7 +242,7 @@ public class FogOfWar extends Image {
 			}
 		}
 
-		if (updating.width() == mapWidth && updating.height() == mapWidth)
+		if (updating.width() == mapWidth && updating.height() == mapHeight)
 			fog.update();
 		else
 			fog.update(updating.top * PIX_PER_TILE, updating.bottom * PIX_PER_TILE);
