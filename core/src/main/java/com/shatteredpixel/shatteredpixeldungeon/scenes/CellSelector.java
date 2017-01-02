@@ -20,11 +20,13 @@
  */
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.input.Touchscreen.Touch;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.TouchArea;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
@@ -51,6 +53,14 @@ public class CellSelector extends TouchArea {
 			dragging = false;
 			
 		} else {
+			
+			PointF p = Camera.main.screenToCamera( (int)touch.current.x, (int)touch.current.y );
+			for (Char mob : Dungeon.level.mobs){
+				if (mob.sprite != null && mob.sprite.overlapsPoint( p.x, p.y)){
+					select( mob.pos );
+					return;
+				}
+			}
 			
 			select( ((DungeonTilemap)target).screenToTile(
 				(int)touch.current.x,
