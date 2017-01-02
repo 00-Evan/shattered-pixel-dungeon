@@ -28,7 +28,7 @@ public class Patch {
 	public static boolean[] generate( Level level, float seed, int nGen ) {
 		
 		int w = level.width();
-		int h = level.width();
+		int h = level.height();
 
 		boolean[] cur = new boolean[level.length()];
 		boolean[] off = new boolean[level.length()];
