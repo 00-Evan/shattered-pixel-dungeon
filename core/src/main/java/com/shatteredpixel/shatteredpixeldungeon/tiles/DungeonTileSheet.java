@@ -259,15 +259,17 @@ public class DungeonTileSheet {
 
 	//+1 for open to the down-right, +2 for open to the down-left
 	private static final int WALLS_OVERHANG             =                   xy(1, 14);  //32 slots
-	public static final int WALL_OVERHANG               = WALLS_OVERHANG+0;
-	public static final int DOOR_SIDEWAYS_OVERHANG      = WALLS_OVERHANG+4;
-	public static final int DOOR_SIDEWAYS_OVERHANG_OPEN = WALLS_OVERHANG+8;
-	public static final int WALL_OVERHANG_WOODEN        = WALLS_OVERHANG+12;
+	public static final int WALL_OVERHANG                   = WALLS_OVERHANG+0;
+	public static final int DOOR_SIDEWAYS_OVERHANG          = WALLS_OVERHANG+4;
+	public static final int DOOR_SIDEWAYS_OVERHANG_OPEN     = WALLS_OVERHANG+8;
+	public static final int DOOR_SIDEWAYS_OVERHANG_LOCKED   = WALLS_OVERHANG+12;
+	public static final int WALL_OVERHANG_WOODEN            = WALLS_OVERHANG+16;
 
 	public static int stitchWallOverhangTile(int tile, int rightBelow, int below, int leftBelow){
 		int visual;
-		if (tile == Terrain.DOOR || tile == Terrain.LOCKED_DOOR)    visual = DOOR_SIDEWAYS_OVERHANG;
+		if (tile == Terrain.DOOR)                                   visual = DOOR_SIDEWAYS_OVERHANG;
 		else if (tile == Terrain.OPEN_DOOR)                         visual = DOOR_SIDEWAYS_OVERHANG_OPEN;
+		else if (tile == Terrain.LOCKED_DOOR)                       visual = DOOR_SIDEWAYS_OVERHANG_LOCKED;
 		else if (below == Terrain.BOOKSHELF)                        visual = WALL_OVERHANG_WOODEN;
 		else                                                        visual = WALL_OVERHANG;
 
@@ -278,12 +280,12 @@ public class DungeonTileSheet {
 	}
 
 	//no attachment to adjacent walls
-	public static final int DOOR_OVERHANG               = WALL_OVERHANG+16;
-	public static final int DOOR_OVERHANG_OPEN          = WALL_OVERHANG+17;
-	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+18;
-	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+19;
+	public static final int DOOR_OVERHANG               = WALL_OVERHANG+21;
+	public static final int DOOR_OVERHANG_OPEN          = WALL_OVERHANG+22;
+	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+23;
+	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+24;
 
-	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+21;
+	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+26;
 
 	/**********************************************************************
 	 * Logic for the selection of tile visuals
