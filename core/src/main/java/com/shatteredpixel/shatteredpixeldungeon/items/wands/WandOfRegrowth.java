@@ -213,9 +213,18 @@ public class WandOfRegrowth extends Wand {
 
 		for (int cell : visualCells){
 			//this way we only get the cells at the tip, much better performance.
-			MagicMissile.foliage(curUser.sprite.parent, bolt.sourcePos, cell, null);
+			((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
+					MagicMissile.FOLIAGE_CONE,
+					curUser.sprite,
+					cell,
+					null
+			);
 		}
-		MagicMissile.foliage( curUser.sprite.parent, bolt.sourcePos, bolt.path.get(dist), callback );
+		MagicMissile.boltFromChar( curUser.sprite.parent,
+				MagicMissile.FOLIAGE_CONE,
+				curUser.sprite,
+				bolt.path.get(dist/2),
+				callback );
 
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}

@@ -51,10 +51,10 @@ public class Shocking extends Weapon.Enchantment {
 			affected.add(attacker);
 
 			arcs.clear();
-			arcs.add(new Lightning.Arc(attacker.pos, defender.pos));
+			arcs.add(new Lightning.Arc(attacker.sprite.center(), defender.sprite.center()));
 			hit(defender, Random.Int(1, damage / 3));
 
-			attacker.sprite.parent.add( new Lightning( arcs, null ) );
+			attacker.sprite.parent.addToFront( new Lightning( arcs, null ) );
 			
 		}
 
@@ -82,12 +82,11 @@ public class Shocking extends Weapon.Enchantment {
 		
 		ch.sprite.centerEmitter().burst(SparkParticle.FACTORY, 3);
 		ch.sprite.flash();
-		
-		HashSet<Char> ns = new HashSet<Char>();
+
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 			Char n = Actor.findChar( ch.pos + PathFinder.NEIGHBOURS8[i] );
 			if (n != null && !affected.contains( n )) {
-				arcs.add(new Lightning.Arc(ch.pos, n.pos));
+				arcs.add(new Lightning.Arc(ch.sprite.center(), n.sprite.center()));
 				hit(n, Random.Int(damage / 2, damage));
 			}
 		}

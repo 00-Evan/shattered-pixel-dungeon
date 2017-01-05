@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.Visual;
 
 public class Surprise extends Image {
 
@@ -43,6 +44,14 @@ public class Surprise extends Image {
 
 		x = (p % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
 		y = (p / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
+
+		time = TIME_TO_FADE;
+	}
+
+	public void reset(Visual v) {
+		revive();
+
+		point(v.center(this));
 
 		time = TIME_TO_FADE;
 	}
@@ -68,7 +77,7 @@ public class Surprise extends Image {
 		if (ch.sprite.parent != null) {
 			Surprise s = (Surprise) ch.sprite.parent.recycle(Surprise.class);
 			ch.sprite.parent.bringToFront(s);
-			s.reset(ch.pos);
+			s.reset(ch.sprite);
 			s.angle = angle;
 		}
 	}
@@ -79,9 +88,9 @@ public class Surprise extends Image {
 
 	public static void hit(int pos, float angle) {
 		Group parent = Dungeon.hero.sprite.parent;
-		Wound w = (Wound) parent.recycle(Wound.class);
-		parent.bringToFront(w);
-		w.reset(pos);
-		w.angle = angle;
+		Surprise s = (Surprise) parent.recycle(Surprise.class);
+		parent.bringToFront(s);
+		s.reset(pos);
+		s.angle = angle;
 	}
 }

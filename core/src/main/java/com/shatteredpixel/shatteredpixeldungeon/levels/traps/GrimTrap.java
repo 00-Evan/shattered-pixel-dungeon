@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -64,31 +65,35 @@ public class GrimTrap extends Trap {
 		if (target != null){
 			final Char finalTarget = target;
 			final GrimTrap trap = this;
-			MagicMissile.shadow(target.sprite.parent, pos, target.pos, new Callback() {
-				@Override
-				public void call() {
-					if (!finalTarget.isAlive()) return;
-					if (finalTarget == Dungeon.hero) {
-						//almost kill the player
-						if (((float)finalTarget.HP/finalTarget.HT) >= 0.9f){
-							finalTarget.damage((finalTarget.HP-1), trap);
-						//kill 'em
-						} else {
-							finalTarget.damage(finalTarget.HP, trap);
+			((MagicMissile)target.sprite.parent.recycle(MagicMissile.class)).reset(
+					MagicMissile.SHADOW,
+					DungeonTilemap.tileCenterToWorld(pos),
+					target.sprite.center(),
+					new Callback() {
+						@Override
+						public void call() {
+							if (!finalTarget.isAlive()) return;
+							if (finalTarget == Dungeon.hero) {
+								//almost kill the player
+								if (((float)finalTarget.HP/finalTarget.HT) >= 0.9f){
+									finalTarget.damage((finalTarget.HP-1), trap);
+								//kill 'em
+								} else {
+									finalTarget.damage(finalTarget.HP, trap);
+								}
+								Sample.INSTANCE.play(Assets.SND_CURSED);
+								if (!finalTarget.isAlive()) {
+									Dungeon.fail( GrimTrap.class );
+									GLog.n( Messages.get(GrimTrap.class, "ondeath") );
+								}
+							} else {
+								finalTarget.damage(finalTarget.HP, this);
+								Sample.INSTANCE.play(Assets.SND_BURNING);
+							}
+							finalTarget.sprite.emitter().burst(ShadowParticle.UP, 10);
+							if (!finalTarget.isAlive()) finalTarget.next();
 						}
-						Sample.INSTANCE.play(Assets.SND_CURSED);
-						if (!finalTarget.isAlive()) {
-							Dungeon.fail( GrimTrap.class );
-							GLog.n( Messages.get(GrimTrap.class, "ondeath") );
-						}
-					} else {
-						finalTarget.damage(finalTarget.HP, this);
-						Sample.INSTANCE.play(Assets.SND_BURNING);
-					}
-					finalTarget.sprite.emitter().burst(ShadowParticle.UP, 10);
-					if (!finalTarget.isAlive()) finalTarget.next();
-				}
-			});
+					});
 		} else {
 			CellEmitter.get(pos).burst(ShadowParticle.UP, 10);
 			Sample.INSTANCE.play(Assets.SND_BURNING);

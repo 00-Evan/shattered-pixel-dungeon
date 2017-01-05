@@ -108,7 +108,7 @@ public class Guard extends Mob {
 			} else {
 				final int newPosFinal = newPos;
 				yell( Messages.get(this, "scorpion") );
-				sprite.parent.add(new Chains(pos, enemy.pos, new Callback() {
+				sprite.parent.add(new Chains(sprite.center(), enemy.sprite.center(), new Callback() {
 					public void call() {
 						Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback(){
 							public void call() {

@@ -139,12 +139,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			if (args.length > 0) {
 				text = Messages.format( text, args );
 			}
-			if (ch != null) {
-				PointF tile = DungeonTilemap.tileCenterToWorld(ch.pos);
-				FloatingText.show( tile.x, tile.y-(width*0.5f), ch.pos, text, color );
-			} else {
-				FloatingText.show( x + width * 0.5f, y, text, color );
-			}
+			FloatingText.show( x + width * 0.5f, y, text, color );
 		}
 	}
 	

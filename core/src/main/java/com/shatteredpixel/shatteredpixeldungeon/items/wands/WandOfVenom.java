@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -61,7 +60,12 @@ public class WandOfVenom extends Wand {
 
 	@Override
 	protected void fx(Ballistica bolt, Callback callback) {
-		MagicMissile.poison(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
+		MagicMissile.boltFromChar(
+				curUser.sprite.parent,
+				MagicMissile.POISON,
+				curUser.sprite,
+				bolt.collisionPos,
+				callback);
 		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
 

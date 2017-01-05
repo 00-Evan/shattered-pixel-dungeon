@@ -179,12 +179,9 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 			CharSprite sprite = lastTarget.sprite;
 			
 			sprite.parent.addToFront( crossM );
-			
-			crossM.x = sprite.x + ( sprite.width() - crossM.width())/2f;
-			crossM.y = sprite.y + ( sprite.height() - crossM.height())/2f;
-			
-			crossB.x = x + (width - crossB.width) / 2;
-			crossB.y = y + (height - crossB.height) / 2;
+			crossM.point(sprite.center(crossM));
+
+			crossB.point(slot.icon.center(crossB));
 			crossB.visible = true;
 
 		} else {

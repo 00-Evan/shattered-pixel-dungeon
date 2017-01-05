@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -499,15 +500,32 @@ public class Item implements Bundlable {
 			}
 		}
 		final float finalDelay = delay;
-		
-		((MissileSprite)user.sprite.parent.recycle( MissileSprite.class )).
-			reset( user.pos, cell, this, new Callback() {
-				@Override
-				public void call() {
-					Item.this.detach( user.belongings.backpack ).onThrow( cell );
-					user.spendAndNext( finalDelay );
-				}
-			} );
+
+		if (enemy != null) {
+			((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+					reset(user.sprite,
+							enemy.sprite,
+							this,
+							new Callback() {
+						@Override
+						public void call() {
+							Item.this.detach(user.belongings.backpack).onThrow(cell);
+							user.spendAndNext(finalDelay);
+						}
+					});
+		} else {
+			((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+					reset(user.sprite,
+							dst,
+							this,
+							new Callback() {
+						@Override
+						public void call() {
+							Item.this.detach(user.belongings.backpack).onThrow(cell);
+							user.spendAndNext(finalDelay);
+						}
+					});
+		}
 	}
 	
 	protected static Hero curUser = null;

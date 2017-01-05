@@ -300,16 +300,20 @@ public class Potion extends Item {
 	}
 	
 	protected void splash( int cell ) {
-		final int color = ItemSprite.pick( image, 8, 10 );
-		Splash.at( cell, color, 5 );
 
 		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
 		if (fire != null)
 			fire.clear( cell );
 
+		final int color = ItemSprite.pick( image, 8, 10 );
+
 		Char ch = Actor.findChar(cell);
-		if (ch != null)
-			Buff.detach( ch, Burning.class );
+		if (ch != null) {
+			Buff.detach(ch, Burning.class);
+			Splash.at( ch.sprite.center(), color, 5 );
+		} else {
+			Splash.at( cell, color, 5 );
+		}
 	}
 	
 	@Override

@@ -45,7 +45,7 @@ public class WaterOfAwareness extends WellWater {
 	protected boolean affectHero( Hero hero ) {
 		
 		Sample.INSTANCE.play( Assets.SND_DRINK );
-		emitter.parent.add( new Identification( DungeonTilemap.tileCenterToWorld( pos ) ) );
+		emitter.parent.add( new Identification( hero.sprite.center() ) );
 		
 		hero.belongings.observe();
 		

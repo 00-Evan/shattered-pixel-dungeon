@@ -159,7 +159,11 @@ public class WandOfBlastWave extends DamageWand {
 
 	@Override
 	protected void fx(Ballistica bolt, Callback callback) {
-		MagicMissile.slowness(curUser.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
+		MagicMissile.boltFromChar( curUser.sprite.parent,
+				MagicMissile.FORCE,
+				curUser.sprite,
+				bolt.collisionPos,
+				callback);
 		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
 

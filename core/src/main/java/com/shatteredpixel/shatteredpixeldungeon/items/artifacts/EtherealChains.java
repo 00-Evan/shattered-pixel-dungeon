@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
@@ -132,7 +133,7 @@ public class EtherealChains extends Artifact {
 							updateQuickslot();
 						}
 						curUser.busy();
-						curUser.sprite.parent.add(new Chains(curUser.pos, affected.pos, new Callback() {
+						curUser.sprite.parent.add(new Chains(curUser.sprite.center(), affected.sprite.center(), new Callback() {
 							public void call() {
 								Actor.add(new Pushing(affected, affected.pos, newMobPos, new Callback() {
 									public void call() {
@@ -169,7 +170,7 @@ public class EtherealChains extends Artifact {
 							updateQuickslot();
 						}
 						curUser.busy();
-						curUser.sprite.parent.add(new Chains(curUser.pos, target, new Callback() {
+						curUser.sprite.parent.add(new Chains(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(target), new Callback() {
 							public void call() {
 								Actor.add(new Pushing(curUser, curUser.pos, newHeroPos, new Callback() {
 									public void call() {

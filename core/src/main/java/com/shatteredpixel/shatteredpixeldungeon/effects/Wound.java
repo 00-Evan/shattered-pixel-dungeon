@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.Visual;
 
 public class Wound extends Image {
 
@@ -44,6 +45,14 @@ public class Wound extends Image {
 		x = (p % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
 		y = (p / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
 		
+		time = TIME_TO_FADE;
+	}
+
+	public void reset(Visual v) {
+		revive();
+
+		point(v.center(this));
+
 		time = TIME_TO_FADE;
 	}
 	
@@ -68,7 +77,7 @@ public class Wound extends Image {
 		if (ch.sprite.parent != null) {
 			Wound w = (Wound) ch.sprite.parent.recycle(Wound.class);
 			ch.sprite.parent.bringToFront(w);
-			w.reset(ch.pos);
+			w.reset(ch.sprite);
 			w.angle = angle;
 		}
 	}

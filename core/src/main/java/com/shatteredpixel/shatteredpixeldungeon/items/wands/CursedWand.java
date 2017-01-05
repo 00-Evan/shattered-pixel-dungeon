@@ -53,7 +53,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
@@ -443,7 +442,11 @@ public class CursedWand {
 	}
 
 	private static void cursedFX(final Hero user, final Ballistica bolt, final Callback callback){
-		MagicMissile.rainbow(user.sprite.parent, bolt.sourcePos, bolt.collisionPos, callback);
+		MagicMissile.boltFromChar( user.sprite.parent,
+				MagicMissile.RAINBOW,
+				user.sprite,
+				bolt.collisionPos,
+				callback);
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
 
