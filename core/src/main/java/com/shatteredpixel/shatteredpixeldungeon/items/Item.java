@@ -516,7 +516,7 @@ public class Item implements Bundlable {
 		} else {
 			((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
 					reset(user.sprite,
-							dst,
+							cell,
 							this,
 							new Callback() {
 						@Override
