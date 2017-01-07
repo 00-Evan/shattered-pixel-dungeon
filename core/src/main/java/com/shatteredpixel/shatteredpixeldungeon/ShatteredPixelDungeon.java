@@ -471,6 +471,15 @@ public class ShatteredPixelDungeon extends Game {
 		return Preferences.INSTANCE.getInt( Preferences.KEY_BRIGHTNESS, 0, -2, 2 );
 	}
 
+	public static void visualGrid( int value ){
+		Preferences.INSTANCE.put( Preferences.KEY_GRID, value );
+		GameScene.updateMap();
+	}
+
+	public static int visualGrid() {
+		return Preferences.INSTANCE.getInt( Preferences.KEY_GRID, 0, -1, 3 );
+	}
+
 	public static void language(Languages lang) {
 		Preferences.INSTANCE.put( Preferences.KEY_LANG, lang.code());
 	}
