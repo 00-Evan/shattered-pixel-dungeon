@@ -104,7 +104,7 @@ public class DungeonTileSheet {
 
 
 	public static boolean floorTile(int tile){
-		return directVisuals.get(tile, CHASM) < CHASM;
+		return tile == Terrain.WATER || directVisuals.get(tile, CHASM) < CHASM;
 	}
 
 
