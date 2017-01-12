@@ -76,6 +76,11 @@ public class RotLasher extends Mob {
 	}
 
 	@Override
+	public boolean reset() {
+		return true;
+	}
+
+	@Override
 	protected boolean getCloser(int target) {
 		return true;
 	}

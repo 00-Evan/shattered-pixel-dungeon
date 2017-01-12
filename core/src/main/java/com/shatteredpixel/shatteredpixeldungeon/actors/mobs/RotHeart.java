@@ -94,6 +94,11 @@ public class RotHeart extends Mob {
 	}
 
 	@Override
+	public boolean reset() {
+		return true;
+	}
+
+	@Override
 	public int damageRoll() {
 		return 0;
 	}
