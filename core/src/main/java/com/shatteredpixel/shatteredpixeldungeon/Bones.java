@@ -25,6 +25,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
@@ -148,6 +153,7 @@ public class Bones {
 				Game.instance.deleteFile( BONES_FILE );
 				depth = 0;
 
+				//Enforces artifact uniqueness
 				if (item instanceof Artifact){
 					if (Generator.removeArtifact((Artifact)item)) {
 						try {
@@ -168,6 +174,16 @@ public class Bones {
 					} else {
 						return new Gold(item.price());
 					}
+
+				//Progression items are less likely to appear in bones in very early floors
+				//This is to discourage using heroes remains to purposefully boost your earlygame
+				} else if (item instanceof PotionOfStrength || item instanceof PotionOfMight ||
+						item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion){
+
+					if (Random.IntRange(1, 3) >= depth){
+						return new Gold(item.price());
+					}
+
 				}
 				
 				if (item.isUpgradable()) {
