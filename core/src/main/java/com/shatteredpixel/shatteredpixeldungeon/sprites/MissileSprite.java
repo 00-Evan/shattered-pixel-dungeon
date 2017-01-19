@@ -101,7 +101,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				|| image == ItemSpriteSheet.CURARE_DART  || image == ItemSpriteSheet.JAVELIN) {
 
 			angularSpeed = 0;
-			angle = 135 - (float)(Math.atan2( d.y, d.x ) / 3.1415926 * 180);
+			angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);
 
 		} else {
 
