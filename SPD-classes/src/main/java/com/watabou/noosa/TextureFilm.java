@@ -34,12 +34,14 @@ public class TextureFilm {
 	
 	private int texWidth;
 	private int texHeight;
+
+	private SmartTexture texture;
 	
 	protected HashMap<Object,RectF> frames = new HashMap<Object, RectF>();
 	
 	public TextureFilm( Object tx ) {
 		
-		SmartTexture texture = TextureCache.get( tx );
+		texture = TextureCache.get( tx );
 		
 		texWidth = texture.width;
 		texHeight = texture.height;
@@ -53,7 +55,7 @@ public class TextureFilm {
 	
 	public TextureFilm( Object tx, int width, int height ) {
 		
-		SmartTexture texture = TextureCache.get( tx );
+		texture = TextureCache.get( tx );
 		
 		texWidth = texture.width;
 		texHeight = texture.height;
@@ -72,6 +74,8 @@ public class TextureFilm {
 	}
 	
 	public TextureFilm( TextureFilm atlas, Object key, int width, int height ) {
+
+		texture = atlas.texture;
 	
 		texWidth = atlas.texWidth;
 		texHeight = atlas.texHeight;
@@ -95,13 +99,25 @@ public class TextureFilm {
 	public void add( Object id, RectF rect ) {
 		frames.put( id, rect );
 	}
+
+	public void add( Object id, int left, int top, int right, int bottom){
+		frames.put( id, texture.uvRect(left, top, right, bottom));
+	}
 	
 	public RectF get( Object id ) {
 		return frames.get( id );
 	}
+
+	public float width( Object id ){
+		return width( get( id ) );
+	}
 	
 	public float width( RectF frame ) {
 		return frame.width() * texWidth;
+	}
+
+	public float height( Object id ){
+		return height( get( id ) );
 	}
 	
 	public float height( RectF frame ) {

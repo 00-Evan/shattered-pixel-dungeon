@@ -34,42 +34,61 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 	
 	private Callback callback;
 	
-	public MissileSprite() {
-		super();
-		originToCenter();
-	}
-	
 	public void reset( int from, int to, Item item, Callback listener ) {
-		reset( DungeonTilemap.tileToWorld( from ),
+		revive();
+		int image;
+
+		if (item == null)   view(image = 0, null);
+		else                view(image = item.image(), item.glowing());
+
+		setup( DungeonTilemap.tileToWorld( from ),
 				DungeonTilemap.tileToWorld( to ),
-				item,
+				image,
 				listener);
 	}
 
 	public void reset( Visual from, Visual to, Item item, Callback listener ) {
-		reset( from.center(this),
+		revive();
+		int image;
+
+		if (item == null)   view(image = 0, null);
+		else                view(image = item.image(), item.glowing());
+
+		setup( from.center(this),
 				to.center(this),
-				item,
+				image,
 				listener);
 	}
 
 	public void reset( Visual from, int to, Item item, Callback listener ) {
-		reset( from.center(this),
+		revive();
+		int image;
+
+		if (item == null)   view(image = 0, null);
+		else                view(image = item.image(), item.glowing());
+
+		setup( from.center(this),
 				DungeonTilemap.tileToWorld( to ),
-				item,
+				image,
 				listener);
 	}
 
 	public void reset( PointF from, PointF to, Item item, Callback listener) {
 		revive();
-
 		int image;
-		if (item == null){
-			view( image = 0, null);;
-		} else {
-			//no particle effects
-			view( image = item.image(), item.glowing() );
-		}
+
+		if (item == null)   view(image = 0, null);
+		else                view(image = item.image(), item.glowing());
+
+		setup( from,
+				to,
+				image,
+				listener );
+	}
+
+	private void setup( PointF from, PointF to, int image, Callback listener ){
+
+		originToCenter();
 
 		this.callback = listener;
 
@@ -82,7 +101,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				|| image == ItemSpriteSheet.CURARE_DART  || image == ItemSpriteSheet.JAVELIN) {
 
 			angularSpeed = 0;
-			angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);
+			angle = 135 - (float)(Math.atan2( d.y, d.x ) / 3.1415926 * 180);
 
 		} else {
 

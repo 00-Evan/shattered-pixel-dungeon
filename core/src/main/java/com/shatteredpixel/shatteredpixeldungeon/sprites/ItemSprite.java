@@ -47,8 +47,6 @@ public class ItemSprite extends MovieClip {
 	
 	private static final float DROP_INTERVAL = 0.4f;
 	
-	protected static TextureFilm film;
-	
 	public Heap heap;
 	
 	private Glowing glowing;
@@ -67,25 +65,17 @@ public class ItemSprite extends MovieClip {
 	public ItemSprite( Item item ) {
 		super(Assets.ITEMS);
 
-		if (film == null) {
-			film = new TextureFilm( texture, SIZE, SIZE );
-		}
-
 		view (item);
 	}
 	
 	public ItemSprite( int image, Glowing glowing ) {
 		super( Assets.ITEMS );
 		
-		if (film == null) {
-			film = new TextureFilm( texture, SIZE, SIZE );
-		}
-		
 		view(image, glowing);
 	}
 	
 	public void originToCenter() {
-		origin.set(SIZE / 2);
+		origin.set(width / 2, height / 2);
 	}
 	
 	public void link() {
@@ -125,8 +115,8 @@ public class ItemSprite extends MovieClip {
 		final int csize = DungeonTilemap.SIZE;
 		
 		return new PointF(
-			cell % Dungeon.level.width() * csize + (csize - SIZE) * 0.5f,
-			cell / Dungeon.level.width() * csize + (csize - SIZE) * 0.5f
+			cell % Dungeon.level.width() * csize + (csize - width()) * 0.5f,
+			cell / Dungeon.level.width() * csize + (csize - height()) - csize * 0.333f
 		);
 	}
 	
@@ -187,7 +177,7 @@ public class ItemSprite extends MovieClip {
 	public ItemSprite view( int image, Glowing glowing ) {
 		if (this.emitter != null) this.emitter.killAndErase();
 		emitter = null;
-		frame( film.get( image ) );
+		frame( ItemSpriteSheet.film.get( image ) );
 		if ((this.glowing = glowing) == null) {
 			resetColor();
 		}
@@ -195,7 +185,7 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public void frame( int image ){
-		frame( film.get( image ));
+		frame( ItemSpriteSheet.film.get( image ));
 	}
 
 	@Override
