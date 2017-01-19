@@ -65,7 +65,17 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	private static final float MOVE_INTERVAL	= 0.1f;
 	private static final float FLASH_INTERVAL	= 0.05f;
-	
+
+	//the amount the sprite is raised from flat when viewed in a raised perspective
+	protected float perspectiveRaise    = 0.4f;
+
+	//the width and height of the shadow are a percentage of sprite size
+	//offset is the number of pixels the shadow is moved down or up (handy for some animations)
+	protected boolean renderShadow  = false;
+	protected float shadowWidth     = 1.2f;
+	protected float shadowHeight    = 0.25f;
+	protected float shadowOffset    = 0.5f;
+
 	public enum State {
 		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED
 	}
@@ -116,6 +126,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		
 		place( ch.pos );
 		turnTo( ch.pos, Random.Int( Dungeon.level.length() ) );
+		renderShadow = true;
 
 		ch.updateSpriteState();
 	}
@@ -448,15 +459,16 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 
-	//FIXME shadows are really sloppily implemented here, there is surely a neater way to do this.
 	private float[] shadowMatrix;
 
 	@Override
 	protected void updateMatrix() {
 		super.updateMatrix();
 		shadowMatrix = Matrix.clone(matrix);
-		Matrix.translate(shadowMatrix, -width()/13.333f, height()*0.7625f);
-		Matrix.scale(shadowMatrix, 1.15f, 0.25f);
+		Matrix.translate(shadowMatrix,
+				(width() * (1f - shadowWidth)) / 2f,
+				(height() * (1f - shadowHeight)) + shadowOffset);
+		Matrix.scale(shadowMatrix, shadowWidth, shadowHeight);
 	}
 
 	@Override
@@ -464,30 +476,32 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		if (texture == null || (!dirty && buffer == null))
 			return;
 
-		if (dirty) {
-			verticesBuffer.position( 0 );
-			verticesBuffer.put( vertices );
-			if (buffer == null)
-				buffer = new Vertexbuffer( verticesBuffer );
-			else
-				buffer.updateVertices( verticesBuffer );
-			dirty = false;
+		if (renderShadow) {
+			if (dirty) {
+				verticesBuffer.position(0);
+				verticesBuffer.put(vertices);
+				if (buffer == null)
+					buffer = new Vertexbuffer(verticesBuffer);
+				else
+					buffer.updateVertices(verticesBuffer);
+				dirty = false;
+			}
+
+			NoosaScript script = script();
+
+			texture.bind();
+
+			script.camera(camera());
+
+			updateMatrix();
+
+			script.uModel.valueM4(shadowMatrix);
+			script.lighting(
+					0, 0, 0, am * .6f,
+					0, 0, 0, aa * .6f);
+
+			script.drawQuad(buffer);
 		}
-
-		NoosaScript script = script();
-
-		texture.bind();
-
-		script.camera( camera() );
-
-		updateMatrix();
-
-		script.uModel.valueM4( shadowMatrix );
-		script.lighting(
-				0, 0, 0, am*.5f,
-				0, 0, 0, aa*.5f );
-
-		script.drawQuad( buffer );
 
 		super.draw();
 
