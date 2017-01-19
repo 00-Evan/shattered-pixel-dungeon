@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -58,6 +59,13 @@ public class CellSelector extends TouchArea {
 			for (Char mob : Dungeon.level.mobs){
 				if (mob.sprite != null && mob.sprite.overlapsPoint( p.x, p.y)){
 					select( mob.pos );
+					return;
+				}
+			}
+
+			for (Heap heap : Dungeon.level.heaps.values()){
+				if (heap.sprite != null && heap.sprite.overlapsPoint( p.x, p.y)){
+					select( heap.pos );
 					return;
 				}
 			}
