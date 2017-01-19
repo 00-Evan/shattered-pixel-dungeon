@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.watabou.noosa.TextureFilm;
 
@@ -28,7 +29,9 @@ public class YogSprite extends MobSprite {
 	
 	public YogSprite() {
 		super();
-		
+
+		perspectiveRaise = 0.2f;
+
 		texture( Assets.YOG );
 		
 		TextureFilm frames = new TextureFilm( texture, 20, 19 );
@@ -47,7 +50,13 @@ public class YogSprite extends MobSprite {
 		
 		play( idle );
 	}
-	
+
+	@Override
+	public void link(Char ch) {
+		super.link(ch);
+		renderShadow = false;
+	}
+
 	@Override
 	public void die() {
 		super.die();

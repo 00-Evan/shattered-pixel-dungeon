@@ -74,7 +74,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected boolean renderShadow  = false;
 	protected float shadowWidth     = 1.2f;
 	protected float shadowHeight    = 0.25f;
-	protected float shadowOffset    = 0.5f;
+	protected float shadowOffset    = 0.25f;
 
 	public enum State {
 		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED
@@ -137,7 +137,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		
 		return new PointF(
 			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width * 0.5f),
-			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height - csize * 0.33f)
+			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height - csize * perspectiveRaise)
 		);
 	}
 	

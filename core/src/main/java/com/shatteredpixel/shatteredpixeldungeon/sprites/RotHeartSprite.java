@@ -34,6 +34,8 @@ public class RotHeartSprite extends MobSprite {
 	public RotHeartSprite(){
 		super();
 
+		perspectiveRaise = 0.2f;
+
 		texture( Assets.ROT_HEART );
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
@@ -56,6 +58,8 @@ public class RotHeartSprite extends MobSprite {
 	@Override
 	public void link( Char ch ) {
 		super.link( ch );
+
+		renderShadow = false;
 
 		if (cloud == null) {
 			cloud = emitter();
