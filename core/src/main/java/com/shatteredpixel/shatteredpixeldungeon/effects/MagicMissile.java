@@ -65,8 +65,8 @@ public class MagicMissile extends Emitter {
 	
 	public void reset( int type, int from, int to, Callback callback ) {
 		reset( type,
-				DungeonTilemap.tileCenterToWorld( from ),
-				DungeonTilemap.tileCenterToWorld( to ),
+				DungeonTilemap.raisedTileCenterToWorld( from ),
+				DungeonTilemap.raisedTileCenterToWorld( to ),
 				callback );
 	}
 
@@ -80,7 +80,7 @@ public class MagicMissile extends Emitter {
 	public void reset( int type, Visual from, int to, Callback callback ) {
 		reset( type,
 				from.center(),
-				DungeonTilemap.tileCenterToWorld( to ),
+				DungeonTilemap.raisedTileCenterToWorld( to ),
 				callback);
 	}
 

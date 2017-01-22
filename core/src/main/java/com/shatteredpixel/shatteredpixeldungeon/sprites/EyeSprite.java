@@ -108,7 +108,7 @@ public class EyeSprite extends MobSprite {
 				if (Actor.findChar(zapPos) != null){
 					parent.add(new Beam.DeathRay(center(), Actor.findChar(zapPos).sprite.center()));
 				} else {
-					parent.add(new Beam.DeathRay(center(), DungeonTilemap.tileCenterToWorld(zapPos)));
+					parent.add(new Beam.DeathRay(center(), DungeonTilemap.raisedTileCenterToWorld(zapPos)));
 				}
 			}
 			((Eye)ch).deathGaze();
