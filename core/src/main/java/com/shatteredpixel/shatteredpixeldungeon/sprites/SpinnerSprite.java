@@ -21,13 +21,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.noosa.TextureFilm;
 
 public class SpinnerSprite extends MobSprite {
 	
 	public SpinnerSprite() {
 		super();
-		
+
+		perspectiveRaise = 0f;
+
 		texture( Assets.SPINNER );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
@@ -46,7 +49,13 @@ public class SpinnerSprite extends MobSprite {
 		
 		play( idle );
 	}
-	
+
+	@Override
+	public void link(Char ch) {
+		super.link(ch);
+		renderShadow = false;
+	}
+
 	@Override
 	public int blood() {
 		return 0xFFBFE5B8;

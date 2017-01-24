@@ -62,7 +62,7 @@ public class ItemSprite extends MovieClip {
 	private float dropInterval;
 
 	//the amount the sprite is raised from flat when viewed in a raised perspective
-	protected float perspectiveRaise    = 0.333f;
+	protected float perspectiveRaise    = 0.3125f; //5 pixels
 
 	//the width and height of the shadow are a percentage of sprite size
 	//offset is the number of pixels the shadow is moved down or up (handy for some animations)
@@ -130,13 +130,15 @@ public class ItemSprite extends MovieClip {
 		
 		return new PointF(
 			cell % Dungeon.level.width() * csize + (csize - width()) * 0.5f,
-			cell / Dungeon.level.width() * csize + (csize - height()) - csize * 0.333f
+			cell / Dungeon.level.width() * csize + (csize - height()) - csize * perspectiveRaise
 		);
 	}
 	
 	public void place( int p ) {
-		if (Dungeon.level != null)
-			point( worldToCamera( p ) );
+		if (Dungeon.level != null) {
+			point(worldToCamera(p));
+			shadowOffset = 0.5f;
+		}
 	}
 	
 	public void drop() {
