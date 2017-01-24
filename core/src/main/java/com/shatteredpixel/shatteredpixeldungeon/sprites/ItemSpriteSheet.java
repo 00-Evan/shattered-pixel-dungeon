@@ -53,7 +53,7 @@ public class ItemSpriteSheet {
 	public static final int SANDBAG         = UNCOLLECTIBLE+3;
 	public static final int DBL_BOMB        = UNCOLLECTIBLE+4;
 	static{
-		assignItemRect(GOLD,        15, 14);
+		assignItemRect(GOLD,        15, 13);
 		assignItemRect(DEWDROP,     10, 10);
 		assignItemRect(PETAL,       8,  8);
 		assignItemRect(SANDBAG,     10, 10);
@@ -69,8 +69,8 @@ public class ItemSpriteSheet {
 	public static final int LOCKED_CHEST    = CONTAINERS+5;
 	public static final int CRYSTAL_CHEST   = CONTAINERS+6;
 	static{
-		assignItemRect(BONES,           15, 14);
-		assignItemRect(REMAINS,         15, 14);
+		assignItemRect(BONES,           14, 11);
+		assignItemRect(REMAINS,         14, 11);
 		assignItemRect(TOMB,            14, 15);
 		assignItemRect(GRAVE,           14, 15);
 		assignItemRect(CHEST,           16, 15);
