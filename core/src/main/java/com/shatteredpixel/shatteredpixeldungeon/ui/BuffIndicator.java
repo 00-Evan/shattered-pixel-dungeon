@@ -151,6 +151,8 @@ public class BuffIndicator extends Component {
 						image.killAndErase();
 					}
 				} );
+
+				icons.get( key ).destroy();
 			}
 		}
 		
