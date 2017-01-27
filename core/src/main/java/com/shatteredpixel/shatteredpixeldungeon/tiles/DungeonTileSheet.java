@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Random;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 
 public class DungeonTileSheet {
 
@@ -83,14 +83,14 @@ public class DungeonTileSheet {
 	//next 15 slots are all water stitching with ground.
 
 	//These tiles can stitch with water
-	public static List waterStitcheable = Arrays.asList(
+	public static HashSet<Integer> waterStitcheable = new HashSet<>(Arrays.asList(
 			Terrain.EMPTY, Terrain.GRASS, Terrain.EMPTY_WELL,
 			Terrain.ENTRANCE, Terrain.EXIT, Terrain.EMBERS,
 			Terrain.BARRICADE, Terrain.HIGH_GRASS, Terrain.SECRET_TRAP,
 			Terrain.TRAP, Terrain.INACTIVE_TRAP, Terrain.EMPTY_DECO,
 			Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.ALCHEMY,
 			Terrain.DOOR, Terrain.OPEN_DOOR, Terrain.LOCKED_DOOR
-	);
+	));
 
 	//+1 for ground above, +2 for ground right, +4 for ground below, +8 for ground left.
 	public static int stitchWaterTile(int top, int right, int bottom, int left){
@@ -191,10 +191,10 @@ public class DungeonTileSheet {
 	public static final int RAISED_WALL_BOOKSHELF_ALT   = RAISED_WALLS+28;
 
 	//These tiles count as wall for the purposes of wall stitching
-	public static List wallStitcheable = Arrays.asList(
+	public static HashSet<Integer> wallStitcheable = new HashSet<>(Arrays.asList(
 			Terrain.WALL, Terrain.WALL_DECO, Terrain.SECRET_DOOR,
 			Terrain.LOCKED_EXIT, Terrain.UNLOCKED_EXIT, Terrain.BOOKSHELF, NULL_TILE
-	);
+	));
 
 	public static int getRaisedWallTile(int tile, int pos, int right, int below, int left){
 		int result;
@@ -227,9 +227,9 @@ public class DungeonTileSheet {
 		else return -1;
 	}
 
-	public static List doorTiles = Arrays.asList(
+	public static HashSet<Integer> doorTiles = new HashSet<>(Arrays.asList(
 			Terrain.DOOR, Terrain.LOCKED_DOOR, Terrain.OPEN_DOOR
-	);
+	));
 
 	public static final int RAISED_BARRICADE        = xy(1, 11);
 

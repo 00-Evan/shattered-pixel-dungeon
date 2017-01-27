@@ -52,7 +52,7 @@ public class WallBlockingTilemap extends Tilemap {
 		int curr;
 
 		//no point in blocking tiles that are already obscured by fog
-		if (fogHidden(cell) && fogHidden(cell - mapWidth)){
+		if (fogHidden(cell) && fogHidden(cell - mapWidth) && fogHidden(cell + mapWidth)){
 			curr = BLOCK_NONE;
 
 		} else if (wall(cell)) {
@@ -115,7 +115,14 @@ public class WallBlockingTilemap extends Tilemap {
 			}
 
 		} else {
-			curr = BLOCK_NONE;
+			if (fogHidden(cell - 1) && fogHidden(cell) && fogHidden(cell + 1)
+					&& cell + mapWidth < Dungeon.level.map.length
+					&& wall(cell + mapWidth -1 ) && wall(cell + mapWidth) && wall(cell + mapWidth + 1)
+					&& !fogHidden(cell + mapWidth)){
+				curr = BLOCK_ALL;
+			} else {
+				curr = BLOCK_NONE;
+			}
 		}
 
 		if (prev != curr){
@@ -126,12 +133,11 @@ public class WallBlockingTilemap extends Tilemap {
 
 	private boolean fogHidden(int cell){
 		if (cell < 0 || cell >= Dungeon.level.length()) return false;
-		if (wall(cell) && cell + mapWidth < Dungeon.level.length() && !wall(cell + mapWidth)){
-			return (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])
-					|| (!Dungeon.level.visited[cell + mapWidth] && !Dungeon.level.mapped[cell + mapWidth]);
-		} else {
-			return (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]);
-		}
+		if (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]) return true;
+		if (wall(cell) && cell + mapWidth < Dungeon.level.length() && !wall(cell + mapWidth) &&
+				!Dungeon.level.visited[cell + mapWidth] && !Dungeon.level.mapped[cell + mapWidth])
+			return true;
+		return false;
 	}
 
 	private boolean wall(int cell){

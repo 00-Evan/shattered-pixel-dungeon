@@ -102,6 +102,7 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.io.IOException;
@@ -706,6 +707,7 @@ public class GameScene extends PixelScene {
 			scene.visualGrid.updateMap();
 			scene.terrainFeatures.updateMap();
 			scene.walls.updateMap();
+			updateFog();
 		}
 	}
 	
@@ -715,8 +717,7 @@ public class GameScene extends PixelScene {
 			scene.visualGrid.updateMapCell( cell );
 			scene.terrainFeatures.updateMapCell( cell );
 			scene.walls.updateMapCell( cell );
-			scene.fog.updateFogCell( cell );
-			scene.wallBlocking.updateMapCell( cell );
+			updateFog( cell );
 		}
 	}
 
@@ -748,6 +749,23 @@ public class GameScene extends PixelScene {
 		if (scene != null) {
 			scene.fog.updateFogArea(x, y, w, h);
 			scene.wallBlocking.updateArea(x, y, w, h);
+		}
+	}
+
+	public static void updateFog( int cell ){
+		if (scene != null) {
+			//update in a 3x3 grid to account for neighbours which might also be affected
+			if (Dungeon.level.insideMap(cell)) {
+				for (int i : PathFinder.NEIGHBOURS9) {
+					scene.fog.updateFogCell( cell + i );
+					scene.wallBlocking.updateMapCell( cell + i );
+				}
+
+			//unless we're at the level's edge, then just do the one tile.
+			} else {
+				scene.fog.updateFogCell( cell );
+				scene.wallBlocking.updateMapCell( cell );
+			}
 		}
 	}
 	
