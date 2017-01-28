@@ -79,6 +79,8 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 			return DungeonTileSheet.DOOR_OVERHANG;
 		} else if (Dungeon.level.insideMap(pos) && map[pos+mapWidth] == Terrain.OPEN_DOOR ) {
 			return DungeonTileSheet.DOOR_OVERHANG_OPEN;
+		} else if (pos + mapWidth < size && (map[pos+mapWidth] == Terrain.STATUE || map[pos+mapWidth] == Terrain.STATUE_SP)){
+			return DungeonTileSheet.STATUE_OVERHANG;
 		} else if (pos + mapWidth < size && map[pos+mapWidth] == Terrain.BARRICADE){
 			return DungeonTileSheet.BARRICADE_OVERHANG;
 		}

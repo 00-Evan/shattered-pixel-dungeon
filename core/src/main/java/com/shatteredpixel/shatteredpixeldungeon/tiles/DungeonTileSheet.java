@@ -65,13 +65,10 @@ public class DungeonTileSheet {
 
 	public static final int ENTRANCE        = GROUND +16;
 	public static final int EXIT            = GROUND +17;
-	public static final int SIGN            = GROUND +18;
-	public static final int STATUE          = GROUND +19;
-	public static final int STATUE_SP       = GROUND +20;
-	public static final int WELL            = GROUND +21;
-	public static final int EMPTY_WELL      = GROUND +22;
-	public static final int ALCHEMY_POT     = GROUND +23;
-	public static final int PEDESTAL        = GROUND +24;
+	public static final int WELL            = GROUND +18;
+	public static final int EMPTY_WELL      = GROUND +19;
+	public static final int ALCHEMY_POT     = GROUND +20;
+	public static final int PEDESTAL        = GROUND +21;
 
 
 
@@ -171,7 +168,11 @@ public class DungeonTileSheet {
 	public static final int UNLOCKED_EXIT       = FLAT_DOORS+3;
 	public static final int LOCKED_EXIT         = FLAT_DOORS+4;
 
-	public static final int FLAT_BARRICADE      =                           xy(1, 7);
+	public static final int FLAT_OTHER          =                           xy(1, 7);   //16 slots
+	public static final int FLAT_SIGN           = FLAT_OTHER+0;
+	public static final int FLAT_STATUE         = FLAT_OTHER+1;
+	public static final int FLAT_STATUE_SP      = FLAT_OTHER+2;
+	public static final int FLAT_BARRICADE      = FLAT_OTHER+3;
 
 
 	/**********************************************************************
@@ -231,7 +232,11 @@ public class DungeonTileSheet {
 			Terrain.DOOR, Terrain.LOCKED_DOOR, Terrain.OPEN_DOOR
 	));
 
-	public static final int RAISED_BARRICADE        = xy(1, 11);
+	private static final int RAISED_OTHER           =                       xy(1, 11);  //16 slots
+	public static final int RAISED_SIGN             = RAISED_OTHER+0;
+	public static final int RAISED_STATUE           = RAISED_OTHER+1;
+	public static final int RAISED_STATUE_SP        = RAISED_OTHER+2;
+	public static final int RAISED_BARRICADE        = RAISED_OTHER+3;
 
 
 
@@ -285,7 +290,8 @@ public class DungeonTileSheet {
 	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+23;
 	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+24;
 
-	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+26;
+	public static final int STATUE_OVERHANG             = WALL_OVERHANG+26;
+	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+27;
 
 	/**********************************************************************
 	 * Logic for the selection of tile visuals
@@ -311,10 +317,7 @@ public class DungeonTileSheet {
 		directVisuals.put(Terrain.EMPTY_DECO,       FLOOR_DECO);
 		directVisuals.put(Terrain.LOCKED_EXIT,      LOCKED_EXIT);
 		directVisuals.put(Terrain.UNLOCKED_EXIT,    UNLOCKED_EXIT);
-		directVisuals.put(Terrain.SIGN,             SIGN);
 		directVisuals.put(Terrain.WELL,             WELL);
-		directVisuals.put(Terrain.STATUE,           STATUE);
-		directVisuals.put(Terrain.STATUE_SP,        STATUE_SP);
 		directVisuals.put(Terrain.ALCHEMY,          ALCHEMY_POT);
 
 	}
@@ -328,6 +331,9 @@ public class DungeonTileSheet {
 		directFlatVisuals.put(Terrain.LOCKED_DOOR,      FLAT_DOOR_LOCKED);
 		directFlatVisuals.put(Terrain.WALL_DECO,        FLAT_WALL_DECO);
 		directFlatVisuals.put(Terrain.BOOKSHELF,        FLAT_BOOKSHELF);
+		directFlatVisuals.put(Terrain.SIGN,             FLAT_SIGN);
+		directFlatVisuals.put(Terrain.STATUE,           FLAT_STATUE);
+		directFlatVisuals.put(Terrain.STATUE_SP,        FLAT_STATUE_SP);
 		directFlatVisuals.put(Terrain.BARRICADE,        FLAT_BARRICADE);
 
 		directFlatVisuals.put(Terrain.SECRET_DOOR,      directFlatVisuals.get(Terrain.WALL));
