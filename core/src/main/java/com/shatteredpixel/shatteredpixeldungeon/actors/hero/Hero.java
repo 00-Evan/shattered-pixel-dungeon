@@ -1101,8 +1101,11 @@ public class Hero extends Char {
 			move(step);
 
 			spend( moveTime / speed() );
-			
-			return true;
+
+			//FIXME this is a fairly sloppy fix for a crash involving pitfall traps.
+			//really there should be a way for traps to specify whether action should continue or
+			//not when they are pressed.
+			return InterlevelScene.mode != InterlevelScene.Mode.FALL;
 
 		} else {
 
