@@ -133,7 +133,7 @@ public class Eye extends Mob {
 
 			spend( attackDelay() );
 
-			if (Dungeon.visible[pos]) {
+			if (Dungeon.visible[pos] || Dungeon.visible[beam.collisionPos] ) {
 				sprite.zap( beam.collisionPos );
 				return false;
 			} else {
