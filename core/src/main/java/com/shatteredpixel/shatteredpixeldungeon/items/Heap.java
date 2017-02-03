@@ -163,6 +163,7 @@ public class Heap implements Bundlable {
 			destroy();
 		} else if (sprite != null) {
 			sprite.view( image(), glowing() );
+			sprite.place( pos );
 		}
 		
 		return item;
@@ -198,6 +199,7 @@ public class Heap implements Bundlable {
 				sprite.view( items.peek() );
 			else
 				sprite.view( image(), glowing() );
+			sprite.place( pos );
 		}
 	}
 	
