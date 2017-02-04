@@ -118,7 +118,7 @@ public class Viscosity extends Glyph {
 		public boolean act() {
 			if (target.isAlive()) {
 
-				int damageThisTick = Math.max(1, damage/10);
+				int damageThisTick = Math.max(1, (int)(damage*0.15f));
 				target.damage( damageThisTick, this );
 				if (target == Dungeon.hero && !target.isAlive()) {
 

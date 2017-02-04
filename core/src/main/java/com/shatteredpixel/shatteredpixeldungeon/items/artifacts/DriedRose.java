@@ -205,7 +205,7 @@ public class DriedRose extends Artifact {
 
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 1/5f; //500 turns to a full charge
+				partialCharge += 1/4f; //400 turns to a full charge
 				if (partialCharge > 1){
 					charge++;
 					partialCharge--;
@@ -376,14 +376,14 @@ public class DriedRose extends Artifact {
 
 		@Override
 		public int damageRoll() {
-			int lvl = (HT-10)/3;
-			return Random.NormalIntRange( lvl/2, 5+lvl);
+			int lvl = (HT-10)/4;
+			return Random.NormalIntRange( 3+lvl/2, 8+lvl);
 		}
 
 		@Override
 		public int drRoll() {
-			//defence is equal to the level of rose.
-			return Random.NormalIntRange(0, (HT-10)/3);
+			int lvl = (HT-10)/4;
+			return Random.NormalIntRange(0, 2+lvl);
 		}
 
 		@Override

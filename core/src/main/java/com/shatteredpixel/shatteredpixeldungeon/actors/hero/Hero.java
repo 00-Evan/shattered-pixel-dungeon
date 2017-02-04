@@ -962,7 +962,7 @@ public class Hero extends Char {
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
 				&& RingOfElements.FULL.contains(src.getClass())){
-			dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/2;
+			dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/3;
 		}
 
 		if (subClass == HeroSubClass.BERSERKER && berserk == null){
