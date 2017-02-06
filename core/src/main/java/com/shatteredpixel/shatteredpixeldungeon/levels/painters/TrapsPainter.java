@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -125,25 +126,24 @@ public class TrapsPainter extends Painter {
 
 		Item prize;
 
-		if (Random.Int(4) != 0){
+		if (Random.Int(3) != 0){
 			prize = level.findPrizeItem();
 			if (prize != null)
 				return prize;
 		}
 		
-		prize = Generator.random( Random.oneOf(
-			Generator.Category.WEAPON,
-			Generator.Category.ARMOR
-		) );
-
-		for (int i=0; i < 3; i++) {
-			Item another = Generator.random( Random.oneOf(
-				Generator.Category.WEAPON,
-				Generator.Category.ARMOR
-			) );
-			if (another.level() > prize.level()) {
-				prize = another;
+		//1 floor set higher in probability, never cursed
+		do {
+			if (Random.Int(2) == 0) {
+				prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
+			} else {
+				prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
 			}
+		} while (prize.cursed);
+
+		//33% chance for an extra update.
+		if (!(prize instanceof MissileWeapon) && Random.Int(3) == 0){
+			prize.upgrade();
 		}
 		
 		return prize;
