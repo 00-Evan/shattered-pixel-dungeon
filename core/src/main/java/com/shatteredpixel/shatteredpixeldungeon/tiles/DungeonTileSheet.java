@@ -191,15 +191,25 @@ public class DungeonTileSheet {
 	public static final int RAISED_WALL_DECO_ALT        = RAISED_WALLS+20;
 	public static final int RAISED_WALL_BOOKSHELF_ALT   = RAISED_WALLS+28;
 
+	//we use an array instead of a collection because the small element count
+	// makes array traversal much faster than something like HashSet.contains.
+
 	//These tiles count as wall for the purposes of wall stitching
-	public static HashSet<Integer> wallStitcheable = new HashSet<>(Arrays.asList(
+	private static int[] wallStitcheable = new int[]{
 			Terrain.WALL, Terrain.WALL_DECO, Terrain.SECRET_DOOR,
 			Terrain.LOCKED_EXIT, Terrain.UNLOCKED_EXIT, Terrain.BOOKSHELF, NULL_TILE
-	));
+	};
+
+	public static boolean wallStitcheable(int tile){
+		for (int i : wallStitcheable)
+			if (tile == i)
+				return true;
+		return false;
+	}
 
 	public static int getRaisedWallTile(int tile, int pos, int right, int below, int left){
 		int result;
-		if (doorTiles.contains(below))                                  result = RAISED_WALL_DOOR;
+		if (doorTile(below))                                            result = RAISED_WALL_DOOR;
 		else if (tile == Terrain.WALL || tile == Terrain.SECRET_DOOR)   result = RAISED_WALL;
 		else if (tile == Terrain.WALL_DECO)                             result = RAISED_WALL_DECO;
 		else if (tile == Terrain.BOOKSHELF)                             result = RAISED_WALL_BOOKSHELF;
@@ -207,8 +217,8 @@ public class DungeonTileSheet {
 
 		result = getVisualWithAlts(result, pos);
 
-		if (!wallStitcheable.contains(right))   result += 1;
-		if (!wallStitcheable.contains(left))    result += 2;
+		if (!wallStitcheable(right))   result += 1;
+		if (!wallStitcheable(left))    result += 2;
 		return result;
 	}
 
@@ -221,16 +231,23 @@ public class DungeonTileSheet {
 
 
 	public static int getRaisedDoorTile(int tile, int below){
-		if (wallStitcheable.contains(below))    return RAISED_DOOR_SIDEWAYS;
+		if (wallStitcheable(below))             return RAISED_DOOR_SIDEWAYS;
 		else if (tile == Terrain.DOOR)          return DungeonTileSheet.RAISED_DOOR;
 		else if (tile == Terrain.OPEN_DOOR)     return DungeonTileSheet.RAISED_DOOR_OPEN;
 		else if (tile == Terrain.LOCKED_DOOR)   return DungeonTileSheet.RAISED_DOOR_LOCKED;
 		else return -1;
 	}
 
-	public static HashSet<Integer> doorTiles = new HashSet<>(Arrays.asList(
+	private static int[] doorTiles = new int[]{
 			Terrain.DOOR, Terrain.LOCKED_DOOR, Terrain.OPEN_DOOR
-	));
+	};
+
+	public static boolean doorTile(int tile){
+		for (int i : doorTiles)
+			if (tile == i)
+				return true;
+		return false;
+	}
 
 	private static final int RAISED_OTHER           =                       xy(1, 11);  //16 slots
 	public static final int RAISED_SIGN             = RAISED_OTHER+0;
@@ -255,10 +272,10 @@ public class DungeonTileSheet {
 		if (tile == Terrain.BOOKSHELF)  result = WALL_INTERNAL_WOODEN;
 		else                            result = WALL_INTERNAL;
 
-		if (!wallStitcheable.contains(right))        result += 1;
-		if (!wallStitcheable.contains(rightBelow))   result += 2;
-		if (!wallStitcheable.contains(leftBelow))    result += 4;
-		if (!wallStitcheable.contains(left))         result += 8;
+		if (!wallStitcheable(right))        result += 1;
+		if (!wallStitcheable(rightBelow))   result += 2;
+		if (!wallStitcheable(leftBelow))    result += 4;
+		if (!wallStitcheable(left))         result += 8;
 		return result;
 	}
 
@@ -278,8 +295,8 @@ public class DungeonTileSheet {
 		else if (below == Terrain.BOOKSHELF)                        visual = WALL_OVERHANG_WOODEN;
 		else                                                        visual = WALL_OVERHANG;
 
-		if (!wallStitcheable.contains(rightBelow))  visual += 1;
-		if (!wallStitcheable.contains(leftBelow))   visual += 2;
+		if (!wallStitcheable(rightBelow))  visual += 1;
+		if (!wallStitcheable(leftBelow))   visual += 2;
 
 		return visual;
 	}

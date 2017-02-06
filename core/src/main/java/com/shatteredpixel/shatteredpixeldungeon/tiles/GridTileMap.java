@@ -26,8 +26,8 @@ public class GridTileMap extends DungeonTilemap {
 			return -1;
 		} else if (DungeonTileSheet.floorTile(tile)) {
 			return gridSetting;
-		} else if (DungeonTileSheet.doorTiles.contains(tile)){
-			if (DungeonTileSheet.wallStitcheable.contains(map[pos - mapWidth])){
+		} else if (DungeonTileSheet.doorTile(tile)){
+			if (DungeonTileSheet.wallStitcheable(map[pos - mapWidth])){
 				return 12 + gridSetting;
 			} else if ( tile == Terrain.OPEN_DOOR){
 				return 8 + gridSetting;

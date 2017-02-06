@@ -92,11 +92,11 @@ public abstract class DungeonTilemap extends Tilemap {
 
 		if (wallAssist
 				&& map != null
-				&& DungeonTileSheet.wallStitcheable.contains(map[cell])){
+				&& DungeonTileSheet.wallStitcheable(map[cell])){
 
 			if (cell + mapWidth < size
 					&& p.y % 1 >= 0.75f
-					&& !DungeonTileSheet.wallStitcheable.contains(map[cell + mapWidth])){
+					&& !DungeonTileSheet.wallStitcheable(map[cell + mapWidth])){
 				cell += mapWidth;
 			}
 

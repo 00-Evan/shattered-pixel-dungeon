@@ -43,8 +43,8 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 
 		if (flat) return -1;
 
-		if (DungeonTileSheet.wallStitcheable.contains(tile)) {
-			if (pos + mapWidth < size && !DungeonTileSheet.wallStitcheable.contains(map[pos + mapWidth])){
+		if (DungeonTileSheet.wallStitcheable(tile)) {
+			if (pos + mapWidth < size && !DungeonTileSheet.wallStitcheable(map[pos + mapWidth])){
 
 				if (map[pos + mapWidth] == Terrain.DOOR){
 					return DungeonTileSheet.DOOR_SIDEWAYS;
@@ -66,7 +66,7 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 
 		}
 
-		if (pos + mapWidth < size && DungeonTileSheet.wallStitcheable.contains(map[pos+mapWidth])) {
+		if (pos + mapWidth < size && DungeonTileSheet.wallStitcheable(map[pos+mapWidth])) {
 
 			return DungeonTileSheet.stitchWallOverhangTile(
 					tile,

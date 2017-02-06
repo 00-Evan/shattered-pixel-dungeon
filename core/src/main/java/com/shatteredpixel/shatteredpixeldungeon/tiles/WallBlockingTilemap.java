@@ -21,6 +21,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
 
@@ -29,6 +30,7 @@ public class WallBlockingTilemap extends Tilemap {
 
 	public static final int SIZE = 16;
 
+	private static final int CLEARED        = -1;
 	private static final int BLOCK_NONE     = 0;
 	private static final int BLOCK_RIGHT    = 1;
 	private static final int BLOCK_LEFT     = 2;
@@ -42,6 +44,7 @@ public class WallBlockingTilemap extends Tilemap {
 	@Override
 	public synchronized void updateMap() {
 		super.updateMap();
+		data = new int[size]; //clears all values, including cleared tiles
 		for (int i = 0; i < data.length; i++)
 			updateMapCell(i);
 	}
@@ -51,78 +54,76 @@ public class WallBlockingTilemap extends Tilemap {
 		int prev = data[cell];
 		int curr;
 
-		//no point in blocking tiles that are already obscured by fog
-		if (fogHidden(cell) && fogHidden(cell - mapWidth) && fogHidden(cell + mapWidth)){
-			curr = BLOCK_NONE;
+		if (prev == CLEARED){
+			return;
 
-		} else if (wall(cell)) {
-			if (cell + mapWidth < Dungeon.level.map.length) {
-				if (!wall(cell + mapWidth)) {
-					if (!fogHidden(cell + mapWidth)){
-						curr = BLOCK_NONE;
-					} else if ((cell + 1) % mapWidth != 0 && !fogHidden(cell + 1)
-							&& !door(cell + 1) && !(wall(cell + 1) && wall(cell + 1 + mapWidth))){
-						curr = BLOCK_NONE;
-					} else if (cell % mapWidth != 0 && !fogHidden(cell - 1)
-							&& !door(cell - 1) && !(wall(cell - 1) && wall(cell - 1 + mapWidth))){
-						curr = BLOCK_NONE;
-					} else {
-						curr = BLOCK_ALL;
-					}
-				} else {
-					curr = BLOCK_NONE;
+		} else if (!Level.discoverable[cell]) {
+			curr = CLEARED;
 
-					if ((cell + 1) % mapWidth != 0) {
+			//handles blocking wall overhang (which is technically on a none wall tile)
+		} else if (!wall(cell)) {
 
-						if (!wall(cell + 1) && !door(cell + 1)){
-							if (fogHidden(cell + 1)) {
-								curr += 1;
-							}
-						} else {
-							if (fogHidden(cell + 1 + mapWidth)){
-								curr += 1;
-							}
-						}
+			if (!fogHidden(cell)) {
+				curr = CLEARED;
 
-					}
-
-					if (cell % mapWidth != 0) {
-
-						if (!wall(cell - 1) && !door(cell - 1)){
-							if (fogHidden(cell - 1)) {
-								curr += 2;
-							}
-						} else {
-							if (fogHidden(cell - 1 + mapWidth)){
-								curr += 2;
-							}
-						}
-
-					}
-
-				}
+			} else if ( wall(cell + mapWidth) && !fogHidden(cell + mapWidth)
+					&& fogHidden(cell - 1) && fogHidden(cell + 1)) {
+				curr = BLOCK_ALL;
 
 			} else {
 				curr = BLOCK_NONE;
-
-				if ((cell + 1) % mapWidth != 0 && fogHidden(cell + 1)) {
-					curr += 1;
-				}
-
-				if (cell % mapWidth != 0 && fogHidden(cell - 1)) {
-					curr += 2;
-				}
 			}
 
 		} else {
-			if (fogHidden(cell - 1) && fogHidden(cell) && fogHidden(cell + 1)
-					&& cell + mapWidth < Dungeon.level.map.length
-					&& wall(cell + mapWidth -1 ) && wall(cell + mapWidth) && wall(cell + mapWidth + 1)
-					&& !fogHidden(cell + mapWidth)){
-				curr = BLOCK_ALL;
-			} else {
+
+			if (fogHidden(cell - mapWidth) && fogHidden(cell) && fogHidden(cell + mapWidth)) {
 				curr = BLOCK_NONE;
+
+				//camera-facing wall tiles
+			} else if (!wall(cell + mapWidth)) {
+
+				if (!fogHidden(cell + mapWidth)){
+					curr = CLEARED;
+
+				} else if ((cell + 1) % mapWidth != 0 && !fogHidden(cell + 1)
+						&& !door(cell + 1) && !(wall(cell + 1) && wall(cell + 1 + mapWidth))){
+					curr = CLEARED;
+
+				} else if (cell % mapWidth != 0 && !fogHidden(cell - 1)
+						&& !door(cell - 1) && !(wall(cell - 1) && wall(cell - 1 + mapWidth))){
+					curr = CLEARED;
+
+				} else {
+					curr = BLOCK_ALL;
+				}
+
+				//internal wall tiles
+			} else {
+
+				curr = BLOCK_NONE;
+
+				if ((cell + 1) % mapWidth != 0) {
+					if ((wall(cell + 1) || fogHidden(cell + 1 - mapWidth))
+							&& fogHidden(cell + 1)
+							&& (wall(cell + 1 + mapWidth) || fogHidden(cell + 1 + mapWidth))){
+						curr += 1;
+					}
+				}
+
+				if (cell % mapWidth != 0) {
+					if ((wall(cell - 1) || fogHidden(cell - 1 - mapWidth))
+							&& fogHidden(cell - 1)
+							&& (wall(cell - 1 + mapWidth) || fogHidden(cell - 1 + mapWidth))){
+						curr += 2;
+					}
+				}
+
+				if (curr == BLOCK_NONE) {
+					curr = CLEARED;
+				}
+
 			}
+
 		}
 
 		if (prev != curr){
@@ -140,12 +141,13 @@ public class WallBlockingTilemap extends Tilemap {
 		return false;
 	}
 
-	private boolean wall(int cell){
-		return DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell]);
+	//for the purposes of wall stitching, tiles below the map count as walls
+	private boolean wall(int cell) {
+		return cell >= 0 && (cell >= size || DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell]));
 	}
 
-	private boolean door(int cell ) {
-		return DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell]);
+	private boolean door(int cell) {
+		return cell >= 0 && cell < size && DungeonTileSheet.doorTile(Dungeon.level.map[cell]);
 	}
 
 	public synchronized void updateArea(int x, int y, int w, int h) {
@@ -153,7 +155,7 @@ public class WallBlockingTilemap extends Tilemap {
 		for (int i = x; i <= x+w; i++){
 			for (int j = y; j <= y+h; j++){
 				cell = i + j*mapWidth;
-				if (cell < data.length)
+				if (cell < data.length && data[cell] != CLEARED)
 					updateMapCell(cell);
 			}
 		}
@@ -161,6 +163,6 @@ public class WallBlockingTilemap extends Tilemap {
 
 	@Override
 	protected boolean needsRender(int pos) {
-		return data[pos] != BLOCK_NONE;
+		return data[pos] > BLOCK_NONE;
 	}
 }

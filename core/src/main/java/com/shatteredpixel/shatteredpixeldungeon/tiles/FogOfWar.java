@@ -163,15 +163,15 @@ public class FogOfWar extends Image {
 				}
 
 				//triggers on wall tiles or sideways doors
-				if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell]) ||
-						( DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell])
+				if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell]) ||
+						( DungeonTileSheet.doorTile(Dungeon.level.map[cell])
 								&& cell + mapWidth < mapLength
-								&& DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + mapWidth]))) {
+								&& DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + mapWidth]))) {
 					cellIndex = getColorIndexForCell(cell);
 
 					if (cell + mapWidth < mapLength){
-						if (!DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + mapWidth])
-								&& !DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell + mapWidth])){
+						if (!DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + mapWidth])
+								&& !DungeonTileSheet.doorTile(Dungeon.level.map[cell + mapWidth])){
 								if (getColorIndexForCell(cell + mapWidth) > cellIndex)
 									cellIndex = getColorIndexForCell(cell + mapWidth);
 							fillCell(j, i, FOG_COLORS[cellIndex][brightness]);
@@ -180,8 +180,8 @@ public class FogOfWar extends Image {
 						}
 
 						if (cell % mapWidth != 0){
-							if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell - 1])
-									|| DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell - 1])){
+							if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell - 1])
+									|| DungeonTileSheet.doorTile(Dungeon.level.map[cell - 1])){
 								if (getColorIndexForCell(cell - 1 + mapWidth) > cellIndex)
 									colorArray[0] = colorArray[2] = FOG_COLORS[getColorIndexForCell(cell - 1 + mapWidth)][brightness];
 								else
@@ -197,8 +197,8 @@ public class FogOfWar extends Image {
 						}
 
 						if ((cell+1) % mapWidth != 0){
-							if (DungeonTileSheet.wallStitcheable.contains(Dungeon.level.map[cell + 1])
-									|| DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell + 1])){
+							if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + 1])
+									|| DungeonTileSheet.doorTile(Dungeon.level.map[cell + 1])){
 								if (getColorIndexForCell(cell + 1 + mapWidth) > cellIndex)
 									colorArray[1] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + 1 + mapWidth)][brightness];
 								else
@@ -228,7 +228,7 @@ public class FogOfWar extends Image {
 					}
 
 					fillCell(j, i, colorArray);
-				} else if (DungeonTileSheet.doorTiles.contains(Dungeon.level.map[cell])) {
+				} else if (DungeonTileSheet.doorTile(Dungeon.level.map[cell])) {
 
 					colorArray[0] = colorArray[1] = FOG_COLORS[getColorIndexForCell(cell)][brightness];
 					colorArray[2] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + mapWidth)][brightness];
