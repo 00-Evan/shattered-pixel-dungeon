@@ -24,6 +24,7 @@ import android.opengl.GLES20;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Texture;
@@ -146,96 +147,75 @@ public class FogOfWar extends Image {
 
 		moveToUpdating();
 
+		boolean fullUpdate = updating.height() == mapHeight && updating.width() == mapWidth;
+
 		FogTexture fog = (FogTexture)texture;
 
-		int cellIndex;
+		int cell;
 		int[] colorArray = new int[PIX_PER_TILE*PIX_PER_TILE];
 		for (int i=updating.top; i < updating.bottom; i++) {
-			int cell = mapWidth * i + updating.left;
+			cell = mapWidth * i + updating.left;
 			for (int j=updating.left; j < updating.right; j++) {
 
 				if (cell >= Dungeon.level.length()) continue; //do nothing
 
-				if (!visible[cell] && !visited[cell] && !mapped[cell]){
-					fillCell(j, i, FOG_COLORS[INVISIBLE][brightness]);
+				if (!Level.discoverable[cell]
+						|| (!visible[cell] && !visited[cell] && !mapped[cell])){
+					//we skip filling cells here if it isn't a full update
+					// because they must already be dark
+					if (fullUpdate)
+						fillCell(j, i, FOG_COLORS[INVISIBLE][brightness]);
 					cell++;
 					continue;
 				}
 
-				//triggers on wall tiles or sideways doors
-				if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell]) ||
-						( DungeonTileSheet.doorTile(Dungeon.level.map[cell])
-								&& cell + mapWidth < mapLength
-								&& DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + mapWidth]))) {
-					cellIndex = getColorIndexForCell(cell);
+				//wall tiles
+				if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell])){
 
-					if (cell + mapWidth < mapLength){
-						if (!DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + mapWidth])
-								&& !DungeonTileSheet.doorTile(Dungeon.level.map[cell + mapWidth])){
-								if (getColorIndexForCell(cell + mapWidth) > cellIndex)
-									cellIndex = getColorIndexForCell(cell + mapWidth);
-							fillCell(j, i, FOG_COLORS[cellIndex][brightness]);
-							cell++;
-							continue;
-						}
+					//internal wall tiles
+					if (cell + mapWidth >= mapLength
+							|| DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + mapWidth])){
 
+						//these tiles need to check both the left and right side, to account for only one half of them being seen
 						if (cell % mapWidth != 0){
-							if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell - 1])
-									|| DungeonTileSheet.doorTile(Dungeon.level.map[cell - 1])){
-								if (getColorIndexForCell(cell - 1 + mapWidth) > cellIndex)
-									colorArray[0] = colorArray[2] = FOG_COLORS[getColorIndexForCell(cell - 1 + mapWidth)][brightness];
-								else
-									colorArray[0] = colorArray[2] = FOG_COLORS[cellIndex][brightness];
+
+							//picks the darkest fog between current tile, left, and below-left(if left is a wall).
+							if (cell + mapWidth < mapLength && DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell - 1])){
+								colorArray[0] = colorArray[2] = FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth - 1), getCellFog(cell - 1)))][brightness];
+
 							} else {
-								if (getColorIndexForCell(cell - 1) > cellIndex)
-									colorArray[0] = colorArray[2] = FOG_COLORS[getColorIndexForCell(cell - 1)][brightness];
-								else
-									colorArray[0] = colorArray[2] = FOG_COLORS[cellIndex][brightness];
+								colorArray[0] = colorArray[2] = FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell - 1))][brightness];
 							}
+
 						} else {
-							colorArray[0] = colorArray[2] = FOG_COLORS[cellIndex][brightness];
+							colorArray[0] = colorArray [2] = FOG_COLORS[INVISIBLE][brightness];
 						}
 
 						if ((cell+1) % mapWidth != 0){
-							if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + 1])
-									|| DungeonTileSheet.doorTile(Dungeon.level.map[cell + 1])){
-								if (getColorIndexForCell(cell + 1 + mapWidth) > cellIndex)
-									colorArray[1] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + 1 + mapWidth)][brightness];
-								else
-									colorArray[1] = colorArray[3] = FOG_COLORS[cellIndex][brightness];
+
+							//picks the darkest fog between current tile, right, and below-right(if right is a wall).
+							if (cell + mapWidth < mapLength && DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + 1])){
+								colorArray[1] = colorArray[3] = FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth + 1), getCellFog(cell + 1)))][brightness];
+
 							} else {
-								if (getColorIndexForCell(cell + 1) > cellIndex)
-									colorArray[1] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + 1)][brightness];
-								else
-									colorArray[1] = colorArray[3] = FOG_COLORS[cellIndex][brightness];
+								colorArray[1] = colorArray[3] =
+										FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell + 1))][brightness];
 							}
+
 						} else {
-							colorArray[1] = colorArray[3] = FOG_COLORS[cellIndex][brightness];
+							colorArray[1] = colorArray [3] = FOG_COLORS[INVISIBLE][brightness];
 						}
 
+						fillCell(j, i, colorArray);
+
+					//camera-facing wall tiles
 					} else {
-						if (cell % mapWidth != 0 && getColorIndexForCell(cell - 1) > cellIndex) {
-							colorArray[0] = colorArray[2] = FOG_COLORS[getColorIndexForCell(cell - 1)][brightness];
-						} else {
-							colorArray[0] = colorArray[2] = FOG_COLORS[cellIndex][brightness];
-						}
-
-						if ((cell+1) % mapWidth != 0 && getColorIndexForCell(cell + 1) > cellIndex) {
-							colorArray[1] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + 1)][brightness];
-						} else {
-							colorArray[1] = colorArray[3] = FOG_COLORS[cellIndex][brightness];
-						}
+						fillCell(j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell + mapWidth))][brightness]);
 					}
 
-					fillCell(j, i, colorArray);
-				} else if (DungeonTileSheet.doorTile(Dungeon.level.map[cell])) {
-
-					colorArray[0] = colorArray[1] = FOG_COLORS[getColorIndexForCell(cell)][brightness];
-					colorArray[2] = colorArray[3] = FOG_COLORS[getColorIndexForCell(cell + mapWidth)][brightness];
-					fillCell(j, i, colorArray);
-
+					//other tiles
 				} else {
-					fillCell(j, i, FOG_COLORS[getColorIndexForCell(cell)][brightness]);
+					fillCell(j, i, FOG_COLORS[getCellFog(cell)][brightness]);
 				}
 
 				cell++;
@@ -249,7 +229,7 @@ public class FogOfWar extends Image {
 
 	}
 
-	private int getColorIndexForCell( int cell ){
+	private int getCellFog( int cell ){
 
 		if (visible[cell]) {
 			return VISIBLE;
