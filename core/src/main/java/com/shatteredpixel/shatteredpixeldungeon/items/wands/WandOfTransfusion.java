@@ -170,8 +170,8 @@ public class WandOfTransfusion extends Wand {
 
 	//this wand costs health too
 	private void damageHero(){
-		// 15% of max hp
-		int damage = (int)Math.ceil(curUser.HT*0.15f);
+		// 10% of max hp
+		int damage = (int)Math.ceil(curUser.HT*0.10f);
 		curUser.damage(damage, this);
 
 		if (!curUser.isAlive()){
