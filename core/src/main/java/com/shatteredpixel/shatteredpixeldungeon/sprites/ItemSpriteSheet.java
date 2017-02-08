@@ -151,7 +151,7 @@ public class ItemSpriteSheet {
 	public static final int WHIP            = WEP_TIER3+5;
 	static{
 		assignItemRect(SWORD,           14, 14);
-		assignItemRect(MACE,            15, 14);
+		assignItemRect(MACE,            15, 15);
 		assignItemRect(SCIMITAR,        13, 16);
 		assignItemRect(ROUND_SHIELD,    16, 16);
 		assignItemRect(SAI,             16, 16);
