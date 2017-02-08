@@ -277,6 +277,8 @@ public abstract class Level implements Bundlable {
 		createMobs();
 		createItems();
 
+		buildFlagMaps();
+
 		Random.seed();
 	}
 
@@ -860,6 +862,10 @@ public abstract class Level implements Bundlable {
 		Plant plant = plants.get( cell );
 		if (plant != null) {
 			plant.trigger();
+		}
+
+		if ( map[cell] == Terrain.HIGH_GRASS){
+			HighGrass.trample( this, cell, mob );
 		}
 	}
 	

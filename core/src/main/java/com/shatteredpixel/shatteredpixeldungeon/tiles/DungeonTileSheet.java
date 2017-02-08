@@ -49,19 +49,17 @@ public class DungeonTileSheet {
 	private static final int GROUND         =                               xy(1, 1);   //32 slots
 	public static final int FLOOR           = GROUND +0;
 	public static final int FLOOR_DECO      = GROUND +1;
-	public static final int HIGH_GRASS      = GROUND +2;
-	public static final int GRASS           = GROUND +3;
-	public static final int EMBERS          = GROUND +4;
-	public static final int FLOOR_SP        = GROUND +5;
+	public static final int GRASS           = GROUND +2;
+	public static final int EMBERS          = GROUND +3;
+	public static final int FLOOR_SP        = GROUND +4;
 
-	public static final int FLOOR_ALT_1     = GROUND +7;
-	public static final int FLOOR_DECO_ALT  = GROUND +8;
-	public static final int HIGH_GRASS_ALT  = GROUND +9;
-	public static final int GRASS_ALT       = GROUND +10;
-	public static final int EMBERS_ALT      = GROUND +11;
-	public static final int FLOOR_SP_ALT    = GROUND +12;
+	public static final int FLOOR_ALT_1     = GROUND +6;
+	public static final int FLOOR_DECO_ALT  = GROUND +7;
+	public static final int GRASS_ALT       = GROUND +8;
+	public static final int EMBERS_ALT      = GROUND +9;
+	public static final int FLOOR_SP_ALT    = GROUND +10;
 
-	public static final int FLOOR_ALT_2     = GROUND +14;
+	public static final int FLOOR_ALT_2     = GROUND +12;
 
 	public static final int ENTRANCE        = GROUND +16;
 	public static final int EXIT            = GROUND +17;
@@ -173,6 +171,9 @@ public class DungeonTileSheet {
 	public static final int FLAT_STATUE         = FLAT_OTHER+1;
 	public static final int FLAT_STATUE_SP      = FLAT_OTHER+2;
 	public static final int FLAT_BARRICADE      = FLAT_OTHER+3;
+	public static final int FLAT_HIGH_GRASS     = FLAT_OTHER+4;
+
+	public static final int FLAT_HIGH_GRASS_ALT = FLAT_OTHER+6;
 
 
 	/**********************************************************************
@@ -254,6 +255,9 @@ public class DungeonTileSheet {
 	public static final int RAISED_STATUE           = RAISED_OTHER+1;
 	public static final int RAISED_STATUE_SP        = RAISED_OTHER+2;
 	public static final int RAISED_BARRICADE        = RAISED_OTHER+3;
+	public static final int RAISED_HIGH_GRASS       = RAISED_OTHER+4;
+
+	public static final int RAISED_HIGH_GRASS_ALT   = RAISED_OTHER+6;
 
 
 
@@ -309,6 +313,9 @@ public class DungeonTileSheet {
 
 	public static final int STATUE_OVERHANG             = WALL_OVERHANG+26;
 	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+27;
+	public static final int HIGH_GRASS_OVERHANG         = WALL_OVERHANG+28;
+
+	public static final int HIGH_GRASS_OVERHANG_ALT     = WALL_OVERHANG+30;
 
 	/**********************************************************************
 	 * Logic for the selection of tile visuals
@@ -325,7 +332,6 @@ public class DungeonTileSheet {
 		directVisuals.put(Terrain.EMBERS,           EMBERS);
 		directVisuals.put(Terrain.PEDESTAL,         PEDESTAL);
 		directVisuals.put(Terrain.EMPTY_SP,         FLOOR_SP);
-		directVisuals.put(Terrain.HIGH_GRASS,       HIGH_GRASS);
 
 		directVisuals.put(Terrain.SECRET_TRAP,      directVisuals.get(Terrain.EMPTY));
 		directVisuals.put(Terrain.TRAP,             directVisuals.get(Terrain.EMPTY));
@@ -352,6 +358,7 @@ public class DungeonTileSheet {
 		directFlatVisuals.put(Terrain.STATUE,           FLAT_STATUE);
 		directFlatVisuals.put(Terrain.STATUE_SP,        FLAT_STATUE_SP);
 		directFlatVisuals.put(Terrain.BARRICADE,        FLAT_BARRICADE);
+		directFlatVisuals.put(Terrain.HIGH_GRASS,       FLAT_HIGH_GRASS);
 
 		directFlatVisuals.put(Terrain.SECRET_DOOR,      directFlatVisuals.get(Terrain.WALL));
 	}
@@ -380,13 +387,17 @@ public class DungeonTileSheet {
 		commonAltVisuals.put(EMBERS,                EMBERS_ALT);
 		commonAltVisuals.put(FLAT_WALL_DECO,        FLAT_WALL_DECO_ALT);
 		commonAltVisuals.put(FLOOR_SP,              FLOOR_SP_ALT);
-		commonAltVisuals.put(HIGH_GRASS,            HIGH_GRASS_ALT);
 		commonAltVisuals.put(FLOOR_DECO,            FLOOR_DECO_ALT);
+
 		commonAltVisuals.put(FLAT_BOOKSHELF,        FLAT_BOOKSHELF_ALT);
+		commonAltVisuals.put(FLAT_HIGH_GRASS,       FLAT_HIGH_GRASS_ALT);
 
 		commonAltVisuals.put(RAISED_WALL,           RAISED_WALL_ALT);
 		commonAltVisuals.put(RAISED_WALL_DECO,      RAISED_WALL_DECO_ALT);
 		commonAltVisuals.put(RAISED_WALL_BOOKSHELF, RAISED_WALL_BOOKSHELF_ALT);
+
+		commonAltVisuals.put(RAISED_HIGH_GRASS,     RAISED_HIGH_GRASS_ALT);
+		commonAltVisuals.put(HIGH_GRASS_OVERHANG,   HIGH_GRASS_OVERHANG_ALT);
 	}
 
 	//These alt visuals trigger 5% of the time (and also override common alts when they show up)
