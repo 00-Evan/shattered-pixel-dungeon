@@ -614,18 +614,6 @@ public abstract class Level implements Bundlable {
 				}
 			}
 			
-			if (d) {
-				d = false;
-				
-				for (int j=0; j < PathFinder.NEIGHBOURS9.length; j++) {
-					int n = i + PathFinder.NEIGHBOURS9[j];
-					if (n >= 0 && n < length() && !pit[n]) {
-						d = true;
-						break;
-					}
-				}
-			}
-			
 			discoverable[i] = d;
 		}
 	}
