@@ -37,20 +37,23 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
+			"_v0.5.0a:_\n" +
+			"_-_ Added new Language: Esperanto\n" +
+			"_-_ Various Bugfixes\n" +
+			"_-_ Translation updates\n" +
+			"\n"+
 			"_v0.5.0:_\n" +
 			"New Visuals!:\n" +
 			"_-_ Walls and some terrain now have depth\n" +
 			"_-_ Characters & items are raised & cast shadows\n" +
 			"_-_ Added a visible tile grid in the settings menu\n" +
-			"_-_ Various Bugfixes\n" +
-			"_-_ Translation Updates\n" +
 			"\n"+
 			"Balance Changes:\n" +
 			"_-_ Quarterstaff armor bonus increased from 2 to 3\n" +
 			"_-_ Wand of Frost damage against chilled enemies\n" +
 			"\t \treduced from -7.5% per turn of chill to -10%\n" +
 			"_-_ Wand of Transfusion self-damage reduced\n" +
-			"\t \tfrom 15% max hp per zap to 10% max hp per zap\n" +
+			"\t \tfrom 15% max hp to 10% max hp per zap\n" +
 			"_-_ Dried Rose charges 20% faster and the ghost\n" +
 			"\t \thero is stronger, especially at low levels\n" +
 			"_-_ Glyph of Entanglement activates less often\n" +
@@ -63,11 +66,7 @@ public class ChangesScene extends PixelScene {
 			"\t \tfrom 10% of deferred damage to 15%\n" +
 			"_-_ Exhausting Curse activates more often\n" +
 			"\n" +
-			"_v0.4.3:_\n" +
-			"_-_ Added rankings and hall of heroes sync\n" +
-			"_-_ Added Power Saver mode in the settings menu\n" +
-			"_-_ Improved variety of level visuals\n" +
-			"_-_ Thrown potions now trigger traps and plants\n" +
+			"_v0.4.3:_ Various utility features and improvements\n" +
 			"\n" +
 			"_v0.4.2:_ Performance and game engine improvements\n" +
 			"\n" +
