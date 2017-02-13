@@ -190,7 +190,7 @@ public class RenderedText extends Image {
 
 			r.texture = new SmartTexture(bitmap, Texture.NEAREST, Texture.CLAMP, true);
 
-			RectF rect = r.texture.uvRect(0, 0, (int)r.width, (int)r.height);
+			RectF rect = r.texture.uvRect(0, 0, r.width, r.height);
 			r.frame(rect);
 
 			r.cache = new CachedText();

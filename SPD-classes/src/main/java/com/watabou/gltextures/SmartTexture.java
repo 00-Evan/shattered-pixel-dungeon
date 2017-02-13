@@ -119,11 +119,11 @@ public class SmartTexture extends Texture {
 		bitmap = null;
 	}
 	
-	public RectF uvRect( int left, int top, int right, int bottom ) {
+	public RectF uvRect( float left, float top, float right, float bottom ) {
 		return new RectF(
-			(float)left		/ width,
-			(float)top		/ height,
-			(float)right	/ width,
-			(float)bottom	/ height );
+			left		/ width,
+			top		/ height,
+			right	/ width,
+			bottom	/ height );
 	}
 }
