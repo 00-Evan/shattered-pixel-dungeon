@@ -185,7 +185,7 @@ public class ShatteredPixelDungeon extends Game {
 
 		} else {
 			DisplayMetrics metrics = new DisplayMetrics();
-			if (immersed() && Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1)
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1)
 				getWindowManager().getDefaultDisplay().getRealMetrics( metrics );
 			else
 				getWindowManager().getDefaultDisplay().getMetrics( metrics );
@@ -330,13 +330,8 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	private void updateDisplaySize(){
-		DisplayMetrics m = new DisplayMetrics();
-		if (immersed() && Build.VERSION.SDK_INT >= 19)
-			getWindowManager().getDefaultDisplay().getRealMetrics( m );
-		else
-			getWindowManager().getDefaultDisplay().getMetrics( m );
-		dispHeight = m.heightPixels;
-		dispWidth = m.widthPixels;
+		dispWidth = view.getMeasuredWidth();
+		dispHeight = view.getMeasuredHeight();
 
 		float dispRatio = dispWidth / (float)dispHeight;
 
