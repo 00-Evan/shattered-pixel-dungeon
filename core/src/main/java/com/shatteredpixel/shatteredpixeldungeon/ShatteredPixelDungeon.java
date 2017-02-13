@@ -330,6 +330,9 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	private void updateDisplaySize(){
+		if (view.getMeasuredWidth() == 0 || view.getMeasuredHeight() == 0)
+			return;
+
 		dispWidth = view.getMeasuredWidth();
 		dispHeight = view.getMeasuredHeight();
 
