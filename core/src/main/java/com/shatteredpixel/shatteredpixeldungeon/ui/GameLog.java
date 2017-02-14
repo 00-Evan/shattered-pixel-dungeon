@@ -112,7 +112,9 @@ public class GameLog extends Component implements Signal.Listener<String> {
 				}
 
 				if (nLines > MAX_LINES) {
-					remove(members.get(0));
+					RenderedTextMultiline r = ((RenderedTextMultiline) members.get(0));
+					remove(r);
+					r.destroy();
 
 					entries.remove( 0 );
 				}
