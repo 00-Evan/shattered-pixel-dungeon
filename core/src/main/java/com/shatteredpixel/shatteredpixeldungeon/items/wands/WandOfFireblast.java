@@ -78,9 +78,8 @@ public class WandOfFireblast extends DamageWand {
 			Char ch = Actor.findChar( cell );
 			if (ch != null) {
 
-				int damage = damageRoll();
-
-				ch.damage(damage, this);
+				processSoulMark(ch, chargesPerCast());
+				ch.damage(damageRoll(), this);
 				Buff.affect( ch, Burning.class ).reignite( ch );
 				switch(chargesPerCast()){
 					case 1:
