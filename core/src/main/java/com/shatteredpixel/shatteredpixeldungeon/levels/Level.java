@@ -65,6 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MassGravePainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
@@ -74,6 +75,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
@@ -362,7 +364,32 @@ public abstract class Level implements Bundlable {
 		collection = bundle.getCollection( CUSTOM_TILES );
 		for (Bundlable p : collection) {
 			CustomTiledVisual vis = (CustomTiledVisual)p;
-			customTiles.add( vis );
+			//for compatibilities with pre-0.5.0b saves
+			//extends one of the bones visuals and discards the rest
+			if (vis instanceof MassGravePainter.Bones && vis.tileH == 0){
+				int cell = vis.tileX + vis.tileY*width;
+				if (map[cell] == Terrain.EMPTY_SP &&
+						DungeonTileSheet.wallStitcheable(map[cell - width]) &&
+						DungeonTileSheet.wallStitcheable(map[cell - 1])){
+
+					vis.tileY--; //move top to into the wall
+					vis.tileW = 1;
+					vis.tileH = 2;
+
+					while (map[cell+1] == Terrain.EMPTY_SP){
+						vis.tileW++;
+						cell++;
+					}
+					while (map[cell+width] == Terrain.EMPTY_SP){
+						vis.tileH++;
+						cell+=width;
+					}
+
+					customTiles.add(vis);
+				}
+			} else {
+				customTiles.add(vis);
+			}
 		}
 		
 		collection = bundle.getCollection( MOBS );
