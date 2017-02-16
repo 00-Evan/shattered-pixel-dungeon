@@ -202,8 +202,9 @@ public class Tilemap extends Visual {
 		}
 
 		Camera c = Camera.main;
-		camX = (int)c.scroll.x/16;
-		camY = (int)c.scroll.y/16;
+		//we treat the position of the tilemap as (0,0) here
+		camX = (int)(c.scroll.x/cellW - x/cellW);
+		camY = (int)(c.scroll.y/cellH - y/cellH);
 		camW = (int)Math.ceil(c.width/cellW);
 		camH = (int)Math.ceil(c.height/cellH);
 
@@ -221,7 +222,7 @@ public class Tilemap extends Visual {
 		bottomRight = Math.min(camX+camW, mapWidth-1)
 				+ Math.min((camY+camH)*mapWidth, (mapHeight-1)*mapWidth);
 
-		if (topLeft >= size || bottomRight <= 0)
+		if (topLeft >= size || bottomRight < 0)
 			length = 0;
 		else
 			length = bottomRight - topLeft + 1;

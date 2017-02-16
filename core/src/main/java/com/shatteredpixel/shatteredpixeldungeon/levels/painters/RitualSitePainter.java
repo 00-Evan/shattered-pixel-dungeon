@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
 import com.watabou.utils.Point;
 
 public class RitualSitePainter extends Painter {
@@ -56,18 +56,26 @@ public class RitualSitePainter extends Painter {
 		CeremonialCandle.ritualPos = c.x + (level.width() * c.y);
 	}
 
-	public static class RitualMarker extends CustomTileVisual{
+	public static class RitualMarker extends CustomTiledVisual {
 
-		{
-			name = Messages.get(this, "name");
-
-			tx = Assets.PRISON_QUEST;
-			txX = txY = 0;
-			tileW = tileH = 3;
+		public RitualMarker(){
+			super( Assets.PRISON_QUEST );
 		}
 
 		@Override
-		public String desc() {
+		public CustomTiledVisual create() {
+			tileH = tileW = 3;
+			mapSimpleImage(0, 0);
+			return super.create();
+		}
+
+		@Override
+		public String name(int tileX, int tileY) {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
 			return Messages.get(this, "desc");
 		}
 	}

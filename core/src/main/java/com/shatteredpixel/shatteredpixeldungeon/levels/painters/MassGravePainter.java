@@ -32,7 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -48,7 +49,10 @@ public class MassGravePainter extends Painter {
 		fill(level, room, Terrain.WALL);
 		fill(level, room, 1, Terrain.EMPTY_SP);
 
-		level.customTiles.addAll(Bones.CustomTilesForRoom(room, Bones.class));
+		Bones b = new Bones();
+
+		b.setRect(room.left+1, room.top, room.width()-1, room.height());
+		level.customTiles.add(b);
 
 		//50% 1 skeleton, 50% 2 skeletons
 		for (int i = 0; i <= Random.Int(2); i++){
@@ -82,22 +86,40 @@ public class MassGravePainter extends Painter {
 		}
 	}
 
-	public static class Bones extends CustomTileVisual {
-		{
-			name = Messages.get(this, "name");
+	public static class Bones extends CustomTiledVisual {
 
-			tx = Assets.PRISON_QUEST;
-			txX = 3;
-			txY = 0;
+		private static final int WALL_OVERLAP   = 3;
+		private static final int FLOOR          = 7;
+
+		public Bones(){
+			super(Assets.PRISON_QUEST);
 		}
 
 		@Override
-		public String desc() {
-			if (ofsX == 1 && ofsY == 1) {
-				return Messages.get(this, "desc");
-			} else {
-				return null;
+		public CustomTiledVisual create() {
+			int data[] = new int[tileW*tileH];
+			for (int i = 0; i < data.length; i++){
+				if (i < tileW)  data[i] = WALL_OVERLAP;
+				else            data[i] = FLOOR;
 			}
+			map( data, tileW );
+			return super.create();
+		}
+
+		@Override
+		public Image image(int tileX, int tileY) {
+			if (tileY == 0) return null;
+			else            return super.image(tileX, tileY);
+		}
+
+		@Override
+		public String name(int tileX, int tileY) {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
+			return Messages.get(this, "desc");
 		}
 	}
 }

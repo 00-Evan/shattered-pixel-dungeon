@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
@@ -340,7 +340,7 @@ public class PrisonBossLevel extends Level {
 			case FIGHT_ARENA:
 				unseal();
 
-				CustomTileVisual vis = new exitVisual();
+				CustomTiledVisual vis = new exitVisual();
 				vis.pos(11, 8);
 				customTiles.add(vis);
 				((GameScene)ShatteredPixelDungeon.scene()).addCustomTile(vis);
@@ -526,15 +526,36 @@ public class PrisonBossLevel extends Level {
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
 
 
-	public static class exitVisual extends CustomTileVisual{
+	public static class exitVisual extends CustomTiledVisual {
 
-		{
-			name = "prison exit";
+		private static short[] render = new short[]{
+				0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+				0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+				0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+				0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+				0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+				1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+				1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+		};
 
-			tx = Assets.PRISON_EXIT;
-			txX = txY = 0;
+		public exitVisual() {
+			super(Assets.PRISON_EXIT);
+		}
+
+		@Override
+		public CustomTiledVisual create() {
 			tileW = 12;
 			tileH = 15;
+			mapSimpleImage(0, 0);
+			return super.create();
 		}
 
 		//for compatibility with pre-0.4.3 saves
@@ -545,8 +566,8 @@ public class PrisonBossLevel extends Level {
 		}
 
 		@Override
-		public String desc() {
-			return super.desc();
+		protected boolean needsRender(int pos) {
+			return render[pos] != 0;
 		}
 	}
 }

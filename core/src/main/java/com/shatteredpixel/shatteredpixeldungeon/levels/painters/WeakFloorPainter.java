@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.CustomTileVisual;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -69,24 +69,33 @@ public class WeakFloorPainter extends Painter {
 			well = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.top+2 );
 		}
 		set(level, well, Terrain.CHASM);
-		CustomTileVisual vis = new HiddenWell();
+		CustomTiledVisual vis = new HiddenWell();
 		vis.pos(well.x, well.y);
 		level.customTiles.add(vis);
 	}
 
-	public static class HiddenWell extends CustomTileVisual{
+	public static class HiddenWell extends CustomTiledVisual {
 
-		{
-			name = Messages.get(this, "name");
-
-			tx = Assets.WEAK_FLOOR;
-			txX = Dungeon.depth/5;
-			txY = 0;
+		public HiddenWell(){
+			super(Assets.WEAK_FLOOR);
 		}
 
 		@Override
-		public String desc() {
+		public CustomTiledVisual create() {
+			tileW = tileH = 1;
+			map( new int[]{Dungeon.depth/5}, 1);
+			return super.create();
+		}
+
+		@Override
+		public String name(int tileX, int tileY) {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
 			return Messages.get(this, "desc");
 		}
+
 	}
 }
