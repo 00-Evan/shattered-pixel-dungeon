@@ -145,6 +145,7 @@ public abstract class Level implements Bundlable {
 	public SparseArray<Plant> plants;
 	public SparseArray<Trap> traps;
 	public HashSet<CustomTiledVisual> customTiles;
+	public HashSet<CustomTiledVisual> customWalls;
 	
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
@@ -168,6 +169,7 @@ public abstract class Level implements Bundlable {
 	private static final String PLANTS		= "plants";
 	private static final String TRAPS       = "traps";
 	private static final String CUSTOM_TILES= "customTiles";
+	private static final String CUSTOM_WALLS= "customWalls";
 	private static final String MOBS		= "mobs";
 	private static final String BLOBS		= "blobs";
 	private static final String FEELING		= "feeling";
@@ -269,6 +271,7 @@ public abstract class Level implements Bundlable {
 			plants = new SparseArray<>();
 			traps = new SparseArray<>();
 			customTiles = new HashSet<>();
+			customWalls = new HashSet<>();
 			
 		} while (!build());
 		decorate();
@@ -319,6 +322,7 @@ public abstract class Level implements Bundlable {
 		plants = new SparseArray<>();
 		traps = new SparseArray<>();
 		customTiles = new HashSet<>();
+		customWalls = new HashSet<>();
 		
 		map		= bundle.getIntArray( MAP );
 
@@ -391,6 +395,12 @@ public abstract class Level implements Bundlable {
 				customTiles.add(vis);
 			}
 		}
+
+		collection = bundle.getCollection( CUSTOM_WALLS );
+		for (Bundlable p : collection) {
+			CustomTiledVisual vis = (CustomTiledVisual)p;
+			customWalls.add(vis);
+		}
 		
 		collection = bundle.getCollection( MOBS );
 		for (Bundlable m : collection) {
@@ -429,6 +439,7 @@ public abstract class Level implements Bundlable {
 		bundle.put( PLANTS, plants.values() );
 		bundle.put( TRAPS, traps.values() );
 		bundle.put( CUSTOM_TILES, customTiles );
+		bundle.put( CUSTOM_WALLS, customWalls );
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );
 		bundle.put( FEELING, feeling );

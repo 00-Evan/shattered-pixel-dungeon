@@ -345,6 +345,11 @@ public class PrisonBossLevel extends Level {
 				customTiles.add(vis);
 				((GameScene)ShatteredPixelDungeon.scene()).addCustomTile(vis);
 
+				vis = new exitVisualWalls();
+				vis.pos(11, 8);
+				customWalls.add(vis);
+				((GameScene)ShatteredPixelDungeon.scene()).addCustomWall(vis);
+
 				Dungeon.hero.interrupt();
 				Dungeon.hero.pos = 5+27*32;
 				Dungeon.hero.sprite.interruptMotion();
@@ -543,7 +548,6 @@ public class PrisonBossLevel extends Level {
 				1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 				1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 		};
 
 		public exitVisual() {
@@ -553,7 +557,7 @@ public class PrisonBossLevel extends Level {
 		@Override
 		public CustomTiledVisual create() {
 			tileW = 12;
-			tileH = 15;
+			tileH = 14;
 			mapSimpleImage(0, 0);
 			return super.create();
 		}
@@ -563,6 +567,42 @@ public class PrisonBossLevel extends Level {
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			pos(11, 8);
+		}
+
+		@Override
+		protected boolean needsRender(int pos) {
+			return render[pos] != 0;
+		}
+	}
+
+	public static class exitVisualWalls extends CustomTiledVisual {
+		private static short[] render = new short[]{
+				0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+				0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0,
+				0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+				1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		};
+
+		public exitVisualWalls() {
+			super(Assets.PRISON_EXIT);
+		}
+
+		@Override
+		public CustomTiledVisual create() {
+			tileW = 12;
+			tileH = 14;
+			mapSimpleImage(4, 0);
+			return super.create();
 		}
 
 		@Override
