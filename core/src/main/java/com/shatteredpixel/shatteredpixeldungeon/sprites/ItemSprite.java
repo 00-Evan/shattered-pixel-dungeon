@@ -62,7 +62,7 @@ public class ItemSprite extends MovieClip {
 	private float dropInterval;
 
 	//the amount the sprite is raised from flat when viewed in a raised perspective
-	protected float perspectiveRaise    = 0.3125f; //5 pixels
+	protected float perspectiveRaise    = 5 / 16f; //5 pixels
 
 	//the width and height of the shadow are a percentage of sprite size
 	//offset is the number of pixels the shadow is moved down or up (handy for some animations)
@@ -193,7 +193,7 @@ public class ItemSprite extends MovieClip {
 	public ItemSprite view( int image, Glowing glowing ) {
 		if (this.emitter != null) this.emitter.killAndErase();
 		emitter = null;
-		frame( ItemSpriteSheet.film.get( image ) );
+		frame( image );
 		if ((this.glowing = glowing) == null) {
 			resetColor();
 		}
@@ -202,6 +202,12 @@ public class ItemSprite extends MovieClip {
 
 	public void frame( int image ){
 		frame( ItemSpriteSheet.film.get( image ));
+
+		float height = ItemSpriteSheet.film.height( image );
+		//adds extra raise to very short items, so they are visible
+		if (height < 8f){
+			perspectiveRaise =  (5 + 8 - height) / 16f;
+		}
 	}
 
 	@Override

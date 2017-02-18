@@ -67,7 +67,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	private static final float FLASH_INTERVAL	= 0.05f;
 
 	//the amount the sprite is raised from flat when viewed in a raised perspective
-	protected float perspectiveRaise    = 0.375f; //6 pixels
+	protected float perspectiveRaise    = 6 / 16f; //6 pixels
 
 	//the width and height of the shadow are a percentage of sprite size
 	//offset is the number of pixels the shadow is moved down or up (handy for some animations)
