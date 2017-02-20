@@ -602,8 +602,6 @@ public abstract class RegularLevel extends Level {
 			if (findMob(mob.pos) == null && Level.passable[mob.pos]) {
 				mobsToSpawn--;
 				mobs.add(mob);
-				if (map[mob.pos] == Terrain.HIGH_GRASS)
-					map[mob.pos] = Terrain.GRASS;
 
 				//TODO: perhaps externalize this logic into a method. Do I want to make mobs more likely to clump deeper down?
 				if (mobsToSpawn > 0 && Random.Int(4) == 0){
@@ -613,12 +611,19 @@ public abstract class RegularLevel extends Level {
 					if (findMob(mob.pos)  == null && Level.passable[mob.pos]) {
 						mobsToSpawn--;
 						mobs.add(mob);
-						if (map[mob.pos] == Terrain.HIGH_GRASS)
-							map[mob.pos] = Terrain.GRASS;
 					}
 				}
 			}
 		}
+
+		for (Mob m : mobs){
+			if (map[m.pos] == Terrain.HIGH_GRASS) {
+				map[m.pos] = Terrain.GRASS;
+				losBlocking[m.pos] = false;
+			}
+
+		}
+
 	}
 	
 	@Override

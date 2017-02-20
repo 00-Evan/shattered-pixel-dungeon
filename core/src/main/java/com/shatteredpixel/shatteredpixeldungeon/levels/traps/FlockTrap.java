@@ -56,6 +56,7 @@ public class FlockTrap extends Trap {
 						Sheep sheep = new Sheep();
 						sheep.lifespan = 2 + Random.Int(Dungeon.depth + 10);
 						sheep.pos = i;
+						Dungeon.level.mobPress(sheep);
 						GameScene.add(sheep);
 						CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
 					}

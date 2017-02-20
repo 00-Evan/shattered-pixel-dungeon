@@ -282,8 +282,6 @@ public abstract class Level implements Bundlable {
 		createMobs();
 		createItems();
 
-		buildFlagMaps();
-
 		Random.seed();
 	}
 
