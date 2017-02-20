@@ -37,10 +37,14 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
+			"_v0.5.0b:_\n" +
+			"_-_ Added new Language: Indonesian\n" +
+			"_-_ Fixed wand of fireblast not activating soul mark\n" +
+			"_-_ Various bugfixes and optimizations\n" +
+			"_-_ Translation updates\n" +
+			"\n"+
 			"_v0.5.0a:_\n" +
 			"_-_ Added new Language: Esperanto\n" +
-			"_-_ Various Bugfixes\n" +
-			"_-_ Translation updates\n" +
 			"\n"+
 			"_v0.5.0:_\n" +
 			"New Visuals!:\n" +
