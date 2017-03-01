@@ -63,11 +63,11 @@ public class SewerLevel extends RegularLevel {
 	}
 	
 	protected boolean[] water() {
-		return Patch.generate( this, feeling == Feeling.WATER ? 0.60f : 0.45f, 5 );
+		return Patch.generate( width, height, feeling == Feeling.WATER ? 0.85f : 0.30f, 5, true );
 	}
 	
 	protected boolean[] grass() {
-		return Patch.generate( this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 4 );
+		return Patch.generate( width, height, feeling == Feeling.GRASS ? 0.80f : 0.20f, 4, true );
 	}
 
 	@Override

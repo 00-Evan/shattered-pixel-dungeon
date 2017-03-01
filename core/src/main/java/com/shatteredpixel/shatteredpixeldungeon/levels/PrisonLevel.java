@@ -67,11 +67,11 @@ public class PrisonLevel extends RegularLevel {
 	}
 	
 	protected boolean[] water() {
-		return Patch.generate( this, feeling == Feeling.WATER ? 0.65f : 0.45f, 4 );
+		return Patch.generate( width, height, feeling == Feeling.WATER ? 0.90f : 0.30f, 4, true );
 	}
 	
 	protected boolean[] grass() {
-		return Patch.generate( this, feeling == Feeling.GRASS ? 0.60f : 0.40f, 3 );
+		return Patch.generate( width, height, feeling == Feeling.GRASS ? 0.80f : 0.20f, 3, true );
 	}
 
 	@Override

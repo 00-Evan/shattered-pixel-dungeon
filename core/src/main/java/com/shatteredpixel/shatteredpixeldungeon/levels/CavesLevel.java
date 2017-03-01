@@ -75,11 +75,11 @@ public class CavesLevel extends RegularLevel {
 	}
 	
 	protected boolean[] water() {
-		return Patch.generate( this, feeling == Feeling.WATER ? 0.60f : 0.45f, 6 );
+		return Patch.generate( width, height, feeling == Feeling.WATER ? 0.85f : 0.30f, 6, true );
 	}
 	
 	protected boolean[] grass() {
-		return Patch.generate( this, feeling == Feeling.GRASS ? 0.55f : 0.35f, 3 );
+		return Patch.generate( width, height, feeling == Feeling.GRASS ? 0.65f : 0.15f, 3, true );
 	}
 
 	@Override

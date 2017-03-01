@@ -217,12 +217,12 @@ public class LastShopLevel extends RegularLevel {
 
 	@Override
 	protected boolean[] water() {
-		return Patch.generate( this, 0.35f, 4 );
+		return Patch.generate( width, height, 0.10f, 4, true );
 	}
 
 	@Override
 	protected boolean[] grass() {
-		return Patch.generate( this, 0.30f, 3 );
+		return Patch.generate( width, height, 0.10f, 3, true );
 	}
 
 	@Override
