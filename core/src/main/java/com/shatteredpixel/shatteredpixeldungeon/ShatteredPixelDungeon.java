@@ -186,7 +186,7 @@ public class ShatteredPixelDungeon extends Game {
 
 		} else {
 			DisplayMetrics metrics = new DisplayMetrics();
-			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
 				getWindowManager().getDefaultDisplay().getRealMetrics( metrics );
 			else
 				getWindowManager().getDefaultDisplay().getMetrics( metrics );
@@ -280,7 +280,7 @@ public class ShatteredPixelDungeon extends Game {
 	 */
 	
 	public static void landscape( boolean value ) {
-		if (android.os.Build.VERSION.SDK_INT >= 9) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			Game.instance.setRequestedOrientation(value ?
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
 					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
@@ -382,7 +382,7 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static void updateImmersiveMode() {
-		if (android.os.Build.VERSION.SDK_INT >= 19) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			try {
 				// Sometime NullPointerException happens here
 				instance.getWindow().getDecorView().setSystemUiVisibility(

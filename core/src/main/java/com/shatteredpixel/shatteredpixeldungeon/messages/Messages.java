@@ -87,7 +87,7 @@ public class Messages {
 				String value = bundle.getString(key);
 
 				//android 2.2 doesn't use UTF-8 by default, need to force it.
-				if (android.os.Build.VERSION.SDK_INT == 8) {
+				if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.FROYO) {
 					try {
 						value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
 					} catch (Exception e) {

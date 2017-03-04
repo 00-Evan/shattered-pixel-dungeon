@@ -132,7 +132,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		view = new GLSurfaceView( this );
 		view.setEGLContextClientVersion( 2 );
 
-		//Versions of android below 4.0.0 are forced to RGB 565 for performance reasons.
+		//Versions of android below 4.1 are forced to RGB 565 for performance reasons.
 		//Otherwise try to use RGB888 for best quality, but use RGB565 if it is what's available.
 		view.setEGLConfigChooser( new ScreenConfigChooser(
 						Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN,

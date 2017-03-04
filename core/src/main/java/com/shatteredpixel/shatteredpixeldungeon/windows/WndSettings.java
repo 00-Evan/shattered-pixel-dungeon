@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import android.os.Build;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -285,7 +287,7 @@ public class WndSettings extends WndTabbed {
 			};
 			chkImmersive.setRect( 0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
 			chkImmersive.checked(ShatteredPixelDungeon.immersed());
-			chkImmersive.enable(android.os.Build.VERSION.SDK_INT >= 19);
+			chkImmersive.enable(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1);
 			add(chkImmersive);
 
 			CheckBox chkFont = new CheckBox(Messages.get(this, "system_font")){
