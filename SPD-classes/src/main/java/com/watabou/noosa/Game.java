@@ -45,6 +45,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -223,7 +224,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		}
 		
 		SystemTime.tick();
-		long rightNow = SystemTime.now;
+		long rightNow = SystemClock.elapsedRealtime();
 		step = (now == 0 ? 0 : rightNow - now);
 		now = rightNow;
 		
