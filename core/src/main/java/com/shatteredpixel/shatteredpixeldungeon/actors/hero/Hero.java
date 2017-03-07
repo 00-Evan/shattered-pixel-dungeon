@@ -1403,7 +1403,8 @@ public class Hero extends Char {
 	public boolean isAlive() {
 		if (subClass == HeroSubClass.BERSERKER
 				&& berserk != null
-				&& berserk.berserking()){
+				&& berserk.berserking()
+				&& SHLD > 0){
 			return true;
 		}
 		return super.isAlive();
