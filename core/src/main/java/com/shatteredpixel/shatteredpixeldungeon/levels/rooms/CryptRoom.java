@@ -19,25 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Point;
 
-public class CryptPainter extends Painter {
+public class CryptRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
-
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY );
+		
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Terrain.EMPTY );
 
 		Point c = room.center();
 		int cx = c.x;
@@ -49,24 +49,24 @@ public class CryptPainter extends Painter {
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 		
 		if (entrance.x == room.left) {
-			set( level, new Point( room.right-1, room.top+1 ), Terrain.STATUE );
-			set( level, new Point( room.right-1, room.bottom-1 ), Terrain.STATUE );
+			Painter.set( level, new Point( room.right-1, room.top+1 ), Terrain.STATUE );
+			Painter.set( level, new Point( room.right-1, room.bottom-1 ), Terrain.STATUE );
 			cx = room.right - 2;
 		} else if (entrance.x == room.right) {
-			set( level, new Point( room.left+1, room.top+1 ), Terrain.STATUE );
-			set( level, new Point( room.left+1, room.bottom-1 ), Terrain.STATUE );
+			Painter.set( level, new Point( room.left+1, room.top+1 ), Terrain.STATUE );
+			Painter.set( level, new Point( room.left+1, room.bottom-1 ), Terrain.STATUE );
 			cx = room.left + 2;
 		} else if (entrance.y == room.top) {
-			set( level, new Point( room.left+1, room.bottom-1 ), Terrain.STATUE );
-			set( level, new Point( room.right-1, room.bottom-1 ), Terrain.STATUE );
+			Painter.set( level, new Point( room.left+1, room.bottom-1 ), Terrain.STATUE );
+			Painter.set( level, new Point( room.right-1, room.bottom-1 ), Terrain.STATUE );
 			cy = room.bottom - 2;
 		} else if (entrance.y == room.bottom) {
-			set( level, new Point( room.left+1, room.top+1 ), Terrain.STATUE );
-			set( level, new Point( room.right-1, room.top+1 ), Terrain.STATUE );
+			Painter.set( level, new Point( room.left+1, room.top+1 ), Terrain.STATUE );
+			Painter.set( level, new Point( room.right-1, room.top+1 ), Terrain.STATUE );
 			cy = room.top + 2;
 		}
 		
-		level.drop( prize( level ), cx + cy * level.width() ).type = Type.TOMB;
+		level.drop( prize( level ), cx + cy * level.width() ).type = Heap.Type.TOMB;
 	}
 	
 	private static Item prize( Level level ) {

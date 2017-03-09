@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -27,12 +27,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotHeart;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RotLasher;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class RotGardenPainter extends Painter {
+public class RotGardenRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
 
@@ -40,8 +40,8 @@ public class RotGardenPainter extends Painter {
 		entrance.set(Room.Door.Type.LOCKED);
 		level.addItemToSpawn(new IronKey(Dungeon.depth));
 
-		fill(level, room, Terrain.WALL);
-		fill(level, room, 1, Terrain.GRASS);
+		Painter.fill(level, room, Terrain.WALL);
+		Painter.fill(level, room, 1, Terrain.GRASS);
 
 
 		int heartX = Random.IntRange(room.left+1, room.right-1);
@@ -90,7 +90,7 @@ public class RotGardenPainter extends Painter {
 
 		for(int i : PathFinder.NEIGHBOURS8) {
 			if (level.map[pos + i] == Terrain.GRASS){
-				set(level, pos + i, Terrain.HIGH_GRASS);
+				Painter.set(level, pos + i, Terrain.HIGH_GRASS);
 			}
 		}
 	}

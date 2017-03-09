@@ -19,38 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.AltarPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ArmoryPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.BlacksmithPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.BossExitPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CryptPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.EntrancePainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ExitPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.GardenPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.LaboratoryPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.LibraryPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MagicWellPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MassGravePainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PassagePainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PitPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PoolPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RatKingPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RitualSitePainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RotGardenPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ShopPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.StandardPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.StatuePainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.StoragePainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.TrapsPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.TreasuryPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.TunnelPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.VaultPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.WeakFloorPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
@@ -72,41 +44,52 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	public int distance;
 	public int price = 1;
 	
+	public Room(){
+		super();
+	}
+	
+	public Room(Rect other){
+		super(other);
+	}
+	
+	public Room( int left, int top, int right, int bottom ) {
+		super( left, top, right, bottom );
+	}
+	
+	//TODO convert these types into full subclasses of room
 	public static enum Type {
 		NULL( null ),
-		STANDARD	( StandardPainter.class ),
-		ENTRANCE	( EntrancePainter.class ),
-		EXIT		( ExitPainter.class ),
-		BOSS_EXIT	( BossExitPainter.class ),
-		TUNNEL		( TunnelPainter.class ),
-		PASSAGE		( PassagePainter.class ),
-		SHOP		( ShopPainter.class ),
-		BLACKSMITH	( BlacksmithPainter.class ),
-		TREASURY	( TreasuryPainter.class ),
-		ARMORY		( ArmoryPainter.class ),
-		LIBRARY		( LibraryPainter.class ),
-		LABORATORY	( LaboratoryPainter.class ),
-		VAULT		( VaultPainter.class ),
-		TRAPS		( TrapsPainter.class ),
-		STORAGE		( StoragePainter.class ),
-		MAGIC_WELL	( MagicWellPainter.class ),
-		GARDEN		( GardenPainter.class ),
-		CRYPT		( CryptPainter.class ),
-		STATUE		( StatuePainter.class ),
-		POOL		( PoolPainter.class ),
-		RAT_KING	( RatKingPainter.class ),
-		WEAK_FLOOR	( WeakFloorPainter.class ),
-		PIT			( PitPainter.class ),
-		ALTAR		( AltarPainter.class ),
+		STANDARD	( StandardRoom.class ),
+		ENTRANCE	( EntranceRoom.class ),
+		EXIT		( ExitRoom.class ),
+		TUNNEL		( MazeRoom.class ),
+		PASSAGE		( PassageRoom.class ),
+		SHOP		( ShopRoom.class ),
+		BLACKSMITH	( BlacksmithRoom.class ),
+		TREASURY	( TreasuryRoom.class ),
+		ARMORY		( ArmoryRoom.class ),
+		LIBRARY		( LibraryRoom.class ),
+		LABORATORY	( LaboratoryRoom.class ),
+		VAULT		( VaultRoom.class ),
+		TRAPS		( TrapsRoom.class ),
+		STORAGE		( StorageRoom.class ),
+		MAGIC_WELL	( MagicWellRoom.class ),
+		GARDEN		( GardenRoom.class ),
+		CRYPT		( CryptRoom.class ),
+		STATUE		( StatueRoom.class ),
+		POOL		( PoolRoom.class ),
+		RAT_KING	( RatKingRoom.class ),
+		WEAK_FLOOR	( WeakFloorRoom.class ),
+		PIT			( PitRoom.class ),
 
 		//prison quests
-		MASS_GRAVE  ( MassGravePainter.class ),
-		ROT_GARDEN  ( RotGardenPainter.class ),
-		RITUAL_SITE ( RitualSitePainter.class );
+		MASS_GRAVE  ( MassGraveRoom.class ),
+		ROT_GARDEN  ( RotGardenRoom.class ),
+		RITUAL_SITE ( RitualSiteRoom.class );
 		
 		private Method paint;
 		
-		Type( Class<? extends Painter> painter ) {
+		Type( Class<? extends Room> painter ) {
 			if (painter == null)
 				paint = null;
 			else

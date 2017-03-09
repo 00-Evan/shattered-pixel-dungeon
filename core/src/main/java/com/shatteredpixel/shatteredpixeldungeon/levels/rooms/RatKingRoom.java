@@ -19,23 +19,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Random;
 
-public class RatKingPainter extends Painter {
+public class RatKingRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
 
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY_SP );
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Terrain.EMPTY_SP );
 		
 		Room.Door entrance = room.entrance();
 		entrance.set( Room.Door.Type.HIDDEN );

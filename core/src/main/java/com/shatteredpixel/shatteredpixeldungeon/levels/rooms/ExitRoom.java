@@ -19,25 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 
-public class BossExitPainter extends Painter {
+public class ExitRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
 
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY );
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Terrain.EMPTY );
 		
 		for (Room.Door door : room.connected.values()) {
 			door.set( Room.Door.Type.REGULAR );
 		}
 		
-		level.exit = room.top * level.width() + (room.left + room.right) / 2;
-		set( level, level.exit, Terrain.LOCKED_EXIT );
+		level.exit = level.pointToCell(room.random( 1 ));
+		Painter.set( level, level.exit, Terrain.EXIT );
 	}
 	
 }

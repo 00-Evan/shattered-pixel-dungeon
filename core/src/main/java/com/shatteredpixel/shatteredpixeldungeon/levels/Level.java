@@ -66,8 +66,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MassGravePainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MassGraveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -369,7 +368,7 @@ public abstract class Level implements Bundlable {
 			CustomTiledVisual vis = (CustomTiledVisual)p;
 			//for compatibilities with pre-0.5.0b saves
 			//extends one of the bones visuals and discards the rest
-			if (vis instanceof MassGravePainter.Bones && vis.tileH == 0){
+			if (vis instanceof MassGraveRoom.Bones && vis.tileH == 0){
 				int cell = vis.tileX + vis.tileY*width;
 				if (map[cell] == Terrain.EMPTY_SP &&
 						DungeonTileSheet.wallStitcheable(map[cell - width]) &&

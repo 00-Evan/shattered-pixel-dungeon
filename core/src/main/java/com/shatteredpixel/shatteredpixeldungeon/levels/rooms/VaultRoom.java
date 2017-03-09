@@ -19,27 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class VaultPainter extends Painter {
+public class VaultRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
 
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY_SP );
-		fill( level, room, 2, Terrain.EMPTY );
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Terrain.EMPTY_SP );
+		Painter.fill( level, room, 2, Terrain.EMPTY );
 		
 		int cx = (room.left + room.right) / 2;
 		int cy = (room.top + room.bottom) / 2;
@@ -48,7 +48,7 @@ public class VaultPainter extends Painter {
 		switch (Random.Int( 3 )) {
 		
 		case 0:
-			level.drop( prize( level ), c ).type = Type.LOCKED_CHEST;
+			level.drop( prize( level ), c ).type = Heap.Type.LOCKED_CHEST;
 			level.addItemToSpawn( new GoldenKey( Dungeon.depth ) );
 			break;
 			
@@ -58,14 +58,14 @@ public class VaultPainter extends Painter {
 				i1 = prize( level );
 				i2 = prize( level );
 			} while (i1.getClass() == i2.getClass());
-			level.drop( i1, c ).type = Type.CRYSTAL_CHEST;
-			level.drop( i2, c + PathFinder.NEIGHBOURS8[Random.Int( 8 )]).type = Type.CRYSTAL_CHEST;
+			level.drop( i1, c ).type = Heap.Type.CRYSTAL_CHEST;
+			level.drop( i2, c + PathFinder.NEIGHBOURS8[Random.Int( 8 )]).type = Heap.Type.CRYSTAL_CHEST;
 			level.addItemToSpawn( new GoldenKey( Dungeon.depth ) );
 			break;
 			
 		case 2:
 			level.drop( prize( level ), c );
-			set( level, c, Terrain.PEDESTAL );
+			Painter.set( level, c, Terrain.PEDESTAL );
 			break;
 		}
 		

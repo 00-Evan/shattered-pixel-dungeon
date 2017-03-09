@@ -19,22 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Point;
 
-public class StatuePainter extends Painter {
+public class StatueRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
 
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY );
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Terrain.EMPTY );
 
 		Point c = room.center();
 		int cx = c.x;
@@ -47,22 +47,22 @@ public class StatuePainter extends Painter {
 		
 		if (door.x == room.left) {
 			
-			fill( level, room.right - 1, room.top + 1, 1, room.height() - 1 , Terrain.STATUE );
+			Painter.fill( level, room.right - 1, room.top + 1, 1, room.height() - 1 , Terrain.STATUE );
 			cx = room.right - 2;
 			
 		} else if (door.x == room.right) {
 			
-			fill( level, room.left + 1, room.top + 1, 1, room.height() - 1 , Terrain.STATUE );
+			Painter.fill( level, room.left + 1, room.top + 1, 1, room.height() - 1 , Terrain.STATUE );
 			cx = room.left + 2;
 			
 		} else if (door.y == room.top) {
 			
-			fill( level, room.left + 1, room.bottom - 1, room.width() - 1, 1 , Terrain.STATUE );
+			Painter.fill( level, room.left + 1, room.bottom - 1, room.width() - 1, 1 , Terrain.STATUE );
 			cy = room.bottom - 2;
 			
 		} else if (door.y == room.bottom) {
 			
-			fill( level, room.left + 1, room.top + 1, room.width() - 1, 1 , Terrain.STATUE );
+			Painter.fill( level, room.left + 1, room.top + 1, room.width() - 1, 1 , Terrain.STATUE );
 			cy = room.top + 2;
 			
 		}

@@ -19,39 +19,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Point;
 
 //import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 
-public class AltarPainter extends Painter {
+public class AltarRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
-
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Dungeon.bossLevel( Dungeon.depth + 1 ) ? Terrain.HIGH_GRASS : Terrain.CHASM );
+		
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Dungeon.bossLevel( Dungeon.depth + 1 ) ? Terrain.HIGH_GRASS : Terrain.CHASM );
 
 		Point c = room.center();
 		Room.Door door = room.entrance();
 		if (door.x == room.left || door.x == room.right) {
-			Point p = drawInside( level, room, door, Math.abs( door.x - c.x ) - 2, Terrain.EMPTY_SP );
+			Point p = Painter.drawInside( level, room, door, Math.abs( door.x - c.x ) - 2, Terrain.EMPTY_SP );
 			for (; p.y != c.y; p.y += p.y < c.y ? +1 : -1) {
-				set( level, p, Terrain.EMPTY_SP );
+				Painter.set( level, p, Terrain.EMPTY_SP );
 			}
 		} else {
-			Point p = drawInside( level, room, door, Math.abs( door.y - c.y ) - 2, Terrain.EMPTY_SP );
+			Point p = Painter.drawInside( level, room, door, Math.abs( door.y - c.y ) - 2, Terrain.EMPTY_SP );
 			for (; p.x != c.x; p.x += p.x < c.x ? +1 : -1) {
-				set( level, p, Terrain.EMPTY_SP );
+				Painter.set( level, p, Terrain.EMPTY_SP );
 			}
 		}
-
-		fill( level, c.x - 1, c.y - 1, 3, 3, Terrain.EMBERS );
-		set( level, c, Terrain.PEDESTAL );
+		
+		Painter.fill( level, c.x - 1, c.y - 1, 3, 3, Terrain.EMBERS );
+		Painter.set( level, c, Terrain.PEDESTAL );
 
 		//TODO: find some use for sacrificial fire... but not the vanilla one. scroll of wipe out is too strong.
 		/*SacrificialFire fire = (SacrificialFire)level.blobs.get( SacrificialFire.class );

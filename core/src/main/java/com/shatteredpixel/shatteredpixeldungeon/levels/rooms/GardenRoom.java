@@ -19,25 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Foliage;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.watabou.utils.Random;
 
-public class GardenPainter extends Painter {
+public class GardenRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
 		
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.HIGH_GRASS );
-		fill( level, room, 2, Terrain.GRASS );
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Terrain.HIGH_GRASS );
+		Painter.fill( level, room, 2, Terrain.GRASS );
 		
 		room.entrance().set( Room.Door.Type.REGULAR );
 

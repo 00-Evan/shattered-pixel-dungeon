@@ -33,7 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.MazePainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MazeRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -306,7 +307,7 @@ public class PrisonBossLevel extends Level {
 				maze.set(10, 1, 31, 29);
 				maze.connected.put(null, new Room.Door(10, 2));
 				maze.connected.put(maze, new Room.Door(20, 29));
-				MazePainter.paint(this, maze);
+				MazeRoom.paint(this, maze);
 				buildFlagMaps();
 				cleanWalls();
 				GameScene.resetMap();

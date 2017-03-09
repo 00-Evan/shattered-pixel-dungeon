@@ -19,17 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Random;
 
-public class MazePainter extends Painter {
+public class MazeRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
-		fill(level, room, 1, Terrain.EMPTY);
+		Painter.fill(level, room, 1, Terrain.EMPTY);
 
 		//true = space, false = wall
 		boolean[][] maze = new boolean[room.width() + 1][room.height() + 1];
@@ -82,11 +82,11 @@ public class MazePainter extends Painter {
 
 		}
 
-		fill(level, room, 1, Terrain.EMPTY);
+		Painter.fill(level, room, 1, Terrain.EMPTY);
 		for (int x = 0; x < maze.length; x++)
 			for (int y = 0; y < maze[0].length; y++) {
 				if (!maze[x][y]) {
-					fill(level, x + room.left, y + room.top, 1, 1, Terrain.WALL);
+					Painter.fill(level, x + room.left, y + room.top, 1, 1, Terrain.WALL);
 				}
 			}
 	}

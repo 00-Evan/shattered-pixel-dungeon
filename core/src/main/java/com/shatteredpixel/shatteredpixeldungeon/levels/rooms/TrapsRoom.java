@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
@@ -48,11 +48,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class TrapsPainter extends Painter {
+public class TrapsRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
 		 
-		fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, Terrain.WALL );
 
 		Class<? extends Trap> trapClass;
 		switch (Random.Int(5)){
@@ -68,9 +68,9 @@ public class TrapsPainter extends Painter {
 		}
 
 		if (trapClass == null){
-			fill(level, room, 1, Terrain.CHASM);
+			Painter.fill(level, room, 1, Terrain.CHASM);
 		} else {
-			fill(level, room, 1, Terrain.TRAP);
+			Painter.fill(level, room, 1, Terrain.TRAP);
 		}
 		
 		Room.Door door = room.entrance();
@@ -83,19 +83,19 @@ public class TrapsPainter extends Painter {
 		if (door.x == room.left) {
 			x = room.right - 1;
 			y = room.top + room.height() / 2;
-			fill( level, x, room.top + 1, 1, room.height() - 1 , lastRow );
+			Painter.fill( level, x, room.top + 1, 1, room.height() - 1 , lastRow );
 		} else if (door.x == room.right) {
 			x = room.left + 1;
 			y = room.top + room.height() / 2;
-			fill( level, x, room.top + 1, 1, room.height() - 1 , lastRow );
+			Painter.fill( level, x, room.top + 1, 1, room.height() - 1 , lastRow );
 		} else if (door.y == room.top) {
 			x = room.left + room.width() / 2;
 			y = room.bottom - 1;
-			fill( level, room.left + 1, y, room.width() - 1, 1 , lastRow );
+			Painter.fill( level, room.left + 1, y, room.width() - 1, 1 , lastRow );
 		} else if (door.y == room.bottom) {
 			x = room.left + room.width() / 2;
 			y = room.top + 1;
-			fill( level, room.left + 1, y, room.width() - 1, 1 , lastRow );
+			Painter.fill( level, room.left + 1, y, room.width() - 1, 1 , lastRow );
 		}
 
 		for(Point p : room.getPoints()) {
@@ -112,11 +112,11 @@ public class TrapsPainter extends Painter {
 		int pos = x + y * level.width();
 		if (Random.Int( 3 ) == 0) {
 			if (lastRow == Terrain.CHASM) {
-				set( level, pos, Terrain.EMPTY );
+				Painter.set( level, pos, Terrain.EMPTY );
 			}
 			level.drop( prize( level ), pos ).type = Heap.Type.CHEST;
 		} else {
-			set( level, pos, Terrain.PEDESTAL );
+			Painter.set( level, pos, Terrain.PEDESTAL );
 			level.drop( prize( level ), pos );
 		}
 		

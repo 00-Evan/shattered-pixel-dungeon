@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -34,9 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room.Type;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.ShopPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.Type;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
@@ -55,6 +54,7 @@ import java.util.List;
 
 public abstract class RegularLevel extends Level {
 
+	
 	protected ArrayList<Room> rooms;
 	
 	protected Room roomEntrance;
@@ -135,7 +135,7 @@ public abstract class RegularLevel extends Level {
 		if (Dungeon.shopOnLevel()) {
 			Room shop = null;
 			for (Room r : roomEntrance.connected.keySet()) {
-				if (r.connected.size() == 1 && ((r.width()-1)*(r.height()-1) >= ShopPainter.spaceNeeded())) {
+				if (r.connected.size() == 1 && ((r.width()-1)*(r.height()-1) >= ShopRoom.spaceNeeded())) {
 					shop = r;
 					break;
 				}
@@ -795,7 +795,7 @@ public abstract class RegularLevel extends Level {
 			}
 			if (r.type == Type.ENTRANCE){
 				roomEntrance = r;
-			} else if (r.type == Type.EXIT || r.type == Type.BOSS_EXIT){
+			} else if (r.type == Type.EXIT){
 				roomExit = r;
 			}
 		}

@@ -19,24 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class BlacksmithPainter extends Painter {
+public class BlacksmithRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
 
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.TRAP );
-		fill( level, room, 2, Terrain.EMPTY_SP );
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Terrain.TRAP );
+		Painter.fill( level, room, 2, Terrain.EMPTY_SP );
 		
 		for (int i=0; i < 2; i++) {
 			int pos;
@@ -52,7 +52,7 @@ public class BlacksmithPainter extends Painter {
 		
 		for (Room.Door door : room.connected.values()) {
 			door.set( Room.Door.Type.UNLOCKED );
-			drawInside( level, room, door, 1, Terrain.EMPTY );
+			Painter.drawInside( level, room, door, 1, Terrain.EMPTY );
 		}
 		
 		Blacksmith npc = new Blacksmith();

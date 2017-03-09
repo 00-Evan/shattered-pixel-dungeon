@@ -19,16 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.watabou.utils.Point;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class PassagePainter extends Painter {
+public class PassageRoom extends Room {
 
 	private static int pasWidth;
 	private static int pasHeight;
@@ -63,11 +63,11 @@ public class PassagePainter extends Painter {
 		
 		int p = joints.get( start );
 		do {
-			set( level, p2xy( room, p ), floor );
+			Painter.set( level, p2xy( room, p ), floor );
 			p = (p + 1) % perimeter;
 		} while (p != joints.get( end ));
 		
-		set( level, p2xy( room, p ), floor );
+		Painter.set( level, p2xy( room, p ), floor );
 		
 		for (Room.Door door : room.connected.values()) {
 			door.set( Room.Door.Type.TUNNEL );

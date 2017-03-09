@@ -19,25 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class PitPainter extends Painter {
+public class PitRoom extends Room {
 
 	public static void paint( Level level, Room room ) {
-
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY );
+		
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Terrain.EMPTY );
 		
 		Room.Door entrance = room.entrance();
 		entrance.set( Room.Door.Type.LOCKED );
@@ -52,14 +52,14 @@ public class PitPainter extends Painter {
 		} else if (entrance.y == room.bottom) {
 			well = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.top+1 );
 		}
-		set( level, well, Terrain.EMPTY_WELL );
+		Painter.set( level, well, Terrain.EMPTY_WELL );
 		
 		int remains = level.pointToCell(room.random());
 		while (level.map[remains] == Terrain.EMPTY_WELL) {
 			remains = level.pointToCell(room.random());
 		}
 		
-		level.drop( new IronKey( Dungeon.depth ), remains ).type = Type.SKELETON;
+		level.drop( new IronKey( Dungeon.depth ), remains ).type = Heap.Type.SKELETON;
 		int loot = Random.Int( 3 );
 		if (loot == 0) {
 			level.drop( Generator.random( Generator.Category.RING ), remains );

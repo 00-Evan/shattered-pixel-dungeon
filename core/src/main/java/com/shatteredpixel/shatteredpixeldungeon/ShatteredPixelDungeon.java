@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -35,10 +36,10 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.GameMath;
+
+import java.util.Locale;
 
 import javax.microedition.khronos.opengles.GL10;
-import java.util.Locale;
 
 public class ShatteredPixelDungeon extends Game {
 	
@@ -163,6 +164,17 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stench" );
+		
+		//0.6.0
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MassGraveRoom.Bones.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.MassGravePainter.Bones.class" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.RitualSiteRoom.RitualMarker.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.RitualSitePainter.RitualMarker.class" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.WeakFloorRoom.HiddenWell.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.WeakFloorPainter.HiddenWell.class" );
 
 		com.watabou.utils.Bundle.exceptionReporter =
 				new com.watabou.utils.Bundle.BundleExceptionCallback() {

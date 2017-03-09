@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Skeleton;
@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
@@ -39,7 +39,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class MassGravePainter extends Painter {
+public class MassGraveRoom extends Room {
 
 	public static void paint( Level level, Room room){
 
@@ -47,8 +47,8 @@ public class MassGravePainter extends Painter {
 		entrance.set(Room.Door.Type.BARRICADE);
 		level.addItemToSpawn(new PotionOfLiquidFlame());
 
-		fill(level, room, Terrain.WALL);
-		fill(level, room, 1, Terrain.EMPTY_SP);
+		Painter.fill(level, room, Terrain.WALL);
+		Painter.fill(level, room, 1, Terrain.EMPTY_SP);
 
 		Bones b = new Bones();
 

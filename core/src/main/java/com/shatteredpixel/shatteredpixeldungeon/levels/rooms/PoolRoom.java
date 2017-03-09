@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
@@ -29,18 +29,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Random;
 
-public class PoolPainter extends Painter {
+public class PoolRoom extends Room {
 
 	private static final int NPIRANHAS	= 3;
 	
 	public static void paint( Level level, Room room ) {
 		
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.WATER );
+		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, room, 1, Terrain.WATER );
 		
 		Room.Door door = room.entrance();
 		door.set( Room.Door.Type.REGULAR );
@@ -72,7 +72,7 @@ public class PoolPainter extends Painter {
 		int pos = x + y * level.width();
 		level.drop( prize( level ), pos ).type =
 			Random.Int( 3 ) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
-		set( level, pos, Terrain.PEDESTAL );
+		Painter.set( level, pos, Terrain.PEDESTAL );
 		
 		level.addItemToSpawn( new PotionOfInvisibility() );
 		
