@@ -662,10 +662,8 @@ public class Dungeon {
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.depth = bundle.getInt( DEPTH );
+		info.version = bundle.getInt( VERSION );
 		info.challenges = (bundle.getInt( CHALLENGES ) != 0);
-		if (info.depth == -1) {
-			info.depth = bundle.getInt( "maxDepth" );	// FIXME
-		}
 		Hero.preview( info, bundle.getBundle( HERO ) );
 	}
 	

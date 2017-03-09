@@ -21,17 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ParalyticTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
-import com.watabou.utils.SparseArray;
-
 public class Terrain {
 
 	public static final int CHASM			= 0;
@@ -145,73 +134,5 @@ public class Terrain {
 		}
 		return map;
 	}
-
-	//converts terrain values from pre versioncode 44 (0.3.0c) saves
-	//TODO: remove when no longer supporting saves from 0.3.0b and under
-	public static int[] convertTrapsFrom43( int[] map, SparseArray<Trap> traps){
-		for (int i = 0; i < map.length; i++){
-
-			int c = map[i];
-
-			//non-trap tiles getting their values shifted around
-			if (c >= 24 && c <= 26) {
-				c -= 4; //24-26 becomes 20-22
-			} else if (c == 29) {
-				c = 23; //29 becomes 23
-			} else if ( c >= 34 && c <= 36) {
-				c -= 10; //34-36 becomes 24-26
-			} else if ( c >= 41 && c <= 46) {
-				c -= 14; //41-46 becomes 27-32
-			}
-
-			//trap tiles, must be converted to general trap tiles and specific traps instantiated
-			else if (c >= 17 && c <= 40){
-				//this is going to be messy...
-				Trap trap = null;
-				switch(c){
-					case 17: trap = new ToxicTrap().reveal(); break;
-					case 18: trap = new ToxicTrap().hide(); break;
-
-					case 19: trap = new FireTrap().reveal(); break;
-					case 20: trap = new FireTrap().hide(); break;
-
-					case 21: trap = new ParalyticTrap().reveal(); break;
-					case 22: trap = new ParalyticTrap().hide(); break;
-
-					case 23:
-						c = INACTIVE_TRAP;
-						trap = null;
-						break;
-
-					case 27: trap = new PoisonTrap().reveal(); break;
-					case 28: trap = new PoisonTrap().hide(); break;
-
-					case 30: trap = new AlarmTrap().reveal(); break;
-					case 31: trap = new AlarmTrap().hide(); break;
-
-					case 32: trap = new LightningTrap().reveal(); break;
-					case 33: trap = new LightningTrap().hide(); break;
-
-					case 37: trap = new GrippingTrap().reveal(); break;
-					case 38: trap = new GrippingTrap().hide(); break;
-
-					case 39: trap = new SummoningTrap().reveal(); break;
-					case 40: trap = new SummoningTrap().hide(); break;
-				}
-				if (trap != null){
-					trap.set( i );
-					traps.put( trap.pos, trap );
-					if (trap.visible)
-						c = TRAP;
-					else
-						c = SECRET_TRAP;
- 				}
-			}
-
-			map[i] = c;
-		}
-		return map;
-	}
-
 
 }

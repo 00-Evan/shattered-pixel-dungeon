@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -430,7 +429,6 @@ public class Item implements Bundlable {
 	private static final String LEVEL_KNOWN		= "levelKnown";
 	private static final String CURSED			= "cursed";
 	private static final String CURSED_KNOWN	= "cursedKnown";
-	private static final String OLDSLOT			= "quickslot";
 	private static final String QUICKSLOT		= "quickslotpos";
 	
 	@Override
@@ -462,10 +460,7 @@ public class Item implements Bundlable {
 
 		//only want to populate slot on first load.
 		if (Dungeon.hero == null) {
-			//support for pre-0.2.3 saves and rankings
-			if (bundle.contains(OLDSLOT)) {
-				Dungeon.quickslot.setSlot(0, this);
-			} else if (bundle.contains(QUICKSLOT)) {
+			if (bundle.contains(QUICKSLOT)) {
 				Dungeon.quickslot.setSlot(bundle.getInt(QUICKSLOT), this);
 			}
 		}

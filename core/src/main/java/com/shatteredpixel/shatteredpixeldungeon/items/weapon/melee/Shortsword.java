@@ -23,8 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-//this class is named as such to avoid conflicts with the ShortSword class, from pre-0.4.0
-public class NewShortsword extends MeleeWeapon {
+public class Shortsword extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.SHORTSWORD;

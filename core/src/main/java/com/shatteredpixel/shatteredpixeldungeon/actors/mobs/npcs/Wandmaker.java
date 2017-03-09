@@ -229,12 +229,7 @@ public class Wandmaker extends NPC {
 			
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
 
-				//TODO remove when pre-0.3.2 saves are no longer supported
-				if (node.contains(TYPE)) {
-					type = node.getInt(TYPE);
-				} else {
-					type = node.getBoolean("alternative")? 1 : 3;
-				}
+				type = node.getInt(TYPE);
 				
 				given = node.getBoolean( GIVEN );
 				

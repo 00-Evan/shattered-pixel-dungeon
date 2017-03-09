@@ -62,7 +62,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		STANDARD	( StandardRoom.class ),
 		ENTRANCE	( EntranceRoom.class ),
 		EXIT		( ExitRoom.class ),
-		TUNNEL		( MazeRoom.class ),
+		TUNNEL		( TunnelRoom.class ),
 		PASSAGE		( PassageRoom.class ),
 		SHOP		( ShopRoom.class ),
 		BLACKSMITH	( BlacksmithRoom.class ),

@@ -43,7 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -302,7 +302,7 @@ public class Ghost extends NPC {
 					} while (!(weapon instanceof MeleeWeapon));
 				} catch (Exception e){
 					ShatteredPixelDungeon.reportException(e);
-					weapon = new NewShortsword();
+					weapon = new Shortsword();
 				}
 
 				//50%:+0, 30%:+1, 15%:+2, 5%:+3

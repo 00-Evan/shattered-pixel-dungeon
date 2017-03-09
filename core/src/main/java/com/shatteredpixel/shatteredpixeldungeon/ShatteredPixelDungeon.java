@@ -43,129 +43,18 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class ShatteredPixelDungeon extends Game {
 	
+	//variable constants for specific older versions of shattered, used for data conversion
+	//versions older than v0.4.0 are no longer supported, and data from them is ignored
+	public static final int v0_4_0  = 107;
+	public static final int v0_4_1  = 114;
+	public static final int v0_4_2b = 129;
+	
+	public static final int v0_5_0b = 157;
+	
 	public ShatteredPixelDungeon() {
 		super( WelcomeScene.class );
-
-		// 0.2.4
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Piercing" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Swing" );
-
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfWeaponUpgrade" );
-
-		// 0.2.4d
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.LloydsBeacon" );
-
-		// 0.3.0, lots of wands
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPoison" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSlowness" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFirebolt" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAmok" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTelekinesis" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFlock" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfAvalanche" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlink" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTeleportation" );
-
-		//0.3.3
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.FetidRat.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost$FetidRat" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollTrickster.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost$GnollTrickster" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GreatCrab.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost$GreatCrab" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker$Rotberry" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry.Seed.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker$Rotberry$Seed" );
-
-		//0.4.0
-		//equipment
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ShortSword" );
-		//enchants/glyphs
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Death" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Fire" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Horror" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Instability" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Leech" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Luck" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Paralysis" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Poison" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shock" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Slow" );
-
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Bounce" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Displacement" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiEntropy" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Entanglement.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Metabolism" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Entanglement.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Multiplicity" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stench" );
 		
-		//0.6.0
+		//v0.6.0
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MassGraveRoom.Bones.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.MassGravePainter.Bones.class" );
@@ -175,6 +64,10 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.WeakFloorRoom.HiddenWell.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.WeakFloorPainter.HiddenWell.class" );
+		
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortSword" );
 
 		com.watabou.utils.Bundle.exceptionReporter =
 				new com.watabou.utils.Bundle.BundleExceptionCallback() {

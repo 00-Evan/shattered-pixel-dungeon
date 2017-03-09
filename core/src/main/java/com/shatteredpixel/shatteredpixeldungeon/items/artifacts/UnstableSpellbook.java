@@ -170,12 +170,6 @@ public class UnstableSpellbook extends Artifact {
 		super.restoreFromBundle(bundle);
 		scrolls.clear();
 		Collections.addAll(scrolls, bundle.getClassArray(SCROLLS));
-		if (scrolls.contains(null)){
-			//compatability with pre-0.3.4, just give them a maxed book.
-			scrolls.clear();
-			level(levelCap);
-			chargeCap = 8;
-		}
 	}
 
 	public class bookRecharge extends ArtifactBuff{

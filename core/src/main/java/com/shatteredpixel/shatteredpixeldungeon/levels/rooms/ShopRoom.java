@@ -58,7 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HandAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
@@ -129,7 +129,7 @@ public class ShopRoom extends Room {
 		
 		switch (Dungeon.depth) {
 		case 6:
-			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new NewShortsword().identify() : new HandAxe()).identify() );
+			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Shortsword().identify() : new HandAxe()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
 					new IncendiaryDart().quantity(Random.NormalIntRange(2, 4)) :
 					new CurareDart().quantity(Random.NormalIntRange(1, 3)));

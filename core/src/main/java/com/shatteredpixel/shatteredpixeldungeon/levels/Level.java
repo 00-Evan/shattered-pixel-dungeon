@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -305,6 +306,11 @@ public abstract class Level implements Bundlable {
 	public void restoreFromBundle( Bundle bundle ) {
 
 		version = bundle.getInt( VERSION );
+		
+		//saves from before 0.4.0 are not supported
+		if (version < ShatteredPixelDungeon.v0_4_0){
+			throw new RuntimeException("old save");
+		}
 
 		if (bundle.contains("width") && bundle.contains("height")){
 			width = bundle.getInt("width");
@@ -334,13 +340,8 @@ public abstract class Level implements Bundlable {
 		
 		weakFloorCreated = false;
 
-		//for pre-0.3.0c saves
-		if (version < 44){
-			map = Terrain.convertTrapsFrom43( map, traps );
-		}
-
 		//for pre-0.4.3 saves
-		if (version < 130){
+		if (version <= ShatteredPixelDungeon.v0_4_2b){
 			map = Terrain.convertTilesFrom129( map );
 		}
 		

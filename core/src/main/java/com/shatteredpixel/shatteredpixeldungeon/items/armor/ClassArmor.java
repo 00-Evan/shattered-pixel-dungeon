@@ -89,20 +89,8 @@ abstract public class ClassArmor extends Armor {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		//logic for pre-0.4.0 saves
-		if (bundle.contains( "DR" )){
-			//we just assume tier-4 or tier-5 armor was used.
-			int DR = bundle.getInt( "DR" );
-			if (DR % 5 == 0){
-				level((DR - 10)/5);
-				armorTier = 5;
-			} else {
-				level((DR - 8)/4);
-				armorTier = 4;
-			}
-		} else {
-			armorTier = bundle.getInt( ARMOR_TIER );
-		}
+		
+		armorTier = bundle.getInt( ARMOR_TIER );
 	}
 	
 	@Override
