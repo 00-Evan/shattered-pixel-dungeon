@@ -27,10 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.tweeners.ScaleTweener;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.SparseArray;
 
@@ -66,10 +63,12 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 			return plants.get(pos).image + 7*16;
 		}
 
+		int stage = (Dungeon.depth-1)/5;
+		if (Dungeon.depth == 21) stage--;
 		if (tile == Terrain.HIGH_GRASS){
-			return 9 + 16*((Dungeon.depth-1)/5) + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
+			return 9 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.GRASS) {
-			return 11 + 16*((Dungeon.depth-1)/5) + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
+			return 11 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.EMBERS) {
 			return 13 + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		}
