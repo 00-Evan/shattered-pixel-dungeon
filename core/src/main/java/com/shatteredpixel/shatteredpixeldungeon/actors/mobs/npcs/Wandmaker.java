@@ -245,75 +245,80 @@ public class Wandmaker extends NPC {
 			}
 		}
 		
-		public static boolean spawn( PrisonLevel level, Room room, Collection<Room> rooms ) {
-			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {
-				// decide between 1,2, or 3 for quest type.
-				// but if the no herbalism challenge is enabled, only pick 1 or 2, no rotberry.
-				if (type == 0) type = Random.Int(Dungeon.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3)+1;
+		private static boolean questRoomSpawned;
+		
+		public static void spawnWandmaker( PrisonLevel level, Room room, Collection<Room> rooms ) {
+			if (questRoomSpawned) {
+				
+				questRoomSpawned = false;
+				
+				Wandmaker npc = new Wandmaker();
+				do {
+					npc.pos = level.pointToCell(room.random());
+					//Wandmaker must never spawn in the center.
+					//If he does, and the room is 3x3, there is no room for the stairs.
+				} while (npc.pos == level.pointToCell(room.center()));
+				level.mobs.add( npc );
 
-				//note that we set the type but can fail here. This ensures that if a level needs to be re-generated
-				//we don't re-roll the quest, it will try to assign itself to that new level with the same type.
-				if (setRoom( rooms )){
-					Wandmaker npc = new Wandmaker();
-					do {
-						npc.pos = level.pointToCell(room.random());
-						//Wandmaker must never spawn in the center.
-						//If he does, and the room is 3x3, there is no room for the stairs.
-					} while (npc.pos == level.pointToCell(room.center()));
-					level.mobs.add( npc );
+				spawned = true;
 
-					spawned = true;
+				given = false;
+				wand1 = (Wand) Generator.random(Generator.Category.WAND);
+				wand1.cursed = false;
+				wand1.identify();
+				wand1.upgrade();
 
-					given = false;
-					wand1 = (Wand) Generator.random(Generator.Category.WAND);
-					wand1.cursed = false;
-					wand1.identify();
-					wand1.upgrade();
-
-					do {
-						wand2 = (Wand) Generator.random(Generator.Category.WAND);
-					} while (wand2.getClass().equals(wand1.getClass()));
-					wand2.cursed = false;
-					wand2.identify();
-					wand2.upgrade();
-
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				return true;
+				do {
+					wand2 = (Wand) Generator.random(Generator.Category.WAND);
+				} while (wand2.getClass().equals(wand1.getClass()));
+				wand2.cursed = false;
+				wand2.identify();
+				wand2.upgrade();
+				
 			}
 		}
 		
-		private static boolean setRoom( Collection<Room> rooms) {
-			Room questRoom = null;
-			for (Room r : rooms){
-				if (r.type == Room.Type.STANDARD && r.width() > 5 && r.height() > 5){
-					if (type == 2 || r.connected.size() == 1){
-						questRoom = r;
-						break;
+		public static boolean spawnRoom( Collection<Room> rooms) {
+			questRoomSpawned = false;
+			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {
+				
+				// decide between 1,2, or 3 for quest type.
+				// but if the no herbalism challenge is enabled, only pick 1 or 2, no rotberry.
+				if (type == 0) type = Random.Int(Dungeon.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3)+1;
+				
+				//note that we set the type but can fail here. This ensures that if a level needs to be re-generated
+				//we don't re-roll the quest, it will try to assign itself to that new level with the same type.
+				Room questRoom = null;
+				for (Room r : rooms){
+					if (r.type == Room.Type.STANDARD && r.width() > 5 && r.height() > 5){
+						if (type == 2 || r.connected.size() == 1){
+							questRoom = r;
+							break;
+						}
 					}
 				}
+		
+				if (questRoom == null){
+					return false;
+				}
+		
+				switch (type){
+					case 1: default:
+						questRoom.type = Room.Type.MASS_GRAVE;
+						break;
+					case 2:
+						questRoom.type = Room.Type.RITUAL_SITE;
+						break;
+					case 3:
+						questRoom.type = Room.Type.ROT_GARDEN;
+						break;
+				}
+		
+				questRoomSpawned = true;
+				return true;
+			} else {
+				return true;
 			}
-
-			if (questRoom == null){
-				return false;
-			}
-
-			switch (type){
-				case 1: default:
-					questRoom.type = Room.Type.MASS_GRAVE;
-					break;
-				case 2:
-					questRoom.type = Room.Type.RITUAL_SITE;
-					break;
-				case 3:
-					questRoom.type = Room.Type.ROT_GARDEN;
-					break;
-			}
-
-			return true;
 		}
 		
 		public static void complete() {

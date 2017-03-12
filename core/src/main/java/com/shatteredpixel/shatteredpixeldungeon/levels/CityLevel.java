@@ -24,8 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
@@ -92,19 +90,6 @@ public class CityLevel extends RegularLevel {
 				4, 4, 4, 4, 4, 4,
 				2, 2, 2, 2, 2, 2,
 				1, 1 };
-	}
-	
-	@Override
-	protected boolean assignRoomType() {
-		if (!super.assignRoomType()) return false;
-		
-		for (Room r : rooms) {
-			if (r.type == Type.TUNNEL) {
-				r.type = Type.PASSAGE;
-			}
-		}
-
-		return true;
 	}
 	
 	@Override

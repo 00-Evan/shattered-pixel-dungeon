@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
@@ -96,16 +95,6 @@ public class CavesLevel extends RegularLevel {
 				4, 4, 4, 4, 4, 4, 4,
 				2, 2, 2, 2, 2, 2,
 				1 };
-	}
-	
-	@Override
-	protected boolean assignRoomType() {
-		if (!super.assignRoomType()) return false;
-
-		if (!Blacksmith.Quest.spawn( rooms ) && Dungeon.depth == 14)
-			return false;
-
-		return true;
 	}
 	
 	@Override

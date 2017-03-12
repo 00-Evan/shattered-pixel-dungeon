@@ -29,18 +29,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LegacyBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Group;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SewerBossLevel extends RegularLevel {
 
@@ -64,107 +62,13 @@ public class SewerBossLevel extends RegularLevel {
 	@Override
 	protected boolean build() {
 		
-		initRooms();
-
-		int distance;
-		//if we ever need to try 20 or more times to find a room, better to give up and try again.
-		int retry = 0;
-
-		//start with finding an entrance room (will also contain exit)
-		//the room must be at least 4x4 and be nearer the top of the map(so that it is less likely something connects to the top)
-		do {
-			if (retry++ > 20) {
-				return false;
-			}
-			roomEntrance = Random.element( rooms );
-		} while (roomEntrance.width() != 8 || roomEntrance.height() < 5 || roomEntrance.top == 0 || roomEntrance.top >= 8);
-
-		roomEntrance.type = Type.ENTRANCE;
-		roomExit = roomEntrance;
-
-
-		//now find the rest of the rooms for this boss mini-maze
-		Room curRoom = null;
-		Room lastRoom = roomEntrance;
-		//we make 4 rooms, last iteration is tieing the final room to the start
-		for(int i = 0; i <= 4; i++){
-			retry = 0;
-			//find a suitable room the first four times
-			//suitable room should be empty, have a distance of 2 from the current room, and not touch the entrance.
-			if (i < 4) {
-				do {
-					if (retry++ > 20) {
-						return false;
-					}
-					curRoom = Random.element(rooms);
-					Graph.buildDistanceMap(rooms, curRoom);
-					distance = lastRoom.distance();
-				} while (curRoom.type != Type.NULL || distance != 3 || curRoom.neigbours.contains(roomEntrance));
-
-				curRoom.type = Type.STANDARD;
-
-			//otherwise, we're on the last iteration.
-			} else {
-				//set the current room to the entrance, so we can build a connection to it.
-				curRoom = roomEntrance;
-			}
-
-			//now build a connection between the current room and the last one.
-			Graph.buildDistanceMap( rooms, curRoom );
-			List<Room> path = Graph.buildPath( rooms, lastRoom, curRoom );
-
-			Graph.setPrice( path, lastRoom.distance );
-
-			path = Graph.buildPath( rooms, lastRoom, curRoom );
-
-			Room room = lastRoom;
-			for (Room next : path) {
-				room.connect( next );
-				room = next;
-			}
-
-			if (i == 4) {
-
-				//we must find a room for his royal highness!
-				//look at rooms adjacent to the final found room (likely to be furthest from start)
-				ArrayList<Room> candidates = new ArrayList<Room>();
-				for (Room r : lastRoom.neigbours) {
-					if (r.type == Type.NULL && r.connected.size() == 0 && !r.neigbours.contains(roomEntrance)) {
-						candidates.add(r);
-					}
-				}
-
-				//if we have candidates, pick a room and put the king there
-				if (candidates.size() > 0) {
-					Room kingsRoom = Random.element(candidates);
-					kingsRoom.connect(lastRoom);
-					kingsRoom.type = Room.Type.RAT_KING;
-
-				//unacceptable! make a new level...
-				} else {
-					return false;
-				}
-			}
-			lastRoom = curRoom;
-		}
-
-		//the connection structure ensures that (most of the time) there is a nice loop for the player to kite the
-		//boss around. What's nice is that there is enough chaos such that the loop is rarely straightforward
-		//and boring.
-
-		//fills our connection rooms in with tunnel
-		for (Room r : rooms) {
-			if (r.type == Type.NULL && r.connected.size() > 0) {
-				r.type = Type.TUNNEL;
-			}
-		}
-
-		paint();
-
+		if (!super.build())
+			return false;
+		
 		//sticks the exit in the room entrance.
 		exit = roomEntrance.top * width() + (roomEntrance.left + roomEntrance.right) / 2;
 		map[exit] = Terrain.LOCKED_EXIT;
-
+		
 		//make sure the exit is only visible in the entrance room.
 		int count = 0;
 		for (int i : PathFinder.NEIGHBOURS8){
@@ -174,12 +78,13 @@ public class SewerBossLevel extends RegularLevel {
 		}
 		if (count > 3)
 			return false;
-
-		
-		paintWater();
-		paintGrass();
 		
 		return true;
+	}
+	
+	protected Builder builder(){
+		return new LegacyBuilder(LegacyBuilder.Type.SEWER_BOSS,
+				width, height, minRoomSize, maxRoomSize);
 	}
 		
 	protected boolean[] water() {
@@ -188,6 +93,10 @@ public class SewerBossLevel extends RegularLevel {
 	
 	protected boolean[] grass() {
 		return Patch.generate( width, height, 0.20f, 4, true );
+	}
+	
+	protected int nTraps() {
+		return 0;
 	}
 	
 	@Override

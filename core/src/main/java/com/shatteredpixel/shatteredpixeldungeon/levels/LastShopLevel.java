@@ -27,14 +27,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.Type;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LegacyBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
-import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
-
-import java.util.List;
 
 public class LastShopLevel extends RegularLevel {
 	
@@ -54,83 +51,10 @@ public class LastShopLevel extends RegularLevel {
 	}
 	
 	@Override
-	protected boolean build() {
-
+	protected Builder builder() {
 		feeling = Feeling.CHASM;
-		viewDistance = 4;
-		
-		initRooms();
-		
-		int distance;
-		int retry = 0;
-		int minDistance = (int)Math.sqrt( rooms.size() );
-		do {
-			int innerRetry = 0;
-			do {
-				if (innerRetry++ > 10) {
-					return false;
-				}
-				roomEntrance = Random.element( rooms );
-			} while (roomEntrance.width() < 4 || roomEntrance.height() < 4);
-			
-			innerRetry = 0;
-			do {
-				if (innerRetry++ > 10) {
-					return false;
-				}
-				roomExit = Random.element( rooms );
-			} while (roomExit == roomEntrance || roomExit.width() < 6 || roomExit.height() < 6 || roomExit.top == 0);
-	
-			Graph.buildDistanceMap( rooms, roomExit );
-			distance = Graph.buildPath( rooms, roomEntrance, roomExit ).size();
-			
-			if (retry++ > 10) {
-				return false;
-			}
-			
-		} while (distance < minDistance);
-		
-		roomEntrance.type = Type.ENTRANCE;
-		roomExit.type = Type.EXIT;
-		
-		Graph.buildDistanceMap( rooms, roomExit );
-		List<Room> path = Graph.buildPath( rooms, roomEntrance, roomExit );
-		
-		Graph.setPrice( path, roomEntrance.distance );
-		
-		Graph.buildDistanceMap( rooms, roomExit );
-		path = Graph.buildPath( rooms, roomEntrance, roomExit );
-		
-		Room room = roomEntrance;
-		for (Room next : path) {
-			room.connect( next );
-			room = next;
-		}
-		
-		Room roomShop = null;
-		int shopSquare = 0;
-		for (Room r : rooms) {
-			if (r.type == Type.NULL && r.connected.size() > 0) {
-				r.type = Type.PASSAGE;
-				if (r.square() > shopSquare) {
-					roomShop = r;
-					shopSquare = r.square();
-				}
-			}
-		}
-		
-		if (roomShop == null || shopSquare < 54) {
-			return false;
-		} else {
-			roomShop.type = Imp.Quest.isCompleted() ? Room.Type.SHOP : Room.Type.STANDARD;
-		}
-		
-		paint();
-		
-		paintWater();
-		paintGrass();
-		
-		return true;
+		return new LegacyBuilder(LegacyBuilder.Type.LAST_SHOP,
+				width, height, minRoomSize, maxRoomSize);
 	}
 	
 	@Override
@@ -224,6 +148,10 @@ public class LastShopLevel extends RegularLevel {
 	@Override
 	protected boolean[] grass() {
 		return Patch.generate( width, height, 0.10f, 3, true );
+	}
+	
+	protected int nTraps() {
+		return 0;
 	}
 
 	@Override

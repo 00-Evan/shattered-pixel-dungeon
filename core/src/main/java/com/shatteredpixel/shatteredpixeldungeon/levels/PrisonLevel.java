@@ -26,8 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Halo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.Type;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
@@ -88,22 +86,11 @@ public class PrisonLevel extends RegularLevel {
 				2, 2, 2, 2, 2, 2,
 				1, 1, 1, 1 };
 	}
-
-	@Override
-	protected boolean assignRoomType() {
-		if (!super.assignRoomType()) return false;
-		
-		for (Room r : rooms) {
-			if (r.type == Type.TUNNEL) {
-				r.type = Type.PASSAGE;
-			}
-		}
-
-		return Wandmaker.Quest.spawn( this, roomEntrance, rooms );
-	}
 	
 	@Override
 	protected void decorate() {
+		
+		Wandmaker.Quest.spawnWandmaker( this, roomEntrance, rooms );
 		
 		for (int i=width() + 1; i < length() - width() - 1; i++) {
 			if (map[i] == Terrain.EMPTY) {

@@ -156,7 +156,7 @@ public abstract class Level implements Bundlable {
 	public int color2 = 0x88CC44;
 
 	//FIXME this is sloppy. Should be able to keep track of this without static variables
-	protected static boolean pitRoomNeeded = false;
+	public static boolean pitRoomNeeded = false;
 	public static boolean weakFloorCreated = false;
 
 	private static final String VERSION     = "version";
