@@ -303,11 +303,11 @@ public class PrisonBossLevel extends Level {
 				HealthIndicator.instance.target(null);
 				tengu.sprite.kill();
 
-				Room maze = new Room();
+				Room maze = new MazeRoom();
 				maze.set(10, 1, 31, 29);
 				maze.connected.put(null, new Room.Door(10, 2));
 				maze.connected.put(maze, new Room.Door(20, 29));
-				MazeRoom.paint(this, maze);
+				maze.paint(this);
 				buildFlagMaps();
 				cleanWalls();
 				GameScene.resetMap();

@@ -28,7 +28,7 @@ import com.watabou.utils.Random;
 
 public class MazeRoom extends Room {
 
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		Painter.fill(level, room, 1, Terrain.EMPTY);
 
 		//true = space, false = wall

@@ -31,7 +31,7 @@ import com.watabou.utils.Point;
 
 public class AltarRoom extends Room {
 
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		
 		Painter.fill( level, room, Terrain.WALL );
 		Painter.fill( level, room, 1, Dungeon.bossLevel( Dungeon.depth + 1 ) ? Terrain.HIGH_GRASS : Terrain.CHASM );

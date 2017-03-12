@@ -34,8 +34,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LegacyBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ExitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.PassageRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.Type;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.TunnelRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.WeakFloorRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
@@ -117,7 +123,7 @@ public abstract class RegularLevel extends Level {
 		if (feeling == Feeling.GRASS) {
 			
 			for (Room room : rooms) {
-				if (room.type != Type.NULL && room.type != Type.PASSAGE && room.type != Type.TUNNEL) {
+				if (!(room instanceof TunnelRoom || room instanceof PassageRoom)) {
 					grass[(room.left + 1) + (room.top + 1) * width()] = true;
 					grass[(room.right - 1) + (room.top + 1) * width()] = true;
 					grass[(room.left + 1) + (room.bottom - 1) * width()] = true;
@@ -156,7 +162,7 @@ public abstract class RegularLevel extends Level {
 				if(Dungeon.depth == 1){
 					//extra check to prevent annoying inactive traps in hallways on floor 1
 					Room r = room(i);
-					if (r != null && r.type != Type.TUNNEL){
+					if (r instanceof StandardRoom){
 						validCells.add(i);
 					}
 				} else
@@ -201,14 +207,8 @@ public abstract class RegularLevel extends Level {
 	protected boolean paint() {
 		
 		for (Room r : rooms) {
-			if (r.type != Type.NULL) {
-				placeDoors( r );
-				r.type.paint( this, r );
-			} else {
-				if (feeling == Feeling.CHASM && Random.Int( 2 ) == 0) {
-					Painter.fill( this, r, Terrain.WALL );
-				}
-			}
+			placeDoors( r );
+			r.paint( this );
 		}
 		
 		for (Room r : rooms) {
@@ -287,7 +287,7 @@ public abstract class RegularLevel extends Level {
 	
 	protected boolean joinRooms( Room r, Room n ) {
 		
-		if (r.type != Room.Type.STANDARD || n.type != Room.Type.STANDARD) {
+		if (!(r instanceof StandardRoom && n instanceof StandardRoom)) {
 			return false;
 		}
 		
@@ -356,7 +356,7 @@ public abstract class RegularLevel extends Level {
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
-			if (room.type == Type.STANDARD) stdRooms.add(room);
+			if (room instanceof StandardRoom) stdRooms.add(room);
 		}
 		Iterator<Room> stdRoomIter = stdRooms.iterator();
 
@@ -406,7 +406,7 @@ public abstract class RegularLevel extends Level {
 				return -1;
 			}
 			
-			Room room = randomRoom( Room.Type.STANDARD, 10 );
+			Room room = randomRoom( StandardRoom.class, 10 );
 			if (room == null) {
 				continue;
 			}
@@ -501,10 +501,10 @@ public abstract class RegularLevel extends Level {
 		}
 	}
 	
-	protected Room randomRoom( Room.Type type, int tries ) {
+	protected Room randomRoom( Class<?extends Room> type, int tries ) {
 		for (int i=0; i < tries; i++) {
 			Room room = Random.element( rooms );
-			if (room.type == type) {
+			if (room.getClass().equals(type)) {
 				return room;
 			}
 		}
@@ -513,7 +513,7 @@ public abstract class RegularLevel extends Level {
 	
 	public Room room( int pos ) {
 		for (Room room : rooms) {
-			if (room.type != Type.NULL && room.inside( cellToPoint(pos) )) {
+			if (room.inside( cellToPoint(pos) )) {
 				return room;
 			}
 		}
@@ -523,7 +523,7 @@ public abstract class RegularLevel extends Level {
 	
 	protected int randomDropCell() {
 		while (true) {
-			Room room = randomRoom( Room.Type.STANDARD, 1 );
+			Room room = randomRoom( StandardRoom.class, 1 );
 			if (room != null) {
 				int pos = pointToCell(room.random());
 				if (passable[pos]) {
@@ -536,7 +536,7 @@ public abstract class RegularLevel extends Level {
 	@Override
 	public int pitCell() {
 		for (Room room : rooms) {
-			if (room.type == Type.PIT) {
+			if (room instanceof PitRoom) {
 				return pointToCell(room.random());
 			}
 		}
@@ -555,15 +555,16 @@ public abstract class RegularLevel extends Level {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 
+		//TODO implement legacytype support here
 		rooms = new ArrayList<>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
 		for (Room r : rooms) {
-			if (r.type == Type.WEAK_FLOOR) {
+			if (r instanceof WeakFloorRoom || r.legacyType.equals("WEAK_FLOOR")) {
 				weakFloorCreated = true;
 				break;
 			}
-			if (r.type == Type.ENTRANCE){
+			if (r instanceof EntranceRoom || r.legacyType.equals("ENTRANCE")){
 				roomEntrance = r;
-			} else if (r.type == Type.EXIT){
+			} else if (r instanceof ExitRoom  || r.legacyType.equals("EXIT")){
 				roomExit = r;
 			}
 		}

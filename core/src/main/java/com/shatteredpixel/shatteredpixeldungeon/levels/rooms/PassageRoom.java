@@ -33,7 +33,7 @@ public class PassageRoom extends Room {
 	private static int pasWidth;
 	private static int pasHeight;
 	
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		
 		pasWidth = room.width() - 2;
 		pasHeight = room.height() - 2;

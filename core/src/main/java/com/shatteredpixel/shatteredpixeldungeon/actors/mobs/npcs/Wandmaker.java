@@ -33,7 +33,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MassGraveRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.RitualSiteRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.RotGardenRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -43,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndWandmaker;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Wandmaker extends NPC {
@@ -278,7 +283,7 @@ public class Wandmaker extends NPC {
 			}
 		}
 		
-		public static boolean spawnRoom( Collection<Room> rooms) {
+		public static boolean spawnRoom( ArrayList<Room> rooms) {
 			questRoomSpawned = false;
 			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {
 				
@@ -290,7 +295,7 @@ public class Wandmaker extends NPC {
 				//we don't re-roll the quest, it will try to assign itself to that new level with the same type.
 				Room questRoom = null;
 				for (Room r : rooms){
-					if (r.type == Room.Type.STANDARD && r.width() > 5 && r.height() > 5){
+					if (r instanceof StandardRoom && r.width() > 5 && r.height() > 5){
 						if (type == 2 || r.connected.size() == 1){
 							questRoom = r;
 							break;
@@ -302,17 +307,19 @@ public class Wandmaker extends NPC {
 					return false;
 				}
 		
+				Room temp = questRoom;
 				switch (type){
 					case 1: default:
-						questRoom.type = Room.Type.MASS_GRAVE;
+						questRoom = new MassGraveRoom().set(temp);
 						break;
 					case 2:
-						questRoom.type = Room.Type.RITUAL_SITE;
+						questRoom = new RitualSiteRoom().set(temp);
 						break;
 					case 3:
-						questRoom.type = Room.Type.ROT_GARDEN;
+						questRoom = new RotGardenRoom().set(temp);
 						break;
 				}
+				rooms.set(rooms.indexOf(temp), questRoom);
 		
 				questRoomSpawned = true;
 				return true;

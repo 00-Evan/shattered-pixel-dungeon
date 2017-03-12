@@ -41,7 +41,7 @@ import java.util.ArrayList;
 
 public class MassGraveRoom extends Room {
 
-	public static void paint( Level level, Room room){
+	public void paint( Level level, Room room){
 
 		Room.Door entrance = room.entrance();
 		entrance.set(Room.Door.Type.BARRICADE);

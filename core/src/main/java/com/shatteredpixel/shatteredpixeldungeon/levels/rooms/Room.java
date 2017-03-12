@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -30,7 +29,6 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -48,79 +46,42 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		super();
 	}
 	
-	public Room(Rect other){
+	public Room( Rect other ){
 		super(other);
 	}
 	
-	public Room( int left, int top, int right, int bottom ) {
-		super( left, top, right, bottom );
+	public Room set( Room other ) {
+		super.set( other );
+		for (Room r : other.neigbours){
+			neigbours.add(r);
+			r.neigbours.remove(other);
+			r.neigbours.add(this);
+		}
+		for (Room r : other.connected.keySet()){
+			Door d = other.connected.get(r);
+			r.connected.remove(other);
+			r.connected.put(this, d);
+			connected.put(r, d);
+		}
+		return this;
 	}
 	
-	//TODO convert these types into full subclasses of room
-	public static enum Type {
-		NULL( null ),
-		STANDARD	( StandardRoom.class ),
-		ENTRANCE	( EntranceRoom.class ),
-		EXIT		( ExitRoom.class ),
-		TUNNEL		( TunnelRoom.class ),
-		PASSAGE		( PassageRoom.class ),
-		SHOP		( ShopRoom.class ),
-		BLACKSMITH	( BlacksmithRoom.class ),
-		TREASURY	( TreasuryRoom.class ),
-		ARMORY		( ArmoryRoom.class ),
-		LIBRARY		( LibraryRoom.class ),
-		LABORATORY	( LaboratoryRoom.class ),
-		VAULT		( VaultRoom.class ),
-		TRAPS		( TrapsRoom.class ),
-		STORAGE		( StorageRoom.class ),
-		MAGIC_WELL	( MagicWellRoom.class ),
-		GARDEN		( GardenRoom.class ),
-		CRYPT		( CryptRoom.class ),
-		STATUE		( StatueRoom.class ),
-		POOL		( PoolRoom.class ),
-		RAT_KING	( RatKingRoom.class ),
-		WEAK_FLOOR	( WeakFloorRoom.class ),
-		PIT			( PitRoom.class ),
+	public void paint(Level level){
+		paint(level, this);
+	}
+	
+	public void paint(Level level, Room room){
+		
+	}
 
-		//prison quests
-		MASS_GRAVE  ( MassGraveRoom.class ),
-		ROT_GARDEN  ( RotGardenRoom.class ),
-		RITUAL_SITE ( RitualSiteRoom.class );
-		
-		private Method paint;
-		
-		Type( Class<? extends Room> painter ) {
-			if (painter == null)
-				paint = null;
-			else
-				try {
-					paint = painter.getMethod( "paint", Level.class, Room.class );
-				} catch (Exception e) {
-					ShatteredPixelDungeon.reportException(e);
-					paint = null;
-				}
-		}
-		
-		public void paint( Level level, Room room ) {
-			try {
-				paint.invoke( null, level, room );
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-			}
-		}
-	};
-
-	private static final ArrayList<Type> ALL_SPEC = new ArrayList<Type>( Arrays.asList(
-		Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
-		Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
+	private static final ArrayList<Class<? extends Room>> ALL_SPEC = new ArrayList<>( Arrays.asList(
+		WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, GardenRoom.class, LibraryRoom.class, ArmoryRoom.class,
+		TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, LaboratoryRoom.class, VaultRoom.class
 	) );
 	
-	public static ArrayList<Type> SPECIALS = new ArrayList<Type>( Arrays.asList(
-		Type.WEAK_FLOOR, Type.MAGIC_WELL, Type.CRYPT, Type.POOL, Type.GARDEN, Type.LIBRARY, Type.ARMORY,
-		Type.TREASURY, Type.TRAPS, Type.STORAGE, Type.STATUE, Type.LABORATORY, Type.VAULT
-	) );
+	public static ArrayList<Class<? extends Room>> SPECIALS = new ArrayList<>();
 	
-	public Type type = Type.NULL;
+	public String legacyType = "NULL";
 	
 	public Point random() {
 		return random( 0 );
@@ -196,7 +157,8 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		bundle.put( "top", top );
 		bundle.put( "right", right );
 		bundle.put( "bottom", bottom );
-		bundle.put( "type", type.toString() );
+		if (!legacyType.equals("NULL"))
+			bundle.put( "type", legacyType );
 	}
 	
 	@Override
@@ -205,35 +167,36 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		top = bundle.getInt( "top" );
 		right = bundle.getInt( "right" );
 		bottom = bundle.getInt( "bottom" );
-		type = Type.valueOf( bundle.getString( "type" ) );
+		if (bundle.contains( "type" ))
+			legacyType = bundle.getString( "type" );
 	}
 	
 	public static void shuffleTypes() {
-		SPECIALS = (ArrayList<Type>)ALL_SPEC.clone();
+		SPECIALS = (ArrayList<Class<?extends Room>>)ALL_SPEC.clone();
 		int size = SPECIALS.size();
 		for (int i=0; i < size - 1; i++) {
 			int j = Random.Int( i, size );
 			if (j != i) {
-				Type t = SPECIALS.get( i );
+				Class<?extends Room> c = SPECIALS.get( i );
 				SPECIALS.set( i, SPECIALS.get( j ) );
-				SPECIALS.set( j, t );
+				SPECIALS.set( j, c );
 			}
 		}
 	}
 	
-	public static void useType( Type type ) {
+	public static void useType( Class<?extends Room> type ) {
 		if (SPECIALS.remove( type )) {
 			SPECIALS.add( type );
 		}
 	}
 	
-	private static final String ROOMS	= "rooms";
+	private static final String ROOMS	= "special_rooms";
 	
 	public static void restoreRoomsFromBundle( Bundle bundle ) {
 		if (bundle.contains( ROOMS )) {
 			SPECIALS.clear();
-			for (String type : bundle.getStringArray( ROOMS )) {
-				SPECIALS.add( Type.valueOf( type ));
+			for (Class<?extends Room> type : bundle.getClassArray( ROOMS )) {
+				SPECIALS.add( type );
 			}
 		} else {
 			shuffleTypes();
@@ -241,11 +204,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	public static void storeRoomsInBundle( Bundle bundle ) {
-		String[] array = new String[SPECIALS.size()];
-		for (int i=0; i < array.length; i++) {
-			array[i] = SPECIALS.get( i ).toString();
-		}
-		bundle.put( ROOMS, array );
+		bundle.put( ROOMS, SPECIALS.toArray(new Class[0]) );
 	}
 	
 	public static class Door extends Point {

@@ -50,7 +50,7 @@ import com.watabou.utils.Random;
 
 public class TrapsRoom extends Room {
 
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		 
 		Painter.fill( level, room, Terrain.WALL );
 

@@ -2,18 +2,37 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ArmoryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.CryptRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ExitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.GardenRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.LaboratoryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.LibraryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MagicWellRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.PassageRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.PitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.RatKingRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ShopRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StatueRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.TreasuryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.TunnelRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.VaultRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.WeakFloorRoom;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 //This builder exactly mimics pre-0.6.0 levelgen, including all of its limitations
 //Currently implemented during this transition period, it will likely not survive to 0.6.0 release
@@ -44,7 +63,7 @@ public class LegacyBuilder extends Builder {
 	public Room roomEntrance;
 	public Room roomExit;
 	
-	protected ArrayList<Room.Type> specials;
+	protected ArrayList<Class<?extends Room>> specials;
 	
 	@Override
 	//The list of rooms passed to this method is ignored
@@ -86,8 +105,13 @@ public class LegacyBuilder extends Builder {
 			
 		} while (distance < minDistance);
 		
-		roomEntrance.type = Room.Type.ENTRANCE;
-		roomExit.type = Room.Type.EXIT;
+		Room temp = roomEntrance;
+		roomEntrance = new EntranceRoom().set(temp);
+		rooms.set(rooms.indexOf(temp), roomEntrance);
+		
+		temp = roomExit;
+		roomExit = new ExitRoom().set(temp);
+		rooms.set(rooms.indexOf(temp), roomExit);
 		
 		ArrayList<Room> connected = new ArrayList<>();
 		connected.add( roomEntrance );
@@ -138,21 +162,23 @@ public class LegacyBuilder extends Builder {
 			if (shop == null) {
 				return null;
 			} else {
-				shop.type = Room.Type.SHOP;
+				temp = shop;
+				shop = new LaboratoryRoom().set(temp);
+				rooms.set(rooms.indexOf(temp), shop);
 			}
 		}
 		
-		specials = new ArrayList<Room.Type>( Room.SPECIALS );
+		specials = new ArrayList<Class<? extends Room>>( Room.SPECIALS );
 		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
-			specials.remove( Room.Type.WEAK_FLOOR );
+			specials.remove( WeakFloorRoom.class );
 		}
 		if (Dungeon.isChallenged( Challenges.NO_ARMOR )){
 			//no sense in giving an armor reward room on a run with no armor.
-			specials.remove( Room.Type.CRYPT );
+			specials.remove( CryptRoom.class );
 		}
 		if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
 			//sorry warden, no lucky sungrass or blandfruit seeds for you!
-			specials.remove( Room.Type.GARDEN );
+			specials.remove( GardenRoom.class );
 		}
 		
 		if (!assignRoomType())
@@ -167,8 +193,12 @@ public class LegacyBuilder extends Builder {
 				return null;
 		}
 		
+		ArrayList<Room> resultRooms = new ArrayList<>();
+		for (Room r : rooms)
+			if (!r.getClass().equals(Room.class))
+				resultRooms.add(r);
 		
-		return rooms;
+		return resultRooms;
 	}
 	
 	private ArrayList<Room> buildSewerBossLevel(){
@@ -185,9 +215,10 @@ public class LegacyBuilder extends Builder {
 			roomEntrance = Random.element( rooms );
 		} while (roomEntrance.width() != 8 || roomEntrance.height() < 5 || roomEntrance.top == 0 || roomEntrance.top >= 8);
 		
-		roomEntrance.type = Room.Type.ENTRANCE;
+		Room temp = roomEntrance;
+		roomEntrance = new EntranceRoom().set(temp);
+		rooms.set(rooms.indexOf(temp), roomEntrance);
 		roomExit = roomEntrance;
-		
 		
 		//now find the rest of the rooms for this boss mini-maze
 		Room curRoom = null;
@@ -205,9 +236,11 @@ public class LegacyBuilder extends Builder {
 					curRoom = Random.element(rooms);
 					Graph.buildDistanceMap(rooms, curRoom);
 					distance = lastRoom.distance();
-				} while (curRoom.type != Room.Type.NULL || distance != 3 || curRoom.neigbours.contains(roomEntrance));
+				} while (!(curRoom.getClass().equals(Room.class)) || distance != 3 || curRoom.neigbours.contains(roomEntrance));
 				
-				curRoom.type = Room.Type.STANDARD;
+				temp = curRoom;
+				curRoom = new StandardRoom().set(temp);
+				rooms.set(rooms.indexOf(temp), curRoom);
 				
 				//otherwise, we're on the last iteration.
 			} else {
@@ -235,7 +268,7 @@ public class LegacyBuilder extends Builder {
 				//look at rooms adjacent to the final found room (likely to be furthest from start)
 				ArrayList<Room> candidates = new ArrayList<Room>();
 				for (Room r : lastRoom.neigbours) {
-					if (r.type == Room.Type.NULL && r.connected.size() == 0 && !r.neigbours.contains(roomEntrance)) {
+					if (r.getClass().equals(Room.class) && r.connected.size() == 0 && !r.neigbours.contains(roomEntrance)) {
 						candidates.add(r);
 					}
 				}
@@ -244,7 +277,10 @@ public class LegacyBuilder extends Builder {
 				if (candidates.size() > 0) {
 					Room kingsRoom = Random.element(candidates);
 					kingsRoom.connect(lastRoom);
-					kingsRoom.type = Room.Type.RAT_KING;
+					
+					temp = kingsRoom;
+					kingsRoom = new RatKingRoom().set(temp);
+					rooms.set(rooms.indexOf(temp), kingsRoom);
 					
 					//unacceptable! make a new level...
 				} else {
@@ -259,13 +295,20 @@ public class LegacyBuilder extends Builder {
 		//and boring.
 		
 		//fills our connection rooms in with tunnel
-		for (Room r : rooms) {
-			if (r.type == Room.Type.NULL && r.connected.size() > 0) {
-				r.type = Room.Type.TUNNEL;
+		ListIterator<Room> it = rooms.listIterator();
+		while (it.hasNext()) {
+			Room r = it.next();
+			if (r.getClass().equals(Room.class) && r.connected.size() > 0) {
+				it.set(new TunnelRoom().set(r));
 			}
 		}
 		
-		return rooms;
+		ArrayList<Room> resultRooms = new ArrayList<>();
+		for (Room r : rooms)
+			if (!r.getClass().equals(Room.class))
+				resultRooms.add(r);
+		
+		return resultRooms;
 	}
 	
 	private ArrayList<Room> buildsLastShopLevel(){
@@ -298,8 +341,13 @@ public class LegacyBuilder extends Builder {
 			
 		} while (distance < minDistance);
 		
-		roomEntrance.type = Room.Type.ENTRANCE;
-		roomExit.type = Room.Type.EXIT;
+		Room temp = roomEntrance;
+		roomEntrance = new EntranceRoom().set(temp);
+		rooms.set(rooms.indexOf(temp), roomEntrance);
+		
+		temp = roomExit;
+		roomExit = new ExitRoom().set(temp);
+		rooms.set(rooms.indexOf(temp), roomExit);
 		
 		Graph.buildDistanceMap( rooms, roomExit );
 		List<Room> path = Graph.buildPath( rooms, roomEntrance, roomExit );
@@ -317,9 +365,11 @@ public class LegacyBuilder extends Builder {
 		
 		Room roomShop = null;
 		int shopSquare = 0;
-		for (Room r : rooms) {
-			if (r.type == Room.Type.NULL && r.connected.size() > 0) {
-				r.type = Room.Type.PASSAGE;
+		ListIterator<Room> it = rooms.listIterator();
+		while (it.hasNext()) {
+			Room r = it.next();
+			if (r.getClass().equals(Room.class) && r.connected.size() > 0) {
+				it.set(r = new PassageRoom().set(r));
 				if (r.square() > shopSquare) {
 					roomShop = r;
 					shopSquare = r.square();
@@ -330,10 +380,17 @@ public class LegacyBuilder extends Builder {
 		if (roomShop == null || shopSquare < 54) {
 			return null;
 		} else {
-			roomShop.type = Imp.Quest.isCompleted() ? Room.Type.SHOP : Room.Type.STANDARD;
+			temp = roomShop;
+			roomShop = Imp.Quest.isCompleted() ? new ShopRoom().set(temp) : new StandardRoom().set(temp);
+			rooms.set(rooms.indexOf(temp), roomShop);
 		}
 		
-		return rooms;
+		ArrayList<Room> resultRooms = new ArrayList<>();
+		for (Room r : rooms)
+			if (!r.getClass().equals(Room.class))
+				resultRooms.add(r);
+		
+		return resultRooms;
 	}
 	
 	private boolean initRooms(){
@@ -397,8 +454,11 @@ public class LegacyBuilder extends Builder {
 		int specialRooms = 0;
 		boolean pitMade = false;
 		
-		for (Room r : rooms) {
-			if (r.type == Room.Type.NULL &&
+		ListIterator<Room> it = rooms.listIterator();
+		while (it.hasNext()) {
+			Room r = it.next();
+			Room temp;
+			if (r.getClass().equals(Room.class) &&
 					r.connected.size() == 1) {
 				
 				if (specials.size() > 0 &&
@@ -407,38 +467,50 @@ public class LegacyBuilder extends Builder {
 					
 					if (Level.pitRoomNeeded && !pitMade) {
 						
-						r.type = Room.Type.PIT;
+						temp = r;
+						r = new PitRoom().set(temp);
+						rooms.set(rooms.indexOf(temp), r);
 						pitMade = true;
 						
-						specials.remove( Room.Type.ARMORY );
-						specials.remove( Room.Type.CRYPT );
-						specials.remove( Room.Type.LABORATORY );
-						specials.remove( Room.Type.LIBRARY );
-						specials.remove( Room.Type.STATUE );
-						specials.remove( Room.Type.TREASURY );
-						specials.remove( Room.Type.VAULT );
-						specials.remove( Room.Type.WEAK_FLOOR );
+						specials.remove( ArmoryRoom.class );
+						specials.remove( CryptRoom.class );
+						specials.remove( LaboratoryRoom.class );
+						specials.remove( LibraryRoom.class );
+						specials.remove( StatueRoom.class );
+						specials.remove( TreasuryRoom.class );
+						specials.remove( VaultRoom.class );
+						specials.remove( WeakFloorRoom.class );
 						
-					} else if (Dungeon.depth % 5 == 2 && specials.contains( Room.Type.LABORATORY )) {
+					} else if (Dungeon.depth % 5 == 2 && specials.contains( LaboratoryRoom.class )) {
 						
-						r.type = Room.Type.LABORATORY;
+						temp = r;
+						r = new LaboratoryRoom().set(temp);
+						rooms.set(rooms.indexOf(temp), r);
 						
-					} else if (Dungeon.depth >= Dungeon.transmutation && specials.contains( Room.Type.MAGIC_WELL )) {
+					} else if (Dungeon.depth >= Dungeon.transmutation && specials.contains( MagicWellRoom.class )) {
 						
-						r.type = Room.Type.MAGIC_WELL;
+						temp = r;
+						r = new MagicWellRoom().set(temp);
+						rooms.set(rooms.indexOf(temp), r);
 						
 					} else {
 						
 						int n = specials.size();
-						r.type = specials.get( Math.min( Random.Int( n ), Random.Int( n ) ) );
-						if (r.type == Room.Type.WEAK_FLOOR) {
+						temp = r;
+						try {
+							r = specials.get( Math.min( Random.Int( n ), Random.Int( n ) ) ).newInstance().set(temp);
+						} catch (Exception e) {
+							ShatteredPixelDungeon.reportException(e);
+						}
+						rooms.set(rooms.indexOf(temp), r);
+						if (r instanceof WeakFloorRoom) {
 							Level.weakFloorCreated = true;
 						}
 						
 					}
 					
-					Room.useType( r.type );
-					specials.remove( r.type );
+					Room.useType( r.getClass() );
+					specials.remove( r.getClass() );
 					specialRooms++;
 					
 				} else if (Random.Int( 2 ) == 0){
@@ -446,8 +518,8 @@ public class LegacyBuilder extends Builder {
 					ArrayList<Room> neigbours = new ArrayList<>();
 					for (Room n : r.neigbours) {
 						if (!r.connected.containsKey( n ) &&
-								!Room.SPECIALS.contains( n.type ) &&
-								n.type != Room.Type.PIT) {
+								!Room.SPECIALS.contains( n.getClass() ) &&
+								!(n instanceof PitRoom)) {
 							
 							neigbours.add( n );
 						}
@@ -461,23 +533,29 @@ public class LegacyBuilder extends Builder {
 		
 		if (Level.pitRoomNeeded && !pitMade) return false;
 		
-		Room.Type tunnelType = Room.Type.TUNNEL;
+		Class<? extends Room> tunnelType = TunnelRoom.class;
 		if ((Dungeon.depth > 5 && Dungeon.depth <= 10) ||
 				(Dungeon.depth > 15 && Dungeon.depth <= 20)){
-			tunnelType = Room.Type.PASSAGE;
+			tunnelType = PassageRoom.class;
 		}
 		
 		int count = 0;
-		for (Room r : rooms) {
-			if (r.type == Room.Type.NULL) {
+		it = rooms.listIterator();
+		while (it.hasNext()) {
+			Room r = it.next();
+			if (r.getClass().equals(Room.class)) {
 				int connections = r.connected.size();
 				if (connections == 0) {
 					
 				} else if (Random.Int( connections * connections ) == 0) {
-					r.type = Room.Type.STANDARD;
+					it.set(new StandardRoom().set(r));
 					count++;
 				} else {
-					r.type = tunnelType;
+					if (tunnelType == TunnelRoom.class){
+						it.set(new TunnelRoom().set(r));
+					} else {
+						it.set(new PassageRoom().set(r));
+					}
 				}
 			}
 		}
@@ -485,7 +563,7 @@ public class LegacyBuilder extends Builder {
 		while (count < 6) {
 			Room r = randomRoom( tunnelType, 20 );
 			if (r != null) {
-				r.type = Room.Type.STANDARD;
+				rooms.set(rooms.indexOf(r), new StandardRoom().set(r));
 				count++;
 			} else {
 				return false;
@@ -495,10 +573,10 @@ public class LegacyBuilder extends Builder {
 		return true;
 	}
 	
-	private Room randomRoom( Room.Type type, int tries ) {
+	private Room randomRoom( Class<?extends Room> type, int tries ) {
 		for (int i=0; i < tries; i++) {
 			Room room = Random.element( rooms );
-			if (room.type == type) {
+			if (room.getClass().equals(type)) {
 				return room;
 			}
 		}

@@ -28,7 +28,7 @@ import com.watabou.utils.Random;
 
 public class TunnelRoom extends Room {
 
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		
 		int floor = level.tunnelTile();
 		

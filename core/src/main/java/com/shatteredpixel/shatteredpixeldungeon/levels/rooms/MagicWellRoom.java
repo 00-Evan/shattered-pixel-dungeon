@@ -38,7 +38,7 @@ public class MagicWellRoom extends Room {
 	private static final Class<?>[] WATERS =
 		{WaterOfAwareness.class, WaterOfHealth.class, WaterOfTransmutation.class};
 	
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 
 		Painter.fill( level, room, Terrain.WALL );
 		Painter.fill( level, room, 1, Terrain.EMPTY );

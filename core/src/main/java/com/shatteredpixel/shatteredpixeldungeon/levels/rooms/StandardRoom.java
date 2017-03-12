@@ -35,7 +35,7 @@ import com.watabou.utils.Random;
 
 public class StandardRoom extends Room {
 
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		
 		Painter.fill( level, room, Terrain.WALL );
 		for (Room.Door door : room.connected.values()) {

@@ -32,7 +32,7 @@ import com.watabou.utils.Point;
 
 public class RitualSiteRoom extends Room {
 
-	public static void paint( Level level, Room room) {
+	public void paint( Level level, Room room) {
 
 		for (Room.Door door : room.connected.values()) {
 			door.set( Room.Door.Type.REGULAR );

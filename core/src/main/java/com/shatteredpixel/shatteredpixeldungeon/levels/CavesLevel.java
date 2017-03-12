@@ -24,7 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.Type;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.TunnelRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
@@ -101,7 +102,7 @@ public class CavesLevel extends RegularLevel {
 	protected void decorate() {
 		
 		for (Room room : rooms) {
-			if (room.type != Room.Type.STANDARD) {
+			if (!(room instanceof StandardRoom)) {
 				continue;
 			}
 			
@@ -144,7 +145,7 @@ public class CavesLevel extends RegularLevel {
 			}
 
 			for (Room n : room.connected.keySet()) {
-				if ((n.type == Room.Type.STANDARD || n.type == Room.Type.TUNNEL) && Random.Int( 3 ) == 0) {
+				if ((n instanceof StandardRoom || n instanceof TunnelRoom) && Random.Int( 3 ) == 0) {
 					Painter.set( this, room.connected.get( n ), Terrain.EMPTY_DECO );
 				}
 			}
@@ -186,9 +187,9 @@ public class CavesLevel extends RegularLevel {
 		}
 		
 		for (Room r : rooms) {
-			if (r.type == Type.STANDARD) {
+			if (r instanceof StandardRoom) {
 				for (Room n : r.neigbours) {
-					if (n.type == Type.STANDARD && !r.connected.containsKey( n )) {
+					if (n instanceof StandardRoom && !r.connected.containsKey( n )) {
 						Rect w = r.intersect( n );
 						if (w.left == w.right && w.bottom - w.top >= 5) {
 							

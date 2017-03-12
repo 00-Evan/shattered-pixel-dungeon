@@ -34,7 +34,7 @@ import com.watabou.utils.Random;
 
 public class RotGardenRoom extends Room {
 
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 
 		Room.Door entrance = room.entrance();
 		entrance.set(Room.Door.Type.LOCKED);

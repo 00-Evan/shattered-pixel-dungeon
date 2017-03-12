@@ -33,7 +33,7 @@ import com.watabou.utils.Random;
 
 public class WeakFloorRoom extends Room {
 
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		
 		Painter.fill( level, room, Terrain.WALL );
 		Painter.fill( level, room, 1, Terrain.CHASM );

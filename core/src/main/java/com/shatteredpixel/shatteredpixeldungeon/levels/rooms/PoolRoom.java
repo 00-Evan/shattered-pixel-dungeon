@@ -37,7 +37,7 @@ public class PoolRoom extends Room {
 
 	private static final int NPIRANHAS	= 3;
 	
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		
 		Painter.fill( level, room, Terrain.WALL );
 		Painter.fill( level, room, 1, Terrain.WATER );

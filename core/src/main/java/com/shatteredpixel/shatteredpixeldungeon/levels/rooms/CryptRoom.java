@@ -34,7 +34,7 @@ import com.watabou.utils.Point;
 
 public class CryptRoom extends Room {
 
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		
 		Painter.fill( level, room, Terrain.WALL );
 		Painter.fill( level, room, 1, Terrain.EMPTY );

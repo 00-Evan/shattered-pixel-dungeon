@@ -32,7 +32,7 @@ import com.watabou.utils.Random;
 
 public class StorageRoom extends Room {
 
-	public static void paint( Level level, Room room ) {
+	public void paint( Level level, Room room ) {
 		
 		final int floor = Terrain.EMPTY_SP;
 		

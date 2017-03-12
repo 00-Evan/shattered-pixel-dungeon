@@ -32,8 +32,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.BlacksmithRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.Type;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
@@ -44,7 +45,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.util.Collection;
+import java.util.ArrayList;
 
 public class Blacksmith extends NPC {
 	
@@ -278,14 +279,14 @@ public class Blacksmith extends NPC {
 			}
 		}
 		
-		public static boolean spawn( Collection<Room> rooms ) {
+		public static boolean spawn( ArrayList<Room> rooms ) {
 			if (!spawned && Dungeon.depth > 11 && Random.Int( 15 - Dungeon.depth ) == 0) {
 				
 				Room blacksmith;
 				for (Room r : rooms) {
-					if (r.type == Type.STANDARD && r.width() > 4 && r.height() > 4) {
-						blacksmith = r;
-						blacksmith.type = Type.BLACKSMITH;
+					if (r instanceof StandardRoom && r.width() > 4 && r.height() > 4) {
+						blacksmith = new BlacksmithRoom().set(r);
+						rooms.set(rooms.indexOf(r), blacksmith);
 						
 						spawned = true;
 						alternative = Random.Int( 2 ) == 0;
@@ -295,6 +296,7 @@ public class Blacksmith extends NPC {
 						break;
 					}
 				}
+				
 			}
 			return spawned;
 		}
