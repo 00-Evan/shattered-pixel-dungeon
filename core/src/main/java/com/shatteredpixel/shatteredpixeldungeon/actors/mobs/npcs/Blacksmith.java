@@ -284,7 +284,7 @@ public class Blacksmith extends NPC {
 				
 				Room blacksmith;
 				for (Room r : rooms) {
-					if (r instanceof StandardRoom && r.width() > 4 && r.height() > 4) {
+					if (r instanceof StandardRoom && r.width() >= 6 && r.height() >= 6) {
 						blacksmith = new BlacksmithRoom().set(r);
 						rooms.set(rooms.indexOf(r), blacksmith);
 						

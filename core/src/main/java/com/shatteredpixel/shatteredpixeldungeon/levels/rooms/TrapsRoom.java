@@ -83,19 +83,19 @@ public class TrapsRoom extends Room {
 		if (door.x == room.left) {
 			x = room.right - 1;
 			y = room.top + room.height() / 2;
-			Painter.fill( level, x, room.top + 1, 1, room.height() - 1 , lastRow );
+			Painter.fill( level, x, room.top + 1, 1, room.height() - 2 , lastRow );
 		} else if (door.x == room.right) {
 			x = room.left + 1;
 			y = room.top + room.height() / 2;
-			Painter.fill( level, x, room.top + 1, 1, room.height() - 1 , lastRow );
+			Painter.fill( level, x, room.top + 1, 1, room.height() - 2 , lastRow );
 		} else if (door.y == room.top) {
 			x = room.left + room.width() / 2;
 			y = room.bottom - 1;
-			Painter.fill( level, room.left + 1, y, room.width() - 1, 1 , lastRow );
+			Painter.fill( level, room.left + 1, y, room.width() - 2, 1 , lastRow );
 		} else if (door.y == room.bottom) {
 			x = room.left + room.width() / 2;
 			y = room.top + 1;
-			Painter.fill( level, room.left + 1, y, room.width() - 1, 1 , lastRow );
+			Painter.fill( level, room.left + 1, y, room.width() - 2, 1 , lastRow );
 		}
 
 		for(Point p : room.getPoints()) {

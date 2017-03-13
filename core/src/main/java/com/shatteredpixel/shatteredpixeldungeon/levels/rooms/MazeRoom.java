@@ -32,7 +32,7 @@ public class MazeRoom extends Room {
 		Painter.fill(level, room, 1, Terrain.EMPTY);
 
 		//true = space, false = wall
-		boolean[][] maze = new boolean[room.width() + 1][room.height() + 1];
+		boolean[][] maze = new boolean[room.width()][room.height()];
 
 		for (int x = 0; x < maze.length; x++) {
 			for (int y = 0; y < maze[0].length; y++) {

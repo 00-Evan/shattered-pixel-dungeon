@@ -90,8 +90,8 @@ public class ShopRoom extends Room {
 		Painter.fill( level, room, Terrain.WALL );
 		Painter.fill( level, room, 1, Terrain.EMPTY_SP );
 		
-		pasWidth = room.width() - 2;
-		pasHeight = room.height() - 2;
+		pasWidth = room.width() - 3;
+		pasHeight = room.height() - 3;
 		int per = pasWidth * 2 + pasHeight * 2;
 		
 		if (itemsToSpawn == null)

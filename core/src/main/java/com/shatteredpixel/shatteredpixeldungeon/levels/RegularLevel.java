@@ -201,8 +201,8 @@ public abstract class RegularLevel extends Level {
 		return new float[]{1};
 	}
 	
-	protected int minRoomSize = 7;
-	protected int maxRoomSize = 9;
+	protected int minRoomSize = 8;
+	protected int maxRoomSize = 10;
 	
 	protected boolean paint() {
 		

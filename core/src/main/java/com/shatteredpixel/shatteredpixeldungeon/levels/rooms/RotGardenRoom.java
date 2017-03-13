@@ -59,7 +59,7 @@ public class RotGardenRoom extends Room {
 
 		placePlant(level, heartX + heartY * level.width(), new RotHeart());
 
-		int lashers = ((room.right-room.left-1)*(room.bottom-room.top-1))/8;
+		int lashers = ((room.width()-2)*(room.height()-2))/8;
 
 		for (int i = 1; i <= lashers; i++){
 			int pos;

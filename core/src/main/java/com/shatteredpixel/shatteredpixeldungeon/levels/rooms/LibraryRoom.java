@@ -45,7 +45,7 @@ public class LibraryRoom extends Room {
 		Point a = null;
 		Point b = null;
 		
-		Painter.fill( level, room.left + 1, room.top+1, room.width() - 1, 1 , Terrain.BOOKSHELF );
+		Painter.fill( level, room.left + 1, room.top+1, room.width() - 2, 1 , Terrain.BOOKSHELF );
 		if (entrance.y == room.top){
 			Painter.set( level, entrance.x, entrance.y + 1, Terrain.EMPTY_SP );
 		}

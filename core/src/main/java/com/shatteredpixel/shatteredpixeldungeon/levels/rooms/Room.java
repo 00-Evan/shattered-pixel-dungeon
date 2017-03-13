@@ -66,6 +66,22 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return this;
 	}
 	
+	//Width and height are increased by 1 because rooms are inclusive to their right and bottom sides
+	@Override
+	public int width() {
+		return super.width()+1;
+	}
+	
+	@Override
+	public int height() {
+		return super.height()+1;
+	}
+	
+	@Override
+	public int square() {
+		return width()*height();
+	}
+	
 	public void paint(Level level){
 		paint(level, this);
 	}

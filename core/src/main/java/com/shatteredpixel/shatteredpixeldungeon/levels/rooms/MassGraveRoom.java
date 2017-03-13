@@ -52,7 +52,7 @@ public class MassGraveRoom extends Room {
 
 		Bones b = new Bones();
 
-		b.setRect(room.left+1, room.top, room.width()-1, room.height());
+		b.setRect(room.left+1, room.top, room.width()-2, room.height()-1);
 		level.customTiles.add(b);
 
 		//50% 1 skeleton, 50% 2 skeletons

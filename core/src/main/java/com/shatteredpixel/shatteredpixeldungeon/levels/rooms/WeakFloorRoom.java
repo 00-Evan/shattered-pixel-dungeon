@@ -43,19 +43,19 @@ public class WeakFloorRoom extends Room {
 		
 		if (door.x == room.left) {
 			for (int i=room.top + 1; i < room.bottom; i++) {
-				Painter.drawInside( level, room, new Point( room.left, i ), Random.IntRange( 1, room.width() - 2 ), Terrain.EMPTY_SP );
+				Painter.drawInside( level, room, new Point( room.left, i ), Random.IntRange( 1, room.width() - 3 ), Terrain.EMPTY_SP );
 			}
 		} else if (door.x == room.right) {
 			for (int i=room.top + 1; i < room.bottom; i++) {
-				Painter.drawInside( level, room, new Point( room.right, i ), Random.IntRange( 1, room.width() - 2 ), Terrain.EMPTY_SP );
+				Painter.drawInside( level, room, new Point( room.right, i ), Random.IntRange( 1, room.width() - 3 ), Terrain.EMPTY_SP );
 			}
 		} else if (door.y == room.top) {
 			for (int i=room.left + 1; i < room.right; i++) {
-				Painter.drawInside( level, room, new Point( i, room.top ), Random.IntRange( 1, room.height() - 2 ), Terrain.EMPTY_SP );
+				Painter.drawInside( level, room, new Point( i, room.top ), Random.IntRange( 1, room.height() - 3 ), Terrain.EMPTY_SP );
 			}
 		} else if (door.y == room.bottom) {
 			for (int i=room.left + 1; i < room.right; i++) {
-				Painter.drawInside( level, room, new Point( i, room.bottom ), Random.IntRange( 1, room.height() - 2 ), Terrain.EMPTY_SP );
+				Painter.drawInside( level, room, new Point( i, room.bottom ), Random.IntRange( 1, room.height() - 3 ), Terrain.EMPTY_SP );
 			}
 		}
 

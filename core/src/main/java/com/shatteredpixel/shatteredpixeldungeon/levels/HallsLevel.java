@@ -22,9 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import android.opengl.GLES20;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.PixelParticle;
@@ -58,7 +59,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class HallsLevel extends RegularLevel {
 
 	{
-		minRoomSize = 6;
+		minRoomSize = 7;
 		
 		viewDistance = Math.max( 25 - Dungeon.depth, 1 );
 		

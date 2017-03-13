@@ -52,15 +52,15 @@ public class Painter {
 	}
 	
 	public static void fill( Level level, Rect rect, int value ) {
-		fill( level, rect.left, rect.top, rect.width() + 1, rect.height() + 1, value );
+		fill( level, rect.left, rect.top, rect.width(), rect.height(), value );
 	}
 	
 	public static void fill( Level level, Rect rect, int m, int value ) {
-		fill( level, rect.left + m, rect.top + m, rect.width() + 1 - m*2, rect.height() + 1 - m*2, value );
+		fill( level, rect.left + m, rect.top + m, rect.width() - m*2, rect.height() - m*2, value );
 	}
 	
 	public static void fill( Level level, Rect rect, int l, int t, int r, int b, int value ) {
-		fill( level, rect.left + l, rect.top + t, rect.width() + 1 - (l + r), rect.height() + 1 - (t + b), value );
+		fill( level, rect.left + l, rect.top + t, rect.width() - (l + r), rect.height() - (t + b), value );
 	}
 	
 	public static Point drawInside( Level level, Room room, Point from, int n, int value ) {

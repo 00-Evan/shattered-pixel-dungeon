@@ -46,7 +46,7 @@ public class StandardRoom extends Room {
 			switch (Random.Int( 6 )) {
 			case 0:
 				if (level.feeling != Level.Feeling.GRASS) {
-					if (Math.min( room.width(), room.height() ) >= 4 && Math.max( room.width(), room.height() ) >= 6) {
+					if (Math.min( room.width(), room.height() ) > 4 && Math.max( room.width(), room.height() ) > 6) {
 						paintGraveyard( level, room );
 						return;
 					}
@@ -61,20 +61,20 @@ public class StandardRoom extends Room {
 				}
 				break;
 			case 2:
-				if (Math.max( room.width(), room.height() ) >= 4) {
+				if (Math.max( room.width(), room.height() ) > 4) {
 					paintStriped( level, room );
 					return;
 				}
 				break;
 			case 3:
-				if (room.width() >= 6 && room.height() >= 6) {
+				if (room.width() > 6 && room.height() > 6) {
 					paintStudy( level, room );
 					return;
 				}
 				break;
 			case 4:
 				if (level.feeling != Level.Feeling.WATER) {
-					if (room.connected.size() == 2 && room.width() >= 4 && room.height() >= 4) {
+					if (room.connected.size() == 2 && room.width() > 4 && room.height() > 4) {
 						paintBridge( level, room );
 						return;
 					}
@@ -84,7 +84,7 @@ public class StandardRoom extends Room {
 				}
 			case 5:
 				if (!Dungeon.bossLevel() && !Dungeon.bossLevel( Dungeon.depth + 1 ) &&
-					Math.min( room.width(), room.height() ) >= 5) {
+					Math.min( room.width(), room.height() ) > 5) {
 					paintFissure( level, room );
 					return;
 				}
@@ -125,10 +125,10 @@ public class StandardRoom extends Room {
 	}
 	
 	private static void paintGraveyard( Level level, Room room ) {
-		Painter.fill( level, room.left + 1, room.top + 1, room.width() - 1, room.height() - 1 , Terrain.GRASS );
+		Painter.fill( level, room , 1 , Terrain.GRASS );
 		
-		int w = room.width() - 1;
-		int h = room.height() - 1;
+		int w = room.width() - 2;
+		int h = room.height() - 2;
 		int nGraves = Math.max( w, h ) / 2;
 		
 		int index = Random.Int( nGraves );
@@ -143,23 +143,23 @@ public class StandardRoom extends Room {
 	}
 	
 	private static void paintStriped( Level level, Room room ) {
-		Painter.fill( level, room.left + 1, room.top + 1, room.width() - 1, room.height() - 1 , Terrain.EMPTY_SP );
+		Painter.fill( level, room, 1 , Terrain.EMPTY_SP );
 
 		if (room.width() > room.height()) {
 			for (int i=room.left + 2; i < room.right; i += 2) {
-				Painter.fill( level, i, room.top + 1, 1, room.height() - 1, Terrain.HIGH_GRASS );
+				Painter.fill( level, i, room.top + 1, 1, room.height() - 2, Terrain.HIGH_GRASS );
 			}
 		} else {
 			for (int i=room.top + 2; i < room.bottom; i += 2) {
-				Painter.fill( level, room.left + 1, i, room.width() - 1, 1, Terrain.HIGH_GRASS );
+				Painter.fill( level, room.left + 1, i, room.width() - 2, 1, Terrain.HIGH_GRASS );
 			}
 		}
 	}
 
 	//TODO: this is almost a special room type now, consider moving this into its own painter if/when you address room gen significantly.
 	private static void paintStudy( Level level, Room room ) {
-		Painter.fill( level, room.left + 1, room.top + 1, room.width() - 1, room.height() - 1 , Terrain.BOOKSHELF );
-		Painter.fill( level, room.left + 2, room.top + 2, room.width() - 3, room.height() - 3 , Terrain.EMPTY_SP );
+		Painter.fill( level, room, 1 , Terrain.BOOKSHELF );
+		Painter.fill( level, room, 2 , Terrain.EMPTY_SP );
 
 		for (Point door : room.connected.values()) {
 			if (door.x == room.left) {
@@ -189,7 +189,7 @@ public class StandardRoom extends Room {
 	
 	private static void paintBridge( Level level, Room room ) {
 		
-		Painter.fill( level, room.left + 1, room.top + 1, room.width() - 1, room.height() - 1 ,
+		Painter.fill( level, room, 1,
 			!Dungeon.bossLevel() && !Dungeon.bossLevel( Dungeon.depth + 1 ) && Random.Int( 3 ) == 0 ?
 				Terrain.CHASM :
 				Terrain.WATER );
@@ -249,7 +249,7 @@ public class StandardRoom extends Room {
 	}
 	
 	private static void paintFissure( Level level, Room room ) {
-		Painter.fill( level, room.left + 1, room.top + 1, room.width() - 1, room.height() - 1 ,Terrain.EMPTY );
+		Painter.fill( level, room, 1, Terrain.EMPTY );
 		
 		for (int i=room.top + 2; i < room.bottom - 1; i++) {
 			for (int j=room.left + 2; j < room.right - 1; j++) {

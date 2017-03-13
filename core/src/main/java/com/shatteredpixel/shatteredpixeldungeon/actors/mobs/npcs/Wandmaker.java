@@ -295,7 +295,7 @@ public class Wandmaker extends NPC {
 				//we don't re-roll the quest, it will try to assign itself to that new level with the same type.
 				Room questRoom = null;
 				for (Room r : rooms){
-					if (r instanceof StandardRoom && r.width() > 5 && r.height() > 5){
+					if (r instanceof StandardRoom && r.width() >= 7 && r.height() >= 7){
 						if (type == 2 || r.connected.size() == 1){
 							questRoom = r;
 							break;

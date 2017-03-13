@@ -35,8 +35,8 @@ public class PassageRoom extends Room {
 	
 	public void paint( Level level, Room room ) {
 		
-		pasWidth = room.width() - 2;
-		pasHeight = room.height() - 2;
+		pasWidth = room.width() - 3;
+		pasHeight = room.height() - 3;
 		
 		int floor = level.tunnelTile();
 		

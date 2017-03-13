@@ -106,7 +106,7 @@ public class CavesLevel extends RegularLevel {
 				continue;
 			}
 			
-			if (room.width() <= 3 || room.height() <= 3) {
+			if (room.width() <= 4 || room.height() <= 4) {
 				continue;
 			}
 			

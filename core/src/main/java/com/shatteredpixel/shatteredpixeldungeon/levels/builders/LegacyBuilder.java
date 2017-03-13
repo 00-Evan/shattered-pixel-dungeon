@@ -90,11 +90,11 @@ public class LegacyBuilder extends Builder {
 		do {
 			do {
 				roomEntrance = Random.element( rooms );
-			} while (roomEntrance.width() < 4 || roomEntrance.height() < 4);
+			} while (roomEntrance.width() <= 4 || roomEntrance.height() <= 4);
 			
 			do {
 				roomExit = Random.element( rooms );
-			} while (roomExit == roomEntrance || roomExit.width() < 4 || roomExit.height() < 4);
+			} while (roomExit == roomEntrance || roomExit.width() <= 4 || roomExit.height() <= 4);
 			
 			Graph.buildDistanceMap( rooms, roomExit );
 			distance = roomEntrance.distance();
@@ -153,7 +153,7 @@ public class LegacyBuilder extends Builder {
 		if (Dungeon.shopOnLevel()) {
 			Room shop = null;
 			for (Room r : roomEntrance.connected.keySet()) {
-				if (r.connected.size() == 1 && ((r.width()-1)*(r.height()-1) >= ShopRoom.spaceNeeded())) {
+				if (r.connected.size() == 1 && ((r.width()-2)*(r.height()-2) >= ShopRoom.spaceNeeded())) {
 					shop = r;
 					break;
 				}
@@ -163,7 +163,7 @@ public class LegacyBuilder extends Builder {
 				return null;
 			} else {
 				temp = shop;
-				shop = new LaboratoryRoom().set(temp);
+				shop = new ShopRoom().set(temp);
 				rooms.set(rooms.indexOf(temp), shop);
 			}
 		}
@@ -213,7 +213,7 @@ public class LegacyBuilder extends Builder {
 				return null;
 			}
 			roomEntrance = Random.element( rooms );
-		} while (roomEntrance.width() != 8 || roomEntrance.height() < 5 || roomEntrance.top == 0 || roomEntrance.top >= 8);
+		} while (roomEntrance.width() != 9 || roomEntrance.height() < 6 || roomEntrance.top == 0 || roomEntrance.top >= 8);
 		
 		Room temp = roomEntrance;
 		roomEntrance = new EntranceRoom().set(temp);
@@ -322,7 +322,7 @@ public class LegacyBuilder extends Builder {
 					return null;
 				}
 				roomEntrance = Random.element( rooms );
-			} while (roomEntrance.width() < 4 || roomEntrance.height() < 4);
+			} while (roomEntrance.width() <= 4 || roomEntrance.height() <= 4);
 			
 			innerRetry = 0;
 			do {
@@ -330,7 +330,7 @@ public class LegacyBuilder extends Builder {
 					return null;
 				}
 				roomExit = Random.element( rooms );
-			} while (roomExit == roomEntrance || roomExit.width() < 6 || roomExit.height() < 6 || roomExit.top == 0);
+			} while (roomExit == roomEntrance || roomExit.width() <= 6 || roomExit.height() <= 6 || roomExit.top == 0);
 			
 			Graph.buildDistanceMap( rooms, roomExit );
 			distance = Graph.buildPath( rooms, roomEntrance, roomExit ).size();
@@ -413,8 +413,9 @@ public class LegacyBuilder extends Builder {
 	
 	private void split( Rect rect ) {
 		
-		int w = rect.width();
-		int h = rect.height();
+		//To match with rooms
+		int w = rect.width()+1;
+		int h = rect.height()+1;
 		
 		if (w > maxRoomSize && h < minRoomSize) {
 			
@@ -462,7 +463,7 @@ public class LegacyBuilder extends Builder {
 					r.connected.size() == 1) {
 				
 				if (specials.size() > 0 &&
-						r.width() > 3 && r.height() > 3 &&
+						r.width() > 4 && r.height() > 4 &&
 						Random.Int( specialRooms * specialRooms + 2 ) == 0) {
 					
 					if (Level.pitRoomNeeded && !pitMade) {
