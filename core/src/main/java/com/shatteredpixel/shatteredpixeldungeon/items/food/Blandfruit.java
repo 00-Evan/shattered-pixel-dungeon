@@ -195,7 +195,15 @@ public class Blandfruit extends Food {
 		}
 
 	}
-
+	
+	@Override
+	public void reset() {
+		if (potionAttrib != null)
+			imbuePotion(potionAttrib);
+		else
+			super.reset();
+	}
+	
 	@Override
 	public void storeInBundle(Bundle bundle){
 		super.storeInBundle(bundle);
