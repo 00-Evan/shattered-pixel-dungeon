@@ -23,8 +23,6 @@ package com.watabou.glwrap;
 
 import android.opengl.GLES20;
 
-import java.util.Arrays;
-
 public class Uniform {
 
 	private int location;

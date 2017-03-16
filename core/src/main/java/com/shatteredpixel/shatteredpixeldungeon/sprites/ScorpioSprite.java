@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Callback;
 

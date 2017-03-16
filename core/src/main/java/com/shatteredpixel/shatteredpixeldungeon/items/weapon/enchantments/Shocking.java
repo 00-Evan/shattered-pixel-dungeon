@@ -33,7 +33,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Shocking extends Weapon.Enchantment {
 
