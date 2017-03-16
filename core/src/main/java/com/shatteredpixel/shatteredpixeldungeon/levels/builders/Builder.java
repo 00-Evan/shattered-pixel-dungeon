@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 public abstract class Builder {
 	
-	//If builders require additional parameters, they should request them in their constructor
+	//If builders require additional parameters, they should
+	// request them in their constructor or other methods
 	
 	//builders take a list of rooms and returns them as a connected map
 	//returns null on failure

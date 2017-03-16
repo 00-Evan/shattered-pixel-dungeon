@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.TunnelRoom;
@@ -74,12 +75,24 @@ public class CavesLevel extends RegularLevel {
 		return Assets.WATER_CAVES;
 	}
 	
-	protected boolean[] water() {
-		return Patch.generate( width, height, feeling == Feeling.WATER ? 0.85f : 0.30f, 6, true );
+	@Override
+	protected float waterFill() {
+		return feeling == Feeling.WATER ? 0.85f : 0.30f;
 	}
 	
-	protected boolean[] grass() {
-		return Patch.generate( width, height, feeling == Feeling.GRASS ? 0.65f : 0.15f, 3, true );
+	@Override
+	protected int waterSmoothing() {
+		return 6;
+	}
+	
+	@Override
+	protected float grassFill() {
+		return feeling == Feeling.GRASS ? 0.65f : 0.15f;
+	}
+	
+	@Override
+	protected int grassSmoothing() {
+		return 3;
 	}
 
 	@Override

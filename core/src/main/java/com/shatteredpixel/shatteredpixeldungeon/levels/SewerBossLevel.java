@@ -86,13 +86,25 @@ public class SewerBossLevel extends RegularLevel {
 		return new LegacyBuilder(LegacyBuilder.Type.SEWER_BOSS,
 				width, height, minRoomSize, maxRoomSize);
 	}
-		
-	protected boolean[] water() {
-		return Patch.generate( width, height, 0.5f, 5, true );
+	
+	@Override
+	protected float waterFill(){
+		return 0.50f;
 	}
 	
-	protected boolean[] grass() {
-		return Patch.generate( width, height, 0.20f, 4, true );
+	@Override
+	protected int waterSmoothing(){
+		return 5;
+	}
+	
+	@Override
+	protected float grassFill() {
+		return 0.20f;
+	}
+	
+	@Override
+	protected int grassSmoothing() {
+		return 4;
 	}
 	
 	protected int nTraps() {

@@ -34,23 +34,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LegacyBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RegularPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.PassageRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.TunnelRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.WeakFloorRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornTrap;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,14 +78,9 @@ public abstract class RegularLevel extends Level {
 		roomEntrance = ((LegacyBuilder)builder).roomEntrance;
 		roomExit = ((LegacyBuilder)builder).roomExit;
 		
-		if (!paint()){
+		if (!painter().paint(this, rooms)){
 			return false;
 		}
-		
-		paintWater();
-		paintGrass();
-		
-		placeTraps();
 		
 		return true;
 	}
@@ -96,6 +88,14 @@ public abstract class RegularLevel extends Level {
 	protected Builder builder(){
 		return new LegacyBuilder(LegacyBuilder.Type.REGULAR,
 				width, height, minRoomSize, maxRoomSize);
+	}
+	
+	protected Painter painter(){
+		RegularPainter p = new RegularPainter();
+		p.setGrass(grassFill(), grassSmoothing());
+		p.setWater(waterFill(), waterSmoothing());
+		p.setTraps(nTraps(), trapClasses(), trapChances());
+		return p;
 	}
 
 	protected void placeSign(){
@@ -108,85 +108,20 @@ public abstract class RegularLevel extends Level {
 		}
 	}
 	
-	protected void paintWater() {
-		boolean[] lake = water();
-		for (int i=0; i < length(); i++) {
-			if (map[i] == Terrain.EMPTY && lake[i]) {
-				map[i] = Terrain.WATER;
-			}
-		}
+	protected float waterFill(){
+		return 0;
 	}
 	
-	protected void paintGrass() {
-		boolean[] grass = grass();
-		
-		if (feeling == Feeling.GRASS) {
-			
-			for (Room room : rooms) {
-				if (!(room instanceof TunnelRoom || room instanceof PassageRoom)) {
-					grass[(room.left + 1) + (room.top + 1) * width()] = true;
-					grass[(room.right - 1) + (room.top + 1) * width()] = true;
-					grass[(room.left + 1) + (room.bottom - 1) * width()] = true;
-					grass[(room.right - 1) + (room.bottom - 1) * width()] = true;
-				}
-			}
-		}
-
-		for (int i=width()+1; i < length()-width()-1; i++) {
-			if (map[i] == Terrain.EMPTY && grass[i]) {
-				int count = 1;
-				for (int n : PathFinder.NEIGHBOURS8) {
-					if (grass[i + n]) {
-						count++;
-					}
-				}
-				map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS : Terrain.GRASS;
-			}
-		}
+	protected int waterSmoothing(){
+		return 0;
 	}
 	
-	protected abstract boolean[] water();
-	protected abstract boolean[] grass();
+	protected float grassFill(){
+		return 0;
+	}
 	
-	protected void placeTraps() {
-		
-		int nTraps = nTraps();
-		float[] trapChances = trapChances();
-		Class<?>[] trapClasses = trapClasses();
-
-		ArrayList<Integer> validCells = new ArrayList<>();
-
-		for (int i = 0; i < length(); i ++) {
-			if (map[i] == Terrain.EMPTY){
-
-				if(Dungeon.depth == 1){
-					//extra check to prevent annoying inactive traps in hallways on floor 1
-					Room r = room(i);
-					if (r instanceof StandardRoom){
-						validCells.add(i);
-					}
-				} else
-					validCells.add(i);
-			}
-		}
-
-		//no more than one trap every 5 valid tiles.
-		nTraps = Math.min(nTraps, validCells.size()/5);
-
-		for (int i = 0; i < nTraps; i++) {
-			
-			Integer trapPos = Random.element(validCells);
-			validCells.remove(trapPos); //removes the integer object, not at the index
-
-			try {
-				Trap trap = ((Trap)trapClasses[Random.chances( trapChances )].newInstance()).hide();
-				setTrap( trap, trapPos );
-				//some traps will not be hidden
-				map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
+	protected int grassSmoothing(){
+		return 0;
 	}
 	
 	protected int nTraps() {
@@ -203,140 +138,6 @@ public abstract class RegularLevel extends Level {
 	
 	protected int minRoomSize = 8;
 	protected int maxRoomSize = 10;
-	
-	protected boolean paint() {
-		
-		for (Room r : rooms) {
-			placeDoors( r );
-			r.paint( this );
-		}
-		
-		for (Room r : rooms) {
-			paintDoors( r );
-		}
-		
-		return true;
-	}
-	
-	private void placeDoors( Room r ) {
-		for (Room n : r.connected.keySet()) {
-			Room.Door door = r.connected.get( n );
-			if (door == null) {
-				
-				Rect i = r.intersect( n );
-				if (i.width() == 0) {
-					door = new Room.Door(
-						i.left,
-						Random.Int( i.top + 1, i.bottom ) );
-				} else {
-					door = new Room.Door(
-						Random.Int( i.left + 1, i.right ),
-						i.top);
-				}
-
-				r.connected.put( n, door );
-				n.connected.put( r, door );
-			}
-		}
-	}
-	
-	protected void paintDoors( Room r ) {
-		for (Room n : r.connected.keySet()) {
-
-			if (joinRooms( r, n )) {
-				continue;
-			}
-			
-			Room.Door d = r.connected.get( n );
-			int door = d.x + d.y * width();
-			
-			switch (d.type) {
-			case EMPTY:
-				map[door] = Terrain.EMPTY;
-				break;
-			case TUNNEL:
-				map[door] =  tunnelTile();
-				break;
-			case REGULAR:
-				if (Dungeon.depth <= 1) {
-					map[door] = Terrain.DOOR;
-				} else {
-					boolean secret = (Dungeon.depth < 6 ? Random.Int( 12 - Dungeon.depth ) : Random.Int( 6 )) == 0;
-					map[door] = secret ? Terrain.SECRET_DOOR : Terrain.DOOR;
-					if (secret) {
-						secretDoors++;
-					}
-				}
-				break;
-			case UNLOCKED:
-				map[door] = Terrain.DOOR;
-				break;
-			case HIDDEN:
-				map[door] = Terrain.SECRET_DOOR;
-				secretDoors++;
-				break;
-			case BARRICADE:
-				map[door] = Terrain.BARRICADE;
-				break;
-			case LOCKED:
-				map[door] = Terrain.LOCKED_DOOR;
-				break;
-			}
-		}
-	}
-	
-	protected boolean joinRooms( Room r, Room n ) {
-		
-		if (!(r instanceof StandardRoom && n instanceof StandardRoom)) {
-			return false;
-		}
-		
-		Rect w = r.intersect( n );
-		if (w.left == w.right) {
-			
-			if (w.bottom - w.top < 3) {
-				return false;
-			}
-			
-			if (w.height() == Math.max( r.height(), n.height() )) {
-				return false;
-			}
-			
-			if (r.width() + n.width() > maxRoomSize) {
-				return false;
-			}
-			
-			w.top += 1;
-			w.bottom -= 0;
-			
-			w.right++;
-			
-			Painter.fill( this, w.left, w.top, 1, w.height(), Terrain.EMPTY );
-			
-		} else {
-			
-			if (w.right - w.left < 3) {
-				return false;
-			}
-			
-			if (w.width() == Math.max( r.width(), n.width() )) {
-				return false;
-			}
-			
-			if (r.height() + n.height() > maxRoomSize) {
-				return false;
-			}
-			
-			w.left += 1;
-			w.right -= 0;
-			
-			w.bottom++;
-			
-			Painter.fill( this, w.left, w.top, w.width(), 1, Terrain.EMPTY );
-		}
-		
-		return true;
-	}
 	
 	@Override
 	public int nMobs() {
@@ -554,8 +355,7 @@ public abstract class RegularLevel extends Level {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-
-		//TODO implement legacytype support here
+		
 		rooms = new ArrayList<>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
 		for (Room r : rooms) {
 			if (r instanceof WeakFloorRoom || r.legacyType.equals("WEAK_FLOOR")) {

@@ -68,12 +68,24 @@ public class CityLevel extends RegularLevel {
 		return Assets.WATER_CITY;
 	}
 	
-	protected boolean[] water() {
-		return Patch.generate( width, height, feeling == Feeling.WATER ? 0.90f : 0.30f, 4, true );
+	@Override
+	protected float waterFill() {
+		return feeling == Feeling.WATER ? 0.90f : 0.30f;
 	}
 	
-	protected boolean[] grass() {
-		return Patch.generate( width, height, feeling == Feeling.GRASS ? 0.80f : 0.20f, 3, true );
+	@Override
+	protected int waterSmoothing() {
+		return 4;
+	}
+	
+	@Override
+	protected float grassFill() {
+		return feeling == Feeling.GRASS ? 0.80f : 0.20f;
+	}
+	
+	@Override
+	protected int grassSmoothing() {
+		return 3;
 	}
 
 	@Override

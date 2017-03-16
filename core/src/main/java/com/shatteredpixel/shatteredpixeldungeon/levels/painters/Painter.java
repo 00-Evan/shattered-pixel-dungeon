@@ -19,15 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels;
+package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Rect;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Painter {
+public abstract class Painter {
+	
+	//If painters require additional parameters, they should
+	// request them in their constructor or other methods
+	
+	//Painters take a level and its collection of rooms, and paint all the specific tile values
+	public abstract boolean paint(Level level, ArrayList<Room> rooms);
+	
+	// Static methods
 
 	public static void set( Level level, int cell, int value ) {
 		level.map[cell] = value;

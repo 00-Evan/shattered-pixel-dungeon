@@ -83,12 +83,24 @@ public class HallsLevel extends RegularLevel {
 		return Assets.WATER_HALLS;
 	}
 	
-	protected boolean[] water() {
-		return Patch.generate( width, height, feeling == Feeling.WATER ? 0.70f : 0.15f, 6, true );
+	@Override
+	protected float waterFill() {
+		return feeling == Feeling.WATER ? 0.70f : 0.15f;
 	}
 	
-	protected boolean[] grass() {
-		return Patch.generate( width, height, feeling == Feeling.GRASS ? 0.65f : 0.10f, 3, true );
+	@Override
+	protected int waterSmoothing() {
+		return 6;
+	}
+	
+	@Override
+	protected float grassFill() {
+		return feeling == Feeling.GRASS ? 0.65f : 0.10f;
+	}
+	
+	@Override
+	protected int grassSmoothing() {
+		return 3;
 	}
 
 	@Override

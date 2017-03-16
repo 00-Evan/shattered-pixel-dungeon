@@ -139,15 +139,25 @@ public class LastShopLevel extends RegularLevel {
 				return super.tileDesc( tile );
 		}
 	}
-
+	
 	@Override
-	protected boolean[] water() {
-		return Patch.generate( width, height, 0.10f, 4, true );
+	protected float waterFill() {
+		return 0.10f;
 	}
-
+	
 	@Override
-	protected boolean[] grass() {
-		return Patch.generate( width, height, 0.10f, 3, true );
+	protected int waterSmoothing() {
+		return 4;
+	}
+	
+	@Override
+	protected float grassFill() {
+		return 0.10f;
+	}
+	
+	@Override
+	protected int grassSmoothing() {
+		return 3;
 	}
 	
 	protected int nTraps() {
