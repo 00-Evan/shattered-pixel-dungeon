@@ -271,7 +271,10 @@ public abstract class RegularLevel extends Level {
 				type = Heap.Type.HEAP;
 			}
 			int cell = randomDropCell();
-			if (map[cell] == Terrain.HIGH_GRASS) map[cell] = Terrain.GRASS;
+			if (map[cell] == Terrain.HIGH_GRASS) {
+				map[cell] = Terrain.GRASS;
+				losBlocking[cell] = false;
+			}
 			drop( Generator.random(), cell ).type = type;
 		}
 
@@ -291,13 +294,19 @@ public abstract class RegularLevel extends Level {
 				}
 			} while (traps.get(cell) instanceof ExplosiveTrap);
 			drop( item, cell ).type = Heap.Type.HEAP;
-			if (map[cell] == Terrain.HIGH_GRASS) map[cell] = Terrain.GRASS;
+			if (map[cell] == Terrain.HIGH_GRASS) {
+				map[cell] = Terrain.GRASS;
+				losBlocking[cell] = false;
+			}
 		}
 		
 		Item item = Bones.get();
 		if (item != null) {
 			int cell = randomDropCell();
-			if (map[cell] == Terrain.HIGH_GRASS) map[cell] = Terrain.GRASS;
+			if (map[cell] == Terrain.HIGH_GRASS) {
+				map[cell] = Terrain.GRASS;
+				losBlocking[cell] = false;
+			}
 			drop( item, cell ).type = Heap.Type.REMAINS;
 		}
 	}
