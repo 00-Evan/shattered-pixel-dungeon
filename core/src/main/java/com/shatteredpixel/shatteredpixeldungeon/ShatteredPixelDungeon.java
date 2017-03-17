@@ -57,17 +57,19 @@ public class ShatteredPixelDungeon extends Game {
 		//v0.6.0
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MassGraveRoom.Bones.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.MassGravePainter.Bones.class" );
+				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.MassGravePainter$Bones" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.RitualSiteRoom.RitualMarker.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.RitualSitePainter.RitualMarker.class" );
+				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.RitualSitePainter$RitualMarker" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.WeakFloorRoom.HiddenWell.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.WeakFloorPainter.HiddenWell.class" );
-		
+				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.WeakFloorPainter$HiddenWell" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.Room" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortSword" );
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortsword" );
 
 		com.watabou.utils.Bundle.exceptionReporter =
 				new com.watabou.utils.Bundle.BundleExceptionCallback() {
