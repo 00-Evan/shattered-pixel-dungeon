@@ -117,27 +117,32 @@ public class ItemSlot extends Button {
 	protected void layout() {
 		super.layout();
 		
-		icon.x = x + (width - icon.width) / 2;
-		icon.y = y + (height - icon.height) / 2;
+		icon.x = x + (width - icon.width) / 2f;
+		icon.y = y + (height - icon.height) / 2f;
+		PixelScene.align(icon);
 		
 		if (topLeft != null) {
 			topLeft.x = x;
 			topLeft.y = y;
+			PixelScene.align(topLeft);
 		}
 		
 		if (topRight != null) {
 			topRight.x = x + (width - topRight.width());
 			topRight.y = y;
+			PixelScene.align(topRight);
 		}
 		
 		if (bottomRight != null) {
 			bottomRight.x = x + (width - bottomRight.width());
 			bottomRight.y = y + (height - bottomRight.height());
+			PixelScene.align(bottomRight);
 		}
 
 		if (bottomRightIcon != null) {
 			bottomRightIcon.x = x + (width - bottomRightIcon.width()) -1;
 			bottomRightIcon.y = y + (height - bottomRightIcon.height());
+			PixelScene.align(bottomRightIcon);
 		}
 	}
 	

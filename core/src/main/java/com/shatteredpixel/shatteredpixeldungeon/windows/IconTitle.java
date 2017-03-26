@@ -81,6 +81,7 @@ public class IconTitle extends Component {
 
 		imIcon.x = x + (Math.max(0, 8 - imIcon.width()/2));
 		imIcon.y = y + (Math.max(0, 8 - imIcon.height()/2));
+		PixelScene.align(imIcon);
 
 		int imWidth = (int)Math.max(imIcon.width(), 16);
 		int imHeight = (int)Math.max(imIcon.height(), 16);
