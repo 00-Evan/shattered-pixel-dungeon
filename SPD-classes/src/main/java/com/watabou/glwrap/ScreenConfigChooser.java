@@ -138,7 +138,6 @@ public class ScreenConfigChooser implements GLSurfaceView.EGLConfigChooser {
 					} else {
 						configVal += val;
 					}
-					break;
 				} else if (attribPrefs[i] == AT_MOST) {
 					if (attribVals[i] < val) {
 						configVal = -1;
