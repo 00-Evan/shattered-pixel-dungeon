@@ -21,11 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
@@ -39,19 +35,12 @@ public class Lucky extends Weapon.Enchantment {
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.level() );
 
-		if (Random.Int(100) < (55 + level)){
-			int exStr = 0;
-			if (attacker == Dungeon.hero) exStr = Math.max(0, Dungeon.hero.STR() - weapon.STRReq());
-			damage = weapon.imbue.damageFactor(weapon.max()) + exStr - defender.drRoll();
+		if (Random.Int(100) < (60 + level)){
+			return 2*damage;
 		} else {
-			damage = weapon.imbue.damageFactor(weapon.min()) - defender.drRoll();
+			return 0;
 		}
-
-		if (attacker == Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.BERSERKER ){
-			damage = Buff.affect(Dungeon.hero, Berserk.class).damageFactor(damage);
-		}
-
-		return Math.max(0, damage);
+		
 	}
 
 	@Override

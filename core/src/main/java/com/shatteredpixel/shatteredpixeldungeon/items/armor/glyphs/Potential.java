@@ -43,15 +43,13 @@ public class Potential extends Glyph {
 
 		if (Random.Int( level + 20 ) >= 18) {
 
-			int shockDmg = Random.NormalIntRange( defender.HT/20, defender.HT/10 );
-
-			shockDmg *= Math.pow(0.9, level);
+			int shockDmg = Random.NormalIntRange( 2, 6 );
 
 			defender.damage( shockDmg, LightningTrap.LIGHTNING );
 			
 			checkOwner( defender );
 			if (defender == Dungeon.hero) {
-				Dungeon.hero.belongings.charge(1f);
+				Dungeon.hero.belongings.charge(1f + level/10f);
 				Camera.main.shake( 2, 0.3f );
 			}
 

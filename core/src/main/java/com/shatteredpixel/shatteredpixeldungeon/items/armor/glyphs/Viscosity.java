@@ -49,7 +49,7 @@ public class Viscosity extends Glyph {
 		
 		int level = Math.max( 0, armor.level() );
 		
-		if (Random.Int( level + 4 ) >= 3) {
+		if (Random.Int( level + 6 ) >= 5) {
 			
 			DeferedDamage debuff = defender.buff( DeferedDamage.class );
 			if (debuff == null) {
@@ -119,7 +119,7 @@ public class Viscosity extends Glyph {
 		public boolean act() {
 			if (target.isAlive()) {
 
-				int damageThisTick = Math.max(1, (int)(damage*0.15f));
+				int damageThisTick = Math.max(1, (int)(damage*0.1f));
 				target.damage( damageThisTick, this );
 				if (target == Dungeon.hero && !target.isAlive()) {
 
