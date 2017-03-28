@@ -174,6 +174,8 @@ public enum Rankings {
 		Dungeon.hero = (Hero)data.get(HERO);
 
 		Statistics.restoreFromBundle(data.getBundle(STATS));
+		
+		Dungeon.challenges = 0;
 
 	}
 	
