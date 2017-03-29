@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
@@ -33,24 +33,24 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class LaboratoryRoom extends Room {
+public class LaboratoryRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.EMPTY_SP );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
 		
-		Room.Door entrance = room.entrance();
+		Door entrance = entrance();
 		
 		Point pot = null;
-		if (entrance.x == room.left) {
-			pot = new Point( room.right-1, Random.Int( 2 ) == 0 ? room.top + 1 : room.bottom - 1 );
-		} else if (entrance.x == room.right) {
-			pot = new Point( room.left+1, Random.Int( 2 ) == 0 ? room.top + 1 : room.bottom - 1 );
-		} else if (entrance.y == room.top) {
-			pot = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.bottom-1 );
-		} else if (entrance.y == room.bottom) {
-			pot = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.top+1 );
+		if (entrance.x == left) {
+			pot = new Point( right-1, Random.Int( 2 ) == 0 ? top + 1 : bottom - 1 );
+		} else if (entrance.x == right) {
+			pot = new Point( left+1, Random.Int( 2 ) == 0 ? top + 1 : bottom - 1 );
+		} else if (entrance.y == top) {
+			pot = new Point( Random.Int( 2 ) == 0 ? left + 1 : right - 1, bottom-1 );
+		} else if (entrance.y == bottom) {
+			pot = new Point( Random.Int( 2 ) == 0 ? left + 1 : right - 1, top+1 );
 		}
 		Painter.set( level, pot, Terrain.ALCHEMY );
 		
@@ -62,14 +62,14 @@ public class LaboratoryRoom extends Room {
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
-				pos = level.pointToCell(room.random());
+				pos = level.pointToCell(random());
 			} while (
 				level.map[pos] != Terrain.EMPTY_SP ||
 				level.heaps.get( pos ) != null);
 			level.drop( prize( level ), pos );
 		}
 		
-		entrance.set( Room.Door.Type.LOCKED );
+		entrance.set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
 	

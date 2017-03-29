@@ -33,11 +33,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MassGraveRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.RitualSiteRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.RotGardenRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RotGardenRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RitualSiteRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -283,6 +283,7 @@ public class Wandmaker extends NPC {
 			}
 		}
 		
+		//FIXME: refactor this to work with new levelgen
 		public static boolean spawnRoom( ArrayList<Room> rooms) {
 			questRoomSpawned = false;
 			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {

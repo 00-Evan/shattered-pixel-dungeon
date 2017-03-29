@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -31,32 +31,32 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.watabou.utils.Random;
 
-public class GardenRoom extends Room {
+public class GardenRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.HIGH_GRASS );
-		Painter.fill( level, room, 2, Terrain.GRASS );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.HIGH_GRASS );
+		Painter.fill( level, this, 2, Terrain.GRASS );
 		
-		room.entrance().set( Room.Door.Type.REGULAR );
+		entrance().set( Door.Type.REGULAR );
 
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
 			if (Random.Int(2) == 0){
-				level.plant(new Sungrass.Seed(), level.pointToCell(room.random()));
+				level.plant(new Sungrass.Seed(), level.pointToCell(random()));
 			}
 		} else {
 			int bushes = Random.Int(3);
 			if (bushes == 0) {
-				level.plant(new Sungrass.Seed(), level.pointToCell(room.random()));
+				level.plant(new Sungrass.Seed(), level.pointToCell(random()));
 			} else if (bushes == 1) {
-				level.plant(new BlandfruitBush.Seed(), level.pointToCell(room.random()));
+				level.plant(new BlandfruitBush.Seed(), level.pointToCell(random()));
 			} else if (Random.Int(5) == 0) {
 				int plant1, plant2;
-				plant1 = level.pointToCell(room.random());
+				plant1 = level.pointToCell(random());
 				level.plant(new Sungrass.Seed(), plant1);
 				do {
-					plant2 = level.pointToCell(room.random());
+					plant2 = level.pointToCell(random());
 				} while (plant2 == plant1);
 				level.plant(new BlandfruitBush.Seed(), plant2);
 			}
@@ -66,8 +66,8 @@ public class GardenRoom extends Room {
 		if (light == null) {
 			light = new Foliage();
 		}
-		for (int i=room.top + 1; i < room.bottom; i++) {
-			for (int j=room.left + 1; j < room.right; j++) {
+		for (int i=top + 1; i < bottom; i++) {
+			for (int j=left + 1; j < right; j++) {
 				light.seed( level, j + level.width() * i, 1 );
 			}
 		}

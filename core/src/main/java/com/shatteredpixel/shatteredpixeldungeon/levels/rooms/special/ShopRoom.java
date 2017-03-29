@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
@@ -70,6 +70,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -78,34 +79,34 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ShopRoom extends Room {
+public class ShopRoom extends SpecialRoom {
 
 	private static int pasWidth;
 	private static int pasHeight;
 
 	private static ArrayList<Item> itemsToSpawn;
 	
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.EMPTY_SP );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
 		
-		pasWidth = room.width() - 3;
-		pasHeight = room.height() - 3;
+		pasWidth = width() - 3;
+		pasHeight = height() - 3;
 		int per = pasWidth * 2 + pasHeight * 2;
 		
 		if (itemsToSpawn == null)
 			generateItems();
 		
-		int pos = xy2p( room, room.entrance() ) + (per - itemsToSpawn.size()) / 2;
+		int pos = xy2p( this, entrance() ) + (per - itemsToSpawn.size()) / 2;
 		for (Item item : itemsToSpawn) {
 			
-			Point xy = p2xy( room, (pos + per) % per );
+			Point xy = p2xy( this, (pos + per) % per );
 			int cell = xy.x + xy.y * level.width();
 			
 			if (level.heaps.get( cell ) != null) {
 				do {
-					cell = level.pointToCell(room.random());
+					cell = level.pointToCell(random());
 				} while (level.heaps.get( cell ) != null);
 			}
 			
@@ -114,10 +115,10 @@ public class ShopRoom extends Room {
 			pos++;
 		}
 		
-		placeShopkeeper( level, room );
+		placeShopkeeper( level, this );
 		
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.REGULAR );
 		}
 
 		itemsToSpawn = null;

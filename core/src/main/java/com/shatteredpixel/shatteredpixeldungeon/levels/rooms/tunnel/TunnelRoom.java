@@ -19,40 +19,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class TunnelRoom extends Room {
-
-	public void paint( Level level, Room room ) {
+	
+	@Override
+	public int minDimension() {
+		return 3;
+	}
+	
+	@Override
+	public int maxDimension() {
+		return 10;
+	}
+	
+	public void paint(Level level) {
 		
 		int floor = level.tunnelTile();
 		
-		Point c = room.center();
+		Point c = center();
 		
-		if (room.width() > room.height() || (room.width() == room.height() && Random.Int( 2 ) == 0)) {
+		if (width() > height() || (width() == height() && Random.Int( 2 ) == 0)) {
 			
-			int from = room.right - 1;
-			int to = room.left + 1;
+			int from = right - 1;
+			int to = left + 1;
 			
-			for (Room.Door door : room.connected.values()) {
+			for (Door door : connected.values()) {
 				
 				int step = door.y < c.y ? +1 : -1;
 				
-				if (door.x == room.left) {
+				if (door.x == left) {
 					
-					from = room.left + 1;
+					from = left + 1;
 					for (int i=door.y; i != c.y; i += step) {
 						Painter.set( level, from, i, floor );
 					}
 					
-				} else if (door.x == room.right) {
+				} else if (door.x == right) {
 					
-					to = room.right - 1;
+					to = right - 1;
 					for (int i=door.y; i != c.y; i += step) {
 						Painter.set( level, to, i, floor );
 					}
@@ -77,23 +88,23 @@ public class TunnelRoom extends Room {
 			
 		} else {
 			
-			int from = room.bottom - 1;
-			int to = room.top + 1;
+			int from = bottom - 1;
+			int to = top + 1;
 			
-			for (Room.Door door : room.connected.values()) {
+			for (Door door : connected.values()) {
 				
 				int step = door.x < c.x ? +1 : -1;
 				
-				if (door.y == room.top) {
+				if (door.y == top) {
 					
-					from = room.top + 1;
+					from = top + 1;
 					for (int i=door.x; i != c.x; i += step) {
 						Painter.set( level, i, from, floor );
 					}
 					
-				} else if (door.y == room.bottom) {
+				} else if (door.y == bottom) {
 					
-					to = room.bottom - 1;
+					to = bottom - 1;
 					for (int i=door.x; i != c.x; i += step) {
 						Painter.set( level, i, to, floor );
 					}
@@ -117,8 +128,8 @@ public class TunnelRoom extends Room {
 			}
 		}
 		
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.TUNNEL );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.TUNNEL );
 		}
 	}
 }

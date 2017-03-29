@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -29,22 +29,22 @@ import com.watabou.utils.Point;
 
 //import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SacrificialFire;
 
-public class AltarRoom extends Room {
+public class AltarRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Dungeon.bossLevel( Dungeon.depth + 1 ) ? Terrain.HIGH_GRASS : Terrain.CHASM );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Dungeon.bossLevel( Dungeon.depth + 1 ) ? Terrain.HIGH_GRASS : Terrain.CHASM );
 
-		Point c = room.center();
-		Room.Door door = room.entrance();
-		if (door.x == room.left || door.x == room.right) {
-			Point p = Painter.drawInside( level, room, door, Math.abs( door.x - c.x ) - 2, Terrain.EMPTY_SP );
+		Point c = center();
+		Door door = entrance();
+		if (door.x == left || door.x == right) {
+			Point p = Painter.drawInside( level, this, door, Math.abs( door.x - c.x ) - 2, Terrain.EMPTY_SP );
 			for (; p.y != c.y; p.y += p.y < c.y ? +1 : -1) {
 				Painter.set( level, p, Terrain.EMPTY_SP );
 			}
 		} else {
-			Point p = Painter.drawInside( level, room, door, Math.abs( door.y - c.y ) - 2, Terrain.EMPTY_SP );
+			Point p = Painter.drawInside( level, this, door, Math.abs( door.y - c.y ) - 2, Terrain.EMPTY_SP );
 			for (; p.x != c.x; p.x += p.x < c.x ? +1 : -1) {
 				Painter.set( level, p, Terrain.EMPTY_SP );
 			}
@@ -61,6 +61,6 @@ public class AltarRoom extends Room {
 		fire.seed( c.x + c.y * Level.WIDTH, 5 + Dungeon.depth * 5 );
 		level.blobs.put( SacrificialFire.class, fire );*/
 
-		door.set( Room.Door.Type.EMPTY );
+		door.set( Door.Type.EMPTY );
 	}
 }

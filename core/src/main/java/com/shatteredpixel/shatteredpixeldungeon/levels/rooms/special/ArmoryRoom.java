@@ -19,61 +19,60 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class LibraryRoom extends Room {
+public class ArmoryRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.EMPTY_SP );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.EMPTY );
 		
-		Room.Door entrance = room.entrance();
-		Point a = null;
-		Point b = null;
-		
-		Painter.fill( level, room.left + 1, room.top+1, room.width() - 2, 1 , Terrain.BOOKSHELF );
-		if (entrance.y == room.top){
-			Painter.set( level, entrance.x, entrance.y + 1, Terrain.EMPTY_SP );
+		Door entrance = entrance();
+		Point statue = null;
+		if (entrance.x == left) {
+			statue = new Point( right-1, Random.Int( 2 ) == 0 ? top+1 : bottom-1 );
+		} else if (entrance.x == right) {
+			statue = new Point( left+1, Random.Int( 2 ) == 0 ? top+1 : bottom-1 );
+		} else if (entrance.y == top) {
+			statue = new Point( Random.Int( 2 ) == 0 ? left+1 : right-1, bottom-1 );
+		} else if (entrance.y == bottom) {
+			statue = new Point( Random.Int( 2 ) == 0 ? left+1 : right-1, top+1 );
+		}
+		if (statue != null) {
+			Painter.set( level, statue, Terrain.STATUE );
 		}
 		
-		int n = Random.IntRange( 2, 3 );
+		int n = Random.IntRange( 1, 2 );
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
-				pos = level.pointToCell(room.random());
-			} while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get( pos ) != null);
-			Item item;
-			if (i == 0)
-				item = Random.Int(2) == 0 ? new ScrollOfIdentify() : new ScrollOfRemoveCurse();
-			else
-				item = prize( level );
-			level.drop( item, pos );
+				pos = level.pointToCell(random());
+			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
+			level.drop( prize( level ), pos );
 		}
 		
-		entrance.set( Room.Door.Type.LOCKED );
+		entrance.set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
 	
 	private static Item prize( Level level ) {
-		
-		Item prize = level.findPrizeItem( Scroll.class );
-		if (prize == null)
-			prize = Generator.random( Generator.Category.SCROLL );
-		
-		return prize;
+		return Random.Int( 6 ) == 0 ?
+				new Bomb().random() :
+				Generator.random( Random.oneOf(
+						Generator.Category.ARMOR,
+						Generator.Category.WEAPON
+				) );
 	}
 }

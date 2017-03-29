@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -29,25 +29,36 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class StandardRoom extends Room {
-
-	public void paint( Level level, Room room ) {
+	
+	@Override
+	public int minDimension() {
+		return 4;
+	}
+	
+	@Override
+	public int maxDimension() {
+		return 10;
+	}
+	
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
+		Painter.fill( level, this, Terrain.WALL );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.REGULAR );
 		}
 		
 		if (!Dungeon.bossLevel() && Random.Int( 5 ) == 0) {
 			switch (Random.Int( 6 )) {
 			case 0:
 				if (level.feeling != Level.Feeling.GRASS) {
-					if (Math.min( room.width(), room.height() ) > 4 && Math.max( room.width(), room.height() ) > 6) {
-						paintGraveyard( level, room );
+					if (Math.min( width(), height() ) > 4 && Math.max( width(), height() ) > 6) {
+						paintGraveyard( level, this );
 						return;
 					}
 					break;
@@ -56,26 +67,26 @@ public class StandardRoom extends Room {
 				}
 			case 1:
 				if (Dungeon.depth > 1) {
-					paintBurned( level, room );
+					paintBurned( level, this );
 					return;
 				}
 				break;
 			case 2:
-				if (Math.max( room.width(), room.height() ) > 4) {
-					paintStriped( level, room );
+				if (Math.max( width(), height() ) > 4) {
+					paintStriped( level, this );
 					return;
 				}
 				break;
 			case 3:
-				if (room.width() > 6 && room.height() > 6) {
-					paintStudy( level, room );
+				if (width() > 6 && height() > 6) {
+					paintStudy( level, this );
 					return;
 				}
 				break;
 			case 4:
 				if (level.feeling != Level.Feeling.WATER) {
-					if (room.connected.size() == 2 && room.width() > 4 && room.height() > 4) {
-						paintBridge( level, room );
+					if (connected.size() == 2 && width() > 4 && height() > 4) {
+						paintBridge( level, this );
 						return;
 					}
 					break;
@@ -84,15 +95,15 @@ public class StandardRoom extends Room {
 				}
 			case 5:
 				if (!Dungeon.bossLevel() && !Dungeon.bossLevel( Dungeon.depth + 1 ) &&
-					Math.min( room.width(), room.height() ) > 5) {
-					paintFissure( level, room );
+						Math.min( width(), height() ) > 5) {
+					paintFissure( level, this );
 					return;
 				}
 				break;
 			}
 		}
 		
-		Painter.fill( level, room, 1, Terrain.EMPTY );
+		Painter.fill( level, this, 1, Terrain.EMPTY );
 	}
 	
 	private static void paintBurned( Level level, Room room ) {

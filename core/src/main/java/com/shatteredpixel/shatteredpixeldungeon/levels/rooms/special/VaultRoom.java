@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -33,16 +33,16 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class VaultRoom extends Room {
+public class VaultRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.EMPTY_SP );
-		Painter.fill( level, room, 2, Terrain.EMPTY );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
+		Painter.fill( level, this, 2, Terrain.EMPTY );
 		
-		int cx = (room.left + room.right) / 2;
-		int cy = (room.top + room.bottom) / 2;
+		int cx = (left + right) / 2;
+		int cy = (top + bottom) / 2;
 		int c = cx + cy * level.width();
 		
 		switch (Random.Int( 3 )) {
@@ -69,7 +69,7 @@ public class VaultRoom extends Room {
 			break;
 		}
 		
-		room.entrance().set( Room.Door.Type.LOCKED );
+		entrance().set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
 	

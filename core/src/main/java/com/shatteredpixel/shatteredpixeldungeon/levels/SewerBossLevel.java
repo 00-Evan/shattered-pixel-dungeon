@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LegacyBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Group;
@@ -140,7 +140,7 @@ public class SewerBossLevel extends RegularLevel {
 		Room room;
 		do {
 			room = Random.element(rooms);
-		} while (!(room instanceof StandardRoom));
+		} while (!(room instanceof StandardRoom) || room == roomEntrance);
 		mob.pos = pointToCell(room.random());
 		mobs.add( mob );
 	}

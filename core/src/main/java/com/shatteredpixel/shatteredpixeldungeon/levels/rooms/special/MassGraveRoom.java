@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Skeleton;
@@ -39,20 +39,20 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class MassGraveRoom extends Room {
+public class MassGraveRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room){
+	public void paint( Level level){
 
-		Room.Door entrance = room.entrance();
-		entrance.set(Room.Door.Type.BARRICADE);
+		Door entrance = entrance();
+		entrance.set(Door.Type.BARRICADE);
 		level.addItemToSpawn(new PotionOfLiquidFlame());
 
-		Painter.fill(level, room, Terrain.WALL);
-		Painter.fill(level, room, 1, Terrain.EMPTY_SP);
+		Painter.fill(level, this, Terrain.WALL);
+		Painter.fill(level, this, 1, Terrain.EMPTY_SP);
 
 		Bones b = new Bones();
 
-		b.setRect(room.left+1, room.top, room.width()-2, room.height()-1);
+		b.setRect(left+1, top, width()-2, height()-1);
 		level.customTiles.add(b);
 
 		//50% 1 skeleton, 50% 2 skeletons
@@ -61,7 +61,7 @@ public class MassGraveRoom extends Room {
 
 			int pos;
 			do {
-				pos = level.pointToCell(room.random());
+				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY_SP || level.findMob(pos) != null);
 			skele.pos = pos;
 			level.mobs.add( skele );
@@ -80,7 +80,7 @@ public class MassGraveRoom extends Room {
 		for (Item item : items){
 			int pos;
 			do {
-				pos = level.pointToCell(room.random());
+				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get(pos) != null);
 			Heap h = level.drop(item, pos);
 			h.type = Heap.Type.SKELETON;

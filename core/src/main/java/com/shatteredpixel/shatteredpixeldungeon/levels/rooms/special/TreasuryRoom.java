@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -30,14 +30,14 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
 
-public class TreasuryRoom extends Room {
+public class TreasuryRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.EMPTY );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.EMPTY );
 		
-		Painter.set( level, room.center(), Terrain.STATUE );
+		Painter.set( level, center(), Terrain.STATUE );
 		
 		Heap.Type heapType = Random.Int( 2 ) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
 		
@@ -45,7 +45,7 @@ public class TreasuryRoom extends Room {
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
-				pos = level.pointToCell(room.random());
+				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
 			level.drop( new Gold().random(), pos ).type = (Random.Int(20) == 0 && heapType == Heap.Type.CHEST ? Heap.Type.MIMIC : heapType);
 		}
@@ -54,13 +54,13 @@ public class TreasuryRoom extends Room {
 			for (int i=0; i < 6; i++) {
 				int pos;
 				do {
-					pos = level.pointToCell(room.random());
+					pos = level.pointToCell(random());
 				} while (level.map[pos] != Terrain.EMPTY);
 				level.drop( new Gold( Random.IntRange( 5, 12 ) ), pos );
 			}
 		}
 		
-		room.entrance().set( Room.Door.Type.LOCKED );
+		entrance().set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
 }

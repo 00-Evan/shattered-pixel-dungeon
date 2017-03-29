@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -48,11 +48,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class TrapsRoom extends Room {
+public class TrapsRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		 
-		Painter.fill( level, room, Terrain.WALL );
+		Painter.fill( level, this, Terrain.WALL );
 
 		Class<? extends Trap> trapClass;
 		switch (Random.Int(5)){
@@ -68,37 +68,37 @@ public class TrapsRoom extends Room {
 		}
 
 		if (trapClass == null){
-			Painter.fill(level, room, 1, Terrain.CHASM);
+			Painter.fill(level, this, 1, Terrain.CHASM);
 		} else {
-			Painter.fill(level, room, 1, Terrain.TRAP);
+			Painter.fill(level, this, 1, Terrain.TRAP);
 		}
 		
-		Room.Door door = room.entrance();
-		door.set( Room.Door.Type.REGULAR );
+		Door door = entrance();
+		door.set( Door.Type.REGULAR );
 		
-		int lastRow = level.map[room.left + 1 + (room.top + 1) * level.width()] == Terrain.CHASM ? Terrain.CHASM : Terrain.EMPTY;
+		int lastRow = level.map[left + 1 + (top + 1) * level.width()] == Terrain.CHASM ? Terrain.CHASM : Terrain.EMPTY;
 
 		int x = -1;
 		int y = -1;
-		if (door.x == room.left) {
-			x = room.right - 1;
-			y = room.top + room.height() / 2;
-			Painter.fill( level, x, room.top + 1, 1, room.height() - 2 , lastRow );
-		} else if (door.x == room.right) {
-			x = room.left + 1;
-			y = room.top + room.height() / 2;
-			Painter.fill( level, x, room.top + 1, 1, room.height() - 2 , lastRow );
-		} else if (door.y == room.top) {
-			x = room.left + room.width() / 2;
-			y = room.bottom - 1;
-			Painter.fill( level, room.left + 1, y, room.width() - 2, 1 , lastRow );
-		} else if (door.y == room.bottom) {
-			x = room.left + room.width() / 2;
-			y = room.top + 1;
-			Painter.fill( level, room.left + 1, y, room.width() - 2, 1 , lastRow );
+		if (door.x == left) {
+			x = right - 1;
+			y = top + height() / 2;
+			Painter.fill( level, x, top + 1, 1, height() - 2 , lastRow );
+		} else if (door.x == right) {
+			x = left + 1;
+			y = top + height() / 2;
+			Painter.fill( level, x, top + 1, 1, height() - 2 , lastRow );
+		} else if (door.y == top) {
+			x = left + width() / 2;
+			y = bottom - 1;
+			Painter.fill( level, left + 1, y, width() - 2, 1 , lastRow );
+		} else if (door.y == bottom) {
+			x = left + width() / 2;
+			y = top + 1;
+			Painter.fill( level, left + 1, y, width() - 2, 1 , lastRow );
 		}
 
-		for(Point p : room.getPoints()) {
+		for(Point p : getPoints()) {
 			int cell = level.pointToCell(p);
 			if (level.map[cell] == Terrain.TRAP){
 				try {

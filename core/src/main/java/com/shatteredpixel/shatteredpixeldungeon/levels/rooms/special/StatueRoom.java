@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
@@ -29,41 +29,41 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 
-public class StatueRoom extends Room {
+public class StatueRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.EMPTY );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.EMPTY );
 
-		Point c = room.center();
+		Point c = center();
 		int cx = c.x;
 		int cy = c.y;
 		
-		Room.Door door = room.entrance();
+		Door door = entrance();
 		
-		door.set( Room.Door.Type.LOCKED );
+		door.set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 		
-		if (door.x == room.left) {
+		if (door.x == left) {
 			
-			Painter.fill( level, room.right - 1, room.top + 1, 1, room.height() - 2 , Terrain.STATUE );
-			cx = room.right - 2;
+			Painter.fill( level, right - 1, top + 1, 1, height() - 2 , Terrain.STATUE );
+			cx = right - 2;
 			
-		} else if (door.x == room.right) {
+		} else if (door.x == right) {
 			
-			Painter.fill( level, room.left + 1, room.top + 1, 1, room.height() - 2 , Terrain.STATUE );
-			cx = room.left + 2;
+			Painter.fill( level, left + 1, top + 1, 1, height() - 2 , Terrain.STATUE );
+			cx = left + 2;
 			
-		} else if (door.y == room.top) {
+		} else if (door.y == top) {
 			
-			Painter.fill( level, room.left + 1, room.bottom - 1, room.width() - 2, 1 , Terrain.STATUE );
-			cy = room.bottom - 2;
+			Painter.fill( level, left + 1, bottom - 1, width() - 2, 1 , Terrain.STATUE );
+			cy = bottom - 2;
 			
-		} else if (door.y == room.bottom) {
+		} else if (door.y == bottom) {
 			
-			Painter.fill( level, room.left + 1, room.top + 1, room.width() - 2, 1 , Terrain.STATUE );
-			cy = room.top + 2;
+			Painter.fill( level, left + 1, top + 1, width() - 2, 1 , Terrain.STATUE );
+			cy = top + 2;
 			
 		}
 		

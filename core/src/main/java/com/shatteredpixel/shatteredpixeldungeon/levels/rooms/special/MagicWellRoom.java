@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -33,17 +33,17 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class MagicWellRoom extends Room {
+public class MagicWellRoom extends SpecialRoom {
 
 	private static final Class<?>[] WATERS =
 		{WaterOfAwareness.class, WaterOfHealth.class, WaterOfTransmutation.class};
 	
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.EMPTY );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.EMPTY );
 		
-		Point c = room.center();
+		Point c = center();
 		Painter.set( level, c.x, c.y, Terrain.WELL );
 		
 		@SuppressWarnings("unchecked")
@@ -68,6 +68,6 @@ public class MagicWellRoom extends Room {
 		water.seed( level, c.x + level.width() * c.y, 1 );
 		level.blobs.put( waterClass, water );
 		
-		room.entrance().set( Room.Door.Type.REGULAR );
+		entrance().set( Door.Type.REGULAR );
 	}
 }

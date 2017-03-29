@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -31,43 +31,43 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class WeakFloorRoom extends Room {
+public class WeakFloorRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.CHASM );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.CHASM );
 		
-		Room.Door door = room.entrance();
-		door.set( Room.Door.Type.REGULAR );
+		Door door = entrance();
+		door.set( Door.Type.REGULAR );
 		
-		if (door.x == room.left) {
-			for (int i=room.top + 1; i < room.bottom; i++) {
-				Painter.drawInside( level, room, new Point( room.left, i ), Random.IntRange( 1, room.width() - 3 ), Terrain.EMPTY_SP );
+		if (door.x == left) {
+			for (int i=top + 1; i < bottom; i++) {
+				Painter.drawInside( level, this, new Point( left, i ), Random.IntRange( 1, width() - 3 ), Terrain.EMPTY_SP );
 			}
-		} else if (door.x == room.right) {
-			for (int i=room.top + 1; i < room.bottom; i++) {
-				Painter.drawInside( level, room, new Point( room.right, i ), Random.IntRange( 1, room.width() - 3 ), Terrain.EMPTY_SP );
+		} else if (door.x == right) {
+			for (int i=top + 1; i < bottom; i++) {
+				Painter.drawInside( level, this, new Point( right, i ), Random.IntRange( 1, width() - 3 ), Terrain.EMPTY_SP );
 			}
-		} else if (door.y == room.top) {
-			for (int i=room.left + 1; i < room.right; i++) {
-				Painter.drawInside( level, room, new Point( i, room.top ), Random.IntRange( 1, room.height() - 3 ), Terrain.EMPTY_SP );
+		} else if (door.y == top) {
+			for (int i=left + 1; i < right; i++) {
+				Painter.drawInside( level, this, new Point( i, top ), Random.IntRange( 1, height() - 3 ), Terrain.EMPTY_SP );
 			}
-		} else if (door.y == room.bottom) {
-			for (int i=room.left + 1; i < room.right; i++) {
-				Painter.drawInside( level, room, new Point( i, room.bottom ), Random.IntRange( 1, room.height() - 3 ), Terrain.EMPTY_SP );
+		} else if (door.y == bottom) {
+			for (int i=left + 1; i < right; i++) {
+				Painter.drawInside( level, this, new Point( i, bottom ), Random.IntRange( 1, height() - 3 ), Terrain.EMPTY_SP );
 			}
 		}
 
 		Point well = null;
-		if (door.x == room.left) {
-			well = new Point( room.right-1, Random.Int( 2 ) == 0 ? room.top + 2 : room.bottom - 1 );
-		} else if (door.x == room.right) {
-			well = new Point( room.left+1, Random.Int( 2 ) == 0 ? room.top + 2 : room.bottom - 1 );
-		} else if (door.y == room.top) {
-			well = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.bottom-1 );
-		} else if (door.y == room.bottom) {
-			well = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.top+2 );
+		if (door.x == left) {
+			well = new Point( right-1, Random.Int( 2 ) == 0 ? top + 2 : bottom - 1 );
+		} else if (door.x == right) {
+			well = new Point( left+1, Random.Int( 2 ) == 0 ? top + 2 : bottom - 1 );
+		} else if (door.y == top) {
+			well = new Point( Random.Int( 2 ) == 0 ? left + 1 : right - 1, bottom-1 );
+		} else if (door.y == bottom) {
+			well = new Point( Random.Int( 2 ) == 0 ? left + 1 : right - 1, top+2 );
 		}
 		Painter.set(level, well, Terrain.CHASM);
 		CustomTiledVisual vis = new HiddenWell();

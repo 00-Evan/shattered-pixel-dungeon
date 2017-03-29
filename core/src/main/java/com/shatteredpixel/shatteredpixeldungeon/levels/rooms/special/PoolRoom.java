@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
@@ -33,39 +33,39 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
 
-public class PoolRoom extends Room {
+public class PoolRoom extends SpecialRoom {
 
 	private static final int NPIRANHAS	= 3;
 	
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.WATER );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.WATER );
 		
-		Room.Door door = room.entrance();
-		door.set( Room.Door.Type.REGULAR );
+		Door door = entrance();
+		door.set( Door.Type.REGULAR );
 
 		int x = -1;
 		int y = -1;
-		if (door.x == room.left) {
+		if (door.x == left) {
 			
-			x = room.right - 1;
-			y = room.top + room.height() / 2;
+			x = right - 1;
+			y = top + height() / 2;
 			
-		} else if (door.x == room.right) {
+		} else if (door.x == right) {
 			
-			x = room.left + 1;
-			y = room.top + room.height() / 2;
+			x = left + 1;
+			y = top + height() / 2;
 			
-		} else if (door.y == room.top) {
+		} else if (door.y == top) {
 			
-			x = room.left + room.width() / 2;
-			y = room.bottom - 1;
+			x = left + width() / 2;
+			y = bottom - 1;
 			
-		} else if (door.y == room.bottom) {
+		} else if (door.y == bottom) {
 			
-			x = room.left + room.width() / 2;
-			y = room.top + 1;
+			x = left + width() / 2;
+			y = top + 1;
 			
 		}
 		
@@ -79,7 +79,7 @@ public class PoolRoom extends Room {
 		for (int i=0; i < NPIRANHAS; i++) {
 			Piranha piranha = new Piranha();
 			do {
-				piranha.pos = level.pointToCell(room.random());
+				piranha.pos = level.pointToCell(random());
 			} while (level.map[piranha.pos] != Terrain.WATER|| level.findMob( piranha.pos ) != null);
 			level.mobs.add( piranha );
 		}

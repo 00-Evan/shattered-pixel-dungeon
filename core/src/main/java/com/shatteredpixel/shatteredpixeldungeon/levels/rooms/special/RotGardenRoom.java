@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -32,39 +32,39 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class RotGardenRoom extends Room {
+public class RotGardenRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 
-		Room.Door entrance = room.entrance();
-		entrance.set(Room.Door.Type.LOCKED);
+		Door entrance = entrance();
+		entrance.set(Door.Type.LOCKED);
 		level.addItemToSpawn(new IronKey(Dungeon.depth));
 
-		Painter.fill(level, room, Terrain.WALL);
-		Painter.fill(level, room, 1, Terrain.GRASS);
+		Painter.fill(level, this, Terrain.WALL);
+		Painter.fill(level, this, 1, Terrain.GRASS);
 
 
-		int heartX = Random.IntRange(room.left+1, room.right-1);
-		int heartY = Random.IntRange(room.top+1, room.bottom-1);
+		int heartX = Random.IntRange(left+1, right-1);
+		int heartY = Random.IntRange(top+1, bottom-1);
 
-		if (entrance.x == room.left) {
-			heartX = room.right - 1;
-		} else if (entrance.x == room.right) {
-			heartX = room.left + 1;
-		} else if (entrance.y == room.top) {
-			heartY = room.bottom - 1;
-		} else if (entrance.y == room.bottom) {
-			heartY = room.top + 1;
+		if (entrance.x == left) {
+			heartX = right - 1;
+		} else if (entrance.x == right) {
+			heartX = left + 1;
+		} else if (entrance.y == top) {
+			heartY = bottom - 1;
+		} else if (entrance.y == bottom) {
+			heartY = top + 1;
 		}
 
 		placePlant(level, heartX + heartY * level.width(), new RotHeart());
 
-		int lashers = ((room.width()-2)*(room.height()-2))/8;
+		int lashers = ((width()-2)*(height()-2))/8;
 
 		for (int i = 1; i <= lashers; i++){
 			int pos;
 			do {
-				pos = level.pointToCell(room.random());
+				pos = level.pointToCell(random());
 			} while (!validPlantPos(level, pos));
 			placePlant(level, pos, new RotLasher());
 		}

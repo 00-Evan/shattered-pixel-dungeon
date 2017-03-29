@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -30,18 +30,18 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class BlacksmithRoom extends Room {
+public class BlacksmithRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.TRAP );
-		Painter.fill( level, room, 2, Terrain.EMPTY_SP );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.TRAP );
+		Painter.fill( level, this, 2, Terrain.EMPTY_SP );
 		
 		for (int i=0; i < 2; i++) {
 			int pos;
 			do {
-				pos = level.pointToCell(room.random());
+				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY_SP);
 			level.drop(
 				Generator.random( Random.oneOf(
@@ -50,18 +50,18 @@ public class BlacksmithRoom extends Room {
 				) ), pos );
 		}
 		
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.UNLOCKED );
-			Painter.drawInside( level, room, door, 1, Terrain.EMPTY );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.UNLOCKED );
+			Painter.drawInside( level, this, door, 1, Terrain.EMPTY );
 		}
 		
 		Blacksmith npc = new Blacksmith();
 		do {
-			npc.pos = level.pointToCell(room.random( 1 ));
+			npc.pos = level.pointToCell(random( 1 ));
 		} while (level.heaps.get( npc.pos ) != null);
 		level.mobs.add( npc );
 
-		for(Point p : room.getPoints()) {
+		for(Point p : getPoints()) {
 			int cell = level.pointToCell(p);
 			if (level.map[cell] == Terrain.TRAP){
 				level.setTrap(new FireTrap().reveal(), cell);

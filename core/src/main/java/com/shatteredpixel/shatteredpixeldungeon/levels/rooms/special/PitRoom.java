@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -32,31 +32,31 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class PitRoom extends Room {
+public class PitRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.EMPTY );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.EMPTY );
 		
-		Room.Door entrance = room.entrance();
-		entrance.set( Room.Door.Type.LOCKED );
+		Door entrance = entrance();
+		entrance.set( Door.Type.LOCKED );
 		
 		Point well = null;
-		if (entrance.x == room.left) {
-			well = new Point( room.right-1, Random.Int( 2 ) == 0 ? room.top + 1 : room.bottom - 1 );
-		} else if (entrance.x == room.right) {
-			well = new Point( room.left+1, Random.Int( 2 ) == 0 ? room.top + 1 : room.bottom - 1 );
-		} else if (entrance.y == room.top) {
-			well = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.bottom-1 );
-		} else if (entrance.y == room.bottom) {
-			well = new Point( Random.Int( 2 ) == 0 ? room.left + 1 : room.right - 1, room.top+1 );
+		if (entrance.x == left) {
+			well = new Point( right-1, Random.Int( 2 ) == 0 ? top + 1 : bottom - 1 );
+		} else if (entrance.x == right) {
+			well = new Point( left+1, Random.Int( 2 ) == 0 ? top + 1 : bottom - 1 );
+		} else if (entrance.y == top) {
+			well = new Point( Random.Int( 2 ) == 0 ? left + 1 : right - 1, bottom-1 );
+		} else if (entrance.y == bottom) {
+			well = new Point( Random.Int( 2 ) == 0 ? left + 1 : right - 1, top+1 );
 		}
 		Painter.set( level, well, Terrain.EMPTY_WELL );
 		
-		int remains = level.pointToCell(room.random());
+		int remains = level.pointToCell(random());
 		while (level.map[remains] == Terrain.EMPTY_WELL) {
-			remains = level.pointToCell(room.random());
+			remains = level.pointToCell(random());
 		}
 		
 		level.drop( new IronKey( Dungeon.depth ), remains ).type = Heap.Type.SKELETON;

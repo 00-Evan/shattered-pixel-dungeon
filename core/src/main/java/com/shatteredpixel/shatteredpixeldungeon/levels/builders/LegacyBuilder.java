@@ -7,25 +7,25 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ArmoryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.CryptRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.GardenRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.LaboratoryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.LibraryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MagicWellRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.PassageRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.PitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.RatKingRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ShopRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StatueRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.TreasuryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.TunnelRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.VaultRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.WeakFloorRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ArmoryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.CryptRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.GardenRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.LaboratoryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.LibraryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicWellRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.StatueRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.TreasuryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.VaultRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel.PassageRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel.TunnelRoom;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
@@ -419,14 +419,14 @@ public class LegacyBuilder extends Builder {
 		
 		if (w > maxRoomSize && h < minRoomSize) {
 			
-			int vw = Random.Int( rect.left + 3, rect.right - 3 );
+			int vw = Random.Int( rect.left + (minRoomSize/2), rect.right - (minRoomSize/2) );
 			split( new Rect( rect.left, rect.top, vw, rect.bottom ) );
 			split( new Rect( vw, rect.top, rect.right, rect.bottom ) );
 			
 		} else
 		if (h > maxRoomSize && w < minRoomSize) {
 			
-			int vh = Random.Int( rect.top + 3, rect.bottom - 3 );
+			int vh = Random.Int( rect.top + (minRoomSize/2), rect.bottom - (minRoomSize/2) );
 			split( new Rect( rect.left, rect.top, rect.right, vh ) );
 			split( new Rect( rect.left, vh, rect.right, rect.bottom ) );
 			
@@ -438,11 +438,11 @@ public class LegacyBuilder extends Builder {
 		} else {
 			
 			if (Random.Float() < (float)(w - 2) / (w + h - 4)) {
-				int vw = Random.Int( rect.left + 3, rect.right - 3 );
+				int vw = Random.Int( rect.left + (minRoomSize/2), rect.right - (minRoomSize/2) );
 				split( new Rect( rect.left, rect.top, vw, rect.bottom ) );
 				split( new Rect( vw, rect.top, rect.right, rect.bottom ) );
 			} else {
-				int vh = Random.Int( rect.top + 3, rect.bottom - 3 );
+				int vh = Random.Int( rect.top + (minRoomSize/2), rect.bottom - (minRoomSize/2) );
 				split( new Rect( rect.left, rect.top, rect.right, vh ) );
 				split( new Rect( rect.left, vh, rect.right, rect.bottom ) );
 			}

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
@@ -30,14 +30,14 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
 
-public class StorageRoom extends Room {
+public class StorageRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
 		final int floor = Terrain.EMPTY_SP;
 		
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, floor );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, floor );
 
 		boolean honeyPot = Random.Int( 2 ) == 0;
 		
@@ -45,7 +45,7 @@ public class StorageRoom extends Room {
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
-				pos = level.pointToCell(room.random());
+				pos = level.pointToCell(random());
 			} while (level.map[pos] != floor);
 			if (honeyPot){
 				level.drop( new Honeypot(), pos);
@@ -54,7 +54,7 @@ public class StorageRoom extends Room {
 				level.drop( prize( level ), pos );
 		}
 		
-		room.entrance().set( Room.Door.Type.BARRICADE );
+		entrance().set( Door.Type.BARRICADE );
 		level.addItemToSpawn( new PotionOfLiquidFlame() );
 	}
 	

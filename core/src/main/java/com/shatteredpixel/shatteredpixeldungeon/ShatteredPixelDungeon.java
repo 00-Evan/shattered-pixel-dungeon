@@ -56,13 +56,13 @@ public class ShatteredPixelDungeon extends Game {
 		
 		//v0.6.0
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MassGraveRoom.Bones.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom.Bones.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.MassGravePainter$Bones" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.RitualSiteRoom.RitualMarker.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RitualSiteRoom.RitualMarker.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.RitualSitePainter$RitualMarker" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.WeakFloorRoom.HiddenWell.class,
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom.HiddenWell.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.WeakFloorPainter$HiddenWell" );
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.class,

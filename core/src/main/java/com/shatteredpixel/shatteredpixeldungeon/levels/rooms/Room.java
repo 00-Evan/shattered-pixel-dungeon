@@ -22,6 +22,20 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ArmoryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.CryptRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.GardenRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.LaboratoryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.LibraryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicWellRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PoolRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.StatueRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.StorageRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.TrapsRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.TreasuryRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.VaultRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
@@ -34,6 +48,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
+//Note that this class should be treated as if it were abstract
+// it is currently not abstract to maintain compatibility with pre-0.6.0 saves
 public class Room extends Rect implements Graph.Node, Bundlable {
 	
 	public ArrayList<Room> neigbours = new ArrayList<Room>();
@@ -66,6 +82,14 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return this;
 	}
 	
+	public int minDimension(){
+		return -1;
+	}
+	
+	public int maxDimension(){
+		return -1;
+	}
+	
 	//Width and height are increased by 1 because rooms are inclusive to their right and bottom sides
 	@Override
 	public int width() {
@@ -82,15 +106,13 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return width()*height();
 	}
 	
-	public void paint(Level level){
-		paint(level, this);
-	}
+	public void paint(Level level){ }
 	
 	public void paint(Level level, Room room){
 		
 	}
 
-	private static final ArrayList<Class<? extends Room>> ALL_SPEC = new ArrayList<>( Arrays.asList(
+	private static final ArrayList<Class<? extends SpecialRoom>> ALL_SPEC = new ArrayList<>( Arrays.asList(
 		WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, GardenRoom.class, LibraryRoom.class, ArmoryRoom.class,
 		TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, LaboratoryRoom.class, VaultRoom.class
 	) );
@@ -124,10 +146,6 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 			connected.put( room, null );
 			room.connected.put( this, null );
 		}
-	}
-	
-	public Door entrance() {
-		return connected.values().iterator().next();
 	}
 	
 	public boolean inside( Point p ) {

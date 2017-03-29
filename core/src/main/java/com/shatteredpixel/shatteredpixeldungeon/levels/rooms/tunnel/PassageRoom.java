@@ -19,30 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class PassageRoom extends Room {
+public class PassageRoom extends TunnelRoom {
 
 	private static int pasWidth;
 	private static int pasHeight;
 	
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 		
-		pasWidth = room.width() - 3;
-		pasHeight = room.height() - 3;
+		pasWidth = width() - 3;
+		pasHeight = height() - 3;
 		
 		int floor = level.tunnelTile();
 		
 		ArrayList<Integer> joints = new ArrayList<Integer>();
-		for (Point door : room.connected.values()) {
-			joints.add( xy2p( room, door ) );
+		for (Point door : connected.values()) {
+			joints.add( xy2p( this, door ) );
 		}
 		Collections.sort( joints );
 		
@@ -63,14 +64,14 @@ public class PassageRoom extends Room {
 		
 		int p = joints.get( start );
 		do {
-			Painter.set( level, p2xy( room, p ), floor );
+			Painter.set( level, p2xy( this, p ), floor );
 			p = (p + 1) % perimeter;
 		} while (p != joints.get( end ));
 		
-		Painter.set( level, p2xy( room, p ), floor );
+		Painter.set( level, p2xy( this, p ), floor );
 		
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.TUNNEL );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.TUNNEL );
 		}
 	}
 	

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
@@ -30,19 +30,19 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
 import com.watabou.utils.Point;
 
-public class RitualSiteRoom extends Room {
+public class RitualSiteRoom extends StandardRoom {
 
-	public void paint( Level level, Room room) {
+	public void paint( Level level ) {
 
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.REGULAR );
 		}
 
-		Painter.fill(level, room, Terrain.WALL);
-		Painter.fill(level, room, 1, Terrain.EMPTY);
+		Painter.fill(level, this, Terrain.WALL);
+		Painter.fill(level, this, 1, Terrain.EMPTY);
 
 		RitualMarker vis = new RitualMarker();
-		Point c = room.center();
+		Point c = center();
 		vis.pos(c.x - 1, c.y - 1);
 
 		level.customTiles.add(vis);

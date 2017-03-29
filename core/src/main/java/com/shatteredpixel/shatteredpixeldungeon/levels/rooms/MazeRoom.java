@@ -26,13 +26,14 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
 
+//TODO figure out where this should go, tunnel room type perhaps?
 public class MazeRoom extends Room {
 
-	public void paint( Level level, Room room ) {
-		Painter.fill(level, room, 1, Terrain.EMPTY);
+	public void paint( Level level ) {
+		Painter.fill(level, this, 1, Terrain.EMPTY);
 
 		//true = space, false = wall
-		boolean[][] maze = new boolean[room.width()][room.height()];
+		boolean[][] maze = new boolean[width()][height()];
 
 		for (int x = 0; x < maze.length; x++) {
 			for (int y = 0; y < maze[0].length; y++) {
@@ -40,8 +41,8 @@ public class MazeRoom extends Room {
 						y == 0 || y == maze[0].length - 1) {
 
 					//set spaces where there are doors
-					for (Room.Door d : room.connected.values()) {
-						if (d.x == x + room.left && d.y == y + room.top) {
+					for (Door d : connected.values()) {
+						if (d.x == x + left && d.y == y + top) {
 							maze[x][y] = true;
 							break;
 						}
@@ -82,11 +83,11 @@ public class MazeRoom extends Room {
 
 		}
 
-		Painter.fill(level, room, 1, Terrain.EMPTY);
+		Painter.fill(level, this, 1, Terrain.EMPTY);
 		for (int x = 0; x < maze.length; x++)
 			for (int y = 0; y < maze[0].length; y++) {
 				if (!maze[x][y]) {
-					Painter.fill(level, x + room.left, y + room.top, 1, 1, Terrain.WALL);
+					Painter.fill(level, x + left, y + top, 1, 1, Terrain.WALL);
 				}
 			}
 	}

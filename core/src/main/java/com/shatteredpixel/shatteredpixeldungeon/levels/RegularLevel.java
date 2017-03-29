@@ -36,12 +36,12 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LegacyBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RegularPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.StandardRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.WeakFloorRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
@@ -157,7 +157,7 @@ public abstract class RegularLevel extends Level {
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
-			if (room instanceof StandardRoom) stdRooms.add(room);
+			if (room instanceof StandardRoom && room != roomEntrance) stdRooms.add(room);
 		}
 		Iterator<Room> stdRoomIter = stdRooms.iterator();
 
@@ -346,7 +346,7 @@ public abstract class RegularLevel extends Level {
 	@Override
 	public int pitCell() {
 		for (Room room : rooms) {
-			if (room instanceof PitRoom) {
+			if (room instanceof PitRoom || room.legacyType.equals("PIT")) {
 				return pointToCell(room.random());
 			}
 		}

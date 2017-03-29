@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -30,29 +30,29 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
 
-public class RatKingRoom extends Room {
+public class RatKingRoom extends SpecialRoom {
 
-	public void paint( Level level, Room room ) {
+	public void paint( Level level ) {
 
-		Painter.fill( level, room, Terrain.WALL );
-		Painter.fill( level, room, 1, Terrain.EMPTY_SP );
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
 		
-		Room.Door entrance = room.entrance();
-		entrance.set( Room.Door.Type.HIDDEN );
+		Door entrance = entrance();
+		entrance.set( Door.Type.HIDDEN );
 		int door = entrance.x + entrance.y * level.width();
 		
-		for (int i=room.left + 1; i < room.right; i++) {
-			addChest( level, (room.top + 1) * level.width() + i, door );
-			addChest( level, (room.bottom - 1) * level.width() + i, door );
+		for (int i=left + 1; i < right; i++) {
+			addChest( level, (top + 1) * level.width() + i, door );
+			addChest( level, (bottom - 1) * level.width() + i, door );
 		}
 		
-		for (int i=room.top + 2; i < room.bottom - 1; i++) {
-			addChest( level, i * level.width() + room.left + 1, door );
-			addChest( level, i * level.width() + room.right - 1, door );
+		for (int i=top + 2; i < bottom - 1; i++) {
+			addChest( level, i * level.width() + left + 1, door );
+			addChest( level, i * level.width() + right - 1, door );
 		}
 
 		RatKing king = new RatKing();
-		king.pos = level.pointToCell(room.random( 1 ));
+		king.pos = level.pointToCell(random( 1 ));
 		level.mobs.add( king );
 	}
 	
