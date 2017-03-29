@@ -22,20 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ArmoryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.CryptRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.GardenRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.LaboratoryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.LibraryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicWellRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PoolRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.StatueRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.StorageRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.TrapsRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.TreasuryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.VaultRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
@@ -44,7 +30,6 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
@@ -107,19 +92,6 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	public void paint(Level level){ }
-	
-	public void paint(Level level, Room room){
-		
-	}
-
-	private static final ArrayList<Class<? extends SpecialRoom>> ALL_SPEC = new ArrayList<>( Arrays.asList(
-		WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, GardenRoom.class, LibraryRoom.class, ArmoryRoom.class,
-		TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, LaboratoryRoom.class, VaultRoom.class
-	) );
-	
-	public static ArrayList<Class<? extends Room>> SPECIALS = new ArrayList<>();
-	
-	public String legacyType = "NULL";
 	
 	public Point random() {
 		return random( 0 );
@@ -185,6 +157,8 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return neigbours;
 	}
 	
+	public String legacyType = "NULL";
+	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( "left", left );
@@ -205,45 +179,9 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 			legacyType = bundle.getString( "type" );
 	}
 	
-	public static void shuffleTypes() {
-		SPECIALS = (ArrayList<Class<?extends Room>>)ALL_SPEC.clone();
-		int size = SPECIALS.size();
-		for (int i=0; i < size - 1; i++) {
-			int j = Random.Int( i, size );
-			if (j != i) {
-				Class<?extends Room> c = SPECIALS.get( i );
-				SPECIALS.set( i, SPECIALS.get( j ) );
-				SPECIALS.set( j, c );
-			}
-		}
-	}
-	
-	public static void useType( Class<?extends Room> type ) {
-		if (SPECIALS.remove( type )) {
-			SPECIALS.add( type );
-		}
-	}
-	
-	private static final String ROOMS	= "special_rooms";
-	
-	public static void restoreRoomsFromBundle( Bundle bundle ) {
-		if (bundle.contains( ROOMS )) {
-			SPECIALS.clear();
-			for (Class<?extends Room> type : bundle.getClassArray( ROOMS )) {
-				SPECIALS.add( type );
-			}
-		} else {
-			shuffleTypes();
-		}
-	}
-	
-	public static void storeRoomsInBundle( Bundle bundle ) {
-		bundle.put( ROOMS, SPECIALS.toArray(new Class[0]) );
-	}
-	
 	public static class Door extends Point {
 		
-		public static enum Type {
+		public enum Type {
 			EMPTY, TUNNEL, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED
 		}
 		public Type type = Type.EMPTY;

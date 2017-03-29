@@ -53,7 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
@@ -158,7 +158,7 @@ public class Dungeon {
 
 			transmutation = Random.IntRange( 6, 14 );
 
-			Room.shuffleTypes();
+			SpecialRoom.shuffleTypes();
 
 		Random.seed();
 		
@@ -476,7 +476,7 @@ public class Dungeon {
 			Imp			.Quest.storeInBundle( quests );
 			bundle.put( QUESTS, quests );
 			
-			Room.storeRoomsInBundle( bundle );
+			SpecialRoom.storeRoomsInBundle( bundle );
 			
 			Statistics.storeInBundle( bundle );
 			Journal.storeInBundle( bundle );
@@ -592,7 +592,7 @@ public class Dungeon {
 				Imp.Quest.reset();
 			}
 			
-			Room.restoreRoomsFromBundle(bundle);
+			SpecialRoom.restoreRoomsFromBundle(bundle);
 		}
 		
 		Bundle badges = bundle.getBundle(BADGES);

@@ -17,6 +17,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicWellRo
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.StatueRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.TreasuryRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.VaultRoom;
@@ -168,7 +169,7 @@ public class LegacyBuilder extends Builder {
 			}
 		}
 		
-		specials = new ArrayList<Class<? extends Room>>( Room.SPECIALS );
+		specials = new ArrayList<>( SpecialRoom.SPECIALS );
 		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
 			specials.remove( WeakFloorRoom.class );
 		}
@@ -510,7 +511,7 @@ public class LegacyBuilder extends Builder {
 						
 					}
 					
-					Room.useType( r.getClass() );
+					SpecialRoom.useType( r.getClass() );
 					specials.remove( r.getClass() );
 					specialRooms++;
 					
@@ -519,7 +520,7 @@ public class LegacyBuilder extends Builder {
 					ArrayList<Room> neigbours = new ArrayList<>();
 					for (Room n : r.neigbours) {
 						if (!r.connected.containsKey( n ) &&
-								!Room.SPECIALS.contains( n.getClass() ) &&
+								!SpecialRoom.SPECIALS.contains( n.getClass() ) &&
 								!(n instanceof PitRoom)) {
 							
 							neigbours.add( n );
