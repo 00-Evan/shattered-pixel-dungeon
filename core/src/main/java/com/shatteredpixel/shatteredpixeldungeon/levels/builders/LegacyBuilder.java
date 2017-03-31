@@ -1,3 +1,24 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015  Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2017 Evan Debenham
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
@@ -240,7 +261,7 @@ public class LegacyBuilder extends Builder {
 				} while (!(curRoom.getClass().equals(Room.class)) || distance != 3 || curRoom.neigbours.contains(roomEntrance));
 				
 				temp = curRoom;
-				curRoom = new StandardRoom().set(temp);
+				curRoom = StandardRoom.createRoom().set(temp);
 				rooms.set(rooms.indexOf(temp), curRoom);
 				
 				//otherwise, we're on the last iteration.
@@ -382,7 +403,7 @@ public class LegacyBuilder extends Builder {
 			return null;
 		} else {
 			temp = roomShop;
-			roomShop = Imp.Quest.isCompleted() ? new ShopRoom().set(temp) : new StandardRoom().set(temp);
+			roomShop = Imp.Quest.isCompleted() ? new ShopRoom().set(temp) : StandardRoom.createRoom().set(temp);
 			rooms.set(rooms.indexOf(temp), roomShop);
 		}
 		
@@ -550,7 +571,7 @@ public class LegacyBuilder extends Builder {
 				if (connections == 0) {
 					
 				} else if (Random.Int( connections * connections ) == 0) {
-					it.set(new StandardRoom().set(r));
+					it.set(StandardRoom.createRoom().set(r));
 					count++;
 				} else {
 					if (tunnelType == TunnelRoom.class){
@@ -565,7 +586,7 @@ public class LegacyBuilder extends Builder {
 		while (count < 6) {
 			Room r = randomRoom( tunnelType, 20 );
 			if (r != null) {
-				rooms.set(rooms.indexOf(r), new StandardRoom().set(r));
+				rooms.set(rooms.indexOf(r), StandardRoom.createRoom().set(r));
 				count++;
 			} else {
 				return false;

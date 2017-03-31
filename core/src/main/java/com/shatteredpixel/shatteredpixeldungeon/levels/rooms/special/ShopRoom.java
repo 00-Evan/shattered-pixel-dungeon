@@ -86,6 +86,18 @@ public class ShopRoom extends SpecialRoom {
 
 	private static ArrayList<Item> itemsToSpawn;
 	
+	@Override
+	public int minWidth() {
+		if (itemsToSpawn == null) generateItems();
+		return Math.max(7, (int)(Math.sqrt(itemsToSpawn.size())+3));
+	}
+	
+	@Override
+	public int minHeight() {
+		if (itemsToSpawn == null) generateItems();
+		return Math.max(7, (int)(Math.sqrt(itemsToSpawn.size())+3));
+	}
+	
 	public void paint( Level level ) {
 		
 		Painter.fill( level, this, Terrain.WALL );
@@ -252,9 +264,9 @@ public class ShopRoom extends SpecialRoom {
 		rare.cursed = rare.cursedKnown = false;
 		itemsToSpawn.add( rare );
 
-		//this is a hard limit, level gen allows for at most an 8x5 room, can't fit more than 39 items + 1 shopkeeper.
-		if (itemsToSpawn.size() > 39)
-			throw new RuntimeException("Shop attempted to carry more than 39 items!");
+		//hard limit is 63 items + 1 shopkeeper, as shops can't be bigger than 8x8=64 internally
+		if (itemsToSpawn.size() > 63)
+			throw new RuntimeException("Shop attempted to carry more than 63 items!");
 
 		Collections.shuffle(itemsToSpawn);
 	}

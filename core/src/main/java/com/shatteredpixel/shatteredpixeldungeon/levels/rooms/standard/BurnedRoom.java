@@ -24,31 +24,43 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
+import com.watabou.utils.Random;
 
-public class ExitRoom extends StandardRoom {
+public class BurnedRoom extends StandardRoom {
 	
 	@Override
-	public int minWidth() {
-		return Math.max(super.minWidth(), 5);
-	}
-	
-	@Override
-	public int minHeight() {
-		return Math.max(super.minHeight(), 5);
-	}
-	
 	public void paint(Level level) {
-
 		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.EMPTY );
-		
-		for (Room.Door door : connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.REGULAR );
 		}
 		
-		level.exit = level.pointToCell(random( 1 ));
-		Painter.set( level, level.exit, Terrain.EXIT );
+		for (int i=top + 1; i < bottom; i++) {
+			for (int j=left + 1; j < right; j++) {
+				int cell = i * level.width() + j;
+				int t = Terrain.EMBERS;
+				switch (Random.Int( 5 )) {
+					case 0:
+						t = Terrain.EMPTY;
+						break;
+					case 1:
+						t = Terrain.TRAP;
+						level.setTrap(new FireTrap().reveal(), cell);
+						break;
+					case 2:
+						t = Terrain.SECRET_TRAP;
+						level.setTrap(new FireTrap().hide(), cell);
+						break;
+					case 3:
+						t = Terrain.INACTIVE_TRAP;
+						FireTrap trap = new FireTrap();
+						trap.reveal().active = false;
+						level.setTrap(trap, cell);
+						break;
+				}
+				level.map[cell] = t;
+			}
+		}
 	}
-	
 }

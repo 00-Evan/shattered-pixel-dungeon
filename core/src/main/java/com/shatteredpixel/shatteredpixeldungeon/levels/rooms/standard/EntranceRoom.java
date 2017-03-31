@@ -27,6 +27,16 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 
 public class EntranceRoom extends StandardRoom {
+	
+	@Override
+	public int minWidth() {
+		return Math.max(super.minWidth(), 5);
+	}
+	
+	@Override
+	public int minHeight() {
+		return Math.max(super.minHeight(), 5);
+	}
 
 	public void paint( Level level ) {
 		

@@ -21,255 +21,59 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class StandardRoom extends Room {
+import java.util.HashMap;
+
+public abstract class StandardRoom extends Room {
+	
+	public enum SizeCategories{
+		
+		NORMAL(4, 10),
+		LARGE(10, 14),
+		GIANT(14, 18);
+		
+		public final int minDim, maxDim;
+		
+		SizeCategories(int min, int max){
+			minDim = min;
+			maxDim = max;
+		}
+		
+	}
+	
+	public SizeCategories sizeCat = SizeCategories.NORMAL;
 	
 	@Override
-	public int minDimension() {
-		return 4;
-	}
+	public int minWidth() { return sizeCat.minDim; }
+	public int maxWidth() { return sizeCat.maxDim; }
 	
 	@Override
-	public int maxDimension() {
-		return 10;
+	public int minHeight() { return sizeCat.minDim; }
+	public int maxHeight() { return sizeCat.maxDim; }
+	
+	private static HashMap<Class<?extends StandardRoom>, Float> chances = new HashMap<>();
+	
+	static {
+		chances.put(EmptyRoom.class, 24f);
+		
+		chances.put(BridgeRoom.class,       1f);
+		chances.put(BurnedRoom.class,       1f);
+		chances.put(FissureRoom.class,      1f);
+		chances.put(GrassyGraveRoom.class,  1f);
+		chances.put(StripedRoom.class,      1f);
+		chances.put(StudyRoom.class,        1f);
 	}
 	
-	public void paint( Level level ) {
-		
-		Painter.fill( level, this, Terrain.WALL );
-		for (Door door : connected.values()) {
-			door.set( Door.Type.REGULAR );
-		}
-		
-		if (!Dungeon.bossLevel() && Random.Int( 5 ) == 0) {
-			switch (Random.Int( 6 )) {
-			case 0:
-				if (level.feeling != Level.Feeling.GRASS) {
-					if (Math.min( width(), height() ) > 4 && Math.max( width(), height() ) > 6) {
-						paintGraveyard( level, this );
-						return;
-					}
-					break;
-				} else {
-					// Burned room
-				}
-			case 1:
-				if (Dungeon.depth > 1) {
-					paintBurned( level, this );
-					return;
-				}
-				break;
-			case 2:
-				if (Math.max( width(), height() ) > 4) {
-					paintStriped( level, this );
-					return;
-				}
-				break;
-			case 3:
-				if (width() > 6 && height() > 6) {
-					paintStudy( level, this );
-					return;
-				}
-				break;
-			case 4:
-				if (level.feeling != Level.Feeling.WATER) {
-					if (connected.size() == 2 && width() > 4 && height() > 4) {
-						paintBridge( level, this );
-						return;
-					}
-					break;
-				} else {
-					// Fissure
-				}
-			case 5:
-				if (!Dungeon.bossLevel() && !Dungeon.bossLevel( Dungeon.depth + 1 ) &&
-						Math.min( width(), height() ) > 5) {
-					paintFissure( level, this );
-					return;
-				}
-				break;
-			}
-		}
-		
-		Painter.fill( level, this, 1, Terrain.EMPTY );
-	}
-	
-	private static void paintBurned( Level level, Room room ) {
-		for (int i=room.top + 1; i < room.bottom; i++) {
-			for (int j=room.left + 1; j < room.right; j++) {
-				int cell = i * level.width() + j;
-				int t = Terrain.EMBERS;
-				switch (Random.Int( 5 )) {
-				case 0:
-					t = Terrain.EMPTY;
-					break;
-				case 1:
-					t = Terrain.TRAP;
-					level.setTrap(new FireTrap().reveal(), cell);
-					break;
-				case 2:
-					t = Terrain.SECRET_TRAP;
-					level.setTrap(new FireTrap().hide(), cell);
-					break;
-				case 3:
-					t = Terrain.INACTIVE_TRAP;
-					FireTrap trap = new FireTrap();
-					trap.reveal().active = false;
-					level.setTrap(trap, cell);
-					break;
-				}
-				level.map[cell] = t;
-			}
+	public static StandardRoom createRoom(){
+		try{
+			return Random.chances(chances).newInstance();
+		} catch (Exception e) {
+			ShatteredPixelDungeon.reportException(e);
+			return null;
 		}
 	}
 	
-	private static void paintGraveyard( Level level, Room room ) {
-		Painter.fill( level, room , 1 , Terrain.GRASS );
-		
-		int w = room.width() - 2;
-		int h = room.height() - 2;
-		int nGraves = Math.max( w, h ) / 2;
-		
-		int index = Random.Int( nGraves );
-		
-		int shift = Random.Int( 2 );
-		for (int i=0; i < nGraves; i++) {
-			int pos = w > h ?
-				room.left + 1 + shift + i * 2 + (room.top + 2 + Random.Int( h-2 )) * level.width() :
-				(room.left + 2 + Random.Int( w-2 )) + (room.top + 1 + shift + i * 2) * level.width();
-			level.drop( i == index ? Generator.random() : new Gold().random(), pos ).type = Heap.Type.TOMB;
-		}
-	}
-	
-	private static void paintStriped( Level level, Room room ) {
-		Painter.fill( level, room, 1 , Terrain.EMPTY_SP );
-
-		if (room.width() > room.height()) {
-			for (int i=room.left + 2; i < room.right; i += 2) {
-				Painter.fill( level, i, room.top + 1, 1, room.height() - 2, Terrain.HIGH_GRASS );
-			}
-		} else {
-			for (int i=room.top + 2; i < room.bottom; i += 2) {
-				Painter.fill( level, room.left + 1, i, room.width() - 2, 1, Terrain.HIGH_GRASS );
-			}
-		}
-	}
-
-	//TODO: this is almost a special room type now, consider moving this into its own painter if/when you address room gen significantly.
-	private static void paintStudy( Level level, Room room ) {
-		Painter.fill( level, room, 1 , Terrain.BOOKSHELF );
-		Painter.fill( level, room, 2 , Terrain.EMPTY_SP );
-
-		for (Point door : room.connected.values()) {
-			if (door.x == room.left) {
-				Painter.set( level, door.x + 1, door.y, Terrain.EMPTY );
-			} else if (door.x == room.right) {
-				Painter.set( level, door.x - 1, door.y, Terrain.EMPTY );
-			} else if (door.y == room.top) {
-				Painter.set( level, door.x, door.y + 1, Terrain.EMPTY );
-			} else if (door.y == room.bottom) {
-				Painter.set( level, door.x , door.y - 1, Terrain.EMPTY );
-			}
-		}
-		Point center = room.center();
-		Painter.set( level, center, Terrain.PEDESTAL );
-		if (Random.Int(2) != 0){
-			Item prize = level.findPrizeItem();
-			if (prize != null) {
-				level.drop(prize, (room.center().x + center.y * level.width()));
-				return;
-			}
-		}
-
-		level.drop(Generator.random( Random.oneOf(
-				Generator.Category.POTION,
-				Generator.Category.SCROLL)), (room.center().x + center.y * level.width()));
-	}
-	
-	private static void paintBridge( Level level, Room room ) {
-		
-		Painter.fill( level, room, 1,
-			!Dungeon.bossLevel() && !Dungeon.bossLevel( Dungeon.depth + 1 ) && Random.Int( 3 ) == 0 ?
-				Terrain.CHASM :
-				Terrain.WATER );
-		
-		Point door1 = null;
-		Point door2 = null;
-		for (Point p : room.connected.values()) {
-			if (door1 == null) {
-				door1 = p;
-			} else {
-				door2 = p;
-			}
-		}
-		
-		if ((door1.x == room.left && door2.x == room.right) ||
-			(door1.x == room.right && door2.x == room.left)) {
-			
-			int s = room.width() / 2;
-			
-			Painter.drawInside( level, room, door1, s, Terrain.EMPTY_SP );
-			Painter.drawInside( level, room, door2, s, Terrain.EMPTY_SP );
-			Painter.fill( level, room.center().x, Math.min( door1.y, door2.y ), 1, Math.abs( door1.y - door2.y ) + 1, Terrain.EMPTY_SP );
-			
-		} else
-		if ((door1.y == room.top && door2.y == room.bottom) ||
-			(door1.y == room.bottom && door2.y == room.top)) {
-			
-			int s = room.height() / 2;
-			
-			Painter.drawInside( level, room, door1, s, Terrain.EMPTY_SP );
-			Painter.drawInside( level, room, door2, s, Terrain.EMPTY_SP );
-			Painter.fill( level, Math.min( door1.x, door2.x ), room.center().y, Math.abs( door1.x - door2.x ) + 1, 1, Terrain.EMPTY_SP );
-			
-		} else
-		if (door1.x == door2.x) {
-			
-			Painter.fill( level, door1.x == room.left ? room.left + 1 : room.right - 1, Math.min( door1.y, door2.y ), 1, Math.abs( door1.y - door2.y ) + 1, Terrain.EMPTY_SP );
-			
-		} else
-		if (door1.y == door2.y) {
-			
-			Painter.fill( level, Math.min( door1.x, door2.x ), door1.y == room.top ? room.top + 1 : room.bottom - 1, Math.abs( door1.x - door2.x ) + 1, 1, Terrain.EMPTY_SP );
-			
-		} else
-		if (door1.y == room.top || door1.y == room.bottom) {
-			
-			Painter.drawInside( level, room, door1, Math.abs( door1.y - door2.y ), Terrain.EMPTY_SP );
-			Painter.drawInside( level, room, door2, Math.abs( door1.x - door2.x ), Terrain.EMPTY_SP );
-			
-		} else
-		if (door1.x == room.left || door1.x == room.right) {
-			
-			Painter.drawInside( level, room, door1, Math.abs( door1.x - door2.x ), Terrain.EMPTY_SP );
-			Painter.drawInside( level, room, door2, Math.abs( door1.y - door2.y ), Terrain.EMPTY_SP );
-			
-		}
-	}
-	
-	private static void paintFissure( Level level, Room room ) {
-		Painter.fill( level, room, 1, Terrain.EMPTY );
-		
-		for (int i=room.top + 2; i < room.bottom - 1; i++) {
-			for (int j=room.left + 2; j < room.right - 1; j++) {
-				int v = Math.min( i - room.top, room.bottom - i );
-				int h = Math.min( j - room.left, room.right - j );
-				if (Math.min( v, h ) > 2 || Random.Int( 2 ) == 0) {
-					Painter.set( level, j, i, Terrain.CHASM );
-				}
-			}
-		}
-	}
 }

@@ -30,14 +30,12 @@ import com.watabou.utils.Random;
 public class TunnelRoom extends Room {
 	
 	@Override
-	public int minDimension() {
-		return 3;
-	}
+	public int minWidth() { return 3; }
+	public int maxWidth() { return 10; }
 	
 	@Override
-	public int maxDimension() {
-		return 10;
-	}
+	public int minHeight() { return 3; }
+	public int maxHeight() { return 10; }
 	
 	public void paint(Level level) {
 		

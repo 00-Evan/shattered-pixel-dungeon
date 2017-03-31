@@ -24,31 +24,27 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.watabou.utils.Random;
 
-public class ExitRoom extends StandardRoom {
+public class StripedRoom extends StandardRoom {
 	
 	@Override
-	public int minWidth() {
-		return Math.max(super.minWidth(), 5);
-	}
-	
-	@Override
-	public int minHeight() {
-		return Math.max(super.minHeight(), 5);
-	}
-	
 	public void paint(Level level) {
-
 		Painter.fill( level, this, Terrain.WALL );
-		Painter.fill( level, this, 1, Terrain.EMPTY );
-		
-		for (Room.Door door : connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.REGULAR );
 		}
 		
-		level.exit = level.pointToCell(random( 1 ));
-		Painter.set( level, level.exit, Terrain.EXIT );
+		Painter.fill( level, this, 1 , Terrain.EMPTY_SP );
+		
+		if (width() > height() || (width() == height() && Random.Int(2) == 0)) {
+			for (int i=left + 2; i < right; i += 2) {
+				Painter.fill( level, i, top + 1, 1, height() - 2, Terrain.HIGH_GRASS );
+			}
+		} else {
+			for (int i=top + 2; i < bottom; i += 2) {
+				Painter.fill( level, left + 1, i, width() - 2, 1, Terrain.HIGH_GRASS );
+			}
+		}
 	}
-	
 }

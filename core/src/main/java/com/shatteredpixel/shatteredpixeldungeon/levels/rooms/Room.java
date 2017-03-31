@@ -35,6 +35,7 @@ import java.util.LinkedHashMap;
 
 //Note that this class should be treated as if it were abstract
 // it is currently not abstract to maintain compatibility with pre-0.6.0 saves
+// TODO make this class abstract after dropping support for pre-0.6.0 saves
 public class Room extends Rect implements Graph.Node, Bundlable {
 	
 	public ArrayList<Room> neigbours = new ArrayList<Room>();
@@ -67,12 +68,37 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return this;
 	}
 	
-	public int minDimension(){
+	//Note: when overriding these it is STRONGLY ADVISED to store any randomly decided values.
+	//With the same room and the same parameters these should always return
+	//the same value over multiple calls, even if there's some randomness initially.
+	public int minWidth(){
 		return -1;
 	}
+	public int maxWidth() { return -1; }
 	
-	public int maxDimension(){
-		return -1;
+	public int minHeight() { return -1; }
+	public int maxHeight() { return -1; }
+	
+	public boolean setSize(){
+		return setSize(minWidth(), maxWidth(), minHeight(), maxHeight());
+	}
+	
+	public boolean setSize( int w, int h){
+		return setSize( w, w, h, h );
+	}
+	
+	public boolean setSize(int minW, int maxW, int minH, int maxH) {
+		if (minW < minWidth()
+				|| maxW > maxWidth()
+				|| minH < minHeight()
+				|| maxH > maxHeight()){
+			return false;
+		} else {
+			//subtract one because rooms are inclusive to their right and bottom sides
+			resize(left + Random.NormalIntRange(minW, maxW) - 1,
+					top + Random.NormalIntRange(minH, maxH) - 1);
+			return true;
+		}
 	}
 	
 	//Width and height are increased by 1 because rooms are inclusive to their right and bottom sides
@@ -84,11 +110,6 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	@Override
 	public int height() {
 		return super.height()+1;
-	}
-	
-	@Override
-	public int square() {
-		return width()*height();
 	}
 	
 	public void paint(Level level){ }
@@ -126,8 +147,8 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	
 	public Point center() {
 		return new Point(
-			(left + right) / 2 + (((right - left) & 1) == 1 ? Random.Int( 2 ) : 0),
-			(top + bottom) / 2 + (((bottom - top) & 1) == 1 ? Random.Int( 2 ) : 0) );
+			(left + right) / 2 + (((right - left) % 2) == 1 ? Random.Int( 2 ) : 0),
+			(top + bottom) / 2 + (((bottom - top) % 2) == 1 ? Random.Int( 2 ) : 0) );
 	}
 	
 	// **** Graph.Node interface ****

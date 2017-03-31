@@ -33,6 +33,12 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class RotGardenRoom extends SpecialRoom {
+	
+	@Override
+	public int minWidth() { return 7; }
+	
+	@Override
+	public int minHeight() { return 7; }
 
 	public void paint( Level level ) {
 

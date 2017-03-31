@@ -40,8 +40,14 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class MassGraveRoom extends SpecialRoom {
-
-	public void paint( Level level){
+	
+	@Override
+	public int minWidth() { return 7; }
+	
+	@Override
+	public int minHeight() { return 7; }
+	
+	public void paint(Level level){
 
 		Door entrance = entrance();
 		entrance.set(Door.Type.BARRICADE);

@@ -31,6 +31,16 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
 import com.watabou.utils.Point;
 
 public class RitualSiteRoom extends StandardRoom {
+	
+	@Override
+	public int minWidth() {
+		return Math.max(super.minWidth(), 5);
+	}
+	
+	@Override
+	public int minHeight() {
+		return Math.max(super.minHeight(), 5);
+	}
 
 	public void paint( Level level ) {
 
