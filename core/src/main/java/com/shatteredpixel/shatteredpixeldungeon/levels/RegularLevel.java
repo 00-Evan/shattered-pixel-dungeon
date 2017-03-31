@@ -51,6 +51,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 public abstract class RegularLevel extends Level {
@@ -207,7 +208,7 @@ public abstract class RegularLevel extends Level {
 				return -1;
 			}
 			
-			Room room = randomRoom( StandardRoom.class, 10 );
+			Room room = randomRoom( StandardRoom.class );
 			if (room == null) {
 				continue;
 			}
@@ -311,11 +312,13 @@ public abstract class RegularLevel extends Level {
 		}
 	}
 	
-	protected Room randomRoom( Class<?extends Room> type, int tries ) {
-		for (int i=0; i < tries; i++) {
-			Room room = Random.element( rooms );
-			if (room.getClass().equals(type)) {
-				return room;
+	protected Room randomRoom( Class<?extends Room> type ) {
+		Collections.shuffle( rooms );
+		for (Room r : rooms) {
+			if (type.isInstance(r)
+					//compatibility with pre-0.6.0 saves
+				|| (type == StandardRoom.class && r.legacyType.equals("STANDARD"))) {
+				return r;
 			}
 		}
 		return null;
@@ -333,7 +336,7 @@ public abstract class RegularLevel extends Level {
 	
 	protected int randomDropCell() {
 		while (true) {
-			Room room = randomRoom( StandardRoom.class, 1 );
+			Room room = randomRoom( StandardRoom.class );
 			if (room != null) {
 				int pos = pointToCell(room.random());
 				if (passable[pos]) {
