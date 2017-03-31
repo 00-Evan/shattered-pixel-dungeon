@@ -95,6 +95,8 @@ public class CityBossLevel extends Level {
 	@Override
 	protected boolean build() {
 		
+		setSize(32, 32);
+		
 		Painter.fill( this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY );
 		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP );
 		

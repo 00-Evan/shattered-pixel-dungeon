@@ -94,6 +94,8 @@ public class HallsBossLevel extends Level {
 	@Override
 	protected boolean build() {
 		
+		setSize(32, 32);
+		
 		for (int i=0; i < 5; i++) {
 			
 			int top = Random.IntRange( 2, ROOM_TOP - 1 );

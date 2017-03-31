@@ -45,15 +45,6 @@ public class LastLevel extends Level {
 	private int pedestal;
 
 	@Override
-	protected void setupSize() {
-		if (width == 0 || height == 0) {
-			width = 16;
-			height = 64;
-		}
-		length = width * height;
-	}
-
-	@Override
 	public String tilesTex() {
 		return Assets.TILES_HALLS;
 	}
@@ -77,7 +68,8 @@ public class LastLevel extends Level {
 
 	@Override
 	protected boolean build() {
-
+		
+		setSize(16, 64);
 		Arrays.fill( map, Terrain.CHASM );
 
 		int mid = width/2;

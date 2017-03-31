@@ -179,23 +179,6 @@ public abstract class Level implements Bundlable {
 	public void create() {
 
 		Random.seed( Dungeon.seedCurDepth() );
-
-		setupSize();
-		PathFinder.setMapSize(width(), height());
-		passable	= new boolean[length()];
-		losBlocking	= new boolean[length()];
-		flamable	= new boolean[length()];
-		secret		= new boolean[length()];
-		solid		= new boolean[length()];
-		avoid		= new boolean[length()];
-		water		= new boolean[length()];
-		pit			= new boolean[length()];
-		
-		map = new int[length()];
-		visited = new boolean[length()];
-		Arrays.fill( visited, false );
-		mapped = new boolean[length()];
-		Arrays.fill( mapped, false );
 		
 		if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
 			addItemToSpawn( Generator.random( Generator.Category.FOOD ) );
@@ -262,10 +245,9 @@ public abstract class Level implements Bundlable {
 		boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;
 		
 		do {
-			Arrays.fill( map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL );
-			
 			pitRoomNeeded = pitNeeded;
 			weakFloorCreated = false;
+			width = height = length = 0;
 
 			mobs = new HashSet<>();
 			heaps = new SparseArray<>();
@@ -278,6 +260,16 @@ public abstract class Level implements Bundlable {
 		} while (!build());
 		decorate();
 		
+		PathFinder.setMapSize(width(), height());
+		passable	= new boolean[length()];
+		losBlocking	= new boolean[length()];
+		flamable	= new boolean[length()];
+		secret		= new boolean[length()];
+		solid		= new boolean[length()];
+		avoid		= new boolean[length()];
+		water		= new boolean[length()];
+		pit			= new boolean[length()];
+		
 		buildFlagMaps();
 		cleanWalls();
 		
@@ -286,11 +278,20 @@ public abstract class Level implements Bundlable {
 
 		Random.seed();
 	}
-
-	protected void setupSize(){
-		if (width == 0 || height == 0)
-			width = height = 32;
-		length = width * height;
+	
+	public void setSize(int w, int h){
+		
+		width = w;
+		height = h;
+		length = w * h;
+		
+		map = new int[length];
+		Arrays.fill( map, Terrain.WALL );
+		Arrays.fill( map, feeling == Level.Feeling.CHASM ? Terrain.CHASM : Terrain.WALL );
+		
+		visited = new boolean[length];
+		mapped = new boolean[length];
+		Dungeon.visible = new boolean[length];
 	}
 	
 	public void reset() {
@@ -450,20 +451,14 @@ public abstract class Level implements Bundlable {
 	}
 
 	public int width() {
-		if (width == 0)
-			setupSize();
 		return width;
 	}
 
 	public int height() {
-		if (height == 0)
-			setupSize();
 		return height;
 	}
 
 	public int length() {
-		if (length == 0)
-			setupSize();
 		return length;
 	}
 	

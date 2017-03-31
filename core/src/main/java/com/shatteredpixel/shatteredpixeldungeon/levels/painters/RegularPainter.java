@@ -64,6 +64,25 @@ public class RegularPainter extends Painter {
 	
 	@Override
 	public boolean paint(Level level, ArrayList<Room> rooms) {
+		int leftMost = Integer.MAX_VALUE, topMost = Integer.MAX_VALUE;
+		
+		for (Room r : rooms){
+			if (r.left < leftMost) leftMost = r.left;
+			if (r.top < topMost) topMost = r.top;
+		}
+		
+		int width = 0, height = 0;
+		
+		for (Room r : rooms){
+			r.shift( -leftMost, -topMost);
+			if (r.right > width) width = r.right;
+			if (r.bottom > height) height = r.bottom;
+		}
+		
+		level.setSize(width+1, height+1);
+		
+		PathFinder.setMapSize(level.width(), level.height());
+		
 		for (Room r : rooms) {
 			placeDoors( r );
 			r.paint( level );

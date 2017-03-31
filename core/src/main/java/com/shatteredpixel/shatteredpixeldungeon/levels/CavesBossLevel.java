@@ -100,6 +100,8 @@ public class CavesBossLevel extends Level {
 	@Override
 	protected boolean build() {
 		
+		setSize(32, 32);
+		
 		int topMost = Integer.MAX_VALUE;
 		
 		for (int i=0; i < 8; i++) {

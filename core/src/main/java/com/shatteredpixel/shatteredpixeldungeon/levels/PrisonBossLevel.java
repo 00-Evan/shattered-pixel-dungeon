@@ -119,6 +119,8 @@ public class PrisonBossLevel extends Level {
 	@Override
 	protected boolean build() {
 		
+		setSize(32, 32);
+		
 		map = MAP_START.clone();
 		decorate();
 

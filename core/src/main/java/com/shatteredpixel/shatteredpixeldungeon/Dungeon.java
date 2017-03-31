@@ -268,8 +268,7 @@ public class Dungeon {
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
 		}
-
-		visible = new boolean[level.length()];
+		
 		level.create();
 		
 		Statistics.qualifiedForNoKilling = !bossLevel();

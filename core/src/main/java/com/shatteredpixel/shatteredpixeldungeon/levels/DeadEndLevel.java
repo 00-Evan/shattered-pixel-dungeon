@@ -25,8 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.watabou.utils.Random;
 
-import java.util.Arrays;
-
 public class DeadEndLevel extends Level {
 
 	private static final int SIZE = 5;
@@ -48,8 +46,8 @@ public class DeadEndLevel extends Level {
 	
 	@Override
 	protected boolean build() {
-
-		Arrays.fill( map, Terrain.WALL );
+		
+		setSize(7, 7);
 		
 		for (int i=2; i < SIZE; i++) {
 			for (int j=2; j < SIZE; j++) {
