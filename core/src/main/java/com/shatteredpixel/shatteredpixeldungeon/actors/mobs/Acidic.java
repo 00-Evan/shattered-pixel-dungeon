@@ -22,8 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.AcidicSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
 public class Acidic extends Scorpio {
@@ -38,6 +41,10 @@ public class Acidic extends Scorpio {
 		int dmg = Random.IntRange( 0, damage );
 		if (dmg > 0) {
 			enemy.damage( dmg, this );
+			if (!enemy.isAlive() && enemy == Dungeon.hero) {
+				Dungeon.fail(getClass());
+				GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name)));
+			}
 		}
 		
 		return super.defenseProc( enemy, damage );
