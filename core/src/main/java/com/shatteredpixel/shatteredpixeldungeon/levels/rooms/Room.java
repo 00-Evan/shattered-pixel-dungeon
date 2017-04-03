@@ -123,22 +123,28 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 				Random.Int( top + 1 + m, bottom - m ));
 	}
 	
-	public void addNeigbour( Room other ) {
+	public boolean addNeigbour( Room other ) {
+		if (neigbours.contains(other))
+			return true;
 		
 		Rect i = intersect( other );
-		if ((i.width() == 0 && i.height() >= 3) ||
-			(i.height() == 0 && i.width() >= 3)) {
+		if ((i.width() == 0 && i.height() >= 2) ||
+			(i.height() == 0 && i.width() >= 2)) {
 			neigbours.add( other );
 			other.neigbours.add( this );
+			return true;
 		}
-		
+		return false;
 	}
 	
-	public void connect( Room room ) {
+	public boolean connect( Room room ) {
+		if (!neigbours.contains(room) && !addNeigbour(room))
+			return false;
 		if (!connected.containsKey( room )) {
 			connected.put( room, null );
 			room.connected.put( this, null );
 		}
+		return true;
 	}
 	
 	public boolean inside( Point p ) {
