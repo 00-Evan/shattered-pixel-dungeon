@@ -83,20 +83,36 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return setSize(minWidth(), maxWidth(), minHeight(), maxHeight());
 	}
 	
-	public boolean setSize( int w, int h){
+	public boolean forceSize( int w, int h ){
 		return setSize( w, w, h, h );
 	}
 	
-	public boolean setSize(int minW, int maxW, int minH, int maxH) {
+	public boolean setSizeWithLimit( int w, int h ){
+		if ( w < minWidth() || h < minHeight()) {
+			return false;
+		} else {
+			setSize();
+			
+			if (width() > w || height() > h){
+				resize(Math.min(width(), w)-1, Math.min(height(), h)-1);
+			}
+			
+			return true;
+		}
+	}
+	
+	protected boolean setSize(int minW, int maxW, int minH, int maxH) {
 		if (minW < minWidth()
 				|| maxW > maxWidth()
 				|| minH < minHeight()
-				|| maxH > maxHeight()){
+				|| maxH > maxHeight()
+				|| minW > maxW
+				|| minH > maxH){
 			return false;
 		} else {
 			//subtract one because rooms are inclusive to their right and bottom sides
-			resize(left + Random.NormalIntRange(minW, maxW) - 1,
-					top + Random.NormalIntRange(minH, maxH) - 1);
+			resize(Random.NormalIntRange(minW, maxW) - 1,
+					Random.NormalIntRange(minH, maxH) - 1);
 			return true;
 		}
 	}

@@ -28,7 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRo
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel.TunnelRoom;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 
@@ -73,7 +75,7 @@ public class LineBuilder extends Builder {
 			shop.connect(entrance);
 		}
 		
-		int standardsOnPath = standards.size()/2 + Random.Int(3) - 1;
+		int standardsOnPath = standards.size()/5 + Random.Int(2);
 		standardsOnPath = Math.min(standardsOnPath, standards.size());
 		
 		//standardsOnPath = standards.size();
@@ -157,7 +159,7 @@ public class LineBuilder extends Builder {
 			if (!placeBranchRoom(up, curr, r, rooms)){
 				continue;
 			}
-			if (r instanceof StandardRoom) {
+			if (r instanceof StandardRoom && Random.Int(3) == 0) {
 				if (up) upBrancheable.add(r);
 				else downBrancheable.add(r);
 			}
@@ -169,11 +171,24 @@ public class LineBuilder extends Builder {
 	}
 	
 	private boolean placeBranchRoom(boolean up, Room curr, Room next, ArrayList<Room> collision){
-		next.setSize();
-		next.setPos( curr.left + (curr.width()-next.width())/2, up ? curr.top - next.height()+1 : curr.bottom);
-		next.connect(curr);
-		return true;
+		Rect space = findFreeSpace(
+				new Point( curr.left + curr.width()/2, up ? curr.top : curr.bottom),
+				collision,
+				Math.max(next.maxWidth(), next.maxHeight()));
+		
+		if (next.setSizeWithLimit(space.width()+1,space.height()+1 )){
+			next.setPos( curr.left + (curr.width()-next.width())/2, up ? curr.top - next.height()+1 : curr.bottom);
+			
+			if (next.right > space.right){
+				next.shift( space.right - next.right, 0);
+			} else if (next.left < space.left){
+				next.shift( space.left - next.left, 0);
+			}
+			
+			return next.connect(curr);
+			
+		} else {
+			return false;
+		}
 	}
-	
-	
 }

@@ -261,14 +261,6 @@ public abstract class Level implements Bundlable {
 		decorate();
 		
 		PathFinder.setMapSize(width(), height());
-		passable	= new boolean[length()];
-		losBlocking	= new boolean[length()];
-		flamable	= new boolean[length()];
-		secret		= new boolean[length()];
-		solid		= new boolean[length()];
-		avoid		= new boolean[length()];
-		water		= new boolean[length()];
-		pit			= new boolean[length()];
 		
 		buildFlagMaps();
 		cleanWalls();
@@ -292,6 +284,17 @@ public abstract class Level implements Bundlable {
 		visited = new boolean[length];
 		mapped = new boolean[length];
 		Dungeon.visible = new boolean[length];
+		
+		fieldOfView = new boolean[length()];
+		
+		passable	= new boolean[length()];
+		losBlocking	= new boolean[length()];
+		flamable	= new boolean[length()];
+		secret		= new boolean[length()];
+		solid		= new boolean[length()];
+		avoid		= new boolean[length()];
+		water		= new boolean[length()];
+		pit			= new boolean[length()];
 	}
 	
 	public void reset() {
@@ -315,11 +318,9 @@ public abstract class Level implements Bundlable {
 		}
 
 		if (bundle.contains("width") && bundle.contains("height")){
-			width = bundle.getInt("width");
-			height = bundle.getInt("height");
+			setSize( bundle.getInt("width"), bundle.getInt("height"));
 		} else
-			width = height = 32; //default sizes
-		length = width * height;
+			setSize( 32, 32); //default sizes
 		PathFinder.setMapSize(width(), height());
 		
 		mobs = new HashSet<>();
@@ -593,17 +594,6 @@ public abstract class Level implements Bundlable {
 	}
 
 	protected void buildFlagMaps() {
-
-		fieldOfView = new boolean[length()];
-
-		passable	= new boolean[length()];
-		losBlocking	= new boolean[length()];
-		flamable	= new boolean[length()];
-		secret		= new boolean[length()];
-		solid		= new boolean[length()];
-		avoid		= new boolean[length()];
-		water		= new boolean[length()];
-		pit			= new boolean[length()];
 		
 		for (int i=0; i < length(); i++) {
 			int flags = Terrain.flags[map[i]];
