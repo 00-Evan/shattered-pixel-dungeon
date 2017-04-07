@@ -249,6 +249,7 @@ public class Potion extends Item {
 		if (!ownedByFruit) {
 			if (!isKnown()) {
 				handler.know(this);
+				updateQuickslot();
 			}
 
 			Badges.validateAllPotionsIdentified();
