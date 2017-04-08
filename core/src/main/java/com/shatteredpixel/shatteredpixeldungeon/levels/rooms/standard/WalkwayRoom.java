@@ -21,60 +21,45 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 //TODO, limit connections on corners
-public class StudyRoom extends StandardRoom {
+public class WalkwayRoom extends StandardRoom {
 	
 	@Override
 	public int minWidth() {
-		return Math.max(super.minWidth(), 7);
+		return Math.max(super.minWidth(), 5);
 	}
 	
 	@Override
 	public int minHeight() {
-		return Math.max(super.minHeight(), 7);
+		return Math.max(super.minHeight(), 5);
 	}
 	
 	@Override
 	public void paint(Level level) {
+		
 		Painter.fill( level, this, Terrain.WALL );
+		
+		Painter.fill( level, this, 1, !Dungeon.bossLevel() && Random.Int( 2 ) == 0 ? Terrain.CHASM : Terrain.WATER );
+		Painter.fill( level, this, 2, Terrain.EMPTY_SP);
+		
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
-		}
-		
-		Painter.fill( level, this, 1 , Terrain.BOOKSHELF );
-		Painter.fill( level, this, 2 , Terrain.EMPTY_SP );
-		
-		for (Point door : connected.values()) {
 			if (door.x == left) {
-				Painter.set( level, door.x + 1, door.y, Terrain.EMPTY );
+				Painter.set( level, door.x + 1, door.y, Terrain.EMPTY_SP );
 			} else if (door.x == right) {
-				Painter.set( level, door.x - 1, door.y, Terrain.EMPTY );
+				Painter.set( level, door.x - 1, door.y, Terrain.EMPTY_SP );
 			} else if (door.y == top) {
-				Painter.set( level, door.x, door.y + 1, Terrain.EMPTY );
+				Painter.set( level, door.x, door.y + 1, Terrain.EMPTY_SP );
 			} else if (door.y == bottom) {
-				Painter.set( level, door.x , door.y - 1, Terrain.EMPTY );
-			}
-		}
-		Point center = center();
-		Painter.set( level, center, Terrain.PEDESTAL );
-		if (Random.Int(2) != 0){
-			Item prize = level.findPrizeItem();
-			if (prize != null) {
-				level.drop(prize, (center.x + center.y * level.width()));
-				return;
+				Painter.set( level, door.x , door.y - 1, Terrain.EMPTY_SP );
 			}
 		}
 		
-		level.drop(Generator.random( Random.oneOf(
-				Generator.Category.POTION,
-				Generator.Category.SCROLL)), (center.x + center.y * level.width()));
 	}
 }

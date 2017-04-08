@@ -59,7 +59,7 @@ public abstract class StandardRoom extends Room {
 	static {
 		chances.put(EmptyRoom.class, 24f);
 		
-		chances.put(BridgeRoom.class,       1f);
+		chances.put(WalkwayRoom.class,      1f);
 		chances.put(BurnedRoom.class,       1f);
 		chances.put(FissureRoom.class,      1f);
 		chances.put(GrassyGraveRoom.class,  1f);
