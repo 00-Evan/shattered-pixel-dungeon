@@ -54,13 +54,17 @@ public class StudyRoom extends StandardRoom {
 		
 		for (Point door : connected.values()) {
 			if (door.x == left) {
-				Painter.set( level, door.x + 1, door.y, Terrain.EMPTY );
+				Painter.set( level, door.x + 1, door.y, Terrain.EMPTY_SP );
+				Painter.set( level, door.x + 2, door.y, Terrain.EMPTY_SP );
 			} else if (door.x == right) {
-				Painter.set( level, door.x - 1, door.y, Terrain.EMPTY );
+				Painter.set( level, door.x - 1, door.y, Terrain.EMPTY_SP );
+				Painter.set( level, door.x - 2, door.y, Terrain.EMPTY_SP );
 			} else if (door.y == top) {
-				Painter.set( level, door.x, door.y + 1, Terrain.EMPTY );
+				Painter.set( level, door.x, door.y + 1, Terrain.EMPTY_SP );
+				Painter.set( level, door.x, door.y + 2, Terrain.EMPTY_SP );
 			} else if (door.y == bottom) {
-				Painter.set( level, door.x , door.y - 1, Terrain.EMPTY );
+				Painter.set( level, door.x , door.y - 1, Terrain.EMPTY_SP );
+				Painter.set( level, door.x , door.y - 2, Terrain.EMPTY_SP );
 			}
 		}
 		Point center = center();
