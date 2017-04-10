@@ -295,6 +295,8 @@ public abstract class Level implements Bundlable {
 		avoid		= new boolean[length()];
 		water		= new boolean[length()];
 		pit			= new boolean[length()];
+		
+		PathFinder.setMapSize(w, h);
 	}
 	
 	public void reset() {

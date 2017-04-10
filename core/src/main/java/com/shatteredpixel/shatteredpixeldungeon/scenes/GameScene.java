@@ -26,11 +26,6 @@ import android.opengl.GLES20;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.GridTileMap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.FogOfWar;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -61,20 +56,25 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DiscardedItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.FogOfWar;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.GridTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.WallBlockingTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BusyIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toast;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -707,6 +707,7 @@ public class GameScene extends PixelScene {
 	public static void resetMap() {
 		if (scene != null) {
 			scene.tiles.map(Dungeon.level.map, Dungeon.level.width() );
+			scene.visualGrid.map(Dungeon.level.map, Dungeon.level.width() );
 			scene.terrainFeatures.map(Dungeon.level.map, Dungeon.level.width() );
 			scene.walls.map(Dungeon.level.map, Dungeon.level.width() );
 		}
