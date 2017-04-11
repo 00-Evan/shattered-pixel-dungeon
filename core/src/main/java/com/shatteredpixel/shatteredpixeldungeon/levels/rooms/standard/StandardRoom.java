@@ -54,6 +54,18 @@ public abstract class StandardRoom extends Room {
 	public int minHeight() { return sizeCat.minDim; }
 	public int maxHeight() { return sizeCat.maxDim; }
 	
+	@Override
+	public int minConnections(int direction) {
+		if (direction == ALL)   return 1;
+		else                    return 0;
+	}
+	
+	@Override
+	public int maxConnections(int direction) {
+		if (direction == ALL)   return 16;
+		else                    return 4;
+	}
+	
 	private static HashMap<Class<?extends StandardRoom>, Float> chances = new HashMap<>();
 	
 	static {

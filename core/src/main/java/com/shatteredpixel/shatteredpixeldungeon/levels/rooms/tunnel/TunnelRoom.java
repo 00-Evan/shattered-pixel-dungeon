@@ -37,6 +37,18 @@ public class TunnelRoom extends Room {
 	public int minHeight() { return 3; }
 	public int maxHeight() { return 10; }
 	
+	@Override
+	public int minConnections(int direction) {
+		if (direction == ALL)   return 2;
+		else                    return 0;
+	}
+	
+	@Override
+	public int maxConnections(int direction) {
+		if (direction == ALL)   return 16;
+		else                    return 4;
+	}
+	
 	public void paint(Level level) {
 		
 		int floor = level.tunnelTile();

@@ -40,6 +40,17 @@ public class SpecialRoom extends Room {
 	}
 	public int maxHeight() { return 10; }
 	
+	@Override
+	public int minConnections(int direction) {
+		if (direction == ALL)   return 1;
+		else                    return 0;
+	}
+	
+	@Override
+	public int maxConnections(int direction) {
+		return 1;
+	}
+	
 	public Door entrance() {
 		return connected.values().iterator().next();
 	}

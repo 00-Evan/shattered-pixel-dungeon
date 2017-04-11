@@ -68,7 +68,13 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return this;
 	}
 	
-	//Note: when overriding these it is STRONGLY ADVISED to store any randomly decided values.
+	//TODO make abstract
+	public void paint(Level level){ }
+	
+	
+	// **** Spatial logic ****
+	
+	//Note: when overriding these YOU MUST store any randomly decided values.
 	//With the same room and the same parameters these should always return
 	//the same value over multiple calls, even if there's some randomness initially.
 	public int minWidth(){
@@ -128,15 +134,78 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return super.height()+1;
 	}
 	
-	public void paint(Level level){ }
-	
 	public Point random() {
-		return random( 0 );
+		return random( 1 );
 	}
 	
 	public Point random( int m ) {
-		return new Point( Random.Int( left + 1 + m, right - m ),
-				Random.Int( top + 1 + m, bottom - m ));
+		return new Point( Random.Int( left + m, right - m ),
+				Random.Int( top + m, bottom - m ));
+	}
+	
+	public boolean inside( Point p ) {
+		return p.x > left && p.y > top && p.x < right && p.y < bottom;
+	}
+	
+	public Point center() {
+		return new Point(
+				(left + right) / 2 + (((right - left) % 2) == 1 ? Random.Int( 2 ) : 0),
+				(top + bottom) / 2 + (((bottom - top) % 2) == 1 ? Random.Int( 2 ) : 0) );
+	}
+	
+	
+	// **** Connection logic ****
+	
+	public static final int ALL     = 0;
+	public static final int LEFT    = 1;
+	public static final int TOP     = 2;
+	public static final int RIGHT   = 3;
+	public static final int BOTTOM  = 4;
+	
+	//TODO make abstract
+	public int minConnections(int direction){ return -1; }
+	
+	public int curConnections(int direction){
+		if (direction == ALL) {
+			return connected.size();
+			
+		} else {
+			int total = 0;
+			for (Room r : connected.keySet()){
+				Rect i = intersect( r );
+				if      (direction == LEFT && i.width() == 0 && i.left == left)         total++;
+				else if (direction == TOP && i.height() == 0 && i.top == top)           total++;
+				else if (direction == RIGHT && i.width() == 0 && i.right == right)      total++;
+				else if (direction == BOTTOM && i.height() == 0 && i.bottom == bottom)  total++;
+			}
+			return total;
+		}
+	}
+	
+	public int remConnections(int direction){
+		if (curConnections(ALL) >= maxConnections(ALL)) return 0;
+		else return maxConnections(direction) - curConnections(direction);
+	}
+	
+	//TODO make abstract
+	public int maxConnections(int direction){ return -1; }
+	
+	public boolean canConnect(int direction){
+		return remConnections(direction) > 0;
+	}
+	
+	public boolean canConnect( Room r ){
+		Rect i = intersect( r );
+		if (i.width() == 0 && i.left == left)
+			return canConnect(LEFT);
+		else if (i.height() == 0 && i.top == top)
+			return canConnect(TOP);
+		else if (i.width() == 0 && i.right == right)
+			return canConnect(RIGHT);
+		else if (i.height() == 0 && i.bottom == bottom)
+			return canConnect(BOTTOM);
+		else
+			return false;
 	}
 	
 	public boolean addNeigbour( Room other ) {
@@ -154,23 +223,13 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	public boolean connect( Room room ) {
-		if (!neigbours.contains(room) && !addNeigbour(room))
-			return false;
-		if (!connected.containsKey( room )) {
+		if ((neigbours.contains(room) || addNeigbour(room))
+				&& !connected.containsKey( room ) && canConnect(room) && room.canConnect(this)) {
 			connected.put( room, null );
 			room.connected.put( this, null );
+			return true;
 		}
-		return true;
-	}
-	
-	public boolean inside( Point p ) {
-		return p.x > left && p.y > top && p.x < right && p.y < bottom;
-	}
-	
-	public Point center() {
-		return new Point(
-			(left + right) / 2 + (((right - left) % 2) == 1 ? Random.Int( 2 ) : 0),
-			(top + bottom) / 2 + (((bottom - top) % 2) == 1 ? Random.Int( 2 ) : 0) );
+		return false;
 	}
 	
 	// **** Graph.Node interface ****

@@ -47,7 +47,7 @@ public class ExitRoom extends StandardRoom {
 			door.set( Room.Door.Type.REGULAR );
 		}
 		
-		level.exit = level.pointToCell(random( 1 ));
+		level.exit = level.pointToCell(random( 2 ));
 		Painter.set( level, level.exit, Terrain.EXIT );
 	}
 	

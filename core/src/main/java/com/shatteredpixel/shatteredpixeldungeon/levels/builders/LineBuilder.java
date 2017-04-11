@@ -23,10 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel.TunnelRoom;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -42,8 +40,9 @@ public class LineBuilder extends Builder {
 		Room entrance = null;
 		Room exit = null;
 		Room shop = null;
-		ArrayList<StandardRoom> standards = new ArrayList<>();
-		ArrayList<SpecialRoom> specials = new ArrayList<>();
+		
+		ArrayList<Room> multiConnections = new ArrayList<>();
+		ArrayList<Room> singleConnections = new ArrayList<>();
 		
 		for (Room r : rooms){
 			if (r instanceof EntranceRoom){
@@ -52,10 +51,10 @@ public class LineBuilder extends Builder {
 				exit = r;
 			} else if (r instanceof ShopRoom){
 				shop = r;
-			} else if (r instanceof StandardRoom){
-				standards.add((StandardRoom)r);
-			} else if (r instanceof SpecialRoom){
-				specials.add((SpecialRoom)r);
+			} else if (r.maxConnections(Room.ALL) > 1){
+				multiConnections.add(r);
+			} else if (r.maxConnections(Room.ALL) == 1){
+				singleConnections.add(r);
 			}
 		}
 		
@@ -71,19 +70,17 @@ public class LineBuilder extends Builder {
 		
 		if (shop != null){
 			shop.setSize();
-			shop.setPos(-shop.width(), -shop.height()/2);
+			shop.setPos(-shop.width()+1, -shop.height()/2);
 			shop.connect(entrance);
 		}
 		
-		int standardsOnPath = standards.size()/5 + Random.Int(2);
-		standardsOnPath = Math.min(standardsOnPath, standards.size());
-		
-		//standardsOnPath = standards.size();
+		int roomsOnPath = multiConnections.size()/5 + Random.Int(2);
+		roomsOnPath = Math.min(roomsOnPath, multiConnections.size());
 		
 		Room curr = entrance;
 		
-		for (int i = 0; i < standardsOnPath; i++){
-			if (Random.Int(3) == 0){
+		for (int i = 0; i <= roomsOnPath; i++){
+			if (Random.Int(2) == 0){
 				TunnelRoom t = new TunnelRoom();
 				t.setSize();
 				t.setPos( curr.right, -t.height()/2);
@@ -92,7 +89,7 @@ public class LineBuilder extends Builder {
 				branchable.add(t);
 				curr = t;
 			}
-			if (Random.Int(3) == 0){
+			if (Random.Int(2) == 0){
 				TunnelRoom t = new TunnelRoom();
 				t.setSize();
 				t.setPos( curr.right, -t.height()/2);
@@ -101,27 +98,26 @@ public class LineBuilder extends Builder {
 				branchable.add(t);
 				curr = t;
 			}
-			StandardRoom s = standards.get(i);
-			s.setSize();
-			s.setPos( curr.right, -s.height()/2);
-			s.connect(curr);
-			branchable.add(s);
-			curr = s;
+			Room r = (i == roomsOnPath ? exit : multiConnections.get(i));
+			r.setSize();
+			r.setPos( curr.right, -r.height()/2);
+			r.connect(curr);
+			branchable.add(r);
+			curr = r;
 		}
 		
-		//place exit
-		exit.setSize();
-		exit.setPos( curr.right, -exit.height()/2);
-		exit.connect(curr);
-		branchable.add(exit);
 		
 		ArrayList<Room> upBrancheable = new ArrayList<>(branchable);
 		ArrayList<Room> downBrancheable = new ArrayList<>(branchable);
 		
 		//place branches
-		int i = standardsOnPath;
-		while (i < standards.size() + specials.size()){
-			boolean up = !upBrancheable.isEmpty() && (Random.Int(2) == 0 || downBrancheable.isEmpty());
+		int i = roomsOnPath;
+		while (i < multiConnections.size() + singleConnections.size()){
+			if (upBrancheable.isEmpty() && downBrancheable.isEmpty())
+				return null;
+			
+			boolean up = downBrancheable.isEmpty()
+					|| (Random.Int(2) == 0 && !upBrancheable.isEmpty());
 			
 			if (up){
 				curr = Random.element(upBrancheable);
@@ -131,7 +127,7 @@ public class LineBuilder extends Builder {
 				downBrancheable.remove(curr);
 			}
 			
-			if (Random.Int(2) == 0){
+			if (Random.Int(3) == 0){
 				TunnelRoom t = new TunnelRoom();
 				if (placeBranchRoom(up, curr, t, rooms)){
 					rooms.add(t);
@@ -150,16 +146,16 @@ public class LineBuilder extends Builder {
 				curr = t;
 			}
 			Room r;
-			if (i < standards.size()) {
-				r = standards.get(i);
+			if (i < multiConnections.size()) {
+				r = multiConnections.get(i);
 			} else {
-				r = specials.get(i - standards.size());
+				r = singleConnections.get(i - multiConnections.size());
 			}
 			
 			if (!placeBranchRoom(up, curr, r, rooms)){
 				continue;
 			}
-			if (r instanceof StandardRoom && Random.Int(3) == 0) {
+			if (r.canConnect(up ? Room.TOP : Room.BOTTOM) && Random.Int(3) == 0) {
 				if (up) upBrancheable.add(r);
 				else downBrancheable.add(r);
 			}

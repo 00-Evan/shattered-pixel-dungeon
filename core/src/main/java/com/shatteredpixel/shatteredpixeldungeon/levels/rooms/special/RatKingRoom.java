@@ -52,7 +52,7 @@ public class RatKingRoom extends SpecialRoom {
 		}
 
 		RatKing king = new RatKing();
-		king.pos = level.pointToCell(random( 1 ));
+		king.pos = level.pointToCell(random( 2 ));
 		level.mobs.add( king );
 	}
 	

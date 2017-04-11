@@ -57,7 +57,7 @@ public class BlacksmithRoom extends SpecialRoom {
 		
 		Blacksmith npc = new Blacksmith();
 		do {
-			npc.pos = level.pointToCell(random( 1 ));
+			npc.pos = level.pointToCell(random( 2 ));
 		} while (level.heaps.get( npc.pos ) != null);
 		level.mobs.add( npc );
 
