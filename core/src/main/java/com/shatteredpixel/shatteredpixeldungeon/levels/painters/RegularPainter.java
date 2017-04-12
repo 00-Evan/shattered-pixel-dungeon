@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
@@ -113,15 +114,12 @@ public class RegularPainter extends Painter {
 			if (door == null) {
 				
 				Rect i = r.intersect( n );
-				if (i.width() == 0) {
-					door = new Room.Door(
-							i.left,
-							Random.Int( i.top + 1, i.bottom ) );
-				} else {
-					door = new Room.Door(
-							Random.Int( i.left + 1, i.right ),
-							i.top);
+				ArrayList<Point> doorSpots = new ArrayList<>();
+				for (Point p : i.getPoints()){
+					if (r.canConnect(p) && n.canConnect(p))
+						doorSpots.add(p);
 				}
+				door = new Room.Door(Random.element(doorSpots));
 				
 				r.connected.put( n, door );
 				n.connected.put( r, door );

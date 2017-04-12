@@ -190,20 +190,38 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	//TODO make abstract
 	public int maxConnections(int direction){ return -1; }
 	
+	//only considers point-specific limits, not direction limits
+	public boolean canConnect(Point p){
+		//point must be along exactly one edge, no corners.
+		return (p.x == left || p.x == right) != (p.y == top || p.y == bottom);
+	}
+	
+	//only considers direction limits, not point-specific limits
 	public boolean canConnect(int direction){
 		return remConnections(direction) > 0;
 	}
 	
+	//considers both direction and point limits
 	public boolean canConnect( Room r ){
 		Rect i = intersect( r );
+		
+		boolean foundPoint = false;
+		for (Point p : i.getPoints()){
+			if (canConnect(p) && r.canConnect(p)){
+				foundPoint = true;
+				break;
+			}
+		}
+		if (!foundPoint) return false;
+		
 		if (i.width() == 0 && i.left == left)
-			return canConnect(LEFT);
+			return canConnect(LEFT) && r.canConnect(LEFT);
 		else if (i.height() == 0 && i.top == top)
-			return canConnect(TOP);
+			return canConnect(TOP) && r.canConnect(TOP);
 		else if (i.width() == 0 && i.right == right)
-			return canConnect(RIGHT);
+			return canConnect(RIGHT) && r.canConnect(RIGHT);
 		else if (i.height() == 0 && i.bottom == bottom)
-			return canConnect(BOTTOM);
+			return canConnect(BOTTOM) && r.canConnect(BOTTOM);
 		else
 			return false;
 	}
@@ -224,7 +242,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	
 	public boolean connect( Room room ) {
 		if ((neigbours.contains(room) || addNeigbour(room))
-				&& !connected.containsKey( room ) && canConnect(room) && room.canConnect(this)) {
+				&& !connected.containsKey( room ) && canConnect(room)) {
 			connected.put( room, null );
 			room.connected.put( this, null );
 			return true;
@@ -287,6 +305,10 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 			EMPTY, TUNNEL, REGULAR, UNLOCKED, HIDDEN, BARRICADE, LOCKED
 		}
 		public Type type = Type.EMPTY;
+		
+		public Door( Point p ){
+			super(p);
+		}
 		
 		public Door( int x, int y ) {
 			super( x, y );

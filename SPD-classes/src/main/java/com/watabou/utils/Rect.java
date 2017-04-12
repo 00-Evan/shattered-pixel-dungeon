@@ -21,7 +21,7 @@
 
 package com.watabou.utils;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class Rect {
 
@@ -133,8 +133,8 @@ public class Rect {
 		return shrink( 1 );
 	}
 
-	public HashSet<Point> getPoints() {
-		HashSet<Point> points = new HashSet<>(square()*2);
+	public ArrayList<Point> getPoints() {
+		ArrayList<Point> points = new ArrayList<>(square()*2);
 		for (int i = left; i <= right; i++)
 			for (int j = top; j <= bottom; j++)
 				points.add(new Point(i, j));
