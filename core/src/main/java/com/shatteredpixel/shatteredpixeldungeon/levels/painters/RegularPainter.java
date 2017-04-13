@@ -72,6 +72,9 @@ public class RegularPainter extends Painter {
 			if (r.top < topMost) topMost = r.top;
 		}
 		
+		leftMost--;
+		topMost--;
+		
 		int width = 0, height = 0;
 		
 		for (Room r : rooms){
@@ -79,6 +82,9 @@ public class RegularPainter extends Painter {
 			if (r.right > width) width = r.right;
 			if (r.bottom > height) height = r.bottom;
 		}
+		
+		width++;
+		height++;
 		
 		level.setSize(width+1, height+1);
 		
