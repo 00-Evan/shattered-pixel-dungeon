@@ -260,8 +260,6 @@ public abstract class Level implements Bundlable {
 		} while (!build());
 		decorate();
 		
-		PathFinder.setMapSize(width(), height());
-		
 		buildFlagMaps();
 		cleanWalls();
 		

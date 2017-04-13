@@ -92,6 +92,12 @@ public class ShopRoom extends SpecialRoom {
 		return Math.max(7, (int)(Math.sqrt(itemsToSpawn.size())+3));
 	}
 	
+	//FIXME this is messy, the floor 21 shop should probably just be its own class.
+	@Override
+	public int maxConnections(int direction) {
+		return Dungeon.depth == 21 ? 2 : 1;
+	}
+	
 	@Override
 	public int minHeight() {
 		if (itemsToSpawn == null) generateItems();

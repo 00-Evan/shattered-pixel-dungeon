@@ -33,8 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.BlacksmithRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.BlacksmithRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
@@ -279,27 +278,13 @@ public class Blacksmith extends NPC {
 			}
 		}
 		
-		//FIXME: refactor this to work with new levelgen
-		public static boolean spawn( ArrayList<Room> rooms ) {
+		public static ArrayList<Room> spawn( ArrayList<Room> rooms ) {
 			if (!spawned && Dungeon.depth > 11 && Random.Int( 15 - Dungeon.depth ) == 0) {
 				
-				Room blacksmith;
-				for (Room r : rooms) {
-					if (r instanceof StandardRoom && r.width() >= 6 && r.height() >= 6) {
-						blacksmith = new BlacksmithRoom().set(r);
-						rooms.set(rooms.indexOf(r), blacksmith);
-						
-						spawned = true;
-						alternative = Random.Int( 2 ) == 0;
-						
-						given = false;
-						
-						break;
-					}
-				}
+				rooms.add(new BlacksmithRoom());
 				
 			}
-			return spawned;
+			return rooms;
 		}
 	}
 }

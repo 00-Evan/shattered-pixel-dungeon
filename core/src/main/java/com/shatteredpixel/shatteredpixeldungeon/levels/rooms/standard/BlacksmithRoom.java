@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -30,9 +30,19 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class BlacksmithRoom extends SpecialRoom {
-
-	public void paint( Level level ) {
+public class BlacksmithRoom extends StandardRoom {
+	
+	@Override
+	public int minWidth() {
+		return Math.max(super.minWidth(), 6);
+	}
+	
+	@Override
+	public int minHeight() {
+		return Math.max(super.minHeight(), 6);
+	}
+	
+	public void paint(Level level ) {
 
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.TRAP );

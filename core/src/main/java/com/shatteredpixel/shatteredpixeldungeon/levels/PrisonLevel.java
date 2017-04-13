@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Halo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
@@ -48,11 +49,28 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class PrisonLevel extends RegularLevel {
 
 	{
 		color1 = 0x6a723d;
 		color2 = 0x88924c;
+	}
+	
+	@Override
+	protected ArrayList<Room> initRooms() {
+		return Wandmaker.Quest.spawnRoom(super.initRooms());
+	}
+	
+	@Override
+	protected int standardRooms() {
+		return 4+Random.chances(new float[]{2, 3, 3, 2, 1});
+	}
+	
+	@Override
+	protected int specialRooms() {
+		return 1+Random.chances(new float[]{4, 3, 3});
 	}
 	
 	@Override

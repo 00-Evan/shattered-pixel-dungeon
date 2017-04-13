@@ -59,6 +59,16 @@ public class CityLevel extends RegularLevel {
 	}
 	
 	@Override
+	protected int standardRooms() {
+		return 6+Random.chances(new float[]{2, 3, 3, 2, 1});
+	}
+	
+	@Override
+	protected int specialRooms() {
+		return 1 + Random.chances(new float[]{2, 3, 3, 1});
+	}
+	
+	@Override
 	public String tilesTex() {
 		return Assets.TILES_CITY;
 	}

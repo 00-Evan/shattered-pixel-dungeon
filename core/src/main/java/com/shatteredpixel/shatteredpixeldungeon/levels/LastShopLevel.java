@@ -28,10 +28,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LegacyBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.FissureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class LastShopLevel extends RegularLevel {
 	
@@ -51,10 +57,26 @@ public class LastShopLevel extends RegularLevel {
 	}
 	
 	@Override
+	protected ArrayList<Room> initRooms() {
+		ArrayList<Room> rooms = new ArrayList<>();
+		
+		rooms.add ( roomEntrance = new EntranceRoom());
+		rooms.add( roomExit = new ExitRoom());
+		
+		if (Imp.Quest.isCompleted()){
+			rooms.add( new ShopRoom() );
+		} else {
+			rooms.add( new FissureRoom() );
+		}
+		
+		return rooms;
+	}
+	
+	@Override
 	protected Builder builder() {
 		feeling = Feeling.CHASM;
-		return new LegacyBuilder(LegacyBuilder.Type.LAST_SHOP,
-				width, height, minRoomSize, maxRoomSize);
+		//TODO want to use strict line builder here
+		return super.builder();
 	}
 	
 	@Override

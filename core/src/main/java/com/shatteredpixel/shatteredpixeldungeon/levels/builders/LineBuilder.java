@@ -58,7 +58,7 @@ public class LineBuilder extends Builder {
 			}
 		}
 		
-		if (entrance == null || exit == null){
+		if (entrance == null){
 			return null;
 		}
 		
@@ -80,6 +80,9 @@ public class LineBuilder extends Builder {
 		Room curr = entrance;
 		
 		for (int i = 0; i <= roomsOnPath; i++){
+			if (i == roomsOnPath && exit == null)
+				continue;
+			
 			if (Random.Int(2) == 0){
 				TunnelRoom t = new TunnelRoom();
 				t.setSize();

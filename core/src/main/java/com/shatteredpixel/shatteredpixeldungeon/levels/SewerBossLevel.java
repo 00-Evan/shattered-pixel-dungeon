@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -30,17 +29,17 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LegacyBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerBossEntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.noosa.Group;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class SewerBossLevel extends RegularLevel {
+import java.util.ArrayList;
+
+public class SewerBossLevel extends SewerLevel {
 
 	{
 		color1 = 0x48763c;
@@ -50,41 +49,26 @@ public class SewerBossLevel extends RegularLevel {
 	private int stairs = 0;
 	
 	@Override
-	public String tilesTex() {
-		return Assets.TILES_SEWERS;
+	protected ArrayList<Room> initRooms() {
+		ArrayList<Room> initRooms = new ArrayList<>();
+		initRooms.add ( roomEntrance = roomExit = new SewerBossEntranceRoom());
+		
+		int standards = standardRooms();
+		for (int i = 0; i < standards; i++)
+			initRooms.add(StandardRoom.createRoom());
+		
+		initRooms.add(new RatKingRoom());
+		return initRooms;
 	}
 	
 	@Override
-	public String waterTex() {
-		return Assets.WATER_SEWERS;
-	}
-	
-	@Override
-	protected boolean build() {
-		
-		if (!super.build())
-			return false;
-		
-		//sticks the exit in the room entrance.
-		exit = roomEntrance.top * width() + (roomEntrance.left + roomEntrance.right) / 2;
-		map[exit] = Terrain.LOCKED_EXIT;
-		
-		//make sure the exit is only visible in the entrance room.
-		int count = 0;
-		for (int i : PathFinder.NEIGHBOURS8){
-			//exit must have exactly 3 non-wall tiles around it.
-			if (map[exit+i] != Terrain.WALL)
-				count++;
-		}
-		if (count > 3)
-			return false;
-		
-		return true;
+	protected int standardRooms() {
+		return 3+Random.chances(new float[]{4, 2, 2});
 	}
 	
 	protected Builder builder(){
-		return new LegacyBuilder(LegacyBuilder.Type.SEWER_BOSS,
-				width, height, minRoomSize, maxRoomSize);
+		//TODO want to use a more simple circular builder here
+		return super.builder();
 	}
 	
 	@Override
@@ -109,29 +93,6 @@ public class SewerBossLevel extends RegularLevel {
 	
 	protected int nTraps() {
 		return 0;
-	}
-	
-	@Override
-	protected void decorate() {
-		int start = roomExit.top * width() + roomExit.left + 1;
-		int end = start + roomExit.width() - 2;
-		for (int i=start; i < end; i++) {
-			if (i != exit && map[i] == Terrain.WALL) {
-				map[i] = Terrain.WALL_DECO;
-				map[i + width()] = Terrain.WATER;
-			} else {
-				map[i + width()] = Terrain.EMPTY;
-			}
-		}
-		
-		placeSign();
-	}
-	
-	@Override
-	public Group addVisuals() {
-		super.addVisuals();
-		SewerLevel.addSewerVisuals(this, visuals);
-		return visuals;
 	}
 
 	@Override
@@ -208,27 +169,5 @@ public class SewerBossLevel extends RegularLevel {
 		super.restoreFromBundle( bundle );
 		stairs = bundle.getInt( STAIRS );
 		roomExit = roomEntrance;
-	}
-
-	@Override
-	public String tileName( int tile ) {
-		switch (tile) {
-			case Terrain.WATER:
-				return Messages.get(SewerLevel.class, "water_name");
-			default:
-				return super.tileName( tile );
-		}
-	}
-
-	@Override
-	public String tileDesc(int tile) {
-		switch (tile) {
-			case Terrain.EMPTY_DECO:
-				return Messages.get(SewerLevel.class, "empty_deco_desc");
-			case Terrain.BOOKSHELF:
-				return Messages.get(SewerLevel.class, "bookshelf_desc");
-			default:
-				return super.tileDesc( tile );
-		}
 	}
 }

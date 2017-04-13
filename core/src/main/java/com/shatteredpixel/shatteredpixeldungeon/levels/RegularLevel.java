@@ -33,11 +33,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LegacyBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RegularPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
@@ -70,25 +72,53 @@ public abstract class RegularLevel extends Level {
 		
 		builder = builder();
 		
-		rooms = builder.build(null);
 		
-		if (rooms == null){
-			return false;
-		}
+		ArrayList<Room> initRooms = initRooms();
+		Collections.shuffle(initRooms);
 		
-		roomEntrance = ((LegacyBuilder)builder).roomEntrance;
-		roomExit = ((LegacyBuilder)builder).roomExit;
+		do {
+			for (Room r : initRooms){
+				r.neigbours.clear();
+				r.connected.clear();
+			}
+			rooms = builder.build(initRooms);
+		} while (rooms == null);
 		
-		if (!painter().paint(this, rooms)){
-			return false;
-		}
+		return painter().paint(this, rooms);
 		
-		return true;
+	}
+	
+	protected ArrayList<Room> initRooms() {
+		ArrayList<Room> initRooms = new ArrayList<>();
+		initRooms.add ( roomEntrance = new EntranceRoom());
+		initRooms.add( roomExit = new ExitRoom());
+		
+		int standards = standardRooms();
+		for (int i = 0; i < standards; i++)
+			initRooms.add(StandardRoom.createRoom());
+		
+		if (Dungeon.shopOnLevel())
+			initRooms.add(new ShopRoom());
+		
+		int specials = specialRooms();
+		SpecialRoom.initForFloor();
+		for (int i = 0; i < specials; i++)
+				initRooms.add(SpecialRoom.createRoom());
+			
+		return initRooms;
+	}
+	
+	protected int standardRooms(){
+		return 0;
+	}
+	
+	protected int specialRooms(){
+		return 0;
 	}
 	
 	protected Builder builder(){
-		return new LegacyBuilder(LegacyBuilder.Type.REGULAR,
-				width, height, minRoomSize, maxRoomSize);
+		//TODO need a much better builder here
+		return new LineBuilder();
 	}
 	
 	protected Painter painter(){
@@ -136,9 +166,6 @@ public abstract class RegularLevel extends Level {
 	protected float[] trapChances() {
 		return new float[]{1};
 	}
-	
-	protected int minRoomSize = 8;
-	protected int maxRoomSize = 10;
 	
 	@Override
 	public int nMobs() {

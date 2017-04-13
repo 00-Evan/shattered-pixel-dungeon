@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
@@ -56,6 +57,8 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
+import java.util.ArrayList;
+
 public class CavesLevel extends RegularLevel {
 
 	{
@@ -63,6 +66,21 @@ public class CavesLevel extends RegularLevel {
 		color2 = 0xb9d661;
 		
 		viewDistance = 6;
+	}
+	
+	@Override
+	protected ArrayList<Room> initRooms() {
+		return Blacksmith.Quest.spawn(super.initRooms());
+	}
+	
+	@Override
+	protected int standardRooms() {
+		return 5+Random.chances(new float[]{2, 2, 3, 2, 1, 1});
+	}
+	
+	@Override
+	protected int specialRooms() {
+		return 1+Random.chances(new float[]{3, 3, 2, 1});
 	}
 	
 	@Override

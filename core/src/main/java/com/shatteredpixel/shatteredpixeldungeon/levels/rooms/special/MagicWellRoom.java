@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfAwareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfHealth;
@@ -38,6 +37,8 @@ public class MagicWellRoom extends SpecialRoom {
 	private static final Class<?>[] WATERS =
 		{WaterOfAwareness.class, WaterOfHealth.class, WaterOfTransmutation.class};
 	
+	public Class<?extends WellWater> overrideWater = null;
+	
 	public void paint( Level level ) {
 
 		Painter.fill( level, this, Terrain.WALL );
@@ -48,12 +49,12 @@ public class MagicWellRoom extends SpecialRoom {
 		
 		@SuppressWarnings("unchecked")
 		Class<? extends WellWater> waterClass =
-			Dungeon.depth >= Dungeon.transmutation ?
-			WaterOfTransmutation.class :
+			overrideWater != null ?
+			overrideWater :
 			(Class<? extends WellWater>)Random.element( WATERS );
 			
 		if (waterClass == WaterOfTransmutation.class) {
-			Dungeon.transmutation = Integer.MAX_VALUE;
+			SpecialRoom.disableGaranteedWell();
 		}
 		
 		WellWater water = (WellWater)level.blobs.get( waterClass );

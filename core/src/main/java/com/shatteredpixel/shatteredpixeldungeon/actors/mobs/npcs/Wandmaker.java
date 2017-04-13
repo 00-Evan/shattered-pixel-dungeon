@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RotGardenRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RitualSiteRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -283,8 +282,7 @@ public class Wandmaker extends NPC {
 			}
 		}
 		
-		//FIXME: refactor this to work with new levelgen
-		public static boolean spawnRoom( ArrayList<Room> rooms) {
+		public static ArrayList<Room> spawnRoom( ArrayList<Room> rooms) {
 			questRoomSpawned = false;
 			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {
 				
@@ -292,41 +290,22 @@ public class Wandmaker extends NPC {
 				// but if the no herbalism challenge is enabled, only pick 1 or 2, no rotberry.
 				if (type == 0) type = Random.Int(Dungeon.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3)+1;
 				
-				//note that we set the type but can fail here. This ensures that if a level needs to be re-generated
-				//we don't re-roll the quest, it will try to assign itself to that new level with the same type.
-				Room questRoom = null;
-				for (Room r : rooms){
-					if (r instanceof StandardRoom && r.width() >= 7 && r.height() >= 7){
-						if (type == 2 || r.connected.size() == 1){
-							questRoom = r;
-							break;
-						}
-					}
-				}
-		
-				if (questRoom == null){
-					return false;
-				}
-		
-				Room temp = questRoom;
 				switch (type){
 					case 1: default:
-						questRoom = new MassGraveRoom().set(temp);
+						rooms.add(new MassGraveRoom());
 						break;
 					case 2:
-						questRoom = new RitualSiteRoom().set(temp);
+						rooms.add(new RitualSiteRoom());
 						break;
 					case 3:
-						questRoom = new RotGardenRoom().set(temp);
+						rooms.add(new RotGardenRoom());
 						break;
 				}
-				rooms.set(rooms.indexOf(temp), questRoom);
 		
 				questRoomSpawned = true;
-				return true;
-			} else {
-				return true;
+				
 			}
+			return rooms;
 		}
 		
 		public static void complete() {

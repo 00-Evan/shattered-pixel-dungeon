@@ -76,8 +76,6 @@ import java.util.HashSet;
 
 public class Dungeon {
 
-	public static int transmutation;	// depth number for a well of transmutation
-
 	//enum of items which have limited spawns, records how many have spawned
 	//could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
 	//TODO: this is fairly brittle when it comes to bundling, should look into a more flexible solution.
@@ -156,9 +154,7 @@ public class Dungeon {
 			Potion.initColors();
 			Ring.initGems();
 
-			transmutation = Random.IntRange( 6, 14 );
-
-			SpecialRoom.shuffleTypes();
+			SpecialRoom.initForRun();
 
 		Random.seed();
 		
@@ -454,8 +450,6 @@ public class Dungeon {
 
 			quickslot.storePlaceholders( bundle );
 
-			bundle.put( WT, transmutation );
-
 			int[] dropValues = new int[limitedDrops.values().length];
 			for (limitedDrops value : limitedDrops.values())
 				dropValues[value.ordinal()] = value.count;
@@ -563,8 +557,6 @@ public class Dungeon {
 		quickslot.restorePlaceholders( bundle );
 		
 		if (fullLoad) {
-			transmutation = bundle.getInt( WT );
-
 			int[] dropValues = bundle.getIntArray(LIMDROPS);
 			for (limitedDrops value : limitedDrops.values())
 				value.count = value.ordinal() < dropValues.length ?

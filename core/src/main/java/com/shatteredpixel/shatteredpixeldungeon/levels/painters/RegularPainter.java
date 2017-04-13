@@ -82,8 +82,6 @@ public class RegularPainter extends Painter {
 		
 		level.setSize(width+1, height+1);
 		
-		PathFinder.setMapSize(level.width(), level.height());
-		
 		for (Room r : rooms) {
 			placeDoors( r );
 			r.paint( level );

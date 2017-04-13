@@ -59,12 +59,21 @@ import javax.microedition.khronos.opengles.GL10;
 public class HallsLevel extends RegularLevel {
 
 	{
-		minRoomSize = 7;
 		
 		viewDistance = Math.max( 25 - Dungeon.depth, 1 );
 		
 		color1 = 0x801500;
 		color2 = 0xa68521;
+	}
+	
+	@Override
+	protected int standardRooms() {
+		return 8+Random.chances(new float[]{3, 3, 2, 2, 1});
+	}
+	
+	@Override
+	protected int specialRooms() {
+		return 1 + Random.chances(new float[]{1, 3, 3, 2});
 	}
 	
 	@Override

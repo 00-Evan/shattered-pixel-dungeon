@@ -21,28 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ArmoryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.CryptRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.GardenRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.LaboratoryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.LibraryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicWellRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.StatueRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.TreasuryRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.VaultRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
@@ -58,6 +41,9 @@ import java.util.ListIterator;
 
 //This builder exactly mimics pre-0.6.0 levelgen, including all of its limitations
 //Currently implemented during this transition period, it will likely not survive to 0.6.0 release
+
+//this is now broken due to changes elsewhere and serves only as a reference for older logic.
+//DO NOT USE, pending deletion before 0.6.0 release.
 public class LegacyBuilder extends Builder {
 	
 	public enum Type{
@@ -190,6 +176,7 @@ public class LegacyBuilder extends Builder {
 			}
 		}
 		
+		/*
 		specials = new ArrayList<>( SpecialRoom.SPECIALS );
 		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
 			specials.remove( WeakFloorRoom.class );
@@ -201,19 +188,21 @@ public class LegacyBuilder extends Builder {
 		if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
 			//sorry warden, no lucky sungrass or blandfruit seeds for you!
 			specials.remove( GardenRoom.class );
-		}
+		}*/
 		
 		if (!assignRoomType())
 			return null;
 		
 		//Quest generation logic
+		//disabled due to incompatibilities with old logic
+		/*
 		if (Dungeon.depth >= 6 && Dungeon.depth <= 9){
 			if (!Wandmaker.Quest.spawnRoom( rooms ) && Dungeon.depth == 9)
 				return null;
 		} else if (Dungeon.depth >= 11 && Dungeon.depth <= 14){
 			if (!Blacksmith.Quest.spawn( rooms ) && Dungeon.depth == 14)
 				return null;
-		}
+		}*/
 		
 		ArrayList<Room> resultRooms = new ArrayList<>();
 		for (Room r : rooms)
@@ -478,6 +467,8 @@ public class LegacyBuilder extends Builder {
 		boolean pitMade = false;
 		
 		ListIterator<Room> it = rooms.listIterator();
+		
+		/*
 		while (it.hasNext()) {
 			Room r = it.next();
 			Room temp;
@@ -555,7 +546,7 @@ public class LegacyBuilder extends Builder {
 		}
 		
 		if (Level.pitRoomNeeded && !pitMade) return false;
-		
+		*/
 		Class<? extends Room> tunnelType = TunnelRoom.class;
 		if ((Dungeon.depth > 5 && Dungeon.depth <= 10) ||
 				(Dungeon.depth > 15 && Dungeon.depth <= 20)){

@@ -21,12 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class SpecialRoom extends Room {
 	
@@ -60,41 +65,112 @@ public class SpecialRoom extends Room {
 			TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, LaboratoryRoom.class, VaultRoom.class
 	) );
 	
-	public static ArrayList<Class<? extends Room>> SPECIALS = new ArrayList<>();
+	public static ArrayList<Class<? extends Room>> runSpecials = new ArrayList<>();
+	public static ArrayList<Class<? extends Room>> floorSpecials = new ArrayList<>();
 	
-	public static void shuffleTypes() {
-		SPECIALS = (ArrayList<Class<?extends Room>>)ALL_SPEC.clone();
-		int size = SPECIALS.size();
-		for (int i=0; i < size - 1; i++) {
-			int j = Random.Int( i, size );
-			if (j != i) {
-				Class<?extends Room> c = SPECIALS.get( i );
-				SPECIALS.set( i, SPECIALS.get( j ) );
-				SPECIALS.set( j, c );
-			}
+	private static int pitNeededDepth = Integer.MAX_VALUE;
+	private static int guaranteedWellDepth = Integer.MAX_VALUE;
+	
+	public static void initForRun() {
+		runSpecials = (ArrayList<Class<?extends Room>>)ALL_SPEC.clone();
+		
+		//remove special rooms disallowed by challenges
+		if (Dungeon.isChallenged( Challenges.NO_ARMOR )){
+			//no sense in giving an armor reward room on a run with no armor.
+			runSpecials.remove( CryptRoom.class );
+		}
+		if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
+			//sorry warden, no lucky sungrass or blandfruit seeds for you!
+			runSpecials.remove( GardenRoom.class );
+		}
+		
+		guaranteedWellDepth = Random.IntRange( 6, 14 );
+		Collections.shuffle(runSpecials);
+	}
+	
+	public static void initForFloor(){
+		floorSpecials = (ArrayList<Class<?extends Room>>) runSpecials.clone();
+	}
+	
+	private static void useType( Class<?extends Room> type ) {
+		if (runSpecials.remove( type )) {
+			floorSpecials.remove( type );
+			runSpecials.add( type );
 		}
 	}
 	
-	public static void useType( Class<?extends Room> type ) {
-		if (SPECIALS.remove( type )) {
-			SPECIALS.add( type );
+	public static void disableGaranteedWell(){
+		guaranteedWellDepth = Integer.MAX_VALUE;
+	}
+	
+	public static SpecialRoom createRoom(){
+		if (Dungeon.depth == pitNeededDepth){
+			pitNeededDepth = -1;
+			
+			floorSpecials.remove( ArmoryRoom.class );
+			floorSpecials.remove( CryptRoom.class );
+			floorSpecials.remove( LaboratoryRoom.class );
+			floorSpecials.remove( LibraryRoom.class );
+			floorSpecials.remove( StatueRoom.class );
+			floorSpecials.remove( TreasuryRoom.class );
+			floorSpecials.remove( VaultRoom.class );
+			floorSpecials.remove( WeakFloorRoom.class );
+			
+			return new PitRoom();
+		
+			//TODO should laboratory rooms be more common like this?
+		} else if (Dungeon.depth % 5 == 2 && floorSpecials.contains( LaboratoryRoom.class )) {
+			
+			useType(LaboratoryRoom.class);
+			return new LaboratoryRoom();
+			
+		} else if (Dungeon.depth >= guaranteedWellDepth) {
+			useType( MagicWellRoom.class );
+			
+			MagicWellRoom r = new MagicWellRoom();
+			r.overrideWater = WaterOfTransmutation.class;
+			guaranteedWellDepth = Integer.MAX_VALUE;
+			return r;
+		
+		} else {
+			
+			if (Dungeon.bossLevel(Dungeon.depth + 1)){
+				floorSpecials.remove(WeakFloorRoom.class);
+			}
+			
+			Room r = null;
+			try {
+				r = floorSpecials.get( Math.min( Random.Int( floorSpecials.size() ), Random.Int( floorSpecials.size() ) ) ).newInstance();
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+			}
+			
+			if (r instanceof WeakFloorRoom){
+				pitNeededDepth = Dungeon.depth + 1;
+			}
+			
+			useType( r.getClass() );
+			return (SpecialRoom)r;
+		
 		}
 	}
 	
 	private static final String ROOMS	= "special_rooms";
+	private static final String PIT	    = "pit_needed";
+	private static final String WELL    = "guaranteed_well";
 	
 	public static void restoreRoomsFromBundle( Bundle bundle ) {
-		if (bundle.contains( ROOMS )) {
-			SPECIALS.clear();
-			for (Class<?extends Room> type : bundle.getClassArray( ROOMS )) {
-				SPECIALS.add( type );
-			}
-		} else {
-			shuffleTypes();
+		runSpecials.clear();
+		for (Class<?extends Room> type : bundle.getClassArray( ROOMS )) {
+			runSpecials.add( type );
 		}
+		pitNeededDepth = bundle.getInt(PIT);
+		guaranteedWellDepth = bundle.getInt(WELL);
 	}
 	
 	public static void storeRoomsInBundle( Bundle bundle ) {
-		bundle.put( ROOMS, SPECIALS.toArray(new Class[0]) );
+		bundle.put( ROOMS, runSpecials.toArray(new Class[0]) );
+		bundle.put( PIT, pitNeededDepth );
+		bundle.put( WELL, guaranteedWellDepth );
 	}
 }
