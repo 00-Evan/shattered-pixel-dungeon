@@ -175,15 +175,23 @@ public class FogOfWar extends Image {
 				if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell])){
 
 					//internal wall tiles
-					if (cell + mapWidth >= mapLength
-							|| DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + mapWidth])){
+					if (cell + mapWidth >= mapLength){
+						fillCell(j, i, FOG_COLORS[INVISIBLE][brightness]);
+						
+					} else if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + mapWidth])){
 
 						//these tiles need to check both the left and right side, to account for only one half of them being seen
 						if (cell % mapWidth != 0){
 
 							//picks the darkest fog between current tile, left, and below-left(if left is a wall).
 							if (cell + mapWidth < mapLength && DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell - 1])){
-								colorArray[0] = colorArray[2] = FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth - 1), getCellFog(cell - 1)))][brightness];
+								
+								//if below-left is also a wall, then we should be dark no matter what.
+								if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + mapWidth - 1])){
+									colorArray[0] = colorArray[2] = FOG_COLORS[INVISIBLE][brightness];
+								} else {
+									colorArray[0] = colorArray[2] = FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth - 1), getCellFog(cell - 1)))][brightness];
+								}
 
 							} else {
 								colorArray[0] = colorArray[2] = FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell - 1))][brightness];
@@ -197,7 +205,13 @@ public class FogOfWar extends Image {
 
 							//picks the darkest fog between current tile, right, and below-right(if right is a wall).
 							if (cell + mapWidth < mapLength && DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + 1])){
-								colorArray[1] = colorArray[3] = FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth + 1), getCellFog(cell + 1)))][brightness];
+								
+								//if below-right is also a wall, then we should be dark no matter what.
+								if (DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell + mapWidth + 1])){
+									colorArray[1] = colorArray[3] = FOG_COLORS[INVISIBLE][brightness];
+								} else {
+									colorArray[1] = colorArray[3] = FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth + 1), getCellFog(cell + 1)))][brightness];
+								}
 
 							} else {
 								colorArray[1] = colorArray[3] =
