@@ -274,7 +274,7 @@ public class ShopRoom extends SpecialRoom {
 		if (itemsToSpawn.size() > 63)
 			throw new RuntimeException("Shop attempted to carry more than 63 items!");
 
-		Collections.shuffle(itemsToSpawn);
+		Random.shuffle(itemsToSpawn);
 	}
 
 	private static void ChooseBag(Belongings pack){

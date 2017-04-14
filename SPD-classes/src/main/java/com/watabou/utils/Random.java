@@ -22,7 +22,9 @@
 package com.watabou.utils;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class Random {
 
@@ -155,6 +157,10 @@ public class Random {
 		return size > 0 ?
 			(T)collection.toArray()[Int( size )] :
 			null;
+	}
+
+	public static<T> void shuffle( List<?extends T> list){
+		Collections.shuffle(list, rand);
 	}
 	
 	public static<T> void shuffle( T[] array ) {

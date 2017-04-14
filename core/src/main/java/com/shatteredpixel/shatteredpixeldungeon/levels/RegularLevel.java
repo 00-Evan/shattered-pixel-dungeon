@@ -74,7 +74,7 @@ public abstract class RegularLevel extends Level {
 		
 		
 		ArrayList<Room> initRooms = initRooms();
-		Collections.shuffle(initRooms);
+		Random.shuffle(initRooms);
 		
 		do {
 			for (Room r : initRooms){
@@ -340,7 +340,7 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	protected Room randomRoom( Class<?extends Room> type ) {
-		Collections.shuffle( rooms );
+		Random.shuffle( rooms );
 		for (Room r : rooms) {
 			if (type.isInstance(r)
 					//compatibility with pre-0.6.0 saves

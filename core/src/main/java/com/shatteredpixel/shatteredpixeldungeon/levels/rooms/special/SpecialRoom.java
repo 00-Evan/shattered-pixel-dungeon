@@ -85,7 +85,7 @@ public class SpecialRoom extends Room {
 		}
 		
 		guaranteedWellDepth = Random.IntRange( 6, 14 );
-		Collections.shuffle(runSpecials);
+		Random.shuffle(runSpecials);
 	}
 	
 	public static void initForFloor(){
