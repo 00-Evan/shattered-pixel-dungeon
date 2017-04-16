@@ -31,7 +31,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class SpecialRoom extends Room {
 	
@@ -97,6 +96,10 @@ public class SpecialRoom extends Room {
 			floorSpecials.remove( type );
 			runSpecials.add( type );
 		}
+	}
+
+	public static void resetPitRoom(int depth){
+		if (pitNeededDepth == depth) pitNeededDepth = Integer.MAX_VALUE;
 	}
 	
 	public static void disableGaranteedWell(){

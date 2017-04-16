@@ -156,10 +156,6 @@ public abstract class Level implements Bundlable {
 	public int color1 = 0x004400;
 	public int color2 = 0x88CC44;
 
-	//FIXME this is sloppy. Should be able to keep track of this without static variables
-	public static boolean pitRoomNeeded = false;
-	public static boolean weakFloorCreated = false;
-
 	private static final String VERSION     = "version";
 	private static final String MAP			= "map";
 	private static final String VISITED		= "visited";
@@ -242,11 +238,7 @@ public abstract class Level implements Bundlable {
 			}
 		}
 		
-		boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;
-		
 		do {
-			pitRoomNeeded = pitNeeded;
-			weakFloorCreated = false;
 			width = height = length = 0;
 
 			mobs = new HashSet<>();
@@ -321,7 +313,6 @@ public abstract class Level implements Bundlable {
 			setSize( bundle.getInt("width"), bundle.getInt("height"));
 		} else
 			setSize( 32, 32); //default sizes
-		PathFinder.setMapSize(width(), height());
 		
 		mobs = new HashSet<>();
 		heaps = new SparseArray<>();
@@ -340,8 +331,6 @@ public abstract class Level implements Bundlable {
 		exit		= bundle.getInt( EXIT );
 
 		locked      = bundle.getBoolean( LOCKED );
-		
-		weakFloorCreated = false;
 
 		//for pre-0.4.3 saves
 		if (version <= ShatteredPixelDungeon.v0_4_2b){
