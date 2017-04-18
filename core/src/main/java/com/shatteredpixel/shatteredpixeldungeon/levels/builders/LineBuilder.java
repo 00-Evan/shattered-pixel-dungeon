@@ -32,7 +32,7 @@ import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 
-//A simple builder which puts most rooms in a straight line with a few branches
+//A simple builder which utilizes a line as its core feature.
 public class LineBuilder extends Builder {
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
@@ -61,133 +61,93 @@ public class LineBuilder extends Builder {
 		if (entrance == null){
 			return null;
 		}
-		
+
+		float direction = Random.Float(0, 360);
 		ArrayList<Room> branchable = new ArrayList<>();
 		
 		entrance.setSize();
-		entrance.setPos(0, -entrance.width()/2);
+		entrance.setPos(0, 0);
 		branchable.add(entrance);
-		
+
 		if (shop != null){
-			shop.setSize();
-			shop.setPos(-shop.width()+1, -shop.height()/2);
-			shop.connect(entrance);
+			placeRoom(rooms, entrance, shop, direction + 180f);
 		}
 		
 		int roomsOnPath = multiConnections.size()/5 + Random.Int(2);
 		roomsOnPath = Math.min(roomsOnPath, multiConnections.size());
 		
 		Room curr = entrance;
-		
+
 		for (int i = 0; i <= roomsOnPath; i++){
 			if (i == roomsOnPath && exit == null)
 				continue;
-			
-			if (Random.Int(2) == 0){
+
+			int tunnels = Random.chances(new float[]{1,2,1});
+			for (int j = 0; j < tunnels; j++){
 				TunnelRoom t = new TunnelRoom();
-				t.setSize();
-				t.setPos( curr.right, -t.height()/2);
-				t.connect(curr);
-				rooms.add(t);
+				placeRoom(rooms, curr, t, direction + Random.Float(-45f, 45f));
 				branchable.add(t);
+				rooms.add(t);
 				curr = t;
 			}
-			if (Random.Int(2) == 0){
-				TunnelRoom t = new TunnelRoom();
-				t.setSize();
-				t.setPos( curr.right, -t.height()/2);
-				t.connect(curr);
-				rooms.add(t);
-				branchable.add(t);
-				curr = t;
-			}
+
 			Room r = (i == roomsOnPath ? exit : multiConnections.get(i));
-			r.setSize();
-			r.setPos( curr.right, -r.height()/2);
-			r.connect(curr);
+			placeRoom(rooms, curr, r, direction + Random.Float(-45f, 45f));
 			branchable.add(r);
 			curr = r;
 		}
 		
-		
-		ArrayList<Room> upBrancheable = new ArrayList<>(branchable);
-		ArrayList<Room> downBrancheable = new ArrayList<>(branchable);
-		
 		//place branches
 		int i = roomsOnPath;
+		float angle;
+		int tries;
 		while (i < multiConnections.size() + singleConnections.size()){
-			if (upBrancheable.isEmpty() && downBrancheable.isEmpty())
-				return null;
-			
-			boolean up = downBrancheable.isEmpty()
-					|| (Random.Int(2) == 0 && !upBrancheable.isEmpty());
-			
-			if (up){
-				curr = Random.element(upBrancheable);
-				upBrancheable.remove(curr);
-			} else {
-				curr = Random.element(downBrancheable);
-				downBrancheable.remove(curr);
-			}
-			
-			if (Random.Int(3) == 0){
+
+			curr = Random.element(branchable);
+
+			int tunnels = Random.chances(new float[]{2,1,1});
+			for (int j = 0; j < tunnels; j++){
 				TunnelRoom t = new TunnelRoom();
-				if (placeBranchRoom(up, curr, t, rooms)){
-					rooms.add(t);
-				} else {
+				tries = 10;
+
+				do {
+					angle = placeRoom(rooms, curr, t, Random.Float(360f));
+					tries--;
+				} while (angle == -1 && tries >= 0);
+
+				if (angle == -1)
 					continue;
-				}
+				else
+					rooms.add(t);
+
 				curr = t;
 			}
-			if (Random.Int(3) == 0){
-				TunnelRoom t = new TunnelRoom();
-				if (placeBranchRoom(up, curr, t, rooms)){
-					rooms.add(t);
-				} else {
-					continue;
-				}
-				curr = t;
-			}
+
 			Room r;
 			if (i < multiConnections.size()) {
 				r = multiConnections.get(i);
 			} else {
 				r = singleConnections.get(i - multiConnections.size());
 			}
-			
-			if (!placeBranchRoom(up, curr, r, rooms)){
+
+			tries = 10;
+
+			do {
+				angle = placeRoom(rooms, curr, r, Random.Float(360f));
+				tries--;
+			} while (angle == -1 && tries >= 0);
+
+			if (angle == -1)
 				continue;
-			}
-			if (r.canConnect(up ? Room.TOP : Room.BOTTOM) && Random.Int(3) == 0) {
-				if (up) upBrancheable.add(r);
-				else downBrancheable.add(r);
-			}
+
+			if (r.maxConnections(Room.ALL) > 1 && Random.Int(2) == 0)
+				branchable.add(r);
+
 			i++;
 		}
 		
 		return rooms;
 	
 	}
-	
-	private boolean placeBranchRoom(boolean up, Room curr, Room next, ArrayList<Room> collision){
-		Rect space = findFreeSpace(
-				new Point( curr.left + curr.width()/2, up ? curr.top : curr.bottom),
-				collision,
-				Math.max(next.maxWidth(), next.maxHeight()));
-		
-		if (next.setSizeWithLimit(space.width()+1,space.height()+1 )){
-			next.setPos( curr.left + (curr.width()-next.width())/2, up ? curr.top - next.height()+1 : curr.bottom);
-			
-			if (next.right > space.right){
-				next.shift( space.right - next.right, 0);
-			} else if (next.left < space.left){
-				next.shift( space.left - next.left, 0);
-			}
-			
-			return next.connect(curr);
-			
-		} else {
-			return false;
-		}
-	}
+
 }
