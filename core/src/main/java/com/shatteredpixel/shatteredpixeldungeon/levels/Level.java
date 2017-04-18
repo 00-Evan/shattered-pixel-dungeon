@@ -763,8 +763,14 @@ public abstract class Level implements Bundlable {
 		GameScene.updateMap( cell );
 	}
 	
-	public int pitCell() {
-		return randomRespawnCell();
+	public int fallCell( boolean fallIntoPit ) {
+		int result;
+		do {
+			result = randomRespawnCell();
+		} while (traps.get(result) != null
+				|| findMob(result) != null
+				|| heaps.get(result) != null);
+		return result;
 	}
 	
 	public void press( int cell, Char ch ) {

@@ -233,7 +233,7 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.depth++;
 			level = Dungeon.loadLevel( Dungeon.hero.heroClass );
 		}
-		Dungeon.switchLevel( level, fallIntoPit ? level.pitCell() : level.randomRespawnCell() );
+		Dungeon.switchLevel( level, level.fallCell( fallIntoPit ));
 	}
 	
 	private void ascend() throws IOException {

@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
@@ -53,7 +52,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 
 public abstract class RegularLevel extends Level {
@@ -374,14 +372,21 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	@Override
-	public int pitCell() {
-		for (Room room : rooms) {
-			if (room instanceof PitRoom || room.legacyType.equals("PIT")) {
-				return pointToCell(room.random());
+	public int fallCell( boolean fallIntoPit ) {
+		if (fallIntoPit) {
+			for (Room room : rooms) {
+				if (room instanceof PitRoom || room.legacyType.equals("PIT")) {
+					int result;
+					do {
+						result = pointToCell(room.random());
+					} while (traps.get(result) != null
+							|| findMob(result) != null
+							|| heaps.get(result) != null);
+				}
 			}
 		}
 		
-		return super.pitCell();
+		return super.fallCell( false );
 	}
 	
 	@Override
