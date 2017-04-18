@@ -157,7 +157,8 @@ public class LegacyBuilder extends Builder {
 				connected.add( or );
 			}
 		}
-		
+
+		/*
 		if (Dungeon.shopOnLevel()) {
 			Room shop = null;
 			for (Room r : roomEntrance.connected.keySet()) {
@@ -176,7 +177,7 @@ public class LegacyBuilder extends Builder {
 			}
 		}
 		
-		/*
+
 		specials = new ArrayList<>( SpecialRoom.SPECIALS );
 		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
 			specials.remove( WeakFloorRoom.class );

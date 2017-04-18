@@ -298,6 +298,11 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		if (bundle.contains( "type" ))
 			legacyType = bundle.getString( "type" );
 	}
+
+	//Note that currently connections and neighbours are not preserved on load
+	public void onLevelLoad( Level level ){
+		//does nothing by default
+	}
 	
 	public static class Door extends Point {
 		

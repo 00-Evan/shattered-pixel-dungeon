@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.FissureRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ImpShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
 import com.watabou.utils.Random;
@@ -61,13 +62,8 @@ public class LastShopLevel extends RegularLevel {
 		ArrayList<Room> rooms = new ArrayList<>();
 		
 		rooms.add ( roomEntrance = new EntranceRoom());
+		rooms.add( new ImpShopRoom() );
 		rooms.add( roomExit = new ExitRoom());
-		
-		if (Imp.Quest.isCompleted()){
-			rooms.add( new ShopRoom() );
-		} else {
-			rooms.add( new FissureRoom() );
-		}
 		
 		return rooms;
 	}

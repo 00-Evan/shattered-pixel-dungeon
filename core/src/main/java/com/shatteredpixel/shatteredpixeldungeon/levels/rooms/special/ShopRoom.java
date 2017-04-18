@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.MailArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
@@ -81,26 +82,17 @@ import java.util.Collections;
 
 public class ShopRoom extends SpecialRoom {
 
-	private static int pasWidth;
-	private static int pasHeight;
-
-	private static ArrayList<Item> itemsToSpawn;
+	private ArrayList<Item> itemsToSpawn;
 	
 	@Override
 	public int minWidth() {
-		if (itemsToSpawn == null) generateItems();
+		if (itemsToSpawn == null) itemsToSpawn = generateItems();
 		return Math.max(7, (int)(Math.sqrt(itemsToSpawn.size())+3));
-	}
-	
-	//FIXME this is messy, the floor 21 shop should probably just be its own class.
-	@Override
-	public int maxConnections(int direction) {
-		return Dungeon.depth == 21 ? 2 : 1;
 	}
 	
 	@Override
 	public int minHeight() {
-		if (itemsToSpawn == null) generateItems();
+		if (itemsToSpawn == null) itemsToSpawn = generateItems();
 		return Math.max(7, (int)(Math.sqrt(itemsToSpawn.size())+3));
 	}
 	
@@ -108,43 +100,71 @@ public class ShopRoom extends SpecialRoom {
 		
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
-		
-		pasWidth = width() - 3;
-		pasHeight = height() - 3;
-		int per = pasWidth * 2 + pasHeight * 2;
-		
-		if (itemsToSpawn == null)
-			generateItems();
-		
-		int pos = xy2p( this, entrance() ) + (per - itemsToSpawn.size()) / 2;
-		for (Item item : itemsToSpawn) {
-			
-			Point xy = p2xy( this, (pos + per) % per );
-			int cell = xy.x + xy.y * level.width();
-			
-			if (level.heaps.get( cell ) != null) {
-				do {
-					cell = level.pointToCell(random());
-				} while (level.heaps.get( cell ) != null);
-			}
-			
-			level.drop( item, cell ).type = Heap.Type.FOR_SALE;
-			
-			pos++;
-		}
-		
-		placeShopkeeper( level, this );
+
+		placeShopkeeper( level );
+
+		placeItems( level );
 		
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
 
-		itemsToSpawn = null;
+	}
+
+	protected void placeShopkeeper( Level level ) {
+
+		int pos = level.pointToCell(center());
+
+		Mob shopkeeper = new Shopkeeper();
+		shopkeeper.pos = pos;
+		level.mobs.add( shopkeeper );
+
+	}
+
+	protected void placeItems( Level level ){
+
+		if (itemsToSpawn == null)
+			itemsToSpawn = generateItems();
+
+		Point itemPlacement = new Point(entrance());
+		if (itemPlacement.y == top){
+			itemPlacement.y++;
+		} else if (itemPlacement.y == bottom) {
+			itemPlacement.y--;
+		} else if (itemPlacement.x == left){
+			itemPlacement.x++;
+		} else {
+			itemPlacement.x--;
+		}
+
+		for (Item item : itemsToSpawn) {
+
+			if (itemPlacement.x == left+1 && itemPlacement.y != top+1){
+				itemPlacement.y--;
+			} else if (itemPlacement.y == top+1 && itemPlacement.x != right-1){
+				itemPlacement.x++;
+			} else if (itemPlacement.x == right-1 && itemPlacement.y != bottom-1){
+				itemPlacement.y++;
+			} else {
+				itemPlacement.x--;
+			}
+
+			int cell = level.pointToCell(itemPlacement);
+
+			if (level.heaps.get( cell ) != null) {
+				do {
+					cell = level.pointToCell(random());
+				} while (level.heaps.get( cell ) != null || level.findMob( cell ) != null);
+			}
+
+			level.drop( item, cell ).type = Heap.Type.FOR_SALE;
+		}
+
 	}
 	
-	private static void generateItems() {
+	protected static ArrayList<Item> generateItems() {
 
-		itemsToSpawn = new ArrayList<Item>();
+		ArrayList<Item> itemsToSpawn = new ArrayList<>();
 		
 		switch (Dungeon.depth) {
 		case 6:
@@ -185,7 +205,7 @@ public class ShopRoom extends SpecialRoom {
 		itemsToSpawn.add( new MerchantsBeacon() );
 
 
-		ChooseBag(Dungeon.hero.belongings);
+		itemsToSpawn.add(ChooseBag(Dungeon.hero.belongings));
 
 
 		itemsToSpawn.add( new PotionOfHealing() );
@@ -275,9 +295,10 @@ public class ShopRoom extends SpecialRoom {
 			throw new RuntimeException("Shop attempted to carry more than 63 items!");
 
 		Random.shuffle(itemsToSpawn);
+		return itemsToSpawn;
 	}
 
-	private static void ChooseBag(Belongings pack){
+	protected static Bag ChooseBag(Belongings pack){
 
 		int seeds = 0, scrolls = 0, potions = 0, wands = 0;
 
@@ -297,92 +318,22 @@ public class ShopRoom extends SpecialRoom {
 		//note that the order here gives a perference if counts are otherwise equal
 		if (seeds >= scrolls && seeds >= potions && seeds >= wands && !Dungeon.limitedDrops.seedBag.dropped()) {
 			Dungeon.limitedDrops.seedBag.drop();
-			itemsToSpawn.add( new SeedPouch() );
+			return new SeedPouch();
 
 		} else if (scrolls >= potions && scrolls >= wands && !Dungeon.limitedDrops.scrollBag.dropped()) {
 			Dungeon.limitedDrops.scrollBag.drop();
-			itemsToSpawn.add( new ScrollHolder() );
+			return new ScrollHolder();
 
 		} else if (potions >= wands && !Dungeon.limitedDrops.potionBag.dropped()) {
 			Dungeon.limitedDrops.potionBag.drop();
-			itemsToSpawn.add( new PotionBandolier() );
+			return new PotionBandolier();
 
 		} else if (!Dungeon.limitedDrops.wandBag.dropped()) {
 			Dungeon.limitedDrops.wandBag.drop();
-			itemsToSpawn.add(new WandHolster());
+			return new WandHolster();
 		}
+
+		return null;
 	}
 
-	public static int spaceNeeded(){
-		if (itemsToSpawn == null)
-			generateItems();
-
-		//plus one for the shopkeeper
-		return itemsToSpawn.size() + 1;
-	}
-	
-	private static void placeShopkeeper( Level level, Room room ) {
-		
-		int pos;
-		do {
-			pos = level.pointToCell(room.random());
-		} while (level.heaps.get( pos ) != null);
-		
-		Mob shopkeeper = level instanceof LastShopLevel ? new ImpShopkeeper() : new Shopkeeper();
-		shopkeeper.pos = pos;
-		level.mobs.add( shopkeeper );
-		
-		if (level instanceof LastShopLevel) {
-			for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
-				int p = shopkeeper.pos + PathFinder.NEIGHBOURS9[i];
-				if (level.map[p] == Terrain.EMPTY_SP) {
-					level.map[p] = Terrain.WATER;
-				}
-			}
-		}
-	}
-	
-	private static int xy2p( Room room, Point xy ) {
-		if (xy.y == room.top) {
-			
-			return (xy.x - room.left - 1);
-			
-		} else if (xy.x == room.right) {
-			
-			return (xy.y - room.top - 1) + pasWidth;
-			
-		} else if (xy.y == room.bottom) {
-			
-			return (room.right - xy.x - 1) + pasWidth + pasHeight;
-			
-		} else {
-			
-			if (xy.y == room.top + 1) {
-				return 0;
-			} else {
-				return (room.bottom - xy.y - 1) + pasWidth * 2 + pasHeight;
-			}
-			
-		}
-	}
-	
-	private static Point p2xy( Room room, int p ) {
-		if (p < pasWidth) {
-			
-			return new Point( room.left + 1 + p, room.top + 1);
-			
-		} else if (p < pasWidth + pasHeight) {
-			
-			return new Point( room.right - 1, room.top + 1 + (p - pasWidth) );
-			
-		} else if (p < pasWidth * 2 + pasHeight) {
-			
-			return new Point( room.right - 1 - (p - (pasWidth + pasHeight)), room.bottom - 1 );
-			
-		} else {
-			
-			return new Point( room.left + 1, room.bottom - 1 - (p - (pasWidth * 2 + pasHeight)) );
-			
-		}
-	}
 }
