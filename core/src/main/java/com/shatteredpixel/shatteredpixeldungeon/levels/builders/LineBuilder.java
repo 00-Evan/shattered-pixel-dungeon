@@ -34,6 +34,34 @@ import java.util.ArrayList;
 
 //A simple builder which utilizes a line as its core feature.
 public class LineBuilder extends Builder {
+
+	private float pathVariance = 45f;
+
+	public LineBuilder setPathVariance( float var ){
+		pathVariance = var;
+		return this;
+	}
+
+	//path length is a percentage of total path rooms
+	private float pathLength = 0.2f;
+	//The chance weights for extra rooms to be added to the path
+	private float[] pathLenJitterChances = new float[]{1, 1};
+
+	public LineBuilder setPathLength( float len, float[] jitter ){
+		pathLength = len;
+		pathLenJitterChances = jitter;
+		return this;
+	}
+
+	private float[] pathTunnelChances = new float[]{1, 2, 1};
+	private float[] branchTunnelChances = new float[]{2, 1, 1};
+
+	public LineBuilder setTunnelLength( float[] path, float[] branch){
+		pathTunnelChances = path;
+		branchTunnelChances = branch;
+		return this;
+	}
+
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
 	
@@ -49,7 +77,7 @@ public class LineBuilder extends Builder {
 				entrance = r;
 			} else if (r instanceof ExitRoom) {
 				exit = r;
-			} else if (r instanceof ShopRoom){
+			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1){
 				shop = r;
 			} else if (r.maxConnections(Room.ALL) > 1){
 				multiConnections.add(r);
@@ -73,7 +101,7 @@ public class LineBuilder extends Builder {
 			placeRoom(rooms, entrance, shop, direction + 180f);
 		}
 		
-		int roomsOnPath = multiConnections.size()/5 + Random.Int(2);
+		int roomsOnPath = Math.round(multiConnections.size()*pathLength + Random.chances(pathLenJitterChances));
 		roomsOnPath = Math.min(roomsOnPath, multiConnections.size());
 		
 		Room curr = entrance;
@@ -82,17 +110,17 @@ public class LineBuilder extends Builder {
 			if (i == roomsOnPath && exit == null)
 				continue;
 
-			int tunnels = Random.chances(new float[]{1,2,1});
+			int tunnels = Random.chances(pathTunnelChances);
 			for (int j = 0; j < tunnels; j++){
 				TunnelRoom t = new TunnelRoom();
-				placeRoom(rooms, curr, t, direction + Random.Float(-45f, 45f));
+				placeRoom(rooms, curr, t, direction + Random.Float(-pathVariance, pathVariance));
 				branchable.add(t);
 				rooms.add(t);
 				curr = t;
 			}
 
 			Room r = (i == roomsOnPath ? exit : multiConnections.get(i));
-			placeRoom(rooms, curr, r, direction + Random.Float(-45f, 45f));
+			placeRoom(rooms, curr, r, direction + Random.Float(-pathVariance, pathVariance));
 			branchable.add(r);
 			curr = r;
 		}
@@ -105,7 +133,7 @@ public class LineBuilder extends Builder {
 
 			curr = Random.element(branchable);
 
-			int tunnels = Random.chances(new float[]{2,1,1});
+			int tunnels = Random.chances(branchTunnelChances);
 			for (int j = 0; j < tunnels; j++){
 				TunnelRoom t = new TunnelRoom();
 				tries = 10;
