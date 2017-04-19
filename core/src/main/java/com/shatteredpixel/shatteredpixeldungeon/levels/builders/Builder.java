@@ -40,8 +40,8 @@ public abstract class Builder {
 	//returns null on failure
 	public abstract ArrayList<Room> build(ArrayList<Room> rooms);
 
-    //returns a rectangle representing the maximum amount of free space from a specific start point
-	protected Rect findFreeSpace(Point start, ArrayList<Room> collision, int maxSize){
+	//returns a rectangle representing the maximum amount of free space from a specific start point
+	protected static Rect findFreeSpace(Point start, ArrayList<Room> collision, int maxSize){
 		Rect space = new Rect(start.x-maxSize, start.y-maxSize, start.x+maxSize, start.y+maxSize);
 
 		//shallow copy
@@ -130,100 +130,100 @@ public abstract class Builder {
 	// and it matches the given angle ([0-360), where 0 is straight up) as closely as possible.
 	//Note that getting an exactly correct angle is harder the closer that angle is to diagonal.
 	//Returns the exact angle between the centerpoints of the two rooms, or -1 if placement fails.
-	protected float placeRoom( ArrayList<Room> collision, Room prev, Room next, float angle){
+	protected static float placeRoom( ArrayList<Room> collision, Room prev, Room next, float angle){
 
-        //wrap angle around to always be [0-360)
-        angle %= 360f;
+		//wrap angle around to always be [0-360)
+		angle %= 360f;
 		if (angle < 0){
 			angle += 360f;
 		}
 
-        PointF prevCenter = new PointF((prev.left + prev.right)/2f, (prev.top + prev.bottom)/2f);
+		PointF prevCenter = new PointF((prev.left + prev.right)/2f, (prev.top + prev.bottom)/2f);
 
 		// calculating using y = mx+b, straight line formula
-        double m = Math.tan(angle/A + Math.PI/2.0);
-        double b = prevCenter.y -m*prevCenter.x;
+		double m = Math.tan(angle/A + Math.PI/2.0);
+		double b = prevCenter.y -m*prevCenter.x;
 
-        //using the line equation, we find the point along the prev room where the line exists
-        Point start;
-        int direction;
-        if (Math.abs(m) >= 1){
-            if (angle < 90 || angle > 270){
-                direction = Room.TOP;
-                start = new Point( (int)Math.round((prev.top - b)/m), prev.top);
-            } else {
-                direction = Room.BOTTOM;
-                start = new Point( (int)Math.round((prev.bottom - b)/m), prev.bottom);
-            }
-        } else {
-            if (angle < 180){
-                direction = Room.RIGHT;
-                start = new Point(prev.right, (int) Math.round(m * prev.right + b));
-            } else {
-                direction = Room.LEFT;
-                start = new Point(prev.left, (int) Math.round(m * prev.left + b));
-            }
-        }
+		//using the line equation, we find the point along the prev room where the line exists
+		Point start;
+		int direction;
+		if (Math.abs(m) >= 1){
+			if (angle < 90 || angle > 270){
+				direction = Room.TOP;
+				start = new Point( (int)Math.round((prev.top - b)/m), prev.top);
+			} else {
+				direction = Room.BOTTOM;
+				start = new Point( (int)Math.round((prev.bottom - b)/m), prev.bottom);
+			}
+		} else {
+			if (angle < 180){
+				direction = Room.RIGHT;
+				start = new Point(prev.right, (int) Math.round(m * prev.right + b));
+			} else {
+				direction = Room.LEFT;
+				start = new Point(prev.left, (int) Math.round(m * prev.left + b));
+			}
+		}
 
-        //cap it to a valid connection point for most rooms
-        if (direction == Room.TOP || direction == Room.BOTTOM) {
-            start.x = (int) GameMath.gate(prev.left + 1, start.x, prev.right - 1);
-        } else {
-            start.y = (int) GameMath.gate(prev.top + 1, start.y, prev.bottom - 1);
-        }
+		//cap it to a valid connection point for most rooms
+		if (direction == Room.TOP || direction == Room.BOTTOM) {
+			start.x = (int) GameMath.gate(prev.left + 1, start.x, prev.right - 1);
+		} else {
+			start.y = (int) GameMath.gate(prev.top + 1, start.y, prev.bottom - 1);
+		}
 
-        //space checking
-        Rect space = findFreeSpace(start, collision, Math.max(next.maxWidth(), next.maxHeight()));
-        if (!next.setSizeWithLimit(space.width()+1, space.height()+1)){
-            return -1;
-        }
+		//space checking
+		Rect space = findFreeSpace(start, collision, Math.max(next.maxWidth(), next.maxHeight()));
+		if (!next.setSizeWithLimit(space.width()+1, space.height()+1)){
+			return -1;
+		}
 
-        //find the ideal center for this new room using the line equation and known dimensions
-        PointF targetCenter = new PointF();
-        if (direction == Room.TOP) {
-            targetCenter.y = prev.top - (next.height() - 1) / 2f;
-            targetCenter.x = (float) ((targetCenter.y - b) / m);
-            next.setPos(Math.round(targetCenter.x - (next.width() - 1) / 2f), prev.top - (next.height() - 1));
+		//find the ideal center for this new room using the line equation and known dimensions
+		PointF targetCenter = new PointF();
+		if (direction == Room.TOP) {
+			targetCenter.y = prev.top - (next.height() - 1) / 2f;
+			targetCenter.x = (float) ((targetCenter.y - b) / m);
+			next.setPos(Math.round(targetCenter.x - (next.width() - 1) / 2f), prev.top - (next.height() - 1));
 
-        } else if (direction == Room.BOTTOM) {
-            targetCenter.y = prev.bottom + (next.height() - 1) / 2f;
-            targetCenter.x = (float) ((targetCenter.y - b) / m);
-            next.setPos(Math.round(targetCenter.x - (next.width() - 1) / 2f), prev.bottom);
+		} else if (direction == Room.BOTTOM) {
+			targetCenter.y = prev.bottom + (next.height() - 1) / 2f;
+			targetCenter.x = (float) ((targetCenter.y - b) / m);
+			next.setPos(Math.round(targetCenter.x - (next.width() - 1) / 2f), prev.bottom);
 
-        } else if (direction == Room.RIGHT) {
-            targetCenter.x = prev.right + (next.width()-1)/2f;
-            targetCenter.y = (float)(m*targetCenter.x + b);
-            next.setPos( prev.right, Math.round(targetCenter.y - (next.height()-1)/2f));
+		} else if (direction == Room.RIGHT) {
+			targetCenter.x = prev.right + (next.width()-1)/2f;
+			targetCenter.y = (float)(m*targetCenter.x + b);
+			next.setPos( prev.right, Math.round(targetCenter.y - (next.height()-1)/2f));
 
-        } else if (direction == Room.LEFT) {
-            targetCenter.x = prev.left - (next.width()-1)/2f;
-            targetCenter.y = (float)(m*targetCenter.x + b);
-            next.setPos( prev.left - (next.width() - 1), Math.round(targetCenter.y - (next.height()-1)/2f));
+		} else if (direction == Room.LEFT) {
+			targetCenter.x = prev.left - (next.width()-1)/2f;
+			targetCenter.y = (float)(m*targetCenter.x + b);
+			next.setPos( prev.left - (next.width() - 1), Math.round(targetCenter.y - (next.height()-1)/2f));
 
-        }
+		}
 
-        //perform connection bounds and target checking, move the room if necessary
-        if (direction == Room.TOP || direction == Room.BOTTOM){
-            if (next.right < prev.left+2)       next.shift(prev.left+2-next.right, 0);
-            else if (next.left > prev.right-2)  next.shift(prev.right-2-next.left, 0);
+		//perform connection bounds and target checking, move the room if necessary
+		if (direction == Room.TOP || direction == Room.BOTTOM){
+			if (next.right < prev.left+2)	    next.shift(prev.left+2-next.right, 0);
+			else if (next.left > prev.right-2)  next.shift(prev.right-2-next.left, 0);
 
-            if (next.right > space.right)       next.shift( space.right - next.right, 0);
-            else if (next.left < space.left)    next.shift( space.left - next.left, 0);
-        } else {
-            if (next.bottom < prev.top+2)       next.shift(0, prev.top+2-next.bottom);
-            else if (next.top > prev.bottom-2)  next.shift(0, prev.bottom-2-next.top);
+			if (next.right > space.right)       next.shift( space.right - next.right, 0);
+			else if (next.left < space.left)    next.shift( space.left - next.left, 0);
+		} else {
+			if (next.bottom < prev.top+2)	    next.shift(0, prev.top+2-next.bottom);
+			else if (next.top > prev.bottom-2)  next.shift(0, prev.bottom-2-next.top);
 
-            if (next.bottom > space.bottom)     next.shift( 0, space.bottom - next.bottom);
-            else if (next.top < space.top)      next.shift( 0, space.top - next.top);
-        }
+			if (next.bottom > space.bottom)     next.shift( 0, space.bottom - next.bottom);
+			else if (next.top < space.top)      next.shift( 0, space.top - next.top);
+		}
 
-        //attempt to connect, return the result angle if successful.
-        if (next.connect(prev)){
-            PointF nextCenter = new PointF((next.left + next.right)/2f, (next.top + next.bottom)/2f);
-            double trueM = (nextCenter.y - prevCenter.y)/(nextCenter.x - prevCenter.x);
-            return (float)(A*(Math.atan(trueM) + Math.PI/2f));
-        } else {
-            return -1;
-        }
+		//attempt to connect, return the result angle if successful.
+		if (next.connect(prev)){
+			PointF nextCenter = new PointF((next.left + next.right)/2f, (next.top + next.bottom)/2f);
+			double trueM = (nextCenter.y - prevCenter.y)/(nextCenter.x - prevCenter.x);
+			return (float)(A*(Math.atan(trueM) + Math.PI/2f));
+		} else {
+			return -1;
+		}
 	}
 }
