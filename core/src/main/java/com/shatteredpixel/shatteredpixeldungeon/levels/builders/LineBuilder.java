@@ -26,9 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel.TunnelRoom;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
-import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 
@@ -42,7 +40,7 @@ public class LineBuilder extends Builder {
 		return this;
 	}
 
-	//path length is a percentage of total path rooms
+	//path length is the percentage of pathable rooms that are on the path
 	private float pathLength = 0.2f;
 	//The chance weights for extra rooms to be added to the path
 	private float[] pathLenJitterChances = new float[]{1, 1};
@@ -59,6 +57,13 @@ public class LineBuilder extends Builder {
 	public LineBuilder setTunnelLength( float[] path, float[] branch){
 		pathTunnelChances = path;
 		branchTunnelChances = branch;
+		return this;
+	}
+	
+	private float extraConnectionChance = 0.1f;
+	
+	public LineBuilder setExtraConnectionChance( float chance ){
+		extraConnectionChance = chance;
 		return this;
 	}
 
@@ -172,6 +177,17 @@ public class LineBuilder extends Builder {
 				branchable.add(r);
 
 			i++;
+		}
+		
+		findNeighbours(rooms);
+		
+		for (Room r : rooms){
+			for (Room n : r.neigbours){
+				if (!n.connected.containsKey(r)
+						&& Random.Float() < extraConnectionChance){
+					r.connect(n);
+				}
+			}
 		}
 		
 		return rooms;

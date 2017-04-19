@@ -39,6 +39,15 @@ public abstract class Builder {
 	//builders take a list of rooms and returns them as a connected map
 	//returns null on failure
 	public abstract ArrayList<Room> build(ArrayList<Room> rooms);
+	
+	protected static void findNeighbours(ArrayList<Room> rooms){
+		Room[] ra = rooms.toArray( new Room[0] );
+		for (int i=0; i < ra.length-1; i++) {
+			for (int j=i+1; j < ra.length; j++) {
+				ra[i].addNeigbour( ra[j] );
+			}
+		}
+	}
 
 	//returns a rectangle representing the maximum amount of free space from a specific start point
 	protected static Rect findFreeSpace(Point start, ArrayList<Room> collision, int maxSize){
@@ -125,6 +134,14 @@ public abstract class Builder {
 	}
 
 	private static final double A = 180 / Math.PI;
+	
+	//returns the angle in degrees made by the centerpoints of 2 rooms, with 0 being straight up.
+	protected static float angleBetweenRooms( Room from, Room to){
+		PointF fromCenter = new PointF((from.left + from.right)/2f, (from.top + from.bottom)/2f);
+		PointF toCenter = new PointF((to.left + to.right)/2f, (to.top + to.bottom)/2f);
+		double m = (toCenter.y - fromCenter.y)/(toCenter.x - fromCenter.x);
+		return (float)(A*(Math.atan(m) + Math.PI/2f));
+	}
 
 	//Attempts to place a room such that the angle between the center of the previous room
 	// and it matches the given angle ([0-360), where 0 is straight up) as closely as possible.
@@ -219,9 +236,7 @@ public abstract class Builder {
 
 		//attempt to connect, return the result angle if successful.
 		if (next.connect(prev)){
-			PointF nextCenter = new PointF((next.left + next.right)/2f, (next.top + next.bottom)/2f);
-			double trueM = (nextCenter.y - prevCenter.y)/(nextCenter.x - prevCenter.x);
-			return (float)(A*(Math.atan(trueM) + Math.PI/2f));
+			return angleBetweenRooms(prev, next);
 		} else {
 			return -1;
 		}
