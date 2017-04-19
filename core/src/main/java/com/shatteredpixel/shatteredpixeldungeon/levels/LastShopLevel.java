@@ -28,11 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.FissureRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ImpShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
@@ -58,6 +57,12 @@ public class LastShopLevel extends RegularLevel {
 	}
 	
 	@Override
+	protected boolean build() {
+		feeling = Feeling.CHASM;
+		return super.build();
+	}
+	
+	@Override
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> rooms = new ArrayList<>();
 		
@@ -70,9 +75,10 @@ public class LastShopLevel extends RegularLevel {
 	
 	@Override
 	protected Builder builder() {
-		feeling = Feeling.CHASM;
-		//TODO want to use strict line builder here
-		return super.builder();
+		return new LineBuilder()
+				.setPathVariance(0f)
+				.setPathLength(1f, new float[]{1})
+				.setTunnelLength(new float[]{0, 0, 1}, new float[]{1});
 	}
 	
 	@Override
