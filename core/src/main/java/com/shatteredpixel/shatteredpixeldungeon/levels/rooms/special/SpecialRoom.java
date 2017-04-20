@@ -120,12 +120,6 @@ public class SpecialRoom extends Room {
 			floorSpecials.remove( WeakFloorRoom.class );
 			
 			return new PitRoom();
-		
-			//TODO should laboratory rooms be more common like this?
-		} else if (Dungeon.depth % 5 == 2 && floorSpecials.contains( LaboratoryRoom.class )) {
-			
-			useType(LaboratoryRoom.class);
-			return new LaboratoryRoom();
 			
 		} else if (Dungeon.depth >= guaranteedWellDepth) {
 			useType( MagicWellRoom.class );

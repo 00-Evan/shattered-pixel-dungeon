@@ -31,30 +31,31 @@ public class SewerBossEntranceRoom extends EntranceRoom {
 	
 	@Override
 	public int minWidth() {
-		return 11;
+		return 9;
 	}
 	
 	@Override
 	public int maxWidth() {
-		return 11;
+		return 9;
 	}
 	
 	@Override
 	public int minHeight() {
-		return 5;
+		return 6;
 	}
 	
 	@Override
 	public int maxHeight() {
-		return 8;
+		return 10;
 	}
 	
 	//TODO perhaps I just want to deny all top-side connections
 	@Override
 	public boolean canConnect(Point p) {
-		//refuses connections on the center 3 tiles on the top side
+		//refuses connections on the center 3 tiles on the top side, and the top tile along left/right
 		return super.canConnect(p)
-				&& !(p.y == top && p.x >= (left + (width()/2 - 1)) && p.x <= (left + (width()/2 + 1)));
+				&& !(p.y == top && p.x >= (left + (width()/2 - 1)) && p.x <= (left + (width()/2 + 1)))
+				&& p.y != top+1;
 	}
 	
 	public void paint(Level level ) {

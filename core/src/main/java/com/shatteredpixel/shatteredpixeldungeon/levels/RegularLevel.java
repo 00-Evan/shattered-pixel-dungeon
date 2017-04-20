@@ -79,7 +79,7 @@ public abstract class RegularLevel extends Level {
 				r.neigbours.clear();
 				r.connected.clear();
 			}
-			rooms = builder.build(initRooms);
+			rooms = builder.build((ArrayList<Room>)initRooms.clone());
 		} while (rooms == null);
 		
 		return painter().paint(this, rooms);
@@ -382,6 +382,7 @@ public abstract class RegularLevel extends Level {
 					} while (traps.get(result) != null
 							|| findMob(result) != null
 							|| heaps.get(result) != null);
+					return result;
 				}
 			}
 		}

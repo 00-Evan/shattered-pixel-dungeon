@@ -72,6 +72,18 @@ public class SewerBossLevel extends SewerLevel {
 	}
 	
 	@Override
+	protected void placeSign() {
+		while (true) {
+			int pos = pointToCell(roomEntrance.random());
+			if (map[pos] != Terrain.LOCKED_EXIT
+					&& map[pos] != Terrain.WALL_DECO) {
+				map[pos] = Terrain.SIGN;
+				break;
+			}
+		}
+	}
+	
+	@Override
 	protected float waterFill(){
 		return 0.50f;
 	}

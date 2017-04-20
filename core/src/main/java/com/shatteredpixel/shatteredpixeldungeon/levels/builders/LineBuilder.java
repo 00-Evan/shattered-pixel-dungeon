@@ -41,9 +41,9 @@ public class LineBuilder extends Builder {
 	}
 
 	//path length is the percentage of pathable rooms that are on the path
-	private float pathLength = 0.2f;
+	private float pathLength = 0.1f;
 	//The chance weights for extra rooms to be added to the path
-	private float[] pathLenJitterChances = new float[]{1, 1};
+	private float[] pathLenJitterChances = new float[]{0, 2, 1};
 
 	public LineBuilder setPathLength( float len, float[] jitter ){
 		pathLength = len;
@@ -51,8 +51,8 @@ public class LineBuilder extends Builder {
 		return this;
 	}
 
-	private float[] pathTunnelChances = new float[]{1, 2, 1};
-	private float[] branchTunnelChances = new float[]{2, 1, 1};
+	private float[] pathTunnelChances = new float[]{2, 3, 1};
+	private float[] branchTunnelChances = new float[]{3, 2, 1};
 
 	public LineBuilder setTunnelLength( float[] path, float[] branch){
 		pathTunnelChances = path;
@@ -106,7 +106,7 @@ public class LineBuilder extends Builder {
 			placeRoom(rooms, entrance, shop, direction + 180f);
 		}
 		
-		int roomsOnPath = Math.round(multiConnections.size()*pathLength + Random.chances(pathLenJitterChances));
+		int roomsOnPath = (int)(multiConnections.size()*pathLength) + Random.chances(pathLenJitterChances);
 		roomsOnPath = Math.min(roomsOnPath, multiConnections.size());
 		
 		Room curr = entrance;
