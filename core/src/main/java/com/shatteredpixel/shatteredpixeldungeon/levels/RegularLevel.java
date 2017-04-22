@@ -234,12 +234,15 @@ public abstract class RegularLevel extends Level {
 			}
 			
 			Room room = randomRoom( StandardRoom.class );
-			if (room == null) {
+			if (room == null || room == roomEntrance) {
 				continue;
 			}
 			
 			cell = pointToCell(room.random());
-			if (!Dungeon.visible[cell] && Actor.findChar( cell ) == null && Level.passable[cell]) {
+			if (!Dungeon.visible[cell]
+					&& Actor.findChar( cell ) == null
+					&& Level.passable[cell]
+					&& cell != exit) {
 				return cell;
 			}
 			
@@ -364,7 +367,7 @@ public abstract class RegularLevel extends Level {
 			Room room = randomRoom( StandardRoom.class );
 			if (room != null && room != roomEntrance) {
 				int pos = pointToCell(room.random());
-				if (passable[pos]) {
+				if (passable[pos] && pos != exit) {
 					return pos;
 				}
 			}
