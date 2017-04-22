@@ -65,6 +65,15 @@ public class LibraryRoom extends SpecialRoom {
 		}
 		
 		entrance.set( Door.Type.LOCKED );
+		
+		if (entrance.y == top + 1){
+			if (entrance.x == left){
+				Painter.set(level, entrance.x+1, entrance.y, Terrain.EMPTY_SP);
+			} else {
+				Painter.set(level, entrance.x-1, entrance.y, Terrain.EMPTY_SP);
+			}
+		}
+		
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
 	
