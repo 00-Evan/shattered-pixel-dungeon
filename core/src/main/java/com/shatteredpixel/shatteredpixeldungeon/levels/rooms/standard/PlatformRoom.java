@@ -27,8 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
 
-//TODO, limit connections on corners
-public class WalkwayRoom extends StandardRoom {
+public class PlatformRoom extends StandardRoom {
 	
 	@Override
 	public int minWidth() {
