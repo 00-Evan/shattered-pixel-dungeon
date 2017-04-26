@@ -134,8 +134,10 @@ public class LineBuilder extends Builder {
 		int i = roomsOnPath;
 		float angle;
 		int tries;
+		ArrayList<Room> tunnelsThisBranch = new ArrayList<>();
 		while (i < multiConnections.size() + singleConnections.size()){
-
+			
+			tunnelsThisBranch.clear();
 			curr = Random.element(branchable);
 
 			int tunnels = Random.chances(branchTunnelChances);
@@ -148,12 +150,23 @@ public class LineBuilder extends Builder {
 					tries--;
 				} while (angle == -1 && tries >= 0);
 
-				if (angle == -1)
-					continue;
-				else
+				if (angle == -1) {
+					for (Room r : tunnelsThisBranch){
+						r.clearConnections();
+						rooms.remove(r);
+					}
+					tunnelsThisBranch.clear();
+					break;
+				} else {
+					tunnelsThisBranch.add(t);
 					rooms.add(t);
+				}
 
 				curr = t;
+			}
+			
+			if (tunnelsThisBranch.size() != tunnels){
+				continue;
 			}
 
 			Room r;
@@ -170,8 +183,15 @@ public class LineBuilder extends Builder {
 				tries--;
 			} while (angle == -1 && tries >= 0);
 
-			if (angle == -1)
+			if (angle == -1){
+				for (Room t : tunnelsThisBranch){
+					t.clearConnections();
+					rooms.remove(t);
+				}
+				tunnelsThisBranch.clear();
 				continue;
+			}
+			
 
 			if (r.maxConnections(Room.ALL) > 1 && Random.Int(2) == 0)
 				branchable.add(r);
