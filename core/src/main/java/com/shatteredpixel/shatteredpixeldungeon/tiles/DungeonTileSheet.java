@@ -271,10 +271,10 @@ public class DungeonTileSheet {
 	private static final int WALL_INTERNAL              = WALLS_INTERNAL+0;
 	private static final int WALL_INTERNAL_WOODEN       = WALLS_INTERNAL+16;
 
-	public static int stitchInternalWallTile(int tile, int right, int rightBelow, int leftBelow, int left){
+	public static int stitchInternalWallTile(int tile, int right, int rightBelow, int below, int leftBelow, int left){
 		int result;
 
-		if (tile == Terrain.BOOKSHELF)  result = WALL_INTERNAL_WOODEN;
+		if (tile == Terrain.BOOKSHELF || below == Terrain.BOOKSHELF)  result = WALL_INTERNAL_WOODEN;
 		else                            result = WALL_INTERNAL;
 
 		if (!wallStitcheable(right))        result += 1;

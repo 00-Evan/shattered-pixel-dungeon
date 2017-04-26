@@ -52,6 +52,7 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 						tile,
 						(pos+1) % mapWidth != 0 ?                           map[pos + 1] : -1,
 						(pos+1) % mapWidth != 0 && pos + mapWidth < size ?  map[pos + 1 + mapWidth] : -1,
+						pos + mapWidth < size ?                             map[pos + mapWidth] : -1,
 						pos % mapWidth != 0 && pos + mapWidth < size ?      map[pos - 1 + mapWidth] : -1,
 						pos % mapWidth != 0 ?                               map[pos - 1] : -1
 				);
