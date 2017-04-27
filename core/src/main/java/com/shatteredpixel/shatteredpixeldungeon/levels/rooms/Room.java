@@ -139,8 +139,8 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	public Point random( int m ) {
-		return new Point( Random.Int( left + m, right - m ),
-				Random.Int( top + m, bottom - m ));
+		return new Point( Random.IntRange( left + m, right - m ),
+				Random.IntRange( top + m, bottom - m ));
 	}
 	
 	public boolean inside( Point p ) {
