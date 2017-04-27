@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurs
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class LibraryRoom extends SpecialRoom {
@@ -42,12 +41,16 @@ public class LibraryRoom extends SpecialRoom {
 		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
 		
 		Door entrance = entrance();
-		Point a = null;
-		Point b = null;
 		
 		Painter.fill( level, left + 1, top+1, width() - 2, 1 , Terrain.BOOKSHELF );
 		if (entrance.y == top){
 			Painter.set( level, entrance.x, entrance.y + 1, Terrain.EMPTY_SP );
+		} else if (entrance.y == top + 1){
+			if (entrance.x == left){
+				Painter.set(level, entrance.x+1, entrance.y, Terrain.EMPTY_SP);
+			} else {
+				Painter.set(level, entrance.x+1, entrance.y, Terrain.EMPTY_SP);
+			}
 		}
 		
 		int n = Random.IntRange( 2, 3 );
@@ -65,14 +68,6 @@ public class LibraryRoom extends SpecialRoom {
 		}
 		
 		entrance.set( Door.Type.LOCKED );
-		
-		if (entrance.y == top + 1){
-			if (entrance.x == left){
-				Painter.set(level, entrance.x+1, entrance.y, Terrain.EMPTY_SP);
-			} else {
-				Painter.set(level, entrance.x-1, entrance.y, Terrain.EMPTY_SP);
-			}
-		}
 		
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
