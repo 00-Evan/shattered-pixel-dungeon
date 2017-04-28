@@ -250,6 +250,17 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return false;
 	}
 	
+	public void clearConnections(){
+		for (Room r : neigbours){
+			r.neigbours.remove(this);
+		}
+		neigbours.clear();
+		for (Room r : connected.keySet()){
+			r.connected.remove(this);
+		}
+		connected.clear();
+	}
+	
 	// **** Graph.Node interface ****
 
 	@Override

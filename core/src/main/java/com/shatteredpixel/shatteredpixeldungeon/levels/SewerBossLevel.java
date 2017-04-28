@@ -29,8 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerBossEntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -55,7 +57,7 @@ public class SewerBossLevel extends SewerLevel {
 		
 		int standards = standardRooms();
 		for (int i = 0; i < standards; i++)
-			initRooms.add(StandardRoom.createRoom());
+			initRooms.add(new EmptyRoom());
 		
 		initRooms.add(new RatKingRoom());
 		return initRooms;
@@ -67,16 +69,18 @@ public class SewerBossLevel extends SewerLevel {
 	}
 	
 	protected Builder builder(){
-		//TODO want to use a more simple circular builder here
-		return super.builder();
+		return new LoopBuilder()
+				.setPathLength(1f, new float[]{1})
+				.setTunnelLength(new float[]{2, 3}, new float[]{1});
 	}
 	
 	@Override
 	protected void placeSign() {
 		while (true) {
-			int pos = pointToCell(roomEntrance.random());
+			int pos = pointToCell(roomEntrance.random(2));
 			if (map[pos] != Terrain.LOCKED_EXIT
-					&& map[pos] != Terrain.WALL_DECO) {
+					&& map[pos] != Terrain.WALL_DECO
+					&& map[pos] != Terrain.ENTRANCE) {
 				map[pos] = Terrain.SIGN;
 				break;
 			}
@@ -112,8 +116,8 @@ public class SewerBossLevel extends SewerLevel {
 		Mob mob = Bestiary.mob( Dungeon.depth );
 		Room room;
 		do {
-			room = Random.element(rooms);
-		} while (!(room instanceof StandardRoom) || room == roomEntrance);
+			room = randomRoom(StandardRoom.class);
+		} while (room == roomEntrance);
 		mob.pos = pointToCell(room.random());
 		mobs.add( mob );
 	}
@@ -129,14 +133,18 @@ public class SewerBossLevel extends SewerLevel {
 			int pos;
 			do {
 				pos = pointToCell(roomEntrance.random());
-			} while (pos == entrance || map[pos] == Terrain.SIGN);
+			} while (pos == entrance || map[pos] == Terrain.SIGN || solid[pos]);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
 	}
 
 	@Override
 	public int randomRespawnCell() {
-		return pointToCell(roomEntrance.random());
+		int pos;
+		do {
+			pos = pointToCell(roomEntrance.random());
+		} while (pos == entrance || map[pos] == Terrain.SIGN || solid[pos]);
+		return pos;
 	}
 
 	
