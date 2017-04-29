@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel.TunnelRoom;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -239,6 +240,76 @@ public abstract class Builder {
 			return angleBetweenRooms(prev, next);
 		} else {
 			return -1;
+		}
+	}
+	
+	//places the rooms in roomsToBranch into branches from rooms in branchable.
+	//note that the three arrays should be separate, they may contain the same rooms however
+	protected static void createBranches( ArrayList<Room> rooms, ArrayList<Room> branchable,
+	                                      ArrayList<Room> roomsToBranch, float[] tunnelChances){
+		
+		int i = 0;
+		float angle;
+		int tries;
+		Room curr;
+		ArrayList<Room> tunnelsThisBranch = new ArrayList<>();
+		while (i < roomsToBranch.size()){
+			
+			tunnelsThisBranch.clear();
+			curr = Random.element(branchable);
+			
+			int tunnels = Random.chances(tunnelChances);
+			for (int j = 0; j < tunnels; j++){
+				TunnelRoom t = new TunnelRoom();
+				tries = 10;
+				
+				do {
+					angle = placeRoom(rooms, curr, t, Random.Float(360f));
+					tries--;
+				} while (angle == -1 && tries >= 0);
+				
+				if (angle == -1) {
+					for (Room r : tunnelsThisBranch){
+						r.clearConnections();
+						rooms.remove(r);
+					}
+					tunnelsThisBranch.clear();
+					break;
+				} else {
+					tunnelsThisBranch.add(t);
+					rooms.add(t);
+				}
+				
+				curr = t;
+			}
+			
+			if (tunnelsThisBranch.size() != tunnels){
+				continue;
+			}
+			
+			Room r = roomsToBranch.get(i);
+			
+			tries = 10;
+			
+			do {
+				angle = placeRoom(rooms, curr, r, Random.Float(360f));
+				tries--;
+			} while (angle == -1 && tries >= 0);
+			
+			if (angle == -1){
+				for (Room t : tunnelsThisBranch){
+					t.clearConnections();
+					rooms.remove(t);
+				}
+				tunnelsThisBranch.clear();
+				continue;
+			}
+			
+			
+			if (r.maxConnections(Room.ALL) > 1 && Random.Int(2) == 0)
+				branchable.add(r);
+			
+			i++;
 		}
 	}
 }

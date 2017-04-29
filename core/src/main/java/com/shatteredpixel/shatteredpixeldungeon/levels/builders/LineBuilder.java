@@ -130,74 +130,12 @@ public class LineBuilder extends Builder {
 			curr = r;
 		}
 		
-		//place branches
-		int i = roomsOnPath;
-		float angle;
-		int tries;
-		ArrayList<Room> tunnelsThisBranch = new ArrayList<>();
-		while (i < multiConnections.size() + singleConnections.size()){
-			
-			tunnelsThisBranch.clear();
-			curr = Random.element(branchable);
-
-			int tunnels = Random.chances(branchTunnelChances);
-			for (int j = 0; j < tunnels; j++){
-				TunnelRoom t = new TunnelRoom();
-				tries = 10;
-
-				do {
-					angle = placeRoom(rooms, curr, t, Random.Float(360f));
-					tries--;
-				} while (angle == -1 && tries >= 0);
-
-				if (angle == -1) {
-					for (Room r : tunnelsThisBranch){
-						r.clearConnections();
-						rooms.remove(r);
-					}
-					tunnelsThisBranch.clear();
-					break;
-				} else {
-					tunnelsThisBranch.add(t);
-					rooms.add(t);
-				}
-
-				curr = t;
-			}
-			
-			if (tunnelsThisBranch.size() != tunnels){
-				continue;
-			}
-
-			Room r;
-			if (i < multiConnections.size()) {
-				r = multiConnections.get(i);
-			} else {
-				r = singleConnections.get(i - multiConnections.size());
-			}
-
-			tries = 10;
-
-			do {
-				angle = placeRoom(rooms, curr, r, Random.Float(360f));
-				tries--;
-			} while (angle == -1 && tries >= 0);
-
-			if (angle == -1){
-				for (Room t : tunnelsThisBranch){
-					t.clearConnections();
-					rooms.remove(t);
-				}
-				tunnelsThisBranch.clear();
-				continue;
-			}
-			
-
-			if (r.maxConnections(Room.ALL) > 1 && Random.Int(2) == 0)
-				branchable.add(r);
-
-			i++;
+		ArrayList<Room> roomsToBranch = new ArrayList<>();
+		for (int i = roomsOnPath; i < multiConnections.size(); i++){
+			roomsToBranch.add(multiConnections.get(i));
 		}
+		roomsToBranch.addAll(singleConnections);
+		createBranches(rooms, branchable, roomsToBranch, branchTunnelChances);
 		
 		findNeighbours(rooms);
 		

@@ -22,10 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel.TunnelRoom;
 import com.watabou.utils.Random;
 
@@ -78,8 +77,6 @@ public class LoopBuilder extends Builder {
 				entrance = r;
 			} else if (r instanceof ExitRoom) {
 				exit = r;
-			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1){
-				shop = r;
 			} else if (r.maxConnections(Room.ALL) > 1){
 				multiConnections.add(r);
 			} else if (r.maxConnections(Room.ALL) == 1){
@@ -122,9 +119,7 @@ public class LoopBuilder extends Builder {
 		for (int i = 0; i < loop.size(); i++){
 			Room r = loop.get(i);
 			targetAngle += angleChange;
-			float placeAngle;
-			if ((placeAngle = placeRoom(rooms, prev, r, targetAngle)) != -1) {
-				//targetAngle += (targetAngle - placeAngle);
+			if (placeRoom(rooms, prev, r, targetAngle) != -1) {
 				prev = r;
 				if (!rooms.contains(prev))
 					rooms.add(prev);
@@ -138,79 +133,13 @@ public class LoopBuilder extends Builder {
 		
 		ArrayList<Room> branchable = new ArrayList<>();
 		for (Room r : loop){
-			if (r instanceof StandardRoom) branchable.add(r);
+			if (r instanceof EmptyRoom) branchable.add(r);
 		}
 		
-		int i = 0;
-		
-		Room curr;
-		float angle;
-		int tries;
-		ArrayList<Room> tunnelsThisBranch = new ArrayList<>();
-		//TODO this is almost identical to logic in linebuilder, can probably generalize
-		while (i < multiConnections.size() + singleConnections.size()){
-			
-			tunnelsThisBranch.clear();
-			curr = Random.element(branchable);
-			
-			int tunnels = Random.chances(branchTunnelChances);
-			for (int j = 0; j < tunnels; j++){
-				TunnelRoom t = new TunnelRoom();
-				tries = 10;
-				
-				do {
-					angle = placeRoom(rooms, curr, t, Random.Float(360f));
-					tries--;
-				} while (angle == -1 && tries >= 0);
-				
-				if (angle == -1) {
-					for (Room r : tunnelsThisBranch){
-						r.clearConnections();
-						rooms.remove(r);
-					}
-					tunnelsThisBranch.clear();
-					break;
-				} else {
-					tunnelsThisBranch.add(t);
-					rooms.add(t);
-				}
-				
-				curr = t;
-			}
-			
-			if (tunnelsThisBranch.size() != tunnels){
-				continue;
-			}
-			
-			Room r;
-			if (i < multiConnections.size()) {
-				r = multiConnections.get(i);
-			} else {
-				r = singleConnections.get(i - multiConnections.size());
-			}
-			
-			tries = 10;
-			
-			do {
-				angle = placeRoom(rooms, curr, r, Random.Float(360f));
-				tries--;
-			} while (angle == -1 && tries >= 0);
-			
-			if (angle == -1){
-				for (Room t : tunnelsThisBranch){
-					t.clearConnections();
-					rooms.remove(t);
-				}
-				tunnelsThisBranch.clear();
-				continue;
-			}
-			
-			
-			if (r.maxConnections(Room.ALL) > 1 && Random.Int(2) == 0)
-				branchable.add(r);
-			
-			i++;
-		}
+		ArrayList<Room> roomsToBranch = new ArrayList<>();
+		roomsToBranch.addAll(multiConnections);
+		roomsToBranch.addAll(singleConnections);
+		createBranches(rooms, branchable, roomsToBranch, branchTunnelChances);
 		
 		findNeighbours(rooms);
 		
