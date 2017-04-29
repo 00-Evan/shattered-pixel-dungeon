@@ -305,7 +305,9 @@ public abstract class Builder {
 				continue;
 			}
 			
-			
+			for (Room t : tunnelsThisBranch){
+				branchable.add(t);
+			}
 			if (r.maxConnections(Room.ALL) > 1 && Random.Int(2) == 0)
 				branchable.add(r);
 			
