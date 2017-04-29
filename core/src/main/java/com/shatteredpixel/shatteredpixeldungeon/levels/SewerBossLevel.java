@@ -65,13 +65,13 @@ public class SewerBossLevel extends SewerLevel {
 	
 	@Override
 	protected int standardRooms() {
-		return 3+Random.chances(new float[]{4, 2, 2});
+		return 2+Random.chances(new float[]{3, 3, 1});
 	}
 	
 	protected Builder builder(){
 		return new LoopBuilder()
 				.setPathLength(1f, new float[]{1})
-				.setTunnelLength(new float[]{2, 3}, new float[]{1});
+				.setTunnelLength(new float[]{0, 4, 1}, new float[]{1});
 	}
 	
 	@Override
