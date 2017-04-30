@@ -19,35 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class TunnelRoom extends Room {
-	
-	@Override
-	public int minWidth() { return 3; }
-	public int maxWidth() { return 10; }
-	
-	@Override
-	public int minHeight() { return 3; }
-	public int maxHeight() { return 10; }
-	
-	@Override
-	public int minConnections(int direction) {
-		if (direction == ALL)   return 2;
-		else                    return 0;
-	}
-	
-	@Override
-	public int maxConnections(int direction) {
-		if (direction == ALL)   return 16;
-		else                    return 4;
-	}
+//tunnels along the rooms center, with straight lines
+public class TunnelRoom extends ConnectionRoom {
 	
 	public void paint(Level level) {
 		

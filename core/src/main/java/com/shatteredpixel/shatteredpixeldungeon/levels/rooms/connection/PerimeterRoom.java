@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -29,7 +29,9 @@ import com.watabou.utils.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class PassageRoom extends TunnelRoom {
+//tunnels along the room's perimeter
+//FIXME should be refactored, like shop rooms (which use perimiter logic for item placement)
+public class PerimeterRoom extends ConnectionRoom {
 
 	private static int pasWidth;
 	private static int pasHeight;

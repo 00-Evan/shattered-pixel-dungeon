@@ -21,16 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.TunnelRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel.PassageRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.tunnel.TunnelRoom;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
@@ -378,6 +376,7 @@ public class LegacyBuilder extends Builder {
 		Room roomShop = null;
 		int shopSquare = 0;
 		ListIterator<Room> it = rooms.listIterator();
+		/*
 		while (it.hasNext()) {
 			Room r = it.next();
 			if (r.getClass().equals(Room.class) && r.connected.size() > 0) {
@@ -387,7 +386,7 @@ public class LegacyBuilder extends Builder {
 					shopSquare = r.square();
 				}
 			}
-		}
+		}*/
 		
 		if (roomShop == null || shopSquare < 54) {
 			return null;
@@ -547,7 +546,7 @@ public class LegacyBuilder extends Builder {
 		}
 		
 		if (Level.pitRoomNeeded && !pitMade) return false;
-		*/
+		
 		Class<? extends Room> tunnelType = TunnelRoom.class;
 		if ((Dungeon.depth > 5 && Dungeon.depth <= 10) ||
 				(Dungeon.depth > 15 && Dungeon.depth <= 20)){
@@ -583,7 +582,7 @@ public class LegacyBuilder extends Builder {
 			} else {
 				return false;
 			}
-		}
+		}*/
 		
 		return true;
 	}
