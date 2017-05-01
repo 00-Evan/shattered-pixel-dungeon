@@ -19,22 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Maze;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 
-//TODO figure out where this should go, tunnel room type perhaps?
-public class MazeRoom extends Room {
-
-	public void paint( Level level ) {
+public class MazeConnectionRoom extends ConnectionRoom {
+	
+	@Override
+	public void paint(Level level) {
+		super.paint(level);
+		
 		Painter.fill(level, this, 1, Terrain.EMPTY);
-
+		
 		//true = space, false = wall
 		boolean[][] maze = Maze.generate(this);
-
+		
 		Painter.fill(level, this, 1, Terrain.EMPTY);
 		for (int x = 0; x < maze.length; x++)
 			for (int y = 0; y < maze[0].length; y++) {
@@ -42,6 +44,9 @@ public class MazeRoom extends Room {
 					Painter.fill(level, x + left, y + top, 1, 1, Terrain.WALL);
 				}
 			}
+		
+		for (Door door : connected.values()) {
+			door.set( Door.Type.TUNNEL );
+		}
 	}
-
 }
