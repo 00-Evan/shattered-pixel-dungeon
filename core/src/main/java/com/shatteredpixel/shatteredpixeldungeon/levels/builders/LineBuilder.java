@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.TunnelRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
@@ -117,7 +117,7 @@ public class LineBuilder extends Builder {
 
 			int tunnels = Random.chances(pathTunnelChances);
 			for (int j = 0; j < tunnels; j++){
-				TunnelRoom t = new TunnelRoom();
+				ConnectionRoom t = ConnectionRoom.createRoom();
 				placeRoom(rooms, curr, t, direction + Random.Float(-pathVariance, pathVariance));
 				branchable.add(t);
 				rooms.add(t);

@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.TunnelRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -246,21 +246,21 @@ public abstract class Builder {
 	//places the rooms in roomsToBranch into branches from rooms in branchable.
 	//note that the three arrays should be separate, they may contain the same rooms however
 	protected static void createBranches( ArrayList<Room> rooms, ArrayList<Room> branchable,
-	                                      ArrayList<Room> roomsToBranch, float[] tunnelChances){
+	                                      ArrayList<Room> roomsToBranch, float[] connChances){
 		
 		int i = 0;
 		float angle;
 		int tries;
 		Room curr;
-		ArrayList<Room> tunnelsThisBranch = new ArrayList<>();
+		ArrayList<Room> connectingRoomsThisBranch = new ArrayList<>();
 		while (i < roomsToBranch.size()){
 			
-			tunnelsThisBranch.clear();
+			connectingRoomsThisBranch.clear();
 			curr = Random.element(branchable);
 			
-			int tunnels = Random.chances(tunnelChances);
-			for (int j = 0; j < tunnels; j++){
-				TunnelRoom t = new TunnelRoom();
+			int connectingRooms = Random.chances(connChances);
+			for (int j = 0; j < connectingRooms; j++){
+				ConnectionRoom t = ConnectionRoom.createRoom();
 				tries = 10;
 				
 				do {
@@ -269,21 +269,21 @@ public abstract class Builder {
 				} while (angle == -1 && tries >= 0);
 				
 				if (angle == -1) {
-					for (Room r : tunnelsThisBranch){
+					for (Room r : connectingRoomsThisBranch){
 						r.clearConnections();
 						rooms.remove(r);
 					}
-					tunnelsThisBranch.clear();
+					connectingRoomsThisBranch.clear();
 					break;
 				} else {
-					tunnelsThisBranch.add(t);
+					connectingRoomsThisBranch.add(t);
 					rooms.add(t);
 				}
 				
 				curr = t;
 			}
 			
-			if (tunnelsThisBranch.size() != tunnels){
+			if (connectingRoomsThisBranch.size() != connectingRooms){
 				continue;
 			}
 			
@@ -297,15 +297,15 @@ public abstract class Builder {
 			} while (angle == -1 && tries >= 0);
 			
 			if (angle == -1){
-				for (Room t : tunnelsThisBranch){
+				for (Room t : connectingRoomsThisBranch){
 					t.clearConnections();
 					rooms.remove(t);
 				}
-				tunnelsThisBranch.clear();
+				connectingRoomsThisBranch.clear();
 				continue;
 			}
 			
-			for (Room t : tunnelsThisBranch){
+			for (Room t : connectingRoomsThisBranch){
 				branchable.add(t);
 			}
 			if (r.maxConnections(Room.ALL) > 1 && Random.Int(2) == 0)

@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.TunnelRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
@@ -109,7 +109,7 @@ public class LoopBuilder extends Builder {
 			
 			int tunnels = Random.chances(pathTunnelChances);
 			for (int j = 0; j < tunnels; j++){
-				loop.add(new TunnelRoom());
+				loop.add(ConnectionRoom.createRoom());
 			}
 		}
 		

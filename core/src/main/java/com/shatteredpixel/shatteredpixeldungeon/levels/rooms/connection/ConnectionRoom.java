@@ -21,7 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.watabou.utils.Random;
+
+import java.util.HashMap;
 
 public abstract class ConnectionRoom extends Room {
 	
@@ -45,5 +49,22 @@ public abstract class ConnectionRoom extends Room {
 		else                    return 4;
 	}
 	
+	private static HashMap<Class<?extends ConnectionRoom>, Float> chances = new HashMap<>();
 	
+	static {
+		chances.put(TunnelRoom.class,           10f);
+		chances.put(PerimeterRoom.class,        10f);
+		chances.put(BridgeRoom.class,           3f);
+		chances.put(WalkwayRoom.class,          3f);
+		chances.put(MazeConnectionRoom.class,   1f);
+	}
+	
+	public static ConnectionRoom createRoom(){
+		try {
+			return Random.chances(chances).newInstance();
+		} catch (Exception e) {
+			ShatteredPixelDungeon.reportException(e);
+			return null;
+		}
+	}
 }
