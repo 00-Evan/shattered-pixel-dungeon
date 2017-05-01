@@ -24,8 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
+import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.PathFinder;
@@ -259,7 +261,15 @@ public class RegularPainter extends Painter {
 		
 		for (int i = 0; i < l.length(); i ++) {
 			if (l.map[i] == Terrain.EMPTY){
-				validCells.add(i);
+				//TODO rooms should probably be able to handle trap placement
+				if (Dungeon.depth == 1){
+					Room r = ((RegularLevel)l).room(i);
+					if (r != null && !(r instanceof ConnectionRoom)){
+						validCells.add(i);
+					}
+				} else {
+					validCells.add(i);
+				}
 			}
 		}
 		
