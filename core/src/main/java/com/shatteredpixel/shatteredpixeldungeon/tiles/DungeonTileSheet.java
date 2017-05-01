@@ -127,6 +127,8 @@ public class DungeonTileSheet {
 		chasmStitcheable.put( Terrain.SIGN,         CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.EMPTY_WELL,   CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.STATUE,       CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.SECRET_TRAP,  CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.TRAP,         CHASM_FLOOR );
 
 		//special floor
 		chasmStitcheable.put( Terrain.EMPTY_SP,     CHASM_FLOOR_SP );
