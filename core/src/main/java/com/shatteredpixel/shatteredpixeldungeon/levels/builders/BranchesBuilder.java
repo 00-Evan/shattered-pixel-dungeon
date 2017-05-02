@@ -22,53 +22,17 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
 //A builder that creates only branches, very simple and very random
-public class BranchesBuilder extends Builder {
-	
-	private float[] branchTunnelChances = new float[]{3, 2, 1};
-	
-	public BranchesBuilder setTunnelLength( float[] branch){
-		branchTunnelChances = branch;
-		return this;
-	}
-	
-	private float extraConnectionChance = 0.1f;
-	
-	public BranchesBuilder setExtraConnectionChance( float chance ){
-		extraConnectionChance = chance;
-		return this;
-	}
+public class BranchesBuilder extends RegularBuilder {
 	
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
 		
-		Room entrance = null;
-		Room exit = null;
-		Room shop = null;
-		
-		ArrayList<Room> multiConnections = new ArrayList<>();
-		ArrayList<Room> singleConnections = new ArrayList<>();
-		
-		for (Room r : rooms){
-			if (r instanceof EntranceRoom){
-				entrance = r;
-			} else if (r instanceof ExitRoom) {
-				exit = r;
-			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1){
-				shop = r;
-			} else if (r.maxConnections(Room.ALL) > 1){
-				multiConnections.add(r);
-			} else if (r.maxConnections(Room.ALL) == 1){
-				singleConnections.add(r);
-			}
-		}
+		setupRooms( rooms );
 		
 		if (entrance == null){
 			return null;

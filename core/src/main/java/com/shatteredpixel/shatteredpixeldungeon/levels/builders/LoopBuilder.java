@@ -23,66 +23,19 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
 //A builder with one core loop as its primary element
-public class LoopBuilder extends Builder {
+public class LoopBuilder extends RegularBuilder {
 	
 	//TODO customizeable equation for angle changes (currently we're just linear)
-	
-	//path length is the percentage of pathable rooms that are on the loop
-	private float pathLength = 0.1f;
-	//The chance weights for extra rooms to be added to the path
-	private float[] pathLenJitterChances = new float[]{0, 2, 1};
-	
-	public LoopBuilder setPathLength( float len, float[] jitter ){
-		pathLength = len;
-		pathLenJitterChances = jitter;
-		return this;
-	}
-	
-	private float[] pathTunnelChances = new float[]{2, 3, 1};
-	private float[] branchTunnelChances = new float[]{3, 2, 1};
-	
-	public LoopBuilder setTunnelLength( float[] path, float[] branch){
-		pathTunnelChances = path;
-		branchTunnelChances = branch;
-		return this;
-	}
-	
-	private float extraConnectionChance = 0.1f;
-	
-	public LoopBuilder setExtraConnectionChance( float chance ){
-		extraConnectionChance = chance;
-		return this;
-	}
 	
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
 		
-		Room entrance = null;
-		Room exit = null;
-		Room shop = null;
-		
-		ArrayList<Room> multiConnections = new ArrayList<>();
-		ArrayList<Room> singleConnections = new ArrayList<>();
-		
-		for (Room r : rooms){
-			if (r instanceof EntranceRoom){
-				entrance = r;
-			} else if (r instanceof ExitRoom) {
-				exit = r;
-			} else if (r.maxConnections(Room.ALL) > 1){
-				multiConnections.add(r);
-			} else if (r.maxConnections(Room.ALL) == 1){
-				singleConnections.add(r);
-			}
-		}
+		setupRooms(rooms);
 		
 		if (entrance == null){
 			return null;
@@ -116,13 +69,16 @@ public class LoopBuilder extends Builder {
 		Room prev = entrance;
 		float targetAngle = startAngle;
 		float angleChange = 360f / loop.size();
-		for (int i = 0; i < loop.size(); i++){
+		for (int i = 1; i < loop.size(); i++){
 			Room r = loop.get(i);
 			targetAngle += angleChange;
 			if (placeRoom(rooms, prev, r, targetAngle) != -1) {
 				prev = r;
 				if (!rooms.contains(prev))
 					rooms.add(prev);
+			} else {
+				//FIXME this is lazy, there are ways to do this without relying on chance
+				return null;
 			}
 		}
 		
@@ -131,10 +87,7 @@ public class LoopBuilder extends Builder {
 			return null;
 		}
 		
-		ArrayList<Room> branchable = new ArrayList<>();
-		for (Room r : loop){
-			if (r instanceof EmptyRoom) branchable.add(r);
-		}
+		ArrayList<Room> branchable = new ArrayList<>(loop);
 		
 		ArrayList<Room> roomsToBranch = new ArrayList<>();
 		roomsToBranch.addAll(multiConnections);

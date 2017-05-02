@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -240,78 +239,6 @@ public abstract class Builder {
 			return angleBetweenRooms(prev, next);
 		} else {
 			return -1;
-		}
-	}
-	
-	//places the rooms in roomsToBranch into branches from rooms in branchable.
-	//note that the three arrays should be separate, they may contain the same rooms however
-	protected static void createBranches( ArrayList<Room> rooms, ArrayList<Room> branchable,
-	                                      ArrayList<Room> roomsToBranch, float[] connChances){
-		
-		int i = 0;
-		float angle;
-		int tries;
-		Room curr;
-		ArrayList<Room> connectingRoomsThisBranch = new ArrayList<>();
-		while (i < roomsToBranch.size()){
-			
-			connectingRoomsThisBranch.clear();
-			curr = Random.element(branchable);
-			
-			int connectingRooms = Random.chances(connChances);
-			for (int j = 0; j < connectingRooms; j++){
-				ConnectionRoom t = ConnectionRoom.createRoom();
-				tries = 10;
-				
-				do {
-					angle = placeRoom(rooms, curr, t, Random.Float(360f));
-					tries--;
-				} while (angle == -1 && tries >= 0);
-				
-				if (angle == -1) {
-					for (Room r : connectingRoomsThisBranch){
-						r.clearConnections();
-						rooms.remove(r);
-					}
-					connectingRoomsThisBranch.clear();
-					break;
-				} else {
-					connectingRoomsThisBranch.add(t);
-					rooms.add(t);
-				}
-				
-				curr = t;
-			}
-			
-			if (connectingRoomsThisBranch.size() != connectingRooms){
-				continue;
-			}
-			
-			Room r = roomsToBranch.get(i);
-			
-			tries = 10;
-			
-			do {
-				angle = placeRoom(rooms, curr, r, Random.Float(360f));
-				tries--;
-			} while (angle == -1 && tries >= 0);
-			
-			if (angle == -1){
-				for (Room t : connectingRoomsThisBranch){
-					t.clearConnections();
-					rooms.remove(t);
-				}
-				connectingRoomsThisBranch.clear();
-				continue;
-			}
-			
-			for (Room t : connectingRoomsThisBranch){
-				branchable.add(t);
-			}
-			if (r.maxConnections(Room.ALL) > 1 && Random.Int(2) == 0)
-				branchable.add(r);
-			
-			i++;
 		}
 	}
 }

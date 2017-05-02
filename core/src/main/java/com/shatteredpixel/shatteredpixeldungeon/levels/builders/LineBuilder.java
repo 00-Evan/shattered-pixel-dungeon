@@ -23,73 +23,17 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
 //A simple builder which utilizes a line as its core feature.
-public class LineBuilder extends Builder {
-
-	private float pathVariance = 45f;
-
-	public LineBuilder setPathVariance( float var ){
-		pathVariance = var;
-		return this;
-	}
-
-	//path length is the percentage of pathable rooms that are on the path
-	private float pathLength = 0.1f;
-	//The chance weights for extra rooms to be added to the path
-	private float[] pathLenJitterChances = new float[]{0, 2, 1};
-
-	public LineBuilder setPathLength( float len, float[] jitter ){
-		pathLength = len;
-		pathLenJitterChances = jitter;
-		return this;
-	}
-
-	private float[] pathTunnelChances = new float[]{2, 3, 1};
-	private float[] branchTunnelChances = new float[]{3, 2, 1};
-
-	public LineBuilder setTunnelLength( float[] path, float[] branch){
-		pathTunnelChances = path;
-		branchTunnelChances = branch;
-		return this;
-	}
-	
-	private float extraConnectionChance = 0.1f;
-	
-	public LineBuilder setExtraConnectionChance( float chance ){
-		extraConnectionChance = chance;
-		return this;
-	}
+public class LineBuilder extends RegularBuilder {
 
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
 	
-		Room entrance = null;
-		Room exit = null;
-		Room shop = null;
-		
-		ArrayList<Room> multiConnections = new ArrayList<>();
-		ArrayList<Room> singleConnections = new ArrayList<>();
-		
-		for (Room r : rooms){
-			if (r instanceof EntranceRoom){
-				entrance = r;
-			} else if (r instanceof ExitRoom) {
-				exit = r;
-			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1){
-				shop = r;
-			} else if (r.maxConnections(Room.ALL) > 1){
-				multiConnections.add(r);
-			} else if (r.maxConnections(Room.ALL) == 1){
-				singleConnections.add(r);
-			}
-		}
+		setupRooms(rooms);
 		
 		if (entrance == null){
 			return null;
