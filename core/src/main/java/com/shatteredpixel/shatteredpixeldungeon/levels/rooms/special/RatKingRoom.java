@@ -28,11 +28,25 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.watabou.utils.Random;
 
 public class RatKingRoom extends SpecialRoom {
-
-	public void paint( Level level ) {
+	
+	@Override
+	public boolean canConnect(Room r) {
+		//never at the end of a connection room, or at the entrance
+		return r instanceof EmptyRoom && super.canConnect(r);
+	}
+	
+	//reduced max size to limit chest numbers.
+	// normally would gen with 8-28, this limits it to 8-16
+	@Override
+	public int maxHeight() { return 7; }
+	public int maxWidth() { return 7; }
+	
+	public void paint(Level level ) {
 
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
