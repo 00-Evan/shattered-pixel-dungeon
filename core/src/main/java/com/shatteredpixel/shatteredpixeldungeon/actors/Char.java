@@ -270,13 +270,11 @@ public abstract class Char extends Actor {
 			HP -= (dmg - SHLD);
 			SHLD = 0;
 		}
-
-		if (dmg > 0 || src instanceof Char) {
-			sprite.showStatus( HP > HT / 2 ?
-				CharSprite.WARNING :
-				CharSprite.NEGATIVE,
-				Integer.toString( dmg ) );
-		}
+		
+		sprite.showStatus( HP > HT / 2 ?
+			CharSprite.WARNING :
+			CharSprite.NEGATIVE,
+			Integer.toString( dmg ) );
 
 		if (HP < 0) HP = 0;
 
