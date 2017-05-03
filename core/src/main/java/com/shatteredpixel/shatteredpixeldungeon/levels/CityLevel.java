@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
@@ -43,7 +45,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
@@ -79,25 +80,13 @@ public class CityLevel extends RegularLevel {
 	}
 	
 	@Override
-	protected float waterFill() {
-		return feeling == Feeling.WATER ? 0.90f : 0.30f;
+	protected Painter painter() {
+		return new CityPainter()
+				.setWater(feeling == Feeling.WATER ? 0.90f : 0.30f, 4)
+				.setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 3)
+				.setTraps(nTraps(), trapClasses(), trapChances());
 	}
 	
-	@Override
-	protected int waterSmoothing() {
-		return 4;
-	}
-	
-	@Override
-	protected float grassFill() {
-		return feeling == Feeling.GRASS ? 0.80f : 0.20f;
-	}
-	
-	@Override
-	protected int grassSmoothing() {
-		return 3;
-	}
-
 	@Override
 	protected Class<?>[] trapClasses() {
 		return new Class[]{ BlazingTrap.class, FrostTrap.class, SpearTrap.class, VenomTrap.class,
@@ -112,22 +101,6 @@ public class CityLevel extends RegularLevel {
 				4, 4, 4, 4, 4, 4,
 				2, 2, 2, 2, 2, 2,
 				1, 1 };
-	}
-	
-	@Override
-	protected void decorate() {
-		
-		for (int i=0; i < length() - width(); i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
-				map[i] = Terrain.EMPTY_DECO;
-			} else if (map[i] == Terrain.WALL
-					&& DungeonTileSheet.floorTile(map[i + width()])
-					&& Random.Int( 21 - Dungeon.depth ) == 0) {
-				map[i] = Terrain.WALL_DECO;
-			}
-		}
-		
-		placeSign();
 	}
 	
 	@Override

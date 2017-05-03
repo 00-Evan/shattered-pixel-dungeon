@@ -100,21 +100,17 @@ public class LastLevel extends Level {
 		map[pos-3] = map[pos-2] = map[pos-1] = map[pos] = map[pos+1] = map[pos+2] = map[pos+3] = Terrain.WATER;
 		pos+=width();
 		map[pos-2] = map[pos+2] = Terrain.WATER;
-
-
-		feeling = Feeling.NONE;
-		viewDistance = 8;
-
-		return true;
-	}
-
-	@Override
-	protected void decorate() {
+		
 		for (int i=0; i < length(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
 			}
 		}
+
+		feeling = Feeling.NONE;
+		viewDistance = 8;
+
+		return true;
 	}
 
 	@Override

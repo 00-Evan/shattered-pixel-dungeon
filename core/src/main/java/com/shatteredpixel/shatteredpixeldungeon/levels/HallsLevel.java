@@ -26,6 +26,8 @@ import android.opengl.GLES20;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.HallsPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
@@ -50,7 +52,6 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.PixelParticle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -77,6 +78,14 @@ public class HallsLevel extends RegularLevel {
 	}
 	
 	@Override
+	protected Painter painter() {
+		return new HallsPainter()
+				.setWater(feeling == Feeling.WATER ? 0.70f : 0.15f, 6)
+				.setGrass(feeling == Feeling.GRASS ? 0.65f : 0.10f, 3)
+				.setTraps(nTraps(), trapClasses(), trapChances());
+	}
+	
+	@Override
 	public void create() {
 		addItemToSpawn( new Torch() );
 		super.create();
@@ -93,26 +102,6 @@ public class HallsLevel extends RegularLevel {
 	}
 	
 	@Override
-	protected float waterFill() {
-		return feeling == Feeling.WATER ? 0.70f : 0.15f;
-	}
-	
-	@Override
-	protected int waterSmoothing() {
-		return 6;
-	}
-	
-	@Override
-	protected float grassFill() {
-		return feeling == Feeling.GRASS ? 0.65f : 0.10f;
-	}
-	
-	@Override
-	protected int grassSmoothing() {
-		return 3;
-	}
-
-	@Override
 	protected Class<?>[] trapClasses() {
 		return new Class[]{ BlazingTrap.class, DisintegrationTrap.class, FrostTrap.class, SpearTrap.class, VenomTrap.class,
 				ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, OozeTrap.class, WeakeningTrap.class,
@@ -126,36 +115,6 @@ public class HallsLevel extends RegularLevel {
 				4, 4, 4, 4, 4,
 				2, 2, 2, 2, 2, 2,
 				1, 1, 1 };
-	}
-	
-	@Override
-	protected void decorate() {
-		
-		for (int i=width() + 1; i < length() - width() - 1; i++) {
-			if (map[i] == Terrain.EMPTY) {
-				
-				int count = 0;
-				for (int j=0; j < PathFinder.NEIGHBOURS8.length; j++) {
-					if ((Terrain.flags[map[i + PathFinder.NEIGHBOURS8[j]]] & Terrain.PASSABLE) > 0) {
-						count++;
-					}
-				}
-				
-				if (Random.Int( 80 ) < count) {
-					map[i] = Terrain.EMPTY_DECO;
-				}
-				
-			} else
-			if (map[i] == Terrain.WALL &&
-				map[i-1] != Terrain.WALL_DECO && map[i-width()] != Terrain.WALL_DECO &&
-				Random.Int( 20 ) == 0) {
-
-				map[i] = Terrain.WALL_DECO;
-
-			}
-		}
-		
-		placeSign();
 	}
 	
 	@Override

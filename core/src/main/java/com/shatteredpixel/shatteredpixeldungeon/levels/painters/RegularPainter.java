@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -37,58 +37,74 @@ import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 
-public class RegularPainter extends Painter {
+public abstract class RegularPainter extends Painter {
 	
 	private float waterFill = 0f;
 	private int waterSmoothness;
 	
+	public RegularPainter setWater(float fill, int smoothness){
+		waterFill = fill;
+		waterSmoothness = smoothness;
+		return this;
+	}
+	
 	private float grassFill = 0f;
 	private int grassSmoothness;
+	
+	public RegularPainter setGrass(float fill, int smoothness){
+		grassFill = fill;
+		grassSmoothness = smoothness;
+		return this;
+	}
 	
 	private int nTraps = 0;
 	private Class<? extends Trap>[] trapClasses;
 	private float[] trapChances;
 	
-	public void setWater(float fill, int smoothness){
-		waterFill = fill;
-		waterSmoothness = smoothness;
-	}
-	
-	public void setGrass(float fill, int smoothness){
-		grassFill = fill;
-		grassSmoothness = smoothness;
-	}
-	
-	public void setTraps(int num, Class<?>[] classes, float[] chances){
+	public RegularPainter setTraps(int num, Class<?>[] classes, float[] chances){
 		nTraps = num;
 		trapClasses = (Class<? extends Trap>[]) classes;
 		trapChances = chances;
+		return this;
 	}
 	
 	@Override
 	public boolean paint(Level level, ArrayList<Room> rooms) {
-		int leftMost = Integer.MAX_VALUE, topMost = Integer.MAX_VALUE;
 		
-		for (Room r : rooms){
-			if (r.left < leftMost) leftMost = r.left;
-			if (r.top < topMost) topMost = r.top;
+		//painter can be used without rooms
+		if (rooms != null) {
+			int leftMost = Integer.MAX_VALUE, topMost = Integer.MAX_VALUE;
+			
+			for (Room r : rooms) {
+				if (r.left < leftMost) leftMost = r.left;
+				if (r.top < topMost) topMost = r.top;
+			}
+			
+			//subtract 1 for padding
+			leftMost--;
+			topMost--;
+			
+			int rightMost = 0, bottomMost = 0;
+			
+			for (Room r : rooms) {
+				r.shift(-leftMost, -topMost);
+				if (r.right > rightMost) rightMost = r.right;
+				if (r.bottom > bottomMost) bottomMost = r.bottom;
+			}
+			
+			//add 1 for padding
+			rightMost++;
+			bottomMost++;
+			
+			//add 1 to account for 0 values
+			level.setSize(rightMost + 1, bottomMost + 1);
+		} else {
+			//check if the level's size was already initialized by something else
+			if (level.length() == 0) return false;
+			
+			//easier than checking for null everywhere
+			rooms = new ArrayList<>();
 		}
-		
-		leftMost--;
-		topMost--;
-		
-		int width = 0, height = 0;
-		
-		for (Room r : rooms){
-			r.shift( -leftMost, -topMost);
-			if (r.right > width) width = r.right;
-			if (r.bottom > height) height = r.bottom;
-		}
-		
-		width++;
-		height++;
-		
-		level.setSize(width+1, height+1);
 		
 		for (Room r : rooms) {
 			placeDoors( r );
@@ -111,8 +127,12 @@ public class RegularPainter extends Painter {
 			paintTraps( level );
 		}
 		
+		decorate( level, rooms );
+		
 		return true;
 	}
+	
+	protected abstract void decorate(Level level, ArrayList<Room> rooms);
 	
 	private void placeDoors( Room r ) {
 		for (Room n : r.connected.keySet()) {
@@ -137,6 +157,7 @@ public class RegularPainter extends Painter {
 		for (Room n : r.connected.keySet()) {
 			
 			if (joinRooms( l, r, n )) {
+				
 				continue;
 			}
 			
@@ -176,10 +197,11 @@ public class RegularPainter extends Painter {
 	
 	protected boolean joinRooms( Level l, Room r, Room n ) {
 		
-		if (!(r instanceof StandardRoom && n instanceof StandardRoom)) {
+		if (!(r instanceof EmptyRoom && n instanceof EmptyRoom)) {
 			return false;
 		}
 		
+		//TODO decide on good probabilities and dimension restrictions
 		Rect w = r.intersect( n );
 		if (w.left == w.right) {
 			

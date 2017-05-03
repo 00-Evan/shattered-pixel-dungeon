@@ -129,12 +129,6 @@ public class CityBossLevel extends Level {
 		entrance = (TOP + HALL_HEIGHT + 3 + Random.Int( CHAMBER_HEIGHT - 2 )) * width() + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 ));
 		map[entrance] = Terrain.ENTRANCE;
 		
-		return true;
-	}
-	
-	@Override
-	protected void decorate() {
-
 		for (int i=0; i < length() - width(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
@@ -147,6 +141,8 @@ public class CityBossLevel extends Level {
 		
 		int sign = arenaDoor + 2*width() + 1;
 		map[sign] = Terrain.SIGN;
+		
+		return true;
 	}
 	
 	public int pedestal( boolean left ) {

@@ -26,7 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Ripple;
 import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.SewerPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
@@ -72,6 +73,14 @@ public class SewerLevel extends RegularLevel {
 	}
 	
 	@Override
+	protected Painter painter() {
+		return new SewerPainter()
+				.setWater(feeling == Feeling.WATER ? 0.85f : 0.30f, 5)
+				.setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 4)
+				.setTraps(nTraps(), trapClasses(), trapChances());
+	}
+	
+	@Override
 	public String tilesTex() {
 		return Assets.TILES_SEWERS;
 	}
@@ -81,26 +90,6 @@ public class SewerLevel extends RegularLevel {
 		return Assets.WATER_SEWERS;
 	}
 	
-	@Override
-	protected float waterFill() {
-		return feeling == Feeling.WATER ? 0.85f : 0.30f;
-	}
-	
-	@Override
-	protected int waterSmoothing() {
-		return 5;
-	}
-	
-	@Override
-	protected float grassFill() {
-		return feeling == Feeling.GRASS ? 0.80f : 0.20f;
-	}
-	
-	@Override
-	protected int grassSmoothing() {
-		return 4;
-	}
-
 	@Override
 	protected Class<?>[] trapClasses() {
 		return Dungeon.depth == 1 ?
@@ -117,54 +106,6 @@ public class SewerLevel extends RegularLevel {
 				new float[]{4, 4, 4,
 						2, 2,
 						1, 1, 1};
-	}
-
-	@Override
-	protected void decorate() {
-		
-		for (int i=0; i < width(); i++) {
-			if (map[i] == Terrain.WALL &&
-				map[i + width()] == Terrain.WATER &&
-				Random.Int( 4 ) == 0) {
-				
-				map[i] = Terrain.WALL_DECO;
-			}
-		}
-		
-		for (int i=width(); i < length() - width(); i++) {
-			if (map[i] == Terrain.WALL &&
-				map[i - width()] == Terrain.WALL &&
-				map[i + width()] == Terrain.WATER &&
-				Random.Int( 2 ) == 0) {
-				
-				map[i] = Terrain.WALL_DECO;
-			}
-		}
-		
-		for (int i=width() + 1; i < length() - width() - 1; i++) {
-			if (map[i] == Terrain.EMPTY) {
-				
-				int count =
-					(map[i + 1] == Terrain.WALL ? 1 : 0) +
-					(map[i - 1] == Terrain.WALL ? 1 : 0) +
-					(map[i + width()] == Terrain.WALL ? 1 : 0) +
-					(map[i - width()] == Terrain.WALL ? 1 : 0);
-				
-				if (Random.Int( 16 ) < count * count) {
-					map[i] = Terrain.EMPTY_DECO;
-				}
-			}
-		}
-
-		//hides all doors in the entrance room on floor 2, teaches the player to search.
-		if (Dungeon.depth == 2)
-			for (Room r : roomEntrance.connected.keySet()){
-				Room.Door d = roomEntrance.connected.get(r);
-				if (d.type == Room.Door.Type.REGULAR)
-					map[d.x + d.y * width()] = Terrain.SECRET_DOOR;
-			}
-		
-		placeSign();
 	}
 	
 	@Override

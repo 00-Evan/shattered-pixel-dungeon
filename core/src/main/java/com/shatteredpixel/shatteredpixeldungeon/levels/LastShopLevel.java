@@ -24,18 +24,18 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ImpShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -59,7 +59,18 @@ public class LastShopLevel extends RegularLevel {
 	@Override
 	protected boolean build() {
 		feeling = Feeling.CHASM;
-		return super.build();
+		if (super.build()){
+			
+			for (int i=0; i < length(); i++) {
+				if (map[i] == Terrain.SECRET_DOOR) {
+					map[i] = Terrain.DOOR;
+				}
+			}
+			
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	@Override
@@ -82,27 +93,10 @@ public class LastShopLevel extends RegularLevel {
 	}
 	
 	@Override
-	protected void decorate() {
-		
-		for (int i=0; i < length(); i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
-				
-				map[i] = Terrain.EMPTY_DECO;
-				
-			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
-				
-				map[i] = Terrain.WALL_DECO;
-				
-			} else if (map[i] == Terrain.SECRET_DOOR) {
-				
-				map[i] = Terrain.DOOR;
-				
-			}
-		}
-		
-		if (Imp.Quest.isCompleted()) {
-			placeSign();
-		}
+	protected Painter painter() {
+		return new CityPainter()
+				.setWater( 0.10f, 4 )
+				.setGrass( 0.10f, 3 );
 	}
 	
 	@Override
@@ -162,30 +156,6 @@ public class LastShopLevel extends RegularLevel {
 			default:
 				return super.tileDesc( tile );
 		}
-	}
-	
-	@Override
-	protected float waterFill() {
-		return 0.10f;
-	}
-	
-	@Override
-	protected int waterSmoothing() {
-		return 4;
-	}
-	
-	@Override
-	protected float grassFill() {
-		return 0.10f;
-	}
-	
-	@Override
-	protected int grassSmoothing() {
-		return 3;
-	}
-	
-	protected int nTraps() {
-		return 0;
 	}
 
 	@Override

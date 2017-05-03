@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Halo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.PrisonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
@@ -74,6 +76,14 @@ public class PrisonLevel extends RegularLevel {
 	}
 	
 	@Override
+	protected Painter painter() {
+		return new PrisonPainter()
+				.setWater(feeling == Feeling.WATER ? 0.90f : 0.30f, 4)
+				.setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 3)
+				.setTraps(nTraps(), trapClasses(), trapChances());
+	}
+	
+	@Override
 	public String tilesTex() {
 		return Assets.TILES_PRISON;
 	}
@@ -83,26 +93,6 @@ public class PrisonLevel extends RegularLevel {
 		return Assets.WATER_PRISON;
 	}
 	
-	@Override
-	protected float waterFill() {
-		return feeling == Feeling.WATER ? 0.90f : 0.30f;
-	}
-	
-	@Override
-	protected int waterSmoothing() {
-		return 4;
-	}
-	
-	@Override
-	protected float grassFill() {
-		return feeling == Feeling.GRASS ? 0.80f : 0.20f;
-	}
-	
-	@Override
-	protected int grassSmoothing() {
-		return 3;
-	}
-
 	@Override
 	protected Class<?>[] trapClasses() {
 		return new Class[]{ ChillingTrap.class, FireTrap.class, PoisonTrap.class, SpearTrap.class, ToxicTrap.class,
@@ -115,56 +105,6 @@ public class PrisonLevel extends RegularLevel {
 		return new float[]{ 4, 4, 4, 4,
 				2, 2, 2, 2, 2, 2,
 				1, 1, 1, 1 };
-	}
-	
-	@Override
-	protected void decorate() {
-		
-		Wandmaker.Quest.spawnWandmaker( this, roomEntrance, rooms );
-		
-		for (int i=width() + 1; i < length() - width() - 1; i++) {
-			if (map[i] == Terrain.EMPTY) {
-				
-				float c = 0.05f;
-				if (map[i + 1] == Terrain.WALL && map[i + width()] == Terrain.WALL) {
-					c += 0.2f;
-				}
-				if (map[i - 1] == Terrain.WALL && map[i + width()] == Terrain.WALL) {
-					c += 0.2f;
-				}
-				if (map[i + 1] == Terrain.WALL && map[i - width()] == Terrain.WALL) {
-					c += 0.2f;
-				}
-				if (map[i - 1] == Terrain.WALL && map[i - width()] == Terrain.WALL) {
-					c += 0.2f;
-				}
-				
-				if (Random.Float() < c) {
-					map[i] = Terrain.EMPTY_DECO;
-				}
-			}
-		}
-		
-		for (int i=0; i < width(); i++) {
-			if (map[i] == Terrain.WALL &&
-				(map[i + width()] == Terrain.EMPTY || map[i + width()] == Terrain.EMPTY_SP) &&
-				Random.Int( 6 ) == 0) {
-				
-				map[i] = Terrain.WALL_DECO;
-			}
-		}
-		
-		for (int i=width(); i < length() - width(); i++) {
-			if (map[i] == Terrain.WALL &&
-				map[i - width()] == Terrain.WALL &&
-				(map[i + width()] == Terrain.EMPTY || map[i + width()] == Terrain.EMPTY_SP) &&
-				Random.Int( 3 ) == 0) {
-				
-				map[i] = Terrain.WALL_DECO;
-			}
-		}
-		
-		placeSign();
 	}
 
 	@Override

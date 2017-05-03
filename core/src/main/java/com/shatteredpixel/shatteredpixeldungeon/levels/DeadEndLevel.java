@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.watabou.utils.Random;
 
 public class DeadEndLevel extends Level {
 
@@ -71,17 +70,6 @@ public class DeadEndLevel extends Level {
 		exit = 0;
 		
 		return true;
-	}
-
-	@Override
-	protected void decorate() {
-		for (int i=0; i < length(); i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
-				map[i] = Terrain.EMPTY_DECO;
-			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
-				map[i] = Terrain.WALL_DECO;
-			}
-		}
 	}
 
 	@Override

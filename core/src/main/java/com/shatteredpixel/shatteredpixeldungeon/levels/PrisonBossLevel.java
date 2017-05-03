@@ -122,7 +122,6 @@ public class PrisonBossLevel extends Level {
 		setSize(32, 32);
 		
 		map = MAP_START.clone();
-		decorate();
 
 		buildFlagMaps();
 		cleanWalls();
@@ -134,11 +133,6 @@ public class PrisonBossLevel extends Level {
 		resetTraps();
 
 		return true;
-	}
-
-	@Override
-	protected void decorate() {
-		//do nothing, all decorations are hard-coded.
 	}
 
 	@Override

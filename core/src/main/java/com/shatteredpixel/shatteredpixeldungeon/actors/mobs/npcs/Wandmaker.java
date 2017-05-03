@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RotGardenRoom;
@@ -47,7 +47,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Wandmaker extends NPC {
 
@@ -251,7 +250,7 @@ public class Wandmaker extends NPC {
 		
 		private static boolean questRoomSpawned;
 		
-		public static void spawnWandmaker( PrisonLevel level, Room room, Collection<Room> rooms ) {
+		public static void spawnWandmaker( Level level, Room room ) {
 			if (questRoomSpawned) {
 				
 				questRoomSpawned = false;

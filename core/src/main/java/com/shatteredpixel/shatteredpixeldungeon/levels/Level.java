@@ -250,7 +250,6 @@ public abstract class Level implements Bundlable {
 			customWalls = new HashSet<>();
 			
 		} while (!build());
-		decorate();
 		
 		buildFlagMaps();
 		cleanWalls();
@@ -461,8 +460,6 @@ public abstract class Level implements Bundlable {
 	}
 	
 	abstract protected boolean build();
-
-	abstract protected void decorate();
 
 	abstract protected void createMobs();
 

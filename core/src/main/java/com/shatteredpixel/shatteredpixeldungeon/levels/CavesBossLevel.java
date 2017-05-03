@@ -162,12 +162,6 @@ public class CavesBossLevel extends Level {
 			}
 		}
 		
-		return true;
-	}
-	
-	@Override
-	protected void decorate() {
-		
 		for (int i=width() + 1; i < length() - width(); i++) {
 			if (map[i] == Terrain.EMPTY) {
 				int n = 0;
@@ -188,7 +182,7 @@ public class CavesBossLevel extends Level {
 				}
 			}
 		}
-
+		
 		for (int i=0; i < length() - width(); i++) {
 			if (map[i] == Terrain.WALL
 					&& DungeonTileSheet.floorTile(map[i + width()])
@@ -202,6 +196,9 @@ public class CavesBossLevel extends Level {
 			sign = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + Random.Int( ROOM_TOP, ROOM_BOTTOM ) * width();
 		} while (sign == entrance || map[sign] == Terrain.INACTIVE_TRAP);
 		map[sign] = Terrain.SIGN;
+		
+		
+		return true;
 	}
 	
 	@Override

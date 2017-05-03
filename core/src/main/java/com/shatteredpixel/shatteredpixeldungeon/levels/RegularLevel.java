@@ -32,10 +32,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.BranchesBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RegularPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
@@ -70,7 +69,6 @@ public abstract class RegularLevel extends Level {
 		
 		builder = builder();
 		
-		
 		ArrayList<Room> initRooms = initRooms();
 		Random.shuffle(initRooms);
 		
@@ -82,7 +80,12 @@ public abstract class RegularLevel extends Level {
 			rooms = builder.build((ArrayList<Room>)initRooms.clone());
 		} while (rooms == null);
 		
-		return painter().paint(this, rooms);
+		if (painter().paint(this, rooms)){
+			placeSign();
+			return true;
+		} else {
+			return false;
+		}
 		
 	}
 	
@@ -101,8 +104,8 @@ public abstract class RegularLevel extends Level {
 		int specials = specialRooms();
 		SpecialRoom.initForFloor();
 		for (int i = 0; i < specials; i++)
-				initRooms.add(SpecialRoom.createRoom());
-			
+			initRooms.add(SpecialRoom.createRoom());
+		
 		return initRooms;
 	}
 	
@@ -116,16 +119,10 @@ public abstract class RegularLevel extends Level {
 	
 	protected Builder builder(){
 		//TODO need a much better builder here
-		return new LineBuilder();
+		return new BranchesBuilder();
 	}
 	
-	protected Painter painter(){
-		RegularPainter p = new RegularPainter();
-		p.setGrass(grassFill(), grassSmoothing());
-		p.setWater(waterFill(), waterSmoothing());
-		p.setTraps(nTraps(), trapClasses(), trapChances());
-		return p;
-	}
+	protected abstract Painter painter();
 
 	protected void placeSign(){
 		while (true) {
@@ -133,6 +130,15 @@ public abstract class RegularLevel extends Level {
 			if (pos != entrance && traps.get(pos) == null && findMob(pos) == null) {
 				map[pos] = Terrain.SIGN;
 				break;
+			}
+		}
+		
+		//teaches players about secret doors
+		if (Dungeon.depth == 2) {
+			for (Room r : roomEntrance.connected.keySet()) {
+				Room.Door d = roomEntrance.connected.get(r);
+				if (d.type == Room.Door.Type.REGULAR)
+					map[d.x + d.y * width()] = Terrain.SECRET_DOOR;
 			}
 		}
 	}
