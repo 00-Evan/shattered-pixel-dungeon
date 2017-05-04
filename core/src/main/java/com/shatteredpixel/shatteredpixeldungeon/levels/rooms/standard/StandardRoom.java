@@ -31,15 +31,21 @@ public abstract class StandardRoom extends Room {
 	
 	public enum SizeCategories{
 		
-		NORMAL(4, 10),
-		LARGE(10, 14),
-		GIANT(14, 18);
+		NORMAL(4, 10, 1),
+		LARGE(10, 14, 2),
+		GIANT(14, 18, 3);
 		
 		public final int minDim, maxDim;
+		public final int roomValue;
 		
-		SizeCategories(int min, int max){
+		SizeCategories(int min, int max, int val){
 			minDim = min;
 			maxDim = max;
+			roomValue = val;
+		}
+		
+		public int connectionWeight(){
+			return roomValue*roomValue;
 		}
 		
 	}

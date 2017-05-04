@@ -95,8 +95,14 @@ public abstract class RegularLevel extends Level {
 		initRooms.add( roomExit = new ExitRoom());
 		
 		int standards = standardRooms();
-		for (int i = 0; i < standards; i++)
-			initRooms.add(StandardRoom.createRoom());
+		for (int i = 0; i < standards; i++) {
+			StandardRoom s;
+			do {
+				s = StandardRoom.createRoom();
+			} while ((i + s.sizeCat.roomValue) > standards);
+			i += s.sizeCat.roomValue-1;
+			initRooms.add(s);
+		}
 		
 		if (Dungeon.shopOnLevel())
 			initRooms.add(new ShopRoom());
@@ -189,8 +195,13 @@ public abstract class RegularLevel extends Level {
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
-			if (room instanceof StandardRoom && room != roomEntrance) stdRooms.add(room);
+			if (room instanceof StandardRoom && room != roomEntrance) {
+				for (int i = 0; i < ((StandardRoom) room).sizeCat.roomValue; i++) {
+					stdRooms.add(room);
+				}
+			}
 		}
+		Random.shuffle(rooms);
 		Iterator<Room> stdRoomIter = stdRooms.iterator();
 
 		while (mobsToSpawn > 0) {

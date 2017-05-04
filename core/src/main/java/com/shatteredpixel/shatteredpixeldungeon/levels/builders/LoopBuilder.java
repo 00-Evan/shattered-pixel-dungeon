@@ -92,6 +92,7 @@ public class LoopBuilder extends RegularBuilder {
 		ArrayList<Room> roomsToBranch = new ArrayList<>();
 		roomsToBranch.addAll(multiConnections);
 		roomsToBranch.addAll(singleConnections);
+		weightRooms(branchable);
 		createBranches(rooms, branchable, roomsToBranch, branchTunnelChances);
 		
 		findNeighbours(rooms);

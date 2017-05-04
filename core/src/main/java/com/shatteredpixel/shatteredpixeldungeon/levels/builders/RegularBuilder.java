@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -98,6 +99,15 @@ public abstract class RegularBuilder extends Builder {
 	
 	// *** Branch Placement ***
 	
+	protected static void weightRooms(ArrayList<Room> rooms){
+		for (Room r : rooms.toArray(new Room[0])){
+			if (r instanceof StandardRoom){
+				for (int i = 0; i < ((StandardRoom) r).sizeCat.connectionWeight(); i++)
+					rooms.add(r);
+			}
+		}
+	}
+	
 	//places the rooms in roomsToBranch into branches from rooms in branchable.
 	//note that the three arrays should be separate, they may contain the same rooms however
 	protected static void createBranches(ArrayList<Room> rooms, ArrayList<Room> branchable,
@@ -160,11 +170,16 @@ public abstract class RegularBuilder extends Builder {
 				continue;
 			}
 			
-			for (Room t : connectingRoomsThisBranch){
-				branchable.add(t);
+			branchable.addAll(connectingRoomsThisBranch);
+			if (r.maxConnections(Room.ALL) > 1) {
+				if (r instanceof StandardRoom){
+					for (int j = 0; j < ((StandardRoom) r).sizeCat.connectionWeight(); j++){
+						branchable.add(r);
+					}
+				} else {
+					branchable.add(r);
+				}
 			}
-			if (r.maxConnections(Room.ALL) > 1 && Random.Int(2) == 0)
-				branchable.add(r);
 			
 			i++;
 		}

@@ -79,6 +79,7 @@ public class LineBuilder extends RegularBuilder {
 			roomsToBranch.add(multiConnections.get(i));
 		}
 		roomsToBranch.addAll(singleConnections);
+		weightRooms(branchable);
 		createBranches(rooms, branchable, roomsToBranch, branchTunnelChances);
 		
 		findNeighbours(rooms);
