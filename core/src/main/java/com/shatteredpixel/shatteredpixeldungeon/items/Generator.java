@@ -151,6 +151,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Generator {
 
@@ -201,7 +202,7 @@ public class Generator {
 			{0,  2,  8, 20, 70}
 	};
 	
-	private static HashMap<Category,Float> categoryProbs = new HashMap<Generator.Category, Float>();
+	private static HashMap<Category,Float> categoryProbs = new LinkedHashMap<>();
 
 	private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
 	

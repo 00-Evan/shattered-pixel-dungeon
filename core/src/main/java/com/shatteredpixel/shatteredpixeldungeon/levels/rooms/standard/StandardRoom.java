@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Random;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public abstract class StandardRoom extends Room {
 	
@@ -72,12 +73,12 @@ public abstract class StandardRoom extends Room {
 		else                    return 4;
 	}
 	
-	private static HashMap<Class<?extends StandardRoom>, Float> chances = new HashMap<>();
+	private static HashMap<Class<?extends StandardRoom>, Float> chances = new LinkedHashMap<>();
 	
 	static {
 		chances.put(EmptyRoom.class, 24f);
 		
-		chances.put(PlatformRoom.class,      1f);
+		chances.put(PlatformRoom.class,     1f);
 		chances.put(BurnedRoom.class,       1f);
 		chances.put(FissureRoom.class,      1f);
 		chances.put(GrassyGraveRoom.class,  1f);
