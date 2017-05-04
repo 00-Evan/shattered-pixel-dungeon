@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
@@ -89,6 +90,8 @@ public abstract class RegularBuilder extends Builder {
 				entrance = r;
 			} else if (r instanceof ExitRoom) {
 				exit = r;
+			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1){
+				shop = r;
 			} else if (r.maxConnections(Room.ALL) > 1){
 				multiConnections.add(r);
 			} else if (r.maxConnections(Room.ALL) == 1){

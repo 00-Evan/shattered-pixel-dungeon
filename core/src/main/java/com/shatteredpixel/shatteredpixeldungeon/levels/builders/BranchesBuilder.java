@@ -44,8 +44,11 @@ public class BranchesBuilder extends RegularBuilder {
 		entrance.setPos(0, 0);
 		branchable.add(entrance);
 		
+		if (shop != null){
+			placeRoom(branchable, entrance, shop, Random.Float(360f));
+		}
+		
 		ArrayList<Room> roomsToBranch = new ArrayList<>();
-		if (shop != null) roomsToBranch.add(shop);
 		roomsToBranch.addAll(multiConnections);
 		if (exit != null) roomsToBranch.add(exit);
 		roomsToBranch.addAll(singleConnections);
