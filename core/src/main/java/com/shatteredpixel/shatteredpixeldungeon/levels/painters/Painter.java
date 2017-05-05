@@ -73,6 +73,30 @@ public abstract class Painter {
 		fill( level, rect.left + l, rect.top + t, rect.width() - (l + r), rect.height() - (t + b), value );
 	}
 	
+	public static void drawLine( Level level, Point from, Point to, int value){
+		float x = from.x;
+		float y = from.y;
+		float dx = to.x - from.x;
+		float dy = to.y - from.y;
+		
+		boolean movingbyX = Math.abs(dx) >= Math.abs(dy);
+		//normalize
+		if (movingbyX){
+			dy /= Math.abs(dx);
+			dx /= Math.abs(dx);
+		} else {
+			dx /= Math.abs(dy);
+			dy /= Math.abs(dy);
+		}
+		
+		set(level, Math.round(x), Math.round(y), value);
+		while((movingbyX && to.x != x) || (!movingbyX && to.y != y)){
+			x += dx;
+			y += dy;
+			set(level, Math.round(x), Math.round(y), value);
+		}
+	}
+	
 	public static Point drawInside( Level level, Room room, Point from, int n, int value ) {
 		
 		Point step = new Point();
