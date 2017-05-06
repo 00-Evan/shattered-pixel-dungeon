@@ -21,8 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.HashMap;
@@ -48,6 +50,12 @@ public abstract class ConnectionRoom extends Room {
 	public int maxConnections(int direction) {
 		if (direction == ALL)   return 16;
 		else                    return 4;
+	}
+	
+	@Override
+	public boolean canPlaceTrap(Point p) {
+		//traps cannot appear in connection rooms on floor 1
+		return super.canPlaceTrap(p) && Dungeon.depth > 1;
 	}
 	
 	private static HashMap<Class<?extends ConnectionRoom>, Float> chances = new LinkedHashMap<>();

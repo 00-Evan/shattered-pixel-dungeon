@@ -68,10 +68,6 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		return this;
 	}
 	
-	//TODO make abstract
-	public void paint(Level level){ }
-	
-	
 	// **** Spatial logic ****
 	
 	//Note: when overriding these YOU MUST store any randomly decided values.
@@ -143,6 +139,7 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 				Random.IntRange( top + m, bottom - m ));
 	}
 	
+	//a point is only considered to be inside if it is within the 1 tile perimeter
 	public boolean inside( Point p ) {
 		return p.x > left && p.y > top && p.x < right && p.y < bottom;
 	}
@@ -260,6 +257,44 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 		}
 		connected.clear();
 	}
+	
+	// **** Painter Logic ****
+	
+	//TODO make abstract
+	public void paint(Level level){}
+	
+	//whether or not a painter can make its own modifications to a specific point
+	public boolean canModifyTerrain(Point p){
+		return inside(p);
+	}
+	
+	public final ArrayList<Point> terrainModifiablePoints(){
+		ArrayList<Point> points = new ArrayList<>();
+		for (int i = left; i <= right; i++) {
+			for (int j = top; j <= bottom; j++) {
+				Point p = new Point(i, j);
+				if (canModifyTerrain(p)) points.add(p);
+			}
+		}
+		return points;
+	}
+	
+	//whether or not a painter can place a trap at a specific point
+	public boolean canPlaceTrap(Point p){
+		return inside(p);
+	}
+	
+	public final ArrayList<Point> trapPlaceablePoints(){
+		ArrayList<Point> points = new ArrayList<>();
+		for (int i = left; i <= right; i++) {
+			for (int j = top; j <= bottom; j++) {
+				Point p = new Point(i, j);
+				if (canPlaceTrap(p)) points.add(p);
+			}
+		}
+		return points;
+	}
+	
 	
 	// **** Graph.Node interface ****
 

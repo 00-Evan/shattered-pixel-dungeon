@@ -24,10 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
-import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.PathFinder;
@@ -116,15 +114,15 @@ public abstract class RegularPainter extends Painter {
 		}
 		
 		if (waterFill > 0f) {
-			paintWater( level );
+			paintWater( level, rooms );
 		}
 		
 		if (grassFill > 0f){
-			paintGrass( level );
+			paintGrass( level, rooms );
 		}
 		
 		if (nTraps > 0){
-			paintTraps( level );
+			paintTraps( level, rooms );
 		}
 		
 		decorate( level, rooms );
@@ -249,47 +247,79 @@ public abstract class RegularPainter extends Painter {
 		return true;
 	}
 	
-	protected void paintWater( Level l ){
-		boolean[] lake =
-				Patch.generate( l.width(), l.height(), waterFill, waterSmoothness, true );
-		for (int i=0; i < l.length(); i++) {
-			if (l.map[i] == Terrain.EMPTY && lake[i]) {
-				l.map[i] = Terrain.WATER;
-			}
-		}
-	}
-	
-	protected void paintGrass( Level l ) {
-		boolean[] grass =
-				Patch.generate( l.width(), l.height(), grassFill, grassSmoothness, true );
+	protected void paintWater( Level l, ArrayList<Room> rooms ){
+		boolean[] lake = Patch.generate( l.width(), l.height(), waterFill, waterSmoothness, true );
 		
-		//adds some chaos to grass distribution, note that this does decrease the fill rate slightly
-		//TODO: analyize statistical changes on fill rate
-		for (int i=l.width()+1; i < l.length()-l.width()-1; i++) {
-			if (l.map[i] == Terrain.EMPTY && grass[i]) {
-				int count = 1;
-				for (int n : PathFinder.NEIGHBOURS8) {
-					if (grass[i + n]) {
-						count++;
+		if (!rooms.isEmpty()){
+			for (Room r : rooms){
+				for (Point p : r.terrainModifiablePoints()){
+					int i = l.pointToCell(p);
+					if (lake[i] && l.map[i] == Terrain.EMPTY){
+						l.map[i] = Terrain.WATER;
 					}
 				}
-				l.map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS : Terrain.GRASS;
 			}
+		} else {
+			for (int i = 0; i < l.length(); i ++) {
+				if (lake[i] && l.map[i] == Terrain.EMPTY){
+					l.map[i] = Terrain.WATER;
+				}
+			}
+		}
+		
+	}
+	
+	protected void paintGrass( Level l, ArrayList<Room> rooms ) {
+		boolean[] grass = Patch.generate( l.width(), l.height(), grassFill, grassSmoothness, true );
+		
+		ArrayList<Integer> grassCells = new ArrayList<>();
+		
+		if (!rooms.isEmpty()){
+			for (Room r : rooms){
+				for (Point p : r.terrainModifiablePoints()){
+					int i = l.pointToCell(p);
+					if (grass[i] && l.map[i] == Terrain.EMPTY){
+						grassCells.add(i);
+					}
+				}
+			}
+		} else {
+			for (int i = 0; i < l.length(); i ++) {
+				if (grass[i] && l.map[i] == Terrain.EMPTY){
+					grassCells.add(i);
+				}
+			}
+		}
+		
+		//Adds chaos to grass height distribution. Ratio of high grass depends on fill and smoothing
+		//Full range is 8.3% to 75%, but most commonly (20% fill with 3 smoothing) is around 60%
+		//low smoothing, or very low fill, will begin to push the ratio down, normally to 50-30%
+		for (int i : grassCells) {
+			int count = 1;
+			for (int n : PathFinder.NEIGHBOURS8) {
+				if (grass[i + n]) {
+					count++;
+				}
+			}
+			l.map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS : Terrain.GRASS;
 		}
 	}
 	
-	protected void paintTraps( Level l ) {
+	protected void paintTraps( Level l, ArrayList<Room> rooms ) {
 		ArrayList<Integer> validCells = new ArrayList<>();
 		
-		for (int i = 0; i < l.length(); i ++) {
-			if (l.map[i] == Terrain.EMPTY){
-				//TODO rooms should probably be able to handle trap placement
-				if (Dungeon.depth == 1){
-					Room r = ((RegularLevel)l).room(i);
-					if (r != null && !(r instanceof ConnectionRoom)){
+		if (!rooms.isEmpty()){
+			for (Room r : rooms){
+				for (Point p : r.trapPlaceablePoints()){
+					int i = l.pointToCell(p);
+					if (l.map[i] == Terrain.EMPTY){
 						validCells.add(i);
 					}
-				} else {
+				}
+			}
+		} else {
+			for (int i = 0; i < l.length(); i ++) {
+				if (l.map[i] == Terrain.EMPTY){
 					validCells.add(i);
 				}
 			}
