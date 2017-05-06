@@ -21,8 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SheepSprite;
 import com.watabou.utils.Random;
 
@@ -63,7 +65,8 @@ public class Sheep extends NPC {
 
 	@Override
 	public boolean interact() {
-		yell( Messages.get(this, Random.element( LINE_KEYS )) );
+		sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, Random.element( LINE_KEYS )) );
+		Dungeon.hero.spendAndNext(1f);
 		return false;
 	}
 }
