@@ -93,4 +93,11 @@ public class PitRoom extends SpecialRoom {
 			Generator.Category.GOLD
 		) );
 	}
+	
+	@Override
+	public boolean canPlaceTrap(Point p) {
+		//the player is already weak after landing, and will likely need to kite the ghost.
+		//having traps here just seems unfair
+		return false;
+	}
 }
