@@ -30,7 +30,7 @@ import java.util.LinkedHashMap;
 
 public abstract class StandardRoom extends Room {
 	
-	public enum SizeCategories{
+	public enum SizeCategory {
 		
 		NORMAL(4, 10, 1),
 		LARGE(10, 14, 2),
@@ -39,7 +39,7 @@ public abstract class StandardRoom extends Room {
 		public final int minDim, maxDim;
 		public final int roomValue;
 		
-		SizeCategories(int min, int max, int val){
+		SizeCategory(int min, int max, int val){
 			minDim = min;
 			maxDim = max;
 			roomValue = val;
@@ -51,7 +51,44 @@ public abstract class StandardRoom extends Room {
 		
 	}
 	
-	public SizeCategories sizeCat = SizeCategories.NORMAL;
+	public SizeCategory sizeCat;
+	{ setSizeCat(); }
+	
+	//Note that if a room wishes to allow itself to be forced to a certain size category,
+	//but would (effectively) never roll that size category, consider using Float.MIN_VALUE
+	public float[] sizeCatProbs(){
+		//always normal by default
+		return new float[]{1, 0, 0};
+	}
+	
+	public boolean setSizeCat(){
+		return setSizeCat(0, SizeCategory.values().length-1);
+	}
+	
+	//assumes room value is always ordinal+1
+	public boolean setSizeCat( int maxRoomValue ){
+		return setSizeCat(0, maxRoomValue-1);
+	}
+	
+	//returns false if size cannot be set
+	public boolean setSizeCat( int minOrdinal, int maxOrdinal ) {
+		float[] probs = sizeCatProbs();
+		SizeCategory[] categories = SizeCategory.values();
+		
+		if (probs.length != categories.length) return false;
+		
+		for (int i = 0; i < minOrdinal; i++)                    probs[i] = 0;
+		for (int i = maxOrdinal+1; i < categories.length; i++)  probs[i] = 0;
+		
+		int ordinal = Random.chances(probs);
+		
+		if (ordinal != -1){
+			sizeCat = categories[ordinal];
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	@Override
 	public int minWidth() { return sizeCat.minDim; }
