@@ -67,7 +67,7 @@ public class SpecialRoom extends Room {
 	public static ArrayList<Class<? extends Room>> runSpecials = new ArrayList<>();
 	public static ArrayList<Class<? extends Room>> floorSpecials = new ArrayList<>();
 	
-	private static int pitNeededDepth = Integer.MAX_VALUE;
+	private static int pitNeededDepth = -1;
 	private static int guaranteedWellDepth = Integer.MAX_VALUE;
 	
 	public static void initForRun() {
@@ -83,6 +83,7 @@ public class SpecialRoom extends Room {
 			runSpecials.remove( GardenRoom.class );
 		}
 		
+		pitNeededDepth = -1;
 		guaranteedWellDepth = Random.IntRange( 6, 14 );
 		Random.shuffle(runSpecials);
 	}
@@ -99,10 +100,10 @@ public class SpecialRoom extends Room {
 	}
 
 	public static void resetPitRoom(int depth){
-		if (pitNeededDepth == depth) pitNeededDepth = Integer.MAX_VALUE;
+		if (pitNeededDepth == depth) pitNeededDepth = -1;
 	}
 	
-	public static void disableGaranteedWell(){
+	public static void disableGuaranteedWell(){
 		guaranteedWellDepth = Integer.MAX_VALUE;
 	}
 	

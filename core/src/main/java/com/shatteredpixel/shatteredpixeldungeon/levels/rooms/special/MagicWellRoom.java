@@ -54,7 +54,7 @@ public class MagicWellRoom extends SpecialRoom {
 			(Class<? extends WellWater>)Random.element( WATERS );
 			
 		if (waterClass == WaterOfTransmutation.class) {
-			SpecialRoom.disableGaranteedWell();
+			SpecialRoom.disableGuaranteedWell();
 		}
 		
 		WellWater water = (WellWater)level.blobs.get( waterClass );
