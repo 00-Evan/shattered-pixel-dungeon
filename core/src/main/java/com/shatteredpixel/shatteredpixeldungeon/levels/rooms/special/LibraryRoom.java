@@ -43,15 +43,7 @@ public class LibraryRoom extends SpecialRoom {
 		Door entrance = entrance();
 		
 		Painter.fill( level, left + 1, top+1, width() - 2, 1 , Terrain.BOOKSHELF );
-		if (entrance.y == top){
-			Painter.set( level, entrance.x, entrance.y + 1, Terrain.EMPTY_SP );
-		} else if (entrance.y == top + 1){
-			if (entrance.x == left){
-				Painter.set(level, entrance.x+1, entrance.y, Terrain.EMPTY_SP);
-			} else {
-				Painter.set(level, entrance.x+1, entrance.y, Terrain.EMPTY_SP);
-			}
-		}
+		Painter.drawInside(level, this, entrance, 1, Terrain.EMPTY_SP );
 		
 		int n = Random.IntRange( 2, 3 );
 		for (int i=0; i < n; i++) {
