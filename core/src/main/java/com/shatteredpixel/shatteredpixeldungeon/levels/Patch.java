@@ -35,7 +35,7 @@ public class Patch {
 	 * The closer the fill rate is to 0.5f the weaker this pushing will be.
 	 *
 	 * forceFillRate adjusts the algorithm to force fill rate to be consistent despite clustering.
-	 * this is achived by firstly pulling the initial fill value towards 0.5f
+	 * this is achieved by firstly pulling the initial fill value towards 0.5f
 	 * and then by manually filling in or emptying cells after clustering, until the fill rate is
 	 * achieved. This is tracked with the fillDiff variable.
 	*/
@@ -114,7 +114,8 @@ public class Patch {
 			off = tmp;
 		}
 
-		if (forceFillRate) {
+		//even if force fill rate is on, only do this if we have some kind of border
+		if (forceFillRate && Math.min(w, h) > 2) {
 			int[] neighbours = new int[]{-w - 1, -w, -w + 1, -1, 0, +1, +w - 1, +w, +w + 1};
 			boolean growing = fillDiff < 0;
 
