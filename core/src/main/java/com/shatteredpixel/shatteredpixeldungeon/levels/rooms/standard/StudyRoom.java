@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-//TODO, limit connections on corners
 public class StudyRoom extends StandardRoom {
 	
 	@Override
@@ -43,42 +42,50 @@ public class StudyRoom extends StandardRoom {
 	}
 	
 	@Override
+	public float[] sizeCatProbs() {
+		return new float[]{2, 1, 0};
+	}
+	
+	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
-		for (Door door : connected.values()) {
-			door.set( Door.Type.REGULAR );
-		}
-		
 		Painter.fill( level, this, 1 , Terrain.BOOKSHELF );
 		Painter.fill( level, this, 2 , Terrain.EMPTY_SP );
 		
-		for (Point door : connected.values()) {
-			if (door.x == left) {
-				Painter.set( level, door.x + 1, door.y, Terrain.EMPTY_SP );
-				Painter.set( level, door.x + 2, door.y, Terrain.EMPTY_SP );
-			} else if (door.x == right) {
-				Painter.set( level, door.x - 1, door.y, Terrain.EMPTY_SP );
-				Painter.set( level, door.x - 2, door.y, Terrain.EMPTY_SP );
-			} else if (door.y == top) {
-				Painter.set( level, door.x, door.y + 1, Terrain.EMPTY_SP );
-				Painter.set( level, door.x, door.y + 2, Terrain.EMPTY_SP );
-			} else if (door.y == bottom) {
-				Painter.set( level, door.x , door.y - 1, Terrain.EMPTY_SP );
-				Painter.set( level, door.x , door.y - 2, Terrain.EMPTY_SP );
-			}
-		}
-		Point center = center();
-		Painter.set( level, center, Terrain.PEDESTAL );
-		if (Random.Int(2) != 0){
-			Item prize = level.findPrizeItem();
-			if (prize != null) {
-				level.drop(prize, (center.x + center.y * level.width()));
-				return;
-			}
+		for (Door door : connected.values()) {
+			Painter.drawInside(level, this, door, 2, Terrain.EMPTY_SP);
+			door.set( Door.Type.REGULAR );
 		}
 		
-		level.drop(Generator.random( Random.oneOf(
-				Generator.Category.POTION,
-				Generator.Category.SCROLL)), (center.x + center.y * level.width()));
+		//TODO add support for giant size as well
+		if (sizeCat == SizeCategory.LARGE){
+			int pillarW = (width()-7)/2;
+			int pillarH = (height()-7)/2;
+			
+			Painter.fill(level, left+3, top+3, pillarW, 1, Terrain.BOOKSHELF);
+			Painter.fill(level, left+3, top+3, 1, pillarH, Terrain.BOOKSHELF);
+			
+			Painter.fill(level, left+3, bottom-2-1, pillarW, 1, Terrain.BOOKSHELF);
+			Painter.fill(level, left+3, bottom-2-pillarH, 1, pillarH, Terrain.BOOKSHELF);
+			
+			Painter.fill(level, right-2-pillarW, top+3, pillarW, 1, Terrain.BOOKSHELF);
+			Painter.fill(level, right-2-1, top+3, 1, pillarH, Terrain.BOOKSHELF);
+			
+			Painter.fill(level, right-2-pillarW, bottom-2-1, pillarW, 1, Terrain.BOOKSHELF);
+			Painter.fill(level, right-2-1, bottom-2-pillarH, 1, pillarH, Terrain.BOOKSHELF);
+		}
+		
+		Point center = center();
+		Painter.set( level, center, Terrain.PEDESTAL );
+		
+		Item prize = (Random.Int(2) == 0) ? level.findPrizeItem() : null;
+		
+		if (prize != null) {
+			level.drop(prize, (center.x + center.y * level.width()));
+		} else {
+			level.drop(Generator.random( Random.oneOf(
+					Generator.Category.POTION,
+					Generator.Category.SCROLL)), (center.x + center.y * level.width()));
+		}
 	}
 }
