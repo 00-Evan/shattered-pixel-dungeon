@@ -8,6 +8,12 @@ import com.watabou.utils.Random;
 
 public class FissureRoom extends StandardRoom {
 	
+	
+	@Override
+	public float[] sizeCatProbs() {
+		return new float[]{6, 3, 1};
+	}
+	
 	@Override
 	public void paint(Level level) {
 		Painter.fill( level, this, Terrain.WALL );
