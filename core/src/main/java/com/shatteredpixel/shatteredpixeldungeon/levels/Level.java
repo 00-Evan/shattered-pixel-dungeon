@@ -117,7 +117,7 @@ public abstract class Level implements Bundlable {
 	public boolean[] visited;
 	public boolean[] mapped;
 
-	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 3: 8;
+	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 4 : 8;
 
 	//FIXME should not be static!
 	public static boolean[] fieldOfView;
@@ -232,7 +232,7 @@ public abstract class Level implements Bundlable {
 				case 3:
 					feeling = Feeling.DARK;
 					addItemToSpawn(new Torch());
-					viewDistance = (int)Math.ceil(viewDistance/3f);
+					viewDistance = Math.round(viewDistance/2f);
 					break;
 				}
 			}
@@ -408,7 +408,7 @@ public abstract class Level implements Bundlable {
 
 		feeling = bundle.getEnum( FEELING, Feeling.class );
 		if (feeling == Feeling.DARK)
-			viewDistance = (int)Math.ceil(viewDistance/3f);
+			viewDistance = Math.round(viewDistance/2f);
 
 		buildFlagMaps();
 		cleanWalls();
