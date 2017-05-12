@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 //This room type uses the patch system to fill itself in in some manner
 //it's still up to the specific room to implement paint, but utility methods are provided
@@ -73,6 +74,51 @@ public abstract class PatchRoom extends StandardRoom {
 			PathFinder.setMapSize(level.width(), level.height());
 		} else {
 			patch = Patch.generate(width()-2, height()-2, fill, clustering, true);
+		}
+	}
+	
+	//removes all diagonal-only adjacent filled patch areas, handy for making things look cleaner
+	//note that this will reduce the fill rate very slightly
+	protected void cleanDiagonalEdges(){
+		if (patch == null) return;
+		
+		int pWidth = width()-2;
+		
+		boolean badLeft, badRight;
+		
+		for (int i = 0; i < patch.length - pWidth; i++){
+			if (!patch[i]) continue;
+			
+			//we don't need to check above because we are either at the top
+			// or have already dealt with those tiles
+			badLeft = badRight = false;
+			
+			//down-left
+			if (i % pWidth != 0){
+				if (patch[i - 1 + pWidth] && !(patch[i - 1] || patch[i + pWidth])){
+					badLeft = true;
+				}
+			}
+			
+			//down-right
+			if ((i + 1) % pWidth != 0){
+				if (patch[i + 1 + pWidth] && !(patch[i + 1] || patch[i + pWidth])){
+					badRight = true;
+				}
+			}
+			
+			if (badLeft && badRight){
+				patch[i] = false;
+				
+			} else if (badLeft){
+				if (Random.Int(2) == 0) patch[i] = false;
+				else                    patch[i - 1 + pWidth] = false;
+				
+			} else if (badRight){
+				if (Random.Int(2) == 0) patch[i] = false;
+				else                    patch[i + 1 + pWidth] = false;
+			}
+			
 		}
 	}
 	
