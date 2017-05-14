@@ -137,8 +137,13 @@ public class SpecialRoom extends Room {
 			}
 			
 			Room r = null;
+			int index = floorSpecials.size();
+			for (int i = 0; i < 4; i++){
+				int newidx = Random.Int( floorSpecials.size() );
+				if (newidx < index) index = newidx;
+			}
 			try {
-				r = floorSpecials.get( Math.min( Random.Int( floorSpecials.size() ), Random.Int( floorSpecials.size() ) ) ).newInstance();
+				r = floorSpecials.get( index ).newInstance();
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 			}
@@ -159,8 +164,13 @@ public class SpecialRoom extends Room {
 	
 	public static void restoreRoomsFromBundle( Bundle bundle ) {
 		runSpecials.clear();
-		for (Class<?extends Room> type : bundle.getClassArray( ROOMS )) {
-			runSpecials.add( type );
+		if (bundle.contains( ROOMS )) {
+			for (Class<? extends Room> type : bundle.getClassArray(ROOMS)) {
+				runSpecials.add(type);
+			}
+		} else {
+			initForRun();
+			ShatteredPixelDungeon.reportException(new Exception("specials array didn't exist!"));
 		}
 		pitNeededDepth = bundle.getInt(PIT);
 		guaranteedWellDepth = bundle.getInt(WELL);
