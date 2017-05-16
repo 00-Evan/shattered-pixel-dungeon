@@ -113,14 +113,19 @@ public abstract class StandardRoom extends Room {
 	private static HashMap<Class<?extends StandardRoom>, Float> chances = new LinkedHashMap<>();
 	
 	static {
-		chances.put(EmptyRoom.class, 24f);
+		//currently effective average room size value is 1.15916
+		chances.put(EmptyRoom.class,        24f);//average value: 1.0000, +.00000 overall
 		
-		chances.put(PlatformRoom.class,     1f);
-		chances.put(BurnedRoom.class,       1f);
-		chances.put(FissureRoom.class,      1f);
-		chances.put(GrassyGraveRoom.class,  1f);
-		chances.put(StripedRoom.class,      1f);
-		chances.put(StudyRoom.class,        1f);
+		chances.put(RingRoom.class,         8f); //average value: 1.5000, +.10000 overall
+		
+		chances.put(GardenRoom.class,       1f); //average value: 1.2500, +.00625 overall
+		chances.put(AquariumRoom.class,     1f); //average value: 1.2500, +.00625 overall
+		chances.put(PlatformRoom.class,     1f); //average value: 1.5000, +.01250 overall
+		chances.put(BurnedRoom.class,       1f); //average value: 1.2000, +.00500 overall
+		chances.put(FissureRoom.class,      1f); //average value: 1.5000, +.01250 overall
+		chances.put(GrassyGraveRoom.class,  1f); //average value: 1.0000, +.00000 overall
+		chances.put(StripedRoom.class,      1f); //average value: 1.3333, +.00833 overall
+		chances.put(StudyRoom.class,        1f); //average value: 1.3333, +.00833 overall
 	}
 	
 	public static StandardRoom createRoom(){
