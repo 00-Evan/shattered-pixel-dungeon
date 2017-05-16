@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.watabou.utils.Random;
 
-public class GardenRoom extends SpecialRoom {
+public class FoliageRoom extends SpecialRoom {
 
 	public void paint( Level level ) {
 		

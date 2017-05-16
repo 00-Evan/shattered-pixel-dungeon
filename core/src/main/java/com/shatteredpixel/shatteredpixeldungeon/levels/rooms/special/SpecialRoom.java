@@ -60,7 +60,7 @@ public class SpecialRoom extends Room {
 	}
 	
 	private static final ArrayList<Class<? extends SpecialRoom>> ALL_SPEC = new ArrayList<>( Arrays.asList(
-			WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, GardenRoom.class, LibraryRoom.class, ArmoryRoom.class,
+			WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, FoliageRoom.class, LibraryRoom.class, ArmoryRoom.class,
 			TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, LaboratoryRoom.class, VaultRoom.class
 	) );
 	
@@ -80,7 +80,7 @@ public class SpecialRoom extends Room {
 		}
 		if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
 			//sorry warden, no lucky sungrass or blandfruit seeds for you!
-			runSpecials.remove( GardenRoom.class );
+			runSpecials.remove( FoliageRoom.class );
 		}
 		
 		pitNeededDepth = -1;
