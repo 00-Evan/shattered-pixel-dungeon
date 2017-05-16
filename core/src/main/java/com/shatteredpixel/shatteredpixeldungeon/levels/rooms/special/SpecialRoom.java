@@ -79,7 +79,7 @@ public class SpecialRoom extends Room {
 			runSpecials.remove( CryptRoom.class );
 		}
 		if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
-			//sorry warden, no lucky sungrass or blandfruit seeds for you!
+			//Would be a bit mean to spawn these with no plants in them
 			runSpecials.remove( FoliageRoom.class );
 		}
 		
