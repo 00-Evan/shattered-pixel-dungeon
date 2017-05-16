@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -139,8 +140,8 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 		
-		//teaches players about secret doors
-		if (Dungeon.depth == 2) {
+		//teaches new players about secret doors
+		if (Dungeon.depth == 2 && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)) {
 			for (Room r : roomEntrance.connected.keySet()) {
 				Room.Door d = roomEntrance.connected.get(r);
 				if (d.type == Room.Door.Type.REGULAR)
