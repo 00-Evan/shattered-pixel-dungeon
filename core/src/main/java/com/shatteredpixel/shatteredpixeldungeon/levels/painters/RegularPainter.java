@@ -295,6 +295,11 @@ public abstract class RegularPainter extends Painter {
 		//Full range is 8.3% to 75%, but most commonly (20% fill with 3 smoothing) is around 60%
 		//low smoothing, or very low fill, will begin to push the ratio down, normally to 50-30%
 		for (int i : grassCells) {
+			if (l.heaps.get(i) != null || l.findMob(i) != null) {
+				l.map[i] = Terrain.GRASS;
+				continue;
+			}
+			
 			int count = 1;
 			for (int n : PathFinder.NEIGHBOURS8) {
 				if (grass[i + n]) {
