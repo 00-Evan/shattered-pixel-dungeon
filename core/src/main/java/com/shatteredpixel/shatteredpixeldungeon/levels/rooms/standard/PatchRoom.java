@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 
 //This room type uses the patch system to fill itself in in some manner
 //it's still up to the specific room to implement paint, but utility methods are provided
@@ -84,39 +83,24 @@ public abstract class PatchRoom extends StandardRoom {
 		
 		int pWidth = width()-2;
 		
-		boolean badLeft, badRight;
-		
 		for (int i = 0; i < patch.length - pWidth; i++){
 			if (!patch[i]) continue;
 			
 			//we don't need to check above because we are either at the top
 			// or have already dealt with those tiles
-			badLeft = badRight = false;
 			
 			//down-left
 			if (i % pWidth != 0){
 				if (patch[i - 1 + pWidth] && !(patch[i - 1] || patch[i + pWidth])){
-					badLeft = true;
+					patch[i - 1 + pWidth] = false;
 				}
 			}
 			
 			//down-right
 			if ((i + 1) % pWidth != 0){
 				if (patch[i + 1 + pWidth] && !(patch[i + 1] || patch[i + pWidth])){
-					badRight = true;
+					patch[i + 1 + pWidth] = false;
 				}
-			}
-			
-			if (badLeft && badRight){
-				patch[i] = false;
-				
-			} else if (badLeft){
-				if (Random.Int(2) == 0) patch[i] = false;
-				else                    patch[i - 1 + pWidth] = false;
-				
-			} else if (badRight){
-				if (Random.Int(2) == 0) patch[i] = false;
-				else                    patch[i + 1 + pWidth] = false;
 			}
 			
 		}
