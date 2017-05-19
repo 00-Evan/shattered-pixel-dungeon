@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
@@ -43,7 +44,7 @@ public class CavesPainter extends RegularPainter {
 		int[] map = level.map;
 		
 		for (Room room : rooms) {
-			if (!(room instanceof EmptyRoom)) {
+			if (!(room instanceof EmptyRoom || room instanceof CaveRoom)) {
 				continue;
 			}
 			
@@ -122,9 +123,9 @@ public class CavesPainter extends RegularPainter {
 		}
 		
 		for (Room r : rooms) {
-			if (r instanceof StandardRoom) {
+			if (r instanceof EmptyRoom) {
 				for (Room n : r.neigbours) {
-					if (n instanceof StandardRoom && !r.connected.containsKey( n )) {
+					if (n instanceof EmptyRoom && !r.connected.containsKey( n )) {
 						Rect i = r.intersect( n );
 						if (i.left == i.right && i.bottom - i.top >= 5) {
 							
