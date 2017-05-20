@@ -21,12 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Random;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 
 public abstract class StandardRoom extends Room {
 	
@@ -110,27 +110,53 @@ public abstract class StandardRoom extends Room {
 		else                    return 4;
 	}
 	
-	private static HashMap<Class<?extends StandardRoom>, Float> chances = new LinkedHashMap<>();
-	
+	//FIXME this is a very messy way of handing variable standard rooms
+	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();
 	static {
-		//currently effective average room size value is 1.15916
-		chances.put(EmptyRoom.class,        24f);//average value: 1.0000, +.00000 overall
+		rooms.add(EmptyRoom.class);
 		
-		chances.put(RingRoom.class,         8f); //average value: 1.5000, +.10000 overall
+		rooms.add(RingRoom.class);
+		rooms.add(SegmentedRoom.class);
+		rooms.add(CaveRoom.class);
+		rooms.add(PillarsRoom.class);
+		rooms.add(RuinsRoom.class);
 		
-		chances.put(GardenRoom.class,       1f); //average value: 1.2500, +.00625 overall
-		chances.put(AquariumRoom.class,     1f); //average value: 1.2500, +.00625 overall
-		chances.put(PlatformRoom.class,     1f); //average value: 1.5000, +.01250 overall
-		chances.put(BurnedRoom.class,       1f); //average value: 1.2000, +.00500 overall
-		chances.put(FissureRoom.class,      1f); //average value: 1.5000, +.01250 overall
-		chances.put(GrassyGraveRoom.class,  1f); //average value: 1.0000, +.00000 overall
-		chances.put(StripedRoom.class,      1f); //average value: 1.3333, +.00833 overall
-		chances.put(StudyRoom.class,        1f); //average value: 1.3333, +.00833 overall
+		rooms.add(GardenRoom.class);
+		rooms.add(AquariumRoom.class);
+		rooms.add(PlatformRoom.class);
+		rooms.add(BurnedRoom.class);
+		rooms.add(FissureRoom.class);
+		rooms.add(GrassyGraveRoom.class);
+		rooms.add(StripedRoom.class);
+		rooms.add(StudyRoom.class);
 	}
+	
+	private static float[][] chances = new float[27][];
+	static {
+		chances[1] =  new float[]{22,  10, 0, 0, 0, 0,  1, 0, 1, 0, 1, 0, 1, 1};
+		chances[2] =  new float[]{22,  10, 0, 0, 0, 0,  1, 1, 1, 1, 1, 1, 1, 1};
+		chances[4] =  chances[3] = chances[2];
+		chances[5] =  new float[]{1,   0, 0, 0, 0, 0,   0, 0, 0, 0, 0, 0, 0, 0};
+		
+		chances[6] =  new float[]{22,  0, 10, 0, 0, 0,  1, 1, 1, 1, 1, 1, 1, 1};
+		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];
+		
+		chances[11] = new float[]{22,  0, 0, 10, 0, 0,  1, 1, 1, 1, 1, 1, 1, 1};
+		chances[15] = chances[14] = chances[13] = chances[12] = chances[11];
+		
+		chances[16] = new float[]{22,  0, 0, 0, 10, 0,  1, 1, 1, 1, 1, 1, 1, 1};
+		chances[20] = chances[19] = chances[18] = chances[17] = chances[16];
+		
+		chances[21] = chances[5];
+		
+		chances[22] = new float[]{22,  0, 0, 0, 0, 10,  1, 1, 1, 1, 1, 1, 1, 1};
+		chances[26] = chances[25] = chances[24] = chances[23] = chances[22];
+	}
+	
 	
 	public static StandardRoom createRoom(){
 		try{
-			return Random.chances(chances).newInstance();
+			return rooms.get(Random.chances(chances[Dungeon.depth])).newInstance();
 		} catch (Exception e) {
 			ShatteredPixelDungeon.reportException(e);
 			return null;

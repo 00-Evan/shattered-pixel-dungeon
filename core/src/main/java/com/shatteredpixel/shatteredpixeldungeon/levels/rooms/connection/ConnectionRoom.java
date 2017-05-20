@@ -27,8 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 
 public abstract class ConnectionRoom extends Room {
 	
@@ -58,19 +57,42 @@ public abstract class ConnectionRoom extends Room {
 		return super.canPlaceTrap(p) && Dungeon.depth > 1;
 	}
 	
-	private static HashMap<Class<?extends ConnectionRoom>, Float> chances = new LinkedHashMap<>();
-	
+	//FIXME this is a very messy way of handing variable connection rooms
+	private static ArrayList<Class<?extends ConnectionRoom>> rooms = new ArrayList<>();
 	static {
-		chances.put(TunnelRoom.class,           10f);
-		chances.put(PerimeterRoom.class,        10f);
-		chances.put(BridgeRoom.class,           3f);
-		chances.put(WalkwayRoom.class,          3f);
-		chances.put(MazeConnectionRoom.class,   1f);
+		rooms.add(TunnelRoom.class);
+		rooms.add(BridgeRoom.class);
+		
+		rooms.add(PerimeterRoom.class);
+		rooms.add(WalkwayRoom.class);
+		
+		rooms.add(MazeConnectionRoom.class);
+	}
+	
+	private static float[][] chances = new float[27][];
+	static {
+		chances[1] =  new float[]{6, 1,  0, 1,  0};
+		chances[4] =  chances[3] = chances[2] = chances[1];
+		chances[5] =  new float[]{1, 0,  0, 0,  0};
+		
+		chances[6] =  new float[]{0, 0,  5, 1,  0};
+		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];
+		
+		chances[11] = new float[]{6, 0,  0, 3,  0};
+		chances[15] = chances[14] = chances[13] = chances[12] = chances[11];
+		
+		chances[16] = new float[]{0, 1,  6, 1,  0};
+		chances[20] = chances[19] = chances[18] = chances[17] = chances[16];
+		
+		chances[21] = chances[5];
+		
+		chances[22] = new float[]{6, 2,  0, 1,  0};
+		chances[26] = chances[25] = chances[24] = chances[23] = chances[22];
 	}
 	
 	public static ConnectionRoom createRoom(){
 		try {
-			return Random.chances(chances).newInstance();
+			return rooms.get(Random.chances(chances[Dungeon.depth])).newInstance();
 		} catch (Exception e) {
 			ShatteredPixelDungeon.reportException(e);
 			return null;
