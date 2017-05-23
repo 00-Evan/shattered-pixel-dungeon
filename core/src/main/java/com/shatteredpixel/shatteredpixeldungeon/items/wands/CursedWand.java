@@ -412,7 +412,7 @@ public class CursedWand {
 									
 									@Override
 									protected void onSelect(int index) {
-										throw new RuntimeException("critical wand exception");
+										Game.instance.finish();
 									}
 									
 									@Override
