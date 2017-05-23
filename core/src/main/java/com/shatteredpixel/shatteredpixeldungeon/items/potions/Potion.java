@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -312,6 +313,7 @@ public class Potion extends Item {
 		Char ch = Actor.findChar(cell);
 		if (ch != null) {
 			Buff.detach(ch, Burning.class);
+			Buff.detach(ch, Ooze.class);
 			Splash.at( ch.sprite.center(), color, 5 );
 		} else {
 			Splash.at( cell, color, 5 );
