@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.utils.PathFinder;
 
 public class PitfallTrap extends Trap {
 
@@ -64,11 +65,18 @@ public class PitfallTrap extends Trap {
 	@Override
 	protected void disarm() {
 		super.disarm();
-
+		
+		int stateChanges = 0;
+		boolean curPassable = Level.passable[pos + PathFinder.CIRCLE8[PathFinder.CIRCLE8.length-1]];
+		for (int i : PathFinder.CIRCLE8){
+			if (curPassable != Level.passable[pos + i]){
+				stateChanges++;
+				curPassable = Level.passable[pos + i];
+			}
+		}
+		
 		//if making a pit here wouldn't block any paths, make a pit tile instead of a disarmed trap tile.
-		if (!(Dungeon.level.solid[pos - Dungeon.level.width()] && Dungeon.level.solid[pos + Dungeon.level.width()])
-				&& !(Dungeon.level.solid[pos - 1]&& Dungeon.level.solid[pos + 1])){
-
+		if (stateChanges <= 2){
 			Level.set(pos, Terrain.CHASM);
 			GameScene.updateMap( pos );
 		}
