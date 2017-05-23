@@ -122,7 +122,7 @@ public class FogOfWar extends Image {
 	}
 
 	public synchronized void updateFogCell( int cell ){
-		updateFogArea( cell % mapWidth , cell / mapHeight, 1, 1 );
+		updateFogArea( cell % mapWidth , cell / mapWidth, 1, 1 );
 	}
 
 	public synchronized void updateFogArea(int x, int y, int w, int h){
