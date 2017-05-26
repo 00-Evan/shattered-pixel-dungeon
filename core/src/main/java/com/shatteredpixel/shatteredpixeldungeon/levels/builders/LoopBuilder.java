@@ -30,7 +30,41 @@ import java.util.ArrayList;
 //A builder with one core loop as its primary element
 public class LoopBuilder extends RegularBuilder {
 	
-	//TODO customizeable equation for angle changes (currently we're just linear)
+	//These methods allow for the adjusting of the shape of the loop
+	//by default the loop is a perfect circle, but it can be adjusted
+	
+	//increasing the exponent will increase the the curvature, making the loop more oval shaped.
+	private int curveExponent = 0;
+	
+	//This is a percentage (range 0-1) of the intensity of the curve function
+	// 0 makes for a perfect linear curve (circle)
+	// 1 means the curve is completely determined by the curve exponent
+	private float curveIntensity = 1;
+	
+	//Adjusts the starting point along the loop.
+	// a common example, setting to 0.25 will make for a short fat oval instead of a long one.
+	private float curveOffset = 0;
+	
+	public LoopBuilder setLoopShape(int exponent, float intensity, float offset){
+		this.curveExponent = Math.abs(exponent);
+		curveIntensity = intensity % 1f;
+		curveOffset = offset % 0.5f;
+		return this;
+	}
+	
+	private float targetAngle( float percentAlong ){
+		percentAlong += curveOffset;
+		return 360f * (float)(
+						curveIntensity * curveEquation(percentAlong)
+						+ (1-curveIntensity)*(percentAlong)
+						- curveOffset);
+	}
+	
+	private double curveEquation( double x ){
+		return Math.pow(4, 2*curveExponent)
+				*(Math.pow((x % 0.5f )-0.25, 2*curveExponent + 1))
+				+ 0.25 + 0.5*Math.floor(2*x);
+	}
 	
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
@@ -49,14 +83,11 @@ public class LoopBuilder extends RegularBuilder {
 		ArrayList<Room> loop = new ArrayList<>();
 		int roomsOnLoop = (int)(multiConnections.size()*pathLength) + Random.chances(pathLenJitterChances);
 		roomsOnLoop = Math.min(roomsOnLoop, multiConnections.size());
-		if (exit != null) roomsOnLoop++;
 		roomsOnLoop++;
 		
 		for (int i = 0; i < roomsOnLoop; i++){
 			if (i == 0)
 				loop.add(entrance);
-			else if (exit != null && i == roomsOnLoop/2)
-				loop.add(exit);
 			else
 				loop.add(multiConnections.remove(0));
 			
@@ -66,12 +97,13 @@ public class LoopBuilder extends RegularBuilder {
 			}
 		}
 		
+		if (exit != null) loop.add(loop.size()/2, exit);
+		
 		Room prev = entrance;
-		float targetAngle = startAngle;
-		float angleChange = 360f / loop.size();
+		float targetAngle;
 		for (int i = 1; i < loop.size(); i++){
 			Room r = loop.get(i);
-			targetAngle += angleChange;
+			targetAngle = startAngle + targetAngle( i / (float)loop.size());
 			if (placeRoom(rooms, prev, r, targetAngle) != -1) {
 				prev = r;
 				if (!rooms.contains(prev))
@@ -85,6 +117,13 @@ public class LoopBuilder extends RegularBuilder {
 		//FIXME this is lazy, there are ways to do this without relying on chance
 		if (!prev.connect(entrance)){
 			return null;
+		}
+		
+		if (shop != null) {
+			float angle;
+			do {
+				angle = placeRoom(loop, entrance, shop, Random.Float(360f));
+			} while (angle == -1);
 		}
 		
 		ArrayList<Room> branchable = new ArrayList<>(loop);

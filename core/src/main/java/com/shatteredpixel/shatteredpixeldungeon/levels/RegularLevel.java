@@ -33,8 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.BranchesBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
@@ -125,8 +125,10 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	protected Builder builder(){
-		//TODO need a much better builder here
-		return new BranchesBuilder();
+		return new LoopBuilder()
+				.setLoopShape( 2 ,
+						Random.Float(0.6f, 0.9f),
+						Random.Int(4) == 0 ? 0.25f : 0);
 	}
 	
 	protected abstract Painter painter();

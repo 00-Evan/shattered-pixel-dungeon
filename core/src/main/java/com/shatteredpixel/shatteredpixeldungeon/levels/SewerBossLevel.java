@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.TunnelRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerBossEntranceRoom;
@@ -59,10 +58,7 @@ public class SewerBossLevel extends SewerLevel {
 		int standards = standardRooms();
 		for (int i = 0; i < standards; i++) {
 			initRooms.add(new EmptyRoom());
-			initRooms.add(new TunnelRoom());
 		}
-		initRooms.add(new TunnelRoom());
-		if (Random.Int(3) == 0) initRooms.add(new TunnelRoom());
 		
 		initRooms.add(new RatKingRoom());
 		return initRooms;
@@ -76,7 +72,7 @@ public class SewerBossLevel extends SewerLevel {
 	protected Builder builder(){
 		return new LoopBuilder()
 				.setPathLength(1f, new float[]{1})
-				.setTunnelLength(new float[]{1}, new float[]{1});
+				.setTunnelLength(new float[]{0, 3, 1}, new float[]{1});
 	}
 	
 	@Override
