@@ -166,7 +166,7 @@ public class SpecialRoom extends Room {
 		runSpecials.clear();
 		if (bundle.contains( ROOMS )) {
 			for (Class<? extends Room> type : bundle.getClassArray(ROOMS)) {
-				runSpecials.add(type);
+				if (type != null) runSpecials.add(type);
 			}
 		} else {
 			initForRun();
