@@ -28,10 +28,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLDisplay;
 
 public class ScreenConfigChooser implements GLSurfaceView.EGLConfigChooser {
-
-	private int[] attribVals = new int[6]; //array for storing attribute values
-	private int[] attribPrefs = new int[6]; //array for storing attribute preferences
-
+	
 	//array of corresponding EGL attributes for each array index
 	private int[] attribEGLconsts = new int[]{
 			EGL10.EGL_RED_SIZE,
@@ -41,7 +38,11 @@ public class ScreenConfigChooser implements GLSurfaceView.EGLConfigChooser {
 			EGL10.EGL_DEPTH_SIZE,
 			EGL10.EGL_STENCIL_SIZE
 	};
-
+	
+	private int[] desiredAttribVals = new int[attribEGLconsts.length]; //desired attribute values
+	private int[] attribPrefs = new int[attribEGLconsts.length]; //attribute preferences types
+	private int[] prefWeights = new int[attribEGLconsts.length]; //weights for preferences
+	
 	//attributes with this preference are ignored
 	public static final int DONT_CARE = 0;
 
@@ -50,11 +51,11 @@ public class ScreenConfigChooser implements GLSurfaceView.EGLConfigChooser {
 
 	//attributes with this preference must be present in the config with at least the given value
 	// In the case of multiple valid configs, chooser will prefer higher values for these attributes
-	public static final int AT_LEAST = 2;
+	public static final int PREF_LOW = 2;
 
-	//attributes with this preference must be present in the config with at most the given value
-	// In the case of multiple valid configs, chooser will prefer higher values for these attributes
-	public static final int AT_MOST = 3;
+	//attributes with this preference must be present in the config with at least the given value
+	// In the case of multiple valid configs, chooser will prefer lower values for these attributes
+	public static final int PREF_HIGH = 3;
 
 
 	private EGL10 egl;
@@ -69,26 +70,30 @@ public class ScreenConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	}
 
 	//helper constructor for a basic config with or without depth
-	//and whether or not to force RGB565 for performance reasons
+	//and whether or not to prefer RGB565 for performance reasons
 	//On many devices RGB565 gives slightly better performance for a minimal quality tradeoff.
-	public ScreenConfigChooser( boolean forceRGB565, boolean depth ){
+	public ScreenConfigChooser( boolean prefRGB565, boolean depth ){
 		this(
-				new int[]{ 5,        6,        5, 	     0,        depth ? 16 : 0,  0       } ,
-				forceRGB565 ?
-				new int[]{ EXACTLY,  EXACTLY,  EXACTLY,  EXACTLY,  EXACTLY,         EXACTLY } :
-				new int[]{ AT_LEAST, AT_LEAST, AT_LEAST, EXACTLY,  EXACTLY,         EXACTLY }
+				new int[]{     5    ,     6    ,     5    ,    0    , depth ? 16 : 0,     0    } ,
+				prefRGB565 ?
+				new int[]{ PREF_LOW , PREF_LOW , PREF_LOW , EXACTLY ,   PREF_LOW    , PREF_LOW } :
+				new int[]{ PREF_HIGH, PREF_HIGH, PREF_HIGH, EXACTLY ,   PREF_LOW    , PREF_LOW },
+				new int[]{     2    ,     2    ,     2    ,    1    ,      1        ,     1    }
 		);
 	}
 
-	public ScreenConfigChooser( int[] vals, int[] prefs){
-		if (vals.length != 6 || prefs.length != 6)
-			throw new IllegalArgumentException("6 values must be entered!");
+	public ScreenConfigChooser( int[] vals, int[] prefs, int[] weights){
+		if (vals.length != desiredAttribVals.length
+				|| prefs.length != attribPrefs.length
+				|| weights.length != prefWeights.length)
+			throw new IllegalArgumentException("incorrect array lengths!");
 
-		attribVals = vals;
+		desiredAttribVals = vals;
 		attribPrefs = prefs;
+		prefWeights = weights;
 	}
 
-	int[] eglPrefs = new int[]{
+	private int[] eglPrefs = new int[]{
 			EGL10.EGL_RENDERABLE_TYPE, 4, //same as EGL_OPENGL_ES2_BIT. config must support GLES 2.0
 			EGL10.EGL_SURFACE_TYPE, EGL10.EGL_WINDOW_BIT,
 			EGL10.EGL_NONE
@@ -121,43 +126,51 @@ public class ScreenConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	private EGLConfig chooseConfig( EGLConfig[] configs ){
 		EGLConfig bestConfig = null;
 		int bestConfigValue = -1;
-		for (EGLConfig config : configs){
+		for (EGLConfig curConfig : configs){
 
-			int configVal = 0;
+			int curConfigValue = 0;
 
 			for (int i = 0; i < attribEGLconsts.length; i++){
-				int val = findConfigAttrib(config, attribEGLconsts[i]);
+				int val = findConfigAttrib(curConfig, attribEGLconsts[i]);
 
-				if (attribPrefs[i] == EXACTLY && attribVals[i] != val) {
-					configVal = -1;
-					break;
-				} else if (attribPrefs[i] == AT_LEAST) {
-					if (attribVals[i] > val) {
-						configVal = -1;
+				if (attribPrefs[i] == EXACTLY) {
+					
+					if (desiredAttribVals[i] != val) {
+						curConfigValue = Integer.MIN_VALUE;
+						break;
+					}
+					
+				} else if (attribPrefs[i] == PREF_HIGH) {
+					
+					if (desiredAttribVals[i] > val) {
+						curConfigValue = Integer.MIN_VALUE;
 						break;
 					} else {
-						configVal += val;
+						curConfigValue += prefWeights[i]*(val - desiredAttribVals[i]);
 					}
-				} else if (attribPrefs[i] == AT_MOST) {
-					if (attribVals[i] < val) {
-						configVal = -1;
+					
+				} else if (attribPrefs[i] == PREF_LOW) {
+					
+					if (desiredAttribVals[i] > val) {
+						curConfigValue = Integer.MIN_VALUE;
 						break;
 					} else {
-						configVal += val;
+						curConfigValue -= prefWeights[i]*(val - desiredAttribVals[i]);
 					}
+					
 				}
 			}
-
-			if (configVal > bestConfigValue){
-				bestConfigValue = configVal;
-				bestConfig = config;
+			
+			if (curConfigValue > bestConfigValue){
+				bestConfigValue = curConfigValue;
+				bestConfig = curConfig;
 			}
 
 		}
 		return bestConfig;
 	}
 
-	int[] value = new int[1];
+	private int[] value = new int[1];
 
 	private int findConfigAttrib(EGLConfig config, int attribute) {
 
