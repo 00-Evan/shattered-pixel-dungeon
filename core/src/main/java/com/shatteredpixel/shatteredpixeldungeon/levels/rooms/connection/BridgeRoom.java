@@ -32,7 +32,9 @@ public class BridgeRoom extends TunnelRoom {
 	@Override
 	public void paint(Level level) {
 		
-		Painter.fill(level, this, 1, Terrain.CHASM);
+		if (Math.min(width(), height()) > 3) {
+			Painter.fill(level, this, 1, Terrain.CHASM);
+		}
 		
 		super.paint(level);
 		
