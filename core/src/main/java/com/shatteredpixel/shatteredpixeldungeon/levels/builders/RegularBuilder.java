@@ -56,8 +56,8 @@ public abstract class RegularBuilder extends Builder {
 		return this;
 	}
 	
-	protected float[] pathTunnelChances = new float[]{2, 3, 1};
-	protected float[] branchTunnelChances = new float[]{3, 2, 1};
+	protected float[] pathTunnelChances = new float[]{2, 6, 2};
+	protected float[] branchTunnelChances = new float[]{5, 4, 1};
 	
 	public RegularBuilder setTunnelLength( float[] path, float[] branch){
 		pathTunnelChances = path;
@@ -173,7 +173,7 @@ public abstract class RegularBuilder extends Builder {
 				continue;
 			}
 			
-			branchable.addAll(connectingRoomsThisBranch);
+			if (Random.Float() < 0.33f) branchable.addAll(connectingRoomsThisBranch);
 			if (r.maxConnections(Room.ALL) > 1) {
 				if (r instanceof StandardRoom){
 					for (int j = 0; j < ((StandardRoom) r).sizeCat.connectionWeight(); j++){

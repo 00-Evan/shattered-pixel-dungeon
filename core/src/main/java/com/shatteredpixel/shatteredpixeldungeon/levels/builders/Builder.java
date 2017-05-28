@@ -68,61 +68,67 @@ public abstract class Builder {
 				}
 			}
 			
-			//iterate through all rooms we are overlapping, and find which one would take
-			//the largest area reduction to resolve the overlapping
-			Room biggestCollision = null;
-			int wDiff, hDiff, biggestDiff = 0;
-			boolean widthCollision = false;
-			for (Room room : colliding){
+			//iterate through all rooms we are overlapping, and find the closest one
+			Room closestRoom = null;
+			int closestDiff = Integer.MAX_VALUE;
+			boolean inside = true;
+			int curDiff = 0;
+			for (Room curRoom : colliding){
+				
+				if (start.x <= curRoom.left){
+					inside = false;
+					curDiff += curRoom.left - start.x;
+				} else if (start.x >= curRoom.right){
+					inside = false;
+					curDiff += start.x - curRoom.right;
+				}
+			
+				if (start.y <= curRoom.top){
+					inside = false;
+					curDiff += curRoom.top - start.y;
+				} else if (start.y >= curRoom.bottom){
+					inside = false;
+					curDiff += start.y - curRoom.bottom;
+				}
+				
+				if (inside){
+					space.set(start.x, start.y, start.x, start.y);
+					return space;
+				}
+				
+				if (curDiff < closestDiff){
+					closestDiff = curDiff;
+					closestRoom = curRoom;
+				}
+			
+			}
+			
+			int wDiff, hDiff;
+			if (closestRoom != null){
+				
 				wDiff = Integer.MAX_VALUE;
-				if (room.left >= start.x){
-					wDiff = (space.right - room.left) * (space.height() + 1);
-				} else if (room.right <= start.x){
-					wDiff = (room.right - space.left) * (space.height() + 1);
+				if (closestRoom.left >= start.x){
+					wDiff = (space.right - closestRoom.left) * (space.height() + 1);
+				} else if (closestRoom.right <= start.x){
+					wDiff = (closestRoom.right - space.left) * (space.height() + 1);
 				}
 				
 				hDiff = Integer.MAX_VALUE;
-				if (room.top >= start.y){
-					hDiff = (space.bottom - room.top) * (space.width() + 1);
-				} else if (room.bottom <= start.y){
-					hDiff = (room.bottom - space.top) * (space.width() + 1);
+				if (closestRoom.top >= start.y){
+					hDiff = (space.bottom - closestRoom.top) * (space.width() + 1);
+				} else if (closestRoom.bottom <= start.y){
+					hDiff = (closestRoom.bottom - space.top) * (space.width() + 1);
 				}
 				
-				//our start is inside this room, return an empty rect
-				if (hDiff == Integer.MAX_VALUE && wDiff == Integer.MAX_VALUE){
-					space.set(0, 0, 0, 0);
-					return space;
-					
+				//reduce by as little as possible to resolve the collision
+				if (wDiff < hDiff || wDiff == hDiff && Random.Int(2) == 0){
+					if (closestRoom.left >= start.x && closestRoom.left < space.right) space.right = closestRoom.left;
+					if (closestRoom.right <= start.x && closestRoom.right > space.left) space.left = closestRoom.right;
 				} else {
-					if (wDiff < hDiff || (wDiff == hDiff && Random.Int(2) == 0)){
-						if (wDiff >= biggestDiff){
-							biggestDiff = wDiff;
-							biggestCollision = room;
-							widthCollision = true;
-						}
-						
-					} else {
-						if (hDiff >= biggestDiff){
-							biggestDiff = hDiff;
-							biggestCollision = room;
-							widthCollision = false;
-						}
-					}
-					
+					if (closestRoom.top >= start.y && closestRoom.top < space.bottom) space.bottom = closestRoom.top;
+					if (closestRoom.bottom <= start.y && closestRoom.bottom > space.top) space.top = closestRoom.bottom;
 				}
-				
-			}
-			
-			//reduce the available space in order to not overlap with the biggest collision we found
-			if (biggestCollision != null){
-				if (widthCollision){
-					if (biggestCollision.left >= start.x && biggestCollision.left < space.right) space.right = biggestCollision.left;
-					if (biggestCollision.right <= start.x && biggestCollision.right > space.left) space.left = biggestCollision.right;
-				} else {
-					if (biggestCollision.top >= start.y && biggestCollision.top < space.bottom) space.bottom = biggestCollision.top;
-					if (biggestCollision.bottom <= start.y && biggestCollision.bottom > space.top) space.top = biggestCollision.bottom;
-				}
-				colliding.remove(biggestCollision);
+				colliding.remove(closestRoom);
 			} else {
 				colliding.clear();
 			}
@@ -140,7 +146,10 @@ public abstract class Builder {
 		PointF fromCenter = new PointF((from.left + from.right)/2f, (from.top + from.bottom)/2f);
 		PointF toCenter = new PointF((to.left + to.right)/2f, (to.top + to.bottom)/2f);
 		double m = (toCenter.y - fromCenter.y)/(toCenter.x - fromCenter.x);
-		return (float)(A*(Math.atan(m) + Math.PI/2f));
+		
+		float angle = (float)(A*(Math.atan(m) + Math.PI/2.0));
+		if (fromCenter.x > toCenter.x) angle -= 180f;
+		return angle;
 	}
 
 	//Attempts to place a room such that the angle between the center of the previous room

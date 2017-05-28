@@ -97,7 +97,7 @@ public class LoopBuilder extends RegularBuilder {
 			}
 		}
 		
-		if (exit != null) loop.add(loop.size()/2, exit);
+		if (exit != null) loop.add((loop.size()+1)/2, exit);
 		
 		Room prev = entrance;
 		float targetAngle;
@@ -114,16 +114,27 @@ public class LoopBuilder extends RegularBuilder {
 			}
 		}
 		
-		//FIXME this is lazy, there are ways to do this without relying on chance
-		if (!prev.connect(entrance)){
-			return null;
+		//FIXME this is still fairly chance reliant
+		// should just write a general function for stitching two rooms together in builder
+		while (!prev.connect(entrance)){
+			
+			ConnectionRoom c = ConnectionRoom.createRoom();
+			if (placeRoom(loop, prev, c, angleBetweenRooms(prev, entrance)) == -1){
+				return null;
+			}
+			loop.add(c);
+			rooms.add(c);
+			prev = c;
 		}
 		
 		if (shop != null) {
 			float angle;
+			int tries = 10;
 			do {
 				angle = placeRoom(loop, entrance, shop, Random.Float(360f));
-			} while (angle == -1);
+				tries--;
+			} while (angle == -1 && tries >= 0);
+			if (angle == -1) return null;
 		}
 		
 		ArrayList<Room> branchable = new ArrayList<>(loop);
