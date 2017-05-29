@@ -697,11 +697,11 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static void pickUp( Item item ) {
-		scene.toolbar.pickup( item );
+		if (scene != null) scene.toolbar.pickup( item );
 	}
 
 	public static void pickUpJournal( Item item ) {
-		scene.pane.pickup( item );
+		if (scene != null) scene.pane.pickup( item );
 	}
 
 	public static void resetMap() {
@@ -748,8 +748,10 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static void show( Window wnd ) {
-		cancelCellSelector();
-		scene.addToFront( wnd );
+		if (scene != null) {
+			cancelCellSelector();
+			scene.addToFront(wnd);
+		}
 	}
 
 	public static void updateFog(){
