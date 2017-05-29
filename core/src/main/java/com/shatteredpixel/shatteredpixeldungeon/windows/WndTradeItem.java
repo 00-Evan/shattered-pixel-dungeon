@@ -229,9 +229,10 @@ public class WndTradeItem extends Window {
 		}
 		item.detachAll( hero.belongings.backpack );
 		
-		int price = item.price();
+		new Gold( item.price() ).doPickUp( hero );
 		
-		new Gold( price ).doPickUp( hero );
+		//selling items in the sell interface doesn't spend time
+		hero.spend(-hero.cooldown());
 	}
 	
 	private void sellOne( Item item ) {
@@ -243,9 +244,11 @@ public class WndTradeItem extends Window {
 			Hero hero = Dungeon.hero;
 			
 			item = item.detach( hero.belongings.backpack );
-			int price = item.price();
 			
-			new Gold( price ).doPickUp( hero );
+			new Gold( item.price() ).doPickUp( hero );
+			
+			//selling items in the sell interface doesn't spend time
+			hero.spend(-hero.cooldown());
 		}
 	}
 	
