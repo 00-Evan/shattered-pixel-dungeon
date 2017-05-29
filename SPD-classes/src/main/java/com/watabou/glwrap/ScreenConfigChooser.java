@@ -125,7 +125,7 @@ public class ScreenConfigChooser implements GLSurfaceView.EGLConfigChooser {
 
 	private EGLConfig chooseConfig( EGLConfig[] configs ){
 		EGLConfig bestConfig = null;
-		int bestConfigValue = -1;
+		int bestConfigValue = Integer.MIN_VALUE;
 		for (EGLConfig curConfig : configs){
 
 			int curConfigValue = 0;
