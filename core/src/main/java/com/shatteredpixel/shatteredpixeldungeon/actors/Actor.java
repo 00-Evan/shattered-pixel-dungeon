@@ -22,8 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors;
 
 import android.util.SparseArray;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -210,11 +210,14 @@ public abstract class Actor implements Bundlable {
 							}
 						}
 					} catch (InterruptedException e) {
-						ShatteredPixelDungeon.reportException(e);
+						acting = null; //continue
 					}
 				}
-
-				doNext = acting.act();
+				
+				doNext = !Thread.interrupted()
+						&& acting != null
+						&& acting.act();
+				
 				if (doNext && !Dungeon.hero.isAlive()) {
 					doNext = false;
 					current = null;
@@ -228,7 +231,7 @@ public abstract class Actor implements Bundlable {
 					try {
 						Thread.currentThread().wait();
 					} catch (InterruptedException e) {
-						ShatteredPixelDungeon.reportException(e);
+						//continue, should just hit wait again
 					}
 				}
 			}

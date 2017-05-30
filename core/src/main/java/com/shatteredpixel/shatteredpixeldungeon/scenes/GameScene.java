@@ -419,6 +419,12 @@ public class GameScene extends PixelScene {
 		scene = null;
 		Badges.saveGlobal();
 		
+		if (actorThread.isAlive()){
+			synchronized (actorThread) {
+				actorThread.interrupt();
+			}
+		}
+		
 		super.destroy();
 	}
 	
@@ -432,7 +438,7 @@ public class GameScene extends PixelScene {
 		}
 	}
 
-	private final Thread t = new Thread() {
+	private static final Thread actorThread = new Thread() {
 		@Override
 		public void run() {
 			Actor.process();
@@ -450,13 +456,13 @@ public class GameScene extends PixelScene {
 		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
 
 		if (!Actor.processing() && Dungeon.hero.isAlive()) {
-			if (!t.isAlive()) {
+			if (!actorThread.isAlive()) {
 				//if cpu time is limited, game should prefer drawing the current frame
-				t.setPriority(Thread.NORM_PRIORITY - 1);
-				t.start();
+				actorThread.setPriority(Thread.NORM_PRIORITY - 1);
+				actorThread.start();
 			} else {
-				synchronized (t) {
-					t.notify();
+				synchronized (actorThread) {
+					actorThread.notify();
 				}
 			}
 		}
