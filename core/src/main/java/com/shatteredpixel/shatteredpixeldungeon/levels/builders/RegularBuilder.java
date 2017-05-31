@@ -173,8 +173,10 @@ public abstract class RegularBuilder extends Builder {
 				continue;
 			}
 			
-			if (Random.Float() < 0.33f) branchable.addAll(connectingRoomsThisBranch);
-			if (r.maxConnections(Room.ALL) > 1) {
+			for (int j = 0; j <connectingRoomsThisBranch.size(); j++){
+				if (Random.Int(3) <= 1) branchable.add(connectingRoomsThisBranch.get(j));
+			}
+			if (r.maxConnections(Room.ALL) > 1 && Random.Int(3) == 0) {
 				if (r instanceof StandardRoom){
 					for (int j = 0; j < ((StandardRoom) r).sizeCat.connectionWeight(); j++){
 						branchable.add(r);

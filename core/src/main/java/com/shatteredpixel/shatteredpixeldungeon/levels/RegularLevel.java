@@ -127,8 +127,8 @@ public abstract class RegularLevel extends Level {
 	protected Builder builder(){
 		return new LoopBuilder()
 				.setLoopShape( 2 ,
-						Random.Float(0.6f, 0.9f),
-						Random.Int(4) == 0 ? 0.25f : 0);
+						Random.Float(0.55f, 0.85f),
+						Random.Float(0f, 0.5f));
 	}
 	
 	protected abstract Painter painter();
