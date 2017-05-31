@@ -67,12 +67,14 @@ public class PrisonLevel extends RegularLevel {
 	
 	@Override
 	protected int standardRooms() {
-		return 4+Random.chances(new float[]{2, 3, 3, 2, 1});
+		//6 to 8, average 6.66
+		return 6+Random.chances(new float[]{4, 2, 2});
 	}
 	
 	@Override
 	protected int specialRooms() {
-		return 1+Random.chances(new float[]{4, 3, 3});
+		//1 to 3, average 1.83
+		return 1+Random.chances(new float[]{3, 4, 3});
 	}
 	
 	@Override

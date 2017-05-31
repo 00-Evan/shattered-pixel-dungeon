@@ -66,7 +66,8 @@ public class SewerBossLevel extends SewerLevel {
 	
 	@Override
 	protected int standardRooms() {
-		return 2+Random.chances(new float[]{3, 3, 1});
+		//2 to 4, average 3
+		return 2+Random.chances(new float[]{1, 1, 1});
 	}
 	
 	protected Builder builder(){

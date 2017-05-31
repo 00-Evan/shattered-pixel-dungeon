@@ -56,20 +56,14 @@ public class SewerLevel extends RegularLevel {
 	
 	@Override
 	protected int standardRooms() {
-		if (Dungeon.depth == 1){
-			return 5+Random.chances(new float[]{4, 3, 3});
-		} else {
-			return 4+Random.chances(new float[]{2, 4, 2, 1});
-		}
+		//5 to 7, average 5.57
+		return 5+Random.chances(new float[]{4, 2, 1});
 	}
 	
 	@Override
 	protected int specialRooms() {
-		if (Dungeon.depth == 1){
-			return 1;
-		} else {
-			return 1+Random.chances(new float[]{4, 4, 2});
-		}
+		//1 to 3, average 1.67
+		return 1+Random.chances(new float[]{4, 4, 2});
 	}
 	
 	@Override
