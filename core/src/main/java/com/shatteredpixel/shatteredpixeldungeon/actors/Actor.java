@@ -174,26 +174,24 @@ public abstract class Actor implements Bundlable {
 	
 	public static void process() {
 		
-		if (current != null) {
-			return;
-		}
-	
 		boolean doNext;
+		boolean interrupted = false;
 
 		do {
 			now = Float.MAX_VALUE;
 			current = null;
-
 			
-			for (Actor actor : all) {
-
-				//some actors will always go before others if time is equal.
-				if (actor.time < now ||
-						actor.time == now && (current == null || actor.actPriority < current.actPriority)) {
-					now = actor.time;
-					current = actor;
+			if (!interrupted) {
+				for (Actor actor : all) {
+					
+					//some actors will always go before others if time is equal.
+					if (actor.time < now ||
+							actor.time == now && (current == null || actor.actPriority < current.actPriority)) {
+						now = actor.time;
+						current = actor;
+					}
+					
 				}
-
 			}
 
 			if  (current != null) {
@@ -210,14 +208,13 @@ public abstract class Actor implements Bundlable {
 							}
 						}
 					} catch (InterruptedException e) {
-						acting = null; //continue
+						interrupted = true;
 					}
 				}
 				
-				doNext = !Thread.interrupted()
-						&& acting != null
-						&& Dungeon.hero != null
-						&& acting.act();
+				interrupted = interrupted || Thread.interrupted();
+				
+				doNext = !interrupted && acting.act();
 				
 				if (doNext && !Dungeon.hero.isAlive()) {
 					doNext = false;
@@ -228,11 +225,12 @@ public abstract class Actor implements Bundlable {
 			}
 
 			if (!doNext){
+				interrupted = false;
 				synchronized (Thread.currentThread()) {
 					try {
 						Thread.currentThread().wait();
 					} catch (InterruptedException e) {
-						//continue, should just hit wait again
+						interrupted = true;
 					}
 				}
 			}
