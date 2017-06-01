@@ -218,12 +218,12 @@ public class ItemSprite extends MovieClip {
 		emitter = null;
 	}
 
-	private float[] shadowMatrix;
+	private float[] shadowMatrix = new float[16];
 
 	@Override
 	protected void updateMatrix() {
 		super.updateMatrix();
-		shadowMatrix = Matrix.clone(matrix);
+		Matrix.copy(matrix, shadowMatrix);
 		Matrix.translate(shadowMatrix,
 				(width() * (1f - shadowWidth)) / 2f,
 				(height() * (1f - shadowHeight)) + shadowOffset);
