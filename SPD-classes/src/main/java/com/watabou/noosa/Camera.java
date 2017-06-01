@@ -21,12 +21,12 @@
 
 package com.watabou.noosa;
 
-import java.util.ArrayList;
-
 import com.watabou.glwrap.Matrix;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class Camera extends Gizmo {
 
@@ -161,7 +161,7 @@ public class Camera extends Gizmo {
 		super.update();
 		
 		if (target != null) {
-			focusOn( target );
+			focusOn( target.x + target.width / 2, target.y + target.height / 2 );
 		}
 		
 		if ((shakeTime -= Game.elapsed) > 0) {
