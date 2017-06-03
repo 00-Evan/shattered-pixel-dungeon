@@ -24,11 +24,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.food;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
+//TODO rename this class to small ration in the next update
 public class OverpricedRation extends Food {
 
 	{
 		image = ItemSpriteSheet.OVERPRICED;
-		energy = Hunger.STARVING - Hunger.HUNGRY;
+		energy = Hunger.HUNGRY/2f;
 		hornValue = 1;
 	}
 	

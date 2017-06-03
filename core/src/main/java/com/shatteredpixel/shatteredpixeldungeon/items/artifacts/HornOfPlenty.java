@@ -45,6 +45,7 @@ import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
+//TODO perhaps adjust leveling mechanics on this to go along with 0.6.0 hunger changes
 public class HornOfPlenty extends Artifact {
 
 

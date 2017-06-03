@@ -43,7 +43,7 @@ public class FrozenCarpaccio extends Food {
 
 	{
 		image = ItemSpriteSheet.CARPACCIO;
-		energy = Hunger.STARVING - Hunger.HUNGRY;
+		energy = Hunger.HUNGRY/2f;
 		hornValue = 1;
 	}
 	
