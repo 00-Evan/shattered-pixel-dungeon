@@ -31,6 +31,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class SpecialRoom extends Room {
 	
@@ -89,6 +90,12 @@ public class SpecialRoom extends Room {
 	}
 	
 	public static void initForFloor(){
+		//laboratory rooms are more common
+		int labIdx = runSpecials.indexOf(LaboratoryRoom.class);
+		if (labIdx > 0) {
+			Collections.swap(runSpecials, labIdx-1, labIdx);
+		}
+		
 		floorSpecials = (ArrayList<Class<?extends Room>>) runSpecials.clone();
 	}
 	
