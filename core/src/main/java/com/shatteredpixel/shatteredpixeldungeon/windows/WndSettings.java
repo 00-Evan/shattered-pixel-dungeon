@@ -287,7 +287,7 @@ public class WndSettings extends WndTabbed {
 			};
 			chkImmersive.setRect( 0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
 			chkImmersive.checked(ShatteredPixelDungeon.immersed());
-			chkImmersive.enable(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1);
+			chkImmersive.enable(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT);
 			add(chkImmersive);
 
 			CheckBox chkFont = new CheckBox(Messages.get(this, "system_font")){
