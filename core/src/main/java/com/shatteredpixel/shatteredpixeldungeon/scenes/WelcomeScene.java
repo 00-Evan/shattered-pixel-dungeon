@@ -44,7 +44,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class WelcomeScene extends PixelScene {
 
-	private static int LATEST_UPDATE = 157;
+	private static int LATEST_UPDATE = 181;
 
 	@Override
 	public void create() {

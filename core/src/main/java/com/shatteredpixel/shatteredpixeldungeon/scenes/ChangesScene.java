@@ -38,71 +38,63 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
-			"_v0.5.0b:_\n" +
-			"_-_ Added new Language: Indonesian\n" +
-			"_-_ Fixed wand of fireblast not activating soul mark\n" +
-			"_-_ Various bugfixes and optimizations\n" +
-			"_-_ Translation updates\n" +
+			"_v0.6.0:_\n" +
+			"New levelgen!\n" +
+			"_-_ Level creation algorithm completely overhauled!\n" +
+			"_-_ Sewers are now smaller, caves+ are now larger\n" +
+			"_-_ Some rooms can now be much larger than before\n" +
+			"_-_ Added 8 new standard room types,\n" +
+			"\t\t and loads of new standard room layouts\n" +
 			"\n"+
-			"_v0.5.0a:_\n" +
-			"_-_ Added new Language: Esperanto\n" +
+			"Environment Balance Changes:\n"+
+			"_-_ Falling damage tweaked to be less random\n" +
+			"_-_ Reduced number of traps in later chapters\n" +
+			"_-_ Floor 2 entry doors only hidden for new players\n" +
+			"_-_ Visiting floor 21 before completing the imp quest\n" +
+			"\t\t no longer prevents his shop from spawning\n" +
+			"_-_ Light sources now grant significantly more vision\n" +
+			"_-_ Light from torches now lasts 20% longer\n" +
+			"_-_ Slightly increased visibility on floor 22+\n" +
+			"_-_ Floor 21 shop now sells 3 torches, up from 2\n" +
 			"\n"+
-			"_v0.5.0:_\n" +
-			"New Visuals!:\n" +
-			"_-_ Walls and some terrain now have depth\n" +
-			"_-_ Characters & items are raised & cast shadows\n" +
-			"_-_ Added a visible tile grid in the settings menu\n" +
+			"Item Balance Changes:\n"+
+			"_-_ Meat and small rations are 50% more filling\n" +
+			"_-_ Pasties and blandfruit are 12.5% more filling\n" +
+			"_-_ Greataxe base damage increased by ~22%\n" +
+			"_-_ Greatshield base damage increased by ~17%\n" +
+			"_-_ Vampiric enchant lifesteal reduced by 20%\n" +
+			"_-_ Lucky enchant rebalanced:\n" +
+			"\t\t now deals 2x/0x damage, instead of min/max\n" +
+			"\t\t base chance to deal 2x increased by ~10%\n" +
+			"_-_ Glyph of Viscosity rebalanced:\n" +
+			"\t\t proc chance reduced by ~25% \n" +
+			"\t\t damage over time reverted from 15% to 10%\n" +
+			"_-_ Glyph of Entanglement root time reduced by 40%\n" +
+			"_-_ Glyph of Potential rebalanced:\n" +
+			"\t\t self-damage no longer scales with max hp\n" +
+			"\t\t grants more charge at higher levels\n" +
 			"\n"+
-			"Balance Changes:\n" +
-			"_-_ Quarterstaff armor bonus increased from 2 to 3\n" +
-			"_-_ Wand of Frost damage against chilled enemies\n" +
-			"\t \treduced from -7.5% per turn of chill to -10%\n" +
-			"_-_ Wand of Transfusion self-damage reduced\n" +
-			"\t \tfrom 15% max hp to 10% max hp per zap\n" +
-			"_-_ Dried Rose charges 20% faster and the ghost\n" +
-			"\t \thero is stronger, especially at low levels\n" +
-			"_-_ Glyph of Entanglement activates less often\n" +
-			"\t \tbut grants significantly more herbal armor\n" +
-			"_-_ Glyph of Stone armor bonus reduced\n" +
-			"\t \tfrom 2+level to 0+level\n" +
-			"_-_ Glyph of Antimagic magical damage resist\n" +
-			"\t \treduced from 50% of armor to 33% of armor\n" +
-			"_-_ Glyph of Viscosity damage rate increased\n" +
-			"\t \tfrom 10% of deferred damage to 15%\n" +
-			"_-_ Exhausting Curse activates more often\n" +
-			"\n" +
+			"_v0.5.0:_ New visual style, shadows and depth!\n" +
+			"\n"+
 			"_v0.4.3:_ Various utility features and improvements\n" +
-			"\n" +
 			"_v0.4.2:_ Performance and game engine improvements\n" +
-			"\n" +
 			"_v0.4.1:_ Balance adjustments to enemies & armor\n" +
-			"\n" +
 			"_v0.4.0:_ Reworked equips, enchants & curses\n" +
 			"\n" +
 			"_v0.3.5:_ Reworked Warrior & subclasses\n" +
-			"\n"+
 			"_v0.3.4:_ Multiple language support\n" +
-			"\n" +
 			"_v0.3.3:_ Support for Google Play Games\n" +
-			"\n" +
 			"_v0.3.2:_ Prison Rework & Balance Changes\n" +
-			"\n" +
 			"_v0.3.1:_ Traps reworked & UI upgrades\n" +
-			"\n" +
 			"_v0.3.0:_ Wands & Mage completely reworked\n" +
 			"\n" +
 			"_v0.2.4:_ Small improvements and tweaks\n" +
-			"\n" +
 			"_v0.2.3:_ Artifact additions & improvements\n" +
-			"\n" +
 			"_v0.2.2:_ Small improvements and tweaks\n" +
-			"\n" +
 			"_v0.2.1:_ Sewer improvements\n" +
-			"\n" +
 			"_v0.2.0:_ Added artifacts, reworked rings\n" +
 			"\n" +
 			"_v0.1.1:_ Added blandfruit, reworked dew vial\n" +
-			"\n" +
 			"_v0.1.0:_ Improvements to potions/scrolls";
 
 	@Override
