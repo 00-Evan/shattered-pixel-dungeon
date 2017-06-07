@@ -198,13 +198,15 @@ public abstract class RegularLevel extends Level {
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
-			if (room instanceof StandardRoom && room != roomEntrance) {
+			//pre-0.6.0 save compatibility
+			if ((room instanceof StandardRoom || room.legacyType.equals("STANDARD"))
+					&& room != roomEntrance) {
 				for (int i = 0; i < ((StandardRoom) room).sizeCat.roomValue; i++) {
 					stdRooms.add(room);
 				}
 			}
 		}
-		Random.shuffle(rooms);
+		Random.shuffle(stdRooms);
 		Iterator<Room> stdRoomIter = stdRooms.iterator();
 
 		while (mobsToSpawn > 0) {
