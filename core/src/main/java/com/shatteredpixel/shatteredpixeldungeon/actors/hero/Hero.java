@@ -551,7 +551,9 @@ public class Hero extends Char {
 	}
 	
 	public void interrupt() {
-		if (isAlive() && curAction != null && curAction instanceof HeroAction.Move && curAction.dst != pos) {
+		if (isAlive() && curAction != null &&
+			((curAction instanceof HeroAction.Move && curAction.dst != pos) ||
+			(curAction instanceof HeroAction.Ascend || curAction instanceof HeroAction.Descend))) {
 			lastAction = curAction;
 		}
 		curAction = null;
