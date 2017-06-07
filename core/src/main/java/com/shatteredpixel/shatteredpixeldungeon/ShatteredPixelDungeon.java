@@ -70,6 +70,11 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortsword" );
+		
+		//v0.6.0a
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.food.OverpricedRation" );
 
 		com.watabou.utils.Bundle.exceptionReporter =
 				new com.watabou.utils.Bundle.BundleExceptionCallback() {

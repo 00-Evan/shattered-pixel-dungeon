@@ -45,7 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.OverpricedRation;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -219,8 +219,8 @@ public class ShopRoom extends SpecialRoom {
 					Generator.random( Generator.Category.SCROLL ) );
 
 
-		itemsToSpawn.add( new OverpricedRation() );
-		itemsToSpawn.add( new OverpricedRation() );
+		itemsToSpawn.add( new SmallRation() );
+		itemsToSpawn.add( new SmallRation() );
 
 		itemsToSpawn.add( new Bomb().random() );
 		switch (Random.Int(5)){
