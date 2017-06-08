@@ -21,8 +21,7 @@
 
 package com.watabou.noosa;
 
-import java.nio.FloatBuffer;
-import java.util.Arrays;
+import android.graphics.RectF;
 
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -30,7 +29,8 @@ import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.Rect;
 
-import android.graphics.RectF;
+import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 public class Tilemap extends Visual {
 
@@ -105,16 +105,20 @@ public class Tilemap extends Visual {
 	protected void updateVertices() {
 
 		moveToUpdating();
+		
+		float x1, y1, x2, y2;
+		int pos;
+		RectF uv;
 
-		float y1 = cellH * updating.top;
-		float y2 = y1 + cellH;
+		y1 = cellH * updating.top;
+		y2 = y1 + cellH;
 
 		for (int i=updating.top; i < updating.bottom; i++) {
 
-			float x1 = cellW * updating.left;
-			float x2 = x1 + cellW;
+			x1 = cellW * updating.left;
+			x2 = x1 + cellW;
 
-			int pos = i * mapWidth + updating.left;
+			pos = i * mapWidth + updating.left;
 
 			for (int j=updating.left; j < updating.right; j++) {
 
@@ -124,9 +128,10 @@ public class Tilemap extends Visual {
 				bottomRightUpdating = pos + 1;
 
 				quads.position(pos*16);
-
-				if (needsRender(pos)) {
-					RectF uv = tileset.get(data[pos]);
+				
+				uv = tileset.get(data[pos]);
+				
+				if (needsRender(pos) && uv != null) {
 
 					vertices[0] = x1;
 					vertices[1] = y1;
