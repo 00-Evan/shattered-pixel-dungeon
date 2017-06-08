@@ -179,21 +179,24 @@ public abstract class Actor implements Bundlable {
 		boolean interrupted = false;
 
 		do {
-			now = Float.MAX_VALUE;
-			current = null;
 			
-			for (Actor actor : all) {
+			current = null;
+			if (!interrupted) {
+				now = Float.MAX_VALUE;
 				
-				//some actors will always go before others if time is equal.
-				if (actor.time < now ||
-						actor.time == now && (current == null || actor.actPriority < current.actPriority)) {
-					now = actor.time;
-					current = actor;
+				for (Actor actor : all) {
+					
+					//some actors will always go before others if time is equal.
+					if (actor.time < now ||
+							actor.time == now && (current == null || actor.actPriority < current.actPriority)) {
+						now = actor.time;
+						current = actor;
+					}
+					
 				}
-				
 			}
 
-			if  (!interrupted && current != null) {
+			if  (current != null) {
 
 				Actor acting = current;
 
@@ -228,6 +231,7 @@ public abstract class Actor implements Bundlable {
 				
 				synchronized (Thread.currentThread()) {
 					synchronized (GameScene.class){
+						//signals to the gamescene that actor processing is finished for now
 						GameScene.class.notify();
 					}
 					try {

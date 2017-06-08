@@ -416,11 +416,10 @@ public class GameScene extends PixelScene {
 		
 		//tell the actor thread to finish, then wait for it to complete any actions it may be doing.
 		if (actorThread.isAlive()){
-			synchronized (actorThread) {
-				actorThread.interrupt();
-			}
 			synchronized (GameScene.class){
-				if (actorThread.getState() != Thread.State.WAITING) {
+					synchronized (actorThread) {
+						actorThread.interrupt();
+					}
 					try {
 						GameScene.class.wait(5000);
 					} catch (InterruptedException e) {
@@ -432,7 +431,6 @@ public class GameScene extends PixelScene {
 							t.setStackTrace(actorThread.getStackTrace());
 							throw new RuntimeException("timeout waiting for actor thread! ", t);
 						}
-					}
 				}
 			}
 		}
