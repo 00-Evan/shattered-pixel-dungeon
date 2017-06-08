@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
@@ -224,7 +225,11 @@ public abstract class Actor implements Bundlable {
 
 			if (!doNext){
 				interrupted = false;
+				
 				synchronized (Thread.currentThread()) {
+					synchronized (GameScene.class){
+						GameScene.class.notify();
+					}
 					try {
 						Thread.currentThread().wait();
 					} catch (InterruptedException e) {

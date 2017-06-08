@@ -414,16 +414,33 @@ public class GameScene extends PixelScene {
 	
 	public void destroy() {
 		
-		freezeEmitters = false;
-
-		scene = null;
-		Badges.saveGlobal();
-		
+		//tell the actor thread to finish, then wait for it to complete any actions it may be doing.
 		if (actorThread.isAlive()){
 			synchronized (actorThread) {
 				actorThread.interrupt();
 			}
+			synchronized (GameScene.class){
+				if (actorThread.getState() != Thread.State.WAITING) {
+					try {
+						GameScene.class.wait(5000);
+					} catch (InterruptedException e) {
+						ShatteredPixelDungeon.reportException(e);
+					}
+					synchronized (actorThread) {
+						if (actorThread.getState() != Thread.State.WAITING) {
+							Throwable t = new Throwable();
+							t.setStackTrace(actorThread.getStackTrace());
+							throw new RuntimeException("timeout waiting for actor thread! ", t);
+						}
+					}
+				}
+			}
 		}
+		
+		freezeEmitters = false;
+		
+		scene = null;
+		Badges.saveGlobal();
 		
 		super.destroy();
 	}
