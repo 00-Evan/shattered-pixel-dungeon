@@ -38,6 +38,10 @@ import com.watabou.noosa.ui.Component;
 public class ChangesScene extends PixelScene {
 
 	private static final String TXT_Update =
+			"_v0.6.0a:_\n" +
+			"_-_ Various bug and crash fixes\n" +
+			"_-_ Resume indicator now appears in more cases\n" +
+			"\n"+
 			"_v0.6.0:_\n" +
 			"New levelgen!\n" +
 			"_-_ Level creation algorithm completely overhauled!\n" +
