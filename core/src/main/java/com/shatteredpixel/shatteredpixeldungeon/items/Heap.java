@@ -466,7 +466,6 @@ public class Heap implements Bundlable {
 			sprite.kill();
 		}
 		items.clear();
-		items = null;
 	}
 
 	@Override
