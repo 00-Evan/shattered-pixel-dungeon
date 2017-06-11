@@ -216,11 +216,15 @@ public abstract class Actor implements Bundlable {
 				
 				interrupted = interrupted || Thread.interrupted();
 				
-				doNext = !interrupted && acting.act();
-				
-				if (doNext && !Dungeon.hero.isAlive()) {
+				if (interrupted){
 					doNext = false;
 					current = null;
+				} else {
+					doNext = acting.act();
+					if (doNext && !Dungeon.hero.isAlive()) {
+						doNext = false;
+						current = null;
+					}
 				}
 			} else {
 				doNext = false;
