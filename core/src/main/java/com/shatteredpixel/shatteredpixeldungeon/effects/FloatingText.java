@@ -21,9 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
@@ -100,13 +100,18 @@ public class FloatingText extends RenderedText {
 	/* STATIC METHODS */
 	
 	public static void show( float x, float y, String text, int color ) {
-		GameScene.status().reset( x,  y,  text, color );
+		FloatingText txt = GameScene.status();
+		if (txt != null){
+			txt.reset(x, y, text, color);
+		}
 	}
 	
 	public static void show( float x, float y, int key, String text, int color ) {
 		FloatingText txt = GameScene.status();
-		txt.reset( x,  y,  text, color );
-		push( txt, key );
+		if (txt != null) {
+			txt.reset(x, y, text, color);
+			push(txt, key);
+		}
 	}
 	
 	private static void push( FloatingText txt, int key ) {
