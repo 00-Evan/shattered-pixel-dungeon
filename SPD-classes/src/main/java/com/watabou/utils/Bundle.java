@@ -21,6 +21,11 @@
 
 package com.watabou.utils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -35,11 +40,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 public class Bundle {
 
@@ -158,6 +158,21 @@ public class Bundle {
 			int[] result = new int[length];
 			for (int i=0; i < length; i++) {
 				result[i] = array.getInt( i );
+			}
+			return result;
+		} catch (JSONException e) {
+			reportException(e);
+			return null;
+		}
+	}
+	
+	public float[] getFloatArray( String key ) {
+		try {
+			JSONArray array = data.getJSONArray( key );
+			int length = array.length();
+			float[] result = new float[length];
+			for (int i=0; i < length; i++) {
+				result[i] = (float)array.optDouble( i, 0.0 );
 			}
 			return result;
 		} catch (JSONException e) {
@@ -318,6 +333,18 @@ public class Bundle {
 	}
 	
 	public void put( String key, int[] array ) {
+		try {
+			JSONArray jsonArray = new JSONArray();
+			for (int i=0; i < array.length; i++) {
+				jsonArray.put( i, array[i] );
+			}
+			data.put( key, jsonArray );
+		} catch (JSONException e) {
+			reportException(e);
+		}
+	}
+	
+	public void put( String key, float[] array ) {
 		try {
 			JSONArray jsonArray = new JSONArray();
 			for (int i=0; i < array.length; i++) {
