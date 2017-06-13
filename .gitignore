@@ -7,9 +7,10 @@
 # Java class files
 *.class
 
-# Gradle files
+# Gradle build files
 .gradle/
 build/
+release/
 
 # Local configuration file (sdk path, etc)
 local.properties
