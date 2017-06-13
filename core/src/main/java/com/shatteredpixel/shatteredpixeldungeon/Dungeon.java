@@ -179,6 +179,7 @@ public class Dungeon {
 		Blacksmith.Quest.reset();
 		Imp.Quest.reset();
 
+		Generator.reset();
 		Generator.initArtifacts();
 		hero = new Hero();
 		hero.live();
@@ -539,8 +540,6 @@ public class Dungeon {
 		version = bundle.getInt( VERSION );
 
 		seed = bundle.contains( SEED ) ? bundle.getLong( SEED ) : DungeonSeed.randomSeed();
-
-		Generator.reset();
 
 		Actor.restoreNextID( bundle );
 

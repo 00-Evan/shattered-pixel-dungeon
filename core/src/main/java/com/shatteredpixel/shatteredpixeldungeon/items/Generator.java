@@ -149,28 +149,27 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class Generator {
 
 	public static enum Category {
-		WEAPON	( 100,	Weapon.class ),
-		WEP_T1	( 0, 	Weapon.class),
-		WEP_T2	( 0,	Weapon.class),
-		WEP_T3	( 0, 	Weapon.class),
-		WEP_T4	( 0, 	Weapon.class),
-		WEP_T5	( 0, 	Weapon.class),
-		ARMOR	( 60,	Armor.class ),
-		POTION	( 500,	Potion.class ),
-		SCROLL	( 400,	Scroll.class ),
-		WAND	( 40,	Wand.class ),
-		RING	( 15,	Ring.class ),
-		ARTIFACT( 15,   Artifact.class),
-		SEED	( 50,	Plant.Seed.class ),
-		FOOD	( 0,	Food.class ),
-		GOLD	( 500,	Gold.class );
+		WEAPON	( 6,    Weapon.class ),
+		WEP_T1	( 0,    Weapon.class),
+		WEP_T2	( 0,    Weapon.class),
+		WEP_T3	( 0,    Weapon.class),
+		WEP_T4	( 0,    Weapon.class),
+		WEP_T5	( 0,    Weapon.class),
+		ARMOR	( 4,    Armor.class ),
+		POTION	( 20,   Potion.class ),
+		SCROLL	( 20,   Scroll.class ),
+		WAND	( 3,    Wand.class ),
+		RING	( 1,    Ring.class ),
+		ARTIFACT( 1,    Artifact.class),
+		SEED	( 0,    Plant.Seed.class ),
+		FOOD	( 0,    Food.class ),
+		GOLD	( 25,   Gold.class );
 		
 		public Class<?>[] classes;
 		public float[] probs;
@@ -384,13 +383,17 @@ public class Generator {
 	}
 	
 	public static Item random() {
-		return random( Random.chances( categoryProbs ) );
+		Category cat = Random.chances( categoryProbs );
+		if (cat == null){
+			reset();
+			cat = Random.chances( categoryProbs );
+		}
+		categoryProbs.put( cat, categoryProbs.get( cat ) - 1);
+		return random( cat );
 	}
 	
 	public static Item random( Category cat ) {
 		try {
-			
-			categoryProbs.put( cat, categoryProbs.get( cat ) / 2 );
 			
 			switch (cat) {
 			case ARMOR:
@@ -482,16 +485,18 @@ public class Generator {
 			if (i == -1){
 				return null;
 			}
+			
+			Class<?extends Artifact> art = (Class<? extends Artifact>) cat.classes[i];
 
-			Artifact artifact = (Artifact)cat.classes[i].newInstance();
-
-			//remove the chance of spawning this artifact.
-			cat.probs[i] = 0;
-			spawnedArtifacts.add(cat.classes[i].getSimpleName());
-
-			artifact.random();
-
-			return artifact;
+			if (removeArtifact(art)) {
+				Artifact artifact = art.newInstance();
+				
+				artifact.random();
+				
+				return artifact;
+			} else {
+				return null;
+			}
 
 		} catch (Exception e) {
 			ShatteredPixelDungeon.reportException(e);
@@ -499,16 +504,16 @@ public class Generator {
 		}
 	}
 
-	public static boolean removeArtifact(Artifact artifact) {
-		if (spawnedArtifacts.contains(artifact.getClass().getSimpleName()))
+	public static boolean removeArtifact(Class<?extends Artifact> artifact) {
+		if (spawnedArtifacts.contains(artifact))
 			return false;
 
 		Category cat = Category.ARTIFACT;
 		for (int i = 0; i < cat.classes.length; i++)
-			if (cat.classes[i].equals(artifact.getClass())) {
+			if (cat.classes[i].equals(artifact)) {
 				if (cat.probs[i] == 1){
 					cat.probs[i] = 0;
-					spawnedArtifacts.add(artifact.getClass().getSimpleName());
+					spawnedArtifacts.add(artifact);
 					return true;
 				} else
 					return false;
@@ -524,26 +529,46 @@ public class Generator {
 		//checks for dried rose quest completion, adds the rose in accordingly.
 		if (Ghost.Quest.completed()) Category.ARTIFACT.probs[10] = 1;
 
-		spawnedArtifacts = new ArrayList<String>();
+		spawnedArtifacts = new ArrayList<>();
 	}
 
-	private static ArrayList<String> spawnedArtifacts = new ArrayList<String>();
-
-	private static final String ARTIFACTS = "artifacts";
-
-	//used to store information on which artifacts have been spawned.
+	private static ArrayList<Class<?extends Artifact>> spawnedArtifacts = new ArrayList<>();
+	
+	private static final String GENERAL_PROBS = "general_probs";
+	private static final String SPAWNED_ARTIFACTS = "spawned_artifacts";
+	
 	public static void storeInBundle(Bundle bundle) {
-		bundle.put( ARTIFACTS, spawnedArtifacts.toArray(new String[spawnedArtifacts.size()]));
+		Float[] genProbs = categoryProbs.values().toArray(new Float[0]);
+		float[] storeProbs = new float[genProbs.length];
+		for (int i = 0; i < storeProbs.length; i++){
+			storeProbs[i] = genProbs[i];
+		}
+		bundle.put( GENERAL_PROBS, storeProbs);
+		
+		bundle.put( SPAWNED_ARTIFACTS, spawnedArtifacts.toArray(new Class[0]));
 	}
 
 	public static void restoreFromBundle(Bundle bundle) {
+		if (bundle.contains(GENERAL_PROBS)){
+			float[] probs = bundle.getFloatArray(GENERAL_PROBS);
+			for (int i = 0; i < probs.length; i++){
+				categoryProbs.put(Category.values()[i], probs[i]);
+			}
+		} else {
+			reset();
+		}
+		
 		initArtifacts();
-
-		if (bundle.contains(ARTIFACTS)) {
-			Collections.addAll(spawnedArtifacts, bundle.getStringArray(ARTIFACTS));
+		if (bundle.contains(SPAWNED_ARTIFACTS)){
+			for ( Class<?extends Artifact> artifact : bundle.getClassArray(SPAWNED_ARTIFACTS) ){
+				removeArtifact(artifact);
+			}
+		//pre-0.6.1 saves
+		} else if (bundle.contains("artifacts")) {
+			String[] names = bundle.getStringArray("artifacts");
 			Category cat = Category.ARTIFACT;
 
-			for (String artifact : spawnedArtifacts)
+			for (String artifact : names)
 				for (int i = 0; i < cat.classes.length; i++)
 					if (cat.classes[i].getSimpleName().equals(artifact))
 						cat.probs[i] = 0;
