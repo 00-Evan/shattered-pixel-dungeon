@@ -121,6 +121,10 @@ public class Random {
 			sum += probs[i];
 		}
 		
+		if (sum <= 0) {
+			return null;
+		}
+		
 		float value = Float( sum );
 		
 		sum = probs[0];
