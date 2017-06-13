@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -202,6 +202,11 @@ public class CavesBossLevel extends Level {
 	}
 	
 	@Override
+	public Mob createMob() {
+		return null;
+	}
+	
+	@Override
 	protected void createMobs() {
 	}
 	
@@ -240,7 +245,7 @@ public class CavesBossLevel extends Level {
 			enteredArena = true;
 			seal();
 			
-			Mob boss = Bestiary.mob( Dungeon.depth );
+			DM300 boss = new DM300();
 			boss.state = boss.WANDERING;
 			do {
 				boss.pos = Random.Int( length() );

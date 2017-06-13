@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -191,6 +192,21 @@ public abstract class RegularLevel extends Level {
 		}
 	}
 	
+	private ArrayList<Class<?extends Mob>> mobsToSpawn = new ArrayList<>();
+	
+	@Override
+	public Mob createMob() {
+		if (mobsToSpawn == null || mobsToSpawn.isEmpty())
+			mobsToSpawn = Bestiary.getMobRotation(Dungeon.depth);
+		
+		try {
+			return mobsToSpawn.remove(0).newInstance();
+		} catch (Exception e) {
+			ShatteredPixelDungeon.reportException(e);
+			return null;
+		}
+	}
+	
 	@Override
 	protected void createMobs() {
 		//on floor 1, 10 rats are created so the player can get level 2.
@@ -215,7 +231,7 @@ public abstract class RegularLevel extends Level {
 				stdRoomIter = stdRooms.iterator();
 			Room roomToSpawn = stdRoomIter.next();
 
-			Mob mob = Bestiary.mob( Dungeon.depth );
+			Mob mob = createMob();
 			mob.pos = pointToCell(roomToSpawn.random());
 
 			if (findMob(mob.pos) == null && Level.passable[mob.pos]) {
@@ -224,7 +240,7 @@ public abstract class RegularLevel extends Level {
 
 				//TODO: perhaps externalize this logic into a method. Do I want to make mobs more likely to clump deeper down?
 				if (mobsToSpawn > 0 && Random.Int(4) == 0){
-					mob = Bestiary.mob( Dungeon.depth );
+					mob = createMob();
 					mob.pos = pointToCell(roomToSpawn.random());
 
 					if (findMob(mob.pos)  == null && Level.passable[mob.pos]) {
@@ -420,6 +436,7 @@ public abstract class RegularLevel extends Level {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( "rooms", rooms );
+		bundle.put( "mobs_to_spawn", mobsToSpawn.toArray(new Class[0]));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -434,6 +451,12 @@ public abstract class RegularLevel extends Level {
 				roomEntrance = r;
 			} else if (r instanceof ExitRoom  || r.legacyType.equals("EXIT")){
 				roomExit = r;
+			}
+		}
+		
+		if (bundle.contains( "mobs_to_spawn" )) {
+			for (Class<? extends Mob> mob : bundle.getClassArray("mobs_to_spawn")) {
+				if (mob != null) mobsToSpawn.add(mob);
 			}
 		}
 	}

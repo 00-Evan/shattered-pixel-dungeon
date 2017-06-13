@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 
 public class DeadEndLevel extends Level {
 
@@ -71,7 +72,12 @@ public class DeadEndLevel extends Level {
 		
 		return true;
 	}
-
+	
+	@Override
+	public Mob createMob() {
+		return null;
+	}
+	
 	@Override
 	protected void createMobs() {
 	}

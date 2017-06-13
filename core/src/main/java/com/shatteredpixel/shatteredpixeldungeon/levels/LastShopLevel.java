@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
@@ -97,6 +98,11 @@ public class LastShopLevel extends RegularLevel {
 		return new CityPainter()
 				.setWater( 0.10f, 4 )
 				.setGrass( 0.10f, 3 );
+	}
+	
+	@Override
+	public Mob createMob() {
+		return null;
 	}
 	
 	@Override
