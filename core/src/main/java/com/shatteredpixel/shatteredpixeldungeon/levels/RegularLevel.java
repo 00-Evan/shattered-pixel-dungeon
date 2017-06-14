@@ -312,11 +312,8 @@ public abstract class RegularLevel extends Level {
 	protected void createItems() {
 		
 		int nItems = 3;
-		int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
-
-		//just incase someone gets a ridiculous ring, cap this at 80%
-		bonus = Math.min(bonus, 10);
-		while (Random.Float() < (0.3f + bonus*0.05f)) {
+		
+		while (Random.Float() < (0.3f + RingOfWealth.regularLootChanceBonus( Dungeon.hero ))) {
 			nItems++;
 		}
 		

@@ -178,24 +178,22 @@ public abstract class Level implements Bundlable {
 		if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
 			addItemToSpawn( Generator.random( Generator.Category.FOOD ) );
 
-			int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
-
 			if (Dungeon.posNeeded()) {
-				if (Random.Float() > Math.pow(0.925, bonus))
+				if (Random.Float() < RingOfWealth.specialLootChance( Dungeon.hero ))
 					addItemToSpawn( new PotionOfMight() );
 				else
 					addItemToSpawn( new PotionOfStrength() );
 				Dungeon.limitedDrops.strengthPotions.count++;
 			}
 			if (Dungeon.souNeeded()) {
-				if (Random.Float() > Math.pow(0.925, bonus))
+				if (Random.Float() < RingOfWealth.specialLootChance( Dungeon.hero ))
 					addItemToSpawn( new ScrollOfMagicalInfusion() );
 				else
 					addItemToSpawn( new ScrollOfUpgrade() );
 				Dungeon.limitedDrops.upgradeScrolls.count++;
 			}
 			if (Dungeon.asNeeded()) {
-				if (Random.Float() > Math.pow(0.925, bonus))
+				if (Random.Float() < RingOfWealth.specialLootChance( Dungeon.hero ))
 					addItemToSpawn( new Stylus() );
 				addItemToSpawn( new Stylus() );
 				Dungeon.limitedDrops.arcaneStyli.count++;

@@ -21,11 +21,26 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+
 public class RingOfWealth extends Ring {
 
 	@Override
 	protected RingBuff buff( ) {
 		return new Wealth();
+	}
+	
+	public static float dropChanceMultiplier( Char target ){
+		return (float)Math.pow(1.15, getBonus(target, Wealth.class));
+	}
+	
+	//caps at a 50% bonus
+	public static float regularLootChanceBonus( Char target ){
+		return Math.min(0.5f, 0.05f* getBonus(target, Wealth.class));
+	}
+	
+	public static float specialLootChance( Char target ){
+		return 1f - (float)Math.pow(0.925, getBonus(target, Wealth.class));
 	}
 
 	public class Wealth extends RingBuff {

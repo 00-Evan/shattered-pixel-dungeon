@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 
@@ -74,6 +75,10 @@ public class RingOfMight extends Ring {
 	@Override
 	protected RingBuff buff( ) {
 		return new Might();
+	}
+	
+	public static int strengthBonus( Char target ){
+		return getBonus( target, Might.class );
 	}
 
 	public class Might extends RingBuff {

@@ -21,11 +21,18 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+
 public class RingOfFuror extends Ring {
 
 	@Override
 	protected RingBuff buff( ) {
 		return new Furor();
+	}
+	
+	public static float modifyAttackDelay( float delay, Char target){
+		//furor bonus only affects delay after 0.2
+		return (float)(0.2 + (delay - 0.2)*Math.pow(0.85, getBonus(target, Furor.class)));
 	}
 
 	public class Furor extends RingBuff {

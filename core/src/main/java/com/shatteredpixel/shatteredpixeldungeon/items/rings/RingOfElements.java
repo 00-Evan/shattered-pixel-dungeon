@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
@@ -54,15 +55,20 @@ public class RingOfElements extends Ring {
 		FULL.add( Yog.BurningFist.class );
 	}
 	
-	public class Resistance extends RingBuff {
-		
-		public HashSet<Class<?>> resistances() {
-			if (Random.Int( level() + 2 ) >= 2) {
-				return FULL;
-			} else {
-				return EMPTY;
-			}
+	public static HashSet<Class<?>> resistances( Char target ){
+		if (Random.Int( getBonus(target, Resistance.class) + 2 ) >= 2) {
+			return FULL;
+		} else {
+			return EMPTY;
 		}
+	}
+	
+	public static float durationFactor( Char target ){
+		int level = getBonus( target, Resistance.class);
+		return level <= 0 ? 1 : (1 + 0.5f * level) / (1 + level);
+	}
+	
+	public class Resistance extends RingBuff {
 		
 		public float durationFactor() {
 			return level() < 0 ? 1 : (1 + 0.5f * level()) / (1 + level());

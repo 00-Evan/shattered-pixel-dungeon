@@ -21,11 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+
 public class RingOfHaste extends Ring {
 	
 	@Override
 	protected RingBuff buff( ) {
 		return new Haste();
+	}
+	
+	public static float speedMultiplier( Char target ){
+		return (float)Math.pow(1.2, getBonus(target, Haste.class));
 	}
 	
 	public class Haste extends RingBuff {

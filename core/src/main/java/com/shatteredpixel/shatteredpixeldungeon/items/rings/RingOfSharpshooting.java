@@ -21,11 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+
 public class RingOfSharpshooting extends Ring {
 
 	@Override
 	protected RingBuff buff( ) {
 		return new Aim();
+	}
+	
+	public static float accuracyMultiplier( Char target ){
+		return (float)(Math.pow(1.2, getBonus(target, Aim.class)));
 	}
 
 	public class Aim extends RingBuff {

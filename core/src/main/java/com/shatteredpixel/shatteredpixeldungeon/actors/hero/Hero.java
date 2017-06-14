@@ -183,7 +183,7 @@ public class Hero extends Char {
 	public int STR() {
 		int STR = this.STR;
 
-		STR += RingOfMight.getBonus(this, RingOfMight.Might.class);
+		STR += RingOfMight.strengthBonus( this );
 
 		return weakened ? STR - 2 : STR;
 	}
@@ -281,9 +281,8 @@ public class Hero extends Char {
 	@Override
 	public int defenseSkill( Char enemy ) {
 		
-		int bonus = RingOfEvasion.getBonus(this, RingOfEvasion.Evasion.class);
-
-		float evasion = (float)Math.pow( 1.125, bonus );
+		float evasion = 1f * RingOfEvasion.evasionMultiplier( this );
+		
 		if (paralysed > 0) {
 			evasion /= 2;
 		}
@@ -294,7 +293,7 @@ public class Hero extends Char {
 			return (int)(defenseSkill * evasion / Math.pow( 1.5, aEnc ));
 		} else {
 
-			bonus = 0;
+			int bonus = 0;
 			if (heroClass == HeroClass.ROGUE) bonus += -aEnc;
 
 			if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
@@ -326,16 +325,11 @@ public class Hero extends Char {
 	public int damageRoll() {
 		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
 		int dmg;
-		int bonus = RingOfForce.getBonus(this, RingOfForce.Force.class);
 
 		if (wep != null) {
-			dmg = wep.damageRoll( this ) + bonus;
+			dmg = wep.damageRoll( this ) + RingOfForce.armedDamageBonus(this);
 		} else {
-			if (bonus != 0){
-				dmg = RingOfForce.damageRoll(this);
-			} else {
-				dmg = Random.NormalIntRange(1, Math.max(STR()-8, 1));
-			}
+			dmg = RingOfForce.damageRoll(this);
 		}
 		if (dmg < 0) dmg = 0;
 		if (subClass == HeroSubClass.BERSERKER){
@@ -350,10 +344,7 @@ public class Hero extends Char {
 
 		float speed = super.speed();
 
-		int hasteLevel = RingOfHaste.getBonus(this, RingOfHaste.Haste.class);
-
-		if (hasteLevel != 0)
-			speed *= Math.pow(1.2, hasteLevel);
+		speed *= RingOfHaste.speedMultiplier(this);
 
 		Armor armor = belongings.armor;
 
@@ -430,8 +421,7 @@ public class Hero extends Char {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			int bonus = RingOfFuror.getBonus(this, RingOfFuror.Furor.class);
-			return (float)(0.2 + (1 - 0.2)*Math.pow(0.85, bonus));
+			return RingOfFuror.modifyAttackDelay(1f, this);
 		}
 	}
 
@@ -958,9 +948,7 @@ public class Hero extends Char {
 			dmg = thorns.proc(dmg, (src instanceof Char ? (Char)src : null),  this);
 		}
 
-		int tenacity = RingOfTenacity.getBonus(this, RingOfTenacity.Tenacity.class);
-		if (tenacity != 0) //(HT - HP)/HT = heroes current % missing health.
-			dmg = (int)Math.ceil((float)dmg * Math.pow(0.85, tenacity*((float)(HT - HP)/HT)));
+		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
 
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
@@ -1280,7 +1268,7 @@ public class Hero extends Char {
 	public int stealth() {
 		int stealth = super.stealth();
 
-		stealth += RingOfEvasion.getBonus(this, RingOfEvasion.Evasion.class);
+		stealth += RingOfEvasion.stealthBonus( this );
 
 		if (belongings.armor != null && belongings.armor.hasGlyph(Obfuscation.class)){
 			stealth += belongings.armor.level();
@@ -1594,8 +1582,7 @@ public class Hero extends Char {
 	
 	@Override
 	public HashSet<Class<?>> resistances() {
-		RingOfElements.Resistance r = buff( RingOfElements.Resistance.class );
-		return r == null ? super.resistances() : r.resistances();
+		return RingOfElements.resistances( this );
 	}
 	
 	@Override

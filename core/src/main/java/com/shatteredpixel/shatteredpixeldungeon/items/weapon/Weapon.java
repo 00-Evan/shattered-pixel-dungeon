@@ -146,8 +146,7 @@ abstract public class Weapon extends KindOfWeapon {
 		float ACC = this.ACC;
 		
 		if (this instanceof MissileWeapon) {
-			int bonus = RingOfSharpshooting.getBonus(hero, RingOfSharpshooting.Aim.class);
-			ACC *= (float)(Math.pow(1.2, bonus));
+			ACC *= RingOfSharpshooting.accuracyMultiplier( hero );
 		}
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
@@ -163,9 +162,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 		float DLY = imbue.delayFactor(this.DLY);
 
-		int bonus = RingOfFuror.getBonus(hero, RingOfFuror.Furor.class);
-
-		DLY = (float)(0.2 + (DLY - 0.2)*Math.pow(0.85, bonus));
+		DLY = RingOfFuror.modifyAttackDelay(DLY, hero);
 
 		return
 				(encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY);

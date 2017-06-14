@@ -21,11 +21,19 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+
 public class RingOfAccuracy extends Ring {
 	
 	@Override
 	protected RingBuff buff( ) {
 		return new Accuracy();
+	}
+	
+	//The ring of accuracy reduces enemy evasion
+	// this makes it more powerful against more evasive enemies
+	public static float enemyEvasionMultiplier( Char target ){
+		return (float)Math.pow(0.75, getBonus(target, Accuracy.class));
 	}
 	
 	public class Accuracy extends RingBuff {

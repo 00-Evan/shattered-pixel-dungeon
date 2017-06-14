@@ -443,9 +443,7 @@ public abstract class Mob extends Char {
 		boolean seen = enemySeen || (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack());
 		if (seen && paralysed == 0) {
 			int defenseSkill = this.defenseSkill;
-			int penalty = RingOfAccuracy.getBonus(enemy, RingOfAccuracy.Accuracy.class);
-			if (penalty != 0 && enemy == Dungeon.hero)
-				defenseSkill *= Math.pow(0.75, penalty);
+			defenseSkill *= RingOfAccuracy.enemyEvasionMultiplier( enemy );
 			return defenseSkill;
 		} else {
 			return 0;
@@ -546,8 +544,7 @@ public abstract class Mob extends Char {
 		super.die( cause );
 
 		float lootChance = this.lootChance;
-		int bonus = RingOfWealth.getBonus(Dungeon.hero, RingOfWealth.Wealth.class);
-		lootChance *= Math.pow(1.15, bonus);
+		lootChance *= RingOfWealth.dropChanceMultiplier( Dungeon.hero );
 		
 		if (Random.Float() < lootChance && Dungeon.hero.lvl <= maxLvl + 2) {
 			Item loot = createLoot();

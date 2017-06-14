@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
@@ -32,6 +33,13 @@ public class RingOfForce extends Ring {
 	protected RingBuff buff( ) {
 		return new Force();
 	}
+	
+	public static int armedDamageBonus( Char ch ){
+		return getBonus( ch, Force.class);
+	}
+	
+	
+	// *** Weapon-like properties ***
 
 	private static float tier(int str){
 		float tier = Math.max(1, (str - 8)/2f);
@@ -43,9 +51,14 @@ public class RingOfForce extends Ring {
 	}
 
 	public static int damageRoll( Hero hero ){
-		int level = getBonus(hero, Force.class);
-		float tier = tier(hero.STR());
-		return Random.NormalIntRange(min(level, tier), max(level, tier));
+		if (hero.buff(Force.class) != null) {
+			int level = getBonus(hero, Force.class);
+			float tier = tier(hero.STR());
+			return Random.NormalIntRange(min(level, tier), max(level, tier));
+		} else {
+			//attack without any ring of force influence
+			return Random.NormalIntRange(1, Math.max(hero.STR()-8, 1));
+		}
 	}
 
 	//same as equivalent tier weapon
