@@ -251,6 +251,8 @@ public class Armor extends EquipableItem {
 		} else if (!inscribe && Random.Float() > Math.pow(0.9, level())){
 			inscribe(null);
 		}
+		
+		cursed = false;
 
 		if (seal != null && seal.level() == 0)
 			seal.upgrade();

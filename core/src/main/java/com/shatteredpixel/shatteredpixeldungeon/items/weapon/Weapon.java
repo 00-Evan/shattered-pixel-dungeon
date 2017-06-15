@@ -194,13 +194,20 @@ abstract public class Weapon extends KindOfWeapon {
 
 	public abstract int STRReq(int lvl);
 	
-	public Item upgrade( boolean enchant ) {
+	@Override
+	public Item upgrade() {
+		return upgrade(false);
+	}
+	
+	public Item upgrade(boolean enchant ) {
 
 		if (enchant && (enchantment == null || enchantment.curse())){
 			enchant( Enchantment.random() );
 		} else if (!enchant && Random.Float() > Math.pow(0.9, level())){
 			enchant(null);
 		}
+		
+		cursed = false;
 		
 		return super.upgrade();
 	}

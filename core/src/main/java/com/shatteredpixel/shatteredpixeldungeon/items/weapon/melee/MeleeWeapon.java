@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
@@ -40,15 +39,6 @@ public class MeleeWeapon extends Weapon {
 	public int max(int lvl) {
 		return  5*(tier+1) +    //base
 				lvl*(tier+1);   //level scaling
-	}
-
-	@Override
-	public Item upgrade() {
-		return upgrade( false );
-	}
-	
-	public Item safeUpgrade() {
-		return upgrade( enchantment != null );
 	}
 
 	public int STRReq(int lvl){

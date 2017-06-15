@@ -85,26 +85,13 @@ public class ScrollOfUpgrade extends InventoryScroll {
 				GLog.w( Messages.get(Armor.class, "incompatible") );
 			}
 
-		} else if (item instanceof Wand) {
+		} else if (item instanceof Wand || item instanceof Ring) {
 			boolean wasCursed = item.cursed;
 
 			item.upgrade();
 
 			if (wasCursed && !item.cursed){
 				removeCurse( Dungeon.hero );
-			}
-
-		} else if (item instanceof Ring) {
-			boolean wasCursed = item.cursed;
-
-			item.upgrade();
-
-			if (wasCursed && !item.cursed){
-				if (item.level() < 1){
-					weakenCurse( Dungeon.hero );
-				} else {
-					removeCurse( Dungeon.hero );
-				}
 			}
 
 		} else {
