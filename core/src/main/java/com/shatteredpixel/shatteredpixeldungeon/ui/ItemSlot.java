@@ -122,6 +122,12 @@ public class ItemSlot extends Button {
 		PixelScene.align(icon);
 		
 		if (topLeft != null) {
+			topLeft.measure();
+			if (topLeft.width > width){
+				topLeft.scale.set(PixelScene.align(0.8f));
+			} else {
+				topLeft.scale.set(1f);
+			}
 			topLeft.x = x;
 			topLeft.y = y;
 			PixelScene.align(topLeft);
