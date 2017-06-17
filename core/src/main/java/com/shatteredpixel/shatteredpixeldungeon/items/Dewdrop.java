@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -45,14 +44,17 @@ public class Dewdrop extends Item {
 		
 		DewVial vial = hero.belongings.getItem( DewVial.class );
 		
-		if (hero.HP < hero.HT || vial == null || vial.isFull()) {
+		if (vial != null && !vial.isFull()){
 			
-			int value = 1 + (Dungeon.depth - 1) / 5;
-			if (hero.subClass == HeroSubClass.WARDEN) {
-				value+=2;
-			}
+			vial.collectDew( this );
 			
-			int effect = Math.min( hero.HT - hero.HP, value * quantity );
+		} else {
+			
+			//20 drops for a full heal normally, 15 for the warden
+			float healthPercent = hero.subClass == HeroSubClass.WARDEN ? 0.0667f : 0.05f;
+			int heal = Math.round( hero.HT * healthPercent * quantity );
+			
+			int effect = Math.min( hero.HT - hero.HP, heal );
 			if (effect > 0) {
 				hero.HP += effect;
 				hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
@@ -61,10 +63,6 @@ public class Dewdrop extends Item {
 				GLog.i( Messages.get(this, "already_full") );
 				return false;
 			}
-			
-		} else {
-			
-			vial.collectDew( this );
 			
 		}
 		

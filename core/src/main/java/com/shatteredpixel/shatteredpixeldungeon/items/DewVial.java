@@ -22,9 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -37,7 +36,7 @@ import java.util.ArrayList;
 
 public class DewVial extends Item {
 
-	private static final int MAX_VOLUME	= 10;
+	private static final int MAX_VOLUME	= 20;
 
 	private static final String AC_DRINK	= "DRINK";
 
@@ -86,21 +85,25 @@ public class DewVial extends Item {
 		if (action.equals( AC_DRINK )) {
 
 			if (volume > 0) {
-
-				int value = 1 + (Dungeon.depth - 1) / 5;
-				if (hero.heroClass == HeroClass.HUNTRESS) {
-					value++;
-				}
-				value *= volume;
-				value = (int)Math.max(volume*volume*.01*hero.HT, value);
-				int effect = Math.min( hero.HT - hero.HP, value );
+				
+				//20 drops for a full heal normally, 15 for the warden
+				float dropHealPercent = hero.subClass == HeroSubClass.WARDEN ? 0.0667f : 0.05f;
+				float missingHealthPercent = 1f - (hero.HP / (float)hero.HT);
+				
+				//trimming off 0.01 drops helps with floating point errors
+				int dropsNeeded = (int)Math.ceil((missingHealthPercent / dropHealPercent) - 0.01f);
+				dropsNeeded = Math.min(dropsNeeded, volume);
+				
+				int heal = Math.round( hero.HT * dropHealPercent * dropsNeeded );
+				
+				int effect = Math.min( hero.HT - hero.HP, heal );
 				if (effect > 0) {
 					hero.HP += effect;
-					hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), volume > 5 ? 2 : 1 );
+					hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 + dropsNeeded/5 );
 					hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "value", effect) );
 				}
 
-				volume = 0;
+				volume -= dropsNeeded;
 
 				hero.spend( TIME_TO_DRINK );
 				hero.busy();
