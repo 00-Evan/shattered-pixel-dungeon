@@ -104,7 +104,7 @@ public class SewerLevel extends RegularLevel {
 	
 	@Override
 	protected void createItems() {
-		if (!Dungeon.limitedDrops.dewVial.dropped() && Random.Int( 4 - Dungeon.depth ) == 0) {
+		if (!Dungeon.limitedDrops.dewVial.dropped()) {
 			addItemToSpawn( new DewVial() );
 			Dungeon.limitedDrops.dewVial.drop();
 		}
