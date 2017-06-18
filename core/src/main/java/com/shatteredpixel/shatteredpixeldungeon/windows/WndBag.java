@@ -48,11 +48,13 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
@@ -85,7 +87,7 @@ public class WndBag extends WndTabbed {
 	protected static final int SLOT_HEIGHT	= 28;
 	protected static final int SLOT_MARGIN	= 1;
 	
-	protected static final int TITLE_HEIGHT	= 12;
+	protected static final int TITLE_HEIGHT	= 14;
 	
 	private Listener listener;
 	private WndBag.Mode mode;
@@ -113,16 +115,12 @@ public class WndBag extends WndTabbed {
 		lastBag = bag;
 
 		nCols = ShatteredPixelDungeon.landscape() ? COLS_L : COLS_P;
-		nRows = (int)Math.ceil((Belongings.BACKPACK_SIZE + 4 + 1) / (float)nCols);
+		nRows = (int)Math.ceil((Belongings.BACKPACK_SIZE + 4) / (float)nCols);
 
 		int slotsWidth = SLOT_WIDTH * nCols + SLOT_MARGIN * (nCols - 1);
 		int slotsHeight = SLOT_HEIGHT * nRows + SLOT_MARGIN * (nRows - 1);
 
-		RenderedText txtTitle = PixelScene.renderText( title != null ? title : Messages.titleCase( bag.name() ), 9 );
-		txtTitle.hardlight( TITLE_COLOR );
-		txtTitle.x = (int)(slotsWidth - txtTitle.width()) / 2;
-		txtTitle.y = (int)(TITLE_HEIGHT - txtTitle.height()) / 2;
-		add( txtTitle );
+		placeTitle( bag, slotsWidth );
 		
 		placeItems( bag );
 
@@ -168,6 +166,31 @@ public class WndBag extends WndTabbed {
 				lastBag( listener, mode, title );
 	}
 	
+	protected void placeTitle( Bag bag, int width ){
+		
+		RenderedText txtTitle = PixelScene.renderText(
+				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 9 );
+		txtTitle.hardlight( TITLE_COLOR );
+		txtTitle.x = 1;
+		txtTitle.y = (int)(TITLE_HEIGHT - txtTitle.baseLine()) / 2f - 1;
+		PixelScene.align(txtTitle);
+		add( txtTitle );
+		
+		ItemSprite gold = new ItemSprite(ItemSpriteSheet.GOLD, null);
+		gold.x = width - gold.width() - 1;
+		gold.y = (TITLE_HEIGHT - gold.height())/2f - 1;
+		PixelScene.align(gold);
+		add(gold);
+		
+		BitmapText amt = new BitmapText( Integer.toString(Dungeon.gold), PixelScene.pixelFont );
+		amt.hardlight(TITLE_COLOR);
+		amt.measure();
+		amt.x = width - gold.width() - amt.width() - 2;
+		amt.y = (TITLE_HEIGHT - amt.baseLine())/2f - 1;
+		PixelScene.align(amt);
+		add(amt);
+	}
+	
 	protected void placeItems( Bag container ) {
 		
 		// Equipped items
@@ -192,13 +215,6 @@ public class WndBag extends WndTabbed {
 		// Free Space
 		while (count-(backpack ? 4 : nCols) < container.size) {
 			placeItem( null );
-		}
-		
-		// Gold
-		if (container == Dungeon.hero.belongings.backpack) {
-			row = nRows - 1;
-			col = nCols - 1;
-			placeItem( new Gold( Dungeon.gold ) );
 		}
 	}
 	

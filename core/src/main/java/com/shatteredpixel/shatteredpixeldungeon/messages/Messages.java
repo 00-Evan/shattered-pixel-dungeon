@@ -157,7 +157,7 @@ public class Messages {
 	private static final HashSet<String> noCaps = new HashSet<>(
 			Arrays.asList(new String[]{
 					//English
-					"a", "of", "by", "to", "the", "x"
+					"a", "an", "and", "of", "by", "to", "the", "x"
 			})
 	);
 
