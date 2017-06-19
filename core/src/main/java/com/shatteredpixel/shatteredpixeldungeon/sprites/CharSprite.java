@@ -78,7 +78,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING
 	}
 	
 	protected Animation idle;
@@ -96,6 +96,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Emitter chilled;
 	protected Emitter marked;
 	protected Emitter levitation;
+	protected Emitter health;
 	
 	protected IceBlock iceBlock;
 	protected DarkBlock darkBlock;
@@ -320,6 +321,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				marked = emitter();
 				marked.pour(ShadowParticle.UP, 0.1f);
 				break;
+			case HEALING:
+				health = emitter();
+				health.pour(Speck.factory(Speck.HEALING), 0.5f);
 		}
 	}
 	
@@ -375,6 +379,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				if (marked != null){
 					marked.on = false;
 					marked = null;
+				}
+				break;
+			case HEALING:
+				if (health != null){
+					health.on = false;
+					health = null;
 				}
 				break;
 		}
