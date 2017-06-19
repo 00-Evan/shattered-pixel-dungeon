@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 
 public class Healing extends Buff {
@@ -47,7 +48,7 @@ public class Healing extends Buff {
 		
 		healingLeft -= healingThisTick;
 		
-		if (healingLeft == 0){
+		if (healingLeft <= 0){
 			detach();
 		}
 		
@@ -71,5 +72,24 @@ public class Healing extends Buff {
 		if (on) target.sprite.add( CharSprite.State.HEALING );
 		else if (target.invisible == 0) target.sprite.remove( CharSprite.State.HEALING );
 	}
-
+	
+	private static final String LEFT = "left";
+	private static final String PERCENT = "percent";
+	private static final String FLAT = "flat";
+	
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(LEFT, healingLeft);
+		bundle.put(PERCENT, percentHealPerTick);
+		bundle.put(FLAT, flatHealPerTick);
+	}
+	
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		healingLeft = bundle.getInt(LEFT);
+		percentHealPerTick = bundle.getFloat(PERCENT);
+		flatHealPerTick = bundle.getInt(FLAT);
+	}
 }
