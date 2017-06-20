@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.utils.Bundle;
@@ -43,7 +42,6 @@ public class Healing extends Buff {
 		
 		target.HP = Math.min(target.HT, target.HP + healingThisTick);
 		
-		target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1 );
 		target.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "value", healingThisTick));
 		
 		healingLeft -= healingThisTick;
@@ -70,7 +68,7 @@ public class Healing extends Buff {
 	@Override
 	public void fx(boolean on) {
 		if (on) target.sprite.add( CharSprite.State.HEALING );
-		else if (target.invisible == 0) target.sprite.remove( CharSprite.State.HEALING );
+		else    target.sprite.remove( CharSprite.State.HEALING );
 	}
 	
 	private static final String LEFT = "left";
