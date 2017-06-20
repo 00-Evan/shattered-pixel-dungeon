@@ -154,7 +154,7 @@ import java.util.LinkedHashMap;
 
 public class Generator {
 
-	public static enum Category {
+	public enum Category {
 		WEAPON	( 6,    Weapon.class ),
 		WEP_T1	( 0,    Weapon.class),
 		WEP_T2	( 0,    Weapon.class),
@@ -191,6 +191,178 @@ public class Generator {
 			
 			return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
 		}
+		
+		private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
+		
+		static {
+			GOLD.classes = new Class<?>[]{
+					Gold.class };
+			GOLD.probs = new float[]{ 1 };
+			
+			SCROLL.classes = new Class<?>[]{
+					ScrollOfIdentify.class,
+					ScrollOfTeleportation.class,
+					ScrollOfRemoveCurse.class,
+					ScrollOfUpgrade.class,
+					ScrollOfRecharging.class,
+					ScrollOfMagicMapping.class,
+					ScrollOfRage.class,
+					ScrollOfTerror.class,
+					ScrollOfLullaby.class,
+					ScrollOfMagicalInfusion.class,
+					ScrollOfPsionicBlast.class,
+					ScrollOfMirrorImage.class };
+			SCROLL.probs = new float[]{ 30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10 };
+			
+			POTION.classes = new Class<?>[]{
+					PotionOfHealing.class,
+					PotionOfExperience.class,
+					PotionOfToxicGas.class,
+					PotionOfParalyticGas.class,
+					PotionOfLiquidFlame.class,
+					PotionOfLevitation.class,
+					PotionOfStrength.class,
+					PotionOfMindVision.class,
+					PotionOfPurity.class,
+					PotionOfInvisibility.class,
+					PotionOfMight.class,
+					PotionOfFrost.class };
+			POTION.probs = new float[]{ 45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10 };
+			
+			//TODO: add last ones when implemented
+			WAND.classes = new Class<?>[]{
+					WandOfMagicMissile.class,
+					WandOfLightning.class,
+					WandOfDisintegration.class,
+					WandOfFireblast.class,
+					WandOfVenom.class,
+					WandOfBlastWave.class,
+					//WandOfLivingEarth.class,
+					WandOfFrost.class,
+					WandOfPrismaticLight.class,
+					//WandOfWarding.class,
+					WandOfTransfusion.class,
+					WandOfCorruption.class,
+					WandOfRegrowth.class };
+			WAND.probs = new float[]{ 5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3 };
+			
+			//see generator.randomWeapon
+			WEAPON.classes = new Class<?>[]{};
+			WEAPON.probs = new float[]{};
+			
+			WEP_T1.classes = new Class<?>[]{
+					WornShortsword.class,
+					Knuckles.class,
+					Dagger.class,
+					MagesStaff.class,
+					Boomerang.class,
+					Dart.class
+			};
+			WEP_T1.probs = new float[]{ 1, 1, 1, 0, 0, 1 };
+			
+			WEP_T2.classes = new Class<?>[]{
+					Shortsword.class,
+					HandAxe.class,
+					Spear.class,
+					Quarterstaff.class,
+					Dirk.class,
+					IncendiaryDart.class
+			};
+			WEP_T2.probs = new float[]{ 6, 5, 5, 4, 4, 6 };
+			
+			WEP_T3.classes = new Class<?>[]{
+					Sword.class,
+					Mace.class,
+					Scimitar.class,
+					RoundShield.class,
+					Sai.class,
+					Whip.class,
+					Shuriken.class,
+					CurareDart.class
+			};
+			WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4, 6, 6 };
+			
+			WEP_T4.classes = new Class<?>[]{
+					Longsword.class,
+					BattleAxe.class,
+					Flail.class,
+					RunicBlade.class,
+					AssassinsBlade.class,
+					Javelin.class
+			};
+			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4, 6 };
+			
+			WEP_T5.classes = new Class<?>[]{
+					Greatsword.class,
+					WarHammer.class,
+					Glaive.class,
+					Greataxe.class,
+					Greatshield.class,
+					Tamahawk.class
+			};
+			WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4, 6 };
+			
+			//see Generator.randomArmor
+			ARMOR.classes = new Class<?>[]{
+					ClothArmor.class,
+					LeatherArmor.class,
+					MailArmor.class,
+					ScaleArmor.class,
+					PlateArmor.class };
+			ARMOR.probs = new float[]{ 0, 0, 0, 0, 0 };
+			
+			FOOD.classes = new Class<?>[]{
+					Food.class,
+					Pasty.class,
+					MysteryMeat.class };
+			FOOD.probs = new float[]{ 4, 1, 0 };
+			
+			RING.classes = new Class<?>[]{
+					RingOfAccuracy.class,
+					RingOfEvasion.class,
+					RingOfElements.class,
+					RingOfForce.class,
+					RingOfFuror.class,
+					RingOfHaste.class,
+					RingOfMagic.class, //currently removed from drop tables, pending rework
+					RingOfMight.class,
+					RingOfSharpshooting.class,
+					RingOfTenacity.class,
+					RingOfWealth.class};
+			RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 };
+			
+			ARTIFACT.classes = new Class<?>[]{
+					CapeOfThorns.class,
+					ChaliceOfBlood.class,
+					CloakOfShadows.class,
+					HornOfPlenty.class,
+					MasterThievesArmband.class,
+					SandalsOfNature.class,
+					TalismanOfForesight.class,
+					TimekeepersHourglass.class,
+					UnstableSpellbook.class,
+					AlchemistsToolkit.class, //currently removed from drop tables, pending rework.
+					DriedRose.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
+					LloydsBeacon.class,
+					EtherealChains.class
+			};
+			ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
+			
+			SEED.classes = new Class<?>[]{
+					Firebloom.Seed.class,
+					Icecap.Seed.class,
+					Sorrowmoss.Seed.class,
+					Blindweed.Seed.class,
+					Sungrass.Seed.class,
+					Earthroot.Seed.class,
+					Fadeleaf.Seed.class,
+					Rotberry.Seed.class,
+					BlandfruitBush.Seed.class,
+					Dreamfoil.Seed.class,
+					Stormvine.Seed.class,
+					Starflower.Seed.class};
+			SEED.probs = new float[]{ 12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1 };
+		}
 	}
 
 	private static final float[][] floorSetTierProbs = new float[][] {
@@ -202,179 +374,6 @@ public class Generator {
 	};
 	
 	private static HashMap<Category,Float> categoryProbs = new LinkedHashMap<>();
-
-	private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
-	
-	static {
-		
-		Category.GOLD.classes = new Class<?>[]{
-			Gold.class };
-		Category.GOLD.probs = new float[]{ 1 };
-		
-		Category.SCROLL.classes = new Class<?>[]{
-			ScrollOfIdentify.class,
-			ScrollOfTeleportation.class,
-			ScrollOfRemoveCurse.class,
-			ScrollOfUpgrade.class,
-			ScrollOfRecharging.class,
-			ScrollOfMagicMapping.class,
-			ScrollOfRage.class,
-			ScrollOfTerror.class,
-			ScrollOfLullaby.class,
-			ScrollOfMagicalInfusion.class,
-			ScrollOfPsionicBlast.class,
-			ScrollOfMirrorImage.class };
-		Category.SCROLL.probs = new float[]{ 30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10 };
-		
-		Category.POTION.classes = new Class<?>[]{
-			PotionOfHealing.class,
-			PotionOfExperience.class,
-			PotionOfToxicGas.class,
-			PotionOfParalyticGas.class,
-			PotionOfLiquidFlame.class,
-			PotionOfLevitation.class,
-			PotionOfStrength.class,
-			PotionOfMindVision.class,
-			PotionOfPurity.class,
-			PotionOfInvisibility.class,
-			PotionOfMight.class,
-			PotionOfFrost.class };
-		Category.POTION.probs = new float[]{ 45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10 };
-
-		//TODO: add last ones when implemented
-		Category.WAND.classes = new Class<?>[]{
-			WandOfMagicMissile.class,
-			WandOfLightning.class,
-			WandOfDisintegration.class,
-			WandOfFireblast.class,
-			WandOfVenom.class,
-			WandOfBlastWave.class,
-			//WandOfLivingEarth.class,
-			WandOfFrost.class,
-			WandOfPrismaticLight.class,
-			//WandOfWarding.class,
-			WandOfTransfusion.class,
-			WandOfCorruption.class,
-			WandOfRegrowth.class };
-		Category.WAND.probs = new float[]{ 5, 4, 4, 4, 4, 3, /*3,*/ 3, 3, /*3,*/ 3, 3, 3 };
-
-		//see generator.randomWeapon
-		Category.WEAPON.classes = new Class<?>[]{};
-		Category.WEAPON.probs = new float[]{};
-
-		Category.WEP_T1.classes = new Class<?>[]{
-			WornShortsword.class,
-			Knuckles.class,
-			Dagger.class,
-			MagesStaff.class,
-			Boomerang.class,
-			Dart.class
-		};
-		Category.WEP_T1.probs = new float[]{ 1, 1, 1, 0, 0, 1 };
-
-		Category.WEP_T2.classes = new Class<?>[]{
-			Shortsword.class,
-			HandAxe.class,
-			Spear.class,
-			Quarterstaff.class,
-			Dirk.class,
-			IncendiaryDart.class
-		};
-		Category.WEP_T2.probs = new float[]{ 6, 5, 5, 4, 4, 6 };
-
-		Category.WEP_T3.classes = new Class<?>[]{
-			Sword.class,
-			Mace.class,
-			Scimitar.class,
-			RoundShield.class,
-			Sai.class,
-			Whip.class,
-			Shuriken.class,
-			CurareDart.class
-		};
-		Category.WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4, 6, 6 };
-
-		Category.WEP_T4.classes = new Class<?>[]{
-			Longsword.class,
-			BattleAxe.class,
-			Flail.class,
-			RunicBlade.class,
-			AssassinsBlade.class,
-			Javelin.class
-		};
-		Category.WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4, 6 };
-
-		Category.WEP_T5.classes = new Class<?>[]{
-			Greatsword.class,
-			WarHammer.class,
-			Glaive.class,
-			Greataxe.class,
-			Greatshield.class,
-			Tamahawk.class
-		};
-		Category.WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4, 6 };
-
-		//see Generator.randomArmor
-		Category.ARMOR.classes = new Class<?>[]{
-			ClothArmor.class,
-			LeatherArmor.class,
-			MailArmor.class,
-			ScaleArmor.class,
-			PlateArmor.class };
-		Category.ARMOR.probs = new float[]{ 0, 0, 0, 0, 0 };
-		
-		Category.FOOD.classes = new Class<?>[]{
-			Food.class,
-			Pasty.class,
-			MysteryMeat.class };
-		Category.FOOD.probs = new float[]{ 4, 1, 0 };
-			
-		Category.RING.classes = new Class<?>[]{
-			RingOfAccuracy.class,
-			RingOfEvasion.class,
-			RingOfElements.class,
-			RingOfForce.class,
-			RingOfFuror.class,
-			RingOfHaste.class,
-			RingOfMagic.class, //currently removed from drop tables, pending rework
-			RingOfMight.class,
-			RingOfSharpshooting.class,
-			RingOfTenacity.class,
-			RingOfWealth.class};
-		Category.RING.probs = new float[]{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1 };
-
-		Category.ARTIFACT.classes = new Class<?>[]{
-			CapeOfThorns.class,
-			ChaliceOfBlood.class,
-			CloakOfShadows.class,
-			HornOfPlenty.class,
-			MasterThievesArmband.class,
-			SandalsOfNature.class,
-			TalismanOfForesight.class,
-			TimekeepersHourglass.class,
-			UnstableSpellbook.class,
-			AlchemistsToolkit.class, //currently removed from drop tables, pending rework.
-			DriedRose.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
-			LloydsBeacon.class,
-			EtherealChains.class
-			};
-		Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
-		
-		Category.SEED.classes = new Class<?>[]{
-			Firebloom.Seed.class,
-			Icecap.Seed.class,
-			Sorrowmoss.Seed.class,
-			Blindweed.Seed.class,
-			Sungrass.Seed.class,
-			Earthroot.Seed.class,
-			Fadeleaf.Seed.class,
-			Rotberry.Seed.class,
-			BlandfruitBush.Seed.class,
-			Dreamfoil.Seed.class,
-			Stormvine.Seed.class,
-			Starflower.Seed.class};
-		Category.SEED.probs = new float[]{ 12, 12, 12, 12, 12, 12, 12, 0, 4, 12, 12, 1 };
-	}
 	
 	public static void reset() {
 		for (Category cat : Category.values()) {
@@ -524,7 +523,7 @@ public class Generator {
 
 	//resets artifact probabilities, for new dungeons
 	public static void initArtifacts() {
-		Category.ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
+		Category.ARTIFACT.probs = Category.INITIAL_ARTIFACT_PROBS.clone();
 
 		//checks for dried rose quest completion, adds the rose in accordingly.
 		if (Ghost.Quest.completed()) Category.ARTIFACT.probs[10] = 1;
