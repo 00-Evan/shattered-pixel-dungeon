@@ -41,14 +41,12 @@ import java.util.ArrayList;
 
 public class Food extends Item {
 
-	private static final float TIME_TO_EAT	= 3f;
+	public static final float TIME_TO_EAT	= 3f;
 	
 	public static final String AC_EAT	= "EAT";
 	
 	public float energy = Hunger.HUNGRY;
 	public String message = Messages.get(this, "eat_msg");
-
-	public int hornValue = 3;
 	
 	{
 		stackable = true;

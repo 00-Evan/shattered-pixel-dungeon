@@ -52,16 +52,16 @@ public class HornOfPlenty extends Artifact {
 	{
 		image = ItemSpriteSheet.ARTIFACT_HORN1;
 
-		levelCap = 30;
+		levelCap = 10;
 
 		charge = 0;
 		partialCharge = 0;
-		chargeCap = 10 + visiblyUpgraded();
+		chargeCap = 10 + level();
 
 		defaultAction = AC_EAT;
 	}
-
-	private static final float TIME_TO_EAT	= 3f;
+	
+	private int storedFoodEnergy = 0;
 
 	public static final String AC_EAT = "EAT";
 	public static final String AC_STORE = "STORE";
@@ -73,7 +73,7 @@ public class HornOfPlenty extends Artifact {
 		ArrayList<String> actions = super.actions( hero );
 		if (isEquipped( hero ) && charge > 0)
 			actions.add(AC_EAT);
-		if (isEquipped( hero ) && level() < 30 && !cursed)
+		if (isEquipped( hero ) && level() < levelCap && !cursed)
 			actions.add(AC_STORE);
 		return actions;
 	}
@@ -121,7 +121,7 @@ public class HornOfPlenty extends Artifact {
 				Sample.INSTANCE.play(Assets.SND_EAT);
 				GLog.i( Messages.get(this, "eat") );
 
-				hero.spend(TIME_TO_EAT);
+				hero.spend(Food.TIME_TO_EAT);
 
 				Badges.validateFoodEaten();
 
@@ -163,19 +163,58 @@ public class HornOfPlenty extends Artifact {
 	@Override
 	public void level(int value) {
 		super.level(value);
-		chargeCap = 10 + visiblyUpgraded();
+		chargeCap = 10 + level();
 	}
 
 	@Override
 	public Item upgrade() {
 		super.upgrade();
-		chargeCap = 10 + visiblyUpgraded();
+		chargeCap = 10 + level();
 		return this;
 	}
-
+	
+	public void gainFoodValue( Food food ){
+		if (level() >= 10) return;
+		
+		storedFoodEnergy += food.energy;
+		if (storedFoodEnergy >= Hunger.HUNGRY){
+			int upgrades = storedFoodEnergy / (int)Hunger.HUNGRY;
+			upgrades = Math.min(upgrades, 10 - level());
+			upgrade(upgrades);
+			storedFoodEnergy -= upgrades * Hunger.HUNGRY;
+			if (level() == 10){
+				storedFoodEnergy = 0;
+				GLog.p( Messages.get(this, "maxlevel") );
+			} else {
+				GLog.p( Messages.get(this, "levelup") );
+			}
+		} else {
+			GLog.i( Messages.get(this, "feed") );
+		}
+	}
+	
+	private static final String STORED = "stored";
+	
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put( STORED, storedFoodEnergy );
+	}
+	
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
+		
+		if (bundle.contains(STORED)){
+			storedFoodEnergy = bundle.getInt(STORED);
+			
+		//logic for pre-0.6.1 saves
+		} else {
+			//keep partial levels
+			storedFoodEnergy = (int)(level()%3 * Hunger.HUNGRY/3);
+			level(level()/3);
+		}
+		
 		if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
 		else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
 		else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
@@ -186,10 +225,10 @@ public class HornOfPlenty extends Artifact {
 		public void gainCharge(float levelPortion) {
 			if (charge < chargeCap) {
 
-				//generates 0.25x max hunger value every hero level, +0.035x max value per horn level
-				//to a max of 1.3x max hunger value per hero level
-				//This means that a standard ration will be recovered in ~7.15 hero levels
-				partialCharge += Hunger.STARVING * levelPortion * (0.25f + (0.035f*level()));
+				//generates 0.2x max hunger value every hero level, +0.1x max value per horn level
+				//to a max of 1.2x max hunger value per hero level
+				//This means that a standard ration will be recovered in 6.67 hero levels
+				partialCharge += Hunger.STARVING * levelPortion * (0.2f + (0.1f*level()));
 
 				//charge is in increments of 1/10 max hunger value.
 				while (partialCharge >= Hunger.STARVING/10) {
@@ -224,14 +263,9 @@ public class HornOfPlenty extends Artifact {
 					Hero hero = Dungeon.hero;
 					hero.sprite.operate( hero.pos );
 					hero.busy();
-					hero.spend( TIME_TO_EAT );
+					hero.spend( Food.TIME_TO_EAT );
 
-					curItem.upgrade(((Food)item).hornValue);
-					if (curItem.level() >= 30){
-						curItem.level(30);
-						GLog.p( Messages.get(HornOfPlenty.class, "maxlevel") );
-					} else
-						GLog.p( Messages.get(HornOfPlenty.class, "levelup") );
+					((HornOfPlenty)curItem).gainFoodValue(((Food)item));
 					item.detach(hero.belongings.backpack);
 				}
 
