@@ -31,8 +31,7 @@ public class RingOfMight extends Ring {
 	@Override
 	public boolean doEquip(Hero hero) {
 		if (super.doEquip(hero)){
-			hero.HT += level()*5;
-			hero.HP = Math.min(hero.HP, hero.HT);
+			hero.updateHT( false );
 			return true;
 		} else {
 			return false;
@@ -41,34 +40,30 @@ public class RingOfMight extends Ring {
 
 	@Override
 	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
-
 		if (super.doUnequip(hero, collect, single)){
-			hero.HT -= level()*5;
-			hero.HP = Math.min(hero.HP, hero.HT);
+			hero.updateHT( false );
 			return true;
 		} else {
 			return false;
 		}
-
 	}
 
 	@Override
 	public Item upgrade() {
-		if (buff != null && buff.target != null){
-			buff.target.HT += 5;
-		}
-		return super.upgrade();
+		super.upgrade();
+		updateTargetHT();
+		return this;
 	}
 
 	@Override
 	public void level(int value) {
-		if (buff != null && buff.target != null){
-			buff.target.HT -= level()*5;
-		}
 		super.level(value);
-		if (buff != null && buff.target != null){
-			buff.target.HT += level()*5;
-			buff.target.HP = Math.min(buff.target.HP, buff.target.HT);
+		updateTargetHT();
+	}
+	
+	private void updateTargetHT(){
+		if (buff != null && buff.target instanceof Hero){
+			((Hero) buff.target).updateHT( false );
 		}
 	}
 
@@ -79,6 +74,10 @@ public class RingOfMight extends Ring {
 	
 	public static int strengthBonus( Char target ){
 		return getBonus( target, Might.class );
+	}
+	
+	public static float HTMultiplier( Char target ){
+		return (float)Math.pow(1.035, getBonus(target, Might.class));
 	}
 
 	public class Might extends RingBuff {

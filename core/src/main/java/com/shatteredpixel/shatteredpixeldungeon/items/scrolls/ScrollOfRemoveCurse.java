@@ -91,6 +91,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		
 		if (procced) {
 			hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+			hero.updateHT( false ); //for ring of might
 		}
 		
 		return procced;

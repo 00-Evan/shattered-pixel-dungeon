@@ -161,6 +161,8 @@ public class Hero extends Char {
 	public int lvl = 1;
 	public int exp = 0;
 	
+	public int HTBoost = 0;
+	
 	private ArrayList<Mob> visibleEnemies;
 
 	//This list is maintained so that some logic checks can be skipped
@@ -179,6 +181,19 @@ public class Hero extends Char {
 		
 		visibleEnemies = new ArrayList<Mob>();
 	}
+	
+	public void updateHT( boolean boostHP ){
+		int curHT = HT;
+		
+		HT = 20 + 5*(lvl-1) + HTBoost;
+		float multiplier = RingOfMight.HTMultiplier(this);
+		HT = Math.round(multiplier * HT);
+		
+		if (boostHP){
+			HP += Math.max(HT - curHT, 0);
+		}
+		HP = Math.min(HP, HT);
+	}
 
 	public int STR() {
 		int STR = this.STR;
@@ -193,6 +208,7 @@ public class Hero extends Char {
 	private static final String STRENGTH	= "STR";
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
+	private static final String HTBOOST     = "htboost";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -209,6 +225,8 @@ public class Hero extends Char {
 		
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
+		
+		bundle.put( HTBOOST, HTBoost );
 
 		belongings.storeInBundle( bundle );
 	}
@@ -228,6 +246,8 @@ public class Hero extends Char {
 		
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
+		
+		HTBoost = bundle.getInt(HTBOOST);
 		
 		belongings.restoreFromBundle( bundle );
 	}
@@ -1191,8 +1211,7 @@ public class Hero extends Char {
 				lvl++;
 				levelUp = true;
 
-				HT += 5;
-				HP += 5;
+				updateHT( true );
 				attackSkill++;
 				defenseSkill++;
 
