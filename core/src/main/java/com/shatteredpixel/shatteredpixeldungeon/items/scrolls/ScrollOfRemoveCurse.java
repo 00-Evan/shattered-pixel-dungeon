@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -79,9 +78,6 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 					a.cursed = false;
 					procced = true;
 				}
-			}
-			if (item instanceof Ring && item.level() <= 0){
-				item.upgrade(1 - item.level());
 			}
 			if (item instanceof Bag){
 				for (Item bagItem : ((Bag)item).items){

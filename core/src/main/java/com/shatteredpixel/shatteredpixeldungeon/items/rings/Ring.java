@@ -248,6 +248,11 @@ public class Ring extends KindofMisc {
 		if ((ticksToKnow = bundle.getInt( UNFAMILIRIARITY )) == 0) {
 			ticksToKnow = TICKS_TO_KNOW;
 		}
+		
+		//pre-0.6.1 saves
+		if (level() < 0){
+			upgrade(-level());
+		}
 	}
 
 	public static int getBonus(Char target, Class<?extends RingBuff> type){
