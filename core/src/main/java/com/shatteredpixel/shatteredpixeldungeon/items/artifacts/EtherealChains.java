@@ -38,8 +38,10 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -102,92 +104,29 @@ public class EtherealChains extends Artifact {
 		public void onSelect(Integer target) {
 			if (target != null && (Dungeon.level.visited[target] || Dungeon.level.mapped[target])){
 
-				//ballistica does not go through walls on pre-rework boss arenas
-				int missileProperties = (Dungeon.depth == 10 || Dungeon.depth == 15 || Dungeon.depth == 20 || Dungeon.depth == 25) ?
-						Ballistica.PROJECTILE : Ballistica.STOP_CHARS | Ballistica.STOP_TARGET;
-
-				final Ballistica chain = new Ballistica(curUser.pos, target, missileProperties);
-
-				//determine if we're grabbing an enemy, pulling to a location, or doing nothing.
+				//chains cannot be used to go where it is impossible to walk to
+				PathFinder.buildDistanceMap(target, BArray.or(Level.passable, Level.avoid, null));
+				if (PathFinder.distance[curUser.pos] == Integer.MAX_VALUE){
+					GLog.w( Messages.get(EtherealChains.class, "cant_reach") );
+					return;
+				}
+				
+				final Ballistica chain = new Ballistica(curUser.pos, target, Ballistica.STOP_TARGET);
+				
+				//chains do not go through walls on locked levels
+				if (curUser.buff(LockedFloor.class) != null){
+					for (int i : chain.subPath(1, chain.dist)){
+						if (Level.solid[i]){
+							GLog.w( Messages.get(EtherealChains.class, "locked") );
+							return;
+						}
+					}
+				}
+				
 				if (Actor.findChar( chain.collisionPos ) != null){
-					int newPos = -1;
-					for (int i : chain.subPath(1, chain.dist)){
-						if (!Level.solid[i] && Actor.findChar(i) == null){
-							newPos = i;
-							break;
-						}
-					}
-					if (newPos == -1){
-						GLog.w( Messages.get(EtherealChains.class, "does_nothing") );
-					} else {
-						final int newMobPos = newPos;
-						final Char affected = Actor.findChar( chain.collisionPos );
-						int chargeUse = Dungeon.level.distance(affected.pos, newMobPos);
-						if (chargeUse > charge) {
-							GLog.w( Messages.get(EtherealChains.class, "no_charge") );
-							return;
-						} else if (affected.properties().contains(Char.Property.IMMOVABLE)) {
-							GLog.w( Messages.get(EtherealChains.class, "cant_pull") );
-							return;
-						} else {
-							charge -= chargeUse;
-							updateQuickslot();
-						}
-						curUser.busy();
-						curUser.sprite.parent.add(new Chains(curUser.sprite.center(), affected.sprite.center(), new Callback() {
-							public void call() {
-								Actor.add(new Pushing(affected, affected.pos, newMobPos, new Callback() {
-									public void call() {
-										Dungeon.level.press(newMobPos, affected);
-									}
-								}));
-								affected.pos = newMobPos;
-								Dungeon.observe();
-								GameScene.updateFog();
-								curUser.spendAndNext(1f);
-							}
-						}));
-					}
-
-				} else if (Level.solid[chain.path.get(chain.dist)]
-						|| (chain.dist > 0 && Level.solid[chain.path.get(chain.dist-1)])
-						|| (chain.path.size() > chain.dist+1 && Level.solid[chain.path.get(chain.dist+1)])
-						//if the player is trying to grapple the edge of the map, let them.
-						|| (chain.path.size() == chain.dist+1)) {
-					int newPos = -1;
-					for (int i : chain.subPath(1, chain.dist)){
-						if (!Level.solid[i] && Actor.findChar(i) == null) newPos = i;
-						}
-					if (newPos == -1) {
-						GLog.w( Messages.get(EtherealChains.class, "does_nothing") );
-					} else {
-						final int newHeroPos = newPos;
-						int chargeUse = Dungeon.level.distance(curUser.pos, newHeroPos);
-						if (chargeUse > charge){
-							GLog.w( Messages.get(EtherealChains.class, "no_charge") );
-							return;
-						} else {
-							charge -= chargeUse;
-							updateQuickslot();
-						}
-						curUser.busy();
-						curUser.sprite.parent.add(new Chains(curUser.sprite.center(), DungeonTilemap.tileCenterToWorld(target), new Callback() {
-							public void call() {
-								Actor.add(new Pushing(curUser, curUser.pos, newHeroPos, new Callback() {
-									public void call() {
-										Dungeon.level.press(newHeroPos, curUser);
-									}
-								}));
-								curUser.spendAndNext(1f);
-								curUser.pos = newHeroPos;
-								Dungeon.observe();
-								GameScene.updateFog();
-							}
-						}));
-					}
-
+					chainEnemy( chain, curUser, Actor.findChar( chain.collisionPos ));
 				} else {
-					GLog.i( Messages.get(EtherealChains.class, "nothing_to_grab") );
+					chainLocation( chain, curUser );
 				}
 
 			}
@@ -199,6 +138,104 @@ public class EtherealChains extends Artifact {
 			return Messages.get(EtherealChains.class, "prompt");
 		}
 	};
+	
+	//pulls an enemy to a position along the chain's path, as close to the hero as possible
+	private void chainEnemy( Ballistica chain, final Hero hero, final Char enemy ){
+		
+		if (enemy.properties().contains(Char.Property.IMMOVABLE)) {
+			GLog.w( Messages.get(this, "cant_pull") );
+			return;
+		}
+		
+		int bestPos = -1;
+		for (int i : chain.subPath(1, chain.dist)){
+			//prefer to the earliest point on the path
+			if (!Level.solid[i] && Actor.findChar(i) == null){
+				bestPos = i;
+				break;
+			}
+		}
+		
+		if (bestPos == -1) {
+			GLog.i(Messages.get(this, "does_nothing"));
+			return;
+		}
+		
+		final int pulledPos = bestPos;
+		
+		int chargeUse = Dungeon.level.distance(enemy.pos, pulledPos);
+		if (chargeUse > charge) {
+			GLog.w( Messages.get(this, "no_charge") );
+			return;
+		} else {
+			charge -= chargeUse;
+			updateQuickslot();
+		}
+		
+		hero.busy();
+		hero.sprite.parent.add(new Chains(hero.sprite.center(), enemy.sprite.center(), new Callback() {
+			public void call() {
+				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
+					public void call() {
+						Dungeon.level.press(pulledPos, enemy);
+					}
+				}));
+				enemy.pos = pulledPos;
+				Dungeon.observe();
+				GameScene.updateFog();
+				hero.spendAndNext(1f);
+			}
+		}));
+	}
+	
+	//pulls the hero along the chain to the collosionPos, if possible.
+	private void chainLocation( Ballistica chain, final Hero hero ){
+		
+		//don't pull if the collision spot is in a wall
+		if (Level.solid[chain.collisionPos]){
+			GLog.i( Messages.get(this, "inside_wall"));
+			return;
+		}
+		
+		//don't pull if there are no solid objects next to the pull location
+		boolean solidFound = false;
+		for (int i : PathFinder.NEIGHBOURS4){
+			if (Level.solid[chain.collisionPos + i]){
+				solidFound = true;
+				break;
+			}
+		}
+		if (!solidFound){
+			GLog.i( Messages.get(EtherealChains.class, "nothing_to_grab") );
+			return;
+		}
+		
+		final int newHeroPos = chain.collisionPos;
+		
+		int chargeUse = Dungeon.level.distance(hero.pos, newHeroPos);
+		if (chargeUse > charge){
+			GLog.w( Messages.get(EtherealChains.class, "no_charge") );
+			return;
+		} else {
+			charge -= chargeUse;
+			updateQuickslot();
+		}
+		
+		hero.busy();
+		hero.sprite.parent.add(new Chains(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(newHeroPos), new Callback() {
+			public void call() {
+				Actor.add(new Pushing(hero, hero.pos, newHeroPos, new Callback() {
+					public void call() {
+						Dungeon.level.press(newHeroPos, hero);
+					}
+				}));
+				hero.spendAndNext(1f);
+				hero.pos = newHeroPos;
+				Dungeon.observe();
+				GameScene.updateFog();
+			}
+		}));
+	}
 
 	@Override
 	protected ArtifactBuff passiveBuff() {
