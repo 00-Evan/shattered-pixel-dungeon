@@ -111,7 +111,7 @@ public class Chasm {
 			public void onDeath() {
 				Badges.validateDeathFromFalling();
 				
-				Dungeon.fail( getClass() );
+				Dungeon.fail( Chasm.class );
 				GLog.n( Messages.get(Chasm.class, "ondeath") );
 			}
 		} );
