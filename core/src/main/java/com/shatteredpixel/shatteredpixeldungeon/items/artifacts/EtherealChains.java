@@ -113,16 +113,6 @@ public class EtherealChains extends Artifact {
 				
 				final Ballistica chain = new Ballistica(curUser.pos, target, Ballistica.STOP_TARGET);
 				
-				//chains do not go through walls on locked levels
-				if (curUser.buff(LockedFloor.class) != null){
-					for (int i : chain.subPath(1, chain.dist)){
-						if (Level.solid[i]){
-							GLog.w( Messages.get(EtherealChains.class, "locked") );
-							return;
-						}
-					}
-				}
-				
 				if (Actor.findChar( chain.collisionPos ) != null){
 					chainEnemy( chain, curUser, Actor.findChar( chain.collisionPos ));
 				} else {
