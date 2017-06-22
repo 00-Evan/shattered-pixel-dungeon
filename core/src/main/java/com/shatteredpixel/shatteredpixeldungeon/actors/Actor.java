@@ -231,13 +231,20 @@ public abstract class Actor implements Bundlable {
 			}
 
 			if (!doNext){
-				interrupted = false;
-				
 				synchronized (Thread.currentThread()) {
+					
+					interrupted = interrupted || Thread.interrupted();
+					
+					if (interrupted){
+						current = null;
+						interrupted = false;
+					}
+					
 					synchronized (GameScene.class){
 						//signals to the gamescene that actor processing is finished for now
 						GameScene.class.notify();
 					}
+					
 					try {
 						Thread.currentThread().wait();
 					} catch (InterruptedException e) {
