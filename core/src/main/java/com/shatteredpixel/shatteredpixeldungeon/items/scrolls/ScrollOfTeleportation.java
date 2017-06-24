@@ -23,15 +23,21 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
+import com.watabou.utils.PathFinder;
 
 public class ScrollOfTeleportation extends Scroll {
 
@@ -40,7 +46,7 @@ public class ScrollOfTeleportation extends Scroll {
 	}
 
 	@Override
-	protected void doRead() {
+	public void doRead() {
 
 		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();
@@ -51,7 +57,49 @@ public class ScrollOfTeleportation extends Scroll {
 		readAnimation();
 	}
 	
-	public static void teleportHero( Hero  hero ) {
+	@Override
+	public void empoweredRead() {
+		
+		if (Dungeon.bossLevel()){
+			GLog.w( Messages.get(this, "no_tele") );
+			return;
+		}
+		
+		GameScene.selectCell(new CellSelector.Listener() {
+			@Override
+			public void onSelect(Integer target) {
+				if (target != null) {
+					//time isn't spent
+					((HeroSprite)curUser.sprite).read();
+					teleportToLocation(curUser, target);
+				}
+			}
+			
+			@Override
+			public String prompt() {
+				return Messages.get(ScrollOfTeleportation.class, "prompt");
+			}
+		});
+	}
+	
+	public static void teleportToLocation(Hero hero, int pos){
+		PathFinder.buildDistanceMap(pos, BArray.or(Level.passable, Level.avoid, null));
+		if (PathFinder.distance[hero.pos] == Integer.MAX_VALUE
+				|| (!Level.passable[pos] && !Level.avoid[pos])
+				|| Actor.findChar(pos) != null){
+			GLog.w( Messages.get(ScrollOfTeleportation.class, "cant_reach") );
+			return;
+		}
+		
+		appear( hero, pos );
+		Dungeon.level.press( pos, hero );
+		Dungeon.observe();
+		GameScene.updateFog();
+		
+		GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
+	}
+	
+	public static void teleportHero(Hero  hero ) {
 
 		int count = 10;
 		int pos;

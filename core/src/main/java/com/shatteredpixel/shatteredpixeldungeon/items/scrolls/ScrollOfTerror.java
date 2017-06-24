@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
@@ -40,7 +41,7 @@ public class ScrollOfTerror extends Scroll {
 	}
 
 	@Override
-	protected void doRead() {
+	public void doRead() {
 		
 		new Flare( 5, 32 ).color( 0xFF0000, true ).show( curUser.sprite, 2f );
 		Sample.INSTANCE.play( Assets.SND_READ );
@@ -73,7 +74,21 @@ public class ScrollOfTerror extends Scroll {
 
 		readAnimation();
 	}
-
+	
+	@Override
+	public void empoweredRead() {
+		doRead();
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			if (Level.fieldOfView[mob.pos]) {
+				Terror t = mob.buff(Terror.class);
+				if (t != null){
+					Buff.prolong(mob, Terror.class, Terror.DURATION*1.5f);
+					Buff.affect(mob, Paralysis.class, Terror.DURATION*.5f);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public int price() {
 		return isKnown() ? 30 * quantity : super.price();

@@ -23,7 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
@@ -41,7 +44,7 @@ public class ScrollOfMagicMapping extends Scroll {
 	}
 
 	@Override
-	protected void doRead() {
+	public void doRead() {
 		
 		int length = Dungeon.level.length();
 		int[] map = Dungeon.level.map;
@@ -84,6 +87,14 @@ public class ScrollOfMagicMapping extends Scroll {
 		setKnown();
 
 		readAnimation();
+	}
+	
+	@Override
+	public void empoweredRead() {
+		doRead();
+		Buff.affect( curUser, MindVision.class, MindVision.DURATION );
+		Buff.affect( curUser, Awareness.class, Awareness.DURATION );
+		Dungeon.observe();
 	}
 	
 	@Override

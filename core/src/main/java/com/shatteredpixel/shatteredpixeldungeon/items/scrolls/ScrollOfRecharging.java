@@ -41,7 +41,7 @@ public class ScrollOfRecharging extends Scroll {
 	}
 
 	@Override
-	protected void doRead() {
+	public void doRead() {
 
 		Buff.affect(curUser, Recharging.class, BUFF_DURATION);
 		charge(curUser);
@@ -54,6 +54,12 @@ public class ScrollOfRecharging extends Scroll {
 		setKnown();
 
 		readAnimation();
+	}
+	
+	@Override
+	public void empoweredRead() {
+		doRead();
+		Buff.append(curUser, Recharging.class, BUFF_DURATION/3f);
 	}
 	
 	public static void charge( Hero hero ) {

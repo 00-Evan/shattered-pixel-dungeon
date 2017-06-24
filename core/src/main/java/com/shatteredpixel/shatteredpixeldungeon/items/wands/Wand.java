@@ -434,9 +434,10 @@ public abstract class Wand extends Item {
 			if (lock == null || lock.regenOn())
 				partialCharge += 1f/turnsToCharge;
 
-			Recharging bonus = target.buff(Recharging.class);
-			if (bonus != null && bonus.remainder() > 0f){
-				partialCharge += CHARGE_BUFF_BONUS * bonus.remainder();
+			for (Recharging bonus : target.buffs(Recharging.class)){
+				if (bonus != null && bonus.remainder() > 0f) {
+					partialCharge += CHARGE_BUFF_BONUS * bonus.remainder();
+				}
 			}
 		}
 

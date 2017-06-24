@@ -36,7 +36,7 @@ public abstract class InventoryScroll extends Scroll {
 	protected WndBag.Mode mode = WndBag.Mode.ALL;
 	
 	@Override
-	protected void doRead() {
+	public void doRead() {
 		
 		if (!isKnown()) {
 			setKnown();

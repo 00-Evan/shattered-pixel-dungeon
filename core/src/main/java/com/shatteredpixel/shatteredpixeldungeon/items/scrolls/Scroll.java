@@ -147,7 +147,10 @@ public abstract class Scroll extends Item {
 		}
 	}
 	
-	abstract protected void doRead();
+	public abstract void doRead();
+	
+	//currently only used in scrolls owned by the unstable spellbook
+	public abstract void empoweredRead();
 
 	protected void readAnimation() {
 		curUser.spend( TIME_TO_READ );

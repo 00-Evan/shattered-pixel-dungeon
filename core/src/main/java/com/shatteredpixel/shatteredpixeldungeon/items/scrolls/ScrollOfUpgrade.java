@@ -114,7 +114,12 @@ public class ScrollOfUpgrade extends InventoryScroll {
 		GLog.p( Messages.get(ScrollOfUpgrade.class, "remove_curse") );
 		hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 	}
-
+	
+	@Override
+	public void empoweredRead() {
+		//does nothing for now, this should never happen.
+	}
+	
 	@Override
 	public int price() {
 		return isKnown() ? 50 * quantity : super.price();

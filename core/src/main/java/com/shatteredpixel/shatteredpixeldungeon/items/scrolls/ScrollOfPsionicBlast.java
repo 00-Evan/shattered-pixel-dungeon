@@ -44,7 +44,7 @@ public class ScrollOfPsionicBlast extends Scroll {
 	}
 	
 	@Override
-	protected void doRead() {
+	public void doRead() {
 		
 		GameScene.flash( 0xFFFFFF );
 		
@@ -63,13 +63,31 @@ public class ScrollOfPsionicBlast extends Scroll {
 		Dungeon.observe();
 		
 		setKnown();
-
-		curUser.spendAndNext( TIME_TO_READ ); //no animation here, the flash interrupts it anyway.
+		
+		readAnimation();
 
 		if (!curUser.isAlive()) {
 			Dungeon.fail( getClass() );
 			GLog.n( Messages.get(this, "ondeath") );
 		}
+	}
+	
+	@Override
+	public void empoweredRead() {
+		GameScene.flash( 0xFFFFFF );
+		
+		Sample.INSTANCE.play( Assets.SND_BLAST );
+		Invisibility.dispel();
+		
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			if (Level.fieldOfView[mob.pos]) {
+				mob.damage(mob.HT, this );
+			}
+		}
+		
+		setKnown();
+		
+		readAnimation();
 	}
 	
 	@Override

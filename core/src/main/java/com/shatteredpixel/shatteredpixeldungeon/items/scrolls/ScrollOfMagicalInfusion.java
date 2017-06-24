@@ -55,6 +55,11 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 		curUser.sprite.emitter().start(Speck.factory(Speck.UP), 0.2f, 3);
 		Enchanting.show(curUser, item);
 	}
+	
+	@Override
+	public void empoweredRead() {
+		//does nothing for now, this should never happen.
+	}
 
 	@Override
 	public int price() {

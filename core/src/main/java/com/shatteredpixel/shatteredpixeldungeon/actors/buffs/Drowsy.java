@@ -48,10 +48,10 @@ public class Drowsy extends Buff {
 
 	@Override
 	public boolean act(){
-			Buff.affect(target, MagicalSleep.class);
+		Buff.affect(target, MagicalSleep.class);
 
-			detach();
-			return true;
+		detach();
+		return true;
 	}
 
 	@Override

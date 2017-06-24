@@ -42,7 +42,7 @@ public class ScrollOfRage extends Scroll {
 	}
 
 	@Override
-	protected void doRead() {
+	public void doRead() {
 
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			mob.beckon( curUser.pos );
@@ -70,7 +70,24 @@ public class ScrollOfRage extends Scroll {
 
 		readAnimation();
 	}
-
+	
+	@Override
+	public void empoweredRead() {
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			if (Level.fieldOfView[mob.pos]) {
+				Buff.prolong(mob, Amok.class, 5f);
+			}
+		}
+		
+		setKnown();
+		
+		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+		Sample.INSTANCE.play( Assets.SND_READ );
+		Invisibility.dispel();
+		
+		readAnimation();
+	}
+	
 	@Override
 	public int price() {
 		return isKnown() ? 30 * quantity : super.price();
