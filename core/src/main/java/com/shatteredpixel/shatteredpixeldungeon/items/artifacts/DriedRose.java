@@ -38,7 +38,9 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -203,10 +205,17 @@ public class DriedRose extends Artifact {
 
 		@Override
 		public boolean act() {
-
+			
+			spend( TICK );
+			
+			//rose does not charge while ghost hero is alive
+			if (spawned){
+				return true;
+			}
+			
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 1/4f; //400 turns to a full charge
+				partialCharge += 1/5f; //500 turns to a full charge
 				if (partialCharge > 1){
 					charge++;
 					partialCharge--;
@@ -234,8 +243,6 @@ public class DriedRose extends Artifact {
 			}
 
 			updateQuickslot();
-
-			spend( TICK );
 
 			return true;
 		}
@@ -288,6 +295,12 @@ public class DriedRose extends Artifact {
 
 			ally = true;
 		}
+		
+		//TODO currently there is no way to assign these
+		private MeleeWeapon weapon = null;
+		private Armor armor = null;
+		
+		private DriedRose rose;
 
 		public GhostHero() {
 			super();
@@ -298,7 +311,7 @@ public class DriedRose extends Artifact {
 
 		public GhostHero(int roseLevel){
 			this();
-			HP = HT = 10+roseLevel*4;
+			HP = HT = 20+roseLevel*4;
 		}
 
 		public void saySpawned(){
@@ -335,7 +348,13 @@ public class DriedRose extends Artifact {
 
 		@Override
 		protected boolean act() {
-			if (Random.Int(10) == 0) damage(1 , this);
+			if (rose == null) {
+				rose = Dungeon.hero.belongings.getItem(DriedRose.class);
+			}
+			if (rose == null || !rose.isEquipped(Dungeon.hero)){
+				damage(1, this);
+			}
+			
 			if (!isAlive())
 				return true;
 			if (!Dungeon.hero.isAlive()){
@@ -374,17 +393,50 @@ public class DriedRose extends Artifact {
 			//same accuracy as the hero.
 			return (defenseSkill/2)+5;
 		}
-
+		
+		//FIXME currently many effects on weapons/armor are ignored
+		//probably should refactor weapons/armor to not be so locked to hero
+		
+		@Override
+		protected float attackDelay() {
+			if (weapon != null){
+				return weapon.DLY;
+			} else {
+				return super.attackDelay();
+			}
+		}
+		
+		@Override
+		protected boolean canAttack(Char enemy) {
+			if (weapon != null) {
+				return Dungeon.level.distance(pos, enemy.pos) <= weapon.RCH;
+			} else {
+				return super.canAttack(enemy);
+			}
+		}
+		
 		@Override
 		public int damageRoll() {
-			int lvl = (HT-10)/4;
-			return Random.NormalIntRange( 3+lvl/2, 8+lvl);
+			int dmg = 0;
+			if (weapon != null){
+				dmg += Random.NormalIntRange(weapon.min(), weapon.max());
+			} else {
+				dmg += Random.NormalIntRange(0, 5);
+			}
+			
+			return dmg;
 		}
 
 		@Override
 		public int drRoll() {
-			int lvl = (HT-10)/4;
-			return Random.NormalIntRange(0, 2+lvl);
+			int block = 0;
+			if (armor != null){
+				block += Random.NormalIntRange( armor.DRMin(), armor.DRMax());
+			}
+			if (weapon != null){
+				block += Random.NormalIntRange( 0, weapon.defenseFactor( null ));
+			}
+			return block;
 		}
 
 		@Override
