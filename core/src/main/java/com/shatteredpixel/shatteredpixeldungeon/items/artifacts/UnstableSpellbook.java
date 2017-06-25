@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -52,9 +53,9 @@ public class UnstableSpellbook extends Artifact {
 
 		levelCap = 10;
 
-		charge = ((level()/2)+3);
+		charge = (int)(level()*0.4f)+2;
 		partialCharge = 0;
-		chargeCap = ((level()/2)+3);
+		chargeCap = (int)(level()*0.4f)+2;
 
 		defaultAction = AC_READ;
 	}
@@ -108,14 +109,25 @@ public class UnstableSpellbook extends Artifact {
 				Scroll scroll;
 				do {
 					scroll = (Scroll) Generator.random(Generator.Category.SCROLL);
-				} while (scroll == null ||
-						//gotta reduce the rate on these scrolls or that'll be all the item does.
-						((scroll instanceof ScrollOfIdentify ||
+				} while (scroll == null
+						//reduce the frequency of these scrolls by half
+						||((scroll instanceof ScrollOfIdentify ||
 							scroll instanceof ScrollOfRemoveCurse ||
-							scroll instanceof ScrollOfMagicMapping) && Random.Int(2) == 0));
-
+							scroll instanceof ScrollOfMagicMapping) && Random.Int(2) == 0)
+						//don't roll teleportation scrolls on boss floors
+						|| (scroll instanceof ScrollOfTeleportation && Dungeon.bossLevel()));
+				
 				scroll.ownedByBook = true;
-				scroll.execute(hero, AC_READ);
+				curItem = scroll;
+				curUser = hero;
+				
+				//if this scroll hasn't been given to the book
+				if (scrolls.contains(scroll.getClass())) {
+					scroll.doRead();
+				} else {
+					scroll.empoweredRead();
+				}
+				updateQuickslot();
 			}
 
 		} else if (action.equals( AC_ADD )) {
@@ -130,7 +142,7 @@ public class UnstableSpellbook extends Artifact {
 
 	@Override
 	public Item upgrade() {
-		chargeCap = (((level()+1)/2)+3);
+		chargeCap = (int)((level()+1)*0.4f)+2;
 
 		//for artifact transmutation.
 		while (scrolls.size() > (levelCap-1-level()))
@@ -147,12 +159,15 @@ public class UnstableSpellbook extends Artifact {
 			desc += "\n\n" + Messages.get(this, "desc_cursed");
 		}
 
-		if (level() < levelCap)
-			if (scrolls.size() > 0) {
-				desc += "\n\n" + Messages.get(this, "desc_index");
-				desc += "\n" + Messages.get(scrolls.get(0), "name");
-				if (scrolls.size() > 1) desc += "\n" + Messages.get(scrolls.get(1), "name");
-			}
+		if (level() < levelCap && scrolls.size() > 0) {
+			desc += "\n\n" + Messages.get(this, "desc_index");
+			desc += "\n" + "_" + Messages.get(scrolls.get(0), "name") + "_";
+			if (scrolls.size() > 1) desc += "\n" + "_" + Messages.get(scrolls.get(1), "name") + "_";
+		}
+		
+		if (level() > 0) {
+			desc += "\n\n" + Messages.get(this, "desc_empowered");
+		}
 
 		return desc;
 	}
@@ -177,7 +192,7 @@ public class UnstableSpellbook extends Artifact {
 		public boolean act() {
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 1 / (150f - (chargeCap - charge)*15f);
+				partialCharge += 1 / (160f - (chargeCap - charge)*15f);
 
 				if (partialCharge >= 1) {
 					partialCharge --;
