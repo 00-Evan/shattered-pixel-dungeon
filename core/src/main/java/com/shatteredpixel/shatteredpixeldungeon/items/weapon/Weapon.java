@@ -136,9 +136,13 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	@Override
-	public float accuracyFactor( Hero hero ) {
+	public float accuracyFactor( Char owner ) {
 		
-		int encumbrance = STRReq() - hero.STR();
+		int encumbrance = 0;
+		
+		if( owner instanceof Hero ){
+			encumbrance = STRReq() - ((Hero)owner).STR();
+		}
 
 		if (hasEnchant(Wayward.class))
 			encumbrance = Math.max(3, encumbrance+3);
@@ -146,40 +150,44 @@ abstract public class Weapon extends KindOfWeapon {
 		float ACC = this.ACC;
 		
 		if (this instanceof MissileWeapon) {
-			ACC *= RingOfSharpshooting.accuracyMultiplier( hero );
+			ACC *= RingOfSharpshooting.accuracyMultiplier( owner );
 		}
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
 	
 	@Override
-	public float speedFactor( Hero hero ) {
+	public float speedFactor( Char owner ) {
 
-		int encumrance = STRReq() - hero.STR();
-		if (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS) {
-			encumrance -= 2;
+		int encumbrance = 0;
+		if (owner instanceof Hero) {
+			encumbrance = STRReq() - ((Hero)owner).STR();
+			if (this instanceof MissileWeapon && ((Hero)owner).heroClass == HeroClass.HUNTRESS) {
+				encumbrance -= 2;
+			}
 		}
 
 		float DLY = imbue.delayFactor(this.DLY);
 
-		DLY = RingOfFuror.modifyAttackDelay(DLY, hero);
+		DLY = RingOfFuror.modifyAttackDelay(DLY, owner);
 
-		return
-				(encumrance > 0 ? (float)(DLY * Math.pow( 1.2, encumrance )) : DLY);
+		return (encumbrance > 0 ? (float)(DLY * Math.pow( 1.2, encumbrance )) : DLY);
 	}
 
 	@Override
-	public int reachFactor(Hero hero) {
+	public int reachFactor(Char owner) {
 		return hasEnchant(Projecting.class) ? RCH+1 : RCH;
 	}
 
 	@Override
-	public int damageRoll( Hero hero ) {
+	public int damageRoll( Char owner ) {
 		
-		int damage = super.damageRoll( hero );
+		int damage = super.damageRoll( owner );
 		
-		if (this instanceof MeleeWeapon || (this instanceof MissileWeapon && hero.heroClass == HeroClass.HUNTRESS)) {
-			int exStr = hero.STR() - STRReq();
+		if (owner instanceof Hero &&
+				(this instanceof MeleeWeapon
+				|| (this instanceof MissileWeapon && ((Hero)owner).heroClass == HeroClass.HUNTRESS))) {
+			int exStr = ((Hero)owner).STR() - STRReq();
 			if (exStr > 0) {
 				damage += Random.IntRange( 0, exStr );
 			}

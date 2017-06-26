@@ -88,27 +88,27 @@ public class Statue extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( weapon.min(), weapon.max() );
+		return weapon.damageRoll(this);
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return (int)((9 + Dungeon.depth) * weapon.ACC);
+		return (int)((9 + Dungeon.depth) * weapon.accuracyFactor(this));
 	}
 	
 	@Override
 	protected float attackDelay() {
-		return weapon.DLY;
+		return weapon.speedFactor( this );
 	}
 
 	@Override
 	protected boolean canAttack(Char enemy) {
-		return Dungeon.level.distance( pos, enemy.pos ) <= weapon.RCH;
+		return Dungeon.level.distance( pos, enemy.pos ) <= weapon.reachFactor(this);
 	}
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(null));
+		return Random.NormalIntRange(0, Dungeon.depth + weapon.defenseFactor(this));
 	}
 	
 	@Override

@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Greatshield extends MeleeWeapon {
@@ -39,7 +39,7 @@ public class Greatshield extends MeleeWeapon {
 	}
 
 	@Override
-	public int defenseFactor(Hero hero) {
+	public int defenseFactor( Char owner ) {
 		return 10+3*level();    //10 extra defence, plus 3 per level;
 	}
 }

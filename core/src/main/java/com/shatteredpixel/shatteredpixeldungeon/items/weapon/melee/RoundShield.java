@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class RoundShield extends MeleeWeapon {
@@ -39,7 +39,7 @@ public class RoundShield extends MeleeWeapon {
 	}
 
 	@Override
-	public int defenseFactor(Hero hero) {
+	public int defenseFactor( Char owner ) {
 		return 5+2*level();     //5 extra defence, plus 2 per level;
 	}
 }

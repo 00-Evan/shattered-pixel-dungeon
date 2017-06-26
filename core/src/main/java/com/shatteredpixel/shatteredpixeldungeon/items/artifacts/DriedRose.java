@@ -39,6 +39,11 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Obfuscation;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -415,7 +420,13 @@ public class DriedRose extends Artifact {
 		@Override
 		public int attackSkill(Char target) {
 			//same accuracy as the hero.
-			return (defenseSkill/2)+5;
+			int acc = (defenseSkill/2)+5;
+			
+			if (weapon != null){
+				acc *= weapon.accuracyFactor(this);
+			}
+			
+			return acc;
 		}
 		
 		//FIXME currently many effects on weapons/armor are ignored
@@ -424,7 +435,7 @@ public class DriedRose extends Artifact {
 		@Override
 		protected float attackDelay() {
 			if (weapon != null){
-				return weapon.DLY;
+				return weapon.speedFactor(this);
 			} else {
 				return super.attackDelay();
 			}
@@ -433,7 +444,7 @@ public class DriedRose extends Artifact {
 		@Override
 		protected boolean canAttack(Char enemy) {
 			if (weapon != null) {
-				return Dungeon.level.distance(pos, enemy.pos) <= weapon.RCH;
+				return Dungeon.level.distance(pos, enemy.pos) <= weapon.reachFactor(this);
 			} else {
 				return super.canAttack(enemy);
 			}
@@ -443,14 +454,80 @@ public class DriedRose extends Artifact {
 		public int damageRoll() {
 			int dmg = 0;
 			if (weapon != null){
-				dmg += Random.NormalIntRange(weapon.min(), weapon.max());
+				dmg += weapon.damageRoll(this);
 			} else {
 				dmg += Random.NormalIntRange(0, 5);
 			}
 			
 			return dmg;
 		}
-
+		
+		@Override
+		public int attackProc(Char enemy, int damage) {
+			if (weapon != null) {
+				return weapon.proc( enemy, this, damage );
+			} else {
+				return super.attackProc(enemy, damage);
+			}
+		}
+		
+		@Override
+		public int defenseProc(Char enemy, int damage) {
+			if (armor != null) {
+				return armor.proc( enemy, this, damage );
+			} else {
+				return super.defenseProc(enemy, damage);
+			}
+		}
+		
+		@Override
+		public void damage(int dmg, Object src) {
+			//TODO improve this when I have proper damage source logic
+			if (armor != null && armor.hasGlyph(AntiMagic.class)
+					&& RingOfElements.FULL.contains(src.getClass())){
+				dmg -= Random.NormalIntRange(armor.DRMin(), armor.DRMax())/3;
+			}
+			
+			super.damage( dmg, src );
+		}
+		
+		@Override
+		public float speed() {
+			float speed = super.speed();
+			
+			if (armor != null){
+				if (armor.hasGlyph(Swiftness.class)) {
+					speed *= (1.1f + 0.01f * armor.level());
+				} else if (armor.hasGlyph(Flow.class) && Level.water[pos]){
+					speed *= (1.5f + 0.05f * armor.level());
+				}
+			}
+			
+			return speed;
+		}
+		
+		@Override
+		public int defenseSkill(Char enemy) {
+			int defense = super.defenseSkill(enemy);
+			
+			if (armor != null && armor.hasGlyph(Swiftness.class)){
+				defense += 5 + armor.level()*1.5f;
+			}
+			
+			return defense;
+		}
+		
+		@Override
+		public int stealth() {
+			int stealth = super.stealth();
+			
+			if (armor != null && armor.hasGlyph(Obfuscation.class)){
+				stealth += armor.level();
+			}
+			
+			return stealth;
+		}
+		
 		@Override
 		public int drRoll() {
 			int block = 0;
@@ -458,7 +535,7 @@ public class DriedRose extends Artifact {
 				block += Random.NormalIntRange( armor.DRMin(), armor.DRMax());
 			}
 			if (weapon != null){
-				block += Random.NormalIntRange( 0, weapon.defenseFactor( null ));
+				block += Random.NormalIntRange( 0, weapon.defenseFactor( this ));
 			}
 			return block;
 		}

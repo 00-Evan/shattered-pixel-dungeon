@@ -89,23 +89,23 @@ abstract public class KindOfWeapon extends EquipableItem {
 	abstract public int min(int lvl);
 	abstract public int max(int lvl);
 
-	public int damageRoll( Hero owner ) {
+	public int damageRoll( Char owner ) {
 		return Random.NormalIntRange( min(), max() );
 	}
 	
-	public float accuracyFactor(Hero hero ) {
+	public float accuracyFactor( Char owner ) {
 		return 1f;
 	}
 	
-	public float speedFactor( Hero hero ) {
+	public float speedFactor( Char owner ) {
 		return 1f;
 	}
 
-	public int reachFactor( Hero hero ){
+	public int reachFactor( Char owner ){
 		return 1;
 	}
 
-	public int defenseFactor(Hero hero ) {
+	public int defenseFactor( Char owner ) {
 		return 0;
 	}
 	
