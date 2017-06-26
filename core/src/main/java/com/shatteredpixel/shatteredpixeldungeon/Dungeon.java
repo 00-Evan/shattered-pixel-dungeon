@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -309,10 +310,16 @@ public class Dungeon {
 	@SuppressWarnings("deprecation")
 	public static void switchLevel( final Level level, int pos ) {
 		
-		Dungeon.level = level;
-		Actor.init();
-
+		if (pos < 0 || pos >= level.length()){
+			pos = level.exit;
+		}
+		
 		PathFinder.setMapSize(level.width(), level.height());
+		
+		Dungeon.level = level;
+		DriedRose.restoreGhostHero( level, pos + PathFinder.NEIGHBOURS8[Random.Int(8)]);
+		Actor.init();
+		
 		visible = new boolean[level.length()];
 		
 		Actor respawner = level.respawner();
@@ -320,7 +327,7 @@ public class Dungeon {
 			Actor.add( level.respawner() );
 		}
 
-		hero.pos = pos != -1 ? pos : level.exit;
+		hero.pos = pos;
 		
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );

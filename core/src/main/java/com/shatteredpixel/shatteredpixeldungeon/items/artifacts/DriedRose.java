@@ -200,6 +200,30 @@ public class DriedRose extends Artifact {
 		spawned = bundle.getBoolean( SPAWNED );
 		droppedPetals = bundle.getInt( PETALS );
 	}
+	
+	private static GhostHero heldGhost;
+	
+	public static void holdGhostHero( Level level ){
+		for (Mob mob : level.mobs.toArray( new Mob[0] )) {
+			if (mob instanceof DriedRose.GhostHero) {
+				Dungeon.level.mobs.remove( mob );
+				heldGhost = (GhostHero) mob;
+				break;
+			}
+		}
+	}
+	
+	public static void restoreGhostHero( Level level, int pos ){
+		if (heldGhost != null){
+			Dungeon.level.mobs.add( heldGhost );
+			heldGhost.pos = pos;
+			heldGhost = null;
+		}
+	}
+	
+	public static void clearHeldGhostHero(){
+		heldGhost = null;
+	}
 
 	public class roseRecharge extends ArtifactBuff {
 
