@@ -310,7 +310,7 @@ public class WndBag extends WndTabbed {
 		}
 	}
 	
-	private static class Placeholder extends Item {
+	public static class Placeholder extends Item {
 		{
 			name = null;
 		}
