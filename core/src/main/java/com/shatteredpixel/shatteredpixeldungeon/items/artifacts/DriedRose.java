@@ -160,6 +160,10 @@ public class DriedRose extends Artifact {
 			GameScene.show( new WndGhostHero(this) );
 		}
 	}
+	
+	public int ghostStrength(){
+		return 13 + level()/2;
+	}
 
 	@Override
 	public String desc() {
@@ -771,29 +775,73 @@ public class DriedRose extends Artifact {
 	
 	private static class WndGhostHero extends Window{
 		
-		private static final int BTN_SIZE	= 36;
+		private static final int BTN_SIZE	= 32;
 		private static final float GAP		= 2;
-		private static final float BTN_GAP	= 10;
+		private static final float BTN_GAP	= 12;
 		private static final int WIDTH		= 116;
 		
 		private WndBlacksmith.ItemButton btnWeapon;
 		private WndBlacksmith.ItemButton btnArmor;
 		
-		WndGhostHero(DriedRose rose){
+		WndGhostHero(final DriedRose rose){
 			
 			IconTitle titlebar = new IconTitle();
 			titlebar.icon( new ItemSprite(rose) );
-			titlebar.label( "Ghost's Equipment" );
+			titlebar.label( Messages.get(this, "title") );
 			titlebar.setRect( 0, 0, WIDTH, 0 );
 			add( titlebar );
 			
-			RenderedTextMultiline message = PixelScene.renderMultiline( "bleh", 6 );
+			RenderedTextMultiline message =
+					PixelScene.renderMultiline(Messages.get(this, "desc", rose.ghostStrength()), 6);
 			message.maxWidth( WIDTH );
 			message.setPos(0, titlebar.bottom() + GAP);
 			add( message );
 			
-			btnWeapon = new WndBlacksmith.ItemButton();
-			btnWeapon.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + BTN_GAP, BTN_SIZE, BTN_SIZE );
+			btnWeapon = new WndBlacksmith.ItemButton(){
+				@Override
+				protected void onClick() {
+					if (rose.weapon != null){
+						if (rose.weapon.doPickUp(Dungeon.hero)){
+							item(new WndBag.Placeholder(ItemSpriteSheet.WEAPON_HOLDER));
+						} else {
+							Dungeon.level.drop( rose.weapon, Dungeon.hero.pos);
+						}
+						rose.weapon = null;
+					} else {
+						GameScene.selectItem(new WndBag.Listener() {
+							@Override
+							public void onSelect(Item item) {
+								if (item.unique) { //catches boomerang
+									GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
+									hide();
+								} else if (!(item instanceof MeleeWeapon)) {
+									//no message because this should never happen
+									hide();
+								} else if (!item.isIdentified()) {
+									GLog.w( Messages.get(WndGhostHero.class, "cant_unidentified"));
+									hide();
+								} else if (item.cursed) {
+									GLog.w( Messages.get(WndGhostHero.class, "cant_cursed"));
+									hide();
+								} else if (((MeleeWeapon)item).STRReq() > rose.ghostStrength()) {
+									GLog.w( Messages.get(WndGhostHero.class, "cant_strength"));
+									hide();
+								} else {
+									if (item.isEquipped(Dungeon.hero)){
+										((MeleeWeapon) item).doUnequip(Dungeon.hero, false, false);
+									} else {
+										item.detach(Dungeon.hero.belongings.backpack);
+									}
+									rose.weapon = (MeleeWeapon) item;
+									item(rose.weapon);
+								}
+								
+							}
+						}, WndBag.Mode.WEAPON, Messages.get(WndGhostHero.class, "weapon_prompt"));
+					}
+				}
+			};
+			btnWeapon.setRect( (WIDTH - BTN_GAP) / 2 - BTN_SIZE, message.top() + message.height() + GAP, BTN_SIZE, BTN_SIZE );
 			if (rose.weapon != null) {
 				btnWeapon.item(rose.weapon);
 			} else {
@@ -801,7 +849,50 @@ public class DriedRose extends Artifact {
 			}
 			add( btnWeapon );
 			
-			btnArmor = new WndBlacksmith.ItemButton();
+			btnArmor = new WndBlacksmith.ItemButton(){
+				@Override
+				protected void onClick() {
+					if (rose.armor != null){
+						if (rose.armor.doPickUp(Dungeon.hero)){
+							item(new WndBag.Placeholder(ItemSpriteSheet.ARMOR_HOLDER));
+						} else {
+							Dungeon.level.drop( rose.armor, Dungeon.hero.pos);
+						}
+						rose.armor = null;
+					} else {
+						GameScene.selectItem(new WndBag.Listener() {
+							@Override
+							public void onSelect(Item item) {
+								if (!(item instanceof Armor)) {
+									//no message because this should never happen
+									hide();
+								} else if (item.unique || ((Armor) item).checkSeal() != null) {
+									GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
+									hide();
+								} else if (!item.isIdentified()) {
+									GLog.w( Messages.get(WndGhostHero.class, "cant_unidentified"));
+									hide();
+								} else if (item.cursed) {
+									GLog.w( Messages.get(WndGhostHero.class, "cant_cursed"));
+									hide();
+								} else if (((Armor)item).STRReq() > rose.ghostStrength()) {
+									GLog.w( Messages.get(WndGhostHero.class, "cant_strength"));
+									hide();
+								} else {
+									if (item.isEquipped(Dungeon.hero)){
+										((Armor) item).doUnequip(Dungeon.hero, false, false);
+									} else {
+										item.detach(Dungeon.hero.belongings.backpack);
+									}
+									rose.armor = (Armor) item;
+									item(rose.armor);
+								}
+								
+							}
+						}, WndBag.Mode.ARMOR, Messages.get(WndGhostHero.class, "armor_prompt"));
+					}
+				}
+			};
 			btnArmor.setRect( btnWeapon.right() + BTN_GAP, btnWeapon.top(), BTN_SIZE, BTN_SIZE );
 			if (rose.armor != null) {
 				btnArmor.item(rose.armor);
