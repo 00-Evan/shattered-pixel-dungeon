@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -811,11 +812,10 @@ public class DriedRose extends Artifact {
 						GameScene.selectItem(new WndBag.Listener() {
 							@Override
 							public void onSelect(Item item) {
-								if (item.unique) { //catches boomerang
+								if (!(item instanceof MeleeWeapon || item instanceof Boomerang)) {
+									//do nothing, should only happen when window is cancelled
+								} else if (item.unique || item instanceof Boomerang) {
 									GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
-									hide();
-								} else if (!(item instanceof MeleeWeapon)) {
-									//no message because this should never happen
 									hide();
 								} else if (!item.isIdentified()) {
 									GLog.w( Messages.get(WndGhostHero.class, "cant_unidentified"));
@@ -864,8 +864,7 @@ public class DriedRose extends Artifact {
 							@Override
 							public void onSelect(Item item) {
 								if (!(item instanceof Armor)) {
-									//no message because this should never happen
-									hide();
+									//do nothing, should only happen when window is cancelled
 								} else if (item.unique || ((Armor) item).checkSeal() != null) {
 									GLog.w( Messages.get(WndGhostHero.class, "cant_unique"));
 									hide();
