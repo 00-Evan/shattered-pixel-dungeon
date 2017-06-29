@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
@@ -99,13 +98,23 @@ public class MirrorImage extends NPC {
 		
 		if (enemy == null || !enemy.isAlive()) {
 			HashSet<Mob> enemies = new HashSet<>();
-			for (Mob mob:Dungeon.level.mobs) {
-				if (mob.hostile && Level.fieldOfView[mob.pos]) {
-					enemies.add( mob );
+			for (Mob mob : Dungeon.level.mobs) {
+				if (mob.hostile
+						&& Level.fieldOfView[mob.pos]
+						&& mob.state != mob.PASSIVE) {
+					enemies.add(mob);
 				}
 			}
 			
-			enemy = enemies.size() > 0 ? Random.element( enemies ) : null;
+			//go for closest enemy
+			Char closest = null;
+			for (Char curr : enemies){
+				if (closest == null
+						|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)){
+					closest = curr;
+				}
+			}
+			return closest;
 		}
 		
 		return enemy;

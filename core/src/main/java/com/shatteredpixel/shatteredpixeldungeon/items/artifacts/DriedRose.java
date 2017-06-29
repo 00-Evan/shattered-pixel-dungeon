@@ -363,10 +363,16 @@ public class DriedRose extends Artifact {
 
 			flying = true;
 
+			ally = true;
+			
+			WANDERING = new Wandering();
+			HUNTING = new Hunting();
+			
 			state = WANDERING;
 			enemy = null;
-
-			ally = true;
+			
+			//after hero, but before mobs
+			actPriority = 1;
 		}
 		
 		private DriedRose rose = null;
@@ -441,25 +447,35 @@ public class DriedRose extends Artifact {
 			}
 			return super.act();
 		}
-
-		@Override
-		protected boolean getCloser( int target ) {
-			if (state == WANDERING || Dungeon.level.distance(target, Dungeon.hero.pos) > 6)
-				this.target = target = Dungeon.hero.pos;
-			return super.getCloser( target );
-		}
-
+		
+		//prioritizes closest enemy, and will never attack something far from the player
 		@Override
 		protected Char chooseEnemy() {
-			if (enemy == null || !enemy.isAlive() || !Dungeon.level.mobs.contains(enemy) || state == WANDERING) {
-
-				HashSet<Mob> enemies = new HashSet<Mob>();
+			if (enemy == null
+					|| !enemy.isAlive()
+					|| !Dungeon.level.mobs.contains(enemy)
+					|| Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) > 8
+					|| state == WANDERING) {
+				
+				HashSet<Mob> enemies = new HashSet<>();
 				for (Mob mob : Dungeon.level.mobs) {
-					if (mob.hostile && Level.fieldOfView[mob.pos] && mob.state != mob.PASSIVE) {
+					if (mob.hostile
+							&& Level.fieldOfView[mob.pos]
+							&& Dungeon.level.distance(mob.pos, Dungeon.hero.pos) <= 8
+							&& mob.state != mob.PASSIVE) {
 						enemies.add(mob);
 					}
 				}
-				enemy = enemies.size() > 0 ? Random.element( enemies ) : null;
+				
+				//go for closest enemy
+				Char closest = null;
+				for (Char curr : enemies){
+					if (closest == null
+							|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)){
+						closest = curr;
+					}
+				}
+				return closest;
 			}
 			return enemy;
 		}
@@ -638,6 +654,75 @@ public class DriedRose extends Artifact {
 		@Override
 		public HashSet<Class<?>> immunities() {
 			return IMMUNITIES;
+		}
+		
+		private class Wandering extends Mob.Wandering {
+			
+			@Override
+			public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+				if ( enemyInFOV ) {
+					
+					enemySeen = true;
+					
+					notice();
+					state = HUNTING;
+					target = enemy.pos;
+					
+				} else {
+					
+					enemySeen = false;
+					
+					int oldPos = pos;
+					//always move towards the hero when wandering
+					if (getCloser( target = Dungeon.hero.pos )) {
+						//moves 2 tiles at a time when returning to the hero from a distance
+						if (!Dungeon.level.adjacent(Dungeon.hero.pos, pos)){
+							getCloser( target = Dungeon.hero.pos );
+						}
+						spend( 1 / speed() );
+						return moveSprite( oldPos, pos );
+					} else {
+						spend( TICK );
+					}
+					
+				}
+				return true;
+			}
+			
+		}
+		
+		private class Hunting extends Mob.Hunting {
+			
+			@Override
+			public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+				
+				enemySeen = enemyInFOV;
+				if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
+					
+					return doAttack( enemy );
+					
+				} else {
+					
+					if (enemyInFOV) {
+						target = enemy.pos;
+					}
+					
+					int oldPos = pos;
+					if (enemyInFOV && getCloser( target )) {
+						
+						spend( 1 / speed() );
+						return moveSprite( oldPos,  pos );
+						
+					} else {
+						
+						//don't lose a turn due to the transition, immediately act instead
+						state = WANDERING;
+						return state.act( false, justAlerted );
+						
+					}
+				}
+			}
+			
 		}
 
 		//************************************************************************************

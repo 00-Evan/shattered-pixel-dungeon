@@ -239,9 +239,17 @@ public abstract class Mob extends Char {
 
 				//and add the hero to the list of targets.
 				enemies.add(Dungeon.hero);
-
-				//target one at random.
-				return Random.element(enemies);
+				
+				//go after the closest enemy, preferring the hero if two are equidistant
+				Char closest = null;
+				for (Char curr : enemies){
+					if (closest == null
+							|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)
+							|| Dungeon.level.distance(pos, curr.pos) == Dungeon.level.distance(pos, closest.pos) && curr == Dungeon.hero){
+						closest = curr;
+					}
+				}
+				return closest;
 
 			}
 
@@ -313,7 +321,7 @@ public abstract class Mob extends Char {
 			//or if it's extremely inefficient and checking again may result in a much better path
 			if (path == null || path.isEmpty()
 					|| !Dungeon.level.adjacent(pos, path.getFirst())
-					|| path.size() >= 2*Dungeon.level.distance(pos, target))
+					|| path.size() > 2*Dungeon.level.distance(pos, target))
 				newPath = true;
 			else if (path.getLast() != target) {
 				//if the new target is adjacent to the end of the path, adjust for that
@@ -372,8 +380,14 @@ public abstract class Mob extends Char {
 						Level.fieldOfView);
 			}
 
-			if (path == null)
+			//if hunting something, don't follow a path that is extremely inefficient
+			//FIXME this is fairly brittle, primarily it assumes that hunting mobs can't see through
+			// permanent terrain, such that if their path is inefficient it's always because
+			// of a temporary blockage, and therefore waiting for it to clear is the best option.
+			if (path == null ||
+					(state == HUNTING && path.size() > Math.max(9, 2*Dungeon.level.distance(pos, target)))) {
 				return false;
+			}
 
 			step = path.removeFirst();
 		}
@@ -461,12 +475,11 @@ public abstract class Mob extends Char {
 			}
 		}
 
-		//become aggro'd by a corrupted enemy
-		if (enemy.buff(Corruption.class) != null) {
+		//if attacked by something else than current target, and that thing is closer, switch targets
+		if (this.enemy == null
+				|| (enemy != this.enemy && (Dungeon.level.distance(pos, enemy.pos) < Dungeon.level.distance(pos, this.enemy.pos)))) {
 			aggro(enemy);
 			target = enemy.pos;
-			if (state == SLEEPING || state == WANDERING)
-				state = HUNTING;
 		}
 
 		if (buff(SoulMark.class) != null) {
