@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import android.annotation.SuppressLint;
 import android.opengl.GLES20;
+
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Game;
@@ -31,11 +32,12 @@ import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.Visual;
 import com.watabou.utils.PointF;
 
-import javax.microedition.khronos.opengles.GL10;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+
+import javax.microedition.khronos.opengles.GL10;
 
 public class Flare extends Visual {
 	
@@ -117,6 +119,7 @@ public class Flare extends Visual {
 		visual.parent.addToBack( this );
 		
 		lifespan = this.duration = duration;
+		scale.set( 0 );
 		
 		return this;
 	}
@@ -126,6 +129,7 @@ public class Flare extends Visual {
 		parent.add( this );
 
 		lifespan = this.duration = duration;
+		scale.set( 0 );
 
 		return this;
 	}
