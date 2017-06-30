@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
@@ -311,11 +310,8 @@ public abstract class RegularLevel extends Level {
 	@Override
 	protected void createItems() {
 		
-		int nItems = 3;
-		
-		while (Random.Float() < (0.3f + RingOfWealth.regularLootChanceBonus( Dungeon.hero ))) {
-			nItems++;
-		}
+		// drops 3/4/5 items 60%/30%/10% of the time
+		int nItems = 3 + Random.chances(new float[]{6, 3, 1});
 		
 		for (int i=0; i < nItems; i++) {
 			Heap.Type type = null;

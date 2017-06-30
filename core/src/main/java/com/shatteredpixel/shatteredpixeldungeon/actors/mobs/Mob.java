@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
@@ -563,6 +564,17 @@ public abstract class Mob extends Char {
 			Item loot = createLoot();
 			if (loot != null)
 				Dungeon.level.drop( loot , pos ).sprite.drop();
+		}
+		
+		if (hostile && Dungeon.hero.lvl <= maxLvl + 2){
+			int rolls = 1;
+			if (properties.contains(Property.BOSS))             rolls = 15;
+			else if (properties.contains(Property.MINIBOSS))    rolls = 5;
+			Item bonus = RingOfWealth.tryRareDrop(Dungeon.hero, rolls);
+			if (bonus != null){
+				Dungeon.level.drop( bonus , pos ).sprite.drop();
+				new Flare(8, 32).color(0xFFFF00, true).show(sprite, 2f);
+			}
 		}
 		
 		if (Dungeon.hero.isAlive() && !Dungeon.visible[pos]) {

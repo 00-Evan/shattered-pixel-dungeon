@@ -22,9 +22,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.watabou.utils.Random;
+
+import java.util.HashSet;
 
 public class RingOfWealth extends Ring {
-
+	
+	private float triesToDrop = 0;
+	
 	@Override
 	protected RingBuff buff( ) {
 		return new Wealth();
@@ -34,15 +41,51 @@ public class RingOfWealth extends Ring {
 		return (float)Math.pow(1.15, getBonus(target, Wealth.class));
 	}
 	
-	//caps at a 50% bonus
-	public static float regularLootChanceBonus( Char target ){
-		return Math.min(0.5f, 0.05f* getBonus(target, Wealth.class));
+	public static Item tryRareDrop(Char target, int tries ){
+		if (getBonus(target, Wealth.class) <= 0) return null;
+		
+		HashSet<Wealth> buffs = target.buffs(Wealth.class);
+		float triesToDrop = -1;
+		
+		//find the largest count (if they aren't synced yet)
+		for (Wealth w : buffs){
+			if (w.triesToDrop() > triesToDrop){
+				triesToDrop = w.triesToDrop();
+			}
+		}
+		
+		//reset (if needed), decrement, and store counts
+		if (triesToDrop <= 0) triesToDrop += Random.NormalIntRange(0, 100);
+		triesToDrop -= dropProgression( target, tries );
+		for (Wealth w : buffs){
+			w.triesToDrop(triesToDrop);
+		}
+		
+		//now handle reward logic
+		if (triesToDrop <= 0){
+			//TODO more drops, gold is very boring
+			return new Gold().random();
+		} else {
+			return null;
+		}
+		
 	}
 	
-	public static float specialLootChance( Char target ){
-		return 1f - (float)Math.pow(0.925, getBonus(target, Wealth.class));
+	//caps at a 50% bonus
+	private static float dropProgression( Char target, int tries ){
+		return tries * (float)Math.pow(1.25f, getBonus(target, Wealth.class) -1 );
 	}
 
 	public class Wealth extends RingBuff {
+		
+		private void triesToDrop( float val){
+			triesToDrop = val;
+		}
+		
+		private float triesToDrop(){
+			return triesToDrop;
+		}
+		
+		
 	}
 }

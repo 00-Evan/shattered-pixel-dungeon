@@ -57,9 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -179,22 +177,14 @@ public abstract class Level implements Bundlable {
 			addItemToSpawn( Generator.random( Generator.Category.FOOD ) );
 
 			if (Dungeon.posNeeded()) {
-				if (Random.Float() < RingOfWealth.specialLootChance( Dungeon.hero ))
-					addItemToSpawn( new PotionOfMight() );
-				else
-					addItemToSpawn( new PotionOfStrength() );
+				addItemToSpawn( new PotionOfStrength() );
 				Dungeon.limitedDrops.strengthPotions.count++;
 			}
 			if (Dungeon.souNeeded()) {
-				if (Random.Float() < RingOfWealth.specialLootChance( Dungeon.hero ))
-					addItemToSpawn( new ScrollOfMagicalInfusion() );
-				else
-					addItemToSpawn( new ScrollOfUpgrade() );
+				addItemToSpawn( new ScrollOfUpgrade() );
 				Dungeon.limitedDrops.upgradeScrolls.count++;
 			}
 			if (Dungeon.asNeeded()) {
-				if (Random.Float() < RingOfWealth.specialLootChance( Dungeon.hero ))
-					addItemToSpawn( new Stylus() );
 				addItemToSpawn( new Stylus() );
 				Dungeon.limitedDrops.arcaneStyli.count++;
 			}
