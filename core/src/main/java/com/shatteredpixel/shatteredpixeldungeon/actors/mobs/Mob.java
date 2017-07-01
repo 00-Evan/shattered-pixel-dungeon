@@ -55,6 +55,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public abstract class Mob extends Char {
@@ -570,9 +571,9 @@ public abstract class Mob extends Char {
 			int rolls = 1;
 			if (properties.contains(Property.BOSS))             rolls = 15;
 			else if (properties.contains(Property.MINIBOSS))    rolls = 5;
-			Item bonus = RingOfWealth.tryRareDrop(Dungeon.hero, rolls);
+			ArrayList<Item> bonus = RingOfWealth.tryRareDrop(Dungeon.hero, rolls);
 			if (bonus != null){
-				Dungeon.level.drop( bonus , pos ).sprite.drop();
+				for (Item b : bonus) Dungeon.level.drop( b , pos ).sprite.drop();
 				new Flare(8, 32).color(0xFFFF00, true).show(sprite, 2f);
 			}
 		}

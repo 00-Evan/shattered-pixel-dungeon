@@ -22,10 +22,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class RingOfWealth extends Ring {
@@ -41,7 +45,7 @@ public class RingOfWealth extends Ring {
 		return (float)Math.pow(1.15, getBonus(target, Wealth.class));
 	}
 	
-	public static Item tryRareDrop(Char target, int tries ){
+	public static ArrayList<Item> tryRareDrop(Char target, int tries ){
 		if (getBonus(target, Wealth.class) <= 0) return null;
 		
 		HashSet<Wealth> buffs = target.buffs(Wealth.class);
@@ -63,12 +67,55 @@ public class RingOfWealth extends Ring {
 		
 		//now handle reward logic
 		if (triesToDrop <= 0){
-			//TODO more drops, gold is very boring
-			return new Gold().random();
+			return generateRareDrop();
 		} else {
 			return null;
 		}
 		
+	}
+	
+	//TODO this is a start, but i'm sure this could be made more interesting...
+	private static ArrayList<Item> generateRareDrop(){
+		float roll = Random.Float();
+		ArrayList<Item> items = new ArrayList<>();
+		if (roll < 0.6f){
+			switch (Random.Int(3)){
+				case 0:
+					items.add(new Gold().random());
+					break;
+				case 1:
+					items.add(Generator.random(Generator.Category.POTION));
+					break;
+				case 2:
+					items.add(Generator.random(Generator.Category.SCROLL));
+					break;
+			}
+		} else if (roll < 0.9f){
+			switch (Random.Int(3)){
+				case 0:
+					items.add(Generator.random(Generator.Category.SEED));
+					items.add(Generator.random(Generator.Category.SEED));
+					items.add(Generator.random(Generator.Category.SEED));
+					items.add(Generator.random(Generator.Category.SEED));
+					items.add(Generator.random(Generator.Category.SEED));
+					break;
+				case 1:
+					items.add(Generator.random(Random.Int(2) == 0 ? Generator.Category.POTION : Generator.Category.SCROLL ));
+					items.add(Generator.random(Random.Int(2) == 0 ? Generator.Category.POTION : Generator.Category.SCROLL ));
+					items.add(Generator.random(Random.Int(2) == 0 ? Generator.Category.POTION : Generator.Category.SCROLL ));
+					break;
+				case 2:
+					items.add(new Bomb().random());
+					items.add(new Honeypot());
+					break;
+			}
+		} else {
+			Gold g = new Gold();
+			g.random();
+			g.quantity(g.quantity()*5);
+			items.add(g);
+		}
+		return items;
 	}
 	
 	//caps at a 50% bonus

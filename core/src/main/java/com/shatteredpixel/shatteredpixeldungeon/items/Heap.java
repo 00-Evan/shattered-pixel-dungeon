@@ -65,6 +65,7 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -151,9 +152,9 @@ public class Heap implements Bundlable {
 
 		if (type != Type.MIMIC) {
 			type = Type.HEAP;
-			Item bonus = RingOfWealth.tryRareDrop(hero, 1);
+			ArrayList<Item> bonus = RingOfWealth.tryRareDrop(hero, 1);
 			if (bonus != null){
-				items.addFirst(bonus);
+				items.addAll(0, bonus);
 				new Flare(8, 32).color(0xFFFF00, true).show(sprite, 2f);
 			}
 			sprite.link();
