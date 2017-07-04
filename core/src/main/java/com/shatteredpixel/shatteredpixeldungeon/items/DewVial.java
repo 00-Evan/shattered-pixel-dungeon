@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
 
@@ -52,7 +53,7 @@ public class DewVial extends Item {
 		unique = true;
 	}
 
-	private int volume = 0;
+	private int volume = 20;
 
 	private static final String VOLUME	= "volume";
 
@@ -92,7 +93,7 @@ public class DewVial extends Item {
 				
 				//trimming off 0.01 drops helps with floating point errors
 				int dropsNeeded = (int)Math.ceil((missingHealthPercent / dropHealPercent) - 0.01f);
-				dropsNeeded = Math.min(dropsNeeded, volume);
+				dropsNeeded = (int)GameMath.gate(1, dropsNeeded, volume);
 				
 				int heal = Math.round( hero.HT * dropHealPercent * dropsNeeded );
 				
