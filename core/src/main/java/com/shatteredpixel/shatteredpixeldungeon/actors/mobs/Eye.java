@@ -198,7 +198,6 @@ public class Eye extends Mob {
 
 		beam = null;
 		beamTarget = -1;
-		sprite.idle();
 	}
 
 	private static final String BEAM_TARGET     = "beamTarget";

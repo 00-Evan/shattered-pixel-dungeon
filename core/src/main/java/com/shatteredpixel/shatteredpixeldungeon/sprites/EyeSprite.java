@@ -104,6 +104,7 @@ public class EyeSprite extends MobSprite {
 		super.onComplete( anim );
 		
 		if (anim == zap) {
+			idle();
 			if (Actor.findChar(zapPos) != null){
 				parent.add(new Beam.DeathRay(center(), Actor.findChar(zapPos).sprite.center()));
 			} else {
