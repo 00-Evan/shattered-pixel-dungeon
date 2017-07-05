@@ -256,6 +256,12 @@ public class DriedRose extends Artifact {
 	public static void restoreGhostHero( Level level, int pos ){
 		if (heldGhost != null){
 			level.mobs.add( heldGhost );
+			
+			int ghostPos;
+			do {
+				ghostPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+			} while (!Level.solid[ghostPos] || level.findMob(ghostPos) != null);
+			
 			heldGhost.pos = pos;
 			heldGhost = null;
 		}

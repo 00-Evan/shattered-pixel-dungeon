@@ -317,7 +317,7 @@ public class Dungeon {
 		PathFinder.setMapSize(level.width(), level.height());
 		
 		Dungeon.level = level;
-		DriedRose.restoreGhostHero( level, pos + PathFinder.NEIGHBOURS8[Random.Int(8)]);
+		DriedRose.restoreGhostHero( level, pos );
 		Actor.init();
 		
 		visible = new boolean[level.length()];
