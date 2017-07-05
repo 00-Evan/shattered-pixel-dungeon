@@ -471,8 +471,9 @@ public class Hero extends Char {
 			return false;
 		}
 		
+		search( false );
 		checkVisibleMobs();
-
+		Dungeon.observe();
 		
 		if (curAction == null) {
 			
@@ -1426,12 +1427,6 @@ public class Hero extends Char {
 			}
 			Dungeon.level.press(pos, this);
 		}
-	}
-	
-	@Override
-	public void onMotionComplete() {
-		Dungeon.observe();
-		search( false );
 	}
 	
 	@Override
