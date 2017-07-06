@@ -123,6 +123,10 @@ public class RedButton extends Button {
 		}
 	}
 	
+	public Image icon(){
+		return icon;
+	}
+	
 	public float reqWidth() {
 		float reqWidth = 0;
 		if (icon != null){

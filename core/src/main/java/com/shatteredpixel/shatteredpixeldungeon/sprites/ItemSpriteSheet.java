@@ -35,26 +35,30 @@ public class ItemSpriteSheet {
 		return x + WIDTH*y;
 	}
 
-	private static final int PLACEHOLDERS   =                               xy(1, 1);   //8 slots
+	private static final int PLACEHOLDERS   =                               xy(1, 1);   //16 slots
 	//null warning occupies space 0, should only show up if there's a bug.
 	public static final int NULLWARN        = PLACEHOLDERS+0;
 	public static final int WEAPON_HOLDER   = PLACEHOLDERS+1;
 	public static final int ARMOR_HOLDER    = PLACEHOLDERS+2;
-	public static final int RING_HOLDER     = PLACEHOLDERS+3;
-	public static final int POTION_HOLDER   = PLACEHOLDERS+4;
-	public static final int SCROLL_HOLDER   = PLACEHOLDERS+5;
-	public static final int SOMETHING       = PLACEHOLDERS+6;
+	public static final int WAND_HOLDER     = PLACEHOLDERS+3;
+	public static final int RING_HOLDER     = PLACEHOLDERS+4;
+	public static final int ARTIFACT_HOLDER = PLACEHOLDERS+5;
+	public static final int POTION_HOLDER   = PLACEHOLDERS+6;
+	public static final int SCROLL_HOLDER   = PLACEHOLDERS+7;
+	public static final int SOMETHING       = PLACEHOLDERS+8;
 	static{
 		assignItemRect(NULLWARN,        16, 7);
 		assignItemRect(WEAPON_HOLDER,   14, 14);
 		assignItemRect(ARMOR_HOLDER,    14, 12);
+		assignItemRect(WAND_HOLDER,     14, 14);
 		assignItemRect(RING_HOLDER,     8,  10);
+		assignItemRect(ARTIFACT_HOLDER, 15, 15);
 		assignItemRect(POTION_HOLDER,   10, 14);
 		assignItemRect(SCROLL_HOLDER,   15, 14);
 		assignItemRect(SOMETHING,       8,  13);
 	}
 
-	private static final int UNCOLLECTIBLE  =                               xy(9, 1);   //8 slots
+	private static final int UNCOLLECTIBLE  =                               xy(1, 2);   //16 slots
 	public static final int GOLD            = UNCOLLECTIBLE+0;
 	public static final int DEWDROP         = UNCOLLECTIBLE+1;
 	public static final int PETAL           = UNCOLLECTIBLE+2;
@@ -68,7 +72,7 @@ public class ItemSpriteSheet {
 		assignItemRect(DBL_BOMB,    14, 13);
 	}
 
-	private static final int CONTAINERS     =                               xy(1, 2);   //16 slots
+	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots
 	public static final int BONES           = CONTAINERS+0;
 	public static final int REMAINS         = CONTAINERS+1;
 	public static final int TOMB            = CONTAINERS+2;
@@ -86,7 +90,7 @@ public class ItemSpriteSheet {
 		assignItemRect(CRYSTAL_CHEST,   16, 15);
 	}
 
-	private static final int SINGLE_USE     =                               xy(1, 3);   //32 slots
+	private static final int SINGLE_USE     =                               xy(1, 4);   //16 slots
 	public static final int ANKH            = SINGLE_USE+0;
 	public static final int STYLUS          = SINGLE_USE+1;
 	public static final int WEIGHT          = SINGLE_USE+2;

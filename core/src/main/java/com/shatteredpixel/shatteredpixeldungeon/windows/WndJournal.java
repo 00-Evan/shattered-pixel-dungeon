@@ -53,28 +53,34 @@ import java.util.Collections;
 //FIXME a lot of cleanup and improvements to do here
 public class WndJournal extends WndTabbed {
 	
-	private static final int WIDTH    = 112;
-	private static final int HEIGHT   = 130;
+	private static final int WIDTH_P    = 112;
+	private static final int HEIGHT_P   = 160;
+	
+	private static final int WIDTH_L    = 160;
+	private static final int HEIGHT_L   = 128;
 	
 	private static final int ITEM_HEIGHT	= 18;
 	
 	private Notes notes;
 	private Catalog catalog;
 	
-	private static int last_index = 0;
+	public static int last_index = 0;
 	
 	public WndJournal(){
 		
-		resize(WIDTH, HEIGHT);
+		int width = ShatteredPixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
+		int height = ShatteredPixelDungeon.landscape() ? HEIGHT_L : HEIGHT_P;
+		
+		resize(width, height);
 		
 		notes = new Notes();
 		add(notes);
-		notes.setRect(0, 0, WIDTH, HEIGHT);
+		notes.setRect(0, 0, width, height);
 		notes.updateList();
 		
 		catalog = new Catalog();
 		add(catalog);
-		catalog.setRect(0, 0, WIDTH, HEIGHT);
+		catalog.setRect(0, 0, width, height);
 		catalog.updateList();
 		
 		Tab[] tabs = {
@@ -209,7 +215,7 @@ public class WndJournal extends WndTabbed {
 						text += " x" + Dungeon.hero.belongings.specialKeys[i];
 					}
 					ListItem item = new ListItem( Icons.get(Icons.DEPTH), Messages.titleCase(text), i );
-					item.setRect( 0, pos, WIDTH, ITEM_HEIGHT );
+					item.setRect( 0, pos, width(), ITEM_HEIGHT );
 					content.add( item );
 					
 					pos += item.height();
@@ -222,7 +228,7 @@ public class WndJournal extends WndTabbed {
 					}
 					
 					ListItem item = new ListItem( Icons.get(Icons.DEPTH), text, i );
-					item.setRect( 0, pos, WIDTH, ITEM_HEIGHT );
+					item.setRect( 0, pos, width(), ITEM_HEIGHT );
 					content.add( item );
 					
 					pos += item.height();
@@ -233,22 +239,21 @@ public class WndJournal extends WndTabbed {
 			//Journal entries
 			for (Journal.Record rec : Journal.records) {
 				ListItem item = new ListItem( Icons.get(Icons.DEPTH), rec.feature.desc(), rec.depth );
-				item.setRect( 0, pos, WIDTH, ITEM_HEIGHT );
+				item.setRect( 0, pos, width(), ITEM_HEIGHT );
 				content.add( item );
 				
 				pos += item.height();
 			}
 			
-			content.setSize( WIDTH, pos );
+			content.setSize( width(), pos );
 		}
 		
 	}
 	
 	private static class Catalog extends Component{
 		
-		private RedButton btnPotions;
-		private RedButton btnScrolls;
-		private RedButton btnRings;
+		private RedButton[] itemButtons;
+		private static final int NUM_BUTTONS = 7;
 		
 		private static int latestPressedIdx = 0;
 		
@@ -256,41 +261,23 @@ public class WndJournal extends WndTabbed {
 		
 		private ArrayList<CatalogItem> items = new ArrayList<>();
 		
-		private static boolean showPotions = true;
-		
 		public Catalog(){
 			
 			super();
 			
-			btnPotions = new RedButton( "" ){
-				@Override
-				protected void onClick() {
-					latestPressedIdx = 0;
-					updateList();
-				}
-			};
-			btnPotions.icon(new ItemSprite(ItemSpriteSheet.POTION_HOLDER, null));
-			add( btnPotions );
-			
-			btnScrolls = new RedButton( "" ){
-				@Override
-				protected void onClick() {
-					latestPressedIdx = 1;
-					updateList();
-				}
-			};
-			btnScrolls.icon(new ItemSprite(ItemSpriteSheet.SCROLL_HOLDER, null));
-			add( btnScrolls );
-			
-			btnRings = new RedButton( "" ){
-				@Override
-				protected void onClick() {
-					latestPressedIdx = 2;
-					updateList();
-				}
-			};
-			btnRings.icon(new ItemSprite(ItemSpriteSheet.RING_HOLDER, null));
-			add( btnRings );
+			itemButtons = new RedButton[NUM_BUTTONS];
+			for (int i = 0; i < NUM_BUTTONS; i++){
+				final int idx = i;
+				itemButtons[i] = new RedButton( "" ){
+					@Override
+					protected void onClick() {
+						latestPressedIdx = idx;
+						updateList();
+					}
+				};
+				itemButtons[i].icon(new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER + i, null));
+				add( itemButtons[i] );
+			}
 			
 			list = new ScrollPane( new Component() ) {
 				@Override
@@ -306,40 +293,48 @@ public class WndJournal extends WndTabbed {
 			add( list );
 		}
 		
-		private static final int BUTTON_WIDTH = 36;
-		private static final int BUTTON_HEIGHT = 18;
+		private static final int BUTTON_HEIGHT = 17;
 		
 		@Override
 		protected void layout() {
 			super.layout();
 			
-			btnPotions.setRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
-			PixelScene.align( btnPotions );
+			int perRow = ShatteredPixelDungeon.landscape() ? NUM_BUTTONS : 4;
+			float buttonWidth = (width() - (perRow-1))/perRow;
 			
-			btnScrolls.setRect((width() - BUTTON_WIDTH)/2f, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
-			PixelScene.align(btnScrolls);
+			for (int i = 0; i < NUM_BUTTONS; i++) {
+				itemButtons[i].setRect((i%perRow) * (buttonWidth + 1), (i/perRow) * (BUTTON_HEIGHT + 1),
+						buttonWidth, BUTTON_HEIGHT);
+				PixelScene.align(itemButtons[i]);
+			}
 			
-			btnRings.setRect(width() - BUTTON_WIDTH, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
-			PixelScene.align(btnRings);
-			
-			list.setRect( 0, btnPotions.height() + 1, width, height - btnPotions.height() - 1 );
+			list.setRect(0, itemButtons[NUM_BUTTONS-1].bottom() + 1, width,
+					height - itemButtons[NUM_BUTTONS-1].bottom() - 1);
 		}
 		
 		private void updateList() {
 			
 			items.clear();
 			
+			for (int i = 0; i < NUM_BUTTONS; i++){
+				if (i == latestPressedIdx){
+					itemButtons[i].icon().color(TITLE_COLOR);
+				} else {
+					itemButtons[i].icon().resetColor();
+				}
+			}
+			
 			Component content = list.content();
 			content.clear();
 			list.scrollTo( 0, 0 );
 			
 			ArrayList<Class<?>> itemClasses;
-			if (latestPressedIdx == 0){
+			if (latestPressedIdx == 5){
 				itemClasses = new ArrayList<>(Arrays.asList(Generator.Category.POTION.classes));
 				for ( Class unknown : Potion.getUnknown()){
 					if (itemClasses.remove(unknown)) itemClasses.add(unknown);
 				}
-			} else if (latestPressedIdx == 1) {
+			} else if (latestPressedIdx == 6) {
 				itemClasses = new ArrayList<>(Arrays.asList(Generator.Category.SCROLL.classes));
 				for ( Class unknown : Scroll.getUnknown()){
 					if (itemClasses.remove(unknown)) itemClasses.add(unknown);
