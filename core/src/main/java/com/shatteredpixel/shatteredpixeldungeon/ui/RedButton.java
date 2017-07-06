@@ -65,15 +65,26 @@ public class RedButton extends Button {
 		bg.y = y;
 		bg.size( width, height );
 		
-		text.x = x + (width - text.width()) / 2;
-		text.y = y + (height - text.baseLine()) / 2;
-		PixelScene.align(text);
+		float componentWidth = 0;
+		
+		if (icon != null) componentWidth += icon.width() + 2;
+		
+		if (text != null && !text.text().equals("")){
+			componentWidth += text.width() + 2;
+			
+			text.x = x + (width() - componentWidth)/2f + 1;
+			text.y = y + (height() - text.baseLine()) / 2f;
+			PixelScene.align(text);
+			
+		}
 		
 		if (icon != null) {
-			icon.x = x + text.x - icon.width() - 2;
-			icon.y = y + (height - icon.height()) / 2;
+			
+			icon.x = x + (width() + componentWidth)/2f - icon.width() - 1;
+			icon.y = y + (height() - icon.height()) / 2f;
 			PixelScene.align(icon);
 		}
+		
 	}
 
 	@Override
@@ -113,10 +124,24 @@ public class RedButton extends Button {
 	}
 	
 	public float reqWidth() {
-		return text.width() + 2f;
+		float reqWidth = 0;
+		if (icon != null){
+			reqWidth += icon.width() + 2;
+		}
+		if (text != null && !text.text().equals("")){
+			reqWidth += text.width() + 2;
+		}
+		return reqWidth;
 	}
 	
 	public float reqHeight() {
-		return text.baseLine() + 4;
+		float reqHeight = 0;
+		if (icon != null){
+			reqHeight = Math.max(icon.height() + 4, reqHeight);
+		}
+		if (text != null && !text.text().equals("")){
+			reqHeight = Math.max(text.baseLine() + 4, reqHeight);
+		}
+		return reqHeight;
 	}
 }
