@@ -213,7 +213,7 @@ public class RankingsScene extends PixelScene {
 				if (rec.depth != 0){
 					depth.text( Integer.toString(rec.depth) );
 					depth.measure();
-					steps.copy(Icons.DEPTH_LG.get());
+					steps.copy(Icons.DEPTH.get());
 
 					add(steps);
 					add(depth);
@@ -239,14 +239,12 @@ public class RankingsScene extends PixelScene {
 			add( shield );
 			
 			position = new BitmapText( PixelScene.pixelFont);
-			position.alpha(0.8f);
 			add( position );
 			
 			desc = renderMultiline( 7 );
 			add( desc );
 
 			depth = new BitmapText( PixelScene.pixelFont);
-			depth.alpha(0.8f);
 
 			steps = new Image();
 			
@@ -254,7 +252,6 @@ public class RankingsScene extends PixelScene {
 			add( classIcon );
 
 			level = new BitmapText( PixelScene.pixelFont);
-			level.alpha(0.8f);
 		}
 		
 		@Override

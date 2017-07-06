@@ -41,10 +41,17 @@ public class ItemSpriteSheet {
 	public static final int WEAPON_HOLDER   = PLACEHOLDERS+1;
 	public static final int ARMOR_HOLDER    = PLACEHOLDERS+2;
 	public static final int RING_HOLDER     = PLACEHOLDERS+3;
-	public static final int SOMETHING       = PLACEHOLDERS+4;
-	static {
-		for (int i = PLACEHOLDERS; i < PLACEHOLDERS+8; i++)
-			assignItemRect(i, 16, 16);
+	public static final int POTION_HOLDER   = PLACEHOLDERS+4;
+	public static final int SCROLL_HOLDER   = PLACEHOLDERS+5;
+	public static final int SOMETHING       = PLACEHOLDERS+6;
+	static{
+		assignItemRect(NULLWARN,        16, 7);
+		assignItemRect(WEAPON_HOLDER,   14, 14);
+		assignItemRect(ARMOR_HOLDER,    14, 12);
+		assignItemRect(RING_HOLDER,     8,  10);
+		assignItemRect(POTION_HOLDER,   10, 14);
+		assignItemRect(SCROLL_HOLDER,   15, 14);
+		assignItemRect(SOMETHING,       8,  13);
 	}
 
 	private static final int UNCOLLECTIBLE  =                               xy(9, 1);   //8 slots
