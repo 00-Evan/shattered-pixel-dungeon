@@ -38,6 +38,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Ring extends KindofMisc {
 
@@ -205,6 +206,14 @@ public class Ring extends KindofMisc {
 		}
 		
 		return this;
+	}
+	
+	public static HashSet<Class<? extends Ring>> getKnown() {
+		return handler.known();
+	}
+	
+	public static HashSet<Class<? extends Ring>> getUnknown() {
+		return handler.unknown();
 	}
 	
 	public static boolean allKnown() {

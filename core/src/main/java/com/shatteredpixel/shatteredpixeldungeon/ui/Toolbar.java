@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndCatalogs;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
@@ -121,13 +120,6 @@ public class Toolbar extends Component {
 			protected void onClick() {
 				GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null, WndBag.Mode.ALL, null));
 			}
-
-			protected boolean onLongClick() {
-				GameScene.show(new WndCatalogs());
-				return true;
-			}
-
-			;
 
 			@Override
 			protected void createChildren() {
