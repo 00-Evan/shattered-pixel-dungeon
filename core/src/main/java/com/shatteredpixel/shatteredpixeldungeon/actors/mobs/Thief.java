@@ -52,7 +52,8 @@ public class Thief extends Mob {
 		EXP = 5;
 		maxLvl = 10;
 		
-		loot = new MasterThievesArmband().identify();
+		//see createloot
+		loot = null;
 		lootChance = 0.01f;
 
 		FLEEING = new Fleeing();
@@ -106,7 +107,7 @@ public class Thief extends Mob {
 	protected Item createLoot(){
 		if (!Dungeon.limitedDrops.armband.dropped()) {
 			Dungeon.limitedDrops.armband.drop();
-			return super.createLoot();
+			return new MasterThievesArmband().identify();
 		} else
 			return new Gold(Random.NormalIntRange(100, 250));
 	}

@@ -275,10 +275,10 @@ public class ShopRoom extends SpecialRoom {
 				break;
 			case 1:
 				rare = Generator.random(Generator.Category.RING);
-				rare.level( 1 );
+				rare.level( 0 );
 				break;
 			case 2:
-				rare = Generator.random( Generator.Category.ARTIFACT ).identify();
+				rare = Generator.random( Generator.Category.ARTIFACT );
 				break;
 			default:
 				rare = new Stylus();

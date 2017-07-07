@@ -326,8 +326,6 @@ public class Ghost extends NPC {
 					armor.inscribe();
 				}
 
-				weapon.identify();
-				armor.identify();
 			}
 		}
 		

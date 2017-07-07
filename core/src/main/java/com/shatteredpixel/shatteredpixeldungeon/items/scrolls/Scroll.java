@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalogs;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -163,12 +164,15 @@ public abstract class Scroll extends Item {
 	}
 	
 	public void setKnown() {
-		if (!isKnown() && !ownedByBook) {
-			handler.know( this );
-			updateQuickslot();
+		if (!ownedByBook) {
+			if (!isKnown()) {
+				handler.know(this);
+				updateQuickslot();
+			}
+			
+			Catalogs.setSeen(getClass());
+			Badges.validateAllScrollsIdentified();
 		}
-		
-		Badges.validateAllScrollsIdentified();
 	}
 	
 	@Override

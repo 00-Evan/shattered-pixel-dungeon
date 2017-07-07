@@ -57,7 +57,6 @@ public class Statue extends Mob {
 			weapon = (Weapon)Generator.random( Generator.Category.WEAPON );
 		} while (!(weapon instanceof MeleeWeapon) || weapon.cursed);
 		
-		weapon.identify();
 		weapon.enchant( Enchantment.random() );
 		
 		HP = HT = 15 + Dungeon.depth * 5;
@@ -133,6 +132,7 @@ public class Statue extends Mob {
 	
 	@Override
 	public void die( Object cause ) {
+		weapon.identify();
 		Dungeon.level.drop( weapon, pos ).sprite.drop();
 		super.die( cause );
 	}

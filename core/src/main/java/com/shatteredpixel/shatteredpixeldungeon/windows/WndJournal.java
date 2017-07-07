@@ -47,8 +47,8 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 //FIXME a lot of cleanup and improvements to do here
@@ -256,7 +256,15 @@ public class WndJournal extends WndTabbed {
 		private RedButton[] itemButtons;
 		private static final int NUM_BUTTONS = 7;
 		
-		private static int currentItemIdx = 0;
+		private static int currentItemIdx   = 0;
+		
+		private static final int WEAPON_IDX = 0;
+		private static final int ARMOR_IDX  = 1;
+		private static final int WAND_IDX   = 2;
+		private static final int RING_IDX   = 3;
+		private static final int ARTIF_IDX  = 4;
+		private static final int POTION_IDX = 5;
+		private static final int SCROLL_IDX = 6;
 		
 		private ScrollPane list;
 		
@@ -329,37 +337,52 @@ public class WndJournal extends WndTabbed {
 			content.clear();
 			list.scrollTo( 0, 0 );
 			
-			ArrayList<Class<?>> itemClasses;
-			HashMap<Class<?>, Boolean> known = new HashMap<>();
-			if (currentItemIdx == 0) {
-				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.weapons));
-				for (Class<?> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == 1){
-				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.armor));
-				for (Class<?> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == 2){
-				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.wands));
-				for (Class<?> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == 3){
-				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.rings));
-				for (Class<?> cls : itemClasses) known.put(cls, Ring.getKnown().contains(cls));
-			} else if (currentItemIdx == 4){
-				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.artifacts));
-				for (Class<?> cls : itemClasses) known.put(cls, true);
-			} else if (currentItemIdx == 5){
-				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.potions));
-				for (Class<?> cls : itemClasses) known.put(cls, Potion.getKnown().contains(cls));
-			} else if (currentItemIdx == 6) {
-				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.scrolls));
-				for (Class<?> cls : itemClasses) known.put(cls, Scroll.getKnown().contains(cls));
+			ArrayList<Class<? extends Item>> itemClasses;
+			final HashMap<Class<?  extends Item>, Boolean> known = new HashMap<>();
+			if (currentItemIdx == WEAPON_IDX) {
+				itemClasses = new ArrayList<>(Catalogs.weapons());
+				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+			} else if (currentItemIdx == ARMOR_IDX){
+				itemClasses = new ArrayList<>(Catalogs.armors());
+				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+			} else if (currentItemIdx == WAND_IDX){
+				itemClasses = new ArrayList<>(Catalogs.wands());
+				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+			} else if (currentItemIdx == RING_IDX){
+				itemClasses = new ArrayList<>(Catalogs.rings());
+				for (Class<? extends Item> cls : itemClasses) known.put(cls, Ring.getKnown().contains(cls));
+			} else if (currentItemIdx == ARTIF_IDX){
+				itemClasses = new ArrayList<>(Catalogs.artifacts());
+				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
+			} else if (currentItemIdx == POTION_IDX){
+				itemClasses = new ArrayList<>(Catalogs.potions());
+				for (Class<? extends Item> cls : itemClasses) known.put(cls, Potion.getKnown().contains(cls));
+			} else if (currentItemIdx == SCROLL_IDX) {
+				itemClasses = new ArrayList<>(Catalogs.scrolls());
+				for (Class<? extends Item> cls : itemClasses) known.put(cls, Scroll.getKnown().contains(cls));
 			} else {
 				itemClasses = new ArrayList<>();
 			}
 			
+			Collections.sort(itemClasses, new Comparator<Class<? extends Item>>() {
+				@Override
+				public int compare(Class<? extends Item> a, Class<? extends Item> b) {
+					int result = 0;
+					
+					//specifically known items appear first, then seen items, then unknown items.
+					if (known.get(a))       result -= 2;
+					if (known.get(b))       result += 2;
+					if (Catalogs.isSeen(a)) result --;
+					if (Catalogs.isSeen(b)) result ++;
+					
+					return result;
+				}
+			});
+			
 			float pos = 0;
-			for (Class<?> itemClass : itemClasses) {
+			for (Class<? extends Item> itemClass : itemClasses) {
 				try{
-					CatalogItem item = new CatalogItem((Item) itemClass.newInstance(), known.get(itemClass));
+					CatalogItem item = new CatalogItem(itemClass.newInstance(), known.get(itemClass), Catalogs.isSeen(itemClass));
 					item.setRect( 0, pos, width, ITEM_HEIGHT );
 					content.add( item );
 					items.add( item );
@@ -377,13 +400,19 @@ public class WndJournal extends WndTabbed {
 		private static class CatalogItem extends ListItem {
 			
 			private Item item;
+			private boolean seen;
 			
-			public CatalogItem(Item item, boolean IDed ) {
+			public CatalogItem(Item item, boolean IDed, boolean seen ) {
 				super( new ItemSprite(item), Messages.titleCase(item.trueName()));
 				
 				this.item = item;
+				this.seen = seen;
 				
-				if (!IDed) {
+				if (!seen) {
+					icon.copy( new ItemSprite( ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null) );
+					label.text("???");
+					label.hardlight( 0x999999 );
+				} else if (!IDed) {
 					icon.copy( new ItemSprite( ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null) );
 					label.hardlight( 0xCCCCCC );
 				}
@@ -391,7 +420,7 @@ public class WndJournal extends WndTabbed {
 			}
 			
 			public boolean onClick( float x, float y ) {
-				if (inside( x, y )) {
+				if (inside( x, y ) && seen) {
 					GameScene.show(new WndTitledMessage( new Image(icon),
 								Messages.titleCase(item.trueName()), item.desc() ));
 					return true;

@@ -142,6 +142,8 @@ public class Ring extends KindofMisc {
 			handler.know( this );
 		}
 		
+		//Player has to fully identify a ring first
+		//Catalogs.setSeen(getClass());
 		Badges.validateAllRingsIdentified();
 	}
 	

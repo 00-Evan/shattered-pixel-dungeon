@@ -104,7 +104,7 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		if (!levelKnown) {
 			if (--hitsToKnow <= 0) {
-				levelKnown = true;
+				identify();
 				GLog.i( Messages.get(Weapon.class, "identify") );
 				Badges.validateItemLevelAquired( this );
 			}

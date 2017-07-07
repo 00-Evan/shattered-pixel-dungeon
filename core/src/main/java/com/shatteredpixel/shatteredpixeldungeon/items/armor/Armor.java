@@ -268,7 +268,7 @@ public class Armor extends EquipableItem {
 		
 		if (!levelKnown) {
 			if (--hitsToKnow <= 0) {
-				levelKnown = true;
+				identify();
 				GLog.w( Messages.get(Armor.class, "identify") );
 				Badges.validateItemLevelAquired( this );
 			}

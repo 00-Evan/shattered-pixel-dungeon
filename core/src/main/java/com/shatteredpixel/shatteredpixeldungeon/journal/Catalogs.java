@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.HuntressArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
@@ -114,122 +115,191 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+
 public class Catalogs {
 	
-	public static final Class<?>[] weapons = new Class<?>[]{
-			WornShortsword.class,
-			Knuckles.class,
-			Dagger.class,
-			MagesStaff.class,
-			Boomerang.class,
-			Shortsword.class,
-			HandAxe.class,
-			Spear.class,
-			Quarterstaff.class,
-			Dirk.class,
-			Sword.class,
-			Mace.class,
-			Scimitar.class,
-			RoundShield.class,
-			Sai.class,
-			Whip.class,
-			Longsword.class,
-			BattleAxe.class,
-			Flail.class,
-			RunicBlade.class,
-			AssassinsBlade.class,
-			Greatsword.class,
-			WarHammer.class,
-			Glaive.class,
-			Greataxe.class,
-			Greatshield.class
-	};
+	private static final LinkedHashMap<Class<? extends Item>, Boolean> weapons = new LinkedHashMap<>();
+	static {
+		weapons.put( WornShortsword.class,  false);
+		weapons.put( Knuckles.class,        false);
+		weapons.put( Dagger.class,          false);
+		weapons.put( MagesStaff.class,      false);
+		weapons.put( Boomerang.class,       false);
+		weapons.put( Shortsword.class,      false);
+		weapons.put( HandAxe.class,         false);
+		weapons.put( Spear.class,           false);
+		weapons.put( Quarterstaff.class,    false);
+		weapons.put( Dirk.class,            false);
+		weapons.put( Sword.class,           false);
+		weapons.put( Mace.class,            false);
+		weapons.put( Scimitar.class,        false);
+		weapons.put( RoundShield.class,     false);
+		weapons.put( Sai.class,             false);
+		weapons.put( Whip.class,            false);
+		weapons.put( Longsword.class,       false);
+		weapons.put( BattleAxe.class,       false);
+		weapons.put( Flail.class,           false);
+		weapons.put( RunicBlade.class,      false);
+		weapons.put( AssassinsBlade.class,  false);
+		weapons.put( Greatsword.class,      false);
+		weapons.put( WarHammer.class,       false);
+		weapons.put( Glaive.class,          false);
+		weapons.put( Greataxe.class,        false);
+		weapons.put( Greatshield.class,     false);
+	}
 	
-	public static final Class<?>[] armor = new Class<?>[]{
-			ClothArmor.class,
-			LeatherArmor.class,
-			MailArmor.class,
-			ScaleArmor.class,
-			PlateArmor.class,
-			WarriorArmor.class,
-			MageArmor.class,
-			RogueArmor.class,
-			HuntressArmor.class,
-	};
+	public static Collection<Class<? extends Item>> weapons(){
+		return weapons.keySet();
+	}
 	
-	public static final Class<?>[] wands = new Class<?>[]{
-			WandOfMagicMissile.class,
-			WandOfLightning.class,
-			WandOfDisintegration.class,
-			WandOfFireblast.class,
-			WandOfVenom.class,
-			WandOfBlastWave.class,
-			//WandOfLivingEarth.class,
-			WandOfFrost.class,
-			WandOfPrismaticLight.class,
-			//WandOfWarding.class,
-			WandOfTransfusion.class,
-			WandOfCorruption.class,
-			WandOfRegrowth.class
-	};
+	private static final LinkedHashMap<Class<? extends Item>, Boolean> armors = new LinkedHashMap<>();
+	static {
+		armors.put( ClothArmor.class,       false);
+		armors.put( LeatherArmor.class,     false);
+		armors.put( MailArmor.class,        false);
+		armors.put( ScaleArmor.class,       false);
+		armors.put( PlateArmor.class,       false);
+		armors.put( WarriorArmor.class,     false);
+		armors.put( MageArmor.class,        false);
+		armors.put( RogueArmor.class,       false);
+		armors.put( HuntressArmor.class,    false);
+	}
 	
-	public static final Class<?>[] rings = new Class<?>[]{
-			RingOfAccuracy.class,
-			RingOfEvasion.class,
-			RingOfElements.class,
-			RingOfForce.class,
-			RingOfFuror.class,
-			RingOfHaste.class,
-			//RingOfMagic.class,
-			RingOfMight.class,
-			RingOfSharpshooting.class,
-			RingOfTenacity.class,
-			RingOfWealth.class
-	};
+	public static Collection<Class<? extends Item>> armors(){
+		return armors.keySet();
+	}
 	
-	public static final Class<?>[] artifacts = new Class<?>[]{
-			//AlchemistsToolkit.class,
-			CapeOfThorns.class,
-			ChaliceOfBlood.class,
-			CloakOfShadows.class,
-			DriedRose.class,
-			EtherealChains.class,
-			HornOfPlenty.class,
-			LloydsBeacon.class,
-			MasterThievesArmband.class,
-			SandalsOfNature.class,
-			TalismanOfForesight.class,
-			TimekeepersHourglass.class,
-			UnstableSpellbook.class
-	};
+	private static final LinkedHashMap<Class<? extends Item>, Boolean> wands = new LinkedHashMap<>();
+	static {
+		wands.put( WandOfMagicMissile.class,    false);
+		wands.put( WandOfLightning.class,       false);
+		wands.put( WandOfDisintegration.class,  false);
+		wands.put( WandOfFireblast.class,       false);
+		wands.put( WandOfVenom.class,           false);
+		wands.put( WandOfBlastWave.class,       false);
+		//wands.put( WandOfLivingEarth.class,   false);
+		wands.put( WandOfFrost.class,           false);
+		wands.put( WandOfPrismaticLight.class,  false);
+		//wands.put( WandOfWarding.class,       false);
+		wands.put( WandOfTransfusion.class,     false);
+		wands.put( WandOfCorruption.class,      false);
+		wands.put( WandOfRegrowth.class,        false);
+	}
 	
-	public static final Class<?>[] potions = new Class<?>[]{
-			PotionOfHealing.class,
-			PotionOfStrength.class,
-			PotionOfLiquidFlame.class,
-			PotionOfFrost.class,
-			PotionOfToxicGas.class,
-			PotionOfParalyticGas.class,
-			PotionOfPurity.class,
-			PotionOfLevitation.class,
-			PotionOfMindVision.class,
-			PotionOfInvisibility.class,
-			PotionOfExperience.class,
-			PotionOfMight.class,
-	};
+	public static Collection<Class<? extends Item>> wands(){
+		return wands.keySet();
+	}
 	
-	public static final Class<?>[] scrolls = new Class<?>[]{
-			ScrollOfIdentify.class,
-			ScrollOfUpgrade.class,
-			ScrollOfRemoveCurse.class,
-			ScrollOfMagicMapping.class,
-			ScrollOfTeleportation.class,
-			ScrollOfRecharging.class,
-			ScrollOfMirrorImage.class,
-			ScrollOfTerror.class,
-			ScrollOfLullaby.class,
-			ScrollOfRage.class,
-			ScrollOfPsionicBlast.class,
-			ScrollOfMagicalInfusion.class
-	};
+	private static final LinkedHashMap<Class<? extends Item>, Boolean> rings = new LinkedHashMap<>();
+	static {
+		rings.put( RingOfAccuracy.class,        false);
+		rings.put( RingOfElements.class,        false);
+		rings.put( RingOfEvasion.class,         false);
+		rings.put( RingOfForce.class,           false);
+		rings.put( RingOfFuror.class,           false);
+		rings.put( RingOfHaste.class,           false);
+		//rings.put( RingOfMagic.class,         false);
+		rings.put( RingOfMight.class,           false);
+		rings.put( RingOfSharpshooting.class,   false);
+		rings.put( RingOfTenacity.class,        false);
+		rings.put( RingOfWealth.class,          false);
+	}
+	
+	public static Collection<Class<? extends Item>> rings(){
+		return rings.keySet();
+	}
+	
+	private static final LinkedHashMap<Class<? extends Item>, Boolean> artifacts = new LinkedHashMap<>();
+	static{
+		//artifacts.put( AlchemistsToolkit.class,   false);
+		artifacts.put( CapeOfThorns.class,          false);
+		artifacts.put( ChaliceOfBlood.class,        false);
+		artifacts.put( CloakOfShadows.class,        false);
+		artifacts.put( DriedRose.class,             false);
+		artifacts.put( EtherealChains.class,        false);
+		artifacts.put( HornOfPlenty.class,          false);
+		artifacts.put( LloydsBeacon.class,          false);
+		artifacts.put( MasterThievesArmband.class,  false);
+		artifacts.put( SandalsOfNature.class,       false);
+		artifacts.put( TalismanOfForesight.class,   false);
+		artifacts.put( TimekeepersHourglass.class,  false);
+		artifacts.put(UnstableSpellbook.class,      false);
+	}
+	
+	public static Collection<Class<? extends Item>> artifacts(){
+		return artifacts.keySet();
+	}
+	
+	private static final LinkedHashMap<Class<? extends Item>, Boolean> potions = new LinkedHashMap<>();
+	static {
+		potions.put( PotionOfHealing.class,         false);
+		potions.put( PotionOfStrength.class,        false);
+		potions.put( PotionOfLiquidFlame.class,     false);
+		potions.put( PotionOfFrost.class,           false);
+		potions.put( PotionOfToxicGas.class,        false);
+		potions.put( PotionOfParalyticGas.class,    false);
+		potions.put( PotionOfPurity.class,          false);
+		potions.put( PotionOfLevitation.class,      false);
+		potions.put( PotionOfMindVision.class,      false);
+		potions.put( PotionOfInvisibility.class,    false);
+		potions.put( PotionOfExperience.class,      false);
+		potions.put( PotionOfMight.class,           false);
+	}
+	
+	public static Collection<Class<? extends Item>> potions(){
+		return potions.keySet();
+	}
+
+	private static final LinkedHashMap<Class<? extends Item>, Boolean> scrolls = new LinkedHashMap<>();
+	static {
+		scrolls.put( ScrollOfIdentify.class,        false);
+		scrolls.put( ScrollOfUpgrade.class,         false);
+		scrolls.put( ScrollOfRemoveCurse.class,     false);
+		scrolls.put( ScrollOfMagicMapping.class,    false);
+		scrolls.put( ScrollOfTeleportation.class,   false);
+		scrolls.put( ScrollOfRecharging.class,      false);
+		scrolls.put( ScrollOfMirrorImage.class,     false);
+		scrolls.put( ScrollOfTerror.class,          false);
+		scrolls.put( ScrollOfLullaby.class,         false);
+		scrolls.put( ScrollOfRage.class,            false);
+		scrolls.put( ScrollOfPsionicBlast.class,    false);
+		scrolls.put( ScrollOfMagicalInfusion.class, false);
+	}
+	
+	public static Collection<Class<? extends Item>> scrolls(){
+		return scrolls.keySet();
+	}
+	
+	public static final ArrayList<LinkedHashMap<Class<? extends Item>, Boolean>> allCatalogs = new ArrayList<>();
+	static{
+		allCatalogs.add(weapons);
+		allCatalogs.add(armors);
+		allCatalogs.add(wands);
+		allCatalogs.add(rings);
+		allCatalogs.add(artifacts);
+		allCatalogs.add(potions);
+		allCatalogs.add(scrolls);
+	}
+	
+	public static boolean isSeen(Class<? extends Item> itemClass){
+		for (LinkedHashMap<Class<? extends Item>, Boolean> catalog : allCatalogs) {
+			if (catalog.containsKey(itemClass)) {
+				return catalog.get(itemClass);
+			}
+		}
+		return false;
+	}
+	
+	public static void setSeen(Class<? extends Item> itemClass){
+		for (LinkedHashMap<Class<? extends Item>, Boolean> catalog : allCatalogs) {
+			if (catalog.containsKey(itemClass)) {
+				catalog.put(itemClass, true);
+			}
+		}
+	}
+	
+	
 }
