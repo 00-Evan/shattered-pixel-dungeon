@@ -75,6 +75,11 @@ public class Boomerang extends MissileWeapon {
 	}
 	
 	@Override
+	public boolean isIdentified() {
+		return levelKnown && cursedKnown;
+	}
+	
+	@Override
 	public Item upgrade( boolean enchant ) {
 		super.upgrade( enchant );
 		

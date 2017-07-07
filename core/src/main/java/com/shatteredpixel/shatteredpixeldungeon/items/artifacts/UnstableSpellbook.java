@@ -155,14 +155,17 @@ public class UnstableSpellbook extends Artifact {
 	public String desc() {
 		String desc = super.desc();
 
-		if (cursed && isEquipped (Dungeon.hero)){
-			desc += "\n\n" + Messages.get(this, "desc_cursed");
-		}
-
-		if (level() < levelCap && scrolls.size() > 0) {
-			desc += "\n\n" + Messages.get(this, "desc_index");
-			desc += "\n" + "_" + Messages.get(scrolls.get(0), "name") + "_";
-			if (scrolls.size() > 1) desc += "\n" + "_" + Messages.get(scrolls.get(1), "name") + "_";
+		if (isEquipped(Dungeon.hero)) {
+			if (cursed) {
+				desc += "\n\n" + Messages.get(this, "desc_cursed");
+			}
+			
+			if (level() < levelCap && scrolls.size() > 0) {
+				desc += "\n\n" + Messages.get(this, "desc_index");
+				desc += "\n" + "_" + Messages.get(scrolls.get(0), "name") + "_";
+				if (scrolls.size() > 1)
+					desc += "\n" + "_" + Messages.get(scrolls.get(1), "name") + "_";
+			}
 		}
 		
 		if (level() > 0) {

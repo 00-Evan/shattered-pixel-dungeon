@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
@@ -32,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalogs;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -49,6 +49,7 @@ import com.watabou.noosa.ui.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 //FIXME a lot of cleanup and improvements to do here
 public class WndJournal extends WndTabbed {
@@ -62,7 +63,7 @@ public class WndJournal extends WndTabbed {
 	private static final int ITEM_HEIGHT	= 18;
 	
 	private Notes notes;
-	private Catalog catalog;
+	private CatalogTab catalogTab;
 	
 	public static int last_index = 0;
 	
@@ -78,10 +79,10 @@ public class WndJournal extends WndTabbed {
 		notes.setRect(0, 0, width, height);
 		notes.updateList();
 		
-		catalog = new Catalog();
-		add(catalog);
-		catalog.setRect(0, 0, width, height);
-		catalog.updateList();
+		catalogTab = new CatalogTab();
+		add(catalogTab);
+		catalogTab.setRect(0, 0, width, height);
+		catalogTab.updateList();
 		
 		Tab[] tabs = {
 				new LabeledTab( "Guide" ) {
@@ -100,7 +101,7 @@ public class WndJournal extends WndTabbed {
 				new LabeledTab( "Items" ) {
 					protected void select( boolean value ) {
 						super.select( value );
-						catalog.active = catalog.visible = value;
+						catalogTab.active = catalogTab.visible = value;
 						if (value) last_index = 2;
 					};
 				}
@@ -250,18 +251,18 @@ public class WndJournal extends WndTabbed {
 		
 	}
 	
-	private static class Catalog extends Component{
+	private static class CatalogTab extends Component{
 		
 		private RedButton[] itemButtons;
 		private static final int NUM_BUTTONS = 7;
 		
-		private static int latestPressedIdx = 0;
+		private static int currentItemIdx = 0;
 		
 		private ScrollPane list;
 		
 		private ArrayList<CatalogItem> items = new ArrayList<>();
 		
-		public Catalog(){
+		public CatalogTab(){
 			
 			super();
 			
@@ -271,7 +272,7 @@ public class WndJournal extends WndTabbed {
 				itemButtons[i] = new RedButton( "" ){
 					@Override
 					protected void onClick() {
-						latestPressedIdx = idx;
+						currentItemIdx = idx;
 						updateList();
 					}
 				};
@@ -317,7 +318,7 @@ public class WndJournal extends WndTabbed {
 			items.clear();
 			
 			for (int i = 0; i < NUM_BUTTONS; i++){
-				if (i == latestPressedIdx){
+				if (i == currentItemIdx){
 					itemButtons[i].icon().color(TITLE_COLOR);
 				} else {
 					itemButtons[i].icon().resetColor();
@@ -329,27 +330,36 @@ public class WndJournal extends WndTabbed {
 			list.scrollTo( 0, 0 );
 			
 			ArrayList<Class<?>> itemClasses;
-			if (latestPressedIdx == 5){
-				itemClasses = new ArrayList<>(Arrays.asList(Generator.Category.POTION.classes));
-				for ( Class unknown : Potion.getUnknown()){
-					if (itemClasses.remove(unknown)) itemClasses.add(unknown);
-				}
-			} else if (latestPressedIdx == 6) {
-				itemClasses = new ArrayList<>(Arrays.asList(Generator.Category.SCROLL.classes));
-				for ( Class unknown : Scroll.getUnknown()){
-					if (itemClasses.remove(unknown)) itemClasses.add(unknown);
-				}
+			HashMap<Class<?>, Boolean> known = new HashMap<>();
+			if (currentItemIdx == 0) {
+				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.weapons));
+				for (Class<?> cls : itemClasses) known.put(cls, true);
+			} else if (currentItemIdx == 1){
+				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.armor));
+				for (Class<?> cls : itemClasses) known.put(cls, true);
+			} else if (currentItemIdx == 2){
+				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.wands));
+				for (Class<?> cls : itemClasses) known.put(cls, true);
+			} else if (currentItemIdx == 3){
+				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.rings));
+				for (Class<?> cls : itemClasses) known.put(cls, Ring.getKnown().contains(cls));
+			} else if (currentItemIdx == 4){
+				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.artifacts));
+				for (Class<?> cls : itemClasses) known.put(cls, true);
+			} else if (currentItemIdx == 5){
+				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.potions));
+				for (Class<?> cls : itemClasses) known.put(cls, Potion.getKnown().contains(cls));
+			} else if (currentItemIdx == 6) {
+				itemClasses = new ArrayList<>(Arrays.asList(Catalogs.scrolls));
+				for (Class<?> cls : itemClasses) known.put(cls, Scroll.getKnown().contains(cls));
 			} else {
-				itemClasses = new ArrayList<>(Arrays.asList(Generator.Category.RING.classes));
-				for ( Class unknown : Ring.getUnknown()){
-					if (itemClasses.remove(unknown)) itemClasses.add(unknown);
-				}
+				itemClasses = new ArrayList<>();
 			}
 			
 			float pos = 0;
 			for (Class<?> itemClass : itemClasses) {
 				try{
-					CatalogItem item = new CatalogItem((Item) itemClass.newInstance());
+					CatalogItem item = new CatalogItem((Item) itemClass.newInstance(), known.get(itemClass));
 					item.setRect( 0, pos, width, ITEM_HEIGHT );
 					content.add( item );
 					items.add( item );
@@ -367,26 +377,14 @@ public class WndJournal extends WndTabbed {
 		private static class CatalogItem extends ListItem {
 			
 			private Item item;
-			private boolean identified;
 			
-			public CatalogItem(Item item ) {
-				super( new ItemSprite(item), Messages.titleCase(item.name()));
+			public CatalogItem(Item item, boolean IDed ) {
+				super( new ItemSprite(item), Messages.titleCase(item.trueName()));
 				
 				this.item = item;
 				
-				if (!(identified = item.isIdentified())) {
-					ItemSprite placeHolder;
-					if (item instanceof Potion){
-						placeHolder = new ItemSprite( ItemSpriteSheet.POTION_HOLDER, null);
-					} else if (item instanceof Scroll){
-						placeHolder = new ItemSprite( ItemSpriteSheet.SCROLL_HOLDER, null);
-					} else if (item instanceof Ring){
-						placeHolder = new ItemSprite( ItemSpriteSheet.RING_HOLDER, null);
-					} else {
-						placeHolder = new ItemSprite( ItemSpriteSheet.SOMETHING, null);
-					}
-					icon.copy( placeHolder );
-					label.text( Messages.titleCase(item.trueName()) );
+				if (!IDed) {
+					icon.copy( new ItemSprite( ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null) );
 					label.hardlight( 0xCCCCCC );
 				}
 				
@@ -394,10 +392,7 @@ public class WndJournal extends WndTabbed {
 			
 			public boolean onClick( float x, float y ) {
 				if (inside( x, y )) {
-					if (identified)
-						GameScene.show( new WndInfoItem( item ) );
-					else
-						GameScene.show(new WndTitledMessage( new Image(icon),
+					GameScene.show(new WndTitledMessage( new Image(icon),
 								Messages.titleCase(item.trueName()), item.desc() ));
 					return true;
 				} else {
