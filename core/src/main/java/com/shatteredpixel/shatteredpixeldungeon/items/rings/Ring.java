@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalogs;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -142,9 +143,7 @@ public class Ring extends KindofMisc {
 			handler.know( this );
 		}
 		
-		//Player has to fully identify a ring first
-		//Catalogs.setSeen(getClass());
-		Badges.validateAllRingsIdentified();
+		Catalogs.setSeen(getClass());
 	}
 	
 	@Override

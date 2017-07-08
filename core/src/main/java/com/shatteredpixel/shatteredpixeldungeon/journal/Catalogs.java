@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.HuntressArmor;
@@ -31,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.RogueArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.WarriorArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -155,21 +157,35 @@ public class Catalogs {
 		return weapons.keySet();
 	}
 	
-	private static final LinkedHashMap<Class<? extends Item>, Boolean> armors = new LinkedHashMap<>();
-	static {
-		armors.put( ClothArmor.class,       false);
-		armors.put( LeatherArmor.class,     false);
-		armors.put( MailArmor.class,        false);
-		armors.put( ScaleArmor.class,       false);
-		armors.put( PlateArmor.class,       false);
-		armors.put( WarriorArmor.class,     false);
-		armors.put( MageArmor.class,        false);
-		armors.put( RogueArmor.class,       false);
-		armors.put( HuntressArmor.class,    false);
+	public static boolean allWeaponsSeen(){
+		for (Boolean val : weapons.values()){
+			if (!val) return false;
+		}
+		return true;
 	}
 	
-	public static Collection<Class<? extends Item>> armors(){
-		return armors.keySet();
+	private static final LinkedHashMap<Class<? extends Item>, Boolean> armor = new LinkedHashMap<>();
+	static {
+		armor.put( ClothArmor.class,       false);
+		armor.put( LeatherArmor.class,     false);
+		armor.put( MailArmor.class,        false);
+		armor.put( ScaleArmor.class,       false);
+		armor.put( PlateArmor.class,       false);
+		armor.put( WarriorArmor.class,     false);
+		armor.put( MageArmor.class,        false);
+		armor.put( RogueArmor.class,       false);
+		armor.put( HuntressArmor.class,    false);
+	}
+	
+	public static Collection<Class<? extends Item>> armor(){
+		return armor.keySet();
+	}
+	
+	public static boolean allArmorSeen(){
+		for (Boolean val : armor.values()){
+			if (!val) return false;
+		}
+		return true;
 	}
 	
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> wands = new LinkedHashMap<>();
@@ -193,6 +209,13 @@ public class Catalogs {
 		return wands.keySet();
 	}
 	
+	public static boolean allWandsSeen(){
+		for (Boolean val : wands.values()){
+			if (!val) return false;
+		}
+		return true;
+	}
+	
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> rings = new LinkedHashMap<>();
 	static {
 		rings.put( RingOfAccuracy.class,        false);
@@ -212,9 +235,16 @@ public class Catalogs {
 		return rings.keySet();
 	}
 	
+	public static boolean allRingsSeen(){
+		for (Boolean val : rings.values()){
+			if (!val) return false;
+		}
+		return true;
+	}
+	
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> artifacts = new LinkedHashMap<>();
 	static{
-		//artifacts.put( AlchemistsToolkit.class,   false);
+		artifacts.put( AlchemistsToolkit.class,     false);
 		artifacts.put( CapeOfThorns.class,          false);
 		artifacts.put( ChaliceOfBlood.class,        false);
 		artifacts.put( CloakOfShadows.class,        false);
@@ -231,6 +261,13 @@ public class Catalogs {
 	
 	public static Collection<Class<? extends Item>> artifacts(){
 		return artifacts.keySet();
+	}
+	
+	public static boolean allArtifactsSeen(){
+		for (Boolean val : artifacts.values()){
+			if (!val) return false;
+		}
+		return true;
 	}
 	
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> potions = new LinkedHashMap<>();
@@ -251,6 +288,13 @@ public class Catalogs {
 	
 	public static Collection<Class<? extends Item>> potions(){
 		return potions.keySet();
+	}
+	
+	public static boolean allPotionsSeen(){
+		for (Boolean val : potions.values()){
+			if (!val) return false;
+		}
+		return true;
 	}
 
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> scrolls = new LinkedHashMap<>();
@@ -273,10 +317,17 @@ public class Catalogs {
 		return scrolls.keySet();
 	}
 	
-	public static final ArrayList<LinkedHashMap<Class<? extends Item>, Boolean>> allCatalogs = new ArrayList<>();
+	public static boolean allScrollsSeen(){
+		for (Boolean val : scrolls.values()){
+			if (!val) return false;
+		}
+		return true;
+	}
+	
+	private static final ArrayList<LinkedHashMap<Class<? extends Item>, Boolean>> allCatalogs = new ArrayList<>();
 	static{
 		allCatalogs.add(weapons);
-		allCatalogs.add(armors);
+		allCatalogs.add(armor);
 		allCatalogs.add(wands);
 		allCatalogs.add(rings);
 		allCatalogs.add(artifacts);
@@ -299,7 +350,7 @@ public class Catalogs {
 				catalog.put(itemClass, true);
 			}
 		}
+		Badges.validateItemsIdentified();
 	}
-	
 	
 }

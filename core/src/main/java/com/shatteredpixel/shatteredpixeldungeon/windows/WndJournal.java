@@ -343,7 +343,7 @@ public class WndJournal extends WndTabbed {
 				itemClasses = new ArrayList<>(Catalogs.weapons());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
 			} else if (currentItemIdx == ARMOR_IDX){
-				itemClasses = new ArrayList<>(Catalogs.armors());
+				itemClasses = new ArrayList<>(Catalogs.armor());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
 			} else if (currentItemIdx == WAND_IDX){
 				itemClasses = new ArrayList<>(Catalogs.wands());

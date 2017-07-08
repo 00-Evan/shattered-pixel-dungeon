@@ -31,7 +31,6 @@ public class Statistics {
 	public static int foodEaten;
 	public static int potionsCooked;
 	public static int piranhasKilled;
-	public static int nightHunt;
 	public static int ankhsUsed;
 	
 	public static float duration;
@@ -49,7 +48,6 @@ public class Statistics {
 		foodEaten		= 0;
 		potionsCooked	= 0;
 		piranhasKilled	= 0;
-		nightHunt		= 0;
 		ankhsUsed		= 0;
 		
 		duration	= 0;
@@ -66,7 +64,6 @@ public class Statistics {
 	private static final String FOOD		= "foodEaten";
 	private static final String ALCHEMY		= "potionsCooked";
 	private static final String PIRANHAS	= "priranhas";
-	private static final String NIGHT		= "nightHunt";
 	private static final String ANKHS		= "ankhsUsed";
 	private static final String DURATION	= "duration";
 	private static final String AMULET		= "amuletObtained";
@@ -78,7 +75,6 @@ public class Statistics {
 		bundle.put( FOOD,		foodEaten );
 		bundle.put( ALCHEMY,	potionsCooked );
 		bundle.put( PIRANHAS,	piranhasKilled );
-		bundle.put( NIGHT,		nightHunt );
 		bundle.put( ANKHS,		ankhsUsed );
 		bundle.put( DURATION,	duration );
 		bundle.put( AMULET,		amuletObtained );
@@ -91,7 +87,6 @@ public class Statistics {
 		foodEaten		= bundle.getInt( FOOD );
 		potionsCooked	= bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );
-		nightHunt		= bundle.getInt( NIGHT );
 		ankhsUsed		= bundle.getInt( ANKHS );
 		duration		= bundle.getFloat( DURATION );
 		amuletObtained	= bundle.getBoolean( AMULET );
