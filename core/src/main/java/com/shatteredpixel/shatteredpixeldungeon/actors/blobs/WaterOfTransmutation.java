@@ -21,8 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Journal;
-import com.shatteredpixel.shatteredpixeldungeon.Journal.Feature;
+import com.shatteredpixel.shatteredpixeldungeon.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.Notes.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -71,7 +71,7 @@ public class WaterOfTransmutation extends WellWater {
 		}
 
 		if (item != null) {
-			Journal.remove( Feature.WELL_OF_TRANSMUTATION );
+			Notes.remove( Feature.WELL_OF_TRANSMUTATION );
 		}
 
 		return item;

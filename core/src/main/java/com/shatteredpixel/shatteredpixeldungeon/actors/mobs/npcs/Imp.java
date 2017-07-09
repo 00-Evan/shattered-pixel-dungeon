@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
@@ -105,7 +105,7 @@ public class Imp extends NPC {
 			Quest.given = true;
 			Quest.completed = false;
 			
-			Journal.add( Journal.Feature.IMP );
+			Notes.add( Notes.Feature.IMP );
 		}
 
 		return false;
@@ -214,7 +214,7 @@ public class Imp extends NPC {
 			reward = null;
 			completed = true;
 			
-			Journal.remove( Journal.Feature.IMP );
+			Notes.remove( Notes.Feature.IMP );
 		}
 		
 		public static boolean isCompleted() {

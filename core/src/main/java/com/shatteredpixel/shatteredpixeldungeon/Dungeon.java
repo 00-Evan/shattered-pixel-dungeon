@@ -160,7 +160,7 @@ public class Dungeon {
 		Random.seed();
 		
 		Statistics.reset();
-		Journal.reset();
+		Notes.reset();
 
 		quickslot.reset();
 		QuickSlotButton.reset();
@@ -482,7 +482,7 @@ public class Dungeon {
 			SpecialRoom.storeRoomsInBundle( bundle );
 			
 			Statistics.storeInBundle( bundle );
-			Journal.storeInBundle( bundle );
+			Notes.storeInBundle( bundle );
 			Generator.storeInBundle( bundle );
 			
 			Scroll.save( bundle );
@@ -608,7 +608,7 @@ public class Dungeon {
 		depth = bundle.getInt( DEPTH );
 		
 		Statistics.restoreFromBundle( bundle );
-		Journal.restoreFromBundle( bundle );
+		Notes.restoreFromBundle( bundle );
 		Generator.restoreFromBundle( bundle );
 
 		droppedItems = new SparseArray<ArrayList<Item>>();

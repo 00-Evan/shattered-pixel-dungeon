@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -86,7 +86,7 @@ public class Blacksmith extends NPC {
 				}
 			} );
 			
-			Journal.add( Journal.Feature.TROLL );
+			Notes.add( Notes.Feature.TROLL );
 			
 		} else if (!Quest.completed) {
 			if (Quest.alternative) {
@@ -203,7 +203,7 @@ public class Blacksmith extends NPC {
 		
 		Quest.reforged = true;
 		
-		Journal.remove( Journal.Feature.TROLL );
+		Notes.remove( Notes.Feature.TROLL );
 	}
 	
 	@Override

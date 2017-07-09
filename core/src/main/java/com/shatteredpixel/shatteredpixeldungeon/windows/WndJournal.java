@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
@@ -62,7 +62,7 @@ public class WndJournal extends WndTabbed {
 	
 	private static final int ITEM_HEIGHT	= 18;
 	
-	private Notes notes;
+	private NotesTab notesTab;
 	private CatalogTab catalogTab;
 	
 	public static int last_index = 0;
@@ -74,10 +74,10 @@ public class WndJournal extends WndTabbed {
 		
 		resize(width, height);
 		
-		notes = new Notes();
-		add(notes);
-		notes.setRect(0, 0, width, height);
-		notes.updateList();
+		notesTab = new NotesTab();
+		add(notesTab);
+		notesTab.setRect(0, 0, width, height);
+		notesTab.updateList();
 		
 		catalogTab = new CatalogTab();
 		add(catalogTab);
@@ -94,7 +94,7 @@ public class WndJournal extends WndTabbed {
 				new LabeledTab( "Notes" ) {
 					protected void select( boolean value ) {
 						super.select( value );
-						notes.active = notes.visible = value;
+						notesTab.active = notesTab.visible = value;
 						if (value) last_index = 1;
 					};
 				},
@@ -181,11 +181,11 @@ public class WndJournal extends WndTabbed {
 		}
 	}
 	
-	private static class Notes extends Component {
+	private static class NotesTab extends Component {
 		
 		private ScrollPane list;
 		
-		public Notes(){
+		public NotesTab(){
 			list = new ScrollPane( new Component() );
 			add( list );
 		}
@@ -199,7 +199,7 @@ public class WndJournal extends WndTabbed {
 		private void updateList(){
 			Component content = list.content();
 			
-			Collections.sort( Journal.records );
+			Collections.sort( Notes.records );
 			
 			float pos = 0;
 			
@@ -237,8 +237,8 @@ public class WndJournal extends WndTabbed {
 				
 			}
 			
-			//Journal entries
-			for (Journal.Record rec : Journal.records) {
+			//Notes entries
+			for (Notes.Record rec : Notes.records) {
 				ListItem item = new ListItem( Icons.get(Icons.DEPTH), rec.feature.desc(), rec.depth );
 				item.setRect( 0, pos, width(), ITEM_HEIGHT );
 				content.add( item );

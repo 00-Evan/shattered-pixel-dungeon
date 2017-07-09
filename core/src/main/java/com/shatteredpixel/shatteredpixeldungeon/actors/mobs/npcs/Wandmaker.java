@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -163,7 +163,7 @@ public class Wandmaker extends NPC {
 				}
 			});
 
-			Journal.add( Journal.Feature.WANDMAKER );
+			Notes.add( Notes.Feature.WANDMAKER );
 			Quest.given = true;
 		}
 
@@ -307,7 +307,7 @@ public class Wandmaker extends NPC {
 			wand1 = null;
 			wand2 = null;
 			
-			Journal.remove( Journal.Feature.WANDMAKER );
+			Notes.remove( Notes.Feature.WANDMAKER );
 		}
 	}
 }

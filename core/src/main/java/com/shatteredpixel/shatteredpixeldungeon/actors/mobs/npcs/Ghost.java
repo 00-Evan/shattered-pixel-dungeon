@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -170,7 +170,7 @@ public class Ghost extends NPC {
 				GameScene.add(questBoss);
 				GameScene.show( new WndQuest( this, txt_quest ) );
 				Quest.given = true;
-				Journal.add( Journal.Feature.GHOST );
+				Notes.add( Notes.Feature.GHOST );
 			}
 
 		}
@@ -342,7 +342,7 @@ public class Ghost extends NPC {
 			weapon = null;
 			armor = null;
 			
-			Journal.remove( Journal.Feature.GHOST );
+			Notes.remove( Notes.Feature.GHOST );
 		}
 
 		public static boolean completed(){

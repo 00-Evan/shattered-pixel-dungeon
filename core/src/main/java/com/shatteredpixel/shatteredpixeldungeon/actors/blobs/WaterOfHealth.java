@@ -23,8 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Journal;
-import com.shatteredpixel.shatteredpixeldungeon.Journal.Feature;
+import com.shatteredpixel.shatteredpixeldungeon.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.Notes.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
@@ -55,7 +55,7 @@ public class WaterOfHealth extends WellWater {
 	
 		GLog.p( Messages.get(this, "procced") );
 		
-		Journal.remove( Feature.WELL_OF_HEALTH );
+		Notes.remove( Feature.WELL_OF_HEALTH );
 		
 		return true;
 	}
@@ -64,7 +64,7 @@ public class WaterOfHealth extends WellWater {
 	protected Item affectItem( Item item ) {
 		if (item instanceof DewVial && !((DewVial)item).isFull()) {
 			((DewVial)item).fill();
-			Journal.remove( Feature.WELL_OF_HEALTH );
+			Notes.remove( Feature.WELL_OF_HEALTH );
 			return item;
 		}
 		

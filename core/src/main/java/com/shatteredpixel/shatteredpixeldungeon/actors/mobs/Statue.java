@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
@@ -80,7 +80,7 @@ public class Statue extends Mob {
 	@Override
 	protected boolean act() {
 		if (Dungeon.visible[pos]) {
-			Journal.add( Journal.Feature.STATUE );
+			Notes.add( Notes.Feature.STATUE );
 		}
 		return super.act();
 	}
@@ -139,7 +139,7 @@ public class Statue extends Mob {
 	
 	@Override
 	public void destroy() {
-		Journal.remove( Journal.Feature.STATUE );
+		Notes.remove( Notes.Feature.STATUE );
 		super.destroy();
 	}
 	

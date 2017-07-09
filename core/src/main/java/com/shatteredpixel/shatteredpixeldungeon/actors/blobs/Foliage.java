@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Journal;
+import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -69,7 +69,7 @@ public class Foliage extends Blob {
 		}
 
 		if (visible) {
-			Journal.add( Journal.Feature.GARDEN );
+			Notes.add( Notes.Feature.GARDEN );
 		}
 	}
 	
