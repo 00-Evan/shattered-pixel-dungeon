@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ import java.util.HashMap;
 //FIXME a lot of cleanup and improvements to do here
 public class WndJournal extends WndTabbed {
 	
-	private static final int WIDTH_P    = 112;
+	private static final int WIDTH_P    = 120;
 	private static final int HEIGHT_P   = 160;
 	
 	private static final int WIDTH_L    = 160;
@@ -59,6 +60,7 @@ public class WndJournal extends WndTabbed {
 	
 	private static final int ITEM_HEIGHT	= 18;
 	
+	private GuideTab guideTab;
 	private NotesTab notesTab;
 	private CatalogTab catalogTab;
 	
@@ -71,6 +73,10 @@ public class WndJournal extends WndTabbed {
 		
 		resize(width, height);
 		
+		guideTab = new GuideTab();
+		add(guideTab);
+		guideTab.setRect(0, 0, width, height);
+		
 		notesTab = new NotesTab();
 		add(notesTab);
 		notesTab.setRect(0, 0, width, height);
@@ -82,25 +88,26 @@ public class WndJournal extends WndTabbed {
 		catalogTab.updateList();
 		
 		Tab[] tabs = {
-				new LabeledTab( "Guide" ) {
+				new LabeledTab( Messages.get(this, "guide") ) {
 					protected void select( boolean value ) {
 						super.select( value );
+						guideTab.active = guideTab.visible = value;
 						if (value) last_index = 0;
-					};
+					}
 				},
-				new LabeledTab( "Notes" ) {
+				new LabeledTab( Messages.get(this, "notes") ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						notesTab.active = notesTab.visible = value;
 						if (value) last_index = 1;
-					};
+					}
 				},
-				new LabeledTab( "Items" ) {
+				new LabeledTab( Messages.get(this, "items") ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						catalogTab.active = catalogTab.visible = value;
 						if (value) last_index = 2;
-					};
+					}
 				}
 		};
 		
@@ -178,11 +185,30 @@ public class WndJournal extends WndTabbed {
 		}
 	}
 	
+	private static class GuideTab extends Component {
+		
+		private RenderedText text;
+		
+		@Override
+		protected void createChildren() {
+			text = PixelScene.renderText( "Coming Soon...", 9);
+			add( text );
+		}
+		
+		@Override
+		protected void layout() {
+			text.x = (width() - text.width())/2f;
+			text.y = 10;
+			PixelScene.align(text);
+		}
+	}
+	
 	private static class NotesTab extends Component {
 		
 		private ScrollPane list;
 		
-		public NotesTab(){
+		@Override
+		protected void createChildren() {
 			list = new ScrollPane( new Component() );
 			add( list );
 		}
@@ -199,7 +225,20 @@ public class WndJournal extends WndTabbed {
 			float pos = 0;
 			
 			//Keys
-			for(Notes.Record rec : Notes.getRecords(Notes.KeyRecord.class)){
+			ArrayList<Notes.KeyRecord> keys = Notes.getRecords(Notes.KeyRecord.class);
+			if (!keys.isEmpty()){
+				RenderedText keyTitle = PixelScene.renderText(Messages.get(this, "keys"), 9);
+				keyTitle.x = (width() - keyTitle.width())/2f;
+				keyTitle.y = pos + (ITEM_HEIGHT - keyTitle.baseLine())/2f;
+				PixelScene.align(keyTitle);
+				content.add(keyTitle);
+				
+				ColorBlock line = new ColorBlock( width(), 1, 0xFF222222);
+				line.y = pos;
+				content.add(line);
+				pos += ITEM_HEIGHT;
+			}
+			for(Notes.Record rec : keys){
 				ListItem item = new ListItem( Icons.get(Icons.DEPTH),
 						Messages.titleCase(rec.desc()), rec.depth() );
 				item.setRect( 0, pos, width(), ITEM_HEIGHT );
@@ -209,7 +248,20 @@ public class WndJournal extends WndTabbed {
 			}
 			
 			//Landmarks
-			for (Notes.Record rec : Notes.getRecords(Notes.LandmarkRecord.class)) {
+			ArrayList<Notes.LandmarkRecord> landmarks = Notes.getRecords(Notes.LandmarkRecord.class);
+			if (!landmarks.isEmpty()){
+				RenderedText keyTitle = PixelScene.renderText(Messages.get(this, "landmarks"), 9);
+				keyTitle.x = (width() - keyTitle.width())/2f;
+				keyTitle.y = pos + (ITEM_HEIGHT - keyTitle.baseLine())/2f;
+				PixelScene.align(keyTitle);
+				content.add(keyTitle);
+				
+				ColorBlock line = new ColorBlock( width(), 1, 0xFF222222);
+				line.y = pos;
+				content.add(line);
+				pos += ITEM_HEIGHT;
+			}
+			for (Notes.Record rec : landmarks) {
 				ListItem item = new ListItem( Icons.get(Icons.DEPTH),
 						Messages.titleCase(rec.desc()), rec.depth() );
 				item.setRect( 0, pos, width(), ITEM_HEIGHT );
@@ -242,10 +294,8 @@ public class WndJournal extends WndTabbed {
 		
 		private ArrayList<CatalogItem> items = new ArrayList<>();
 		
-		public CatalogTab(){
-			
-			super();
-			
+		@Override
+		protected void createChildren() {
 			itemButtons = new RedButton[NUM_BUTTONS];
 			for (int i = 0; i < NUM_BUTTONS; i++){
 				final int idx = i;
@@ -280,11 +330,11 @@ public class WndJournal extends WndTabbed {
 		protected void layout() {
 			super.layout();
 			
-			int perRow = ShatteredPixelDungeon.landscape() ? NUM_BUTTONS : 4;
-			float buttonWidth = (width() - (perRow-1))/perRow;
+			int perRow = NUM_BUTTONS;
+			float buttonWidth = width()/perRow;
 			
 			for (int i = 0; i < NUM_BUTTONS; i++) {
-				itemButtons[i].setRect((i%perRow) * (buttonWidth + 1), (i/perRow) * (BUTTON_HEIGHT + 1),
+				itemButtons[i].setRect((i%perRow) * (buttonWidth), (i/perRow) * (BUTTON_HEIGHT + 1),
 						buttonWidth, BUTTON_HEIGHT);
 				PixelScene.align(itemButtons[i]);
 			}
