@@ -21,20 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.keys;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class IronKey extends Key {
 	
 	{
 		image = ItemSpriteSheet.IRON_KEY;
-	}
-
-	@Override
-	public boolean doPickUp(Hero hero) {
-		Dungeon.hero.belongings.ironKeys[depth] += quantity();
-		return super.doPickUp(hero);
 	}
 
 	public IronKey() {

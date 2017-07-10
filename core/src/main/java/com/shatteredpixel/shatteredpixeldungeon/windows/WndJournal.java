@@ -24,9 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -199,47 +196,22 @@ public class WndJournal extends WndTabbed {
 		private void updateList(){
 			Component content = list.content();
 			
-			Collections.sort( Notes.records );
-			
 			float pos = 0;
 			
 			//Keys
-			for (int i = Dungeon.hero.belongings.ironKeys.length-1; i > 0; i--){
-				if (Dungeon.hero.belongings.specialKeys[i] > 0){
-					String text;
-					if (i % 5 == 0)
-						text = Messages.capitalize(Messages.get(SkeletonKey.class, "name"));
-					else
-						text = Messages.capitalize(Messages.get(GoldenKey.class, "name"));
-					
-					if (Dungeon.hero.belongings.specialKeys[i] > 1){
-						text += " x" + Dungeon.hero.belongings.specialKeys[i];
-					}
-					ListItem item = new ListItem( Icons.get(Icons.DEPTH), Messages.titleCase(text), i );
-					item.setRect( 0, pos, width(), ITEM_HEIGHT );
-					content.add( item );
-					
-					pos += item.height();
-				}
-				if (Dungeon.hero.belongings.ironKeys[i] > 0){
-					String text = Messages.titleCase(Messages.get(IronKey.class, "name"));
-					
-					if (Dungeon.hero.belongings.ironKeys[i] > 1){
-						text += " x" + Dungeon.hero.belongings.ironKeys[i];
-					}
-					
-					ListItem item = new ListItem( Icons.get(Icons.DEPTH), text, i );
-					item.setRect( 0, pos, width(), ITEM_HEIGHT );
-					content.add( item );
-					
-					pos += item.height();
-				}
+			for(Notes.Record rec : Notes.getRecords(Notes.KeyRecord.class)){
+				ListItem item = new ListItem( Icons.get(Icons.DEPTH),
+						Messages.titleCase(rec.desc()), rec.depth() );
+				item.setRect( 0, pos, width(), ITEM_HEIGHT );
+				content.add( item );
 				
+				pos += item.height();
 			}
 			
-			//Notes entries
-			for (Notes.Record rec : Notes.records) {
-				ListItem item = new ListItem( Icons.get(Icons.DEPTH), rec.landmark.desc(), rec.depth );
+			//Landmarks
+			for (Notes.Record rec : Notes.getRecords(Notes.LandmarkRecord.class)) {
+				ListItem item = new ListItem( Icons.get(Icons.DEPTH),
+						Messages.titleCase(rec.desc()), rec.depth() );
 				item.setRect( 0, pos, width(), ITEM_HEIGHT );
 				content.add( item );
 				

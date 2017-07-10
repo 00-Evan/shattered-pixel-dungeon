@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -272,30 +274,23 @@ public class StatusPane extends Component {
 
 		public void updateKeyDisplay() {
 			needsKeyUpdate = false;
-
-			boolean foundKeys = false;
+			
 			boolean blackKey = false;
 			boolean specialKey = false;
 			int ironKeys = 0;
-			for (int i = 1; i <= Math.min(Dungeon.depth, 25); i++) {
-				if (Dungeon.hero.belongings.ironKeys[i] > 0 || Dungeon.hero.belongings.specialKeys[i] > 0) {
-					foundKeys = true;
-
-					if (i < Dungeon.depth){
-						blackKey = true;
-
+			for (Notes.KeyRecord rec : Notes.getRecords(Notes.KeyRecord.class)){
+				if (rec.depth() < Dungeon.depth){
+					blackKey = true;
+				} else if (rec.depth() == Dungeon.depth){
+					if (rec.type().equals(IronKey.class)) {
+						ironKeys += rec.quantity();
 					} else {
-						if (Dungeon.hero.belongings.specialKeys[i] > 0){
-							specialKey = true;
-						}
-						ironKeys = Dungeon.hero.belongings.ironKeys[i];
+						specialKey = true;
 					}
 				}
 			}
 
-			if (!foundKeys){
-				icon.frame(31, 0, 11, 7);
-			} else {
+			if (blackKey || specialKey || ironKeys > 0){
 				int left = 46, top = 0, width = 0, height = 7;
 				if (blackKey){
 					left = 43;
@@ -308,6 +303,8 @@ public class StatusPane extends Component {
 				width += ironKeys*3;
 				width = Math.min( width, 9);
 				icon.frame(left, top, width, height);
+			} else {
+				icon.frame(31, 0, 11, 7);
 			}
 			layout();
 

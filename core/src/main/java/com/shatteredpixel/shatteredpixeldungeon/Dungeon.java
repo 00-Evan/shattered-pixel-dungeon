@@ -602,6 +602,8 @@ public class Dungeon {
 			Badges.reset();
 		}
 		
+		Notes.restoreFromBundle( bundle );
+		
 		hero = null;
 		hero = (Hero)bundle.get( HERO );
 		
@@ -609,10 +611,9 @@ public class Dungeon {
 		depth = bundle.getInt( DEPTH );
 		
 		Statistics.restoreFromBundle( bundle );
-		Notes.restoreFromBundle( bundle );
 		Generator.restoreFromBundle( bundle );
 
-		droppedItems = new SparseArray<ArrayList<Item>>();
+		droppedItems = new SparseArray<>();
 		for (int i=2; i <= Statistics.deepestFloor + 1; i++) {
 			ArrayList<Item> dropped = new ArrayList<Item>();
 			if (bundle.contains(Messages.format( DROPPED, i )))

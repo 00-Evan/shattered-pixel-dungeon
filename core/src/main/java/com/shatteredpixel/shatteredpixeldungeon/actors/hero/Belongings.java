@@ -27,10 +27,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -49,9 +52,6 @@ public class Belongings implements Iterable<Item> {
 	public Armor armor = null;
 	public KindofMisc misc1 = null;
 	public KindofMisc misc2 = null;
-
-	public int[] ironKeys = new int[26];
-	public int[] specialKeys = new int[26]; //golden or boss keys
 	
 	public Belongings( Hero owner ) {
 		this.owner = owner;
@@ -68,9 +68,6 @@ public class Belongings implements Iterable<Item> {
 	private static final String MISC1       = "misc1";
 	private static final String MISC2       = "misc2";
 
-	private static final String IRON_KEYS       = "ironKeys";
-	private static final String SPECIAL_KEYS    = "specialKeys";
-	
 	public void storeInBundle( Bundle bundle ) {
 		
 		backpack.storeInBundle( bundle );
@@ -79,29 +76,35 @@ public class Belongings implements Iterable<Item> {
 		bundle.put( ARMOR, armor );
 		bundle.put( MISC1, misc1);
 		bundle.put( MISC2, misc2);
-
-		bundle.put( IRON_KEYS, ironKeys);
-		bundle.put( SPECIAL_KEYS, specialKeys);
 	}
 	
 	public void restoreFromBundle( Bundle bundle ) {
 
-		if (bundle.contains(IRON_KEYS)) ironKeys = bundle.getIntArray( IRON_KEYS );
-		if (bundle.contains(SPECIAL_KEYS)) specialKeys = bundle.getIntArray( SPECIAL_KEYS );
+		//moving keys to Notes, for pre-0.6.1 saves
+		if (bundle.contains("ironKeys")) {
+			int[] ironKeys = bundle.getIntArray( "ironKeys" );
+			for (int i = 0; i < ironKeys.length; i++){
+				if (ironKeys[i] > 0){
+					Notes.add((Key) new IronKey(i).quantity(ironKeys[i]));
+				}
+			}
+		}
+		
+		if (bundle.contains("specialKeys")) {
+			int[] specialKeys = bundle.getIntArray( "specialKeys" );
+			for (int i = 0; i < specialKeys.length; i++){
+				if (specialKeys[i] > 0){
+					if (i % 5 == 0){
+						Notes.add((Key) new GoldenKey(i).quantity(specialKeys[i]));
+					} else {
+						Notes.add((Key) new SkeletonKey(i).quantity(specialKeys[i]));
+					}
+				}
+			}
+		}
 		
 		backpack.clear();
 		backpack.restoreFromBundle( bundle );
-
-		//removing keys, from pre-0.4.1 saves
-		for (Item item : backpack.items.toArray(new Item[0])){
-			if (item instanceof Key){
-				item.detachAll(backpack);
-				if (item instanceof IronKey)
-					ironKeys[((Key) item).depth] += item.quantity();
-				else
-					specialKeys[((Key) item).depth] += item.quantity();
-			}
-		}
 		
 		weapon = (KindOfWeapon) bundle.get(WEAPON);
 		if (weapon != null) {

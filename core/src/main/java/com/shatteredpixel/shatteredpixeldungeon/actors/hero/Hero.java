@@ -68,7 +68,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
@@ -86,6 +89,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.AlchemyPot;
@@ -717,7 +721,7 @@ public class Hero extends Char {
 			if (heap != null && (heap.type != Type.HEAP && heap.type != Type.FOR_SALE)) {
 				
 				if ((heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST)
-						&& belongings.specialKeys[Dungeon.depth] < 1) {
+						&& Notes.keyCount(new GoldenKey(Dungeon.depth)) < 1) {
 
 						GLog.w( Messages.get(this, "locked_chest") );
 						ready();
@@ -764,12 +768,12 @@ public class Hero extends Char {
 			int door = Dungeon.level.map[doorCell];
 			
 			if (door == Terrain.LOCKED_DOOR
-					&& belongings.ironKeys[Dungeon.depth] > 0) {
+					&& Notes.keyCount(new IronKey(Dungeon.depth)) > 0) {
 				
 				hasKey = true;
 				
 			} else if (door == Terrain.LOCKED_EXIT
-					&& belongings.specialKeys[Dungeon.depth] > 0) {
+					&& Notes.keyCount(new GoldenKey(Dungeon.depth)) > 0) {
 
 				hasKey = true;
 				
@@ -1459,10 +1463,10 @@ public class Hero extends Char {
 			int door = Dungeon.level.map[doorCell];
 
 			if (door == Terrain.LOCKED_DOOR){
-				belongings.ironKeys[Dungeon.depth]--;
+				Notes.remove(new IronKey(Dungeon.depth));
 				Level.set( doorCell, Terrain.DOOR );
 			} else {
-				belongings.specialKeys[Dungeon.depth]--;
+				Notes.remove(new SkeletonKey(Dungeon.depth));
 				Level.set( doorCell, Terrain.UNLOCKED_EXIT );
 			}
 			StatusPane.needsKeyUpdate = true;
@@ -1476,7 +1480,7 @@ public class Hero extends Char {
 			if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
 				Sample.INSTANCE.play( Assets.SND_BONES );
 			} else if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST){
-				belongings.specialKeys[Dungeon.depth]--;
+				Notes.remove(new GoldenKey(Dungeon.depth));
 			}
 			StatusPane.needsKeyUpdate = true;
 			heap.open( this );

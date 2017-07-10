@@ -21,16 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.keys;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class SkeletonKey extends Key {
 	
 	{
 		image = ItemSpriteSheet.SKELETON_KEY;
-		stackable = false;
 	}
 	
 	public SkeletonKey() {
@@ -40,17 +36,6 @@ public class SkeletonKey extends Key {
 	public SkeletonKey( int depth ) {
 		super();
 		this.depth = depth;
-	}
-
-	@Override
-	public boolean doPickUp(Hero hero) {
-		Dungeon.hero.belongings.specialKeys[depth]++;
-		return super.doPickUp(hero);
-	}
-	
-	@Override
-	public boolean isSimilar( Item item ) {
-		return false;
 	}
 
 }

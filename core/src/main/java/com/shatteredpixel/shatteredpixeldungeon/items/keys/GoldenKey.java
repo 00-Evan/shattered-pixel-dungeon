@@ -21,20 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.keys;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class GoldenKey extends Key {
 	
 	{
 		image = ItemSpriteSheet.GOLDEN_KEY;
-	}
-
-	@Override
-	public boolean doPickUp(Hero hero) {
-		Dungeon.hero.belongings.specialKeys[depth] += quantity();
-		return super.doPickUp(hero);
 	}
 
 	public GoldenKey() {
