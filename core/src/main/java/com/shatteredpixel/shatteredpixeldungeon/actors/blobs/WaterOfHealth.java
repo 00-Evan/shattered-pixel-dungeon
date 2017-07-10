@@ -23,8 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.Notes.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
@@ -34,6 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -55,7 +55,7 @@ public class WaterOfHealth extends WellWater {
 	
 		GLog.p( Messages.get(this, "procced") );
 		
-		Notes.remove( Feature.WELL_OF_HEALTH );
+		Notes.remove( Landmark.WELL_OF_HEALTH );
 		
 		return true;
 	}
@@ -64,7 +64,7 @@ public class WaterOfHealth extends WellWater {
 	protected Item affectItem( Item item ) {
 		if (item instanceof DewVial && !((DewVial)item).isFull()) {
 			((DewVial)item).fill();
-			Notes.remove( Feature.WELL_OF_HEALTH );
+			Notes.remove( Landmark.WELL_OF_HEALTH );
 			return item;
 		}
 		

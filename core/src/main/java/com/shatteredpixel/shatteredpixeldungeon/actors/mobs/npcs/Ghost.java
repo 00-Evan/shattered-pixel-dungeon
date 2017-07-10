@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -44,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -170,7 +170,7 @@ public class Ghost extends NPC {
 				GameScene.add(questBoss);
 				GameScene.show( new WndQuest( this, txt_quest ) );
 				Quest.given = true;
-				Notes.add( Notes.Feature.GHOST );
+				Notes.add( Notes.Landmark.GHOST );
 			}
 
 		}
@@ -342,7 +342,7 @@ public class Ghost extends NPC {
 			weapon = null;
 			armor = null;
 			
-			Notes.remove( Notes.Feature.GHOST );
+			Notes.remove( Notes.Landmark.GHOST );
 		}
 
 		public static boolean completed(){

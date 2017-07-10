@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -32,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.BlacksmithRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -86,7 +86,7 @@ public class Blacksmith extends NPC {
 				}
 			} );
 			
-			Notes.add( Notes.Feature.TROLL );
+			Notes.add( Notes.Landmark.TROLL );
 			
 		} else if (!Quest.completed) {
 			if (Quest.alternative) {
@@ -203,7 +203,7 @@ public class Blacksmith extends NPC {
 		
 		Quest.reforged = true;
 		
-		Notes.remove( Notes.Feature.TROLL );
+		Notes.remove( Notes.Landmark.TROLL );
 	}
 	
 	@Override

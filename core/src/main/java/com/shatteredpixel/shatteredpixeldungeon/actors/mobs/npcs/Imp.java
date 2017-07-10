@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
@@ -31,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DwarfToken;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -105,7 +105,7 @@ public class Imp extends NPC {
 			Quest.given = true;
 			Quest.completed = false;
 			
-			Notes.add( Notes.Feature.IMP );
+			Notes.add( Notes.Landmark.IMP );
 		}
 
 		return false;
@@ -214,7 +214,7 @@ public class Imp extends NPC {
 			reward = null;
 			completed = true;
 			
-			Notes.remove( Notes.Feature.IMP );
+			Notes.remove( Notes.Landmark.IMP );
 		}
 		
 		public static boolean isCompleted() {

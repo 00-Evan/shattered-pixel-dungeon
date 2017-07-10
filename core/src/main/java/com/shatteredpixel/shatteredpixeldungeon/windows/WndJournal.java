@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
@@ -32,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalogs;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -239,7 +239,7 @@ public class WndJournal extends WndTabbed {
 			
 			//Notes entries
 			for (Notes.Record rec : Notes.records) {
-				ListItem item = new ListItem( Icons.get(Icons.DEPTH), rec.feature.desc(), rec.depth );
+				ListItem item = new ListItem( Icons.get(Icons.DEPTH), rec.landmark.desc(), rec.depth );
 				item.setRect( 0, pos, width(), ITEM_HEIGHT );
 				content.add( item );
 				

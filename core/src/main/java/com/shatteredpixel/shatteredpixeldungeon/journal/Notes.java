@@ -19,17 +19,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
-public class Journal {
+public class Notes {
 
-	public enum Feature {
+	public enum Landmark {
 		WELL_OF_HEALTH,
 		WELL_OF_AWARENESS,
 		WELL_OF_TRANSMUTATION,
@@ -49,17 +50,22 @@ public class Journal {
 	
 	public static class Record implements Comparable<Record>, Bundlable {
 		
+		//compatibility with pre-0.6.1 saves
 		private static final String FEATURE	= "feature";
+		
+		private static final String LANDMARK	= "landmark";
+		
 		private static final String DEPTH	= "depth";
 		
-		public Feature feature;
+		public Landmark landmark;
+		
 		public int depth;
 		
 		public Record() {
 		}
 		
-		public Record( Feature feature, int depth ) {
-			this.feature = feature;
+		public Record(Landmark landmark, int depth ) {
+			this.landmark = landmark;
 			this.depth = depth;
 		}
 
@@ -70,13 +76,17 @@ public class Journal {
 
 		@Override
 		public void restoreFromBundle( Bundle bundle ) {
-			feature = Feature.valueOf( bundle.getString( FEATURE ) );
+			if (bundle.contains(FEATURE)) {
+				landmark = Landmark.valueOf(bundle.getString(FEATURE));
+			} else {
+				landmark = Landmark.valueOf(bundle.getString(LANDMARK));
+			}
 			depth = bundle.getInt( DEPTH );
 		}
 
 		@Override
 		public void storeInBundle( Bundle bundle ) {
-			bundle.put( FEATURE, feature.toString() );
+			bundle.put( LANDMARK, landmark.toString() );
 			bundle.put( DEPTH, depth );
 		}
 	}
@@ -84,7 +94,7 @@ public class Journal {
 	public static ArrayList<Record> records;
 	
 	public static void reset() {
-		records = new ArrayList<Journal.Record>();
+		records = new ArrayList<>();
 	}
 	
 	private static final String JOURNAL	= "journal";
@@ -94,29 +104,29 @@ public class Journal {
 	}
 	
 	public static void restoreFromBundle( Bundle bundle ) {
-		records = new ArrayList<Record>();
+		records = new ArrayList<>();
 		for (Bundlable rec : bundle.getCollection( JOURNAL ) ) {
 			records.add( (Record) rec );
 		}
 	}
 	
-	public static void add( Feature feature ) {
+	public static void add( Landmark landmark ) {
 		int size = records.size();
 		for (int i=0; i < size; i++) {
 			Record rec = records.get( i );
-			if (rec.feature == feature && rec.depth == Dungeon.depth) {
+			if (rec.landmark == landmark && rec.depth == Dungeon.depth) {
 				return;
 			}
 		}
 		
-		records.add( new Record( feature, Dungeon.depth ) );
+		records.add( new Record(landmark, Dungeon.depth ) );
 	}
 	
-	public static void remove( Feature feature ) {
+	public static void remove( Landmark landmark ) {
 		int size = records.size();
 		for (int i=0; i < size; i++) {
 			Record rec = records.get( i );
-			if (rec.feature == feature && rec.depth == Dungeon.depth) {
+			if (rec.landmark == landmark && rec.depth == Dungeon.depth) {
 				records.remove( i );
 				return;
 			}

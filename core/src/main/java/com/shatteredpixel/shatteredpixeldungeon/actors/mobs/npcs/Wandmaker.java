@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -32,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.CeremonialCandle;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.CorpseDust;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom;
@@ -163,7 +163,7 @@ public class Wandmaker extends NPC {
 				}
 			});
 
-			Notes.add( Notes.Feature.WANDMAKER );
+			Notes.add( Notes.Landmark.WANDMAKER );
 			Quest.given = true;
 		}
 
@@ -307,7 +307,7 @@ public class Wandmaker extends NPC {
 			wand1 = null;
 			wand2 = null;
 			
-			Notes.remove( Notes.Feature.WANDMAKER );
+			Notes.remove( Notes.Landmark.WANDMAKER );
 		}
 	}
 }

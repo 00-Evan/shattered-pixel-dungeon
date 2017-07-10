@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.Notes.Feature;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -41,6 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Random;
@@ -71,7 +71,7 @@ public class WaterOfTransmutation extends WellWater {
 		}
 
 		if (item != null) {
-			Notes.remove( Feature.WELL_OF_TRANSMUTATION );
+			Notes.remove( Landmark.WELL_OF_TRANSMUTATION );
 		}
 
 		return item;
