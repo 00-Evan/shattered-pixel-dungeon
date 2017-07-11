@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Badges {
@@ -464,32 +465,14 @@ public class Badges {
 	}
 	
 	public static void validateItemsIdentified() {
-		if (!global.contains( Badge.ALL_WEAPONS_IDENTIFIED ) && Catalogs.allWeaponsSeen()){
-			displayBadge( Badge.ALL_WEAPONS_IDENTIFIED );
-		}
 		
-		if (!global.contains( Badge.ALL_ARMOR_IDENTIFIED ) && Catalogs.allArmorSeen()){
-			displayBadge( Badge.ALL_ARMOR_IDENTIFIED );
-		}
-		
-		if (!global.contains( Badge.ALL_WANDS_IDENTIFIED ) && Catalogs.allWandsSeen()){
-			displayBadge( Badge.ALL_WANDS_IDENTIFIED );
-		}
-		
-		if (!global.contains( Badge.ALL_RINGS_IDENTIFIED ) && Catalogs.allRingsSeen()){
-			displayBadge( Badge.ALL_RINGS_IDENTIFIED );
-		}
-		
-		if (!global.contains( Badge.ALL_ARTIFACTS_IDENTIFIED ) && Catalogs.allArtifactsSeen()){
-			displayBadge( Badge.ALL_ARTIFACTS_IDENTIFIED );
-		}
-		
-		if (!global.contains( Badge.ALL_POTIONS_IDENTIFIED ) && Catalogs.allPotionsSeen()){
-			displayBadge( Badge.ALL_POTIONS_IDENTIFIED );
-		}
-		
-		if (!global.contains( Badge.ALL_SCROLLS_IDENTIFIED ) && Catalogs.allScrollsSeen()){
-			displayBadge( Badge.ALL_SCROLLS_IDENTIFIED );
+		for (LinkedHashMap<Class<? extends Item>, Boolean> catalog : Catalogs.allCatalogs){
+			if (Catalogs.allSeen(catalog.keySet())){
+				Badge b = Catalogs.catalogBadges.get(catalog);
+				if (!global.contains(b)){
+					displayBadge(b);
+				}
+			}
 		}
 		
 		if (!global.contains( Badge.ALL_ITEMS_IDENTIFIED ) &&

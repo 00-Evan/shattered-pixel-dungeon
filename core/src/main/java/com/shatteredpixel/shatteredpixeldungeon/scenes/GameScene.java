@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalogs;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
@@ -439,6 +440,7 @@ public class GameScene extends PixelScene {
 		
 		scene = null;
 		Badges.saveGlobal();
+		Catalogs.save();
 		
 		super.destroy();
 	}
@@ -448,6 +450,7 @@ public class GameScene extends PixelScene {
 		try {
 			Dungeon.saveAll();
 			Badges.saveGlobal();
+			Catalogs.save();
 		} catch (IOException e) {
 			ShatteredPixelDungeon.reportException(e);
 		}

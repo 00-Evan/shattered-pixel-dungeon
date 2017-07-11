@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.HuntressArmor;
@@ -116,10 +117,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
+import com.watabou.noosa.Game;
+import com.watabou.utils.Bundle;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Catalogs {
 	
@@ -157,13 +165,6 @@ public class Catalogs {
 		return weapons.keySet();
 	}
 	
-	public static boolean allWeaponsSeen(){
-		for (Boolean val : weapons.values()){
-			if (!val) return false;
-		}
-		return true;
-	}
-	
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> armor = new LinkedHashMap<>();
 	static {
 		armor.put( ClothArmor.class,       false);
@@ -179,13 +180,6 @@ public class Catalogs {
 	
 	public static Collection<Class<? extends Item>> armor(){
 		return armor.keySet();
-	}
-	
-	public static boolean allArmorSeen(){
-		for (Boolean val : armor.values()){
-			if (!val) return false;
-		}
-		return true;
 	}
 	
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> wands = new LinkedHashMap<>();
@@ -209,13 +203,6 @@ public class Catalogs {
 		return wands.keySet();
 	}
 	
-	public static boolean allWandsSeen(){
-		for (Boolean val : wands.values()){
-			if (!val) return false;
-		}
-		return true;
-	}
-	
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> rings = new LinkedHashMap<>();
 	static {
 		rings.put( RingOfAccuracy.class,        false);
@@ -233,13 +220,6 @@ public class Catalogs {
 	
 	public static Collection<Class<? extends Item>> rings(){
 		return rings.keySet();
-	}
-	
-	public static boolean allRingsSeen(){
-		for (Boolean val : rings.values()){
-			if (!val) return false;
-		}
-		return true;
 	}
 	
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> artifacts = new LinkedHashMap<>();
@@ -263,13 +243,6 @@ public class Catalogs {
 		return artifacts.keySet();
 	}
 	
-	public static boolean allArtifactsSeen(){
-		for (Boolean val : artifacts.values()){
-			if (!val) return false;
-		}
-		return true;
-	}
-	
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> potions = new LinkedHashMap<>();
 	static {
 		potions.put( PotionOfHealing.class,         false);
@@ -290,13 +263,6 @@ public class Catalogs {
 		return potions.keySet();
 	}
 	
-	public static boolean allPotionsSeen(){
-		for (Boolean val : potions.values()){
-			if (!val) return false;
-		}
-		return true;
-	}
-
 	private static final LinkedHashMap<Class<? extends Item>, Boolean> scrolls = new LinkedHashMap<>();
 	static {
 		scrolls.put( ScrollOfIdentify.class,        false);
@@ -317,14 +283,7 @@ public class Catalogs {
 		return scrolls.keySet();
 	}
 	
-	public static boolean allScrollsSeen(){
-		for (Boolean val : scrolls.values()){
-			if (!val) return false;
-		}
-		return true;
-	}
-	
-	private static final ArrayList<LinkedHashMap<Class<? extends Item>, Boolean>> allCatalogs = new ArrayList<>();
+	public static final ArrayList<LinkedHashMap<Class<? extends Item>, Boolean>> allCatalogs = new ArrayList<>();
 	static{
 		allCatalogs.add(weapons);
 		allCatalogs.add(armor);
@@ -333,6 +292,26 @@ public class Catalogs {
 		allCatalogs.add(artifacts);
 		allCatalogs.add(potions);
 		allCatalogs.add(scrolls);
+	}
+	
+	public static LinkedHashMap<LinkedHashMap<Class<? extends Item>, Boolean>, Badges.Badge> catalogBadges = new LinkedHashMap<>();
+	static {
+		catalogBadges.put(weapons, Badges.Badge.ALL_WEAPONS_IDENTIFIED);
+		catalogBadges.put(armor, Badges.Badge.ALL_ARMOR_IDENTIFIED);
+		catalogBadges.put(wands, Badges.Badge.ALL_WANDS_IDENTIFIED);
+		catalogBadges.put(rings, Badges.Badge.ALL_RINGS_IDENTIFIED);
+		catalogBadges.put(artifacts, Badges.Badge.ALL_ARTIFACTS_IDENTIFIED);
+		catalogBadges.put(potions, Badges.Badge.ALL_POTIONS_IDENTIFIED);
+		catalogBadges.put(scrolls, Badges.Badge.ALL_SCROLLS_IDENTIFIED);
+	}
+	
+	public static boolean allSeen( Collection<Class<?extends Item>> items){
+		for (Class<?extends Item> item : items){
+			if (!isSeen(item)){
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public static boolean isSeen(Class<? extends Item> itemClass){
@@ -348,9 +327,96 @@ public class Catalogs {
 		for (LinkedHashMap<Class<? extends Item>, Boolean> catalog : allCatalogs) {
 			if (catalog.containsKey(itemClass)) {
 				catalog.put(itemClass, true);
+				saveNeeded = true;
 			}
 		}
 		Badges.validateItemsIdentified();
+	}
+	
+	private static boolean saveNeeded = false;
+	
+	public static void save(){
+		if (!saveNeeded){
+			return;
+		}
+		
+		Badges.loadGlobal();
+		
+		Bundle bundle = new Bundle();
+		
+		ArrayList<String> seen = new ArrayList<>();
+		
+		//if we have identified all items of a set, we use the badge to keep track instead.
+		if (!Badges.global.contains(Badges.Badge.ALL_ITEMS_IDENTIFIED)) {
+			for (LinkedHashMap<Class<? extends Item>, Boolean> cat : allCatalogs) {
+				if (!Badges.global.contains(catalogBadges.get(cat))) {
+					for (Class<? extends Item> item : cat.keySet()) {
+						if (cat.get(item)) seen.add(item.getSimpleName());
+					}
+				}
+			}
+		}
+		
+		bundle.put( "catalogs", seen.toArray(new String[0]));
+		
+		try {
+			OutputStream output = Game.instance.openFileOutput( "journal.dat", Game.MODE_PRIVATE );
+			Bundle.write( bundle, output );
+			output.close();
+			saveNeeded = false;
+		} catch (IOException e) {
+			ShatteredPixelDungeon.reportException(e);
+		}
+	
+	}
+	
+	private static boolean loaded = false;
+	
+	public static void load( ){
+		if (loaded){
+			return;
+		}
+		
+		Badges.loadGlobal();
+		
+		//logic for if we have all badges
+		if (Badges.global.contains(Badges.Badge.ALL_ITEMS_IDENTIFIED)){
+			for ( LinkedHashMap<Class<? extends Item>, Boolean> cat : allCatalogs){
+				for (Class<? extends Item> item : cat.keySet()){
+					cat.put(item, true);
+				}
+			}
+			loaded = true;
+			return;
+		}
+		
+		//catalog-specific badge logic
+		for (LinkedHashMap<Class<? extends Item>, Boolean> cat : allCatalogs){
+			if (Badges.global.contains(catalogBadges.get(cat))){
+				for (Class<? extends Item> item : cat.keySet()){
+					cat.put(item, true);
+				}
+			}
+		}
+		
+		//general save/load
+		try {
+			InputStream input = Game.instance.openFileInput("journal.dat");
+			Bundle bundle = Bundle.read(input);
+			input.close();
+			
+			List<String> seen = Arrays.asList(bundle.getStringArray("catalogs"));
+			
+			for ( LinkedHashMap<Class<? extends Item>, Boolean> cat : allCatalogs){
+				for (Class<? extends Item> item : cat.keySet()){
+					cat.put(item, seen.contains( item.getSimpleName() ));
+				}
+			}
+			
+			loaded = true;
+		} catch (IOException e){
+		
+		}
 	}
 	
 }
