@@ -95,9 +95,9 @@ public class Belongings implements Iterable<Item> {
 			for (int i = 0; i < specialKeys.length; i++){
 				if (specialKeys[i] > 0){
 					if (i % 5 == 0){
-						Notes.add((Key) new GoldenKey(i).quantity(specialKeys[i]));
-					} else {
 						Notes.add((Key) new SkeletonKey(i).quantity(specialKeys[i]));
+					} else {
+						Notes.add((Key) new GoldenKey(i).quantity(specialKeys[i]));
 					}
 				}
 			}

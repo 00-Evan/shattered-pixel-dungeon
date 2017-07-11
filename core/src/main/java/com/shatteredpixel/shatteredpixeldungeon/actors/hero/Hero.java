@@ -773,7 +773,7 @@ public class Hero extends Char {
 				hasKey = true;
 				
 			} else if (door == Terrain.LOCKED_EXIT
-					&& Notes.keyCount(new GoldenKey(Dungeon.depth)) > 0) {
+					&& Notes.keyCount(new SkeletonKey(Dungeon.depth)) > 0) {
 
 				hasKey = true;
 				
