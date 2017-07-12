@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Catalogs;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -48,7 +48,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Badges {
@@ -466,9 +465,9 @@ public class Badges {
 	
 	public static void validateItemsIdentified() {
 		
-		for (LinkedHashMap<Class<? extends Item>, Boolean> catalog : Catalogs.allCatalogs){
-			if (Catalogs.allSeen(catalog.keySet())){
-				Badge b = Catalogs.catalogBadges.get(catalog);
+		for (Catalog cat : Catalog.values()){
+			if (Catalog.allSeen(cat.items())){
+				Badge b = Catalog.catalogBadges.get(cat);
 				if (!global.contains(b)){
 					displayBadge(b);
 				}

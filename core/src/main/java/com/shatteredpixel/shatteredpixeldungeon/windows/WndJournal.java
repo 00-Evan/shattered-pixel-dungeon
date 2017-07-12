@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Catalogs;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -64,7 +64,7 @@ public class WndJournal extends WndTabbed {
 	private NotesTab notesTab;
 	private CatalogTab catalogTab;
 	
-	public static int last_index = 0;
+	public static int last_index = 2;
 	
 	public WndJournal(){
 		
@@ -362,25 +362,25 @@ public class WndJournal extends WndTabbed {
 			ArrayList<Class<? extends Item>> itemClasses;
 			final HashMap<Class<?  extends Item>, Boolean> known = new HashMap<>();
 			if (currentItemIdx == WEAPON_IDX) {
-				itemClasses = new ArrayList<>(Catalogs.weapons());
+				itemClasses = new ArrayList<>(Catalog.WEAPONS.items());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
 			} else if (currentItemIdx == ARMOR_IDX){
-				itemClasses = new ArrayList<>(Catalogs.armor());
+				itemClasses = new ArrayList<>(Catalog.ARMOR.items());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
 			} else if (currentItemIdx == WAND_IDX){
-				itemClasses = new ArrayList<>(Catalogs.wands());
+				itemClasses = new ArrayList<>(Catalog.WANDS.items());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
 			} else if (currentItemIdx == RING_IDX){
-				itemClasses = new ArrayList<>(Catalogs.rings());
+				itemClasses = new ArrayList<>(Catalog.RINGS.items());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, Ring.getKnown().contains(cls));
 			} else if (currentItemIdx == ARTIF_IDX){
-				itemClasses = new ArrayList<>(Catalogs.artifacts());
+				itemClasses = new ArrayList<>(Catalog.ARTIFACTS.items());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, true);
 			} else if (currentItemIdx == POTION_IDX){
-				itemClasses = new ArrayList<>(Catalogs.potions());
+				itemClasses = new ArrayList<>(Catalog.POTIONS.items());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, Potion.getKnown().contains(cls));
 			} else if (currentItemIdx == SCROLL_IDX) {
-				itemClasses = new ArrayList<>(Catalogs.scrolls());
+				itemClasses = new ArrayList<>(Catalog.SCROLLS.items());
 				for (Class<? extends Item> cls : itemClasses) known.put(cls, Scroll.getKnown().contains(cls));
 			} else {
 				itemClasses = new ArrayList<>();
@@ -392,10 +392,10 @@ public class WndJournal extends WndTabbed {
 					int result = 0;
 					
 					//specifically known items appear first, then seen items, then unknown items.
-					if (known.get(a) && Catalogs.isSeen(a)) result -= 2;
-					if (known.get(b) && Catalogs.isSeen(b)) result += 2;
-					if (Catalogs.isSeen(a))                 result --;
-					if (Catalogs.isSeen(b))                 result ++;
+					if (known.get(a) && Catalog.isSeen(a)) result -= 2;
+					if (known.get(b) && Catalog.isSeen(b)) result += 2;
+					if (Catalog.isSeen(a))                 result --;
+					if (Catalog.isSeen(b))                 result ++;
 					
 					return result;
 				}
@@ -404,7 +404,7 @@ public class WndJournal extends WndTabbed {
 			float pos = 0;
 			for (Class<? extends Item> itemClass : itemClasses) {
 				try{
-					CatalogItem item = new CatalogItem(itemClass.newInstance(), known.get(itemClass), Catalogs.isSeen(itemClass));
+					CatalogItem item = new CatalogItem(itemClass.newInstance(), known.get(itemClass), Catalog.isSeen(itemClass));
 					item.setRect( 0, pos, width, ITEM_HEIGHT );
 					content.add( item );
 					items.add( item );

@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Catalogs;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -171,7 +171,7 @@ public abstract class Scroll extends Item {
 			}
 			
 			if (Dungeon.hero.isAlive()) {
-				Catalogs.setSeen(getClass());
+				Catalog.setSeen(getClass());
 			}
 		}
 	}

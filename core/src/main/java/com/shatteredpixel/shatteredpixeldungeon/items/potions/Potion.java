@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Catalogs;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -254,7 +254,7 @@ public class Potion extends Item {
 			}
 			
 			if (Dungeon.hero.isAlive()) {
-				Catalogs.setSeen(getClass());
+				Catalog.setSeen(getClass());
 			}
 		}
 	}
