@@ -338,7 +338,9 @@ public class Item implements Bundlable {
 		levelKnown = true;
 		cursedKnown = true;
 		
-		Catalogs.setSeen(getClass());
+		if (Dungeon.hero.isAlive()) {
+			Catalogs.setSeen(getClass());
+		}
 		
 		return this;
 	}

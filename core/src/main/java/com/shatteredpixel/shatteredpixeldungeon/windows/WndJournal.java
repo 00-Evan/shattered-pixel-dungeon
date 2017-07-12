@@ -392,10 +392,10 @@ public class WndJournal extends WndTabbed {
 					int result = 0;
 					
 					//specifically known items appear first, then seen items, then unknown items.
-					if (known.get(a))       result -= 2;
-					if (known.get(b))       result += 2;
-					if (Catalogs.isSeen(a)) result --;
-					if (Catalogs.isSeen(b)) result ++;
+					if (known.get(a) && Catalogs.isSeen(a)) result -= 2;
+					if (known.get(b) && Catalogs.isSeen(b)) result += 2;
+					if (Catalogs.isSeen(a))                 result --;
+					if (Catalogs.isSeen(b))                 result ++;
 					
 					return result;
 				}

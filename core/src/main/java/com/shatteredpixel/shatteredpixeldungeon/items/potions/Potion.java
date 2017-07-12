@@ -253,7 +253,9 @@ public class Potion extends Item {
 				updateQuickslot();
 			}
 			
-			Catalogs.setSeen(getClass());
+			if (Dungeon.hero.isAlive()) {
+				Catalogs.setSeen(getClass());
+			}
 		}
 	}
 	

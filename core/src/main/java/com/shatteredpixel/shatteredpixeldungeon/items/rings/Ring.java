@@ -143,7 +143,9 @@ public class Ring extends KindofMisc {
 			handler.know( this );
 		}
 		
-		Catalogs.setSeen(getClass());
+		if (Dungeon.hero.isAlive()) {
+			Catalogs.setSeen(getClass());
+		}
 	}
 	
 	@Override
