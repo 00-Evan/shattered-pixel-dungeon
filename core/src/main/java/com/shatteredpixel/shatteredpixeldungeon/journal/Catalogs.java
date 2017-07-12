@@ -409,7 +409,9 @@ public class Catalogs {
 			
 			for ( LinkedHashMap<Class<? extends Item>, Boolean> cat : allCatalogs){
 				for (Class<? extends Item> item : cat.keySet()){
-					cat.put(item, seen.contains( item.getSimpleName() ));
+					if (seen.contains( item.getSimpleName() )) {
+						cat.put(item, true );
+					}
 				}
 			}
 			
