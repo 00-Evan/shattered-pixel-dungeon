@@ -331,12 +331,14 @@ public enum Catalog {
 		}
 		
 		//general save/load
-		List<String> seen = Arrays.asList(bundle.getStringArray(CATALOGS));
-		
-		for ( Catalog cat : values()){
-			for (Class<? extends Item> item : cat.items()){
-				if (seen.contains( item.getSimpleName() )) {
-					cat.seen.put(item, true );
+		if (bundle.contains(CATALOGS)) {
+			List<String> seen = Arrays.asList(bundle.getStringArray(CATALOGS));
+			
+			for (Catalog cat : values()) {
+				for (Class<? extends Item> item : cat.items()) {
+					if (seen.contains(item.getSimpleName())) {
+						cat.seen.put(item, true);
+					}
 				}
 			}
 		}
