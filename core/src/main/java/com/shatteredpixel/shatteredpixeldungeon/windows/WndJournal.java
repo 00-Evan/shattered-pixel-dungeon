@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -64,7 +65,7 @@ public class WndJournal extends WndTabbed {
 	private NotesTab notesTab;
 	private CatalogTab catalogTab;
 	
-	public static int last_index = 2;
+	public static int last_index = 0;
 	
 	public WndJournal(){
 		
@@ -76,6 +77,7 @@ public class WndJournal extends WndTabbed {
 		guideTab = new GuideTab();
 		add(guideTab);
 		guideTab.setRect(0, 0, width, height);
+		guideTab.updateList();
 		
 		notesTab = new NotesTab();
 		add(notesTab);
@@ -187,20 +189,92 @@ public class WndJournal extends WndTabbed {
 	
 	private static class GuideTab extends Component {
 		
-		private RenderedText text;
+		private ScrollPane list;
+		private ArrayList<GuideItem> pages = new ArrayList<>();
 		
 		@Override
 		protected void createChildren() {
-			text = PixelScene.renderText( "Coming Soon...", 9);
-			add( text );
+			list = new ScrollPane( new Component() ){
+				@Override
+				public void onClick( float x, float y ) {
+					int size = pages.size();
+					for (int i=0; i < size; i++) {
+						if (pages.get( i ).onClick( x, y )) {
+							break;
+						}
+					}
+				}
+			};
+			add( list );
 		}
 		
 		@Override
 		protected void layout() {
-			text.x = (width() - text.width())/2f;
-			text.y = 10;
-			PixelScene.align(text);
+			super.layout();
+			list.setRect( 0, 0, width, height);
 		}
+		
+		private void updateList(){
+			Component content = list.content();
+			
+			float pos = 0;
+			
+			RenderedText title = PixelScene.renderText(Document.ADVENTURERS_GUIDE.title(), 9);
+			title.hardlight(TITLE_COLOR);
+			title.x = (width() - title.width())/2f;
+			title.y = pos + (ITEM_HEIGHT - title.baseLine())/2f;
+			PixelScene.align(title);
+			content.add(title);
+			
+			ColorBlock line = new ColorBlock( width(), 1, 0xFF222222);
+			line.y = pos;
+			content.add(line);
+			pos += ITEM_HEIGHT;
+			
+			for (String page : Document.ADVENTURERS_GUIDE.pages()){
+				GuideItem item = new GuideItem( page );
+				
+				item.setRect( 0, pos, width(), ITEM_HEIGHT );
+				content.add( item );
+				
+				pos += item.height();
+				pages.add(item);
+			}
+			
+			content.setSize( width(), pos );
+			list.setSize( list.width(), list.height() );
+		}
+		
+		private static class GuideItem extends ListItem {
+			
+			private boolean found = false;
+			private String page;
+			
+			public GuideItem( String page ){
+				super( Icons.get(Icons.MASTERY), Messages.titleCase(Document.ADVENTURERS_GUIDE.pageTitle(page)), -1);
+				
+				this.page = page;
+				found = Document.ADVENTURERS_GUIDE.hasPage(page);
+				
+				if (!found) {
+					icon.hardlight( 0.5f, 0.5f, 0.5f);
+					label.text("???");
+					label.hardlight( 0x999999 );
+				}
+				
+			}
+			
+			public boolean onClick( float x, float y ) {
+				if (inside( x, y ) && found) {
+					GameScene.show( new WndStory( Document.ADVENTURERS_GUIDE.pageBody(page) ));
+					return true;
+				} else {
+					return false;
+				}
+			}
+			
+		}
+		
 	}
 	
 	private static class NotesTab extends Component {
@@ -228,6 +302,7 @@ public class WndJournal extends WndTabbed {
 			ArrayList<Notes.KeyRecord> keys = Notes.getRecords(Notes.KeyRecord.class);
 			if (!keys.isEmpty()){
 				RenderedText keyTitle = PixelScene.renderText(Messages.get(this, "keys"), 9);
+				keyTitle.hardlight(TITLE_COLOR);
 				keyTitle.x = (width() - keyTitle.width())/2f;
 				keyTitle.y = pos + (ITEM_HEIGHT - keyTitle.baseLine())/2f;
 				PixelScene.align(keyTitle);
@@ -250,11 +325,12 @@ public class WndJournal extends WndTabbed {
 			//Landmarks
 			ArrayList<Notes.LandmarkRecord> landmarks = Notes.getRecords(Notes.LandmarkRecord.class);
 			if (!landmarks.isEmpty()){
-				RenderedText keyTitle = PixelScene.renderText(Messages.get(this, "landmarks"), 9);
-				keyTitle.x = (width() - keyTitle.width())/2f;
-				keyTitle.y = pos + (ITEM_HEIGHT - keyTitle.baseLine())/2f;
-				PixelScene.align(keyTitle);
-				content.add(keyTitle);
+				RenderedText markTitle = PixelScene.renderText(Messages.get(this, "landmarks"), 9);
+				markTitle.hardlight(TITLE_COLOR);
+				markTitle.x = (width() - markTitle.width())/2f;
+				markTitle.y = pos + (ITEM_HEIGHT - markTitle.baseLine())/2f;
+				PixelScene.align(markTitle);
+				content.add(markTitle);
 				
 				ColorBlock line = new ColorBlock( width(), 1, 0xFF222222);
 				line.y = pos;
@@ -271,6 +347,7 @@ public class WndJournal extends WndTabbed {
 			}
 			
 			content.setSize( width(), pos );
+			list.setSize( list.width(), list.height() );
 		}
 		
 	}

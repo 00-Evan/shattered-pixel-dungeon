@@ -466,7 +466,7 @@ public class Badges {
 	public static void validateItemsIdentified() {
 		
 		for (Catalog cat : Catalog.values()){
-			if (Catalog.allSeen(cat.items())){
+			if (cat.allSeen()){
 				Badge b = Catalog.catalogBadges.get(cat);
 				if (!global.contains(b)){
 					displayBadge(b);

@@ -51,6 +51,7 @@ public class Journal {
 		}
 		
 		Catalog.restore( bundle );
+		Document.restore( bundle );
 		
 		loaded = true;
 	}
@@ -66,6 +67,7 @@ public class Journal {
 		Bundle bundle = new Bundle();
 		
 		Catalog.store(bundle);
+		Document.store(bundle);
 		
 		try {
 			OutputStream output = Game.instance.openFileOutput( JOURNAL_FILE, Game.MODE_PRIVATE );

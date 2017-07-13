@@ -140,6 +140,15 @@ public enum Catalog {
 		return seen.keySet();
 	}
 	
+	public boolean allSeen(){
+		for (Class<?extends Item> item : items()){
+			if (!seen.get(item)){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	static {
 		WEAPONS.seen.put( WornShortsword.class,             false);
 		WEAPONS.seen.put( Knuckles.class,                   false);
@@ -216,7 +225,7 @@ public enum Catalog {
 		ARTIFACTS.seen.put( SandalsOfNature.class,          false);
 		ARTIFACTS.seen.put( TalismanOfForesight.class,      false);
 		ARTIFACTS.seen.put( TimekeepersHourglass.class,     false);
-		ARTIFACTS.seen.put(UnstableSpellbook.class,         false);
+		ARTIFACTS.seen.put( UnstableSpellbook.class,        false);
 	
 		POTIONS.seen.put( PotionOfHealing.class,            false);
 		POTIONS.seen.put( PotionOfStrength.class,           false);
@@ -254,15 +263,6 @@ public enum Catalog {
 		catalogBadges.put(ARTIFACTS, Badges.Badge.ALL_ARTIFACTS_IDENTIFIED);
 		catalogBadges.put(POTIONS, Badges.Badge.ALL_POTIONS_IDENTIFIED);
 		catalogBadges.put(SCROLLS, Badges.Badge.ALL_SCROLLS_IDENTIFIED);
-	}
-	
-	public static boolean allSeen( Collection<Class<?extends Item>> items){
-		for (Class<?extends Item> item : items){
-			if (!isSeen(item)){
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	public static boolean isSeen(Class<? extends Item> itemClass){
