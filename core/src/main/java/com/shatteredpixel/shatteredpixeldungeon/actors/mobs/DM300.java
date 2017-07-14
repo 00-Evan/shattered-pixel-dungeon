@@ -63,7 +63,7 @@ public class DM300 extends Mob {
 		EXP = 30;
 		defenseSkill = 18;
 		
-		loot = new CapeOfThorns().identify();
+		loot = new CapeOfThorns();
 		lootChance = 0.333f;
 
 		properties.add(Property.BOSS);

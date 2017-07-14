@@ -62,7 +62,7 @@ public class Goo extends Mob {
 		defenseSkill = 8;
 		spriteClass = GooSprite.class;
 
-		loot = new LloydsBeacon().identify();
+		loot = new LloydsBeacon();
 		lootChance = 0.333f;
 
 		properties.add(Property.BOSS);
