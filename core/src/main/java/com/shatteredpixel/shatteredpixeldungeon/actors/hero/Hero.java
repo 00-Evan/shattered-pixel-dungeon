@@ -242,6 +242,8 @@ public class Hero extends Char {
 		heroClass = HeroClass.restoreInBundle( bundle );
 		subClass = HeroSubClass.restoreInBundle( bundle );
 		
+		berserk = subClass == HeroSubClass.BERSERKER ? buff(Berserk.class) : null;
+		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
 		
