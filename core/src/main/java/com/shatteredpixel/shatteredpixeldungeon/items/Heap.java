@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.DocumentPage;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -533,8 +534,19 @@ public class Heap implements Bundlable {
 		pos = bundle.getInt( POS );
 		seen = bundle.getBoolean( SEEN );
 		type = Type.valueOf( bundle.getString( TYPE ) );
+		
 		items = new LinkedList<Item>( (Collection<Item>) ((Collection<?>) bundle.getCollection( ITEMS )) );
 		items.removeAll(Collections.singleton(null));
+		
+		//remove any document pages that either don't exist anymore or that the player already has
+		for (Item item : items.toArray(new Item[0])){
+			if (item instanceof DocumentPage
+					&& ( !((DocumentPage) item).document().pages().contains(((DocumentPage) item).page())
+					||    ((DocumentPage) item).document().hasPage(((DocumentPage) item).page()))){
+				items.remove(item);
+			}
+		}
+		
 	}
 
 	@Override

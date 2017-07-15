@@ -40,6 +40,14 @@ public enum Document {
 		return pages.keySet();
 	}
 	
+	public boolean addPage( String page ) {
+		if (pages.containsKey(page) && !pages.get(page)){
+			pages.put(page, true);
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean hasPage( String page ){
 		return pages.containsKey(page) && pages.get(page);
 	}
