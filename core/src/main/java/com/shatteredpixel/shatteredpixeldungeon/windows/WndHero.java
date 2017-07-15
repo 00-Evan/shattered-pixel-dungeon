@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -38,13 +39,15 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.ui.Button;
+import com.watabou.noosa.ui.Component;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class WndHero extends WndTabbed {
 	
 	private static final int WIDTH		= 115;
+	private static final int HEIGHT		= 100;
 	
 	private StatsTab stats;
 	private BuffsTab buffs;
@@ -56,6 +59,8 @@ public class WndHero extends WndTabbed {
 		
 		super();
 		
+		resize( WIDTH, HEIGHT );
+		
 		icons = TextureCache.get( Assets.BUFFS_LARGE );
 		film = new TextureFilm( icons, 16, 16 );
 		
@@ -64,6 +69,8 @@ public class WndHero extends WndTabbed {
 		
 		buffs = new BuffsTab();
 		add( buffs );
+		buffs.setRect(0, 0, WIDTH, HEIGHT);
+		buffs.setupList();
 		
 		add( new LabeledTab( Messages.get(this, "stats") ) {
 			protected void select( boolean value ) {
@@ -77,8 +84,6 @@ public class WndHero extends WndTabbed {
 				buffs.visible = buffs.active = selected;
 			};
 		} );
-
-		resize( WIDTH, (int)Math.max( stats.height(), buffs.height() ) );
 
 		layoutTabs();
 		
@@ -144,28 +149,51 @@ public class WndHero extends WndTabbed {
 		}
 	}
 	
-	private class BuffsTab extends Group {
+	private class BuffsTab extends Component {
 		
 		private static final int GAP = 2;
 		
 		private float pos;
+		private ScrollPane buffList;
+		private ArrayList<BuffSlot> slots = new ArrayList<>();
 		
 		public BuffsTab() {
+			buffList = new ScrollPane( new Component() ){
+				@Override
+				public void onClick( float x, float y ) {
+					int size = slots.size();
+					for (int i=0; i < size; i++) {
+						if (slots.get( i ).onClick( x, y )) {
+							break;
+						}
+					}
+				}
+			};
+			add(buffList);
+		}
+		
+		@Override
+		protected void layout() {
+			super.layout();
+			buffList.setRect(0, 0, width, height);
+		}
+		
+		private void setupList() {
+			Component content = buffList.content();
 			for (Buff buff : Dungeon.hero.buffs()) {
 				if (buff.icon() != BuffIndicator.NONE) {
 					BuffSlot slot = new BuffSlot(buff);
 					slot.setRect(0, pos, WIDTH, slot.icon.height());
-					add(slot);
+					content.add(slot);
+					slots.add(slot);
 					pos += GAP + slot.height();
 				}
 			}
-		}
-		
-		public float height() {
-			return pos;
+			content.setSize(buffList.width(), pos);
+			buffList.setSize(buffList.width(), buffList.height());
 		}
 
-		private class BuffSlot extends Button{
+		private class BuffSlot extends Component {
 
 			private Buff buff;
 
@@ -196,10 +224,14 @@ public class WndHero extends WndTabbed {
 				txt.x = icon.width + GAP;
 				txt.y = pos + (int)(icon.height - txt.baseLine()) / 2;
 			}
-
-			@Override
-			protected void onClick() {
-				GameScene.show( new WndInfoBuff( buff ));
+			
+			protected boolean onClick ( float x, float y ) {
+				if (inside( x, y )) {
+					GameScene.show(new WndInfoBuff(buff));
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
 	}
