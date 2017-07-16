@@ -121,6 +121,7 @@ public class DungeonTileSheet {
 		//floor
 		chasmStitcheable.put( Terrain.EMPTY,        CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.GRASS,        CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.EMBERS,       CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.EMPTY_WELL,   CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.HIGH_GRASS,   CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.EMPTY_DECO,   CHASM_FLOOR );
