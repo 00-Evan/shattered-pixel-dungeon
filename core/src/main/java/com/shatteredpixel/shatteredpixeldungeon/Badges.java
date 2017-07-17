@@ -523,19 +523,25 @@ public class Badges {
 		Badge badge = Badge.DEATH_FROM_GLYPH;
 		local.add( badge );
 		displayBadge( badge );
+
+		validateYASD();
 	}
 	
 	public static void validateDeathFromFalling() {
 		Badge badge = Badge.DEATH_FROM_FALLING;
 		local.add( badge );
 		displayBadge( badge );
+
+		validateYASD();
 	}
 	
 	private static void validateYASD() {
 		if (global.contains( Badge.DEATH_FROM_FIRE ) &&
 			global.contains( Badge.DEATH_FROM_POISON ) &&
 			global.contains( Badge.DEATH_FROM_GAS ) &&
-			global.contains( Badge.DEATH_FROM_HUNGER)) {
+			global.contains( Badge.DEATH_FROM_HUNGER) &&
+			global.contains( Badge.DEATH_FROM_GLYPH) &&
+			global.contains( Badge.DEATH_FROM_FALLING)) {
 			
 			Badge badge = Badge.YASD;
 			local.add( badge );
@@ -793,13 +799,13 @@ public class Badges {
 		if (Rankings.INSTANCE.totalNumber >= 10) {
 			badge = Badge.GAMES_PLAYED_1;
 		}
-		if (Rankings.INSTANCE.totalNumber >= 100) {
+		if (Rankings.INSTANCE.totalNumber >= 50) {
 			badge = Badge.GAMES_PLAYED_2;
 		}
-		if (Rankings.INSTANCE.totalNumber >= 500) {
+		if (Rankings.INSTANCE.totalNumber >= 250) {
 			badge = Badge.GAMES_PLAYED_3;
 		}
-		if (Rankings.INSTANCE.totalNumber >= 2000) {
+		if (Rankings.INSTANCE.totalNumber >= 1000) {
 			badge = Badge.GAMES_PLAYED_4;
 		}
 		
@@ -870,11 +876,12 @@ public class Badges {
 		leaveBest( filtered, Badge.FOOD_EATEN_1, Badge.FOOD_EATEN_2, Badge.FOOD_EATEN_3, Badge.FOOD_EATEN_4 );
 		leaveBest( filtered, Badge.ITEM_LEVEL_1, Badge.ITEM_LEVEL_2, Badge.ITEM_LEVEL_3, Badge.ITEM_LEVEL_4 );
 		leaveBest( filtered, Badge.POTIONS_COOKED_1, Badge.POTIONS_COOKED_2, Badge.POTIONS_COOKED_3, Badge.POTIONS_COOKED_4 );
-		leaveBest( filtered, Badge.BOSS_SLAIN_1_ALL_CLASSES, Badge.BOSS_SLAIN_3_ALL_SUBCLASSES );
 		leaveBest( filtered, Badge.DEATH_FROM_FIRE, Badge.YASD );
 		leaveBest( filtered, Badge.DEATH_FROM_GAS, Badge.YASD );
 		leaveBest( filtered, Badge.DEATH_FROM_HUNGER, Badge.YASD );
 		leaveBest( filtered, Badge.DEATH_FROM_POISON, Badge.YASD );
+		leaveBest( filtered, Badge.DEATH_FROM_GLYPH, Badge.YASD );
+		leaveBest( filtered, Badge.DEATH_FROM_FALLING, Badge.YASD );
 		leaveBest( filtered, Badge.ALL_WEAPONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( filtered, Badge.ALL_ARMOR_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( filtered, Badge.ALL_WANDS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
@@ -882,9 +889,6 @@ public class Badges {
 		leaveBest( filtered, Badge.ALL_ARTIFACTS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( filtered, Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( filtered, Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
-		leaveBest( filtered, Badge.VICTORY, Badge.VICTORY_ALL_CLASSES );
-		leaveBest( filtered, Badge.VICTORY, Badge.HAPPY_END );
-		leaveBest( filtered, Badge.VICTORY, Badge.CHAMPION );
 		leaveBest( filtered, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4 );
 		
 		ArrayList<Badge> list = new ArrayList<Badge>( filtered );

@@ -61,16 +61,8 @@ public class BadgesScene extends PixelScene {
 		archs.setSize( w, h );
 		add( archs );
 
-		float pw = Math.min( w, (ShatteredPixelDungeon.landscape() ? MIN_WIDTH_L : MIN_WIDTH_P) * 3 ) - 16;
-		float ph = Math.min( h, (ShatteredPixelDungeon.landscape() ? MIN_HEIGHT_L : MIN_HEIGHT_P) * 3 ) - 32;
-
-		float size = (float)Math.sqrt( pw * ph / 27f );
-		int nCols = (int)Math.ceil( pw / size );
-		int nRows = (int)Math.ceil( ph / size );
-		size = Math.min( pw / nCols, ph / nRows );
-
-		float left = (w - size * nCols) / 2;
-		float top = (h - size * nRows) / 2;
+		float left = 5;
+		float top = 15;
 
 		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
@@ -82,17 +74,32 @@ public class BadgesScene extends PixelScene {
 		Badges.loadGlobal();
 
 		List<Badges.Badge> badges = Badges.filtered( true );
-		for (int i=0; i < nRows; i++) {
-			for (int j=0; j < nCols; j++) {
-				int index = i * nCols + j;
-				Badges.Badge b = index < badges.size() ? badges.get( index ) : null;
-				BadgeButton button = new BadgeButton( b );
-				button.setPos(
-						left + j * size + (size - button.width()) / 2,
-						top + i * size + (size - button.height()) / 2);
-				align(button);
-				add( button );
-			}
+
+		int blankBadges = 34;
+		blankBadges -= badges.size();
+		if (badges.contains(Badges.Badge.ALL_ITEMS_IDENTIFIED))	blankBadges -= 6;
+		if (badges.contains(Badges.Badge.YASD)) 				blankBadges -= 5;
+		blankBadges = Math.max(0, blankBadges);
+
+		//guarantees a max of 5 rows in landscape, and 8 in portrait, assuming a max of 40 buttons
+		int nCols = ShatteredPixelDungeon.landscape() ? 7 : 4;
+		if (badges.size() + blankBadges > 32 && !ShatteredPixelDungeon.landscape())	nCols++;
+
+		int nRows = 1 + (blankBadges + badges.size())/nCols;
+
+		float badgeWidth = (w - 2*left)/nCols;
+		float badgeHeight = (h - 2*top)/nRows;
+
+		for (int i = 0; i < badges.size() + blankBadges; i++){
+			int row = i / nCols;
+			int col = i % nCols;
+			Badges.Badge b = i < badges.size() ? badges.get( i ) : null;
+			BadgeButton button = new BadgeButton( b );
+			button.setPos(
+					left + col * badgeWidth + (badgeWidth - button.width()) / 2,
+					top + row * badgeHeight + (badgeHeight - button.height()) / 2);
+			align(button);
+			add( button );
 		}
 
 		ExitButton btnExit = new ExitButton();
