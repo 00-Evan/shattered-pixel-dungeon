@@ -31,8 +31,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -51,8 +53,10 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class RegularLevel extends Level {
 	
@@ -81,12 +85,7 @@ public abstract class RegularLevel extends Level {
 			rooms = builder.build((ArrayList<Room>)initRooms.clone());
 		} while (rooms == null);
 		
-		if (painter().paint(this, rooms)){
-			placeSign();
-			return true;
-		} else {
-			return false;
-		}
+		return painter().paint(this, rooms);
 		
 	}
 	
@@ -132,25 +131,6 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	protected abstract Painter painter();
-
-	protected void placeSign(){
-		while (true) {
-			int pos = pointToCell(roomEntrance.random());
-			if (pos != entrance && traps.get(pos) == null && findMob(pos) == null) {
-				map[pos] = Terrain.SIGN;
-				break;
-			}
-		}
-		
-		//teaches new players about secret doors
-		if (Dungeon.depth == 2 && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)) {
-			for (Room r : roomEntrance.connected.keySet()) {
-				Room.Door d = roomEntrance.connected.get(r);
-				if (d.type == Room.Door.Type.REGULAR)
-					map[d.x + d.y * width()] = Terrain.SECRET_DOOR;
-			}
-		}
-	}
 	
 	protected float waterFill(){
 		return 0;
@@ -375,6 +355,33 @@ public abstract class RegularLevel extends Level {
 			}
 			drop( item, cell ).type = Heap.Type.REMAINS;
 		}
+
+		//guide pages
+		Collection<String> allPages = Document.ADVENTURERS_GUIDE.pages();
+		ArrayList<String> missingPages = new ArrayList<>();
+		for ( String page : allPages){
+			if (!Document.ADVENTURERS_GUIDE.hasPage(page)){
+				missingPages.add(page);
+			}
+		}
+
+		//these are dropped specially
+		missingPages.remove(Document.GUIDE_INTRO_PAGE);
+		missingPages.remove(Document.GUIDE_SEARCH_PAGE);
+
+		//chance to find a page scales with pages missing and depth
+		if (missingPages.size() > 0 &&
+				Random.Int(allPages.size()) < missingPages.size() + Dungeon.depth/2){
+			GuidePage p = new GuidePage();
+			p.page(missingPages.get(0));
+			int cell = randomDropCell();
+			if (map[cell] == Terrain.HIGH_GRASS) {
+				map[cell] = Terrain.GRASS;
+				losBlocking[cell] = false;
+			}
+			drop( p, cell ).type = Heap.Type.REMAINS;
+		}
+
 	}
 	
 	protected Room randomRoom( Class<?extends Room> type ) {

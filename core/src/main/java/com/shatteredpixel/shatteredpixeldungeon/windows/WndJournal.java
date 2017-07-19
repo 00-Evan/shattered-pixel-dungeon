@@ -251,14 +251,15 @@ public class WndJournal extends WndTabbed {
 			private String page;
 			
 			public GuideItem( String page ){
-				super( Icons.get(Icons.MASTERY), Messages.titleCase(Document.ADVENTURERS_GUIDE.pageTitle(page)), -1);
+				super( new ItemSprite( ItemSpriteSheet.GUIDE_PAGE, null),
+						Messages.titleCase(Document.ADVENTURERS_GUIDE.pageTitle(page)), -1);
 				
 				this.page = page;
 				found = Document.ADVENTURERS_GUIDE.hasPage(page);
 				
 				if (!found) {
 					icon.hardlight( 0.5f, 0.5f, 0.5f);
-					label.text("???");
+					label.text( Messages.titleCase(Messages.get( this, "missing" )));
 					label.hardlight( 0x999999 );
 				}
 				

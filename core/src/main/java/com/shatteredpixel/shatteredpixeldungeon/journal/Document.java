@@ -43,6 +43,7 @@ public enum Document {
 	public boolean addPage( String page ) {
 		if (pages.containsKey(page) && !pages.get(page)){
 			pages.put(page, true);
+			Journal.saveNeeded = true;
 			return true;
 		}
 		return false;
@@ -63,19 +64,19 @@ public enum Document {
 	public String pageBody( String page ){
 		return Messages.get( this, name() + "." + page + ".body");
 	}
+
+	public static final String GUIDE_INTRO_PAGE = "Intro";
+	public static final String GUIDE_SEARCH_PAGE = "Examining_and_Searching";
 	
 	static {
-		ADVENTURERS_GUIDE.pages.put("0", false);
-		ADVENTURERS_GUIDE.pages.put("1", false);
-		ADVENTURERS_GUIDE.pages.put("2", false);
-		ADVENTURERS_GUIDE.pages.put("3", false);
-		ADVENTURERS_GUIDE.pages.put("4", false);
-		ADVENTURERS_GUIDE.pages.put("5", false);
-		ADVENTURERS_GUIDE.pages.put("6", false);
-		ADVENTURERS_GUIDE.pages.put("7", false);
-		ADVENTURERS_GUIDE.pages.put("8", false);
-		ADVENTURERS_GUIDE.pages.put("9", false);
-		
+		ADVENTURERS_GUIDE.pages.put(GUIDE_INTRO_PAGE, 	false);
+		ADVENTURERS_GUIDE.pages.put("Identifying", 		false);
+		ADVENTURERS_GUIDE.pages.put(GUIDE_SEARCH_PAGE, 	false);
+		ADVENTURERS_GUIDE.pages.put("Upgrades", 		false);
+		ADVENTURERS_GUIDE.pages.put("Food", 			false);
+		ADVENTURERS_GUIDE.pages.put("Levelling", 		false);
+		ADVENTURERS_GUIDE.pages.put("Surprise_Attacks", false);
+		ADVENTURERS_GUIDE.pages.put("Dieing", 			false);
 	}
 	
 	private static final String DOCUMENTS = "documents";
