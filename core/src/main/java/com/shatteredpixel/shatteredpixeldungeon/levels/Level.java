@@ -322,6 +322,11 @@ public abstract class Level implements Bundlable {
 		if (version <= ShatteredPixelDungeon.v0_4_2b){
 			map = Terrain.convertTilesFrom129( map );
 		}
+
+		// pre-0.6.1 saves
+		if (version <= ShatteredPixelDungeon.v0_6_0b){
+			map = Terrain.convertTilesFrom0_6_0b( map );
+		}
 		
 		Collection<Bundlable> collection = bundle.getCollection( HEAPS );
 		for (Bundlable h : collection) {
