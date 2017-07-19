@@ -260,7 +260,7 @@ public class DriedRose extends Artifact {
 			int ghostPos;
 			do {
 				ghostPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-			} while (!Level.solid[ghostPos] || level.findMob(ghostPos) != null);
+			} while (Level.solid[ghostPos] || level.findMob(ghostPos) != null);
 			
 			heldGhost.pos = pos;
 			heldGhost = null;
