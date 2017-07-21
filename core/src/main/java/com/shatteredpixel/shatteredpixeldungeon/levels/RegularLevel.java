@@ -379,7 +379,7 @@ public abstract class RegularLevel extends Level {
 				map[cell] = Terrain.GRASS;
 				losBlocking[cell] = false;
 			}
-			drop( p, cell ).type = Heap.Type.REMAINS;
+			drop( p, cell );
 		}
 
 	}
