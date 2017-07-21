@@ -59,6 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
@@ -202,12 +203,12 @@ public enum Catalog {
 		WANDS.seen.put( WandOfRegrowth.class,               false);
 	
 		RINGS.seen.put( RingOfAccuracy.class,               false);
+		RINGS.seen.put( RingOfEnergy.class,                 false);
 		RINGS.seen.put( RingOfElements.class,               false);
 		RINGS.seen.put( RingOfEvasion.class,                false);
 		RINGS.seen.put( RingOfForce.class,                  false);
 		RINGS.seen.put( RingOfFuror.class,                  false);
 		RINGS.seen.put( RingOfHaste.class,                  false);
-		//RINGS.seen.put( RingOfMagic.class,                false);
 		RINGS.seen.put( RingOfMight.class,                  false);
 		RINGS.seen.put( RingOfSharpshooting.class,          false);
 		RINGS.seen.put( RingOfTenacity.class,               false);

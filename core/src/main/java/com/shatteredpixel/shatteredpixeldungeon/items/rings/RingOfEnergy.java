@@ -21,13 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
-public class RingOfMagic extends Ring {
+public class RingOfEnergy extends Ring {
 	
 	@Override
 	protected RingBuff buff( ) {
-		return new Magic();
+		return new Energy();
 	}
 	
-	public class Magic extends RingBuff {
+	public class Energy extends RingBuff {
 	}
 }
