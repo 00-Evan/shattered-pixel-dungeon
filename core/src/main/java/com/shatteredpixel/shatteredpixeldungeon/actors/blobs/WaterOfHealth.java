@@ -44,8 +44,11 @@ public class WaterOfHealth extends WellWater {
 	protected boolean affectHero( Hero hero ) {
 		
 		Sample.INSTANCE.play( Assets.SND_DRINK );
-		
-		PotionOfHealing.heal( hero );
+
+		hero.HP = hero.HT;
+		hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
+
+		PotionOfHealing.cure( hero );
 		hero.belongings.uncurseEquipped();
 		((Hunger)hero.buff( Hunger.class )).satisfy( Hunger.STARVING );
 		
