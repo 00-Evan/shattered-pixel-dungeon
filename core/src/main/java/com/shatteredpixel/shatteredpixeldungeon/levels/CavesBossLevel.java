@@ -191,13 +191,6 @@ public class CavesBossLevel extends Level {
 			}
 		}
 		
-		int sign;
-		do {
-			sign = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + Random.Int( ROOM_TOP, ROOM_BOTTOM ) * width();
-		} while (sign == entrance || map[sign] == Terrain.INACTIVE_TRAP);
-		map[sign] = Terrain.SIGN;
-		
-		
 		return true;
 	}
 	
@@ -221,7 +214,7 @@ public class CavesBossLevel extends Level {
 			int pos;
 			do {
 				pos = Random.IntRange( ROOM_LEFT, ROOM_RIGHT ) + Random.IntRange( ROOM_TOP + 1, ROOM_BOTTOM ) * width();
-			} while (pos == entrance || map[pos] == Terrain.SIGN);
+			} while (pos == entrance);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
 	}

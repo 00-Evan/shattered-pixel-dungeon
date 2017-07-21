@@ -120,7 +120,7 @@ public class SewerBossLevel extends SewerLevel {
 			int pos;
 			do {
 				pos = pointToCell(roomEntrance.random());
-			} while (pos == entrance || map[pos] == Terrain.SIGN || solid[pos]);
+			} while (pos == entrance || solid[pos]);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
 	}
@@ -130,7 +130,7 @@ public class SewerBossLevel extends SewerLevel {
 		int pos;
 		do {
 			pos = pointToCell(roomEntrance.random());
-		} while (pos == entrance || map[pos] == Terrain.SIGN || solid[pos]);
+		} while (pos == entrance || solid[pos]);
 		return pos;
 	}
 

@@ -139,9 +139,6 @@ public class CityBossLevel extends Level {
 			}
 		}
 		
-		int sign = arenaDoor + 2*width() + 1;
-		map[sign] = Terrain.SIGN;
-		
 		return true;
 	}
 	
@@ -175,7 +172,7 @@ public class CityBossLevel extends Level {
 				pos =
 					Random.IntRange( LEFT + 1, LEFT + HALL_WIDTH - 2 ) +
 					Random.IntRange( TOP + HALL_HEIGHT + 1, TOP + HALL_HEIGHT  + CHAMBER_HEIGHT ) * width();
-			} while (pos == entrance || map[pos] == Terrain.SIGN);
+			} while (pos == entrance);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}
 	}
