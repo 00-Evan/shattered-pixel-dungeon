@@ -72,7 +72,7 @@ public enum Document {
 		ADVENTURERS_GUIDE.pages.put(GUIDE_INTRO_PAGE, 	false);
 		ADVENTURERS_GUIDE.pages.put("Identifying", 		false);
 		ADVENTURERS_GUIDE.pages.put(GUIDE_SEARCH_PAGE, 	false);
-		ADVENTURERS_GUIDE.pages.put("Upgrades", 		false);
+		ADVENTURERS_GUIDE.pages.put("Strength", 		false);
 		ADVENTURERS_GUIDE.pages.put("Food", 			false);
 		ADVENTURERS_GUIDE.pages.put("Levelling", 		false);
 		ADVENTURERS_GUIDE.pages.put("Surprise_Attacks", false);
