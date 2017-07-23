@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -93,7 +94,7 @@ public class ShatteredPixelDungeon extends Game {
 	protected void onCreate( Bundle savedInstanceState ) {
 		super.onCreate(savedInstanceState);
 
-		updateImmersiveMode();
+		updateSystemUI();
 		
 		if (Preferences.INSTANCE.contains( Preferences.KEY_LANDSCAPE )){
 			landscape ( Preferences.INSTANCE.getBoolean( Preferences.KEY_LANDSCAPE, false));
@@ -172,12 +173,14 @@ public class ShatteredPixelDungeon extends Game {
 
 	@Override
 	public void onWindowFocusChanged( boolean hasFocus ) {
-
 		super.onWindowFocusChanged( hasFocus );
+		if (hasFocus) updateSystemUI();
+	}
 
-		if (hasFocus) {
-			updateImmersiveMode();
-		}
+	@Override
+	public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+		super.onMultiWindowModeChanged(isInMultiWindowMode);
+		updateSystemUI();
 	}
 
 	public static void switchNoFade(Class<? extends PixelScene> c){
@@ -223,8 +226,7 @@ public class ShatteredPixelDungeon extends Game {
 		instance.runOnUiThread( new Runnable() {
 			@Override
 			public void run() {
-				updateImmersiveMode();
-				immersiveModeChanged = true;
+				updateSystemUI();
 				//ensures surfacechanged is called if the view was previously set to be fixed.
 				((ShatteredPixelDungeon)instance).view.getHolder().setSizeFromLayout();
 			}
@@ -238,10 +240,6 @@ public class ShatteredPixelDungeon extends Game {
 
 		updateDisplaySize();
 
-		if (immersiveModeChanged) {
-			requestedReset = true;
-			immersiveModeChanged = false;
-		}
 	}
 
 	private void updateDisplaySize(){
@@ -295,24 +293,32 @@ public class ShatteredPixelDungeon extends Game {
 		}
 	}
 
-	public static void updateImmersiveMode() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			try {
-				// Sometime NullPointerException happens here
+	public static void updateSystemUI() {
+
+		boolean fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
+								|| !instance.isInMultiWindowMode();
+
+		if (fullscreen){
+			instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+					WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+		} else {
+			instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+					WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+		}
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+			if (fullscreen && immersed()) {
 				instance.getWindow().getDecorView().setSystemUiVisibility(
-						immersed() ?
-								View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-										View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-										View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-										View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-										View.SYSTEM_UI_FLAG_FULLSCREEN |
-										View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-								:
-								0 );
-			} catch (Exception e) {
-				reportException( e );
+						View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+						View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+						View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+						View.SYSTEM_UI_FLAG_HIDE_NAVIGATION );
+			} else {
+				instance.getWindow().getDecorView().setSystemUiVisibility(
+						View.SYSTEM_UI_FLAG_LAYOUT_STABLE );
 			}
 		}
+
 	}
 
 	public static boolean immersed() {

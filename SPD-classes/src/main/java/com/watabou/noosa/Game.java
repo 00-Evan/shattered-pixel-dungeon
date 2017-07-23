@@ -145,8 +145,8 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	}
 	
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void onStart() {
+		super.onStart();
 		
 		now = 0;
 		view.onResume();
@@ -156,8 +156,8 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	}
 	
 	@Override
-	public void onPause() {
-		super.onPause();
+	public void onStop() {
+		super.onStop();
 		
 		if (scene != null) {
 			scene.pause();

@@ -204,7 +204,7 @@ public class WndTextInput extends Window {
 					imm.hideSoftInputFromWindow(textInput.getWindowToken(), 0);
 
 					//Soft keyboard sometimes triggers software buttons, so make sure to reassert immersive
-					ShatteredPixelDungeon.updateImmersiveMode();
+					ShatteredPixelDungeon.updateSystemUI();
 
 					textInput = null;
 				}
