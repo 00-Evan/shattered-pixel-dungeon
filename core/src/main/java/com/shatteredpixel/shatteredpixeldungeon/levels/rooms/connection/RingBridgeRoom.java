@@ -27,17 +27,14 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Rect;
 
-public class BridgeRoom extends TunnelRoom {
-	
+public class RingBridgeRoom extends RingTunnelRoom {
+
 	@Override
 	public void paint(Level level) {
-		
-		if (Math.min(width(), height()) > 3) {
-			Painter.fill(level, this, 1, Terrain.CHASM);
-		}
-		
+		Painter.fill(level, this, 1, Terrain.CHASM);
+
 		super.paint(level);
-		
+
 		for (Room r : neigbours){
 			if (r instanceof BridgeRoom || r instanceof RingBridgeRoom || r instanceof WalkwayRoom){
 				Rect i = intersect(r);
