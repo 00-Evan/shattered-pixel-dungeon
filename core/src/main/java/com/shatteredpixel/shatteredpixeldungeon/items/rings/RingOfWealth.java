@@ -59,7 +59,7 @@ public class RingOfWealth extends Ring {
 		}
 		
 		//reset (if needed), decrement, and store counts
-		if (triesToDrop <= 0) triesToDrop += Random.NormalIntRange(0, 100);
+		if (triesToDrop <= 0) triesToDrop += Random.NormalIntRange(15, 60);
 		triesToDrop -= dropProgression( target, tries );
 		for (Wealth w : buffs){
 			w.triesToDrop(triesToDrop);
@@ -120,7 +120,7 @@ public class RingOfWealth extends Ring {
 	
 	//caps at a 50% bonus
 	private static float dropProgression( Char target, int tries ){
-		return tries * (float)Math.pow(1.25f, getBonus(target, Wealth.class) -1 );
+		return tries * (float)Math.pow(1.2f, getBonus(target, Wealth.class) -1 );
 	}
 
 	public class Wealth extends RingBuff {
