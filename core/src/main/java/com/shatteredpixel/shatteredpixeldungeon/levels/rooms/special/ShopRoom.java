@@ -300,32 +300,32 @@ public class ShopRoom extends SpecialRoom {
 
 		//count up items in the main bag, for bags which haven't yet been dropped.
 		for (Item item : pack.backpack.items) {
-			if (!Dungeon.limitedDrops.seedBag.dropped() && item instanceof Plant.Seed)
+			if (!Dungeon.LimitedDrops.SEED_POUCH.dropped() && item instanceof Plant.Seed)
 				seeds++;
-			else if (!Dungeon.limitedDrops.scrollBag.dropped() && item instanceof Scroll)
+			else if (!Dungeon.LimitedDrops.SCROLL_HOLDER.dropped() && item instanceof Scroll)
 				scrolls++;
-			else if (!Dungeon.limitedDrops.potionBag.dropped() && item instanceof Potion)
+			else if (!Dungeon.LimitedDrops.POTION_BANDOLIER.dropped() && item instanceof Potion)
 				potions++;
-			else if (!Dungeon.limitedDrops.wandBag.dropped() && item instanceof Wand)
+			else if (!Dungeon.LimitedDrops.WAND_HOLSTER.dropped() && item instanceof Wand)
 				wands++;
 		}
 
 		//then pick whichever valid bag has the most items available to put into it.
 		//note that the order here gives a perference if counts are otherwise equal
-		if (seeds >= scrolls && seeds >= potions && seeds >= wands && !Dungeon.limitedDrops.seedBag.dropped()) {
-			Dungeon.limitedDrops.seedBag.drop();
+		if (seeds >= scrolls && seeds >= potions && seeds >= wands && !Dungeon.LimitedDrops.SEED_POUCH.dropped()) {
+			Dungeon.LimitedDrops.SEED_POUCH.drop();
 			return new SeedPouch();
 
-		} else if (scrolls >= potions && scrolls >= wands && !Dungeon.limitedDrops.scrollBag.dropped()) {
-			Dungeon.limitedDrops.scrollBag.drop();
+		} else if (scrolls >= potions && scrolls >= wands && !Dungeon.LimitedDrops.SCROLL_HOLDER.dropped()) {
+			Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
 			return new ScrollHolder();
 
-		} else if (potions >= wands && !Dungeon.limitedDrops.potionBag.dropped()) {
-			Dungeon.limitedDrops.potionBag.drop();
+		} else if (potions >= wands && !Dungeon.LimitedDrops.POTION_BANDOLIER.dropped()) {
+			Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
 			return new PotionBandolier();
 
-		} else if (!Dungeon.limitedDrops.wandBag.dropped()) {
-			Dungeon.limitedDrops.wandBag.drop();
+		} else if (!Dungeon.LimitedDrops.WAND_HOLSTER.dropped()) {
+			Dungeon.LimitedDrops.WAND_HOLSTER.drop();
 			return new WandHolster();
 		}
 

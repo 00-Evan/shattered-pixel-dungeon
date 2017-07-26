@@ -69,9 +69,9 @@ public class HighGrass {
 					Item seed = Generator.random(Generator.Category.SEED);
 
 					if (seed instanceof BlandfruitBush.Seed) {
-						if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
+						if (Random.Int(15) - Dungeon.LimitedDrops.BLANDFRUIT_SEED.count >= 0) {
 							level.drop(seed, pos).sprite.drop();
-							Dungeon.limitedDrops.blandfruitSeed.count++;
+							Dungeon.LimitedDrops.BLANDFRUIT_SEED.count++;
 						}
 					} else
 						level.drop(seed, pos).sprite.drop();

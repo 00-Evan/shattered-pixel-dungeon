@@ -130,9 +130,9 @@ public class WandOfRegrowth extends Wand {
 			Plant.Seed seed = (Plant.Seed) Generator.random(Generator.Category.SEED);
 
 			if (seed instanceof BlandfruitBush.Seed) {
-				if (Random.Int(15) - Dungeon.limitedDrops.blandfruitSeed.count >= 0) {
+				if (Random.Int(15) - Dungeon.LimitedDrops.BLANDFRUIT_SEED.count >= 0) {
 					floor.plant(seed, cells.next());
-					Dungeon.limitedDrops.blandfruitSeed.count++;
+					Dungeon.LimitedDrops.BLANDFRUIT_SEED.count++;
 				}
 			} else
 				floor.plant(seed, cells.next());

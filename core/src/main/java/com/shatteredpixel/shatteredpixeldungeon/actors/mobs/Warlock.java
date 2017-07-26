@@ -135,10 +135,10 @@ public class Warlock extends Mob implements Callback {
 		if (loot instanceof PotionOfHealing){
 
 			//count/10 chance of not dropping potion
-			if (Random.Int(10)-Dungeon.limitedDrops.warlockHP.count < 0){
+			if ((Random.Int(10) - Dungeon.LimitedDrops.WARLOCK_HP.count) < 0){
 				return null;
 			} else
-				Dungeon.limitedDrops.warlockHP.count++;
+				Dungeon.LimitedDrops.WARLOCK_HP.count++;
 
 		}
 

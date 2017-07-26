@@ -105,8 +105,8 @@ public class Thief extends Mob {
 
 	@Override
 	protected Item createLoot(){
-		if (!Dungeon.limitedDrops.armband.dropped()) {
-			Dungeon.limitedDrops.armband.drop();
+		if (!Dungeon.LimitedDrops.THIEVES_ARMBAND.dropped()) {
+			Dungeon.LimitedDrops.THIEVES_ARMBAND.drop();
 			return new MasterThievesArmband().identify();
 		} else
 			return new Gold(Random.NormalIntRange(100, 250));

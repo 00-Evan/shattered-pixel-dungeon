@@ -81,13 +81,13 @@ public class Bat extends Mob {
 	@Override
 	public void die( Object cause ){
 		//sets drop chance
-		lootChance = 1f/((6 + Dungeon.limitedDrops.batHP.count ));
+		lootChance = 1f/((6 + Dungeon.LimitedDrops.BAT_HP.count ));
 		super.die( cause );
 	}
 
 	@Override
 	protected Item createLoot(){
-		Dungeon.limitedDrops.batHP.count++;
+		Dungeon.LimitedDrops.BAT_HP.count++;
 		return super.createLoot();
 	}
 	

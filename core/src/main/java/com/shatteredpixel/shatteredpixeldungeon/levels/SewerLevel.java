@@ -104,9 +104,9 @@ public class SewerLevel extends RegularLevel {
 	
 	@Override
 	protected void createItems() {
-		if (!Dungeon.limitedDrops.dewVial.dropped()) {
+		if (!Dungeon.LimitedDrops.DEW_VIAL.dropped()) {
 			addItemToSpawn( new DewVial() );
-			Dungeon.limitedDrops.dewVial.drop();
+			Dungeon.LimitedDrops.DEW_VIAL.drop();
 		}
 
 		Ghost.Quest.spawn( this );

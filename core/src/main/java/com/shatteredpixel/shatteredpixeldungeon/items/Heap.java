@@ -443,11 +443,14 @@ public class Heap implements Bundlable {
 				if (Random.Int(1000/bonus) == 0)
 					return new PotionOfExperience();
 
-			while (potion instanceof PotionOfHealing && Random.Int(10) < Dungeon.limitedDrops.cookingHP.count)
-				potion = Generator.random( Generator.Category.POTION );
+			while (potion instanceof PotionOfHealing
+					&& Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count) {
+				potion = Generator.random(Generator.Category.POTION);
+			}
 
-			if (potion instanceof PotionOfHealing)
-				Dungeon.limitedDrops.cookingHP.count++;
+			if (potion instanceof PotionOfHealing) {
+				Dungeon.LimitedDrops.COOKING_HP.count++;
+			}
 
 			return potion;
 

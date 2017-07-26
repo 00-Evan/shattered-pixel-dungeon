@@ -97,8 +97,8 @@ public class Scorpio extends Mob {
 	@Override
 	protected Item createLoot() {
 		//5/count+5 total chance of getting healing, failing the 2nd roll drops mystery meat instead.
-		if (Random.Int( 5 + Dungeon.limitedDrops.scorpioHP.count ) <= 4) {
-			Dungeon.limitedDrops.scorpioHP.count++;
+		if (Random.Int( 5 + Dungeon.LimitedDrops.SCORPIO_HP.count ) < 5) {
+			Dungeon.LimitedDrops.SCORPIO_HP.count++;
 			return (Item)loot;
 		} else {
 			return new MysteryMeat();
