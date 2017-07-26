@@ -80,7 +80,6 @@ public class Dungeon {
 
 	//enum of items which have limited spawns, records how many have spawned
 	//could all be their own separate numbers, but this allows iterating, much nicer for bundling/initializing.
-	//TODO: this is fairly brittle when it comes to bundling, should look into a more flexible solution.
 	public static enum limitedDrops{
 		//limited world drops
 		strengthPotions,
@@ -117,6 +116,49 @@ public class Dungeon {
 		public void drop(){
 			count = 1;
 		}
+
+		public static void reset(){
+			for (limitedDrops lim : values()){
+				lim.count = 0;
+			}
+		}
+
+		public static void store( Bundle bundle ){
+			for (limitedDrops lim : values()){
+				bundle.put(lim.name(), lim.count);
+			}
+		}
+
+		public static void restore( Bundle bundle ){
+			for (limitedDrops lim : values()){
+				if (bundle.contains(lim.name())){
+					lim.count = bundle.getInt(lim.name());
+				} else {
+					lim.count = 0;
+				}
+			}
+		}
+
+		//for saves prior to 0.6.1
+		public static void legacyRestore( int[] counts ){
+			strengthPotions.count = counts[0];
+			upgradeScrolls.count =  counts[1];
+			arcaneStyli.count =     counts[2];
+			swarmHP.count =         counts[3];
+			batHP.count =           counts[4];
+			warlockHP.count =       counts[5];
+			scorpioHP.count =       counts[6];
+			cookingHP.count =       counts[7];
+			blandfruitSeed.count =  counts[8];
+			armband.count =         counts[9];
+			dewVial.count =         counts[10];
+			seedBag.count =         counts[11];
+			scrollBag.count =       counts[12];
+			potionBag.count =       counts[13];
+			wandBag.count =         counts[14];
+			guardHP.count =         counts[15];
+		}
+
 	}
 
 	public static int challenges;
@@ -461,10 +503,9 @@ public class Dungeon {
 
 			quickslot.storePlaceholders( bundle );
 
-			int[] dropValues = new int[limitedDrops.values().length];
-			for (limitedDrops value : limitedDrops.values())
-				dropValues[value.ordinal()] = value.count;
-			bundle.put ( LIMDROPS, dropValues );
+			Bundle limDrops = new Bundle();
+			limitedDrops.store( limDrops );
+			bundle.put ( LIMDROPS, limDrops );
 			
 			int count = 0;
 			int ids[] = new int[chapters.size()];
@@ -566,10 +607,12 @@ public class Dungeon {
 		quickslot.restorePlaceholders( bundle );
 		
 		if (fullLoad) {
-			int[] dropValues = bundle.getIntArray(LIMDROPS);
-			for (limitedDrops value : limitedDrops.values())
-				value.count = value.ordinal() < dropValues.length ?
-						dropValues[value.ordinal()] : 0;
+
+			if( version <= 199 ){
+				limitedDrops.legacyRestore( bundle.getIntArray(LIMDROPS) );
+			} else {
+				limitedDrops.restore( bundle.getBundle(LIMDROPS) );
+			}
 
 			chapters = new HashSet<Integer>();
 			int ids[] = bundle.getIntArray( CHAPTERS );
