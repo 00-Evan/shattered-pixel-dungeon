@@ -214,7 +214,7 @@ public enum Catalog {
 		RINGS.seen.put( RingOfTenacity.class,               false);
 		RINGS.seen.put( RingOfWealth.class,                 false);
 	
-		ARTIFACTS.seen.put( AlchemistsToolkit.class,        false);
+		//ARTIFACTS.seen.put( AlchemistsToolkit.class,      false);
 		ARTIFACTS.seen.put( CapeOfThorns.class,             false);
 		ARTIFACTS.seen.put( ChaliceOfBlood.class,           false);
 		ARTIFACTS.seen.put( CloakOfShadows.class,           false);
