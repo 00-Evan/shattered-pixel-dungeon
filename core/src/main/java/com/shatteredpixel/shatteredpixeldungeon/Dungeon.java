@@ -452,7 +452,7 @@ public class Dungeon {
 	private static final String DEPTH		= "depth";
 	private static final String DROPPED     = "dropped%d";
 	private static final String LEVEL		= "level";
-	private static final String LIMDROPS    = "limiteddrops";
+	private static final String LIMDROPS    = "limited_drops";
 	private static final String CHAPTERS	= "chapters";
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
@@ -606,8 +606,9 @@ public class Dungeon {
 		
 		if (fullLoad) {
 
-			if( version <= 199 ){
-				LimitedDrops.legacyRestore( bundle.getIntArray(LIMDROPS) );
+			//pre-0.6.1
+			if( bundle.contains("limiteddrops") ){
+				LimitedDrops.legacyRestore( bundle.getIntArray("limiteddrops") );
 			} else {
 				LimitedDrops.restore( bundle.getBundle(LIMDROPS) );
 			}

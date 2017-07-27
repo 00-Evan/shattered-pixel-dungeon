@@ -178,15 +178,15 @@ public abstract class Level implements Bundlable {
 
 			if (Dungeon.posNeeded()) {
 				addItemToSpawn( new PotionOfStrength() );
-				Dungeon.limitedDrops.strengthPotions.count++;
+				Dungeon.LimitedDrops.STRENGTH_POTIONS.count++;
 			}
 			if (Dungeon.souNeeded()) {
 				addItemToSpawn( new ScrollOfUpgrade() );
-				Dungeon.limitedDrops.upgradeScrolls.count++;
+				Dungeon.LimitedDrops.UPGRADE_SCROLLS.count++;
 			}
 			if (Dungeon.asNeeded()) {
 				addItemToSpawn( new Stylus() );
-				Dungeon.limitedDrops.arcaneStyli.count++;
+				Dungeon.LimitedDrops.ARCANE_STYLI.count++;
 			}
 
 			DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
