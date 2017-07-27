@@ -96,6 +96,47 @@ public abstract class Painter {
 			set(level, Math.round(x), Math.round(y), value);
 		}
 	}
+
+	public static void fillEllipse(Level level, Rect rect, int value ) {
+		fillEllipse( level, rect.left, rect.top, rect.width(), rect.height(), value );
+	}
+
+	public static void fillEllipse(Level level, Rect rect, int m, int value ) {
+		fillEllipse( level, rect.left + m, rect.top + m, rect.width() - m*2, rect.height() - m*2, value );
+	}
+	
+	public static void fillEllipse(Level level, int x, int y, int w, int h, int value){
+
+		//radii
+		double radH = h/2f;
+		double radW = w/2f;
+
+		//fills each row of the ellipse from top to bottom
+		for( int i = 0; i < h; i++){
+
+			//y coordinate of the row for determining ellipsis width
+			//always want to test the middle of a tile, hence the 0.5 shift
+			double rowY = -radH + 0.5 + i;
+
+			//equation is derived from ellipsis formula: y^2/radH^2 + x^2/radW^2 = 1
+			//solves for x and then doubles to get the width
+			double rowW = 2.0 * Math.sqrt((radW * radW) * (1.0 - (rowY*rowY) / (radH * radH)));
+
+			//need to round to nearest even or odd number, depending on width
+			if ( w % 2 == 0 ){
+				rowW = Math.round(rowW / 2.0)*2.0;
+
+			} else {
+				rowW = Math.floor(rowW / 2.0)*2.0;
+				rowW++;
+			}
+
+			int cell = x + (w - (int)rowW)/2 + ((y + i) * level.width());
+			Arrays.fill( level.map, cell, cell + (int)rowW, value );
+
+		}
+
+	}
 	
 	public static Point drawInside( Level level, Room room, Point from, int n, int value ) {
 		
