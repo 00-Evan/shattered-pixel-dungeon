@@ -23,86 +23,28 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 
+import java.util.ArrayList;
+
 //TODO: update this class with relevant info as new versions come out.
 public class ChangesScene extends PixelScene {
 
-	private static final String TXT_Update =
-			"_v0.6.0b:_\n" +
-			"_-_ Additional bug and crash fixes\n" +
-			"\n"+
-			"_v0.6.0a:_\n" +
-			"_-_ Various bug and crash fixes\n" +
-			"_-_ Resume indicator now appears in more cases\n" +
-			"\n"+
-			"_v0.6.0:_\n" +
-			"New levelgen!\n" +
-			"_-_ Level creation algorithm completely overhauled!\n" +
-			"_-_ Sewers are now smaller, caves+ are now larger\n" +
-			"_-_ Some rooms can now be much larger than before\n" +
-			"_-_ Added 8 new standard room types,\n" +
-			"\t\t and loads of new standard room layouts\n" +
-			"\n"+
-			"Environment Balance Changes:\n"+
-			"_-_ Falling damage tweaked to be less random\n" +
-			"_-_ Reduced number of traps in later chapters\n" +
-			"_-_ Floor 2 entry doors only hidden for new players\n" +
-			"_-_ Visiting floor 21 before completing the imp quest\n" +
-			"\t\t no longer prevents his shop from spawning\n" +
-			"_-_ Light sources now grant significantly more vision\n" +
-			"_-_ Light from torches now lasts 20% longer\n" +
-			"_-_ Slightly increased visibility on floor 22+\n" +
-			"_-_ Floor 21 shop now sells 3 torches, up from 2\n" +
-			"\n"+
-			"Item Balance Changes:\n"+
-			"_-_ Meat and small rations are 50% more filling\n" +
-			"_-_ Pasties and blandfruit are 12.5% more filling\n" +
-			"_-_ Greataxe base damage increased by ~22%\n" +
-			"_-_ Greatshield base damage increased by ~17%\n" +
-			"_-_ Vampiric enchant lifesteal reduced by 20%\n" +
-			"_-_ Lucky enchant rebalanced:\n" +
-			"\t\t now deals 2x/0x damage, instead of min/max\n" +
-			"\t\t base chance to deal 2x increased by ~10%\n" +
-			"_-_ Glyph of Viscosity rebalanced:\n" +
-			"\t\t proc chance reduced by ~25% \n" +
-			"\t\t damage over time reverted from 15% to 10%\n" +
-			"_-_ Glyph of Entanglement root time reduced by 40%\n" +
-			"_-_ Glyph of Potential rebalanced:\n" +
-			"\t\t self-damage no longer scales with max hp\n" +
-			"\t\t grants more charge at higher levels\n" +
-			"\n"+
-			"_v0.5.0:_ New visual style, shadows and depth!\n" +
-			"\n"+
-			"_v0.4.3:_ Various utility features and improvements\n" +
-			"_v0.4.2:_ Performance and game engine improvements\n" +
-			"_v0.4.1:_ Balance adjustments to enemies & armor\n" +
-			"_v0.4.0:_ Reworked equips, enchants & curses\n" +
-			"\n" +
-			"_v0.3.5:_ Reworked Warrior & subclasses\n" +
-			"_v0.3.4:_ Multiple language support\n" +
-			"_v0.3.3:_ Support for Google Play Games\n" +
-			"_v0.3.2:_ Prison Rework & Balance Changes\n" +
-			"_v0.3.1:_ Traps reworked & UI upgrades\n" +
-			"_v0.3.0:_ Wands & Mage completely reworked\n" +
-			"\n" +
-			"_v0.2.4:_ Small improvements and tweaks\n" +
-			"_v0.2.3:_ Artifact additions & improvements\n" +
-			"_v0.2.2:_ Small improvements and tweaks\n" +
-			"_v0.2.1:_ Sewer improvements\n" +
-			"_v0.2.0:_ Added artifacts, reworked rings\n" +
-			"\n" +
-			"_v0.1.1:_ Added blandfruit, reworked dew vial\n" +
-			"_v0.1.0:_ Improvements to potions/scrolls";
+	private static final ArrayList<ChangeInfo> infos = new ArrayList<>();
 
 	@Override
 	public void create() {
@@ -122,8 +64,6 @@ public class ChangesScene extends PixelScene {
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
 		add( btnExit );
 
-		RenderedTextMultiline text = renderMultiline(TXT_Update, 6 );
-
 		NinePatch panel = Chrome.get(Chrome.Type.TOAST);
 
 		int pw = 135 + panel.marginLeft() + panel.marginRight() - 2;
@@ -135,17 +75,38 @@ public class ChangesScene extends PixelScene {
 		align( panel );
 		add( panel );
 
-		ScrollPane list = new ScrollPane( new Component() );
+		ScrollPane list = new ScrollPane( new Component() ){
+
+			@Override
+			public void onClick(float x, float y) {
+				for (ChangeInfo info : infos){
+					if (info.onClick( x, y )){
+						return;
+					}
+				}
+			}
+
+		};
 		add( list );
 
 		Component content = list.content();
 		content.clear();
 
-		text.maxWidth((int) panel.innerWidth());
+		float posY;
 
-		content.add(text);
+		ChangeInfo changes = new ChangeInfo("Test", 12, "Lorem ipsum dolor sit amet, consectetur " +
+				"adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
+				" Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip" +
+				" ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit" +
+				" esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non" +
+				" proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+		changes.setRect(0, 0, panel.innerWidth(), 0);
+		changes.hardlight(Window.TITLE_COLOR);
+		content.add(changes);
+		infos.add(changes);
+		posY = changes.bottom();
 
-		content.setSize( panel.innerWidth(), (int)Math.ceil(text.height()) );
+		content.setSize( panel.innerWidth(), (int)Math.ceil(posY) );
 
 		list.setRect(
 				panel.x + panel.marginLeft(),
@@ -164,6 +125,147 @@ public class ChangesScene extends PixelScene {
 	@Override
 	protected void onBackPressed() {
 		ShatteredPixelDungeon.switchNoFade(TitleScene.class);
+	}
+
+	private static class ChangeInfo extends Component {
+
+		protected ColorBlock line;
+
+		private RenderedText title;
+
+		private RenderedTextMultiline text;
+
+		private ArrayList<ChangeButton> buttons = new ArrayList<>();
+
+		public ChangeInfo( String title, int titleSize, String text){
+			super();
+
+			line = new ColorBlock( 1, 1, 0xFF222222);
+			add(line);
+
+			this.title = PixelScene.renderText( title, titleSize );
+			add(this.title);
+
+			if (text != null && !text.equals("")){
+				this.text = PixelScene.renderMultiline(text, 6);
+				add(this.text);
+			}
+
+		}
+
+		public void hardlight( int color ){
+			title.hardlight( color );
+		}
+
+		public void addButton( ChangeButton button ){
+			buttons.add(button);
+			add(button);
+
+			button.setSize(16, 16);
+			layout();
+		}
+
+		public boolean onClick( float x, float y ){
+			for( ChangeButton button : buttons){
+				if (button.inside(x, y)){
+					button.onClick();
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		protected void layout() {
+			float posY = this.y;
+
+			line.size(width(), 1);
+			line.x = x;
+			line.y = posY;
+
+			posY += 2;
+
+			title.x = x + (width - title.width()) / 2f;
+			title.y = posY;
+			PixelScene.align( title );
+			posY += title.baseLine() + 2;
+
+			if (text != null) {
+				text.maxWidth((int) width());
+				text.setPos(x, posY);
+				posY += text.height();
+			}
+
+			float posX = 0;
+			float tallest = 0;
+			for (ChangeButton change : buttons){
+
+				if (posX + change.width() >= width()){
+					posX = 0;
+					posY += tallest;
+					tallest = 0;
+				}
+
+				//centers
+				if (posX == 0){
+					float offset = width;
+					for (ChangeButton b : buttons){
+						offset -= b.width();
+						if (offset <= 0){
+							offset += b.width();
+							break;
+						}
+					}
+					posX += offset / 2f;
+				}
+
+				change.setPos(posX, posY);
+				posX += change.width();
+				if (tallest < change.height()){
+					tallest = change.height();
+				}
+			}
+			posY += tallest + 2;
+
+			height = posY - this.y;
+		}
+	}
+
+	//not actually a button, but functions as one.
+	private static class ChangeButton extends Component {
+
+		protected Image icon;
+
+		protected String title;
+		protected String message;
+
+		public ChangeButton( Image icon, String title, String message){
+			super();
+			this.icon = icon;
+			add(this.icon);
+
+			this.title = title;
+			this.message = message;
+
+			layout();
+		}
+
+		public ChangeButton( Item item, String message ){
+			this( new ItemSprite(item), item.name(), message);
+		}
+
+		protected void onClick() {
+			ShatteredPixelDungeon.scene().add(new WndTitledMessage(new Image(icon), title, message));
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+
+			icon.x = x + (width - icon.width) / 2f;
+			icon.y = y + (height - icon.height) / 2f;
+			PixelScene.align(icon);
+		}
 	}
 }
 
