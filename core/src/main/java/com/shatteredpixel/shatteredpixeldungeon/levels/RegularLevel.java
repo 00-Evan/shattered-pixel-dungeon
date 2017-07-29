@@ -255,13 +255,8 @@ public abstract class RegularLevel extends Level {
 			if (room == null || room == roomEntrance) {
 				continue;
 			}
-			
-			//if we can avoid it, don't place along the perimiter
-			if (room.width() >= 6 && room.height() >= 6) {
-				cell = pointToCell(room.random(2));
-			} else {
-				cell = pointToCell(room.random(1));
-			}
+
+			cell = pointToCell(room.random(1));
 			if (!Dungeon.visible[cell]
 					&& Actor.findChar( cell ) == null
 					&& Level.passable[cell]
