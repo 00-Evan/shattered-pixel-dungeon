@@ -369,9 +369,10 @@ public abstract class RegularLevel extends Level {
 		missingPages.remove(Document.GUIDE_INTRO_PAGE);
 		missingPages.remove(Document.GUIDE_SEARCH_PAGE);
 
+		int foundPages = allPages.size() - (missingPages.size() + 2);
+
 		//chance to find a page scales with pages missing and depth
-		if (missingPages.size() > 0 &&
-				Random.Int(allPages.size()-2) < missingPages.size() + Dungeon.depth/2){
+		if (missingPages.size() > 0 && Random.Float() < (Dungeon.depth/(float)(foundPages + 1))){
 			GuidePage p = new GuidePage();
 			p.page(missingPages.get(0));
 			int cell = randomDropCell();
