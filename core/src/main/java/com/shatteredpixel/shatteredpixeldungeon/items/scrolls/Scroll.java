@@ -115,8 +115,10 @@ public abstract class Scroll extends Item {
 	@Override
 	public void reset(){
 		super.reset();
-		image = handler.image( this );
-		rune = handler.label( this );
+		if (handler != null) {
+			image = handler.image(this);
+			rune = handler.label(this);
+		}
 	};
 	
 	@Override

@@ -31,7 +31,7 @@ import com.watabou.noosa.ui.Component;
 public class WndTitledMessage extends Window {
 
 	protected static final int WIDTH_P    = 120;
-	protected static final int WIDTH_L    = 144;
+	protected static final int WIDTH_L    = 160;
 	protected static final int GAP	= 2;
 
 	public WndTitledMessage( Image icon, String title, String message ) {

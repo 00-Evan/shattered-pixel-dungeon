@@ -109,8 +109,10 @@ public class Ring extends KindofMisc {
 	
 	public void reset() {
 		super.reset();
-		image	= handler.image( this );
-		gem		= handler.label( this );
+		if (handler != null){
+			image = handler.image(this);
+			gem = handler.label(this);
+		}
 	}
 	
 	public void activate( Char ch ) {
