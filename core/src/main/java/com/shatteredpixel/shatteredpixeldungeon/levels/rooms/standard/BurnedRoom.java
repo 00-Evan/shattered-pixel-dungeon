@@ -82,10 +82,15 @@ public class BurnedRoom extends PatchRoom {
 	}
 	
 	@Override
-	public boolean canModifyTerrain(Point p) {
-		return super.canModifyTerrain(p) && !patch[xyToPatchCoords(p.x, p.y)];
+	public boolean canPlaceWater(Point p) {
+		return super.canPlaceWater(p) && !patch[xyToPatchCoords(p.x, p.y)];
 	}
-	
+
+	@Override
+	public boolean canPlaceGrass(Point p) {
+		return super.canPlaceGrass(p) && !patch[xyToPatchCoords(p.x, p.y)];
+	}
+
 	@Override
 	public boolean canPlaceTrap(Point p) {
 		return super.canPlaceTrap(p) && !patch[xyToPatchCoords(p.x, p.y)];

@@ -252,7 +252,7 @@ public abstract class RegularPainter extends Painter {
 		
 		if (!rooms.isEmpty()){
 			for (Room r : rooms){
-				for (Point p : r.terrainModifiablePoints()){
+				for (Point p : r.waterPlaceablePoints()){
 					int i = l.pointToCell(p);
 					if (lake[i] && l.map[i] == Terrain.EMPTY){
 						l.map[i] = Terrain.WATER;
@@ -276,7 +276,7 @@ public abstract class RegularPainter extends Painter {
 		
 		if (!rooms.isEmpty()){
 			for (Room r : rooms){
-				for (Point p : r.terrainModifiablePoints()){
+				for (Point p : r.grassPlaceablePoints()){
 					int i = l.pointToCell(p);
 					if (grass[i] && l.map[i] == Terrain.EMPTY){
 						grassCells.add(i);

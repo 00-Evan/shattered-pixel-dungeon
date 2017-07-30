@@ -264,16 +264,32 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	public void paint(Level level){}
 	
 	//whether or not a painter can make its own modifications to a specific point
-	public boolean canModifyTerrain(Point p){
+	public boolean canPlaceWater(Point p){
 		return inside(p);
 	}
 	
-	public final ArrayList<Point> terrainModifiablePoints(){
+	public final ArrayList<Point> waterPlaceablePoints(){
 		ArrayList<Point> points = new ArrayList<>();
 		for (int i = left; i <= right; i++) {
 			for (int j = top; j <= bottom; j++) {
 				Point p = new Point(i, j);
-				if (canModifyTerrain(p)) points.add(p);
+				if (canPlaceWater(p)) points.add(p);
+			}
+		}
+		return points;
+	}
+
+	//whether or not a painter can make place grass at a specific point
+	public boolean canPlaceGrass(Point p){
+		return inside(p);
+	}
+
+	public final ArrayList<Point> grassPlaceablePoints(){
+		ArrayList<Point> points = new ArrayList<>();
+		for (int i = left; i <= right; i++) {
+			for (int j = top; j <= bottom; j++) {
+				Point p = new Point(i, j);
+				if (canPlaceGrass(p)) points.add(p);
 			}
 		}
 		return points;
