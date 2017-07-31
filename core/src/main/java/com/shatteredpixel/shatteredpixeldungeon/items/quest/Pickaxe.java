@@ -125,12 +125,6 @@ public class Pickaxe extends Weapon {
 								Dungeon.level.drop( gold, hero.pos ).sprite.drop();
 							}
 							
-							Hunger hunger = hero.buff( Hunger.class );
-							if (hunger != null && !hunger.isStarving()) {
-								hunger.reduceHunger( -Hunger.STARVING / 10 );
-								BuffIndicator.refreshHero();
-							}
-							
 							hero.onOperateComplete();
 						}
 					} );
