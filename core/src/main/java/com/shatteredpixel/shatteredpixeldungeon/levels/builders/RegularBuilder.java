@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 //Introduces the concept of a major path, and branches
 // with tunnels padding rooms placed in them
@@ -98,6 +99,11 @@ public abstract class RegularBuilder extends Builder {
 				singleConnections.add(r);
 			}
 		}
+
+		//this weights larger rooms to be much more likely to appear in the main loop, by placing them earlier in the multiconnections list
+		weightRooms(multiConnections);
+		Random.shuffle(multiConnections);
+		multiConnections = new ArrayList<>(new LinkedHashSet<>(multiConnections));
 	}
 	
 	// *** Branch Placement ***
@@ -105,7 +111,7 @@ public abstract class RegularBuilder extends Builder {
 	protected static void weightRooms(ArrayList<Room> rooms){
 		for (Room r : rooms.toArray(new Room[0])){
 			if (r instanceof StandardRoom){
-				for (int i = 0; i < ((StandardRoom) r).sizeCat.connectionWeight(); i++)
+				for (int i = 1; i < ((StandardRoom) r).sizeCat.connectionWeight(); i++)
 					rooms.add(r);
 			}
 		}
