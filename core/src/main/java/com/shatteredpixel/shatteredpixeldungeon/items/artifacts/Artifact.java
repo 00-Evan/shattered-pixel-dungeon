@@ -137,6 +137,11 @@ public class Artifact extends KindofMisc {
 
 	@Override
 	public String status() {
+		
+		//if the artifact isn't IDed, or is cursed, don't display anything
+		if (!isIdentified() || cursed){
+			return null;
+		}
 
 		//display the current cooldown
 		if (cooldown != 0)

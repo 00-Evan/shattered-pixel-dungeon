@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
@@ -192,7 +191,7 @@ public class Generator {
 			return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
 		}
 		
-		private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1};
+		private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1};
 		
 		static {
 			GOLD.classes = new Class<?>[]{
@@ -342,7 +341,7 @@ public class Generator {
 					TimekeepersHourglass.class,
 					UnstableSpellbook.class,
 					AlchemistsToolkit.class, //currently removed from drop tables, pending rework.
-					DriedRose.class, //starts with no chance of spawning, chance is set directly after beating ghost quest.
+					DriedRose.class,
 					LloydsBeacon.class,
 					EtherealChains.class
 			};
@@ -524,10 +523,6 @@ public class Generator {
 	//resets artifact probabilities, for new dungeons
 	public static void initArtifacts() {
 		Category.ARTIFACT.probs = Category.INITIAL_ARTIFACT_PROBS.clone();
-
-		//checks for dried rose quest completion, adds the rose in accordingly.
-		if (Ghost.Quest.completed()) Category.ARTIFACT.probs[10] = 1;
-
 		spawnedArtifacts = new ArrayList<>();
 	}
 

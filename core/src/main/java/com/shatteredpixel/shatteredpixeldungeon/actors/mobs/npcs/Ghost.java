@@ -75,7 +75,7 @@ public class Ghost extends NPC {
 
 	@Override
 	protected boolean act() {
-		if (Quest.completed())
+		if (Quest.processed())
 			target = Dungeon.hero.pos;
 		return super.act();
 	}
@@ -87,7 +87,7 @@ public class Ghost extends NPC {
 	
 	@Override
 	public float speed() {
-		return Quest.completed() ? 2f : 0.5f;
+		return Quest.processed() ? 2f : 0.5f;
 	}
 	
 	@Override
@@ -334,7 +334,6 @@ public class Ghost extends NPC {
 				GLog.n( Messages.get(Ghost.class, "find_me") );
 				Sample.INSTANCE.play( Assets.SND_GHOST );
 				processed = true;
-				Generator.Category.ARTIFACT.probs[10] = 1; //flags the dried rose as spawnable.
 			}
 		}
 		
@@ -345,8 +344,12 @@ public class Ghost extends NPC {
 			Notes.remove( Notes.Landmark.GHOST );
 		}
 
-		public static boolean completed(){
+		public static boolean processed(){
 			return spawned && processed;
+		}
+		
+		public static boolean completed(){
+			return processed() && weapon == null && armor == null;
 		}
 	}
 }

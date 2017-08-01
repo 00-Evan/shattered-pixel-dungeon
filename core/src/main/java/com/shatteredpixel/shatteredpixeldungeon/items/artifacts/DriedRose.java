@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -100,6 +101,10 @@ public class DriedRose extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
+		if (!Ghost.Quest.completed()){
+			actions.remove(AC_EQUIP);
+			return actions;
+		}
 		if (isEquipped( hero ) && charge == chargeCap && !cursed) {
 			actions.add(AC_SUMMON);
 		}
@@ -168,6 +173,10 @@ public class DriedRose extends Artifact {
 
 	@Override
 	public String desc() {
+		if (!Ghost.Quest.completed() && !isIdentified()){
+			return Messages.get(this, "desc_no_quest");
+		}
+		
 		String desc = super.desc();
 
 		if (isEquipped( Dungeon.hero )){
@@ -262,7 +271,7 @@ public class DriedRose extends Artifact {
 				ghostPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
 			} while (Level.solid[ghostPos] || level.findMob(ghostPos) != null);
 			
-			heldGhost.pos = pos;
+			heldGhost.pos = ghostPos;
 			heldGhost = null;
 		}
 	}

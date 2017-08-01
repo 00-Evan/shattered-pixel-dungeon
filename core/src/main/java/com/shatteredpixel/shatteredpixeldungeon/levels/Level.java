@@ -190,7 +190,7 @@ public abstract class Level implements Bundlable {
 			}
 
 			DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
-			if (rose != null && !rose.cursed){
+			if (rose != null && rose.isIdentified() && !rose.cursed){
 				//aim to drop 1 petal every 2 floors
 				int petalsNeeded = (int) Math.ceil((float)((Dungeon.depth / 2) - rose.droppedPetals) / 3);
 
