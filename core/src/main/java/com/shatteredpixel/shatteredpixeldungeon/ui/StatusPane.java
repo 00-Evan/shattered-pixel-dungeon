@@ -227,6 +227,10 @@ public class StatusPane extends Component {
 				btnJournal.icon.y + btnJournal.icon.height()/2f,
 				true );
 	}
+	
+	public void flash(){
+		btnJournal.flashing = true;
+	}
 
 	public static boolean needsKeyUpdate = false;
 
@@ -235,6 +239,8 @@ public class StatusPane extends Component {
 		private Image bg;
 		//used to display key state to the player
 		private Image icon;
+		
+		private boolean flashing;
 
 		public JournalButton() {
 			super();
@@ -267,11 +273,20 @@ public class StatusPane extends Component {
 			PixelScene.align(icon);
 		}
 
+		private float time;
+		
 		@Override
 		public void update() {
 			super.update();
 			if (needsKeyUpdate)
 				updateKeyDisplay();
+			
+			if (flashing){
+				icon.am = (float)Math.abs(Math.cos( 3 * (time += Game.elapsed) ));
+				if (time >= 0.333f*Math.PI) {
+					time = 0;
+				}
+			}
 		}
 
 		public void updateKeyDisplay() {
@@ -327,6 +342,8 @@ public class StatusPane extends Component {
 
 		@Override
 		protected void onClick() {
+			flashing = false;
+			time = 0;
 			GameScene.show( new WndJournal() );
 		}
 

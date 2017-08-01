@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
@@ -51,6 +52,8 @@ public abstract class DocumentPage extends Item {
 	@Override
 	public final boolean doPickUp(Hero hero) {
 		GameScene.pickUpJournal(this);
+		GameScene.flashJournal();
+		WndJournal.last_index = 0;
 		document().addPage(page);
 		Sample.INSTANCE.play( Assets.SND_ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );

@@ -727,6 +727,10 @@ public class GameScene extends PixelScene {
 	public static void pickUpJournal( Item item ) {
 		if (scene != null) scene.pane.pickup( item );
 	}
+	
+	public static void flashJournal(){
+		if (scene != null) scene.pane.flash();
+	}
 
 	public static void resetMap() {
 		if (scene != null) {
