@@ -77,6 +77,8 @@ public enum Document {
 		ADVENTURERS_GUIDE.pages.put("Levelling", 		false);
 		ADVENTURERS_GUIDE.pages.put("Surprise_Attacks", false);
 		ADVENTURERS_GUIDE.pages.put("Dieing", 			false);
+		ADVENTURERS_GUIDE.pages.put("Looting", 		    false);
+		ADVENTURERS_GUIDE.pages.put("Magic", 			false);
 	}
 	
 	private static final String DOCUMENTS = "documents";
