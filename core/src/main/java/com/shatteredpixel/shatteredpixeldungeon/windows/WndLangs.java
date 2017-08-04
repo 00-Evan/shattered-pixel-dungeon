@@ -45,7 +45,7 @@ public class WndLangs extends Window {
 	private int MIN_HEIGHT = 110;
 
 	private int BTN_WIDTH = 50;
-	private int BTN_HEIGHT = 14;
+	private int BTN_HEIGHT = 12;
 
 	public WndLangs(){
 		super();
@@ -95,15 +95,15 @@ public class WndLangs extends Window {
 			}
 			btn.setSize(BTN_WIDTH, BTN_HEIGHT);
 			if (ShatteredPixelDungeon.landscape() && i % 2 == 1){
-				btn.setPos(BTN_WIDTH+1, y-15);
+				btn.setPos(BTN_WIDTH+1, y-(BTN_HEIGHT + 1));
 			} else {
 				btn.setPos(0, y);
-				y += 15;
+				y += BTN_HEIGHT + 1;
 			}
 
 			add(btn);
 		}
-		y = Math.max(MIN_HEIGHT, y+1);
+		y = Math.max(MIN_HEIGHT, y);
 		resize(ShatteredPixelDungeon.landscape() ? WIDTH_L : WIDTH_P, y);
 
 		int textLeft = width - 65;

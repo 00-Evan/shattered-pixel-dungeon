@@ -39,7 +39,8 @@ public enum Languages {
 	SPANISH("español",      "es", Status.UNREVIEWED, new String[]{"Kiroto", "Kohru", "grayscales"}, new String[]{"Alesxanderk", "CorvosUtopy", "Dewstend", "Dyrran", "Fervoreking", "Illyatwo2", "alfongad", "benzarr410", "ctrijueque", "dhg121", "javifs", "jonismack1"}),
 	PORTUGUESE("português", "pt", Status.UNREVIEWED, new String[]{"TDF2001", "matheus208"}, new String[]{"ChainedFreaK", "JST", "MadHorus", "danypr23", "ismael.henriques12", "try31"}),
 	ESPERANTO("esperanto",  "eo", Status.UNREVIEWED, new String[]{"Verdulo"}, null),
-	INDONESIAN("indonésien","in", Status.UNREVIEWED, new String[]{"rakapratama"}, null);
+	INDONESIAN("indonésien","in", Status.UNREVIEWED, new String[]{"rakapratama"}, null),
+	CATALAN("català",       "ca", Status.UNREVIEWED, new String[]{"Illyatwo2"}, null);
 
 	public enum Status{
 		//below 60% complete languages are not added.
