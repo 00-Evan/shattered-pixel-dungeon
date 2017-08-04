@@ -57,13 +57,14 @@ public abstract class Builder {
 		ArrayList<Room> colliding = new ArrayList<>(collision);
 		do{
 			
-			//remove any rooms we aren't currently overlapping
+			//remove empty rooms and any rooms we aren't currently overlapping
 			Iterator<Room> it = colliding.iterator();
 			while (it.hasNext()){
 				Room room = it.next();
 				//if not colliding
-				if ( Math.max(space.left, room.left) >= Math.min(space.right, room.right)
-					|| Math.max(space.top, room.top) >= Math.min(space.bottom, room.bottom) ){
+				if ( room.isEmpty()
+						|| Math.max(space.left, room.left) >= Math.min(space.right, room.right)
+						|| Math.max(space.top, room.top) >= Math.min(space.bottom, room.bottom) ){
 					it.remove();
 				}
 			}

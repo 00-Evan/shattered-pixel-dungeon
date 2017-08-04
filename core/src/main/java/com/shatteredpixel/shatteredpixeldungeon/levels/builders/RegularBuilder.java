@@ -83,6 +83,10 @@ public abstract class RegularBuilder extends Builder {
 	protected ArrayList<Room> singleConnections = new ArrayList<>();
 	
 	protected void setupRooms(ArrayList<Room> rooms){
+		for(Room r : rooms){
+			r.setEmpty();
+		}
+		
 		entrance = exit = shop = null;
 		singleConnections.clear();
 		multiConnections.clear();

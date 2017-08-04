@@ -64,7 +64,7 @@ public class SewerPipeRoom extends StandardRoom {
 
 		Rect c = getConnectionSpace();
 
-		if (connected.size() <= 3) {
+		if (connected.size() <= 2) {
 			for (Door door : connected.values()) {
 				
 				Point start;
@@ -248,22 +248,22 @@ public class SewerPipeRoom extends StandardRoom {
 		
 		//doors on opposite sides
 		Point side;
-		if (from.y == top+1 || from.y == bottom-1){
+		if (from.y == top+2 || from.y == bottom-2){
 			//connect along the left, or right side
 			if (spaceBetween(left, from.x) + spaceBetween(left, to.x) <=
 					spaceBetween(right, from.x) + spaceBetween(right, to.x)){
-				side = new Point(left+1, top + height()/2);
+				side = new Point(left+2, top + height()/2);
 			} else {
-				side = new Point(right-1, top + height()/2);
+				side = new Point(right-2, top + height()/2);
 			}
 			
 		} else {
 			//connect along the top, or bottom side
 			if (spaceBetween(top, from.y) + spaceBetween(top, to.y) <=
 					spaceBetween(bottom, from.y) + spaceBetween(bottom, to.y)){
-				side = new Point(left + width()/2, top+1);
+				side = new Point(left + width()/2, top+2);
 			} else {
-				side = new Point(left + width()/2, bottom-1);
+				side = new Point(left + width()/2, bottom-2);
 			}
 		}
 		//treat this as two connections with adjacent sides
