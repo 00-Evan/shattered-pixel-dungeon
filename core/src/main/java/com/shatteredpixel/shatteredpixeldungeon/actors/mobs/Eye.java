@@ -133,7 +133,8 @@ public class Eye extends Mob {
 		} else {
 
 			spend( attackDelay() );
-
+			
+			beam = new Ballistica(pos, beamTarget, Ballistica.STOP_TERRAIN);
 			if (Dungeon.visible[pos] || Dungeon.visible[beam.collisionPos] ) {
 				sprite.zap( beam.collisionPos );
 				return false;
