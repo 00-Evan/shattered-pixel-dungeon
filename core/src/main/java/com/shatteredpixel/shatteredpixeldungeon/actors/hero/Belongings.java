@@ -139,6 +139,17 @@ public class Belongings implements Iterable<Item> {
 		return null;
 	}
 	
+	public Item getSimilar( Item similar ){
+		
+		for (Item item : this) {
+			if (item.isSimilar(similar)) {
+				return item;
+			}
+		}
+		
+		return null;
+	}
+	
 	public void identify() {
 		for (Item item : this) {
 			item.identify();

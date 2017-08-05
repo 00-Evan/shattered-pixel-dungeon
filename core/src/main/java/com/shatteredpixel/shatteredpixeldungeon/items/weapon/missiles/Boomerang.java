@@ -114,7 +114,7 @@ public class Boomerang extends MissileWeapon {
 		if (throwEquiped) {
 			owner.belongings.weapon = this;
 			owner.spend( -TIME_TO_EQUIP );
-			Dungeon.quickslot.replaceSimilar(this);
+			Dungeon.quickslot.replacePlaceholder(this);
 			updateQuickslot();
 		} else
 		if (!collect( curUser.belongings.backpack )) {

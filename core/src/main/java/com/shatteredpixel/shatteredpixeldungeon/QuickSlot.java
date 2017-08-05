@@ -85,9 +85,9 @@ public class QuickSlot {
 		return getSlot(item) != -1;
 	}
 
-	public void replaceSimilar(Item item){
+	public void replacePlaceholder(Item item){
 		for (int i = 0; i < SIZE; i++)
-			if (getItem(i) != null && item.isSimilar(getItem(i)))
+			if (isPlaceholder(i) && item.isSimilar(getItem(i)))
 				setSlot( i , item );
 	}
 

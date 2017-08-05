@@ -97,7 +97,7 @@ public class Monk extends Mob {
 
 				if (--hitsToDisarm == 0) {
 					hero.belongings.weapon = null;
-					Dungeon.quickslot.clearItem(weapon);
+					Dungeon.quickslot.convertToPlaceholder(weapon);
 					weapon.updateQuickslot();
 					Dungeon.level.drop(weapon, hero.pos).sprite.drop();
 					GLog.w(Messages.get(this, "disarm", weapon.name()));
