@@ -195,9 +195,7 @@ public class ItemSprite extends MovieClip {
 		if (this.emitter != null) this.emitter.killAndErase();
 		emitter = null;
 		frame( image );
-		if ((this.glowing = glowing) == null) {
-			resetColor();
-		}
+		glow( glowing );
 		return this;
 	}
 
@@ -209,6 +207,11 @@ public class ItemSprite extends MovieClip {
 		if (height < 8f){
 			perspectiveRaise =  (5 + 8 - height) / 16f;
 		}
+	}
+	
+	public void glow( Glowing glowing ){
+		this.glowing = glowing;
+		if (glowing == null) resetColor();
 	}
 
 	@Override
