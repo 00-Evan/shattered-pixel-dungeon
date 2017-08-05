@@ -902,9 +902,8 @@ public class DriedRose extends Artifact {
 				@Override
 				protected void onClick() {
 					if (rose.weapon != null){
-						if (rose.weapon.doPickUp(Dungeon.hero)){
-							item(new WndBag.Placeholder(ItemSpriteSheet.WEAPON_HOLDER));
-						} else {
+						item(new WndBag.Placeholder(ItemSpriteSheet.WEAPON_HOLDER));
+						if (!rose.weapon.doPickUp(Dungeon.hero)){
 							Dungeon.level.drop( rose.weapon, Dungeon.hero.pos);
 						}
 						rose.weapon = null;
@@ -953,9 +952,8 @@ public class DriedRose extends Artifact {
 				@Override
 				protected void onClick() {
 					if (rose.armor != null){
-						if (rose.armor.doPickUp(Dungeon.hero)){
-							item(new WndBag.Placeholder(ItemSpriteSheet.ARMOR_HOLDER));
-						} else {
+						item(new WndBag.Placeholder(ItemSpriteSheet.ARMOR_HOLDER));
+						if (!rose.armor.doPickUp(Dungeon.hero)){
 							Dungeon.level.drop( rose.armor, Dungeon.hero.pos);
 						}
 						rose.armor = null;
