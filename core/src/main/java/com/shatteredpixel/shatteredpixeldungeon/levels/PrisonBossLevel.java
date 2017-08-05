@@ -297,7 +297,7 @@ public class PrisonBossLevel extends Level {
 			case FIGHT_START:
 
 				changeMap(MAP_MAZE);
-				clearEntities((Room) new Room().set(0, 5, 8, 32)); //clear all but the entrance
+				clearEntities((Room) new Room().set(0, 5, 8, 32)); //clear the entrance
 
 				Actor.remove(tengu);
 				mobs.remove(tengu);
@@ -327,7 +327,13 @@ public class PrisonBossLevel extends Level {
 				Dungeon.hero.sprite.place(Dungeon.hero.pos);
 
 				changeMap(MAP_ARENA);
-				clearEntities(null);
+				clearEntities( (Room) new Room().set(0, 0, 10, 4)); //clear all but the area right around the teleport spot
+				
+				//if any characters are left over, move them along the same way as the hero
+				for (Mob m : mobs){
+					m.pos += 9+3*32;
+					m.sprite().place(m.pos);
+				}
 
 				tengu.state = tengu.HUNTING;
 				do {
@@ -335,6 +341,9 @@ public class PrisonBossLevel extends Level {
 				} while (solid[tengu.pos] || distance(tengu.pos, Dungeon.hero.pos) < 8);
 				GameScene.add(tengu);
 				tengu.notice();
+				
+				GameScene.flash(0xFFFFFF);
+				Sample.INSTANCE.play(Assets.SND_BLAST);
 
 				state = State.FIGHT_ARENA;
 				break;
@@ -362,13 +371,32 @@ public class PrisonBossLevel extends Level {
 				tengu.sprite.place(5 + 28 * 32);
 
 				changeMap(MAP_END);
+				
+				//remove all mobs, but preserve allies
+				ArrayList<Mob> allies = new ArrayList<>();
+				for(Mob m : mobs.toArray(new Mob[0])){
+					if (m.ally){
+						allies.add(m);
+						mobs.remove(m);
+					}
+				}
 				clearEntities(null);
+				for (Mob m : allies){
+					do{
+						m.pos = Random.IntRange(3, 7) + Random.IntRange(26, 30)*32;
+					} while (findMob(m.pos) != null);
+					m.sprite().place(m.pos);
+					mobs.add(m);
+				}
 
 				tengu.die(Dungeon.hero);
 
 				for (Item item : storedItems)
 					drop(item, randomPrisonCell());
-
+				
+				GameScene.flash(0xFFFFFF);
+				Sample.INSTANCE.play(Assets.SND_BLAST);
+				
 				state = State.WON;
 				break;
 		}
