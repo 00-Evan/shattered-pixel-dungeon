@@ -42,7 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -219,17 +218,18 @@ public class WndJournal extends WndTabbed {
 			
 			float pos = 0;
 			
-			RenderedText title = PixelScene.renderText(Document.ADVENTURERS_GUIDE.title(), 9);
-			title.hardlight(TITLE_COLOR);
-			title.x = (width() - title.width())/2f;
-			title.y = pos + (ITEM_HEIGHT - title.baseLine())/2f;
-			PixelScene.align(title);
-			content.add(title);
-			
 			ColorBlock line = new ColorBlock( width(), 1, 0xFF222222);
 			line.y = pos;
 			content.add(line);
-			pos += ITEM_HEIGHT;
+			
+			RenderedTextMultiline title = PixelScene.renderMultiline(Document.ADVENTURERS_GUIDE.title(), 9);
+			title.hardlight(TITLE_COLOR);
+			title.maxWidth( (int)width() - 2 );
+			title.setPos( (width() - title.width())/2f, pos + 1 + ((ITEM_HEIGHT) - title.height())/2f);
+			PixelScene.align(title);
+			content.add(title);
+			
+			pos += Math.max(ITEM_HEIGHT, title.bottom());
 			
 			for (String page : Document.ADVENTURERS_GUIDE.pages()){
 				GuideItem item = new GuideItem( page );
@@ -302,17 +302,18 @@ public class WndJournal extends WndTabbed {
 			//Keys
 			ArrayList<Notes.KeyRecord> keys = Notes.getRecords(Notes.KeyRecord.class);
 			if (!keys.isEmpty()){
-				RenderedText keyTitle = PixelScene.renderText(Messages.get(this, "keys"), 9);
-				keyTitle.hardlight(TITLE_COLOR);
-				keyTitle.x = (width() - keyTitle.width())/2f;
-				keyTitle.y = pos + (ITEM_HEIGHT - keyTitle.baseLine())/2f;
-				PixelScene.align(keyTitle);
-				content.add(keyTitle);
-				
 				ColorBlock line = new ColorBlock( width(), 1, 0xFF222222);
 				line.y = pos;
 				content.add(line);
-				pos += ITEM_HEIGHT;
+				
+				RenderedTextMultiline title = PixelScene.renderMultiline(Messages.get(this, "keys"), 9);
+				title.hardlight(TITLE_COLOR);
+				title.maxWidth( (int)width() - 2 );
+				title.setPos( (width() - title.width())/2f, pos + 1 + ((ITEM_HEIGHT) - title.height())/2f);
+				PixelScene.align(title);
+				content.add(title);
+				
+				pos += Math.max(ITEM_HEIGHT, title.bottom());
 			}
 			for(Notes.Record rec : keys){
 				ListItem item = new ListItem( Icons.get(Icons.DEPTH),
@@ -326,17 +327,18 @@ public class WndJournal extends WndTabbed {
 			//Landmarks
 			ArrayList<Notes.LandmarkRecord> landmarks = Notes.getRecords(Notes.LandmarkRecord.class);
 			if (!landmarks.isEmpty()){
-				RenderedText markTitle = PixelScene.renderText(Messages.get(this, "landmarks"), 9);
-				markTitle.hardlight(TITLE_COLOR);
-				markTitle.x = (width() - markTitle.width())/2f;
-				markTitle.y = pos + (ITEM_HEIGHT - markTitle.baseLine())/2f;
-				PixelScene.align(markTitle);
-				content.add(markTitle);
-				
 				ColorBlock line = new ColorBlock( width(), 1, 0xFF222222);
 				line.y = pos;
 				content.add(line);
-				pos += ITEM_HEIGHT;
+				
+				RenderedTextMultiline title = PixelScene.renderMultiline(Messages.get(this, "landmarks"), 9);
+				title.hardlight(TITLE_COLOR);
+				title.maxWidth( (int)width() - 2 );
+				title.setPos( (width() - title.width())/2f, pos + 1 + ((ITEM_HEIGHT) - title.height())/2f);
+				PixelScene.align(title);
+				content.add(title);
+				
+				pos += Math.max(ITEM_HEIGHT, title.bottom());
 			}
 			for (Notes.Record rec : landmarks) {
 				ListItem item = new ListItem( Icons.get(Icons.DEPTH),
@@ -510,7 +512,7 @@ public class WndJournal extends WndTabbed {
 				
 				if (!seen) {
 					icon.copy( new ItemSprite( ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null) );
-					label.text("???");
+					label.text("?????? ????????????? ????????? ?????");
 					label.hardlight( 0x999999 );
 				} else if (!IDed) {
 					icon.copy( new ItemSprite( ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null) );
