@@ -26,8 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -200,6 +202,13 @@ public class Blacksmith extends NPC {
 			((EquipableItem)second).doUnequip( Dungeon.hero, false );
 		}
 		second.detachAll( Dungeon.hero.belongings.backpack );
+		
+		if (second instanceof Armor){
+			BrokenSeal seal = ((Armor) second).checkSeal();
+			if (seal != null){
+				Dungeon.level.drop( seal, Dungeon.hero.pos );
+			}
+		}
 		
 		Quest.reforged = true;
 		
