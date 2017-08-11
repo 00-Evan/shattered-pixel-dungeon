@@ -512,7 +512,7 @@ public class WndJournal extends WndTabbed {
 				
 				if (!seen) {
 					icon.copy( new ItemSprite( ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null) );
-					label.text("?????? ????????????? ????????? ?????");
+					label.text("???");
 					label.hardlight( 0x999999 );
 				} else if (!IDed) {
 					icon.copy( new ItemSprite( ItemSpriteSheet.WEAPON_HOLDER + currentItemIdx, null) );

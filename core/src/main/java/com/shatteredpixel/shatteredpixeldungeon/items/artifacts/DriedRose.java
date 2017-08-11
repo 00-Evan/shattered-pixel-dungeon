@@ -627,7 +627,7 @@ public class DriedRose extends Artifact {
 				rose.talkedTo = true;
 				GameScene.show(new WndQuest(this, Messages.get(this, "introduce") ));
 				return false;
-			} else {
+			} else if (Level.passable[pos] || Dungeon.hero.flying) {
 				int curPos = pos;
 
 				moveSprite( pos, Dungeon.hero.pos );
@@ -639,6 +639,8 @@ public class DriedRose extends Artifact {
 				Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
 				Dungeon.hero.busy();
 				return true;
+			} else {
+				return false;
 			}
 		}
 
