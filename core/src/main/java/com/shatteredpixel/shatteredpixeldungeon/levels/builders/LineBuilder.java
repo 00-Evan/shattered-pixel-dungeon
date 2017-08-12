@@ -54,12 +54,19 @@ public class LineBuilder extends RegularBuilder {
 		roomsOnPath = Math.min(roomsOnPath, multiConnections.size());
 		
 		Room curr = entrance;
-
+		
+		float[] pathTunnels = pathTunnelChances.clone();
 		for (int i = 0; i <= roomsOnPath; i++){
 			if (i == roomsOnPath && exit == null)
 				continue;
-
-			int tunnels = Random.chances(pathTunnelChances);
+			
+			int tunnels = Random.chances(pathTunnels);
+			if (tunnels == -1){
+				pathTunnels = pathTunnelChances.clone();
+				tunnels = Random.chances(pathTunnels);
+			}
+			pathTunnels[tunnels]--;
+			
 			for (int j = 0; j < tunnels; j++){
 				ConnectionRoom t = ConnectionRoom.createRoom();
 				placeRoom(rooms, curr, t, direction + Random.Float(-pathVariance, pathVariance));

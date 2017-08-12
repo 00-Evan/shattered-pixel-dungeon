@@ -88,13 +88,20 @@ public class LoopBuilder extends RegularBuilder {
 		roomsOnLoop = Math.min(roomsOnLoop, multiConnections.size());
 		roomsOnLoop++;
 		
+		float[] pathTunnels = pathTunnelChances.clone();
 		for (int i = 0; i < roomsOnLoop; i++){
 			if (i == 0)
 				loop.add(entrance);
 			else
 				loop.add(multiConnections.remove(0));
 			
-			int tunnels = Random.chances(pathTunnelChances);
+			int tunnels = Random.chances(pathTunnels);
+			if (tunnels == -1){
+				pathTunnels = pathTunnelChances.clone();
+				tunnels = Random.chances(pathTunnels);
+			}
+			pathTunnels[tunnels]--;
+			
 			for (int j = 0; j < tunnels; j++){
 				loop.add(ConnectionRoom.createRoom());
 			}
