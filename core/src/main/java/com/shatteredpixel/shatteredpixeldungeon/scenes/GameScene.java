@@ -156,6 +156,9 @@ public class GameScene extends PixelScene {
 	private ActionIndicator action;
 	private ResumeIndicator resume;
 	
+	//temporary, see Ghostsprite
+	public Group ghostHP;
+	
 	@Override
 	public void create() {
 		
@@ -231,6 +234,8 @@ public class GameScene extends PixelScene {
 		mobs = new Group();
 		add( mobs );
 		
+		ghostHP = new Group();
+		
 		for (Mob mob : Dungeon.level.mobs) {
 			addMobSprite( mob );
 			if (Statistics.amuletObtained) {
@@ -280,6 +285,8 @@ public class GameScene extends PixelScene {
 		mobs.add( hero );
 
 		add( new HealthIndicator() );
+		
+		add( ghostHP );
 		
 		add( cellSelector = new CellSelector( tiles ) );
 
