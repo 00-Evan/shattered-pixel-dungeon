@@ -47,7 +47,7 @@ public abstract class RegularBuilder extends Builder {
 	}
 	
 	//path length is the percentage of pathable rooms that are on
-	protected float pathLength = 0.67f;
+	protected float pathLength = 0.6f;
 	//The chance weights for extra rooms to be added to the path
 	protected float[] pathLenJitterChances = new float[]{1, 0, 0};
 	
@@ -66,7 +66,7 @@ public abstract class RegularBuilder extends Builder {
 		return this;
 	}
 	
-	protected float extraConnectionChance = 0.1f;
+	protected float extraConnectionChance = 0.2f;
 	
 	public RegularBuilder setExtraConnectionChance( float chance ){
 		extraConnectionChance = chance;
@@ -112,7 +112,7 @@ public abstract class RegularBuilder extends Builder {
 	
 	// *** Branch Placement ***
 	
-	protected static void weightRooms(ArrayList<Room> rooms){
+	protected void weightRooms(ArrayList<Room> rooms){
 		for (Room r : rooms.toArray(new Room[0])){
 			if (r instanceof StandardRoom){
 				for (int i = 1; i < ((StandardRoom) r).sizeCat.connectionWeight(); i++)
@@ -123,7 +123,7 @@ public abstract class RegularBuilder extends Builder {
 	
 	//places the rooms in roomsToBranch into branches from rooms in branchable.
 	//note that the three arrays should be separate, they may contain the same rooms however
-	protected static void createBranches(ArrayList<Room> rooms, ArrayList<Room> branchable,
+	protected void createBranches(ArrayList<Room> rooms, ArrayList<Room> branchable,
 	                                     ArrayList<Room> roomsToBranch, float[] connChances){
 		
 		int i = 0;
@@ -139,12 +139,12 @@ public abstract class RegularBuilder extends Builder {
 			int connectingRooms = Random.chances(connChances);
 			for (int j = 0; j < connectingRooms; j++){
 				ConnectionRoom t = ConnectionRoom.createRoom();
-				tries = 10;
+				tries = 3;
 				
 				do {
-					angle = placeRoom(rooms, curr, t, Random.Float(360f));
+					angle = placeRoom(rooms, curr, t, randomBranchAngle(curr));
 					tries--;
-				} while (angle == -1 && tries >= 0);
+				} while (angle == -1 && tries > 0);
 				
 				if (angle == -1) {
 					for (Room r : connectingRoomsThisBranch){
@@ -170,9 +170,9 @@ public abstract class RegularBuilder extends Builder {
 			tries = 10;
 			
 			do {
-				angle = placeRoom(rooms, curr, r, Random.Float(360f));
+				angle = placeRoom(rooms, curr, r, randomBranchAngle(curr));
 				tries--;
-			} while (angle == -1 && tries >= 0);
+			} while (angle == -1 && tries > 0);
 			
 			if (angle == -1){
 				for (Room t : connectingRoomsThisBranch){
@@ -198,6 +198,10 @@ public abstract class RegularBuilder extends Builder {
 			
 			i++;
 		}
+	}
+	
+	protected float randomBranchAngle( Room r ){
+		return Random.Float(360f);
 	}
 	
 }

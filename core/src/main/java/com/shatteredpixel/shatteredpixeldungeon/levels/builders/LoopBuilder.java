@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -65,6 +66,8 @@ public class LoopBuilder extends RegularBuilder {
 				*(Math.pow((x % 0.5f )-0.25, 2*curveExponent + 1))
 				+ 0.25 + 0.5*Math.floor(2*x);
 	}
+	
+	private PointF loopCenter;
 	
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
@@ -127,6 +130,14 @@ public class LoopBuilder extends RegularBuilder {
 			prev = c;
 		}
 		
+		loopCenter = new PointF();
+		for (Room r : loop){
+			loopCenter.x += (r.left + r.right)/2f;
+			loopCenter.y += (r.top + r.bottom)/2f;
+		}
+		loopCenter.x /= loop.size();
+		loopCenter.y /= loop.size();
+		
 		if (shop != null) {
 			float angle;
 			int tries = 10;
@@ -157,5 +168,25 @@ public class LoopBuilder extends RegularBuilder {
 		}
 		
 		return rooms;
+	}
+	
+	@Override
+	protected float randomBranchAngle( Room r ) {
+		if (loopCenter == null)
+			return super.randomBranchAngle( r );
+		else {
+			//generate four angles randomly and return the one which points closer to the center
+			float toCenter = angleBetweenPoints( new PointF((r.left + r.right)/2f, (r.top + r.bottom)/2f), loopCenter);
+			if (toCenter < 0) toCenter += 360f;
+			
+			float currAngle = Random.Float(360f);
+			for( int i = 0; i < 4; i ++){
+				float newAngle = Random.Float(360f);
+				if (Math.abs(toCenter - newAngle) < Math.abs(toCenter - currAngle)){
+					currAngle = newAngle;
+				}
+			}
+			return currAngle;
+		}
 	}
 }

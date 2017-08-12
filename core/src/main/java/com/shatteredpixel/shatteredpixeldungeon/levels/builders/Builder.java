@@ -146,10 +146,14 @@ public abstract class Builder {
 	protected static float angleBetweenRooms( Room from, Room to){
 		PointF fromCenter = new PointF((from.left + from.right)/2f, (from.top + from.bottom)/2f);
 		PointF toCenter = new PointF((to.left + to.right)/2f, (to.top + to.bottom)/2f);
-		double m = (toCenter.y - fromCenter.y)/(toCenter.x - fromCenter.x);
+		return angleBetweenPoints(fromCenter, toCenter);
+	}
+	
+	protected static float angleBetweenPoints( PointF from, PointF to ){
+		double m = (to.y - from.y)/(to.x - from.x);
 		
 		float angle = (float)(A*(Math.atan(m) + Math.PI/2.0));
-		if (fromCenter.x > toCenter.x) angle -= 180f;
+		if (from.x > to.x) angle -= 180f;
 		return angle;
 	}
 

@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -53,10 +52,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 public abstract class RegularLevel extends Level {
 	
@@ -126,7 +123,7 @@ public abstract class RegularLevel extends Level {
 	protected Builder builder(){
 		return new LoopBuilder()
 				.setLoopShape( 2 ,
-						Random.Float(0.55f, 0.85f),
+						Random.Float(0.4f, 0.7f),
 						Random.Float(0f, 0.5f));
 	}
 	
