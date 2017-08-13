@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.watabou.utils.Random;
 
 public class SuspiciousChestRoom extends EmptyRoom {
 
@@ -54,6 +55,10 @@ public class SuspiciousChestRoom extends EmptyRoom {
 
 		Painter.set(level, center, Terrain.PEDESTAL);
 
-		level.drop(i, center).type = Heap.Type.MIMIC;
+		if (Random.Int(3) == 0) {
+			level.drop(i, center).type = Heap.Type.MIMIC;
+		} else {
+			level.drop(i, center).type = Heap.Type.CHEST;
+		}
 	}
 }
