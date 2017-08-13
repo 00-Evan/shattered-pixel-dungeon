@@ -229,7 +229,7 @@ public class WndJournal extends WndTabbed {
 			PixelScene.align(title);
 			content.add(title);
 			
-			pos += Math.max(ITEM_HEIGHT, title.bottom());
+			pos += Math.max(ITEM_HEIGHT, title.height());
 			
 			for (String page : Document.ADVENTURERS_GUIDE.pages()){
 				GuideItem item = new GuideItem( page );
@@ -313,7 +313,7 @@ public class WndJournal extends WndTabbed {
 				PixelScene.align(title);
 				content.add(title);
 				
-				pos += Math.max(ITEM_HEIGHT, title.bottom());
+				pos += Math.max(ITEM_HEIGHT, title.height());
 			}
 			for(Notes.Record rec : keys){
 				ListItem item = new ListItem( Icons.get(Icons.DEPTH),
@@ -338,7 +338,7 @@ public class WndJournal extends WndTabbed {
 				PixelScene.align(title);
 				content.add(title);
 				
-				pos += Math.max(ITEM_HEIGHT, title.bottom());
+				pos += Math.max(ITEM_HEIGHT, title.height());
 			}
 			for (Notes.Record rec : landmarks) {
 				ListItem item = new ListItem( Icons.get(Icons.DEPTH),
