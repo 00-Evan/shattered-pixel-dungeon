@@ -285,6 +285,15 @@ public class PrisonBossLevel extends Level {
 				set(5 + 25 * 32, Terrain.LOCKED_DOOR);
 				GameScene.updateMap(5 + 25 * 32);
 
+				for (Mob m : mobs){
+					//bring the first ally with you
+					if (m.ally){
+						m.pos = 5 + 25 * 32; //they should immediately walk out of the door
+						m.sprite.place(m.pos);
+						break;
+					}
+				}
+				
 				tengu.state = tengu.HUNTING;
 				tengu.pos = 5 + 28*32; //in the middle of the fight room
 				GameScene.add( tengu );
@@ -329,10 +338,12 @@ public class PrisonBossLevel extends Level {
 				changeMap(MAP_ARENA);
 				clearEntities( (Room) new Room().set(0, 0, 10, 4)); //clear all but the area right around the teleport spot
 				
-				//if any characters are left over, move them along the same way as the hero
+				//if any allies are left over, move them along the same way as the hero
 				for (Mob m : mobs){
-					m.pos += 9+3*32;
-					m.sprite().place(m.pos);
+					if (m.ally) {
+						m.pos += 9 + 3 * 32;
+						m.sprite().place(m.pos);
+					}
 				}
 
 				tengu.state = tengu.HUNTING;

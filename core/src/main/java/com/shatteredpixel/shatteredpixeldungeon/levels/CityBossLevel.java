@@ -196,6 +196,15 @@ public class CityBossLevel extends Level {
 			enteredArena = true;
 			seal();
 			
+			for (Mob m : mobs){
+				//bring the first ally with you
+				if (m.ally){
+					m.pos = Dungeon.hero.pos + (Random.Int(2) == 0 ? +1 : -1);
+					m.sprite.place(m.pos);
+					break;
+				}
+			}
+			
 			King boss = new King();
 			boss.state = boss.WANDERING;
 			int count = 0;

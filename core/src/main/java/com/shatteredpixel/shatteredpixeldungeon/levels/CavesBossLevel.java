@@ -225,6 +225,15 @@ public class CavesBossLevel extends Level {
 			enteredArena = true;
 			seal();
 			
+			for (Mob m : mobs){
+				//bring the first ally with you
+				if (m.ally){
+					m.pos = Dungeon.hero.pos + (Random.Int(2) == 0 ? +1 : -1);
+					m.sprite.place(m.pos);
+					break;
+				}
+			}
+			
 			DM300 boss = new DM300();
 			boss.state = boss.WANDERING;
 			do {
