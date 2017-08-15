@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
@@ -48,11 +47,13 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
+import com.watabou.input.Touchscreen;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.TouchArea;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -104,12 +105,12 @@ public class ChangesScene extends PixelScene {
 
 		};
 		add( list );
-
+		
 		ChangeInfo changes = new ChangeInfo("v0.6.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 
-		changes = new ChangeInfo("New Content:", false, null);
+		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 
@@ -120,17 +121,22 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(BadgeBanner.image(Badges.Badge.ALL_ITEMS_IDENTIFIED.image), "Badge Changes",
 				"_-_ Added new badges for identifying all weapons, armor, wands, and artifacts.\n\n" +
 				"_-_ All identification-based badges are now tied to the new item list system, and progress for them will persist between runs.\n\n" +
-				"_-_ Removed the Night Hunter badge.\n\n" +
+				"_-_ Removed the Night Hunter badge\n\n" +
 				"_-_ The 'Many Deaths' badge now covers all death related badges, previously it was not covering 2 of them.\n\n" +
+				"_-_ Reduced the numbers of games needed for the 'games played' badges from 10/100/500/2000 to 10/50/250/1000\n\n" +
 				"_-_ Blank badges shown in the badges menu are now accurate to how many badges you have left to unlock."));
-		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "levelgen changes",
-				"_-_ Added two new uncommon room types\n\n" +
-				"_-_ Added a new type of tunnel room (plus a chasm variant)"));
+		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Dungeon Changes",
+				"_-_ Added 5 new regional rooms\n" +
+				"_-_ Added two new uncommon room types\n" +
+				"_-_ Added a new type of tunnel room\n\n" +
+				"_-_ Level layouts now more likely to be dense and interconnected.\n\n" +
+				"_-_ Tunnels will now appear more consistently.\n\n" +
+				"_-_ Ascending stairs, descending stairs, and mining no longer increase hunger."));
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), new RingOfEnergy().trueName(),
 				"_-_ Added the ring of energy."));
 
 
-		changes = new ChangeInfo("Changes:", false, null);
+		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
 		changes.hardlight( CharSprite.WARNING );
 		infos.add(changes);
 
@@ -140,45 +146,63 @@ public class ChangesScene extends PixelScene {
 				"_-_ Curses no longer affect ring upgrades, it is now impossible to find negatively upgraded rings.\n\n" +
 				"_-_ Cursed rings are now always harmful regardless of their level, until the curse is cleansed.\n\n" +
 				"_-_ Scrolls of upgrade have a chance to remove curses on a ring, scrolls of remove curse will always remove the curse."));
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), new RingOfWealth().trueName(),
+				"The ring of wealth is getting a change in emphasis, moving away from affecting items generally, and instead affecting item drops more strongly.\n\n" +
+				"_-_ No longer grants any benefit to item spawns when levels are generated.\n\n" +
+				"_-_ Now has a chance to generate extra loot when defeating enemies.\n\n" +
+				"I'm planning to make further tweaks to this item in future updates."));
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), new PotionOfHealing().trueName(),
 				"Health Potions are getting a changeup to make hoarding and chugging them less effective, and to encourage a bit more strategy than to just drink them on the verge of death.\n\n" +
 				"_-_ Health potions now heal in a burst that fades over time, rather than instantly.\n\n" +
 				"_-_ Health potions now heal more than max HP at low levels, and slightly less than max HP at high levels.\n\n" +
 				"Make sure to read the dew vial changes as well."));
 		changes.addButton( new ChangeButton( new DewVial(),
-				"The dew vial (and dew) are having their healing abilities enhanced both to improve the availability of healing in the sewers, and also to help offset the health potion changes somewhat.\n\n" +
-				"_-_ Dew drops now heal 5% of max HP, this is an increase in almost all cases.\n\n" +
+				"The dew vial (and dew) are having their healing abilities enhanced to improve the availability of healing in the sewers, and to help offset the health potion changes.\n\n" +
+				"_-_ Dew drops now heal 5% of max HP\n\n" +
+				"_-_ Dew vial now always spawns on floor 1\n\n" +
 				"_-_ The dew vial is now full at 20 drops, drinking heals 5% per drop and is instantaneous.\n\n" +
-				"_-_ Dew will always be collected into an available vial, even if the hero is below max HP.\n\n" +
-				"_-_ When drinking from the vial, the hero will now only drink as many drops as they need to reach full HP.\n\n"));
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), new RingOfWealth().trueName(),
-				"The ring of wealth is getting a change in emphasis, moving away from affecting items generally, and instead affecting item drops more strongly.\n\n" +
-				"_-_ no longer grants any benefit to item spawns when levels are generated\n\n" +
-				"_-_ now has a chance to generate extra loot when defeating enemies\n\n" +
-				"I'm planning to make further tweaks to this item in future updates."));
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), "Bug Fixes",
-				"_-_ Fixed several issues with multi-window mode in android 7.0+.\n" +
-				"_-_ Fixed death by chasm showing incorrectly in the rankings.\n" +
-				"_-_ Fixed rare crashes caused by falling into pits.\n" +
-				"_-_ Fixed the resting icon sometimes not appearing while resting.\n" +
-				"_-_ Fixed flare effects rendering incorrectly on the first frame.\n" +
-				"_-_ Fixed Evil eyes not visually dieing in rare circumstances.\n" +
-				"_-_ Fixed the ambitious imp rarely blocking the player's path.\n" +
-				"_-_ Fixed berserking prematurely ending after loading a save.\n" +
-				"_-_ Fixed wands always becoming uncursed by upgrades, now has a chance to be uncursed as intended."));
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
-				"_-_ Improvements to pathfinding. Characters are now more prone to take efficient paths to their targets, and will prefer to wait instead of taking an extremely inefficient path.\n\n" +
-				"_-_ Characters will now more consistently decide who to attack based on distance and who they are being attacked by.\n\n" +
-				"_-_ Item and enemy spawn randomness is now more consistent.\n" +
-				"_-_ Google Play Games features now require android 4.0+.\n" +
-				"_-_ Stepping on plants now stops hero movement.\n" +
-				"_-_ Improved the inventory icons on some potions and scrolls.\n" +
-				"_-_ The compass now points to the entrance instead of the exit after the amulet has been acquired."));
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), "Language Improvements",
-				"_-_ Fixed a missing capitalization in Prison Guard text.\n" +
-				"_-_ Fixed a typo that appears when trying to open a locked chest with no key"));
+				"_-_ Dew will always be collected into an available vial, even if the hero is below full HP.\n\n" +
+				"_-_ When drinking from the vial, the hero will now only drink as many drops as they need to reach full HP."));
+		changes.addButton( new ChangeButton( new Image(Assets.STATUE, 0, 0, 12, 15), "AI Changes",
+				"_-_ Improvements to pathfinding. Characters are now more prone to take efficient paths to their targets, and will prefer to wait instead of taking a very inefficient path.\n\n" +
+				"_-_ Characters will now more consistently decide who to attack based on distance and who they are being attacked by."));
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Issues with Android 7.0+ multi-window\n" +
+				"_-_ Rare stability issues on certain devices\n" +
+				"_-_ Rare crashes caused by falling into pits\n" +
+				"_-_ Chasm death not showing in rankings\n" +
+				"_-_ Resting icon sometimes not appearing\n" +
+				"_-_ Various minor graphical bugs\n" +
+				"_-_ The ambitious imp rarely blocking paths\n" +
+				"_-_ Berserk prematurely ending after loading\n" +
+				"_-_ Mind vision not updating while waiting\n" +
+				"_-_ Troll blacksmith destroying broken seal\n" +
+				"_-_ Wands always being uncursed by upgrades\n" +
+				"_-_ Evil Eyes not visually dying in rare cases\n" +
+				"_-_ Evil Eyes shooting through walls in rare cases\n" +
+				"_-_ Evil Eyes behaving oddly when charmed\n" +
+				"_-_ Sad Ghost being affected by corruption\n" +
+				"_-_ Switching places with the Sad Ghost over chasms causing the hero to fall"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Completely overhauled the changes scene (which you're currently reading!)\n\n" +
+				"_-_ Item and enemy spawn RNG is now more consistent. Should prevent things like finding 4 crabs on floor 3.\n\n" +
+				"_-_ The compass marker now points toward entrances after the amulet has been acquired.\n\n" +
+				"_-_ Improved quickslot behaviour when items are removed by monks or thieves.\n\n" +
+				"_-_ Allies are now better able to follow you through bosses.\n\n" +
+				"_-_ Performance tweaks on phones with 2+ cpu cores\n\n" +
+				"_-_ Stepping on plants now interrupts the hero\n" +
+				"_-_ Improved potion and scroll inventory icons\n" +
+				"_-_ Increased landscape width of some windows\n" +
+				"_-_ Un-IDed artifacts no longer display charge"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "translation"),
+				"Fixed in English:\n" +
+				"_-_ Missing capitalization in Prison Guard text\n" +
+				"_-_ Typo when trying a locked chest with no key\n\n" +
+				"Added new Language: _Catalan_\n\n" +
+				"Various Translation updates"));
 
-		changes = new ChangeInfo("Buffs:", false, null);
+		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
 		infos.add(changes);
 
@@ -187,40 +211,40 @@ public class ChangesScene extends PixelScene {
 				"_-_ Infusing a scroll into the unstable spellbook will now grant a unique empowered effect whenever that scroll's spell is cast from the book.\n\n" +
 				"To compensate, charge mechanics have been adjusted:\n\n" +
 				"_-_ Max charges reduced from 3-8 to 2-6\n\n" +
-				"_-_ Recharge time has been increased slightly" ));
+				"_-_ Recharge speed has been reduced slightly" ));
 		changes.addButton( new ChangeButton( new DriedRose().upgrade(10),
 				"The ghost hero summoned by the rose is now much more capable and is also much less temporary:\n\n" +
-				"_-_ Ghost can now be equipped with a weapon and armor and uses them just like the hero\n" +
+				"_-_ Ghost can now be equipped with a weapon and armor and uses them just like the hero.\n" +
+				"_-_ Ghost no longer takes damage over time as long as the rose remains equipped.\n" +
 				"_-_ Ghost health increased by 10\n" +
-				"_-_ Ghost no longer takes damage over time as long as the rose remains equipped\n" +
-				"_-_ Ghost is now capable of following you between floors\n\n" +
+				"_-_ Ghost now has a persistent HP bar\n" +
+				"_-_ Ghost can now follow you between floors\n\n" +
 				"However:\n\n" +
+				"_-_ Ghost no longer gains damage and defense from rose levels, instead gains strength to use better equipment.\n" +
 				"_-_ Rose no longer recharges while ghost is summoned\n" +
-				"_-_ Rose takes 25% longer to fully charge\n" +
-				"_-_ Ghost no longer gains damage and defense from rose levels, instead gains strength to use better equipment" ));
+				"_-_ Rose takes 25% longer to fully charge" ));
 		changes.addButton( new ChangeButton( Icons.get(Icons.BACKPACK), "Inventory",
 				"_-_ Inventory space increased from 19 slots to 20 slots.\n\n" +
 				"_-_ Gold indicator has been moved to the top-right of the inventory window to make room for the extra slot." ));
 
-		changes = new ChangeInfo("Nerfs:", false, null);
+		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
 		changes.hardlight( CharSprite.NEGATIVE );
 		infos.add(changes);
 
 		changes.addButton( new ChangeButton( new HornOfPlenty(),
 				"The Horn of Plenty was providing a bit too much value in the earlygame, especially without upgrades:\n\n" +
-				"_-_ Charge Speed reduced: -20% at +0, scaling to -7.5% at +10\n\n" +
-				"_-_ Upgrade rate adjusted, Food now contributes towards upgrades exactly in line with how much hunger it restores. This means smaller food items will contribute more, larger ones will contribute less."));
+				"_-_ Charge Speed reduced, primarily at lower levels:\n-20% at +0\n-7.5% at +10\n\n" +
+				"_-_ Upgrade rate adjusted, Food now contributes towards upgrades exactly in line with how much hunger it restores. This means smaller food items will contribute more, larger ones will contribute less. Rations still grant exactly 1 upgrade each."));
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_GARNET, null), new RingOfMight().trueName(),
-				"The Ring of Might's strength bonus is already extremely valuable, having it also provide an excellent health boost was simply too powerful:\n\n" +
-				"_-_ Health granted reduced from +5 per upgrade to +3.5% of max hp per upgrade\n\n" +
+				"The Ring of Might's strength bonus is already extremely valuable, having it also provide an excellent health boost was simply too much:\n\n" +
+				"_-_ Health granted reduced from +5 per upgrade to +3.5% of max hp per upgrade.\n\n" +
 				"This is a massive reduction to its earlygame health boosting power, however as the player levels up this will improve. By hero level 26 it will be as strong as before this change."));
 		changes.addButton( new ChangeButton( new EtherealChains(),
-				"The ability for Ethereal Chains to pull you literally anywhere limits design possibilities for future updates, so I've added an important limitation.\n\n" +
+				"The ability for Ethereal Chains to pull you literally anywhere limits design possibilities for future updates, so I've added a limitation.\n\n" +
 				"_-_ Ethereal chains now cannot reach locations the player cannot reach by walking or flying. e.g. the chains can no longer reach into a locked room.\n\n" +
 				"_-_ Ethereal chains can now reach through walls on boss floors, but the above limitation still applies."));
-
-
-		changes = new ChangeInfo("Previous Updates", true,
+		
+		changes = new ChangeInfo( Messages.get(this, "previous"), true,
 				"_v0.6.0:_\n" +
 				"_-_ Level creation algorithm completely overhauled!\n" +
 				"_-_ Sewers are now smaller, caves+ are now larger\n" +
@@ -400,12 +424,12 @@ public class ChangesScene extends PixelScene {
 	private static class ChangeButton extends Component {
 
 		protected Image icon;
-
 		protected String title;
 		protected String message;
 
 		public ChangeButton( Image icon, String title, String message){
 			super();
+			
 			this.icon = icon;
 			add(this.icon);
 
@@ -420,7 +444,7 @@ public class ChangesScene extends PixelScene {
 		}
 
 		protected void onClick() {
-			ShatteredPixelDungeon.scene().add(new WndTitledMessage(new Image(icon), title, message));
+			ShatteredPixelDungeon.scene().add(new ChangesWindow(new Image(icon), title, message));
 		}
 
 		@Override
@@ -431,6 +455,22 @@ public class ChangesScene extends PixelScene {
 			icon.y = y + (height - icon.height) / 2f;
 			PixelScene.align(icon);
 		}
+	}
+	
+	private static class ChangesWindow extends WndTitledMessage {
+	
+		public ChangesWindow( Image icon, String title, String message ) {
+			super( icon, title, message);
+			
+			add( new TouchArea( chrome ) {
+				@Override
+				protected void onClick( Touchscreen.Touch touch ) {
+					hide();
+				}
+			} );
+			
+		}
+		
 	}
 }
 

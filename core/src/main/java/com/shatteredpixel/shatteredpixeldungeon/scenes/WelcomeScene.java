@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 import android.opengl.GLES20;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -44,7 +45,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class WelcomeScene extends PixelScene {
 
-	private static int LATEST_UPDATE = 181;
+	private static int LATEST_UPDATE = 205;
 
 	@Override
 	public void create() {
@@ -182,6 +183,15 @@ public class WelcomeScene extends PixelScene {
 				Game.instance.deleteFile( Rankings.RANKINGS_FILE );
 			}
 
+		}
+		
+		if (previousVersion <= ShatteredPixelDungeon.v0_6_0b){
+			Badges.disown(Badges.Badge.ALL_WANDS_IDENTIFIED);
+			Badges.disown(Badges.Badge.ALL_RINGS_IDENTIFIED);
+			Badges.disown(Badges.Badge.ALL_SCROLLS_IDENTIFIED);
+			Badges.disown(Badges.Badge.ALL_POTIONS_IDENTIFIED);
+			Badges.disown(Badges.Badge.ALL_ITEMS_IDENTIFIED);
+			Badges.saveGlobal();
 		}
 
 		ShatteredPixelDungeon.version(ShatteredPixelDungeon.versionCode);
