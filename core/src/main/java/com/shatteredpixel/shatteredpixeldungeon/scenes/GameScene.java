@@ -482,8 +482,10 @@ public class GameScene extends PixelScene {
 
 		if (!Actor.processing() && Dungeon.hero.isAlive()) {
 			if (!actorThread.isAlive()) {
-				//if cpu time is limited, game should prefer drawing the current frame
-				actorThread.setPriority(Thread.NORM_PRIORITY - 1);
+				//if cpu cores are limited, game should prefer drawing the current frame
+				if (Runtime.getRuntime().availableProcessors() == 1) {
+					actorThread.setPriority(Thread.NORM_PRIORITY - 1);
+				}
 				actorThread.start();
 			} else {
 				synchronized (actorThread) {
