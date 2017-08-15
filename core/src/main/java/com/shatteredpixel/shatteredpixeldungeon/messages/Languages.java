@@ -31,20 +31,22 @@ public enum Languages {
 	CHINESE("中文",          "zh", Status.REVIEWED, new String[]{"Jinkeloid(zdx00793)"}, new String[]{"931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401", "ShatteredFlameBlast", "hmdzl001", "tempest102"}),
 	FINNISH("suomi", 		"fi", Status.REVIEWED, new String[]{"TenguTheKnight"}, null ),
 	POLISH("polski",        "pl", Status.REVIEWED, new String[]{"Deksippos", "kuadziw"}, new String[]{"Chasseur", "Darden", "MJedi", "Scharnvirk", "Shmilly", "dusakus", "michaub", "ozziezombie", "szczoteczka22", "szymex73"}),
-
-	GERMAN("deutsch",       "de", Status.UNREVIEWED, new String[]{"Dallukas", "KrystalCroft", "Wuzzy", "Zap0", "davedude" }, new String[]{"DarkPixel", "ErichME", "Sarius", "Sorpl3x", "ThunfischGott", "oragothen"}),
-	FRENCH("français",      "fr", Status.UNREVIEWED, new String[]{"Emether", "canc42", "kultissim", "minikrob"}, new String[]{"Alsydis", "Basttee", "Draal", "go11um", "linterpreteur", "solthaar"}),
+	
 	ITALIAN("italiano",		"it", Status.UNREVIEWED, new String[]{"bizzolino", "funnydwarf"}, new String[]{"4est", "DaniMare", "Danzl", "andrearubbino00", "nessunluogo", "umby000"}),
-	HUNGARIAN("magyar",     "hu", Status.UNREVIEWED, new String[]{"dorheim"}, new String[]{"Navetelen", "clarovani", "dhialub", "nanometer", "nardomaa"}),
-	SPANISH("español",      "es", Status.UNREVIEWED, new String[]{"Kiroto", "Kohru", "grayscales"}, new String[]{"Alesxanderk", "CorvosUtopy", "Dewstend", "Dyrran", "Fervoreking", "Illyatwo2", "alfongad", "benzarr410", "ctrijueque", "dhg121", "javifs", "jonismack1"}),
-	PORTUGUESE("português", "pt", Status.UNREVIEWED, new String[]{"TDF2001", "matheus208"}, new String[]{"ChainedFreaK", "JST", "MadHorus", "danypr23", "ismael.henriques12", "try31"}),
 	ESPERANTO("esperanto",  "eo", Status.UNREVIEWED, new String[]{"Verdulo"}, null),
-	INDONESIAN("indonésien","in", Status.UNREVIEWED, new String[]{"rakapratama"}, null),
-	CATALAN("català",       "ca", Status.UNREVIEWED, new String[]{"Illyatwo2"}, null);
+	CATALAN("català",       "ca", Status.UNREVIEWED, new String[]{"Illyatwo2"}, null),
+	
+	GERMAN("deutsch",       "de", Status.INCOMPLETE, new String[]{"Dallukas", "KrystalCroft", "Wuzzy", "Zap0", "davedude" }, new String[]{"DarkPixel", "ErichME", "Sarius", "Sorpl3x", "ThunfischGott", "oragothen"}),
+	FRENCH("français",      "fr", Status.INCOMPLETE, new String[]{"Emether", "canc42", "kultissim", "minikrob"}, new String[]{"Alsydis", "Basttee", "Draal", "go11um", "linterpreteur", "solthaar"}),
+	HUNGARIAN("magyar",     "hu", Status.INCOMPLETE, new String[]{"dorheim"}, new String[]{"Navetelen", "clarovani", "dhialub", "nanometer", "nardomaa"}),
+	SPANISH("español",      "es", Status.INCOMPLETE, new String[]{"Kiroto", "Kohru", "grayscales"}, new String[]{"Alesxanderk", "CorvosUtopy", "Dewstend", "Dyrran", "Fervoreking", "Illyatwo2", "alfongad", "benzarr410", "ctrijueque", "dhg121", "javifs", "jonismack1"}),
+	PORTUGUESE("português", "pt", Status.INCOMPLETE, new String[]{"TDF2001", "matheus208"}, new String[]{"ChainedFreaK", "JST", "MadHorus", "danypr23", "ismael.henriques12", "try31"}),
+	INDONESIAN("indonésien","in", Status.INCOMPLETE, new String[]{"rakapratama"}, null);
+	
 
 	public enum Status{
-		//below 60% complete languages are not added.
-		INCOMPLETE, //60-99% complete
+		//below 80% complete languages are not added.
+		INCOMPLETE, //80-99% complete
 		UNREVIEWED, //100% complete
 		REVIEWED    //100% reviewed
 	}
