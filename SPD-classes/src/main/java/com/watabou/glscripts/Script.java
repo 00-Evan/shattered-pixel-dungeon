@@ -21,10 +21,10 @@
 
 package com.watabou.glscripts;
 
-import java.util.HashMap;
-
 import com.watabou.glwrap.Program;
 import com.watabou.glwrap.Shader;
+
+import java.util.HashMap;
 
 public class Script extends Program {
 
@@ -35,7 +35,7 @@ public class Script extends Program {
 	private static Class<? extends Script> curScriptClass = null;
 	
 	@SuppressWarnings("unchecked")
-	public static<T extends Script> T use( Class<T> c ) {
+	public synchronized static<T extends Script> T use( Class<T> c ) {
 		
 		if (c != curScriptClass) {
 			
