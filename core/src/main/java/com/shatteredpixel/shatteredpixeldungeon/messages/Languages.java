@@ -26,11 +26,11 @@ import java.util.Locale;
 public enum Languages {
 	ENGLISH("english",      "", Status.REVIEWED, null, null),
 
-	RUSSIAN("русский",      "ru", Status.REVIEWED, new String[]{"ConsideredHamster", "Inevielle", "yarikonline"}, new String[]{"AttHawk46", "HerrGotlieb", "Shamahan", "un_logic"}),
+	RUSSIAN("русский",      "ru", Status.UNREVIEWED, new String[]{"ConsideredHamster", "Inevielle", "yarikonline"}, new String[]{"AttHawk46", "HerrGotlieb", "Shamahan", "un_logic"}),
 	KOREAN("한국어",         "ko", Status.REVIEWED, new String[]{"Flameblast12"}, new String[]{"WondarRabb1t", "ddojin0115", "eeeei", "linterpreteur", "lsiebnie" }),
 	CHINESE("中文",          "zh", Status.REVIEWED, new String[]{"Jinkeloid(zdx00793)"}, new String[]{"931451545", "HoofBumpBlurryface", "Lery", "Lyn-0401", "ShatteredFlameBlast", "hmdzl001", "tempest102"}),
 	FINNISH("suomi", 		"fi", Status.REVIEWED, new String[]{"TenguTheKnight"}, null ),
-	POLISH("polski",        "pl", Status.REVIEWED, new String[]{"Deksippos", "kuadziw"}, new String[]{"Chasseur", "Darden", "MJedi", "Scharnvirk", "Shmilly", "dusakus", "michaub", "ozziezombie", "szczoteczka22", "szymex73"}),
+	POLISH("polski",        "pl", Status.INCOMPLETE, new String[]{"Deksippos", "kuadziw"}, new String[]{"Chasseur", "Darden", "MJedi", "Scharnvirk", "Shmilly", "dusakus", "michaub", "ozziezombie", "szczoteczka22", "szymex73"}),
 	
 	ITALIAN("italiano",		"it", Status.UNREVIEWED, new String[]{"bizzolino", "funnydwarf"}, new String[]{"4est", "DaniMare", "Danzl", "andrearubbino00", "nessunluogo", "umby000"}),
 	ESPERANTO("esperanto",  "eo", Status.UNREVIEWED, new String[]{"Verdulo"}, null),
