@@ -240,10 +240,6 @@ public enum Rankings {
 	}
 
 	public static class Record implements Bundlable {
-		
-		//pre 0.4.1
-		public String gameFile;
-		private static final String FILE    = "gameFile";
 
 		private static final String CAUSE   = "cause";
 		private static final String WIN		= "win";
@@ -295,7 +291,6 @@ public enum Rankings {
 			heroClass	= HeroClass.restoreInBundle( bundle );
 			armorTier	= bundle.getInt( TIER );
 			
-			if (bundle.contains(FILE))  gameFile = bundle.getString(FILE);
 			if (bundle.contains(DATA))  gameData = bundle.getBundle(DATA);
 			if (bundle.contains(ID))    gameID = bundle.getString(ID);
 

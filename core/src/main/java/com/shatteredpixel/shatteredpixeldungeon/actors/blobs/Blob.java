@@ -88,12 +88,7 @@ public class Blob extends Actor {
 
 		if (bundle.contains( CUR )) {
 
-			if (bundle.contains(LENGTH)) {
-				cur = new int[bundle.getInt(LENGTH)];
-			} else {
-				//compatability with pre-0.4.2
-				cur = new int[1024];
-			}
+			cur = new int[bundle.getInt(LENGTH)];
 			off = new int[cur.length];
 
 			int[] data = bundle.getIntArray(CUR);

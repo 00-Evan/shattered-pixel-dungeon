@@ -46,8 +46,8 @@ public class GamesInProgress {
 				info = new Info();
 				Dungeon.preview( info, bundle );
 				
-				//saves from before 0.4.0 are not supported
-				if (info.version < ShatteredPixelDungeon.v0_4_0){
+				//saves from before 0.4.3c are not supported
+				if (info.version < ShatteredPixelDungeon.v0_4_3c){
 					info = null;
 				}
 

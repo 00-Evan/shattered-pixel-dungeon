@@ -603,13 +603,6 @@ public class PrisonBossLevel extends Level {
 			return super.create();
 		}
 
-		//for compatibility with pre-0.4.3 saves
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			pos(11, 8);
-		}
-
 		@Override
 		protected boolean needsRender(int pos) {
 			return render[pos] != 0;

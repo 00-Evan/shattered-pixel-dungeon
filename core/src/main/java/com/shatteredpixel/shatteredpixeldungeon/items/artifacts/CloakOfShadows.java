@@ -155,12 +155,6 @@ public class CloakOfShadows extends Artifact {
 		super.restoreFromBundle(bundle);
 		stealthed = bundle.getBoolean( STEALTHED );
 		cooldown = bundle.getInt( COOLDOWN );
-
-		//for pre-0.4.1 saves which may have over-levelled cloaks
-		if (level() == 15){
-			level(14);
-			chargeCap = 20;
-		}
 	}
 
 	@Override

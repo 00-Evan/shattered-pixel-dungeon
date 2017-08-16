@@ -114,27 +114,6 @@ public class Terrain {
 		}
 	}
 
-	//converts terrain values from pre versioncode 120 (0.4.3) saves
-	//TODO: remove when no longer supporting saves from 0.4.2b and under
-	public static int[] convertTilesFrom129(int[] map){
-		for (int i = 0; i < map.length; i++){
-
-			int c = map[i];
-
-			if (c >= 29){
-				if (c <= 32){
-					c = 0; //chasm tiles
-				} else {
-					c = 29; //water tiles
-				}
-			}
-
-			map[i] = c;
-
-		}
-		return map;
-	}
-
 	//removes signs, places floors instead
 	public static int[] convertTilesFrom0_6_0b(int[] map){
 		for (int i = 0; i < map.length; i++){
