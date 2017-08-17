@@ -885,8 +885,8 @@ public class GameScene extends PixelScene {
 				mode == Mode.WAND ?
 					WndBag.getBag( WandHolster.class, listener, mode, title ) :
 				WndBag.lastBag( listener, mode, title );
-
-		scene.addToFront( wnd );
+		
+		if (scene != null) scene.addToFront( wnd );
 		
 		return wnd;
 	}
