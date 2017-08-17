@@ -56,6 +56,7 @@ public class Thief extends Mob {
 		loot = null;
 		lootChance = 0.01f;
 
+		WANDERING = new Wandering();
 		FLEEING = new Fleeing();
 
 		properties.add(Property.DEMONIC);
@@ -177,6 +178,21 @@ public class Thief extends Mob {
 
 		return desc;
 	}
+	
+	private class Wandering extends Mob.Wandering {
+		
+		@Override
+		public boolean act(boolean enemyInFOV, boolean justAlerted) {
+			super.act(enemyInFOV, justAlerted);
+			
+			//if an enemy is just noticed and the thief posses an item, run, don't fight.
+			if (state == HUNTING && item != null){
+				state = FLEEING;
+			}
+			
+			return true;
+		}
+	}
 
 	private class Fleeing extends Mob.Fleeing {
 		@Override
@@ -185,7 +201,7 @@ public class Thief extends Mob {
 				if (enemySeen) {
 					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
 					state = HUNTING;
-				} else {
+				} else if (item != null && !Dungeon.visible[pos]) {
 
 					int count = 32;
 					int newPos;
@@ -208,6 +224,8 @@ public class Thief extends Mob {
 
 					if (item != null) GLog.n( Messages.get(Thief.class, "escapes", item.name()));
 					item = null;
+					state = WANDERING;
+				} else {
 					state = WANDERING;
 				}
 			} else {
