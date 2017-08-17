@@ -119,7 +119,7 @@ public class Flare extends Visual {
 		visual.parent.addToBack( this );
 		
 		lifespan = this.duration = duration;
-		scale.set( 0 );
+		if (lifespan > 0) scale.set( 0 );
 		
 		return this;
 	}
@@ -129,7 +129,7 @@ public class Flare extends Visual {
 		parent.add( this );
 
 		lifespan = this.duration = duration;
-		scale.set( 0 );
+		if (lifespan > 0) scale.set( 0 );
 
 		return this;
 	}
