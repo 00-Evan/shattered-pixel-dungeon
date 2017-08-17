@@ -154,6 +154,8 @@ public abstract class Level implements Bundlable {
 	public int color2 = 0x88CC44;
 
 	private static final String VERSION     = "version";
+	private static final String WIDTH       = "width";
+	private static final String HEIGHT      = "height";
 	private static final String MAP			= "map";
 	private static final String VISITED		= "visited";
 	private static final String MAPPED		= "mapped";
@@ -295,10 +297,7 @@ public abstract class Level implements Bundlable {
 			throw new RuntimeException("old save");
 		}
 
-		if (bundle.contains("width") && bundle.contains("height")){
-			setSize( bundle.getInt("width"), bundle.getInt("height"));
-		} else
-			setSize( 32, 32); //default sizes
+		setSize( bundle.getInt(WIDTH), bundle.getInt(HEIGHT));
 		
 		mobs = new HashSet<>();
 		heaps = new SparseArray<>();
@@ -404,8 +403,8 @@ public abstract class Level implements Bundlable {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( VERSION, Game.versionCode );
-		bundle.put( "width", width );
-		bundle.put( "height", height );
+		bundle.put( WIDTH, width );
+		bundle.put( HEIGHT, height );
 		bundle.put( MAP, map );
 		bundle.put( VISITED, visited );
 		bundle.put( MAPPED, mapped );

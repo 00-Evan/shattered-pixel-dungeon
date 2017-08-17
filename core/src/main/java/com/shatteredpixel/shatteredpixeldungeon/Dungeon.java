@@ -677,7 +677,7 @@ public class Dungeon {
 		Bundle bundle = Bundle.read( input );
 		input.close();
 		
-		return (Level)bundle.get( "level" );
+		return (Level)bundle.get( LEVEL );
 	}
 	
 	public static void deleteGame( HeroClass cl, boolean deleteLevels ) {
