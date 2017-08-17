@@ -478,7 +478,6 @@ public class Hero extends Char {
 			return false;
 		}
 		
-		search( false );
 		checkVisibleMobs();
 		if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
 			Dungeon.observe();
@@ -495,6 +494,8 @@ public class Hero extends Char {
 			return false;
 			
 		} else {
+			
+			search( false );
 			
 			resting = false;
 			
