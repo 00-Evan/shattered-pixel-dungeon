@@ -22,11 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.TouchArea;
@@ -167,7 +167,7 @@ public class CellSelector extends TouchArea {
 			float curSpan = PointF.distance( touch.current, another.current );
 			camera.zoom( GameMath.gate(
 				PixelScene.minZoom,
-				startZoom * curSpan / startSpan,
+				PixelScene.align(startZoom * curSpan / startSpan),
 				PixelScene.maxZoom ) );
 
 		} else {
