@@ -148,18 +148,8 @@ public class ItemStatusHandler<T extends Item> {
 		return known.contains( item.getClass() );
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void know( T item ) {
 		known.add( (Class<? extends T>)item.getClass() );
-		
-		if (known.size() == items.length - 1) {
-			for (int i=0; i < items.length; i++) {
-				if (!known.contains( items[i] )) {
-					known.add( items[i] );
-					break;
-				}
-			}
-		}
 	}
 	
 	public HashSet<Class<? extends T>> known() {
