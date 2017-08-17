@@ -391,7 +391,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 	
 	@Override
-	public void update() {
+	//syncronized due to EmoIcon handling
+	public synchronized void update() {
 		
 		super.update();
 		
@@ -428,11 +429,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 	
-	public void showSleep() {
-		if (emo instanceof EmoIcon.Sleep && emo.alive) {
+	public synchronized void showSleep() {
+		if (emo instanceof EmoIcon.Sleep) {
 			
 		} else {
-			if (emo != null && emo.alive) {
+			if (emo != null) {
 				emo.killAndErase();
 			}
 			emo = new EmoIcon.Sleep( this );
@@ -441,17 +442,18 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		idle();
 	}
 	
-	public void hideSleep() {
+	public synchronized void hideSleep() {
 		if (emo instanceof EmoIcon.Sleep) {
 			emo.killAndErase();
+			emo = null;
 		}
 	}
 	
-	public void showAlert() {
-		if (emo instanceof EmoIcon.Alert && emo.alive) {
+	public synchronized void showAlert() {
+		if (emo instanceof EmoIcon.Alert) {
 			
 		} else {
-			if (emo != null && emo.alive) {
+			if (emo != null) {
 				emo.killAndErase();
 			}
 			emo = new EmoIcon.Alert( this );
@@ -459,9 +461,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 	
-	public void hideAlert() {
+	public synchronized void hideAlert() {
 		if (emo instanceof EmoIcon.Alert) {
 			emo.killAndErase();
+			emo = null;
 		}
 	}
 	
