@@ -48,7 +48,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 		recreateLines();
 	}
 
-	private void recreateLines() {
+	private synchronized void recreateLines() {
 		for (Entry entry : entries) {
 			lastEntry = PixelScene.renderMultiline( entry.text, 6 );
 			lastEntry.hardlight( lastColor = entry.color );
@@ -56,12 +56,12 @@ public class GameLog extends Component implements Signal.Listener<String> {
 		}
 	}
 
-	public void newLine() {
+	public synchronized void newLine() {
 		lastEntry = null;
 	}
 
 	@Override
-	public void onSignal( String text ) {
+	public synchronized void onSignal( String text ) {
 
 		if (length != entries.size()){
 			clear();
