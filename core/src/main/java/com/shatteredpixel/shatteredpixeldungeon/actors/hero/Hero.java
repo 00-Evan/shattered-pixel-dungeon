@@ -483,7 +483,7 @@ public class Hero extends Char {
 			Dungeon.observe();
 		}
 		
-		if (curAction == null) {
+		if (curAction == null || search(false)) {
 			
 			if (resting) {
 				spend( TIME_TO_REST ); next();
@@ -494,8 +494,6 @@ public class Hero extends Char {
 			return false;
 			
 		} else {
-			
-			search( false );
 			
 			resting = false;
 			
