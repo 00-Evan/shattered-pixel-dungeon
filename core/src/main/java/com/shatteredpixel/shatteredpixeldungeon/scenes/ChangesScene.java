@@ -106,7 +106,28 @@ public class ChangesScene extends PixelScene {
 		};
 		add( list );
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.1", true, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.1a", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.1):\n" +
+				"_-_ About page flare visuals not appearing\n" +
+				"_-_ Sleep & alert indicators not disappearing\n" +
+				"_-_ Hero automatically finding secrets more often than intended\n\n" +
+				"Fixed (existed prior to 0.6.1):\n" +
+				"_-_ Various crash bugs\n" +
+				"_-_ Thieves being able to escape while visible\n" +
+				"_-_ Enemies not visually dieing in rare cases\n" +
+				"_-_ Visuals flickering while zooming on low resolution devices."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ As a result of the flickering bugfix, camera zooming will be a bit more rigid on low resolution devices.\n\n" +
+				"_-_ Lloyd's Beacon's return function is no longer blocked by none-hostile creatures."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "translation"),
+				"Various translation updates"));
+		
+		
+		changes = new ChangeInfo("v0.6.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 
@@ -200,7 +221,7 @@ public class ChangesScene extends PixelScene {
 				"_-_ Missing capitalization in Prison Guard text\n" +
 				"_-_ Typo when trying a locked chest with no key\n\n" +
 				"Added new Language: _Catalan_\n\n" +
-				"Various Translation updates"));
+				"Various translation updates"));
 
 		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
