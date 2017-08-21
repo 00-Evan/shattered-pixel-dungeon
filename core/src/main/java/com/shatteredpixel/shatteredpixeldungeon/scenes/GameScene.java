@@ -912,12 +912,10 @@ public class GameScene extends PixelScene {
 	}
 
 	public static void examineCell( Integer cell ) {
-		if (cell == null) {
-			return;
-		}
-
-		if (cell < 0 || cell > Dungeon.level.length() || (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])) {
-			GameScene.show( new WndMessage( Messages.get(GameScene.class, "dont_know") ) ) ;
+		if (cell == null
+				|| cell < 0
+				|| cell > Dungeon.level.length()
+				|| (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell])) {
 			return;
 		}
 
