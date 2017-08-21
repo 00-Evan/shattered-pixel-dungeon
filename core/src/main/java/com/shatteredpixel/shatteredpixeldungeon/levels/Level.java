@@ -261,7 +261,6 @@ public abstract class Level implements Bundlable {
 		
 		visited = new boolean[length];
 		mapped = new boolean[length];
-		Dungeon.visible = new boolean[length];
 		
 		fieldOfView = new boolean[length()];
 		
@@ -527,7 +526,9 @@ public abstract class Level implements Bundlable {
 		int cell;
 		do {
 			cell = Random.Int( length() );
-		} while (!passable[cell] || Dungeon.visible[cell] || Actor.findChar( cell ) != null);
+		} while ((Dungeon.level == this && Dungeon.visible[cell])
+				|| !passable[cell]
+				|| Actor.findChar( cell ) != null);
 		return cell;
 	}
 	
@@ -668,7 +669,7 @@ public abstract class Level implements Bundlable {
 		if (heap == null) {
 			
 			heap = new Heap();
-			heap.seen = Dungeon.visible[cell];
+			heap.seen = Dungeon.level == this && Dungeon.visible[cell];
 			heap.pos = cell;
 			if (map[cell] == Terrain.CHASM || (Dungeon.level != null && pit[cell])) {
 				Dungeon.dropToChasm( item );

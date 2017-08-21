@@ -84,6 +84,8 @@ public class InterlevelScene extends PixelScene {
 		
 		phase = Phase.FADE_IN;
 		timeLeft = TIME_TO_FADE;
+		
+		Dungeon.visible = null;
 
 		thread = new Thread() {
 			@Override
