@@ -167,7 +167,7 @@ public abstract class Plant implements Bundlable {
 		
 		public Plant couch( int pos ) {
 			try {
-				if (Dungeon.visible[pos]) {
+				if (Dungeon.visible != null && Dungeon.visible[pos]) {
 					Sample.INSTANCE.play(Assets.SND_PLANT);
 				}
 				Plant plant = plantClass.newInstance();
