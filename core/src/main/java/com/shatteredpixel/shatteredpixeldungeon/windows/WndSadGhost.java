@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -81,7 +82,7 @@ public class WndSadGhost extends Window {
 		btnWeapon.setRect( 0, message.top() + message.height() + GAP, WIDTH, BTN_HEIGHT );
 		add( btnWeapon );
 
-		if (Ghost.Quest.armor != null) {
+		if (!Dungeon.isChallenged( Challenges.NO_ARMOR )) {
 			RedButton btnArmor = new RedButton( Messages.get(this, "armor") ) {
 				@Override
 				protected void onClick() {
@@ -100,6 +101,8 @@ public class WndSadGhost extends Window {
 	private void selectReward( Ghost ghost, Item reward ) {
 		
 		hide();
+		
+		if (reward == null) return;
 		
 		reward.identify();
 		if (reward.doPickUp( Dungeon.hero )) {
