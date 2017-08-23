@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import android.content.SharedPreferences;
+import android.os.Build;
+
 import com.watabou.noosa.Game;
 import com.watabou.utils.GameMath;
 
@@ -115,15 +117,29 @@ enum Preferences {
 		}
 	}
 	
+	//android 2.3+ supports apply, which is asyncronous, much nicer
+	
 	void put( String key, int value ) {
-		get().edit().putInt( key, value ).commit();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			get().edit().putInt(key, value).apply();
+		} else {
+			get().edit().putInt(key, value).commit();
+		}
 	}
 	
 	void put( String key, boolean value ) {
-		get().edit().putBoolean( key, value ).commit();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			get().edit().putBoolean(key, value).apply();
+		} else {
+			get().edit().putBoolean(key, value).commit();
+		}
 	}
 	
 	void put( String key, String value ) {
-		get().edit().putString( key, value ).commit();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			get().edit().putString(key, value).apply();
+		} else {
+			get().edit().putString(key, value).commit();
+		}
 	}
 }
