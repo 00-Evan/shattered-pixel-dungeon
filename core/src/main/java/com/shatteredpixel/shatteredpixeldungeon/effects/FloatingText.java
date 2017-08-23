@@ -42,7 +42,7 @@ public class FloatingText extends RenderedText {
 
 	private float cameraZoom = -1;
 
-	private static SparseArray<ArrayList<FloatingText>> stacks = new SparseArray<ArrayList<FloatingText>>();
+	private static final SparseArray<ArrayList<FloatingText>> stacks = new SparseArray<ArrayList<FloatingText>>();
 	
 	public FloatingText() {
 		speed.y = - DISTANCE / LIFESPAN;
@@ -65,7 +65,9 @@ public class FloatingText extends RenderedText {
 	@Override
 	public void kill() {
 		if (key != -1) {
-			stacks.get( key ).remove( this );
+			synchronized (stacks) {
+				stacks.get(key).remove(this);
+			}
 			key = -1;
 		}
 		super.kill();
@@ -116,30 +118,32 @@ public class FloatingText extends RenderedText {
 	
 	private static void push( FloatingText txt, int key ) {
 		
-		txt.key = key;
-		
-		ArrayList<FloatingText> stack = stacks.get( key );
-		if (stack == null) {
-			stack = new ArrayList<FloatingText>();
-			stacks.put( key, stack );
-		}
-		
-		if (stack.size() > 0) {
-			FloatingText below = txt;
-			int aboveIndex = stack.size() - 1;
-			while (aboveIndex >= 0) {
-				FloatingText above = stack.get( aboveIndex );
-				if (above.y + above.height() > below.y) {
-					above.y = below.y - above.height();
-					
-					below = above;
-					aboveIndex--;
-				} else {
-					break;
+		synchronized (stacks) {
+			txt.key = key;
+			
+			ArrayList<FloatingText> stack = stacks.get(key);
+			if (stack == null) {
+				stack = new ArrayList<FloatingText>();
+				stacks.put(key, stack);
+			}
+			
+			if (stack.size() > 0) {
+				FloatingText below = txt;
+				int aboveIndex = stack.size() - 1;
+				while (aboveIndex >= 0) {
+					FloatingText above = stack.get(aboveIndex);
+					if (above.y + above.height() > below.y) {
+						above.y = below.y - above.height();
+						
+						below = above;
+						aboveIndex--;
+					} else {
+						break;
+					}
 				}
 			}
+			
+			stack.add(txt);
 		}
-		
-		stack.add( txt );
 	}
 }
