@@ -82,14 +82,16 @@ public class ItemSpriteSheet {
 	public static final int CHEST           = CONTAINERS+4;
 	public static final int LOCKED_CHEST    = CONTAINERS+5;
 	public static final int CRYSTAL_CHEST   = CONTAINERS+6;
+	public static final int EBONY_CHEST     = CONTAINERS+7;
 	static{
 		assignItemRect(BONES,           14, 11);
 		assignItemRect(REMAINS,         14, 11);
 		assignItemRect(TOMB,            14, 15);
 		assignItemRect(GRAVE,           14, 15);
-		assignItemRect(CHEST,           16, 15);
-		assignItemRect(LOCKED_CHEST,    16, 15);
-		assignItemRect(CRYSTAL_CHEST,   16, 15);
+		assignItemRect(CHEST,           16, 14);
+		assignItemRect(LOCKED_CHEST,    16, 14);
+		assignItemRect(CRYSTAL_CHEST,   16, 14);
+		assignItemRect(EBONY_CHEST,     16, 14);
 	}
 
 	private static final int SINGLE_USE     =                               xy(1, 4);   //16 slots
