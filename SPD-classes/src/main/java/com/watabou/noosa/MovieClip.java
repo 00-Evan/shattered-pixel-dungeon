@@ -54,7 +54,7 @@ public class MovieClip extends Image {
 		return curAnim != null && curAnim.looped;
 	}
 	
-	protected void updateAnimation() {
+	protected synchronized void updateAnimation() {
 		if (curAnim != null && curAnim.delay > 0 && (curAnim.looped || !finished)) {
 			
 			int lastFrame = curFrame;
@@ -91,7 +91,7 @@ public class MovieClip extends Image {
 		play( anim, false );
 	}
 
-	public void play( Animation anim, boolean force ) {
+	public synchronized void play( Animation anim, boolean force ) {
 		
 		if (!force && (curAnim != null) && (curAnim == anim) && (curAnim.looped || !finished)) {
 			return;
