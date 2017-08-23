@@ -556,7 +556,7 @@ public class Dungeon {
 	}
 	
 	public static void saveAll() throws IOException {
-		if (hero.isAlive()) {
+		if (hero != null && hero.isAlive()) {
 			
 			Actor.fixTime();
 			saveGame( gameFile( hero.heroClass ) );
