@@ -71,7 +71,7 @@ public class EntranceRoom extends StandardRoom {
 		}
 
 		if (Dungeon.depth == 2){
-			if (!Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_4)){
+			if (!Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)){
 				for (Room.Door door : connected.values()) {
 					door.set( Door.Type.HIDDEN );
 				}
