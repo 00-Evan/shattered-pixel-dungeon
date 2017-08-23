@@ -377,16 +377,20 @@ public class CursedWand {
 				cursedFX(user, bolt, new Callback() {
 					public void call() {
 						Mimic mimic = Mimic.spawnAt(bolt.collisionPos, new ArrayList<Item>());
-						mimic.adjustStats(Dungeon.depth + 10);
-						mimic.HP = mimic.HT;
-						Item reward;
-						do {
-							reward = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
-									Generator.Category.RING, Generator.Category.WAND));
-						} while (reward.level() < 2 && !(reward instanceof MissileWeapon));
-						Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 1, 0.5f);
-						mimic.items.clear();
-						mimic.items.add(reward);
+						if (mimic != null) {
+							mimic.adjustStats(Dungeon.depth + 10);
+							mimic.HP = mimic.HT;
+							Item reward;
+							do {
+								reward = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
+										Generator.Category.RING, Generator.Category.WAND));
+							} while (reward.level() < 2 && !(reward instanceof MissileWeapon));
+							Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 1, 0.5f);
+							mimic.items.clear();
+							mimic.items.add(reward);
+						} else {
+							GLog.i(Messages.get(CursedWand.class, "nothing"));
+						}
 
 						wand.wandUsed();
 					}
