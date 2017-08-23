@@ -21,14 +21,14 @@
 
 package com.watabou.input;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import android.view.MotionEvent;
 
 import com.watabou.noosa.Game;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
-import android.view.MotionEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Touchscreen {
 	
@@ -67,7 +67,9 @@ public class Touchscreen {
 			case MotionEvent.ACTION_MOVE:
 				int count = e.getPointerCount();
 				for (int j=0; j < count; j++) {
-					pointers.get( e.getPointerId( j ) ).update( e, j );
+					if (pointers.containsKey(e.getPointerId(j))) {
+						pointers.get(e.getPointerId(j)).update(e, j);
+					}
 				}
 				event.dispatch( null );
 				break;
