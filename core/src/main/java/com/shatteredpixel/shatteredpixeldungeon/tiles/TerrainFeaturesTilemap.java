@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
+import android.graphics.RectF;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -77,13 +79,18 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 	}
 
 	public static Image tile(int pos, int tile ) {
+		RectF uv = instance.tileset.get( instance.getTileVisual( pos, tile, true ) );
+		if (uv == null) return null;
+		
 		Image img = new Image( instance.texture );
-		img.frame( instance.tileset.get( instance.getTileVisual( pos, tile, true ) ) );
+		img.frame(uv);
 		return img;
 	}
 
 	public void growPlant( final int pos ){
 		final Image plant = tile( pos, map[pos] );
+		if (plant == null) return;
+		
 		plant.origin.set( 8, 12 );
 		plant.scale.set( 0 );
 		plant.point( DungeonTilemap.tileToWorld( pos ) );
