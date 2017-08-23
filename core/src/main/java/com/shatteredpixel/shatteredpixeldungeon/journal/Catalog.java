@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.RogueArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ScaleArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.WarriorArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -277,7 +276,7 @@ public enum Catalog {
 	
 	public static void setSeen(Class<? extends Item> itemClass){
 		for (Catalog cat : values()) {
-			if (cat.seen.containsKey(itemClass)) {
+			if (cat.seen.containsKey(itemClass) && !cat.seen.get(itemClass)) {
 				cat.seen.put(itemClass, true);
 				Journal.saveNeeded = true;
 			}
