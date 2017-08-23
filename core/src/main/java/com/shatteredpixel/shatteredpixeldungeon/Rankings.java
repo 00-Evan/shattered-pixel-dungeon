@@ -292,7 +292,9 @@ public enum Rankings {
 			armorTier	= bundle.getInt( TIER );
 			
 			if (bundle.contains(DATA))  gameData = bundle.getBundle(DATA);
-			if (bundle.contains(ID))    gameID = bundle.getString(ID);
+			if (bundle.contains(ID))   gameID = bundle.getString(ID);
+			
+			if (gameID == null) gameID = UUID.randomUUID().toString();
 
 			depth = bundle.getInt( DEPTH );
 			herolevel = bundle.getInt( LEVEL );
