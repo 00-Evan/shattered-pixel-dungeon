@@ -44,6 +44,11 @@ abstract public class Tweener extends Gizmo {
 	
 	@Override
 	public void update() {
+		if (elapsed < 0){
+			onComplete();
+			kill();
+			return;
+		}
 		elapsed += Game.elapsed;
 		if (elapsed >= interval) {
 			updateValues( 1 );
@@ -52,6 +57,10 @@ abstract public class Tweener extends Gizmo {
 		} else {
 			updateValues( elapsed / interval );
 		}
+	}
+	
+	public void stop( boolean complete ){
+		elapsed = complete ? interval : -1;
 	}
 	
 	protected void onComplete() {

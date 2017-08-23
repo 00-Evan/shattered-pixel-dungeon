@@ -185,7 +185,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	public void interruptMotion() {
 		if (motion != null) {
-			onComplete( motion );
+			motion.stop(false);
 		}
 	}
 	
