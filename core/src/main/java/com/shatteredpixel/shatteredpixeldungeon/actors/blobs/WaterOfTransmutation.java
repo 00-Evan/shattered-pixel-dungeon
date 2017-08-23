@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -72,6 +73,11 @@ public class WaterOfTransmutation extends WellWater {
 
 		if (item != null) {
 			Notes.remove( Landmark.WELL_OF_TRANSMUTATION );
+			
+			//incase a never-seen item pops out
+			if (item.isIdentified()){
+				Catalog.setSeen(item.getClass());
+			}
 		}
 
 		return item;
