@@ -106,7 +106,34 @@ public class ChangesScene extends PixelScene {
 		};
 		add( list );
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.1a", true, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.1b", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHEST, null), "Sprites",
+				"Improved sprites for the following:\n" +
+				"_-_ Chests & Mimics\n" +
+				"_-_ Darts\n" +
+				"_-_ Javelins\n" +
+				"_-_ Tomahawks"));
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.1):\n" +
+				"_-_ Hero automatically searching in cases when they shouldn't\n\n" +
+				"_-_ Transmuted items not being added to the journal items list\n\n" +
+				"_-_ Doors on floor 2 being hidden more often than they should be\n\n" +
+				"_-_ Frequent crashes for a tiny number of unlucky players (sorry!)\n\n" +
+				"Fixed (existed prior to 0.6.1):\n" +
+				"_-_ Numerous rare crash and freeze bugs\n" +
+				"_-_ Various minor bugs with the buff indicator\n" +
+				"_-_ Sleep-immune enemies being affected by magical sleep"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Fixed an exploit where players could examine never-seen areas to determine the shape of a level. Examining any never-seen region will now always show nothing. Previously only examining outside of the level would show nothing."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "translation"),
+				"Fixed in English:\n" +
+				"_-_ Missing period in alarm trap description\n\n" +
+				"Various translation updates"));
+		
+		changes = new ChangeInfo("v0.6.1a", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
@@ -118,7 +145,7 @@ public class ChangesScene extends PixelScene {
 				"Fixed (existed prior to 0.6.1):\n" +
 				"_-_ Various crash bugs\n" +
 				"_-_ Thieves being able to escape while visible\n" +
-				"_-_ Enemies not visually dieing in rare cases\n" +
+				"_-_ Enemies not visually dying in rare cases\n" +
 				"_-_ Visuals flickering while zooming on low resolution devices."));
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
 				"_-_ As a result of the flickering bugfix, camera zooming will be a bit more rigid on low resolution devices.\n\n" +
