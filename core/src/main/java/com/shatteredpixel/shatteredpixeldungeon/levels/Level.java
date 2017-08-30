@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
@@ -790,12 +789,6 @@ public abstract class Level implements Bundlable {
 			
 		case Terrain.WELL:
 			WellWater.affectCell( cell );
-			break;
-			
-		case Terrain.ALCHEMY:
-			if (ch == null) {
-				Alchemy.transmute( cell );
-			}
 			break;
 			
 		case Terrain.DOOR:

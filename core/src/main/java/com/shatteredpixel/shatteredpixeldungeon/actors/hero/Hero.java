@@ -94,7 +94,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWea
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.features.AlchemyPot;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
@@ -110,6 +109,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndAlchemy;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
@@ -544,9 +544,9 @@ public class Hero extends Char {
 				return actAttack( (HeroAction.Attack)curAction );
 				
 			} else
-			if (curAction instanceof HeroAction.Cook) {
+			if (curAction instanceof HeroAction.Alchemy) {
 
-				return actCook( (HeroAction.Cook)curAction );
+				return actAlchemy( (HeroAction.Alchemy)curAction );
 				
 			}
 		}
@@ -643,12 +643,12 @@ public class Hero extends Char {
 		}
 	}
 
-	private boolean actCook( HeroAction.Cook action ) {
+	private boolean actAlchemy( HeroAction.Alchemy action ) {
 		int dst = action.dst;
-		if (Dungeon.visible[dst]) {
+		if (Dungeon.level.distance(dst, pos) <= 1) {
 
 			ready();
-			AlchemyPot.operate( this, dst );
+			GameScene.show(new WndAlchemy());
 			return false;
 
 		} else if (getCloser( dst )) {
@@ -1132,7 +1132,7 @@ public class Hero extends Char {
 		
 		if (Dungeon.level.map[cell] == Terrain.ALCHEMY && cell != pos) {
 			
-			curAction = new HeroAction.Cook( cell );
+			curAction = new HeroAction.Alchemy( cell );
 			
 		} else if (Level.fieldOfView[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
 

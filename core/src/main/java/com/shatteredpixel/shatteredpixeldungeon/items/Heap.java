@@ -22,10 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
@@ -35,21 +32,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.DocumentPage;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
@@ -58,7 +50,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInf
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -357,105 +348,6 @@ public class Heap implements Bundlable {
 			} else if (sprite != null) {
 				sprite.view( items.peek() );
 			}
-		}
-	}
-	
-	public Item transmute() {
-		
-		CellEmitter.get( pos ).burst( Speck.factory( Speck.BUBBLE ), 3 );
-		Splash.at( pos, 0xFFFFFF, 3 );
-		
-		float chances[] = new float[items.size()];
-		int count = 0;
-
-
-		if (items.size() == 2 && items.get(0) instanceof Seed && items.get(1) instanceof Blandfruit ) {
-
-			Sample.INSTANCE.play( Assets.SND_PUFF );
-			CellEmitter.center( pos ).burst( Speck.factory( Speck.EVOKE ), 3 );
-
-			Blandfruit result = new Blandfruit();
-			result.cook((Seed)items.get(0));
-
-			destroy();
-
-			return result;
-
-		}
-		
-		int index = 0;
-		for (Item item : items) {
-			if (item instanceof Seed) {
-				count += item.quantity;
-				chances[index++] = item.quantity;
-			}  else{
-				count = 0;
-				break;
-			}
-		}
-
-		//alchemists toolkit gives a chance to cook a potion in two or even one seeds
-		AlchemistsToolkit.alchemy alchemy = Dungeon.hero.buff(AlchemistsToolkit.alchemy.class);
-		int bonus = alchemy != null ? alchemy.itemLevel() : -1;
-
-		if (bonus != -1 ? alchemy.tryCook(count) : count >= SEEDS_TO_POTION) {
-
-			CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
-			Sample.INSTANCE.play( Assets.SND_PUFF );
-
-			Item potion;
-
-			if (Random.Int( count + bonus ) == 0) {
-
-				CellEmitter.center( pos ).burst( Speck.factory( Speck.EVOKE ), 3 );
-
-				destroy();
-
-				Statistics.potionsCooked++;
-				Badges.validatePotionsCooked();
-
-				potion = Generator.random( Generator.Category.POTION );
-
-			} else {
-
-				Seed proto = (Seed)items.get( Random.chances( chances ) );
-				Class<? extends Item> itemClass = proto.alchemyClass;
-
-				destroy();
-
-				Statistics.potionsCooked++;
-				Badges.validatePotionsCooked();
-
-				if (itemClass == null) {
-					potion =  Generator.random( Generator.Category.POTION );
-				} else {
-					try {
-						potion =  itemClass.newInstance();
-					} catch (Exception e) {
-						ShatteredPixelDungeon.reportException(e);
-						return null;
-					}
-				}
-			}
-
-			//not a buff per-se, meant to cancel out higher potion accuracy when ppl are farming for potions of exp.
-			if (bonus > 0)
-				if (Random.Int(1000/bonus) == 0)
-					return new PotionOfExperience();
-
-			while (potion instanceof PotionOfHealing
-					&& Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count) {
-				potion = Generator.random(Generator.Category.POTION);
-			}
-
-			if (potion instanceof PotionOfHealing) {
-				Dungeon.LimitedDrops.COOKING_HP.count++;
-			}
-
-			return potion;
-
-		} else {
-			return null;
 		}
 	}
 	

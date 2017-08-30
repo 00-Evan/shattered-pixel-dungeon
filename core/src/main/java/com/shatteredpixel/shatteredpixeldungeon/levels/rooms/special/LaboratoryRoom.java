@@ -55,7 +55,7 @@ public class LaboratoryRoom extends SpecialRoom {
 		Painter.set( level, pot, Terrain.ALCHEMY );
 		
 		Alchemy alchemy = new Alchemy();
-		alchemy.seed( level, pot.x + level.width() * pot.y, 1 );
+		alchemy.seed( level, pot.x + level.width() * pot.y, Random.IntRange(25, 50) );
 		level.blobs.put( Alchemy.class, alchemy );
 		
 		int n = Random.IntRange( 2, 3 );
