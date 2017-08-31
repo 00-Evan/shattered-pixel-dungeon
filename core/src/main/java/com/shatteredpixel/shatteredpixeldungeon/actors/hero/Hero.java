@@ -687,10 +687,7 @@ public class Hero extends Char {
 							GLog.i( Messages.get(this, "you_now_have", item.name()) );
 						}
 					}
-
-					if (!heap.isEmpty()) {
-						GLog.i( Messages.get(this, "something_else") );
-					}
+					
 					curAction = null;
 				} else {
 					heap.sprite.drop();

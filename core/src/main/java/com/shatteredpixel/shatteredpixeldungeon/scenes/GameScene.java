@@ -318,6 +318,7 @@ public class GameScene extends PixelScene {
 
 		log = new GameLog();
 		log.camera = uiCamera;
+		log.newLine();
 		add( log );
 
 		layoutTags();
@@ -386,11 +387,14 @@ public class GameScene extends PixelScene {
 		Camera.main.target = hero;
 
 		if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
-			if (Dungeon.depth < Statistics.deepestFloor) {
-				GLog.h(Messages.get(this, "welcome_back"), Dungeon.depth);
-			} else {
-				GLog.h(Messages.get(this, "welcome"), Dungeon.depth);
+			if (Dungeon.depth == Statistics.deepestFloor
+					&& (InterlevelScene.mode == InterlevelScene.Mode.DESCEND || InterlevelScene.mode == InterlevelScene.Mode.FALL)) {
+				GLog.h(Messages.get(this, "descend"), Dungeon.depth);
 				Sample.INSTANCE.play(Assets.SND_DESCEND);
+			} else if (InterlevelScene.mode == InterlevelScene.Mode.RESET) {
+				GLog.h(Messages.get(this, "warp"));
+			} else {
+				GLog.h(Messages.get(this, "return"), Dungeon.depth);
 			}
 
 			switch (Dungeon.level.feeling) {

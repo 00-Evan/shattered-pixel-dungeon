@@ -222,7 +222,6 @@ public class Goo extends Mob {
 		super.damage(dmg, src);
 		if ((HP*2 <= HT) && !bleeding){
 			BossHealthBar.bleed(true);
-			GLog.w( Messages.get(this, "enraged_text") );
 			sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "enraged"));
 			((GooSprite)sprite).spray(true);
 			yell(Messages.get(this, "gluuurp"));

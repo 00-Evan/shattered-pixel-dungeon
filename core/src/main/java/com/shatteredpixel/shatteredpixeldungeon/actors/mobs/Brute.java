@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BruteSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -82,7 +81,6 @@ public class Brute extends Mob {
 			enraged = true;
 			spend( TICK );
 			if (Dungeon.visible[pos]) {
-				GLog.w( Messages.get(this, "enraged_text") );
 				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "enraged") );
 			}
 		}
