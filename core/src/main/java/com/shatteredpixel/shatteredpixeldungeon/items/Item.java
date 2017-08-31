@@ -104,7 +104,7 @@ public class Item implements Bundlable {
 	public boolean doPickUp( Hero hero ) {
 		if (collect( hero.belongings.backpack )) {
 			
-			GameScene.pickUp( this );
+			GameScene.pickUp( this, hero.pos );
 			Sample.INSTANCE.play( Assets.SND_ITEM );
 			hero.spendAndNext( TIME_TO_PICK_UP );
 			return true;

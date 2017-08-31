@@ -221,11 +221,11 @@ public class StatusPane extends Component {
 		}
 	}
 
-	public void pickup( Item item ) {
+	public void pickup( Item item, int cell) {
 		pickedUp.reset( item,
-				btnJournal.icon.x + btnJournal.icon.width()/2f,
-				btnJournal.icon.y + btnJournal.icon.height()/2f,
-				true );
+			cell,
+			btnJournal.icon.x + btnJournal.icon.width()/2f,
+			btnJournal.icon.y + btnJournal.icon.height()/2f);
 	}
 	
 	public void flash(){

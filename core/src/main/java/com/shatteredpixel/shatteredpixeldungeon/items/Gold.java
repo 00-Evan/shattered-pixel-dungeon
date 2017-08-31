@@ -69,7 +69,7 @@ public class Gold extends Item {
 		if (thievery != null)
 			thievery.collect(quantity);
 
-		GameScene.pickUp( this );
+		GameScene.pickUp( this, hero.pos );
 		hero.sprite.showStatus( CharSprite.NEUTRAL, TXT_VALUE, quantity );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		

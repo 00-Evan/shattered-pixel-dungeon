@@ -29,14 +29,17 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Point;
+import com.watabou.utils.PointF;
 
 public class Toolbar extends Component {
 
@@ -265,11 +268,11 @@ public class Toolbar extends Component {
 		}
 	}
 	
-	public void pickup( Item item ) {
+	public void pickup( Item item, int cell ) {
 		pickedUp.reset( item,
+			cell,
 			btnInventory.centerX(),
-			btnInventory.centerY(),
-				false );
+			btnInventory.centerY());
 	}
 	
 	private static CellSelector.Listener informer = new CellSelector.Listener() {
@@ -380,14 +383,12 @@ public class Toolbar extends Component {
 	
 	public static class PickedUpItem extends ItemSprite {
 		
-		private static final float DISTANCE = DungeonTilemap.SIZE;
-		private static final float DURATION = 0.2f;
+		private static final float DURATION = 0.5f;
 		
-		private float dstX;
-		private float dstY;
+		private float startScale;
+		private float startX, startY;
+		private float endX, endY;
 		private float left;
-
-		private boolean rising = false;
 		
 		public PickedUpItem() {
 			super();
@@ -399,23 +400,26 @@ public class Toolbar extends Component {
 				false;
 		}
 		
-		public void reset( Item item, float dstX, float dstY, boolean rising ) {
+		public void reset( Item item, int cell, float endX, float endY ) {
 			view( item );
 			
 			active =
 			visible =
 				true;
-
-			this.rising = rising;
 			
-			this.dstX = dstX - ItemSprite.SIZE / 2;
-			this.dstY = dstY - ItemSprite.SIZE / 2;
+			PointF tile = DungeonTerrainTilemap.raisedTileCenterToWorld(cell);
+			Point screen = Camera.main.cameraToScreen(tile.x, tile.y);
+			PointF start = camera().screenToCamera(screen.x, screen.y);
+			
+			x = this.startX = start.x - ItemSprite.SIZE / 2;
+			y = this.startY = start.y - ItemSprite.SIZE / 2;
+			
+			this.endX = endX - ItemSprite.SIZE / 2;
+			this.endY = endY - ItemSprite.SIZE / 2;
 			left = DURATION;
 			
-						x = this.dstX - DISTANCE;
-			if (rising) y = this.dstY + DISTANCE;
-			else        y = this.dstY - DISTANCE;
-			alpha( 1 );
+			scale.set( startScale = Camera.main.zoom / camera().zoom );
+			
 		}
 		
 		@Override
@@ -431,12 +435,10 @@ public class Toolbar extends Component {
 				
 			} else {
 				float p = left / DURATION;
-				scale.set( (float)Math.sqrt( p ) );
-				float offset = DISTANCE * p;
-
-							x = dstX - offset;
-				if (rising) y = dstY + offset;
-				else        y = dstY - offset;
+				scale.set( startScale * (float)Math.sqrt( p ) );
+				
+				x = startX*p + endX*(1-p);
+				y = startY*p + endY*(1-p);
 			}
 		}
 	}
