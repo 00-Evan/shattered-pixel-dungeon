@@ -51,6 +51,7 @@ public class WndInfoBuff extends Window {
 
 		Image buffIcon = new Image( icons );
 		buffIcon.frame( film.get(buff.icon()) );
+		buff.tintIcon(buffIcon);
 
 		titlebar.icon( buffIcon );
 		titlebar.label( Messages.titleCase(buff.toString()), Window.TITLE_COLOR );

@@ -207,6 +207,7 @@ public class WndHero extends WndTabbed {
 
 				icon = new Image( icons );
 				icon.frame( film.get( index ) );
+				buff.tintIcon(icon);
 				icon.y = this.y;
 				add( icon );
 

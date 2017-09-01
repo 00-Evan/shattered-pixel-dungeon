@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 import java.text.DecimalFormat;
 import java.util.HashSet;
@@ -75,6 +76,10 @@ public class Buff extends Actor {
 	
 	public int icon() {
 		return BuffIndicator.NONE;
+	}
+	
+	public void tintIcon( Image icon ){
+		//do nothing by default
 	}
 
 	public void fx(boolean on) {

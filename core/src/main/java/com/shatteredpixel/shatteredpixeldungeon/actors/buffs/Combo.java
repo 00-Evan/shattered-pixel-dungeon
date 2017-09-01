@@ -59,6 +59,16 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 	
 	@Override
+	public void tintIcon(Image icon) {
+		if (count >= 10)    icon.hardlight(1f, 0f, 0f);
+		else if (count >= 8)icon.hardlight(1f, 0.8f, 0f);
+		else if (count >= 6)icon.hardlight(1f, 1f, 0f);
+		else if (count >= 4)icon.hardlight(0.8f, 1f, 0f);
+		else if (count >= 2)icon.hardlight(0f, 1f, 0f);
+		else                icon.resetColor();
+	}
+	
+	@Override
 	public String toString() {
 		return Messages.get(this, "name");
 	}
@@ -68,6 +78,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		count++;
 		comboTime = 4f;
 		misses = 0;
+		BuffIndicator.refreshHero();
 		
 		if (count >= 2) {
 

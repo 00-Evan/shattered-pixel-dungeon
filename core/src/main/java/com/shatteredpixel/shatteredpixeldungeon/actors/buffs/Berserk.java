@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal.WarriorShield;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 
@@ -136,18 +137,28 @@ public class Berserk extends Buff {
 
 	@Override
 	public int icon() {
+		return BuffIndicator.BERSERK;
+	}
+	
+	@Override
+	public void tintIcon(Image icon) {
 		switch (state){
 			case NORMAL: default:
-				return BuffIndicator.ANGERED;
+				icon.hardlight(1f, 0.67f, 0.2f);
+				break;
 			case BERSERK:
-				return BuffIndicator.FURY;
+				icon.hardlight(1f, 0.1f, 0.1f);
+				break;
 			case EXHAUSTED:
-				return BuffIndicator.EXHAUSTED;
+				icon.resetColor();
+				break;
 			case RECOVERING:
-				return BuffIndicator.RECOVERING;
+				//icon.hardlight(0.12f, 0.20f, 0.55f);
+				icon.hardlight(0.35f, 0.45f, 0.75f);
+				break;
 		}
 	}
-
+	
 	@Override
 	public String toString() {
 		switch (state){
