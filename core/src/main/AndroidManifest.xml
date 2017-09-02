@@ -37,6 +37,9 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
+		<!-- Workaround for a bug on Galaxy S8: max aspect must be specified or it defaults to 1.86-->
+		<meta-data android:name="android.max_aspect" android:value="10.0" />
 	</application>
 
 </manifest>
