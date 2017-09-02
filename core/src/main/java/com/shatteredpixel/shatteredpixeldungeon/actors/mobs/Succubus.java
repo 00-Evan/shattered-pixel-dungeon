@@ -72,6 +72,7 @@ public class Succubus extends Mob {
 	
 	@Override
 	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
 		
 		if (Random.Int( 3 ) == 0) {
 			Buff.affect( enemy, Charm.class, Charm.durationFactor( enemy ) * Random.IntRange( 3, 7 ) ).object = id();

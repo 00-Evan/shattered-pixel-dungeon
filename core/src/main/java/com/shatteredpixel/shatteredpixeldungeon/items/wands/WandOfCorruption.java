@@ -22,74 +22,199 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
+import java.util.HashMap;
+
+//TODO final balancing decisions here
 public class WandOfCorruption extends Wand {
 
 	{
 		image = ItemSpriteSheet.WAND_CORRUPTION;
 	}
-
+	
+	//Note that some debuffs here have a 0% chance to be applied.
+	// This is because the wand of corruption considers them to be a certain level of harmful
+	// for the purposes of reducing resistance, but does not actually apply them itself
+	
+	private static final float MINOR_DEBUFF_WEAKEN = 4/5f;
+	private static final HashMap<Class<? extends Buff>, Float> MINOR_DEBUFFS = new HashMap<>();
+	static{
+		MINOR_DEBUFFS.put(Weakness.class,       2f);
+		MINOR_DEBUFFS.put(Cripple.class,        1f);
+		MINOR_DEBUFFS.put(Blindness.class,      1f);
+		MINOR_DEBUFFS.put(Terror.class,         1f);
+		
+		MINOR_DEBUFFS.put(Chill.class,          0f);
+		MINOR_DEBUFFS.put(Ooze.class,           0f);
+		MINOR_DEBUFFS.put(Roots.class,          0f);
+		MINOR_DEBUFFS.put(Vertigo.class,        0f);
+		MINOR_DEBUFFS.put(Drowsy.class,         0f);
+		MINOR_DEBUFFS.put(Bleeding.class,       0f);
+		MINOR_DEBUFFS.put(Burning.class,        0f);
+		MINOR_DEBUFFS.put(Poison.class,         0f);
+	}
+	
+	private static final float MAJOR_DEBUFF_WEAKEN = 2/3f;
+	private static final HashMap<Class<? extends Buff>, Float> MAJOR_DEBUFFS = new HashMap<>();
+	static{
+		MAJOR_DEBUFFS.put(Amok.class,           3f);
+		MAJOR_DEBUFFS.put(Slow.class,           2f);
+		MAJOR_DEBUFFS.put(Paralysis.class,      1f);
+		
+		MAJOR_DEBUFFS.put(Charm.class,          0f);
+		MAJOR_DEBUFFS.put(MagicalSleep.class,   0f);
+		MAJOR_DEBUFFS.put(SoulMark.class,       0f);
+		MAJOR_DEBUFFS.put(Venom.class,          0f);
+		MAJOR_DEBUFFS.put(Frost.class,          0f);
+		MAJOR_DEBUFFS.put(Doom.class,           0f);
+	}
+	
 	@Override
 	protected void onZap(Ballistica bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
 
-		if (ch != null && !(ch instanceof NPC)){
+		if (ch != null && ch instanceof Mob && !(ch instanceof NPC)){
 
-			if(ch.buff(Corruption.class) != null){
-				GLog.w( Messages.get(this, "already_corrupted") );
-				return;
+			Mob enemy = (Mob) ch;
+
+			float corruptingPower = 2 + level();
+			
+			//base enemy resistance is usually based on their exp, but in special cases it is based on other criteria
+			float enemyResist = 1 + enemy.EXP;
+			if (ch instanceof Mimic || ch instanceof Statue){
+				enemyResist = 1 + Dungeon.depth;
+			} else if (ch instanceof Piranha) {
+				enemyResist = 1 + Dungeon.depth/2f;
+			} else if (ch instanceof Wraith) {
+				enemyResist = 1 + Dungeon.depth/4f;
+			} else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
+				enemyResist = 1 + 30;
+			} else if (ch instanceof Yog.Larva || ch instanceof King.Undead){
+				enemyResist = 1 + 5;
+			} else if (ch instanceof Swarm){
+				//child swarms don't give exp, so we force this here.
+				enemyResist = 1 + 3;
 			}
-
-			if (ch.properties().contains(Char.Property.BOSS) || ch.properties().contains(Char.Property.MINIBOSS)){
-				GLog.w( Messages.get(this, "boss") );
-				return;
+			
+			//100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
+			enemyResist *= 1 + 2*Math.pow(enemy.HP/(float)enemy.HT, 2);
+			
+			//debuffs placed on the enemy reduce their resistance
+			for (Buff buff : enemy.buffs()){
+				if (MAJOR_DEBUFFS.containsKey(buff.getClass()))         enemyResist *= MAJOR_DEBUFF_WEAKEN;
+				else if (MINOR_DEBUFFS.containsKey(buff.getClass()))    enemyResist *= MINOR_DEBUFF_WEAKEN;
+				else if (buff.type == Buff.buffType.NEGATIVE)           enemyResist *= MINOR_DEBUFF_WEAKEN;
 			}
-
-			int basePower = 10 + 2*level();
-			int mobPower = Random.IntRange(0, ch.HT) + ch.HP*2;
-			for ( Buff buff : ch.buffs()){
-				if (buff.type == Buff.buffType.NEGATIVE){
-					mobPower *= 0.67;
-					break;
+			
+			//cannot re-corrupt or doom an enemy, so give them a major debuff instead
+			if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
+				enemyResist = corruptingPower*.99f;
+			}
+			
+			if (corruptingPower > enemyResist){
+				corruptEnemy( enemy );
+			} else {
+				float debuffChance = corruptingPower / enemyResist;
+				if (Random.Float() < debuffChance){
+					debuffEnemy( enemy, MAJOR_DEBUFFS);
+				} else {
+					debuffEnemy( enemy, MINOR_DEBUFFS);
 				}
 			}
 
-			int extraCharges = 0;
-			//try to use extra charges to overpower the mob
-			while (basePower <= mobPower){
-				extraCharges++;
-				basePower += 5 + level();
+			processSoulMark(ch, chargesPerCast());
+		}
+	}
+	
+	private void debuffEnemy( Mob enemy, HashMap<Class<? extends Buff>, Float> category ){
+		HashMap<Class<? extends Buff>, Float> debuffs = new HashMap<>(category);
+		for (Buff existing : enemy.buffs()){
+			if (debuffs.containsKey(existing.getClass())) {
+				debuffs.put(existing.getClass(), 0f);
 			}
-
-			//if we fail, lose all charges, remember we have 1 left to lose from using the wand.
-			if (extraCharges >= curCharges){
-				curCharges = 1;
-				GLog.w( Messages.get(this, "fail") );
-				return;
+		}
+		
+		//all buffs with a > 0 chance are flavor buffs
+		Class<?extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>) Random.chances(debuffs);
+		
+		if (debuffCls != null){
+			Buff.append(enemy, debuffCls, 6 + level()*3);
+		} else {
+			//if no debuff can be applied (all are present), then go up one tier
+			if (category == MINOR_DEBUFFS)          debuffEnemy( enemy, MAJOR_DEBUFFS);
+			else if (category == MAJOR_DEBUFFS)     corruptEnemy( enemy );
+		}
+	}
+	
+	private void corruptEnemy( Mob enemy ){
+		//cannot re-corrupt or doom an enemy, so give them a major debuff instead
+		if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
+			GLog.w( Messages.get(this, "already_corrupted") );
+			return;
+		}
+		
+		if (!enemy.properties().contains(Char.Property.BOSS) &&
+				!enemy.properties().contains(Char.Property.MINIBOSS) &&
+				!enemy.immunities().contains(Corruption.class)){
+			enemy.HP = enemy.HT;
+			for (Buff buff : enemy.buffs()) {
+				buff.detach();
 			}
-
-			//otherwise corrupt the mob & spend charges
-			Buff.append(ch, Corruption.class);
-			ch.HP = ch.HT;
-			curCharges -= extraCharges;
-			usagesToKnow -= extraCharges;
-
-			processSoulMark(ch, extraCharges+chargesPerCast());
+			Buff.affect(enemy, Corruption.class);
+			if (enemy.EXP > 0) {
+				curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
+				curUser.earnExp(enemy.EXP);
+				enemy.EXP = 0;
+			}
+			//TODO perhaps enemies should also drop loot here
+		} else {
+			Buff.affect(enemy, Doom.class);
 		}
 	}
 
@@ -99,7 +224,7 @@ public class WandOfCorruption extends Wand {
 		// lvl 1 - 40%
 		// lvl 2 - 50%
 		if (Random.Int( level() + 4 ) >= 3){
-			Buff.prolong( defender, Amok.class, 3+level());
+			Buff.prolong( defender, Amok.class, 4+level()*2);
 		}
 	}
 

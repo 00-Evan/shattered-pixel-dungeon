@@ -296,6 +296,7 @@ public class King extends Mob {
 		
 		@Override
 		public int attackProc( Char enemy, int damage ) {
+			damage = super.attackProc( enemy, damage );
 			if (Random.Int( MAX_ARMY_SIZE ) == 0) {
 				Buff.prolong( enemy, Paralysis.class, 1 );
 			}

@@ -86,12 +86,12 @@ public class MirrorImage extends NPC {
 	
 	@Override
 	public int attackProc( Char enemy, int damage ) {
-		int dmg = super.attackProc( enemy, damage );
+		damage = super.attackProc( enemy, damage );
 
 		destroy();
 		sprite.die();
 		
-		return dmg;
+		return damage;
 	}
 	
 	protected Char chooseEnemy() {

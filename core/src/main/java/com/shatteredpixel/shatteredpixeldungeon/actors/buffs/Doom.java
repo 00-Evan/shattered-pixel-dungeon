@@ -19,36 +19,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
+package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.AlbinoSprite;
-import com.watabou.utils.Random;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
-public class Albino extends Rat {
-
+public class Doom extends Buff {
+	
 	{
-		spriteClass = AlbinoSprite.class;
-		
-		HP = HT = 15;
+		type = buffType.NEGATIVE;
 	}
 	
 	@Override
-	public void die( Object cause ) {
-		super.die( cause );
-		Badges.validateRare( this );
+	public void fx(boolean on) {
+		if (on) target.sprite.add( CharSprite.State.DARKENED );
+		else if (target.invisible == 0) target.sprite.remove( CharSprite.State.DARKENED );
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
-		damage = super.attackProc( enemy, damage );
-		if (Random.Int( 2 ) == 0) {
-			Buff.affect( enemy, Bleeding.class ).set( damage );
-		}
-		
-		return damage;
+	public int icon() {
+		return BuffIndicator.CORRUPT;
+	}
+	
+	@Override
+	public String toString() {
+		return Messages.get(this, "name");
+	}
+	
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc");
 	}
 }

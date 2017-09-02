@@ -122,6 +122,7 @@ public class Statue extends Mob {
 	
 	@Override
 	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
 		return weapon.proc( this, enemy, damage );
 	}
 	

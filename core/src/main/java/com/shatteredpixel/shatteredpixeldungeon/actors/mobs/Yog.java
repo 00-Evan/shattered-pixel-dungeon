@@ -242,6 +242,8 @@ public class Yog extends Mob {
 		
 		@Override
 		public int attackProc( Char enemy, int damage ) {
+			damage = super.attackProc( enemy, damage );
+			
 			if (Random.Int( 3 ) == 0) {
 				Buff.affect( enemy, Ooze.class );
 				enemy.sprite.burst( 0xFF000000, 5 );
@@ -332,7 +334,7 @@ public class Yog extends Mob {
 		}
 		
 		@Override
-		public boolean attack( Char enemy ) {
+		public boolean doAttack( Char enemy ) {
 			
 			if (!Dungeon.level.adjacent( pos, enemy.pos )) {
 				spend( attackDelay() );
@@ -357,7 +359,7 @@ public class Yog extends Mob {
 					return false;
 				}
 			} else {
-				return super.attack( enemy );
+				return super.doAttack( enemy );
 			}
 		}
 		

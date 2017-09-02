@@ -61,6 +61,7 @@ public class FetidRat extends Rat {
 
 	@Override
 	public int attackProc( Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
 		if (Random.Int(3) == 0) {
 			Buff.affect(enemy, Ooze.class);
 		}

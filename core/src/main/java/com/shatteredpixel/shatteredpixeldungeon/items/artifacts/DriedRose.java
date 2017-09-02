@@ -539,11 +539,11 @@ public class DriedRose extends Artifact {
 		
 		@Override
 		public int attackProc(Char enemy, int damage) {
+			damage = super.attackProc(enemy, damage);
 			if (rose != null && rose.weapon != null) {
-				return rose.weapon.proc( this, enemy, damage );
-			} else {
-				return super.attackProc(enemy, damage);
+				damage = rose.weapon.proc( this, enemy, damage );
 			}
+			return damage;
 		}
 		
 		@Override

@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
@@ -83,7 +84,7 @@ public abstract class Mob extends Char {
 	
 	protected int defenseSkill = 0;
 	
-	protected int EXP = 1;
+	public int EXP = 1;
 	protected int maxLvl = Hero.MAX_LEVEL;
 	
 	protected Char enemy;
@@ -272,10 +273,7 @@ public abstract class Mob extends Char {
 	@Override
 	public void add( Buff buff ) {
 		super.add( buff );
-		if (buff instanceof Amok) {
-			if (sprite != null) {
-				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "rage") );
-			}
+		if (buff instanceof Amok || buff instanceof Corruption) {
 			state = HUNTING;
 		} else if (buff instanceof Terror) {
 			state = FLEEING;
@@ -454,6 +452,15 @@ public abstract class Mob extends Char {
 	}
 	
 	@Override
+	public int attackProc(Char enemy, int damage) {
+		damage = super.attackProc(enemy, damage);
+		if (buff(Weakness.class) != null){
+			damage *= 0.67f;
+		}
+		return damage;
+	}
+	
+	@Override
 	public int defenseSkill( Char enemy ) {
 		boolean seen = enemySeen || (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack());
 		if (seen && paralysed == 0) {
@@ -533,16 +540,12 @@ public abstract class Mob extends Char {
 				Statistics.qualifiedForNoKilling = false;
 			}
 
-			int exp = exp();
+			int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
 			if (exp > 0) {
 				Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "exp", exp) );
 				Dungeon.hero.earnExp( exp );
 			}
 		}
-	}
-
-	public int exp() {
-		return Dungeon.hero.lvl <= maxLvl ? EXP : 0;
 	}
 	
 	@Override

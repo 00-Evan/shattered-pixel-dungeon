@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -159,7 +160,6 @@ public class Hero extends Char {
 	public Belongings belongings;
 	
 	public int STR;
-	public boolean weakened = false;
 	
 	public float awareness;
 	
@@ -205,7 +205,7 @@ public class Hero extends Char {
 
 		STR += RingOfMight.strengthBonus( this );
 
-		return weakened ? STR - 2 : STR;
+		return (buff(Weakness.class) != null) ? STR - 2 : STR;
 	}
 
 	private static final String ATTACK		= "attackSkill";

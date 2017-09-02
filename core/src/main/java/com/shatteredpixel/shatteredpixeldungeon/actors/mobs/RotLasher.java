@@ -71,6 +71,7 @@ public class RotLasher extends Mob {
 
 	@Override
 	public int attackProc(Char enemy, int damage) {
+		damage = super.attackProc( enemy, damage );
 		Buff.affect( enemy, Cripple.class, 2f );
 		return super.attackProc(enemy, damage);
 	}
