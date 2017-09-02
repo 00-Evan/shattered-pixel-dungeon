@@ -70,12 +70,13 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BusyIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CharHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LootIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ResumeIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toast;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
@@ -147,6 +148,7 @@ public class GameScene extends PixelScene {
 	private Group spells;
 	private Group statuses;
 	private Group emoicons;
+	private Group healthIndicators;
 	
 	private Toolbar toolbar;
 	private Toast prompt;
@@ -155,9 +157,6 @@ public class GameScene extends PixelScene {
 	private LootIndicator loot;
 	private ActionIndicator action;
 	private ResumeIndicator resume;
-	
-	//temporary, see Ghostsprite
-	public Group ghostHP;
 	
 	@Override
 	public void create() {
@@ -230,11 +229,10 @@ public class GameScene extends PixelScene {
 		emitters = new Group();
 		effects = new Group();
 		emoicons = new Group();
+		healthIndicators = new Group();
 		
 		mobs = new Group();
 		add( mobs );
-		
-		ghostHP = new Group();
 		
 		for (Mob mob : Dungeon.level.mobs) {
 			addMobSprite( mob );
@@ -283,10 +281,10 @@ public class GameScene extends PixelScene {
 		hero.place( Dungeon.hero.pos );
 		hero.updateArmor();
 		mobs.add( hero );
-
-		add( new HealthIndicator() );
 		
-		add( ghostHP );
+		add( healthIndicators );
+		//always appears ontop of other health indicators
+		add( new TargetHealthIndicator() );
 		
 		add( cellSelector = new CellSelector( tiles ) );
 
@@ -699,6 +697,10 @@ public class GameScene extends PixelScene {
 	
 	public static void add( EmoIcon icon ) {
 		scene.emoicons.add( icon );
+	}
+	
+	public static void add( CharHealthIndicator indicator ){
+		if (scene != null) scene.healthIndicators.add(indicator);
 	}
 	
 	public static void effect( Visual effect ) {

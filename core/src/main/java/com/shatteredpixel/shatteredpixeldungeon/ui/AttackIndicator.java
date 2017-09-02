@@ -178,7 +178,7 @@ public class AttackIndicator extends Tag {
 		lastTarget = (Mob)target;
 		instance.updateImage();
 		
-		HealthIndicator.instance.target( target );
+		TargetHealthIndicator.instance.target( target );
 	}
 	
 	public static void updateState() {

@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.CharHealthIndicator;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.noosa.Camera;
@@ -96,7 +97,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected Emitter chilled;
 	protected Emitter marked;
 	protected Emitter levitation;
-	protected Emitter health;
+	protected Emitter healing;
 	
 	protected IceBlock iceBlock;
 	protected DarkBlock darkBlock;
@@ -104,6 +105,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected AlphaTweener invisible;
 	
 	protected EmoIcon emo;
+	protected CharHealthIndicator health;
 
 	private Tweener jumpTweener;
 	private Callback jumpCallback;
@@ -129,6 +131,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		place( ch.pos );
 		turnTo( ch.pos, Random.Int( Dungeon.level.length() ) );
 		renderShadow = true;
+		
+		if (ch != Dungeon.hero) {
+			if (health == null) {
+				health = new CharHealthIndicator(ch);
+			} else {
+				health.target(ch);
+			}
+		}
 
 		ch.updateSpriteState();
 	}
@@ -238,6 +248,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		if (emo != null) {
 			emo.killAndErase();
 		}
+		
+		if (health != null){
+			health.killAndErase();
+		}
 	}
 	
 	public Emitter emitter() {
@@ -324,8 +338,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				marked.pour(ShadowParticle.UP, 0.1f);
 				break;
 			case HEALING:
-				health = emitter();
-				health.pour(Speck.factory(Speck.HEALING), 0.5f);
+				healing = emitter();
+				healing.pour(Speck.factory(Speck.HEALING), 0.5f);
 		}
 	}
 	
@@ -384,9 +398,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				}
 				break;
 			case HEALING:
-				if (health != null){
-					health.on = false;
-					health = null;
+				if (healing != null){
+					healing.on = false;
+					healing = null;
 				}
 				break;
 		}
@@ -476,6 +490,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		
 		if (emo != null) {
 			emo.killAndErase();
+		}
+		
+		if (health != null){
+			health.killAndErase();
 		}
 	}
 

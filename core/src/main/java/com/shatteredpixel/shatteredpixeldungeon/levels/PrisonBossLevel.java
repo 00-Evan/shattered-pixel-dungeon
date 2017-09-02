@@ -41,7 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
@@ -310,7 +310,7 @@ public class PrisonBossLevel extends Level {
 
 				Actor.remove(tengu);
 				mobs.remove(tengu);
-				HealthIndicator.instance.target(null);
+				TargetHealthIndicator.instance.target(null);
 				tengu.sprite.kill();
 
 				Room maze = new MazeRoom();

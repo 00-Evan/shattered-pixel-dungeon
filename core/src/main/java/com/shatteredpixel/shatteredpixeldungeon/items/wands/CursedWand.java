@@ -62,7 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
@@ -299,7 +299,7 @@ public class CursedWand {
 							ch.destroy();
 							ch.sprite.killAndErase();
 							Dungeon.level.mobs.remove(ch);
-							HealthIndicator.instance.target(null);
+							TargetHealthIndicator.instance.target(null);
 							GameScene.add(sheep);
 							CellEmitter.get(sheep.pos).burst(Speck.factory(Speck.WOOL), 4);
 						} else {

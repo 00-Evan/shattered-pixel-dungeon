@@ -60,15 +60,13 @@ public class HealthBar extends Component {
 		Bg.x = Shld.x = Hp.x = x;
 		Bg.y = Shld.y = Hp.y = y;
 		
-		Bg.size( width, HEIGHT );
+		Bg.size( width, height );
 		
 		//logic here rounds up to the nearest pixel
 		float pixelWidth = width;
 		if (camera() != null) pixelWidth *= camera().zoom;
-		Shld.size( width * (float)Math.ceil(shield * pixelWidth)/pixelWidth, HEIGHT );
-		Hp.size( width * (float)Math.ceil(health * pixelWidth)/pixelWidth, HEIGHT );
-		
-		height = HEIGHT;
+		Shld.size( width * (float)Math.ceil(shield * pixelWidth)/pixelWidth, height );
+		Hp.size( width * (float)Math.ceil(health * pixelWidth)/pixelWidth, height );
 	}
 	
 	public void level( float value ) {

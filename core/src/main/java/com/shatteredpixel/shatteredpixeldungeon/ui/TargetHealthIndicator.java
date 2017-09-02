@@ -24,13 +24,13 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 
-public class HealthIndicator extends HealthBar {
+public class TargetHealthIndicator extends HealthBar {
 	
-	public static HealthIndicator instance;
+	public static TargetHealthIndicator instance;
 	
 	private Char target;
 	
-	public HealthIndicator() {
+	public TargetHealthIndicator() {
 		super();
 		
 		instance = this;

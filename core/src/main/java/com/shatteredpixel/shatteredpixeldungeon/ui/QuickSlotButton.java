@@ -230,7 +230,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		if (target != Dungeon.hero) {
 			lastTarget = target;
 			
-			HealthIndicator.instance.target( target );
+			TargetHealthIndicator.instance.target( target );
 		}
 	}
 	
