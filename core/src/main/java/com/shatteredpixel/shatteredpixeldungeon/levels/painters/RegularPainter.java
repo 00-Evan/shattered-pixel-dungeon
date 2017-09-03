@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -104,14 +105,14 @@ public abstract class RegularPainter extends Painter {
 			rooms = new ArrayList<>();
 		}
 		
+		Random.shuffle(rooms);
+		
 		for (Room r : rooms) {
 			placeDoors( r );
 			r.paint( level );
 		}
 		
-		for (Room r : rooms) {
-			paintDoors( level, r );
-		}
+		paintDoors( level, rooms );
 		
 		if (waterFill > 0f) {
 			paintWater( level, rooms );
@@ -151,44 +152,52 @@ public abstract class RegularPainter extends Painter {
 		}
 	}
 	
-	protected void paintDoors( Level l, Room r ) {
-		for (Room n : r.connected.keySet()) {
-			
-			if (joinRooms( l, r, n )) {
+	protected void paintDoors( Level l, ArrayList<Room> rooms ) {
+		for (Room r : rooms) {
+			for (Room n : r.connected.keySet()) {
 				
-				continue;
-			}
-			
-			Room.Door d = r.connected.get( n );
-			int door = d.x + d.y * l.width();
-			
-			switch (d.type) {
-				case EMPTY:
-					l.map[door] = Terrain.EMPTY;
-					break;
-				case TUNNEL:
-					l.map[door] =  l.tunnelTile();
-					break;
-				case REGULAR:
-					if (Dungeon.depth <= 1) {
-						l.map[door] = Terrain.DOOR;
+				if (joinRooms(l, r, n)) {
+					continue;
+				}
+				
+				Room.Door d = r.connected.get(n);
+				int door = d.x + d.y * l.width();
+				
+				if (d.type == Room.Door.Type.REGULAR){
+					//chance for a hidden door scales from 3/21 on floor 2 to 3/3 on floor 20
+					if (Dungeon.depth > 1 &&
+							(Dungeon.depth >= 20 || Random.Int(23 - Dungeon.depth) < Dungeon.depth)) {
+						d.type = Room.Door.Type.HIDDEN;
+						Graph.buildDistanceMap(rooms, r);
+						//don't hide if it would make this room only accessible by hidden doors
+						if (n.distance == Integer.MAX_VALUE){
+							d.type = Room.Door.Type.UNLOCKED;
+						}
 					} else {
-						boolean secret = (Dungeon.depth < 6 ? Random.Int( 12 - Dungeon.depth ) : Random.Int( 6 )) == 0;
-						l.map[door] = secret ? Terrain.SECRET_DOOR : Terrain.DOOR;
+						d.type = Room.Door.Type.UNLOCKED;
 					}
-					break;
-				case UNLOCKED:
-					l.map[door] = Terrain.DOOR;
-					break;
-				case HIDDEN:
-					l.map[door] = Terrain.SECRET_DOOR;
-					break;
-				case BARRICADE:
-					l.map[door] = Terrain.BARRICADE;
-					break;
-				case LOCKED:
-					l.map[door] = Terrain.LOCKED_DOOR;
-					break;
+				}
+				
+				switch (d.type) {
+					case EMPTY:
+						l.map[door] = Terrain.EMPTY;
+						break;
+					case TUNNEL:
+						l.map[door] = l.tunnelTile();
+						break;
+					case UNLOCKED:
+						l.map[door] = Terrain.DOOR;
+						break;
+					case HIDDEN:
+						l.map[door] = Terrain.SECRET_DOOR;
+						break;
+					case BARRICADE:
+						l.map[door] = Terrain.BARRICADE;
+						break;
+					case LOCKED:
+						l.map[door] = Terrain.LOCKED_DOOR;
+						break;
+				}
 			}
 		}
 	}

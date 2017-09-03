@@ -79,8 +79,7 @@ public enum HeroClass {
 				initHuntress( hero );
 				break;
 		}
-
-		hero.updateAwareness();
+		
 	}
 
 	private static void initCommon( Hero hero ) {

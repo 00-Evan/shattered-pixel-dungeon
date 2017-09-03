@@ -74,7 +74,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 			if (isStarving()) {
 
-				partialDamage += target.HT/100f;
+				partialDamage += STEP * target.HT/1000f;
 
 				if (partialDamage > 1){
 					target.damage( (int)partialDamage, this);
@@ -139,7 +139,9 @@ public class Hunger extends Buff implements Hero.Doom {
 		if (level < 0) {
 			level = 0;
 		} else if (level > STARVING) {
+			float excess = level - STARVING;
 			level = STARVING;
+			partialDamage += excess * (target.HT/1000f);
 		}
 
 		BuffIndicator.refreshHero();

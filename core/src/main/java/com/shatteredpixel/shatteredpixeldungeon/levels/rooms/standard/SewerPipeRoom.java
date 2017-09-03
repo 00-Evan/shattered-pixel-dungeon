@@ -154,7 +154,7 @@ public class SewerPipeRoom extends StandardRoom {
 		}
 
 		for (Door door : connected.values()) {
-			door.set( Door.Type.UNLOCKED );
+			door.set( Door.Type.REGULAR );
 		}
 	}
 

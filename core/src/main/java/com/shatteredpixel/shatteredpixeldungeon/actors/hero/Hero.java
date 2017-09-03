@@ -136,8 +136,9 @@ public class Hero extends Char {
 
 	public static final int STARTING_STR = 10;
 	
-	private static final float TIME_TO_REST		= 1f;
-	private static final float TIME_TO_SEARCH	= 2f;
+	private static final float TIME_TO_REST		    = 1f;
+	private static final float TIME_TO_SEARCH	    = 2f;
+	private static final float HUNGER_FOR_SEARCH	= 6f;
 	
 	public HeroClass heroClass = HeroClass.ROGUE;
 	public HeroSubClass subClass = HeroSubClass.NONE;
@@ -151,8 +152,6 @@ public class Hero extends Char {
 	public HeroAction lastAction = null;
 
 	private Char enemy;
-	
-	private Item theKey;
 	
 	public boolean resting = false;
 
@@ -180,7 +179,6 @@ public class Hero extends Char {
 		
 		HP = HT = 20;
 		STR = STARTING_STR;
-		awareness = 0.1f;
 		
 		belongings = new Belongings( this );
 		
@@ -249,7 +247,6 @@ public class Hero extends Char {
 		defenseSkill = bundle.getInt( DEFENSE );
 		
 		STR = bundle.getInt( STRENGTH );
-		updateAwareness();
 		
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
@@ -1215,9 +1212,6 @@ public class Hero extends Char {
 				Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			}
 			
-			if (lvl < 10) {
-				updateAwareness();
-			}
 		}
 		
 		if (levelUp) {
@@ -1232,13 +1226,6 @@ public class Hero extends Char {
 	
 	public int maxExp() {
 		return 5 + lvl * 5;
-	}
-	
-	void updateAwareness() {
-		awareness = (float)(1 - Math.pow(
-			(heroClass == HeroClass.ROGUE ? 0.85 : 0.90),
-			(1 + Math.min( lvl,  9 )) * 0.5
-		));
 	}
 	
 	public boolean isStarving() {
@@ -1487,16 +1474,7 @@ public class Hero extends Char {
 		
 		boolean smthFound = false;
 
-		int positive = 0;
-		int negative = 0;
-
-		int distance = 1 + positive + negative;
-
-		float level = intentional ? (2 * awareness - awareness * awareness) : awareness;
-		if (distance <= 0) {
-			level /= 2 - distance;
-			distance = 1;
-		}
+		int distance = 1;
 		
 		int cx = pos % Dungeon.level.width();
 		int cy = pos / Dungeon.level.width();
@@ -1518,11 +1496,7 @@ public class Hero extends Char {
 		}
 
 		TalismanOfForesight.Foresight foresight = buff( TalismanOfForesight.Foresight.class );
-
-		//cursed talisman of foresight makes unintentionally finding things impossible.
-		if (foresight != null && foresight.isCursed()){
-			level = -1;
-		}
+		boolean cursed = foresight != null && foresight.isCursed();
 		
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
@@ -1533,20 +1507,41 @@ public class Hero extends Char {
 						sprite.parent.addToBack( new CheckedCell( p ) );
 					}
 					
-					if (Level.secret[p] && (intentional || Random.Float() < level)) {
+					if (Level.secret[p]){
 						
-						int oldValue = Dungeon.level.map[p];
+						float chance;
+						//intentional searches always succeed
+						if (intentional){
+							chance = 1f;
 						
-						GameScene.discoverTile( p, oldValue );
+						//unintentional searches always fail with a cursed talisman
+						} else if (cursed) {
+							chance = 0f;
+							
+						//unintentional trap detection scales from 40% at floor 0 to 30% at floor 25
+						} else if (Dungeon.level.map[p] == Terrain.SECRET_TRAP) {
+							chance = 0.4f - (Dungeon.depth / 250f);
+							
+						//unintentional door detection scales from 20% at floor 0 to 0% at floor 20
+						} else {
+							chance = 0.2f - (Dungeon.depth / 100f);
+						}
 						
-						Dungeon.level.discover( p );
+						if (Random.Float() < chance) {
 						
-						ScrollOfMagicMapping.discover( p );
-						
-						smthFound = true;
-
-						if (foresight != null && !foresight.isCursed())
-							foresight.charge();
+							int oldValue = Dungeon.level.map[p];
+							
+							GameScene.discoverTile( p, oldValue );
+							
+							Dungeon.level.discover( p );
+							
+							ScrollOfMagicMapping.discover( p );
+							
+							smthFound = true;
+	
+							if (foresight != null && !foresight.isCursed())
+								foresight.charge();
+						}
 					}
 				}
 			}
@@ -1556,12 +1551,13 @@ public class Hero extends Char {
 		if (intentional) {
 			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "search") );
 			sprite.operate( pos );
-			if (foresight != null && foresight.isCursed()){
+			if (cursed){
 				GLog.n(Messages.get(this, "search_distracted"));
-				spendAndNext(TIME_TO_SEARCH * 3);
+				buff(Hunger.class).reduceHunger(TIME_TO_SEARCH - (2*HUNGER_FOR_SEARCH));
 			} else {
-				spendAndNext(TIME_TO_SEARCH);
+				buff(Hunger.class).reduceHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
 			}
+			spendAndNext(TIME_TO_SEARCH);
 			
 		}
 		
