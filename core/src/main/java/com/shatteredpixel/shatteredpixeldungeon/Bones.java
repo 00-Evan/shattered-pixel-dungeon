@@ -181,7 +181,7 @@ public class Bones {
 				} else if (item instanceof PotionOfStrength || item instanceof PotionOfMight ||
 						item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion){
 
-					if (Random.IntRange(1, 3) >= depth){
+					if (Random.IntRange(1, 3) >= Dungeon.depth){
 						return new Gold(item.price());
 					}
 
