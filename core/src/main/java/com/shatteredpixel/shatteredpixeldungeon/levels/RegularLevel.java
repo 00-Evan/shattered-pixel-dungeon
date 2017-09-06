@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
@@ -108,6 +109,10 @@ public abstract class RegularLevel extends Level {
 		SpecialRoom.initForFloor();
 		for (int i = 0; i < specials; i++)
 			initRooms.add(SpecialRoom.createRoom());
+		
+		int secrets = SecretRoom.secretsForFloor(Dungeon.depth);
+		for (int i = 0; i < secrets; i++)
+			initRooms.add(SecretRoom.createRoom());
 		
 		return initRooms;
 	}

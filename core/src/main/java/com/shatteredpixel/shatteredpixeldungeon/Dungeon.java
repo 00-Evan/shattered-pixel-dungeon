@@ -55,6 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -199,6 +200,7 @@ public class Dungeon {
 			Ring.initGems();
 
 			SpecialRoom.initForRun();
+			SecretRoom.initForRun();
 
 		Random.seed();
 		
@@ -520,6 +522,7 @@ public class Dungeon {
 			bundle.put( QUESTS, quests );
 			
 			SpecialRoom.storeRoomsInBundle( bundle );
+			SecretRoom.storeRoomsInBundle( bundle );
 			
 			Statistics.storeInBundle( bundle );
 			Notes.storeInBundle( bundle );
@@ -635,6 +638,7 @@ public class Dungeon {
 			}
 			
 			SpecialRoom.restoreRoomsFromBundle(bundle);
+			SecretRoom.restoreRoomsFromBundle(bundle);
 		}
 		
 		Bundle badges = bundle.getBundle(BADGES);

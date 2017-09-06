@@ -78,7 +78,18 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.food.OverpricedRation" );
-
+		
+		//v0.6.2
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.RatKingRoom.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.PlantsRoom.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.GardenRoom" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.GardenRoom.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.FoliageRoom" );
+		
 		com.watabou.utils.Bundle.exceptionReporter =
 				new com.watabou.utils.Bundle.BundleExceptionCallback() {
 					@Override
@@ -86,7 +97,7 @@ public class ShatteredPixelDungeon extends Game {
 						ShatteredPixelDungeon.reportException(t);
 					}
 				};
-
+		
 	}
 	
 	@SuppressWarnings("deprecation")

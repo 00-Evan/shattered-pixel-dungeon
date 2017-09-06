@@ -61,7 +61,7 @@ public class SpecialRoom extends Room {
 	}
 	
 	private static final ArrayList<Class<? extends SpecialRoom>> ALL_SPEC = new ArrayList<>( Arrays.asList(
-			WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, FoliageRoom.class, LibraryRoom.class, ArmoryRoom.class,
+			WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, GardenRoom.class, LibraryRoom.class, ArmoryRoom.class,
 			TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, LaboratoryRoom.class, VaultRoom.class
 	) );
 	
@@ -81,7 +81,7 @@ public class SpecialRoom extends Room {
 		}
 		if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
 			//Would be a bit mean to spawn these with no plants in them
-			runSpecials.remove( FoliageRoom.class );
+			runSpecials.remove( GardenRoom.class );
 		}
 		
 		pitNeededDepth = -1;

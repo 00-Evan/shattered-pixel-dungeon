@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
-public class GardenRoom extends StandardRoom {
+public class PlantsRoom extends StandardRoom {
 	
 	@Override
 	public int minWidth() {

@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Foliage;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -31,35 +32,30 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.watabou.utils.Random;
 
-public class FoliageRoom extends SpecialRoom {
-
+//TODO specific implementation
+public class SecretGardenRoom extends SecretRoom {
+	
 	public void paint( Level level ) {
 		
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.HIGH_GRASS );
 		Painter.fill( level, this, 2, Terrain.GRASS );
 		
-		entrance().set( Door.Type.REGULAR );
-
+		entrance().set( Door.Type.HIDDEN );
+		
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)) {
-			if (Random.Int(2) == 0){
-				level.plant(new Sungrass.Seed(), level.pointToCell(random()));
-			}
+			level.plant(new Sungrass.Seed(), plantPos(level));
 		} else {
-			int bushes = Random.Int(3);
-			if (bushes == 0) {
-				level.plant(new Sungrass.Seed(), level.pointToCell(random()));
-			} else if (bushes == 1) {
-				level.plant(new BlandfruitBush.Seed(), level.pointToCell(random()));
-			} else if (Random.Int(5) == 0) {
-				int plant1, plant2;
-				plant1 = level.pointToCell(random());
-				level.plant(new Sungrass.Seed(), plant1);
-				do {
-					plant2 = level.pointToCell(random());
-				} while (plant2 == plant1);
-				level.plant(new BlandfruitBush.Seed(), plant2);
-			}
+			level.plant(new BlandfruitBush.Seed(), plantPos(level));
+		}
+		
+		level.plant(new WandOfRegrowth.Seedpod.Seed(), plantPos( level ));
+		level.plant(new WandOfRegrowth.Dewcatcher.Seed(), plantPos( level ));
+		
+		if (Random.Int(2) == 0){
+			level.plant(new WandOfRegrowth.Seedpod.Seed(), plantPos( level ));
+		} else {
+			level.plant(new WandOfRegrowth.Dewcatcher.Seed(), plantPos( level ));
 		}
 		
 		Foliage light = (Foliage)level.blobs.get( Foliage.class );
@@ -72,5 +68,13 @@ public class FoliageRoom extends SpecialRoom {
 			}
 		}
 		level.blobs.put( Foliage.class, light );
+	}
+	
+	private int plantPos( Level level ){
+		int pos;
+		do{
+			pos = level.pointToCell(random());
+		} while (level.plants.get(pos) != null);
+		return pos;
 	}
 }

@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
@@ -29,15 +29,15 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerBossEntranceRoom;
 import com.watabou.utils.Random;
 
-public class RatKingRoom extends SpecialRoom {
+public class RatKingRoom extends SecretRoom {
 	
 	@Override
 	public boolean canConnect(Room r) {
-		//never at the end of a connection room, or at the entrance
-		return r instanceof EmptyRoom && super.canConnect(r);
+		//never connects at the entrance
+		return !(r instanceof SewerBossEntranceRoom) && super.canConnect(r);
 	}
 	
 	//reduced max size to limit chest numbers.

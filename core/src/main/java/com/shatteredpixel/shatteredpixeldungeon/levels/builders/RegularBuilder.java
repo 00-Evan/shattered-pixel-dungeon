@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.builders;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretTunnelRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
@@ -135,8 +137,13 @@ public abstract class RegularBuilder extends Builder {
 		float[] connectionChances = connChances.clone();
 		while (i < roomsToBranch.size()){
 			
+			Room r = roomsToBranch.get(i);
+			
 			connectingRoomsThisBranch.clear();
-			curr = Random.element(branchable);
+			
+			do {
+				curr = Random.element(branchable);
+			} while( r instanceof SecretRoom && curr instanceof ConnectionRoom);
 			
 			int connectingRooms = Random.chances(connectionChances);
 			if (connectingRooms == -1){
@@ -146,7 +153,7 @@ public abstract class RegularBuilder extends Builder {
 			connectionChances[connectingRooms]--;
 			
 			for (int j = 0; j < connectingRooms; j++){
-				ConnectionRoom t = ConnectionRoom.createRoom();
+				ConnectionRoom t = r instanceof SecretRoom ? new SecretTunnelRoom() : ConnectionRoom.createRoom();
 				tries = 3;
 				
 				do {
@@ -155,9 +162,9 @@ public abstract class RegularBuilder extends Builder {
 				} while (angle == -1 && tries > 0);
 				
 				if (angle == -1) {
-					for (Room r : connectingRoomsThisBranch){
-						r.clearConnections();
-						rooms.remove(r);
+					for (Room c : connectingRoomsThisBranch){
+						c.clearConnections();
+						rooms.remove(c);
 					}
 					connectingRoomsThisBranch.clear();
 					break;
@@ -172,8 +179,6 @@ public abstract class RegularBuilder extends Builder {
 			if (connectingRoomsThisBranch.size() != connectingRooms){
 				continue;
 			}
-			
-			Room r = roomsToBranch.get(i);
 			
 			tries = 10;
 			
