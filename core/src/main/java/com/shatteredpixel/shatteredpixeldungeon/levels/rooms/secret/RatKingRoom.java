@@ -79,7 +79,7 @@ public class RatKingRoom extends SecretRoom {
 			return;
 		}
 		
-		Item prize = new Gold( Random.IntRange( 1, 25 ) );
+		Item prize = new Gold( Random.IntRange( 10, 25 ) );
 		
 		level.drop( prize, pos ).type = Heap.Type.CHEST;
 	}

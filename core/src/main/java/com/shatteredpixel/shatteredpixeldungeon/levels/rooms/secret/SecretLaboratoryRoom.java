@@ -21,9 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
@@ -31,11 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -51,16 +48,14 @@ public class SecretLaboratoryRoom extends SecretRoom {
 	private static HashMap<Class<? extends Potion>, Float> potionChances = new HashMap<>();
 	static{
 		potionChances.put(PotionOfHealing.class,        2f);
-		potionChances.put(PotionOfExperience.class,     4f);
+		potionChances.put(PotionOfExperience.class,     5f);
 		potionChances.put(PotionOfToxicGas.class,       1f);
-		potionChances.put(PotionOfParalyticGas.class,   2f);
+		potionChances.put(PotionOfParalyticGas.class,   3f);
 		potionChances.put(PotionOfLiquidFlame.class,    1f);
 		potionChances.put(PotionOfLevitation.class,     1f);
-		potionChances.put(PotionOfStrength.class,       0f);
-		potionChances.put(PotionOfMindVision.class,     2f);
+		potionChances.put(PotionOfMindVision.class,     3f);
 		potionChances.put(PotionOfPurity.class,         2f);
 		potionChances.put(PotionOfInvisibility.class,   1f);
-		potionChances.put(PotionOfMight.class,          0f);
 		potionChances.put(PotionOfFrost.class,          1f);
 	}
 	
@@ -69,46 +64,33 @@ public class SecretLaboratoryRoom extends SecretRoom {
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.EMPTY_SP );
 		
-		Door entrance = entrance();
+		entrance().set( Door.Type.HIDDEN );
 		
-		Point pot = null;
-		if (entrance.x == left) {
-			pot = new Point( right-1, Random.Int( 2 ) == 0 ? top + 1 : bottom - 1 );
-		} else if (entrance.x == right) {
-			pot = new Point( left+1, Random.Int( 2 ) == 0 ? top + 1 : bottom - 1 );
-		} else if (entrance.y == top) {
-			pot = new Point( Random.Int( 2 ) == 0 ? left + 1 : right - 1, bottom-1 );
-		} else if (entrance.y == bottom) {
-			pot = new Point( Random.Int( 2 ) == 0 ? left + 1 : right - 1, top+1 );
-		}
+		Point pot = center();
 		Painter.set( level, pot, Terrain.ALCHEMY );
 		
 		Alchemy alchemy = new Alchemy();
 		alchemy.seed( level, pot.x + level.width() * pot.y, Random.IntRange(40, 75) );
 		level.blobs.put( Alchemy.class, alchemy );
 		
-		int n = Random.IntRange( 3, 4 );
+		int n = Random.IntRange( 2, 4 );
 		HashMap<Class<? extends Potion>, Float> chances = new HashMap<>(potionChances);
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
 				pos = level.pointToCell(random());
-			} while (
-					level.map[pos] != Terrain.EMPTY_SP ||
-							level.heaps.get( pos ) != null);
-			level.drop( prize( level ), pos );
+			} while (level.map[pos] != Terrain.EMPTY_SP || level.heaps.get( pos ) != null);
+			
+			try{
+				Class<?extends Potion> potionCls = Random.chances(chances);
+				chances.put(potionCls, 0f);
+				level.drop( potionCls.newInstance(), pos );
+			} catch (Exception e){
+				ShatteredPixelDungeon.reportException(e);
+			}
+			
 		}
 		
-		entrance.set( Door.Type.HIDDEN );
-	}
-	
-	private static Item prize(Level level ) {
-		
-		Item prize = level.findPrizeItem( Potion.class );
-		if (prize == null)
-			prize = Generator.random( Generator.Category.POTION );
-		
-		return prize;
 	}
 	
 }
