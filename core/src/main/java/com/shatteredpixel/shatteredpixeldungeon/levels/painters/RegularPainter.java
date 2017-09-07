@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -143,6 +144,13 @@ public abstract class RegularPainter extends Painter {
 				for (Point p : i.getPoints()){
 					if (r.canConnect(p) && n.canConnect(p))
 						doorSpots.add(p);
+				}
+				if (doorSpots.isEmpty()){
+					ShatteredPixelDungeon.reportException(
+							new RuntimeException("Could not place a door! " +
+									"r=" + r.getClass().getSimpleName() +
+									" n=" + n.getClass().getSimpleName()));
+					continue;
 				}
 				door = new Room.Door(Random.element(doorSpots));
 				
