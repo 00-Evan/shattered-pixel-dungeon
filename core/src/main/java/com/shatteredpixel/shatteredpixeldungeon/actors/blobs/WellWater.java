@@ -26,54 +26,46 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class WellWater extends Blob {
+public abstract class WellWater extends Blob {
 
 	protected int pos;
 	
 	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-
-		if (volume > 0)
-			for (int i=0; i < cur.length; i++) {
-				if (cur[i] > 0) {
-					pos = i;
-					break;
+	protected void evolve() {
+		int cell;
+		boolean seen = false;
+		for (int i=area.top-1; i <= area.bottom; i++) {
+			for (int j = area.left-1; j <= area.right; j++) {
+				cell = j + i* Dungeon.level.width();
+				if (Dungeon.level.insideMap(cell)) {
+					off[cell] = cur[cell];
+					volume += off[cell];
+					if (off[cell] > 0 && Dungeon.level.visited[cell]) {
+						seen = true;
+					}
 				}
 			}
-	}
-	
-	@Override
-	protected void evolve() {
-		volume = off[pos] = cur[pos];
-		area.union(pos%Dungeon.level.width(), pos/Dungeon.level.width());
-		
-		if (Dungeon.visible[pos]) {
-			if (this instanceof WaterOfAwareness) {
-				Notes.add( Landmark.WELL_OF_AWARENESS );
-			} else if (this instanceof WaterOfHealth) {
-				Notes.add( Notes.Landmark.WELL_OF_HEALTH );
-			} else if (this instanceof WaterOfTransmutation) {
-				Notes.add( Landmark.WELL_OF_TRANSMUTATION );
-			}
+		}
+		if (seen){
+			Notes.add(record());
+		} else {
+			Notes.remove(record());
 		}
 	}
 	
-	protected boolean affect() {
-
+	protected boolean affect( int pos ) {
+		
 		Heap heap;
 		
 		if (pos == Dungeon.hero.pos && affectHero( Dungeon.hero )) {
 			
-			volume = off[pos] = cur[pos] = 0;
+			cur[pos] = 0;
 			return true;
 			
 		} else if ((heap = Dungeon.level.heaps.get( pos )) != null) {
@@ -95,7 +87,7 @@ public class WellWater extends Blob {
 				}
 				
 				heap.sprite.link();
-				volume = off[pos] = cur[pos] = 0;
+				cur[pos] = 0;
 				
 				return true;
 				
@@ -118,25 +110,11 @@ public class WellWater extends Blob {
 		}
 	}
 	
-	protected boolean affectHero( Hero hero ) {
-		return false;
-	}
+	protected abstract boolean affectHero( Hero hero );
 	
-	protected Item affectItem( Item item ) {
-		return null;
-	}
+	protected abstract Item affectItem( Item item );
 	
-	@Override
-	public void seed( Level level, int cell, int amount ) {
-		super.seed(level, cell, amount);
-
-		cur[pos] = 0;
-		pos = cell;
-		volume = cur[pos] = amount;
-
-		area.setEmpty();
-		area.union(cell%level.width(), cell/level.width());
-	}
+	protected abstract Notes.Landmark record();
 	
 	public static void affectCell( int cell ) {
 		
@@ -146,8 +124,8 @@ public class WellWater extends Blob {
 			WellWater water = (WellWater)Dungeon.level.blobs.get( waterClass );
 			if (water != null &&
 				water.volume > 0 &&
-				water.pos == cell &&
-				water.affect()) {
+				water.cur[cell] > 0 &&
+				water.affect( cell )) {
 				
 				Level.set( cell, Terrain.EMPTY_WELL );
 				GameScene.updateMap( cell );
