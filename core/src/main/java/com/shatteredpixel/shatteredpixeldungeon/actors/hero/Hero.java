@@ -318,7 +318,6 @@ public class Hero extends Char {
 		} else {
 
 			int bonus = 0;
-			if (heroClass == HeroClass.ROGUE) bonus += -aEnc;
 
 			if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
 				bonus += 5 + belongings.armor.level()*1.5f;
@@ -1474,7 +1473,7 @@ public class Hero extends Char {
 		
 		boolean smthFound = false;
 
-		int distance = 1;
+		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;
 		
 		int cx = pos % Dungeon.level.width();
 		int cy = pos / Dungeon.level.width();

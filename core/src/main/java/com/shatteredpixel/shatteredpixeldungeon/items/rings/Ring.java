@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
@@ -278,18 +277,6 @@ public class Ring extends KindofMisc {
 	}
 
 	public class RingBuff extends Buff {
-		
-		@Override
-		public boolean attachTo( Char target ) {
-
-			if (target instanceof Hero && ((Hero)target).heroClass == HeroClass.ROGUE && !isKnown()) {
-				setKnown();
-				GLog.i( Messages.get(Ring.class, "known", name()) );
-				Badges.validateItemLevelAquired( Ring.this );
-			}
-			
-			return super.attachTo(target);
-		}
 		
 		@Override
 		public boolean act() {

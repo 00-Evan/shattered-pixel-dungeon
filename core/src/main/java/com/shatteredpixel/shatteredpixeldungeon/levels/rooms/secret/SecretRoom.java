@@ -22,7 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -47,11 +49,11 @@ public abstract class SecretRoom extends SpecialRoom {
 		
 		float[] regionChances = baseRegionSecrets.clone();
 		
-		/*if (StartScene.curClass == HeroClass.ROGUE){
+		if (StartScene.curClass == HeroClass.ROGUE){
 			for (int i = 0; i < regionChances.length; i++){
 				regionChances[i] += 0.6f;
 			}
-		}*/
+		}
 		
 		for (int i = 0; i < regionSecretsThisRun.length; i++){
 			regionSecretsThisRun[i] = (int)regionChances[i];
