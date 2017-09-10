@@ -142,9 +142,8 @@ public class HeroSprite extends CharSprite {
 		super.update();
 	}
 	
-	public boolean sprint( boolean on ) {
-		run.delay = on ? 0.667f / RUN_FRAMERATE : 1f / RUN_FRAMERATE;
-		return on;
+	public void sprint( float speed ) {
+		run.delay = 1f / speed / RUN_FRAMERATE;
 	}
 	
 	public static TextureFilm tiers() {

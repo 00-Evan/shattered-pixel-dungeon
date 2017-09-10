@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
@@ -314,16 +315,19 @@ public class Hero extends Char {
 		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 10 - STR();
 		
 		if (aEnc > 0) {
-			return (int)(defenseSkill * evasion / Math.pow( 1.5, aEnc ));
-		} else {
-
-			int bonus = 0;
-
-			if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
-				bonus += 5 + belongings.armor.level()*1.5f;
-
-			return Math.round((defenseSkill + bonus) * evasion);
+			evasion /= Math.pow( 1.5, aEnc );
 		}
+		int bonus = 0;
+
+		if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
+			bonus += 5 + belongings.armor.level()*1.5f;
+		
+		Momentum momentum = buff(Momentum.class);
+		if (momentum != null){
+			bonus += momentum.evasionBonus(Math.max(0, -aEnc));
+		}
+
+		return Math.round((defenseSkill + bonus) * evasion);
 	}
 	
 	@Override
@@ -381,19 +385,16 @@ public class Hero extends Char {
 		}
 		
 		int aEnc = armor != null ? armor.STRReq() - STR() : 0;
-		if (aEnc > 0) {
-			
-			return (float)(speed / Math.pow( 1.2, aEnc ));
-			
-		} else {
-
-			return ((HeroSprite)sprite).sprint( subClass == HeroSubClass.FREERUNNER && !isStarving() ) ?
-					invisible > 0 ?
-							2f * speed :
-							1.5f * speed :
-					speed;
-			
+		if (aEnc > 0) speed /= Math.pow( 1.2, aEnc );
+		
+		Momentum momentum = buff(Momentum.class);
+		if (momentum != null){
+			((HeroSprite)sprite).sprint( 1f + 0.05f*momentum.stacks());
+			speed *= momentum.speedMultiplier();
 		}
+		
+		return speed;
+		
 	}
 
 	public boolean canSurpriseAttack(){
@@ -1100,6 +1101,10 @@ public class Hero extends Char {
 			spend( moveTime / speed() );
 			
 			search(false);
+			
+			if (subClass == HeroSubClass.FREERUNNER){
+				Buff.affect(this, Momentum.class).gainStack();
+			}
 
 			//FIXME this is a fairly sloppy fix for a crash involving pitfall traps.
 			//really there should be a way for traps to specify whether action should continue or
