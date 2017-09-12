@@ -124,7 +124,15 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		listener = this;
 	}
 	
-	public void link( Char ch ) {
+	@Override
+	public void play(Animation anim) {
+		//Shouldn't interrupt the dieing animation
+		if (curAnim != die) {
+			super.play(anim);
+		}
+	}
+	
+	public void link(Char ch ) {
 		this.ch = ch;
 		ch.sprite = this;
 		
@@ -171,9 +179,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 	
 	public void idle() {
-		if (curAnim != die) {
-			play(idle);
-		}
+		play(idle);
 	}
 	
 	public void move( int from, int to ) {
