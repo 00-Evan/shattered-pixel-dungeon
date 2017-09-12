@@ -31,8 +31,6 @@ public class PotionOfMight extends Potion {
 
 	{
 		initials = 6;
-
-		bones = true;
 	}
 	
 	@Override

@@ -27,11 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -97,7 +92,7 @@ public class Bones {
 					item = Dungeon.quickslot.randomNonePlaceholder();
 					break;
 			}
-			if (item != null && !item.bones)
+			if (item == null || item.bones)
 				return pickItem(hero);
 		} else {
 
@@ -113,17 +108,13 @@ public class Bones {
 			if (Random.Int(3) < items.size()) {
 				item = Random.element(items);
 				if (item.stackable){
-					if (item instanceof MissileWeapon){
-						item.quantity(Random.NormalIntRange(1, item.quantity()));
-					} else {
-						item.quantity(Random.NormalIntRange(1, (item.quantity() + 1) / 2));
-					}
+					item.quantity(Random.NormalIntRange(1, (item.quantity() + 1) / 2));
 				}
 			}
 		}
 		if (item == null) {
-			if (Dungeon.gold > 50) {
-				item = new Gold( Random.NormalIntRange( 50, Dungeon.gold ) );
+			if (Dungeon.gold > 100) {
+				item = new Gold( Random.NormalIntRange( 50, Dungeon.gold/2 ) );
 			} else {
 				item = new Gold( 50 );
 			}
@@ -175,16 +166,6 @@ public class Bones {
 					} else {
 						return new Gold(item.price());
 					}
-
-				//Progression items are less likely to appear in bones in very early floors
-				//This is to discourage using heroes remains to purposefully boost your earlygame
-				} else if (item instanceof PotionOfStrength || item instanceof PotionOfMight ||
-						item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion){
-
-					if (Random.IntRange(1, 3) >= depth){
-						return new Gold(item.price());
-					}
-
 				}
 				
 				if (item.isUpgradable()) {
