@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites.Type;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -217,6 +218,7 @@ public class StartScene extends PixelScene {
 		add( btnExit );
 
 		curClass = null;
+		ActionIndicator.action = null;
 		updateClass( HeroClass.values()[ShatteredPixelDungeon.lastClass()] );
 
 		fadeIn();

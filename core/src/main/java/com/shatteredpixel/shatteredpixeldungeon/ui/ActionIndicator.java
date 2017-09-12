@@ -45,7 +45,6 @@ public class ActionIndicator extends Tag {
 	public void destroy() {
 		super.destroy();
 		instance = null;
-		action = null;
 	}
 
 	@Override
