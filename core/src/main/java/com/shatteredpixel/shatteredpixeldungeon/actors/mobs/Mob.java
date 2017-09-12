@@ -32,12 +32,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
@@ -475,8 +475,7 @@ public abstract class Mob extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		if (!enemySeen && enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack()) {
-			if (((Hero)enemy).subClass == HeroSubClass.ASSASSIN) {
-				damage *= 1.25f;
+			if (enemy.buff(Preparation.class) != null) {
 				Wound.hit(this);
 			} else {
 				Surprise.hit(this);

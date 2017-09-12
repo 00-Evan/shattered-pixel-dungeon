@@ -970,7 +970,7 @@ public class Hero extends Char {
 		super.damage( dmg, src );
 	}
 	
-	private void checkVisibleMobs() {
+	public void checkVisibleMobs() {
 		ArrayList<Mob> visible = new ArrayList<>();
 
 		boolean newMob = false;

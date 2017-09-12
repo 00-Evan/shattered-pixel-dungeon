@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
@@ -133,7 +134,13 @@ public abstract class Char extends Actor {
 			int dr = this instanceof Hero && ((Hero)this).rangedWeapon != null && ((Hero)this).subClass ==
 				HeroSubClass.SNIPER ? 0 : enemy.drRoll();
 			
-			int dmg = damageRoll();
+			int dmg;
+			Preparation prep = buff(Preparation.class);
+			if (prep != null){
+				dmg = prep.damageRoll(this, enemy);
+			} else {
+				dmg = damageRoll();
+			}
 			int effectiveDamage = Math.max( dmg - dr, 0 );
 			
 			effectiveDamage = attackProc( enemy, effectiveDamage );
