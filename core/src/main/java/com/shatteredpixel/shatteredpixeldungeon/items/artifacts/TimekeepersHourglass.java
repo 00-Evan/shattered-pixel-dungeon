@@ -105,6 +105,7 @@ public class TimekeepersHourglass extends Artifact {
 
 									activeBuff = new timeFreeze();
 									activeBuff.attachTo(Dungeon.hero);
+									((timeFreeze)activeBuff).processTime(0f);
 								}
 							};
 						}
@@ -269,11 +270,11 @@ public class TimekeepersHourglass extends Artifact {
 
 	public class timeFreeze extends ArtifactBuff {
 
-		float partialTime = 0f;
+		float partialTime = 1f;
 
 		ArrayList<Integer> presses = new ArrayList<Integer>();
 
-		public boolean processTime(float time){
+		public void processTime(float time){
 			partialTime += time;
 
 			while (partialTime >= 1f){
@@ -283,11 +284,10 @@ public class TimekeepersHourglass extends Artifact {
 
 			updateQuickslot();
 
-			if (charge <= 0){
+			if (charge < 0){
+				charge = 0;
 				detach();
-				return false;
-			} else
-				return true;
+			}
 
 		}
 

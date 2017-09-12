@@ -452,8 +452,11 @@ public class Hero extends Char {
 	@Override
 	public void spend( float time ) {
 		TimekeepersHourglass.timeFreeze buff = buff(TimekeepersHourglass.timeFreeze.class);
-		if (!(buff != null && buff.processTime(time)))
-			super.spend( time );
+		if (buff != null){
+			buff.processTime(time);
+		} else {
+			super.spend(time);
+		}
 	}
 	
 	public void spendAndNext( float time ) {
