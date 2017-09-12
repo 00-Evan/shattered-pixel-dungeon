@@ -119,11 +119,11 @@ public abstract class SecretRoom extends SpecialRoom {
 			for (Class<? extends SecretRoom> type : bundle.getClassArray(ROOMS)) {
 				if (type != null) runSecrets.add(type);
 			}
+			regionSecretsThisRun = bundle.getIntArray(REGIONS);
 		} else {
 			initForRun();
 			ShatteredPixelDungeon.reportException(new Exception("secrets array didn't exist!"));
 		}
-		regionSecretsThisRun = bundle.getIntArray(REGIONS);
 	}
 	
 	public static void storeRoomsInBundle( Bundle bundle ) {
