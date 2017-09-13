@@ -503,7 +503,12 @@ public abstract class Level implements Bundlable {
 
 			@Override
 			protected boolean act() {
-				if (mobs.size() < nMobs()) {
+				int count = 0;
+				for (Mob mob : mobs.toArray(new Mob[0])){
+					if (mob.hostile) count++;
+				}
+				
+				if (count < nMobs()) {
 
 					Mob mob = createMob();
 					mob.state = mob.WANDERING;
