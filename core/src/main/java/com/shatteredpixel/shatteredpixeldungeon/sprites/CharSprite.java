@@ -498,6 +498,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			emo.killAndErase();
 		}
 		
+		for( State s : State.values()){
+			remove(s);
+		}
+		
 		if (health != null){
 			health.killAndErase();
 		}
