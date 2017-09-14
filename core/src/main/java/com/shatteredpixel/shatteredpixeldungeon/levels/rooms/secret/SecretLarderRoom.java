@@ -40,7 +40,7 @@ public class SecretLarderRoom extends SecretRoom {
 	@Override
 	public boolean canConnect(Point p) {
 		//refuses connections from the top
-		return super.canConnect(p) && p.x > top+1;
+		return super.canConnect(p) && p.y > top+1;
 	}
 	
 	@Override
