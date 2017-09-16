@@ -80,7 +80,7 @@ public class Brute extends Mob {
 		if (isAlive() && !enraged && HP < HT / 4) {
 			enraged = true;
 			spend( TICK );
-			if (Dungeon.visible[pos]) {
+			if (Dungeon.level.heroFOV[pos]) {
 				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "enraged") );
 			}
 		}

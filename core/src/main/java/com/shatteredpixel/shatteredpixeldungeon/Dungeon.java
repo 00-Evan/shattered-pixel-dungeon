@@ -365,8 +365,6 @@ public class Dungeon {
 		DriedRose.restoreGhostHero( level, pos );
 		Actor.init();
 		
-		visible = new boolean[level.length()];
-		
 		Actor respawner = level.respawner();
 		if (respawner != null) {
 			Actor.add( level.respawner() );
@@ -747,10 +745,10 @@ public class Dungeon {
 			return;
 		}
 		
-		level.updateFieldOfView(hero, visible);
+		level.updateFieldOfView(hero, level.heroFOV);
 
 		if (hero.buff(MindVision.class) != null || hero.buff(Awareness.class) != null) {
-			BArray.or( level.visited, visible, 0, visible.length, level.visited );
+			BArray.or( level.visited, level.heroFOV, 0, level.heroFOV.length, level.visited );
 
 			GameScene.updateFog();
 		} else {
@@ -767,7 +765,7 @@ public class Dungeon {
 			int pos = ax + ay * level.width();
 
 			for (int y = ay; y <= by; y++, pos+=level.width()) {
-				BArray.or( level.visited, visible, pos, len, level.visited );
+				BArray.or( level.visited, level.heroFOV, pos, len, level.visited );
 			}
 
 			GameScene.updateFog(ax, ay, len, by-ay);

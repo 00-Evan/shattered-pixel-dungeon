@@ -157,7 +157,7 @@ public class Goo extends Mob {
 			return true;
 		} else if (pumpedUp >= 2 || Random.Int( (HP*2 <= HT) ? 2 : 5 ) > 0) {
 
-			boolean visible = Dungeon.visible[pos];
+			boolean visible = Dungeon.level.heroFOV[pos];
 
 			if (visible) {
 				if (pumpedUp >= 2) {
@@ -186,7 +186,7 @@ public class Goo extends Mob {
 				}
 			}
 
-			if (Dungeon.visible[pos]) {
+			if (Dungeon.level.heroFOV[pos]) {
 				sprite.showStatus( CharSprite.NEGATIVE, Messages.get(this, "!!!") );
 				GLog.n( Messages.get(this, "pumpup") );
 			}

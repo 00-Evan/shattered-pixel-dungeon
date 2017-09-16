@@ -39,7 +39,7 @@ public class Alchemy extends Blob {
 				if (Dungeon.level.insideMap(cell)) {
 					off[cell] = cur[cell];
 					volume += off[cell];
-					if (off[cell] > 0 && Dungeon.visible[cell]){
+					if (off[cell] > 0 && Dungeon.level.heroFOV[cell]){
 						Notes.add( Notes.Landmark.ALCHEMY );
 					}
 				}

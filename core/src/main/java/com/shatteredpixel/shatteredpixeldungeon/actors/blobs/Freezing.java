@@ -54,7 +54,7 @@ public class Freezing {
 			heap.freeze();
 		}
 
-		if (Dungeon.visible[cell]) {
+		if (Dungeon.level.heroFOV[cell]) {
 			CellEmitter.get( cell ).start( SnowParticle.FACTORY, 0.2f, 6 );
 			return true;
 		} else {

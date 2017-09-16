@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -46,7 +45,7 @@ public class ScrollOfRage extends Scroll {
 
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			mob.beckon( curUser.pos );
-			if (Level.fieldOfView[mob.pos]) {
+			if (Dungeon.level.heroFOV[mob.pos]) {
 				Buff.prolong(mob, Amok.class, 5f);
 			}
 		}
@@ -74,7 +73,7 @@ public class ScrollOfRage extends Scroll {
 	@Override
 	public void empoweredRead() {
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Level.fieldOfView[mob.pos]) {
+			if (Dungeon.level.heroFOV[mob.pos]) {
 				Buff.prolong(mob, Amok.class, 5f);
 			}
 		}

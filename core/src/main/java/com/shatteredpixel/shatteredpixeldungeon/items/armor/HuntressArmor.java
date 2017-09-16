@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
@@ -49,7 +48,7 @@ public class HuntressArmor extends ClassArmor {
 		Item proto = new Shuriken();
 		
 		for (Mob mob : Dungeon.level.mobs) {
-			if (Level.fieldOfView[mob.pos]) {
+			if (Dungeon.level.heroFOV[mob.pos]) {
 				
 				Callback callback = new Callback() {
 					@Override

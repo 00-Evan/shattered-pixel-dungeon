@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -50,7 +49,7 @@ public class ScrollOfTerror extends Scroll {
 		int count = 0;
 		Mob affected = null;
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Level.fieldOfView[mob.pos]) {
+			if (Dungeon.level.heroFOV[mob.pos]) {
 				Buff.affect( mob, Terror.class, Terror.DURATION ).object = curUser.id();
 
 				if (mob.buff(Terror.class) != null){
@@ -79,7 +78,7 @@ public class ScrollOfTerror extends Scroll {
 	public void empoweredRead() {
 		doRead();
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Level.fieldOfView[mob.pos]) {
+			if (Dungeon.level.heroFOV[mob.pos]) {
 				Terror t = mob.buff(Terror.class);
 				if (t != null){
 					Buff.prolong(mob, Terror.class, Terror.DURATION*1.5f);

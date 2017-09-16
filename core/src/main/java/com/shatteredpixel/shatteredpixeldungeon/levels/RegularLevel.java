@@ -259,7 +259,7 @@ public abstract class RegularLevel extends Level {
 			}
 
 			cell = pointToCell(room.random(1));
-			if ((Dungeon.level != this || !Dungeon.visible[cell])
+			if (!heroFOV[cell]
 					&& Actor.findChar( cell ) == null
 					&& passable[cell]
 					&& cell != exit) {

@@ -147,7 +147,7 @@ public class Mimic extends Mob {
 		
 		m.sprite.turnTo( pos, Dungeon.hero.pos );
 		
-		if (Dungeon.visible[m.pos]) {
+		if (Dungeon.level.heroFOV[m.pos]) {
 			CellEmitter.get( pos ).burst( Speck.factory( Speck.STAR ), 10 );
 			Sample.INSTANCE.play( Assets.SND_MIMIC );
 		}

@@ -49,7 +49,7 @@ public class Sungrass extends Plant {
 			Buff.affect( ch, Health.class ).boost(ch.HT);
 		}
 		
-		if (Dungeon.visible[pos]) {
+		if (Dungeon.level.heroFOV[pos]) {
 			CellEmitter.get( pos ).start( ShaftParticle.FACTORY, 0.2f, 3 );
 		}
 	}

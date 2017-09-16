@@ -53,7 +53,7 @@ public class SkeletonSprite extends MobSprite {
 	@Override
 	public void die() {
 		super.die();
-		if (Dungeon.visible[ch.pos]) {
+		if (Dungeon.level.heroFOV[ch.pos]) {
 			emitter().burst( Speck.factory( Speck.BONE ), 6 );
 		}
 	}

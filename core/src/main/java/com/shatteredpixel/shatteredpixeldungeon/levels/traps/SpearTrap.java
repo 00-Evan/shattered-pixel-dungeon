@@ -42,7 +42,7 @@ public class SpearTrap extends Trap {
 
 	@Override
 	public void trigger() {
-		if (Dungeon.visible[pos]){
+		if (Dungeon.level.heroFOV[pos]){
 			Sample.INSTANCE.play(Assets.SND_TRAP);
 		}
 		//this trap is not disarmed by being triggered
@@ -53,7 +53,7 @@ public class SpearTrap extends Trap {
 
 	@Override
 	public void activate() {
-		if (Dungeon.visible[pos]){
+		if (Dungeon.level.heroFOV[pos]){
 			Sample.INSTANCE.play(Assets.SND_HIT);
 			Wound.hit(pos);
 		}

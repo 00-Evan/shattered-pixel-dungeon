@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -84,7 +83,7 @@ public class Shaman extends Mob implements Callback {
 			
 		} else {
 			
-			boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
+			boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];
 			if (visible) {
 				sprite.zap( enemy.pos );
 			}

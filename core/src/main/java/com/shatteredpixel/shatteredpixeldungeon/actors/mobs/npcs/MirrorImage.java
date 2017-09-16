@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
 import com.watabou.utils.Bundle;
@@ -100,7 +99,7 @@ public class MirrorImage extends NPC {
 			HashSet<Mob> enemies = new HashSet<>();
 			for (Mob mob : Dungeon.level.mobs) {
 				if (mob.hostile
-						&& Level.fieldOfView[mob.pos]
+						&& fieldOfView[mob.pos]
 						&& mob.state != mob.PASSIVE) {
 					enemies.add(mob);
 				}

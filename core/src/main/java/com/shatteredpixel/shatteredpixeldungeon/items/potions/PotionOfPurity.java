@@ -80,7 +80,7 @@ public class PotionOfPurity extends Potion {
 						blob.volume -= value;
 						procd = true;
 
-						if (Dungeon.visible[i]) {
+						if (Dungeon.level.heroFOV[i]) {
 							CellEmitter.get( i ).burst( Speck.factory( Speck.DISCOVER ), 1 );
 						}
 					}
@@ -93,7 +93,7 @@ public class PotionOfPurity extends Potion {
 		
 		if (procd) {
 
-			if (Dungeon.visible[cell]) {
+			if (Dungeon.level.heroFOV[cell]) {
 				splash( cell );
 				Sample.INSTANCE.play( Assets.SND_SHATTER );
 			}

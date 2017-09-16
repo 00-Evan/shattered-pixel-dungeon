@@ -241,7 +241,7 @@ public class CavesBossLevel extends Level {
 			} while (
 				!passable[boss.pos] ||
 				!outsideEntraceRoom( boss.pos ) ||
-				Dungeon.visible[boss.pos]);
+				heroFOV[boss.pos]);
 			GameScene.add( boss );
 			
 			set( arenaDoor, Terrain.WALL );

@@ -62,13 +62,13 @@ public class Fadeleaf extends Plant {
 			
 				ch.pos = newPos;
 				ch.sprite.place( ch.pos );
-				ch.sprite.visible = Dungeon.visible[ch.pos];
+				ch.sprite.visible = Dungeon.level.heroFOV[ch.pos];
 				
 			}
 
 		}
 		
-		if (Dungeon.visible[pos]) {
+		if (Dungeon.level.heroFOV[pos]) {
 			CellEmitter.get( pos ).start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );
 		}
 	}

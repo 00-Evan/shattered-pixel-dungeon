@@ -40,7 +40,7 @@ public class ImpShopkeeper extends Shopkeeper {
 	@Override
 	protected boolean act() {
 
-		if (!seenBefore && Dungeon.visible[pos]) {
+		if (!seenBefore && Dungeon.level.heroFOV[pos]) {
 			yell( Messages.get(this, "greetings", Dungeon.hero.givenName() ) );
 			seenBefore = true;
 		}

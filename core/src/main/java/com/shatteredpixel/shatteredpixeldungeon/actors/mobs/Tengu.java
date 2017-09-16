@@ -170,7 +170,7 @@ public class Tengu extends Mob {
 			int trapPos;
 			do {
 				trapPos = Random.Int( Dungeon.level.length() );
-			} while (!Level.fieldOfView[trapPos] || Dungeon.level.solid[trapPos]);
+			} while (!fieldOfView[trapPos] || Dungeon.level.solid[trapPos]);
 			
 			if (Dungeon.level.map[trapPos] == Terrain.INACTIVE_TRAP) {
 				Dungeon.level.setTrap( new SpearTrap().reveal(), trapPos );
@@ -201,13 +201,13 @@ public class Tengu extends Mob {
 					Actor.findChar(newPos) != null);
 		}
 		
-		if (Dungeon.visible[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
+		if (Dungeon.level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 
 
 		sprite.move( pos, newPos );
 		move( newPos );
 		
-		if (Dungeon.visible[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
+		if (Dungeon.level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
 		Sample.INSTANCE.play( Assets.SND_PUFF );
 		
 		spend( 1 / speed() );

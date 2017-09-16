@@ -233,7 +233,7 @@ public class LloydsBeacon extends Artifact {
 
 											ch.pos = pos;
 											ch.sprite.place(ch.pos);
-											ch.sprite.visible = Dungeon.visible[pos];
+											ch.sprite.visible = Dungeon.level.heroFOV[pos];
 
 										}
 									}

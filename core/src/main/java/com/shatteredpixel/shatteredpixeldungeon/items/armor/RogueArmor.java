@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -55,7 +54,7 @@ public class RogueArmor extends ClassArmor {
 		public void onSelect( Integer target ) {
 			if (target != null) {
 
-				if (!Level.fieldOfView[target] ||
+				if (!Dungeon.level.heroFOV[target] ||
 					!(Dungeon.level.passable[target] || Dungeon.level.avoid[target]) ||
 					Actor.findChar( target ) != null) {
 					
@@ -66,7 +65,7 @@ public class RogueArmor extends ClassArmor {
 				curUser.HP -= (curUser.HP / 3);
 				
 				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[Dungeon.level.mobs.size()])) {
-					if (Level.fieldOfView[mob.pos]) {
+					if (Dungeon.level.heroFOV[mob.pos]) {
 						Buff.prolong( mob, Blindness.class, 2 );
 						if (mob.state == mob.HUNTING) mob.state = mob.WANDERING;
 						mob.sprite.emitter().burst( Speck.factory( Speck.LIGHT ), 4 );

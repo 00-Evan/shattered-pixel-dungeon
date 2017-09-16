@@ -79,7 +79,7 @@ public class Statue extends Mob {
 	
 	@Override
 	protected boolean act() {
-		if (Dungeon.visible[pos]) {
+		if (Dungeon.level.heroFOV[pos]) {
 			Notes.add( Notes.Landmark.STATUE );
 		}
 		return super.act();

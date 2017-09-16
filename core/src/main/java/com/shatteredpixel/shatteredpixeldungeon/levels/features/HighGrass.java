@@ -104,7 +104,6 @@ public class HighGrass {
 		}
 		
 		CellEmitter.get( pos ).burst( LeafParticle.LEVEL_SPECIFIC, leaves );
-		if (Dungeon.visible[pos])
-			Dungeon.observe();
+		if (Dungeon.level.heroFOV[pos]) Dungeon.observe();
 	}
 }

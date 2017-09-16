@@ -103,7 +103,7 @@ public class CorpseDust extends Item {
 				int pos = 0;
 				do{
 					pos = Random.Int(Dungeon.level.length());
-				} while (!Dungeon.visible[pos] || !Dungeon.level.passable[pos] || Actor.findChar( pos ) != null);
+				} while (!Dungeon.level.heroFOV[pos] || !Dungeon.level.passable[pos] || Actor.findChar( pos ) != null);
 				Wraith.spawnAt(pos);
 				Sample.INSTANCE.play(Assets.SND_CURSED);
 			}

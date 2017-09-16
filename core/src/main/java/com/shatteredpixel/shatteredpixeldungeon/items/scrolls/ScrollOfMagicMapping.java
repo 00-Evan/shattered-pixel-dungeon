@@ -63,7 +63,7 @@ public class ScrollOfMagicMapping extends Scroll {
 					
 					Dungeon.level.discover( i );
 					
-					if (Dungeon.visible[i]) {
+					if (Dungeon.level.heroFOV[i]) {
 						GameScene.discoverTile( i, terr );
 						discover( i );
 						

@@ -617,7 +617,7 @@ public class GameScene extends PixelScene {
 	
 	private void addMobSprite( Mob mob ) {
 		CharSprite sprite = mob.sprite();
-		sprite.visible = Dungeon.visible[mob.pos];
+		sprite.visible = Dungeon.level.heroFOV[mob.pos];
 		mobs.add( sprite );
 		sprite.link( mob );
 	}
@@ -832,7 +832,7 @@ public class GameScene extends PixelScene {
 		if (scene != null) {
 			for (Mob mob : Dungeon.level.mobs) {
 				if (mob.sprite != null)
-					mob.sprite.visible = Dungeon.visible[mob.pos];
+					mob.sprite.visible = Dungeon.level.heroFOV[mob.pos];
 			}
 		}
 	}
@@ -932,7 +932,7 @@ public class GameScene extends PixelScene {
 			objects.add(Dungeon.hero);
 			names.add(Dungeon.hero.className().toUpperCase(Locale.ENGLISH));
 		} else {
-			if (Dungeon.visible[cell]) {
+			if (Dungeon.level.heroFOV[cell]) {
 				Mob mob = (Mob) Actor.findChar(cell);
 				if (mob != null) {
 					objects.add(mob);

@@ -44,7 +44,7 @@ public class FrostTrap extends Trap {
 	@Override
 	public void activate() {
 
-		if (Dungeon.visible[ pos ]){
+		if (Dungeon.level.heroFOV[ pos ]){
 			Splash.at( pos, 0xFFB2D6FF, 10);
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}

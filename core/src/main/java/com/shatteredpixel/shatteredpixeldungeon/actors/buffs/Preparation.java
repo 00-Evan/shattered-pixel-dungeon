@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -272,7 +271,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				Dungeon.hero.pos = attackPos;
 				Dungeon.level.press(Dungeon.hero.pos, Dungeon.hero);
 				//prevents the hero from being interrupted by seeing new enemies
-				Dungeon.level.updateFieldOfView(Dungeon.hero, Level.fieldOfView);
+				Dungeon.observe();
 				Dungeon.hero.checkVisibleMobs();
 				
 				Dungeon.hero.sprite.place( Dungeon.hero.pos );

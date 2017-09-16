@@ -59,7 +59,7 @@ public class FlashingTrap extends Trap {
 			}
 		}
 
-		if (Dungeon.visible[pos]) {
+		if (Dungeon.level.heroFOV[pos]) {
 			GameScene.flash(0xFFFFFF);
 			CellEmitter.get(pos).burst( Speck.factory(Speck.LIGHT), 4 );
 		}

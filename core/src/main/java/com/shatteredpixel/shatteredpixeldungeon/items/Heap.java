@@ -252,7 +252,7 @@ public class Heap implements Bundlable {
 		
 		if (burnt || evaporated) {
 			
-			if (Dungeon.visible[pos]) {
+			if (Dungeon.level.heroFOV[pos]) {
 				if (burnt) {
 					burnFX( pos );
 				} else {

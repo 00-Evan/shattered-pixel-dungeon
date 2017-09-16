@@ -475,7 +475,7 @@ public class DriedRose extends Artifact {
 				HashSet<Mob> enemies = new HashSet<>();
 				for (Mob mob : Dungeon.level.mobs) {
 					if (mob.hostile
-							&& Level.fieldOfView[mob.pos]
+							&& fieldOfView[mob.pos]
 							&& Dungeon.level.distance(mob.pos, Dungeon.hero.pos) <= 8
 							&& mob.state != mob.PASSIVE) {
 						enemies.add(mob);

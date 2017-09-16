@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 
@@ -43,7 +42,7 @@ public class MageArmor extends ClassArmor {
 	public void doSpecial() {
 		
 		for (Mob mob : Dungeon.level.mobs) {
-			if (Level.fieldOfView[mob.pos]) {
+			if (Dungeon.level.heroFOV[mob.pos]) {
 				Buff.affect( mob, Burning.class ).reignite( mob );
 				Buff.prolong( mob, Roots.class, 3 );
 			}

@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BeeSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -122,7 +121,7 @@ public class Bee extends Mob {
 
 			//if already targeting something, and that thing is still alive and near the pot, keeping targeting it.
 			if (enemy != null && enemy.isAlive() && Dungeon.level.mobs.contains(enemy)
-					&& Level.fieldOfView[enemy.pos] && enemy.invisible == 0
+					&& fieldOfView[enemy.pos] && enemy.invisible == 0
 					&& Dungeon.level.distance(enemy.pos, potPos) <= 3)
 				return enemy;
 

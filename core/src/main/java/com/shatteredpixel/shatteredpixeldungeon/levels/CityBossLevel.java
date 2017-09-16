@@ -213,10 +213,10 @@ public class CityBossLevel extends Level {
 			} while (
 				!passable[boss.pos] ||
 				!outsideEntraceRoom( boss.pos ) ||
-				(Dungeon.visible[boss.pos] && count++ < 20));
+				(heroFOV[boss.pos] && count++ < 20));
 			GameScene.add( boss );
 
-			if (Dungeon.visible[boss.pos]) {
+			if (heroFOV[boss.pos]) {
 				boss.notice();
 				boss.sprite.alpha( 0 );
 				boss.sprite.parent.add( new AlphaTweener( boss.sprite, 1, 0.1f ) );

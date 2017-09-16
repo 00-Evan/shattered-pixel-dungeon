@@ -205,7 +205,7 @@ public class HallsBossLevel extends Level {
 				boss.pos = Random.Int( length() );
 			} while (
 				!passable[boss.pos] ||
-				Dungeon.visible[boss.pos]);
+				heroFOV[boss.pos]);
 			GameScene.add( boss );
 			boss.spawnFists();
 			

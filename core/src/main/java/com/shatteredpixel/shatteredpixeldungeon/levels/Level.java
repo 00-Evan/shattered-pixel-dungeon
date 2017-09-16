@@ -116,9 +116,8 @@ public abstract class Level implements Bundlable {
 	public boolean[] discoverable;
 
 	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 4 : 8;
-
-	//TODO even though it would cost more memory, it may make more sense to have this be a property of char.
-	public static boolean[] fieldOfView;
+	
+	public boolean[] heroFOV;
 	
 	public boolean[] passable;
 	public boolean[] losBlocking;
@@ -255,22 +254,21 @@ public abstract class Level implements Bundlable {
 		length = w * h;
 		
 		map = new int[length];
-		Arrays.fill( map, Terrain.WALL );
 		Arrays.fill( map, feeling == Level.Feeling.CHASM ? Terrain.CHASM : Terrain.WALL );
 		
-		visited = new boolean[length];
-		mapped = new boolean[length];
+		visited     = new boolean[length];
+		mapped      = new boolean[length];
 		
-		fieldOfView = new boolean[length()];
+		heroFOV     = new boolean[length];
 		
-		passable	= new boolean[length()];
-		losBlocking	= new boolean[length()];
-		flamable	= new boolean[length()];
-		secret		= new boolean[length()];
-		solid		= new boolean[length()];
-		avoid		= new boolean[length()];
-		water		= new boolean[length()];
-		pit			= new boolean[length()];
+		passable	= new boolean[length];
+		losBlocking	= new boolean[length];
+		flamable	= new boolean[length];
+		secret		= new boolean[length];
+		solid		= new boolean[length];
+		avoid		= new boolean[length];
+		water		= new boolean[length];
+		pit			= new boolean[length];
 		
 		PathFinder.setMapSize(w, h);
 	}
@@ -530,7 +528,7 @@ public abstract class Level implements Bundlable {
 		int cell;
 		do {
 			cell = Random.Int( length() );
-		} while ((Dungeon.level == this && Dungeon.visible[cell])
+		} while ((Dungeon.level == this && heroFOV[cell])
 				|| !passable[cell]
 				|| Actor.findChar( cell ) != null);
 		return cell;
@@ -677,7 +675,7 @@ public abstract class Level implements Bundlable {
 		if (heap == null) {
 			
 			heap = new Heap();
-			heap.seen = Dungeon.level == this && Dungeon.visible[cell];
+			heap.seen = Dungeon.level == this && heroFOV[cell];
 			heap.pos = cell;
 			if (map[cell] == Terrain.CHASM || (Dungeon.level != null && pit[cell])) {
 				Dungeon.dropToChasm( item );

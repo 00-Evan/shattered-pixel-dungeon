@@ -315,7 +315,7 @@ public class King extends Mob {
 		public void die( Object cause ) {
 			super.die( cause );
 			
-			if (Dungeon.visible[pos]) {
+			if (Dungeon.level.heroFOV[pos]) {
 				Sample.INSTANCE.play( Assets.SND_BONES );
 			}
 		}

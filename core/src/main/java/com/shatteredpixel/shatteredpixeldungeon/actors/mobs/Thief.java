@@ -203,7 +203,7 @@ public class Thief extends Mob {
 				if (enemySeen) {
 					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
 					state = HUNTING;
-				} else if (item != null && !Dungeon.visible[pos]) {
+				} else if (item != null && !Dungeon.level.heroFOV[pos]) {
 
 					int count = 32;
 					int newPos;
@@ -212,15 +212,15 @@ public class Thief extends Mob {
 						if (count-- <= 0) {
 							break;
 						}
-					} while (newPos == -1 || Dungeon.visible[newPos] || Dungeon.level.distance(newPos, pos) < (count/3));
+					} while (newPos == -1 || Dungeon.level.heroFOV[newPos] || Dungeon.level.distance(newPos, pos) < (count/3));
 
 					if (newPos != -1) {
 
-						if (Dungeon.visible[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
+						if (Dungeon.level.heroFOV[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
 						pos = newPos;
 						sprite.place( pos );
-						sprite.visible = Dungeon.visible[pos];
-						if (Dungeon.visible[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
+						sprite.visible = Dungeon.level.heroFOV[pos];
+						if (Dungeon.level.heroFOV[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
 
 					}
 

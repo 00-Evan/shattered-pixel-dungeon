@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -87,7 +86,7 @@ public class Warlock extends Mob implements Callback {
 			
 		} else {
 			
-			boolean visible = Level.fieldOfView[pos] || Level.fieldOfView[enemy.pos];
+			boolean visible = fieldOfView[pos] || fieldOfView[enemy.pos];
 			if (visible) {
 				sprite.zap( enemy.pos );
 			} else {

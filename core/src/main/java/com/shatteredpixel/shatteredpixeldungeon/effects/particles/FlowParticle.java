@@ -96,7 +96,7 @@ public class FlowParticle extends PixelParticle {
 		@Override
 		public void update() {
 			
-			if (visible = Dungeon.visible[pos]) {
+			if (visible = Dungeon.level.heroFOV[pos]) {
 				
 				super.update();
 				

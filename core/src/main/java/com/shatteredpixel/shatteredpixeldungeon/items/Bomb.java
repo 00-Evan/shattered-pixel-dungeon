@@ -115,7 +115,7 @@ public class Bomb extends Item {
 
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 
-		if (Dungeon.visible[cell]) {
+		if (Dungeon.level.heroFOV[cell]) {
 			CellEmitter.center( cell ).burst( BlastParticle.FACTORY, 30 );
 		}
 
@@ -123,7 +123,7 @@ public class Bomb extends Item {
 		for (int n : PathFinder.NEIGHBOURS9) {
 			int c = cell + n;
 			if (c >= 0 && c < Dungeon.level.length()) {
-				if (Dungeon.visible[c]) {
+				if (Dungeon.level.heroFOV[c]) {
 					CellEmitter.get( c ).burst( SmokeParticle.FACTORY, 4 );
 				}
 

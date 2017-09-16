@@ -187,7 +187,7 @@ public class CityLevel extends RegularLevel {
 		
 		@Override
 		public void update() {
-			if (visible = Dungeon.visible[pos]) {
+			if (visible = Dungeon.level.heroFOV[pos]) {
 				super.update();
 			}
 		}

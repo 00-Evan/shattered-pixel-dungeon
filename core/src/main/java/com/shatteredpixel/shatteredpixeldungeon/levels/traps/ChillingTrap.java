@@ -42,7 +42,7 @@ public class ChillingTrap extends Trap{
 
 	@Override
 	public void activate() {
-		if (Dungeon.visible[ pos ]){
+		if (Dungeon.level.heroFOV[ pos ]){
 			Splash.at( pos, 0xFFB2D6FF, 5);
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}

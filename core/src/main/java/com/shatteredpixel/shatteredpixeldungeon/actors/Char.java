@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -79,11 +78,16 @@ public abstract class Char extends Actor {
 	
 	public int viewDistance	= 8;
 	
+	protected boolean[] fieldOfView = null;
+	
 	private HashSet<Buff> buffs = new HashSet<>();
 	
 	@Override
 	protected boolean act() {
-		Dungeon.level.updateFieldOfView( this, Level.fieldOfView );
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+		}
+		Dungeon.level.updateFieldOfView( this, fieldOfView );
 		return false;
 	}
 	
@@ -126,7 +130,7 @@ public abstract class Char extends Actor {
 
 		if (enemy == null || !enemy.isAlive()) return false;
 		
-		boolean visibleFight = Dungeon.visible[pos] || Dungeon.visible[enemy.pos];
+		boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
 		
 		if (hit( this, enemy, false )) {
 			
@@ -266,7 +270,7 @@ public abstract class Char extends Actor {
 		if (buff( Paralysis.class ) != null) {
 			if (Random.Int( dmg ) >= Random.Int( HP )) {
 				Buff.detach( this, Paralysis.class );
-				if (Dungeon.visible[pos]) {
+				if (Dungeon.level.heroFOV[pos]) {
 					GLog.i( Messages.get(Char.class, "out_of_paralysis", name) );
 				}
 			}
@@ -433,7 +437,7 @@ public abstract class Char extends Actor {
 		}
 		
 		if (this != Dungeon.hero) {
-			sprite.visible = Dungeon.visible[pos];
+			sprite.visible = Dungeon.level.heroFOV[pos];
 		}
 	}
 	

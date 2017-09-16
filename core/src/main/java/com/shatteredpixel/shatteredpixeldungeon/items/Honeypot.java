@@ -88,7 +88,7 @@ public class Honeypot extends Item {
 	
 	public Item shatter( Char owner, int pos ) {
 		
-		if (Dungeon.visible[pos]) {
+		if (Dungeon.level.heroFOV[pos]) {
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 			Splash.at( pos, 0xffd500, 5 );
 		}

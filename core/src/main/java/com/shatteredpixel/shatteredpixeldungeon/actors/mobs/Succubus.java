@@ -33,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SuccubusSprite;
 import com.watabou.noosa.audio.Sample;
@@ -85,7 +84,7 @@ public class Succubus extends Mob {
 	
 	@Override
 	protected boolean getCloser( int target ) {
-		if (Level.fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && delay <= 0) {
+		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && delay <= 0) {
 			
 			blink( target );
 			spend( -1 / speed() );

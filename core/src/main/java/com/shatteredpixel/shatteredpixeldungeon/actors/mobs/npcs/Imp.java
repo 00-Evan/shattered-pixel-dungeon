@@ -54,7 +54,7 @@ public class Imp extends NPC {
 	@Override
 	protected boolean act() {
 		
-		if (!Quest.given && Dungeon.visible[pos]) {
+		if (!Quest.given && Dungeon.level.heroFOV[pos]) {
 			if (!seenBefore) {
 				yell( Messages.get(this, "hey", Dungeon.hero.givenName() ) );
 			}

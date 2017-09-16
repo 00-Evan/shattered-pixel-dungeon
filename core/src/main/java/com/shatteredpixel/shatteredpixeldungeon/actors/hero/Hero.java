@@ -608,7 +608,7 @@ public class Hero extends Char {
 			
 		} else {
 			
-			if (Level.fieldOfView[npc.pos] && getCloser( npc.pos )) {
+			if (fieldOfView[npc.pos] && getCloser( npc.pos )) {
 
 				return true;
 
@@ -875,7 +875,7 @@ public class Hero extends Char {
 
 		} else {
 
-			if (Level.fieldOfView[enemy.pos] && getCloser( enemy.pos )) {
+			if (fieldOfView[enemy.pos] && getCloser( enemy.pos )) {
 
 				return true;
 
@@ -980,7 +980,7 @@ public class Hero extends Char {
 
 		Mob target = null;
 		for (Mob m : Dungeon.level.mobs) {
-			if (Level.fieldOfView[ m.pos ] && m.hostile) {
+			if (Dungeon.level.heroFOV[ m.pos ] && m.hostile) {
 				visible.add(m);
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;
@@ -998,7 +998,7 @@ public class Hero extends Char {
 
 		if (target != null && (QuickSlotButton.lastTarget == null ||
 							!QuickSlotButton.lastTarget.isAlive() ||
-							!Dungeon.visible[QuickSlotButton.lastTarget.pos])){
+							!Dungeon.level.heroFOV[QuickSlotButton.lastTarget.pos])){
 			QuickSlotButton.target(target);
 		}
 		
@@ -1062,7 +1062,7 @@ public class Hero extends Char {
 				int lookAhead = (int) GameMath.gate(0, path.size()-1, 2);
 				for (int i = 0; i < lookAhead; i++){
 					int cell = path.get(i);
-					if (!Dungeon.level.passable[cell] || (Dungeon.visible[cell] && Actor.findChar(cell) != null)) {
+					if (!Dungeon.level.passable[cell] || (fieldOfView[cell] && Actor.findChar(cell) != null)) {
 						newPath = true;
 						break;
 					}
@@ -1080,7 +1080,7 @@ public class Hero extends Char {
 					passable[i] = p[i] && (v[i] || m[i]);
 				}
 
-				path = Dungeon.findPath(this, pos, target, passable, Level.fieldOfView);
+				path = Dungeon.findPath(this, pos, target, passable, fieldOfView);
 			}
 
 			if (path == null) return false;
@@ -1135,7 +1135,7 @@ public class Hero extends Char {
 			
 			curAction = new HeroAction.Alchemy( cell );
 			
-		} else if (Level.fieldOfView[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
+		} else if (Dungeon.level.heroFOV[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
 
 			if (ch instanceof NPC) {
 				curAction = new HeroAction.Interact( (NPC)ch );
@@ -1508,7 +1508,7 @@ public class Hero extends Char {
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
 				
-				if (Dungeon.visible[p] && p != pos) {
+				if (Dungeon.level.heroFOV[p] && p != pos) {
 					
 					if (intentional) {
 						sprite.parent.addToBack( new CheckedCell( p ) );

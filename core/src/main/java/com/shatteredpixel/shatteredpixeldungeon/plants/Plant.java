@@ -72,7 +72,7 @@ public abstract class Plant implements Bundlable {
 	public void wither() {
 		Dungeon.level.uproot( pos );
 
-		if (Dungeon.visible[pos]) {
+		if (Dungeon.level.heroFOV[pos]) {
 			CellEmitter.get( pos ).burst( LeafParticle.GENERAL, 6 );
 		}
 		
@@ -168,7 +168,7 @@ public abstract class Plant implements Bundlable {
 		
 		public Plant couch( int pos ) {
 			try {
-				if (Dungeon.visible != null && Dungeon.visible[pos]) {
+				if (Dungeon.level.heroFOV != null && Dungeon.level.heroFOV[pos]) {
 					Sample.INSTANCE.play(Assets.SND_PLANT);
 				}
 				Plant plant = plantClass.newInstance();

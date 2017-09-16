@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -92,7 +91,7 @@ public class Eye extends Mob {
 		if (beamCooldown == 0) {
 			Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_TERRAIN);
 
-			if (enemy.invisible == 0 && !isCharmedBy(enemy) && Level.fieldOfView[enemy.pos] && aim.subPath(1, aim.dist).contains(enemy.pos)){
+			if (enemy.invisible == 0 && !isCharmedBy(enemy) && fieldOfView[enemy.pos] && aim.subPath(1, aim.dist).contains(enemy.pos)){
 				beam = aim;
 				beamTarget = aim.collisionPos;
 				return true;
@@ -135,7 +134,7 @@ public class Eye extends Mob {
 			spend( attackDelay() );
 			
 			beam = new Ballistica(pos, beamTarget, Ballistica.STOP_TERRAIN);
-			if (Dungeon.visible[pos] || Dungeon.visible[beam.collisionPos] ) {
+			if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[beam.collisionPos] ) {
 				sprite.zap( beam.collisionPos );
 				return false;
 			} else {
@@ -179,7 +178,7 @@ public class Eye extends Mob {
 			if (hit( this, ch, true )) {
 				ch.damage( Random.NormalIntRange( 30, 50 ), this );
 
-				if (Dungeon.visible[pos]) {
+				if (Dungeon.level.heroFOV[pos]) {
 					ch.sprite.flash();
 					CellEmitter.center( pos ).burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
 				}

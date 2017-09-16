@@ -53,7 +53,7 @@ public class RockfallTrap extends Trap {
 			if (Dungeon.level.solid[pos+i])
 				continue;
 
-			if (Dungeon.visible[ pos+i ]){
+			if (Dungeon.level.heroFOV[ pos+i ]){
 				CellEmitter.get( pos + i - Dungeon.level.width() ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
 				if (!seen) {
 					Camera.main.shake(3, 0.7f);

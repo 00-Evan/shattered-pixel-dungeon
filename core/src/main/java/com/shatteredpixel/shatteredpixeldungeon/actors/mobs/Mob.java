@@ -47,7 +47,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -171,7 +170,7 @@ public abstract class Mob extends Char {
 		
 		enemy = chooseEnemy();
 		
-		boolean enemyInFOV = enemy != null && enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0;
+		boolean enemyInFOV = enemy != null && enemy.isAlive() && fieldOfView[enemy.pos] && enemy.invisible <= 0;
 
 		return state.act( enemyInFOV, justAlerted );
 	}
@@ -207,7 +206,7 @@ public abstract class Mob extends Char {
 
 				//look for enemy mobs to attack, which are also not corrupted
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile && mob.buff(Corruption.class) == null)
+					if (mob != this && fieldOfView[mob.pos] && mob.hostile && mob.buff(Corruption.class) == null)
 						enemies.add(mob);
 				if (enemies.size() > 0) return Random.element(enemies);
 
@@ -219,13 +218,13 @@ public abstract class Mob extends Char {
 
 				//try to find an enemy mob to attack first.
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob != this && Level.fieldOfView[mob.pos] && mob.hostile)
+					if (mob != this && fieldOfView[mob.pos] && mob.hostile)
 							enemies.add(mob);
 				if (enemies.size() > 0) return Random.element(enemies);
 
 				//try to find ally mobs to attack second.
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob != this && Level.fieldOfView[mob.pos] && mob.ally)
+					if (mob != this && fieldOfView[mob.pos] && mob.ally)
 						enemies.add(mob);
 				if (enemies.size() > 0) return Random.element(enemies);
 
@@ -236,7 +235,7 @@ public abstract class Mob extends Char {
 
 				//try to find ally mobs to attack.
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob != this && Level.fieldOfView[mob.pos] && mob.ally)
+					if (mob != this && fieldOfView[mob.pos] && mob.ally)
 						enemies.add(mob);
 
 				//and add the hero to the list of targets.
@@ -261,7 +260,7 @@ public abstract class Mob extends Char {
 
 	protected boolean moveSprite( int from, int to ) {
 
-		if (sprite.isVisible() && (Dungeon.visible[from] || Dungeon.visible[to])) {
+		if (sprite.isVisible() && (Dungeon.level.heroFOV[from] || Dungeon.level.heroFOV[to])) {
 			sprite.move( from, to );
 			return true;
 		} else {
@@ -366,7 +365,7 @@ public abstract class Mob extends Char {
 				int lookAhead = (int)GameMath.gate(1, path.size()-1, 4);
 				for (int i = 0; i < lookAhead; i++) {
 					int cell = path.get(i);
-					if (!Dungeon.level.passable[cell] || ( Level.fieldOfView[cell] && Actor.findChar(cell) != null)) {
+					if (!Dungeon.level.passable[cell] || ( fieldOfView[cell] && Actor.findChar(cell) != null)) {
 						newPath = true;
 						break;
 					}
@@ -376,7 +375,7 @@ public abstract class Mob extends Char {
 			if (newPath) {
 				path = Dungeon.findPath(this, pos, target,
 						Dungeon.level.passable,
-						Level.fieldOfView);
+						fieldOfView);
 			}
 
 			//if hunting something, don't follow a path that is extremely inefficient
@@ -401,7 +400,7 @@ public abstract class Mob extends Char {
 	protected boolean getFurther( int target ) {
 		int step = Dungeon.flee( this, pos, target,
 			Dungeon.level.passable,
-			Level.fieldOfView );
+			fieldOfView );
 		if (step != -1) {
 			move( step );
 			return true;
@@ -432,7 +431,7 @@ public abstract class Mob extends Char {
 	
 	protected boolean doAttack( Char enemy ) {
 		
-		boolean visible = Dungeon.visible[pos];
+		boolean visible = Dungeon.level.heroFOV[pos];
 		
 		if (visible) {
 			sprite.attack( enemy.pos );
@@ -572,7 +571,7 @@ public abstract class Mob extends Char {
 			}
 		}
 		
-		if (Dungeon.hero.isAlive() && !Dungeon.visible[pos]) {
+		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {
 			GLog.i( Messages.get(this, "died") );
 		}
 	}

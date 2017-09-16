@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -67,7 +66,8 @@ public class Guard extends Mob {
 
 	@Override
 	protected boolean act() {
-		Dungeon.level.updateFieldOfView( this, Level.fieldOfView );
+		//FIXME should handle chaining in an extended hunting aistate
+		/*Dungeon.level.updateFieldOfView( this, fieldOfView );
 
 		if (state == HUNTING &&
 				paralysed <= 0 &&
@@ -82,9 +82,9 @@ public class Guard extends Mob {
 
 			return false;
 
-		} else {
+		} else {*/
 			return super.act();
-		}
+		//}
 	}
 
 	private boolean chain(int target){

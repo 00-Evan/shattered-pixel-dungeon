@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PiranhaSprite;
 import com.watabou.utils.Random;
 
@@ -57,13 +56,15 @@ public class Piranha extends Mob {
 	
 	@Override
 	protected boolean act() {
+		
 		if (!Dungeon.level.water[pos]) {
 			die( null );
 			sprite.killAndErase();
 			return true;
 		} else {
+			//FIXME should handle this is an extended hunting
 			//this causes pirahna to move away when a door is closed on them.
-			Dungeon.level.updateFieldOfView( this, Level.fieldOfView );
+			/*Dungeon.level.updateFieldOfView( this, Level.fieldOfView );
 			enemy = chooseEnemy();
 			if (state == this.HUNTING &&
 					!(enemy != null && enemy.isAlive() && Level.fieldOfView[enemy.pos] && enemy.invisible <= 0)){
@@ -77,7 +78,7 @@ public class Piranha extends Mob {
 				} while (!getCloser(target));
 				moveSprite( oldPos, pos );
 				return true;
-			}
+			}*/
 
 			return super.act();
 		}
@@ -121,7 +122,7 @@ public class Piranha extends Mob {
 		
 		int step = Dungeon.findStep( this, pos, target,
 			Dungeon.level.water,
-			Level.fieldOfView );
+			fieldOfView );
 		if (step != -1) {
 			move( step );
 			return true;
@@ -134,7 +135,7 @@ public class Piranha extends Mob {
 	protected boolean getFurther( int target ) {
 		int step = Dungeon.flee( this, pos, target,
 			Dungeon.level.water,
-			Level.fieldOfView );
+			fieldOfView );
 		if (step != -1) {
 			move( step );
 			return true;
