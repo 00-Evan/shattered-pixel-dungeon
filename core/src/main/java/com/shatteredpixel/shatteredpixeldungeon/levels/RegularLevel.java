@@ -215,7 +215,7 @@ public abstract class RegularLevel extends Level {
 			Mob mob = createMob();
 			mob.pos = pointToCell(roomToSpawn.random());
 
-			if (findMob(mob.pos) == null && Level.passable[mob.pos]) {
+			if (findMob(mob.pos) == null && passable[mob.pos]) {
 				mobsToSpawn--;
 				mobs.add(mob);
 
@@ -224,7 +224,7 @@ public abstract class RegularLevel extends Level {
 					mob = createMob();
 					mob.pos = pointToCell(roomToSpawn.random());
 
-					if (findMob(mob.pos)  == null && Level.passable[mob.pos]) {
+					if (findMob(mob.pos)  == null && passable[mob.pos]) {
 						mobsToSpawn--;
 						mobs.add(mob);
 					}
@@ -261,7 +261,7 @@ public abstract class RegularLevel extends Level {
 			cell = pointToCell(room.random(1));
 			if ((Dungeon.level != this || !Dungeon.visible[cell])
 					&& Actor.findChar( cell ) == null
-					&& Level.passable[cell]
+					&& passable[cell]
 					&& cell != exit) {
 				return cell;
 			}
@@ -282,7 +282,7 @@ public abstract class RegularLevel extends Level {
 			}
 			
 			cell = pointToCell(room.random());
-			if (Level.passable[cell]) {
+			if (passable[cell]) {
 				return cell;
 			}
 			

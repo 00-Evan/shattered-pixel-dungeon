@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -248,7 +247,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 								int ofs = PathFinder.NEIGHBOURS8[i];
 								if (enemy.pos - target.pos == ofs) {
 									int newPos = enemy.pos + ofs;
-									if ((Level.passable[newPos] || Level.avoid[newPos]) && Actor.findChar( newPos ) == null) {
+									if ((Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])
+											&& Actor.findChar( newPos ) == null) {
 
 										Actor.addDelayed( new Pushing( enemy, enemy.pos, newPos ), -1 );
 

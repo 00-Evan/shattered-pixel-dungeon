@@ -249,7 +249,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				AttackLevel lvl = AttackLevel.getLvl(turnsInvis);
 				
 				boolean[] passable = new boolean[Dungeon.level.length()];
-				PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Level.passable, Level.avoid, passable), lvl.blinkDistance+1);
+				PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, passable), lvl.blinkDistance+1);
 				if (PathFinder.distance[cell] == Integer.MAX_VALUE){
 					GLog.w(Messages.get(Preparation.class, "out_of_reach"));
 					return;

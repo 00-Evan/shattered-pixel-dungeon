@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
@@ -51,7 +50,7 @@ public class RockfallTrap extends Trap {
 
 		for (int i : PathFinder.NEIGHBOURS9){
 
-			if (Level.solid[pos+i])
+			if (Dungeon.level.solid[pos+i])
 				continue;
 
 			if (Dungeon.visible[ pos+i ]){

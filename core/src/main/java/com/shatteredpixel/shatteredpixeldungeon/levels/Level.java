@@ -109,25 +109,25 @@ public abstract class Level implements Bundlable {
 	protected static final float TIME_TO_RESPAWN	= 50;
 
 	public int version;
+	
 	public int[] map;
 	public boolean[] visited;
 	public boolean[] mapped;
+	public boolean[] discoverable;
 
 	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 4 : 8;
 
-	//FIXME should not be static!
+	//TODO even though it would cost more memory, it may make more sense to have this be a property of char.
 	public static boolean[] fieldOfView;
 	
-	public static boolean[] passable;
-	public static boolean[] losBlocking;
-	public static boolean[] flamable;
-	public static boolean[] secret;
-	public static boolean[] solid;
-	public static boolean[] avoid;
-	public static boolean[] water;
-	public static boolean[] pit;
-	
-	public static boolean[] discoverable;
+	public boolean[] passable;
+	public boolean[] losBlocking;
+	public boolean[] flamable;
+	public boolean[] secret;
+	public boolean[] solid;
+	public boolean[] avoid;
+	public boolean[] water;
+	public boolean[] pit;
 	
 	public Feeling feeling = Feeling.NONE;
 	
@@ -620,22 +620,26 @@ public abstract class Level implements Bundlable {
 		}
 	}
 	
-	public static void set( int cell, int terrain ) {
-		Painter.set( Dungeon.level, cell, terrain );
+	public static void set( int cell, int terrain ){
+		set( cell, terrain, Dungeon.level );
+	}
+	
+	public static void set( int cell, int terrain, Level level ) {
+		Painter.set( level, cell, terrain );
 
 		if (terrain != Terrain.TRAP && terrain != Terrain.SECRET_TRAP && terrain != Terrain.INACTIVE_TRAP){
-			Dungeon.level.traps.remove( cell );
+			level.traps.remove( cell );
 		}
 
 		int flags = Terrain.flags[terrain];
-		passable[cell]		= (flags & Terrain.PASSABLE) != 0;
-		losBlocking[cell]	= (flags & Terrain.LOS_BLOCKING) != 0;
-		flamable[cell]		= (flags & Terrain.FLAMABLE) != 0;
-		secret[cell]		= (flags & Terrain.SECRET) != 0;
-		solid[cell]			= (flags & Terrain.SOLID) != 0;
-		avoid[cell]			= (flags & Terrain.AVOID) != 0;
-		pit[cell]			= (flags & Terrain.PIT) != 0;
-		water[cell]			= terrain == Terrain.WATER;
+		level.passable[cell]		= (flags & Terrain.PASSABLE) != 0;
+		level.losBlocking[cell]	    = (flags & Terrain.LOS_BLOCKING) != 0;
+		level.flamable[cell]		= (flags & Terrain.FLAMABLE) != 0;
+		level.secret[cell]		    = (flags & Terrain.SECRET) != 0;
+		level.solid[cell]			= (flags & Terrain.SOLID) != 0;
+		level.avoid[cell]			= (flags & Terrain.AVOID) != 0;
+		level.pit[cell]			    = (flags & Terrain.PIT) != 0;
+		level.water[cell]			= terrain == Terrain.WATER;
 	}
 	
 	public Heap drop( Item item, int cell ) {
@@ -688,7 +692,7 @@ public abstract class Level implements Bundlable {
 			int n;
 			do {
 				n = cell + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
-			} while (!Level.passable[n] && !Level.avoid[n]);
+			} while (!passable[n] && !avoid[n]);
 			return drop( item, n );
 			
 		}

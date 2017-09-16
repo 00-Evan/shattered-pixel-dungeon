@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -83,9 +82,9 @@ public class ScrollOfTeleportation extends Scroll {
 	}
 	
 	public static void teleportToLocation(Hero hero, int pos){
-		PathFinder.buildDistanceMap(pos, BArray.or(Level.passable, Level.avoid, null));
+		PathFinder.buildDistanceMap(pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
 		if (PathFinder.distance[hero.pos] == Integer.MAX_VALUE
-				|| (!Level.passable[pos] && !Level.avoid[pos])
+				|| (!Dungeon.level.passable[pos] && !Dungeon.level.avoid[pos])
 				|| Actor.findChar(pos) != null){
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "cant_reach") );
 			return;

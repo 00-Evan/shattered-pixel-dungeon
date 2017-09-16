@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -286,7 +285,7 @@ public class ItemSprite extends MovieClip {
 				place(heap.pos);
 
 				if (visible) {
-					boolean water = Level.water[heap.pos];
+					boolean water = Dungeon.level.water[heap.pos];
 
 					if (water) {
 						GameScene.ripple(heap.pos);

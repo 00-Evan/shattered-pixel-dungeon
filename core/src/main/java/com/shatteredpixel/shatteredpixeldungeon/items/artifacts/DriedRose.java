@@ -130,7 +130,7 @@ public class DriedRose extends Artifact {
 				ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
 				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 					int p = hero.pos + PathFinder.NEIGHBOURS8[i];
-					if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
+					if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
 						spawnPoints.add(p);
 					}
 				}
@@ -269,7 +269,7 @@ public class DriedRose extends Artifact {
 			int ghostPos;
 			do {
 				ghostPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-			} while (Level.solid[ghostPos] || level.findMob(ghostPos) != null);
+			} while (Dungeon.level.solid[ghostPos] || level.findMob(ghostPos) != null);
 			
 			heldGhost.pos = ghostPos;
 			heldGhost = null;
@@ -318,7 +318,7 @@ public class DriedRose extends Artifact {
 
 				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 					int p = target.pos + PathFinder.NEIGHBOURS8[i];
-					if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
+					if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
 						spawnPoints.add(p);
 					}
 				}
@@ -573,7 +573,7 @@ public class DriedRose extends Artifact {
 			if (rose != null && rose.armor != null){
 				if (rose.armor.hasGlyph(Swiftness.class)) {
 					speed *= (1.1f + 0.01f * rose.armor.level());
-				} else if (rose.armor.hasGlyph(Flow.class) && Level.water[pos]){
+				} else if (rose.armor.hasGlyph(Flow.class) && Dungeon.level.water[pos]){
 					speed *= (1.5f + 0.05f * rose.armor.level());
 				}
 			}
@@ -627,7 +627,7 @@ public class DriedRose extends Artifact {
 				rose.talkedTo = true;
 				GameScene.show(new WndQuest(this, Messages.get(this, "introduce") ));
 				return false;
-			} else if (Level.passable[pos] || Dungeon.hero.flying) {
+			} else if (Dungeon.level.passable[pos] || Dungeon.hero.flying) {
 				int curPos = pos;
 
 				moveSprite( pos, Dungeon.hero.pos );

@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
@@ -50,7 +49,7 @@ public class PotionOfLiquidFlame extends Potion {
 		}
 
 		for (int offset : PathFinder.NEIGHBOURS9){
-			if (Level.flamable[cell+offset]
+			if (Dungeon.level.flamable[cell+offset]
 					|| Actor.findChar(cell+offset) != null
 					|| Dungeon.level.heaps.get(cell+offset) != null) {
 

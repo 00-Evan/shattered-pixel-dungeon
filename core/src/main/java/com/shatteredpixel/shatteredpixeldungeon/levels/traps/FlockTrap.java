@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
@@ -50,16 +49,19 @@ public class FlockTrap extends Trap {
 			{ actPriority = 3; }
 
 			protected boolean act() {
-				PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
+				PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
 				for (int i = 0; i < PathFinder.distance.length; i++) {
-					if (PathFinder.distance[i] < Integer.MAX_VALUE)
-						if (Dungeon.level.insideMap(i) && Actor.findChar(i) == null && !(Level.pit[i])) {
-						Sheep sheep = new Sheep();
-						sheep.lifespan = 2 + Random.Int(Dungeon.depth + 10);
-						sheep.pos = i;
-						Dungeon.level.mobPress(sheep);
-						GameScene.add(sheep);
-						CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
+					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+						if (Dungeon.level.insideMap(i)
+								&& Actor.findChar(i) == null
+								&& !(Dungeon.level.pit[i])) {
+							Sheep sheep = new Sheep();
+							sheep.lifespan = 2 + Random.Int(Dungeon.depth + 10);
+							sheep.pos = i;
+							Dungeon.level.mobPress(sheep);
+							GameScene.add(sheep);
+							CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
+						}
 					}
 				}
 				Sample.INSTANCE.play(Assets.SND_PUFF);

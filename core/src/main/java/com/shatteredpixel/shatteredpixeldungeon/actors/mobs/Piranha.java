@@ -57,7 +57,7 @@ public class Piranha extends Mob {
 	
 	@Override
 	protected boolean act() {
-		if (!Level.water[pos]) {
+		if (!Dungeon.level.water[pos]) {
 			die( null );
 			sprite.killAndErase();
 			return true;
@@ -120,7 +120,7 @@ public class Piranha extends Mob {
 		}
 		
 		int step = Dungeon.findStep( this, pos, target,
-			Level.water,
+			Dungeon.level.water,
 			Level.fieldOfView );
 		if (step != -1) {
 			move( step );
@@ -133,7 +133,7 @@ public class Piranha extends Mob {
 	@Override
 	protected boolean getFurther( int target ) {
 		int step = Dungeon.flee( this, pos, target,
-			Level.water,
+			Dungeon.level.water,
 			Level.fieldOfView );
 		if (step != -1) {
 			move( step );

@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -77,7 +76,7 @@ public class Goo extends Mob {
 		int max = (HP*2 <= HT) ? 15 : 10;
 		if (pumpedUp > 0) {
 			pumpedUp = 0;
-			PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
+			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] < Integer.MAX_VALUE)
 					CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
@@ -110,7 +109,7 @@ public class Goo extends Mob {
 	@Override
 	public boolean act() {
 
-		if (Level.water[pos] && HP < HT) {
+		if (Dungeon.level.water[pos] && HP < HT) {
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			if (HP*2 == HT) {
 				BossHealthBar.bleed(false);
@@ -146,7 +145,7 @@ public class Goo extends Mob {
 	protected boolean doAttack( Char enemy ) {
 		if (pumpedUp == 1) {
 			((GooSprite)sprite).pumpUp();
-			PathFinder.buildDistanceMap( pos, BArray.not( Level.solid, null ), 2 );
+			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] < Integer.MAX_VALUE)
 					GameScene.add(Blob.seed(i, 2, GooWarn.class));
@@ -182,7 +181,7 @@ public class Goo extends Mob {
 
 			for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
 				int j = pos + PathFinder.NEIGHBOURS9[i];
-				if (!Level.solid[j]) {
+				if (!Dungeon.level.solid[j]) {
 					GameScene.add(Blob.seed(j, 2, GooWarn.class));
 				}
 			}

@@ -139,7 +139,7 @@ public class Blob extends Actor {
 	
 	protected void evolve() {
 		
-		boolean[] blocking = Level.solid;
+		boolean[] blocking = Dungeon.level.solid;
 		int cell;
 		for (int i=area.top-1; i <= area.bottom; i++) {
 			for (int j = area.left-1; j <= area.right; j++) {

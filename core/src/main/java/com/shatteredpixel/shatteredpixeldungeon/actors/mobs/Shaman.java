@@ -93,7 +93,7 @@ public class Shaman extends Mob implements Callback {
 			
 			if (hit( this, enemy, true )) {
 				int dmg = Random.NormalIntRange(3, 10);
-				if (Level.water[enemy.pos] && !enemy.flying) {
+				if (Dungeon.level.water[enemy.pos] && !enemy.flying) {
 					dmg *= 1.5f;
 				}
 				enemy.damage( dmg, LightningTrap.LIGHTNING );

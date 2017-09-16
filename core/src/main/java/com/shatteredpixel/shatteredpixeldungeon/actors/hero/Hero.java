@@ -379,7 +379,7 @@ public class Hero extends Char {
 
 			if (armor.hasGlyph(Swiftness.class)) {
 				speed *= (1.1f + 0.01f * belongings.armor.level());
-			} else if (armor.hasGlyph(Flow.class) && Level.water[pos]){
+			} else if (armor.hasGlyph(Flow.class) && Dungeon.level.water[pos]){
 				speed *= (1.5f + 0.05f * belongings.armor.level());
 			}
 		}
@@ -422,7 +422,7 @@ public class Hero extends Char {
 
 		if (wep != null && Dungeon.level.distance( pos, enemy.pos ) <= wep.reachFactor(this)){
 
-			boolean[] passable = BArray.not(Level.solid, null);
+			boolean[] passable = BArray.not(Dungeon.level.solid, null);
 			for (Mob m : Dungeon.level.mobs)
 				passable[m.pos] = false;
 
@@ -1035,7 +1035,7 @@ public class Hero extends Char {
 			path = null;
 
 			if (Actor.findChar( target ) == null) {
-				if (Level.pit[target] && !flying && !Level.solid[target]) {
+				if (Dungeon.level.pit[target] && !flying && !Dungeon.level.solid[target]) {
 					if (!Chasm.jumpConfirmed){
 						Chasm.heroJump(this);
 						interrupt();
@@ -1044,7 +1044,7 @@ public class Hero extends Char {
 					}
 					return false;
 				}
-				if (Level.passable[target] || Level.avoid[target]) {
+				if (Dungeon.level.passable[target] || Dungeon.level.avoid[target]) {
 					step = target;
 				}
 			}
@@ -1062,7 +1062,7 @@ public class Hero extends Char {
 				int lookAhead = (int) GameMath.gate(0, path.size()-1, 2);
 				for (int i = 0; i < lookAhead; i++){
 					int cell = path.get(i);
-					if (!Level.passable[cell] || (Dungeon.visible[cell] && Actor.findChar(cell) != null)) {
+					if (!Dungeon.level.passable[cell] || (Dungeon.visible[cell] && Actor.findChar(cell) != null)) {
 						newPath = true;
 						break;
 					}
@@ -1072,7 +1072,7 @@ public class Hero extends Char {
 			if (newPath) {
 
 				int len = Dungeon.level.length();
-				boolean[] p = Level.passable;
+				boolean[] p = Dungeon.level.passable;
 				boolean[] v = Dungeon.level.visited;
 				boolean[] m = Dungeon.level.mapped;
 				boolean[] passable = new boolean[len];
@@ -1336,7 +1336,7 @@ public class Hero extends Char {
 		int length = Dungeon.level.length();
 		int[] map = Dungeon.level.map;
 		boolean[] visited = Dungeon.level.visited;
-		boolean[] discoverable = Level.discoverable;
+		boolean[] discoverable = Dungeon.level.discoverable;
 		
 		for (int i=0; i < length; i++) {
 			
@@ -1363,7 +1363,7 @@ public class Hero extends Char {
 		ArrayList<Integer> passable = new ArrayList<Integer>();
 		for (Integer ofs : PathFinder.NEIGHBOURS8) {
 			int cell = pos + ofs;
-			if ((Level.passable[cell] || Level.avoid[cell]) && Dungeon.level.heaps.get( cell ) == null) {
+			if ((Dungeon.level.passable[cell] || Dungeon.level.avoid[cell]) && Dungeon.level.heaps.get( cell ) == null) {
 				passable.add( cell );
 			}
 		}
@@ -1411,7 +1411,7 @@ public class Hero extends Char {
 		
 		if (!flying) {
 			
-			if (Level.water[pos]) {
+			if (Dungeon.level.water[pos]) {
 				Sample.INSTANCE.play( Assets.SND_WATER, 1, 1, Random.Float( 0.8f, 1.25f ) );
 			} else {
 				Sample.INSTANCE.play( Assets.SND_STEP );
@@ -1514,7 +1514,7 @@ public class Hero extends Char {
 						sprite.parent.addToBack( new CheckedCell( p ) );
 					}
 					
-					if (Level.secret[p]){
+					if (Dungeon.level.secret[p]){
 						
 						float chance;
 						//intentional searches always succeed

@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
@@ -142,7 +141,9 @@ public abstract class Plant implements Bundlable {
 		
 		@Override
 		protected void onThrow( int cell ) {
-			if (Dungeon.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell] || Dungeon.level.traps.get(cell) != null) {
+			if (Dungeon.level.map[cell] == Terrain.ALCHEMY
+					|| Dungeon.level.pit[cell]
+					|| Dungeon.level.traps.get(cell) != null) {
 				super.onThrow( cell );
 			} else {
 				Dungeon.level.plant( this, cell );

@@ -25,7 +25,6 @@ import android.opengl.GLES20;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Texture;
@@ -161,7 +160,7 @@ public class FogOfWar extends Image {
 
 				if (cell >= Dungeon.level.length()) continue; //do nothing
 
-				if (!Level.discoverable[cell]
+				if (!Dungeon.level.discoverable[cell]
 						|| (!visible[cell] && !visited[cell] && !mapped[cell])){
 					//we skip filling cells here if it isn't a full update
 					// because they must already be dark

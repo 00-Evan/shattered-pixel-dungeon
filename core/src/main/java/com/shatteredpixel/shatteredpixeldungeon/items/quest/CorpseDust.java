@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -104,7 +103,7 @@ public class CorpseDust extends Item {
 				int pos = 0;
 				do{
 					pos = Random.Int(Dungeon.level.length());
-				} while (!Dungeon.visible[pos] || !Level.passable[pos] || Actor.findChar( pos ) != null);
+				} while (!Dungeon.visible[pos] || !Dungeon.level.passable[pos] || Actor.findChar( pos ) != null);
 				Wraith.spawnAt(pos);
 				Sample.INSTANCE.play(Assets.SND_CURSED);
 			}

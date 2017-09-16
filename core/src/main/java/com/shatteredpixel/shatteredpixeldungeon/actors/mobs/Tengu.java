@@ -170,7 +170,7 @@ public class Tengu extends Mob {
 			int trapPos;
 			do {
 				trapPos = Random.Int( Dungeon.level.length() );
-			} while (!Level.fieldOfView[trapPos] || Level.solid[trapPos]);
+			} while (!Level.fieldOfView[trapPos] || Dungeon.level.solid[trapPos]);
 			
 			if (Dungeon.level.map[trapPos] == Terrain.INACTIVE_TRAP) {
 				Dungeon.level.setTrap( new SpearTrap().reveal(), trapPos );
@@ -196,7 +196,7 @@ public class Tengu extends Mob {
 			do {
 				newPos = Random.Int(Dungeon.level.length());
 			} while (
-					Level.solid[newPos] ||
+					Dungeon.level.solid[newPos] ||
 					Dungeon.level.distance(newPos, enemy.pos) < 8 ||
 					Actor.findChar(newPos) != null);
 		}

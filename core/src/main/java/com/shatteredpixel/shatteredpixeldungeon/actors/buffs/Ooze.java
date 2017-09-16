@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -67,7 +66,7 @@ public class Ooze extends Buff {
 			}
 			spend( TICK );
 		}
-		if (Level.water[target.pos]) {
+		if (Dungeon.level.water[target.pos]) {
 			detach();
 		}
 		return true;

@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.mechanics;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,13 +102,13 @@ public class Ballistica {
 		while (Dungeon.level.insideMap(cell)) {
 
 			//if we're in a wall, collide with the previous cell along the path.
-			if (stopTerrain && cell != sourcePos && !Level.passable[cell] && !Level.avoid[cell]) {
+			if (stopTerrain && cell != sourcePos && !Dungeon.level.passable[cell] && !Dungeon.level.avoid[cell]) {
 				collide(path.get(path.size() - 1));
 			}
 
 			path.add(cell);
 
-			if ((stopTerrain && cell != sourcePos && Level.losBlocking[cell])
+			if ((stopTerrain && cell != sourcePos && Dungeon.level.losBlocking[cell])
 					|| (cell != sourcePos && stopChars && Actor.findChar( cell ) != null)
 					|| (cell == to && stopTarget)){
 				collide(cell);

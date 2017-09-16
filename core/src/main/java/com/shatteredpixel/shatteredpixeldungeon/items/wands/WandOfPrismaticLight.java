@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticl
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -105,7 +104,7 @@ public class WandOfPrismaticLight extends DamageWand {
 			for (int n : PathFinder.NEIGHBOURS9){
 				int cell = c+n;
 
-				if (Level.discoverable[cell])
+				if (Dungeon.level.discoverable[cell])
 					Dungeon.level.mapped[cell] = true;
 
 				int terr = Dungeon.level.map[cell];

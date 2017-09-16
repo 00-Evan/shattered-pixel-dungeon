@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -68,7 +67,7 @@ public class WandOfLightning extends DamageWand {
 		//lightning deals less damage per-target, the more targets that are hit.
 		float multipler = 0.4f + (0.6f/affected.size());
 		//if the main target is in water, all affected take full damage
-		if (Level.water[bolt.collisionPos]) multipler = 1f;
+		if (Dungeon.level.water[bolt.collisionPos]) multipler = 1f;
 
 		int min = 5 + level();
 		int max = 10 + 5*level();
@@ -99,12 +98,12 @@ public class WandOfLightning extends DamageWand {
 		affected.add( ch );
 
 		int dist;
-		if (Level.water[ch.pos] && !ch.flying)
+		if (Dungeon.level.water[ch.pos] && !ch.flying)
 			dist = 2;
 		else
 			dist = 1;
 
-			PathFinder.buildDistanceMap( ch.pos, BArray.not( Level.solid, null ), dist );
+			PathFinder.buildDistanceMap( ch.pos, BArray.not( Dungeon.level.solid, null ), dist );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] < Integer.MAX_VALUE){
 					Char n = Actor.findChar( i );

@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -82,7 +81,7 @@ public class WandOfFrost extends DamageWand {
 			ch.damage(damage, this);
 
 			if (ch.isAlive()){
-				if (Level.water[ch.pos])
+				if (Dungeon.level.water[ch.pos])
 					Buff.prolong(ch, Chill.class, 4+level());
 				else
 					Buff.prolong(ch, Chill.class, 2+level());

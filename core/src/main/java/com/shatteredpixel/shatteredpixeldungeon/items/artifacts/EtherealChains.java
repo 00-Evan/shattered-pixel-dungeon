@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -105,7 +104,7 @@ public class EtherealChains extends Artifact {
 			if (target != null && (Dungeon.level.visited[target] || Dungeon.level.mapped[target])){
 
 				//chains cannot be used to go where it is impossible to walk to
-				PathFinder.buildDistanceMap(target, BArray.or(Level.passable, Level.avoid, null));
+				PathFinder.buildDistanceMap(target, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
 				if (PathFinder.distance[curUser.pos] == Integer.MAX_VALUE){
 					GLog.w( Messages.get(EtherealChains.class, "cant_reach") );
 					return;
@@ -140,7 +139,7 @@ public class EtherealChains extends Artifact {
 		int bestPos = -1;
 		for (int i : chain.subPath(1, chain.dist)){
 			//prefer to the earliest point on the path
-			if (!Level.solid[i] && Actor.findChar(i) == null){
+			if (!Dungeon.level.solid[i] && Actor.findChar(i) == null){
 				bestPos = i;
 				break;
 			}
@@ -182,7 +181,7 @@ public class EtherealChains extends Artifact {
 	private void chainLocation( Ballistica chain, final Hero hero ){
 		
 		//don't pull if the collision spot is in a wall
-		if (Level.solid[chain.collisionPos]){
+		if (Dungeon.level.solid[chain.collisionPos]){
 			GLog.i( Messages.get(this, "inside_wall"));
 			return;
 		}
@@ -190,7 +189,7 @@ public class EtherealChains extends Artifact {
 		//don't pull if there are no solid objects next to the pull location
 		boolean solidFound = false;
 		for (int i : PathFinder.NEIGHBOURS8){
-			if (Level.solid[chain.collisionPos + i]){
+			if (Dungeon.level.solid[chain.collisionPos + i]){
 				solidFound = true;
 				break;
 			}

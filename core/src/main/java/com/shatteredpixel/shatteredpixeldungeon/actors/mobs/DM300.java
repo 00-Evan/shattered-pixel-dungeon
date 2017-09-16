@@ -120,7 +120,7 @@ public class DM300 extends Mob {
 			Camera.main.shake( 3, 0.7f );
 			Sample.INSTANCE.play( Assets.SND_ROCKS );
 			
-			if (Level.water[cell]) {
+			if (Dungeon.level.water[cell]) {
 				GameScene.ripple( cell );
 			} else if (Dungeon.level.map[cell] == Terrain.EMPTY) {
 				Level.set( cell, Terrain.EMPTY_DECO );

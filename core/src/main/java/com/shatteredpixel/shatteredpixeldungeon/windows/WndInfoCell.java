@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -45,9 +44,9 @@ public class WndInfoCell extends Window {
 		super();
 		
 		int tile = Dungeon.level.map[cell];
-		if (Level.water[cell]) {
+		if (Dungeon.level.water[cell]) {
 			tile = Terrain.WATER;
-		} else if (Level.pit[cell]) {
+		} else if (Dungeon.level.pit[cell]) {
 			tile = Terrain.CHASM;
 		}
 

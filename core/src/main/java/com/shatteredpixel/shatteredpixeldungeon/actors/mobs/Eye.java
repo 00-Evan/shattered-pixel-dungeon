@@ -163,7 +163,7 @@ public class Eye extends Mob {
 
 		for (int pos : beam.subPath(1, beam.dist)) {
 
-			if (Level.flamable[pos]) {
+			if (Dungeon.level.flamable[pos]) {
 
 				Dungeon.level.destroy( pos );
 				GameScene.updateMap( pos );
