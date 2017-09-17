@@ -57,34 +57,13 @@ public class Guard extends Mob {
 		lootChance = 0.25f;
 
 		properties.add(Property.DEMONIC);
+		
+		HUNTING = new Hunting();
 	}
 
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange(4, 12);
-	}
-
-	@Override
-	protected boolean act() {
-		//FIXME should handle chaining in an extended hunting aistate
-		/*Dungeon.level.updateFieldOfView( this, fieldOfView );
-
-		if (state == HUNTING &&
-				paralysed <= 0 &&
-				enemy != null &&
-				enemy.invisible == 0 &&
-				Level.fieldOfView[enemy.pos] &&
-				Dungeon.level.distance( pos, enemy.pos ) < 5 &&
-				!Dungeon.level.adjacent( pos, enemy.pos ) &&
-				Random.Int(3) == 0 &&
-
-				chain(enemy.pos)) {
-
-			return false;
-
-		} else {*/
-			return super.act();
-		//}
 	}
 
 	private boolean chain(int target){
@@ -179,5 +158,26 @@ public class Guard extends Mob {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		chainsUsed = bundle.getBoolean(CHAINSUSED);
+	}
+	
+	private class Hunting extends Mob.Hunting{
+		@Override
+		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+			enemySeen = enemyInFOV;
+			
+			if (!chainsUsed
+					&& enemyInFOV
+					&& !isCharmedBy( enemy )
+					&& !canAttack( enemy )
+					&& Dungeon.level.distance( pos, enemy.pos ) < 5
+					&& Random.Int(3) == 0
+					
+					&& chain(enemy.pos)){
+				return false;
+			} else {
+				return super.act( enemyInFOV, justAlerted );
+			}
+			
+		}
 	}
 }
