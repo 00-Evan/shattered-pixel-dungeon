@@ -173,9 +173,6 @@ public class Dungeon {
 	public static int gold;
 	
 	public static HashSet<Integer> chapters;
-	
-	// Hero's field of view
-	public static boolean[] visible;
 
 	public static SparseArray<ArrayList<Item>> droppedItems;
 

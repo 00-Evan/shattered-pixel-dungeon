@@ -468,7 +468,17 @@ public class Hero extends Char {
 	@Override
 	public boolean act() {
 		
-		super.act();
+		//calls to dungeon.observe will also update hero's local FOV.
+		fieldOfView = Dungeon.level.heroFOV;
+		
+		//do a full observe (including fog update) if not resting.
+		if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
+			Dungeon.observe();
+		} else {
+			//otherwise just directly re-calculate FOV
+			Dungeon.level.updateFieldOfView( this, fieldOfView );
+		}
+		checkVisibleMobs();
 		
 		if (paralysed > 0) {
 			
@@ -476,11 +486,6 @@ public class Hero extends Char {
 			
 			spendAndNext( TICK );
 			return false;
-		}
-		
-		checkVisibleMobs();
-		if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
-			Dungeon.observe();
 		}
 		
 		if (curAction == null) {
@@ -980,7 +985,7 @@ public class Hero extends Char {
 
 		Mob target = null;
 		for (Mob m : Dungeon.level.mobs) {
-			if (Dungeon.level.heroFOV[ m.pos ] && m.hostile) {
+			if (fieldOfView[ m.pos ] && m.hostile) {
 				visible.add(m);
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;
@@ -998,7 +1003,7 @@ public class Hero extends Char {
 
 		if (target != null && (QuickSlotButton.lastTarget == null ||
 							!QuickSlotButton.lastTarget.isAlive() ||
-							!Dungeon.level.heroFOV[QuickSlotButton.lastTarget.pos])){
+							!fieldOfView[QuickSlotButton.lastTarget.pos])){
 			QuickSlotButton.target(target);
 		}
 		
@@ -1135,7 +1140,7 @@ public class Hero extends Char {
 			
 			curAction = new HeroAction.Alchemy( cell );
 			
-		} else if (Dungeon.level.heroFOV[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
+		} else if (fieldOfView[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
 
 			if (ch instanceof NPC) {
 				curAction = new HeroAction.Interact( (NPC)ch );
@@ -1508,7 +1513,7 @@ public class Hero extends Char {
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
 				
-				if (Dungeon.level.heroFOV[p] && p != pos) {
+				if (fieldOfView[p] && p != pos) {
 					
 					if (intentional) {
 						sprite.parent.addToBack( new CheckedCell( p ) );
