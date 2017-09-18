@@ -126,7 +126,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	@Override
 	public void play(Animation anim) {
 		//Shouldn't interrupt the dieing animation
-		if (curAnim != die) {
+		if (curAnim == null || curAnim != die) {
 			super.play(anim);
 		}
 	}
