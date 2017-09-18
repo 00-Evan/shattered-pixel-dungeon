@@ -72,6 +72,8 @@ public class Multiplicity extends Armor.Glyph {
 						m = Dungeon.level.createMob();
 					} else {
 						try {
+							Actor.fixTime();
+							
 							m = (Mob)attacker.getClass().newInstance();
 							Bundle store = new Bundle();
 							attacker.storeInBundle(store);
