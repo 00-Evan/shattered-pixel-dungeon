@@ -228,8 +228,8 @@ public class GameScene extends PixelScene {
 		
 		emitters = new Group();
 		effects = new Group();
-		emoicons = new Group();
 		healthIndicators = new Group();
+		emoicons = new Group();
 		
 		mobs = new Group();
 		add( mobs );
@@ -274,17 +274,17 @@ public class GameScene extends PixelScene {
 		
 		statuses = new Group();
 		add( statuses );
-
+		
+		add( healthIndicators );
+		//always appears ontop of other health indicators
+		add( new TargetHealthIndicator() );
+		
 		add( emoicons );
 		
 		hero = new HeroSprite();
 		hero.place( Dungeon.hero.pos );
 		hero.updateArmor();
 		mobs.add( hero );
-		
-		add( healthIndicators );
-		//always appears ontop of other health indicators
-		add( new TargetHealthIndicator() );
 		
 		add( cellSelector = new CellSelector( tiles ) );
 

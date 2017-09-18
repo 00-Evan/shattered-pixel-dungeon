@@ -103,5 +103,24 @@ public class EmoIcon extends Image {
 			y = owner.y - height;
 		}
 	}
+	
+	public static class Lost extends EmoIcon {
+		
+		public Lost( CharSprite owner ){
+			super( owner );
+			
+			copy( Icons.get( Icons.LOST ) );
+			
+			maxSize = 1.25f;
+			timeScale = 1;
+			
+			origin.set( 2.5f, height - 2.5f );
+			scale.set( Random.Float( 1, maxSize ) );
+			
+			x = owner.x + owner.width - width / 2;
+			y = owner.y - height;
+		}
+		
+	}
 
 }

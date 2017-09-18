@@ -160,7 +160,11 @@ public abstract class Mob extends Char {
 		boolean justAlerted = alerted;
 		alerted = false;
 		
-		sprite.hideAlert();
+		if (justAlerted){
+			sprite.showAlert();
+		} else {
+			sprite.hideAlert();
+		}
 		
 		if (paralysed > 0) {
 			enemySeen = false;
@@ -517,7 +521,9 @@ public abstract class Mob extends Char {
 		if (state == SLEEPING) {
 			state = WANDERING;
 		}
-		alerted = true;
+		if (state != HUNTING) {
+			alerted = true;
+		}
 		
 		super.damage( dmg, src );
 	}
@@ -631,7 +637,6 @@ public abstract class Mob extends Char {
 
 	public interface AiState {
 		boolean act( boolean enemyInFOV, boolean justAlerted );
-		String status();
 	}
 
 	protected class Sleeping implements AiState {
@@ -667,11 +672,6 @@ public abstract class Mob extends Char {
 			}
 			return true;
 		}
-
-		@Override
-		public String status() {
-			return Messages.get(this, "status", name );
-		}
 	}
 
 	protected class Wandering implements AiState {
@@ -685,12 +685,14 @@ public abstract class Mob extends Char {
 				enemySeen = true;
 
 				notice();
+				alerted = true;
 				state = HUNTING;
 				target = enemy.pos;
 
 			} else {
 
 				enemySeen = false;
+				sprite.hideLost();
 
 				int oldPos = pos;
 				if (target != -1 && getCloser( target )) {
@@ -703,11 +705,6 @@ public abstract class Mob extends Char {
 
 			}
 			return true;
-		}
-
-		@Override
-		public String status() {
-			return Messages.get(this, "status", name );
 		}
 	}
 
@@ -737,16 +734,15 @@ public abstract class Mob extends Char {
 				} else {
 
 					spend( TICK );
-					state = WANDERING;
-					target = Dungeon.level.randomDestination();
+					
+					if (!enemyInFOV) {
+						sprite.showLost();
+						state = WANDERING;
+						target = Dungeon.level.randomDestination();
+					}
 					return true;
 				}
 			}
-		}
-
-		@Override
-		public String status() {
-			return Messages.get(this, "status", name );
 		}
 	}
 
@@ -781,11 +777,6 @@ public abstract class Mob extends Char {
 
 		protected void nowhereToRun() {
 		}
-
-		@Override
-		public String status() {
-			return Messages.get(this, "status", name );
-		}
 	}
 
 	protected class Passive implements AiState {
@@ -797,11 +788,6 @@ public abstract class Mob extends Char {
 			enemySeen = false;
 			spend( TICK );
 			return true;
-		}
-
-		@Override
-		public String status() {
-			return Messages.get(this, "status", name );
 		}
 	}
 }

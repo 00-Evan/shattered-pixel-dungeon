@@ -489,6 +489,25 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 	
+	public synchronized void showLost() {
+		if (emo instanceof EmoIcon.Lost) {
+		
+		} else {
+			if (emo != null) {
+				emo.killAndErase();
+			}
+			emo = new EmoIcon.Lost( this );
+			emo.visible = visible;
+		}
+	}
+	
+	public synchronized void hideLost() {
+		if (emo instanceof EmoIcon.Lost) {
+			emo.killAndErase();
+			emo = null;
+		}
+	}
+	
 	@Override
 	public void kill() {
 		super.kill();
