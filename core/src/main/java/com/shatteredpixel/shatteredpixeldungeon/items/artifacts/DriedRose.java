@@ -659,18 +659,12 @@ public class DriedRose extends Artifact {
 			}
 			super.destroy();
 		}
-
-		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-		static {
-			IMMUNITIES.add( ToxicGas.class );
-			IMMUNITIES.add( VenomGas.class );
-			IMMUNITIES.add( Burning.class );
-			IMMUNITIES.add( ScrollOfPsionicBlast.class );
-		}
-
-		@Override
-		public HashSet<Class<?>> immunities() {
-			return IMMUNITIES;
+		
+		{
+			immunities.add( ToxicGas.class );
+			immunities.add( VenomGas.class );
+			immunities.add( Burning.class );
+			immunities.add( ScrollOfPsionicBlast.class );
 		}
 		
 		private class Wandering extends Mob.Wandering {

@@ -41,10 +41,9 @@ public class RingOfElements extends Ring {
 		return new Resistance();
 	}
 
-	private static final HashSet<Class<?>> EMPTY = new HashSet<Class<?>>();
-	public static final HashSet<Class<?>> FULL;
+	private static final HashSet<Class> EMPTY = new HashSet<>();
+	public static final HashSet<Class> FULL = new HashSet<>();
 	static {
-		FULL = new HashSet<Class<?>>();
 		FULL.add( Burning.class );
 		FULL.add( ToxicGas.class );
 		FULL.add( Poison.class );
@@ -55,7 +54,7 @@ public class RingOfElements extends Ring {
 		FULL.add( Yog.BurningFist.class );
 	}
 	
-	public static HashSet<Class<?>> resistances( Char target ){
+	public static HashSet<Class> resistances( Char target ){
 		if (Random.Int( getBonus(target, Resistance.class) + 2 ) >= 2) {
 			return FULL;
 		} else {

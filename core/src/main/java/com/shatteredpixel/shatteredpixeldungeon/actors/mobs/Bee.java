@@ -146,14 +146,8 @@ public class Bee extends Mob {
 		return super.getCloser( target );
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Poison.class );
-		IMMUNITIES.add( Amok.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Poison.class );
+		immunities.add( Amok.class );
 	}
 }

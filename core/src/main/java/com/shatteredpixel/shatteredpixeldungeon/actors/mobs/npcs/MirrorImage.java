@@ -142,16 +142,10 @@ public class MirrorImage extends NPC {
 
 		return true;
 	}
-
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( ToxicGas.class );
-		IMMUNITIES.add( VenomGas.class );
-		IMMUNITIES.add( Burning.class );
-	}
-
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	
+	{
+		immunities.add( ToxicGas.class );
+		immunities.add( VenomGas.class );
+		immunities.add( Burning.class );
 	}
 }

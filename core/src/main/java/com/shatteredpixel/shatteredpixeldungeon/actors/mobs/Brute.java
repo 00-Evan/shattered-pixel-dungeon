@@ -31,8 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Brute extends Mob {
 	
 	{
@@ -86,13 +84,7 @@ public class Brute extends Mob {
 		}
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Terror.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Terror.class );
 	}
 }

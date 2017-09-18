@@ -37,8 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Statue extends Mob {
 	
 	{
@@ -155,22 +153,13 @@ public class Statue extends Mob {
 		return Messages.get(this, "desc", weapon.name());
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		RESISTANCES.add( ToxicGas.class );
-		RESISTANCES.add( Poison.class );
-		RESISTANCES.add( Grim.class );
-		IMMUNITIES.add( Vampiric.class );
+	{
+		resistances.add(ToxicGas.class);
+		resistances.add(Poison.class);
+		resistances.add(Grim.class);
 	}
 	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Vampiric.class );
 	}
 }

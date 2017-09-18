@@ -34,8 +34,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Wraith extends Mob {
 
 	private static final float SPAWN_DELAY	= 2f;
@@ -119,14 +117,8 @@ public class Wraith extends Mob {
 		}
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Grim.class );
-		IMMUNITIES.add( Terror.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Grim.class );
+		immunities.add( Terror.class );
 	}
 }

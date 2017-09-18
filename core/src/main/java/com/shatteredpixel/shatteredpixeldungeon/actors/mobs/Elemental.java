@@ -34,8 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Elemental extends Mob {
 
 	{
@@ -97,15 +95,9 @@ public class Elemental extends Mob {
 		}
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Burning.class );
-		IMMUNITIES.add( Blazing.class );
-		IMMUNITIES.add( WandOfFireblast.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Burning.class );
+		immunities.add( Blazing.class );
+		immunities.add( WandOfFireblast.class );
 	}
 }

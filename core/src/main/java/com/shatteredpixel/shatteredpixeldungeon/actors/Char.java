@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -459,25 +460,64 @@ public abstract class Char extends Actor {
 		next();
 	}
 	
-	private static final HashSet<Class<?>> EMPTY = new HashSet<>();
+	protected final HashSet<Class> resistances = new HashSet<>();
 	
-	public HashSet<Class<?>> resistances() {
-		return EMPTY;
+	public HashSet<Class> resistances() {
+		HashSet<Class> result = new HashSet<>(resistances);
+		for (Property p : properties()){
+			result.addAll(p.resistances());
+		}
+		for (Buff b : buffs()){
+			result.addAll(b.resistances());
+		}
+		result.addAll(RingOfElements.resistances( this ));
+		return result;
 	}
 	
-	public HashSet<Class<?>> immunities() {
-		return EMPTY;
+	protected final HashSet<Class> immunities = new HashSet<>();
+	
+	public HashSet<Class> immunities() {
+		HashSet<Class> result = new HashSet<>(immunities);
+		for (Property p : properties()){
+			result.addAll(p.immunities());
+		}
+		for (Buff b : buffs()){
+			result.addAll(b.immunities());
+		}
+		return result;
 	}
 
 	protected HashSet<Property> properties = new HashSet<>();
 
-	public HashSet<Property> properties() { return properties; }
+	public HashSet<Property> properties() {
+		return new HashSet<>(properties);
+	}
 
 	public enum Property{
 		BOSS,
 		MINIBOSS,
 		UNDEAD,
 		DEMONIC,
-		IMMOVABLE
+		IMMOVABLE;
+		
+		private HashSet<Class> resistances;
+		private HashSet<Class> immunities;
+		
+		Property(){
+			this(new HashSet<Class>(), new HashSet<Class>());
+		}
+		
+		Property( HashSet<Class> resistances, HashSet<Class> immunities){
+			this.resistances = resistances;
+			this.immunities = immunities;
+		}
+		
+		public HashSet<Class> resistances(){
+			return new HashSet<>(resistances);
+		}
+		
+		public HashSet<Class> immunities(){
+			return new HashSet<>(immunities);
+		}
 	}
 }

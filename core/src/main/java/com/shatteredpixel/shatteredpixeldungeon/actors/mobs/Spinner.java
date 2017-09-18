@@ -33,8 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpinnerSprite;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Spinner extends Mob {
 
 	{
@@ -97,26 +95,12 @@ public class Spinner extends Mob {
 		super.move(step);
 	}
 
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-
-	static {
-		RESISTANCES.add(Poison.class);
+	{
+		resistances.add(Poison.class);
 	}
-
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
-	}
-
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-
-	static {
-		IMMUNITIES.add(Roots.class);
-	}
-
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	
+	{
+		immunities.add(Roots.class);
 	}
 
 	private class Fleeing extends Mob.Fleeing {

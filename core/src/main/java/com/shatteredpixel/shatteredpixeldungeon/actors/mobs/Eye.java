@@ -41,8 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Eye extends Mob {
 	
 	{
@@ -221,26 +219,14 @@ public class Eye extends Mob {
 		beamCharged = bundle.getBoolean(BEAM_CHARGED);
 	}
 
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( WandOfDisintegration.class );
-		RESISTANCES.add( Grim.class );
-		RESISTANCES.add( Vampiric.class );
+	{
+		resistances.add( WandOfDisintegration.class );
+		resistances.add( Grim.class );
+		resistances.add( Vampiric.class );
 	}
 	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Terror.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Terror.class );
 	}
 
 	private class Hunting extends Mob.Hunting{

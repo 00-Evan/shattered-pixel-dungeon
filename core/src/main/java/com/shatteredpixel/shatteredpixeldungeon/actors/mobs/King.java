@@ -52,8 +52,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class King extends Mob {
 	
 	private static final int MAX_ARMY_SIZE	= 5;
@@ -229,29 +227,17 @@ public class King extends Mob {
 		yell( Messages.get(this, "notice") );
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( ToxicGas.class );
-		RESISTANCES.add( Grim.class );
-		RESISTANCES.add( ScrollOfPsionicBlast.class );
-		RESISTANCES.add( WandOfDisintegration.class );
+	{
+		resistances.add( ToxicGas.class );
+		resistances.add( Grim.class );
+		resistances.add( ScrollOfPsionicBlast.class );
+		resistances.add( WandOfDisintegration.class );
 	}
 	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Paralysis.class );
-		IMMUNITIES.add( Vertigo.class );
-		IMMUNITIES.add( Terror.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Paralysis.class );
+		immunities.add( Vertigo.class );
+		immunities.add( Terror.class );
 	}
 	
 	public static class Undead extends Mob {
@@ -325,15 +311,9 @@ public class King extends Mob {
 			return Random.NormalIntRange(0, 5);
 		}
 
-		private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-		static {
-			IMMUNITIES.add( Grim.class );
-			IMMUNITIES.add( Paralysis.class );
-		}
-		
-		@Override
-		public HashSet<Class<?>> immunities() {
-			return IMMUNITIES;
+		{
+			immunities.add( Grim.class );
+			immunities.add( Paralysis.class );
 		}
 	}
 }

@@ -35,8 +35,6 @@ import com.watabou.noosa.Camera;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Shaman extends Mob implements Callback {
 
 	private static final float TIME_TO_ZAP	= 1f;
@@ -122,13 +120,7 @@ public class Shaman extends Mob implements Callback {
 		next();
 	}
 
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( LightningTrap.Electricity.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	{
+		resistances.add( LightningTrap.Electricity.class );
 	}
 }

@@ -40,7 +40,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Succubus extends Mob {
 	
@@ -138,23 +137,11 @@ public class Succubus extends Mob {
 		return Random.NormalIntRange(0, 10);
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( Vampiric.class );
+	{
+		resistances.add( Vampiric.class );
 	}
 	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
-	}
-	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Sleep.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Sleep.class );
 	}
 }

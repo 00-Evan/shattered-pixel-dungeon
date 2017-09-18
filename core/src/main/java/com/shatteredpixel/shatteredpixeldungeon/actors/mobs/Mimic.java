@@ -41,7 +41,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 public class Mimic extends Mob {
@@ -167,13 +166,7 @@ public class Mimic extends Mob {
 		return m;
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( ScrollOfPsionicBlast.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( ScrollOfPsionicBlast.class );
 	}
 }

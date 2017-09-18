@@ -32,8 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotHeartSprite;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class RotHeart extends Mob {
 
 	{
@@ -113,16 +111,10 @@ public class RotHeart extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 5);
 	}
-
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( ToxicGas.class );
-		IMMUNITIES.add( Terror.class );
-	}
-
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	
+	{
+		immunities.add( ToxicGas.class );
+		immunities.add( Terror.class );
 	}
 
 }

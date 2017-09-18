@@ -125,7 +125,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 
 public class Hero extends Char {
 
@@ -1591,21 +1590,6 @@ public class Hero extends Char {
 		belongings.resurrect( resetLevel );
 
 		live();
-	}
-	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RingOfElements.resistances( this );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		HashSet<Class<?>> immunities = new HashSet<Class<?>>();
-		for (Buff buff : buffs()){
-			for (Class<?> immunity : buff.immunities)
-				immunities.add(immunity);
-		}
-		return immunities;
 	}
 
 	@Override

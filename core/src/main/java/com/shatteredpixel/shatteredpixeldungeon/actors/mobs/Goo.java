@@ -51,8 +51,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Goo extends Mob {
 
 	{
@@ -273,15 +271,9 @@ public class Goo extends Mob {
 
 	}
 	
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( ToxicGas.class );
-		RESISTANCES.add( Grim.class );
-		RESISTANCES.add( ScrollOfPsionicBlast.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	{
+		resistances.add( ToxicGas.class );
+		resistances.add( Grim.class );
+		resistances.add( ScrollOfPsionicBlast.class );
 	}
 }

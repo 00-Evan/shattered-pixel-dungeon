@@ -37,8 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Warlock extends Mob implements Callback {
 	
 	private static final float TIME_TO_ZAP	= 1f;
@@ -144,13 +142,7 @@ public class Warlock extends Mob implements Callback {
 		return loot;
 	}
 
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
-	static {
-		RESISTANCES.add( Grim.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
+	{
+		resistances.add( Grim.class );
 	}
 }

@@ -38,8 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PoolRoom;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PiranhaSprite;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Piranha extends Mob {
 	
 	{
@@ -131,19 +129,13 @@ public class Piranha extends Mob {
 		}
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Burning.class );
-		IMMUNITIES.add( Paralysis.class );
-		IMMUNITIES.add( ToxicGas.class );
-		IMMUNITIES.add( VenomGas.class );
-		IMMUNITIES.add( Roots.class );
-		IMMUNITIES.add( Frost.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Burning.class );
+		immunities.add( Paralysis.class );
+		immunities.add( ToxicGas.class );
+		immunities.add( VenomGas.class );
+		immunities.add( Roots.class );
+		immunities.add( Frost.class );
 	}
 	
 	private class Hunting extends Mob.Hunting{

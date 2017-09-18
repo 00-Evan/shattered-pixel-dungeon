@@ -36,8 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import java.util.HashSet;
-
 public class Monk extends Mob {
 	
 	{
@@ -109,15 +107,9 @@ public class Monk extends Mob {
 		return damage;
 	}
 	
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
-	static {
-		IMMUNITIES.add( Amok.class );
-		IMMUNITIES.add( Terror.class );
-	}
-	
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
+	{
+		immunities.add( Amok.class );
+		immunities.add( Terror.class );
 	}
 
 	private static String DISARMHITS = "hitsToDisarm";
