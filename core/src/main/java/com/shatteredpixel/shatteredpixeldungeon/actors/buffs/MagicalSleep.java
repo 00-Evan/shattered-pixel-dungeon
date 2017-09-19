@@ -57,6 +57,10 @@ public class MagicalSleep extends Buff {
 
 	@Override
 	public boolean act(){
+		if (target instanceof Mob && ((Mob) target).state != ((Mob) target).SLEEPING){
+			detach();
+			return true;
+		}
 		if (target instanceof Hero) {
 			target.HP = Math.min(target.HP+1, target.HT);
 			((Hero) target).resting = true;
