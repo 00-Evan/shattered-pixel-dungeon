@@ -26,6 +26,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.tweeners.AlphaTweener;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 
@@ -83,10 +84,10 @@ public abstract class DungeonTilemap extends Tilemap {
 		PointF p = camera().screenToCamera( x, y ).
 			offset( this.point().negate() ).
 			invScale( SIZE );
-		if (p.x < 0 || p.x >= Dungeon.level.width()
-				|| p.y < 0
-				|| p.y >= Dungeon.level.height())
-			return -1;
+		
+		//snap to the edges of the tilemap
+		p.x = GameMath.gate(0, p.x, Dungeon.level.width()-0.001f);
+		p.y = GameMath.gate(0, p.y, Dungeon.level.height()-0.001f);
 
 		int cell = (int)p.x + (int)p.y * Dungeon.level.width();
 
