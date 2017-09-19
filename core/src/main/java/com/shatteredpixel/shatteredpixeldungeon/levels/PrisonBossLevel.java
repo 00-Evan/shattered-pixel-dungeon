@@ -287,7 +287,7 @@ public class PrisonBossLevel extends Level {
 
 				for (Mob m : mobs){
 					//bring the first ally with you
-					if (m.ally){
+					if (m.alignment == Char.Alignment.ALLY){
 						m.pos = 5 + 25 * 32; //they should immediately walk out of the door
 						m.sprite.place(m.pos);
 						break;
@@ -340,7 +340,7 @@ public class PrisonBossLevel extends Level {
 				
 				//if any allies are left over, move them along the same way as the hero
 				for (Mob m : mobs){
-					if (m.ally) {
+					if (m.alignment == Char.Alignment.ALLY) {
 						m.pos += 9 + 3 * 32;
 						m.sprite().place(m.pos);
 					}
@@ -386,7 +386,7 @@ public class PrisonBossLevel extends Level {
 				//remove all mobs, but preserve allies
 				ArrayList<Mob> allies = new ArrayList<>();
 				for(Mob m : mobs.toArray(new Mob[0])){
-					if (m.ally){
+					if (m.alignment == Char.Alignment.ALLY){
 						allies.add(m);
 						mobs.remove(m);
 					}

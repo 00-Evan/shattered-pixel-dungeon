@@ -62,6 +62,8 @@ public abstract class Mob extends Char {
 	{
 		name = Messages.get(this, "name");
 		actPriority = 2; //hero gets priority over mobs.
+		
+		alignment = Alignment.ENEMY;
 	}
 	
 	private static final String	TXT_DIED	= "You hear something died in the distance";
@@ -91,9 +93,6 @@ public abstract class Mob extends Char {
 	protected boolean alerted = false;
 
 	protected static final float TIME_TO_WAKE_UP = 1f;
-	
-	public boolean hostile = true;
-	public boolean ally = false;
 	
 	private static final String STATE	= "state";
 	private static final String SEEN	= "seen";
@@ -194,8 +193,8 @@ public abstract class Mob extends Char {
 		//we have no enemy, or the current one is dead
 		if ( enemy == null || !enemy.isAlive() || state == WANDERING)
 			newEnemy = true;
-		//We are corrupted, and current enemy is either the hero or another corrupted character.
-		else if (buff(Corruption.class) != null && (enemy == Dungeon.hero || enemy.buff(Corruption.class) != null))
+		//We are an ally, and current enemy is another ally.
+		else if (alignment == Alignment.ALLY && enemy.alignment == Alignment.ALLY)
 			newEnemy = true;
 		//We are amoked and current enemy is the hero
 		else if (buff( Amok.class ) != null && enemy == Dungeon.hero)
@@ -205,47 +204,55 @@ public abstract class Mob extends Char {
 
 			HashSet<Char> enemies = new HashSet<>();
 
-			//if the mob is corrupted...
-			if ( buff(Corruption.class) != null) {
-
-				//look for enemy mobs to attack, which are also not corrupted
-				for (Mob mob : Dungeon.level.mobs)
-					if (mob != this && fieldOfView[mob.pos] && mob.hostile && mob.buff(Corruption.class) == null)
-						enemies.add(mob);
-				if (enemies.size() > 0) return Random.element(enemies);
-
-				//otherwise go for nothing
-				return null;
-
 			//if the mob is amoked...
-			} else if ( buff(Amok.class) != null) {
-
+			if ( buff(Amok.class) != null) {
 				//try to find an enemy mob to attack first.
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob != this && fieldOfView[mob.pos] && mob.hostile)
+					if (mob.alignment == Alignment.ENEMY && mob != this && fieldOfView[mob.pos])
 							enemies.add(mob);
-				if (enemies.size() > 0) return Random.element(enemies);
-
-				//try to find ally mobs to attack second.
-				for (Mob mob : Dungeon.level.mobs)
-					if (mob != this && fieldOfView[mob.pos] && mob.ally)
-						enemies.add(mob);
-				if (enemies.size() > 0) return Random.element(enemies);
-
-				//if there is nothing, go for the hero
-				else return Dungeon.hero;
-
-			} else {
-
-				//try to find ally mobs to attack.
-				for (Mob mob : Dungeon.level.mobs)
-					if (mob != this && fieldOfView[mob.pos] && mob.ally)
-						enemies.add(mob);
-
-				//and add the hero to the list of targets.
-				enemies.add(Dungeon.hero);
 				
-				//go after the closest enemy, preferring the hero if two are equidistant
+				if (enemies.isEmpty()) {
+					//try to find ally mobs to attack second.
+					for (Mob mob : Dungeon.level.mobs)
+						if (mob.alignment == Alignment.ALLY && mob != this && fieldOfView[mob.pos])
+							enemies.add(mob);
+					
+					if (enemies.isEmpty()) {
+						//try to find the hero third
+						if (fieldOfView[Dungeon.hero.pos]) {
+							enemies.add(Dungeon.hero);
+						}
+					}
+				}
+				
+			//if the mob is an ally...
+			} else if ( alignment == Alignment.ALLY ) {
+				//look for hostile mobs that are not passive to attack
+				for (Mob mob : Dungeon.level.mobs)
+					if (mob.alignment == Alignment.ENEMY
+							&& fieldOfView[mob.pos]
+							&& mob.state != mob.PASSIVE)
+						enemies.add(mob);
+				
+			//if the mob is an enemy...
+			} else if (alignment == Alignment.ENEMY) {
+				//look for ally mobs to attack
+				for (Mob mob : Dungeon.level.mobs)
+					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos])
+						enemies.add(mob);
+
+				//and look for the hero
+				if (fieldOfView[Dungeon.hero.pos]) {
+					enemies.add(Dungeon.hero);
+				}
+				
+			}
+			
+			//neutral character in particular do not choose enemies.
+			if (enemies.isEmpty()){
+				return null;
+			} else {
+				//go after the closest potential enemy, preferring the hero if two are equidistant
 				Char closest = null;
 				for (Char curr : enemies){
 					if (closest == null
@@ -255,7 +262,6 @@ public abstract class Mob extends Char {
 					}
 				}
 				return closest;
-
 			}
 
 		} else
@@ -538,7 +544,7 @@ public abstract class Mob extends Char {
 		
 		if (Dungeon.hero.isAlive()) {
 			
-			if (hostile) {
+			if (alignment == Alignment.ENEMY) {
 				Statistics.enemiesSlain++;
 				Badges.validateMonstersSlain();
 				Statistics.qualifiedForNoKilling = false;
@@ -566,7 +572,7 @@ public abstract class Mob extends Char {
 				Dungeon.level.drop( loot , pos ).sprite.drop();
 		}
 		
-		if (hostile && Dungeon.hero.lvl <= maxLvl + 2){
+		if (alignment == Alignment.ENEMY && Dungeon.hero.lvl <= maxLvl + 2){
 			int rolls = 1;
 			if (properties.contains(Property.BOSS))             rolls = 15;
 			else if (properties.contains(Property.MINIBOSS))    rolls = 5;
@@ -723,18 +729,20 @@ public abstract class Mob extends Char {
 
 				if (enemyInFOV) {
 					target = enemy.pos;
+				} else if (enemy == null) {
+					state = WANDERING;
+					target = Dungeon.level.randomDestination();
+					return true;
 				}
-
+				
 				int oldPos = pos;
 				if (target != -1 && getCloser( target )) {
-
+					
 					spend( 1 / speed() );
 					return moveSprite( oldPos,  pos );
 
 				} else {
-
 					spend( TICK );
-					
 					if (!enemyInFOV) {
 						sprite.showLost();
 						state = WANDERING;

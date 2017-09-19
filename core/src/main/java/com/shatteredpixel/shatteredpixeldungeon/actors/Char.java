@@ -77,6 +77,14 @@ public abstract class Char extends Actor {
 	public boolean flying		= false;
 	public int invisible		= 0;
 	
+	//these are relative to the hero
+	public enum Alignment{
+		ENEMY,
+		NEUTRAL,
+		ALLY
+	}
+	public Alignment alignment;
+	
 	public int viewDistance	= 8;
 	
 	protected boolean[] fieldOfView = null;

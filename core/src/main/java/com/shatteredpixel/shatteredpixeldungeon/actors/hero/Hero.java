@@ -131,6 +131,8 @@ public class Hero extends Char {
 
 	{
 		actPriority = 0; //acts at priority 0, baseline for the rest of behaviour.
+		
+		alignment = Alignment.ALLY;
 	}
 	
 	public static final int MAX_LEVEL = 30;
@@ -988,7 +990,7 @@ public class Hero extends Char {
 
 		Mob target = null;
 		for (Mob m : Dungeon.level.mobs) {
-			if (fieldOfView[ m.pos ] && m.hostile) {
+			if (fieldOfView[ m.pos ] && m.alignment == Alignment.ENEMY) {
 				visible.add(m);
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;

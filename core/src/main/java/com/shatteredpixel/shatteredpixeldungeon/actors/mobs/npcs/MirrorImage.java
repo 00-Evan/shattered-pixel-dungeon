@@ -27,18 +27,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
 import com.watabou.utils.Bundle;
-
-import java.util.HashSet;
 
 public class MirrorImage extends NPC {
 	
 	{
 		spriteClass = MirrorSprite.class;
 		
+		alignment = Alignment.ALLY;
 		state = HUNTING;
 	}
 	
@@ -91,32 +89,6 @@ public class MirrorImage extends NPC {
 		sprite.die();
 		
 		return damage;
-	}
-	
-	protected Char chooseEnemy() {
-		
-		if (enemy == null || !enemy.isAlive()) {
-			HashSet<Mob> enemies = new HashSet<>();
-			for (Mob mob : Dungeon.level.mobs) {
-				if (mob.hostile
-						&& fieldOfView[mob.pos]
-						&& mob.state != mob.PASSIVE) {
-					enemies.add(mob);
-				}
-			}
-			
-			//go for closest enemy
-			Char closest = null;
-			for (Char curr : enemies){
-				if (closest == null
-						|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)){
-					closest = curr;
-				}
-			}
-			return closest;
-		}
-		
-		return enemy;
 	}
 	
 	@Override

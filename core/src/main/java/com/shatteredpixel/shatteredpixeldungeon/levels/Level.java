@@ -503,7 +503,7 @@ public abstract class Level implements Bundlable {
 			protected boolean act() {
 				int count = 0;
 				for (Mob mob : mobs.toArray(new Mob[0])){
-					if (mob.hostile) count++;
+					if (mob.alignment == Char.Alignment.ENEMY) count++;
 				}
 				
 				if (count < nMobs()) {

@@ -378,13 +378,11 @@ public class DriedRose extends Artifact {
 
 			flying = true;
 
-			ally = true;
+			alignment = Alignment.ALLY;
 			
 			WANDERING = new Wandering();
-			HUNTING = new Hunting();
 			
-			state = WANDERING;
-			enemy = null;
+			state = HUNTING;
 			
 			//after hero, but before mobs
 			actPriority = 1;
@@ -470,11 +468,12 @@ public class DriedRose extends Artifact {
 					|| !enemy.isAlive()
 					|| !Dungeon.level.mobs.contains(enemy)
 					|| Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) > 8
+					|| enemy.alignment != Alignment.ENEMY
 					|| state == WANDERING) {
 				
 				HashSet<Mob> enemies = new HashSet<>();
 				for (Mob mob : Dungeon.level.mobs) {
-					if (mob.hostile
+					if (mob.alignment == Alignment.ENEMY
 							&& fieldOfView[mob.pos]
 							&& Dungeon.level.distance(mob.pos, Dungeon.hero.pos) <= 8
 							&& mob.state != mob.PASSIVE) {
@@ -676,12 +675,14 @@ public class DriedRose extends Artifact {
 					enemySeen = true;
 					
 					notice();
+					alerted = true;
 					state = HUNTING;
 					target = enemy.pos;
 					
 				} else {
 					
 					enemySeen = false;
+					sprite.hideLost();
 					
 					int oldPos = pos;
 					//always move towards the hero when wandering
@@ -698,40 +699,6 @@ public class DriedRose extends Artifact {
 					
 				}
 				return true;
-			}
-			
-		}
-		
-		private class Hunting extends Mob.Hunting {
-			
-			@Override
-			public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-				
-				enemySeen = enemyInFOV;
-				if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
-					
-					return doAttack( enemy );
-					
-				} else {
-					
-					if (enemyInFOV) {
-						target = enemy.pos;
-					}
-					
-					int oldPos = pos;
-					if (enemyInFOV && getCloser( target )) {
-						
-						spend( 1 / speed() );
-						return moveSprite( oldPos,  pos );
-						
-					} else {
-						
-						//don't lose a turn due to the transition, immediately act instead
-						state = WANDERING;
-						return state.act( false, justAlerted );
-						
-					}
-				}
 			}
 			
 		}

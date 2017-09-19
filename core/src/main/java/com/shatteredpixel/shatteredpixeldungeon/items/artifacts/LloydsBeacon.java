@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -118,7 +117,7 @@ public class LloydsBeacon extends Artifact {
 			
 			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 				Char ch = Actor.findChar(hero.pos + PathFinder.NEIGHBOURS8[i]);
-				if (ch != null && !(ch instanceof Mob && !((Mob) ch).hostile)) {
+				if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
 					GLog.w( Messages.get(this, "creatures") );
 					return;
 				}
