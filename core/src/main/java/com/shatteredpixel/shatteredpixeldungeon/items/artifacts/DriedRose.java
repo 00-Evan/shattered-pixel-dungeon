@@ -682,7 +682,6 @@ public class DriedRose extends Artifact {
 				} else {
 					
 					enemySeen = false;
-					sprite.hideLost();
 					
 					int oldPos = pos;
 					//always move towards the hero when wandering

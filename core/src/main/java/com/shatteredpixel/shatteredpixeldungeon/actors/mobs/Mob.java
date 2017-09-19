@@ -163,6 +163,7 @@ public abstract class Mob extends Char {
 			sprite.showAlert();
 		} else {
 			sprite.hideAlert();
+			sprite.hideLost();
 		}
 		
 		if (paralysed > 0) {
@@ -698,7 +699,6 @@ public abstract class Mob extends Char {
 			} else {
 
 				enemySeen = false;
-				sprite.hideLost();
 
 				int oldPos = pos;
 				if (target != -1 && getCloser( target )) {
