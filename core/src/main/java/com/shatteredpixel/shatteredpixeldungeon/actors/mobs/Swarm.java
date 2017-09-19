@@ -86,11 +86,11 @@ public class Swarm extends Mob {
 
 		if (HP >= damage + 2) {
 			ArrayList<Integer> candidates = new ArrayList<>();
-			boolean[] passable = Dungeon.level.passable;
+			boolean[] solid = Dungeon.level.solid;
 			
 			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
 			for (int n : neighbours) {
-				if (passable[n] && Actor.findChar( n ) == null) {
+				if (!solid[n] && Actor.findChar( n ) == null) {
 					candidates.add( n );
 				}
 			}
