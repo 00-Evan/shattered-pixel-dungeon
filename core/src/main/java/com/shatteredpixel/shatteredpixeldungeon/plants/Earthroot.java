@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
@@ -32,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 public class Earthroot extends Plant {
@@ -111,6 +113,11 @@ public class Earthroot extends Plant {
 		@Override
 		public int icon() {
 			return BuffIndicator.ARMOR;
+		}
+		
+		@Override
+		public void tintIcon(Image icon) {
+			FlavourBuff.greyIcon(icon, target.HT/4f, level);
 		}
 		
 		@Override

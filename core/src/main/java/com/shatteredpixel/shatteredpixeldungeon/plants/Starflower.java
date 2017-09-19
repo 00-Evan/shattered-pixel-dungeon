@@ -40,7 +40,7 @@ public class Starflower extends Plant {
 	public void activate() {
 		Char ch = Actor.findChar(pos);
 
-		if (ch != null) Buff.prolong(ch, Bless.class, 30f);
+		if (ch != null) Buff.prolong(ch, Bless.class, Bless.DURATION);
 
 		if (Random.Int(5) == 0){
 			Dungeon.level.drop(new Seed(), pos).sprite.drop();

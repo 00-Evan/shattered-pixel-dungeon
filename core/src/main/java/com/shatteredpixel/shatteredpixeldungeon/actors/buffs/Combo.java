@@ -59,12 +59,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		if (count >= 10)    icon.hardlight(1f, 0f, 0f);
-		else if (count >= 8)icon.hardlight(1f, 0.8f, 0f);
-		else if (count >= 6)icon.hardlight(1f, 1f, 0f);
-		else if (count >= 4)icon.hardlight(0.8f, 1f, 0f);
-		else if (count >= 2)icon.hardlight(0f, 1f, 0f);
-		else                icon.resetColor();
+		if (comboTime >= 3f){
+			icon.resetColor();
+		} else {
+			icon.tint(0xb3b3b3, 0.5f + 0.5f*(3f + 1 - comboTime)/3f);
+		}
 	}
 	
 	@Override
@@ -108,6 +107,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	public boolean act() {
 		comboTime-=TICK;
 		spend(TICK);
+		BuffIndicator.refreshHero();
 		if (comboTime <= 0) {
 			detach();
 		}

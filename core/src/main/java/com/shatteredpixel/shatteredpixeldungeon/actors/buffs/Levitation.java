@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 public class Levitation extends FlavourBuff {
 
@@ -53,7 +54,12 @@ public class Levitation extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.LEVITATION;
 	}
-
+	
+	@Override
+	public void tintIcon(Image icon) {
+		greyIcon(icon, 5f, cooldown());
+	}
+	
 	@Override
 	public void fx(boolean on) {
 		if (on) target.sprite.add(CharSprite.State.LEVITATING);

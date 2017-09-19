@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 public class Recharging extends FlavourBuff {
 
@@ -30,7 +31,12 @@ public class Recharging extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.RECHARGING;
 	}
-
+	
+	@Override
+	public void tintIcon(Image icon) {
+		FlavourBuff.greyIcon(icon, 5f, cooldown());
+	}
+	
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");

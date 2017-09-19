@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 public class Invisibility extends FlavourBuff {
 
@@ -62,6 +63,11 @@ public class Invisibility extends FlavourBuff {
 	@Override
 	public int icon() {
 		return BuffIndicator.INVISIBLE;
+	}
+	
+	@Override
+	public void tintIcon(Image icon) {
+		greyIcon(icon, 5f, cooldown());
 	}
 
 	@Override

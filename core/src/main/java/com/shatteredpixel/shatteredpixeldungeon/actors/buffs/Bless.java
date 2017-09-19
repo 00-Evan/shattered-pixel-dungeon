@@ -23,9 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 public class Bless extends FlavourBuff {
-
+	
+	public static final float DURATION	= 30f;
+	
 	{
 		type = buffType.POSITIVE;
 	}
@@ -33,6 +36,11 @@ public class Bless extends FlavourBuff {
 	@Override
 	public int icon() {
 		return BuffIndicator.BLESS;
+	}
+	
+	@Override
+	public void tintIcon(Image icon) {
+		greyIcon(icon, 5f, cooldown());
 	}
 
 	@Override

@@ -28,14 +28,20 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 public class GasesImmunity extends FlavourBuff {
 	
-	public static final float DURATION	= 15f;
+	public static final float DURATION	= 20f;
 	
 	@Override
 	public int icon() {
 		return BuffIndicator.IMMUNITY;
+	}
+	
+	@Override
+	public void tintIcon(Image icon) {
+		greyIcon(icon, 5f, cooldown());
 	}
 	
 	@Override
