@@ -61,6 +61,7 @@ public class Fadeleaf extends Plant {
 			if (newPos != -1 && !Dungeon.bossLevel()) {
 			
 				ch.pos = newPos;
+				if (((Mob) ch).state == ((Mob) ch).HUNTING) ((Mob) ch).state = ((Mob) ch).WANDERING;
 				ch.sprite.place( ch.pos );
 				ch.sprite.visible = Dungeon.level.heroFOV[ch.pos];
 				

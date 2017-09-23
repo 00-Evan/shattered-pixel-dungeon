@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
@@ -231,6 +232,9 @@ public class LloydsBeacon extends Artifact {
 										} else  {
 
 											ch.pos = pos;
+											if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).HUNTING){
+												((Mob) ch).state = ((Mob) ch).WANDERING;
+											}
 											ch.sprite.place(ch.pos);
 											ch.sprite.visible = Dungeon.level.heroFOV[pos];
 

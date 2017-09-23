@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -53,6 +54,9 @@ public class Displacing extends Weapon.Enchantment {
 				}
 
 				defender.pos = newPos;
+				if (defender instanceof Mob && ((Mob) defender).state == ((Mob) defender).HUNTING){
+					((Mob) defender).state = ((Mob) defender).WANDERING;
+				}
 				defender.sprite.place( defender.pos );
 				defender.sprite.visible = Dungeon.level.heroFOV[defender.pos];
 
