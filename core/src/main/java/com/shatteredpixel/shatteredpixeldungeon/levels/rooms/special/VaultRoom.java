@@ -33,6 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class VaultRoom extends SpecialRoom {
 
 	public void paint( Level level ) {
@@ -44,6 +47,8 @@ public class VaultRoom extends SpecialRoom {
 		int cx = (left + right) / 2;
 		int cy = (top + bottom) / 2;
 		int c = cx + cy * level.width();
+		
+		Random.shuffle(prizeClasses);
 		
 		switch (Random.Int( 3 )) {
 		
@@ -73,11 +78,12 @@ public class VaultRoom extends SpecialRoom {
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
 	}
 	
-	private static Item prize( Level level ) {
-		return Generator.random( Random.oneOf(
-			Generator.Category.WAND,
-			Generator.Category.RING,
-			Generator.Category.ARTIFACT
-		) );
+	private Item prize( Level level ) {
+		return Generator.random( prizeClasses.remove(0) );
 	}
+	
+	private ArrayList<Generator.Category> prizeClasses = new ArrayList<>(
+			Arrays.asList(Generator.Category.WAND,
+					Generator.Category.RING,
+					Generator.Category.ARTIFACT));
 }
