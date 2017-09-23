@@ -352,8 +352,26 @@ public class ItemSpriteSheet {
 		for (int i = SCROLLS; i < SCROLLS+16; i++)
 			assignItemRect(i, 15, 14);
 	}
+	
+	private static final int STONES        =                                xy(1, 21);  //16 slots
+	public static final int STONE_KAUNAN   = STONES+0;
+	public static final int STONE_SOWILO   = STONES+1;
+	public static final int STONE_LAGUZ    = STONES+2;
+	public static final int STONE_YNGVI    = STONES+3;
+	public static final int STONE_GYFU     = STONES+4;
+	public static final int STONE_RAIDO    = STONES+5;
+	public static final int STONE_ISAZ     = STONES+6;
+	public static final int STONE_MANNAZ   = STONES+7;
+	public static final int STONE_NAUDIZ   = STONES+8;
+	public static final int STONE_BERKANAN = STONES+9;
+	public static final int STONE_ODAL     = STONES+10;
+	public static final int STONE_TIWAZ    = STONES+11;
+	static {
+		for (int i = STONES; i < STONES+16; i++)
+			assignItemRect(i, 11, 11);
+	}
 
-	private static final int POTIONS        =                               xy(1, 21);  //16 slots
+	private static final int POTIONS        =                               xy(1, 22);  //16 slots
 	public static final int POTION_CRIMSON  = POTIONS+0;
 	public static final int POTION_AMBER    = POTIONS+1;
 	public static final int POTION_GOLDEN   = POTIONS+2;
@@ -371,7 +389,7 @@ public class ItemSpriteSheet {
 			assignItemRect(i, 10, 14);
 	}
 
-	private static final int SEEDS          =                               xy(1, 22);  //16 slots
+	private static final int SEEDS          =                               xy(1, 23);  //16 slots
 	public static final int SEED_ROTBERRY   = SEEDS+0;
 	public static final int SEED_FIREBLOOM  = SEEDS+1;
 	public static final int SEED_STARFLOWER = SEEDS+2;
@@ -389,7 +407,7 @@ public class ItemSpriteSheet {
 			assignItemRect(i, 10, 10);
 	}
 
-	                                                                                    //32 free slots
+	                                                                                    //16 free slots
 
 	private static final int FOOD       =                                   xy(1, 25);  //16 slots
 	public static final int MEAT        = FOOD+0;

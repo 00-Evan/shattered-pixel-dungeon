@@ -64,6 +64,7 @@ import com.watabou.noosa.audio.Sample;
 
 public class WndBag extends WndTabbed {
 	
+	//FIXME this is getting cumbersome, there should be a better way to manage this
 	public static enum Mode {
 		ALL,
 		UNIDENTIFED,
@@ -79,6 +80,7 @@ public class WndBag extends WndTabbed {
 		FOOD,
 		POTION,
 		SCROLL,
+		UNIDED_POTION_OR_SCROLL,
 		EQUIPMENT,
 		ALCHEMY
 	}
@@ -402,6 +404,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.FOOD && (item instanceof Food) ||
 						mode == Mode.POTION && (item instanceof Potion) ||
 						mode == Mode.SCROLL && (item instanceof Scroll) ||
+						mode == Mode.UNIDED_POTION_OR_SCROLL && (!item.isIdentified() && (item instanceof Scroll || item instanceof Potion)) ||
 						mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
 						mode == Mode.ALCHEMY && ((item instanceof Seed && !(item instanceof BlandfruitBush.Seed)) || (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null)) ||
 						mode == Mode.ALL
