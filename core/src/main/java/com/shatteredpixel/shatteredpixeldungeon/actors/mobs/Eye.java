@@ -102,6 +102,9 @@ public class Eye extends Mob {
 
 	@Override
 	protected boolean act() {
+		if (beamCharged && state != HUNTING){
+			beamCharged = false;
+		}
 		if (beam == null && beamTarget != -1) {
 			beam = new Ballistica(pos, beamTarget, Ballistica.STOP_TERRAIN);
 			sprite.turnTo(pos, beamTarget);
@@ -109,12 +112,6 @@ public class Eye extends Mob {
 		if (beamCooldown > 0)
 			beamCooldown--;
 		return super.act();
-	}
-
-	@Override
-	protected Char chooseEnemy() {
-		if (beamCharged && enemy != null) return enemy;
-		return super.chooseEnemy();
 	}
 
 	@Override
