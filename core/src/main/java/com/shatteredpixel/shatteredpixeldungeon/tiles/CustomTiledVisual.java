@@ -64,6 +64,7 @@ public abstract class CustomTiledVisual extends Tilemap implements Bundlable {
 	}
 
 	public CustomTiledVisual create(){
+		camera = null;
 		x = tileX*SIZE;
 		y = tileY*SIZE;
 		return this;
