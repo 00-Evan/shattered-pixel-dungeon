@@ -29,7 +29,7 @@ public class Flail extends MeleeWeapon {
 		image = ItemSpriteSheet.FLAIL;
 
 		tier = 4;
-		DLY = 1.25f; //0.8x speed
+		ACC = 0.8f; //0.8x accuracy
 		//also cannot surprise attack, see Hero.canSurpriseAttack
 	}
 

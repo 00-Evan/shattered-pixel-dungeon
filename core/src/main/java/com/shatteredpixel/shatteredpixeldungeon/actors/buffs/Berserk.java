@@ -39,7 +39,7 @@ public class Berserk extends Buff {
 	}
 	private State state = State.NORMAL;
 
-	private static final int EXHAUSTION_START = 40;
+	private static final int EXHAUSTION_START = 60;
 	private int exhaustion;
 
 	private static final float LEVEL_RECOVER_START = 3f;
@@ -95,11 +95,13 @@ public class Berserk extends Buff {
 	public int damageFactor(int dmg){
 		float bonus;
 
-		if (state == State.EXHAUSTED) {
-			bonus = (50 - exhaustion) / 50f;
+		if (state == State.BERSERK){
+			bonus = 2f;
+		} else if (state == State.EXHAUSTED) {
+			bonus = 1f - ((float)Math.sqrt(exhaustion) / 10f);
 		} else {
 			float percentMissing = 1f - target.HP/(float)target.HT;
-			bonus = 1f + (float)Math.pow(percentMissing, 3);
+			bonus = 1f + (0.5f * (float)Math.pow(percentMissing, 2));
 		}
 
 		return Math.round(dmg * bonus);
@@ -175,7 +177,7 @@ public class Berserk extends Buff {
 
 	@Override
 	public String desc() {
-		float dispDamage = damageFactor(10000)/100f;
+		float dispDamage = damageFactor(100);
 		switch (state){
 			case NORMAL: default:
 				return Messages.get(this, "angered_desc", dispDamage);
