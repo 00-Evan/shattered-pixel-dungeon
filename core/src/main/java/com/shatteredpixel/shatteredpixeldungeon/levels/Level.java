@@ -722,7 +722,7 @@ public abstract class Level implements Bundlable {
 			flamable[pos] = true;
 		}
 		
-		plant = seed.couch( pos );
+		plant = seed.couch( pos, this );
 		plants.put( pos, plant );
 		
 		GameScene.plantSeed( pos );

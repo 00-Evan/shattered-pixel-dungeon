@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.audio.Sample;
@@ -166,9 +167,9 @@ public abstract class Plant implements Bundlable {
 			}
 		}
 		
-		public Plant couch( int pos ) {
+		public Plant couch( int pos, Level level ) {
 			try {
-				if (Dungeon.level.heroFOV != null && Dungeon.level.heroFOV[pos]) {
+				if (level.heroFOV != null && level.heroFOV[pos]) {
 					Sample.INSTANCE.play(Assets.SND_PLANT);
 				}
 				Plant plant = plantClass.newInstance();
