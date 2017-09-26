@@ -32,8 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -94,17 +92,13 @@ public class CursingTrap extends Trap {
 		}
 
 		KindofMisc misc1 = hero.belongings.misc1;
-		if (misc1 instanceof Artifact){
+		if (misc1 != null){
 			priorityCurse.add(misc1);
-		} else if (misc1 instanceof Ring){
-			canCurse.add(misc1);
 		}
 
 		KindofMisc misc2 = hero.belongings.misc2;
-		if (misc2 instanceof Artifact){
+		if (misc2 != null){
 			priorityCurse.add(misc2);
-		} else if (misc2 instanceof Ring){
-			canCurse.add(misc2);
 		}
 
 		Collections.shuffle(priorityCurse);

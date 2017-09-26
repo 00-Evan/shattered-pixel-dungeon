@@ -208,6 +208,12 @@ public class MagesStaff extends MeleeWeapon {
 
 		return this;
 	}
+	
+	public void gainCharge( float amt ){
+		if (wand != null){
+			wand.gainCharge(amt);
+		}
+	}
 
 	public Class<?extends Wand> wandClass(){
 		return wand != null ? wand.getClass() : null;

@@ -23,15 +23,12 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder;
 
 public class ChillingTrap extends Trap{
 
@@ -46,17 +43,10 @@ public class ChillingTrap extends Trap{
 			Splash.at( pos, 0xFFB2D6FF, 5);
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
-
-		Heap heap = Dungeon.level.heaps.get( pos );
-		if (heap != null) heap.freeze();
-
-		Char ch = Actor.findChar( pos );
-		if (ch != null){
-			Chill.prolong(ch, Chill.class, 5f + Random.Int(Dungeon.depth));
-			ch.damage(Random.NormalIntRange(1 , Dungeon.depth), this);
-			if (!ch.isAlive() && ch == Dungeon.hero){
-				Dungeon.fail( getClass() );
-				GLog.n( Messages.get(this, "ondeath") );
+		
+		for( int i : PathFinder.NEIGHBOURS9) {
+			if (!Dungeon.level.solid[pos + i]) {
+				GameScene.add(Blob.seed(pos + i, 10, Freezing.class));
 			}
 		}
 	}

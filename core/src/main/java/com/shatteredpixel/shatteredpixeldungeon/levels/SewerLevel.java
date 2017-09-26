@@ -30,12 +30,14 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.SewerPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.AlarmTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.OozeTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TeleportationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -87,19 +89,19 @@ public class SewerLevel extends RegularLevel {
 	@Override
 	protected Class<?>[] trapClasses() {
 		return Dungeon.depth == 1 ?
-				new Class<?>[]{WornTrap.class} :
-				new Class<?>[]{ChillingTrap.class, ToxicTrap.class, WornTrap.class,
+				new Class<?>[]{ WornDartTrap.class } :
+				new Class<?>[]{ ChillingTrap.class, ShockingTrap.class, ToxicTrap.class, WornDartTrap.class,
 						AlarmTrap.class, OozeTrap.class,
-						FlockTrap.class, SummoningTrap.class, TeleportationTrap.class, };
+						ConfusionTrap.class, FlockTrap.class, SummoningTrap.class, TeleportationTrap.class };
 }
 
 	@Override
 	protected float[] trapChances() {
 		return Dungeon.depth == 1 ?
 				new float[]{1} :
-				new float[]{4, 4, 4,
-						2, 2,
-						1, 1, 1};
+				new float[]{8, 8, 8, 8,
+						4, 4,
+						2, 2, 2, 2};
 	}
 	
 	@Override

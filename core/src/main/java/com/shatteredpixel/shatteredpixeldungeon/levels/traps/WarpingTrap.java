@@ -25,18 +25,17 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
-import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
-
-import java.util.ArrayList;
 
 public class WarpingTrap extends Trap {
 
@@ -49,41 +48,50 @@ public class WarpingTrap extends Trap {
 	public void activate() {
 		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
 		Sample.INSTANCE.play( Assets.SND_TELEPORT );
-
-		if (Dungeon.depth > 1 && !Dungeon.bossLevel()) {
-
-			//each depth has 1 more weight than the previous depth.
-			float[] depths = new float[Dungeon.depth-1];
-			for (int i = 1; i < Dungeon.depth; i++) depths[i-1] = i;
-			int depth = 1+Random.chances(depths);
-
-			Heap heap = Dungeon.level.heaps.get(pos);
-			if (heap != null) {
-				ArrayList<Item> dropped = Dungeon.droppedItems.get( depth );
-				if (dropped == null) {
-					Dungeon.droppedItems.put( depth, dropped = new ArrayList<Item>() );
+		
+		Char ch = Actor.findChar( pos);
+		if (ch instanceof Hero){
+			ScrollOfTeleportation.teleportHero( (Hero)ch);
+			BArray.setFalse(Dungeon.level.visited);
+			BArray.setFalse(Dungeon.level.mapped);
+			Dungeon.observe();
+			
+		} else if (ch != null){
+			int count = 10;
+			int pos;
+			do {
+				pos = Dungeon.level.randomRespawnCell();
+				if (count-- <= 0) {
+					break;
 				}
-				for (Item item : heap.items){
-					dropped.add(item);
+			} while (pos == -1);
+			
+			if (pos == -1 || Dungeon.bossLevel()) {
+				
+				GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+				
+			} else {
+				
+				ch.pos = pos;
+				if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).HUNTING){
+					((Mob) ch).state = ((Mob) ch).WANDERING;
 				}
-				heap.destroy();
+				ch.sprite.place(ch.pos);
+				ch.sprite.visible = Dungeon.level.heroFOV[pos];
+				
 			}
-
-			Char ch = Actor.findChar( pos );
-			if (ch == Dungeon.hero){
-				Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
-				if (buff != null) buff.detach();
-
-				InterlevelScene.mode = InterlevelScene.Mode.RETURN;
-				InterlevelScene.returnDepth = depth;
-				InterlevelScene.returnPos = -1;
-				Game.switchScene(InterlevelScene.class);
-			} else if (ch != null) {
-				ch.destroy();
-				ch.sprite.killAndErase();
-				Dungeon.level.mobs.remove(ch);
+		}
+		
+		Heap heap = Dungeon.level.heaps.get(pos);
+		
+		if (heap != null){
+			int cell = Dungeon.level.randomRespawnCell();
+			
+			Item item = heap.pickUp();
+			
+			if (cell != -1) {
+				Dungeon.level.drop( item, cell );
 			}
-
 		}
 
 	}

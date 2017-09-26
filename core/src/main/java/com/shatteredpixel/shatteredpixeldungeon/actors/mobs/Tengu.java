@@ -40,7 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -171,7 +171,7 @@ public class Tengu extends Mob {
 			} while (!fieldOfView[trapPos] || Dungeon.level.solid[trapPos]);
 			
 			if (Dungeon.level.map[trapPos] == Terrain.INACTIVE_TRAP) {
-				Dungeon.level.setTrap( new SpearTrap().reveal(), trapPos );
+				Dungeon.level.setTrap( new GrippingTrap().reveal(), trapPos );
 				Level.set( trapPos, Terrain.TRAP );
 				ScrollOfMagicMapping.discover( trapPos );
 			}
@@ -253,7 +253,9 @@ public class Tengu extends Mob {
 					target = enemy.pos;
 				} else {
 					chooseEnemy();
-					target = enemy.pos;
+					if (enemy != null) {
+						target = enemy.pos;
+					}
 				}
 
 				spend( TICK );

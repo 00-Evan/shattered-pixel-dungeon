@@ -21,31 +21,33 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 
-public class PoisonTrap extends Trap{
+public class ShockingTrap extends Trap {
 
 	{
-		color = VIOLET;
-		shape = CROSSHAIR;
+		color = YELLOW;
+		shape = DOTS;
 	}
 
 	@Override
 	public void activate() {
-
-		Char ch = Actor.findChar( pos );
-
-		if (ch != null) {
-			Buff.affect( ch, Poison.class ).set( Poison.durationFactor( ch ) * (4 + Dungeon.depth / 2) );
+		
+		if (Dungeon.level.heroFOV[pos]){
+			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 		}
-
-		CellEmitter.center( pos ).burst( PoisonParticle.SPLASH, 3 );
-
+		
+		for( int i : PathFinder.NEIGHBOURS9) {
+			if (!Dungeon.level.solid[pos + i]) {
+				GameScene.add(Blob.seed(pos + i, 10, Electricity.class));
+			}
+		}
 	}
+	
 }

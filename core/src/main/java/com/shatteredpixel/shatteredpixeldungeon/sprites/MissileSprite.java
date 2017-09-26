@@ -36,42 +36,19 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 	private Callback callback;
 	
 	public void reset( int from, int to, Item item, Callback listener ) {
-		revive();
-		int image;
-
-		if (item == null)   view(image = 0, null);
-		else                view(image = item.image(), item.glowing());
-
-		setup( DungeonTilemap.tileToWorld( from ),
-				DungeonTilemap.tileToWorld( to ),
-				image,
-				listener);
+		reset( DungeonTilemap.tileToWorld( from ), DungeonTilemap.tileToWorld( to ), item, listener);
 	}
 
 	public void reset( Visual from, Visual to, Item item, Callback listener ) {
-		revive();
-		int image;
-
-		if (item == null)   view(image = 0, null);
-		else                view(image = item.image(), item.glowing());
-
-		setup( from.center(this),
-				to.center(this),
-				image,
-				listener);
+		reset(from.center(this), to.center(this), item, listener );
 	}
 
 	public void reset( Visual from, int to, Item item, Callback listener ) {
-		revive();
-		int image;
-
-		if (item == null)   view(image = 0, null);
-		else                view(image = item.image(), item.glowing());
-
-		setup( from.center(this),
-				DungeonTilemap.tileToWorld( to ),
-				image,
-				listener);
+		reset(from.center(this), DungeonTilemap.tileToWorld( to ), item, listener );
+	}
+	
+	public void reset( int from, Visual to, Item item, Callback listener ) {
+		reset(DungeonTilemap.tileToWorld( from ), to.center(this), item, listener );
 	}
 
 	public void reset( PointF from, PointF to, Item item, Callback listener) {

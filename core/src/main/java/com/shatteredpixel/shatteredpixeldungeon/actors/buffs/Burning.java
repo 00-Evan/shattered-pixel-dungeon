@@ -46,13 +46,19 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class Burning extends Buff implements Hero.Doom {
 	
 	private static final float DURATION = 8f;
 	
 	private float left;
 	
+	//for tracking burning of hero items
+	private int burnIncrement = 0;
+	
 	private static final String LEFT	= "left";
+	private static final String BURN	= "burnIncrement";
 
 	{
 		type = buffType.NEGATIVE;
@@ -62,12 +68,14 @@ public class Burning extends Buff implements Hero.Doom {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEFT, left );
+		bundle.put( BURN, burnIncrement );
 	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		left = bundle.getFloat( LEFT );
+		burnIncrement = bundle.getInt( BURN );
 	}
 
 	@Override
@@ -81,38 +89,42 @@ public class Burning extends Buff implements Hero.Doom {
 			Buff.detach( target, Chill.class);
 
 			if (target instanceof Hero) {
-
+				
 				Hero hero = (Hero)target;
-
+				
 				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Brimstone.class)){
-
 					Buff.affect(target, Brimstone.BrimstoneShield.class);
-
+					
 				} else {
-
+					
 					hero.damage( damage, this );
-					Item item = hero.belongings.randomUnequipped();
-					if (item instanceof Scroll
-							&& !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
-
-						item = item.detach( hero.belongings.backpack );
-						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(item.toString())) );
-
-						Heap.burnFX( hero.pos );
-
-					} else if (item instanceof MysteryMeat) {
-
-						item = item.detach( hero.belongings.backpack );
-						ChargrilledMeat steak = new ChargrilledMeat();
-						if (!steak.collect( hero.belongings.backpack )) {
-							Dungeon.level.drop( steak, hero.pos ).sprite.drop();
+					burnIncrement++;
+					
+					//at 4+ turns, there is a (turns-3)/3 chance an item burns
+					if (Random.Int(3) < (burnIncrement - 3)){
+						burnIncrement = 0;
+						
+						ArrayList<Item> burnable = new ArrayList<>();
+						//does not reach inside of containers
+						for (Item i : hero.belongings.backpack.items){
+							if ((i instanceof Scroll && !(i instanceof ScrollOfUpgrade || i instanceof ScrollOfMagicalInfusion))
+									|| i instanceof MysteryMeat){
+								burnable.add(i);
+							}
 						}
-						GLog.w( Messages.get(this, "burnsup", item.toString()) );
-
-						Heap.burnFX( hero.pos );
-
+						
+						if (!burnable.isEmpty()){
+							Item toBurn = Random.element(burnable).detach(hero.belongings.backpack);
+							if (toBurn instanceof MysteryMeat){
+								ChargrilledMeat steak = new ChargrilledMeat();
+								if (!steak.collect( hero.belongings.backpack )) {
+									Dungeon.level.drop( steak, hero.pos ).sprite.drop();
+								}
+							}
+							Heap.burnFX( hero.pos );
+							GLog.w( Messages.get(this, "burnsup", Messages.capitalize(toBurn.toString())) );
+						}
 					}
-
 				}
 				
 			} else {
@@ -127,6 +139,9 @@ public class Burning extends Buff implements Hero.Doom {
 						!(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
 					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
 					((Thief)target).item = null;
+				} else if (item instanceof MysteryMeat) {
+					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
+					((Thief)target).item = new ChargrilledMeat();
 				}
 
 			}

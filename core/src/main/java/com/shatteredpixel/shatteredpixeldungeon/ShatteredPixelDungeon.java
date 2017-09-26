@@ -80,6 +80,7 @@ public class ShatteredPixelDungeon extends Game {
 				"com.shatteredpixel.shatteredpixeldungeon.items.food.OverpricedRation" );
 		
 		//v0.6.2
+		//rooms
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.RatKingRoom.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom" );
@@ -89,6 +90,23 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.GardenRoom.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.FoliageRoom" );
+		
+		//traps
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornTrap" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.ParalyticTrap" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap" );
 		
 		com.watabou.utils.Bundle.exceptionReporter =
 				new com.watabou.utils.Bundle.BundleExceptionCallback() {

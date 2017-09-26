@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MazeRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -223,7 +223,7 @@ public class PrisonBossLevel extends Level {
 
 		for (int i = 0; i < length(); i++){
 			if (map[i] == Terrain.INACTIVE_TRAP) {
-				Trap t = new SpearTrap().reveal();
+				Trap t = new GrippingTrap().reveal();
 				t.active = false;
 				setTrap(t, i);
 				map[i] = Terrain.INACTIVE_TRAP;

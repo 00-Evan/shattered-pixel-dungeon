@@ -21,22 +21,35 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 
-public class ParalyticTrap extends Trap{
-
+public class StormTrap extends Trap {
+	
 	{
 		color = YELLOW;
-		shape = GRILL;
+		shape = STARS;
 	}
-
+	
 	@Override
 	public void activate() {
-
-		GameScene.add( Blob.seed( pos, 80 + 5 * Dungeon.depth, ParalyticGas.class ) );
-
+		
+		if (Dungeon.level.heroFOV[pos]){
+			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+		}
+		
+		PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
+		for (int i = 0; i < PathFinder.distance.length; i++) {
+			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+				GameScene.add(Blob.seed(i, 20, Electricity.class));
+			}
+		}
 	}
+	
 }

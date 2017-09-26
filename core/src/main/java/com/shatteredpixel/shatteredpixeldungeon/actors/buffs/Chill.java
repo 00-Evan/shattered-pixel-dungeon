@@ -21,21 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.utils.Random;
 
 import java.text.DecimalFormat;
 
@@ -51,40 +40,7 @@ public class Chill extends FlavourBuff {
 		if (target.buff(Frost.class) != null) return false;
 
 		if (super.attachTo(target)){
-			Burning.detach( target, Burning.class );
-
-			//chance of potion breaking is the same as speed factor.
-			if (Random.Float(1f) > speedFactor() && target instanceof Hero) {
-
-				Hero hero = (Hero)target;
-				Item item = hero.belongings.randomUnequipped();
-				if (item instanceof Potion
-						&& !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
-
-					item = item.detach( hero.belongings.backpack );
-					GLog.w( Messages.get(this, "freezes", item.toString()) );
-					((Potion) item).shatter(hero.pos);
-
-				} else if (item instanceof MysteryMeat) {
-
-					item = item.detach( hero.belongings.backpack );
-					FrozenCarpaccio carpaccio = new FrozenCarpaccio();
-					if (!carpaccio.collect( hero.belongings.backpack )) {
-						Dungeon.level.drop( carpaccio, target.pos ).sprite.drop();
-					}
-					GLog.w( Messages.get(this, "freezes", item.toString()) );
-
-				}
-			} else if (target instanceof Thief) {
-
-				Item item = ((Thief) target).item;
-
-				if (item instanceof Potion && !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
-					((Potion) ((Thief) target).item).shatter(target.pos);
-					((Thief) target).item = null;
-				}
-
-			}
+			Buff.detach( target, Burning.class );
 			return true;
 		} else {
 			return false;

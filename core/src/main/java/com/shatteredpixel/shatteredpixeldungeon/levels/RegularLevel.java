@@ -45,10 +45,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -155,7 +155,7 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	protected Class<?>[] trapClasses(){
-		return new Class<?>[]{WornTrap.class};
+		return new Class<?>[]{WornDartTrap.class};
 	}
 
 	protected float[] trapChances() {
@@ -326,7 +326,7 @@ public abstract class RegularLevel extends Level {
 			do {
 				cell = randomDropCell();
 				if (item instanceof Scroll) {
-					while (traps.get(cell) instanceof FireTrap) {
+					while (traps.get(cell) instanceof BurningTrap) {
 						cell = randomDropCell();
 					}
 

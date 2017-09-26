@@ -21,27 +21,30 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.utils.PathFinder;
 
-public class WornTrap extends Trap {
+public class BurningTrap extends Trap {
 
 	{
-		color = BLACK;
+		color = ORANGE;
 		shape = DOTS;
 	}
 
 	@Override
-	public Trap hide() {
-		//this one can't be hidden
-		return reveal();
-	}
-
-	@Override
 	public void activate() {
-		CellEmitter.get(pos).burst(Speck.factory(Speck.STEAM), 6);
-		GLog.i( Messages.get(this, "nothing") );
+		
+		for( int i : PathFinder.NEIGHBOURS9) {
+			if (!Dungeon.level.solid[pos + i]) {
+				GameScene.add( Blob.seed( pos+i, 2, Fire.class ) );
+				CellEmitter.get( pos+i ).burst( FlameParticle.FACTORY, 5 );
+			}
+		}
+
 	}
 }

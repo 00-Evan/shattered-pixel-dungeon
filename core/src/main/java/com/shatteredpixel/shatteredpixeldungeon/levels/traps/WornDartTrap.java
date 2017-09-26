@@ -26,25 +26,20 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class DisintegrationTrap extends Trap {
+public class WornDartTrap extends Trap {
 
 	{
-		color = VIOLET;
+		color = GREY;
 		shape = CROSSHAIR;
 	}
-	
+
 	@Override
 	public Trap hide() {
 		//this one can't be hidden
@@ -65,42 +60,27 @@ public class DisintegrationTrap extends Trap {
 				}
 			}
 		}
-		
-		Heap heap = Dungeon.level.heaps.get(pos);
-		if (heap != null) heap.explode();
-		
 		if (target != null) {
+			final Char finalTarget = target;
+			final WornDartTrap trap = this;
 			if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[target.pos]) {
-				Sample.INSTANCE.play(Assets.SND_RAY);
-				ShatteredPixelDungeon.scene().add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos), target.sprite.center()));
-			}
-			target.damage( Math.max( target.HT/5, Random.Int(target.HP / 2, 2 * target.HP / 3) ), this );
-			if (target == Dungeon.hero){
-				Hero hero = (Hero)target;
-				if (!hero.isAlive()){
-					Dungeon.fail( getClass() );
-					GLog.n( Messages.get(this, "ondeath") );
-				} else {
-					Item item = hero.belongings.randomUnequipped();
-					Bag bag = hero.belongings.backpack;
-					//bags do not protect against this trap
-					if (item instanceof Bag){
-						bag = (Bag)item;
-						item = Random.element(bag.items);
-					}
-					if (item == null || item.level() > 0 || item.unique) return;
-					if (!item.stackable){
-						item.detachAll(bag);
-						GLog.w( Messages.get(this, "one", item.name()) );
-					} else {
-						int n = Random.NormalIntRange(1, (item.quantity()+1)/2);
-						for(int i = 1; i <= n; i++)
-							item.detach(bag);
-						GLog.w( Messages.get(this, "some", item.name()) );
-					}
-				}
+				((MissileSprite) ShatteredPixelDungeon.scene().recycle(MissileSprite.class)).
+						reset(pos, target.sprite, new Dart(), new Callback() {
+							@Override
+							public void call() {
+								int dmg = Random.NormalIntRange(1, 4) - finalTarget.drRoll();
+								finalTarget.damage(dmg, trap);
+								if (finalTarget == Dungeon.hero && !finalTarget.isAlive()){
+									Dungeon.fail( getClass() );
+								}
+								Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
+								finalTarget.sprite.bloodBurstA(finalTarget.sprite.center(), dmg);
+								finalTarget.sprite.flash();
+							}
+						});
+			} else {
+				finalTarget.damage(Random.NormalIntRange(1, 4) - finalTarget.drRoll(), trap);
 			}
 		}
-
 	}
 }

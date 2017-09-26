@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -63,15 +63,15 @@ public class BurnedRoom extends PatchRoom {
 						break;
 					case 2:
 						t = Terrain.TRAP;
-						level.setTrap(new FireTrap().reveal(), cell);
+						level.setTrap(new BurningTrap().reveal(), cell);
 						break;
 					case 3:
 						t = Terrain.SECRET_TRAP;
-						level.setTrap(new FireTrap().hide(), cell);
+						level.setTrap(new BurningTrap().hide(), cell);
 						break;
 					case 4:
 						t = Terrain.INACTIVE_TRAP;
-						FireTrap trap = new FireTrap();
+						BurningTrap trap = new BurningTrap();
 						trap.reveal().active = false;
 						level.setTrap(trap, cell);
 						break;

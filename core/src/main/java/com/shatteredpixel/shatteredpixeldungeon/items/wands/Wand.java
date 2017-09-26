@@ -122,6 +122,15 @@ public abstract class Wand extends Item {
 		}
 	}
 	
+	public void gainCharge( float amt ){
+		partialCharge += amt;
+		while (partialCharge >= 1) {
+			curCharges = Math.min(maxCharges, curCharges+1);
+			partialCharge--;
+			updateQuickslot();
+		}
+	}
+	
 	public void charge( Char owner ) {
 		if (charger == null) charger = new Charger();
 		charger.attachTo( owner );

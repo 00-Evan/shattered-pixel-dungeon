@@ -31,19 +31,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWea
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlashingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ParalyticTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TeleportationTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -56,13 +53,10 @@ public class TrapsRoom extends SpecialRoom {
 
 		Class<? extends Trap> trapClass;
 		switch (Random.Int(5)){
-			case 0: default:
-				trapClass = SpearTrap.class;
-				break;
-			case 1:
+			case 0:
 				trapClass = !Dungeon.bossLevel(Dungeon.depth + 1)? null : SummoningTrap.class;
 				break;
-			case 2: case 3: case 4:
+			default:
 				trapClass = Random.oneOf(levelTraps[Dungeon.depth/5]);
 				break;
 		}
@@ -153,13 +147,13 @@ public class TrapsRoom extends SpecialRoom {
 	@SuppressWarnings("unchecked")
 	private static Class<?extends Trap>[][] levelTraps = new Class[][]{
 			//sewers
-			{ToxicTrap.class, TeleportationTrap.class, FlockTrap.class},
+			{GrippingTrap.class, TeleportationTrap.class, FlockTrap.class},
 			//prison
-			{ConfusionTrap.class, ExplosiveTrap.class, ParalyticTrap.class},
+			{PoisonDartTrap.class, GrippingTrap.class, ExplosiveTrap.class},
 			//caves
-			{BlazingTrap.class, VenomTrap.class, ExplosiveTrap.class},
+			{PoisonDartTrap.class, FlashingTrap.class, ExplosiveTrap.class},
 			//city
-			{WarpingTrap.class, VenomTrap.class, DisintegrationTrap.class},
+			{WarpingTrap.class, FlashingTrap.class, DisintegrationTrap.class},
 			//halls, muahahahaha
 			{GrimTrap.class}
 	};

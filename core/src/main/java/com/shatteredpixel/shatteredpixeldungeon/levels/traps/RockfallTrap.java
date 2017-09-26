@@ -29,12 +29,18 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class RockfallTrap extends Trap {
 
@@ -42,30 +48,50 @@ public class RockfallTrap extends Trap {
 		color = GREY;
 		shape = DIAMOND;
 	}
-
+	
+	@Override
+	public Trap hide() {
+		//this one can't be hidden
+		return reveal();
+	}
+	
 	@Override
 	public void activate() {
-
-		boolean seen = false;
-
-		for (int i : PathFinder.NEIGHBOURS9){
-
-			if (Dungeon.level.solid[pos+i])
-				continue;
-
-			if (Dungeon.level.heroFOV[ pos+i ]){
-				CellEmitter.get( pos + i - Dungeon.level.width() ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
-				if (!seen) {
-					Camera.main.shake(3, 0.7f);
-					Sample.INSTANCE.play(Assets.SND_ROCKS);
-					seen = true;
+		
+		ArrayList<Integer> rockCells = new ArrayList<>();
+		
+		if (Dungeon.level instanceof RegularLevel){
+			Room r = ((RegularLevel) Dungeon.level).room(pos);
+			int cell;
+			for (Point p : r.getPoints()){
+				cell = Dungeon.level.pointToCell(p);
+				if (!Dungeon.level.solid[cell]){
+					rockCells.add(cell);
 				}
 			}
+			
+		//if we don't have rooms, then just do 5x5
+		} else {
+			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+					rockCells.add(i);
+				}
+			}
+		}
+		
+		boolean seen = false;
+		for (int cell : rockCells){
 
-			Char ch = Actor.findChar( pos+i );
+			if (Dungeon.level.heroFOV[ cell ]){
+				CellEmitter.get( cell - Dungeon.level.width() ).start(Speck.factory(Speck.ROCK), 0.07f, 10);
+				seen = true;
+			}
+
+			Char ch = Actor.findChar( cell );
 
 			if (ch != null){
-				int damage = Random.NormalIntRange(Dungeon.depth, Dungeon.depth*2);
+				int damage = Random.NormalIntRange(5+Dungeon.depth, 10+Dungeon.depth*2);
 				damage -= ch.drRoll();
 				ch.damage( Math.max(damage, 0) , this);
 
@@ -76,6 +102,11 @@ public class RockfallTrap extends Trap {
 					GLog.n( Messages.get(this, "ondeath") );
 				}
 			}
+		}
+		
+		if (seen){
+			Camera.main.shake(3, 0.7f);
+			Sample.INSTANCE.play(Assets.SND_ROCKS);
 		}
 
 	}

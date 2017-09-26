@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
@@ -68,7 +67,7 @@ public class GreatCrab extends Crab {
 		//crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
 		//All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
 		if ((enemySeen && state != SLEEPING && paralysed == 0)
-				&& (src instanceof Wand || src instanceof LightningTrap.Electricity || src instanceof Char)){
+				&& (src instanceof Wand || src instanceof Char)){
 			GLog.n( Messages.get(this, "noticed") );
 			sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, "blocked") );
 		} else {

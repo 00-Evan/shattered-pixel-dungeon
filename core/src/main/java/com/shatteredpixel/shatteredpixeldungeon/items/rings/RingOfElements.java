@@ -27,9 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
@@ -48,7 +48,7 @@ public class RingOfElements extends Ring {
 		FULL.add( ToxicGas.class );
 		FULL.add( Poison.class );
 		FULL.add( Venom.class );
-		FULL.add( LightningTrap.Electricity.class );
+		FULL.add( Shaman.class );
 		FULL.add( Warlock.class );
 		FULL.add( Eye.class );
 		FULL.add( Yog.BurningFist.class );

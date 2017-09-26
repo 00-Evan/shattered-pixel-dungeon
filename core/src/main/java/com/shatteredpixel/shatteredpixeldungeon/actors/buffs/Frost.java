@@ -36,6 +36,9 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class Frost extends FlavourBuff {
 
@@ -56,24 +59,28 @@ public class Frost extends FlavourBuff {
 			if (target instanceof Hero) {
 
 				Hero hero = (Hero)target;
-				Item item = hero.belongings.randomUnequipped();
-				if (item instanceof Potion
-						&& !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
-
-					item = item.detach( hero.belongings.backpack );
-					GLog.w( Messages.get(this, "freezes", item.toString()) );
-					((Potion) item).shatter(hero.pos);
-
-				} else if (item instanceof MysteryMeat) {
-
-					item = item.detach( hero.belongings.backpack );
-					FrozenCarpaccio carpaccio = new FrozenCarpaccio();
-					if (!carpaccio.collect( hero.belongings.backpack )) {
-						Dungeon.level.drop( carpaccio, target.pos ).sprite.drop();
+				ArrayList<Item> freezable = new ArrayList<>();
+				//does not reach inside of containers
+				for (Item i : hero.belongings.backpack.items){
+					if ((i instanceof Potion && !(i instanceof PotionOfStrength || i instanceof PotionOfMight))
+						|| i instanceof MysteryMeat){
+						freezable.add(i);
 					}
-					GLog.w( Messages.get(this, "freezes", item.toString()) );
-
 				}
+				
+				if (!freezable.isEmpty()){
+					Item toFreeze = Random.element(freezable).detach( hero.belongings.backpack );
+					if (toFreeze instanceof Potion){
+						((Potion) toFreeze).shatter(hero.pos);
+					} else if (toFreeze instanceof MysteryMeat){
+						FrozenCarpaccio carpaccio = new FrozenCarpaccio();
+						if (!carpaccio.collect( hero.belongings.backpack )) {
+							Dungeon.level.drop( carpaccio, target.pos ).sprite.drop();
+						}
+					}
+					GLog.w( Messages.get(this, "freezes", toFreeze.toString()) );
+				}
+				
 			} else if (target instanceof Thief) {
 
 				Item item = ((Thief) target).item;
@@ -81,6 +88,8 @@ public class Frost extends FlavourBuff {
 				if (item instanceof Potion && !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
 					((Potion) ((Thief) target).item).shatter(target.pos);
 					((Thief) target).item = null;
+				} else if (item instanceof MysteryMeat){
+					((Thief) target).item = new FrozenCarpaccio();;
 				}
 
 			}

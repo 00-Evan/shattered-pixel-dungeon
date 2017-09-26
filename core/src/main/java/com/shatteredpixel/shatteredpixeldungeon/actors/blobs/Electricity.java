@@ -25,47 +25,60 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class Freezing extends Blob {
+public class Electricity extends Blob {
+	
+	private boolean[] water;
 	
 	@Override
 	protected void evolve() {
 		
-		boolean[] water = Dungeon.level.water;
+		water = Dungeon.level.water;
 		int cell;
 		
-		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
+		//spread first..
+		for (int i = area.left-1; i <= area.right; i++) {
+			for (int j = area.top-1; j <= area.bottom; j++) {
+				cell = i + j*Dungeon.level.width();
+				
+				if (cur[cell] > 0) {
+					spreadFromCell(cell, cur[cell]);
+				}
+			}
+		}
 		
+		//..then decrement/shock
 		for (int i = area.left-1; i <= area.right; i++) {
 			for (int j = area.top-1; j <= area.bottom; j++) {
 				cell = i + j*Dungeon.level.width();
 				if (cur[cell] > 0) {
-					
 					Char ch = Actor.findChar( cell );
 					if (ch != null) {
-						if (ch.buff(Frost.class) != null){
-							Buff.affect(ch, Frost.class, 2f);
-						} else {
-							Buff.affect(ch, Chill.class, water[cell] ? 5f : 3f);
-							Chill chill = ch.buff(Chill.class);
-							if (chill != null && chill.cooldown() >= 10f){
-								Buff.affect(ch, Frost.class, 5f);
-							}
+						Buff.prolong( ch, Paralysis.class, 1f);
+						if (cur[cell] % 2 == 1) {
+							ch.damage(Math.round(Random.Float(2 + Dungeon.depth / 5f)), this);
 						}
 					}
 					
-					if (fire != null) fire.clear(cell);
-					
-					Heap heap = Dungeon.level.heaps.get( cell );
-					if (heap != null) heap.freeze();
+					Heap h = Dungeon.level.heaps.get( cell );
+					if (h != null){
+						Item toShock = h.peek();
+						if (toShock instanceof Wand){
+							((Wand) toShock).gainCharge(0.333f);
+						} else if (toShock instanceof MagesStaff){
+							((MagesStaff) toShock).gainCharge(0.333f);
+						}
+					}
 					
 					off[cell] = cur[cell] - 1;
 					volume += off[cell];
@@ -74,12 +87,26 @@ public class Freezing extends Blob {
 				}
 			}
 		}
+		
+	}
+	
+	private void spreadFromCell( int cell, int power ){
+		if (cur[cell] == 0) {
+			area.union(cell % Dungeon.level.width(), cell / Dungeon.level.width());
+		}
+		cur[cell] = Math.max(cur[cell], power);
+		
+		for (int c : PathFinder.NEIGHBOURS4){
+			if (water[cell + c] && cur[cell + c] < power){
+				spreadFromCell(cell + c, power);
+			}
+		}
 	}
 	
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
-		emitter.start( SnowParticle.FACTORY, 0.05f, 0 );
+		emitter.start( SparkParticle.FACTORY, 0.05f, 0 );
 	}
 	
 	@Override
@@ -87,32 +114,4 @@ public class Freezing extends Blob {
 		return Messages.get(this, "desc");
 	}
 	
-	//legacy functionality from before this was a proper blob. Returns true if this cell is visible
-	public static boolean affect( int cell, Fire fire ) {
-		
-		Char ch = Actor.findChar( cell );
-		if (ch != null) {
-			if (Dungeon.level.water[ch.pos]){
-				Buff.prolong(ch, Frost.class, Frost.duration(ch) * Random.Float(5f, 7.5f));
-			} else {
-				Buff.prolong(ch, Frost.class, Frost.duration(ch) * Random.Float(1.0f, 1.5f));
-			}
-		}
-		
-		if (fire != null) {
-			fire.clear( cell );
-		}
-		
-		Heap heap = Dungeon.level.heaps.get( cell );
-		if (heap != null) {
-			heap.freeze();
-		}
-		
-		if (Dungeon.level.heroFOV[cell]) {
-			CellEmitter.get( cell ).start( SnowParticle.FACTORY, 0.2f, 6 );
-			return true;
-		} else {
-			return false;
-		}
-	}
 }
