@@ -46,7 +46,12 @@ public class MazeConnectionRoom extends ConnectionRoom {
 			}
 		
 		for (Door door : connected.values()) {
-			door.set( Door.Type.TUNNEL );
+			door.set( Door.Type.HIDDEN );
 		}
+	}
+	
+	@Override
+	public int maxConnections(int direction) {
+		return 2;
 	}
 }
