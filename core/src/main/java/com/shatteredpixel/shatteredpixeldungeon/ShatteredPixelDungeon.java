@@ -96,6 +96,9 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornTrap" );
 		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap" );
+		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.ParalyticTrap" );
 		com.watabou.utils.Bundle.addAlias(
