@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class Alchemy extends Blob {
 
@@ -41,6 +43,16 @@ public class Alchemy extends Blob {
 					volume += off[cell];
 					if (off[cell] > 0 && Dungeon.level.heroFOV[cell]){
 						Notes.add( Notes.Landmark.ALCHEMY );
+					}
+					
+					//for pre-0.6.2 saves
+					while (off[cell] > 0 && Dungeon.level.heaps.get(cell) != null){
+						
+						int n;
+						do {
+							n = cell + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+						} while (!Dungeon.level.passable[n]);
+						Dungeon.level.drop( Dungeon.level.heaps.get(cell).pickUp(), n ).sprite.drop( pos );
 					}
 				}
 			}

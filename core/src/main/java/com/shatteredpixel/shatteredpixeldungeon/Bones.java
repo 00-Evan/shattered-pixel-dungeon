@@ -92,8 +92,9 @@ public class Bones {
 					item = Dungeon.quickslot.randomNonePlaceholder();
 					break;
 			}
-			if (item == null || item.bones)
+			if (item == null || !item.bones) {
 				return pickItem(hero);
+			}
 		} else {
 
 			Iterator<Item> iterator = hero.belongings.backpack.iterator();

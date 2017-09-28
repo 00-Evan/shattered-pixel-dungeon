@@ -49,7 +49,7 @@ public abstract class InventoryScroll extends Scroll {
 	}
 	
 	private void confirmCancelation() {
-		GameScene.show( new WndOptions( name(), Messages.get(this, "warning"),
+		GameScene.show( new WndOptions( Messages.titleCase(name()), Messages.get(this, "warning"),
 				Messages.get(this, "yes"), Messages.get(this, "no") ) {
 			@Override
 			protected void onSelect( int index ) {

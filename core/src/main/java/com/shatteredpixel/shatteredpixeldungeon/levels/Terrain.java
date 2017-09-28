@@ -99,7 +99,7 @@ public class Terrain {
 		flags[STATUE]		= SOLID;
 		flags[STATUE_SP]	= flags[STATUE];
 		flags[BOOKSHELF]	= flags[BARRICADE];
-		flags[ALCHEMY]		= PASSABLE;
+		flags[ALCHEMY]		= SOLID;
 
 	};
 

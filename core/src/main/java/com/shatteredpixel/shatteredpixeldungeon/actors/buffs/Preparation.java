@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -57,7 +56,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		LVL_2( 3,  0.2f, 0.0f, 1, 1),
 		LVL_3( 6,  0.3f, 0.0f, 2, 3),
 		LVL_4( 11, 0.4f, 0.4f, 2, 5),
-		LVL_5( 16, 0.6f, 0.6f, 1, 7);
+		LVL_5( 16, 0.6f, 0.6f, 3, 7);
 		
 		final int turnsReq;
 		final float baseDmgBonus, missingHPBonus;
@@ -72,7 +71,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		public boolean canInstakill(Char defender){
 			return this == LVL_5
 					&& !defender.properties().contains(Char.Property.MINIBOSS)
-					&& !defender.properties().contains(Char.Property.MINIBOSS);
+					&& !defender.properties().contains(Char.Property.BOSS);
 		}
 		
 		public int damageRoll( Char attacker, Char defender){
@@ -242,13 +241,14 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				if (Dungeon.hero.canAttack(enemy)){
 					if (Dungeon.hero.handle( cell )) {
 						Dungeon.hero.next();
+						return;
 					}
 				}
 				
 				AttackLevel lvl = AttackLevel.getLvl(turnsInvis);
 				
-				boolean[] passable = new boolean[Dungeon.level.length()];
-				PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, passable), lvl.blinkDistance+1);
+				boolean[] passable = Dungeon.level.passable.clone();
+				PathFinder.buildDistanceMap(Dungeon.hero.pos, passable, lvl.blinkDistance+1);
 				if (PathFinder.distance[cell] == Integer.MAX_VALUE){
 					GLog.w(Messages.get(Preparation.class, "out_of_reach"));
 					return;
