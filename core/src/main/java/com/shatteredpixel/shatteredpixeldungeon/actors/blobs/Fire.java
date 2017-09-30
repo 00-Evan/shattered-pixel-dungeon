@@ -41,6 +41,8 @@ public class Fire extends Blob {
 		boolean[] flamable = Dungeon.level.flamable;
 		int cell;
 		int fire;
+		
+		Freezing freeze = (Freezing)Dungeon.level.blobs.get( Freezing.class );
 
 		boolean observe = false;
 
@@ -48,6 +50,12 @@ public class Fire extends Blob {
 			for (int j = area.top-1; j <= area.bottom; j++) {
 				cell = i + j*Dungeon.level.width();
 				if (cur[cell] > 0) {
+					
+					if (freeze != null && freeze.cur[cell] > 0){
+						freeze.clear(cell);
+						off[cell] = cur[cell] = 0;
+						continue;
+					}
 
 					burn( cell );
 
@@ -61,7 +69,7 @@ public class Fire extends Blob {
 
 					}
 
-				} else {
+				} else if (freeze == null || freeze.cur[cell] < 0) {
 
 					if (flamable[cell]
 							&& (cur[cell-1] > 0
@@ -75,6 +83,8 @@ public class Fire extends Blob {
 						fire = 0;
 					}
 
+				} else {
+					fire = 0;
 				}
 
 				volume += (off[cell] = fire);

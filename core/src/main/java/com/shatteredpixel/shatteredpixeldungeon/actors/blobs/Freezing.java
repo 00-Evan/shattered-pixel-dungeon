@@ -49,6 +49,12 @@ public class Freezing extends Blob {
 				cell = i + j*Dungeon.level.width();
 				if (cur[cell] > 0) {
 					
+					if (fire != null && fire.cur[cell] > 0){
+						fire.clear(cell);
+						off[cell] = cur[cell] = 0;
+						continue;
+					}
+					
 					Char ch = Actor.findChar( cell );
 					if (ch != null) {
 						if (ch.buff(Frost.class) != null){
@@ -61,8 +67,6 @@ public class Freezing extends Blob {
 							}
 						}
 					}
-					
-					if (fire != null) fire.clear(cell);
 					
 					Heap heap = Dungeon.level.heaps.get( cell );
 					if (heap != null) heap.freeze();
