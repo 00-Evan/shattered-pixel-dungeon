@@ -69,7 +69,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class DriedRose extends Artifact {
 
@@ -414,6 +413,8 @@ public class DriedRose extends Artifact {
 		public void saySpawned(){
 			if (Messages.lang() != Languages.ENGLISH) return; //don't say anything if not on english
 			int i = (Dungeon.depth - 1) / 5;
+			fieldOfView = new boolean[Dungeon.level.length()];
+			Dungeon.level.updateFieldOfView(this, fieldOfView);
 			if (chooseEnemy() == null)
 				yell( Random.element( VOICE_AMBIENT[i] ) );
 			else
@@ -461,37 +462,16 @@ public class DriedRose extends Artifact {
 			return super.act();
 		}
 		
-		//prioritizes closest enemy, and will never attack something far from the player
 		@Override
 		protected Char chooseEnemy() {
-			if (enemy == null
-					|| !enemy.isAlive()
-					|| !Dungeon.level.mobs.contains(enemy)
-					|| Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) > 8
-					|| enemy.alignment != Alignment.ENEMY
-					|| state == WANDERING) {
-				
-				HashSet<Mob> enemies = new HashSet<>();
-				for (Mob mob : Dungeon.level.mobs) {
-					if (mob.alignment == Alignment.ENEMY
-							&& fieldOfView[mob.pos]
-							&& Dungeon.level.distance(mob.pos, Dungeon.hero.pos) <= 8
-							&& mob.state != mob.PASSIVE) {
-						enemies.add(mob);
-					}
-				}
-				
-				//go for closest enemy
-				Char closest = null;
-				for (Char curr : enemies){
-					if (closest == null
-							|| Dungeon.level.distance(pos, curr.pos) < Dungeon.level.distance(pos, closest.pos)){
-						closest = curr;
-					}
-				}
-				return closest;
+			Char enemy = super.chooseEnemy();
+			
+			//will never attack something far from the player
+			if (enemy != null &&  Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) <= 8){
+				return enemy;
+			} else {
+				return null;
 			}
-			return enemy;
 		}
 
 		@Override

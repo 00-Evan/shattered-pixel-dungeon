@@ -94,7 +94,7 @@ public class Eye extends Mob {
 				beamTarget = aim.collisionPos;
 				return true;
 			} else
-				//if the beam is charged, it has to attack, will aim at previous location of hero.
+				//if the beam is charged, it has to attack, will aim at previous location of target.
 				return beamCharged;
 		} else
 			return super.canAttack(enemy);
@@ -229,8 +229,8 @@ public class Eye extends Mob {
 	private class Hunting extends Mob.Hunting{
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
-			//always attack if the beam is charged, no exceptions
-			if (beamCharged && canAttack(enemy)) {
+			//even if enemy isn't seen, attack them if the beam is charged
+			if (beamCharged && enemy != null && canAttack(enemy)) {
 				enemySeen = enemyInFOV;
 				return doAttack(enemy);
 			}
