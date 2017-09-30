@@ -66,10 +66,10 @@ public class FireImbue extends Buff {
 
 		spend(TICK);
 		left -= TICK;
-		if (left < 5){
-			BuffIndicator.refreshHero();
-		} else if (left <= 0) {
+		if (left <= 0){
 			detach();
+		} else if (left < 5){
+			BuffIndicator.refreshHero();
 		}
 
 		return true;
