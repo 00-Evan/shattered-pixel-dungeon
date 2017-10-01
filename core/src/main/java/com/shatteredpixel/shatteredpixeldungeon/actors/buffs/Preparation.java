@@ -241,8 +241,8 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				if (Dungeon.hero.canAttack(enemy)){
 					if (Dungeon.hero.handle( cell )) {
 						Dungeon.hero.next();
-						return;
 					}
+					return;
 				}
 				
 				AttackLevel lvl = AttackLevel.getLvl(turnsInvis);
@@ -261,9 +261,10 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				}
 				
 				PathFinder.Path path = PathFinder.find(Dungeon.hero.pos, cell, passable);
-				int attackPos = path.get(path.size()-2);
+				int attackPos = path == null ? -1 : path.get(path.size()-2);
 				
-				if (Dungeon.level.distance(attackPos, Dungeon.hero.pos) > lvl.blinkDistance){
+				if (attackPos == -1 ||
+						Dungeon.level.distance(attackPos, Dungeon.hero.pos) > lvl.blinkDistance){
 					GLog.w(Messages.get(Preparation.class, "out_of_reach"));
 					return;
 				}
