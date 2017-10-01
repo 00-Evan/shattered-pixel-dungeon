@@ -66,22 +66,37 @@ public class PoisonDartTrap extends Trap {
 			final Char finalTarget = target;
 			final PoisonDartTrap trap = this;
 			if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[target.pos]) {
-				((MissileSprite) ShatteredPixelDungeon.scene().recycle(MissileSprite.class)).
-						reset(pos, target.sprite, new Dart(), new Callback() {
-							@Override
-							public void call() {
-								int dmg = Random.NormalIntRange(1, 4) - finalTarget.drRoll();
-								finalTarget.damage(dmg, trap);
-								if (finalTarget == Dungeon.hero && !finalTarget.isAlive()){
-									Dungeon.fail( getClass() );
+				Actor.add(new Actor() {
+					
+					{
+						//it's a visual effect, gets priority no matter what
+						actPriority = Integer.MIN_VALUE;
+					}
+					
+					@Override
+					protected boolean act() {
+						final Actor toRemove = this;
+						((MissileSprite) ShatteredPixelDungeon.scene().recycle(MissileSprite.class)).
+							reset(pos, finalTarget.sprite, new Dart(), new Callback() {
+								@Override
+								public void call() {
+									int dmg = Random.NormalIntRange(1, 4) - finalTarget.drRoll();
+									finalTarget.damage(dmg, trap);
+									if (finalTarget == Dungeon.hero && !finalTarget.isAlive()){
+										Dungeon.fail( trap.getClass() );
+									}
+									Buff.affect( finalTarget, Poison.class )
+											.set( Poison.durationFactor( finalTarget ) * (4 + Dungeon.depth) );
+									Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
+									finalTarget.sprite.bloodBurstA(finalTarget.sprite.center(), dmg);
+									finalTarget.sprite.flash();
+									Actor.remove(toRemove);
+									next();
 								}
-								Buff.affect( finalTarget, Poison.class )
-										.set( Poison.durationFactor( finalTarget ) * (4 + Dungeon.depth) );
-								Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
-								finalTarget.sprite.bloodBurstA(finalTarget.sprite.center(), dmg);
-								finalTarget.sprite.flash();
-							}
-						});
+							});
+						return false;
+					}
+				});
 			} else {
 				finalTarget.damage(Random.NormalIntRange(1, 4) - finalTarget.drRoll(), trap);
 				Buff.affect( finalTarget, Poison.class )
