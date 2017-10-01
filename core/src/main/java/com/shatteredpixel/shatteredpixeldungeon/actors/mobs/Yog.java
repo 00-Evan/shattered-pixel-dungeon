@@ -315,7 +315,7 @@ public class Yog extends Mob {
 		}
 		
 		@Override
-		public boolean doAttack( Char enemy ) {
+		public boolean attack( Char enemy ) {
 			
 			if (!Dungeon.level.adjacent( pos, enemy.pos )) {
 				spend( attackDelay() );
@@ -340,7 +340,7 @@ public class Yog extends Mob {
 					return false;
 				}
 			} else {
-				return super.doAttack( enemy );
+				return super.attack( enemy );
 			}
 		}
 		
