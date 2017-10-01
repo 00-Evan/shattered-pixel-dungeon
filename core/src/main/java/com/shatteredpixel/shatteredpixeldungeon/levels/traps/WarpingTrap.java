@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -54,6 +55,7 @@ public class WarpingTrap extends Trap {
 			ScrollOfTeleportation.teleportHero( (Hero)ch);
 			BArray.setFalse(Dungeon.level.visited);
 			BArray.setFalse(Dungeon.level.mapped);
+			GameScene.updateFog();
 			Dungeon.observe();
 			
 		} else if (ch != null){

@@ -51,7 +51,7 @@ public class Fire extends Blob {
 				cell = i + j*Dungeon.level.width();
 				if (cur[cell] > 0) {
 					
-					if (freeze != null && freeze.cur[cell] > 0){
+					if (freeze != null && freeze.volume > 0 && freeze.cur[cell] > 0){
 						freeze.clear(cell);
 						off[cell] = cur[cell] = 0;
 						continue;
@@ -69,7 +69,7 @@ public class Fire extends Blob {
 
 					}
 
-				} else if (freeze == null || freeze.cur[cell] < 0) {
+				} else if (freeze == null || freeze.volume <= 0 || freeze.cur[cell] < 0) {
 
 					if (flamable[cell]
 							&& (cur[cell-1] > 0

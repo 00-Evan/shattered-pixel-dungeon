@@ -49,7 +49,7 @@ public class Freezing extends Blob {
 				cell = i + j*Dungeon.level.width();
 				if (cur[cell] > 0) {
 					
-					if (fire != null && fire.cur[cell] > 0){
+					if (fire != null && fire.volume > 0 && fire.cur[cell] > 0){
 						fire.clear(cell);
 						off[cell] = cur[cell] = 0;
 						continue;
