@@ -46,11 +46,11 @@ public class ActionIndicator extends Tag {
 		super.destroy();
 		instance = null;
 	}
-
+	
 	@Override
 	protected void layout() {
 		super.layout();
-
+		
 		if (icon != null){
 			icon.x = x + (width - icon.width()) / 2;
 			icon.y = y + (height - icon.height()) / 2;
@@ -59,7 +59,9 @@ public class ActionIndicator extends Tag {
 				add(icon);
 		}
 	}
-
+	
+	private boolean needsLayout = false;
+	
 	@Override
 	public void update() {
 		super.update();
@@ -76,6 +78,11 @@ public class ActionIndicator extends Tag {
 			flash();
 		} else {
 			visible = action != null;
+		}
+		
+		if (needsLayout){
+			layout();
+			needsLayout = false;
 		}
 	}
 
@@ -103,7 +110,7 @@ public class ActionIndicator extends Tag {
 			}
 			if (action != null){
 				instance.icon = action.getIcon();
-				instance.layout();
+				instance.needsLayout = true;
 			}
 		}
 	}
