@@ -21,13 +21,20 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfAwareness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfHealth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
-public class SecretTransmutationRoom extends SecretRoom {
+public class SecretWellRoom extends SecretRoom {
+	
+	private static final Class<?>[] WATERS =
+			{WaterOfAwareness.class, WaterOfHealth.class, WaterOfTransmutation.class};
 	
 	@Override
 	public boolean canConnect(Point p) {
@@ -55,7 +62,10 @@ public class SecretTransmutationRoom extends SecretRoom {
 		
 		Painter.set( level, well, Terrain.WELL );
 		
-		WaterOfTransmutation.seed(well.x + level.width() * well.y, 1, WaterOfTransmutation.class, level);
+		@SuppressWarnings("unchecked")
+		Class<? extends WellWater> waterClass = (Class<? extends WellWater>) Random.element( WATERS );
+		
+		WellWater.seed(well.x + level.width() * well.y, 1, waterClass, level);
 		
 		entrance().set( Door.Type.HIDDEN );
 	}

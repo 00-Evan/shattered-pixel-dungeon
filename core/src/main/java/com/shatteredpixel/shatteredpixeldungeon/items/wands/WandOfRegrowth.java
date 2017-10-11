@@ -262,7 +262,7 @@ public class WandOfRegrowth extends Wand {
 		@Override
 		public void activate() {
 
-			int nDrops = Random.NormalIntRange(2, 8);
+			int nDrops = Random.NormalIntRange(3, 6);
 
 			ArrayList<Integer> candidates = new ArrayList<Integer>();
 			for (int i : PathFinder.NEIGHBOURS8){
@@ -296,7 +296,7 @@ public class WandOfRegrowth extends Wand {
 		@Override
 		public void activate() {
 
-			int nSeeds = Random.NormalIntRange(1, 5);
+			int nSeeds = Random.NormalIntRange(2, 4);
 
 			ArrayList<Integer> candidates = new ArrayList<Integer>();
 			for (int i : PathFinder.NEIGHBOURS8){

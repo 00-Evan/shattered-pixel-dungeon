@@ -70,10 +70,10 @@ public class SecretLaboratoryRoom extends SecretRoom {
 		Painter.set( level, pot, Terrain.ALCHEMY );
 		
 		Alchemy alchemy = new Alchemy();
-		alchemy.seed( level, pot.x + level.width() * pot.y, Random.IntRange(40, 75) );
+		alchemy.seed( level, pot.x + level.width() * pot.y, Random.IntRange(30, 60) );
 		level.blobs.put( Alchemy.class, alchemy );
 		
-		int n = Random.IntRange( 2, 4 );
+		int n = Random.IntRange( 2, 3 );
 		HashMap<Class<? extends Potion>, Float> chances = new HashMap<>(potionChances);
 		for (int i=0; i < n; i++) {
 			int pos;
