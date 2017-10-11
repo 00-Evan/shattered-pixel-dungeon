@@ -39,19 +39,22 @@ public class SecretHoneypotRoom extends SecretRoom {
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill(level, this, 1, Terrain.EMPTY );
 		
-		Point center = center();
+		Point brokenPotPos = center();
+		
+		brokenPotPos.x = (brokenPotPos.x + entrance().x) / 2;
+		brokenPotPos.y = (brokenPotPos.y + entrance().y) / 2;
 		
 		Honeypot.ShatteredPot pot = new Honeypot.ShatteredPot();
-		level.drop(pot, level.pointToCell(center));
+		level.drop(pot, level.pointToCell(brokenPotPos));
 		
 		Bee bee = new Bee();
 		bee.spawn( Dungeon.depth );
 		bee.HP = bee.HT;
-		bee.pos = level.pointToCell(center);
+		bee.pos = level.pointToCell(brokenPotPos);
 		level.mobs.add( bee );
 		
 		pot.setBee(bee);
-		bee.setPotInfo(level.pointToCell(center), null);
+		bee.setPotInfo(level.pointToCell(brokenPotPos), null);
 		
 		placeItem(new Honeypot(), level);
 		

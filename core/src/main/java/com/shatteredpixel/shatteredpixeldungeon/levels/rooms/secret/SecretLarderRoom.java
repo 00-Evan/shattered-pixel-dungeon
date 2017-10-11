@@ -21,36 +21,27 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.watabou.utils.Point;
-import com.watabou.utils.Random;
-
-import java.util.ArrayList;
 
 public class SecretLarderRoom extends SecretRoom {
 	
 	@Override
-	public boolean canConnect(Point p) {
-		//refuses connections from the top
-		return super.canConnect(p) && p.y > top+1;
+	public int minHeight() {
+		return 6;
 	}
 	
 	@Override
-	public int maxWidth() {
-		return 8;
-	}
-	
-	@Override
-	public int maxHeight() {
-		return 8;
+	public int minWidth() {
+		return 6;
 	}
 	
 	@Override
@@ -58,31 +49,29 @@ public class SecretLarderRoom extends SecretRoom {
 		Painter.fill(level, this, Terrain.WALL);
 		Painter.fill(level, this, 1, Terrain.EMPTY_SP);
 		
-		int nFood = width()-2;
-		ArrayList<Item> foodItems = new ArrayList<>();
+		Point c = center();
 		
-		//generates 900 food value, spread out over 3-6 pieces of food
-		if (nFood <= 4){
-			foodItems.add(Random.Int(2) == 0 ? new Blandfruit() : new Pasty());
-			nFood--;
-		}
+		Painter.fill(level, c.x-1, c.y-1, 3, 3, Terrain.WATER);
+		Painter.set(level, c, Terrain.GRASS);
 		
-		if (nFood == 3 || nFood == 5){
-			foodItems.add(new Food());
-			nFood--;
-		}
+		level.plant(new BlandfruitBush.Seed(), level.pointToCell(c));
 		
-		while (nFood > 0){
-			foodItems.add(Random.Int(2) == 0 ? new ChargrilledMeat() : new SmallRation());
-			nFood--;
-		}
+		int extraFood = (int)(Hunger.STARVING - Hunger.HUNGRY) * (1 + Dungeon.depth / 5);
 		
-		Random.shuffle(foodItems);
-		
-		int topLeft = level.pointToCell(new Point(left+1, top+1));
-		for(int i = 0; i < foodItems.size(); i++){
-			level.drop( foodItems.get(i), topLeft+i );
-			Painter.set(level, topLeft+i, Terrain.PEDESTAL);
+		while (extraFood > 0){
+			Food food;
+			if (extraFood >= Hunger.STARVING){
+				food = new Pasty();
+				extraFood -= Hunger.STARVING;
+			} else {
+				food = new ChargrilledMeat();
+				extraFood -= (Hunger.STARVING - Hunger.HUNGRY);
+			}
+			int foodPos;
+			do {
+				foodPos = level.pointToCell(random());
+			} while (level.map[foodPos] != Terrain.EMPTY_SP || level.heaps.get(foodPos) != null);
+			level.drop(food, foodPos);
 		}
 		
 		entrance().set(Door.Type.HIDDEN);
