@@ -133,7 +133,8 @@ public class WandOfCorruption extends Wand {
 			} else if (ch instanceof Piranha || ch instanceof Bee) {
 				enemyResist = 1 + Dungeon.depth/2f;
 			} else if (ch instanceof Wraith) {
-				enemyResist = 1 + Dungeon.depth/4f;
+				//this is so low because wraiths are always at max hp
+				enemyResist = 1 + Dungeon.depth/5f;
 			} else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
 				enemyResist = 1 + 30;
 			} else if (ch instanceof Yog.Larva || ch instanceof King.Undead){
