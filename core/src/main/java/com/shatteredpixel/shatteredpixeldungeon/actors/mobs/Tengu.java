@@ -163,15 +163,18 @@ public class Tengu extends Mob {
 }
 
 	private void jump() {
+		
+		Level level = Dungeon.level;
+		if (level == null) return;
 
 		for (int i=0; i < 4; i++) {
 			int trapPos;
 			do {
-				trapPos = Random.Int( Dungeon.level.length() );
-			} while (!fieldOfView[trapPos] || Dungeon.level.solid[trapPos]);
+				trapPos = Random.Int( level.length() );
+			} while (!fieldOfView[trapPos] || level.solid[trapPos]);
 			
-			if (Dungeon.level.map[trapPos] == Terrain.INACTIVE_TRAP) {
-				Dungeon.level.setTrap( new GrippingTrap().reveal(), trapPos );
+			if (level.map[trapPos] == Terrain.INACTIVE_TRAP) {
+				level.setTrap( new GrippingTrap().reveal(), trapPos );
 				Level.set( trapPos, Terrain.TRAP );
 				ScrollOfMagicMapping.discover( trapPos );
 			}
@@ -185,27 +188,26 @@ public class Tengu extends Mob {
 			int tries = 50;
 			do {
 				newPos = Random.IntRange(3, 7) + 32*Random.IntRange(26, 30);
-			} while ( (Dungeon.level.adjacent(newPos, enemy.pos) || Actor.findChar(newPos) != null)
+			} while ( (level.adjacent(newPos, enemy.pos) || Actor.findChar(newPos) != null)
 					&& --tries > 0);
 			if (tries <= 0) return;
 
 		//otherwise go wherever, as long as it's a little bit away
 		} else {
 			do {
-				newPos = Random.Int(Dungeon.level.length());
+				newPos = Random.Int(level.length());
 			} while (
-					Dungeon.level.solid[newPos] ||
-					Dungeon.level.distance(newPos, enemy.pos) < 8 ||
+					level.solid[newPos] ||
+					level.distance(newPos, enemy.pos) < 8 ||
 					Actor.findChar(newPos) != null);
 		}
 		
-		if (Dungeon.level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
-
+		if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 
 		sprite.move( pos, newPos );
 		move( newPos );
 		
-		if (Dungeon.level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
+		if (level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
 		Sample.INSTANCE.play( Assets.SND_PUFF );
 		
 		spend( 1 / speed() );
