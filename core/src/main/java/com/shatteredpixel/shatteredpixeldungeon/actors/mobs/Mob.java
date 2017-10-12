@@ -764,7 +764,9 @@ public abstract class Mob extends Char {
 			//loses target when 0-dist rolls a 6 or greater.
 			if (enemy == null || !enemyInFOV && 1 + Random.Int(Dungeon.level.distance(pos, target)) >= 6){
 				target = -1;
-			} else {
+			
+			//if enemy isn't in FOV, keep running from their previous position.
+			} else if (enemyInFOV) {
 				target = enemy.pos;
 			}
 
