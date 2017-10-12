@@ -89,6 +89,7 @@ public class Guard extends Mob {
 				return false;
 			} else {
 				final int newPosFinal = newPos;
+				this.target = newPos;
 				yell( Messages.get(this, "scorpion") );
 				sprite.parent.add(new Chains(sprite.center(), enemy.sprite.center(), new Callback() {
 					public void call() {
