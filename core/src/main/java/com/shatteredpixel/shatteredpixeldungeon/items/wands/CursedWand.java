@@ -153,7 +153,10 @@ public class CursedWand {
 						cursedFX(user, bolt, new Callback() {
 							public void call() {
 								Char ch = Actor.findChar( bolt.collisionPos );
-								if (ch != null && !ch.properties().contains(Char.Property.IMMOVABLE)) {
+								if (ch == user){
+									ScrollOfTeleportation.teleportHero(user);
+									wand.wandUsed();
+								} else if (ch != null && !ch.properties().contains(Char.Property.IMMOVABLE)) {
 									int count = 10;
 									int pos;
 									do {
@@ -166,7 +169,7 @@ public class CursedWand {
 										GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 									} else {
 										ch.pos = pos;
-										if (((Mob) ch).state == ((Mob) ch).HUNTING) ((Mob) ch).state = ((Mob) ch).WANDERING;
+										if (((Mob) ch).state == ((Mob) ch).HUNTING)((Mob) ch).state = ((Mob) ch).WANDERING;
 										ch.sprite.place(ch.pos);
 										ch.sprite.visible = Dungeon.level.heroFOV[pos];
 									}
