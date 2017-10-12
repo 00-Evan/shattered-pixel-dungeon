@@ -205,6 +205,8 @@ public class MagesStaff extends MeleeWeapon {
 			Dungeon.quickslot.setSlot( slot, this );
 			updateQuickslot();
 		}
+		
+		Badges.validateItemLevelAquired(this);
 
 		return this;
 	}
