@@ -74,8 +74,8 @@ public class Bones {
 
 	private static Item pickItem(Hero hero){
 		Item item = null;
-		if (Random.Int(2) == 0) {
-			switch (Random.Int(5)) {
+		if (Random.Int(3) != 0) {
+			switch (Random.Int(6)) {
 				case 0:
 					item = hero.belongings.weapon;
 					break;
@@ -88,7 +88,7 @@ public class Bones {
 				case 3:
 					item = hero.belongings.misc2;
 					break;
-				case 4:
+				case 4: case 5:
 					item = Dungeon.quickslot.randomNonePlaceholder();
 					break;
 			}
@@ -111,15 +111,15 @@ public class Bones {
 				if (item.stackable){
 					item.quantity(Random.NormalIntRange(1, (item.quantity() + 1) / 2));
 				}
-			}
-		}
-		if (item == null) {
-			if (Dungeon.gold > 100) {
-				item = new Gold( Random.NormalIntRange( 50, Dungeon.gold/2 ) );
 			} else {
-				item = new Gold( 50 );
+				if (Dungeon.gold > 100) {
+					item = new Gold( Random.NormalIntRange( 50, Dungeon.gold/2 ) );
+				} else {
+					item = new Gold( 50 );
+				}
 			}
 		}
+		
 		return item;
 	}
 
@@ -150,11 +150,8 @@ public class Bones {
 				if (item instanceof Artifact){
 					if (Generator.removeArtifact(((Artifact)item).getClass())) {
 						try {
+							//generates a new artifact of the same type, always +0
 							Artifact artifact = (Artifact)item.getClass().newInstance();
-							//caps displayed artifact level
-							artifact.transferUpgrade(Math.min(
-									item.visiblyUpgraded(),
-									1 + ((Dungeon.depth * 3) / 10)));
 
 							artifact.cursed = true;
 							artifact.cursedKnown = true;
@@ -173,10 +170,9 @@ public class Bones {
 					item.cursed = true;
 					item.cursedKnown = true;
 					if (item.isUpgradable()) {
-						//gain 1 level every 3.333 floors down plus one additional level.
-						int lvl = 1 + ((Dungeon.depth * 3) / 10);
-						if (lvl < item.level()) {
-							item.degrade( item.level() - lvl );
+						//caps at +3
+						if (item.level() > 3) {
+							item.degrade( item.level() - 3 );
 						}
 						item.levelKnown = false;
 					}
