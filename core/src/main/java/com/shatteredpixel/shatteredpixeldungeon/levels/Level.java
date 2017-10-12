@@ -516,7 +516,13 @@ public abstract class Level implements Bundlable {
 						}
 					}
 				}
-				spend( Dungeon.level.feeling == Feeling.DARK || Statistics.amuletObtained ? TIME_TO_RESPAWN / 2 : TIME_TO_RESPAWN );
+				if (Statistics.amuletObtained){
+					spend(TIME_TO_RESPAWN/2f);
+				} else if (Dungeon.level.feeling == Feeling.DARK){
+					spend(2*TIME_TO_RESPAWN/3f);
+				} else {
+					spend(TIME_TO_RESPAWN);
+				}
 				return true;
 			}
 		};
