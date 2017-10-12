@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticG
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -178,21 +180,25 @@ public class Blandfruit extends Food {
 	}
 
 	public static final String POTIONATTRIB = "potionattrib";
-
+	
 	@Override
-	public void cast( final Hero user, int dst ) {
-		if (potionAttrib instanceof PotionOfLiquidFlame ||
+	protected void onThrow(int cell) {
+		if (Dungeon.level.map[cell] == Terrain.WELL || Dungeon.level.pit[cell]) {
+			super.onThrow( cell );
+			
+		} else if (potionAttrib instanceof PotionOfLiquidFlame ||
 				potionAttrib instanceof PotionOfToxicGas ||
 				potionAttrib instanceof PotionOfParalyticGas ||
 				potionAttrib instanceof PotionOfFrost ||
 				potionAttrib instanceof PotionOfLevitation ||
 				potionAttrib instanceof PotionOfPurity) {
-			potionAttrib.cast(user, dst);
-			detach( user.belongings.backpack );
+			
+			Dungeon.level.press( cell, null );
+			potionAttrib.shatter( cell );
+			
 		} else {
-			super.cast(user, dst);
+			super.onThrow( cell );
 		}
-
 	}
 	
 	@Override
