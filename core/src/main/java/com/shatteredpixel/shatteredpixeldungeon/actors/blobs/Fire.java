@@ -98,7 +98,7 @@ public class Fire extends Blob {
 	
 	private void burn( int pos ) {
 		Char ch = Actor.findChar( pos );
-		if (ch != null) {
+		if (ch != null && !ch.immunities().contains(this.getClass())) {
 			Buff.affect( ch, Burning.class ).reignite( ch );
 		}
 		

@@ -59,7 +59,9 @@ public class Regrowth extends Blob {
 						}
 
 						Char ch = Actor.findChar( cell );
-						if (ch != null && off[cell] > 1) {
+						if (ch != null
+								&& !ch.immunities().contains(this.getClass())
+								&& off[cell] > 1) {
 							Buff.prolong( ch, Roots.class, TICK );
 						}
 					}

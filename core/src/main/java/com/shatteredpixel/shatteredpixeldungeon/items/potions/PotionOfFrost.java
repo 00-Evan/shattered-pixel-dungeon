@@ -23,15 +23,13 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
 public class PotionOfFrost extends Potion {
-	
-	private static final int DISTANCE	= 2;
 
 	{
 		initials = 1;
@@ -40,23 +38,21 @@ public class PotionOfFrost extends Potion {
 	@Override
 	public void shatter( int cell ) {
 		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.losBlocking, null ), DISTANCE );
-		
-		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
-
-		boolean visible = false;
-		for (int i=0; i < Dungeon.level.length(); i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				visible = Freezing.affect( i, fire ) || visible;
-			}
-		}
-
-		if (visible) {
+		if (Dungeon.level.heroFOV[cell]) {
+			setKnown();
+			
 			splash( cell );
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
-
-			setKnown();
 		}
+		
+		for (int offset : PathFinder.NEIGHBOURS9){
+			if (!Dungeon.level.solid[cell+offset]) {
+				
+				GameScene.add(Blob.seed(cell + offset, 10, Freezing.class));
+				
+			}
+		}
+		
 	}
 	
 	@Override

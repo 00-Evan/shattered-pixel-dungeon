@@ -24,13 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GasesImmunity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -40,86 +35,71 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
+import java.util.ArrayList;
+
 public class PotionOfPurity extends Potion {
 	
-	private static final int DISTANCE	= 5;
+	private static final int DISTANCE	= 3;
+	
+	private static ArrayList<Class> affectedBlobs;
 
 	{
 		initials = 9;
+		
+		affectedBlobs = new ArrayList<>(new BlobImmunity().immunities());
 	}
 
 	@Override
 	public void shatter( int cell ) {
 		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.losBlocking, null ), DISTANCE );
+		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), DISTANCE );
 		
-		boolean procd = false;
-		
-		Blob[] blobs = {
-			Dungeon.level.blobs.get( ToxicGas.class ),
-			Dungeon.level.blobs.get( ParalyticGas.class ),
-			Dungeon.level.blobs.get( ConfusionGas.class ),
-			Dungeon.level.blobs.get( StenchGas.class ),
-			Dungeon.level.blobs.get( VenomGas.class )
-		};
-		
-		for (int j=0; j < blobs.length; j++) {
-			
-			Blob blob = blobs[j];
-			if (blob == null || blob.volume == 0) {
-				continue;
+		ArrayList<Blob> blobs = new ArrayList<>();
+		for (Class c : affectedBlobs){
+			Blob b = Dungeon.level.blobs.get(c);
+			if (b != null && b.volume > 0){
+				blobs.add(b);
 			}
-			
-			for (int i=0; i < Dungeon.level.length(); i++) {
-				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+		}
+		
+		for (int i=0; i < Dungeon.level.length(); i++) {
+			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+				
+				for (Blob blob : blobs) {
 					
 					int value = blob.cur[i];
 					if (value > 0) {
 						
+						blob.clear(i);
 						blob.cur[i] = 0;
 						blob.volume -= value;
-						procd = true;
-
-						if (Dungeon.level.heroFOV[i]) {
-							CellEmitter.get( i ).burst( Speck.factory( Speck.DISCOVER ), 1 );
-						}
+						
 					}
-
+					
 				}
+				
+				if (Dungeon.level.heroFOV[i]) {
+					CellEmitter.get( i ).burst( Speck.factory( Speck.DISCOVER ), 2 );
+				}
+				
 			}
 		}
 		
-		boolean heroAffected = PathFinder.distance[Dungeon.hero.pos] < Integer.MAX_VALUE;
 		
-		if (procd) {
-
-			if (Dungeon.level.heroFOV[cell]) {
-				splash( cell );
-				Sample.INSTANCE.play( Assets.SND_SHATTER );
-			}
-
+		if (Dungeon.level.heroFOV[cell]) {
+			splash(cell);
+			Sample.INSTANCE.play(Assets.SND_SHATTER);
+			
 			setKnown();
-
-			if (heroAffected) {
-				GLog.p( Messages.get(this, "freshness") );
-			}
-			
-		} else {
-			
-			super.shatter( cell );
-			
-			if (heroAffected) {
-				GLog.i( Messages.get(this, "freshness") );
-				setKnown();
-			}
-			
+			GLog.i(Messages.get(this, "freshness"));
 		}
+		
 	}
 	
 	@Override
 	public void apply( Hero hero ) {
-		GLog.w( Messages.get(this, "no_smell") );
-		Buff.prolong( hero, GasesImmunity.class, GasesImmunity.DURATION );
+		GLog.w( Messages.get(this, "protected") );
+		Buff.prolong( hero, BlobImmunity.class, BlobImmunity.DURATION );
 		setKnown();
 	}
 	
