@@ -55,8 +55,8 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		LVL_1( 1,  0.1f, 0.0f, 1, 0),
 		LVL_2( 3,  0.2f, 0.0f, 1, 1),
 		LVL_3( 6,  0.3f, 0.0f, 2, 3),
-		LVL_4( 11, 0.4f, 0.4f, 2, 5),
-		LVL_5( 16, 0.6f, 0.6f, 3, 7);
+		LVL_4( 11, 0.4f, 0.6f, 2, 5),
+		LVL_5( 16, 0.5f, 1.0f, 3, 7);
 		
 		final int turnsReq;
 		final float baseDmgBonus, missingHPBonus;
@@ -80,7 +80,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				int newDmg = attacker.damageRoll();
 				if (newDmg > dmg) dmg = newDmg;
 			}
-			float defenderHPPercent = defender.HP / (float)defender.HT;
+			float defenderHPPercent = 1f - (defender.HP / (float)defender.HT);
 			return Math.round(dmg * (1f + baseDmgBonus + (missingHPBonus * defenderHPPercent)));
 		}
 		

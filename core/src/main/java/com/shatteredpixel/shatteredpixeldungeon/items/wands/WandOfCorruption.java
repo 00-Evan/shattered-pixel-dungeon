@@ -208,7 +208,7 @@ public class WandOfCorruption extends Wand {
 				buff.detach();
 			}
 			Buff.affect(enemy, Corruption.class);
-			if (enemy.EXP > 0) {
+			if (enemy.EXP > 0 && curUser.lvl <= enemy.maxLvl) {
 				curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
 				curUser.earnExp(enemy.EXP);
 				enemy.EXP = 0;

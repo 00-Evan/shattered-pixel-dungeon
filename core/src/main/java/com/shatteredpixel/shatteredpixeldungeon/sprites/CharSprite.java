@@ -314,9 +314,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				levitation.pour( Speck.factory( Speck.JET ), 0.02f );
 				break;
 			case INVISIBLE:
+				if (invisible != null) {
+					invisible.killAndErase();
+				}
+				invisible = new AlphaTweener( this, 0.4f, 0.4f );
 				if (parent != null){
-					if (invisible != null) invisible.killAndErase();
-					invisible = new AlphaTweener( this, 0.4f, 0.4f );
 					parent.add(invisible);
 				} else
 					alpha( 0.4f );
@@ -447,6 +449,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 		if (emo != null && emo.alive) {
 			emo.visible = visible;
+		}
+	}
+	
+	@Override
+	public void resetColor() {
+		super.resetColor();
+		if (invisible != null){
+			alpha(0.4f);
 		}
 	}
 	

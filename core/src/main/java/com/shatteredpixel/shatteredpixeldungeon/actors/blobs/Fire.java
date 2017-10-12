@@ -69,7 +69,7 @@ public class Fire extends Blob {
 
 					}
 
-				} else if (freeze == null || freeze.volume <= 0 || freeze.cur[cell] < 0) {
+				} else if (freeze == null || freeze.volume <= 0 || freeze.cur[cell] <= 0) {
 
 					if (flamable[cell]
 							&& (cur[cell-1] > 0
