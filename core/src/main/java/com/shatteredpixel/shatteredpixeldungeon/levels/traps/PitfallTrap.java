@@ -67,11 +67,11 @@ public class PitfallTrap extends Trap {
 		super.disarm();
 		
 		int stateChanges = 0;
-		boolean curPassable = Dungeon.level.passable[pos + PathFinder.CIRCLE8[PathFinder.CIRCLE8.length-1]];
+		boolean curWall = Dungeon.level.map[pos + PathFinder.CIRCLE8[PathFinder.CIRCLE8.length-1]] == Terrain.WALL;
 		for (int i : PathFinder.CIRCLE8){
-			if (curPassable != Dungeon.level.passable[pos + i]){
+			if (curWall != (Dungeon.level.map[pos + i]  == Terrain.WALL)){
 				stateChanges++;
-				curPassable = Dungeon.level.passable[pos + i];
+				curWall = Dungeon.level.map[pos + i]  == Terrain.WALL;
 			}
 		}
 		
