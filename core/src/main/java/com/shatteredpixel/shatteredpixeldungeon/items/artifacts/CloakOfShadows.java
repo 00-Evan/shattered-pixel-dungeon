@@ -172,7 +172,7 @@ public class CloakOfShadows extends Artifact {
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (!stealthed && (lock == null || lock.regenOn())) {
 					float turnsToCharge = (60 - 2*(chargeCap - charge));
-					if (level() > 7) turnsToCharge -= 2 * (level() - 7);
+					if (level() > 7) turnsToCharge -= 10*(level() - 7)/3f;
 					partialCharge += (1f / turnsToCharge);
 				}
 
@@ -232,7 +232,17 @@ public class CloakOfShadows extends Artifact {
 					GLog.w(Messages.get(this, "no_charge"));
 					((Hero) target).interrupt();
 				} else {
-					exp += 10 + ((Hero) target).lvl;
+					//target hero level is 1 + 2*cloak level
+					int lvlDiffFromTarget = ((Hero) target).lvl - 1+level()*2;
+					//plus an extra one for each level after 6
+					if (level() >= 7){
+						lvlDiffFromTarget -= level()-6;
+					}
+					if (lvlDiffFromTarget >= 0){
+						exp += Math.round(10f * Math.pow(1.1f, lvlDiffFromTarget));
+					} else {
+						exp += Math.round(10f * Math.pow(0.75f, -lvlDiffFromTarget));
+					}
 					
 					if (exp >= (level() + 1) * 50 && level() < levelCap) {
 						upgrade();
