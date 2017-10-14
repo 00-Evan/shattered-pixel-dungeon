@@ -22,13 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 
 public class SecretRunestoneRoom extends SecretRoom {
 	
@@ -64,14 +62,11 @@ public class SecretRunestoneRoom extends SecretRoom {
 		
 		level.addItemToSpawn(new PotionOfLiquidFlame());
 		
-		int runeStones = Random.NormalIntRange(2, 4);
-		for (int i = 0; i <runeStones; i++){
-			int dropPos;
-			do{
-				dropPos = level.pointToCell(random());
-			} while (level.map[dropPos] != Terrain.EMPTY_SP);
-			level.drop( i == 0? new StoneOfEnchantment() : new StoneOfIntuition(), dropPos);
-		}
+		int dropPos;
+		do{
+			dropPos = level.pointToCell(random());
+		} while (level.map[dropPos] != Terrain.EMPTY_SP);
+		level.drop( new StoneOfIntuition(), dropPos);
 		
 		entrance.set(Door.Type.HIDDEN);
 	}

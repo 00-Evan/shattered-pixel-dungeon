@@ -85,7 +85,7 @@ public class Maze {
 					y += mov[1];
 					maze[x][y] = FILLED;
 					moves++;
-				} while (Random.Int(moves+1) == 0 && checkValidMove(maze, x, y, mov));
+				} while (Random.Int(moves) == 0 && checkValidMove(maze, x, y, mov));
 				
 			}
 			

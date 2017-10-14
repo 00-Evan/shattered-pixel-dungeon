@@ -86,6 +86,8 @@ public class SummoningTrap extends Trap {
 		//important to process the visuals and pressing of cells last, so spawned mobs have a chance to occupy cells first
 		for (Mob mob : mobs){
 			ScrollOfTeleportation.appear(mob, mob.pos);
+			//so hidden traps are triggered as well
+			Dungeon.level.press(mob.pos, mob);
 		}
 
 	}
