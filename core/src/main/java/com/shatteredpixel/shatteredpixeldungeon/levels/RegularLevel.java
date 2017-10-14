@@ -215,7 +215,7 @@ public abstract class RegularLevel extends Level {
 			Mob mob = createMob();
 			mob.pos = pointToCell(roomToSpawn.random());
 
-			if (findMob(mob.pos) == null && passable[mob.pos]) {
+			if (findMob(mob.pos) == null && passable[mob.pos] && mob.pos != exit) {
 				mobsToSpawn--;
 				mobs.add(mob);
 
@@ -224,7 +224,7 @@ public abstract class RegularLevel extends Level {
 					mob = createMob();
 					mob.pos = pointToCell(roomToSpawn.random());
 
-					if (findMob(mob.pos)  == null && passable[mob.pos]) {
+					if (findMob(mob.pos)  == null && passable[mob.pos] && mob.pos != exit) {
 						mobsToSpawn--;
 						mobs.add(mob);
 					}
