@@ -30,7 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -318,7 +320,16 @@ public abstract class RegularLevel extends Level {
 				map[cell] = Terrain.GRASS;
 				losBlocking[cell] = false;
 			}
-			drop( Generator.random(), cell ).type = type;
+			
+			Item toDrop = Generator.random();
+			if ((toDrop instanceof Artifact && Random.Int(2) > 0) ||
+					(toDrop.isUpgradable() && Random.Int(2 + toDrop.level()) > 0)){
+				drop( toDrop, cell ).type = Heap.Type.LOCKED_CHEST;
+				addItemToSpawn(new GoldenKey(Dungeon.depth));
+			} else {
+				drop( toDrop, cell ).type = type;
+			}
+			
 		}
 
 		for (Item item : itemsToSpawn) {

@@ -73,6 +73,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
@@ -726,8 +727,8 @@ public class Hero extends Char {
 			Heap heap = Dungeon.level.heaps.get( dst );
 			if (heap != null && (heap.type != Type.HEAP && heap.type != Type.FOR_SALE)) {
 				
-				if ((heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST)
-						&& Notes.keyCount(new GoldenKey(Dungeon.depth)) < 1) {
+				if ((heap.type == Type.LOCKED_CHEST && Notes.keyCount(new GoldenKey(Dungeon.depth)) < 1)
+					|| (heap.type == Type.CRYSTAL_CHEST && Notes.keyCount(new CrystalKey(Dungeon.depth)) < 1)){
 
 						GLog.w( Messages.get(this, "locked_chest") );
 						ready();
@@ -1476,8 +1477,10 @@ public class Hero extends Char {
 			Heap heap = Dungeon.level.heaps.get( ((HeroAction.OpenChest)curAction).dst );
 			if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
 				Sample.INSTANCE.play( Assets.SND_BONES );
-			} else if (heap.type == Type.LOCKED_CHEST || heap.type == Type.CRYSTAL_CHEST){
+			} else if (heap.type == Type.LOCKED_CHEST){
 				Notes.remove(new GoldenKey(Dungeon.depth));
+			} else if (heap.type == Type.CRYSTAL_CHEST){
+				Notes.remove(new CrystalKey(Dungeon.depth));
 			}
 			StatusPane.needsKeyUpdate = true;
 			heap.open( this );

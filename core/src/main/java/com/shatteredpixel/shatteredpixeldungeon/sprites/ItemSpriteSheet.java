@@ -106,10 +106,11 @@ public class ItemSpriteSheet {
 	public static final int SHATTPOT        = SINGLE_USE+8;
 	public static final int IRON_KEY        = SINGLE_USE+9;
 	public static final int GOLDEN_KEY      = SINGLE_USE+10;
-	public static final int SKELETON_KEY    = SINGLE_USE+11;
-	public static final int MASTERY         = SINGLE_USE+12;
-	public static final int KIT             = SINGLE_USE+13;
-	public static final int AMULET          = SINGLE_USE+14;
+	public static final int CRYSTAL_KEY     = SINGLE_USE+11;
+	public static final int SKELETON_KEY    = SINGLE_USE+13;
+	public static final int MASTERY         = SINGLE_USE+14;
+	public static final int KIT             = SINGLE_USE+15;
+	public static final int AMULET          = SINGLE_USE+16;
 	static{
 		assignItemRect(ANKH,            10, 16);
 		assignItemRect(STYLUS,          12, 13);
@@ -122,6 +123,7 @@ public class ItemSpriteSheet {
 		assignItemRect(SHATTPOT,        14, 12);
 		assignItemRect(IRON_KEY,        8,  14);
 		assignItemRect(GOLDEN_KEY,      8,  14);
+		assignItemRect(CRYSTAL_KEY,     8,  14);
 		assignItemRect(SKELETON_KEY,    8,  14);
 		assignItemRect(MASTERY,         13, 16);
 		assignItemRect(KIT,             16, 15);

@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.CrystalKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -50,29 +50,14 @@ public class VaultRoom extends SpecialRoom {
 		
 		Random.shuffle(prizeClasses);
 		
-		switch (Random.Int( 3 )) {
-		
-		case 0:
-			level.drop( prize( level ), c ).type = Heap.Type.LOCKED_CHEST;
-			level.addItemToSpawn( new GoldenKey( Dungeon.depth ) );
-			break;
-			
-		case 1:
-			Item i1, i2;
-			do {
-				i1 = prize( level );
-				i2 = prize( level );
-			} while (i1.getClass() == i2.getClass());
-			level.drop( i1, c ).type = Heap.Type.CRYSTAL_CHEST;
-			level.drop( i2, c + PathFinder.NEIGHBOURS8[Random.Int( 8 )]).type = Heap.Type.CRYSTAL_CHEST;
-			level.addItemToSpawn( new GoldenKey( Dungeon.depth ) );
-			break;
-			
-		case 2:
-			level.drop( prize( level ), c );
-			Painter.set( level, c, Terrain.PEDESTAL );
-			break;
-		}
+		Item i1, i2;
+		do {
+			i1 = prize( level );
+			i2 = prize( level );
+		} while (i1.getClass() == i2.getClass());
+		level.drop( i1, c ).type = Heap.Type.CRYSTAL_CHEST;
+		level.drop( i2, c + PathFinder.NEIGHBOURS8[Random.Int( 8 )]).type = Heap.Type.CRYSTAL_CHEST;
+		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
 		
 		entrance().set( Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
