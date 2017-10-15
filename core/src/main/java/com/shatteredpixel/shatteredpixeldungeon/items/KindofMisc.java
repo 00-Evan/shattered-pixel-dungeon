@@ -50,18 +50,13 @@ public abstract class KindofMisc extends EquipableItem {
 						protected void onSelect(int index) {
 
 							KindofMisc equipped = (index == 0 ? m1 : m2);
-							if (!equipped.cursed) {
-								if (index == 0){
-									hero.belongings.misc1 = null;
-								} else {
-									hero.belongings.misc2 = null;
-								}
+							//temporarily give 1 extra backpack spot to support swapping with a full inventory
+							hero.belongings.backpack.size++;
+							if (equipped.doUnequip(hero, true, false)) {
 								//fully re-execute rather than just call doEquip as we want to preserve quickslot
 								execute(hero, AC_EQUIP);
-								equipped.collect();
-							} else {
-								GLog.w(Messages.get(EquipableItem.class, "unequip_cursed"));
 							}
+							hero.belongings.backpack.size--;
 						}
 					});
 
