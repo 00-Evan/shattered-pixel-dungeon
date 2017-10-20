@@ -71,7 +71,16 @@ public class Pasty extends Food {
 	}
 
 	{
+		reset();
 
+		energy = Hunger.STARVING;
+
+		bones = true;
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
 		switch(holiday){
 			case NONE:
 				name = Messages.get(this, "pasty");
@@ -86,12 +95,8 @@ public class Pasty extends Food {
 				image = ItemSpriteSheet.CANDY_CANE;
 				break;
 		}
-
-		energy = Hunger.STARVING;
-
-		bones = true;
 	}
-
+	
 	@Override
 	public void execute(Hero hero, String action) {
 		super.execute(hero, action);
