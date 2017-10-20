@@ -233,7 +233,7 @@ public class CloakOfShadows extends Artifact {
 					((Hero) target).interrupt();
 				} else {
 					//target hero level is 1 + 2*cloak level
-					int lvlDiffFromTarget = ((Hero) target).lvl - 1+level()*2;
+					int lvlDiffFromTarget = ((Hero) target).lvl - (1+level()*2);
 					//plus an extra one for each level after 6
 					if (level() >= 7){
 						lvlDiffFromTarget -= level()-6;
