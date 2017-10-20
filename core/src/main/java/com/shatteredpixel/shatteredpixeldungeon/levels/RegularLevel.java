@@ -33,8 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
@@ -47,9 +45,13 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -322,10 +324,13 @@ public abstract class RegularLevel extends Level {
 			}
 			
 			Item toDrop = Generator.random();
-			if ((toDrop instanceof Artifact && Random.Int(2) > 0) ||
-					(toDrop.isUpgradable() && Random.Int(2 + toDrop.level()) > 0)){
-				drop( toDrop, cell ).type = Heap.Type.LOCKED_CHEST;
-				addItemToSpawn(new GoldenKey(Dungeon.depth));
+			if ((toDrop instanceof Artifact && Random.Int(2) == 0) ||
+					(toDrop.isUpgradable() && Random.Int(3) <= toDrop.level())){
+				Heap dropped = drop( toDrop, cell );
+				if (heaps.get(cell) == dropped) {
+					dropped.type = Heap.Type.LOCKED_CHEST;
+					addItemToSpawn(new GoldenKey(Dungeon.depth));
+				}
 			} else {
 				drop( toDrop, cell ).type = type;
 			}
@@ -333,20 +338,7 @@ public abstract class RegularLevel extends Level {
 		}
 
 		for (Item item : itemsToSpawn) {
-			int cell;
-			do {
-				cell = randomDropCell();
-				if (item instanceof Scroll) {
-					while (traps.get(cell) instanceof BurningTrap) {
-						cell = randomDropCell();
-					}
-
-				} else if (item instanceof Potion) {
-					while (traps.get(cell) instanceof ChillingTrap) {
-						cell = randomDropCell();
-					}
-				}
-			} while (traps.get(cell) instanceof ExplosiveTrap);
+			int cell = randomDropCell();
 			drop( item, cell ).type = Heap.Type.HEAP;
 			if (map[cell] == Terrain.HIGH_GRASS) {
 				map[cell] = Terrain.GRASS;
@@ -420,8 +412,20 @@ public abstract class RegularLevel extends Level {
 			Room room = randomRoom( StandardRoom.class );
 			if (room != null && room != roomEntrance) {
 				int pos = pointToCell(room.random());
-				if (passable[pos] && pos != exit) {
-					return pos;
+				if (passable[pos]
+						&& pos != exit
+						&& heaps.get(pos) == null) {
+					
+					Trap t = traps.get(pos);
+					
+					//items cannot spawn on traps which destroy items
+					if (t == null ||
+							! (t instanceof BurningTrap || t instanceof BlazingTrap
+							|| t instanceof ChillingTrap || t instanceof FrostTrap
+							|| t instanceof ExplosiveTrap || t instanceof DisintegrationTrap)) {
+						
+						return pos;
+					}
 				}
 			}
 		}
