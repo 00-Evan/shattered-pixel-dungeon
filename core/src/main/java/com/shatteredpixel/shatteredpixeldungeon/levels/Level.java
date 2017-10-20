@@ -669,6 +669,7 @@ public abstract class Level implements Bundlable {
 			heap = new Heap();
 			heap.seen = Dungeon.level == this && heroFOV[cell];
 			heap.pos = cell;
+			heap.drop(item);
 			if (map[cell] == Terrain.CHASM || (Dungeon.level != null && pit[cell])) {
 				Dungeon.dropToChasm( item );
 				GameScene.discard( heap );
@@ -685,13 +686,14 @@ public abstract class Level implements Bundlable {
 			} while (!passable[n] && !avoid[n]);
 			return drop( item, n );
 			
+		} else {
+			heap.drop(item);
 		}
-		heap.drop(item);
 		
 		if (Dungeon.level != null) {
 			press( cell, null );
 		}
-				
+		
 		return heap;
 	}
 	
