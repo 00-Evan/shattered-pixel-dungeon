@@ -21,17 +21,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
-public class Venom extends Poison implements Hero.Doom {
+public class Venom extends Buff implements Hero.Doom {
 
 	private int damage = 1;
+	protected float left;
 
 	private static final String DAMAGE	= "damage";
+	private static final String LEFT	= "left";
 
 	{
 		type = buffType.NEGATIVE;
@@ -41,17 +45,18 @@ public class Venom extends Poison implements Hero.Doom {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( DAMAGE, damage );
-
+		bundle.put( LEFT, left );
 	}
 
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		damage = bundle.getInt( DAMAGE );
+		left = bundle.getFloat( LEFT );
 	}
 
 	public void set(float duration, int damage) {
-		set(duration);
+		this.left = Math.max(duration, left);
 		if (this.damage < damage) this.damage = damage;
 	}
 
@@ -76,9 +81,8 @@ public class Venom extends Poison implements Hero.Doom {
 			target.damage(damage, this);
 			if (damage < ((Dungeon.depth+1)/2)+1)
 				damage++;
-
-			//want it to act after the cloud of venom it came from.
-			spend( TICK+0.1f );
+			
+			spend( TICK );
 			if ((left -= TICK) <= 0) {
 				detach();
 			}
@@ -87,6 +91,14 @@ public class Venom extends Poison implements Hero.Doom {
 		}
 
 		return true;
+	}
+	
+	@Override
+	public void onDeath() {
+		Badges.validateDeathFromPoison();
+		
+		Dungeon.fail( getClass() );
+		GLog.n( Messages.get(this, "ondeath") );
 	}
 
 }
