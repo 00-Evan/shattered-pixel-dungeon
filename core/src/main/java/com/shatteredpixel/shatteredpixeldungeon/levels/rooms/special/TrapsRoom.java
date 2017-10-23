@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TeleportationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
@@ -52,9 +51,9 @@ public class TrapsRoom extends SpecialRoom {
 		Painter.fill( level, this, Terrain.WALL );
 
 		Class<? extends Trap> trapClass;
-		switch (Random.Int(5)){
+		switch (Random.Int(4)){
 			case 0:
-				trapClass = !Dungeon.bossLevel(Dungeon.depth + 1)? null : SummoningTrap.class;
+				trapClass = null;
 				break;
 			default:
 				trapClass = Random.oneOf(levelTraps[Dungeon.depth/5]);

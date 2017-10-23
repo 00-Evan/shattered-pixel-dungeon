@@ -33,14 +33,26 @@ import com.watabou.utils.Point;
 
 public class SecretChestChasmRoom extends SecretRoom {
 	
+	//width and height are controlled here so that this room always requires 2 levitation potions
+	
 	@Override
 	public int minWidth() {
 		return 8;
 	}
 	
 	@Override
+	public int maxWidth() {
+		return 9;
+	}
+	
+	@Override
 	public int minHeight() {
 		return 8;
+	}
+	
+	@Override
+	public int maxHeight() {
+		return 9;
 	}
 	
 	@Override
@@ -69,23 +81,19 @@ public class SecretChestChasmRoom extends SecretRoom {
 		
 		p = new Point(left+3, top+3);
 		Painter.set(level, p, Terrain.EMPTY_SP);
-		level.drop(Generator.random(Generator.Category.SCROLL),
-				level.pointToCell(p)).type = Heap.Type.LOCKED_CHEST;
+		level.drop(Generator.random(), level.pointToCell(p)).type = Heap.Type.LOCKED_CHEST;
 		
 		p.x = right-3;
 		Painter.set(level, p, Terrain.EMPTY_SP);
-		level.drop(Generator.random(Generator.Category.POTION),
-				level.pointToCell(p)).type = Heap.Type.LOCKED_CHEST;
+		level.drop(Generator.random(), level.pointToCell(p)).type = Heap.Type.LOCKED_CHEST;
 		
 		p.y = bottom-3;
 		Painter.set(level, p, Terrain.EMPTY_SP);
-		level.drop(Generator.random(Generator.Category.SCROLL),
-				level.pointToCell(p)).type = Heap.Type.LOCKED_CHEST;
+		level.drop(Generator.random(), level.pointToCell(p)).type = Heap.Type.LOCKED_CHEST;
 		
 		p.x = left+3;
 		Painter.set(level, p, Terrain.EMPTY_SP);
-		level.drop(Generator.random(Generator.Category.POTION),
-				level.pointToCell(p)).type = Heap.Type.LOCKED_CHEST;
+		level.drop(Generator.random(), level.pointToCell(p)).type = Heap.Type.LOCKED_CHEST;
 		
 		level.addItemToSpawn(new PotionOfLevitation());
 		
