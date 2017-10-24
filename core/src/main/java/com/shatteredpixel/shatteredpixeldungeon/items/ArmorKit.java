@@ -95,6 +95,7 @@ public class ArmorKit extends Item {
 			
 			curUser.belongings.armor = classArmor;
 			((HeroSprite)curUser.sprite).updateArmor();
+			classArmor.activate(curUser);
 			
 		} else {
 			

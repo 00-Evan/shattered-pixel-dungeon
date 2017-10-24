@@ -97,7 +97,6 @@ abstract public class ClassArmor extends Armor {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.remove( AC_DETACH );
 		if (hero.HP >= 3 && isEquipped( hero )) {
 			actions.add( AC_SPECIAL );
 		}
