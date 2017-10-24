@@ -27,11 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.utils.PathFinder;
 
 public class PitfallTrap extends Trap {
 
@@ -62,23 +59,6 @@ public class PitfallTrap extends Trap {
 		}
 	}
 
-	@Override
-	protected void disarm() {
-		super.disarm();
-		
-		int stateChanges = 0;
-		boolean curWall = Dungeon.level.map[pos + PathFinder.CIRCLE8[PathFinder.CIRCLE8.length-1]] == Terrain.WALL;
-		for (int i : PathFinder.CIRCLE8){
-			if (curWall != (Dungeon.level.map[pos + i]  == Terrain.WALL)){
-				stateChanges++;
-				curWall = Dungeon.level.map[pos + i]  == Terrain.WALL;
-			}
-		}
-		
-		//if making a pit here wouldn't block any paths, make a pit tile instead of a disarmed trap tile.
-		if (stateChanges <= 2){
-			Level.set(pos, Terrain.CHASM);
-			GameScene.updateMap( pos );
-		}
-	}
+	//TODO these used to become chasms when disarmed, but the functionality was problematic
+	//because it could block routes, perhaps some way to make this work elegantly?
 }
