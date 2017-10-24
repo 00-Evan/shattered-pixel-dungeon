@@ -549,12 +549,12 @@ public abstract class Mob extends Char {
 				Statistics.enemiesSlain++;
 				Badges.validateMonstersSlain();
 				Statistics.qualifiedForNoKilling = false;
-			}
-
-			int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
-			if (exp > 0) {
-				Dungeon.hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "exp", exp) );
-				Dungeon.hero.earnExp( exp );
+				
+				int exp = Dungeon.hero.lvl <= maxLvl ? EXP : 0;
+				if (exp > 0) {
+					Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
+					Dungeon.hero.earnExp(exp);
+				}
 			}
 		}
 	}

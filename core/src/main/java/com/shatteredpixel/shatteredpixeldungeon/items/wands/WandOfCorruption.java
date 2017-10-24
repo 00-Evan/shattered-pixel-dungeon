@@ -22,7 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
@@ -209,10 +211,13 @@ public class WandOfCorruption extends Wand {
 				buff.detach();
 			}
 			Buff.affect(enemy, Corruption.class);
+			
+			Statistics.enemiesSlain++;
+			Badges.validateMonstersSlain();
+			Statistics.qualifiedForNoKilling = false;
 			if (enemy.EXP > 0 && curUser.lvl <= enemy.maxLvl) {
 				curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
 				curUser.earnExp(enemy.EXP);
-				enemy.EXP = 0;
 			}
 			//TODO perhaps enemies should also drop loot here
 		} else {
