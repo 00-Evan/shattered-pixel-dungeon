@@ -54,6 +54,8 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public static final int v0_6_1  = 205;
 	
+	public static final int v0_6_2  = 221;
+	
 	public ShatteredPixelDungeon() {
 		super( WelcomeScene.class );
 		

@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
@@ -36,6 +37,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -106,53 +110,164 @@ public class ChangesScene extends PixelScene {
 		};
 		add( list );
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.1b", true, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.2", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHEST, null), "Sprites",
-				"Improved sprites for the following:\n" +
-				"_-_ Chests & Mimics\n" +
-				"_-_ Darts\n" +
-				"_-_ Javelins\n" +
-				"_-_ Tomahawks"));
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.1):\n" +
-				"_-_ Hero automatically searching in cases when they shouldn't\n\n" +
-				"_-_ Transmuted items not being added to the journal items list\n\n" +
-				"_-_ Doors on floor 2 being hidden more often than they should be\n\n" +
-				"_-_ Frequent crashes for a tiny number of unlucky players (sorry!)\n\n" +
-				"Fixed (existed prior to 0.6.1):\n" +
-				"_-_ Numerous rare crash and freeze bugs\n" +
-				"_-_ Various minor bugs with the buff indicator\n" +
-				"_-_ Sleep-immune enemies being affected by magical sleep"));
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"Fixed an exploit where players could examine never-seen areas to determine the shape of a level. Examining any never-seen region will now always show nothing. Previously only examining outside of the level would show nothing."));
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "translation"),
-				"Fixed in English:\n" +
-				"_-_ Missing period in alarm trap description\n\n" +
-				"Various translation updates"));
-		
-		changes = new ChangeInfo("v0.6.1a", true, "");
-		changes.hardlight(Window.TITLE_COLOR);
+		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
+		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.1):\n" +
-				"_-_ About page flare visuals not appearing\n" +
-				"_-_ Sleep & alert indicators not disappearing\n" +
-				"_-_ Hero automatically finding secrets more often than intended\n\n" +
-				"Fixed (existed prior to 0.6.1):\n" +
-				"_-_ Various crash bugs\n" +
-				"_-_ Thieves being able to escape while visible\n" +
-				"_-_ Enemies not visually dying in rare cases\n" +
-				"_-_ Visuals flickering while zooming on low resolution devices."));
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"_-_ As a result of the flickering bugfix, camera zooming will be a bit more rigid on low resolution devices.\n\n" +
-				"_-_ Lloyd's Beacon's return function is no longer blocked by none-hostile creatures."));
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "translation"),
-				"Various translation updates"));
+		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Dungeon Secrets!",
+				"The secrets of the dungeon have been totally redesigned!\n\n" +
+				"_-_ Regular rooms can no longer be totally hidden\n\n" +
+				"_-_ 12 new secret rooms added, which are always hidden\n\n" +
+				"_-_ Hidden doors are now harder to find automatically\n\n" +
+				"_-_ Searching now consumes 6 turns of hunger, up from 2.\n\n" +
+				"This is a big adjustment to how secrets work in the dungeon. The goal is to make secrets more interesting, harder to find, and also more optional."));
 		
+		changes.addButton( new ChangeButton( new Image(Assets.ROGUE, 0, 15, 12, 15), "Rogue Rework!",
+				"The rogue has been reworked! His abilities have received a number of changes to make his strengths more pronounced and focused.\n\n" +
+				"These abilities have been _removed:_\n" +
+				"_-_ Gains evasion from excess strength on armor\n" +
+				"_-_ Gains hunger 20% more slowly\n" +
+				"_-_ Identifies rings by wearing them\n" +
+				"_-_ Has an increased chance to detect secrets\n\n" +
+				"These abilities have been _added:_\n" +
+				"_-_ Searches in a wider radius than other heroes\n" +
+				"_-_ Is able to find more secrets in the dungeon\n\n" +
+				"Make sure to check out the Cloak of Shadows and Dagger changes as well."));
+		
+		changes.addButton( new ChangeButton( new Image(Assets.ROGUE, 0, 90, 12, 15), "Rogue Subclasses Rework!",
+				"Both of the rogue's subclasses has been reworked, with an emphasis on more powerful abilities that need more interaction from the player.\n\n" +
+				"_The Assassin:_\n" +
+				"_-_ No longer gains a free +25% damage on surprise attacks\n" +
+				"_-_ Now prepares for a deadly strike while invisible, the longer he waits the more powerful the strike becomes.\n" +
+				"_-_ Charged attacks have special effects, such as blinking to the target and dealing bonus damage to weakened enemies.\n\n" +
+				"_The Freerunner:_\n" +
+				"_-_ No longer gains movement speed when not hungry or encumbered\n" +
+				"_-_ Now gains 'momentum' as he runs. Momentum increases evasion and movement speed as it builds.\n" +
+				"_-_ Momentum is rapidly lost when standing still.\n" +
+				"_-_ Evasion gained from momentum scales with excess strength on armor."));
+		
+		changes.addButton( new ChangeButton( new Image(Assets.TERRAIN_FEATURES, 16, 0, 16, 16), "Trap Overhaul!",
+				"Most of the game's traps have received changes, some have been overhauled entirely!\n\n" +
+				"_-_ Removed Spear and Paralytic Gas Traps\n" +
+				"_-_ Lightning Trap is now Shocking and Storm traps\n" +
+				"_-_ Elemental Traps now all create fields of their element\n" +
+				"_-_ Worn and Poison Trap are now Worn and Poison Dart Trap\n" +
+				"_-_ Dart traps, Rockfall Trap, and Disintegration Trap are now always visible, but attack at a range\n" +
+				"_-_ Warping Trap reworked, no longer sends to previous floors\n" +
+				"_-_ Gripping and Flashing Traps now never deactivate, but are less harmful\n\n" +
+				"_-_ Tengu now uses Gripping Traps\n\n" +
+				"_-_ Significantly reduced instances of items appearing ontop of item-destroying traps"));
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.LOCKED_CHEST, null), "Chest Adjustments",
+				"_-_ Crystal chests are now opened by crystal keys.\n\n" +
+				"_-_ Golden chests now sometimes appear in the dungeon, containing more valuable items."));
+		
+		
+		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new WandOfCorruption(),
+				"The Wand of Corruption has been reworked!\n\n" +
+				"_-_ Corruption resistance is now based on enemy exp values, not max HP. Low HP and debuffs still reduce enemy corruption resistance.\n\n" +
+				"_-_ Wand now only spends 1 charge per shot, and inflicts debuffs on enemies if it fails to corrupt. Debuffs become stronger the closer the wand got to corrupting.\n\n" +
+				"_-_ Corrupted enemies are now considered by the game to be ally characters.\n\n" +
+				"_-_ Corrupted enemies award exp immediately as they are corrupted.\n\n" +
+				"These changes are aimed at making the wand more powerful, and also less of an all-in wand. Wand of Corruption is now useful even if it doesn't corrupt an enemy."));
+		
+		changes.addButton( new ChangeButton( new Image(Assets.STATUE, 0, 0, 12, 15), "AI and Enemy Changes",
+				"_-_ Characters now have an internal alignment and choose enemies based on that. Friendly characters should now never attack eachother.\n\n" +
+				"_-_ Injured characters will now always have a persistent health bar, even if they aren't being targeted.\n\n" +
+				"_-_ Improved enemy emote visuals, they now appear more frequently and there is now one for losing a target.\n\n" +
+				"_-_ Enemies now always lose their target after being teleported."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Buff icons can now be tinted, several buffs take advantage of this to better display their state.\n\n" +
+				"_-_ Added a new interface for alchemy. This replaces throwing items into the pot directly.\n\n" +
+				"_-_ Reduced the spawn rate of dark floors to 1.5x, from 2x.\n\n" +
+				"_-_ Crystal chest rooms will now always have a different item type in each chest.\n\n" +
+				"_-_ Burning and freezing now destroy held items in a much less random manner.\n\n" +
+				"_-_ Various internal code improvements.\n" +
+				"_-_ Zooming is now less stiff at low resolutions.\n" +
+				"_-_ Improved VFX when items are picked up."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Various exploits players could use to determine map shape\n" +
+				"_-_ Artifacts being removed from the quickslot when being equipped in some cases\n" +
+				"_-_ Swapping misc items not working correctly with a full inventory\n" +
+				"_-_ Non-hostile characters reducing the number of spawned enemies in some cases\n" +
+				"_-_ Bugged interaction between poison and venom\n" +
+				"_-_ Enemies sometimes not waking from sleep\n" +
+				"_-_ Swarms not duplicating over hazards\n" +
+				"_-_ Black bars on certain modern phones\n" +
+				"_-_ Action button not persisting between floors\n" +
+				"_-_ Various bugs with multiplicity curse\n" +
+				"_-_ Various minor visual bugs\n" +
+				"_-_ Blandfruit rarely becoming a potion\n" +
+				"_-_ Planted seeds not updating terrain correctly\n" +
+				"_-_ Enemies rarely spawning ontop of exit stairs\n" +
+				"_-_ Evil Eyes sometimes skipping beam chargeup\n" +
+				"_-_ Warrior's seal being disabled by armor kit" ));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"In English:\n" +
+				"_-_ Improved some common game log entries\n" +
+				"_-_ Fixed a typo when enemies die out of view\n" +
+				"_-_ Fixed a typo in the ghost hero's introduction\n" +
+				"_-_ Fixed a typo in dirk description\n" +
+						"\n" +
+				"_-_ Translation Updates\n\n" +
+				"_-_ Added turkish language"));
+		
+		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new CloakOfShadows(),
+				"As part of the rogue rework, the cloak of shadows has been significantly buffed:\n\n" +
+				"_-_ Max charges have been halved, however each charge is roughly twice as useful.\n" +
+				"_-_ As there are half as many charges total, charge rate is effectively increased.\n" +
+				"_-_ Cooldown mechanic removed, cloak can now be used multiple times in a row.\n" +
+				"_-_ Cloak levelling progression changed, it is now much more dependant on hero level\n\n" +
+				"These changes should let the rogue go invisible more often, and with more flexibility."));
+		
+		changes.addButton( new ChangeButton(new Dagger(),
+				"As part of the rogue rework, sneak attack weapons have been buffed:\n\n" +
+				"_-_ Dagger sneak attack minimum damage increased to 75% from 50%.\n" +
+				"_-_ Dirk sneak attack minimum damage increased to 67% from 50%\n" +
+				"_-_ Assassin's blade sneak attack minimum damage unchanged at 50%\n\n" +
+				"This change should hopefully give the rogue some needed earlygame help, and give him a more clear choice as to what item he should upgrade, if no items were found in the dungeon."));
+		
+		changes.addButton( new ChangeButton(new Flail(),
+				"The flail's downsides were too harsh, so one of them has been changed both to make its weaknesses more centralized and to hopefully increase its power.\n\n" +
+				"_-_ Flail no longer attacks at 0.8x speed, instead it has 20% reduced accuracy."));
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.POTION_GOLDEN, null), "Potion Adjustments",
+				"Potion of Purification buffed:\n" +
+				"_-_ Drinking effect now lasts for 20 turns, up from 15.\n" +
+				"_-_ Drinking now provides immunity to all area-bound effects, not just gasses.\n\n" +
+				"Potion of Frost buffed:\n" +
+				"_-_ Now creates a freezing field which lasts for several turns."));
+		
+		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
+				"The Berserker's survivability and power have been reduced to help bring him into line with the other subclasses:\n\n" +
+				"_-_ Bonus damage from low health reduced significantly when below 50% HP. 2x damage while berserking is unchanged.\n\n" +
+				"_-_ Turns of exhaustion after berserking increased to 60 from 40. Damage reduction from exhaustion stays higher for longer."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.REMAINS, null), "Heroes Remains",
+				"_-_ Remains can no longer contain progression items, such as potions of strength or scrolls of upgrade.\n\n" +
+				"_-_ All upgradeable items dropped by remains are now capped at +3 (+0 for artifacts)\n\n" +
+				"The intention for remains is so a previously failed run can give a nice surprise and tiny boost to the next one, but these items are both too strong and too easy to abuse.\n\n" +
+				"In compensation, it is now much less likely to receive gold from remains, unless that character died with very few items."));
 		
 		changes = new ChangeInfo("v0.6.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -243,7 +358,7 @@ public class ChangesScene extends PixelScene {
 				"_-_ Improved potion and scroll inventory icons\n" +
 				"_-_ Increased landscape width of some windows\n" +
 				"_-_ Un-IDed artifacts no longer display charge"));
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "translation"),
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"Fixed in English:\n" +
 				"_-_ Missing capitalization in Prison Guard text\n" +
 				"_-_ Typo when trying a locked chest with no key\n\n" +
@@ -292,6 +407,53 @@ public class ChangesScene extends PixelScene {
 				"_-_ Ethereal chains now cannot reach locations the player cannot reach by walking or flying. e.g. the chains can no longer reach into a locked room.\n\n" +
 				"_-_ Ethereal chains can now reach through walls on boss floors, but the above limitation still applies."));
 		
+		changes = new ChangeInfo("v0.6.1a", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.1):\n" +
+				"_-_ About page flare visuals not appearing\n" +
+				"_-_ Sleep & alert indicators not disappearing\n" +
+				"_-_ Hero automatically finding secrets more often than intended\n\n" +
+				"Fixed (existed prior to 0.6.1):\n" +
+				"_-_ Various crash bugs\n" +
+				"_-_ Thieves being able to escape while visible\n" +
+				"_-_ Enemies not visually dying in rare cases\n" +
+				"_-_ Visuals flickering while zooming on low resolution devices."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ As a result of the flickering bugfix, camera zooming will be a bit more rigid on low resolution devices.\n\n" +
+						"_-_ Lloyd's Beacon's return function is no longer blocked by none-hostile creatures."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Various translation updates"));
+		
+		changes = new ChangeInfo("v0.6.1b", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHEST, null), "Sprites",
+				"Improved sprites for the following:\n" +
+				"_-_ Chests & Mimics\n" +
+				"_-_ Darts\n" +
+				"_-_ Javelins\n" +
+				"_-_ Tomahawks"));
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.1):\n" +
+				"_-_ Hero automatically searching in cases when they shouldn't\n\n" +
+				"_-_ Transmuted items not being added to the journal items list\n\n" +
+				"_-_ Doors on floor 2 being hidden more often than they should be\n\n" +
+				"_-_ Frequent crashes for a tiny number of unlucky players (sorry!)\n\n" +
+				"Fixed (existed prior to 0.6.1):\n" +
+				"_-_ Numerous rare crash and freeze bugs\n" +
+				"_-_ Various minor bugs with the buff indicator\n" +
+				"_-_ Sleep-immune enemies being affected by magical sleep"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Fixed an exploit where players could examine never-seen areas to determine the shape of a level. Examining any never-seen region will now always show nothing. Previously only examining outside of the level would show nothing."));
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Fixed in English:\n" +
+				"_-_ Missing period in alarm trap description\n\n" +
+				"Various translation updates"));
+		
 		changes = new ChangeInfo( Messages.get(this, "previous"), true,
 				"_v0.6.0:_\n" +
 				"_-_ Level creation algorithm completely overhauled!\n" +
@@ -332,10 +494,29 @@ public class ChangesScene extends PixelScene {
 		content.clear();
 
 		float posY = 0;
+		float nextPosY = 0;
+		boolean second =false;
 		for (ChangeInfo info : infos){
-			info.setRect(0, posY, panel.innerWidth(), 0);
-			content.add( info );
-			posY = info.bottom();
+			if (info.major) {
+				posY = nextPosY;
+				second = false;
+				info.setRect(0, posY, panel.innerWidth(), 0);
+				content.add(info);
+				posY = nextPosY = info.bottom();
+			} else {
+				if (!second){
+					second = true;
+					info.setRect(0, posY, panel.innerWidth()/2f, 0);
+					content.add(info);
+					nextPosY = info.bottom();
+				} else {
+					second = false;
+					info.setRect(panel.innerWidth()/2f, posY, panel.innerWidth()/2f, 0);
+					content.add(info);
+					nextPosY = Math.max(info.bottom(), nextPosY);
+					posY = nextPosY;
+				}
+			}
 		}
 
 
@@ -365,6 +546,7 @@ public class ChangesScene extends PixelScene {
 		protected ColorBlock line;
 
 		private RenderedText title;
+		private boolean major;
 
 		private RenderedTextMultiline text;
 
@@ -372,14 +554,17 @@ public class ChangesScene extends PixelScene {
 
 		public ChangeInfo( String title, boolean majorTitle, String text){
 			super();
-
-			line = new ColorBlock( 1, 1, 0xFF222222);
+			
 			if (majorTitle){
 				this.title = PixelScene.renderText( title, 9 );
+				line = new ColorBlock( 1, 1, 0xFF222222);
 				add(line);
 			} else {
 				this.title = PixelScene.renderText( title, 6 );
+				line = new ColorBlock( 1, 1, 0xFF333333);
+				add(line);
 			}
+			major = majorTitle;
 
 			add(this.title);
 
@@ -414,13 +599,8 @@ public class ChangesScene extends PixelScene {
 
 		@Override
 		protected void layout() {
-			float posY = this.y;
-
-			line.size(width(), 1);
-			line.x = x;
-			line.y = posY;
-
-			posY += 2;
+			float posY = this.y + 2;
+			if (major) posY += 2;
 
 			title.x = x + (width - title.width()) / 2f;
 			title.y = posY;
@@ -433,18 +613,18 @@ public class ChangesScene extends PixelScene {
 				posY += text.height();
 			}
 
-			float posX = 0;
+			float posX = x;
 			float tallest = 0;
 			for (ChangeButton change : buttons){
 
-				if (posX + change.width() >= width()){
-					posX = 0;
+				if (posX + change.width() >= right()){
+					posX = x;
 					posY += tallest;
 					tallest = 0;
 				}
 
 				//centers
-				if (posX == 0){
+				if (posX == x){
 					float offset = width;
 					for (ChangeButton b : buttons){
 						offset -= b.width();
@@ -465,6 +645,20 @@ public class ChangesScene extends PixelScene {
 			posY += tallest + 2;
 
 			height = posY - this.y;
+			
+			if (major) {
+				line.size(width(), 1);
+				line.x = x;
+				line.y = y+2;
+			} else if (x == 0){
+				line.size(1, height());
+				line.x = width;
+				line.y = y;
+			} else {
+				line.size(1, height());
+				line.x = x;
+				line.y = y;
+			}
 		}
 	}
 
