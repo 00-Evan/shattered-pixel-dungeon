@@ -208,7 +208,10 @@ public class WandOfCorruption extends Wand {
 				!enemy.immunities().contains(Corruption.class)){
 			enemy.HP = enemy.HT;
 			for (Buff buff : enemy.buffs()) {
-				buff.detach();
+				if (buff.type == Buff.buffType.NEGATIVE
+						&& !(buff instanceof SoulMark)) {
+					buff.detach();
+				}
 			}
 			Buff.affect(enemy, Corruption.class);
 			
