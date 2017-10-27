@@ -28,18 +28,28 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
+import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -109,6 +119,10 @@ public class ChangesScene extends PixelScene {
 
 		};
 		add( list );
+		
+		//**********************
+		//       v0.6.2
+ 		//**********************
 		
 		ChangeInfo changes = new ChangeInfo("v0.6.2", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -269,6 +283,10 @@ public class ChangesScene extends PixelScene {
 				"The intention for remains is so a previously failed run can give a nice surprise and tiny boost to the next one, but these items are both too strong and too easy to abuse.\n\n" +
 				"In compensation, it is now much less likely to receive gold from remains, unless that character died with very few items."));
 		
+		//**********************
+		//       v0.6.1
+		//**********************
+		
 		changes = new ChangeInfo("v0.6.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
@@ -297,7 +315,6 @@ public class ChangesScene extends PixelScene {
 				"_-_ Ascending stairs, descending stairs, and mining no longer increase hunger."));
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), new RingOfEnergy().trueName(),
 				"_-_ Added the ring of energy."));
-
 
 		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
 		changes.hardlight( CharSprite.WARNING );
@@ -454,40 +471,215 @@ public class ChangesScene extends PixelScene {
 				"_-_ Missing period in alarm trap description\n\n" +
 				"Various translation updates"));
 		
-		changes = new ChangeInfo( Messages.get(this, "previous"), true,
-				"_v0.6.0:_\n" +
-				"_-_ Level creation algorithm completely overhauled!\n" +
+		//**********************
+		//       v0.6.0
+		//**********************
+		
+		changes = new ChangeInfo("v0.6.0", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Levelgen Overhaul!",
+				"Level creation algorithm overhauled!\n\n" +
+				"_-_ Levels are now much less box-shaped\n" +
 				"_-_ Sewers are now smaller, caves+ are now larger\n" +
 				"_-_ Some rooms can now be much larger than before\n" +
-				"_-_ Added 8 new standard room types,\n" +
-				"\t\t and loads of new standard room layouts\n" +
-				"_-_ Balance changes to traps and light sources\n" +
-				"_-_ All food except rations is more filling\n" +
-				"_-_ many enchant/glyph balance changes\n" +
-				"\n"+
-				"_v0.5.0:_ New visual style, shadows and depth!\n" +
-				"\n"+
-				"_v0.4.3:_ Various utility features and improvements\n" +
-				"_v0.4.2:_ Performance and game engine improvements\n" +
-				"_v0.4.1:_ Balance adjustments to enemies & armor\n" +
-				"_v0.4.0:_ Reworked equips, enchants & curses\n" +
-				"\n" +
-				"_v0.3.5:_ Reworked Warrior & subclasses\n" +
-				"_v0.3.4:_ Multiple language support\n" +
-				"_v0.3.3:_ Support for Google Play Games\n" +
-				"_v0.3.2:_ Prison Rework & Balance Changes\n" +
-				"_v0.3.1:_ Traps reworked & UI upgrades\n" +
-				"_v0.3.0:_ Wands & Mage completely reworked\n" +
-				"\n" +
-				"_v0.2.4:_ Small improvements and tweaks\n" +
-				"_v0.2.3:_ Artifact additions & improvements\n" +
-				"_v0.2.2:_ Small improvements and tweaks\n" +
-				"_v0.2.1:_ Sewer improvements\n" +
-				"_v0.2.0:_ Added artifacts, reworked rings\n" +
-				"\n" +
-				"_v0.1.1:_ Added blandfruit, reworked dew vial\n" +
-				"_v0.1.0:_ Improvements to potions/scrolls");
+				"_-_ Added 8 new standard room types, and loads of new standard room layouts\n\n" +
+				"_-_ Reduced number of traps in later chapters"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Torch()), "Light Source Buffs",
+				"_-_ Light sources now grant significantly more vision\n" +
+				"_-_ Light from torches now lasts 20% longer\n" +
+				"_-_ Slightly increased visibility on floor 22+\n" +
+				"_-_ Floor 21 shop now sells 3 torches, up from 2"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Food()), "Food Buffs",
+				"_-_ Meat and small rations are 50% more filling\n" +
+				"_-_ Pasties and blandfruit are 12.5% more filling"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Greataxe()), "Tier-5 Weapon Buffs",
+				"_-_ Greataxe base damage increased by ~22%\n" +
+				"_-_ Greatshield base damage increased by ~17%"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new StoneOfEnchantment()), "Enchant and Glyph Balance Changes",
+				"_-_ Vampiric enchant lifesteal reduced by 20%\n\n" +
+				"Lucky enchant rebalanced:\n" +
+				"_-_ now deals 2x/0x damage, instead of min/max\n" +
+				"_-_ base chance to deal 2x increased by ~10%\n\n" +
+				"Glyph of Viscosity rebalanced:\n" +
+				"_-_ proc chance reduced by ~25% \n" +
+				"_-_ damage over time reverted from 15% to 10%\n\n" +
+				"_-_ Glyph of Entanglement root time reduced by 40%\n\n" +
+				"Glyph of Potential rebalanced:\n" +
+				"_-_ self-damage no longer scales with max hp\n" +
+				"_-_ grants more charge at higher levels"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Visiting floor 21 before completing the imp quest no longer prevents his shop from spawning\n\n" +
+				"_-_ Floor 2 entry doors are now only hidden for new players\n\n" +
+				"_-_ Falling damage tweaked to be less random\n\n" +
+				"_-_ Resume indicator now appears in more cases"));
+		
+		//**********************
+		//       v0.5.0
+		//**********************
+		
+		changes = new ChangeInfo("v0.5.0", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "New Dungeon Visual Style!",
+				"_-_ Walls and some terrain now have depth\n" +
+				"_-_ Characters & items are raised & cast shadows\n" +
+				"_-_ Added a visible tile grid in the settings menu"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Quarterstaff()), "Equipment Balance Changes",
+				"_-_ Quarterstaff armor bonus increased from 2 to 3\n\n" +
+				"_-_ Wand of Frost damage against chilled enemies reduced from -7.5% per turn of chill to -10%\n\n" +
+				"_-_ Wand of Transfusion self-damage reduced from 15% max hp to 10% max hp per zap\n\n" +
+				"_-_ Dried Rose charges 20% faster and the ghost hero is stronger, especially at low levels"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Stylus()), "Glyph Balance Changes",
+				"_-_ Glyph of Entanglement activates less often but grants significantly more herbal armor\n\n" +
+				"_-_ Glyph of Stone armor bonus reduced from 2+level to 0+level\n\n" +
+				"_-_ Glyph of Antimagic magical damage resist reduced from 50% of armor to 33% of armor\n\n" +
+				"_-_ Glyph of Viscosity damage rate increased from 10% of deferred damage to 15%"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"_-_ Added new Language: Esperanto\n" +
+				"_-_ Added new Language: Indonesian\n"));
+		
+		//**********************
+		//   Previous Updates
+		//**********************
+		
+		changes = new ChangeInfo( Messages.get(this, "older"), true, "More Info will be added to these soon.");
 		changes.hardlight( Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes = new ChangeInfo("v0.4.3", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
+				"Various utility features and improvements"));
+		
+		changes = new ChangeInfo("v0.4.2", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
+				"Performance and game engine improvements"));
+		
+		changes = new ChangeInfo("v0.4.1", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new PlateArmor()), "Update Changes",
+				"Balance adjustments to enemies & armor"));
+		
+		changes = new ChangeInfo("v0.4.0", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Longsword()), "Update Changes",
+				"Reworked equips, enchants & curses"));
+		
+		changes = new ChangeInfo("v0.3.5", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 15, 12, 15), "Update Changes",
+				"Reworked Warrior & subclasses"));
+		
+		changes = new ChangeInfo("v0.3.4", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), "Update Changes",
+				"Multiple language support"));
+		
+		changes = new ChangeInfo("v0.3.3", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
+				"Support for Google Play Games"));
+		
+		changes = new ChangeInfo("v0.3.2", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Update Changes",
+				"Prison Rework & Balance Changes"));
+		
+		changes = new ChangeInfo("v0.3.1", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 16, 0, 16, 16), "Update Changes",
+				"Traps reworked & UI upgrades"));
+		
+		changes = new ChangeInfo("v0.3.0", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 15, 12, 15), "Update Changes",
+				"Wands & Mage completely reworked"));
+		
+		changes = new ChangeInfo("v0.2.4", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
+				"Small improvements and tweaks"));
+		
+		changes = new ChangeInfo("v0.2.3", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new TimekeepersHourglass()), "Update Changes",
+				"Artifact additions & improvements"));
+		
+		changes = new ChangeInfo("v0.2.2", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
+				"Small improvements and tweaks"));
+		
+		changes = new ChangeInfo("v0.2.1", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.RAT, 0, 30, 16, 15), "Update Changes",
+				"Sewer improvements\n\n" +
+					"More Info to be added here soon."));
+		
+		changes = new ChangeInfo("v0.2.0", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new HornOfPlenty()), "Update Changes",
+				"Added artifacts, reworked rings"));
+		
+		
+		changes = new ChangeInfo("v0.1.1", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Blandfruit()), "Update Changes",
+				"Added blandfruit, reworked dew vial"));
+		
+		changes = new ChangeInfo("v0.1.0", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_SILVER, null), "Update Changes",
+				"Improvements to potions/scrolls"));
+		
+		changes = new ChangeInfo(" ", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 
 		Component content = list.content();
