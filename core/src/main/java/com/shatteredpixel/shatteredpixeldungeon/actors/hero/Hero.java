@@ -110,7 +110,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.StatusPane;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndAlchemy;
@@ -1467,7 +1466,7 @@ public class Hero extends Char {
 				Notes.remove(new SkeletonKey(Dungeon.depth));
 				Level.set( doorCell, Terrain.UNLOCKED_EXIT );
 			}
-			StatusPane.needsKeyUpdate = true;
+			GameScene.updateKeyDisplay();
 			
 			Level.set( doorCell, door == Terrain.LOCKED_DOOR ? Terrain.DOOR : Terrain.UNLOCKED_EXIT );
 			GameScene.updateMap( doorCell );
@@ -1482,7 +1481,7 @@ public class Hero extends Char {
 			} else if (heap.type == Type.CRYSTAL_CHEST){
 				Notes.remove(new CrystalKey(Dungeon.depth));
 			}
-			StatusPane.needsKeyUpdate = true;
+			GameScene.updateKeyDisplay();
 			heap.open( this );
 		}
 		curAction = null;

@@ -27,8 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -224,21 +222,23 @@ public class StatusPane extends Component {
 	public void pickup( Item item, int cell) {
 		pickedUp.reset( item,
 			cell,
-			btnJournal.icon.x + btnJournal.icon.width()/2f,
-			btnJournal.icon.y + btnJournal.icon.height()/2f);
+			btnJournal.journalIcon.x + btnJournal.journalIcon.width()/2f,
+			btnJournal.journalIcon.y + btnJournal.journalIcon.height()/2f);
 	}
 	
 	public void flash(){
 		btnJournal.flashing = true;
 	}
-
-	public static boolean needsKeyUpdate = false;
+	
+	public void updateKeys(){
+		btnJournal.updateKeyDisplay();
+	}
 
 	private static class JournalButton extends Button {
 
 		private Image bg;
-		//used to display key state to the player
-		private Image icon;
+		private Image journalIcon;
+		private KeyDisplay keyIcon;
 		
 		private boolean flashing;
 
@@ -255,10 +255,13 @@ public class StatusPane extends Component {
 
 			bg = new Image( Assets.MENU, 2, 2, 13, 11 );
 			add( bg );
-
-			icon = new Image( Assets.MENU, 31, 0, 11, 7);
-			add( icon );
-			needsKeyUpdate = true;
+			
+			journalIcon = new Image( Assets.MENU, 31, 0, 11, 7);
+			add( journalIcon );
+			
+			keyIcon = new KeyDisplay();
+			add(keyIcon);
+			updateKeyDisplay();
 		}
 
 		@Override
@@ -267,10 +270,16 @@ public class StatusPane extends Component {
 
 			bg.x = x + 13;
 			bg.y = y + 2;
-
-			icon.x = bg.x + (bg.width() - icon.width())/2f;
-			icon.y = bg.y + (bg.height() - icon.height())/2f;
-			PixelScene.align(icon);
+			
+			journalIcon.x = bg.x + (bg.width() - journalIcon.width())/2f;
+			journalIcon.y = bg.y + (bg.height() - journalIcon.height())/2f;
+			PixelScene.align(journalIcon);
+			
+			keyIcon.x = bg.x + 1;
+			keyIcon.y = bg.y + 1;
+			keyIcon.width = bg.width - 2;
+			keyIcon.height = bg.height - 2;
+			PixelScene.align(keyIcon);
 		}
 
 		private float time;
@@ -278,11 +287,10 @@ public class StatusPane extends Component {
 		@Override
 		public void update() {
 			super.update();
-			if (needsKeyUpdate)
-				updateKeyDisplay();
 			
 			if (flashing){
-				icon.am = (float)Math.abs(Math.cos( 3 * (time += Game.elapsed) ));
+				journalIcon.am = (float)Math.abs(Math.cos( 3 * (time += Game.elapsed) ));
+				keyIcon.am = journalIcon.am;
 				if (time >= 0.333f*Math.PI) {
 					time = 0;
 				}
@@ -290,54 +298,29 @@ public class StatusPane extends Component {
 		}
 
 		public void updateKeyDisplay() {
-			needsKeyUpdate = false;
-			
-			boolean blackKey = false;
-			boolean specialKey = false;
-			int ironKeys = 0;
-			for (Notes.KeyRecord rec : Notes.getRecords(Notes.KeyRecord.class)){
-				if (rec.depth() < Dungeon.depth){
-					blackKey = true;
-				} else if (rec.depth() == Dungeon.depth){
-					if (rec.type().equals(IronKey.class)) {
-						ironKeys += rec.quantity();
-					} else {
-						specialKey = true;
-					}
-				}
-			}
-
-			if (blackKey || specialKey || ironKeys > 0){
-				int left = 46, top = 0, width = 0, height = 7;
-				if (blackKey){
-					left = 43;
-					width += 3;
-				}
-				if (specialKey){
-					top = 8;
-					width += 3;
-				}
-				width += ironKeys*3;
-				width = Math.min( width, 9);
-				icon.frame(left, top, width, height);
+			keyIcon.updateKeys();
+			keyIcon.visible = keyIcon.keyCount() > 0;
+			journalIcon.visible = !keyIcon.visible;
+			if (keyIcon.keyCount() > 0) {
+				bg.brightness(.8f - (Math.min(6, keyIcon.keyCount()) / 20f));
 			} else {
-				icon.frame(31, 0, 11, 7);
+				bg.resetColor();
 			}
-			layout();
-
 		}
 
 		@Override
 		protected void onTouchDown() {
 			bg.brightness( 1.5f );
-			icon.brightness( 1.5f );
 			Sample.INSTANCE.play( Assets.SND_CLICK );
 		}
 
 		@Override
 		protected void onTouchUp() {
-			bg.resetColor();
-			icon.resetColor();
+			if (keyIcon.keyCount() > 0) {
+				bg.brightness(.8f - (Math.min(6, keyIcon.keyCount()) / 20f));
+			} else {
+				bg.resetColor();
+			}
 		}
 
 		@Override

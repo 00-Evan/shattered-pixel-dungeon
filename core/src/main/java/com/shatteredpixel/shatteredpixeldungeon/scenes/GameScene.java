@@ -746,6 +746,10 @@ public class GameScene extends PixelScene {
 	public static void flashJournal(){
 		if (scene != null) scene.pane.flash();
 	}
+	
+	public static void updateKeyDisplay(){
+		if (scene != null) scene.pane.updateKeys();
+	}
 
 	public static void resetMap() {
 		if (scene != null) {
