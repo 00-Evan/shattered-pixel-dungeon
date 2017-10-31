@@ -236,7 +236,7 @@ public class ChangesScene extends PixelScene {
 				"_-_ Fixed a typo in dirk description\n" +
 						"\n" +
 				"_-_ Translation Updates\n\n" +
-				"_-_ Added turkish language"));
+				"_-_ Added new language: _Turkish_"));
 		
 		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
@@ -315,6 +315,12 @@ public class ChangesScene extends PixelScene {
 				"_-_ Ascending stairs, descending stairs, and mining no longer increase hunger."));
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), new RingOfEnergy().trueName(),
 				"_-_ Added the ring of energy."));
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHEST, null), "Sprites",
+				"New sprites for the following:\n" +
+						"_-_ Chests & Mimics\n" +
+						"_-_ Darts\n" +
+						"_-_ Javelins\n" +
+						"_-_ Tomahawks"));
 
 		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
 		changes.hardlight( CharSprite.WARNING );
@@ -350,7 +356,7 @@ public class ChangesScene extends PixelScene {
 				"Fixed:\n" +
 				"_-_ Issues with Android 7.0+ multi-window\n" +
 				"_-_ Rare stability issues on certain devices\n" +
-				"_-_ Rare crashes caused by falling into pits\n" +
+				"_-_ Numerous rare crash and freeze bugs\n" +
 				"_-_ Chasm death not showing in rankings\n" +
 				"_-_ Resting icon sometimes not appearing\n" +
 				"_-_ Various minor graphical bugs\n" +
@@ -359,18 +365,22 @@ public class ChangesScene extends PixelScene {
 				"_-_ Mind vision not updating while waiting\n" +
 				"_-_ Troll blacksmith destroying broken seal\n" +
 				"_-_ Wands always being uncursed by upgrades\n" +
-				"_-_ Evil Eyes not visually dying in rare cases\n" +
-				"_-_ Evil Eyes shooting through walls in rare cases\n" +
-				"_-_ Evil Eyes behaving oddly when charmed\n" +
+				"_-_ Various bugs with Evil Eyes\n" +
+				"_-_ Thieves being able to escape while visible\n" +
+				"_-_ Enemies not visually dying in rare cases\n" +
+				"_-_ Visuals flickering while zooming on low resolution devices.\n" +
+				"_-_ Various minor bugs with the buff indicator\n" +
+				"_-_ Sleep-immune enemies being affected by magical sleep\n" +
 				"_-_ Sad Ghost being affected by corruption\n" +
 				"_-_ Switching places with the Sad Ghost over chasms causing the hero to fall"));
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"_-_ Completely overhauled the changes scene (which you're currently reading!)\n\n" +
-				"_-_ Item and enemy spawn RNG is now more consistent. Should prevent things like finding 4 crabs on floor 3.\n\n" +
-				"_-_ The compass marker now points toward entrances after the amulet has been acquired.\n\n" +
-				"_-_ Improved quickslot behaviour when items are removed by monks or thieves.\n\n" +
-				"_-_ Allies are now better able to follow you through bosses.\n\n" +
-				"_-_ Performance tweaks on phones with 2+ cpu cores\n\n" +
+				"_-_ Completely overhauled the changes scene (which you're currently reading!)\n" +
+				"_-_ Item and enemy spawn RNG is now more consistent. Should prevent things like finding 4 crabs on floor 3.\n" +
+				"_-_ The compass marker now points toward entrances after the amulet has been acquired.\n" +
+				"_-_ Improved quickslot behaviour when items are removed by monks or thieves.\n" +
+				"_-_ Allies are now better able to follow you through bosses.\n" +
+				"_-_ Lloyd's Beacon's return function is no longer blocked by none-hostile creatures.\n" +
+				"_-_ Performance tweaks on devices with 2+ cpu cores\n" +
 				"_-_ Stepping on plants now interrupts the hero\n" +
 				"_-_ Improved potion and scroll inventory icons\n" +
 				"_-_ Increased landscape width of some windows\n" +
@@ -378,9 +388,10 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"Fixed in English:\n" +
 				"_-_ Missing capitalization in Prison Guard text\n" +
-				"_-_ Typo when trying a locked chest with no key\n\n" +
-				"Added new Language: _Catalan_\n\n" +
-				"Various translation updates"));
+				"_-_ Typo when trying a locked chest with no key\n" +
+				"_-_ Missing period in alarm trap description\n\n" +
+				"_-_ Added new Language: _Catalan_\n\n" +
+				"_-_ Various translation updates"));
 
 		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
@@ -423,53 +434,6 @@ public class ChangesScene extends PixelScene {
 				"The ability for Ethereal Chains to pull you literally anywhere limits design possibilities for future updates, so I've added a limitation.\n\n" +
 				"_-_ Ethereal chains now cannot reach locations the player cannot reach by walking or flying. e.g. the chains can no longer reach into a locked room.\n\n" +
 				"_-_ Ethereal chains can now reach through walls on boss floors, but the above limitation still applies."));
-		
-		changes = new ChangeInfo("v0.6.1a", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.1):\n" +
-				"_-_ About page flare visuals not appearing\n" +
-				"_-_ Sleep & alert indicators not disappearing\n" +
-				"_-_ Hero automatically finding secrets more often than intended\n\n" +
-				"Fixed (existed prior to 0.6.1):\n" +
-				"_-_ Various crash bugs\n" +
-				"_-_ Thieves being able to escape while visible\n" +
-				"_-_ Enemies not visually dying in rare cases\n" +
-				"_-_ Visuals flickering while zooming on low resolution devices."));
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"_-_ As a result of the flickering bugfix, camera zooming will be a bit more rigid on low resolution devices.\n\n" +
-						"_-_ Lloyd's Beacon's return function is no longer blocked by none-hostile creatures."));
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Various translation updates"));
-		
-		changes = new ChangeInfo("v0.6.1b", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHEST, null), "Sprites",
-				"Improved sprites for the following:\n" +
-				"_-_ Chests & Mimics\n" +
-				"_-_ Darts\n" +
-				"_-_ Javelins\n" +
-				"_-_ Tomahawks"));
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.1):\n" +
-				"_-_ Hero automatically searching in cases when they shouldn't\n\n" +
-				"_-_ Transmuted items not being added to the journal items list\n\n" +
-				"_-_ Doors on floor 2 being hidden more often than they should be\n\n" +
-				"_-_ Frequent crashes for a tiny number of unlucky players (sorry!)\n\n" +
-				"Fixed (existed prior to 0.6.1):\n" +
-				"_-_ Numerous rare crash and freeze bugs\n" +
-				"_-_ Various minor bugs with the buff indicator\n" +
-				"_-_ Sleep-immune enemies being affected by magical sleep"));
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"Fixed an exploit where players could examine never-seen areas to determine the shape of a level. Examining any never-seen region will now always show nothing. Previously only examining outside of the level would show nothing."));
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Fixed in English:\n" +
-				"_-_ Missing period in alarm trap description\n\n" +
-				"Various translation updates"));
 		
 		//**********************
 		//       v0.6.0
@@ -550,16 +514,20 @@ public class ChangesScene extends PixelScene {
 				"_-_ Added new Language: Indonesian\n"));
 		
 		//**********************
-		//   Previous Updates
+		//       v0.4.X
 		//**********************
 		
-		changes = new ChangeInfo( Messages.get(this, "older"), true, "More Info will be added to these soon.");
+		changes = new ChangeInfo( "v0.4.X", true, "More Info will be added here soon.");
 		changes.hardlight( Window.TITLE_COLOR);
 		infos.add(changes);
 		
 		changes = new ChangeInfo("v0.4.3", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released October 16th, 2016\n" +
+				"_-_ 37 days after Shattered v0.4.2"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
 				"Various utility features and improvements"));
@@ -568,12 +536,20 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released September 9th, 2016\n" +
+				"_-_ 46 days after Shattered v0.4.1"));
+		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
 				"Performance and game engine improvements"));
 		
 		changes = new ChangeInfo("v0.4.1", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released July 25th, 2016\n" +
+				"_-_ 35 days after Shattered v0.4.0"));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new PlateArmor()), "Update Changes",
 				"Balance adjustments to enemies & armor"));
@@ -582,12 +558,29 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released June 20th, 2016\n" +
+				"_-_ 391 days after Shattered v0.3.0\n" +
+				"_-_ 50 days after Shattered v0.3.5"));
+		
 		changes.addButton( new ChangeButton(new ItemSprite(new Longsword()), "Update Changes",
 				"Reworked equips, enchants & curses"));
+		
+		//**********************
+		//       v0.3.X
+		//**********************
+		
+		changes = new ChangeInfo( "v0.3.X", true, "More Info will be added here soon.");
+		changes.hardlight( Window.TITLE_COLOR);
+		infos.add(changes);
 		
 		changes = new ChangeInfo("v0.3.5", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released May 1st, 2016\n" +
+				"_-_ 81 days after Shattered v0.3.4"));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 15, 12, 15), "Update Changes",
 				"Reworked Warrior & subclasses"));
@@ -596,12 +589,20 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released February 10th, 2016\n" +
+				"_-_ 54 days after Shattered v0.3.3"));
+		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), "Update Changes",
 				"Multiple language support"));
 		
 		changes = new ChangeInfo("v0.3.3", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released December 18th, 2015\n" +
+				"_-_ 44 days after Shattered v0.3.2"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
 				"Support for Google Play Games"));
@@ -610,12 +611,20 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released November 4th, 2015\n" +
+				"_-_ 79 days after Shattered v0.3.1"));
+		
 		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Update Changes",
 				"Prison Rework & Balance Changes"));
 		
 		changes = new ChangeInfo("v0.3.1", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released August 17th, 2015\n" +
+				"_-_ 83 days after Shattered v0.3.0"));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 16, 0, 16, 16), "Update Changes",
 				"Traps reworked & UI upgrades"));
@@ -624,12 +633,29 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released May 26th, 2015\n" +
+				"_-_ 253 days after Shattered v0.2.0\n" +
+				"_-_ 92 days after Shattered v0.2.4"));
+		
 		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 15, 12, 15), "Update Changes",
 				"Wands & Mage completely reworked"));
+		
+		//**********************
+		//       v0.2.X
+		//**********************
+		
+		changes = new ChangeInfo( "v0.2.X", true, "More Info will be added here soon.");
+		changes.hardlight( Window.TITLE_COLOR);
+		infos.add(changes);
 		
 		changes = new ChangeInfo("v0.2.4", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released February 23rd, 2015\n" +
+				"_-_ 48 days after Shattered v0.2.3"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
 				"Small improvements and tweaks"));
@@ -638,6 +664,10 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released January 6th, 2015\n" +
+				"_-_ 64 days after Shattered v0.2.2"));
+		
 		changes.addButton( new ChangeButton(new ItemSprite(new TimekeepersHourglass()), "Update Changes",
 				"Artifact additions & improvements"));
 		
@@ -645,12 +675,20 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released November 3rd, 2014\n" +
+				"_-_ 21 days after Shattered v0.2.1"));
+		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
 				"Small improvements and tweaks"));
 		
 		changes = new ChangeInfo("v0.2.1", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released October 13th, 2014\n" +
+				"_-_ 28 days after Shattered v0.2.0"));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.RAT, 0, 30, 16, 15), "Update Changes",
 				"Sewer improvements\n\n" +
@@ -660,27 +698,63 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				""));
+		
 		changes.addButton( new ChangeButton(new ItemSprite(new HornOfPlenty()), "Update Changes",
 				"Added artifacts, reworked rings"));
 		
+		changes = new ChangeInfo(" ", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		//**********************
+		//       v0.1.X
+		//**********************
+		
+		changes = new ChangeInfo( "v0.1.X", true, "More Info will be added here soon.");
+		changes.hardlight( Window.TITLE_COLOR);
+		infos.add(changes);
 		
 		changes = new ChangeInfo("v0.1.1", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new Blandfruit()), "Update Changes",
-				"Added blandfruit, reworked dew vial"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released August 15th, 2014\n" +
+				"_-_ 10 days after Shattered v0.1.0"));
+		
+		changes.addButton( new ChangeButton(new Blandfruit(),
+				"Added blandfruit"));
+		
+		changes.addButton( new ChangeButton(new DewVial(),
+				"Reworked dew vial and ankh"));
+		
+		//changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Item Changes",
+		//		""));
 		
 		changes = new ChangeInfo("v0.1.0", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_SILVER, null), "Update Changes",
-				"Improvements to potions/scrolls"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released August 5th, 2014\n" +
+				"_-_ 69 days after Pixel Dungeon v1.7.1\n" +
+				"_-_ 9 days after v1.7.1 source release"));
 		
-		changes = new ChangeInfo(" ", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_EARTHROOT, null), "Seed Changes",
+				"_-_ Blindweed buffed, now cripples as well as blinds\n\n" +
+				"_-_ Sungrass nerfed, heal scales up over time, total heal reduced by combat\n\n" +
+				"_-_ Earthroot nerfed, damage absorb down to 50% from 100%, total shield unchanged\n\n" +
+				"_-_ Icecap buffed, freeze effect is now much stronger in water"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_SILVER, null), "Potion Changes",
+				"_-_ Potion of Purity buffed, immunity duration increased to 10 turns from 5, clear effect radius increased\n\n" +
+				"_-_ Potion of Frost buffed, freeze effect is now much stronger in water."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Scroll Changes",
+				"_-_ Scroll of Psionic blast reworked, now rarer and much stronger, but deals damage to the hero\n\n" +
+				"_-_ Scroll of Challenge renamed to Scroll of Rage, now amoks nearby enemies"));
 
 		Component content = list.content();
 		content.clear();
@@ -907,5 +981,3 @@ public class ChangesScene extends PixelScene {
 		
 	}
 }
-
-
