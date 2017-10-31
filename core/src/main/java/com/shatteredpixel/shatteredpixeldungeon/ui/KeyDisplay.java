@@ -39,7 +39,7 @@ import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.Visual;
 
 import java.nio.FloatBuffer;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class KeyDisplay extends Visual {
 	
@@ -55,7 +55,7 @@ public class KeyDisplay extends Visual {
 	//mapping of key types to slots in the array, 0 is reserved for black (missed) keys
 	//this also determines the order these keys will appear (lower first)
 	//and the order they will be truncated if there is no space (higher first, larger counts first)
-	private static final HashMap<Class<? extends Key>, Integer> keyMap = new HashMap<>();
+	private static final LinkedHashMap<Class<? extends Key>, Integer> keyMap = new LinkedHashMap<>();
 	static {
 		keyMap.put(SkeletonKey.class, 1);
 		keyMap.put(CrystalKey.class, 2);
