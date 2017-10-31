@@ -165,27 +165,28 @@ public class Tengu extends Mob {
 	private void jump() {
 		
 		Level level = Dungeon.level;
-		if (level == null) return;
-
-		for (int i=0; i < 4; i++) {
-			int trapPos;
-			do {
-				trapPos = Random.Int( level.length() );
-			} while (!fieldOfView[trapPos] || level.solid[trapPos]);
-			
-			if (level.map[trapPos] == Terrain.INACTIVE_TRAP) {
-				level.setTrap( new GrippingTrap().reveal(), trapPos );
-				Level.set( trapPos, Terrain.TRAP );
-				ScrollOfMagicMapping.discover( trapPos );
-			}
-		}
-
 		if (enemy == null) enemy = chooseEnemy();
 		if (enemy == null) return;
 
 		int newPos;
 		//if we're in phase 1, want to warp around within the room
 		if (HP > HT/2) {
+			
+			//place new traps
+			for (int i=0; i < 4; i++) {
+				int trapPos;
+				do {
+					trapPos = Random.Int( level.length() );
+				} while (level.map[trapPos] != Terrain.INACTIVE_TRAP
+						&& level.map[trapPos] != Terrain.TRAP);
+				
+				if (level.map[trapPos] == Terrain.INACTIVE_TRAP) {
+					level.setTrap( new GrippingTrap().reveal(), trapPos );
+					Level.set( trapPos, Terrain.TRAP );
+					ScrollOfMagicMapping.discover( trapPos );
+				}
+			}
+			
 			int tries = 50;
 			do {
 				newPos = Random.IntRange(3, 7) + 32*Random.IntRange(26, 30);
