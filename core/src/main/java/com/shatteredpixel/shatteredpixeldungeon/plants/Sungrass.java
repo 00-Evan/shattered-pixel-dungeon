@@ -104,16 +104,22 @@ public class Sungrass extends Plant {
 			} else {
 				count++;
 			}
-			if (level <= 0)
+			if (level <= 0) {
 				detach();
+			} else {
+				BuffIndicator.refreshHero();
+			}
 			spend( STEP );
 			return true;
 		}
 
 		public int absorb( int damage ) {
 			level -= damage;
-			if (level <= 0)
+			if (level <= 0) {
 				detach();
+			} else {
+				BuffIndicator.refreshHero();
+			}
 			return damage;
 		}
 
