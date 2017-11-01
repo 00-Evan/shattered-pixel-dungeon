@@ -31,6 +31,18 @@ import com.watabou.utils.Point;
 
 public class SecretSummoningRoom extends SecretRoom {
 	
+	//minimum of 3x3 traps, max of 6x6 traps
+	
+	@Override
+	public int maxWidth() {
+		return 8;
+	}
+	
+	@Override
+	public int maxHeight() {
+		return 8;
+	}
+	
 	@Override
 	public void paint(Level level) {
 		super.paint(level);
