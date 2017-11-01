@@ -73,6 +73,13 @@ public abstract class InventoryScroll extends Scroll {
 	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( Item item ) {
+			
+			//FIXME this safety check shouldn't be necessary
+			//it would be better to eliminate the curItem static variable.
+			if (!(curItem instanceof InventoryScroll)){
+				return;
+			}
+			
 			if (item != null) {
 				
 				((InventoryScroll)curItem).onItemSelected( item );
