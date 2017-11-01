@@ -24,11 +24,13 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
+//FIXME do proper translation stuff for new text here in 0.6.3 (heromsg, ondeath, rankings_desc)
 public class Venom extends Buff implements Hero.Doom {
 
 	private int damage = 1;
@@ -98,7 +100,11 @@ public class Venom extends Buff implements Hero.Doom {
 		Badges.validateDeathFromPoison();
 		
 		Dungeon.fail( getClass() );
-		GLog.n( Messages.get(this, "ondeath") );
+		if (Messages.lang() == Languages.ENGLISH){
+			GLog.n("You died from venom...");
+		} else {
+			GLog.n(Messages.get(Poison.class, "ondeath"));
+		}
 	}
 
 }
