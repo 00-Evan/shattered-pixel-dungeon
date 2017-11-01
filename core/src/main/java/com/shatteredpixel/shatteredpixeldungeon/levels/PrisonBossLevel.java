@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
@@ -243,7 +244,9 @@ public class PrisonBossLevel extends Level {
 			else if (map[i] == Terrain.EXIT)
 				exit = i;
 
-		visited = mapped = new boolean[length()];
+		BArray.setFalse(visited);
+		BArray.setFalse(mapped);
+		
 		for (Blob blob: blobs.values()){
 			blob.fullyClear();
 		}
