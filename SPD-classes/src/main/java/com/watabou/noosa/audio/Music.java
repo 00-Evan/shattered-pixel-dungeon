@@ -61,16 +61,15 @@ public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnError
 			
 			AssetFileDescriptor afd = Game.instance.getAssets().openFd( assetName );
 			
-			player = new MediaPlayer();
-			player.setAudioStreamType( AudioManager.STREAM_MUSIC );
-			player.setDataSource( afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength() );
-			player.setOnPreparedListener( this );
-			player.setOnErrorListener( this );
-			player.prepareAsync();
+			MediaPlayer mp = new MediaPlayer();
+			mp.setAudioStreamType( AudioManager.STREAM_MUSIC );
+			mp.setDataSource( afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength() );
+			mp.setOnPreparedListener( this );
+			mp.setOnErrorListener( this );
+			mp.prepareAsync();
 			
 		} catch (IOException e) {
 			
-			player.release();
 			player = null;
 			
 		}
@@ -82,17 +81,16 @@ public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnError
 	}
 
 	@Override
-	public void onPrepared( MediaPlayer player ) {
+	public void onPrepared( MediaPlayer mp ) {
+		player = mp;
 		player.start();
 		player.setLooping(looping);
 	}
 	
 	@Override
 	public boolean onError( MediaPlayer mp, int what, int extra ) {
-		if (player != null) {
-			player.release();
-			player = null;
-		}
+		mp.release();
+		player = null;
 		return true;
 	}
 	
