@@ -21,22 +21,6 @@
 
 package com.watabou.noosa;
 
-import java.util.ArrayList;
-
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
-import com.watabou.glscripts.Script;
-import com.watabou.gltextures.TextureCache;
-import com.watabou.glwrap.ScreenConfigChooser;
-import com.watabou.glwrap.Vertexbuffer;
-import com.watabou.input.Keys;
-import com.watabou.input.Touchscreen;
-import com.watabou.noosa.audio.Music;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.BitmapCache;
-import com.watabou.utils.SystemTime;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -52,6 +36,22 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+
+import com.watabou.glscripts.Script;
+import com.watabou.gltextures.TextureCache;
+import com.watabou.glwrap.ScreenConfigChooser;
+import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.input.Keys;
+import com.watabou.input.Touchscreen;
+import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BitmapCache;
+import com.watabou.utils.SystemTime;
+
+import java.util.ArrayList;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTouchListener {
 
@@ -144,11 +144,14 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		setContentView( view );
 	}
 	
+	private boolean paused = false;
+	
 	@Override
 	public void onStart() {
 		super.onStart();
 		
 		now = 0;
+		paused = false;
 		view.onResume();
 		
 		Music.INSTANCE.resume();
@@ -163,11 +166,16 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 			scene.pause();
 		}
 		
+		paused = true;
 		view.onPause();
 		Script.reset();
 		
 		Music.INSTANCE.pause();
 		Sample.INSTANCE.pause();
+	}
+	
+	public boolean isPaused(){
+		return paused;
 	}
 	
 	@Override

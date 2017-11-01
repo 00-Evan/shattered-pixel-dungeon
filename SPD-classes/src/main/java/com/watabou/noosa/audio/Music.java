@@ -21,13 +21,15 @@
 
 package com.watabou.noosa.audio;
 
-import java.io.IOException;
-
-import com.watabou.noosa.Game;
-
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
+
+import com.watabou.noosa.Game;
+
+import java.io.IOException;
 
 public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
 	
@@ -138,4 +140,22 @@ public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnError
 	public boolean isEnabled() {
 		return enabled;
 	}
+	
+	public static final PhoneStateListener callMute = new PhoneStateListener(){
+		
+		@Override
+		public void onCallStateChanged(int state, String incomingNumber)
+		{
+			if( state == TelephonyManager.CALL_STATE_RINGING ) {
+				INSTANCE.pause();
+				
+			} else if( state == TelephonyManager.CALL_STATE_IDLE ) {
+				if (!Game.instance.isPaused()) {
+					INSTANCE.resume();
+				}
+			}
+			
+			super.onCallStateChanged(state, incomingNumber);
+		}
+	};
 }

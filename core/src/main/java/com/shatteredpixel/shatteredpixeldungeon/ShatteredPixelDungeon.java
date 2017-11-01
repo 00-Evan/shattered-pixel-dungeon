@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -149,6 +151,9 @@ public class ShatteredPixelDungeon extends Game {
 		Music.INSTANCE.enable( music() );
 		Sample.INSTANCE.enable( soundFx() );
 		Sample.INSTANCE.volume( SFXVol()/10f );
+		
+		TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+		mgr.listen(Music.callMute, PhoneStateListener.LISTEN_CALL_STATE);
 
 		Sample.INSTANCE.load(
 				Assets.SND_CLICK,
