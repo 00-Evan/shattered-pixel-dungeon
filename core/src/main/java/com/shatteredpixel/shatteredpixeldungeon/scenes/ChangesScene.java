@@ -124,7 +124,36 @@ public class ChangesScene extends PixelScene {
 		//       v0.6.2
  		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.2", true, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.2a", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.IRON_KEY, null), "New Key Display",
+				"The key display has been overhauled!\n\n" +
+				"_-_ Each key type now has its own icon, instead of all special keys being shown as golden.\n\n" +
+				"_-_ Can now display up to 6 keys, up from 3. After 3 keys the key icons will become smaller.\n\n" +
+				"_-_ Button background now dims as keys are collected, for added visual clarity."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Improved the formatting of older updates in the changes list. More information will be added to fill these out in future updates.\n\n" +
+				"_-_ Slightly reduced the chance for items to appear in locked chests.\n\n" +
+				"_-_ Game music now mutes itself during phone calls"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.2):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Herbal healing and armor not greying out their icons correctly\n\n" +
+				"Fixed (Existed prior to 0.6.2):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Gladiator being able to combo non-visible enemies"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"In English:\n" +
+				"_-_ Fixed missing text when dieing to venom\n" +
+				"\n" +
+				"_-_ Translation Updates"));
+		
+		changes = new ChangeInfo("v0.6.2", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
@@ -699,7 +728,8 @@ public class ChangesScene extends PixelScene {
 		infos.add(changes);
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				""));
+				"_-_ Released September 15th, 2014\n" +
+				"_-_ 31 days after Shattered v0.1.1"));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new HornOfPlenty()), "Update Changes",
 				"Added artifacts, reworked rings"));
