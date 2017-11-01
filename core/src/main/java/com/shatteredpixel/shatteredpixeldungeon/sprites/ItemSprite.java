@@ -208,7 +208,7 @@ public class ItemSprite extends MovieClip {
 		}
 	}
 	
-	public void glow( Glowing glowing ){
+	public synchronized void glow( Glowing glowing ){
 		this.glowing = glowing;
 		if (glowing == null) resetColor();
 	}
@@ -269,7 +269,7 @@ public class ItemSprite extends MovieClip {
 	}
 
 	@Override
-	public void update() {
+	public synchronized void update() {
 		super.update();
 
 		visible = (heap == null || heap.seen);

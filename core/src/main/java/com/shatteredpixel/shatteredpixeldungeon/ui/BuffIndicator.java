@@ -39,8 +39,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class BuffIndicator extends Component {
-
-	public static final int NONE	= -1;
+	
+	//transparent icon
+	public static final int NONE	= 63;
 
 	//TODO consider creating an enum to store both index, and tint. Saves making separate images for color differences.
 	public static final int MIND_VISION	= 0;

@@ -63,7 +63,7 @@ public class AttackIndicator extends Tag {
 	}
 	
 	@Override
-	protected void layout() {
+	protected synchronized void layout() {
 		super.layout();
 		
 		if (sprite != null) {
@@ -127,7 +127,7 @@ public class AttackIndicator extends Tag {
 		enable( bg.visible );
 	}
 	
-	private void updateImage() {
+	private synchronized void updateImage() {
 		
 		if (sprite != null) {
 			sprite.killAndErase();
@@ -151,14 +151,14 @@ public class AttackIndicator extends Tag {
 	}
 	
 	private boolean enabled = true;
-	private void enable( boolean value ) {
+	private synchronized void enable( boolean value ) {
 		enabled = value;
 		if (sprite != null) {
 			sprite.alpha( value ? ENABLED : DISABLED );
 		}
 	}
 	
-	private void visible( boolean value ) {
+	private synchronized void visible( boolean value ) {
 		bg.visible = value;
 		if (sprite != null) {
 			sprite.visible = value;
