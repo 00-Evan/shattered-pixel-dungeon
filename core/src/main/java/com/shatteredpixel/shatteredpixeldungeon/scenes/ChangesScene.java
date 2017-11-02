@@ -137,7 +137,7 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
 				"_-_ Improved the formatting of older updates in the changes list. More information will be added to fill these out in future updates.\n\n" +
 				"_-_ Slightly reduced the chance for items to appear in locked chests.\n\n" +
-				"_-_ Game music now mutes itself during phone calls"));
+				"_-_ Game music now mutes itself during phone calls on android 6.0+"));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed (caused by 0.6.2):\n" +

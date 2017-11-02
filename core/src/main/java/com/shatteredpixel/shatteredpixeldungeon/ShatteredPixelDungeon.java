@@ -152,8 +152,11 @@ public class ShatteredPixelDungeon extends Game {
 		Sample.INSTANCE.enable( soundFx() );
 		Sample.INSTANCE.volume( SFXVol()/10f );
 		
-		TelephonyManager mgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-		mgr.listen(Music.callMute, PhoneStateListener.LISTEN_CALL_STATE);
+		//versions lower than this require READ_PHONE_STATE permission
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			TelephonyManager mgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+			mgr.listen(Music.callMute, PhoneStateListener.LISTEN_CALL_STATE);
+		}
 
 		Sample.INSTANCE.load(
 				Assets.SND_CLICK,

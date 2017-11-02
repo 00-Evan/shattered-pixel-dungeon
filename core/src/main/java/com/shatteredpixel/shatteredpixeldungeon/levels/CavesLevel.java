@@ -174,7 +174,7 @@ public class CavesLevel extends RegularLevel {
 		@Override
 		public void update() {
 			
-			if (visible = Dungeon.level.heroFOV[pos]) {
+			if (visible = (pos < Dungeon.level.heroFOV.length && Dungeon.level.heroFOV[pos])) {
 				
 				super.update();
 
