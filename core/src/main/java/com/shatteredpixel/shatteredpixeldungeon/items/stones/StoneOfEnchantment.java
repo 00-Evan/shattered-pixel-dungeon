@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -56,8 +55,10 @@ public class StoneOfEnchantment extends InventoryStone {
 		Enchanting.show( curUser, item );
 		
 		//FIXME add this to translations
-		if (Messages.lang() == Languages.ENGLISH) {
-			GLog.w("your %s glows in the dark", item.name());
+		if (item instanceof Weapon) {
+			GLog.p(Messages.get(this, "weapon"));
+		} else {
+			GLog.p(Messages.get(this, "armor"));
 		}
 		
 	}

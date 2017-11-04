@@ -278,7 +278,7 @@ public class WndSettings extends WndTabbed {
 			slots.setRect(0, chkFlipTags.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
 			add(slots);
 
-			CheckBox chkImmersive = new CheckBox( Messages.get(this, "soft_keys") ) {
+			CheckBox chkImmersive = new CheckBox( Messages.get(this, "nav_bar") ) {
 				@Override
 				protected void onClick() {
 					super.onClick();
