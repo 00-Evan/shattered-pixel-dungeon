@@ -26,7 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
@@ -47,9 +49,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -149,13 +153,17 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"In English:\n" +
-				"_-_ Fixed missing text when dieing to venom\n" +
+				"_-_ Fixed missing text when dying to venom\n" +
 				"\n" +
 				"_-_ Translation Updates"));
 		
 		changes = new ChangeInfo("v0.6.2", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released October 24th, 2017\n" +
+				"_-_ 70 days after Shattered v0.6.1"));
 		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -319,6 +327,10 @@ public class ChangesScene extends PixelScene {
 		changes = new ChangeInfo("v0.6.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released August 15th, 2017\n" +
+				"_-_ 72 days after Shattered v0.6.0"));
 
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -472,6 +484,10 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released June 4th, 2017\n" +
+				"_-_ 116 days after Shattered v0.5.0"));
+		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Levelgen Overhaul!",
 				"Level creation algorithm overhauled!\n\n" +
 				"_-_ Levels are now much less box-shaped\n" +
@@ -521,6 +537,11 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released February 8th, 2017\n" +
+				"_-_ 233 days after Shattered v0.4.0\n" +
+				"_-_ 115 days after Shattered v0.4.3"));
+		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "New Dungeon Visual Style!",
 				"_-_ Walls and some terrain now have depth\n" +
 				"_-_ Characters & items are raised & cast shadows\n" +
@@ -546,7 +567,7 @@ public class ChangesScene extends PixelScene {
 		//       v0.4.X
 		//**********************
 		
-		changes = new ChangeInfo( "v0.4.X", true, "More Info will be added here soon.");
+		changes = new ChangeInfo( "v0.4.X", true, "");
 		changes.hardlight( Window.TITLE_COLOR);
 		infos.add(changes);
 		
@@ -558,8 +579,22 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released October 16th, 2016\n" +
 				"_-_ 37 days after Shattered v0.4.2"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
-				"Various utility features and improvements"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
+				"_-_ Added rankings and hall of heroes sync via Google Play Games, for the Google Play version of Shattered.\n\n" +
+				"_-_ Added Power Saver mode in settings\n" +
+				"_-_ Download size reduced by ~25%\n" +
+				"_-_ Game now supports small screen devices\n" +
+				"_-_ Performance improvements\n" +
+				"_-_ Improved variety of level visuals"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FLAIL, null), "Balance Changes",
+				"_-_ Flail max damage increased by ~15%\n" +
+				"_-_ Wand of Frost damage reduction increased from 5% per turn of chill to 7.5%\n" +
+				"_-_ Ring of Furor speed bonus reduced by ~15% for slow weapons, ~0% for fast weapons\n" +
+				"_-_ Reduced sacrificial curse bleed by ~33%\n" +
+				"_-_ Reworked glyph of brimstone, now grants shielding instead of healing\n" +
+				"_-_ Reworked glyph of stone, now reduces speed in doorways\n" +
+				"_-_ Thrown potions now trigger traps and plants"));
 		
 		changes = new ChangeInfo("v0.4.2", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -569,8 +604,23 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released September 9th, 2016\n" +
 				"_-_ 46 days after Shattered v0.4.1"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
-				"Performance and game engine improvements"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
+				"_-_ Many general performance improvements\n" +
+				"_-_ Game now uses 2 CPU cores, up from 1\n" +
+				"_-_ Reduced hitching on many devices\n" +
+				"_-_ Framerate improvements for older devices\n" +
+				"_-_ Game size reduced by ~10%"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Glaive()), "Balance Changes",
+				"_-_ Spear and Glaive damage reduced\n" +
+				"_-_ Runic blade damage reduced\n" +
+				"_-_ Grim enchant now procs more often\n" +
+				"_-_ Glyph of stone adds more weight\n" +
+				"_-_ Glyph of potential procs less often\n" +
+				"_-_ Wand of Fireblast less dangerous to caster\n" +
+				"_-_ Wand of Pris. Light reveal area reduced\n" +
+				"_-_ Ring of Wealth slightly more effective\n" +
+				"_-_ Ring of Sharpshooting gives more accuracy"));
 		
 		changes = new ChangeInfo("v0.4.1", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -580,8 +630,60 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released July 25th, 2016\n" +
 				"_-_ 35 days after Shattered v0.4.0"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new PlateArmor()), "Update Changes",
-				"Balance adjustments to enemies & armor"));
+		changes.addButton( new ChangeButton(new ItemSprite(new PlateArmor()), "Item Changes pt.1",
+				"Armor and Enemy Balance Changes:\n" +
+				"_-_ Armor now has a min damage block value\n" +
+				"_-_ Armor gains more blocking from upgrades\n" +
+				"_-_ Prison+ enemy damage increased\n" +
+				"_-_ Evil Eyes reworked\n" +
+				"_-_ Brimstone glyph healing reduced\n" +
+				"\n" +
+				"Class Balance Changes:\n" +
+				"_-_ Mage's Staff melee damage increased\n" +
+				"_-_ Mage's Staff can now preserve one upgrade\n" +
+				"_-_ Cloak of Shadows buffed at lower levels\n" +
+				"_-_ Some Battlemage effects changed\n" +
+				"\n" +
+				"Wand Balance Changes:\n" +
+				"_-_ All wands damage adjusted/increased\n" +
+				"_-_ Upgraded wands appear slightly less often\n" +
+				"_-_ Wand of Lightning bonus damage reduced\n" +
+				"_-_ Wand of Fireblast uses fewer charges\n" +
+				"_-_ Wand of Venom damage increases over time\n" +
+				"_-_ Wand of Prismatic Light bonus damage reduced\n" +
+				"_-_ Corrupted enemies live longer & no longer attack eachother\n" +
+				"_-_ Wands in the holster now charge faster"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new RunicBlade()), "Item Changes pt.2",
+				"Ring Balance Changes:\n" +
+				"_-_ Ring of Force weaker at 18+ strength, stronger otherwise\n" +
+				"_-_ Ring of Tenacity reduces more damage\n" +
+				"_-_ Ring of Wealth secret rewards adjusted\n" +
+				"_-_ Ring of Evasion now works consistently\n" +
+				"\n" +
+				"Artifact Balance Changes:\n" +
+				"_-_ Dried Rose charges faster, ghost HP up\n" +
+				"_-_ Horn of Plenty now charges on exp gain\n" +
+				"_-_ Master Thieves Armband levels faster\n" +
+				"_-_ Sandals of Nature level faster\n" +
+				"_-_ Hourglass uses fewer charges at a time\n" +
+				"_-_ Horn of Plenty adjusted, now stronger\n" +
+				"\n" +
+				"Weapon Balance Changes:\n" +
+				"_-_ Lucky enchant deals max dmg more often\n" +
+				"_-_ Dazzling enchant now cripples & blinds\n"+
+				"_-_ Flail now can't surprise attack, damage increased\n" +
+				"_-_ Extra reach weapons no longer penetrate\n" +
+				"_-_ Runic blade damage decreased"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Added a new journal button with key display\n" +
+				"_-_ Keys now exist in the journal, not inventory\n" +
+				"_-_ Improved donator menu button visuals\n" +
+				"_-_ Increased the efficiency of data storage\n" +
+				"_-_ Chasms now deal less damage, but bleed\n" +
+				"_-_ Many shop prices adjusted\n" +
+				"_-_ Pirahna rooms no longer give cursed gear"));
 		
 		changes = new ChangeInfo("v0.4.0", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -592,14 +694,58 @@ public class ChangesScene extends PixelScene {
 				"_-_ 391 days after Shattered v0.3.0\n" +
 				"_-_ 50 days after Shattered v0.3.5"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new Longsword()), "Update Changes",
-				"Reworked equips, enchants & curses"));
+		changes.addButton( new ChangeButton(new ItemSprite(new Longsword()), "Equipment Overhaul!",
+				"_-_ 13 new weapons, 12 rebalanced weapons\n" +
+				"\n" +
+				"Equipment Balance:\n" +
+				"_-_ Tier 2-4 weapons do more base damage\n" +
+				"_-_ All weapons gain more dmg from upgrades\n" +
+				"_-_ Upgrades now remove enchants less often\n" +
+				"_-_ Upgrades reduce str requirements less\n" +
+				"_-_ All armors require 1 more str\n" +
+				"_-_ Encumbered characters can't sneak attack\n" +
+				"\n" +
+				"Droprate Changes:\n" +
+				"_-_ Powerful equipment less common early\n" +
+				"_-_ +3 and +2 equipment less common\n" +
+				"_-_ Equipment curses more common\n" +
+				"_-_ Tier 1 equipment no longer drops\n" +
+				"_-_ Arcane styli slightly more common\n" +
+				"_-_ Better item drops on floors 22-24"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(new Stylus()), "Curse, Enchant, & Glyph Overhaul!",
+				"_-_ 3 new enchants, 10 rebalanced enchants\n" +
+				"_-_ 8 new glyphs, 5 rebalanced glyphs\n" +
+				"_-_ 12 new curse effects\n" +
+				"\n" +
+				"Equipment Curses:\n" +
+				"_-_ Curses now give negative effects\n" +
+				"_-_ Curses no longer give negative levels\n" +
+				"_-_ Upgrades now weaken curses\n" +
+				"_-_ Remove curse scrolls now affect 1 item"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Class Balance:\n" +
+				"_-_ Huntress now starts with knuckleduster\n" +
+				"_-_ Assassin sneak bonus damage reduced\n" +
+				"_-_ Fixed a bug where berserker was immune when enraged\n" +
+				"_-_ Gladiator's clobber now inflicts vertigo, not stun\n" +
+				"\n" +
+				"Enemy Balance:\n" +
+				"_-_ Tengu damage increased\n" +
+				"_-_ Prison Guard health and DR increased\n" +
+				"\n" +
+				"Misc:\n" +
+				"_-_ Scrolls of upgrade no longer burn\n" +
+				"_-_ Potions of strength no longer freeze\n" +
+				"_-_ Translation updates\n" +
+				"_-_ Various bugfixes"));
 		
 		//**********************
 		//       v0.3.X
 		//**********************
 		
-		changes = new ChangeInfo( "v0.3.X", true, "More Info will be added here soon.");
+		changes = new ChangeInfo( "v0.3.X", true, "");
 		changes.hardlight( Window.TITLE_COLOR);
 		infos.add(changes);
 		
@@ -611,8 +757,35 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released May 1st, 2016\n" +
 				"_-_ 81 days after Shattered v0.3.4"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 15, 12, 15), "Update Changes",
-				"Reworked Warrior & subclasses"));
+		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 15, 12, 15), "Warrior Rework!",
+				"Warrior Rework:\n" +
+				"_-_ Starting STR down to 10, from 11\n" +
+				"_-_ Short sword dmg down to 1-10, from 1-12\n" +
+				"_-_ Short sword can no longer be reforged\n" +
+				"_-_ Now IDs potions of health, not STR\n" +
+				"_-_ Now starts with a unique seal for armor\n" +
+				"_-_ Seal grants shielding ontop of health\n" +
+				"_-_ Seal allows for one upgrade transfer"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Warrior Subclass Rework!",
+				"Berserker Rework:\n" +
+				"_-_ Bonus damage now scales with lost HP, instead of a flat 50% at 50% hp\n" +
+				"_-_ Berserker can now endure through death for a short time, with caveats\n" +
+				"\n" +
+				"Gladiator Rework:\n" +
+				"_-_ Combo no longer grants bonus damage\n" +
+				"_-_ Combo is now easier to stack\n" +
+				"_-_ Combo now unlocks special finisher moves"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Balance Tweaks:\n" +
+				"_-_ Spears can now reach enemies 1 tile away\n" +
+				"_-_ Wand of Blast Wave now pushes bosses less\n" +
+				"\n" +
+				"Misc:\n" +
+				"_-_ Can now examine multiple things in one tile\n" +
+				"_-_ Pixelated font now available for cyrillic languages\n" +
+				"_-_ Added Hungarian language"));
 		
 		changes = new ChangeInfo("v0.3.4", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -622,8 +795,30 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released February 10th, 2016\n" +
 				"_-_ 54 days after Shattered v0.3.3"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), "Update Changes",
-				"Multiple language support"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), "Translations!",
+				"Shattered Pixel Dungeon now supports multiple languages, thanks to a new community translation project!\n\n" +
+				"The Following languages are supported at release:\n" +
+				"_-_ English\n" +
+				"_-_ Russian\n" +
+				"_-_ Korean\n" +
+				"_-_ Chinese\n" +
+				"_-_ Portugese\n" +
+				"_-_ German\n" +
+				"_-_ French\n" +
+				"_-_ Italian\n" +
+				"_-_ Polish\n" +
+				"_-_ Spanish"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Completely redesigned the text rendering system to support none-english characters\n\n" +
+				"New text system renders using either the default system font, or the original pixelated game font. None-latin languages must use system font.\n\n" +
+				"Balance Changes:\n" +
+				"_-_ Hunger now builds ~10% slower\n" +
+				"_-_ Sad Ghost no longer gives tier 1 loot\n" +
+				"_-_ Sad Ghost gives tier 4/5 loot less often\n" +
+				"_-_ Burning now deals less damage at low HP\n" +
+				"_-_ Weakness no longer discharges wands\n" +
+				"_-_ Rockfall traps rebalanced"));
 		
 		changes = new ChangeInfo("v0.3.3", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -633,8 +828,27 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released December 18th, 2015\n" +
 				"_-_ 44 days after Shattered v0.3.2"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
-				"Support for Google Play Games"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Google Play Games",
+				"Added support for Google Play Games in the Google Play version:\n\n" +
+				"- Badges can now sync across devices\n" +
+				"- Five Google Play Achievements added\n" +
+				"- Rankings sync will come in future\n\n" +
+				"Shattered remains a 100% offline game if Google Play Games is not enabled"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Gameplay Changes:\n" +
+				"- Tengu's maze is now different each time\n" +
+				"- Items no longer auto-pickup when enemies are near\n" +
+				"\n" +
+				"Fixes:\n" +
+				"- Fixed several bugs with prison enemies\n" +
+				"- Fixed some landscape window size issues\n" +
+				"- Fixed other minor bugs\n" +
+				"\n" +
+				"Misc:\n" +
+				"- Added support for reverse landscape\n" +
+				"- Added a small holiday treat ;)\n" +
+				"- Thieves now disappear when they get away"));
 		
 		changes = new ChangeInfo("v0.3.2", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -644,8 +858,46 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released November 4th, 2015\n" +
 				"_-_ 79 days after Shattered v0.3.1"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Update Changes",
-				"Prison Rework & Balance Changes"));
+		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Prison Rework",
+				"_-_ Tengu boss fight completely redone\n" +
+				"_-_ Corpse dust quest overhauled\n" +
+				"_-_ Rotberry quest overhauled\n" +
+				"_-_ NEW elemental embers quest\n" +
+				"_-_ NEW prison mob: insane prison guards!\n" +
+				"_-_ Thieves can escape with a stolen item\n" +
+				"_-_ Gnoll shaman attack speed increased"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.MASTERY, null), "Balance Changes",
+				"_-_ Mastery Book now always at floor 10, even when unlocked\n" +
+				"_-_ Hunger damage now increases with hero level, starts lower\n" +
+				"\n" +
+				"Sewers rebalance: \n" +
+				"_-_ Marsupial rat dmg and evasion reduced\n" +
+				"_-_ Gnoll scout accuracy reduced\n" +
+				"_-_ Sewer crabs less likely to spawn on floor 3, grant more exp\n" +
+				"_-_ Fly swarms rebalanced, moved to the sewers\n" +
+				"_-_ Great Crab HP reduced \n" +
+				"_-_ Goo fight rebalanced \n" +
+				" \n" +
+				"Base Class Changes: \n" +
+				"_-_ Mage's staff base damage increased \n" +
+				"_-_ Huntress now starts with 20 hp \n" +
+				"_-_ Huntress no longer heals more from dew \n" +
+				"_-_ Rogue's cloak of shadows now drains less while invisible\n" +
+				" \n" +
+				"Subclass Changes: \n" +
+				"_-_ Berserker now starts raging at 50% hp (up from 40%) \n" +
+				"_-_ Warden now heals 2 extra HP from dew \n" +
+				"_-_ Warlock completely overhauled"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Visual improvements from 1.9.1 source\n" +
+				"_-_ Improved golden UI for donators\n" +
+				"_-_ Fixed 'white line' graphical artifacts\n" +
+				"_-_ Floor locking now pauses all passive effects, not just hunger\n" +
+				"_-_ Cursed chains now only cripple, do not root\n" +
+				"_-_ Warping trap rebalanced, much less harsh\n" +
+				"_-_ Various other bugfixes"));
 		
 		changes = new ChangeInfo("v0.3.1", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -655,8 +907,37 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released August 17th, 2015\n" +
 				"_-_ 83 days after Shattered v0.3.0"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 16, 0, 16, 16), "Update Changes",
-				"Traps reworked & UI upgrades"));
+		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 112, 96, 16, 16), "Trap Overhaul",
+				"_-_ Over 20 new traps + tweaks to existing ones\n" +
+				"_-_ Trap visuals overhauled\n" +
+				"_-_ Traps now get trickier deeper in the dungeon\n" +
+				"_-_ Trap room reworked to make use of new traps"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.MENU, 15, 0, 16, 15), "Interface Improvements",
+				"_-_ Adjusted display scaling\n" +
+				"_-_ Search and Examine merged into one button (double tap to search)\n" +
+				"_-_ New max of 4 Quickslots!\n" +
+				"_-_ Multiple toolbar modes for large display and landscape users\n" +
+				"_-_ Ability to flip toolbar and indicators (left-handed mode)\n" +
+				"_-_ Better settings menu\n" +
+				"_-_ Graphics settings are now accessible ingame\n" +
+				"_-_ More consistent text rendering\n" +
+				"_-_ Recent changes can now be viewed from the title screen\n" +
+				"_-_ Added a health bar for bosses"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Balance changes:\n" +
+				"_-_ Ethereal chains now gain less charge the more charges they have\n" +
+				"_-_ Staff of regrowth grants more herbal healing\n" +
+				"_-_ Monks now disarm less randomly, but not less frequently\n" +
+				"_-_ Invisibility potion effect now lasts for 20 turns, up from 15\n\n" +
+				"QOL improvements:\n" +
+				"_-_ Quickslots now autotarget enemies\n" +
+				"_-_ Resting now works while hungry & at max HP\n" +
+				"_-_ Dew drops no longer collect when at full health with no dew vial\n" +
+				"_-_ Items now stay visible in the fog of war\n" +
+				"_-_ Added a visual hint to weak floor rooms\n" +
+				"_-_ Many bugfixes"));
 		
 		changes = new ChangeInfo("v0.3.0", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -667,14 +948,61 @@ public class ChangesScene extends PixelScene {
 				"_-_ 253 days after Shattered v0.2.0\n" +
 				"_-_ 92 days after Shattered v0.2.4"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 15, 12, 15), "Update Changes",
-				"Wands & Mage completely reworked"));
+		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 15, 12, 15), "Mage Rework!",
+				"_-_ No longer starts with knuckledusters or a wand\n" +
+				"_-_ Can no longer equip wands\n" +
+				"_-_ Now starts with a unique mages staff, empowered with magic missile to start.\n\n" +
+				"_-_ Battlemage reworked, staff now deals bonus effects when used as a melee weapon.\n\n" +
+				"_-_ Warlock reworked, gains more health and fullness from gaining exp, but food no longer restores hunger."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_DISINTEGRATION, null), "Wand Rework!",
+				"Removed Wands:\n" +
+				"Flock, Blink, Teleportation, Avalanche\n" +
+				"\n" +
+				"Reworked Wands:\n" +
+				"Magic Missile, Lightning, Disintegration,\n" +
+				"Fireblast (was Firebolt), Venom (was Poison),\n" +
+				"Frost (was Slowing), Corruption (was Amok),\n" +
+				"Blast Wave (was Telekinesis), Regrowth\n" +
+				"\n" +
+				"New Wands:\n" +
+				"Prismatic Light, Transfusion\n" +
+				"\n" +
+				"_-_ Wand types are now known by default.\n" +
+				"_-_ Wands now each have unique sprites.\n" +
+				"_-_ Wands now cap at 10 charges instead of 9\n" +
+				"_-_ Wands now recharge faster the more charges are missing.\n" +
+				"_-_ Self-targeting with wands is no longer possible.\n" +
+				"_-_ Wand recharge effects now give charge over time.\n" +
+				"_-_ Wands can now be cursed!"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"New Artifacts:\n" +
+				"_-_ Ethereal Chains (replaces wand of blink)\n" +
+				"_-_ Lloyd's Beacon (replaces wand of teleportation)\n" +
+				"\n" +
+				"Misc. Balance changes:\n" +
+				"_-_ Blessed Ankhs now revive at 1/4hp, but also grant initiative.\n" +
+				"_-_ Alchemist's Toolkit removed (will be reworked)\n" +
+				"_-_ Chalice of blood nerfed, now regens less hp at high levels.\n" +
+				"_-_ Cape of Thorns buffed, now absorbs all damage, but only deflects adjacent attacks.\n" +
+				"_-_ Sandals of nature adjusted, now give more seeds, less dew.\n" +
+				"_-_ Hunger no longer increases while fighting bosses.\n" +
+				"_-_ Floor 1 now spawns 10 rats, exactly enough to level up.\n" +
+				"_-_ Scrolls of recharging and mirror image now more common.\n" +
+				"_-_ Mimics are now less common, stronger, & give better loot.\n" +
+				"\n" +
+				"UI tweaks:\n" +
+				"_-_ New app icon!\n" +
+				"_-_ Shading added to main game interface\n" +
+				"_-_ Buffs now have descriptions, tap their icons!\n" +
+				"_-_ Visual indicator added for surprising enemies"));
 		
 		//**********************
 		//       v0.2.X
 		//**********************
 		
-		changes = new ChangeInfo( "v0.2.X", true, "More Info will be added here soon.");
+		changes = new ChangeInfo( "v0.2.X", true, "");
 		changes.hardlight( Window.TITLE_COLOR);
 		infos.add(changes);
 		
@@ -686,8 +1014,30 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released February 23rd, 2015\n" +
 				"_-_ 48 days after Shattered v0.2.3"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
-				"Small improvements and tweaks"));
+		changes.addButton( new ChangeButton(new ItemSprite(new Honeypot()), "Pixel Dungeon v1.7.5",
+				"v1.7.3 - v1.7.5 Source Implemented, with exceptions:\n" +
+				"_-_ Degredation not implemented.\n\n" +
+				"_-_ Badge syncing not implemented.\n\n" +
+				"_-_ Scroll of Weapon Upgrade renamed to Magical Infusion, works on armor.\n\n" +
+				"_-_ Scroll of Enchantment not implemented, Arcane stylus has not been removed.\n\n" +
+				"_-_ Honey pots now shatter in a new item: shattered honeypot. A bee will defend its shattered pot to the death against anything that gets near.\n\n" +
+				"_-_ Bombs have been reworked/nerfed: they explode after a delay, no longer stun, deal more damage at the center of the blast, affect the world (destroy items, blow up other bombs)."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BANDOLIER, null), "New Content",
+				"_-_ The huntress has been buffed: starts with Potion of Mind Vision identified, now benefits from strength on melee attacks, and has a chance to reclaim a single used ranged weapon from each defeated enemy.\n\n" +
+				"_-_ A new container: The Potion Bandolier! Potions can now shatter from frost, but the bandolier can protect them.\n\n" +
+				"_-_ Shops now stock a much greater variety of items, some item prices have been rebalanced.\n\n" +
+				"_-_ Added Merchant's Beacon.\n\n" +
+				"_-_ Added initials for IDed scrolls/potions."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Going down stairs no longer increases hunger, going up still does.\n\n" +
+				"_-_ Many, many bugfixes.\n" +
+				"_-_ Some UI improvements.\n" +
+				"_-_ Ingame audio quality improved.\n" +
+				"_-_ Unstable spellbook buffed.\n" +
+				"_-_ Psionic blasts deal less self-damage.\n" +
+				"_-_ Potions of liquid flame affect a 3x3 grid."));
 		
 		changes = new ChangeInfo("v0.2.3", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -697,8 +1047,30 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released January 6th, 2015\n" +
 				"_-_ 64 days after Shattered v0.2.2"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new TimekeepersHourglass()), "Update Changes",
-				"Artifact additions & improvements"));
+		changes.addButton( new ChangeButton(new ItemSprite(new TimekeepersHourglass()), "Artifact Changes",
+				"Added 4 new artifacts:\n" +
+				"_-_ Alchemist's Toolkit\n" +
+				"_-_ Unstable Spellbook\n" +
+				"_-_ Timekeeper's Hourglass\n" +
+				"_-_ Dried Rose\n\n" +
+				"_-_ Artifacts are now unique over each run\n" +
+				"_-_ Artifacts can now be cursed!\n" +
+				"_-_ Cloak of Shadows is now exclusive to the rogue\n" +
+				"_-_ Smaller Balance Changes and QOL improvements to almost every artifact"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), "Balance Changes",
+				"_-_ Health potion farming has been nerfed from all sources\n" +
+				"_-_ Freerunner now moves at very high speeds when invisible\n" +
+				"_-_ Ring of Force buffed significantly\n" +
+				"_-_ Ring of Evasion reworked again\n" +
+				"_-_ Improved the effects of some blandfruit types\n" +
+				"_-_ Using throwing weapons now cancels stealth"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Implement a donation system in the Google Play version of Shattered\n\n" +
+				"_-_ Significantly increased the stability of the save system\n\n" +
+				"_-_ Increased the number of visible rankings to 11 from 6\n\n" +
+				"_-_ Improved how the player is interrupted by hermful events"));
 		
 		changes = new ChangeInfo("v0.2.2", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -708,8 +1080,35 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released November 3rd, 2014\n" +
 				"_-_ 21 days after Shattered v0.2.1"));
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Update Changes",
-				"Small improvements and tweaks"));
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WEIGHT, null), "Pixel Dungeon v1.7.2",
+				"Implemented directly from v1.7.2:\n" +
+				"_-_ Synchronous Movement\n" +
+				"_-_ Challenges\n" +
+				"_-_ UI improvements\n" +
+				"_-_ Vertigo debuff\n\n" +
+				"Implement with changes:\n" +
+				"_-_ Weightstone: Increases either speed or damage, at the cost of the other, instead of increasing either speed or accuracy.\n\n" +
+				"Not Implemented:\n" +
+				"_-_ Key ring and unstackable keys\n" +
+				"_-_ Blindweed has not been removed"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 144, 112, 16, 16), "New Plants",
+				"Added two new plants:\n" +
+				"_-_ Stormvine, which brews into levitation\n" +
+				"_-_ Dreamfoil, which brews into purity\n\n" +
+				"_-_ Potion of levitation can now be thrown to make a cloud of confusion gas\n\n" +
+				"_-_ Removed gas collision logic, gasses can now stack without limitation."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.REMAINS, null), "Heroes Remains",
+				"Heroes remains have been significantly adjusted to prevent strategies that exploit them, but also to increase their average loot.\n\n" +
+				"Remains have additional limitations:\n" +
+				"_-_ Heros will no longer drop remains if they have obtained the amulet of yendor, or die 5 or more floors above the deepest floor they have reached\n" +
+				"_-_ Class exclusive items can no longer appear in remains\n" +
+				"_-_ Items found in remains are now more harshly level-capped\n" +
+				"_-_ Remains are not dropped, and cannot be found, when challenges are enabled.\n\n" +
+				"However:\n" +
+				"_-_ Remains can now contain useful items from the inventory, not just equipped items.\n" +
+				"_-_ Remains are now less likely to contain gold."));
 		
 		changes = new ChangeInfo("v0.2.1", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -719,9 +1118,18 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released October 13th, 2014\n" +
 				"_-_ 28 days after Shattered v0.2.0"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.RAT, 0, 30, 16, 15), "Update Changes",
-				"Sewer improvements\n\n" +
-					"More Info to be added here soon."));
+		changes.addButton( new ChangeButton(new Image(Assets.GHOST, 0, 0, 14, 15), "New Sewer Quests",
+				"_-_ Removed the dried rose quest (the rose will return...)\n\n" +
+				"_-_ Tweaked the mechanics of the fetid rat quest\n\n" +
+				"_-_ Added a gnoll trickster quest\n\n" +
+				"_-_ Added a great crab quest"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.GOO, 43, 3, 14, 11), "Goo Changes",
+				"Goo's animations have been overhauled, including a particle effect for the area of its pumped up attack.\n\n" +
+				"Goo's arena has been updated to give more room to maneuver, and to be more variable."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null), "Story & Signpost Changes",
+				"Most text in the sewers has been overhauled, including descriptions, quest dialogues, signposts, and story scrolls"));
 		
 		changes = new ChangeInfo("v0.2.0", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -731,8 +1139,37 @@ public class ChangesScene extends PixelScene {
 				"_-_ Released September 15th, 2014\n" +
 				"_-_ 31 days after Shattered v0.1.1"));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(new HornOfPlenty()), "Update Changes",
-				"Added artifacts, reworked rings"));
+		changes.addButton( new ChangeButton(new ItemSprite(new HornOfPlenty()), "Artifacts!",
+				"Added artifacts to the game!\n\n" +
+				"Artifacts are unique items which offer new gameplay opportunities and grow stronger through unique means.\n\n" +
+				"Removed 7 Rings... And Replaced them with 7 Artifacts!\n" +
+				"_-_ Ring of Shadows becomes Cloak of Shadows\n" +
+				"_-_ Ring of Satiety becomes Horn of Plenty\n" +
+				"_-_ Ring of Mending becomes Chalice of Blood\n" +
+				"_-_ Ring of Thorns becomes Cape of Thorns\n" +
+				"_-_ Ring of Haggler becomes Master Thieves' Armband\n" +
+				"_-_ Ring of Naturalism becomes Sandals of Nature"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_DIAMOND, null), "New Rings!",
+				"To replace the lost rings, 6 new rings have been added:\n" +
+				"_-_ Ring of Force\n" +
+				"_-_ Ring of Furor\n" +
+				"_-_ Ring of Might\n" +
+				"_-_ Ring of Tenacity\n" +
+				"_-_ Ring of Sharpshooting\n" +
+				"_-_ Ring of Wealth\n\n" +
+				"The 4 remaining rings have also been tweaked or reworked entirely:\n" +
+				"_-_ Ring of Accuracy\n" +
+				"_-_ Ring of Elements\n" +
+				"_-_ Ring of Evasion\n" +
+				"_-_ Ring of Haste"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"-Nerfed farming health potions from fly swarms.\n\n" +
+				"-Buffed crazed bandit and his drops.\n\n" +
+				"-Made Blandfruit more common.\n\n" +
+				"-Nerfed Assassin bonus damage slightly, to balance with him having an artifact now.\n\n" +
+				"-Added a welcome page!"));
 		
 		changes = new ChangeInfo(" ", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -742,7 +1179,7 @@ public class ChangesScene extends PixelScene {
 		//       v0.1.X
 		//**********************
 		
-		changes = new ChangeInfo( "v0.1.X", true, "More Info will be added here soon.");
+		changes = new ChangeInfo( "v0.1.X", true, "");
 		changes.hardlight( Window.TITLE_COLOR);
 		infos.add(changes);
 		
@@ -755,13 +1192,28 @@ public class ChangesScene extends PixelScene {
 				"_-_ 10 days after Shattered v0.1.0"));
 		
 		changes.addButton( new ChangeButton(new Blandfruit(),
-				"Added blandfruit"));
+				"Players who chance upon gardens or who get lucky while trampling grass may come across a new plant: the _Blandfruit._\n\n" +
+				"As the name implies, the fruit from this plant is pretty unexceptional, and will barely do anything for you on its own. Perhaps there is some way to prepare the fruit with another ingredient..."));
 		
-		changes.addButton( new ChangeButton(new DewVial(),
-				"Reworked dew vial and ankh"));
+		changes.addButton( new ChangeButton(new ItemSprite(new Ankh()), "Revival Item Changes",
+				"When the Dew Vial was initially added to Pixel Dungeon, its essentially free revive made ankhs pretty useless by comparison. " +
+				"To fix this, both items have been adjusted to combine to create a more powerful revive.\n\n" +
+				"Dew Vial nerfed:\n" +
+				"_-_ Still grants a full heal at full charge, but grants less healing at partial charge.\n" +
+				"_-_ No longer revives the player if they die.\n\n" +
+				"Ankh buffed:\n" +
+				"_-_ Can now be blessed with a full dew vial, to gain the vial's old revive effect."));
 		
-		//changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Item Changes",
-		//		""));
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Misc Item Changes",
+				"Sungrass buffed:\n" +
+				"_-_ Heal scaling now scales with max hp.\n\n" +
+				"Scroll of Psionic Blast rebalanced:\n" +
+				"_-_ Now deals less self damage, and damage is more consistent.\n" +
+				"_-_ Duration of self stun/blind effect increased.\n\n" +
+				"Scroll of lullaby reworked:\n" +
+				"_-_ No longer instantly sleeps enemies, now afflicts them with drowsy, which turns into magical sleep.\n" +
+				"_-_ Magically slept enemies will only wake up when attacked.\n" +
+				"_-_ Hero is also affected, and will be healed by magical sleep."));
 		
 		changes = new ChangeInfo("v0.1.0", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
@@ -773,18 +1225,18 @@ public class ChangesScene extends PixelScene {
 				"_-_ 9 days after v1.7.1 source release"));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_EARTHROOT, null), "Seed Changes",
-				"_-_ Blindweed buffed, now cripples as well as blinds\n\n" +
-				"_-_ Sungrass nerfed, heal scales up over time, total heal reduced by combat\n\n" +
-				"_-_ Earthroot nerfed, damage absorb down to 50% from 100%, total shield unchanged\n\n" +
-				"_-_ Icecap buffed, freeze effect is now much stronger in water"));
+				"_-_ Blindweed buffed, now cripples as well as blinds.\n\n" +
+				"_-_ Sungrass nerfed, heal scales up over time, total heal reduced by combat.\n\n" +
+				"_-_ Earthroot nerfed, damage absorb down to 50% from 100%, total shield unchanged.\n\n" +
+				"_-_ Icecap buffed, freeze effect is now much stronger in water."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_SILVER, null), "Potion Changes",
-				"_-_ Potion of Purity buffed, immunity duration increased to 10 turns from 5, clear effect radius increased\n\n" +
+				"_-_ Potion of Purity buffed, immunity duration increased to 10 turns from 5, clear effect radius increased.\n\n" +
 				"_-_ Potion of Frost buffed, freeze effect is now much stronger in water."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_BERKANAN, null), "Scroll Changes",
-				"_-_ Scroll of Psionic blast reworked, now rarer and much stronger, but deals damage to the hero\n\n" +
-				"_-_ Scroll of Challenge renamed to Scroll of Rage, now amoks nearby enemies"));
+				"_-_ Scroll of Psionic blast reworked, now rarer and much stronger, but deals damage to the hero.\n\n" +
+				"_-_ Scroll of Challenge renamed to Scroll of Rage, now amoks nearby enemies."));
 
 		Component content = list.content();
 		content.clear();
