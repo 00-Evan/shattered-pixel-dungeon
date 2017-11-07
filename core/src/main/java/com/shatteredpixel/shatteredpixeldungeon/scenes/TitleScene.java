@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import android.opengl.GLES20;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
@@ -157,7 +158,7 @@ public class TitleScene extends PixelScene {
 		add( btnPrefs );
 
 		LanguageButton btnLang = new LanguageButton();
-		btnLang.setPos(16, 1);
+		btnLang.setRect(16, 0, 16, 15);
 		add( btnLang );
 
 		ExitButton btnExit = new ExitButton();
