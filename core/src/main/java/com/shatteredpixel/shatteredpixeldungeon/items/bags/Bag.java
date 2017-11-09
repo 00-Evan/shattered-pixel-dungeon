@@ -69,9 +69,14 @@ public class Bag extends Item implements Iterable<Item> {
 
 		for (Item item : container.items.toArray( new Item[0] )) {
 			if (grab( item )) {
-				item.detachAll( container );
-				if (!item.collect( this ))
-					item.collect( container );
+				int slot = Dungeon.quickslot.getSlot(item);
+				item.detachAll(container);
+				if (!item.collect(this)) {
+					item.collect(container);
+				}
+				if (slot != -1) {
+					Dungeon.quickslot.setSlot(slot, item);
+				}
 			}
 		}
 
