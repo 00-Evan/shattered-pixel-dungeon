@@ -86,6 +86,8 @@ public class WandOfFrost extends DamageWand {
 				else
 					Buff.prolong(ch, Chill.class, 2+level());
 			}
+		} else {
+			Dungeon.level.press(bolt.collisionPos, null);
 		}
 	}
 

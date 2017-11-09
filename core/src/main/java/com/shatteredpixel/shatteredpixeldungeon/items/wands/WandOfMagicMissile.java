@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -55,6 +56,8 @@ public class WandOfMagicMissile extends DamageWand {
 
 			ch.sprite.burst(0xFFFFFFFF, level() / 2 + 2);
 
+		} else {
+			Dungeon.level.press(bolt.collisionPos, null);
 		}
 	}
 
