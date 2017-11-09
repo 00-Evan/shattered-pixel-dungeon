@@ -73,6 +73,8 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 				return DungeonTileSheet.RAISED_STATUE;
 			} else if (tile == Terrain.STATUE_SP) {
 				return DungeonTileSheet.RAISED_STATUE_SP;
+			} else if (tile == Terrain.ALCHEMY) {
+				return DungeonTileSheet.RAISED_ALCHEMY_POT;
 			} else if (tile == Terrain.BARRICADE) {
 				return DungeonTileSheet.RAISED_BARRICADE;
 			} else if (tile == Terrain.HIGH_GRASS) {
