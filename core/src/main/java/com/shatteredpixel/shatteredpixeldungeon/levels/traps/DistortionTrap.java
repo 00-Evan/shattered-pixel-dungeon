@@ -25,9 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.watabou.noosa.Game;
@@ -43,8 +40,13 @@ public class DistortionTrap extends Trap{
 	public void activate() {
 		InterlevelScene.returnDepth = Dungeon.depth;
 		Belongings belongings = Dungeon.hero.belongings;
-		Notes.remove((Key) new IronKey(Dungeon.depth).quantity(99));
-		Notes.remove((Key) new GoldenKey(Dungeon.depth).quantity(99));
+		
+		for (Notes.Record rec : Notes.getRecords()){
+			if (rec.depth() == Dungeon.depth){
+				Notes.remove(rec);
+			}
+		}
+		
 		for (Item i : belongings){
 			if (i instanceof LloydsBeacon && ((LloydsBeacon) i).returnDepth == Dungeon.depth)
 					((LloydsBeacon) i).returnDepth = -1;

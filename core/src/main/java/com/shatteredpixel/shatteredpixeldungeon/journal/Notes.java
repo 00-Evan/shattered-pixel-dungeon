@@ -249,4 +249,8 @@ public class Notes {
 		return filtered;
 	}
 	
+	public static void remove( Record rec ){
+		records.remove(rec);
+	}
+	
 }
