@@ -128,7 +128,38 @@ public class ChangesScene extends PixelScene {
 		//       v0.6.2
  		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.2a", true, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.2b", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new CloakOfShadows(),
+				"Increased the base charge speed of the Cloak of Shadows by 20%, charge speed at higher levels unchanged."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Increased the brightness of the game's fog of war across all brightness settings.\n\n" +
+				"_-_ Added more detailed information to historical updates in the changes list.\n\n" +
+				"_-_ Wands that fire magical bolts now push on their detonation area, opening doors and trampling grass.\n\n" +
+				"_-_ Improved the visuals of alchemy pots."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.2):\n" +
+				"_-_ Various crash fixes\n" +
+				"_-_ Distortion traps not clearing journal entries\n\n" +
+				"Fixed (Existed prior to 0.6.2):\n" +
+				"_-_ Various crash fixes\n" +
+				"_-_ Game failing to save in rare cases\n" +
+				"_-_ Mimics spawning over pits in rare cases\n" +
+				"_-_ Game music not correctly pausing on android 2.2 and 2.3\n" +
+				"_-_ Items being removed from quickslots when containers are bought\n"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"_-_ Fixed various text errors with venom\n" +
+				"\n" +
+				"_-_ Various Translation Updates\n\n" +
+				"_-_ New Language: _Czech_"));
+		
+		
+		changes = new ChangeInfo("v0.6.2a", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
