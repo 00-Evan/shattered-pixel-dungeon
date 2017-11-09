@@ -165,6 +165,13 @@ public class Tengu extends Mob {
 	private void jump() {
 		
 		Level level = Dungeon.level;
+		
+		//incase tengu hasn't had a chance to act yet
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+			Dungeon.level.updateFieldOfView( this, fieldOfView );
+		}
+		
 		if (enemy == null) enemy = chooseEnemy();
 		if (enemy == null) return;
 

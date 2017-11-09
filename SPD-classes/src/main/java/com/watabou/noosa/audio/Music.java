@@ -44,7 +44,7 @@ public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnError
 	
 	public void play( String assetName, boolean looping ) {
 		
-		if (isPlaying() && lastPlayed.equals( assetName )) {
+		if (isPlaying() && lastPlayed != null && lastPlayed.equals( assetName )) {
 			return;
 		}
 		

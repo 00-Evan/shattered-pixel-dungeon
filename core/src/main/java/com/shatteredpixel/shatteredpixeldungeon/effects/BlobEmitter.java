@@ -56,7 +56,9 @@ public class BlobEmitter extends Emitter {
 		for (int i = blob.area.left; i < blob.area.right; i++) {
 			for (int j = blob.area.top; j < blob.area.bottom; j++) {
 				cell = i + j*Dungeon.level.width();
-				if (map[cell] > 0 && Dungeon.level.heroFOV[cell]) {
+				if (map[cell] > 0
+						&& cell < Dungeon.level.heroFOV.length
+						&& Dungeon.level.heroFOV[cell]) {
 					float x = (i + Random.Float()) * size;
 					float y = (j + Random.Float()) * size;
 					factory.emit(this, index, x, y);
