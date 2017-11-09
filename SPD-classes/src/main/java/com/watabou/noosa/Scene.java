@@ -71,7 +71,7 @@ public class Scene extends Group {
 	}
 	
 	protected void onBackPressed() {
-		Game.instance.finish();
+		Game.quitGame();
 	}
 	
 	protected void onMenuPressed() {

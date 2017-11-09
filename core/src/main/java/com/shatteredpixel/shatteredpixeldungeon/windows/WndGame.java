@@ -108,7 +108,12 @@ public class WndGame extends Window {
 				new RedButton( Messages.get(this, "exit") ) {
 					@Override
 					protected void onClick() {
-						Game.instance.finish();
+						try {
+							Dungeon.saveAll();
+						} catch (IOException e) {
+							ShatteredPixelDungeon.reportException(e);
+						}
+						ShatteredPixelDungeon.quitGame();
 					}
 				}
 		);

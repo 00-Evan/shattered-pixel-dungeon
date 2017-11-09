@@ -142,25 +142,53 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		view.setRenderer( this );
 		view.setOnTouchListener( this );
 		setContentView( view );
+		
+		//so first call to onstart/onresume calls correct logic.
+		paused = true;
 	}
 	
-	private boolean paused = false;
+	private boolean paused;
+	
+	//Checks for gingerbread are here due to minor activity lifecycle differences
 	
 	@Override
 	public void onStart() {
 		super.onStart();
 		
-		now = 0;
-		paused = false;
-		view.onResume();
-		
-		Music.INSTANCE.resume();
-		Sample.INSTANCE.resume();
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1){
+			resumeGame();
+		}
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
+		
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1){
+			pauseGame();
+		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+			resumeGame();
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+			pauseGame();
+		}
+	}
+	
+	public void pauseGame(){
+		if (paused) return;
 		
 		if (scene != null) {
 			scene.pause();
@@ -172,6 +200,22 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		
 		Music.INSTANCE.pause();
 		Sample.INSTANCE.pause();
+	}
+	
+	public void resumeGame(){
+		if (!paused) return;
+		
+		now = 0;
+		paused = false;
+		view.onResume();
+		
+		Music.INSTANCE.resume();
+		Sample.INSTANCE.resume();
+	}
+	
+	public static void quitGame(){
+		Game.instance.finish();
+		System.exit(0);
 	}
 	
 	public boolean isPaused(){
