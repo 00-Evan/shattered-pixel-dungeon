@@ -171,7 +171,7 @@ public class CloakOfShadows extends Artifact {
 			if (charge < chargeCap) {
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (!stealthed && (lock == null || lock.regenOn())) {
-					float turnsToCharge = (60 - 2*(chargeCap - charge));
+					float turnsToCharge = (50 - (chargeCap - charge));
 					if (level() > 7) turnsToCharge -= 10*(level() - 7)/3f;
 					partialCharge += (1f / turnsToCharge);
 				}
