@@ -161,13 +161,15 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ Released October 24th, 2017\n" +
-				"_-_ 70 days after Shattered v0.6.1"));
-		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released October 24th, 2017\n" +
+				"_-_ 70 days after Shattered v0.6.1\n" +
+				"\n" +
+				"Commentary will be added here when this update is older."));
 		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Dungeon Secrets!",
 				"The secrets of the dungeon have been totally redesigned!\n\n" +
@@ -327,15 +329,16 @@ public class ChangesScene extends PixelScene {
 		changes = new ChangeInfo("v0.6.1", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ Released August 15th, 2017\n" +
-				"_-_ 72 days after Shattered v0.6.0"));
 
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
-
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released August 15th, 2017\n" +
+				"_-_ 72 days after Shattered v0.6.0\n" +
+				"\n" +
+				"Commentary will be added here when this update is older."));
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null), "Journal Additions",
 				"_-_ Overhauled the Journal window with loads of new functionality\n\n" +
 				"_-_ Added a completely overhauled tutorial experience, which replaces the existing signpost system.\n\n" +
@@ -358,10 +361,10 @@ public class ChangesScene extends PixelScene {
 				"_-_ Added the ring of energy."));
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CHEST, null), "Sprites",
 				"New sprites for the following:\n" +
-						"_-_ Chests & Mimics\n" +
-						"_-_ Darts\n" +
-						"_-_ Javelins\n" +
-						"_-_ Tomahawks"));
+				"_-_ Chests & Mimics\n" +
+				"_-_ Darts\n" +
+				"_-_ Javelins\n" +
+				"_-_ Tomahawks"));
 
 		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
 		changes.hardlight( CharSprite.WARNING );
@@ -486,7 +489,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released June 4th, 2017\n" +
-				"_-_ 116 days after Shattered v0.5.0"));
+				"_-_ 116 days after Shattered v0.5.0\n" +
+				"\n" +
+				"Commentary will be added here when this update is older."));
 		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "Levelgen Overhaul!",
 				"Level creation algorithm overhauled!\n\n" +
@@ -540,7 +545,9 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released February 8th, 2017\n" +
 				"_-_ 233 days after Shattered v0.4.0\n" +
-				"_-_ 115 days after Shattered v0.4.3"));
+				"_-_ 115 days after Shattered v0.4.3\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton( Icons.get(Icons.DEPTH), "New Dungeon Visual Style!",
 				"_-_ Walls and some terrain now have depth\n" +
@@ -577,7 +584,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released October 16th, 2016\n" +
-				"_-_ 37 days after Shattered v0.4.2"));
+				"_-_ 37 days after Shattered v0.4.2\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
 				"_-_ Added rankings and hall of heroes sync via Google Play Games, for the Google Play version of Shattered.\n\n" +
@@ -602,7 +611,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released September 9th, 2016\n" +
-				"_-_ 46 days after Shattered v0.4.1"));
+				"_-_ 46 days after Shattered v0.4.1\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Technical Improvements",
 				"_-_ Many general performance improvements\n" +
@@ -628,7 +639,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released July 25th, 2016\n" +
-				"_-_ 35 days after Shattered v0.4.0"));
+				"_-_ 35 days after Shattered v0.4.0\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new PlateArmor()), "Item Changes pt.1",
 				"Armor and Enemy Balance Changes:\n" +
@@ -692,7 +705,9 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released June 20th, 2016\n" +
 				"_-_ 391 days after Shattered v0.3.0\n" +
-				"_-_ 50 days after Shattered v0.3.5"));
+				"_-_ 50 days after Shattered v0.3.5\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new Longsword()), "Equipment Overhaul!",
 				"_-_ 13 new weapons, 12 rebalanced weapons\n" +
@@ -755,7 +770,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released May 1st, 2016\n" +
-				"_-_ 81 days after Shattered v0.3.4"));
+				"_-_ 81 days after Shattered v0.3.4\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 15, 12, 15), "Warrior Rework!",
 				"Warrior Rework:\n" +
@@ -793,7 +810,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released February 10th, 2016\n" +
-				"_-_ 54 days after Shattered v0.3.3"));
+				"_-_ 54 days after Shattered v0.3.3\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), "Translations!",
 				"Shattered Pixel Dungeon now supports multiple languages, thanks to a new community translation project!\n\n" +
@@ -826,7 +845,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released December 18th, 2015\n" +
-				"_-_ 44 days after Shattered v0.3.2"));
+				"_-_ 44 days after Shattered v0.3.2\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Google Play Games",
 				"Added support for Google Play Games in the Google Play version:\n\n" +
@@ -856,7 +877,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released November 4th, 2015\n" +
-				"_-_ 79 days after Shattered v0.3.1"));
+				"_-_ 79 days after Shattered v0.3.1\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Prison Rework",
 				"_-_ Tengu boss fight completely redone\n" +
@@ -905,7 +928,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released August 17th, 2015\n" +
-				"_-_ 83 days after Shattered v0.3.0"));
+				"_-_ 83 days after Shattered v0.3.0\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 112, 96, 16, 16), "Trap Overhaul",
 				"_-_ Over 20 new traps + tweaks to existing ones\n" +
@@ -946,7 +971,9 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released May 26th, 2015\n" +
 				"_-_ 253 days after Shattered v0.2.0\n" +
-				"_-_ 92 days after Shattered v0.2.4"));
+				"_-_ 92 days after Shattered v0.2.4\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 15, 12, 15), "Mage Rework!",
 				"_-_ No longer starts with knuckledusters or a wand\n" +
@@ -1012,7 +1039,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released February 23rd, 2015\n" +
-				"_-_ 48 days after Shattered v0.2.3"));
+				"_-_ 48 days after Shattered v0.2.3\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new Honeypot()), "Pixel Dungeon v1.7.5",
 				"v1.7.3 - v1.7.5 Source Implemented, with exceptions:\n" +
@@ -1045,7 +1074,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released January 6th, 2015\n" +
-				"_-_ 64 days after Shattered v0.2.2"));
+				"_-_ 64 days after Shattered v0.2.2\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(new TimekeepersHourglass()), "Artifact Changes",
 				"Added 4 new artifacts:\n" +
@@ -1078,7 +1109,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released November 3rd, 2014\n" +
-				"_-_ 21 days after Shattered v0.2.1"));
+				"_-_ 21 days after Shattered v0.2.1\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WEIGHT, null), "Pixel Dungeon v1.7.2",
 				"Implemented directly from v1.7.2:\n" +
@@ -1116,7 +1149,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released October 13th, 2014\n" +
-				"_-_ 28 days after Shattered v0.2.0"));
+				"_-_ 28 days after Shattered v0.2.0\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.GHOST, 0, 0, 14, 15), "New Sewer Quests",
 				"_-_ Removed the dried rose quest (the rose will return...)\n\n" +
@@ -1189,7 +1224,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released August 15th, 2014\n" +
-				"_-_ 10 days after Shattered v0.1.0"));
+				"_-_ 10 days after Shattered v0.1.0\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new Blandfruit(),
 				"Players who chance upon gardens or who get lucky while trampling grass may come across a new plant: the _Blandfruit._\n\n" +
@@ -1222,7 +1259,9 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released August 5th, 2014\n" +
 				"_-_ 69 days after Pixel Dungeon v1.7.1\n" +
-				"_-_ 9 days after v1.7.1 source release"));
+				"_-_ 9 days after v1.7.1 source release\n" +
+				"\n" +
+				"More dev commentary will be added here soon."));
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_EARTHROOT, null), "Seed Changes",
 				"_-_ Blindweed buffed, now cripples as well as blinds.\n\n" +
