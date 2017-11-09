@@ -949,6 +949,14 @@ public abstract class Level implements Bundlable {
 	public boolean adjacent( int a, int b ) {
 		return distance( a, b ) == 1;
 	}
+	
+	public int distNoDiag( int a, int b){
+		int ax = a % width();
+		int ay = a / width();
+		int bx = b % width();
+		int by = b / width();
+		return Math.abs( ax - bx ) + Math.abs( ay - by );
+	}
 
 	//returns true if the input is a valid tile within the level
 	public boolean insideMap( int tile ){
