@@ -40,9 +40,10 @@ public enum Languages {
 	TURKISH("türkçe",       "tr", Status.UNREVIEWED, new String[]{"LokiofMillenium", "emrebnk"}, new String[]{"AcuriousPotato", "alpekin98", "denizakalin", "melezorus34"}),
 	
 	GERMAN("deutsch",       "de", Status.INCOMPLETE, new String[]{"Dallukas", "KrystalCroft", "Wuzzy", "Zap0", "davedude" }, new String[]{"DarkPixel", "ErichME", "LenzB", "Sarius", "Sorpl3x", "ThunfischGott", "Topicranger", "oragothen"}),
-	FRENCH("français",      "fr", Status.INCOMPLETE, new String[]{"Emether", "canc42", "kultissim", "minikrob"}, new String[]{"Alsydis", "Basttee", "Dekadisk", "Draal", "antoine9298", "go11um", "linterpreteur", "solthaar"}),
+	FRENCH("français",      "fr", Status.UNREVIEWED, new String[]{"Emether", "canc42", "kultissim", "minikrob"}, new String[]{"Alsydis", "Basttee", "Dekadisk", "Draal", "antoine9298", "go11um", "linterpreteur", "solthaar"}),
 	PORTUGUESE("português", "pt", Status.INCOMPLETE, new String[]{"TDF2001", "matheus208"}, new String[]{"ChainedFreaK", "JST", "MadHorus", "Tio_P_", "ancientorange", "danypr23", "ismael.henriques12", "owenreilly", "try31"}),
-	INDONESIAN("indonésien","in", Status.INCOMPLETE, new String[]{"rakapratama"}, null);
+	INDONESIAN("indonésien","in", Status.INCOMPLETE, new String[]{"rakapratama"}, null),
+	CZECH("Čeština",        "cs", Status.UNREVIEWED, new String[]{"ObisMike"}, new String[]{"AshenShugar", "Buba237", "JStrange", "RealBrofessor", "chuckjirka"});
 
 	public enum Status{
 		//below 80% complete languages are not added.
