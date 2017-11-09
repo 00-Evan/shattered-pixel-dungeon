@@ -113,7 +113,7 @@ public class Mimic extends Mob {
 
 	public static Mimic spawnAt( int pos, List<Item> items ) {
 		Char ch = Actor.findChar( pos );
-		if (ch != null) {
+		if (ch != null || !Dungeon.level.passable[pos]) {
 			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : PathFinder.NEIGHBOURS8) {
 				int cell = pos + n;
