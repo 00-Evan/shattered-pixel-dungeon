@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class Camera extends Gizmo {
 
-	protected static ArrayList<Camera> all = new ArrayList<Camera>();
+	private static ArrayList<Camera> all = new ArrayList<Camera>();
 	
 	protected static float invW2;
 	protected static float invH2;
@@ -66,7 +66,7 @@ public class Camera extends Gizmo {
 		return reset( createFullscreen( 1 ) );
 	}
 	
-	public static Camera reset( Camera newCamera ) {
+	public static synchronized Camera reset( Camera newCamera ) {
 		
 		invW2 = 2f / Game.width;
 		invH2 = 2f / Game.height;
@@ -80,20 +80,18 @@ public class Camera extends Gizmo {
 		return main = add( newCamera );
 	}
 	
-	public static Camera add( Camera camera ) {
+	public static synchronized Camera add( Camera camera ) {
 		all.add( camera );
 		return camera;
 	}
 	
-	public static Camera remove( Camera camera ) {
+	public static synchronized Camera remove( Camera camera ) {
 		all.remove( camera );
 		return camera;
 	}
 	
-	public static void updateAll() {
-		int length = all.size();
-		for (int i=0; i < length; i++) {
-			Camera c = all.get( i );
+	public static synchronized void updateAll() {
+		for (Camera c : all) {
 			if (c.exists && c.active) {
 				c.update();
 			}

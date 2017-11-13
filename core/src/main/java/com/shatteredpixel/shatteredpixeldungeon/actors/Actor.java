@@ -220,7 +220,7 @@ public abstract class Actor implements Bundlable {
 					current = null;
 				} else {
 					doNext = acting.act();
-					if (doNext && !Dungeon.hero.isAlive()) {
+					if (doNext && (Dungeon.hero == null || !Dungeon.hero.isAlive())) {
 						doNext = false;
 						current = null;
 					}
