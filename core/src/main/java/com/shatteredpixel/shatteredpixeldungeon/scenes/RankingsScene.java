@@ -60,7 +60,6 @@ public class RankingsScene extends PixelScene {
 		super.create();
 		
 		Music.INSTANCE.play( Assets.THEME, true );
-		Music.INSTANCE.volume( ShatteredPixelDungeon.musicVol() / 10f );
 
 		uiCamera.visible = false;
 		

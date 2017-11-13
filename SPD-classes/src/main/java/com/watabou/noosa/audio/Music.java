@@ -29,8 +29,6 @@ import android.telephony.TelephonyManager;
 
 import com.watabou.noosa.Game;
 
-import java.io.IOException;
-
 public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
 	
 	INSTANCE;
@@ -41,6 +39,7 @@ public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnError
 	private boolean looping;
 	
 	private boolean enabled = true;
+	private float volume = 1f;
 	
 	public void play( String assetName, boolean looping ) {
 		
@@ -67,8 +66,9 @@ public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnError
 			mp.setOnPreparedListener( this );
 			mp.setOnErrorListener( this );
 			mp.prepareAsync();
+			afd.close();
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			
 			player = null;
 			
@@ -85,6 +85,7 @@ public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnError
 		player = mp;
 		player.start();
 		player.setLooping(looping);
+		player.setVolume(volume, volume);
 	}
 	
 	@Override
@@ -116,6 +117,7 @@ public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnError
 	}
 	
 	public void volume( float value ) {
+		volume = value;
 		if (player != null) {
 			player.setVolume( value, value );
 		}

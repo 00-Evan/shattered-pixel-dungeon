@@ -36,7 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 
 import java.io.FileNotFoundException;
@@ -159,10 +158,7 @@ public class InterlevelScene extends PixelScene {
 			
 		case FADE_OUT:
 			message.alpha( p );
-
-			if (mode == Mode.CONTINUE || (mode == Mode.DESCEND && Dungeon.depth == 1)) {
-				Music.INSTANCE.volume( p * (ShatteredPixelDungeon.musicVol()/10f));
-			}
+			
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				Game.switchScene( GameScene.class );
 			}

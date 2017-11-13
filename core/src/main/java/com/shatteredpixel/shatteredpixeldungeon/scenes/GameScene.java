@@ -162,7 +162,6 @@ public class GameScene extends PixelScene {
 	public void create() {
 		
 		Music.INSTANCE.play( Assets.TUNE, true );
-		Music.INSTANCE.volume( ShatteredPixelDungeon.musicVol()/10f );
 
 		ShatteredPixelDungeon.lastClass(Dungeon.hero.heroClass.ordinal());
 		
