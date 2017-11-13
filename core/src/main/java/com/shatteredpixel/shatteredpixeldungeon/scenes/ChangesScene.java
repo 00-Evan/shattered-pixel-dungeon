@@ -128,7 +128,26 @@ public class ChangesScene extends PixelScene {
 		//       v0.6.2
  		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.2b", true, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.2", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes = new ChangeInfo("v0.6.2c", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.2):\n" +
+				"_-_ Various crash bugs\n" +
+				"_-_ Mimics causing crashes in certain cases\n\n" +
+				"Fixed (Existed prior to 0.6.2):\n" +
+				"_-_ Various crash bugs\n" +
+				"_-_ Music volume being ignored in certain cases"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+						"_-_ Various Translation Updates"));
+		
+		changes = new ChangeInfo("v0.6.2b", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
@@ -143,14 +162,14 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed (caused by 0.6.2):\n" +
-				"_-_ Various crash fixes\n" +
+				"_-_ Various crash bugs\n" +
 				"_-_ Distortion traps not clearing journal entries\n\n" +
 				"Fixed (Existed prior to 0.6.2):\n" +
-				"_-_ Various crash fixes\n" +
+				"_-_ Various crash bugs\n" +
 				"_-_ Game failing to save in rare cases\n" +
 				"_-_ Mimics spawning over pits in rare cases\n" +
 				"_-_ Game music not correctly pausing on android 2.2 and 2.3\n" +
-				"_-_ Items being removed from quickslots when containers are bought\n"));
+				"_-_ Items being removed from quickslots when containers are bought"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"_-_ Fixed various text errors with venom\n" +
@@ -159,7 +178,7 @@ public class ChangesScene extends PixelScene {
 				"_-_ New Language: _Czech_"));
 		
 		
-		changes = new ChangeInfo("v0.6.2a", true, "");
+		changes = new ChangeInfo("v0.6.2a", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
@@ -188,7 +207,7 @@ public class ChangesScene extends PixelScene {
 				"\n" +
 				"_-_ Translation Updates"));
 		
-		changes = new ChangeInfo("v0.6.2", true, "");
+		changes = new ChangeInfo("", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
