@@ -161,15 +161,6 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	}
 	
 	@Override
-	public void onStop() {
-		super.onStop();
-		
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1){
-			pauseGame();
-		}
-	}
-	
-	@Override
 	protected void onResume() {
 		super.onResume();
 		
@@ -182,17 +173,26 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	protected void onPause() {
 		super.onPause();
 		
+		if (scene != null) {
+			scene.onFocusLost();
+		}
+		
 		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+			pauseGame();
+		}
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1){
 			pauseGame();
 		}
 	}
 	
 	public void pauseGame(){
 		if (paused) return;
-		
-		if (scene != null) {
-			scene.pause();
-		}
 		
 		paused = true;
 		view.onPause();

@@ -454,7 +454,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	@Override
-	public synchronized void pause() {
+	public synchronized void onFocusLost() {
 		try {
 			Dungeon.saveAll();
 			Badges.saveGlobal();

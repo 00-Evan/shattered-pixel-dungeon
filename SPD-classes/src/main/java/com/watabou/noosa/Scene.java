@@ -52,11 +52,7 @@ public class Scene extends Group {
 		super.destroy();
 	}
 	
-	public void pause() {
-		
-	}
-	
-	public void resume() {
+	public void onFocusLost() {
 		
 	}
 	
