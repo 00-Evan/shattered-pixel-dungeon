@@ -80,8 +80,10 @@ public class SpellSprite extends Image {
 	public void update() {
 		super.update();
 		
-		x = target.sprite.center().x - SIZE / 2;
-		y = target.sprite.y - SIZE;
+		if (target.sprite != null) {
+			x = target.sprite.center().x - SIZE / 2;
+			y = target.sprite.y - SIZE;
+		}
 		
 		switch (phase) {
 		case FADE_IN:
