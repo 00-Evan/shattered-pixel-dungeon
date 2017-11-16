@@ -132,6 +132,22 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
+		changes = new ChangeInfo("v0.6.2d", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.2):\n" +
+				"_-_ Various crash bugs\n" +
+				"_-_ Game frequently hanging on some devices\n\n" +
+				"Fixed (Existed prior to 0.6.2):\n" +
+				"_-_ Various crash bugs\n" +
+				"_-_ Layout issues with enemy description windows\n" +
+				"_-_ An exploit which allowed players to quit without saving by using splitscreen mode."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"_-_ Various Translation Updates"));
+		
 		changes = new ChangeInfo("v0.6.2c", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
@@ -206,10 +222,6 @@ public class ChangesScene extends PixelScene {
 				"_-_ Fixed missing text when dying to venom\n" +
 				"\n" +
 				"_-_ Translation Updates"));
-		
-		changes = new ChangeInfo("", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
 		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
