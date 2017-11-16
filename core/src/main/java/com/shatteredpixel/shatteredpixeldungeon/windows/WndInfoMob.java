@@ -68,14 +68,14 @@ public class WndInfoMob extends WndTitledMessage {
 		protected void layout() {
 			
 			image.x = 0;
-			image.y = Math.max( 0, name.height() + GAP + health.height() - image.height );
+			image.y = Math.max( 0, name.height() + health.height() - image.height );
 
 			name.x = image.width + GAP;
-			name.y = image.height - health.height() - GAP - name.baseLine();
+			name.y = Math.max( 0, image.height - health.height() - name.height());
 
 			float w = width - image.width - GAP;
 
-			health.setRect(image.width + GAP, image.height - health.height(), w, health.height());
+			health.setRect(image.width + GAP, name.y + name.height(), w, health.height());
 
 			buffs.setPos(
 				name.x + name.width() + GAP-1,
