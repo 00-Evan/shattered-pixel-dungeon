@@ -416,7 +416,7 @@ public class CursedWand {
 									
 									@Override
 									protected void onSelect(int index) {
-										ShatteredPixelDungeon.quitGame();
+										Game.instance.finish();
 									}
 									
 									@Override

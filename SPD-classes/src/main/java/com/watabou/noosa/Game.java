@@ -149,13 +149,13 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	
 	private boolean paused;
 	
-	//Checks for gingerbread are here due to minor activity lifecycle differences
+	//Starting with honeycomb, android's lifecycle management changes slightly
 	
 	@Override
 	public void onStart() {
 		super.onStart();
 		
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1){
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
 			resumeGame();
 		}
 	}
@@ -164,7 +164,11 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	protected void onResume() {
 		super.onResume();
 		
-		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+		if (scene != null) {
+			scene.onResume();
+		}
+		
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
 			resumeGame();
 		}
 	}
@@ -174,10 +178,10 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		super.onPause();
 		
 		if (scene != null) {
-			scene.onFocusLost();
+			scene.onPause();
 		}
 		
-		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1){
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
 			pauseGame();
 		}
 	}
@@ -186,7 +190,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	public void onStop() {
 		super.onStop();
 		
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1){
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
 			pauseGame();
 		}
 	}
@@ -211,11 +215,6 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		
 		Music.INSTANCE.resume();
 		Sample.INSTANCE.resume();
-	}
-	
-	public static void quitGame(){
-		Game.instance.finish();
-		System.exit(0);
 	}
 	
 	public boolean isPaused(){

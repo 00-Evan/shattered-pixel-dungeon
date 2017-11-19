@@ -113,7 +113,7 @@ public class WndGame extends Window {
 						} catch (IOException e) {
 							ShatteredPixelDungeon.reportException(e);
 						}
-						ShatteredPixelDungeon.quitGame();
+						Game.instance.finish();
 					}
 				}
 		);

@@ -70,7 +70,7 @@ public class ExitButton extends Button {
 	@Override
 	protected void onClick() {
 		if (Game.scene() instanceof TitleScene) {
-			ShatteredPixelDungeon.quitGame();
+			Game.instance.finish();
 		} else {
 			ShatteredPixelDungeon.switchNoFade( TitleScene.class );
 		}

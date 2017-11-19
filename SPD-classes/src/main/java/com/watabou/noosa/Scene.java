@@ -52,8 +52,12 @@ public class Scene extends Group {
 		super.destroy();
 	}
 	
-	public void onFocusLost() {
+	public void onPause() {
 		
+	}
+	
+	public void onResume(){
+	
 	}
 	
 	@Override
@@ -67,7 +71,7 @@ public class Scene extends Group {
 	}
 	
 	protected void onBackPressed() {
-		Game.quitGame();
+		Game.instance.finish();
 	}
 	
 	protected void onMenuPressed() {
