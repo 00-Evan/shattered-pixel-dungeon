@@ -132,36 +132,32 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
-		changes = new ChangeInfo("v0.6.2d", false, "");
+		changes = new ChangeInfo("v0.6.2e", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.2):\n" +
+				"_-_ 'Exit Game' button corrupting saves on some devices"
+				));
+		
+		changes = new ChangeInfo("v0.6.2c & v0.6.2d", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed (caused by 0.6.2):\n" +
 				"_-_ Various crash bugs\n" +
+				"_-_ Mimics causing crashes in certain cases\n" +
 				"_-_ Game frequently hanging on some devices\n\n" +
 				"Fixed (Existed prior to 0.6.2):\n" +
 				"_-_ Various crash bugs\n" +
+				"_-_ Music volume being ignored in certain cases\n" +
 				"_-_ Layout issues with enemy description windows\n" +
 				"_-_ An exploit which allowed players to quit without saving by using splitscreen mode."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"_-_ Various Translation Updates"));
-		
-		changes = new ChangeInfo("v0.6.2c", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.2):\n" +
-				"_-_ Various crash bugs\n" +
-				"_-_ Mimics causing crashes in certain cases\n\n" +
-				"Fixed (Existed prior to 0.6.2):\n" +
-				"_-_ Various crash bugs\n" +
-				"_-_ Music volume being ignored in certain cases"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-						"_-_ Various Translation Updates"));
 		
 		changes = new ChangeInfo("v0.6.2b", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
