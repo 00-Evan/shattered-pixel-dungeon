@@ -274,18 +274,20 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 			return;
 		}
 		
+		NoosaScript.get().resetCamera();
+		NoosaScriptNoLighting.get().resetCamera();
+		GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
+		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+		draw();
+		
+		GLES20.glFlush();
+		
 		SystemTime.tick();
 		long rightNow = SystemClock.elapsedRealtime();
 		step = (now == 0 ? 0 : rightNow - now);
 		now = rightNow;
 		
 		step();
-
-		NoosaScript.get().resetCamera();
-		NoosaScriptNoLighting.get().resetCamera();
-		GLES20.glDisable( GLES20.GL_SCISSOR_TEST );
-		GLES20.glClear( GLES20.GL_COLOR_BUFFER_BIT );
-		draw();
 	}
 
 	@Override
@@ -360,7 +362,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	}
 	
 	protected void draw() {
-		scene.draw();
+		if (scene != null) scene.draw();
 	}
 	
 	protected void switchScene() {
