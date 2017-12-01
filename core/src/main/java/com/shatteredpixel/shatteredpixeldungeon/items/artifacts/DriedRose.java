@@ -383,8 +383,8 @@ public class DriedRose extends Artifact {
 			
 			state = HUNTING;
 			
-			//after hero, but before mobs
-			actPriority = 1;
+			//before other mobs
+			actPriority = MOB_PRIO + 1;
 		}
 		
 		private DriedRose rose = null;

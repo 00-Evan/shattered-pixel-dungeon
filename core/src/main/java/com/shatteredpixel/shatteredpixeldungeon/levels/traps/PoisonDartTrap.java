@@ -70,7 +70,7 @@ public class PoisonDartTrap extends Trap {
 					
 					{
 						//it's a visual effect, gets priority no matter what
-						actPriority = Integer.MIN_VALUE;
+						actPriority = VFX_PRIO;
 					}
 					
 					@Override

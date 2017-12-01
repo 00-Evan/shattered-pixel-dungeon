@@ -35,7 +35,7 @@ public class Buff extends Actor {
 	public Char target;
 
 	{
-		actPriority = 3; //low priority, at the end of a turn
+		actPriority = BUFF_PRIO; //low priority, towards the end of a turn
 	}
 
 	//determines how the buff is announced when it is shown.

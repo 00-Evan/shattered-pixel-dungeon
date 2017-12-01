@@ -42,9 +42,18 @@ public abstract class Actor implements Bundlable {
 
 	private int id = 0;
 
-	//used to determine what order actors act in.
-	//hero should always act on 0, therefore negative is before hero, positive is after hero
-	protected int actPriority = Integer.MAX_VALUE;
+	//default priority values for general actor categories
+	//note that some specific actors pick more specific values
+	//e.g. a buff acting after all normal buffs might have priority BUFF_PRIO + 1
+	protected final int VFX_PRIO    = 100;      //visual effects take priority
+	protected final int HERO_PRIO   = 0;        //positive priority is before hero, negative after
+	protected final int BLOB_PRIO   = -10;      //blobs act after hero, before mobs
+	protected final int MOB_PRIO    = -20;      //mobs act between buffs and blobd
+	protected final int BUFF_PRIO   = -30;      //buffs act last in a turn
+	private final int   DEFAULT     = -100;     //if no priority is given, act after all else
+
+	//used to determine what order actors act in if their time is equal. Higher values act earlier.
+	protected int actPriority = DEFAULT;
 
 	protected abstract boolean act();
 	
@@ -187,7 +196,7 @@ public abstract class Actor implements Bundlable {
 					
 					//some actors will always go before others if time is equal.
 					if (actor.time < now ||
-							actor.time == now && (current == null || actor.actPriority < current.actPriority)) {
+							actor.time == now && (current == null || actor.actPriority > current.actPriority)) {
 						now = actor.time;
 						current = actor;
 					}

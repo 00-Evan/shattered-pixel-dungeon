@@ -40,7 +40,7 @@ public class Pushing extends Actor {
 	private Callback callback;
 
 	{
-		actPriority = Integer.MIN_VALUE; //it's a visual effect, gets priority no matter what
+		actPriority = VFX_PRIO;
 	}
 	
 	public Pushing( Char ch, int from, int to ) {

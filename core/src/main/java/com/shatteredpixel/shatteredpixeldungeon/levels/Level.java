@@ -494,7 +494,7 @@ public abstract class Level implements Bundlable {
 		return new Actor() {
 
 			{
-				actPriority = 1; //as if it were a buff.
+				actPriority = BUFF_PRIO; //as if it were a buff.
 			}
 
 			@Override

@@ -32,7 +32,7 @@ import com.watabou.utils.Rect;
 public class Blob extends Actor {
 
 	{
-		actPriority = 1; //take priority over mobs, but not the hero
+		actPriority = BLOB_PRIO;
 	}
 	
 	public int volume = 0;

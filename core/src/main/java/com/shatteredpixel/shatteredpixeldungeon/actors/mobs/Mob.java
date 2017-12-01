@@ -61,7 +61,7 @@ public abstract class Mob extends Char {
 
 	{
 		name = Messages.get(this, "name");
-		actPriority = 2; //hero gets priority over mobs.
+		actPriority = MOB_PRIO;
 		
 		alignment = Alignment.ENEMY;
 	}

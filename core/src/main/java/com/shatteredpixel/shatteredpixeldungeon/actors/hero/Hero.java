@@ -130,7 +130,7 @@ import java.util.Collections;
 public class Hero extends Char {
 
 	{
-		actPriority = 0; //acts at priority 0, baseline for the rest of behaviour.
+		actPriority = HERO_PRIO;
 		
 		alignment = Alignment.ALLY;
 	}

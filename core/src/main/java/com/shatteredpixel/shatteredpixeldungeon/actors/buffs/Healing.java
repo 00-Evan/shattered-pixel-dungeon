@@ -34,9 +34,9 @@ public class Healing extends Buff {
 	private int flatHealPerTick;
 	
 	{
-		//unlike other buffs, this one acts after the hero and takes priority against enemies
-		//healing is much more useful if you get some of it off before enemies attack
-		actPriority = 1;
+		//unlike other buffs, this one acts after the hero and takes priority against other effects
+		//healing is much more useful if you get some of it off before taking damage
+		actPriority = HERO_PRIO - 1;
 	}
 	
 	@Override

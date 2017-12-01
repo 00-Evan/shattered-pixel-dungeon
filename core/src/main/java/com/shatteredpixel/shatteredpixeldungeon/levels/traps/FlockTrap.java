@@ -46,7 +46,7 @@ public class FlockTrap extends Trap {
 		//use an actor as we want to put this on a slight delay so all chars get a chance to act this turn first.
 		Actor.add(new Actor() {
 
-			{ actPriority = 3; }
+			{ actPriority = BUFF_PRIO; }
 
 			protected boolean act() {
 				PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );

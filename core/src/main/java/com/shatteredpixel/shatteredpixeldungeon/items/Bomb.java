@@ -218,7 +218,7 @@ public class Bomb extends Item {
 	public static class Fuse extends Actor{
 
 		{
-			actPriority = 3; //as if it were a buff
+			actPriority = BUFF_PRIO; //as if it were a buff
 		}
 
 		private Bomb bomb;

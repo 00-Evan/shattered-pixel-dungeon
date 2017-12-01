@@ -48,7 +48,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	
 	{
 		//always acts after other buffs, so invisibility effects can process first
-		actPriority = 4;
+		actPriority = BUFF_PRIO - 1;
 	}
 	
 	public enum AttackLevel{
