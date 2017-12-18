@@ -473,13 +473,17 @@ public class Hero extends Char {
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
 		
-		//do a full observe (including fog update) if not resting.
-		if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
-			Dungeon.observe();
-		} else {
-			//otherwise just directly re-calculate FOV
-			Dungeon.level.updateFieldOfView( this, fieldOfView );
+		
+		if (!ready) {
+			//do a full observe (including fog update) if not resting.
+			if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
+				Dungeon.observe();
+			} else {
+				//otherwise just directly re-calculate FOV
+				Dungeon.level.updateFieldOfView(this, fieldOfView);
+			}
 		}
+		
 		checkVisibleMobs();
 		if (buff(FlavourBuff.class) != null) {
 			BuffIndicator.refreshHero();

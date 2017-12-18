@@ -24,12 +24,13 @@ package com.shatteredpixel.shatteredpixeldungeon.mechanics;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 
+//based on: http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting
 public final class ShadowCaster {
 
 	private static final int MAX_DISTANCE = 8;
-
-	private static boolean[] falseArray;
 	
+	//max length of rows as FOV moves out, for each FOV distance
+	//This is used to make the overall FOV circular, instead of square
 	private static int[][] rounding;
 	static {
 		rounding = new int[MAX_DISTANCE+1][];
@@ -45,104 +46,91 @@ public final class ShadowCaster {
 
 		BArray.setFalse(fieldOfView);
 
+		//set source cell to true
 		fieldOfView[y * Dungeon.level.width() + x] = true;
 
 		boolean[] losBlocking = Dungeon.level.losBlocking;
-		Obstacles obs = new Obstacles();
-
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, +1, +1, 0, 0 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, -1, +1, 0, 0 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, +1, -1, 0, 0 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, -1, -1, 0, 0 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, +1 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, +1 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, +1, -1 );
-		scanSector( distance, fieldOfView, losBlocking, obs, x, y, 0, 0, -1, -1 );
+		
+		//scans octants, clockwise
+		scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, -1, false);
+		scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, +1, true);
+		scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, +1, true);
+		scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, +1, false);
+		scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, +1, false);
+		scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, +1, -1, true);
+		scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, -1, true);
+		scanOctant(distance, fieldOfView, losBlocking, 1, x, y, 0.0, 1.0, -1, -1, false);
 
 	}
-
-	//FIXME This is is the primary performance bottleneck for game logic, need to optimize or rewrite
-	private static void scanSector( int distance, boolean[] fieldOfView, boolean[] losBlocking, Obstacles obs, int cx, int cy, int m1, int m2, int m3, int m4 ) {
-		
-		obs.reset();
-		
-		for (int p=1; p <= distance; p++) {
-
-			float dq2 = 0.5f / p;
-			
-			int pp = rounding[distance][p];
-			for (int q=0; q <= pp; q++) {
-				
-				int x = cx + q * m1 + p * m3;
-				int y = cy + p * m2 + q * m4;
-				
-				if (y >= 0 && y < Dungeon.level.height() && x >= 0 && x < Dungeon.level.width()) {
-					
-					float a0 = (float)q / p;
-					float a1 = a0 - dq2;
-					float a2 = a0 + dq2;
-					
-					int pos = y * Dungeon.level.width() + x;
 	
-					if (obs.isBlocked( a0 ) && obs.isBlocked( a1 ) && obs.isBlocked( a2 )) {
-
-						// Do nothing
-					} else {
-						fieldOfView[pos] = true;
-					}
-					
-					if (losBlocking[pos]) {
-						obs.add( a1, a2 );
-					}
-
-				}
-			}
-			
-			obs.nextRow();
-		}
-	}
+	//TODO this is slightly less permissive that the previous algorithm, decide if that's okay
 	
-	private static final class Obstacles {
+	//scans a single 45 degree octant of the FOV.
+	//This can add up to a whole FOV by mirroring in X(mX), Y(mY), and X=Y(mXY)
+	private static void scanOctant(int distance, boolean[] fov, boolean[] blocking, int row,
+	                               int x, int y, double lSlope, double rSlope,
+	                               int mX, int mY, boolean mXY){
 		
-		private static int SIZE = (MAX_DISTANCE+1) * (MAX_DISTANCE+1) / 2;
-		private float[] a1 = new float[SIZE];
-		private float[] a2 = new float[SIZE];
+		boolean inBlocking = false;
+		int start, end;
+		int col;
 		
-		private int length;
-		private int limit;
+		//calculations are offset by 0.5 because FOV is coming from the center of the source cell
 		
-		public void reset() {
-			length = 0;
-			limit = 0;
-		}
-		
-		public void add( float o1, float o2 ) {
+		//for each row, starting with the current one
+		for (; row <= distance; row++){
 			
-			if (length > limit && o1 <= a2[length-1]) {
-
-				// Merging several blocking cells
-				a2[length-1] = o2;
-				
-			} else {
-				
-				a1[length] = o1;
-				a2[length++] = o2;
-				
-			}
+			//we offset by slightly less than 0.5 to account for slopes just touching a cell
+			if (lSlope == 0)    start = 0;
+			else                start = (int)Math.floor((row - 0.5) * lSlope + 0.499);
 			
-		}
-		
-		public boolean isBlocked( float a ) {
-			for (int i=0; i < limit; i++) {
-				if (a >= a1[i] && a <= a2[i]) {
-					return true;
+			if (rSlope == 1)    end = rounding[distance][row];
+			else                end = Math.min( rounding[distance][row],
+			                                    (int)Math.ceil((row + 0.5) * rSlope - 0.499));
+			
+			//coordinates of source
+			int cell = x + y*Dungeon.level.width();
+			
+			//plus coordinates of current cell (including mirroring in x, y, and x=y)
+			if (mXY)    cell += mX*start*Dungeon.level.width() + mY*row;
+			else        cell += mX*start + mY*row*Dungeon.level.width();
+			
+			//for each column in this row, which
+			for (col = start; col <= end; col++){
+				
+				fov[cell] = true;
+				
+				if (blocking[cell]){
+					if (!inBlocking){
+						inBlocking = true;
+						
+						//start a new scan, 1 row deeper, ending at the left side of current cell
+						if (col != start){
+							scanOctant(distance, fov, blocking, row+1, x, y, lSlope,
+									//change in x over change in y
+									(col - 0.5) / (row + 0.5),
+									mX, mY, mXY);
+						}
+					}
+				
+				} else {
+					if (inBlocking){
+						inBlocking = false;
+						
+						//restrict current scan to the left side of current cell for future rows
+						
+						//change in x over change in y
+						lSlope = (col - 0.5) / (row - 0.5);
+					}
 				}
+				
+				if (!mXY)   cell += mX;
+				else        cell += mX*Dungeon.level.width();
+				
 			}
-			return false;
-		}
-		
-		public void nextRow() {
-			limit = length;
+			
+			//if the row ends in a blocking cell, this scan is finished.
+			if (inBlocking) return;
 		}
 	}
 }
