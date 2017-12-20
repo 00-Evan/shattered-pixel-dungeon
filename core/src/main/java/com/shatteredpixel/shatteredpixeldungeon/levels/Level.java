@@ -950,12 +950,13 @@ public abstract class Level implements Bundlable {
 		return distance( a, b ) == 1;
 	}
 	
-	public int distNoDiag( int a, int b){
+	//uses pythagorean theorum for true distance, as if there was no movement grid
+	public float trueDistance(int a, int b){
 		int ax = a % width();
 		int ay = a / width();
 		int bx = b % width();
 		int by = b / width();
-		return Math.abs( ax - bx ) + Math.abs( ay - by );
+		return (float)Math.sqrt(Math.pow(Math.abs( ax - bx ), 2) + Math.pow(Math.abs( ay - by ), 2));
 	}
 
 	//returns true if the input is a valid tile within the level

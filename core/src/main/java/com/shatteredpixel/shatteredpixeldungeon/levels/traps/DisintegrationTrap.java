@@ -60,7 +60,7 @@ public class DisintegrationTrap extends Trap {
 			for (Char ch : Actor.chars()){
 				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
 				if (bolt.collisionPos == ch.pos &&
-						(target == null || Dungeon.level.distNoDiag(pos, ch.pos) < Dungeon.level.distNoDiag(pos, target.pos))){
+						(target == null || Dungeon.level.trueDistance(pos, ch.pos) < Dungeon.level.trueDistance(pos, target.pos))){
 					target = ch;
 				}
 			}
