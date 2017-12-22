@@ -279,19 +279,21 @@ public abstract class Wand extends Item {
 	
 	@Override
 	public Item random() {
+		//+0: 66.67% (2/3)
+		//+1: 26.67% (4/15)
+		//+2: 6.67%  (1/15)
 		int n = 0;
-
 		if (Random.Int(3) == 0) {
 			n++;
-			if (Random.Int(5) == 0) {
+			if (Random.Int(5) == 0){
 				n++;
 			}
 		}
-
-		upgrade(n);
+		level(n);
+		
+		//30% chance to be cursed
 		if (Random.Float() < 0.3f) {
 			cursed = true;
-			cursedKnown = false;
 		}
 
 		return this;

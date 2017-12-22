@@ -227,25 +227,27 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public Item random() {
-		float roll = Random.Float();
-		if (roll < 0.3f){
-			//30% chance to be level 0 and cursed
+		//+0: 75% (3/4)
+		//+1: 20% (4/20)
+		//+2: 5%  (1/20)
+		int n = 0;
+		if (Random.Int(4) == 0) {
+			n++;
+			if (Random.Int(5) == 0) {
+				n++;
+			}
+		}
+		level(n);
+		
+		//30% chance to be cursed
+		//10% chance to be enchanted
+		float effectRoll = Random.Float();
+		if (effectRoll < 0.3f) {
 			enchant(Enchantment.randomCurse());
 			cursed = true;
-			return this;
-		} else if (roll < 0.75f){
-			//45% chance to be level 0
-		} else if (roll < 0.95f){
-			//15% chance to be +1
-			upgrade(1);
-		} else {
-			//5% chance to be +2
-			upgrade(2);
-		}
-
-		//if not cursed, 10% chance to be enchanted (7% overall)
-		if (Random.Int(10) == 0)
+		} else if (effectRoll >= 0.9f){
 			enchant();
+		}
 
 		return this;
 	}

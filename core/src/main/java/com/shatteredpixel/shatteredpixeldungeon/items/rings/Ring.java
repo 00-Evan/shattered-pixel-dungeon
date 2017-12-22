@@ -196,6 +196,9 @@ public class Ring extends KindofMisc {
 	
 	@Override
 	public Item random() {
+		//+0: 66.67% (2/3)
+		//+1: 26.67% (4/15)
+		//+2: 6.67%  (1/15)
 		int n = 0;
 		if (Random.Int(3) == 0) {
 			n++;
@@ -203,8 +206,9 @@ public class Ring extends KindofMisc {
 				n++;
 			}
 		}
-		
 		level(n);
+		
+		//30% chance to be cursed
 		if (Random.Float() < 0.3f) {
 			cursed = true;
 		}
