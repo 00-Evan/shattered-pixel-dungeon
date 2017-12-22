@@ -591,11 +591,15 @@ public abstract class Level implements Bundlable {
 		int lastRow = length() - width();
 		for (int i=0; i < width(); i++) {
 			passable[i] = avoid[i] = false;
+			losBlocking[i] = true;
 			passable[lastRow + i] = avoid[lastRow + i] = false;
+			losBlocking[lastRow + i] = true;
 		}
 		for (int i=width(); i < lastRow; i += width()) {
 			passable[i] = avoid[i] = false;
+			losBlocking[i] = true;
 			passable[i + width()-1] = avoid[i + width()-1] = false;
+			losBlocking[i + width()-1] = true;
 		}
 	}
 

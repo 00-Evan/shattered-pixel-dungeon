@@ -73,6 +73,9 @@ public abstract class RegularPainter extends Painter {
 		
 		//painter can be used without rooms
 		if (rooms != null) {
+			
+			int padding = level.feeling == Level.Feeling.CHASM ? 2 : 1;
+			
 			int leftMost = Integer.MAX_VALUE, topMost = Integer.MAX_VALUE;
 			
 			for (Room r : rooms) {
@@ -80,9 +83,8 @@ public abstract class RegularPainter extends Painter {
 				if (r.top < topMost) topMost = r.top;
 			}
 			
-			//subtract 1 for padding
-			leftMost--;
-			topMost--;
+			leftMost -= padding;
+			topMost -= padding;
 			
 			int rightMost = 0, bottomMost = 0;
 			
@@ -92,9 +94,8 @@ public abstract class RegularPainter extends Painter {
 				if (r.bottom > bottomMost) bottomMost = r.bottom;
 			}
 			
-			//add 1 for padding
-			rightMost++;
-			bottomMost++;
+			rightMost += padding;
+			bottomMost += padding;
 			
 			//add 1 to account for 0 values
 			level.setSize(rightMost + 1, bottomMost + 1);
