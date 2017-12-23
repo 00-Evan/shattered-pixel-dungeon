@@ -166,7 +166,7 @@ public class EtherealChains extends Artifact {
 			public void call() {
 				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
 					public void call() {
-						Dungeon.level.press(pulledPos, enemy);
+						Dungeon.level.press(pulledPos, enemy, true);
 					}
 				}));
 				enemy.pos = pulledPos;

@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.noosa.Game;
@@ -77,18 +76,12 @@ public class Swap extends Actor {
 			ch2.pos = pos;
 
 			if (!ch1.flying) {
-				if (ch1 instanceof Mob) {
-					Dungeon.level.mobPress( (Mob)ch1 );
-				} else {
-					Dungeon.level.press( ch1.pos, ch1 );
-				}
+				Dungeon.level.press( ch1.pos, ch1 );
+				
 			}
 			if (!ch2.flying) {
-				if (ch2 instanceof Mob) {
-					Dungeon.level.mobPress( (Mob)ch2 );
-				} else {
-					Dungeon.level.press( ch2.pos, ch2 );
-				}
+				Dungeon.level.press( ch2.pos, ch2 );
+				
 			}
 
 			if (ch1 == Dungeon.hero || ch2 == Dungeon.hero) {

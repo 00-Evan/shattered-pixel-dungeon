@@ -96,7 +96,7 @@ public class Guard extends Mob {
 						Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback(){
 							public void call() {
 								enemy.pos = newPosFinal;
-								Dungeon.level.press(newPosFinal, enemy);
+								Dungeon.level.press(newPosFinal, enemy, true);
 								Cripple.prolong(enemy, Cripple.class, 4f);
 								if (enemy == Dungeon.hero) {
 									Dungeon.hero.interrupt();

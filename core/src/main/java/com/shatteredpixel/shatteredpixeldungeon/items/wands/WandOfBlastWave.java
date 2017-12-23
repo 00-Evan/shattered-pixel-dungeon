@@ -69,7 +69,7 @@ public class WandOfBlastWave extends DamageWand {
 
 		//presses all tiles in the AOE first
 		for (int i : PathFinder.NEIGHBOURS9){
-			Dungeon.level.press(bolt.collisionPos+i, Actor.findChar(bolt.collisionPos+i));
+			Dungeon.level.press(bolt.collisionPos+i, Actor.findChar(bolt.collisionPos+i), true);
 		}
 
 		//throws other chars around the center.
@@ -138,7 +138,7 @@ public class WandOfBlastWave extends DamageWand {
 					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
 					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
 				}
-				Dungeon.level.press(ch.pos, ch);
+				Dungeon.level.press(ch.pos, ch, true);
 				if (ch == Dungeon.hero){
 					Dungeon.observe();
 				}

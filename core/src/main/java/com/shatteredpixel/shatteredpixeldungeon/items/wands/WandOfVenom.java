@@ -60,7 +60,7 @@ public class WandOfVenom extends Wand {
 		}
 		
 		if (Actor.findChar(bolt.collisionPos) == null){
-			Dungeon.level.press(bolt.collisionPos, null);
+			Dungeon.level.press(bolt.collisionPos, null, true);
 		}
 	}
 

@@ -87,7 +87,7 @@ public class SummoningTrap extends Trap {
 		for (Mob mob : mobs){
 			ScrollOfTeleportation.appear(mob, mob.pos);
 			//so hidden traps are triggered as well
-			Dungeon.level.press(mob.pos, mob);
+			Dungeon.level.press(mob.pos, mob, true);
 		}
 
 	}

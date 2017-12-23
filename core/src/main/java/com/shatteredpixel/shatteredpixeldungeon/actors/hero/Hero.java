@@ -1424,13 +1424,11 @@ public class Hero extends Char {
 		super.move( step );
 		
 		if (!flying) {
-			
 			if (Dungeon.level.water[pos]) {
 				Sample.INSTANCE.play( Assets.SND_WATER, 1, 1, Random.Float( 0.8f, 1.25f ) );
 			} else {
 				Sample.INSTANCE.play( Assets.SND_STEP );
 			}
-			Dungeon.level.press(pos, this);
 		}
 	}
 	

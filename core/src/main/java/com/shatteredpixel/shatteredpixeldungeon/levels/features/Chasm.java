@@ -96,7 +96,7 @@ public class Chasm {
 		hero.sprite.burst( hero.sprite.blood(), 10 );
 		Camera.main.shake( 4, 0.2f );
 
-		Dungeon.level.press( hero.pos, hero );
+		Dungeon.level.press( hero.pos, hero, true );
 		Buff.prolong( hero, Cripple.class, Cripple.DURATION );
 
 		//The lower the hero's HP, the more bleed and the less upfront damage.

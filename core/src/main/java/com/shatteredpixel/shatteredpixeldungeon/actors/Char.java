@@ -448,6 +448,10 @@ public abstract class Char extends Actor {
 		if (this != Dungeon.hero) {
 			sprite.visible = Dungeon.level.heroFOV[pos];
 		}
+		
+		if (!flying) {
+			Dungeon.level.press( pos, this );
+		}
 	}
 	
 	public int distance( Char other ) {

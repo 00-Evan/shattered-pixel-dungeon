@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -256,12 +255,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 										Actor.addDelayed( new Pushing( enemy, enemy.pos, newPos ), -1 );
 
 										enemy.pos = newPos;
-										// FIXME
-										if (enemy instanceof Mob) {
-											Dungeon.level.mobPress( (Mob)enemy );
-										} else {
-											Dungeon.level.press( newPos, enemy );
-										}
+										Dungeon.level.press( newPos, enemy );
 
 									}
 									break;

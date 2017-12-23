@@ -73,7 +73,7 @@ public class WarriorArmor extends ClassArmor {
 					@Override
 					public void call() {
 						curUser.move(dest);
-						Dungeon.level.press(dest, curUser);
+						Dungeon.level.press(dest, curUser, true);
 						Dungeon.observe();
 						GameScene.updateFog();
 

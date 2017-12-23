@@ -426,15 +426,6 @@ public abstract class Mob extends Char {
 		if (Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) != null)
 			sprite.add( CharSprite.State.PARALYSED );
 	}
-
-	@Override
-	public void move( int step ) {
-		super.move( step );
-		
-		if (!flying) {
-			Dungeon.level.mobPress( this );
-		}
-	}
 	
 	protected float attackDelay() {
 		return 1f;

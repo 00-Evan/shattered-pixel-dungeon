@@ -193,7 +193,7 @@ public class Blandfruit extends Food {
 				potionAttrib instanceof PotionOfLevitation ||
 				potionAttrib instanceof PotionOfPurity) {
 			
-			Dungeon.level.press( cell, null );
+			Dungeon.level.press( cell, null, true );
 			potionAttrib.shatter( cell );
 			
 		} else {
