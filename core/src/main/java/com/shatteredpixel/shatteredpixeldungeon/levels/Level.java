@@ -908,8 +908,6 @@ public abstract class Level implements Bundlable {
 					if (!fieldOfView[p]){
 						Dungeon.hero.mindVisionEnemies.add(mob);
 					}
-					for (int i : PathFinder.NEIGHBOURS9)
-						fieldOfView[p+i] = true;
 
 				}
 			} else if (((Hero)c).heroClass == HeroClass.HUNTRESS) {
@@ -920,11 +918,16 @@ public abstract class Level implements Bundlable {
 						if (!fieldOfView[p]){
 							Dungeon.hero.mindVisionEnemies.add(mob);
 						}
-						for (int i : PathFinder.NEIGHBOURS9)
-							fieldOfView[p+i] = true;
 					}
 				}
 			}
+			
+			for (Mob m : Dungeon.hero.mindVisionEnemies) {
+				for (int i : PathFinder.NEIGHBOURS9) {
+					fieldOfView[m.pos + i] = true;
+				}
+			}
+			
 			if (c.buff( Awareness.class ) != null) {
 				for (Heap heap : heaps.values()) {
 					int p = heap.pos;
