@@ -29,12 +29,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -744,30 +746,45 @@ public class Dungeon {
 		
 		level.updateFieldOfView(hero, level.heroFOV);
 
-		if (hero.buff(MindVision.class) != null || hero.buff(Awareness.class) != null) {
-			BArray.or( level.visited, level.heroFOV, 0, level.heroFOV.length, level.visited );
-
-			GameScene.updateFog();
-		} else {
-
-			int cx = hero.pos % level.width();
-			int cy = hero.pos / level.width();
-
-			int ax = Math.max( 0, cx - dist );
-			int bx = Math.min( cx + dist, level.width() - 1 );
-			int ay = Math.max( 0, cy - dist );
-			int by = Math.min( cy + dist, level.height() - 1 );
-
-			int len = bx - ax + 1;
-			int pos = ax + ay * level.width();
-
-			for (int y = ay; y <= by; y++, pos+=level.width()) {
-				BArray.or( level.visited, level.heroFOV, pos, len, level.visited );
-			}
-
-			GameScene.updateFog(ax, ay, len, by-ay);
+		int x = hero.pos % level.width();
+		int y = hero.pos / level.width();
+	
+		//left, right, top, bottom
+		int l = Math.max( 0, x - dist );
+		int r = Math.min( x + dist, level.width() - 1 );
+		int t = Math.max( 0, y - dist );
+		int b = Math.min( y + dist, level.height() - 1 );
+	
+		int length = r - l + 1;
+		int width = t - b + 1;
+		
+		int pos = l + t * level.width();
+	
+		for (int i = t; i <= b; i++) {
+			BArray.or( level.visited, level.heroFOV, pos, length, level.visited );
+			pos+=level.width();
 		}
-
+	
+		GameScene.updateFog(l, t, length, width);
+		
+		if (hero.buff(MindVision.class) != null){
+			for (Mob m : level.mobs.toArray(new Mob[0])){
+				BArray.or( level.visited, level.heroFOV, m.pos - 1 - level.width(), 3, level.visited );
+				BArray.or( level.visited, level.heroFOV, m.pos, 3, level.visited );
+				BArray.or( level.visited, level.heroFOV, m.pos - 1 + level.width(), 3, level.visited );
+				//updates adjacent cells too
+				GameScene.updateFog(m.pos, 2);
+			}
+		}
+		
+		if (hero.buff(Awareness.class) != null){
+			for (Heap h : level.heaps.values()){
+				BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
+				BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
+				BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );
+				GameScene.updateFog(h.pos, 2);
+			}
+		}
 
 		GameScene.afterObserve();
 	}

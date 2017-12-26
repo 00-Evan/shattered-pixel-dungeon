@@ -30,11 +30,12 @@ public class WallBlockingTilemap extends Tilemap {
 
 	public static final int SIZE = 16;
 
-	private static final int CLEARED        = -1;
-	private static final int BLOCK_NONE     = 0;
-	private static final int BLOCK_RIGHT    = 1;
-	private static final int BLOCK_LEFT     = 2;
-	private static final int BLOCK_ALL      = 3;
+	private static final int CLEARED        = -2;
+	private static final int BLOCK_NONE     = -1;
+	private static final int BLOCK_RIGHT    = 0;
+	private static final int BLOCK_LEFT     = 1;
+	private static final int BLOCK_ALL      = 2;
+	private static final int BLOCK_BELOW    = 3;
 
 	public WallBlockingTilemap() {
 		super("wall_blocking.png", new TextureFilm( "wall_blocking.png", SIZE, SIZE ) );
@@ -45,109 +46,158 @@ public class WallBlockingTilemap extends Tilemap {
 	public synchronized void updateMap() {
 		super.updateMap();
 		data = new int[size]; //clears all values, including cleared tiles
-		for (int i = 0; i < data.length; i++)
-			updateMapCell(i);
+		
+		for (int cell = 0; cell < data.length; cell++) {
+			//force all none-discoverable and border cells to cleared
+			if (!Dungeon.level.discoverable[cell] ||
+					!Dungeon.level.insideMap(cell)){
+				data[cell] = CLEARED;
+			} else {
+				updateMapCell(cell);
+			}
+		}
 	}
 
+	private int curr;
+	
 	@Override
 	public synchronized void updateMapCell(int cell) {
-		int prev = data[cell];
-		int curr;
+		
+		//TODO should doors be considered? currently the blocking is a bit permissive around doors
 
-		if (prev == CLEARED){
-			return;
+		//non-wall tiles
+		if (!wall(cell)) {
 
-		} else if (!Dungeon.level.discoverable[cell]) {
-			curr = CLEARED;
-
-			//handles blocking wall overhang (which is technically on a none wall tile)
-		} else if (!wall(cell)) {
-
-			if (!fogHidden(cell)) {
+			//clear empty floor tiles and cells which are visible
+			if (!fogHidden(cell) || !wall(cell + mapWidth)) {
 				curr = CLEARED;
 
-			} else if ( wall(cell + mapWidth) && !fogHidden(cell + mapWidth)
-					&& fogHidden(cell - 1) && fogHidden(cell + 1)) {
-				curr = BLOCK_ALL;
+			//block wall overhang if:
+			//- The cell below is a wall and visible
+			//- All of left, below-left, right, below-right is either a wall or hidden
+			} else if ( !fogHidden(cell + mapWidth)
+					&& (fogHidden(cell - 1) || wall(cell - 1))
+					&& (fogHidden(cell + 1) || wall(cell + 1))
+					&& (fogHidden(cell - 1 + mapWidth) || wall(cell - 1 + mapWidth))
+					&& (fogHidden(cell + 1 + mapWidth) || wall(cell + 1 + mapWidth))) {
+				curr = BLOCK_BELOW;
 
 			} else {
 				curr = BLOCK_NONE;
 			}
 
+		//wall tiles
 		} else {
 
-			if (fogHidden(cell - mapWidth) && fogHidden(cell) && fogHidden(cell + mapWidth)) {
-				curr = BLOCK_NONE;
+			//camera-facing wall tiles
+			if (!wall(cell + mapWidth)) {
 
-				//camera-facing wall tiles
-			} else if (!wall(cell + mapWidth)) {
-
-				if (!fogHidden(cell + mapWidth)){
+				//Block a camera-facing wall if:
+				//- the cell above, above-left, or above-right is not a wall, visible, and has a wall below
+				//- none of the remaining 5 neighbour cells are both not a wall and visible
+				
+				//if all 3 above are wall we can shortcut and just clear the cell
+				if (wall(cell - 1 - mapWidth) && wall(cell - mapWidth) && wall(cell + 1 - mapWidth)){
 					curr = CLEARED;
-
-				} else if ((cell + 1) % mapWidth != 0 && !fogHidden(cell + 1)
-						&& !door(cell + 1) && !(wall(cell + 1) && wall(cell + 1 + mapWidth))){
-					curr = CLEARED;
-
-				} else if (cell % mapWidth != 0 && !fogHidden(cell - 1)
-						&& !door(cell - 1) && !(wall(cell - 1) && wall(cell - 1 + mapWidth))){
-					curr = CLEARED;
-
+					
+				} else if ((!wall(cell - 1 - mapWidth) && !fogHidden(cell - 1 - mapWidth) && wall(cell - 1)) ||
+						(!wall(cell - mapWidth) && !fogHidden(cell - mapWidth)) ||
+						(!wall(cell + 1 - mapWidth) && !fogHidden(cell + 1 - mapWidth) && wall(cell+1))){
+					
+					if ( !fogHidden( cell + mapWidth) ||
+							(!wall(cell - 1) && !fogHidden(cell - 1)) ||
+							(!wall(cell - 1 + mapWidth) && !fogHidden(cell - 1 + mapWidth)) ||
+							(!wall(cell + 1) && !fogHidden(cell + 1)) ||
+							(!wall(cell + 1 + mapWidth) && !fogHidden(cell + 1 + mapWidth))){
+						curr = CLEARED;
+					} else {
+						curr = BLOCK_ALL;
+					}
+					
 				} else {
-					curr = BLOCK_ALL;
+					curr = BLOCK_NONE;
 				}
 
-				//internal wall tiles
+			//internal wall tiles
 			} else {
+				
+				//Block the side of an internal wall if:
+				//- the cell above, below, or the cell itself is visible
+				//and all of the following are NOT true:
+				//- the top-side neighbour is visible and the side neighbour isn't a wall.
+				//- the side neighbour is both not a wall and visible
+				//- the bottom-side neighbour is both not a wall and visible
 
 				curr = BLOCK_NONE;
-
-				if ((cell + 1) % mapWidth != 0) {
-					if ((wall(cell + 1) || fogHidden(cell + 1 - mapWidth))
-							&& fogHidden(cell + 1)
-							&& (wall(cell + 1 + mapWidth) || fogHidden(cell + 1 + mapWidth))){
+				
+				if (!fogHidden(cell - mapWidth)
+						|| !fogHidden(cell)
+						|| !fogHidden(cell + mapWidth)) {
+					
+					//right side
+					if ((!wall(cell + 1) && !fogHidden(cell + 1 - mapWidth)) ||
+							(!wall(cell + 1) && !fogHidden(cell + 1)) ||
+							(!wall(cell + 1 + mapWidth) && !fogHidden(cell + 1 + mapWidth))
+							){
+						//do nothing
+					} else {
 						curr += 1;
 					}
-				}
-
-				if (cell % mapWidth != 0) {
-					if ((wall(cell - 1) || fogHidden(cell - 1 - mapWidth))
-							&& fogHidden(cell - 1)
-							&& (wall(cell - 1 + mapWidth) || fogHidden(cell - 1 + mapWidth))){
+					
+					//left side
+					if ((!wall(cell - 1) && !fogHidden(cell - 1 - mapWidth)) ||
+							(!wall(cell - 1) && !fogHidden(cell - 1)) ||
+							(!wall(cell - 1 + mapWidth) && !fogHidden(cell - 1 + mapWidth))
+							){
+						//do nothing
+					} else {
 						curr += 2;
 					}
-				}
-
-				if (curr == BLOCK_NONE) {
-					curr = CLEARED;
+					
+					if (curr == BLOCK_NONE) {
+						curr = CLEARED;
+					}
 				}
 
 			}
 
 		}
 
-		if (prev != curr){
+		if (data[cell] != curr){
 			data[cell] = curr;
 			super.updateMapCell(cell);
 		}
 	}
 
 	private boolean fogHidden(int cell){
-		if (cell < 0 || cell >= Dungeon.level.length()) return false;
-		if (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]) return true;
-		if (wall(cell) && cell + mapWidth < Dungeon.level.length() && !wall(cell + mapWidth) &&
-				!Dungeon.level.visited[cell + mapWidth] && !Dungeon.level.mapped[cell + mapWidth])
+		if (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]) {
 			return true;
+		} else if (wall(cell) && !wall(cell + mapWidth) &&
+				!Dungeon.level.visited[cell + mapWidth] && !Dungeon.level.mapped[cell + mapWidth]) {
+			return true;
+		}
 		return false;
 	}
 
-	//for the purposes of wall stitching, tiles below the map count as walls
 	private boolean wall(int cell) {
-		return cell >= 0 && (cell >= size || DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell]));
+		return DungeonTileSheet.wallStitcheable(Dungeon.level.map[cell]);
 	}
 
 	private boolean door(int cell) {
-		return cell >= 0 && cell < size && DungeonTileSheet.doorTile(Dungeon.level.map[cell]);
+		return DungeonTileSheet.doorTile(Dungeon.level.map[cell]);
+	}
+	
+	public synchronized void updateArea(int cell, int radius){
+		int l = cell%mapWidth - radius;
+		int t = cell/mapWidth - radius;
+		int r = cell%mapWidth + radius;
+		int b = cell/mapWidth + radius;
+		updateArea(
+				Math.max(0, l),
+				Math.max(0, t),
+				Math.min(mapWidth-1, r - l),
+				Math.min(mapHeight-1, b - t)
+		);
 	}
 
 	public synchronized void updateArea(int x, int y, int w, int h) {
