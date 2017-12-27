@@ -22,10 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import android.annotation.SuppressLint;
-import android.opengl.GLES20;
 
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NoosaScript;
@@ -36,8 +36,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-
-import javax.microedition.khronos.opengles.GL10;
 
 public class Flare extends Visual {
 	
@@ -158,9 +156,9 @@ public class Flare extends Visual {
 		super.draw();
 		
 		if (lightMode) {
-			GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
+			Blending.setLightMode();
 			drawRays();
-			GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+			Blending.setNormalMode();
 		} else {
 			drawRays();
 		}

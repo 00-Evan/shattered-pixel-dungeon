@@ -21,11 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import android.opengl.GLES20;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
-
-import javax.microedition.khronos.opengles.GL10;
 
 public class TorchHalo extends Halo {
 
@@ -63,9 +61,9 @@ public class TorchHalo extends Halo {
 	
 	@Override
 	public void draw() {
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
+		Blending.setLightMode();
 		super.draw();
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+		Blending.setNormalMode();
 	}
 	
 	public void putOut() {

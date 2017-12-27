@@ -39,6 +39,7 @@ import android.view.View;
 
 import com.watabou.glscripts.Script;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.ScreenConfigChooser;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.Keys;
@@ -307,8 +308,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 
 	@Override
 	public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
-		GLES20.glEnable( GL10.GL_BLEND );
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+		Blending.useDefault();
 
 		//refreshes texture and vertex data stored on the gpu
 		TextureCache.reload();

@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import android.opengl.GLES20;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -94,6 +92,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
+import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -185,9 +184,9 @@ public class GameScene extends PixelScene {
 			@Override
 			public void draw() {
 				//water has no alpha component, this improves performance
-				GLES20.glBlendFunc( GLES20.GL_ONE, GLES20.GL_ZERO );
+				Blending.disable();
 				super.draw();
-				GLES20.glBlendFunc( GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA );
+				Blending.enable();
 			}
 		};
 		terrain.add( water );

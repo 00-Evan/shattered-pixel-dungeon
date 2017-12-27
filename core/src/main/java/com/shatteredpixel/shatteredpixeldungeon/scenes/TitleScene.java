@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import android.opengl.GLES20;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
@@ -33,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ChangesButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LanguageButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.PrefsButton;
+import com.watabou.glwrap.Blending;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -41,8 +40,6 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
-
-import javax.microedition.khronos.opengles.GL10;
 
 public class TitleScene extends PixelScene {
 	
@@ -88,9 +85,9 @@ public class TitleScene extends PixelScene {
 			}
 			@Override
 			public void draw() {
-				GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
+				Blending.setLightMode();
 				super.draw();
-				GLES20.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+				Blending.setNormalMode();
 			}
 		};
 		signs.x = title.x + (title.width() - signs.width())/2f;

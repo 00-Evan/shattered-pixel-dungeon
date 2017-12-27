@@ -21,14 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
-import android.opengl.GLES20;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
+import com.watabou.glwrap.Blending;
 import com.watabou.noosa.TextureFilm;
-
-import javax.microedition.khronos.opengles.GL10;
 
 public class GhostSprite extends MobSprite {
 	
@@ -56,9 +53,9 @@ public class GhostSprite extends MobSprite {
 	
 	@Override
 	public void draw() {
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
+		Blending.setLightMode();
 		super.draw();
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+		Blending.setNormalMode();
 	}
 	
 	@Override

@@ -22,8 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import android.graphics.RectF;
-import android.opengl.GLES20;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Texture;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -33,8 +34,6 @@ import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.Random;
-
-import javax.microedition.khronos.opengles.GL10;
 
 public class Fireball extends Component {
 
@@ -118,9 +117,9 @@ public class Fireball extends Component {
 	
 	@Override
 	public void draw() {
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
+		Blending.setLightMode();
 		super.draw();
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+		Blending.setNormalMode();
 	}
 	
 	public static class Flame extends Image {

@@ -21,9 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import android.opengl.GLES20;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
@@ -32,7 +32,6 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-import javax.microedition.khronos.opengles.GL10;
 import java.util.Arrays;
 import java.util.List;
 
@@ -102,9 +101,9 @@ public class Lightning extends Group {
 	
 	@Override
 	public void draw() {
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
+		Blending.setLightMode();
 		super.draw();
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+		Blending.setNormalMode();
 	}
 
 	//A lightning object is meant to be loaded up with arcs.
