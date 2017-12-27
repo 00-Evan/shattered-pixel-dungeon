@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import android.os.Build;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -37,6 +35,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.DeviceCompat;
 
 public class WndSettings extends WndTabbed {
 
@@ -287,7 +286,7 @@ public class WndSettings extends WndTabbed {
 			};
 			chkImmersive.setRect( 0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
 			chkImmersive.checked(ShatteredPixelDungeon.immersed());
-			chkImmersive.enable(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT);
+			chkImmersive.enable(DeviceCompat.supportsFullScreen());
 			add(chkImmersive);
 
 			CheckBox chkFont = new CheckBox(Messages.get(this, "system_font")){

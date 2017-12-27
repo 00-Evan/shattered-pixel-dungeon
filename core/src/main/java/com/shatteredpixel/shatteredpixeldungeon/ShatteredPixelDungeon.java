@@ -24,8 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +37,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.DeviceCompat;
 
 import java.util.Locale;
 
@@ -134,8 +133,8 @@ public class ShatteredPixelDungeon extends Game {
 
 		updateSystemUI();
 		
-		if (Preferences.INSTANCE.contains( Preferences.KEY_LANDSCAPE )){
-			landscape ( Preferences.INSTANCE.getBoolean( Preferences.KEY_LANDSCAPE, false));
+		if (SPDSettings.contains( SPDSettings.KEY_LANDSCAPE )){
+			landscape ( SPDSettings.getBoolean( SPDSettings.KEY_LANDSCAPE, false));
 
 		} else {
 			DisplayMetrics metrics = new DisplayMetrics();
@@ -153,11 +152,7 @@ public class ShatteredPixelDungeon extends Game {
 		Sample.INSTANCE.enable( soundFx() );
 		Sample.INSTANCE.volume( SFXVol()/10f );
 		
-		//versions lower than this require READ_PHONE_STATE permission
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			TelephonyManager mgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-			mgr.listen(Music.callMute, PhoneStateListener.LISTEN_CALL_STATE);
-		}
+		Music.setMuteListener();
 
 		Sample.INSTANCE.load(
 				Assets.SND_CLICK,
@@ -238,8 +233,10 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	/*
-	 * ---> Prefernces
+	 * ---> Settings
 	 */
+	
+	//TODO migrate some of these to SPDSettings, no reason to clutter up Shattered Pixel Dungeon
 	
 	public static void landscape( boolean value ) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
@@ -251,7 +248,7 @@ public class ShatteredPixelDungeon extends Game {
 					ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
 					ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
-		Preferences.INSTANCE.put( Preferences.KEY_LANDSCAPE, value );
+		SPDSettings.put( SPDSettings.KEY_LANDSCAPE, value );
 		((ShatteredPixelDungeon)instance).updateDisplaySize();
 	}
 	
@@ -260,13 +257,11 @@ public class ShatteredPixelDungeon extends Game {
 	}
 	
 	public static void scale( int value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_SCALE, value );
+		SPDSettings.put( SPDSettings.KEY_SCALE, value );
 	}
 
-	private static boolean immersiveModeChanged = false;
-
 	public static void immerse( boolean value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_IMMERSIVE, value );
+		SPDSettings.put( SPDSettings.KEY_IMMERSIVE, value );
 
 		instance.runOnUiThread( new Runnable() {
 			@Override
@@ -301,7 +296,7 @@ public class ShatteredPixelDungeon extends Game {
 
 		//force power saver in this case as all devices must run at at least 2x scale.
 		if (dispWidth < renderWidth*2 || dispHeight < renderHeight*2)
-			Preferences.INSTANCE.put( Preferences.KEY_POWER_SAVER, true );
+			SPDSettings.put( SPDSettings.KEY_POWER_SAVER, true );
 
 		if (powerSaver()){
 
@@ -351,7 +346,7 @@ public class ShatteredPixelDungeon extends Game {
 					WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		}
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+		if (DeviceCompat.supportsFullScreen()){
 			if (fullscreen && immersed()) {
 				instance.getWindow().getDecorView().setSystemUiVisibility(
 						View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
@@ -367,88 +362,88 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static boolean immersed() {
-		return Preferences.INSTANCE.getBoolean( Preferences.KEY_IMMERSIVE, false );
+		return SPDSettings.getBoolean( SPDSettings.KEY_IMMERSIVE, false );
 	}
 
 	public static boolean powerSaver(){
-		return Preferences.INSTANCE.getBoolean( Preferences.KEY_POWER_SAVER, false );
+		return SPDSettings.getBoolean( SPDSettings.KEY_POWER_SAVER, false );
 	}
 
 	public static void powerSaver( boolean value ){
-		Preferences.INSTANCE.put( Preferences.KEY_POWER_SAVER, value );
+		SPDSettings.put( SPDSettings.KEY_POWER_SAVER, value );
 		((ShatteredPixelDungeon)instance).updateDisplaySize();
 	}
 	
 	public static int scale() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_SCALE, 0 );
+		return SPDSettings.getInt( SPDSettings.KEY_SCALE, 0 );
 	}
 
 	public static void zoom( int value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_ZOOM, value );
+		SPDSettings.put( SPDSettings.KEY_ZOOM, value );
 	}
 	
 	public static int zoom() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_ZOOM, 0 );
+		return SPDSettings.getInt( SPDSettings.KEY_ZOOM, 0 );
 	}
 	
 	public static void music( boolean value ) {
 		Music.INSTANCE.enable( value );
-		Preferences.INSTANCE.put( Preferences.KEY_MUSIC, value );
+		SPDSettings.put( SPDSettings.KEY_MUSIC, value );
 	}
 	
 	public static boolean music() {
-		return Preferences.INSTANCE.getBoolean( Preferences.KEY_MUSIC, true );
+		return SPDSettings.getBoolean( SPDSettings.KEY_MUSIC, true );
 	}
 
 	public static void musicVol( int value ){
-		Preferences.INSTANCE.put( Preferences.KEY_MUSIC_VOL, value );
+		SPDSettings.put( SPDSettings.KEY_MUSIC_VOL, value );
 	}
 
 	public static int musicVol(){
-		return Preferences.INSTANCE.getInt( Preferences.KEY_MUSIC_VOL, 10, 0, 10 );
+		return SPDSettings.getInt( SPDSettings.KEY_MUSIC_VOL, 10, 0, 10 );
 	}
 	
 	public static void soundFx( boolean value ) {
 		Sample.INSTANCE.enable( value );
-		Preferences.INSTANCE.put( Preferences.KEY_SOUND_FX, value );
+		SPDSettings.put( SPDSettings.KEY_SOUND_FX, value );
 	}
 	
 	public static boolean soundFx() {
-		return Preferences.INSTANCE.getBoolean( Preferences.KEY_SOUND_FX, true );
+		return SPDSettings.getBoolean( SPDSettings.KEY_SOUND_FX, true );
 	}
 
 	public static void SFXVol( int value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_SFX_VOL, value );
+		SPDSettings.put( SPDSettings.KEY_SFX_VOL, value );
 	}
 
 	public static int SFXVol() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_SFX_VOL, 10, 0, 10 );
+		return SPDSettings.getInt( SPDSettings.KEY_SFX_VOL, 10, 0, 10 );
 	}
 	
 	public static void brightness( int value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_BRIGHTNESS, value );
+		SPDSettings.put( SPDSettings.KEY_BRIGHTNESS, value );
 		GameScene.updateFog();
 	}
 	
 	public static int brightness() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_BRIGHTNESS, 0, -2, 2 );
+		return SPDSettings.getInt( SPDSettings.KEY_BRIGHTNESS, 0, -2, 2 );
 	}
 
 	public static void visualGrid( int value ){
-		Preferences.INSTANCE.put( Preferences.KEY_GRID, value );
+		SPDSettings.put( SPDSettings.KEY_GRID, value );
 		GameScene.updateMap();
 	}
 
 	public static int visualGrid() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_GRID, 0, -1, 3 );
+		return SPDSettings.getInt( SPDSettings.KEY_GRID, 0, -1, 3 );
 	}
 
 	public static void language(Languages lang) {
-		Preferences.INSTANCE.put( Preferences.KEY_LANG, lang.code());
+		SPDSettings.put( SPDSettings.KEY_LANG, lang.code());
 	}
 
 	public static Languages language() {
-		String code = Preferences.INSTANCE.getString(Preferences.KEY_LANG, null);
+		String code = SPDSettings.getString(SPDSettings.KEY_LANG, null);
 		if (code == null){
 			return Languages.matchLocale(Locale.getDefault());
 		} else {
@@ -457,7 +452,7 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static void classicFont(boolean classic){
-		Preferences.INSTANCE.put(Preferences.KEY_CLASSICFONT, classic);
+		SPDSettings.put(SPDSettings.KEY_CLASSICFONT, classic);
 		if (classic) {
 			RenderedText.setFont("pixelfont.ttf");
 		} else {
@@ -466,68 +461,68 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static boolean classicFont(){
-		return Preferences.INSTANCE.getBoolean(Preferences.KEY_CLASSICFONT,
+		return SPDSettings.getBoolean(SPDSettings.KEY_CLASSICFONT,
 				(language() != Languages.KOREAN && language() != Languages.CHINESE));
 	}
 
 	public static void lastClass( int value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_LAST_CLASS, value );
+		SPDSettings.put( SPDSettings.KEY_LAST_CLASS, value );
 	}
 	
 	public static int lastClass() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_LAST_CLASS, 0, 0, 3 );
+		return SPDSettings.getInt( SPDSettings.KEY_LAST_CLASS, 0, 0, 3 );
 	}
 
 	public static void challenges( int value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_CHALLENGES, value );
+		SPDSettings.put( SPDSettings.KEY_CHALLENGES, value );
 	}
 
 	public static int challenges() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
+		return SPDSettings.getInt( SPDSettings.KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
 	}
 
-	public static void quickSlots( int value ){ Preferences.INSTANCE.put( Preferences.KEY_QUICKSLOTS, value ); }
+	public static void quickSlots( int value ){ SPDSettings.put( SPDSettings.KEY_QUICKSLOTS, value ); }
 
-	public static int quickSlots(){ return Preferences.INSTANCE.getInt( Preferences.KEY_QUICKSLOTS, 4, 0, 4); }
+	public static int quickSlots(){ return SPDSettings.getInt( SPDSettings.KEY_QUICKSLOTS, 4, 0, 4); }
 
 	public static void flipToolbar( boolean value) {
-		Preferences.INSTANCE.put(Preferences.KEY_FLIPTOOLBAR, value );
+		SPDSettings.put(SPDSettings.KEY_FLIPTOOLBAR, value );
 	}
 
-	public static boolean flipToolbar(){ return Preferences.INSTANCE.getBoolean(Preferences.KEY_FLIPTOOLBAR, false); }
+	public static boolean flipToolbar(){ return SPDSettings.getBoolean(SPDSettings.KEY_FLIPTOOLBAR, false); }
 
 	public static void flipTags( boolean value) {
-		Preferences.INSTANCE.put(Preferences.KEY_FLIPTAGS, value );
+		SPDSettings.put(SPDSettings.KEY_FLIPTAGS, value );
 	}
 
-	public static boolean flipTags(){ return Preferences.INSTANCE.getBoolean(Preferences.KEY_FLIPTAGS, false); }
+	public static boolean flipTags(){ return SPDSettings.getBoolean(SPDSettings.KEY_FLIPTAGS, false); }
 
 	public static void toolbarMode( String value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_BARMODE, value );
+		SPDSettings.put( SPDSettings.KEY_BARMODE, value );
 	}
 
 	public static String toolbarMode() {
-		return Preferences.INSTANCE.getString(Preferences.KEY_BARMODE, !landscape() ? "SPLIT" : "GROUP");
+		return SPDSettings.getString(SPDSettings.KEY_BARMODE, !landscape() ? "SPLIT" : "GROUP");
 	}
 	
 	public static void intro( boolean value ) {
-		Preferences.INSTANCE.put( Preferences.KEY_INTRO, value );
+		SPDSettings.put( SPDSettings.KEY_INTRO, value );
 	}
 	
 	public static boolean intro() {
-		return Preferences.INSTANCE.getBoolean( Preferences.KEY_INTRO, true );
+		return SPDSettings.getBoolean( SPDSettings.KEY_INTRO, true );
 	}
 
 	public static void version( int value)  {
-		Preferences.INSTANCE.put( Preferences.KEY_VERSION, value );
+		SPDSettings.put( SPDSettings.KEY_VERSION, value );
 	}
 
 	public static int version() {
-		return Preferences.INSTANCE.getInt( Preferences.KEY_VERSION, 0 );
+		return SPDSettings.getInt( SPDSettings.KEY_VERSION, 0 );
 	}
 	
 	/*
-	 * <--- Preferences
+	 * <--- Settings
 	 */
 
 	public static void reportException( Throwable tr ) {

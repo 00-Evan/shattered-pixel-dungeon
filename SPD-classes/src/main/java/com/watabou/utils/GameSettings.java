@@ -19,58 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.watabou.utils;
 
 import android.content.SharedPreferences;
 import android.os.Build;
 
 import com.watabou.noosa.Game;
-import com.watabou.utils.GameMath;
 
-enum Preferences {
-
-	INSTANCE;
+public class GameSettings {
 	
-	public static final String KEY_LANDSCAPE	= "landscape";
-	public static final String KEY_IMMERSIVE	= "immersive";
-	public static final String KEY_POWER_SAVER 	= "power_saver";
-	public static final String KEY_SCALE		= "scale";
-	public static final String KEY_MUSIC		= "music";
-	public static final String KEY_MUSIC_VOL    = "music_vol";
-	public static final String KEY_SOUND_FX		= "soundfx";
-	public static final String KEY_SFX_VOL      = "sfx_vol";
-	public static final String KEY_ZOOM			= "zoom";
-	public static final String KEY_LAST_CLASS	= "last_class";
-	public static final String KEY_CHALLENGES	= "challenges";
-	public static final String KEY_QUICKSLOTS	= "quickslots";
-	public static final String KEY_FLIPTOOLBAR	= "flipped_ui";
-	public static final String KEY_FLIPTAGS 	= "flip_tags";
-	public static final String KEY_BARMODE		= "toolbar_mode";
-	public static final String KEY_LANG         = "language";
-	public static final String KEY_CLASSICFONT	= "classic_font";
-	public static final String KEY_INTRO		= "intro";
-	public static final String KEY_BRIGHTNESS	= "brightness";
-	public static final String KEY_GRID 	    = "visual_grid";
-	public static final String KEY_VERSION      = "version";
+	private static SharedPreferences prefs;
 	
-	private SharedPreferences prefs;
-	
-	private SharedPreferences get() {
+	private static SharedPreferences get() {
 		if (prefs == null) {
 			prefs = Game.instance.getPreferences( Game.MODE_PRIVATE );
 		}
 		return prefs;
 	}
-
-	boolean contains( String key ){
+	
+	public static boolean contains( String key ){
 		return get().contains( key );
 	}
-
-	int getInt( String key, int defValue ) {
+	
+	public static int getInt( String key, int defValue ) {
 		return getInt(key, defValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 	
-	int getInt( String key, int defValue, int min, int max ) {
+	public static int getInt( String key, int defValue, int min, int max ) {
 		try {
 			int i = get().getInt( key, defValue );
 			if (i < min || i > max){
@@ -81,27 +56,27 @@ enum Preferences {
 				return i;
 			}
 		} catch (ClassCastException e) {
-			ShatteredPixelDungeon.reportException(e);
+			//ShatteredPixelDungeon.reportException(e);
 			put(key, defValue);
 			return defValue;
 		}
 	}
 	
-	boolean getBoolean( String key, boolean defValue ) {
+	public static boolean getBoolean( String key, boolean defValue ) {
 		try {
 			return get().getBoolean(key, defValue);
 		} catch (ClassCastException e) {
-			ShatteredPixelDungeon.reportException(e);
+			//ShatteredPixelDungeon.reportException(e);
 			put(key, defValue);
 			return defValue;
 		}
 	}
-
-	String getString( String key, String defValue ) {
+	
+	public static String getString( String key, String defValue ) {
 		return getString(key, defValue, Integer.MAX_VALUE);
 	}
 	
-	String getString( String key, String defValue, int maxLength ) {
+	public static String getString( String key, String defValue, int maxLength ) {
 		try {
 			String s = get().getString( key, defValue );
 			if (s != null && s.length() > maxLength) {
@@ -111,7 +86,7 @@ enum Preferences {
 				return s;
 			}
 		} catch (ClassCastException e) {
-			ShatteredPixelDungeon.reportException(e);
+			//ShatteredPixelDungeon.reportException(e);
 			put(key, defValue);
 			return defValue;
 		}
@@ -119,7 +94,7 @@ enum Preferences {
 	
 	//android 2.3+ supports apply, which is asyncronous, much nicer
 	
-	void put( String key, int value ) {
+	public static void put( String key, int value ) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			get().edit().putInt(key, value).apply();
 		} else {
@@ -127,7 +102,7 @@ enum Preferences {
 		}
 	}
 	
-	void put( String key, boolean value ) {
+	public static void put( String key, boolean value ) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			get().edit().putBoolean(key, value).apply();
 		} else {
@@ -135,11 +110,12 @@ enum Preferences {
 		}
 	}
 	
-	void put( String key, String value ) {
+	public static void put( String key, String value ) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			get().edit().putString(key, value).apply();
 		} else {
 			get().edit().putString(key, value).commit();
 		}
 	}
+	
 }

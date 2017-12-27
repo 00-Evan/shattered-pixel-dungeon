@@ -46,6 +46,7 @@ import com.watabou.input.Touchscreen;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BitmapCache;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.SystemTime;
 
 import java.util.ArrayList;
@@ -133,10 +134,10 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		view = new GLSurfaceView( this );
 		view.setEGLContextClientVersion( 2 );
 
-		//Versions of android below 4.1 are forced to RGB 565 for performance reasons.
+		//Older devices are forced to RGB 565 for performance reasons.
 		//Otherwise try to use RGB888 for best quality, but use RGB565 if it is what's available.
 		view.setEGLConfigChooser( new ScreenConfigChooser(
-						Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN,
+				DeviceCompat.legacyDevice(),
 						false ));
 
 		view.setRenderer( this );
