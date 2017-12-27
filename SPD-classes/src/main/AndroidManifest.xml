@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.watabou">
 
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
     <uses-sdk
         android:minSdkVersion="8"/>
 
