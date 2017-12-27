@@ -58,8 +58,7 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 		if (!flat) {
 			if ((DungeonTileSheet.doorTile(tile))) {
 				return DungeonTileSheet.getRaisedDoorTile(tile, map[pos - mapWidth]);
-			} else if (tile == Terrain.WALL || tile == Terrain.WALL_DECO
-					|| tile == Terrain.SECRET_DOOR || tile == Terrain.BOOKSHELF){
+			} else if (DungeonTileSheet.wallStitcheable(tile)){
 				return DungeonTileSheet.getRaisedWallTile(
 						tile,
 						pos,
@@ -100,11 +99,6 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 
 	@Override
 	protected boolean needsRender(int pos) {
-		return data[pos] != DungeonTileSheet.WATER ||
-				(
-						pos + mapWidth < size &&
-						DungeonTileSheet.wallStitcheable(map[pos]) &&
-						DungeonTileSheet.wallStitcheable(map[pos + mapWidth])
-				);
+		return data[pos] >= 0 && data[pos] != DungeonTileSheet.WATER;
 	}
 }

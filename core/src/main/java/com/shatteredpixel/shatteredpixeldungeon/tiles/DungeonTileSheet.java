@@ -219,7 +219,9 @@ public class DungeonTileSheet {
 
 	public static int getRaisedWallTile(int tile, int pos, int right, int below, int left){
 		int result;
-		if (doorTile(below))                                            result = RAISED_WALL_DOOR;
+		
+		if (below == -1 || wallStitcheable(below))                      return -1;
+		else if (doorTile(below))                                       result = RAISED_WALL_DOOR;
 		else if (tile == Terrain.WALL || tile == Terrain.SECRET_DOOR)   result = RAISED_WALL;
 		else if (tile == Terrain.WALL_DECO)                             result = RAISED_WALL_DECO;
 		else if (tile == Terrain.BOOKSHELF)                             result = RAISED_WALL_BOOKSHELF;

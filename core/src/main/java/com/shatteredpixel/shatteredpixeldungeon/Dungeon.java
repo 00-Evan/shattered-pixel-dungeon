@@ -755,17 +755,17 @@ public class Dungeon {
 		int t = Math.max( 0, y - dist );
 		int b = Math.min( y + dist, level.height() - 1 );
 	
-		int length = r - l + 1;
-		int width = t - b + 1;
+		int width = r - l + 1;
+		int height = b - t + 1;
 		
 		int pos = l + t * level.width();
 	
 		for (int i = t; i <= b; i++) {
-			BArray.or( level.visited, level.heroFOV, pos, length, level.visited );
+			BArray.or( level.visited, level.heroFOV, pos, width, level.visited );
 			pos+=level.width();
 		}
 	
-		GameScene.updateFog(l, t, length, width);
+		GameScene.updateFog(l, t, width, height);
 		
 		if (hero.buff(MindVision.class) != null){
 			for (Mob m : level.mobs.toArray(new Mob[0])){
