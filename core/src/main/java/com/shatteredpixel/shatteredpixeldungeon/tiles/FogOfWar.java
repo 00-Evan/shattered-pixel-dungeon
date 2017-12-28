@@ -21,21 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
-import android.opengl.GLES20;
-
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.watabou.gltextures.SmartTexture;
+import com.watabou.gltextures.BufferTexture;
 import com.watabou.gltextures.TextureCache;
-import com.watabou.glwrap.Texture;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.utils.Rect;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 public class FogOfWar extends Image {
@@ -116,7 +110,7 @@ public class FogOfWar extends Image {
 		width = width2 * size;
 		height = height2 * size;
 		
-		texture( new FogTexture(width2, height2) );
+		texture( TextureCache.createBufferTex("fog", width2, height2) );
 		
 		scale.set(
 			DungeonTilemap.SIZE / PIX_PER_TILE,
@@ -186,7 +180,7 @@ public class FogOfWar extends Image {
 			}
 		}
 
-		FogTexture fog = (FogTexture)texture;
+		BufferTexture fog = (BufferTexture) texture;
 
 		int cell;
 		
@@ -202,7 +196,7 @@ public class FogOfWar extends Image {
 						//we skip filling cells here if it isn't a full update
 						// because they must already be dark
 						if (fullUpdate)
-							fillCell(j, i, FOG_COLORS[INVISIBLE][brightness]);
+							fillCell(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
 						cell++;
 						continue;
 					}
@@ -212,7 +206,7 @@ public class FogOfWar extends Image {
 						
 						//always dark if nothing is beneath them
 						if (cell + mapWidth >= mapLength) {
-							fillCell(j, i, FOG_COLORS[INVISIBLE][brightness]);
+							fillCell(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
 							
 						//internal wall tiles, need to check both the left and right side,
 						// to account for only one half of them being seen
@@ -226,17 +220,17 @@ public class FogOfWar extends Image {
 									
 									//if below-left is also a wall, then we should be dark no matter what.
 									if (wall(cell + mapWidth - 1)) {
-										fillLeft(j, i, FOG_COLORS[INVISIBLE][brightness]);
+										fillLeft(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
 									} else {
-										fillLeft(j, i, FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth - 1), getCellFog(cell - 1)))][brightness]);
+										fillLeft(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth - 1), getCellFog(cell - 1)))][brightness]);
 									}
 									
 								} else {
-									fillLeft(j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell - 1))][brightness]);
+									fillLeft(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell - 1))][brightness]);
 								}
 								
 							} else {
-								fillLeft(j, i, FOG_COLORS[INVISIBLE][brightness]);
+								fillLeft(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
 							}
 							
 							//right side
@@ -247,28 +241,28 @@ public class FogOfWar extends Image {
 									
 									//if below-right is also a wall, then we should be dark no matter what.
 									if (wall(cell + mapWidth + 1)) {
-										fillRight(j, i, FOG_COLORS[INVISIBLE][brightness]);
+										fillRight(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
 									} else {
-										fillRight(j, i, FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth + 1), getCellFog(cell + 1)))][brightness]);
+										fillRight(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), Math.max(getCellFog(cell + mapWidth + 1), getCellFog(cell + 1)))][brightness]);
 									}
 									
 								} else {
-									fillRight(j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell + 1))][brightness]);
+									fillRight(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell + 1))][brightness]);
 								}
 								
 							} else {
-								fillRight(j, i, FOG_COLORS[INVISIBLE][brightness]);
+								fillRight(fog, j, i, FOG_COLORS[INVISIBLE][brightness]);
 							}
 							
 						//camera-facing wall tiles
 						//darkest between themselves and the tile below them
 						} else {
-							fillCell(j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell + mapWidth))][brightness]);
+							fillCell(fog, j, i, FOG_COLORS[Math.max(getCellFog(cell), getCellFog(cell + mapWidth))][brightness]);
 						}
 						
 					//other tiles, just their direct value
 					} else {
-						fillCell(j, i, FOG_COLORS[getCellFog(cell)][brightness]);
+						fillCell(fog, j, i, FOG_COLORS[getCellFog(cell)][brightness]);
 					}
 					
 					cell++;
@@ -302,8 +296,7 @@ public class FogOfWar extends Image {
 		}
 	}
 	
-	private void fillLeft( int x, int y, int color){
-		FogTexture fog = (FogTexture)texture;
+	private void fillLeft( BufferTexture fog, int x, int y, int color){
 		for (int i = 0; i < PIX_PER_TILE; i++){
 			fog.pixels.position(((y * PIX_PER_TILE)+i)*width2 + x * PIX_PER_TILE);
 			for (int j = 0; j < PIX_PER_TILE/2; j++) {
@@ -312,8 +305,7 @@ public class FogOfWar extends Image {
 		}
 	}
 	
-	private void fillRight( int x, int y, int color){
-		FogTexture fog = (FogTexture)texture;
+	private void fillRight( BufferTexture fog, int x, int y, int color){
 		for (int i = 0; i < PIX_PER_TILE; i++){
 			fog.pixels.position(((y * PIX_PER_TILE)+i)*width2 + x * PIX_PER_TILE + PIX_PER_TILE/2);
 			for (int j = PIX_PER_TILE/2; j < PIX_PER_TILE; j++) {
@@ -322,84 +314,12 @@ public class FogOfWar extends Image {
 		}
 	}
 
-	private void fillCell( int x, int y, int color){
-		FogTexture fog = (FogTexture)texture;
+	private void fillCell( BufferTexture fog, int x, int y, int color){
 		for (int i = 0; i < PIX_PER_TILE; i++){
 			fog.pixels.position(((y * PIX_PER_TILE)+i)*width2 + x * PIX_PER_TILE);
 			for (int j = 0; j < PIX_PER_TILE; j++) {
 				fog.pixels.put(color);
 			}
-		}
-	}
-
-	//provides a native intbuffer implementation because android.graphics.bitmap is too slow
-	//TODO perhaps should spin this off into something like FastEditTexture in SPD-classes
-	private class FogTexture extends SmartTexture {
-
-		private IntBuffer pixels;
-		
-		public FogTexture(int w, int h) {
-			super();
-			width = w;
-			height = h;
-			pixels = ByteBuffer.
-					allocateDirect( w * h * 4 ).
-					order( ByteOrder.nativeOrder() ).
-					asIntBuffer();
-
-			TextureCache.add( FogOfWar.class, this );
-		}
-
-		@Override
-		protected void generate() {
-			int[] ids = new int[1];
-			GLES20.glGenTextures( 1, ids, 0 );
-			id = ids[0];
-		}
-
-		@Override
-		public void reload() {
-			generate();
-			update();
-		}
-
-		public void update(){
-			bind();
-			filter( Texture.LINEAR, Texture.LINEAR );
-			wrap( Texture.CLAMP, Texture.CLAMP);
-			pixels.position(0);
-			GLES20.glTexImage2D(
-					GLES20.GL_TEXTURE_2D,
-					0,
-					GLES20.GL_RGBA,
-					width,
-					height,
-					0,
-					GLES20.GL_RGBA,
-					GLES20.GL_UNSIGNED_BYTE,
-					pixels );
-		}
-
-		//allows partially updating the texture
-		public void update(int top, int bottom){
-			bind();
-			filter( Texture.LINEAR, Texture.LINEAR );
-			wrap( Texture.CLAMP, Texture.CLAMP);
-			pixels.position(top*width);
-			GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D,
-					0,
-					0,
-					top,
-					width,
-					bottom - top,
-					GLES20.GL_RGBA,
-					GLES20.GL_UNSIGNED_BYTE,
-					pixels);
-		}
-
-		@Override
-		public void delete() {
-			super.delete();
 		}
 	}
 
@@ -416,5 +336,13 @@ public class FogOfWar extends Image {
 		}
 
 		super.draw();
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		if (texture != null){
+			texture.delete();
+		}
 	}
 }
