@@ -238,7 +238,7 @@ public class PixelScene extends Scene {
 		if (noFade) {
 			noFade = false;
 		} else {
-			fadeIn( 0xFF000000, true );
+			fadeIn( 0xFF000000, false );
 		}
 	}
 	
