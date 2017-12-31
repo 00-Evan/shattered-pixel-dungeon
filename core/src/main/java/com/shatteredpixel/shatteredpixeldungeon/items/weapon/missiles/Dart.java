@@ -21,6 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
@@ -31,6 +35,9 @@ public class Dart extends MissileWeapon {
 		image = ItemSpriteSheet.DART;
 
 		bones = false; //Finding them in bones would be semi-frequent and disappointing.
+		
+		//does not use durability
+		durability = -1;
 	}
 
 	@Override
@@ -47,7 +54,15 @@ public class Dart extends MissileWeapon {
 	public int STRReq(int lvl) {
 		return 10;
 	}
-
+	
+	@Override
+	protected void rangedHit(Char enemy) {
+		if (enemy.isAlive())
+			Buff.affect(enemy, PinCushion.class).stick(new Dart());
+		else
+			Dungeon.level.drop( new Dart(), enemy.pos).sprite.drop();
+	}
+	
 	public Dart() {
 		this( 1 );
 	}

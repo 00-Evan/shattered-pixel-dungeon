@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -143,9 +144,15 @@ public abstract class Char extends Actor {
 		
 		if (hit( this, enemy, false )) {
 			
-			// FIXME
-			int dr = this instanceof Hero && ((Hero)this).rangedWeapon != null && ((Hero)this).subClass ==
-				HeroSubClass.SNIPER ? 0 : enemy.drRoll();
+			int dr = enemy.drRoll();
+			
+			if (this instanceof Hero){
+				Hero h = (Hero)this;
+				if (h.belongings.weapon instanceof MissileWeapon
+						&& h.subClass == HeroSubClass.SNIPER){
+					dr = 0;
+				}
+			}
 			
 			int dmg;
 			Preparation prep = buff(Preparation.class);

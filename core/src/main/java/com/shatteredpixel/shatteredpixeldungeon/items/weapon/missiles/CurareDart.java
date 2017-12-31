@@ -28,22 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class CurareDart extends MissileWeapon {
+public class CurareDart extends Dart {
 
 	public static final float DURATION	= 3f;
 	
 	{
 		image = ItemSpriteSheet.CURARE_DART;
-	}
-
-	@Override
-	public int min(int lvl) {
-		return 1;
-	}
-
-	@Override
-	public int max(int lvl) {
-		return 3;
 	}
 
 	@Override

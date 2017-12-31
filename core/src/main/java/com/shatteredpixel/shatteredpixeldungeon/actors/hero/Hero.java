@@ -157,8 +157,7 @@ public class Hero extends Char {
 	private Char enemy;
 	
 	public boolean resting = false;
-
-	public MissileWeapon rangedWeapon = null;
+	
 	public Belongings belongings;
 	
 	public int STR;
@@ -282,22 +281,26 @@ public class Hero extends Char {
 
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
-		rangedWeapon = wep;
+		//temporarily set the hero's weapon to the missile weapon being used
+		KindOfWeapon equipped = belongings.weapon;
+		belongings.weapon = wep;
 		boolean result = attack( enemy );
 		Invisibility.dispel();
-		rangedWeapon = null;
+		belongings.weapon = equipped;
 
 		return result;
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
+		KindOfWeapon wep = belongings.weapon;
+		
 		float accuracy = 1;
-		if (rangedWeapon != null && Dungeon.level.distance( pos, target.pos ) == 1) {
+		if (wep instanceof MissileWeapon
+				&& Dungeon.level.distance( pos, target.pos ) == 1) {
 			accuracy *= 0.5f;
 		}
-
-		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
+		
 		if (wep != null) {
 			return (int)(attackSkill * accuracy * wep.accuracyFactor( this ));
 		} else {
@@ -352,7 +355,7 @@ public class Hero extends Char {
 	
 	@Override
 	public int damageRoll() {
-		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
+		KindOfWeapon wep = belongings.weapon;
 		int dmg;
 
 		if (wep != null) {
@@ -400,14 +403,9 @@ public class Hero extends Char {
 	}
 
 	public boolean canSurpriseAttack(){
-		if (belongings.weapon == null || !(belongings.weapon instanceof Weapon))
-			return true;
-
-		if (STR() < ((Weapon)belongings.weapon).STRReq())
-			return false;
-
-		if (belongings.weapon instanceof Flail && rangedWeapon == null)
-			return false;
+		if (belongings.weapon == null || !(belongings.weapon instanceof Weapon))    return true;
+		if (STR() < ((Weapon)belongings.weapon).STRReq())                           return false;
+		if (belongings.weapon instanceof Flail)                                     return false;
 
 		return true;
 	}
@@ -438,10 +436,9 @@ public class Hero extends Char {
 	}
 	
 	public float attackDelay() {
-		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
-		if (wep != null) {
+		if (belongings.weapon != null) {
 			
-			return wep.speedFactor( this );
+			return belongings.weapon.speedFactor( this );
 						
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
@@ -915,14 +912,14 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackProc( Char enemy, int damage ) {
-		KindOfWeapon wep = rangedWeapon != null ? rangedWeapon : belongings.weapon;
+		KindOfWeapon wep = belongings.weapon;
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
 			
 		switch (subClass) {
 		case SNIPER:
-			if (rangedWeapon != null) {
-				Buff.prolong( this, SnipersMark.class, attackDelay() * 1.1f ).object = enemy.id();
+			if (wep instanceof MissileWeapon) {
+				Buff.prolong( this, SnipersMark.class, attackDelay() ).object = enemy.id();
 			}
 			break;
 		default:

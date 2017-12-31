@@ -58,6 +58,11 @@ public class Shuriken extends MissileWeapon {
 	}
 	
 	@Override
+	protected void reduceDurability() {
+		durability -= 10;
+	}
+	
+	@Override
 	public Item random() {
 		quantity = Random.Int( 5, 15 );
 		return this;

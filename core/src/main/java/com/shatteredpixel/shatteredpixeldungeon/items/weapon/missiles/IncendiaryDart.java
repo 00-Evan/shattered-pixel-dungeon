@@ -33,20 +33,10 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class IncendiaryDart extends MissileWeapon {
+public class IncendiaryDart extends Dart {
 
 	{
 		image = ItemSpriteSheet.INCENDIARY_DART;
-	}
-
-	@Override
-	public int min(int lvl) {
-		return 1;
-	}
-
-	@Override
-	public int max(int lvl) {
-		return 2;
 	}
 
 	@Override
@@ -66,10 +56,12 @@ public class IncendiaryDart extends MissileWeapon {
 	@Override
 	protected void onThrow( int cell ) {
 		Char enemy = Actor.findChar( cell );
-		if ((enemy == null || enemy == curUser) && Dungeon.level.flamable[cell])
-			GameScene.add( Blob.seed( cell, 4, Fire.class ) );
-		else
-			super.onThrow( cell );
+		if ((enemy == null || enemy == curUser) && Dungeon.level.flamable[cell]) {
+			GameScene.add(Blob.seed(cell, 4, Fire.class));
+			Dungeon.level.drop(new Dart(), cell).sprite.drop();
+		} else{
+			super.onThrow(cell);
+		}
 	}
 	
 	@Override

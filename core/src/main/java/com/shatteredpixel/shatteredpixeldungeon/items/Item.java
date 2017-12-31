@@ -28,12 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -159,6 +157,15 @@ public class Item implements Bundlable {
 		}
 	}
 	
+	//takes two items and merges them (if possible)
+	public Item merge( Item other ){
+		if (isSimilar( other )){
+			quantity += other.quantity;
+			other.quantity = 0;
+		}
+		return this;
+	}
+	
 	public boolean collect( Bag container ) {
 		
 		ArrayList<Item> items = container.items;
@@ -176,7 +183,7 @@ public class Item implements Bundlable {
 		if (stackable) {
 			for (Item item:items) {
 				if (isSimilar( item )) {
-					item.quantity += quantity;
+					item.merge( this );
 					item.updateQuickslot();
 					return true;
 				}
@@ -207,6 +214,29 @@ public class Item implements Bundlable {
 		return collect( Dungeon.hero.belongings.backpack );
 	}
 	
+	//returns a new item if the split was sucessful and there are now 2 items, otherwise null
+	public Item split( int amount ){
+		if (amount <= 0 || amount >= quantity()) {
+			return null;
+		} else {
+			try {
+				
+				//pssh, who needs copy constructors?
+				Item split = getClass().newInstance();
+				Bundle copy = new Bundle();
+				this.storeInBundle(copy);
+				split.restoreFromBundle(copy);
+				split.quantity(amount);
+				quantity -= amount;
+				
+				return split;
+			} catch (Exception e){
+				ShatteredPixelDungeon.reportException(e);
+				return null;
+			}
+		}
+	}
+	
 	public final Item detach( Bag container ) {
 		
 		if (quantity <= 0) {
@@ -224,24 +254,12 @@ public class Item implements Bundlable {
 			
 		} else {
 			
-			quantity--;
-			updateQuickslot();
 			
-			try {
-
-				//pssh, who needs copy constructors?
-				Item detached = getClass().newInstance();
-				Bundle copy = new Bundle();
-				this.storeInBundle(copy);
-				detached.restoreFromBundle(copy);
-				detached.quantity(1);
-
-				detached.onDetach( );
-				return detached;
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
-			}
+			Item detached = split(1);
+			updateQuickslot();
+			if (detached != null) detached.onDetach( );
+			return detached;
+			
 		}
 	}
 	
@@ -474,7 +492,7 @@ public class Item implements Bundlable {
 		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
 	}
 	
-	public void cast( final Hero user, int dst ) {
+	public void cast( final Hero user, final int dst ) {
 		
 		final int cell = throwPos( user, dst );
 		user.sprite.zap( cell );
@@ -484,22 +502,8 @@ public class Item implements Bundlable {
 
 		Char enemy = Actor.findChar( cell );
 		QuickSlotButton.target(enemy);
-
-		// FIXME!!!
-		float delay = TIME_TO_THROW;
-		if (this instanceof MissileWeapon) {
-			delay *= ((MissileWeapon)this).speedFactor( user );
-			if (enemy != null) {
-				SnipersMark mark = user.buff( SnipersMark.class );
-				if (mark != null) {
-					if (mark.object == enemy.id()) {
-						delay *= 0.5f;
-					}
-					user.remove( mark );
-				}
-			}
-		}
-		final float finalDelay = delay;
+		
+		final float delay = castDelay(user, dst);
 
 		if (enemy != null) {
 			((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
@@ -510,7 +514,7 @@ public class Item implements Bundlable {
 						@Override
 						public void call() {
 							Item.this.detach(user.belongings.backpack).onThrow(cell);
-							user.spendAndNext(finalDelay);
+							user.spendAndNext(delay);
 						}
 					});
 		} else {
@@ -522,10 +526,14 @@ public class Item implements Bundlable {
 						@Override
 						public void call() {
 							Item.this.detach(user.belongings.backpack).onThrow(cell);
-							user.spendAndNext(finalDelay);
+							user.spendAndNext(delay);
 						}
 					});
 		}
+	}
+	
+	public float castDelay( Char user, int dst ){
+		return TIME_TO_THROW;
 	}
 	
 	protected static Hero curUser = null;

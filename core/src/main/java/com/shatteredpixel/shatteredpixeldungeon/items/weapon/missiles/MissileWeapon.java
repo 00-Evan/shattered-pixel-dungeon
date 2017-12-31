@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -33,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -46,6 +48,9 @@ abstract public class MissileWeapon extends Weapon {
 		defaultAction = AC_THROW;
 		usesTargeting = true;
 	}
+	
+	//weapons which don't use durability should set it to -1
+	protected float durability = 100;
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
@@ -68,32 +73,56 @@ abstract public class MissileWeapon extends Weapon {
 	protected void onThrow( int cell ) {
 		Char enemy = Actor.findChar( cell );
 		if (enemy == null || enemy == curUser) {
-			if (this instanceof Boomerang)
 				super.onThrow( cell );
-			else
-				miss( cell );
 		} else {
 			if (!curUser.shoot( enemy, this )) {
-				miss( cell );
-			} else if (!(this instanceof Boomerang)){
+				rangedMiss( cell );
+			} else {
 
-				int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
+				//int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
 
-				if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
-					bonus += 3;
-
-				if (Random.Float() > Math.pow(0.7, bonus)){
-					if (enemy.isAlive())
-						Buff.affect(enemy, PinCushion.class).stick(this);
-					else
-						Dungeon.level.drop( this, enemy.pos).sprite.drop();
-				}
+				//if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
+				//	bonus += 3;
+				
+				rangedHit( enemy );
 
 			}
 		}
 	}
 	
-	protected void miss( int cell ) {
+	@Override
+	public float castDelay(Char user, int dst) {
+		float delay = speedFactor( user );
+		
+		Char enemy = Actor.findChar(dst);
+		
+		if (enemy != null) {
+			SnipersMark mark = user.buff( SnipersMark.class );
+			if (mark != null) {
+				if (mark.object == enemy.id()) {
+					delay *= 0.5f;
+				}
+			}
+		}
+		
+		return delay;
+	}
+	
+	protected void rangedHit(Char enemy ){
+		reduceDurability();
+		if (durability > 0){
+			if (enemy.isAlive())
+				Buff.affect(enemy, PinCushion.class).stick(this);
+			else
+				Dungeon.level.drop( this, enemy.pos).sprite.drop();
+		}
+	}
+	
+	protected void reduceDurability(){
+		//do nothing by default
+	}
+	
+	protected void rangedMiss(int cell ) {
 		int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
 
 		//degraded ring of sharpshooting will even make missed shots break.
@@ -102,24 +131,41 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		
-		Hero hero = (Hero)attacker;
-		if (hero.rangedWeapon == null && stackable) {
-			if (quantity == 1) {
-				doUnequip( hero, false, false );
-			} else {
-				detach( null );
-			}
-		}
-
-		return super.proc( attacker, defender, damage );
-
+	public Item random() {
+		if (durability != -1) durability = Random.NormalIntRange(70, 100);
+		return this;
 	}
 	
 	@Override
-	public Item random() {
+	public void reset() {
+		super.reset();
+		durability = 100;
+	}
+	
+	@Override
+	public Item merge(Item other) {
+		super.merge(other);
+		if (isSimilar(other) && durability != -1) {
+			durability += ((MissileWeapon)other).durability;
+			durability -= 100;
+			while (durability <= 0){
+				quantity -= 1;
+				durability += 100;
+			}
+		}
 		return this;
+	}
+	
+	@Override
+	public Item split(int amount) {
+		Item split = super.split(amount);
+		
+		//the split item will retain lost durability
+		if (split != null && durability != -1){
+			durability = 100;
+		}
+		
+		return split;
 	}
 	
 	@Override
@@ -158,6 +204,34 @@ abstract public class MissileWeapon extends Weapon {
 
 		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");
 		
+		info += "\n\n" + Messages.get(this, "durability");
+		
+		//weapons which don't use durability should set it to -1, and have their own text
+		if (durability >= 100)      info += "\n\n" + Messages.get(this, "dur_100");
+		else if (durability >= 80)  info += "\n\n" + Messages.get(this, "dur_80");
+		else if (durability >= 60)  info += "\n\n" + Messages.get(this, "dur_60");
+		else if (durability >= 40)  info += "\n\n" + Messages.get(this, "dur_40");
+		else if (durability >= 20)  info += "\n\n" + Messages.get(this, "dur_20");
+		else if (durability >= 0)   info += "\n\n" + Messages.get(this, "dur_0");
+		
+		
 		return info;
+	}
+	
+	private static final String DURABILITY = "durability";
+	
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(DURABILITY, durability);
+	}
+	
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		//compatibility with pre-0.6.3 saves
+		if (bundle.contains(DURABILITY)) {
+			durability = bundle.getInt(DURABILITY);
+		}
 	}
 }

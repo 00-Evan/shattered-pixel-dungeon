@@ -41,6 +41,9 @@ public class Boomerang extends MissileWeapon {
 
 		unique = true;
 		bones = false;
+		
+		//does not use durability
+		durability = -1;
 	}
 
 	@Override
@@ -87,22 +90,14 @@ public class Boomerang extends MissileWeapon {
 		
 		return this;
 	}
-	
+
 	@Override
-	public Item degrade() {
-		return super.degrade();
+	public void rangedHit( Char enemy ) {
+		circleBack(enemy.pos, curUser);
 	}
 
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		if (attacker instanceof Hero && ((Hero)attacker).rangedWeapon == this) {
-			circleBack( defender.pos, (Hero)attacker );
-		}
-		return super.proc( attacker, defender, damage );
-	}
-
-	@Override
-	protected void miss( int cell ) {
+	protected void rangedMiss( int cell ) {
 		circleBack( cell, curUser );
 	}
 
