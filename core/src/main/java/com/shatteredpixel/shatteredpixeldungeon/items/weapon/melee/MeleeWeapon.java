@@ -22,8 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.utils.Random;
 
 public class MeleeWeapon extends Weapon {
 	
@@ -45,6 +48,20 @@ public class MeleeWeapon extends Weapon {
 		lvl = Math.max(0, lvl);
 		//strength req decreases at +1,+3,+6,+10,etc.
 		return (8 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+	}
+	
+	@Override
+	public int damageRoll(Char owner) {
+		int damage = super.damageRoll( owner );
+		
+		if (owner instanceof Hero) {
+			int exStr = ((Hero)owner).STR() - STRReq();
+			if (exStr > 0) {
+				damage += Random.IntRange( 0, exStr );
+			}
+		}
+		
+		return imbue.damageFactor(damage);
 	}
 	
 	@Override

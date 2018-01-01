@@ -25,11 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Exhausting;
@@ -49,8 +47,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstab
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vorpal;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -148,10 +144,6 @@ abstract public class Weapon extends KindOfWeapon {
 			encumbrance = Math.max(3, encumbrance+3);
 
 		float ACC = this.ACC;
-		
-		if (this instanceof MissileWeapon) {
-			ACC *= RingOfSharpshooting.accuracyMultiplier( owner );
-		}
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
@@ -162,9 +154,6 @@ abstract public class Weapon extends KindOfWeapon {
 		int encumbrance = 0;
 		if (owner instanceof Hero) {
 			encumbrance = STRReq() - ((Hero)owner).STR();
-			if (this instanceof MissileWeapon && ((Hero)owner).heroClass == HeroClass.HUNTRESS) {
-				encumbrance -= 2;
-			}
 		}
 
 		float DLY = imbue.delayFactor(this.DLY);
@@ -177,23 +166,6 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int reachFactor(Char owner) {
 		return hasEnchant(Projecting.class) ? RCH+1 : RCH;
-	}
-
-	@Override
-	public int damageRoll( Char owner ) {
-		
-		int damage = super.damageRoll( owner );
-		
-		if (owner instanceof Hero &&
-				(this instanceof MeleeWeapon
-				|| (this instanceof MissileWeapon && ((Hero)owner).heroClass == HeroClass.HUNTRESS))) {
-			int exStr = ((Hero)owner).STR() - STRReq();
-			if (exStr > 0) {
-				damage += Random.IntRange( 0, exStr );
-			}
-		}
-		
-		return imbue.damageFactor(damage);
 	}
 
 	public int STRReq(){

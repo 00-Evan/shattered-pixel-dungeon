@@ -30,10 +30,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -136,7 +138,28 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	protected float durabilityPerUse(){
-		return MAX_DURABILITY/10f;
+		float usage = Dungeon.hero.heroClass == HeroClass.HUNTRESS ?
+				MAX_DURABILITY/15f:
+				MAX_DURABILITY/10f;
+		
+		usage /= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
+		
+		return usage;
+	}
+	
+	@Override
+	public int damageRoll(Char owner) {
+		int damage = super.damageRoll( owner );
+		
+		if (owner instanceof Hero &&
+				((Hero)owner).heroClass == HeroClass.HUNTRESS) {
+			int exStr = ((Hero)owner).STR() - STRReq();
+			if (exStr > 0) {
+				damage += Random.IntRange( 0, exStr );
+			}
+		}
+		
+		return (int)(imbue.damageFactor(damage) * RingOfSharpshooting.damageMultiplier( owner ));
 	}
 	
 	@Override
@@ -195,7 +218,10 @@ abstract public class MissileWeapon extends Weapon {
 
 		String info = desc();
 		
-		info += "\n\n" + Messages.get( MissileWeapon.class, "stats", imbue.damageFactor(min()), imbue.damageFactor(max()), STRReq());
+		info += "\n\n" + Messages.get( MissileWeapon.class, "stats",
+				(int)(imbue.damageFactor(min()) * RingOfSharpshooting.damageMultiplier( Dungeon.hero )),
+				(int)(imbue.damageFactor(max()) * RingOfSharpshooting.damageMultiplier( Dungeon.hero )),
+				STRReq());
 
 		if (STRReq() > Dungeon.hero.STR()) {
 			info += " " + Messages.get(Weapon.class, "too_heavy");
