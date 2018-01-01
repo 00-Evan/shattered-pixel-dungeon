@@ -36,8 +36,6 @@ public class Dart extends MissileWeapon {
 
 		bones = false; //Finding them in bones would be semi-frequent and disappointing.
 		
-		//does not use durability
-		durability = -1;
 	}
 
 	@Override
@@ -53,6 +51,11 @@ public class Dart extends MissileWeapon {
 	@Override
 	public int STRReq(int lvl) {
 		return 10;
+	}
+	
+	@Override
+	protected float durabilityPerUse() {
+		return 0;
 	}
 	
 	@Override

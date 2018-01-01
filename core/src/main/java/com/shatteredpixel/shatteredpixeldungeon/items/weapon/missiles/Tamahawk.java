@@ -66,11 +66,6 @@ public class Tamahawk extends MissileWeapon {
 	}
 	
 	@Override
-	protected void reduceDurability() {
-		durability -= 10;
-	}
-	
-	@Override
 	public Item random() {
 		quantity = Random.Int( 5, 12 );
 		return this;

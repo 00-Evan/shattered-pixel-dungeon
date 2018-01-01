@@ -42,8 +42,6 @@ public class Boomerang extends MissileWeapon {
 		unique = true;
 		bones = false;
 		
-		//does not use durability
-		durability = -1;
 	}
 
 	@Override
@@ -90,7 +88,12 @@ public class Boomerang extends MissileWeapon {
 		
 		return this;
 	}
-
+	
+	@Override
+	protected float durabilityPerUse() {
+		return 0;
+	}
+	
 	@Override
 	public void rangedHit( Char enemy ) {
 		circleBack(enemy.pos, curUser);

@@ -30,12 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -49,8 +47,11 @@ abstract public class MissileWeapon extends Weapon {
 		usesTargeting = true;
 	}
 	
-	//weapons which don't use durability should set it to -1
-	protected float durability = 100;
+	protected static final float MAX_DURABILITY = 100;
+	protected float durability = MAX_DURABILITY;
+	
+	//used to reduce durability from the source weapon stack, rather than the one being thrown.
+	protected MissileWeapon parent;
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
@@ -73,6 +74,7 @@ abstract public class MissileWeapon extends Weapon {
 	protected void onThrow( int cell ) {
 		Char enemy = Actor.findChar( cell );
 		if (enemy == null || enemy == curUser) {
+				parent = null;
 				super.onThrow( cell );
 		} else {
 			if (!curUser.shoot( enemy, this )) {
@@ -108,49 +110,50 @@ abstract public class MissileWeapon extends Weapon {
 		return delay;
 	}
 	
-	protected void rangedHit(Char enemy ){
-		reduceDurability();
+	protected void rangedHit( Char enemy ){
+		//if this weapon was thrown from a source stack, degrade that stack.
+		//unless a weapon is about to break, then break the one being thrown
+		if (parent != null){
+			if (parent.durability <= parent.durabilityPerUse()){
+				durability = 0;
+				parent.durability = MAX_DURABILITY;
+			} else {
+				parent.durability -= parent.durabilityPerUse();
+			}
+			parent = null;
+		} else {
+			durability -= durabilityPerUse();
+		}
 		if (durability > 0){
-			if (enemy.isAlive())
-				Buff.affect(enemy, PinCushion.class).stick(this);
-			else
-				Dungeon.level.drop( this, enemy.pos).sprite.drop();
+			if (enemy.isAlive())    Buff.affect(enemy, PinCushion.class).stick(this);
+			else                    Dungeon.level.drop( this, enemy.pos).sprite.drop();
 		}
 	}
 	
-	protected void reduceDurability(){
-		//do nothing by default
+	protected void rangedMiss( int cell ) {
+		parent = null;
+		super.onThrow(cell);
 	}
 	
-	protected void rangedMiss(int cell ) {
-		int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
-
-		//degraded ring of sharpshooting will even make missed shots break.
-		if (Random.Float() < Math.pow(0.6, -bonus))
-			super.onThrow( cell );
-	}
-	
-	@Override
-	public Item random() {
-		if (durability != -1) durability = Random.NormalIntRange(70, 100);
-		return this;
+	protected float durabilityPerUse(){
+		return MAX_DURABILITY/10f;
 	}
 	
 	@Override
 	public void reset() {
 		super.reset();
-		durability = 100;
+		durability = MAX_DURABILITY;
 	}
 	
 	@Override
 	public Item merge(Item other) {
 		super.merge(other);
-		if (isSimilar(other) && durability != -1) {
+		if (isSimilar(other)) {
 			durability += ((MissileWeapon)other).durability;
-			durability -= 100;
+			durability -= MAX_DURABILITY;
 			while (durability <= 0){
 				quantity -= 1;
-				durability += 100;
+				durability += MAX_DURABILITY;
 			}
 		}
 		return this;
@@ -160,12 +163,21 @@ abstract public class MissileWeapon extends Weapon {
 	public Item split(int amount) {
 		Item split = super.split(amount);
 		
-		//the split item will retain lost durability
-		if (split != null && durability != -1){
-			durability = 100;
+		//unless the thrown weapon will break, split off a max durability item and
+		//have it reduce the durability of the main stack. Cleaner to the player this way
+		if (split != null){
+			MissileWeapon m = (MissileWeapon)split;
+			m.durability = MAX_DURABILITY;
+			m.parent = this;
 		}
 		
 		return split;
+	}
+	
+	@Override
+	public boolean doPickUp(Hero hero) {
+		parent = null;
+		return super.doPickUp(hero);
 	}
 	
 	@Override
@@ -206,13 +218,11 @@ abstract public class MissileWeapon extends Weapon {
 		
 		info += "\n\n" + Messages.get(this, "durability");
 		
-		//weapons which don't use durability should set it to -1, and have their own text
-		if (durability >= 100)      info += "\n\n" + Messages.get(this, "dur_100");
-		else if (durability >= 80)  info += "\n\n" + Messages.get(this, "dur_80");
-		else if (durability >= 60)  info += "\n\n" + Messages.get(this, "dur_60");
-		else if (durability >= 40)  info += "\n\n" + Messages.get(this, "dur_40");
-		else if (durability >= 20)  info += "\n\n" + Messages.get(this, "dur_20");
-		else if (durability >= 0)   info += "\n\n" + Messages.get(this, "dur_0");
+		if (durabilityPerUse() > 0){
+			info += " " + Messages.get(this, "uses_left",
+					(int)Math.ceil(durability/durabilityPerUse()),
+					(int)Math.ceil(MAX_DURABILITY/durabilityPerUse()));
+		}
 		
 		
 		return info;
