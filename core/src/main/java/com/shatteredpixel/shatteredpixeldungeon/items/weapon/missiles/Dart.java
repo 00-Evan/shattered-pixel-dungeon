@@ -21,10 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
@@ -35,7 +31,6 @@ public class Dart extends MissileWeapon {
 		image = ItemSpriteSheet.DART;
 
 		bones = false; //Finding them in bones would be semi-frequent and disappointing.
-		
 	}
 
 	@Override
@@ -45,12 +40,12 @@ public class Dart extends MissileWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return 4;
+		return 3;
 	}
 
 	@Override
 	public int STRReq(int lvl) {
-		return 10;
+		return 9;
 	}
 	
 	@Override
@@ -59,30 +54,13 @@ public class Dart extends MissileWeapon {
 	}
 	
 	@Override
-	protected void rangedHit(Char enemy) {
-		if (enemy.isAlive())
-			Buff.affect(enemy, PinCushion.class).stick(new Dart());
-		else
-			Dungeon.level.drop( new Dart(), enemy.pos).sprite.drop();
-	}
-	
-	public Dart() {
-		this( 1 );
-	}
-	
-	public Dart( int number ) {
-		super();
-		quantity = number;
-	}
-	
-	@Override
 	public Item random() {
-		quantity = Random.Int( 5, 15 );
+		quantity = Random.Int( 5, 10 );
 		return this;
 	}
 	
 	@Override
 	public int price() {
-		return quantity * 2;
+		return quantity * 4;
 	}
 }

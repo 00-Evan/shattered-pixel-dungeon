@@ -450,6 +450,7 @@ public class Hero extends Char {
 
 	@Override
 	public void spend( float time ) {
+		justMoved = false;
 		TimekeepersHourglass.timeFreeze buff = buff(TimekeepersHourglass.timeFreeze.class);
 		if (buff != null){
 			buff.processTime(time);
@@ -596,9 +597,14 @@ public class Hero extends Char {
 		next();
 	}
 	
+	//FIXME this is a fairly crude way to track this, really it would be nice to have a short
+	//history of hero actions
+	public boolean justMoved = false;
+	
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
+			justMoved = true;
 			return true;
 
 		} else {

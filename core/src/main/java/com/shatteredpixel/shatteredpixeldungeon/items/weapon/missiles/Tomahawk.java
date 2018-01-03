@@ -22,22 +22,53 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
-public class CurareDart extends TippedDart {
+public class Tomahawk extends MissileWeapon {
 
-	public static final float DURATION	= 3f;
-	
 	{
-		image = ItemSpriteSheet.CURARE_DART;
+		image = ItemSpriteSheet.TOMAHAWK;
+
+	}
+
+	@Override
+	public int min(int lvl) {
+		return 8;
+	}
+
+	@Override
+	public int max(int lvl) {
+		return 16;
+	}
+
+	@Override
+	public int STRReq(int lvl) {
+		return 15;
 	}
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
-		Buff.prolong( defender, Paralysis.class, DURATION );
+		Buff.affect( defender, Bleeding.class ).set( damage );
 		return super.proc( attacker, defender, damage );
 	}
 	
+	@Override
+	protected float durabilityPerUse() {
+		return super.durabilityPerUse()*2f;
+	}
+	
+	@Override
+	public Item random() {
+		quantity = Random.Int( 2, 4 );
+		return this;
+	}
+	
+	@Override
+	public int price() {
+		return 16 * quantity;
+	}
 }

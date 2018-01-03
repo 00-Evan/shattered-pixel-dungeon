@@ -21,23 +21,40 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.watabou.utils.Random;
 
-public class CurareDart extends TippedDart {
-
-	public static final float DURATION	= 3f;
+public abstract class TippedDart extends Dart {
 	
 	{
-		image = ItemSpriteSheet.CURARE_DART;
+		bones = true;
 	}
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		Buff.prolong( defender, Paralysis.class, DURATION );
-		return super.proc( attacker, defender, damage );
+	public int STRReq(int lvl) {
+		return 11;
 	}
 	
+	@Override
+	protected void rangedHit(Char enemy) {
+		if (enemy.isAlive())
+			Buff.affect(enemy, PinCushion.class).stick(new Dart());
+		else
+			Dungeon.level.drop( new Dart(), enemy.pos).sprite.drop();
+	}
+	
+	@Override
+	public Item random() {
+		quantity = Random.Int( 3, 5 );
+		return this;
+	}
+	
+	@Override
+	public int price() {
+		return quantity * 8;
+	}
 }

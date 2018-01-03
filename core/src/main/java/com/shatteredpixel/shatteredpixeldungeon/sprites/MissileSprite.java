@@ -29,6 +29,8 @@ import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 
+import java.util.HashMap;
+
 public class MissileSprite extends ItemSprite implements Tweener.Listener {
 
 	private static final float SPEED	= 240f;
@@ -63,7 +65,30 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				image,
 				listener );
 	}
+	
+	private static final int DEFAULT_ANGULAR_SPEED = 720;
+	
+	private static final HashMap<Integer, Integer> ANGULAR_SPEEDS = new HashMap<>();
+	static {
+		ANGULAR_SPEEDS.put(ItemSpriteSheet.DART,            0);
+		ANGULAR_SPEEDS.put(ItemSpriteSheet.THROWING_KNIFE,  0);
+		ANGULAR_SPEEDS.put(ItemSpriteSheet.FISHING_SPEAR,   0);
+		ANGULAR_SPEEDS.put(ItemSpriteSheet.JAVELIN,         0);
+		ANGULAR_SPEEDS.put(ItemSpriteSheet.TRIDENT,         0);
+		
+		for( int i = ItemSpriteSheet.TIPPED_DARTS; i < ItemSpriteSheet.TIPPED_DARTS+16; i++){
+			ANGULAR_SPEEDS.put(i, 0);
+		}
+		
+		//720 is default
+		
+		ANGULAR_SPEEDS.put(ItemSpriteSheet.BOOMERANG,       1440);
+		ANGULAR_SPEEDS.put(ItemSpriteSheet.BOLAS,           1440);
+		
+		ANGULAR_SPEEDS.put(ItemSpriteSheet.SHURIKEN,        2160);
+	}
 
+	//TODO it might be nice to have a source and destination angle, to improve thrown weapon visuals
 	private void setup( PointF from, PointF to, int image, Callback listener ){
 
 		originToCenter();
@@ -75,21 +100,20 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		PointF d = PointF.diff( to, from );
 		speed.set( d ).normalize().scale( SPEED );
 
-		if (image == ItemSpriteSheet.DART || image == ItemSpriteSheet.INCENDIARY_DART
-				|| image == ItemSpriteSheet.CURARE_DART  || image == ItemSpriteSheet.JAVELIN) {
-
-			angularSpeed = 0;
-			angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);
-
-		} else if (image == ItemSpriteSheet.SHURIKEN
-				|| image == ItemSpriteSheet.BOOMERANG
-				|| image == ItemSpriteSheet.TOMAHAWK) {
-			
-			angularSpeed = 1440;
+		if ( ANGULAR_SPEEDS.containsKey(image)) angularSpeed = ANGULAR_SPEEDS.get(image);
+		else                                    angularSpeed = DEFAULT_ANGULAR_SPEED;
+		
+		angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);
+		
+		if (d.x >= 0){
+			flipHorizontal = false;
+			updateFrame();
 			
 		} else {
-			
-			angularSpeed = 720;
+			angularSpeed = -angularSpeed;
+			angle += 90;
+			flipHorizontal = true;
+			updateFrame();
 		}
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / SPEED );

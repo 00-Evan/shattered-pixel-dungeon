@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 
@@ -106,8 +107,8 @@ public enum HeroClass {
 
 	private static void initWarrior( Hero hero ) {
 		(hero.belongings.weapon = new WornShortsword()).identify();
-		Dart darts = new Dart( 8 );
-		darts.identify().collect();
+		Dart darts = new Dart();
+		darts.identify().quantity(3).collect();
 
 		if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR) ){
 			if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
@@ -150,11 +151,11 @@ public enum HeroClass {
 		(hero.belongings.misc1 = cloak).identify();
 		hero.belongings.misc1.activate( hero );
 
-		Dart darts = new Dart( 8 );
-		darts.identify().collect();
+		ThrowingKnife knives = new ThrowingKnife();
+		knives.quantity(3).collect();
 
 		Dungeon.quickslot.setSlot(0, cloak);
-		Dungeon.quickslot.setSlot(1, darts);
+		Dungeon.quickslot.setSlot(1, knives);
 
 		new ScrollOfMagicMapping().identify();
 	}

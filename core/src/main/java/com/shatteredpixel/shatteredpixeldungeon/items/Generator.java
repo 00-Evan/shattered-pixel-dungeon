@@ -123,13 +123,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.IncendiaryDart;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tamahawk;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil;
@@ -253,21 +246,18 @@ public class Generator {
 					WornShortsword.class,
 					Knuckles.class,
 					Dagger.class,
-					MagesStaff.class,
-					Boomerang.class,
-					Dart.class
+					MagesStaff.class
 			};
-			WEP_T1.probs = new float[]{ 1, 1, 1, 0, 0, 1 };
+			WEP_T1.probs = new float[]{ 1, 1, 1, 0 };
 			
 			WEP_T2.classes = new Class<?>[]{
 					Shortsword.class,
 					HandAxe.class,
 					Spear.class,
 					Quarterstaff.class,
-					Dirk.class,
-					IncendiaryDart.class
+					Dirk.class
 			};
-			WEP_T2.probs = new float[]{ 6, 5, 5, 4, 4, 6 };
+			WEP_T2.probs = new float[]{ 6, 5, 5, 4, 4 };
 			
 			WEP_T3.classes = new Class<?>[]{
 					Sword.class,
@@ -275,31 +265,27 @@ public class Generator {
 					Scimitar.class,
 					RoundShield.class,
 					Sai.class,
-					Whip.class,
-					Shuriken.class,
-					CurareDart.class
+					Whip.class
 			};
-			WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4, 6, 6 };
+			WEP_T3.probs = new float[]{ 6, 5, 5, 4, 4, 4 };
 			
 			WEP_T4.classes = new Class<?>[]{
 					Longsword.class,
 					BattleAxe.class,
 					Flail.class,
 					RunicBlade.class,
-					AssassinsBlade.class,
-					Javelin.class
+					AssassinsBlade.class
 			};
-			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4, 6 };
+			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4 };
 			
 			WEP_T5.classes = new Class<?>[]{
 					Greatsword.class,
 					WarHammer.class,
 					Glaive.class,
 					Greataxe.class,
-					Greatshield.class,
-					Tamahawk.class
+					Greatshield.class
 			};
-			WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4, 6 };
+			WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4 };
 			
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{

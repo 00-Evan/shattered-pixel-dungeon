@@ -21,58 +21,44 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
-public class Tamahawk extends MissileWeapon {
-
+public class ThrowingHammer extends MissileWeapon {
+	
 	{
-		image = ItemSpriteSheet.TOMAHAWK;
-
+		image = ItemSpriteSheet.THROWING_HAMMER;
 	}
-
+	
 	@Override
 	public int min(int lvl) {
-		return 4;
+		return 8;
 	}
-
+	
 	@Override
 	public int max(int lvl) {
 		return 20;
 	}
-
+	
 	@Override
 	public int STRReq(int lvl) {
 		return 17;
 	}
-
-	public Tamahawk() {
-		this( 1 );
-	}
-	
-	public Tamahawk( int number ) {
-		super();
-		quantity = number;
-	}
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		Buff.affect( defender, Bleeding.class ).set( damage );
-		return super.proc( attacker, defender, damage );
+	protected float durabilityPerUse() {
+		return super.durabilityPerUse()/2f;
 	}
 	
 	@Override
 	public Item random() {
-		quantity = Random.Int( 5, 12 );
+		quantity = Random.Int( 2, 4 );
 		return this;
 	}
 	
 	@Override
 	public int price() {
-		return 15 * quantity;
+		return 20 * quantity;
 	}
 }

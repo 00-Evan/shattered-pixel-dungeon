@@ -65,7 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.IncendiaryDart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tamahawk;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -190,7 +190,7 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ? new Greatsword().identify() : new WarHammer().identify() );
 			itemsToSpawn.add( Random.Int(2) == 0 ?
 					new Javelin().quantity(Random.NormalIntRange(4, 7)) :
-					new Tamahawk().quantity(Random.NormalIntRange(4, 7)));
+					new Tomahawk().quantity(Random.NormalIntRange(4, 7)));
 			itemsToSpawn.add( new PlateArmor().identify() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );

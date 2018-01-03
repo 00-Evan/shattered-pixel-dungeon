@@ -21,23 +21,40 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
-public class CurareDart extends TippedDart {
-
-	public static final float DURATION	= 3f;
+public class FishingSpear extends MissileWeapon {
 	
 	{
-		image = ItemSpriteSheet.CURARE_DART;
+		image = ItemSpriteSheet.FISHING_SPEAR;
 	}
 	
 	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		Buff.prolong( defender, Paralysis.class, DURATION );
-		return super.proc( attacker, defender, damage );
+	public int min(int lvl) {
+		return 6;
+	}
+	
+	@Override
+	public int max(int lvl) {
+		return 18;
+	}
+	
+	@Override
+	public int STRReq(int lvl) {
+		return 13;
+	}
+	
+	@Override
+	public Item random() {
+		quantity = Random.Int( 2, 4 );
+		return this;
+	}
+	
+	@Override
+	public int price() {
+		return 12 * quantity;
 	}
 	
 }

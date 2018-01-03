@@ -206,25 +206,59 @@ public class ItemSpriteSheet {
 
 	                                                                                    //8 free slots
 
-	private static final int MISSILE_WEP    =                               xy(1, 10);  //16 slots
-	public static final int DART            = MISSILE_WEP+0;
-	public static final int BOOMERANG       = MISSILE_WEP+1;
-	public static final int INCENDIARY_DART = MISSILE_WEP+2;
-	public static final int SHURIKEN        = MISSILE_WEP+3;
-	public static final int CURARE_DART     = MISSILE_WEP+4;
-	public static final int JAVELIN         = MISSILE_WEP+5;
-	public static final int TOMAHAWK        = MISSILE_WEP+6;
+	private static final int MISSILE_WEP    =                               xy(1, 10);  //16 slots. 3 per tier + boomerang
+	public static final int BOOMERANG       = MISSILE_WEP+0;
+	
+	public static final int DART            = MISSILE_WEP+1;
+	public static final int THROWING_KNIFE  = MISSILE_WEP+2;
+	
+	public static final int SHURIKEN        = MISSILE_WEP+4;
+	
+	public static final int FISHING_SPEAR   = MISSILE_WEP+7;
+	public static final int BOLAS           = MISSILE_WEP+8;
+	
+	public static final int JAVELIN         = MISSILE_WEP+10;
+	public static final int TOMAHAWK        = MISSILE_WEP+11;
+	
+	public static final int TRIDENT         = MISSILE_WEP+13;
+	public static final int THROWING_HAMMER = MISSILE_WEP+14;
+	
 	static{
-		assignItemRect(DART,            15, 15);
 		assignItemRect(BOOMERANG,       14, 14);
-		assignItemRect(INCENDIARY_DART, 15, 15);
+		
+		assignItemRect(DART,            15, 15);
+		assignItemRect(THROWING_KNIFE,  12, 13);
+		
 		assignItemRect(SHURIKEN,        12, 12);
-		assignItemRect(CURARE_DART,     15, 15);
+		
+		assignItemRect(FISHING_SPEAR,   13, 13);
+		assignItemRect(BOLAS,           15, 14);
+		
 		assignItemRect(JAVELIN,         16, 16);
 		assignItemRect(TOMAHAWK,        13, 13);
+		
+		assignItemRect(TRIDENT,         16, 16);
+		assignItemRect(THROWING_HAMMER, 12, 12);
 	}
-
-	private static final int ARMOR          =                               xy(1, 11);  //16 slots
+	
+	public static final int TIPPED_DARTS    =                               xy(1, 11);  //16 slots
+	public static final int ADRENALINE_DART = TIPPED_DARTS+0;
+	public static final int INCENDIARY_DART = TIPPED_DARTS+1;
+	public static final int HOLY_DART       = TIPPED_DARTS+2;
+	public static final int BLINDING_DART   = TIPPED_DARTS+3;
+	public static final int HEALING_DART    = TIPPED_DARTS+4;
+	public static final int FREEZING_DART   = TIPPED_DARTS+5;
+	public static final int VERTIGO_DART    = TIPPED_DARTS+6;
+	public static final int POISON_DART     = TIPPED_DARTS+7;
+	public static final int SLEEP_DART      = TIPPED_DARTS+8;
+	public static final int CURARE_DART     = TIPPED_DARTS+9;
+	public static final int WARPING_DART    = TIPPED_DARTS+10;
+	static {
+		for (int i = TIPPED_DARTS; i < TIPPED_DARTS+16; i++)
+			assignItemRect(i, 15, 15);
+	}
+	
+	private static final int ARMOR          =                               xy(1, 12);  //16 slots
 	public static final int ARMOR_CLOTH     = ARMOR+0;
 	public static final int ARMOR_LEATHER   = ARMOR+1;
 	public static final int ARMOR_MAIL      = ARMOR+2;
@@ -246,7 +280,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ARMOR_HUNTRESS,  13, 15);
 	}
 
-	                                                                                    //32 free slots
+	                                                                                    //16 free slots
 
 	private static final int WANDS              =                           xy(1, 14);  //16 slots
 	public static final int WAND_MAGIC_MISSILE  = WANDS+0;

@@ -60,6 +60,11 @@ public class ShatteredPixelDungeon extends Game {
 	public ShatteredPixelDungeon() {
 		super( WelcomeScene.class );
 		
+		//v0.6.3
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tamahawk" );
+		
 		//v0.6.0
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom.Bones.class,
