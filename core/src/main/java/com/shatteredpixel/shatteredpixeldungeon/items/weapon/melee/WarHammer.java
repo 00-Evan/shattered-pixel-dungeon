@@ -29,7 +29,7 @@ public class WarHammer extends MeleeWeapon {
 		image = ItemSpriteSheet.WAR_HAMMER;
 
 		tier = 5;
-		ACC = 1.15f; //15% boost to accuracy
+		ACC = 1.20f; //20% boost to accuracy
 	}
 
 	@Override

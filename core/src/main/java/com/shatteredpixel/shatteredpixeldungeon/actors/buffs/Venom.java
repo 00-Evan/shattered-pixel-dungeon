@@ -32,7 +32,7 @@ import com.watabou.utils.Bundle;
 //FIXME do proper translation stuff for new text here in 0.6.3 (heromsg, ondeath, rankings_desc)
 public class Venom extends Buff implements Hero.Doom {
 
-	private int damage = 1;
+	private float damage = 1;
 	protected float left;
 
 	private static final String DAMAGE	= "damage";
@@ -52,7 +52,7 @@ public class Venom extends Buff implements Hero.Doom {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		damage = bundle.getInt( DAMAGE );
+		damage = bundle.getFloat( DAMAGE );
 		left = bundle.getFloat( LEFT );
 	}
 
@@ -79,9 +79,12 @@ public class Venom extends Buff implements Hero.Doom {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-			target.damage(damage, this);
-			if (damage < ((Dungeon.depth+1)/2)+1)
+			target.damage((int)damage, this);
+			if (damage < (Dungeon.depth/2)+2) {
 				damage++;
+			} else {
+				damage += 0.5f;
+			}
 			
 			spend( TICK );
 			if ((left -= TICK) <= 0) {

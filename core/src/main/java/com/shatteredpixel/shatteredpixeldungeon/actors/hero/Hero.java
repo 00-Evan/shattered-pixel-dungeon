@@ -311,16 +311,16 @@ public class Hero extends Char {
 	@Override
 	public int defenseSkill( Char enemy ) {
 		
-		float evasion = 1f * RingOfEvasion.evasionMultiplier( this );
+		float multiplier = 1f * RingOfEvasion.evasionMultiplier( this );
 		
 		if (paralysed > 0) {
-			evasion /= 2;
+			multiplier /= 2;
 		}
 		
 		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 10 - STR();
 		
 		if (aEnc > 0) {
-			evasion /= Math.pow( 1.5, aEnc );
+			multiplier /= Math.pow( 1.5, aEnc );
 		}
 		int bonus = 0;
 
@@ -332,7 +332,7 @@ public class Hero extends Char {
 			bonus += momentum.evasionBonus(Math.max(0, -aEnc));
 		}
 
-		return Math.round((defenseSkill + bonus) * evasion);
+		return Math.round((defenseSkill * multiplier) + bonus);
 	}
 	
 	@Override

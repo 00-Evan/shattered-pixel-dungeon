@@ -29,7 +29,7 @@ public class BattleAxe extends MeleeWeapon {
 		image = ItemSpriteSheet.BATTLE_AXE;
 
 		tier = 4;
-		ACC = 1.175f; //17.5% boost to accuracy
+		ACC = 1.24f; //24% boost to accuracy
 	}
 
 	@Override

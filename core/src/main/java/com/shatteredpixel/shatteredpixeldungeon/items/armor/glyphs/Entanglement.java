@@ -45,8 +45,8 @@ public class Entanglement extends Glyph {
 		
 		if (Random.Int( 4 ) == 0) {
 			
-			Buff.prolong( defender, Roots.class, 3 );
-			Buff.affect( defender, Earthroot.Armor.class ).level( 5 + 2*level );
+			Buff.prolong( defender, Roots.class, 3 - level/5 );
+			Buff.affect( defender, Earthroot.Armor.class ).level( 4 + 4*level );
 			CellEmitter.bottom( defender.pos ).start( EarthParticle.FACTORY, 0.05f, 8 );
 			Camera.main.shake( 1, 0.4f );
 			

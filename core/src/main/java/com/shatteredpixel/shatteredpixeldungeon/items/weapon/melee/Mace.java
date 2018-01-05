@@ -29,7 +29,7 @@ public class Mace extends MeleeWeapon {
 		image = ItemSpriteSheet.MACE;
 
 		tier = 3;
-		ACC = 1.2f; //20% boost to accuracy
+		ACC = 1.28f; //28% boost to accuracy
 	}
 
 	@Override

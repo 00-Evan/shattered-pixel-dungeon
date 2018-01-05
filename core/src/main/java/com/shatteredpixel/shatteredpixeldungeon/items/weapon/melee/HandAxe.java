@@ -29,7 +29,7 @@ public class HandAxe extends MeleeWeapon {
 		image = ItemSpriteSheet.HAND_AXE;
 
 		tier = 2;
-		ACC = 1.225f; //22.5% boost to accuracy
+		ACC = 1.32f; //32% boost to accuracy
 	}
 
 	@Override

@@ -140,7 +140,7 @@ public class WandOfCorruption extends Wand {
 				enemyResist = 1 + Dungeon.depth/2f;
 			} else if (ch instanceof Wraith) {
 				//this is so low because wraiths are always at max hp
-				enemyResist = 1 + Dungeon.depth/5f;
+				enemyResist = 0.5f + Dungeon.depth/8f;
 			} else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
 				enemyResist = 1 + 30;
 			} else if (ch instanceof Yog.Larva || ch instanceof King.Undead){
@@ -184,11 +184,18 @@ public class WandOfCorruption extends Wand {
 	}
 	
 	private void debuffEnemy( Mob enemy, HashMap<Class<? extends Buff>, Float> category ){
+		
+		//do not consider buffs which are already assigned, or that the enemy is immune to.
 		HashMap<Class<? extends Buff>, Float> debuffs = new HashMap<>(category);
 		for (Buff existing : enemy.buffs()){
 			if (debuffs.containsKey(existing.getClass())) {
 				debuffs.put(existing.getClass(), 0f);
 			}
+		}
+		for (Class<?extends Buff> toAssign : debuffs.keySet()){
+			 if (debuffs.get(toAssign) > 0 && enemy.immunities().contains(toAssign)){
+			 	debuffs.put(toAssign, 0f);
+			 }
 		}
 		
 		//all buffs with a > 0 chance are flavor buffs
