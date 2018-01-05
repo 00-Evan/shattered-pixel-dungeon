@@ -52,7 +52,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap;
@@ -389,7 +388,7 @@ public class CursedWand {
 							do {
 								reward = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
 										Generator.Category.RING, Generator.Category.WAND));
-							} while (reward.level() < 2 && !(reward instanceof MissileWeapon));
+							} while (reward.level() < 1);
 							Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 1, 0.5f);
 							mimic.items.clear();
 							mimic.items.add(reward);
@@ -442,7 +441,7 @@ public class CursedWand {
 				do {
 					result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
 							Generator.Category.RING, Generator.Category.ARTIFACT));
-				} while (result.level() < 0 && !(result instanceof MissileWeapon));
+				} while (result.cursed);
 				if (result.isUpgradable()) result.upgrade();
 				result.cursed = result.cursedKnown = true;
 				GLog.w( Messages.get(CursedWand.class, "transmogrify") );

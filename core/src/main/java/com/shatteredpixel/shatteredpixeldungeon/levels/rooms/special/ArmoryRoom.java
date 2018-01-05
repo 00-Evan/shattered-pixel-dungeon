@@ -54,7 +54,7 @@ public class ArmoryRoom extends SpecialRoom {
 			Painter.set( level, statue, Terrain.STATUE );
 		}
 		
-		int n = Random.IntRange( 1, 2 );
+		int n = Random.IntRange( 2, 3 );
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
@@ -68,11 +68,15 @@ public class ArmoryRoom extends SpecialRoom {
 	}
 	
 	private static Item prize( Level level ) {
-		return Random.Int( 6 ) == 0 ?
-				new Bomb().random() :
-				Generator.random( Random.oneOf(
-						Generator.Category.ARMOR,
-						Generator.Category.WEAPON
-				) );
+		switch (Random.Int( 5 )){
+			case 0:
+				return new Bomb().random();
+			case 1:
+				return Generator.randomWeapon();
+			case 2:
+				return Generator.randomArmor();
+			default:
+				return Generator.randomMissile();
+		}
 	}
 }

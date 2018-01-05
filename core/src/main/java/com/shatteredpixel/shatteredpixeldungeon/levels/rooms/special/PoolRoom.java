@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -105,7 +104,7 @@ public class PoolRoom extends SpecialRoom {
 		} while (prize.cursed);
 
 		//33% chance for an extra update.
-		if (!(prize instanceof MissileWeapon) && Random.Int(3) == 0){
+		if (Random.Int(3) == 0){
 			prize.upgrade();
 		}
 

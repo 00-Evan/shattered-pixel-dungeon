@@ -22,8 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -46,12 +44,7 @@ public class SecretArtilleryRoom extends SecretRoom {
 			} while ( level.map[itemPos] != Terrain.EMPTY_SP
 					|| level.heaps.get(itemPos) != null);
 			
-			Item item;
-			do{
-				item = Generator.randomWeapon();
-			} while (!(item instanceof MissileWeapon));
-			
-			level.drop(item, itemPos);
+			level.drop(Generator.randomMissile(), itemPos);
 		}
 		
 		entrance().set(Door.Type.HIDDEN);
