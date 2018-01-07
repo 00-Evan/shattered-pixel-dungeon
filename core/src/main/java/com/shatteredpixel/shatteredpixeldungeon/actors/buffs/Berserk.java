@@ -39,15 +39,18 @@ public class Berserk extends Buff {
 	}
 	private State state = State.NORMAL;
 
-	private static final int EXHAUSTION_START = 60;
+	private static final int EXHAUSTION_START = 30;
 	private int exhaustion;
 
-	private static final float LEVEL_RECOVER_START = 3f;
+	private static final float LEVEL_RECOVER_START = 2f;
 	private float levelRecovery;
+	
+	private int pastRages = 0;
 
 	private static final String STATE = "state";
 	private static final String EXHAUSTION = "exhaustion";
 	private static final String LEVEL_RECOVERY = "levelrecovery";
+	private static final String PAST_RAGES = "pastrages";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -55,6 +58,7 @@ public class Berserk extends Buff {
 		bundle.put(STATE, state);
 		if (state == State.EXHAUSTED) bundle.put(EXHAUSTION, exhaustion);
 		if (state == State.EXHAUSTED || state == State.RECOVERING) bundle.put(LEVEL_RECOVERY, levelRecovery);
+		bundle.put( PAST_RAGES, pastRages );
 	}
 
 	@Override
@@ -63,6 +67,7 @@ public class Berserk extends Buff {
 		state = bundle.getEnum(STATE, State.class);
 		if (state == State.EXHAUSTED) exhaustion = bundle.getInt(EXHAUSTION);
 		if (state == State.EXHAUSTED || state == State.RECOVERING) levelRecovery = bundle.getFloat(LEVEL_RECOVERY);
+		pastRages = bundle.getInt(PAST_RAGES);
 	}
 
 	@Override
@@ -80,12 +85,22 @@ public class Berserk extends Buff {
 				levelRecovery = LEVEL_RECOVER_START;
 				BuffIndicator.refreshHero();
 				target.SHLD = 0;
+				pastRages++;
 			}
-		} else if (state == State.EXHAUSTED){
-			exhaustion--;
-			if (exhaustion == 0){
-				state = State.RECOVERING;
-				BuffIndicator.refreshHero();
+		} else {
+			
+			float percentHP = target.HP/(float)target.HT;
+			
+			if (percentHP > targetHPPercent()){
+				target.HP = (int)Math.max(target.HT*targetHPPercent(), target.HP - pastRages);
+			}
+			
+			if (state == State.EXHAUSTED){
+				exhaustion--;
+				if (exhaustion == 0){
+					state = State.RECOVERING;
+					BuffIndicator.refreshHero();
+				}
 			}
 		}
 		spend(TICK);
@@ -95,16 +110,18 @@ public class Berserk extends Buff {
 	public int damageFactor(int dmg){
 		float bonus;
 
-		if (state == State.BERSERK){
-			bonus = 2f;
-		} else if (state == State.EXHAUSTED) {
-			bonus = 1f - ((float)Math.sqrt(exhaustion) / 10f);
+		if (state == State.EXHAUSTED) {
+			bonus = 1f - ((float)Math.sqrt(exhaustion) / 8f);
 		} else {
 			float percentMissing = 1f - target.HP/(float)target.HT;
-			bonus = 1f + (0.5f * (float)Math.pow(percentMissing, 2));
+			bonus = 1f + (float)Math.pow(percentMissing, 3);
 		}
 
 		return Math.round(dmg * bonus);
+	}
+	
+	public float targetHPPercent(){
+		return Math.round(20* Math.pow(0.8f, pastRages))/20f;
 	}
 
 	public boolean berserking(){
@@ -178,15 +195,25 @@ public class Berserk extends Buff {
 	@Override
 	public String desc() {
 		float dispDamage = damageFactor(100);
+		String text;
 		switch (state){
 			case NORMAL: default:
-				return Messages.get(this, "angered_desc", dispDamage);
+				text = Messages.get(this, "angered_desc", dispDamage);
+				break;
 			case BERSERK:
 				return Messages.get(this, "berserk_desc");
 			case EXHAUSTED:
-				return Messages.get(this, "exhausted_desc", exhaustion , dispDamage);
+				text = Messages.get(this, "exhausted_desc", exhaustion , dispDamage);
+				break;
 			case RECOVERING:
-				return Messages.get(this, "recovering_desc", levelRecovery, dispDamage);
+				text = Messages.get(this, "recovering_desc", levelRecovery, dispDamage);
+				break;
 		}
+		if (pastRages == 0){
+			text += "\n\n" + Messages.get(this, "no_rages");
+		} else {
+			text += "\n\n" + Messages.get(this, "past_rages", pastRages, (int)(targetHPPercent()*100));
+		}
+		return text;
 	}
 }
