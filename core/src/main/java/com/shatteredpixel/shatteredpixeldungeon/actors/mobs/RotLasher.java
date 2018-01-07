@@ -47,6 +47,7 @@ public class RotLasher extends Mob {
 		state = WANDERING = new Waiting();
 
 		properties.add(Property.IMMOVABLE);
+		properties.add(Property.MINIBOSS);
 	}
 
 	@Override
