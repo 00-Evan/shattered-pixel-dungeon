@@ -113,6 +113,9 @@ public abstract class DungeonTilemap extends Tilemap {
 	
 	public void discover( int pos, int oldValue ) {
 		
+		int visual = getTileVisual( pos, oldValue, false);
+		if (visual < 0) return;
+		
 		final Image tile = new Image( texture );
 		tile.frame( tileset.get( getTileVisual( pos, oldValue, false)));
 		tile.point( tileToWorld( pos ) );

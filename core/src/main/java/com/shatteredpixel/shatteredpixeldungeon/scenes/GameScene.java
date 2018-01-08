@@ -786,6 +786,7 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
+	//todo this doesn't account for walls right now
 	public static void discoverTile( int pos, int oldValue ) {
 		if (scene != null) {
 			scene.tiles.discover( pos, oldValue );
