@@ -69,13 +69,13 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -431,17 +431,9 @@ public class Dungeon {
 		return Random.Int(5 - floorThisSet) < asLeftThisSet;
 	}
 	
-	private static final String RG_GAME_FILE	= "game.dat";
-	private static final String RG_DEPTH_FILE	= "depth%d.dat";
-	
-	private static final String WR_GAME_FILE	= "warrior.dat";
-	private static final String WR_DEPTH_FILE	= "warrior%d.dat";
-	
-	private static final String MG_GAME_FILE	= "mage.dat";
-	private static final String MG_DEPTH_FILE	= "mage%d.dat";
-	
-	private static final String RN_GAME_FILE	= "ranger.dat";
-	private static final String RN_DEPTH_FILE	= "ranger%d.dat";
+	private static final String GAME_FOLDER = "game%d";
+	private static final String GAME_FILE	= "game.dat";
+	private static final String DEPTH_FILE	= "depth%d.dat";
 	
 	private static final String VERSION		= "version";
 	private static final String SEED		= "seed";
@@ -456,33 +448,62 @@ public class Dungeon {
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
 	
-	public static String gameFile( HeroClass cl ) {
+	//TODO remove class-based loading
+	
+	public static File gameFolder( HeroClass cl ) {
 		switch (cl) {
-		case WARRIOR:
-			return WR_GAME_FILE;
-		case MAGE:
-			return MG_GAME_FILE;
-		case HUNTRESS:
-			return RN_GAME_FILE;
-		default:
-			return RG_GAME_FILE;
+			case WARRIOR:
+				return gameFolder(1);
+			case MAGE:
+				return gameFolder(2);
+			case ROGUE: default:
+				return gameFolder(3);
+			case HUNTRESS:
+				return gameFolder(4);
 		}
 	}
 	
-	private static String depthFile( HeroClass cl ) {
+	
+	
+	public static File gameFile( HeroClass cl ) {
 		switch (cl) {
 		case WARRIOR:
-			return WR_DEPTH_FILE;
+			return gameFile(1);
 		case MAGE:
-			return MG_DEPTH_FILE;
+			return gameFile(2);
+		case ROGUE: default:
+			return gameFile(3);
 		case HUNTRESS:
-			return RN_DEPTH_FILE;
-		default:
-			return RG_DEPTH_FILE;
+			return gameFile(4);
 		}
 	}
 	
-	public static void saveGame( String fileName ) throws IOException {
+	public static File depthFile( HeroClass cl, int depth ) {
+		switch (cl) {
+		case WARRIOR:
+			return depthFile(1, depth);
+		case MAGE:
+			return depthFile(2, depth);
+		case ROGUE: default:
+			return depthFile(3, depth);
+		case HUNTRESS:
+			return depthFile(4, depth);
+		}
+	}
+	
+	public static File gameFolder( int save ){
+		return FileUtils.getDir(Messages.format(GAME_FOLDER, save));
+	}
+	
+	public static File gameFile( int save ){
+		return FileUtils.getFile(gameFolder( save ), GAME_FILE);
+	}
+	
+	public static File depthFile( int save, int depth ) {
+		return FileUtils.getFile( gameFolder(save), Messages.format(DEPTH_FILE, depth));
+	}
+	
+	public static void saveGame( HeroClass cl ) throws IOException {
 		try {
 			Bundle bundle = new Bundle();
 
@@ -535,9 +556,7 @@ public class Dungeon {
 			Badges.saveLocal( badges );
 			bundle.put( BADGES, badges );
 			
-			OutputStream output = Game.instance.openFileOutput( fileName, Game.MODE_PRIVATE );
-			Bundle.write( bundle, output );
-			output.close();
+			FileUtils.bundleToFile( gameFile(cl), bundle);
 			
 		} catch (IOException e) {
 			GamesInProgress.setUnknown( hero.heroClass );
@@ -549,17 +568,14 @@ public class Dungeon {
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
 		
-		OutputStream output = Game.instance.openFileOutput(
-			Messages.format( depthFile( hero.heroClass ), depth ), Game.MODE_PRIVATE );
-		Bundle.write( bundle, output );
-		output.close();
+		FileUtils.bundleToFile(depthFile( hero.heroClass, depth), bundle);
 	}
 	
 	public static void saveAll() throws IOException {
 		if (hero != null && hero.isAlive()) {
 			
 			Actor.fixTime();
-			saveGame( gameFile( hero.heroClass ) );
+			saveGame( hero.heroClass );
 			saveLevel();
 
 			GamesInProgress.set( hero.heroClass, depth, hero.lvl, challenges != 0 );
@@ -573,16 +589,12 @@ public class Dungeon {
 	}
 	
 	public static void loadGame( HeroClass cl ) throws IOException {
-		loadGame( gameFile( cl ), true );
-	}
-
-	public static void loadGame( String fileName ) throws IOException {
-		loadGame( fileName, false );
+		loadGame(  cl, true );
 	}
 	
-	public static void loadGame( String fileName, boolean fullLoad ) throws IOException {
+	public static void loadGame( HeroClass cl, boolean fullLoad ) throws IOException {
 		
-		Bundle bundle = gameBundle( fileName );
+		Bundle bundle = FileUtils.bundleFromFile( gameFile( cl ) );
 
 		version = bundle.getInt( VERSION );
 
@@ -674,9 +686,7 @@ public class Dungeon {
 		Dungeon.level = null;
 		Actor.clear();
 		
-		InputStream input = Game.instance.openFileInput( Messages.format( depthFile( cl ), depth ) ) ;
-		Bundle bundle = Bundle.read( input );
-		input.close();
+		Bundle bundle = FileUtils.bundleFromFile( depthFile( cl, depth)) ;
 		
 		Level level = (Level)bundle.get( LEVEL );
 		
@@ -689,25 +699,13 @@ public class Dungeon {
 	
 	public static void deleteGame( HeroClass cl, boolean deleteLevels ) {
 		
-		Game.instance.deleteFile( gameFile( cl ) );
+		FileUtils.deleteFile(gameFile(cl));
 		
 		if (deleteLevels) {
-			int depth = 1;
-			while (Game.instance.deleteFile( Messages.format( depthFile( cl ), depth ) )) {
-				depth++;
-			}
+			FileUtils.deleteDir(gameFolder(cl));
 		}
 		
 		GamesInProgress.delete( cl );
-	}
-	
-	public static Bundle gameBundle( String fileName ) throws IOException {
-		
-		InputStream input = Game.instance.openFileInput( fileName );
-		Bundle bundle = Bundle.read( input );
-		input.close();
-		
-		return bundle;
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {

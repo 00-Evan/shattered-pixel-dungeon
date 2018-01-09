@@ -22,12 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class Journal {
 	
@@ -42,9 +40,7 @@ public class Journal {
 		
 		Bundle bundle;
 		try {
-			InputStream input = Game.instance.openFileInput( JOURNAL_FILE );
-			bundle = Bundle.read(input);
-			input.close();
+			bundle = FileUtils.bundleFromFile( JOURNAL_FILE );
 			
 		} catch (IOException e){
 			bundle = new Bundle();
@@ -70,9 +66,7 @@ public class Journal {
 		Document.store(bundle);
 		
 		try {
-			OutputStream output = Game.instance.openFileOutput( JOURNAL_FILE, Game.MODE_PRIVATE );
-			Bundle.write( bundle, output );
-			output.close();
+			FileUtils.bundleToFile( JOURNAL_FILE, bundle );
 			saveNeeded = false;
 		} catch (IOException e) {
 			ShatteredPixelDungeon.reportException(e);

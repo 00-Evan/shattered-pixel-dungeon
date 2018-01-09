@@ -33,13 +33,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -194,9 +192,7 @@ public enum Rankings {
 		bundle.put( WON, wonNumber );
 
 		try {
-			OutputStream output = Game.instance.openFileOutput( RANKINGS_FILE, Game.MODE_PRIVATE );
-			Bundle.write( bundle, output );
-			output.close();
+			FileUtils.bundleToFile( RANKINGS_FILE, bundle);
 		} catch (IOException e) {
 			ShatteredPixelDungeon.reportException(e);
 		}
@@ -212,9 +208,7 @@ public enum Rankings {
 		records = new ArrayList<>();
 		
 		try {
-			InputStream input = Game.instance.openFileInput( RANKINGS_FILE );
-			Bundle bundle = Bundle.read( input );
-			input.close();
+			Bundle bundle = FileUtils.bundleFromFile( RANKINGS_FILE );
 			
 			for (Bundlable record : bundle.getCollection( RECORDS )) {
 				records.add( (Record)record );

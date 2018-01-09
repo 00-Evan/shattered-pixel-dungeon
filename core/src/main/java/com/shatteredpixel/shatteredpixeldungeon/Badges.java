@@ -37,13 +37,11 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -222,10 +220,7 @@ public class Badges {
 	public static void loadGlobal() {
 		if (global == null) {
 			try {
-				InputStream input = Game.instance.openFileInput( BADGES_FILE );
-				Bundle bundle = Bundle.read( input );
-				input.close();
-				
+				Bundle bundle = FileUtils.bundleFromFile( BADGES_FILE );
 				global = restore( bundle );
 				
 			} catch (IOException e) {
@@ -241,9 +236,7 @@ public class Badges {
 			store( bundle, global );
 			
 			try {
-				OutputStream output = Game.instance.openFileOutput( BADGES_FILE, Game.MODE_PRIVATE );
-				Bundle.write( bundle, output );
-				output.close();
+				FileUtils.bundleToFile(BADGES_FILE, bundle);
 				saveNeeded = false;
 			} catch (IOException e) {
 				ShatteredPixelDungeon.reportException(e);

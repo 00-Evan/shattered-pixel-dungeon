@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
@@ -35,6 +36,8 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 
 public class WelcomeScene extends PixelScene {
 
@@ -155,7 +158,35 @@ public class WelcomeScene extends PixelScene {
 				Rankings.INSTANCE.save();
 			} catch (Exception e) {
 				//if we encounter a fatal error, then just clear the rankings
-				Game.instance.deleteFile( Rankings.RANKINGS_FILE );
+				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
+			}
+		}
+		
+		//convert game saves from the old format
+		if (previousVersion <= ShatteredPixelDungeon.v0_6_2e){
+			//old save file names for warrior, mage, rogue, huntress
+			String[] classes = new String[]{"warrior", "mage", "game", "ranger"};
+			for (int i = 1; i <= classes.length; i++){
+				String name = classes[i-1];
+				if (FileUtils.fileExists(name + ".dat")){
+					try {
+						Bundle gamedata = FileUtils.bundleFromFile(name + ".dat");
+						FileUtils.bundleToFile(Dungeon.gameFile(i), gamedata);
+						FileUtils.deleteFile(name + ".dat");
+						
+						//rogue's safe files have a different name
+						if (name.equals("game")) name = "depth";
+						
+						int depth = 1;
+						while (FileUtils.fileExists(name + depth + ".dat")) {
+							gamedata = FileUtils.bundleFromFile(name + depth + ".dat");
+							FileUtils.bundleToFile(Dungeon.depthFile(i, depth), gamedata);
+							FileUtils.deleteFile(name + depth + ".dat");
+							depth++;
+						}
+					} catch (Exception e){
+					}
+				}
 			}
 		}
 		

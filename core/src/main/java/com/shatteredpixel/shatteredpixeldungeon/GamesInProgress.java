@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class GamesInProgress {
 
 	private static HashMap<HeroClass, Info> state = new HashMap<HeroClass, Info>();
 	
+	//TODO this should check if a game directly exists
 	public static Info check( HeroClass cl ) {
 		
 		if (state.containsKey( cl )) {
@@ -42,13 +44,14 @@ public class GamesInProgress {
 			Info info;
 			try {
 				
-				Bundle bundle = Dungeon.gameBundle( Dungeon.gameFile( cl ) );
+				Bundle bundle = FileUtils.bundleFromFile(Dungeon.gameFile(cl));
 				info = new Info();
-				Dungeon.preview( info, bundle );
+				Dungeon.preview(info, bundle);
 				
 				//saves from before 0.4.3c are not supported
-				if (info.version < ShatteredPixelDungeon.v0_4_3c){
+				if (info.version < ShatteredPixelDungeon.v0_4_3c) {
 					info = null;
+					
 				}
 
 			} catch (IOException e) {
