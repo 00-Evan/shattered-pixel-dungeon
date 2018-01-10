@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -213,7 +214,7 @@ public class InterlevelScene extends PixelScene {
 			level = Dungeon.newLevel();
 		} else {
 			Dungeon.depth++;
-			level = Dungeon.loadLevel( Dungeon.hero.heroClass );
+			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		}
 		Dungeon.switchLevel( level, level.entrance );
 	}
@@ -230,7 +231,7 @@ public class InterlevelScene extends PixelScene {
 			level = Dungeon.newLevel();
 		} else {
 			Dungeon.depth++;
-			level = Dungeon.loadLevel( Dungeon.hero.heroClass );
+			level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		}
 		Dungeon.switchLevel( level, level.fallCell( fallIntoPit ));
 	}
@@ -242,7 +243,7 @@ public class InterlevelScene extends PixelScene {
 
 		Dungeon.saveAll();
 		Dungeon.depth--;
-		Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
+		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		Dungeon.switchLevel( level, level.exit );
 	}
 	
@@ -253,7 +254,7 @@ public class InterlevelScene extends PixelScene {
 
 		Dungeon.saveAll();
 		Dungeon.depth = returnDepth;
-		Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
+		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
 		Dungeon.switchLevel( level, returnPos );
 	}
 	
@@ -264,12 +265,12 @@ public class InterlevelScene extends PixelScene {
 
 		GameLog.wipe();
 
-		Dungeon.loadGame( StartScene.curClass );
+		Dungeon.loadGame( GamesInProgress.curSlot );
 		if (Dungeon.depth == -1) {
 			Dungeon.depth = Statistics.deepestFloor;
-			Dungeon.switchLevel( Dungeon.loadLevel( StartScene.curClass ), -1 );
+			Dungeon.switchLevel( Dungeon.loadLevel( GamesInProgress.curSlot ), -1 );
 		} else {
-			Level level = Dungeon.loadLevel( StartScene.curClass );
+			Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
 			Dungeon.switchLevel( level, Dungeon.hero.pos );
 		}
 	}

@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
@@ -74,7 +73,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -231,7 +229,7 @@ public class Dungeon {
 		
 		Badges.reset();
 		
-		StartScene.curClass.initHero( hero );
+		StartScene.selectedClass.initHero( hero );
 	}
 
 	public static boolean isChallenged( int mask ) {
@@ -431,10 +429,6 @@ public class Dungeon {
 		return Random.Int(5 - floorThisSet) < asLeftThisSet;
 	}
 	
-	private static final String GAME_FOLDER = "game%d";
-	private static final String GAME_FILE	= "game.dat";
-	private static final String DEPTH_FILE	= "depth%d.dat";
-	
 	private static final String VERSION		= "version";
 	private static final String SEED		= "seed";
 	private static final String CHALLENGES	= "challenges";
@@ -448,62 +442,7 @@ public class Dungeon {
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
 	
-	//TODO remove class-based loading
-	
-	public static File gameFolder( HeroClass cl ) {
-		switch (cl) {
-			case WARRIOR:
-				return gameFolder(1);
-			case MAGE:
-				return gameFolder(2);
-			case ROGUE: default:
-				return gameFolder(3);
-			case HUNTRESS:
-				return gameFolder(4);
-		}
-	}
-	
-	
-	
-	public static File gameFile( HeroClass cl ) {
-		switch (cl) {
-		case WARRIOR:
-			return gameFile(1);
-		case MAGE:
-			return gameFile(2);
-		case ROGUE: default:
-			return gameFile(3);
-		case HUNTRESS:
-			return gameFile(4);
-		}
-	}
-	
-	public static File depthFile( HeroClass cl, int depth ) {
-		switch (cl) {
-		case WARRIOR:
-			return depthFile(1, depth);
-		case MAGE:
-			return depthFile(2, depth);
-		case ROGUE: default:
-			return depthFile(3, depth);
-		case HUNTRESS:
-			return depthFile(4, depth);
-		}
-	}
-	
-	public static File gameFolder( int save ){
-		return FileUtils.getDir(Messages.format(GAME_FOLDER, save));
-	}
-	
-	public static File gameFile( int save ){
-		return FileUtils.getFile(gameFolder( save ), GAME_FILE);
-	}
-	
-	public static File depthFile( int save, int depth ) {
-		return FileUtils.getFile( gameFolder(save), Messages.format(DEPTH_FILE, depth));
-	}
-	
-	public static void saveGame( HeroClass cl ) throws IOException {
+	public static void saveGame( int save ) throws IOException {
 		try {
 			Bundle bundle = new Bundle();
 
@@ -556,29 +495,30 @@ public class Dungeon {
 			Badges.saveLocal( badges );
 			bundle.put( BADGES, badges );
 			
-			FileUtils.bundleToFile( gameFile(cl), bundle);
+			FileUtils.bundleToFile( GamesInProgress.gameFile(save), bundle);
 			
 		} catch (IOException e) {
-			GamesInProgress.setUnknown( hero.heroClass );
+			GamesInProgress.setUnknown( save );
 			ShatteredPixelDungeon.reportException(e);
 		}
 	}
 	
-	public static void saveLevel() throws IOException {
+	public static void saveLevel( int save ) throws IOException {
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
 		
-		FileUtils.bundleToFile(depthFile( hero.heroClass, depth), bundle);
+		FileUtils.bundleToFile(GamesInProgress.depthFile( save, depth), bundle);
 	}
 	
 	public static void saveAll() throws IOException {
 		if (hero != null && hero.isAlive()) {
 			
 			Actor.fixTime();
-			saveGame( hero.heroClass );
-			saveLevel();
+			saveGame( GamesInProgress.curSlot );
+			saveLevel( GamesInProgress.curSlot );
 
-			GamesInProgress.set( hero.heroClass, depth, hero.lvl, challenges != 0 );
+			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges,
+					hero.lvl, hero.heroClass, hero.subClass );
 
 		} else if (WndResurrect.instance != null) {
 			
@@ -588,13 +528,13 @@ public class Dungeon {
 		}
 	}
 	
-	public static void loadGame( HeroClass cl ) throws IOException {
-		loadGame(  cl, true );
+	public static void loadGame( int save ) throws IOException {
+		loadGame( save, true );
 	}
 	
-	public static void loadGame( HeroClass cl, boolean fullLoad ) throws IOException {
+	public static void loadGame( int save, boolean fullLoad ) throws IOException {
 		
-		Bundle bundle = FileUtils.bundleFromFile( gameFile( cl ) );
+		Bundle bundle = FileUtils.bundleFromFile( GamesInProgress.gameFile( save ) );
 
 		version = bundle.getInt( VERSION );
 
@@ -681,12 +621,12 @@ public class Dungeon {
 		}
 	}
 	
-	public static Level loadLevel( HeroClass cl ) throws IOException {
+	public static Level loadLevel( int save ) throws IOException {
 		
 		Dungeon.level = null;
 		Actor.clear();
 		
-		Bundle bundle = FileUtils.bundleFromFile( depthFile( cl, depth)) ;
+		Bundle bundle = FileUtils.bundleFromFile( GamesInProgress.depthFile( save, depth)) ;
 		
 		Level level = (Level)bundle.get( LEVEL );
 		
@@ -697,21 +637,21 @@ public class Dungeon {
 		}
 	}
 	
-	public static void deleteGame( HeroClass cl, boolean deleteLevels ) {
+	public static void deleteGame( int save, boolean deleteLevels ) {
 		
-		FileUtils.deleteFile(gameFile(cl));
+		FileUtils.deleteFile(GamesInProgress.gameFile(save));
 		
 		if (deleteLevels) {
-			FileUtils.deleteDir(gameFolder(cl));
+			FileUtils.deleteDir(GamesInProgress.gameFolder(save));
 		}
 		
-		GamesInProgress.delete( cl );
+		GamesInProgress.delete( save );
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
 		info.depth = bundle.getInt( DEPTH );
 		info.version = bundle.getInt( VERSION );
-		info.challenges = (bundle.getInt( CHALLENGES ) != 0);
+		info.challenges = bundle.getInt( CHALLENGES );
 		Hero.preview( info, bundle.getBundle( HERO ) );
 	}
 	

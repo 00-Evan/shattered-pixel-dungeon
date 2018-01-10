@@ -22,29 +22,58 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 public class GamesInProgress {
-
-	private static HashMap<HeroClass, Info> state = new HashMap<HeroClass, Info>();
 	
-	//TODO this should check if a game directly exists
-	public static Info check( HeroClass cl ) {
+	//null means we have loaded info and it is empty, no entry means unknown.
+	private static HashMap<Integer, Info> slotStates = new HashMap<>();
+	public static int curSlot;
+	
+	private static final String GAME_FOLDER = "game%d";
+	private static final String GAME_FILE	= "game.dat";
+	private static final String DEPTH_FILE	= "depth%d.dat";
+	
+	public static boolean gameExists( int slot ){
+		return FileUtils.dirExists(Messages.format(GAME_FOLDER, slot));
+	}
+	
+	public static File gameFolder( int slot ){
+		return FileUtils.getDir(Messages.format(GAME_FOLDER, slot));
+	}
+	
+	public static File gameFile( int slot ){
+		return FileUtils.getFile(gameFolder( slot ), GAME_FILE);
+	}
+	
+	public static File depthFile( int slot, int depth ) {
+		return FileUtils.getFile( gameFolder(slot), Messages.format(DEPTH_FILE, depth));
+	}
+	
+	public static Info check( int slot ) {
 		
-		if (state.containsKey( cl )) {
+		if (slotStates.containsKey( slot )) {
 			
-			return state.get( cl );
+			return slotStates.get( slot );
+			
+		} else if (!gameExists( slot )) {
+			
+			slotStates.put(slot, null);
+			return null;
 			
 		} else {
 			
 			Info info;
 			try {
 				
-				Bundle bundle = FileUtils.bundleFromFile(Dungeon.gameFile(cl));
+				Bundle bundle = FileUtils.bundleFromFile(gameFile(slot));
 				info = new Info();
 				Dungeon.preview(info, bundle);
 				
@@ -58,32 +87,40 @@ public class GamesInProgress {
 				info = null;
 			}
 			
-			state.put( cl, info );
+			slotStates.put( slot, info );
 			return info;
 			
 		}
 	}
 
-	public static void set( HeroClass cl, int depth, int level, boolean challenges ) {
+	public static void set( int slot, int depth, int challenges,
+	                        int level, HeroClass heroClass, HeroSubClass subClass) {
 		Info info = new Info();
 		info.depth = depth;
-		info.level = level;
 		info.challenges = challenges;
-		state.put( cl, info );
+		
+		info.level = level;
+		info.heroClass = heroClass;
+		info.subClass = subClass;
+		
+		slotStates.put( slot, info );
 	}
 	
-	public static void setUnknown( HeroClass cl ) {
-		state.remove( cl );
+	public static void setUnknown( int slot ) {
+		slotStates.remove( slot );
 	}
 	
-	public static void delete( HeroClass cl ) {
-		state.put( cl, null );
+	public static void delete( int slot ) {
+		slotStates.put( slot, null );
 	}
 	
 	public static class Info {
 		public int depth;
-		public int level;
 		public int version;
-		public boolean challenges;
+		public int challenges;
+		
+		public int level;
+		public HeroClass heroClass;
+		public HeroSubClass subClass;
 	}
 }

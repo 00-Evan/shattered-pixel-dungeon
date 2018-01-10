@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
@@ -171,7 +171,7 @@ public class WelcomeScene extends PixelScene {
 				if (FileUtils.fileExists(name + ".dat")){
 					try {
 						Bundle gamedata = FileUtils.bundleFromFile(name + ".dat");
-						FileUtils.bundleToFile(Dungeon.gameFile(i), gamedata);
+						FileUtils.bundleToFile(GamesInProgress.gameFile(i), gamedata);
 						FileUtils.deleteFile(name + ".dat");
 						
 						//rogue's safe files have a different name
@@ -180,7 +180,7 @@ public class WelcomeScene extends PixelScene {
 						int depth = 1;
 						while (FileUtils.fileExists(name + depth + ".dat")) {
 							gamedata = FileUtils.bundleFromFile(name + depth + ".dat");
-							FileUtils.bundleToFile(Dungeon.depthFile(i, depth), gamedata);
+							FileUtils.bundleToFile(GamesInProgress.depthFile(i, depth), gamedata);
 							FileUtils.deleteFile(name + depth + ".dat");
 							depth++;
 						}

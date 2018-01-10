@@ -77,7 +77,7 @@ public class StartScene extends PixelScene {
 	private boolean huntressUnlocked;
 	private Group unlock;
 
-	public static HeroClass curClass;
+	public static HeroClass selectedClass;
 
 	@Override
 	public void create() {
@@ -121,7 +121,7 @@ public class StartScene extends PixelScene {
 		btnNewGame = new GameButton( Messages.get(this, "new") ) {
 			@Override
 			protected void onClick() {
-				if (GamesInProgress.check( curClass ) != null) {
+				if (GamesInProgress.check( GamesInProgress.curSlot ) != null) {
 					StartScene.this.add( new WndOptions(
 							Messages.get(StartScene.class, "really"),
 							Messages.get(StartScene.class, "warning"),
@@ -217,7 +217,7 @@ public class StartScene extends PixelScene {
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
 		add( btnExit );
 
-		curClass = null;
+		GamesInProgress.curSlot = 0;
 		ActionIndicator.action = null;
 		updateClass( HeroClass.values()[ShatteredPixelDungeon.lastClass()] );
 
@@ -245,25 +245,29 @@ public class StartScene extends PixelScene {
 
 	private void updateClass( HeroClass cl ) {
 
-		if (curClass == cl) {
+		int slot = cl.ordinal()+1;
+		
+		if (GamesInProgress.curSlot == slot) {
 			add( new WndClass( cl ) );
 			return;
+		} else {
+			GamesInProgress.curSlot = slot;
 		}
 
-		if (curClass != null) {
-			shields.get( curClass ).highlight( false );
+		if (selectedClass != null) {
+			shields.get( selectedClass ).highlight( false );
 		}
-		shields.get( curClass = cl ).highlight( true );
+		shields.get( selectedClass = cl ).highlight( true );
 
 		if (cl != HeroClass.HUNTRESS || huntressUnlocked) {
 
 			unlock.visible = false;
 
-			GamesInProgress.Info info = GamesInProgress.check( curClass );
+			GamesInProgress.Info info = GamesInProgress.check( GamesInProgress.curSlot );
 			if (info != null) {
 
 				btnLoad.visible = true;
-				btnLoad.secondary( Messages.format( Messages.get(this, "depth_level"), info.depth, info.level ), info.challenges );
+				btnLoad.secondary( Messages.format( Messages.get(this, "depth_level"), info.depth, info.level ), info.challenges != 0 );
 				btnNewGame.visible = true;
 				btnNewGame.secondary( Messages.get(this, "erase"), false );
 
