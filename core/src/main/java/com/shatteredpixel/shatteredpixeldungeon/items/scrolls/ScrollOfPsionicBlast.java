@@ -57,9 +57,11 @@ public class ScrollOfPsionicBlast extends Scroll {
 		}
 
 		curUser.damage(Math.max(curUser.HT/5, curUser.HP/2), this);
-		Buff.prolong( curUser, Paralysis.class, Random.Int( 4, 6 ) );
-		Buff.prolong( curUser, Blindness.class, Random.Int( 6, 9 ) );
-		Dungeon.observe();
+		if (curUser.isAlive()) {
+			Buff.prolong(curUser, Paralysis.class, Random.Int(4, 6));
+			Buff.prolong(curUser, Blindness.class, Random.Int(6, 9));
+			Dungeon.observe();
+		}
 		
 		setKnown();
 		
