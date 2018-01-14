@@ -1291,9 +1291,7 @@ public class Hero extends Char {
 	@Override
 	public int stealth() {
 		int stealth = super.stealth();
-
-		stealth += RingOfEvasion.stealthBonus( this );
-
+		
 		if (belongings.armor != null && belongings.armor.hasGlyph(Obfuscation.class)){
 			stealth += belongings.armor.level();
 		}
