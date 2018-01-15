@@ -1496,6 +1496,8 @@ public class Hero extends Char {
 	
 	public boolean search( boolean intentional ) {
 		
+		if (!isAlive()) return false;
+		
 		boolean smthFound = false;
 
 		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;

@@ -114,7 +114,10 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		BitmapCache.context = TextureCache.context = instance = this;
 		
 		DisplayMetrics m = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics( m );
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+			getWindowManager().getDefaultDisplay().getRealMetrics( m );
+		else
+			getWindowManager().getDefaultDisplay().getMetrics( m );
 		density = m.density;
 		dispHeight = m.heightPixels;
 		dispWidth = m.widthPixels;

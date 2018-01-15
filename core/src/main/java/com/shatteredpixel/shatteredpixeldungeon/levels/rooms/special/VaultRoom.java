@@ -51,10 +51,8 @@ public class VaultRoom extends SpecialRoom {
 		Random.shuffle(prizeClasses);
 		
 		Item i1, i2;
-		do {
-			i1 = prize( level );
-			i2 = prize( level );
-		} while (i1.getClass() == i2.getClass());
+		i1 = prize( level );
+		i2 = prize( level );
 		level.drop( i1, c ).type = Heap.Type.CRYSTAL_CHEST;
 		level.drop( i2, c + PathFinder.NEIGHBOURS8[Random.Int( 8 )]).type = Heap.Type.CRYSTAL_CHEST;
 		level.addItemToSpawn( new CrystalKey( Dungeon.depth ) );
