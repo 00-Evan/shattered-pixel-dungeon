@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import android.content.Intent;
 import android.net.Uri;
+
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
@@ -58,9 +60,9 @@ public class AboutScene extends PixelScene {
 	public void create() {
 		super.create();
 
-		final float colWidth = Camera.main.width / (ShatteredPixelDungeon.landscape() ? 2 : 1);
-		final float colTop = (Camera.main.height / 2) - (ShatteredPixelDungeon.landscape() ? 30 : 90);
-		final float wataOffset = ShatteredPixelDungeon.landscape() ? colWidth : 0;
+		final float colWidth = Camera.main.width / (SPDSettings.landscape() ? 2 : 1);
+		final float colTop = (Camera.main.height / 2) - (SPDSettings.landscape() ? 30 : 90);
+		final float wataOffset = SPDSettings.landscape() ? colWidth : 0;
 
 		Image shpx = Icons.SHPX.get();
 		shpx.x = (colWidth - shpx.width()) / 2;
@@ -104,7 +106,7 @@ public class AboutScene extends PixelScene {
 
 		Image wata = Icons.WATA.get();
 		wata.x = wataOffset + (colWidth - wata.width()) / 2;
-		wata.y = ShatteredPixelDungeon.landscape() ?
+		wata.y = SPDSettings.landscape() ?
 						colTop:
 						shpxlink.top() + wata.height + 20;
 		align(wata);

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
@@ -47,7 +48,7 @@ public class WelcomeScene extends PixelScene {
 	public void create() {
 		super.create();
 
-		final int previousVersion = ShatteredPixelDungeon.version();
+		final int previousVersion = SPDSettings.version();
 
 		if (ShatteredPixelDungeon.versionCode == previousVersion) {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
@@ -66,7 +67,7 @@ public class WelcomeScene extends PixelScene {
 		float topRegion = Math.max(95f, h*0.45f);
 
 		title.x = (w - title.width()) / 2f;
-		if (ShatteredPixelDungeon.landscape())
+		if (SPDSettings.landscape())
 			title.y = (topRegion - title.height()) / 2f;
 		else
 			title.y = 16 + (topRegion - title.height() - 16) / 2f;
@@ -199,8 +200,8 @@ public class WelcomeScene extends PixelScene {
 			Badges.disown(Badges.Badge.ALL_ITEMS_IDENTIFIED);
 			Badges.saveGlobal();
 		}
-
-		ShatteredPixelDungeon.version(ShatteredPixelDungeon.versionCode);
+		
+		SPDSettings.version(ShatteredPixelDungeon.versionCode);
 	}
 
 	private void placeTorch( float x, float y ) {

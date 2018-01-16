@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -38,8 +37,6 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.DeviceCompat;
-
-import java.util.Locale;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -139,25 +136,12 @@ public class ShatteredPixelDungeon extends Game {
 		super.onCreate(savedInstanceState);
 
 		updateSystemUI();
+		SPDSettings.landscape ( SPDSettings.landscape() );
 		
-		if (SPDSettings.contains( SPDSettings.KEY_LANDSCAPE )){
-			landscape ( SPDSettings.getBoolean( SPDSettings.KEY_LANDSCAPE, false));
-
-		} else {
-			DisplayMetrics metrics = new DisplayMetrics();
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-				getWindowManager().getDefaultDisplay().getRealMetrics( metrics );
-			else
-				getWindowManager().getDefaultDisplay().getMetrics( metrics );
-			boolean landscape = metrics.widthPixels > metrics.heightPixels;
-
-			landscape( landscape );
-		}
-		
-		Music.INSTANCE.enable( music() );
-		Music.INSTANCE.volume( musicVol()/10f );
-		Sample.INSTANCE.enable( soundFx() );
-		Sample.INSTANCE.volume( SFXVol()/10f );
+		Music.INSTANCE.enable( SPDSettings.music() );
+		Music.INSTANCE.volume( SPDSettings.musicVol()/10f );
+		Sample.INSTANCE.enable( SPDSettings.soundFx() );
+		Sample.INSTANCE.volume( SPDSettings.SFXVol()/10f );
 		
 		Music.setMuteListener();
 
@@ -211,7 +195,7 @@ public class ShatteredPixelDungeon extends Game {
 				Assets.SND_DEGRADE,
 				Assets.SND_MIMIC );
 
-		if (classicFont()) {
+		if (!SPDSettings.systemFont()) {
 			RenderedText.setFont("pixelfont.ttf");
 		} else {
 			RenderedText.setFont( null );
@@ -239,47 +223,6 @@ public class ShatteredPixelDungeon extends Game {
 		switchScene( c, callback );
 	}
 
-	/*
-	 * ---> Settings
-	 */
-	
-	//TODO migrate some of these to SPDSettings, no reason to clutter up Shattered Pixel Dungeon
-	
-	public static void landscape( boolean value ) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			Game.instance.setRequestedOrientation(value ?
-					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-		} else {
-			Game.instance.setRequestedOrientation(value ?
-					ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
-					ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		}
-		SPDSettings.put( SPDSettings.KEY_LANDSCAPE, value );
-		((ShatteredPixelDungeon)instance).updateDisplaySize();
-	}
-	
-	public static boolean landscape() {
-		return width > height;
-	}
-	
-	public static void scale( int value ) {
-		SPDSettings.put( SPDSettings.KEY_SCALE, value );
-	}
-
-	public static void immerse( boolean value ) {
-		SPDSettings.put( SPDSettings.KEY_IMMERSIVE, value );
-
-		instance.runOnUiThread( new Runnable() {
-			@Override
-			public void run() {
-				updateSystemUI();
-				//ensures surfacechanged is called if the view was previously set to be fixed.
-				((ShatteredPixelDungeon)instance).view.getHolder().setSizeFromLayout();
-			}
-		} );
-	}
-
 	@Override
 	public void onSurfaceChanged( GL10 gl, int width, int height ) {
 
@@ -289,7 +232,21 @@ public class ShatteredPixelDungeon extends Game {
 
 	}
 
-	private void updateDisplaySize(){
+	public void updateDisplaySize(){
+		boolean landscape = SPDSettings.landscape();
+		
+		if (landscape != (width > height)) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				instance.setRequestedOrientation(landscape ?
+						ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+						ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+			} else {
+				instance.setRequestedOrientation(landscape ?
+						ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
+						ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			}
+		}
+		
 		if (view.getMeasuredWidth() == 0 || view.getMeasuredHeight() == 0)
 			return;
 
@@ -305,7 +262,7 @@ public class ShatteredPixelDungeon extends Game {
 		if (dispWidth < renderWidth*2 || dispHeight < renderHeight*2)
 			SPDSettings.put( SPDSettings.KEY_POWER_SAVER, true );
 
-		if (powerSaver()){
+		if (SPDSettings.powerSaver()){
 
 			int maxZoom = (int)Math.min(dispWidth/renderWidth, dispHeight/renderHeight);
 
@@ -354,7 +311,7 @@ public class ShatteredPixelDungeon extends Game {
 		}
 
 		if (DeviceCompat.supportsFullScreen()){
-			if (fullscreen && immersed()) {
+			if (fullscreen && SPDSettings.fullscreen()) {
 				instance.getWindow().getDecorView().setSystemUiVisibility(
 						View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
 						View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
@@ -367,170 +324,6 @@ public class ShatteredPixelDungeon extends Game {
 		}
 
 	}
-
-	public static boolean immersed() {
-		return SPDSettings.getBoolean( SPDSettings.KEY_IMMERSIVE, false );
-	}
-
-	public static boolean powerSaver(){
-		return SPDSettings.getBoolean( SPDSettings.KEY_POWER_SAVER, false );
-	}
-
-	public static void powerSaver( boolean value ){
-		SPDSettings.put( SPDSettings.KEY_POWER_SAVER, value );
-		((ShatteredPixelDungeon)instance).updateDisplaySize();
-	}
-	
-	public static int scale() {
-		return SPDSettings.getInt( SPDSettings.KEY_SCALE, 0 );
-	}
-
-	public static void zoom( int value ) {
-		SPDSettings.put( SPDSettings.KEY_ZOOM, value );
-	}
-	
-	public static int zoom() {
-		return SPDSettings.getInt( SPDSettings.KEY_ZOOM, 0 );
-	}
-	
-	public static void music( boolean value ) {
-		Music.INSTANCE.enable( value );
-		SPDSettings.put( SPDSettings.KEY_MUSIC, value );
-	}
-	
-	public static boolean music() {
-		return SPDSettings.getBoolean( SPDSettings.KEY_MUSIC, true );
-	}
-
-	public static void musicVol( int value ){
-		SPDSettings.put( SPDSettings.KEY_MUSIC_VOL, value );
-	}
-
-	public static int musicVol(){
-		return SPDSettings.getInt( SPDSettings.KEY_MUSIC_VOL, 10, 0, 10 );
-	}
-	
-	public static void soundFx( boolean value ) {
-		Sample.INSTANCE.enable( value );
-		SPDSettings.put( SPDSettings.KEY_SOUND_FX, value );
-	}
-	
-	public static boolean soundFx() {
-		return SPDSettings.getBoolean( SPDSettings.KEY_SOUND_FX, true );
-	}
-
-	public static void SFXVol( int value ) {
-		SPDSettings.put( SPDSettings.KEY_SFX_VOL, value );
-	}
-
-	public static int SFXVol() {
-		return SPDSettings.getInt( SPDSettings.KEY_SFX_VOL, 10, 0, 10 );
-	}
-	
-	public static void brightness( int value ) {
-		SPDSettings.put( SPDSettings.KEY_BRIGHTNESS, value );
-		GameScene.updateFog();
-	}
-	
-	public static int brightness() {
-		return SPDSettings.getInt( SPDSettings.KEY_BRIGHTNESS, 0, -2, 2 );
-	}
-
-	public static void visualGrid( int value ){
-		SPDSettings.put( SPDSettings.KEY_GRID, value );
-		GameScene.updateMap();
-	}
-
-	public static int visualGrid() {
-		return SPDSettings.getInt( SPDSettings.KEY_GRID, 0, -1, 3 );
-	}
-
-	public static void language(Languages lang) {
-		SPDSettings.put( SPDSettings.KEY_LANG, lang.code());
-	}
-
-	public static Languages language() {
-		String code = SPDSettings.getString(SPDSettings.KEY_LANG, null);
-		if (code == null){
-			return Languages.matchLocale(Locale.getDefault());
-		} else {
-			return Languages.matchCode(code);
-		}
-	}
-
-	public static void classicFont(boolean classic){
-		SPDSettings.put(SPDSettings.KEY_CLASSICFONT, classic);
-		if (classic) {
-			RenderedText.setFont("pixelfont.ttf");
-		} else {
-			RenderedText.setFont( null );
-		}
-	}
-
-	public static boolean classicFont(){
-		return SPDSettings.getBoolean(SPDSettings.KEY_CLASSICFONT,
-				(language() != Languages.KOREAN && language() != Languages.CHINESE));
-	}
-
-	public static void lastClass( int value ) {
-		SPDSettings.put( SPDSettings.KEY_LAST_CLASS, value );
-	}
-	
-	public static int lastClass() {
-		return SPDSettings.getInt( SPDSettings.KEY_LAST_CLASS, 0, 0, 3 );
-	}
-
-	public static void challenges( int value ) {
-		SPDSettings.put( SPDSettings.KEY_CHALLENGES, value );
-	}
-
-	public static int challenges() {
-		return SPDSettings.getInt( SPDSettings.KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
-	}
-
-	public static void quickSlots( int value ){ SPDSettings.put( SPDSettings.KEY_QUICKSLOTS, value ); }
-
-	public static int quickSlots(){ return SPDSettings.getInt( SPDSettings.KEY_QUICKSLOTS, 4, 0, 4); }
-
-	public static void flipToolbar( boolean value) {
-		SPDSettings.put(SPDSettings.KEY_FLIPTOOLBAR, value );
-	}
-
-	public static boolean flipToolbar(){ return SPDSettings.getBoolean(SPDSettings.KEY_FLIPTOOLBAR, false); }
-
-	public static void flipTags( boolean value) {
-		SPDSettings.put(SPDSettings.KEY_FLIPTAGS, value );
-	}
-
-	public static boolean flipTags(){ return SPDSettings.getBoolean(SPDSettings.KEY_FLIPTAGS, false); }
-
-	public static void toolbarMode( String value ) {
-		SPDSettings.put( SPDSettings.KEY_BARMODE, value );
-	}
-
-	public static String toolbarMode() {
-		return SPDSettings.getString(SPDSettings.KEY_BARMODE, !landscape() ? "SPLIT" : "GROUP");
-	}
-	
-	public static void intro( boolean value ) {
-		SPDSettings.put( SPDSettings.KEY_INTRO, value );
-	}
-	
-	public static boolean intro() {
-		return SPDSettings.getBoolean( SPDSettings.KEY_INTRO, true );
-	}
-
-	public static void version( int value)  {
-		SPDSettings.put( SPDSettings.KEY_VERSION, value );
-	}
-
-	public static int version() {
-		return SPDSettings.getInt( SPDSettings.KEY_VERSION, 0 );
-	}
-	
-	/*
-	 * <--- Settings
-	 */
 
 	public static void reportException( Throwable tr ) {
 		Log.e("PD", Log.getStackTraceString(tr));

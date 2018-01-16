@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
@@ -93,7 +94,7 @@ public class StartScene extends PixelScene {
 		int h = Camera.main.height;
 
 		float width, height;
-		if (ShatteredPixelDungeon.landscape()) {
+		if (SPDSettings.landscape()) {
 			width = WIDTH_L;
 			height = HEIGHT_L;
 		} else {
@@ -161,7 +162,7 @@ public class StartScene extends PixelScene {
 			shields.put( cl, shield );
 			add( shield );
 		}
-		if (ShatteredPixelDungeon.landscape()) {
+		if (SPDSettings.landscape()) {
 			float shieldW = width / 4;
 			float shieldH = Math.min( centralHeight, shieldW );
 			top = title.y + title.height + (centralHeight - shieldH) / 2;
@@ -219,7 +220,7 @@ public class StartScene extends PixelScene {
 
 		GamesInProgress.curSlot = 0;
 		ActionIndicator.action = null;
-		updateClass( HeroClass.values()[ShatteredPixelDungeon.lastClass()] );
+		updateClass( HeroClass.values()[SPDSettings.lastClass()] );
 
 		fadeIn();
 
@@ -300,8 +301,8 @@ public class StartScene extends PixelScene {
 		Dungeon.hero = null;
 		InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 
-		if (ShatteredPixelDungeon.intro()) {
-			ShatteredPixelDungeon.intro( false );
+		if (SPDSettings.intro()) {
+			SPDSettings.intro( false );
 			Game.switchScene( IntroScene.class );
 		} else {
 			Game.switchScene( InterlevelScene.class );
@@ -492,7 +493,7 @@ public class StartScene extends PixelScene {
 
 			super.createChildren();
 
-			image = Icons.get( ShatteredPixelDungeon.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF );
+			image = Icons.get( SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF );
 			add( image );
 		}
 
@@ -508,10 +509,10 @@ public class StartScene extends PixelScene {
 		@Override
 		protected void onClick() {
 			if (Badges.isUnlocked( Badges.Badge.VICTORY )) {
-				StartScene.this.add(new WndChallenges(ShatteredPixelDungeon.challenges(), true) {
+				StartScene.this.add(new WndChallenges(SPDSettings.challenges(), true) {
 					public void onBackPressed() {
 						super.onBackPressed();
-						image.copy( Icons.get( ShatteredPixelDungeon.challenges() > 0 ?
+						image.copy( Icons.get( SPDSettings.challenges() > 0 ?
 								Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF ) );
 					}
 				} );

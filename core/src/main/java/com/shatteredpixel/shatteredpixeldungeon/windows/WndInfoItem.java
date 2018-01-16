@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -57,7 +57,7 @@ public class WndInfoItem extends Window {
 		} else {
 
 			fillFields( heap.image(), heap.glowing(), TITLE_COLOR, heap.toString(), heap.info() );
-
+			
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class WndInfoItem extends Window {
 	
 	private void fillFields( int image, ItemSprite.Glowing glowing, int titleColor, String title, String info ) {
 
-		int width = ShatteredPixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
+		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
 
 		IconTitle titlebar = new IconTitle();
 		titlebar.icon( new ItemSprite( image, glowing ) );

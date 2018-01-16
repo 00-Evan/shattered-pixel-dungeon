@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -157,7 +157,7 @@ public class Toolbar extends Component {
 	protected void layout() {
 
 		int[] visible = new int[4];
-		int slots = ShatteredPixelDungeon.quickSlots();
+		int slots = SPDSettings.quickSlots();
 
 		for(int i = 0; i <= 3; i++)
 			visible[i] = (int)((slots > i) ? y+2 : y+25);
@@ -167,8 +167,8 @@ public class Toolbar extends Component {
 			//decides on quickslot layout, depending on available screen size.
 			if (slots == 4 && width < 152){
 				if (width < 138){
-					if ((ShatteredPixelDungeon.flipToolbar() && i == 3) ||
-							(!ShatteredPixelDungeon.flipToolbar() && i == 0)) {
+					if ((SPDSettings.flipToolbar() && i == 3) ||
+							(!SPDSettings.flipToolbar() && i == 0)) {
 						btnQuick[i].border(0, 0);
 						btnQuick[i].frame(88, 0, 17, 24);
 					} else {
@@ -176,12 +176,12 @@ public class Toolbar extends Component {
 						btnQuick[i].frame(88, 0, 18, 24);
 					}
 				} else {
-					if (i == 0 && !ShatteredPixelDungeon.flipToolbar() ||
-						i == 3 && ShatteredPixelDungeon.flipToolbar()){
+					if (i == 0 && !SPDSettings.flipToolbar() ||
+						i == 3 && SPDSettings.flipToolbar()){
 						btnQuick[i].border(0, 2);
 						btnQuick[i].frame(106, 0, 19, 24);
-					} else if (i == 0 && ShatteredPixelDungeon.flipToolbar() ||
-							i == 3 && !ShatteredPixelDungeon.flipToolbar()){
+					} else if (i == 0 && SPDSettings.flipToolbar() ||
+							i == 3 && !SPDSettings.flipToolbar()){
 						btnQuick[i].border(2, 1);
 						btnQuick[i].frame(86, 0, 20, 24);
 					} else {
@@ -197,7 +197,7 @@ public class Toolbar extends Component {
 		}
 
 		float right = width;
-		switch(Mode.valueOf(ShatteredPixelDungeon.toolbarMode())){
+		switch(Mode.valueOf(SPDSettings.toolbarMode())){
 			case SPLIT:
 				btnWait.setPos(x, y);
 				btnSearch.setPos(btnWait.right(), y);
@@ -231,7 +231,7 @@ public class Toolbar extends Component {
 		}
 		right = width;
 
-		if (ShatteredPixelDungeon.flipToolbar()) {
+		if (SPDSettings.flipToolbar()) {
 
 			btnWait.setPos( (right - btnWait.right()), y);
 			btnSearch.setPos( (right - btnSearch.right()), y);

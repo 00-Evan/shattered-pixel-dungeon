@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -68,8 +69,8 @@ public class WndJournal extends WndTabbed {
 	
 	public WndJournal(){
 		
-		int width = ShatteredPixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
-		int height = ShatteredPixelDungeon.landscape() ? HEIGHT_L : HEIGHT_P;
+		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
+		int height = SPDSettings.landscape() ? HEIGHT_L : HEIGHT_P;
 		
 		resize(width, height);
 		

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.messages;
 
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.utils.DeviceCompat;
 
@@ -73,7 +74,7 @@ public class Messages {
 	};
 
 	static{
-		setup(ShatteredPixelDungeon.language());
+		setup(SPDSettings.language());
 	}
 
 	public static void setup( Languages lang ){

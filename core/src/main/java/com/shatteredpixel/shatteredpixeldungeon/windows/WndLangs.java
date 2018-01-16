@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -71,7 +72,7 @@ public class WndLangs extends Window {
 					ShatteredPixelDungeon.switchNoFade(TitleScene.class, new Game.SceneChangeCallback() {
 						@Override
 						public void beforeCreate() {
-							ShatteredPixelDungeon.language(langs.get(langIndex));
+							SPDSettings.language(langs.get(langIndex));
 							RenderedText.clearCache();
 						}
 						@Override
@@ -94,7 +95,7 @@ public class WndLangs extends Window {
 				}
 			}
 			btn.setSize(BTN_WIDTH, BTN_HEIGHT);
-			if (ShatteredPixelDungeon.landscape() && i % 2 == 1){
+			if (SPDSettings.landscape() && i % 2 == 1){
 				btn.setPos(BTN_WIDTH+1, y-(BTN_HEIGHT + 1));
 			} else {
 				btn.setPos(0, y);
@@ -104,7 +105,7 @@ public class WndLangs extends Window {
 			add(btn);
 		}
 		y = Math.max(MIN_HEIGHT, y);
-		resize(ShatteredPixelDungeon.landscape() ? WIDTH_L : WIDTH_P, y);
+		resize(SPDSettings.landscape() ? WIDTH_L : WIDTH_P, y);
 
 		int textLeft = width - 65;
 		int textWidth = width - textLeft;
