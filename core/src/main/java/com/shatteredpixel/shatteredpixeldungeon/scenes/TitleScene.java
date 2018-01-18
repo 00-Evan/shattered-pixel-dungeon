@@ -150,12 +150,16 @@ public class TitleScene extends PixelScene {
 		changes.setPos( w-changes.width(), h - version.height() - changes.height());
 		add( changes );
 		
+		int pos = 0;
+		
 		PrefsButton btnPrefs = new PrefsButton();
-		btnPrefs.setPos( 0, 0 );
+		btnPrefs.setRect( pos, 0, 16, 16 );
 		add( btnPrefs );
+		
+		pos += btnPrefs.width();
 
 		LanguageButton btnLang = new LanguageButton();
-		btnLang.setRect(16, 0, 16, 15);
+		btnLang.setRect(pos, 0, 14, 16);
 		add( btnLang );
 
 		ExitButton btnExit = new ExitButton();

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
@@ -30,13 +31,6 @@ import com.watabou.noosa.ui.Button;
 public class PrefsButton extends Button {
 	
 	private Image image;
-	
-	public PrefsButton() {
-		super();
-		
-		width = image.width;
-		height = image.height;
-	}
 	
 	@Override
 	protected void createChildren() {
@@ -50,8 +44,9 @@ public class PrefsButton extends Button {
 	protected void layout() {
 		super.layout();
 		
-		image.x = x;
-		image.y = y;
+		image.x = x + (width - image.width)/2f;
+		image.y = y + (height - image.height)/2f;
+		PixelScene.align(image);
 	}
 	
 	@Override
