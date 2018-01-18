@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
@@ -86,12 +85,6 @@ public class ThrowingKnife extends MissileWeapon {
 	@Override
 	protected float durabilityPerUse() {
 		return super.durabilityPerUse()*2f;
-	}
-	
-	@Override
-	public Item random() {
-		quantity = Random.NormalIntRange( 2, 4 );
-		return this;
 	}
 	
 	@Override

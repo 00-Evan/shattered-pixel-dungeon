@@ -24,9 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.utils.Random;
 
 public class Bolas extends MissileWeapon {
 	
@@ -59,12 +57,6 @@ public class Bolas extends MissileWeapon {
 	@Override
 	protected float durabilityPerUse() {
 		return super.durabilityPerUse()*2f;
-	}
-	
-	@Override
-	public Item random() {
-		quantity = Random.Int( 2, 4 );
-		return this;
 	}
 	
 	@Override

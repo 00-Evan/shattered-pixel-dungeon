@@ -21,9 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.utils.Random;
 
 public class Javelin extends MissileWeapon {
 
@@ -44,12 +42,6 @@ public class Javelin extends MissileWeapon {
 	@Override
 	public int STRReq(int lvl) {
 		return 15;
-	}
-	
-	@Override
-	public Item random() {
-		quantity = Random.Int( 2, 4 );
-		return this;
 	}
 	
 	@Override

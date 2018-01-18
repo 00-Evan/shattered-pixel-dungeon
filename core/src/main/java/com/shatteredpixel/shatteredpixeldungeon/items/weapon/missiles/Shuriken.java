@@ -23,9 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.utils.Random;
 
 public class Shuriken extends MissileWeapon {
 
@@ -52,12 +50,6 @@ public class Shuriken extends MissileWeapon {
 	public float speedFactor(Char owner) {
 		if (owner instanceof Hero && ((Hero) owner).justMoved)  return 0;
 		else                                                    return super.speedFactor(owner);
-	}
-	
-	@Override
-	public Item random() {
-		quantity = Random.NormalIntRange( 2, 4 );
-		return this;
 	}
 	
 	@Override

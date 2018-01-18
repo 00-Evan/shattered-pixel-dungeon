@@ -25,8 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.watabou.utils.Random;
 
 public abstract class TippedDart extends Dart {
 	
@@ -45,12 +43,6 @@ public abstract class TippedDart extends Dart {
 			Buff.affect(enemy, PinCushion.class).stick(new Dart());
 		else
 			Dungeon.level.drop( new Dart(), enemy.pos).sprite.drop();
-	}
-	
-	@Override
-	public Item random() {
-		quantity = Random.Int( 3, 5 );
-		return this;
 	}
 	
 	@Override
