@@ -48,9 +48,10 @@ public class WallBlockingTilemap extends Tilemap {
 		data = new int[size]; //clears all values, including cleared tiles
 		
 		for (int cell = 0; cell < data.length; cell++) {
-			//force all none-discoverable and border cells to cleared
-			if (!Dungeon.level.discoverable[cell] ||
-					!Dungeon.level.insideMap(cell)){
+			//force all top/bottom row, and none-discoverable cells to cleared
+			if (!Dungeon.level.discoverable[cell]
+					|| (cell - mapWidth) <= 0
+					|| (cell + mapWidth) >= size){
 				data[cell] = CLEARED;
 			} else {
 				updateMapCell(cell);
@@ -73,9 +74,11 @@ public class WallBlockingTilemap extends Tilemap {
 				curr = CLEARED;
 
 			//block wall overhang if:
+			//- There are cells 2x below
 			//- The cell below is a wall and visible
 			//- All of left, below-left, right, below-right is either a wall or hidden
-			} else if ( !fogHidden(cell + mapWidth)
+			} else if ( ((cell + 2*mapWidth) < size)
+					&& !fogHidden(cell + mapWidth)
 					&& (fogHidden(cell - 1) || wall(cell - 1))
 					&& (fogHidden(cell + 1) || wall(cell + 1))
 					&& (fogHidden(cell - 1 + mapWidth) || wall(cell - 1 + mapWidth))
@@ -124,6 +127,7 @@ public class WallBlockingTilemap extends Tilemap {
 				//Block the side of an internal wall if:
 				//- the cell above, below, or the cell itself is visible
 				//and all of the following are NOT true:
+				//- the cell has no neighbours on that side
 				//- the top-side neighbour is visible and the side neighbour isn't a wall.
 				//- the side neighbour is both not a wall and visible
 				//- the bottom-side neighbour is both not a wall and visible
@@ -135,7 +139,8 @@ public class WallBlockingTilemap extends Tilemap {
 						|| !fogHidden(cell + mapWidth)) {
 					
 					//right side
-					if ((!wall(cell + 1) && !fogHidden(cell + 1 - mapWidth)) ||
+					if ( ((cell + 1) % mapWidth == 0) ||
+							(!wall(cell + 1) && !fogHidden(cell + 1 - mapWidth)) ||
 							(!wall(cell + 1) && !fogHidden(cell + 1)) ||
 							(!wall(cell + 1 + mapWidth) && !fogHidden(cell + 1 + mapWidth))
 							){
@@ -145,7 +150,8 @@ public class WallBlockingTilemap extends Tilemap {
 					}
 					
 					//left side
-					if ((!wall(cell - 1) && !fogHidden(cell - 1 - mapWidth)) ||
+					if ( (cell  % mapWidth == 0) ||
+							(!wall(cell - 1) && !fogHidden(cell - 1 - mapWidth)) ||
 							(!wall(cell - 1) && !fogHidden(cell - 1)) ||
 							(!wall(cell - 1 + mapWidth) && !fogHidden(cell - 1 + mapWidth))
 							){
