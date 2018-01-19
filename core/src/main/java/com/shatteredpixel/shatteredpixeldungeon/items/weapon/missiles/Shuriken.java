@@ -38,7 +38,7 @@ public class Shuriken extends MissileWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return 8;
+		return 6;
 	}
 
 	@Override

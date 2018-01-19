@@ -39,7 +39,7 @@ public class Dart extends MissileWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return 3;
+		return 2;
 	}
 
 	@Override

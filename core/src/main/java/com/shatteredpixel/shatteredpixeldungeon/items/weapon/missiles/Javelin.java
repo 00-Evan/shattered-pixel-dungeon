@@ -36,7 +36,7 @@ public class Javelin extends MissileWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return 24;
+		return 16;
 	}
 
 	@Override
