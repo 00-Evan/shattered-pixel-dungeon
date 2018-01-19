@@ -21,16 +21,16 @@
 
 package com.watabou.noosa;
 
-import java.nio.FloatBuffer;
+import android.graphics.Bitmap;
 
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.utils.RectF;
 
-import android.graphics.Bitmap;
-import android.graphics.RectF;
+import java.nio.FloatBuffer;
 
 public class BitmapText extends Visual {
 

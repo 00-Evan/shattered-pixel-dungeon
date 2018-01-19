@@ -21,13 +21,12 @@
 
 package com.watabou.noosa;
 
-import android.graphics.RectF;
-
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.Rect;
+import com.watabou.utils.RectF;
 
 import java.nio.FloatBuffer;
 import java.util.Arrays;

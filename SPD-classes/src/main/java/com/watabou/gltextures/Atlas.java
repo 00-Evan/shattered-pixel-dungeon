@@ -21,9 +21,9 @@
 
 package com.watabou.gltextures;
 
-import java.util.HashMap;
+import com.watabou.utils.RectF;
 
-import android.graphics.RectF;
+import java.util.HashMap;
 
 public class Atlas {
 

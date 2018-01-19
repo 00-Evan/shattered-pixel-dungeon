@@ -21,12 +21,10 @@
 
 package com.watabou.noosa.particles;
 
-import android.graphics.RectF;
-
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Random;
+import com.watabou.utils.RectF;
 
 public class BitmaskEmitter extends Emitter {
 

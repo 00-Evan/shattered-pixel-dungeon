@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
-import android.graphics.RectF;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -34,6 +32,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
+import com.watabou.utils.RectF;
 
 public class HeroSprite extends CharSprite {
 	
@@ -160,7 +159,7 @@ public class HeroSprite extends CharSprite {
 		RectF patch = tiers().get( armorTier );
 		Image avatar = new Image( cl.spritesheet() );
 		RectF frame = avatar.texture.uvRect( 1, 0, FRAME_WIDTH, FRAME_HEIGHT );
-		frame.offset( patch.left, patch.top );
+		frame.shift( patch.left, patch.top );
 		avatar.frame( frame );
 		
 		return avatar;

@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import android.graphics.RectF;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Texture;
@@ -34,6 +32,7 @@ import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.Random;
+import com.watabou.utils.RectF;
 
 public class Fireball extends Component {
 

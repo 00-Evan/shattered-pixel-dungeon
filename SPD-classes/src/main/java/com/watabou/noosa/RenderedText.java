@@ -24,11 +24,12 @@ package com.watabou.noosa;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.graphics.Typeface;
+
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Texture;
+import com.watabou.utils.RectF;
 
 import java.util.HashSet;
 import java.util.Iterator;

@@ -21,12 +21,11 @@
 
 package com.watabou.noosa;
 
-import java.util.HashMap;
-
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.utils.RectF;
 
-import android.graphics.RectF;
+import java.util.HashMap;
 
 public class TextureFilm {
 	
@@ -90,7 +89,7 @@ public class TextureFilm {
 		for (int i=0; i < rows; i++) {
 			for (int j=0; j < cols; j++) {
 				RectF rect = new RectF( j * uw, i * vh, (j+1) * uw, (i+1) * vh );
-				rect.offset( patch.left, patch.top );
+				rect.shift( patch.left, patch.top );
 				add( i * cols + j, rect );
 			}
 		}

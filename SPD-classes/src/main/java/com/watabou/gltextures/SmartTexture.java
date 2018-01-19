@@ -22,9 +22,9 @@
 package com.watabou.gltextures;
 
 import android.graphics.Bitmap;
-import android.graphics.RectF;
 
 import com.watabou.glwrap.Texture;
+import com.watabou.utils.RectF;
 
 public class SmartTexture extends Texture {
 

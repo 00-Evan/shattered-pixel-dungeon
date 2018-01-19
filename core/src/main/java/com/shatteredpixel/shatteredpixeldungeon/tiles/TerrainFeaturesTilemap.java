@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
-import android.graphics.RectF;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -31,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.tweeners.ScaleTweener;
 import com.watabou.utils.PointF;
+import com.watabou.utils.RectF;
 import com.watabou.utils.SparseArray;
 
 //TODO add in a proper set of vfx for plants growing/withering, grass burning, discovering traps
