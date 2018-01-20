@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -327,6 +326,7 @@ public class StatusPane extends Component {
 		protected void onClick() {
 			flashing = false;
 			time = 0;
+			keyIcon.am = journalIcon.am = 1;
 			GameScene.show( new WndJournal() );
 		}
 

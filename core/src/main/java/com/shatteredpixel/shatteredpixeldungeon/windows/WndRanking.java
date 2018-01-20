@@ -56,7 +56,7 @@ public class WndRanking extends WndTabbed {
 	private String error = null;
 	
 	private Image busy;
-
+	
 	public WndRanking( final Rankings.Record rec ) {
 		
 		super();

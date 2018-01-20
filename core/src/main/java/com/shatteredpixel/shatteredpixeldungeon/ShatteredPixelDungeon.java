@@ -28,8 +28,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
@@ -200,6 +198,7 @@ public class ShatteredPixelDungeon extends Game {
 		} else {
 			RenderedText.setFont( null );
 		}
+		
 	}
 
 	@Override
