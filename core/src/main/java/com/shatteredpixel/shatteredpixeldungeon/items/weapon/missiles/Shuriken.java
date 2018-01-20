@@ -33,7 +33,7 @@ public class Shuriken extends MissileWeapon {
 
 	@Override
 	public int min(int lvl) {
-		return 3;
+		return 4;
 	}
 
 	@Override

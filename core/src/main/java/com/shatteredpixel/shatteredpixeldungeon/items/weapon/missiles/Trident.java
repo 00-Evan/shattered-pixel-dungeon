@@ -36,7 +36,7 @@ public class Trident extends MissileWeapon {
 	
 	@Override
 	public int max(int lvl) {
-		return 20;
+		return 25;
 	}
 	
 	@Override

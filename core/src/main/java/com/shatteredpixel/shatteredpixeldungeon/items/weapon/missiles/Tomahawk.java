@@ -40,7 +40,7 @@ public class Tomahawk extends MissileWeapon {
 
 	@Override
 	public int max(int lvl) {
-		return 12;
+		return 15;
 	}
 
 	@Override

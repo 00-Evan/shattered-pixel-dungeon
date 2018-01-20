@@ -36,7 +36,7 @@ public class ThrowingHammer extends MissileWeapon {
 	
 	@Override
 	public int max(int lvl) {
-		return 16;
+		return 20;
 	}
 	
 	@Override
