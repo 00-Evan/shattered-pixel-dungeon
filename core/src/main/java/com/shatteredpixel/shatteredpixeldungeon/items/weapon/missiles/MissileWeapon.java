@@ -98,11 +98,11 @@ abstract public class MissileWeapon extends Weapon {
 	public Item random() {
 		if (!stackable) return this;
 		
-		//+0: 50% (1/2)
-		//+1: 40% (4/10)
-		//+2: 10% (1/10)
+		//2: 66.67% (2/3)
+		//3: 26.67% (4/15)
+		//4: 6.67%  (1/15)
 		quantity = 2;
-		if (Random.Int(2) == 0) {
+		if (Random.Int(3) == 0) {
 			quantity++;
 			if (Random.Int(5) == 0) {
 				quantity++;

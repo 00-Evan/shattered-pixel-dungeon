@@ -168,7 +168,7 @@ public class Generator {
 		
 		ARMOR	( 4,    Armor.class ),
 		
-		MISSILE ( 5,    MissileWeapon.class ),
+		MISSILE ( 3,    MissileWeapon.class ),
 		MIS_T1  ( 0,    MissileWeapon.class ),
 		MIS_T2  ( 0,    MissileWeapon.class ),
 		MIS_T3  ( 0,    MissileWeapon.class ),

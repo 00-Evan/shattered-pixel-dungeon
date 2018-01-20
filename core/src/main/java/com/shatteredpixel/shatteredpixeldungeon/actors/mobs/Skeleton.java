@@ -89,9 +89,9 @@ public class Skeleton extends Mob {
 	protected Item createLoot() {
 		Item loot;
 		do {
-			loot = Random.Int(4) == 0 ? Generator.randomMissile() : Generator.randomWeapon();
+			loot = Generator.randomWeapon();
 		//50% chance of re-rolling tier 4 or 5 melee weapons
-		} while (loot instanceof MeleeWeapon && ((MeleeWeapon) loot).tier >= 4 && Random.Int(2) == 0);
+		} while (((MeleeWeapon) loot).tier >= 4 && Random.Int(2) == 0);
 		loot.level(0);
 		return loot;
 	}

@@ -68,7 +68,7 @@ public class ArmoryRoom extends SpecialRoom {
 	}
 	
 	private static Item prize( Level level ) {
-		switch (Random.Int( 5 )){
+		switch (Random.Int( 4 )){
 			case 0:
 				return new Bomb().random();
 			case 1:

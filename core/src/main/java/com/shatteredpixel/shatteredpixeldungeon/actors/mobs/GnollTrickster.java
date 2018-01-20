@@ -30,6 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
@@ -48,6 +50,7 @@ public class GnollTrickster extends Gnoll {
 
 		state = WANDERING;
 
+		//at half quantity, see createLoot()
 		loot = Generator.Category.MISSILE;
 		lootChance = 1f;
 
@@ -98,7 +101,15 @@ public class GnollTrickster extends Gnoll {
 			return super.getCloser( target );
 		}
 	}
-
+	
+	@Override
+	protected Item createLoot() {
+		MissileWeapon drop = (MissileWeapon)super.createLoot();
+		//half quantity, rounded up
+		drop.quantity((drop.quantity()+1)/2);
+		return drop;
+	}
+	
 	@Override
 	public void die( Object cause ) {
 		super.die( cause );
