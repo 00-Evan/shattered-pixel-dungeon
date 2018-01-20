@@ -110,7 +110,9 @@ public class FogOfWar extends Image {
 		width = width2 * size;
 		height = height2 * size;
 		
-		texture( TextureCache.createBufferTex("fog", width2, height2) );
+		BufferTexture tx = new BufferTexture(width2, height2);
+		TextureCache.add(FogOfWar.class, tx);
+		texture( tx );
 		
 		scale.set(
 			DungeonTilemap.SIZE / PIX_PER_TILE,
@@ -342,7 +344,7 @@ public class FogOfWar extends Image {
 	public void destroy() {
 		super.destroy();
 		if (texture != null){
-			texture.delete();
+			TextureCache.remove(FogOfWar.class);
 		}
 	}
 }

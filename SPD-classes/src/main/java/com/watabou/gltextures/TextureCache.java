@@ -87,28 +87,16 @@ public class TextureCache {
 		
 	}
 	
-	//creates a smarttexture backed by a native intbuffer, not a bitmap.
-	//This is much faster is the texture needs to be frequently edited.
-	//texture is all black by default
-	public static SmartTexture createBufferTex( String key, int w, int h ){
-		
-		key += "w" + w + "h" + h;
-		
-		if (all.containsKey( key )){
-			
-			return all.get( key );
-			
-		} else {
-			
-			BufferTexture tx = new BufferTexture(w, h);
-			all.put( key, tx);
-			return tx;
-		
-		}
-	}
-	
 	public static void add( Object key, SmartTexture tx ) {
 		all.put( key, tx );
+	}
+	
+	public static void remove( Object key ){
+		SmartTexture tx = all.get( key );
+		if (tx != null){
+			all.remove(key);
+			tx.delete();
+		}
 	}
 
 	public static SmartTexture get( Object src ) {

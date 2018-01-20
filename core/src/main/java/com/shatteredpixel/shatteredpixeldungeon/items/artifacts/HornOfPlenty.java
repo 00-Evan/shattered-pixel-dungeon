@@ -127,6 +127,7 @@ public class HornOfPlenty extends Artifact {
 				if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
 				else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
 				else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
+				else                    image = ItemSpriteSheet.ARTIFACT_HORN1;
 
 				updateQuickslot();
 			}
