@@ -82,13 +82,8 @@ abstract public class MissileWeapon extends Weapon {
 			if (!curUser.shoot( enemy, this )) {
 				rangedMiss( cell );
 			} else {
-
-				//int bonus = RingOfSharpshooting.getBonus(curUser, RingOfSharpshooting.Aim.class);
-
-				//if (curUser.heroClass == HeroClass.HUNTRESS && enemy.buff(PinCushion.class) == null)
-				//	bonus += 3;
 				
-				rangedHit( enemy );
+				rangedHit( enemy, cell );
 
 			}
 		}
@@ -129,7 +124,7 @@ abstract public class MissileWeapon extends Weapon {
 		return delay;
 	}
 	
-	protected void rangedHit( Char enemy ){
+	protected void rangedHit( Char enemy, int cell ){
 		//if this weapon was thrown from a source stack, degrade that stack.
 		//unless a weapon is about to break, then break the one being thrown
 		if (parent != null){

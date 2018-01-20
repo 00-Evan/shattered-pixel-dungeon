@@ -38,11 +38,11 @@ public abstract class TippedDart extends Dart {
 	}
 	
 	@Override
-	protected void rangedHit(Char enemy) {
+	protected void rangedHit(Char enemy, int cell) {
 		if (enemy.isAlive())
 			Buff.affect(enemy, PinCushion.class).stick(new Dart());
 		else
-			Dungeon.level.drop( new Dart(), enemy.pos).sprite.drop();
+			Dungeon.level.drop( new Dart(), cell ).sprite.drop();
 	}
 	
 	@Override

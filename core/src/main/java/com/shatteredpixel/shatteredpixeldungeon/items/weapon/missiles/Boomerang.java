@@ -95,8 +95,8 @@ public class Boomerang extends MissileWeapon {
 	}
 	
 	@Override
-	public void rangedHit( Char enemy ) {
-		circleBack(enemy.pos, curUser);
+	public void rangedHit( Char enemy, int cell ) {
+		circleBack(cell, curUser);
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class Boomerang extends MissileWeapon {
 	private void circleBack( int from, Hero owner ) {
 
 		((MissileSprite)curUser.sprite.parent.recycle( MissileSprite.class )).
-				reset( from, curUser.pos, curItem, null );
+				reset( from, owner.sprite, curItem, null );
 
 		if (throwEquiped) {
 			owner.belongings.weapon = this;
