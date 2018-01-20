@@ -91,19 +91,17 @@ public class Thief extends Mob {
 	protected float attackDelay() {
 		return 0.5f;
 	}
-
+	
 	@Override
-	public void die( Object cause ) {
-
-		super.die( cause );
-
+	public void rollToDropLoot() {
 		if (item != null) {
 			Dungeon.level.drop( item, pos ).sprite.drop();
 			//updates position
 			if (item instanceof Honeypot.ShatteredPot) ((Honeypot.ShatteredPot)item).setHolder( this );
 		}
+		super.rollToDropLoot();
 	}
-
+	
 	@Override
 	protected Item createLoot(){
 		if (!Dungeon.LimitedDrops.THIEVES_ARMBAND.dropped()) {
