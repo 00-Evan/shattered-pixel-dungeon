@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ToxicImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
@@ -49,6 +50,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+
+import java.util.ArrayList;
 
 public class Blandfruit extends Food {
 
@@ -226,6 +229,64 @@ public class Blandfruit extends Food {
 	@Override
 	public ItemSprite.Glowing glowing() {
 		return potionGlow;
+	}
+	
+	public static class cookFruit extends Recipe {
+		
+		@Override
+		//also sorts ingredients if it can
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			if (ingredients.size() != 2) return false;
+			
+			if (ingredients.get(0) instanceof Blandfruit){
+				if (!(ingredients.get(1) instanceof Seed)){
+					return false;
+				}
+			} else if (ingredients.get(0) instanceof Seed){
+				if (ingredients.get(1) instanceof Blandfruit){
+					Item temp = ingredients.get(0);
+					ingredients.set(0, ingredients.get(1));
+					ingredients.set(1, temp);
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+			
+			Blandfruit fruit = (Blandfruit) ingredients.get(0);
+			Seed seed = (Seed) ingredients.get(1);
+			
+			if (fruit.quantity() >= 1 && fruit.potionAttrib == null
+				&& seed.quantity() >= 1){
+				return true;
+			}
+			
+			return false;
+		}
+		
+		@Override
+		public int cost(ArrayList<Item> ingredients) {
+			return 2;
+		}
+		
+		@Override
+		public Item cook(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+			
+			ingredients.get(0).quantity(ingredients.get(0).quantity() - 1);
+			ingredients.get(1).quantity(ingredients.get(1).quantity() - 1);
+			
+			
+			return new Blandfruit().cook((Seed) ingredients.get(1));
+		}
+		
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+			
+			return new Blandfruit().cook((Seed) ingredients.get(1));
+		}
 	}
 
 }

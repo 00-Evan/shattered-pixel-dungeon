@@ -24,16 +24,11 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -202,15 +197,12 @@ public class WndAlchemy extends Window {
 	}
 	
 	private void updateState(){
-		//potion creation
-		if (filterInput(Plant.Seed.class).size() == 3){
-			output.item(new WndBag.Placeholder(ItemSpriteSheet.POTION_HOLDER));
-			output.visible = true;
-			btnCombine.enable(true);
-			
-		//blandfruit cooking
-		} else if (filterInput(Blandfruit.class).size() == 1 && filterInput(Plant.Seed.class).size() == 1){
-			output.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
+		
+		ArrayList<Item> ingredients = filterInput(Item.class);
+		Recipe recipe = Recipe.findRecipe(ingredients);
+		
+		if (recipe != null){
+			output.item(recipe.sampleOutput(ingredients));
 			output.visible = true;
 			btnCombine.enable(true);
 			
@@ -218,49 +210,18 @@ public class WndAlchemy extends Window {
 			btnCombine.enable(false);
 			output.visible = false;
 		}
+		
 	}
 
 	private void combine(){
-		ArrayList<Plant.Seed> seeds = filterInput(Plant.Seed.class);
-		ArrayList<Blandfruit> fruits = filterInput(Blandfruit.class);
+		
+		ArrayList<Item> ingredients = filterInput(Item.class);
+		Recipe recipe = Recipe.findRecipe(ingredients);
 		
 		Item result = null;
 		
-		//potion creation
-		if (seeds.size() == 3){
-			
-			if (Random.Int( 3 ) == 0) {
-				
-				result = Generator.random( Generator.Category.POTION );
-				
-			} else {
-				
-				Class<? extends Item> itemClass = Random.element(seeds).alchemyClass;
-				try {
-					result = itemClass.newInstance();
-				} catch (Exception e) {
-					ShatteredPixelDungeon.reportException(e);
-					result = Generator.random( Generator.Category.POTION );
-				}
-				
-			}
-			
-			while (result instanceof PotionOfHealing
-					&& Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count) {
-				result = Generator.random(Generator.Category.POTION);
-			}
-			
-			if (result instanceof PotionOfHealing) {
-				Dungeon.LimitedDrops.COOKING_HP.count++;
-			}
-			
-			Statistics.potionsCooked++;
-			Badges.validatePotionsCooked();
-			
-		//blandfruit cooking
-		} else if (fruits.size() == 1 && seeds.size() == 1) {
-			result = fruits.get(0);
-			((Blandfruit)result).cook(seeds.get(0));
+		if (recipe != null){
+			result = recipe.cook(ingredients);
 		}
 		
 		if (result != null){
@@ -274,8 +235,10 @@ public class WndAlchemy extends Window {
 			}
 			
 			for (int i = 0; i < inputs.length; i++){
-				inputs[i].slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
-				inputs[i].item = null;
+				if (inputs[i].item != null && inputs[i].item.quantity() <= 0) {
+					inputs[i].slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
+					inputs[i].item = null;
+				}
 			}
 			
 			btnCombine.enable(false);
@@ -284,7 +247,7 @@ public class WndAlchemy extends Window {
 	}
 	
 	@Override
-	public void onBackPressed() {
+	public void destroy() {
 		for (int i = 0; i < inputs.length; i++) {
 			if (inputs[i].item != null){
 				if (!inputs[i].item.collect()){
@@ -292,6 +255,6 @@ public class WndAlchemy extends Window {
 				}
 			}
 		}
-		super.onBackPressed();
+		super.destroy();
 	}
 }
