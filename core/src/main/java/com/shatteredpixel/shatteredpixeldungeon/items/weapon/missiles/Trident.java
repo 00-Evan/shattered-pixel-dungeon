@@ -46,7 +46,7 @@ public class Trident extends MissileWeapon {
 	
 	@Override
 	public int price() {
-		return 20 * quantity;
+		return 30 * quantity;
 	}
 	
 }

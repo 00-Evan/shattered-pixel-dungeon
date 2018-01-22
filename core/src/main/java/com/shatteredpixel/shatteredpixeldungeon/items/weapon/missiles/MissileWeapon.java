@@ -49,6 +49,8 @@ abstract public class MissileWeapon extends Weapon {
 		usesTargeting = true;
 	}
 	
+	protected boolean sticky = true;
+	
 	protected static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
 	
@@ -139,8 +141,8 @@ abstract public class MissileWeapon extends Weapon {
 			durability -= durabilityPerUse();
 		}
 		if (durability > 0){
-			if (enemy.isAlive())    Buff.affect(enemy, PinCushion.class).stick(this);
-			else                    Dungeon.level.drop( this, enemy.pos).sprite.drop();
+			if (enemy.isAlive() && sticky)  Buff.affect(enemy, PinCushion.class).stick(this);
+			else                            Dungeon.level.drop( this, enemy.pos).sprite.drop();
 		}
 	}
 	

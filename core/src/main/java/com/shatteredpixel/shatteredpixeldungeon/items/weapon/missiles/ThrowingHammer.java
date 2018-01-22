@@ -27,6 +27,8 @@ public class ThrowingHammer extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.THROWING_HAMMER;
+		
+		sticky = false;
 	}
 	
 	@Override
@@ -46,11 +48,11 @@ public class ThrowingHammer extends MissileWeapon {
 	
 	@Override
 	protected float durabilityPerUse() {
-		return super.durabilityPerUse()/2f;
+		return super.durabilityPerUse()/1.5f;
 	}
 	
 	@Override
 	public int price() {
-		return 20 * quantity;
+		return 30 * quantity;
 	}
 }

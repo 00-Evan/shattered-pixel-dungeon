@@ -46,7 +46,7 @@ public class FishingSpear extends MissileWeapon {
 	
 	@Override
 	public int price() {
-		return 12 * quantity;
+		return 18 * quantity;
 	}
 	
 }

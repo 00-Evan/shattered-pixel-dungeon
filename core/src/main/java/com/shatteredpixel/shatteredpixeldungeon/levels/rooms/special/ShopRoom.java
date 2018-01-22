@@ -168,32 +168,32 @@ public class ShopRoom extends SpecialRoom {
 		case 6:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Shortsword().identify() : new HandAxe()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
-					new Shuriken().random() :
-					new IncendiaryDart().random());
+					new Shuriken().quantity(2) :
+					new IncendiaryDart().quantity(5));
 			itemsToSpawn.add( new LeatherArmor().identify() );
 			break;
 			
 		case 11:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Sword().identify() : new Mace()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
-					new FishingSpear().random() :
-					new Bolas().random());
+					new FishingSpear().quantity(2) :
+					new Bolas().quantity(2));
 			itemsToSpawn.add( new MailArmor().identify() );
 			break;
 			
 		case 16:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Longsword().identify() : new BattleAxe()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
-					new Javelin().random() :
-					new Tomahawk().random());
+					new Javelin().quantity(2) :
+					new Tomahawk().quantity(2));
 			itemsToSpawn.add( new ScaleArmor().identify() );
 			break;
 			
 		case 21:
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ? new Greatsword().identify() : new WarHammer().identify() );
 			itemsToSpawn.add( Random.Int(2) == 0 ?
-					new Trident().random() :
-					new ThrowingHammer().random());
+					new Trident().quantity(2) :
+					new ThrowingHammer().quantity(2));
 			itemsToSpawn.add( new PlateArmor().identify() );
 			itemsToSpawn.add( new Torch() );
 			itemsToSpawn.add( new Torch() );

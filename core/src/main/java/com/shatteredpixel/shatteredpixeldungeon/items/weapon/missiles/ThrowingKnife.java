@@ -89,6 +89,6 @@ public class ThrowingKnife extends MissileWeapon {
 	
 	@Override
 	public int price() {
-		return 4 * quantity;
+		return 6 * quantity;
 	}
 }

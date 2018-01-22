@@ -61,6 +61,6 @@ public class Tomahawk extends MissileWeapon {
 	
 	@Override
 	public int price() {
-		return 16 * quantity;
+		return 24 * quantity;
 	}
 }

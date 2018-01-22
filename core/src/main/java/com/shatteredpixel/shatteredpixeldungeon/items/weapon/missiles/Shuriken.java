@@ -54,6 +54,6 @@ public class Shuriken extends MissileWeapon {
 	
 	@Override
 	public int price() {
-		return 8 * quantity;
+		return 12 * quantity;
 	}
 }

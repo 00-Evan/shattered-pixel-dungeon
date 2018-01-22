@@ -61,6 +61,6 @@ public class Bolas extends MissileWeapon {
 	
 	@Override
 	public int price() {
-		return 12 * quantity;
+		return 18 * quantity;
 	}
 }

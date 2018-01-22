@@ -47,6 +47,6 @@ public abstract class TippedDart extends Dart {
 	
 	@Override
 	public int price() {
-		return quantity * 6;
+		return 12 * quantity;
 	}
 }
