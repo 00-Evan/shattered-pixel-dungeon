@@ -118,14 +118,6 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GasesImmunity" );
 		
-		com.watabou.utils.Bundle.exceptionReporter =
-				new com.watabou.utils.Bundle.BundleExceptionCallback() {
-					@Override
-					public void call(Throwable t) {
-						ShatteredPixelDungeon.reportException(t);
-					}
-				};
-		
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -323,8 +315,5 @@ public class ShatteredPixelDungeon extends Game {
 		}
 
 	}
-
-	public static void reportException( Throwable tr ) {
-		Log.e("PD", Log.getStackTraceString(tr));
-	}
+	
 }

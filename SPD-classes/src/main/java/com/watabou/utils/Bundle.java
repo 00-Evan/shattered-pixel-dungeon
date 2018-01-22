@@ -21,6 +21,8 @@
 
 package com.watabou.utils;
 
+import com.watabou.noosa.Game;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,7 +101,7 @@ public class Bundle {
 				Class cl = Class.forName( clName );
 				return cl;
 			} catch (ClassNotFoundException e) {
-				reportException(e);
+				Game.reportException(e);
 				return null;
 			}
 		}
@@ -127,13 +129,13 @@ public class Bundle {
 				return null;
 			}
 		} catch (ClassNotFoundException e ) {
-			reportException(e);
+			Game.reportException(e);
 			return null;
 		} catch (InstantiationException e ) {
-			reportException(e);
+			Game.reportException(e);
 			return null;
 		} catch (IllegalAccessException e ) {
-			reportException(e);
+			Game.reportException(e);
 			return null;
 		}
 	}
@@ -146,7 +148,7 @@ public class Bundle {
 		try {
 			return Enum.valueOf( enumClass, data.getString( key ) );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 			return enumClass.getEnumConstants()[0];
 		}
 	}
@@ -161,7 +163,7 @@ public class Bundle {
 			}
 			return result;
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 			return null;
 		}
 	}
@@ -176,7 +178,7 @@ public class Bundle {
 			}
 			return result;
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 			return null;
 		}
 	}
@@ -191,7 +193,7 @@ public class Bundle {
 			}
 			return result;
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 			return null;
 		}
 	}
@@ -206,7 +208,7 @@ public class Bundle {
 			}
 			return result;
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 			return null;
 		}
 	}
@@ -225,13 +227,13 @@ public class Bundle {
 					Class cl = Class.forName( clName );
 					result[i] = cl;
 				} catch (ClassNotFoundException e) {
-					reportException(e);
+					Game.reportException(e);
 					result[i] = null;
 				}
 			}
 			return result;
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 			return null;
 		}
 	}
@@ -247,7 +249,7 @@ public class Bundle {
 				if (O != null) list.add( O );
 			}
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 		
 		return list;
@@ -257,7 +259,7 @@ public class Bundle {
 		try {
 			data.put( key, value );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 	
@@ -265,7 +267,7 @@ public class Bundle {
 		try {
 			data.put( key, value );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 
@@ -273,7 +275,7 @@ public class Bundle {
 		try {
 			data.put( key, value );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 	
@@ -281,7 +283,7 @@ public class Bundle {
 		try {
 			data.put( key, value );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 	
@@ -289,7 +291,7 @@ public class Bundle {
 		try {
 			data.put( key, value );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 
@@ -297,7 +299,7 @@ public class Bundle {
 		try {
 			data.put( key, value );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 	
@@ -305,7 +307,7 @@ public class Bundle {
 		try {
 			data.put( key, bundle.data );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 	
@@ -317,7 +319,7 @@ public class Bundle {
 				object.storeInBundle( bundle );
 				data.put( key, bundle.data );
 			} catch (JSONException e) {
-				reportException(e);
+				Game.reportException(e);
 			}
 		}
 	}
@@ -327,7 +329,7 @@ public class Bundle {
 			try {
 				data.put( key, value.name() );
 			} catch (JSONException e) {
-				reportException(e);
+				Game.reportException(e);
 			}
 		}
 	}
@@ -340,7 +342,7 @@ public class Bundle {
 			}
 			data.put( key, jsonArray );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 	
@@ -352,7 +354,7 @@ public class Bundle {
 			}
 			data.put( key, jsonArray );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 	
@@ -364,7 +366,7 @@ public class Bundle {
 			}
 			data.put( key, jsonArray );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 	
@@ -376,7 +378,7 @@ public class Bundle {
 			}
 			data.put( key, jsonArray );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 
@@ -388,7 +390,7 @@ public class Bundle {
 			}
 			data.put( key, jsonArray );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 	
@@ -410,7 +412,7 @@ public class Bundle {
 		try {
 			data.put( key, array );
 		} catch (JSONException e) {
-			reportException(e);
+			Game.reportException(e);
 		}
 	}
 
@@ -439,7 +441,7 @@ public class Bundle {
 
 			return new Bundle( json );
 		} catch (Exception e) {
-			reportException(e);
+			Game.reportException(e);
 			throw new IOException();
 		}
 	}
@@ -459,7 +461,7 @@ public class Bundle {
 
 			return true;
 		} catch (IOException e) {
-			reportException(e);
+			Game.reportException(e);
 			return false;
 		}
 	}
@@ -467,19 +469,5 @@ public class Bundle {
 	public static void addAlias( Class<?> cl, String alias ) {
 		aliases.put( alias, cl.getName() );
 	}
-
-	//This may be set in order to have bundles report exceptions
-	//...Yes it would be far cleaner to have the bundling methods throw exceptions
-	//But that would require too much code-changing right now.
-	public static BundleExceptionCallback exceptionReporter;
-
-	private static void reportException(Throwable t){
-		if (exceptionReporter != null){
-			exceptionReporter.call(t);
-		}
-	}
-
-	public static abstract class BundleExceptionCallback {
-		public abstract void call(Throwable t);
-	}
+	
 }

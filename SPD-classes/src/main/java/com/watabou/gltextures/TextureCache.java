@@ -26,6 +26,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.watabou.glwrap.Texture;
+import com.watabou.noosa.Game;
 
 import java.util.HashMap;
 
@@ -157,7 +158,7 @@ public class TextureCache {
 			}
 		} catch (Exception e) {
 			
-			e.printStackTrace();
+			Game.reportException(e);
 			return null;
 			
 		}

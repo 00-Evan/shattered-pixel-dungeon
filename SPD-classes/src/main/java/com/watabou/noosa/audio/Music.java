@@ -72,6 +72,7 @@ public enum Music implements MediaPlayer.OnPreparedListener, MediaPlayer.OnError
 			
 		} catch (Exception e) {
 			
+			Game.reportException(e);
 			player = null;
 			
 		}

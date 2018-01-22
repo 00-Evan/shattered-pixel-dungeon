@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -402,6 +403,14 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		
 		scene.update();
 		Camera.updateAll();
+	}
+	
+	public static void reportException( Throwable tr ) {
+		if (instance != null) instance.logException(tr);
+	}
+	
+	protected void logException( Throwable tr ){
+		Log.e("GAME", Log.getStackTraceString(tr));
 	}
 	
 	public static void vibrate( int milliseconds ) {
