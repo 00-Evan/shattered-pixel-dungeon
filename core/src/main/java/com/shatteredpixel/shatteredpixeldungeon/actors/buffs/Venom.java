@@ -70,10 +70,15 @@ public class Venom extends Buff implements Hero.Doom {
 	public String toString() {
 		return Messages.get(this, "name");
 	}
+	
+	@Override
+	public String heroMessage() {
+		return Messages.get(this, "heromsg");
+	}
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", dispTurns(left), damage);
+		return Messages.get(this, "desc", dispTurns(left), (int)damage);
 	}
 
 	@Override
@@ -102,7 +107,7 @@ public class Venom extends Buff implements Hero.Doom {
 		Badges.validateDeathFromPoison();
 		
 		Dungeon.fail( getClass() );
-		GLog.n(Messages.get(Poison.class, "ondeath"));
+		GLog.n(Messages.get(this, "ondeath"));
 	}
 
 }
