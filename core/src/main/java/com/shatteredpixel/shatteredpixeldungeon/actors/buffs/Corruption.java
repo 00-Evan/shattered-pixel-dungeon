@@ -39,13 +39,6 @@ public class Corruption extends Buff {
 	public boolean attachTo(Char target) {
 		if (super.attachTo(target)){
 			target.alignment = Char.Alignment.ALLY;
-			if (target instanceof Mob){
-				((Mob) target).rollToDropLoot();
-			}
-			PinCushion p = target.buff(PinCushion.class);
-			if (p != null){
-				p.detach();
-			}
 			return true;
 		} else {
 			return false;

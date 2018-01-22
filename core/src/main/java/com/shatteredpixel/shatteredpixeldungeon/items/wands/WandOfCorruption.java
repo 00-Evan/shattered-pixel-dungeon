@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
@@ -225,6 +226,8 @@ public class WandOfCorruption extends Wand {
 				if (buff.type == Buff.buffType.NEGATIVE
 						&& !(buff instanceof SoulMark)) {
 					buff.detach();
+				} else if (buff instanceof PinCushion){
+					buff.detach();
 				}
 			}
 			Buff.affect(enemy, Corruption.class);
@@ -236,7 +239,7 @@ public class WandOfCorruption extends Wand {
 				curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
 				curUser.earnExp(enemy.EXP);
 			}
-			//TODO perhaps enemies should also drop loot here
+			enemy.rollToDropLoot();
 		} else {
 			Buff.affect(enemy, Doom.class);
 		}
