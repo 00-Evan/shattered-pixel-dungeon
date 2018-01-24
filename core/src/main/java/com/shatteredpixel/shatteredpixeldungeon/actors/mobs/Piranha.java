@@ -47,6 +47,9 @@ public class Piranha extends Mob {
 		
 		EXP = 0;
 		
+		loot = MysteryMeat.class;
+		lootChance = 1f;
+		
 		HUNTING = new Hunting();
 	}
 	
@@ -86,7 +89,6 @@ public class Piranha extends Mob {
 	
 	@Override
 	public void die( Object cause ) {
-		Dungeon.level.drop( new MysteryMeat(), pos ).sprite.drop();
 		super.die( cause );
 		
 		Statistics.piranhasKilled++;

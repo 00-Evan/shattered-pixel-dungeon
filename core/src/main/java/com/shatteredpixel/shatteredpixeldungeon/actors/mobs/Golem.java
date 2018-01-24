@@ -60,12 +60,12 @@ public class Golem extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 12);
 	}
-
+	
 	@Override
-	public void die( Object cause ) {
+	public void rollToDropLoot() {
 		Imp.Quest.process( this );
 		
-		super.die( cause );
+		super.rollToDropLoot();
 	}
 	
 	{

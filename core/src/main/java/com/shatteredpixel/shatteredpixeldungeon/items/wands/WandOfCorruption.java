@@ -125,7 +125,7 @@ public class WandOfCorruption extends Wand {
 
 		if (ch != null){
 			
-			if (!(ch instanceof Mob) || ch instanceof NPC){
+			if (!(ch instanceof Mob)){
 				return;
 			}
 

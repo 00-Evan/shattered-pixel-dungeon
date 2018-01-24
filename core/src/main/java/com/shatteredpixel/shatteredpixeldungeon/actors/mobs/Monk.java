@@ -74,10 +74,10 @@ public class Monk extends Mob {
 	}
 	
 	@Override
-	public void die( Object cause ) {
+	public void rollToDropLoot() {
 		Imp.Quest.process( this );
 		
-		super.die( cause );
+		super.rollToDropLoot();
 	}
 
 	private int hitsToDisarm = 0;
