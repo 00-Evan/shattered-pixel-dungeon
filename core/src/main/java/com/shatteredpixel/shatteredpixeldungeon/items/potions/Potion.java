@@ -337,7 +337,7 @@ public class Potion extends Item {
 	}
 	
 	
-	public static class randomPotion extends Recipe{
+	public static class RandomPotion extends Recipe {
 		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
@@ -359,7 +359,7 @@ public class Potion extends Item {
 		}
 		
 		@Override
-		public Item cook(ArrayList<Item> ingredients) {
+		public Item brew(ArrayList<Item> ingredients) {
 			if (!testIngredients(ingredients)) return null;
 			
 			for (Item ingredient : ingredients){
@@ -401,7 +401,16 @@ public class Potion extends Item {
 		
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
-			return new WndBag.Placeholder(ItemSpriteSheet.POTION_HOLDER);
+			return new WndBag.Placeholder(ItemSpriteSheet.POTION_HOLDER){
+				{
+					name = Messages.get(RandomPotion.class, "name");
+				}
+				
+				@Override
+				public String info() {
+					return "";
+				}
+			};
 		}
 	}
 }

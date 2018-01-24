@@ -231,7 +231,7 @@ public class Blandfruit extends Food {
 		return potionGlow;
 	}
 	
-	public static class cookFruit extends Recipe {
+	public static class CookFruit extends Recipe {
 		
 		@Override
 		//also sorts ingredients if it can
@@ -271,7 +271,7 @@ public class Blandfruit extends Food {
 		}
 		
 		@Override
-		public Item cook(ArrayList<Item> ingredients) {
+		public Item brew(ArrayList<Item> ingredients) {
 			if (!testIngredients(ingredients)) return null;
 			
 			ingredients.get(0).quantity(ingredients.get(0).quantity() - 1);

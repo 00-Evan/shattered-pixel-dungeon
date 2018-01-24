@@ -25,6 +25,13 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+
+import java.util.ArrayList;
 
 public abstract class TippedDart extends Dart {
 	
@@ -48,5 +55,71 @@ public abstract class TippedDart extends Dart {
 	@Override
 	public int price() {
 		return 12 * quantity;
+	}
+	
+	
+	public static class TipDart extends Recipe{
+		
+		@Override
+		//also sorts ingredients if it can
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			if (ingredients.size() != 2) return false;
+			
+			if (ingredients.get(0).getClass() == Dart.class){
+				if (!(ingredients.get(1) instanceof Plant.Seed)){
+					return false;
+				}
+			} else if (ingredients.get(0) instanceof Plant.Seed){
+				if (ingredients.get(1).getClass() == Dart.class){
+					Item temp = ingredients.get(0);
+					ingredients.set(0, ingredients.get(1));
+					ingredients.set(1, temp);
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+			
+			Plant.Seed seed = (Plant.Seed) ingredients.get(1);
+			
+			if (ingredients.get(0).quantity() >= 2
+					&& seed.quantity() >= 1
+					&& (seed instanceof Firebloom.Seed || seed instanceof Earthroot.Seed)){
+				return true;
+			}
+			
+			return false;
+		}
+		
+		@Override
+		public int cost(ArrayList<Item> ingredients) {
+			return 2;
+		}
+		
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+			
+			ingredients.get(0).quantity(ingredients.get(0).quantity() - 2);
+			ingredients.get(1).quantity(ingredients.get(1).quantity() - 1);
+			
+			if (ingredients.get(1) instanceof Firebloom.Seed){
+				return new IncendiaryDart().quantity(2);
+			} else {
+				return new CurareDart().quantity(2);
+			}
+		}
+		
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+			
+			if (ingredients.get(1) instanceof Firebloom.Seed){
+				return new IncendiaryDart().quantity(2);
+			} else {
+				return new CurareDart().quantity(2);
+			}
+		}
 	}
 }

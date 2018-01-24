@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.TippedDart;
 
 import java.util.ArrayList;
 
@@ -31,9 +32,10 @@ public abstract class Recipe {
 	
 	public abstract boolean testIngredients(ArrayList<Item> ingredients);
 	
+	//not currently used
 	public abstract int cost(ArrayList<Item> ingredients);
 	
-	public abstract Item cook(ArrayList<Item> ingredients);
+	public abstract Item brew(ArrayList<Item> ingredients);
 	
 	public abstract Item sampleOutput(ArrayList<Item> ingredients);
 	
@@ -74,7 +76,7 @@ public abstract class Recipe {
 		}
 		
 		@Override
-		public final Item cook(ArrayList<Item> ingredients) {
+		public final Item brew(ArrayList<Item> ingredients) {
 			if (!testIngredients(ingredients)) return null;
 			
 			for(int i = 0; i < inputs.length; i++){
@@ -113,11 +115,12 @@ public abstract class Recipe {
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
-		new Blandfruit.cookFruit()
+		new Blandfruit.CookFruit(),
+		new TippedDart.TipDart()
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
-		new Potion.randomPotion()
+		new Potion.RandomPotion()
 	};
 	
 	public static Recipe findRecipe(ArrayList<Item> ingredients){

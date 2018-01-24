@@ -22,11 +22,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -42,7 +43,6 @@ import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -98,17 +98,53 @@ public class WndAlchemy extends Window {
 					GameScene.selectItem( itemSelector, WndBag.Mode.ALCHEMY, Messages.get(WndAlchemy.class, "select") );
 				}
 			};
-			inputs[i].setRect(15, h, BTN_SIZE, BTN_SIZE);
+			inputs[i].setRect(10, h, BTN_SIZE, BTN_SIZE);
 			add(inputs[i]);
 			h += BTN_SIZE + 2;
 		}
 		
-		Image arrow = Icons.get(Icons.RESUME);
-		arrow.hardlight(0, 0, 0);
-		arrow.x = (w - arrow.width)/2f;
-		arrow.y = inputs[1].top() + (inputs[1].height() - arrow.height)/2f;
-		PixelScene.align(arrow);
-		add(arrow);
+		btnCombine = new RedButton(""){
+			Image arrow;
+			
+			@Override
+			protected void createChildren() {
+				super.createChildren();
+				
+				arrow = Icons.get(Icons.RESUME);
+				add(arrow);
+			}
+			
+			@Override
+			protected void layout() {
+				super.layout();
+				arrow.x = x + (width - arrow.width)/2f;
+				arrow.y = y + (height - arrow.height)/2f;
+				PixelScene.align(arrow);
+			}
+			
+			@Override
+			public void enable(boolean value) {
+				super.enable(value);
+				if (value){
+					arrow.tint(1, 1, 0, 1);
+					arrow.alpha(1f);
+					bg.alpha(1f);
+				} else {
+					arrow.color(0, 0, 0);
+					arrow.alpha(0.6f);
+					bg.alpha(0.6f);
+				}
+			}
+			
+			@Override
+			protected void onClick() {
+				super.onClick();
+				combine();
+			}
+		};
+		btnCombine.enable(false);
+		btnCombine.setRect((w-30)/2f, inputs[1].top()+5, 30, inputs[1].height()-10);
+		add(btnCombine);
 		
 		output = new ItemSlot(){
 			@Override
@@ -119,7 +155,7 @@ public class WndAlchemy extends Window {
 				}
 			}
 		};
-		output.setRect(w - BTN_SIZE - 15, inputs[1].top(), BTN_SIZE, BTN_SIZE);
+		output.setRect(w - BTN_SIZE - 10, inputs[1].top(), BTN_SIZE, BTN_SIZE);
 		
 		ColorBlock outputBG = new ColorBlock(output.width(), output.height(), 0x9991938C);
 		outputBG.x = output.left();
@@ -142,30 +178,29 @@ public class WndAlchemy extends Window {
 		
 		float btnWidth = (w-14)/2f;
 		
-		btnCombine = new RedButton(Messages.get(this, "combine")){
+		RedButton btnRecipes = new RedButton(Messages.get(this, "recipes_title")){
 			@Override
 			protected void onClick() {
 				super.onClick();
-				combine();
+				ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(WndAlchemy.class, "recipes_text")));
 			}
 		};
-		btnCombine.setRect(5, h, btnWidth, 18);
-		PixelScene.align(btnCombine);
-		btnCombine.enable(false);
-		add(btnCombine);
+		btnRecipes.setRect(5, h, btnWidth, 18);
+		PixelScene.align(btnRecipes);
+		add(btnRecipes);
 		
-		RedButton btnCancel = new RedButton(Messages.get(this, "cancel")){
+		RedButton btnClose = new RedButton(Messages.get(this, "close")){
 			@Override
 			protected void onClick() {
 				super.onClick();
 				onBackPressed();
 			}
 		};
-		btnCancel.setRect(w - 5 - btnWidth, h, btnWidth, 18);
-		PixelScene.align(btnCancel);
-		add(btnCancel);
+		btnClose.setRect(w - 5 - btnWidth, h, btnWidth, 18);
+		PixelScene.align(btnClose);
+		add(btnClose);
 		
-		h += btnCancel.height();
+		h += btnClose.height();
 		
 		resize(w, h);
 	}
@@ -176,7 +211,11 @@ public class WndAlchemy extends Window {
 			if (item != null) {
 				for (int i = 0; i < inputs.length; i++) {
 					if (inputs[i].item == null){
-						inputs[i].item(item.detach(Dungeon.hero.belongings.backpack));
+						if (item instanceof Dart){
+							inputs[i].item(item.detachAll(Dungeon.hero.belongings.backpack));
+						} else {
+							inputs[i].item(item.detach(Dungeon.hero.belongings.backpack));
+						}
 						break;
 					}
 				}
@@ -221,7 +260,7 @@ public class WndAlchemy extends Window {
 		Item result = null;
 		
 		if (recipe != null){
-			result = recipe.cook(ingredients);
+			result = recipe.brew(ingredients);
 		}
 		
 		if (result != null){
@@ -235,9 +274,13 @@ public class WndAlchemy extends Window {
 			}
 			
 			for (int i = 0; i < inputs.length; i++){
-				if (inputs[i].item != null && inputs[i].item.quantity() <= 0) {
-					inputs[i].slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
-					inputs[i].item = null;
+				if (inputs[i].item != null)  {
+					if (inputs[i].item.quantity() <= 0) {
+						inputs[i].slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
+						inputs[i].item = null;
+					} else {
+						inputs[i].slot.item(inputs[i].item);
+					}
 				}
 			}
 			
