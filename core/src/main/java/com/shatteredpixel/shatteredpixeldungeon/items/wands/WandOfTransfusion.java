@@ -105,10 +105,10 @@ public class WandOfTransfusion extends Wand {
 			} else {
 
 				float duration = 5+level();
-				Buff.affect(ch, Charm.class, Charm.durationFactor(ch) * duration).object = curUser.id();
+				Buff.affect(ch, Charm.class, duration).object = curUser.id();
 
 				duration *= Random.Float(0.75f, 1f);
-				Buff.affect(curUser, Charm.class, Charm.durationFactor(ch) * duration).object = ch.id();
+				Buff.affect(curUser, Charm.class, duration).object = ch.id();
 
 				ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 				curUser.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );

@@ -131,6 +131,6 @@ public class Frost extends FlavourBuff {
 	}
 
 	public static float duration( Char ch ) {
-		return DURATION * RingOfElements.durationFactor( ch );
+		return DURATION;
 	}
 }

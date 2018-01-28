@@ -44,7 +44,7 @@ public class WeakeningTrap extends Trap{
 
 		Char ch = Actor.findChar( pos );
 		if (ch == Dungeon.hero){
-			Buff.prolong( ch, Weakness.class, Weakness.duration(ch)*2f);
+			Buff.prolong( ch, Weakness.class, Weakness.DURATION*2f );
 		}
 	}
 }

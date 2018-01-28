@@ -498,43 +498,38 @@ public abstract class Char extends Actor {
 	
 	protected final HashSet<Class> resistances = new HashSet<>();
 	
-	public HashSet<Class> resistances() {
-		HashSet<Class> result = new HashSet<>(resistances);
+	//returns percent effectiveness after resistances
+	//TODO currently resistances reduce effectiveness by a static 50%, and do not stack.
+	public float resist( Class effect ){
+		HashSet<Class> resists = new HashSet<>(resistances);
 		for (Property p : properties()){
-			result.addAll(p.resistances());
+			resists.addAll(p.resistances());
 		}
 		for (Buff b : buffs()){
-			result.addAll(b.resistances());
+			resists.addAll(b.resistances());
 		}
-		result.addAll(RingOfElements.resistances( this ));
-		return result;
-	}
-	
-	public float resist( Class effect ){
+		
 		float result = 1f;
-		for (Class c : resistances()){
+		for (Class c : resists){
 			if (c.isAssignableFrom(effect)){
-				result *= Random.Float();
+				result *= 0.5f;
 			}
 		}
-		return result;
+		return result * RingOfElements.resist(this, effect);
 	}
 	
 	protected final HashSet<Class> immunities = new HashSet<>();
 	
-	public HashSet<Class> immunities() {
-		HashSet<Class> result = new HashSet<>(immunities);
+	public boolean isImmune(Class effect ){
+		HashSet<Class> immunes = new HashSet<>(immunities);
 		for (Property p : properties()){
-			result.addAll(p.immunities());
+			immunes.addAll(p.immunities());
 		}
 		for (Buff b : buffs()){
-			result.addAll(b.immunities());
+			immunes.addAll(b.immunities());
 		}
-		return result;
-	}
-	
-	public boolean isImmune(Class effect ){
-		for (Class c : immunities()){
+		
+		for (Class c : immunes){
 			if (c.isAssignableFrom(effect)){
 				return true;
 			}

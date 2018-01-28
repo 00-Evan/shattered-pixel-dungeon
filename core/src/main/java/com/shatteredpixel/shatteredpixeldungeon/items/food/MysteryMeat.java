@@ -63,15 +63,15 @@ public class MysteryMeat extends Food {
 				break;
 			case 1:
 				GLog.w( Messages.get(MysteryMeat.class, "legs") );
-				Buff.prolong( hero, Roots.class, Paralysis.duration( hero ) );
+				Buff.prolong( hero, Roots.class, Paralysis.DURATION );
 				break;
 			case 2:
 				GLog.w( Messages.get(MysteryMeat.class, "not_well") );
-				Buff.affect( hero, Poison.class ).set( Poison.durationFactor( hero ) * hero.HT / 5 );
+				Buff.affect( hero, Poison.class ).set( hero.HT / 5 );
 				break;
 			case 3:
 				GLog.w( Messages.get(MysteryMeat.class, "stuffed") );
-				Buff.prolong( hero, Slow.class, Slow.duration( hero ) );
+				Buff.prolong( hero, Slow.class, Slow.DURATION );
 				break;
 		}
 	}

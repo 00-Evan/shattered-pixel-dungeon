@@ -86,7 +86,7 @@ public class PoisonDartTrap extends Trap {
 										Dungeon.fail( trap.getClass() );
 									}
 									Buff.affect( finalTarget, Poison.class )
-											.set( Poison.durationFactor( finalTarget ) * (4 + Dungeon.depth) );
+											.set( 4 + Dungeon.depth );
 									Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
 									finalTarget.sprite.bloodBurstA(finalTarget.sprite.center(), dmg);
 									finalTarget.sprite.flash();
@@ -100,7 +100,7 @@ public class PoisonDartTrap extends Trap {
 			} else {
 				finalTarget.damage(Random.NormalIntRange(1, 4) - finalTarget.drRoll(), trap);
 				Buff.affect( finalTarget, Poison.class )
-						.set( Poison.durationFactor( finalTarget ) * (4 + Dungeon.depth) );
+						.set( 4 + Dungeon.depth );
 			}
 		}
 	}

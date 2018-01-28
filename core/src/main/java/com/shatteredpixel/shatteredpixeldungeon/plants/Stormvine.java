@@ -39,7 +39,7 @@ public class Stormvine extends Plant {
 		Char ch = Actor.findChar(pos);
 
 		if (ch != null) {
-			Buff.affect(ch, Vertigo.class, Vertigo.duration( ch ) );
+			Buff.affect(ch, Vertigo.class, Vertigo.DURATION );
 		}
 	}
 

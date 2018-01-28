@@ -21,14 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Weakness extends FlavourBuff {
 
-	private static final float DURATION = 40f;
+	public static final float DURATION = 40f;
 
 	{
 		type = buffType.NEGATIVE;
@@ -42,10 +40,6 @@ public class Weakness extends FlavourBuff {
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");
-	}
-	
-	public static float duration( Char ch ) {
-		return DURATION * RingOfElements.durationFactor( ch );
 	}
 
 	@Override

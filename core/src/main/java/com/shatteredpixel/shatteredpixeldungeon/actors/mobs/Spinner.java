@@ -80,7 +80,7 @@ public class Spinner extends Mob {
 	public int attackProc(Char enemy, int damage) {
 		damage = super.attackProc( enemy, damage );
 		if (Random.Int(2) == 0) {
-			Buff.affect(enemy, Poison.class).set(Random.Int(7, 9) * Poison.durationFactor(enemy));
+			Buff.affect(enemy, Poison.class).set(Random.Int(7, 9) );
 			state = FLEEING;
 		}
 

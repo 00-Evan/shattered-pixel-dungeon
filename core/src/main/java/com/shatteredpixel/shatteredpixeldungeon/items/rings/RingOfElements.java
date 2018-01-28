@@ -22,10 +22,17 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
@@ -40,31 +47,38 @@ public class RingOfElements extends Ring {
 	protected RingBuff buff( ) {
 		return new Resistance();
 	}
-
-	private static final HashSet<Class> EMPTY = new HashSet<>();
-	public static final HashSet<Class> FULL = new HashSet<>();
+	
+	public static final HashSet<Class> RESISTS = new HashSet<>();
 	static {
-		FULL.add( Burning.class );
-		FULL.add( ToxicGas.class );
-		FULL.add( Poison.class );
-		FULL.add( Venom.class );
-		FULL.add( Shaman.class );
-		FULL.add( Warlock.class );
-		FULL.add( Eye.class );
-		FULL.add( Yog.BurningFist.class );
+		RESISTS.add( Burning.class );
+		RESISTS.add( Charm.class );
+		RESISTS.add( Chill.class );
+		RESISTS.add( Frost.class );
+		RESISTS.add( Ooze.class );
+		RESISTS.add( Paralysis.class );
+		RESISTS.add( Poison.class );
+		RESISTS.add( Venom.class );
+		RESISTS.add( Weakness.class );
+		
+		RESISTS.add( ToxicGas.class );
+		RESISTS.add( Electricity.class );
+		
+		RESISTS.add( Shaman.class );
+		RESISTS.add( Warlock.class );
+		RESISTS.add( Eye.class );
+		RESISTS.add( Yog.BurningFist.class );
 	}
 	
-	public static HashSet<Class> resistances( Char target ){
-		if (Random.Int( getBonus(target, Resistance.class) + 2 ) >= 2) {
-			return FULL;
-		} else {
-			return EMPTY;
+	public static float resist( Char target, Class effect ){
+		if (getBonus(target, Resistance.class) == 0) return 1f;
+		
+		for (Class c : RESISTS){
+			if (c.isAssignableFrom(effect)){
+				return (float)Math.pow(0.875, getBonus(target, Resistance.class));
+			}
 		}
-	}
-	
-	public static float durationFactor( Char target ){
-		int level = getBonus( target, Resistance.class);
-		return level <= 0 ? 1 : (1 + 0.5f * level) / (1 + level);
+		
+		return 1f;
 	}
 	
 	public class Resistance extends RingBuff {

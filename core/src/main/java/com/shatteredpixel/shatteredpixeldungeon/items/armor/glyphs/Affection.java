@@ -44,7 +44,7 @@ public class Affection extends Glyph {
 			
 			int duration = Random.IntRange( 2, 5 );
 
-			Buff.affect( attacker, Charm.class, Charm.durationFactor( attacker ) * duration ).object = defender.id();
+			Buff.affect( attacker, Charm.class, duration ).object = defender.id();
 			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 
 		}

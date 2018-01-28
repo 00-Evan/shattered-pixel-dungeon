@@ -52,7 +52,7 @@ public class ScrollOfPsionicBlast extends Scroll {
 		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
-				mob.damage(mob.HT, this );
+				mob.damage(mob.HP, this);
 			}
 		}
 

@@ -45,7 +45,7 @@ public class Eldritch extends Weapon.Enchantment {
 		if (Random.Int( level + 5 ) >= 4) {
 
 			if (defender == Dungeon.hero) {
-				Buff.affect( defender, Vertigo.class, Vertigo.duration(defender) );
+				Buff.affect( defender, Vertigo.class, Vertigo.DURATION );
 			} else {
 				Buff.affect( defender, Terror.class, Terror.DURATION ).object = attacker.id();
 			}

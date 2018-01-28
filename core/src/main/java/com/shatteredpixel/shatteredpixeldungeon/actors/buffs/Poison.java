@@ -113,10 +113,6 @@ public class Poison extends Buff implements Hero.Doom {
 		return true;
 	}
 
-	public static float durationFactor( Char ch ) {
-		return RingOfElements.durationFactor( ch );
-	}
-
 	@Override
 	public void onDeath() {
 		Badges.validateDeathFromPoison();
