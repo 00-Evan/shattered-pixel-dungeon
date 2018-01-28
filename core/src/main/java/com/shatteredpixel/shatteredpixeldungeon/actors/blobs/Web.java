@@ -47,7 +47,7 @@ public class Web extends Blob {
 					volume += off[cell];
 
 					Char ch = Actor.findChar( cell );
-					if (ch != null && !ch.immunities().contains(this.getClass())) {
+					if (ch != null && !ch.isImmune(this.getClass())) {
 						Buff.prolong( ch, Roots.class, TICK );
 					}
 				}

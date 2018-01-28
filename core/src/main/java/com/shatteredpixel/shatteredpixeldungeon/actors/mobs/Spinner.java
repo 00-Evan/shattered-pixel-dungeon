@@ -100,7 +100,7 @@ public class Spinner extends Mob {
 	}
 	
 	{
-		immunities.add(Roots.class);
+		immunities.add(Web.class);
 	}
 
 	private class Fleeing extends Mob.Fleeing {

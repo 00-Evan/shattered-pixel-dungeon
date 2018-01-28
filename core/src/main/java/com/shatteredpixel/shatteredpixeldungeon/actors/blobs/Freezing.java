@@ -56,7 +56,7 @@ public class Freezing extends Blob {
 					}
 					
 					Char ch = Actor.findChar( cell );
-					if (ch != null && !ch.immunities().contains(this.getClass())) {
+					if (ch != null && !ch.isImmune(this.getClass())) {
 						if (ch.buff(Frost.class) != null){
 							Buff.affect(ch, Frost.class, 2f);
 						} else {

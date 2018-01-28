@@ -51,6 +51,7 @@ public class Skeleton extends Mob {
 		lootChance = 0.2f;
 
 		properties.add(Property.UNDEAD);
+		properties.add(Property.INORGANIC);
 	}
 	
 	@Override

@@ -23,10 +23,16 @@ package com.shatteredpixel.shatteredpixeldungeon.actors;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue;
@@ -34,14 +40,24 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -56,6 +72,7 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public abstract class Char extends Actor {
@@ -277,10 +294,10 @@ public abstract class Char extends Actor {
 		}
 		
 		Class<?> srcClass = src.getClass();
-		if (immunities().contains( srcClass )) {
+		if (isImmune( srcClass )) {
 			dmg = 0;
-		} else if (resistances().contains( srcClass )) {
-			dmg = Random.IntRange( 0, dmg );
+		} else {
+			dmg = Math.round( dmg * resist( srcClass ));
 		}
 		
 		if (buff( Paralysis.class ) != null) {
@@ -493,6 +510,16 @@ public abstract class Char extends Actor {
 		return result;
 	}
 	
+	public float resist( Class effect ){
+		float result = 1f;
+		for (Class c : resistances()){
+			if (c.isAssignableFrom(effect)){
+				result *= Random.Float();
+			}
+		}
+		return result;
+	}
+	
 	protected final HashSet<Class> immunities = new HashSet<>();
 	
 	public HashSet<Class> immunities() {
@@ -505,6 +532,15 @@ public abstract class Char extends Actor {
 		}
 		return result;
 	}
+	
+	public boolean isImmune(Class effect ){
+		for (Class c : immunities()){
+			if (c.isAssignableFrom(effect)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	protected HashSet<Property> properties = new HashSet<>();
 
@@ -513,10 +549,22 @@ public abstract class Char extends Actor {
 	}
 
 	public enum Property{
-		BOSS,
-		MINIBOSS,
+		BOSS ( new HashSet<Class>( Arrays.asList(Grim.class, ScrollOfPsionicBlast.class)),
+				new HashSet<Class>( Arrays.asList(Corruption.class) )),
+		MINIBOSS ( new HashSet<Class>(),
+				new HashSet<Class>( Arrays.asList(Corruption.class) )),
 		UNDEAD,
 		DEMONIC,
+		INORGANIC ( new HashSet<Class>(),
+				new HashSet<Class>( Arrays.asList(Bleeding.class, ToxicGas.class, Poison.class, Venom.class) )),
+		BLOB_IMMUNE ( new HashSet<Class>(),
+				new HashSet<Class>( Arrays.asList(Blob.class) )),
+		FIERY ( new HashSet<Class>( Arrays.asList(WandOfFireblast.class)),
+				new HashSet<Class>( Arrays.asList(Burning.class, Blazing.class))),
+		ACIDIC ( new HashSet<Class>( Arrays.asList(ToxicGas.class)),
+				new HashSet<Class>( Arrays.asList(Ooze.class))),
+		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class, Electricity.class)),
+				new HashSet<Class>()),
 		IMMOVABLE;
 		
 		private HashSet<Class> resistances;

@@ -52,6 +52,8 @@ public class Shaman extends Mob implements Callback {
 		
 		loot = Generator.Category.SCROLL;
 		lootChance = 0.33f;
+		
+		properties.add(Property.ELECTRIC);
 	}
 	
 	@Override
@@ -121,10 +123,5 @@ public class Shaman extends Mob implements Callback {
 	public void call() {
 		next();
 	}
-
-	{
-		resistances.add( WandOfLightning.class );
-		resistances.add( Shocking.class );
-		resistances.add( Potential.class );
-	}
+	
 }

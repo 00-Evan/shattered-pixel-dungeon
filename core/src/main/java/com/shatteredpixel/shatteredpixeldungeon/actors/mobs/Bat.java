@@ -89,7 +89,4 @@ public class Bat extends Mob {
 		return super.createLoot();
 	}
 	
-	{
-		resistances.add( Vampiric.class );
-	}
 }

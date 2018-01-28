@@ -43,6 +43,8 @@ public class Statue extends Mob {
 
 		EXP = 0;
 		state = PASSIVE;
+		
+		properties.add(Property.INORGANIC);
 	}
 	
 	protected Weapon weapon;
@@ -153,12 +155,7 @@ public class Statue extends Mob {
 	}
 	
 	{
-		resistances.add(ToxicGas.class);
-		resistances.add(Poison.class);
 		resistances.add(Grim.class);
 	}
 	
-	{
-		immunities.add( Vampiric.class );
-	}
 }

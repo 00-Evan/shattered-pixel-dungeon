@@ -228,9 +228,6 @@ public class King extends Mob {
 	}
 	
 	{
-		resistances.add( ToxicGas.class );
-		resistances.add( Grim.class );
-		resistances.add( ScrollOfPsionicBlast.class );
 		resistances.add( WandOfDisintegration.class );
 	}
 	
@@ -255,6 +252,7 @@ public class King extends Mob {
 			state = WANDERING;
 
 			properties.add(Property.UNDEAD);
+			properties.add(Property.INORGANIC);
 		}
 		
 		@Override

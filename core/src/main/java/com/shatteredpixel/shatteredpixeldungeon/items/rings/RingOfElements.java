@@ -68,9 +68,6 @@ public class RingOfElements extends Ring {
 	}
 	
 	public class Resistance extends RingBuff {
-		
-		public float durationFactor() {
-			return level() < 0 ? 1 : (1 + 0.5f * level()) / (1 + level());
-		}
+	
 	}
 }

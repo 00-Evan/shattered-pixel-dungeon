@@ -216,6 +216,7 @@ public class Yog extends Mob {
 
 			properties.add(Property.BOSS);
 			properties.add(Property.DEMONIC);
+			properties.add(Property.ACIDIC);
 		}
 		
 		@Override
@@ -264,12 +265,6 @@ public class Yog extends Mob {
 		}
 		
 		{
-			resistances.add( ToxicGas.class );
-			resistances.add( Grim.class );
-			resistances.add( ScrollOfPsionicBlast.class );
-		}
-		
-		{
 			immunities.add( Amok.class );
 			immunities.add( Sleep.class );
 			immunities.add( Terror.class );
@@ -292,6 +287,7 @@ public class Yog extends Mob {
 
 			properties.add(Property.BOSS);
 			properties.add(Property.DEMONIC);
+			properties.add(Property.FIERY);
 		}
 		
 		@Override
@@ -363,16 +359,12 @@ public class Yog extends Mob {
 		
 		{
 			resistances.add( ToxicGas.class );
-			resistances.add( Grim.class );
-
 		}
 		
 		{
 			immunities.add( Amok.class );
 			immunities.add( Sleep.class );
 			immunities.add( Terror.class );
-			immunities.add( Burning.class );
-			immunities.add( ScrollOfPsionicBlast.class );
 			immunities.add( Vertigo.class );
 		}
 	}

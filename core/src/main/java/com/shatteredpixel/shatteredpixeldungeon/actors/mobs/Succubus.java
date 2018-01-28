@@ -138,10 +138,6 @@ public class Succubus extends Mob {
 	}
 	
 	{
-		resistances.add( Vampiric.class );
-	}
-	
-	{
 		immunities.add( Sleep.class );
 	}
 }

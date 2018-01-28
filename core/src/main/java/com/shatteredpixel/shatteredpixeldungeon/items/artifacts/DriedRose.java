@@ -385,6 +385,8 @@ public class DriedRose extends Artifact {
 			
 			//before other mobs
 			actPriority = MOB_PRIO + 1;
+			
+			properties.add(Property.UNDEAD);
 		}
 		
 		private DriedRose rose = null;

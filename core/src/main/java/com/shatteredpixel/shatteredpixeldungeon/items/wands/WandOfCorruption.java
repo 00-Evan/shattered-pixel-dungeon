@@ -61,7 +61,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -194,7 +193,7 @@ public class WandOfCorruption extends Wand {
 			}
 		}
 		for (Class<?extends Buff> toAssign : debuffs.keySet()){
-			 if (debuffs.get(toAssign) > 0 && enemy.immunities().contains(toAssign)){
+			 if (debuffs.get(toAssign) > 0 && enemy.isImmune(toAssign)){
 			 	debuffs.put(toAssign, 0f);
 			 }
 		}
@@ -218,9 +217,7 @@ public class WandOfCorruption extends Wand {
 			return;
 		}
 		
-		if (!enemy.properties().contains(Char.Property.BOSS) &&
-				!enemy.properties().contains(Char.Property.MINIBOSS) &&
-				!enemy.immunities().contains(Corruption.class)){
+		if (!enemy.isImmune(Corruption.class)){
 			enemy.HP = enemy.HT;
 			for (Buff buff : enemy.buffs()) {
 				if (buff.type == Buff.buffType.NEGATIVE

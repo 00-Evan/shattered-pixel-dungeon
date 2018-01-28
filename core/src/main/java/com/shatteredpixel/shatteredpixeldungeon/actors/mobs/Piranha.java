@@ -51,6 +51,8 @@ public class Piranha extends Mob {
 		lootChance = 1f;
 		
 		HUNTING = new Hunting();
+		
+		properties.add(Property.BLOB_IMMUNE);
 	}
 	
 	public Piranha() {
@@ -133,11 +135,6 @@ public class Piranha extends Mob {
 	
 	{
 		immunities.add( Burning.class );
-		immunities.add( Paralysis.class );
-		immunities.add( ToxicGas.class );
-		immunities.add( VenomGas.class );
-		immunities.add( Roots.class );
-		immunities.add( Frost.class );
 	}
 	
 	private class Hunting extends Mob.Hunting{
