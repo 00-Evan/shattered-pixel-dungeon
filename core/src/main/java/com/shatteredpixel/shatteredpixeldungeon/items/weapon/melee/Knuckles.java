@@ -30,6 +30,8 @@ public class Knuckles extends MeleeWeapon {
 
 		tier = 1;
 		DLY = 0.5f; //2x speed
+		
+		bones = false;
 	}
 
 	@Override
