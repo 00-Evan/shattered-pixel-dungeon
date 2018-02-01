@@ -22,9 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.CorrosionParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -52,7 +52,7 @@ public class MagicMissile extends Emitter {
 	public static final int MAGIC_MISSILE   = 0;
 	public static final int FROST           = 1;
 	public static final int FIRE            = 2;
-	public static final int POISON          = 3;
+	public static final int CORROSION       = 3;
 	public static final int FOLIAGE         = 4;
 	public static final int FORCE           = 5;
 	public static final int BEACON          = 6;
@@ -111,9 +111,9 @@ public class MagicMissile extends Emitter {
 				size( 4 );
 				pour( FlameParticle.FACTORY, 0.01f );
 				break;
-			case POISON:
+			case CORROSION:
 				size( 3 );
-				pour( PoisonParticle.MISSILE, 0.01f );
+				pour( CorrosionParticle.MISSILE, 0.01f );
 				break;
 			case FOLIAGE:
 				size( 4 );

@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
@@ -643,7 +643,7 @@ public class DriedRose extends Artifact {
 		
 		{
 			immunities.add( ToxicGas.class );
-			immunities.add( VenomGas.class );
+			immunities.add( CorrosiveGas.class );
 			immunities.add( Burning.class );
 			immunities.add( ScrollOfPsionicBlast.class );
 		}

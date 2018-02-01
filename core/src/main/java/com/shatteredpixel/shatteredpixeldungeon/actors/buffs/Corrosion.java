@@ -27,10 +27,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 //FIXME do proper translation stuff for new text here in 0.6.3 (heromsg, ondeath, rankings_desc)
-public class Venom extends Buff implements Hero.Doom {
+public class Corrosion extends Buff implements Hero.Doom {
 
 	private float damage = 1;
 	protected float left;
@@ -60,10 +61,15 @@ public class Venom extends Buff implements Hero.Doom {
 		this.left = Math.max(duration, left);
 		if (this.damage < damage) this.damage = damage;
 	}
-
+	
 	@Override
 	public int icon() {
 		return BuffIndicator.POISON;
+	}
+	
+	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(1f, 0.5f, 0f);
 	}
 
 	@Override
@@ -104,8 +110,6 @@ public class Venom extends Buff implements Hero.Doom {
 	
 	@Override
 	public void onDeath() {
-		Badges.validateDeathFromPoison();
-		
 		Dungeon.fail( getClass() );
 		GLog.n(Messages.get(this, "ondeath"));
 	}

@@ -23,24 +23,24 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
-public class VenomTrap extends Trap {
+public class CorrosionTrap extends Trap {
 
 	{
-		color = VIOLET;
+		color = GREY;
 		shape = GRILL;
 	}
 
 	@Override
 	public void activate() {
 
-		VenomGas venomGas = Blob.seed(pos, 80 + 5 * Dungeon.depth, VenomGas.class);
+		CorrosiveGas corrosiveGas = Blob.seed(pos, 80 + 5 * Dungeon.depth, CorrosiveGas.class);
 
-		venomGas.setStrength(1+Dungeon.depth/4);
+		corrosiveGas.setStrength(1+Dungeon.depth/4);
 
-		GameScene.add(venomGas);
+		GameScene.add(corrosiveGas);
 
 	}
 }

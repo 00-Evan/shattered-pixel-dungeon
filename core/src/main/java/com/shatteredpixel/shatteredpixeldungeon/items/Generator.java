@@ -96,7 +96,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
@@ -252,7 +252,7 @@ public class Generator {
 					WandOfLightning.class,
 					WandOfDisintegration.class,
 					WandOfFireblast.class,
-					WandOfVenom.class,
+					WandOfCorrosion.class,
 					WandOfBlastWave.class,
 					//WandOfLivingEarth.class,
 					WandOfFrost.class,

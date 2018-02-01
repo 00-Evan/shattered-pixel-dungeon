@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
@@ -46,7 +47,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -551,12 +551,12 @@ public abstract class Char extends Actor {
 		UNDEAD,
 		DEMONIC,
 		INORGANIC ( new HashSet<Class>(),
-				new HashSet<Class>( Arrays.asList(Bleeding.class, ToxicGas.class, Poison.class, Venom.class) )),
+				new HashSet<Class>( Arrays.asList(Bleeding.class, ToxicGas.class, Poison.class) )),
 		BLOB_IMMUNE ( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(Blob.class) )),
 		FIERY ( new HashSet<Class>( Arrays.asList(WandOfFireblast.class)),
 				new HashSet<Class>( Arrays.asList(Burning.class, Blazing.class))),
-		ACIDIC ( new HashSet<Class>( Arrays.asList(ToxicGas.class)),
+		ACIDIC ( new HashSet<Class>( Arrays.asList(ToxicGas.class, Corrosion.class)),
 				new HashSet<Class>( Arrays.asList(Ooze.class))),
 		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class, Electricity.class)),
 				new HashSet<Class>()),

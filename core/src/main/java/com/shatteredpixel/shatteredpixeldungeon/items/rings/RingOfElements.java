@@ -31,13 +31,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
-import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
@@ -57,7 +56,7 @@ public class RingOfElements extends Ring {
 		RESISTS.add( Ooze.class );
 		RESISTS.add( Paralysis.class );
 		RESISTS.add( Poison.class );
-		RESISTS.add( Venom.class );
+		RESISTS.add( Corrosion.class );
 		RESISTS.add( Weakness.class );
 		
 		RESISTS.add( ToxicGas.class );

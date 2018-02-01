@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
@@ -49,7 +50,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
@@ -113,7 +113,7 @@ public class WandOfCorruption extends Wand {
 		MAJOR_DEBUFFS.put(Charm.class,          0f);
 		MAJOR_DEBUFFS.put(MagicalSleep.class,   0f);
 		MAJOR_DEBUFFS.put(SoulMark.class,       0f);
-		MAJOR_DEBUFFS.put(Venom.class,          0f);
+		MAJOR_DEBUFFS.put(Corrosion.class,      0f);
 		MAJOR_DEBUFFS.put(Frost.class,          0f);
 		MAJOR_DEBUFFS.put(Doom.class,           0f);
 	}

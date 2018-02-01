@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.StormTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -88,7 +88,7 @@ public class CityLevel extends RegularLevel {
 	
 	@Override
 	protected Class<?>[] trapClasses() {
-		return new Class[]{ FrostTrap.class, StormTrap.class, VenomTrap.class, BlazingTrap.class, DisintegrationTrap.class,
+		return new Class[]{ FrostTrap.class, StormTrap.class, CorrosionTrap.class, BlazingTrap.class, DisintegrationTrap.class,
 				ExplosiveTrap.class, RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, WeakeningTrap.class,
 				SummoningTrap.class, WarpingTrap.class, CursingTrap.class,
 				PitfallTrap.class, DisarmingTrap.class };

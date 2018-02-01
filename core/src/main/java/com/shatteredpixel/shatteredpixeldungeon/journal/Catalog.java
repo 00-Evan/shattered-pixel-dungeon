@@ -89,7 +89,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
@@ -191,7 +191,7 @@ public enum Catalog {
 		WANDS.seen.put( WandOfLightning.class,              false);
 		WANDS.seen.put( WandOfDisintegration.class,         false);
 		WANDS.seen.put( WandOfFireblast.class,              false);
-		WANDS.seen.put( WandOfVenom.class,                  false);
+		WANDS.seen.put( WandOfCorrosion.class,              false);
 		WANDS.seen.put( WandOfBlastWave.class,              false);
 		//WANDS.seen.put( WandOfLivingEarth.class,          false);
 		WANDS.seen.put( WandOfFrost.class,                  false);
@@ -333,6 +333,12 @@ public enum Catalog {
 		//general save/load
 		if (bundle.contains(CATALOGS)) {
 			List<String> seen = Arrays.asList(bundle.getStringArray(CATALOGS));
+			
+			//pre-0.6.3 saves
+			//TODO should adjust this to tie into the bundling system's class array
+			if (seen.contains("WandOfVenom")){
+				WANDS.seen.put(WandOfCorrosion.class, true);
+			}
 			
 			for (Catalog cat : values()) {
 				for (Class<? extends Item> item : cat.items()) {

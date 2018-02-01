@@ -62,6 +62,19 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tamahawk" );
 		
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap" );
+		
 		//v0.6.0
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom.Bones.class,

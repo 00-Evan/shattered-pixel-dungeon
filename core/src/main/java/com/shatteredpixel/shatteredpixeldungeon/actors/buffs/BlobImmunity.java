@@ -22,16 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
