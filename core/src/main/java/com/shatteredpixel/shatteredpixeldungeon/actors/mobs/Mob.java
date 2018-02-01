@@ -276,6 +276,7 @@ public abstract class Mob extends Char {
 			sprite.move( from, to );
 			return true;
 		} else {
+			sprite.turnTo(from, to);
 			sprite.place( to );
 			return true;
 		}
