@@ -211,6 +211,7 @@ public class ItemSpriteSheet {
 	
 	public static final int DART            = MISSILE_WEP+1;
 	public static final int THROWING_KNIFE  = MISSILE_WEP+2;
+	public static final int THROWING_STONE  = MISSILE_WEP+3;
 	
 	public static final int SHURIKEN        = MISSILE_WEP+4;
 	
@@ -228,6 +229,7 @@ public class ItemSpriteSheet {
 		
 		assignItemRect(DART,            15, 15);
 		assignItemRect(THROWING_KNIFE,  12, 13);
+		assignItemRect(THROWING_STONE,  9,  9);
 		
 		assignItemRect(SHURIKEN,        12, 12);
 		
