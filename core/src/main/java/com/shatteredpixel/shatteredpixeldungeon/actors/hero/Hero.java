@@ -281,14 +281,19 @@ public class Hero extends Char {
 		return belongings.armor == null ? 0 : belongings.armor.tier;
 	}
 
+	//this variable is only needed because of the boomerang, remove if/when it is no longer equippable
+	boolean rangedAttack = false;
+	
 	public boolean shoot( Char enemy, MissileWeapon wep ) {
 
 		//temporarily set the hero's weapon to the missile weapon being used
 		KindOfWeapon equipped = belongings.weapon;
 		belongings.weapon = wep;
+		rangedAttack = true;
 		boolean result = attack( enemy );
 		Invisibility.dispel();
 		belongings.weapon = equipped;
+		rangedAttack = false;
 
 		return result;
 	}
@@ -298,7 +303,7 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.weapon;
 		
 		float accuracy = 1;
-		if (wep instanceof MissileWeapon
+		if (wep instanceof MissileWeapon && rangedAttack
 				&& Dungeon.level.distance( pos, target.pos ) == 1) {
 			accuracy *= 0.5f;
 		}
