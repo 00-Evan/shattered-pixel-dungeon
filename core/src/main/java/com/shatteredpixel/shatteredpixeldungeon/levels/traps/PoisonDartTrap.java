@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.PoisonDart;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.watabou.noosa.audio.Sample;
@@ -77,7 +77,7 @@ public class PoisonDartTrap extends Trap {
 					protected boolean act() {
 						final Actor toRemove = this;
 						((MissileSprite) ShatteredPixelDungeon.scene().recycle(MissileSprite.class)).
-							reset(pos, finalTarget.sprite, new Dart(), new Callback() {
+							reset(pos, finalTarget.sprite, new PoisonDart(), new Callback() {
 								@Override
 								public void call() {
 									int dmg = Random.NormalIntRange(1, 4) - finalTarget.drRoll();

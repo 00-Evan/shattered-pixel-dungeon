@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
@@ -48,11 +49,11 @@ public class PotionOfHealing extends Potion {
 		GLog.p( Messages.get(this, "heal") );
 	}
 	
-	public static void cure( Hero hero ) {
-		Buff.detach( hero, Poison.class );
-		Buff.detach( hero, Cripple.class );
-		Buff.detach( hero, Weakness.class );
-		Buff.detach( hero, Bleeding.class );
+	public static void cure( Char ch ) {
+		Buff.detach( ch, Poison.class );
+		Buff.detach( ch, Cripple.class );
+		Buff.detach( ch, Weakness.class );
+		Buff.detach( ch, Bleeding.class );
 		
 	}
 
