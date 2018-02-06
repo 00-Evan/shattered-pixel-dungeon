@@ -77,8 +77,7 @@ public class WallBlockingTilemap extends Tilemap {
 			//- There are cells 2x below
 			//- The cell below is a wall and visible
 			//- All of left, below-left, right, below-right is either a wall or hidden
-			} else if ( ((cell + 2*mapWidth) < size)
-					&& !fogHidden(cell + mapWidth)
+			} else if ( !fogHidden(cell + mapWidth)
 					&& (fogHidden(cell - 1) || wall(cell - 1))
 					&& (fogHidden(cell + 1) || wall(cell + 1))
 					&& (fogHidden(cell - 1 + mapWidth) || wall(cell - 1 + mapWidth))
@@ -178,7 +177,7 @@ public class WallBlockingTilemap extends Tilemap {
 	private boolean fogHidden(int cell){
 		if (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]) {
 			return true;
-		} else if (wall(cell) && !wall(cell + mapWidth) &&
+		} else if (wall(cell) && cell + mapWidth < size && !wall(cell + mapWidth) &&
 				!Dungeon.level.visited[cell + mapWidth] && !Dungeon.level.mapped[cell + mapWidth]) {
 			return true;
 		}
