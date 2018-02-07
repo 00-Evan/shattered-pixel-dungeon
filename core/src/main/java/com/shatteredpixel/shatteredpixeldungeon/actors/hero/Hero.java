@@ -931,7 +931,7 @@ public class Hero extends Char {
 			
 		switch (subClass) {
 		case SNIPER:
-			if (wep instanceof MissileWeapon) {
+			if (wep instanceof MissileWeapon && rangedAttack) {
 				Buff.prolong( this, SnipersMark.class, attackDelay() ).object = enemy.id();
 			}
 			break;
