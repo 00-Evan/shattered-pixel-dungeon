@@ -25,10 +25,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -597,11 +597,6 @@ public class DriedRose extends Artifact {
 		}
 
 		@Override
-		public void add( Buff buff ) {
-			//in other words, can't be directly affected by buffs/debuffs.
-		}
-
-		@Override
 		public boolean interact() {
 			updateRose();
 			if (rose != null && !rose.talkedTo){
@@ -646,6 +641,7 @@ public class DriedRose extends Artifact {
 			immunities.add( CorrosiveGas.class );
 			immunities.add( Burning.class );
 			immunities.add( ScrollOfPsionicBlast.class );
+			immunities.add( Corruption.class );
 		}
 		
 		private class Wandering extends Mob.Wandering {
