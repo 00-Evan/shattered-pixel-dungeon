@@ -466,7 +466,9 @@ public abstract class Mob extends Char {
 	@Override
 	public int defenseSkill( Char enemy ) {
 		boolean seen = enemySeen || (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack());
-		if (seen && paralysed == 0) {
+		if ( seen
+				&& paralysed == 0
+				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
 			int defenseSkill = this.defenseSkill;
 			defenseSkill *= RingOfAccuracy.enemyEvasionMultiplier( enemy );
 			return defenseSkill;

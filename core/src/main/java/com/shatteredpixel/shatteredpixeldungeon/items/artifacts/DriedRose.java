@@ -565,8 +565,8 @@ public class DriedRose extends Artifact {
 		@Override
 		public int defenseSkill(Char enemy) {
 			int defense = super.defenseSkill(enemy);
-			
-			if (rose != null && rose.armor != null && rose.armor.hasGlyph(Swiftness.class)){
+
+			if (defense != 0 && rose != null && rose.armor != null && rose.armor.hasGlyph(Swiftness.class)){
 				defense += 5 + rose.armor.level()*1.5f;
 			}
 			
