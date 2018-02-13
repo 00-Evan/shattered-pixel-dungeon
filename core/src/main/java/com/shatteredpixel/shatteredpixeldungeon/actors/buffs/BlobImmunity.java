@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.*;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
@@ -46,7 +46,17 @@ public class BlobImmunity extends FlavourBuff {
 	}
 
 	{
-		immunities.add( Blob.class );
+		//all harmful blobs
+		immunities.add( ConfusionGas.class );
+		immunities.add( CorrosiveGas.class );
+		immunities.add( Electricity.class );
+		immunities.add( Fire.class );
+		immunities.add( Freezing.class );
+		immunities.add( ParalyticGas.class );
+		immunities.add( Regrowth.class );
+		immunities.add( StenchGas.class );
+		immunities.add( ToxicGas.class );
+		immunities.add( Web.class );
 	}
 
 	@Override
