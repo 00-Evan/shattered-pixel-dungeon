@@ -42,10 +42,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellboo
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
@@ -125,99 +129,158 @@ public class ChangesScene extends PixelScene {
 		add( list );
 		
 		//**********************
-		//       v0.6.2
- 		//**********************
+		//       v0.6.3
+		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.2", true, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
-		changes = new ChangeInfo("v0.6.2e", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
+		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
+		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.2):\n" +
-				"_-_ 'Exit Game' button corrupting saves on some devices"
-				));
-		
-		changes = new ChangeInfo("v0.6.2c & v0.6.2d", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.2):\n" +
-				"_-_ Various crash bugs\n" +
-				"_-_ Mimics causing crashes in certain cases\n" +
-				"_-_ Game frequently hanging on some devices\n\n" +
-				"Fixed (Existed prior to 0.6.2):\n" +
-				"_-_ Various crash bugs\n" +
-				"_-_ Music volume being ignored in certain cases\n" +
-				"_-_ Layout issues with enemy description windows\n" +
-				"_-_ An exploit which allowed players to quit without saving by using splitscreen mode."));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"_-_ Various Translation Updates"));
-		
-		changes = new ChangeInfo("v0.6.2b", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new CloakOfShadows(),
-				"Increased the base charge speed of the Cloak of Shadows by 20%, charge speed at higher levels unchanged."));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"_-_ Increased the brightness of the game's fog of war across all brightness settings.\n\n" +
-				"_-_ Added more detailed information to historical updates in the changes list.\n\n" +
-				"_-_ Wands that fire magical bolts now push on their detonation area, opening doors and trampling grass.\n\n" +
-				"_-_ Improved the visuals of alchemy pots."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.2):\n" +
-				"_-_ Various crash bugs\n" +
-				"_-_ Distortion traps not clearing journal entries\n\n" +
-				"Fixed (Existed prior to 0.6.2):\n" +
-				"_-_ Various crash bugs\n" +
-				"_-_ Game failing to save in rare cases\n" +
-				"_-_ Mimics spawning over pits in rare cases\n" +
-				"_-_ Game music not correctly pausing on android 2.2 and 2.3\n" +
-				"_-_ Items being removed from quickslots when containers are bought"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"_-_ Fixed various text errors with venom\n" +
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released Fabruary 14th, 2018\n" +
+				"_-_ 113 days after Shattered v0.6.2\n" +
 				"\n" +
-				"_-_ Various Translation Updates\n\n" +
-				"_-_ New Language: _Czech_"));
+				"Commentary will be added here when this update is older."));
 		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TRIDENT, null), "Ranged Weapons Overhaul!",
+				"Ranged weapons have been completely overhauled!\n\n" +
+				"_-_ Quantity of ranged weapons decreased, however most ranged weapons now last for several uses before breaking.\n\n" +
+				"_-_ Ranged weapon effectiveness increased significantly.\n\n" +
+				"_-_ Ranged weapons are now dropped in more situations, and do not replace melee weapons.\n\n" +
+				"_-_ Existing ranged weapons reworked, 5 new ranged weapons added.\n\n" +
+				"_-_ Warrior now starts with throwing stones, rogue starts with throwing knives"));
 		
-		changes = new ChangeInfo("v0.6.2a", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
+		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress",
+				"Huntress adjusted due to ranged weapon changes (note that this is not a full class rework):\n\n" +
+				"_-_ Huntress no longer has a chance to reclaim a single ranged weapon.\n\n" +
+				"_-_ Missile weapons now have 50% greater durability when used by the huntress.\n\n" +
+				"_-_ Boomerang dmg increased to 1-6 from 1-5\n" +
+				"_-_ Boomerang str req reduced to 9 from 10\n" +
+				"_-_ Knuckleduster dmg reduced to 1-5 from 1-6"));
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.CHILLING_DART, null), "Expanded Alchemy",
+				"It is now possible to use alchemy to tip darts!\n\n" +
+				"_-_ Every seed (except blandfruit) can now be combined with two darts to make two tipped darts.\n\n" +
+				"_-_ Tipped dart effects are similar to their potion/seed counterparts.\n\n" +
+				"_-_ Curare darts are now paralytic darts, and paralyze for 5 turns, up from 3\n\n" +
+				"_-_ Alchemy interface now features a recipes button to show you what you can create."));
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), Messages.get(RingOfSharpshooting.class, "name"),
+				"Ring of Sharpshooting overhauled\n\n" +
+				"_-_ No longer grants bonus accuracy\n\n" +
+				"_-_ Now increases ranged weapon durability, instead of giving a chance to not consume them\n\n" +
+				"_-_ Now increases ranged weapon damage, scaling based on the weapon's initial damage."));
+		
+		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.IRON_KEY, null), "New Key Display",
-				"The key display has been overhauled!\n\n" +
-				"_-_ Each key type now has its own icon, instead of all special keys being shown as golden.\n\n" +
-				"_-_ Can now display up to 6 keys, up from 3. After 3 keys the key icons will become smaller.\n\n" +
-				"_-_ Button background now dims as keys are collected, for added visual clarity."));
+		changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 32, 0, 16, 16), "Changes to debuffs and resistances",
+				"The game's resistance system has been totally overhauled, to allow for more flexibility and consistency.\n\n" +
+				"Previously, if a character was resistant to something, its effect would be reduced by a random amount between 0% and 100%.\n\n" +
+				"Now, resistances are much less random, applying a specific reduction to harmful effects. Currently all resistances are 50%.\n\n" +
+				"Resistances are also now much more consistent between different creatures. e.g. all non-organic enemies are now immune to bleed.\n\n" +
+				"A few things have been adjusted due to this:\n\n" +
+				"_-_ The Rotting Fist is now immune to paralysis.\n" +
+				"_-_ Psionic blast now deals 100% of current HP, instead of 100% of max HP.\n" +
+				"_-_ Damage from fire now scales with max HP, and is slightly lower below 40 max HP."));
+		
+		changes.addButton( new ChangeButton( new WandOfCorrosion(),
+				"Wand of venom is now wand of corrosion. This is primarily a visual rework, with only some changes to functionality:\n\n" +
+				"_-_ Wand now shoots bolts of caustic gas, instead of venom gas\n" +
+				"_-_ Venom debuff is now corrosion debuff, functionality unchanged\n\n" +
+				"_-_ Battlemage now inflicts ooze with a staff of corrosion, instead of poison."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"_-_ Improved the formatting of older updates in the changes list. More information will be added to fill these out in future updates.\n\n" +
-				"_-_ Slightly reduced the chance for items to appear in locked chests.\n\n" +
-				"_-_ Game music now mutes itself during phone calls on android 6.0+"));
+				"_-_ Performance improvements to the fog of war & mind vision.\n\n" +
+				"_-_ Improved the consistency of how ranged traps pick targets.\n\n" +
+				"_-_ Weapons and armor can now be found upgraded and cursed. Overall curse chance unchanged.\n\n" +
+				"_-_ Each shop now always stocks 2 random tipped darts\n\n" +
+				"_-_ Starting weapons can no longer appear in hero's remains\n\n" +
+				"_-_ The ghost hero is no longer unaffected by all buffs, and is also immune to corruption"));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.2):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Herbal healing and armor not greying out their icons correctly\n\n" +
-				"Fixed (Existed prior to 0.6.2):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Gladiator being able to combo non-visible enemies"));
+				"Fixed:\n" +
+				"_-_ Various crash bugs\n" +
+				"_-_ Scroll of psionic blast debuffing a dead hero\n" +
+				"_-_ Rot lashers not being considered minibosses\n" +
+				"_-_ Wand of corruption ignoring NPCs\n" +
+				"_-_ NPCs being valid targets for assassin\n" +
+				"_-_ Wand of frost battlemage effect not activating as often as it should.\n" +
+				"_-_ Items in the alchemy window rarely being lost\n" +
+				"_-_ Various minor visual bugs"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"In English:\n" +
-				"_-_ Fixed missing text when dying to venom\n" +
-				"\n" +
-				"_-_ Translation Updates"));
+				"_-_ Fixed inconsistent text when equipping cursed artifacts\n\n" +
+				"Updated Translations"));
+		
+		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_EMERALD, null), Messages.get(RingOfElements.class, "name"),
+				"Thanks to the increased flexibility of the improved resistance system, buffing the ring of elements is now possible!\n\n" +
+				"_-_ Now reduces the duration and damage of harmful effects significantly more at higher levels.\n\n" +
+				"_-_ Rather than granting a chance to resist elemental/magic damage, ring now grants a set percentage resistance to these effects, which increases each level.\n\n" +
+				"_-_ Ring now applies to more elemental/magical effects than before."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
+				"The warlock is underperforming relative to the battlemage at the moment, and so he is getting an adjustment to his ability.\n\n" +
+				"This should hopefully both increase his power, and further encourage investing upgrades in wands.\n\n" +
+				"_-_ Reduced the base soul mark chance by 40%\n" +
+				"_-_ Increased soul mark chance scaling by 100%\n\n" +
+				"Soul mark chance reaches pre-adjustment levels at a +2 wand, and grows from there."));
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE, null), "Minor Wand buffs",
+				"Wand of Corruption:\n" +
+				"_-_ Reduced the corruption resistance of wraiths by ~40%\n" +
+				"_-_ Enemies now drop their loot (including ranged weapons) when corrupted.\n" +
+				"_-_ If an enemy is immune to a particular debuff, corruption will now try to give a different debuff, instead of doing nothing.\n\n" +
+				"Wand of Corrosion:\n" +
+				"_-_ Corrosion damage growth will continue at 1/2 speed when the damage cap is reached, rather than stopping completely."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.FLAIL, null), "Weapon and Glyph buffs",
+				"Weapons with non-standard accuracy are generally weak, so they have been buffed across the board:\n\n" +
+				"_-_ Flail accuracy penalty reduced by 10%\n" +
+				"_-_ Handaxe accuracy bonus increased by 9.5%\n" +
+				"_-_ Mace accuracy bonus increased by 8%\n" +
+				"_-_ BattleAxe accuracy bonus increased by 6.5%\n" +
+				"_-_ WarHammer accuracy bonus increased by 5%\n\n" +
+				"Glyph Buffs:\n" +
+				"_-_ Glyph of obfuscation no longer reduces damage blocking.\n" +
+				"_-_ Glyph of entanglement now gives more herbal armor, and root duration decreases at higher armor levels."));
+		
+		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
+				"The previous berserker nerf from 0.6.2 had little effect on his overall winrate, so I'm trying again with a different approach, based around having a permanent penalty for each use of berserk.\n\n" +
+				"_-_ Reverted bonus damage nerf from 0.6.2\n" +
+				"_-_ Reverted exhaustion nerf from 0.6.2\n\n" +
+				"_-_ Decreased lvls to recover rage to 2 from 3\n" +
+				"_-_ Berserking now reduces max health by 20%"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_ONYX, null), new RingOfEvasion().trueName(),
+				"The ring of evasion has always been a very powerful ring, but the recent freerunner rework has increased the power of evasiveness in general, making the ring overbearingly strong.\n\n" +
+				"Evasion synergy has been adjusted:\n" +
+				"_-_ Ring of evasion no longer synergizes as strongly with freerunner or armor of swiftness.\n" +
+				"_-_ Previously their affects would multiply together, they now add to eachother instead.\n\n" +
+				"And the ring itself has been nerf/simplified:\n" +
+				"_-_ Ring of evasion no longer grants stealth"));
+		
+		//**********************
+		//       v0.6.2
+ 		//**********************
+		
+		changes = new ChangeInfo("v0.6.2", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
 		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -277,6 +340,12 @@ public class ChangesScene extends PixelScene {
 				"_-_ Crystal chests are now opened by crystal keys.\n\n" +
 				"_-_ Golden chests now sometimes appear in the dungeon, containing more valuable items."));
 		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.IRON_KEY, null), "New Key Display",
+				"The key display has been overhauled!\n\n" +
+						"_-_ Each key type now has its own icon, instead of all special keys being shown as golden.\n\n" +
+						"_-_ Can now display up to 6 keys, up from 3. After 3 keys the key icons will become smaller.\n\n" +
+						"_-_ Button background now dims as keys are collected, for added visual clarity."));
+		
 		
 		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
 		changes.hardlight( CharSprite.WARNING );
@@ -298,32 +367,39 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
 				"_-_ Buff icons can now be tinted, several buffs take advantage of this to better display their state.\n\n" +
-				"_-_ Added a new interface for alchemy. This replaces throwing items into the pot directly.\n\n" +
-				"_-_ Reduced the spawn rate of dark floors to 1.5x, from 2x.\n\n" +
+				"_-_ Wands that fire magical bolts now push on their detonation area, opening doors and trampling grass.\n\n" +
 				"_-_ Crystal chest rooms will now always have a different item type in each chest.\n\n" +
-				"_-_ Burning and freezing now destroy held items in a much less random manner.\n\n" +
+				"_-_ Burning and freezing now destroy held items in a more consistent manner.\n\n" +
+				"_-_ Reduced enemies in dark floors to 1.5x, from 2x.\n" +
+				"_-_ Increased the brightness of the fog of war.\n" +
 				"_-_ Various internal code improvements.\n" +
+				"_-_ Added a new interface and graphics for alchemy.\n" +
 				"_-_ Zooming is now less stiff at low resolutions.\n" +
-				"_-_ Improved VFX when items are picked up."));
+				"_-_ Improved VFX when items are picked up.\n" +
+				"_-_ Improved older updates in the changes list.\n" +
+				"_-_ Game now mutes during phone calls on android 6.0+"));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed:\n" +
+				"_-_ Various crash bugs\n" +
 				"_-_ Various exploits players could use to determine map shape\n" +
-				"_-_ Artifacts being removed from the quickslot when being equipped in some cases\n" +
-				"_-_ Swapping misc items not working correctly with a full inventory\n" +
-				"_-_ Non-hostile characters reducing the number of spawned enemies in some cases\n" +
-				"_-_ Bugged interaction between poison and venom\n" +
+				"_-_ Artifacts sometimes removed from quickslot when equipped\n" +
+				"_-_ Items removed from quickslots when containers are bought\n" +
+				"_-_ Swapping misc items not working with a full inventory\n" +
 				"_-_ Enemies sometimes not waking from sleep\n" +
 				"_-_ Swarms not duplicating over hazards\n" +
 				"_-_ Black bars on certain modern phones\n" +
 				"_-_ Action button not persisting between floors\n" +
 				"_-_ Various bugs with multiplicity curse\n" +
 				"_-_ Various minor visual bugs\n" +
-				"_-_ Blandfruit rarely becoming a potion\n" +
-				"_-_ Planted seeds not updating terrain correctly\n" +
-				"_-_ Enemies rarely spawning ontop of exit stairs\n" +
+				"_-_ Plants not updating terrain correctly\n" +
+				"_-_ Enemies spawning ontop of exit stairs\n" +
 				"_-_ Evil Eyes sometimes skipping beam chargeup\n" +
-				"_-_ Warrior's seal being disabled by armor kit" ));
+				"_-_ Warrior's seal being disabled by armor kit\n" +
+				"_-_ Gladiator being able to combo non-visible enemies\n" +
+				"_-_ Music volume being ignored in certain cases\n" +
+				"_-_ Game music not correctly pausing on android 2.2/2.3\n" +
+				"_-_ Game failing to save in rare cases"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"In English:\n" +
@@ -331,9 +407,12 @@ public class ChangesScene extends PixelScene {
 				"_-_ Fixed a typo when enemies die out of view\n" +
 				"_-_ Fixed a typo in the ghost hero's introduction\n" +
 				"_-_ Fixed a typo in dirk description\n" +
-						"\n" +
-				"_-_ Translation Updates\n\n" +
-				"_-_ Added new language: _Turkish_"));
+				"_-_ Fixed various text errors with venom\n" +
+				"\n" +
+				"_-_ Translation Updates\n" +
+				"_-_ Various Translation Updates\n" +
+				"_-_ Added new language: _Turkish_\n" +
+				"_-_ New Language: _Czech_"));
 		
 		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
