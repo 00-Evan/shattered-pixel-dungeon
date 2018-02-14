@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndAlchemy;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
@@ -480,6 +481,8 @@ public class Dungeon {
 			
 			SpecialRoom.storeRoomsInBundle( bundle );
 			SecretRoom.storeRoomsInBundle( bundle );
+
+			WndAlchemy.storeInBundle( bundle );
 			
 			Statistics.storeInBundle( bundle );
 			Notes.storeInBundle( bundle );
@@ -601,6 +604,8 @@ public class Dungeon {
 		
 		hero = null;
 		hero = (Hero)bundle.get( HERO );
+
+		WndAlchemy.restoreFromBundle( bundle, hero );
 		
 		gold = bundle.getInt( GOLD );
 		depth = bundle.getInt( DEPTH );

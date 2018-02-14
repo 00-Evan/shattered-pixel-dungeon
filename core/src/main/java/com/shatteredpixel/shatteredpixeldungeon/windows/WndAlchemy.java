@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
@@ -43,12 +44,14 @@ import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
 public class WndAlchemy extends Window {
 	
-	private WndBlacksmith.ItemButton[] inputs = new WndBlacksmith.ItemButton[3];
+	private static WndBlacksmith.ItemButton[] inputs = new WndBlacksmith.ItemButton[3];
 	private ItemSlot output;
 	
 	private Emitter smokeEmitter;
@@ -291,13 +294,46 @@ public class WndAlchemy extends Window {
 	
 	@Override
 	public void destroy() {
-		for (int i = 0; i < inputs.length; i++) {
-			if (inputs[i].item != null){
-				if (!inputs[i].item.collect()){
-					Dungeon.level.drop(inputs[i].item, Dungeon.hero.pos);
+		synchronized ( inputs ) {
+			for (int i = 0; i < inputs.length; i++) {
+				if (inputs[i].item != null) {
+					if (!inputs[i].item.collect()) {
+						Dungeon.level.drop(inputs[i].item, Dungeon.hero.pos);
+					}
 				}
+				inputs[i] = null;
 			}
 		}
 		super.destroy();
+	}
+
+	private static final String ALCHEMY_INPUTS = "alchemy_inputs";
+
+	public static void storeInBundle( Bundle b ){
+		synchronized ( inputs ){
+			ArrayList<Item> items = new ArrayList<>();
+			for (WndBlacksmith.ItemButton i : inputs){
+				if (i != null && i.item != null){
+					items.add(i.item);
+				}
+			}
+			if (!items.isEmpty()){
+				b.put( ALCHEMY_INPUTS, items );
+			}
+		}
+	}
+
+	public static void restoreFromBundle( Bundle b, Hero h ){
+
+		if (b.contains(ALCHEMY_INPUTS)){
+			for (Bundlable item : b.getCollection(ALCHEMY_INPUTS)){
+
+				//try to add normally, force-add otherwise.
+				if (!((Item)item).collect(h.belongings.backpack)){
+					h.belongings.backpack.items.add((Item)item);
+				}
+			}
+		}
+
 	}
 }
