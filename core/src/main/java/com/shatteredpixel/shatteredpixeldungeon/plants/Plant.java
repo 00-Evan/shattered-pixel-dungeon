@@ -89,7 +89,7 @@ public abstract class Plant implements Bundlable {
 				Item seed = Generator.random(Generator.Category.SEED);
 
 				if (seed instanceof BlandfruitBush.Seed) {
-					if (Random.Int(5) - Dungeon.LimitedDrops.BLANDFRUIT_SEED.count >= 0) {
+					if (Random.Int(3) - Dungeon.LimitedDrops.BLANDFRUIT_SEED.count >= 0) {
 						Dungeon.level.drop(seed, pos).sprite.drop();
 						Dungeon.LimitedDrops.BLANDFRUIT_SEED.count++;
 					}

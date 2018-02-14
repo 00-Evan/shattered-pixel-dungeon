@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
@@ -81,6 +82,21 @@ public abstract class TippedDart extends Dart {
 		types.put(Starflower.Seed.class,    HolyDart.class);
 		types.put(Stormvine.Seed.class,     ShockingDart.class);
 		types.put(Sungrass.Seed.class,      HealingDart.class);
+	}
+	
+	public static TippedDart randomTipped(){
+		Plant.Seed s;
+		do{
+			s = (Plant.Seed) Generator.random(Generator.Category.SEED);
+		} while (!types.containsKey(s.getClass()));
+		
+		try{
+			return (TippedDart) types.get(s.getClass()).newInstance().quantity(2);
+		} catch (Exception e) {
+			ShatteredPixelDungeon.reportException(e);
+			return null;
+		}
+		
 	}
 	
 	public static class TipDart extends Recipe{
