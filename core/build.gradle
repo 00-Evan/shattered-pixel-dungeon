@@ -4,6 +4,11 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
 
+    defaultConfig {
+        resConfigs "en", "cs", "tr", "ca", "ko", "pl", "it",
+                "eo", "ru", "zh", "de", "fr", "es", "pt", "fi", "hu", "in"
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix ".indev"
