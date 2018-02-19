@@ -5,8 +5,8 @@ android {
     buildToolsVersion "26.0.2"
 
     defaultConfig {
-        resConfigs "en", "cs", "tr", "ca", "ko", "pl", "it",
-                "eo", "ru", "zh", "de", "fr", "es", "pt", "fi", "hu", "in"
+        resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it",
+                "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
     }
 
     buildTypes {

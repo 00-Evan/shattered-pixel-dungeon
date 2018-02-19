@@ -131,8 +131,25 @@ public class ChangesScene extends PixelScene {
 		//**********************
 		//       v0.6.3
 		//**********************
-		
-		ChangeInfo changes = new ChangeInfo("v0.6.3", true, "");
+
+		ChangeInfo changes = new ChangeInfo("v0.6.3a", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Reduced burning damage against high health enemies\n\n" +
+						"_-_ Reduced game install size by ~2.5%"));
+
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.3):\n" +
+				"_-_ Health potions being craftable with pharmacophobia enabled\n" +
+				"_-_ Ring of sharpshooting increasing damage a bit more than displayed\n" +
+				"_-_ Various rare crashes"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+
+		changes = new ChangeInfo("v0.6.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
