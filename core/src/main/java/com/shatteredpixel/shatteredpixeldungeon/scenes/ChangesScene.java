@@ -141,7 +141,7 @@ public class ChangesScene extends PixelScene {
 		infos.add(changes);
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
-				"_-_ Released Fabruary 14th, 2018\n" +
+				"_-_ Released February 14th, 2018\n" +
 				"_-_ 113 days after Shattered v0.6.2\n" +
 				"\n" +
 				"Commentary will be added here when this update is older."));
@@ -1235,10 +1235,10 @@ public class ChangesScene extends PixelScene {
 				"_-_ Using throwing weapons now cancels stealth"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"_-_ Implement a donation system in the Google Play version of Shattered\n\n" +
+				"_-_ Implemented a donation system in the Google Play version of Shattered\n\n" +
 				"_-_ Significantly increased the stability of the save system\n\n" +
 				"_-_ Increased the number of visible rankings to 11 from 6\n\n" +
-				"_-_ Improved how the player is interrupted by hermful events"));
+				"_-_ Improved how the player is interrupted by harmful events"));
 		
 		changes = new ChangeInfo("v0.2.2", false, "");
 		changes.hardlight(Window.TITLE_COLOR);
