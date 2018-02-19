@@ -52,8 +52,8 @@ public class MeleeWeapon extends Weapon {
 	
 	@Override
 	public int damageRoll(Char owner) {
-		int damage = super.damageRoll( owner );
-		
+		int damage = imbue.damageFactor(super.damageRoll( owner ));
+
 		if (owner instanceof Hero) {
 			int exStr = ((Hero)owner).STR() - STRReq();
 			if (exStr > 0) {
@@ -61,7 +61,7 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 		
-		return imbue.damageFactor(damage);
+		return damage;
 	}
 	
 	@Override
