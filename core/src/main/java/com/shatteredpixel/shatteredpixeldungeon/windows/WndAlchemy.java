@@ -85,25 +85,27 @@ public class WndAlchemy extends Window {
 		add(desc);
 		
 		h += desc.height() + 6;
-		
-		for (int i = 0; i < inputs.length; i++) {
-			inputs[i] = new WndBlacksmith.ItemButton(){
-				@Override
-				protected void onClick() {
-					super.onClick();
-					if (item != null){
-						if (!item.collect()){
-							Dungeon.level.drop(item, Dungeon.hero.pos);
+
+		synchronized (inputs) {
+			for (int i = 0; i < inputs.length; i++) {
+				inputs[i] = new WndBlacksmith.ItemButton() {
+					@Override
+					protected void onClick() {
+						super.onClick();
+						if (item != null) {
+							if (!item.collect()) {
+								Dungeon.level.drop(item, Dungeon.hero.pos);
+							}
+							item = null;
+							slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
 						}
-						item = null;
-						slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
+						GameScene.selectItem(itemSelector, WndBag.Mode.ALCHEMY, Messages.get(WndAlchemy.class, "select"));
 					}
-					GameScene.selectItem( itemSelector, WndBag.Mode.ALCHEMY, Messages.get(WndAlchemy.class, "select") );
-				}
-			};
-			inputs[i].setRect(10, h, BTN_SIZE, BTN_SIZE);
-			add(inputs[i]);
-			h += BTN_SIZE + 2;
+				};
+				inputs[i].setRect(10, h, BTN_SIZE, BTN_SIZE);
+				add(inputs[i]);
+				h += BTN_SIZE + 2;
+			}
 		}
 		
 		btnCombine = new RedButton(""){
@@ -211,19 +213,21 @@ public class WndAlchemy extends Window {
 	protected WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( Item item ) {
-			if (item != null) {
-				for (int i = 0; i < inputs.length; i++) {
-					if (inputs[i].item == null){
-						if (item instanceof Dart){
-							inputs[i].item(item.detachAll(Dungeon.hero.belongings.backpack));
-						} else {
-							inputs[i].item(item.detach(Dungeon.hero.belongings.backpack));
+			synchronized (inputs) {
+				if (item != null && inputs[0] != null) {
+					for (int i = 0; i < inputs.length; i++) {
+						if (inputs[i].item == null) {
+							if (item instanceof Dart) {
+								inputs[i].item(item.detachAll(Dungeon.hero.belongings.backpack));
+							} else {
+								inputs[i].item(item.detach(Dungeon.hero.belongings.backpack));
+							}
+							break;
 						}
-						break;
 					}
+					updateState();
 				}
 			}
-			updateState();
 		}
 	};
 	
@@ -275,14 +279,16 @@ public class WndAlchemy extends Window {
 			if (!result.collect()){
 				Dungeon.level.drop(result, Dungeon.hero.pos);
 			}
-			
-			for (int i = 0; i < inputs.length; i++){
-				if (inputs[i].item != null)  {
-					if (inputs[i].item.quantity() <= 0) {
-						inputs[i].slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
-						inputs[i].item = null;
-					} else {
-						inputs[i].slot.item(inputs[i].item);
+
+			synchronized (inputs) {
+				for (int i = 0; i < inputs.length; i++) {
+					if (inputs[i] != null && inputs[i].item != null) {
+						if (inputs[i].item.quantity() <= 0) {
+							inputs[i].slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
+							inputs[i].item = null;
+						} else {
+							inputs[i].slot.item(inputs[i].item);
+						}
 					}
 				}
 			}
