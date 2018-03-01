@@ -131,27 +131,56 @@ public class ChangesScene extends PixelScene {
 		//**********************
 		//       v0.6.3
 		//**********************
-
-		ChangeInfo changes = new ChangeInfo("v0.6.3a", true, "");
+		
+		ChangeInfo changes = new ChangeInfo("v0.6.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
-
+		
+		changes = new ChangeInfo("v0.6.3b", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STYLUS, null), "Obfuscation",
+				"With its downside removed in 0.6.3, the glyph of obfuscation has become extremely powerful.\n" +
+				"\n" +
+				"To reign it in a bit, its effectiveness has been reduced at higher levels:\n" +
+				"_-_ Base power increased\n" +
+				"_-_ Power scaling has been decreased by 67%"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
+				"The berserker remains extremely powerful, so further adjustments have been made:\n\n" +
+				"_-_ Re-applied bonus damage nerf from 0.6.2: bonus damage below 50% health reduced significantly, 2x damage while at 0 hp unchanged.\n\n" +
+				"_-_ Bonus damage is now calculated using reduced max hp, not true max hp. This means that past rages effectively reduce bonus damage."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed a serious memory leak on android 8.0+\n\n" +
+				"Fixed serious crash issues on older custom ROMs\n\n" +
+				"Fixed (caused by 0.6.3):\n" +
+				"_-_ Sleep darts causing phantom sleep bubbles\n" +
+				"_-_ Mimics not dropping loot when corrupted\n" +
+				"_-_ Bugs caused by berserker hp reduction\n\n" +
+				"Fixed (existed before 0.6.3):\n" +
+				"_-_ Rankings not retaining challenges completed"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
+		changes = new ChangeInfo("v0.6.3a", false, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		infos.add(changes);
+		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
 				"_-_ Reduced burning damage against high health enemies\n\n" +
-						"_-_ Reduced game install size by ~2.5%"));
-
+				"_-_ Reduced game install size by ~2.5%"));
+		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed (caused by 0.6.3):\n" +
 				"_-_ Health potions being craftable with pharmacophobia enabled\n" +
 				"_-_ Ring of sharpshooting increasing damage a bit more than displayed\n" +
 				"_-_ Various rare crashes"));
-
+		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"Updated Translations"));
-
-		changes = new ChangeInfo("v0.6.3", true, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
 		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
