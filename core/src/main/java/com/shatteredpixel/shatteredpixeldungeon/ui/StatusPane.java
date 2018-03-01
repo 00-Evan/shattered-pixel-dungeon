@@ -169,6 +169,8 @@ public class StatusPane extends Component {
 
 		btnMenu.setPos( width - btnMenu.width(), 1 );
 	}
+	
+	private static final int[] warningColors = new int[]{0x660000, 0xCC0000, 0x660000};
 
 	@Override
 	public void update() {
@@ -183,7 +185,7 @@ public class StatusPane extends Component {
 		} else if ((health/max) < 0.3f) {
 			warning += Game.elapsed * 5f *(0.4f - (health/max));
 			warning %= 1f;
-			avatar.tint(ColorMath.interpolate(warning, 0x660000, 0xCC0000, 0x660000), 0.5f );
+			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );
 		} else {
 			avatar.resetColor();
 		}

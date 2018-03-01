@@ -91,7 +91,9 @@ public class Camera extends Gizmo {
 	}
 	
 	public static synchronized void updateAll() {
-		for (Camera c : all) {
+		int length = all.size();
+		for (int i=0; i < length; i++) {
+			Camera c = all.get( i );
 			if (c.exists && c.active) {
 				c.update();
 			}

@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.watabou.glwrap.Blending;
-import com.watabou.glwrap.Texture;
 import com.watabou.input.Touchscreen;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapText.Font;
@@ -112,8 +111,11 @@ public class PixelScene extends Scene {
 			pixelFont.baseLine = 6;
 			pixelFont.tracking = -1;
 
+			//Fonts disabled to save memory (~1mb of texture data just sitting there unused)
+			//uncomment if you wish to enable these again.
+			
 			// 9x15 (18)
-			font1x = Font.colorMarked(
+			/*font1x = Font.colorMarked(
 					BitmapCache.get( Assets.FONT1X), 22, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font1x.baseLine = 17;
 			font1x.tracking = -2;
@@ -124,7 +126,7 @@ public class PixelScene extends Scene {
 					BitmapCache.get( Assets.FONT2X), 44, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font2x.baseLine = 38;
 			font2x.tracking = -4;
-			font2x.texture.filter(Texture.LINEAR, Texture.NEAREST);
+			font2x.texture.filter(Texture.LINEAR, Texture.NEAREST);*/
 		}
 	}
 
