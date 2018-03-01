@@ -518,6 +518,7 @@ public class StartScene extends PixelScene {
 				} );
 			} else {
 				StartScene.this.add( new WndMessage( Messages.get(StartScene.class, "need_to_win") ) );
+				SPDSettings.challenges(0);
 			}
 		}
 
