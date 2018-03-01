@@ -158,16 +158,17 @@ public class WndRanking extends WndTabbed {
 			float pos = title.bottom();
 
 			if (Dungeon.challenges > 0) {
-				RedButton btnCatalogus = new RedButton( Messages.get(this, "challenges") ) {
+				RedButton btnChallenges = new RedButton( Messages.get(this, "challenges") ) {
 					@Override
 					protected void onClick() {
 						Game.scene().add( new WndChallenges( Dungeon.challenges, false ) );
 					}
 				};
-				btnCatalogus.setRect( 0, pos, btnCatalogus.reqWidth() + 2, btnCatalogus.reqHeight() + 2 );
-				add( btnCatalogus );
+				float btnW = btnChallenges.reqWidth() + 2;
+				btnChallenges.setRect( (WIDTH - btnW)/2, pos, btnW , btnChallenges.reqHeight() + 2 );
+				add( btnChallenges );
 
-				pos = btnCatalogus.bottom();
+				pos = btnChallenges.bottom();
 			}
 
 			pos += GAP + GAP;
