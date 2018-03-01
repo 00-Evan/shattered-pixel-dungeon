@@ -578,7 +578,7 @@ public class DriedRose extends Artifact {
 			int stealth = super.stealth();
 			
 			if (rose != null && rose.armor != null && rose.armor.hasGlyph(Obfuscation.class)){
-				stealth += rose.armor.level();
+				stealth +=  1 + rose.armor.level()/3;
 			}
 			
 			return stealth;
