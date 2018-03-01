@@ -39,11 +39,11 @@ public class Regeneration extends Buff {
 	public boolean act() {
 		if (target.isAlive()) {
 
-			if (target.HP < target.HT && !((Hero)target).isStarving()) {
+			if (target.HP < regencap() && !((Hero)target).isStarving()) {
 				LockedFloor lock = target.buff(LockedFloor.class);
 				if (target.HP > 0 && (lock == null || lock.regenOn())) {
 					target.HP += 1;
-					if (target.HP == target.HT) {
+					if (target.HP == regencap()) {
 						((Hero) target).resting = false;
 					}
 				}
@@ -66,5 +66,9 @@ public class Regeneration extends Buff {
 		}
 		
 		return true;
+	}
+	
+	public int regencap(){
+		return target.buff(Berserk.class) == null ? target.HT : target.buff(Berserk.class).targetHPMax();
 	}
 }

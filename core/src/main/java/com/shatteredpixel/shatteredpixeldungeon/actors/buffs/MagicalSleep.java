@@ -37,7 +37,7 @@ public class MagicalSleep extends Buff {
 		if (!target.isImmune(Sleep.class) && super.attachTo( target )) {
 
 			if (target instanceof Hero)
-				if (target.HP == target.HT) {
+				if (target.HP == target.buff(Regeneration.class).regencap()) {
 					GLog.i(Messages.get(this, "toohealthy"));
 					detach();
 					return true;
@@ -64,7 +64,7 @@ public class MagicalSleep extends Buff {
 		if (target instanceof Hero) {
 			target.HP = Math.min(target.HP+1, target.HT);
 			((Hero) target).resting = true;
-			if (target.HP == target.HT) {
+			if (target.HP == target.buff(Regeneration.class).regencap()) {
 				GLog.p(Messages.get(this, "wakeup"));
 				detach();
 			}

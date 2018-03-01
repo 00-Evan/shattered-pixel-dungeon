@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal.WarriorShield;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -89,10 +90,12 @@ public class Berserk extends Buff {
 			}
 		} else {
 			
-			float percentHP = target.HP/(float)target.HT;
-			
-			if (percentHP > targetHPPercent()){
-				target.HP = (int)Math.max(target.HT*targetHPPercent(), target.HP - pastRages);
+			if (target.HP > targetHPMax()){
+				target.HP = Math.max(targetHPMax(), target.HP - 1);
+				if (target instanceof Hero){
+					((Hero) target).resting = false;
+					target.remove(MagicalSleep.class);
+				}
 			}
 			
 			if (state == State.EXHAUSTED){
@@ -109,19 +112,21 @@ public class Berserk extends Buff {
 
 	public int damageFactor(int dmg){
 		float bonus;
-
-		if (state == State.EXHAUSTED) {
-			bonus = 1f - ((float)Math.sqrt(exhaustion) / 8f);
+		
+		if (state == State.BERSERK){
+			bonus = 2f;
+		} else if (state == State.EXHAUSTED) {
+			bonus = 1f - ((float)Math.sqrt(exhaustion) / 10f);
 		} else {
-			float percentMissing = 1f - target.HP/(float)target.HT;
-			bonus = 1f + (float)Math.pow(percentMissing, 3);
+			float percentMissing = 1f - target.HP/(float)targetHPMax();
+			bonus = 1f + (0.5f * (float)Math.pow(percentMissing, 2));
 		}
 
 		return Math.round(dmg * bonus);
 	}
 	
-	public float targetHPPercent(){
-		return Math.round(20* Math.pow(0.8f, pastRages))/20f;
+	public int targetHPMax(){
+		return Math.round(target.HT * Math.round(20* Math.pow(0.8f, pastRages))/20f);
 	}
 
 	public boolean berserking(){
@@ -212,7 +217,8 @@ public class Berserk extends Buff {
 		if (pastRages == 0){
 			text += "\n\n" + Messages.get(this, "no_rages");
 		} else {
-			text += "\n\n" + Messages.get(this, "past_rages", pastRages, (int)(targetHPPercent()*100));
+			int dispPercent = (int)(targetHPMax()/(float)target.HT * 100);
+			text += "\n\n" + Messages.get(this, "past_rages", pastRages, dispPercent);
 		}
 		return text;
 	}
