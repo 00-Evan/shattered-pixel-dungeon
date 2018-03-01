@@ -27,8 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
-import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.RenderedText;
 
 public class WndClass extends WndTabbed {
 
@@ -113,18 +113,16 @@ public class WndClass extends WndTabbed {
 					pos += GAP;
 				}
 
-				BitmapText dot = PixelScene.createText( "-", 6 );
-				dot.x = MARGIN;
+				RenderedText dot = PixelScene.renderText( "-", 6 );
 				dot.y = pos;
 				if (dotWidth == 0) {
-					dot.measure();
 					dotWidth = dot.width();
 				}
 				add( dot );
 
 				RenderedTextMultiline item = PixelScene.renderMultiline( items[i], 6 );
 				item.maxWidth((int)(WIDTH - MARGIN * 2 - dotWidth));
-				item.setPos(dot.x + dotWidth, pos);
+				item.setPos(dot.x + dot.width(), pos);
 				add( item );
 
 				pos += item.height();
