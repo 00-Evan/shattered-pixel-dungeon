@@ -42,47 +42,27 @@ public class RenderedText extends Image {
 	private static Paint painter = new Paint();
 
 	private static Typeface font;
-
+	
 	//this is basically a LRU cache. capacity is determined by character count, not entry count.
-	//will attempt to clear oldest, not in use entires until there are 500 characters stored.
 	//FIXME: Caching based on words is very inefficient for every language but chinese.
-	private static LinkedHashMap<String, CachedText> textCache =
-			new LinkedHashMap<String, CachedText>(700, 0.75f, true){
-				private int cachedChars = 0;
-				private final int MAX_CACHED = 1000;
-
-				@Override
-				public CachedText put(String key, CachedText value) {
-					cachedChars += value.length;
-					CachedText added = super.put(key, value);
-					runGC();
-					return added;
-				}
-
-				@Override
-				public CachedText remove(Object key) {
-					CachedText removed = super.remove(key);
-					if (removed != null) {
-						cachedChars-= removed.length;
-						removed.texture.delete();
-					}
-					return removed;
-				}
-
-				@Override
-				public void clear() {
-					super.clear();
-					cachedChars = 0;
-				}
-
-				private void runGC(){
-					Iterator<Map.Entry<String, CachedText>> it = this.entrySet().iterator();
-					while (cachedChars > MAX_CACHED && it.hasNext()){
-						CachedText cached = it.next().getValue();
-						if (cached.activeTexts.isEmpty()) it.remove();
-					}
-				}
-	};
+	private static LinkedHashMap<String, CachedText> textCache = new LinkedHashMap<>(700, 0.75f, true);
+	
+	private static int cachedChars = 0;
+	
+	private static final int GC_TRIGGER = 1250;
+	private static final int GC_TARGET = 1000;
+	
+	private static void runGC(){
+		Iterator<Map.Entry<String, CachedText>> it = textCache.entrySet().iterator();
+		while (cachedChars > GC_TARGET && it.hasNext()){
+			CachedText cached = it.next().getValue();
+			if (cached.activeTexts.isEmpty()) {
+				cachedChars -= cached.length;
+				cached.texture.delete();
+				it.remove();
+			}
+		}
+	}
 
 	private int size;
 	private String text;
@@ -200,7 +180,13 @@ public class RenderedText extends Image {
 			r.cache.length = r.text.length();
 			r.cache.activeTexts = new HashSet<>();
 			r.cache.activeTexts.add(r);
+			
+			cachedChars += r.cache.length;
 			textCache.put("text:" + r.size + " " + r.text, r.cache);
+			
+			if (cachedChars >= GC_TRIGGER){
+				runGC();
+			}
 		}
 	}
 
@@ -230,6 +216,7 @@ public class RenderedText extends Image {
 		for (CachedText cached : textCache.values()){
 			cached.texture.delete();
 		}
+		cachedChars = 0;
 		textCache.clear();
 	}
 
