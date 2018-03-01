@@ -291,7 +291,6 @@ public abstract class Mob extends Char {
 			state = FLEEING;
 		} else if (buff instanceof Sleep) {
 			state = SLEEPING;
-			this.sprite().showSleep();
 			postpone( Sleep.SWS );
 		}
 	}
