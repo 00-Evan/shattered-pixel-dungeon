@@ -94,15 +94,15 @@ public class Mimic extends Mob {
 	}
 	
 	@Override
-	public void die( Object cause ) {
-
-		super.die( cause );
+	public void rollToDropLoot(){
 		
 		if (items != null) {
 			for (Item item : items) {
 				Dungeon.level.drop( item, pos ).sprite.drop();
 			}
+			items = null;
 		}
+		super.rollToDropLoot();
 	}
 	
 	@Override
