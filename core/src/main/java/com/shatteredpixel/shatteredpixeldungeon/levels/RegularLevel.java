@@ -324,6 +324,9 @@ public abstract class RegularLevel extends Level {
 			}
 			
 			Item toDrop = Generator.random();
+
+			if (toDrop == null) continue;
+
 			if ((toDrop instanceof Artifact && Random.Int(2) == 0) ||
 					(toDrop.isUpgradable() && Random.Int(4 - toDrop.level()) == 0)){
 				Heap dropped = drop( toDrop, cell );

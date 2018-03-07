@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -64,7 +66,12 @@ public class Torch extends Item {
 			hero.sprite.operate( hero.pos );
 			
 			detach( hero.belongings.backpack );
-			Buff.affect( hero, Light.class, Light.DURATION );
+
+			if (Dungeon.isChallenged(Challenges.DARKNESS)){
+				Buff.affect(hero, Light.class, 2*Light.DURATION/3f);
+			} else {
+				Buff.affect(hero, Light.class, Light.DURATION);
+			}
 			
 			Emitter emitter = hero.sprite.centerEmitter();
 			emitter.start( FlameParticle.FACTORY, 0.2f, 3 );

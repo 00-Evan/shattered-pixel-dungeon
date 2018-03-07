@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -60,17 +61,20 @@ public class PitRoom extends SpecialRoom {
 		}
 		
 		level.drop( new IronKey( Dungeon.depth ), remains ).type = Heap.Type.SKELETON;
-		int loot = Random.Int( 3 );
-		if (loot == 0) {
-			level.drop( Generator.random( Generator.Category.RING ), remains );
-		} else if (loot == 1) {
-			level.drop( Generator.random( Generator.Category.ARTIFACT ), remains );
-		} else {
-			level.drop( Generator.random( Random.oneOf(
-				Generator.Category.WEAPON,
-				Generator.Category.ARMOR
-			) ), remains );
-		}
+		Item mainLoot = null;
+		do {
+			switch (Random.Int(3)){
+				case 0:
+					mainLoot = Generator.random(Generator.Category.RING);
+				case 1:
+					mainLoot = Generator.random(Generator.Category.ARTIFACT);
+				case 2:
+					mainLoot = Generator.random(Random.oneOf(
+							Generator.Category.WEAPON,
+							Generator.Category.ARMOR));
+			}
+		} while ( mainLoot == null || !Challenges.isItemBlocked(mainLoot));
+		level.drop(mainLoot, remains);
 		
 		int n = Random.IntRange( 1, 2 );
 		for (int i=0; i < n; i++) {

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -72,8 +73,13 @@ public class WandOfPrismaticLight extends DamageWand {
 		}
 		affectMap(beam);
 
-		if (Dungeon.level.viewDistance < 6)
-			Buff.prolong( curUser, Light.class, 10f+level()*5);
+		if (Dungeon.level.viewDistance < 6 ){
+			if (Dungeon.isChallenged(Challenges.DARKNESS)){
+				Buff.prolong( curUser, Light.class, 2f + level());
+			} else {
+				Buff.prolong( curUser, Light.class, 10f+level()*5);
+			}
+		}
 	}
 
 	private void affectTarget(Char ch){

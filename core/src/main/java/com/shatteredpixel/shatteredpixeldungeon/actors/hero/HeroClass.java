@@ -26,9 +26,11 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -84,11 +86,16 @@ public enum HeroClass {
 	}
 
 	private static void initCommon( Hero hero ) {
-		if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-			(hero.belongings.armor = new ClothArmor()).identify();
+		Item i = new ClothArmor().identify();
+		if (!Challenges.isItemBlocked(i)) hero.belongings.armor = (ClothArmor)i;
 
-		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
-			new Food().identify().collect();
+		i = new Food();
+		if (!Challenges.isItemBlocked(i)) i.collect();
+
+		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
+			new SmallRation().collect();
+		}
+
 	}
 
 	public Badges.Badge masteryBadge() {
@@ -109,18 +116,16 @@ public enum HeroClass {
 		(hero.belongings.weapon = new WornShortsword()).identify();
 		ThrowingStone stones = new ThrowingStone();
 		stones.identify().quantity(3).collect();
+		Dungeon.quickslot.setSlot(0, stones);
 
-		if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR) ){
-			if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
+		if (hero.belongings.armor != null){
+			if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR) ){
 				hero.belongings.armor.affixSeal(new BrokenSeal());
-			Dungeon.quickslot.setSlot(0, stones);
-		} else {
-			if (!Dungeon.isChallenged(Challenges.NO_ARMOR)) {
+			} else {
 				BrokenSeal seal = new BrokenSeal();
 				seal.collect();
-				Dungeon.quickslot.setSlot(0, seal);
+				Dungeon.quickslot.setSlot(1, seal);
 			}
-			Dungeon.quickslot.setSlot(1, stones);
 		}
 
 		new PotionOfHealing().identify();

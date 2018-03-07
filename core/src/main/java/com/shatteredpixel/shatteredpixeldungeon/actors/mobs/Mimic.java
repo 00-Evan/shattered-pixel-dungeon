@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -149,18 +150,27 @@ public class Mimic extends Mob {
 		}
 
 		//generate an extra reward for killing the mimic
-		switch(Random.Int(5)){
-			case 0:
-				m.items.add(new Gold().random()); break;
-			case 1:
-				m.items.add(Generator.randomMissile()); break;
-			case 2:
-				m.items.add(Generator.randomArmor().identify()); break;
-			case 3:
-				m.items.add(Generator.randomWeapon().identify()); break;
-			case 4:
-				m.items.add(Generator.random(Generator.Category.RING).identify()); break;
-		}
+		Item reward = null;
+		do {
+			switch (Random.Int(5)) {
+				case 0:
+					reward = new Gold().random();
+					break;
+				case 1:
+					reward = Generator.randomMissile();
+					break;
+				case 2:
+					reward = Generator.randomArmor();
+					break;
+				case 3:
+					reward = Generator.randomWeapon();
+					break;
+				case 4:
+					reward = Generator.random(Generator.Category.RING);
+					break;
+			}
+		} while (reward == null || !Challenges.isItemBlocked(reward));
+		m.items.add(reward);
 		
 		return m;
 	}

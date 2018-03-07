@@ -41,22 +41,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -66,7 +59,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRo
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -113,7 +105,7 @@ public abstract class Level implements Bundlable {
 	public boolean[] mapped;
 	public boolean[] discoverable;
 
-	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 4 : 8;
+	public int viewDistance = Dungeon.isChallenged( Challenges.DARKNESS ) ? 2 : 8;
 	
 	public boolean[] heroFOV;
 	
@@ -172,7 +164,16 @@ public abstract class Level implements Bundlable {
 		Random.seed( Dungeon.seedCurDepth() );
 		
 		if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
-			addItemToSpawn( Generator.random( Generator.Category.FOOD ) );
+
+			if (Dungeon.isChallenged(Challenges.NO_FOOD)){
+				addItemToSpawn( new SmallRation() );
+			} else {
+				addItemToSpawn(Generator.random(Generator.Category.FOOD));
+			}
+
+			if (Dungeon.isChallenged(Challenges.DARKNESS)){
+				addItemToSpawn( new Torch() );
+			}
 
 			if (Dungeon.posNeeded()) {
 				addItemToSpawn( new PotionOfStrength() );
@@ -650,13 +651,7 @@ public abstract class Level implements Bundlable {
 	
 	public Heap drop( Item item, int cell ) {
 
-		//This messy if statement deals will items which should not drop in challenges primarily.
-		if ((Dungeon.isChallenged( Challenges.NO_FOOD ) && (item instanceof Food || item instanceof BlandfruitBush.Seed)) ||
-			(Dungeon.isChallenged( Challenges.NO_ARMOR ) && item instanceof Armor) ||
-			(Dungeon.isChallenged( Challenges.NO_HEALING ) && item instanceof PotionOfHealing) ||
-			(Dungeon.isChallenged( Challenges.NO_HERBALISM ) && (item instanceof Plant.Seed || item instanceof Dewdrop || item instanceof SeedPouch)) ||
-			(Dungeon.isChallenged( Challenges.NO_SCROLLS ) && ((item instanceof Scroll && !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) || item instanceof ScrollHolder)) ||
-			item == null) {
+		if (item == null || Challenges.isItemBlocked(item)){
 
 			//create a dummy heap, give it a dummy sprite, don't add it to the game, and return it.
 			//effectively nullifies whatever the logic calling this wants to do, including dropping items.

@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfTransmutation;
@@ -73,16 +72,6 @@ public class SpecialRoom extends Room {
 	
 	public static void initForRun() {
 		runSpecials = (ArrayList<Class<?extends Room>>)ALL_SPEC.clone();
-		
-		//remove special rooms disallowed by challenges
-		if (Dungeon.isChallenged( Challenges.NO_ARMOR )){
-			//no sense in giving an armor reward room on a run with no armor.
-			runSpecials.remove( CryptRoom.class );
-		}
-		if (Dungeon.isChallenged( Challenges.NO_HERBALISM )){
-			//Would be a bit mean to spawn these with no plants in them
-			runSpecials.remove( GardenRoom.class );
-		}
 		
 		pitNeededDepth = -1;
 		guaranteedWellDepth = Random.IntRange( 6, 14 );

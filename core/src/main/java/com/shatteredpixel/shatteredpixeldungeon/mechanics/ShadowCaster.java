@@ -37,7 +37,10 @@ public final class ShadowCaster {
 		for (int i=1; i <= MAX_DISTANCE; i++) {
 			rounding[i] = new int[i+1];
 			for (int j=1; j <= i; j++) {
-				rounding[i][j] = (int)Math.min( j, Math.round( i * Math.cos( Math.asin( j / (i + 0.5) ))));
+				//testing the middle of a cell, so we use i + 0.5
+				rounding[i][j] = (int)Math.min(
+						j,
+						Math.round( (i + 0.5) * Math.cos( Math.asin( j / (i + 0.5) ))));
 			}
 		}
 	}

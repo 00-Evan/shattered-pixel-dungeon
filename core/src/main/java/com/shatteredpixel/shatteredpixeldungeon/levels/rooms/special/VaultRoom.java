@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -62,7 +63,12 @@ public class VaultRoom extends SpecialRoom {
 	}
 	
 	private Item prize( Level level ) {
-		return Generator.random( prizeClasses.remove(0) );
+		Generator.Category cat = prizeClasses.remove(0);
+		Item prize = null;
+		do {
+			prize = Generator.random(cat);
+		} while (prize == null || Challenges.isItemBlocked(prize));
+		return prize;
 	}
 	
 	private ArrayList<Generator.Category> prizeClasses = new ArrayList<>(

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -132,7 +133,7 @@ public class TrapsRoom extends SpecialRoom {
 			} else {
 				prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
 			}
-		} while (prize.cursed);
+		} while (prize.cursed || Challenges.isItemBlocked(prize));
 
 		//33% chance for an extra update.
 		if (Random.Int(3) == 0){
