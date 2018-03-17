@@ -141,6 +141,15 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap" );
 		
+		//v0.6.4
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch" );
+		
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster" );
+		
 	}
 	
 	@SuppressWarnings("deprecation")

@@ -23,9 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class WandHolster extends Bag {
+public class MagicalHolster extends Bag {
 
 	{
 		image = ItemSpriteSheet.HOLSTER;
@@ -33,11 +34,12 @@ public class WandHolster extends Bag {
 		size = 12;
 	}
 
-	public static float HOLSTER_SCALE_FACTOR = 0.85f;
+	public static final float HOLSTER_SCALE_FACTOR = 0.85f;
+	public static final float HOLSTER_DURABILITY_FACTOR = 1.2f;
 	
 	@Override
 	public boolean grab( Item item ) {
-		return item instanceof Wand;
+		return item instanceof Wand || item instanceof MissileWeapon;
 	}
 	
 	@Override
@@ -45,7 +47,11 @@ public class WandHolster extends Bag {
 		if (super.collect( container )) {
 			if (owner != null) {
 				for (Item item : items) {
-					((Wand)item).charge( owner, HOLSTER_SCALE_FACTOR );
+					if (item instanceof Wand) {
+						((Wand) item).charge(owner, HOLSTER_SCALE_FACTOR);
+					} else if (item instanceof MissileWeapon){
+						((MissileWeapon) item).holster = true;
+					}
 				}
 			}
 			return true;
@@ -64,7 +70,7 @@ public class WandHolster extends Bag {
 	
 	@Override
 	public int price() {
-		return 50;
+		return 60;
 	}
 
 }

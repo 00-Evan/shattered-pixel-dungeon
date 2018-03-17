@@ -104,10 +104,10 @@ public class Dungeon {
 
 		//containers
 		DEW_VIAL,
-		SEED_POUCH,
+		VELVET_POUCH,
 		SCROLL_HOLDER,
 		POTION_BANDOLIER,
-		WAND_HOLSTER;
+		MAGICAL_HOLSTER;
 
 		public int count = 0;
 
@@ -138,6 +138,14 @@ public class Dungeon {
 				} else {
 					lim.count = 0;
 				}
+				
+			}
+			//saves prior to 0.6.4
+			if (bundle.contains("SEED_POUCH")) {
+				LimitedDrops.VELVET_POUCH.count = bundle.getInt("SEED_POUCH");
+			}
+			if (bundle.contains("WAND_HOLSTER")) {
+				LimitedDrops.MAGICAL_HOLSTER.count = bundle.getInt("WAND_HOLSTER");
 			}
 		}
 
@@ -154,10 +162,10 @@ public class Dungeon {
 			BLANDFRUIT_SEED.count =     counts[8];
 			THIEVES_ARMBAND.count =     counts[9];
 			DEW_VIAL.count =            counts[10];
-			SEED_POUCH.count =          counts[11];
+			VELVET_POUCH.count =        counts[11];
 			SCROLL_HOLDER.count =       counts[12];
 			POTION_BANDOLIER.count =    counts[13];
-			WAND_HOLSTER.count =        counts[14];
+			MAGICAL_HOLSTER.count =     counts[14];
 			GUARD_HP.count =            counts[15];
 		}
 

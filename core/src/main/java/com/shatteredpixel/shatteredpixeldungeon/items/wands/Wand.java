@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -111,8 +111,8 @@ public abstract class Wand extends Item {
 	public boolean collect( Bag container ) {
 		if (super.collect( container )) {
 			if (container.owner != null) {
-				if (container instanceof WandHolster)
-					charge( container.owner, ((WandHolster) container).HOLSTER_SCALE_FACTOR );
+				if (container instanceof MagicalHolster)
+					charge( container.owner, ((MagicalHolster) container).HOLSTER_SCALE_FACTOR );
 				else
 					charge( container.owner );
 			}

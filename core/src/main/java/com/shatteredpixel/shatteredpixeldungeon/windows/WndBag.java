@@ -31,10 +31,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
@@ -134,10 +134,10 @@ public class WndBag extends WndTabbed {
 		Belongings stuff = Dungeon.hero.belongings;
 		Bag[] bags = {
 			stuff.backpack,
-			stuff.getItem( SeedPouch.class ),
+			stuff.getItem( VelvetPouch.class ),
 			stuff.getItem( ScrollHolder.class ),
 			stuff.getItem( PotionBandolier.class ),
-			stuff.getItem( WandHolster.class )};
+			stuff.getItem( MagicalHolster.class )};
 
 		for (Bag b : bags) {
 			if (b != null) {
@@ -301,11 +301,11 @@ public class WndBag extends WndTabbed {
 		}
 		
 		private Image icon() {
-			if (bag instanceof SeedPouch) {
+			if (bag instanceof VelvetPouch) {
 				return Icons.get( Icons.SEED_POUCH );
 			} else if (bag instanceof ScrollHolder) {
 				return Icons.get( Icons.SCROLL_HOLDER );
-			} else if (bag instanceof WandHolster) {
+			} else if (bag instanceof MagicalHolster) {
 				return Icons.get( Icons.WAND_HOLSTER );
 			} else if (bag instanceof PotionBandolier) {
 				return Icons.get( Icons.POTION_BANDOLIER );

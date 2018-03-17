@@ -40,10 +40,10 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster;
+import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
@@ -877,13 +877,13 @@ public class GameScene extends PixelScene {
 		
 		WndBag wnd =
 				mode == Mode.SEED ?
-					WndBag.getBag( SeedPouch.class, listener, mode, title ) :
+					WndBag.getBag( VelvetPouch.class, listener, mode, title ) :
 				mode == Mode.SCROLL ?
 					WndBag.getBag( ScrollHolder.class, listener, mode, title ) :
 				mode == Mode.POTION ?
 					WndBag.getBag( PotionBandolier.class, listener, mode, title ) :
 				mode == Mode.WAND ?
-					WndBag.getBag( WandHolster.class, listener, mode, title ) :
+					WndBag.getBag( MagicalHolster.class, listener, mode, title ) :
 				WndBag.lastBag( listener, mode, title );
 		
 		if (scene != null) scene.addToFront( wnd );
