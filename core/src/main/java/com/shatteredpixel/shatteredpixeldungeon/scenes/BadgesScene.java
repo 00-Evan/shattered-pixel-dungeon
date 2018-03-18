@@ -62,12 +62,12 @@ public class BadgesScene extends PixelScene {
 		add( archs );
 
 		float left = 5;
-		float top = 15;
+		float top = 16;
 
 		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
-		title.x = (w - title.width()) / 2 ;
-		title.y = (top - title.baseLine()) / 2 ;
+		title.x = (w - title.width()) / 2f;
+		title.y = (top - title.baseLine()) / 2f;
 		align(title);
 		add(title);
 

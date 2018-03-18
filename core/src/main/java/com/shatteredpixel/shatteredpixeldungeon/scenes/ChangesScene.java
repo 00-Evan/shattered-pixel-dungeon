@@ -94,8 +94,8 @@ public class ChangesScene extends PixelScene {
 
 		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
-		title.x = (w - title.width()) / 2 ;
-		title.y = 4;
+		title.x = (w - title.width()) / 2f;
+		title.y = (16 - title.baseLine()) / 2f;
 		align(title);
 		add(title);
 

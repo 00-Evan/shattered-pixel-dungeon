@@ -119,11 +119,11 @@ public abstract class Char extends Actor {
 		return false;
 	}
 	
-	private static final String POS			= "pos";
-	private static final String TAG_HP		= "HP";
-	private static final String TAG_HT		= "HT";
-	private static final String TAG_SHLD    = "SHLD";
-	private static final String BUFFS		= "buffs";
+	protected static final String POS       = "pos";
+	protected static final String TAG_HP    = "HP";
+	protected static final String TAG_HT    = "HT";
+	protected static final String TAG_SHLD  = "SHLD";
+	protected static final String BUFFS	    = "buffs";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {

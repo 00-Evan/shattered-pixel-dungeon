@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
@@ -124,6 +125,14 @@ public class Belongings implements Iterable<Item> {
 		misc2 = (KindofMisc)bundle.get(MISC2);
 		if (misc2 != null) {
 			misc2.activate( owner );
+		}
+	}
+	
+	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
+		if (bundle.contains( ARMOR )){
+			info.armorTier = ((Armor)bundle.get( ARMOR )).tier;
+		} else {
+			info.armorTier = 0;
 		}
 	}
 	

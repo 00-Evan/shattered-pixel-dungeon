@@ -91,5 +91,10 @@ public class Statistics {
 		duration		= bundle.getFloat( DURATION );
 		amuletObtained	= bundle.getBoolean( AMULET );
 	}
+	
+	public static void preview( GamesInProgress.Info info, Bundle bundle ){
+		info.goldCollected  = bundle.getInt( GOLD );
+		info.maxDepth       = bundle.getInt( DEEPEST );
+	}
 
 }

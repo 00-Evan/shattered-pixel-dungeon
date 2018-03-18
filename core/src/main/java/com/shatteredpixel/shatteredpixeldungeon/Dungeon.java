@@ -60,7 +60,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
@@ -238,7 +237,7 @@ public class Dungeon {
 		
 		Badges.reset();
 		
-		StartScene.selectedClass.initHero( hero );
+		GamesInProgress.selectedClass.initHero( hero );
 	}
 
 	public static boolean isChallenged( int mask ) {
@@ -533,8 +532,7 @@ public class Dungeon {
 			saveGame( GamesInProgress.curSlot );
 			saveLevel( GamesInProgress.curSlot );
 
-			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges,
-					hero.lvl, hero.heroClass, hero.subClass );
+			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges, hero );
 
 		} else if (WndResurrect.instance != null) {
 			
@@ -671,6 +669,7 @@ public class Dungeon {
 		info.version = bundle.getInt( VERSION );
 		info.challenges = bundle.getInt( CHALLENGES );
 		Hero.preview( info, bundle.getBundle( HERO ) );
+		Statistics.preview( info, bundle );
 	}
 	
 	public static void fail( Class cause ) {

@@ -51,15 +51,17 @@ import com.watabou.utils.Bundle;
 
 public enum HeroClass {
 
-	WARRIOR( "warrior" ),
-	MAGE( "mage" ),
-	ROGUE( "rogue" ),
-	HUNTRESS( "huntress" );
+	WARRIOR( "warrior", HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
+	MAGE( "mage", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
+	ROGUE( "rogue", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
+	HUNTRESS( "huntress", HeroSubClass.WARDEN, HeroSubClass.SNIPER );
 
 	private String title;
+	private HeroSubClass[] subClasses;
 
-	HeroClass( String title ) {
+	HeroClass( String title, HeroSubClass...subClasses ) {
 		this.title = title;
+		this.subClasses = subClasses;
 	}
 
 	public void initHero( Hero hero ) {
@@ -189,6 +191,10 @@ public enum HeroClass {
 	
 	public String title() {
 		return Messages.get(HeroClass.class, title);
+	}
+	
+	public HeroSubClass[] subClasses() {
+		return subClasses;
 	}
 	
 	public String spritesheet() {
