@@ -21,7 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -29,18 +33,16 @@ public class Dart extends MissileWeapon {
 
 	{
 		image = ItemSpriteSheet.DART;
-
-		bones = false; //Finding them in bones would be semi-frequent and disappointing.
 	}
 
 	@Override
 	public int min(int lvl) {
-		return 1;
+		return bow != null ? 4 + bow.level() : 1;
 	}
 
 	@Override
 	public int max(int lvl) {
-		return 2;
+		return bow != null ? 12 + 3*bow.level() : 2;
 	}
 
 	@Override
@@ -53,11 +55,44 @@ public class Dart extends MissileWeapon {
 		return 0;
 	}
 	
+	private static Crossbow bow;
+	
+	private void updateCrossbow(){
+		if (Dungeon.hero.belongings.weapon instanceof Crossbow){
+			bow = (Crossbow) Dungeon.hero.belongings.weapon;
+		} else {
+			bow = null;
+		}
+	}
+	
 	@Override
-	public Item random() {
-		super.random();
-		quantity += 3;
-		return this;
+	public int throwPos(Hero user, int dst) {
+		if (bow != null && bow.hasEnchant(Projecting.class)
+				&& !Dungeon.level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4){
+			return dst;
+		} else {
+			return super.throwPos(user, dst);
+		}
+	}
+	
+	@Override
+	public int proc(Char attacker, Char defender, int damage) {
+		if (bow != null && bow.enchantment != null){
+			damage = bow.enchantment.proc(bow, attacker, defender, damage);
+		}
+		return super.proc(attacker, defender, damage);
+	}
+	
+	@Override
+	protected void onThrow(int cell) {
+		updateCrossbow();
+		super.onThrow(cell);
+	}
+	
+	@Override
+	public String info() {
+		updateCrossbow();
+		return super.info();
 	}
 	
 	@Override

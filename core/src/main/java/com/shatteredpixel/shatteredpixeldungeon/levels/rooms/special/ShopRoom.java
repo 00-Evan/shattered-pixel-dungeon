@@ -68,9 +68,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingHammer;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Trident;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.IncendiaryDart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -171,15 +171,15 @@ public class ShopRoom extends SpecialRoom {
 		case 6:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Shortsword().identify() : new HandAxe()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
-					new Shuriken().quantity(2) :
-					new IncendiaryDart().quantity(5));
+					new FishingSpear().quantity(2) :
+					new Shuriken().quantity(2));
 			itemsToSpawn.add( new LeatherArmor().identify() );
 			break;
 			
 		case 11:
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Sword().identify() : new Mace()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
-					new FishingSpear().quantity(2) :
+					new ThrowingSpear().quantity(2) :
 					new Bolas().quantity(2));
 			itemsToSpawn.add( new MailArmor().identify() );
 			break;

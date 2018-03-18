@@ -21,7 +21,18 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Trident;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.tweeners.PosTweener;
@@ -55,41 +66,37 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 
 	public void reset( PointF from, PointF to, Item item, Callback listener) {
 		revive();
-		int image;
 
-		if (item == null)   view(image = 0, null);
-		else                view(image = item.image(), item.glowing());
+		if (item == null)   view(0, null);
+		else                view(item.image(), item.glowing());
 
 		setup( from,
 				to,
-				image,
+				item,
 				listener );
 	}
 	
 	private static final int DEFAULT_ANGULAR_SPEED = 720;
 	
-	private static final HashMap<Integer, Integer> ANGULAR_SPEEDS = new HashMap<>();
+	private static final HashMap<Class<?extends Item>, Integer> ANGULAR_SPEEDS = new HashMap<>();
 	static {
-		ANGULAR_SPEEDS.put(ItemSpriteSheet.DART,            0);
-		ANGULAR_SPEEDS.put(ItemSpriteSheet.THROWING_KNIFE,  0);
-		ANGULAR_SPEEDS.put(ItemSpriteSheet.FISHING_SPEAR,   0);
-		ANGULAR_SPEEDS.put(ItemSpriteSheet.JAVELIN,         0);
-		ANGULAR_SPEEDS.put(ItemSpriteSheet.TRIDENT,         0);
-		
-		for( int i = ItemSpriteSheet.TIPPED_DARTS; i < ItemSpriteSheet.TIPPED_DARTS+16; i++){
-			ANGULAR_SPEEDS.put(i, 0);
-		}
+		ANGULAR_SPEEDS.put(Dart.class,          0);
+		ANGULAR_SPEEDS.put(ThrowingKnife.class, 0);
+		ANGULAR_SPEEDS.put(FishingSpear.class,  0);
+		ANGULAR_SPEEDS.put(ThrowingSpear.class, 0);
+		ANGULAR_SPEEDS.put(Javelin.class,       0);
+		ANGULAR_SPEEDS.put(Trident.class,       0);
 		
 		//720 is default
 		
-		ANGULAR_SPEEDS.put(ItemSpriteSheet.BOOMERANG,       1440);
-		ANGULAR_SPEEDS.put(ItemSpriteSheet.BOLAS,           1440);
+		ANGULAR_SPEEDS.put(Boomerang.class,     1440);
+		ANGULAR_SPEEDS.put(Bolas.class,         1440);
 		
-		ANGULAR_SPEEDS.put(ItemSpriteSheet.SHURIKEN,        2160);
+		ANGULAR_SPEEDS.put(Shuriken.class,      2160);
 	}
 
 	//TODO it might be nice to have a source and destination angle, to improve thrown weapon visuals
-	private void setup( PointF from, PointF to, int image, Callback listener ){
+	private void setup( PointF from, PointF to, Item item, Callback listener ){
 
 		originToCenter();
 
@@ -98,10 +105,15 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		point( from );
 
 		PointF d = PointF.diff( to, from );
-		speed.set( d ).normalize().scale( SPEED );
-
-		if ( ANGULAR_SPEEDS.containsKey(image)) angularSpeed = ANGULAR_SPEEDS.get(image);
-		else                                    angularSpeed = DEFAULT_ANGULAR_SPEED;
+		speed.set(d).normalize().scale(SPEED);
+		
+		angularSpeed = DEFAULT_ANGULAR_SPEED;
+		for (Class<?extends Item> cls : ANGULAR_SPEEDS.keySet()){
+			if (cls.isAssignableFrom(item.getClass())){
+				angularSpeed = ANGULAR_SPEEDS.get(cls);
+				break;
+			}
+		}
 		
 		angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);
 		
@@ -116,7 +128,11 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 			updateFrame();
 		}
 		
-		PosTweener tweener = new PosTweener( this, to, d.length() / SPEED );
+		float speed = SPEED;
+		if (item instanceof Dart && Dungeon.hero.belongings.weapon instanceof Crossbow){
+			speed *= 3f;
+		}
+		PosTweener tweener = new PosTweener( this, to, d.length() / speed );
 		tweener.listener = this;
 		parent.add( tweener );
 	}

@@ -182,12 +182,14 @@ public class ItemSpriteSheet {
 	public static final int FLAIL           = WEP_TIER4+2;
 	public static final int RUNIC_BLADE     = WEP_TIER4+3;
 	public static final int ASSASSINS_BLADE = WEP_TIER4+4;
+	public static final int CROSSBOW        = WEP_TIER4+5;
 	static{
 		assignItemRect(LONGSWORD,       15, 15);
 		assignItemRect(BATTLE_AXE,      16, 16);
 		assignItemRect(FLAIL,           14, 14);
 		assignItemRect(RUNIC_BLADE,     14, 14);
 		assignItemRect(ASSASSINS_BLADE, 14, 15);
+		assignItemRect(CROSSBOW,        15, 15);
 	}
 
 	private static final int WEP_TIER5      =                               xy(1, 9);   //8 slots
@@ -196,12 +198,14 @@ public class ItemSpriteSheet {
 	public static final int GLAIVE          = WEP_TIER5+2;
 	public static final int GREATAXE        = WEP_TIER5+3;
 	public static final int GREATSHIELD     = WEP_TIER5+4;
+	public static final int GAUNTLETS       = WEP_TIER5+5;
 	static{
 		assignItemRect(GREATSWORD,  16, 16);
 		assignItemRect(WAR_HAMMER,  16, 16);
 		assignItemRect(GLAIVE,      16, 16);
 		assignItemRect(GREATAXE,    12, 16);
 		assignItemRect(GREATSHIELD, 12, 16);
+		assignItemRect(GAUNTLETS,   13, 15);
 	}
 
 	                                                                                    //8 free slots
@@ -213,9 +217,10 @@ public class ItemSpriteSheet {
 	public static final int THROWING_KNIFE  = MISSILE_WEP+2;
 	public static final int THROWING_STONE  = MISSILE_WEP+3;
 	
-	public static final int SHURIKEN        = MISSILE_WEP+4;
+	public static final int FISHING_SPEAR   = MISSILE_WEP+4;
+	public static final int SHURIKEN        = MISSILE_WEP+5;
 	
-	public static final int FISHING_SPEAR   = MISSILE_WEP+7;
+	public static final int THROWING_SPEAR  = MISSILE_WEP+7;
 	public static final int BOLAS           = MISSILE_WEP+8;
 	
 	public static final int JAVELIN         = MISSILE_WEP+10;
@@ -231,9 +236,10 @@ public class ItemSpriteSheet {
 		assignItemRect(THROWING_KNIFE,  12, 13);
 		assignItemRect(THROWING_STONE,  9,  9);
 		
+		assignItemRect(FISHING_SPEAR,   11, 11);
 		assignItemRect(SHURIKEN,        12, 12);
 		
-		assignItemRect(FISHING_SPEAR,   13, 13);
+		assignItemRect(THROWING_SPEAR,  13, 13);
 		assignItemRect(BOLAS,           15, 14);
 		
 		assignItemRect(JAVELIN,         16, 16);

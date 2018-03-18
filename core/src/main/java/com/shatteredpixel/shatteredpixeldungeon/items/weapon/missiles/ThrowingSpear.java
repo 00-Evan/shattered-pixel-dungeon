@@ -19,32 +19,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class HealingDart extends TippedDart {
+public class ThrowingSpear extends MissileWeapon {
 	
 	{
-		image = ItemSpriteSheet.HEALING_DART;
+		image = ItemSpriteSheet.THROWING_SPEAR;
 	}
 	
 	@Override
-	public int proc(Char attacker, Char defender, int damage) {
-		
-		//heals 30 hp at base, scaling with enemy HT
-		Buff.affect( defender, Healing.class ).setHeal((int)(0.5f*defender.HT + 30), 0.333f, 0);
-		PotionOfHealing.cure( defender );
-		
-		if (attacker.alignment == defender.alignment){
-			return 0;
-		}
-		
-		return super.proc(attacker, defender, damage);
+	public int min(int lvl) {
+		return 6;
+	}
+	
+	@Override
+	public int max(int lvl) {
+		return 15;
+	}
+	
+	@Override
+	public int STRReq(int lvl) {
+		return 13;
+	}
+	
+	@Override
+	public int price() {
+		return 18 * quantity;
 	}
 	
 }

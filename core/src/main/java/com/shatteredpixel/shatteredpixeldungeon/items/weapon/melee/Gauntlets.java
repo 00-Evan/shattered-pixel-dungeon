@@ -19,32 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class HealingDart extends TippedDart {
+//TODO rename
+public class Gauntlets extends MeleeWeapon {
 	
 	{
-		image = ItemSpriteSheet.HEALING_DART;
+		image = ItemSpriteSheet.GAUNTLETS;
+		
+		tier = 5;
+		DLY = 0.5f; //2x speed
 	}
 	
 	@Override
-	public int proc(Char attacker, Char defender, int damage) {
-		
-		//heals 30 hp at base, scaling with enemy HT
-		Buff.affect( defender, Healing.class ).setHeal((int)(0.5f*defender.HT + 30), 0.333f, 0);
-		PotionOfHealing.cure( defender );
-		
-		if (attacker.alignment == defender.alignment){
-			return 0;
-		}
-		
-		return super.proc(attacker, defender, damage);
+	public int max(int lvl) {
+		return  Math.round(2.5f*(tier+1)) +     //15 base, down from 30
+				lvl*Math.round(0.5f*(tier+1));  //+3 per level, down from +6
 	}
 	
+	@Override
+	public int defenseFactor( Char owner ) {
+		return 5;	//5 extra defence
+	}
 }

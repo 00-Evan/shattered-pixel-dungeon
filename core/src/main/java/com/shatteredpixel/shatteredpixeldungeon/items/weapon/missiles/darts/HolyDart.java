@@ -37,6 +37,10 @@ public class HolyDart extends TippedDart {
 		
 		Buff.affect(defender, Bless.class, 20f);
 		
+		if (attacker.alignment == defender.alignment){
+			return 0;
+		}
+		
 		return super.proc(attacker, defender, damage);
 	}
 }

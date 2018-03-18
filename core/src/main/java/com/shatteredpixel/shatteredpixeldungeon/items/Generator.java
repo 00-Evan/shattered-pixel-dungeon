@@ -99,9 +99,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dirk;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlets;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
@@ -130,11 +132,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWea
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Trident;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.IncendiaryDart;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ParalyticDart;
 import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil;
@@ -299,18 +300,20 @@ public class Generator {
 					BattleAxe.class,
 					Flail.class,
 					RunicBlade.class,
-					AssassinsBlade.class
+					AssassinsBlade.class,
+					Crossbow.class
 			};
-			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4 };
+			WEP_T4.probs = new float[]{ 6, 5, 5, 4, 4, 4 };
 			
 			WEP_T5.classes = new Class<?>[]{
 					Greatsword.class,
 					WarHammer.class,
 					Glaive.class,
 					Greataxe.class,
-					Greatshield.class
+					Greatshield.class,
+					Gauntlets.class
 			};
-			WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4 };
+			WEP_T5.probs = new float[]{ 6, 5, 5, 4, 4, 4 };
 			
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{
@@ -332,14 +335,13 @@ public class Generator {
 			MIS_T1.probs = new float[]{ 1, 1 };
 			
 			MIS_T2.classes = new Class<?>[]{
-					Shuriken.class,
-					IncendiaryDart.class,
-					ParalyticDart.class,
+					FishingSpear.class,
+					Shuriken.class
 			};
-			MIS_T2.probs = new float[]{ 8, 3, 3 };
+			MIS_T2.probs = new float[]{ 4, 3 };
 			
 			MIS_T3.classes = new Class<?>[]{
-					FishingSpear.class,
+					ThrowingSpear.class,
 					Bolas.class
 			};
 			MIS_T3.probs = new float[]{ 4, 3 };
