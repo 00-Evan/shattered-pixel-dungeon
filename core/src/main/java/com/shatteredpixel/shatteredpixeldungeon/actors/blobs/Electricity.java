@@ -38,6 +38,11 @@ import com.watabou.utils.Random;
 
 public class Electricity extends Blob {
 	
+	{
+		//acts after mobs, to give them a chance to resist paralysis
+		actPriority = MOB_PRIO - 1;
+	}
+	
 	private boolean[] water;
 	
 	@Override

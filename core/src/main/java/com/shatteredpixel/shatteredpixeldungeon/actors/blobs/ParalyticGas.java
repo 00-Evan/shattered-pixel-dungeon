@@ -32,6 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 
 public class ParalyticGas extends Blob {
 	
+	{
+		//acts after mobs, to give them a chance to resist paralysis
+		actPriority = MOB_PRIO - 1;
+	}
+	
 	@Override
 	protected void evolve() {
 		super.evolve();

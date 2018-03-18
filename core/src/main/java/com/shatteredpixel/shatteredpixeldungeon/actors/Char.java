@@ -302,12 +302,7 @@ public abstract class Char extends Actor {
 		}
 		
 		if (buff( Paralysis.class ) != null) {
-			if (Random.Int( dmg ) >= Random.Int( HP )) {
-				Buff.detach( this, Paralysis.class );
-				if (Dungeon.level.heroFOV[pos]) {
-					GLog.i( Messages.get(Char.class, "out_of_paralysis", name) );
-				}
-			}
+			buff( Paralysis.class ).processDamage(dmg);
 		}
 
 		//FIXME: when I add proper damage properties, should add an IGNORES_SHIELDS property to use here.

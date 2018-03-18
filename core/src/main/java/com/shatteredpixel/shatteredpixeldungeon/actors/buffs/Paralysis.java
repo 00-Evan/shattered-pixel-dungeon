@@ -21,11 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class Paralysis extends FlavourBuff {
 
@@ -42,6 +45,21 @@ public class Paralysis extends FlavourBuff {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public void processDamage( int damage ){
+		if (target == null) return;
+		ParalysisResist resist = target.buff(ParalysisResist.class);
+		if (resist == null){
+			resist = Buff.affect(target, ParalysisResist.class);
+		}
+		resist.damage += damage;
+		if (Random.NormalIntRange(0, resist.damage) >= Random.NormalIntRange(0, target.HP)){
+			detach();
+			if (Dungeon.level.heroFOV[target.pos]) {
+				GLog.i( Messages.get(this, "out", target.name) );
+			}
 		}
 	}
 	
@@ -80,5 +98,34 @@ public class Paralysis extends FlavourBuff {
 
 	public static float duration( Char ch ) {
 		return DURATION;
+	}
+	
+	public static class ParalysisResist extends Buff {
+		
+		private int damage;
+		
+		@Override
+		public boolean act() {
+			if (target.buff(Paralysis.class) == null) {
+				damage -= Math.ceil(damage / 10f);
+				if (damage >= 0) detach();
+			}
+			spend(TICK);
+			return true;
+		}
+		
+		private static final String DAMAGE = "damage";
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			damage = bundle.getInt(DAMAGE);
+		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			bundle.put( DAMAGE, damage );
+		}
 	}
 }
