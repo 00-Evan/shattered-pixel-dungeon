@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -29,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.RankingsScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
@@ -74,14 +74,12 @@ public class WndGame extends Window {
 			addButton( btnStart = new RedButton( Messages.get(this, "start") ) {
 				@Override
 				protected void onClick() {
-					Dungeon.hero = null;
-					SPDSettings.challenges( Dungeon.challenges );
-					InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+					GamesInProgress.selectedClass = Dungeon.hero.heroClass;
 					InterlevelScene.noStory = true;
-					Game.switchScene( InterlevelScene.class );
+					ShatteredPixelDungeon.scene().add(new WndStartGame(GamesInProgress.firstEmpty()));
 				}
 			} );
-			btnStart.icon( Icons.get( Dungeon.hero.heroClass ) );
+			btnStart.textColor(Window.TITLE_COLOR);
 			
 			addButton( new RedButton( Messages.get(this, "rankings") ) {
 				@Override
@@ -126,7 +124,7 @@ public class WndGame extends Window {
 				hide();
 			}
 		} );
-
+		
 		resize( WIDTH, pos );
 	}
 	
