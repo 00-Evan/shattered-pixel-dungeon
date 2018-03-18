@@ -134,7 +134,7 @@ public class StartScene extends PixelScene {
 		}
 		align(challengeButton);
 		
-		if (!Badges.isUnlocked(Badges.Badge.VICTORY)){
+		if (Badges.isUnlocked(Badges.Badge.VICTORY)){
 			add(challengeButton);
 		} else {
 			Dungeon.challenges = 0;
