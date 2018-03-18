@@ -28,9 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.utils.FileUtils;
 
@@ -41,13 +44,13 @@ public class WndGameInProgress extends Window {
 	private static final int WIDTH    = 120;
 	private static final int HEIGHT   = 120;
 	
-	private static final int GAP	  = 5;
+	private int GAP	  = 5;
 	
 	private float pos;
 	
 	public WndGameInProgress(final int slot){
 		
-		GamesInProgress.Info info = GamesInProgress.check(slot);
+		final GamesInProgress.Info info = GamesInProgress.check(slot);
 		
 		IconTitle title = new IconTitle();
 		title.icon( HeroSprite.avatar(info.heroClass, info.armorTier) );
@@ -56,7 +59,25 @@ public class WndGameInProgress extends Window {
 		title.setRect( 0, 0, WIDTH, 0 );
 		add(title);
 		
-		pos = title.bottom() + 2*GAP;
+		if (info.challenges > 0) GAP -= 2;
+		
+		pos = title.bottom() + GAP;
+		
+		if (info.challenges > 0) {
+			RedButton btnChallenges = new RedButton( "Challenges" ) {
+				@Override
+				protected void onClick() {
+					Game.scene().add( new WndChallenges( info.challenges, false ) );
+				}
+			};
+			float btnW = btnChallenges.reqWidth() + 2;
+			btnChallenges.setRect( (WIDTH - btnW)/2, pos, btnW , btnChallenges.reqHeight() + 2 );
+			add( btnChallenges );
+			
+			pos = btnChallenges.bottom() + GAP;
+		}
+		
+		pos += GAP;
 		
 		statSlot( Messages.get(this, "str"), info.str );
 		if (info.shld > 0) statSlot( Messages.get(this, "health"), info.hp + "+" + info.shld + "/" + info.ht );
@@ -97,7 +118,11 @@ public class WndGameInProgress extends Window {
 						if (index == 0) {
 							FileUtils.deleteDir(GamesInProgress.gameFolder(slot));
 							GamesInProgress.setUnknown(slot);
-							ShatteredPixelDungeon.switchNoFade((Class<? extends PixelScene>) ShatteredPixelDungeon.scene().getClass());
+							if (GamesInProgress.checkAll().size() > 0) {
+								ShatteredPixelDungeon.switchNoFade(StartScene.class);
+							} else {
+								ShatteredPixelDungeon.switchNoFade(TitleScene.class);
+							}
 						}
 					}
 				} );

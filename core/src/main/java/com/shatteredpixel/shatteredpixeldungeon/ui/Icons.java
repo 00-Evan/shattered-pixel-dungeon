@@ -155,10 +155,10 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 95, 42, 107, 51 ) );
 			break;
 		case CHALLENGE_OFF:
-			icon.frame( icon.texture.uvRect( 78, 16, 102, 40 ) );
+			icon.frame( icon.texture.uvRect( 78, 12, 92, 24 ) );
 			break;
 		case CHALLENGE_ON:
-			icon.frame( icon.texture.uvRect( 102, 16, 126, 40 ) );
+			icon.frame( icon.texture.uvRect( 92, 12, 108, 24 ) );
 			break;
 		case RESUME:
 			icon.frame( icon.texture.uvRect( 13, 53, 24, 64 ) );

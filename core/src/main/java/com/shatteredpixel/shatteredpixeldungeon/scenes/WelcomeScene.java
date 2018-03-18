@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -97,8 +98,13 @@ public class WelcomeScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				updateVersion(previousVersion);
-				ShatteredPixelDungeon.switchScene(TitleScene.class);
+				if (previousVersion == 0){
+					SPDSettings.version(ShatteredPixelDungeon.versionCode);
+					WelcomeScene.this.add(new WndStartGame(1));
+				} else {
+					updateVersion(previousVersion);
+					ShatteredPixelDungeon.switchScene(TitleScene.class);
+				}
 			}
 		};
 

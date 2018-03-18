@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -32,10 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGameInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.noosa.BitmapText;
@@ -51,8 +48,6 @@ public class StartScene extends PixelScene {
 	
 	private static final int SLOT_WIDTH = 120;
 	private static final int SLOT_HEIGHT = 30;
-	
-	private static final int CHALLENGE_SIZE = 22;
 	
 	@Override
 	public void create() {
@@ -107,38 +102,6 @@ public class StartScene extends PixelScene {
 			yPos += SLOT_HEIGHT + slotGap;
 			align(newGame);
 			add(newGame);
-		}
-		
-		IconButton challengeButton = new IconButton(
-				Icons.get( SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
-			@Override
-			protected void onClick() {
-				ShatteredPixelDungeon.scene().add(new WndChallenges(SPDSettings.challenges(), true) {
-					public void onBackPressed() {
-						super.onBackPressed();
-						icon( Icons.get( SPDSettings.challenges() > 0 ?
-								Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF ) );
-					}
-				} );
-			}
-		};
-		
-		if (SPDSettings.landscape()){
-			challengeButton.setRect(4*slotGap + (w + SLOT_WIDTH - CHALLENGE_SIZE)/2, 8 + (h - CHALLENGE_SIZE)/2f,
-					CHALLENGE_SIZE, CHALLENGE_SIZE);
-			
-		} else {
-			challengeButton.setRect((w - CHALLENGE_SIZE)/2f, yPos + 2*slotGap - CHALLENGE_SIZE/2f,
-					CHALLENGE_SIZE, CHALLENGE_SIZE);
-			
-		}
-		align(challengeButton);
-		
-		if (Badges.isUnlocked(Badges.Badge.VICTORY)){
-			add(challengeButton);
-		} else {
-			Dungeon.challenges = 0;
-			SPDSettings.challenges(0);
 		}
 		
 		GamesInProgress.curSlot = 0;
@@ -225,6 +188,16 @@ public class StartScene extends PixelScene {
 				
 				level.text(Integer.toString(info.level));
 				level.measure();
+				
+				if (info.challenges > 0){
+					name.hardlight(Window.TITLE_COLOR);
+					depth.hardlight(Window.TITLE_COLOR);
+					level.hardlight(Window.TITLE_COLOR);
+				} else {
+					name.resetColor();
+					depth.resetColor();
+					level.resetColor();
+				}
 				
 			}
 			

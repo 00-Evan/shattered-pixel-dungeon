@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.IntroScene;
@@ -54,6 +55,7 @@ public class WndStartGame extends Window {
 	public WndStartGame(final int slot){
 		
 		Badges.loadGlobal();
+		Journal.loadGlobal();
 		
 		RenderedText title = PixelScene.renderText(Messages.get(this, "title"), 12 );
 		title.hardlight(Window.TITLE_COLOR);
@@ -111,6 +113,37 @@ public class WndStartGame extends Window {
 		start.visible = false;
 		start.setRect(0, HEIGHT - 20, WIDTH, 20);
 		add(start);
+		
+		if (Badges.isUnlocked(Badges.Badge.VICTORY)){
+			IconButton challengeButton = new IconButton(
+					Icons.get( SPDSettings.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF)){
+				@Override
+				protected void onClick() {
+					ShatteredPixelDungeon.scene().add(new WndChallenges(SPDSettings.challenges(), true) {
+						public void onBackPressed() {
+							super.onBackPressed();
+							icon( Icons.get( SPDSettings.challenges() > 0 ?
+									Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF ) );
+						}
+					} );
+				}
+				
+				@Override
+				public void update() {
+					if( !visible && GamesInProgress.selectedClass != null){
+						visible = true;
+					}
+					super.update();
+				}
+			};
+			challengeButton.setRect(WIDTH - 20, HEIGHT - 20, 20, 20);
+			challengeButton.visible = false;
+			add(challengeButton);
+			
+		} else {
+			Dungeon.challenges = 0;
+			SPDSettings.challenges(0);
+		}
 		
 		resize(WIDTH, HEIGHT);
 		
