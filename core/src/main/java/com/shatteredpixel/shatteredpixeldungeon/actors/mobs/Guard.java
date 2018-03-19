@@ -135,10 +135,10 @@ public class Guard extends Mob {
 			} while (loot.tier >= 4 && Random.Int(2) == 0);
 			loot.level(0);
 			return loot;
-		//otherwise, we may drop a health potion. overall chance is 7/(8 * (7 + potions dropped))
+		//otherwise, we may drop a health potion. overall chance is 1/8 * (6-potions dropped)/6
 		//with 0 potions dropped that simplifies to 1/8
 		} else {
-			if (Random.Int(7 + Dungeon.LimitedDrops.GUARD_HP.count) < 7){
+			if (Random.Float() < ((6f - Dungeon.LimitedDrops.GUARD_HP.count) / 6f)){
 				Dungeon.LimitedDrops.GUARD_HP.drop();
 				return new PotionOfHealing();
 			}

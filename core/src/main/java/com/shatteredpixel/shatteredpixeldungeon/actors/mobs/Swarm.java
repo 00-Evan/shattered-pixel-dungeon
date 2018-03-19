@@ -139,8 +139,8 @@ public class Swarm extends Mob {
 	
 	@Override
 	public void rollToDropLoot() {
-		//sets drop chance
-		lootChance = 1f/((6 + 2* Dungeon.LimitedDrops.SWARM_HP.count ) * (generation+1) );
+		lootChance = 1f/(6 * (generation+1) );
+		lootChance *= (5f - Dungeon.LimitedDrops.SWARM_HP.count) / 5f;
 		super.rollToDropLoot();
 	}
 	
