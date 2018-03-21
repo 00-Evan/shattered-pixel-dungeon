@@ -302,7 +302,7 @@ public class WndAlchemy extends Window {
 	public void destroy() {
 		synchronized ( inputs ) {
 			for (int i = 0; i < inputs.length; i++) {
-				if (inputs[i].item != null) {
+				if (inputs[i] != null && inputs[i].item != null) {
 					if (!inputs[i].item.collect()) {
 						Dungeon.level.drop(inputs[i].item, Dungeon.hero.pos);
 					}

@@ -51,8 +51,10 @@ public class Group extends Gizmo {
 			}
 		}
 		
-		members.clear();
-		members = null;
+		if (members != null) {
+			members.clear();
+			members = null;
+		}
 		length = 0;
 	}
 	

@@ -62,14 +62,16 @@ public class Mimic extends Mob {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
-		bundle.put( ITEMS, items );
+		if (items != null) bundle.put( ITEMS, items );
 		bundle.put( LEVEL, level );
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
-		items = new ArrayList<>( (Collection<Item>) ((Collection<?>) bundle.getCollection( ITEMS ) ));
+		if (bundle.contains( ITEMS )) {
+			items = new ArrayList<>((Collection<Item>) ((Collection<?>) bundle.getCollection(ITEMS)));
+		}
 		adjustStats( bundle.getInt( LEVEL ) );
 		super.restoreFromBundle(bundle);
 	}

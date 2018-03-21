@@ -213,7 +213,7 @@ public class WndBag extends WndTabbed {
 		}
 
 		// Items in the bag
-		for (Item item : container.items) {
+		for (Item item : container.items.toArray(new Item[0])) {
 			placeItem( item );
 		}
 		
