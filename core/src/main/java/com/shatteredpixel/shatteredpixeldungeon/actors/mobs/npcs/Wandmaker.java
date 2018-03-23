@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -282,8 +281,7 @@ public class Wandmaker extends NPC {
 			if (!spawned && (type != 0 || (Dungeon.depth > 6 && Random.Int( 10 - Dungeon.depth ) == 0))) {
 				
 				// decide between 1,2, or 3 for quest type.
-				// but if the no herbalism challenge is enabled, only pick 1 or 2, no rotberry.
-				if (type == 0) type = Random.Int(Dungeon.isChallenged(Challenges.NO_HERBALISM) ? 2 : 3)+1;
+				if (type == 0) type = Random.Int(3)+1;
 				
 				switch (type){
 					case 1: default:

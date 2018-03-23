@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
@@ -31,17 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 
 public class Challenges {
 
+	//Some of these internal IDs are outdated and don't represent what these challenges do
 	public static final int NO_FOOD				= 1;
 	public static final int NO_ARMOR			= 2;
 	public static final int NO_HEALING			= 4;
@@ -78,8 +70,6 @@ public class Challenges {
 		if (Dungeon.isChallenged(NO_ARMOR)){
 			if (item instanceof Armor && !(item instanceof ClothArmor)) {
 				return true;
-			} else if (item instanceof Stylus){
-				return true;
 			}
 		}
 
@@ -93,28 +83,8 @@ public class Challenges {
 		}
 
 		if (Dungeon.isChallenged(NO_HERBALISM)){
-			if (item instanceof Plant.Seed) {
+			if (item instanceof Dewdrop) {
 				return true;
-			} else if (item instanceof Dewdrop){
-				return true;
- 			} else if (item instanceof Blandfruit){
-				return true;
-			} else if (item instanceof WandOfRegrowth){
- 				return true;
-			}
-		}
-
-		if (Dungeon.isChallenged(NO_SCROLLS)){
-			if (item instanceof Scroll){
-				if (!(item instanceof ScrollOfUpgrade
-						|| item instanceof ScrollOfRemoveCurse
-						|| item instanceof ScrollOfMagicalInfusion)){
-					return true;
-				}
-			} else if (item instanceof Runestone){
-				if (!(item instanceof StoneOfEnchantment)){
-					return true;
-				}
 			}
 		}
 

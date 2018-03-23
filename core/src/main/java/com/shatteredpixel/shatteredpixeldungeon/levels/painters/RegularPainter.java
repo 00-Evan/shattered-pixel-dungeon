@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -326,15 +325,6 @@ public abstract class RegularPainter extends Painter {
 				}
 			}
 			l.map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS : Terrain.GRASS;
-		}
-
-		//forces all grass to short under no herbalism challenge
-		if (Dungeon.isChallenged(Challenges.NO_HERBALISM)){
-			for (int i = 0; i < l.map.length; i++){
-				if (l.map[i] == Terrain.HIGH_GRASS){
-					l.map[i] = Terrain.GRASS;
-				}
-			}
 		}
 	}
 	
