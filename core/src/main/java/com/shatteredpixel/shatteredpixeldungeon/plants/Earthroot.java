@@ -93,14 +93,19 @@ public class Earthroot extends Plant {
 			return true;
 		}
 		
+		private static int blocking(){
+			return (Dungeon.depth + 5)/2;
+		}
+		
 		public int absorb( int damage ) {
-			if (level <= damage-damage/2) {
+			int block = Math.min( damage, blocking());
+			if (level <= block) {
 				detach();
-				return damage - level;
+				return damage - block;
 			} else {
-				level -= damage-damage/2;
+				level -= block;
 				BuffIndicator.refreshHero();
-				return damage/2;
+				return damage - block;
 			}
 		}
 		
@@ -129,7 +134,7 @@ public class Earthroot extends Plant {
 
 		@Override
 		public String desc() {
-			return Messages.get(this, "desc", level);
+			return Messages.get(this, "desc", blocking(), level);
 		}
 
 		private static final String POS		= "pos";

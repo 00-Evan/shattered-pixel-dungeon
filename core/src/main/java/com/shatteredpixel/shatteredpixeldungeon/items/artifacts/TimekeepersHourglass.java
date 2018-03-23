@@ -48,9 +48,9 @@ public class TimekeepersHourglass extends Artifact {
 
 		levelCap = 5;
 
-		charge = 10+level()*2;
+		charge = 5+level();
 		partialCharge = 0;
-		chargeCap = 10+level()*2;
+		chargeCap = 5+level();
 
 		defaultAction = AC_ACTIVATE;
 	}
@@ -139,7 +139,7 @@ public class TimekeepersHourglass extends Artifact {
 
 	@Override
 	public Item upgrade() {
-		chargeCap+= 2;
+		chargeCap+= 1;
 
 		//for artifact transmutation.
 		while (level()+1 > sandBags)
@@ -200,7 +200,7 @@ public class TimekeepersHourglass extends Artifact {
 
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 1 / (60f - (chargeCap - charge)*2f);
+				partialCharge += 1 / (50f - (chargeCap - charge)*3f);
 
 				if (partialCharge >= 1) {
 					partialCharge --;
@@ -228,15 +228,15 @@ public class TimekeepersHourglass extends Artifact {
 
 			if (super.attachTo(target)) {
 
-				int usedCharge = Math.min(charge, 5);
+				int usedCharge = Math.min(charge, 2);
 				//buffs always act last, so the stasis buff should end a turn early.
-				spend(usedCharge - 1);
-				((Hero) target).spendAndNext(usedCharge);
+				spend((5*usedCharge) - 1);
+				((Hero) target).spendAndNext(5*usedCharge);
 
 				//shouldn't punish the player for going into stasis frequently
 				Hunger hunger = target.buff(Hunger.class);
 				if (hunger != null && !hunger.isStarving())
-					hunger.satisfy(usedCharge);
+					hunger.satisfy(5*usedCharge);
 
 				charge -= usedCharge;
 
@@ -277,8 +277,8 @@ public class TimekeepersHourglass extends Artifact {
 		public void processTime(float time){
 			partialTime += time;
 
-			while (partialTime >= 1f){
-				partialTime --;
+			while (partialTime >= 2f){
+				partialTime -= 2f;
 				charge --;
 			}
 
