@@ -55,7 +55,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -63,7 +62,6 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
@@ -287,8 +285,8 @@ public abstract class Level implements Bundlable {
 
 		version = bundle.getInt( VERSION );
 		
-		//saves from before 0.4.3c are not supported
-		if (version < ShatteredPixelDungeon.v0_4_3c){
+		//saves from before 0.5.0b are not supported
+		if (version < ShatteredPixelDungeon.v0_5_0b){
 			throw new RuntimeException("old save");
 		}
 
@@ -339,32 +337,7 @@ public abstract class Level implements Bundlable {
 		collection = bundle.getCollection( CUSTOM_TILES );
 		for (Bundlable p : collection) {
 			CustomTiledVisual vis = (CustomTiledVisual)p;
-			//for compatibilities with pre-0.5.0b saves
-			//extends one of the bones visuals and discards the rest
-			if (vis instanceof MassGraveRoom.Bones && vis.tileH == 0){
-				int cell = vis.tileX + vis.tileY*width;
-				if (map[cell] == Terrain.EMPTY_SP &&
-						DungeonTileSheet.wallStitcheable(map[cell - width]) &&
-						DungeonTileSheet.wallStitcheable(map[cell - 1])){
-
-					vis.tileY--; //move top to into the wall
-					vis.tileW = 1;
-					vis.tileH = 2;
-
-					while (map[cell+1] == Terrain.EMPTY_SP){
-						vis.tileW++;
-						cell++;
-					}
-					while (map[cell+width] == Terrain.EMPTY_SP){
-						vis.tileH++;
-						cell+=width;
-					}
-
-					customTiles.add(vis);
-				}
-			} else {
-				customTiles.add(vis);
-			}
+			customTiles.add(vis);
 		}
 
 		collection = bundle.getCollection( CUSTOM_WALLS );

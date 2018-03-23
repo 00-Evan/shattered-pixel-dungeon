@@ -40,10 +40,8 @@ import javax.microedition.khronos.opengles.GL10;
 public class ShatteredPixelDungeon extends Game {
 	
 	//variable constants for specific older versions of shattered, used for data conversion
-	//versions older than v0.4.3c are no longer supported, and data from them is ignored
-	public static final int v0_4_3c = 148;
-	
-	public static final int v0_5_0b = 157;
+	//versions older than v0.5.0b are no longer supported, and data from them is ignored
+	public static final int v0_5_0b = 159;
 	
 	public static final int v0_6_0b = 185;
 	
@@ -51,7 +49,7 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public static final int v0_6_2e = 229;
 	
-	public static final int v0_6_3  = 241;
+	public static final int v0_6_3c = 245;
 	
 	
 	public ShatteredPixelDungeon() {
