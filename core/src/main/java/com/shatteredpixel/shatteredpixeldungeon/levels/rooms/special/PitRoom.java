@@ -66,14 +66,17 @@ public class PitRoom extends SpecialRoom {
 			switch (Random.Int(3)){
 				case 0:
 					mainLoot = Generator.random(Generator.Category.RING);
+					break;
 				case 1:
 					mainLoot = Generator.random(Generator.Category.ARTIFACT);
+					break;
 				case 2:
 					mainLoot = Generator.random(Random.oneOf(
 							Generator.Category.WEAPON,
 							Generator.Category.ARMOR));
+					break;
 			}
-		} while ( mainLoot == null || !Challenges.isItemBlocked(mainLoot));
+		} while ( mainLoot == null || Challenges.isItemBlocked(mainLoot));
 		level.drop(mainLoot, remains);
 		
 		int n = Random.IntRange( 1, 2 );

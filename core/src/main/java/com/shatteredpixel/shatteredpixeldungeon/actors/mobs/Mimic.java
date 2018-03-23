@@ -171,7 +171,7 @@ public class Mimic extends Mob {
 					reward = Generator.random(Generator.Category.RING);
 					break;
 			}
-		} while (reward == null || !Challenges.isItemBlocked(reward));
+		} while (reward == null || Challenges.isItemBlocked(reward));
 		m.items.add(reward);
 		
 		return m;
