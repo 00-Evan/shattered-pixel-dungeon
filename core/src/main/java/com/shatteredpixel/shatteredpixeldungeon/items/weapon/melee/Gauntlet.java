@@ -24,8 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-//TODO rename
-public class Gauntlets extends MeleeWeapon {
+public class Gauntlet extends MeleeWeapon {
 	
 	{
 		image = ItemSpriteSheet.GAUNTLETS;
