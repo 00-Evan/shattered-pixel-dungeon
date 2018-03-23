@@ -124,13 +124,7 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(0, stones);
 
 		if (hero.belongings.armor != null){
-			if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR) ){
-				hero.belongings.armor.affixSeal(new BrokenSeal());
-			} else {
-				BrokenSeal seal = new BrokenSeal();
-				seal.collect();
-				Dungeon.quickslot.setSlot(1, seal);
-			}
+			hero.belongings.armor.affixSeal(new BrokenSeal());
 		}
 		
 		new PotionBandolier().collect();
@@ -140,13 +134,8 @@ public enum HeroClass {
 
 	private static void initMage( Hero hero ) {
 		MagesStaff staff;
-
-		if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_MAGE) ){
-			staff = new MagesStaff(new WandOfMagicMissile());
-		} else {
-			staff = new MagesStaff();
-			new WandOfMagicMissile().identify().collect();
-		}
+		
+		staff = new MagesStaff(new WandOfMagicMissile());
 
 		(hero.belongings.weapon = staff).identify();
 		hero.belongings.weapon.activate(hero);
