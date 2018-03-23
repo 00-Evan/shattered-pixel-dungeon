@@ -200,7 +200,7 @@ public class TimekeepersHourglass extends Artifact {
 
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 1 / (50f - (chargeCap - charge)*3f);
+				partialCharge += 1 / (90f - (chargeCap - charge)*3f);
 
 				if (partialCharge >= 1) {
 					partialCharge --;
