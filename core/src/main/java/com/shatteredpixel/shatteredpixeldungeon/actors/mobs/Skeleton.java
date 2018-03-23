@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -35,8 +36,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Skeleton extends Mob {
-
-	private static final String TXT_HERO_KILLED = "You were killed by the explosion of bones...";
 	
 	{
 		spriteClass = SkeletonSprite.class;
@@ -63,6 +62,8 @@ public class Skeleton extends Mob {
 	public void die( Object cause ) {
 		
 		super.die( cause );
+		
+		if (cause == Chasm.class) return;
 		
 		boolean heroKilled = false;
 		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {

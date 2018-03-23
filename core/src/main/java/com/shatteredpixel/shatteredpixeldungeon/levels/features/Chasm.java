@@ -114,7 +114,7 @@ public class Chasm {
 	}
 
 	public static void mobFall( Mob mob ) {
-		mob.die( null );
+		mob.die( Chasm.class );
 		
 		((MobSprite)mob.sprite).fall();
 	}
