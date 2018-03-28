@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -34,6 +36,17 @@ public class Rotberry extends Plant {
 	@Override
 	public void activate() {
 		Dungeon.level.drop( new Seed(), pos ).sprite.drop();
+	}
+	
+	@Override
+	public void wither() {
+		Dungeon.level.uproot( pos );
+		
+		if (Dungeon.level.heroFOV[pos]) {
+			CellEmitter.get( pos ).burst( LeafParticle.GENERAL, 6 );
+		}
+		
+		//no warden benefit
 	}
 
 	public static class Seed extends Plant.Seed {

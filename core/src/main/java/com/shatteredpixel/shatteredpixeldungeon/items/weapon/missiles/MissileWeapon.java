@@ -152,8 +152,15 @@ abstract public class MissileWeapon extends Weapon {
 			durability -= durabilityPerUse();
 		}
 		if (durability > 0){
-			if (enemy.isAlive() && sticky)  Buff.affect(enemy, PinCushion.class).stick(this);
-			else                            Dungeon.level.drop( this, enemy.pos).sprite.drop();
+			//attempt to stick the missile weapon to the enemy, just drop it if we can't.
+			if (enemy.isAlive() && sticky) {
+				PinCushion p = Buff.affect(enemy, PinCushion.class);
+				if (p.target == enemy){
+					p.stick(this);
+					return;
+				}
+			}
+			Dungeon.level.drop( this, enemy.pos ).sprite.drop();
 		}
 	}
 	
