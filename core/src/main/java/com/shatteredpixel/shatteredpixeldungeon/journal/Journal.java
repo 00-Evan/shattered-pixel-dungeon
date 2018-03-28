@@ -29,7 +29,7 @@ import java.io.IOException;
 
 public class Journal {
 	
-	private static final String JOURNAL_FILE = "journal.dat";
+	public static final String JOURNAL_FILE = "journal.dat";
 	
 	private static boolean loaded = false;
 	
