@@ -150,7 +150,6 @@ public class ShatteredPixelDungeon extends Game {
 		
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
 		super.onCreate(savedInstanceState);
@@ -230,6 +229,7 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
 		super.onMultiWindowModeChanged(isInMultiWindowMode);
 		updateSystemUI();
