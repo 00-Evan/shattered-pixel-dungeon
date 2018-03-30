@@ -48,7 +48,7 @@ public class ActionIndicator extends Tag {
 	}
 	
 	@Override
-	protected void layout() {
+	protected synchronized void layout() {
 		super.layout();
 		
 		if (icon != null){
@@ -63,7 +63,7 @@ public class ActionIndicator extends Tag {
 	private boolean needsLayout = false;
 	
 	@Override
-	public void update() {
+	public synchronized void update() {
 		super.update();
 
 		if (!Dungeon.hero.ready){
@@ -104,13 +104,15 @@ public class ActionIndicator extends Tag {
 
 	public static void updateIcon(){
 		if (instance != null){
-			if (instance.icon != null){
-				instance.icon.killAndErase();
-				instance.icon = null;
-			}
-			if (action != null){
-				instance.icon = action.getIcon();
-				instance.needsLayout = true;
+			synchronized (instance) {
+				if (instance.icon != null) {
+					instance.icon.killAndErase();
+					instance.icon = null;
+				}
+				if (action != null) {
+					instance.icon = action.getIcon();
+					instance.needsLayout = true;
+				}
 			}
 		}
 	}

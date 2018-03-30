@@ -76,7 +76,7 @@ public class WndGame extends Window {
 				protected void onClick() {
 					GamesInProgress.selectedClass = Dungeon.hero.heroClass;
 					InterlevelScene.noStory = true;
-					ShatteredPixelDungeon.scene().add(new WndStartGame(GamesInProgress.firstEmpty()));
+					GameScene.show(new WndStartGame(GamesInProgress.firstEmpty()));
 				}
 			} );
 			btnStart.textColor(Window.TITLE_COLOR);
