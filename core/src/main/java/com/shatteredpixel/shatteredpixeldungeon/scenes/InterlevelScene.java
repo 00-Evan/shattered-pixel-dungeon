@@ -34,9 +34,15 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
+import com.watabou.gltextures.TextureCache;
+import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.NoosaScript;
+import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.audio.Sample;
 
 import java.io.FileNotFoundException;
@@ -44,7 +50,7 @@ import java.io.IOException;
 
 public class InterlevelScene extends PixelScene {
 
-	private static final float TIME_TO_FADE = 0.3f;
+	private static final float TIME_TO_FADE = 1f;
 	
 	public enum Mode {
 		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE
@@ -73,6 +79,79 @@ public class InterlevelScene extends PixelScene {
 	@Override
 	public void create() {
 		super.create();
+		
+		String loadingAsset;
+		int loadingDepth;
+		final float scrollSpeed;
+		switch (mode){
+			default:
+				loadingDepth = Dungeon.depth;
+				scrollSpeed = 0;
+				break;
+			case CONTINUE:
+				loadingDepth = GamesInProgress.check(GamesInProgress.curSlot).depth;
+				scrollSpeed = 5;
+				break;
+			case DESCEND:
+				if (Dungeon.hero == null)   loadingDepth = 1;
+				else                        loadingDepth = Dungeon.depth+1;
+				scrollSpeed = 5;
+				break;
+			case FALL:
+				loadingDepth = Dungeon.depth+1;
+				scrollSpeed = 100;
+				break;
+			case ASCEND:
+				loadingDepth = Dungeon.depth-1;
+				scrollSpeed = -5;
+				break;
+			case RETURN:
+				loadingDepth = returnDepth;
+				scrollSpeed = returnDepth > Dungeon.depth ? 15 : -15;
+				break;
+		}
+		if (loadingDepth <= 5)          loadingAsset = Assets.LOADING_SEWERS;
+		else if (loadingDepth <= 10)    loadingAsset = Assets.LOADING_PRISON;
+		else if (loadingDepth <= 15)    loadingAsset = Assets.LOADING_CAVES;
+		else if (loadingDepth <= 21)    loadingAsset = Assets.LOADING_CITY;
+		else                            loadingAsset = Assets.LOADING_HALLS;
+		
+		SkinnedBlock bg = new SkinnedBlock(Camera.main.width, Camera.main.height, loadingAsset ){
+			@Override
+			protected NoosaScript script() {
+				return NoosaScriptNoLighting.get();
+			}
+			
+			@Override
+			public void draw() {
+				Blending.disable();
+				super.draw();
+				Blending.enable();
+			}
+			
+			@Override
+			public void update() {
+				super.update();
+				offset(0, Game.elapsed * scrollSpeed);
+			}
+		};
+		bg.scale(4, 4);
+		add(bg);
+		
+		Image im = new Image(TextureCache.createGradient(0xAA000000, 0xBB000000, 0xCC000000, 0xDD000000, 0xFF000000)){
+			@Override
+			public void update() {
+				super.update();
+				if (phase == Phase.FADE_IN)         aa = Math.max( 0, timeLeft - 0.6f);
+				else if (phase == Phase.FADE_OUT)   aa = Math.max( 0, 0.4f - (timeLeft));
+				else                                aa = 0;
+			}
+		};
+		im.angle = 90;
+		im.x = Camera.main.width;
+		im.scale.x = Camera.main.height/5f;
+		im.scale.y = Camera.main.width;
+		add(im);
 
 		String text = Messages.get(Mode.class, mode.name());
 		

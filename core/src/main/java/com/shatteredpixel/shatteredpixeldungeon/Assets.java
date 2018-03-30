@@ -112,6 +112,12 @@ public class Assets {
 	public static final String WATER_CAVES	= "water2.png";
 	public static final String WATER_CITY	= "water3.png";
 	public static final String WATER_HALLS	= "water4.png";
+	
+	public static final String LOADING_SEWERS	= "loading_sewers.png";
+	public static final String LOADING_PRISON	= "loading_prison.png";
+	public static final String LOADING_CAVES	= "loading_caves.png";
+	public static final String LOADING_CITY	    = "loading_city.png";
+	public static final String LOADING_HALLS	= "loading_halls.png";
 
 	public static final String WEAK_FLOOR   = "custom_tiles/weak_floor.png";
 	public static final String PRISON_QUEST = "custom_tiles/prison_quests.png";
