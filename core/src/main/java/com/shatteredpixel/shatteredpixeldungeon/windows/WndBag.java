@@ -391,7 +391,7 @@ public class WndBag extends WndTabbed {
 					enable( false );
 				} else {
 					enable(
-						mode == Mode.FOR_SALE && (item.price() > 0) && (!item.isEquipped( Dungeon.hero ) || !item.cursed) ||
+						mode == Mode.FOR_SALE && !item.unique && (item.price() > 0) && (!item.isEquipped( Dungeon.hero ) || !item.cursed) ||
 						mode == Mode.UPGRADEABLE && item.isUpgradable() ||
 						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
 						mode == Mode.UNIDED_OR_CURSED && ((item instanceof EquipableItem || item instanceof Wand) && (!item.isIdentified() || item.cursed)) ||
