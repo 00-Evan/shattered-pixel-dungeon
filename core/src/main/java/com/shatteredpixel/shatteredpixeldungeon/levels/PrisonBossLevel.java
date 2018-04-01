@@ -383,8 +383,6 @@ public class PrisonBossLevel extends Level {
 
 				tengu.pos = 5+28*32;
 				tengu.sprite.place(5 + 28 * 32);
-
-				changeMap(MAP_END);
 				
 				//remove all mobs, but preserve allies
 				ArrayList<Mob> allies = new ArrayList<>();
@@ -395,6 +393,9 @@ public class PrisonBossLevel extends Level {
 					}
 				}
 				clearEntities(null);
+				
+				changeMap(MAP_END);
+				
 				for (Mob m : allies){
 					do{
 						m.pos = Random.IntRange(3, 7) + Random.IntRange(26, 30)*32;
