@@ -41,8 +41,8 @@ public class WndItem extends Window {
 	
 	private static final float GAP	= 2;
 	
-	private static final int WIDTH_P = 120;
-	private static final int WIDTH_L = 144;
+	private static final int WIDTH_MIN = 120;
+	private static final int WIDTH_MAX = 220;
 
 	public WndItem( final WndBag owner, final Item item ){
 		this( owner, item, owner != null );
@@ -52,7 +52,18 @@ public class WndItem extends Window {
 		
 		super();
 
-		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
+		int width = WIDTH_MIN;
+		
+		RenderedTextMultiline info = PixelScene.renderMultiline( item.info(), 6 );
+		info.maxWidth(width);
+		
+		//info box can go out of the screen on landscape, so widen it
+		while (SPDSettings.landscape()
+				&& info.height() > 100
+				&& width < WIDTH_MAX){
+			width += 20;
+			info.maxWidth(width);
+		}
 		
 		IconTitle titlebar = new IconTitle( item );
 		titlebar.setRect( 0, 0, width, 0 );
@@ -64,8 +75,6 @@ public class WndItem extends Window {
 			titlebar.color( ItemSlot.DEGRADED );
 		}
 		
-		RenderedTextMultiline info = PixelScene.renderMultiline( item.info(), 6 );
-		info.maxWidth(width);
 		info.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( info );
 	
