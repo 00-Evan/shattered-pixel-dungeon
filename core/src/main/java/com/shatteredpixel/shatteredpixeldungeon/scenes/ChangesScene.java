@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
@@ -129,10 +130,148 @@ public class ChangesScene extends PixelScene {
 		add( list );
 		
 		//**********************
+		//       v0.6.4
+		//**********************
+		
+		ChangeInfo changes = new ChangeInfo("v0.6.4", true, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released April 1st, 2018\n" +
+				"_-_ 46 days after Shattered v0.6.3\n" +
+				"\n" +
+				"Commentary will be added here when this update is older."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "Challenges",
+				"Challenges have received several major changes, with the goal of making them more fair and interesting.\n" +
+				"\n" +
+				"_-_ Challenges now have descriptions\n" +
+				"\n" +
+				"_-_ On diet now provides small rations, rather than removing all food\n" +
+				"_-_ Cloth armor is now allowed on faith is my armor\n" +
+				"_-_ Pharmacophobia is unchanged\n" +
+				"_-_ Barren land now allows seeds to drop, but they cannot be planted\n" +
+				"_-_ Swarm intelligence now draws nearby enemies, not all enemies\n" +
+				"_-_ Into darkness now limits light more harshly, but provides torches\n" +
+				"_-_ Forbidden runes now removes 50% of upgrade scrolls, and no other scrolls"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.INFO), "Start game UI",
+				"The interface for starting and loading a game has been completely overhauled!\n" +
+				"\n" +
+				"_-_ Game now supports 4 save slots of any hero class, rather than 1 slot per class\n" +
+				"_-_ Hero select and challenge select are now more streamlined and informative\n" +
+				"_-_ Hero select is now a window, offering more flexibility of where games can be started\n" +
+				"_-_ More details are now shown for games in progress before they are loaded"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CROSSBOW, null), "New Weapons",
+				"Three new weapons have been added!\n" +
+				"\n" +
+				"Throwing spears are a basic tier 3 missile weapon, fishing spears have been reduced to tier 2. Tiers 2-5 now each have a basic missile weapon.\n" +
+				"\n" +
+				"The crossbow is a tier 4 melee weapon which enhances darts! You'll do less damage up-front, but thrown darts will pack a punch!\n" +
+				"\n" +
+				"The gauntlet is a tier 5 fast melee weapon, similar to the sai. Excellent for chaining combos or enchantments."));
+		
+		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.HOLSTER, null), "Inventory changes",
+				"Since the ranged weapon improvements in 0.6.3, inventory space has become a bit too congested. Rather than make a small change that only helps the issue for a few more updates, I have decided to make a larger-scale adjustment to available inventory space:\n" +
+				"\n" +
+				"_-_ The wand holster is now the magical holster, and can store missile weapons as well as wands.\n" +
+				"\n" +
+				"_-_ The seed pouch is now the velvet pouch, and can store runestones as well as seeds.\n" +
+				"\n" +
+				"_-_ Every hero now starts the game with an extra container."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ It is now possible to back up game data using ADB backup on android 4.0+ and android auto-backup on android 6.0+. Runs in progress are not backed up to prevent cheating.\n" +
+				"\n" +
+				"_-_ Firebloom plants will no longer appear in garden rooms. Accidentally running into them is massively more harmful than any other plant.\n" +
+				"\n" +
+				"_-_ Mage and Warrior tutorial functionality has been removed, as more players found it confusing than helpful.\n" +
+				"\n" +
+				"_-_ Added a new visual effect to the loading screen\n" +
+				"\n" +
+				"_-_ Piranha treasure rooms now have a one tile wide buffer\n" +
+				"\n" +
+				"_-_ Bags are now unsellable"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Crashes involving corrupted mimics\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor visual bugs\n" +
+				"_-_ Skeletons exploding when falling in chasms\n" +
+				"_-_ Thrown weapons lost when used on sheep\n" +
+				"_-_ Warden gaining benefits from rotberry bush"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
+		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new TimekeepersHourglass(),
+				"The timekeeper's hourglass has been adjusted to cap at 10 charges, instead of 20, and to have a bit more power without upgrades:\n" +
+				"\n" +
+				"_-_ Number of charges halved\n" +
+				"_-_ 2x freeze duration per charge\n" +
+				"_-_ 5x stasis duration per charge\n" +
+				"_-_ Overall recharge speed increased at +0, unchanged at +10"));
+		
+		changes.addButton( new ChangeButton(new TalismanOfForesight(),
+				"The talisman of foresight now builds power for scrying slightly faster\n" +
+				"\n" +
+				"_-_ Charge speed increased by 20% at +0, scaling to 50% increased at +10\n" +
+				"_-_ Charge gain when discovering traps unchanged"));
+		
+		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 64, 0, 16, 16), "Paralysis changes",
+				"Paralysis is an extremely powerful debuff, and its ability to completely immobilize the player or an enemy while they are killed needs to be adjusted.\n" +
+				"\n" +
+				"Chance to resist paralysis is now based on all recent damage taken while paralyzed, instead of each specific instance of damage separately.\n" +
+				"\n" +
+				"This means that after taking around half current HP in damage, breaking from paralysis becomes very likely, and immediately re-applying paralysis will not reset this resist chance."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.TILES_SEWERS, 48, 48, 16, 16), "Chasm changes",
+				"Dropping enemies into chasms is a very fun way to deal with enemies, but killing an enemy instantly and getting almost the full reward is simply too strong. This change should keep killing via chasms fun and useful, without it being as strong.\n" +
+				"\n" +
+				"_-_ Enemies killed via chasms now only award 50% exp"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_SUNGRASS, null), "Seed adjustments",
+				"Sungrass is almost as effective as a potion of healing when used properly, which is extremely strong for a seed. I am increasing the time it takes to heal, so that hunger and combat while waiting can add some cost to the otherwise very powerful healing sungrass provides.\n" +
+				"\n" +
+				"_-_ Sungrass now grants healing significantly more slowly, scaling to ~40% speed at high levels\n" +
+				"_-_ Taking damage no longer reduces sungrass healing\n" +
+				"_-_ Sungrass healing no longer dissapears at full HP\n" +
+				"\n" +
+				"Earthroot is also problematic, as its 50% damage resist makes it an extremely potent tool against bosses, yet not so useful against regular enemies. My hope is that this change levels its power out over both situations.\n" +
+				"\n" +
+				"_-_ Earthroot now blocks up to a certain amount of damage, based on depth, rather than 50% damage"));
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), new PotionOfHealing().trueName(),
+				"Heal potion drops have had their RNG bounded in shattered for a long time, but this bound was always fairly lax. This meant that people who wanted to slowly farm for potions could still amass large numbers of them. I have decided to reign this in more harshly.\n" +
+				"\n" +
+				"_-_ Health potion drops now lower in probability more quickly after potions have already been dropped from a given enemy type\n" +
+				"\n" +
+				"This change should not seriously affect the average player, but does make hoarding health potions much less feasible."));
+		
+		//**********************
 		//       v0.6.3
 		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.3", true, "");
+		changes = new ChangeInfo("v0.6.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
