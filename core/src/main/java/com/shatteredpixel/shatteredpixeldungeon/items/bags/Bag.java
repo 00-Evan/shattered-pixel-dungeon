@@ -114,6 +114,12 @@ public class Bag extends Item implements Iterable<Item> {
 		items.clear();
 	}
 	
+	public void resurrect() {
+		for (Item item : items.toArray(new Item[0])){
+			if (!item.unique) items.remove(item);
+		}
+	}
+	
 	private static final String ITEMS	= "inventory";
 	
 	@Override
