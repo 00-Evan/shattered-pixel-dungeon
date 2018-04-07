@@ -48,7 +48,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -332,9 +331,6 @@ public class GameScene extends PixelScene {
 			break;
 		case RETURN:
 			ScrollOfTeleportation.appear(  Dungeon.hero, Dungeon.hero.pos );
-			break;
-		case FALL:
-			Chasm.heroLand();
 			break;
 		case DESCEND:
 			switch (Dungeon.depth) {
