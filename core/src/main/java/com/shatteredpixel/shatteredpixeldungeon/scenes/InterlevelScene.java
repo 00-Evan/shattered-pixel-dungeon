@@ -72,8 +72,8 @@ public class InterlevelScene extends PixelScene {
 	
 	private RenderedText message;
 	
-	private Thread thread;
-	private Exception error = null;
+	private static Thread thread;
+	private static Exception error = null;
 	private float waitingTime;
 	
 	@Override
@@ -163,54 +163,56 @@ public class InterlevelScene extends PixelScene {
 		
 		phase = Phase.FADE_IN;
 		timeLeft = TIME_TO_FADE;
-
-		thread = new Thread() {
-			@Override
-			public void run() {
-				
-				try {
-
-					switch (mode) {
-					case DESCEND:
-						descend();
-						break;
-					case ASCEND:
-						ascend();
-						break;
-					case CONTINUE:
-						restore();
-						break;
-					case RESURRECT:
-						resurrect();
-						break;
-					case RETURN:
-						returnTo();
-						break;
-					case FALL:
-						fall();
-						break;
-					case RESET:
-						reset();
-						break;
+		
+		if (thread == null) {
+			thread = new Thread() {
+				@Override
+				public void run() {
+					
+					try {
+						
+						switch (mode) {
+							case DESCEND:
+								descend();
+								break;
+							case ASCEND:
+								ascend();
+								break;
+							case CONTINUE:
+								restore();
+								break;
+							case RESURRECT:
+								resurrect();
+								break;
+							case RETURN:
+								returnTo();
+								break;
+							case FALL:
+								fall();
+								break;
+							case RESET:
+								reset();
+								break;
+						}
+						
+						if ((Dungeon.depth % 5) == 0) {
+							Sample.INSTANCE.load(Assets.SND_BOSS);
+						}
+						
+					} catch (Exception e) {
+						
+						error = e;
+						
 					}
 					
-					if ((Dungeon.depth % 5) == 0) {
-						Sample.INSTANCE.load( Assets.SND_BOSS );
+					if (phase == Phase.STATIC && error == null) {
+						phase = Phase.FADE_OUT;
+						timeLeft = TIME_TO_FADE;
 					}
-					
-				} catch (Exception e) {
-					
-					error = e;
-
 				}
-
-				if (phase == Phase.STATIC && error == null) {
-					phase = Phase.FADE_OUT;
-					timeLeft = TIME_TO_FADE;
-				}
-			}
-		};
-		thread.start();
+			};
+			thread.start();
+		}
 		waitingTime = 0f;
 	}
 	
@@ -241,6 +243,8 @@ public class InterlevelScene extends PixelScene {
 			
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				Game.switchScene( GameScene.class );
+				thread = null;
+				error = null;
 			}
 			break;
 			
@@ -260,11 +264,19 @@ public class InterlevelScene extends PixelScene {
 						Game.switchScene( StartScene.class );
 					}
 				} );
+				thread = null;
 				error = null;
 			} else if ((int)waitingTime == 10){
 				waitingTime = 11f;
+				String s = "";
+				for (StackTraceElement t : thread.getStackTrace()){
+					s += "\n";
+					s += t.toString();
+				}
 				ShatteredPixelDungeon.reportException(
-						new RuntimeException("waited more than 10 seconds on levelgen. Seed:" + Dungeon.seed + " depth:" + Dungeon.depth)
+						new RuntimeException("waited more than 10 seconds on levelgen. " +
+								"Seed:" + Dungeon.seed + " depth:" + Dungeon.depth + "trace:" +
+								s)
 				);
 			}
 			break;
