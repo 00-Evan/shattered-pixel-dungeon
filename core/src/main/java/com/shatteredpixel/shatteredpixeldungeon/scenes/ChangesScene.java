@@ -133,7 +133,29 @@ public class ChangesScene extends PixelScene {
 		//       v0.6.4
 		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.4", true, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.4a", true, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ The dwarf king is now immune to blindness\n" +
+				"\n" +
+				"_-_ Made adjustments to sending gameplay data. Data use should be slightly reduced."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.6.4):\n" +
+				"_-_ Various bugs caused by new loading animation\n" +
+				"_-_ Unique items being lost on ankh revive\n" +
+				"_-_ Various issues with tipped darts and tengu\n" +
+				"\n" +
+				"Fixed (existed before 0.6.4):\n" +
+				"_-_ Rare cases where music wouldn't play\n" +
+				"_-_ Unstable enchant not being able to activate venom"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
+		changes = new ChangeInfo("v0.6.4", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
@@ -275,52 +297,6 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight(Window.TITLE_COLOR);
 		infos.add(changes);
 		
-		changes = new ChangeInfo("v0.6.3b", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STYLUS, null), "Obfuscation",
-				"With its downside removed in 0.6.3, the glyph of obfuscation has become extremely powerful.\n" +
-				"\n" +
-				"To reign it in a bit, its effectiveness has been reduced at higher levels:\n" +
-				"_-_ Base power increased\n" +
-				"_-_ Power scaling has been decreased by 67%"));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
-				"The berserker remains extremely powerful, so further adjustments have been made:\n\n" +
-				"_-_ Re-applied bonus damage nerf from 0.6.2: bonus damage below 50% health reduced significantly, 2x damage while at 0 hp unchanged.\n\n" +
-				"_-_ Bonus damage is now calculated using reduced max hp, not true max hp. This means that past rages effectively reduce bonus damage."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed a serious memory leak on android 8.0+\n\n" +
-				"Fixed serious crash issues on older custom ROMs\n\n" +
-				"Fixed (caused by 0.6.3):\n" +
-				"_-_ Sleep darts causing phantom sleep bubbles\n" +
-				"_-_ Mimics not dropping loot when corrupted\n" +
-				"_-_ Bugs caused by berserker hp reduction\n\n" +
-				"Fixed (existed before 0.6.3):\n" +
-				"_-_ Rankings not retaining challenges completed"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
-		
-		changes = new ChangeInfo("v0.6.3a", false, "");
-		changes.hardlight(Window.TITLE_COLOR);
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"_-_ Reduced burning damage against high health enemies\n\n" +
-				"_-_ Reduced game install size by ~2.5%"));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.6.3):\n" +
-				"_-_ Health potions being craftable with pharmacophobia enabled\n" +
-				"_-_ Ring of sharpshooting increasing damage a bit more than displayed\n" +
-				"_-_ Various rare crashes"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
-		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
@@ -391,6 +367,8 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various crash bugs\n" +
+				"_-_ Serious memory leaks on android 8.0+\n" +
+				"_-_ Rankings not retaining challenges completed\n" +
 				"_-_ Scroll of psionic blast debuffing a dead hero\n" +
 				"_-_ Rot lashers not being considered minibosses\n" +
 				"_-_ Wand of corruption ignoring NPCs\n" +
@@ -437,7 +415,7 @@ public class ChangesScene extends PixelScene {
 				"_-_ BattleAxe accuracy bonus increased by 6.5%\n" +
 				"_-_ WarHammer accuracy bonus increased by 5%\n\n" +
 				"Glyph Buffs:\n" +
-				"_-_ Glyph of obfuscation no longer reduces damage blocking.\n" +
+				"_-_ Glyph of obfuscation no longer reduces damage blocking, but is also less powerful.\n" +
 				"_-_ Glyph of entanglement now gives more herbal armor, and root duration decreases at higher armor levels."));
 		
 		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
@@ -446,7 +424,6 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
 				"The previous berserker nerf from 0.6.2 had little effect on his overall winrate, so I'm trying again with a different approach, based around having a permanent penalty for each use of berserk.\n\n" +
-				"_-_ Reverted bonus damage nerf from 0.6.2\n" +
 				"_-_ Reverted exhaustion nerf from 0.6.2\n\n" +
 				"_-_ Decreased lvls to recover rage to 2 from 3\n" +
 				"_-_ Berserking now reduces max health by 20%"));
@@ -527,9 +504,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.IRON_KEY, null), "New Key Display",
 				"The key display has been overhauled!\n\n" +
-						"_-_ Each key type now has its own icon, instead of all special keys being shown as golden.\n\n" +
-						"_-_ Can now display up to 6 keys, up from 3. After 3 keys the key icons will become smaller.\n\n" +
-						"_-_ Button background now dims as keys are collected, for added visual clarity."));
+				"_-_ Each key type now has its own icon, instead of all special keys being shown as golden.\n\n" +
+				"_-_ Can now display up to 6 keys, up from 3. After 3 keys the key icons will become smaller.\n\n" +
+				"_-_ Button background now dims as keys are collected, for added visual clarity."));
 		
 		
 		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
