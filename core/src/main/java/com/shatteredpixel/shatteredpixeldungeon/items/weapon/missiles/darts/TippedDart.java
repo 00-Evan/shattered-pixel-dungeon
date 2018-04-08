@@ -61,7 +61,7 @@ public abstract class TippedDart extends Dart {
 		if (enemy.isAlive())
 			Buff.affect(enemy, PinCushion.class).stick(new Dart());
 		else
-			Dungeon.level.drop( new Dart(), cell ).sprite.drop();
+			Dungeon.level.drop( new Dart(), enemy.pos ).sprite.drop();
 	}
 	
 	@Override
