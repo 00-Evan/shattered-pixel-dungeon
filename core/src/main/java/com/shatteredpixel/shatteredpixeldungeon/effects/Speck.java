@@ -1,9 +1,9 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2017 Evan Debenham
+ * Copyright (C) 2014-2018 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import android.annotation.SuppressLint;
 import android.util.SparseArray;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;

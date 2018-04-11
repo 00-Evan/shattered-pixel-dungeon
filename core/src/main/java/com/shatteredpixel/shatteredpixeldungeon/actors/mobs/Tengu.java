@@ -1,9 +1,9 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2017 Evan Debenham
+ * Copyright (C) 2014-2018 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,8 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;

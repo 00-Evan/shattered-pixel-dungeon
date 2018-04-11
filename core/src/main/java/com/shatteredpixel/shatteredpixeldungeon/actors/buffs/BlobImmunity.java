@@ -1,9 +1,9 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2017 Evan Debenham
+ * Copyright (C) 2014-2018 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.*;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StenchGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;

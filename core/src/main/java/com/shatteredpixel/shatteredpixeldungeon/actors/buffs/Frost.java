@@ -1,9 +1,9 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2017 Evan Debenham
+ * Copyright (C) 2014-2018 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;

@@ -1,9 +1,9 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2017 Evan Debenham
+ * Copyright (C) 2014-2018 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,16 @@
 
 package com.watabou.noosa.audio;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-
-import com.watabou.noosa.Game;
-
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
+
+import com.watabou.noosa.Game;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public enum Sample implements SoundPool.OnLoadCompleteListener {
 

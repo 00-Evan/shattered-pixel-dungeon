@@ -1,9 +1,9 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2017 Evan Debenham
+ * Copyright (C) 2014-2018 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +21,18 @@
 
 package com.watabou.noosa;
 
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
-
 import android.opengl.GLES20;
 import android.os.Build;
 
 import com.watabou.glscripts.Script;
-import com.watabou.glwrap.FroyoGLES20Fix;
 import com.watabou.glwrap.Attribute;
+import com.watabou.glwrap.FroyoGLES20Fix;
 import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Uniform;
 import com.watabou.glwrap.Vertexbuffer;
+
+import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 public class NoosaScript extends Script {
 	

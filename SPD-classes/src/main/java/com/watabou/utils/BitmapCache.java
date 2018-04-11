@@ -1,9 +1,9 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2017 Evan Debenham
+ * Copyright (C) 2014-2018 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,13 @@
 
 package com.watabou.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 
 public class BitmapCache {
 

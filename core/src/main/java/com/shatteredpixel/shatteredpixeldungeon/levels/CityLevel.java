@@ -1,9 +1,9 @@
 /*
  * Pixel Dungeon
- * Copyright (C) 2012-2015  Oleg Dolya
+ * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2017 Evan Debenham
+ * Copyright (C) 2014-2018 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
@@ -38,7 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.RockfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.StormTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
