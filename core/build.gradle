@@ -24,4 +24,8 @@ android {
 
 dependencies {
     implementation project(':SPD-classes')
+    repositories {
+        google()
+        jcenter()
+    }
 }
