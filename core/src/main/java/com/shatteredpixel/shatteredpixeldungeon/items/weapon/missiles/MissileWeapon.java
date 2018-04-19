@@ -182,7 +182,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int damageRoll(Char owner) {
-		int damage = imbue.damageFactor(super.damageRoll( owner ));
+		int damage = augment.damageFactor(super.damageRoll( owner ));
 		damage = Math.round( damage * RingOfSharpshooting.damageMultiplier( owner ));
 		
 		if (owner instanceof Hero &&
@@ -253,8 +253,8 @@ abstract public class MissileWeapon extends Weapon {
 		String info = desc();
 		
 		info += "\n\n" + Messages.get( MissileWeapon.class, "stats",
-				Math.round(imbue.damageFactor(min()) * RingOfSharpshooting.damageMultiplier( Dungeon.hero )),
-				Math.round(imbue.damageFactor(max()) * RingOfSharpshooting.damageMultiplier( Dungeon.hero )),
+				Math.round(augment.damageFactor(min()) * RingOfSharpshooting.damageMultiplier( Dungeon.hero )),
+				Math.round(augment.damageFactor(max()) * RingOfSharpshooting.damageMultiplier( Dungeon.hero )),
 				STRReq());
 
 		if (STRReq() > Dungeon.hero.STR()) {

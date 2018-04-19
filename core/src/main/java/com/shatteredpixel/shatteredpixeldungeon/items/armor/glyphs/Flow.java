@@ -31,7 +31,7 @@ public class Flow extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see hero.speed for effect.
+		//no proc effect, see armor.speedfactor for effect.
 		return damage;
 	}
 

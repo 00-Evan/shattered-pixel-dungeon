@@ -60,12 +60,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Obfuscation;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
@@ -323,28 +319,19 @@ public class Hero extends Char {
 	@Override
 	public int defenseSkill( Char enemy ) {
 		
-		float multiplier = 1f * RingOfEvasion.evasionMultiplier( this );
+		float evasion = defenseSkill;
+		
+		evasion *= RingOfEvasion.evasionMultiplier( this );
 		
 		if (paralysed > 0) {
-			multiplier /= 2;
-		}
-		
-		int aEnc = belongings.armor != null ? belongings.armor.STRReq() - STR() : 10 - STR();
-		
-		if (aEnc > 0) {
-			multiplier /= Math.pow( 1.5, aEnc );
-		}
-		int bonus = 0;
-
-		if (belongings.armor != null && belongings.armor.hasGlyph(Swiftness.class))
-			bonus += 5 + belongings.armor.level()*1.5f;
-		
-		Momentum momentum = buff(Momentum.class);
-		if (momentum != null){
-			bonus += momentum.evasionBonus(Math.max(0, -aEnc));
+			evasion /= 2;
 		}
 
-		return Math.round((defenseSkill * multiplier) + bonus);
+		if (belongings.armor != null) {
+			evasion = belongings.armor.evasionFactor(this, evasion);
+		}
+
+		return Math.round(evasion);
 	}
 	
 	@Override
@@ -389,20 +376,10 @@ public class Hero extends Char {
 		float speed = super.speed();
 
 		speed *= RingOfHaste.speedMultiplier(this);
-
-		Armor armor = belongings.armor;
-
-		if (armor != null){
-
-			if (armor.hasGlyph(Swiftness.class)) {
-				speed *= (1.1f + 0.01f * belongings.armor.level());
-			} else if (armor.hasGlyph(Flow.class) && Dungeon.level.water[pos]){
-				speed *= (1.5f + 0.05f * belongings.armor.level());
-			}
-		}
 		
-		int aEnc = armor != null ? armor.STRReq() - STR() : 0;
-		if (aEnc > 0) speed /= Math.pow( 1.2, aEnc );
+		if (belongings.armor != null) {
+			speed = belongings.armor.speedFactor(this, speed);
+		}
 		
 		Momentum momentum = buff(Momentum.class);
 		if (momentum != null){
@@ -1301,9 +1278,10 @@ public class Hero extends Char {
 	public int stealth() {
 		int stealth = super.stealth();
 		
-		if (belongings.armor != null && belongings.armor.hasGlyph(Obfuscation.class)){
-			stealth += 1 + belongings.armor.level()/3;
+		if (belongings.armor != null){
+			stealth = Math.round(belongings.armor.stealthFactor(this, stealth));
 		}
+		
 		return stealth;
 	}
 	

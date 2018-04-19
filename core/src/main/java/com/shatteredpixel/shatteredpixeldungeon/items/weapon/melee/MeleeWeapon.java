@@ -52,7 +52,7 @@ public class MeleeWeapon extends Weapon {
 	
 	@Override
 	public int damageRoll(Char owner) {
-		int damage = imbue.damageFactor(super.damageRoll( owner ));
+		int damage = augment.damageFactor(super.damageRoll( owner ));
 
 		if (owner instanceof Hero) {
 			int exStr = ((Hero)owner).STR() - STRReq();
@@ -70,7 +70,7 @@ public class MeleeWeapon extends Weapon {
 		String info = desc();
 
 		if (levelKnown) {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, imbue.damageFactor(min()), imbue.damageFactor(max()), STRReq());
+			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq());
 			if (STRReq() > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Weapon.class, "too_heavy");
 			} else if (Dungeon.hero.STR() > STRReq()){
@@ -86,12 +86,12 @@ public class MeleeWeapon extends Weapon {
 		String stats_desc = Messages.get(this, "stats_desc");
 		if (!stats_desc.equals("")) info+= "\n\n" + stats_desc;
 
-		switch (imbue) {
-			case LIGHT:
-				info += "\n\n" + Messages.get(Weapon.class, "lighter");
+		switch (augment) {
+			case SPEED:
+				info += "\n\n" + Messages.get(Weapon.class, "faster");
 				break;
-			case HEAVY:
-				info += "\n\n" + Messages.get(Weapon.class, "heavier");
+			case DAMAGE:
+				info += "\n\n" + Messages.get(Weapon.class, "stronger");
 				break;
 			case NONE:
 		}

@@ -64,10 +64,13 @@ public abstract class InventoryStone extends Runestone {
 		GameScene.selectItem( itemSelector, mode, inventoryTitle );
 	}
 	
-	private void useAnimation() {
+	protected void useAnimation() {
 		curUser.spend( 1f );
 		curUser.busy();
 		curUser.sprite.operate(curUser.pos);
+		
+		Sample.INSTANCE.play( Assets.SND_READ );
+		Invisibility.dispel();
 	}
 	
 	protected abstract void onItemSelected( Item item );
@@ -85,10 +88,6 @@ public abstract class InventoryStone extends Runestone {
 			if (item != null) {
 				
 				((InventoryStone)curItem).onItemSelected( item );
-				((InventoryStone)curItem).useAnimation();
-				
-				Sample.INSTANCE.play( Assets.SND_READ );
-				Invisibility.dispel();
 				
 			} else{
 				curItem.collect( curUser.belongings.backpack );

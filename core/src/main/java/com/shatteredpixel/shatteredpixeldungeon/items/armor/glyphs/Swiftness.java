@@ -31,18 +31,8 @@ public class Swiftness extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see hero.defenseskill and hero.speed for effect.
+		//no proc effect, see hero.defenseskill and armor.speedfactor for effect.
 		return damage;
-	}
-
-	@Override
-	public int tierDRAdjust() {
-		return -2;
-	}
-
-	@Override
-	public float tierSTRAdjust() {
-		return -1;
 	}
 
 	@Override

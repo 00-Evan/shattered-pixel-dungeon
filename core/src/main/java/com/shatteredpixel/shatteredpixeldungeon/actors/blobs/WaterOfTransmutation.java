@@ -139,7 +139,7 @@ public class WaterOfTransmutation extends WellWater {
 		n.levelKnown = w.levelKnown;
 		n.cursedKnown = w.cursedKnown;
 		n.cursed = w.cursed;
-		n.imbue = w.imbue;
+		n.augment = w.augment;
 
 		return n;
 
