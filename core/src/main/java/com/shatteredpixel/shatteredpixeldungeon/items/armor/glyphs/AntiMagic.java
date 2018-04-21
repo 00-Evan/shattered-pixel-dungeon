@@ -22,13 +22,37 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+
+import java.util.HashSet;
 
 public class AntiMagic extends Armor.Glyph {
 
 	private static ItemSprite.Glowing TEAL = new ItemSprite.Glowing( 0x88EEFF );
-
+	
+	public static final HashSet<Class> RESISTS = new HashSet<>();
+	static {
+		RESISTS.add( Charm.class );
+		RESISTS.add( Weakness.class );
+		
+		RESISTS.add( DisintegrationTrap.class );
+		RESISTS.add( GrimTrap.class );
+		
+		RESISTS.add( Shaman.class );
+		RESISTS.add( Warlock.class );
+		RESISTS.add( Eye.class );
+		RESISTS.add( Yog.BurningFist.class );
+	}
+	
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 		//no proc effect, see Hero.damage

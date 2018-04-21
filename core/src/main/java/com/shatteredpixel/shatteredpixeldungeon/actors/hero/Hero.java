@@ -61,7 +61,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
@@ -77,7 +76,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
@@ -927,13 +925,13 @@ public class Hero extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		
+		if (belongings.armor != null) {
+			damage = belongings.armor.proc( enemy, this, damage );
+		}
+		
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
 		if (armor != null) {
 			damage = armor.absorb( damage );
-		}
-		
-		if (belongings.armor != null) {
-			damage = belongings.armor.proc( enemy, this, damage );
 		}
 		
 		return damage;
@@ -963,7 +961,7 @@ public class Hero extends Char {
 
 		//TODO improve this when I have proper damage source logic
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
-				&& RingOfElements.RESISTS.contains(src.getClass())){
+				&& AntiMagic.RESISTS.contains(src.getClass())){
 			dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/3;
 		}
 
@@ -1090,19 +1088,13 @@ public class Hero extends Char {
 		}
 
 		if (step != -1) {
-
-			int moveTime = 1;
-			if (belongings.armor != null && belongings.armor.hasGlyph(Stone.class) &&
-							(Dungeon.level.map[pos] == Terrain.DOOR
-							|| Dungeon.level.map[pos] == Terrain.OPEN_DOOR
-							|| Dungeon.level.map[step] == Terrain.DOOR
-							|| Dungeon.level.map[step] == Terrain.OPEN_DOOR )){
-				moveTime *= 2;
-			}
+			
+			float speed = speed();
+			
 			sprite.move(pos, step);
 			move(step);
 
-			spend( moveTime / speed() );
+			spend( 1 / speed );
 			
 			search(false);
 			

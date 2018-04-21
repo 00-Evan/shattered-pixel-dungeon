@@ -21,15 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EnergyParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
-import com.watabou.noosa.Camera;
-import com.watabou.utils.Random;
 
 public class Potential extends Glyph {
 	
@@ -39,21 +37,12 @@ public class Potential extends Glyph {
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
 		int level = Math.max( 0, armor.level() );
-
-		if (Random.Int( level + 20 ) >= 18) {
-
-			int shockDmg = Random.NormalIntRange( 2, 6 );
-
-			defender.damage( shockDmg, this );
-			
-			checkOwner( defender );
-			if (defender == Dungeon.hero) {
-				Dungeon.hero.belongings.charge(1f + level/10f);
-				Camera.main.shake( 2, 0.3f );
+		
+		if (defender instanceof Hero) {
+			int wands = ((Hero) defender).belongings.charge(0.1f + level*0.05f);
+			if (wands > 0) {
+				defender.sprite.centerEmitter().burst(EnergyParticle.FACTORY, wands * (level + 2));
 			}
-
-			attacker.sprite.parent.add( new Lightning( attacker.pos, defender.pos, null ) );
-
 		}
 		
 		return damage;

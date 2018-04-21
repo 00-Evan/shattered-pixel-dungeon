@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 public class Viscosity extends Glyph {
 	
@@ -49,22 +48,16 @@ public class Viscosity extends Glyph {
 		
 		int level = Math.max( 0, armor.level() );
 		
-		if (Random.Int( level + 6 ) >= 5) {
-			
-			DeferedDamage debuff = defender.buff( DeferedDamage.class );
-			if (debuff == null) {
-				debuff = new DeferedDamage();
-				debuff.attachTo( defender );
-			}
-			debuff.prolong( damage );
-			
-			defender.sprite.showStatus( CharSprite.WARNING, Messages.get(this, "deferred", damage) );
-			
-			return 0;
-			
-		} else {
-			return damage;
-		}
+		float percent = (level+1)/(float)(level+6);
+		int amount = (int)Math.ceil(damage * percent);
+		
+		DeferedDamage deferred = Buff.affect( defender, DeferedDamage.class );
+		deferred.prolong( amount );
+		
+		defender.sprite.showStatus( CharSprite.WARNING, Messages.get(this, "deferred", amount) );
+		
+		return damage - amount;
+		
 	}
 
 	@Override

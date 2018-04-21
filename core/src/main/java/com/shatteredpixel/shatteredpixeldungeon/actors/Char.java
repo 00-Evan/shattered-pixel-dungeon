@@ -180,11 +180,11 @@ public abstract class Char extends Actor {
 			} else {
 				dmg = damageRoll();
 			}
-			int effectiveDamage = Math.max( dmg - dr, 0 );
 			
+			int effectiveDamage = enemy.defenseProc( this, dmg );
+			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
 			effectiveDamage = attackProc( enemy, effectiveDamage );
-			effectiveDamage = enemy.defenseProc( this, effectiveDamage );
-
+			
 			if (visibleFight) {
 				Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
 			}

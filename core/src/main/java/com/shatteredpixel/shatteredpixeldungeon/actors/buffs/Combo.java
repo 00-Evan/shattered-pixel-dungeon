@@ -234,10 +234,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					dmg = Math.round(dmg*0.6f);
 					break;
 			}
-
+			
+			dmg = enemy.defenseProc(target, dmg);
 			dmg -= enemy.drRoll();
 			dmg = target.attackProc(enemy, dmg);
-			dmg = enemy.defenseProc(target, dmg);
 			enemy.damage( dmg, this );
 
 			//special effects

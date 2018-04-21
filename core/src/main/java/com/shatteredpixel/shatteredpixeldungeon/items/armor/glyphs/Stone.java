@@ -32,7 +32,29 @@ public class Stone extends Armor.Glyph {
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 		//no proc effect, see armor.DrMin and the end of hero.getCloser
+		
+		testing = true;
+		float evasion = defender.defenseSkill(attacker);
+		float accuracy = attacker.attackSkill(defender);
+		testing = false;
+		
+		float hitChance;
+		if (evasion >= accuracy){
+			hitChance = 1f - (1f - (accuracy/evasion))/2f;
+		} else {
+			hitChance = 1f - (evasion/accuracy)/2f;
+		}
+		
+		//FIXME this is probably very OP, needs balancing
+		damage = (int)Math.ceil(damage * hitChance);
+		
 		return damage;
+	}
+	
+	private boolean testing = false;
+	
+	public boolean testingEvasion(){
+		return testing;
 	}
 
 	@Override

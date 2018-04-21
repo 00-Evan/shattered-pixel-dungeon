@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
@@ -269,6 +270,10 @@ public class Armor extends EquipableItem {
 	
 	public float evasionFactor( Char owner, float evasion ){
 		
+		if (hasGlyph(Stone.class) && !((Stone)glyph).testingEvasion()){
+			return 0;
+		}
+		
 		if (owner instanceof Hero){
 			int aEnc = STRReq() - ((Hero) owner).STR();
 			if (aEnc > 0) evasion /= Math.pow(1.5, aEnc);
@@ -277,10 +282,6 @@ public class Armor extends EquipableItem {
 			if (momentum != null){
 				evasion += momentum.evasionBonus(Math.max(0, -aEnc));
 			}
-		}
-		
-		if (hasGlyph(Swiftness.class)) {
-			evasion += 5 + level()*1.5f;
 		}
 		
 		return evasion + augment.evasionFactor(level());
@@ -294,9 +295,16 @@ public class Armor extends EquipableItem {
 		}
 		
 		if (hasGlyph(Swiftness.class)) {
-			speed *= (1.1f + 0.01f * level());
+			boolean enemyNear = false;
+			for (Char ch : Actor.chars()){
+				if (Dungeon.level.adjacent(ch.pos, owner.pos) && owner.alignment != ch.alignment){
+					enemyNear = true;
+					break;
+				}
+			}
+			if (!enemyNear) speed *= (1.2f + 0.04f * level());
 		} else if (hasGlyph(Flow.class) && Dungeon.level.water[owner.pos]){
-			speed *= (1.5f + 0.05f * level());
+			speed *= (1.5f + 0.1f * level());
 		}
 		
 		return speed;
@@ -506,8 +514,8 @@ public class Armor extends EquipableItem {
 	public static abstract class Glyph implements Bundlable {
 		
 		private static final Class<?>[] glyphs = new Class<?>[]{
-				Obfuscation.class, Swiftness.class, Stone.class, Potential.class,
-				Brimstone.class, Viscosity.class, Entanglement.class, Repulsion.class, Camouflage.class, Flow.class,
+				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class,
+				Brimstone.class, Stone.class, Entanglement.class, Repulsion.class, Camouflage.class, Flow.class,
 				Affection.class, AntiMagic.class, Thorns.class };
 		private static final float[] chances= new float[]{
 				10, 10, 10, 10,
