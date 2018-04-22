@@ -34,10 +34,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.AntiEntropy;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Bulk;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Corrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Displacement;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Metabolism;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Multiplicity;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Overgrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Stench;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Affection;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
@@ -52,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Thorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -307,6 +310,12 @@ public class Armor extends EquipableItem {
 			speed *= (1.5f + 0.1f * level());
 		}
 		
+		if (hasGlyph(Bulk.class) &&
+				(Dungeon.level.map[owner.pos] == Terrain.DOOR
+						|| Dungeon.level.map[owner.pos] == Terrain.OPEN_DOOR )) {
+			speed /= 3f;
+		}
+		
 		return speed;
 		
 	}
@@ -523,7 +532,8 @@ public class Armor extends EquipableItem {
 				2, 2, 2 };
 
 		private static final Class<?>[] curses = new Class<?>[]{
-				AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class, Multiplicity.class, Stench.class
+				AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class,
+				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class
 		};
 			
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );

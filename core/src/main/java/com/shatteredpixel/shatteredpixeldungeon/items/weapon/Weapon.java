@@ -30,8 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Exhausting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Fragile;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Friendly;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Sacrificial;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
@@ -145,7 +147,7 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 
 		if (hasEnchant(Wayward.class))
-			encumbrance = Math.max(3, encumbrance+3);
+			encumbrance = Math.max(2, encumbrance+2);
 
 		float ACC = this.ACC;
 
@@ -272,7 +274,8 @@ abstract public class Weapon extends KindOfWeapon {
 			2, 2, 2 };
 
 		private static final Class<?>[] curses = new Class<?>[]{
-				Annoying.class, Displacing.class, Exhausting.class, Fragile.class, Sacrificial.class, Wayward.class
+				Annoying.class, Displacing.class, Exhausting.class, Fragile.class,
+				Sacrificial.class, Wayward.class, Elastic.class, Friendly.class
 		};
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
