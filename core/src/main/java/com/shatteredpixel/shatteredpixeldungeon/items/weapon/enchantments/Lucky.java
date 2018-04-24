@@ -22,9 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class Lucky extends Weapon.Enchantment {
@@ -34,17 +36,69 @@ public class Lucky extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.level() );
-
-		if (Random.Int(100) < (60 + level)){
-			return 2*damage;
-		} else {
-			return 0;
+		
+		float zeroChance = 0.5f;
+		
+		Luck buff = attacker.buff(Luck.class);
+		if (buff != null){
+			zeroChance = buff.zeroChance;
 		}
 		
+		if (Random.Float() >= zeroChance){
+			
+			if (buff != null) {
+				buff.detach();
+			}
+			
+			return 2*damage;
+		} else {
+			
+			buff = Buff.affect(attacker, Luck.class);
+			buff.zeroChance = zeroChance * (0.5f - 0.001f*level);
+			
+			return 0;
+		}
+
 	}
 
 	@Override
 	public Glowing glowing() {
 		return GREEN;
 	}
+	
+	
+	public static class Luck extends Buff {
+		
+		float zeroChance;
+		
+		@Override
+		public boolean act() {
+			
+			zeroChance += 0.01f;
+			
+			if (zeroChance >= 0.5f){
+				detach();
+			} else {
+				spend(TICK);
+			}
+			
+			return true;
+		}
+		
+		private static final String CHANCE = "chance";
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			zeroChance = bundle.getFloat(CHANCE);
+		}
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(CHANCE, zeroChance);
+		}
+		
+	}
+	
 }
