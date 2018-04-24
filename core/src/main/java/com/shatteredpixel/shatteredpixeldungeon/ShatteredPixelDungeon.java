@@ -40,43 +40,19 @@ import javax.microedition.khronos.opengles.GL10;
 public class ShatteredPixelDungeon extends Game {
 	
 	//variable constants for specific older versions of shattered, used for data conversion
-	//versions older than v0.5.0b are no longer supported, and data from them is ignored
-	public static final int v0_5_0b = 159;
-	
+	//versions older than v0.6.0b are no longer supported, and data from them is ignored
 	public static final int v0_6_0b = 185;
 	
 	public static final int v0_6_1b = 209;
 	
 	public static final int v0_6_2e = 229;
 	
-	public static final int v0_6_3c = 245;
+	public static final int v0_6_3b = 245;
 	
-	public static final int v0_6_4  = 251;
+	public static final int v0_6_4a = 252;
 	
 	public ShatteredPixelDungeon() {
 		super( WelcomeScene.class );
-		
-		//v0.6.0
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MassGraveRoom.Bones.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.MassGravePainter$Bones" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.RitualSiteRoom.RitualMarker.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.RitualSitePainter$RitualMarker" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom.HiddenWell.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.painters.WeakFloorPainter$HiddenWell" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.Room" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.NewShortsword" );
-		
-		//v0.6.0a
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.food.OverpricedRation" );
 		
 		//v0.6.2
 		com.watabou.utils.Bundle.addAlias(

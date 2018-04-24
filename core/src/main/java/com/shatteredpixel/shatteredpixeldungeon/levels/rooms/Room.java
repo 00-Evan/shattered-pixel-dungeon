@@ -33,10 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
-//Note that this class should be treated as if it were abstract
-// it is currently not abstract to maintain compatibility with pre-0.6.0 saves
-// TODO make this class abstract after dropping support for pre-0.6.0 saves
-public class Room extends Rect implements Graph.Node, Bundlable {
+public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
 	public ArrayList<Room> neigbours = new ArrayList<Room>();
 	public LinkedHashMap<Room, Door> connected = new LinkedHashMap<Room, Door>();

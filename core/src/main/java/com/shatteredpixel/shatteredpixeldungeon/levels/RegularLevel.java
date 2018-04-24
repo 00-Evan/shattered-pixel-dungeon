@@ -203,9 +203,6 @@ public abstract class RegularLevel extends Level {
 				for (int i = 0; i < ((StandardRoom) room).sizeCat.roomValue; i++) {
 					stdRooms.add(room);
 				}
-			//pre-0.6.0 save compatibility
-			} else if (room.legacyType.equals("STANDARD")){
-				stdRooms.add(room);
 			}
 		}
 		Random.shuffle(stdRooms);
@@ -391,9 +388,7 @@ public abstract class RegularLevel extends Level {
 	protected Room randomRoom( Class<?extends Room> type ) {
 		Random.shuffle( rooms );
 		for (Room r : rooms) {
-			if (type.isInstance(r)
-					//compatibility with pre-0.6.0 saves
-				|| (type == StandardRoom.class && r.legacyType.equals("STANDARD"))) {
+			if (type.isInstance(r)) {
 				return r;
 			}
 		}
