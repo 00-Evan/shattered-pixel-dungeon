@@ -149,6 +149,11 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster" );
 		
+		//v0.6.5
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.Weightstone" );
+		
 	}
 	
 	@Override
