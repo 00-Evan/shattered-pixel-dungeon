@@ -64,6 +64,11 @@ public class StoneOfAugmentation extends InventoryStone {
 		ScrollOfUpgrade.upgrade(curUser);
 	}
 	
+	@Override
+	public int price() {
+		return 30 * quantity;
+	}
+	
 	public class WndAugment extends Window {
 		
 		private static final int WIDTH			= 120;
