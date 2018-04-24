@@ -97,7 +97,7 @@ public class ItemSpriteSheet {
 	private static final int SINGLE_USE     =                               xy(1, 4);   //16 slots
 	public static final int ANKH            = SINGLE_USE+0;
 	public static final int STYLUS          = SINGLE_USE+1;
-	public static final int WEIGHT          = SINGLE_USE+2;
+	
 	public static final int SEAL            = SINGLE_USE+3;
 	public static final int TORCH           = SINGLE_USE+4;
 	public static final int BEACON          = SINGLE_USE+5;
@@ -114,7 +114,7 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(ANKH,            10, 16);
 		assignItemRect(STYLUS,          12, 13);
-		assignItemRect(WEIGHT,          14, 12);
+		
 		assignItemRect(SEAL,            9,  15);
 		assignItemRect(TORCH,           12, 15);
 		assignItemRect(BEACON,          16, 15);
@@ -234,7 +234,7 @@ public class ItemSpriteSheet {
 		
 		assignItemRect(DART,            15, 15);
 		assignItemRect(THROWING_KNIFE,  12, 13);
-		assignItemRect(THROWING_STONE,  9,  9);
+		assignItemRect(THROWING_STONE,  12, 10);
 		
 		assignItemRect(FISHING_SPEAR,   11, 11);
 		assignItemRect(SHURIKEN,        12, 12);
@@ -412,7 +412,7 @@ public class ItemSpriteSheet {
 	public static final int STONE_TIWAZ    = STONES+11;
 	static {
 		for (int i = STONES; i < STONES+16; i++)
-			assignItemRect(i, 11, 11);
+			assignItemRect(i, 14, 12);
 	}
 
 	private static final int POTIONS        =                               xy(1, 22);  //16 slots
