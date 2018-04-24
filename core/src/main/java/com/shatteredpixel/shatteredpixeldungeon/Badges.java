@@ -21,12 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Acidic;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Albino;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bandit;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Senior;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shielded;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
@@ -43,6 +37,7 @@ import com.watabou.utils.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -76,14 +71,14 @@ public class Badges {
 		BAG_BOUGHT_SCROLL_HOLDER,
 		BAG_BOUGHT_POTION_BANDOLIER,
 		BAG_BOUGHT_WAND_HOLSTER,
-		ALL_BAGS_BOUGHT( 58 ),
-		DEATH_FROM_FIRE( 24 ),
-		DEATH_FROM_POISON( 25 ),
-		DEATH_FROM_GAS( 26 ),
-		DEATH_FROM_HUNGER( 27 ),
-		DEATH_FROM_GLYPH( 57 ),
-		DEATH_FROM_FALLING( 59 ),
-		YASD( 34, true ),
+		ALL_BAGS_BOUGHT( 24 ),
+		DEATH_FROM_FIRE( 25 ),
+		DEATH_FROM_POISON( 26 ),
+		DEATH_FROM_GAS( 27 ),
+		DEATH_FROM_HUNGER( 28 ),
+		DEATH_FROM_GLYPH( 29 ),
+		DEATH_FROM_FALLING( 30 ),
+		YASD( 31, true ),
 		BOSS_SLAIN_1_WARRIOR,
 		BOSS_SLAIN_1_MAGE,
 		BOSS_SLAIN_1_ROGUE,
@@ -102,6 +97,16 @@ public class Badges {
 		BOSS_SLAIN_3_SNIPER,
 		BOSS_SLAIN_3_WARDEN,
 		BOSS_SLAIN_3_ALL_SUBCLASSES( 33, true ),
+		VICTORY_WARRIOR,
+		VICTORY_MAGE,
+		VICTORY_ROGUE,
+		VICTORY_HUNTRESS,
+		VICTORY( 34 ),
+		VICTORY_ALL_CLASSES( 35, true ),
+		HAPPY_END( 36 ),
+		CHAMPION_1( 37, true ),
+		CHAMPION_2( 39, true ),
+		CHAMPION_3( 38, true ),
 		STRENGTH_ATTAINED_1( 40 ),
 		STRENGTH_ATTAINED_2( 41 ),
 		STRENGTH_ATTAINED_3( 42 ),
@@ -118,34 +123,18 @@ public class Badges {
 		ITEM_LEVEL_2( 49 ),
 		ITEM_LEVEL_3( 50 ),
 		ITEM_LEVEL_4( 51 ),
-		RARE_ALBINO,
-		RARE_BANDIT,
-		RARE_SHIELDED,
-		RARE_SENIOR,
-		RARE_ACIDIC,
-		RARE( 37, true ),
-		TUTORIAL_WARRIOR,
-		TUTORIAL_MAGE,
-		VICTORY_WARRIOR,
-		VICTORY_MAGE,
-		VICTORY_ROGUE,
-		VICTORY_HUNTRESS,
-		VICTORY( 31 ),
-		VICTORY_ALL_CLASSES( 36, true ),
-		MASTERY_COMBO( 56 ),
 		POTIONS_COOKED_1( 52 ),
 		POTIONS_COOKED_2( 53 ),
 		POTIONS_COOKED_3( 54 ),
 		POTIONS_COOKED_4( 55 ),
-		NO_MONSTERS_SLAIN( 28 ),
-		GRIM_WEAPON( 29 ),
-		PIRANHAS( 30 ),
+		MASTERY_COMBO( 56 ),
+		NO_MONSTERS_SLAIN( 57 ),
+		GRIM_WEAPON( 58 ),
+		PIRANHAS( 59 ),
 		GAMES_PLAYED_1( 60, true ),
 		GAMES_PLAYED_2( 61, true ),
 		GAMES_PLAYED_3( 62, true ),
-		GAMES_PLAYED_4( 63, true ),
-		HAPPY_END( 38 ),
-		CHAMPION( 39, true );
+		GAMES_PLAYED_4( 63, true );
 
 		public boolean meta;
 
@@ -184,6 +173,16 @@ public class Badges {
 	public static final String BADGES_FILE	= "badges.dat";
 	private static final String BADGES		= "badges";
 	
+	private static final HashSet<String> removedBadges = new HashSet<>();
+	static{
+		//removed in 0.6.1
+		removedBadges.add("NIGHT_HUNTER");
+
+		//removed in 0.6.5
+		removedBadges.addAll(Arrays.asList("RARE_ALBINO", "RARE_BANDIT", "RARE_SHIELDED",
+				"RARE_SENIOR", "RARE_ACIDIC", "RARE", "TUTORIAL_WARRIOR", "TUTORIAL_MAGE"));
+	}
+
 	private static HashSet<Badge> restore( Bundle bundle ) {
 		HashSet<Badge> badges = new HashSet<Badge>();
 		if (bundle == null) return badges;
@@ -191,7 +190,9 @@ public class Badges {
 		String[] names = bundle.getStringArray( BADGES );
 		for (int i=0; i < names.length; i++) {
 			try {
-				badges.add( Badge.valueOf( names[i] ) );
+				if (!removedBadges.contains(names[i])){
+					badges.add( Badge.valueOf( names[i] ) );
+				}
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 			}
@@ -685,36 +686,6 @@ public class Badges {
 		}
 	}
 	
-	public static void validateRare( Mob mob ) {
-		
-		Badge badge = null;
-		if (mob instanceof Albino) {
-			badge = Badge.RARE_ALBINO;
-		} else if (mob instanceof Bandit) {
-			badge = Badge.RARE_BANDIT;
-		} else if (mob instanceof Shielded) {
-			badge = Badge.RARE_SHIELDED;
-		} else if (mob instanceof Senior) {
-			badge = Badge.RARE_SENIOR;
-		} else if (mob instanceof Acidic) {
-			badge = Badge.RARE_ACIDIC;
-		}
-		if (!global.contains( badge )) {
-			global.add( badge );
-			saveNeeded = true;
-		}
-		
-		if (global.contains( Badge.RARE_ALBINO ) &&
-			global.contains( Badge.RARE_BANDIT ) &&
-			global.contains( Badge.RARE_SHIELDED ) &&
-			global.contains( Badge.RARE_SENIOR ) &&
-			global.contains( Badge.RARE_ACIDIC )) {
-			
-			badge = Badge.RARE;
-			displayBadge( badge );
-		}
-	}
-	
 	public static void validateVictory() {
 
 		Badge badge = Badge.VICTORY;
@@ -747,28 +718,6 @@ public class Badges {
 			
 			badge = Badge.VICTORY_ALL_CLASSES;
 			displayBadge( badge );
-		}
-	}
-
-	public static void validateTutorial(){
-		Badge badge = null;
-		switch (Dungeon.hero.heroClass){
-			case WARRIOR:
-				badge = Badge.TUTORIAL_WARRIOR;
-				break;
-			case MAGE:
-				badge = Badge.TUTORIAL_MAGE;
-				break;
-			default:
-				break;
-		}
-
-		if (badge != null) {
-			local.add(badge);
-			if (!global.contains(badge)) {
-				global.add(badge);
-				saveNeeded = true;
-			}
 		}
 	}
 
@@ -806,12 +755,29 @@ public class Badges {
 		displayBadge( badge );
 	}
 	
+	//necessary in order to display the happy end badge in the surface scene
+	public static void silentValidateHappyEnd() {
+		if (!local.contains( Badge.HAPPY_END )){
+			local.add( Badge.HAPPY_END );
+		}
+	}
+
 	public static void validateHappyEnd() {
 		displayBadge( Badge.HAPPY_END );
 	}
 
-	public static void validateChampion() {
-		displayBadge(Badge.CHAMPION);
+	public static void validateChampion( int challenges ) {
+		Badge badge = null;
+		if (challenges >= 1) {
+			badge = Badge.CHAMPION_1;
+		}
+		if (challenges >= 3){
+			badge = Badge.CHAMPION_2;
+		}
+		if (challenges >= 6){
+			badge = Badge.CHAMPION_3;
+		}
+		displayBadge( badge );
 	}
 	
 	private static void displayBadge( Badge badge ) {
@@ -884,7 +850,8 @@ public class Badges {
 		leaveBest( filtered, Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( filtered, Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( filtered, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4 );
-		
+		leaveBest( filtered, Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3 );
+
 		ArrayList<Badge> list = new ArrayList<Badge>( filtered );
 		Collections.sort( list );
 		

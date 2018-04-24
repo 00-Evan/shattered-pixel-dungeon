@@ -567,20 +567,6 @@ public class Armor extends EquipableItem {
 		
 		public abstract ItemSprite.Glowing glowing();
 
-		public boolean checkOwner( Char owner ) {
-			if (!owner.isAlive() && owner instanceof Hero) {
-
-				Dungeon.fail( getClass() );
-				GLog.n( Messages.get(this, "killed", name()) );
-
-				Badges.validateDeathFromGlyph();
-				return true;
-				
-			} else {
-				return false;
-			}
-		}
-
 		@SuppressWarnings("unchecked")
 		public static Glyph random() {
 			try {

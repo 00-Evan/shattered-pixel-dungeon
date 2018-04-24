@@ -75,7 +75,7 @@ public class BadgesScene extends PixelScene {
 
 		List<Badges.Badge> badges = Badges.filtered( true );
 
-		int blankBadges = 34;
+		int blankBadges = 33;
 		blankBadges -= badges.size();
 		if (badges.contains(Badges.Badge.ALL_ITEMS_IDENTIFIED))	blankBadges -= 6;
 		if (badges.contains(Badges.Badge.YASD)) 				blankBadges -= 5;

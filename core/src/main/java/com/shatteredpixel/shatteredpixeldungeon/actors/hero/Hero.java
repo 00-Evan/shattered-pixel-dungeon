@@ -839,6 +839,7 @@ public class Hero extends Char {
 				} else {
 					Dungeon.win( Amulet.class );
 					Dungeon.deleteGame( GamesInProgress.curSlot, true );
+					Badges.silentValidateHappyEnd();
 					Game.switchScene( SurfaceScene.class );
 				}
 				
