@@ -236,8 +236,6 @@ public class Hero extends Char {
 		heroClass = HeroClass.restoreInBundle( bundle );
 		subClass = HeroSubClass.restoreInBundle( bundle );
 		
-		berserk = subClass == HeroSubClass.BERSERKER ? buff(Berserk.class) : null;
-		
 		attackSkill = bundle.getInt( ATTACK );
 		defenseSkill = bundle.getInt( DEFENSE );
 		
@@ -361,10 +359,10 @@ public class Hero extends Char {
 			dmg = RingOfForce.damageRoll(this);
 		}
 		if (dmg < 0) dmg = 0;
-		if (subClass == HeroSubClass.BERSERKER){
-			berserk = Buff.affect(this, Berserk.class);
-			dmg = berserk.damageFactor(dmg);
-		}
+		
+		Berserk berserk = buff(Berserk.class);
+		if (berserk != null) dmg = berserk.damageFactor(dmg);
+		
 		return buff( Fury.class ) != null ? (int)(dmg * 1.5f) : dmg;
 	}
 	
@@ -926,6 +924,11 @@ public class Hero extends Char {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		
+		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
+			Berserk berserk = Buff.affect(this, Berserk.class);
+			berserk.damage(damage);
+		}
+		
 		if (belongings.armor != null) {
 			damage = belongings.armor.proc( enemy, this, damage );
 		}
@@ -964,10 +967,6 @@ public class Hero extends Char {
 		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
 			dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/3;
-		}
-
-		if (subClass == HeroSubClass.BERSERKER && berserk == null){
-			berserk = Buff.affect(this, Berserk.class);
 		}
 
 		super.damage( dmg, src );
@@ -1188,11 +1187,9 @@ public class Hero extends Char {
 
 		HornOfPlenty.hornRecharge horn = buff(HornOfPlenty.hornRecharge.class);
 		if (horn != null) horn.gainCharge(percent);
-
-		if (subClass == HeroSubClass.BERSERKER){
-			berserk = Buff.affect(this, Berserk.class);
-			berserk.recover(percent);
-		}
+		
+		Berserk berserk = buff(Berserk.class);
+		if (berserk != null) berserk.recover(percent);
 		
 		boolean levelUp = false;
 		while (this.exp >= maxExp()) {
@@ -1393,13 +1390,14 @@ public class Hero extends Char {
 
 	@Override
 	public boolean isAlive() {
-		if (subClass == HeroSubClass.BERSERKER
-				&& berserk != null
-				&& berserk.berserking()
-				&& SHLD > 0){
-			return true;
+		
+		if (HP <= 0){
+			if (berserk == null) berserk = buff(Berserk.class);
+			return berserk != null && berserk.berserking();
+		} else {
+			berserk = null;
+			return super.isAlive();
 		}
-		return super.isAlive();
 	}
 
 	@Override

@@ -23,8 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -124,8 +122,5 @@ public class TomeOfMastery extends Item {
 		curUser.sprite.emitter().burst( Speck.factory( Speck.MASTERY ), 12 );
 		GLog.w( Messages.get(this, "way", way.title()) );
 		
-		if (way == HeroSubClass.BERSERKER) {
-			Buff.affect( curUser, Berserk.class );
-		}
 	}
 }

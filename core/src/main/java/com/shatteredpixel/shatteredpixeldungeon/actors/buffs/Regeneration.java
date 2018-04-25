@@ -69,6 +69,6 @@ public class Regeneration extends Buff {
 	}
 	
 	public int regencap(){
-		return target.buff(Berserk.class) == null ? target.HT : target.buff(Berserk.class).targetHPMax();
+		return target.HT;
 	}
 }
