@@ -26,10 +26,10 @@
 		android:theme="@android:style/Theme.Black.NoTitleBar"
 		android:allowBackup="true"
 		android:fullBackupOnly="true"
-		android:backupAgent=".BackupHandler">
+		android:backupAgent="com.shatteredpixel.shatteredpixeldungeon.BackupHandler">
 		<activity
 			android:label="@string/app_name"
-			android:name=".ShatteredPixelDungeon"
+			android:name="com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon"
 			android:alwaysRetainTaskState="true"
 			android:launchMode="singleInstance"
 			android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout"

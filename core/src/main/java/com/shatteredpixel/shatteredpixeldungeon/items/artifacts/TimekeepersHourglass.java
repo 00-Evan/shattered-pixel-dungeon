@@ -82,7 +82,7 @@ public class TimekeepersHourglass extends Artifact {
 					activeBuff.detach();
 					GLog.i( Messages.get(this, "deactivate") );
 				}
-			} else if (charge <= 1)         GLog.i( Messages.get(this, "no_charge") );
+			} else if (charge <= 0)         GLog.i( Messages.get(this, "no_charge") );
 			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
 			else GameScene.show(
 						new WndOptions( Messages.get(this, "name"),
