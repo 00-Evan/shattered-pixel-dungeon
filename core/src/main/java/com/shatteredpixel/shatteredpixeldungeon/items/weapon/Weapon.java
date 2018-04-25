@@ -130,8 +130,10 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		//pre-0.6.5 saves
 		if (bundle.contains( "imbue" )){
-			if (bundle.getString( "imbue" ).equals( "LIGHT" ))  augment = Augment.SPEED;
-			else                                                augment = Augment.DAMAGE;
+			String imbue = bundle.getString( "imbue" );
+			if (imbue.equals( "LIGHT" ))        augment = Augment.SPEED;
+			else if (imbue.equals( "HEAVY" ))   augment = Augment.DAMAGE;
+			else                                augment = Augment.NONE;
 		} else {
 			augment = bundle.getEnum(AUGMENT, Augment.class);
 		}
