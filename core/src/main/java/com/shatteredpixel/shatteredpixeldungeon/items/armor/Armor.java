@@ -128,7 +128,8 @@ public class Armor extends EquipableItem {
 		hitsToKnow = bundle.getInt( UNFAMILIRIARITY );
 		inscribe((Glyph) bundle.get(GLYPH));
 		seal = (BrokenSeal)bundle.get(SEAL);
-		augment = bundle.getEnum(AUGMENT, Augment.class);
+		//pre-0.6.5 saves
+		if (bundle.contains(AUGMENT)) augment = bundle.getEnum(AUGMENT, Augment.class);
 	}
 
 	@Override
