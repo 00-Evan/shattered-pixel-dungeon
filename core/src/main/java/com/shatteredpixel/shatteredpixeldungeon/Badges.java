@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -183,6 +184,12 @@ public class Badges {
 				"RARE_SENIOR", "RARE_ACIDIC", "RARE", "TUTORIAL_WARRIOR", "TUTORIAL_MAGE"));
 	}
 
+	private static final HashMap<String, String> renamedBadges = new HashMap<>();
+	static{
+		//0.6.5
+		renamedBadges.put("CHAMPION", "CHAMPION_1");
+	}
+
 	private static HashSet<Badge> restore( Bundle bundle ) {
 		HashSet<Badge> badges = new HashSet<Badge>();
 		if (bundle == null) return badges;
@@ -190,6 +197,9 @@ public class Badges {
 		String[] names = bundle.getStringArray( BADGES );
 		for (int i=0; i < names.length; i++) {
 			try {
+				if (renamedBadges.containsKey(names[i])){
+					names[i] = renamedBadges.get(names[i]);
+				}
 				if (!removedBadges.contains(names[i])){
 					badges.add( Badge.valueOf( names[i] ) );
 				}
@@ -761,7 +771,7 @@ public class Badges {
 			local.add( Badge.HAPPY_END );
 		}
 	}
-
+	
 	public static void validateHappyEnd() {
 		displayBadge( Badge.HAPPY_END );
 	}
@@ -851,7 +861,7 @@ public class Badges {
 		leaveBest( filtered, Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED );
 		leaveBest( filtered, Badge.GAMES_PLAYED_1, Badge.GAMES_PLAYED_2, Badge.GAMES_PLAYED_3, Badge.GAMES_PLAYED_4 );
 		leaveBest( filtered, Badge.CHAMPION_1, Badge.CHAMPION_2, Badge.CHAMPION_3 );
-
+		
 		ArrayList<Badge> list = new ArrayList<Badge>( filtered );
 		Collections.sort( list );
 		
