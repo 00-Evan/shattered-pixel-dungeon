@@ -73,6 +73,7 @@ abstract public class ClassArmor extends Armor {
 		
 		classArmor.level(armor.level());
 		classArmor.armorTier = armor.tier;
+		classArmor.augment = armor.augment;
 		classArmor.inscribe( armor.glyph );
 		classArmor.identify();
 		
