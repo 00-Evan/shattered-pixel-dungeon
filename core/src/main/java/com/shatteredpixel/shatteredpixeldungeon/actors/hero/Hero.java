@@ -835,9 +835,9 @@ public class Hero extends Char {
 					GameScene.show( new WndMessage( Messages.get(this, "leave") ) );
 					ready();
 				} else {
+					Badges.silentValidateHappyEnd();
 					Dungeon.win( Amulet.class );
 					Dungeon.deleteGame( GamesInProgress.curSlot, true );
-					Badges.silentValidateHappyEnd();
 					Game.switchScene( SurfaceScene.class );
 				}
 				
