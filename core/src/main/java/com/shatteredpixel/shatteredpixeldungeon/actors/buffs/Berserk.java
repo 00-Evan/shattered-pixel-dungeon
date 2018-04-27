@@ -91,7 +91,7 @@ public class Berserk extends Buff {
 				power = 0f;
 			}
 		} else if (state == State.NORMAL) {
-			power -= 0.01f * (target.HP/(float)target.HT);
+			power -= Math.max(0.1f, power) * 0.1f * Math.pow((target.HP/(float)target.HT), 2);
 			
 			if (power <= 0){
 				detach();
@@ -128,7 +128,7 @@ public class Berserk extends Buff {
 	
 	public void damage(int damage){
 		if (state == State.RECOVERING) return;
-		power = Math.min(1.1f, power + ( 0.5f * damage/(float)target.HT) );
+		power = Math.min(1.1f, power + (damage/(float)target.HT)/3f );
 	}
 
 	public void recover(float percent){
