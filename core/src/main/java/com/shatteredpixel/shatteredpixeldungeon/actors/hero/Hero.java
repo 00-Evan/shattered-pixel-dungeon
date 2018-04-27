@@ -336,13 +336,19 @@ public class Hero extends Char {
 		Barkskin bark = buff(Barkskin.class);
 
 		if (belongings.armor != null) {
-			dr += Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
+			int armDr = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
 			if (STR() < belongings.armor.STRReq()){
-				dr -= 2*(belongings.armor.STRReq() - STR());
-				dr = Math.max(dr, 0);
+				armDr -= 2*(belongings.armor.STRReq() - STR());
 			}
+			if (armDr > 0) dr += armDr;
 		}
-		if (belongings.weapon != null)  dr += Random.NormalIntRange( 0 , belongings.weapon.defenseFactor( this ) );
+		if (belongings.weapon != null)  {
+			int wepDr = Random.NormalIntRange( 0 , belongings.weapon.defenseFactor( this ) );
+			if (STR() < ((Weapon)belongings.weapon).STRReq()){
+				wepDr -= 2*(((Weapon)belongings.weapon).STRReq() - STR());
+			}
+			if (wepDr > 0) dr += wepDr;
+		}
 		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
 
 		return dr;

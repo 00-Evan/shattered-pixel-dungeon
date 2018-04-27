@@ -31,7 +31,6 @@ public class Stone extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see armor.DrMin and the end of hero.getCloser
 		
 		testing = true;
 		float evasion = defender.defenseSkill(attacker);
@@ -45,7 +44,9 @@ public class Stone extends Armor.Glyph {
 			hitChance = 1f - (evasion/accuracy)/2f;
 		}
 		
-		//FIXME this is probably very OP, needs balancing
+		//60% of dodge chance is applied as damage reduction
+		hitChance = (2f + 3f*hitChance)/5f;
+		
 		damage = (int)Math.ceil(damage * hitChance);
 		
 		return damage;
