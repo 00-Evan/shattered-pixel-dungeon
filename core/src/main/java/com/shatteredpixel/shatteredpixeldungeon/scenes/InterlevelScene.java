@@ -49,8 +49,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class InterlevelScene extends PixelScene {
-
-	private static final float TIME_TO_FADE = 1f;
+	
+	//slow fade on entering a new region
+	private static final float SLOW_FADE = 1f; //.33 in, 1.33 steady, .33 out, 2 seconds total
+	//norm fade when loading, falling, returning, or descending to a new floor
+	private static final float NORM_FADE = 0.67f; //.33 in, .67 steady, .33 out, 1.33 seconds total
+	//fast fade when ascending, or descending to a floor you've been on
+	private static final float FAST_FADE = 0.50f; //.33 in, .33 steady, .33 out, 1 second total
+	
+	private static float fadeTime;
 	
 	public enum Mode {
 		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, RESET, NONE
@@ -83,6 +90,7 @@ public class InterlevelScene extends PixelScene {
 		String loadingAsset;
 		int loadingDepth;
 		final float scrollSpeed;
+		fadeTime = NORM_FADE;
 		switch (mode){
 			default:
 				loadingDepth = Dungeon.depth;
@@ -93,15 +101,26 @@ public class InterlevelScene extends PixelScene {
 				scrollSpeed = 5;
 				break;
 			case DESCEND:
-				if (Dungeon.hero == null)   loadingDepth = 1;
-				else                        loadingDepth = Dungeon.depth+1;
+				if (Dungeon.hero == null){
+					loadingDepth = 1;
+					fadeTime = SLOW_FADE;
+				} else {
+					loadingDepth = Dungeon.depth+1;
+					if (!(Statistics.deepestFloor < loadingDepth)) {
+						fadeTime = FAST_FADE;
+					} else if (loadingDepth == 6 || loadingDepth == 11
+							|| loadingDepth == 16 || loadingDepth == 22) {
+						fadeTime = SLOW_FADE;
+					}
+				}
 				scrollSpeed = 5;
 				break;
 			case FALL:
 				loadingDepth = Dungeon.depth+1;
-				scrollSpeed = 100;
+				scrollSpeed = 50;
 				break;
 			case ASCEND:
+				fadeTime = FAST_FADE;
 				loadingDepth = Dungeon.depth-1;
 				scrollSpeed = -5;
 				break;
@@ -114,7 +133,8 @@ public class InterlevelScene extends PixelScene {
 		else if (loadingDepth <= 10)    loadingAsset = Assets.LOADING_PRISON;
 		else if (loadingDepth <= 15)    loadingAsset = Assets.LOADING_CAVES;
 		else if (loadingDepth <= 21)    loadingAsset = Assets.LOADING_CITY;
-		else                            loadingAsset = Assets.LOADING_HALLS;
+		else if (loadingDepth <= 25)    loadingAsset = Assets.LOADING_HALLS;
+		else                            loadingAsset = Assets.SHADOW;
 		
 		SkinnedBlock bg = new SkinnedBlock(Camera.main.width, Camera.main.height, loadingAsset ){
 			@Override
@@ -142,8 +162,8 @@ public class InterlevelScene extends PixelScene {
 			@Override
 			public void update() {
 				super.update();
-				if (phase == Phase.FADE_IN)         aa = Math.max( 0, timeLeft - 0.6f);
-				else if (phase == Phase.FADE_OUT)   aa = Math.max( 0, 0.4f - (timeLeft));
+				if (phase == Phase.FADE_IN)         aa = Math.max( 0, (timeLeft - (fadeTime - 0.333f)));
+				else if (phase == Phase.FADE_OUT)   aa = Math.max( 0, (0.333f - timeLeft));
 				else                                aa = 0;
 			}
 		};
@@ -162,7 +182,7 @@ public class InterlevelScene extends PixelScene {
 		add( message );
 		
 		phase = Phase.FADE_IN;
-		timeLeft = TIME_TO_FADE;
+		timeLeft = fadeTime;
 		
 		if (thread == null) {
 			thread = new Thread() {
@@ -207,7 +227,7 @@ public class InterlevelScene extends PixelScene {
 					
 					if (phase == Phase.STATIC && error == null) {
 						phase = Phase.FADE_OUT;
-						timeLeft = TIME_TO_FADE;
+						timeLeft = fadeTime;
 					}
 				}
 			};
@@ -222,7 +242,7 @@ public class InterlevelScene extends PixelScene {
 
 		waitingTime += Game.elapsed;
 		
-		float p = timeLeft / TIME_TO_FADE;
+		float p = timeLeft / fadeTime;
 		
 		switch (phase) {
 		
@@ -231,7 +251,7 @@ public class InterlevelScene extends PixelScene {
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				if (!thread.isAlive() && error == null) {
 					phase = Phase.FADE_OUT;
-					timeLeft = TIME_TO_FADE;
+					timeLeft = fadeTime;
 				} else {
 					phase = Phase.STATIC;
 				}
