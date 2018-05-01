@@ -745,7 +745,6 @@ public class Hero extends Char {
 					Sample.INSTANCE.play( Assets.SND_UNLOCK );
 				}
 				
-				spend( Key.TIME_TO_UNLOCK );
 				sprite.operate( dst );
 				
 			} else {
@@ -785,7 +784,6 @@ public class Hero extends Char {
 			
 			if (hasKey) {
 				
-				spend( Key.TIME_TO_UNLOCK );
 				sprite.operate( doorCell );
 				
 				Sample.INSTANCE.play( Assets.SND_UNLOCK );
@@ -1459,6 +1457,7 @@ public class Hero extends Char {
 			
 			Level.set( doorCell, door == Terrain.LOCKED_DOOR ? Terrain.DOOR : Terrain.UNLOCKED_EXIT );
 			GameScene.updateMap( doorCell );
+			spend( Key.TIME_TO_UNLOCK );
 			
 		} else if (curAction instanceof HeroAction.OpenChest) {
 
@@ -1472,6 +1471,7 @@ public class Hero extends Char {
 			}
 			GameScene.updateKeyDisplay();
 			heap.open( this );
+			spend( Key.TIME_TO_UNLOCK );
 		}
 		curAction = null;
 
