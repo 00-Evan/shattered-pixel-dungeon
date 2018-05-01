@@ -205,20 +205,13 @@ public class WndBag extends WndTabbed {
 		placeItem( stuff.misc1 != null ? stuff.misc1 : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
 		placeItem( stuff.misc2 != null ? stuff.misc2 : new Placeholder( ItemSpriteSheet.RING_HOLDER ) );
 
-		boolean backpack = (container == Dungeon.hero.belongings.backpack);
-		if (!backpack) {
-			count = nCols;
-			col = 0;
-			row = 1;
-		}
-
 		// Items in the bag
 		for (Item item : container.items.toArray(new Item[0])) {
 			placeItem( item );
 		}
 		
 		// Free Space
-		while (count-(backpack ? 4 : nCols) < container.size) {
+		while ((count - 4) < container.size) {
 			placeItem( null );
 		}
 	}
