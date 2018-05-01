@@ -175,9 +175,10 @@ public class WaterOfTransmutation extends WellWater {
 			n.cursed = a.cursed;
 			n.levelKnown = a.levelKnown;
 			n.transferUpgrade(a.visiblyUpgraded());
+			return n;
 		}
 
-		return n;
+		return null;
 	}
 	
 	private Wand changeWand( Wand w ) {
