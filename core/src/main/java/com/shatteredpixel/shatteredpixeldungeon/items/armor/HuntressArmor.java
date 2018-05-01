@@ -48,7 +48,8 @@ public class HuntressArmor extends ClassArmor {
 		Item proto = new Shuriken();
 		
 		for (Mob mob : Dungeon.level.mobs) {
-			if (Dungeon.level.heroFOV[mob.pos]) {
+			if (Dungeon.level.distance(curUser.pos, mob.pos) <= 12
+				&& Dungeon.level.heroFOV[mob.pos]) {
 				
 				Callback callback = new Callback() {
 					@Override
