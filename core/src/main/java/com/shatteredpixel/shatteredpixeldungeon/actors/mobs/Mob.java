@@ -465,7 +465,8 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
-		boolean seen = enemySeen || (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack());
+		boolean seen = (enemySeen && enemy.invisible == 0);
+		if (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack()) seen = true;
 		if ( seen
 				&& paralysed == 0
 				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
@@ -479,7 +480,8 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
-		if (!enemySeen && enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack()) {
+		if ((!enemySeen || enemy.invisible > 0)
+				&& enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack()) {
 			if (enemy.buff(Preparation.class) != null) {
 				Wound.hit(this);
 			} else {
