@@ -151,41 +151,76 @@ public class WndLangs extends Window {
 				protected void onClick() {
 					super.onClick();
 					String creds = "";
+					String creds2 = "";
 					String[] reviewers = currLang.reviewers();
 					String[] translators = currLang.translators();
+					
+					boolean wide = false;
+					if (SPDSettings.landscape() && (reviewers.length + translators.length) > 10){
+						wide = true;
+					}
+					
+					int i;
 					if (reviewers.length > 0){
 						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "reviewers")) + "_\n";
-						for (String reviewer : reviewers){
-							creds += "-" + reviewer + "\n";
+						creds2 += "";
+						for ( i = 0; i < reviewers.length; i++){
+							if (wide && i % 2 == 1){
+								creds2 += "-" + reviewers[i] + "\n";
+							} else {
+								creds += "-" + reviewers[i] + "\n";
+							}
 						}
 						creds += "\n";
+						creds2 += "\n";
+						if (i % 2 == 1) creds2 += "\n";
 					}
 
 					if (reviewers.length > 0 || translators.length > 0){
-						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "translators")) + "_";
+						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "translators")) + "_\n";
+						creds2 += "\n";
 						//reviewers are also translators
-						for (String reviewer : reviewers){
-							creds += "\n-" + reviewer;
+						for ( i = 0; i < reviewers.length; i++){
+							if (wide && i % 2 == 1){
+								creds2 += "-" + reviewers[i] + "\n";
+							} else {
+								creds += "-" + reviewers[i] + "\n";
+							}
 						}
-						for (String translator : translators){
-							creds += "\n-" + translator;
+						for (int j = 0; j < translators.length; j++){
+							if (wide && (j + i) % 2 == 1){
+								creds2 += "-" + translators[j] + "\n";
+							} else {
+								creds += "-" + translators[j] + "\n";
+							}
 						}
 					}
+					
+					creds = creds.substring(0, creds.length()-1);
 
 					Window credits = new Window();
+					
+					int w = wide? 135 : 65;
 
 					RenderedTextMultiline title = PixelScene.renderMultiline(9);
-					title.text(Messages.titleCase(Messages.get(WndLangs.class, "credits")) , 65);
+					title.text(Messages.titleCase(Messages.get(WndLangs.class, "credits")) , w);
 					title.hardlight(SHPX_COLOR);
-					title.setPos((65 - title.width())/2, 0);
+					title.setPos((w - title.width())/2, 0);
 					credits.add(title);
 
 					RenderedTextMultiline text = PixelScene.renderMultiline(6);
 					text.text(creds, 65);
 					text.setPos(0, title.bottom() + 2);
 					credits.add(text);
+					
+					if (wide){
+						RenderedTextMultiline rightColumn = PixelScene.renderMultiline(6);
+						rightColumn.text(creds2, 65);
+						rightColumn.setPos(70, title.bottom() + 8.5f);
+						credits.add(rightColumn);
+					}
 
-					credits.resize(65, (int)text.bottom());
+					credits.resize(w, (int)text.bottom());
 					parent.add(credits);
 				}
 			};
