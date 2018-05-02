@@ -87,7 +87,10 @@ public class HeroSprite extends CharSprite {
 		read = new Animation( 20, false );
 		read.frames( film, 19, 20, 20, 20, 20, 20, 20, 20, 20, 19 );
 		
-		idle();
+		if (ch.isAlive())
+			idle();
+		else
+			die();
 	}
 	
 	@Override

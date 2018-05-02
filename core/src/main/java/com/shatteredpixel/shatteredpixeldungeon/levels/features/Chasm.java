@@ -76,7 +76,6 @@ public class Chasm {
 		
 		if (Dungeon.hero.isAlive()) {
 			Dungeon.hero.interrupt();
-			Buff.affect(Dungeon.hero, Falling.class);
 			InterlevelScene.mode = InterlevelScene.Mode.FALL;
 			if (Dungeon.level instanceof RegularLevel) {
 				Room room = ((RegularLevel)Dungeon.level).room( pos );
@@ -94,8 +93,7 @@ public class Chasm {
 		
 		Hero hero = Dungeon.hero;
 		
-		hero.sprite.burst( hero.sprite.blood(), 10 );
-		Camera.main.shake( 4, 0.2f );
+		Camera.main.shake( 4, 1f );
 
 		Dungeon.level.press( hero.pos, hero, true );
 		Buff.prolong( hero, Cripple.class, Cripple.DURATION );
@@ -120,7 +118,7 @@ public class Chasm {
 		((MobSprite)mob.sprite).fall();
 	}
 	
-	public static class Falling extends Buff{
+	public static class Falling extends Buff {
 		
 		{
 			actPriority = VFX_PRIO;
@@ -134,7 +132,7 @@ public class Chasm {
 		}
 	}
 	
-	public static class FallBleed extends Bleeding implements Hero.Doom{
+	public static class FallBleed extends Bleeding implements Hero.Doom {
 		
 		@Override
 		public void onDeath() {
