@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class Viscosity extends Glyph {
 	
@@ -42,15 +43,19 @@ public class Viscosity extends Glyph {
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage ) {
 
-		if (damage == 0) {
+		//FIXME this glyph should really just proc after DR is accounted for.
+		//should build in functionality for that, but this works for now
+		int realDamage = damage - Random.NormalIntRange( armor.DRMin(), armor.DRMax());
+
+		if (realDamage <= 0) {
 			return 0;
 		}
-		
+
 		int level = Math.max( 0, armor.level() );
 		
 		float percent = (level+1)/(float)(level+6);
-		int amount = (int)Math.ceil(damage * percent);
-		
+		int amount = (int)Math.ceil(realDamage * percent);
+
 		DeferedDamage deferred = Buff.affect( defender, DeferedDamage.class );
 		deferred.prolong( amount );
 		
