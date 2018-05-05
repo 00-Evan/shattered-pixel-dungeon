@@ -137,7 +137,19 @@ public class ChangesScene extends PixelScene {
 		//       v0.6.5
 		//**********************
 
-		ChangeInfo changes = new ChangeInfo("v0.6.5", true, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.5a", true, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed(Caused by 0.6.5):\n" +
+				"_-_ Korean language crashes\n" +
+				"_-_ Viscocity deferring damage before it is blocked by armor"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+
+		changes = new ChangeInfo("v0.6.5", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
