@@ -99,8 +99,12 @@ public enum Music {
 	
 	public void stop() {
 		if (player != null) {
-			player.stop();
-			player.release();
+			try {
+				player.stop();
+				player.release();
+			} catch ( Exception e ){
+				Game.reportException(e);
+			}
 			player = null;
 		}
 	}

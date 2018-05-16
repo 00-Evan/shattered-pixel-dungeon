@@ -273,9 +273,14 @@ public abstract class RegularLevel extends Level {
 	@Override
 	public int randomDestination() {
 		
+		int count = 0;
 		int cell = -1;
 		
 		while (true) {
+			
+			if (++count > 30) {
+				return -1;
+			}
 			
 			Room room = Random.element( rooms );
 			if (room == null) {

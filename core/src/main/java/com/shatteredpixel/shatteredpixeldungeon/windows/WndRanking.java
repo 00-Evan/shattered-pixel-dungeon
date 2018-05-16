@@ -91,7 +91,11 @@ public class WndRanking extends WndTabbed {
 			thread = null;
 			if (error == null) {
 				remove( busy );
-				createControls();
+				if (Dungeon.hero != null) {
+					createControls();
+				} else {
+					hide();
+				}
 			} else {
 				hide();
 				Game.scene().add( new WndError( error ) );

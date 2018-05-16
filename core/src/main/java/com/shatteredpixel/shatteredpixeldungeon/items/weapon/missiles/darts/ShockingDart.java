@@ -42,10 +42,12 @@ public class ShockingDart extends TippedDart {
 		defender.damage(Random.NormalIntRange(8, 12), this);
 		
 		CharSprite s = defender.sprite;
-		ArrayList<Lightning.Arc> arcs = new ArrayList<>();
-		arcs.add(new Lightning.Arc(new PointF(s.x, s.y + s.height/2), new PointF(s.x + s.width, s.y + s.height/2)));
-		arcs.add(new Lightning.Arc(new PointF(s.x + s.width/2, s.y), new PointF(s.x + s.width/2, s.y + s.height)));
-		defender.sprite.parent.add( new Lightning( arcs, null ) );
+		if (s != null && s.parent != null) {
+			ArrayList<Lightning.Arc> arcs = new ArrayList<>();
+			arcs.add(new Lightning.Arc(new PointF(s.x, s.y + s.height / 2), new PointF(s.x + s.width, s.y + s.height / 2)));
+			arcs.add(new Lightning.Arc(new PointF(s.x + s.width / 2, s.y), new PointF(s.x + s.width / 2, s.y + s.height)));
+			s.parent.add(new Lightning(arcs, null));
+		}
 		
 		return super.proc(attacker, defender, damage);
 	}
