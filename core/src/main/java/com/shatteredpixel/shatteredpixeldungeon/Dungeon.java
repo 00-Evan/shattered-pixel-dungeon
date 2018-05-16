@@ -372,7 +372,7 @@ public class Dungeon {
 		
 		Actor respawner = level.respawner();
 		if (respawner != null) {
-			Actor.add( level.respawner() );
+			Actor.addDelayed( respawner, level.respawnTime() );
 		}
 
 		hero.pos = pos;

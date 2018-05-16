@@ -490,16 +490,20 @@ public abstract class Level implements Bundlable {
 						}
 					}
 				}
-				if (Statistics.amuletObtained){
-					spend(TIME_TO_RESPAWN/2f);
-				} else if (Dungeon.level.feeling == Feeling.DARK){
-					spend(2*TIME_TO_RESPAWN/3f);
-				} else {
-					spend(TIME_TO_RESPAWN);
-				}
+				spend(respawnTime());
 				return true;
 			}
 		};
+	}
+	
+	public float respawnTime(){
+		if (Statistics.amuletObtained){
+			return TIME_TO_RESPAWN/2f;
+		} else if (Dungeon.level.feeling == Feeling.DARK){
+			return 2*TIME_TO_RESPAWN/3f;
+		} else {
+			return TIME_TO_RESPAWN;
+		}
 	}
 	
 	public int randomRespawnCell() {

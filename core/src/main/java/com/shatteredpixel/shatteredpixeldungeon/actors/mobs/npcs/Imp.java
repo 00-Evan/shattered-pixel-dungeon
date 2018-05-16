@@ -188,6 +188,7 @@ public class Imp extends NPC {
 				} while (
 						npc.pos == -1 ||
 						level.heaps.get( npc.pos ) != null ||
+						level.traps.get( npc.pos) != null ||
 						level.findMob( npc.pos ) != null ||
 						//The imp doesn't move, so he cannot obstruct a passageway
 						!(level.passable[npc.pos + PathFinder.CIRCLE4[0]] && level.passable[npc.pos + PathFinder.CIRCLE4[2]]) ||

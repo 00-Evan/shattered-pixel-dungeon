@@ -66,19 +66,20 @@ public class WandOfPrismaticLight extends DamageWand {
 
 	@Override
 	protected void onZap(Ballistica beam) {
-		Char ch = Actor.findChar(beam.collisionPos);
-		if (ch != null){
-			processSoulMark(ch, chargesPerCast());
-			affectTarget(ch);
-		}
 		affectMap(beam);
-
+		
 		if (Dungeon.level.viewDistance < 6 ){
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
 				Buff.prolong( curUser, Light.class, 2f + level());
 			} else {
 				Buff.prolong( curUser, Light.class, 10f+level()*5);
 			}
+		}
+		
+		Char ch = Actor.findChar(beam.collisionPos);
+		if (ch != null){
+			processSoulMark(ch, chargesPerCast());
+			affectTarget(ch);
 		}
 	}
 
