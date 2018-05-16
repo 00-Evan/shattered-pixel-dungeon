@@ -173,7 +173,7 @@ abstract public class MissileWeapon extends Weapon {
 		float usage = MAX_DURABILITY/10f;
 		
 		if (Dungeon.hero.heroClass == HeroClass.HUNTRESS)   usage /= 1.5f;
-		else if (holster)                                   usage /= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
+		if (holster)                                        usage /= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
 		
 		usage /= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
 		
