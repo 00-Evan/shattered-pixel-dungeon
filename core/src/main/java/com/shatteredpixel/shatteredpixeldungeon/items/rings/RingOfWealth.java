@@ -118,7 +118,6 @@ public class RingOfWealth extends Ring {
 		return items;
 	}
 	
-	//caps at a 50% bonus
 	private static float dropProgression( Char target, int tries ){
 		return tries * (float)Math.pow(1.2f, getBonus(target, Wealth.class) -1 );
 	}
