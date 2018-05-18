@@ -137,13 +137,25 @@ public class ChangesScene extends PixelScene {
 		//       v0.6.5
 		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.5b", false, "");
+		ChangeInfo changes = new ChangeInfo("v0.6.5c", false, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (Caused by 0.6.5):\n" +
+				"_-_ Exploit involving the timekeeper's hourglass that allowed for free attacks"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
+		changes = new ChangeInfo("v0.6.5a & v0.6.5b", false, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
 		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
-				"Soul mark chance changed. Now has a 10% chance to activate per wand level, with a base of 10% at +0.\n\n" +
-				"Previous soul mark chance was 9% at base plus 6% per level.\n\n" +
+				"Soul mark chance changed. Now has a 10% chance to activate per wand level, stacking multiplicatively, with a base of 10% at +0.\n" +
+				"e.g. +0 is 10%, +1 is 19%, +2 is 27%, etc.\n\n" +
+				"Previous soul mark chance was 9% at base plus 6% per level, stacking linearly.\n\n" +
 				"This substantially increases soul mark chance at wand levels +1 to +5"));
 		
 		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress",
@@ -151,23 +163,13 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed (Caused by 0.6.5):\n" +
+				"_-_ Korean language crashes\n" +
+				"_-_ Viscocity deferring damage before it is blocked by armor\n" +
 				"_-_ Various rare crash bugs\n\n" +
 				"Fixed (Existed prior to 0.6.5):\n" +
 				"_-_ Piranha incorrectly being affect by vertigo\n" +
 				"_-_ Ambitious imp spawning on top of traps\n" +
 				"_-_ Enemies spawning faster than intended in specific cases"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
-		
-		changes = new ChangeInfo("v0.6.5a", false, "");
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (Caused by 0.6.5):\n" +
-				"_-_ Korean language crashes\n" +
-				"_-_ Viscocity deferring damage before it is blocked by armor"));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"Updated Translations"));
