@@ -136,13 +136,36 @@ public class ChangesScene extends PixelScene {
 		//**********************
 		//       v0.6.5
 		//**********************
-
-		ChangeInfo changes = new ChangeInfo("v0.6.5a", true, "");
+		
+		ChangeInfo changes = new ChangeInfo("v0.6.5b", false, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
+				"Soul mark chance changed. Now has a 10% chance to activate per wand level, with a base of 10% at +0.\n\n" +
+				"Previous soul mark chance was 9% at base plus 6% per level.\n\n" +
+				"This substantially increases soul mark chance at wand levels +1 to +5"));
+		
+		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress",
+				"Huntress ranged weapon durability boost now stacks with magical holster durability boost, for a total of 180% durability."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (Caused by 0.6.5):\n" +
+				"_-_ Various rare crash bugs\n\n" +
+				"Fixed (Existed prior to 0.6.5):\n" +
+				"_-_ Piranha incorrectly being affect by vertigo\n" +
+				"_-_ Ambitious imp spawning on top of traps\n" +
+				"_-_ Enemies spawning faster than intended in specific cases"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
+		changes = new ChangeInfo("v0.6.5a", false, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed(Caused by 0.6.5):\n" +
+				"Fixed (Caused by 0.6.5):\n" +
 				"_-_ Korean language crashes\n" +
 				"_-_ Viscocity deferring damage before it is blocked by armor"));
 

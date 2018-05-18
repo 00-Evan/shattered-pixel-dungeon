@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.shatteredpixel.shatteredpixeldungeon"
-	android:versionCode="261"
-	android:versionName="0.6.5a"
+	android:versionCode="263"
+	android:versionName="0.6.5b"
 	android:installLocation="auto">
 
 	<uses-sdk
