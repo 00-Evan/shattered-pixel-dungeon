@@ -30,7 +30,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class SpecialRoom extends Room {
 	
@@ -61,7 +60,7 @@ public class SpecialRoom extends Room {
 	
 	private static final ArrayList<Class<? extends SpecialRoom>> ALL_SPEC = new ArrayList<>( Arrays.asList(
 			WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, GardenRoom.class, LibraryRoom.class, ArmoryRoom.class,
-			TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, LaboratoryRoom.class, VaultRoom.class
+			TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, VaultRoom.class
 	) );
 	
 	public static ArrayList<Class<? extends Room>> runSpecials = new ArrayList<>();
@@ -79,18 +78,17 @@ public class SpecialRoom extends Room {
 	}
 	
 	public static void initForFloor(){
-		//laboratory rooms are more common
-		int labIdx = runSpecials.indexOf(LaboratoryRoom.class);
-		if (labIdx > 0) {
-			Collections.swap(runSpecials, labIdx-1, labIdx);
-		}
-		
 		floorSpecials = (ArrayList<Class<?extends Room>>) runSpecials.clone();
+		
+		//laboratory rooms spawn at set intervals every chapter
+		if (Dungeon.depth%5 == (Dungeon.seed%3 + 2)){
+			floorSpecials.add(0, LaboratoryRoom.class);
+		}
 	}
 	
 	private static void useType( Class<?extends Room> type ) {
+		floorSpecials.remove( type );
 		if (runSpecials.remove( type )) {
-			floorSpecials.remove( type );
 			runSpecials.add( type );
 		}
 	}
@@ -109,7 +107,6 @@ public class SpecialRoom extends Room {
 			
 			floorSpecials.remove( ArmoryRoom.class );
 			floorSpecials.remove( CryptRoom.class );
-			floorSpecials.remove( LaboratoryRoom.class );
 			floorSpecials.remove( LibraryRoom.class );
 			floorSpecials.remove( StatueRoom.class );
 			floorSpecials.remove( TreasuryRoom.class );
@@ -125,6 +122,11 @@ public class SpecialRoom extends Room {
 			r.overrideWater = WaterOfTransmutation.class;
 			guaranteedWellDepth = Integer.MAX_VALUE;
 			return r;
+		
+		} else if (floorSpecials.contains(LaboratoryRoom.class)) {
+		
+			useType(LaboratoryRoom.class);
+			return new LaboratoryRoom();
 		
 		} else {
 			

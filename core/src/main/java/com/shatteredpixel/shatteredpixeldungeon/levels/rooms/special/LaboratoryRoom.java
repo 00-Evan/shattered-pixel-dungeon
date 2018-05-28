@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -55,10 +54,11 @@ public class LaboratoryRoom extends SpecialRoom {
 		Painter.set( level, pot, Terrain.ALCHEMY );
 		
 		Alchemy alchemy = new Alchemy();
-		alchemy.seed( level, pot.x + level.width() * pot.y, Random.IntRange(25, 50) );
+		int chapter = 1 + Dungeon.depth/5;
+		alchemy.seed( level, pot.x + level.width() * pot.y, chapter*10 + Random.IntRange(0, 20) );
 		level.blobs.put( Alchemy.class, alchemy );
 		
-		int n = Random.IntRange( 2, 3 );
+		int n = Random.IntRange( 1, 2 );
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {
@@ -69,8 +69,7 @@ public class LaboratoryRoom extends SpecialRoom {
 			level.drop( prize( level ), pos );
 		}
 		
-		entrance.set( Door.Type.LOCKED );
-		level.addItemToSpawn( new IronKey( Dungeon.depth ) );
+		entrance.set( Door.Type.REGULAR );
 	}
 	
 	private static Item prize( Level level ) {

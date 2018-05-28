@@ -40,7 +40,6 @@ import com.watabou.utils.Random;
 
 import java.util.HashMap;
 
-//TODO specific implementation
 public class SecretLibraryRoom extends SecretRoom {
 	
 	@Override
@@ -53,6 +52,7 @@ public class SecretLibraryRoom extends SecretRoom {
 		return Math.max(7, super.minHeight());
 	}
 	
+	//TODO adjust based on changes to generator chances
 	private static HashMap<Class<? extends Scroll>, Float> scrollChances = new HashMap<>();
 	static{
 		scrollChances.put( ScrollOfIdentify.class,      1f );

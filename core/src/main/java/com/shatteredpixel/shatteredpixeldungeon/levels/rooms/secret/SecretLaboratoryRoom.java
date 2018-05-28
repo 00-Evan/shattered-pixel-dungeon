@@ -42,9 +42,9 @@ import com.watabou.utils.Random;
 
 import java.util.HashMap;
 
-//TODO specific implementation
 public class SecretLaboratoryRoom extends SecretRoom {
 	
+	//TODO adjust based on changes to generator chances
 	private static HashMap<Class<? extends Potion>, Float> potionChances = new HashMap<>();
 	static{
 		potionChances.put(PotionOfHealing.class,        2f);
@@ -70,7 +70,7 @@ public class SecretLaboratoryRoom extends SecretRoom {
 		Painter.set( level, pot, Terrain.ALCHEMY );
 		
 		Alchemy alchemy = new Alchemy();
-		alchemy.seed( level, pot.x + level.width() * pot.y, Random.IntRange(30, 60) );
+		alchemy.seed( level, pot.x + level.width() * pot.y, Random.IntRange(20, 30) );
 		level.blobs.put( Alchemy.class, alchemy );
 		
 		int n = Random.IntRange( 2, 3 );

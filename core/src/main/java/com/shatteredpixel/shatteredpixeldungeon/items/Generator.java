@@ -54,7 +54,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
@@ -76,7 +75,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
@@ -218,34 +216,35 @@ public class Generator {
 			GOLD.probs = new float[]{ 1 };
 			
 			SCROLL.classes = new Class<?>[]{
+					ScrollOfUpgrade.class, //3 drop every chapter, see Dungeon.souNeeded()
 					ScrollOfIdentify.class,
-					ScrollOfTeleportation.class,
 					ScrollOfRemoveCurse.class,
-					ScrollOfUpgrade.class,
-					ScrollOfRecharging.class,
 					ScrollOfMagicMapping.class,
-					ScrollOfRage.class,
-					ScrollOfTerror.class,
+					ScrollOfMirrorImage.class,
+					ScrollOfRecharging.class,
 					ScrollOfLullaby.class,
-					ScrollOfMagicalInfusion.class,
 					ScrollOfPsionicBlast.class,
-					ScrollOfMirrorImage.class };
-			SCROLL.probs = new float[]{ 30, 10, 20, 0, 15, 15, 12, 8, 8, 0, 4, 10 };
+					ScrollOfRage.class,
+					ScrollOfTeleportation.class,
+					ScrollOfTerror.class,
+					/*ScrollOfTransmutation.class*/ //1 additional scroll guaranteed on floors 6-19
+					};
+			SCROLL.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2/*, 1*/ };
 			
 			POTION.classes = new Class<?>[]{
+					PotionOfStrength.class, //2 drop every chapter, see Dungeon.posNeeded()
 					PotionOfHealing.class,
-					PotionOfExperience.class,
-					PotionOfToxicGas.class,
-					PotionOfParalyticGas.class,
-					PotionOfLiquidFlame.class,
-					PotionOfLevitation.class,
-					PotionOfStrength.class,
 					PotionOfMindVision.class,
-					PotionOfPurity.class,
+					PotionOfFrost.class,
+					PotionOfLiquidFlame.class,
+					PotionOfToxicGas.class,
+					/* PotionOfHaste.class */
 					PotionOfInvisibility.class,
-					PotionOfMight.class,
-					PotionOfFrost.class };
-			POTION.probs = new float[]{ 45, 4, 15, 10, 15, 10, 0, 20, 12, 10, 0, 10 };
+					PotionOfLevitation.class,
+					PotionOfParalyticGas.class,
+					PotionOfPurity.class,
+					PotionOfExperience.class};
+			POTION.probs = new float[]{ 0, 6, 4, 3, 3, 3, /*2,*/ 2, 2, 2, 2, 1 };
 			
 			//TODO: add last ones when implemented
 			WAND.classes = new Class<?>[]{
