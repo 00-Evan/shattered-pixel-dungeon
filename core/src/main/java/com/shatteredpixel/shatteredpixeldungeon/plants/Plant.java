@@ -132,8 +132,6 @@ public abstract class Plant implements Bundlable {
 		
 		protected Class<? extends Plant> plantClass;
 		
-		public Class<? extends Item> alchemyClass;
-		
 		@Override
 		public ArrayList<String> actions( Hero hero ) {
 			ArrayList<String> actions = super.actions( hero );

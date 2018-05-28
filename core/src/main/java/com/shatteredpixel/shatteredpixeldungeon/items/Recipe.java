@@ -120,7 +120,7 @@ public abstract class Recipe {
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
-		new Potion.RandomPotion()
+		new Potion.SeedToPotion()
 	};
 	
 	public static Recipe findRecipe(ArrayList<Item> ingredients){

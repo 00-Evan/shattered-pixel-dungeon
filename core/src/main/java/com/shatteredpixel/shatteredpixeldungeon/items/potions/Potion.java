@@ -42,7 +42,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Fadeleaf;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Icecap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -338,7 +349,22 @@ public class Potion extends Item {
 	}
 	
 	
-	public static class RandomPotion extends Recipe {
+	public static class SeedToPotion extends Recipe {
+		
+		public static HashMap<Class<?extends Plant.Seed>, Class<?extends Potion>> types = new HashMap<>();
+		static {
+			types.put(Blindweed.Seed.class,     PotionOfInvisibility.class);
+			types.put(Dreamfoil.Seed.class,     PotionOfPurity.class);
+			types.put(Earthroot.Seed.class,     PotionOfParalyticGas.class);
+			types.put(Fadeleaf.Seed.class,      PotionOfMindVision.class);
+			types.put(Firebloom.Seed.class,     PotionOfLiquidFlame.class);
+			types.put(Icecap.Seed.class,        PotionOfFrost.class);
+			types.put(Rotberry.Seed.class,      PotionOfStrength.class);
+			types.put(Sorrowmoss.Seed.class,    PotionOfToxicGas.class);
+			types.put(Starflower.Seed.class,    PotionOfExperience.class);
+			types.put(Stormvine.Seed.class,     PotionOfLevitation.class);
+			types.put(Sungrass.Seed.class,      PotionOfHealing.class);
+		}
 		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
@@ -347,7 +373,9 @@ public class Potion extends Item {
 			}
 			
 			for (Item ingredient : ingredients){
-				if (!(ingredient instanceof Plant.Seed && ingredient.quantity() >= 1)){
+				if (!(ingredient instanceof Plant.Seed
+						&& ingredient.quantity() >= 1
+						&& types.containsKey(ingredient.getClass()))){
 					return false;
 				}
 			}
@@ -367,15 +395,23 @@ public class Potion extends Item {
 				ingredient.quantity(ingredient.quantity() - 1);
 			}
 			
+			ArrayList<Class<?extends Plant.Seed>> seeds = new ArrayList<>();
+			for (Item i : ingredients) {
+				if (!seeds.contains(i.getClass())) {
+					seeds.add((Class<? extends Plant.Seed>) i.getClass());
+				}
+			}
+			
 			Item result;
 			
-			if (Random.Int( 3 ) == 0) {
+			if ( (seeds.size() == 2 && Random.Int(4) == 0)
+					|| (seeds.size() == 3 && Random.Int(2) == 0)) {
 				
 				result = Generator.random( Generator.Category.POTION );
 				
 			} else {
 				
-				Class<? extends Item> itemClass = ((Plant.Seed)Random.element(ingredients)).alchemyClass;
+				Class<? extends Potion> itemClass = types.get(Random.element(ingredients).getClass());
 				try {
 					result = itemClass.newInstance();
 				} catch (Exception e) {
@@ -405,7 +441,7 @@ public class Potion extends Item {
 		public Item sampleOutput(ArrayList<Item> ingredients) {
 			return new WndBag.Placeholder(ItemSpriteSheet.POTION_HOLDER){
 				{
-					name = Messages.get(RandomPotion.class, "name");
+					name = Messages.get(SeedToPotion.class, "name");
 				}
 				
 				@Override

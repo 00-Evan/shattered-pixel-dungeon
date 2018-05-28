@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.plants;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
@@ -54,7 +53,6 @@ public class Icecap extends Plant {
 			image = ItemSpriteSheet.SEED_ICECAP;
 
 			plantClass = Icecap.class;
-			alchemyClass = PotionOfFrost.class;
 		}
 	}
 }

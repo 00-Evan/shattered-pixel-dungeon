@@ -41,7 +41,6 @@ public class BlandfruitBush extends Plant {
 			image = ItemSpriteSheet.SEED_BLANDFRUIT;
 
 			plantClass = BlandfruitBush.class;
-			alchemyClass = null;
 		}
 
 	}

@@ -131,7 +131,7 @@ public class Blandfruit extends Food {
 	public Item cook(Seed seed){
 
 		try {
-			return imbuePotion((Potion)seed.alchemyClass.newInstance());
+			return imbuePotion(Potion.SeedToPotion.types.get(seed.getClass()).newInstance());
 		} catch (Exception e) {
 			ShatteredPixelDungeon.reportException(e);
 			return null;
