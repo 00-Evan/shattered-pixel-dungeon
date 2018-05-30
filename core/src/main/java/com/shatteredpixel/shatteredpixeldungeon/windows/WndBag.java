@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -43,9 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -399,7 +396,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.SCROLL && (item instanceof Scroll) ||
 						mode == Mode.UNIDED_POTION_OR_SCROLL && (!item.isIdentified() && (item instanceof Scroll || item instanceof Potion)) ||
 						mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
-						mode == Mode.ALCHEMY && ((item instanceof Seed && !(item instanceof BlandfruitBush.Seed)) || (item instanceof Blandfruit && ((Blandfruit) item).potionAttrib == null) || (item.getClass() == Dart.class)) ||
+						mode == Mode.ALCHEMY && (!(item instanceof EquipableItem) && item.isIdentified()) ||
 						mode == Mode.ALL
 					);
 					//extra logic for cursed weapons or armor

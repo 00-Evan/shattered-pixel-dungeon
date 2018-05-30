@@ -22,11 +22,15 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
+import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -225,5 +229,61 @@ public abstract class Scroll extends Item {
 	@Override
 	public int price() {
 		return 30 * quantity;
+	}
+	
+	public static class ScrollToStone extends Recipe {
+		
+		private static HashMap<Class<?extends Scroll>, Class<?extends Runestone>> stones = new HashMap<>();
+		private static HashMap<Class<?extends Scroll>, Integer> amnts = new HashMap<>();
+		//TODO add more stones as they are implemented
+		static {
+			stones.put(ScrollOfIdentify.class,      StoneOfIntuition.class);
+			amnts.put(ScrollOfIdentify.class,       2);
+		}
+		
+		@Override
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			if (ingredients.size() != 1
+					|| !(ingredients.get(0) instanceof Scroll)
+					|| !stones.containsKey(ingredients.get(0).getClass())){
+				return false;
+			}
+			
+			return true;
+		}
+		
+		@Override
+		public int cost(ArrayList<Item> ingredients) {
+			return 0;
+		}
+		
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+			
+			Scroll s = (Scroll) ingredients.get(0);
+			
+			s.quantity(s.quantity() - 1);
+			
+			try{
+				return stones.get(s.getClass()).newInstance().quantity(amnts.get(s.getClass()));
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+				return null;
+			}
+		}
+		
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			if (!testIngredients(ingredients)) return null;
+			
+			try{
+				Scroll s = (Scroll) ingredients.get(0);
+				return stones.get(s.getClass()).newInstance().quantity(amnts.get(s.getClass()));
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+				return null;
+			}
+		}
 	}
 }
