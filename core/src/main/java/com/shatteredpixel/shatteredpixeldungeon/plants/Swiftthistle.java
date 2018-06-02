@@ -1,0 +1,125 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015 Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2018 Evan Debenham
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.shatteredpixel.shatteredpixeldungeon.plants;
+
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
+
+public class Swiftthistle extends Plant {
+	
+	{
+		//TODO
+		image = 1;
+	}
+	
+	@Override
+	public void activate() {
+		Char ch = Actor.findChar(pos);
+		if (ch == Dungeon.hero) {
+			Buff.affect(ch, TimeBubble.class);
+		}
+	}
+	
+	public static class Seed extends Plant.Seed {
+		{
+			//TODO
+			image = ItemSpriteSheet.SEED_FADELEAF;
+			
+			plantClass = Swiftthistle.class;
+		}
+	}
+	
+	public static class TimeBubble extends Buff {
+		
+		private float left = 6f;
+		private int pos;
+		
+		@Override
+		public int icon() {
+			//TODO
+			return BuffIndicator.IMMUNITY;
+		}
+		
+		@Override
+		public void tintIcon(Image icon) {
+			FlavourBuff.greyIcon(icon, 4f, left);
+		}
+		
+		@Override
+		public boolean attachTo(Char target) {
+			if (super.attachTo(target)){
+				pos = target.pos;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		public void processTime( float time ){
+			if (target.pos != pos){
+				left = 0f;
+			}
+			
+			left -= time;
+			BuffIndicator.refreshHero();
+			
+			if (left <= 0){
+				detach();
+			}
+		}
+		
+		@Override
+		public String toString() {
+			return Messages.get(this, "name");
+		}
+		
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", dispTurns(left));
+		}
+		
+		private static final String POS	= "pos";
+		private static final String LEFT = "left";
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( POS, pos );
+			bundle.put( LEFT, left );
+		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			pos = bundle.getInt( POS );
+			left = bundle.getInt( LEFT );
+		}
+	}
+}

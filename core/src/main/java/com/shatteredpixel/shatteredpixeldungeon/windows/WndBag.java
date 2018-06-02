@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -79,6 +80,7 @@ public class WndBag extends WndTabbed {
 		SCROLL,
 		UNIDED_POTION_OR_SCROLL,
 		EQUIPMENT,
+		TRANMSUTABLE,
 		ALCHEMY
 	}
 
@@ -397,6 +399,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.UNIDED_POTION_OR_SCROLL && (!item.isIdentified() && (item instanceof Scroll || item instanceof Potion)) ||
 						mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
 						mode == Mode.ALCHEMY && (!(item instanceof EquipableItem) && item.isIdentified()) ||
+						mode == Mode.TRANMSUTABLE && ScrollOfTransmutation.canTransmute(item) ||
 						mode == Mode.ALL
 					);
 					//extra logic for cursed weapons or armor

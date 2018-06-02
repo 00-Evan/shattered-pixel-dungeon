@@ -95,6 +95,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.SurfaceScene;
@@ -442,12 +443,19 @@ public class Hero extends Char {
 	@Override
 	public void spend( float time ) {
 		justMoved = false;
-		TimekeepersHourglass.timeFreeze buff = buff(TimekeepersHourglass.timeFreeze.class);
-		if (buff != null){
-			buff.processTime(time);
-		} else {
-			super.spend(time);
+		TimekeepersHourglass.timeFreeze freeze = buff(TimekeepersHourglass.timeFreeze.class);
+		if (freeze != null) {
+			freeze.processTime(time);
+			return;
 		}
+		
+		Swiftthistle.TimeBubble bubble = buff(Swiftthistle.TimeBubble.class);
+		if (bubble != null){
+			bubble.processTime(time);
+			return;
+		}
+		
+		super.spend(time);
 	}
 	
 	public void spendAndNext( float time ) {

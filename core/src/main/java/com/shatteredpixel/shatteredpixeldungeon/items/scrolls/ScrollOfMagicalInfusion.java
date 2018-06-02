@@ -28,14 +28,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ScrollOfMagicalInfusion extends InventoryScroll {
 	
+	//TODO decide what to do with this one
+	
 	{
 		initials = 2;
 		mode = WndBag.Mode.ENCHANTABLE;
+		image = ItemSpriteSheet.SCROLL_ISAZ;
 	}
 	
 	@Override
@@ -58,7 +62,12 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 	public void empoweredRead() {
 		//does nothing for now, this should never happen.
 	}
-
+	
+	@Override
+	public boolean isKnown() {
+		return true;
+	}
+	
 	@Override
 	public int price() {
 		return isKnown() ? 100 * quantity : super.price();

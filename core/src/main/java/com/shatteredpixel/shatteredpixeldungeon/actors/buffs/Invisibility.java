@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
@@ -95,10 +96,16 @@ public class Invisibility extends FlavourBuff {
 		if (cloakBuff != null) {
 			cloakBuff.dispel();
 		}
-		//this isn't a form of invisibilty, but it is meant to dispel at the same time as it.
+		
+		//these aren't forms of invisibilty, but do dispel at the same time as it.
 		TimekeepersHourglass.timeFreeze timeFreeze = Dungeon.hero.buff( TimekeepersHourglass.timeFreeze.class );
 		if (timeFreeze != null) {
 			timeFreeze.detach();
+		}
+		
+		Swiftthistle.TimeBubble bubble =  Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
+		if (bubble != null){
+			bubble.detach();
 		}
 	}
 }

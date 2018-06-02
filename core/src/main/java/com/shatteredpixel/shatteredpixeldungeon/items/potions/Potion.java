@@ -87,7 +87,7 @@ public class Potion extends Item {
 			PotionOfMindVision.class,
 			PotionOfPurity.class,
 			PotionOfInvisibility.class,
-			PotionOfMight.class,
+			PotionOfHaste.class,
 			PotionOfFrost.class
 	};
 

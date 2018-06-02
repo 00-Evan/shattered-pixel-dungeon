@@ -19,106 +19,112 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
+package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.utils.Random;
 
-public class WaterOfTransmutation extends WellWater {
+public class ScrollOfTransmutation extends InventoryScroll {
+	
+	{
+		//TODO
+		initials = -1;
+		mode = WndBag.Mode.TRANMSUTABLE;
+	}
+	
+	public static boolean canTransmute(Item item){
+		return item instanceof MagesStaff || item instanceof MeleeWeapon || item instanceof Potion
+				|| item instanceof Scroll || item instanceof Ring || item instanceof Wand
+				|| item instanceof Plant.Seed || item instanceof Artifact;
+	}
 	
 	@Override
-	protected Item affectItem( Item item ) {
+	protected void onItemSelected(Item item) {
+		
+		Item result;
 		
 		if (item instanceof MagesStaff) {
-			item = changeStaff( (MagesStaff)item );
+			result = changeStaff( (MagesStaff)item );
 		} else if (item instanceof MeleeWeapon) {
-			item = changeWeapon( (MeleeWeapon)item );
+			result = changeWeapon( (MeleeWeapon)item );
 		} else if (item instanceof Scroll) {
-			item = changeScroll( (Scroll)item );
+			result = changeScroll( (Scroll)item );
 		} else if (item instanceof Potion) {
-			item = changePotion( (Potion)item );
+			result = changePotion( (Potion)item );
 		} else if (item instanceof Ring) {
-			item = changeRing( (Ring)item );
+			result = changeRing( (Ring)item );
 		} else if (item instanceof Wand) {
-			item = changeWand( (Wand)item );
+			result = changeWand( (Wand)item );
 		} else if (item instanceof Plant.Seed) {
-			item = changeSeed( (Plant.Seed)item );
+			result = changeSeed( (Plant.Seed)item );
 		} else if (item instanceof Artifact) {
-			item = changeArtifact( (Artifact)item );
+			result = changeArtifact( (Artifact)item );
 		} else {
-			item = null;
+			result = null;
 		}
 		
-		//incase a never-seen item pops out
-		if (item != null&& item.isIdentified()){
-			Catalog.setSeen(item.getClass());
+		if (result == null){
+			//This shouldn't ever trigger
+			GLog.n( Messages.get(this, "nothing") );
+			curItem.collect( curUser.belongings.backpack );
+		} else {
+			if (item.isEquipped(Dungeon.hero)){
+				((EquipableItem)item).doUnequip(Dungeon.hero, false);
+				((EquipableItem)result).doEquip(Dungeon.hero);
+			} else {
+				item.detach(Dungeon.hero.belongings.backpack);
+				result.collect();
+			}
+			if (result.isIdentified()){
+				Catalog.setSeen(result.getClass());
+			}
+			//TODO visuals
+			GLog.p( Messages.get(this, "morph") );
 		}
-
-		return item;
-
+		
 	}
 	
-	@Override
-	protected boolean affectHero(Hero hero) {
-		return false;
-	}
-	
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
-		emitter.start( Speck.factory( Speck.CHANGE ), 0.2f, 0 );
-	}
-	
-	@Override
-	protected Landmark record() {
-		return Landmark.WELL_OF_TRANSMUTATION;
-	}
-
 	private MagesStaff changeStaff( MagesStaff staff ){
 		Class<?extends Wand> wandClass = staff.wandClass();
-
+		
 		if (wandClass == null){
 			return null;
 		} else {
 			Wand n;
 			do {
-				n = (Wand)Generator.random(Category.WAND);
+				n = (Wand) Generator.random(Generator.Category.WAND);
 			} while (Challenges.isItemBlocked(n) || n.getClass() == wandClass);
 			n.level(0);
 			staff.imbueWand(n, null);
 		}
-
+		
 		return staff;
 	}
 	
-	private Weapon changeWeapon( MeleeWeapon w ) {
+	private Weapon changeWeapon(MeleeWeapon w ) {
 		
 		Weapon n;
-		Category c = Generator.wepTiers[w.tier-1];
-
+		Generator.Category c = Generator.wepTiers[w.tier-1];
+		
 		do {
 			try {
 				n = (MeleeWeapon)c.classes[Random.chances(c.probs)].newInstance();
@@ -127,28 +133,28 @@ public class WaterOfTransmutation extends WellWater {
 				return null;
 			}
 		} while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
-
+		
 		int level = w.level();
 		if (level > 0) {
 			n.upgrade( level );
 		} else if (level < 0) {
 			n.degrade( -level );
 		}
-
+		
 		n.enchantment = w.enchantment;
 		n.levelKnown = w.levelKnown;
 		n.cursedKnown = w.cursedKnown;
 		n.cursed = w.cursed;
 		n.augment = w.augment;
-
+		
 		return n;
-
+		
 	}
 	
 	private Ring changeRing( Ring r ) {
 		Ring n;
 		do {
-			n = (Ring)Generator.random( Category.RING );
+			n = (Ring)Generator.random( Generator.Category.RING );
 		} while (Challenges.isItemBlocked(n) || n.getClass() == r.getClass());
 		
 		n.level(0);
@@ -166,10 +172,10 @@ public class WaterOfTransmutation extends WellWater {
 		
 		return n;
 	}
-
+	
 	private Artifact changeArtifact( Artifact a ) {
 		Artifact n = Generator.randomArtifact();
-
+		
 		if (n != null && !Challenges.isItemBlocked(n)){
 			n.cursedKnown = a.cursedKnown;
 			n.cursed = a.cursed;
@@ -177,7 +183,7 @@ public class WaterOfTransmutation extends WellWater {
 			n.transferUpgrade(a.visiblyUpgraded());
 			return n;
 		}
-
+		
 		return null;
 	}
 	
@@ -185,7 +191,7 @@ public class WaterOfTransmutation extends WellWater {
 		
 		Wand n;
 		do {
-			n = (Wand)Generator.random( Category.WAND );
+			n = (Wand)Generator.random( Generator.Category.WAND );
 		} while ( Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 		
 		n.level( 0 );
@@ -203,7 +209,7 @@ public class WaterOfTransmutation extends WellWater {
 		Plant.Seed n;
 		
 		do {
-			n = (Plant.Seed)Generator.random( Category.SEED );
+			n = (Plant.Seed)Generator.random( Generator.Category.SEED );
 		} while (n.getClass() == s.getClass());
 		
 		return n;
@@ -218,7 +224,7 @@ public class WaterOfTransmutation extends WellWater {
 			
 			Scroll n;
 			do {
-				n = (Scroll)Generator.random( Category.SCROLL );
+				n = (Scroll)Generator.random( Generator.Category.SCROLL );
 			} while (n.getClass() == s.getClass());
 			return n;
 		}
@@ -233,14 +239,16 @@ public class WaterOfTransmutation extends WellWater {
 			
 			Potion n;
 			do {
-				n = (Potion)Generator.random( Category.POTION );
+				n = (Potion)Generator.random( Generator.Category.POTION );
 			} while (n.getClass() == p.getClass());
 			return n;
 		}
 	}
 	
 	@Override
-	public String tileDesc() {
-		return Messages.get(this, "desc");
+	public void empoweredRead() {
+		//does nothing, this shouldn't happen
 	}
+	
+	
 }

@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Pasty;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
@@ -82,6 +83,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
@@ -227,9 +229,9 @@ public class Generator {
 					ScrollOfRage.class,
 					ScrollOfTeleportation.class,
 					ScrollOfTerror.class,
-					/*ScrollOfTransmutation.class*/ //1 additional scroll guaranteed on floors 6-19
+					ScrollOfTransmutation.class //1 additional scroll guaranteed on floors 6-19
 					};
-			SCROLL.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2/*, 1*/ };
+			SCROLL.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
 			
 			POTION.classes = new Class<?>[]{
 					PotionOfStrength.class, //2 drop every chapter, see Dungeon.posNeeded()
@@ -238,13 +240,13 @@ public class Generator {
 					PotionOfFrost.class,
 					PotionOfLiquidFlame.class,
 					PotionOfToxicGas.class,
-					/* PotionOfHaste.class */
+					PotionOfHaste.class,
 					PotionOfInvisibility.class,
 					PotionOfLevitation.class,
 					PotionOfParalyticGas.class,
 					PotionOfPurity.class,
 					PotionOfExperience.class};
-			POTION.probs = new float[]{ 0, 6, 4, 3, 3, 3, /*2,*/ 2, 2, 2, 2, 1 };
+			POTION.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
 			
 			//TODO: add last ones when implemented
 			WAND.classes = new Class<?>[]{

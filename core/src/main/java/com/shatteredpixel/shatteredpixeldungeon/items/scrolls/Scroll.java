@@ -60,7 +60,7 @@ public abstract class Scroll extends Item {
 		ScrollOfRage.class,
 		ScrollOfTerror.class,
 		ScrollOfLullaby.class,
-		ScrollOfMagicalInfusion.class,
+		ScrollOfTransmutation.class,
 		ScrollOfPsionicBlast.class,
 		ScrollOfMirrorImage.class
 	};

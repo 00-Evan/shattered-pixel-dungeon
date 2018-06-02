@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -67,13 +66,11 @@ public class SpecialRoom extends Room {
 	public static ArrayList<Class<? extends Room>> floorSpecials = new ArrayList<>();
 	
 	private static int pitNeededDepth = -1;
-	private static int guaranteedWellDepth = Integer.MAX_VALUE;
 	
 	public static void initForRun() {
 		runSpecials = (ArrayList<Class<?extends Room>>)ALL_SPEC.clone();
 		
 		pitNeededDepth = -1;
-		guaranteedWellDepth = Random.IntRange( 6, 14 );
 		Random.shuffle(runSpecials);
 	}
 	
@@ -97,10 +94,6 @@ public class SpecialRoom extends Room {
 		if (pitNeededDepth == depth) pitNeededDepth = -1;
 	}
 	
-	public static void disableGuaranteedWell(){
-		guaranteedWellDepth = Integer.MAX_VALUE;
-	}
-	
 	public static SpecialRoom createRoom(){
 		if (Dungeon.depth == pitNeededDepth){
 			pitNeededDepth = -1;
@@ -115,14 +108,6 @@ public class SpecialRoom extends Room {
 			
 			return new PitRoom();
 			
-		} else if (Dungeon.depth >= guaranteedWellDepth) {
-			useType( MagicWellRoom.class );
-			
-			MagicWellRoom r = new MagicWellRoom();
-			r.overrideWater = WaterOfTransmutation.class;
-			guaranteedWellDepth = Integer.MAX_VALUE;
-			return r;
-		
 		} else if (floorSpecials.contains(LaboratoryRoom.class)) {
 		
 			useType(LaboratoryRoom.class);
@@ -158,7 +143,6 @@ public class SpecialRoom extends Room {
 	
 	private static final String ROOMS	= "special_rooms";
 	private static final String PIT	    = "pit_needed";
-	private static final String WELL    = "guaranteed_well";
 	
 	public static void restoreRoomsFromBundle( Bundle bundle ) {
 		runSpecials.clear();
@@ -171,12 +155,10 @@ public class SpecialRoom extends Room {
 			ShatteredPixelDungeon.reportException(new Exception("specials array didn't exist!"));
 		}
 		pitNeededDepth = bundle.getInt(PIT);
-		guaranteedWellDepth = bundle.getInt(WELL);
 	}
 	
 	public static void storeRoomsInBundle( Bundle bundle ) {
 		bundle.put( ROOMS, runSpecials.toArray(new Class[0]) );
 		bundle.put( PIT, pitNeededDepth );
-		bundle.put( WELL, guaranteedWellDepth );
 	}
 }

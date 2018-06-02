@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
@@ -277,7 +278,10 @@ public abstract class Char extends Actor {
 	}
 	
 	public float speed() {
-		return buff( Cripple.class ) == null ? baseSpeed : baseSpeed * 0.5f;
+		float speed = baseSpeed;
+		if ( buff( Cripple.class ) != null ) speed /= 2f;
+		if ( buff( Haste.class ) != null) speed *= 3f;
+		return speed;
 	}
 	
 	public void damage( int dmg, Object src ) {
