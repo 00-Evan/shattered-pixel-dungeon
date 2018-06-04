@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class PotionOfHealing extends Potion {
 
 	{
-		initials = 2;
+		initials = 3;
 
 		bones = true;
 	}

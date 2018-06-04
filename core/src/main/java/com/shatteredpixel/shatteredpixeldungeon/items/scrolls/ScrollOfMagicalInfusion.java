@@ -37,7 +37,7 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 	//TODO decide what to do with this one
 	
 	{
-		initials = 2;
+		initials = 12;
 		mode = WndBag.Mode.ENCHANTABLE;
 		image = ItemSpriteSheet.SCROLL_ISAZ;
 	}

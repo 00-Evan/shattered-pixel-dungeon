@@ -37,7 +37,7 @@ import com.watabou.utils.Random;
 public class ScrollOfPsionicBlast extends Scroll {
 
 	{
-		initials = 5;
+		initials = 4;
 
 		bones = true;
 	}

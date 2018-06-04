@@ -37,7 +37,7 @@ import com.watabou.noosa.audio.Sample;
 public class ScrollOfRage extends Scroll {
 
 	{
-		initials = 6;
+		initials = 5;
 	}
 
 	@Override

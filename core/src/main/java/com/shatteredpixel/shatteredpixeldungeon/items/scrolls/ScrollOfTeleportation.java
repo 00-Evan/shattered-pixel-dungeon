@@ -41,7 +41,7 @@ import com.watabou.utils.PathFinder;
 public class ScrollOfTeleportation extends Scroll {
 
 	{
-		initials = 9;
+		initials = 7;
 	}
 
 	@Override

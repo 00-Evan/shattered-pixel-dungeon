@@ -30,8 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class PotionOfHaste extends Potion {
 	
 	{
-		//TODO
-		initials = -1;
+		initials = 2;
 	}
 	
 	@Override

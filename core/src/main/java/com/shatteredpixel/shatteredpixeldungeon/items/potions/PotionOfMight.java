@@ -33,7 +33,7 @@ public class PotionOfMight extends Potion {
 	//TODO finish transitioning this item
 
 	{
-		initials = 6;
+		initials = 12;
 		image = ItemSpriteSheet.POTION_AMBER;
 	}
 	

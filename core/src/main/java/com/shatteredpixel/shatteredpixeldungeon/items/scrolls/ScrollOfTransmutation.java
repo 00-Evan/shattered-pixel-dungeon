@@ -47,7 +47,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	
 	{
 		//TODO
-		initials = -1;
+		initials = 10;
 		mode = WndBag.Mode.TRANMSUTABLE;
 	}
 	

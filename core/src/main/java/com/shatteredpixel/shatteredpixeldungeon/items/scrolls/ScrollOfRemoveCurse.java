@@ -39,7 +39,7 @@ import com.watabou.noosa.audio.Sample;
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	{
-		initials = 8;
+		initials = 7;
 		mode = WndBag.Mode.UNIDED_OR_CURSED;
 	}
 	

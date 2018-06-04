@@ -32,7 +32,7 @@ import com.watabou.noosa.audio.Sample;
 public class PotionOfInvisibility extends Potion {
 
 	{
-		initials = 3;
+		initials = 4;
 	}
 
 	@Override
