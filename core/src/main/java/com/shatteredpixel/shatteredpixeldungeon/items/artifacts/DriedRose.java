@@ -487,11 +487,11 @@ public class DriedRose extends Artifact {
 		
 		@Override
 		protected float attackDelay() {
+			float delay = super.attackDelay();
 			if (rose != null && rose.weapon != null){
-				return rose.weapon.speedFactor(this);
-			} else {
-				return super.attackDelay();
+				delay *= rose.weapon.speedFactor(this);
 			}
+			return delay;
 		}
 		
 		@Override
