@@ -50,8 +50,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
@@ -187,10 +188,14 @@ public abstract class Level implements Bundlable {
 				Dungeon.LimitedDrops.ARCANE_STYLI.count++;
 			}
 			//one scroll of transmutation is guaranteed to spawn somewhere on chapter 2-4
-			int transChapter = (int)((Dungeon.seed / 10) % 3) + 1;
-			if ( Dungeon.depth / 5 == transChapter &&
+			int enchChapter = (int)((Dungeon.seed / 10) % 3) + 1;
+			if ( Dungeon.depth / 5 == enchChapter &&
 					Dungeon.seed % 4 + 1 == Dungeon.depth % 5){
-				addItemToSpawn( new ScrollOfTransmutation() );
+				addItemToSpawn( new StoneOfEnchantment() );
+			}
+			
+			if ( Dungeon.depth == ((Dungeon.seed % 3) + 1)){
+				addItemToSpawn( new StoneOfIntuition() );
 			}
 
 			DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );

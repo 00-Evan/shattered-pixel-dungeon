@@ -48,6 +48,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAvoidance;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -190,6 +192,14 @@ public abstract class Mob extends Char {
 				return source;
 			}
 		}
+		
+		StoneOfAggression.Aggression aggro = buff( StoneOfAggression.Aggression.class );
+		if (aggro != null){
+			Char source = (Char)Actor.findById( aggro.object );
+			if (source != null){
+				return source;
+			}
+		}
 
 		//find a new enemy if..
 		boolean newEnemy = false;
@@ -201,6 +211,10 @@ public abstract class Mob extends Char {
 			newEnemy = true;
 		//We are amoked and current enemy is the hero
 		else if (buff( Amok.class ) != null && enemy == Dungeon.hero)
+			newEnemy = true;
+		//We have avoidance and current enemy is what should be avoided
+		else if (buff(StoneOfAvoidance.Avoidance.class) != null
+				&& buff(StoneOfAvoidance.Avoidance.class).object == enemy.id())
 			newEnemy = true;
 
 		if ( newEnemy ) {
@@ -251,7 +265,15 @@ public abstract class Mob extends Char {
 				
 			}
 			
-			//neutral character in particular do not choose enemies.
+			StoneOfAvoidance.Avoidance avoid = buff( StoneOfAvoidance.Avoidance.class );
+			if (avoid != null){
+				Char source = (Char)Actor.findById( avoid.object );
+				if (source != null && enemies.contains(source) && enemies.size() > 1){
+					enemies.remove(source);
+				}
+			}
+			
+			//neutral characters in particular do not choose enemies.
 			if (enemies.isEmpty()){
 				return null;
 			} else {

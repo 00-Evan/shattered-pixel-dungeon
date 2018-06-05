@@ -85,6 +85,19 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAvoidance;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfClairvoyance;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepenedSleep;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
@@ -177,13 +190,14 @@ public class Generator {
 		MIS_T5  ( 0,    MissileWeapon.class ),
 		
 		POTION	( 20,   Potion.class ),
+		SEED	( 0,    Plant.Seed.class ),
+		
 		SCROLL	( 20,   Scroll.class ),
+		STONE   ( 0,    Runestone.class),
 		
 		WAND	( 3,    Wand.class ),
 		RING	( 1,    Ring.class ),
 		ARTIFACT( 1,    Artifact.class),
-		
-		SEED	( 0,    Plant.Seed.class ),
 		
 		FOOD	( 0,    Food.class ),
 		
@@ -217,22 +231,6 @@ public class Generator {
 					Gold.class };
 			GOLD.probs = new float[]{ 1 };
 			
-			SCROLL.classes = new Class<?>[]{
-					ScrollOfUpgrade.class, //3 drop every chapter, see Dungeon.souNeeded()
-					ScrollOfIdentify.class,
-					ScrollOfRemoveCurse.class,
-					ScrollOfMagicMapping.class,
-					ScrollOfMirrorImage.class,
-					ScrollOfRecharging.class,
-					ScrollOfLullaby.class,
-					ScrollOfPsionicBlast.class,
-					ScrollOfRage.class,
-					ScrollOfTeleportation.class,
-					ScrollOfTerror.class,
-					ScrollOfTransmutation.class //1 additional scroll guaranteed on floors 6-19
-					};
-			SCROLL.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
-			
 			POTION.classes = new Class<?>[]{
 					PotionOfStrength.class, //2 drop every chapter, see Dungeon.posNeeded()
 					PotionOfHealing.class,
@@ -247,6 +245,53 @@ public class Generator {
 					PotionOfPurity.class,
 					PotionOfExperience.class};
 			POTION.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
+			
+			SEED.classes = new Class<?>[]{
+					Firebloom.Seed.class,
+					Icecap.Seed.class,
+					Sorrowmoss.Seed.class,
+					Blindweed.Seed.class,
+					Sungrass.Seed.class,
+					Earthroot.Seed.class,
+					Fadeleaf.Seed.class,
+					Rotberry.Seed.class,
+					BlandfruitBush.Seed.class,
+					Dreamfoil.Seed.class,
+					Stormvine.Seed.class,
+					Starflower.Seed.class};
+			SEED.probs = new float[]{ 10, 10, 10, 10, 10, 10, 10, 0, 2, 10, 10, 1 };
+			
+			SCROLL.classes = new Class<?>[]{
+					ScrollOfUpgrade.class, //3 drop every chapter, see Dungeon.souNeeded()
+					ScrollOfIdentify.class,
+					ScrollOfRemoveCurse.class,
+					ScrollOfMagicMapping.class,
+					ScrollOfMirrorImage.class,
+					ScrollOfRecharging.class,
+					ScrollOfLullaby.class,
+					ScrollOfPsionicBlast.class,
+					ScrollOfRage.class,
+					ScrollOfTeleportation.class,
+					ScrollOfTerror.class,
+					ScrollOfTransmutation.class
+			};
+			SCROLL.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
+			
+			STONE.classes = new Class<?>[]{
+					StoneOfEnchantment.class,   //1 is garunteed to drop on floors 6-19
+					StoneOfAugmentation.class,  //1 is sold in each shop
+					StoneOfIntuition.class,     //1 additional stone is also dropped on floors 1-3
+					StoneOfAggression.class,
+					StoneOfAvoidance.class,
+					StoneOfBlast.class,
+					StoneOfBlink.class,
+					StoneOfClairvoyance.class,
+					StoneOfDeepenedSleep.class,
+					StoneOfDetectCurse.class,
+					StoneOfFlock.class,
+					StoneOfShock.class
+			};
+			STONE.probs = new float[]{ 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 			
 			//TODO: add last ones when implemented
 			WAND.classes = new Class<?>[]{
@@ -395,21 +440,6 @@ public class Generator {
 					EtherealChains.class
 			};
 			ARTIFACT.probs = INITIAL_ARTIFACT_PROBS.clone();
-			
-			SEED.classes = new Class<?>[]{
-					Firebloom.Seed.class,
-					Icecap.Seed.class,
-					Sorrowmoss.Seed.class,
-					Blindweed.Seed.class,
-					Sungrass.Seed.class,
-					Earthroot.Seed.class,
-					Fadeleaf.Seed.class,
-					Rotberry.Seed.class,
-					BlandfruitBush.Seed.class,
-					Dreamfoil.Seed.class,
-					Stormvine.Seed.class,
-					Starflower.Seed.class};
-			SEED.probs = new float[]{ 10, 10, 10, 10, 10, 10, 10, 0, 2, 10, 10, 1 };
 		}
 	}
 

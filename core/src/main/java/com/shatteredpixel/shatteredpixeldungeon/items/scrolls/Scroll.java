@@ -30,7 +30,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAvoidance;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfClairvoyance;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDeepenedSleep;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
@@ -238,7 +249,40 @@ public abstract class Scroll extends Item {
 		//TODO add more stones as they are implemented
 		static {
 			stones.put(ScrollOfIdentify.class,      StoneOfIntuition.class);
-			amnts.put(ScrollOfIdentify.class,       2);
+			amnts.put(ScrollOfIdentify.class,       3);
+			
+			stones.put(ScrollOfLullaby.class,       StoneOfDeepenedSleep.class);
+			amnts.put(ScrollOfLullaby.class,        3);
+			
+			stones.put(ScrollOfMagicMapping.class,  StoneOfClairvoyance.class);
+			amnts.put(ScrollOfMagicMapping.class,   3);
+			
+			stones.put(ScrollOfMirrorImage.class,   StoneOfFlock.class);
+			amnts.put(ScrollOfMirrorImage.class,    3);
+			
+			stones.put(ScrollOfPsionicBlast.class,  StoneOfBlast.class);
+			amnts.put(ScrollOfPsionicBlast.class,   2);
+			
+			stones.put(ScrollOfRage.class,          StoneOfAggression.class);
+			amnts.put(ScrollOfRage.class,           3);
+			
+			stones.put(ScrollOfRecharging.class,    StoneOfShock.class);
+			amnts.put(ScrollOfRecharging.class,     2);
+			
+			stones.put(ScrollOfRemoveCurse.class,   StoneOfDetectCurse.class);
+			amnts.put(ScrollOfRemoveCurse.class,    2);
+			
+			stones.put(ScrollOfTeleportation.class, StoneOfBlink.class);
+			amnts.put(ScrollOfTeleportation.class,  2);
+			
+			stones.put(ScrollOfTerror.class,        StoneOfAvoidance.class);
+			amnts.put(ScrollOfTerror.class,         3);
+			
+			stones.put(ScrollOfTransmutation.class, StoneOfAugmentation.class);
+			amnts.put(ScrollOfTransmutation.class,  2);
+			
+			stones.put(ScrollOfUpgrade.class,       StoneOfEnchantment.class);
+			amnts.put(ScrollOfUpgrade.class,        2);
 		}
 		
 		@Override
