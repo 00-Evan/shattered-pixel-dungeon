@@ -65,9 +65,9 @@ abstract public class Weapon extends KindOfWeapon {
 	public int      RCH = 1;    // Reach modifier (only applies to melee hits)
 
 	public enum Augment {
-		SPEED   (0.7f, 0.67f),
-		DAMAGE  (1.5f, 1.67f),
-		NONE	(1.0f, 1.00f);
+		SPEED   (0.7f, 0.6667f),
+		DAMAGE  (1.5f, 1.6667f),
+		NONE	(1.0f, 1.0000f);
 
 		private float damageFactor;
 		private float delayFactor;
