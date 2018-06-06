@@ -413,6 +413,8 @@ public class Armor extends EquipableItem {
 			info += "\n\n" + Messages.get(Armor.class, "cursed");
 		} else if (seal != null) {
 			info += "\n\n" + Messages.get(Armor.class, "seal_attached");
+		} else if (!isIdentified() && cursedKnown){
+			info += "\n\n" + Messages.get(Armor.class, "not_cursed");
 		}
 		
 		return info;

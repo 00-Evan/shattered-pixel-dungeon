@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -74,15 +73,15 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		
 		boolean procced = false;
 		for (Item item : items) {
-			if (item != null && item.cursed) {
+			if (item != null) {
+				item.cursedKnown = true;
+				procced = item.cursed;
 				item.cursed = false;
-				procced = true;
 			}
 			if (item instanceof Weapon){
 				Weapon w = (Weapon) item;
 				if (w.hasCurseEnchant()){
 					w.enchant(null);
-					w.cursed = false;
 					procced = true;
 				}
 			}
@@ -90,16 +89,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 				Armor a = (Armor) item;
 				if (a.hasCurseGlyph()){
 					a.inscribe(null);
-					a.cursed = false;
 					procced = true;
-				}
-			}
-			if (item instanceof Bag){
-				for (Item bagItem : ((Bag)item).items){
-					if (bagItem != null && bagItem.cursed) {
-						bagItem.cursed = false;
-						procced = true;
-					}
 				}
 			}
 		}

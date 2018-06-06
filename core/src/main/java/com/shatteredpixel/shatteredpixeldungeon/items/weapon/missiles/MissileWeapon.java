@@ -272,6 +272,8 @@ abstract public class MissileWeapon extends Weapon {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed_worn");
 		} else if (cursedKnown && cursed) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed");
+		} else if (!isIdentified() && cursedKnown){
+			info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
 		}
 
 		info += "\n\n" + Messages.get(MissileWeapon.class, "distance");

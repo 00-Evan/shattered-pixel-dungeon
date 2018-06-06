@@ -183,8 +183,11 @@ public abstract class Wand extends Item {
 
 		desc += "\n\n" + statsDesc();
 
-		if (cursed && cursedKnown)
+		if (cursed && cursedKnown) {
 			desc += "\n\n" + Messages.get(Wand.class, "cursed");
+		} else if (!isIdentified() && cursedKnown){
+			desc += "\n\n" + Messages.get(Wand.class, "not_cursed");
+		}
 
 		return desc;
 	}

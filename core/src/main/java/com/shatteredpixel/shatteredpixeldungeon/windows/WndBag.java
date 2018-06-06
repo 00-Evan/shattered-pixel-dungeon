@@ -375,8 +375,12 @@ public class WndBag extends WndTabbed {
 					bg.ra = +0.3f;
 					bg.ga = -0.15f;
 				} else if (!item.isIdentified()) {
-					bg.ra = 0.2f;
-					bg.ba = 0.2f;
+					if (item.cursedKnown){
+						bg.ba = 0.3f;
+					} else {
+						bg.ra = 0.3f;
+						bg.ba = 0.3f;
+					}
 				}
 				
 				if (item.name() == null) {
