@@ -26,20 +26,15 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
 public class ScrollOfPsionicBlast extends Scroll {
 
 	{
 		initials = 4;
-
-		bones = true;
 	}
 	
 	@Override
@@ -47,30 +42,30 @@ public class ScrollOfPsionicBlast extends Scroll {
 		
 		GameScene.flash( 0xFFFFFF );
 		
+		//scales from 2x to 5x power, maxing at ~10% HP
+		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
+		float power = Math.min( 5f, 2f + 3.333f*hpPercent);
+		
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 		Invisibility.dispel();
 		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
-				mob.damage(mob.HP, this);
+				mob.damage(Math.round(mob.HP * power/5f), this);
+				if (mob.isAlive()) {
+					Buff.prolong(mob, Blindness.class, Math.round(2*power));
+				}
 			}
 		}
-
-		curUser.damage(Math.max(curUser.HT/5, curUser.HP/2), this);
-		if (curUser.isAlive()) {
-			Buff.prolong(curUser, Paralysis.class, Random.Int(4, 6));
-			Buff.prolong(curUser, Blindness.class, Random.Int(6, 9));
-			Dungeon.observe();
-		}
+		
+		Buff.prolong(curUser, Weakness.class, Weakness.DURATION);
+		Buff.prolong(curUser, Blindness.class, Math.round(2*power));
+		Dungeon.observe();
 		
 		setKnown();
 		
 		readAnimation();
-
-		if (!curUser.isAlive()) {
-			Dungeon.fail( getClass() );
-			GLog.n( Messages.get(this, "ondeath") );
-		}
+		
 	}
 	
 	@Override
@@ -80,9 +75,13 @@ public class ScrollOfPsionicBlast extends Scroll {
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 		Invisibility.dispel();
 		
+		//scales from 3x to 5x power, maxing at ~20% HP
+		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
+		float power = Math.min( 5f, 3f + 2.5f*hpPercent);
+		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
-				mob.damage(mob.HT, this );
+				mob.damage(Math.round(mob.HP * power/5f), this);
 			}
 		}
 		
