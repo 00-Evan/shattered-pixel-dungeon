@@ -21,28 +21,32 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 
 public class StoneOfAvoidance extends Runestone {
 	
 	{
-		//TODO
-		image = ItemSpriteSheet.STONE_TIWAZ;
+		image = ItemSpriteSheet.STONE_LAGUZ;
 	}
 	
 	@Override
 	protected void activate(int cell) {
 		
+		CellEmitter.center(cell).start( Speck.factory( Speck.CALM ), 0.3f, 3 );
+		Sample.INSTANCE.play( Assets.SND_READ );
+		
 		for (int i : PathFinder.NEIGHBOURS9){
-			
-			//TODO visuals
 			
 			Char ch = Actor.findChar( cell + i );
 			

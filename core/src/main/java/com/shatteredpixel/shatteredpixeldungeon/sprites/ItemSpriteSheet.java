@@ -252,15 +252,16 @@ public class ItemSpriteSheet {
 	public static final int TIPPED_DARTS    =                               xy(1, 11);  //16 slots
 	public static final int ROT_DART        = TIPPED_DARTS+0;
 	public static final int INCENDIARY_DART = TIPPED_DARTS+1;
-	public static final int HOLY_DART       = TIPPED_DARTS+2;
-	public static final int BLINDING_DART   = TIPPED_DARTS+3;
-	public static final int HEALING_DART    = TIPPED_DARTS+4;
-	public static final int CHILLING_DART   = TIPPED_DARTS+5;
-	public static final int SHOCKING_DART   = TIPPED_DARTS+6;
-	public static final int POISON_DART     = TIPPED_DARTS+7;
-	public static final int SLEEP_DART      = TIPPED_DARTS+8;
-	public static final int PARALYTIC_DART  = TIPPED_DARTS+9;
+	public static final int ADRENALINE_DART = TIPPED_DARTS+2;
+	public static final int HEALING_DART    = TIPPED_DARTS+3;
+	public static final int CHILLING_DART   = TIPPED_DARTS+4;
+	public static final int SHOCKING_DART   = TIPPED_DARTS+5;
+	public static final int POISON_DART     = TIPPED_DARTS+6;
+	public static final int SLEEP_DART      = TIPPED_DARTS+7;
+	public static final int PARALYTIC_DART  = TIPPED_DARTS+8;
+	public static final int HOLY_DART       = TIPPED_DARTS+9;
 	public static final int DISPLACING_DART = TIPPED_DARTS+10;
+	public static final int BLINDING_DART   = TIPPED_DARTS+11;
 	static {
 		for (int i = TIPPED_DARTS; i < TIPPED_DARTS+16; i++)
 			assignItemRect(i, 15, 15);
@@ -433,19 +434,19 @@ public class ItemSpriteSheet {
 			assignItemRect(i, 10, 14);
 	}
 
-	private static final int SEEDS          =                               xy(1, 23);  //16 slots
-	public static final int SEED_ROTBERRY   = SEEDS+0;
-	public static final int SEED_FIREBLOOM  = SEEDS+1;
-	public static final int SEED_STARFLOWER = SEEDS+2;
-	public static final int SEED_BLINDWEED  = SEEDS+3;
-	public static final int SEED_SUNGRASS   = SEEDS+4;
-	public static final int SEED_ICECAP     = SEEDS+5;
-	public static final int SEED_STORMVINE  = SEEDS+6;
-	public static final int SEED_SORROWMOSS = SEEDS+7;
-	public static final int SEED_DREAMFOIL  = SEEDS+8;
-	public static final int SEED_EARTHROOT  = SEEDS+9;
-	public static final int SEED_FADELEAF   = SEEDS+10;
-	public static final int SEED_BLANDFRUIT = SEEDS+11;
+	private static final int SEEDS              =                           xy(1, 23);  //16 slots
+	public static final int SEED_ROTBERRY       = SEEDS+0;
+	public static final int SEED_FIREBLOOM      = SEEDS+1;
+	public static final int SEED_SWIFTTHISTLE   = SEEDS+2;
+	public static final int SEED_SUNGRASS       = SEEDS+3;
+	public static final int SEED_ICECAP         = SEEDS+4;
+	public static final int SEED_STORMVINE      = SEEDS+5;
+	public static final int SEED_SORROWMOSS     = SEEDS+6;
+	public static final int SEED_DREAMFOIL      = SEEDS+7;
+	public static final int SEED_EARTHROOT      = SEEDS+8;
+	public static final int SEED_STARFLOWER     = SEEDS+9;
+	public static final int SEED_FADELEAF       = SEEDS+10;
+	public static final int SEED_BLINDWEED      = SEEDS+11;
 	static{
 		for (int i = SEEDS; i < SEEDS+16; i++)
 			assignItemRect(i, 10, 10);

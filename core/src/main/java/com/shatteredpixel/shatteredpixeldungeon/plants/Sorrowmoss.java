@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Sorrowmoss extends Plant {
 
 	{
-		image = 2;
+		image = 6;
 	}
 	
 	@Override

@@ -21,12 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Point;
 
 public class StoneOfClairvoyance extends Runestone {
@@ -34,8 +36,7 @@ public class StoneOfClairvoyance extends Runestone {
 	private static final int DIST = 8;
 	
 	{
-		//TODO
-		image = ItemSpriteSheet.STONE_TIWAZ;
+		image = ItemSpriteSheet.STONE_RAIDO;
 	}
 	
 	@Override
@@ -50,6 +51,7 @@ public class StoneOfClairvoyance extends Runestone {
 		int sY = Math.max(0, c.y - DIST);
 		int eY = Math.min(Dungeon.level.height()-1, c.y + DIST);
 		
+		boolean noticed = false;
 		for (int y = sY; y <= eY; y++){
 			int curr = y*Dungeon.level.width() + sX;
 			for ( int x = sX; x <= eX; x++){
@@ -62,12 +64,18 @@ public class StoneOfClairvoyance extends Runestone {
 					if (Dungeon.level.heroFOV[curr]) {
 						GameScene.discoverTile( curr, Dungeon.level.map[curr] );
 						ScrollOfMagicMapping.discover( curr );
-						
+						noticed = true;
 					}
 				}
 				curr++;
 			}
 		}
+		
+		if (noticed) {
+			Sample.INSTANCE.play( Assets.SND_SECRET );
+		}
+		
+		Sample.INSTANCE.play( Assets.SND_READ );
 	}
 	
 }

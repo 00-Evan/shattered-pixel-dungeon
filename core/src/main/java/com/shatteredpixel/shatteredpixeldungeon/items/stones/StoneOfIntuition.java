@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
@@ -72,7 +73,6 @@ public class StoneOfIntuition extends InventoryStone {
 	
 	{
 		mode = WndBag.Mode.UNIDED_POTION_OR_SCROLL;
-		//TODO
 		image = ItemSpriteSheet.STONE_ISAZ;
 	}
 	
@@ -83,46 +83,45 @@ public class StoneOfIntuition extends InventoryStone {
 		
 	}
 	
+	//in order of their consumable icon
+	public static Class[] potions = new Class[]{
+			PotionOfExperience.class,
+			PotionOfFrost.class,
+			PotionOfHaste.class,
+			PotionOfHealing.class,
+			PotionOfInvisibility.class,
+			PotionOfLevitation.class,
+			PotionOfLiquidFlame.class,
+			PotionOfMindVision.class,
+			PotionOfParalyticGas.class,
+			PotionOfPurity.class,
+			PotionOfStrength.class,
+			PotionOfToxicGas.class,
+			PotionOfMight.class
+	};
 	
-	public static class WndGuess extends Window {
+	public static Class[] scrolls = new Class[]{
+			ScrollOfIdentify.class,
+			ScrollOfLullaby.class,
+			ScrollOfMagicMapping.class,
+			ScrollOfMirrorImage.class,
+			ScrollOfPsionicBlast.class,
+			ScrollOfRage.class,
+			ScrollOfRecharging.class,
+			ScrollOfRemoveCurse.class,
+			ScrollOfTeleportation.class,
+			ScrollOfTerror.class,
+			ScrollOfTransmutation.class,
+			ScrollOfUpgrade.class,
+			ScrollOfMagicalInfusion.class
+	};
+	
+	static Class curGuess = null;
+	
+	public class WndGuess extends Window {
 		
 		private static final int WIDTH = 120;
 		private static final int BTN_SIZE = 20;
-		
-		//in order of their consumable icon
-		public static Class[] potions = new Class[]{
-				PotionOfExperience.class,
-				PotionOfFrost.class,
-				PotionOfHaste.class,
-				PotionOfHealing.class,
-				PotionOfInvisibility.class,
-				PotionOfLevitation.class,
-				PotionOfLiquidFlame.class,
-				PotionOfMindVision.class,
-				PotionOfParalyticGas.class,
-				PotionOfPurity.class,
-				PotionOfStrength.class,
-				PotionOfToxicGas.class,
-				PotionOfMight.class
-		};
-		
-		public static Class[] scrolls = new Class[]{
-				ScrollOfIdentify.class,
-				ScrollOfLullaby.class,
-				ScrollOfMagicMapping.class,
-				ScrollOfMirrorImage.class,
-				ScrollOfPsionicBlast.class,
-				ScrollOfRage.class,
-				ScrollOfRecharging.class,
-				ScrollOfRemoveCurse.class,
-				ScrollOfTeleportation.class,
-				ScrollOfTerror.class,
-				ScrollOfTransmutation.class,
-				ScrollOfUpgrade.class,
-				ScrollOfMagicalInfusion.class
-		};
-		
-		static Class curGuess = null;
 		
 		public WndGuess(final Item item){
 			
@@ -138,14 +137,15 @@ public class StoneOfIntuition extends InventoryStone {
 			text.maxWidth( WIDTH );
 			add(text);
 			
-			//TODO visuals
 			final RedButton guess = new RedButton(""){
 				@Override
 				protected void onClick() {
 					super.onClick();
+					useAnimation();
 					if (item.getClass() == curGuess){
 						item.identify();
 						GLog.p( Messages.get(WndGuess.class, "correct") );
+						curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 					} else {
 						GLog.n( Messages.get(WndGuess.class, "incorrect") );
 					}

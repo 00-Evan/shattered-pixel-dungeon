@@ -28,20 +28,18 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class StoneOfDetectCurse extends InventoryStone {
-	//TODO there should be a 'cursed known' visible status for items
 	
 	{
 		mode = WndBag.Mode.EQUIPMENT;
-		//TODO
-		image = ItemSpriteSheet.STONE_TIWAZ;
+		image = ItemSpriteSheet.STONE_ODAL;
 	}
 	
 	@Override
 	protected void onItemSelected(Item item) {
 		
 		item.cursedKnown = true;
+		useAnimation();
 		
-		//TODO visuals
 		if (item.cursed){
 			GLog.w( Messages.get(this, "cursed") );
 		} else {

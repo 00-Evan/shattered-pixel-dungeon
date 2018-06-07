@@ -65,6 +65,7 @@ public class Speck extends Image {
 	public static final int FORGE		= 112;
 	public static final int CONFUSION	= 113;
 	public static final int RED_LIGHT   = 114;
+	public static final int CALM        = 115;
 	
 	private static final int SIZE = 7;
 	
@@ -113,6 +114,9 @@ public class Speck extends Image {
 		case CONFUSION:
 		case DUST:
 			frame( film.get( STEAM ) );
+			break;
+		case CALM:
+			frame( film.get( SCREAM ) );
 			break;
 		default:
 			frame( film.get( type ) );
@@ -198,6 +202,8 @@ public class Speck extends Image {
 			lifespan = 1f;
 			break;
 			
+		case CALM:
+			color(0, 1, 1);
 		case SCREAM:
 			lifespan = 0.9f;
 			break;
@@ -376,6 +382,7 @@ public class Speck extends Image {
 				scale.set( (float)(Math.sqrt( p < 0.5f ? p : 1 - p ) * 2) );
 				break;
 				
+			case CALM:
 			case SCREAM:
 				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 2f );
 				scale.set( p * 7 );

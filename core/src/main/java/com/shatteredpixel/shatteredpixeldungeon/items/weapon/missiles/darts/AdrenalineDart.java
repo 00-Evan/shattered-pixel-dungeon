@@ -29,8 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class AdrenalineDart extends TippedDart {
 	
 	{
-		//TODO
-		image = ItemSpriteSheet.BLINDING_DART;
+		image = ItemSpriteSheet.ADRENALINE_DART;
 	}
 	
 	@Override

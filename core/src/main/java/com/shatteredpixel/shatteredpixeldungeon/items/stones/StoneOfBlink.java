@@ -27,8 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class StoneOfBlink extends Runestone {
 	
 	{
-		//TODO
-		image = ItemSpriteSheet.STONE_TIWAZ;
+		image = ItemSpriteSheet.STONE_SOWILO;
 	}
 	
 	@Override

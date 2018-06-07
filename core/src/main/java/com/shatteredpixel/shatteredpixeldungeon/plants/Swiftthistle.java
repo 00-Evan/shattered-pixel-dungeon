@@ -35,8 +35,7 @@ import com.watabou.utils.Bundle;
 public class Swiftthistle extends Plant {
 	
 	{
-		//TODO
-		image = 1;
+		image = 2;
 	}
 	
 	@Override
@@ -49,8 +48,7 @@ public class Swiftthistle extends Plant {
 	
 	public static class Seed extends Plant.Seed {
 		{
-			//TODO
-			image = ItemSpriteSheet.SEED_FADELEAF;
+			image = ItemSpriteSheet.SEED_SWIFTTHISTLE;
 			
 			plantClass = Swiftthistle.class;
 		}
@@ -63,13 +61,12 @@ public class Swiftthistle extends Plant {
 		
 		@Override
 		public int icon() {
-			//TODO
-			return BuffIndicator.IMMUNITY;
+			return BuffIndicator.SLOW;
 		}
 		
 		@Override
 		public void tintIcon(Image icon) {
-			FlavourBuff.greyIcon(icon, 4f, left);
+			if (left < 4) FlavourBuff.greyIcon(icon, 4f, left);
 		}
 		
 		@Override

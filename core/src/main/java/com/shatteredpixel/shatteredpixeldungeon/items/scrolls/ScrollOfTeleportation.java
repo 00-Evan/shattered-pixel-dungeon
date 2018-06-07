@@ -71,6 +71,7 @@ public class ScrollOfTeleportation extends Scroll {
 					//time isn't spent
 					((HeroSprite)curUser.sprite).read();
 					teleportToLocation(curUser, target);
+					GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 				}
 			}
 			
@@ -95,7 +96,6 @@ public class ScrollOfTeleportation extends Scroll {
 		Dungeon.observe();
 		GameScene.updateFog();
 		
-		//GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 	}
 	
 	public static void teleportHero(Hero  hero ) {

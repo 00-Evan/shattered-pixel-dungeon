@@ -35,8 +35,7 @@ import com.watabou.utils.PathFinder;
 public class StoneOfFlock extends Runestone {
 	
 	{
-		//TODO
-		image = ItemSpriteSheet.STONE_TIWAZ;
+		image = ItemSpriteSheet.STONE_BERKANAN;
 	}
 	
 	@Override

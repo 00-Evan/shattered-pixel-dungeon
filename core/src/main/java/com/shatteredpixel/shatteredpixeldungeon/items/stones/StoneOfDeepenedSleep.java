@@ -36,8 +36,7 @@ import com.watabou.utils.PathFinder;
 public class StoneOfDeepenedSleep extends Runestone {
 	
 	{
-		//TODO
-		image = ItemSpriteSheet.STONE_TIWAZ;
+		image = ItemSpriteSheet.STONE_NAUDIZ;
 	}
 	
 	@Override
@@ -45,7 +44,7 @@ public class StoneOfDeepenedSleep extends Runestone {
 		
 		for (int i : PathFinder.NEIGHBOURS9){
 			
-			CellEmitter.get(cell + i).start( Speck.factory( Speck.NOTE ), 0.3f, 5 );
+			CellEmitter.get(cell + i).start( Speck.factory( Speck.NOTE ), 0.1f, 2 );
 			
 			if (Actor.findChar(cell + i) != null) {
 				

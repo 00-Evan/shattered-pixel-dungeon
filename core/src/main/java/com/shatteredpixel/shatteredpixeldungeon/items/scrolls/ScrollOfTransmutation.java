@@ -46,7 +46,6 @@ import com.watabou.utils.Random;
 public class ScrollOfTransmutation extends InventoryScroll {
 	
 	{
-		//TODO
 		initials = 10;
 		mode = WndBag.Mode.TRANMSUTABLE;
 	}

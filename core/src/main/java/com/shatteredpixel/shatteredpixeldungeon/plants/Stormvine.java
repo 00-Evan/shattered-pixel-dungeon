@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Stormvine extends Plant {
 
 	{
-		image = 9;
+		image = 5;
 	}
 
 	@Override

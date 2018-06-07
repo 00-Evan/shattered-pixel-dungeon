@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Rotberry extends Plant {
 
 	{
-		image = 7;
+		image = 0;
 	}
 
 	@Override

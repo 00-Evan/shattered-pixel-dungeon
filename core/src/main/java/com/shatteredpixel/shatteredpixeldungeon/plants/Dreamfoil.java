@@ -41,7 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 public class Dreamfoil extends Plant {
 
 	{
-		image = 10;
+		image = 7;
 	}
 
 	@Override

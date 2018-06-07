@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Firebloom extends Plant {
 	
 	{
-		image = 0;
+		image = 1;
 	}
 	
 	@Override

@@ -39,7 +39,7 @@ import com.watabou.utils.Bundle;
 public class Sungrass extends Plant {
 	
 	{
-		image = 4;
+		image = 3;
 	}
 	
 	@Override

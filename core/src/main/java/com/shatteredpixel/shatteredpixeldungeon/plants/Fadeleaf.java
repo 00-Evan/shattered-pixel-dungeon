@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Fadeleaf extends Plant {
 	
 	{
-		image = 6;
+		image = 10;
 	}
 	
 	@Override

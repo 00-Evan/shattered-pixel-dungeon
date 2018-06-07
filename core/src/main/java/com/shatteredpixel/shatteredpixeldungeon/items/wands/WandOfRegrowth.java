@@ -256,7 +256,7 @@ public class WandOfRegrowth extends Wand {
 	public static class Dewcatcher extends Plant{
 
 		{
-			image = 12;
+			image = 13;
 		}
 
 		@Override
@@ -290,7 +290,7 @@ public class WandOfRegrowth extends Wand {
 	public static class Seedpod extends Plant{
 
 		{
-			image = 13;
+			image = 14;
 		}
 
 		@Override

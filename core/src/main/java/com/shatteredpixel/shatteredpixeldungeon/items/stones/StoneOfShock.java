@@ -33,8 +33,7 @@ import com.watabou.utils.PathFinder;
 public class StoneOfShock extends Runestone {
 	
 	{
-		//TODO
-		image = ItemSpriteSheet.STONE_TIWAZ;
+		image = ItemSpriteSheet.STONE_MANNAZ;
 	}
 	
 	@Override
