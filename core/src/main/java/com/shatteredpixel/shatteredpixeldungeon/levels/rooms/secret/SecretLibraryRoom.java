@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -52,19 +53,19 @@ public class SecretLibraryRoom extends SecretRoom {
 		return Math.max(7, super.minHeight());
 	}
 	
-	//TODO adjust based on changes to generator chances
 	private static HashMap<Class<? extends Scroll>, Float> scrollChances = new HashMap<>();
 	static{
 		scrollChances.put( ScrollOfIdentify.class,      1f );
-		scrollChances.put( ScrollOfTeleportation.class, 1f );
-		scrollChances.put( ScrollOfRemoveCurse.class,   3f );
-		scrollChances.put( ScrollOfRecharging.class,    1f );
+		scrollChances.put( ScrollOfRemoveCurse.class,   2f );
 		scrollChances.put( ScrollOfMagicMapping.class,  3f );
-		scrollChances.put( ScrollOfRage.class,          1f );
-		scrollChances.put( ScrollOfTerror.class,        2f );
-		scrollChances.put( ScrollOfLullaby.class,       2f );
-		scrollChances.put( ScrollOfPsionicBlast.class,  5f );
-		scrollChances.put( ScrollOfMirrorImage.class,   1f );
+		scrollChances.put( ScrollOfMirrorImage.class,   3f );
+		scrollChances.put( ScrollOfRecharging.class,    3f );
+		scrollChances.put( ScrollOfLullaby.class,       4f );
+		scrollChances.put( ScrollOfPsionicBlast.class,  4f );
+		scrollChances.put( ScrollOfRage.class,          4f );
+		scrollChances.put( ScrollOfTeleportation.class, 4f );
+		scrollChances.put( ScrollOfTerror.class,        4f );
+		scrollChances.put( ScrollOfTransmutation.class, 6f );
 	}
 	
 	public void paint( Level level ) {

@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -115,7 +116,8 @@ public class UnstableSpellbook extends Artifact {
 							scroll instanceof ScrollOfRemoveCurse ||
 							scroll instanceof ScrollOfMagicMapping) && Random.Int(2) == 0)
 						//don't roll teleportation scrolls on boss floors
-						|| (scroll instanceof ScrollOfTeleportation && Dungeon.bossLevel()));
+						|| (scroll instanceof ScrollOfTeleportation && Dungeon.bossLevel())
+						|| (scroll instanceof ScrollOfTransmutation));
 				
 				scroll.ownedByBook = true;
 				curItem = scroll;

@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
@@ -44,19 +45,19 @@ import java.util.HashMap;
 
 public class SecretLaboratoryRoom extends SecretRoom {
 	
-	//TODO adjust based on changes to generator chances
 	private static HashMap<Class<? extends Potion>, Float> potionChances = new HashMap<>();
 	static{
-		potionChances.put(PotionOfHealing.class,        2f);
-		potionChances.put(PotionOfExperience.class,     5f);
-		potionChances.put(PotionOfToxicGas.class,       1f);
-		potionChances.put(PotionOfParalyticGas.class,   3f);
-		potionChances.put(PotionOfLiquidFlame.class,    1f);
-		potionChances.put(PotionOfLevitation.class,     1f);
-		potionChances.put(PotionOfMindVision.class,     3f);
-		potionChances.put(PotionOfPurity.class,         2f);
-		potionChances.put(PotionOfInvisibility.class,   1f);
-		potionChances.put(PotionOfFrost.class,          1f);
+		potionChances.put(PotionOfHealing.class,        1f);
+		potionChances.put(PotionOfMindVision.class,     2f);
+		potionChances.put(PotionOfFrost.class,          3f);
+		potionChances.put(PotionOfLiquidFlame.class,    3f);
+		potionChances.put(PotionOfToxicGas.class,       3f);
+		potionChances.put(PotionOfHaste.class,          4f);
+		potionChances.put(PotionOfInvisibility.class,   4f);
+		potionChances.put(PotionOfLevitation.class,     4f);
+		potionChances.put(PotionOfParalyticGas.class,   4f);
+		potionChances.put(PotionOfPurity.class,         4f);
+		potionChances.put(PotionOfExperience.class,     6f);
 	}
 	
 	public void paint( Level level ) {
