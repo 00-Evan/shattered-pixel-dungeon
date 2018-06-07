@@ -149,7 +149,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSp
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Trident;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
@@ -162,6 +161,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
@@ -189,17 +189,17 @@ public class Generator {
 		MIS_T4  ( 0,    MissileWeapon.class ),
 		MIS_T5  ( 0,    MissileWeapon.class ),
 		
-		POTION	( 20,   Potion.class ),
-		SEED	( 0,    Plant.Seed.class ),
-		
-		SCROLL	( 20,   Scroll.class ),
-		STONE   ( 0,    Runestone.class),
-		
 		WAND	( 3,    Wand.class ),
 		RING	( 1,    Ring.class ),
 		ARTIFACT( 1,    Artifact.class),
 		
 		FOOD	( 0,    Food.class ),
+		
+		POTION	( 20,   Potion.class ),
+		SEED	( 0,    Plant.Seed.class ),
+		
+		SCROLL	( 20,   Scroll.class ),
+		STONE   ( 0,    Runestone.class),
 		
 		GOLD	( 20,   Gold.class );
 		
@@ -247,19 +247,19 @@ public class Generator {
 			POTION.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
 			
 			SEED.classes = new Class<?>[]{
+					Rotberry.Seed.class, //quest item
+					Blindweed.Seed.class,
+					Dreamfoil.Seed.class,
+					Earthroot.Seed.class,
+					Fadeleaf.Seed.class,
 					Firebloom.Seed.class,
 					Icecap.Seed.class,
 					Sorrowmoss.Seed.class,
-					Blindweed.Seed.class,
-					Sungrass.Seed.class,
-					Earthroot.Seed.class,
-					Fadeleaf.Seed.class,
-					Rotberry.Seed.class,
-					BlandfruitBush.Seed.class,
-					Dreamfoil.Seed.class,
 					Stormvine.Seed.class,
+					Sungrass.Seed.class,
+					Swiftthistle.Seed.class,
 					Starflower.Seed.class};
-			SEED.probs = new float[]{ 10, 10, 10, 10, 10, 10, 10, 0, 2, 10, 10, 1 };
+			SEED.probs = new float[]{ 0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1 };
 			
 			SCROLL.classes = new Class<?>[]{
 					ScrollOfUpgrade.class, //3 drop every chapter, see Dungeon.souNeeded()
