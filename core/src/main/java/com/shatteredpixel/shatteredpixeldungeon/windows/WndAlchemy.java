@@ -98,6 +98,7 @@ public class WndAlchemy extends Window {
 							}
 							item = null;
 							slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
+							updateState();
 						}
 						GameScene.selectItem(itemSelector, WndBag.Mode.ALCHEMY, Messages.get(WndAlchemy.class, "select"));
 					}
