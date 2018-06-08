@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Sorrowmoss;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -364,6 +365,7 @@ public class Potion extends Item {
 			types.put(Starflower.Seed.class,    PotionOfExperience.class);
 			types.put(Stormvine.Seed.class,     PotionOfLevitation.class);
 			types.put(Sungrass.Seed.class,      PotionOfHealing.class);
+			types.put(Swiftthistle.Seed.class,  PotionOfHaste.class);
 		}
 		
 		@Override
