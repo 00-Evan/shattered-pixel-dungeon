@@ -376,7 +376,7 @@ public class WndBag extends WndTabbed {
 					bg.ra = +0.3f;
 					bg.ga = -0.15f;
 				} else if (!item.isIdentified()) {
-					if (item.cursedKnown){
+					if ((item instanceof EquipableItem || item instanceof Wand) && item.cursedKnown){
 						bg.ba = 0.3f;
 					} else {
 						bg.ra = 0.3f;
