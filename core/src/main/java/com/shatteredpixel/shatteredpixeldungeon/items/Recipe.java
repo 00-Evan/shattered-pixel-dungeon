@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 
 import java.util.ArrayList;
@@ -151,6 +153,11 @@ public abstract class Recipe {
 		return null;
 	}
 	
+	public static boolean usableInRecipe(Item item){
+		return item.isIdentified()
+				&& (!(item instanceof EquipableItem) || item instanceof Dart)
+				&& !(item instanceof Wand);
+	}
 }
 
 

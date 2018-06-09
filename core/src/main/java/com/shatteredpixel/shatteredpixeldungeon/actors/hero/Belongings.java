@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
@@ -183,7 +184,9 @@ public class Belongings implements Iterable<Item> {
 			Badges.validateItemLevelAquired(misc2);
 		}
 		for (Item item : backpack) {
-			item.cursedKnown = true;
+			if (item instanceof EquipableItem || item instanceof Wand) {
+				item.cursedKnown = true;
+			}
 		}
 	}
 	

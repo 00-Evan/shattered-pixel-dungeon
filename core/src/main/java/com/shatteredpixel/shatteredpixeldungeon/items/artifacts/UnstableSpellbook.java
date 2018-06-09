@@ -80,7 +80,8 @@ public class UnstableSpellbook extends Artifact {
 			probs[i] = 0;
 
 			i = Random.chances(probs);
-		};
+		}
+		scrolls.remove(ScrollOfTransmutation.class);
 	}
 
 	@Override
@@ -147,7 +148,7 @@ public class UnstableSpellbook extends Artifact {
 		chargeCap = (int)((level()+1)*0.4f)+2;
 
 		//for artifact transmutation.
-		while (scrolls.size() > (levelCap-1-level()))
+		while (!scrolls.isEmpty() && scrolls.size() > (levelCap-1-level()))
 			scrolls.remove(0);
 
 		return super.upgrade();
