@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.IntroScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
@@ -92,6 +93,7 @@ public class WndStartGame extends Window {
 				
 				GamesInProgress.curSlot = slot;
 				Dungeon.hero = null;
+				ActionIndicator.action = null;
 				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 				
 				if (SPDSettings.intro()) {
