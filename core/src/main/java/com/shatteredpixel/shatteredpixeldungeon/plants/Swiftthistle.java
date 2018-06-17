@@ -59,6 +59,10 @@ public class Swiftthistle extends Plant {
 		private float left = 6f;
 		private int pos;
 		
+		{
+			type = buffType.POSITIVE;
+		}
+		
 		@Override
 		public int icon() {
 			return BuffIndicator.SLOW;
