@@ -75,8 +75,10 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		for (Item item : items) {
 			if (item != null) {
 				item.cursedKnown = true;
-				procced = item.cursed;
-				item.cursed = false;
+				if (item.cursed) {
+					procced = true;
+					item.cursed = false;
+				}
 			}
 			if (item instanceof Weapon){
 				Weapon w = (Weapon) item;
