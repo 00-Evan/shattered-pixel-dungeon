@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class StoneOfFlock extends Runestone {
 	
@@ -48,7 +49,7 @@ public class StoneOfFlock extends Runestone {
 					&& Actor.findChar(cell + i) == null) {
 				
 				Sheep sheep = new Sheep();
-				sheep.lifespan = 10;
+				sheep.lifespan = Random.IntRange(5, 8);
 				sheep.pos = cell + i;
 				GameScene.add(sheep);
 				Dungeon.level.press(sheep.pos, sheep);
