@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.PathFinder;
@@ -65,6 +66,8 @@ public class WandOfRegrowth extends Wand {
 	private HashSet<Integer> visualCells;
 	private int direction = 0;
 	
+	private int totChrgUsed = 0;
+	
 	@Override
 	protected void onZap( Ballistica bolt ) {
 
@@ -81,6 +84,8 @@ public class WandOfRegrowth extends Wand {
 		}
 
 		float numPlants, numDews, numPods, numStars;
+		
+		int overLimit = totChrgUsed - chargeLimit(Dungeon.hero.lvl);
 
 		int chrgUsed = chargesPerCast();
 		//numbers greater than n*100% means n guaranteed plants, e.g. 210% = 2 plants w/10% chance for 3 plants.
@@ -88,6 +93,14 @@ public class WandOfRegrowth extends Wand {
 		numDews = 0.05f + chrgUsed*chrgUsed*0.016f; //scales from 6.6% to 165%
 		numPods = 0.02f + chrgUsed*chrgUsed*0.013f; //scales from 3.3% to 135%
 		numStars = (chrgUsed*chrgUsed*chrgUsed/5f)*0.005f; //scales from 0.1% to 100%
+		
+		if (overLimit > 0){
+			numPlants -= overLimit*0.02f;
+			numDews -= overLimit*0.02f;
+			numPods -= overLimit*0.02f;
+			numStars -= overLimit*0.02f;
+		}
+		
 		placePlants(numPlants, numDews, numPods, numStars);
 
 		for (int i : affectedCells){
@@ -102,9 +115,25 @@ public class WandOfRegrowth extends Wand {
 			if (ch != null){
 				processSoulMark(ch, chargesPerCast());
 			}
-
-			GameScene.add( Blob.seed( i, 10, Regrowth.class ) );
-
+			
+			if (Random.Int(50) < overLimit){
+				GameScene.add( Blob.seed( i, 9, Regrowth.class ) );
+			} else {
+				GameScene.add( Blob.seed( i, 10, Regrowth.class ) );
+			}
+			
+		}
+		
+		totChrgUsed += chrgUsed;
+	}
+	
+	private int chargeLimit( int heroLevel ){
+		if (level() >= 12){
+			return Integer.MAX_VALUE;
+		} else {
+			//4 charges per hero level at +0, with another 2-4 each upgrade from +1 to +9.
+			//then +7 at +10, +16 at +11, and infinite at +12.
+			return Math.round(((4 + 2*level())*heroLevel) * (11f/12f + 1f/(12f-level())));
 		}
 	}
 
@@ -252,7 +281,21 @@ public class WandOfRegrowth extends Wand {
 		particle.x -= dst;
 		particle.y += dst;
 	}
-
+	
+	private static final String TOTAL = "totChrgUsed";
+	
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put( TOTAL, totChrgUsed );
+	}
+	
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		totChrgUsed = bundle.getInt(TOTAL);
+	}
+	
 	public static class Dewcatcher extends Plant{
 
 		{
