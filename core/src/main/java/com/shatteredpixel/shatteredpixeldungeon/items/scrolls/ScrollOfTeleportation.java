@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -37,6 +39,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class ScrollOfTeleportation extends Scroll {
 
@@ -50,7 +55,7 @@ public class ScrollOfTeleportation extends Scroll {
 		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();
 		
-		teleportHero( curUser );
+		teleportPreferringUnseen( curUser );
 		setKnown();
 
 		readAnimation();
@@ -98,7 +103,7 @@ public class ScrollOfTeleportation extends Scroll {
 		
 	}
 	
-	public static void teleportHero(Hero  hero ) {
+	public static void teleportHero( Hero  hero ) {
 
 		int count = 10;
 		int pos;
@@ -123,6 +128,50 @@ public class ScrollOfTeleportation extends Scroll {
 			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 			
 		}
+	}
+	
+	public static void teleportPreferringUnseen( Hero hero ){
+		
+		if (!(Dungeon.level instanceof RegularLevel)){
+			teleportHero( hero );
+		}
+		
+		RegularLevel level = (RegularLevel) Dungeon.level;
+		ArrayList<Integer> candidates = new ArrayList<>();
+		
+		Room r;
+		for (int i = 0; i < level.length(); i++){
+			if (!level.passable[i] || level.visited[i]){
+				continue;
+			}
+			r = level.room(i);
+			if (r == null || Actor.findChar(i) != null){
+				continue;
+			}
+			boolean locked = false;
+			for (Room.Door d : r.connected.values()){
+				if (d.type == Room.Door.Type.LOCKED || d.type == Room.Door.Type.BARRICADE) {
+					locked = true;
+					break;
+				}
+			}
+			if (locked){
+				continue;
+			}
+			candidates.add(i);
+		}
+		
+		if (candidates.isEmpty()){
+			teleportHero( hero );
+		} else {
+			int pos = Random.element(candidates);
+			appear( hero, pos );
+			Dungeon.level.press( pos, hero );
+			Dungeon.observe();
+			GameScene.updateFog();
+			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
+		}
+		
 	}
 
 	public static void appear( Char ch, int pos ) {
