@@ -196,12 +196,12 @@ public class Generator {
 		FOOD	( 0,    Food.class ),
 		
 		POTION	( 20,   Potion.class ),
-		SEED	( 0,    Plant.Seed.class ),
+		SEED	( 0,    Plant.Seed.class ), //dropped by grass
 		
 		SCROLL	( 20,   Scroll.class ),
-		STONE   ( 0,    Runestone.class),
+		STONE   ( 5,    Runestone.class),
 		
-		GOLD	( 20,   Gold.class );
+		GOLD	( 15,   Gold.class );
 		
 		public Class<?>[] classes;
 		public float[] probs;
@@ -278,7 +278,7 @@ public class Generator {
 			SCROLL.probs = new float[]{ 0, 6, 4, 3, 3, 3, 2, 2, 2, 2, 2, 1 };
 			
 			STONE.classes = new Class<?>[]{
-					StoneOfEnchantment.class,   //1 is garunteed to drop on floors 6-19
+					StoneOfEnchantment.class,   //1 is guaranteed to drop on floors 6-19
 					StoneOfAugmentation.class,  //1 is sold in each shop
 					StoneOfIntuition.class,     //1 additional stone is also dropped on floors 1-3
 					StoneOfAggression.class,

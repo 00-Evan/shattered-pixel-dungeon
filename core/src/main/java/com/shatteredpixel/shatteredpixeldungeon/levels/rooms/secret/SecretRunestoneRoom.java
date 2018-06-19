@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -63,6 +64,17 @@ public class SecretRunestoneRoom extends SecretRoom {
 		level.addItemToSpawn(new PotionOfLiquidFlame());
 		
 		int dropPos;
+		
+		do{
+			dropPos = level.pointToCell(random());
+		} while (level.map[dropPos] != Terrain.EMPTY);
+		level.drop( Generator.random(Generator.Category.STONE), dropPos);
+		
+		do{
+			dropPos = level.pointToCell(random());
+		} while (level.map[dropPos] != Terrain.EMPTY && level.heaps.get(dropPos) != null);
+		level.drop( Generator.random(Generator.Category.STONE), dropPos);
+		
 		do{
 			dropPos = level.pointToCell(random());
 		} while (level.map[dropPos] != Terrain.EMPTY_SP);
