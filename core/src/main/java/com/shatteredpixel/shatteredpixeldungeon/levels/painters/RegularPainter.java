@@ -109,7 +109,7 @@ public abstract class RegularPainter extends Painter {
 		
 		Random.shuffle(rooms);
 		
-		for (Room r : rooms) {
+		for (Room r : rooms.toArray(new Room[0])) {
 			placeDoors( r );
 			r.paint( level );
 		}
