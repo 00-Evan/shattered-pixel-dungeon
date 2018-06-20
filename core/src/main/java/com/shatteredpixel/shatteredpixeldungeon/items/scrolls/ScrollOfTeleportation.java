@@ -134,6 +134,7 @@ public class ScrollOfTeleportation extends Scroll {
 		
 		if (!(Dungeon.level instanceof RegularLevel)){
 			teleportHero( hero );
+			return;
 		}
 		
 		RegularLevel level = (RegularLevel) Dungeon.level;

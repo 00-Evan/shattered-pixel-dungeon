@@ -72,7 +72,7 @@ public class SecretRunestoneRoom extends SecretRoom {
 		
 		do{
 			dropPos = level.pointToCell(random());
-		} while (level.map[dropPos] != Terrain.EMPTY && level.heaps.get(dropPos) != null);
+		} while (level.map[dropPos] != Terrain.EMPTY || level.heaps.get(dropPos) != null);
 		level.drop( Generator.random(Generator.Category.STONE), dropPos);
 		
 		do{
