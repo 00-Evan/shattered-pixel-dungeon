@@ -75,7 +75,8 @@ public class BlacksmithSprite extends MobSprite {
 	public void onComplete( Animation anim ) {
 		super.onComplete( anim );
 		
-		if (visible && emitter != null && anim == idle) {
+		//FIXME should figure out why onComplete is called constantly when an animation is paused
+		if (visible && emitter != null && anim == idle && !paused) {
 			emitter.burst( Speck.factory( Speck.FORGE ), 3 );
 			float volume = 0.2f / (Dungeon.level.distance( ch.pos, Dungeon.hero.pos ));
 			Sample.INSTANCE.play( Assets.SND_EVOKE, volume, volume, 0.8f  );
