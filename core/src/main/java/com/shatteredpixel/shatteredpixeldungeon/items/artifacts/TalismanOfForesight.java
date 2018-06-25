@@ -182,6 +182,7 @@ public class TalismanOfForesight extends Artifact {
 				if (partialCharge > 1 && charge < chargeCap) {
 					partialCharge--;
 					charge++;
+					updateQuickslot();
 				} else if (charge >= chargeCap) {
 					partialCharge = 0;
 					GLog.p( Messages.get(this, "full_charge") );
@@ -199,6 +200,7 @@ public class TalismanOfForesight extends Artifact {
 				GLog.p( Messages.get(this, "levelup") );
 				exp -= 4;
 			}
+			updateQuickslot();
 		}
 
 		@Override
