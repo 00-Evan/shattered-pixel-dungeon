@@ -29,7 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -39,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -140,26 +143,29 @@ public class ScrollOfTeleportation extends Scroll {
 		RegularLevel level = (RegularLevel) Dungeon.level;
 		ArrayList<Integer> candidates = new ArrayList<>();
 		
-		Room r;
-		for (int i = 0; i < level.length(); i++){
-			if (!level.passable[i] || level.visited[i]){
-				continue;
-			}
-			r = level.room(i);
-			if (r == null || Actor.findChar(i) != null){
-				continue;
-			}
-			boolean locked = false;
-			for (Room.Door d : r.connected.values()){
-				if (d.type == Room.Door.Type.LOCKED || d.type == Room.Door.Type.BARRICADE) {
-					locked = true;
-					break;
+		for (Room r : level.rooms()){
+			if (r instanceof SpecialRoom){
+				int terr;
+				boolean locked = false;
+				for (Point p : r.getPoints()){
+					terr = level.map[level.pointToCell(p)];
+					if (terr == Terrain.LOCKED_DOOR || terr == Terrain.BARRICADE){
+						locked = true;
+						break;
+					}
+				}
+				if (locked){
+					continue;
 				}
 			}
-			if (locked){
-				continue;
+			
+			int cell;
+			for (Point p : r.getPoints()){
+				cell = level.pointToCell(p);
+				if (level.passable[cell] && !level.visited[cell] && Actor.findChar(cell) != null){
+					candidates.add(cell);
+				}
 			}
-			candidates.add(i);
 		}
 		
 		if (candidates.isEmpty()){
