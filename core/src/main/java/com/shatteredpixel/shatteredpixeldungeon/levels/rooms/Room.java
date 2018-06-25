@@ -345,16 +345,12 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		return edges;
 	}
 	
-	public String legacyType = "NULL";
-	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( "left", left );
 		bundle.put( "top", top );
 		bundle.put( "right", right );
 		bundle.put( "bottom", bottom );
-		if (!legacyType.equals("NULL"))
-			bundle.put( "type", legacyType );
 	}
 	
 	@Override
@@ -363,11 +359,9 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		top = bundle.getInt( "top" );
 		right = bundle.getInt( "right" );
 		bottom = bundle.getInt( "bottom" );
-		if (bundle.contains( "type" ))
-			legacyType = bundle.getString( "type" );
 	}
 
-	//Note that currently connections and neighbours are not preserved on load
+	//FIXME currently connections and neighbours are not preserved on load
 	public void onLevelLoad( Level level ){
 		//does nothing by default
 	}

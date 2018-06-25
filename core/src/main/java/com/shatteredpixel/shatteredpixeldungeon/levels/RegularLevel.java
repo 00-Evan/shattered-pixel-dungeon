@@ -452,7 +452,7 @@ public abstract class RegularLevel extends Level {
 	public int fallCell( boolean fallIntoPit ) {
 		if (fallIntoPit) {
 			for (Room room : rooms) {
-				if (room instanceof PitRoom || room.legacyType.equals("PIT")) {
+				if (room instanceof PitRoom) {
 					int result;
 					do {
 						result = pointToCell(room.random());
@@ -482,9 +482,9 @@ public abstract class RegularLevel extends Level {
 		rooms = new ArrayList<>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
 		for (Room r : rooms) {
 			r.onLevelLoad( this );
-			if (r instanceof EntranceRoom || r.legacyType.equals("ENTRANCE")){
+			if (r instanceof EntranceRoom ){
 				roomEntrance = r;
-			} else if (r instanceof ExitRoom  || r.legacyType.equals("EXIT")){
+			} else if (r instanceof ExitRoom ){
 				roomExit = r;
 			}
 		}
