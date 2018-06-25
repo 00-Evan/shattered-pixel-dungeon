@@ -63,4 +63,9 @@ public class StoneOfEnchantment extends InventoryStone {
 		useAnimation();
 		
 	}
+	
+	@Override
+	public int price() {
+		return 30 * quantity;
+	}
 }

@@ -54,5 +54,10 @@ public class Rotberry extends Plant {
 
 			plantClass = Rotberry.class;
 		}
+		
+		@Override
+		public int price() {
+			return 30 * quantity;
+		}
 	}
 }

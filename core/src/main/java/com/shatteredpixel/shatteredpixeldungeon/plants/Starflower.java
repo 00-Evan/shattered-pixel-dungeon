@@ -53,5 +53,10 @@ public class Starflower extends Plant {
 
 			plantClass = Starflower.class;
 		}
+		
+		@Override
+		public int price() {
+			return 30 * quantity;
+		}
 	}
 }
