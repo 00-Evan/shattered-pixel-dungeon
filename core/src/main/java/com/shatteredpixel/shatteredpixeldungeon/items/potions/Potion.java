@@ -146,7 +146,7 @@ public class Potion extends Item {
 	@Override
 	public void reset(){
 		super.reset();
-		if (handler != null) {
+		if (handler != null && handler.contains(this)) {
 			image = handler.image(this);
 			color = handler.label(this);
 		}

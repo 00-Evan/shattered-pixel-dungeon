@@ -108,7 +108,7 @@ public class Ring extends KindofMisc {
 	
 	public void reset() {
 		super.reset();
-		if (handler != null){
+		if (handler != null && handler.contains(this)){
 			image = handler.image(this);
 			gem = handler.label(this);
 		}

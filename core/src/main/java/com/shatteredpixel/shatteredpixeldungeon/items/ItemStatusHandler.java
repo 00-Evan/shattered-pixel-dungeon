@@ -136,6 +136,15 @@ public class ItemStatusHandler<T extends Item> {
 		}
 	}
 	
+	public boolean contains( T item ){
+		for (Class<?extends Item> i : items){
+			if (item.getClass().equals(i)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public int image( T item ) {
 		return labelImages.get(label(item));
 	}
