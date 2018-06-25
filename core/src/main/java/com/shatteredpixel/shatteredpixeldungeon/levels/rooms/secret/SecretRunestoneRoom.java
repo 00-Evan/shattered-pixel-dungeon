@@ -92,4 +92,9 @@ public class SecretRunestoneRoom extends SecretRoom {
 	public boolean canPlaceGrass(Point p) {
 		return false;
 	}
+	
+	@Override
+	public boolean canPlaceCharacter(Point p, Level l) {
+		return super.canPlaceCharacter(p, l) && l.map[l.pointToCell(p)] != Terrain.EMPTY_SP;
+	}
 }

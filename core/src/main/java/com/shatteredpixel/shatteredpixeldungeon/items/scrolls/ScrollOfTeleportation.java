@@ -147,7 +147,7 @@ public class ScrollOfTeleportation extends Scroll {
 			if (r instanceof SpecialRoom){
 				int terr;
 				boolean locked = false;
-				for (Point p : r.getPoints()){
+				for (Point p : r.charPlaceablePoints(level)){
 					terr = level.map[level.pointToCell(p)];
 					if (terr == Terrain.LOCKED_DOOR || terr == Terrain.BARRICADE){
 						locked = true;
@@ -160,9 +160,9 @@ public class ScrollOfTeleportation extends Scroll {
 			}
 			
 			int cell;
-			for (Point p : r.getPoints()){
+			for (Point p : r.charPlaceablePoints(level)){
 				cell = level.pointToCell(p);
-				if (level.passable[cell] && !level.visited[cell] && Actor.findChar(cell) != null){
+				if (level.passable[cell] && !level.visited[cell] && Actor.findChar(cell) == null){
 					candidates.add(cell);
 				}
 			}
