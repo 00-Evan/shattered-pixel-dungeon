@@ -91,9 +91,9 @@ public abstract class Trap implements Bundlable {
 
 	public abstract void activate();
 
-	protected void disarm(){
-		Dungeon.level.disarmTrap(pos);
+	public void disarm(){
 		active = false;
+		Dungeon.level.disarmTrap(pos);
 	}
 
 	private static final String POS	= "pos";
