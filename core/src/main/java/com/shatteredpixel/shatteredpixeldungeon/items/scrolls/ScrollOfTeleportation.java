@@ -147,7 +147,7 @@ public class ScrollOfTeleportation extends Scroll {
 			if (r instanceof SpecialRoom){
 				int terr;
 				boolean locked = false;
-				for (Point p : r.charPlaceablePoints(level)){
+				for (Point p : r.getPoints()){
 					terr = level.map[level.pointToCell(p)];
 					if (terr == Terrain.LOCKED_DOOR || terr == Terrain.BARRICADE){
 						locked = true;
