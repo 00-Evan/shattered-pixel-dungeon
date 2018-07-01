@@ -43,7 +43,7 @@ public class ScrollOfMirrorImage extends Scroll {
 		initials = 3;
 	}
 
-	private static final int NIMAGES	= 3;
+	private static final int NIMAGES	= 2;
 	
 	@Override
 	public void doRead() {
@@ -61,8 +61,8 @@ public class ScrollOfMirrorImage extends Scroll {
 	
 	@Override
 	public void empoweredRead() {
-		//spawns 2 images right away, delays 4 of them, 6 total.
-		new DelayedImageSpawner(6 - spawnImages(curUser, 2), 2, 3).attachTo(curUser);
+		//spawns 2 images right away, delays 3 of them, 5 total.
+		new DelayedImageSpawner(5 - spawnImages(curUser, 2), 1, 2).attachTo(curUser);
 		
 		setKnown();
 		

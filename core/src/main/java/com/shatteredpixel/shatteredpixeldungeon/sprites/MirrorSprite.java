@@ -42,7 +42,7 @@ public class MirrorSprite extends MobSprite {
 	@Override
 	public void link( Char ch ) {
 		super.link( ch );
-		updateArmor( ((MirrorImage)ch).tier );
+		updateArmor( ((MirrorImage)ch).armTier );
 	}
 	
 	public void updateArmor( int tier ) {
