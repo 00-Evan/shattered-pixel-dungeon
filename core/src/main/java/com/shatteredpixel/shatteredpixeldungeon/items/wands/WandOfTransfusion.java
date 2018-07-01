@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -32,18 +33,10 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -73,105 +66,64 @@ public class WandOfTransfusion extends Wand {
 		int cell = beam.collisionPos;
 
 		Char ch = Actor.findChar(cell);
-		Heap heap = Dungeon.level.heaps.get(cell);
 
-		//this wand does a bunch of different things depending on what it targets.
-
-		//if we find a character..
 		if (ch != null && ch instanceof Mob){
+			
+			// 10% of max hp
+			int selfDmg = (int)Math.ceil(curUser.HT*0.10f);
 
 			processSoulMark(ch, chargesPerCast());
-
-			//heals an ally, or a charmed enemy
+			
+			//this wand does different things depending on the target.
+			
+			//heals/shields an ally, or a charmed enemy
 			if (ch.alignment == Char.Alignment.ALLY || ch.buff(Charm.class) != null){
-
-				int missingHP = ch.HT - ch.HP;
-				//heals 30%+3%*lvl missing HP.
-				int healing = (int)Math.ceil((missingHP * (0.30f+(0.03f*level()))));
+				
+				int healing = selfDmg + 3*level();
+				int shielding = -(ch.HT - ch.HP - healing);
+				if (shielding > 0){
+					healing -= shielding;
+				}
+				
 				ch.HP += healing;
-				ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1 + level() / 2);
-				ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing);
+				
+				Buff.affect(ch, Barrier.class).set(shielding);
+				
+				ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 2 + level() / 2);
+				ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing + shielding);
 
 			//harms the undead
 			} else if (ch.properties().contains(Char.Property.UNDEAD)){
-
-				//deals 30%+5%*lvl total HP.
-				int damage = (int) Math.ceil(ch.HT*(0.3f+(0.05f*level())));
+				
+				int damage = selfDmg + 3*level();
 				ch.damage(damage, this);
 				ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
 				Sample.INSTANCE.play(Assets.SND_BURNING);
 
 			//charms an enemy
 			} else {
-
-				float duration = 5+level();
-				Buff.affect(ch, Charm.class, duration).object = curUser.id();
-
-				duration *= Random.Float(0.75f, 1f);
-				Buff.affect(curUser, Charm.class, duration).object = ch.id();
+				
+				Buff.affect(ch      , Charm.class, 5 + level()  ).object = curUser.id();
+				Buff.affect(curUser , Charm.class, 5            ).object = ch.id();
 
 				ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 				curUser.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 
 			}
-
-
-		//if we find an item...
-		} else if (heap != null && heap.type == Heap.Type.HEAP){
-			Item item = heap.peek();
-
-			//30% + 10%*lvl chance to uncurse the item and reset it to base level if degraded.
-			if (item != null && Random.Float() <= 0.3f+level()*0.1f){
-				if (item.cursed){
-					item.cursed = false;
-					CellEmitter.get(cell).start( ShadowParticle.UP, 0.05f, 10 );
-					Sample.INSTANCE.play(Assets.SND_BURNING);
-				}
-
-				int lvldiffFromBase = item.level() - (item instanceof Ring ? 1 : 0);
-				if (lvldiffFromBase < 0){
-					item.upgrade(-lvldiffFromBase);
-					CellEmitter.get(cell).start(Speck.factory(Speck.UP), 0.2f, 3);
-					Sample.INSTANCE.play(Assets.SND_BURNING);
-				}
+			
+			if (!freeCharge) {
+				damageHero(selfDmg);
+			} else {
+				freeCharge = false;
 			}
-
-		//if we find some trampled grass...
-		} else if (Dungeon.level.map[cell] == Terrain.GRASS) {
-
-			//regrow one grass tile, suuuuuper useful...
-			Dungeon.level.set(cell, Terrain.HIGH_GRASS);
-			GameScene.updateMap(cell);
-			CellEmitter.get( cell ).burst(LeafParticle.LEVEL_SPECIFIC, 4);
-
-		//If we find embers...
-		} else if (Dungeon.level.map[cell] == Terrain.EMBERS) {
-
-			//30% + 3%*lvl chance to grow a random plant, or just regrow grass.
-			if (Random.Float() <= 0.3f+level()*0.03f) {
-				Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), cell);
-				CellEmitter.get( cell ).burst(LeafParticle.LEVEL_SPECIFIC, 8);
-				GameScene.updateMap(cell);
-			} else{
-				Dungeon.level.set(cell, Terrain.HIGH_GRASS);
-				GameScene.updateMap(cell);
-				CellEmitter.get( cell ).burst(LeafParticle.LEVEL_SPECIFIC, 4);
-			}
-
-		} else
-			return; //don't damage the hero if we can't find a target;
-
-		if (!freeCharge) {
-			damageHero();
-		} else {
-			freeCharge = false;
+			
 		}
+		
 	}
 
 	//this wand costs health too
-	private void damageHero(){
-		// 10% of max hp
-		int damage = (int)Math.ceil(curUser.HT*0.10f);
+	private void damageHero(int damage){
+		
 		curUser.damage(damage, this);
 
 		if (!curUser.isAlive()){
