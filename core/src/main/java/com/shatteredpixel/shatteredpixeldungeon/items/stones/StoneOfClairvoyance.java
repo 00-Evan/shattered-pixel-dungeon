@@ -68,6 +68,7 @@ public class StoneOfClairvoyance extends Runestone {
 				
 				if (FOV[curr]){
 					curUser.sprite.parent.addToBack( new CheckedCell( curr ) );
+					Dungeon.level.mapped[curr] = true;
 					
 					if (Dungeon.level.secret[curr]) {
 						Dungeon.level.discover(curr);
@@ -117,6 +118,7 @@ public class StoneOfClairvoyance extends Runestone {
 		}
 		
 		Sample.INSTANCE.play( Assets.SND_READ );
+		GameScene.updateFog();
 	}
 	
 }
