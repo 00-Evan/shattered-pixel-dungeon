@@ -60,6 +60,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -72,6 +73,9 @@ import java.util.HashSet;
 public class Potion extends Item {
 
 	public static final String AC_DRINK = "DRINK";
+	
+	//used internally for potions that can be drunk or thrown
+	public static final String AC_CHOOSE = "CHOOSE";
 
 	private static final float TIME_TO_DRINK = 1f;
 
@@ -108,6 +112,20 @@ public class Potion extends Item {
 			put("ivory",ItemSpriteSheet.POTION_IVORY);
 		}
 	};
+	
+	private static final HashSet<Class<?extends Potion>> mustThrowPots = new HashSet<>();
+	static{
+		mustThrowPots.add(PotionOfToxicGas.class);
+		mustThrowPots.add(PotionOfLiquidFlame.class);
+		mustThrowPots.add(PotionOfParalyticGas.class);
+		mustThrowPots.add(PotionOfFrost.class);
+	}
+	
+	private static final HashSet<Class<?extends Potion>> canThrowPots = new HashSet<>();
+	static{
+		canThrowPots.add(PotionOfPurity.class);
+		canThrowPots.add(PotionOfLevitation.class);
+	}
 	
 	private static ItemStatusHandler<Potion> handler;
 	
@@ -150,7 +168,14 @@ public class Potion extends Item {
 			image = handler.image(this);
 			color = handler.label(this);
 		}
-	};
+		if (isKnown()){
+			if (mustThrowPots.contains(this.getClass())) {
+				defaultAction = AC_THROW;
+			} else if (canThrowPots.contains(this.getClass())){
+				defaultAction = AC_CHOOSE;
+			}
+		}
+	}
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
@@ -163,13 +188,14 @@ public class Potion extends Item {
 	public void execute( final Hero hero, String action ) {
 
 		super.execute( hero, action );
-
-		if (action.equals( AC_DRINK )) {
+		
+		if (action.equals( AC_CHOOSE )){
 			
-			if (isKnown() && (
-					this instanceof PotionOfLiquidFlame ||
-					this instanceof PotionOfToxicGas ||
-					this instanceof PotionOfParalyticGas)) {
+			GameScene.show(new WndItem(null, this, true) );
+			
+		} else if (action.equals( AC_DRINK )) {
+			
+			if (isKnown() && mustThrowPots.contains(getClass())) {
 				
 					GameScene.show(
 						new WndOptions( Messages.get(Potion.class, "harmful"),
@@ -194,13 +220,9 @@ public class Potion extends Item {
 	@Override
 	public void doThrow( final Hero hero ) {
 
-		if (isKnown() && (
-			this instanceof PotionOfExperience ||
-			this instanceof PotionOfHealing ||
-			this instanceof PotionOfMindVision ||
-			this instanceof PotionOfStrength ||
-			this instanceof PotionOfInvisibility ||
-			this instanceof PotionOfMight)) {
+		if (isKnown()
+				&& !mustThrowPots.contains(this.getClass())
+				&& !canThrowPots.contains(this.getClass())) {
 		
 			GameScene.show(
 				new WndOptions( Messages.get(Potion.class, "beneficial"),
@@ -265,7 +287,7 @@ public class Potion extends Item {
 	}
 	
 	public boolean isKnown() {
-		return handler.isKnown( this );
+		return handler != null && handler.isKnown( this );
 	}
 	
 	public void setKnown() {
@@ -273,6 +295,11 @@ public class Potion extends Item {
 			if (!isKnown()) {
 				handler.know(this);
 				updateQuickslot();
+				if (mustThrowPots.contains(this.getClass())){
+					defaultAction = AC_THROW;
+				} else if (canThrowPots.contains(this.getClass())){
+					defaultAction = AC_CHOOSE;
+				}
 			}
 			
 			if (Dungeon.hero.isAlive()) {

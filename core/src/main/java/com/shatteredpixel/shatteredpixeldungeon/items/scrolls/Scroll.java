@@ -177,7 +177,7 @@ public abstract class Scroll extends Item {
 	}
 	
 	public boolean isKnown() {
-		return handler.isKnown( this );
+		return handler != null && handler.isKnown( this );
 	}
 	
 	public void setKnown() {
