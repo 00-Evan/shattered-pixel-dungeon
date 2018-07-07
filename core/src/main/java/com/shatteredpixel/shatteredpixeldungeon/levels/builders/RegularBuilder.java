@@ -162,6 +162,7 @@ public abstract class RegularBuilder extends Builder {
 				} while (angle == -1 && tries > 0);
 				
 				if (angle == -1) {
+					t.clearConnections();
 					for (Room c : connectingRoomsThisBranch){
 						c.clearConnections();
 						rooms.remove(c);
@@ -188,6 +189,7 @@ public abstract class RegularBuilder extends Builder {
 			} while (angle == -1 && tries > 0);
 			
 			if (angle == -1){
+				r.clearConnections();
 				for (Room t : connectingRoomsThisBranch){
 					t.clearConnections();
 					rooms.remove(t);
