@@ -339,8 +339,9 @@ public class CursedWand {
 
 				} else {
 					ScrollOfTeleportation.teleportHero(user);
-					wand.wandUsed();
+
 				}
+				wand.wandUsed();
 				break;
 
 			//summon monsters
