@@ -19,20 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
+package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class ExplosiveTrap extends Trap {
-
+public class HealingBomb extends Bomb {
+	
 	{
-		color = ORANGE;
-		shape = DIAMOND;
+		image = ItemSpriteSheet.HEAL_BOMB;
 	}
-
-	@Override
-	public void activate() {
-		new Bomb().explode(pos);
-	}
-
+	
 }

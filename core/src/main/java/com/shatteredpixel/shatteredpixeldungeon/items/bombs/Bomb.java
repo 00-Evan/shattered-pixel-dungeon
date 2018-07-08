@@ -19,17 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items;
+package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -41,6 +48,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Bomb extends Item {
 	
@@ -62,7 +70,7 @@ public class Bomb extends Item {
 
 	@Override
 	public boolean isSimilar(Item item) {
-		return item instanceof Bomb && this.fuse == ((Bomb) item).fuse;
+		return item.getClass() == getClass() && this.fuse == ((Bomb) item).fuse;
 	}
 
 	@Override
@@ -275,6 +283,70 @@ public class Bomb extends Item {
 				return true;
 			}
 			return false;
+		}
+	}
+	
+	public static class EnhanceBomb extends Recipe {
+		
+		private static final HashMap<Class<?extends Item>, Class<?extends Bomb>> validIngredients = new HashMap<>();
+		static {
+			validIngredients.put(PotionOfHealing.class, HealingBomb.class);
+		}
+		
+		@Override
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			boolean seedOrStone = false;
+			boolean bomb = false;
+			boolean ingredient = false;
+			
+			for (Item i : ingredients){
+				if (i instanceof Plant.Seed || i instanceof Runestone){
+					seedOrStone = true;
+				} else if (i.getClass().equals(Bomb.class)){
+					bomb = true;
+				} else if (validIngredients.containsKey(i.getClass())){
+					ingredient = true;
+				}
+			}
+			
+			return seedOrStone && bomb && ingredient;
+		}
+		
+		@Override
+		public int cost(ArrayList<Item> ingredients) {
+			return 0;
+		}
+		
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			Item result = null;
+			
+			for (Item i : ingredients){
+				i.quantity(i.quantity()-1);
+				if (validIngredients.containsKey(i.getClass())){
+					try {
+						result = validIngredients.get(i.getClass()).newInstance();
+					} catch (Exception e) {
+						ShatteredPixelDungeon.reportException(e);
+					}
+				}
+			}
+			
+			return result;
+		}
+		
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			for (Item i : ingredients){
+				if (validIngredients.containsKey(i.getClass())){
+					try {
+						return validIngredients.get(i.getClass()).newInstance();
+					} catch (Exception e) {
+						ShatteredPixelDungeon.reportException(e);
+					}
+				}
+			}
+			return null;
 		}
 	}
 }

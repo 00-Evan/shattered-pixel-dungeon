@@ -132,6 +132,10 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.Weightstone" );
 		
+		//v0.7.0
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.Bomb" );
 	}
 	
 	@Override

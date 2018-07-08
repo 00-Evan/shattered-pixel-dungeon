@@ -145,16 +145,37 @@ public class ItemStatusHandler<T extends Item> {
 		return false;
 	}
 	
+	public boolean contains( Class<?extends T> itemCls ){
+		for (Class<?extends Item> i : items){
+			if (itemCls.equals(i)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public int image( T item ) {
 		return labelImages.get(label(item));
+	}
+	
+	public int image( Class<?extends T> itemCls ) {
+		return labelImages.get(label(itemCls));
 	}
 	
 	public String label( T item ) {
 		return itemLabels.get(item.getClass());
 	}
 	
+	public String label( Class<?extends T> itemCls ){
+		return itemLabels.get( itemCls );
+	}
+	
 	public boolean isKnown( T item ) {
 		return known.contains( item.getClass() );
+	}
+	
+	public boolean isKnown( Class<?extends T> itemCls ){
+		return known.contains( itemCls );
 	}
 	
 	public void know( T item ) {

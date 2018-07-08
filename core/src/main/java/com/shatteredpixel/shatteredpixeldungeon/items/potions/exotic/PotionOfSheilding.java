@@ -19,20 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
+package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
-
-public class ExplosiveTrap extends Trap {
-
-	{
-		color = ORANGE;
-		shape = DIAMOND;
-	}
-
-	@Override
-	public void activate() {
-		new Bomb().explode(pos);
-	}
-
+public class PotionOfSheilding extends ExoticPotion {
 }

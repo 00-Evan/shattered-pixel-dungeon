@@ -127,7 +127,7 @@ public class Potion extends Item {
 		canThrowPots.add(PotionOfLevitation.class);
 	}
 	
-	private static ItemStatusHandler<Potion> handler;
+	protected static ItemStatusHandler<Potion> handler;
 	
 	private String color;
 

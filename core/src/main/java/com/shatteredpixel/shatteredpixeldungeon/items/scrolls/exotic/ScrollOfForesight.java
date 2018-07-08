@@ -19,20 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
+package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
-
-public class ExplosiveTrap extends Trap {
-
-	{
-		color = ORANGE;
-		shape = DIAMOND;
-	}
-
+public class ScrollOfForesight extends ExoticScroll {
 	@Override
-	public void activate() {
-		new Bomb().explode(pos);
+	public void doRead() {
+	
 	}
-
 }

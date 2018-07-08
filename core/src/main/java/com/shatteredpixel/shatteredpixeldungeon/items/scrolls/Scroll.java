@@ -93,7 +93,7 @@ public abstract class Scroll extends Item {
 		}
 	};
 	
-	private static ItemStatusHandler<Scroll> handler;
+	protected static ItemStatusHandler<Scroll> handler;
 	
 	private String rune;
 
