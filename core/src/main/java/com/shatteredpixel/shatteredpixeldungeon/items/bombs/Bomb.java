@@ -33,7 +33,14 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -158,7 +165,7 @@ public class Bomb extends Item {
 					}
 
 					if (ch == Dungeon.hero && !ch.isAlive())
-						Dungeon.fail( getClass() );
+						Dungeon.fail( Bomb.class );
 				}
 			}
 		}
@@ -249,6 +256,9 @@ public class Bomb extends Item {
 			for (Heap heap : Dungeon.level.heaps.values()) {
 				if (heap.items.contains(bomb)) {
 					heap.items.remove(bomb);
+					if (heap.items.isEmpty()){
+						heap.destroy();
+					}
 
 					bomb.explode(heap.pos);
 
@@ -290,7 +300,14 @@ public class Bomb extends Item {
 		
 		private static final HashMap<Class<?extends Item>, Class<?extends Bomb>> validIngredients = new HashMap<>();
 		static {
-			validIngredients.put(PotionOfHealing.class, HealingBomb.class);
+			validIngredients.put(PotionOfLiquidFlame.class,     Firebomb.class);
+			validIngredients.put(PotionOfFrost.class,           FrostBomb.class);
+			validIngredients.put(PotionOfHealing.class,         HealingBomb.class);
+			validIngredients.put(PotionOfInvisibility.class,    Flashbang.class);
+			validIngredients.put(ScrollOfRecharging.class,      ShockBomb.class);
+			validIngredients.put(ScrollOfRemoveCurse.class,     HolyBomb.class);
+			validIngredients.put(ScrollOfMirrorImage.class,     WoollyBomb.class);
+			validIngredients.put(ScrollOfRage.class,            Noisemaker.class);
 		}
 		
 		@Override

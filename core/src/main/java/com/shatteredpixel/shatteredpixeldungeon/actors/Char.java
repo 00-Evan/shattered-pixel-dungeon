@@ -109,7 +109,7 @@ public abstract class Char extends Actor {
 	
 	public int viewDistance	= 8;
 	
-	protected boolean[] fieldOfView = null;
+	public boolean[] fieldOfView = null;
 	
 	private HashSet<Buff> buffs = new HashSet<>();
 	

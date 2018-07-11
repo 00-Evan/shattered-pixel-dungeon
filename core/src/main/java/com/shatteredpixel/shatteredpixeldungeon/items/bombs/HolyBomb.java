@@ -25,45 +25,44 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 
-public class HealingBomb extends Bomb {
+public class HolyBomb extends Bomb {
 	
 	{
 		//TODO visuals
-		image = ItemSpriteSheet.HEAL_BOMB;
+		image = ItemSpriteSheet.HOLY_BOMB;
 	}
 	
 	@Override
 	public void explode(int cell) {
-		//We're blowing up, so no need for a fuse anymore.
-		this.fuse = null;
-		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
+		super.explode(cell);
 		
 		if (Dungeon.level.heroFOV[cell]) {
-			CellEmitter.center( cell ).burst( BlastParticle.FACTORY, 30 );
+			new Flare(10, 64).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(cell), 2f);
 		}
-		
-		//no regular explosion damage
 		
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				Char ch = Actor.findChar(i);
-				if (ch != null){
-					Buff.affect( ch, Healing.class ).setHeal((int)(0.5f*ch.HT + 30), 0.333f, 0);
-					PotionOfHealing.cure( ch );
+				Char n = Actor.findChar(i);
+				if (n != null) {
+					Buff.prolong(n, Blindness.class, 1f);
+					if (n.properties().contains(Char.Property.UNDEAD) || n.properties().contains(Char.Property.DEMONIC)){
+						//TODO decide on damage numbers and other effects here
+						n.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+					}
 				}
 			}
 		}
+		Sample.INSTANCE.play( Assets.SND_READ );
 	}
 }

@@ -24,22 +24,22 @@ package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
-public class HealingBomb extends Bomb {
+public class WoollyBomb extends Bomb {
 	
 	{
 		//TODO visuals
-		image = ItemSpriteSheet.HEAL_BOMB;
+		image = ItemSpriteSheet.WOOLY_BOMB;
 	}
 	
 	@Override
@@ -58,12 +58,21 @@ public class HealingBomb extends Bomb {
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				Char ch = Actor.findChar(i);
-				if (ch != null){
-					Buff.affect( ch, Healing.class ).setHeal((int)(0.5f*ch.HT + 30), 0.333f, 0);
-					PotionOfHealing.cure( ch );
+				if (Dungeon.level.insideMap(i)
+						&& Actor.findChar(i) == null
+						&& !(Dungeon.level.pit[i])) {
+					Sheep sheep = new Sheep();
+					sheep.lifespan = Random.NormalIntRange( 8, 16 );
+					sheep.pos = i;
+					Dungeon.level.press(sheep.pos, sheep);
+					GameScene.add(sheep);
+					CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
 				}
 			}
 		}
+		
+		Sample.INSTANCE.play(Assets.SND_PUFF);
+		
+		
 	}
 }

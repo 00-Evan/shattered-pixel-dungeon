@@ -132,12 +132,26 @@ public class ItemSpriteSheet {
 	private static final int BOMBS          =                               xy(1, 5);   //16 slots
 	public static final int BOMB            = BOMBS+0;
 	public static final int DBL_BOMB        = BOMBS+1;
-	public static final int HEAL_BOMB       = BOMBS+2;
+	public static final int FIRE_BOMB       = BOMBS+2;
+	public static final int FROST_BOMB      = BOMBS+3;
+	public static final int HEAL_BOMB       = BOMBS+4;
+	public static final int FLASHBANG       = BOMBS+5;
+	public static final int SHOCK_BOMB      = BOMBS+6;
+	public static final int HOLY_BOMB       = BOMBS+7;
+	public static final int WOOLY_BOMB      = BOMBS+8;
+	public static final int NOISEMAKER      = BOMBS+9;
 	
 	static{
 		assignItemRect(BOMB,            10, 13);
 		assignItemRect(DBL_BOMB,        14, 13);
+		assignItemRect(FIRE_BOMB,       10, 13);
+		assignItemRect(FROST_BOMB,      10, 13);
 		assignItemRect(HEAL_BOMB,       10, 13);
+		assignItemRect(FLASHBANG,       10, 13);
+		assignItemRect(SHOCK_BOMB,      10, 13);
+		assignItemRect(HOLY_BOMB,       10, 13);
+		assignItemRect(WOOLY_BOMB,      10, 13);
+		assignItemRect(NOISEMAKER,      10, 13);
 	}
 
 	
