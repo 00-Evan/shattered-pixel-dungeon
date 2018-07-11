@@ -73,6 +73,8 @@ public class StatusPane extends Component {
 	private MenuButton btnMenu;
 
 	private Toolbar.PickedUpItem pickedUp;
+	
+	private BitmapText version;
 
 	@Override
 	protected void createChildren() {
@@ -135,6 +137,10 @@ public class StatusPane extends Component {
 		add( buffs );
 
 		add( pickedUp = new Toolbar.PickedUpItem());
+		
+		version = new BitmapText( "v" + Game.version, PixelScene.pixelFont);
+		version.hardlight( 0xCCCCCC );
+		add(version);
 	}
 
 	@Override
@@ -168,6 +174,12 @@ public class StatusPane extends Component {
 		btnJournal.setPos( width - 42, 1 );
 
 		btnMenu.setPos( width - btnMenu.width(), 1 );
+		
+		version.scale.set(PixelScene.align(0.5f));
+		version.measure();
+		version.x = width - version.width();
+		version.y = btnMenu.bottom() + (4 - version.baseLine());
+		PixelScene.align(version);
 	}
 	
 	private static final int[] warningColors = new int[]{0x660000, 0xCC0000, 0x660000};
