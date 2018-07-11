@@ -139,7 +139,7 @@ public class StatusPane extends Component {
 		add( pickedUp = new Toolbar.PickedUpItem());
 		
 		version = new BitmapText( "v" + Game.version, PixelScene.pixelFont);
-		version.hardlight( 0xCCCCCC );
+		version.alpha( 0.5f );
 		add(version);
 	}
 
