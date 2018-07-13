@@ -43,12 +43,20 @@ public abstract class ExoticScroll extends Scroll {
 	
 	@Override
 	public boolean isKnown() {
-		//assume it is IDed as ided scrolls are needed for alchemy
-		return true;
+		return handler != null && handler.isKnown( exoToReg.get(this.getClass()) );
+	}
+	
+	@Override
+	public void setKnown() {
+		if (!isKnown()) {
+			handler.know(exoToReg.get(this.getClass()));
+			updateQuickslot();
+		}
 	}
 	
 	@Override
 	public void reset() {
+		super.reset();
 		if (handler != null && handler.contains(exoToReg.get(this.getClass()))) {
 			image = handler.image(exoToReg.get(this.getClass())) + 16;
 		}
@@ -57,6 +65,12 @@ public abstract class ExoticScroll extends Scroll {
 	@Override
 	public void empoweredRead() {
 	
+	}
+	
+	//TODO
+	@Override
+	public int price() {
+		return super.price();
 	}
 	
 	public static class ScrollToExotic extends Recipe {

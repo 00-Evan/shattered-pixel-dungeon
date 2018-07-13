@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
@@ -46,15 +47,33 @@ public class ExoticPotion extends Potion {
 	
 	@Override
 	public boolean isKnown() {
-		//assume it is IDed as ided potions are needed for alchemy
-		return true;
+		return handler != null && handler.isKnown( exoToReg.get(this.getClass()) );
+	}
+	
+	@Override
+	public void setKnown() {
+		if (!isKnown()) {
+			handler.know(exoToReg.get(this.getClass()));
+			updateQuickslot();
+			Potion p = Dungeon.hero.belongings.getItem(getClass());
+			if (p != null)  p.setAction();
+			p = Dungeon.hero.belongings.getItem(exoToReg.get(this.getClass()));
+			if (p != null)  p.setAction();
+		}
 	}
 	
 	@Override
 	public void reset() {
+		super.reset();
 		if (handler != null && handler.contains(exoToReg.get(this.getClass()))) {
 			image = handler.image(exoToReg.get(this.getClass())) + 16;
 		}
+	}
+	
+	//TODO
+	@Override
+	public int price() {
+		return super.price();
 	}
 	
 	public static class PotionToExotic extends Recipe{

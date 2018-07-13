@@ -182,6 +182,10 @@ public class ItemStatusHandler<T extends Item> {
 		known.add( (Class<? extends T>)item.getClass() );
 	}
 	
+	public void know( Class<?extends T> itemCls ){
+		known.add( itemCls );
+	}
+	
 	public HashSet<Class<? extends T>> known() {
 		return known;
 	}
