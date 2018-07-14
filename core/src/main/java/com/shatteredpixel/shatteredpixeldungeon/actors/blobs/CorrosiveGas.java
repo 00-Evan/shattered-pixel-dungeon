@@ -33,6 +33,7 @@ import com.watabou.utils.Bundle;
 
 public class CorrosiveGas extends Blob {
 
+	//FIXME should have strength per-cell
 	private int strength = 0;
 
 	@Override
@@ -57,9 +58,11 @@ public class CorrosiveGas extends Blob {
 		}
 	}
 
-	public void setStrength(int str){
-		if (str > strength)
+	public CorrosiveGas setStrength(int str){
+		if (str > strength) {
 			strength = str;
+		}
+		return this;
 	}
 
 	private static final String STRENGTH = "strength";

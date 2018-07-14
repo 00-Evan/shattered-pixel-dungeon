@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 
 import java.util.ArrayList;
@@ -39,6 +41,13 @@ public abstract class ExoticScroll extends Scroll {
 	static{
 		regToExo.put(ScrollOfIdentify.class, ScrollOfForesight.class);
 		exoToReg.put(ScrollOfForesight.class, ScrollOfIdentify.class);
+		
+		regToExo.put(ScrollOfUpgrade.class, ScrollOfEnchantment.class);
+		exoToReg.put(ScrollOfEnchantment.class, ScrollOfUpgrade.class);
+		
+		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
+		
 	}
 	
 	@Override

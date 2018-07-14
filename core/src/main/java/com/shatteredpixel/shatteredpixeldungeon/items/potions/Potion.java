@@ -41,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCorrosiveGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -121,6 +123,10 @@ public class Potion extends Item {
 		mustThrowPots.add(PotionOfLiquidFlame.class);
 		mustThrowPots.add(PotionOfParalyticGas.class);
 		mustThrowPots.add(PotionOfFrost.class);
+		
+		//exotic
+		mustThrowPots.add(PotionOfCorrosiveGas.class);
+		mustThrowPots.add(PotionOfSnapFreeze.class);
 	}
 	
 	private static final HashSet<Class<?extends Potion>> canThrowPots = new HashSet<>();
@@ -313,8 +319,10 @@ public class Potion extends Item {
 				updateQuickslot();
 				Potion p = Dungeon.hero.belongings.getItem(getClass());
 				if (p != null)  p.setAction();
-				p = Dungeon.hero.belongings.getItem(ExoticPotion.regToExo.get(getClass()));
-				if (p != null)  p.setAction();
+				if (ExoticPotion.regToExo.get(getClass()) != null) {
+					p = Dungeon.hero.belongings.getItem(ExoticPotion.regToExo.get(getClass()));
+					if (p != null) p.setAction();
+				}
 			}
 			
 			if (Dungeon.hero.isAlive()) {

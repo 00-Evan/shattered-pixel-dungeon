@@ -21,5 +21,25 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
-public class PotionOfSheilding extends ExoticPotion {
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.noosa.audio.Sample;
+
+public class PotionOfCorrosiveGas extends ExoticPotion {
+	
+	@Override
+	public void shatter( int cell ) {
+		
+		if (Dungeon.level.heroFOV[cell]) {
+			setKnown();
+			
+			splash( cell );
+			Sample.INSTANCE.play( Assets.SND_SHATTER );
+		}
+		
+		GameScene.add( Blob.seed( cell, 100, CorrosiveGas.class ).setStrength( 1 + Dungeon.depth/5));
+	}
 }

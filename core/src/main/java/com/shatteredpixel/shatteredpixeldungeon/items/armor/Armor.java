@@ -529,16 +529,28 @@ public class Armor extends EquipableItem {
 				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class,
 				Brimstone.class, Stone.class, Entanglement.class, Repulsion.class, Camouflage.class, Flow.class,
 				Affection.class, AntiMagic.class, Thorns.class };
-		private static final float[] chances= new float[]{
-				10, 10, 10, 10,
-				5, 5, 5, 5, 5, 5,
-				2, 2, 2 };
+		
+		private static final Class<?>[] common = new Class<?>[]{
+				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class };
+		
+		private static final Class<?>[] uncommon = new Class<?>[]{
+				Brimstone.class, Stone.class, Entanglement.class,
+				Repulsion.class, Camouflage.class, Flow.class };
+		
+		private static final Class<?>[] rare = new Class<?>[]{
+				Affection.class, AntiMagic.class, Thorns.class };
+		
+		private static final float[] typeChances = new float[]{
+				40, //10 each
+				30, // 5 each
+				6   // 2 each
+		};
 
 		private static final Class<?>[] curses = new Class<?>[]{
 				AntiEntropy.class, Corrosion.class, Displacement.class, Metabolism.class,
 				Multiplicity.class, Stench.class, Overgrowth.class, Bulk.class
 		};
-			
+		
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
 		
 		public String name() {
@@ -572,14 +584,46 @@ public class Armor extends EquipableItem {
 
 		@SuppressWarnings("unchecked")
 		public static Glyph random() {
+			switch(Random.chances(typeChances)){
+				case 0: default:
+					return randomCommon();
+				case 1:
+					return randomUncommon();
+				case 2:
+					return randomRare();
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		public static Glyph randomCommon(){
 			try {
-				return ((Class<Glyph>)glyphs[ Random.chances( chances ) ]).newInstance();
+				return ((Class<Glyph>)Random.oneOf(common)).newInstance();
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 				return null;
 			}
 		}
-
+		
+		@SuppressWarnings("unchecked")
+		public static Glyph randomUncommon(){
+			try {
+				return ((Class<Glyph>)Random.oneOf(uncommon)).newInstance();
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+				return null;
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		public static Glyph randomRare(){
+			try {
+				return ((Class<Glyph>)Random.oneOf(rare)).newInstance();
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+				return null;
+			}
+		}
+		
 		@SuppressWarnings("unchecked")
 		public static Glyph randomCurse(){
 			try {

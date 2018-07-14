@@ -222,6 +222,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		play( operate );
 	}
 	
+	public void operate( int cell, Callback callback ) {
+		animCallback = callback;
+		turnTo( ch.pos, cell );
+		play( operate );
+	}
+	
 	public void zap( int cell ) {
 		turnTo( ch.pos, cell );
 		play( zap );

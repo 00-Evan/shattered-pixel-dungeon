@@ -26,7 +26,12 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 
 import java.util.ArrayList;
@@ -41,8 +46,23 @@ public class ExoticPotion extends Potion {
 	public static final HashMap<Class<?extends Potion>, Class<?extends ExoticPotion>> regToExo = new HashMap<>();
 	public static final HashMap<Class<?extends ExoticPotion>, Class<?extends Potion>> exoToReg = new HashMap<>();
 	static{
-		regToExo.put(PotionOfHealing.class, PotionOfSheilding.class);
-		exoToReg.put(PotionOfSheilding.class, PotionOfHealing.class);
+		regToExo.put(PotionOfHealing.class, PotionOfShielding.class);
+		exoToReg.put(PotionOfShielding.class, PotionOfHealing.class);
+		
+		regToExo.put(PotionOfToxicGas.class, PotionOfCorrosiveGas.class);
+		exoToReg.put(PotionOfCorrosiveGas.class, PotionOfToxicGas.class);
+		
+		regToExo.put(PotionOfStrength.class, PotionOfAdrenalineSurge.class);
+		exoToReg.put(PotionOfAdrenalineSurge.class, PotionOfStrength.class);
+		
+		regToExo.put(PotionOfFrost.class, PotionOfSnapFreeze.class);
+		exoToReg.put(PotionOfSnapFreeze.class, PotionOfFrost.class);
+		
+		regToExo.put(PotionOfHaste.class, PotionOfStamina.class);
+		exoToReg.put(PotionOfStamina.class, PotionOfHaste.class);
+		
+		regToExo.put(PotionOfLiquidFlame.class, PotionOfDragonsBreath.class);
+		exoToReg.put(PotionOfDragonsBreath.class, PotionOfLiquidFlame.class);
 	}
 	
 	@Override

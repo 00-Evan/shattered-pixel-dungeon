@@ -265,20 +265,28 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public static abstract class Enchantment implements Bundlable {
-
-		private static final Class<?>[] enchants = new Class<?>[]{
-			Blazing.class, Venomous.class, Vorpal.class, Shocking.class,
-			Chilling.class, Eldritch.class, Lucky.class, Projecting.class, Unstable.class, Dazzling.class,
-			Grim.class, Stunning.class, Vampiric.class,};
-		private static final float[] chances= new float[]{
-			10, 10, 10, 10,
-			5, 5, 5, 5, 5, 5,
-			2, 2, 2 };
-
+		
+		private static final Class<?>[] common = new Class<?>[]{
+				Blazing.class, Venomous.class, Vorpal.class, Shocking.class};
+		
+		private static final Class<?>[] uncommon = new Class<?>[]{
+				Chilling.class, Eldritch.class, Lucky.class,
+				Projecting.class, Unstable.class, Dazzling.class};
+		
+		private static final Class<?>[] rare = new Class<?>[]{
+				Grim.class, Stunning.class, Vampiric.class};
+		
+		private static final float[] typeChances = new float[]{
+				40, //10 each
+				30, // 5 each
+				6   // 2 each
+		};
+		
 		private static final Class<?>[] curses = new Class<?>[]{
 				Annoying.class, Displacing.class, Exhausting.class, Fragile.class,
 				Sacrificial.class, Wayward.class, Elastic.class, Friendly.class
 		};
+		
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
@@ -313,8 +321,40 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		@SuppressWarnings("unchecked")
 		public static Enchantment random() {
+			switch(Random.chances(typeChances)){
+				case 0: default:
+					return randomCommon();
+				case 1:
+					return randomUncommon();
+				case 2:
+					return randomRare();
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		public static Enchantment randomCommon() {
 			try {
-				return ((Class<Enchantment>)enchants[ Random.chances( chances ) ]).newInstance();
+				return ((Class<Enchantment>)Random.oneOf(common)).newInstance();
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+				return null;
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		public static Enchantment randomUncommon() {
+			try {
+				return ((Class<Enchantment>)Random.oneOf(uncommon)).newInstance();
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+				return null;
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		public static Enchantment randomRare() {
+			try {
+				return ((Class<Enchantment>)Random.oneOf(rare)).newInstance();
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 				return null;

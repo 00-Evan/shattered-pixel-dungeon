@@ -59,7 +59,7 @@ public abstract class Scroll extends Item {
 	
 	protected static final float TIME_TO_READ	= 1f;
 
-	protected int initials;
+	protected Integer initials;
 
 	private static final Class<?>[] scrolls = {
 		ScrollOfIdentify.class,

@@ -139,7 +139,7 @@ public class Ring extends KindofMisc {
 		return handler != null && handler.isKnown( this );
 	}
 	
-	protected void setKnown() {
+	public void setKnown() {
 		if (!isKnown()) {
 			handler.know( this );
 		}

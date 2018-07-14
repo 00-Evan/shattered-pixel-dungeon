@@ -76,6 +76,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
@@ -198,6 +199,11 @@ public class Hero extends Char {
 		int STR = this.STR;
 
 		STR += RingOfMight.strengthBonus( this );
+		
+		PotionOfAdrenalineSurge.strBoost buff = buff(PotionOfAdrenalineSurge.strBoost.class);
+		if (buff != null){
+			STR += buff.boost();
+		}
 
 		return (buff(Weakness.class) != null) ? STR - 2 : STR;
 	}
