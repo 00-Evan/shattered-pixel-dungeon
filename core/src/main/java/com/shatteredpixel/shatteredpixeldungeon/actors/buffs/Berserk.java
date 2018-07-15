@@ -76,10 +76,10 @@ public class Berserk extends Buff {
 	@Override
 	public boolean act() {
 		if (berserking()){
+			WarriorShield buff = target.buff(WarriorShield.class);
 			if (target.HP <= 0) {
-				target.SHLD -=  1 + Math.ceil(target.SHLD * 0.1f);
-				if (target.SHLD <= 0) {
-					target.SHLD = 0;
+				buff.absorbDamage(1 + (int)Math.ceil(target.shielding() * 0.1f));
+				if (target.shielding() <= 0) {
 					target.die(this);
 					if (!target.isAlive()) Dungeon.fail(this.getClass());
 				}
@@ -87,7 +87,7 @@ public class Berserk extends Buff {
 				state = State.RECOVERING;
 				levelRecovery = LEVEL_RECOVER_START;
 				BuffIndicator.refreshHero();
-				target.SHLD = 0;
+				buff.absorbDamage(buff.shielding());
 				power = 0f;
 			}
 		} else if (state == State.NORMAL) {
@@ -114,7 +114,7 @@ public class Berserk extends Buff {
 			if (shield != null){
 				state = State.BERSERK;
 				BuffIndicator.refreshHero();
-				target.SHLD = shield.maxShield() * 10;
+				shield.supercharge(shield.maxShield() * 10);
 
 				SpellSprite.show(target, SpellSprite.BERSERK);
 				Sample.INSTANCE.play( Assets.SND_CHALLENGE );
@@ -123,7 +123,7 @@ public class Berserk extends Buff {
 
 		}
 
-		return state == State.BERSERK && target.SHLD > 0;
+		return state == State.BERSERK && target.shielding() > 0;
 	}
 	
 	public void damage(int damage){

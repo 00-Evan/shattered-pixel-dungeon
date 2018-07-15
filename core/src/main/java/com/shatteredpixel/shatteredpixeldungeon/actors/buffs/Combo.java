@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -266,7 +267,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					}
 					break;
 				case SLAM:
-					target.SHLD = Math.max( target.SHLD, dmg/2);
+					BrokenSeal.WarriorShield shield = Buff.affect(target, BrokenSeal.WarriorShield.class);
+					if (shield != null) {
+						shield.supercharge(dmg / 2);
+					}
 					break;
 				default:
 					//nothing

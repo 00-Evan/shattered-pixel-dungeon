@@ -131,7 +131,7 @@ public class GamesInProgress {
 		info.exp = hero.exp;
 		info.hp = hero.HP;
 		info.ht = hero.HT;
-		info.shld = hero.SHLD;
+		info.shld = hero.shielding();
 		info.heroClass = hero.heroClass;
 		info.subClass = hero.subClass;
 		info.armorTier = hero.tier();

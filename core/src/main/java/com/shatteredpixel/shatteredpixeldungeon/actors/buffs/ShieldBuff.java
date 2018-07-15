@@ -21,45 +21,61 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.utils.Bundle;
 
-public class Barrier extends ShieldBuff {
+public abstract class ShieldBuff extends Buff {
 	
-	//TODO icon and description for phase 2
+	protected int shielding;
 	
 	@Override
-	public boolean act() {
-		
-		absorbDamage(1);
-		
-		if (shielding <= 0){
+	public boolean attachTo(Char target) {
+		if (super.attachTo(target)) {
+			target.needsShieldUpdate = true;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public void detach() {
+		target.needsShieldUpdate = true;
+		super.detach();
+	}
+	
+	public int shielding(){
+		return shielding;
+	}
+	
+	//returns the amount of damage leftover
+	public int absorbDamage( int dmg ){
+		if (shielding >= dmg){
+			shielding -= dmg;
+			dmg = 0;
+		} else {
+			dmg -= shielding;
+			shielding = 0;
+		}
+		if (shielding == 0){
 			detach();
 		}
-		
-		spend( TICK );
-		
-		return true;
+		target.needsShieldUpdate = true;
+		return dmg;
 	}
 	
-	public void set( int s ){
-		if (shielding < s){
-			shielding = s;
-		}
-	}
+	private static final String SHIELDING = "shielding";
 	
 	@Override
-	public void fx(boolean on) {
-		if (on) target.sprite.add(CharSprite.State.SHIELDED);
-		else target.sprite.remove(CharSprite.State.SHIELDED);
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( SHIELDING, shielding);
 	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		if (bundle.contains("level")) {
-			//TODO pre beta-2.0, remove in full release
-			shielding = bundle.getInt("level");
-		}
+		shielding = bundle.getInt( SHIELDING );
 	}
+	
 }

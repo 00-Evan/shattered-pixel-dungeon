@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -99,25 +99,35 @@ public class BrokenSeal extends Item {
 		}
 	};
 
-	public static class WarriorShield extends Buff {
+	public static class WarriorShield extends ShieldBuff {
 
 		private Armor armor;
 		private float partialShield;
 
 		@Override
 		public synchronized boolean act() {
-			if (armor == null) detach();
-			else if (armor.isEquipped((Hero)target)) {
-				if (target.SHLD < maxShield()){
-					partialShield += 1/(35*Math.pow(0.885f, (maxShield() - target.SHLD - 1)));
-				}
+			if (shielding < maxShield()) {
+				partialShield += 1/(35*Math.pow(0.885f, (maxShield() - shielding - 1)));
 			}
+			
 			while (partialShield >= 1){
-				target.SHLD++;
+				shielding++;
 				partialShield--;
+				target.needsShieldUpdate = true;
 			}
+			
+			if (shielding <= 0 && maxShield() <= 0){
+				detach();
+			}
+			
 			spend(TICK);
 			return true;
+		}
+		
+		public synchronized void supercharge(int maxShield){
+			if (maxShield > shielding){
+				shielding = maxShield;
+			}
 		}
 
 		public synchronized void setArmor(Armor arm){
@@ -125,7 +135,12 @@ public class BrokenSeal extends Item {
 		}
 
 		public synchronized int maxShield() {
-			return 1 + armor.tier + armor.level();
+			if (armor != null && armor.isEquipped((Hero)target)) {
+				return 1 + armor.tier + armor.level();
+			} else {
+				return 0;
+			}
 		}
+		
 	}
 }

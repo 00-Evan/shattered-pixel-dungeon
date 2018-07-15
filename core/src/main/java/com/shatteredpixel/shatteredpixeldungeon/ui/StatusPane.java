@@ -187,9 +187,9 @@ public class StatusPane extends Component {
 	@Override
 	public void update() {
 		super.update();
-
+		
 		float health = Dungeon.hero.HP;
-		float shield = Dungeon.hero.SHLD;
+		float shield = Dungeon.hero.shielding();
 		float max = Dungeon.hero.HT;
 
 		if (!Dungeon.hero.isAlive()) {

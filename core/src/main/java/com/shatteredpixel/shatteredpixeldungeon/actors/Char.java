@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -47,12 +48,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
@@ -90,7 +94,6 @@ public abstract class Char extends Actor {
 	
 	public int HT;
 	public int HP;
-	public int SHLD;
 	
 	protected float baseSpeed	= 1;
 	protected PathFinder.Path path;
@@ -137,7 +140,6 @@ public abstract class Char extends Actor {
 		bundle.put( POS, pos );
 		bundle.put( TAG_HP, HP );
 		bundle.put( TAG_HT, HT );
-		bundle.put( TAG_SHLD, SHLD );
 		bundle.put( BUFFS, buffs );
 	}
 	
@@ -149,11 +151,25 @@ public abstract class Char extends Actor {
 		pos = bundle.getInt( POS );
 		HP = bundle.getInt( TAG_HP );
 		HT = bundle.getInt( TAG_HT );
-		SHLD = bundle.getInt( TAG_SHLD );
 		
 		for (Bundlable b : bundle.getCollection( BUFFS )) {
 			if (b != null) {
 				((Buff)b).attachTo( this );
+			}
+		}
+		
+		//pre-0.7.0
+		if (bundle.contains( "SHLD" )){
+			int legacySHLD = bundle.getInt( "SHLD" );
+			//attempt to find the buff that may have given the shield
+			ShieldBuff buff = buff(Brimstone.BrimstoneShield.class);
+			if (buff != null) legacySHLD -= buff.shielding();
+			//pre beta-2.0, remove for full release
+			buff = buff(Barrier.class);
+			if (buff != null) legacySHLD -= buff.shielding();
+			if (legacySHLD > 0){
+				BrokenSeal.WarriorShield buff2 = buff(BrokenSeal.WarriorShield.class);
+				if (buff != null) buff2.supercharge(legacySHLD);
 			}
 		}
 	}
@@ -288,6 +304,23 @@ public abstract class Char extends Actor {
 		return speed;
 	}
 	
+	//used so that buffs(Shieldbuff.class) isn't called every time unnecessarily
+	private int cachedShield = 0;
+	public boolean needsShieldUpdate = true;
+	
+	public int shielding(){
+		if (!needsShieldUpdate){
+			return cachedShield;
+		}
+		
+		cachedShield = 0;
+		for (ShieldBuff s : buffs(ShieldBuff.class)){
+			cachedShield += s.shielding();
+		}
+		needsShieldUpdate = false;
+		return cachedShield;
+	}
+	
 	public void damage( int dmg, Object src ) {
 		
 		if (!isAlive() || dmg < 0) {
@@ -314,20 +347,21 @@ public abstract class Char extends Actor {
 			buff( Paralysis.class ).processDamage(dmg);
 		}
 
+		int shielded = dmg;
 		//FIXME: when I add proper damage properties, should add an IGNORES_SHIELDS property to use here.
-		if (src instanceof Hunger || SHLD == 0){
-			HP -= dmg;
-		} else if (SHLD >= dmg){
-			SHLD -= dmg;
-		} else if (SHLD > 0) {
-			HP -= (dmg - SHLD);
-			SHLD = 0;
+		if (!(src instanceof Hunger)){
+			for (ShieldBuff s : buffs(ShieldBuff.class)){
+				dmg = s.absorbDamage(dmg);
+				if (dmg == 0) break;
+			}
 		}
+		shielded -= dmg;
+		HP -= dmg;
 		
 		sprite.showStatus( HP > HT / 2 ?
 			CharSprite.WARNING :
 			CharSprite.NEGATIVE,
-			Integer.toString( dmg ) );
+			Integer.toString( dmg + shielded ) );
 
 		if (HP < 0) HP = 0;
 
