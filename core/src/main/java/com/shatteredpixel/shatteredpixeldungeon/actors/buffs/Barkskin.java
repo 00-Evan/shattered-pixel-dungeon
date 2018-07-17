@@ -23,16 +23,18 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.utils.Bundle;
 
 public class Barkskin extends Buff {
 
 	private int level = 0;
+	private int interval = 1;
 	
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
 
-			spend( TICK );
+			spend( interval );
 			if (--level <= 0) {
 				detach();
 			}
@@ -50,9 +52,12 @@ public class Barkskin extends Buff {
 		return level;
 	}
 	
-	public void level( int value ) {
-		if (level < value) {
+	public void set( int value, int time ) {
+		//decide whether to override, preferring high value + low interval
+		if (Math.sqrt(interval)*level < Math.sqrt(time)*value) {
 			level = value;
+			interval = time;
+			spend(cooldown() - time);
 		}
 	}
 	
@@ -67,7 +72,25 @@ public class Barkskin extends Buff {
 	}
 
 	@Override
+	//TODO
 	public String desc() {
 		return Messages.get(this, "desc", level);
+	}
+	
+	private static final String LEVEL	    = "level";
+	private static final String INTERVAL    = "interval";
+	
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( INTERVAL, interval );
+		bundle.put( LEVEL, level );
+	}
+	
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		interval = bundle.getInt( INTERVAL );
+		level = bundle.getInt( LEVEL );
 	}
 }

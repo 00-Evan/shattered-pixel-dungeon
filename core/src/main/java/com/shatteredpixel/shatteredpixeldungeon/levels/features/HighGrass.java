@@ -89,7 +89,7 @@ public class HighGrass {
 
 			// Barkskin
 			if (hero.subClass == HeroSubClass.WARDEN) {
-				Buff.affect(ch, Barkskin.class).level(ch.HT / 3);
+				Buff.affect(ch, Barkskin.class).set(ch.HT / 3, 1);
 				leaves += 4;
 			}
 

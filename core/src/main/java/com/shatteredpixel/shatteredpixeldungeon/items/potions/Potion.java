@@ -42,7 +42,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCorrosiveGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -127,6 +129,8 @@ public class Potion extends Item {
 		//exotic
 		mustThrowPots.add(PotionOfCorrosiveGas.class);
 		mustThrowPots.add(PotionOfSnapFreeze.class);
+		mustThrowPots.add(PotionOfShroudingFog.class);
+		mustThrowPots.add(PotionOfStormClouds.class);
 	}
 	
 	private static final HashSet<Class<?extends Potion>> canThrowPots = new HashSet<>();

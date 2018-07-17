@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SmokeScreen;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
@@ -50,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfMagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
@@ -578,6 +580,13 @@ public abstract class Level implements Bundlable {
 			pit[i]			= (flags & Terrain.PIT) != 0;
 		}
 		
+		SmokeScreen s = (SmokeScreen)blobs.get(SmokeScreen.class);
+		if (s != null && s.volume > 0){
+			for (int i=0; i < length(); i++) {
+				losBlocking[i]	= losBlocking[i] || s.cur[i] > 0;
+			}
+		}
+		
 		int lastRow = length() - width();
 		for (int i=0; i < width(); i++) {
 			passable[i] = avoid[i] = false;
@@ -636,6 +645,11 @@ public abstract class Level implements Bundlable {
 		level.avoid[cell]			= (flags & Terrain.AVOID) != 0;
 		level.pit[cell]			    = (flags & Terrain.PIT) != 0;
 		level.water[cell]			= terrain == Terrain.WATER;
+		
+		SmokeScreen s = (SmokeScreen)level.blobs.get(SmokeScreen.class);
+		if (s != null && s.volume > 0){
+			level.losBlocking[cell] = level.losBlocking[cell] || s.cur[cell] > 0;
+		}
 	}
 	
 	public Heap drop( Item item, int cell ) {
@@ -847,8 +861,12 @@ public abstract class Level implements Bundlable {
 			for (Buff b : c.buffs( MindVision.class )) {
 				sense = Math.max( ((MindVision)b).distance, sense );
 			}
+			if (c.buff(PotionOfMagicalSight.MagicalSight.class) != null){
+				sense = 8;
+			}
 		}
 		
+		//TODO rounding
 		if ((sighted && sense > 1) || !sighted) {
 			
 			int ax = Math.max( 0, cx - sense );

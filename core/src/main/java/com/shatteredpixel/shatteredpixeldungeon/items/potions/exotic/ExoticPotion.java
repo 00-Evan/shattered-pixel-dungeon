@@ -26,10 +26,16 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -63,6 +69,24 @@ public class ExoticPotion extends Potion {
 		
 		regToExo.put(PotionOfLiquidFlame.class, PotionOfDragonsBreath.class);
 		exoToReg.put(PotionOfDragonsBreath.class, PotionOfLiquidFlame.class);
+		
+		regToExo.put(PotionOfInvisibility.class, PotionOfShroudingFog.class);
+		exoToReg.put(PotionOfShroudingFog.class, PotionOfInvisibility.class);
+		
+		regToExo.put(PotionOfMindVision.class, PotionOfMagicalSight.class);
+		exoToReg.put(PotionOfMagicalSight.class, PotionOfMindVision.class);
+		
+		regToExo.put(PotionOfLevitation.class, PotionOfStormClouds.class);
+		exoToReg.put(PotionOfStormClouds.class, PotionOfLevitation.class);
+		
+		regToExo.put(PotionOfExperience.class, PotionOfHolyFuror.class);
+		exoToReg.put(PotionOfHolyFuror.class, PotionOfExperience.class);
+		
+		regToExo.put(PotionOfPurity.class, PotionOfCleansing.class);
+		exoToReg.put(PotionOfCleansing.class, PotionOfPurity.class);
+		
+		regToExo.put(PotionOfParalyticGas.class, PotionOfEarthenArmor.class);
+		exoToReg.put(PotionOfEarthenArmor.class, PotionOfParalyticGas.class);
 	}
 	
 	@Override

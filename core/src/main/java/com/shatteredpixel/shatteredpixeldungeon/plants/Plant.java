@@ -61,7 +61,7 @@ public abstract class Plant implements Bundlable {
 		if (ch instanceof Hero){
 			((Hero) ch).interrupt();
 			if (((Hero)ch).subClass == HeroSubClass.WARDEN) {
-				Buff.affect(ch, Barkskin.class).level(ch.HT / 3);
+				Buff.affect(ch, Barkskin.class).set(ch.HT / 3, 1);
 			}
 		}
 

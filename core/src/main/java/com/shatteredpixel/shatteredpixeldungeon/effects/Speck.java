@@ -66,6 +66,7 @@ public class Speck extends Image {
 	public static final int CONFUSION	= 113;
 	public static final int RED_LIGHT   = 114;
 	public static final int CALM        = 115;
+	public static final int SMOKE		= 116;
 	
 	private static final int SIZE = 7;
 	
@@ -113,6 +114,7 @@ public class Speck extends Image {
 		case STENCH:
 		case CONFUSION:
 		case DUST:
+		case SMOKE:
 			frame( film.get( STEAM ) );
 			break;
 		case CALM:
@@ -313,6 +315,13 @@ public class Speck extends Image {
 			angle = Random.Float( 360 );
 			lifespan = Random.Float( 1f, 3f );
 			break;
+			
+		case SMOKE:
+			hardlight( 0x000000 );
+			angularSpeed = 30;
+			angle = Random.Float( 360 );
+			lifespan = Random.Float( 1f, 1.5f );
+			break;
 
 		case DUST:
 			hardlight( 0xFFFF66 );
@@ -432,6 +441,7 @@ public class Speck extends Image {
 			case CORROSION:
 				hardlight( ColorMath.interpolate( 0xAAAAAA, 0xFF8800 , p ));
 			case STENCH:
+			case SMOKE:
 				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) );
 				scale.set( 1 + p );
 				break;
