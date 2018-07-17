@@ -52,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -325,6 +326,14 @@ public abstract class Char extends Actor {
 		
 		if (!isAlive() || dmg < 0) {
 			return;
+		}
+		Terror t = buff(Terror.class);
+		if (t != null){
+			t.recover();
+		}
+		Charm c = buff(Charm.class);
+		if (c != null){
+			c.recover();
 		}
 		if (this.buff(Frost.class) != null){
 			Buff.detach( this, Frost.class );

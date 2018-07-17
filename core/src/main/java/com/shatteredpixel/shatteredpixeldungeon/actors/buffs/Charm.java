@@ -63,7 +63,15 @@ public class Charm extends FlavourBuff {
 	}
 
 	@Override
+	//TODO
 	public String desc() {
 		return Messages.get(this, "desc", dispTurns());
+	}
+	
+	public void recover() {
+		spend(-5f);
+		if (cooldown() <= 0){
+			detach();
+		}
 	}
 }

@@ -545,8 +545,6 @@ public abstract class Mob extends Char {
 	@Override
 	public void damage( int dmg, Object src ) {
 
-		Terror.recover( this );
-
 		if (state == SLEEPING) {
 			state = WANDERING;
 		}

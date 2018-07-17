@@ -21,14 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
 public class Terror extends FlavourBuff {
-
-	public static final float DURATION = 10f;
 
 	public int object = 0;
 
@@ -61,14 +58,15 @@ public class Terror extends FlavourBuff {
 	}
 
 	@Override
+	//TODO
 	public String desc() {
 		return Messages.get(this, "desc", dispTurns());
 	}
 
-	public static void recover( Char target ) {
-		Terror terror = target.buff( Terror.class );
-		if (terror != null && terror.cooldown() < DURATION) {
-			target.remove( terror );
+	public void recover() {
+		spend(-5f);
+		if (cooldown() <= 0){
+			detach();
 		}
 	}
 }

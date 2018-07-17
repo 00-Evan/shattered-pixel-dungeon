@@ -40,6 +40,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
+//TODO desc changes
 public class Succubus extends Mob {
 	
 	private static final int BLINK_DELAY	= 5;
@@ -71,8 +72,13 @@ public class Succubus extends Mob {
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		
-		if (Random.Int( 3 ) == 0) {
-			Buff.affect( enemy, Charm.class, Random.IntRange( 3, 7 ) ).object = id();
+		if (enemy.buff(Charm.class) != null ){
+			HP = Math.min(HT, HP + damage);
+			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 2 );
+			Sample.INSTANCE.play( Assets.SND_CHARMS );
+		} else if (Random.Int( 3 ) == 0) {
+			//attack will reduce by 5 turns, so effectively 3-6 turns
+			Buff.affect( enemy, Charm.class, Random.IntRange( 3, 6 ) + 5 ).object = id();
 			enemy.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			Sample.INSTANCE.play( Assets.SND_CHARMS );
 		}
@@ -138,5 +144,6 @@ public class Succubus extends Mob {
 	
 	{
 		immunities.add( Sleep.class );
+		immunities.add( Charm.class );
 	}
 }

@@ -50,7 +50,7 @@ public class ScrollOfTerror extends Scroll {
 		Mob affected = null;
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
-				Buff.affect( mob, Terror.class, Terror.DURATION ).object = curUser.id();
+				Buff.affect( mob, Terror.class, 20f ).object = curUser.id();
 
 				if (mob.buff(Terror.class) != null){
 					count++;
@@ -81,8 +81,8 @@ public class ScrollOfTerror extends Scroll {
 			if (Dungeon.level.heroFOV[mob.pos]) {
 				Terror t = mob.buff(Terror.class);
 				if (t != null){
-					Buff.prolong(mob, Terror.class, Terror.DURATION*1.5f);
-					Buff.affect(mob, Paralysis.class, Terror.DURATION*.5f);
+					Buff.prolong(mob, Terror.class, 15f);
+					Buff.affect(mob, Paralysis.class, 5f);
 				}
 			}
 		}
