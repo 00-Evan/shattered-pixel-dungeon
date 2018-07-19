@@ -26,6 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
@@ -48,6 +51,17 @@ public abstract class ExoticScroll extends Scroll {
 		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
 		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
 		
+		regToExo.put(ScrollOfRemoveCurse.class, ScrollOfAntiMagic.class);
+		exoToReg.put(ScrollOfAntiMagic.class, ScrollOfRemoveCurse.class);
+		
+		regToExo.put(ScrollOfLullaby.class, ScrollOfAffection.class);
+		exoToReg.put(ScrollOfAffection.class, ScrollOfLullaby.class);
+		
+		regToExo.put(ScrollOfRage.class, ScrollOfConfusion.class);
+		exoToReg.put(ScrollOfConfusion.class, ScrollOfRage.class);
+		
+		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
 	}
 	
 	@Override

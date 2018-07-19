@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -96,9 +97,14 @@ public abstract class Wand extends Item {
 
 		if (action.equals( AC_ZAP )) {
 			
-			curUser = hero;
-			curItem = this;
-			GameScene.selectCell( zapper );
+			if (hero.buff(MagicImmune.class) != null){
+				GLog.w( "no magic!" ); //TODO
+			} else {
+				
+				curUser = hero;
+				curItem = this;
+				GameScene.selectCell(zapper);
+			}
 			
 		}
 	}
