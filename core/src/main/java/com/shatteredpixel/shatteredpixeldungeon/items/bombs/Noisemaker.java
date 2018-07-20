@@ -65,20 +65,19 @@ public class Noisemaker extends Bomb {
 		public void set(int cell){
 			floor = Dungeon.depth;
 			this.cell = cell;
-			left = 8;
+			left = 5;
 		}
 		
 		@Override
 		public boolean act() {
 			
 			if (Dungeon.depth == floor){
-				//VFX
 				if (Dungeon.level.heroFOV[cell]) {
 					CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
 					Sample.INSTANCE.play( Assets.SND_ALERT );
 				} else {
 					CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-					Sample.INSTANCE.play( Assets.SND_ALERT, 0.5f );
+					Sample.INSTANCE.play( Assets.SND_ALERT, 0.25f );
 				}
 				
 				for (Mob m : Dungeon.level.mobs){
@@ -89,7 +88,7 @@ public class Noisemaker extends Bomb {
 			}
 			
 			if (left > 0) {
-				spend(TICK * 10f);
+				spend(TICK * 20f);
 				left--;
 			} else {
 				detach();

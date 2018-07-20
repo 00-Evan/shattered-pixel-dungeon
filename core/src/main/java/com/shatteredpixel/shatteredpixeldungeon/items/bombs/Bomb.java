@@ -209,9 +209,9 @@ public class Bomb extends Item {
 	@Override
 	public String desc() {
 		if (fuse == null)
-			return super.desc();
+			return super.desc()+ "\n\n" + Messages.get(this, "desc_fuse");
 		else
-			return Messages.get(this, "desc_burning");
+			return super.desc() + "\n\n" + Messages.get(this, "desc_burning");
 	}
 
 	private static final String FUSE = "fuse";

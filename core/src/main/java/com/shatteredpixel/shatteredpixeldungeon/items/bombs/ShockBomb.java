@@ -48,6 +48,6 @@ public class ShockBomb extends Bomb {
 				GameScene.add(Blob.seed(i, 10, Electricity.class));
 			}
 		}
-		Sample.INSTANCE.play(Assets.SND_BURNING);
+		Sample.INSTANCE.play(Assets.SND_LIGHTNING);
 	}
 }

@@ -27,8 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -53,16 +55,15 @@ public class Flashbang extends Bomb {
 		
 		//no regular explosion damage
 		
-		//FIXME currently has odd behaviour for the hero
-		//TODO final balancing for effect here, based on distance? perhaps also cripple/weaken?
+		//FIXME currently has somewhat odd behaviour, as FOV is updated at the start of a turn.
+		Level l = Dungeon.level;
 		for (Char ch : Actor.chars()){
-			if (ch == Dungeon.hero){
-				if (Dungeon.level.heroFOV[cell]){
-					Buff.prolong(ch, Blindness.class, 5f);
-					GameScene.flash(0xFFFFFF);
+			if (ch.fieldOfView[cell]){
+				int power = 10 - l.distance(ch.pos, cell);
+				if (power > 0){
+					Buff.prolong(ch, Blindness.class, power);
+					Buff.prolong(ch, Cripple.class, power);
 				}
-			} else if (ch.fieldOfView[cell]){
-				Buff.prolong(ch, Blindness.class, 5f);
 				if (ch == Dungeon.hero){
 					GameScene.flash(0xFFFFFF);
 				}

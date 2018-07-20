@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class HolyBomb extends Bomb {
 	
@@ -57,8 +58,8 @@ public class HolyBomb extends Bomb {
 				if (n != null) {
 					Buff.prolong(n, Blindness.class, 1f);
 					if (n.properties().contains(Char.Property.UNDEAD) || n.properties().contains(Char.Property.DEMONIC)){
-						//TODO decide on damage numbers and other effects here
 						n.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+						n.damage(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ), this);
 					}
 				}
 			}

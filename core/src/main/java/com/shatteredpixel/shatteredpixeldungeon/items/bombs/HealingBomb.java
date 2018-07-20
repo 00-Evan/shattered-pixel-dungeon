@@ -27,8 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
@@ -50,7 +49,7 @@ public class HealingBomb extends Bomb {
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 		
 		if (Dungeon.level.heroFOV[cell]) {
-			CellEmitter.center( cell ).burst( BlastParticle.FACTORY, 30 );
+			Splash.at(cell, 0x00FF00, 30);
 		}
 		
 		//no regular explosion damage
@@ -60,6 +59,7 @@ public class HealingBomb extends Bomb {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				Char ch = Actor.findChar(i);
 				if (ch != null){
+					//same as a healing dart
 					Buff.affect( ch, Healing.class ).setHeal((int)(0.5f*ch.HT + 30), 0.333f, 0);
 					PotionOfHealing.cure( ch );
 				}
