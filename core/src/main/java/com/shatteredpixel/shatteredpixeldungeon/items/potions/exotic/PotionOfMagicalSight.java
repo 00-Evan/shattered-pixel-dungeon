@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 
 public class PotionOfMagicalSight extends ExoticPotion {
@@ -31,13 +31,9 @@ public class PotionOfMagicalSight extends ExoticPotion {
 	@Override
 	public void apply(Hero hero) {
 		setKnown();
-		Buff.affect(hero, MagicalSight.class, 30f);
+		Buff.affect(hero, MagicalSight.class, MagicalSight.DURATION);
 		Dungeon.observe();
 		
-	}
-	
-	public static class MagicalSight extends FlavourBuff {
-	
 	}
 	
 }

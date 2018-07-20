@@ -55,13 +55,14 @@ public class SmokeScreen extends Blob {
 	@Override
 	public void clear(int cell) {
 		super.clear(cell);
-		//TODO
+		Level l = Dungeon.level;
+		l.losBlocking[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.LOS_BLOCKING) != 0;
 	}
 	
 	@Override
 	public void fullyClear() {
 		super.fullyClear();
-		//TODO
+		Dungeon.level.buildFlagMaps();
 	}
 	
 	@Override

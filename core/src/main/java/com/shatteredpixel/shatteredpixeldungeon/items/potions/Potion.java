@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
@@ -137,11 +138,12 @@ public class Potion extends Item {
 	static{
 		canThrowPots.add(PotionOfPurity.class);
 		canThrowPots.add(PotionOfLevitation.class);
+		canThrowPots.add(PotionOfCleansing.class);
 	}
 	
 	protected static ItemStatusHandler<Potion> handler;
 	
-	private String color;
+	protected String color;
 
 	public boolean ownedByFruit = false;
 	
@@ -344,14 +346,12 @@ public class Potion extends Item {
 	
 	@Override
 	public String name() {
-		return isKnown() ? super.name() : Messages.get(Potion.class, color);
+		return isKnown() ? super.name() : Messages.get(this, color);
 	}
 	
 	@Override
 	public String info() {
-		return isKnown() ?
-			desc() :
-			Messages.get(Potion.class, "unknown_desc");
+		return isKnown() ? desc() : Messages.get(this, "unknown_desc");
 	}
 
 	public Integer initials(){

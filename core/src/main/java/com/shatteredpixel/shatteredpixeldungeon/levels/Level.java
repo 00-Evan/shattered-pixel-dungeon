@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -51,7 +52,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfMagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
@@ -566,7 +566,7 @@ public abstract class Level implements Bundlable {
 		return null;
 	}
 
-	protected void buildFlagMaps() {
+	public void buildFlagMaps() {
 		
 		for (int i=0; i < length(); i++) {
 			int flags = Terrain.flags[map[i]];
@@ -861,23 +861,32 @@ public abstract class Level implements Bundlable {
 			for (Buff b : c.buffs( MindVision.class )) {
 				sense = Math.max( ((MindVision)b).distance, sense );
 			}
-			if (c.buff(PotionOfMagicalSight.MagicalSight.class) != null){
+			if (c.buff(MagicalSight.class) != null){
 				sense = 8;
 			}
 		}
 		
-		//TODO rounding
-		if ((sighted && sense > 1) || !sighted) {
+		//uses rounding
+		if (!sighted || sense > 1) {
 			
-			int ax = Math.max( 0, cx - sense );
-			int bx = Math.min( cx + sense, width() - 1 );
-			int ay = Math.max( 0, cy - sense );
-			int by = Math.min( cy + sense, height() - 1 );
-
-			int len = bx - ax + 1;
-			int pos = ax + ay * width();
-			for (int y = ay; y <= by; y++, pos+=width()) {
-				System.arraycopy(discoverable, pos, fieldOfView, pos, len);
+			int[][] rounding = ShadowCaster.rounding;
+			
+			int left, right;
+			int pos;
+			for (int y = Math.max(0, cy - sense); y <= Math.min(height()-1, cy + sense); y++) {
+				if (rounding[sense][Math.abs(cy - y)] < Math.abs(cy - y)) {
+					left = cx - rounding[sense][Math.abs(cy - y)];
+				} else {
+					left = sense;
+					while (rounding[sense][left] < rounding[sense][Math.abs(cy - y)]){
+						left--;
+					}
+					left = cx - left;
+				}
+				right = Math.min(width()-1, cx + cx - left);
+				left = Math.max(0, left);
+				pos = left + y * width();
+				System.arraycopy(discoverable, pos, fieldOfView, pos, right - left);
 			}
 		}
 

@@ -21,15 +21,50 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.watabou.noosa.audio.Sample;
 
 public class PotionOfCleansing extends ExoticPotion {
 	
 	@Override
 	public void apply( Hero hero ) {
 		setKnown();
-		//TODO detach all debuffs, and satifsy hunger
-		//perhaps heal a little too?
+		
+		cleanse( hero );
 	}
 	
+	@Override
+	public void shatter(int cell) {
+		if (Actor.findChar(cell) == null){
+			super.shatter(cell);
+		} else {
+			if (Dungeon.level.heroFOV[cell]) {
+				Sample.INSTANCE.play(Assets.SND_SHATTER);
+				splash(cell);
+				setKnown();
+			}
+			
+			if (Actor.findChar(cell) != null){
+				cleanse(Actor.findChar(cell));
+			}
+		}
+	}
+	
+	public static void cleanse(Char ch){
+		for (Buff b : ch.buffs()){
+			if (b.type == Buff.buffType.NEGATIVE && !(b instanceof Corruption)){
+				b.detach();
+			}
+			if (b instanceof Hunger){
+				((Hunger) b).satisfy(Hunger.STARVING);
+			}
+		}
+	}
 }

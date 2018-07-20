@@ -57,10 +57,6 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 		detach( hero.belongings.backpack );
 		setKnown();
 		
-		//hero.spend( TIME_TO_DRINK );
-		//hero.busy();
-		//apply( hero );
-		
 		GameScene.selectCell(targeter);
 	}
 	

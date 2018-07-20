@@ -57,7 +57,7 @@ public class Barkskin extends Buff {
 		if (Math.sqrt(interval)*level < Math.sqrt(time)*value) {
 			level = value;
 			interval = time;
-			spend(cooldown() - time);
+			spend(time - cooldown());
 		}
 	}
 	
@@ -74,7 +74,7 @@ public class Barkskin extends Buff {
 	@Override
 	//TODO
 	public String desc() {
-		return Messages.get(this, "desc", level);
+		return Messages.get(this, "desc", level, dispTurns(cooldown()+1));
 	}
 	
 	private static final String LEVEL	    = "level";

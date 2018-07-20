@@ -21,58 +21,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class PotionOfAdrenalineSurge extends ExoticPotion {
 	
 	@Override
 	public void apply(Hero hero) {
 		setKnown();
-		Buff.affect(hero, strBoost.class).reset();
+		Buff.affect(hero, AdrenalineSurge.class).reset();
 	}
 	
-	public static class strBoost extends Buff {
-		
-		int boost;
-		private static final float INTERVAL = TICK * 500f;
-		
-		public void reset(){
-			boost = 2;
-			spend(INTERVAL - cooldown());
-		}
-		
-		public int boost(){
-			return boost;
-		}
-		
-		@Override
-		public boolean act() {
-			boost --;
-			if (boost > 0){
-				spend( INTERVAL );
-			} else {
-				detach();
-			}
-			return true;
-		}
-		
-		//TODO visuals
-		
-		@Override
-		public int icon() {
-			return BuffIndicator.MOMENTUM;
-		}
-		
-		@Override
-		public String toString() {
-			return "surge";
-		}
-		
-		@Override
-		public String desc() {
-			return "cur boost: +" + boost + "\n\nleft: " + dispTurns(cooldown());
-		}
-	}
 }

@@ -40,6 +40,7 @@ public class Buff extends Actor {
 
 	//determines how the buff is announced when it is shown.
 	//buffs that work behind the scenes, or have other visual indicators can usually be silent.
+	//FIXME should extend this to more buffs, want silent positive and silent negative?
 	public enum buffType {POSITIVE, NEGATIVE, NEUTRAL, SILENT};
 	public buffType type = buffType.SILENT;
 	

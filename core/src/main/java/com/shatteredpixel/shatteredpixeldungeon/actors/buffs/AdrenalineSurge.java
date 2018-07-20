@@ -22,58 +22,37 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-public class Barrier extends ShieldBuff {
+public class AdrenalineSurge extends Buff {
 	
-	//TODO icon and description for phase 2
+	private int boost;
+	private static final float INTERVAL = TICK * 500f;
+	
+	public void reset(){
+		boost = 2;
+		spend(INTERVAL - cooldown());
+	}
+	
+	public int boost(){
+		return boost;
+	}
 	
 	@Override
 	public boolean act() {
-		
-		absorbDamage(1);
-		
-		if (shielding <= 0){
+		boost --;
+		if (boost > 0){
+			spend( INTERVAL );
+		} else {
 			detach();
 		}
-		
-		spend( TICK );
-		
 		return true;
-	}
-	
-	public void set( int s ){
-		if (shielding < s){
-			shielding = s;
-		}
-	}
-	
-	@Override
-	public void fx(boolean on) {
-		if (on) target.sprite.add(CharSprite.State.SHIELDED);
-		else target.sprite.remove(CharSprite.State.SHIELDED);
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		if (bundle.contains("level")) {
-			//TODO pre beta-2.0, remove in full release
-			shielding = bundle.getInt("level");
-		}
 	}
 	
 	@Override
 	public int icon() {
-		return BuffIndicator.ARMOR;
-	}
-	
-	@Override
-	public void tintIcon(Image icon) {
-		icon.tint(0, 0.5f, 1, 0.5f);
+		return BuffIndicator.FURY;
 	}
 	
 	@Override
@@ -83,6 +62,20 @@ public class Barrier extends ShieldBuff {
 	
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", shielding);
+		return Messages.get(this, "desc", boost, dispTurns(cooldown()+1));
+	}
+	
+	private static final String BOOST	    = "boost";
+	
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( BOOST, boost );
+	}
+	
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		boost = bundle.getInt( BOOST );
 	}
 }

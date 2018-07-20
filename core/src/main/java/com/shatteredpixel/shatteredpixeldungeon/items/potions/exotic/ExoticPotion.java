@@ -111,6 +111,7 @@ public class ExoticPotion extends Potion {
 		super.reset();
 		if (handler != null && handler.contains(exoToReg.get(this.getClass()))) {
 			image = handler.image(exoToReg.get(this.getClass())) + 16;
+			color = handler.label(exoToReg.get(this.getClass()));
 		}
 	}
 	

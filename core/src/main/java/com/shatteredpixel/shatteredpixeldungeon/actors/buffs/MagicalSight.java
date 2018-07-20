@@ -21,59 +21,30 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
-import com.watabou.utils.Bundle;
 
-public class Barrier extends ShieldBuff {
+public class MagicalSight extends FlavourBuff {
 	
-	//TODO icon and description for phase 2
+	public static final float DURATION = 30f;
 	
-	@Override
-	public boolean act() {
-		
-		absorbDamage(1);
-		
-		if (shielding <= 0){
-			detach();
-		}
-		
-		spend( TICK );
-		
-		return true;
-	}
+	public int distance = 8;
 	
-	public void set( int s ){
-		if (shielding < s){
-			shielding = s;
-		}
-	}
-	
-	@Override
-	public void fx(boolean on) {
-		if (on) target.sprite.add(CharSprite.State.SHIELDED);
-		else target.sprite.remove(CharSprite.State.SHIELDED);
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		if (bundle.contains("level")) {
-			//TODO pre beta-2.0, remove in full release
-			shielding = bundle.getInt("level");
-		}
+	{
+		type = buffType.POSITIVE;
 	}
 	
 	@Override
 	public int icon() {
-		return BuffIndicator.ARMOR;
+		return BuffIndicator.MIND_VISION;
 	}
 	
 	@Override
 	public void tintIcon(Image icon) {
-		icon.tint(0, 0.5f, 1, 0.5f);
+		greyIcon(icon, 5f, cooldown());
 	}
 	
 	@Override
@@ -82,7 +53,15 @@ public class Barrier extends ShieldBuff {
 	}
 	
 	@Override
-	public String desc() {
-		return Messages.get(this, "desc", shielding);
+	public void detach() {
+		super.detach();
+		Dungeon.observe();
+		GameScene.updateFog();
 	}
+	
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", dispTurns());
+	}
+	
 }
