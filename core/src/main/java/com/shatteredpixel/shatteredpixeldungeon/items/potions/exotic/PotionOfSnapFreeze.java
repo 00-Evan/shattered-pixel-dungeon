@@ -34,6 +34,10 @@ import com.watabou.utils.PathFinder;
 
 public class PotionOfSnapFreeze extends ExoticPotion {
 	
+	{
+		initials = 1;
+	}
+	
 	@Override
 	public void shatter(int cell) {
 		

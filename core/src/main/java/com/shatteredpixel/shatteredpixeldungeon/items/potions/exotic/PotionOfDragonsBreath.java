@@ -43,6 +43,10 @@ import java.util.HashSet;
 
 public class PotionOfDragonsBreath extends ExoticPotion {
 	
+	{
+		initials = 6;
+	}
+	
 	//a lot of this is copy-paste from wand of fireblast
 	
 	//the actual affected cells

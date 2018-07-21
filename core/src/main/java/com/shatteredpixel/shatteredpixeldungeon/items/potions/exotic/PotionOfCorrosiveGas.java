@@ -30,6 +30,10 @@ import com.watabou.noosa.audio.Sample;
 
 public class PotionOfCorrosiveGas extends ExoticPotion {
 	
+	{
+		initials = 11;
+	}
+	
 	@Override
 	public void shatter( int cell ) {
 		

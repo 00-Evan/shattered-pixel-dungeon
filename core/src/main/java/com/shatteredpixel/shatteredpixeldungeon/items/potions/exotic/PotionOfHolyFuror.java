@@ -27,6 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 
 public class PotionOfHolyFuror extends ExoticPotion {
 	
+	{
+		initials = 0;
+	}
+	
 	@Override
 	public void apply( Hero hero ) {
 		setKnown();

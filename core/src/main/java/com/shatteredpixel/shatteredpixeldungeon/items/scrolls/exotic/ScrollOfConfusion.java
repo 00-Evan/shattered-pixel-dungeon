@@ -33,6 +33,9 @@ import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfConfusion extends ExoticScroll {
 	
+	{
+		initials = 5;
+	}
 	
 	@Override
 	public void doRead() {

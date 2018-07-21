@@ -35,6 +35,11 @@ import com.watabou.utils.Random;
 import java.util.HashSet;
 
 public class ScrollOfForesight extends ExoticScroll {
+	
+	{
+		initials = 0;
+	}
+	
 	@Override
 	public void doRead() {
 		

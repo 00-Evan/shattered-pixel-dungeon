@@ -26,6 +26,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 
 public class ScrollOfAntiMagic extends ExoticScroll {
+	
+	{
+		initials = 7;
+	}
+	
 	@Override
 	public void doRead() {
 		

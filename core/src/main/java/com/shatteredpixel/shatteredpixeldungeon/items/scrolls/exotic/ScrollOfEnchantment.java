@@ -30,6 +30,11 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 
 public class ScrollOfEnchantment extends ExoticScroll {
+	
+	{
+		initials = 11;
+	}
+	
 	@Override
 	public void doRead() {
 		setKnown();

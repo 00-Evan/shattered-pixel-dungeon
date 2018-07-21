@@ -28,7 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -248,7 +250,20 @@ public class ItemSlot extends Button {
 			if (iconInt != null && iconVisible) {
 				bottomRightIcon = new Image(Assets.CONS_ICONS);
 				int left = iconInt*7;
-				int top = item instanceof Potion ? 0 : 8;
+				int top;
+				if (item instanceof Potion){
+					if (item instanceof ExoticPotion){
+						top = 8;
+					} else {
+						top = 0;
+					}
+				} else {
+					if (item instanceof ExoticScroll){
+						top = 24;
+					} else {
+						top = 16;
+					}
+				}
 				bottomRightIcon.frame(left, top, 7, 8);
 				add(bottomRightIcon);
 			}

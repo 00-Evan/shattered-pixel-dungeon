@@ -31,6 +31,10 @@ import com.watabou.noosa.Game;
 
 public class ScrollOfDistortion extends ExoticScroll {
 	
+	{
+		initials = 10;
+	}
+	
 	@Override
 	public void doRead() {
 		//FIXME this doesn't handle various edge-cases. especially as it can trigger in boss rooms!

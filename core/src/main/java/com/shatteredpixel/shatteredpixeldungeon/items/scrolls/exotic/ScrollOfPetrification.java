@@ -31,6 +31,11 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfPetrification extends ExoticScroll {
+	
+	{
+		initials = 9;
+	}
+	
 	@Override
 	public void doRead() {
 		new Flare( 5, 32 ).color( 0xFF0000, true ).show( curUser.sprite, 2f );

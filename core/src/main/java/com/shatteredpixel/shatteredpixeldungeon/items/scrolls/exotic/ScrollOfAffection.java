@@ -32,6 +32,10 @@ import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfAffection extends ExoticScroll {
 	
+	{
+		initials = 1;
+	}
+	
 	@Override
 	public void doRead() {
 		

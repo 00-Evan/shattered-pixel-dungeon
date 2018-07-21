@@ -33,6 +33,10 @@ import com.watabou.noosa.audio.Sample;
 
 public class PotionOfCleansing extends ExoticPotion {
 	
+	{
+		initials = 9;
+	}
+	
 	@Override
 	public void apply( Hero hero ) {
 		setKnown();

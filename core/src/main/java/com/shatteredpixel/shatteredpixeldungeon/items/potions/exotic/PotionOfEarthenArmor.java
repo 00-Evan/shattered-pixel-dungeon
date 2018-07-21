@@ -27,6 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 
 public class PotionOfEarthenArmor extends ExoticPotion {
 	
+	{
+		initials = 8;
+	}
+	
 	@Override
 	public void apply( Hero hero ) {
 		setKnown();
