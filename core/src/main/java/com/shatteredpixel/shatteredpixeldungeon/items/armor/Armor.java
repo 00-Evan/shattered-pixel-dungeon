@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -274,7 +275,7 @@ public class Armor extends EquipableItem {
 	
 	public float evasionFactor( Char owner, float evasion ){
 		
-		if (hasGlyph(Stone.class) && !((Stone)glyph).testingEvasion()){
+		if (hasGlyph(Stone.class, owner) && !((Stone)glyph).testingEvasion()){
 			return 0;
 		}
 		
@@ -298,7 +299,7 @@ public class Armor extends EquipableItem {
 			if (aEnc > 0) speed /= Math.pow(1.2, aEnc);
 		}
 		
-		if (hasGlyph(Swiftness.class)) {
+		if (hasGlyph(Swiftness.class, owner)) {
 			boolean enemyNear = false;
 			for (Char ch : Actor.chars()){
 				if (Dungeon.level.adjacent(ch.pos, owner.pos) && owner.alignment != ch.alignment){
@@ -307,11 +308,11 @@ public class Armor extends EquipableItem {
 				}
 			}
 			if (!enemyNear) speed *= (1.2f + 0.04f * level());
-		} else if (hasGlyph(Flow.class) && Dungeon.level.water[owner.pos]){
+		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
 			speed *= (1.5f + 0.1f * level());
 		}
 		
-		if (hasGlyph(Bulk.class) &&
+		if (hasGlyph(Bulk.class, owner) &&
 				(Dungeon.level.map[owner.pos] == Terrain.DOOR
 						|| Dungeon.level.map[owner.pos] == Terrain.OPEN_DOOR )) {
 			speed /= 3f;
@@ -323,7 +324,7 @@ public class Armor extends EquipableItem {
 	
 	public float stealthFactor( Char owner, float stealth ){
 		
-		if (hasGlyph(Obfuscation.class)){
+		if (hasGlyph(Obfuscation.class, owner)){
 			stealth += 1 + level()/3f;
 		}
 		
@@ -353,7 +354,7 @@ public class Armor extends EquipableItem {
 	
 	public int proc( Char attacker, Char defender, int damage ) {
 		
-		if (glyph != null) {
+		if (glyph != null && defender.buff(MagicImmune.class) != null) {
 			damage = glyph.proc( this, attacker, defender, damage );
 		}
 		
@@ -505,10 +506,11 @@ public class Armor extends EquipableItem {
 		return inscribe( gl );
 	}
 
-	public boolean hasGlyph(Class<?extends Glyph> type) {
-		return glyph != null && glyph.getClass() == type;
+	public boolean hasGlyph(Class<?extends Glyph> type, Char owner) {
+		return glyph != null &&  glyph.getClass() == type && owner.buff(MagicImmune.class) == null;
 	}
 
+	//these are not used to process specific glyph effects, so magic immune doesn't affect them
 	public boolean hasGoodGlyph(){
 		return glyph != null && !glyph.curse();
 	}

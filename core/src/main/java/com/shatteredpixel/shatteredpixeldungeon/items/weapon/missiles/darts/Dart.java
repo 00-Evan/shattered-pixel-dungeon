@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
@@ -67,7 +68,7 @@ public class Dart extends MissileWeapon {
 	
 	@Override
 	public int throwPos(Hero user, int dst) {
-		if (bow != null && bow.hasEnchant(Projecting.class)
+		if (bow != null && bow.hasEnchant(Projecting.class, user)
 				&& !Dungeon.level.solid[dst] && Dungeon.level.distance(user.pos, dst) <= 4){
 			return dst;
 		} else {
@@ -77,7 +78,7 @@ public class Dart extends MissileWeapon {
 	
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
-		if (bow != null && bow.enchantment != null){
+		if (bow != null && bow.enchantment != null && attacker.buff(MagicImmune.class) != null){
 			damage = bow.enchantment.proc(bow, attacker, defender, damage);
 		}
 		return super.proc(attacker, defender, damage);

@@ -980,7 +980,7 @@ public class Hero extends Char {
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
 
 		//TODO improve this when I have proper damage source logic
-		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class)
+		if (belongings.armor != null && belongings.armor.hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
 			dmg -= Random.NormalIntRange(belongings.armor.DRMin(), belongings.armor.DRMax())/3;
 		}

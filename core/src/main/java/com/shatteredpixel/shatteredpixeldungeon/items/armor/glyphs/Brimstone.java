@@ -44,6 +44,7 @@ public class Brimstone extends Armor.Glyph {
 		return ORANGE;
 	}
 
+	//FIXME doesn't work with sad ghost
 	public static class BrimstoneShield extends ShieldBuff {
 		
 		{
@@ -54,7 +55,7 @@ public class Brimstone extends Armor.Glyph {
 		public boolean act() {
 			Hero hero = (Hero)target;
 
-			if (hero.belongings.armor == null || !hero.belongings.armor.hasGlyph(Brimstone.class)) {
+			if (hero.belongings.armor == null || !hero.belongings.armor.hasGlyph(Brimstone.class, hero)) {
 				detach();
 				return true;
 			}

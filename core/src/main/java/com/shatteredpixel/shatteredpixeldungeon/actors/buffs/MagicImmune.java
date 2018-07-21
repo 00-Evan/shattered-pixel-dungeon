@@ -21,16 +21,23 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
+import java.util.HashSet;
+
 public class MagicImmune extends FlavourBuff {
+	
+	
+	public static final HashSet<Class> IMMUNITIES = (HashSet<Class>) AntiMagic.RESISTS.clone();
 	
 	//TODO visuals
 	
 	//FIXME this does not currently handle all cases, need to implement:
-	//- all glyph effects not working
-	//- equipped curse being removable
-	//- 0 damage from magical attacks
+	//+ all enchant effects not working
+	//+ all glyph effects not working
+	//+ equipped curse being removable
+	//+ 0 damage from magical attacks
 	//- text for all of these
 	
 	//what about active buffs/debuffs?

@@ -150,7 +150,7 @@ abstract public class Weapon extends KindOfWeapon {
 			encumbrance = STRReq() - ((Hero)owner).STR();
 		}
 
-		if (hasEnchant(Wayward.class))
+		if (hasEnchant(Wayward.class, owner))
 			encumbrance = Math.max(2, encumbrance+2);
 
 		float ACC = this.ACC;
@@ -175,7 +175,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int reachFactor(Char owner) {
-		return hasEnchant(Projecting.class) ? RCH+1 : RCH;
+		return hasEnchant(Projecting.class, owner) ? RCH+1 : RCH;
 	}
 
 	public int STRReq(){
@@ -250,15 +250,17 @@ abstract public class Weapon extends KindOfWeapon {
 		return enchant( ench );
 	}
 
-	public boolean hasEnchant(Class<?extends Enchantment> type) {
-		return enchantment != null && enchantment.getClass() == type;
+	public boolean hasEnchant(Class<?extends Enchantment> type, Char owner) {
+		return enchantment != null && enchantment.getClass() == type && owner.buff(MagicImmune.class) != null;
 	}
-
+	
+	//these are not used to process specific enchant effects, so magic immune doesn't affect them
 	public boolean hasGoodEnchant(){
 		return enchantment != null && !enchantment.curse();
 	}
 
-	public boolean hasCurseEnchant(){		return enchantment != null && enchantment.curse();
+	public boolean hasCurseEnchant(){
+		return enchantment != null && enchantment.curse();
 	}
 
 	@Override

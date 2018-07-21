@@ -86,11 +86,12 @@ public class Burning extends Buff implements Hero.Doom {
 			int damage = Random.NormalIntRange( 1, 3 + target.HT/40 );
 			Buff.detach( target, Chill.class);
 
+			//FIXME doesn't work with the sad ghost
 			if (target instanceof Hero) {
 				
 				Hero hero = (Hero)target;
 				
-				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Brimstone.class)){
+				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Brimstone.class, hero)){
 					Buff.affect(target, Brimstone.BrimstoneShield.class);
 					
 				} else {

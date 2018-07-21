@@ -536,7 +536,7 @@ public class DriedRose extends Artifact {
 		@Override
 		public void damage(int dmg, Object src) {
 			//TODO improve this when I have proper damage source logic
-			if (rose != null && rose.armor != null && rose.armor.hasGlyph(AntiMagic.class)
+			if (rose != null && rose.armor != null && rose.armor.hasGlyph(AntiMagic.class, this)
 					&& RingOfElements.RESISTS.contains(src.getClass())){
 				dmg -= Random.NormalIntRange(rose.armor.DRMin(), rose.armor.DRMax())/3;
 			}
