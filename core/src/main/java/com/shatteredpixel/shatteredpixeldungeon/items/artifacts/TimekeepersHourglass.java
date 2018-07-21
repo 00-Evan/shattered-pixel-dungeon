@@ -222,6 +222,10 @@ public class TimekeepersHourglass extends Artifact {
 	}
 
 	public class timeStasis extends ArtifactBuff {
+		
+		{
+			type = buffType.POSITIVE;
+		}
 
 		@Override
 		public boolean attachTo(Char target) {
@@ -269,6 +273,10 @@ public class TimekeepersHourglass extends Artifact {
 	}
 
 	public class timeFreeze extends ArtifactBuff {
+		
+		{
+			type = buffType.POSITIVE;
+		}
 
 		float partialTime = 1f;
 

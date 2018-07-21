@@ -37,6 +37,8 @@ public class Healing extends Buff {
 		//unlike other buffs, this one acts after the hero and takes priority against other effects
 		//healing is much more useful if you get some of it off before taking damage
 		actPriority = HERO_PRIO - 1;
+		
+		type = buffType.POSITIVE;
 	}
 	
 	@Override

@@ -29,7 +29,9 @@ import com.watabou.utils.Bundle;
 
 public class Barrier extends ShieldBuff {
 	
-	//TODO icon and description for phase 2
+	{
+		type = buffType.POSITIVE;
+	}
 	
 	@Override
 	public boolean act() {

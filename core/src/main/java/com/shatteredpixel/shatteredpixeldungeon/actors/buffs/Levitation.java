@@ -29,6 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
 public class Levitation extends FlavourBuff {
+	
+	{
+		type = buffType.POSITIVE;
+	}
 
 	public static final float DURATION	= 20f;
 	

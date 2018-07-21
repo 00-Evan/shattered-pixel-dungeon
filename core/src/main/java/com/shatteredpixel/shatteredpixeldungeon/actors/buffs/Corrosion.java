@@ -39,6 +39,7 @@ public class Corrosion extends Buff implements Hero.Doom {
 
 	{
 		type = buffType.NEGATIVE;
+		announced = true;
 	}
 
 	@Override

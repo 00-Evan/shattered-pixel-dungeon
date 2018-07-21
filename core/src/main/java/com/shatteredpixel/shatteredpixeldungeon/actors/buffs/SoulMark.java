@@ -31,6 +31,7 @@ public class SoulMark extends FlavourBuff {
 
 	{
 		type = buffType.NEGATIVE;
+		announced = true;
 	}
 
 	@Override

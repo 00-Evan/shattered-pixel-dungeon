@@ -25,6 +25,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 
 public class Awareness extends FlavourBuff {
+	
+	{
+		type = buffType.POSITIVE;
+	}
 
 	public static final float DURATION = 2f;
 

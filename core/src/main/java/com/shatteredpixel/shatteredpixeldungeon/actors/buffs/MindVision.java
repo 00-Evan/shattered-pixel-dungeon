@@ -35,6 +35,7 @@ public class MindVision extends FlavourBuff {
 
 	{
 		type = buffType.POSITIVE;
+		announced = true;
 	}
 	
 	@Override

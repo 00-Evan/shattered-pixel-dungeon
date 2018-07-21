@@ -26,6 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
 public class Barkskin extends Buff {
+	
+	{
+		type = buffType.POSITIVE;
+	}
 
 	private int level = 0;
 	private int interval = 1;

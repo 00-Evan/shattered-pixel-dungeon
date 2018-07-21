@@ -67,6 +67,7 @@ public class StoneOfAggression extends Runestone {
 		
 		{
 			type = buffType.NEGATIVE;
+			announced = true;
 		}
 		
 		@Override

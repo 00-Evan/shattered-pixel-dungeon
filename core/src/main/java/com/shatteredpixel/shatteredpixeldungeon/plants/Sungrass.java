@@ -75,6 +75,7 @@ public class Sungrass extends Plant {
 
 		{
 			type = buffType.POSITIVE;
+			announced = true;
 		}
 		
 		@Override

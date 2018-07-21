@@ -26,6 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
 public class Recharging extends FlavourBuff {
+	
+	{
+		type = buffType.POSITIVE;
+	}
 
 	@Override
 	public int icon() {

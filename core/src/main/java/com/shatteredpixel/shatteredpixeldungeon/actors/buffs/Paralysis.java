@@ -36,6 +36,7 @@ public class Paralysis extends FlavourBuff {
 
 	{
 		type = buffType.NEGATIVE;
+		announced = true;
 	}
 	
 	@Override
@@ -101,6 +102,10 @@ public class Paralysis extends FlavourBuff {
 	}
 	
 	public static class ParalysisResist extends Buff {
+		
+		{
+			type = buffType.POSITIVE;
+		}
 		
 		private int damage;
 		

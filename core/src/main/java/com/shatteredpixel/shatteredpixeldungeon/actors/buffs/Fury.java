@@ -30,6 +30,7 @@ public class Fury extends Buff {
 
 	{
 		type = buffType.POSITIVE;
+		announced = true;
 	}
 	
 	@Override

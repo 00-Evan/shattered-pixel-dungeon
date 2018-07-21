@@ -74,6 +74,7 @@ public class Earthroot extends Plant {
 
 		{
 			type = buffType.POSITIVE;
+			announced = true;
 		}
 		
 		@Override

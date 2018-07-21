@@ -45,6 +45,10 @@ public class Brimstone extends Armor.Glyph {
 	}
 
 	public static class BrimstoneShield extends ShieldBuff {
+		
+		{
+			type = buffType.POSITIVE;
+		}
 
 		@Override
 		public boolean act() {

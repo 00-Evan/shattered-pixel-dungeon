@@ -27,6 +27,10 @@ import com.watabou.utils.Bundle;
 
 public class AdrenalineSurge extends Buff {
 	
+	{
+		type = buffType.POSITIVE;
+	}
+	
 	private int boost;
 	private static final float INTERVAL = TICK * 500f;
 	

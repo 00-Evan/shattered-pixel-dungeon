@@ -61,6 +61,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 	{
 		type = buffType.NEGATIVE;
+		announced = true;
 	}
 	
 	@Override

@@ -72,6 +72,10 @@ public class Viscosity extends Glyph {
 	
 	public static class DeferedDamage extends Buff {
 		
+		{
+			type = buffType.NEGATIVE;
+		}
+		
 		protected int damage = 0;
 		
 		private static final String DAMAGE	= "damage";

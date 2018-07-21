@@ -27,6 +27,10 @@ import com.watabou.noosa.Image;
 
 public class Adrenaline extends FlavourBuff {
 	
+	{
+		type = buffType.POSITIVE;
+	}
+	
 	public static final float DURATION	= 10f;
 	
 	@Override

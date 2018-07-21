@@ -33,6 +33,10 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class FireImbue extends Buff {
+	
+	{
+		type = buffType.POSITIVE;
+	}
 
 	public static final float DURATION	= 30f;
 

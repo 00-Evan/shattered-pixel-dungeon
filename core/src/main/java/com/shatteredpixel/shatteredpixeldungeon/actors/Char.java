@@ -450,16 +450,17 @@ public abstract class Char extends Actor {
 		buffs.add( buff );
 		Actor.add( buff );
 
-		if (sprite != null)
+		if (sprite != null && buff.announced)
 			switch(buff.type){
 				case POSITIVE:
-					sprite.showStatus(CharSprite.POSITIVE, buff.toString()); break;
+					sprite.showStatus(CharSprite.POSITIVE, buff.toString());
+					break;
 				case NEGATIVE:
-					sprite.showStatus(CharSprite.NEGATIVE, buff.toString());break;
-				case NEUTRAL:
-					sprite.showStatus(CharSprite.NEUTRAL, buff.toString()); break;
-				case SILENT: default:
-					break; //show nothing
+					sprite.showStatus(CharSprite.NEGATIVE, buff.toString());
+					break;
+				case NEUTRAL: default:
+					sprite.showStatus(CharSprite.NEUTRAL, buff.toString());
+					break;
 			}
 
 	}

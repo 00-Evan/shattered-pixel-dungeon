@@ -61,6 +61,7 @@ public class Swiftthistle extends Plant {
 		
 		{
 			type = buffType.POSITIVE;
+			announced = true;
 		}
 		
 		@Override

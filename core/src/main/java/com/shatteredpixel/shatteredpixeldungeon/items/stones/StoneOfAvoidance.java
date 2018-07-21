@@ -67,6 +67,7 @@ public class StoneOfAvoidance extends Runestone {
 		
 		{
 			type = buffType.NEGATIVE;
+			announced = true;
 		}
 		
 		@Override

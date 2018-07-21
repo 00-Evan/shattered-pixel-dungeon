@@ -27,6 +27,10 @@ import com.watabou.noosa.Image;
 
 public class Haste extends FlavourBuff {
 	
+	{
+		type = buffType.POSITIVE;
+	}
+	
 	public static final float DURATION	= 20f;
 	
 	@Override

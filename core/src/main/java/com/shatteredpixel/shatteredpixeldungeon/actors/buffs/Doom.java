@@ -29,6 +29,7 @@ public class Doom extends Buff {
 	
 	{
 		type = buffType.NEGATIVE;
+		announced = true;
 	}
 	
 	@Override

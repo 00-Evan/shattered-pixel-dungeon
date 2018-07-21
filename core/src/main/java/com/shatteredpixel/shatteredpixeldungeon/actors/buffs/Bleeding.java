@@ -34,6 +34,7 @@ public class Bleeding extends Buff {
 
 	{
 		type = buffType.NEGATIVE;
+		announced = true;
 	}
 	
 	protected int level;

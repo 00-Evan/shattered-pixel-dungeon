@@ -33,6 +33,7 @@ public class Terror extends FlavourBuff {
 
 	{
 		type = buffType.NEGATIVE;
+		announced = true;
 	}
 
 	@Override

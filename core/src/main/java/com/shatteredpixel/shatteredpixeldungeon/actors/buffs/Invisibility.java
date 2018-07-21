@@ -39,6 +39,7 @@ public class Invisibility extends FlavourBuff {
 
 	{
 		type = buffType.POSITIVE;
+		announced = true;
 	}
 	
 	@Override

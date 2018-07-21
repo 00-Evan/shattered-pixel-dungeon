@@ -28,6 +28,10 @@ import com.watabou.utils.Bundle;
 
 public class Momentum extends Buff {
 	
+	{
+		type = buffType.POSITIVE;
+	}
+	
 	private int stacks = 0;
 	private int turnsSinceMove = 0;
 	

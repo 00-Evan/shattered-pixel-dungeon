@@ -200,6 +200,11 @@ public class CloakOfShadows extends Artifact {
 	}
 
 	public class cloakStealth extends ArtifactBuff{
+		
+		{
+			type = buffType.POSITIVE;
+		}
+		
 		int turnsToCost = 0;
 
 		@Override

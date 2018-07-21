@@ -46,6 +46,11 @@ public class Camouflage extends Armor.Glyph {
 	}
 
 	public static class Camo extends Invisibility {
+		
+		{
+			announced = false;
+		}
+		
 		private int pos;
 		private int left;
 

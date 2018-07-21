@@ -27,6 +27,10 @@ import com.watabou.noosa.Image;
 
 public class Stamina extends FlavourBuff {
 	
+	{
+		type = buffType.POSITIVE;
+	}
+	
 	@Override
 	public int icon() {
 		return BuffIndicator.MOMENTUM;

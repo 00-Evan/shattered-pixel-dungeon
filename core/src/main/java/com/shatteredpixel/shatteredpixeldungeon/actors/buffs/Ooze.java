@@ -31,6 +31,7 @@ public class Ooze extends Buff {
 
 	{
 		type = buffType.NEGATIVE;
+		announced = true;
 	}
 	
 	@Override

@@ -208,6 +208,10 @@ public class MirrorImage extends NPC {
 	
 	public static class MirrorInvis extends Invisibility {
 		
+		{
+			announced = false;
+		}
+		
 		@Override
 		public int icon() {
 			return BuffIndicator.NONE;

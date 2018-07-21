@@ -39,6 +39,10 @@ import com.watabou.noosa.Image;
 
 public class BlobImmunity extends FlavourBuff {
 	
+	{
+		type = buffType.POSITIVE;
+	}
+	
 	public static final float DURATION	= 20f;
 	
 	@Override
