@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -35,11 +36,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -54,9 +57,9 @@ public class UnstableSpellbook extends Artifact {
 
 		levelCap = 10;
 
-		charge = (int)(level()*0.4f)+2;
+		charge = (int)(level()*0.6f)+2;
 		partialCharge = 0;
-		chargeCap = (int)(level()*0.4f)+2;
+		chargeCap = (int)(level()*0.6f)+2;
 
 		defaultAction = AC_READ;
 	}
@@ -103,7 +106,7 @@ public class UnstableSpellbook extends Artifact {
 
 			if (hero.buff( Blindness.class ) != null) GLog.w( Messages.get(this, "blinded") );
 			else if (!isEquipped( hero ))             GLog.i( Messages.get(Artifact.class, "need_to_equip") );
-			else if (charge == 0)                     GLog.i( Messages.get(this, "no_charge") );
+			else if (charge <= 0)                     GLog.i( Messages.get(this, "no_charge") );
 			else if (cursed)                          GLog.i( Messages.get(this, "cursed") );
 			else {
 				charge--;
@@ -125,10 +128,35 @@ public class UnstableSpellbook extends Artifact {
 				curUser = hero;
 				
 				//if this scroll hasn't been given to the book
-				if (scrolls.contains(scroll.getClass())) {
-					scroll.doRead();
+				if (!scrolls.contains(scroll.getClass())) {
+					final Scroll fScroll = scroll;
+					GameScene.show(new WndOptions(
+							Messages.get(this, "prompt"),
+							Messages.get(this, "read_empowered"),
+							scroll.trueName(),
+							Messages.get(ExoticScroll.regToExo.get(scroll.getClass()), "name")){
+						@Override
+						protected void onSelect(int index) {
+							if (index == 1){
+								try {
+									Scroll scroll = ExoticScroll.regToExo.get(fScroll.getClass()).newInstance();
+									charge --;
+									scroll.doRead();
+								} catch ( Exception e) {
+									ShatteredPixelDungeon.reportException(e);
+								}
+							} else {
+								fScroll.doRead();
+							}
+						}
+						
+						@Override
+						public void onBackPressed() {
+							//do nothing
+						}
+					});
 				} else {
-					scroll.empoweredRead();
+					scroll.doRead();
 				}
 				updateQuickslot();
 			}
@@ -145,7 +173,7 @@ public class UnstableSpellbook extends Artifact {
 
 	@Override
 	public Item upgrade() {
-		chargeCap = (int)((level()+1)*0.4f)+2;
+		chargeCap = (int)((level()+1)*0.6f)+2;
 
 		//for artifact transmutation.
 		while (!scrolls.isEmpty() && scrolls.size() > (levelCap-1-level()))
@@ -198,7 +226,7 @@ public class UnstableSpellbook extends Artifact {
 		public boolean act() {
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
-				partialCharge += 1 / (160f - (chargeCap - charge)*15f);
+				partialCharge += 1 / (120f - (chargeCap - charge)*5f);
 
 				if (partialCharge >= 1) {
 					partialCharge --;

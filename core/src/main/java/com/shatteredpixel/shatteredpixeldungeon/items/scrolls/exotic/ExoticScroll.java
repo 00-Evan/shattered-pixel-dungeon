@@ -27,8 +27,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
@@ -62,6 +67,26 @@ public abstract class ExoticScroll extends Scroll {
 		
 		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
 		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
+		
+		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
+		
+		//TODO
+		
+		regToExo.put(ScrollOfTeleportation.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfTeleportation.class);
+		
+		regToExo.put(ScrollOfRecharging.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfRecharging.class);
+		
+		regToExo.put(ScrollOfMagicMapping.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfMagicMapping.class);
+		
+		regToExo.put(ScrollOfPsionicBlast.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfPsionicBlast.class);
+		
+		regToExo.put(ScrollOfMirrorImage.class, ScrollOfPetrification.class);
+		exoToReg.put(ScrollOfPetrification.class, ScrollOfMirrorImage.class);
 	}
 	
 	@Override
