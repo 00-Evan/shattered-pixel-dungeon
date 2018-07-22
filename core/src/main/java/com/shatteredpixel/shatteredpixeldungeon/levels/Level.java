@@ -886,7 +886,7 @@ public abstract class Level implements Bundlable {
 				right = Math.min(width()-1, cx + cx - left);
 				left = Math.max(0, left);
 				pos = left + y * width();
-				System.arraycopy(discoverable, pos, fieldOfView, pos, right - left);
+				System.arraycopy(discoverable, pos, fieldOfView, pos, right - left + 1);
 			}
 		}
 
