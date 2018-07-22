@@ -25,13 +25,22 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class ScrollOfForesight extends ExoticScroll {
@@ -58,37 +67,11 @@ public class ScrollOfForesight extends ExoticScroll {
 		int total = potions.size() + scrolls.size() + rings.size();
 		
 		if (total == 0){
-			GLog.n("Nothing left to Identify!");
+			GLog.n( Messages.get(this, "nothing_left") );
 			return;
 		}
 		
-		/*
-		//items which the player holds have lower priority
-		HashSet<Class <? extends Potion>> heldPotions = new HashSet<>();
-		HashSet<Class <? extends Scroll>> heldScrolls = new HashSet<>();
-		HashSet<Class <? extends Ring>> heldRings = new HashSet<>();
-		
-		for (Class <? extends Potion> p : potions){
-			if (curUser.belongings.getItem(p) != null){
-				heldPotions.add(p);
-			}
-		}
-		potions.removeAll(heldPotions);
-		
-		for (Class <? extends Scroll> s : scrolls){
-			if (curUser.belongings.getItem(s) != null){
-				heldScrolls.add(s);
-			}
-		}
-		scrolls.removeAll(heldScrolls);
-		
-		for (Class <? extends Ring> r : rings){
-			if (curUser.belongings.getItem(r) != null){
-				heldRings.add(r);
-			}
-		}
-		rings.removeAll(heldRings);*/
-		
+		ArrayList<Item> IDed = new ArrayList<>();
 		int left = 4;
 		
 		while (left > 0 && total > 0) {
@@ -99,21 +82,21 @@ public class ScrollOfForesight extends ExoticScroll {
 						if (potions.isEmpty()) continue;
 						Potion p = Random.element(potions).newInstance();
 						p.setKnown();
-						GLog.i(p.name() + " identified!");
+						IDed.add(p);
 						potions.remove(p.getClass());
 						break;
 					case 1:
 						if (scrolls.isEmpty()) continue;
 						Scroll s = Random.element(scrolls).newInstance();
 						s.setKnown();
-						GLog.i(s.name() + " identified!");
+						IDed.add(s);
 						scrolls.remove(s.getClass());
 						break;
 					case 2:
 						if (rings.isEmpty()) continue;
 						Ring r = Random.element(rings).newInstance();
 						r.setKnown();
-						GLog.i(r.name() + " identified!");
+						IDed.add(r);
 						rings.remove(r.getClass());
 						break;
 				}
@@ -123,5 +106,38 @@ public class ScrollOfForesight extends ExoticScroll {
 			left --;
 			total --;
 		}
+		
+		GameScene.show(new WndForesight( IDed ));
+	}
+	
+	private class WndForesight extends Window {
+		
+		private static final int WIDTH = 120;
+		
+		WndForesight(ArrayList<Item> IDed ){
+			IconTitle cur = new IconTitle(new ItemSprite(ScrollOfForesight.this),
+					Messages.titleCase(Messages.get(ScrollOfForesight.class, "name")));
+			cur.setRect(0, 0, WIDTH, 0);
+			add(cur);
+			
+			RenderedTextMultiline msg = PixelScene.renderMultiline(Messages.get(this, "desc"), 6);
+			msg.maxWidth(120);
+			msg.setPos(0, cur.bottom() + 2);
+			add(msg);
+			
+			float pos = msg.bottom() + 10;
+			
+			for (Item i : IDed){
+				
+				cur = new IconTitle(i);
+				cur.setRect(0, pos, WIDTH, 0);
+				add(cur);
+				pos = cur.bottom() + 2;
+				
+			}
+			
+			resize(WIDTH, (int)pos);
+		}
+		
 	}
 }

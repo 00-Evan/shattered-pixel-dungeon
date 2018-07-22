@@ -22,40 +22,31 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.watabou.noosa.audio.Sample;
 
-public class ScrollOfAffection extends ExoticScroll {
+public class ScrollOfMysticalEnergy extends ExoticScroll {
 	
 	{
-		initials = 1;
+		initials = 6;
 	}
 	
 	@Override
 	public void doRead() {
 		
-		curUser.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
-		Sample.INSTANCE.play( Assets.SND_CHARMS );
+		//append buff
+		ScrollOfRecharging.charge(curUser);
+		
+		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();
 		
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-			if (Dungeon.level.heroFOV[mob.pos]) {
-				Buff.affect( mob, Charm.class, 20f ).object = curUser.id();
-				mob.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
-			}
-		}
-		
-		//GLog.i( Messages.get(this, "sooth") );
-		
+		SpellSprite.show( curUser, SpellSprite.CHARGE );
 		setKnown();
+		ScrollOfRecharging.charge(curUser);
 		
 		readAnimation();
-		
 	}
 	
 }

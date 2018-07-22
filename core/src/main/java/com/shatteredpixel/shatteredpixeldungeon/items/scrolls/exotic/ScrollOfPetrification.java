@@ -45,7 +45,6 @@ public class ScrollOfPetrification extends ExoticScroll {
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
 				Buff.affect( mob, Paralysis.class, Paralysis.DURATION );
-				
 			}
 		}
 		

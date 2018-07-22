@@ -96,7 +96,7 @@ public abstract class Scroll extends Item {
 	
 	protected static ItemStatusHandler<Scroll> handler;
 	
-	private String rune;
+	protected String rune;
 
 	public boolean ownedByBook = false;
 	
@@ -204,7 +204,7 @@ public abstract class Scroll extends Item {
 	
 	@Override
 	public String name() {
-		return isKnown() ? name : Messages.get(Scroll.class, rune);
+		return isKnown() ? name : Messages.get(this, rune);
 	}
 	
 	@Override

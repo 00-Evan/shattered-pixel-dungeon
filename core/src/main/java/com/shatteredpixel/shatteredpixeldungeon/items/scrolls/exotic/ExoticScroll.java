@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 
@@ -68,16 +69,16 @@ public abstract class ExoticScroll extends Scroll {
 		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
 		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
 		
-		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
-		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
+		regToExo.put(ScrollOfTransmutation.class, ScrollOfDistortion.class);
+		exoToReg.put(ScrollOfDistortion.class, ScrollOfTransmutation.class);
+		
+		regToExo.put(ScrollOfRecharging.class, ScrollOfMysticalEnergy.class);
+		exoToReg.put(ScrollOfMysticalEnergy.class, ScrollOfRecharging.class);
 		
 		//TODO
 		
 		regToExo.put(ScrollOfTeleportation.class, ScrollOfPetrification.class);
 		exoToReg.put(ScrollOfPetrification.class, ScrollOfTeleportation.class);
-		
-		regToExo.put(ScrollOfRecharging.class, ScrollOfPetrification.class);
-		exoToReg.put(ScrollOfPetrification.class, ScrollOfRecharging.class);
 		
 		regToExo.put(ScrollOfMagicMapping.class, ScrollOfPetrification.class);
 		exoToReg.put(ScrollOfPetrification.class, ScrollOfMagicMapping.class);
@@ -96,7 +97,7 @@ public abstract class ExoticScroll extends Scroll {
 	
 	@Override
 	public void setKnown() {
-		if (!isKnown()) {
+		if (!ownedByBook && !isKnown()) {
 			handler.know(exoToReg.get(this.getClass()));
 			updateQuickslot();
 		}
@@ -107,6 +108,7 @@ public abstract class ExoticScroll extends Scroll {
 		super.reset();
 		if (handler != null && handler.contains(exoToReg.get(this.getClass()))) {
 			image = handler.image(exoToReg.get(this.getClass())) + 16;
+			rune = handler.label(exoToReg.get(this.getClass()));
 		}
 	}
 	
