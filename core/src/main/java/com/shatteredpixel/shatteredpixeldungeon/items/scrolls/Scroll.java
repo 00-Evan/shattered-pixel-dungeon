@@ -73,7 +73,7 @@ public abstract class Scroll extends Item {
 		ScrollOfTerror.class,
 		ScrollOfLullaby.class,
 		ScrollOfTransmutation.class,
-		ScrollOfPsionicBlast.class,
+		ScrollOfRetribution.class,
 		ScrollOfMirrorImage.class
 	};
 
@@ -263,8 +263,8 @@ public abstract class Scroll extends Item {
 			stones.put(ScrollOfMirrorImage.class,   StoneOfFlock.class);
 			amnts.put(ScrollOfMirrorImage.class,    3);
 			
-			stones.put(ScrollOfPsionicBlast.class,  StoneOfBlast.class);
-			amnts.put(ScrollOfPsionicBlast.class,   2);
+			stones.put(ScrollOfRetribution.class,  StoneOfBlast.class);
+			amnts.put(ScrollOfRetribution.class,   2);
 			
 			stones.put(ScrollOfRage.class,          StoneOfAggression.class);
 			amnts.put(ScrollOfRage.class,           3);

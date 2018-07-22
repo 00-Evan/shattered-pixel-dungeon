@@ -136,6 +136,9 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.Bomb" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast" );
 	}
 	
 	@Override

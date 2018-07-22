@@ -71,10 +71,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
@@ -254,7 +254,7 @@ public enum Catalog {
 		SCROLLS.seen.put( ScrollOfTerror.class,             false);
 		SCROLLS.seen.put( ScrollOfLullaby.class,            false);
 		SCROLLS.seen.put( ScrollOfRage.class,               false);
-		SCROLLS.seen.put( ScrollOfPsionicBlast.class,       false);
+		SCROLLS.seen.put( ScrollOfRetribution.class,       false);
 		SCROLLS.seen.put( ScrollOfTransmutation.class,      false);
 	}
 	
