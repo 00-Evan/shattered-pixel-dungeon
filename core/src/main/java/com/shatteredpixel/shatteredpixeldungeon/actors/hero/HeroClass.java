@@ -26,11 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
@@ -38,18 +36,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfAdrenalineSurge;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCorrosiveGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfDragonsBreath;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfEarthenArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfHolyFuror;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfMagicalSight;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShielding;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShroudingFog;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStamina;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
@@ -114,17 +100,6 @@ public enum HeroClass {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			new SmallRation().collect();
 		}
-		
-		new UnstableSpellbook().identify().collect();
-		
-		/*new Firebomb().collect();
-		new Flashbang().collect();
-		new FrostBomb().collect();
-		new HealingBomb().collect();
-		new HolyBomb().collect();
-		new Noisemaker().collect();
-		new ShockBomb().collect();
-		new WoollyBomb().collect();*/
 
 	}
 
@@ -155,23 +130,6 @@ public enum HeroClass {
 		new PotionBandolier().collect();
 		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
 		new PotionOfHealing().identify();
-		
-		for (int j = 0; j < 100; j++){
-			Generator.random(Generator.Category.POTION).identify().collect();
-		}
-		
-		new PotionOfAdrenalineSurge().quantity(5).identify().collect();
-		new PotionOfCleansing().quantity(5).identify().collect();
-		new PotionOfCorrosiveGas().quantity(5).identify().collect();
-		new PotionOfDragonsBreath().quantity(5).identify().collect();
-		new PotionOfEarthenArmor().quantity(5).identify().collect();
-		new PotionOfHolyFuror().quantity(5).identify().collect();
-		new PotionOfMagicalSight().quantity(5).identify().collect();
-		new PotionOfShielding().quantity(5).identify().collect();
-		new PotionOfShroudingFog().quantity(5).identify().collect();
-		new PotionOfSnapFreeze().quantity(5).identify().collect();
-		new PotionOfStamina().quantity(5).identify().collect();
-		new PotionOfStormClouds().quantity(5).identify().collect();
 	}
 
 	private static void initMage( Hero hero ) {
