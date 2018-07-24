@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Foresight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -1520,8 +1521,10 @@ public class Hero extends Char {
 			by = Dungeon.level.height() - 1;
 		}
 
-		TalismanOfForesight.Foresight foresight = buff( TalismanOfForesight.Foresight.class );
-		boolean cursed = foresight != null && foresight.isCursed();
+		TalismanOfForesight.Foresight talisman = buff( TalismanOfForesight.Foresight.class );
+		boolean cursed = talisman != null && talisman.isCursed();
+		
+		boolean foresight = buff(Foresight.class) != null;
 		
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {
@@ -1542,6 +1545,10 @@ public class Hero extends Char {
 						//unintentional searches always fail with a cursed talisman
 						} else if (cursed) {
 							chance = 0f;
+							
+						//..and always succeed when affected by foresight buff
+						} else if (foresight){
+							chance = 1f;
 							
 						//unintentional trap detection scales from 40% at floor 0 to 30% at floor 25
 						} else if (Dungeon.level.map[p] == Terrain.SECRET_TRAP) {
@@ -1564,8 +1571,8 @@ public class Hero extends Char {
 							
 							smthFound = true;
 	
-							if (foresight != null && !foresight.isCursed())
-								foresight.charge();
+							if (talisman != null && !talisman.isCursed())
+								talisman.charge();
 						}
 					}
 				}
