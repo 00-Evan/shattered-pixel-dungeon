@@ -22,29 +22,41 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-
-import java.util.HashSet;
+import com.watabou.noosa.Image;
 
 public class MagicImmune extends FlavourBuff {
 	
+	{
+		type = buffType.POSITIVE;
+		announced = true;
+	}
 	
-	public static final HashSet<Class> IMMUNITIES = (HashSet<Class>) AntiMagic.RESISTS.clone();
+	{
+		immunities.addAll(AntiMagic.RESISTS);
+	}
 	
-	//TODO visuals
-	
-	//FIXME this does not currently handle all cases, need to implement:
-	//+ all enchant effects not working
-	//+ all glyph effects not working
-	//+ equipped curse being removable
-	//+ 0 damage from magical attacks
-	//- text for all of these
-	
-	//what about active buffs/debuffs?
+	//FIXME what about active buffs/debuffs?, what about rings? what about artifacts?
 	
 	@Override
 	public int icon() {
 		return BuffIndicator.COMBO;
+	}
+	
+	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(0, 1, 0);
+	}
+	
+	@Override
+	public String toString() {
+		return Messages.get(this, "name");
+	}
+	
+	@Override
+	public String desc() {
+		return Messages.get(this, "desc", dispTurns());
 	}
 	
 }

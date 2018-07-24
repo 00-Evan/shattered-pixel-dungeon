@@ -98,7 +98,7 @@ public abstract class Wand extends Item {
 		if (action.equals( AC_ZAP )) {
 			
 			if (hero.buff(MagicImmune.class) != null){
-				GLog.w( "no magic!" ); //TODO
+				GLog.w( Messages.get(this, "no_magic") );
 			} else {
 				
 				curUser = hero;

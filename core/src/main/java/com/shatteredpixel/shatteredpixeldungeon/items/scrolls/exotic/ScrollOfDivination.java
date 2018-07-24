@@ -43,7 +43,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class ScrollOfForesight extends ExoticScroll {
+public class ScrollOfDivination extends ExoticScroll {
 	
 	{
 		initials = 0;
@@ -107,16 +107,16 @@ public class ScrollOfForesight extends ExoticScroll {
 			total --;
 		}
 		
-		GameScene.show(new WndForesight( IDed ));
+		GameScene.show(new WndDivination( IDed ));
 	}
 	
-	private class WndForesight extends Window {
+	private class WndDivination extends Window {
 		
 		private static final int WIDTH = 120;
 		
-		WndForesight(ArrayList<Item> IDed ){
-			IconTitle cur = new IconTitle(new ItemSprite(ScrollOfForesight.this),
-					Messages.titleCase(Messages.get(ScrollOfForesight.class, "name")));
+		WndDivination(ArrayList<Item> IDed ){
+			IconTitle cur = new IconTitle(new ItemSprite(ScrollOfDivination.this),
+					Messages.titleCase(Messages.get(ScrollOfDivination.class, "name")));
 			cur.setRect(0, 0, WIDTH, 0);
 			add(cur);
 			
