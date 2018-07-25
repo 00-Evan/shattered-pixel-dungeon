@@ -21,13 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfEnchantment extends ExoticScroll {
 	
@@ -39,10 +43,12 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	public void doRead() {
 		setKnown();
 		
-		GameScene.selectItem( itemSelector, WndBag.Mode.ENCHANTABLE, "TODO" );
+		curItem = this;
+		
+		GameScene.selectItem( itemSelector, WndBag.Mode.ENCHANTABLE, Messages.get(this, "inv_title"));
 	}
 	
-	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
+	protected WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect(final Item item) {
 			
@@ -50,24 +56,27 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				
 				final Weapon.Enchantment enchants[] = new Weapon.Enchantment[3];
 				
-				enchants[0] = Weapon.Enchantment.randomCommon();
-				enchants[1] = Weapon.Enchantment.randomUncommon();
-				do {
-					enchants[2] = Weapon.Enchantment.random();
-				} while (enchants[2].getClass() == enchants[0].getClass() ||
-						enchants[1].getClass() == enchants[0].getClass());
+				Class<? extends Weapon.Enchantment> existing = ((Weapon) item).enchantment != null ? ((Weapon) item).enchantment.getClass() : null;
+				enchants[0] = Weapon.Enchantment.randomCommon( existing );
+				enchants[1] = Weapon.Enchantment.randomUncommon( existing );
+				enchants[2] = Weapon.Enchantment.random( existing, enchants[0].getClass(), enchants[1].getClass());
 				
-				GameScene.show(new WndOptions("title", "body",
+				GameScene.show(new WndOptions(Messages.titleCase(ScrollOfEnchantment.this.name()),
+						Messages.get(ScrollOfEnchantment.class, "weapon"),
 						enchants[0].name(),
 						enchants[1].name(),
 						enchants[2].name(),
-						"cancel"){
+						Messages.get(ScrollOfEnchantment.class, "cancel")){
 					
 					@Override
 					protected void onSelect(int index) {
 						if (index < 3) {
 							((Weapon) item).enchant(enchants[index]);
 							//TODO text
+							((ScrollOfEnchantment)curItem).readAnimation();
+							
+							Sample.INSTANCE.play( Assets.SND_READ );
+							Invisibility.dispel();
 							Enchanting.show(curUser, item);
 						}
 					}
@@ -77,24 +86,27 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				
 				final Armor.Glyph glyphs[] = new Armor.Glyph[3];
 				
-				glyphs[0] = Armor.Glyph.randomCommon();
-				glyphs[1] = Armor.Glyph.randomUncommon();
-				do {
-					glyphs[2] = Armor.Glyph.random();
-				} while (glyphs[2].getClass() == glyphs[0].getClass() ||
-						glyphs[1].getClass() == glyphs[0].getClass());
+				Class<? extends Armor.Glyph> existing = ((Armor) item).glyph != null ? ((Armor) item).glyph.getClass() : null;
+				glyphs[0] = Armor.Glyph.randomCommon( existing );
+				glyphs[1] = Armor.Glyph.randomUncommon( existing );
+				glyphs[2] = Armor.Glyph.random( existing, glyphs[0].getClass(), glyphs[1].getClass());
 				
-				GameScene.show(new WndOptions("title", "body",
+				GameScene.show(new WndOptions(Messages.titleCase(ScrollOfEnchantment.this.name()),
+						Messages.get(ScrollOfEnchantment.class, "armor"),
 						glyphs[0].name(),
 						glyphs[1].name(),
 						glyphs[2].name(),
-						"cancel"){
+						Messages.get(ScrollOfEnchantment.class, "cancel")){
 					
 					@Override
 					protected void onSelect(int index) {
 						if (index < 3) {
 							((Armor) item).inscribe(glyphs[index]);
 							//TODO text
+							((ScrollOfEnchantment)curItem).readAnimation();
+							
+							Sample.INSTANCE.play( Assets.SND_READ );
+							Invisibility.dispel();
 							Enchanting.show(curUser, item);
 						}
 					}

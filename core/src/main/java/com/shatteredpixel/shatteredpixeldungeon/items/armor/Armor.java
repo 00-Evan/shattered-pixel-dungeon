@@ -67,6 +67,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Armor extends EquipableItem {
 
@@ -498,10 +499,7 @@ public class Armor extends EquipableItem {
 	public Armor inscribe() {
 
 		Class<? extends Glyph> oldGlyphClass = glyph != null ? glyph.getClass() : null;
-		Glyph gl = Glyph.random();
-		while (gl.getClass() == oldGlyphClass) {
-			gl = Armor.Glyph.random();
-		}
+		Glyph gl = Glyph.random( oldGlyphClass );
 
 		return inscribe( gl );
 	}
@@ -543,9 +541,9 @@ public class Armor extends EquipableItem {
 				Affection.class, AntiMagic.class, Thorns.class };
 		
 		private static final float[] typeChances = new float[]{
-				40, //10 each
-				30, // 5 each
-				6   // 2 each
+				50, //12.5% each
+				40, //6.67% each
+				10  //3.33% each
 		};
 
 		private static final Class<?>[] curses = new Class<?>[]{
@@ -585,21 +583,27 @@ public class Armor extends EquipableItem {
 		public abstract ItemSprite.Glowing glowing();
 
 		@SuppressWarnings("unchecked")
-		public static Glyph random() {
+		public static Glyph random( Class<? extends Glyph> ... toIgnore ) {
 			switch(Random.chances(typeChances)){
 				case 0: default:
-					return randomCommon();
+					return randomCommon( toIgnore );
 				case 1:
-					return randomUncommon();
+					return randomUncommon( toIgnore );
 				case 2:
-					return randomRare();
+					return randomRare( toIgnore );
 			}
 		}
 		
 		@SuppressWarnings("unchecked")
-		public static Glyph randomCommon(){
+		public static Glyph randomCommon( Class<? extends Glyph> ... toIgnore ){
 			try {
-				return ((Class<Glyph>)Random.oneOf(common)).newInstance();
+				ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(common));
+				glyphs.removeAll(Arrays.asList(toIgnore));
+				if (glyphs.isEmpty()) {
+					return random();
+				} else {
+					return (Glyph) Random.element(glyphs).newInstance();
+				}
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 				return null;
@@ -607,9 +611,15 @@ public class Armor extends EquipableItem {
 		}
 		
 		@SuppressWarnings("unchecked")
-		public static Glyph randomUncommon(){
+		public static Glyph randomUncommon( Class<? extends Glyph> ... toIgnore ){
 			try {
-				return ((Class<Glyph>)Random.oneOf(uncommon)).newInstance();
+				ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(uncommon));
+				glyphs.removeAll(Arrays.asList(toIgnore));
+				if (glyphs.isEmpty()) {
+					return random();
+				} else {
+					return (Glyph) Random.element(glyphs).newInstance();
+				}
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 				return null;
@@ -617,9 +627,15 @@ public class Armor extends EquipableItem {
 		}
 		
 		@SuppressWarnings("unchecked")
-		public static Glyph randomRare(){
+		public static Glyph randomRare( Class<? extends Glyph> ... toIgnore ){
 			try {
-				return ((Class<Glyph>)Random.oneOf(rare)).newInstance();
+				ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(rare));
+				glyphs.removeAll(Arrays.asList(toIgnore));
+				if (glyphs.isEmpty()) {
+					return random();
+				} else {
+					return (Glyph) Random.element(glyphs).newInstance();
+				}
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 				return null;
@@ -627,9 +643,15 @@ public class Armor extends EquipableItem {
 		}
 		
 		@SuppressWarnings("unchecked")
-		public static Glyph randomCurse(){
+		public static Glyph randomCurse( Class<? extends Glyph> ... toIgnore ){
 			try {
-				return ((Class<Glyph>)Random.oneOf(curses)).newInstance();
+				ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(curses));
+				glyphs.removeAll(Arrays.asList(toIgnore));
+				if (glyphs.isEmpty()) {
+					return random();
+				} else {
+					return (Glyph) Random.element(glyphs).newInstance();
+				}
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 				return null;
