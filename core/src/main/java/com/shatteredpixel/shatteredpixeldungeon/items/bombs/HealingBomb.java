@@ -60,7 +60,7 @@ public class HealingBomb extends Bomb {
 				Char ch = Actor.findChar(i);
 				if (ch != null){
 					//same as a healing dart
-					Buff.affect( ch, Healing.class ).setHeal((int)(0.5f*ch.HT + 30), 0.333f, 0);
+					Buff.affect( ch, Healing.class ).setHeal((int)(0.5f*ch.HT + 30), 0.25f, 0);
 					PotionOfHealing.cure( ch );
 				}
 			}
