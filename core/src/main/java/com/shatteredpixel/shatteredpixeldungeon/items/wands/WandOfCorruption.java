@@ -74,7 +74,6 @@ import com.watabou.utils.Random;
 
 import java.util.HashMap;
 
-//TODO final balancing decisions here
 public class WandOfCorruption extends Wand {
 
 	{

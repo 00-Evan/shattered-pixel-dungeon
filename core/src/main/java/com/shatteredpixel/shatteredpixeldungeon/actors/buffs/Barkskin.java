@@ -76,7 +76,6 @@ public class Barkskin extends Buff {
 	}
 
 	@Override
-	//TODO
 	public String desc() {
 		return Messages.get(this, "desc", level, dispTurns(cooldown()+1));
 	}

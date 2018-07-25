@@ -115,10 +115,15 @@ public class ExoticPotion extends Potion {
 		}
 	}
 	
-	//TODO
 	@Override
+	//20 gold more than its none-exotic equivalent
 	public int price() {
-		return super.price();
+		try {
+			return (exoToReg.get(getClass()).newInstance().price() + 20) * quantity;
+		} catch (Exception e){
+			ShatteredPixelDungeon.reportException(e);
+			return 0;
+		}
 	}
 	
 	public static class PotionToExotic extends Recipe{

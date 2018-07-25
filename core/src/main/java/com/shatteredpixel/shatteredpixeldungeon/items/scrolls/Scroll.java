@@ -153,7 +153,7 @@ public abstract class Scroll extends Item {
 		if (action.equals( AC_READ )) {
 			
 			if (hero.buff(MagicImmune.class) != null){
-				GLog.w( Messages.get(this, "no_magic") ); //TODO
+				GLog.w( Messages.get(this, "no_magic") );
 			} else if (hero.buff( Blindness.class ) != null) {
 				GLog.w( Messages.get(this, "blinded") );
 			} else if (hero.buff(UnstableSpellbook.bookRecharge.class) != null
@@ -250,7 +250,6 @@ public abstract class Scroll extends Item {
 		
 		private static HashMap<Class<?extends Scroll>, Class<?extends Runestone>> stones = new HashMap<>();
 		private static HashMap<Class<?extends Scroll>, Integer> amnts = new HashMap<>();
-		//TODO add more stones as they are implemented
 		static {
 			stones.put(ScrollOfIdentify.class,      StoneOfIntuition.class);
 			amnts.put(ScrollOfIdentify.class,       3);

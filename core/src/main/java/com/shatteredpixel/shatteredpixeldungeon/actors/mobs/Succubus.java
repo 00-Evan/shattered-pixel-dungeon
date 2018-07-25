@@ -40,7 +40,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-//TODO desc changes
 public class Succubus extends Mob {
 	
 	private static final int BLINK_DELAY	= 5;

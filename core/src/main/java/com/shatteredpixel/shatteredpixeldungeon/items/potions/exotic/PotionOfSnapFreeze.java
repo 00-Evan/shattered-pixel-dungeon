@@ -57,7 +57,6 @@ public class PotionOfSnapFreeze extends ExoticPotion {
 				
 				Char ch = Actor.findChar( cell + offset);
 				if (ch != null){
-					//TODO balancing on this
 					Buff.affect(ch, Roots.class, 10f);
 				}
 				

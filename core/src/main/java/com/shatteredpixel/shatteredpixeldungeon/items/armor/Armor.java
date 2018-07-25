@@ -87,8 +87,7 @@ public class Armor extends EquipableItem {
 			evasionFactor = eva;
 			defenceFactor = df;
 		}
-
-		//TODO balance on this seems good, but needs testing.
+		
 		public int evasionFactor(int level){
 			return Math.round((2 + level) * evasionFactor);
 		}
@@ -522,13 +521,7 @@ public class Armor extends EquipableItem {
 		return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.glowing() : null;
 	}
 	
-	//FIXME need to adjust glyphs given armor augmentation changes
 	public static abstract class Glyph implements Bundlable {
-		
-		private static final Class<?>[] glyphs = new Class<?>[]{
-				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class,
-				Brimstone.class, Stone.class, Entanglement.class, Repulsion.class, Camouflage.class, Flow.class,
-				Affection.class, AntiMagic.class, Thorns.class };
 		
 		private static final Class<?>[] common = new Class<?>[]{
 				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class };

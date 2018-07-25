@@ -64,7 +64,6 @@ public class Charm extends FlavourBuff {
 	}
 
 	@Override
-	//TODO
 	public String desc() {
 		return Messages.get(this, "desc", dispTurns());
 	}

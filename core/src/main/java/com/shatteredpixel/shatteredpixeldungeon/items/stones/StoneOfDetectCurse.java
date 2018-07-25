@@ -21,7 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -30,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 public class StoneOfDetectCurse extends InventoryStone {
 	
 	{
-		mode = WndBag.Mode.EQUIPMENT;
+		mode = WndBag.Mode.CURSE_DETECTABLE;
 		image = ItemSpriteSheet.STONE_ODAL;
 	}
 	
@@ -45,5 +47,11 @@ public class StoneOfDetectCurse extends InventoryStone {
 		} else {
 			GLog.w( Messages.get(this, "not_cursed") );
 		}
+	}
+	
+	public static boolean canDetectCurse(Item item){
+		return !item.isIdentified()
+				&& !item.cursedKnown
+				&& (item instanceof EquipableItem || item instanceof Wand);
 	}
 }

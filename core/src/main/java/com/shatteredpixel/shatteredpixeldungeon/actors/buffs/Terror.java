@@ -59,7 +59,6 @@ public class Terror extends FlavourBuff {
 	}
 
 	@Override
-	//TODO
 	public String desc() {
 		return Messages.get(this, "desc", dispTurns());
 	}

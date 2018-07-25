@@ -39,9 +39,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -67,7 +68,7 @@ public class WndBag extends WndTabbed {
 	public static enum Mode {
 		ALL,
 		UNIDENTIFED,
-		UNIDED_OR_CURSED,
+		UNCURSABLE,
 		UPGRADEABLE,
 		QUICKSLOT,
 		FOR_SALE,
@@ -80,6 +81,7 @@ public class WndBag extends WndTabbed {
 		POTION,
 		SCROLL,
 		UNIDED_POTION_OR_SCROLL,
+		CURSE_DETECTABLE,
 		EQUIPMENT,
 		TRANMSUTABLE,
 		ALCHEMY
@@ -391,7 +393,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.FOR_SALE && !item.unique && (item.price() > 0) && (!item.isEquipped( Dungeon.hero ) || !item.cursed) ||
 						mode == Mode.UPGRADEABLE && item.isUpgradable() ||
 						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
-						mode == Mode.UNIDED_OR_CURSED && ((item instanceof EquipableItem || item instanceof Wand) && (!item.isIdentified() || item.cursed)) ||
+						mode == Mode.UNCURSABLE && ScrollOfRemoveCurse.uncursable(item) ||
 						mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon || item instanceof Boomerang) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||
@@ -402,22 +404,12 @@ public class WndBag extends WndTabbed {
 						mode == Mode.POTION && (item instanceof Potion) ||
 						mode == Mode.SCROLL && (item instanceof Scroll) ||
 						mode == Mode.UNIDED_POTION_OR_SCROLL && (!item.isIdentified() && (item instanceof Scroll || item instanceof Potion)) ||
+						mode == Mode.CURSE_DETECTABLE && StoneOfDetectCurse.canDetectCurse(item) ||
 						mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
 						mode == Mode.ALCHEMY && Recipe.usableInRecipe(item) ||
 						mode == Mode.TRANMSUTABLE && ScrollOfTransmutation.canTransmute(item) ||
 						mode == Mode.ALL
 					);
-					//extra logic for cursed weapons or armor
-					if (!active && mode == Mode.UNIDED_OR_CURSED){
-						if (item instanceof Weapon){
-							Weapon w = (Weapon) item;
-							enable(w.hasCurseEnchant());
-						}
-						if (item instanceof Armor){
-							Armor a = (Armor) item;
-							enable(a.hasCurseGlyph());
-						}
-					}
 				}
 			} else {
 				bg.color( NORMAL );

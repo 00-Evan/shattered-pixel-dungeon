@@ -27,8 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -39,7 +41,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	{
 		initials = 7;
-		mode = WndBag.Mode.UNIDED_OR_CURSED;
+		mode = WndBag.Mode.UNCURSABLE;
 	}
 	
 	@Override
@@ -102,6 +104,18 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		}
 		
 		return procced;
+	}
+	
+	public static boolean uncursable( Item item ){
+		if ((item instanceof EquipableItem || item instanceof Wand) && (!item.isIdentified() || item.cursed)){
+			return true;
+		} else if (item instanceof Weapon){
+			return ((Weapon)item).hasCurseEnchant();
+		} else if (item instanceof Armor){
+			return ((Armor)item).hasCurseGlyph();
+		} else {
+			return false;
+		}
 	}
 	
 	@Override
