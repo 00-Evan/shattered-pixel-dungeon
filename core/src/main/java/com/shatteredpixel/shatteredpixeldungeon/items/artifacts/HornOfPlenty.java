@@ -143,7 +143,14 @@ public class HornOfPlenty extends Artifact {
 	protected ArtifactBuff passiveBuff() {
 		return new hornRecharge();
 	}
-
+	
+	@Override
+	public void charge(Hero target) {
+		if (charge < chargeCap){
+			partialCharge += 0.25f;
+		}
+	}
+	
 	@Override
 	public String desc() {
 		String desc = super.desc();

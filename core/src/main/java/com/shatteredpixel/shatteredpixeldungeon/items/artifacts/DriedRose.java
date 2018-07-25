@@ -193,7 +193,14 @@ public class DriedRose extends Artifact {
 	protected ArtifactBuff passiveBuff() {
 		return new roseRecharge();
 	}
-
+	
+	@Override
+	public void charge(Hero target) {
+		if (ghost == null && charge < chargeCap){
+			partialCharge += 0.25f;
+		}
+	}
+	
 	@Override
 	public Item upgrade() {
 		if (level() >= 9)

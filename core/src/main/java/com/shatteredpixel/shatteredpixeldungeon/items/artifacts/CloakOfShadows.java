@@ -133,7 +133,14 @@ public class CloakOfShadows extends Artifact {
 	protected ArtifactBuff activeBuff( ) {
 		return new cloakStealth();
 	}
-
+	
+	@Override
+	public void charge(Hero target) {
+		if (charge < chargeCap) {
+			partialCharge += 0.25f;
+		}
+	}
+	
 	@Override
 	public Item upgrade() {
 		chargeCap = Math.min(chargeCap + 1, 10);

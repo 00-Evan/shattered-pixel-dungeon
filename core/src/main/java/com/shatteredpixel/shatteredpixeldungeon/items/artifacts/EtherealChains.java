@@ -230,7 +230,15 @@ public class EtherealChains extends Artifact {
 	protected ArtifactBuff passiveBuff() {
 		return new chainsRecharge();
 	}
-
+	
+	@Override
+	public void charge(Hero target) {
+		int chargeTarget = 5+(level()*2);
+		if (charge < chargeTarget*2){
+			partialCharge += 0.5f;
+		}
+	}
+	
 	@Override
 	public String desc() {
 		String desc = super.desc();

@@ -136,6 +136,13 @@ public class TimekeepersHourglass extends Artifact {
 	protected ArtifactBuff passiveBuff() {
 		return new hourglassRecharge();
 	}
+	
+	@Override
+	public void charge(Hero target) {
+		if (charge < chargeCap){
+			partialCharge += 0.25f;
+		}
+	}
 
 	@Override
 	public Item upgrade() {

@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
@@ -37,7 +39,7 @@ public class ScrollOfMysticalEnergy extends ExoticScroll {
 	public void doRead() {
 		
 		//append buff
-		ScrollOfRecharging.charge(curUser);
+		Buff.affect(curUser, ArtifactRecharge.class);
 		
 		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();

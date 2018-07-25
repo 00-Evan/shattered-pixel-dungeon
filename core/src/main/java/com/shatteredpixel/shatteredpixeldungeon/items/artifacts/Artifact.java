@@ -207,6 +207,10 @@ public class Artifact extends KindofMisc {
 	}
 
 	protected ArtifactBuff activeBuff() {return null; }
+	
+	public void charge(Hero target){
+		//do nothing by default;
+	}
 
 	public class ArtifactBuff extends Buff {
 

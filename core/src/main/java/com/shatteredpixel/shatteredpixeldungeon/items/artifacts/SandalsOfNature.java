@@ -99,6 +99,11 @@ public class SandalsOfNature extends Artifact {
 	protected ArtifactBuff passiveBuff() {
 		return new Naturalism();
 	}
+	
+	@Override
+	public void charge(Hero target) {
+		target.buff(Naturalism.class).charge();
+	}
 
 	@Override
 	public String desc() {

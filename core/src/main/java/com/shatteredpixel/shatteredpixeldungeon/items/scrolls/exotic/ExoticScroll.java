@@ -69,9 +69,6 @@ public abstract class ExoticScroll extends Scroll {
 		regToExo.put(ScrollOfTerror.class, ScrollOfPetrification.class);
 		exoToReg.put(ScrollOfPetrification.class, ScrollOfTerror.class);
 		
-		regToExo.put(ScrollOfTransmutation.class, ScrollOfDistortion.class);
-		exoToReg.put(ScrollOfDistortion.class, ScrollOfTransmutation.class);
-		
 		regToExo.put(ScrollOfRecharging.class, ScrollOfMysticalEnergy.class);
 		exoToReg.put(ScrollOfMysticalEnergy.class, ScrollOfRecharging.class);
 		
@@ -86,8 +83,11 @@ public abstract class ExoticScroll extends Scroll {
 		
 		//TODO
 		
-		regToExo.put(ScrollOfMirrorImage.class, ScrollOfPetrification.class);
-		exoToReg.put(ScrollOfPetrification.class, ScrollOfMirrorImage.class);
+		regToExo.put(ScrollOfMirrorImage.class, ScrollOfDivination.class);
+		exoToReg.put(ScrollOfDivination.class, ScrollOfMirrorImage.class);
+		
+		regToExo.put(ScrollOfTransmutation.class, ScrollOfDivination.class);
+		exoToReg.put(ScrollOfDivination.class, ScrollOfTransmutation.class);
 	}
 	
 	@Override

@@ -135,7 +135,12 @@ public class ChaliceOfBlood extends Artifact {
 	protected ArtifactBuff passiveBuff() {
 		return new chaliceRegen();
 	}
-
+	
+	@Override
+	public void charge(Hero target) {
+		target.HP = Math.min( target.HT, target.HP + 1 + Dungeon.depth/5);
+	}
+	
 	@Override
 	public String desc() {
 		String desc = super.desc();

@@ -170,6 +170,13 @@ public class UnstableSpellbook extends Artifact {
 	protected ArtifactBuff passiveBuff() {
 		return new bookRecharge();
 	}
+	
+	@Override
+	public void charge(Hero target) {
+		if (charge < chargeCap){
+			partialCharge += 0.1f;
+		}
+	}
 
 	@Override
 	public Item upgrade() {
