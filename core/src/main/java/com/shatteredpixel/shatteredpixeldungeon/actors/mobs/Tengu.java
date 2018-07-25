@@ -178,11 +178,13 @@ public class Tengu extends Mob {
 		if (HP > HT/2) {
 			
 			//place new traps
+			int tries;
 			for (int i=0; i < 4; i++) {
 				int trapPos;
+				tries = 15;
 				do {
 					trapPos = Random.Int( level.length() );
-				} while (level.map[trapPos] != Terrain.INACTIVE_TRAP
+				} while (tries-- > 0 && level.map[trapPos] != Terrain.INACTIVE_TRAP
 						&& level.map[trapPos] != Terrain.TRAP);
 				
 				if (level.map[trapPos] == Terrain.INACTIVE_TRAP) {
@@ -192,7 +194,7 @@ public class Tengu extends Mob {
 				}
 			}
 			
-			int tries = 50;
+			tries = 50;
 			do {
 				newPos = Random.IntRange(3, 7) + 32*Random.IntRange(26, 30);
 			} while ( (level.adjacent(newPos, enemy.pos) || Actor.findChar(newPos) != null)

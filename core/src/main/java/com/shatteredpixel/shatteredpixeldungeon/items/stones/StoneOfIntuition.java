@@ -206,7 +206,7 @@ public class StoneOfIntuition extends InventoryStone {
 						super.onClick();
 					}
 				};
-				Image im = new Image(Assets.CONS_ICONS, 7*i, all == potions ? 0 : 8, 7, 8);
+				Image im = new Image(Assets.CONS_ICONS, 7*i, all == potions ? 0 : 16, 7, 8);
 				im.scale.set(2f);
 				btn.icon(im);
 				btn.setRect(left + placed*BTN_SIZE, top, BTN_SIZE, BTN_SIZE);
