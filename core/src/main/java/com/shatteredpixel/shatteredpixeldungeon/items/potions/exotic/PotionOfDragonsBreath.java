@@ -59,7 +59,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 	@Override
 	//need to override drink so that time isn't spent right away
 	protected void drink(final Hero hero) {
-		detach( hero.belongings.backpack );
+		curItem = detach( hero.belongings.backpack );
 		setKnown();
 		
 		GameScene.selectCell(targeter);
@@ -70,7 +70,8 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 		public void onSelect(final Integer cell) {
 			
 			if (cell == null){
-				return;
+				//TODO if this can ever be found un-IDed, need logic for that
+				curItem.collect();
 			} else {
 				Sample.INSTANCE.play( Assets.SND_DRINK );
 				curUser.sprite.operate(curUser.pos, new Callback() {

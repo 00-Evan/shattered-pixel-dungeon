@@ -135,7 +135,7 @@ public class ScrollOfTeleportation extends Scroll {
 	
 	public static void teleportPreferringUnseen( Hero hero ){
 		
-		if (!(Dungeon.level instanceof RegularLevel)){
+		if (Dungeon.bossLevel() || !(Dungeon.level instanceof RegularLevel)){
 			teleportHero( hero );
 			return;
 		}

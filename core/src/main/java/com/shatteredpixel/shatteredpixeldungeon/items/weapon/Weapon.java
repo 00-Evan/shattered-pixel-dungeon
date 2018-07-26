@@ -100,7 +100,7 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
 		
-		if (enchantment != null && attacker.buff(MagicImmune.class) != null) {
+		if (enchantment != null && attacker.buff(MagicImmune.class) == null) {
 			damage = enchantment.proc( this, attacker, defender, damage );
 		}
 		
@@ -251,7 +251,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public boolean hasEnchant(Class<?extends Enchantment> type, Char owner) {
-		return enchantment != null && enchantment.getClass() == type && owner.buff(MagicImmune.class) != null;
+		return enchantment != null && enchantment.getClass() == type && owner.buff(MagicImmune.class) == null;
 	}
 	
 	//these are not used to process specific enchant effects, so magic immune doesn't affect them

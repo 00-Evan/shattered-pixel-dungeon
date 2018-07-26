@@ -354,7 +354,7 @@ public class Armor extends EquipableItem {
 	
 	public int proc( Char attacker, Char defender, int damage ) {
 		
-		if (glyph != null && defender.buff(MagicImmune.class) != null) {
+		if (glyph != null && defender.buff(MagicImmune.class) == null) {
 			damage = glyph.proc( this, attacker, defender, damage );
 		}
 		
@@ -504,7 +504,7 @@ public class Armor extends EquipableItem {
 	}
 
 	public boolean hasGlyph(Class<?extends Glyph> type, Char owner) {
-		return glyph != null &&  glyph.getClass() == type && owner.buff(MagicImmune.class) == null;
+		return glyph != null && glyph.getClass() == type && owner.buff(MagicImmune.class) == null;
 	}
 
 	//these are not used to process specific glyph effects, so magic immune doesn't affect them

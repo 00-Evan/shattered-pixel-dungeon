@@ -80,14 +80,15 @@ public class WandOfTransfusion extends Wand {
 			if (ch.alignment == Char.Alignment.ALLY || ch.buff(Charm.class) != null){
 				
 				int healing = selfDmg + 3*level();
-				int shielding = -(ch.HT - ch.HP - healing);
+				int shielding = (ch.HP + healing) - ch.HT;
 				if (shielding > 0){
 					healing -= shielding;
+					Buff.affect(ch, Barrier.class).set(shielding);
+				} else {
+					shielding = 0;
 				}
 				
 				ch.HP += healing;
-				
-				Buff.affect(ch, Barrier.class).set(shielding);
 				
 				ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 2 + level() / 2);
 				ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing + shielding);

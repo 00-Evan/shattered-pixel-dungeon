@@ -43,8 +43,6 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	public void doRead() {
 		setKnown();
 		
-		curItem = this;
-		
 		GameScene.selectItem( itemSelector, WndBag.Mode.ENCHANTABLE, Messages.get(this, "inv_title"));
 	}
 	
@@ -82,7 +80,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 					}
 				});
 			
-			} else {
+			} else if (item instanceof Armor) {
 				
 				final Armor.Glyph glyphs[] = new Armor.Glyph[3];
 				
@@ -111,6 +109,9 @@ public class ScrollOfEnchantment extends ExoticScroll {
 						}
 					}
 				});
+			} else {
+				//TODO if this can ever be found un-IDed, need logic for that
+				curItem.collect();
 			}
 		}
 	};
