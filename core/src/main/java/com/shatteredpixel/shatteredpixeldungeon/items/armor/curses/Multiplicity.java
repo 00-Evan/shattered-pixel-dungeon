@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -79,6 +80,9 @@ public class Multiplicity extends Armor.Glyph {
 							attacker.storeInBundle(store);
 							m.restoreFromBundle(store);
 							m.HP = m.HT;
+							if (m.buff(PinCushion.class) != null){
+								m.remove(m.buff(PinCushion.class));
+							}
 
 							//If a thief has stolen an item, that item is not duplicated.
 							if (m instanceof Thief){
