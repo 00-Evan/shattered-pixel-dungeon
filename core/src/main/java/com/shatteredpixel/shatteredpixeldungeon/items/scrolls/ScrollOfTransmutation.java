@@ -31,7 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -218,32 +220,28 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 	
 	private Scroll changeScroll( Scroll s ) {
-		if (s instanceof ScrollOfUpgrade || s instanceof ScrollOfMagicalInfusion) {
-			
+		try {
+			if (s instanceof ExoticScroll) {
+				return ExoticScroll.exoToReg.get(s.getClass()).newInstance();
+			} else {
+				return ExoticScroll.regToExo.get(s.getClass()).newInstance();
+			}
+		} catch ( Exception e ){
+			ShatteredPixelDungeon.reportException(e);
 			return null;
-			
-		} else {
-			
-			Scroll n;
-			do {
-				n = (Scroll)Generator.random( Generator.Category.SCROLL );
-			} while (n.getClass() == s.getClass());
-			return n;
 		}
 	}
 	
 	private Potion changePotion( Potion p ) {
-		if (p instanceof PotionOfStrength || p instanceof PotionOfMight) {
-			
+		try {
+			if (p instanceof ExoticPotion) {
+				return ExoticPotion.exoToReg.get(p.getClass()).newInstance();
+			} else {
+				return ExoticPotion.regToExo.get(p.getClass()).newInstance();
+			}
+		} catch ( Exception e ){
+			ShatteredPixelDungeon.reportException(e);
 			return null;
-			
-		} else {
-			
-			Potion n;
-			do {
-				n = (Potion)Generator.random( Generator.Category.POTION );
-			} while (n.getClass() == p.getClass());
-			return n;
 		}
 	}
 	
