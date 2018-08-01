@@ -111,7 +111,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	private Tweener jumpTweener;
 	private Callback jumpCallback;
 
-	private float flashTime = 0;
+	protected float flashTime = 0;
 	
 	protected boolean sleeping = false;
 

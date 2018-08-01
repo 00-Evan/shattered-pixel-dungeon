@@ -358,7 +358,7 @@ public class Armor extends EquipableItem {
 			damage = glyph.proc( this, attacker, defender, damage );
 		}
 		
-		if (!levelKnown) {
+		if (!levelKnown && defender instanceof Hero) {
 			if (--hitsToKnow <= 0) {
 				identify();
 				GLog.w( Messages.get(Armor.class, "identify") );

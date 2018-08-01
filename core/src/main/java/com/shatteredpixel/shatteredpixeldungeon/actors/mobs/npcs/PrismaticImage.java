@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -28,25 +29,29 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PrismaticGuard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.MirrorSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.PrismaticSprite;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-public class MirrorImage extends NPC {
+public class PrismaticImage extends NPC {
 	
 	{
-		spriteClass = MirrorSprite.class;
+		spriteClass = PrismaticSprite.class;
 		
-		HP = HT = 1;
+		HP = HT = 8;
 		defenseSkill = 0;
 		
 		alignment = Alignment.ALLY;
 		state = HUNTING;
+		
+		WANDERING = new Wandering();
 		
 		//before other mobs
 		actPriority = MOB_PRIO + 1;
@@ -56,55 +61,82 @@ public class MirrorImage extends NPC {
 	private int heroID;
 	public int armTier;
 	
+	private int deathTimer = -1;
+	
 	@Override
 	protected boolean act() {
 		
+		if (!isAlive()){
+			deathTimer--;
+			
+			if (deathTimer > 0) {
+				sprite.alpha((deathTimer + 3) / 8f);
+				spend(TICK);
+			} else {
+				destroy();
+				sprite.die();
+			}
+			return true;
+		}
+		
+		if (deathTimer != -1){
+			if (paralysed == 0) sprite.remove(CharSprite.State.PARALYSED);
+			deathTimer = -1;
+			sprite.resetColor();
+		}
+		
 		if ( hero == null ){
-			hero = (Hero)Actor.findById(heroID);
+			hero = (Hero) Actor.findById(heroID);
 			if ( hero == null ){
-				die(null);
-				sprite.killAndErase();
+				destroy();
+				sprite.die();
 				return true;
 			}
 		}
 		
 		if (hero.tier() != armTier){
 			armTier = hero.tier();
-			((MirrorSprite)sprite).updateArmor( armTier );
+			((PrismaticSprite)sprite).updateArmor( armTier );
 		}
 		
 		return super.act();
 	}
 	
+	@Override
+	public void die(Object cause) {
+		if (deathTimer == -1) {
+			deathTimer = 5;
+			sprite.add(CharSprite.State.PARALYSED);
+		}
+	}
+	
 	private static final String HEROID	= "hero_id";
+	private static final String TIMER	= "timer";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( HEROID, heroID );
+		bundle.put( TIMER, deathTimer );
 	}
 	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		heroID = bundle.getInt( HEROID );
+		deathTimer = bundle.getInt( TIMER );
 	}
 	
-	public void duplicate( Hero hero ) {
+	public void duplicate( Hero hero, int HP ) {
 		this.hero = hero;
 		heroID = this.hero.id();
-		Buff.affect(this, MirrorInvis.class, Short.MAX_VALUE);
+		this.HP = HP;
+		HT = PrismaticGuard.maxHP( hero );
 	}
 	
 	@Override
 	public int damageRoll() {
-		int damage;
-		if (hero.belongings.weapon != null){
-			damage = hero.belongings.weapon.damageRoll(this);
-		} else {
-			damage = hero.damageRoll(); //handles ring of force
-		}
-		return (damage+1)/2; //half hero damage, rounded up
+		return Random.NormalIntRange( 1 + hero.lvl/8, 4 + hero.lvl/2 );
 	}
 	
 	@Override
@@ -126,64 +158,54 @@ public class MirrorImage extends NPC {
 	}
 	
 	@Override
-	protected float attackDelay() {
-		return hero.attackDelay(); //handles ring of furor
-	}
-	
-	@Override
-	protected boolean canAttack(Char enemy) {
-		if (hero.belongings.weapon != null){
-			return Dungeon.level.distance( pos, enemy.pos ) <= hero.belongings.weapon.reachFactor(this);
-		} else {
-			return super.canAttack(enemy);
-		}
-	}
-	
-	@Override
 	public int drRoll() {
-		if (hero != null && hero.belongings.weapon != null){
-			return Random.NormalIntRange(0, hero.belongings.weapon.defenseFactor(this)/2);
+		if (hero != null){
+			return hero.drRoll();
 		} else {
 			return 0;
 		}
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
-		damage = super.attackProc( enemy, damage );
-		
-		MirrorInvis buff = buff(MirrorInvis.class);
-		if (buff != null){
-			buff.detach();
-		}
-		
-		if (enemy instanceof Mob) {
-			((Mob)enemy).aggro( this );
-		}
-		if (hero.belongings.weapon != null){
-			return hero.belongings.weapon.proc( this, enemy, damage );
+	public int defenseProc(Char enemy, int damage) {
+		damage = super.defenseProc(enemy, damage);
+		if (hero.belongings.armor != null){
+			return hero.belongings.armor.proc( enemy, this, damage );
 		} else {
 			return damage;
 		}
 	}
 	
 	@Override
+	public float speed() {
+		if (hero.belongings.armor != null){
+			return hero.belongings.armor.speedFactor(this, super.speed());
+		}
+		return super.speed();
+	}
+	
+	@Override
+	public int attackProc( Char enemy, int damage ) {
+		
+		if (enemy instanceof Mob) {
+			((Mob)enemy).aggro( this );
+		}
+		
+		return super.attackProc( enemy, damage );
+	}
+	
+	@Override
 	public CharSprite sprite() {
 		CharSprite s = super.sprite();
-		
-		//pre-0.7.0 saves
-		if (heroID == 0){
-			heroID = Dungeon.hero.id();
-		}
 		
 		hero = (Hero)Actor.findById(heroID);
 		if (hero != null) {
 			armTier = hero.tier();
 		}
-		((MirrorSprite)s).updateArmor( armTier );
+		((PrismaticSprite)s).updateArmor( armTier );
 		return s;
 	}
-
+	
 	@Override
 	public boolean interact() {
 		
@@ -197,7 +219,7 @@ public class MirrorImage extends NPC {
 		
 		Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
 		Dungeon.hero.busy();
-
+		
 		return true;
 	}
 	
@@ -207,15 +229,22 @@ public class MirrorImage extends NPC {
 		immunities.add( Burning.class );
 	}
 	
-	public static class MirrorInvis extends Invisibility {
-		
-		{
-			announced = false;
-		}
+	private class Wandering extends Mob.Wandering{
 		
 		@Override
-		public int icon() {
-			return BuffIndicator.NONE;
+		public boolean act(boolean enemyInFOV, boolean justAlerted) {
+			if (!enemyInFOV){
+				Buff.affect(hero, PrismaticGuard.class).set( HP );
+				destroy();
+				CellEmitter.get(pos).start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
+				sprite.die();
+				Sample.INSTANCE.play( Assets.SND_TELEPORT );
+				return true;
+			} else {
+				return super.act(enemyInFOV, justAlerted);
+			}
 		}
+		
 	}
+	
 }
