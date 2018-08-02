@@ -62,17 +62,21 @@ public class Shopkeeper extends NPC {
 	}
 	
 	public void flee() {
+		destroy();
+		
+		sprite.killAndErase();
+		CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
 		for (Heap heap: Dungeon.level.heaps.values()) {
 			if (heap.type == Heap.Type.FOR_SALE) {
 				CellEmitter.get( heap.pos ).burst( ElmoParticle.FACTORY, 4 );
 				heap.destroy();
 			}
 		}
-		
-		destroy();
-		
-		sprite.killAndErase();
-		CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
 	}
 	
 	@Override

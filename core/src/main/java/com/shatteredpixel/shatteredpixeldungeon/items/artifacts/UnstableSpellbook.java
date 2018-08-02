@@ -127,8 +127,8 @@ public class UnstableSpellbook extends Artifact {
 				curItem = scroll;
 				curUser = hero;
 				
-				//if this scroll hasn't been given to the book
-				if (!scrolls.contains(scroll.getClass())) {
+				//if there are changes left and the scroll has been given to the book
+				if (charge > 0 && !scrolls.contains(scroll.getClass())) {
 					final Scroll fScroll = scroll;
 					GameScene.show(new WndOptions(
 							Messages.get(this, "prompt"),

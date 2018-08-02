@@ -62,6 +62,10 @@ public class ArtifactRecharge extends Buff {
 		return true;
 	}
 	
+	public void reset(){
+		left = 30;
+	}
+	
 	@Override
 	public int icon() {
 		return BuffIndicator.RECHARGING;

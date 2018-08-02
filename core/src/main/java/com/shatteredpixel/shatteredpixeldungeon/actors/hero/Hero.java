@@ -1583,11 +1583,13 @@ public class Hero extends Char {
 		if (intentional) {
 			sprite.showStatus( CharSprite.DEFAULT, Messages.get(this, "search") );
 			sprite.operate( pos );
-			if (cursed){
-				GLog.n(Messages.get(this, "search_distracted"));
-				buff(Hunger.class).reduceHunger(TIME_TO_SEARCH - (2*HUNGER_FOR_SEARCH));
-			} else {
-				buff(Hunger.class).reduceHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
+			if (!Dungeon.level.locked) {
+				if (cursed) {
+					GLog.n(Messages.get(this, "search_distracted"));
+					buff(Hunger.class).reduceHunger(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH));
+				} else {
+					buff(Hunger.class).reduceHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
+				}
 			}
 			spendAndNext(TIME_TO_SEARCH);
 			
