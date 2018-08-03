@@ -178,7 +178,7 @@ public abstract class Char extends Actor {
 	
 	public boolean attack( Char enemy ) {
 
-		if (enemy == null || !enemy.isAlive()) return false;
+		if (enemy == null) return false;
 		
 		boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
 		

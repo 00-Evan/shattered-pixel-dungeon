@@ -43,7 +43,7 @@ public class MirrorImage extends NPC {
 		spriteClass = MirrorSprite.class;
 		
 		HP = HT = 1;
-		defenseSkill = 0;
+		defenseSkill = 1;
 		
 		alignment = Alignment.ALLY;
 		state = HUNTING;
@@ -119,7 +119,7 @@ public class MirrorImage extends NPC {
 			int heroEvasion = hero.defenseSkill(enemy);
 			
 			//if the hero has more/less evasion, 50% of it is applied
-			return (baseEvasion + heroEvasion) / 2;
+			return super.defenseSkill(enemy) * (baseEvasion + heroEvasion) / 2;
 		} else {
 			return 0;
 		}

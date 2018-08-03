@@ -85,7 +85,8 @@ public class PrismaticGuard extends Buff {
 			spend(TICK);
 		}
 		
-		if (HP < maxHP()){
+		LockedFloor lock = target.buff(LockedFloor.class);
+		if (HP < maxHP() && (lock == null || lock.regenOn())){
 			HP += 0.1f;
 		}
 		
