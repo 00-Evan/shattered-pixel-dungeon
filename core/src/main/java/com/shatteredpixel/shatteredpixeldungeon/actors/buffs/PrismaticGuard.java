@@ -51,7 +51,7 @@ public class PrismaticGuard extends Buff {
 		int v = hero.visibleEnemies();
 		for (int i=0; i < v; i++) {
 			Mob mob = hero.visibleEnemy( i );
-			if ( mob.isAlive() && !hero.mindVisionEnemies.contains(mob)
+			if ( mob.isAlive() && mob.state != mob.PASSIVE && !hero.mindVisionEnemies.contains(mob)
 					&& (closest == null || Dungeon.level.distance(hero.pos, mob.pos) < Dungeon.level.distance(hero.pos, closest.pos))) {
 				closest = mob;
 			}
@@ -72,7 +72,7 @@ public class PrismaticGuard extends Buff {
 				PrismaticImage pris = new PrismaticImage();
 				pris.duplicate(hero, (int)Math.floor(HP) );
 				pris.state = pris.HUNTING;
-				GameScene.add(pris);
+				GameScene.add(pris, 1);
 				ScrollOfTeleportation.appear(pris, bestPos);
 				
 				detach();
