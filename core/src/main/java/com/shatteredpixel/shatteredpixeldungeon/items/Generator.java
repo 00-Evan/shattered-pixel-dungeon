@@ -199,9 +199,9 @@ public class Generator {
 		SEED	( 0,    Plant.Seed.class ), //dropped by grass
 		
 		SCROLL	( 20,   Scroll.class ),
-		STONE   ( 5,    Runestone.class),
+		STONE   ( 2,    Runestone.class),
 		
-		GOLD	( 15,   Gold.class );
+		GOLD	( 18,   Gold.class );
 		
 		public Class<?>[] classes;
 		public float[] probs;
