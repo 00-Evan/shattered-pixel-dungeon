@@ -337,6 +337,7 @@ public class TimekeepersHourglass extends Artifact {
 			super.detach();
 			activeBuff = null;
 			triggerPresses();
+			target.next();
 		}
 
 		private static final String PRESSES = "presses";

@@ -434,6 +434,10 @@ public abstract class Mob extends Char {
 	}
 	
 	protected boolean getFurther( int target ) {
+		if (rooted || target == pos) {
+			return false;
+		}
+		
 		int step = Dungeon.flee( this, pos, target,
 			Dungeon.level.passable,
 			fieldOfView );

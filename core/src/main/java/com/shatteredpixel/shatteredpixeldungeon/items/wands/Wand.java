@@ -387,7 +387,8 @@ public abstract class Wand extends Item {
 				if (curWand.curCharges >= (curWand.cursed ? 1 : curWand.chargesPerCast())) {
 					
 					curUser.busy();
-
+					Invisibility.dispel();
+					
 					if (curWand.cursed){
 						CursedWand.cursedZap(curWand, curUser, new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT));
 						if (!curWand.cursedKnown){
@@ -402,8 +403,6 @@ public abstract class Wand extends Item {
 						});
 					}
 					curWand.cursedKnown = true;
-					
-					Invisibility.dispel();
 					
 				} else {
 

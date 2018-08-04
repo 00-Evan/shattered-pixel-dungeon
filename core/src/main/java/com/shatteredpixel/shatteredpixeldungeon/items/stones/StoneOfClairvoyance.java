@@ -80,8 +80,9 @@ public class StoneOfClairvoyance extends Runestone {
 						}
 					}
 					
-					if (Dungeon.level.traps.get(curr) != null){
-						disarmCandidates.add(Dungeon.level.traps.get(curr));
+					Trap t = Dungeon.level.traps.get(curr);
+					if (t != null && t.active){
+						disarmCandidates.add(t);
 					}
 					
 				}

@@ -187,6 +187,10 @@ public class MirrorImage extends NPC {
 	@Override
 	public boolean interact() {
 		
+		if (!Dungeon.level.passable[pos]){
+			return true;
+		}
+		
 		int curPos = pos;
 		
 		moveSprite( pos, Dungeon.hero.pos );

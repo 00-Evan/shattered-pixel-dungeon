@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
@@ -68,7 +69,7 @@ public class Challenges {
 		}
 
 		if (Dungeon.isChallenged(NO_ARMOR)){
-			if (item instanceof Armor && !(item instanceof ClothArmor)) {
+			if (item instanceof Armor && !(item instanceof ClothArmor || item instanceof ClassArmor)) {
 				return true;
 			}
 		}
