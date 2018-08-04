@@ -97,14 +97,9 @@ public abstract class Wand extends Item {
 
 		if (action.equals( AC_ZAP )) {
 			
-			if (hero.buff(MagicImmune.class) != null){
-				GLog.w( Messages.get(this, "no_magic") );
-			} else {
-				
-				curUser = hero;
-				curItem = this;
-				GameScene.selectCell(zapper);
-			}
+			curUser = hero;
+			curItem = this;
+			GameScene.selectCell( zapper );
 			
 		}
 	}
@@ -373,6 +368,9 @@ public abstract class Wand extends Item {
 				
 				if (target == curUser.pos || cell == curUser.pos) {
 					GLog.i( Messages.get(Wand.class, "self_target") );
+					return;
+				} else if (curUser.buff(MagicImmune.class) != null){
+					GLog.w( Messages.get(Wand.class, "no_magic") );
 					return;
 				}
 

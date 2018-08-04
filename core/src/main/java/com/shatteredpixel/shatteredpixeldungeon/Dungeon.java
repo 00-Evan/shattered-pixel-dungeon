@@ -378,6 +378,18 @@ public class Dungeon {
 
 		hero.pos = pos;
 		
+		for(Mob m : level.mobs){
+			if (m.pos == hero.pos){
+				//displace mob
+				for(int i : PathFinder.NEIGHBOURS8){
+					if (Actor.findChar(m.pos+i) == null && level.passable[m.pos + i]){
+						m.pos += i;
+						break;
+					}
+				}
+			}
+		}
+		
 		Light light = hero.buff( Light.class );
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		
