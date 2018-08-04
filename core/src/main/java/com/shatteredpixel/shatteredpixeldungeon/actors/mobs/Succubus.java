@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
@@ -72,12 +73,18 @@ public class Succubus extends Mob {
 		damage = super.attackProc( enemy, damage );
 		
 		if (enemy.buff(Charm.class) != null ){
-			HP = Math.min(HT, HP + damage);
+			int shield = (HP - HT) + (5 + damage);
+			if (shield > 0){
+				HP = HT;
+				Buff.affect(this, Barrier.class).set(shield);
+			} else {
+				HP += 5 + damage;
+			}
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 2 );
 			Sample.INSTANCE.play( Assets.SND_CHARMS );
 		} else if (Random.Int( 3 ) == 0) {
-			//attack will reduce by 5 turns, so effectively 3-6 turns
-			Buff.affect( enemy, Charm.class, Random.IntRange( 3, 6 ) + 5 ).object = id();
+			//attack will reduce by 5 turns, so effectively 3-4 turns
+			Buff.affect( enemy, Charm.class, Random.IntRange( 3, 4 ) + 5 ).object = id();
 			enemy.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			Sample.INSTANCE.play( Assets.SND_CHARMS );
 		}
