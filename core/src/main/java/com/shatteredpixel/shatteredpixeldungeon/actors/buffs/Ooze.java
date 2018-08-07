@@ -66,6 +66,8 @@ public class Ooze extends Buff {
 				GLog.n( Messages.get(this, "ondeath") );
 			}
 			spend( TICK );
+		} else {
+			detach();
 		}
 		if (Dungeon.level.water[target.pos]) {
 			detach();

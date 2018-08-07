@@ -28,7 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
+
+import static com.watabou.utils.Random.NormalFloat;
 
 public class Bleeding extends Buff {
 
@@ -37,7 +38,7 @@ public class Bleeding extends Buff {
 		announced = true;
 	}
 	
-	protected int level;
+	protected float level;
 	
 	private static final String LEVEL	= "level";
 	
@@ -51,7 +52,7 @@ public class Bleeding extends Buff {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		level = bundle.getInt( LEVEL );
+		level = bundle.getFloat( LEVEL );
 	}
 	
 	public void set( int level ) {
@@ -72,12 +73,15 @@ public class Bleeding extends Buff {
 	public boolean act() {
 		if (target.isAlive()) {
 			
-			if ((level = Random.NormalIntRange( level / 2, level )) > 0) {
+			level = NormalFloat(level / 2f, level);
+			int dmg = Math.round(level);
+			
+			if (dmg > 0) {
 				
-				target.damage( level, this );
+				target.damage( dmg, this );
 				if (target.sprite.visible) {
 					Splash.at( target.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
-							target.sprite.blood(), Math.min( 10 * level / target.HT, 10 ) );
+							target.sprite.blood(), Math.min( 10 * dmg / target.HT, 10 ) );
 				}
 				
 				if (target == Dungeon.hero && !target.isAlive()) {
