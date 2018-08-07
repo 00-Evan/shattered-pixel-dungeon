@@ -58,7 +58,7 @@ public class Flashbang extends Bomb {
 		//FIXME currently has somewhat odd behaviour, as FOV is updated at the start of a turn.
 		Level l = Dungeon.level;
 		for (Char ch : Actor.chars()){
-			if (ch.fieldOfView[cell]){
+			if (ch.fieldOfView != null && ch.fieldOfView[cell]){
 				int power = 10 - l.distance(ch.pos, cell);
 				if (power > 0){
 					Buff.prolong(ch, Blindness.class, power);
