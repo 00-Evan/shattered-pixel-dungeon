@@ -110,6 +110,6 @@ public class Bleeding extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", level);
+		return Messages.get(this, "desc", Math.round(level));
 	}
 }
