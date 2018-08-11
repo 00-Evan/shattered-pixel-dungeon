@@ -25,14 +25,19 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.journal.AlchemyPage;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class LaboratoryRoom extends SpecialRoom {
 
@@ -69,6 +74,30 @@ public class LaboratoryRoom extends SpecialRoom {
 				level.map[pos] != Terrain.EMPTY_SP ||
 				level.heaps.get( pos ) != null);
 			level.drop( prize( level ), pos );
+		}
+		
+		//guide pages
+		Collection<String> allPages = Document.ALCHEMY_GUIDE.pages();
+		ArrayList<String> missingPages = new ArrayList<>();
+		for ( String page : allPages){
+			if (!Document.ALCHEMY_GUIDE.hasPage(page)){
+				missingPages.add(page);
+			}
+		}
+		
+		//drops a page every room for now
+		//TODO make pages rarer as players get more, once more alchemy comes out
+		//3 to ensure teaser pages aren't found
+		if(missingPages.size() > 3){
+			AlchemyPage p = new AlchemyPage();
+			p.page(missingPages.get(0));
+			int pos;
+			do {
+				pos = level.pointToCell(random());
+			} while (
+					level.map[pos] != Terrain.EMPTY_SP ||
+							level.heaps.get( pos ) != null);
+			level.drop( p, pos );
 		}
 		
 		if (level instanceof RegularLevel && ((RegularLevel)level).hasPitRoom()){

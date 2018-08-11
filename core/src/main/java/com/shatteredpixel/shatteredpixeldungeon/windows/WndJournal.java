@@ -223,7 +223,7 @@ public class WndJournal extends WndTabbed {
 			line.y = pos;
 			content.add(line);
 			
-			RenderedTextMultiline title = PixelScene.renderMultiline(Document.ADVENTURERS_GUIDE.title(), 9);
+			RenderedTextMultiline title = PixelScene.renderMultiline(Messages.get(this, "title"), 9);
 			title.hardlight(TITLE_COLOR);
 			title.maxWidth( (int)width() - 2 );
 			title.setPos( (width() - title.width())/2f, pos + 1 + ((ITEM_HEIGHT) - title.height())/2f);
@@ -232,8 +232,8 @@ public class WndJournal extends WndTabbed {
 			
 			pos += Math.max(ITEM_HEIGHT, title.height());
 			
-			for (String page : Document.ADVENTURERS_GUIDE.pages()){
-				GuideItem item = new GuideItem( page );
+			for (Document doc : Document.values()){
+				GuideItem item = new GuideItem( doc );
 				
 				item.setRect( 0, pos, width(), ITEM_HEIGHT );
 				content.add( item );
@@ -249,18 +249,18 @@ public class WndJournal extends WndTabbed {
 		private static class GuideItem extends ListItem {
 			
 			private boolean found = false;
-			private String page;
+			private Document doc;
 			
-			public GuideItem( String page ){
-				super( new ItemSprite( ItemSpriteSheet.GUIDE_PAGE, null),
-						Messages.titleCase(Document.ADVENTURERS_GUIDE.pageTitle(page)), -1);
+			public GuideItem( Document doc ){
+				super( new ItemSprite( doc.pageSprite(), null),
+						Messages.titleCase( doc.title() ), -1);
 				
-				this.page = page;
-				found = Document.ADVENTURERS_GUIDE.hasPage(page);
+				this.doc = doc;
+				found = doc.hasAnyPages();
 				
 				if (!found) {
 					icon.hardlight( 0.5f, 0.5f, 0.5f);
-					label.text( Messages.titleCase(Messages.get( this, "missing" )));
+					label.text( Messages.titleCase( "???" ));
 					label.hardlight( 0x999999 );
 				}
 				
@@ -268,7 +268,7 @@ public class WndJournal extends WndTabbed {
 			
 			public boolean onClick( float x, float y ) {
 				if (inside( x, y ) && found) {
-					GameScene.show( new WndStory( Document.ADVENTURERS_GUIDE.pageBody(page) ));
+					GameScene.show( new WndDocument(doc));
 					return true;
 				} else {
 					return false;

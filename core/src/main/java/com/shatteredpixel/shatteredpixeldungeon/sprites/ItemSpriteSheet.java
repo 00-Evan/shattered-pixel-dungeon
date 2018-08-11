@@ -65,12 +65,14 @@ public class ItemSpriteSheet {
 	public static final int SANDBAG         = UNCOLLECTIBLE+3;
 	
 	public static final int GUIDE_PAGE      = UNCOLLECTIBLE+5;
+	public static final int ALCH_PAGE       = UNCOLLECTIBLE+6;
 	static{
 		assignItemRect(GOLD,        15, 13);
 		assignItemRect(DEWDROP,     10, 10);
 		assignItemRect(PETAL,       8,  8);
 		assignItemRect(SANDBAG,     10, 10);
 		assignItemRect(GUIDE_PAGE,  10, 11);
+		assignItemRect(ALCH_PAGE,   10, 11);
 	}
 
 	private static final int CONTAINERS     =                               xy(1, 3);   //16 slots

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -31,8 +32,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public enum Document {
-
-	ADVENTURERS_GUIDE;
+	
+	ADVENTURERS_GUIDE(ItemSpriteSheet.GUIDE_PAGE),
+	ALCHEMY_GUIDE(ItemSpriteSheet.ALCH_PAGE);
+	
+	Document( int sprite ){
+		pageSprite = sprite;
+	}
 	
 	private LinkedHashMap<String, Boolean> pages = new LinkedHashMap<>();
 	
@@ -51,6 +57,20 @@ public enum Document {
 	
 	public boolean hasPage( String page ){
 		return pages.containsKey(page) && pages.get(page);
+	}
+	
+	public boolean hasAnyPages(){
+		for (String p : pages.keySet()){
+			if (pages.get(p)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private int pageSprite;
+	public int pageSprite(){
+		return pageSprite;
 	}
 	
 	public String title(){
@@ -79,6 +99,15 @@ public enum Document {
 		ADVENTURERS_GUIDE.pages.put("Dieing", 			false);
 		ADVENTURERS_GUIDE.pages.put("Looting", 		    false);
 		ADVENTURERS_GUIDE.pages.put("Magic", 			false);
+		
+		ALCHEMY_GUIDE.pages.put("Potions",              false);
+		ALCHEMY_GUIDE.pages.put("Stones",               false);
+		ALCHEMY_GUIDE.pages.put("Darts",                false);
+		ALCHEMY_GUIDE.pages.put("Exotics",              false);
+		ALCHEMY_GUIDE.pages.put("Bombs",                false);
+		ALCHEMY_GUIDE.pages.put("teaser1",              false);
+		ALCHEMY_GUIDE.pages.put("teaser2",              false);
+		ALCHEMY_GUIDE.pages.put("teaser3",              false);
 	}
 	
 	private static final String DOCUMENTS = "documents";
