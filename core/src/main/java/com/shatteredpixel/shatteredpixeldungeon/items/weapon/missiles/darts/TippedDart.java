@@ -126,7 +126,7 @@ public abstract class TippedDart extends Dart {
 			
 			Plant.Seed seed = (Plant.Seed) ingredients.get(1);
 			
-			if (ingredients.get(0).quantity() >= 2
+			if (ingredients.get(0).quantity() >= 1
 					&& seed.quantity() >= 1
 					&& types.containsKey(seed.getClass())){
 				return true;
@@ -144,11 +144,13 @@ public abstract class TippedDart extends Dart {
 		public Item brew(ArrayList<Item> ingredients) {
 			if (!testIngredients(ingredients)) return null;
 			
-			ingredients.get(0).quantity(ingredients.get(0).quantity() - 2);
+			int produced = Math.min(2, ingredients.get(0).quantity());
+			
+			ingredients.get(0).quantity(ingredients.get(0).quantity() - produced);
 			ingredients.get(1).quantity(ingredients.get(1).quantity() - 1);
 			
 			try{
-				return types.get(ingredients.get(1).getClass()).newInstance().quantity(2);
+				return types.get(ingredients.get(1).getClass()).newInstance().quantity(produced);
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 				return null;
@@ -161,7 +163,8 @@ public abstract class TippedDart extends Dart {
 			if (!testIngredients(ingredients)) return null;
 			
 			try{
-				return types.get(ingredients.get(1).getClass()).newInstance().quantity(2);
+				int produced = Math.min(2, ingredients.get(0).quantity());
+				return types.get(ingredients.get(1).getClass()).newInstance().quantity( produced );
 			} catch (Exception e) {
 				ShatteredPixelDungeon.reportException(e);
 				return null;
