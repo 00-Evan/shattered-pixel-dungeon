@@ -65,7 +65,7 @@ public class LaboratoryRoom extends SpecialRoom {
 		alchemy.seed( level, pot.x + level.width() * pot.y, chapter*10 + Random.IntRange(0, 20) );
 		level.blobs.put( Alchemy.class, alchemy );
 		
-		int n = Random.NormalIntRange( 1, 3 );
+		int n = Random.NormalIntRange( 2, 3 );
 		for (int i=0; i < n; i++) {
 			int pos;
 			do {

@@ -229,17 +229,16 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add( new SmallRation() );
 		itemsToSpawn.add( new SmallRation() );
-
-		itemsToSpawn.add( new Bomb().random() );
-		switch (Random.Int(5)){
-			case 1:
+		
+		switch (Random.Int(4)){
+			case 0:
 				itemsToSpawn.add( new Bomb() );
 				break;
+			case 1:
 			case 2:
-				itemsToSpawn.add( new Bomb().random() );
+				itemsToSpawn.add( new Bomb.DoubleBomb() );
 				break;
 			case 3:
-			case 4:
 				itemsToSpawn.add( new Honeypot() );
 				break;
 		}
