@@ -64,7 +64,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndAlchemy;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
@@ -506,8 +505,6 @@ public class Dungeon {
 			
 			SpecialRoom.storeRoomsInBundle( bundle );
 			SecretRoom.storeRoomsInBundle( bundle );
-
-			WndAlchemy.storeInBundle( bundle );
 			
 			Statistics.storeInBundle( bundle );
 			Notes.storeInBundle( bundle );
@@ -629,7 +626,16 @@ public class Dungeon {
 		hero = null;
 		hero = (Hero)bundle.get( HERO );
 
-		WndAlchemy.restoreFromBundle( bundle, hero );
+		//pre-0.7.0 saves, back when alchemy had a window which could store items
+		if (bundle.contains("alchemy_inputs")){
+			for (Bundlable item : bundle.getCollection("alchemy_inputs")){
+				
+				//try to add normally, force-add otherwise.
+				if (!((Item)item).collect(hero.belongings.backpack)){
+					hero.belongings.backpack.items.add((Item)item);
+				}
+			}
+		}
 		
 		gold = bundle.getInt( GOLD );
 		depth = bundle.getInt( DEPTH );

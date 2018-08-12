@@ -23,9 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
@@ -132,7 +132,7 @@ public class WndDocument extends Window {
 		
 		public boolean onClick( float x, float y ) {
 			if (inside( x, y ) && found) {
-				GameScene.show( new WndStory( doc.pageBody(page) ));
+				ShatteredPixelDungeon.scene().addToFront( new WndStory( doc.pageBody(page) ));
 				return true;
 			} else {
 				return false;

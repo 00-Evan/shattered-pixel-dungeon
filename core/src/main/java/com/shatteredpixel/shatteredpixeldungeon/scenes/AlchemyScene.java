@@ -19,77 +19,115 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.windows;
+package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
+import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndDocument;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
+import com.watabou.gltextures.TextureCache;
+import com.watabou.glwrap.Blending;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.NoosaScript;
+import com.watabou.noosa.NoosaScriptNoLighting;
+import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
+import com.watabou.noosa.ui.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class WndAlchemy extends Window {
+public class AlchemyScene extends PixelScene {
 	
-	private static WndBlacksmith.ItemButton[] inputs = new WndBlacksmith.ItemButton[3];
+	private static ItemButton[] inputs = new ItemButton[3];
 	private ItemSlot output;
 	
 	private Emitter smokeEmitter;
 	private Emitter bubbleEmitter;
 	
-	private RedButton btnCombine;
+	private Emitter lowerBubbles;
+	private SkinnedBlock water;
 	
-	private static final int WIDTH_P = 116;
-	private static final int WIDTH_L = 160;
+	private RedButton btnCombine;
 	
 	private static final int BTN_SIZE	= 28;
 	
-	public WndAlchemy(){
+	@Override
+	public void create() {
+		super.create();
 		
-		int w = WIDTH_P;
+		water = new SkinnedBlock(
+				Camera.main.width, Camera.main.height,
+				Dungeon.level.waterTex() ){
+			
+			@Override
+			protected NoosaScript script() {
+				return NoosaScriptNoLighting.get();
+			}
+			
+			@Override
+			public void draw() {
+				//water has no alpha component, this improves performance
+				Blending.disable();
+				super.draw();
+				Blending.enable();
+			}
+		};
+		add(water);
 		
-		int h = 0;
+		Image im = new Image(TextureCache.createGradient(0x66000000, 0x88000000, 0xAA000000, 0xCC000000, 0xFF000000));
+		im.angle = 90;
+		im.x = Camera.main.width;
+		im.scale.x = Camera.main.height/5f;
+		im.scale.y = Camera.main.width;
+		add(im);
+		
+		int w = 50 + Camera.main.width/2;
+		int left = (Camera.main.width - w)/2;
+		
+		int pos = (Camera.main.height - 160)/2;
 		
 		IconTitle titlebar = new IconTitle();
-		titlebar.icon(DungeonTerrainTilemap.tile(0, Terrain.ALCHEMY));
-		titlebar.label( Messages.get(this, "title") );
+		//titlebar.icon(DungeonTerrainTilemap.tile(0, Terrain.ALCHEMY));
+		titlebar.label( Messages.get(AlchemyScene.class, "title") );
 		titlebar.setRect( 0, 0, w, 0 );
-		add( titlebar );
+		//add( titlebar );
 		
-		h += titlebar.height() + 2;
+		pos += titlebar.height() + 2;
 		
 		RenderedTextMultiline desc = PixelScene.renderMultiline(6);
-		desc.text( Messages.get(this, "text") );
-		desc.setPos(0, h);
+		desc.text( Messages.get(AlchemyScene.class, "text") );
 		desc.maxWidth(w);
+		desc.setPos(left + (w - desc.width())/2, pos);
 		add(desc);
 		
-		h += desc.height() + 6;
-
+		pos += desc.height() + 6;
+		
 		synchronized (inputs) {
 			for (int i = 0; i < inputs.length; i++) {
-				inputs[i] = new WndBlacksmith.ItemButton() {
+				inputs[i] = new ItemButton() {
 					@Override
 					protected void onClick() {
 						super.onClick();
@@ -101,12 +139,12 @@ public class WndAlchemy extends Window {
 							slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
 							updateState();
 						}
-						GameScene.selectItem(itemSelector, WndBag.Mode.ALCHEMY, Messages.get(WndAlchemy.class, "select"));
+						AlchemyScene.this.addToFront(WndBag.lastBag( itemSelector, WndBag.Mode.ALCHEMY, Messages.get(AlchemyScene.class, "select")));
 					}
 				};
-				inputs[i].setRect(10, h, BTN_SIZE, BTN_SIZE);
+				inputs[i].setRect(left + 10, pos, BTN_SIZE, BTN_SIZE);
 				add(inputs[i]);
-				h += BTN_SIZE + 2;
+				pos += BTN_SIZE + 2;
 			}
 		}
 		
@@ -150,7 +188,7 @@ public class WndAlchemy extends Window {
 			}
 		};
 		btnCombine.enable(false);
-		btnCombine.setRect((w-30)/2f, inputs[1].top()+5, 30, inputs[1].height()-10);
+		btnCombine.setRect(left + (w-30)/2f, inputs[1].top()+5, 30, inputs[1].height()-10);
 		add(btnCombine);
 		
 		output = new ItemSlot(){
@@ -158,11 +196,11 @@ public class WndAlchemy extends Window {
 			protected void onClick() {
 				super.onClick();
 				if (visible && item.trueName() != null){
-					GameScene.show(new WndInfoItem(item));
+					AlchemyScene.this.addToFront(new WndInfoItem(item));
 				}
 			}
 		};
-		output.setRect(w - BTN_SIZE - 10, inputs[1].top(), BTN_SIZE, BTN_SIZE);
+		output.setRect(left + w - BTN_SIZE - 10, inputs[1].top(), BTN_SIZE, BTN_SIZE);
 		
 		ColorBlock outputBG = new ColorBlock(output.width(), output.height(), 0x9991938C);
 		outputBG.x = output.left();
@@ -174,42 +212,58 @@ public class WndAlchemy extends Window {
 		
 		bubbleEmitter = new Emitter();
 		smokeEmitter = new Emitter();
-		bubbleEmitter.pos(outputBG.x + (BTN_SIZE-16)/2f, outputBG.y + (BTN_SIZE-16)/2f, 16, 16);
-		smokeEmitter.pos(bubbleEmitter.x, bubbleEmitter.y, bubbleEmitter.width, bubbleEmitter.height);
+		bubbleEmitter.pos(0, 0, Camera.main.width, Camera.main.height);
+		smokeEmitter.pos(outputBG.x + (BTN_SIZE-16)/2f, outputBG.y + (BTN_SIZE-16)/2f, 16, 16);
 		bubbleEmitter.autoKill = false;
 		smokeEmitter.autoKill = false;
 		add(bubbleEmitter);
 		add(smokeEmitter);
 		
-		h += 4;
+		pos += 4;
 		
 		float btnWidth = (w-14)/2f;
 		
-		RedButton btnRecipes = new RedButton(Messages.get(this, "recipes_title")){
+		RedButton btnRecipes = new RedButton(Messages.get(AlchemyScene.class, "recipes_title")){
 			@Override
 			protected void onClick() {
 				super.onClick();
-				ShatteredPixelDungeon.scene().addToFront(new WndDocument(Document.ALCHEMY_GUIDE));
+				AlchemyScene.this.addToFront(new WndDocument(Document.ALCHEMY_GUIDE));
 			}
 		};
-		btnRecipes.setRect(5, h, btnWidth, 18);
+		btnRecipes.setRect(left + 5, pos, btnWidth, 18);
 		PixelScene.align(btnRecipes);
 		add(btnRecipes);
 		
-		RedButton btnClose = new RedButton(Messages.get(this, "close")){
+		RedButton btnClose = new RedButton(Messages.get(AlchemyScene.class, "close")){
 			@Override
 			protected void onClick() {
 				super.onClick();
-				onBackPressed();
+				Game.switchScene(GameScene.class);
 			}
 		};
-		btnClose.setRect(w - 5 - btnWidth, h, btnWidth, 18);
+		btnClose.setRect(left + w - 5 - btnWidth, pos, btnWidth, 18);
 		PixelScene.align(btnClose);
 		add(btnClose);
 		
-		h += btnClose.height();
+		pos = (int)btnClose.bottom() + 20;
 		
-		resize(w, h);
+		lowerBubbles = new Emitter();
+		lowerBubbles.pos(0, pos, Camera.main.width, Math.max(0, Camera.main.height-pos));
+		add(lowerBubbles);
+		lowerBubbles.pour(Speck.factory( Speck.BUBBLE ), 0.1f );
+		
+		fadeIn();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		water.offset( 0, -5 * Game.elapsed );
+	}
+	
+	@Override
+	protected void onBackPressed() {
+		Game.switchScene(GameScene.class);
 	}
 	
 	protected WndBag.Listener itemSelector = new WndBag.Listener() {
@@ -260,7 +314,7 @@ public class WndAlchemy extends Window {
 		}
 		
 	}
-
+	
 	private void combine(){
 		
 		ArrayList<Item> ingredients = filterInput(Item.class);
@@ -273,7 +327,7 @@ public class WndAlchemy extends Window {
 		}
 		
 		if (result != null){
-			bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.2f, 10 );
+			bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
 			smokeEmitter.burst(Speck.factory( Speck.WOOL ), 10 );
 			Sample.INSTANCE.play( Assets.SND_PUFF );
 			
@@ -281,7 +335,13 @@ public class WndAlchemy extends Window {
 			if (!result.collect()){
 				Dungeon.level.drop(result, Dungeon.hero.pos);
 			}
-
+			
+			try {
+				Dungeon.saveAll();
+			} catch (IOException e) {
+				ShatteredPixelDungeon.reportException(e);
+			}
+			
 			synchronized (inputs) {
 				for (int i = 0; i < inputs.length; i++) {
 					if (inputs[i] != null && inputs[i].item != null) {
@@ -312,36 +372,64 @@ public class WndAlchemy extends Window {
 				inputs[i] = null;
 			}
 		}
+		try {
+			Dungeon.saveAll();
+			Badges.saveGlobal();
+			Journal.saveGlobal();
+		} catch (IOException e) {
+			ShatteredPixelDungeon.reportException(e);
+		}
 		super.destroy();
 	}
-
-	private static final String ALCHEMY_INPUTS = "alchemy_inputs";
-
-	public static void storeInBundle( Bundle b ){
-		synchronized ( inputs ){
-			ArrayList<Item> items = new ArrayList<>();
-			for (WndBlacksmith.ItemButton i : inputs){
-				if (i != null && i.item != null){
-					items.add(i.item);
+	
+	public static class ItemButton extends Component {
+		
+		protected NinePatch bg;
+		protected ItemSlot slot;
+		
+		public Item item = null;
+		
+		@Override
+		protected void createChildren() {
+			super.createChildren();
+			
+			bg = Chrome.get( Chrome.Type.BUTTON );
+			add( bg );
+			
+			slot = new ItemSlot() {
+				@Override
+				protected void onTouchDown() {
+					bg.brightness( 1.2f );
+					Sample.INSTANCE.play( Assets.SND_CLICK );
+				};
+				@Override
+				protected void onTouchUp() {
+					bg.resetColor();
 				}
-			}
-			if (!items.isEmpty()){
-				b.put( ALCHEMY_INPUTS, items );
-			}
-		}
-	}
-
-	public static void restoreFromBundle( Bundle b, Hero h ){
-
-		if (b.contains(ALCHEMY_INPUTS)){
-			for (Bundlable item : b.getCollection(ALCHEMY_INPUTS)){
-
-				//try to add normally, force-add otherwise.
-				if (!((Item)item).collect(h.belongings.backpack)){
-					h.belongings.backpack.items.add((Item)item);
+				@Override
+				protected void onClick() {
+					ItemButton.this.onClick();
 				}
-			}
+			};
+			slot.enable(true);
+			add( slot );
 		}
-
+		
+		protected void onClick() {};
+		
+		@Override
+		protected void layout() {
+			super.layout();
+			
+			bg.x = x;
+			bg.y = y;
+			bg.size( width, height );
+			
+			slot.setRect( x + 2, y + 2, width - 4, height - 4 );
+		};
+		
+		public void item( Item item ) {
+			slot.item( this.item = item );
+		}
 	}
 }
