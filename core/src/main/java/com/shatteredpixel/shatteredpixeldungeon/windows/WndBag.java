@@ -47,7 +47,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant.Seed;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -57,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
@@ -251,7 +251,7 @@ public class WndBag extends WndTabbed {
 	@Override
 	protected void onClick( Tab tab ) {
 		hide();
-		GameScene.show( new WndBag( ((BagTab)tab).bag, listener, mode, title ) );
+		Game.scene().addToFront(new WndBag(((BagTab) tab).bag, listener, mode, title));
 	}
 	
 	@Override
@@ -439,7 +439,7 @@ public class WndBag extends WndTabbed {
 				
 			} else {
 				
-				GameScene.show(new WndItem( WndBag.this, item ) );
+				Game.scene().addToFront(new WndItem( WndBag.this, item ) );
 				
 			}
 		}
