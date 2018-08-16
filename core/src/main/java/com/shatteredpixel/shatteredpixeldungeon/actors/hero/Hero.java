@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
@@ -672,6 +673,13 @@ public class Hero extends Char {
 		if (Dungeon.level.distance(dst, pos) <= 1) {
 
 			ready();
+			
+			Alchemy alch = (Alchemy) Dungeon.level.blobs.get(Alchemy.class);
+			//TODO logic for a well having dried up?
+			if (alch != null) {
+				alch.alchPos = dst;
+				AlchemyScene.setProvider( alch );
+			}
 			ShatteredPixelDungeon.switchScene(AlchemyScene.class);
 			return false;
 

@@ -62,7 +62,7 @@ public class LaboratoryRoom extends SpecialRoom {
 		
 		Alchemy alchemy = new Alchemy();
 		int chapter = 1 + Dungeon.depth/5;
-		alchemy.seed( level, pot.x + level.width() * pot.y, chapter*10 + Random.IntRange(0, 20) );
+		alchemy.seed( level, pot.x + level.width() * pot.y, 1 + chapter*10 + Random.NormalIntRange(0, 10) );
 		level.blobs.put( Alchemy.class, alchemy );
 		
 		int n = Random.NormalIntRange( 2, 3 );

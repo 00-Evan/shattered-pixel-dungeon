@@ -33,12 +33,15 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
-import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndDocument;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
@@ -51,6 +54,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
+import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -69,6 +73,9 @@ public class AlchemyScene extends PixelScene {
 	
 	private Emitter lowerBubbles;
 	private SkinnedBlock water;
+	
+	private RenderedText waterLeft;
+	private RenderedText waterCost;
 	
 	private RedButton btnCombine;
 	
@@ -104,18 +111,18 @@ public class AlchemyScene extends PixelScene {
 		im.scale.y = Camera.main.width;
 		add(im);
 		
+		
+		RenderedText title = PixelScene.renderText( "Alchemy", 9 );
+		title.hardlight(Window.TITLE_COLOR);
+		title.x = (Camera.main.width - title.width()) / 2f;
+		title.y = (16 - title.baseLine()) / 2f;
+		align(title);
+		add(title);
+		
 		int w = 50 + Camera.main.width/2;
 		int left = (Camera.main.width - w)/2;
 		
-		int pos = (Camera.main.height - 160)/2;
-		
-		IconTitle titlebar = new IconTitle();
-		//titlebar.icon(DungeonTerrainTilemap.tile(0, Terrain.ALCHEMY));
-		titlebar.label( Messages.get(AlchemyScene.class, "title") );
-		titlebar.setRect( 0, 0, w, 0 );
-		//add( titlebar );
-		
-		pos += titlebar.height() + 2;
+		int pos = (Camera.main.height - 120)/2;
 		
 		RenderedTextMultiline desc = PixelScene.renderMultiline(6);
 		desc.text( Messages.get(AlchemyScene.class, "text") );
@@ -219,38 +226,39 @@ public class AlchemyScene extends PixelScene {
 		add(bubbleEmitter);
 		add(smokeEmitter);
 		
-		pos += 4;
+		pos += 10;
 		
-		float btnWidth = (w-14)/2f;
+		lowerBubbles = new Emitter();
+		lowerBubbles.pos(0, pos, Camera.main.width, Math.max(0, Camera.main.height-pos));
+		add(lowerBubbles);
+		lowerBubbles.pour(Speck.factory( Speck.BUBBLE ), 0.1f );
 		
-		RedButton btnRecipes = new RedButton(Messages.get(AlchemyScene.class, "recipes_title")){
+		ExitButton btnExit = new ExitButton(){
+			@Override
+			protected void onClick() {
+				Game.switchScene(GameScene.class);
+			}
+		};
+		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
+		add( btnExit );
+		
+		IconButton btnGuide = new IconButton( new ItemSprite(ItemSpriteSheet.ALCH_PAGE, null)){
 			@Override
 			protected void onClick() {
 				super.onClick();
 				AlchemyScene.this.addToFront(new WndDocument(Document.ALCHEMY_GUIDE));
 			}
 		};
-		btnRecipes.setRect(left + 5, pos, btnWidth, 18);
-		PixelScene.align(btnRecipes);
-		add(btnRecipes);
+		btnGuide.setRect(0, 0, 16, 16);
+		add(btnGuide);
 		
-		RedButton btnClose = new RedButton(Messages.get(AlchemyScene.class, "close")){
-			@Override
-			protected void onClick() {
-				super.onClick();
-				Game.switchScene(GameScene.class);
-			}
-		};
-		btnClose.setRect(left + w - 5 - btnWidth, pos, btnWidth, 18);
-		PixelScene.align(btnClose);
-		add(btnClose);
+		waterLeft = PixelScene.renderText("Alchemy Water: " + availableWater(), 9);
+		waterLeft.y = Camera.main.height - waterLeft.baseLine();
+		waterLeft.x = (Camera.main.width - waterLeft.width())/2;
+		add(waterLeft);
 		
-		pos = (int)btnClose.bottom() + 20;
-		
-		lowerBubbles = new Emitter();
-		lowerBubbles.pos(0, pos, Camera.main.width, Math.max(0, Camera.main.height-pos));
-		add(lowerBubbles);
-		lowerBubbles.pour(Speck.factory( Speck.BUBBLE ), 0.1f );
+		waterCost = PixelScene.renderText(6);
+		add(waterCost);
 		
 		fadeIn();
 	}
@@ -306,11 +314,27 @@ public class AlchemyScene extends PixelScene {
 		if (recipe != null){
 			output.item(recipe.sampleOutput(ingredients));
 			output.visible = true;
-			btnCombine.enable(true);
+			
+			int cost = recipe.cost(ingredients);
+			
+			waterCost.text("Water: " + cost);
+			waterCost.y = btnCombine.top() - waterCost.baseLine();
+			waterCost.x = btnCombine.left() + (btnCombine.width() - waterCost.width())/2;
+			
+			waterCost.visible = (cost > 0);
+			
+			if (cost <= availableWater()) {
+				btnCombine.enable(true);
+				waterCost.resetColor();
+			} else {
+				btnCombine.enable(false);
+				waterCost.hardlight(1, 0, 0);
+			}
 			
 		} else {
 			btnCombine.enable(false);
 			output.visible = false;
+			waterCost.visible = false;
 		}
 		
 	}
@@ -323,6 +347,11 @@ public class AlchemyScene extends PixelScene {
 		Item result = null;
 		
 		if (recipe != null){
+			provider.spendWater(recipe.cost(ingredients));
+			waterLeft.text("Alchemy Water: " + availableWater());
+			waterLeft.y = Camera.main.height - waterLeft.baseLine();
+			waterLeft.x = (Camera.main.width - waterLeft.width())/2;
+			
 			result = recipe.brew(ingredients);
 		}
 		
@@ -372,6 +401,9 @@ public class AlchemyScene extends PixelScene {
 				inputs[i] = null;
 			}
 		}
+		
+		provider = null;
+		
 		try {
 			Dungeon.saveAll();
 			Badges.saveGlobal();
@@ -431,5 +463,23 @@ public class AlchemyScene extends PixelScene {
 		public void item( Item item ) {
 			slot.item( this.item = item );
 		}
+	}
+	
+	private static AlchemyProvider provider;
+	
+	public static void setProvider( AlchemyProvider p ){
+		provider = p;
+	}
+	
+	private static int availableWater(){
+		return provider == null ? 0 : provider.getWater();
+	}
+	
+	public interface AlchemyProvider {
+	
+		int getWater();
+		
+		void spendWater(int reduction);
+	
 	}
 }
