@@ -107,7 +107,6 @@ public class WandOfTransfusion extends Wand {
 				Buff.affect(ch , Charm.class, 4 + level() ).object = curUser.id();
 
 				ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
-				curUser.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 
 			}
 			
