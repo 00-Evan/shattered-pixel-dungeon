@@ -32,6 +32,7 @@ public class EarthImbue extends FlavourBuff {
 	
 	{
 		type = buffType.POSITIVE;
+		announced = true;
 	}
 
 	public static final float DURATION	= 30f;

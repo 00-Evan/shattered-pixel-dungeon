@@ -380,13 +380,17 @@ public class Potion extends Item {
 		return handler.known().size() == potions.length;
 	}
 	
+	protected int splashColor(){
+		return ItemSprite.pick( image, 8, 10 );
+	}
+	
 	protected void splash( int cell ) {
 
 		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
 		if (fire != null)
 			fire.clear( cell );
 
-		final int color = ItemSprite.pick( image, 8, 10 );
+		final int color = splashColor();
 
 		Char ch = Actor.findChar(cell);
 		if (ch != null) {

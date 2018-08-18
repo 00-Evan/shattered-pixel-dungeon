@@ -514,8 +514,18 @@ public class ItemSpriteSheet {
 		for (int i = SEEDS; i < SEEDS+16; i++)
 			assignItemRect(i, 10, 10);
 	}
+	
+	private static final int ELIXIRS        =                               xy(1, 25);  //16 slots
+	public static final int ELIXIR_DRAGON   = ELIXIRS+0;
+	public static final int ELIXIR_TOXIC    = ELIXIRS+1;
+	public static final int ELIXIR_EARTH    = ELIXIRS+2;
+	static{
+		assignItemRect(ELIXIR_DRAGON,   10, 14);
+		assignItemRect(ELIXIR_TOXIC,    10, 14);
+		assignItemRect(ELIXIR_EARTH,    10, 14);
+	}
 
-	private static final int FOOD       =                                   xy(1, 25);  //16 slots
+	private static final int FOOD       =                                   xy(1, 28);  //16 slots
 	public static final int MEAT        = FOOD+0;
 	public static final int STEAK       = FOOD+1;
 	public static final int OVERPRICED  = FOOD+2;
@@ -539,7 +549,7 @@ public class ItemSpriteSheet {
 		assignItemRect(BLAND_CHUNKS,14, 6);
 	}
 
-	private static final int QUEST  =                                       xy(1, 26);  //32 slots
+	private static final int QUEST  =                                       xy(1, 29);  //32 slots
 	public static final int SKULL   = QUEST+0;
 	public static final int DUST    = QUEST+1;
 	public static final int CANDLE  = QUEST+2;
@@ -555,10 +565,9 @@ public class ItemSpriteSheet {
 		assignItemRect(PICKAXE, 14, 14);
 		assignItemRect(ORE,     15, 15);
 		assignItemRect(TOKEN,   12, 12);
-
 	}
 
-	private static final int BAGS       =                                   xy(1, 28);  //16 slots
+	private static final int BAGS       =                                   xy(1, 31);  //16 slots
 	public static final int VIAL        = BAGS+0;
 	public static final int POUCH       = BAGS+1;
 	public static final int HOLDER      = BAGS+2;
@@ -572,7 +581,7 @@ public class ItemSpriteSheet {
 		assignItemRect(HOLSTER,     15, 16);
 	}
 
-	                                                                                    //64 free slots
+	                                                                                    //16 free slots
 
 
 	private static void assignItemRect( int item, int width, int height){

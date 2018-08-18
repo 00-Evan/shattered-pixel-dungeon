@@ -33,6 +33,7 @@ public class ToxicImbue extends Buff {
 	
 	{
 		type = buffType.POSITIVE;
+		announced = true;
 	}
 
 	public static final float DURATION	= 30f;
