@@ -51,7 +51,7 @@ public abstract class Recipe {
 	public static abstract class SimpleRecipe extends Recipe {
 		
 		//*** These elements must be filled in by subclasses
-		protected Class<?extends Item>[] inputs;
+		protected Class<?extends Item>[] inputs; //each class should be unique
 		protected int[] inQuantity;
 		
 		protected int cost;
@@ -62,20 +62,24 @@ public abstract class Recipe {
 		
 		@Override
 		public final boolean testIngredients(ArrayList<Item> ingredients) {
-			boolean found;
-			for(int i = 0; i < inputs.length; i++){
-				found = false;
-				for (Item ingredient : ingredients){
-					if (ingredient.getClass() == inputs[i]
-							&& ingredient.quantity() >= inQuantity[i]){
-						found = true;
+			
+			int[] needed = inQuantity.clone();
+			
+			for (Item ingredient : ingredients){
+				for (int i = 0; i < inputs.length; i++){
+					if (ingredient.getClass() == inputs[i]){
+						needed[i] -= ingredient.quantity();
 						break;
 					}
 				}
-				if (!found){
+			}
+			
+			for (int i : needed){
+				if (i > 0){
 					return false;
 				}
 			}
+			
 			return true;
 		}
 		
@@ -87,11 +91,18 @@ public abstract class Recipe {
 		public final Item brew(ArrayList<Item> ingredients) {
 			if (!testIngredients(ingredients)) return null;
 			
-			for(int i = 0; i < inputs.length; i++){
-				for (Item ingredient : ingredients){
-					if (ingredient.getClass() == inputs[i]){
-						ingredient.quantity( ingredient.quantity()-inQuantity[i]);
-						break;
+			int[] needed = inQuantity.clone();
+			
+			for (Item ingredient : ingredients){
+				for (int i = 0; i < inputs.length; i++) {
+					if (ingredient.getClass() == inputs[i] && needed[i] > 0) {
+						if (needed[i] <= ingredient.quantity()) {
+							ingredient.quantity(ingredient.quantity() - needed[i]);
+							needed[i] = 0;
+						} else {
+							needed[i] -= ingredient.quantity();
+							ingredient.quantity(0);
+						}
 					}
 				}
 			}
