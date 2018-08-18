@@ -528,23 +528,27 @@ public class ItemSpriteSheet {
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots
 	public static final int MEAT        = FOOD+0;
 	public static final int STEAK       = FOOD+1;
-	public static final int OVERPRICED  = FOOD+2;
-	public static final int CARPACCIO   = FOOD+3;
-	public static final int RATION      = FOOD+4;
-	public static final int PASTY       = FOOD+5;
-	public static final int PUMPKIN_PIE = FOOD+6;
-	public static final int CANDY_CANE  = FOOD+7;
-	public static final int BLANDFRUIT  = FOOD+8;
-	public static final int BLAND_CHUNKS= FOOD+9;
+	public static final int STEWED      = FOOD+2;
+	public static final int OVERPRICED  = FOOD+3;
+	public static final int CARPACCIO   = FOOD+4;
+	public static final int RATION      = FOOD+5;
+	public static final int PASTY       = FOOD+6;
+	public static final int PUMPKIN_PIE = FOOD+7;
+	public static final int CANDY_CANE  = FOOD+8;
+	public static final int FEAST       = FOOD+9;
+	public static final int BLANDFRUIT  = FOOD+10;
+	public static final int BLAND_CHUNKS= FOOD+11;
 	static{
 		assignItemRect(MEAT,        15, 11);
 		assignItemRect(STEAK,       15, 11);
+		assignItemRect(STEWED,      15, 11);
 		assignItemRect(OVERPRICED,  14, 11);
 		assignItemRect(CARPACCIO,   15, 11);
 		assignItemRect(RATION,      16, 12);
 		assignItemRect(PASTY,       16, 11);
 		assignItemRect(PUMPKIN_PIE, 16, 12);
 		assignItemRect(CANDY_CANE,  13, 16);
+		assignItemRect(FEAST,       16, 11);
 		assignItemRect(BLANDFRUIT,  9,  12);
 		assignItemRect(BLAND_CHUNKS,14, 6);
 	}

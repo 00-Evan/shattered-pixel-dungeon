@@ -71,10 +71,30 @@ public class Food extends Item {
 			
 			detach( hero.belongings.backpack );
 			
-			(hero.buff( Hunger.class )).satisfy( energy );
+			satisfy(hero);
 			GLog.i( message );
 			
-			switch (hero.heroClass) {
+			foodProc( hero );
+			
+			hero.sprite.operate( hero.pos );
+			hero.busy();
+			SpellSprite.show( hero, SpellSprite.FOOD );
+			Sample.INSTANCE.play( Assets.SND_EAT );
+			
+			hero.spend( TIME_TO_EAT );
+			
+			Statistics.foodEaten++;
+			Badges.validateFoodEaten();
+			
+		}
+	}
+	
+	protected void satisfy( Hero hero ){
+		(hero.buff( Hunger.class )).satisfy( energy );
+	}
+	
+	public static void foodProc( Hero hero ){
+		switch (hero.heroClass) {
 			case WARRIOR:
 				if (hero.HP < hero.HT) {
 					hero.HP = Math.min( hero.HP + 5, hero.HT );
@@ -89,18 +109,6 @@ public class Food extends Item {
 			case ROGUE:
 			case HUNTRESS:
 				break;
-			}
-			
-			hero.sprite.operate( hero.pos );
-			hero.busy();
-			SpellSprite.show( hero, SpellSprite.FOOD );
-			Sample.INSTANCE.play( Assets.SND_EAT );
-			
-			hero.spend( TIME_TO_EAT );
-			
-			Statistics.foodEaten++;
-			Badges.validateFoodEaten();
-			
 		}
 	}
 	

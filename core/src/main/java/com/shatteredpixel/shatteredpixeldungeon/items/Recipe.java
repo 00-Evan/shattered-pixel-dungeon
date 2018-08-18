@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.Feast;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfEarthenPower;
@@ -130,7 +132,8 @@ public abstract class Recipe {
 	//*******
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
-		new Scroll.ScrollToStone()
+		new Scroll.ScrollToStone(),
+		new StewedMeat.oneMeat()
 	};
 	
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
@@ -138,14 +141,17 @@ public abstract class Recipe {
 		new TippedDart.TipDart(),
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfEarthenPower.Recipe(),
-		new ElixirOfToxicEssence.Recipe()
+		new ElixirOfToxicEssence.Recipe(),
+		new StewedMeat.twoMeat()
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
 		new Potion.SeedToPotion(),
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
-		new Bomb.EnhanceBomb()
+		new Bomb.EnhanceBomb(),
+		new StewedMeat.threeMeat(),
+		new Feast.Recipe()
 	};
 	
 	public static Recipe findRecipe(ArrayList<Item> ingredients){

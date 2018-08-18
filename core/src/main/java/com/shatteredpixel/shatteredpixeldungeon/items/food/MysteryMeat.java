@@ -42,13 +42,9 @@ public class MysteryMeat extends Food {
 	}
 	
 	@Override
-	public void execute( Hero hero, String action ) {
-		
-		super.execute( hero, action );
-		
-		if (action.equals( AC_EAT )) {
-			effect(hero);
-		}
+	protected void satisfy(Hero hero) {
+		super.satisfy(hero);
+		effect(hero);
 	}
 
 	public int price() {

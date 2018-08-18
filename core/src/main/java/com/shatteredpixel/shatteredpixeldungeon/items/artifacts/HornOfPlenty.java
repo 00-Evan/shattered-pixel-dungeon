@@ -25,16 +25,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -87,28 +83,12 @@ public class HornOfPlenty extends Artifact {
 			if (!isEquipped(hero)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 			else if (charge == 0)  GLog.i( Messages.get(this, "no_food") );
 			else {
-				//consume as many
+				//consume as much food as it takes to be full, to a minimum of 1
 				int chargesToUse = Math.max( 1, hero.buff(Hunger.class).hunger() / (int)(Hunger.STARVING/10));
 				if (chargesToUse > charge) chargesToUse = charge;
 				hero.buff(Hunger.class).satisfy((Hunger.STARVING/10) * chargesToUse);
 
-				//if you get at least 80 food energy from the horn
-				switch (hero.heroClass) {
-					case WARRIOR:
-						if (hero.HP < hero.HT) {
-							hero.HP = Math.min(hero.HP + 5, hero.HT);
-							hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
-						}
-						break;
-					case MAGE:
-						//1 charge
-						Buff.affect( hero, Recharging.class, 4f );
-						ScrollOfRecharging.charge(hero);
-						break;
-					case ROGUE:
-					case HUNTRESS:
-						break;
-				}
+				Food.foodProc( hero );
 
 				Statistics.foodEaten++;
 
