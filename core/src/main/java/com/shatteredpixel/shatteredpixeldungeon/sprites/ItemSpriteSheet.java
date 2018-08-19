@@ -519,20 +519,36 @@ public class ItemSpriteSheet {
 	public static final int ELIXIR_DRAGON   = ELIXIRS+0;
 	public static final int ELIXIR_TOXIC    = ELIXIRS+1;
 	public static final int ELIXIR_EARTH    = ELIXIRS+2;
+	
+	public static final int ELIXIR_RESTO    = ELIXIRS+5;
+	public static final int ELIXIR_SURGE    = ELIXIRS+6;
+	public static final int ELIXIR_HONEY    = ELIXIRS+7;
 	static{
 		assignItemRect(ELIXIR_DRAGON,   10, 14);
 		assignItemRect(ELIXIR_TOXIC,    10, 14);
 		assignItemRect(ELIXIR_EARTH,    10, 14);
+		
+		assignItemRect(ELIXIR_RESTO,    10, 14);
+		assignItemRect(ELIXIR_SURGE,    10, 14);
+		assignItemRect(ELIXIR_HONEY,    10, 14);
 	}
 	
 	private static final int BREWS        =                                 xy(1, 26);  //16 slots
 	public static final int BREW_WICKED   = BREWS+0;
 	public static final int BREW_FRIGID   = BREWS+1;
 	public static final int BREW_FROSTFIRE= BREWS+2;
+	
+	public static final int BREW_INFERNAL  = BREWS+5;
+	public static final int BREW_BLIZZARD  = BREWS+6;
+	public static final int BREW_SHOCKING  = BREWS+7;
 	static{
 		assignItemRect(BREW_WICKED,     10, 14);
 		assignItemRect(BREW_FRIGID,     10, 14);
 		assignItemRect(BREW_FROSTFIRE,  10, 14);
+		
+		assignItemRect(BREW_INFERNAL,   10, 14);
+		assignItemRect(BREW_BLIZZARD,   10, 14);
+		assignItemRect(BREW_SHOCKING,   10, 14);
 	}
 	                                                                                    //16 free slots
 	

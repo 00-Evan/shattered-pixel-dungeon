@@ -27,11 +27,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Feast;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.BlizzardBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrigidBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.InfernalBrew;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.WickedBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfEarthenPower;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfRestoration;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfSurgingVitality;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -145,9 +151,15 @@ public abstract class Recipe {
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfEarthenPower.Recipe(),
 		new ElixirOfToxicEssence.Recipe(),
+		new ElixirOfHoneyedHealing.Recipe(),
+		new ElixirOfRestoration.Recipe(),
+		new ElixirOfSurgingVitality.Recipe(),
 		new FrigidBrew.Recipe(),
 		new FrostfireBrew.Recipe(),
 		new WickedBrew.Recipe(),
+		new BlizzardBrew.Recipe(),
+		new InfernalBrew.Recipe(),
+		new ShockingBrew.Recipe(),
 		new StewedMeat.twoMeat()
 	};
 	

@@ -46,7 +46,7 @@ public class PotionOfHealing extends Potion {
 		//starts out healing 30 hp, equalizes with hero health total at level 11
 		Buff.affect( hero, Healing.class ).setHeal((int)(0.8f*hero.HT + 14), 0.25f, 0);
 		cure( hero );
-		GLog.p( Messages.get(this, "heal") );
+		GLog.p( Messages.get(this, "heal") ); //TODO make the healing buff more visible
 	}
 	
 	public static void cure( Char ch ) {
