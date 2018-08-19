@@ -524,7 +524,18 @@ public class ItemSpriteSheet {
 		assignItemRect(ELIXIR_TOXIC,    10, 14);
 		assignItemRect(ELIXIR_EARTH,    10, 14);
 	}
-
+	
+	private static final int BREWS        =                                 xy(1, 26);  //16 slots
+	public static final int BREW_WICKED   = BREWS+0;
+	public static final int BREW_FRIGID   = BREWS+1;
+	public static final int BREW_FROSTFIRE= BREWS+2;
+	static{
+		assignItemRect(BREW_WICKED,     10, 14);
+		assignItemRect(BREW_FRIGID,     10, 14);
+		assignItemRect(BREW_FROSTFIRE,  10, 14);
+	}
+	                                                                                    //16 free slots
+	
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots
 	public static final int MEAT        = FOOD+0;
 	public static final int STEAK       = FOOD+1;

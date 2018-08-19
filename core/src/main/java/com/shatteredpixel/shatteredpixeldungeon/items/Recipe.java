@@ -27,6 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Feast;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrigidBrew;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.WickedBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfEarthenPower;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
@@ -142,6 +145,9 @@ public abstract class Recipe {
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfEarthenPower.Recipe(),
 		new ElixirOfToxicEssence.Recipe(),
+		new FrigidBrew.Recipe(),
+		new FrostfireBrew.Recipe(),
+		new WickedBrew.Recipe(),
 		new StewedMeat.twoMeat()
 	};
 	
