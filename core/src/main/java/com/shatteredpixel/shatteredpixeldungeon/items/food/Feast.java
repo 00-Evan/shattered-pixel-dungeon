@@ -22,8 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.food;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WellFed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -40,18 +40,12 @@ public class Feast extends Food {
 	@Override
 	protected void satisfy(Hero hero) {
 		super.satisfy( hero );
-		
-		Buff.affect(hero, WellFed.class, Hunger.STARVING);
+		Buff.affect(hero, WellFed.class);
 	}
 	
 	@Override
 	public int price() {
-		return 50 * quantity;
-	}
-	
-	//TODO visuals, is this the effect we want as well?
-	public static class WellFed extends FlavourBuff {
-	
+		return 30 * quantity;
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {
