@@ -4,10 +4,6 @@
 	android:versionCode="264"
 	android:versionName="0.6.5c"
 	android:installLocation="auto">
-
-	<uses-sdk
-		android:minSdkVersion="8"
-		android:targetSdkVersion="28"/>
 	
 	<uses-feature
 		android:glEsVersion="0x00020000"/>
