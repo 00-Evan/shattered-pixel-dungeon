@@ -74,8 +74,8 @@ public class AlchemyScene extends PixelScene {
 	private Emitter lowerBubbles;
 	private SkinnedBlock water;
 	
-	private RenderedText waterLeft;
-	private RenderedText waterCost;
+	private RenderedText energyLeft;
+	private RenderedText energyCost;
 	
 	private RedButton btnCombine;
 	
@@ -112,7 +112,7 @@ public class AlchemyScene extends PixelScene {
 		add(im);
 		
 		
-		RenderedText title = PixelScene.renderText( "Alchemy", 9 );
+		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
 		title.x = (Camera.main.width - title.width()) / 2f;
 		title.y = (16 - title.baseLine()) / 2f;
@@ -122,7 +122,7 @@ public class AlchemyScene extends PixelScene {
 		int w = 50 + Camera.main.width/2;
 		int left = (Camera.main.width - w)/2;
 		
-		int pos = (Camera.main.height - 120)/2;
+		int pos = (Camera.main.height - 100)/2;
 		
 		RenderedTextMultiline desc = PixelScene.renderMultiline(6);
 		desc.text( Messages.get(AlchemyScene.class, "text") );
@@ -252,13 +252,13 @@ public class AlchemyScene extends PixelScene {
 		btnGuide.setRect(0, 0, 16, 16);
 		add(btnGuide);
 		
-		waterLeft = PixelScene.renderText("Alchemy Water: " + availableWater(), 9);
-		waterLeft.y = Camera.main.height - waterLeft.baseLine();
-		waterLeft.x = (Camera.main.width - waterLeft.width())/2;
-		add(waterLeft);
+		energyLeft = PixelScene.renderText(Messages.get(AlchemyScene.class, "energy", availableEnergy()), 9);
+		energyLeft.y = Camera.main.height - 5 - energyLeft.baseLine();
+		energyLeft.x = (Camera.main.width - energyLeft.width())/2;
+		add(energyLeft);
 		
-		waterCost = PixelScene.renderText(6);
-		add(waterCost);
+		energyCost = PixelScene.renderText(6);
+		add(energyCost);
 		
 		fadeIn();
 	}
@@ -317,24 +317,24 @@ public class AlchemyScene extends PixelScene {
 			
 			int cost = recipe.cost(ingredients);
 			
-			waterCost.text("Water: " + cost);
-			waterCost.y = btnCombine.top() - waterCost.baseLine();
-			waterCost.x = btnCombine.left() + (btnCombine.width() - waterCost.width())/2;
+			energyCost.text( Messages.get(AlchemyScene.class, "cost", cost) );
+			energyCost.y = btnCombine.top() - energyCost.baseLine();
+			energyCost.x = btnCombine.left() + (btnCombine.width() - energyCost.width())/2;
 			
-			waterCost.visible = (cost > 0);
+			energyCost.visible = (cost > 0);
 			
-			if (cost <= availableWater()) {
+			if (cost <= availableEnergy()) {
 				btnCombine.enable(true);
-				waterCost.resetColor();
+				energyCost.resetColor();
 			} else {
 				btnCombine.enable(false);
-				waterCost.hardlight(1, 0, 0);
+				energyCost.hardlight(1, 0, 0);
 			}
 			
 		} else {
 			btnCombine.enable(false);
 			output.visible = false;
-			waterCost.visible = false;
+			energyCost.visible = false;
 		}
 		
 	}
@@ -347,10 +347,10 @@ public class AlchemyScene extends PixelScene {
 		Item result = null;
 		
 		if (recipe != null){
-			provider.spendWater(recipe.cost(ingredients));
-			waterLeft.text("Alchemy Water: " + availableWater());
-			waterLeft.y = Camera.main.height - waterLeft.baseLine();
-			waterLeft.x = (Camera.main.width - waterLeft.width())/2;
+			provider.spendEnergy(recipe.cost(ingredients));
+			energyLeft.text(Messages.get(AlchemyScene.class, "energy", availableEnergy()));
+			energyLeft.y = Camera.main.height - energyLeft.baseLine();
+			energyLeft.x = (Camera.main.width - energyLeft.width())/2;
 			
 			result = recipe.brew(ingredients);
 		}
@@ -471,15 +471,15 @@ public class AlchemyScene extends PixelScene {
 		provider = p;
 	}
 	
-	private static int availableWater(){
-		return provider == null ? 0 : provider.getWater();
+	private static int availableEnergy(){
+		return provider == null ? 0 : provider.getEnergy();
 	}
 	
 	public interface AlchemyProvider {
 	
-		int getWater();
+		int getEnergy();
 		
-		void spendWater(int reduction);
+		void spendEnergy(int reduction);
 	
 	}
 }

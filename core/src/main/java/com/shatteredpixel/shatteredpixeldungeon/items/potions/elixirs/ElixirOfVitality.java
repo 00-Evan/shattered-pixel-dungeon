@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfShielding;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class ElixirOfSurgingVitality extends Elixir {
+public class ElixirOfVitality extends Elixir {
 	
 	{
 		image = ItemSpriteSheet.ELIXIR_SURGE;
@@ -49,7 +49,7 @@ public class ElixirOfSurgingVitality extends Elixir {
 			
 			cost = 2;
 			
-			output = ElixirOfSurgingVitality.class;
+			output = ElixirOfVitality.class;
 			outQuantity = 1;
 		}
 		

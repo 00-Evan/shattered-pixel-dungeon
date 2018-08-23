@@ -37,8 +37,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDr
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfEarthenPower;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfRestoration;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfSurgingVitality;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfVitality;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
@@ -153,7 +153,7 @@ public abstract class Recipe {
 		new ElixirOfToxicEssence.Recipe(),
 		new ElixirOfHoneyedHealing.Recipe(),
 		new ElixirOfRestoration.Recipe(),
-		new ElixirOfSurgingVitality.Recipe(),
+		new ElixirOfVitality.Recipe(),
 		new FrigidBrew.Recipe(),
 		new FrostfireBrew.Recipe(),
 		new WickedBrew.Recipe(),
