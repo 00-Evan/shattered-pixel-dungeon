@@ -137,7 +137,7 @@ public abstract class TippedDart extends Dart {
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 2;
+			return 0;
 		}
 		
 		@Override

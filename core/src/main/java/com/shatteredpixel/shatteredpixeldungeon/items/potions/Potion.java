@@ -452,7 +452,7 @@ public class Potion extends Item {
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 1;
+			return 0;
 		}
 		
 		@Override
