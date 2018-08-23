@@ -104,7 +104,13 @@ public enum Document {
 		ALCHEMY_GUIDE.pages.put("Stones",               false);
 		ALCHEMY_GUIDE.pages.put("Darts",                false);
 		ALCHEMY_GUIDE.pages.put("Exotics",              false);
+		ALCHEMY_GUIDE.pages.put("Energy",               false);
+		ALCHEMY_GUIDE.pages.put("Food",                 false);
 		ALCHEMY_GUIDE.pages.put("Bombs",                false);
+		ALCHEMY_GUIDE.pages.put("Combo_Brews",          false);
+		ALCHEMY_GUIDE.pages.put("Heal_Elixirs",         false);
+		ALCHEMY_GUIDE.pages.put("AOE_Brews",            false);
+		ALCHEMY_GUIDE.pages.put("Imbue_Elixirs",        false);
 		ALCHEMY_GUIDE.pages.put("teaser1",              false);
 		ALCHEMY_GUIDE.pages.put("teaser2",              false);
 		ALCHEMY_GUIDE.pages.put("teaser3",              false);
