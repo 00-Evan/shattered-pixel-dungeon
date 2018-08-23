@@ -38,7 +38,7 @@ public class EarthImbue extends FlavourBuff {
 	public static final float DURATION	= 30f;
 
 	public void proc(Char enemy){
-		Buff.affect(enemy, Roots.class, 2);
+		Buff.affect(enemy, Cripple.class, 2);
 		CellEmitter.bottom(enemy.pos).start(EarthParticle.FACTORY, 0.05f, 8);
 	}
 
@@ -61,10 +61,5 @@ public class EarthImbue extends FlavourBuff {
 	public String desc() {
 		return Messages.get(this, "desc", dispTurns());
 	}
-
-	{
-		immunities.add( Paralysis.class );
-		immunities.add( Roots.class );
-		immunities.add( Slow.class );
-	}
+	
 }

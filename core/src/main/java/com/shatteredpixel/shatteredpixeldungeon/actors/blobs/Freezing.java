@@ -39,7 +39,6 @@ public class Freezing extends Blob {
 	@Override
 	protected void evolve() {
 		
-		boolean[] water = Dungeon.level.water;
 		int cell;
 		
 		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
@@ -55,21 +54,7 @@ public class Freezing extends Blob {
 						continue;
 					}
 					
-					Char ch = Actor.findChar( cell );
-					if (ch != null && !ch.isImmune(this.getClass())) {
-						if (ch.buff(Frost.class) != null){
-							Buff.affect(ch, Frost.class, 2f);
-						} else {
-							Buff.affect(ch, Chill.class, water[cell] ? 5f : 3f);
-							Chill chill = ch.buff(Chill.class);
-							if (chill != null && chill.cooldown() >= 10f){
-								Buff.affect(ch, Frost.class, 5f);
-							}
-						}
-					}
-					
-					Heap heap = Dungeon.level.heaps.get( cell );
-					if (heap != null) heap.freeze();
+					Freezing.freeze(cell);
 					
 					off[cell] = cur[cell] - 1;
 					volume += off[cell];
@@ -78,6 +63,24 @@ public class Freezing extends Blob {
 				}
 			}
 		}
+	}
+	
+	public static void freeze( int cell ){
+		Char ch = Actor.findChar( cell );
+		if (ch != null && !ch.isImmune(Freezing.class)) {
+			if (ch.buff(Frost.class) != null){
+				Buff.affect(ch, Frost.class, 2f);
+			} else {
+				Buff.affect(ch, Chill.class, Dungeon.level.water[cell] ? 5f : 3f);
+				Chill chill = ch.buff(Chill.class);
+				if (chill != null && chill.cooldown() >= 10f){
+					Buff.affect(ch, Frost.class, 5f);
+				}
+			}
+		}
+		
+		Heap heap = Dungeon.level.heaps.get( cell );
+		if (heap != null) heap.freeze();
 	}
 	
 	@Override

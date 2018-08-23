@@ -75,7 +75,7 @@ public class FrostfireBrew extends Brew {
 			inputs =  new Class[]{PotionOfSnapFreeze.class, PotionOfLiquidFlame.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 3;
+			cost = 5;
 			
 			output = FrostfireBrew.class;
 			outQuantity = 1;

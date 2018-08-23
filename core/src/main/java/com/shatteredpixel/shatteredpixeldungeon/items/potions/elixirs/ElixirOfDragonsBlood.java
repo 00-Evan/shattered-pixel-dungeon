@@ -56,7 +56,7 @@ public class ElixirOfDragonsBlood extends Elixir {
 			inputs =  new Class[]{PotionOfLiquidFlame.class, PotionOfPurity.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 2;
+			cost = 4;
 			
 			output = ElixirOfDragonsBlood.class;
 			outQuantity = 1;

@@ -53,7 +53,7 @@ public class ElixirOfEarthenPower extends Elixir {
 			inputs =  new Class[]{PotionOfParalyticGas.class, PotionOfHaste.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 2;
+			cost = 4;
 			
 			output = ElixirOfEarthenPower.class;
 			outQuantity = 1;

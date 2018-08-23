@@ -26,10 +26,10 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -57,10 +57,10 @@ public class ElixirOfHoneyedHealing extends Elixir {
 		Char ch = Actor.findChar(cell);
 		if (ch != null){
 			Buff.affect( ch, Healing.class ).setHeal((int)(0.8f*ch.HT + 14), 0.25f, 0);
-			if (ch.alignment != curUser.alignment){
-				//TODO this is effectively a free kill against enemies, do we want that?
-				Buff.affect(ch, Charm.class, 999f).object = curUser.id();
-				//TODO specific bee interactions?
+			if (ch instanceof Bee && ch.alignment != curUser.alignment){
+				ch.alignment = Char.Alignment.ALLY;
+				((Bee)ch).setPotInfo(-1, null);
+				
 			}
 		}
 	}
@@ -71,7 +71,7 @@ public class ElixirOfHoneyedHealing extends Elixir {
 			inputs =  new Class[]{PotionOfHealing.class, Honeypot.ShatteredPot.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 2;
+			cost = 5;
 			
 			output = ElixirOfHoneyedHealing.class;
 			outQuantity = 1;

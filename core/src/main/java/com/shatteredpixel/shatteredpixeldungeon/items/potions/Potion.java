@@ -389,7 +389,7 @@ public class Potion extends Item {
 	}
 	
 	protected int splashColor(){
-		return ItemSprite.pick( image, 8, 10 );
+		return ItemSprite.pick( image, 5, 9 );
 	}
 	
 	protected void splash( int cell ) {

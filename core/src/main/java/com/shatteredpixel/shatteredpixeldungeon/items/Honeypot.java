@@ -195,7 +195,7 @@ public class Honeypot extends Item {
 				return;
 
 			Bee bee = (Bee)Actor.findById( myBee );
-			if (bee != null)
+			if (bee != null && bee.alignment == Char.Alignment.ENEMY)
 				bee.setPotInfo( cell, holder );
 		}
 

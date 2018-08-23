@@ -575,7 +575,7 @@ public class ItemSpriteSheet {
 		assignItemRect(PASTY,       16, 11);
 		assignItemRect(PUMPKIN_PIE, 16, 12);
 		assignItemRect(CANDY_CANE,  13, 16);
-		assignItemRect(FEAST,       16, 11);
+		assignItemRect(FEAST,       16, 12);
 		assignItemRect(BLANDFRUIT,  9,  12);
 		assignItemRect(BLAND_CHUNKS,14, 6);
 	}

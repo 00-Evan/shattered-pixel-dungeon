@@ -25,13 +25,16 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BeeSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
+//FIXME the AI for these things is becoming a complete mess, should refactor
 public class Bee extends Mob {
 	
 	{
@@ -55,6 +58,7 @@ public class Bee extends Mob {
 	private static final String LEVEL	    = "level";
 	private static final String POTPOS	    = "potpos";
 	private static final String POTHOLDER	= "potholder";
+	private static final String ALIGMNENT   = "alignment";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -62,6 +66,7 @@ public class Bee extends Mob {
 		bundle.put( LEVEL, level );
 		bundle.put( POTPOS, potPos );
 		bundle.put( POTHOLDER, potHolder );
+		bundle.put( ALIGMNENT, alignment);
 	}
 	
 	@Override
@@ -70,6 +75,7 @@ public class Bee extends Mob {
 		spawn( bundle.getInt( LEVEL ) );
 		potPos = bundle.getInt( POTPOS );
 		potHolder = bundle.getInt( POTHOLDER );
+		if (bundle.contains(ALIGMNENT)) alignment = bundle.getEnum( ALIGMNENT, Alignment.class);
 	}
 	
 	public void spawn( int level ) {
@@ -109,7 +115,7 @@ public class Bee extends Mob {
 	@Override
 	protected Char chooseEnemy() {
 		//if the pot is no longer present, default to regular AI behaviour
-		if (potHolder == -1 && potPos == -1)
+		if (alignment == Alignment.ALLY || (potHolder == -1 && potPos == -1))
 			return super.chooseEnemy();
 
 		//if something is holding the pot, target that
@@ -127,7 +133,7 @@ public class Bee extends Mob {
 				//find all mobs near the pot
 				HashSet<Char> enemies = new HashSet<>();
 				for (Mob mob : Dungeon.level.mobs) {
-					if (!(mob instanceof Bee)
+					if (!(mob == this)
 							&& Dungeon.level.distance(mob.pos, potPos) <= 3
 							&& mob.alignment != Alignment.NEUTRAL
 							&& !(alignment == Alignment.ALLY && mob.alignment == Alignment.ALLY)) {
@@ -155,11 +161,22 @@ public class Bee extends Mob {
 
 	@Override
 	protected boolean getCloser(int target) {
-		if (enemy != null && Actor.findById(potHolder) == enemy) {
+		if (alignment == Alignment.ALLY && enemy == null && buff(Corruption.class) == null){
+			target = Dungeon.hero.pos;
+		} else if (enemy != null && Actor.findById(potHolder) == enemy) {
 			target = enemy.pos;
 		} else if (potPos != -1 && (state == WANDERING || Dungeon.level.distance(target, potPos) > 3))
 			this.target = target = potPos;
 		return super.getCloser( target );
+	}
+	
+	@Override
+	public String description() {
+		if (alignment == Alignment.ALLY && buff(Corruption.class) == null){
+			return Messages.get(this, "desc_honey");
+		} else {
+			return super.description();
+		}
 	}
 	
 	{

@@ -96,9 +96,9 @@ public class Fire extends Blob {
 		}
 	}
 	
-	private void burn( int pos ) {
+	public static void burn( int pos ) {
 		Char ch = Actor.findChar( pos );
-		if (ch != null && !ch.isImmune(this.getClass())) {
+		if (ch != null && !ch.isImmune(Fire.class)) {
 			Buff.affect( ch, Burning.class ).reignite( ch );
 		}
 		
@@ -116,7 +116,7 @@ public class Fire extends Blob {
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
-		emitter.start( FlameParticle.FACTORY, 0.03f, 0 );
+		emitter.pour( FlameParticle.FACTORY, 0.03f );
 	}
 	
 	@Override

@@ -46,7 +46,7 @@ public class ElixirOfRestoration extends Elixir {
 			inputs =  new Class[]{PotionOfHealing.class, PotionOfCleansing.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 2;
+			cost = 1;
 			
 			output = ElixirOfRestoration.class;
 			outQuantity = 1;

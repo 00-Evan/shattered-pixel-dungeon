@@ -311,6 +311,18 @@ public class Bomb extends Item {
 			validIngredients.put(ScrollOfRage.class,            Noisemaker.class);
 		}
 		
+		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
+		static {
+			bombCosts.put(Firebomb.class,       0);
+			bombCosts.put(FrostBomb.class,      0);
+			bombCosts.put(HealingBomb.class,    0);
+			bombCosts.put(Flashbang.class,      0);
+			bombCosts.put(ShockBomb.class,      0);
+			bombCosts.put(HolyBomb.class,       0);
+			bombCosts.put(WoollyBomb.class,     0);
+			bombCosts.put(Noisemaker.class,     0);
+		}
+		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
 			boolean seedOrStone = false;
@@ -332,6 +344,11 @@ public class Bomb extends Item {
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
+			for (Item i : ingredients){
+				if (validIngredients.containsKey(i.getClass())){
+					return (bombCosts.get(validIngredients.get(i.getClass())));
+				}
+			}
 			return 0;
 		}
 		

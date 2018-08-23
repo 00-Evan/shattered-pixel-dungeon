@@ -21,9 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.brews;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blizzard;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfSnapFreeze;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 
 public class BlizzardBrew extends Brew {
 	
@@ -33,7 +39,14 @@ public class BlizzardBrew extends Brew {
 	
 	@Override
 	public void shatter(int cell) {
-		//TODO
+		if (Dungeon.level.heroFOV[cell]) {
+			setKnown();
+			
+			splash( cell );
+			Sample.INSTANCE.play( Assets.SND_SHATTER );
+		}
+		
+		GameScene.add( Blob.seed( cell, 1000, Blizzard.class ) );
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
@@ -42,7 +55,7 @@ public class BlizzardBrew extends Brew {
 			inputs =  new Class[]{PotionOfSnapFreeze.class, PotionOfFrost.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 1;
+			cost = 5;
 			
 			output = BlizzardBrew.class;
 			outQuantity = 1;
