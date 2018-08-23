@@ -42,10 +42,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImag
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -313,33 +311,30 @@ public class Bomb extends Item {
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
 		static {
-			bombCosts.put(Firebomb.class,       0);
-			bombCosts.put(FrostBomb.class,      0);
-			bombCosts.put(HealingBomb.class,    0);
-			bombCosts.put(Flashbang.class,      0);
-			bombCosts.put(ShockBomb.class,      0);
-			bombCosts.put(HolyBomb.class,       0);
-			bombCosts.put(WoollyBomb.class,     0);
-			bombCosts.put(Noisemaker.class,     0);
+			bombCosts.put(Firebomb.class,       2);
+			bombCosts.put(FrostBomb.class,      1);
+			bombCosts.put(HealingBomb.class,    5);
+			bombCosts.put(Flashbang.class,      3);
+			bombCosts.put(ShockBomb.class,      3);
+			bombCosts.put(HolyBomb.class,       5);
+			bombCosts.put(WoollyBomb.class,     1);
+			bombCosts.put(Noisemaker.class,     2);
 		}
 		
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
-			boolean seedOrStone = false;
 			boolean bomb = false;
 			boolean ingredient = false;
 			
 			for (Item i : ingredients){
-				if (i instanceof Plant.Seed || i instanceof Runestone){
-					seedOrStone = true;
-				} else if (i.getClass().equals(Bomb.class)){
+				if (i.getClass().equals(Bomb.class)){
 					bomb = true;
 				} else if (validIngredients.containsKey(i.getClass())){
 					ingredient = true;
 				}
 			}
 			
-			return seedOrStone && bomb && ingredient;
+			return bomb && ingredient;
 		}
 		
 		@Override

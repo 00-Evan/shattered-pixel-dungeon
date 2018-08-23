@@ -59,8 +59,8 @@ public class HealingBomb extends Bomb {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				Char ch = Actor.findChar(i);
 				if (ch != null){
-					//same as a healing dart
-					Buff.affect( ch, Healing.class ).setHeal((int)(0.5f*ch.HT + 30), 0.25f, 0);
+					//same as a healing potion
+					Buff.affect( ch, Healing.class ).setHeal((int)(0.8f*ch.HT + 14), 0.25f, 0);
 					PotionOfHealing.cure( ch );
 				}
 			}

@@ -148,6 +148,7 @@ public abstract class Recipe {
 	private static Recipe[] twoIngredientRecipes = new Recipe[]{
 		new Blandfruit.CookFruit(),
 		new TippedDart.TipDart(),
+		new Bomb.EnhanceBomb(),
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfEarthenPower.Recipe(),
 		new ElixirOfToxicEssence.Recipe(),
@@ -167,7 +168,6 @@ public abstract class Recipe {
 		new Potion.SeedToPotion(),
 		new ExoticPotion.PotionToExotic(),
 		new ExoticScroll.ScrollToExotic(),
-		new Bomb.EnhanceBomb(),
 		new StewedMeat.threeMeat(),
 		new Feast.Recipe()
 	};
