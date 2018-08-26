@@ -144,6 +144,7 @@ public class DungeonTileSheet {
 		chasmStitcheable.put( Terrain.DOOR,         CHASM_WALL );
 		chasmStitcheable.put( Terrain.OPEN_DOOR,    CHASM_WALL );
 		chasmStitcheable.put( Terrain.LOCKED_DOOR,  CHASM_WALL );
+		chasmStitcheable.put( Terrain.SECRET_DOOR,  CHASM_WALL );
 		chasmStitcheable.put( Terrain.WALL_DECO,    CHASM_WALL );
 
 		//water

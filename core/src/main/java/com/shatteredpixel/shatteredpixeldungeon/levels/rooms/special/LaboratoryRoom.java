@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Alchemy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.journal.AlchemyPage;
@@ -60,10 +61,8 @@ public class LaboratoryRoom extends SpecialRoom {
 		}
 		Painter.set( level, pot, Terrain.ALCHEMY );
 		
-		Alchemy alchemy = new Alchemy();
 		int chapter = 1 + Dungeon.depth/5;
-		alchemy.seed( level, pot.x + level.width() * pot.y, 1 + chapter*10 + Random.NormalIntRange(0, 10) );
-		level.blobs.put( Alchemy.class, alchemy );
+		Blob.seed( pot.x + level.width() * pot.y, 1 + chapter*10 + Random.NormalIntRange(0, 10), Alchemy.class, level );
 		
 		int n = Random.NormalIntRange( 2, 3 );
 		for (int i=0; i < n; i++) {

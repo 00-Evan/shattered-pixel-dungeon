@@ -161,7 +161,7 @@ public class WandOfCorruption extends Wand {
 			
 			//cannot re-corrupt or doom an enemy, so give them a major debuff instead
 			if(enemy.buff(Corruption.class) != null || enemy.buff(Doom.class) != null){
-				enemyResist = corruptingPower*.99f;
+				corruptingPower = enemyResist - 0.001f;
 			}
 			
 			if (corruptingPower > enemyResist){

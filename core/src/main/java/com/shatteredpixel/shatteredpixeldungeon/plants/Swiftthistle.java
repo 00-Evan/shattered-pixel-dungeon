@@ -42,7 +42,7 @@ public class Swiftthistle extends Plant {
 	public void activate() {
 		Char ch = Actor.findChar(pos);
 		if (ch == Dungeon.hero) {
-			Buff.affect(ch, TimeBubble.class);
+			Buff.affect(ch, TimeBubble.class).reset();
 		}
 	}
 	
@@ -56,7 +56,7 @@ public class Swiftthistle extends Plant {
 	
 	public static class TimeBubble extends Buff {
 		
-		private float left = 6f;
+		private float left;
 		private int pos;
 		
 		{
@@ -74,14 +74,9 @@ public class Swiftthistle extends Plant {
 			if (left < 4) FlavourBuff.greyIcon(icon, 4f, left);
 		}
 		
-		@Override
-		public boolean attachTo(Char target) {
-			if (super.attachTo(target)){
-				pos = target.pos;
-				return true;
-			} else {
-				return false;
-			}
+		public void reset(){
+			pos = target.pos;
+			left = 6f;
 		}
 		
 		public void processTime( float time ){

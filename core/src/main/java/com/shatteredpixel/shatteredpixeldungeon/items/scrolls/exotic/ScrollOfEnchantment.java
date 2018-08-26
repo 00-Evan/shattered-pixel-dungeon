@@ -60,7 +60,9 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				enchants[2] = Weapon.Enchantment.random( existing, enchants[0].getClass(), enchants[1].getClass());
 				
 				GameScene.show(new WndOptions(Messages.titleCase(ScrollOfEnchantment.this.name()),
-						Messages.get(ScrollOfEnchantment.class, "weapon"),
+						Messages.get(ScrollOfEnchantment.class, "weapon") +
+						"\n\n" +
+						Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
 						enchants[0].name(),
 						enchants[1].name(),
 						enchants[2].name(),
@@ -78,6 +80,11 @@ public class ScrollOfEnchantment extends ExoticScroll {
 							Enchanting.show(curUser, item);
 						}
 					}
+					
+					@Override
+					public void onBackPressed() {
+						//do nothing, reader has to cancel
+					}
 				});
 			
 			} else if (item instanceof Armor) {
@@ -90,7 +97,9 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				glyphs[2] = Armor.Glyph.random( existing, glyphs[0].getClass(), glyphs[1].getClass());
 				
 				GameScene.show(new WndOptions(Messages.titleCase(ScrollOfEnchantment.this.name()),
-						Messages.get(ScrollOfEnchantment.class, "armor"),
+						Messages.get(ScrollOfEnchantment.class, "armor") +
+						"\n\n" +
+						Messages.get(ScrollOfEnchantment.class, "cancel_warn"),
 						glyphs[0].name(),
 						glyphs[1].name(),
 						glyphs[2].name(),
@@ -107,6 +116,11 @@ public class ScrollOfEnchantment extends ExoticScroll {
 							Invisibility.dispel();
 							Enchanting.show(curUser, item);
 						}
+					}
+					
+					@Override
+					public void onBackPressed() {
+						//do nothing, reader has to cancel
 					}
 				});
 			} else {

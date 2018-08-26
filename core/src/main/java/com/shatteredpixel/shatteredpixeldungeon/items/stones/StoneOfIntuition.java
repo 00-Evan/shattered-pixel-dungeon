@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticG
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
@@ -52,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -167,15 +169,42 @@ public class StoneOfIntuition extends InventoryStone {
 			HashSet<Class<?extends Item>> unIDed = new HashSet<>();
 			final Class[] all;
 			
+			final int row;
 			if (item.isIdentified()){
 				hide();
 				return;
 			} else if (item instanceof Potion){
 				unIDed.addAll(Potion.getUnknown());
-				all = potions;
+				all = potions.clone();
+				if (item instanceof ExoticPotion){
+					row = 8;
+					for (int i = 0; i < all.length; i++){
+						all[i] = ExoticPotion.regToExo.get(all[i]);
+					}
+					HashSet<Class<?extends Item>> exoUID = new HashSet<>();
+					for (Class<?extends Item> i : unIDed){
+						exoUID.add(ExoticPotion.regToExo.get(i));
+					}
+					unIDed = exoUID;
+				} else {
+					row = 0;
+				}
 			} else if (item instanceof Scroll){
 				unIDed.addAll(Scroll.getUnknown());
-				all = scrolls;
+				all = scrolls.clone();
+				if (item instanceof ExoticScroll){
+					row = 24;
+					for (int i = 0; i < all.length; i++){
+						all[i] = ExoticScroll.regToExo.get(all[i]);
+					}
+					HashSet<Class<?extends Item>> exoUID = new HashSet<>();
+					for (Class<?extends Item> i : unIDed){
+						exoUID.add(ExoticScroll.regToExo.get(i));
+					}
+					unIDed = exoUID;
+				} else {
+					row = 16;
+				}
 			} else {
 				hide();
 				return;
@@ -206,7 +235,7 @@ public class StoneOfIntuition extends InventoryStone {
 						super.onClick();
 					}
 				};
-				Image im = new Image(Assets.CONS_ICONS, 7*i, all == potions ? 0 : 16, 7, 8);
+				Image im = new Image(Assets.CONS_ICONS, 7*i, row, 7, 8);
 				im.scale.set(2f);
 				btn.icon(im);
 				btn.setRect(left + placed*BTN_SIZE, top, BTN_SIZE, BTN_SIZE);

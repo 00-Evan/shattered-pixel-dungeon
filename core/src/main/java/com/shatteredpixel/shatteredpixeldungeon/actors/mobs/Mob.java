@@ -674,7 +674,7 @@ public abstract class Mob extends Char {
 	}
 	
 	public void yell( String str ) {
-		GLog.n( "%s: \"%s\" ", name, str );
+		GLog.n( "%s: \"%s\" ", Messages.titleCase(name), str );
 	}
 
 	//returns true when a mob sees the hero, and is currently targeting them.

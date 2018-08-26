@@ -29,8 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
@@ -96,7 +94,9 @@ public class ScrollOfTransmutation extends InventoryScroll {
 				((EquipableItem)result).doEquip(Dungeon.hero);
 			} else {
 				item.detach(Dungeon.hero.belongings.backpack);
-				result.collect();
+				if (!result.collect()){
+					Dungeon.level.drop(result, curUser.pos).sprite.drop();
+				}
 			}
 			if (result.isIdentified()){
 				Catalog.setSeen(result.getClass());
