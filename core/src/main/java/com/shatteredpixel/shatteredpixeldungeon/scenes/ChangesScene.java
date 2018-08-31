@@ -1552,7 +1552,7 @@ public class ChangesScene extends PixelScene {
 				"\n" +
 				"Dev commentary will be added here in the future."));
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_YNGVI, null), "Pixel Dungeon v1.7.2",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_AUGMENTATION, null), "Pixel Dungeon v1.7.2",
 				"Implemented directly from v1.7.2:\n" +
 				"_-_ Synchronous Movement\n" +
 				"_-_ Challenges\n" +

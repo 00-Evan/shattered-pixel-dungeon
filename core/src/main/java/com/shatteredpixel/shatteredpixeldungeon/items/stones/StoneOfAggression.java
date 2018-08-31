@@ -37,7 +37,7 @@ import com.watabou.utils.PathFinder;
 public class StoneOfAggression extends Runestone {
 	
 	{
-		image = ItemSpriteSheet.STONE_KAUNAN;
+		image = ItemSpriteSheet.STONE_AGGRESSION;
 	}
 	
 	@Override

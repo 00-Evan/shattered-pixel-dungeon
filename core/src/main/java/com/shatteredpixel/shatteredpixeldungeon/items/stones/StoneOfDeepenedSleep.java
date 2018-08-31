@@ -36,7 +36,7 @@ import com.watabou.utils.PathFinder;
 public class StoneOfDeepenedSleep extends Runestone {
 	
 	{
-		image = ItemSpriteSheet.STONE_NAUDIZ;
+		image = ItemSpriteSheet.STONE_SLEEP;
 	}
 	
 	@Override

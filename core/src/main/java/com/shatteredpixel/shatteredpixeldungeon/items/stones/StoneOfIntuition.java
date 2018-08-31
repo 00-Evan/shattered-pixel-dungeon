@@ -75,7 +75,7 @@ public class StoneOfIntuition extends InventoryStone {
 	
 	{
 		mode = WndBag.Mode.UNIDED_POTION_OR_SCROLL;
-		image = ItemSpriteSheet.STONE_ISAZ;
+		image = ItemSpriteSheet.STONE_INTUITION;
 	}
 	
 	@Override
@@ -128,7 +128,7 @@ public class StoneOfIntuition extends InventoryStone {
 		public WndGuess(final Item item){
 			
 			IconTitle titlebar = new IconTitle();
-			titlebar.icon( new ItemSprite(ItemSpriteSheet.STONE_ISAZ, null) );
+			titlebar.icon( new ItemSprite(ItemSpriteSheet.STONE_INTUITION, null) );
 			titlebar.label( Messages.get(StoneOfIntuition.class, "name") );
 			titlebar.setRect( 0, 0, WIDTH, 0 );
 			add( titlebar );

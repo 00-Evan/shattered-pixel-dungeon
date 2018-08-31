@@ -37,7 +37,7 @@ import com.watabou.utils.PathFinder;
 public class StoneOfAvoidance extends Runestone {
 	
 	{
-		image = ItemSpriteSheet.STONE_LAGUZ;
+		image = ItemSpriteSheet.STONE_AVOIDANCE;
 	}
 	
 	@Override

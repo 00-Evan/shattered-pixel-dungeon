@@ -44,7 +44,7 @@ public class StoneOfClairvoyance extends Runestone {
 	private static final int DIST = 8;
 	
 	{
-		image = ItemSpriteSheet.STONE_RAIDO;
+		image = ItemSpriteSheet.STONE_CLAIRVOYANCE;
 	}
 	
 	@Override

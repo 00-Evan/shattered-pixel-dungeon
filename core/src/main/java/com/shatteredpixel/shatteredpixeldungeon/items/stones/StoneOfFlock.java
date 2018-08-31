@@ -36,7 +36,7 @@ import com.watabou.utils.Random;
 public class StoneOfFlock extends Runestone {
 	
 	{
-		image = ItemSpriteSheet.STONE_BERKANAN;
+		image = ItemSpriteSheet.STONE_FLOCK;
 	}
 	
 	@Override
