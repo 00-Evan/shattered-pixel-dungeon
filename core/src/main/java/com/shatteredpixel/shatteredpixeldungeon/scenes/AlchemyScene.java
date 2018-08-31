@@ -402,8 +402,6 @@ public class AlchemyScene extends PixelScene {
 			}
 		}
 		
-		provider = null;
-		
 		try {
 			Dungeon.saveAll();
 			Badges.saveGlobal();
