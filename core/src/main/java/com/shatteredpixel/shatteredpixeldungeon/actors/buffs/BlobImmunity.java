@@ -21,11 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blizzard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ConfusionGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Inferno;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SmokeScreen;
@@ -62,11 +64,13 @@ public class BlobImmunity extends FlavourBuff {
 
 	{
 		//all harmful blobs
+		immunities.add( Blizzard.class );
 		immunities.add( ConfusionGas.class );
 		immunities.add( CorrosiveGas.class );
 		immunities.add( Electricity.class );
 		immunities.add( Fire.class );
 		immunities.add( Freezing.class );
+		immunities.add( Inferno.class );
 		immunities.add( ParalyticGas.class );
 		immunities.add( Regrowth.class );
 		immunities.add( SmokeScreen.class );
