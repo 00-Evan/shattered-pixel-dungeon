@@ -79,7 +79,7 @@ public class ScrollOfTeleportation extends Scroll {
 					//time isn't spent
 					((HeroSprite)curUser.sprite).read();
 					teleportToLocation(curUser, target);
-					GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
+					
 				}
 			}
 			
@@ -122,13 +122,13 @@ public class ScrollOfTeleportation extends Scroll {
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			
 		} else {
-
+			
+			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
+			
 			appear( hero, pos );
 			Dungeon.level.press( pos, hero );
 			Dungeon.observe();
 			GameScene.updateFog();
-			
-			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 			
 		}
 	}
@@ -172,11 +172,11 @@ public class ScrollOfTeleportation extends Scroll {
 			teleportHero( hero );
 		} else {
 			int pos = Random.element(candidates);
+			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 			appear( hero, pos );
 			Dungeon.level.press( pos, hero );
 			Dungeon.observe();
 			GameScene.updateFog();
-			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 		}
 		
 	}
