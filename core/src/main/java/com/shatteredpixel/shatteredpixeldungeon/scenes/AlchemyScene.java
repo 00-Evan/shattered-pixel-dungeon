@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
@@ -139,8 +140,10 @@ public class AlchemyScene extends PixelScene {
 					protected void onClick() {
 						super.onClick();
 						if (item != null) {
-							if (!item.collect()) {
-								Dungeon.level.drop(item, Dungeon.hero.pos);
+							if (!(item instanceof AlchemistsToolkit)) {
+								if (!item.collect()) {
+									Dungeon.level.drop(item, Dungeon.hero.pos);
+								}
 							}
 							item = null;
 							slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
@@ -283,6 +286,8 @@ public class AlchemyScene extends PixelScene {
 						if (inputs[i].item == null) {
 							if (item instanceof Dart) {
 								inputs[i].item(item.detachAll(Dungeon.hero.belongings.backpack));
+							} else if (item instanceof AlchemistsToolkit) {
+								inputs[i].item(item);
 							} else {
 								inputs[i].item(item.detach(Dungeon.hero.belongings.backpack));
 							}
@@ -312,10 +317,10 @@ public class AlchemyScene extends PixelScene {
 		Recipe recipe = Recipe.findRecipe(ingredients);
 		
 		if (recipe != null){
+			int cost = recipe.cost(ingredients);
+			
 			output.item(recipe.sampleOutput(ingredients));
 			output.visible = true;
-			
-			int cost = recipe.cost(ingredients);
 			
 			energyCost.text( Messages.get(AlchemyScene.class, "cost", cost) );
 			energyCost.y = btnCombine.top() - energyCost.baseLine();
@@ -349,7 +354,7 @@ public class AlchemyScene extends PixelScene {
 		if (recipe != null){
 			provider.spendEnergy(recipe.cost(ingredients));
 			energyLeft.text(Messages.get(AlchemyScene.class, "energy", availableEnergy()));
-			energyLeft.y = Camera.main.height - energyLeft.baseLine();
+			energyLeft.y = Camera.main.height - 5 - energyLeft.baseLine();
 			energyLeft.x = (Camera.main.width - energyLeft.width())/2;
 			
 			result = recipe.brew(ingredients);
@@ -361,8 +366,10 @@ public class AlchemyScene extends PixelScene {
 			Sample.INSTANCE.play( Assets.SND_PUFF );
 			
 			output.item(result);
-			if (!result.collect()){
-				Dungeon.level.drop(result, Dungeon.hero.pos);
+			if (!(result instanceof AlchemistsToolkit)) {
+				if (!result.collect()){
+					Dungeon.level.drop(result, Dungeon.hero.pos);
+				}
 			}
 			
 			try {
@@ -374,7 +381,7 @@ public class AlchemyScene extends PixelScene {
 			synchronized (inputs) {
 				for (int i = 0; i < inputs.length; i++) {
 					if (inputs[i] != null && inputs[i].item != null) {
-						if (inputs[i].item.quantity() <= 0) {
+						if (inputs[i].item.quantity() <= 0 || inputs[i].item instanceof AlchemistsToolkit) {
 							inputs[i].slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
 							inputs[i].item = null;
 						} else {
@@ -394,8 +401,10 @@ public class AlchemyScene extends PixelScene {
 		synchronized ( inputs ) {
 			for (int i = 0; i < inputs.length; i++) {
 				if (inputs[i] != null && inputs[i].item != null) {
-					if (!inputs[i].item.collect()) {
-						Dungeon.level.drop(inputs[i].item, Dungeon.hero.pos);
+					if (!(inputs[i].item instanceof AlchemistsToolkit)) {
+						if (!inputs[i].item.collect()) {
+							Dungeon.level.drop(inputs[i].item, Dungeon.hero.pos);
+						}
 					}
 				}
 				inputs[i] = null;
@@ -469,8 +478,12 @@ public class AlchemyScene extends PixelScene {
 		provider = p;
 	}
 	
-	private static int availableEnergy(){
+	public static int availableEnergy(){
 		return provider == null ? 0 : provider.getEnergy();
+	}
+	
+	public static boolean providerIsToolkit(){
+		return provider instanceof AlchemistsToolkit.kitEnergy;
 	}
 	
 	public interface AlchemyProvider {

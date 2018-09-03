@@ -278,7 +278,7 @@ public class EtherealChains extends Artifact {
 		}
 
 		public void gainExp( float levelPortion ) {
-			if (cursed) return;
+			if (cursed || levelPortion == 0) return;
 
 			exp += Math.round(levelPortion*100);
 

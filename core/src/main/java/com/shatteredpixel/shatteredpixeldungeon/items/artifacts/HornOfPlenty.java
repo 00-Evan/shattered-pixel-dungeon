@@ -210,6 +210,8 @@ public class HornOfPlenty extends Artifact {
 	public class hornRecharge extends ArtifactBuff{
 
 		public void gainCharge(float levelPortion) {
+			if (cursed) return;
+			
 			if (charge < chargeCap) {
 
 				//generates 0.2x max hunger value every hero level, +0.1x max value per horn level

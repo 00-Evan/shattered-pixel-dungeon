@@ -224,7 +224,7 @@ public class Generator {
 			return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
 		}
 		
-		private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1};
+		private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1};
 		
 		static {
 			GOLD.classes = new Class<?>[]{
@@ -434,7 +434,7 @@ public class Generator {
 					TalismanOfForesight.class,
 					TimekeepersHourglass.class,
 					UnstableSpellbook.class,
-					AlchemistsToolkit.class, //currently removed from drop tables, pending rework.
+					AlchemistsToolkit.class,
 					DriedRose.class,
 					LloydsBeacon.class,
 					EtherealChains.class

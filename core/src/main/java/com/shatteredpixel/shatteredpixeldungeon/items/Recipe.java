@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Feast;
@@ -141,6 +142,7 @@ public abstract class Recipe {
 	//*******
 	
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
+		new AlchemistsToolkit.upgradeKit(),
 		new Scroll.ScrollToStone(),
 		new StewedMeat.oneMeat()
 	};
@@ -201,7 +203,7 @@ public abstract class Recipe {
 	
 	public static boolean usableInRecipe(Item item){
 		return item.isIdentified()
-				&& (!(item instanceof EquipableItem) || item instanceof Dart)
+				&& (!(item instanceof EquipableItem) || item instanceof Dart || item instanceof AlchemistsToolkit)
 				&& !(item instanceof Wand);
 	}
 }

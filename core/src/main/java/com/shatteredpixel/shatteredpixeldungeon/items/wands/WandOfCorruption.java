@@ -234,6 +234,8 @@ public class WandOfCorruption extends Wand {
 			if (enemy.EXP > 0 && curUser.lvl <= enemy.maxLvl) {
 				curUser.sprite.showStatus(CharSprite.POSITIVE, Messages.get(enemy, "exp", enemy.EXP));
 				curUser.earnExp(enemy.EXP);
+			} else {
+				curUser.earnExp(0);
 			}
 			enemy.rollToDropLoot();
 		} else {
