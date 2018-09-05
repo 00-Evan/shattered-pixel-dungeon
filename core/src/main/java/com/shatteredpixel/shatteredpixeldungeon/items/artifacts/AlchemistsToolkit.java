@@ -87,6 +87,13 @@ public class AlchemistsToolkit extends Artifact {
 		return new kitEnergy();
 	}
 	
+	@Override
+	public void charge(Hero target) {
+		if (charge < chargeCap){
+			partialCharge += 0.5f;
+		}
+	}
+	
 	public void absorbEnergy( int energy ){
 		
 		exp += energy;
