@@ -33,8 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -55,9 +55,6 @@ public class Goo extends Mob {
 		EXP = 10;
 		defenseSkill = 8;
 		spriteClass = GooSprite.class;
-
-		loot = new LloydsBeacon();
-		lootChance = 0.333f;
 
 		properties.add(Property.BOSS);
 		properties.add(Property.DEMONIC);
@@ -235,6 +232,16 @@ public class Goo extends Mob {
 		
 		GameScene.bossSlain();
 		Dungeon.level.drop( new SkeletonKey( Dungeon.depth ), pos ).sprite.drop();
+		
+		//60% chance of 2 blobs, 30% chance of 3, 10% chance for 4. Average of 2.5
+		int blobs = Random.chances(new float[]{0, 0, 6, 3, 1});
+		for (int i = 0; i < blobs; i++){
+			int ofs;
+			do {
+				ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
+			} while (!Dungeon.level.passable[pos + ofs]);
+			Dungeon.level.drop( new GooBlob(), pos + ofs ).sprite.drop( pos );
+		}
 		
 		Badges.validateBossSlain();
 		

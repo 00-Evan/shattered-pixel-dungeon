@@ -28,10 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ThiefSprite;
@@ -52,8 +52,7 @@ public class Thief extends Mob {
 		EXP = 5;
 		maxLvl = 10;
 		
-		//see createloot
-		loot = null;
+		loot = Random.oneOf(Generator.Category.RING, Generator.Category.ARTIFACT);
 		lootChance = 0.01f;
 
 		WANDERING = new Wandering();
@@ -101,15 +100,6 @@ public class Thief extends Mob {
 			item = null;
 		}
 		super.rollToDropLoot();
-	}
-	
-	@Override
-	protected Item createLoot(){
-		if (!Dungeon.LimitedDrops.THIEVES_ARMBAND.dropped()) {
-			Dungeon.LimitedDrops.THIEVES_ARMBAND.drop();
-			return new MasterThievesArmband().identify();
-		} else
-			return new Gold(Random.NormalIntRange(100, 250));
 	}
 
 	@Override

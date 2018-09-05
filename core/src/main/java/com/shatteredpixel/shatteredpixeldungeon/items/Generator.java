@@ -224,7 +224,7 @@ public class Generator {
 			return item instanceof Bag ? Integer.MAX_VALUE : Integer.MAX_VALUE - 1;
 		}
 		
-		private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1};
+		private static final float[] INITIAL_ARTIFACT_PROBS = new float[]{ 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1};
 		
 		static {
 			GOLD.classes = new Class<?>[]{
