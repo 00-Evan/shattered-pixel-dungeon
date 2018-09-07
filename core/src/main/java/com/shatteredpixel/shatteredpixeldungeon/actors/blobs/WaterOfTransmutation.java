@@ -31,11 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator.Category;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -210,7 +208,7 @@ public class WaterOfTransmutation extends WellWater {
 	}
 	
 	private Scroll changeScroll( Scroll s ) {
-		if (s instanceof ScrollOfUpgrade || s instanceof ScrollOfMagicalInfusion) {
+		if (s instanceof ScrollOfUpgrade) {
 			
 			return null;
 			
@@ -225,7 +223,7 @@ public class WaterOfTransmutation extends WellWater {
 	}
 	
 	private Potion changePotion( Potion p ) {
-		if (p instanceof PotionOfStrength || p instanceof PotionOfMight) {
+		if (p instanceof PotionOfStrength) {
 			
 			return null;
 			

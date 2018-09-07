@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -62,7 +61,7 @@ public class Frost extends FlavourBuff {
 				ArrayList<Item> freezable = new ArrayList<>();
 				//does not reach inside of containers
 				for (Item i : hero.belongings.backpack.items){
-					if ((i instanceof Potion && !(i instanceof PotionOfStrength || i instanceof PotionOfMight))
+					if ((i instanceof Potion && !(i instanceof PotionOfStrength))
 						|| i instanceof MysteryMeat){
 						freezable.add(i);
 					}
@@ -85,7 +84,7 @@ public class Frost extends FlavourBuff {
 
 				Item item = ((Thief) target).item;
 
-				if (item instanceof Potion && !(item instanceof PotionOfStrength || item instanceof PotionOfMight)) {
+				if (item instanceof Potion && !(item instanceof PotionOfStrength)) {
 					((Potion) ((Thief) target).item).shatter(target.pos);
 					((Thief) target).item = null;
 				} else if (item instanceof MysteryMeat){

@@ -38,6 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
@@ -303,22 +305,30 @@ public class Bomb extends Item {
 			validIngredients.put(PotionOfFrost.class,           FrostBomb.class);
 			validIngredients.put(PotionOfHealing.class,         HealingBomb.class);
 			validIngredients.put(PotionOfInvisibility.class,    Flashbang.class);
+			
 			validIngredients.put(ScrollOfRecharging.class,      ShockBomb.class);
 			validIngredients.put(ScrollOfRemoveCurse.class,     HolyBomb.class);
 			validIngredients.put(ScrollOfMirrorImage.class,     WoollyBomb.class);
 			validIngredients.put(ScrollOfRage.class,            Noisemaker.class);
+			
+			validIngredients.put(GooBlob.class,                 ArcaneBomb.class);
+			validIngredients.put(MetalShard.class,              ShrapnelBomb.class);
 		}
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
 		static {
 			bombCosts.put(Firebomb.class,       2);
 			bombCosts.put(FrostBomb.class,      1);
-			bombCosts.put(HealingBomb.class,    5);
+			bombCosts.put(HealingBomb.class,    4);
 			bombCosts.put(Flashbang.class,      3);
+			
 			bombCosts.put(ShockBomb.class,      3);
-			bombCosts.put(HolyBomb.class,       5);
+			bombCosts.put(HolyBomb.class,       4);
 			bombCosts.put(WoollyBomb.class,     1);
 			bombCosts.put(Noisemaker.class,     2);
+			
+			bombCosts.put(ArcaneBomb.class,     6);
+			bombCosts.put(ShrapnelBomb.class,   6);
 		}
 		
 		@Override

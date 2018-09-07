@@ -19,22 +19,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.potions;
+package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
-public class PotionOfMight extends Potion {
-	
-	//TODO finish transitioning this item
+public class ElixirOfMight extends Elixir {
 
 	{
-		initials = 12;
-		image = ItemSpriteSheet.POTION_AMBER;
+		image = ItemSpriteSheet.ELIXIR_MIGHT;
 	}
 	
 	@Override
@@ -51,12 +49,21 @@ public class PotionOfMight extends Potion {
 	}
 	
 	@Override
-	public boolean isKnown() {
-		return true;
+	public int price() {
+		return 100 * quantity;
 	}
 	
-	@Override
-	public int price() {
-		return isKnown() ? 100 * quantity : super.price();
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+		
+		{
+			inputs =  new Class[]{PotionOfStrength.class};
+			inQuantity = new int[]{1};
+			
+			cost = 12;
+			
+			output = ElixirOfMight.class;
+			outQuantity = 1;
+		}
+		
 	}
 }

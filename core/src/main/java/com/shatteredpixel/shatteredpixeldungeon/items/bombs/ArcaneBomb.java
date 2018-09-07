@@ -25,48 +25,58 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.GooWarn;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class HolyBomb extends Bomb {
+public class ArcaneBomb extends Bomb {
 	
 	{
 		//TODO visuals
-		image = ItemSpriteSheet.HOLY_BOMB;
+		image = ItemSpriteSheet.ARCANE_BOMB;
+	}
+	
+	@Override
+	protected void onThrow(int cell) {
+		super.onThrow(cell);
+		if (fuse != null){
+			PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE)
+					GameScene.add(Blob.seed(i, 3, GooWarn.class));
+			}
+		}
 	}
 	
 	@Override
 	public void explode(int cell) {
-		super.explode(cell);
+		//We're blowing up, so no need for a fuse anymore.
+		this.fuse = null;
 		
-		if (Dungeon.level.heroFOV[cell]) {
-			new Flare(10, 64).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(cell), 2f);
-		}
+		Sample.INSTANCE.play( Assets.SND_BURNING );
+		
+		//no regular explosion damage
 		
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				Char n = Actor.findChar(i);
-				if (n != null) {
-					Buff.prolong(n, Blindness.class, 1f);
-					if (n.properties().contains(Char.Property.UNDEAD) || n.properties().contains(Char.Property.DEMONIC)){
-						n.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-						
-						//bomb deals an additional 67% damage to unholy enemies in a 5x5 range
-						int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ) * 0.67f);
-						n.damage(damage, this);
-					}
+				if (Dungeon.level.heroFOV[i]) {
+					CellEmitter.get(i).burst(ElmoParticle.FACTORY, 10);
+				}
+				Char ch = Actor.findChar(i);
+				if (ch != null){
+					//1.5x regular bomb damage
+					int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ) * 1.5f);
+					ch.damage(damage, this);
 				}
 			}
 		}
-		Sample.INSTANCE.play( Assets.SND_READ );
 	}
 }

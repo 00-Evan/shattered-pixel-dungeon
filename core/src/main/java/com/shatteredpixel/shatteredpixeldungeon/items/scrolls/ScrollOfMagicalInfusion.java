@@ -34,10 +34,9 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
 public class ScrollOfMagicalInfusion extends InventoryScroll {
 	
-	//TODO decide what to do with this one
+	//TODO transition to a spell
 	
 	{
-		initials = 12;
 		mode = WndBag.Mode.ENCHANTABLE;
 		image = ItemSpriteSheet.SCROLL_ISAZ;
 	}

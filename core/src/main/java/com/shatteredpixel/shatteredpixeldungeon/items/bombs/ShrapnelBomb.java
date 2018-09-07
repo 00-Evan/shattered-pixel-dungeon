@@ -1,0 +1,73 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015 Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2018 Evan Debenham
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
+
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+
+public class ShrapnelBomb extends Bomb {
+	
+	{
+		//TODO visuals
+		image = ItemSpriteSheet.SHRAPNEL_BOMB;
+	}
+	
+	@Override
+	public void explode(int cell) {
+		//We're blowing up, so no need for a fuse anymore.
+		this.fuse = null;
+		
+		Sample.INSTANCE.play( Assets.SND_BURNING );
+		
+		//no regular explosion damage
+		
+		boolean[] FOV = new boolean[Dungeon.level.length()];
+		Point c = Dungeon.level.cellToPoint(cell);
+		ShadowCaster.castShadow(c.x, c.y, FOV, 8);
+		
+		for (int i = 0; i < FOV.length; i++) {
+			if (FOV[i]) {
+				if (Dungeon.level.heroFOV[i] && !Dungeon.level.solid[i]) {
+					//TODO better vfx?
+					CellEmitter.center( i ).burst( BlastParticle.FACTORY, 5 );
+				}
+				Char ch = Actor.findChar(i);
+				if (ch != null){
+					//regular bomb damage
+					int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ));
+					damage -= ch.drRoll();
+					ch.damage(damage, this);
+				}
+			}
+		}
+	}
+	
+}

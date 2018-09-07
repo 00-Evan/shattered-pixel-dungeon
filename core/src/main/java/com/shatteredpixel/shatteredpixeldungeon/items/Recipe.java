@@ -29,14 +29,17 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Feast;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.StewedMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.BlizzardBrew;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.CausticBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrigidBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.FrostfireBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.InfernalBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.WickedBrew;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAquaticRejuvenation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfEarthenPower;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfRestoration;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfVitality;
@@ -144,6 +147,7 @@ public abstract class Recipe {
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
 		new AlchemistsToolkit.upgradeKit(),
 		new Scroll.ScrollToStone(),
+		new ElixirOfMight.Recipe(),
 		new StewedMeat.oneMeat()
 	};
 	
@@ -151,18 +155,20 @@ public abstract class Recipe {
 		new Blandfruit.CookFruit(),
 		new TippedDart.TipDart(),
 		new Bomb.EnhanceBomb(),
+		new ElixirOfAquaticRejuvenation.Recipe(),
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfEarthenPower.Recipe(),
-		new ElixirOfToxicEssence.Recipe(),
 		new ElixirOfHoneyedHealing.Recipe(),
 		new ElixirOfRestoration.Recipe(),
+		new ElixirOfToxicEssence.Recipe(),
 		new ElixirOfVitality.Recipe(),
+		new BlizzardBrew.Recipe(),
+		new CausticBrew.Recipe(),
 		new FrigidBrew.Recipe(),
 		new FrostfireBrew.Recipe(),
-		new WickedBrew.Recipe(),
-		new BlizzardBrew.Recipe(),
 		new InfernalBrew.Recipe(),
 		new ShockingBrew.Recipe(),
+		new WickedBrew.Recipe(),
 		new StewedMeat.twoMeat()
 	};
 	

@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
@@ -43,7 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
@@ -98,8 +96,7 @@ public class StoneOfIntuition extends InventoryStone {
 			PotionOfParalyticGas.class,
 			PotionOfPurity.class,
 			PotionOfStrength.class,
-			PotionOfToxicGas.class,
-			PotionOfMight.class
+			PotionOfToxicGas.class
 	};
 	
 	public static Class[] scrolls = new Class[]{
@@ -114,8 +111,7 @@ public class StoneOfIntuition extends InventoryStone {
 			ScrollOfTeleportation.class,
 			ScrollOfTerror.class,
 			ScrollOfTransmutation.class,
-			ScrollOfUpgrade.class,
-			ScrollOfMagicalInfusion.class
+			ScrollOfUpgrade.class
 	};
 	
 	static Class curGuess = null;

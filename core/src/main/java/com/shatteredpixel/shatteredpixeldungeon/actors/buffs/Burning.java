@@ -35,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -106,7 +105,7 @@ public class Burning extends Buff implements Hero.Doom {
 						ArrayList<Item> burnable = new ArrayList<>();
 						//does not reach inside of containers
 						for (Item i : hero.belongings.backpack.items){
-							if ((i instanceof Scroll && !(i instanceof ScrollOfUpgrade || i instanceof ScrollOfMagicalInfusion))
+							if ((i instanceof Scroll && !(i instanceof ScrollOfUpgrade))
 									|| i instanceof MysteryMeat){
 								burnable.add(i);
 							}
@@ -135,7 +134,7 @@ public class Burning extends Buff implements Hero.Doom {
 				Item item = ((Thief) target).item;
 
 				if (item instanceof Scroll &&
-						!(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
+						!(item instanceof ScrollOfUpgrade)) {
 					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
 					((Thief)target).item = null;
 				} else if (item instanceof MysteryMeat) {

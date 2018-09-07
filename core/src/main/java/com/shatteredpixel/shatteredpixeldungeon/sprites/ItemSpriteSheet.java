@@ -142,6 +142,8 @@ public class ItemSpriteSheet {
 	public static final int HOLY_BOMB       = BOMBS+7;
 	public static final int WOOLY_BOMB      = BOMBS+8;
 	public static final int NOISEMAKER      = BOMBS+9;
+	public static final int ARCANE_BOMB     = BOMBS+10;
+	public static final int SHRAPNEL_BOMB   = BOMBS+11;
 	
 	static{
 		assignItemRect(BOMB,            10, 13);
@@ -154,6 +156,8 @@ public class ItemSpriteSheet {
 		assignItemRect(HOLY_BOMB,       10, 13);
 		assignItemRect(WOOLY_BOMB,      10, 13);
 		assignItemRect(NOISEMAKER,      10, 13);
+		assignItemRect(ARCANE_BOMB,     10, 13);
+		assignItemRect(SHRAPNEL_BOMB,   10, 13);
 	}
 
 	
@@ -519,7 +523,8 @@ public class ItemSpriteSheet {
 	public static final int ELIXIR_DRAGON   = ELIXIRS+0;
 	public static final int ELIXIR_TOXIC    = ELIXIRS+1;
 	public static final int ELIXIR_EARTH    = ELIXIRS+2;
-	
+	public static final int ELIXIR_MIGHT    = ELIXIRS+3;
+	public static final int ELIXIR_AQUA     = ELIXIRS+4;
 	public static final int ELIXIR_RESTO    = ELIXIRS+5;
 	public static final int ELIXIR_SURGE    = ELIXIRS+6;
 	public static final int ELIXIR_HONEY    = ELIXIRS+7;
@@ -527,7 +532,8 @@ public class ItemSpriteSheet {
 		assignItemRect(ELIXIR_DRAGON,   10, 14);
 		assignItemRect(ELIXIR_TOXIC,    10, 14);
 		assignItemRect(ELIXIR_EARTH,    10, 14);
-		
+		assignItemRect(ELIXIR_MIGHT,    10, 14);
+		assignItemRect(ELIXIR_AQUA,     10, 14);
 		assignItemRect(ELIXIR_RESTO,    10, 14);
 		assignItemRect(ELIXIR_SURGE,    10, 14);
 		assignItemRect(ELIXIR_HONEY,    10, 14);
@@ -538,6 +544,7 @@ public class ItemSpriteSheet {
 	public static final int BREW_FRIGID   = BREWS+1;
 	public static final int BREW_FROSTFIRE= BREWS+2;
 	
+	public static final int BREW_CAUSTIC   = BREWS+4;
 	public static final int BREW_INFERNAL  = BREWS+5;
 	public static final int BREW_BLIZZARD  = BREWS+6;
 	public static final int BREW_SHOCKING  = BREWS+7;
@@ -546,6 +553,7 @@ public class ItemSpriteSheet {
 		assignItemRect(BREW_FRIGID,     10, 14);
 		assignItemRect(BREW_FROSTFIRE,  10, 14);
 		
+		assignItemRect(BREW_CAUSTIC,   10, 14);
 		assignItemRect(BREW_INFERNAL,   10, 14);
 		assignItemRect(BREW_BLIZZARD,   10, 14);
 		assignItemRect(BREW_SHOCKING,   10, 14);
