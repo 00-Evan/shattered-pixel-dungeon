@@ -553,12 +553,21 @@ public class ItemSpriteSheet {
 		assignItemRect(BREW_FRIGID,     10, 14);
 		assignItemRect(BREW_FROSTFIRE,  10, 14);
 		
-		assignItemRect(BREW_CAUSTIC,   10, 14);
+		assignItemRect(BREW_CAUSTIC,    10, 14);
 		assignItemRect(BREW_INFERNAL,   10, 14);
 		assignItemRect(BREW_BLIZZARD,   10, 14);
 		assignItemRect(BREW_SHOCKING,   10, 14);
 	}
-	                                                                                    //16 free slots
+	
+	private static final int SPELLS         =                               xy(1, 27);  //16 slots
+	public static final int PHASE_SHIFT     = SPELLS+0;
+	public static final int AQUA_BLAST      = SPELLS+1;
+	public static final int MAGIC_INFUSE    = SPELLS+2;
+	static{
+		assignItemRect(PHASE_SHIFT,     12, 11);
+		assignItemRect(AQUA_BLAST,      11, 11);
+		assignItemRect(MAGIC_INFUSE,    10, 15);
+	}
 	
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots
 	public static final int MEAT        = FOOD+0;

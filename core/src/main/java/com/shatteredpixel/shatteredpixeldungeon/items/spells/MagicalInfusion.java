@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
+package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
@@ -32,13 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
-public class ScrollOfMagicalInfusion extends InventoryScroll {
-	
-	//TODO transition to a spell
+public class MagicalInfusion extends InventorySpell {
 	
 	{
 		mode = WndBag.Mode.ENCHANTABLE;
-		image = ItemSpriteSheet.SCROLL_ISAZ;
+		image = ItemSpriteSheet.MAGIC_INFUSE;
 	}
 	
 	@Override
@@ -58,17 +56,7 @@ public class ScrollOfMagicalInfusion extends InventoryScroll {
 	}
 	
 	@Override
-	public void empoweredRead() {
-		//does nothing for now, this should never happen.
-	}
-	
-	@Override
-	public boolean isKnown() {
-		return true;
-	}
-	
-	@Override
 	public int price() {
-		return isKnown() ? 100 * quantity : super.price();
+		return 100 * quantity;
 	}
 }
