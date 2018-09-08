@@ -84,7 +84,8 @@ public class WndBag extends WndTabbed {
 		CURSE_DETECTABLE,
 		EQUIPMENT,
 		TRANMSUTABLE,
-		ALCHEMY
+		ALCHEMY,
+		NOT_EQUIPPED
 	}
 
 	protected static final int COLS_P    = 4;
@@ -408,6 +409,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.EQUIPMENT && (item instanceof EquipableItem) ||
 						mode == Mode.ALCHEMY && Recipe.usableInRecipe(item) ||
 						mode == Mode.TRANMSUTABLE && ScrollOfTransmutation.canTransmute(item) ||
+						mode == Mode.NOT_EQUIPPED && !item.isEquipped(Dungeon.hero) ||
 						mode == Mode.ALL
 					);
 				}

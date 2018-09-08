@@ -563,10 +563,16 @@ public class ItemSpriteSheet {
 	public static final int PHASE_SHIFT     = SPELLS+0;
 	public static final int AQUA_BLAST      = SPELLS+1;
 	public static final int MAGIC_INFUSE    = SPELLS+2;
+	public static final int MAGIC_PORTER    = SPELLS+3;
+	public static final int RETURN_BEACON   = SPELLS+4;
+	public static final int FEATHER_FALL    = SPELLS+5;
 	static{
 		assignItemRect(PHASE_SHIFT,     12, 11);
 		assignItemRect(AQUA_BLAST,      11, 11);
 		assignItemRect(MAGIC_INFUSE,    10, 15);
+		assignItemRect(MAGIC_PORTER,    12, 11);
+		assignItemRect(RETURN_BEACON,    8, 16);
+		assignItemRect(FEATHER_FALL,    11, 11);
 	}
 	
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots

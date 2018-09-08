@@ -378,6 +378,22 @@ public class GameScene extends PixelScene {
 			}
 			Dungeon.droppedItems.remove( Dungeon.depth );
 		}
+		
+		ArrayList<Item> ported = Dungeon.portedItems.get( Dungeon.depth );
+		if (ported != null){
+			//TODO currently items are only ported to boss rooms, so this works well
+			//might want to have a 'near entrance' function if items can be ported elsewhere
+			int pos;
+			do {
+				pos = Dungeon.level.randomRespawnCell();
+			} while (Dungeon.level.heaps.get(pos) != null);
+			for (Item item : ported) {
+				Dungeon.level.drop( item, pos ).type = Heap.Type.CHEST;
+			}
+			Dungeon.level.heaps.get(pos).type = Heap.Type.CHEST;
+			Dungeon.level.heaps.get(pos).sprite.link(); //sprite reset to show chest
+			Dungeon.portedItems.remove( Dungeon.depth );
+		}
 
 		Dungeon.hero.next();
 

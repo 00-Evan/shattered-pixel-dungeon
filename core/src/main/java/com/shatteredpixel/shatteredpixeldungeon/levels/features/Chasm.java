@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
@@ -92,6 +93,14 @@ public class Chasm {
 	public static void heroLand() {
 		
 		Hero hero = Dungeon.hero;
+		
+		FeatherFall.FeatherBuff b = hero.buff(FeatherFall.FeatherBuff.class);
+		
+		if (b != null){
+			//TODO visuals
+			b.detach();
+			return;
+		}
 		
 		Camera.main.shake( 4, 1f );
 

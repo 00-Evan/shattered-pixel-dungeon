@@ -183,6 +183,7 @@ public class Dungeon {
 	public static HashSet<Integer> chapters;
 
 	public static SparseArray<ArrayList<Item>> droppedItems;
+	public static SparseArray<ArrayList<Item>> portedItems;
 
 	public static int version;
 
@@ -218,7 +219,8 @@ public class Dungeon {
 		depth = 0;
 		gold = 0;
 
-		droppedItems = new SparseArray<ArrayList<Item>>();
+		droppedItems = new SparseArray<>();
+		portedItems = new SparseArray<>();
 
 		for (LimitedDrops a : LimitedDrops.values())
 			a.count = 0;
@@ -461,6 +463,7 @@ public class Dungeon {
 	private static final String GOLD		= "gold";
 	private static final String DEPTH		= "depth";
 	private static final String DROPPED     = "dropped%d";
+	private static final String PORTED      = "ported%d";
 	private static final String LEVEL		= "level";
 	private static final String LIMDROPS    = "limited_drops";
 	private static final String CHAPTERS	= "chapters";
@@ -481,6 +484,10 @@ public class Dungeon {
 
 			for (int d : droppedItems.keyArray()) {
 				bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
+			}
+			
+			for (int p : portedItems.keyArray()){
+				bundle.put(Messages.format(PORTED, p), portedItems.get(p));
 			}
 
 			quickslot.storePlaceholders( bundle );
@@ -644,14 +651,27 @@ public class Dungeon {
 		Generator.restoreFromBundle( bundle );
 
 		droppedItems = new SparseArray<>();
-		for (int i=2; i <= Statistics.deepestFloor + 1; i++) {
-			ArrayList<Item> dropped = new ArrayList<Item>();
+		portedItems = new SparseArray<>();
+		for (int i=1; i <= 26; i++) {
+			
+			//dropped items
+			ArrayList<Item> items = new ArrayList<Item>();
 			if (bundle.contains(Messages.format( DROPPED, i )))
 				for (Bundlable b : bundle.getCollection( Messages.format( DROPPED, i ) ) ) {
-					dropped.add( (Item)b );
+					items.add( (Item)b );
 				}
-			if (!dropped.isEmpty()) {
-				droppedItems.put( i, dropped );
+			if (!items.isEmpty()) {
+				droppedItems.put( i, items );
+			}
+			
+			//ported items
+			items.clear();
+			if (bundle.contains(Messages.format( PORTED, i )))
+				for (Bundlable b : bundle.getCollection( Messages.format( PORTED, i ) ) ) {
+					items.add( (Item)b );
+				}
+			if (!items.isEmpty()) {
+				portedItems.put( i, items );
 			}
 		}
 	}
