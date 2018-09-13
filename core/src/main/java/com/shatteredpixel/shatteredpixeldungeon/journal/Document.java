@@ -111,9 +111,9 @@ public enum Document {
 		ALCHEMY_GUIDE.pages.put("Heal_Elixirs",         false);
 		ALCHEMY_GUIDE.pages.put("AOE_Brews",            false);
 		ALCHEMY_GUIDE.pages.put("Imbue_Elixirs",        false);
-		ALCHEMY_GUIDE.pages.put("teaser1",              false);
-		ALCHEMY_GUIDE.pages.put("teaser2",              false);
-		ALCHEMY_GUIDE.pages.put("teaser3",              false);
+		ALCHEMY_GUIDE.pages.put("Tele_Spells",          false);
+		ALCHEMY_GUIDE.pages.put("Item_Spells",          false);
+		ALCHEMY_GUIDE.pages.put("Enviro_Spells",        false);
 	}
 	
 	private static final String DOCUMENTS = "documents";

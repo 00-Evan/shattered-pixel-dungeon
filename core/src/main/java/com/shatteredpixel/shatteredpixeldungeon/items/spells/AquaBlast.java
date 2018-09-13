@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfStormClouds;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -67,5 +69,19 @@ public class AquaBlast extends TargetedSpell {
 			//just enough to skip their current turn
 			Buff.affect(target, Paralysis.class, 0f);
 		}
+	}
+	
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+		
+		{
+			inputs =  new Class[]{ScrollOfIdentify.class, PotionOfStormClouds.class};
+			inQuantity = new int[]{1, 1};
+			
+			cost = 4;
+			
+			output = AquaBlast.class;
+			outQuantity = 8;
+		}
+		
 	}
 }

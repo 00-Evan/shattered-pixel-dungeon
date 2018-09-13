@@ -86,8 +86,7 @@ public class LaboratoryRoom extends SpecialRoom {
 		
 		//drops a page every room for now
 		//TODO make pages rarer as players get more, once more alchemy comes out
-		//3 to ensure teaser pages aren't found
-		if(missingPages.size() > 3){
+		if(!missingPages.isEmpty()){
 			AlchemyPage p = new AlchemyPage();
 			p.page(missingPages.get(0));
 			int pos;

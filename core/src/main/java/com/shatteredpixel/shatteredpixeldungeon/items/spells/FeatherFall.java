@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -51,5 +53,19 @@ public class FeatherFall extends Spell {
 	
 	public static class FeatherBuff extends FlavourBuff {
 		//does nothing, just waits to be triggered by chasm falling
+	}
+	
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+		
+		{
+			inputs =  new Class[]{ScrollOfLullaby.class, PotionOfLevitation.class};
+			inQuantity = new int[]{1, 1};
+			
+			cost = 8;
+			
+			output = FeatherFall.class;
+			outQuantity = 2;
+		}
+		
 	}
 }

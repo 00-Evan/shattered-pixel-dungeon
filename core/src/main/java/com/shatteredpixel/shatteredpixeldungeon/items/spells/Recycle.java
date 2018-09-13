@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -65,5 +67,19 @@ public class Recycle extends InventorySpell {
 				item instanceof Scroll ||
 				item instanceof Plant.Seed ||
 				item instanceof Runestone;
+	}
+	
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+		
+		{
+			inputs =  new Class[]{ScrollOfTransmutation.class, ScrollOfMirrorImage.class};
+			inQuantity = new int[]{1, 1};
+			
+			cost = 6;
+			
+			output = Recycle.class;
+			outQuantity = 5;
+		}
+		
 	}
 }

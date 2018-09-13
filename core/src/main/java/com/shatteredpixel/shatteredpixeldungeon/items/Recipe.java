@@ -46,6 +46,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfVi
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Alchemize;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.AquaBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.BeaconOfReturning;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.CurseInfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.FeatherFall;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalPorter;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.PhaseShift;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
@@ -169,6 +179,16 @@ public abstract class Recipe {
 		new InfernalBrew.Recipe(),
 		new ShockingBrew.Recipe(),
 		new WickedBrew.Recipe(),
+		new Alchemize.Recipe(),
+		new AquaBlast.Recipe(),
+		new BeaconOfReturning.Recipe(),
+		new CurseInfusion.Recipe(),
+		new FeatherFall.Recipe(),
+		new MagicalInfusion.Recipe(),
+		new MagicalPorter.Recipe(),
+		new PhaseShift.Recipe(),
+		new ReclaimTrap.Recipe(),
+		new Recycle.Recipe(),
 		new StewedMeat.twoMeat()
 	};
 	

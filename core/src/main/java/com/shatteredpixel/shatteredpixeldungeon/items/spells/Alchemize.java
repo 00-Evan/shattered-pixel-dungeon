@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -54,5 +56,19 @@ public class Alchemize extends Spell implements AlchemyScene.AlchemyProvider {
 	@Override
 	public void spendEnergy(int reduction) {
 		//do nothing
+	}
+	
+	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
+		
+		{
+			inputs =  new Class[]{ScrollOfRecharging.class, PotionOfLiquidFlame.class};
+			inQuantity = new int[]{1, 1};
+			
+			cost = 6;
+			
+			output = Alchemize.class;
+			outQuantity = 3;
+		}
+		
 	}
 }
