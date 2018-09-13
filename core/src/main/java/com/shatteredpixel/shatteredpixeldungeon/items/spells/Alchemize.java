@@ -21,35 +21,38 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.AlchemyScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.audio.Sample;
 
-public class FeatherFall extends Spell {
+public class Alchemize extends Spell implements AlchemyScene.AlchemyProvider {
 	
 	{
-		image = ItemSpriteSheet.FEATHER_FALL;
+		image = ItemSpriteSheet.ALCHEMIZE;
 	}
 	
 	@Override
 	protected void onCast(Hero hero) {
-		Buff.append(hero, FeatherBuff.class, 30f);
-		hero.sprite.operate(hero.pos);
-		Sample.INSTANCE.play(Assets.SND_READ );
-		
-		GLog.p(Messages.get(this, "feather"));
-		
+		if (hero.visibleEnemies() > hero.mindVisionEnemies.size()) {
+			GLog.i( Messages.get(this, "enemy_near") );
+			return;
+		}
 		detach( curUser.belongings.backpack );
 		updateQuickslot();
-		hero.spendAndNext( 1f );
+		AlchemyScene.setProvider(this);
+		ShatteredPixelDungeon.switchScene(AlchemyScene.class);
 	}
 	
-	public static class FeatherBuff extends FlavourBuff {
-		//does nothing, just waits to be triggered by chasm falling
+	@Override
+	public int getEnergy() {
+		return 0;
+	}
+	
+	@Override
+	public void spendEnergy(int reduction) {
+		//do nothing
 	}
 }

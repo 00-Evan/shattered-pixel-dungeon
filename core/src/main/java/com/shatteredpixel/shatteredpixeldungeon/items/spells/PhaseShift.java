@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -61,8 +60,7 @@ public class PhaseShift extends TargetedSpell {
 				
 			} else if (ch.properties().contains(Char.Property.IMMOVABLE)) {
 				
-				//TODO move text
-				GLog.w( Messages.get(LloydsBeacon.class, "tele_fail") );
+				GLog.w( Messages.get(this, "tele_fail") );
 				
 			} else  {
 				

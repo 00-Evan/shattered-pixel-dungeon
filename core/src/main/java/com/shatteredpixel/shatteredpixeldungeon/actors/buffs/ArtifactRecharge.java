@@ -36,7 +36,7 @@ public class ArtifactRecharge extends Buff {
 		type = buffType.POSITIVE;
 	}
 	
-	private int left = 30;
+	private int left;
 	
 	@Override
 	public boolean act() {
@@ -62,8 +62,8 @@ public class ArtifactRecharge extends Buff {
 		return true;
 	}
 	
-	public void reset(){
-		left = 30;
+	public void set( int amount ){
+		left = amount;
 	}
 	
 	@Override

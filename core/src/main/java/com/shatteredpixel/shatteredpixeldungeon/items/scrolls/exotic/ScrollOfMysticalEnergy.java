@@ -39,7 +39,7 @@ public class ScrollOfMysticalEnergy extends ExoticScroll {
 	public void doRead() {
 		
 		//append buff
-		Buff.affect(curUser, ArtifactRecharge.class).reset();
+		Buff.affect(curUser, ArtifactRecharge.class).set( 30 );
 		
 		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();

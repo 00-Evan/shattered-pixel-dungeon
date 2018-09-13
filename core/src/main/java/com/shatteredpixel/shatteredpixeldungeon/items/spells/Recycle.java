@@ -21,43 +21,49 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
-import java.util.ArrayList;
-
-public class MagicalPorter extends InventorySpell {
+public class Recycle extends InventorySpell {
 	
 	{
-		image = ItemSpriteSheet.MAGIC_PORTER;
-		mode = WndBag.Mode.NOT_EQUIPPED;
-	}
-	
-	@Override
-	protected void onCast(Hero hero) {
-		if (Dungeon.depth >= 25){
-			GLog.w(Messages.get(this, "nowhere"));
-		} else {
-			super.onCast(hero);
-		}
+		image = ItemSpriteSheet.RECYCLE;
+		mode = WndBag.Mode.RECYCLABLE;
 	}
 	
 	@Override
 	protected void onItemSelected(Item item) {
+		Item result;
+		do {
+			if (item instanceof Potion) {
+				result = Generator.random(Generator.Category.POTION);
+			} else if (item instanceof Scroll) {
+				result = Generator.random(Generator.Category.SCROLL);
+			} else if (item instanceof Plant.Seed) {
+				result = Generator.random(Generator.Category.SEED);
+			} else {
+				result = Generator.random(Generator.Category.STONE);
+			}
+		} while (result.getClass() == item.getClass());
 		
-		Item result = item.detachAll(curUser.belongings.backpack);
-		ArrayList<Item> ported = Dungeon.portedItems.get(5);
-		if (ported == null) {
-			Dungeon.portedItems.put(5 * (1 + Dungeon.depth/5), ported = new ArrayList<>());
-		}
-		ported.add(result);
-		
-		//TODO vfx
+		item.detach(curUser.belongings.backpack);
+		GLog.p(Messages.get(this, "recycled", result.name()));
+		result.collect();
+		//TODO visuals
 	}
 	
+	public static boolean isRecyclable(Item item){
+		return item instanceof Potion ||
+				item instanceof Scroll ||
+				item instanceof Plant.Seed ||
+				item instanceof Runestone;
+	}
 }

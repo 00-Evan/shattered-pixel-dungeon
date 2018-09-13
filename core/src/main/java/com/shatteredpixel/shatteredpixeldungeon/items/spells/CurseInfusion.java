@@ -21,43 +21,42 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 
-import java.util.ArrayList;
-
-public class MagicalPorter extends InventorySpell {
+public class CurseInfusion extends InventorySpell {
 	
 	{
-		image = ItemSpriteSheet.MAGIC_PORTER;
-		mode = WndBag.Mode.NOT_EQUIPPED;
-	}
-	
-	@Override
-	protected void onCast(Hero hero) {
-		if (Dungeon.depth >= 25){
-			GLog.w(Messages.get(this, "nowhere"));
-		} else {
-			super.onCast(hero);
-		}
+		image = ItemSpriteSheet.CURSE_INFUSE;
+		mode = WndBag.Mode.CURSABLE;
 	}
 	
 	@Override
 	protected void onItemSelected(Item item) {
 		
-		Item result = item.detachAll(curUser.belongings.backpack);
-		ArrayList<Item> ported = Dungeon.portedItems.get(5);
-		if (ported == null) {
-			Dungeon.portedItems.put(5 * (1 + Dungeon.depth/5), ported = new ArrayList<>());
-		}
-		ported.add(result);
+		//TODO visuals
 		
-		//TODO vfx
+		item.cursed = true;
+		if (item instanceof MeleeWeapon || item instanceof Boomerang) {
+			Weapon w = (Weapon) item;
+			Class<? extends Weapon.Enchantment> curr = null;
+			if (w.enchantment != null) {
+				w.enchant(Weapon.Enchantment.randomCurse(w.enchantment.getClass()));
+			} else {
+				w.enchant(Weapon.Enchantment.randomCurse(curr));
+			}
+		} else if (item instanceof Armor){
+			Armor a = (Armor) item;
+			if (a.glyph != null){
+				a.inscribe(Armor.Glyph.randomCurse(a.glyph.getClass()));
+			} else {
+				a.inscribe(Armor.Glyph.randomCurse());
+			}
+		}
 	}
-	
 }

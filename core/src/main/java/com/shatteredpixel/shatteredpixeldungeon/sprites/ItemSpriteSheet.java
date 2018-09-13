@@ -558,7 +558,7 @@ public class ItemSpriteSheet {
 		assignItemRect(BREW_BLIZZARD,   10, 14);
 		assignItemRect(BREW_SHOCKING,   10, 14);
 	}
-	
+	//sprites still pretty WIP
 	private static final int SPELLS         =                               xy(1, 27);  //16 slots
 	public static final int PHASE_SHIFT     = SPELLS+0;
 	public static final int AQUA_BLAST      = SPELLS+1;
@@ -566,6 +566,10 @@ public class ItemSpriteSheet {
 	public static final int MAGIC_PORTER    = SPELLS+3;
 	public static final int RETURN_BEACON   = SPELLS+4;
 	public static final int FEATHER_FALL    = SPELLS+5;
+	public static final int CURSE_INFUSE    = SPELLS+6;
+	public static final int RECLAIM_TRAP    = SPELLS+7;
+	public static final int ALCHEMIZE       = SPELLS+8;
+	public static final int RECYCLE         = SPELLS+9;
 	static{
 		assignItemRect(PHASE_SHIFT,     12, 11);
 		assignItemRect(AQUA_BLAST,      11, 11);
@@ -573,6 +577,10 @@ public class ItemSpriteSheet {
 		assignItemRect(MAGIC_PORTER,    12, 11);
 		assignItemRect(RETURN_BEACON,    8, 16);
 		assignItemRect(FEATHER_FALL,    11, 11);
+		assignItemRect(CURSE_INFUSE,    10, 15);
+		assignItemRect(RECLAIM_TRAP,    11, 11);
+		assignItemRect(ALCHEMIZE,       10, 15);
+		assignItemRect(RECYCLE,         10, 15);
 	}
 	
 	private static final int FOOD       =                                   xy(1, 28);  //16 slots

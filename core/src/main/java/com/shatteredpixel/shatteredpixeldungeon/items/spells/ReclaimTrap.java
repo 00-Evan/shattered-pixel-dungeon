@@ -21,35 +21,38 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.audio.Sample;
 
-public class FeatherFall extends Spell {
+public class ReclaimTrap extends TargetedSpell {
 	
 	{
-		image = ItemSpriteSheet.FEATHER_FALL;
+		image = ItemSpriteSheet.RECLAIM_TRAP;
 	}
 	
 	@Override
-	protected void onCast(Hero hero) {
-		Buff.append(hero, FeatherBuff.class, 30f);
-		hero.sprite.operate(hero.pos);
-		Sample.INSTANCE.play(Assets.SND_READ );
-		
-		GLog.p(Messages.get(this, "feather"));
-		
-		detach( curUser.belongings.backpack );
-		updateQuickslot();
-		hero.spendAndNext( 1f );
+	protected void affectTarget(Ballistica bolt, Hero hero) {
+		Trap t = Dungeon.level.traps.get(bolt.collisionPos);
+		if (t != null && t.active){
+			if (!t.visible) t.reveal();
+			t.disarm();
+			
+			ScrollOfRecharging.charge(hero);
+			Buff.affect(hero, Recharging.class, 10f);
+			Buff.affect(hero, ArtifactRecharge.class).set( 10 );
+			
+		} else {
+			GLog.w(Messages.get(this, "no_trap"));
+		}
 	}
 	
-	public static class FeatherBuff extends FlavourBuff {
-		//does nothing, just waits to be triggered by chasm falling
-	}
 }
