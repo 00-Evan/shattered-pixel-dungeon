@@ -247,8 +247,9 @@ public class Heap implements Bundlable {
 			} else if (item instanceof Bomb) {
 				items.remove( item );
 				((Bomb) item).explode( pos );
+				burnt = true;
 				//stop processing the burning, it will be replaced by the explosion.
-				return;
+				break;
 			}
 		}
 		

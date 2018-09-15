@@ -68,6 +68,11 @@ public abstract class Spell extends Item {
 		return true;
 	}
 	
+	@Override
+	public boolean isUpgradable() {
+		return false;
+	}
+	
 	protected abstract void onCast(Hero hero );
 	
 }
