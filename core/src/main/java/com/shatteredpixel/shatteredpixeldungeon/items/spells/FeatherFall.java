@@ -44,7 +44,7 @@ public class FeatherFall extends Spell {
 		hero.sprite.operate(hero.pos);
 		Sample.INSTANCE.play(Assets.SND_READ );
 		
-		GLog.p(Messages.get(this, "feather"));
+		GLog.p(Messages.get(this, "light"));
 		
 		detach( curUser.belongings.backpack );
 		updateQuickslot();

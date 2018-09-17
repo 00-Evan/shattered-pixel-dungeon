@@ -53,9 +53,10 @@ public class MagicalPorter extends InventorySpell {
 	protected void onItemSelected(Item item) {
 		
 		Item result = item.detachAll(curUser.belongings.backpack);
-		ArrayList<Item> ported = Dungeon.portedItems.get(5);
+		int portDepth = 5 * (1 + Dungeon.depth/5);
+		ArrayList<Item> ported = Dungeon.portedItems.get(portDepth);
 		if (ported == null) {
-			Dungeon.portedItems.put(5 * (1 + Dungeon.depth/5), ported = new ArrayList<>());
+			Dungeon.portedItems.put(portDepth, ported = new ArrayList<>());
 		}
 		ported.add(result);
 		
