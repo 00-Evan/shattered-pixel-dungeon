@@ -54,7 +54,7 @@ public class Lucky extends Weapon.Enchantment {
 		} else {
 			
 			buff = Buff.affect(attacker, Luck.class);
-			buff.zeroChance = zeroChance * (0.5f - 0.001f*level);
+			buff.zeroChance = zeroChance * (0.5f - (0.01f*level));
 			
 			return 0;
 		}
