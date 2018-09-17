@@ -235,6 +235,7 @@ public class AlchemistsToolkit extends Artifact {
 			
 			sample.charge = existing.charge;
 			sample.partialCharge = existing.partialCharge;
+			sample.exp = existing.exp;
 			sample.level(existing.level());
 			sample.absorbEnergy(AlchemyScene.availableEnergy());
 			return sample;
