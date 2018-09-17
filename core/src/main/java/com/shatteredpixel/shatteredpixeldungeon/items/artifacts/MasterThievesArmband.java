@@ -55,15 +55,23 @@ public class MasterThievesArmband extends Artifact {
 	public String desc() {
 		String desc = super.desc();
 
-		if ( isEquipped (Dungeon.hero) )
-			desc += "\n\n" + Messages.get(this, "desc_worn");
+		if ( isEquipped (Dungeon.hero) ){
+			if (cursed){
+				desc += "\n\n" + Messages.get(this, "desc_cursed");
+			} else {
+				desc += "\n\n" + Messages.get(this, "desc_worn");
+			}
+		}
+		
 
 		return desc;
 	}
 
 	public class Thievery extends ArtifactBuff{
 		public void collect(int gold){
-			charge += gold/2;
+			if (!cursed) {
+				charge += gold/2;
+			}
 		}
 
 		@Override
@@ -71,7 +79,22 @@ public class MasterThievesArmband extends Artifact {
 			charge *= 0.95;
 			super.detach();
 		}
-
+		
+		@Override
+		public boolean act() {
+			if (cursed) {
+				
+				if (Dungeon.gold > 0 && Random.Int(6) == 0){
+					Dungeon.gold--;
+				}
+				
+				spend(TICK);
+				return true;
+			} else {
+				return super.act();
+			}
+		}
+		
 		public boolean steal(int value){
 			if (value <= charge){
 				charge -= value;
