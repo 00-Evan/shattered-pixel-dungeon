@@ -181,7 +181,7 @@ public class AlchemistsToolkit extends Artifact {
 					partialCharge -= 1;
 					
 					if (charge == chargeCap){
-						GLog.p( Messages.get(HornOfPlenty.class, "full") );
+						GLog.p( Messages.get(AlchemistsToolkit.class, "full") );
 						partialCharge = 0;
 					}
 					
