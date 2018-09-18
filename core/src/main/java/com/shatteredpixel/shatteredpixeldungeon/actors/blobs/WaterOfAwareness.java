@@ -73,7 +73,7 @@ public class WaterOfAwareness extends WellWater {
 	}
 	
 	@Override
-	protected Item affectItem( Item item ) {
+	protected Item affectItem( Item item, int pos ) {
 		if (item.isIdentified()) {
 			return null;
 		} else {

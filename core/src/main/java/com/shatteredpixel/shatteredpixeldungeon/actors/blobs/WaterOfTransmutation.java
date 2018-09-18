@@ -48,7 +48,7 @@ import com.watabou.utils.Random;
 public class WaterOfTransmutation extends WellWater {
 	
 	@Override
-	protected Item affectItem( Item item ) {
+	protected Item affectItem( Item item, int pos ) {
 		
 		if (item instanceof MagesStaff) {
 			item = changeStaff( (MagesStaff)item );

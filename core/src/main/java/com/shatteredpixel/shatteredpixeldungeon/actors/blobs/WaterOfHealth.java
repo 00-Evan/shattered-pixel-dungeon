@@ -53,7 +53,7 @@ public class WaterOfHealth extends WellWater {
 		hero.belongings.uncurseEquipped();
 		((Hunger)hero.buff( Hunger.class )).satisfy( Hunger.STARVING );
 		
-		CellEmitter.get( pos ).start( ShaftParticle.FACTORY, 0.2f, 3 );
+		CellEmitter.get( hero.pos ).start( ShaftParticle.FACTORY, 0.2f, 3 );
 
 		Dungeon.hero.interrupt();
 	
@@ -63,7 +63,7 @@ public class WaterOfHealth extends WellWater {
 	}
 	
 	@Override
-	protected Item affectItem( Item item ) {
+	protected Item affectItem( Item item, int pos ) {
 		if (item instanceof DewVial && !((DewVial)item).isFull()) {
 			((DewVial)item).fill();
 			return item;
