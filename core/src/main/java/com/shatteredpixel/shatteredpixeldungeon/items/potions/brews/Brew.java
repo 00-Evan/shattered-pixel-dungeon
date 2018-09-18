@@ -44,10 +44,7 @@ public abstract class Brew extends Potion {
 	
 	@Override
 	public void doThrow(Hero hero) {
-		//identical to Item.doThrow
-		if (hero.belongings.backpack.contains(this)) {
-			GameScene.selectCell(thrower);
-		}
+		GameScene.selectCell(thrower);
 	}
 	
 	@Override

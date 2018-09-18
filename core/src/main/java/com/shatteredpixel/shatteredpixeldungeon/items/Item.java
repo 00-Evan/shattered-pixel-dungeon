@@ -113,10 +113,8 @@ public class Item implements Bundlable {
 	}
 	
 	public void doDrop( Hero hero ) {
-		if (hero.belongings.backpack.contains(this)) {
-			hero.spendAndNext(TIME_TO_DROP);
-			Dungeon.level.drop(detachAll(hero.belongings.backpack), hero.pos).sprite.drop(hero.pos);
-		}
+		hero.spendAndNext(TIME_TO_DROP);
+		Dungeon.level.drop(detachAll(hero.belongings.backpack), hero.pos).sprite.drop(hero.pos);
 	}
 
 	//resets an item's properties, to ensure consistency between runs
@@ -126,9 +124,7 @@ public class Item implements Bundlable {
 	}
 
 	public void doThrow( Hero hero ) {
-		if (hero.belongings.backpack.contains(this)) {
-			GameScene.selectCell(thrower);
-		}
+		GameScene.selectCell(thrower);
 	}
 	
 	public void execute( Hero hero, String action ) {
@@ -141,11 +137,15 @@ public class Item implements Bundlable {
 		
 		if (action.equals( AC_DROP )) {
 			
-			doDrop( hero );
+			if (hero.belongings.backpack.contains(this) || isEquipped(hero)) {
+				doDrop(hero);
+			}
 			
 		} else if (action.equals( AC_THROW )) {
 			
-			doThrow( hero );
+			if (hero.belongings.backpack.contains(this) || isEquipped(hero)) {
+				doThrow(hero);
+			}
 			
 		}
 	}
