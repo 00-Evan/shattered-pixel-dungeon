@@ -142,5 +142,18 @@ public class BrokenSeal extends Item {
 			}
 		}
 		
+		@Override
+		//logic edited slightly as buff should not detach
+		public int absorbDamage(int dmg) {
+			if (shielding >= dmg){
+				shielding -= dmg;
+				dmg = 0;
+			} else {
+				dmg -= shielding;
+				shielding = 0;
+			}
+			target.needsShieldUpdate = true;
+			return dmg;
+		}
 	}
 }

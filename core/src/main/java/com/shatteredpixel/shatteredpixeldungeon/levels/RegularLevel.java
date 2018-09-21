@@ -111,8 +111,11 @@ public abstract class RegularLevel extends Level {
 		
 		int specials = specialRooms();
 		SpecialRoom.initForFloor();
-		for (int i = 0; i < specials; i++)
-			initRooms.add(SpecialRoom.createRoom());
+		for (int i = 0; i < specials; i++) {
+			SpecialRoom s = SpecialRoom.createRoom();
+			if (s instanceof PitRoom) specials++;
+			initRooms.add(s);
+		}
 		
 		int secrets = SecretRoom.secretsForFloor(Dungeon.depth);
 		for (int i = 0; i < secrets; i++)

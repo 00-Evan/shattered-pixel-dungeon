@@ -59,10 +59,16 @@ public abstract class TippedDart extends Dart {
 	
 	@Override
 	protected void rangedHit(Char enemy, int cell) {
-		if (enemy.isAlive())
-			Buff.affect(enemy, PinCushion.class).stick(new Dart());
-		else
-			Dungeon.level.drop( new Dart(), enemy.pos ).sprite.drop();
+		//attempt to stick the dart to the enemy, just drop it if we can't.
+		Dart d = new Dart();
+		if (enemy.isAlive() && sticky) {
+			PinCushion p = Buff.affect(enemy, PinCushion.class);
+			if (p.target == enemy){
+				p.stick(d);
+				return;
+			}
+		}
+		Dungeon.level.drop( d, enemy.pos ).sprite.drop();
 	}
 	
 	@Override

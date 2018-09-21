@@ -90,7 +90,7 @@ public class WndItem extends Window {
 					protected void onClick() {
 						hide();
 						if (owner != null && owner.parent != null) owner.hide();
-						item.execute( Dungeon.hero, action );
+						if (Dungeon.hero.isAlive()) item.execute( Dungeon.hero, action );
 					};
 				};
 				btn.setSize( btn.reqWidth(), BUTTON_HEIGHT );
