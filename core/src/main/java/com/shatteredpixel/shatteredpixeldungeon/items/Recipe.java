@@ -229,6 +229,7 @@ public abstract class Recipe {
 	
 	public static boolean usableInRecipe(Item item){
 		return item.isIdentified()
+				&& !item.cursed
 				&& (!(item instanceof EquipableItem) || item instanceof Dart || item instanceof AlchemistsToolkit)
 				&& !(item instanceof Wand);
 	}
