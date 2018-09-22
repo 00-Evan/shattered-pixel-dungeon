@@ -32,7 +32,7 @@ public class AdrenalineSurge extends Buff {
 	}
 	
 	private int boost;
-	private static final float INTERVAL = TICK * 500f;
+	private static final float INTERVAL = TICK * 800f;
 	
 	public void reset(){
 		boost = 2;

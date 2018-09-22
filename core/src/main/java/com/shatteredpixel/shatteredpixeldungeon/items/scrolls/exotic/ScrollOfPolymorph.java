@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class ScrollOfPolymorph extends ExoticScroll {
 	
@@ -54,6 +55,12 @@ public class ScrollOfPolymorph extends ExoticScroll {
 					Sheep sheep = new Sheep();
 					sheep.lifespan = 10;
 					sheep.pos = mob.pos;
+					
+					//awards half exp for each sheep-ified mob
+					//50% chance to round up, 50% to round down
+					if (mob.EXP % 2 == 1) mob.EXP += Random.Int(2);
+					mob.EXP /= 2;
+					
 					mob.destroy();
 					mob.sprite.killAndErase();
 					Dungeon.level.mobs.remove(mob);

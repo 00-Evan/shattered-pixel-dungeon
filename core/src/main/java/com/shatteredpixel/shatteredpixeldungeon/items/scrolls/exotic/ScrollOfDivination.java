@@ -74,26 +74,43 @@ public class ScrollOfDivination extends ExoticScroll {
 		ArrayList<Item> IDed = new ArrayList<>();
 		int left = 4;
 		
+		float[] baseProbs = new float[]{3, 3, 3};
+		float[] probs = baseProbs.clone();
+		
 		while (left > 0 && total > 0) {
 			try {
-				switch (Random.Int(3)) {
-					case 0:
+				switch (Random.chances(probs)) {
 					default:
-						if (potions.isEmpty()) continue;
+						probs = baseProbs.clone();
+						continue;
+					case 0:
+						if (potions.isEmpty()) {
+							probs[0] = 0;
+							continue;
+						}
+						probs[0]--;
 						Potion p = Random.element(potions).newInstance();
 						p.setKnown();
 						IDed.add(p);
 						potions.remove(p.getClass());
 						break;
 					case 1:
-						if (scrolls.isEmpty()) continue;
+						if (scrolls.isEmpty()) {
+							probs[1] = 0;
+							continue;
+						}
+						probs[1]--;
 						Scroll s = Random.element(scrolls).newInstance();
 						s.setKnown();
 						IDed.add(s);
 						scrolls.remove(s.getClass());
 						break;
 					case 2:
-						if (rings.isEmpty()) continue;
+						if (rings.isEmpty()) {
+							probs[2] = 0;
+							continue;
+						}
+						probs[2]--;
 						Ring r = Random.element(rings).newInstance();
 						r.setKnown();
 						IDed.add(r);
