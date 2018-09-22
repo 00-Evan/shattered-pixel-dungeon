@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
@@ -50,7 +51,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAvoidance;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -213,9 +213,8 @@ public abstract class Mob extends Char {
 		//We are amoked and current enemy is the hero
 		else if (buff( Amok.class ) != null && enemy == Dungeon.hero)
 			newEnemy = true;
-		//We have avoidance and current enemy is what should be avoided
-		else if (buff(StoneOfAvoidance.Avoidance.class) != null
-				&& buff(StoneOfAvoidance.Avoidance.class).object == enemy.id())
+		//We are charmed and current enemy is what charmed us
+		else if (buff(Charm.class) != null && buff(Charm.class).object == enemy.id())
 			newEnemy = true;
 
 		if ( newEnemy ) {
@@ -266,9 +265,9 @@ public abstract class Mob extends Char {
 				
 			}
 			
-			StoneOfAvoidance.Avoidance avoid = buff( StoneOfAvoidance.Avoidance.class );
-			if (avoid != null){
-				Char source = (Char)Actor.findById( avoid.object );
+			Charm charm = buff( Charm.class );
+			if (charm != null){
+				Char source = (Char)Actor.findById( charm.object );
 				if (source != null && enemies.contains(source) && enemies.size() > 1){
 					enemies.remove(source);
 				}

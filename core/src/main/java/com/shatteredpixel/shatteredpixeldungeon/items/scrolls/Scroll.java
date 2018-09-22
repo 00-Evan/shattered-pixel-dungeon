@@ -32,9 +32,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfAntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAffection;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAvoidance;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfBlink;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfClairvoyance;
@@ -278,7 +278,7 @@ public abstract class Scroll extends Item {
 			stones.put(ScrollOfTeleportation.class, StoneOfBlink.class);
 			amnts.put(ScrollOfTeleportation.class,  2);
 			
-			stones.put(ScrollOfTerror.class,        StoneOfAvoidance.class);
+			stones.put(ScrollOfTerror.class,        StoneOfAffection.class);
 			amnts.put(ScrollOfTerror.class,         3);
 			
 			stones.put(ScrollOfTransmutation.class, StoneOfAugmentation.class);

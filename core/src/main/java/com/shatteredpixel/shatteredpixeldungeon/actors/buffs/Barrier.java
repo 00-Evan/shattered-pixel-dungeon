@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
-import com.watabou.utils.Bundle;
 
 public class Barrier extends ShieldBuff {
 	
@@ -57,15 +56,6 @@ public class Barrier extends ShieldBuff {
 	public void fx(boolean on) {
 		if (on) target.sprite.add(CharSprite.State.SHIELDED);
 		else target.sprite.remove(CharSprite.State.SHIELDED);
-	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		if (bundle.contains("level")) {
-			//TODO pre beta-2.0, remove in full release
-			shielding = bundle.getInt("level");
-		}
 	}
 	
 	@Override

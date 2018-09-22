@@ -25,66 +25,32 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 
-public class StoneOfAvoidance extends Runestone {
+public class StoneOfAffection extends Runestone {
 	
 	{
-		image = ItemSpriteSheet.STONE_AVOIDANCE;
+		image = ItemSpriteSheet.STONE_AFFECTION;
 	}
 	
 	@Override
 	protected void activate(int cell) {
 		
-		CellEmitter.center(cell).start( Speck.factory( Speck.CALM ), 0.3f, 3 );
-		Sample.INSTANCE.play( Assets.SND_READ );
+		CellEmitter.center(cell).start( Speck.factory( Speck.HEART ), 0.2f, 5 );
+		Sample.INSTANCE.play( Assets.SND_CHARMS );
 		
 		for (int i : PathFinder.NEIGHBOURS9){
 			
 			Char ch = Actor.findChar( cell + i );
 			
 			if (ch != null && ch.alignment == Char.Alignment.ENEMY){
-				Buff.prolong(ch, Avoidance.class, Avoidance.DURATION).object = curUser.id();
+				Buff.prolong(ch, Charm.class, 10f).object = curUser.id();
 			}
-		}
-		
-	}
-	
-	public static class Avoidance extends FlavourBuff {
-		
-		public static final float DURATION = 10f;
-		
-		public int object = 0;
-		
-		private static final String OBJECT    = "object";
-		
-		{
-			type = buffType.NEGATIVE;
-			announced = true;
-		}
-		
-		@Override
-		public void storeInBundle( Bundle bundle ) {
-			super.storeInBundle(bundle);
-			bundle.put(OBJECT, object);
-		}
-		
-		@Override
-		public void restoreFromBundle( Bundle bundle ) {
-			super.restoreFromBundle( bundle );
-			object = bundle.getInt( OBJECT );
-		}
-		
-		@Override
-		public String toString() {
-			return Messages.get(this, "name");
 		}
 		
 	}

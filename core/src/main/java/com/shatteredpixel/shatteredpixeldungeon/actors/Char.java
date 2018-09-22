@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Adrenaline;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -165,9 +164,6 @@ public abstract class Char extends Actor {
 			int legacySHLD = bundle.getInt( "SHLD" );
 			//attempt to find the buff that may have given the shield
 			ShieldBuff buff = buff(Brimstone.BrimstoneShield.class);
-			if (buff != null) legacySHLD -= buff.shielding();
-			//pre beta-2.0, remove for full release
-			buff = buff(Barrier.class);
 			if (buff != null) legacySHLD -= buff.shielding();
 			if (legacySHLD > 0){
 				BrokenSeal.WarriorShield buff2 = buff(BrokenSeal.WarriorShield.class);
