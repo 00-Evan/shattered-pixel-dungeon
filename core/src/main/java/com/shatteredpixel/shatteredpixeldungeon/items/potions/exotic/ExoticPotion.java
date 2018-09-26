@@ -91,7 +91,7 @@ public class ExoticPotion extends Potion {
 	
 	@Override
 	public boolean isKnown() {
-		return handler != null && handler.isKnown( exoToReg.get(this.getClass()) );
+		return anonymous || (handler != null && handler.isKnown( exoToReg.get(this.getClass()) ));
 	}
 	
 	@Override

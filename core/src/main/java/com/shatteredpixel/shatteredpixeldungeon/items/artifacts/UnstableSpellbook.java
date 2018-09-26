@@ -123,7 +123,7 @@ public class UnstableSpellbook extends Artifact {
 						|| (scroll instanceof ScrollOfTeleportation && Dungeon.bossLevel())
 						|| (scroll instanceof ScrollOfTransmutation));
 				
-				scroll.ownedByBook = true;
+				scroll.anonymize();
 				curItem = scroll;
 				curUser = hero;
 				

@@ -90,12 +90,12 @@ public abstract class ExoticScroll extends Scroll {
 	
 	@Override
 	public boolean isKnown() {
-		return handler != null && handler.isKnown( exoToReg.get(this.getClass()) );
+		return anonymous || (handler != null && handler.isKnown( exoToReg.get(this.getClass()) ));
 	}
 	
 	@Override
 	public void setKnown() {
-		if (!ownedByBook && !isKnown()) {
+		if (isKnown()) {
 			handler.know(exoToReg.get(this.getClass()));
 			updateQuickslot();
 		}

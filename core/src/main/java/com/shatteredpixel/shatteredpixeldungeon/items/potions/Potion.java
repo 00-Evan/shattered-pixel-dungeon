@@ -152,8 +152,6 @@ public class Potion extends Item {
 	protected static ItemStatusHandler<Potion> handler;
 	
 	protected String color;
-
-	public boolean ownedByFruit = false;
 	
 	{
 		stackable = true;
@@ -181,6 +179,15 @@ public class Potion extends Item {
 	public Potion() {
 		super();
 		reset();
+	}
+	
+	//anonymous potions are always IDed, do not affect ID status,
+	//and their sprite is replaced by a placeholder if they are not known,
+	//useful for items that appear in UIs, or which are only spawned for their effects
+	protected boolean anonymous = false;
+	public void anonymize(){
+		if (!isKnown()) image = ItemSpriteSheet.POTION_HOLDER;
+		anonymous = true;
 	}
 
 	@Override
@@ -323,11 +330,11 @@ public class Potion extends Item {
 	}
 	
 	public boolean isKnown() {
-		return handler != null && handler.isKnown( this );
+		return anonymous || (handler != null && handler.isKnown( this ));
 	}
 	
 	public void setKnown() {
-		if (!ownedByFruit) {
+		if (!anonymous) {
 			if (!isKnown()) {
 				handler.know(this);
 				updateQuickslot();

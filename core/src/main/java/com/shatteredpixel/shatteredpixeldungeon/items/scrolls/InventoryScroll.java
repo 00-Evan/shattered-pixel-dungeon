@@ -88,11 +88,11 @@ public abstract class InventoryScroll extends Scroll {
 				Sample.INSTANCE.play( Assets.SND_READ );
 				Invisibility.dispel();
 				
-			} else if (identifiedByUse && !((Scroll)curItem).ownedByBook) {
+			} else if (identifiedByUse && !((Scroll)curItem).anonymous) {
 				
 				((InventoryScroll)curItem).confirmCancelation();
 				
-			} else if (!((Scroll)curItem).ownedByBook) {
+			} else if (!((Scroll)curItem).anonymous) {
 				
 				curItem.collect( curUser.belongings.backpack );
 				

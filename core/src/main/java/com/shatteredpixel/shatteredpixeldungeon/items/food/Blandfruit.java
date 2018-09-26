@@ -137,7 +137,7 @@ public class Blandfruit extends Food {
 	public Item imbuePotion(Potion potion){
 
 		potionAttrib = potion;
-		potionAttrib.ownedByFruit = true;
+		potionAttrib.anonymize();
 
 		potionAttrib.image = ItemSpriteSheet.BLANDFRUIT;
 
