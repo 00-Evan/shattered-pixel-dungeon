@@ -43,7 +43,7 @@ public abstract class Key extends Item {
 	
 	@Override
 	public boolean isSimilar( Item item ) {
-		return item.getClass() == getClass() && ((Key)item).depth == depth;
+		return super.isSimilar(item) && ((Key)item).depth == depth;
 	}
 
 	@Override

@@ -69,12 +69,12 @@ public class Blandfruit extends Food {
 
 	@Override
 	public boolean isSimilar( Item item ) {
-		if (item instanceof Blandfruit){
-			if (potionAttrib == null){
-				if (((Blandfruit)item).potionAttrib == null)
+		if ( super.isSimilar(item) ){
+			Blandfruit other = (Blandfruit) item;
+			if (potionAttrib == null && other.potionAttrib == null) {
 					return true;
-			} else if (((Blandfruit)item).potionAttrib != null){
-				if (((Blandfruit)item).potionAttrib.getClass() == potionAttrib.getClass())
+			} else if (potionAttrib != null && other.potionAttrib != null
+					&& potionAttrib.isSimilar(other.potionAttrib)){
 					return true;
 			}
 		}

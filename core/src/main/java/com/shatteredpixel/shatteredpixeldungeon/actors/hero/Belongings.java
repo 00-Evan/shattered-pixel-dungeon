@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Belongings implements Iterable<Item> {
@@ -152,12 +153,24 @@ public class Belongings implements Iterable<Item> {
 	public Item getSimilar( Item similar ){
 		
 		for (Item item : this) {
-			if (item.isSimilar(similar)) {
+			if (similar.isSimilar(item)) {
 				return item;
 			}
 		}
 		
 		return null;
+	}
+	
+	public ArrayList<Item> getAllSimilar( Item similar ){
+		ArrayList<Item> result = new ArrayList<>();
+		
+		for (Item item : this) {
+			if (similar.isSimilar(item)) {
+				result.add(item);
+			}
+		}
+		
+		return result;
 	}
 	
 	public void identify() {

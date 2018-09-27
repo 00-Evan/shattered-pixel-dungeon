@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -204,6 +205,23 @@ public abstract class Plant implements Bundlable {
 		@Override
 		public String info() {
 			return Messages.get( Seed.class, "info", desc() );
+		}
+		
+		public static class PlaceHolder extends Seed {
+			
+			{
+				image = ItemSpriteSheet.SEED_HOLDER;
+			}
+			
+			@Override
+			public boolean isSimilar(Item item) {
+				return item instanceof Plant.Seed;
+			}
+			
+			@Override
+			public String info() {
+				return "";
+			}
 		}
 	}
 }

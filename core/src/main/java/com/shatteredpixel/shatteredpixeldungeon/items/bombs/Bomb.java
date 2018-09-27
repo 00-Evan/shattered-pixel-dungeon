@@ -79,7 +79,7 @@ public class Bomb extends Item {
 
 	@Override
 	public boolean isSimilar(Item item) {
-		return item.getClass() == getClass() && this.fuse == ((Bomb) item).fuse;
+		return super.isSimilar(item) && this.fuse == ((Bomb) item).fuse;
 	}
 
 	@Override

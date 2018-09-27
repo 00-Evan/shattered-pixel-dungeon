@@ -45,7 +45,10 @@ public class ItemSpriteSheet {
 	public static final int ARTIFACT_HOLDER = PLACEHOLDERS+5;
 	public static final int POTION_HOLDER   = PLACEHOLDERS+6;
 	public static final int SCROLL_HOLDER   = PLACEHOLDERS+7;
-	public static final int SOMETHING       = PLACEHOLDERS+8;
+	public static final int SEED_HOLDER     = PLACEHOLDERS+8;
+	public static final int STONE_HOLDER    = PLACEHOLDERS+9;
+	public static final int MEAT_HOLDER     = PLACEHOLDERS+10;
+	public static final int SOMETHING       = PLACEHOLDERS+11;
 	static{
 		assignItemRect(NULLWARN,        16, 7);
 		assignItemRect(WEAPON_HOLDER,   14, 14);
@@ -53,8 +56,11 @@ public class ItemSpriteSheet {
 		assignItemRect(WAND_HOLDER,     14, 14);
 		assignItemRect(RING_HOLDER,     8,  10);
 		assignItemRect(ARTIFACT_HOLDER, 15, 15);
-		assignItemRect(POTION_HOLDER,   10, 14);
+		assignItemRect(POTION_HOLDER,   12, 14);
 		assignItemRect(SCROLL_HOLDER,   15, 14);
+		assignItemRect(SEED_HOLDER,     10, 10);
+		assignItemRect(STONE_HOLDER,    14, 12);
+		assignItemRect(MEAT_HOLDER,     15, 11);
 		assignItemRect(SOMETHING,       8,  13);
 	}
 

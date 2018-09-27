@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public abstract class Runestone extends Item {
 	
@@ -55,5 +56,27 @@ public abstract class Runestone extends Item {
 	@Override
 	public int price() {
 		return 10 * quantity;
+	}
+	
+	public static class PlaceHolder extends Runestone {
+		
+		{
+			image = ItemSpriteSheet.STONE_HOLDER;
+		}
+		
+		@Override
+		protected void activate(int cell) {
+			//does nothing
+		}
+		
+		@Override
+		public boolean isSimilar(Item item) {
+			return item instanceof Runestone;
+		}
+		
+		@Override
+		public String info() {
+			return "";
+		}
 	}
 }
