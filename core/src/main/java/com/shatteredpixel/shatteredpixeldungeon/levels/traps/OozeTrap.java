@@ -39,7 +39,7 @@ public class OozeTrap extends Trap {
 		Char ch = Actor.findChar( pos );
 
 		if (ch != null){
-			Buff.affect(ch, Ooze.class);
+			Buff.affect(ch, Ooze.class).set( 20f );
 			Splash.at( pos, 0x000000, 5);
 		}
 	}

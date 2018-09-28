@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
+//pre-0.7.0, otherwise unused
 public class EarthImbue extends FlavourBuff {
 	
 	{

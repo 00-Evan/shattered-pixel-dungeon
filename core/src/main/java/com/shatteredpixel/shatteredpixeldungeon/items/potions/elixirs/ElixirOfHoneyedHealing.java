@@ -71,7 +71,7 @@ public class ElixirOfHoneyedHealing extends Elixir {
 			inputs =  new Class[]{PotionOfHealing.class, Honeypot.ShatteredPot.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 5;
+			cost = 4;
 			
 			output = ElixirOfHoneyedHealing.class;
 			outQuantity = 1;

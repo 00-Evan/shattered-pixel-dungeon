@@ -61,7 +61,7 @@ public class FetidRat extends Rat {
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		if (Random.Int(3) == 0) {
-			Buff.affect(enemy, Ooze.class);
+			Buff.affect(enemy, Ooze.class).set( 20f );
 		}
 
 		return damage;

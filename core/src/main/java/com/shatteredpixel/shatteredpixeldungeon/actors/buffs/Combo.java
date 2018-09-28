@@ -281,6 +281,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				target.buff(FireImbue.class).proc(enemy);
 			if (target.buff(EarthImbue.class) != null)
 				target.buff(EarthImbue.class).proc(enemy);
+			if (target.buff(FrostImbue.class) != null)
+				target.buff(FrostImbue.class).proc(enemy);
 
 			Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
 			enemy.sprite.bloodBurstA( target.sprite.center(), dmg );

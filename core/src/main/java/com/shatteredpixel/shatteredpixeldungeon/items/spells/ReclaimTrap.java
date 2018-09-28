@@ -62,7 +62,7 @@ public class ReclaimTrap extends TargetedSpell {
 			inputs =  new Class[]{ScrollOfRecharging.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 5;
+			cost = 8;
 			
 			output = ReclaimTrap.class;
 			outQuantity = 4;

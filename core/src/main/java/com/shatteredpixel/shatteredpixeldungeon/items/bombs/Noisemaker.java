@@ -65,7 +65,7 @@ public class Noisemaker extends Bomb {
 		public void set(int cell){
 			floor = Dungeon.depth;
 			this.cell = cell;
-			left = 5;
+			left = 8;
 		}
 		
 		@Override
@@ -88,7 +88,7 @@ public class Noisemaker extends Bomb {
 			}
 			
 			if (left > 0) {
-				spend(TICK * 20f);
+				spend(TICK * 15f);
 				left--;
 			} else {
 				detach();

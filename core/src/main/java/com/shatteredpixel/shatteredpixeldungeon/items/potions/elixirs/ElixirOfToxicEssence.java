@@ -53,7 +53,7 @@ public class ElixirOfToxicEssence extends Elixir {
 			inputs =  new Class[]{PotionOfToxicGas.class, PotionOfPurity.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 4;
+			cost = 6;
 			
 			output = ElixirOfToxicEssence.class;
 			outQuantity = 1;

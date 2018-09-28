@@ -68,7 +68,7 @@ public class CurseInfusion extends InventorySpell {
 			inputs =  new Class[]{ScrollOfRemoveCurse.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 2;
+			cost = 1;
 			
 			output = CurseInfusion.class;
 			outQuantity = 3;

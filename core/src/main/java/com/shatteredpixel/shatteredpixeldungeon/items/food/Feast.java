@@ -76,7 +76,7 @@ public class Feast extends Food {
 		
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
-			return 8;
+			return (int)Hunger.STARVING/50;
 		}
 		
 		@Override

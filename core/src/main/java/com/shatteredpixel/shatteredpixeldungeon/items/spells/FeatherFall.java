@@ -61,7 +61,7 @@ public class FeatherFall extends Spell {
 			inputs =  new Class[]{ScrollOfLullaby.class, PotionOfLevitation.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 8;
+			cost = 6;
 			
 			output = FeatherFall.class;
 			outQuantity = 2;

@@ -123,7 +123,7 @@ public class Goo extends Mob {
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		if (Random.Int( 3 ) == 0) {
-			Buff.affect( enemy, Ooze.class );
+			Buff.affect( enemy, Ooze.class ).set( 20f );
 			enemy.sprite.burst( 0x000000, 5 );
 		}
 

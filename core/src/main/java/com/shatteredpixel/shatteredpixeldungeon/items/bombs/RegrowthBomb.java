@@ -25,20 +25,30 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
-public class HealingBomb extends Bomb {
+import java.util.ArrayList;
+
+public class RegrowthBomb extends Bomb {
 	
 	{
 		//TODO visuals
-		image = ItemSpriteSheet.HEAL_BOMB;
+		image = ItemSpriteSheet.REGROWTH_BOMB;
 	}
 	
 	@Override
@@ -54,16 +64,44 @@ public class HealingBomb extends Bomb {
 		
 		//no regular explosion damage
 		
+		ArrayList<Integer> plantCandidates = new ArrayList<>();
+		
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				Char ch = Actor.findChar(i);
 				if (ch != null){
-					//same as a healing potion
-					Buff.affect( ch, Healing.class ).setHeal((int)(0.8f*ch.HT + 14), 0.25f, 0);
-					PotionOfHealing.cure( ch );
+					if (ch.alignment == Dungeon.hero.alignment) {
+						//same as a healing dart
+						Buff.affect(ch, Healing.class).setHeal((int) (0.5f * ch.HT + 30), 0.25f, 0);
+						PotionOfHealing.cure(ch);
+					}
+				} else if ( Dungeon.level.map[i] == Terrain.EMPTY ||
+							Dungeon.level.map[i] == Terrain.EMBERS ||
+							Dungeon.level.map[i] == Terrain.EMPTY_DECO ||
+							Dungeon.level.map[i] == Terrain.GRASS ||
+							Dungeon.level.map[i] == Terrain.HIGH_GRASS){
+					
+					plantCandidates.add(i);
 				}
+				GameScene.add( Blob.seed( i, 10, Regrowth.class ) );
 			}
+		}
+		
+		Integer plantPos = Random.element(plantCandidates);
+		if (plantPos != null){
+			Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), plantPos);
+			plantCandidates.remove(plantPos);
+		}
+		
+		plantPos = Random.element(plantCandidates);
+		if (plantPos != null){
+			if (Random.Int(2) == 0){
+				Dungeon.level.plant( new WandOfRegrowth.Dewcatcher.Seed(), plantPos);
+			} else {
+				Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), plantPos);
+			}
+			plantCandidates.remove(plantPos);
 		}
 	}
 }

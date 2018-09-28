@@ -120,7 +120,7 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 			inputs =  new Class[]{PotionOfHealing.class, GooBlob.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 3;
+			cost = 4;
 			
 			output = ElixirOfAquaticRejuvenation.class;
 			outQuantity = 1;

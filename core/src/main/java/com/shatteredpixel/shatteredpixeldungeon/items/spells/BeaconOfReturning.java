@@ -184,7 +184,7 @@ public class BeaconOfReturning extends Spell {
 			cost = 12;
 			
 			output = BeaconOfReturning.class;
-			outQuantity = 4;
+			outQuantity = 3;
 		}
 		
 	}

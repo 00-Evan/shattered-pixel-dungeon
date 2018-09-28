@@ -234,7 +234,7 @@ public class Bomb extends Item {
 	public static class Fuse extends Actor{
 
 		{
-			actPriority = BUFF_PRIO; //as if it were a buff
+			actPriority = BLOB_PRIO+1; //after hero, before other actors
 		}
 
 		private Bomb bomb;
@@ -303,7 +303,7 @@ public class Bomb extends Item {
 		static {
 			validIngredients.put(PotionOfLiquidFlame.class,     Firebomb.class);
 			validIngredients.put(PotionOfFrost.class,           FrostBomb.class);
-			validIngredients.put(PotionOfHealing.class,         HealingBomb.class);
+			validIngredients.put(PotionOfHealing.class,         RegrowthBomb.class);
 			validIngredients.put(PotionOfInvisibility.class,    Flashbang.class);
 			
 			validIngredients.put(ScrollOfRecharging.class,      ShockBomb.class);
@@ -317,18 +317,18 @@ public class Bomb extends Item {
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
 		static {
-			bombCosts.put(Firebomb.class,       2);
-			bombCosts.put(FrostBomb.class,      1);
-			bombCosts.put(HealingBomb.class,    4);
-			bombCosts.put(Flashbang.class,      3);
+			bombCosts.put(Firebomb.class,       4);
+			bombCosts.put(FrostBomb.class,      3);
+			bombCosts.put(RegrowthBomb.class,    6);
+			bombCosts.put(Flashbang.class,      5);
 			
-			bombCosts.put(ShockBomb.class,      3);
-			bombCosts.put(HolyBomb.class,       4);
-			bombCosts.put(WoollyBomb.class,     1);
-			bombCosts.put(Noisemaker.class,     2);
+			bombCosts.put(ShockBomb.class,      5);
+			bombCosts.put(HolyBomb.class,       6);
+			bombCosts.put(WoollyBomb.class,     3);
+			bombCosts.put(Noisemaker.class,     4);
 			
-			bombCosts.put(ArcaneBomb.class,     6);
-			bombCosts.put(ShrapnelBomb.class,   6);
+			bombCosts.put(ArcaneBomb.class,     8);
+			bombCosts.put(ShrapnelBomb.class,   8);
 		}
 		
 		@Override

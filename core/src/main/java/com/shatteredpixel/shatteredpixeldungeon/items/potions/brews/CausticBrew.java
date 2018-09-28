@@ -46,7 +46,7 @@ public class CausticBrew extends Brew {
 			Char ch = Actor.findChar(cell + offset);
 			
 			if (ch != null){
-				Buff.affect(ch, Ooze.class);
+				Buff.affect(ch, Ooze.class).set( 20f );
 			}
 			
 		}
@@ -58,7 +58,7 @@ public class CausticBrew extends Brew {
 			inputs =  new Class[]{PotionOfToxicGas.class, GooBlob.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 5;
+			cost = 8;
 			
 			output = CausticBrew.class;
 			outQuantity = 1;

@@ -238,7 +238,7 @@ public class Yog extends Mob {
 			damage = super.attackProc( enemy, damage );
 			
 			if (Random.Int( 3 ) == 0) {
-				Buff.affect( enemy, Ooze.class );
+				Buff.affect( enemy, Ooze.class ).set( 20f );
 				enemy.sprite.burst( 0xFF000000, 5 );
 			}
 			

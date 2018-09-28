@@ -60,7 +60,7 @@ public class ShockingBrew extends Brew {
 			inputs =  new Class[]{PotionOfParalyticGas.class, PotionOfStormClouds.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 5;
+			cost = 8;
 			
 			output = ShockingBrew.class;
 			outQuantity = 1;

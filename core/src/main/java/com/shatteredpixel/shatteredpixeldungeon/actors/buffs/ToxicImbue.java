@@ -36,7 +36,7 @@ public class ToxicImbue extends Buff {
 		announced = true;
 	}
 
-	public static final float DURATION	= 30f;
+	public static final float DURATION	= 50f;
 
 	protected float left;
 
