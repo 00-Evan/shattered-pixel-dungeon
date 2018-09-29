@@ -99,7 +99,8 @@ public class WndLangs extends Window {
 				btn.setPos(BTN_WIDTH+1, y-(BTN_HEIGHT + 1));
 			} else {
 				btn.setPos(0, y);
-				y += BTN_HEIGHT + 1;
+				y += BTN_HEIGHT;
+				if (SPDSettings.landscape()) y++;
 			}
 
 			add(btn);
