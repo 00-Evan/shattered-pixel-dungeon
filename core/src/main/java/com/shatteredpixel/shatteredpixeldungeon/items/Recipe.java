@@ -85,6 +85,22 @@ public abstract class Recipe {
 		protected int outQuantity;
 		//***
 		
+		//gets a simple list of items based on inputs
+		public ArrayList<Item> getIngredients() {
+			ArrayList<Item> result = new ArrayList<>();
+			try {
+				for (int i = 0; i < inputs.length; i++) {
+					Item ingredient = inputs[i].newInstance();
+					ingredient.quantity(inQuantity[i]);
+					result.add(ingredient);
+				}
+			} catch (Exception e){
+				ShatteredPixelDungeon.reportException( e );
+				return null;
+			}
+			return result;
+		}
+		
 		@Override
 		public final boolean testIngredients(ArrayList<Item> ingredients) {
 			

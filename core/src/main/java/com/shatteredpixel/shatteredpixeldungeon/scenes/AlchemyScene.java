@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
@@ -396,17 +397,36 @@ public class AlchemyScene extends PixelScene {
 		
 	}
 	
+	public void populate(ArrayList<Item> toFind, Belongings inventory){
+		clearSlots();
+		
+		int curslot = 0;
+		for (Item finding : toFind){
+			int needed = finding.quantity();
+			ArrayList<Item> found = inventory.getAllSimilar(finding);
+			while (!found.isEmpty() && needed > 0){
+				Item detached;
+				if (finding instanceof Dart) {
+					detached = found.get(0).detachAll(inventory.backpack);
+				} else {
+					detached = found.get(0).detach(inventory.backpack);
+				}
+				inputs[curslot].item(detached);
+				curslot++;
+				needed -= detached.quantity();
+				if (detached == found.get(0)) {
+					found.remove(0);
+				}
+			}
+		}
+		updateState();
+	}
+	
 	@Override
 	public void destroy() {
 		synchronized ( inputs ) {
+			clearSlots();
 			for (int i = 0; i < inputs.length; i++) {
-				if (inputs[i] != null && inputs[i].item != null) {
-					if (!(inputs[i].item instanceof AlchemistsToolkit)) {
-						if (!inputs[i].item.collect()) {
-							Dungeon.level.drop(inputs[i].item, Dungeon.hero.pos);
-						}
-					}
-				}
 				inputs[i] = null;
 			}
 		}
@@ -419,6 +439,20 @@ public class AlchemyScene extends PixelScene {
 			ShatteredPixelDungeon.reportException(e);
 		}
 		super.destroy();
+	}
+	
+	public void clearSlots(){
+		synchronized ( inputs ) {
+			for (int i = 0; i < inputs.length; i++) {
+				if (inputs[i] != null && inputs[i].item != null) {
+					if (!(inputs[i].item instanceof AlchemistsToolkit)) {
+						if (!inputs[i].item.collect()) {
+							Dungeon.level.drop(inputs[i].item, Dungeon.hero.pos);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public static class ItemButton extends Component {
