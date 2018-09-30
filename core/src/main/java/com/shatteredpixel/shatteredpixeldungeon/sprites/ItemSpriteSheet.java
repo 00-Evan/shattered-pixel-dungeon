@@ -154,10 +154,10 @@ public class ItemSpriteSheet {
 	static{
 		assignItemRect(BOMB,            10, 13);
 		assignItemRect(DBL_BOMB,        14, 13);
-		assignItemRect(FIRE_BOMB,       10, 13);
-		assignItemRect(FROST_BOMB,      10, 13);
-		assignItemRect(REGROWTH_BOMB,   10, 13);
-		assignItemRect(FLASHBANG,       10, 13);
+		assignItemRect(FIRE_BOMB,       13, 12);
+		assignItemRect(FROST_BOMB,      13, 12);
+		assignItemRect(REGROWTH_BOMB,   13, 12);
+		assignItemRect(FLASHBANG,       13, 12);
 		assignItemRect(SHOCK_BOMB,      10, 13);
 		assignItemRect(HOLY_BOMB,       10, 13);
 		assignItemRect(WOOLY_BOMB,      10, 13);
