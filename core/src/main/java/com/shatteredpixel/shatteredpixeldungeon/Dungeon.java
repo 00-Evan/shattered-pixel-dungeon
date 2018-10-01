@@ -363,7 +363,7 @@ public class Dungeon {
 	public static void switchLevel( final Level level, int pos ) {
 		
 		if (pos < 0 || pos >= level.length()){
-			pos = level.exit;
+			pos = level.entrance;
 		}
 		
 		PathFinder.setMapSize(level.width(), level.height());
