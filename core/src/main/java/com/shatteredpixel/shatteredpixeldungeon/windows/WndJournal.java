@@ -90,21 +90,21 @@ public class WndJournal extends WndTabbed {
 		catalogTab.updateList();
 		
 		Tab[] tabs = {
-				new LabeledTab( Messages.get(this, "guide") ) {
+				new IconTab( new ItemSprite(ItemSpriteSheet.GUIDE_PAGE, null) ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						guideTab.active = guideTab.visible = value;
 						if (value) last_index = 0;
 					}
 				},
-				new LabeledTab( Messages.get(this, "notes") ) {
+				new IconTab( Icons.get(Icons.DEPTH) ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						notesTab.active = notesTab.visible = value;
 						if (value) last_index = 1;
 					}
 				},
-				new LabeledTab( Messages.get(this, "items") ) {
+				new IconTab( new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER, null) ) {
 					protected void select( boolean value ) {
 						super.select( value );
 						catalogTab.active = catalogTab.visible = value;

@@ -62,7 +62,6 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.RectF;
 
 public class WndBag extends WndTabbed {
 	
@@ -280,55 +279,30 @@ public class WndBag extends WndTabbed {
 		return 20;
 	}
 	
-	private class BagTab extends Tab {
-		
-		private Image icon;
+	private Image icon( Bag bag ) {
+		if (bag instanceof VelvetPouch) {
+			return Icons.get( Icons.SEED_POUCH );
+		} else if (bag instanceof ScrollHolder) {
+			return Icons.get( Icons.SCROLL_HOLDER );
+		} else if (bag instanceof MagicalHolster) {
+			return Icons.get( Icons.WAND_HOLSTER );
+		} else if (bag instanceof PotionBandolier) {
+			return Icons.get( Icons.POTION_BANDOLIER );
+		} else {
+			return Icons.get( Icons.BACKPACK );
+		}
+	}
+	
+	private class BagTab extends IconTab {
 
 		private Bag bag;
 		
 		public BagTab( Bag bag ) {
-			super();
+			super( icon(bag) );
 			
 			this.bag = bag;
-			
-			icon = icon();
-			add( icon );
 		}
 		
-		@Override
-		protected void select( boolean value ) {
-			super.select( value );
-			icon.am = selected ? 1.0f : 0.6f;
-		}
-		
-		@Override
-		protected void layout() {
-			super.layout();
-			
-			icon.copy( icon() );
-			icon.x = x + (width - icon.width) / 2;
-			icon.y = y + (height - icon.height) / 2 - 2 - (selected ? 0 : 1);
-			if (!selected && icon.y < y + CUT) {
-				RectF frame = icon.frame();
-				frame.top += (y + CUT - icon.y) / icon.texture.height;
-				icon.frame( frame );
-				icon.y = y + CUT;
-			}
-		}
-		
-		private Image icon() {
-			if (bag instanceof VelvetPouch) {
-				return Icons.get( Icons.SEED_POUCH );
-			} else if (bag instanceof ScrollHolder) {
-				return Icons.get( Icons.SCROLL_HOLDER );
-			} else if (bag instanceof MagicalHolster) {
-				return Icons.get( Icons.WAND_HOLSTER );
-			} else if (bag instanceof PotionBandolier) {
-				return Icons.get( Icons.POTION_BANDOLIER );
-			} else {
-				return Icons.get( Icons.BACKPACK );
-			}
-		}
 	}
 	
 	public static class Placeholder extends Item {

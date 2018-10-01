@@ -26,10 +26,12 @@ import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
+import com.watabou.utils.RectF;
 
 import java.util.ArrayList;
 
@@ -227,6 +229,52 @@ public class WndTabbed extends Window {
 		protected void select( boolean value ) {
 			super.select( value );
 			btLabel.am = selected ? 1.0f : 0.6f;
+		}
+	}
+	
+	protected class IconTab extends Tab {
+		
+		private Image icon;
+		private RectF defaultFrame;
+		
+		public IconTab( Image icon ){
+			super();
+			
+			this.icon.copy(icon);
+			this.defaultFrame = icon.frame();
+		}
+		
+		@Override
+		protected void createChildren() {
+			super.createChildren();
+			
+			icon = new Image();
+			add( icon );
+		}
+		
+		@Override
+		protected void layout() {
+			super.layout();
+			
+			icon.frame(defaultFrame);
+			icon.x = x + (width - icon.width) / 2;
+			icon.y = y + (height - icon.height) / 2 - 1;
+			if (!selected) {
+				icon.y -= 2;
+				//if some of the icon is going into the window, cut it off
+				if (icon.y < y + CUT) {
+					RectF frame = icon.frame();
+					frame.top += (y + CUT - icon.y) / icon.texture.height;
+					icon.frame( frame );
+					icon.y = y + CUT;
+				}
+			}
+		}
+		
+		@Override
+		protected void select( boolean value ) {
+			super.select( value );
+			icon.am = selected ? 1.0f : 0.6f;
 		}
 	}
 
