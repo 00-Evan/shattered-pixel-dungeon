@@ -21,39 +21,30 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.noosa.audio.Sample;
 
 public class Flashbang extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.FLASHBANG;
 	}
 	
 	@Override
+	public boolean explodesDestructively() {
+		return false;
+	}
+	
+	@Override
 	public void explode(int cell) {
-		//We're blowing up, so no need for a fuse anymore.
-		this.fuse = null;
-		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
-		
-		if (Dungeon.level.heroFOV[cell]) {
-			CellEmitter.center( cell ).burst( BlastParticle.FACTORY, 30 );
-		}
-		
-		//no regular explosion damage
+		super.explode(cell);
 		
 		//FIXME currently has somewhat odd behaviour, as FOV is updated at the start of a turn.
 		Level l = Dungeon.level;

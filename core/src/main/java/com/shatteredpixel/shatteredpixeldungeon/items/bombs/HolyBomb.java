@@ -39,7 +39,6 @@ import com.watabou.utils.Random;
 public class HolyBomb extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.HOLY_BOMB;
 	}
 	

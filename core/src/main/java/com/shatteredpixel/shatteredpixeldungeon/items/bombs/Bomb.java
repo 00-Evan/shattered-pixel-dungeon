@@ -81,6 +81,10 @@ public class Bomb extends Item {
 	public boolean isSimilar(Item item) {
 		return super.isSimilar(item) && this.fuse == ((Bomb) item).fuse;
 	}
+	
+	public boolean explodesDestructively(){
+		return true;
+	}
 
 	@Override
 	public ArrayList<String> actions(Hero hero) {
@@ -132,48 +136,50 @@ public class Bomb extends Item {
 
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 
-		if (Dungeon.level.heroFOV[cell]) {
-			CellEmitter.center( cell ).burst( BlastParticle.FACTORY, 30 );
-		}
-
-		boolean terrainAffected = false;
-		for (int n : PathFinder.NEIGHBOURS9) {
-			int c = cell + n;
-			if (c >= 0 && c < Dungeon.level.length()) {
-				if (Dungeon.level.heroFOV[c]) {
-					CellEmitter.get( c ).burst( SmokeParticle.FACTORY, 4 );
-				}
-
-				if (Dungeon.level.flamable[c]) {
-					Dungeon.level.destroy( c );
-					GameScene.updateMap( c );
-					terrainAffected = true;
-				}
-
-				//destroys items / triggers bombs caught in the blast.
-				Heap heap = Dungeon.level.heaps.get( c );
-				if(heap != null)
-					heap.explode();
-
-				Char ch = Actor.findChar( c );
-				if (ch != null) {
-					//those not at the center of the blast take damage less consistently.
-					int minDamage = c == cell ? Dungeon.depth+5 : 1;
-					int maxDamage = 10 + Dungeon.depth * 2;
-
-					int dmg = Random.NormalIntRange( minDamage, maxDamage ) - ch.drRoll();
-					if (dmg > 0) {
-						ch.damage( dmg, this );
+		if (explodesDestructively()) {
+			if (Dungeon.level.heroFOV[cell]) {
+				CellEmitter.center(cell).burst(BlastParticle.FACTORY, 30);
+			}
+			
+			boolean terrainAffected = false;
+			for (int n : PathFinder.NEIGHBOURS9) {
+				int c = cell + n;
+				if (c >= 0 && c < Dungeon.level.length()) {
+					if (Dungeon.level.heroFOV[c]) {
+						CellEmitter.get(c).burst(SmokeParticle.FACTORY, 4);
 					}
-
-					if (ch == Dungeon.hero && !ch.isAlive())
-						Dungeon.fail( Bomb.class );
+					
+					if (Dungeon.level.flamable[c]) {
+						Dungeon.level.destroy(c);
+						GameScene.updateMap(c);
+						terrainAffected = true;
+					}
+					
+					//destroys items / triggers bombs caught in the blast.
+					Heap heap = Dungeon.level.heaps.get(c);
+					if (heap != null)
+						heap.explode();
+					
+					Char ch = Actor.findChar(c);
+					if (ch != null) {
+						//those not at the center of the blast take damage less consistently.
+						int minDamage = c == cell ? Dungeon.depth + 5 : 1;
+						int maxDamage = 10 + Dungeon.depth * 2;
+						
+						int dmg = Random.NormalIntRange(minDamage, maxDamage) - ch.drRoll();
+						if (dmg > 0) {
+							ch.damage(dmg, this);
+						}
+						
+						if (ch == Dungeon.hero && !ch.isAlive())
+							Dungeon.fail(Bomb.class);
+					}
 				}
 			}
-		}
-
-		if (terrainAffected) {
-			Dungeon.observe();
+			
+			if (terrainAffected) {
+				Dungeon.observe();
+			}
 		}
 	}
 	

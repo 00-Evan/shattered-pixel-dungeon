@@ -34,7 +34,6 @@ import com.watabou.utils.PathFinder;
 public class ShockBomb extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.SHOCK_BOMB;
 	}
 	

@@ -36,7 +36,6 @@ import com.watabou.utils.PathFinder;
 public class Firebomb extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.FIRE_BOMB;
 	}
 	

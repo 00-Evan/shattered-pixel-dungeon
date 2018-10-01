@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -29,25 +28,23 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public class ShrapnelBomb extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.SHRAPNEL_BOMB;
 	}
 	
 	@Override
+	public boolean explodesDestructively() {
+		return false;
+	}
+	
+	@Override
 	public void explode(int cell) {
-		//We're blowing up, so no need for a fuse anymore.
-		this.fuse = null;
-		
-		Sample.INSTANCE.play( Assets.SND_BURNING );
-		
-		//no regular explosion damage
+		super.explode(cell);
 		
 		boolean[] FOV = new boolean[Dungeon.level.length()];
 		Point c = Dungeon.level.cellToPoint(cell);

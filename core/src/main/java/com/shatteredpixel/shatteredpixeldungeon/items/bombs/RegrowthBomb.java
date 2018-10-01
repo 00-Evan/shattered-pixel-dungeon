@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -38,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -52,17 +50,17 @@ public class RegrowthBomb extends Bomb {
 	}
 	
 	@Override
+	public boolean explodesDestructively() {
+		return false;
+	}
+	
+	@Override
 	public void explode(int cell) {
-		//We're blowing up, so no need for a fuse anymore.
-		this.fuse = null;
-		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
+		super.explode(cell);
 		
 		if (Dungeon.level.heroFOV[cell]) {
 			Splash.at(cell, 0x00FF00, 30);
 		}
-		
-		//no regular explosion damage
 		
 		ArrayList<Integer> plantCandidates = new ArrayList<>();
 		

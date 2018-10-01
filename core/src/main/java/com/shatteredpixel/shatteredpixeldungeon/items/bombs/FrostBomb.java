@@ -32,7 +32,6 @@ import com.watabou.utils.PathFinder;
 public class FrostBomb extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.FROST_BOMB;
 	}
 	

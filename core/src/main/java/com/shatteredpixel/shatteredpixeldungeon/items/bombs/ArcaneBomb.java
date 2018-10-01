@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -32,14 +31,12 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class ArcaneBomb extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.ARCANE_BOMB;
 	}
 	
@@ -56,13 +53,13 @@ public class ArcaneBomb extends Bomb {
 	}
 	
 	@Override
+	public boolean explodesDestructively() {
+		return false;
+	}
+	
+	@Override
 	public void explode(int cell) {
-		//We're blowing up, so no need for a fuse anymore.
-		this.fuse = null;
-		
-		Sample.INSTANCE.play( Assets.SND_BURNING );
-		
-		//no regular explosion damage
+		super.explode(cell);
 		
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {

@@ -247,9 +247,10 @@ public class Heap implements Bundlable {
 			} else if (item instanceof Bomb) {
 				items.remove( item );
 				((Bomb) item).explode( pos );
-				burnt = true;
-				//stop processing the burning, it will be replaced by the explosion.
-				break;
+				if (((Bomb) item).explodesDestructively()) {
+					//stop processing the burning, it will be replaced by the explosion.
+					return;
+				}
 			}
 		}
 		
@@ -298,8 +299,10 @@ public class Heap implements Bundlable {
 				} else if (item instanceof Bomb) {
 					items.remove( item );
 					((Bomb) item).explode(pos);
-					//stop processing current explosion, it will be replaced by the new one.
-					return;
+					if (((Bomb) item).explodesDestructively()) {
+						//stop processing current explosion, it will be replaced by the new one.
+						return;
+					}
 
 				//unique and upgraded items can endure the blast
 				} else if (!(item.level() > 0 || item.unique))

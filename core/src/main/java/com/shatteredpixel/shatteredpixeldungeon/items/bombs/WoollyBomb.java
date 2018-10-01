@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
@@ -38,22 +37,17 @@ import com.watabou.utils.Random;
 public class WoollyBomb extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.WOOLY_BOMB;
 	}
 	
 	@Override
+	public boolean explodesDestructively() {
+		return false;
+	}
+	
+	@Override
 	public void explode(int cell) {
-		//We're blowing up, so no need for a fuse anymore.
-		this.fuse = null;
-		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
-		
-		if (Dungeon.level.heroFOV[cell]) {
-			CellEmitter.center( cell ).burst( BlastParticle.FACTORY, 30 );
-		}
-		
-		//no regular explosion damage
+		super.explode(cell);
 		
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {

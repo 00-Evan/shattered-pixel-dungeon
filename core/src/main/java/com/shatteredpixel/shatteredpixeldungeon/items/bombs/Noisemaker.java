@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -35,22 +34,18 @@ import com.watabou.utils.Bundle;
 public class Noisemaker extends Bomb {
 	
 	{
-		//TODO visuals
 		image = ItemSpriteSheet.NOISEMAKER;
+	}
+	
+	
+	@Override
+	public boolean explodesDestructively() {
+		return false;
 	}
 	
 	@Override
 	public void explode(int cell) {
-		//We're blowing up, so no need for a fuse anymore.
-		this.fuse = null;
-		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
-		
-		if (Dungeon.level.heroFOV[cell]) {
-			CellEmitter.center( cell ).burst( BlastParticle.FACTORY, 30 );
-		}
-		
-		//no regular explosion damage
+		super.explode(cell);
 		
 		Buff.affect(Dungeon.hero, Noise.class).set(cell);
 	}
