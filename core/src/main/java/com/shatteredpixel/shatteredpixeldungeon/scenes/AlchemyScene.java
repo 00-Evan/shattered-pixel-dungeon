@@ -127,8 +127,8 @@ public class AlchemyScene extends PixelScene {
 		int pos = (Camera.main.height - 100)/2;
 		
 		RenderedTextMultiline desc = PixelScene.renderMultiline(6);
-		desc.text( Messages.get(AlchemyScene.class, "text") );
 		desc.maxWidth(w);
+		desc.text( Messages.get(AlchemyScene.class, "text") );
 		desc.setPos(left + (w - desc.width())/2, pos);
 		add(desc);
 		

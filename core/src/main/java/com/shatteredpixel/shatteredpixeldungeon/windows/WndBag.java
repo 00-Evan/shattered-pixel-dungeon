@@ -66,6 +66,9 @@ import com.watabou.utils.RectF;
 
 public class WndBag extends WndTabbed {
 	
+	//only one wnditem can appear at a time
+	private static WndBag INSTANCE;
+	
 	//FIXME this is getting cumbersome, there should be a better way to manage this
 	public static enum Mode {
 		ALL,
@@ -118,6 +121,11 @@ public class WndBag extends WndTabbed {
 	public WndBag( Bag bag, Listener listener, Mode mode, String title ) {
 		
 		super();
+		
+		if( INSTANCE != null ){
+			INSTANCE.hide();
+		}
+		INSTANCE = this;
 		
 		this.listener = listener;
 		this.mode = mode;
@@ -257,6 +265,14 @@ public class WndBag extends WndTabbed {
 	protected void onClick( Tab tab ) {
 		hide();
 		Game.scene().addToFront(new WndBag(((BagTab) tab).bag, listener, mode, title));
+	}
+	
+	@Override
+	public void hide() {
+		super.hide();
+		if (INSTANCE == this){
+			INSTANCE = null;
+		}
 	}
 	
 	@Override

@@ -36,6 +36,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class WndItem extends Window {
+	
+	//only one wnditem can appear at a time
+	private static WndItem INSTANCE;
 
 	private static final float BUTTON_HEIGHT	= 16;
 	
@@ -51,6 +54,11 @@ public class WndItem extends Window {
 	public WndItem( final WndBag owner, final Item item , final boolean options ) {
 		
 		super();
+		
+		if( INSTANCE != null ){
+			INSTANCE.hide();
+		}
+		INSTANCE = this;
 
 		int width = WIDTH_MIN;
 		
@@ -161,7 +169,15 @@ public class WndItem extends Window {
 			x += btn.width()+1;
 		}
 	}
-
+	
+	@Override
+	public void hide() {
+		super.hide();
+		if (INSTANCE == this){
+			INSTANCE = null;
+		}
+	}
+	
 	private static Comparator<RedButton> widthComparator = new Comparator<RedButton>() {
 		@Override
 		public int compare(RedButton lhs, RedButton rhs) {
