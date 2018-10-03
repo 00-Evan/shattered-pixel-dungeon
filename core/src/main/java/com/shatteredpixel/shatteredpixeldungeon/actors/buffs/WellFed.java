@@ -32,8 +32,7 @@ public class WellFed extends Buff {
 		announced = true;
 	}
 	
-	//heals one HP every 10 turns for 450 turns
-	int left = (int)Hunger.STARVING;
+	int left;
 	
 	@Override
 	public boolean act() {
@@ -47,6 +46,11 @@ public class WellFed extends Buff {
 		
 		spend(TICK);
 		return true;
+	}
+	
+	public void reset(){
+		//heals one HP every 10 turns for 450 turns
+		left = (int)Hunger.STARVING;
 	}
 	
 	@Override

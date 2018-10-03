@@ -95,7 +95,7 @@ public abstract class ExoticScroll extends Scroll {
 	
 	@Override
 	public void setKnown() {
-		if (isKnown()) {
+		if (!isKnown()) {
 			handler.know(exoToReg.get(this.getClass()));
 			updateQuickslot();
 		}
