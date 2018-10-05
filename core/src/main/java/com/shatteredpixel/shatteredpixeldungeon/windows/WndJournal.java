@@ -51,7 +51,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-//FIXME a lot of cleanup and improvements to do here
 public class WndJournal extends WndTabbed {
 	
 	private static final int WIDTH_P    = 130;
@@ -304,6 +303,7 @@ public class WndJournal extends WndTabbed {
 		private IconTitle title;
 		private RenderedTextMultiline body;
 		
+		private ScrollPane list;
 		private ArrayList<QuickRecipe> recipes = new ArrayList<>();
 		
 		@Override
@@ -330,9 +330,11 @@ public class WndJournal extends WndTabbed {
 			title = new IconTitle();
 			title.icon( new ItemSprite(ItemSpriteSheet.ALCH_PAGE));
 			title.visible = false;
-			add(title);
+
 			body = PixelScene.renderMultiline(6);
-			add(body);
+			
+			list = new ScrollPane(new Component());
+			add(list);
 		}
 		
 		@Override
@@ -347,6 +349,9 @@ public class WndJournal extends WndTabbed {
 						buttonWidth, ITEM_HEIGHT);
 				PixelScene.align(pageButtons[i]);
 			}
+			
+			list.setRect(0, pageButtons[NUM_BUTTONS-1].bottom() + 1, width,
+					height - pageButtons[NUM_BUTTONS-1].bottom() - 1);
 			
 			updateList();
 		}
@@ -365,14 +370,6 @@ public class WndJournal extends WndTabbed {
 				return;
 			}
 			
-			title.visible = true;
-			title.label(Document.ALCHEMY_GUIDE.pageTitle(currentPageIdx));
-			title.setRect(0, pageButtons[NUM_BUTTONS-1].bottom(), width(), 10);
-			
-			body.maxWidth((int)width());
-			body.text(Document.ALCHEMY_GUIDE.pageBody(currentPageIdx));
-			body.setPos(0, title.bottom());
-			
 			for (QuickRecipe r : recipes){
 				if (r != null) {
 					r.killAndErase();
@@ -381,16 +378,30 @@ public class WndJournal extends WndTabbed {
 			}
 			recipes.clear();
 			
+			Component content = list.content();
+			
+			content.clear();
+			
+			title.visible = true;
+			title.label(Document.ALCHEMY_GUIDE.pageTitle(currentPageIdx));
+			title.setRect(0, 0, width(), 10);
+			content.add(title);
+			
+			body.maxWidth((int)width());
+			body.text(Document.ALCHEMY_GUIDE.pageBody(currentPageIdx));
+			body.setPos(0, title.bottom());
+			content.add(body);
+			
 			ArrayList<QuickRecipe> toAdd = QuickRecipe.getRecipes(currentPageIdx);
 			
 			float left;
-			float top = body.bottom() + 2;
+			float top = body.bottom();
 			int w;
 			ArrayList<QuickRecipe> toAddThisRow = new ArrayList<>();
 			while (!toAdd.isEmpty()){
-				while (!toAdd.isEmpty() && toAdd.get(0) == null){
-					top += 2;
+				if (toAdd.get(0) == null){
 					toAdd.remove(0);
+					top += 6;
 				}
 				
 				w = 0;
@@ -402,16 +413,37 @@ public class WndJournal extends WndTabbed {
 				
 				float spacing = (width() - w)/(toAddThisRow.size() + 1);
 				left = spacing;
-				for (QuickRecipe r : toAddThisRow){
+				while (!toAddThisRow.isEmpty()){
+					QuickRecipe r = toAddThisRow.remove(0);
 					r.setPos(left, top);
 					left += r.width() + spacing;
+					if (!toAddThisRow.isEmpty()) {
+						ColorBlock spacer = new ColorBlock(1, 16, 0xFF222222);
+						spacer.y = top;
+						spacer.x = left - spacing / 2;
+						content.add(spacer);
+					}
 					recipes.add(r);
-					add(r);
+					content.add(r);
+				}
+				
+				if (!toAdd.isEmpty() && toAdd.get(0) == null){
+					toAdd.remove(0);
+				}
+				
+				if (!toAdd.isEmpty() && toAdd.get(0) != null) {
+					ColorBlock spacer = new ColorBlock(width(), 1, 0xFF222222);
+					spacer.y = top + 16;
+					spacer.x = 0;
+					content.add(spacer);
 				}
 				top += 17;
 				toAddThisRow.clear();
 			}
 			
+			content.setSize(width(), top);
+			list.setSize(list.width(), list.height());
+			list.scrollTo(0, 0);
 		}
 	}
 	

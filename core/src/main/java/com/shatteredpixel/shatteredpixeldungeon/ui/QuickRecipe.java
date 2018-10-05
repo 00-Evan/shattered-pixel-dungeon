@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAq
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfIcyTouch;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfRestoration;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfToxicEssence;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfVitality;
@@ -146,6 +147,9 @@ public class QuickRecipe extends Component {
 				ShatteredPixelDungeon.scene().addToFront(new WndInfoItem(output));
 			}
 		};
+		if (!hasInputs){
+			this.output.icon.alpha(0.3f);
+		}
 		this.output.showParams(true, false, true);
 		add(this.output);
 		
@@ -302,9 +306,12 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe( new StewedMeat.twoMeat() ));
 				result.add(new QuickRecipe( new StewedMeat.threeMeat() ));
 				result.add(null);
+				result.add(null);
 				result.add(new QuickRecipe( new Feast.Recipe(),
 						new ArrayList<Item>(Arrays.asList(new Pasty(), new Food(), new MysteryMeat.PlaceHolder())),
 						new Feast()));
+				result.add(null);
+				result.add(null);
 				result.add(new QuickRecipe( new Blandfruit.CookFruit(),
 						new ArrayList<>(Arrays.asList(new Blandfruit(), new Plant.Seed.PlaceHolder())),
 						new Blandfruit(){
@@ -320,11 +327,17 @@ public class QuickRecipe extends Component {
 				return result;
 			case 6:
 				r = new Bomb.EnhanceBomb();
+				int i = 0;
 				for (Class<?> cls : Bomb.EnhanceBomb.validIngredients.keySet()){
 					try{
+						if (i == 2){
+							result.add(null);
+							i = 0;
+						}
 						Item item = (Item) cls.newInstance();
 						ArrayList<Item> in = new ArrayList<Item>(Arrays.asList(new Bomb(), item));
 						result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
+						i++;
 					} catch (Exception e){
 						ShatteredPixelDungeon.reportException(e);
 					}
@@ -336,6 +349,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new FrostfireBrew.Recipe()));
 				result.add(new QuickRecipe(new CausticBrew.Recipe()));
 				result.add(null);
+				result.add(null);
 				result.add(new QuickRecipe(new InfernalBrew.Recipe()));
 				result.add(new QuickRecipe(new BlizzardBrew.Recipe()));
 				result.add(new QuickRecipe(new ShockingBrew.Recipe()));
@@ -346,18 +360,22 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new ElixirOfHoneyedHealing.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfAquaticRejuvenation.Recipe()));
 				result.add(null);
+				result.add(null);
 				result.add(new QuickRecipe(new ElixirOfDragonsBlood.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfIcyTouch.Recipe()));
 				result.add(new QuickRecipe(new ElixirOfToxicEssence.Recipe()));
+				result.add(new QuickRecipe(new ElixirOfMight.Recipe()));
 				return result;
 			case 9:
 				result.add(new QuickRecipe(new MagicalPorter.Recipe()));
 				result.add(new QuickRecipe(new PhaseShift.Recipe()));
 				result.add(new QuickRecipe(new BeaconOfReturning.Recipe()));
 				result.add(null);
+				result.add(null);
 				result.add(new QuickRecipe(new AquaBlast.Recipe()));
 				result.add(new QuickRecipe(new FeatherFall.Recipe()));
 				result.add(new QuickRecipe(new ReclaimTrap.Recipe()));
+				result.add(null);
 				result.add(null);
 				result.add(new QuickRecipe(new MagicalInfusion.Recipe()));
 				result.add(new QuickRecipe(new CurseInfusion.Recipe()));
