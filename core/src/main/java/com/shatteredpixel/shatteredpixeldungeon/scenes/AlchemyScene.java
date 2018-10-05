@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -32,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -45,8 +45,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndDocument;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
@@ -250,7 +250,23 @@ public class AlchemyScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				AlchemyScene.this.addToFront(new WndDocument(Document.ALCHEMY_GUIDE));
+				clearSlots();
+				updateState();
+				AlchemyScene.this.addToFront(new Window(){
+				
+					{
+						WndJournal.AlchemyTab t = new WndJournal.AlchemyTab();
+						if (SPDSettings.landscape()) {
+							resize(200, 130);
+							t.setRect(0, 0, 200, 130);
+						} else {
+							resize(130, 180);
+							t.setRect(0, 0, 130, 180);
+						}
+						add(t);
+					}
+				
+				});
 			}
 		};
 		btnGuide.setRect(0, 0, 16, 16);
@@ -450,6 +466,8 @@ public class AlchemyScene extends PixelScene {
 							Dungeon.level.drop(inputs[i].item, Dungeon.hero.pos);
 						}
 					}
+					inputs[i].item(null);
+					inputs[i].slot.item(new WndBag.Placeholder(ItemSpriteSheet.SOMETHING));
 				}
 			}
 		}

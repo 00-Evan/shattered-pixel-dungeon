@@ -59,6 +59,10 @@ public enum Document {
 		return pages.containsKey(page) && pages.get(page);
 	}
 	
+	public boolean hasPage( int pageIdx ){
+		return hasPage( pages.keySet().toArray(new String[0])[pageIdx] );
+	}
+	
 	public boolean hasAnyPages(){
 		for (String p : pages.keySet()){
 			if (pages.get(p)) {
@@ -81,8 +85,16 @@ public enum Document {
 		return Messages.get( this, name() + "." + page + ".title");
 	}
 	
+	public String pageTitle( int pageIdx ){
+		return pageTitle( pages.keySet().toArray(new String[0])[pageIdx] );
+	}
+	
 	public String pageBody( String page ){
 		return Messages.get( this, name() + "." + page + ".body");
+	}
+	
+	public String pageBody( int pageIdx ){
+		return pageBody( pages.keySet().toArray(new String[0])[pageIdx] );
 	}
 
 	public static final String GUIDE_INTRO_PAGE = "Intro";
@@ -103,17 +115,13 @@ public enum Document {
 		ALCHEMY_GUIDE.pages.put("Potions",              false);
 		ALCHEMY_GUIDE.pages.put("Stones",               false);
 		ALCHEMY_GUIDE.pages.put("Darts",                false);
-		ALCHEMY_GUIDE.pages.put("Exotics",              false);
-		ALCHEMY_GUIDE.pages.put("Energy",               false);
-		ALCHEMY_GUIDE.pages.put("Food",                 false);
+		ALCHEMY_GUIDE.pages.put("Exotic_Potions",       false);
+		ALCHEMY_GUIDE.pages.put("Exotic_Scrolls",       false);
+		ALCHEMY_GUIDE.pages.put("Energy_Food",          false);
 		ALCHEMY_GUIDE.pages.put("Bombs",                false);
-		ALCHEMY_GUIDE.pages.put("Combo_Brews",          false);
-		ALCHEMY_GUIDE.pages.put("Heal_Elixirs",         false);
-		ALCHEMY_GUIDE.pages.put("AOE_Brews",            false);
-		ALCHEMY_GUIDE.pages.put("Imbue_Elixirs",        false);
-		ALCHEMY_GUIDE.pages.put("Tele_Spells",          false);
-		ALCHEMY_GUIDE.pages.put("Item_Spells",          false);
-		ALCHEMY_GUIDE.pages.put("Enviro_Spells",        false);
+		ALCHEMY_GUIDE.pages.put("Brews",                false);
+		ALCHEMY_GUIDE.pages.put("Elixirs",              false);
+		ALCHEMY_GUIDE.pages.put("Spells",               false);
 	}
 	
 	private static final String DOCUMENTS = "documents";

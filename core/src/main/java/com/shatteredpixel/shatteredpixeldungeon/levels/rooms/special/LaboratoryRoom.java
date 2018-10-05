@@ -84,9 +84,8 @@ public class LaboratoryRoom extends SpecialRoom {
 			}
 		}
 		
-		//drops a page every room for now
-		//TODO make pages rarer as players get more, once more alchemy comes out
-		if(!missingPages.isEmpty()){
+		//pages after 5 are always deeper than the sewers
+		if(!missingPages.isEmpty() && (missingPages.size() > 5 || Dungeon.depth > 5)){
 			AlchemyPage p = new AlchemyPage();
 			p.page(missingPages.get(0));
 			int pos;

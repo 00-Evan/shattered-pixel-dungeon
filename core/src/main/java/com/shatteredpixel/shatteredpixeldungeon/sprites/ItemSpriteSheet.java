@@ -36,32 +36,40 @@ public class ItemSpriteSheet {
 	}
 
 	private static final int PLACEHOLDERS   =                               xy(1, 1);   //16 slots
-	//null warning occupies space 0, should only show up if there's a bug.
-	public static final int NULLWARN        = PLACEHOLDERS+0;
+	//SOMETHING is the default item sprite at position 0. May show up ingame if there are bugs.
+	public static final int SOMETHING       = PLACEHOLDERS+0;
 	public static final int WEAPON_HOLDER   = PLACEHOLDERS+1;
 	public static final int ARMOR_HOLDER    = PLACEHOLDERS+2;
-	public static final int WAND_HOLDER     = PLACEHOLDERS+3;
-	public static final int RING_HOLDER     = PLACEHOLDERS+4;
-	public static final int ARTIFACT_HOLDER = PLACEHOLDERS+5;
-	public static final int POTION_HOLDER   = PLACEHOLDERS+6;
-	public static final int SCROLL_HOLDER   = PLACEHOLDERS+7;
-	public static final int SEED_HOLDER     = PLACEHOLDERS+8;
-	public static final int STONE_HOLDER    = PLACEHOLDERS+9;
-	public static final int MEAT_HOLDER     = PLACEHOLDERS+10;
-	public static final int SOMETHING       = PLACEHOLDERS+11;
+	public static final int MISSILE_HOLDER  = PLACEHOLDERS+3;
+	public static final int WAND_HOLDER     = PLACEHOLDERS+4;
+	public static final int RING_HOLDER     = PLACEHOLDERS+5;
+	public static final int ARTIFACT_HOLDER = PLACEHOLDERS+6;
+	public static final int FOOD_HOLDER     = PLACEHOLDERS+7;
+	public static final int BOMB_HOLDER     = PLACEHOLDERS+8;
+	public static final int POTION_HOLDER   = PLACEHOLDERS+9;
+	public static final int SCROLL_HOLDER   = PLACEHOLDERS+11;
+	public static final int SEED_HOLDER     = PLACEHOLDERS+10;
+	public static final int STONE_HOLDER    = PLACEHOLDERS+12;
+	public static final int BREW_HOLDER     = PLACEHOLDERS+13;
+	public static final int ELIXIR_HOLDER   = PLACEHOLDERS+14;
+	public static final int SPELL_HOLDER    = PLACEHOLDERS+15;
 	static{
-		assignItemRect(NULLWARN,        16, 7);
+		assignItemRect(SOMETHING,       8,  13);
 		assignItemRect(WEAPON_HOLDER,   14, 14);
 		assignItemRect(ARMOR_HOLDER,    14, 12);
+		assignItemRect(MISSILE_HOLDER,  15, 15);
 		assignItemRect(WAND_HOLDER,     14, 14);
 		assignItemRect(RING_HOLDER,     8,  10);
 		assignItemRect(ARTIFACT_HOLDER, 15, 15);
+		assignItemRect(FOOD_HOLDER,     15, 11);
+		assignItemRect(BOMB_HOLDER,     10, 13);
 		assignItemRect(POTION_HOLDER,   12, 14);
-		assignItemRect(SCROLL_HOLDER,   15, 14);
 		assignItemRect(SEED_HOLDER,     10, 10);
+		assignItemRect(SCROLL_HOLDER,   15, 14);
 		assignItemRect(STONE_HOLDER,    14, 12);
-		assignItemRect(MEAT_HOLDER,     15, 11);
-		assignItemRect(SOMETHING,       8,  13);
+		assignItemRect(BREW_HOLDER,     10, 14);
+		assignItemRect(ELIXIR_HOLDER,   10, 14);
+		assignItemRect(SPELL_HOLDER,    8,  16);
 	}
 
 	private static final int UNCOLLECTIBLE  =                               xy(1, 2);   //16 slots

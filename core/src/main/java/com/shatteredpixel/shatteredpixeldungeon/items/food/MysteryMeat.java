@@ -76,7 +76,7 @@ public class MysteryMeat extends Food {
 	public static class PlaceHolder extends MysteryMeat {
 		
 		{
-			image = ItemSpriteSheet.MEAT_HOLDER;
+			image = ItemSpriteSheet.FOOD_HOLDER;
 		}
 		
 		@Override

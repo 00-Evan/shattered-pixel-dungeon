@@ -58,6 +58,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Bomb extends Item {
 	
@@ -305,17 +306,19 @@ public class Bomb extends Item {
 	
 	public static class EnhanceBomb extends Recipe {
 		
-		private static final HashMap<Class<?extends Item>, Class<?extends Bomb>> validIngredients = new HashMap<>();
+		public static final LinkedHashMap<Class<?extends Item>, Class<?extends Bomb>> validIngredients = new LinkedHashMap<>();
 		static {
-			validIngredients.put(PotionOfLiquidFlame.class,     Firebomb.class);
 			validIngredients.put(PotionOfFrost.class,           FrostBomb.class);
-			validIngredients.put(PotionOfHealing.class,         RegrowthBomb.class);
-			validIngredients.put(PotionOfInvisibility.class,    Flashbang.class);
-			
-			validIngredients.put(ScrollOfRecharging.class,      ShockBomb.class);
-			validIngredients.put(ScrollOfRemoveCurse.class,     HolyBomb.class);
 			validIngredients.put(ScrollOfMirrorImage.class,     WoollyBomb.class);
+			
+			validIngredients.put(PotionOfLiquidFlame.class,     Firebomb.class);
 			validIngredients.put(ScrollOfRage.class,            Noisemaker.class);
+			
+			validIngredients.put(PotionOfInvisibility.class,    Flashbang.class);
+			validIngredients.put(ScrollOfRecharging.class,      ShockBomb.class);
+			
+			validIngredients.put(PotionOfHealing.class,         RegrowthBomb.class);
+			validIngredients.put(ScrollOfRemoveCurse.class,     HolyBomb.class);
 			
 			validIngredients.put(GooBlob.class,                 ArcaneBomb.class);
 			validIngredients.put(MetalShard.class,              ShrapnelBomb.class);
@@ -323,15 +326,17 @@ public class Bomb extends Item {
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
 		static {
-			bombCosts.put(Firebomb.class,       4);
 			bombCosts.put(FrostBomb.class,      3);
-			bombCosts.put(RegrowthBomb.class,    6);
-			bombCosts.put(Flashbang.class,      5);
-			
-			bombCosts.put(ShockBomb.class,      5);
-			bombCosts.put(HolyBomb.class,       6);
 			bombCosts.put(WoollyBomb.class,     3);
+			
+			bombCosts.put(Firebomb.class,       4);
 			bombCosts.put(Noisemaker.class,     4);
+			
+			bombCosts.put(Flashbang.class,      5);
+			bombCosts.put(ShockBomb.class,      5);
+			
+			bombCosts.put(RegrowthBomb.class,   6);
+			bombCosts.put(HolyBomb.class,       6);
 			
 			bombCosts.put(ArcaneBomb.class,     8);
 			bombCosts.put(ShrapnelBomb.class,   8);
