@@ -173,7 +173,6 @@ public abstract class Recipe {
 	private static Recipe[] oneIngredientRecipes = new Recipe[]{
 		new AlchemistsToolkit.upgradeKit(),
 		new Scroll.ScrollToStone(),
-		new ElixirOfMight.Recipe(),
 		new StewedMeat.oneMeat()
 	};
 	
@@ -184,6 +183,7 @@ public abstract class Recipe {
 		new ElixirOfAquaticRejuvenation.Recipe(),
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfIcyTouch.Recipe(),
+		new ElixirOfMight.Recipe(),
 		new ElixirOfHoneyedHealing.Recipe(),
 		new ElixirOfRestoration.Recipe(),
 		new ElixirOfToxicEssence.Recipe(),
