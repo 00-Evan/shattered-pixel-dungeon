@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
@@ -165,13 +166,13 @@ public class CityBossLevel extends Level {
 	
 	@Override
 	protected void createItems() {
-		Item item = Bones.get();
+		Item item = new Gold(10);
 		if (item != null) {
 			int pos;
 			do {
 				pos =
 					Random.IntRange( LEFT + 1, LEFT + HALL_WIDTH - 2 ) +
-					Random.IntRange( TOP + HALL_HEIGHT + 1, TOP + HALL_HEIGHT  + CHAMBER_HEIGHT ) * width();
+					Random.IntRange( TOP + HALL_HEIGHT + 2, TOP + HALL_HEIGHT  + CHAMBER_HEIGHT ) * width();
 			} while (pos == entrance);
 			drop( item, pos ).type = Heap.Type.REMAINS;
 		}

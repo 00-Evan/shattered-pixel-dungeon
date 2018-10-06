@@ -474,7 +474,8 @@ public class DriedRose extends Artifact {
 			Char enemy = super.chooseEnemy();
 			
 			//will never attack something far from the player
-			if (enemy != null &&  Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) <= 8){
+			if (enemy != null && Dungeon.level.mobs.contains(enemy)
+					&& Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) <= 8){
 				return enemy;
 			} else {
 				return null;

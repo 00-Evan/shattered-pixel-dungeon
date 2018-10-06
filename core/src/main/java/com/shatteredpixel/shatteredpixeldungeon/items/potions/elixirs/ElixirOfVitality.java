@@ -38,6 +38,7 @@ public class ElixirOfVitality extends Elixir {
 	@Override
 	public void apply(Hero hero) {
 		Buff.affect( hero, Healing.class ).setHeal((int)(0.8f*hero.HT + 14), 0.25f, 0);
+		PotionOfHealing.cure(hero);
 		Buff.affect(hero, Barrier.class).set((int)(0.6f*hero.HT + 10));
 	}
 	

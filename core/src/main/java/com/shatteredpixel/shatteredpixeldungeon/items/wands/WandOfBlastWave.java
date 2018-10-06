@@ -84,6 +84,9 @@ public class WandOfBlastWave extends DamageWand {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
 					int strength = 1 + Math.round(level() / 2f);
 					throwChar(ch, trajectory, strength);
+				} else if (ch == Dungeon.hero){
+					Dungeon.fail( getClass() );
+					GLog.n( Messages.get( this, "ondeath") );
 				}
 			}
 		}
@@ -100,11 +103,7 @@ public class WandOfBlastWave extends DamageWand {
 				throwChar(ch, trajectory, strength);
 			}
 		}
-
-		if (!curUser.isAlive()) {
-			Dungeon.fail( getClass() );
-			GLog.n( Messages.get( this, "ondeath") );
-		}
+		
 	}
 
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power){
@@ -140,6 +139,7 @@ public class WandOfBlastWave extends DamageWand {
 				}
 				Dungeon.level.press(ch.pos, ch, true);
 				if (ch == Dungeon.hero){
+					//FIXME currently no logic here if the throw effect kills the hero
 					Dungeon.observe();
 				}
 			}

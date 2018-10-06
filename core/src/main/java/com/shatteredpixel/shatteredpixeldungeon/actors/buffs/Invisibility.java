@@ -104,6 +104,11 @@ public class Invisibility extends FlavourBuff {
 			timeFreeze.detach();
 		}
 		
+		Preparation prep = Dungeon.hero.buff( Preparation.class );
+		if (prep != null){
+			prep.detach();
+		}
+		
 		Swiftthistle.TimeBubble bubble =  Dungeon.hero.buff( Swiftthistle.TimeBubble.class );
 		if (bubble != null){
 			bubble.detach();
