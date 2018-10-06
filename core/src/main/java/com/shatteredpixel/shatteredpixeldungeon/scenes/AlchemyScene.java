@@ -260,8 +260,8 @@ public class AlchemyScene extends PixelScene {
 							resize(200, 130);
 							t.setRect(0, 0, 200, 130);
 						} else {
-							resize(130, 180);
-							t.setRect(0, 0, 130, 180);
+							resize(126, 180);
+							t.setRect(0, 0, 126, 180);
 						}
 						add(t);
 					}

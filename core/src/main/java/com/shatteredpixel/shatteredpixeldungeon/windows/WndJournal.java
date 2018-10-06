@@ -53,7 +53,7 @@ import java.util.HashMap;
 
 public class WndJournal extends WndTabbed {
 	
-	private static final int WIDTH_P    = 130;
+	private static final int WIDTH_P    = 126;
 	private static final int HEIGHT_P   = 180;
 	
 	private static final int WIDTH_L    = 200;
@@ -420,7 +420,8 @@ public class WndJournal extends WndTabbed {
 					if (!toAddThisRow.isEmpty()) {
 						ColorBlock spacer = new ColorBlock(1, 16, 0xFF222222);
 						spacer.y = top;
-						spacer.x = left - spacing / 2;
+						spacer.x = left - spacing / 2 - 0.5f;
+						PixelScene.align(spacer);
 						content.add(spacer);
 					}
 					recipes.add(r);
@@ -440,7 +441,7 @@ public class WndJournal extends WndTabbed {
 				top += 17;
 				toAddThisRow.clear();
 			}
-			
+			top -=1;
 			content.setSize(width(), top);
 			list.setSize(list.width(), list.height());
 			list.scrollTo(0, 0);
