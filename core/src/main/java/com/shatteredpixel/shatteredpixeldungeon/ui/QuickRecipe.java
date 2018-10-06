@@ -316,14 +316,14 @@ public class QuickRecipe extends Component {
 						new ArrayList<>(Arrays.asList(new Blandfruit(), new Plant.Seed.PlaceHolder())),
 						new Blandfruit(){
 							{
-								name = "Cooked Blandfruit";
+								name = Messages.get(Blandfruit.class, "cooked");
 							}
 							
 							@Override
 							public String info() {
 								return "";
 							}
-						})); //TODO
+						}));
 				return result;
 			case 6:
 				r = new Bomb.EnhanceBomb();
