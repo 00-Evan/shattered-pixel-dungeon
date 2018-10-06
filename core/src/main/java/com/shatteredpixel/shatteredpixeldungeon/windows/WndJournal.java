@@ -53,11 +53,11 @@ import java.util.HashMap;
 
 public class WndJournal extends WndTabbed {
 	
-	private static final int WIDTH_P    = 126;
-	private static final int HEIGHT_P   = 180;
+	public static final int WIDTH_P     = 126;
+	public static final int HEIGHT_P    = 180;
 	
-	private static final int WIDTH_L    = 200;
-	private static final int HEIGHT_L   = 130;
+	public static final int WIDTH_L     = 200;
+	public static final int HEIGHT_L    = 130;
 	
 	private static final int ITEM_HEIGHT	= 18;
 	
