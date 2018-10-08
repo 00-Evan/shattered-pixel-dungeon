@@ -250,6 +250,8 @@ public class Heap implements Bundlable {
 				if (((Bomb) item).explodesDestructively()) {
 					//stop processing the burning, it will be replaced by the explosion.
 					return;
+				} else {
+					burnt = true;
 				}
 			}
 		}
