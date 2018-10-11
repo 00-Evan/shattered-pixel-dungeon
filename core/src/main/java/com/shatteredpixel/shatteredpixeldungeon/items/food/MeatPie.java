@@ -30,10 +30,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.util.ArrayList;
 
-public class Feast extends Food {
+public class MeatPie extends Food {
 	
 	{
-		image = ItemSpriteSheet.FEAST;
+		image = ItemSpriteSheet.MEAT_PIE;
 		energy = Hunger.STARVING*2f;
 	}
 	
@@ -92,7 +92,7 @@ public class Feast extends Food {
 		
 		@Override
 		public Item sampleOutput(ArrayList<Item> ingredients) {
-			return new Feast();
+			return new MeatPie();
 		}
 	}
 }
