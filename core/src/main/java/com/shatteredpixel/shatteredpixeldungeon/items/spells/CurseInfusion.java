@@ -71,7 +71,7 @@ public class CurseInfusion extends InventorySpell {
 			cost = 1;
 			
 			output = CurseInfusion.class;
-			outQuantity = 3;
+			outQuantity = 4;
 		}
 		
 	}

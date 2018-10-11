@@ -52,7 +52,7 @@ public class AquaBlast extends TargetedSpell {
 		Splash.at(cell, 0x00AAFF, 10);
 		
 		for (int i : PathFinder.NEIGHBOURS9){
-			if (i == 0 || Random.Int(2) == 0){
+			if (i == 0 || Random.Int(5) != 0){
 				int terr = Dungeon.level.map[cell + i];
 				if (terr == Terrain.EMPTY || terr == Terrain.GRASS ||
 						terr == Terrain.EMBERS || terr == Terrain.EMPTY_SP ||

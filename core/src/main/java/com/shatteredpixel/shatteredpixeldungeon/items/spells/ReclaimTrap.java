@@ -48,8 +48,8 @@ public class ReclaimTrap extends TargetedSpell {
 			t.disarm();
 			
 			ScrollOfRecharging.charge(hero);
-			Buff.affect(hero, Recharging.class, 10f);
-			Buff.affect(hero, ArtifactRecharge.class).set( 10 );
+			Buff.affect(hero, Recharging.class, 15f);
+			Buff.affect(hero, ArtifactRecharge.class).set( 15 );
 			
 		} else {
 			GLog.w(Messages.get(this, "no_trap"));
@@ -65,7 +65,7 @@ public class ReclaimTrap extends TargetedSpell {
 			cost = 8;
 			
 			output = ReclaimTrap.class;
-			outQuantity = 4;
+			outQuantity = 3;
 		}
 		
 	}

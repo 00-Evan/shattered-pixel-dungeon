@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.brews;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -29,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.utils.PathFinder;
 
 public class CausticBrew extends Brew {
@@ -40,15 +42,17 @@ public class CausticBrew extends Brew {
 	
 	@Override
 	public void shatter(int cell) {
-		for (int offset : PathFinder.NEIGHBOURS9){
-			
-			Splash.at( cell + offset, 0x000000, 5);
-			Char ch = Actor.findChar(cell + offset);
-			
-			if (ch != null){
-				Buff.affect(ch, Ooze.class).set( 20f );
+		
+		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
+		for (int i = 0; i < PathFinder.distance.length; i++) {
+			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+				Splash.at( i, 0x000000, 5);
+				Char ch = Actor.findChar(i);
+				
+				if (ch != null){
+					Buff.affect(ch, Ooze.class).set( 20f );
+				}
 			}
-			
 		}
 	}
 	

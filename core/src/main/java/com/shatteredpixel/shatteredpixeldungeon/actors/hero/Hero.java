@@ -1519,6 +1519,10 @@ public class Hero extends Char {
 
 		int distance = heroClass == HeroClass.ROGUE ? 2 : 1;
 		
+		boolean foresight = buff(Foresight.class) != null;
+		
+		if (foresight) distance++;
+		
 		int cx = pos % Dungeon.level.width();
 		int cy = pos / Dungeon.level.width();
 		int ax = cx - distance;
@@ -1540,8 +1544,6 @@ public class Hero extends Char {
 
 		TalismanOfForesight.Foresight talisman = buff( TalismanOfForesight.Foresight.class );
 		boolean cursed = talisman != null && talisman.isCursed();
-		
-		boolean foresight = buff(Foresight.class) != null;
 		
 		for (int y = ay; y <= by; y++) {
 			for (int x = ax, p = ax + y * Dungeon.level.width(); x <= bx; x++, p++) {

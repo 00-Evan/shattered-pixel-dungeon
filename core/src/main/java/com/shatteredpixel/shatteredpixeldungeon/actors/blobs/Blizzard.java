@@ -54,6 +54,7 @@ public class Blizzard extends Blob {
 					}
 					
 					Freezing.freeze(cell);
+					Freezing.freeze(cell);
 					
 				}
 			}

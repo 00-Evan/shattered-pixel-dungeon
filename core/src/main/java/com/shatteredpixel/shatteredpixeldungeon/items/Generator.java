@@ -265,13 +265,13 @@ public class Generator {
 					ScrollOfUpgrade.class, //3 drop every chapter, see Dungeon.souNeeded()
 					ScrollOfIdentify.class,
 					ScrollOfRemoveCurse.class,
-					ScrollOfMagicMapping.class,
 					ScrollOfMirrorImage.class,
 					ScrollOfRecharging.class,
+					ScrollOfTeleportation.class,
 					ScrollOfLullaby.class,
+					ScrollOfMagicMapping.class,
 					ScrollOfRage.class,
 					ScrollOfRetribution.class,
-					ScrollOfTeleportation.class,
 					ScrollOfTerror.class,
 					ScrollOfTransmutation.class
 			};

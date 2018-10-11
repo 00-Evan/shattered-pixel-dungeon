@@ -43,7 +43,7 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 	
 	@Override
 	public void apply(Hero hero) {
-		Buff.affect(hero, AquaHealing.class).set(hero.HT * 2);
+		Buff.affect(hero, AquaHealing.class).set(hero.HT * 3);
 	}
 	
 	public static class AquaHealing extends Buff {

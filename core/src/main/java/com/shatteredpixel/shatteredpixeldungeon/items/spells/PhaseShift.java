@@ -85,7 +85,7 @@ public class PhaseShift extends TargetedSpell {
 			cost = 6;
 			
 			output = PhaseShift.class;
-			outQuantity = 5;
+			outQuantity = 6;
 		}
 		
 	}

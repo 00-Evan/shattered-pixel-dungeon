@@ -338,8 +338,8 @@ public class Bomb extends Item {
 			bombCosts.put(RegrowthBomb.class,   6);
 			bombCosts.put(HolyBomb.class,       6);
 			
-			bombCosts.put(ArcaneBomb.class,     8);
-			bombCosts.put(ShrapnelBomb.class,   8);
+			bombCosts.put(ArcaneBomb.class,     10);
+			bombCosts.put(ShrapnelBomb.class,   10);
 		}
 		
 		@Override

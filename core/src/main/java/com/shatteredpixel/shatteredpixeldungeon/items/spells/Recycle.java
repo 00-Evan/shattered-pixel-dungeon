@@ -78,7 +78,7 @@ public class Recycle extends InventorySpell {
 			cost = 8;
 			
 			output = Recycle.class;
-			outQuantity = 5;
+			outQuantity = 6;
 		}
 		
 	}
