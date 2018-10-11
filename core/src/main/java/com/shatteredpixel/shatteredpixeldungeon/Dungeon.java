@@ -655,7 +655,7 @@ public class Dungeon {
 		for (int i=1; i <= 26; i++) {
 			
 			//dropped items
-			ArrayList<Item> items = new ArrayList<Item>();
+			ArrayList<Item> items = new ArrayList<>();
 			if (bundle.contains(Messages.format( DROPPED, i )))
 				for (Bundlable b : bundle.getCollection( Messages.format( DROPPED, i ) ) ) {
 					items.add( (Item)b );
@@ -665,7 +665,7 @@ public class Dungeon {
 			}
 			
 			//ported items
-			items.clear();
+			items = new ArrayList<>();
 			if (bundle.contains(Messages.format( PORTED, i )))
 				for (Bundlable b : bundle.getCollection( Messages.format( PORTED, i ) ) ) {
 					items.add( (Item)b );
