@@ -55,6 +55,12 @@ public class FrigidBrew extends Brew {
 		GameScene.add( Blob.seed( cell, 1000, StormCloud.class ) );
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (30 + 60);
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

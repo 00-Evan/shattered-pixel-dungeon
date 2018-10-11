@@ -51,7 +51,8 @@ public class ElixirOfMight extends Elixir {
 	
 	@Override
 	public int price() {
-		return 100 * quantity;
+		//prices of ingredients
+		return quantity * (50 + 30);
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {

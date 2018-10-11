@@ -63,4 +63,10 @@ public class Flashbang extends Bomb {
 		
 		
 	}
+	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (20 + 40);
+	}
 }

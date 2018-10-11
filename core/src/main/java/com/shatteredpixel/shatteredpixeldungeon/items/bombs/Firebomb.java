@@ -55,4 +55,10 @@ public class Firebomb extends Bomb {
 		}
 		Sample.INSTANCE.play(Assets.SND_BURNING);
 	}
+	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (20 + 30);
+	}
 }

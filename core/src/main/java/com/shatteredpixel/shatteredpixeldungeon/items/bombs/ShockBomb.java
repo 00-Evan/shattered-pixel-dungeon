@@ -49,4 +49,10 @@ public class ShockBomb extends Bomb {
 		}
 		Sample.INSTANCE.play(Assets.SND_LIGHTNING);
 	}
+	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (20 + 30);
+	}
 }

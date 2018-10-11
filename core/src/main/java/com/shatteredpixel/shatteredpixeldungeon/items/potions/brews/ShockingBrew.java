@@ -54,6 +54,12 @@ public class ShockingBrew extends Brew {
 		Sample.INSTANCE.play(Assets.SND_LIGHTNING);
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (40 + 60);
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

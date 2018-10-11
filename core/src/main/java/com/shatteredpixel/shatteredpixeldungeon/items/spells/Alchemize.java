@@ -58,6 +58,12 @@ public class Alchemize extends Spell implements AlchemyScene.AlchemyProvider {
 		//do nothing
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients, divided by output quantity
+		return Math.round(quantity * ((30 + 30) / 4f));
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

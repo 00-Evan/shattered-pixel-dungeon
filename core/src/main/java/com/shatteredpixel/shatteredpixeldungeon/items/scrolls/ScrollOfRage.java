@@ -89,6 +89,6 @@ public class ScrollOfRage extends Scroll {
 	
 	@Override
 	public int price() {
-		return isKnown() ? 30 * quantity : super.price();
+		return isKnown() ? 40 * quantity : super.price();
 	}
 }

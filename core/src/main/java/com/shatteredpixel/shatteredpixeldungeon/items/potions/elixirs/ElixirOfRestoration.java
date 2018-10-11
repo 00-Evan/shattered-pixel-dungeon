@@ -40,6 +40,12 @@ public class ElixirOfRestoration extends Elixir {
 		PotionOfCleansing.cleanse(hero);
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (30 + 60);
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

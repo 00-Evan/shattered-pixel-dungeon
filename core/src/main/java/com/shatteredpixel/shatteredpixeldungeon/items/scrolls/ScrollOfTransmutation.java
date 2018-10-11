@@ -250,5 +250,8 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		//does nothing, this shouldn't happen
 	}
 	
-	
+	@Override
+	public int price() {
+		return isKnown() ? 50 * quantity : super.price();
+	}
 }

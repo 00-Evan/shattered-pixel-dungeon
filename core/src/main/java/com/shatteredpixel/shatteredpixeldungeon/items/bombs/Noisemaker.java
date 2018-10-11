@@ -102,4 +102,10 @@ public class Noisemaker extends Bomb {
 			super.restoreFromBundle(bundle);
 		}
 	}
+	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (20 + 40);
+	}
 }

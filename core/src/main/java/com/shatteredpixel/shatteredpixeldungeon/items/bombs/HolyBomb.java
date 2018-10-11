@@ -68,4 +68,10 @@ public class HolyBomb extends Bomb {
 		}
 		Sample.INSTANCE.play( Assets.SND_READ );
 	}
+	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (20 + 30);
+	}
 }

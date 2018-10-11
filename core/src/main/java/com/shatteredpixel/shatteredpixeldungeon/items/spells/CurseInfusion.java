@@ -62,6 +62,12 @@ public class CurseInfusion extends InventorySpell {
 		}
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients, divided by output quantity
+		return Math.round(quantity * ((30 + 100) / 4f));
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

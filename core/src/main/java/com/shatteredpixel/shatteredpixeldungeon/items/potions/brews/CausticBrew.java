@@ -56,6 +56,12 @@ public class CausticBrew extends Brew {
 		}
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (30 + 50);
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

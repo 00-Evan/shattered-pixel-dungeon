@@ -45,4 +45,10 @@ public class FrostBomb extends Bomb {
 			}
 		}
 	}
+	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (20 + 30);
+	}
 }

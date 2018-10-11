@@ -45,7 +45,7 @@ public class Feast extends Food {
 	
 	@Override
 	public int price() {
-		return 30 * quantity;
+		return 40 * quantity;
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe {

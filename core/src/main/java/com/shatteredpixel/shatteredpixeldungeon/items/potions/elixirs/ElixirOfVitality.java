@@ -42,6 +42,12 @@ public class ElixirOfVitality extends Elixir {
 		Buff.affect(hero, Barrier.class).set((int)(0.6f*hero.HT + 10));
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (30 + 50);
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

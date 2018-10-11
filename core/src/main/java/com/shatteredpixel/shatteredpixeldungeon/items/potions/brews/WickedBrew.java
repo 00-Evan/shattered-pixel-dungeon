@@ -48,6 +48,12 @@ public class WickedBrew extends Brew {
 		GameScene.add( Blob.seed( cell, 1000, ParalyticGas.class ) );
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (30 + 40);
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

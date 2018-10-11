@@ -56,6 +56,12 @@ public class ReclaimTrap extends TargetedSpell {
 		}
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients, divided by output quantity
+		return Math.round(quantity * ((30 + 100) / 3f));
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

@@ -63,6 +63,12 @@ public class MagicalPorter extends InventorySpell {
 		//TODO vfx
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients, divided by output quantity
+		return Math.round(quantity * ((30 + 5) / 8f));
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

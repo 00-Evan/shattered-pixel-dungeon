@@ -102,4 +102,10 @@ public class RegrowthBomb extends Bomb {
 			plantCandidates.remove(plantPos);
 		}
 	}
+	
+	@Override
+	public int price() {
+		//prices of ingredients
+		return quantity * (20 + 30);
+	}
 }

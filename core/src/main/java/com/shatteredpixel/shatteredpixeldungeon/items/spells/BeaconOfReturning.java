@@ -175,6 +175,12 @@ public class BeaconOfReturning extends Spell {
 		returnPos	= bundle.getInt( POS );
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients, divided by output quantity
+		return Math.round(quantity * ((50 + 40) / 3f));
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{

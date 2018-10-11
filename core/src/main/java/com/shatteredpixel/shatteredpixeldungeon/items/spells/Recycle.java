@@ -69,6 +69,12 @@ public class Recycle extends InventorySpell {
 				item instanceof Runestone;
 	}
 	
+	@Override
+	public int price() {
+		//prices of ingredients, divided by output quantity
+		return Math.round(quantity * ((50 + 50) / 6f));
+	}
+	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
