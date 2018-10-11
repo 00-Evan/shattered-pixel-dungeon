@@ -118,7 +118,7 @@ public class StoneOfClairvoyance extends Runestone {
 			Sample.INSTANCE.play( Assets.SND_SECRET );
 		}
 		
-		Sample.INSTANCE.play( Assets.SND_READ );
+		Sample.INSTANCE.play( Assets.SND_TELEPORT );
 		GameScene.updateFog();
 	}
 	
