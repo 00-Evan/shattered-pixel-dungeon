@@ -26,9 +26,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
@@ -72,7 +74,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 					protected void onSelect(int index) {
 						if (index < 3) {
 							((Weapon) item).enchant(enchants[index]);
-							//TODO text
+							GLog.p(Messages.get(StoneOfEnchantment.class, "weapon"));
 							((ScrollOfEnchantment)curItem).readAnimation();
 							
 							Sample.INSTANCE.play( Assets.SND_READ );
@@ -109,7 +111,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 					protected void onSelect(int index) {
 						if (index < 3) {
 							((Armor) item).inscribe(glyphs[index]);
-							//TODO text
+							GLog.p(Messages.get(StoneOfEnchantment.class, "armor"));
 							((ScrollOfEnchantment)curItem).readAnimation();
 							
 							Sample.INSTANCE.play( Assets.SND_READ );
