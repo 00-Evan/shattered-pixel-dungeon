@@ -53,7 +53,11 @@ public abstract class DocumentPage extends Item {
 	public final boolean doPickUp(Hero hero) {
 		GameScene.pickUpJournal(this, hero.pos);
 		GameScene.flashJournal();
-		WndJournal.last_index = 0;
+		if (document() == Document.ALCHEMY_GUIDE){
+			WndJournal.last_index = 1;
+		} else {
+			WndJournal.last_index = 0;
+		}
 		document().addPage(page);
 		Sample.INSTANCE.play( Assets.SND_ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );
