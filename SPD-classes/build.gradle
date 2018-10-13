@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "28.0.2"
 
     task ndkBuild(type: Exec){
         description "builds JNI libs from source. " +

@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "28.0.2"
 
     defaultConfig {
         resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it",
