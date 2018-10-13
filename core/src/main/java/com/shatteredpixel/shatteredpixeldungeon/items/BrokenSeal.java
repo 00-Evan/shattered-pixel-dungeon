@@ -127,6 +127,7 @@ public class BrokenSeal extends Item {
 		public synchronized void supercharge(int maxShield){
 			if (maxShield > shielding){
 				shielding = maxShield;
+				target.needsShieldUpdate = true;
 			}
 		}
 
