@@ -21,6 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
@@ -30,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.noosa.audio.Sample;
 
 public class CurseInfusion extends InventorySpell {
 	
@@ -41,7 +45,8 @@ public class CurseInfusion extends InventorySpell {
 	@Override
 	protected void onItemSelected(Item item) {
 		
-		//TODO visuals
+		CellEmitter.get(curUser.pos).burst(ShadowParticle.UP, 5);
+		Sample.INSTANCE.play(Assets.SND_CURSED);
 		
 		item.cursed = true;
 		if (item instanceof MeleeWeapon || item instanceof Boomerang) {

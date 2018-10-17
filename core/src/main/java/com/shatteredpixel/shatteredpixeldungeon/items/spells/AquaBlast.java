@@ -48,7 +48,6 @@ public class AquaBlast extends TargetedSpell {
 	protected void affectTarget(Ballistica bolt, Hero hero) {
 		int cell = bolt.collisionPos;
 		
-		//TODO perhaps different color based on depth?
 		Splash.at(cell, 0x00AAFF, 10);
 		
 		for (int i : PathFinder.NEIGHBOURS9){

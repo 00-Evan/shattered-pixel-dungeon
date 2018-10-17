@@ -136,7 +136,6 @@ public class BeaconOfReturning extends Spell {
 			InterlevelScene.returnPos = returnPos;
 			Game.switchScene( InterlevelScene.class );
 		}
-		returnDepth = -1;
 		detach(hero.belongings.backpack);
 	}
 	

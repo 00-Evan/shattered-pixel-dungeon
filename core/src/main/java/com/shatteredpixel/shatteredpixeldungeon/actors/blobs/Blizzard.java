@@ -64,7 +64,7 @@ public class Blizzard extends Blob {
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
-		emitter.pour( Speck.factory( Speck.BLIZZARD ), 0.2f );
+		emitter.pour( Speck.factory( Speck.BLIZZARD, true ), 0.4f );
 	}
 	
 	@Override

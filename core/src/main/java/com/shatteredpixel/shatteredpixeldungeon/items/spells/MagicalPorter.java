@@ -60,7 +60,6 @@ public class MagicalPorter extends InventorySpell {
 		}
 		ported.add(result);
 		
-		//TODO vfx
 	}
 	
 	@Override

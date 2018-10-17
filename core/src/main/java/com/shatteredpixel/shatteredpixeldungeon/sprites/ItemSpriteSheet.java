@@ -67,8 +67,8 @@ public class ItemSpriteSheet {
 		assignItemRect(SEED_HOLDER,     10, 10);
 		assignItemRect(SCROLL_HOLDER,   15, 14);
 		assignItemRect(STONE_HOLDER,    14, 12);
-		assignItemRect(BREW_HOLDER,     10, 14);
-		assignItemRect(ELIXIR_HOLDER,   10, 14);
+		assignItemRect(BREW_HOLDER,     12, 14);
+		assignItemRect(ELIXIR_HOLDER,   12, 14);
 		assignItemRect(SPELL_HOLDER,    8,  16);
 	}
 
@@ -543,14 +543,14 @@ public class ItemSpriteSheet {
 	public static final int ELIXIR_SURGE    = ELIXIRS+6;
 	public static final int ELIXIR_HONEY    = ELIXIRS+7;
 	static{
-		assignItemRect(ELIXIR_DRAGON,   10, 14);
-		assignItemRect(ELIXIR_TOXIC,    10, 14);
-		assignItemRect(ELIXIR_ICY,      10, 14);
-		assignItemRect(ELIXIR_MIGHT,    10, 14);
-		assignItemRect(ELIXIR_AQUA,     10, 14);
-		assignItemRect(ELIXIR_RESTO,    10, 14);
-		assignItemRect(ELIXIR_SURGE,    10, 14);
-		assignItemRect(ELIXIR_HONEY,    10, 14);
+		assignItemRect(ELIXIR_DRAGON,   12, 14);
+		assignItemRect(ELIXIR_TOXIC,    12, 14);
+		assignItemRect(ELIXIR_ICY,      12, 14);
+		assignItemRect(ELIXIR_MIGHT,    12, 14);
+		assignItemRect(ELIXIR_AQUA,     12, 14);
+		assignItemRect(ELIXIR_RESTO,    12, 14);
+		assignItemRect(ELIXIR_SURGE,    12, 14);
+		assignItemRect(ELIXIR_HONEY,    12, 14);
 	}
 	
 	private static final int BREWS        =                                 xy(1, 26);  //16 slots
@@ -563,14 +563,14 @@ public class ItemSpriteSheet {
 	public static final int BREW_BLIZZARD  = BREWS+6;
 	public static final int BREW_SHOCKING  = BREWS+7;
 	static{
-		assignItemRect(BREW_WICKED,     10, 14);
-		assignItemRect(BREW_FRIGID,     10, 14);
-		assignItemRect(BREW_FROSTFIRE,  10, 14);
+		assignItemRect(BREW_WICKED,     12, 14);
+		assignItemRect(BREW_FRIGID,     12, 14);
+		assignItemRect(BREW_FROSTFIRE,  12, 14);
 		
-		assignItemRect(BREW_CAUSTIC,    10, 14);
-		assignItemRect(BREW_INFERNAL,   10, 14);
-		assignItemRect(BREW_BLIZZARD,   10, 14);
-		assignItemRect(BREW_SHOCKING,   10, 14);
+		assignItemRect(BREW_CAUSTIC,    12, 14);
+		assignItemRect(BREW_INFERNAL,   12, 14);
+		assignItemRect(BREW_BLIZZARD,   12, 14);
+		assignItemRect(BREW_SHOCKING,   12, 14);
 	}
 	//sprites still pretty WIP
 	private static final int SPELLS         =                               xy(1, 27);  //16 slots

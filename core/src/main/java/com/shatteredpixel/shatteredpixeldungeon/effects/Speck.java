@@ -330,15 +330,15 @@ public class Speck extends Image {
 			break;
 			
 		case INFERNO:
-			hardlight( 0xFF0000 );
-			angularSpeed = Random.Float( -20, +20 );
+			hardlight( 0xEE7722 );
+			angularSpeed = Random.Float( 200, 300 ) * (Random.Int(2) == 0 ? -1 : 1);
 			angle = Random.Float( 360 );
 			lifespan = Random.Float( 1f, 3f );
 			break;
 			
 		case BLIZZARD:
 			hardlight( 0xFFFFFF );
-			angularSpeed = Random.Float( -20, +20 );
+			angularSpeed = Random.Float( 200, 300 ) * (Random.Int(2) == 0 ? -1 : 1);
 			angle = Random.Float( 360 );
 			lifespan = Random.Float( 1f, 3f );
 			break;

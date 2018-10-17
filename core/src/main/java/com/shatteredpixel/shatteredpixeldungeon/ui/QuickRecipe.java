@@ -347,12 +347,12 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new WickedBrew.Recipe()));
 				result.add(new QuickRecipe(new FrigidBrew.Recipe()));
 				result.add(new QuickRecipe(new FrostfireBrew.Recipe()));
-				result.add(new QuickRecipe(new CausticBrew.Recipe()));
 				result.add(null);
 				result.add(null);
 				result.add(new QuickRecipe(new InfernalBrew.Recipe()));
 				result.add(new QuickRecipe(new BlizzardBrew.Recipe()));
 				result.add(new QuickRecipe(new ShockingBrew.Recipe()));
+				result.add(new QuickRecipe(new CausticBrew.Recipe()));
 				return result;
 			case 8:
 				result.add(new QuickRecipe(new ElixirOfRestoration.Recipe()));

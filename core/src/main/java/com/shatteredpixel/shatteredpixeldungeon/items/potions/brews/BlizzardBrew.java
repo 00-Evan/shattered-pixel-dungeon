@@ -40,8 +40,6 @@ public class BlizzardBrew extends Brew {
 	@Override
 	public void shatter(int cell) {
 		if (Dungeon.level.heroFOV[cell]) {
-			setKnown();
-			
 			splash( cell );
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
