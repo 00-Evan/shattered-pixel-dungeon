@@ -87,10 +87,10 @@ public class WndLangs extends Window {
 			} else {
 				switch (langs.get(i).status()) {
 					case INCOMPLETE:
-						btn.textColor(0x999999);
+						btn.textColor(0x888888);
 						break;
 					case UNREVIEWED:
-						btn.textColor(0xCCCCCC);
+						btn.textColor(0xBBBBBB);
 						break;
 				}
 			}
