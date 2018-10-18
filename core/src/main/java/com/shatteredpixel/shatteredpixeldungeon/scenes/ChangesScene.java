@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.curses.Bulk;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
@@ -50,10 +51,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
@@ -134,45 +141,186 @@ public class ChangesScene extends PixelScene {
 		add( list );
 		
 		//**********************
-		//       v0.6.5
+		//       v0.7.0
 		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.6.5c", false, "");
+		ChangeInfo changes = new ChangeInfo("v0.7.0", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (Caused by 0.6.5):\n" +
-				"_-_ Exploit involving the timekeeper's hourglass that allowed for free attacks"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
-		
-		changes = new ChangeInfo("v0.6.5a & v0.6.5b", false, "");
+		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
-				"Soul mark chance changed. Now has a 10% chance to activate per wand level, stacking multiplicatively, with a base of 10% at +0.\n" +
-				"e.g. +0 is 10%, +1 is 19%, +2 is 27%, etc.\n\n" +
-				"Previous soul mark chance was 9% at base plus 6% per level, stacking linearly.\n\n" +
-				"This substantially increases soul mark chance at wand levels +1 to +5"));
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released Oct 18th, 2018\n" +
+				"_-_ 503 days after Shattered v0.6.0\n" +
+				"_-_ 170 days after Shattered v0.6.5\n" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress",
-				"Huntress ranged weapon durability boost now stacks with magical holster durability boost, for a total of 180% durability."));
+		changes.addButton( new ChangeButton(new Image(Assets.TILES_SEWERS, 48, 96, 16, 16 ), "Alchemy Overhaul!",
+				"The game's alchemy system has been entirely overhauled!\n\n" +
+				"Alchemy is now a full consumable crafting system which lets you create all kinds of new items.\n\n" +
+				"There is also a new resource: alchemical energy. Every alchemy pot has some energy within it. Some recipes require this energy, so make sure to use it wisely!\n\n" +
+				"All of this is explained in a new guidebook specifically for alchemy. Pages of it can be found in alchemy rooms. Existing players will be given some pages automatically to get started."));
+		
+		changes.addButton( new ChangeButton(new AlchemistsToolkit(),
+				"The Alchemist's Toolkit returns!\n\n" +
+				"The toolkit can be found like any other artifact, and acts as a sort of horn of plenty for the new alchemical energy resource."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 32, 112, 16, 16), "New Consumables",
+				"Added a new scroll, potion, and plant!\n\n" +
+				"_-_ Scroll of transmutation is a rare scroll which allows the user to change an item into another one of the same type. Note that it cannot be used to make scrolls of magical infusion.\n\n" +
+				"_-_ Potion of haste is an uncommon potion which grants a temporary burst of speed.\n\n" +
+				"_-_ Swiftthistle is the plant counterpart to potions of haste. Both the plant and tipped dart give various speed or time-based buffs."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_BLINK, null), "Runestones",
+				"Added 10 new runestones, and runestone crafting!\n\n" +
+				"Two or three runestones can be crafted by using a scroll with an alchemy pot.\n\n" +
+				"Runestones give various effects that are similar in theme to their scroll counterpart.\n\n" +
+				"Runestones also naturally appear in alchemy rooms, and a new special room type."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_AMBER, null), "Exotic Potions",
+				"Added 12 new potions which can be created through alchemy!\n\n" +
+				"Mix a potion and any two seeds to create an exotic potion with unique effects.\n\n" +
+				"Exotic Potions are only available through alchemy, or by transmuting a regular potion."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_ISAZ, null), "Exotic Scrolls",
+				"Added 12 new scrolls which can be created through alchemy!\n\n" +
+				"Mix a scroll and any two runestones to create an exotic scroll with unique effects.\n\n" +
+				"Exotic Scrolls are only available through alchemy, or by transmuting a regular scroll."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RETURN_BEACON, null), "New Recipes!",
+				"Added ~40 other items which can be created through alchemy!\n\n" +
+				"Most of these recipes require alchemical energy, and information about them can be found within alchemy guidebook pages in the prison and deeper in the dungeon.\n\n" +
+				"All of these items are only available through alchemy."));
+		
+		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_ARMBAND, null), "Spawn Rate Changes",
+				"_-_ Master Thieves' Armband is now a regularly dropping artifact.\n" +
+				"_-_ Thieves now rarely drop a random ring or artifact instead of the armband.\n\n" +
+				"_-_ Blandfruit seeds and wells of transmutation have been removed.\n" +
+				"_-_ Potion of Might and Scroll of Magical infusion are now produced through alchemy.\n" +
+				"_-_ Transmuting potions/scrolls now gives their exotic variant, and vice-versa.\n\n" +
+				"_-_ One runestone of enchantment and one runestone of intution are guaranteed per run.\n" +
+				"_-_ Potion and scroll drops are now slightly more varied.\n" +
+				"_-_ Reduced the droprate of bombs.\n\n" +
+				"_-_ Adjusted enchant/glyph probabilities slightly. rare ones should be slightly more common.\n\n" +
+				"_-_ There is now a guaranteed alchemy room every chapter."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_BEACON, null), "Boss reward changes",
+				"Boss rewards have been significantly adjusted:\n\n" +
+				"_-_ Lloyd's beacon and Cape of Thorns no longer drop, they are effectively removed from the game.\n\n" +
+				"_-_ Goo and DM-300 now drop unique alchemy ingredients instead.\n\n" +
+				"_-_ Lloyd's beacon has been replaced by alchemy recipes, Cape of Thorns will likely return in some form in the future."));
+		
+		changes.addButton( new ChangeButton(new Blandfruit(),
+				"Blandfruit has been changed to be more consistent with potions.\n\n" +
+				"All blandfruit types now exactly mimic their potion counterparts, there are now no blandfruit-exclusive effects.\n\n" +
+				"When a thrown blandfruit shatters, it will now leave behind blandfruit chunks, which can be eaten. This allows offensive blandfruits to be used without losing their food value.\n\n" +
+				"The previous unique mechanics of earthfruit, sorrowfruit, and firefruit have been recycled into the new alchemy system."));
+		
+		changes.addButton( new ChangeButton(new UnstableSpellbook(),
+				"The unstable spellbook has received a mini-rework to go along with the new exotic scrolls.\n\n" +
+				"_-_ Previous enhanced scroll mechanic removed.\n\n" +
+				"_-_ Feeding a scroll to the spellbook now allows you to use either that scroll, or its exotic equivalent.\n\n" +
+				"_-_ Using the exotic variant of a scroll costs 2 charges instead of 1.\n\n" +
+				"_-_ Charge speed at low levels increased. Max charges increased to 8 from 6."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Added an ingame version indicator.\n" +
+				"_-_ Added a new indicator for when an item is not identified, but known to be uncursed.\n\n" +
+				"_-_ Potions which should be thrown can now be thrown from the quickslot, if they are identified.\n" +
+				"_-_ Thrown items and wand zaps now go through tall grass.\n\n" +
+				"_-_ Caustic ooze now lasts a maximum of 20 rounds.\n" +
+				"_-_ Bleeding is now much more consistent at low amounts of damage.\n\n" +
+				"_-_ Expanded what items various bags can carry. Most new alchemy produce can fit in a bag, and bombs can now go into the magical holster.\n\n" +
+				"_-_ Adjusted the text message for breaking paralysis.\n"+
+				"_-_ Adjusted various potion, plant, and seed sprites.\n" +
+				"_-_ Healing now has a buff icon and description."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (Caused by 0.6.5):\n" +
-				"_-_ Korean language crashes\n" +
-				"_-_ Viscocity deferring damage before it is blocked by armor\n" +
-				"_-_ Various rare crash bugs\n\n" +
-				"Fixed (Existed prior to 0.6.5):\n" +
-				"_-_ Piranha incorrectly being affect by vertigo\n" +
-				"_-_ Ambitious imp spawning on top of traps\n" +
-				"_-_ Enemies spawning faster than intended in specific cases"));
-
+				"Fixed:\n" +
+				"_-_ Various rare crash and freeze bugs\n" +
+				"_-_ Various audio and visual bugs\n" +
+				"_-_ Sad Ghost attacking nonexistent enemies\n" +
+				"_-_ Various rare cases where item windows could stack\n" +
+				"_-_ Cases where projectiles would disappear\n" +
+				"_-_ Multiplicity curse duplicating projectiles\n" +
+				"_-_ Lucky enchant not correctly scaling with upgrades\n" +
+				"_-_ Various effects incorrectly working on dead characters\n" +
+				"_-_ Wands never appearing in heroes remains\n" +
+				"_-_ Remains rarely appearing inside bookcases on floor 20\n" +
+				"_-_ Wand of corruption doing nothing to corrupted enemies\n" +
+				"_-_ Augmented weapons rarely having inconsistent speed\n" +
+				"_-_ Scroll of upgrade revealing curses on unidentified items\n" +
+				"_-_ Item curses rarely not being revealed when they should be\n" +
+				"_-_ Assassin buffs not being cleared when they should in some cases\n" +
+				"_-_ Rooting not working correctly on retreating enemies\n" +
+				"_-_ Searching spending hunger in a locked level\n" +
+				"_-_ 'Faith is my armor' deleting class armors\n" +
+				"_-_ Various cases where the player can be ontop of enemies"));
+		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
+				"Updated Translations\n\nUpdated translator credits\n\nAdded new language: Basque!"));
+		
+		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new WandOfTransfusion(),
+				"Wand of transfusion has been rebalanced, with an emphasis on making it much more useful in conjunction with weaker allies:\n\n" +
+				"_-_ Using the wand still costs 10% max hp\n\n" +
+				"_-_ Ally healing adjusted to 10% of user max HP + a flat 3 per level, from 30% + 3%/lvl missing hp\n\n" +
+				"_-_ Ally healing can now overheal up to whatever the max healing per shot is\n\n" +
+				"_-_ Undead damage is is now the same as ally healing, from 30% + 5%/lvl max hp\n\n" +
+				"_-_ Charming is now more powerful at higher wand levels\n\n" +
+				"_-_ All other transfusion functionality has been removed"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_KAUNAN, null), new ScrollOfTeleportation().trueName(),
+				"The scroll of teleportation has been buffed. It now prioritizes sending the user to rooms they have not seen yet, and can teleport to secret rooms."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_ODAL, null), new ScrollOfMirrorImage().trueName(),
+				"Scroll of mirror image has been adjusted to have more interactions with other items, but to also be less powerful at base:\n\n" +
+				"_-_ Scroll now spawns 2 images, down from 3\n\n" +
+				"_-_ Mirror images now attack with the hero's weapon, at 50% damage\n\n" +
+				"_-_ Images no longer fade after a successful attack, instead they pull enemy aggro\n\n" +
+				"_-_ Images start out invisible, have 1 hp, no blocking power, but do inherit some of the hero's evasion."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_NAUDIZ, null), new ScrollOfTerror().trueName(),
+				"Terror now has it's duration reduced by 5 whenever damage is taken, rather than being removed entirely. Scroll of terror duration has been increased to 20 from 10.\n\n" +
+				"Charm now has it's duration reduced by 5 whenever damage is taken, rather than not losing any duration. Succubi have been given a life-drain ability in compensation, and various charming effects have had their durations adjusted."));
+		
+		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new WandOfRegrowth(),
+				"Wand of regrowth will now cease producing plants if it is overused. Charges spent before it begins degrading will increase if the wand is upgraded. At +12 the wand will function infinitely.\n\n" +
+				"This change is made to combat farming with low-levelled wands of regrowth. Especially with the alchemy changes this would be far too powerful. Infinite farming is still possible, but requires upgrades."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_GYFU, null), new ScrollOfRetribution().trueName(),
+				"The scroll of psionic blast is now known as the scroll of retribution:\n" +
+				"_-_ removed damage and stun penalty, now self-weakens instead\n" +
+				"_-_ now blinds enemies as well as the player\n" +
+				"_-_ damage dealt now scales with missing player HP. At very low HP scroll is still an instakill on most enemies\n\n" +
+				"Scroll of psionic blast still exists however. It is now an exotic scroll!"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CRIMSON, null), new PotionOfHealing().trueName(),
+				"_-_ Speed of healing effects (e.g. potion of healing) have been reduced slightly. Overall heal amounts unchanged."));
+		
+		changes.addButton( new ChangeButton(new Honeypot(),
+				"Bees were never intended to be used as a boss-killing tool by stacking many of them onto one area. This use has now been restricted:\n" +
+				"_-_ Bees are now hostile to eachother\n\n" +
+				"Note that the new alchemy system may have a recipe which helps calm angry bees down..."));
+		
+		//**********************
+		//       v0.6.5
+		//**********************
 
 		changes = new ChangeInfo("v0.6.5", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
@@ -251,7 +399,10 @@ public class ChangesScene extends PixelScene {
 				"_-_ Artifacts rarely appearing when blocked by a challenge\n" +
 				"_-_ Hero spending a turn before actually opening a lock\n" +
 				"_-_ Specific cases where an invisible hero would not surprise attack\n" +
-				"_-_ Shields granting full defense when hero does not have enough strength."));
+				"_-_ Shields granting full defense when hero does not have enough strength\n" +
+				"_-_ Piranha incorrectly being affect by vertigo\n" +
+				"_-_ Ambitious imp spawning on top of traps\n" +
+				"_-_ Enemies spawning faster than intended in specific cases"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"Updated Translations"));
@@ -265,6 +416,15 @@ public class ChangesScene extends PixelScene {
 				"Lucky has been adjusted to reign in the extremes of bad luck, and to give a little more strategy to using it.\n\n" +
 				"_-_ Base chance to deal 2x damage reduced to 50% from 60%\n" +
 				"_-_ Each time 0x damage is dealt, the next hit will be much more likely to deal 2x damage"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
+				"Soul mark chance changed. Now has a 10% chance to activate per wand level, stacking multiplicatively, with a base of 10% at +0.\n" +
+						"e.g. +0 is 10%, +1 is 19%, +2 is 27%, etc.\n\n" +
+						"Previous soul mark chance was 9% at base plus 6% per level, stacking linearly.\n\n" +
+						"This substantially increases soul mark chance at wand levels +1 to +5"));
+		
+		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress",
+				"Huntress ranged weapon durability boost now stacks with magical holster durability boost, for a total of 180% durability."));
 		
 		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
 		changes.hardlight( CharSprite.NEGATIVE );
@@ -1564,7 +1724,7 @@ public class ChangesScene extends PixelScene {
 				"_-_ Key ring and unstackable keys\n" +
 				"_-_ Blindweed has not been removed"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 144, 112, 16, 16), "New Plants",
+		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 112, 112, 16, 16), "New Plants",
 				"Added two new plants:\n" +
 				"_-_ Stormvine, which brews into levitation\n" +
 				"_-_ Dreamfoil, which brews into purity\n\n" +

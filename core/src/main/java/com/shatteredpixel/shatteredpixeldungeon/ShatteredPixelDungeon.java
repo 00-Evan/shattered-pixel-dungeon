@@ -42,16 +42,13 @@ public class ShatteredPixelDungeon extends Game {
 	//variable constants for specific older versions of shattered, used for data conversion
 	//versions older than v0.6.0b are no longer supported, and data from them is ignored
 	public static final int v0_6_0b = 185;
-	
 	public static final int v0_6_1b = 209;
-	
 	public static final int v0_6_2e = 229;
-	
 	public static final int v0_6_3b = 245;
-	
 	public static final int v0_6_4a = 252;
-
-	public static final int v0_6_5  = 260;
+	public static final int v0_6_5c = 264;
+	
+	public static final int v0_7_0  = 303;
 	
 	public ShatteredPixelDungeon() {
 		super( WelcomeScene.class );
@@ -145,6 +142,11 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion" );
+		
+		//v0.7.0 beta, remove before full release
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.food.MeatPie.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.food.Feast" );
 	}
 	
 	@Override
