@@ -76,7 +76,7 @@ public class Succubus extends Mob {
 			int shield = (HP - HT) + (5 + damage);
 			if (shield > 0){
 				HP = HT;
-				Buff.affect(this, Barrier.class).set(shield);
+				Buff.affect(this, Barrier.class).setShield(shield);
 			} else {
 				HP += 5 + damage;
 			}

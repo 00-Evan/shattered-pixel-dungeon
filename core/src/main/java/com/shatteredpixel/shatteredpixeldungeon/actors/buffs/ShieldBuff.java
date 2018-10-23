@@ -26,7 +26,7 @@ import com.watabou.utils.Bundle;
 
 public abstract class ShieldBuff extends Buff {
 	
-	protected int shielding;
+	private int shielding;
 	
 	@Override
 	public boolean attachTo(Char target) {
@@ -46,6 +46,29 @@ public abstract class ShieldBuff extends Buff {
 	
 	public int shielding(){
 		return shielding;
+	}
+	
+	public void setShield( int shield ) {
+		this.shielding = shield;
+		target.needsShieldUpdate = true;
+	}
+	
+	public void incShield(){
+		incShield(1);
+	}
+	
+	public void incShield( int amt ){
+		shielding += amt;
+		target.needsShieldUpdate = true;
+	}
+	
+	public void decShield(){
+		decShield(1);
+	}
+	
+	public void decShield( int amt ){
+		shielding -= amt;
+		target.needsShieldUpdate = true;
 	}
 	
 	//returns the amount of damage leftover

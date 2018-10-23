@@ -37,19 +37,13 @@ public class Barrier extends ShieldBuff {
 		
 		absorbDamage(1);
 		
-		if (shielding <= 0){
+		if (shielding() <= 0){
 			detach();
 		}
 		
 		spend( TICK );
 		
 		return true;
-	}
-	
-	public void set( int s ){
-		if (shielding < s){
-			shielding = s;
-		}
 	}
 	
 	@Override
@@ -75,6 +69,6 @@ public class Barrier extends ShieldBuff {
 	
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", shielding);
+		return Messages.get(this, "desc", shielding());
 	}
 }

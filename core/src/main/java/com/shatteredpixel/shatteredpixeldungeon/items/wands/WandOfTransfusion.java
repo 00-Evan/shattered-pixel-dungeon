@@ -83,7 +83,7 @@ public class WandOfTransfusion extends Wand {
 				int shielding = (ch.HP + healing) - ch.HT;
 				if (shielding > 0){
 					healing -= shielding;
-					Buff.affect(ch, Barrier.class).set(shielding);
+					Buff.affect(ch, Barrier.class).setShield(shielding);
 				} else {
 					shielding = 0;
 				}

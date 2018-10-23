@@ -64,8 +64,8 @@ public class Brimstone extends Armor.Glyph {
 
 			if (hero.buff(Burning.class) != null){
 				//max shielding equal to the armors level (this does mean no shield at lvl 0)
-				if (shielding < level) {
-					shielding++;
+				if (shielding() < level) {
+					incShield();
 
 					//generates 0.2 + 0.1*lvl shield per turn
 					spend( 10f / (2f + level));
@@ -76,8 +76,8 @@ public class Brimstone extends Armor.Glyph {
 				}
 
 			} else if (hero.buff(Burning.class) == null){
-				if (shielding > 0){
-					shielding--;
+				if (shielding() > 0){
+					decShield();
 
 					//shield decays at a rate of 1 per turn.
 					spend(TICK);
@@ -85,7 +85,6 @@ public class Brimstone extends Armor.Glyph {
 					detach();
 				}
 			}
-			target.needsShieldUpdate = true;
 
 			return true;
 		}
@@ -100,7 +99,7 @@ public class Brimstone extends Armor.Glyph {
 			super.restoreFromBundle(bundle);
 			//pre-0.7.0
 			if (bundle.contains("added")){
-				shielding = bundle.getInt("added");
+				setShield(bundle.getInt("added"));
 			}
 		}
 	}

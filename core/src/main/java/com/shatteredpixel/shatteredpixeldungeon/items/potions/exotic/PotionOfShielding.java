@@ -36,6 +36,6 @@ public class PotionOfShielding extends ExoticPotion {
 		setKnown();
 		
 		//~75% of a potion of healing
-		Buff.affect(hero, Barrier.class).set((int)(0.6f*hero.HT + 10));
+		Buff.affect(hero, Barrier.class).setShield((int)(0.6f*hero.HT + 10));
 	}
 }

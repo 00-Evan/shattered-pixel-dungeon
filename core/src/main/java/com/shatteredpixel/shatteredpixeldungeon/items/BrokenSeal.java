@@ -106,17 +106,16 @@ public class BrokenSeal extends Item {
 
 		@Override
 		public synchronized boolean act() {
-			if (shielding < maxShield()) {
-				partialShield += 1/(35*Math.pow(0.885f, (maxShield() - shielding - 1)));
+			if (shielding() < maxShield()) {
+				partialShield += 1/(35*Math.pow(0.885f, (maxShield() - shielding() - 1)));
 			}
 			
 			while (partialShield >= 1){
-				shielding++;
+				incShield();
 				partialShield--;
-				target.needsShieldUpdate = true;
 			}
 			
-			if (shielding <= 0 && maxShield() <= 0){
+			if (shielding() <= 0 && maxShield() <= 0){
 				detach();
 			}
 			
@@ -125,9 +124,8 @@ public class BrokenSeal extends Item {
 		}
 		
 		public synchronized void supercharge(int maxShield){
-			if (maxShield > shielding){
-				shielding = maxShield;
-				target.needsShieldUpdate = true;
+			if (maxShield > shielding()){
+				setShield(maxShield);
 			}
 		}
 
@@ -146,14 +144,13 @@ public class BrokenSeal extends Item {
 		@Override
 		//logic edited slightly as buff should not detach
 		public int absorbDamage(int dmg) {
-			if (shielding >= dmg){
-				shielding -= dmg;
+			if (shielding() >= dmg){
+				decShield(dmg);
 				dmg = 0;
 			} else {
-				dmg -= shielding;
-				shielding = 0;
+				dmg -= shielding();
+				setShield(0);
 			}
-			target.needsShieldUpdate = true;
 			return dmg;
 		}
 	}
