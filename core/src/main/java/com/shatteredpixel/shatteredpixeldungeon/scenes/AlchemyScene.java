@@ -305,6 +305,7 @@ public class AlchemyScene extends PixelScene {
 							if (item instanceof Dart) {
 								inputs[i].item(item.detachAll(Dungeon.hero.belongings.backpack));
 							} else if (item instanceof AlchemistsToolkit) {
+								clearSlots();
 								inputs[i].item(item);
 							} else {
 								inputs[i].item(item.detach(Dungeon.hero.belongings.backpack));

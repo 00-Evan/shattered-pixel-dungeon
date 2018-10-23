@@ -60,7 +60,7 @@ public class PrisonBossLevel extends Level {
 		color2 = 0x88924c;
 	}
 
-	private enum State{
+	public enum State {
 		START,
 		FIGHT_START,
 		MAZE,
@@ -70,6 +70,10 @@ public class PrisonBossLevel extends Level {
 	
 	private State state;
 	private Tengu tengu;
+	
+	public State state(){
+		return state;
+	}
 
 	//keep track of that need to be removed as the level is changed. We dump 'em back into the level at the end.
 	private ArrayList<Item> storedItems = new ArrayList<>();

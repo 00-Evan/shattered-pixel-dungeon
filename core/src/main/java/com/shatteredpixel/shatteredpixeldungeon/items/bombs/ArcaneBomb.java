@@ -72,6 +72,8 @@ public class ArcaneBomb extends Bomb {
 					//regular bomb damage, but pierces armor
 					int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ));
 					ch.damage(damage, this);
+					if (ch == Dungeon.hero && !ch.isAlive())
+						Dungeon.fail(Bomb.class);
 				}
 			}
 		}

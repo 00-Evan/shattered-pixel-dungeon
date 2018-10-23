@@ -149,7 +149,10 @@ public class SpecialRoom extends Room {
 		runSpecials.clear();
 		if (bundle.contains( ROOMS )) {
 			for (Class<? extends Room> type : bundle.getClassArray(ROOMS)) {
-				if (type != null) runSpecials.add(type);
+				//pre-0.7.0 saves
+				if (type != null && type != LaboratoryRoom.class) {
+					runSpecials.add(type);
+				}
 			}
 		} else {
 			initForRun();
