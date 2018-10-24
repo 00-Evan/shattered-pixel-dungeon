@@ -148,6 +148,35 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.0a", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RETURN_BEACON, null), "Spell recipe balance changes",
+				"Early gameplay data for 0.7.0 indicates spells are very under-utilized, so I've made a few adjustments to make them more appealing:\n\n" +
+				"_-_ alchemize recipe cost down to 6 from 8\n" +
+				"_-_ magical porter recipe cost down to 4 from 8\n" +
+				"_-_ recycle recipe cost down to 6 from 8, quantity up to 8 from 6\n" +
+				"_-_ aqua blast recipe cost up to 4 from 3, quantity up to 12 from 8\n" +
+				"_-_ beacon of returning recipe cost down to 10 from 12, quantity up to 5 from 3\n" +
+				"_-_ phase shift quantity up to 8 from 6"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (Caused by v0.7.0):\n" +
+				"_-_ Various bugs with new shielding buff\n" +
+				"_-_ Visual bugs with new alchemy interface\n" +
+				"_-_ Deaths to new bombs not always recording rankings\n\n" +
+				"Fixed (Existed before v0.7.0):\n" +
+				"_-_ Various screen layout issues in power saver mode\n" +
+				"_-_ Crashes when tengu is healed above 1/2 health"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations\n\nUpdated translator credits"));
+		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
