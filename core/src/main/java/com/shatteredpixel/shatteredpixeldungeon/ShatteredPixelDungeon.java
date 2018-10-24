@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon;
 
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -252,13 +251,6 @@ public class ShatteredPixelDungeon extends Game {
 		updateDisplaySize();
 
 	}
-	
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		
-		updateDisplaySize();
-	}
 
 	public void updateDisplaySize(){
 		boolean landscape = SPDSettings.landscape();
@@ -275,8 +267,11 @@ public class ShatteredPixelDungeon extends Game {
 			}
 		}
 		
-		dispHeight = getWindow().getWindowManager().getDefaultDisplay().getHeight();
-		dispWidth = getWindow().getWindowManager().getDefaultDisplay().getWidth();
+		if (view.getMeasuredWidth() == 0 || view.getMeasuredHeight() == 0)
+			return;
+
+		dispWidth = view.getMeasuredWidth();
+		dispHeight = view.getMeasuredHeight();
 
 		float dispRatio = dispWidth / (float)dispHeight;
 
