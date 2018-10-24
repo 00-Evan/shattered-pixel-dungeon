@@ -73,7 +73,7 @@ public class AquaBlast extends TargetedSpell {
 	@Override
 	public int price() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((30 + 60) / 8f));
+		return Math.round(quantity * ((30 + 60) / 12f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
@@ -82,10 +82,10 @@ public class AquaBlast extends TargetedSpell {
 			inputs =  new Class[]{ScrollOfIdentify.class, PotionOfStormClouds.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 3;
+			cost = 4;
 			
 			output = AquaBlast.class;
-			outQuantity = 8;
+			outQuantity = 12;
 		}
 		
 	}

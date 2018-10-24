@@ -177,7 +177,7 @@ public class BeaconOfReturning extends Spell {
 	@Override
 	public int price() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((50 + 40) / 3f));
+		return Math.round(quantity * ((50 + 40) / 5f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
@@ -186,10 +186,10 @@ public class BeaconOfReturning extends Spell {
 			inputs =  new Class[]{ScrollOfPassage.class, ScrollOfMagicMapping.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 12;
+			cost = 10;
 			
 			output = BeaconOfReturning.class;
-			outQuantity = 3;
+			outQuantity = 5;
 		}
 		
 	}

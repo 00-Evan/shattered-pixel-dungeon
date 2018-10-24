@@ -74,7 +74,7 @@ public class MagicalPorter extends InventorySpell {
 			inputs =  new Class[]{ScrollOfIdentify.class, MerchantsBeacon.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 8;
+			cost = 4;
 			
 			output = MagicalPorter.class;
 			outQuantity = 8;

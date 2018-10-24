@@ -70,7 +70,7 @@ public class Alchemize extends Spell implements AlchemyScene.AlchemyProvider {
 			inputs =  new Class[]{ScrollOfRecharging.class, PotionOfLiquidFlame.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 8;
+			cost = 6;
 			
 			output = Alchemize.class;
 			outQuantity = 4;
