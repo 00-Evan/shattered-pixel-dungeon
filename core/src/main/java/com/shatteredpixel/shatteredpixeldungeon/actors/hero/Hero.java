@@ -108,7 +108,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
-import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
@@ -411,25 +410,19 @@ public class Hero extends Char {
 	}
 
 	public boolean canAttack(Char enemy){
-		if (enemy == null || pos == enemy.pos)
+		if (enemy == null || pos == enemy.pos) {
 			return false;
+		}
 
 		//can always attack adjacent enemies
-		if (Dungeon.level.adjacent(pos, enemy.pos))
+		if (Dungeon.level.adjacent(pos, enemy.pos)) {
 			return true;
+		}
 
 		KindOfWeapon wep = Dungeon.hero.belongings.weapon;
 
-		if (wep != null && Dungeon.level.distance( pos, enemy.pos ) <= wep.reachFactor(this)){
-
-			boolean[] passable = BArray.not(Dungeon.level.solid, null);
-			for (Mob m : Dungeon.level.mobs)
-				passable[m.pos] = false;
-
-			PathFinder.buildDistanceMap(enemy.pos, passable, wep.reachFactor(this));
-
-			return PathFinder.distance[pos] <= wep.reachFactor(this);
-
+		if (wep != null){
+			return wep.canReach(this, enemy.pos);
 		} else {
 			return false;
 		}

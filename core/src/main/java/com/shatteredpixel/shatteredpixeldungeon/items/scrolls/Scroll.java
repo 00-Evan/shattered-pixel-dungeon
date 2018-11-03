@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfAntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAffection;
@@ -114,7 +115,19 @@ public abstract class Scroll extends Item {
 	}
 
 	public static void saveSelectively( Bundle bundle, ArrayList<Item> items ) {
-		handler.saveSelectively( bundle, items );
+		ArrayList<Class<?extends Item>> classes = new ArrayList<>();
+		for (Item i : items){
+			if (i instanceof ExoticScroll){
+				if (!classes.contains(ExoticScroll.exoToReg.get(i.getClass()))){
+					classes.add(ExoticScroll.exoToReg.get(i.getClass()));
+				}
+			} else if (i instanceof Scroll){
+				if (!classes.contains(i.getClass())){
+					classes.add(i.getClass());
+				}
+			}
+		}
+		handler.saveClassesSelectively( bundle, classes );
 	}
 
 	@SuppressWarnings("unchecked")

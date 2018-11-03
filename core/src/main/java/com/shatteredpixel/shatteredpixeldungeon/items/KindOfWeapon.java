@@ -21,10 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 abstract public class KindOfWeapon extends EquipableItem {
@@ -103,6 +107,20 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 	public int reachFactor( Char owner ){
 		return 1;
+	}
+	
+	public boolean canReach( Char owner, int target){
+		if (Dungeon.level.distance( owner.pos, target ) > reachFactor(owner)){
+			return false;
+		} else {
+			boolean[] passable = BArray.not(Dungeon.level.solid, null);
+			for (Mob m : Dungeon.level.mobs)
+				passable[m.pos] = false;
+			
+			PathFinder.buildDistanceMap(target, passable, reachFactor(owner));
+			
+			return PathFinder.distance[owner.pos] <= reachFactor(owner);
+		}
 	}
 
 	public int defenseFactor( Char owner ) {

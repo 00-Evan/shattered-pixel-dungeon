@@ -132,11 +132,7 @@ public class MirrorImage extends NPC {
 	
 	@Override
 	protected boolean canAttack(Char enemy) {
-		if (hero.belongings.weapon != null){
-			return Dungeon.level.distance( pos, enemy.pos ) <= hero.belongings.weapon.reachFactor(this);
-		} else {
-			return super.canAttack(enemy);
-		}
+		return super.canAttack(enemy) || (hero.belongings.weapon != null && hero.belongings.weapon.canReach(this, enemy.pos));
 	}
 	
 	@Override

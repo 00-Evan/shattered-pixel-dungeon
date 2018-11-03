@@ -325,7 +325,7 @@ public class DungeonTileSheet {
 	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+24;
 
 	public static final int STATUE_OVERHANG             = WALL_OVERHANG+26;
-	public static final int ALCHEMY_POT_OVERHAND        = WALL_OVERHANG+27;
+	public static final int ALCHEMY_POT_OVERHANG        = WALL_OVERHANG+27;
 	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+28;
 	public static final int HIGH_GRASS_OVERHANG         = WALL_OVERHANG+29;
 

@@ -21,12 +21,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 
 public class ElixirOfRestoration extends Elixir {
 	
@@ -38,6 +42,22 @@ public class ElixirOfRestoration extends Elixir {
 	public void apply(Hero hero) {
 		Buff.affect( hero, Healing.class ).setHeal((int)(0.8f*hero.HT + 14), 0.25f, 0);
 		PotionOfCleansing.cleanse(hero);
+	}
+	
+	@Override
+	public void shatter(int cell) {
+		if (Actor.findChar(cell) == null){
+			super.shatter(cell);
+		} else {
+			if (Dungeon.level.heroFOV[cell]) {
+				Sample.INSTANCE.play(Assets.SND_SHATTER);
+				splash(cell);
+			}
+			
+			if (Actor.findChar(cell) != null){
+				PotionOfCleansing.cleanse(Actor.findChar(cell));
+			}
+		}
 	}
 	
 	@Override

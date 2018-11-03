@@ -94,6 +94,18 @@ public class ItemStatusHandler<T extends Item> {
 			}
 		}
 	}
+	
+	public void saveClassesSelectively( Bundle bundle, ArrayList<Class<?extends Item>> clsToSave ){
+		List<Class<? extends T>> items = Arrays.asList(this.items);
+		for (Class<?extends Item> cls : clsToSave){
+			if (items.contains(cls)){
+				Class<? extends T> toSave = items.get(items.indexOf(cls));
+				String itemName = toSave.toString();
+				bundle.put( itemName + PFX_LABEL, itemLabels.get( toSave ) );
+				bundle.put( itemName + PFX_KNOWN, known.contains( toSave ) );
+			}
+		}
+	}
 
 	private void restore( Bundle bundle, ArrayList<String> labelsLeft  ) {
 

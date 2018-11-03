@@ -41,7 +41,6 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -505,11 +504,7 @@ public class DriedRose extends Artifact {
 		
 		@Override
 		protected boolean canAttack(Char enemy) {
-			if (rose != null && rose.weapon != null) {
-				return Dungeon.level.distance(pos, enemy.pos) <= rose.weapon.reachFactor(this);
-			} else {
-				return super.canAttack(enemy);
-			}
+			return super.canAttack(enemy) || (rose != null && rose.weapon != null && rose.weapon.canReach(this, enemy.pos));
 		}
 		
 		@Override
@@ -546,7 +541,7 @@ public class DriedRose extends Artifact {
 		public void damage(int dmg, Object src) {
 			//TODO improve this when I have proper damage source logic
 			if (rose != null && rose.armor != null && rose.armor.hasGlyph(AntiMagic.class, this)
-					&& RingOfElements.RESISTS.contains(src.getClass())){
+					&& AntiMagic.RESISTS.contains(src.getClass())){
 				dmg -= Random.NormalIntRange(rose.armor.DRMin(), rose.armor.DRMax())/3;
 			}
 			

@@ -113,7 +113,8 @@ public class AlchemistsToolkit extends Artifact {
 			partialCharge -= 1;
 			charge++;
 			
-			if (charge == chargeCap){
+			if (charge >= chargeCap){
+				charge = chargeCap;
 				partialCharge = 0;
 				break;
 			}

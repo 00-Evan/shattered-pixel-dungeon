@@ -45,7 +45,7 @@ public class Bolas extends MissileWeapon {
 	
 	@Override
 	public int STRReq(int lvl) {
-		return 15;
+		return 13;
 	}
 	
 	@Override

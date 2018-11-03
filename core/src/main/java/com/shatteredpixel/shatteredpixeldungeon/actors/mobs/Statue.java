@@ -99,7 +99,7 @@ public class Statue extends Mob {
 
 	@Override
 	protected boolean canAttack(Char enemy) {
-		return Dungeon.level.distance( pos, enemy.pos ) <= weapon.reachFactor(this);
+		return super.canAttack(enemy) || weapon.canReach(this, enemy.pos);
 	}
 
 	@Override
