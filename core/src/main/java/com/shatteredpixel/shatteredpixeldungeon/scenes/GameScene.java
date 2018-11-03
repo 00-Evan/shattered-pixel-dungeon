@@ -62,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.FogOfWar;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.GridTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.RaisedTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.WallBlockingTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
@@ -118,6 +119,7 @@ public class GameScene extends PixelScene {
 	private DungeonTerrainTilemap tiles;
 	private GridTileMap visualGrid;
 	private TerrainFeaturesTilemap terrainFeatures;
+	private RaisedTerrainTilemap raisedTerrain;
 	private DungeonWallsTilemap walls;
 	private WallBlockingTilemap wallBlocking;
 	private FogOfWar fog;
@@ -242,6 +244,9 @@ public class GameScene extends PixelScene {
 				mob.beckon( Dungeon.hero.pos );
 			}
 		}
+		
+		raisedTerrain = new RaisedTerrainTilemap();
+		add( raisedTerrain );
 
 		walls = new DungeonWallsTilemap();
 		add(walls);
@@ -771,6 +776,7 @@ public class GameScene extends PixelScene {
 			scene.tiles.map(Dungeon.level.map, Dungeon.level.width() );
 			scene.visualGrid.map(Dungeon.level.map, Dungeon.level.width() );
 			scene.terrainFeatures.map(Dungeon.level.map, Dungeon.level.width() );
+			scene.raisedTerrain.map(Dungeon.level.map, Dungeon.level.width() );
 			scene.walls.map(Dungeon.level.map, Dungeon.level.width() );
 		}
 		updateFog();
@@ -782,6 +788,7 @@ public class GameScene extends PixelScene {
 			scene.tiles.updateMap();
 			scene.visualGrid.updateMap();
 			scene.terrainFeatures.updateMap();
+			scene.raisedTerrain.updateMap();
 			scene.walls.updateMap();
 			updateFog();
 		}
@@ -792,6 +799,7 @@ public class GameScene extends PixelScene {
 			scene.tiles.updateMapCell( cell );
 			scene.visualGrid.updateMapCell( cell );
 			scene.terrainFeatures.updateMapCell( cell );
+			scene.raisedTerrain.updateMapCell( cell );
 			scene.walls.updateMapCell( cell );
 			//update adjacent cells too
 			updateFog( cell, 1 );

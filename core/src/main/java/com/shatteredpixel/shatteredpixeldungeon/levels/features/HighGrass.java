@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
@@ -44,7 +45,12 @@ public class HighGrass {
 
 	public static void trample( Level level, int pos, Char ch ) {
 		
-		Level.set( pos, Terrain.GRASS );
+		if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS){
+			//Level.set(pos, Terrain.FURROWED_GRASS);
+			Level.set(pos, Terrain.GRASS);
+		} else {
+			Level.set(pos, Terrain.GRASS);
+		}
 		GameScene.updateMap( pos );
 		
 		int naturalismLevel = 0;
