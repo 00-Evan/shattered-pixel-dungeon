@@ -62,8 +62,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 public class Heap implements Bundlable {
-
-	private static final int SEEDS_TO_POTION = 3;
 	
 	public enum Type {
 		HEAP,
@@ -82,6 +80,7 @@ public class Heap implements Bundlable {
 	
 	public ItemSprite sprite;
 	public boolean seen = false;
+	public boolean haunted = false;
 	
 	public LinkedList<Item> items = new LinkedList<Item>();
 	
@@ -140,6 +139,14 @@ public class Heap implements Bundlable {
 			break;
 		default:
 		}
+		
+		if (haunted){
+			if (Wraith.spawnAt( pos ) == null) {
+				hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
+				hero.damage( hero.HP / 2, this );
+			}
+			Sample.INSTANCE.play( Assets.SND_CURSED );
+		}
 
 		if (type != Type.MIMIC) {
 			type = Type.HEAP;
@@ -151,6 +158,17 @@ public class Heap implements Bundlable {
 			sprite.link();
 			sprite.drop();
 		}
+	}
+	
+	public Heap setHauntedIfCursed( float chance ){
+		for (Item item : items) {
+			if (item.cursed && Random.Float() < chance) {
+				haunted = true;
+				item.cursedKnown = true;
+				break;
+			}
+		}
+		return this;
 	}
 	
 	public int size() {
@@ -429,6 +447,7 @@ public class Heap implements Bundlable {
 	private static final String SEEN	= "seen";
 	private static final String TYPE	= "type";
 	private static final String ITEMS	= "items";
+	private static final String HAUNTED	= "haunted";
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -449,6 +468,8 @@ public class Heap implements Bundlable {
 			}
 		}
 		
+		haunted = bundle.getBoolean( HAUNTED );
+		
 	}
 
 	@Override
@@ -457,6 +478,7 @@ public class Heap implements Bundlable {
 		bundle.put( SEEN, seen );
 		bundle.put( TYPE, type.toString() );
 		bundle.put( ITEMS, items );
+		bundle.put( HAUNTED, haunted );
 	}
 	
 }

@@ -81,7 +81,7 @@ public class PitRoom extends SpecialRoom {
 		
 		int n = Random.IntRange( 1, 2 );
 		for (int i=0; i < n; i++) {
-			level.drop( prize( level ), remains );
+			level.drop( prize( level ), remains ).setHauntedIfCursed(0.75f);
 		}
 	}
 	

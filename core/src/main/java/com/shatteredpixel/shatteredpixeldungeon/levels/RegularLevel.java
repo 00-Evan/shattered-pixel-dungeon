@@ -341,7 +341,11 @@ public abstract class RegularLevel extends Level {
 					addItemToSpawn(new GoldenKey(Dungeon.depth));
 				}
 			} else {
-				drop( toDrop, cell ).type = type;
+				Heap dropped = drop( toDrop, cell );
+				dropped.type = type;
+				if (type == Heap.Type.SKELETON){
+					dropped.setHauntedIfCursed(0.75f);
+				}
 			}
 			
 		}
@@ -362,7 +366,7 @@ public abstract class RegularLevel extends Level {
 				map[cell] = Terrain.GRASS;
 				losBlocking[cell] = false;
 			}
-			drop( item, cell ).type = Heap.Type.REMAINS;
+			drop( item, cell ).setHauntedIfCursed(1f).type = Heap.Type.REMAINS;
 		}
 
 		//guide pages

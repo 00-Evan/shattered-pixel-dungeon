@@ -202,7 +202,7 @@ public class CavesBossLevel extends Level {
 			do {
 				pos = Random.IntRange( ROOM_LEFT, ROOM_RIGHT ) + Random.IntRange( ROOM_TOP + 1, ROOM_BOTTOM ) * width();
 			} while (pos == entrance);
-			drop( item, pos ).type = Heap.Type.REMAINS;
+			drop( item, pos ).setHauntedIfCursed(1f).type = Heap.Type.REMAINS;
 		}
 	}
 	

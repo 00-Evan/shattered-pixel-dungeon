@@ -121,7 +121,7 @@ public class SewerBossLevel extends SewerLevel {
 			do {
 				pos = pointToCell(roomEntrance.random());
 			} while (pos == entrance || solid[pos]);
-			drop( item, pos ).type = Heap.Type.REMAINS;
+			drop( item, pos ).setHauntedIfCursed(1f).type = Heap.Type.REMAINS;
 		}
 	}
 
