@@ -68,8 +68,8 @@ public class HighGrass {
 		}
 
 		if (naturalismLevel >= 0) {
-			// Seed, scales from 1/16 to 1/4
-			if (Random.Int(16 - ((int) (naturalismLevel * 3))) == 0) {
+			// Seed, scales from 1/20 to 1/4
+			if (Random.Int(20 - (naturalismLevel * 4)) == 0) {
 				Item seed = Generator.random(Generator.Category.SEED);
 
 				if (seed instanceof BlandfruitBush.Seed) {

@@ -50,7 +50,7 @@ public class RunestoneRoom extends SpecialRoom {
 		Painter.drawInside( level, this, entrance(), 2, Terrain.EMPTY_SP);
 		Painter.fill( level, this, 2, Terrain.EMPTY );
 		
-		int n = Random.NormalIntRange(2, 4);
+		int n = Random.NormalIntRange(2, 3);
 		int dropPos;
 		for (int i = 0; i < n; i++) {
 			do {
