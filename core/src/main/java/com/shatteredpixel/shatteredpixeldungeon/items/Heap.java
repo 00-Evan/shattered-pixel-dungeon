@@ -126,16 +126,6 @@ public class Heap implements Bundlable {
 		case REMAINS:
 		case SKELETON:
 			CellEmitter.center( pos ).start(Speck.factory(Speck.RATTLE), 0.1f, 3);
-			for (Item item : items) {
-				if (item.cursed) {
-					if (Wraith.spawnAt( pos ) == null) {
-						hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
-						hero.damage( hero.HP / 2, this );
-					}
-					Sample.INSTANCE.play( Assets.SND_CURSED );
-					break;
-				}
-			}
 			break;
 		default:
 		}
