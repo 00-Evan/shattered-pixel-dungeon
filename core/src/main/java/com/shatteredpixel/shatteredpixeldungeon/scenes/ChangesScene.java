@@ -148,9 +148,34 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.7.0b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POUCH, null), "Seed & stone droprate changes",
+				"With all the new items added in 0.7.0, people's inventories have started getting a bit clogged. I've decided to reign in some of the most frequently dropped items slightly, to reduced the inventory management burden. In particular, this should make the velvet pouch a bit less necessary in the earlygame.\n\n" +
+				"_-_ Seed droprates reduced by 20%. Footwear of nature seed boost increased slightly to compensate.\n\n" +
+				"_-_ Potion and Runestone droprates from special rooms reduced. Resulting in ~5% fewer potions and ~15% fewer stones overall."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Overhauled core logic for payment-handling in Google Play version. Should result in improvements to speed, reliability, and security.\n\n" +
+				"_-_ Overhauled core logic for google play games in Google Play version. Most notably, Google+ account information is no longer required (it was previously unused, but had to be requested).\n\n" +
+				"_-_ Improved the layering system for raised terrain like grass. This solves a few visual bugs immediately, but also allows for functionality like characters being inside of grass.\n\n" +
+				"_-_ Adjusted bone pile functionality to make it more clear that a spawning wraith means an item is cursed. Also fixed an exploit where items could be thrown into bone piles to check if they were cursed."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (Caused by v0.7.0):\n" +
+				"_-_ Exotic items not being identified in rankings (will not fix old rankings)\n" +
+				"_-_ Toolkit rarely being able to go above 100% charge\n" +
+				"_-_ Elixir of restoration doing nothing when thrown\n\n" +
+				"Fixed (Existed before v0.7.0):\n" +
+				"_-_ Bolas incorrectly requiring 15 strength\n" +
+				"_-_ Non-heroes being able to use reach weapons through walls\n" +
+				"_-_ Antimagic glyph applying to more effects when used by the sad ghost\n" +
+				"_-_ Some items not being known as uncursed when sold from shops"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
 		
 		changes = new ChangeInfo("v0.7.0a", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
