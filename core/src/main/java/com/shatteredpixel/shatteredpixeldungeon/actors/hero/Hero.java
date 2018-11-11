@@ -1292,11 +1292,11 @@ public class Hero extends Char {
 	}
 	
 	@Override
-	public int stealth() {
-		int stealth = super.stealth();
+	public float stealth() {
+		float stealth = super.stealth();
 		
 		if (belongings.armor != null){
-			stealth = Math.round(belongings.armor.stealthFactor(this, stealth));
+			stealth = belongings.armor.stealthFactor(this, stealth);
 		}
 		
 		return stealth;

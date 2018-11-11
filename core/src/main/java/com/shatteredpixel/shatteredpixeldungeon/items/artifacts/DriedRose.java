@@ -571,11 +571,11 @@ public class DriedRose extends Artifact {
 		}
 		
 		@Override
-		public int stealth() {
-			int stealth = super.stealth();
+		public float stealth() {
+			float stealth = super.stealth();
 			
 			if (rose != null && rose.armor != null){
-				stealth = Math.round(rose.armor.stealthFactor(this, stealth));
+				stealth = rose.armor.stealthFactor(this, stealth);
 			}
 			
 			return stealth;

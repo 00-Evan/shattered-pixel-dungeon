@@ -22,9 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -114,8 +114,9 @@ abstract public class KindOfWeapon extends EquipableItem {
 			return false;
 		} else {
 			boolean[] passable = BArray.not(Dungeon.level.solid, null);
-			for (Mob m : Dungeon.level.mobs)
-				passable[m.pos] = false;
+			for (Char ch : Actor.chars()) {
+				if (ch != owner) passable[ch.pos] = false;
+			}
 			
 			PathFinder.buildDistanceMap(target, passable, reachFactor(owner));
 			

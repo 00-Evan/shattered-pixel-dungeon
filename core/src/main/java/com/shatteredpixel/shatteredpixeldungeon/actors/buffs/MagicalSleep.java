@@ -35,19 +35,19 @@ public class MagicalSleep extends Buff {
 	@Override
 	public boolean attachTo( Char target ) {
 		if (!target.isImmune(Sleep.class) && super.attachTo( target )) {
-
-			if (target instanceof Hero)
+			
+			target.paralysed++;
+			
+			if (target instanceof Hero) {
 				if (target.HP == target.HT) {
 					GLog.i(Messages.get(this, "toohealthy"));
 					detach();
-					return true;
 				} else {
 					GLog.i(Messages.get(this, "fallasleep"));
 				}
-			else if (target instanceof Mob)
-				((Mob)target).state = ((Mob)target).SLEEPING;
-
-			target.paralysed++;
+			} else if (target instanceof Mob) {
+				((Mob) target).state = ((Mob) target).SLEEPING;
+			}
 
 			return true;
 		} else {
