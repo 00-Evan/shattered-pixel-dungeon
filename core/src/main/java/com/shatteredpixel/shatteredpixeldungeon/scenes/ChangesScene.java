@@ -148,7 +148,7 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes = new ChangeInfo("v0.7.0b", false, null);
+		changes = new ChangeInfo("v0.7.0b & v0.7.0c", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
@@ -164,6 +164,7 @@ public class ChangesScene extends PixelScene {
 				"_-_ Adjusted bone pile functionality to make it more clear that a spawning wraith means an item is cursed. Also fixed an exploit where items could be thrown into bone piles to check if they were cursed."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"v0.7.0b:\n" +
 				"Fixed (Caused by v0.7.0):\n" +
 				"_-_ Exotic items not being identified in rankings (will not fix old rankings)\n" +
 				"_-_ Toolkit rarely being able to go above 100% charge\n" +
@@ -172,7 +173,13 @@ public class ChangesScene extends PixelScene {
 				"_-_ Bolas incorrectly requiring 15 strength\n" +
 				"_-_ Non-heroes being able to use reach weapons through walls\n" +
 				"_-_ Antimagic glyph applying to more effects when used by the sad ghost\n" +
-				"_-_ Some items not being known as uncursed when sold from shops"));
+				"_-_ Some items not being known as uncursed when sold from shops\n\n" +
+				"v0.7.0c:\n" +
+				"Fixed (Caused by v0.7.0):\n" +
+				"_-_ Non-heroes not using reach weapons properly\n\n" +
+				"Fixed (Existed before v0.7.0):\n" +
+				"_-_ Obfuscation glyph not improving every upgrade\n" +
+				"_-_ Magical sleep rarely cancelling paralysis"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"Updated Translations"));
