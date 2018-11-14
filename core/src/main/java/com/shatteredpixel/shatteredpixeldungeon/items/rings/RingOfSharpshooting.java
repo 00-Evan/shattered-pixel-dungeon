@@ -30,9 +30,8 @@ public class RingOfSharpshooting extends Ring {
 		return new Aim();
 	}
 	
-	//roughly in line with the boost a weapon gets from an upgrade
-	public static float damageMultiplier( Char target ){
-		return 1f + 0.2f * getBonus(target, Aim.class);
+	public static int levelDamageBonus( Char target ){
+		return getBonus(target, RingOfSharpshooting.Aim.class);
 	}
 	
 	public static float durabilityMultiplier( Char target ){

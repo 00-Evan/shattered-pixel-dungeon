@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
 
@@ -37,21 +36,14 @@ public class ThrowingKnife extends MissileWeapon {
 		
 		bones = false;
 		
-	}
-	
-	@Override
-	public int min(int lvl) {
-		return 2;
+		tier = 1;
+		baseUses = 5;
 	}
 	
 	@Override
 	public int max(int lvl) {
-		return 6;
-	}
-	
-	@Override
-	public int STRReq(int lvl) {
-		return 9;
+		return  6 * tier +                      //6 base, up from 5
+				(tier == 1 ? 2*lvl : tier*lvl); //scaling unchanged
 	}
 	
 	private Char enemy;
@@ -72,7 +64,6 @@ public class ThrowingKnife extends MissileWeapon {
 				int damage = augment.damageFactor(Random.NormalIntRange(
 						min() + Math.round(diff*0.75f),
 						max()));
-				damage = Math.round(damage * RingOfSharpshooting.damageMultiplier( hero ));
 				int exStr = hero.STR() - STRReq();
 				if (exStr > 0 && hero.heroClass == HeroClass.HUNTRESS) {
 					damage += Random.IntRange(0, exStr);
@@ -81,15 +72,5 @@ public class ThrowingKnife extends MissileWeapon {
 			}
 		}
 		return super.damageRoll(owner);
-	}
-	
-	@Override
-	protected float durabilityPerUse() {
-		return super.durabilityPerUse()*2f;
-	}
-	
-	@Override
-	public int price() {
-		return 6 * quantity;
 	}
 }

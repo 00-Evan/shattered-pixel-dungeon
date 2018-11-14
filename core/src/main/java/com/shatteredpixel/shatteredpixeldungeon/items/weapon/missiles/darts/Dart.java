@@ -34,21 +34,30 @@ public class Dart extends MissileWeapon {
 
 	{
 		image = ItemSpriteSheet.DART;
+		
+		tier = 1;
 	}
 
 	@Override
 	public int min(int lvl) {
-		return bow != null ? 4 + bow.level() : 1;
+		if (bow != null){
+			return  4 +                 //4 base
+					bow.level() + lvl;  //+1 per level or bow level
+		} else {
+			return  1 +     //1 base, down from 2
+					lvl;    //scaling unchanged
+		}
 	}
 
 	@Override
 	public int max(int lvl) {
-		return bow != null ? 12 + 3*bow.level() : 2;
-	}
-
-	@Override
-	public int STRReq(int lvl) {
-		return 9;
+		if (bow != null){
+			return  12 +                    //12 base
+					3*(bow.level() + lvl);  //+3 per level or bow level
+		} else {
+			return  2 +     //2 base, down from 5
+					2*lvl;  //scaling unchanged
+		}
 	}
 	
 	@Override
@@ -97,7 +106,7 @@ public class Dart extends MissileWeapon {
 	}
 	
 	@Override
-	public int price() {
-		return 4 * quantity;
+	public boolean isUpgradable() {
+		return false;
 	}
 }

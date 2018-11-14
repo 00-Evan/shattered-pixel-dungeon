@@ -49,13 +49,10 @@ import java.util.HashMap;
 public abstract class TippedDart extends Dart {
 	
 	{
-		bones = true;
+		tier = 2;
 	}
 	
-	@Override
-	public int STRReq(int lvl) {
-		return 11;
-	}
+	//exact same damage as regular darts, despite being higher tier.
 	
 	@Override
 	protected void rangedHit(Char enemy, int cell) {
@@ -69,11 +66,6 @@ public abstract class TippedDart extends Dart {
 			}
 		}
 		Dungeon.level.drop( d, enemy.pos ).sprite.drop();
-	}
-	
-	@Override
-	public int price() {
-		return 6 * quantity;
 	}
 	
 	private static HashMap<Class<?extends Plant.Seed>, Class<?extends TippedDart>> types = new HashMap<>();

@@ -29,21 +29,8 @@ public class FishingSpear extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.FISHING_SPEAR;
-	}
-	
-	@Override
-	public int min(int lvl) {
-		return 4;
-	}
-	
-	@Override
-	public int max(int lvl) {
-		return 10;
-	}
-	
-	@Override
-	public int STRReq(int lvl) {
-		return 11;
+		
+		tier = 2;
 	}
 	
 	@Override
@@ -53,10 +40,4 @@ public class FishingSpear extends MissileWeapon {
 		}
 		return super.proc(attacker, defender, damage);
 	}
-	
-	@Override
-	public int price() {
-		return 12 * quantity;
-	}
-	
 }

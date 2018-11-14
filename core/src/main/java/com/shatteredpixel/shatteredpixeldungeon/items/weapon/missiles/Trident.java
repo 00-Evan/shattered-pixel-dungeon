@@ -27,26 +27,8 @@ public class Trident extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.TRIDENT;
-	}
-	
-	@Override
-	public int min(int lvl) {
-		return 10;
-	}
-	
-	@Override
-	public int max(int lvl) {
-		return 25;
-	}
-	
-	@Override
-	public int STRReq(int lvl) {
-		return 17;
-	}
-	
-	@Override
-	public int price() {
-		return 30 * quantity;
+		
+		tier = 5;
 	}
 	
 }

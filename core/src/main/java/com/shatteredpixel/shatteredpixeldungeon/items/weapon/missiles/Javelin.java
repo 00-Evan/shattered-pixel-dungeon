@@ -27,25 +27,8 @@ public class Javelin extends MissileWeapon {
 
 	{
 		image = ItemSpriteSheet.JAVELIN;
-	}
-
-	@Override
-	public int min(int lvl) {
-		return 8;
-	}
-
-	@Override
-	public int max(int lvl) {
-		return 20;
-	}
-
-	@Override
-	public int STRReq(int lvl) {
-		return 15;
+		
+		tier = 4;
 	}
 	
-	@Override
-	public int price() {
-		return 24 * quantity;
-	}
 }

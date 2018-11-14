@@ -31,36 +31,19 @@ public class Bolas extends MissileWeapon {
 	{
 		image = ItemSpriteSheet.BOLAS;
 		
-	}
-	
-	@Override
-	public int min(int lvl) {
-		return 4;
+		tier = 3;
+		baseUses = 5;
 	}
 	
 	@Override
 	public int max(int lvl) {
-		return 6;
-	}
-	
-	@Override
-	public int STRReq(int lvl) {
-		return 13;
+		return  3 * tier +                      //9 base, down from 15
+				(tier == 1 ? 2*lvl : tier*lvl); //scaling unchanged
 	}
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
 		Buff.prolong( defender, Cripple.class, Cripple.DURATION );
 		return super.proc( attacker, defender, damage );
-	}
-	
-	@Override
-	protected float durabilityPerUse() {
-		return super.durabilityPerUse()*2f;
-	}
-	
-	@Override
-	public int price() {
-		return 18 * quantity;
 	}
 }

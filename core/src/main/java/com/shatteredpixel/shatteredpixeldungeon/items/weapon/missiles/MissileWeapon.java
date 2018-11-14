@@ -47,6 +47,8 @@ abstract public class MissileWeapon extends Weapon {
 	{
 		stackable = true;
 		levelKnown = true;
+		
+		bones = true;
 
 		defaultAction = AC_THROW;
 		usesTargeting = true;
@@ -56,11 +58,63 @@ abstract public class MissileWeapon extends Weapon {
 	
 	protected static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
+	protected int baseUses = 10;
 	
 	public boolean holster;
 	
 	//used to reduce durability from the source weapon stack, rather than the one being thrown.
 	protected MissileWeapon parent;
+	
+	public int tier;
+	
+	@Override
+	public int min() {
+		return Math.max(0, min( level() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
+	}
+	
+	@Override
+	public int min(int lvl) {
+		return  2 * tier +                      //base
+				(tier == 1 ? lvl : 2*lvl);      //level scaling
+	}
+	
+	@Override
+	public int max() {
+		return Math.max(0, max( level() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
+	}
+	
+	@Override
+	public int max(int lvl) {
+		return  5 * tier +                      //base
+				(tier == 1 ? 2*lvl : tier*lvl); //level scaling
+	}
+	
+	public int STRReq(int lvl){
+		lvl = Math.max(0, lvl);
+		//strength req decreases at +1,+3,+6,+10,etc.
+		return (7 + tier * 2) - (int)(Math.sqrt(8 * lvl + 1) - 1)/2;
+	}
+	
+	@Override
+	public Item upgrade() {
+		
+		if (quantity > 1){
+			MissileWeapon left = (MissileWeapon) split(quantity - 1);
+			left.parent = null;
+			
+			super.upgrade();
+			
+			//deal with full inventory.
+			if (!left.collect()){
+				Dungeon.level.drop( left, Dungeon.hero.pos);
+			}
+		} else {
+			super.upgrade();
+		}
+		
+		durability = MAX_DURABILITY;
+		return this;
+	}
 	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
@@ -170,20 +224,21 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	protected float durabilityPerUse(){
-		float usage = MAX_DURABILITY/10f;
+		float usages = baseUses * (float)(Math.pow(3, level()));
 		
-		if (Dungeon.hero.heroClass == HeroClass.HUNTRESS)   usage /= 1.5f;
-		if (holster)                                        usage /= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
+		if (Dungeon.hero.heroClass == HeroClass.HUNTRESS)   usages *= 1.5f;
+		if (holster)                                        usages *= MagicalHolster.HOLSTER_DURABILITY_FACTOR;
 		
-		usage /= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
+		usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
 		
-		return usage;
+		float usage = MAX_DURABILITY/usages;
+		//after 100 uses, items just last forever.
+		return usage >= (MAX_DURABILITY/100f) ? usage : 0;
 	}
 	
 	@Override
 	public int damageRoll(Char owner) {
 		int damage = augment.damageFactor(super.damageRoll( owner ));
-		damage = Math.round( damage * RingOfSharpshooting.damageMultiplier( owner ));
 		
 		if (owner instanceof Hero &&
 				((Hero)owner).heroClass == HeroClass.HUNTRESS) {
@@ -238,11 +293,6 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
 	public boolean isIdentified() {
 		return true;
 	}
@@ -253,8 +303,9 @@ abstract public class MissileWeapon extends Weapon {
 		String info = desc();
 		
 		info += "\n\n" + Messages.get( MissileWeapon.class, "stats",
-				Math.round(augment.damageFactor(min()) * RingOfSharpshooting.damageMultiplier( Dungeon.hero )),
-				Math.round(augment.damageFactor(max()) * RingOfSharpshooting.damageMultiplier( Dungeon.hero )),
+				tier,
+				Math.round(augment.damageFactor(min())),
+				Math.round(augment.damageFactor(max())),
 				STRReq());
 
 		if (STRReq() > Dungeon.hero.STR()) {
@@ -284,10 +335,17 @@ abstract public class MissileWeapon extends Weapon {
 			info += " " + Messages.get(this, "uses_left",
 					(int)Math.ceil(durability/durabilityPerUse()),
 					(int)Math.ceil(MAX_DURABILITY/durabilityPerUse()));
+		} else {
+			info += " " + Messages.get(this, "unlimited_uses");
 		}
 		
 		
 		return info;
+	}
+	
+	@Override
+	public int price() {
+		return 6 * tier * quantity * (level() + 1);
 	}
 	
 	private static final String DURABILITY = "durability";

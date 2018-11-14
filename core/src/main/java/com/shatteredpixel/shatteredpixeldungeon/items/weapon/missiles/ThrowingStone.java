@@ -28,34 +28,21 @@ public class ThrowingStone extends MissileWeapon {
 	{
 		image = ItemSpriteSheet.THROWING_STONE;
 		
-		sticky = false;
-		
 		bones = false;
 		
+		tier = 1;
+		baseUses = 3;
+		sticky = false;
 	}
 	
 	@Override
 	public int min(int lvl) {
-		return 1;
-	}
-	
-	@Override
-	public int max(int lvl) {
-		return 5;
-	}
-	
-	@Override
-	public int STRReq(int lvl) {
-		return 9;
-	}
-	
-	@Override
-	protected float durabilityPerUse() {
-		return super.durabilityPerUse()*3.34f;
+		return  tier +                      //1 base, down from 2
+				(tier == 1 ? lvl : 2*lvl);  //scaling unchanged
 	}
 	
 	@Override
 	public int price() {
-		return quantity;
+		return super.price()/2; //half normal value
 	}
 }

@@ -27,26 +27,8 @@ public class ThrowingSpear extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.THROWING_SPEAR;
-	}
-	
-	@Override
-	public int min(int lvl) {
-		return 6;
-	}
-	
-	@Override
-	public int max(int lvl) {
-		return 15;
-	}
-	
-	@Override
-	public int STRReq(int lvl) {
-		return 13;
-	}
-	
-	@Override
-	public int price() {
-		return 18 * quantity;
+		
+		tier = 3;
 	}
 	
 }

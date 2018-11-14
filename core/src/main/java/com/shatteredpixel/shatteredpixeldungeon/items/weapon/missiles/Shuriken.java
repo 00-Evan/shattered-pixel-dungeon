@@ -29,31 +29,20 @@ public class Shuriken extends MissileWeapon {
 
 	{
 		image = ItemSpriteSheet.SHURIKEN;
+		
+		tier = 2;
+		baseUses = 5;
 	}
-
-	@Override
-	public int min(int lvl) {
-		return 4;
-	}
-
+	
 	@Override
 	public int max(int lvl) {
-		return 6;
-	}
-
-	@Override
-	public int STRReq(int lvl) {
-		return 11;
+		return  4 * tier +                      //8 base, down from 10
+				(tier == 1 ? 2*lvl : tier*lvl); //scaling unchanged
 	}
 	
 	@Override
 	public float speedFactor(Char owner) {
 		if (owner instanceof Hero && ((Hero) owner).justMoved)  return 0;
 		else                                                    return super.speedFactor(owner);
-	}
-	
-	@Override
-	public int price() {
-		return 12 * quantity;
 	}
 }
