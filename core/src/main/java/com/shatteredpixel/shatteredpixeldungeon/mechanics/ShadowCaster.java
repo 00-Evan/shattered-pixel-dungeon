@@ -80,6 +80,9 @@ public final class ShadowCaster {
 	                               int x, int y, double lSlope, double rSlope,
 	                               int mX, int mY, boolean mXY){
 		
+		//if we have negative space to traverse, just quit.
+		if (rSlope < lSlope) return;
+		
 		boolean inBlocking = false;
 		int start, end;
 		int col;
