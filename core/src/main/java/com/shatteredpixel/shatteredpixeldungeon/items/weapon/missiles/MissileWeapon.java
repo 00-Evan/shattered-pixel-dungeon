@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -200,10 +201,18 @@ abstract public class MissileWeapon extends Weapon {
 				parent.durability = MAX_DURABILITY;
 			} else {
 				parent.durability -= parent.durabilityPerUse();
+				if (parent.durability <= parent.durabilityPerUse()){
+					if (level() <= 0)GLog.w(Messages.get(Weapon.class, "about_to_break"));
+					else             GLog.n(Messages.get(Weapon.class, "about_to_break"));
+				}
 			}
 			parent = null;
 		} else {
 			durability -= durabilityPerUse();
+			if (durability <= durabilityPerUse()){
+				if (level() <= 0)GLog.w(Messages.get(Weapon.class, "about_to_break"));
+				else             GLog.n(Messages.get(Weapon.class, "about_to_break"));
+			}
 		}
 		if (durability > 0){
 			//attempt to stick the missile weapon to the enemy, just drop it if we can't.
@@ -231,9 +240,11 @@ abstract public class MissileWeapon extends Weapon {
 		
 		usages *= RingOfSharpshooting.durabilityMultiplier( Dungeon.hero );
 		
-		float usage = MAX_DURABILITY/usages;
-		//after 100 uses, items just last forever.
-		return usage >= (MAX_DURABILITY/100f) ? usage : 0;
+		//at 100 uses, items just last forever.
+		if (usages >= 100f) return 0;
+		
+		//add a tiny amount to account for rounding error for calculations like 1/3
+		return (MAX_DURABILITY/usages) + 0.001f;
 	}
 	
 	@Override
