@@ -425,11 +425,12 @@ public class Item implements Bundlable {
 		return 0;
 	}
 	
-	public static Item virtual( Class<? extends Item> cl ) {
+	public Item virtual(){
 		try {
 			
-			Item item = (Item)cl.newInstance();
+			Item item = getClass().newInstance();
 			item.quantity = 0;
+			item.level = level;
 			return item;
 			
 		} catch (Exception e) {
