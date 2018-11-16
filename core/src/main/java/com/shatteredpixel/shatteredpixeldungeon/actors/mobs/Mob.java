@@ -48,7 +48,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
@@ -498,9 +497,7 @@ public abstract class Mob extends Char {
 		if ( seen
 				&& paralysed == 0
 				&& !(alignment == Alignment.ALLY && enemy == Dungeon.hero)) {
-			int defenseSkill = this.defenseSkill;
-			defenseSkill *= RingOfAccuracy.enemyEvasionMultiplier( enemy );
-			return defenseSkill;
+			return this.defenseSkill;
 		} else {
 			return 0;
 		}

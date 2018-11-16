@@ -27,14 +27,28 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Random;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 public class RingOfWealth extends Ring {
 	
 	private float triesToDrop = 0;
+	
+	public String info() {
+		String desc = desc();
+		if (isKnown()){
+			if (isIdentified()){
+				desc += "\n\n" + Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.15f, soloBonus()) - 1f)));
+			} else {
+				desc += "\n\n" + Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(15f));
+			}
+		}
+		return desc;
+	}
 	
 	@Override
 	protected RingBuff buff( ) {

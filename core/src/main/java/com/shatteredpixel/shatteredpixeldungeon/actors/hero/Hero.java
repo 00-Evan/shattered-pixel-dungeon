@@ -80,6 +80,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
@@ -308,6 +309,8 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.weapon;
 		
 		float accuracy = 1;
+		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
+		
 		if (wep instanceof MissileWeapon && rangedAttack
 				&& Dungeon.level.distance( pos, target.pos ) == 1) {
 			accuracy *= 0.5f;
@@ -437,7 +440,7 @@ public class Hero extends Char {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
-			return RingOfFuror.modifyAttackDelay(1f, this);
+			return RingOfFuror.attackDelayMultiplier(this);
 		}
 	}
 

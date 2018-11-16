@@ -22,8 +22,23 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+
+import java.text.DecimalFormat;
 
 public class RingOfHaste extends Ring {
+	
+	public String info() {
+		String desc = desc();
+		if (isKnown()){
+			if (isIdentified()){
+				desc += "\n\n" + Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.2f, soloBonus()) - 1f)));
+			} else {
+				desc += "\n\n" + Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(20f));
+			}
+		}
+		return desc;
+	}
 	
 	@Override
 	protected RingBuff buff( ) {

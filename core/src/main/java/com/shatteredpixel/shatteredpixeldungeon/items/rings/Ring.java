@@ -155,9 +155,9 @@ public class Ring extends KindofMisc {
 	}
 	
 	@Override
-	public String info() {
+	public String desc() {
 
-		String desc = isKnown()? desc() : Messages.get(this, "unknown_desc");
+		String desc = isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
 
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
@@ -280,6 +280,14 @@ public class Ring extends KindofMisc {
 		}
 		return bonus;
 	}
+	
+	public int soloBonus(){
+		if (cursed){
+			return Math.min( 0, Ring.this.level()-2 );
+		} else {
+			return Ring.this.level()+1;
+		}
+	}
 
 	public class RingBuff extends Buff {
 		
@@ -298,11 +306,7 @@ public class Ring extends KindofMisc {
 		}
 
 		public int level(){
-			if (Ring.this.cursed){
-				return Math.min( 0, Ring.this.level()-2 );
-			} else {
-				return Ring.this.level()+1;
-			}
+			return Ring.this.soloBonus();
 		}
 
 	}

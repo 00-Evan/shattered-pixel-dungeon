@@ -22,9 +22,24 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+
+import java.text.DecimalFormat;
 
 public class RingOfSharpshooting extends Ring {
-
+	
+	public String info() {
+		String desc = desc();
+		if (isKnown()){
+			if (isIdentified()){
+				desc += "\n\n" + Messages.get(this, "stats", soloBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.2, soloBonus()) - 1f)));
+			} else {
+				desc += "\n\n" + Messages.get(this, "typical_stats", 1, new DecimalFormat("#.##").format(20f));
+			}
+		}
+		return desc;
+	}
+	
 	@Override
 	protected RingBuff buff( ) {
 		return new Aim();
