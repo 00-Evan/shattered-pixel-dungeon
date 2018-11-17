@@ -81,7 +81,7 @@ public class DungeonTileSheet {
 	public static HashSet<Integer> waterStitcheable = new HashSet<>(Arrays.asList(
 			Terrain.EMPTY, Terrain.GRASS, Terrain.EMPTY_WELL,
 			Terrain.ENTRANCE, Terrain.EXIT, Terrain.EMBERS,
-			Terrain.BARRICADE, Terrain.HIGH_GRASS, Terrain.SECRET_TRAP,
+			Terrain.BARRICADE, Terrain.HIGH_GRASS, Terrain.FURROWED_GRASS, Terrain.SECRET_TRAP,
 			Terrain.TRAP, Terrain.INACTIVE_TRAP, Terrain.EMPTY_DECO,
 			Terrain.SIGN, Terrain.WELL, Terrain.STATUE, Terrain.ALCHEMY,
 			Terrain.DOOR, Terrain.OPEN_DOOR, Terrain.LOCKED_DOOR
@@ -123,6 +123,7 @@ public class DungeonTileSheet {
 		chasmStitcheable.put( Terrain.EMBERS,       CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.EMPTY_WELL,   CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.HIGH_GRASS,   CHASM_FLOOR );
+		chasmStitcheable.put( Terrain.FURROWED_GRASS,CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.EMPTY_DECO,   CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.SIGN,         CHASM_FLOOR );
 		chasmStitcheable.put( Terrain.EMPTY_WELL,   CHASM_FLOOR );
@@ -182,8 +183,10 @@ public class DungeonTileSheet {
 	public static final int FLAT_ALCHEMY_POT    = FLAT_OTHER+3;
 	public static final int FLAT_BARRICADE      = FLAT_OTHER+4;
 	public static final int FLAT_HIGH_GRASS     = FLAT_OTHER+5;
+	public static final int FLAT_FURROWED_GRASS = FLAT_OTHER+6;
 
-	public static final int FLAT_HIGH_GRASS_ALT = FLAT_OTHER+7;
+	public static final int FLAT_HIGH_GRASS_ALT = FLAT_OTHER+8;
+	public static final int FLAT_FURROWED_ALT   = FLAT_OTHER+9;
 
 
 	/**********************************************************************
@@ -269,8 +272,10 @@ public class DungeonTileSheet {
 	public static final int RAISED_ALCHEMY_POT      = RAISED_OTHER+3;
 	public static final int RAISED_BARRICADE        = RAISED_OTHER+4;
 	public static final int RAISED_HIGH_GRASS       = RAISED_OTHER+5;
+	public static final int RAISED_FURROWED_GRASS   = RAISED_OTHER+6;
 
-	public static final int RAISED_HIGH_GRASS_ALT   = RAISED_OTHER+7;
+	public static final int RAISED_HIGH_GRASS_ALT   = RAISED_OTHER+9;
+	public static final int RAISED_FURROWED_ALT     = RAISED_OTHER+10;
 
 
 
@@ -324,12 +329,14 @@ public class DungeonTileSheet {
 	public static final int DOOR_SIDEWAYS               = WALL_OVERHANG+23;
 	public static final int DOOR_SIDEWAYS_LOCKED        = WALL_OVERHANG+24;
 
-	public static final int STATUE_OVERHANG             = WALL_OVERHANG+26;
-	public static final int ALCHEMY_POT_OVERHANG        = WALL_OVERHANG+27;
-	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+28;
-	public static final int HIGH_GRASS_OVERHANG         = WALL_OVERHANG+29;
+	public static final int STATUE_OVERHANG             = WALL_OVERHANG+32;
+	public static final int ALCHEMY_POT_OVERHANG        = WALL_OVERHANG+33;
+	public static final int BARRICADE_OVERHANG          = WALL_OVERHANG+34;
+	public static final int HIGH_GRASS_OVERHANG         = WALL_OVERHANG+35;
+	public static final int FURROWED_OVERHANG           = WALL_OVERHANG+36;
 
-	public static final int HIGH_GRASS_OVERHANG_ALT     = WALL_OVERHANG+31;
+	public static final int HIGH_GRASS_OVERHANG_ALT     = WALL_OVERHANG+38;
+	public static final int FURROWED_OVERHANG_ALT       = WALL_OVERHANG+39;
 
 	/**********************************************************************
 	 * Logic for the selection of tile visuals
@@ -373,6 +380,7 @@ public class DungeonTileSheet {
 		directFlatVisuals.put(Terrain.ALCHEMY,          FLAT_ALCHEMY_POT);
 		directFlatVisuals.put(Terrain.BARRICADE,        FLAT_BARRICADE);
 		directFlatVisuals.put(Terrain.HIGH_GRASS,       FLAT_HIGH_GRASS);
+		directFlatVisuals.put(Terrain.FURROWED_GRASS,   FLAT_FURROWED_GRASS);
 
 		directFlatVisuals.put(Terrain.SECRET_DOOR,      directFlatVisuals.get(Terrain.WALL));
 	}
@@ -405,13 +413,16 @@ public class DungeonTileSheet {
 
 		commonAltVisuals.put(FLAT_BOOKSHELF,        FLAT_BOOKSHELF_ALT);
 		commonAltVisuals.put(FLAT_HIGH_GRASS,       FLAT_HIGH_GRASS_ALT);
+		commonAltVisuals.put(FLAT_FURROWED_GRASS,   FLAT_FURROWED_ALT);
 
 		commonAltVisuals.put(RAISED_WALL,           RAISED_WALL_ALT);
 		commonAltVisuals.put(RAISED_WALL_DECO,      RAISED_WALL_DECO_ALT);
 		commonAltVisuals.put(RAISED_WALL_BOOKSHELF, RAISED_WALL_BOOKSHELF_ALT);
 
 		commonAltVisuals.put(RAISED_HIGH_GRASS,     RAISED_HIGH_GRASS_ALT);
+		commonAltVisuals.put(RAISED_FURROWED_GRASS, RAISED_FURROWED_ALT);
 		commonAltVisuals.put(HIGH_GRASS_OVERHANG,   HIGH_GRASS_OVERHANG_ALT);
+		commonAltVisuals.put(FURROWED_OVERHANG,     FURROWED_OVERHANG_ALT);
 	}
 
 	//These alt visuals trigger 5% of the time (and also override common alts when they show up)

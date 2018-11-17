@@ -39,8 +39,13 @@ public class RaisedTerrainTilemap extends DungeonTilemap {
 		if (tile == Terrain.HIGH_GRASS){
 			return DungeonTileSheet.getVisualWithAlts(
 					DungeonTileSheet.RAISED_HIGH_GRASS,
-					pos) + 1;
+					pos) + 2;
+		} else if (tile == Terrain.FURROWED_GRASS){
+			return DungeonTileSheet.getVisualWithAlts(
+					DungeonTileSheet.RAISED_FURROWED_GRASS,
+					pos) + 2;
 		}
+		
 		
 		return -1;
 	}

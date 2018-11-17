@@ -80,6 +80,10 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 				return DungeonTileSheet.getVisualWithAlts(
 						DungeonTileSheet.RAISED_HIGH_GRASS,
 						pos);
+			} else if (tile == Terrain.FURROWED_GRASS) {
+				return DungeonTileSheet.getVisualWithAlts(
+						DungeonTileSheet.RAISED_FURROWED_GRASS,
+						pos);
 			} else {
 				return DungeonTileSheet.NULL_TILE;
 			}

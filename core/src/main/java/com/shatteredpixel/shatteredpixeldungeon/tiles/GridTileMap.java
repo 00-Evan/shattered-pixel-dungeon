@@ -45,7 +45,7 @@ public class GridTileMap extends DungeonTilemap {
 	protected int getTileVisual(int pos, int tile, boolean flat) {
 		if (gridSetting == -1 || (pos % mapWidth) % 2 != (pos / mapWidth) % 2){
 			return -1;
-		} else if (DungeonTileSheet.floorTile(tile) || tile == Terrain.HIGH_GRASS) {
+		} else if (DungeonTileSheet.floorTile(tile) || tile == Terrain.HIGH_GRASS || tile == Terrain.FURROWED_GRASS) {
 			return gridSetting;
 		} else if (DungeonTileSheet.doorTile(tile)){
 			if (DungeonTileSheet.wallStitcheable(map[pos - mapWidth])){

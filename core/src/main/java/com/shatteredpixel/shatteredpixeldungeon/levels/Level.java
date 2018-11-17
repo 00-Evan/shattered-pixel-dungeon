@@ -711,6 +711,7 @@ public abstract class Level implements Bundlable {
 		}
 
 		if (map[pos] == Terrain.HIGH_GRASS ||
+				map[pos] == Terrain.FURROWED_GRASS ||
 				map[pos] == Terrain.EMPTY ||
 				map[pos] == Terrain.EMBERS ||
 				map[pos] == Terrain.EMPTY_DECO) {
@@ -800,6 +801,7 @@ public abstract class Level implements Bundlable {
 			break;
 			
 		case Terrain.HIGH_GRASS:
+		case Terrain.FURROWED_GRASS:
 			HighGrass.trample( this, cell, ch );
 			break;
 			
@@ -1002,6 +1004,8 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "exit_name");
 			case Terrain.EMBERS:
 				return Messages.get(Level.class, "embers_name");
+			case Terrain.FURROWED_GRASS:
+				return Messages.get(Level.class, "furrowed_grass_name");
 			case Terrain.LOCKED_DOOR:
 				return Messages.get(Level.class, "locked_door_name");
 			case Terrain.PEDESTAL:
@@ -1049,6 +1053,7 @@ public abstract class Level implements Bundlable {
 			case Terrain.EMBERS:
 				return Messages.get(Level.class, "embers_desc");
 			case Terrain.HIGH_GRASS:
+			case Terrain.FURROWED_GRASS:
 				return Messages.get(Level.class, "high_grass_desc");
 			case Terrain.LOCKED_DOOR:
 				return Messages.get(Level.class, "locked_door_desc");

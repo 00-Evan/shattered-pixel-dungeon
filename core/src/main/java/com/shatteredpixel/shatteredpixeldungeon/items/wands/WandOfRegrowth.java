@@ -78,7 +78,8 @@ public class WandOfRegrowth extends Wand {
 					c == Terrain.EMBERS ||
 					c == Terrain.EMPTY_DECO ||
 					c == Terrain.GRASS ||
-					c == Terrain.HIGH_GRASS)) {
+					c == Terrain.HIGH_GRASS ||
+					c == Terrain.FURROWED_GRASS)) {
 				i.remove();
 			}
 		}

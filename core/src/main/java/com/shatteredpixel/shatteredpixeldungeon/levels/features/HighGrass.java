@@ -42,53 +42,72 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Random;
 
 public class HighGrass {
+	
+	//prevents items dropped from grass, from trampling that same grass.
+	//yes this is a bit ugly, oh well.
+	private static boolean freezeTrample = false;
 
 	public static void trample( Level level, int pos, Char ch ) {
 		
-		if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS){
-			//Level.set(pos, Terrain.FURROWED_GRASS);
-			Level.set(pos, Terrain.GRASS);
-		} else {
-			Level.set(pos, Terrain.GRASS);
-		}
-		GameScene.updateMap( pos );
+		if (freezeTrample) return;
 		
-		int naturalismLevel = 0;
-
-		if (ch != null) {
-			SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
-			if (naturalism != null) {
-				if (!naturalism.isCursed()) {
-					naturalismLevel = naturalism.itemLevel() + 1;
-					naturalism.charge();
-				} else {
-					naturalismLevel = -1;
+		if (level.map[pos] == Terrain.FURROWED_GRASS){
+			if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS){
+				//Do nothing
+				freezeTrample = true;
+			} else {
+				Level.set(pos, Terrain.GRASS);
+			}
+			
+		} else {
+			if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS){
+				Level.set(pos, Terrain.FURROWED_GRASS);
+				freezeTrample = true;
+			} else {
+				Level.set(pos, Terrain.GRASS);
+			}
+			
+			int naturalismLevel = 0;
+			
+			if (ch != null) {
+				SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
+				if (naturalism != null) {
+					if (!naturalism.isCursed()) {
+						naturalismLevel = naturalism.itemLevel() + 1;
+						naturalism.charge();
+					} else {
+						naturalismLevel = -1;
+					}
 				}
 			}
-		}
-
-		if (naturalismLevel >= 0) {
-			// Seed, scales from 1/20 to 1/4
-			if (Random.Int(20 - (naturalismLevel * 4)) == 0) {
-				Item seed = Generator.random(Generator.Category.SEED);
-
-				if (seed instanceof BlandfruitBush.Seed) {
-					if (Random.Int(3) - Dungeon.LimitedDrops.BLANDFRUIT_SEED.count >= 0) {
+			
+			if (naturalismLevel >= 0) {
+				// Seed, scales from 1/20 to 1/4
+				if (Random.Int(20 - (naturalismLevel * 4)) == 0) {
+					Item seed = Generator.random(Generator.Category.SEED);
+					
+					if (seed instanceof BlandfruitBush.Seed) {
+						if (Random.Int(3) - Dungeon.LimitedDrops.BLANDFRUIT_SEED.count >= 0) {
+							level.drop(seed, pos).sprite.drop();
+							Dungeon.LimitedDrops.BLANDFRUIT_SEED.count++;
+						}
+					} else
 						level.drop(seed, pos).sprite.drop();
-						Dungeon.LimitedDrops.BLANDFRUIT_SEED.count++;
-					}
-				} else
-					level.drop(seed, pos).sprite.drop();
+				}
+				
+				// Dew, scales from 1/6 to 1/3
+				if (Random.Int(24 - naturalismLevel*3) <= 3) {
+					level.drop(new Dewdrop(), pos).sprite.drop();
+				}
 			}
-
-			// Dew, scales from 1/6 to 1/3
-			if (Random.Int(24 - naturalismLevel*3) <= 3) {
-				level.drop(new Dewdrop(), pos).sprite.drop();
-			}
+			
 		}
+		
+		freezeTrample = false;
+		
+		GameScene.updateMap( pos );
 
 		int leaves = 4;
-		
 
 		if (ch instanceof Hero) {
 			Hero hero = (Hero)ch;

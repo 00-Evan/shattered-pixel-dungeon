@@ -55,7 +55,8 @@ public class AquaBlast extends TargetedSpell {
 				int terr = Dungeon.level.map[cell + i];
 				if (terr == Terrain.EMPTY || terr == Terrain.GRASS ||
 						terr == Terrain.EMBERS || terr == Terrain.EMPTY_SP ||
-						terr == Terrain.HIGH_GRASS || terr == Terrain.EMPTY_DECO) {
+						terr == Terrain.HIGH_GRASS || terr == Terrain.FURROWED_GRASS ||
+						terr == Terrain.EMPTY_DECO) {
 					Level.set(cell + i, Terrain.WATER);
 					GameScene.updateMap(cell + i);
 				}

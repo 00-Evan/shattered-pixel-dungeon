@@ -78,7 +78,8 @@ public class RegrowthBomb extends Bomb {
 							Dungeon.level.map[i] == Terrain.EMBERS ||
 							Dungeon.level.map[i] == Terrain.EMPTY_DECO ||
 							Dungeon.level.map[i] == Terrain.GRASS ||
-							Dungeon.level.map[i] == Terrain.HIGH_GRASS){
+							Dungeon.level.map[i] == Terrain.HIGH_GRASS ||
+							Dungeon.level.map[i] == Terrain.FURROWED_GRASS){
 					
 					plantCandidates.add(i);
 				}
