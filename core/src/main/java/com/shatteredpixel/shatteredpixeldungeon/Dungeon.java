@@ -64,7 +64,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.DungeonSeed;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndResurrect;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -551,11 +550,6 @@ public class Dungeon {
 
 			GamesInProgress.set( GamesInProgress.curSlot, depth, challenges, hero );
 
-		} else if (WndResurrect.instance != null) {
-			
-			WndResurrect.instance.hide();
-			Hero.reallyDie( WndResurrect.causeOfDeath );
-			
 		}
 	}
 	
