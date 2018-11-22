@@ -41,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
@@ -394,6 +396,28 @@ public class Dungeon {
 		hero.viewDistance = light == null ? level.viewDistance : Math.max( Light.DISTANCE, level.viewDistance );
 		
 		hero.curAction = hero.lastAction = null;
+		
+		//pre-0.7.1 saves. Adjusting for spirit bows in weapon slot or with upgrades.
+		SpiritBow bow;
+		if (hero.belongings.weapon instanceof SpiritBow){
+			bow = (SpiritBow)hero.belongings.weapon;
+			hero.belongings.weapon = null;
+			
+			if (!bow.collect()){
+				level.drop(bow, hero.pos);
+			}
+		} else {
+			bow = hero.belongings.getItem(SpiritBow.class);
+		}
+		
+		if (bow != null && bow.spentUpgrades() > 0){
+			ScrollOfUpgrade refund = new ScrollOfUpgrade();
+			refund.quantity(bow.spentUpgrades());
+			bow.level(0);
+			if (!refund.collect()){
+				level.drop(refund, hero.pos);
+			}
+		}
 		
 		observe();
 		try {

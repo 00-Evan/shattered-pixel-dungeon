@@ -143,6 +143,11 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalInfusion.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicalInfusion" );
 		
+		//v0.7.1
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang" );
+		
 	}
 	
 	@Override
