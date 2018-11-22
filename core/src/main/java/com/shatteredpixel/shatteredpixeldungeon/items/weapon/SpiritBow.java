@@ -142,7 +142,8 @@ public class SpiritBow extends Weapon {
 	
 	@Override
 	public int level() {
-		return Dungeon.hero.lvl/5;
+		//need to check if hero is null for loading an upgraded bow from pre-0.7.0
+		return Dungeon.hero == null ? 0 : Dungeon.hero.lvl/5;
 	}
 	
 	@Override
