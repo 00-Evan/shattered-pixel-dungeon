@@ -491,7 +491,7 @@ public class Armor extends EquipableItem {
 
 	public Armor inscribe( Glyph glyph ) {
 		this.glyph = glyph;
-
+		updateQuickslot();
 		return this;
 	}
 

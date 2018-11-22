@@ -77,14 +77,17 @@ public class ItemSpriteSheet {
 	public static final int DEWDROP         = UNCOLLECTIBLE+1;
 	public static final int PETAL           = UNCOLLECTIBLE+2;
 	public static final int SANDBAG         = UNCOLLECTIBLE+3;
+	public static final int SPIRIT_ARROW    = UNCOLLECTIBLE+4;
 	
-	public static final int GUIDE_PAGE      = UNCOLLECTIBLE+5;
-	public static final int ALCH_PAGE       = UNCOLLECTIBLE+6;
+	public static final int GUIDE_PAGE      = UNCOLLECTIBLE+6;
+	public static final int ALCH_PAGE       = UNCOLLECTIBLE+7;
 	static{
 		assignItemRect(GOLD,        15, 13);
 		assignItemRect(DEWDROP,     10, 10);
 		assignItemRect(PETAL,       8,  8);
 		assignItemRect(SANDBAG,     10, 10);
+		assignItemRect(SPIRIT_ARROW,11, 11);
+		
 		assignItemRect(GUIDE_PAGE,  10, 11);
 		assignItemRect(ALCH_PAGE,   10, 11);
 	}
@@ -256,7 +259,7 @@ public class ItemSpriteSheet {
 	                                                                                    //8 free slots
 
 	private static final int MISSILE_WEP    =                               xy(1, 10);  //16 slots. 3 per tier + boomerang
-	public static final int BOOMERANG       = MISSILE_WEP+0;
+	public static final int SPIRIT_BOW      = MISSILE_WEP+0;
 	
 	public static final int DART            = MISSILE_WEP+1;
 	public static final int THROWING_KNIFE  = MISSILE_WEP+2;
@@ -267,6 +270,7 @@ public class ItemSpriteSheet {
 	
 	public static final int THROWING_SPEAR  = MISSILE_WEP+7;
 	public static final int BOLAS           = MISSILE_WEP+8;
+	public static final int BOOMERANG       = MISSILE_WEP+9;
 	
 	public static final int JAVELIN         = MISSILE_WEP+10;
 	public static final int TOMAHAWK        = MISSILE_WEP+11;
@@ -275,7 +279,7 @@ public class ItemSpriteSheet {
 	public static final int THROWING_HAMMER = MISSILE_WEP+14;
 	
 	static{
-		assignItemRect(BOOMERANG,       14, 14);
+		assignItemRect(SPIRIT_BOW,      16, 16);
 		
 		assignItemRect(DART,            15, 15);
 		assignItemRect(THROWING_KNIFE,  12, 13);
@@ -286,6 +290,7 @@ public class ItemSpriteSheet {
 		
 		assignItemRect(THROWING_SPEAR,  13, 13);
 		assignItemRect(BOLAS,           15, 14);
+		assignItemRect(BOOMERANG,       14, 14);
 		
 		assignItemRect(JAVELIN,         16, 16);
 		assignItemRect(TOMAHAWK,        13, 13);

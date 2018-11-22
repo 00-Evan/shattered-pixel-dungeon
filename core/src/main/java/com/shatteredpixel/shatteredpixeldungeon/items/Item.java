@@ -447,7 +447,7 @@ public class Item implements Bundlable {
 		return quantity != 1 ? Integer.toString( quantity ) : null;
 	}
 	
-	public void updateQuickslot() {
+	public static void updateQuickslot() {
 			QuickSlotButton.refresh();
 	}
 	

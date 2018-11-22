@@ -239,6 +239,7 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	public Weapon enchant( Enchantment ench ) {
 		enchantment = ench;
+		updateQuickslot();
 		return this;
 	}
 

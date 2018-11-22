@@ -1248,6 +1248,8 @@ public class Hero extends Char {
 			sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
 			Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			
+			Item.updateQuickslot();
+			
 			Badges.validateLevelReached();
 		}
 	}
