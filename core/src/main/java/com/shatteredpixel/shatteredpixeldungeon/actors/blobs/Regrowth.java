@@ -49,7 +49,8 @@ public class Regrowth extends Blob {
 						if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) {
 							c1 = (cur[cell] > 9 && Actor.findChar( cell ) == null)
 									? Terrain.HIGH_GRASS : Terrain.GRASS;
-						} else if (c == Terrain.GRASS && cur[cell] > 9 && Dungeon.level.plants.get(cell) == null && Actor.findChar( cell ) == null ) {
+						} else if ((c == Terrain.GRASS || c == Terrain.FURROWED_GRASS)
+								&& cur[cell] > 9 && Dungeon.level.plants.get(cell) == null && Actor.findChar( cell ) == null ) {
 							c1 = Terrain.HIGH_GRASS;
 						}
 

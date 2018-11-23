@@ -32,12 +32,10 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Camouflage;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.plants.BlandfruitBush;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Random;
 
@@ -84,15 +82,7 @@ public class HighGrass {
 			if (naturalismLevel >= 0) {
 				// Seed, scales from 1/20 to 1/4
 				if (Random.Int(20 - (naturalismLevel * 4)) == 0) {
-					Item seed = Generator.random(Generator.Category.SEED);
-					
-					if (seed instanceof BlandfruitBush.Seed) {
-						if (Random.Int(3) - Dungeon.LimitedDrops.BLANDFRUIT_SEED.count >= 0) {
-							level.drop(seed, pos).sprite.drop();
-							Dungeon.LimitedDrops.BLANDFRUIT_SEED.count++;
-						}
-					} else
-						level.drop(seed, pos).sprite.drop();
+					level.drop(Generator.random(Generator.Category.SEED), pos).sprite.drop();
 				}
 				
 				// Dew, scales from 1/6 to 1/3
