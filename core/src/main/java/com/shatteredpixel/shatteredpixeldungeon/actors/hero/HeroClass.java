@@ -35,8 +35,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
@@ -100,6 +105,8 @@ public enum HeroClass {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			new SmallRation().collect();
 		}
+		
+		new ScrollOfIdentify().identify();
 
 	}
 
@@ -129,7 +136,9 @@ public enum HeroClass {
 		
 		new PotionBandolier().collect();
 		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+		
 		new PotionOfHealing().identify();
+		new ScrollOfRage().identify();
 	}
 
 	private static void initMage( Hero hero ) {
@@ -144,7 +153,9 @@ public enum HeroClass {
 
 		new ScrollHolder().collect();
 		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+		
 		new ScrollOfUpgrade().identify();
+		new PotionOfLiquidFlame().identify();
 	}
 
 	private static void initRogue( Hero hero ) {
@@ -162,7 +173,9 @@ public enum HeroClass {
 
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		
 		new ScrollOfMagicMapping().identify();
+		new PotionOfInvisibility().identify();
 	}
 
 	private static void initHuntress( Hero hero ) {
@@ -175,7 +188,9 @@ public enum HeroClass {
 
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		
 		new PotionOfMindVision().identify();
+		new ScrollOfLullaby().identify();
 	}
 	
 	public String title() {
