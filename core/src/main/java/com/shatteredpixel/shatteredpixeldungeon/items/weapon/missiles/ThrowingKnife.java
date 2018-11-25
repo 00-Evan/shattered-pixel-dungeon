@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
@@ -65,7 +64,7 @@ public class ThrowingKnife extends MissileWeapon {
 						min() + Math.round(diff*0.75f),
 						max()));
 				int exStr = hero.STR() - STRReq();
-				if (exStr > 0 && hero.heroClass == HeroClass.HUNTRESS) {
+				if (exStr > 0) {
 					damage += Random.IntRange(0, exStr);
 				}
 				return damage;
