@@ -202,59 +202,79 @@ public enum HeroClass {
 	}
 	
 	public String spritesheet() {
-		
 		switch (this) {
-		case WARRIOR:
-			return Assets.WARRIOR;
-		case MAGE:
-			return Assets.MAGE;
-		case ROGUE:
-			return Assets.ROGUE;
-		case HUNTRESS:
-			return Assets.HUNTRESS;
+			case WARRIOR: default:
+				return Assets.WARRIOR;
+			case MAGE:
+				return Assets.MAGE;
+			case ROGUE:
+				return Assets.ROGUE;
+			case HUNTRESS:
+				return Assets.HUNTRESS;
 		}
-		
-		return null;
 	}
 	
 	public String[] perks() {
-		
 		switch (this) {
-		case WARRIOR:
-			return new String[]{
-					Messages.get(HeroClass.class, "warrior_perk1"),
-					Messages.get(HeroClass.class, "warrior_perk2"),
-					Messages.get(HeroClass.class, "warrior_perk3"),
-					Messages.get(HeroClass.class, "warrior_perk4"),
-					Messages.get(HeroClass.class, "warrior_perk5"),
-			};
-		case MAGE:
-			return new String[]{
-					Messages.get(HeroClass.class, "mage_perk1"),
-					Messages.get(HeroClass.class, "mage_perk2"),
-					Messages.get(HeroClass.class, "mage_perk3"),
-					Messages.get(HeroClass.class, "mage_perk4"),
-					Messages.get(HeroClass.class, "mage_perk5"),
-			};
-		case ROGUE:
-			return new String[]{
-					Messages.get(HeroClass.class, "rogue_perk1"),
-					Messages.get(HeroClass.class, "rogue_perk2"),
-					Messages.get(HeroClass.class, "rogue_perk3"),
-					Messages.get(HeroClass.class, "rogue_perk4"),
-					Messages.get(HeroClass.class, "rogue_perk5"),
-			};
-		case HUNTRESS:
-			return new String[]{
-					Messages.get(HeroClass.class, "huntress_perk1"),
-					Messages.get(HeroClass.class, "huntress_perk2"),
-					Messages.get(HeroClass.class, "huntress_perk3"),
-					Messages.get(HeroClass.class, "huntress_perk4"),
-					Messages.get(HeroClass.class, "huntress_perk5"),
-			};
+			case WARRIOR: default:
+				return new String[]{
+						Messages.get(HeroClass.class, "warrior_perk1"),
+						Messages.get(HeroClass.class, "warrior_perk2"),
+						Messages.get(HeroClass.class, "warrior_perk3"),
+						Messages.get(HeroClass.class, "warrior_perk4"),
+						Messages.get(HeroClass.class, "warrior_perk5"),
+				};
+			case MAGE:
+				return new String[]{
+						Messages.get(HeroClass.class, "mage_perk1"),
+						Messages.get(HeroClass.class, "mage_perk2"),
+						Messages.get(HeroClass.class, "mage_perk3"),
+						Messages.get(HeroClass.class, "mage_perk4"),
+						Messages.get(HeroClass.class, "mage_perk5"),
+				};
+			case ROGUE:
+				return new String[]{
+						Messages.get(HeroClass.class, "rogue_perk1"),
+						Messages.get(HeroClass.class, "rogue_perk2"),
+						Messages.get(HeroClass.class, "rogue_perk3"),
+						Messages.get(HeroClass.class, "rogue_perk4"),
+						Messages.get(HeroClass.class, "rogue_perk5"),
+				};
+			case HUNTRESS:
+				return new String[]{
+						Messages.get(HeroClass.class, "huntress_perk1"),
+						Messages.get(HeroClass.class, "huntress_perk2"),
+						Messages.get(HeroClass.class, "huntress_perk3"),
+						Messages.get(HeroClass.class, "huntress_perk4"),
+						Messages.get(HeroClass.class, "huntress_perk5"),
+				};
 		}
-		
-		return null;
+	}
+	
+	public boolean isUnlocked(){
+		switch (this){
+			case WARRIOR: default:
+				return true;
+			case MAGE:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_MAGE);
+			case ROGUE:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_ROGUE);
+			case HUNTRESS:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTRESS);
+		}
+	}
+	
+	public String unlockMsg() {
+		switch (this){
+			case WARRIOR: default:
+				return "";
+			case MAGE:
+				return Messages.get(HeroClass.class, "mage_unlock");
+			case ROGUE:
+				return Messages.get(HeroClass.class, "rogue_unlock");
+			case HUNTRESS:
+				return Messages.get(HeroClass.class, "huntress_unlock");
+		}
 	}
 
 	private static final String CLASS	= "class";

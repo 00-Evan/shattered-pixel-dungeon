@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -503,10 +504,19 @@ public abstract class Mob extends Char {
 		}
 	}
 	
+	protected boolean hitWithRanged = false;
+	
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
+		
+		if (enemy instanceof Hero && ((Hero) enemy).belongings.weapon instanceof MissileWeapon){
+			hitWithRanged = true;
+		}
+		
 		if ((!enemySeen || enemy.invisible > 0)
 				&& enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack()) {
+			Statistics.sneakAttacks++;
+			Badges.validateRogueUnlock();
 			if (enemy.buff(Preparation.class) != null) {
 				Wound.hit(this);
 			} else {
@@ -581,6 +591,11 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public void die( Object cause ) {
+		
+		if (hitWithRanged){
+			Statistics.thrownAssists++;
+			Badges.validateHuntressUnlock();
+		}
 		
 		if (cause == Chasm.class){
 			//50% chance to round up, 50% to round down

@@ -120,6 +120,9 @@ public class Badges {
 		MASTERY_MAGE,
 		MASTERY_ROGUE,
 		MASTERY_HUNTRESS,
+		UNLOCK_MAGE( 65 ),
+		UNLOCK_ROGUE( 66 ),
+		UNLOCK_HUNTRESS( 67 ),
 		ITEM_LEVEL_1( 48 ),
 		ITEM_LEVEL_2( 49 ),
 		ITEM_LEVEL_3( 50 ),
@@ -688,6 +691,24 @@ public class Badges {
 		}
 	}
 	
+	public static void validateMageUnlock(){
+		if (Statistics.upgradesUsed >= 2 && !global.contains(Badge.UNLOCK_MAGE)){
+			displayBadge( Badge.UNLOCK_MAGE );
+		}
+	}
+	
+	public static void validateRogueUnlock(){
+		if (Statistics.sneakAttacks >= 20 && !global.contains(Badge.UNLOCK_ROGUE)){
+			displayBadge( Badge.UNLOCK_ROGUE );
+		}
+	}
+	
+	public static void validateHuntressUnlock(){
+		if (Statistics.thrownAssists >= 20 && !global.contains(Badge.UNLOCK_HUNTRESS)){
+			displayBadge( Badge.UNLOCK_HUNTRESS );
+		}
+	}
+	
 	public static void validateMasteryCombo( int n ) {
 		if (!local.contains( Badge.MASTERY_COMBO ) && n == 10) {
 			Badge badge = Badge.MASTERY_COMBO;
@@ -824,6 +845,13 @@ public class Badges {
 		loadGlobal();
 		global.remove( badge );
 		saveNeeded = true;
+	}
+	
+	public static void addGlobal( Badge badge ){
+		if (!global.contains(badge)){
+			global.add( badge );
+			saveNeeded = true;
+		}
 	}
 	
 	public static List<Badge> filtered( boolean global ) {

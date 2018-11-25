@@ -192,8 +192,8 @@ public class WndStartGame extends Window {
 		public void update() {
 			super.update();
 			if (cl != GamesInProgress.selectedClass){
-				if (cl == HeroClass.HUNTRESS && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3)){
-					hero.brightness( 0f );
+				if (!cl.isUnlocked()){
+					hero.brightness(0.3f);
 				} else {
 					hero.brightness(0.6f);
 				}
@@ -206,9 +206,9 @@ public class WndStartGame extends Window {
 		protected void onClick() {
 			super.onClick();
 			
-			if( cl == HeroClass.HUNTRESS && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_3)){
+			if( !cl.isUnlocked() ){
 				ShatteredPixelDungeon.scene().add(
-						new WndMessage(Messages.get(WndStartGame.class, "huntress_unlock")));
+						new WndMessage(cl.unlockMsg()));
 			} else {
 				GamesInProgress.selectedClass = cl;
 			}

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -97,6 +98,8 @@ public class ScrollOfUpgrade extends InventoryScroll {
 		}
 		
 		Badges.validateItemLevelAquired( item );
+		Statistics.upgradesUsed++;
+		Badges.validateMageUnlock();
 	}
 	
 	public static void upgrade( Hero hero ) {
