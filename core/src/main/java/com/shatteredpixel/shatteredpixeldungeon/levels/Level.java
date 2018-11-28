@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.WindParticle;
@@ -852,7 +853,23 @@ public abstract class Level implements Bundlable {
 		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
 						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
 		if (sighted) {
-			ShadowCaster.castShadow( cx, cy, fieldOfView, c.viewDistance );
+			boolean[] blocking;
+			
+			if (c instanceof Hero && ((Hero) c).subClass == HeroSubClass.WARDEN) {
+				blocking = Dungeon.level.losBlocking.clone();
+				for (int i = 0; i < blocking.length; i++){
+					if (blocking[i] && (Dungeon.level.map[i] == Terrain.HIGH_GRASS || Dungeon.level.map[i] == Terrain.FURROWED_GRASS)){
+						blocking[i] = false;
+					}
+				}
+			} else {
+				blocking = Dungeon.level.losBlocking;
+			}
+			
+			int viewDist = c.viewDistance;
+			if (c instanceof Hero && ((Hero) c).subClass == HeroSubClass.SNIPER) viewDist *= 1.5f;
+			
+			ShadowCaster.castShadow( cx, cy, fieldOfView, blocking, viewDist );
 		} else {
 			BArray.setFalse(fieldOfView);
 		}
@@ -865,6 +882,9 @@ public abstract class Level implements Bundlable {
 			}
 			if (c.buff(MagicalSight.class) != null){
 				sense = 8;
+			}
+			if (((Hero)c).subClass == HeroSubClass.SNIPER){
+				sense *= 1.5f;
 			}
 		}
 		

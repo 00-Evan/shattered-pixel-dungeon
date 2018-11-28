@@ -758,6 +758,7 @@ public class Dungeon {
 		Rankings.INSTANCE.submit( true, cause );
 	}
 
+	//TODO hero max vision is now separate from shadowcaster max vision. Might want to adjust.
 	public static void observe(){
 		observe( ShadowCaster.MAX_DISTANCE+1 );
 	}
