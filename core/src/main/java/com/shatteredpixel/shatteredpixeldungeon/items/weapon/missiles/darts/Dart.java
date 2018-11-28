@@ -51,7 +51,7 @@ public class Dart extends MissileWeapon {
 	public int max(int lvl) {
 		if (bow != null){
 			return  12 +                    //12 base
-					3*(bow.level() + lvl);  //+3 per level or bow level
+					3*bow.level() + 2*lvl;  //+3 per bow level, +2 per level (default scaling +2)
 		} else {
 			return  2 +     //2 base, down from 5
 					2*lvl;  //scaling unchanged
