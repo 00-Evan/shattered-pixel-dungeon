@@ -59,7 +59,7 @@ public enum HeroClass {
 	WARRIOR( "warrior", HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
 	MAGE( "mage", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
 	ROGUE( "rogue", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
-	HUNTRESS( "huntress", HeroSubClass.WARDEN, HeroSubClass.SNIPER );
+	HUNTRESS( "huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN );
 
 	private String title;
 	private HeroSubClass[] subClasses;

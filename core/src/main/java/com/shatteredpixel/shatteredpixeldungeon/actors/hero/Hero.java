@@ -295,11 +295,9 @@ public class Hero extends Char {
 		//temporarily set the hero's weapon to the missile weapon being used
 		KindOfWeapon equipped = belongings.weapon;
 		belongings.weapon = wep;
-		rangedAttack = true;
 		boolean result = attack( enemy );
 		Invisibility.dispel();
 		belongings.weapon = equipped;
-		rangedAttack = false;
 
 		return result;
 	}
@@ -311,9 +309,13 @@ public class Hero extends Char {
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
-		if (wep instanceof MissileWeapon && rangedAttack
-				&& Dungeon.level.distance( pos, target.pos ) == 1) {
-			accuracy *= 0.5f;
+		if (wep instanceof MissileWeapon){
+			if (Dungeon.level.adjacent( pos, target.pos )) {
+				accuracy *= 0.5f;
+			} else if (subClass == HeroSubClass.SNIPER){
+				//+10% accuracy per tile of distance
+				accuracy *= .9f + (.1f * Dungeon.level.distance( pos, target.pos));
+			}
 		}
 		
 		if (wep != null) {
@@ -474,7 +476,6 @@ public class Hero extends Char {
 		//calls to dungeon.observe will also update hero's local FOV.
 		fieldOfView = Dungeon.level.heroFOV;
 		
-		
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.
 			if (!resting || buff(MindVision.class) != null || buff(Awareness.class) != null) {
@@ -498,15 +499,17 @@ public class Hero extends Char {
 			return false;
 		}
 		
+		boolean actResult;
 		if (curAction == null) {
 			
 			if (resting) {
-				spend( TIME_TO_REST ); next();
-				return false;
+				spend( TIME_TO_REST );
+				next();
+			} else {
+				ready();
 			}
 			
-			ready();
-			return false;
+			actResult = false;
 			
 		} else {
 			
@@ -515,58 +518,45 @@ public class Hero extends Char {
 			ready = false;
 			
 			if (curAction instanceof HeroAction.Move) {
+				actResult = actMove( (HeroAction.Move)curAction );
 				
-				return actMove( (HeroAction.Move)curAction );
+			} else if (curAction instanceof HeroAction.Interact) {
+				actResult = actInteract( (HeroAction.Interact)curAction );
 				
-			} else
-			if (curAction instanceof HeroAction.Interact) {
-
-				return actInteract( (HeroAction.Interact)curAction );
+			} else if (curAction instanceof HeroAction.Buy) {
+				actResult = actBuy( (HeroAction.Buy)curAction );
 				
-			} else
-			if (curAction instanceof HeroAction.Buy) {
-
-				return actBuy( (HeroAction.Buy)curAction );
+			}else if (curAction instanceof HeroAction.PickUp) {
+				actResult = actPickUp( (HeroAction.PickUp)curAction );
 				
-			}else
-			if (curAction instanceof HeroAction.PickUp) {
-
-				return actPickUp( (HeroAction.PickUp)curAction );
+			} else if (curAction instanceof HeroAction.OpenChest) {
+				actResult = actOpenChest( (HeroAction.OpenChest)curAction );
 				
-			} else
-			if (curAction instanceof HeroAction.OpenChest) {
-
-				return actOpenChest( (HeroAction.OpenChest)curAction );
+			} else if (curAction instanceof HeroAction.Unlock) {
+				actResult = actUnlock((HeroAction.Unlock) curAction);
 				
-			} else
-			if (curAction instanceof HeroAction.Unlock) {
-
-				return actUnlock((HeroAction.Unlock) curAction);
+			} else if (curAction instanceof HeroAction.Descend) {
+				actResult = actDescend( (HeroAction.Descend)curAction );
 				
-			} else
-			if (curAction instanceof HeroAction.Descend) {
-
-				return actDescend( (HeroAction.Descend)curAction );
+			} else if (curAction instanceof HeroAction.Ascend) {
+				actResult = actAscend( (HeroAction.Ascend)curAction );
 				
-			} else
-			if (curAction instanceof HeroAction.Ascend) {
-
-				return actAscend( (HeroAction.Ascend)curAction );
+			} else if (curAction instanceof HeroAction.Attack) {
+				actResult = actAttack( (HeroAction.Attack)curAction );
 				
-			} else
-			if (curAction instanceof HeroAction.Attack) {
-
-				return actAttack( (HeroAction.Attack)curAction );
+			} else if (curAction instanceof HeroAction.Alchemy) {
+				actResult = actAlchemy( (HeroAction.Alchemy)curAction );
 				
-			} else
-			if (curAction instanceof HeroAction.Alchemy) {
-
-				return actAlchemy( (HeroAction.Alchemy)curAction );
-				
+			} else {
+				actResult = false;
 			}
 		}
 		
-		return false;
+		if( subClass == HeroSubClass.WARDEN && Dungeon.level.map[pos] == Terrain.FURROWED_GRASS){
+			Buff.affect(this, Barkskin.class).set( lvl, 1 );
+		}
+		
+		return actResult;
 	}
 	
 	public void busy() {
@@ -937,7 +927,7 @@ public class Hero extends Char {
 			
 		switch (subClass) {
 		case SNIPER:
-			if (wep instanceof MissileWeapon && rangedAttack) {
+			if (wep instanceof MissileWeapon) {
 				Buff.prolong( this, SnipersMark.class, attackDelay() ).object = enemy.id();
 			}
 			break;

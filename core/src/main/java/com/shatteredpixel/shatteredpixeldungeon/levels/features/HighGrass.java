@@ -23,11 +23,9 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
@@ -91,32 +89,23 @@ public class HighGrass {
 				}
 			}
 			
+			if (ch instanceof Hero) {
+				Hero hero = (Hero) ch;
+				
+				//Camouflage
+				//FIXME doesn't work with sad ghost
+				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Camouflage.class, hero)) {
+					Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings.armor.level());
+				}
+			}
+			
 		}
 		
 		freezeTrample = false;
 		
 		GameScene.updateMap( pos );
-
-		int leaves = 4;
-
-		if (ch instanceof Hero) {
-			Hero hero = (Hero)ch;
-
-			// Barkskin
-			if (hero.subClass == HeroSubClass.WARDEN) {
-				Buff.affect(ch, Barkskin.class).set(ch.HT / 3, 1);
-				leaves += 4;
-			}
-
-			//Camouflage
-			//FIXME doesn't work with sad ghost
-			if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Camouflage.class, hero)){
-				Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings.armor.level());
-				leaves += 4;
-			}
-		}
 		
-		CellEmitter.get( pos ).burst( LeafParticle.LEVEL_SPECIFIC, leaves );
+		CellEmitter.get( pos ).burst( LeafParticle.LEVEL_SPECIFIC, 4 );
 		if (Dungeon.level.heroFOV[pos]) Dungeon.observe();
 	}
 }

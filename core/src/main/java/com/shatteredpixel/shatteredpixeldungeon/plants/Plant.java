@@ -27,24 +27,20 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
@@ -61,9 +57,6 @@ public abstract class Plant implements Bundlable {
 
 		if (ch instanceof Hero){
 			((Hero) ch).interrupt();
-			if (((Hero)ch).subClass == HeroSubClass.WARDEN) {
-				Buff.affect(ch, Barkskin.class).set(ch.HT / 3, 1);
-			}
 		}
 
 		wither();
@@ -79,21 +72,6 @@ public abstract class Plant implements Bundlable {
 			CellEmitter.get( pos ).burst( LeafParticle.GENERAL, 6 );
 		}
 		
-		if (Dungeon.hero.subClass == HeroSubClass.WARDEN) {
-
-			int naturalismLevel = 0;
-			SandalsOfNature.Naturalism naturalism = Dungeon.hero.buff( SandalsOfNature.Naturalism.class );
-			if (naturalism != null) {
-				naturalismLevel = naturalism.itemLevel()+1;
-			}
-
-			if (Random.Int( 5 - (naturalismLevel/2) ) == 0) {
-				Dungeon.level.drop(Generator.random(Generator.Category.SEED), pos).sprite.drop();
-			}
-			if (Random.Int( 5 - naturalismLevel ) == 0) {
-				Dungeon.level.drop( new Dewdrop(), pos ).sprite.drop();
-			}
-		}
 	}
 	
 	private static final String POS	= "pos";
@@ -141,6 +119,17 @@ public abstract class Plant implements Bundlable {
 				super.onThrow( cell );
 			} else {
 				Dungeon.level.plant( this, cell );
+				if (Dungeon.hero.subClass == HeroSubClass.WARDEN) {
+					for (int i : PathFinder.NEIGHBOURS8) {
+						int c = Dungeon.level.map[cell + i];
+						if ( c == Terrain.EMPTY || c == Terrain.EMPTY_DECO
+								|| c == Terrain.EMBERS || c == Terrain.GRASS){
+							Level.set(cell + i, Terrain.FURROWED_GRASS);
+							GameScene.updateMap(cell + i);
+							CellEmitter.get( cell + i ).burst( LeafParticle.LEVEL_SPECIFIC, 4 );
+						}
+					}
+				}
 			}
 		}
 		

@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -50,9 +49,8 @@ public class Dewdrop extends Item {
 			
 		} else {
 			
-			//20 drops for a full heal normally, 15 for the warden
-			float healthPercent = hero.subClass == HeroSubClass.WARDEN ? 0.0667f : 0.05f;
-			int heal = Math.round( hero.HT * healthPercent * quantity );
+			//20 drops for a full heal
+			int heal = Math.round( hero.HT * 0.05f * quantity );
 			
 			int effect = Math.min( hero.HT - hero.HP, heal );
 			if (effect > 0) {
