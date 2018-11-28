@@ -410,10 +410,17 @@ public class Dungeon {
 			bow = hero.belongings.getItem(SpiritBow.class);
 		}
 		
+		//pre-0.7.1 saves. refunding upgrades previously spend on a boomerang
 		if (bow != null && bow.spentUpgrades() > 0){
 			ScrollOfUpgrade refund = new ScrollOfUpgrade();
 			refund.quantity(bow.spentUpgrades());
 			bow.level(0);
+			
+			//to prevent exploits, some SoU are lost in the conversion of a boomerang higher than +1
+			if (refund.quantity() > 1){
+				refund.quantity(1 + (int)Math.floor((refund.quantity()-1)*0.8f));
+			}
+			
 			if (!refund.collect()){
 				level.drop(refund, hero.pos);
 			}
