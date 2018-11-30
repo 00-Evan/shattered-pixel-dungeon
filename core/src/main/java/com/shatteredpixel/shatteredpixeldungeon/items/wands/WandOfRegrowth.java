@@ -300,7 +300,7 @@ public class WandOfRegrowth extends Wand {
 		}
 
 		@Override
-		public void activate() {
+		public void activate( Char ch ) {
 
 			int nDrops = Random.NormalIntRange(3, 6);
 
@@ -336,7 +336,7 @@ public class WandOfRegrowth extends Wand {
 		}
 
 		@Override
-		public void activate() {
+		public void activate( Char ch ) {
 
 			int nSeeds = Random.NormalIntRange(2, 4);
 

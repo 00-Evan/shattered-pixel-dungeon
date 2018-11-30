@@ -34,7 +34,7 @@ public class PotionOfAdrenalineSurge extends ExoticPotion {
 	@Override
 	public void apply(Hero hero) {
 		setKnown();
-		Buff.affect(hero, AdrenalineSurge.class).reset();
+		Buff.affect(hero, AdrenalineSurge.class).reset(2, 800f);
 	}
 	
 }

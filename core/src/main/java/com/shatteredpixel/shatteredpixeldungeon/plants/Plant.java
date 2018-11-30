@@ -60,10 +60,10 @@ public abstract class Plant implements Bundlable {
 		}
 
 		wither();
-		activate();
+		activate( ch );
 	}
 	
-	public abstract void activate();
+	public abstract void activate( Char ch );
 	
 	public void wither() {
 		Dungeon.level.uproot( pos );

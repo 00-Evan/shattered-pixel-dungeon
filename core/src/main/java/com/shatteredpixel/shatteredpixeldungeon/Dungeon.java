@@ -363,7 +363,9 @@ public class Dungeon {
 	@SuppressWarnings("deprecation")
 	public static void switchLevel( final Level level, int pos ) {
 		
-		if (pos < 0 || pos >= level.length()){
+		if (pos == -2){
+			pos = level.exit;
+		} else if (pos < 0 || pos >= level.length()){
 			pos = level.entrance;
 		}
 		

@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -48,7 +50,16 @@ public class Overgrowth extends Armor.Glyph {
 			
 			Plant p = s.couch(defender.pos, null);
 			
-			p.activate();
+			//momentarily revoke warden benefits, otherwise this curse would be incredibly powerful
+			if (defender instanceof Hero && ((Hero) defender).subClass == HeroSubClass.WARDEN){
+				((Hero) defender).subClass = HeroSubClass.NONE;
+				p.activate( defender );
+				((Hero) defender).subClass = HeroSubClass.WARDEN;
+			} else {
+				p.activate( defender );
+			}
+			
+			
 			CellEmitter.get( defender.pos ).burst( LeafParticle.LEVEL_SPECIFIC, 10 );
 			
 		}
