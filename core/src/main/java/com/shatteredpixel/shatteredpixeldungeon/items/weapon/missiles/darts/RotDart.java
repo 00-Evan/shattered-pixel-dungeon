@@ -47,4 +47,8 @@ public class RotDart extends TippedDart {
 		return super.proc(attacker, defender, damage);
 	}
 	
+	@Override
+	protected float durabilityPerUse() {
+		return 100f;
+	}
 }

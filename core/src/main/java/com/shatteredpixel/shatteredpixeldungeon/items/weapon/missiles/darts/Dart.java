@@ -34,6 +34,9 @@ public class Dart extends MissileWeapon {
 		image = ItemSpriteSheet.DART;
 		
 		tier = 1;
+		
+		//infinite, even with penalties
+		baseUses = 1000;
 	}
 
 	@Override
@@ -56,11 +59,6 @@ public class Dart extends MissileWeapon {
 			return  2 +     //2 base, down from 5
 					2*lvl;  //scaling unchanged
 		}
-	}
-	
-	@Override
-	protected float durabilityPerUse() {
-		return 0;
 	}
 	
 	private static Crossbow bow;

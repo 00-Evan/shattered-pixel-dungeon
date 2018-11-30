@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
@@ -50,22 +51,41 @@ public abstract class TippedDart extends Dart {
 	
 	{
 		tier = 2;
+		
+		//so that slightly more than 1.5x durability is needed for 2 uses
+		baseUses = 0.65f;
 	}
 	
 	//exact same damage as regular darts, despite being higher tier.
 	
 	@Override
 	protected void rangedHit(Char enemy, int cell) {
-		//attempt to stick the dart to the enemy, just drop it if we can't.
-		Dart d = new Dart();
-		if (enemy.isAlive() && sticky) {
-			PinCushion p = Buff.affect(enemy, PinCushion.class);
-			if (p.target == enemy){
-				p.stick(d);
-				return;
+		super.rangedHit( enemy, cell);
+		
+		//need to spawn a dart
+		if (durability <= 0){
+			//attempt to stick the dart to the enemy, just drop it if we can't.
+			Dart d = new Dart();
+			if (enemy.isAlive() && sticky) {
+				PinCushion p = Buff.affect(enemy, PinCushion.class);
+				if (p.target == enemy){
+					p.stick(d);
+					return;
+				}
 			}
+			Dungeon.level.drop( d, enemy.pos ).sprite.drop();
 		}
-		Dungeon.level.drop( d, enemy.pos ).sprite.drop();
+	}
+	
+	@Override
+	protected float durabilityPerUse() {
+		float use = super.durabilityPerUse();
+		
+		if (Dungeon.hero.subClass == HeroSubClass.WARDEN){
+			use /= 2f;
+		}
+		
+		return use;
 	}
 	
 	private static HashMap<Class<?extends Plant.Seed>, Class<?extends TippedDart>> types = new HashMap<>();

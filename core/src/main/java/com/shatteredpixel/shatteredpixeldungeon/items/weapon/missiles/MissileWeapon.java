@@ -59,7 +59,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	protected static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
-	protected int baseUses = 10;
+	protected float baseUses = 10;
 	
 	public boolean holster;
 	
@@ -202,16 +202,16 @@ abstract public class MissileWeapon extends Weapon {
 			} else {
 				parent.durability -= parent.durabilityPerUse();
 				if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()){
-					if (level() <= 0)GLog.w(Messages.get(MissileWeapon.class, "about_to_break"));
-					else             GLog.n(Messages.get(MissileWeapon.class, "about_to_break"));
+					if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
+					else             GLog.n(Messages.get(this, "about_to_break"));
 				}
 			}
 			parent = null;
 		} else {
 			durability -= durabilityPerUse();
 			if (durability > 0 && durability <= durabilityPerUse()){
-				if (level() <= 0)GLog.w(Messages.get(MissileWeapon.class, "about_to_break"));
-				else             GLog.n(Messages.get(MissileWeapon.class, "about_to_break"));
+				if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
+				else             GLog.n(Messages.get(this, "about_to_break"));
 			}
 		}
 		if (durability > 0){
