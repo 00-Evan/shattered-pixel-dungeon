@@ -21,16 +21,22 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -48,6 +54,8 @@ public class SpiritBow extends Weapon {
 		unique = true;
 		bones = false;
 	}
+	
+	public boolean sniperSpecial = false;
 	
 	@Override
 	public ArrayList<String> actions(Hero hero) {
@@ -125,9 +133,24 @@ public class SpiritBow extends Weapon {
 		return 6 + Dungeon.hero.lvl/3;
 	}
 	
+	private int targetPos;
+	
 	@Override
 	public int damageRoll(Char owner) {
-		int damage = augment.damageFactor(super.damageRoll( owner ));
+		int damage = augment.damageFactor(super.damageRoll(owner));
+		if (sniperSpecial){
+			switch (augment){
+				case NONE:
+					damage = Math.round(damage * 0.667f);
+					break;
+				case SPEED:
+					damage = Math.round(damage * 0.5f);
+					break;
+				case DAMAGE:
+					int distance = Dungeon.level.distance(owner.pos, targetPos) - 1;
+					damage = Math.round(damage * (1f + 0.1f * distance));
+			}
+		}
 		
 		if (owner instanceof Hero) {
 			int exStr = ((Hero)owner).STR() - STRReq();
@@ -137,6 +160,22 @@ public class SpiritBow extends Weapon {
 		}
 		
 		return damage;
+	}
+	
+	@Override
+	public float speedFactor(Char owner) {
+		if (sniperSpecial){
+			switch (augment){
+				case NONE: default:
+					return 0f;
+				case SPEED:
+					return 1f * RingOfFuror.attackDelayMultiplier(owner);
+				case DAMAGE:
+					return 2f * RingOfFuror.attackDelayMultiplier(owner);
+			}
+		} else {
+			return super.speedFactor(owner);
+		}
 	}
 	
 	@Override
@@ -159,6 +198,10 @@ public class SpiritBow extends Weapon {
 	@Override
 	public boolean isUpgradable() {
 		return false;
+	}
+	
+	public SpiritArrow knockArrow(){
+		return new SpiritArrow();
 	}
 	
 	public class SpiritArrow extends MissileWeapon {
@@ -202,6 +245,57 @@ public class SpiritBow extends Weapon {
 				if (!curUser.shoot( enemy, this )) {
 					Splash.at(cell, 0xCC99FFFF, 1);
 				}
+				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
+			}
+		}
+		
+		int flurryCount = -1;
+		
+		@Override
+		public void cast(final Hero user, final int dst) {
+			final int cell = throwPos( user, dst );
+			SpiritBow.this.targetPos = cell;
+			if (sniperSpecial && SpiritBow.this.augment == Augment.SPEED){
+				if (flurryCount == -1) flurryCount = 3;
+				
+				final Char enemy = Actor.findChar( cell );
+				QuickSlotButton.target(enemy);
+				
+				final boolean last = flurryCount == 1;
+				
+				user.busy();
+				
+				Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+				
+				((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+						reset(user.sprite,
+								cell,
+								this,
+								new Callback() {
+									@Override
+									public void call() {
+										if (enemy.isAlive()) onThrow(cell);
+										
+										if (last) {
+											user.spendAndNext(castDelay(user, dst));
+											sniperSpecial = false;
+											flurryCount = -1;
+										}
+									}
+								});
+				
+				user.sprite.zap(cell, new Callback() {
+					@Override
+					public void call() {
+						flurryCount--;
+						if (flurryCount > 0){
+							cast(user, dst);
+						}
+					}
+				});
+				
+			} else {
+				super.cast(user, dst);
 			}
 		}
 	}
@@ -210,7 +304,7 @@ public class SpiritBow extends Weapon {
 		@Override
 		public void onSelect( Integer target ) {
 			if (target != null) {
-				new SpiritArrow().cast(curUser, target);
+				knockArrow().cast(curUser, target);
 			}
 		}
 		@Override

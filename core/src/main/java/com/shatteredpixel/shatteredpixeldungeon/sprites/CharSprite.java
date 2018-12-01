@@ -233,6 +233,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		play( zap );
 	}
 	
+	public void zap( int cell, Callback callback ) {
+		animCallback = callback;
+		zap( cell );
+	}
+	
 	public void turnTo( int from, int to ) {
 		int fx = from % Dungeon.level.width();
 		int tx = to % Dungeon.level.width();

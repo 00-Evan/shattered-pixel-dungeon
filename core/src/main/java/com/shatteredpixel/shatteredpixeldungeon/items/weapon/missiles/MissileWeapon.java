@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -176,20 +175,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public float castDelay(Char user, int dst) {
-		float delay = speedFactor( user );
-		
-		Char enemy = Actor.findChar(dst);
-		
-		if (enemy != null) {
-			SnipersMark mark = user.buff( SnipersMark.class );
-			if (mark != null) {
-				if (mark.object == enemy.id()) {
-					delay *= 0.5f;
-				}
-			}
-		}
-		
-		return delay;
+		return speedFactor( user );
 	}
 	
 	protected void rangedHit( Char enemy, int cell ){

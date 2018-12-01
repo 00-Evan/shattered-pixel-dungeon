@@ -21,16 +21,37 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-public class SnipersMark extends FlavourBuff {
+public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 
 	public int object = 0;
 
 	private static final String OBJECT    = "object";
-
+	
+	@Override
+	public boolean attachTo(Char target) {
+		ActionIndicator.setAction(this);
+		return super.attachTo(target);
+	}
+	
+	@Override
+	public void detach() {
+		super.detach();
+		ActionIndicator.clearAction(this);
+	}
+	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
@@ -57,5 +78,29 @@ public class SnipersMark extends FlavourBuff {
 	@Override
 	public String desc() {
 		return Messages.get(this, "desc");
+	}
+	
+	@Override
+	public Image getIcon() {
+		return new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null);
+	}
+	
+	@Override
+	public void doAction() {
+		
+		SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
+		if (bow == null) return;
+		
+		SpiritBow.SpiritArrow arrow = bow.knockArrow();
+		if (arrow == null) return;
+		
+		Char ch = (Char) Actor.findById(object);
+		if (ch == null) return;
+		
+		bow.sniperSpecial = true;
+		
+		arrow.cast(Dungeon.hero, QuickSlotButton.autoAim(ch, arrow));
+		detach();
+		
 	}
 }

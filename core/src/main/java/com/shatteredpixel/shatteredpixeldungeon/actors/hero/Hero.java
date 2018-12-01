@@ -90,6 +90,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -920,15 +921,30 @@ public class Hero extends Char {
 	}
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
+	public int attackProc( final Char enemy, int damage ) {
 		KindOfWeapon wep = belongings.weapon;
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
 			
 		switch (subClass) {
 		case SNIPER:
-			if (wep instanceof MissileWeapon) {
-				Buff.prolong( this, SnipersMark.class, attackDelay() ).object = enemy.id();
+			if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow)) {
+				final float delay = attackDelay();
+				Actor.add(new Actor() {
+					
+					{
+						actPriority = VFX_PRIO;
+					}
+					
+					@Override
+					protected boolean act() {
+						if (enemy.isAlive()) {
+							Buff.prolong(Hero.this, SnipersMark.class, delay).object = enemy.id();
+						}
+						Actor.remove(this);
+						return true;
+					}
+				});
 			}
 			break;
 		default:
