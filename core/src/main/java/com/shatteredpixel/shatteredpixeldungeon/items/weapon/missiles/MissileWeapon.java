@@ -97,23 +97,26 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public Item upgrade() {
-		
-		if (quantity > 1){
-			MissileWeapon left = (MissileWeapon) split(quantity - 1);
-			left.parent = null;
-			
-			super.upgrade();
-			
-			//deal with full inventory.
-			if (!left.collect()){
-				Dungeon.level.drop( left, Dungeon.hero.pos);
+		if (!bundleRestoring) {
+			if (quantity > 1) {
+				MissileWeapon left = (MissileWeapon) split(quantity - 1);
+				left.parent = null;
+				
+				super.upgrade();
+				
+				//deal with full inventory.
+				if (!left.collect()) {
+					Dungeon.level.drop(left, Dungeon.hero.pos);
+				}
+			} else {
+				super.upgrade();
 			}
+			
+			durability = MAX_DURABILITY;
+			return this;
 		} else {
-			super.upgrade();
+			return super.upgrade();
 		}
-		
-		durability = MAX_DURABILITY;
-		return this;
 	}
 	
 	@Override
@@ -269,7 +272,9 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public Item split(int amount) {
+		bundleRestoring = true;
 		Item split = super.split(amount);
+		bundleRestoring = false;
 		
 		//unless the thrown weapon will break, split off a max durability item and
 		//have it reduce the durability of the main stack. Cleaner to the player this way
@@ -352,9 +357,13 @@ abstract public class MissileWeapon extends Weapon {
 		bundle.put(DURABILITY, durability);
 	}
 	
+	private static boolean bundleRestoring = false;
+	
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
+		bundleRestoring = true;
 		super.restoreFromBundle(bundle);
+		bundleRestoring = false;
 		//compatibility with pre-0.6.3 saves
 		if (bundle.contains(DURABILITY)) {
 			durability = bundle.getInt(DURABILITY);

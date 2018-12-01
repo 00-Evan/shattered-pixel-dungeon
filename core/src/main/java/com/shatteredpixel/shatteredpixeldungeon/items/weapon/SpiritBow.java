@@ -259,6 +259,11 @@ public class SpiritBow extends Weapon {
 				if (flurryCount == -1) flurryCount = 3;
 				
 				final Char enemy = Actor.findChar( cell );
+				
+				if (enemy == null){
+					user.spendAndNext(castDelay(user, dst));
+					return;
+				}
 				QuickSlotButton.target(enemy);
 				
 				final boolean last = flurryCount == 1;
