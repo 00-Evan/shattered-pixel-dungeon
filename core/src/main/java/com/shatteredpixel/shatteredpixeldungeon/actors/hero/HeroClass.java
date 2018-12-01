@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.BuildConfig;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -252,6 +253,9 @@ public enum HeroClass {
 	}
 	
 	public boolean isUnlocked(){
+		//always unlock on debug builds
+		if (BuildConfig.DEBUG) return true;
+		
 		switch (this){
 			case WARRIOR: default:
 				return true;
