@@ -44,7 +44,7 @@ public class Tomahawk extends MissileWeapon {
 	@Override
 	public int max(int lvl) {
 		return  Math.round(3.75f * tier) +  //15 base, down from 20
-				(tier-1)*lvl;               //+3 per level, down from +4
+				(tier-2)*lvl;               //+2 per level, down from +4
 	}
 	
 	@Override

@@ -138,6 +138,14 @@ public class SpiritBow extends Weapon {
 	@Override
 	public int damageRoll(Char owner) {
 		int damage = augment.damageFactor(super.damageRoll(owner));
+		
+		if (owner instanceof Hero) {
+			int exStr = ((Hero)owner).STR() - STRReq();
+			if (exStr > 0) {
+				damage += Random.IntRange( 0, exStr );
+			}
+		}
+		
 		if (sniperSpecial){
 			switch (augment){
 				case NONE:
@@ -149,13 +157,7 @@ public class SpiritBow extends Weapon {
 				case DAMAGE:
 					int distance = Dungeon.level.distance(owner.pos, targetPos) - 1;
 					damage = Math.round(damage * (1f + 0.1f * distance));
-			}
-		}
-		
-		if (owner instanceof Hero) {
-			int exStr = ((Hero)owner).STR() - STRReq();
-			if (exStr > 0) {
-				damage += Random.IntRange( 0, exStr );
+					break;
 			}
 		}
 		
