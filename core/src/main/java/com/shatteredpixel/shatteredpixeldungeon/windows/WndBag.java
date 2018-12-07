@@ -390,7 +390,7 @@ public class WndBag extends WndTabbed {
 						mode == Mode.UPGRADEABLE && item.isUpgradable() ||
 						mode == Mode.UNIDENTIFED && !item.isIdentified() ||
 						mode == Mode.UNCURSABLE && ScrollOfRemoveCurse.uncursable(item) ||
-						mode == Mode.CURSABLE && ((item instanceof EquipableItem && !(item instanceof MissileWeapon)) || item instanceof Boomerang || item instanceof Wand) ||
+						mode == Mode.CURSABLE && ((item instanceof EquipableItem && !(item instanceof MissileWeapon)) || item instanceof Wand) ||
 						mode == Mode.QUICKSLOT && (item.defaultAction != null) ||
 						mode == Mode.WEAPON && (item instanceof MeleeWeapon || item instanceof Boomerang) ||
 						mode == Mode.ARMOR && (item instanceof Armor) ||

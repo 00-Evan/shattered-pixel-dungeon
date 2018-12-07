@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -125,12 +126,12 @@ public class SpiritBow extends Weapon {
 	
 	@Override
 	public int min(int lvl) {
-		return 1 + Dungeon.hero.lvl/6;
+		return 1 + Dungeon.hero.lvl/6 + RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
 	}
 	
 	@Override
 	public int max(int lvl) {
-		return 6 + Dungeon.hero.lvl/3;
+		return 6 + Dungeon.hero.lvl/3 + 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero);
 	}
 	
 	private int targetPos;
@@ -264,6 +265,8 @@ public class SpiritBow extends Weapon {
 				
 				if (enemy == null){
 					user.spendAndNext(castDelay(user, dst));
+					sniperSpecial = false;
+					flurryCount = -1;
 					return;
 				}
 				QuickSlotButton.target(enemy);

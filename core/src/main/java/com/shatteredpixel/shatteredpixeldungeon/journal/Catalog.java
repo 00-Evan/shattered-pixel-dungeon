@@ -116,7 +116,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -155,7 +154,7 @@ public enum Catalog {
 		WEAPONS.seen.put( Knuckles.class,                   false);
 		WEAPONS.seen.put( Dagger.class,                     false);
 		WEAPONS.seen.put( MagesStaff.class,                 false);
-		WEAPONS.seen.put( Boomerang.class,                  false);
+		//WEAPONS.seen.put( Boomerang.class,                  false);
 		WEAPONS.seen.put( Shortsword.class,                 false);
 		WEAPONS.seen.put( HandAxe.class,                    false);
 		WEAPONS.seen.put( Spear.class,                      false);
@@ -253,7 +252,7 @@ public enum Catalog {
 		SCROLLS.seen.put( ScrollOfTerror.class,             false);
 		SCROLLS.seen.put( ScrollOfLullaby.class,            false);
 		SCROLLS.seen.put( ScrollOfRage.class,               false);
-		SCROLLS.seen.put( ScrollOfRetribution.class,       false);
+		SCROLLS.seen.put( ScrollOfRetribution.class,        false);
 		SCROLLS.seen.put( ScrollOfTransmutation.class,      false);
 	}
 	

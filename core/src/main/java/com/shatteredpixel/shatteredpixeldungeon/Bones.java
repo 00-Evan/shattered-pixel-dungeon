@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.Random;
@@ -159,16 +160,17 @@ public class Bones {
 					}
 				}
 				
-				if (item.isUpgradable()) {
+				if (item.isUpgradable() && !(item instanceof MissileWeapon)) {
 					item.cursed = true;
 					item.cursedKnown = true;
-					if (item.isUpgradable()) {
-						//caps at +3
-						if (item.level() > 3) {
-							item.degrade( item.level() - 3 );
-						}
-						item.levelKnown = false;
+				}
+				
+				if (item.isUpgradable()) {
+					//caps at +3
+					if (item.level() > 3) {
+						item.degrade( item.level() - 3 );
 					}
+					item.levelKnown = false;
 				}
 				
 				item.reset();
