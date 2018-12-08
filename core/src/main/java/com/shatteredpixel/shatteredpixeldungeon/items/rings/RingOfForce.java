@@ -78,17 +78,13 @@ public class RingOfForce extends Ring {
 	}
 
 	@Override
-	public String desc() {
-		String desc = super.desc();
-		if (isKnown()) {
-			float tier = tier(Dungeon.hero.STR());
-			if (isIdentified()) {
-				desc += "\n\n" + Messages.get(this, "stats", min(soloBonus(), tier), max(soloBonus(), tier));
-			} else {
-				desc += "\n\n" + Messages.get(this, "typical_stats", min(1, tier), max(1, tier));
-			}
+	public String statsInfo() {
+		float tier = tier(Dungeon.hero.STR());
+		if (isIdentified()) {
+			return Messages.get(this, "stats", min(soloBonus(), tier), max(soloBonus(), tier));
+		} else {
+			return Messages.get(this, "typical_stats", min(1, tier), max(1, tier));
 		}
-		return desc;
 	}
 
 	public class Force extends RingBuff {

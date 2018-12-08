@@ -70,16 +70,12 @@ public class RingOfMight extends Ring {
 		}
 	}
 	
-	public String info() {
-		String desc = desc();
-		if (isKnown()){
-			if (isIdentified()){
-				desc += "\n\n" + Messages.get(this, "stats", soloBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.035, soloBonus()) - 1f)));
-			} else {
-				desc += "\n\n" + Messages.get(this, "typical_stats", 1, new DecimalFormat("#.##").format(3.5f));
-			}
+	public String statsInfo() {
+		if (isIdentified()){
+			return Messages.get(this, "stats", soloBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.035, soloBonus()) - 1f)));
+		} else {
+			return Messages.get(this, "typical_stats", 1, new DecimalFormat("#.##").format(3.5f));
 		}
-		return desc;
 	}
 
 	@Override

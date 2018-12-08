@@ -28,16 +28,12 @@ import java.text.DecimalFormat;
 
 public class RingOfFuror extends Ring {
 	
-	public String info() {
-		String desc = desc();
-		if (isKnown()){
-			if (isIdentified()){
-				desc += "\n\n" + Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.105f, soloBonus()) - 1f)));
-			} else {
-				desc += "\n\n" + Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(10.5f));
-			}
+	public String statsInfo() {
+		if (isIdentified()){
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.105f, soloBonus()) - 1f)));
+		} else {
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(10.5f));
 		}
-		return desc;
 	}
 
 	@Override

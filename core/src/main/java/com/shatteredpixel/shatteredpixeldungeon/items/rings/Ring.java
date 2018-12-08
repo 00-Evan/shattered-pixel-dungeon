@@ -155,10 +155,10 @@ public class Ring extends KindofMisc {
 	}
 	
 	@Override
-	public String desc() {
-
+	public String info(){
+		
 		String desc = isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
-
+		
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
 			
@@ -169,8 +169,16 @@ public class Ring extends KindofMisc {
 			desc += "\n\n" + Messages.get(Ring.class, "not_cursed");
 			
 		}
-
+		
+		if (isKnown()) {
+			desc += "\n\n" + statsInfo();
+		}
+		
 		return desc;
+	}
+	
+	protected String statsInfo(){
+		return "";
 	}
 	
 	@Override

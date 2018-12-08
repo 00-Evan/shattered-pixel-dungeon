@@ -28,16 +28,12 @@ import java.text.DecimalFormat;
 
 public class RingOfAccuracy extends Ring {
 	
-	public String info() {
-		String desc = desc();
-		if (isKnown()){
-			if (isIdentified()){
-				desc += "\n\n" + Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.3f, soloBonus()) - 1f)));
-			} else {
-				desc += "\n\n" + Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(30f));
-			}
+	public String statsInfo() {
+		if (isIdentified()){
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.3f, soloBonus()) - 1f)));
+		} else {
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(30f));
 		}
-		return desc;
 	}
 	
 	@Override

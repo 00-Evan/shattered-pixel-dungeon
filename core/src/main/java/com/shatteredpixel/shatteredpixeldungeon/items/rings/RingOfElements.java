@@ -46,16 +46,12 @@ import java.util.HashSet;
 
 public class RingOfElements extends Ring {
 	
-	public String info() {
-		String desc = desc();
-		if (isKnown()){
-			if (isIdentified()){
-				desc += "\n\n" + Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.875f, soloBonus()))));
-			} else {
-				desc += "\n\n" + Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(12.5f));
-			}
+	public String statsInfo() {
+		if (isIdentified()){
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.875f, soloBonus()))));
+		} else {
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(12.5f));
 		}
-		return desc;
 	}
 	
 	@Override

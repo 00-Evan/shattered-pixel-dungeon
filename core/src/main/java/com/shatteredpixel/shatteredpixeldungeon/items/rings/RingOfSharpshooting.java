@@ -28,16 +28,12 @@ import java.text.DecimalFormat;
 
 public class RingOfSharpshooting extends Ring {
 	
-	public String info() {
-		String desc = desc();
-		if (isKnown()){
-			if (isIdentified()){
-				desc += "\n\n" + Messages.get(this, "stats", soloBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.2, soloBonus()) - 1f)));
-			} else {
-				desc += "\n\n" + Messages.get(this, "typical_stats", 1, new DecimalFormat("#.##").format(20f));
-			}
+	public String statsInfo() {
+		if (isIdentified()){
+			return Messages.get(this, "stats", soloBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.2, soloBonus()) - 1f)));
+		} else {
+			return Messages.get(this, "typical_stats", 1, new DecimalFormat("#.##").format(20f));
 		}
-		return desc;
 	}
 	
 	@Override
