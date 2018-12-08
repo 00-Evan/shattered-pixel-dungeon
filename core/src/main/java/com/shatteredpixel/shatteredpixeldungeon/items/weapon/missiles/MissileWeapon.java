@@ -96,24 +96,32 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	@Override
+	//FIXME some logic here assumes the items are in the player's inventory. Might need to adjust
 	public Item upgrade() {
 		if (!bundleRestoring) {
 			if (quantity > 1) {
-				MissileWeapon left = (MissileWeapon) split(quantity - 1);
-				left.parent = null;
+				MissileWeapon upgraded = (MissileWeapon) split(1);
+				upgraded.parent = null;
 				
-				super.upgrade();
+				upgraded = (MissileWeapon) upgraded.upgrade();
 				
-				//deal with full inventory.
-				if (!left.collect()) {
-					Dungeon.level.drop(left, Dungeon.hero.pos);
+				//try to put the upgraded into inventory, if it didn't already merge
+				if (upgraded.quantity() == 1 && !upgraded.collect()) {
+					Dungeon.level.drop(upgraded, Dungeon.hero.pos);
 				}
+				return upgraded;
 			} else {
+				durability = MAX_DURABILITY;
 				super.upgrade();
+				
+				Item similar = Dungeon.hero.belongings.getSimilar(this);
+				if (similar != null){
+					detach(Dungeon.hero.belongings.backpack);
+					return similar.merge(this);
+				}
+				return this;
 			}
 			
-			durability = MAX_DURABILITY;
-			return this;
 		} else {
 			return super.upgrade();
 		}
