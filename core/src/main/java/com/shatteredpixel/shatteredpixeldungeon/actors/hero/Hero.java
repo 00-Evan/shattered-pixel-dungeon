@@ -373,7 +373,8 @@ public class Hero extends Char {
 		int dmg;
 
 		if (wep != null) {
-			dmg = wep.damageRoll( this ) + RingOfForce.armedDamageBonus(this);
+			dmg = wep.damageRoll( this );
+			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
 		} else {
 			dmg = RingOfForce.damageRoll(this);
 		}
