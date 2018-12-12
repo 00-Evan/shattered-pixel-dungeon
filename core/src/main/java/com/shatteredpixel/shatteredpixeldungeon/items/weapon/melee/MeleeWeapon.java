@@ -83,8 +83,8 @@ public class MeleeWeapon extends Weapon {
 			}
 		}
 
-		String stats_desc = Messages.get(this, "stats_desc");
-		if (!stats_desc.equals("")) info+= "\n\n" + stats_desc;
+		String statsInfo = statsInfo();
+		if (!statsInfo.equals("")) info += "\n\n" + statsInfo;
 
 		switch (augment) {
 			case SPEED:
@@ -110,6 +110,10 @@ public class MeleeWeapon extends Weapon {
 		}
 		
 		return info;
+	}
+	
+	public String statsInfo(){
+		return Messages.get(this, "stats_desc");
 	}
 	
 	@Override
