@@ -23,10 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
-public class Knuckles extends MeleeWeapon {
+public class Gloves extends MeleeWeapon {
 
 	{
-		image = ItemSpriteSheet.KNUCKLEDUSTER;
+		image = ItemSpriteSheet.GLOVES;
 
 		tier = 1;
 		DLY = 0.5f; //2x speed

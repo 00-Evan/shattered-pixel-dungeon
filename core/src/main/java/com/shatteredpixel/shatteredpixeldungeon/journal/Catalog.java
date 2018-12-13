@@ -97,11 +97,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dirk;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HandAxe;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -151,7 +151,7 @@ public enum Catalog {
 	
 	static {
 		WEAPONS.seen.put( WornShortsword.class,             false);
-		WEAPONS.seen.put( Knuckles.class,                   false);
+		WEAPONS.seen.put( Gloves.class,                     false);
 		WEAPONS.seen.put( Dagger.class,                     false);
 		WEAPONS.seen.put( MagesStaff.class,                 false);
 		//WEAPONS.seen.put( Boomerang.class,                  false);
