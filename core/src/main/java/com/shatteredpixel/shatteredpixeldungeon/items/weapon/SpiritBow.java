@@ -234,6 +234,15 @@ public class SpiritBow extends Weapon {
 		}
 		
 		@Override
+		public float accuracyFactor(Char owner) {
+			if (sniperSpecial && SpiritBow.this.augment == Augment.DAMAGE){
+				return Float.POSITIVE_INFINITY;
+			} else {
+				return super.accuracyFactor(owner);
+			}
+		}
+		
+		@Override
 		public int STRReq(int lvl) {
 			return SpiritBow.this.STRReq(lvl);
 		}
