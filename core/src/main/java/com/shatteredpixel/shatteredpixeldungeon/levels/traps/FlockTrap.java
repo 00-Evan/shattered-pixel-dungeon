@@ -51,6 +51,7 @@ public class FlockTrap extends Trap {
 			protected boolean act() {
 				PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
 				for (int i = 0; i < PathFinder.distance.length; i++) {
+					Trap t;
 					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 						if (Dungeon.level.insideMap(i)
 								&& Actor.findChar(i) == null
@@ -58,9 +59,16 @@ public class FlockTrap extends Trap {
 							Sheep sheep = new Sheep();
 							sheep.lifespan = Random.NormalIntRange(3 + Dungeon.depth/4, 6 + Dungeon.depth/2 );
 							sheep.pos = i;
-							Dungeon.level.press(sheep.pos, sheep);
 							GameScene.add(sheep);
 							CellEmitter.get(i).burst(Speck.factory(Speck.WOOL), 4);
+							//before the tile is pressed, directly trigger traps to avoid sfx spam
+							if ((t = Dungeon.level.traps.get(i)) != null && t.active){
+								t.disarm();
+								t.reveal();
+								t.activate();
+							}
+							Dungeon.level.press(sheep.pos, sheep);
+
 						}
 					}
 				}
