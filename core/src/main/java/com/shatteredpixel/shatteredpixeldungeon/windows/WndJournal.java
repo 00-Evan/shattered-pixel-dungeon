@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -680,6 +681,16 @@ public class WndJournal extends WndTabbed {
 				
 				this.item = item;
 				this.seen = seen;
+
+				if ( seen && !IDed ){
+					if (item instanceof Ring){
+						((Ring) item).anonymize();
+					} else if (item instanceof Potion){
+						((Potion) item).anonymize();
+					} else if (item instanceof Scroll){
+						((Scroll) item).anonymize();
+					}
+				}
 				
 				if (!seen) {
 					icon.copy( new ItemSprite( ItemSpriteSheet.SOMETHING + spriteIndexes[currentItemIdx], null) );
@@ -694,8 +705,13 @@ public class WndJournal extends WndTabbed {
 			
 			public boolean onClick( float x, float y ) {
 				if (inside( x, y ) && seen) {
-					GameScene.show(new WndTitledMessage( new Image(icon),
-								Messages.titleCase(item.trueName()), item.desc() ));
+					if (item instanceof ClassArmor){
+						GameScene.show(new WndTitledMessage(new Image(icon),
+								Messages.titleCase(item.trueName()), item.desc()));
+					} else {
+						GameScene.show(new WndTitledMessage(new Image(icon),
+								Messages.titleCase(item.trueName()), item.info()));
+					}
 					return true;
 				} else {
 					return false;

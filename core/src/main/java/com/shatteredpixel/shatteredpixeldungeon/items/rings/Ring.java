@@ -105,6 +105,15 @@ public class Ring extends KindofMisc {
 		super();
 		reset();
 	}
+
+	//anonymous rings are always IDed, do not affect ID status,
+	//and their sprite is replaced by a placeholder if they are not known,
+	//useful for items that appear in UIs, or which are only spawned for their effects
+	protected boolean anonymous = false;
+	public void anonymize(){
+		if (!isKnown()) image = ItemSpriteSheet.RING_HOLDER;
+		anonymous = true;
+	}
 	
 	public void reset() {
 		super.reset();
@@ -136,16 +145,18 @@ public class Ring extends KindofMisc {
 	}
 	
 	public boolean isKnown() {
-		return handler != null && handler.isKnown( this );
+		return anonymous || (handler != null && handler.isKnown( this ));
 	}
 	
 	public void setKnown() {
-		if (!isKnown()) {
-			handler.know( this );
-		}
-		
-		if (Dungeon.hero.isAlive()) {
-			Catalog.setSeen(getClass());
+		if (!anonymous) {
+			if (!isKnown()) {
+				handler.know(this);
+			}
+
+			if (Dungeon.hero.isAlive()) {
+				Catalog.setSeen(getClass());
+			}
 		}
 	}
 	
