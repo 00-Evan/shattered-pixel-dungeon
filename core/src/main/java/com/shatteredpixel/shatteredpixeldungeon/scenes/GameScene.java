@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CircleArc;
 import com.shatteredpixel.shatteredpixeldungeon.effects.EmoIcon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
@@ -130,6 +131,7 @@ public class GameScene extends PixelScene {
 	private GameLog log;
 	
 	private BusyIndicator busy;
+	private CircleArc counter;
 	
 	private static CellSelector cellSelector;
 	
@@ -334,6 +336,11 @@ public class GameScene extends PixelScene {
 		busy.y = pane.bottom() + 1;
 		add( busy );
 		
+		counter = new CircleArc(18, 4);
+		counter.color( 0xCCCCCC, true );
+		counter.camera = uiCamera;
+		counter.show(this, busy.center(), 0f);
+		
 		switch (InterlevelScene.mode) {
 		case RESURRECT:
 			ScrollOfTeleportation.appear( Dungeon.hero, Dungeon.level.entrance );
@@ -515,6 +522,8 @@ public class GameScene extends PixelScene {
 				}
 			}
 		}
+
+		counter.setSweep((1f - Actor.now()%1f)%1f);
 		
 		if (Dungeon.hero.ready && Dungeon.hero.paralysed == 0) {
 			log.newLine();

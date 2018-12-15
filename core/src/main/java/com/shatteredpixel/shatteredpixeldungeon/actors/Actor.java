@@ -124,6 +124,10 @@ public abstract class Actor implements Bundlable {
 
 	private static float now = 0;
 	
+	public static float now(){
+		return now;
+	}
+	
 	public static synchronized void clear() {
 		
 		now = 0;
