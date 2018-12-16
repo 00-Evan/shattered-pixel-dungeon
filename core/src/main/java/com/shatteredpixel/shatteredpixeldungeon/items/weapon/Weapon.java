@@ -93,7 +93,7 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	public Augment augment = Augment.NONE;
 
-	private int hitsToKnow = HITS_TO_KNOW;
+	protected int hitsToKnow = HITS_TO_KNOW;
 	
 	public Enchantment enchantment;
 	

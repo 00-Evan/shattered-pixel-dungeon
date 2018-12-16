@@ -44,9 +44,13 @@ import java.util.ArrayList;
 
 abstract public class MissileWeapon extends Weapon {
 
+	protected MissileWeapon( ) {
+		hitsToKnow = 2;
+	}
+
 	{
 		stackable = true;
-		levelKnown = true;
+		levelKnown = false;
 
 		defaultAction = AC_THROW;
 		usesTargeting = true;
@@ -240,11 +244,6 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	public boolean isUpgradable() {
 		return false;
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
 	}
 	
 	@Override

@@ -116,7 +116,19 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Whip;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingHammer;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpear;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Trident;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
+
 import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
@@ -128,6 +140,7 @@ import java.util.List;
 public enum Catalog {
 	
 	WEAPONS,
+	MISSILES,
 	ARMOR,
 	WANDS,
 	RINGS,
@@ -179,7 +192,19 @@ public enum Catalog {
 		WEAPONS.seen.put( Greataxe.class,                   false);
 		WEAPONS.seen.put( Greatshield.class,                false);
 		WEAPONS.seen.put( Gauntlet.class,                   false);
-	
+
+		MISSILES.seen.put( ThrowingKnife.class,             false);
+		MISSILES.seen.put( ThrowingStone.class,             false);
+		MISSILES.seen.put( Boomerang.class,                 false);
+		MISSILES.seen.put( Dart.class,                      false);
+		MISSILES.seen.put( FishingSpear.class,              false);
+		MISSILES.seen.put( Shuriken.class,                  false);
+		MISSILES.seen.put( Bolas.class,                     false);
+		MISSILES.seen.put( ThrowingHammer.class,            false);
+		MISSILES.seen.put( Javelin.class,                   false);
+		MISSILES.seen.put( Tomahawk.class,                  false);
+		MISSILES.seen.put( Trident.class,                   false);
+
 		ARMOR.seen.put( ClothArmor.class,                   false);
 		ARMOR.seen.put( LeatherArmor.class,                 false);
 		ARMOR.seen.put( MailArmor.class,                    false);
@@ -189,7 +214,7 @@ public enum Catalog {
 		ARMOR.seen.put( MageArmor.class,                    false);
 		ARMOR.seen.put( RogueArmor.class,                   false);
 		ARMOR.seen.put( HuntressArmor.class,                false);
-	
+
 		WANDS.seen.put( WandOfMagicMissile.class,           false);
 		WANDS.seen.put( WandOfLightning.class,              false);
 		WANDS.seen.put( WandOfDisintegration.class,         false);
@@ -203,7 +228,7 @@ public enum Catalog {
 		WANDS.seen.put( WandOfTransfusion.class,            false);
 		WANDS.seen.put( WandOfCorruption.class,             false);
 		WANDS.seen.put( WandOfRegrowth.class,               false);
-	
+
 		RINGS.seen.put( RingOfAccuracy.class,               false);
 		RINGS.seen.put( RingOfEnergy.class,                 false);
 		RINGS.seen.put( RingOfElements.class,               false);
@@ -215,7 +240,7 @@ public enum Catalog {
 		RINGS.seen.put( RingOfSharpshooting.class,          false);
 		RINGS.seen.put( RingOfTenacity.class,               false);
 		RINGS.seen.put( RingOfWealth.class,                 false);
-	
+
 		ARTIFACTS.seen.put( AlchemistsToolkit.class,        false);
 		//ARTIFACTS.seen.put( CapeOfThorns.class,             false);
 		ARTIFACTS.seen.put( ChaliceOfBlood.class,           false);
@@ -229,7 +254,7 @@ public enum Catalog {
 		ARTIFACTS.seen.put( TalismanOfForesight.class,      false);
 		ARTIFACTS.seen.put( TimekeepersHourglass.class,     false);
 		ARTIFACTS.seen.put( UnstableSpellbook.class,        false);
-	
+
 		POTIONS.seen.put( PotionOfHealing.class,            false);
 		POTIONS.seen.put( PotionOfStrength.class,           false);
 		POTIONS.seen.put( PotionOfLiquidFlame.class,        false);
@@ -242,7 +267,7 @@ public enum Catalog {
 		POTIONS.seen.put( PotionOfInvisibility.class,       false);
 		POTIONS.seen.put( PotionOfExperience.class,         false);
 		POTIONS.seen.put( PotionOfHaste.class,              false);
-	
+
 		SCROLLS.seen.put( ScrollOfIdentify.class,           false);
 		SCROLLS.seen.put( ScrollOfUpgrade.class,            false);
 		SCROLLS.seen.put( ScrollOfRemoveCurse.class,        false);
@@ -256,7 +281,7 @@ public enum Catalog {
 		SCROLLS.seen.put( ScrollOfRetribution.class,       false);
 		SCROLLS.seen.put( ScrollOfTransmutation.class,      false);
 	}
-	
+
 	public static LinkedHashMap<Catalog, Badges.Badge> catalogBadges = new LinkedHashMap<>();
 	static {
 		catalogBadges.put(WEAPONS, Badges.Badge.ALL_WEAPONS_IDENTIFIED);
@@ -267,7 +292,7 @@ public enum Catalog {
 		catalogBadges.put(POTIONS, Badges.Badge.ALL_POTIONS_IDENTIFIED);
 		catalogBadges.put(SCROLLS, Badges.Badge.ALL_SCROLLS_IDENTIFIED);
 	}
-	
+
 	public static boolean isSeen(Class<? extends Item> itemClass){
 		for (Catalog cat : values()) {
 			if (cat.seen.containsKey(itemClass)) {

@@ -155,7 +155,7 @@ public enum HeroClass {
 		hero.belongings.misc1.activate( hero );
 
 		ThrowingKnife knives = new ThrowingKnife();
-		knives.quantity(3).collect();
+		knives.identify().quantity(3).collect();
 
 		Dungeon.quickslot.setSlot(0, cloak);
 		Dungeon.quickslot.setSlot(1, knives);
