@@ -336,8 +336,8 @@ public class GameScene extends PixelScene {
 		busy.y = pane.bottom() + 1;
 		add( busy );
 		
-		counter = new CircleArc(18, 4);
-		counter.color( 0xCCCCCC, true );
+		counter = new CircleArc(18, 4.25f);
+		counter.color( 0x999999, true );
 		counter.camera = uiCamera;
 		counter.show(this, busy.center(), 0f);
 		
