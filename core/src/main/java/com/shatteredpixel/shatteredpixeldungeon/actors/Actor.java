@@ -65,6 +65,10 @@ public abstract class Actor implements Bundlable {
 			this.time = Math.round(this.time);
 		}
 	}
+
+	public void spendToWhole(){
+		time = (float)Math.ceil(time);
+	}
 	
 	protected void postpone( float time ) {
 		if (this.time < now + time) {
@@ -157,7 +161,7 @@ public abstract class Actor implements Bundlable {
 		if (Dungeon.hero != null && all.contains( Dungeon.hero )) {
 			Statistics.duration += (int)now;
 		}
-		now = 0;
+		now = now % 1;
 	}
 	
 	public static void init() {

@@ -109,6 +109,7 @@ abstract public class MissileWeapon extends Weapon {
 				if (upgraded.quantity() == 1 && !upgraded.collect()) {
 					Dungeon.level.drop(upgraded, Dungeon.hero.pos);
 				}
+				updateQuickslot();
 				return upgraded;
 			} else {
 				durability = MAX_DURABILITY;
@@ -119,6 +120,7 @@ abstract public class MissileWeapon extends Weapon {
 					detach(Dungeon.hero.belongings.backpack);
 					return similar.merge(this);
 				}
+				updateQuickslot();
 				return this;
 			}
 			

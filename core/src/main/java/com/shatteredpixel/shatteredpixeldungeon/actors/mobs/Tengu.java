@@ -164,7 +164,7 @@ public class Tengu extends Mob {
 			Dungeon.hero.resting = false;
 		sprite.attack( enemy.pos );
 		spend( attackDelay() );
-		return true;
+		return !Dungeon.level.adjacent(pos, enemy.pos);
 }
 
 	private void jump() {

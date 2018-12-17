@@ -192,7 +192,12 @@ public class InterlevelScene extends PixelScene {
 				public void run() {
 					
 					try {
-						
+
+						if (Dungeon.hero != null){
+							Dungeon.hero.spendToWhole();
+						}
+						Actor.fixTime();
+
 						switch (mode) {
 							case DESCEND:
 								descend();
@@ -308,8 +313,6 @@ public class InterlevelScene extends PixelScene {
 
 	private void descend() throws IOException {
 
-		Actor.fixTime();
-		
 		if (Dungeon.hero == null) {
 			DriedRose.clearHeldGhostHero();
 			Dungeon.init();
@@ -335,7 +338,6 @@ public class InterlevelScene extends PixelScene {
 	
 	private void fall() throws IOException {
 
-		Actor.fixTime();
 		DriedRose.holdGhostHero( Dungeon.level );
 		
 		Buff.affect( Dungeon.hero, Chasm.Falling.class );
@@ -353,7 +355,6 @@ public class InterlevelScene extends PixelScene {
 	
 	private void ascend() throws IOException {
 		
-		Actor.fixTime();
 		DriedRose.holdGhostHero( Dungeon.level );
 
 		Dungeon.saveAll();
@@ -364,7 +365,6 @@ public class InterlevelScene extends PixelScene {
 	
 	private void returnTo() throws IOException {
 		
-		Actor.fixTime();
 		DriedRose.holdGhostHero( Dungeon.level );
 
 		Dungeon.saveAll();
@@ -375,7 +375,6 @@ public class InterlevelScene extends PixelScene {
 	
 	private void restore() throws IOException {
 		
-		Actor.fixTime();
 		DriedRose.clearHeldGhostHero();
 
 		GameLog.wipe();
@@ -392,7 +391,6 @@ public class InterlevelScene extends PixelScene {
 	
 	private void resurrect() throws IOException {
 		
-		Actor.fixTime();
 		DriedRose.holdGhostHero( Dungeon.level );
 		
 		if (Dungeon.level.locked) {
@@ -408,7 +406,6 @@ public class InterlevelScene extends PixelScene {
 
 	private void reset() throws IOException {
 
-		Actor.fixTime();
 		DriedRose.holdGhostHero( Dungeon.level );
 
 		SpecialRoom.resetPitRoom(Dungeon.depth+1);

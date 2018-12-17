@@ -58,9 +58,8 @@ public class CircleArc extends Visual {
 	public CircleArc( int triangles, float radius ) {
 		
 		super( 0, 0, 0, 0 );
-		
-		int gradient[] = {0xFFFFFFFF, 0xFFFFFFFF};
-		texture = TextureCache.createGradient( gradient );
+
+		texture = TextureCache.createSolid( 0xFFFFFFFF );
 		
 		this.nTris = triangles;
 		this.rad = radius;
