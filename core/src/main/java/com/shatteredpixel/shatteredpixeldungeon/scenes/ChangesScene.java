@@ -48,6 +48,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
@@ -65,11 +67,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -141,73 +146,120 @@ public class ChangesScene extends PixelScene {
 		add( list );
 		
 		//**********************
+		//       v0.7.1
+		//**********************
+		
+		ChangeInfo changes = new ChangeInfo("v0.7.1", true, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress Reworked!",
+				"The Huntress has received a class overhaul!\n\n" +
+				"Her boomerang has been replaced with a bow. The bow has infinite uses, like the boomerang, but cannot be upgraded directly, instead it will grow stronger as the huntress levels up.\n\n" +
+				"Her knuckledusters have been replaced with studded gloves. This change is purely cosmetic.\n\n" +
+				"Those with runs in progress will have their boomerang turn into a bow, and will regain most of the scrolls of upgrade spent on the boomerang.\n\n" +
+				"The huntress can now also move through grass without trampling it (she 'furrows' it instead)."));
+		
+		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 90, 12, 15), "Huntress Subclasses Reworked!",
+				"Huntress subclasses have also received overhauls:\n\n" +
+				"The Sniper can now see 50% further, penetrates armor with ranged attacks, and can perform a special attack with her bow.\n\n" +
+				"The Warden can now see through grass and gains a variety of bonuses to plant interaction."));
+
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.TRIDENT, null), "Thrown Weapon Improvements",
+				"Thrown weapons now show their tier, ranging from 1-5 like with melee weapons.\n\n" +
+				"All Heroes now benefit from excess strength on thrown weapons.\n\n" +
+				"Thrown weapons now get +50% accuracy when used at range.\n\n" +
+				"Thrown weapons can now be upgraded!\n" +
+				"_-_ Upgrades work on a single thrown weapon\n" +
+				"_-_ Increases damage based on tier\n" +
+				"_-_ Gives 3x durability each upgrade\n" +
+				"_-_ Weapons with 100+ uses now last forever\n" +
+				"_-_ Darts are not upgradeable, but tipped darts can get extra durability\n\n" +
+				"Ring of sharpshooting has been slightly adjusted to tie into this new upgrade system."));
+		
+		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
+		infos.add(changes);
+
+		changes.addButton( new ChangeButton(BadgeBanner.image(Badges.Badge.UNLOCK_MAGE.image), "Hero Class changes",
+				"All heroes except the warrior now need to be unlocked via new badges. The requirements are quite simple, with the goal of giving new players some early goals. Players who have already unlocked characters will not need to re-unlock them.\n\n" +
+				"To help accelerate item identification for alchemy, all heroes now start with 3 identified items: The scroll of identify, a potion, and another scroll."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Added a partial turn indicator to the game interface, which occupies the same spot as the busy icon. This should make it much easier to plan actions that take more or less than 1 turn.\n\n" +
+				"Rings now have better descriptions for their stats! All rings now show exactly how they affect you in a similar way to how other equipment gives direct stats.\n\n" +
+				"Precise descriptions have been added for weapons which block damage.\n\n" +
+				"Added item stats to the item catalog.\n\n" +
+				"Dropping an item now takes 1 turn, up from 0.5 turns."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ various minor visual bugs\n" +
+				"_-_ odd behaviour when transmuting certain items\n" +
+				"_-_ keys rarely spawning without chests\n" +
+				"_-_ fireblast rarely damaging things it shouldn't\n" +
+				"_-_ dew drops from dew catchers landing on stairs\n" +
+				"_-_ ankh revive window rarely closing when it shouldn't\n" +
+				"_-_ flock and summoning traps creating harsh multi-sound effects\n" +
+				"_-_ thrown weapons being lost when used on sheep\n" +
+				"_-_ various specific errors when actions took more/less than 1 turn\n" +
+				"_-_ various freeze bugs caused by Tengu"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations\n\n" +
+				"Updated translator credits"));
+		
+		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		infos.add(changes);
+
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), new RingOfEnergy().trueName(),
+				"The ring of energy has been simplified/buffed:\n\n" +
+				"_-_ Now grants a flat +20% charge speed per level, instead of +1 effective missing charge per level"));
+
+		changes.addButton( new ChangeButton( new Bolas(),
+				"Bolas have received a damage buff:\n\n" +
+				"_-_ Base damage increased to 6-9 from 4-6"));
+
+		changes.addButton( new ChangeButton( new WandOfRegrowth(),
+				"Thanks to the new furrowed grass system, the wand of regrowth can receive a slight buff:\n\n" +
+				"_-_ When the wand of regrowth begins to run out of energy due to excessive use, it will now spawn furrowed grass, instead of short grass."));
+		
+		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_RUBY, null), new RingOfFuror().trueName(),
+				"Ring of furor has been nerfed/simplified:\n\n" +
+				"_-_ Now provides a flat +10.5% attack speed per level, instead of speed with scales based on how slow the weapon is.\n\n" +
+				"This means the ring is effectively nerfed for slow weapons and regular weapons, and slightly buffed for fast weapons.\n\n" +
+				"A +6 ring grants almost exactly doubled attack speed."));
+
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_GARNET, null), new RingOfForce().trueName(),
+				"The ring of force's equipped weapon bonus was always meant as a small boost so it wasn't useless if the player already had a better weapon. It wasn't intended to be used to both replace melee and then boost thrown weapons.\n" +
+				"_-_ The ring of force no longer gives bonus damage to thrown weapons."));
+		
+		changes.addButton( new ChangeButton( new Gauntlet(),
+				"As furor now works much better with fast weapons, I've taken the oppourtunity to very slightly nerf sai and gauntlets\n\n" +
+				"_-_ Sai blocking down to 0-2 from 0-3\n" +
+				"_-_ Gauntlet blocking down to 0-4 from 0-5"));
+		
+		changes.addButton( new ChangeButton( new Shuriken(),
+				"Shuriken have been adjusted due to the new upgrade system:\n\n" +
+				"_-_ Base damage increased to 4-8 from 4-6\n" +
+				"_-_ Durability reduced to 5 from 10"));
+		
+		//**********************
 		//       v0.7.0
 		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.7.0", true, "");
+		changes = new ChangeInfo("v0.7.0", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
-		
-		changes = new ChangeInfo("v0.7.0b & v0.7.0c", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POUCH, null), "Seed & stone droprate changes",
-				"With all the new items added in 0.7.0, people's inventories have started getting a bit clogged. I've decided to reign in some of the most frequently dropped items slightly, to reduced the inventory management burden. In particular, this should make the velvet pouch a bit less necessary in the earlygame.\n\n" +
-				"_-_ Seed droprates reduced by 20%. Footwear of nature seed boost increased slightly to compensate.\n\n" +
-				"_-_ Potion and Runestone droprates from special rooms reduced. Resulting in ~5% fewer potions and ~15% fewer stones overall."));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"_-_ Overhauled core logic for payment-handling in Google Play version. Should result in improvements to speed, reliability, and security.\n\n" +
-				"_-_ Overhauled core logic for google play games in Google Play version. Most notably, Google+ account information is no longer required (it was previously unused, but had to be requested).\n\n" +
-				"_-_ Improved the layering system for raised terrain like grass. This solves a few visual bugs immediately, but also allows for functionality like characters being inside of grass.\n\n" +
-				"_-_ Adjusted bone pile functionality to make it more clear that a spawning wraith means an item is cursed. Also fixed an exploit where items could be thrown into bone piles to check if they were cursed."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"v0.7.0b:\n" +
-				"Fixed (Caused by v0.7.0):\n" +
-				"_-_ Exotic items not being identified in rankings (will not fix old rankings)\n" +
-				"_-_ Toolkit rarely being able to go above 100% charge\n" +
-				"_-_ Elixir of restoration doing nothing when thrown\n\n" +
-				"Fixed (Existed before v0.7.0):\n" +
-				"_-_ Bolas incorrectly requiring 15 strength\n" +
-				"_-_ Non-heroes being able to use reach weapons through walls\n" +
-				"_-_ Antimagic glyph applying to more effects when used by the sad ghost\n" +
-				"_-_ Some items not being known as uncursed when sold from shops\n\n" +
-				"v0.7.0c:\n" +
-				"Fixed (Caused by v0.7.0):\n" +
-				"_-_ Non-heroes not using reach weapons properly\n\n" +
-				"Fixed (Existed before v0.7.0):\n" +
-				"_-_ Obfuscation glyph not improving every upgrade\n" +
-				"_-_ Magical sleep rarely cancelling paralysis"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
-		
-		changes = new ChangeInfo("v0.7.0a", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RETURN_BEACON, null), "Spell recipe balance changes",
-				"Early gameplay data for 0.7.0 indicates spells are very under-utilized, so I've made a few adjustments to make them more appealing:\n\n" +
-				"_-_ alchemize recipe cost down to 6 from 8\n" +
-				"_-_ magical porter recipe cost down to 4 from 8\n" +
-				"_-_ recycle recipe cost down to 6 from 8, quantity up to 8 from 6\n" +
-				"_-_ aqua blast recipe cost up to 4 from 3, quantity up to 12 from 8\n" +
-				"_-_ beacon of returning recipe cost down to 10 from 12, quantity up to 5 from 3\n" +
-				"_-_ phase shift quantity up to 8 from 6"));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (Caused by v0.7.0):\n" +
-				"_-_ Various bugs with new shielding buff\n" +
-				"_-_ Visual bugs with new alchemy interface\n" +
-				"_-_ Deaths to new bombs not always recording rankings\n\n" +
-				"Fixed (Existed before v0.7.0):\n" +
-				"_-_ Various screen layout issues in power saver mode\n" +
-				"_-_ Crashes when tengu is healed above 1/2 health"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations\n\nUpdated translator credits"));
 		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -293,16 +345,19 @@ public class ChangesScene extends PixelScene {
 				"_-_ Charge speed at low levels increased. Max charges increased to 8 from 6."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Potions which should be thrown can now be thrown from the quickslot, if they are IDed.\n" +
+				"_-_ Thrown items and wand zaps now go through tall grass.\n" +
+				"_-_ Expanded what items bags can carry. Most alchemy produce can fit in a bag, magical holster now holds bombs.\n\n" +
+				"_-_ Caustic ooze now lasts a max of 20 turns.\n" +
+				"_-_ Bleeding damage is now more consistent.\n\n" +
+				"_-_ Adjusted the text for breaking paralysis.\n"+
+				"_-_ Adjusted various potion/plant/seed sprites.\n" +
+				"_-_ Healing now has an icon and description.\n" +
+				"_-_ Improved the layering system for raised terrain like grass.\n" +
 				"_-_ Added an ingame version indicator.\n" +
 				"_-_ Added a new indicator for when an item is not identified, but known to be uncursed.\n\n" +
-				"_-_ Potions which should be thrown can now be thrown from the quickslot, if they are identified.\n" +
-				"_-_ Thrown items and wand zaps now go through tall grass.\n\n" +
-				"_-_ Caustic ooze now lasts a maximum of 20 rounds.\n" +
-				"_-_ Bleeding is now much more consistent at low amounts of damage.\n\n" +
-				"_-_ Expanded what items various bags can carry. Most new alchemy produce can fit in a bag, and bombs can now go into the magical holster.\n\n" +
-				"_-_ Adjusted the text message for breaking paralysis.\n"+
-				"_-_ Adjusted various potion, plant, and seed sprites.\n" +
-				"_-_ Healing now has a buff icon and description."));
+				"_-_ Improved payment & sync functions on Google Play version.\n\n" +
+				"_-_ Adjusted bone pile functionality to make it more clear that a spawning wraith means an item is cursed."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed:\n" +
@@ -325,6 +380,18 @@ public class ChangesScene extends PixelScene {
 				"_-_ Searching spending hunger in a locked level\n" +
 				"_-_ 'Faith is my armor' deleting class armors\n" +
 				"_-_ Various cases where the player can be ontop of enemies"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Various screen layout issues in power saver mode\n" +
+				"_-_ Crashes when tengu is healed above 1/2 health\n" +
+				"_-_ Bolas incorrectly requiring 15 strength\n" +
+				"_-_ Non-heroes being able to use reach weapons through walls\n" +
+				"_-_ Antimagic glyph applying to more effects when used by the sad ghost\n" +
+				"_-_ Some items not being known as uncursed when sold from shops\n" +
+				"_-_ Obfuscation glyph not improving every upgrade\n" +
+				"_-_ Magical sleep rarely cancelling paralysis\n" +
+				"_-_ Exploits where bone piles could be used to check if an item was cursed"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"Updated Translations\n\nUpdated translator credits\n\nAdded new language: Basque!"));
