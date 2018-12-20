@@ -235,7 +235,7 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_RUBY, null), new RingOfFuror().trueName(),
 				"Ring of furor has been nerfed/simplified:\n\n" +
-				"_-_ Now provides a flat +10.5% attack speed per level, instead of speed with scales based on how slow the weapon is.\n\n" +
+				"_-_ Now provides a flat +10.5% attack speed per level, instead of speed which scales based on how slow the weapon is.\n\n" +
 				"This means the ring is effectively nerfed for slow weapons and regular weapons, and slightly buffed for fast weapons.\n\n" +
 				"A +6 ring grants almost exactly doubled attack speed."));
 

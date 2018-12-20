@@ -101,9 +101,12 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		Char ch = (Char) Actor.findById(object);
 		if (ch == null) return;
 		
+		int cell = QuickSlotButton.autoAim(ch, arrow);
+		if (cell == -1) return;
+		
 		bow.sniperSpecial = true;
 		
-		arrow.cast(hero, QuickSlotButton.autoAim(ch, arrow));
+		arrow.cast(hero, cell);
 		detach();
 		
 	}

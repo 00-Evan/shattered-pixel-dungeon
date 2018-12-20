@@ -159,9 +159,9 @@ public abstract class Actor implements Bundlable {
 		}
 
 		if (Dungeon.hero != null && all.contains( Dungeon.hero )) {
-			Statistics.duration += (int)now;
+			Statistics.duration += min;
 		}
-		now = now % 1;
+		now -= min;
 	}
 	
 	public static void init() {
