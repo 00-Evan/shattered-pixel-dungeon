@@ -143,7 +143,9 @@ public abstract class Actor implements Bundlable {
 	}
 
 	public static synchronized void fixTime() {
-
+		
+		if (all.isEmpty()) return;
+		
 		float min = Float.MAX_VALUE;
 		for (Actor a : all) {
 			if (a.time < min) {
