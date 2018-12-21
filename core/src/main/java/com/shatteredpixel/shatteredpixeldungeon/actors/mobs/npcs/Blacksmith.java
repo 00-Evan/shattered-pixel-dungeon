@@ -200,7 +200,9 @@ public class Blacksmith extends NPC {
 		}
 		first.level(first.level()+1); //prevents on-upgrade effects like enchant/glyph removal
 		if (first instanceof MissileWeapon && !Dungeon.hero.belongings.contains(first)) {
-			first.collect();
+			if (!first.collect()){
+				Dungeon.level.drop( first, Dungeon.hero.pos );
+			}
 		}
 		Dungeon.hero.spendAndNext( 2f );
 		Badges.validateItemLevelAquired( first );

@@ -139,6 +139,8 @@ public class Bones {
 			if (depth == Dungeon.depth && Dungeon.challenges == 0) {
 				FileUtils.deleteFile( BONES_FILE );
 				depth = 0;
+				
+				if (item == null) return null;
 
 				//Enforces artifact uniqueness
 				if (item instanceof Artifact){
