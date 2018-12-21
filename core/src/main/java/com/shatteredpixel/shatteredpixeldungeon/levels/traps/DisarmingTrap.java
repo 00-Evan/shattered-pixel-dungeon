@@ -61,7 +61,7 @@ public class DisarmingTrap extends Trap{
 			}
 		}
 
-		if (Dungeon.hero.pos == pos){
+		if (Dungeon.hero.pos == pos && !Dungeon.hero.flying){
 			Hero hero = Dungeon.hero;
 			KindOfWeapon weapon = hero.belongings.weapon;
 

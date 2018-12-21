@@ -52,10 +52,12 @@ public class PitfallTrap extends Trap {
 
 		Char ch = Actor.findChar( pos );
 
-		if (ch == Dungeon.hero){
-			Chasm.heroFall( pos );
-		} else if (ch != null){
-			Chasm.mobFall((Mob)ch);
+		if (ch != null && !ch.flying) {
+			if (ch == Dungeon.hero) {
+				Chasm.heroFall(pos);
+			} else {
+				Chasm.mobFall((Mob) ch);
+			}
 		}
 	}
 

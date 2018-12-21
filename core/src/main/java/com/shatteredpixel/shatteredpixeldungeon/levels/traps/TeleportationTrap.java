@@ -50,31 +50,33 @@ public class TeleportationTrap extends Trap {
 		Sample.INSTANCE.play( Assets.SND_TELEPORT );
 
 		Char ch = Actor.findChar( pos);
-		if (ch instanceof Hero){
-			ScrollOfTeleportation.teleportHero( (Hero)ch);
-		} else if (ch != null){
-			int count = 10;
-			int pos;
-			do {
-				pos = Dungeon.level.randomRespawnCell();
-				if (count-- <= 0) {
-					break;
-				}
-			} while (pos == -1);
-
-			if (pos == -1 || Dungeon.bossLevel()) {
-
-				GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
-
+		if (ch != null && !ch.flying) {
+			if (ch instanceof Hero) {
+				ScrollOfTeleportation.teleportHero((Hero) ch);
 			} else {
-
-				ch.pos = pos;
-				if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).HUNTING){
-					((Mob) ch).state = ((Mob) ch).WANDERING;
+				int count = 10;
+				int pos;
+				do {
+					pos = Dungeon.level.randomRespawnCell();
+					if (count-- <= 0) {
+						break;
+					}
+				} while (pos == -1);
+				
+				if (pos == -1 || Dungeon.bossLevel()) {
+					
+					GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
+					
+				} else {
+					
+					ch.pos = pos;
+					if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).HUNTING) {
+						((Mob) ch).state = ((Mob) ch).WANDERING;
+					}
+					ch.sprite.place(ch.pos);
+					ch.sprite.visible = Dungeon.level.heroFOV[pos];
+					
 				}
-				ch.sprite.place(ch.pos);
-				ch.sprite.visible = Dungeon.level.heroFOV[pos];
-
 			}
 		}
 

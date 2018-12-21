@@ -38,7 +38,7 @@ public class OozeTrap extends Trap {
 	public void activate() {
 		Char ch = Actor.findChar( pos );
 
-		if (ch != null){
+		if (ch != null && !ch.flying){
 			Buff.affect(ch, Ooze.class).set( 20f );
 			Splash.at( pos, 0x000000, 5);
 		}
