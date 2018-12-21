@@ -153,9 +153,35 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.1a", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.7.1):\n" +
+				"_-_ various crash bugs\n" +
+				"_-_ chasms dealing damage on a delay in some cases\n" +
+				"_-_ blacksmith deleting items in rare cases\n\n" +
+				"Fixed (existed prior to 0.7.1):\n" +
+				"_-_ various crash bugs\n" +
+				"_-_ traps with ground-based effects affecting flying characters"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released Dec 18th, 2018\n" +
+				"_-_ 61 days after Shattered v0.7.0\n" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
 		
 		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress Reworked!",
 				"The Huntress has received a class overhaul!\n\n" +
@@ -267,8 +293,8 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released Oct 18th, 2018\n" +
-				"_-_ 503 days after Shattered v0.6.0\n" +
-				"_-_ 170 days after Shattered v0.6.5\n" +
+				"_-_ 501 days after Shattered v0.6.0\n" +
+				"_-_ 168 days after Shattered v0.6.5\n" +
 				"\n" +
 				"Dev commentary will be added here in the future."));
 		
