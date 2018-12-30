@@ -55,7 +55,7 @@ public class Bleeding extends Buff {
 		level = bundle.getFloat( LEVEL );
 	}
 	
-	public void set( int level ) {
+	public void set( float level ) {
 		this.level = Math.max(this.level, level);
 	}
 	

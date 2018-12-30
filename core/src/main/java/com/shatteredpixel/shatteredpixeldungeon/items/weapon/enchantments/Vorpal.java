@@ -43,7 +43,7 @@ public class Vorpal extends Weapon.Enchantment {
 
 		if (Random.Int( level + 3 ) >= 2) {
 
-			Buff.affect(defender, Bleeding.class).set(damage/4);
+			Buff.affect(defender, Bleeding.class).set(damage/5f);
 			Splash.at( defender.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
 					defender.sprite.blood(), 10 );
 

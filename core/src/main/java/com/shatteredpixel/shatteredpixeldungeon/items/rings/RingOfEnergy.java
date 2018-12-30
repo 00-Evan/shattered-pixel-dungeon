@@ -30,9 +30,9 @@ public class RingOfEnergy extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.2f, soloBonus()) - 1f)));
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.25f, soloBonus()) - 1f)));
 		} else {
-			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(20f));
+			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(25f));
 		}
 	}
 	
@@ -42,7 +42,7 @@ public class RingOfEnergy extends Ring {
 	}
 	
 	public static float wandChargeMultiplier( Char target ){
-		return (float)Math.pow(1.2, getBonus(target, Energy.class));
+		return (float)Math.pow(1.25, getBonus(target, Energy.class));
 	}
 	
 	public class Energy extends RingBuff {

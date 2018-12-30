@@ -44,8 +44,8 @@ public class Stone extends Armor.Glyph {
 			hitChance = 1f - (evasion/accuracy)/2f;
 		}
 		
-		//60% of dodge chance is applied as damage reduction
-		hitChance = (2f + 3f*hitChance)/5f;
+		//75% of dodge chance is applied as damage reduction
+		hitChance = (1f + 3f*hitChance)/4f;
 		
 		damage = (int)Math.ceil(damage * hitChance);
 		

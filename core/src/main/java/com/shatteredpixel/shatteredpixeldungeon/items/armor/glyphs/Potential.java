@@ -39,7 +39,7 @@ public class Potential extends Glyph {
 		int level = Math.max( 0, armor.level() );
 		
 		if (defender instanceof Hero) {
-			int wands = ((Hero) defender).belongings.charge(0.1f + level*0.05f);
+			int wands = ((Hero) defender).belongings.charge(0.12f + level*0.06f);
 			if (wands > 0) {
 				defender.sprite.centerEmitter().burst(EnergyParticle.FACTORY, wands * (level + 2));
 			}
