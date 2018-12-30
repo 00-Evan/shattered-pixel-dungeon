@@ -107,7 +107,7 @@ public class BrokenSeal extends Item {
 		@Override
 		public synchronized boolean act() {
 			if (shielding() < maxShield()) {
-				partialShield += 1/(35*Math.pow(0.885f, (maxShield() - shielding() - 1)));
+				partialShield += 1/(35*Math.pow(0.9f, (maxShield() - shielding() - 1)));
 			}
 			
 			while (partialShield >= 1){
