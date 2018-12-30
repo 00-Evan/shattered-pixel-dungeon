@@ -153,9 +153,44 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.7.1b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Hero Balance Changes",
+				"After pouring over some analytics numbers, I have decided to give out some hero buffs primarily focused on base power, and one nerf based on power in lategame:\n\n" +
+				"Huntress:\n" +
+				"_-_ Gloves base damage up to 1-6 from 1-5\n" +
+				"_-_ Spirit bow damage scaling up 20%\n(now gets exactly +1/+2 dmg every level up)\n" +
+				"_-_ Warden barkskin increased by 5 points\n\n" +
+				"Rogue's cloak of shadows base charge speed increased by ~11%, scaling reduced to compensate.\n\n" +
+				"Warlock's soul mark base chance increased to 15% from 10%, scaling reduced to compensate.\n\n" +
+				"Warrior's shielding regen scaling reduced by ~15%. This is primarily a lategame nerf."));
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_DIAMOND, null), "Other Balance Changes",
+				"Similarly to heroes, I have gone over the balance of items, and am making several buffs + one nerf.\n\n" +
+				"wand of fireblast buffed:\n" +
+				"_-_ shot distance at 3 charges reduced by 1\n" +
+				"_-_ damage at 1 charge reduced slightly\n" +
+				"_-_ damage at 2/3 charges increased by ~15%\n" +
+				"\n" +
+				"_-_ vorpal enchant bleed reduced by 20%\n" +
+				"_-_ glyph of potential wand charge bonus increased by 20%\n" +
+				"_-_ glyph of stone evasion conversion efficiency increased to 75% from 60%\n" +
+				"\n" +
+				"_-_ ring of elements power increased to 16% from 12.5%\n" +
+				"_-_ ring of energy charge speed increased to 25% from 20%\n" +
+				"_-_ ring of wealth 'luck' bonus increased to 20% from 15%"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.7.1):\n" +
+				"_-_ various rare spirit bow crashes\n\n" +
+				"Fixed (existed prior to 0.7.1):\n" +
+				"_-_ rare crashes involving alchemy\n" +
+				"_-_ health potion limits not applying to prison guards"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
 		
 		changes = new ChangeInfo("v0.7.1a", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
