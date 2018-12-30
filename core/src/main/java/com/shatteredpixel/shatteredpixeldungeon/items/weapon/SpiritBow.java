@@ -68,9 +68,15 @@ public class SpiritBow extends Weapon {
 	
 	@Override
 	public void execute(Hero hero, String action) {
+		
 		super.execute(hero, action);
+		
 		if (action.equals(AC_SHOOT)) {
+			
+			curUser = hero;
+			curItem = this;
 			GameScene.selectCell( shooter );
+			
 		}
 	}
 	
@@ -293,7 +299,10 @@ public class SpiritBow extends Weapon {
 								new Callback() {
 									@Override
 									public void call() {
-										if (enemy.isAlive()) onThrow(cell);
+										if (enemy.isAlive()) {
+											curUser = user;
+											onThrow(cell);
+										}
 										
 										if (last) {
 											user.spendAndNext(castDelay(user, dst));
