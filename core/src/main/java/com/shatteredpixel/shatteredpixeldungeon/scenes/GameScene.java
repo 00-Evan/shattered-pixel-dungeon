@@ -396,9 +396,12 @@ public class GameScene extends PixelScene {
 			//TODO currently items are only ported to boss rooms, so this works well
 			//might want to have a 'near entrance' function if items can be ported elsewhere
 			int pos;
+			//try to find a tile with no heap, otherwise just stick items onto a heap.
+			int tries = 100;
 			do {
 				pos = Dungeon.level.randomRespawnCell();
-			} while (Dungeon.level.heaps.get(pos) != null);
+				tries--;
+			} while (tries > 0 && Dungeon.level.heaps.get(pos) != null);
 			for (Item item : ported) {
 				Dungeon.level.drop( item, pos ).type = Heap.Type.CHEST;
 			}

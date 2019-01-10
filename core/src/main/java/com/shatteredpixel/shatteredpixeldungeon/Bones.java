@@ -172,7 +172,8 @@ public class Bones {
 					if (item.level() > 3) {
 						item.degrade( item.level() - 3 );
 					}
-					item.levelKnown = false;
+					//thrown weapons are always IDed, otherwise set unknown
+					item.levelKnown = !(item instanceof MissileWeapon);
 				}
 				
 				item.reset();
