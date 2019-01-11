@@ -197,6 +197,15 @@ public class DriedRose extends Artifact {
 	public void charge(Hero target) {
 		if (ghost == null && charge < chargeCap){
 			partialCharge += 0.25f;
+			if (partialCharge >= 1){
+				partialCharge--;
+				charge++;
+				updateQuickslot();
+				if (charge == chargeCap){
+					partialCharge = 0f;
+					GLog.p( Messages.get(DriedRose.class, "charged") );
+				}
+			}
 		}
 	}
 	

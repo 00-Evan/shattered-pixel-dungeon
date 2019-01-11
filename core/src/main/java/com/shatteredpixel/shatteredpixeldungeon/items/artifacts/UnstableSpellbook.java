@@ -175,6 +175,11 @@ public class UnstableSpellbook extends Artifact {
 	public void charge(Hero target) {
 		if (charge < chargeCap){
 			partialCharge += 0.1f;
+			if (partialCharge >= 1){
+				partialCharge--;
+				charge++;
+				updateQuickslot();
+			}
 		}
 	}
 

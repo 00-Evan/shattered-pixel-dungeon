@@ -53,6 +53,7 @@ public class CapeOfThorns extends Artifact {
 	public void charge(Hero target) {
 		if (cooldown == 0) {
 			charge += 4;
+			updateQuickslot();
 		}
 		if (charge >= chargeCap){
 			target.buff(Thorns.class).proc(0, null, null);

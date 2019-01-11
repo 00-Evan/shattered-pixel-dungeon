@@ -106,7 +106,12 @@ public class TalismanOfForesight extends Artifact {
 	@Override
 	public void charge(Hero target) {
 		if (charge < chargeCap){
-			partialCharge += 4f;
+			charge += 4f;
+			if (charge >= chargeCap) {
+				charge = chargeCap;
+				partialCharge = 0;
+				GLog.p( Messages.get(this, "full_charge") );
+			}
 		}
 	}
 
