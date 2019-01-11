@@ -26,7 +26,7 @@ import java.util.Locale;
 public enum Languages {
 	ENGLISH("english",      "",   Status.REVIEWED,   null, null),
 	
-	KOREAN("한국어",         "ko", Status.UNREVIEWED, new String[]{"Flameblast12"}, new String[]{"Cocoa", "Korean2017", "WondarRabb1t", "ddojin0115", "eeeei", "hancyel", "linterpreteur", "lsiebnie" }),
+	KOREAN("한국어",         "ko", Status.REVIEWED,  new String[]{"Flameblast12"}, new String[]{"Cocoa", "Korean2017", "WondarRabb1t", "ddojin0115", "eeeei", "hancyel", "linterpreteur", "lsiebnie" }),
 	RUSSIAN("русский",      "ru", Status.INCOMPLETE, new String[]{"ConsideredHamster", "Inevielle", "yarikonline"}, new String[]{"AttHawk46", "HerrGotlieb", "HoloTheWise", "JleHuBbluKoT", "MrXantar", "Shamahan", "apxwn", "roman.yagodin", "un_logic", "Вoвa"}),
 	GERMAN("deutsch",       "de", Status.UNREVIEWED, new String[]{"Dallukas", "KrystalCroft", "Wuzzy", "Zap0", "bernhardreiter", "davedude"}, new String[]{"Ceeee", "DarkPixel", "ErichME", "LenzB", "Sarius", "SirEddi", "Sorpl3x", "ThunfischGott", "Topicranger", "apxwn", "gekko303", "oragothen", "spixi"}),
 	FRENCH("français",      "fr", Status.UNREVIEWED, new String[]{"Emether", "canc42", "kultissim", "minikrob"}, new String[]{"Alsydis", "Axce", "Basttee", "Dekadisk", "Draal", "Neopolitan", "RomTheMareep", "SpeagleZNT", "Tronche2Cake", "Xalofar", "Ygdrazil", "antoine9298", "go11um", "linterpreteur", "marmous", "solthaar", "vavavoum"}),
