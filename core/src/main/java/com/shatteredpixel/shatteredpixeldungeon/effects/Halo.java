@@ -30,6 +30,7 @@ import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
 
+//TODO externalize bitmap stuff to SPD-classes
 public class Halo extends Image {
 	
 	private static final Object CACHE_KEY = Halo.class;

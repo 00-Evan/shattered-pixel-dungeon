@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
-import android.graphics.Bitmap;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -33,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Vertexbuffer;
@@ -328,11 +327,11 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public static int pick( int index, int x, int y ) {
-		Bitmap bmp = TextureCache.get( Assets.ITEMS ).bitmap;
-		int rows = bmp.getWidth() / SIZE;
+		SmartTexture tx = TextureCache.get( Assets.ITEMS );
+		int rows = tx.width / SIZE;
 		int row = index / rows;
 		int col = index % rows;
-		return bmp.getPixel( col * SIZE + x, row * SIZE + y );
+		return tx.getPixel( col * SIZE + x, row * SIZE + y );
 	}
 	
 	public static class Glowing {

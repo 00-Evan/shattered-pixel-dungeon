@@ -21,9 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import android.annotation.SuppressLint;
-import android.util.SparseArray;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -32,6 +29,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+import com.watabou.utils.SparseArray;
 
 public class Speck extends Image {
 
@@ -79,7 +77,7 @@ public class Speck extends Image {
 	
 	private static TextureFilm film;
 	
-	private static SparseArray<Emitter.Factory> factories = new SparseArray<Emitter.Factory>();
+	private static SparseArray<Emitter.Factory> factories = new SparseArray<>();
 	
 	public Speck() {
 		super();
@@ -367,7 +365,6 @@ public class Speck extends Image {
 		left = lifespan;
 	}
 	
-	@SuppressLint("FloatMath")
 	@Override
 	public void update() {
 		super.update();

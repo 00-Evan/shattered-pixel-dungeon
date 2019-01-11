@@ -21,10 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
-import android.util.SparseIntArray;
-
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.utils.Random;
+import com.watabou.utils.SparseArray;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -115,7 +114,7 @@ public class DungeonTileSheet {
 	public static final int CHASM_WATER             = CHASM+4;
 
 	//tiles that can stitch with chasms (from above), and which visual represents the stitching
-	public static SparseIntArray chasmStitcheable = new SparseIntArray(32);
+	public static SparseArray<Integer> chasmStitcheable = new SparseArray<>();
 	static {
 		//floor
 		chasmStitcheable.put( Terrain.EMPTY,        CHASM_FLOOR );
@@ -343,7 +342,7 @@ public class DungeonTileSheet {
 	 **********************************************************************/
 
 	//These visuals always directly represent a game tile with no stitching required
-	public static SparseIntArray directVisuals = new SparseIntArray(32);
+	public static SparseArray<Integer> directVisuals = new SparseArray<>();
 	static {
 		directVisuals.put(Terrain.EMPTY,            FLOOR);
 		directVisuals.put(Terrain.GRASS,            GRASS);
@@ -366,7 +365,7 @@ public class DungeonTileSheet {
 	}
 
 	//These visuals directly represent game tiles (no stitching) when terrain is being shown as flat
-	public static SparseIntArray directFlatVisuals = new SparseIntArray(32);
+	public static SparseArray<Integer> directFlatVisuals = new SparseArray<>();
 	static {
 		directFlatVisuals.put(Terrain.WALL,             FLAT_WALL);
 		directFlatVisuals.put(Terrain.DOOR,             FLAT_DOOR);
@@ -401,7 +400,7 @@ public class DungeonTileSheet {
 	}
 
 	//These alt visuals will trigger 50% of the time (45% of the time if a rare alt is also present)
-	public static SparseIntArray commonAltVisuals = new SparseIntArray(32);
+	public static SparseArray<Integer> commonAltVisuals = new SparseArray<>();
 	static {
 		commonAltVisuals.put(FLOOR,                 FLOOR_ALT_1);
 		commonAltVisuals.put(GRASS,                 GRASS_ALT);
@@ -426,7 +425,7 @@ public class DungeonTileSheet {
 	}
 
 	//These alt visuals trigger 5% of the time (and also override common alts when they show up)
-	public static SparseIntArray rareAltVisuals = new SparseIntArray(32);
+	public static SparseArray<Integer> rareAltVisuals = new SparseArray<>();
 	static {
 		rareAltVisuals.put(FLOOR,               FLOOR_ALT_2);
 	}

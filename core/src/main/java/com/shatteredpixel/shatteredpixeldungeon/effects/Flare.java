@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import android.annotation.SuppressLint;
-
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
@@ -51,7 +49,6 @@ public class Flare extends Visual {
 	
 	private int nRays;
 	
-	@SuppressLint("FloatMath")
 	public Flare( int nRays, float radius ) {
 		
 		super( 0, 0, 0, 0 );

@@ -21,9 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import android.content.Intent;
-import android.net.Uri;
-
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
@@ -34,10 +31,10 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.Camera;
-import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.TouchArea;
+import com.watabou.utils.DeviceCompat;
 
 public class AboutScene extends PixelScene {
 
@@ -98,8 +95,7 @@ public class AboutScene extends PixelScene {
 		TouchArea shpxhotArea = new TouchArea( shpxlink.left(), shpxlink.top(), shpxlink.width(), shpxlink.height() ) {
 			@Override
 			protected void onClick( Touch touch ) {
-				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK_SHPX ) );
-				Game.instance.startActivity( intent );
+				DeviceCompat.openURI( "https://" + LNK_SHPX );
 			}
 		};
 		add( shpxhotArea );
@@ -140,8 +136,7 @@ public class AboutScene extends PixelScene {
 		TouchArea hotArea = new TouchArea( wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height() ) {
 			@Override
 			protected void onClick( Touch touch ) {
-				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK_WATA ) );
-				Game.instance.startActivity( intent );
+				DeviceCompat.openURI( "https://" + LNK_WATA );
 			}
 		};
 		add( hotArea );

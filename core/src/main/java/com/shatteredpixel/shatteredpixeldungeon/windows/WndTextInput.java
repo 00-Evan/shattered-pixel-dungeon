@@ -44,6 +44,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 
 //This class makes use of the android EditText component to handle text input
+//TODO externalize android-specific code to SPD-classes
 public class WndTextInput extends Window {
 
 	private EditText textInput;
