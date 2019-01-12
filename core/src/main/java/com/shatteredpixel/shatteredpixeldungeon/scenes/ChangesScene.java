@@ -153,7 +153,34 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes = new ChangeInfo("v0.7.1b", false, null);
+		changes = new ChangeInfo("v0.7.1c", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton( new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
+				"_-_ Fixed the previous change to walock's soul mark making the effect MUCH more common than intended. The base chance buff was intended to be 10% to 15%, but ended up being closer to 80%, oops!\n\n" +
+				"Despite the unintended change, the warlock was not massively overpowered, which tells me I have more power budget in soul mark than I thought:\n\n" +
+				"_-_ Soul mark hunger restoration increased by 100%\n" +
+				"_-_ Soul mark health restoration increased by 33%"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.KING, 1, 0, 14, 16), "Dwarf King",
+				"While I would like to make more extensive changes to Dwarf King in the future, I've made a couple smaller tweaks for now to make him harder to cheese:\n\n" +
+				"_-_ Dwarf King is now able to summon skeletons even if he cannot see the hero\n" +
+				"_-_ Dwarf King is now resistant to fire and toxic gas"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.7.1):\n" +
+				"_-_ DM-300 failing to spawn in rare cases\n" +
+				"_-_ Thrown weapons in remains not showing their level\n\n" +
+				"Fixed (existed prior to 0.7.1):\n" +
+				"_-_ Recycle being able to produce health potions with pharmacophobia enabled\n" +
+				"_-_ Magical porter soft-locking the game in rare cases\n" +
+				"_-_ Mystical Energy not recharging artifacts correctly in some cases"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
+		changes = new ChangeInfo("v0.7.1a & v0.7.1b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
@@ -186,23 +213,9 @@ public class ChangesScene extends PixelScene {
 				"Fixed (caused by 0.7.1):\n" +
 				"_-_ various rare spirit bow crashes\n\n" +
 				"Fixed (existed prior to 0.7.1):\n" +
+				"_-_ various crash bugs\n" +
 				"_-_ rare crashes involving alchemy\n" +
-				"_-_ health potion limits not applying to prison guards"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
-		
-		changes = new ChangeInfo("v0.7.1a", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.7.1):\n" +
-				"_-_ various crash bugs\n" +
-				"_-_ chasms dealing damage on a delay in some cases\n" +
-				"_-_ blacksmith deleting items in rare cases\n\n" +
-				"Fixed (existed prior to 0.7.1):\n" +
-				"_-_ various crash bugs\n" +
+				"_-_ health potion limits not applying to prison guards\n" +
 				"_-_ traps with ground-based effects affecting flying characters"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
