@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import com.watabou.BuildConfig;
 import com.watabou.noosa.Game;
 
 public class DeviceCompat {
@@ -44,6 +45,10 @@ public class DeviceCompat {
 	
 	public static boolean usesISO_8859_1(){
 		return Build.VERSION.SDK_INT == Build.VERSION_CODES.FROYO;
+	}
+	
+	public static boolean isDebug(){
+		return BuildConfig.DEBUG;
 	}
 	
 	public static void openURI( String URI ){
