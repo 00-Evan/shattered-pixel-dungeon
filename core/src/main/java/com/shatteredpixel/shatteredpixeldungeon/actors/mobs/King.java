@@ -109,6 +109,13 @@ public class King extends Mob {
 			super.getCloser( target );
 	}
 	
+	@Override
+	protected boolean canAttack( Char enemy ) {
+		return canTryToSummon() ?
+				pos == ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) :
+				Dungeon.level.adjacent( pos, enemy.pos );
+	}
+	
 	private boolean canTryToSummon() {
 		if (Undead.count < maxArmySize()) {
 			Char ch = Actor.findChar( ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) );
