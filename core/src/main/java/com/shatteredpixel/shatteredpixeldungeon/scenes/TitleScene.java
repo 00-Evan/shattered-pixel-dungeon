@@ -43,6 +43,7 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
+import com.watabou.utils.DeviceCompat;
 
 public class TitleScene extends PixelScene {
 	
