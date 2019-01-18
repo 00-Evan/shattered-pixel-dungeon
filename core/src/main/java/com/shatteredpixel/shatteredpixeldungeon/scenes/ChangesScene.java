@@ -153,7 +153,7 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes = new ChangeInfo("v0.7.1c", false, null);
+		changes = new ChangeInfo("v0.7.1c & v0.7.1d", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
@@ -166,7 +166,8 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(new Image(Assets.KING, 1, 0, 14, 16), "Dwarf King",
 				"While I would like to make more extensive changes to Dwarf King in the future, I've made a couple smaller tweaks for now to make him harder to cheese:\n\n" +
 				"_-_ Dwarf King is now able to summon skeletons even if he cannot see the hero\n" +
-				"_-_ Dwarf King is now resistant to fire and toxic gas"));
+				"_-_ Dwarf King is now resistant to fire and toxic gas\n\n" +
+				"Note that in 0.7.1d I've fixed a bug where Dwarf King was attacking in several cases where he should have gone to try and summon. This was an unintended change to his behaviour, and now he should behave more like how he was before 0.7.1c."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed (caused by 0.7.1):\n" +
