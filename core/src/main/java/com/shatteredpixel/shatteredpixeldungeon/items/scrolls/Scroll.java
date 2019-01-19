@@ -192,8 +192,8 @@ public abstract class Scroll extends Item {
 	
 	public abstract void doRead();
 	
-	//currently only used in scrolls owned by the unstable spellbook
-	public abstract void empoweredRead();
+	//currently unused. Used to be used for unstable spellbook prior to 0.7.0
+	public void empoweredRead(){};
 
 	protected void readAnimation() {
 		curUser.spend( TIME_TO_READ );
@@ -265,6 +265,27 @@ public abstract class Scroll extends Item {
 	@Override
 	public int price() {
 		return 30 * quantity;
+	}
+	
+	public static class PlaceHolder extends Scroll {
+		
+		{
+			image = ItemSpriteSheet.SCROLL_HOLDER;
+		}
+		
+		@Override
+		public boolean isSimilar(Item item) {
+			return ExoticScroll.regToExo.containsKey(item.getClass())
+					|| ExoticScroll.regToExo.containsValue(item.getClass());
+		}
+		
+		@Override
+		public void doRead() {}
+		
+		@Override
+		public String info() {
+			return "";
+		}
 	}
 	
 	public static class ScrollToStone extends Recipe {

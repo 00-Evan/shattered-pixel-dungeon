@@ -119,8 +119,8 @@ public enum Document {
 		ALCHEMY_GUIDE.pages.put("Exotic_Scrolls",       false);
 		ALCHEMY_GUIDE.pages.put("Energy_Food",          false);
 		ALCHEMY_GUIDE.pages.put("Bombs",                false);
-		ALCHEMY_GUIDE.pages.put("Brews",                false);
-		ALCHEMY_GUIDE.pages.put("Elixirs",              false);
+		ALCHEMY_GUIDE.pages.put("Catalysts",            false);
+		ALCHEMY_GUIDE.pages.put("Brews_Elixirs",        false);
 		ALCHEMY_GUIDE.pages.put("Spells",               false);
 	}
 	
@@ -160,6 +160,11 @@ public enum Document {
 				for (String page : pages){
 					if (doc.pages.containsKey(page)) {
 						doc.pages.put(page, true);
+					}
+					//pre-0.7.2 saves
+					else if (page.equals("Brews")){
+						doc.pages.put("Catalysts", true);
+						doc.pages.put("Brews_Elixirs", true);
 					}
 				}
 			}
