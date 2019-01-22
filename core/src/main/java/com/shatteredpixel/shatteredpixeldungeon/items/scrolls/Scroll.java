@@ -333,6 +333,7 @@ public abstract class Scroll extends Item {
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
 			if (ingredients.size() != 1
+					|| !ingredients.get(0).isIdentified()
 					|| !(ingredients.get(0) instanceof Scroll)
 					|| !stones.containsKey(ingredients.get(0).getClass())){
 				return false;

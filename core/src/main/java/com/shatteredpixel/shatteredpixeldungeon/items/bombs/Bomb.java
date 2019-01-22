@@ -348,6 +348,7 @@ public class Bomb extends Item {
 			boolean ingredient = false;
 			
 			for (Item i : ingredients){
+				if (!i.isIdentified()) return false;
 				if (i.getClass().equals(Bomb.class)){
 					bomb = true;
 				} else if (validIngredients.containsKey(i.getClass())){

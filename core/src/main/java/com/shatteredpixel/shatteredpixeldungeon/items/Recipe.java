@@ -105,6 +105,7 @@ public abstract class Recipe {
 			
 			//TODO is this right?
 			for (Item ingredient : ingredients){
+				if (!ingredient.isIdentified()) return false;
 				for (int i = 0; i < inputs.length; i++){
 					if (ingredient.getClass() == inputs[i]){
 						needed[i] -= ingredient.quantity();
@@ -239,8 +240,7 @@ public abstract class Recipe {
 	}
 	
 	public static boolean usableInRecipe(Item item){
-		return item.isIdentified()
-				&& !item.cursed
+		return !item.cursed
 				&& (!(item instanceof EquipableItem) || item instanceof Dart || item instanceof AlchemistsToolkit)
 				&& !(item instanceof Wand);
 	}

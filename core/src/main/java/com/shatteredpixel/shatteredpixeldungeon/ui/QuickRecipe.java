@@ -108,7 +108,8 @@ public class QuickRecipe extends Component {
 			ArrayList<Item> similar = Dungeon.hero.belongings.getAllSimilar(in);
 			int quantity = 0;
 			for (Item sim : similar) {
-				if (sim.isIdentified()) quantity += sim.quantity();
+				//if we are looking for a specific item, it must be IDed
+				if (sim.getClass() != in.getClass() || sim.isIdentified()) quantity += sim.quantity();
 			}
 			
 			if (quantity < in.quantity()) {
@@ -255,6 +256,7 @@ public class QuickRecipe extends Component {
 				for (Class<?> cls : Generator.Category.SCROLL.classes){
 					try{
 						Scroll scroll = (Scroll) cls.newInstance();
+						if (!scroll.isKnown()) scroll.anonymize();
 						ArrayList<Item> in = new ArrayList<Item>(Arrays.asList(scroll));
 						result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 					} catch (Exception e){
