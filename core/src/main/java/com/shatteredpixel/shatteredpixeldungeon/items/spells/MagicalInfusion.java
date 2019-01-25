@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -36,19 +38,21 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 public class MagicalInfusion extends InventorySpell {
 	
 	{
-		mode = WndBag.Mode.UPGRADEABLE;
+		mode = WndBag.Mode.ENCHANTABLE;
 		image = ItemSpriteSheet.MAGIC_INFUSE;
 	}
 	
 	@Override
 	protected void onItemSelected( Item item ) {
 
-		if (item instanceof Weapon && ((Weapon) item).enchantment != null) {
+		if (item instanceof SpiritBow){
+			if (((SpiritBow) item).enchantment == null){
+				((Weapon)item).enchant();
+			}
+		} else if (item instanceof Weapon) {
 			((Weapon) item).upgrade(true);
-		} else if (item instanceof Armor && ((Armor) item).glyph != null) {
-			((Armor) item).upgrade(true);
 		} else {
-			item.upgrade();
+			((Armor) item).upgrade(true);
 		}
 		
 		GLog.p( Messages.get(this, "infuse", item.name()) );
@@ -62,16 +66,16 @@ public class MagicalInfusion extends InventorySpell {
 	@Override
 	public int price() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((50 + 40) / 1f));
+		return Math.round(quantity * ((50 + 30) / 1f));
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{ScrollOfUpgrade.class, ArcaneCatalyst.class};
+			inputs =  new Class[]{ScrollOfUpgrade.class, StoneOfEnchantment.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 5;
+			cost = 3;
 			
 			output = MagicalInfusion.class;
 			outQuantity = 1;
