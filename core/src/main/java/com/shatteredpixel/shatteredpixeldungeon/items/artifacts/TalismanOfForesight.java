@@ -110,7 +110,7 @@ public class TalismanOfForesight extends Artifact {
 			if (charge >= chargeCap) {
 				charge = chargeCap;
 				partialCharge = 0;
-				GLog.p( Messages.get(this, "full_charge") );
+				GLog.p( Messages.get(Foresight.class, "full_charge") );
 			}
 		}
 	}
