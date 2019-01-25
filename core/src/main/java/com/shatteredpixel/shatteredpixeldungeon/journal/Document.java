@@ -112,13 +112,18 @@ public enum Document {
 		ADVENTURERS_GUIDE.pages.put("Looting", 		    false);
 		ADVENTURERS_GUIDE.pages.put("Magic", 			false);
 		
+		//sewers
 		ALCHEMY_GUIDE.pages.put("Potions",              false);
 		ALCHEMY_GUIDE.pages.put("Stones",               false);
 		ALCHEMY_GUIDE.pages.put("Darts",                false);
+		
+		//prison
 		ALCHEMY_GUIDE.pages.put("Exotic_Potions",       false);
 		ALCHEMY_GUIDE.pages.put("Exotic_Scrolls",       false);
 		ALCHEMY_GUIDE.pages.put("Energy_Food",          false);
 		ALCHEMY_GUIDE.pages.put("Bombs",                false);
+		
+		//caves
 		ALCHEMY_GUIDE.pages.put("Catalysts",            false);
 		ALCHEMY_GUIDE.pages.put("Brews_Elixirs",        false);
 		ALCHEMY_GUIDE.pages.put("Spells",               false);

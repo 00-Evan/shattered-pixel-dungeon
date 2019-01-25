@@ -84,17 +84,25 @@ public class LaboratoryRoom extends SpecialRoom {
 			}
 		}
 		
-		//pages after 5 are always deeper than the sewers
-		if(!missingPages.isEmpty() && (missingPages.size() > 5 || Dungeon.depth > 5)){
-			AlchemyPage p = new AlchemyPage();
-			p.page(missingPages.get(0));
-			int pos;
-			do {
-				pos = level.pointToCell(random());
-			} while (
-					level.map[pos] != Terrain.EMPTY_SP ||
-							level.heaps.get( pos ) != null);
-			level.drop( p, pos );
+		//3 pages in sewers, 7 in prison, 10 in caves+
+		int chapterTarget = 4 - (int)Math.ceil(missingPages.size()/3.5f);
+		
+		if(!missingPages.isEmpty() && chapter >= chapterTarget){
+			
+			//for each chapter ahead of the target chapter, drop 1 additional page
+			int pagesToDrop = Math.min(missingPages.size(), (chapter - chapterTarget) + 1);
+			
+			for (int i = 0; i < pagesToDrop; i++) {
+				AlchemyPage p = new AlchemyPage();
+				p.page(missingPages.remove(0));
+				int pos;
+				do {
+					pos = level.pointToCell(random());
+				} while (
+						level.map[pos] != Terrain.EMPTY_SP ||
+								level.heaps.get(pos) != null);
+				level.drop(p, pos);
+			}
 		}
 		
 		if (level instanceof RegularLevel && ((RegularLevel)level).hasPitRoom()){
