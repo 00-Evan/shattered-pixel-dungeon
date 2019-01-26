@@ -117,7 +117,7 @@ public class King extends Mob {
 	}
 	
 	private boolean canTryToSummon() {
-		if (Undead.count < maxArmySize()) {
+		if (paralysed <= 0 && Undead.count < maxArmySize()) {
 			Char ch = Actor.findChar( ((CityBossLevel)Dungeon.level).pedestal( nextPedestal ) );
 			return ch == this || ch == null;
 		} else {

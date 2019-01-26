@@ -557,8 +557,8 @@ public class ItemSpriteSheet {
 	public static final int ELIXIR_HONEY    = ELIXIRS+1;
 	public static final int ELIXIR_MIGHT    = ELIXIRS+2;
 	public static final int ELIXIR_DRAGON   = ELIXIRS+3;
-	public static final int ELIXIR_ICY      = ELIXIRS+4;
-	public static final int ELIXIR_TOXIC    = ELIXIRS+5;
+	public static final int ELIXIR_TOXIC    = ELIXIRS+4;
+	public static final int ELIXIR_ICY      = ELIXIRS+5;
 	public static final int ELIXIR_RESTO    = ELIXIRS+6; //discontinued
 	public static final int ELIXIR_SURGE    = ELIXIRS+7; //discontinued
 	static{
