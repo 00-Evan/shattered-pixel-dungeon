@@ -448,7 +448,7 @@ public class ItemSpriteSheet {
 	static {
 		for (int i = SCROLLS; i < SCROLLS+16; i++)
 			assignItemRect(i, 15, 14);
-		assignItemRect(SCROLL_CATALYST, 9, 9);
+		assignItemRect(SCROLL_CATALYST, 12, 11);
 	}
 	
 	private static final int EXOTIC_SCROLLS =                               xy(1, 20);  //16 slots
@@ -553,8 +553,8 @@ public class ItemSpriteSheet {
 	public static final int BREW_FROSTFIRE  = BREWS+6; //discontinued
 	
 	private static final int ELIXIRS        =                               xy(9, 25);  //8 slots
-	public static final int ELIXIR_HONEY    = ELIXIRS+0;
-	public static final int ELIXIR_AQUA     = ELIXIRS+1;
+	public static final int ELIXIR_AQUA     = ELIXIRS+0;
+	public static final int ELIXIR_HONEY    = ELIXIRS+1;
 	public static final int ELIXIR_MIGHT    = ELIXIRS+2;
 	public static final int ELIXIR_DRAGON   = ELIXIRS+3;
 	public static final int ELIXIR_ICY      = ELIXIRS+4;
