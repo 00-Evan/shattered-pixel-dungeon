@@ -40,9 +40,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class ShatteredPixelDungeon extends Game {
 	
 	//variable constants for specific older versions of shattered, used for data conversion
-	//versions older than v0.6.0b are no longer supported, and data from them is ignored
-	public static final int v0_6_0b = 185;
-	public static final int v0_6_1b = 209;
+	//versions older than v0.6.2e are no longer supported, and data from them is ignored
 	public static final int v0_6_2e = 229;
 	public static final int v0_6_3b = 245;
 	public static final int v0_6_4a = 252;
@@ -53,40 +51,6 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public ShatteredPixelDungeon() {
 		super( WelcomeScene.class );
-		
-		//v0.6.2
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.RatKingRoom.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.RatKingRoom" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.PlantsRoom.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.GardenRoom" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.GardenRoom.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.FoliageRoom" );
-		
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornTrap" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonDartTrap.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.PoisonTrap" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.ParalyticTrap" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap" );
-		
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BlobImmunity.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.buffs.GasesImmunity" );
 		
 		//v0.6.3
 		com.watabou.utils.Bundle.addAlias(

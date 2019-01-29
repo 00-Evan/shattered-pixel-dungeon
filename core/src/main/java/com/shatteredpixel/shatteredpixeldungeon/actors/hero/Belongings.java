@@ -29,13 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.GoldenKey;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
-import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -82,29 +78,6 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public void restoreFromBundle( Bundle bundle ) {
-
-		//moving keys to Notes, for pre-0.6.1 saves
-		if (bundle.contains("ironKeys")) {
-			int[] ironKeys = bundle.getIntArray( "ironKeys" );
-			for (int i = 0; i < ironKeys.length; i++){
-				if (ironKeys[i] > 0){
-					Notes.add((Key) new IronKey(i).quantity(ironKeys[i]));
-				}
-			}
-		}
-		
-		if (bundle.contains("specialKeys")) {
-			int[] specialKeys = bundle.getIntArray( "specialKeys" );
-			for (int i = 0; i < specialKeys.length; i++){
-				if (specialKeys[i] > 0){
-					if (i % 5 == 0){
-						Notes.add((Key) new SkeletonKey(i).quantity(specialKeys[i]));
-					} else {
-						Notes.add((Key) new GoldenKey(i).quantity(specialKeys[i]));
-					}
-				}
-			}
-		}
 		
 		backpack.clear();
 		backpack.restoreFromBundle( bundle );

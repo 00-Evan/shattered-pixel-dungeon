@@ -165,12 +165,6 @@ public class CloakOfShadows extends Artifact {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
 		stealthed = bundle.getBoolean( STEALTHED );
-		// pre-0.6.2 saves
-		if (bundle.contains("cooldown")){
-			exp = 0;
-			level((int)Math.ceil(level()*0.7f));
-			charge = chargeCap = Math.min(3 + level(), 10);
-		}
 	}
 
 	@Override

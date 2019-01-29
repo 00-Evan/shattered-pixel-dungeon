@@ -300,8 +300,8 @@ public abstract class Level implements Bundlable {
 
 		version = bundle.getInt( VERSION );
 		
-		//saves from before 0.6.0b are not supported
-		if (version < ShatteredPixelDungeon.v0_6_0b){
+		//saves from before 0.6.2e are not supported
+		if (version < ShatteredPixelDungeon.v0_6_2e){
 			throw new RuntimeException("old save");
 		}
 
@@ -324,11 +324,6 @@ public abstract class Level implements Bundlable {
 		exit		= bundle.getInt( EXIT );
 
 		locked      = bundle.getBoolean( LOCKED );
-
-		// pre-0.6.1 saves
-		if (version <= ShatteredPixelDungeon.v0_6_0b){
-			map = Terrain.convertTilesFrom0_6_0b( map );
-		}
 		
 		Collection<Bundlable> collection = bundle.getCollection( HEAPS );
 		for (Bundlable h : collection) {

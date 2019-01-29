@@ -200,16 +200,7 @@ public class HornOfPlenty extends Artifact {
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		
-		if (bundle.contains(STORED)){
-			storedFoodEnergy = bundle.getInt(STORED);
-			
-		//logic for pre-0.6.1 saves
-		} else {
-			//keep partial levels
-			storedFoodEnergy = (int)(level()%3 * Hunger.HUNGRY/3);
-			level(level()/3);
-		}
+		storedFoodEnergy = bundle.getInt(STORED);
 		
 		if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
 		else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
