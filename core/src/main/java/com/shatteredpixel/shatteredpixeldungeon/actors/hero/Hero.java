@@ -79,6 +79,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.IronKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
@@ -1210,7 +1211,7 @@ public class Hero extends Char {
 		return true;
 	}
 	
-	public void earnExp( int exp ) {
+	public void earnExp( int exp, Class source ) {
 		
 		this.exp += exp;
 		float percent = exp/(float)maxExp();
@@ -1226,6 +1227,12 @@ public class Hero extends Char {
 		
 		Berserk berserk = buff(Berserk.class);
 		if (berserk != null) berserk.recover(percent);
+		
+		if (source != PotionOfExperience.class) {
+			for (Item i : belongings) {
+				i.onHeroGainExp(percent, this);
+			}
+		}
 		
 		boolean levelUp = false;
 		while (this.exp >= maxExp()) {

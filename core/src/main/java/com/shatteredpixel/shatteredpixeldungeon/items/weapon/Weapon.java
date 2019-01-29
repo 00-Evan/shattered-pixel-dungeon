@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
@@ -93,7 +92,7 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	public Augment augment = Augment.NONE;
 
-	private int hitsToKnow = HITS_TO_KNOW;
+	private float levelsToID = 1;
 	
 	public Enchantment enchantment;
 	
@@ -103,26 +102,34 @@ abstract public class Weapon extends KindOfWeapon {
 		if (enchantment != null && attacker.buff(MagicImmune.class) == null) {
 			damage = enchantment.proc( this, attacker, defender, damage );
 		}
-		
-		if (!levelKnown && attacker == Dungeon.hero) {
-			if (--hitsToKnow <= 0) {
-				identify();
-				GLog.i( Messages.get(Weapon.class, "identify") );
-				Badges.validateItemLevelAquired( this );
-			}
-		}
 
 		return damage;
 	}
+	
+	public void onHeroGainExp( float levelPercent, Hero hero ){
+		if (levelKnown || !isEquipped(hero)) return;
+		levelsToID -= levelPercent;
+		if (levelsToID <= 0){
+			identify();
+			GLog.p( Messages.get(Weapon.class, "identify") );
+			Badges.validateItemLevelAquired( this );
+		}
+	}
+	
+	@Override
+	public Item identify() {
+		levelsToID = 0;
+		return super.identify();
+	}
 
-	private static final String UNFAMILIRIARITY	= "unfamiliarity";
-	private static final String ENCHANTMENT		= "enchantment";
-	private static final String AUGMENT			= "augment";
+	private static final String LEVELS_TO_ID    = "levels_to_ID";
+	private static final String ENCHANTMENT	    = "enchantment";
+	private static final String AUGMENT	        = "augment";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
-		bundle.put( UNFAMILIRIARITY, hitsToKnow );
+		bundle.put( LEVELS_TO_ID, levelsToID );
 		bundle.put( ENCHANTMENT, enchantment );
 		bundle.put( AUGMENT, augment );
 	}
@@ -130,8 +137,13 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		hitsToKnow = bundle.getInt( UNFAMILIRIARITY );
+		levelsToID = bundle.getFloat( LEVELS_TO_ID );
 		enchantment = (Enchantment)bundle.get( ENCHANTMENT );
+		
+		//pre-0.7.2 saves
+		if (bundle.contains( "unfamiliarity" )){
+			levelsToID = bundle.getInt( "unfamiliarity" ) / 20f;
+		}
 		
 		//pre-0.6.5 saves
 		if (bundle.contains( "imbue" )){

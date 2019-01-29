@@ -584,7 +584,7 @@ public abstract class Mob extends Char {
 				if (exp > 0) {
 					Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "exp", exp));
 				}
-				Dungeon.hero.earnExp(exp);
+				Dungeon.hero.earnExp(exp, getClass());
 			}
 		}
 	}

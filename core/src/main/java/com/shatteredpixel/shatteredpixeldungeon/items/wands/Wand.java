@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -71,6 +72,10 @@ public abstract class Wand extends Item {
 	private boolean curChargeKnown = false;
 
 	protected int usagesToKnow = USAGES_TO_KNOW;
+	private float levelsToID = 1;
+	//wands can't be equipped, so the player needs to use them in addition to gaining exp
+	//takes 5 charges spent, giving 15% exp gain each, plus 25% given right away
+	private float levelsToIDAvailable = 0.25f;
 
 	protected int collisionProperties = Ballistica.MAGIC_BOLT;
 	
@@ -170,13 +175,25 @@ public abstract class Wand extends Item {
 	
 	@Override
 	public Item identify() {
-
+		
+		levelsToID = levelsToIDAvailable = 0;
 		curChargeKnown = true;
 		super.identify();
 		
 		updateQuickslot();
 		
 		return this;
+	}
+	
+	public void onHeroGainExp( float levelPercent, Hero hero ){
+		if (isIdentified()) return;
+		levelsToID -= Math.min(levelsToIDAvailable, levelPercent);
+		levelsToIDAvailable = Math.max(0, levelsToIDAvailable - levelPercent);
+		if (levelsToID <= 0){
+			identify();
+			GLog.p( Messages.get(Wand.class, "identify", name()) );
+			Badges.validateItemLevelAquired( this );
+		}
 	}
 
 	@Override
@@ -269,15 +286,12 @@ public abstract class Wand extends Item {
 	}
 
 	protected void wandUsed() {
-		usagesToKnow -= cursed ? 1 : chargesPerCast();
+		if (!isIdentified()) levelsToIDAvailable += 0.15f * (cursed ? 1 : chargesPerCast());
+		
 		curCharges -= cursed ? 1 : chargesPerCast();
-		if (!isIdentified() && usagesToKnow <= 0) {
-			identify();
-			GLog.w( Messages.get(Wand.class, "identify", name()) );
-		} else {
-			if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
-			updateQuickslot();
-		}
+		
+		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
+		updateQuickslot();
 
 		curUser.spendAndNext( TIME_TO_ZAP );
 	}
@@ -323,15 +337,17 @@ public abstract class Wand extends Item {
 		return price;
 	}
 
-	private static final String UNFAMILIRIARITY     = "unfamiliarity";
-	private static final String CUR_CHARGES			= "curCharges";
-	private static final String CUR_CHARGE_KNOWN	= "curChargeKnown";
-	private static final String PARTIALCHARGE 		= "partialCharge";
+	private static final String LEVELS_TO_ID        = "levels_to_ID";
+	private static final String LEVELS_TO_ID_AVA    = "levels_to_ID_available";
+	private static final String CUR_CHARGES         = "curCharges";
+	private static final String CUR_CHARGE_KNOWN    = "curChargeKnown";
+	private static final String PARTIALCHARGE       = "partialCharge";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
-		bundle.put( UNFAMILIRIARITY, usagesToKnow );
+		bundle.put( LEVELS_TO_ID, levelsToID );
+		bundle.put( LEVELS_TO_ID_AVA, levelsToIDAvailable );
 		bundle.put( CUR_CHARGES, curCharges );
 		bundle.put( CUR_CHARGE_KNOWN, curChargeKnown );
 		bundle.put( PARTIALCHARGE , partialCharge );
@@ -340,8 +356,13 @@ public abstract class Wand extends Item {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		if ((usagesToKnow = bundle.getInt( UNFAMILIRIARITY )) == 0) {
-			usagesToKnow = USAGES_TO_KNOW;
+		levelsToID = bundle.getFloat( LEVELS_TO_ID );
+		levelsToIDAvailable = bundle.getFloat( LEVELS_TO_ID_AVA );
+		
+		//pre-0.7.2 saves
+		if (bundle.contains( "unfamiliarity" )){
+			levelsToID = bundle.getInt( "unfamiliarity" ) / 20f;
+			levelsToIDAvailable = levelsToID;
 		}
 		curCharges = bundle.getInt( CUR_CHARGES );
 		curChargeKnown = bundle.getBoolean( CUR_CHARGE_KNOWN );

@@ -71,8 +71,6 @@ import java.util.Arrays;
 
 public class Armor extends EquipableItem {
 
-	private static final int HITS_TO_KNOW    = 10;
-
 	protected static final String AC_DETACH       = "DETACH";
 	
 	public enum Augment {
@@ -103,13 +101,13 @@ public class Armor extends EquipableItem {
 	
 	public int tier;
 	
-	private int hitsToKnow = HITS_TO_KNOW;
+	private float levelsToID = 1;
 	
 	public Armor( int tier ) {
 		this.tier = tier;
 	}
 
-	private static final String UNFAMILIRIARITY	= "unfamiliarity";
+	private static final String LEVELS_TO_ID    = "levels_to_ID";
 	private static final String GLYPH			= "glyph";
 	private static final String SEAL            = "seal";
 	private static final String AUGMENT			= "augment";
@@ -117,7 +115,7 @@ public class Armor extends EquipableItem {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
-		bundle.put( UNFAMILIRIARITY, hitsToKnow );
+		bundle.put( LEVELS_TO_ID, levelsToID );
 		bundle.put( GLYPH, glyph );
 		bundle.put( SEAL, seal);
 		bundle.put( AUGMENT, augment);
@@ -126,9 +124,15 @@ public class Armor extends EquipableItem {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		hitsToKnow = bundle.getInt( UNFAMILIRIARITY );
+		levelsToID = bundle.getFloat( LEVELS_TO_ID );
 		inscribe((Glyph) bundle.get(GLYPH));
 		seal = (BrokenSeal)bundle.get(SEAL);
+		
+		//pre-0.7.2 saves
+		if (bundle.contains( "unfamiliarity" )){
+			levelsToID = bundle.getInt( "unfamiliarity" ) / 10f;
+		}
+		
 		//pre-0.6.5 saves
 		if (bundle.contains(AUGMENT)) augment = bundle.getEnum(AUGMENT, Augment.class);
 	}
@@ -358,18 +362,26 @@ public class Armor extends EquipableItem {
 			damage = glyph.proc( this, attacker, defender, damage );
 		}
 		
-		if (!levelKnown && defender instanceof Hero) {
-			if (--hitsToKnow <= 0) {
-				identify();
-				GLog.w( Messages.get(Armor.class, "identify") );
-				Badges.validateItemLevelAquired( this );
-			}
-		}
-		
 		return damage;
 	}
-
-
+	
+	@Override
+	public void onHeroGainExp(float levelPercent, Hero hero) {
+		if (levelKnown || !isEquipped(hero)) return;
+		levelsToID -= levelPercent;
+		if (levelsToID <= 0){
+			identify();
+			GLog.p( Messages.get(Armor.class, "identify") );
+			Badges.validateItemLevelAquired( this );
+		}
+	}
+	
+	@Override
+	public Item identify() {
+		levelsToID = 0;
+		return super.identify();
+	}
+	
 	@Override
 	public String name() {
 		return glyph != null && (cursedKnown || !glyph.curse()) ? glyph.name( super.name() ) : super.name();
