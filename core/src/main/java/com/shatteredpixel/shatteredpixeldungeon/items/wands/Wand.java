@@ -461,10 +461,14 @@ public abstract class Wand extends Item {
 			if (curCharges < maxCharges)
 				recharge();
 			
-			if (partialCharge >= 1 && curCharges < maxCharges) {
+			while (partialCharge >= 1 && curCharges < maxCharges) {
 				partialCharge--;
 				curCharges++;
 				updateQuickslot();
+			}
+			
+			if (curCharges == maxCharges){
+				partialCharge = 0;
 			}
 			
 			spend( TICK );
