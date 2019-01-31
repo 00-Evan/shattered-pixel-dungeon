@@ -67,17 +67,17 @@ public class WandOfTransfusion extends Wand {
 
 		Char ch = Actor.findChar(cell);
 
-		if (ch != null && ch instanceof Mob){
+		if (ch instanceof Mob){
 			
-			// 10% of max hp
-			int selfDmg = (int)Math.ceil(curUser.HT*0.10f);
-
 			processSoulMark(ch, chargesPerCast());
 			
 			//this wand does different things depending on the target.
 			
-			//heals/shields an ally, or a charmed enemy
+			//heals/shields an ally or a charmed enemy while damaging self
 			if (ch.alignment == Char.Alignment.ALLY || ch.buff(Charm.class) != null){
+				
+				// 10% of max hp
+				int selfDmg = Math.round(curUser.HT*0.10f);
 				
 				int healing = selfDmg + 3*level();
 				int shielding = (ch.HP + healing) - ch.HT;
@@ -92,28 +92,31 @@ public class WandOfTransfusion extends Wand {
 				
 				ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 2 + level() / 2);
 				ch.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", healing + shielding);
-
-			//harms the undead
-			} else if (ch.properties().contains(Char.Property.UNDEAD)){
 				
-				int damage = selfDmg + 3*level();
-				ch.damage(damage, this);
-				ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
-				Sample.INSTANCE.play(Assets.SND_BURNING);
+				if (!freeCharge) {
+					damageHero(selfDmg);
+				} else {
+					freeCharge = false;
+				}
 
-			//charms an enemy
+			//for enemies...
 			} else {
 				
-				Buff.affect(ch , Charm.class, 4 + level() ).object = curUser.id();
+				//charms living enemies
+				if (!ch.properties().contains(Char.Property.UNDEAD)) {
+					Buff.affect(ch, Charm.class, 3 + level() / 2).object = curUser.id();
+					ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 3 + level()/2 );
+				
+				//harms the undead
+				} else {
+					ch.damage(Random.NormalIntRange(3 + level()/2, 6+level()), this);
+					ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + level());
+					Sample.INSTANCE.play(Assets.SND_BURNING);
+				}
+				
+				//and grants a self shield
+				Buff.affect(curUser, Barrier.class).setShield((5 + 2*level()));
 
-				ch.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
-
-			}
-			
-			if (!freeCharge) {
-				damageHero(selfDmg);
-			} else {
-				freeCharge = false;
 			}
 			
 		}
