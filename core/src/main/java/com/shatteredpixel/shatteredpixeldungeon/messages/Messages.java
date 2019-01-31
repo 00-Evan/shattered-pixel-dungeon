@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IllegalFormatException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -146,7 +147,12 @@ public class Messages {
 	 */
 
 	public static String format( String format, Object...args ) {
-		return String.format( Locale.ENGLISH, format, args );
+		try {
+			return String.format(Locale.ENGLISH, format, args);
+		} catch (IllegalFormatException e) {
+			ShatteredPixelDungeon.reportException( e );
+			return format;
+		}
 	}
 
 	public static String capitalize( String str ){
