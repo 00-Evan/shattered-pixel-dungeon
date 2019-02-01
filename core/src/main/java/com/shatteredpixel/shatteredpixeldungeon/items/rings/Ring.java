@@ -297,7 +297,7 @@ public class Ring extends KindofMisc {
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){
-		if (!isIdentified() || !isEquipped(hero)) return;
+		if (isIdentified() || !isEquipped(hero)) return;
 		levelsToID -= levelPercent;
 		if (levelsToID <= 0){
 			identify();
