@@ -22,13 +22,17 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.AlchemicalCatalyst;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
 
 public class ElixirOfMight extends Elixir {
 
@@ -41,31 +45,96 @@ public class ElixirOfMight extends Elixir {
 		setKnown();
 		
 		hero.STR++;
-		hero.HTBoost += 5;
+		
+		Buff.affect(hero, HTBoost.class).reset();
+		HTBoost boost = Buff.affect(hero, HTBoost.class);
+		boost.reset();
+		
 		hero.updateHT( true );
-		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
+		hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1", boost.boost() ));
 		GLog.p( Messages.get(this, "msg_2") );
 
 		Badges.validateStrengthAttained();
 	}
 	
+	public String desc() {
+		return Messages.get(this, "desc", HTBoost.boost(Dungeon.hero.HT));
+	}
+	
 	@Override
 	public int price() {
 		//prices of ingredients
-		return quantity * (50 + 30);
+		return quantity * (50 + 40);
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{PotionOfStrength.class, PotionOfHealing.class};
+			inputs =  new Class[]{PotionOfStrength.class, AlchemicalCatalyst.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 10;
+			cost = 5;
 			
 			output = ElixirOfMight.class;
 			outQuantity = 1;
 		}
 		
+	}
+	
+	public static class HTBoost extends Buff {
+		
+		{
+			type = buffType.POSITIVE;
+		}
+		
+		private int left;
+		
+		public void reset(){
+			left = 5;
+		}
+		
+		public int boost(){
+			return Math.round(left*boost(target.HT)/5f);
+		}
+		
+		public static int boost(int HT){
+			return Math.round(4 + HT/20f);
+		}
+		
+		public void onLevelUp(){
+			left --;
+			if (left <= 0){
+				detach();
+			}
+		}
+		
+		@Override
+		public int icon() {
+			return BuffIndicator.HEALING;
+		}
+		
+		@Override
+		public String toString() {
+			return Messages.get(this, "name");
+		}
+		
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", boost(), left);
+		}
+		
+		private static String LEFT = "left";
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( LEFT, left );
+		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			left = bundle.getInt(LEFT);
+		}
 	}
 }
