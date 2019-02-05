@@ -100,7 +100,7 @@ public class ScrollOfTeleportation extends Scroll {
 		}
 		
 		appear( hero, pos );
-		Dungeon.level.press( pos, hero );
+		if (!hero.flying) Dungeon.level.press( pos, hero );
 		Dungeon.observe();
 		GameScene.updateFog();
 		
@@ -126,7 +126,7 @@ public class ScrollOfTeleportation extends Scroll {
 			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 			
 			appear( hero, pos );
-			Dungeon.level.press( pos, hero );
+			if (!hero.flying) Dungeon.level.press( pos, hero );
 			Dungeon.observe();
 			GameScene.updateFog();
 			
@@ -174,7 +174,7 @@ public class ScrollOfTeleportation extends Scroll {
 			int pos = Random.element(candidates);
 			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 			appear( hero, pos );
-			Dungeon.level.press( pos, hero );
+			if (!hero.flying) Dungeon.level.press( pos, hero );
 			Dungeon.observe();
 			GameScene.updateFog();
 		}

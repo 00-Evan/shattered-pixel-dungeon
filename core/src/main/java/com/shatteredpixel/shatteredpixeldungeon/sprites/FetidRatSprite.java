@@ -74,8 +74,8 @@ public class FetidRatSprite extends MobSprite {
 	}
 	
 	@Override
-	public void die() {
-		super.die();
+	public void kill() {
+		super.kill();
 		
 		if (cloud != null) {
 			cloud.on = false;
