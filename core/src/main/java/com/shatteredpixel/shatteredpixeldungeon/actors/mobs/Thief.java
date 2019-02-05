@@ -139,7 +139,7 @@ public class Thief extends Mob {
 		if (item != null && !item.unique && item.level() < 1 ) {
 
 			GLog.w( Messages.get(Thief.class, "stole", item.name()) );
-			if (!item.stackable || hero.belongings.getSimilar(item) == null) {
+			if (!item.stackable) {
 				Dungeon.quickslot.convertToPlaceholder(item);
 			}
 			item.updateQuickslot();

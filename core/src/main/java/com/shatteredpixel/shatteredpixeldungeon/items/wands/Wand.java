@@ -57,8 +57,6 @@ import java.util.ArrayList;
 
 public abstract class Wand extends Item {
 
-	private static final int USAGES_TO_KNOW    = 20;
-
 	public static final String AC_ZAP	= "ZAP";
 
 	private static final float TIME_TO_ZAP	= 1f;
@@ -70,8 +68,7 @@ public abstract class Wand extends Item {
 	protected Charger charger;
 	
 	private boolean curChargeKnown = false;
-
-	protected int usagesToKnow = USAGES_TO_KNOW;
+	
 	private float levelsToID = 1;
 	//wands can't be equipped, so the player needs to use them in addition to gaining exp
 	//takes 5 charges spent, giving 15% exp gain each, plus 25% given right away
@@ -367,6 +364,13 @@ public abstract class Wand extends Item {
 		curCharges = bundle.getInt( CUR_CHARGES );
 		curChargeKnown = bundle.getBoolean( CUR_CHARGE_KNOWN );
 		partialCharge = bundle.getFloat( PARTIALCHARGE );
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		levelsToID = 1;
+		levelsToIDAvailable = 0.25f;
 	}
 	
 	protected static CellSelector.Listener zapper = new  CellSelector.Listener() {

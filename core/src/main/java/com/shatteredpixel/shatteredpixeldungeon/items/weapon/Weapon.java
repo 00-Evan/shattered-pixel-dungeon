@@ -157,6 +157,12 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	@Override
+	public void reset() {
+		super.reset();
+		levelsToID = 1;
+	}
+	
+	@Override
 	public float accuracyFactor( Char owner ) {
 		
 		int encumbrance = 0;

@@ -225,16 +225,14 @@ public class ShatteredPixelDungeon extends Game {
 	public void updateDisplaySize(){
 		boolean landscape = SPDSettings.landscape();
 		
-		if (landscape != (width > height)) {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-				instance.setRequestedOrientation(landscape ?
-						ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-						ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-			} else {
-				instance.setRequestedOrientation(landscape ?
-						ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
-						ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			instance.setRequestedOrientation(landscape ?
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+		} else {
+			instance.setRequestedOrientation(landscape ?
+					ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE :
+					ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 		
 		if (view.getMeasuredWidth() == 0 || view.getMeasuredHeight() == 0)

@@ -140,6 +140,7 @@ public class Armor extends EquipableItem {
 	@Override
 	public void reset() {
 		super.reset();
+		levelsToID = 1;
 		//armor can be kept in bones between runs, the seal cannot.
 		seal = null;
 	}
