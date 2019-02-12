@@ -50,11 +50,11 @@ public class ScreenConfigChooser implements GLSurfaceView.EGLConfigChooser {
 	public static final int EXACTLY = 1;
 
 	//attributes with this preference must be present in the config with at least the given value
-	// In the case of multiple valid configs, chooser will prefer higher values for these attributes
+	// In the case of multiple valid configs, chooser will prefer lower values for these attributes
 	public static final int PREF_LOW = 2;
 
 	//attributes with this preference must be present in the config with at least the given value
-	// In the case of multiple valid configs, chooser will prefer lower values for these attributes
+	// In the case of multiple valid configs, chooser will prefer higher values for these attributes
 	public static final int PREF_HIGH = 3;
 
 
