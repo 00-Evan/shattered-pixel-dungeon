@@ -53,8 +53,35 @@ public class SpecialRoom extends Room {
 		return 1;
 	}
 	
+	private Door entrance;
+	
 	public Door entrance() {
-		return connected.values().iterator().next();
+		if (entrance == null){
+			if (connected.isEmpty()){
+				return null;
+			} else {
+				entrance = connected.values().iterator().next();
+			}
+		}
+		return entrance;
+	}
+	
+	private static final String ENTRANCE = "entrance";
+	
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (entrance() != null){
+			bundle.put(ENTRANCE, entrance());
+		}
+	}
+	
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains(ENTRANCE)){
+			entrance = (Door)bundle.get(ENTRANCE);
+		}
 	}
 	
 	private static final ArrayList<Class<? extends SpecialRoom>> ALL_SPEC = new ArrayList<>( Arrays.asList(
