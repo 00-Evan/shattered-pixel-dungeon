@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class ShrapnelBomb extends Bomb {
 	
 	{
@@ -50,6 +52,8 @@ public class ShrapnelBomb extends Bomb {
 		Point c = Dungeon.level.cellToPoint(cell);
 		ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, 8);
 		
+		ArrayList<Char> affected = new ArrayList<>();
+		
 		for (int i = 0; i < FOV.length; i++) {
 			if (FOV[i]) {
 				if (Dungeon.level.heroFOV[i] && !Dungeon.level.solid[i]) {
@@ -58,13 +62,18 @@ public class ShrapnelBomb extends Bomb {
 				}
 				Char ch = Actor.findChar(i);
 				if (ch != null){
-					//regular bomb damage
-					int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ));
-					damage -= ch.drRoll();
-					ch.damage(damage, this);
-					if (ch == Dungeon.hero && !ch.isAlive())
-						Dungeon.fail(Bomb.class);
+					affected.add(ch);
 				}
+			}
+		}
+		
+		for (Char ch : affected){
+			//regular bomb damage
+			int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ));
+			damage -= ch.drRoll();
+			ch.damage(damage, this);
+			if (ch == Dungeon.hero && !ch.isAlive()) {
+				Dungeon.fail(Bomb.class);
 			}
 		}
 	}

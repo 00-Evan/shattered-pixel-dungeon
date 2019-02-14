@@ -36,6 +36,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class HolyBomb extends Bomb {
 	
 	{
@@ -50,22 +52,30 @@ public class HolyBomb extends Bomb {
 			new Flare(10, 64).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(cell), 2f);
 		}
 		
+		ArrayList<Char> affected = new ArrayList<>();
+		
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				Char n = Actor.findChar(i);
-				if (n != null) {
-					Buff.prolong(n, Blindness.class, 1f);
-					if (n.properties().contains(Char.Property.UNDEAD) || n.properties().contains(Char.Property.DEMONIC)){
-						n.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-						
-						//bomb deals an additional 67% damage to unholy enemies in a 5x5 range
-						int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ) * 0.67f);
-						n.damage(damage, this);
-					}
+				Char ch = Actor.findChar(i);
+				if (ch != null) {
+					affected.add(ch);
+					
 				}
 			}
 		}
+		
+		for (Char ch : affected){
+			Buff.prolong(ch, Blindness.class, 1f);
+			if (ch.properties().contains(Char.Property.UNDEAD) || ch.properties().contains(Char.Property.DEMONIC)){
+				ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+				
+				//bomb deals an additional 67% damage to unholy enemies in a 5x5 range
+				int damage = Math.round(Random.NormalIntRange( Dungeon.depth+5, 10 + Dungeon.depth * 2 ) * 0.67f);
+				ch.damage(damage, this);
+			}
+		}
+		
 		Sample.INSTANCE.play( Assets.SND_READ );
 	}
 	

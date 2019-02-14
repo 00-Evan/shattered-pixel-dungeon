@@ -138,6 +138,9 @@ public class Bomb extends Item {
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 
 		if (explodesDestructively()) {
+			
+			ArrayList<Char> affected = new ArrayList<>();
+			
 			if (Dungeon.level.heroFOV[cell]) {
 				CellEmitter.center(cell).burst(BlastParticle.FACTORY, 30);
 			}
@@ -163,18 +166,23 @@ public class Bomb extends Item {
 					
 					Char ch = Actor.findChar(c);
 					if (ch != null) {
-						//those not at the center of the blast take damage less consistently.
-						int minDamage = c == cell ? Dungeon.depth + 5 : 1;
-						int maxDamage = 10 + Dungeon.depth * 2;
-						
-						int dmg = Random.NormalIntRange(minDamage, maxDamage) - ch.drRoll();
-						if (dmg > 0) {
-							ch.damage(dmg, this);
-						}
-						
-						if (ch == Dungeon.hero && !ch.isAlive())
-							Dungeon.fail(Bomb.class);
+						affected.add(ch);
 					}
+				}
+			}
+			
+			for (Char ch : affected){
+				//those not at the center of the blast take damage less consistently.
+				int minDamage = ch.pos == cell ? Dungeon.depth + 5 : 1;
+				int maxDamage = 10 + Dungeon.depth * 2;
+				
+				int dmg = Random.NormalIntRange(minDamage, maxDamage) - ch.drRoll();
+				if (dmg > 0) {
+					ch.damage(dmg, this);
+				}
+				
+				if (ch == Dungeon.hero && !ch.isAlive()) {
+					Dungeon.fail(Bomb.class);
 				}
 			}
 			
