@@ -41,8 +41,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Ring extends KindofMisc {
-
-	private static final int TICKS_TO_KNOW    = 200;
 	
 	protected Buff buff;
 	
@@ -81,6 +79,7 @@ public class Ring extends KindofMisc {
 	
 	private String gem;
 	
+	//rings cannot be 'used' like other equipment, so they ID purely based on exp
 	private float levelsToID = 1;
 	
 	@SuppressWarnings("unchecked")

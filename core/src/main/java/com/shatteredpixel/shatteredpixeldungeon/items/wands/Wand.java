@@ -69,10 +69,9 @@ public abstract class Wand extends Item {
 	
 	private boolean curChargeKnown = false;
 	
-	private float levelsToID = 1;
-	//wands can't be equipped, so the player needs to use them in addition to gaining exp
-	//takes 5 charges spent, giving 15% exp gain each, plus 25% given right away
-	private float levelsToIDAvailable = 0.25f;
+	private static final int USES_TO_ID = 10;
+	private int usesLeftToID = USES_TO_ID;
+	private float availableUsesToID = USES_TO_ID/2f;
 
 	protected int collisionProperties = Ballistica.MAGIC_BOLT;
 	
@@ -173,7 +172,6 @@ public abstract class Wand extends Item {
 	@Override
 	public Item identify() {
 		
-		levelsToID = levelsToIDAvailable = 0;
 		curChargeKnown = true;
 		super.identify();
 		
@@ -183,13 +181,8 @@ public abstract class Wand extends Item {
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){
-		if (isIdentified()) return;
-		levelsToID -= Math.min(levelsToIDAvailable, levelPercent);
-		levelsToIDAvailable = Math.max(0, levelsToIDAvailable - levelPercent);
-		if (levelsToID <= 0){
-			identify();
-			GLog.p( Messages.get(Wand.class, "identify", name()) );
-			Badges.validateItemLevelAquired( this );
+		if (!isIdentified() && availableUsesToID <= USES_TO_ID/2f) {
+			availableUsesToID = Math.min(USES_TO_ID/2f, availableUsesToID + levelPercent * USES_TO_ID/2f);
 		}
 	}
 
@@ -283,7 +276,15 @@ public abstract class Wand extends Item {
 	}
 
 	protected void wandUsed() {
-		if (!isIdentified()) levelsToIDAvailable += 0.15f * (cursed ? 1 : chargesPerCast());
+		if (!levelKnown && availableUsesToID >= 1) {
+			availableUsesToID--;
+			usesLeftToID--;
+			if (usesLeftToID <= 0) {
+				identify();
+				GLog.p( Messages.get(Wand.class, "identify") );
+				Badges.validateItemLevelAquired( this );
+			}
+		}
 		
 		curCharges -= cursed ? 1 : chargesPerCast();
 		
@@ -333,9 +334,9 @@ public abstract class Wand extends Item {
 		}
 		return price;
 	}
-
-	private static final String LEVELS_TO_ID        = "levels_to_ID";
-	private static final String LEVELS_TO_ID_AVA    = "levels_to_ID_available";
+	
+	private static final String USES_LEFT_TO_ID = "uses_left_to_id";
+	private static final String AVAILABLE_USES  = "available_uses";
 	private static final String CUR_CHARGES         = "curCharges";
 	private static final String CUR_CHARGE_KNOWN    = "curChargeKnown";
 	private static final String PARTIALCHARGE       = "partialCharge";
@@ -343,8 +344,8 @@ public abstract class Wand extends Item {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
-		bundle.put( LEVELS_TO_ID, levelsToID );
-		bundle.put( LEVELS_TO_ID_AVA, levelsToIDAvailable );
+		bundle.put( USES_LEFT_TO_ID, usesLeftToID );
+		bundle.put( AVAILABLE_USES, availableUsesToID );
 		bundle.put( CUR_CHARGES, curCharges );
 		bundle.put( CUR_CHARGE_KNOWN, curChargeKnown );
 		bundle.put( PARTIALCHARGE , partialCharge );
@@ -353,13 +354,13 @@ public abstract class Wand extends Item {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		levelsToID = bundle.getFloat( LEVELS_TO_ID );
-		levelsToIDAvailable = bundle.getFloat( LEVELS_TO_ID_AVA );
+		usesLeftToID = bundle.getInt( USES_LEFT_TO_ID );
+		availableUsesToID = bundle.getInt( AVAILABLE_USES );
 		
 		//pre-0.7.2 saves
 		if (bundle.contains( "unfamiliarity" )){
-			levelsToID = bundle.getInt( "unfamiliarity" ) / 20f;
-			levelsToIDAvailable = levelsToID;
+			usesLeftToID = Math.min(10, bundle.getInt( "unfamiliarity" ));
+			availableUsesToID = USES_TO_ID/2f;
 		}
 		curCharges = bundle.getInt( CUR_CHARGES );
 		curChargeKnown = bundle.getBoolean( CUR_CHARGE_KNOWN );
@@ -369,8 +370,8 @@ public abstract class Wand extends Item {
 	@Override
 	public void reset() {
 		super.reset();
-		levelsToID = 1;
-		levelsToIDAvailable = 0.25f;
+		usesLeftToID = USES_TO_ID;
+		availableUsesToID = USES_TO_ID/2f;
 	}
 	
 	protected static CellSelector.Listener zapper = new  CellSelector.Listener() {

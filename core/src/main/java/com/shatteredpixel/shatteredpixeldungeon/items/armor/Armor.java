@@ -101,13 +101,16 @@ public class Armor extends EquipableItem {
 	
 	public int tier;
 	
-	private float levelsToID = 1;
+	private static final int USES_TO_ID = 10;
+	private int usesLeftToID = USES_TO_ID;
+	private float availableUsesToID = USES_TO_ID/2f;
 	
 	public Armor( int tier ) {
 		this.tier = tier;
 	}
-
-	private static final String LEVELS_TO_ID    = "levels_to_ID";
+	
+	private static final String USES_LEFT_TO_ID = "uses_left_to_id";
+	private static final String AVAILABLE_USES  = "available_uses";
 	private static final String GLYPH			= "glyph";
 	private static final String SEAL            = "seal";
 	private static final String AUGMENT			= "augment";
@@ -115,7 +118,8 @@ public class Armor extends EquipableItem {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
-		bundle.put( LEVELS_TO_ID, levelsToID );
+		bundle.put( USES_LEFT_TO_ID, usesLeftToID );
+		bundle.put( AVAILABLE_USES, availableUsesToID );
 		bundle.put( GLYPH, glyph );
 		bundle.put( SEAL, seal);
 		bundle.put( AUGMENT, augment);
@@ -124,13 +128,15 @@ public class Armor extends EquipableItem {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		levelsToID = bundle.getFloat( LEVELS_TO_ID );
+		usesLeftToID = bundle.getInt( USES_LEFT_TO_ID );
+		availableUsesToID = bundle.getInt( AVAILABLE_USES );
 		inscribe((Glyph) bundle.get(GLYPH));
 		seal = (BrokenSeal)bundle.get(SEAL);
 		
 		//pre-0.7.2 saves
 		if (bundle.contains( "unfamiliarity" )){
-			levelsToID = bundle.getInt( "unfamiliarity" ) / 10f;
+			usesLeftToID = bundle.getInt( "unfamiliarity" );
+			availableUsesToID = USES_TO_ID/2f;
 		}
 		
 		//pre-0.6.5 saves
@@ -140,7 +146,8 @@ public class Armor extends EquipableItem {
 	@Override
 	public void reset() {
 		super.reset();
-		levelsToID = 1;
+		usesLeftToID = USES_TO_ID;
+		availableUsesToID = USES_TO_ID/2f;
 		//armor can be kept in bones between runs, the seal cannot.
 		seal = null;
 	}
@@ -363,24 +370,24 @@ public class Armor extends EquipableItem {
 			damage = glyph.proc( this, attacker, defender, damage );
 		}
 		
+		if (!levelKnown && defender == Dungeon.hero && availableUsesToID >= 1) {
+			availableUsesToID--;
+			usesLeftToID--;
+			if (usesLeftToID <= 0) {
+				identify();
+				GLog.p( Messages.get(Armor.class, "identify") );
+				Badges.validateItemLevelAquired( this );
+			}
+		}
+		
 		return damage;
 	}
 	
 	@Override
 	public void onHeroGainExp(float levelPercent, Hero hero) {
-		if (levelKnown || !isEquipped(hero)) return;
-		levelsToID -= levelPercent;
-		if (levelsToID <= 0){
-			identify();
-			GLog.p( Messages.get(Armor.class, "identify") );
-			Badges.validateItemLevelAquired( this );
+		if (!levelKnown && isEquipped(hero) && availableUsesToID <= USES_TO_ID/2f) {
+			availableUsesToID = Math.min(USES_TO_ID/2f, availableUsesToID + levelPercent * USES_TO_ID/2f);
 		}
-	}
-	
-	@Override
-	public Item identify() {
-		levelsToID = 0;
-		return super.identify();
 	}
 	
 	@Override
