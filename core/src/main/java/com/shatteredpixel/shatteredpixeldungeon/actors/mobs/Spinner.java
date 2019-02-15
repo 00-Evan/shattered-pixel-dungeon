@@ -41,7 +41,7 @@ public class Spinner extends Mob {
 		defenseSkill = 14;
 
 		EXP = 9;
-		maxLvl = 16;
+		maxLvl = 17;
 
 		loot = new MysteryMeat();
 		lootChance = 0.125f;

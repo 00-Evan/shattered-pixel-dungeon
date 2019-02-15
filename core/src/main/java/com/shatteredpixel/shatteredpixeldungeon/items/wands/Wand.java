@@ -182,6 +182,7 @@ public abstract class Wand extends Item {
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){
 		if (!isIdentified() && availableUsesToID <= USES_TO_ID/2f) {
+			//gains enough uses to ID over 1 level
 			availableUsesToID = Math.min(USES_TO_ID/2f, availableUsesToID + levelPercent * USES_TO_ID/2f);
 		}
 	}
