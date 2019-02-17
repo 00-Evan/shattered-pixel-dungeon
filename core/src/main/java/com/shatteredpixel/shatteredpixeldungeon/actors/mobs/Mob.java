@@ -632,10 +632,15 @@ public abstract class Mob extends Char {
 			int rolls = 1;
 			if (properties.contains(Property.BOSS)) rolls = 15;
 			else if (properties.contains(Property.MINIBOSS)) rolls = 5;
-			ArrayList<Item> bonus = RingOfWealth.tryRareDrop(Dungeon.hero, rolls);
-			if (bonus != null) {
+			ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(Dungeon.hero, rolls);
+			if (!bonus.isEmpty()) {
 				for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
-				new Flare(8, 32).color(0xFFFF00, true).show(sprite, 2f);
+				if (RingOfWealth.latestDropWasRare){
+					new Flare(8, 48).color(0xAA00FF, true).show(sprite, 2f);
+					RingOfWealth.latestDropWasRare = false;
+				} else {
+					new Flare(8, 24).color(0xFFFFFF, true).show(sprite, 2f);
+				}
 			}
 		}
 	}
