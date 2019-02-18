@@ -141,7 +141,7 @@ public class Heap implements Bundlable {
 		if (type != Type.MIMIC) {
 			type = Type.HEAP;
 			ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(hero, 1);
-			if (!bonus.isEmpty()) {
+			if (bonus != null && !bonus.isEmpty()) {
 				items.addAll(0, bonus);
 				if (RingOfWealth.latestDropWasRare){
 					new Flare(8, 48).color(0xAA00FF, true).show(sprite, 2f);
