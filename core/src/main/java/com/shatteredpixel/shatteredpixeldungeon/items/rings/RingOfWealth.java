@@ -217,7 +217,7 @@ public class RingOfWealth extends Ring {
 			case 0: default:
 				return new StoneOfEnchantment();
 			case 1:
-				return new ScrollOfEnchantment();
+				return new StoneOfEnchantment().quantity(2);
 			case 2:
 				return new PotionOfExperience();
 			case 3:
