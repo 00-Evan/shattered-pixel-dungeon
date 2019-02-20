@@ -277,7 +277,7 @@ public abstract class Wand extends Item {
 	}
 
 	protected void wandUsed() {
-		if (!levelKnown && availableUsesToID >= 1) {
+		if (!isIdentified() && availableUsesToID >= 1) {
 			availableUsesToID--;
 			usesLeftToID--;
 			if (usesLeftToID <= 0) {

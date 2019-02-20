@@ -128,7 +128,7 @@ abstract public class MissileWeapon extends Weapon {
 			return super.upgrade();
 		}
 	}
-	
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
@@ -150,6 +150,12 @@ abstract public class MissileWeapon extends Weapon {
 		} else {
 			return super.throwPos(user, dst);
 		}
+	}
+
+	@Override
+	public void doThrow(Hero hero) {
+		parent = null; //reset parent before throwing, just incase
+		super.doThrow(hero);
 	}
 
 	@Override
