@@ -300,7 +300,7 @@ public class InterlevelScene extends PixelScene {
 				} );
 				thread = null;
 				error = null;
-			} else if ((int)waitingTime == 10){
+			} else if (thread != null && (int)waitingTime == 10){
 				waitingTime = 11f;
 				String s = "";
 				for (StackTraceElement t : thread.getStackTrace()){
