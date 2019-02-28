@@ -335,7 +335,7 @@ public class TimekeepersHourglass extends Artifact {
 		@Override
 		public void detach(){
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
-				mob.sprite.remove(CharSprite.State.PARALYSED);
+				if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
 			GameScene.freezeEmitters = false;
 
 			updateQuickslot();

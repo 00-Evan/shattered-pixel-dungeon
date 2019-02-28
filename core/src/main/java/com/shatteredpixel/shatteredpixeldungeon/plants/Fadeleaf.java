@@ -60,6 +60,8 @@ public class Fadeleaf extends Plant {
 				
 				Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
 				if (buff != null) buff.detach();
+				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
+				if (buff != null) buff.detach();
 				
 				InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 				InterlevelScene.returnDepth = Math.max(1, (Dungeon.depth - 1));
