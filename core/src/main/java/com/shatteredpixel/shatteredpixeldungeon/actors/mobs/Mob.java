@@ -195,11 +195,15 @@ public abstract class Mob extends Char {
 			}
 		}
 		
-		StoneOfAggression.Aggression aggro = buff( StoneOfAggression.Aggression.class );
-		if (aggro != null){
-			Char source = (Char)Actor.findById( aggro.object );
-			if (source != null){
-				return source;
+		//if we are an enemy, and have no target or current target isn't affected by aggression
+		//then auto-prioritize a target that is affected by aggression, even another enemy
+		if (alignment == Alignment.ENEMY
+				&& (enemy == null || enemy.buff(StoneOfAggression.Aggression.class) == null)) {
+			for (Char ch : Actor.chars()) {
+				if (ch != this && fieldOfView[ch.pos] &&
+						ch.buff(StoneOfAggression.Aggression.class) != null) {
+					return ch;
+				}
 			}
 		}
 
@@ -552,6 +556,10 @@ public abstract class Mob extends Char {
 		if (state != PASSIVE){
 			state = HUNTING;
 		}
+	}
+	
+	public boolean isTargeting( Char ch){
+		return enemy == ch;
 	}
 
 	@Override

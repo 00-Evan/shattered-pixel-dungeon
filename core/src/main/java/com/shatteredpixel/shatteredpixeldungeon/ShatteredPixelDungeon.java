@@ -117,6 +117,11 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles" );
 		
+		//v0.7.2
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDisarming.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectCurse" );
+		
 	}
 	
 	@Override
