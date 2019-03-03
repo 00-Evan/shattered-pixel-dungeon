@@ -374,6 +374,7 @@ public class Yog extends Mob {
 			defenseSkill = 20;
 			
 			EXP = 0;
+			maxLvl = -2;
 			
 			state = HUNTING;
 

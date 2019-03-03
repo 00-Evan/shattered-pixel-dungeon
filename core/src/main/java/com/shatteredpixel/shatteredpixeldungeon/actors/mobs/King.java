@@ -252,6 +252,7 @@ public class King extends Mob {
 			HP = HT = 28;
 			defenseSkill = 15;
 			
+			maxLvl = -2;
 			EXP = 0;
 			
 			state = WANDERING;
