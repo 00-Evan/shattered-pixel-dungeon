@@ -122,6 +122,24 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDisarming.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfDetectCurse" );
 		
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.curses.Elastic" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Dazzling" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Precise.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vorpal" );
 	}
 	
 	@Override

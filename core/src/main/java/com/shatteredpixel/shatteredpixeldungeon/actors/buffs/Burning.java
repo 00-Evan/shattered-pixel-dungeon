@@ -170,7 +170,11 @@ public class Burning extends Buff implements Hero.Doom {
 	}
 	
 	public void reignite( Char ch ) {
-		left = DURATION;
+		reignite( ch, DURATION );
+	}
+	
+	public void reignite( Char ch, float duration ) {
+		left = duration;
 	}
 	
 	@Override

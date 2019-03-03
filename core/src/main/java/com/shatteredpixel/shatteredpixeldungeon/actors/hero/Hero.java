@@ -94,6 +94,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Precise;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -313,6 +316,18 @@ public class Hero extends Char {
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.weapon;
 		
+		if (wep instanceof Weapon
+				&& (((Weapon) wep).hasEnchant(Precise.class, this)
+				|| (((Weapon) wep).hasEnchant(Unstable.class, this) && Random.Int(11) == 0))){
+			if (Precise.rollToGuaranteeHit((Weapon) wep)){
+				target.sprite.emitter().start( Speck.factory(Speck.LIGHT), 0.05f, 5 );
+				return Integer.MAX_VALUE;
+			}
+			if (((Weapon) wep).hasEnchant(Unstable.class, this)){
+				Unstable.justRolledPrecise = true;
+			}
+		}
+		
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
@@ -352,7 +367,6 @@ public class Hero extends Char {
 	@Override
 	public int drRoll() {
 		int dr = 0;
-		Barkskin bark = buff(Barkskin.class);
 
 		if (belongings.armor != null) {
 			int armDr = Random.NormalIntRange( belongings.armor.DRMin(), belongings.armor.DRMax());
@@ -368,8 +382,12 @@ public class Hero extends Char {
 			}
 			if (wepDr > 0) dr += wepDr;
 		}
+		Barkskin bark = buff(Barkskin.class);
 		if (bark != null)               dr += Random.NormalIntRange( 0 , bark.level() );
-
+		
+		Blocking.BlockBuff block = buff(Blocking.BlockBuff.class);
+		if (block != null)              dr += block.blockingRoll();
+		
 		return dr;
 	}
 	

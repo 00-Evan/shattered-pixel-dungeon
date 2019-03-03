@@ -32,25 +32,23 @@ import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Exhausting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Fragile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Friendly;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Sacrificial;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Wayward;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blooming;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Dazzling;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Eldritch;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Precise;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Projecting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Stunning;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vorpal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -297,14 +295,14 @@ abstract public class Weapon extends KindOfWeapon {
 	public static abstract class Enchantment implements Bundlable {
 		
 		private static final Class<?>[] common = new Class<?>[]{
-				Blazing.class, Venomous.class, Vorpal.class, Shocking.class};
+				Blazing.class, Chilling.class, Shocking.class, Blooming.class};
 		
 		private static final Class<?>[] uncommon = new Class<?>[]{
-				Chilling.class, Eldritch.class, Lucky.class,
-				Projecting.class, Unstable.class, Dazzling.class};
+				/*Swift.class,*/ Elastic.class, Projecting.class,
+				Unstable.class, Precise.class, Blocking.class};
 		
 		private static final Class<?>[] rare = new Class<?>[]{
-				Grim.class, Stunning.class, Vampiric.class};
+				Grim.class, Vampiric.class, Lucky.class};
 		
 		private static final float[] typeChances = new float[]{
 				50, //12.5% each
@@ -314,7 +312,7 @@ abstract public class Weapon extends KindOfWeapon {
 		
 		private static final Class<?>[] curses = new Class<?>[]{
 				Annoying.class, Displacing.class, Exhausting.class, Fragile.class,
-				Sacrificial.class, Wayward.class, Elastic.class, Friendly.class
+				Sacrificial.class, Wayward.class, /*Shifting.class,*/ Friendly.class
 		};
 		
 			

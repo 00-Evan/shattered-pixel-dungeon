@@ -50,6 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Lucky;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -612,8 +613,6 @@ public abstract class Mob extends Char {
 			if (EXP % 2 == 1) EXP += Random.Int(2);
 			EXP /= 2;
 		}
-		
-		super.die( cause );
 
 		if (alignment == Alignment.ENEMY){
 			rollToDropLoot();
@@ -622,6 +621,8 @@ public abstract class Mob extends Char {
 		if (Dungeon.hero.isAlive() && !Dungeon.level.heroFOV[pos]) {
 			GLog.i( Messages.get(this, "died") );
 		}
+		
+		super.die( cause );
 	}
 	
 	public void rollToDropLoot(){
@@ -646,12 +647,18 @@ public abstract class Mob extends Char {
 			if (bonus != null && !bonus.isEmpty()) {
 				for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
 				if (RingOfWealth.latestDropWasRare){
-					new Flare(8, 48).color(0xAA00FF, true).show(sprite, 2f);
+					new Flare(8, 48).color(0xAA00FF, true).show(sprite, 3f);
 					RingOfWealth.latestDropWasRare = false;
 				} else {
-					new Flare(8, 24).color(0xFFFFFF, true).show(sprite, 2f);
+					new Flare(8, 24).color(0xFFFFFF, true).show(sprite, 3f);
 				}
 			}
+		}
+		
+		//lucky enchant logic
+		if (Dungeon.hero.lvl <= maxLvl && buff(Lucky.LuckProc.class) != null){
+			new Flare(8, 24).color(0x00FF00, true).show(sprite, 3f);
+			Dungeon.level.drop(Lucky.genLoot(), pos).sprite.drop();
 		}
 	}
 	

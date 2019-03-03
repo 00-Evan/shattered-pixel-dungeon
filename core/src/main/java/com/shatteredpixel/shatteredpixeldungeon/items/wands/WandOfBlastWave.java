@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -147,18 +148,8 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
-	//behaves just like glyph of Repulsion
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		int level = Math.max(0, staff.level());
-
-		// lvl 0 - 25%
-		// lvl 1 - 40%
-		// lvl 2 - 50%
-		if (Random.Int( level + 4 ) >= 3){
-			int oppositeHero = defender.pos + (defender.pos - attacker.pos);
-			Ballistica trajectory = new Ballistica(defender.pos, oppositeHero, Ballistica.MAGIC_BOLT);
-			throwChar(defender, trajectory, 2);
-		}
+		new Elastic().proc(staff, attacker, defender, damage);
 	}
 
 	@Override

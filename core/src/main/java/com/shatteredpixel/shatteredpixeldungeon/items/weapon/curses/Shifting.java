@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
+ * Copyright (C) 2014-2018 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,42 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
+package com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
 
-public class Vorpal extends Weapon.Enchantment {
-
-	private static ItemSprite.Glowing RED = new ItemSprite.Glowing( 0xAA6666 );
-
+public class Shifting extends Weapon.Enchantment {
+	
+	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
+	
 	@Override
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
-		// lvl 0 - 33%
-		// lvl 1 - 50%
-		// lvl 2 - 60%
-		int level = Math.max( 0, weapon.level() );
-
-		if (Random.Int( level + 3 ) >= 2) {
-
-			Buff.affect(defender, Bleeding.class).set(damage/5f);
-			Splash.at( defender.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
-					defender.sprite.blood(), 10 );
-
-		}
-
+		//TODO implement
 		return damage;
 	}
-
+	
+	@Override
+	public boolean curse() {
+		return true;
+	}
+	
 	@Override
 	public ItemSprite.Glowing glowing() {
-		return RED;
+		return BLACK;
 	}
-
 }
