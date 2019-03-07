@@ -179,6 +179,8 @@ public abstract class Recipe {
 		new Blandfruit.CookFruit(),
 		new TippedDart.TipDart(),
 		new Bomb.EnhanceBomb(),
+		new AlchemicalCatalyst.Recipe(),
+		new ArcaneCatalyst.Recipe(),
 		new ElixirOfAquaticRejuvenation.Recipe(),
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfIcyTouch.Recipe(),
@@ -199,8 +201,6 @@ public abstract class Recipe {
 		new PhaseShift.Recipe(),
 		new ReclaimTrap.Recipe(),
 		new Recycle.Recipe(),
-		new AlchemicalCatalyst.Recipe(),
-		new ArcaneCatalyst.Recipe(),
 		new StewedMeat.twoMeat()
 	};
 	
