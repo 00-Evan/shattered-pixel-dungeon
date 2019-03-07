@@ -321,10 +321,10 @@ public class Hero extends Char {
 				|| (((Weapon) wep).hasEnchant(Unstable.class, this) && Random.Int(11) == 0))){
 			if (Precise.rollToGuaranteeHit((Weapon) wep)){
 				target.sprite.emitter().start( Speck.factory(Speck.LIGHT), 0.05f, 5 );
+				if (((Weapon) wep).hasEnchant(Unstable.class, this)){
+					Unstable.justRolledPrecise = true;
+				}
 				return Integer.MAX_VALUE;
-			}
-			if (((Weapon) wep).hasEnchant(Unstable.class, this)){
-				Unstable.justRolledPrecise = true;
 			}
 		}
 		

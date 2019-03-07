@@ -40,7 +40,7 @@ public class Grim extends Weapon.Enchantment {
 		int level = Math.max( 0, weapon.level() );
 
 		int enemyHealth = defender.HP - damage;
-		if (enemyHealth == 0) return damage; //no point in proccing if they're already dead.
+		if (enemyHealth <= 0) return damage; //no point in proccing if they're already dead.
 
 		//scales from 0 - 40% based on how low hp the enemy is, plus 2% per level
 		float maxChance = 0.4f + .02f*level;

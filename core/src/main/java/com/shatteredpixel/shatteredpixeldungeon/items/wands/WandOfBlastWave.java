@@ -129,12 +129,12 @@ public class WandOfBlastWave extends DamageWand {
 		Actor.addDelayed(new Pushing(ch, ch.pos, newPos, new Callback() {
 			public void call() {
 				if (initialpos != ch.pos) {
-					//something cased movement before pushing resolved, cancel to be safe.
+					//something caused movement before pushing resolved, cancel to be safe.
 					ch.sprite.place(ch.pos);
 					return;
 				}
 				ch.pos = newPos;
-				if (ch.pos == trajectory.collisionPos) {
+				if (ch.pos == trajectory.collisionPos && ch.isAlive()) {
 					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
 					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
 				}

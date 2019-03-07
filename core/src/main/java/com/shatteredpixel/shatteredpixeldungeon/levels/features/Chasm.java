@@ -125,7 +125,7 @@ public class Chasm {
 	}
 
 	public static void mobFall( Mob mob ) {
-		mob.die( Chasm.class );
+		if (mob.isAlive()) mob.die( Chasm.class );
 		
 		((MobSprite)mob.sprite).fall();
 	}

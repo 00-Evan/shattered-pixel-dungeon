@@ -42,7 +42,7 @@ public class Precise extends Weapon.Enchantment {
 		// lvl 2 - 30%
 		int level = Math.max( 0, weapon.level() );
 		
-		if (Random.Int( level + 80 ) >= 7) {
+		if (Random.Int( level + 8 ) >= 7) {
 			return true;
 		}
 		
