@@ -96,6 +96,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Precise;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Swift;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -459,6 +460,12 @@ public class Hero extends Char {
 	}
 	
 	public float attackDelay() {
+		if (buff(Swift.SwiftAttack.class) != null
+				&& buff(Swift.SwiftAttack.class).boostsMelee()) {
+			buff(Swift.SwiftAttack.class).detach();
+			return 0;
+		}
+		
 		if (belongings.weapon != null) {
 			
 			return belongings.weapon.speedFactor( this );
@@ -957,7 +964,6 @@ public class Hero extends Char {
 		switch (subClass) {
 		case SNIPER:
 			if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow)) {
-				final float delay = attackDelay();
 				Actor.add(new Actor() {
 					
 					{
@@ -967,7 +973,7 @@ public class Hero extends Char {
 					@Override
 					protected boolean act() {
 						if (enemy.isAlive()) {
-							Buff.prolong(Hero.this, SnipersMark.class, delay).object = enemy.id();
+							Buff.prolong(Hero.this, SnipersMark.class, 2f).object = enemy.id();
 						}
 						Actor.remove(this);
 						return true;

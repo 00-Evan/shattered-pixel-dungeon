@@ -39,10 +39,10 @@ public class Unstable extends Weapon.Enchantment {
 			Elastic.class,
 			Grim.class,
 			Lucky.class,
-			//precise also not included here, is manually check in attackSkill
+			//precise also not included here, is manually checked in attackSkill
 			//projecting not included, no on-hit effect
 			Shocking.class,
-			//Swift.class,
+			Swift.class,
 			Vampiric.class
 	};
 	

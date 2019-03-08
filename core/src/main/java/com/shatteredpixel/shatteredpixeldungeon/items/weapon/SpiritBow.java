@@ -235,7 +235,7 @@ public class SpiritBow extends Weapon {
 		}
 		
 		@Override
-		public float castDelay(Char user, int dst) {
+		public float speedFactor(Char user) {
 			return SpiritBow.this.speedFactor(user);
 		}
 		

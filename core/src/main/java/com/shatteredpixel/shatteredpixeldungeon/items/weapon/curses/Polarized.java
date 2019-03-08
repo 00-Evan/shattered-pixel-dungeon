@@ -24,15 +24,21 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
-public class Shifting extends Weapon.Enchantment {
+public class Polarized extends Weapon.Enchantment {
 	
 	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 	
 	@Override
-	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
-		//TODO implement
-		return damage;
+	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+		
+		if (Random.Int(2) == 0){
+			return Math.round(1.5f*damage);
+		} else {
+			return 0;
+		}
+		
 	}
 	
 	@Override
