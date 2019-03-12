@@ -76,9 +76,19 @@ public class BeaconOfReturning extends Spell {
 		}
 	}
 	
+	//we reset return depth when beacons are dropped to prevent
+	//having two stacks of beacons with different return locations
+	
 	@Override
-	protected void onDetach() {
+	protected void onThrow(int cell) {
 		returnDepth = -1;
+		super.onThrow(cell);
+	}
+	
+	@Override
+	public void doDrop(Hero hero) {
+		returnDepth = -1;
+		super.doDrop(hero);
 	}
 	
 	private void setBeacon(Hero hero ){

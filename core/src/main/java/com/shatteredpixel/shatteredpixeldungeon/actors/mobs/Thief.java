@@ -192,7 +192,9 @@ public class Thief extends Mob {
 				if (enemySeen) {
 					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
 					state = HUNTING;
-				} else if (item != null && !Dungeon.level.heroFOV[pos]) {
+				} else if (item != null
+						&& !Dungeon.level.heroFOV[pos]
+						&& Dungeon.level.distance(Dungeon.hero.pos, pos) < 6) {
 
 					int count = 32;
 					int newPos;

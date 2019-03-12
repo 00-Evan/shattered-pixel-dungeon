@@ -59,6 +59,12 @@ public class TenguSprite extends MobSprite {
 	}
 	
 	@Override
+	public void idle() {
+		isMoving = false;
+		super.idle();
+	}
+	
+	@Override
 	public void move( int from, int to ) {
 		
 		place( to );

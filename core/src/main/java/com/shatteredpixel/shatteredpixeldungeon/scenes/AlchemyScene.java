@@ -282,6 +282,14 @@ public class AlchemyScene extends PixelScene {
 		add(energyCost);
 		
 		fadeIn();
+		
+		try {
+			Dungeon.saveAll();
+			Badges.saveGlobal();
+			Journal.saveGlobal();
+		} catch (IOException e) {
+			ShatteredPixelDungeon.reportException(e);
+		}
 	}
 	
 	@Override
