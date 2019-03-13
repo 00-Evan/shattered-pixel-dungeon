@@ -80,6 +80,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.keys.Key;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
@@ -469,7 +470,7 @@ public class Hero extends Char {
 		if (belongings.weapon != null) {
 			
 			return belongings.weapon.speedFactor( this );
-						
+			
 		} else {
 			//Normally putting furor speed on unarmed attacks would be unnecessary
 			//But there's going to be that one guy who gets a furor+force ring combo
@@ -960,7 +961,7 @@ public class Hero extends Char {
 		KindOfWeapon wep = belongings.weapon;
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
-			
+		
 		switch (subClass) {
 		case SNIPER:
 			if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow)) {
@@ -1377,6 +1378,7 @@ public class Hero extends Char {
 			this.HP = HT/4;
 
 			//ensures that you'll get to act first in almost any case, to prevent reviving and then instantly dieing again.
+			PotionOfHealing.cure(this);
 			Buff.detach(this, Paralysis.class);
 			spend(-cooldown());
 

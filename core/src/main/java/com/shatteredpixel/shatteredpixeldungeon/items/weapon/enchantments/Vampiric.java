@@ -41,7 +41,7 @@ public class Vampiric extends Weapon.Enchantment {
 		int healAmt = Math.round(healPercent * damage);
 		healAmt = Math.min( healAmt, attacker.HT - attacker.HP );
 		
-		if (healAmt > 0) {
+		if (healAmt > 0 && attacker.isAlive()) {
 		
 			attacker.HP += healAmt;
 			attacker.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
