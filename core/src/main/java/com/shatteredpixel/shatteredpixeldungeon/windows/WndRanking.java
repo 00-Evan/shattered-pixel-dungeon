@@ -52,7 +52,7 @@ public class WndRanking extends WndTabbed {
 	private static final int WIDTH			= 115;
 	private static final int HEIGHT			= 144;
 	
-	private Thread thread;
+	private static Thread thread;
 	private String error = null;
 	
 	private Image busy;
@@ -61,6 +61,11 @@ public class WndRanking extends WndTabbed {
 		
 		super();
 		resize( WIDTH, HEIGHT );
+		
+		if (thread != null){
+			hide();
+			return;
+		}
 		
 		thread = new Thread() {
 			@Override

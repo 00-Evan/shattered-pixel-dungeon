@@ -211,7 +211,7 @@ public class ScrollOfTeleportation extends Scroll {
 		ch.sprite.interruptMotion();
 
 		ch.move( pos );
-		ch.sprite.place( pos );
+		if (ch.pos == pos) ch.sprite.place( pos );
 
 		if (ch.invisible == 0) {
 			ch.sprite.alpha( 0 );
