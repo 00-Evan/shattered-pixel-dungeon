@@ -43,8 +43,7 @@ public class Chilling extends Weapon.Enchantment {
 		
 		if (Random.Int( level + 3 ) >= 2) {
 			
-			//FIXME this should probably stack chilled
-			Buff.affect( defender, Chill.class, 3f + level/4f );
+			Buff.affect( defender, Chill.class, 3f );
 			Splash.at( defender.sprite.center(), 0xFFB2D6FF, 5);
 
 		}
