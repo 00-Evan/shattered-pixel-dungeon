@@ -48,8 +48,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
@@ -73,7 +71,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -146,81 +143,146 @@ public class ChangesScene extends PixelScene {
 		add( list );
 		
 		//**********************
+		//       v0.7.2
+		//**********************
+		
+		ChangeInfo changes = new ChangeInfo("v0.7.2", true, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released Mar 18th, 2019\n" +
+				"_-_ 90 days after Shattered v0.7.1\n" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POTION_CATALYST, null), "Catalysts!",
+				"Added two new recipes: _Alchemical Catalysts_ and _Arcane Catalysts._\n\n" +
+				"These catalysts are made with any potion/scroll, and a seed/runestone. They replace many specific items for higher-cost recipes. Alchemy should be much more flexible now!\n\n" +
+				"Additional Alchemy Changes:\n\n" +
+				"When a recipe asks for any item of a certain type that item no longer has to be identified.\n\n" +
+				"Alchemy guidebook pages now spawn more slowly at earlier stages of the game, and significantly faster at later stages of the game."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0x0000FF)), "Enchantment Overhaul!",
+				"Enchantments have been significantly rebalanced to be less about direct damage and more about utility and situational power. Their design should now be more similar to glyphs.\n\n" +
+				"Buffed Enchants: Chilling, Lucky.\n\n" +
+				"Nerfed Enchants: Blazing, Shocking, Grim, Vampiric\n\n" +
+				"Removed Enchants: Vorpal, Venomous, Dazzling, Eldritch, and Stunning.\n\n" +
+				"New Enchants: Blocking, Blooming, Elastic (formerly a curse), Precise, and Swift.\n\n" +
+				"New Curse: Polarized.\n\n" +
+				"Some battlemage effects have been adjusted to accommodate these new enchantments. Most of these are very minor, except staff of regrowth, which now procs blooming."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.MAGIC_INFUSE, null), "Enchantment Adjustments",
+				"_-_ Significantly adjusted when enchants/glyphs are lost when items are upgraded. Items are now always safe up to +4, then have a growing chance until +8 where enchantment loss is guaranteed.\n\n" +
+				"_-_ Upgrades now have a set 33% chance to cleanse curses, instead of a chance which scales with level.\n\n" +
+				"Magical Infusion spell adjusted:\n" +
+				"_-_ Recipe changed to: upgrade + catalyst + 4 energy.\n" +
+				"_-_ No longer applies an enchant/glyph, instead is guaranteed to preserve one while upgrading."));
+		
+		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BREW_WICKED, null), "Combination Items",
+				"The following combination items are no longer craftable, and are effectively removed from the game:\n" +
+				"_-_ Wicked Brew\n" +
+				"_-_ Frigid Brew\n" +
+				"_-_ FrostFire Brew\n" +
+				"_-_ Elixir of Restoration\n" +
+				"_-_ Elixir of Vitality\n\n" +
+				"These items offered no unique gameplay and existed purely to give a few cheap recipes. Thanks to catalysts filling that role, they no longer have a reason to exist. FrostFire Brew in particular may return in some form."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ The Identification system has been adjusted to require EXP gain in addition to item uses. " +
+				"This change prevents exploits where an item could be used in unintended ways to rapidly ID it. " +
+				"Items should ID at about the same rate if exp is gained while using them.\n\n" +
+				"_-_ Increased the max level to gain exp from gnoll brutes and cave spinners by 1.\n\n" +
+				"_-_ Sniper's mark now lasts for 2 turns, up from 1. This should make it easier to use with slow weapons, or while slowed.\n\n" +
+				"Elixir of Might reworked:\n" +
+				"_-_ Recipe changed to: strength + catalyst + 5 energy\n" +
+				"_-_ Health boost now scales up with level, but fades after the hero gains a few levels\n\n" +
+				"_-_ Meat Pie recipe cost reduced from 9 to 6, total healing reduced from 45 to 25\n\n" +
+				"_-_ Added a privacy policy link to the Google Play edition of Shattered."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor visual bugs\n" +
+				"_-_ Grim enchant activating when an enemy is already dead\n" +
+				"_-_ Burning destroying scrolls when the hero is immune to it\n" +
+				"_-_ Chasms killing enemies which are already dead in some cases\n" +
+				"_-_ Thieves not correcting interacting with quickslotted items\n" +
+				"_-_ Screen orientation not always being set when game starts\n" +
+				"_-_ Flying characters pushing the ground after teleporting\n" +
+				"_-_ Bombs rarely damaging tengu multiple times\n" +
+				"_-_ Thrown weapons instantly breaking in rare cases\n" +
+				"_-_ Dwarf King summoning skeletons while frozen\n" +
+				"_-_ Incorrect behaviour when wands recharge very quickly\n" +
+				"_-_ Thieves rarely escaping when they are close\n" +
+				"_-_ Beacon of returning losing set location when scroll holder is picked up\n" +
+				"_-_ Recycle not giving an item if inventory is full\n" +
+				"_-_ Rare cases where the game wouldn't save during alchemy"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations\n\n" +
+				"Updated Translator Credits"));
+		
+		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new WandOfTransfusion(),
+				"Wand of Transfusion changed significantly when used on enemies:\n" +
+				"_-_ No longer self-harms, now grants a mild self-shield instead\n" +
+				"_-_ Charm duration no longer scales with level, damage to undead enemies reduced"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), Messages.get(RingOfWealth.class, "name"),
+				"Ring of Wealth significantly buffed:\n" +
+				"_-_ Special item drops now happen ~50% more often\n" +
+				"_-_ The ring of wealth now awards a greater variety of items from special drops\n" +
+				"_-_ special wealth drops have a 1/10 chance to award a high value item\n" +
+				"_-_ Wraiths and minion enemies no longer have a chance to generate wealth items"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SPEAR, new ItemSprite.Glowing(0x00FFFF)), "Buffed Enchants",
+				"_-_ Chilling now stacks with itself over multiple procs\n\n" +
+				"_-_ Lucky buffed/reworked. No longer affects damage, now generates bonus items when enemies are killed with a lucky weapon."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE, null), "Item Balance Adjustments",
+				"Several seeds and stones have been buffed:\n" +
+				"_-_ Player can now move without cancelling swiftthistle's effect\n" +
+				"_-_ Duration of poison from sorrowmoss increased by ~33%\n" +
+				"_-_ Increased the strength of warden's earthroot effect\n" +
+				"_-_ Stone of clairvoyance no longer disarms traps, now goes through walls instead\n" +
+				"_-_ Stone of detect curse is reworked, now stone of disarming. Disarms up to 9 traps where it is thrown.\n" +
+				"_-_ Stone of aggression now forces enemies to attack a target. Duration is longer if thrown at allies.\n\n" +
+				"_-_ Scroll of teleportation now teleports the player to the entrance of secret/special rooms instead of into them\n\n" +
+				"_-_ Blessed ankhs now cure the same debuffs as a potions of healing\n\n" +
+				"Fire and toxic gas have been adjusted to deal damage based on dungeon depth, and not target max health. " +
+				"This means more damage versus regular enemies, and less versus bosses. " +
+				"Several bosses have lost their resistances to these effects as a result of this change."));
+		
+		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.DIRK, new ItemSprite.Glowing(0xFF4400)), "Nerfed Enchants",
+				"_-_ Blazing no longer deals direct damage, now instead is more likely to set enemies on fire.\n\n" +
+				"_-_ Shocking no longer deals damage to enemy being attacked, deals more damage to surrounding enemies.\n\n" +
+				"_-_ Vampiric now grants less health when hero is at higher HP.\n\n" +
+				"_-_ Grim is now more likely to 'finish off' an enemy, but is less likely to activate at higher enemy health."));
+		
+		
+		//**********************
 		//       v0.7.1
 		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.7.1", true, "");
+		changes = new ChangeInfo("v0.7.1", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
-		
-		changes = new ChangeInfo("v0.7.1c & v0.7.1d", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton( new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
-				"_-_ Fixed the previous change to walock's soul mark making the effect MUCH more common than intended. The base chance buff was intended to be 10% to 15%, but ended up being closer to 80%, oops!\n\n" +
-				"Despite the unintended change, the warlock was not massively overpowered, which tells me I have more power budget in soul mark than I thought:\n\n" +
-				"_-_ Soul mark hunger restoration increased by 100%\n" +
-				"_-_ Soul mark health restoration increased by 33%"));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.KING, 1, 0, 14, 16), "Dwarf King",
-				"While I would like to make more extensive changes to Dwarf King in the future, I've made a couple smaller tweaks for now to make him harder to cheese:\n\n" +
-				"_-_ Dwarf King is now able to summon skeletons even if he cannot see the hero\n" +
-				"_-_ Dwarf King is now resistant to fire and toxic gas\n\n" +
-				"Note that in 0.7.1d I've fixed a bug where Dwarf King was attacking in several cases where he should have gone to try and summon. This was an unintended change to his behaviour, and now he should behave more like how he was before 0.7.1c."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.7.1):\n" +
-				"_-_ DM-300 failing to spawn in rare cases\n" +
-				"_-_ Thrown weapons in remains not showing their level\n\n" +
-				"Fixed (existed prior to 0.7.1):\n" +
-				"_-_ Recycle being able to produce health potions with pharmacophobia enabled\n" +
-				"_-_ Magical porter soft-locking the game in rare cases\n" +
-				"_-_ Mystical Energy not recharging artifacts correctly in some cases"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
-		
-		changes = new ChangeInfo("v0.7.1a & v0.7.1b", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Hero Balance Changes",
-				"After pouring over some analytics numbers, I have decided to give out some hero buffs primarily focused on base power, and one nerf based on power in lategame:\n\n" +
-				"Huntress:\n" +
-				"_-_ Gloves base damage up to 1-6 from 1-5\n" +
-				"_-_ Spirit bow damage scaling up 20%\n(now gets exactly +1/+2 dmg every level up)\n" +
-				"_-_ Warden barkskin increased by 5 points\n\n" +
-				"Rogue's cloak of shadows base charge speed increased by ~11%, scaling reduced to compensate.\n\n" +
-				"Warlock's soul mark base chance increased to 15% from 10%, scaling reduced to compensate.\n\n" +
-				"Warrior's shielding regen scaling reduced by ~15%. This is primarily a lategame nerf."));
-		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_DIAMOND, null), "Other Balance Changes",
-				"Similarly to heroes, I have gone over the balance of items, and am making several buffs + one nerf.\n\n" +
-				"wand of fireblast buffed:\n" +
-				"_-_ shot distance at 3 charges reduced by 1\n" +
-				"_-_ damage at 1 charge reduced slightly\n" +
-				"_-_ damage at 2/3 charges increased by ~15%\n" +
-				"\n" +
-				"_-_ vorpal enchant bleed reduced by 20%\n" +
-				"_-_ glyph of potential wand charge bonus increased by 20%\n" +
-				"_-_ glyph of stone evasion conversion efficiency increased to 75% from 60%\n" +
-				"\n" +
-				"_-_ ring of elements power increased to 16% from 12.5%\n" +
-				"_-_ ring of energy charge speed increased to 25% from 20%\n" +
-				"_-_ ring of wealth 'luck' bonus increased to 20% from 15%"));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.7.1):\n" +
-				"_-_ various rare spirit bow crashes\n\n" +
-				"Fixed (existed prior to 0.7.1):\n" +
-				"_-_ various crash bugs\n" +
-				"_-_ rare crashes involving alchemy\n" +
-				"_-_ health potion limits not applying to prison guards\n" +
-				"_-_ traps with ground-based effects affecting flying characters"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
 		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -273,53 +335,74 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed:\n" +
+				"_-_ various crash bugs\n" +
 				"_-_ various minor visual bugs\n" +
+				"_-_ recycle being able to produce health potions with pharmacophobia enabled\n" +
+				"_-_ magical porter soft-locking the game in rare cases\n" +
+				"_-_ mystical energy recharging some artifacts incorrectly\n" +
+				"_-_ health potion limits not applying to prison guards\n" +
+				"_-_ traps with ground-based effects affecting flying characters\n" +
 				"_-_ odd behaviour when transmuting certain items\n" +
 				"_-_ keys rarely spawning without chests\n" +
 				"_-_ fireblast rarely damaging things it shouldn't\n" +
 				"_-_ dew drops from dew catchers landing on stairs\n" +
 				"_-_ ankh revive window rarely closing when it shouldn't\n" +
-				"_-_ flock and summoning traps creating harsh multi-sound effects\n" +
+				"_-_ flock and summoning traps creating harsh sound effects\n" +
 				"_-_ thrown weapons being lost when used on sheep\n" +
-				"_-_ various specific errors when actions took more/less than 1 turn\n" +
+				"_-_ various specific errors when actions took more than 1 turn\n" +
 				"_-_ various freeze bugs caused by Tengu"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations\n\n" +
+				"Updated translations\n\n" +
 				"Updated translator credits"));
 		
 		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton( new Image(Assets.ROGUE, 0, 15, 12, 15), "Hero Buffs",
+				"_-_ Rogue's cloak of shadows base charge speed increased by ~11%, scaling reduced to compensate.\n\n" +
+				"_-_ Warlock's soul mark base chance increased to 15% from 10%, scaling reduced to compensate.\n\n" +
+				"_-_ Warlock's soul mark hunger restoration increased by 100%, health restoration increased by 33%."));
 
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), new RingOfEnergy().trueName(),
-				"The ring of energy has been simplified/buffed:\n\n" +
-				"_-_ Now grants a flat +20% charge speed per level, instead of +1 effective missing charge per level"));
-
-		changes.addButton( new ChangeButton( new Bolas(),
-				"Bolas have received a damage buff:\n\n" +
-				"_-_ Base damage increased to 6-9 from 4-6"));
-
-		changes.addButton( new ChangeButton( new WandOfRegrowth(),
-				"Thanks to the new furrowed grass system, the wand of regrowth can receive a slight buff:\n\n" +
-				"_-_ When the wand of regrowth begins to run out of energy due to excessive use, it will now spawn furrowed grass, instead of short grass."));
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), Messages.get(RingOfSharpshooting.class, "name"),
+				"_-_ Ring of energy simplified/buffed. Now grants a flat +20% charge speed per level, instead of +1 effective missing charge per level\n\n" +
+				"_-_ Ring of elements power increased to 16% from 12.5%\n\n" +
+				"_-_ Ring of energy charge speed increased to 25% from 20%\n\n" +
+				"_-_ Ring of wealth 'luck' bonus increased to 20% from 15%\n\n" +
+				"_-_ Bolas base damage increased to 6-9 from 4-6\n\n" +
+				"_-_ Wand of regrowth now spawns furrowed grass when it begins to run out of energy due to excessive use, instead of short grass.\n\n" +
+				"Wand of fireblast buffed:\n" +
+				"_-_ shot distance at 3 charges reduced by 1\n" +
+				"_-_ damage at 1 charge reduced slightly\n" +
+				"_-_ damage at 2/3 charges increased by ~15"));
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.ARMOR_LEATHER, new ItemSprite.Glowing(0x222222)), "Other Buffs",
+				"_-_ vorpal enchant bleed reduced by 20%\n\n" +
+				"_-_ glyph of potential wand charge bonus increased by 20%\n\n" +
+				"_-_ glyph of stone evasion conversion efficiency increased to 75% from 60%"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.KING, 1, 0, 14, 16), "Dwarf King",
+				"While I would like to make more extensive changes to Dwarf King in the future, I've made a couple smaller tweaks for now to make him harder to cheese:\n\n" +
+				"_-_ Dwarf King is now able to summon skeletons even if he cannot see the hero\n" +
+				"_-_ Dwarf King is now resistant to fire and toxic gas"));
 		
 		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
 		changes.hardlight( CharSprite.NEGATIVE );
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_RUBY, null), new RingOfFuror().trueName(),
-				"Ring of furor has been nerfed/simplified:\n\n" +
+		changes.addButton( new ChangeButton( new Image(Assets.WARRIOR, 0, 15, 12, 15), "Warrior Nerfs",
+				"_-_ Warrior's shielding regen scaling reduced by ~15%. This is primarily a lategame nerf."));
+		
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_RUBY, null), "Ring Nerfs",
+				"Ring of furor has been nerfed/simplified:\n" +
 				"_-_ Now provides a flat +10.5% attack speed per level, instead of speed which scales based on how slow the weapon is.\n\n" +
-				"This means the ring is effectively nerfed for slow weapons and regular weapons, and slightly buffed for fast weapons.\n\n" +
-				"A +6 ring grants almost exactly doubled attack speed."));
-
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_GARNET, null), new RingOfForce().trueName(),
+				"This means the ring is effectively nerfed for slow weapons and regular weapons, and slightly buffed for fast weapons. A +6 ring grants almost exactly doubled attack speed.\n\n" +
 				"The ring of force's equipped weapon bonus was always meant as a small boost so it wasn't useless if the player already had a better weapon. It wasn't intended to be used to both replace melee and then boost thrown weapons.\n" +
 				"_-_ The ring of force no longer gives bonus damage to thrown weapons."));
 		
 		changes.addButton( new ChangeButton( new Gauntlet(),
-				"As furor now works much better with fast weapons, I've taken the oppourtunity to very slightly nerf sai and gauntlets\n\n" +
+				"As furor now works much better with fast weapons, I've taken the opportunity to very slightly nerf sai and gauntlets\n\n" +
 				"_-_ Sai blocking down to 0-2 from 0-3\n" +
 				"_-_ Gauntlet blocking down to 0-4 from 0-5"));
 		
