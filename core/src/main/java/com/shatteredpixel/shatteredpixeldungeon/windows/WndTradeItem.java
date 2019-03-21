@@ -259,13 +259,13 @@ public class WndTradeItem extends Window {
 	
 	private void buy( Heap heap ) {
 		
-		Hero hero = Dungeon.hero;
 		Item item = heap.pickUp();
+		if (item == null) return;
 		
 		int price = price( item );
 		Dungeon.gold -= price;
 		
-		if (!item.doPickUp( hero )) {
+		if (!item.doPickUp( Dungeon.hero )) {
 			Dungeon.level.drop( item, heap.pos ).sprite.drop();
 		}
 	}
