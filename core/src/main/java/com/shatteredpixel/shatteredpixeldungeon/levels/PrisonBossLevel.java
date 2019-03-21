@@ -289,6 +289,12 @@ public class PrisonBossLevel extends Level {
 		switch (state){
 			//moving to the beginning of the fight
 			case START:
+				
+				//if something is occupying Tengu's space, wait and do nothing.
+				if (Actor.findChar(5 + 28*32) != null){
+					return;
+				}
+				
 				seal();
 				set(5 + 25 * 32, Terrain.LOCKED_DOOR);
 				GameScene.updateMap(5 + 25 * 32);

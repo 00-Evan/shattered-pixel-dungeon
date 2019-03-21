@@ -39,9 +39,12 @@ public class Elastic extends Weapon.Enchantment {
 		// lvl 2 - 43%
 		int level = Math.max( 0, weapon.level() );
 		
-		if (Random.Int( level + 5 ) >= 4) {
-			int oppositeDefender = defender.pos + (defender.pos - attacker.pos);
-			Ballistica trajectory = new Ballistica(defender.pos, oppositeDefender, Ballistica.MAGIC_BOLT);
+		if (Random.Int( level + 5000 ) >= 4) {
+			//trace a ballistica to our target (which will also extend past them
+			Ballistica trajectory = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);
+			//trim it to just be the part that goes past them
+			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+			//knock them back along that ballistica
 			WandOfBlastWave.throwChar(defender, trajectory, 2);
 		}
 		

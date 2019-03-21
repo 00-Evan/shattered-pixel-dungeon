@@ -215,7 +215,7 @@ public class ChangesScene extends PixelScene {
 				"_-_ Grim enchant activating when an enemy is already dead\n" +
 				"_-_ Burning destroying scrolls when the hero is immune to it\n" +
 				"_-_ Chasms killing enemies which are already dead in some cases\n" +
-				"_-_ Thieves not correcting interacting with quickslotted items\n" +
+				"_-_ Thieves not correctly interacting with quickslotted items\n" +
 				"_-_ Screen orientation not always being set when game starts\n" +
 				"_-_ Flying characters pushing the ground after teleporting\n" +
 				"_-_ Bombs rarely damaging tengu multiple times\n" +
@@ -365,17 +365,16 @@ public class ChangesScene extends PixelScene {
 				"_-_ Warlock's soul mark base chance increased to 15% from 10%, scaling reduced to compensate.\n\n" +
 				"_-_ Warlock's soul mark hunger restoration increased by 100%, health restoration increased by 33%."));
 
-		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), Messages.get(RingOfSharpshooting.class, "name"),
-				"_-_ Ring of energy simplified/buffed. Now grants a flat +20% charge speed per level, instead of +1 effective missing charge per level\n\n" +
+		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_TOPAZ, null), "Various Item Buffs",
+				"_-_ Ring of energy simplified/buffed. Now grants a flat +25% charge speed per level, instead of +1 effective missing charge per level\n\n" +
 				"_-_ Ring of elements power increased to 16% from 12.5%\n\n" +
-				"_-_ Ring of energy charge speed increased to 25% from 20%\n\n" +
 				"_-_ Ring of wealth 'luck' bonus increased to 20% from 15%\n\n" +
 				"_-_ Bolas base damage increased to 6-9 from 4-6\n\n" +
 				"_-_ Wand of regrowth now spawns furrowed grass when it begins to run out of energy due to excessive use, instead of short grass.\n\n" +
 				"Wand of fireblast buffed:\n" +
 				"_-_ shot distance at 3 charges reduced by 1\n" +
 				"_-_ damage at 1 charge reduced slightly\n" +
-				"_-_ damage at 2/3 charges increased by ~15"));
+				"_-_ damage at 2/3 charges increased by ~15%"));
 		
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.ARMOR_LEATHER, new ItemSprite.Glowing(0x222222)), "Other Buffs",
 				"_-_ vorpal enchant bleed reduced by 20%\n\n" +
@@ -397,7 +396,7 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton( new ItemSprite(ItemSpriteSheet.RING_RUBY, null), "Ring Nerfs",
 				"Ring of furor has been nerfed/simplified:\n" +
 				"_-_ Now provides a flat +10.5% attack speed per level, instead of speed which scales based on how slow the weapon is.\n\n" +
-				"This means the ring is effectively nerfed for slow weapons and regular weapons, and slightly buffed for fast weapons. A +6 ring grants almost exactly doubled attack speed.\n\n" +
+				"This means the ring is effectively nerfed for slow weapons and regular weapons, and slightly buffed for fast weapons. A +6 ring grants almost exactly doubled attack speed.\n\n\n" +
 				"The ring of force's equipped weapon bonus was always meant as a small boost so it wasn't useless if the player already had a better weapon. It wasn't intended to be used to both replace melee and then boost thrown weapons.\n" +
 				"_-_ The ring of force no longer gives bonus damage to thrown weapons."));
 		

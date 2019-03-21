@@ -87,10 +87,12 @@ public class StoneOfAggression extends Runestone {
 		@Override
 		public void detach() {
 			//if our target is an enemy, reset the aggro of any enemies targeting it
-			if (target.alignment == Char.Alignment.ENEMY) {
-				for (Mob m : Dungeon.level.mobs) {
-					if (m.alignment == Char.Alignment.ENEMY && m.isTargeting(target)) {
-						m.aggro(null);
+			if (target.isAlive()) {
+				if (target.alignment == Char.Alignment.ENEMY) {
+					for (Mob m : Dungeon.level.mobs) {
+						if (m.alignment == Char.Alignment.ENEMY && m.isTargeting(target)) {
+							m.aggro(null);
+						}
 					}
 				}
 			}

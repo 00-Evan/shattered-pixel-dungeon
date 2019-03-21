@@ -66,7 +66,7 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (isEquipped( hero ) && !cursed && charge > 1)
+		if (isEquipped( hero ) && !cursed && charge > 0)
 			actions.add(AC_STEALTH);
 		return actions;
 	}
