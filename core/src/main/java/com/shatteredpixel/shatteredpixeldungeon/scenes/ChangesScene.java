@@ -150,6 +150,26 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.2a", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.7.2):\n" +
+				"_-_ various rare crash bugs\n" +
+				"_-_ elastic enchantment behaving oddly in some cases\n" +
+				"_-_ various typos in the gamelog\n\n" +
+				"Fixed (existed before 0.7.2):\n" +
+				"_-_ Tengu spawning on top of other characters\n" +
+				"_-_ Cloak of shadows only being usable from quickslots if it has 1 charge"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
