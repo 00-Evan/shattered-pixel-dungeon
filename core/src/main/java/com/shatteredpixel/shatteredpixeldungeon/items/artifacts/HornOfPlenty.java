@@ -131,11 +131,17 @@ public class HornOfPlenty extends Artifact {
 			if (partialCharge >= 1){
 				partialCharge--;
 				charge++;
-				updateQuickslot();
+				
 				if (charge == chargeCap){
 					GLog.p( Messages.get(HornOfPlenty.class, "full") );
 					partialCharge = 0;
 				}
+				
+				if (charge >= 15)       image = ItemSpriteSheet.ARTIFACT_HORN4;
+				else if (charge >= 10)  image = ItemSpriteSheet.ARTIFACT_HORN3;
+				else if (charge >= 5)   image = ItemSpriteSheet.ARTIFACT_HORN2;
+				
+				updateQuickslot();
 			}
 		}
 	}

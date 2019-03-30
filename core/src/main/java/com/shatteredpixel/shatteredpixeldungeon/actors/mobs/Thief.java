@@ -116,7 +116,8 @@ public class Thief extends Mob {
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 		
-		if (item == null && enemy instanceof Hero && steal( (Hero)enemy )) {
+		if (alignment == Alignment.ENEMY && item == null
+				&& enemy instanceof Hero && steal( (Hero)enemy )) {
 			state = FLEEING;
 		}
 
