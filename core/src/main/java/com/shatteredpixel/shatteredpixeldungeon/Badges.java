@@ -179,9 +179,6 @@ public class Badges {
 	
 	private static final HashSet<String> removedBadges = new HashSet<>();
 	static{
-		//removed in 0.6.1
-		removedBadges.add("NIGHT_HUNTER");
-
 		//removed in 0.6.5
 		removedBadges.addAll(Arrays.asList("RARE_ALBINO", "RARE_BANDIT", "RARE_SHIELDED",
 				"RARE_SENIOR", "RARE_ACIDIC", "RARE", "TUTORIAL_WARRIOR", "TUTORIAL_MAGE"));
@@ -193,8 +190,8 @@ public class Badges {
 		renamedBadges.put("CHAMPION", "CHAMPION_1");
 	}
 
-	private static HashSet<Badge> restore( Bundle bundle ) {
-		HashSet<Badge> badges = new HashSet<Badge>();
+	public static HashSet<Badge> restore( Bundle bundle ) {
+		HashSet<Badge> badges = new HashSet<>();
 		if (bundle == null) return badges;
 		
 		String[] names = bundle.getStringArray( BADGES );
@@ -213,8 +210,8 @@ public class Badges {
 	
 		return badges;
 	}
-
-	private static void store( Bundle bundle, HashSet<Badge> badges ) {
+	
+	public static void store( Bundle bundle, HashSet<Badge> badges ) {
 		int count = 0;
 		String names[] = new String[badges.size()];
 		
@@ -839,6 +836,11 @@ public class Badges {
 	
 	public static boolean isUnlocked( Badge badge ) {
 		return global.contains( badge );
+	}
+	
+	public static HashSet<Badge> allUnlocked(){
+		loadGlobal();
+		return new HashSet<>(global);
 	}
 	
 	public static void disown( Badge badge ) {
