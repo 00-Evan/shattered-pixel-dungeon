@@ -167,8 +167,6 @@ public class Badges {
 	
 	private static boolean saveNeeded = false;
 
-	public static Callback loadingListener = null;
-
 	public static void reset() {
 		local.clear();
 		loadGlobal();

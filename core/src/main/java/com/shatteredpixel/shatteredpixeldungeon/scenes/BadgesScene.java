@@ -107,22 +107,12 @@ public class BadgesScene extends PixelScene {
 		add( btnExit );
 
 		fadeIn();
-
-		Badges.loadingListener = new Callback() {
-			@Override
-			public void call() {
-				if (Game.scene() == BadgesScene.this) {
-					ShatteredPixelDungeon.switchNoFade( BadgesScene.class );
-				}
-			}
-		};
 	}
 
 	@Override
 	public void destroy() {
 
 		Badges.saveGlobal();
-		Badges.loadingListener = null;
 
 		super.destroy();
 	}
