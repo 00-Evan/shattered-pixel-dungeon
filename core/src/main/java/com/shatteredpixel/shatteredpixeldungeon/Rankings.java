@@ -320,7 +320,12 @@ public enum Rankings {
 	private static final Comparator<Record> scoreComparator = new Comparator<Rankings.Record>() {
 		@Override
 		public int compare( Record lhs, Record rhs ) {
-			return (int)Math.signum( rhs.score - lhs.score );
+			int result = (int)Math.signum( rhs.score - lhs.score );
+			if (result == 0) {
+				return (int)Math.signum( rhs.gameID.hashCode() - lhs.gameID.hashCode());
+			} else{
+				return result;
+			}
 		}
 	};
 }
