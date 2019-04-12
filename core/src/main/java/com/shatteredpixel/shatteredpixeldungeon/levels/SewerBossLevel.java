@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
@@ -107,6 +108,11 @@ public class SewerBossLevel extends SewerLevel {
 		} while (room == roomEntrance);
 		boss.pos = pointToCell(room.random());
 		mobs.add( boss );
+	}
+	
+	@Override
+	public Mob createMob() {
+		return null;
 	}
 	
 	public Actor respawner() {
