@@ -50,7 +50,6 @@ public class Shocking extends Weapon.Enchantment {
 			affected.clear();
 
 			arcs.clear();
-			arcs.add(new Lightning.Arc(attacker.sprite.center(), defender.sprite.center()));
 			arc(attacker, defender, 2);
 			
 			affected.remove(defender); //defender isn't hurt by lightning

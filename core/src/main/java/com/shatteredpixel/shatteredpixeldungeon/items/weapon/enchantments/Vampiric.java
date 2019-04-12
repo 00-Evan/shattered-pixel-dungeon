@@ -35,9 +35,9 @@ public class Vampiric extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		
-		//heals for 0-10% of damage dealt, based on missing HP
+		//heals for 2.5-15% of damage dealt, based on missing HP
 		float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
-		float healPercent = missingPercent * 0.1f;
+		float healPercent = .025f + (missingPercent * 0.125f);
 		int healAmt = Math.round(healPercent * damage);
 		healAmt = Math.min( healAmt, attacker.HT - attacker.HP );
 		

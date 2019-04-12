@@ -45,7 +45,7 @@ public class Swift extends Weapon.Enchantment {
 		int level = Math.max( 0, weapon.level() );
 		
 		if (Random.Int( level + 8 ) >= 7) {
-			Buff.prolong(attacker, SwiftAttack.class, 2).setSourceType(weapon instanceof MeleeWeapon);
+			Buff.prolong(attacker, SwiftAttack.class, 5).setSourceType(weapon instanceof MeleeWeapon);
 		}
 		
 		return damage;

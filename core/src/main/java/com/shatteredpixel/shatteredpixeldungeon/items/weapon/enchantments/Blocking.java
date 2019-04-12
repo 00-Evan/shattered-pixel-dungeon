@@ -41,7 +41,7 @@ public class Blocking extends Weapon.Enchantment {
 		
 		int level = Math.max( 0, weapon.level() );
 		
-		Buff.prolong(attacker, BlockBuff.class, 1 + level/2).setBlocking(level + 1);
+		Buff.prolong(attacker, BlockBuff.class, 2 + level/2).setBlocking(level + 1);
 		
 		return damage;
 	}

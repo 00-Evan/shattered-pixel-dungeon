@@ -39,8 +39,8 @@ public class Lucky extends Weapon.Enchantment {
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		int level = Math.max( 0, weapon.level() );
 		
-		//5% chance, + 1% per weapon level
-		if (defender.HP <= damage && Random.Float() < (0.05f + .01f*level)){
+		//10% chance, + 1% per weapon level
+		if (defender.HP <= damage && Random.Float() < (0.1f + .01f*level)){
 			Buff.affect(defender, LuckProc.class);
 		}
 		
