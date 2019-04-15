@@ -76,9 +76,15 @@ public class Berserk extends Buff {
 	@Override
 	public boolean act() {
 		if (berserking()){
-			WarriorShield buff = target.buff(WarriorShield.class);
+			ShieldBuff buff = target.buff(WarriorShield.class);
 			if (target.HP <= 0) {
-				buff.absorbDamage(1 + (int)Math.ceil(target.shielding() * 0.1f));
+				if (buff != null && buff.shielding() > 0) {
+					buff.absorbDamage(1 + (int)Math.ceil(target.shielding() * 0.1f));
+				} else {
+					//if there is no shield buff, or it is empty, then try to remove from other shielding buffs
+					buff = target.buff(ShieldBuff.class);
+					if (buff != null) buff.absorbDamage(1 + (int)Math.ceil(target.shielding() * 0.1f));
+				}
 				if (target.shielding() <= 0) {
 					target.die(this);
 					if (!target.isAlive()) Dungeon.fail(this.getClass());
@@ -87,7 +93,7 @@ public class Berserk extends Buff {
 				state = State.RECOVERING;
 				levelRecovery = LEVEL_RECOVER_START;
 				BuffIndicator.refreshHero();
-				buff.absorbDamage(buff.shielding());
+				if (buff != null) buff.absorbDamage(buff.shielding());
 				power = 0f;
 			}
 		} else if (state == State.NORMAL) {

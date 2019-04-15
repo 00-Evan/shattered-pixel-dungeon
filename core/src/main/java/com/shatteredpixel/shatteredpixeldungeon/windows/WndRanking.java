@@ -78,7 +78,6 @@ public class WndRanking extends WndTabbed {
 				}
 			}
 		};
-		thread.start();
 
 		busy = Icons.BUSY.get();
 		busy.origin.set( busy.width / 2, busy.height / 2 );
@@ -86,6 +85,8 @@ public class WndRanking extends WndTabbed {
 		busy.x = (WIDTH - busy.width) / 2;
 		busy.y = (HEIGHT - busy.height) / 2;
 		add( busy );
+		
+		thread.start();
 	}
 	
 	@Override
