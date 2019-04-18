@@ -150,9 +150,39 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.7.2b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0xFF4400)), "Enchantment Buffs",
+				"_-_ Blazing now deals a small amount of bonus damage if the enemy is already on fire.\n\n" +
+				"_-_ Blooming now has a chance to spawn 2 tall grasses, scaling with weapon level.\n\n" +
+				"_-_ Blocking base duration increased to 2 from 1.\n\n" +
+				"_-_ Swift buff duration increased to 5 from 2.\n\n" +
+				"_-_ Vampiric healing increased to 2.5%-15% of damage dealt, from 0-10%.\n\n" +
+				"_-_ Lucky base chance to generate an item increased to 10% from 5%.\n\n" +
+				"_-_ Grim chance to finish an enemy at low health increased, especially at higher levels."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Major internal improvements to service integrations for Google Play version of the game:\n" +
+				"_-_ 'Share Gameplay Data' now uses Google Firebase Analytics instead of older Google Analytics. Data collected is unchanged.\n" +
+				"_-_ Many internal improvements to Google Play Games sync and Google Payment integration.\n" +
+				"_-_ Item renaming donation perk now applies to wands.\n\n" +
+				"_-_ Shocking enchantment no longer visually arcs lightning to the hero."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.7.2):\n" +
+				"_-_ Cloak of Shadows not able to be turned off at 0 charges\n" +
+				"_-_ Scroll of transmutation incorrectly usable on alchemical catalysts\n\n" +
+				"Fixed (existed before 0.7.2):\n" +
+				"_-_ Multiplicity curse spawning rats on floor 5\n" +
+				"_-_ Dried rose rarely being usable before completing ghost quest\n" +
+				"_-_ Corrupted thieves being able to steal from the hero\n" +
+				"_-_ Rare crashes involving rankings windows\n" +
+				"_-_ Crashes and other odd behaviour when a berserking hero is affected by shielding buffs"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
 		
 		changes = new ChangeInfo("v0.7.2a", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
