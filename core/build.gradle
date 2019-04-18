@@ -6,6 +6,7 @@ android {
     defaultConfig {
         resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it",
                 "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
+        //noinspection MinSdkTooLow
         minSdkVersion 8
         targetSdkVersion 28
     }
