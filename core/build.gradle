@@ -17,9 +17,14 @@ android {
             versionNameSuffix '-INDEV'
         }
         release {
+
+            //These lines enable R8, which is a code shrinker/optimizer/obfuscator.
+            //This makes release APKs smaller and more efficient, but also makes debugging trickier
+            //as the information produced in stack traces must be de-obfuscated.
+            //See here: https://developer.android.com/studio/build/shrink-code#decode-stack-trace
             shrinkResources true
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
