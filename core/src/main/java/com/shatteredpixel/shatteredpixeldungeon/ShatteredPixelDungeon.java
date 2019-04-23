@@ -216,6 +216,14 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		if (scene instanceof PixelScene){
+			((PixelScene) scene).saveWindows();
+		}
+		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
 	public void onWindowFocusChanged( boolean hasFocus ) {
 		super.onWindowFocusChanged( hasFocus );
 		if (hasFocus) updateSystemUI();
@@ -236,9 +244,22 @@ public class ShatteredPixelDungeon extends Game {
 		PixelScene.noFade = true;
 		switchScene( c, callback );
 	}
-
+	
+	@Override
+	protected void switchScene() {
+		super.switchScene();
+		if (scene instanceof PixelScene){
+			((PixelScene) scene).restoreWindows();
+		}
+	}
+	
 	@Override
 	public void onSurfaceChanged( GL10 gl, int width, int height ) {
+		
+		if (scene instanceof PixelScene &&
+				(height != Game.height || width != Game.width)) {
+			((PixelScene) scene).saveWindows();
+		}
 
 		super.onSurfaceChanged( gl, width, height );
 
