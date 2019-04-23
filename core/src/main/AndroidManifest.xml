@@ -28,7 +28,6 @@
 			android:name="com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon"
 			android:alwaysRetainTaskState="true"
 			android:launchMode="singleInstance"
-			android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout"
 			android:screenOrientation="nosensor">
 			<intent-filter >
 				<action android:name="android.intent.action.MAIN" />
