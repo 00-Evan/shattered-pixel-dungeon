@@ -150,6 +150,32 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.2c", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Additional improvements to Google Play version of the game:\n" +
+				"_-_ Improvements to error reporting from data collection.\n" +
+				"_-_ Improvements to stability of hall of heroes cloud syncing.\n\n" +
+				"_-_ Added support for adaptive icons in Android 8.0+.\n" +
+				"_-_ Improved how the game handles orientation changes and window resizing."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.7.2):\n" +
+				"_-_ NPCs triggering ring of wealth when being shot by corruption\n\n" +
+				"Fixed (existed before 0.7.2):\n" +
+				"_-_ Hourglass not updating charges correctly in some cases\n" +
+				"_-_ Blandfruit bush rarely appearing in 'on diet' challenge\n" +
+				"_-_ Strength from ring of might not appearing in rankings"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
 		changes = new ChangeInfo("v0.7.2b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
@@ -190,9 +216,9 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
 				"Fixed (caused by 0.7.2):\n" +
-				"_-_ various rare crash bugs\n" +
-				"_-_ elastic enchantment behaving oddly in some cases\n" +
-				"_-_ various typos in the gamelog\n\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Elastic enchantment behaving oddly in some cases\n" +
+				"_-_ Various typos in the gamelog\n\n" +
 				"Fixed (existed before 0.7.2):\n" +
 				"_-_ Tengu spawning on top of other characters\n" +
 				"_-_ Cloak of shadows only being usable from quickslots if it has 1 charge"));
