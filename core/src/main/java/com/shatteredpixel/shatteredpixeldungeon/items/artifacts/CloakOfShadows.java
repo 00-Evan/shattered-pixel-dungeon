@@ -303,5 +303,21 @@ public class CloakOfShadows extends Artifact {
 			updateQuickslot();
 			super.detach();
 		}
+		
+		private static final String TURNSTOCOST = "turnsToCost";
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			
+			bundle.put( TURNSTOCOST , turnsToCost);
+		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			
+			turnsToCost = bundle.getInt( TURNSTOCOST );
+		}
 	}
 }

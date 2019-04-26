@@ -39,7 +39,7 @@ public class Stone extends Armor.Glyph {
 		
 		float hitChance;
 		if (evasion >= accuracy){
-			hitChance = 1f - (1f - (accuracy/evasion))/2f;
+			hitChance = (accuracy/evasion)/2f;
 		} else {
 			hitChance = 1f - (evasion/accuracy)/2f;
 		}

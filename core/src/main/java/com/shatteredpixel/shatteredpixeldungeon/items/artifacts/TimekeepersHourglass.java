@@ -197,7 +197,7 @@ public class TimekeepersHourglass extends Artifact {
 		if (bundle.contains( BUFF )){
 			Bundle buffBundle = bundle.getBundle( BUFF );
 
-			if (buffBundle.contains( timeFreeze.PARTIALTIME ))
+			if (buffBundle.contains( timeFreeze.PRESSES ))
 				activeBuff = new timeFreeze();
 			else
 				activeBuff = new timeStasis();
@@ -290,15 +290,15 @@ public class TimekeepersHourglass extends Artifact {
 			type = buffType.POSITIVE;
 		}
 
-		float partialTime = 0f;
+		float turnsToCost = 0f;
 
-		ArrayList<Integer> presses = new ArrayList<Integer>();
+		ArrayList<Integer> presses = new ArrayList<>();
 
 		public void processTime(float time){
-			partialTime += time;
+			turnsToCost -= time;
 
-			while (partialTime >= 2f){
-				partialTime -= 2f;
+			while (turnsToCost < 0f){
+				turnsToCost += 2f;
 				charge --;
 			}
 
@@ -337,11 +337,6 @@ public class TimekeepersHourglass extends Artifact {
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0]))
 				if (mob.paralysed <= 0) mob.sprite.remove(CharSprite.State.PARALYSED);
 			GameScene.freezeEmitters = false;
-			
-			while (partialTime > 0f){
-				partialTime -= 2f;
-				charge --;
-			}
 
 			updateQuickslot();
 			super.detach();
@@ -351,7 +346,7 @@ public class TimekeepersHourglass extends Artifact {
 		}
 
 		private static final String PRESSES = "presses";
-		private static final String PARTIALTIME = "partialtime";
+		private static final String TURNSTOCOST = "turnsToCost";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
@@ -362,7 +357,7 @@ public class TimekeepersHourglass extends Artifact {
 				values[i] = presses.get(i);
 			bundle.put( PRESSES , values );
 
-			bundle.put( PARTIALTIME , partialTime );
+			bundle.put( TURNSTOCOST , turnsToCost);
 		}
 
 		@Override
@@ -373,7 +368,7 @@ public class TimekeepersHourglass extends Artifact {
 			for (int value : values)
 				presses.add(value);
 
-			partialTime = bundle.getFloat( PARTIALTIME );
+			turnsToCost = bundle.getFloat( TURNSTOCOST );
 		}
 	}
 
