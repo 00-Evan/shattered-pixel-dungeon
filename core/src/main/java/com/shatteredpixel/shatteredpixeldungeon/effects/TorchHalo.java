@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Halo;
 
 public class TorchHalo extends Halo {
 
