@@ -150,9 +150,18 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("0.7.2d", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.7.2c):\n" +
+				"_-_ Hourglass not updating charges correctly in some cases\n" +
+				"_-_ Corrupted enemies never dropping loot\n\n" +
+				"Fixed (existed before 0.7.2):\n" +
+				"_-_ Cloak of Shadows very rarely consuming more charges than it should\n" +
+				"_-_ Assassin's blink not working on enemies standing on traps\n" +
+				"_-_ Glyph of stone blocking an incorrect amount of damage (too low) in some cases"));
 		
 		changes = new ChangeInfo("v0.7.2c", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
