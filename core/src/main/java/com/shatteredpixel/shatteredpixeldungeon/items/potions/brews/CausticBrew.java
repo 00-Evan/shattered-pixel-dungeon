@@ -50,7 +50,7 @@ public class CausticBrew extends Brew {
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
 		
-		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
+		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 3 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				Splash.at( i, 0x000000, 5);
@@ -75,7 +75,7 @@ public class CausticBrew extends Brew {
 			inputs =  new Class[]{PotionOfToxicGas.class, GooBlob.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 8;
+			cost = 4;
 			
 			output = CausticBrew.class;
 			outQuantity = 1;

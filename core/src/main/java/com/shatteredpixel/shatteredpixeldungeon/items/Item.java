@@ -336,7 +336,7 @@ public class Item implements Bundlable {
 	}
 	
 	public int visiblyUpgraded() {
-		return levelKnown ? level : 0;
+		return levelKnown ? level() : 0;
 	}
 	
 	public boolean visiblyCursed() {

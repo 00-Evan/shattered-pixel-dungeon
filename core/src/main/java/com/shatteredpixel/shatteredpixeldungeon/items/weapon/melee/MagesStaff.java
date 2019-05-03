@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -87,7 +88,7 @@ public class MagesStaff extends MeleeWeapon {
 		wand.identify();
 		wand.cursed = false;
 		this.wand = wand;
-		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+		updateWand(false);
 		wand.curCharges = wand.maxCharges;
 		name = Messages.get(wand, "staff_name");
 	}
@@ -124,6 +125,8 @@ public class MagesStaff extends MeleeWeapon {
 				return;
 			}
 
+			if (cursed || hasCurseEnchant()) wand.cursed = true;
+			else                             wand.cursed = false;
 			wand.execute(hero, AC_ZAP);
 		}
 	}
@@ -169,31 +172,18 @@ public class MagesStaff extends MeleeWeapon {
 
 	public Item imbueWand(Wand wand, Char owner){
 
-		wand.cursed = false;
 		this.wand = null;
 
 		//syncs the level of the two items.
-		int targetLevel = Math.max(this.level(), wand.level());
+		int targetLevel = Math.max(this.level() - (curseInfusionBonus ? 1 : 0), wand.level());
 
 		//if the staff's level is being overridden by the wand, preserve 1 upgrade
-		if (wand.level() >= this.level() && this.level() > 0) targetLevel++;
-
-		int staffLevelDiff = targetLevel - this.level();
-		if (staffLevelDiff > 0)
-			this.upgrade(staffLevelDiff);
-		else if (staffLevelDiff < 0)
-			this.degrade(Math.abs(staffLevelDiff));
-
-		int wandLevelDiff = targetLevel - wand.level();
-		if (wandLevelDiff > 0)
-			wand.upgrade(wandLevelDiff);
-		else if (wandLevelDiff < 0)
-			wand.degrade(Math.abs(wandLevelDiff));
-
+		if (wand.level() >= this.level() && this.level() > (curseInfusionBonus ? 1 : 0)) targetLevel++;
+		
+		level(targetLevel);
 		this.wand = wand;
-		wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+		updateWand(false);
 		wand.curCharges = wand.maxCharges;
-		wand.identify();
 		if (owner != null) wand.charge(owner);
 
 		name = Messages.get(wand, "staff_name");
@@ -227,14 +217,7 @@ public class MagesStaff extends MeleeWeapon {
 	public Item upgrade(boolean enchant) {
 		super.upgrade( enchant );
 
-		if (wand != null) {
-			int curCharges = wand.curCharges;
-			wand.upgrade();
-			//gives the wand one additional charge
-			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-			wand.curCharges = Math.min(wand.curCharges + 1, 10);
-			updateQuickslot();
-		}
+		updateWand(true);
 
 		return this;
 	}
@@ -243,16 +226,20 @@ public class MagesStaff extends MeleeWeapon {
 	public Item degrade() {
 		super.degrade();
 
-		if (wand != null) {
-			int curCharges = wand.curCharges;
-			wand.degrade();
-			//gives the wand one additional charge
-			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
-			wand.curCharges = curCharges-1;
-			updateQuickslot();
-		}
+		updateWand(false);
 
 		return this;
+	}
+	
+	public void updateWand(boolean levelled){
+		if (wand != null) {
+			int curCharges = wand.curCharges;
+			wand.level(level());
+			//gives the wand one additional max charge
+			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);
+			wand.curCharges = Math.min(curCharges + (levelled ? 1 : 0), wand.maxCharges);
+			updateQuickslot();
+		}
 	}
 
 	@Override
@@ -308,7 +295,16 @@ public class MagesStaff extends MeleeWeapon {
 	public int price() {
 		return 0;
 	}
-
+	
+	@Override
+	public Weapon enchant(Enchantment ench) {
+		if (curseInfusionBonus && (ench == null || !ench.curse())){
+			curseInfusionBonus = false;
+			updateWand(false);
+		}
+		return super.enchant(ench);
+	}
+	
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
 		public void onSelect( final Item item ) {

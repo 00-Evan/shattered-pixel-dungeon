@@ -96,6 +96,7 @@ abstract public class Weapon extends KindOfWeapon {
 	private float availableUsesToID = USES_TO_ID/2f;
 	
 	public Enchantment enchantment;
+	public boolean curseInfusionBonus = false;
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
@@ -127,6 +128,7 @@ abstract public class Weapon extends KindOfWeapon {
 	private static final String USES_LEFT_TO_ID = "uses_left_to_id";
 	private static final String AVAILABLE_USES  = "available_uses";
 	private static final String ENCHANTMENT	    = "enchantment";
+	private static final String CURSE_INFUSION_BONUS = "curse_infusion_bonus";
 	private static final String AUGMENT	        = "augment";
 
 	@Override
@@ -135,6 +137,7 @@ abstract public class Weapon extends KindOfWeapon {
 		bundle.put( USES_LEFT_TO_ID, usesLeftToID );
 		bundle.put( AVAILABLE_USES, availableUsesToID );
 		bundle.put( ENCHANTMENT, enchantment );
+		bundle.put( CURSE_INFUSION_BONUS, curseInfusionBonus );
 		bundle.put( AUGMENT, augment );
 	}
 	
@@ -144,6 +147,7 @@ abstract public class Weapon extends KindOfWeapon {
 		usesLeftToID = bundle.getInt( USES_LEFT_TO_ID );
 		availableUsesToID = bundle.getInt( AVAILABLE_USES );
 		enchantment = (Enchantment)bundle.get( ENCHANTMENT );
+		curseInfusionBonus = bundle.getBoolean( CURSE_INFUSION_BONUS );
 		
 		//pre-0.7.2 saves
 		if (bundle.contains( "unfamiliarity" )){
@@ -213,6 +217,11 @@ abstract public class Weapon extends KindOfWeapon {
 	public abstract int STRReq(int lvl);
 	
 	@Override
+	public int level() {
+		return super.level() + (curseInfusionBonus ? 1 : 0);
+	}
+	
+	@Override
 	public Item upgrade() {
 		return upgrade(false);
 	}
@@ -269,6 +278,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	public Weapon enchant( Enchantment ench ) {
+		if (ench == null || !ench.curse()) curseInfusionBonus = false;
 		enchantment = ench;
 		updateQuickslot();
 		return this;

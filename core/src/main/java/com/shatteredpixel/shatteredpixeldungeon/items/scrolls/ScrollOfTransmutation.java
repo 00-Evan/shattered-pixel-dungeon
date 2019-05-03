@@ -129,6 +129,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 				n = (Wand) Generator.random(Generator.Category.WAND);
 			} while (Challenges.isItemBlocked(n) || n.getClass() == wandClass);
 			n.level(0);
+			n.identify();
 			staff.imbueWand(n, null);
 		}
 		
@@ -150,6 +151,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 		
 		int level = w.level();
+		if (w.curseInfusionBonus) level--;
 		if (level > 0) {
 			n.upgrade( level );
 		} else if (level < 0) {
@@ -157,6 +159,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		}
 		
 		n.enchantment = w.enchantment;
+		n.curseInfusionBonus = w.curseInfusionBonus;
 		n.levelKnown = w.levelKnown;
 		n.cursedKnown = w.cursedKnown;
 		n.cursed = w.cursed;
@@ -210,11 +213,14 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} while ( Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 		
 		n.level( 0 );
-		n.upgrade( w.level() );
+		int level = w.level();
+		if (w.curseInfusionBonus) level--;
+		n.upgrade( level );
 		
 		n.levelKnown = w.levelKnown;
 		n.cursedKnown = w.cursedKnown;
 		n.cursed = w.cursed;
+		n.curseInfusionBonus = w.curseInfusionBonus;
 		
 		return n;
 	}

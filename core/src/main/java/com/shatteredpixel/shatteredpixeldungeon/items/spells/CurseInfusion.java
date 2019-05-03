@@ -28,8 +28,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
@@ -51,11 +53,14 @@ public class CurseInfusion extends InventorySpell {
 		item.cursed = true;
 		if (item instanceof MeleeWeapon || item instanceof SpiritBow) {
 			Weapon w = (Weapon) item;
-			Class<? extends Weapon.Enchantment> curr = null;
 			if (w.enchantment != null) {
 				w.enchant(Weapon.Enchantment.randomCurse(w.enchantment.getClass()));
 			} else {
-				w.enchant(Weapon.Enchantment.randomCurse(curr));
+				w.enchant(Weapon.Enchantment.randomCurse());
+			}
+			w.curseInfusionBonus = true;
+			if (w instanceof MagesStaff){
+				((MagesStaff) w).updateWand(true);
 			}
 		} else if (item instanceof Armor){
 			Armor a = (Armor) item;
@@ -64,7 +69,12 @@ public class CurseInfusion extends InventorySpell {
 			} else {
 				a.inscribe(Armor.Glyph.randomCurse());
 			}
+			a.curseInfusionBonus = true;
+		} else if (item instanceof Wand){
+			((Wand) item).curseInfusionBonus = true;
+			((Wand) item).updateLevel();
 		}
+		updateQuickslot();
 	}
 	
 	@Override
@@ -79,10 +89,10 @@ public class CurseInfusion extends InventorySpell {
 			inputs =  new Class[]{ScrollOfRemoveCurse.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 1;
+			cost = 4;
 			
 			output = CurseInfusion.class;
-			outQuantity = 4;
+			outQuantity = 3;
 		}
 		
 	}

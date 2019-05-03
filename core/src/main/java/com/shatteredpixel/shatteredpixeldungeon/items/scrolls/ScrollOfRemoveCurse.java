@@ -96,11 +96,15 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 					procced = true;
 				}
 			}
+			if (item instanceof Wand){
+				((Wand) item).updateLevel();
+			}
 		}
 		
 		if (procced) {
 			hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 			hero.updateHT( false ); //for ring of might
+			updateQuickslot();
 		}
 		
 		return procced;
