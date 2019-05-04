@@ -28,7 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
 public class PitfallTrap extends Trap {
 
@@ -39,6 +41,12 @@ public class PitfallTrap extends Trap {
 
 	@Override
 	public void activate() {
+		
+		if( Dungeon.bossLevel() || Dungeon.depth > 25){
+			GLog.w(Messages.get(this, "no_pit"));
+			return;
+		}
+		
 		Heap heap = Dungeon.level.heaps.get( pos );
 
 		if (heap != null){

@@ -86,7 +86,7 @@ public class PoisonDartTrap extends Trap {
 										Dungeon.fail( trap.getClass() );
 									}
 									Buff.affect( finalTarget, Poison.class )
-											.set( 4 + Dungeon.depth );
+											.set( 8 + Math.round(2*Dungeon.depth / 3f) );
 									Sample.INSTANCE.play(Assets.SND_HIT, 1, 1, Random.Float(0.8f, 1.25f));
 									finalTarget.sprite.bloodBurstA(finalTarget.sprite.center(), dmg);
 									finalTarget.sprite.flash();

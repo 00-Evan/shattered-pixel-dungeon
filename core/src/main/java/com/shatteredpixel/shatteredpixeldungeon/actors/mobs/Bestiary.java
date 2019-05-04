@@ -55,7 +55,7 @@ public class Bestiary {
 				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
 						Gnoll.class, Gnoll.class, Gnoll.class, Gnoll.class,
 						Crab.class, Swarm.class));
-			case 4:
+			case 4: case 5:
 				//1x rat, 2x gnoll, 3x crab, 1x swarm
 				return new ArrayList<>(Arrays.asList(Rat.class,
 						Gnoll.class, Gnoll.class,
@@ -80,7 +80,7 @@ public class Bestiary {
 						Thief.class,
 						Shaman.class, Shaman.class,
 						Guard.class, Guard.class));
-			case 9:
+			case 9: case 10:
 				//3x skeleton, 1x thief, 2x shaman, 3x guard
 				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
 						Thief.class,
@@ -106,7 +106,7 @@ public class Bestiary {
 						Brute.class, Brute.class, Brute.class,
 						Shaman.class,
 						Spinner.class));
-			case 14:
+			case 14: case 15:
 				//1x bat, 3x brute, 1x shaman, 4x spinner
 				return new ArrayList<>(Arrays.asList(
 						Bat.class,
@@ -134,7 +134,7 @@ public class Bestiary {
 						Warlock.class,
 						Monk.class, Monk.class,
 						Golem.class));
-			case 19:
+			case 19: case 20:
 				//1x elemental, 1x warlock, 2x monk, 3x golem
 				return new ArrayList<>(Arrays.asList(
 						Elemental.class,
@@ -143,7 +143,7 @@ public class Bestiary {
 						Golem.class, Golem.class, Golem.class));
 				
 			// Halls
-			case 22:
+			case 21: case 22:
 				//3x succubus, 3x evil eye
 				return new ArrayList<>(Arrays.asList(
 						Succubus.class, Succubus.class, Succubus.class,
@@ -154,7 +154,7 @@ public class Bestiary {
 						Succubus.class, Succubus.class,
 						Eye.class, Eye.class, Eye.class, Eye.class,
 						Scorpio.class, Scorpio.class));
-			case 24:
+			case 24: case 25: case 26:
 				//1x succubus, 2x evil eye, 3x scorpio
 				return new ArrayList<>(Arrays.asList(
 						Succubus.class,

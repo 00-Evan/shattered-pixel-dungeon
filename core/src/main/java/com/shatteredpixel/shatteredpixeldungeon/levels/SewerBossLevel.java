@@ -110,11 +110,6 @@ public class SewerBossLevel extends SewerLevel {
 		mobs.add( boss );
 	}
 	
-	@Override
-	public Mob createMob() {
-		return null;
-	}
-	
 	public Actor respawner() {
 		return null;
 	}

@@ -43,10 +43,6 @@ public class SummoningTrap extends Trap {
 	@Override
 	public void activate() {
 
-		if (Dungeon.bossLevel()) {
-			return;
-		}
-
 		int nMobs = 1;
 		if (Random.Int( 2 ) == 0) {
 			nMobs++;

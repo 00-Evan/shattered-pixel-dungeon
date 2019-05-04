@@ -182,11 +182,6 @@ public class CavesBossLevel extends Level {
 	}
 	
 	@Override
-	public Mob createMob() {
-		return null;
-	}
-	
-	@Override
 	protected void createMobs() {
 	}
 	
