@@ -23,20 +23,19 @@ package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 public class ReclaimTrap extends TargetedSpell {
 	
@@ -44,38 +43,98 @@ public class ReclaimTrap extends TargetedSpell {
 		image = ItemSpriteSheet.RECLAIM_TRAP;
 	}
 	
+	private Class<?extends Trap> storedTrap = null;
+	
 	@Override
 	protected void affectTarget(Ballistica bolt, Hero hero) {
-		Trap t = Dungeon.level.traps.get(bolt.collisionPos);
-		if (t != null && t.active){
-			if (!t.visible) t.reveal();
-			t.disarm();
-			
-			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
-			hero.sprite.parent.addToFront( new Lightning(DungeonTilemap.tileCenterToWorld(t.pos), hero.sprite.center(), null) );
-			
-			ScrollOfRecharging.charge(hero);
-			Buff.prolong(hero, Recharging.class, 15f);
-			Buff.affect(hero, ArtifactRecharge.class).set( 15 );
-			
+		if (storedTrap == null) {
+			quantity++; //storing a trap doesn't consume the spell
+			Trap t = Dungeon.level.traps.get(bolt.collisionPos);
+			if (t != null && t.active && t.visible) {
+				t.disarm();
+				
+				Sample.INSTANCE.play(Assets.SND_LIGHTNING);
+				ScrollOfRecharging.charge(hero);
+				storedTrap = t.getClass();
+				
+			} else {
+				GLog.w(Messages.get(this, "no_trap"));
+			}
 		} else {
-			GLog.w(Messages.get(this, "no_trap"));
+			
+			try {
+				Trap t = storedTrap.newInstance();
+				storedTrap = null;
+				
+				t.pos = bolt.collisionPos;
+				t.activate();
+				
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+			}
 		}
+	}
+	
+	@Override
+	public String desc() {
+		String desc = super.desc();
+		if (storedTrap != null){
+			desc += "\n\n" + Messages.get(this, "desc_trap", Messages.get(storedTrap, "name"));
+		}
+		return desc;
+	}
+	
+	private static final ItemSprite.Glowing[] COLORS = new ItemSprite.Glowing[]{
+			new ItemSprite.Glowing( 0xFF0000 ),
+			new ItemSprite.Glowing( 0xFF8000 ),
+			new ItemSprite.Glowing( 0xFFFF00 ),
+			new ItemSprite.Glowing( 0x00FF00 ),
+			new ItemSprite.Glowing( 0x00FFFF ),
+			new ItemSprite.Glowing( 0x8000FF ),
+			new ItemSprite.Glowing( 0xFFFFFF ),
+			new ItemSprite.Glowing( 0x808080 ),
+			new ItemSprite.Glowing( 0x000000 )
+	};
+	
+	@Override
+	public ItemSprite.Glowing glowing() {
+		if (storedTrap != null){
+			try {
+				return COLORS[storedTrap.newInstance().color];
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+			}
+		}
+		return null;
 	}
 	
 	@Override
 	public int price() {
 		//prices of ingredients, divided by output quantity
-		return Math.round(quantity * ((30 + 100) / 3f));
+		return Math.round(quantity * ((40 + 100) / 3f));
+	}
+	
+	private static final String STORED_TRAP = "stored_trap";
+	
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(STORED_TRAP, storedTrap);
+	}
+	
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		storedTrap = bundle.getClass(STORED_TRAP);
 	}
 	
 	public static class Recipe extends com.shatteredpixel.shatteredpixeldungeon.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{ScrollOfRecharging.class, MetalShard.class};
+			inputs =  new Class[]{ScrollOfMagicMapping.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 8;
+			cost = 6;
 			
 			output = ReclaimTrap.class;
 			outQuantity = 3;
