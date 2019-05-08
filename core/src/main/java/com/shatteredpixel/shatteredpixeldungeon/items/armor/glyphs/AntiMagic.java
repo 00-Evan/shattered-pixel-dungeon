@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
@@ -47,16 +48,20 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( DisintegrationTrap.class );
 		RESISTS.add( GrimTrap.class );
 		
-		RESISTS.add( Shaman.class );
-		RESISTS.add( Warlock.class );
-		RESISTS.add( Eye.class );
-		RESISTS.add( Yog.BurningFist.class );
+		RESISTS.add( Shaman.LightningBolt.class );
+		RESISTS.add( Warlock.DarkBolt.class );
+		RESISTS.add( Eye.DeathGaze.class );
+		RESISTS.add( Yog.BurningFist.DarkBolt.class );
 	}
 	
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 		//no proc effect, see Hero.damage
 		return damage;
+	}
+	
+	public static int drRoll( int level ){
+		return Random.NormalIntRange(2+level, 4 + (level*2));
 	}
 
 	@Override

@@ -311,6 +311,9 @@ public class Yog extends Mob {
 			return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
 		}
 		
+		//used so resistances can differentiate between melee and magical attacks
+		public static class DarkBolt{}
+		
 		@Override
 		public boolean attack( Char enemy ) {
 			
@@ -320,7 +323,7 @@ public class Yog extends Mob {
 				if (hit( this, enemy, true )) {
 					
 					int dmg =  damageRoll();
-					enemy.damage( dmg, this );
+					enemy.damage( dmg, new DarkBolt() );
 					
 					enemy.sprite.bloodBurstA( sprite.center(), dmg );
 					enemy.sprite.flash();

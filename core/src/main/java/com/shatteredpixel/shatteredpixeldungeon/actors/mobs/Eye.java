@@ -144,6 +144,9 @@ public class Eye extends Mob {
 		if (beamCharged) dmg /= 4;
 		super.damage(dmg, src);
 	}
+	
+	//used so resistances can differentiate between melee and magical attacks
+	public static class DeathGaze{}
 
 	public void deathGaze(){
 		if (!beamCharged || beamCooldown > 0 || beam == null)
@@ -170,7 +173,7 @@ public class Eye extends Mob {
 			}
 
 			if (hit( this, ch, true )) {
-				ch.damage( Random.NormalIntRange( 30, 50 ), this );
+				ch.damage( Random.NormalIntRange( 30, 50 ), new DeathGaze() );
 
 				if (Dungeon.level.heroFOV[pos]) {
 					ch.sprite.flash();
