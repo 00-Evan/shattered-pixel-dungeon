@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+import com.watabou.utils.Random;
 
 public class Potential extends Glyph {
 	
@@ -38,10 +39,13 @@ public class Potential extends Glyph {
 
 		int level = Math.max( 0, armor.level() );
 		
-		if (defender instanceof Hero) {
-			int wands = ((Hero) defender).belongings.charge(0.12f + level*0.06f);
+		// lvl 0 - 16.7%
+		// lvl 1 - 28.6%
+		// lvl 2 - 37.5%
+		if (defender instanceof Hero && Random.Int( level + 6 ) >= 5 ) {
+			int wands = ((Hero) defender).belongings.charge( 1f );
 			if (wands > 0) {
-				defender.sprite.centerEmitter().burst(EnergyParticle.FACTORY, wands * (level + 2));
+				defender.sprite.centerEmitter().burst(EnergyParticle.FACTORY, 10);
 			}
 		}
 		
