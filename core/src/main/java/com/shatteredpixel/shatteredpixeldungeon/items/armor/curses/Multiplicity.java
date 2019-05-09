@@ -79,6 +79,7 @@ public class Multiplicity extends Armor.Glyph {
 							Bundle store = new Bundle();
 							attacker.storeInBundle(store);
 							m.restoreFromBundle(store);
+							m.pos = 0;
 							m.HP = m.HT;
 							if (m.buff(PinCushion.class) != null){
 								m.remove(m.buff(PinCushion.class));
