@@ -307,11 +307,20 @@ public class Hero extends Char {
 		//temporarily set the hero's weapon to the missile weapon being used
 		KindOfWeapon equipped = belongings.weapon;
 		belongings.weapon = wep;
-		boolean result = attack( enemy );
+		boolean hit = attack( enemy );
 		Invisibility.dispel();
 		belongings.weapon = equipped;
+		
+		if (subClass == HeroSubClass.GLADIATOR){
+			if (hit) {
+				Buff.affect( this, Combo.class ).hit( enemy );
+			} else {
+				Combo combo = buff(Combo.class);
+				if (combo != null) combo.miss( enemy );
+			}
+		}
 
-		return result;
+		return hit;
 	}
 	
 	@Override
@@ -1506,10 +1515,10 @@ public class Hero extends Char {
 
 		if (subClass == HeroSubClass.GLADIATOR){
 			if (hit) {
-				Buff.affect( this, Combo.class ).hit();
+				Buff.affect( this, Combo.class ).hit( enemy );
 			} else {
 				Combo combo = buff(Combo.class);
-				if (combo != null) combo.miss();
+				if (combo != null) combo.miss( enemy );
 			}
 		}
 		

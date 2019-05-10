@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 
 public class Berserk extends Buff {
 
@@ -97,7 +98,7 @@ public class Berserk extends Buff {
 				power = 0f;
 			}
 		} else if (state == State.NORMAL) {
-			power -= Math.max(0.1f, power) * 0.1f * Math.pow((target.HP/(float)target.HT), 2);
+			power -= GameMath.gate(0.1f, power, 1f) * 0.05f * Math.pow((target.HP/(float)target.HT), 2);
 			
 			if (power <= 0){
 				detach();
@@ -158,7 +159,7 @@ public class Berserk extends Buff {
 	public void tintIcon(Image icon) {
 		switch (state){
 			case NORMAL: default:
-				if (power < 0.5f)       icon.hardlight(1f, 1f, 0.5f - (power));
+				if (power < 0.5f)       icon.hardlight(1f, 1f, 1f - 2*(power));
 				else if (power < 1f)    icon.hardlight(1f, 1.5f - power, 0f);
 				else                    icon.hardlight(1f, 0f, 0f);
 				break;
