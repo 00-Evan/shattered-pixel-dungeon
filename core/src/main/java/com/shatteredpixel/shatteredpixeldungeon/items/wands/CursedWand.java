@@ -82,25 +82,25 @@ public class CursedWand {
 	private static float RARE_CHANCE = 0.09f;
 	private static float VERY_RARE_CHANCE = 0.01f;
 
-	public static void cursedZap(final Wand wand, final Hero user, final Ballistica bolt){
+	public static void cursedZap(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
 		switch (Random.chances(new float[]{COMMON_CHANCE, UNCOMMON_CHANCE, RARE_CHANCE, VERY_RARE_CHANCE})){
 			case 0:
 			default:
-				commonEffect(wand, user, bolt);
+				commonEffect(origin, user, bolt, afterZap);
 				break;
 			case 1:
-				uncommonEffect(wand, user, bolt);
+				uncommonEffect(origin, user, bolt, afterZap);
 				break;
 			case 2:
-				rareEffect(wand, user, bolt);
+				rareEffect(origin, user, bolt, afterZap);
 				break;
 			case 3:
-				veryRareEffect(wand, user, bolt);
+				veryRareEffect(origin, user, bolt, afterZap);
 				break;
 		}
 	}
 
-	private static void commonEffect(final Wand wand, final Hero user, final Ballistica bolt){
+	private static void commonEffect(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
 		switch(Random.Int(4)){
 
 			//anti-entropy
@@ -120,7 +120,7 @@ public class CursedWand {
 										Buff.affect(target, Frost.class, Frost.duration(target) * Random.Float(3f, 5f));
 									break;
 							}
-							wand.wandUsed();
+							afterZap.call();
 						}
 					});
 				break;
@@ -130,7 +130,7 @@ public class CursedWand {
 				cursedFX(user, bolt, new Callback() {
 					public void call() {
 						GameScene.add( Blob.seed(bolt.collisionPos, 30, Regrowth.class));
-						wand.wandUsed();
+						afterZap.call();
 					}
 				});
 				break;
@@ -140,7 +140,7 @@ public class CursedWand {
 				switch(Random.Int(2)){
 					case 0:
 						ScrollOfTeleportation.teleportHero(user);
-						wand.wandUsed();
+						afterZap.call();
 						break;
 					case 1:
 						cursedFX(user, bolt, new Callback() {
@@ -148,7 +148,6 @@ public class CursedWand {
 								Char ch = Actor.findChar( bolt.collisionPos );
 								if (ch == user){
 									ScrollOfTeleportation.teleportHero(user);
-									wand.wandUsed();
 								} else if (ch != null && !ch.properties().contains(Char.Property.IMMOVABLE)) {
 									int count = 10;
 									int pos;
@@ -167,7 +166,7 @@ public class CursedWand {
 										ch.sprite.visible = Dungeon.level.heroFOV[pos];
 									}
 								}
-								wand.wandUsed();
+								afterZap.call();
 							}
 						});
 						break;
@@ -189,7 +188,7 @@ public class CursedWand {
 								GameScene.add( Blob.seed( bolt.collisionPos, 200, ParalyticGas.class ) );
 								break;
 						}
-						wand.wandUsed();
+						afterZap.call();
 					}
 				});
 				break;
@@ -197,7 +196,7 @@ public class CursedWand {
 
 	}
 
-	private static void uncommonEffect(final Wand wand, final Hero user, final Ballistica bolt){
+	private static void uncommonEffect(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
 		switch(Random.Int(4)){
 
 			//Random plant
@@ -218,7 +217,7 @@ public class CursedWand {
 								pos == Terrain.FURROWED_GRASS) {
 							Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), pos);
 						}
-						wand.wandUsed();
+						afterZap.call();
 					}
 				});
 				break;
@@ -234,7 +233,7 @@ public class CursedWand {
 								case 0:
 									user.HP = Math.min(user.HT, user.HP + damage);
 									user.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
-									target.damage(damage, wand);
+									target.damage(damage, origin);
 									target.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
 									break;
 								case 1:
@@ -243,18 +242,18 @@ public class CursedWand {
 									target.HP = Math.min(target.HT, target.HP + damage);
 									target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
 									Sample.INSTANCE.play(Assets.SND_CURSED);
-									if (!user.isAlive()) {
-										Dungeon.fail( wand.getClass() );
-										GLog.n(Messages.get(CursedWand.class, "ondeath", wand.name()));
+									if (!user.isAlive() && origin != null) {
+										Dungeon.fail( origin.getClass() );
+										GLog.n(Messages.get(CursedWand.class, "ondeath", origin.name()));
 									}
 									break;
 							}
-							wand.wandUsed();
+							afterZap.call();
 						}
 					});
 				} else {
 					GLog.i(Messages.get(CursedWand.class, "nothing"));
-					wand.wandUsed();
+					afterZap.call();
 				}
 				break;
 
@@ -263,7 +262,7 @@ public class CursedWand {
 				cursedFX(user, bolt, new Callback() {
 					public void call() {
 						new Bomb().explode(bolt.collisionPos);
-						wand.wandUsed();
+						afterZap.call();
 					}
 				});
 				break;
@@ -274,13 +273,13 @@ public class CursedWand {
 				Buff.prolong(user, Recharging.class, 20f);
 				ScrollOfRecharging.charge(user);
 				SpellSprite.show(user, SpellSprite.CHARGE);
-				wand.wandUsed();
+				afterZap.call();
 				break;
 		}
 
 	}
 
-	private static void rareEffect(final Wand wand, final Hero user, final Ballistica bolt){
+	private static void rareEffect(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
 		switch(Random.Int(4)){
 
 			//sheep transformation
@@ -304,7 +303,7 @@ public class CursedWand {
 						} else {
 							GLog.i(Messages.get(CursedWand.class, "nothing"));
 						}
-						wand.wandUsed();
+						afterZap.call();
 					}
 				});
 				break;
@@ -312,7 +311,7 @@ public class CursedWand {
 			//curses!
 			case 1:
 				CursingTrap.curse(user);
-				wand.wandUsed();
+				afterZap.call();
 				break;
 
 			//inter-level teleportation
@@ -339,18 +338,18 @@ public class CursedWand {
 					ScrollOfTeleportation.teleportHero(user);
 
 				}
-				wand.wandUsed();
+				afterZap.call();
 				break;
 
 			//summon monsters
 			case 3:
 				new SummoningTrap().set( user.pos ).activate();
-				wand.wandUsed();
+				afterZap.call();
 				break;
 		}
 	}
 
-	private static void veryRareEffect(final Wand wand, final Hero user, final Ballistica bolt){
+	private static void veryRareEffect(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
 		switch(Random.Int(4)){
 
 			//great forest fire!
@@ -365,7 +364,7 @@ public class CursedWand {
 				Sample.INSTANCE.play(Assets.SND_TELEPORT);
 				GLog.p(Messages.get(CursedWand.class, "grass"));
 				GLog.w(Messages.get(CursedWand.class, "fire"));
-				wand.wandUsed();
+				afterZap.call();
 				break;
 
 			//superpowered mimic
@@ -387,8 +386,8 @@ public class CursedWand {
 						} else {
 							GLog.i(Messages.get(CursedWand.class, "nothing"));
 						}
-
-						wand.wandUsed();
+						
+						afterZap.call();
 					}
 				});
 				break;
@@ -400,7 +399,7 @@ public class CursedWand {
 					if(Messages.lang() != Languages.ENGLISH){
 						//Don't bother doing this joke to none-english speakers, I doubt it would translate.
 						GLog.i(Messages.get(CursedWand.class, "nothing"));
-						wand.wandUsed();
+						afterZap.call();
 					} else {
 						GameScene.show(
 								new WndOptions("CURSED WAND ERROR", "this application will now self-destruct", "abort", "retry", "fail") {
@@ -421,14 +420,17 @@ public class CursedWand {
 					ShatteredPixelDungeon.reportException(e);
 					//oookay maybe don't kill the game if the save failed.
 					GLog.i(Messages.get(CursedWand.class, "nothing"));
-					wand.wandUsed();
+					afterZap.call();
 				}
 				break;
 
 			//random transmogrification
 			case 3:
-				wand.wandUsed();
-				wand.detach(user.belongings.backpack);
+				if (origin == null){
+					cursedZap(origin, user, bolt, afterZap);
+					return;
+				}
+				origin.detach(user.belongings.backpack);
 				Item result;
 				do {
 					result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
@@ -436,9 +438,13 @@ public class CursedWand {
 				} while (result.cursed);
 				if (result.isUpgradable()) result.upgrade();
 				result.cursed = result.cursedKnown = true;
-				GLog.w( Messages.get(CursedWand.class, "transmogrify") );
+				if (origin instanceof Wand){
+					GLog.w( Messages.get(CursedWand.class, "transmogrify_wand") );
+				} else {
+					GLog.w( Messages.get(CursedWand.class, "transmogrify_other") );
+				}
 				Dungeon.level.drop(result, user.pos).sprite.drop();
-				wand.wandUsed();
+				afterZap.call();
 				break;
 		}
 	}

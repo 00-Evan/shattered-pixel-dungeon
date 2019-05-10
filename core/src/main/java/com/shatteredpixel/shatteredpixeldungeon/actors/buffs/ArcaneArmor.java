@@ -8,7 +8,7 @@
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,63 +21,60 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-//TODO this may be very powerful, consider balancing
-public class ArtifactRecharge extends Buff {
+//A magical version of barkskin, essentially
+public class ArcaneArmor extends Buff {
 	
 	{
 		type = buffType.POSITIVE;
 	}
 	
-	private int left;
+	private int level = 0;
+	private int interval = 1;
 	
 	@Override
 	public boolean act() {
-		
-		if (target instanceof Hero){
-			Belongings b = ((Hero) target).belongings;
+		if (target.isAlive()) {
 			
-			if (b.misc1 instanceof Artifact){
-				((Artifact)b.misc1).charge((Hero)target);
+			spend( interval );
+			if (--level <= 0) {
+				detach();
 			}
-			if (b.misc2 instanceof Artifact){
-				((Artifact)b.misc2).charge((Hero)target);
-			}
-		}
-		
-		left--;
-		if (left <= 0){
-			detach();
+			
 		} else {
-			spend(TICK);
+			
+			detach();
+			
 		}
 		
 		return true;
 	}
 	
-	public void set( int amount ){
-		left = amount;
+	public int level() {
+		return level;
 	}
 	
-	public void prolong( int amount ){
-		left += amount;
+	public void set( int value, int time ) {
+		//decide whether to override, preferring high value + low interval
+		if (Math.sqrt(interval)*level < Math.sqrt(time)*value) {
+			level = value;
+			interval = time;
+			spend(time - cooldown() - 1);
+		}
 	}
 	
 	@Override
 	public int icon() {
-		return BuffIndicator.RECHARGING;
+		return BuffIndicator.ARMOR;
 	}
 	
 	@Override
 	public void tintIcon(Image icon) {
-		icon.hardlight(0, 1f, 0);
+		icon.tint(0.5f, 0, 1, 0.5f);
 	}
 	
 	@Override
@@ -87,20 +84,23 @@ public class ArtifactRecharge extends Buff {
 	
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", dispTurns(left+1));
+		return Messages.get(this, "desc", level, dispTurns(cooldown()+1));
 	}
 	
-	private static final String LEFT = "left";
+	private static final String LEVEL	    = "level";
+	private static final String INTERVAL    = "interval";
 	
 	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put( LEFT, left );
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( INTERVAL, interval );
+		bundle.put( LEVEL, level );
 	}
 	
 	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		left = bundle.getInt(LEFT);
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		interval = bundle.getInt( INTERVAL );
+		level = bundle.getInt( LEVEL );
 	}
 }
