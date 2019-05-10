@@ -272,7 +272,7 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( CharSprite.WARNING );
 		infos.add(changes);
 		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BREW_WICKED, null), "Combination Items",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BREW_INFERNAL, null), "Combination Items",
 				"The following combination items are no longer craftable, and are effectively removed from the game:\n" +
 				"_-_ Wicked Brew\n" +
 				"_-_ Frigid Brew\n" +

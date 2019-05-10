@@ -267,16 +267,19 @@ public class ItemSpriteSheet {
 	
 	public static final int FISHING_SPEAR   = MISSILE_WEP+4;
 	public static final int SHURIKEN        = MISSILE_WEP+5;
+	public static final int THROWING_CLUB   = MISSILE_WEP+6;
 	
 	public static final int THROWING_SPEAR  = MISSILE_WEP+7;
 	public static final int BOLAS           = MISSILE_WEP+8;
-	public static final int BOOMERANG       = MISSILE_WEP+9;
+	public static final int KUNAI           = MISSILE_WEP+9;
 	
 	public static final int JAVELIN         = MISSILE_WEP+10;
 	public static final int TOMAHAWK        = MISSILE_WEP+11;
+	public static final int BOOMERANG       = MISSILE_WEP+12;
 	
 	public static final int TRIDENT         = MISSILE_WEP+13;
 	public static final int THROWING_HAMMER = MISSILE_WEP+14;
+	public static final int FORCE_CUBE      = MISSILE_WEP+15;
 	
 	static{
 		assignItemRect(SPIRIT_BOW,      16, 16);
@@ -287,16 +290,19 @@ public class ItemSpriteSheet {
 		
 		assignItemRect(FISHING_SPEAR,   11, 11);
 		assignItemRect(SHURIKEN,        12, 12);
+		assignItemRect(THROWING_CLUB,   12, 12);
 		
 		assignItemRect(THROWING_SPEAR,  13, 13);
 		assignItemRect(BOLAS,           15, 14);
-		assignItemRect(BOOMERANG,       14, 14);
+		assignItemRect(KUNAI,           15, 15);
 		
 		assignItemRect(JAVELIN,         16, 16);
 		assignItemRect(TOMAHAWK,        13, 13);
+		assignItemRect(BOOMERANG,       14, 14);
 		
 		assignItemRect(TRIDENT,         16, 16);
 		assignItemRect(THROWING_HAMMER, 12, 12);
+		assignItemRect(FORCE_CUBE,      10, 13);
 	}
 	
 	public static final int TIPPED_DARTS    =                               xy(1, 11);  //16 slots
@@ -548,19 +554,15 @@ public class ItemSpriteSheet {
 	public static final int BREW_BLIZZARD   = BREWS+1;
 	public static final int BREW_SHOCKING   = BREWS+2;
 	public static final int BREW_CAUSTIC    = BREWS+3;
-	public static final int BREW_WICKED     = BREWS+4; //discontinued
-	public static final int BREW_FRIGID     = BREWS+5; //discontinued
-	public static final int BREW_FROSTFIRE  = BREWS+6; //discontinued
 	
 	private static final int ELIXIRS        =                               xy(9, 25);  //8 slots
-	public static final int ELIXIR_AQUA     = ELIXIRS+0;
-	public static final int ELIXIR_HONEY    = ELIXIRS+1;
+	public static final int ELIXIR_HONEY    = ELIXIRS+0;
+	public static final int ELIXIR_AQUA     = ELIXIRS+1;
 	public static final int ELIXIR_MIGHT    = ELIXIRS+2;
 	public static final int ELIXIR_DRAGON   = ELIXIRS+3;
 	public static final int ELIXIR_TOXIC    = ELIXIRS+4;
 	public static final int ELIXIR_ICY      = ELIXIRS+5;
-	public static final int ELIXIR_RESTO    = ELIXIRS+6; //discontinued
-	public static final int ELIXIR_SURGE    = ELIXIRS+7; //discontinued
+	public static final int ELIXIR_ARCANE   = ELIXIRS+6;
 	static{
 		for (int i = BREWS; i < BREWS+16; i++)
 			assignItemRect(i, 12, 14);
@@ -569,25 +571,31 @@ public class ItemSpriteSheet {
 	                                                                                    //16 free slots
 	
 	private static final int SPELLS         =                               xy(1, 27);  //16 slots
-	public static final int PHASE_SHIFT     = SPELLS+0;
-	public static final int AQUA_BLAST      = SPELLS+1;
-	public static final int MAGIC_INFUSE    = SPELLS+2;
-	public static final int MAGIC_PORTER    = SPELLS+3;
-	public static final int RETURN_BEACON   = SPELLS+4;
-	public static final int FEATHER_FALL    = SPELLS+5;
-	public static final int CURSE_INFUSE    = SPELLS+6;
+	public static final int MAGIC_PORTER    = SPELLS+0;
+	public static final int PHASE_SHIFT     = SPELLS+1;
+	public static final int WILD_ENERGY = SPELLS+2;
+	public static final int RETURN_BEACON   = SPELLS+3;
+	
+	public static final int AQUA_BLAST      = SPELLS+5;
+	public static final int FEATHER_FALL    = SPELLS+6;
 	public static final int RECLAIM_TRAP    = SPELLS+7;
-	public static final int ALCHEMIZE       = SPELLS+8;
-	public static final int RECYCLE         = SPELLS+9;
+	
+	public static final int CURSE_INFUSE    = SPELLS+9;
+	public static final int MAGIC_INFUSE    = SPELLS+10;
+	public static final int ALCHEMIZE       = SPELLS+11;
+	public static final int RECYCLE         = SPELLS+12;
 	static{
-		assignItemRect(PHASE_SHIFT,     12, 11);
-		assignItemRect(AQUA_BLAST,      11, 11);
-		assignItemRect(MAGIC_INFUSE,    10, 15);
 		assignItemRect(MAGIC_PORTER,    12, 11);
+		assignItemRect(PHASE_SHIFT,     12, 11);
+		assignItemRect(WILD_ENERGY,      8, 16);
 		assignItemRect(RETURN_BEACON,    8, 16);
+		
+		assignItemRect(AQUA_BLAST,      11, 11);
 		assignItemRect(FEATHER_FALL,    11, 11);
-		assignItemRect(CURSE_INFUSE,    10, 15);
 		assignItemRect(RECLAIM_TRAP,    11, 11);
+		
+		assignItemRect(CURSE_INFUSE,    10, 15);
+		assignItemRect(MAGIC_INFUSE,    10, 15);
 		assignItemRect(ALCHEMIZE,       10, 15);
 		assignItemRect(RECYCLE,         10, 15);
 	}
