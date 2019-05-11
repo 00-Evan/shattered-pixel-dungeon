@@ -141,8 +141,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortswor
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Kunai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingClub;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpear;
@@ -382,15 +384,17 @@ public class Generator {
 			
 			MIS_T2.classes = new Class<?>[]{
 					FishingSpear.class,
+					ThrowingClub.class,
 					Shuriken.class
 			};
-			MIS_T2.probs = new float[]{ 4, 3 };
+			MIS_T2.probs = new float[]{ 6, 5, 4 };
 			
 			MIS_T3.classes = new Class<?>[]{
 					ThrowingSpear.class,
+					Kunai.class,
 					Bolas.class
 			};
-			MIS_T3.probs = new float[]{ 4, 3 };
+			MIS_T3.probs = new float[]{ 6, 5, 4 };
 			
 			MIS_T4.classes = new Class<?>[]{
 					Javelin.class,
