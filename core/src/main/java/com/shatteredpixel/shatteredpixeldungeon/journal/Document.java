@@ -116,13 +116,13 @@ public enum Document {
 		//sewers
 		ALCHEMY_GUIDE.pages.put("Potions",              DeviceCompat.isDebug());
 		ALCHEMY_GUIDE.pages.put("Stones",               DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Darts",                DeviceCompat.isDebug());
+		ALCHEMY_GUIDE.pages.put("Energy_Food",          DeviceCompat.isDebug());
+		ALCHEMY_GUIDE.pages.put("Bombs",                DeviceCompat.isDebug());
+		//ALCHEMY_GUIDE.pages.put("Darts",              DeviceCompat.isDebug());
 		
 		//prison
 		ALCHEMY_GUIDE.pages.put("Exotic_Potions",       DeviceCompat.isDebug());
 		ALCHEMY_GUIDE.pages.put("Exotic_Scrolls",       DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Energy_Food",          DeviceCompat.isDebug());
-		ALCHEMY_GUIDE.pages.put("Bombs",                DeviceCompat.isDebug());
 		
 		//caves
 		ALCHEMY_GUIDE.pages.put("Catalysts",            DeviceCompat.isDebug());

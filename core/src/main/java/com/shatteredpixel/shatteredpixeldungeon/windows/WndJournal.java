@@ -295,9 +295,9 @@ public class WndJournal extends WndTabbed {
 	public static class AlchemyTab extends Component {
 		
 		private RedButton[] pageButtons;
-		private static final int NUM_BUTTONS = 10;
+		private static final int NUM_BUTTONS = 9;
 		
-		private static final int spriteIndexes[] = {10, 12, 3, 9, 11, 7, 8, 13, 14, 15};
+		private static final int[] spriteIndexes = {10, 12, 7, 8, 9, 11, 13, 14, 15};
 		
 		private static int currentPageIdx   = -1;
 		
@@ -342,13 +342,27 @@ public class WndJournal extends WndTabbed {
 		protected void layout() {
 			super.layout();
 			
-			int perRow = NUM_BUTTONS / (SPDSettings.landscape() ? 1 : 2);
-			float buttonWidth = width()/perRow;
-			
-			for (int i = 0; i < NUM_BUTTONS; i++) {
-				pageButtons[i].setRect((i%perRow) * (buttonWidth), (i/perRow) * (ITEM_HEIGHT),
-						buttonWidth, ITEM_HEIGHT);
-				PixelScene.align(pageButtons[i]);
+			if (SPDSettings.landscape()){
+				float buttonWidth = width()/pageButtons.length;
+				for (int i = 0; i < NUM_BUTTONS; i++) {
+					pageButtons[i].setRect(i*buttonWidth, 0, buttonWidth, ITEM_HEIGHT);
+					PixelScene.align(pageButtons[i]);
+				}
+			} else {
+				//for first row
+				float buttonWidth = width()/4;
+				float y = 0;
+				float x = 0;
+				for (int i = 0; i < NUM_BUTTONS; i++) {
+					pageButtons[i].setRect(x, y, buttonWidth, ITEM_HEIGHT);
+					PixelScene.align(pageButtons[i]);
+					x += buttonWidth;
+					if (i == 3){
+						y += ITEM_HEIGHT;
+						x = 0;
+						buttonWidth = width()/5;
+					}
+				}
 			}
 			
 			list.setRect(0, pageButtons[NUM_BUTTONS-1].bottom() + 1, width,
