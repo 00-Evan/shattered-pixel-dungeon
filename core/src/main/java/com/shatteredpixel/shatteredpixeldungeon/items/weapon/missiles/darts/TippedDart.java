@@ -23,13 +23,16 @@ package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Recipe;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Dreamfoil;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
@@ -43,6 +46,8 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Stormvine;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +59,49 @@ public abstract class TippedDart extends Dart {
 		
 		//so that slightly more than 1.5x durability is needed for 2 uses
 		baseUses = 0.65f;
+	}
+	
+	private static final String AC_CLEAN = "CLEAN";
+	
+	@Override
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions( hero );
+		actions.remove( AC_TIP );
+		actions.add( AC_CLEAN );
+		return actions;
+	}
+	
+	@Override
+	public void execute(final Hero hero, String action) {
+		if (action.equals( AC_CLEAN )){
+			
+			GameScene.show(new WndOptions(Messages.get(this, "clean_title"),
+					Messages.get(this, "clean_desc"),
+					Messages.get(this, "clean_all"),
+					Messages.get(this, "clean_one"),
+					Messages.get(this, "cancel")){
+				@Override
+				protected void onSelect(int index) {
+					if (index == 0){
+						detachAll(hero.belongings.backpack);
+						new Dart().quantity(quantity).collect();
+						
+						hero.spend( 1f );
+						hero.busy();
+						hero.sprite.operate(hero.pos);
+					} else if (index == 1){
+						detach(hero.belongings.backpack);
+						if (!new Dart().collect()) Dungeon.level.drop(new Dart(), hero.pos).sprite.drop();
+						
+						hero.spend( 1f );
+						hero.busy();
+						hero.sprite.operate(hero.pos);
+					}
+				}
+			});
+			
+		}
+		super.execute(hero, action);
 	}
 	
 	//exact same damage as regular darts, despite being higher tier.
@@ -88,6 +136,12 @@ public abstract class TippedDart extends Dart {
 		return use;
 	}
 	
+	@Override
+	public int price() {
+		//value of regular dart plus half of the seed
+		return 8 * quantity;
+	}
+	
 	private static HashMap<Class<?extends Plant.Seed>, Class<?extends TippedDart>> types = new HashMap<>();
 	static {
 		types.put(Blindweed.Seed.class,     BlindingDart.class);
@@ -104,89 +158,23 @@ public abstract class TippedDart extends Dart {
 		types.put(Swiftthistle.Seed.class,  AdrenalineDart.class);
 	}
 	
-	public static TippedDart randomTipped(){
+	public static TippedDart getTipped( Plant.Seed s, int quantity ){
+		try {
+			return (TippedDart) types.get(s.getClass()).newInstance().quantity(quantity);
+		} catch (Exception e){
+			ShatteredPixelDungeon.reportException(e);
+			return null;
+		}
+	}
+	
+	public static TippedDart randomTipped( int quantity ){
 		Plant.Seed s;
 		do{
 			s = (Plant.Seed) Generator.random(Generator.Category.SEED);
 		} while (!types.containsKey(s.getClass()));
 		
-		try{
-			return (TippedDart) types.get(s.getClass()).newInstance().quantity(2);
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		return getTipped(s, quantity );
 		
 	}
 	
-	public static class TipDart extends Recipe{
-		
-		@Override
-		//also sorts ingredients if it can
-		public boolean testIngredients(ArrayList<Item> ingredients) {
-			if (ingredients.size() != 2) return false;
-			
-			if (ingredients.get(0).getClass() == Dart.class){
-				if (!(ingredients.get(1) instanceof Plant.Seed)){
-					return false;
-				}
-			} else if (ingredients.get(0) instanceof Plant.Seed){
-				if (ingredients.get(1).getClass() == Dart.class){
-					Item temp = ingredients.get(0);
-					ingredients.set(0, ingredients.get(1));
-					ingredients.set(1, temp);
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-			
-			Plant.Seed seed = (Plant.Seed) ingredients.get(1);
-			
-			if (ingredients.get(0).quantity() >= 1
-					&& seed.quantity() >= 1
-					&& types.containsKey(seed.getClass())){
-				return true;
-			}
-			
-			return false;
-		}
-		
-		@Override
-		public int cost(ArrayList<Item> ingredients) {
-			return 0;
-		}
-		
-		@Override
-		public Item brew(ArrayList<Item> ingredients) {
-			if (!testIngredients(ingredients)) return null;
-			
-			int produced = Math.min(2, ingredients.get(0).quantity());
-			
-			ingredients.get(0).quantity(ingredients.get(0).quantity() - produced);
-			ingredients.get(1).quantity(ingredients.get(1).quantity() - 1);
-			
-			try{
-				return types.get(ingredients.get(1).getClass()).newInstance().quantity(produced);
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
-			}
-			
-		}
-		
-		@Override
-		public Item sampleOutput(ArrayList<Item> ingredients) {
-			if (!testIngredients(ingredients)) return null;
-			
-			try{
-				int produced = Math.min(2, ingredients.get(0).quantity());
-				return types.get(ingredients.get(1).getClass()).newInstance().quantity( produced );
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
-			}
-		}
-	}
 }
