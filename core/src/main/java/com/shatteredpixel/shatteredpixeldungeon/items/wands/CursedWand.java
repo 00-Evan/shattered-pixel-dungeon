@@ -426,7 +426,8 @@ public class CursedWand {
 
 			//random transmogrification
 			case 3:
-				if (origin == null){
+				//skips this effect if there is no item to transmogrify
+				if (origin == null || !Dungeon.hero.belongings.contains(origin)){
 					cursedZap(origin, user, bolt, afterZap);
 					return;
 				}
