@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
+import com.watabou.utils.Random;
 
 public class Vampiric extends Weapon.Enchantment {
 
@@ -35,18 +36,22 @@ public class Vampiric extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 		
-		//heals for 2.5-15% of damage dealt, based on missing HP
+		//chance to heal scales from 5%-30% based on missing HP
 		float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
-		float healPercent = .025f + (missingPercent * 0.125f);
-		int healAmt = Math.round(healPercent * damage);
-		healAmt = Math.min( healAmt, attacker.HT - attacker.HP );
+		float healChance = 0.05f + .25f*missingPercent;
 		
-		if (healAmt > 0 && attacker.isAlive()) {
-		
-			attacker.HP += healAmt;
-			attacker.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
-			attacker.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
+		if (Random.Float() < healChance){
 			
+			//heals for 50% of damage dealt
+			int healAmt = Math.round(damage * 0.5f);
+			
+			if (healAmt > 0 && attacker.isAlive()) {
+				
+				attacker.HP += healAmt;
+				attacker.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
+				attacker.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
+				
+			}
 		}
 
 		return damage;
