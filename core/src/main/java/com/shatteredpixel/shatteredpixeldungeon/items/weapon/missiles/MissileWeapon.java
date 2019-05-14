@@ -198,37 +198,17 @@ abstract public class MissileWeapon extends Weapon {
 	}
 	
 	protected void rangedHit( Char enemy, int cell ){
-		//if this weapon was thrown from a source stack, degrade that stack.
-		//unless a weapon is about to break, then break the one being thrown
-		if (parent != null){
-			if (parent.durability <= parent.durabilityPerUse()){
-				durability = 0;
-				parent.durability = MAX_DURABILITY;
-			} else {
-				parent.durability -= parent.durabilityPerUse();
-				if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()){
-					if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
-					else             GLog.n(Messages.get(this, "about_to_break"));
-				}
-			}
-			parent = null;
-		} else {
-			durability -= durabilityPerUse();
-			if (durability > 0 && durability <= durabilityPerUse()){
-				if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
-				else             GLog.n(Messages.get(this, "about_to_break"));
-			}
-		}
+		decrementDurability();
 		if (durability > 0){
 			//attempt to stick the missile weapon to the enemy, just drop it if we can't.
-			if (enemy.isAlive() && sticky) {
+			if (enemy != null && enemy.isAlive() && sticky) {
 				PinCushion p = Buff.affect(enemy, PinCushion.class);
 				if (p.target == enemy){
 					p.stick(this);
 					return;
 				}
 			}
-			Dungeon.level.drop( this, enemy.pos ).sprite.drop();
+			Dungeon.level.drop( this, cell ).sprite.drop();
 		}
 	}
 	
@@ -250,6 +230,30 @@ abstract public class MissileWeapon extends Weapon {
 		
 		//add a tiny amount to account for rounding error for calculations like 1/3
 		return (MAX_DURABILITY/usages) + 0.001f;
+	}
+	
+	protected void decrementDurability(){
+		//if this weapon was thrown from a source stack, degrade that stack.
+		//unless a weapon is about to break, then break the one being thrown
+		if (parent != null){
+			if (parent.durability <= parent.durabilityPerUse()){
+				durability = 0;
+				parent.durability = MAX_DURABILITY;
+			} else {
+				parent.durability -= parent.durabilityPerUse();
+				if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()){
+					if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
+					else             GLog.n(Messages.get(this, "about_to_break"));
+				}
+			}
+			parent = null;
+		} else {
+			durability -= durabilityPerUse();
+			if (durability > 0 && durability <= durabilityPerUse()){
+				if (level() <= 0)GLog.w(Messages.get(this, "about_to_break"));
+				else             GLog.n(Messages.get(this, "about_to_break"));
+			}
+		}
 	}
 	
 	@Override
