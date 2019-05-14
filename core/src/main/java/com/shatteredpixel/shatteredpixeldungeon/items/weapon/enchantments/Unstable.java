@@ -36,31 +36,32 @@ public class Unstable extends Weapon.Enchantment {
 			Blocking.class,
 			Blooming.class,
 			Chilling.class,
+			Kinetic.class,
+			Corrupting.class,
 			Elastic.class,
 			Grim.class,
 			Lucky.class,
-			//precise also not included here, is manually checked in attackSkill
 			//projecting not included, no on-hit effect
 			Shocking.class,
-			Swift.class,
 			Vampiric.class
 	};
-	
-	public static boolean justRolledPrecise;
 
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		if (justRolledPrecise){
-			justRolledPrecise = false;
-			return damage;
+		
+		int conservedDamage = 0;
+		if (attacker.buff(Kinetic.ConservedDamage.class) != null) {
+			conservedDamage = attacker.buff(Kinetic.ConservedDamage.class).damageBonus();
+			attacker.buff(Kinetic.ConservedDamage.class).detach();
 		}
 		
 		try {
-			return Random.oneOf(randomEnchants).newInstance().proc( weapon, attacker, defender, damage );
+			damage = Random.oneOf(randomEnchants).newInstance().proc( weapon, attacker, defender, damage );
 		} catch (Exception e) {
 			ShatteredPixelDungeon.reportException(e);
-			return damage;
 		}
+		
+		return damage + conservedDamage;
 	}
 
 	@Override

@@ -96,9 +96,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Precise;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Swift;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -327,18 +324,6 @@ public class Hero extends Char {
 	public int attackSkill( Char target ) {
 		KindOfWeapon wep = belongings.weapon;
 		
-		if (wep instanceof Weapon
-				&& (((Weapon) wep).hasEnchant(Precise.class, this)
-				|| (((Weapon) wep).hasEnchant(Unstable.class, this) && Random.Int(11) == 0))){
-			if (Precise.rollToGuaranteeHit((Weapon) wep)){
-				target.sprite.emitter().start( Speck.factory(Speck.LIGHT), 0.05f, 5 );
-				if (((Weapon) wep).hasEnchant(Unstable.class, this)){
-					Unstable.justRolledPrecise = true;
-				}
-				return Integer.MAX_VALUE;
-			}
-		}
-		
 		float accuracy = 1;
 		accuracy *= RingOfAccuracy.accuracyMultiplier( this );
 		
@@ -470,12 +455,6 @@ public class Hero extends Char {
 	}
 	
 	public float attackDelay() {
-		if (buff(Swift.SwiftAttack.class) != null
-				&& buff(Swift.SwiftAttack.class).boostsMelee()) {
-			buff(Swift.SwiftAttack.class).detach();
-			return 0;
-		}
-		
 		if (belongings.weapon != null) {
 			
 			return belongings.weapon.speedFactor( this );

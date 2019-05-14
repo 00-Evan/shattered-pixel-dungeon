@@ -139,8 +139,16 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Venomous" );
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Precise.class,
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic.class,
 				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vorpal" );
+		
+		//v0.7.3
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Precise" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic.class,
+				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Swift" );
 	}
 	
 	@Override
