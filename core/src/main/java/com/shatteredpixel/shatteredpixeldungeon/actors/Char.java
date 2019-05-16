@@ -240,6 +240,10 @@ public abstract class Char extends Actor {
 
 			if (!enemy.isAlive() && visibleFight) {
 				if (enemy == Dungeon.hero) {
+					
+					if (this == Dungeon.hero) {
+						return true;
+					}
 
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name)) );

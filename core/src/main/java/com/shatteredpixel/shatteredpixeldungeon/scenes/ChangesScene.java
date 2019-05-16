@@ -2460,12 +2460,14 @@ public class ChangesScene extends PixelScene {
 		public ChangesWindow( Image icon, String title, String message ) {
 			super( icon, title, message);
 			
-			add( new TouchArea( chrome ) {
+			TouchArea blocker = new TouchArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
 				@Override
 				protected void onClick( Touchscreen.Touch touch ) {
 					hide();
 				}
-			} );
+			};
+			blocker.camera = uiCamera;
+			add(blocker);
 			
 		}
 		
