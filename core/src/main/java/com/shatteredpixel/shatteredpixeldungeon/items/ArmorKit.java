@@ -62,7 +62,7 @@ public class ArmorKit extends Item {
 
 		super.execute( hero, action );
 
-		if (action == AC_APPLY) {
+		if (action.equals(AC_APPLY)) {
 
 			curUser = hero;
 			GameScene.selectItem( itemSelector, WndBag.Mode.ARMOR, Messages.get(this, "prompt") );

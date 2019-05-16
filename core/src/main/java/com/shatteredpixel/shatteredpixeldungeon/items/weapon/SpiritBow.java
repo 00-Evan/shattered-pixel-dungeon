@@ -198,10 +198,9 @@ public class SpiritBow extends Weapon {
 				+ (curseInfusionBonus ? 1 : 0);
 	}
 	
-	//for fetching upgrades from a boomerang from pre-0.7.0
-	//TODO implement on this
+	//for fetching upgrades from a boomerang from pre-0.7.1
 	public int spentUpgrades() {
-		return super.level();
+		return super.level() - (curseInfusionBonus ? 1 : 0);
 	}
 	
 	@Override

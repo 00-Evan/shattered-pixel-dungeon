@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.CausticBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.InfernalBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAquaticRejuvenation;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfArcaneArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfHoneyedHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfIcyTouch;
@@ -53,9 +54,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.MagicalPorter;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.PhaseShift;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.ReclaimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
+import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 
 import java.util.ArrayList;
 
@@ -180,6 +181,7 @@ public abstract class Recipe {
 		new Bomb.EnhanceBomb(),
 		new AlchemicalCatalyst.Recipe(),
 		new ArcaneCatalyst.Recipe(),
+		new ElixirOfArcaneArmor.Recipe(),
 		new ElixirOfAquaticRejuvenation.Recipe(),
 		new ElixirOfDragonsBlood.Recipe(),
 		new ElixirOfIcyTouch.Recipe(),
@@ -200,6 +202,7 @@ public abstract class Recipe {
 		new PhaseShift.Recipe(),
 		new ReclaimTrap.Recipe(),
 		new Recycle.Recipe(),
+		new WildEnergy.Recipe(),
 		new StewedMeat.twoMeat()
 	};
 	

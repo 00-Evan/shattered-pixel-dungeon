@@ -44,6 +44,7 @@ public class Vampiric extends Weapon.Enchantment {
 			
 			//heals for 50% of damage dealt
 			int healAmt = Math.round(damage * 0.5f);
+			healAmt = Math.min( healAmt, attacker.HT - attacker.HP );
 			
 			if (healAmt > 0 && attacker.isAlive()) {
 				

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -110,11 +111,19 @@ public class RingOfWealth extends Ring {
 		triesToDrop -= dropProgression(target, tries);
 		while ( triesToDrop <= 0 ){
 			if (dropsToRare <= 0){
-				drops.add(genRareDrop());
+				Item i;
+				do {
+					i = genRareDrop();
+				} while (Challenges.isItemBlocked(i));
+				drops.add(i);
 				latestDropWasRare = true;
 				dropsToRare = Random.NormalIntRange(0, 20);
 			} else {
-				drops.add(genStandardDrop());
+				Item i;
+				do {
+					i = genStandardDrop();
+				} while (Challenges.isItemBlocked(i));
+				drops.add(i);
 				dropsToRare--;
 			}
 			triesToDrop += Random.NormalIntRange(0, 60);
