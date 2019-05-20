@@ -47,7 +47,7 @@ public class WildEnergy extends TargetedSpell {
 	
 	@Override
 	protected void affectTarget(Ballistica bolt, final Hero hero) {
-		CursedWand.cursedZap(null, hero, bolt, new Callback() {
+		CursedWand.cursedZap(this, hero, bolt, new Callback() {
 			@Override
 			public void call() {
 				ScrollOfRecharging.charge(hero);

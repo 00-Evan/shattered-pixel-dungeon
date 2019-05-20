@@ -86,12 +86,15 @@ public class ReclaimTrap extends TargetedSpell {
 	}
 	
 	@Override
-	public Item split(int amount) {
-		Item split = super.split(amount);
-		if (split != null){
-			((ReclaimTrap)split).storedTrap = null;
-		}
-		return split;
+	protected void onThrow(int cell) {
+		storedTrap = null;
+		super.onThrow(cell);
+	}
+	
+	@Override
+	public void doDrop(Hero hero) {
+		storedTrap = null;
+		super.doDrop(hero);
 	}
 	
 	private static final ItemSprite.Glowing[] COLORS = new ItemSprite.Glowing[]{

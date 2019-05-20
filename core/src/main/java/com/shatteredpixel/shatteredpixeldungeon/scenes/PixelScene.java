@@ -141,7 +141,7 @@ public class PixelScene extends Scene {
 	public void saveWindows(){
 		savedWindows.clear();
 		savedClass = getClass();
-		for (Gizmo g : members){
+		for (Gizmo g : members.toArray(new Gizmo[0])){
 			if (g instanceof Window){
 				savedWindows.add((Class<? extends Window>) g.getClass());
 			}
