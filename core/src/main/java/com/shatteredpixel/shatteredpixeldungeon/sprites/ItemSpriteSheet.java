@@ -302,7 +302,7 @@ public class ItemSpriteSheet {
 		
 		assignItemRect(TRIDENT,         16, 16);
 		assignItemRect(THROWING_HAMMER, 12, 12);
-		assignItemRect(FORCE_CUBE,      10, 13);
+		assignItemRect(FORCE_CUBE,      11, 12);
 	}
 	
 	public static final int TIPPED_DARTS    =                               xy(1, 11);  //16 slots

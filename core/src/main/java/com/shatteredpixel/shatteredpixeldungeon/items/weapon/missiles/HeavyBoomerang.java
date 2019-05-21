@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 
@@ -49,14 +50,12 @@ public class HeavyBoomerang extends MissileWeapon {
 	protected void rangedHit(Char enemy, int cell) {
 		decrementDurability();
 		if (durability > 0){
-			//TODO vfx
 			Buff.append(Dungeon.hero, CircleBack.class).setup(this, cell, Dungeon.hero.pos, Dungeon.depth);
 		}
 	}
 	
 	@Override
 	protected void rangedMiss(int cell) {
-		//TODO vfx
 		parent = null;
 		Buff.append(Dungeon.hero, CircleBack.class).setup(this, cell, Dungeon.hero.pos, Dungeon.depth);
 	}
@@ -84,8 +83,8 @@ public class HeavyBoomerang extends MissileWeapon {
 				left--;
 				if (left <= 0){
 					final Char returnTarget = Actor.findChar(returnPos);
-					((MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class)).
-							reset( thrownPos,
+					MissileSprite visual = ((MissileSprite) Dungeon.hero.sprite.parent.recycle(MissileSprite.class));
+					visual.reset( thrownPos,
 									returnPos,
 									boomerang,
 									new Callback() {
@@ -109,6 +108,9 @@ public class HeavyBoomerang extends MissileWeapon {
 											}
 										}
 									});
+					visual.alpha(0f);
+					float duration = Dungeon.level.trueDistance(thrownPos, returnPos) / 20f;
+					Dungeon.hero.sprite.parent.add(new AlphaTweener(visual, 1f, duration));
 					detach();
 				}
 			}
