@@ -28,6 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 public class Kinetic extends Weapon.Enchantment {
 	
@@ -45,7 +47,7 @@ public class Kinetic extends Weapon.Enchantment {
 		if (damage > defender.HP){
 			int extraDamage = damage - defender.HP;
 			
-			Buff.affect(attacker, ConservedDamage.class, extraDamage*10);
+			Buff.affect(attacker, ConservedDamage.class).setBonus(extraDamage);
 		}
 		
 		return damage + conservedDamage;
@@ -56,11 +58,42 @@ public class Kinetic extends Weapon.Enchantment {
 		return YELLOW;
 	}
 	
-	public static class ConservedDamage extends FlavourBuff {
+	public static class ConservedDamage extends Buff {
 		
 		@Override
 		public int icon() {
 			return BuffIndicator.WEAPON;
+		}
+		
+		@Override
+		public void tintIcon(Image icon) {
+			if (preservedDamage >= 10){
+				icon.hardlight(1f, 0f, 0f);
+			} else if (preservedDamage >= 5) {
+				icon.hardlight(1f, 1f - (preservedDamage - 5f)*.2f, 0f);
+			} else {
+				icon.hardlight(1f, 1f, 1f - preservedDamage*.2f);
+			}
+		}
+		
+		private float preservedDamage;
+		
+		public void setBonus(int bonus){
+			preservedDamage = bonus;
+		}
+		
+		public int damageBonus(){
+			return (int)Math.ceil(preservedDamage);
+		}
+		
+		@Override
+		public boolean act() {
+			preservedDamage -= Math.max(preservedDamage*.025f, 0.1f);
+			if (preservedDamage <= 0) detach();
+			else if (preservedDamage <= 10) BuffIndicator.refreshHero();
+			
+			spend(TICK);
+			return true;
 		}
 		
 		@Override
@@ -73,9 +106,23 @@ public class Kinetic extends Weapon.Enchantment {
 			return Messages.get(this, "desc", damageBonus());
 		}
 		
-		public int damageBonus(){
-			return (int)Math.ceil(cooldown()/10f);
+		private static final String PRESERVED_DAMAGE = "preserve_damage";
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(PRESERVED_DAMAGE, preservedDamage);
 		}
 		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			if (bundle.contains(PRESERVED_DAMAGE)){
+				preservedDamage = bundle.getFloat(PRESERVED_DAMAGE);
+			} else {
+				preservedDamage = cooldown()/10;
+				spend(cooldown());
+			}
+		}
 	}
 }
