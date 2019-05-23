@@ -72,6 +72,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Longsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -143,97 +145,136 @@ public class ChangesScene extends PixelScene {
 		add( list );
 		
 		//**********************
+		//       v0.7.3
+		//**********************
+		
+		ChangeInfo changes = new ChangeInfo("v0.7.3", true, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released May 23rd, 2019\n" +
+				"_-_ 66 days after Shattered v0.7.2" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0xFFFF00)), "Enchantment Changes",
+				"Several changes have been made to enchantments, based on feedback from 0.7.2:\n\n" +
+				"_-_ Precise and swift enchantments have been removed.\n\n" +
+				"_-_ Lucky and blooming are now uncommon enchants, instead of rare and common.\n\n" +
+				"_-_ Kinetic is a new common enchantment! This enchantment preserves excess damage when an enemy is killed and applies it to your next hit.\n\n" +
+				"_-_ Corrupting is a new rare enchantment! When killing an enemy, there is a chance you will corrupt it instead."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.KUNAI, null), "New Thrown Weapons",
+				"Four new thrown weapons have been added!\n\n" +
+				"_-_ Throwing clubs are a tier-2 weapon with extra durability\n\n" +
+				"_-_ Kunai are a tier-3 weapon with bonus damage on sneak attacks\n\n" +
+				"_-_ Heavy boomerangs are a tier-4 weapon which returns after being thrown\n\n" +
+				"_-_ Force cubes are a tier-5 weapon which damage enemies in a 3x3 area"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ELIXIR_ARCANE, null), "New Boss Recipes",
+				"Two new recipes have been added, one which uses goo blobs and another which uses metal shards.\n\n" +
+				"_-_ Elixir of arcane armor requires a goo blob and a potion of earthen armor. It grants a long-lasting resistance to magic.\n\n" +
+				"_-_ Wild energy requires a metal shard and a scroll of mystical energy. It grants large amounts of recharging, but with some unpredictable effects attached!"));
+		
+		changes = new ChangeInfo(Messages.get(this, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Dart(),
+				"Dart tipping has been removed from the alchemy system. Darts can instead be tipped right from the inventory.\n\n" +
+				"Tipped darts have had their shop price reduced by 33%, and can now be cleaned if you don't wish to use the effect.\n\n" +
+				"The alchemy guide has been adjusted due to the removal of dart tipping from alchemy. It now has 9 pages (down from 10), and the order of pages have been adjusted to put some simpler recipes earlier."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ The hero will no longer step onto visible traps if that trap wasn't discovered when movement started.\n\n" +
+				"_-_ When the mage's staff is cursed, the wand within the staff will now also be cursed.\n\n" +
+				"_-_ Scrolls of transmutation can now be used on thrown weapons.\n\n" +
+				"_-_ Improved the coloration of crystal keys. They should now be more distinct from iron keys."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Prismatic images causing errors when falling into pits\n" +
+				"_-_ Secret rooms never spawning in the earlier parts of a region\n" +
+				"_-_ Curse of multiplicity not working correctly on boss floors\n" +
+				"_-_ Curse of multiplicity closing doors when it shouldn't\n" +
+				"_-_ Ring of wealth rarely generating items which are blocked by challenges\n" +
+				"_-_ Windows rarely appearing in places they shouldn't"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
+		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton( new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker & Gladiator",
+				"Because of nerfs I have made to the scaling of the warrior's shield regen, I have some power budget to give to his subclasses!\n\n" +
+				"Berserker rate of rage loss decreased by 50%. It should now be easier to hold onto rage at higher health, but being injured will still help to retain it longer.\n\n" +
+				"Gladiator is now significantly more flexible:\n" +
+				"_-_ Using items no longer resets combo\n" +
+				"_-_ Throwing weapons now increment combo\n" +
+				"_-_ Slam ability now deals damage based on armor, instead of simply increasing damage."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CURSE_INFUSE, null), "Boss Recipe Buffs",
+				"All recipes made with ingredients dropped by bosses have been buffed (except bombs):\n\n" +
+				"_-_ Caustic brew now affects a 7x7 area, up from 5x5. Energy cost of caustic brew reduced to 4 from 8.\n\n" +
+				"_-_ Elixir of aquatic rejuvenation now heals faster, and does not waste healing if the hero is not in water. Total amount of healing reduced to compensate.\n\n" +
+				"_-_ Curse Infusion now grants a single upgrade to wands/weapons/armor in addition to cursing. This upgrade is lost if the item is uncursed.\n\n" +
+				"_-_ Reclaim trap no longer grants recharging, now stores the trap instead. The trap can then be triggered anywhere the player likes."));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_EMERALD, null), "Other Item Buffs",
+				"_-_ Ring of elements now grants 20% resistance per level, up from 16%. However, ring of elements also no longer applies to melee attacks from magic-wielding enemies.\n\n" +
+				"_-_ Throwing stone base damage increased to 2-6 from 1-6\n" +
+				"_-_ Throwing stone durability increased to 5 from 3\n\n" +
+				"_-_ Throwing hammer base damage increased to 10-20 from 8-20"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_SCALE, new ItemSprite.Glowing( 0x663300 )), "Enchant/Glyph Buffs",
+				"_-_ Vampiric now has a chance to heal for large amounts, instead of always healing for small amounts.\n\n" +
+				"_-_ Entanglement no longer roots, now only applies herbal armor buff. Amount of herbal armor granted reduced to compensate.\n\n" +
+				"_-_ Affection charm duration up to 8-12 from 4-12. This means an affection proc now guarantees a free hit.\n\n" +
+				"_-_ Potential no longer grants small amounts of partial charge on every hit, now has a chance to grant one full charge instead. Overall amount of charge given increased by ~20%."));
+		
+		changes = new ChangeInfo(Messages.get(this, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Tomahawk(),
+				"The Tomahawk has been adjusted to make its damage more upfront, but also to reduce its extreme damage scaling with upgrades.\n\n" +
+				"_-_ Tomahawk damage scaling increased to 2-4 per level, up from 2-2\n" +
+				"_-_ Tomahawk bleed damage now starts at 60% of damage, down from 100%"));
+		
+		changes.addButton( new ChangeButton( new Image(Assets.WARRIOR, 0, 15, 12, 15), "Warrior Nerfs",
+				"Warrior shielding regeneration scaling reduced. It is now a flat 1 shield every 30 turns. This is a very slight buff to the earlygame, and a significant nerf to the lategame.\n\n" +
+				"I made this change as too much of the warrior's power was put into his base class, and into a passive ability that players tend to ignore. By removing this power, I can put more power into the warrior's subclasses, which should make the warrior feel more fun and interesting without significantly nerfing him overall."));
+		
+		changes.addButton( new ChangeButton( new Image(Assets.TERRAIN_FEATURES, 16, 0, 16, 16), "Trap Adjustments!",
+				"Several traps have been slightly adjusted due to reclaim trap's new functionality:\n\n" +
+				"_-_ Disintegration trap no longer deals damage based on target HP\n" +
+				"_-_ Flock trap duration no longer scales with depth\n" +
+				"_-_ Bosses now resist grim traps, Yog is immune\n" +
+				"_-_ Pitfall traps do not work on boss floors\n" +
+				"_-_ Reduced poison dart trap damage scaling\n" +
+				"_-_ Rockfall traps trigger in a 5x5 AOE when cast from reclaim trap\n" +
+				"_-_ Bosses will resist weakening traps"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_PLATE, new ItemSprite.Glowing( 0x660022 )), "Enchant/Glyph Nerfs",
+				"_-_ Chilling now only stacks the chilled debuff up to 6 turns.\n\n" +
+				"_-_ Thorns now bleeds enemies for a set amount based on armor level, instead of scaling with damage dealt.\n\n" +
+				"_-_ Antimagic no longer affects the melee attacks of magic wielding enemies.\n" +
+				"_-_ Antimagic no longer bases its blocking power on armor directly, now uses its own calculation which scales on level. This is a slight boost for lower tier armors and a nerf for higher tier ones."));
+		
+		//**********************
 		//       v0.7.2
 		//**********************
 		
-		ChangeInfo changes = new ChangeInfo("v0.7.2", true, "");
+		changes = new ChangeInfo("v0.7.2", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
-		
-		changes = new ChangeInfo("0.7.2d", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.7.2c):\n" +
-				"_-_ Hourglass not updating charges correctly in some cases\n" +
-				"_-_ Corrupted enemies never dropping loot\n\n" +
-				"Fixed (existed before 0.7.2):\n" +
-				"_-_ Cloak of Shadows very rarely consuming more charges than it should\n" +
-				"_-_ Assassin's blink not working on enemies standing on traps\n" +
-				"_-_ Glyph of stone blocking an incorrect amount of damage (too low) in some cases"));
-		
-		changes = new ChangeInfo("v0.7.2c", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"Additional improvements to Google Play version of the game:\n" +
-				"_-_ Improvements to error reporting from data collection.\n" +
-				"_-_ Improvements to stability of hall of heroes cloud syncing.\n\n" +
-				"_-_ Added support for adaptive icons in Android 8.0+.\n" +
-				"_-_ Improved how the game handles orientation changes and window resizing."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.7.2):\n" +
-				"_-_ NPCs triggering ring of wealth when being shot by corruption\n\n" +
-				"Fixed (existed before 0.7.2):\n" +
-				"_-_ Hourglass not updating charges correctly in some cases\n" +
-				"_-_ Blandfruit bush rarely appearing in 'on diet' challenge\n" +
-				"_-_ Strength from ring of might not appearing in rankings"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
-		
-		changes = new ChangeInfo("v0.7.2b", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0xFF4400)), "Enchantment Buffs",
-				"_-_ Blazing now deals a small amount of bonus damage if the enemy is already on fire.\n\n" +
-				"_-_ Blooming now has a chance to spawn 2 tall grasses, scaling with weapon level.\n\n" +
-				"_-_ Blocking base duration increased to 2 from 1.\n\n" +
-				"_-_ Swift buff duration increased to 5 from 2.\n\n" +
-				"_-_ Vampiric healing increased to 2.5%-15% of damage dealt, from 0-10%.\n\n" +
-				"_-_ Lucky base chance to generate an item increased to 10% from 5%.\n\n" +
-				"_-_ Grim chance to finish an enemy at low health increased, especially at higher levels."));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
-				"Major internal improvements to service integrations for Google Play version of the game:\n" +
-				"_-_ 'Share Gameplay Data' now uses Google Firebase Analytics instead of older Google Analytics. Data collected is unchanged.\n" +
-				"_-_ Many internal improvements to Google Play Games sync and Google Payment integration.\n" +
-				"_-_ Item renaming donation perk now applies to wands.\n\n" +
-				"_-_ Shocking enchantment no longer visually arcs lightning to the hero."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.7.2):\n" +
-				"_-_ Cloak of Shadows not able to be turned off at 0 charges\n" +
-				"_-_ Scroll of transmutation incorrectly usable on alchemical catalysts\n\n" +
-				"Fixed (existed before 0.7.2):\n" +
-				"_-_ Multiplicity curse spawning rats on floor 5\n" +
-				"_-_ Dried rose rarely being usable before completing ghost quest\n" +
-				"_-_ Corrupted thieves being able to steal from the hero\n" +
-				"_-_ Rare crashes involving rankings windows\n" +
-				"_-_ Crashes and other odd behaviour when a berserking hero is affected by shielding buffs"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
-		
-		changes = new ChangeInfo("v0.7.2a", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		infos.add(changes);
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
-				"Fixed (caused by 0.7.2):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Elastic enchantment behaving oddly in some cases\n" +
-				"_-_ Various typos in the gamelog\n\n" +
-				"Fixed (existed before 0.7.2):\n" +
-				"_-_ Tengu spawning on top of other characters\n" +
-				"_-_ Cloak of shadows only being usable from quickslots if it has 1 charge"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
-				"Updated Translations"));
 		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -315,6 +356,31 @@ public class ChangesScene extends PixelScene {
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
 				"Updated Translations\n\n" +
 				"Updated Translator Credits"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"Major internal improvements to service integrations for Google Play version of the game:\n" +
+				"_-_ 'Share Gameplay Data' now uses Google Firebase Analytics instead of older Google Analytics. Data collected is unchanged.\n" +
+				"_-_ Many internal improvements to Google Play Games sync and Google Payment integration.\n" +
+				"_-_ Item renaming donation perk now applies to wands.\n\n" +
+				"_-_ Added support for adaptive icons in Android 8.0+.\n" +
+				"_-_ Improved how the game handles orientation changes and window resizing.\n" +
+				"_-_ Shocking enchantment no longer visually arcs lightning to the hero."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (existed before 0.7.2):\n" +
+				"_-_ Cloak of Shadows very rarely consuming more charges than it should\n" +
+				"_-_ Assassin's blink not working on enemies standing on traps\n" +
+				"_-_ Glyph of stone blocking an incorrect amount of damage (too low) in some cases\n" +
+				"_-_ Hourglass not updating charges correctly in some cases\n" +
+				"_-_ Blandfruit bush rarely appearing in 'on diet' challenge\n" +
+				"_-_ Strength from ring of might not appearing in rankings\n" +
+				"_-_ Multiplicity curse spawning rats on floor 5\n" +
+				"_-_ Dried rose rarely being usable before completing ghost quest\n" +
+				"_-_ Corrupted thieves being able to steal from the hero\n" +
+				"_-_ Rare crashes involving rankings windows\n" +
+				"_-_ Crashes and other odd behaviour when a berserking hero is affected by shielding buffs\n" +
+				"_-_ Tengu spawning on top of other characters\n" +
+				"_-_ Cloak of shadows only being usable from quickslots if it has 1 charge"));
 		
 		changes = new ChangeInfo(Messages.get(this, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
