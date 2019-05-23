@@ -187,36 +187,8 @@ public class WelcomeScene extends PixelScene {
 			Journal.loadGlobal();
 			Document.ALCHEMY_GUIDE.addPage("Potions");
 			Document.ALCHEMY_GUIDE.addPage("Stones");
-			Document.ALCHEMY_GUIDE.addPage("Darts");
+			Document.ALCHEMY_GUIDE.addPage("Energy_Food");
 			Journal.saveGlobal();
-		}
-		
-		//convert game saves from the old format
-		if (previousVersion <= ShatteredPixelDungeon.v0_6_2e){
-			//old save file names for warrior, mage, rogue, huntress
-			String[] classes = new String[]{"warrior", "mage", "game", "ranger"};
-			for (int i = 1; i <= classes.length; i++){
-				String name = classes[i-1];
-				if (FileUtils.fileExists(name + ".dat")){
-					try {
-						Bundle gamedata = FileUtils.bundleFromFile(name + ".dat");
-						FileUtils.bundleToFile(GamesInProgress.gameFile(i), gamedata);
-						FileUtils.deleteFile(name + ".dat");
-						
-						//rogue's safe files have a different name
-						if (name.equals("game")) name = "depth";
-						
-						int depth = 1;
-						while (FileUtils.fileExists(name + depth + ".dat")) {
-							gamedata = FileUtils.bundleFromFile(name + depth + ".dat");
-							FileUtils.bundleToFile(GamesInProgress.depthFile(i, depth), gamedata);
-							FileUtils.deleteFile(name + depth + ".dat");
-							depth++;
-						}
-					} catch (Exception e){
-					}
-				}
-			}
 		}
 		
 		SPDSettings.version(ShatteredPixelDungeon.versionCode);

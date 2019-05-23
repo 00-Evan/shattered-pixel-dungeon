@@ -145,8 +145,7 @@ public class Armor extends EquipableItem {
 			availableUsesToID = USES_TO_ID/2f;
 		}
 		
-		//pre-0.6.5 saves
-		if (bundle.contains(AUGMENT)) augment = bundle.getEnum(AUGMENT, Augment.class);
+		augment = bundle.getEnum(AUGMENT, Augment.class);
 	}
 
 	@Override

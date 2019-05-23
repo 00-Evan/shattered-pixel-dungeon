@@ -289,11 +289,6 @@ public class Ring extends KindofMisc {
 		if (bundle.contains( "unfamiliarity" )){
 			levelsToID = bundle.getInt( "unfamiliarity" ) / 200f;
 		}
-		
-		//pre-0.6.1 saves
-		if (level() < 0){
-			upgrade(-level());
-		}
 	}
 	
 	public void onHeroGainExp( float levelPercent, Hero hero ){

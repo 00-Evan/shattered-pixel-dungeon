@@ -40,10 +40,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class ShatteredPixelDungeon extends Game {
 	
 	//variable constants for specific older versions of shattered, used for data conversion
-	//versions older than v0.6.2e are no longer supported, and data from them is ignored
-	public static final int v0_6_2e = 229;
-	public static final int v0_6_3b = 245;
-	public static final int v0_6_4a = 252;
+	//versions older than v0.6.5c are no longer supported, and data from them is ignored
 	public static final int v0_6_5c = 264;
 	
 	public static final int v0_7_0c = 311;
@@ -52,48 +49,6 @@ public class ShatteredPixelDungeon extends Game {
 	
 	public ShatteredPixelDungeon() {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass );
-		
-		//v0.6.3
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tamahawk" );
-		
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.IncendiaryDart.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.IncendiaryDart" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ParalyticDart.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.CurareDart" );
-		
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorrosion.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfVenom" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.blobs.VenomGas" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion.class,
-				"com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Venom" );
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap.class,
-				"com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap" );
-		
-		//v0.6.4
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.bags.SeedPouch" );
-		
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.bags.WandHolster" );
-		
-		//v0.6.5
-		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation.class,
-				"com.shatteredpixel.shatteredpixeldungeon.items.Weightstone" );
 		
 		//v0.7.0
 		com.watabou.utils.Bundle.addAlias(

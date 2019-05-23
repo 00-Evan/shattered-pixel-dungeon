@@ -336,12 +336,7 @@ public enum Catalog {
 		if (bundle.contains(CATALOGS)) {
 			List<String> seen = Arrays.asList(bundle.getStringArray(CATALOGS));
 			
-			//pre-0.6.3 saves
 			//TODO should adjust this to tie into the bundling system's class array
-			if (seen.contains("WandOfVenom")){
-				WANDS.seen.put(WandOfCorrosion.class, true);
-			}
-			
 			for (Catalog cat : values()) {
 				for (Class<? extends Item> item : cat.items()) {
 					if (seen.contains(item.getSimpleName())) {

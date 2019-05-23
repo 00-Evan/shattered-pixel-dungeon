@@ -384,15 +384,6 @@ abstract public class MissileWeapon extends Weapon {
 		bundleRestoring = true;
 		super.restoreFromBundle(bundle);
 		bundleRestoring = false;
-		//compatibility with pre-0.6.3 saves
-		if (bundle.contains(DURABILITY)) {
-			durability = bundle.getInt(DURABILITY);
-		} else {
-			durability = 100;
-			//reduces quantity roughly in line with new durability system
-			if (!(this instanceof TippedDart)){
-				quantity = (int)Math.ceil(quantity/5f);
-			}
-		}
+		durability = bundle.getInt(DURABILITY);
 	}
 }
