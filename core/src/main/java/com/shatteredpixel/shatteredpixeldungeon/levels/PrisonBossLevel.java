@@ -69,6 +69,9 @@ public class PrisonBossLevel extends Level {
 		WON
 	}
 	
+	private static final int ARENA_CENTER = 5+28*32;
+	private static final int ARENA_DOOR = 5+25*32;
+	
 	private State state;
 	private Tengu tengu;
 	
@@ -171,6 +174,17 @@ public class PrisonBossLevel extends Level {
 		pos += Random.Int(3) + Random.Int(3)*32;
 
 		return pos;
+	}
+	
+	private int randomTenguArenaCell(){
+		int pos = ARENA_CENTER - 2 - (2*32);//initial position at top-left of room
+		
+		pos += Random.Int(5)*32;
+		pos += Random.Int(5);
+		
+		//cannot choose the center
+		if (pos == ARENA_CENTER)    return randomTenguArenaCell();
+		else                        return pos;
 	}
 
 	@Override
@@ -287,25 +301,25 @@ public class PrisonBossLevel extends Level {
 			case START:
 				
 				//if something is occupying Tengu's space, wait and do nothing.
-				if (Actor.findChar(5 + 28*32) != null){
+				if (Actor.findChar(ARENA_CENTER) != null){
 					return;
 				}
 				
 				seal();
-				set(5 + 25 * 32, Terrain.LOCKED_DOOR);
-				GameScene.updateMap(5 + 25 * 32);
+				set(ARENA_DOOR, Terrain.LOCKED_DOOR);
+				GameScene.updateMap(ARENA_DOOR);
 
 				for (Mob m : mobs){
 					//bring the first ally with you
 					if (m.alignment == Char.Alignment.ALLY){
-						m.pos = 5 + 25 * 32; //they should immediately walk out of the door
+						m.pos = ARENA_DOOR; //they should immediately walk out of the door
 						m.sprite.place(m.pos);
 						break;
 					}
 				}
 				
 				tengu.state = tengu.HUNTING;
-				tengu.pos = 5 + 28*32; //in the middle of the fight room
+				tengu.pos = ARENA_CENTER; //in the middle of the fight room
 				GameScene.add( tengu );
 				tengu.notice();
 
@@ -388,8 +402,8 @@ public class PrisonBossLevel extends Level {
 				Dungeon.hero.sprite.interruptMotion();
 				Dungeon.hero.sprite.place(Dungeon.hero.pos);
 
-				tengu.pos = 5+28*32;
-				tengu.sprite.place(5 + 28 * 32);
+				tengu.pos = ARENA_CENTER;
+				tengu.sprite.place(ARENA_CENTER);
 				
 				//remove all mobs, but preserve allies
 				ArrayList<Mob> allies = new ArrayList<>();
@@ -399,22 +413,23 @@ public class PrisonBossLevel extends Level {
 						mobs.remove(m);
 					}
 				}
-				clearEntities(null);
 				
 				changeMap(MAP_END);
 				
 				for (Mob m : allies){
 					do{
-						m.pos = Random.IntRange(3, 7) + Random.IntRange(26, 30)*32;
+						m.pos = randomTenguArenaCell();
 					} while (findMob(m.pos) != null);
 					m.sprite().place(m.pos);
 					mobs.add(m);
 				}
 
 				tengu.die(Dungeon.hero);
+				
+				clearEntities((Room) new EmptyRoom().set(3, 26, 7, 30)); //arena is safe
 
 				for (Item item : storedItems)
-					drop(item, randomPrisonCell());
+					drop(item, randomTenguArenaCell());
 				
 				GameScene.flash(0xFFFFFF);
 				Sample.INSTANCE.play(Assets.SND_BLAST);
