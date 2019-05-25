@@ -189,7 +189,11 @@ public class Dart extends MissileWeapon {
 							item.quantity(item.quantity() - maxSeedsToUse);
 						}
 						
-						curItem.detachAll( curUser.belongings.backpack );
+						if (maxToTip < curItem.quantity()){
+							curItem.quantity(curItem.quantity() - maxToTip);
+						} else {
+							curItem.detachAll(curUser.belongings.backpack);
+						}
 						
 						TippedDart newDart = TippedDart.getTipped((Plant.Seed) item, maxToTip);
 						if (!newDart.collect()) Dungeon.level.drop(newDart, curUser.pos).sprite.drop();
