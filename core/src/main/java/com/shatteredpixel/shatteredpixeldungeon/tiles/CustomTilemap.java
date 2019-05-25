@@ -28,16 +28,15 @@ import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
-public abstract class CustomTiledVisual extends Tilemap implements Bundlable {
+public abstract class CustomTilemap implements Bundlable {
 
 	protected static final int SIZE = DungeonTilemap.SIZE;
 
 	public int tileX, tileY;   //x and y coords for texture within a level
 	public int tileW = 1, tileH = 1; //width and height in tiles
-
-	public CustomTiledVisual(Object tx) {
-		super(tx, new TextureFilm( tx, SIZE, SIZE ) );
-	}
+	
+	protected Object texture;
+	private Tilemap vis = null;
 
 	public void pos(int pos) {
 		pos( pos%Dungeon.level.width(), pos/Dungeon.level.width() );
@@ -62,40 +61,39 @@ public abstract class CustomTiledVisual extends Tilemap implements Bundlable {
 		this.tileW = tileW;
 		this.tileH = tileH;
 	}
-
-	public CustomTiledVisual create(){
-		camera = null;
-		x = tileX*SIZE;
-		y = tileY*SIZE;
-		return this;
-	}
-
-	//assumes that width and height are already set.
-	protected void mapSimpleImage(int txX, int txY){
-		int data[] = new int[tileW * tileH];
-		int texTileWidth = texture.width/SIZE;
+	
+	//utility method for getting data for a simple image
+	//assumes tileW and tileH have already been set
+	protected int[] mapSimpleImage(int txX, int txY, int texW){
+		int[] data = new int[tileW * tileH];
+		int texTileWidth = texW/SIZE;
 		int x = txX, y = txY;
 		for (int i = 0; i < data.length; i++){
 			data[i] = x + (texTileWidth*y);
-
+			
 			x++;
 			if ((x - txX) == tileW){
 				x = txX;
 				y++;
 			}
 		}
-
-		map(data, tileW);
+		return data;
+	}
+	
+	public Tilemap create(){
+		if (vis != null && vis.alive) vis.killAndErase();
+		vis = new Tilemap(texture, new TextureFilm( texture, SIZE, SIZE ));
+		vis.x = tileX*SIZE;
+		vis.y = tileY*SIZE;
+		return vis;
 	}
 
 	//x and y here are the coordinates tapped within the tile visual
 	public Image image(int tileX, int tileY){
-		if (!needsRender(tileX + mapWidth*tileY)){
+		if (vis == null){
 			return null;
 		} else {
-			Image img = new Image(texture);
-			img.frame(tileset.get(data[tileX + mapWidth * tileY]));
-			return img;
+			return vis.image(tileX, tileY);
 		}
 	}
 

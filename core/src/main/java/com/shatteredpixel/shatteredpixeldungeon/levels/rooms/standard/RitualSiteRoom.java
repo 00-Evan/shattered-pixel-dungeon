@@ -27,7 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
 
 public class RitualSiteRoom extends StandardRoom {
@@ -67,17 +68,21 @@ public class RitualSiteRoom extends StandardRoom {
 		CeremonialCandle.ritualPos = c.x + (level.width() * c.y);
 	}
 
-	public static class RitualMarker extends CustomTiledVisual {
-
-		public RitualMarker(){
-			super( Assets.PRISON_QUEST );
+	public static class RitualMarker extends CustomTilemap {
+		
+		{
+			texture = Assets.PRISON_QUEST;
+			
+			tileW = tileH = 3;
 		}
+		
+		final int TEX_WIDTH = 64;
 
 		@Override
-		public CustomTiledVisual create() {
-			tileH = tileW = 3;
-			mapSimpleImage(0, 0);
-			return super.create();
+		public Tilemap create() {
+			Tilemap v = super.create();
+			v.map(mapSimpleImage(0, 0, TEX_WIDTH), 3);
+			return v;
 		}
 
 		@Override

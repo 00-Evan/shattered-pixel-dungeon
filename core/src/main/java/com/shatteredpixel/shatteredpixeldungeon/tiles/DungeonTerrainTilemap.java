@@ -103,6 +103,6 @@ public class DungeonTerrainTilemap extends DungeonTilemap {
 
 	@Override
 	protected boolean needsRender(int pos) {
-		return data[pos] >= 0 && data[pos] != DungeonTileSheet.WATER;
+		return super.needsRender(pos) && data[pos] != DungeonTileSheet.WATER;
 	}
 }

@@ -215,9 +215,5 @@ public class WallBlockingTilemap extends Tilemap {
 			}
 		}
 	}
-
-	@Override
-	protected boolean needsRender(int pos) {
-		return data[pos] > BLOCK_NONE;
-	}
+	
 }

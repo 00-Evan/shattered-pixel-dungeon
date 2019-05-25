@@ -68,7 +68,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
@@ -136,8 +136,8 @@ public abstract class Level implements Bundlable {
 	public HashMap<Class<? extends Blob>,Blob> blobs;
 	public SparseArray<Plant> plants;
 	public SparseArray<Trap> traps;
-	public HashSet<CustomTiledVisual> customTiles;
-	public HashSet<CustomTiledVisual> customWalls;
+	public HashSet<CustomTilemap> customTiles;
+	public HashSet<CustomTilemap> customWalls;
 	
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
@@ -348,13 +348,13 @@ public abstract class Level implements Bundlable {
 
 		collection = bundle.getCollection( CUSTOM_TILES );
 		for (Bundlable p : collection) {
-			CustomTiledVisual vis = (CustomTiledVisual)p;
+			CustomTilemap vis = (CustomTilemap)p;
 			customTiles.add(vis);
 		}
 
 		collection = bundle.getCollection( CUSTOM_WALLS );
 		for (Bundlable p : collection) {
-			CustomTiledVisual vis = (CustomTiledVisual)p;
+			CustomTilemap vis = (CustomTilemap)p;
 			customWalls.add(vis);
 		}
 		

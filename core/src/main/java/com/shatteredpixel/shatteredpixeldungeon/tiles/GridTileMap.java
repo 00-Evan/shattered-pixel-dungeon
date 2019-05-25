@@ -60,9 +60,4 @@ public class GridTileMap extends DungeonTilemap {
 		}
 	}
 
-	@Override
-	protected boolean needsRender(int pos) {
-		return data[pos] != -1;
-	}
-
 }

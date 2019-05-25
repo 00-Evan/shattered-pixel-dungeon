@@ -97,9 +97,5 @@ public class DungeonWallsTilemap extends DungeonTilemap {
 	public boolean overlapsScreenPoint( int x, int y ) {
 		return true;
 	}
-
-	@Override
-	protected boolean needsRender(int pos) {
-		return data[pos] != -1;
-	}
+	
 }

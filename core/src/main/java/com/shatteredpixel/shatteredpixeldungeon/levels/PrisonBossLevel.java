@@ -41,10 +41,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTiledVisual;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -372,7 +373,7 @@ public class PrisonBossLevel extends Level {
 			case FIGHT_ARENA:
 				unseal();
 
-				CustomTiledVisual vis = new exitVisual();
+				CustomTilemap vis = new exitVisual();
 				vis.pos(11, 8);
 				customTiles.add(vis);
 				((GameScene)ShatteredPixelDungeon.scene()).addCustomTile(vis);
@@ -582,8 +583,17 @@ public class PrisonBossLevel extends Level {
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
 
 
-	public static class exitVisual extends CustomTiledVisual {
-
+	public static class exitVisual extends CustomTilemap {
+		
+		{
+			texture = Assets.PRISON_EXIT;
+			
+			tileW = 12;
+			tileH = 14;
+		}
+		
+		final int TEX_WIDTH = 256;
+		
 		private static short[] render = new short[]{
 				0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -600,26 +610,33 @@ public class PrisonBossLevel extends Level {
 				1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		};
-
-		public exitVisual() {
-			super(Assets.PRISON_EXIT);
-		}
-
+		
 		@Override
-		public CustomTiledVisual create() {
-			tileW = 12;
-			tileH = 14;
-			mapSimpleImage(0, 0);
-			return super.create();
+		public Tilemap create() {
+			
+			Tilemap v = super.create();
+			int[] data = mapSimpleImage(0, 0, TEX_WIDTH);
+			for (int i = 0; i < data.length; i++){
+				if (render[i] == 0) data[i] = -1;
+			}
+			
+			v.map(data, tileW);
+			return v;
 		}
 
-		@Override
-		protected boolean needsRender(int pos) {
-			return render[pos] != 0;
-		}
 	}
 
-	public static class exitVisualWalls extends CustomTiledVisual {
+	public static class exitVisualWalls extends CustomTilemap {
+		
+		{
+			texture = Assets.PRISON_EXIT;
+			
+			tileW = 12;
+			tileH = 14;
+		}
+		
+		final int TEX_WIDTH = 256;
+		
 		private static short[] render = new short[]{
 				0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
@@ -637,21 +654,19 @@ public class PrisonBossLevel extends Level {
 				1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		};
 
-		public exitVisualWalls() {
-			super(Assets.PRISON_EXIT);
+		@Override
+		public Tilemap create() {
+			
+			Tilemap v = super.create();
+			
+			int[] data = mapSimpleImage(4, 0, TEX_WIDTH);
+			for (int i = 0; i < data.length; i++){
+				if (render[i] == 0) data[i] = -1;
+			}
+			
+			v.map(data, tileW);
+			return v;
 		}
 
-		@Override
-		public CustomTiledVisual create() {
-			tileW = 12;
-			tileH = 14;
-			mapSimpleImage(4, 0);
-			return super.create();
-		}
-
-		@Override
-		protected boolean needsRender(int pos) {
-			return render[pos] != 0;
-		}
 	}
 }
