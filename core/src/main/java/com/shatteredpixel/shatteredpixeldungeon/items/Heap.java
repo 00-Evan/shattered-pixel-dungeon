@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
@@ -320,7 +321,8 @@ public class Heap implements Bundlable {
 					}
 
 				//unique and upgraded items can endure the blast
-				} else if (!(item.level() > 0 || item.unique))
+				} else if (!(item.level() > 0 || item.unique
+						|| (item instanceof Armor && ((Armor) item).checkSeal() != null)))
 					items.remove( item );
 
 			}
