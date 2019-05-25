@@ -152,6 +152,30 @@ public class ChangesScene extends PixelScene {
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
 		
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.3a", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		infos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(this, "misc"),
+				"_-_ Tengu now throws his shurikens one at a time, just like other ranged enemies. The speed of the shurikens has been increased to compensate, so that the player doesn't need to keep waiting while Tengu's attacks are in flight.\n\n" +
+				"_-_ After the tengu boss battle, any extra items now drop in tengu's cell, instead of a random prison cell."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(this, "bugfixes"),
+				"Fixed (caused by 0.7.3):\n" +
+				"_-_ Cases where tipping darts would result in some darts being lost\n" +
+				"_-_ Thrown weapons sometimes being lost in the Tengu fight\n\n" +
+				"Fixed (existed prior to 0.7.3):\n" +
+				"_-_ Explosions destroying armor with the warrior's seal on it\n" +
+				"_-_ Various minor visual bugs\n" +
+				"_-_ Various rare crash bugs"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(this, "language"),
+				"Updated Translations"));
+		
 		changes = new ChangeInfo(Messages.get(this, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		infos.add(changes);
@@ -229,7 +253,7 @@ public class ChangesScene extends PixelScene {
 		
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_EMERALD, null), "Other Item Buffs",
 				"_-_ Ring of elements now grants 20% resistance per level, up from 16%. However, ring of elements also no longer applies to melee attacks from magic-wielding enemies.\n\n" +
-				"_-_ Throwing stone base damage increased to 2-6 from 1-6\n" +
+				"_-_ Throwing stone base damage increased to 2-5 from 1-5\n" +
 				"_-_ Throwing stone durability increased to 5 from 3\n\n" +
 				"_-_ Throwing hammer base damage increased to 10-20 from 8-20"));
 		
