@@ -108,7 +108,20 @@ public class Tengu extends Mob {
 
 		//phase 2 of the fight is over
 		if (HP == 0 && state == PrisonBossLevel.State.FIGHT_ARENA) {
-			((PrisonBossLevel)Dungeon.level).progress();
+			//let full attack action complete first
+			Actor.add(new Actor() {
+				
+				{
+					actPriority = VFX_PRIO;
+				}
+				
+				@Override
+				protected boolean act() {
+					Actor.remove(this);
+					((PrisonBossLevel)Dungeon.level).progress();
+					return true;
+				}
+			});
 			return;
 		}
 		
