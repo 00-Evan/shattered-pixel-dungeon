@@ -122,7 +122,7 @@ public class Honeypot extends Item {
 			bee.sprite.parent.add( new AlphaTweener( bee.sprite, 1, 0.15f ) );
 			
 			Sample.INSTANCE.play( Assets.SND_BEE );
-			return new ShatteredPot().setBee( bee );
+			return new ShatteredPot();
 		} else {
 			return this;
 		}
@@ -148,55 +148,76 @@ public class Honeypot extends Item {
 
 		{
 			image = ItemSpriteSheet.SHATTPOT;
-			stackable = false;
-		}
-
-		private int myBee;
-		private int beeDepth;
-
-		public Item setBee(Char bee){
-			myBee = bee.id();
-			beeDepth = Dungeon.depth;
-			return this;
+			stackable = true;
 		}
 
 		@Override
 		public boolean doPickUp(Hero hero) {
 			if ( super.doPickUp(hero) ){
-				setHolder( hero );
+				pickupPot( hero );
 				return true;
-			}else
+			} else {
 				return false;
+			}
 		}
 
 		@Override
 		public void doDrop(Hero hero) {
 			super.doDrop(hero);
-			updateBee( hero.pos, null );
+			dropPot(hero, hero.pos);
 		}
 
 		@Override
 		protected void onThrow(int cell) {
 			super.onThrow(cell);
-			updateBee( cell, null );
+			dropPot(curUser, cell);
 		}
 
-		public void setHolder(Char holder){
-			updateBee(holder.pos, holder );
+		public void pickupPot(Char holder){
+			for (Bee bee : findBees(holder.pos)){
+				updateBee(bee, -1, holder);
+			}
+		}
+		
+		public void dropPot( Char holder, int dropPos ){
+			for (Bee bee : findBees(holder)){
+				updateBee(bee, dropPos, null);
+			}
 		}
 
-		public void goAway(){
-			updateBee( -1, null);
-		}
-
-		private void updateBee( int cell, Char holder){
-			//important, as ids are not unique between depths.
-			if (Dungeon.depth != beeDepth)
-				return;
-
-			Bee bee = (Bee)Actor.findById( myBee );
+		private void updateBee( Bee bee, int cell, Char holder ){
 			if (bee != null && bee.alignment == Char.Alignment.ENEMY)
 				bee.setPotInfo( cell, holder );
+		}
+		
+		//returns up to quantity bees which match the current pot Pos
+		private ArrayList<Bee> findBees( int potPos ){
+			ArrayList<Bee> bees = new ArrayList<>();
+			for (Char c : Actor.chars()){
+				if (c instanceof Bee && ((Bee) c).potPos() == potPos){
+					bees.add((Bee) c);
+					if (bees.size() >= quantity) {
+						break;
+					}
+				}
+			}
+			
+			return bees;
+		}
+		
+		//returns up to quantity bees which match the current pot holder
+		private ArrayList<Bee> findBees( Char potHolder ){
+			ArrayList<Bee> bees = new ArrayList<>();
+			for (Char c : Actor.chars()){
+				if (c instanceof Bee && ((Bee) c).potHolderID() == potHolder.id()){
+					bees.add((Bee) c);
+					if (bees.size() >= quantity) {
+						break;
+					}
+				}
+			}
+			
+			return bees;
 		}
 
 		@Override
@@ -209,21 +230,5 @@ public class Honeypot extends Item {
 			return true;
 		}
 
-		private static final String MYBEE = "mybee";
-		private static final String BEEDEPTH = "beedepth";
-
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put( MYBEE, myBee );
-			bundle.put( BEEDEPTH, beeDepth );
-		}
-
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			myBee = bundle.getInt( MYBEE );
-			beeDepth = bundle.getInt( BEEDEPTH );
-		}
 	}
 }

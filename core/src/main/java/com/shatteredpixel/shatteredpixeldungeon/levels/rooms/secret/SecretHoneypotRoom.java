@@ -52,7 +52,6 @@ public class SecretHoneypotRoom extends SecretRoom {
 		bee.pos = level.pointToCell(brokenPotPos);
 		level.mobs.add( bee );
 		
-		pot.setBee(bee);
 		bee.setPotInfo(level.pointToCell(brokenPotPos), null);
 		
 		placeItem(new Honeypot(), level);
