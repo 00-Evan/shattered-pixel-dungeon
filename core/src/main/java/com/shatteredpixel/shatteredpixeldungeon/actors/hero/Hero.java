@@ -1315,7 +1315,7 @@ public class Hero extends Char {
 	}
 	
 	public boolean isStarving() {
-		return buff(Hunger.class) != null && ((Hunger)buff( Hunger.class )).isStarving();
+		return Buff.affect(this, Hunger.class).isStarving();
 	}
 	
 	@Override
@@ -1656,9 +1656,9 @@ public class Hero extends Char {
 			if (!Dungeon.level.locked) {
 				if (cursed) {
 					GLog.n(Messages.get(this, "search_distracted"));
-					buff(Hunger.class).reduceHunger(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH));
+					Buff.affect(this, Hunger.class).reduceHunger(TIME_TO_SEARCH - (2 * HUNGER_FOR_SEARCH));
 				} else {
-					buff(Hunger.class).reduceHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
+					Buff.affect(this, Hunger.class).reduceHunger(TIME_TO_SEARCH - HUNGER_FOR_SEARCH);
 				}
 			}
 			spendAndNext(TIME_TO_SEARCH);

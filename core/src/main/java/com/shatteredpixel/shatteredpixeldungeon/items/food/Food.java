@@ -90,7 +90,7 @@ public class Food extends Item {
 	}
 	
 	protected void satisfy( Hero hero ){
-		(hero.buff( Hunger.class )).satisfy( energy );
+		Buff.affect(hero, Hunger.class).satisfy( energy );
 	}
 	
 	public static void foodProc( Hero hero ){
