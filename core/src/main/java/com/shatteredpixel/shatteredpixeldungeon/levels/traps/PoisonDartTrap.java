@@ -100,7 +100,7 @@ public class PoisonDartTrap extends Trap {
 			} else {
 				finalTarget.damage(Random.NormalIntRange(1, 4) - finalTarget.drRoll(), trap);
 				Buff.affect( finalTarget, Poison.class )
-						.set( 4 + Dungeon.depth );
+						.set( 8 + Math.round(2*Dungeon.depth / 3f) );
 			}
 		}
 	}
