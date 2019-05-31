@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeInfo;
@@ -43,9 +44,10 @@ import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
 
-//TODO: update this class with relevant info as new versions come out.
 public class ChangesScene extends PixelScene {
-
+	
+	public static int changesSelected = 0;
+	
 	@Override
 	public void create() {
 		super.create();
@@ -67,7 +69,7 @@ public class ChangesScene extends PixelScene {
 		NinePatch panel = Chrome.get(Chrome.Type.TOAST);
 
 		int pw = 135 + panel.marginLeft() + panel.marginRight() - 2;
-		int ph = h - 16;
+		int ph = h - 32;
 
 		panel.size( pw, ph );
 		panel.x = (w - pw) / 2f;
@@ -76,13 +78,22 @@ public class ChangesScene extends PixelScene {
 		add( panel );
 		
 		final ArrayList<ChangeInfo> changeInfos = new ArrayList<>();
-		v0_7_X_Changes.addAllChanges(changeInfos);
-		v0_6_X_Changes.addAllChanges(changeInfos);
-		v0_5_X_Changes.addAllChanges(changeInfos);
-		v0_4_X_Changes.addAllChanges(changeInfos);
-		v0_3_X_Changes.addAllChanges(changeInfos);
-		v0_2_X_Changes.addAllChanges(changeInfos);
-		v0_1_X_Changes.addAllChanges(changeInfos);
+		
+		switch (changesSelected){
+			case 0: default:
+				v0_7_X_Changes.addAllChanges(changeInfos);
+				break;
+			case 1:
+				v0_6_X_Changes.addAllChanges(changeInfos);
+				break;
+			case 2:
+				v0_5_X_Changes.addAllChanges(changeInfos);
+				v0_4_X_Changes.addAllChanges(changeInfos);
+				v0_3_X_Changes.addAllChanges(changeInfos);
+				v0_2_X_Changes.addAllChanges(changeInfos);
+				v0_1_X_Changes.addAllChanges(changeInfos);
+				break;
+		}
 
 		ScrollPane list = new ScrollPane( new Component() ){
 
@@ -135,6 +146,48 @@ public class ChangesScene extends PixelScene {
 				panel.innerWidth(),
 				panel.innerHeight() + 2);
 		list.scrollTo(0, 0);
+		
+		RedButton btn0_7 = new RedButton("v0.7"){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				if (changesSelected != 0) {
+					changesSelected = 0;
+					ShatteredPixelDungeon.seamlessResetScene();
+				}
+			}
+		};
+		if (changesSelected == 0) btn0_7.textColor(Window.TITLE_COLOR);
+		btn0_7.setRect(list.left()-3, list.bottom()+5, 45, 14);
+		add(btn0_7);
+		
+		RedButton btn0_6 = new RedButton("v0.6"){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				if (changesSelected != 1) {
+					changesSelected = 1;
+					ShatteredPixelDungeon.seamlessResetScene();
+				}
+			}
+		};
+		if (changesSelected == 1) btn0_6.textColor(Window.TITLE_COLOR);
+		btn0_6.setRect(btn0_7.right() + 2, btn0_7.top(), 45, 14);
+		add(btn0_6);
+		
+		RedButton btnOld = new RedButton("v0.5-v0.1"){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				if (changesSelected != 2) {
+					changesSelected = 2;
+					ShatteredPixelDungeon.seamlessResetScene();
+				}
+			}
+		};
+		if (changesSelected == 2) btnOld.textColor(Window.TITLE_COLOR);
+		btnOld.setRect(btn0_6.right() + 2, btn0_7.top(), 45, 14);
+		add(btnOld);
 
 		Archs archs = new Archs();
 		archs.setSize( Camera.main.width, Camera.main.height );
