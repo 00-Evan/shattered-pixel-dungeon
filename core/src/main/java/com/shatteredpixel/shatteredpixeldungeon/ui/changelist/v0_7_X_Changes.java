@@ -65,9 +65,31 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.7.3b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
+		
+		changes.addButton(new ChangeButton(Icons.get(Icons.WARNING), "Android Froyo Support",
+				"Unfortunately, v0.7.3 will be the last version of Shattered Pixel Dungeon which supports Android 2.2 Froyo.\n\n" +
+				"While investigating future improvements to the game, I have discovered that it is not possible to support Android 2.2 devices while also implementing the technical improvements I have planned.\n\n" +
+				"Android 2.2 was originally released in may 2010, and was succeeded by android 2.3 in december 2010.\n\n" +
+				"I do not currently have any plans to drop support for other Android versions, and new versions of Shattered should hopefully support Android 2.3+ for the foreseeable future.\n\n" +
+				"If you'd like to stay up to date with Shattered's development and do not have an Android 2.3+ device, you can still read about future updates over at: _www.ShatteredPixel.com_"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Shattered honeypots are now stackable, and can be sold for a small amount of gold.\n\n" +
+				"_-_ The changes list has been split into three separate groups, so that the game's entire change history isn't loaded all at once."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.7.3):\n" +
+				"_-_ Additional cases where thrown weapons would be lost when fighting Tengu\n" +
+				"_-_ Poison dart traps dealing more damage when they were not visible\n\n" +
+				"Fixed (existed prior to 0.7.3):\n" +
+				"_-_ Odd behaviour when the player is killed by electricity or a grim weapon\n" +
+				"_-_ Various rare crash bugs"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+				"Updated Translations"));
 		
 		changes = new ChangeInfo("v0.7.3a", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
