@@ -51,10 +51,6 @@ public class Attribute {
 	}
 
 	public void vertexBuffer( int size, int stride, int offset) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			GLES20.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * 4, offset * 4);
-		} else {
-			FroyoGLES20Fix.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * 4, offset * 4);
-		}
+		GLES20.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * 4, offset * 4);
 	}
 }

@@ -89,14 +89,6 @@ public class Messages {
 			while (keys.hasMoreElements()) {
 				String key = keys.nextElement();
 				String value = bundle.getString(key);
-				
-				if (DeviceCompat.usesISO_8859_1()) {
-					try {
-						value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
-					} catch (Exception e) {
-						ShatteredPixelDungeon.reportException(e);
-					}
-				}
 
 				strings.put(key, value);
 			}

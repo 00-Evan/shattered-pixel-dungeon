@@ -22,11 +22,9 @@
 package com.watabou.noosa;
 
 import android.opengl.GLES20;
-import android.os.Build;
 
 import com.watabou.glscripts.Script;
 import com.watabou.glwrap.Attribute;
-import com.watabou.glwrap.FroyoGLES20Fix;
 import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Uniform;
 import com.watabou.glwrap.Vertexbuffer;
@@ -95,12 +93,7 @@ public class NoosaScript extends Script {
 		vertices.position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE, GLES20.GL_UNSIGNED_SHORT, 0 );
-		} else {
-			FroyoGLES20Fix.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE, GLES20.GL_UNSIGNED_SHORT, 0 );
-		}
-		
+		GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE, GLES20.GL_UNSIGNED_SHORT, 0 );
 	}
 
 	public void drawQuad( Vertexbuffer buffer ) {
@@ -114,11 +107,7 @@ public class NoosaScript extends Script {
 
 		buffer.release();
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE, GLES20.GL_UNSIGNED_SHORT, 0 );
-		} else {
-			FroyoGLES20Fix.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE, GLES20.GL_UNSIGNED_SHORT, 0 );
-		}
+		GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE, GLES20.GL_UNSIGNED_SHORT, 0 );
 	}
 	
 	public void drawQuadSet( FloatBuffer vertices, int size ) {
@@ -133,12 +122,7 @@ public class NoosaScript extends Script {
 		vertices.position( 2 );
 		aUV.vertexPointer( 2, 4, vertices );
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * size, GLES20.GL_UNSIGNED_SHORT, 0 );
-		} else {
-			FroyoGLES20Fix.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * size, GLES20.GL_UNSIGNED_SHORT, 0 );
-		}
-		
+		GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * size, GLES20.GL_UNSIGNED_SHORT, 0 );
 	}
 
 	public void drawQuadSet( Vertexbuffer buffer, int length, int offset ){
@@ -156,11 +140,7 @@ public class NoosaScript extends Script {
 
 		buffer.release();
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-			GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * length, GLES20.GL_UNSIGNED_SHORT, Quad.SIZE * Short.SIZE/8 * offset );
-		} else {
-			FroyoGLES20Fix.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * length, GLES20.GL_UNSIGNED_SHORT, Quad.SIZE * Short.SIZE/8 * offset );
-		}
+		GLES20.glDrawElements( GLES20.GL_TRIANGLES, Quad.SIZE * length, GLES20.GL_UNSIGNED_SHORT, Quad.SIZE * Short.SIZE/8 * offset );
 	}
 	
 	public void lighting( float rm, float gm, float bm, float am, float ra, float ga, float ba, float aa ) {
