@@ -28,10 +28,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PoolRoom;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PiranhaSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Piranha extends Mob {
@@ -46,7 +44,11 @@ public class Piranha extends Mob {
 		loot = MysteryMeat.class;
 		lootChance = 1f;
 		
+		SLEEPING = new Sleeping();
+		WANDERING = new Wandering();
 		HUNTING = new Hunting();
+		
+		state = SLEEPING;
 		
 		properties.add(Property.BLOB_IMMUNE);
 	}
@@ -134,19 +136,41 @@ public class Piranha extends Mob {
 		immunities.add( Vertigo.class );
 	}
 	
+	//if there is not a path to the enemy, piranhas act as if they can't see them
+	private class Sleeping extends Mob.Sleeping{
+		@Override
+		public boolean act(boolean enemyInFOV, boolean justAlerted) {
+			if (enemyInFOV) {
+				PathFinder.buildDistanceMap(enemy.pos, Dungeon.level.water, viewDistance);
+				enemyInFOV = PathFinder.distance[pos] != Integer.MAX_VALUE;
+			}
+			
+			return super.act(enemyInFOV, justAlerted);
+		}
+	}
+	
+	private class Wandering extends Mob.Wandering{
+		@Override
+		public boolean act(boolean enemyInFOV, boolean justAlerted) {
+			if (enemyInFOV) {
+				PathFinder.buildDistanceMap(enemy.pos, Dungeon.level.water, viewDistance);
+				enemyInFOV = PathFinder.distance[pos] != Integer.MAX_VALUE;
+			}
+			
+			return super.act(enemyInFOV, justAlerted);
+		}
+	}
+	
 	private class Hunting extends Mob.Hunting{
 		
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
-			boolean result = super.act(enemyInFOV, justAlerted);
-			//this causes piranha to move away when a door is closed on them in a pool room.
-			if (state == WANDERING && Dungeon.level instanceof RegularLevel){
-				Room curRoom = ((RegularLevel)Dungeon.level).room(pos);
-				if (curRoom instanceof PoolRoom) {
-					target = Dungeon.level.pointToCell(curRoom.random(1));
-				}
+			if (enemyInFOV) {
+				PathFinder.buildDistanceMap(enemy.pos, Dungeon.level.water, viewDistance);
+				enemyInFOV = PathFinder.distance[pos] != Integer.MAX_VALUE;
 			}
-			return result;
+			
+			return super.act(enemyInFOV, justAlerted);
 		}
 	}
 }
