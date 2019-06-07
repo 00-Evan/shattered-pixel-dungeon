@@ -72,7 +72,7 @@ public class RedButton extends Button {
 		if (text != null && !text.text().equals("")){
 			componentWidth += text.width() + 2;
 			
-			text.x = x + (width() - componentWidth)/2f + 1;
+			text.x = x + (width() + componentWidth)/2f - text.width() - 1;
 			text.y = y + (height() - text.baseLine()) / 2f;
 			PixelScene.align(text);
 			
@@ -80,7 +80,7 @@ public class RedButton extends Button {
 		
 		if (icon != null) {
 			
-			icon.x = x + (width() + componentWidth)/2f - icon.width() - 1;
+			icon.x = x + (width() - componentWidth)/2f + 1;
 			icon.y = y + (height() - icon.height()) / 2f;
 			PixelScene.align(icon);
 		}
