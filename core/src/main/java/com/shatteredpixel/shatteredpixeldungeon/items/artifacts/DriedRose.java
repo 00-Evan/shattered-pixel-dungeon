@@ -392,7 +392,7 @@ public class DriedRose extends Artifact {
 			flying = true;
 
 			alignment = Alignment.ALLY;
-			
+			intelligentAlly = true;
 			WANDERING = new Wandering();
 			
 			state = HUNTING;

@@ -51,6 +51,7 @@ public class PrismaticImage extends NPC {
 		defenseSkill = 1;
 		
 		alignment = Alignment.ALLY;
+		intelligentAlly = true;
 		state = HUNTING;
 		
 		WANDERING = new Wandering();

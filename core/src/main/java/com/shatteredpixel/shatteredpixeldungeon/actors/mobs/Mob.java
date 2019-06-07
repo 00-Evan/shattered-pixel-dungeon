@@ -186,6 +186,9 @@ public abstract class Mob extends Char {
 		return state.act( enemyInFOV, justAlerted );
 	}
 	
+	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
+	protected boolean intelligentAlly = false;
+	
 	protected Char chooseEnemy() {
 
 		Terror terror = buff( Terror.class );
@@ -250,12 +253,14 @@ public abstract class Mob extends Char {
 				
 			//if the mob is an ally...
 			} else if ( alignment == Alignment.ALLY ) {
-				//look for hostile mobs that are not passive to attack
+				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ENEMY
-							&& fieldOfView[mob.pos]
-							&& mob.state != mob.PASSIVE)
-						enemies.add(mob);
+					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos])
+						//intelligent allies do not target mobs which are passive, wandering, or asleep
+						if (!intelligentAlly ||
+								(mob.state != mob.SLEEPING && mob.state != mob.PASSIVE && mob.state != mob.WANDERING)) {
+							enemies.add(mob);
+						}
 				
 			//if the mob is an enemy...
 			} else if (alignment == Alignment.ENEMY) {
