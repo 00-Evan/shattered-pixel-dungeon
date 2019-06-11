@@ -92,6 +92,7 @@ public class DriedRose extends Artifact {
 	public int droppedPetals = 0;
 
 	public static final String AC_SUMMON = "SUMMON";
+	public static final String AC_DIRECT = "DIRECT";
 	public static final String AC_OUTFIT = "OUTFIT";
 
 	@Override
@@ -259,38 +260,6 @@ public class DriedRose extends Artifact {
 		
 		if (bundle.contains(WEAPON)) weapon = (MeleeWeapon)bundle.get( WEAPON );
 		if (bundle.contains(ARMOR))  armor = (Armor)bundle.get( ARMOR );
-	}
-	
-	// *** static methods for transferring a ghost hero between floors ***
-	
-	private static GhostHero heldGhost;
-	
-	public static void holdGhostHero( Level level ){
-		for (Mob mob : level.mobs.toArray( new Mob[0] )) {
-			if (mob instanceof DriedRose.GhostHero) {
-				level.mobs.remove( mob );
-				heldGhost = (GhostHero) mob;
-				break;
-			}
-		}
-	}
-	
-	public static void restoreGhostHero( Level level, int pos ){
-		if (heldGhost != null){
-			level.mobs.add( heldGhost );
-			
-			int ghostPos;
-			do {
-				ghostPos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-			} while (Dungeon.level.solid[ghostPos] || level.findMob(ghostPos) != null);
-			
-			heldGhost.pos = ghostPos;
-			heldGhost = null;
-		}
-	}
-	
-	public static void clearHeldGhostHero(){
-		heldGhost = null;
 	}
 
 	public class roseRecharge extends ArtifactBuff {
