@@ -88,6 +88,15 @@ public class Piranha extends Mob {
 	}
 	
 	@Override
+	public int defenseSkill( Char enemy ) {
+		enemySeen = state != SLEEPING
+				&& this.enemy != null
+				&& fieldOfView[this.enemy.pos]
+				&& this.enemy.invisible == 0;
+		return super.defenseSkill( enemy );
+	}
+	
+	@Override
 	public void die( Object cause ) {
 		super.die( cause );
 		
