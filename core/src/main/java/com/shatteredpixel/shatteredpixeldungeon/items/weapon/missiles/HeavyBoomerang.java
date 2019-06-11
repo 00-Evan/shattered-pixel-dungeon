@@ -77,6 +77,15 @@ public class HeavyBoomerang extends MissileWeapon {
 			left = 3;
 		}
 		
+		public int returnPos(){
+			return returnPos;
+		}
+		
+		public MissileWeapon cancel(){
+			detach();
+			return boomerang;
+		}
+		
 		@Override
 		public boolean act() {
 			if (returnDepth == Dungeon.depth){
