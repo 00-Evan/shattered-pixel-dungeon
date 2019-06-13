@@ -44,9 +44,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
@@ -102,8 +102,11 @@ public class DriedRose extends Artifact {
 			actions.remove(AC_EQUIP);
 			return actions;
 		}
-		if (isEquipped( hero ) && charge == chargeCap && !cursed) {
+		if (isEquipped( hero ) && charge == chargeCap && !cursed && ghostID != 0) {
 			actions.add(AC_SUMMON);
+		}
+		if (ghostID != 0){
+			actions.add(AC_DIRECT);
 		}
 		if (isIdentified() && !cursed){
 			actions.add(AC_OUTFIT);
@@ -160,6 +163,17 @@ public class DriedRose extends Artifact {
 					GLog.i( Messages.get(this, "no_space") );
 			}
 
+		} else if (action.equals(AC_DIRECT)){
+			if (ghost == null && ghostID != 0){
+				Actor a = Actor.findById(ghostID);
+				if (a != null){
+					ghost = (GhostHero)a;
+				} else {
+					ghostID = 0;
+				}
+			}
+			if (ghost != null) GameScene.selectCell(ghostDirector);
+			
 		} else if (action.equals(AC_OUTFIT)){
 			GameScene.show( new WndGhostHero(this) );
 		}
@@ -258,6 +272,8 @@ public class DriedRose extends Artifact {
 		ghostID = bundle.getInt( GHOSTID );
 		droppedPetals = bundle.getInt( PETALS );
 		
+		if (ghostID != 0) defaultAction = AC_DIRECT;
+		
 		if (bundle.contains(WEAPON)) weapon = (MeleeWeapon)bundle.get( WEAPON );
 		if (bundle.contains(ARMOR))  armor = (Armor)bundle.get( ARMOR );
 	}
@@ -280,7 +296,10 @@ public class DriedRose extends Artifact {
 			
 			//rose does not charge while ghost hero is alive
 			if (ghost != null){
+				defaultAction = AC_DIRECT;
 				return true;
+			} else {
+				defaultAction = AC_SUMMON;
 			}
 			
 			LockedFloor lock = target.buff(LockedFloor.class);
@@ -317,6 +336,47 @@ public class DriedRose extends Artifact {
 			return true;
 		}
 	}
+	
+	//FIXME need to translate phrases here
+	public CellSelector.Listener ghostDirector = new CellSelector.Listener(){
+		
+		@Override
+		public void onSelect(Integer cell) {
+			if (cell == null) return;
+			
+			if (!Dungeon.level.heroFOV[cell] || Actor.findChar(cell) == null){
+				GLog.i("Okay, I'll hold that position");
+				ghost.aggro(null);
+				ghost.state = ghost.WANDERING;
+				ghost.defendingPos = cell;
+				ghost.movingToDefendPos = true;
+				return;
+			}
+			
+			if (ghost.fieldOfView == null || ghost.fieldOfView.length != Dungeon.level.length()){
+				ghost.fieldOfView = new boolean[Dungeon.level.length()];
+			}
+			Dungeon.level.updateFieldOfView( ghost, ghost.fieldOfView );
+			
+			if (Actor.findChar(cell) == Dungeon.hero){
+				GLog.i("Okay, I'll follow you.");
+				ghost.aggro(null);
+				ghost.state = ghost.WANDERING;
+				ghost.defendingPos = -1;
+				
+			} else if (Actor.findChar(cell).alignment == Char.Alignment.ENEMY){
+				GLog.i("Okay, I'll attack that enemy.");
+				ghost.aggro(Actor.findChar(cell));
+				ghost.setTarget(cell);
+			
+			}
+		}
+		
+		@Override
+		public String prompt() {
+			return "\"What should I do?\"";
+		}
+	};
 
 	public static class Petal extends Item {
 
@@ -371,6 +431,9 @@ public class DriedRose extends Artifact {
 			
 			properties.add(Property.UNDEAD);
 		}
+		
+		private int defendingPos = -1;
+		private boolean movingToDefendPos = false;
 		
 		private DriedRose rose = null;
 		
@@ -451,13 +514,16 @@ public class DriedRose extends Artifact {
 		protected Char chooseEnemy() {
 			Char enemy = super.chooseEnemy();
 			
-			//will never attack something far from the player
-			if (enemy != null && Dungeon.level.mobs.contains(enemy)
-					&& Dungeon.level.distance(enemy.pos, Dungeon.hero.pos) <= 8){
+			int targetPos = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
+			
+			//will never attack something far from their target
+			if (enemy != null
+					&& Dungeon.level.mobs.contains(enemy)
+					&& (Dungeon.level.distance(enemy.pos, targetPos) <= 8)){
 				return enemy;
-			} else {
-				return null;
 			}
+			
+			return null;
 		}
 
 		@Override
@@ -572,7 +638,11 @@ public class DriedRose extends Artifact {
 			}
 			return block;
 		}
-
+		
+		private void setTarget(int cell) {
+			target = cell;
+		}
+		
 		@Override
 		public boolean interact() {
 			updateRose();
@@ -609,8 +679,26 @@ public class DriedRose extends Artifact {
 			if (rose != null) {
 				rose.ghost = null;
 				rose.ghostID = -1;
+				rose.defaultAction = AC_SUMMON;
 			}
 			super.destroy();
+		}
+		
+		private static final String DEFEND_POS = "defend_pos";
+		private static final String MOVING_TO_DEFEND = "moving_to_defend";
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(DEFEND_POS, defendingPos);
+			bundle.put(MOVING_TO_DEFEND, movingToDefendPos);
+		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			if (bundle.contains(DEFEND_POS)) defendingPos = bundle.getInt(DEFEND_POS);
+			movingToDefendPos = bundle.getBoolean(MOVING_TO_DEFEND);
 		}
 		
 		{
@@ -626,7 +714,7 @@ public class DriedRose extends Artifact {
 			
 			@Override
 			public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-				if ( enemyInFOV ) {
+				if ( enemyInFOV && !movingToDefendPos ) {
 					
 					enemySeen = true;
 					
@@ -640,13 +728,15 @@ public class DriedRose extends Artifact {
 					enemySeen = false;
 					
 					int oldPos = pos;
+					target = defendingPos != -1 ? defendingPos : Dungeon.hero.pos;
 					//always move towards the hero when wandering
-					if (getCloser( target = Dungeon.hero.pos )) {
-						//moves 2 tiles at a time when returning to the hero from a distance
-						if (!Dungeon.level.adjacent(Dungeon.hero.pos, pos)){
-							getCloser( target = Dungeon.hero.pos );
+					if (getCloser( target )) {
+						//moves 2 tiles at a time when returning to the hero
+						if (defendingPos == -1 && !Dungeon.level.adjacent(target, pos)){
+							getCloser( target );
 						}
 						spend( 1 / speed() );
+						if (pos == defendingPos) movingToDefendPos = false;
 						return moveSprite( oldPos, pos );
 					} else {
 						spend( TICK );
@@ -661,6 +751,7 @@ public class DriedRose extends Artifact {
 		//************************************************************************************
 		//This is a bunch strings & string arrays, used in all of the sad ghost's voice lines.
 		//************************************************************************************
+		//FIXME, need to go over these for final polish (inc. translations!)
 
 		private static final String VOICE_INTRODUCE = "My spirit is bound to this rose, it was very precious to me, a "+
 			"gift from my love whom I left on the surface.\n\nI cannot return to him, but thanks to you I have a " +
