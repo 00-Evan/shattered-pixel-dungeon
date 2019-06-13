@@ -70,7 +70,13 @@ public class Honeypot extends Item {
 			
 			detach( hero.belongings.backpack );
 
-			shatter( hero, hero.pos ).collect();
+			Item item = shatter( hero, hero.pos );
+			if (!item.collect()){
+				Dungeon.level.drop(item, hero.pos);
+				if (item instanceof ShatteredPot){
+					((ShatteredPot) item).dropPot(hero, hero.pos);
+				}
+			}
 
 			hero.next();
 
