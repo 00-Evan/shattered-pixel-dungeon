@@ -628,17 +628,17 @@ public class Hero extends Char {
 	
 	private boolean actInteract( HeroAction.Interact action ) {
 		
-		NPC npc = action.npc;
+		Char ch = action.ch;
 
-		if (Dungeon.level.adjacent( pos, npc.pos )) {
+		if (Dungeon.level.adjacent( pos, ch.pos )) {
 			
 			ready();
-			sprite.turnTo( pos, npc.pos );
-			return npc.interact();
+			sprite.turnTo( pos, ch.pos );
+			return ch.interact();
 			
 		} else {
 			
-			if (fieldOfView[npc.pos] && getCloser( npc.pos )) {
+			if (fieldOfView[ch.pos] && getCloser( ch.pos )) {
 
 				return true;
 
@@ -1192,8 +1192,8 @@ public class Hero extends Char {
 			
 		} else if (fieldOfView[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
 
-			if (ch instanceof NPC) {
-				curAction = new HeroAction.Interact( (NPC)ch );
+			if (ch.alignment != Alignment.ENEMY) {
+				curAction = new HeroAction.Interact( ch );
 			} else {
 				curAction = new HeroAction.Attack( ch );
 			}

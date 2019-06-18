@@ -179,27 +179,6 @@ public class MirrorImage extends NPC {
 		((MirrorSprite)s).updateArmor( armTier );
 		return s;
 	}
-
-	@Override
-	public boolean interact() {
-		
-		if (!Dungeon.level.passable[pos]){
-			return true;
-		}
-		
-		int curPos = pos;
-		
-		moveSprite( pos, Dungeon.hero.pos );
-		move( Dungeon.hero.pos );
-		
-		Dungeon.hero.sprite.move( Dungeon.hero.pos, curPos );
-		Dungeon.hero.move( curPos );
-		
-		Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
-		Dungeon.hero.busy();
-
-		return true;
-	}
 	
 	{
 		immunities.add( ToxicGas.class );

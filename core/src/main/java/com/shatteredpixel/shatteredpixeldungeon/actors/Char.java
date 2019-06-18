@@ -132,6 +132,39 @@ public abstract class Char extends Actor {
 		return false;
 	}
 	
+	//swaps places by default
+	public boolean interact(){
+		
+		if (!Dungeon.level.passable[pos] && !Dungeon.hero.flying){
+			return true;
+		}
+		
+		int curPos = pos;
+		
+		moveSprite( pos, Dungeon.hero.pos );
+		move( Dungeon.hero.pos );
+		
+		Dungeon.hero.sprite.move( Dungeon.hero.pos, curPos );
+		Dungeon.hero.move( curPos );
+		
+		Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
+		Dungeon.hero.busy();
+		
+		return true;
+	}
+	
+	protected boolean moveSprite( int from, int to ) {
+		
+		if (sprite.isVisible() && (Dungeon.level.heroFOV[from] || Dungeon.level.heroFOV[to])) {
+			sprite.move( from, to );
+			return true;
+		} else {
+			sprite.turnTo(from, to);
+			sprite.place( to );
+			return true;
+		}
+	}
+	
 	protected static final String POS       = "pos";
 	protected static final String TAG_HP    = "HP";
 	protected static final String TAG_HT    = "HT";

@@ -650,20 +650,8 @@ public class DriedRose extends Artifact {
 				rose.talkedTo = true;
 				GameScene.show(new WndQuest(this, Messages.get(this, "introduce") ));
 				return false;
-			} else if (Dungeon.level.passable[pos] || Dungeon.hero.flying) {
-				int curPos = pos;
-
-				moveSprite( pos, Dungeon.hero.pos );
-				move( Dungeon.hero.pos );
-
-				Dungeon.hero.sprite.move( Dungeon.hero.pos, curPos );
-				Dungeon.hero.move( curPos );
-
-				Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
-				Dungeon.hero.busy();
-				return true;
 			} else {
-				return false;
+				return super.interact();
 			}
 		}
 
