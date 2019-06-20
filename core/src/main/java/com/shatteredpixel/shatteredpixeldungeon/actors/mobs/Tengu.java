@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -42,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -241,12 +243,20 @@ public class Tengu extends Mob {
 	@Override
 	public void notice() {
 		super.notice();
-		BossHealthBar.assignBoss(this);
-		if (HP <= HT/2) BossHealthBar.bleed(true);
-		if (HP == HT) {
-			yell(Messages.get(this, "notice_mine", Dungeon.hero.givenName()));
-		} else {
-			yell(Messages.get(this, "notice_face", Dungeon.hero.givenName()));
+		if (!BossHealthBar.isAssigned()) {
+			BossHealthBar.assignBoss(this);
+			if (HP <= HT/2) BossHealthBar.bleed(true);
+			if (HP == HT) {
+				yell(Messages.get(this, "notice_mine", Dungeon.hero.givenName()));
+				for (Char ch : Actor.chars()){
+					if (ch instanceof DriedRose.GhostHero){
+						GLog.n("\n");
+						((DriedRose.GhostHero) ch).sayBoss();
+					}
+				}
+			} else {
+				yell(Messages.get(this, "notice_face", Dungeon.hero.givenName()));
+			}
 		}
 	}
 

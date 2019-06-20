@@ -1391,6 +1391,13 @@ public class Hero extends Char {
 			Sample.INSTANCE.play( Assets.SND_TELEPORT );
 			GLog.w( Messages.get(this, "revive") );
 			Statistics.ankhsUsed++;
+			
+			for (Char ch : Actor.chars()){
+				if (ch instanceof DriedRose.GhostHero){
+					((DriedRose.GhostHero) ch).sayAnhk();
+					return;
+				}
+			}
 
 			return;
 		}

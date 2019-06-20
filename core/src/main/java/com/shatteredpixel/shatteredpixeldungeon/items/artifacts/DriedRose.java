@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
@@ -52,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -153,8 +155,14 @@ public class DriedRose extends Artifact {
 						ghost.yell( Messages.get(GhostHero.class, "hello", Dungeon.hero.givenName()) );
 						Sample.INSTANCE.play( Assets.SND_GHOST );
 						firstSummon = true;
-					} else
-						ghost.saySpawned();
+						
+					} else {
+						if (BossHealthBar.isAssigned()) {
+							ghost.sayBoss();
+						} else {
+							ghost.sayAppeared();
+						}
+					}
 					
 					charge = 0;
 					updateQuickslot();
@@ -302,6 +310,7 @@ public class DriedRose extends Artifact {
 				defaultAction = AC_SUMMON;
 			}
 			
+			//TODO consider adjusting recharging and/or ghosts health regen so that suiciding isn't so good as a heal
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
 				partialCharge += 1/5f; //500 turns to a full charge
@@ -337,15 +346,18 @@ public class DriedRose extends Artifact {
 		}
 	}
 	
-	//FIXME need to translate phrases here
 	public CellSelector.Listener ghostDirector = new CellSelector.Listener(){
 		
 		@Override
 		public void onSelect(Integer cell) {
 			if (cell == null) return;
 			
-			if (!Dungeon.level.heroFOV[cell] || Actor.findChar(cell) == null){
-				GLog.i("Okay, I'll hold that position");
+			Sample.INSTANCE.play( Assets.SND_GHOST );
+			
+			if (!Dungeon.level.heroFOV[cell]
+					|| Actor.findChar(cell) == null
+					|| (Actor.findChar(cell) != Dungeon.hero && Actor.findChar(cell).alignment != Char.Alignment.ENEMY)){
+				ghost.yell(Messages.get(ghost, "directed_position_" + Random.IntRange(1, 5)));
 				ghost.aggro(null);
 				ghost.state = ghost.WANDERING;
 				ghost.defendingPos = cell;
@@ -359,22 +371,21 @@ public class DriedRose extends Artifact {
 			Dungeon.level.updateFieldOfView( ghost, ghost.fieldOfView );
 			
 			if (Actor.findChar(cell) == Dungeon.hero){
-				GLog.i("Okay, I'll follow you.");
+				ghost.yell(Messages.get(ghost, "directed_follow_" + Random.IntRange(1, 5)));
 				ghost.aggro(null);
 				ghost.state = ghost.WANDERING;
 				ghost.defendingPos = -1;
 				
 			} else if (Actor.findChar(cell).alignment == Char.Alignment.ENEMY){
-				GLog.i("Okay, I'll attack that enemy.");
+				ghost.yell(Messages.get(ghost, "directed_attack_" + Random.IntRange(1, 5)));
 				ghost.aggro(Actor.findChar(cell));
 				ghost.setTarget(cell);
-			
 			}
 		}
 		
 		@Override
 		public String prompt() {
-			return "\"What should I do?\"";
+			return  "\"" + Messages.get(GhostHero.class, "direct_prompt") + "\"";
 		}
 	};
 
@@ -453,42 +464,83 @@ public class DriedRose extends Artifact {
 				rose = Dungeon.hero.belongings.getItem(DriedRose.class);
 			}
 			
-			defenseSkill = (Dungeon.hero.lvl+4)*2;
+			//same dodge as the hero
+			defenseSkill = (Dungeon.hero.lvl+4);
 			if (rose == null) return;
-			HT = 20 + 4*rose.level();
+			HT = 20 + 8*rose.level();
 		}
 
-		public void saySpawned(){
-			if (Messages.lang() != Languages.ENGLISH) return; //don't say anything if not on english
-			int i = (Dungeon.depth - 1) / 5;
-			fieldOfView = new boolean[Dungeon.level.length()];
-			Dungeon.level.updateFieldOfView(this, fieldOfView);
-			if (chooseEnemy() == null)
-				yell( Random.element( VOICE_AMBIENT[i] ) );
-			else
-				yell( Random.element( VOICE_ENEMIES[i][ Dungeon.bossLevel() ? 1 : 0 ] ) );
-			Sample.INSTANCE.play( Assets.SND_GHOST );
+		public void sayAppeared(){
+			int depth = (Dungeon.depth - 1) / 5;
+			
+			//only some lines are said on the first floor of a depth
+			int variant = Dungeon.depth % 5 == 1 ? Random.IntRange(1, 3) : Random.IntRange(1, 6);
+			
+			switch(depth){
+				case 0:
+					yell( Messages.get( this, "dialogue_sewers_" + variant ));
+					break;
+				case 1:
+					yell( Messages.get( this, "dialogue_prison_" + variant ));
+					break;
+				case 2:
+					yell( Messages.get( this, "dialogue_caves_" + variant ));
+					break;
+				case 3:
+					yell( Messages.get( this, "dialogue_city_" + variant ));
+					break;
+				case 4: default:
+					yell( Messages.get( this, "dialogue_halls_" + variant ));
+					break;
+			}
+			if (ShatteredPixelDungeon.scene() instanceof GameScene) {
+				Sample.INSTANCE.play( Assets.SND_GHOST );
+			}
 		}
-
-		public void sayAnhk(){
-			yell( Random.element( VOICE_BLESSEDANKH ) );
+		
+		public void sayBoss(){
+			int depth = (Dungeon.depth - 1) / 5;
+			
+			switch(depth){
+				case 0:
+					yell( Messages.get( this, "seen_goo_" + Random.IntRange(1, 3) ));
+					break;
+				case 1:
+					yell( Messages.get( this, "seen_tengu_" + Random.IntRange(1, 3) ));
+					break;
+				case 2:
+					yell( Messages.get( this, "seen_dm300_" + Random.IntRange(1, 3) ));
+					break;
+				case 3:
+					yell( Messages.get( this, "seen_king_" + Random.IntRange(1, 3) ));
+					break;
+				case 4: default:
+					yell( Messages.get( this, "seen_yog_" + Random.IntRange(1, 3) ));
+					break;
+			}
 			Sample.INSTANCE.play( Assets.SND_GHOST );
 		}
 
 		public void sayDefeated(){
-			if (Messages.lang() != Languages.ENGLISH) return; //don't say anything if not on english
-			yell( Random.element( VOICE_DEFEATED[ Dungeon.bossLevel() ? 1 : 0 ] ) );
+			if (BossHealthBar.isAssigned()){
+				yell( Messages.get( this, "defeated_by_boss_" + Random.IntRange(1, 3) ));
+			} else {
+				yell( Messages.get( this, "defeated_by_enemy_" + Random.IntRange(1, 3) ));
+			}
 			Sample.INSTANCE.play( Assets.SND_GHOST );
 		}
 
 		public void sayHeroKilled(){
-			if (Messages.lang() != Languages.ENGLISH) return; //don't say anything if not on english
-			yell(Random.element(VOICE_HEROKILLED));
+			if (Dungeon.bossLevel()){
+				yell( Messages.get( this, "hero_killed_boss_" + Random.IntRange(1, 3) ));
+			} else {
+				yell( Messages.get( this, "hero_killed_" + Random.IntRange(1, 3) ));
+			}
 			Sample.INSTANCE.play( Assets.SND_GHOST );
 		}
-
-		public void sayBossBeaten(){
-			yell( Random.element( VOICE_BOSSBEATEN[ Dungeon.depth==25 ? 1 : 0 ] ) );
+		
+		public void sayAnhk(){
+			yell( Messages.get( this, "blessed_ankh_" + Random.IntRange(1, 3) ));
 			Sample.INSTANCE.play( Assets.SND_GHOST );
 		}
 
@@ -736,139 +788,6 @@ public class DriedRose extends Artifact {
 			
 		}
 
-		//************************************************************************************
-		//This is a bunch strings & string arrays, used in all of the sad ghost's voice lines.
-		//************************************************************************************
-		//FIXME, need to go over these for final polish (inc. translations!)
-
-		private static final String VOICE_INTRODUCE = "My spirit is bound to this rose, it was very precious to me, a "+
-			"gift from my love whom I left on the surface.\n\nI cannot return to him, but thanks to you I have a " +
-			"second chance to complete my journey. When I am able I will respond to your call and fight with you.\n\n" +
-			"hopefully you may succeed where I failed...";
-
-		//1st index - depth type, 2nd index - specific line.
-		public static final String[][] VOICE_AMBIENT = {
-			{
-					"These sewers were once safe, some even lived here in the winter...",
-					"I wonder what happened to the guard patrols, did they give up?...",
-					"I had family on the surface, I hope they are safe..."
-			},{
-					"I've heard stories about this place, nothing good...",
-					"This place was always more of a dungeon than a prison...",
-					"I can't imagine what went on when this place was abandoned..."
-			},{
-					"No human or dwarf has been here for a very long time...",
-					"Something must have gone very wrong, for the dwarves to abandon a gold mine...",
-					"I feel great evil lurking below..."
-			},{
-					"The dwarves were industrious, but greedy...",
-					"I hope the surface never ends up like this place...",
-					"So the dwarvern metropolis really has fallen..."
-			},{
-					"What is this place?...",
-					"So the stories are true, we have to fight a demon god...",
-					"I feel a great evil in this place..."
-			},{
-					"... I don't like this place... We should leave as soon as possible..."
-			}
-		};
-
-		//1st index - depth type, 2nd index - boss or not, 3rd index - specific line.
-		public static final String[][][] VOICE_ENEMIES = {
-			{
-				{
-					"Let's make the sewers safe again...",
-					"If the guards couldn't defeat them, perhaps we can...",
-					"These crabs are extremely annoying..."
-				},{
-					"Beware Goo!...",
-					"Many of my friends died to this thing, time for vengeance...",
-					"Such an abomination cannot be allowed to live..."
-				}
-			},{
-				{
-					"What dark magic happened here?...",
-					"To think the captives of this place are now its guardians...",
-					"They were criminals before, now they are monsters..."
-				},{
-					"If only he would see reason, he doesn't seem insane...",
-					"He assumes we are hostile, if only he would stop to talk...",
-					"The one prisoner left sane is a deadly assassin. Of course..."
-				}
-			},{
-				{
-					"The creatures here are twisted, just like the sewers... ",
-					"more gnolls, I hate gnolls...",
-					"Even the bats are bloodthirsty here..."
-				},{
-					"Only dwarves would build a mining machine that kills looters...",
-					"That thing is huge...",
-					"How has it survived here for so long?..."
-				}
-			},{
-				{
-					"Dwarves aren't supposed to look that pale...",
-					"I don't know what's worse, the dwarves, or their creations...",
-					"They all obey their master without question, even now..."
-				},{
-					"When people say power corrupts, this is what they mean...",
-					"He's more a Lich than a King now...",
-					"Looks like he's more demon than dwarf now..."
-				}
-			},{
-				{
-					"What the heck is that thing?...",
-					"This place is terrifying...",
-					"What were the dwarves thinking, toying with power like this?..."
-				},{
-					"Oh.... this doesn't look good...",
-					"So that's what a god looks like?...",
-					"This is going to hurt..."
-				}
-			},{
-				{
-					"I don't like this place... we should leave as soon as we can..."
-				},{
-					"Hello source viewer, I'm writing this here as this line should never trigger. Have a nice day!"
-				}
-			}
-		};
-
-		//1st index - Yog or not, 2nd index - specific line.
-		public static final String[][] VOICE_BOSSBEATEN = {
-			{
-					"Yes!",
-					"Victory!"
-			},{
-					"It's over... we won...",
-					"I can't believe it... We just killed a god..."
-			}
-		};
-
-		//1st index - boss or not, 2nd index - specific line.
-		public static final String[][] VOICE_DEFEATED = {
-			{
-					"Good luck...",
-					"I will return...",
-					"Tired... for now..."
-			},{
-					"No... I can't....",
-					"I'm sorry.. good luck..",
-					"Finish it off... without me..."
-			}
-		};
-
-		public static final String[] VOICE_HEROKILLED = {
-					"nooo...",
-					"no...",
-					"I couldn't help them..."
-		};
-
-		public static final String[] VOICE_BLESSEDANKH = {
-					"Incredible!...",
-					"Wish I had one of those...",
-					"How did you survive that?..."
-		};
 	}
 	
 	private static class WndGhostHero extends Window{
