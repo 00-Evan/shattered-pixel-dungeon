@@ -23,6 +23,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -41,7 +43,14 @@ public class Door {
 	}
 
 	public static void leave( int pos ) {
-		if (Dungeon.level.heaps.get( pos ) == null) {
+		int chars = 0;
+		
+		for (Char ch : Actor.chars()){
+			if (ch.pos == pos) chars++;
+		}
+		
+		//door does not shut if anything else is also on it
+		if (Dungeon.level.heaps.get( pos ) == null && chars <= 1) {
 			Level.set( pos, Terrain.DOOR );
 			GameScene.updateMap( pos );
 			if (Dungeon.level.heroFOV[pos])
