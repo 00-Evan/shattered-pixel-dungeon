@@ -165,17 +165,6 @@ public class Artifact extends KindofMisc {
 		return null;
 	}
 
-	//converts class names to be more concise and readable.
-	protected String convertName(String className){
-		//removes known redundant parts of names.
-		className = className.replaceFirst("ScrollOf|PotionOf", "");
-
-		//inserts a space infront of every uppercase character
-		className = className.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2");
-
-		return className;
-	};
-
 	@Override
 	public Item random() {
 		//always +0
@@ -223,8 +212,7 @@ public class Artifact extends KindofMisc {
 		}
 
 	}
-
-	private static final String IMAGE = "image";
+	
 	private static final String EXP = "exp";
 	private static final String CHARGE = "charge";
 	private static final String PARTIALCHARGE = "partialcharge";

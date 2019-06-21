@@ -165,6 +165,7 @@ public class DriedRose extends Artifact {
 					}
 					
 					charge = 0;
+					partialCharge = 0;
 					updateQuickslot();
 
 				} else
@@ -211,7 +212,24 @@ public class DriedRose extends Artifact {
 
 		return desc;
 	}
-
+	
+	@Override
+	public String status() {
+		if (ghost == null && ghostID != 0){
+			Actor a = Actor.findById(ghostID);
+			if (a != null){
+				ghost = (GhostHero)a;
+			} else {
+				ghostID = 0;
+			}
+		}
+		if (ghost == null){
+			return super.status();
+		} else {
+			return (int)((ghost.HP+partialCharge)*100) / ghost.HT + "%";
+		}
+	}
+	
 	@Override
 	protected ArtifactBuff passiveBuff() {
 		return new roseRecharge();
@@ -219,17 +237,19 @@ public class DriedRose extends Artifact {
 	
 	@Override
 	public void charge(Hero target) {
-		if (ghost == null && charge < chargeCap){
-			partialCharge += 0.25f;
-			if (partialCharge >= 1){
-				partialCharge--;
-				charge++;
+		if (ghost == null){
+			if (charge < chargeCap) {
+				charge += 4;
 				updateQuickslot();
-				if (charge == chargeCap){
-					partialCharge = 0f;
-					GLog.p( Messages.get(DriedRose.class, "charged") );
+				if (charge >= chargeCap) {
+					charge = chargeCap;
+					partialCharge = 0;
+					GLog.p(Messages.get(DriedRose.class, "charged"));
 				}
 			}
+		} else {
+			ghost.HP = Math.min( ghost.HT, ghost.HP + 1 + level()/3);
+			updateQuickslot();
 		}
 	}
 	
@@ -305,12 +325,25 @@ public class DriedRose extends Artifact {
 			//rose does not charge while ghost hero is alive
 			if (ghost != null){
 				defaultAction = AC_DIRECT;
+				
+				//heals to full over 1000 turns
+				if (ghost.HP < ghost.HT) {
+					partialCharge += ghost.HT / 1000f;
+					updateQuickslot();
+					
+					if (partialCharge > 1) {
+						ghost.HP++;
+						partialCharge--;
+					}
+				} else {
+					partialCharge = 0;
+				}
+				
 				return true;
 			} else {
 				defaultAction = AC_SUMMON;
 			}
 			
-			//TODO consider adjusting recharging and/or ghosts health regen so that suiciding isn't so good as a heal
 			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap && !cursed && (lock == null || lock.regenOn())) {
 				partialCharge += 1/5f; //500 turns to a full charge
@@ -470,80 +503,6 @@ public class DriedRose extends Artifact {
 			HT = 20 + 8*rose.level();
 		}
 
-		public void sayAppeared(){
-			int depth = (Dungeon.depth - 1) / 5;
-			
-			//only some lines are said on the first floor of a depth
-			int variant = Dungeon.depth % 5 == 1 ? Random.IntRange(1, 3) : Random.IntRange(1, 6);
-			
-			switch(depth){
-				case 0:
-					yell( Messages.get( this, "dialogue_sewers_" + variant ));
-					break;
-				case 1:
-					yell( Messages.get( this, "dialogue_prison_" + variant ));
-					break;
-				case 2:
-					yell( Messages.get( this, "dialogue_caves_" + variant ));
-					break;
-				case 3:
-					yell( Messages.get( this, "dialogue_city_" + variant ));
-					break;
-				case 4: default:
-					yell( Messages.get( this, "dialogue_halls_" + variant ));
-					break;
-			}
-			if (ShatteredPixelDungeon.scene() instanceof GameScene) {
-				Sample.INSTANCE.play( Assets.SND_GHOST );
-			}
-		}
-		
-		public void sayBoss(){
-			int depth = (Dungeon.depth - 1) / 5;
-			
-			switch(depth){
-				case 0:
-					yell( Messages.get( this, "seen_goo_" + Random.IntRange(1, 3) ));
-					break;
-				case 1:
-					yell( Messages.get( this, "seen_tengu_" + Random.IntRange(1, 3) ));
-					break;
-				case 2:
-					yell( Messages.get( this, "seen_dm300_" + Random.IntRange(1, 3) ));
-					break;
-				case 3:
-					yell( Messages.get( this, "seen_king_" + Random.IntRange(1, 3) ));
-					break;
-				case 4: default:
-					yell( Messages.get( this, "seen_yog_" + Random.IntRange(1, 3) ));
-					break;
-			}
-			Sample.INSTANCE.play( Assets.SND_GHOST );
-		}
-
-		public void sayDefeated(){
-			if (BossHealthBar.isAssigned()){
-				yell( Messages.get( this, "defeated_by_boss_" + Random.IntRange(1, 3) ));
-			} else {
-				yell( Messages.get( this, "defeated_by_enemy_" + Random.IntRange(1, 3) ));
-			}
-			Sample.INSTANCE.play( Assets.SND_GHOST );
-		}
-
-		public void sayHeroKilled(){
-			if (Dungeon.bossLevel()){
-				yell( Messages.get( this, "hero_killed_boss_" + Random.IntRange(1, 3) ));
-			} else {
-				yell( Messages.get( this, "hero_killed_" + Random.IntRange(1, 3) ));
-			}
-			Sample.INSTANCE.play( Assets.SND_GHOST );
-		}
-		
-		public void sayAnhk(){
-			yell( Messages.get( this, "blessed_ankh_" + Random.IntRange(1, 3) ));
-			Sample.INSTANCE.play( Assets.SND_GHOST );
-		}
-
 		@Override
 		protected boolean act() {
 			updateRose();
@@ -644,6 +603,9 @@ public class DriedRose extends Artifact {
 			}
 			
 			super.damage( dmg, src );
+			
+			//for the rose status indicator
+			Item.updateQuickslot();
 		}
 		
 		@Override
@@ -718,10 +680,86 @@ public class DriedRose extends Artifact {
 			updateRose();
 			if (rose != null) {
 				rose.ghost = null;
+				rose.charge = 0;
+				rose.partialCharge = 0;
 				rose.ghostID = -1;
 				rose.defaultAction = AC_SUMMON;
 			}
 			super.destroy();
+		}
+		
+		public void sayAppeared(){
+			int depth = (Dungeon.depth - 1) / 5;
+			
+			//only some lines are said on the first floor of a depth
+			int variant = Dungeon.depth % 5 == 1 ? Random.IntRange(1, 3) : Random.IntRange(1, 6);
+			
+			switch(depth){
+				case 0:
+					yell( Messages.get( this, "dialogue_sewers_" + variant ));
+					break;
+				case 1:
+					yell( Messages.get( this, "dialogue_prison_" + variant ));
+					break;
+				case 2:
+					yell( Messages.get( this, "dialogue_caves_" + variant ));
+					break;
+				case 3:
+					yell( Messages.get( this, "dialogue_city_" + variant ));
+					break;
+				case 4: default:
+					yell( Messages.get( this, "dialogue_halls_" + variant ));
+					break;
+			}
+			if (ShatteredPixelDungeon.scene() instanceof GameScene) {
+				Sample.INSTANCE.play( Assets.SND_GHOST );
+			}
+		}
+		
+		public void sayBoss(){
+			int depth = (Dungeon.depth - 1) / 5;
+			
+			switch(depth){
+				case 0:
+					yell( Messages.get( this, "seen_goo_" + Random.IntRange(1, 3) ));
+					break;
+				case 1:
+					yell( Messages.get( this, "seen_tengu_" + Random.IntRange(1, 3) ));
+					break;
+				case 2:
+					yell( Messages.get( this, "seen_dm300_" + Random.IntRange(1, 3) ));
+					break;
+				case 3:
+					yell( Messages.get( this, "seen_king_" + Random.IntRange(1, 3) ));
+					break;
+				case 4: default:
+					yell( Messages.get( this, "seen_yog_" + Random.IntRange(1, 3) ));
+					break;
+			}
+			Sample.INSTANCE.play( Assets.SND_GHOST );
+		}
+		
+		public void sayDefeated(){
+			if (BossHealthBar.isAssigned()){
+				yell( Messages.get( this, "defeated_by_boss_" + Random.IntRange(1, 3) ));
+			} else {
+				yell( Messages.get( this, "defeated_by_enemy_" + Random.IntRange(1, 3) ));
+			}
+			Sample.INSTANCE.play( Assets.SND_GHOST );
+		}
+		
+		public void sayHeroKilled(){
+			if (Dungeon.bossLevel()){
+				yell( Messages.get( this, "hero_killed_boss_" + Random.IntRange(1, 3) ));
+			} else {
+				yell( Messages.get( this, "hero_killed_" + Random.IntRange(1, 3) ));
+			}
+			Sample.INSTANCE.play( Assets.SND_GHOST );
+		}
+		
+		public void sayAnhk(){
+			yell( Messages.get( this, "blessed_ankh_" + Random.IntRange(1, 3) ));
+			Sample.INSTANCE.play( Assets.SND_GHOST );
 		}
 		
 		private static final String DEFEND_POS = "defend_pos";
