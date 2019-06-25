@@ -115,12 +115,14 @@ public class HeavyBoomerang extends MissileWeapon {
 											} else {
 												Dungeon.level.drop(boomerang, returnPos).sprite.drop();
 											}
+											CircleBack.this.next();
 										}
 									});
 					visual.alpha(0f);
 					float duration = Dungeon.level.trueDistance(thrownPos, returnPos) / 20f;
 					Dungeon.hero.sprite.parent.add(new AlphaTweener(visual, 1f, duration));
 					detach();
+					return false;
 				}
 			}
 			spend( TICK );
