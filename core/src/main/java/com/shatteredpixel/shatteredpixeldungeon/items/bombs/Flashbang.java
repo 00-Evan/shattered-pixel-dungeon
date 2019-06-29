@@ -36,21 +36,15 @@ public class Flashbang extends Bomb {
 	{
 		image = ItemSpriteSheet.FLASHBANG;
 	}
-	
-	@Override
-	public boolean explodesDestructively() {
-		return false;
-	}
-	
+
 	@Override
 	public void explode(int cell) {
 		super.explode(cell);
-		
-		//FIXME currently has somewhat odd behaviour, as FOV is updated at the start of a turn.
+
 		Level l = Dungeon.level;
 		for (Char ch : Actor.chars()){
 			if (ch.fieldOfView != null && ch.fieldOfView[cell]){
-				int power = 15 - 2*l.distance(ch.pos, cell);
+				int power = 16 - 4*l.distance(ch.pos, cell);
 				if (power > 0){
 					Buff.prolong(ch, Blindness.class, power);
 					Buff.prolong(ch, Cripple.class, power);
@@ -60,7 +54,6 @@ public class Flashbang extends Bomb {
 				}
 			}
 		}
-		
 		
 	}
 	

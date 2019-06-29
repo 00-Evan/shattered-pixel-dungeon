@@ -23,10 +23,15 @@ package com.shatteredpixel.shatteredpixeldungeon.items.bombs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -36,70 +41,113 @@ public class Noisemaker extends Bomb {
 	{
 		image = ItemSpriteSheet.NOISEMAKER;
 	}
-	
-	
-	@Override
-	public boolean explodesDestructively() {
-		return false;
+
+	public void setTrigger(int cell){
+
+		Buff.affect(Dungeon.hero, Trigger.class).set(cell);
+
+		CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+		Sample.INSTANCE.play( Assets.SND_ALERT );
+
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			mob.beckon( cell );
+		}
+
+		for (Heap heap : Dungeon.level.heaps.values()) {
+			if (heap.type == Heap.Type.MIMIC) {
+				Mimic m = Mimic.spawnAt( heap.pos, heap.items );
+				if (m != null) {
+					m.beckon( cell );
+					heap.destroy();
+				}
+			}
+		}
+
 	}
 	
-	@Override
-	public void explode(int cell) {
-		super.explode(cell);
-		
-		Buff.affect(Dungeon.hero, Noise.class).set(cell);
-	}
-	
-	public static class Noise extends Buff {
-		
-		int floor;
+	public static class Trigger extends Buff {
+
 		int cell;
-		
+		int floor;
 		int left;
 		
 		public void set(int cell){
 			floor = Dungeon.depth;
 			this.cell = cell;
-			left = 8;
+			left = 6;
 		}
 		
 		@Override
 		public boolean act() {
-			
-			if (Dungeon.depth == floor){
-				if (Dungeon.level.heroFOV[cell]) {
-					CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-					Sample.INSTANCE.play( Assets.SND_ALERT );
-				} else {
-					CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-					Sample.INSTANCE.play( Assets.SND_ALERT, 0.25f );
-				}
-				
-				for (Mob m : Dungeon.level.mobs){
-					if (m.state != m.HUNTING) {
-						m.beckon(cell);
+
+			if (Dungeon.depth != floor){
+				spend(TICK);
+				return true;
+			}
+
+			Noisemaker bomb = null;
+			Heap heap = Dungeon.level.heaps.get(cell);
+
+			if (heap != null){
+				for (Item i : heap.items){
+					if (i instanceof Noisemaker){
+						bomb = (Noisemaker) i;
+						break;
 					}
 				}
 			}
-			
-			if (left > 0) {
-				spend(TICK * 15f);
-				left--;
-			} else {
+
+			if (bomb == null) {
 				detach();
+
+			} else if (Actor.findChar(cell) != null)  {
+
+				heap.items.remove(bomb);
+				if (heap.items.isEmpty()) {
+					heap.destroy();
+				}
+
+				detach();
+				bomb.explode(cell);
+
+			} else {
+				spend(TICK);
+
+				left--;
+
+				if (left <= 0){
+					CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+					Sample.INSTANCE.play( Assets.SND_ALERT );
+
+					for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+						mob.beckon( cell );
+					}
+					left = 6;
+				}
+
 			}
-			
+
 			return true;
 		}
-		
+
+		private static final String CELL = "cell";
+		private static final String FLOOR = "floor";
+		private static final String LEFT = "left";
+
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
+			bundle.put(CELL, cell);
+			bundle.put(FLOOR, floor);
+			bundle.put(LEFT, left);
 		}
 		
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
+			cell = bundle.getInt(CELL);
+			floor = bundle.getInt(FLOOR);
+			left = bundle.getInt(LEFT);
 		}
 	}
 	

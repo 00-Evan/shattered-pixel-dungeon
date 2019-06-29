@@ -172,11 +172,15 @@ public class Bomb extends Item {
 			}
 			
 			for (Char ch : affected){
-				//those not at the center of the blast take damage less consistently.
-				int minDamage = ch.pos == cell ? Dungeon.depth + 5 : 1;
-				int maxDamage = 10 + Dungeon.depth * 2;
-				
-				int dmg = Random.NormalIntRange(minDamage, maxDamage) - ch.drRoll();
+				int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth*2);
+
+				//those not at the center of the blast take less damage
+				if (ch.pos != cell){
+					dmg = Math.round(dmg*0.67f);
+				}
+
+				dmg -= ch.drRoll();
+
 				if (dmg > 0) {
 					ch.damage(dmg, this);
 				}
@@ -271,13 +275,24 @@ public class Bomb extends Item {
 			//look for our bomb, remove it from its heap, and blow it up.
 			for (Heap heap : Dungeon.level.heaps.values()) {
 				if (heap.items.contains(bomb)) {
-					heap.items.remove(bomb);
-					if (heap.items.isEmpty()){
-						heap.destroy();
+
+					//FIXME this is a bit hacky, might want to generalize the functionality
+					//of bombs that don't explode instantly when their fuse ends
+					if (bomb instanceof Noisemaker){
+
+						((Noisemaker) bomb).setTrigger(heap.pos);
+
+					} else {
+
+						heap.items.remove(bomb);
+						if (heap.items.isEmpty()) {
+							heap.destroy();
+						}
+
+						bomb.explode(heap.pos);
 					}
 
-					bomb.explode(heap.pos);
-
+					diactivate();
 					Actor.remove(this);
 					return true;
 				}
@@ -334,17 +349,17 @@ public class Bomb extends Item {
 		
 		private static final HashMap<Class<?extends Bomb>, Integer> bombCosts = new HashMap<>();
 		static {
-			bombCosts.put(FrostBomb.class,      3);
-			bombCosts.put(WoollyBomb.class,     3);
+			bombCosts.put(FrostBomb.class,      2);
+			bombCosts.put(WoollyBomb.class,     2);
 			
 			bombCosts.put(Firebomb.class,       4);
 			bombCosts.put(Noisemaker.class,     4);
 			
-			bombCosts.put(Flashbang.class,      5);
-			bombCosts.put(ShockBomb.class,      5);
-			
-			bombCosts.put(RegrowthBomb.class,   6);
-			bombCosts.put(HolyBomb.class,       6);
+			bombCosts.put(Flashbang.class,      6);
+			bombCosts.put(ShockBomb.class,      6);
+
+			bombCosts.put(RegrowthBomb.class,   8);
+			bombCosts.put(HolyBomb.class,       8);
 			
 			bombCosts.put(ArcaneBomb.class,     10);
 			bombCosts.put(ShrapnelBomb.class,   10);

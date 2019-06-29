@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Starflower;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
@@ -70,8 +71,8 @@ public class RegrowthBomb extends Bomb {
 				Char ch = Actor.findChar(i);
 				if (ch != null){
 					if (ch.alignment == Dungeon.hero.alignment) {
-						//same as a healing dart
-						Buff.affect(ch, Healing.class).setHeal((int) (0.5f * ch.HT + 30), 0.25f, 0);
+						//same as a healing potion
+						Buff.affect( ch, Healing.class ).setHeal((int)(0.8f*ch.HT + 14), 0.25f, 0);
 						PotionOfHealing.cure(ch);
 					}
 				} else if ( Dungeon.level.map[i] == Terrain.EMPTY ||
@@ -86,21 +87,32 @@ public class RegrowthBomb extends Bomb {
 				GameScene.add( Blob.seed( i, 10, Regrowth.class ) );
 			}
 		}
+
+		int plants = Random.chances(new float[]{0, 6, 3, 1});
+
+		for (int i = 0; i < plants; i++) {
+			Integer plantPos = Random.element(plantCandidates);
+			if (plantPos != null) {
+				Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), plantPos);
+				plantCandidates.remove(plantPos);
+			}
+		}
 		
 		Integer plantPos = Random.element(plantCandidates);
 		if (plantPos != null){
-			Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), plantPos);
-			plantCandidates.remove(plantPos);
-		}
-		
-		plantPos = Random.element(plantCandidates);
-		if (plantPos != null){
-			if (Random.Int(2) == 0){
-				Dungeon.level.plant( new WandOfRegrowth.Dewcatcher.Seed(), plantPos);
-			} else {
-				Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), plantPos);
+			Plant.Seed plant;
+			switch (Random.chances(new float[]{0, 6, 3, 1})){
+				case 1: default:
+					plant = new WandOfRegrowth.Dewcatcher.Seed();
+					break;
+				case 2:
+					plant = new WandOfRegrowth.Seedpod.Seed();
+					break;
+				case 3:
+					plant = new Starflower.Seed();
+					break;
 			}
-			plantCandidates.remove(plantPos);
+			Dungeon.level.plant( plant, plantPos);
 		}
 	}
 	

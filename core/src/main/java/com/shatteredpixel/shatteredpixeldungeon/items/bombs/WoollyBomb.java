@@ -41,11 +41,6 @@ public class WoollyBomb extends Bomb {
 	}
 	
 	@Override
-	public boolean explodesDestructively() {
-		return false;
-	}
-	
-	@Override
 	public void explode(int cell) {
 		super.explode(cell);
 		

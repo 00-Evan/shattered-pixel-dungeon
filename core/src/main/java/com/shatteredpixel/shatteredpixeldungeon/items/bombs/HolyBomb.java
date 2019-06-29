@@ -66,7 +66,6 @@ public class HolyBomb extends Bomb {
 		}
 		
 		for (Char ch : affected){
-			Buff.prolong(ch, Blindness.class, 1f);
 			if (ch.properties().contains(Char.Property.UNDEAD) || ch.properties().contains(Char.Property.DEMONIC)){
 				ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 				
