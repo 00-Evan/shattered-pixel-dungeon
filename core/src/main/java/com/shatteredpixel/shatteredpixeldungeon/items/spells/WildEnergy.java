@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMysticalEnergy;
@@ -51,9 +52,15 @@ public class WildEnergy extends TargetedSpell {
 			@Override
 			public void call() {
 				ScrollOfRecharging.charge(hero);
-				
-				Buff.affect(hero, Recharging.class, 10f);
-				Buff.affect(hero, ArtifactRecharge.class).prolong( 10 );
+
+				hero.belongings.charge(1f);
+				for (int i = 0; i < 4; i++){
+					if (hero.belongings.misc1 instanceof Artifact) ((Artifact) hero.belongings.misc1).charge(hero);
+					if (hero.belongings.misc2 instanceof Artifact) ((Artifact) hero.belongings.misc2).charge(hero);
+				}
+
+				Buff.affect(hero, Recharging.class, 8f);
+				Buff.affect(hero, ArtifactRecharge.class).prolong( 8 );
 				
 				detach( curUser.belongings.backpack );
 				updateQuickslot();
