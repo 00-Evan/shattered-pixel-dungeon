@@ -326,7 +326,7 @@ public class Armor extends EquipableItem {
 			}
 			if (!enemyNear) speed *= (1.2f + 0.04f * level());
 		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
-			speed *= (1.5f + 0.1f * level());
+			speed *= 2f;
 		}
 		
 		if (hasGlyph(Bulk.class, owner) &&

@@ -35,7 +35,7 @@ public class Brimstone extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see Burning.act
+		//no proc effect, see Hero.isImmune and GhostHero.isImmune
 		return damage;
 	}
 
@@ -44,7 +44,7 @@ public class Brimstone extends Armor.Glyph {
 		return ORANGE;
 	}
 
-	//FIXME doesn't work with sad ghost
+	//pre-0.7.4 saves
 	public static class BrimstoneShield extends ShieldBuff {
 		
 		{
@@ -60,38 +60,16 @@ public class Brimstone extends Armor.Glyph {
 				return true;
 			}
 
-			int level = hero.belongings.armor.level();
+			if (shielding() > 0){
+				decShield();
 
-			if (hero.buff(Burning.class) != null){
-				//max shielding equal to the armors level (this does mean no shield at lvl 0)
-				if (shielding() < level) {
-					incShield();
-
-					//generates 0.2 + 0.1*lvl shield per turn
-					spend( 10f / (2f + level));
-				} else {
-
-					//if shield is maxed, don't wait longer than 1 turn to try again
-					spend( Math.min( TICK, 10f / (2f + level)));
-				}
-
-			} else if (hero.buff(Burning.class) == null){
-				if (shielding() > 0){
-					decShield();
-
-					//shield decays at a rate of 1 per turn.
-					spend(TICK);
-				} else {
-					detach();
-				}
+				//shield decays at a rate of 1 per turn.
+				spend(TICK);
+			} else {
+				detach();
 			}
 
 			return true;
-		}
-
-		public void startDecay(){
-			//sets the buff to start acting next turn. Invoked by Burning when it expires.
-			spend(-cooldown()+2);
 		}
 
 		@Override

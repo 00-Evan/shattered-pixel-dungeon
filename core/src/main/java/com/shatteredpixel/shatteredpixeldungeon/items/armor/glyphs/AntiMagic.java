@@ -61,7 +61,7 @@ public class AntiMagic extends Armor.Glyph {
 	}
 	
 	public static int drRoll( int level ){
-		return Random.NormalIntRange(2+level, 4 + (level*2));
+		return Random.NormalIntRange(level, 4 + (level*2));
 	}
 
 	@Override

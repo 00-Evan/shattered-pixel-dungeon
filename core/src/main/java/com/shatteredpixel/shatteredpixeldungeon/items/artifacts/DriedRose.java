@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
@@ -656,7 +657,18 @@ public class DriedRose extends Artifact {
 		private void setTarget(int cell) {
 			target = cell;
 		}
-		
+
+		@Override
+		public boolean isImmune(Class effect) {
+			if (effect == Burning.class
+					&& rose != null
+					&& rose.armor != null
+					&& rose.armor.hasGlyph(Brimstone.class, this)){
+				return true;
+			}
+			return super.isImmune(effect);
+		}
+
 		@Override
 		public boolean interact() {
 			updateRose();
