@@ -111,6 +111,21 @@ public abstract class Wand extends Item {
 
 	public abstract void onHit( MagesStaff staff, Char attacker, Char defender, int damage);
 
+	public boolean tryToZap( Hero owner ){
+
+		if (owner.buff(MagicImmune.class) != null){
+			GLog.w( Messages.get(this, "no_magic") );
+			return false;
+		}
+
+		if ( curCharges >= (cursed ? 1 : chargesPerCast())){
+			return true;
+		} else {
+			GLog.w(Messages.get(this, "fizzles"));
+			return false;
+		}
+	}
+
 	@Override
 	public boolean collect( Bag container ) {
 		if (super.collect( container )) {
@@ -411,9 +426,6 @@ public abstract class Wand extends Item {
 				if (target == curUser.pos || cell == curUser.pos) {
 					GLog.i( Messages.get(Wand.class, "self_target") );
 					return;
-				} else if (curUser.buff(MagicImmune.class) != null){
-					GLog.w( Messages.get(Wand.class, "no_magic") );
-					return;
 				}
 
 				curUser.sprite.zap(cell);
@@ -424,7 +436,7 @@ public abstract class Wand extends Item {
 				else
 					QuickSlotButton.target(Actor.findChar(cell));
 				
-				if (curWand.curCharges >= (curWand.cursed ? 1 : curWand.chargesPerCast())) {
+				if (curWand.tryToZap(curUser)) {
 					
 					curUser.busy();
 					Invisibility.dispel();
@@ -452,10 +464,6 @@ public abstract class Wand extends Item {
 					}
 					curWand.cursedKnown = true;
 					
-				} else {
-
-					GLog.w( Messages.get(Wand.class, "fizzles") );
-
 				}
 				
 			}

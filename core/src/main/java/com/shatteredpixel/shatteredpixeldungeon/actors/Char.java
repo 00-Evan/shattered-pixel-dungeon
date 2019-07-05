@@ -131,6 +131,10 @@ public abstract class Char extends Actor {
 		Dungeon.level.updateFieldOfView( this, fieldOfView );
 		return false;
 	}
+
+	public boolean canInteract( Hero h ){
+		return Dungeon.level.adjacent( pos, h.pos );
+	}
 	
 	//swaps places by default
 	public boolean interact(){

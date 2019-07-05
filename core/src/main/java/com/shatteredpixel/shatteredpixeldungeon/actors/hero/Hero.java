@@ -630,7 +630,7 @@ public class Hero extends Char {
 		
 		Char ch = action.ch;
 
-		if (Dungeon.level.adjacent( pos, ch.pos )) {
+		if (ch.canInteract(this)) {
 			
 			ready();
 			sprite.turnTo( pos, ch.pos );
