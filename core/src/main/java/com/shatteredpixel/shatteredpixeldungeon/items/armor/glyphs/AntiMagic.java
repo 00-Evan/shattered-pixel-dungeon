@@ -29,6 +29,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -47,6 +57,17 @@ public class AntiMagic extends Armor.Glyph {
 		
 		RESISTS.add( DisintegrationTrap.class );
 		RESISTS.add( GrimTrap.class );
+
+		RESISTS.add( WandOfBlastWave.class );
+		RESISTS.add( WandOfDisintegration.class );
+		RESISTS.add( WandOfFireblast.class );
+		RESISTS.add( WandOfFrost.class );
+		RESISTS.add( WandOfLightning.class );
+		RESISTS.add( WandOfLivingEarth.class );
+		RESISTS.add( WandOfMagicMissile.class );
+		RESISTS.add( WandOfPrismaticLight.class );
+		RESISTS.add( WandOfTransfusion.class );
+		RESISTS.add( WandOfWarding.Ward.class );
 		
 		RESISTS.add( Shaman.LightningBolt.class );
 		RESISTS.add( Warlock.DarkBolt.class );
