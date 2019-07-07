@@ -21,6 +21,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 public class WandOfWarding extends Wand {
@@ -86,13 +87,30 @@ public class WandOfWarding extends Wand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		//TODO
+
+		int level = Math.max( 0, staff.level() );
+
+		// lvl 0 - 20%
+		// lvl 1 - 33%
+		// lvl 2 - 43%
+		if (Random.Int( level + 5 ) >= 4) {
+			for (Char ch : Actor.chars()){
+				if (ch instanceof Ward){
+					((Ward) ch).wandHeal(staff.level());
+					ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
+				}
+			}
+		}
 	}
 
 	@Override
 	public void staffFx(MagesStaff.StaffParticle particle) {
-		//TODO
-		super.staffFx(particle);
+		particle.color( 0x8822FF );
+		particle.am = 0.3f;
+		particle.setLifespan(3f);
+		particle.speed.polar(Random.Float(PointF.PI2), 0.3f);
+		particle.setSize( 1f, 2f);
+		particle.radiateXY(2.5f);
 	}
 
 	public static boolean canPlaceWard(int pos){
