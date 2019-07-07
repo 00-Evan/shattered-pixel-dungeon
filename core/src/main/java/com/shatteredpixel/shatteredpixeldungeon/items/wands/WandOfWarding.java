@@ -117,14 +117,19 @@ public class WandOfWarding extends Wand {
 
 		int adjacentBlockedCells = 0;
 		int adjacentCellGroups = 0;
-		boolean prevOpen = openCell(pos + PathFinder.CIRCLE8[PathFinder.CIRCLE8.length-1]);
+
+		boolean[] passable = Dungeon.level.passable;
+		boolean prevPassable = passable[pos + PathFinder.CIRCLE8[PathFinder.CIRCLE8.length-1]];
 
 		for (int i : PathFinder.CIRCLE8){
-			if (!openCell(pos + i)){
+			if (Actor.findChar(pos+i) instanceof Ward){
+				return false;
+			}
+			if (!passable[pos + i]){
 				adjacentBlockedCells++;
 			}
-			if (prevOpen != openCell(pos + i)){
-				prevOpen = !prevOpen;
+			if (prevPassable != passable[pos + i]){
+				prevPassable = !prevPassable;
 				adjacentCellGroups++;
 			}
 		}
@@ -133,19 +138,14 @@ public class WandOfWarding extends Wand {
 			case 0: case 1:
 				return true;
 			case 2:
-				return (openCell(pos + PathFinder.CIRCLE4[0]) || openCell( pos + PathFinder.CIRCLE4[2]))
-						&& (openCell(pos + PathFinder.CIRCLE4[1]) || openCell( pos + PathFinder.CIRCLE4[3]));
+				return (passable[pos + PathFinder.CIRCLE4[0]] || passable[ pos + PathFinder.CIRCLE4[2]])
+						&& (passable[pos + PathFinder.CIRCLE4[1]] || passable[ pos + PathFinder.CIRCLE4[3]]);
 			case 3:
 				return adjacentCellGroups <= 2;
 			default:
 				return false;
 		}
 
-	}
-
-	private static boolean openCell(int pos){
-		//a cell is considered blocked if it isn't passable or a ward is there
-		return Dungeon.level.passable[pos] && !(Actor.findChar(pos) instanceof Ward);
 	}
 
 	public static class Ward extends NPC {
