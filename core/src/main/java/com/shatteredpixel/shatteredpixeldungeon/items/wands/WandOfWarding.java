@@ -9,6 +9,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -48,27 +49,28 @@ public class WandOfWarding extends Wand {
 					((Ward) ch).upgrade(level());
 				} else {
 					if (((Ward) ch).tier <= 3){
-						GLog.w("Your wand can't sustain any more wards.");
+						GLog.w( Messages.get(this, "no_more_wards"));
 					} else {
 						((Ward) ch).wandHeal( level() );
 					}
 				}
 				ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
 			} else {
-				GLog.w("There isn't room to place a ward here");
+				GLog.w( Messages.get(this, "bad_location"));
 			}
 		} else if (canPlaceWard(bolt.collisionPos)){
 			if (canPlaceMore) {
 				Ward ward = new Ward();
 				ward.pos = bolt.collisionPos;
+				ward.wandLevel = level();
 				GameScene.add(ward, 1f);
 				ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
 				QuickSlotButton.target(ward);
 			} else {
-				GLog.w("Your wand can't sustain any more wards.");
+				GLog.w( Messages.get(this, "no_more_wards"));
 			}
 		} else {
-			GLog.w("There isn't room to place a ward here");
+			GLog.w( Messages.get(this, "bad_location"));
 		}
 	}
 
@@ -144,6 +146,8 @@ public class WandOfWarding extends Wand {
 
 			viewDistance = 3;
 			state = WANDERING;
+
+			name = Messages.get(this, "name_" + tier );
 		}
 
 		public void upgrade( int wandLevel ){
@@ -172,6 +176,7 @@ public class WandOfWarding extends Wand {
 			if (tier < 6){
 				tier++;
 				viewDistance++;
+				name = Messages.get(this, "name_" + tier );
 				updateSpriteState();
 			}
 		}
@@ -193,6 +198,23 @@ public class WandOfWarding extends Wand {
 				case 6:
 					HP = Math.min(HT, HP+12);
 					break;
+			}
+		}
+
+		@Override
+		public int defenseSkill(Char enemy) {
+			if (tier > 3){
+				defenseSkill = 4 + Dungeon.depth;
+			}
+			return super.defenseSkill(enemy);
+		}
+
+		@Override
+		public int drRoll() {
+			if (tier > 3){
+				return Math.round(Random.NormalIntRange(0, 3 + Dungeon.depth/2) / (7f - tier));
+			} else {
+				return 0;
 			}
 		}
 
@@ -231,6 +253,9 @@ public class WandOfWarding extends Wand {
 			//always hits
 			int dmg = Random.Int( 2 + wandLevel, 8 + 4*wandLevel );
 			enemy.damage( dmg, WandOfWarding.class );
+			if (enemy.isAlive()){
+				Wand.processSoulMark(enemy, wandLevel, 1);
+			}
 
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
 				Dungeon.fail( getClass() );
@@ -295,7 +320,10 @@ public class WandOfWarding extends Wand {
 
 		@Override
 		public boolean interact() {
-			GameScene.show(new WndOptions("test", "dismiss this ward?", "yes", "no"){
+			GameScene.show(new WndOptions( Messages.get(this, "dismiss_title"),
+					Messages.get(this, "dismiss_body"),
+					Messages.get(this, "dismiss_confirm"),
+					Messages.get(this, "dismiss_cancel") ){
 				@Override
 				protected void onSelect(int index) {
 					if (index == 0){
@@ -304,6 +332,11 @@ public class WandOfWarding extends Wand {
 				}
 			});
 			return true;
+		}
+
+		@Override
+		public String description() {
+			return Messages.get(this, "desc_" + tier, 2+wandLevel, 8 + 4*wandLevel );
 		}
 
 		private static final String TIER = "tier";
@@ -322,6 +355,7 @@ public class WandOfWarding extends Wand {
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			tier = bundle.getInt(TIER);
+			name = Messages.get(this, "name_" + tier );
 			wandLevel = bundle.getInt(WAND_LEVEL);
 			totalZaps = bundle.getInt(TOTAL_ZAPS);
 		}

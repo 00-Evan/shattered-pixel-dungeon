@@ -34,8 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.EarthGuardianSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -56,13 +56,14 @@ public class WandOfLivingEarth extends DamageWand {
 	
 	@Override
 	public int max(int lvl) {
-		return 6 + 3*lvl;
+		return 4 + 2*lvl;
 	}
 	
 	@Override
 	protected void onZap(Ballistica bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
 		int damage = damageRoll();
+		int armorToAdd = Math.round(damage*1.33f);
 
 		EarthGuardian guardian = null;
 		for (Mob m : Dungeon.level.mobs){
@@ -77,13 +78,13 @@ public class WandOfLivingEarth extends DamageWand {
 			buff = Buff.affect(curUser, RockArmor.class);
 		}
 		if (buff != null){
-			buff.addArmor(level(), damage);
+			buff.addArmor(level(), armorToAdd);
 		}
 
 		//shooting at the guardian
 		if (guardian != null && guardian == ch){
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 5 + level() / 2);
-			guardian.setInfo(curUser, level(), damage);
+			guardian.setInfo(curUser, level(), armorToAdd);
 			processSoulMark(guardian, chargesPerCast());
 
 		//shooting the guardian at a location
@@ -149,7 +150,7 @@ public class WandOfLivingEarth extends DamageWand {
 				curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 5 + level() / 2);
 			} else {
 				guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 5 + level() / 2);
-				guardian.setInfo(curUser, level(), damage);
+				guardian.setInfo(curUser, level(), armorToAdd);
 				if (ch != null) guardian.aggro( ch );
 			}
 		}
@@ -253,8 +254,7 @@ public class WandOfLivingEarth extends DamageWand {
 	public static class EarthGuardian extends NPC {
 
 		{
-			//TODO visuals
-			spriteClass = StatueSprite.class;
+			spriteClass = EarthGuardianSprite.class;
 
 			alignment = Alignment.ALLY;
 			state = HUNTING;
@@ -275,19 +275,25 @@ public class WandOfLivingEarth extends DamageWand {
 				HT = 20 + 10 * wandLevel;
 			}
 			HP = Math.min(HT, HP + healthToAdd);
-			//same as the hero
-			defenseSkill = hero.lvl + 4;
+			//half of hero's evasion
+			defenseSkill = (hero.lvl + 4)/2;
 		}
 
 		@Override
 		public int attackSkill(Char target) {
 			//same as the hero
-			return defenseSkill + 5;
+			return 2*defenseSkill + 5;
+		}
+
+		@Override
+		public int attackProc(Char enemy, int damage) {
+			if (enemy instanceof Mob) ((Mob)enemy).aggro(this);
+			return super.attackProc(enemy, damage);
 		}
 
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange(wandLevel, 6 + 3*wandLevel);
+			return Random.NormalIntRange(2+wandLevel, 6 + 3*wandLevel);
 		}
 
 		@Override
@@ -295,20 +301,25 @@ public class WandOfLivingEarth extends DamageWand {
 			return Random.NormalIntRange(wandLevel, 4 + 4*wandLevel);
 		}
 
-		private static final String DEFENCE = "defence";
+		@Override
+		public String description() {
+			return Messages.get(this, "desc", wandLevel, 4 + 4*wandLevel);
+		}
+
+		private static final String DEFENSE = "defense";
 		private static final String WAND_LEVEL = "wand_level";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
-			bundle.put(DEFENCE, defenseSkill);
+			bundle.put(DEFENSE, defenseSkill);
 			bundle.put(WAND_LEVEL, wandLevel);
 		}
 
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
-			defenseSkill = bundle.getInt(DEFENCE);
+			defenseSkill = bundle.getInt(DEFENSE);
 			wandLevel = bundle.getInt(WAND_LEVEL);
 		}
 
