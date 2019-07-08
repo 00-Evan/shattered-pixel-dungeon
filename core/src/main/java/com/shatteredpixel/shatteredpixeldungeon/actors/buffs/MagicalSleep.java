@@ -38,14 +38,16 @@ public class MagicalSleep extends Buff {
 			
 			target.paralysed++;
 			
-			if (target instanceof Hero) {
+			if (target.alignment == Char.Alignment.ALLY) {
 				if (target.HP == target.HT) {
-					GLog.i(Messages.get(this, "toohealthy"));
+					if (target instanceof  Hero) GLog.i(Messages.get(this, "toohealthy"));
 					detach();
 				} else {
-					GLog.i(Messages.get(this, "fallasleep"));
+					if (target instanceof  Hero) GLog.i(Messages.get(this, "fallasleep"));
 				}
-			} else if (target instanceof Mob) {
+			}
+
+			if (target instanceof Mob) {
 				((Mob) target).state = ((Mob) target).SLEEPING;
 			}
 
@@ -61,11 +63,11 @@ public class MagicalSleep extends Buff {
 			detach();
 			return true;
 		}
-		if (target instanceof Hero) {
+		if (target.alignment == Char.Alignment.ALLY) {
 			target.HP = Math.min(target.HP+1, target.HT);
-			((Hero) target).resting = true;
+			if (target instanceof  Hero) ((Hero) target).resting = true;
 			if (target.HP == target.buff(Regeneration.class).regencap()) {
-				GLog.p(Messages.get(this, "wakeup"));
+				if (target instanceof  Hero) GLog.p(Messages.get(this, "wakeup"));
 				detach();
 			}
 		}
