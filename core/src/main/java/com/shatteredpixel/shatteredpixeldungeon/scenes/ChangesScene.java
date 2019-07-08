@@ -58,7 +58,7 @@ public class ChangesScene extends PixelScene {
 		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
 		title.x = (w - title.width()) / 2f;
-		title.y = (16 - title.baseLine()) / 2f;
+		title.y = (20 - title.baseLine()) / 2f;
 		align(title);
 		add(title);
 
@@ -69,7 +69,7 @@ public class ChangesScene extends PixelScene {
 		NinePatch panel = Chrome.get(Chrome.Type.TOAST);
 
 		int pw = 135 + panel.marginLeft() + panel.marginRight() - 2;
-		int ph = h - 32;
+		int ph = h - 35;
 
 		panel.size( pw, ph );
 		panel.x = (w - pw) / 2f;

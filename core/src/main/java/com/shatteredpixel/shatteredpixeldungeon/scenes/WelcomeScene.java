@@ -66,14 +66,15 @@ public class WelcomeScene extends PixelScene {
 		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
 		title.brightness(0.6f);
 		add( title );
-
-		float topRegion = Math.max(95f, h*0.45f);
-
+		
+		float topRegion = Math.max(title.height, h*0.45f);
+		
 		title.x = (w - title.width()) / 2f;
-		if (SPDSettings.landscape())
+		if (SPDSettings.landscape()) {
 			title.y = (topRegion - title.height()) / 2f;
-		else
-			title.y = 16 + (topRegion - title.height() - 16) / 2f;
+		} else {
+			title.y = 20 + (topRegion - title.height() - 20) / 2f;
+		}
 
 		align(title);
 

@@ -66,13 +66,14 @@ public class TitleScene extends PixelScene {
 		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
 		add( title );
 
-		float topRegion = Math.max(95f, h*0.45f);
+		float topRegion = Math.max(title.height, h*0.45f);
 
 		title.x = (w - title.width()) / 2f;
-		if (SPDSettings.landscape())
+		if (SPDSettings.landscape()) {
 			title.y = (topRegion - title.height()) / 2f;
-		else
-			title.y = 16 + (topRegion - title.height() - 16) / 2f;
+		} else {
+			title.y = 20 + (topRegion - title.height() - 20) / 2f;
+		}
 
 		align(title);
 
@@ -159,24 +160,25 @@ public class TitleScene extends PixelScene {
 		BitmapText version = new BitmapText( "v " + Game.version + "", pixelFont);
 		version.measure();
 		version.hardlight( 0x888888 );
-		version.x = w - version.width();
-		version.y = h - version.height();
+		version.x = w - version.width() - 4;
+		version.y = h - version.height() - 2;
 		add( version );
 
 		Button changes = new ChangesButton();
-		changes.setPos( w-changes.width(), h - version.height() - changes.height());
+		changes.setPos( version.x + version.width() - changes.width(),
+				version.y - changes.height());
 		add( changes );
 		
-		int pos = 0;
+		int pos = 2;
 		
 		PrefsButton btnPrefs = new PrefsButton();
-		btnPrefs.setRect( pos, 0, 16, 16 );
+		btnPrefs.setRect( pos, 0, 16, 20 );
 		add( btnPrefs );
 		
 		pos += btnPrefs.width();
 
 		LanguageButton btnLang = new LanguageButton();
-		btnLang.setRect(pos, 0, 14, 16);
+		btnLang.setRect(pos, 0, 16, 20);
 		add( btnLang );
 
 		ExitButton btnExit = new ExitButton();

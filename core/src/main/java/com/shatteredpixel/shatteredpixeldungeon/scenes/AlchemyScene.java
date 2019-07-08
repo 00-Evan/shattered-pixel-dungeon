@@ -117,7 +117,7 @@ public class AlchemyScene extends PixelScene {
 		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
 		title.x = (Camera.main.width - title.width()) / 2f;
-		title.y = (16 - title.baseLine()) / 2f;
+		title.y = (20 - title.baseLine()) / 2f;
 		align(title);
 		add(title);
 		
@@ -270,7 +270,7 @@ public class AlchemyScene extends PixelScene {
 				});
 			}
 		};
-		btnGuide.setRect(0, 0, 16, 16);
+		btnGuide.setRect(0, 0, 20, 20);
 		add(btnGuide);
 		
 		energyLeft = PixelScene.renderText(Messages.get(AlchemyScene.class, "energy", availableEnergy()), 9);
