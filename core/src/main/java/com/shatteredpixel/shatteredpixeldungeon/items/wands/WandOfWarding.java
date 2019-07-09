@@ -65,6 +65,7 @@ public class WandOfWarding extends Wand {
 				ward.pos = bolt.collisionPos;
 				ward.wandLevel = level();
 				GameScene.add(ward, 1f);
+				Dungeon.level.press(ward.pos, ward);
 				ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
 				QuickSlotButton.target(ward);
 			} else {
@@ -346,6 +347,7 @@ public class WandOfWarding extends Wand {
 				protected void onSelect(int index) {
 					if (index == 0){
 						die(null);
+						Dungeon.observe();
 					}
 				}
 			});
@@ -376,6 +378,10 @@ public class WandOfWarding extends Wand {
 			name = Messages.get(this, "name_" + tier );
 			wandLevel = bundle.getInt(WAND_LEVEL);
 			totalZaps = bundle.getInt(TOTAL_ZAPS);
+		}
+		
+		{
+			properties.add(Property.IMMOVABLE);
 		}
 	}
 }

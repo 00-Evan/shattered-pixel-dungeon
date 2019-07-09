@@ -66,7 +66,7 @@ public class MagicalSleep extends Buff {
 		if (target.alignment == Char.Alignment.ALLY) {
 			target.HP = Math.min(target.HP+1, target.HT);
 			if (target instanceof  Hero) ((Hero) target).resting = true;
-			if (target.HP == target.buff(Regeneration.class).regencap()) {
+			if (target.HP == target.HT) {
 				if (target instanceof  Hero) GLog.p(Messages.get(this, "wakeup"));
 				detach();
 			}

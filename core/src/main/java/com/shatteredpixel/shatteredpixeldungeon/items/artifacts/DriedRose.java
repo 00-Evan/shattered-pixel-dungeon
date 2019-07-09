@@ -105,7 +105,7 @@ public class DriedRose extends Artifact {
 			actions.remove(AC_EQUIP);
 			return actions;
 		}
-		if (isEquipped( hero ) && charge == chargeCap && !cursed && ghostID != 0) {
+		if (isEquipped( hero ) && charge == chargeCap && !cursed && ghostID == 0) {
 			actions.add(AC_SUMMON);
 		}
 		if (ghostID != 0){

@@ -121,6 +121,7 @@ public class WandOfLivingEarth extends DamageWand {
 				} else {
 					guardian.pos = closest;
 					GameScene.add(guardian);
+					Dungeon.level.press(guardian.pos, guardian);
 				}
 
 				guardian.aggro(ch);
@@ -128,6 +129,7 @@ public class WandOfLivingEarth extends DamageWand {
 			} else {
 				guardian.pos = bolt.collisionPos;
 				GameScene.add(guardian);
+				Dungeon.level.press(guardian.pos, guardian);
 			}
 
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 5 + level()/2);

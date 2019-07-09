@@ -318,7 +318,7 @@ public class PrisonBossLevel extends Level {
 
 				for (Mob m : mobs){
 					//bring the first ally with you
-					if (m.alignment == Char.Alignment.ALLY){
+					if (m.alignment == Char.Alignment.ALLY && !m.properties().contains(Char.Property.IMMOVABLE)){
 						m.pos = ARENA_DOOR; //they should immediately walk out of the door
 						m.sprite.place(m.pos);
 						break;
