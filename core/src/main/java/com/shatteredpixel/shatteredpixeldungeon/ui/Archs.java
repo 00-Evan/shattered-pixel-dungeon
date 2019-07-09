@@ -22,8 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.SkinnedBlock;
@@ -35,6 +37,7 @@ public class Archs extends Component {
 
 	private SkinnedBlock arcsBg;
 	private SkinnedBlock arcsFg;
+	private Image darkness;
 
 	private static float offsB = 0;
 	private static float offsF = 0;
@@ -70,6 +73,10 @@ public class Archs extends Component {
 		arcsFg.autoAdjust = true;
 		arcsFg.offsetTo( 0,  offsF );
 		add( arcsFg );
+
+		darkness= new Image(TextureCache.createGradient(0x00000000, 0x22000000, 0x55000000, 0x99000000, 0xEE000000));
+		darkness.angle = 90;
+		add(darkness);
 	}
 
 	@Override
@@ -79,6 +86,10 @@ public class Archs extends Component {
 
 		arcsFg.size( width, height );
 		arcsFg.offset( arcsFg.texture.width / 4 - (width % arcsFg.texture.width) / 2, 0 );
+
+		darkness.x = width;
+		darkness.scale.x = height/5f;
+		darkness.scale.y = width;
 	}
 
 	@Override
