@@ -270,7 +270,7 @@ public class WandOfWarding extends Wand {
 			spend( 1f );
 
 			//always hits
-			int dmg = Random.Int( 2 + wandLevel, 8 + 4*wandLevel );
+			int dmg = Random.NormalIntRange( 2 + wandLevel, 8 + 4*wandLevel );
 			enemy.damage( dmg, WandOfWarding.class );
 			if (enemy.isAlive()){
 				Wand.processSoulMark(enemy, wandLevel, 1);
@@ -375,6 +375,7 @@ public class WandOfWarding extends Wand {
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			tier = bundle.getInt(TIER);
+			viewDistance = 2 + tier;
 			name = Messages.get(this, "name_" + tier );
 			wandLevel = bundle.getInt(WAND_LEVEL);
 			totalZaps = bundle.getInt(TOTAL_ZAPS);
