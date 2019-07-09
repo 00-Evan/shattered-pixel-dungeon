@@ -120,7 +120,7 @@ public class WandOfLivingEarth extends DamageWand {
 					return; //do not spawn guardian or detach buff
 				} else {
 					guardian.pos = closest;
-					GameScene.add(guardian);
+					GameScene.add(guardian, 1);
 					Dungeon.level.press(guardian.pos, guardian);
 				}
 
@@ -128,7 +128,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 			} else {
 				guardian.pos = bolt.collisionPos;
-				GameScene.add(guardian);
+				GameScene.add(guardian, 1);
 				Dungeon.level.press(guardian.pos, guardian);
 			}
 
@@ -311,12 +311,12 @@ public class WandOfLivingEarth extends DamageWand {
 
 		@Override
 		public int drRoll() {
-			return Random.NormalIntRange(wandLevel, 4 + 4*wandLevel);
+			return Random.NormalIntRange(wandLevel, 3 + 3*wandLevel);
 		}
 
 		@Override
 		public String description() {
-			return Messages.get(this, "desc", wandLevel, 4 + 4*wandLevel);
+			return Messages.get(this, "desc", wandLevel, 3 + 3*wandLevel);
 		}
 
 		private static final String DEFENSE = "defense";
