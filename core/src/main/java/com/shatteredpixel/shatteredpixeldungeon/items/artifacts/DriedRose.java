@@ -409,11 +409,14 @@ public class DriedRose extends Artifact {
 				ghost.aggro(null);
 				ghost.state = ghost.WANDERING;
 				ghost.defendingPos = -1;
+				ghost.movingToDefendPos = false;
 				
 			} else if (Actor.findChar(cell).alignment == Char.Alignment.ENEMY){
 				ghost.yell(Messages.get(ghost, "directed_attack_" + Random.IntRange(1, 5)));
 				ghost.aggro(Actor.findChar(cell));
 				ghost.setTarget(cell);
+				ghost.movingToDefendPos = false;
+				
 			}
 		}
 		
@@ -477,9 +480,6 @@ public class DriedRose extends Artifact {
 			properties.add(Property.UNDEAD);
 		}
 		
-		private int defendingPos = -1;
-		private boolean movingToDefendPos = false;
-		
 		private DriedRose rose = null;
 		
 		public GhostHero(){
@@ -502,6 +502,14 @@ public class DriedRose extends Artifact {
 			defenseSkill = (Dungeon.hero.lvl+4);
 			if (rose == null) return;
 			HT = 20 + 8*rose.level();
+		}
+		
+		private int defendingPos = -1;
+		private boolean movingToDefendPos = false;
+		
+		public void clearDefensingPos(){
+			defendingPos = -1;
+			movingToDefendPos = false;
 		}
 
 		@Override

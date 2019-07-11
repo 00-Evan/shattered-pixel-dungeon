@@ -887,6 +887,7 @@ public abstract class Mob extends Char {
 		for (Mob mob : level.mobs.toArray( new Mob[0] )) {
 			//preserve the ghost no matter where they are
 			if (mob instanceof DriedRose.GhostHero) {
+				((DriedRose.GhostHero) mob).clearDefensingPos();
 				level.mobs.remove( mob );
 				heldAllies.add(mob);
 				
