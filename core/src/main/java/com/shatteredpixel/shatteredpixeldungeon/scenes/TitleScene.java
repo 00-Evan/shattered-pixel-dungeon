@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -29,20 +30,19 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BannerSprites;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ChangesButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LanguageButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.PrefsButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Button;
 import com.watabou.utils.DeviceCompat;
 
 public class TitleScene extends PixelScene {
@@ -99,23 +99,7 @@ public class TitleScene extends PixelScene {
 		signs.y = title.y;
 		add( signs );
 		
-		DashboardItem btnBadges = new DashboardItem( Messages.get(this, "badges"), 3 ) {
-			@Override
-			protected void onClick() {
-				ShatteredPixelDungeon.switchNoFade( BadgesScene.class );
-			}
-		};
-		add(btnBadges);
-		
-		DashboardItem btnAbout = new DashboardItem( Messages.get(this, "about"), 1 ) {
-			@Override
-			protected void onClick() {
-				ShatteredPixelDungeon.switchNoFade( AboutScene.class );
-			}
-		};
-		add( btnAbout );
-		
-		DashboardItem btnPlay = new DashboardItem( Messages.get(this, "play"), 0 ) {
+		TitleButton btnPlay = new TitleButton(Messages.get(this, "enter")){
 			@Override
 			protected void onClick() {
 				if (GamesInProgress.checkAll().size() == 0){
@@ -135,39 +119,96 @@ public class TitleScene extends PixelScene {
 				return super.onLongClick();
 			}
 		};
-		add( btnPlay );
+		btnPlay.icon(Icons.get(Icons.ENTER));
+		add(btnPlay);
 		
-		DashboardItem btnRankings = new DashboardItem( Messages.get(this, "rankings"), 2 ) {
+		TitleButton btnSupport = new TitleButton(Messages.get(this, "support")){
+			@Override
+			protected void onClick() {
+				WndOptions wnd = new WndOptions(Messages.get(TitleScene.class, "support"),
+						Messages.get(TitleScene.class, "patreon_body"),
+						Messages.get(TitleScene.class, "patreon_button")){
+					@Override
+					protected void onSelect(int index) {
+						if (index == 0){
+							DeviceCompat.openURI("https://www.patreon.com/ShatteredPixel");
+						} else {
+							hide();
+						}
+					}
+				};
+				parent.add(wnd);
+			}
+		};
+		btnSupport.icon(Icons.get(Icons.GOLD));
+		add(btnSupport);
+		
+		TitleButton btnRankings = new TitleButton(Messages.get(this, "rankings")){
 			@Override
 			protected void onClick() {
 				ShatteredPixelDungeon.switchNoFade( RankingsScene.class );
 			}
 		};
-		add( btnRankings );
+		btnRankings.icon(Icons.get(Icons.RANKINGS));
+		add(btnRankings);
+		
+		TitleButton btnBadges = new TitleButton(Messages.get(this, "badges")){
+			@Override
+			protected void onClick() {
+				ShatteredPixelDungeon.switchNoFade( BadgesScene.class );
+			}
+		};
+		btnBadges.icon(Icons.get(Icons.BADGES));
+		add(btnBadges);
+		
+		TitleButton btnChanges = new TitleButton(Messages.get(this, "changes")){
+			@Override
+			protected void onClick() {
+				ChangesScene.changesSelected = 0;
+				ShatteredPixelDungeon.switchNoFade( ChangesScene.class );
+			}
+		};
+		btnChanges.icon(Icons.get(Icons.CHANGES));
+		add(btnChanges);
+		
+		TitleButton btnAbout = new TitleButton(Messages.get(this, "about")){
+			@Override
+			protected void onClick() {
+				ShatteredPixelDungeon.switchNoFade( AboutScene.class );
+			}
+		};
+		btnAbout.icon(Icons.get(Icons.SHPX));
+		add(btnAbout);
+		
+		final int BTN_HEIGHT = 21;
+		int GAP = (int)(h - topRegion - (SPDSettings.landscape() ? 3 : 4)*BTN_HEIGHT)/3;
+		GAP /= SPDSettings.landscape() ? 3 : 4;
+		GAP = Math.max(GAP, 2);
 
 		if (SPDSettings.landscape()) {
-			btnRankings     .setPos( w / 2 - btnRankings.width(), topRegion );
-			btnBadges       .setPos( w / 2, topRegion );
-			btnPlay         .setPos( btnRankings.left() - btnPlay.width(), topRegion );
-			btnAbout        .setPos( btnBadges.right(), topRegion );
+			btnPlay.setRect(title.x-50, topRegion+GAP, ((title.width()+100)/2)-1, BTN_HEIGHT);
+			align(btnPlay);
+			btnSupport.setRect(btnPlay.right()+2, btnPlay.top(), btnPlay.width(), BTN_HEIGHT);
+			btnRankings.setRect(btnPlay.left() + (btnPlay.width()*.33f)+1, btnPlay.bottom()+ GAP, (btnPlay.width()*.67f)-1, BTN_HEIGHT);
+			btnBadges.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
+			btnChanges.setRect(btnRankings.left(), btnRankings.bottom() + GAP, btnRankings.width(), BTN_HEIGHT);
+			btnAbout.setRect(btnChanges.right()+2, btnChanges.top(), btnRankings.width(), BTN_HEIGHT);
 		} else {
-			btnPlay.setPos( w / 2 - btnPlay.width(), topRegion );
-			btnRankings.setPos( w / 2, btnPlay.top() );
-			btnBadges.setPos( w / 2 - btnBadges.width(), btnPlay.top() + DashboardItem.SIZE );
-			btnAbout.setPos( w / 2, btnBadges.top() );
+			btnPlay.setRect(title.x, topRegion+GAP, title.width(), BTN_HEIGHT);
+			align(btnPlay);
+			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
+			btnBadges.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
+			btnChanges.setRect(btnRankings.left(), btnRankings.bottom()+ GAP, btnRankings.width(), BTN_HEIGHT);
+			btnAbout.setRect(btnChanges.right()+2, btnChanges.top(), btnChanges.width(), BTN_HEIGHT);
+			btnSupport.setRect(btnPlay.left(), btnAbout.bottom()+ GAP, btnPlay.width(), BTN_HEIGHT);
 		}
 
-		BitmapText version = new BitmapText( "v " + Game.version + "", pixelFont);
+		BitmapText version = new BitmapText( "v" + Game.version, pixelFont);
 		version.measure();
 		version.hardlight( 0x888888 );
 		version.x = w - version.width() - 4;
 		version.y = h - version.height() - 2;
 		add( version );
-
-		Button changes = new ChangesButton();
-		changes.setPos( version.x + version.width() - changes.width(),
-				version.y - changes.height());
-		add( changes );
 		
 		int pos = 2;
 		
@@ -194,57 +235,15 @@ public class TitleScene extends PixelScene {
 		add( fb );
 	}
 	
-	private static class DashboardItem extends Button {
+	private static class TitleButton extends StyledButton {
 		
-		public static final float SIZE	= 48;
-		
-		private static final int IMAGE_SIZE	= 32;
-		
-		private Image image;
-		private RenderedText label;
-		
-		public DashboardItem( String text, int index ) {
-			super();
-			
-			image.frame( image.texture.uvRect( index * IMAGE_SIZE, 0, (index + 1) * IMAGE_SIZE, IMAGE_SIZE ) );
-			this.label.text( text );
-			
-			setSize( SIZE, SIZE );
+		public TitleButton( String label ){
+			this(label, 9);
 		}
 		
-		@Override
-		protected void createChildren() {
-			super.createChildren();
-			
-			image = new Image( Assets.DASHBOARD );
-			add( image );
-			
-			label = renderText( 9 );
-			add( label );
+		public TitleButton( String label, int size ){
+			super(Chrome.Type.GREY_BUTTON_TR, label, size);
 		}
 		
-		@Override
-		protected void layout() {
-			super.layout();
-			
-			image.x = x + (width - image.width()) / 2;
-			image.y = y;
-			align(image);
-			
-			label.x = x + (width - label.width()) / 2;
-			label.y = image.y + image.height() +2;
-			align(label);
-		}
-		
-		@Override
-		protected void onTouchDown() {
-			image.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.SND_CLICK, 1, 1, 0.8f );
-		}
-		
-		@Override
-		protected void onTouchUp() {
-			image.resetColor();
-		}
 	}
 }

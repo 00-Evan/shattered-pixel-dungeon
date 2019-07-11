@@ -130,7 +130,7 @@ public class WndBlacksmith extends Window {
 		protected void createChildren() {
 			super.createChildren();
 			
-			bg = Chrome.get( Chrome.Type.BUTTON );
+			bg = Chrome.get( Chrome.Type.RED_BUTTON);
 			add( bg );
 			
 			slot = new ItemSlot() {

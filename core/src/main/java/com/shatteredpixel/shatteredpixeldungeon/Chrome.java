@@ -29,7 +29,9 @@ public class Chrome {
 		TOAST,
 		TOAST_TR,
 		WINDOW,
-		BUTTON,
+		RED_BUTTON,
+		GREY_BUTTON,
+		GREY_BUTTON_TR,
 		TAG,
 		GEM,
 		SCROLL,
@@ -47,12 +49,16 @@ public class Chrome {
 			return new NinePatch( Asset, 22, 0, 18, 18, 5 );
 		case TOAST_TR:
 			return new NinePatch( Asset, 40, 0, 18, 18, 5 );
-		case BUTTON:
+		case RED_BUTTON:
 			return new NinePatch( Asset, 58, 0, 6, 6, 2 );
+		case GREY_BUTTON:
+			return new NinePatch( Asset, 58, 6, 6, 6, 2 );
 		case TAG:
 			return new NinePatch( Asset, 22, 18, 16, 14, 3 );
 		case GEM:
 			return new NinePatch( Asset, 0, 32, 32, 32, 13 );
+		case GREY_BUTTON_TR:
+			return new NinePatch( Asset, 53, 20, 9, 9, 5 );
 		case SCROLL:
 			return new NinePatch( Asset, 32, 32, 32, 32, 5, 11, 5, 11 );
 		case TAB_SET:
