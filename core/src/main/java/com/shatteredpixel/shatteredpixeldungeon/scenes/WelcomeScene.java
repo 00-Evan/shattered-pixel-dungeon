@@ -21,9 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -32,8 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Fireball;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
@@ -96,8 +96,8 @@ public class WelcomeScene extends PixelScene {
 		signs.x = title.x + (title.width() - signs.width())/2f;
 		signs.y = title.y;
 		add( signs );
-
-		DarkRedButton okay = new DarkRedButton(Messages.get(this, "continue")){
+		
+		StyledButton okay = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "continue")){
 			@Override
 			protected void onClick() {
 				super.onClick();
@@ -111,8 +111,9 @@ public class WelcomeScene extends PixelScene {
 			}
 		};
 
+		//FIXME these buttons are very low on 18:9 devices
 		if (previousVersion != 0){
-			DarkRedButton changes = new DarkRedButton(Messages.get(this, "changelist")){
+			StyledButton changes = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(TitleScene.class, "changes")){
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -120,16 +121,16 @@ public class WelcomeScene extends PixelScene {
 					ShatteredPixelDungeon.switchScene(ChangesScene.class);
 				}
 			};
-			okay.setRect(title.x, h-20, (title.width()/2)-2, 16);
-			okay.textColor(0xBBBB33);
+			okay.setRect(title.x, h-25, (title.width()/2)-2, 21);
 			add(okay);
 
-			changes.setRect(okay.right()+2, h-20, (title.width()/2)-2, 16);
-			changes.textColor(0xBBBB33);
+			changes.setRect(okay.right()+2, h-25, (title.width()/2)-2, 21);
+			changes.icon(Icons.get(Icons.CHANGES));
 			add(changes);
 		} else {
-			okay.setRect(title.x, h-20, title.width(), 16);
-			okay.textColor(0xBBBB33);
+			okay.text(Messages.get(TitleScene.class, "enter"));
+			okay.setRect(title.x, h-25, title.width(), 21);
+			okay.icon(Icons.get(Icons.ENTER));
 			add(okay);
 		}
 
@@ -200,26 +201,5 @@ public class WelcomeScene extends PixelScene {
 		fb.setPos( x, y );
 		add( fb );
 	}
-
-	private class DarkRedButton extends RedButton{
-		{
-			bg.brightness(0.4f);
-		}
-
-		DarkRedButton(String text){
-			super(text);
-		}
-
-		@Override
-		protected void onTouchDown() {
-			bg.brightness(0.5f);
-			Sample.INSTANCE.play( Assets.SND_CLICK );
-		}
-
-		@Override
-		protected void onTouchUp() {
-			super.onTouchUp();
-			bg.brightness(0.4f);
-		}
-	}
+	
 }
