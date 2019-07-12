@@ -50,7 +50,12 @@ public class WardSprite extends MobSprite {
 		}
 		((WandOfWarding.Ward)ch).onZapComplete();
 	}
-
+	
+	@Override
+	public void turnTo(int from, int to) {
+		//do nothing
+	}
+	
 	@Override
 	public void die() {
 		super.die();
