@@ -4,6 +4,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -35,18 +36,26 @@ public class WandOfWarding extends Wand {
 	@Override
 	protected void onZap(Ballistica bolt) {
 
-		int currentWardLevels = 0;
+		int currentWardEnergy = 0;
 		for (Char ch : Actor.chars()){
 			if (ch instanceof Ward){
-				currentWardLevels += ((Ward) ch).tier;
+				currentWardEnergy += ((Ward) ch).tier + 1;
 			}
 		}
-		boolean canPlaceMore = currentWardLevels < level()+2;
+		
+		int maxWardEnergy = 0;
+		for (Buff buff : curUser.buffs()){
+			if (buff instanceof Wand.Charger){
+				if (((Charger) buff).wand() instanceof WandOfWarding){
+					maxWardEnergy += 3 + ((Charger) buff).wand().level();
+				}
+			}
+		}
 
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (ch != null){
 			if (ch instanceof Ward){
-				if (canPlaceMore) {
+				if (currentWardEnergy < maxWardEnergy) {
 					((Ward) ch).upgrade(level());
 				} else {
 					if (((Ward) ch).tier <= 3){
@@ -60,7 +69,7 @@ public class WandOfWarding extends Wand {
 				GLog.w( Messages.get(this, "bad_location"));
 			}
 		} else if (canPlaceWard(bolt.collisionPos)){
-			if (canPlaceMore) {
+			if ((currentWardEnergy + 2) <= maxWardEnergy) {
 				Ward ward = new Ward();
 				ward.pos = bolt.collisionPos;
 				ward.wandLevel = level();
@@ -116,37 +125,22 @@ public class WandOfWarding extends Wand {
 
 	public static boolean canPlaceWard(int pos){
 
-		int adjacentBlockedCells = 0;
-		int adjacentCellGroups = 0;
-
-		boolean[] passable = Dungeon.level.passable;
-		boolean prevPassable = passable[pos + PathFinder.CIRCLE8[PathFinder.CIRCLE8.length-1]];
-
 		for (int i : PathFinder.CIRCLE8){
 			if (Actor.findChar(pos+i) instanceof Ward){
 				return false;
 			}
-			if (!passable[pos + i]){
-				adjacentBlockedCells++;
-			}
-			if (prevPassable != passable[pos + i]){
-				prevPassable = !prevPassable;
-				adjacentCellGroups++;
-			}
 		}
 
-		switch (adjacentBlockedCells){
-			case 0: case 1:
-				return true;
-			case 2:
-				return (passable[pos + PathFinder.CIRCLE4[0]] || passable[ pos + PathFinder.CIRCLE4[2]])
-						&& (passable[pos + PathFinder.CIRCLE4[1]] || passable[ pos + PathFinder.CIRCLE4[3]]);
-			case 3:
-				return adjacentCellGroups <= 2;
-			default:
-				return false;
-		}
+		return true;
 
+	}
+	
+	@Override
+	public String statsDesc() {
+		if (levelKnown)
+			return Messages.get(this, "stats_desc", level()+3);
+		else
+			return Messages.get(this, "stats_desc", 3);
 	}
 
 	public static class Ward extends NPC {
@@ -187,8 +181,8 @@ public class WandOfWarding extends Wand {
 					HP = Math.round(48*(HP/30f));
 					break;
 				case 5:
-					HT = 72;
-					HP = Math.round(72*(HP/48f));
+					HT = 70;
+					HP = Math.round(70*(HP/48f));
 					break;
 			}
 
@@ -282,24 +276,24 @@ public class WandOfWarding extends Wand {
 
 			totalZaps++;
 			switch(tier){
-				default:
+				case 1: default:
 					if (totalZaps >= tier){
 						die(this);
 					}
 					break;
-				case 3:
-					if (totalZaps >= 4){
+				case 2: case 3:
+					if (totalZaps > tier){
 						die(this);
 					}
 					break;
 				case 4:
-					damage(6, this);
+					damage(5, this);
 					break;
 				case 5:
-					damage(8, this);
+					damage(6, this);
 					break;
 				case 6:
-					damage(9, this);
+					damage(7, this);
 					break;
 			}
 		}
