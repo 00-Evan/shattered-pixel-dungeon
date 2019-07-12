@@ -45,7 +45,7 @@ public class StyledButton extends Button {
 		super();
 		
 		bg = Chrome.get( type );
-		add( bg );
+		addToBack( bg );
 		
 		text = PixelScene.renderText( size );
 		text.text( label );
