@@ -64,10 +64,11 @@ public class GreatCrab extends Crab {
 
 	@Override
 	public void damage( int dmg, Object src ){
-		//crab blocks all attacks originating from the hero or enemy characters or traps if it is alerted.
-		//All direct damage from these sources is negated, no exceptions. blob/debuff effects go through as normal.
+		//crab blocks all attacks originating from its current enemy if it sees them.
+		//All direct damage is negated, no exceptions. environmental effects go through as normal.
 		if ((enemySeen && state != SLEEPING && paralysed == 0)
-				&& (src instanceof Wand || src instanceof Char)){
+				&& ((src instanceof Wand && enemy == Dungeon.hero)
+				|| (src instanceof Char && enemy == src))){
 			GLog.n( Messages.get(this, "noticed") );
 			sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, "blocked") );
 		} else {
