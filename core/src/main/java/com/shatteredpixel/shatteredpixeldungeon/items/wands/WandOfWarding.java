@@ -325,7 +325,13 @@ public class WandOfWarding extends Wand {
 			super.updateSpriteState();
 			((WardSprite)sprite).updateTier(tier);
 		}
-
+		
+		@Override
+		public void destroy() {
+			super.destroy();
+			Dungeon.observe();
+		}
+		
 		@Override
 		public boolean canInteract(Hero h) {
 			return true;
