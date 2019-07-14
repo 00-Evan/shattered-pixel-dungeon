@@ -25,8 +25,15 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.EarthGuardianSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.WardSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.watabou.gltextures.SmartTexture;
@@ -45,6 +52,7 @@ import com.watabou.noosa.TouchArea;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Point;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.nio.FloatBuffer;
@@ -132,13 +140,53 @@ public class SurfaceScene extends PixelScene {
 		a.x = (SKY_WIDTH - a.width) / 2;
 		a.y = SKY_HEIGHT - a.height;
 		align(a);
-		window.add( a );
 		
 		final Pet pet = new Pet();
 		pet.rm = pet.gm = pet.bm = 1.2f;
 		pet.x = SKY_WIDTH / 2 + 2;
 		pet.y = SKY_HEIGHT - pet.height;
 		align(pet);
+		
+		//allies. Attempts to pick highest level, but prefers rose > earth > ward.
+		//Rose level is halved because it's easier to upgrade
+		CharSprite allySprite = null;
+		
+		//picks the highest between ghost's weapon, armor, and rose level/2
+		int roseLevel = 0;
+		DriedRose rose = Dungeon.hero.belongings.getItem(DriedRose.class);
+		if (rose != null){
+			roseLevel = rose.level()/2;
+			if (rose.ghostWeapon() != null){
+				roseLevel = Math.max(roseLevel, rose.ghostWeapon().level());
+			}
+			if (rose.ghostArmor() != null){
+				roseLevel = Math.max(roseLevel, rose.ghostArmor().level());
+			}
+		}
+		
+		int earthLevel = Dungeon.hero.belongings.getItem(WandOfLivingEarth.class) == null ? 0 : Dungeon.hero.belongings.getItem(WandOfLivingEarth.class).level();
+		int wardLevel = Dungeon.hero.belongings.getItem(WandOfWarding.class) == null ? 0 : Dungeon.hero.belongings.getItem(WandOfWarding.class).level();
+		
+		if (roseLevel >= 3 && roseLevel >= earthLevel && roseLevel >= wardLevel){
+			allySprite = new GhostSprite();
+			if (dayTime) allySprite.alpha(0.4f);
+		} else if (earthLevel >= 3 && earthLevel >= wardLevel){
+			allySprite = new EarthGuardianSprite();
+		} else if (wardLevel >= 3){
+			allySprite = new WardSprite();
+			((WardSprite) allySprite).updateTier(Math.min(wardLevel+2, 6));
+		}
+		
+		if (allySprite != null){
+			allySprite.add(CharSprite.State.PARALYSED);
+			allySprite.scale = new PointF(2, 2);
+			allySprite.x = a.x - allySprite.width()*0.75f;
+			allySprite.y = SKY_HEIGHT - allySprite.height();
+			align(allySprite);
+			window.add(allySprite);
+		}
+		
+		window.add( a );
 		window.add( pet );
 		
 		window.add( new TouchArea( sky ) {
