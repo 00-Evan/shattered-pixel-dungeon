@@ -9,6 +9,8 @@ android {
         //noinspection MinSdkTooLow
         minSdkVersion 9
         targetSdkVersion 28
+        versionCode appVersionCode
+        versionName appVersionName
     }
 
     buildTypes {
@@ -31,8 +33,4 @@ android {
 
 dependencies {
     implementation project(':SPD-classes')
-    repositories {
-        google()
-        jcenter()
-    }
 }

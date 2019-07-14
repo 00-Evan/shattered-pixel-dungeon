@@ -8,10 +8,3 @@ android {
         minSdkVersion 9
     }
 }
-
-dependencies {
-    repositories {
-        google()
-        jcenter()
-    }
-}
