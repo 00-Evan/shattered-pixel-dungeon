@@ -1,10 +1,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion appAndroidCompileSDK
 
     defaultConfig {
         //noinspection MinSdkTooLow
-        minSdkVersion 9
+        minSdkVersion appAndroidMinSDK
     }
 }

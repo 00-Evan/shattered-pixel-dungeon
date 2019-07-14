@@ -13,6 +13,10 @@ allprojects {
     ext {
         appVersionCode = 353
         appVersionName = '0.7.4-BETA-4'
+
+        appAndroidCompileSDK = 28
+        appAndroidMinSDK = 9
+        appAndroidTargetSDK = 28
     }
     version = appVersionName
 

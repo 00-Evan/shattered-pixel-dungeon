@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion appAndroidCompileSDK
 
     defaultConfig {
         resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it",
                 "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
         //noinspection MinSdkTooLow
-        minSdkVersion 9
-        targetSdkVersion 28
+        minSdkVersion appAndroidMinSDK
+        targetSdkVersion appAndroidTargetSDK
         versionCode appVersionCode
         versionName appVersionName
     }
