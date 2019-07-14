@@ -76,11 +76,15 @@ public class WandOfLivingEarth extends DamageWand {
 		}
 
 		RockArmor buff = curUser.buff(RockArmor.class);
-		if (buff == null && guardian == null){
-			buff = Buff.affect(curUser, RockArmor.class);
-		}
-		if (buff != null){
-			buff.addArmor(level(), armorToAdd);
+		if (ch == null){
+			armorToAdd = 0;
+		} else {
+			if (buff == null && guardian == null) {
+				buff = Buff.affect(curUser, RockArmor.class);
+			}
+			if (buff != null) {
+				buff.addArmor(level(), armorToAdd);
+			}
 		}
 
 		//shooting at the guardian
@@ -147,17 +151,19 @@ public class WandOfLivingEarth extends DamageWand {
 
 				processSoulMark(ch, chargesPerCast());
 				ch.damage(damage, this);
+				
+				if (guardian == null) {
+					curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + level() / 2);
+				} else {
+					guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + level() / 2);
+					guardian.setInfo(curUser, level(), armorToAdd);
+					if (ch.alignment == Char.Alignment.ENEMY || ch.buff(Amok.class) != null) {
+						guardian.aggro(ch);
+					}
+				}
 
 			} else {
 				Dungeon.level.press(bolt.collisionPos, null, true);
-			}
-
-			if (guardian == null) {
-				curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + level() / 2);
-			} else {
-				guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + level() / 2);
-				guardian.setInfo(curUser, level(), armorToAdd);
-				if (ch != null) guardian.aggro( ch );
 			}
 		}
 
