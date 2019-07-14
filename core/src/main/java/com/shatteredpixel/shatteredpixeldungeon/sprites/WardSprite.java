@@ -75,8 +75,7 @@ public class WardSprite extends MobSprite {
 
 		idle = tierIdles[tier];
 		run = idle.clone();
-		//zap = idle.clone();
-		//attack = idle.clone();
+		attack = idle.clone();
 		die = idle.clone();
 
 		//always render first
@@ -100,7 +99,7 @@ public class WardSprite extends MobSprite {
 		}
 	}
 
-	private float baseY;
+	private float baseY = Float.NaN;
 
 	@Override
 	public void place(int cell) {
@@ -113,6 +112,7 @@ public class WardSprite extends MobSprite {
 		super.update();
 		//if tier is greater than 3
 		if (perspectiveRaise >= 6 / 16f){
+			if (Float.isNaN(baseY)) baseY = y;
 			y = baseY + (float) Math.sin(Game.timeTotal);
 			shadowOffset = 0.25f - 0.8f*(float) Math.sin(Game.timeTotal);
 		}

@@ -91,6 +91,7 @@ public class Piranha extends Mob {
 	public int defenseSkill( Char enemy ) {
 		enemySeen = state != SLEEPING
 				&& this.enemy != null
+				&& fieldOfView != null
 				&& fieldOfView[this.enemy.pos]
 				&& this.enemy.invisible == 0;
 		return super.defenseSkill( enemy );
