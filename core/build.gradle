@@ -4,13 +4,18 @@ android {
     compileSdkVersion appAndroidCompileSDK
 
     defaultConfig {
-        resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it",
-                "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
+        manifestPlaceholders = [appName:appName]
+        applicationId appPackageName
+
+        versionCode appVersionCode
+        versionName appVersionName
+
         //noinspection MinSdkTooLow
         minSdkVersion appAndroidMinSDK
         targetSdkVersion appAndroidTargetSDK
-        versionCode appVersionCode
-        versionName appVersionName
+
+        resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it",
+                "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
     }
 
     buildTypes {

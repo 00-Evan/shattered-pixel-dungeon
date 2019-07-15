@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.shatteredpixel.shatteredpixeldungeon"
-	android:versionCode="349"
-	android:versionName="0.7.3b"
 	android:installLocation="auto">
 	
 	<uses-feature
@@ -18,14 +16,14 @@
 
 	<application
 		android:icon="@mipmap/ic_launcher"
-		android:label="@string/app_name"
+		android:label="${appName}"
 		android:theme="@android:style/Theme.Black.NoTitleBar"
 		android:resizeableActivity="true"
 		android:allowBackup="true"
 		android:fullBackupOnly="true"
 		android:backupAgent="com.shatteredpixel.shatteredpixeldungeon.BackupHandler">
 		<activity
-			android:label="@string/app_name"
+			android:label="${appName}"
 			android:name="com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon"
 			android:screenOrientation="nosensor">
 			<intent-filter >

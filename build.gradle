@@ -11,8 +11,11 @@ buildscript {
 allprojects {
 
     ext {
-        appVersionCode = 353
-        appVersionName = '0.7.4-BETA-4'
+        appName = 'Shattered Pixel Dungeon'
+        appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
+
+        appVersionCode = 349
+        appVersionName = '0.7.3b'
 
         appAndroidCompileSDK = 28
         appAndroidMinSDK = 9
