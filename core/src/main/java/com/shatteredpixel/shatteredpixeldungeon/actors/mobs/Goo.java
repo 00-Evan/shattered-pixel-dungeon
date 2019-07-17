@@ -113,6 +113,10 @@ public class Goo extends Mob {
 			}
 			HP++;
 		}
+		
+		if (state != SLEEPING){
+			Dungeon.level.seal();
+		}
 
 		return super.act();
 	}
@@ -204,12 +208,6 @@ public class Goo extends Mob {
 	protected boolean getCloser( int target ) {
 		pumpedUp = 0;
 		return super.getCloser( target );
-	}
-	
-	@Override
-	public void move( int step ) {
-		Dungeon.level.seal();
-		super.move( step );
 	}
 
 	@Override
