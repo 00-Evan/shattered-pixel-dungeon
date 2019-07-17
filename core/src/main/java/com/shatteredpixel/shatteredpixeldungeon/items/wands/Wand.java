@@ -446,6 +446,9 @@ public abstract class Wand extends Item {
 					Invisibility.dispel();
 					
 					if (curWand.cursed){
+						if (!curWand.cursedKnown){
+							GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name()));
+						}
 						CursedWand.cursedZap(curWand,
 								curUser,
 								new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT),
@@ -455,9 +458,6 @@ public abstract class Wand extends Item {
 										curWand.wandUsed();
 									}
 								});
-						if (!curWand.cursedKnown){
-							GLog.n(Messages.get(Wand.class, "curse_discover", curWand.name()));
-						}
 					} else {
 						curWand.fx(shot, new Callback() {
 							public void call() {
