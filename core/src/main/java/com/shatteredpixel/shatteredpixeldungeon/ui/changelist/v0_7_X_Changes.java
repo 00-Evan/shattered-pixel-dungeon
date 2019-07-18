@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.UnstableSpellbook;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -34,8 +35,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImag
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
@@ -45,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.PrismaticSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
@@ -54,62 +58,118 @@ import java.util.ArrayList;
 public class v0_7_X_Changes {
 	
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+		add_v0_7_4_Changes(changeInfos);
 		add_v0_7_3_Changes(changeInfos);
 		add_v0_7_2_Changes(changeInfos);
 		add_v0_7_1_Changes(changeInfos);
 		add_v0_7_0_Changes(changeInfos);
+	}
+
+	public static void add_v0_7_4_Changes( ArrayList<ChangeInfo> changeInfos ){
+		ChangeInfo changes = new ChangeInfo("v0.7.4", true, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released July 18th, 2019\n" +
+				"_-_ 56 days after Shattered v0.7.3" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
+
+		changes.addButton( new ChangeButton(new WandOfWarding(),
+				"This brand new wand spawns autonomous wards which attack enemies. Wards can be upgraded by being zapped again, and eventually form up into sentry turrets.\n\n" +
+				"The Wand of Warding does very consistent damage, but requires some setup first."));
+
+		changes.addButton( new ChangeButton(new WandOfLivingEarth(),
+				"This new wand has a lower damage output, but grants significant defensive power. The rocks the wand shoots at enemies reform around the hero and absorb damage. If enough rock is built, it will form up into a rock guardian which fights with the player.\n\n" +
+				"The Wand of Living Earth is lacking in offensive output, but does a great job of pulling focus and damage away from the player."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.EXOTIC_BERKANAN), "Ally AI improvements",
+				"Allies which follow the player are now considered to be 'intelligent', and have the following improved behaviours:\n" +
+				"_-_ Intelligent allies will not attack enemies which are asleep, or which haven't noticed the player yet.\n" +
+				"_-_ Intelligent allies will follow the hero through stairs so long as they are near to them.\n\n" +
+				"Lastly, the hero can now swap places with any ally, even unintelligent ones."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Overhauled main menu interface to allow for more expandability.\n\n" +
+				"_-_ Ring of elements and antimagic effects now apply to damage from wands.\n\n" +
+				"_-_ Added a little surprise if you reach the surface with an upgraded ally item.\n\n" +
+				"_-_ The great crab can now only block one enemy at a time.\n\n" +
+				"_-_ Shattered Pixel Dungeon now requires Android 2.3+ to run, up from Android 2.2+.\n\n" +
+				"_-_ Google Play Games and sharing gameplay data now requires android 4.1+, up from 4.0+."));
+
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Shattered pots being lost if the player has a full inventory\n" +
+				"_-_ Doors incorrectly closing when swapping places with an ally\n" +
+				"_-_ Various rare bugs with heavy boomerangs\n" +
+				"_-_ Various minor text errors"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+				"Updated Translations"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new DriedRose(),
+				"The Dried Rose's ghost hero has received some buffs and adjustments to go along with other ally improvements:\n\n" +
+				"_-_ The ghost hero can now be given instructions by using the rose after summoning them, and tapping on a location.\n\n" +
+				"_-_ Ghost HP scaling increased to 8 per petal, from 4.\n" +
+				"_-_ Ghost evasion reduced to 1x hero evasion from 2x.\n" +
+				"_-_ Ghost now heals over time while they are summoned."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.NOISEMAKER, null), "Enhanced Bomb Buffs",
+				"Many enchant bombs are performing poorly compared to some of the more popular ones, such as holy bombs and boss bombs. While I am toning down the strongest bombs a bit, I'm also making some pretty significant buffs to weaker bombs:\n\n" +
+				"_-_ Frost bomb cost down to 2 from 3, now instantly freezes enemies caught in the blast in addition to chilling.\n" +
+				"_-_ Woolly bomb cost down to 2 from 3, now does regular bomb damage in addition to spawning sheep.\n" +
+				"_-_ Noisemaker now explodes when an enemy is attracted to its location.\n" +
+				"_-_ Flashbang cost increased to 6 from 5, now deals regular bomb damage and debuffs in a smaller AOE.\n" +
+				"_-_ Shock bomb cost increased to 6 from 5, now stuns/damages immediately instead of over time with electricity.\n" +
+				"_-_ Regrowth bomb cost increased to 8 from 6, now heals significantly more and spawns more plants."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing(0xFF4400)), "Enchant/Glyph Buffs",
+				"Continuing from the changes in 0.7.3, I'm still watching enchantment balance and making buffs where there's room to do so:\n\n" +
+				"_-_ Blazing Enchantment bonus damage increased to 2/3 of burning damage, from 1-3.\n" +
+				"_-_ Shocking Enchantment damage increased to 40% from 33%.\n" +
+				"_-_ Blooming Enchantment chance for a second tile of grass increased to 10% per level, from 5%.\n" +
+				"_-_ Lucky Enchantment proc chance scaling with levels increased by ~2x.\n" +
+				"_-_ Corrupting Enchantment base proc chance increased to 15% from 10%, scaling reduced to compensate.\n\n" +
+				"_-_ Glyph of Flow now grants a flat 2x speed boost in water, up from 1.5x + 0.1x per level."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WILD_ENERGY, null), "Misc Item Buffs",
+				"_-_ Wild energy now gives 4 turns of charging instantly, and 8 turns over time. Up from 10 turns over time.\n\n" +
+				"_-_ Stone of Clairvoyance radius increased to 12 from 8. This increases the area by ~2.25x.\n\n" +
+				"_-_ Allies are now healed by magical sleep, just like the hero."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_MAIL, new ItemSprite.Glowing(0x88EEFF)), "Glyph Nerfs",
+				"_-_ Glyph of Thorns bleed amount reduced to 4+lvl from 4+2*lvl, proc rate increased.\n\n" +
+				"_-_ Glyph of Antimagic base damage reduction reduced to 0-4 from 2-4.\n\n" +
+				"_-_ Glyph of Brimstone shield generation removed. The glyph now only protects the user from fire and does not also grant shielding when the user is aflame."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARCANE_BOMB, null), "Enhanced Bomb Nerfs",
+				"_-_ Holy Bomb no longer blinds characters caught in the blast, recipe cost up to 8 from 6.\n\n" +
+				"_-_ Arcane Bomb damage now falls off based on distance. Reduced to 100%/83%/67% from all 100%.\n\n" +
+				"_-_ Shrapnel Bomb damage now slightly falls off based on distance. Damage is reduced by 5% per tile of distance."));
+
 	}
 	
 	public static void add_v0_7_3_Changes( ArrayList<ChangeInfo> changeInfos ){
 		ChangeInfo changes = new ChangeInfo("v0.7.3", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
-		
-		changes = new ChangeInfo("v0.7.3b", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-		
-		changes.addButton(new ChangeButton(Icons.get(Icons.WARNING), "Android Froyo Support",
-				"Unfortunately, v0.7.3 will be the last version of Shattered Pixel Dungeon which supports Android 2.2 Froyo.\n\n" +
-				"While investigating future improvements to the game, I have discovered that it is not possible to support Android 2.2 devices while also implementing the technical improvements I have planned.\n\n" +
-				"Android 2.2 was originally released in may 2010, and was succeeded by android 2.3 in december 2010.\n\n" +
-				"I do not currently have any plans to drop support for other Android versions, and new versions of Shattered should hopefully support Android 2.3+ for the foreseeable future.\n\n" +
-				"If you'd like to stay up to date with Shattered's development and do not have an Android 2.3+ device, you can still read about future updates over at: _www.ShatteredPixel.com_"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Shattered honeypots are now stackable, and can be sold for a small amount of gold.\n\n" +
-				"_-_ The changes list has been split into three separate groups, so that the game's entire change history isn't loaded all at once."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by 0.7.3):\n" +
-				"_-_ Additional cases where thrown weapons would be lost when fighting Tengu\n" +
-				"_-_ Poison dart traps dealing more damage when they were not visible\n\n" +
-				"Fixed (existed prior to 0.7.3):\n" +
-				"_-_ Odd behaviour when the player is killed by electricity or a grim weapon\n" +
-				"_-_ Various rare crash bugs"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
-				"Updated Translations"));
-		
-		changes = new ChangeInfo("v0.7.3a", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Tengu now throws his shurikens one at a time, just like other ranged enemies. The speed of the shurikens has been increased to compensate, so that the player doesn't need to keep waiting while Tengu's attacks are in flight.\n\n" +
-				"_-_ After the tengu boss battle, any extra items now drop in tengu's cell, instead of a random prison cell."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by 0.7.3):\n" +
-				"_-_ Cases where tipping darts would result in some darts being lost\n" +
-				"_-_ Thrown weapons sometimes being lost in the Tengu fight\n\n" +
-				"Fixed (existed prior to 0.7.3):\n" +
-				"_-_ Explosions destroying armor with the warrior's seal on it\n" +
-				"_-_ Various minor visual bugs\n" +
-				"_-_ Various rare crash bugs"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
-				"Updated Translations"));
 		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -150,6 +210,10 @@ public class v0_7_X_Changes {
 				"The alchemy guide has been adjusted due to the removal of dart tipping from alchemy. It now has 9 pages (down from 10), and the order of pages have been adjusted to put some simpler recipes earlier."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Shattered honeypots are now stackable, and can be sold for a small amount of gold.\n\n" +
+				"_-_ The changes list has been split into three separate groups, so that the game's entire change history isn't loaded all at once.\n\n" +
+				"_-_ Tengu now throws his shurikens one at a time, just like other ranged enemies. The speed of the shurikens has been increased to compensate, so that the player doesn't need to keep waiting while Tengu's attacks are in flight.\n\n" +
+				"_-_ After the tengu boss battle, any extra items now drop in tengu's cell, instead of a random prison cell.\n\n" +
 				"_-_ The hero will no longer step onto visible traps if that trap wasn't discovered when movement started.\n\n" +
 				"_-_ When the mage's staff is cursed, the wand within the staff will now also be cursed.\n\n" +
 				"_-_ Scrolls of transmutation can now be used on thrown weapons.\n\n" +
@@ -162,7 +226,11 @@ public class v0_7_X_Changes {
 				"_-_ Curse of multiplicity not working correctly on boss floors\n" +
 				"_-_ Curse of multiplicity closing doors when it shouldn't\n" +
 				"_-_ Ring of wealth rarely generating items which are blocked by challenges\n" +
-				"_-_ Windows rarely appearing in places they shouldn't"));
+				"_-_ Windows rarely appearing in places they shouldn't\n" +
+				"_-_ Odd behaviour when the player is killed by electricity or a grim weapon\n" +
+				"_-_ Explosions destroying armor with the warrior's seal on it\n" +
+				"_-_ Various minor visual bugs\n" +
+				"_-_ Various rare crash bugs"));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
 				"Updated Translations"));
