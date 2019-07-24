@@ -76,7 +76,6 @@ public class WandOfWarding extends Wand {
 				GameScene.add(ward, 1f);
 				Dungeon.level.press(ward.pos, ward);
 				ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
-				QuickSlotButton.target(ward);
 			} else {
 				GLog.w( Messages.get(this, "no_more_wards"));
 			}
