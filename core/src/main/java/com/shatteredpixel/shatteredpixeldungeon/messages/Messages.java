@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.messages;
 
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.watabou.utils.DeviceCompat;
 
 import java.util.Arrays;
 import java.util.Enumeration;

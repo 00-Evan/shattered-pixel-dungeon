@@ -38,7 +38,6 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
-import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.List;
