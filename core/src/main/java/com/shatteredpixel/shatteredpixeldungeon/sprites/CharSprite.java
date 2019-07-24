@@ -133,7 +133,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 	
-	public void link(Char ch ) {
+	//intended to be used for placing a character in the game world
+	public void link( Char ch ) {
+		linkVisuals( ch );
+		
 		this.ch = ch;
 		ch.sprite = this;
 		
@@ -150,6 +153,11 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 
 		ch.updateSpriteState();
+	}
+	
+	//used for just updating a sprite based on a given character, not linking them or placing in the game
+	public void linkVisuals( Char ch ){
+		//do nothin by default
 	}
 	
 	public PointF worldToCamera( int cell ) {

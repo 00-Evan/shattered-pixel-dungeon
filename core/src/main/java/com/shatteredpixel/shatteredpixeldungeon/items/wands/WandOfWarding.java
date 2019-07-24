@@ -145,7 +145,7 @@ public class WandOfWarding extends Wand {
 
 	public static class Ward extends NPC {
 
-		private int tier = 1;
+		public int tier = 1;
 		private int wandLevel = 1;
 
 		private int totalZaps = 0;
@@ -316,7 +316,7 @@ public class WandOfWarding extends Wand {
 		@Override
 		public CharSprite sprite() {
 			WardSprite sprite = (WardSprite) super.sprite();
-			sprite.updateTier(tier);
+			sprite.linkVisuals(this);
 			return sprite;
 		}
 
@@ -324,6 +324,7 @@ public class WandOfWarding extends Wand {
 		public void updateSpriteState() {
 			super.updateSpriteState();
 			((WardSprite)sprite).updateTier(tier);
+			sprite.place(pos);
 		}
 		
 		@Override

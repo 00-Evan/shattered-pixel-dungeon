@@ -2,6 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
@@ -70,6 +71,14 @@ public class WardSprite extends MobSprite {
 			}
 		} );
 	}
+	
+	public void linkVisuals( Char ch ){
+		
+		if (ch == null) return;
+		
+		updateTier( ((WandOfWarding.Ward)ch).tier );
+		
+	}
 
 	public void updateTier(int tier){
 
@@ -94,9 +103,6 @@ public class WardSprite extends MobSprite {
 			perspectiveRaise = 6 / 16f; //6 pixels
 		}
 
-		if (ch != null) {
-			place(ch.pos);
-		}
 	}
 
 	private float baseY = Float.NaN;
@@ -111,7 +117,7 @@ public class WardSprite extends MobSprite {
 	public void update() {
 		super.update();
 		//if tier is greater than 3
-		if (perspectiveRaise >= 6 / 16f){
+		if (perspectiveRaise >= 6 / 16f && !paused){
 			if (Float.isNaN(baseY)) baseY = y;
 			y = baseY + (float) Math.sin(Game.timeTotal);
 			shadowOffset = 0.25f - 0.8f*(float) Math.sin(Game.timeTotal);
