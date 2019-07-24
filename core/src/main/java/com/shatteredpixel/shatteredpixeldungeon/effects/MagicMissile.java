@@ -165,7 +165,7 @@ public class MagicMissile extends Emitter {
 	public static void boltFromChar(Group group, int type, Visual sprite, int to, Callback callback){
 		MagicMissile missile = ((MagicMissile)group.recycle( MagicMissile.class ));
 		if (Actor.findChar(to) != null){
-			missile.reset(type, sprite, Actor.findChar(to).sprite, callback);
+			missile.reset(type, sprite.center(), Actor.findChar(to).sprite.destinationCenter(), callback);
 		} else {
 			missile.reset(type, sprite, to, callback);
 		}

@@ -91,7 +91,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	
 	protected Callback animCallback;
 	
-	protected Tweener motion;
+	protected PosTweener motion;
 	
 	protected Emitter burning;
 	protected Emitter chilled;
@@ -198,6 +198,15 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			GameScene.ripple( from );
 		}
 
+	}
+	
+	//returns where the center of this sprite will be after it completes any motion in progress
+	public PointF destinationCenter(){
+		if (motion != null){
+			return new PointF(motion.end.x + width()/2f, motion.end.y + height()/2f);
+		} else {
+			return center();
+		}
 	}
 	
 	public void interruptMotion() {
