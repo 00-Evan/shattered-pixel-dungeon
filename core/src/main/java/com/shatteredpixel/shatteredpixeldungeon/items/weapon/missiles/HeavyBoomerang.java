@@ -100,9 +100,12 @@ public class HeavyBoomerang extends MissileWeapon {
 										@Override
 										public void call() {
 											if (returnTarget == Dungeon.hero){
-												boomerang.doPickUp(Dungeon.hero);
-												//grabbing the boomerang takes no time
-												Dungeon.hero.spend( -TIME_TO_PICK_UP );
+												if (boomerang.doPickUp(Dungeon.hero)) {
+													//grabbing the boomerang takes no time
+													Dungeon.hero.spend(-TIME_TO_PICK_UP);
+												} else {
+													Dungeon.level.drop(boomerang, returnPos).sprite.drop();
+												}
 												
 											} else if (returnTarget != null){
 												if (curUser.shoot( returnTarget, boomerang )) {
