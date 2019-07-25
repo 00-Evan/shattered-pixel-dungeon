@@ -21,34 +21,35 @@
 
 package com.watabou.noosa;
 
-import com.watabou.input.Keys;
+import com.watabou.input.KeyEvent;
 import com.watabou.utils.Signal;
 
 public class Scene extends Group {
 	
-	private Signal.Listener<Keys.Key> keyListener;
+	private Signal.Listener<KeyEvent> keyListener;
 	
 	public void create() {
-		Keys.event.add( keyListener = new Signal.Listener<Keys.Key>() {
+		KeyEvent.addKeyListener( keyListener = new Signal.Listener<KeyEvent>() {
 			@Override
-			public void onSignal( Keys.Key key ) {
-				if (Game.instance != null && key.pressed) {
-					switch (key.code) {
-					case Keys.BACK:
+			public boolean onSignal( KeyEvent event ) {
+				if (Game.instance != null && event.pressed) {
+					switch (event.code) {
+					case KeyEvent.BACK:
 						onBackPressed();
 						break;
-					case Keys.MENU:
+					case KeyEvent.MENU:
 						onMenuPressed();
 						break;
 					}
 				}
+				return false;
 			}
 		} );
 	}
 	
 	@Override
 	public void destroy() {
-		Keys.event.remove( keyListener );
+		KeyEvent.removeKeyListener( keyListener );
 		super.destroy();
 	}
 	

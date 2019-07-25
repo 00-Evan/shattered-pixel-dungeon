@@ -97,11 +97,11 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 				return QuickSlotButton.this.onLongClick();
 			}
 			@Override
-			protected void onTouchDown() {
+			protected void onPointerDown() {
 				icon.lightness( 0.7f );
 			}
 			@Override
-			protected void onTouchUp() {
+			protected void onPointerUp() {
 				icon.resetColor();
 			}
 		};

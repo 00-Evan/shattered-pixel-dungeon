@@ -84,13 +84,13 @@ public class StyledButton extends Button {
 	}
 	
 	@Override
-	protected void onTouchDown() {
+	protected void onPointerDown() {
 		bg.brightness( 1.2f );
 		Sample.INSTANCE.play( Assets.SND_CLICK );
 	}
 	
 	@Override
-	protected void onTouchUp() {
+	protected void onPointerUp() {
 		bg.resetColor();
 	}
 	

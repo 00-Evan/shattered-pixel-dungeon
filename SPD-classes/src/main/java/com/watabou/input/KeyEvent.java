@@ -26,28 +26,48 @@ import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
 
-//TODO probably want to merge this into a central input processor class
-public class Keys {
+public class KeyEvent {
+	
+	public int code;
+	public boolean pressed;
+	
+	public KeyEvent( int code, boolean pressed ) {
+		this.code = code;
+		this.pressed = pressed;
+	}
+	
+	// **********************
+	// *** Static members ***
+	// **********************
 	
 	public static final int BACK		= Input.Keys.BACK;
 	public static final int MENU		= Input.Keys.MENU;
-
-	public static Signal<Key> event = new Signal<>( true );
 	
-	public static void processKeyEvents( ArrayList<Key> events ){
-		for (Key k : events){
-			event.dispatch(k);
-		}
+	private static Signal<KeyEvent> keySignal = new Signal<>( true );
+	
+	public static void addKeyListener( Signal.Listener<KeyEvent> listener ){
+		keySignal.add(listener);
 	}
 	
-	public static class Key {
-		
-		public int code;
-		public boolean pressed;
-		
-		public Key( int code, boolean pressed ) {
-			this.code = code;
-			this.pressed = pressed;
+	public static void removeKeyListener( Signal.Listener<KeyEvent> listener ){
+		keySignal.remove(listener);
+	}
+	
+	public static void clearListeners(){
+		keySignal.removeAll();
+	}
+	
+	//Accumulated key events
+	private static ArrayList<KeyEvent> keyEvents = new ArrayList<>();
+	
+	public static synchronized void addKeyEvent( KeyEvent event ){
+		keyEvents.add( event );
+	}
+	
+	public static synchronized void processKeyEvents(){
+		for (KeyEvent k : keyEvents){
+			keySignal.dispatch(k);
 		}
+		keyEvents.clear();
 	}
 }

@@ -32,13 +32,13 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
-import com.watabou.input.Touchscreen.Touch;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Button;
@@ -82,9 +82,9 @@ public class StatusPane extends Component {
 		bg = new NinePatch( Assets.STATUS, 0, 0, 128, 36, 85, 0, 45, 0 );
 		add( bg );
 
-		add( new TouchArea( 0, 1, 31, 31 ) {
+		add( new PointerArea( 0, 1, 31, 31 ) {
 			@Override
-			protected void onClick( Touch touch ) {
+			protected void onClick( PointerEvent event ) {
 				Image sprite = Dungeon.hero.sprite;
 				if (!sprite.isVisible()) {
 					Camera.main.focusOn( sprite );
@@ -322,13 +322,13 @@ public class StatusPane extends Component {
 		}
 
 		@Override
-		protected void onTouchDown() {
+		protected void onPointerDown() {
 			bg.brightness( 1.5f );
 			Sample.INSTANCE.play( Assets.SND_CLICK );
 		}
 
 		@Override
-		protected void onTouchUp() {
+		protected void onPointerUp() {
 			if (keyIcon.keyCount() > 0) {
 				bg.brightness(.8f - (Math.min(6, keyIcon.keyCount()) / 20f));
 			} else {
@@ -374,13 +374,13 @@ public class StatusPane extends Component {
 		}
 
 		@Override
-		protected void onTouchDown() {
+		protected void onPointerDown() {
 			image.brightness( 1.5f );
 			Sample.INSTANCE.play( Assets.SND_CLICK );
 		}
 
 		@Override
-		protected void onTouchUp() {
+		protected void onPointerUp() {
 			image.resetColor();
 		}
 

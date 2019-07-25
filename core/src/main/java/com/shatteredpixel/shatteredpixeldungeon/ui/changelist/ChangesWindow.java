@@ -23,18 +23,18 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
-import com.watabou.input.Touchscreen;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.PointerArea;
 
 public class ChangesWindow extends WndTitledMessage {
 	
 	public ChangesWindow(Image icon, String title, String message ) {
 		super( icon, title, message);
 		
-		TouchArea blocker = new TouchArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
+		PointerArea blocker = new PointerArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
 			@Override
-			protected void onClick( Touchscreen.Touch touch ) {
+			protected void onClick( PointerEvent event ) {
 				hide();
 			}
 		};

@@ -412,12 +412,12 @@ public class WndBag extends WndTabbed {
 		}
 		
 		@Override
-		protected void onTouchDown() {
+		protected void onPointerDown() {
 			bg.brightness( 1.5f );
 			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
 		};
 		
-		protected void onTouchUp() {
+		protected void onPointerUp() {
 			bg.brightness( 1.0f );
 		};
 		

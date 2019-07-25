@@ -324,12 +324,12 @@ public class Toolbar extends Component {
 		}
 		
 		@Override
-		protected void onTouchDown() {
+		protected void onPointerDown() {
 			base.brightness( 1.4f );
 		}
 		
 		@Override
-		protected void onTouchUp() {
+		protected void onPointerUp() {
 			if (active) {
 				base.resetColor();
 			} else {

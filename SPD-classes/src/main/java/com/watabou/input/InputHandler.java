@@ -24,97 +24,65 @@ package com.watabou.input;
 import com.badlogic.gdx.InputAdapter;
 import com.watabou.noosa.Game;
 
-import java.util.ArrayList;
-
 public class InputHandler extends InputAdapter {
 	
-	// Accumulated touch events
-	protected ArrayList<Touchscreen.Touch> touchEvents = new ArrayList<>();
-	
-	// Accumulated key events
-	protected ArrayList<Keys.Key> keyEvents = new ArrayList<>();
-	
-	@Override
-	public boolean keyDown( int keyCode ) {
-		
-		if (keyCode != Keys.BACK &&
-				keyCode != Keys.MENU) {
-			return false;
-		}
-		
-		synchronized (keyEvents) {
-			keyEvents.add( new Keys.Key(keyCode, true) );
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean keyUp( int keyCode ) {
-		
-		if (keyCode != Keys.BACK &&
-				keyCode != Keys.MENU) {
-			return false;
-		}
-		
-		synchronized (keyEvents) {
-			keyEvents.add( new Keys.Key(keyCode, false) );
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
-	
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		screenX /= (Game.dispWidth / (float)Game.width);
-		screenY /= (Game.dispHeight / (float)Game.height);
-		synchronized (touchEvents) {
-			touchEvents.add(new Touchscreen.Touch(screenX, screenY, pointer, true));
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		screenX /= (Game.dispWidth / (float)Game.width);
-		screenY /= (Game.dispHeight / (float)Game.height);
-		synchronized (touchEvents) {
-			touchEvents.add(new Touchscreen.Touch(screenX, screenY, pointer, false));
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		screenX /= (Game.dispWidth / (float)Game.width);
-		screenY /= (Game.dispHeight / (float)Game.height);
-		synchronized (touchEvents) {
-			touchEvents.add(new Touchscreen.Touch(screenX, screenY, pointer, true));
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
-	
-	@Override
-	public boolean scrolled(int amount) {
-		return false;
-	}
-	
 	public void processAllEvents(){
-		synchronized (touchEvents) {
-			Touchscreen.processTouchEvents( touchEvents );
-			touchEvents.clear();
-		}
-		synchronized (keyEvents) {
-			Keys.processKeyEvents( keyEvents );
-			keyEvents.clear();
-		}
+		PointerEvent.processPointerEvents();
+		KeyEvent.processKeyEvents();
 	}
+	
+	// *********************
+	// *** Pointer Input ***
+	// *********************
+	
+	@Override
+	public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		screenX /= (Game.dispWidth / (float)Game.width);
+		screenY /= (Game.dispHeight / (float)Game.height);
+		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, true));
+		return true;
+	}
+	
+	@Override
+	public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		screenX /= (Game.dispWidth / (float)Game.width);
+		screenY /= (Game.dispHeight / (float)Game.height);
+		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, false));
+		return true;
+	}
+	
+	@Override
+	public synchronized boolean touchDragged(int screenX, int screenY, int pointer) {
+		screenX /= (Game.dispWidth / (float)Game.width);
+		screenY /= (Game.dispHeight / (float)Game.height);
+		PointerEvent.addPointerEvent(new PointerEvent(screenX, screenY, pointer, true));
+		return true;
+	}
+	
+	// *****************
+	// *** Key Input ***
+	// *****************
+	
+	@Override
+	public synchronized boolean keyDown( int keyCode ) {
+		
+		if (keyCode != KeyEvent.BACK && keyCode != KeyEvent.MENU) {
+			return false;
+		}
+		
+		KeyEvent.addKeyEvent( new KeyEvent(keyCode, true) );
+		return true;
+	}
+	
+	@Override
+	public synchronized boolean keyUp( int keyCode ) {
+		
+		if (keyCode != KeyEvent.BACK && keyCode != KeyEvent.MENU) {
+			return false;
+		}
+		
+		KeyEvent.addKeyEvent( new KeyEvent(keyCode, false) );
+		return true;
+	}
+	
 }

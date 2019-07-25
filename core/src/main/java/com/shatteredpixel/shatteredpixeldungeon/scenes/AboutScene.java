@@ -29,11 +29,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.input.Touchscreen.Touch;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
+import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.RenderedText;
-import com.watabou.noosa.TouchArea;
 import com.watabou.utils.DeviceCompat;
 
 public class AboutScene extends PixelScene {
@@ -92,9 +92,9 @@ public class AboutScene extends PixelScene {
 		shpxlink.setPos((colWidth - shpxlink.width()) / 2, shpxtext.bottom() + 6);
 		align(shpxlink);
 
-		TouchArea shpxhotArea = new TouchArea( shpxlink.left(), shpxlink.top(), shpxlink.width(), shpxlink.height() ) {
+		PointerArea shpxhotArea = new PointerArea( shpxlink.left(), shpxlink.top(), shpxlink.width(), shpxlink.height() ) {
 			@Override
-			protected void onClick( Touch touch ) {
+			protected void onClick( PointerEvent event ) {
 				DeviceCompat.openURI( "https://" + LNK_SHPX );
 			}
 		};
@@ -133,9 +133,9 @@ public class AboutScene extends PixelScene {
 		wataLink.setPos(wataOffset + (colWidth - wataLink.width()) / 2 , wataText.bottom() + 6);
 		align(wataLink);
 		
-		TouchArea hotArea = new TouchArea( wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height() ) {
+		PointerArea hotArea = new PointerArea( wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height() ) {
 			@Override
-			protected void onClick( Touch touch ) {
+			protected void onClick( PointerEvent event ) {
 				DeviceCompat.openURI( "https://" + LNK_WATA );
 			}
 		};

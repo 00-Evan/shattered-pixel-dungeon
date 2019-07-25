@@ -21,15 +21,15 @@
 
 package com.watabou.noosa.ui;
 
-import com.watabou.input.Touchscreen.Touch;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.PointerArea;
 
 public class Button extends Component {
 
 	public static float longClick = 1f;
 	
-	protected TouchArea hotArea;
+	protected PointerArea hotArea;
 	
 	protected boolean pressed;
 	protected float pressTime;
@@ -38,25 +38,25 @@ public class Button extends Component {
 	
 	@Override
 	protected void createChildren() {
-		hotArea = new TouchArea( 0, 0, 0, 0 ) {
+		hotArea = new PointerArea( 0, 0, 0, 0 ) {
 			@Override
-			protected void onTouchDown(Touch touch) {
+			protected void onPointerDown( PointerEvent event ) {
 				pressed = true;
 				pressTime = 0;
 				processed = false;
-				Button.this.onTouchDown();
-			};
+				Button.this.onPointerDown();
+			}
 			@Override
-			protected void onTouchUp(Touch touch) {
+			protected void onPointerUp( PointerEvent event ) {
 				pressed = false;
-				Button.this.onTouchUp();
-			};
+				Button.this.onPointerUp();
+			}
 			@Override
-			protected void onClick( Touch touch ) {
+			protected void onClick( PointerEvent event ) {
 				if (!processed) {
 					Button.this.onClick();
 				}
-			};
+			}
 		};
 		add( hotArea );
 	}
@@ -74,7 +74,7 @@ public class Button extends Component {
 
 					hotArea.reset();
 					processed = true;
-					onTouchUp();
+					onPointerUp();
 					
 					Game.vibrate( 50 );
 				}
@@ -82,13 +82,12 @@ public class Button extends Component {
 		}
 	}
 	
-	protected void onTouchDown() {};
-	protected void onTouchUp() {};
-	protected void onClick() {};
-	
+	protected void onPointerDown() {}
+	protected void onPointerUp() {}
+	protected void onClick() {}
 	protected boolean onLongClick() {
 		return false;
-	};
+	}
 	
 	@Override
 	protected void layout() {

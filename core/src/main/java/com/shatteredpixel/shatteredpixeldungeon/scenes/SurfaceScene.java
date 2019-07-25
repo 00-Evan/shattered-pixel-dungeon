@@ -41,7 +41,7 @@ import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Quad;
-import com.watabou.input.Touchscreen.Touch;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -49,7 +49,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Point;
@@ -199,8 +199,8 @@ public class SurfaceScene extends PixelScene {
 		window.add( a );
 		window.add( pet );
 		
-		window.add( new TouchArea( sky ) {
-			protected void onClick( Touch touch ) {
+		window.add( new PointerArea( sky ) {
+			protected void onClick( PointerEvent event ) {
 				pet.jump();
 			}
 		} );

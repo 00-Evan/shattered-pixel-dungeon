@@ -28,13 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.watabou.input.Touchscreen.Touch;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
-import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.PointerArea;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 
-public class CellSelector extends TouchArea {
+public class CellSelector extends PointerArea {
 
 	public Listener listener = null;
 	
@@ -50,14 +50,14 @@ public class CellSelector extends TouchArea {
 	}
 	
 	@Override
-	protected void onClick( Touch touch ) {
+	protected void onClick( PointerEvent event ) {
 		if (dragging) {
 			
 			dragging = false;
 			
 		} else {
 			
-			PointF p = Camera.main.screenToCamera( (int)touch.current.x, (int)touch.current.y );
+			PointF p = Camera.main.screenToCamera( (int) event.current.x, (int) event.current.y );
 			for (Char mob : Dungeon.level.mobs.toArray(new Mob[0])){
 				if (mob.sprite != null && mob.sprite.overlapsPoint( p.x, p.y)){
 					select( mob.pos );
@@ -73,8 +73,8 @@ public class CellSelector extends TouchArea {
 			}
 			
 			select( ((DungeonTilemap)target).screenToTile(
-				(int)touch.current.x,
-				(int)touch.current.y,
+				(int) event.current.x,
+				(int) event.current.y,
 					true ) );
 		}
 	}
@@ -111,47 +111,47 @@ public class CellSelector extends TouchArea {
 	}
 	
 	private boolean pinching = false;
-	private Touch another;
+	private PointerEvent another;
 	private float startZoom;
 	private float startSpan;
 	
 	@Override
-	protected void onTouchDown( Touch t ) {
+	protected void onPointerDown( PointerEvent event ) {
 
-		if (t != touch && another == null) {
+		if (event != curEvent && another == null) {
 					
-			if (!touch.down) {
-				touch = t;
-				onTouchDown( t );
+			if (!curEvent.down) {
+				curEvent = event;
+				onPointerDown( event );
 				return;
 			}
 			
 			pinching = true;
 			
-			another = t;
-			startSpan = PointF.distance( touch.current, another.current );
+			another = event;
+			startSpan = PointF.distance( curEvent.current, another.current );
 			startZoom = camera.zoom;
 
 			dragging = false;
-		} else if (t != touch) {
+		} else if (event != curEvent) {
 			reset();
 		}
 	}
 	
 	@Override
-	protected void onTouchUp( Touch t ) {
-		if (pinching && (t == touch || t == another)) {
+	protected void onPointerUp( PointerEvent event ) {
+		if (pinching && (event == curEvent || event == another)) {
 			
 			pinching = false;
 			
 			zoom(Math.round( camera.zoom ));
 			
 			dragging = true;
-			if (t == touch) {
-				touch = another;
+			if (event == curEvent) {
+				curEvent = another;
 			}
 			another = null;
-			lastPos.set( touch.current );
+			lastPos.set( curEvent.current );
 		}
 	}
 	
@@ -159,13 +159,13 @@ public class CellSelector extends TouchArea {
 	private PointF lastPos = new PointF();
 	
 	@Override
-	protected void onDrag( Touch t ) {
+	protected void onDrag( PointerEvent event ) {
 		 
 		camera.target = null;
 
 		if (pinching) {
 
-			float curSpan = PointF.distance( touch.current, another.current );
+			float curSpan = PointF.distance( curEvent.current, another.current );
 			float zoom = (startZoom * curSpan / startSpan);
 			camera.zoom( GameMath.gate(
 				PixelScene.minZoom,
@@ -174,14 +174,14 @@ public class CellSelector extends TouchArea {
 
 		} else {
 		
-			if (!dragging && PointF.distance( t.current, t.start ) > dragThreshold) {
+			if (!dragging && PointF.distance( event.current, event.start ) > dragThreshold) {
 				
 				dragging = true;
-				lastPos.set( t.current );
+				lastPos.set( event.current );
 				
 			} else if (dragging) {
-				camera.scroll.offset( PointF.diff( lastPos, t.current ).invScale( camera.zoom ) );
-				lastPos.set( t.current );
+				camera.scroll.offset( PointF.diff( lastPos, event.current ).invScale( camera.zoom ) );
+				lastPos.set( event.current );
 			}
 		}
 		

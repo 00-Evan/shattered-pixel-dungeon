@@ -22,10 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.input.Touchscreen.Touch;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -35,7 +35,7 @@ public class ScrollPane extends Component {
 	protected static final int THUMB_COLOR		= 0xFF7b8073;
 	protected static final float THUMB_ALPHA	= 0.5f;
 
-	protected TouchController controller;
+	protected PointerController controller;
 	protected Component content;
 	protected ColorBlock thumb;
 
@@ -69,7 +69,7 @@ public class ScrollPane extends Component {
 
 	@Override
 	protected void createChildren() {
-		controller = new TouchController();
+		controller = new PointerController();
 		add( controller );
 
 		thumb = new ColorBlock( 1, 1, THUMB_COLOR );
@@ -107,17 +107,17 @@ public class ScrollPane extends Component {
 	public void onClick( float x, float y ) {
 	}
 
-	public class TouchController extends TouchArea {
+	public class PointerController extends PointerArea {
 
 		private float dragThreshold;
 
-		public TouchController() {
+		public PointerController() {
 			super( 0, 0, 0, 0 );
 			dragThreshold = PixelScene.defaultZoom * 8;
 		}
 
 		@Override
-		protected void onTouchUp( Touch touch ) {
+		protected void onPointerUp( PointerEvent event ) {
 			if (dragging) {
 
 				dragging = false;
@@ -125,7 +125,7 @@ public class ScrollPane extends Component {
 
 			} else {
 
-				PointF p = content.camera.screenToCamera( (int)touch.current.x, (int)touch.current.y );
+				PointF p = content.camera.screenToCamera( (int) event.current.x, (int) event.current.y );
 				ScrollPane.this.onClick( p.x, p.y );
 
 			}
@@ -135,12 +135,12 @@ public class ScrollPane extends Component {
 		private PointF lastPos = new PointF();
 
 		@Override
-		protected void onDrag( Touch t ) {
+		protected void onDrag( PointerEvent event ) {
 			if (dragging) {
 
 				Camera c = content.camera;
 
-				c.scroll.offset( PointF.diff( lastPos, t.current ).invScale( c.zoom ) );
+				c.scroll.offset( PointF.diff( lastPos, event.current ).invScale( c.zoom ) );
 				if (c.scroll.x + width > content.width()) {
 					c.scroll.x = content.width() - width;
 				}
@@ -156,12 +156,12 @@ public class ScrollPane extends Component {
 
 				thumb.y = y + height * c.scroll.y / content.height();
 
-				lastPos.set( t.current );
+				lastPos.set( event.current );
 
-			} else if (PointF.distance( t.current, t.start ) > dragThreshold) {
+			} else if (PointF.distance( event.current, event.start ) > dragThreshold) {
 
 				dragging = true;
-				lastPos.set( t.current );
+				lastPos.set( event.current );
 				thumb.am = 1;
 
 			}

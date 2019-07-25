@@ -21,9 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.watabou.input.Touchscreen.Touch;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 
 public class SimpleButton extends Component {
@@ -43,19 +43,19 @@ public class SimpleButton extends Component {
 		image = new Image();
 		add( image );
 		
-		add( new TouchArea( image ) {
+		add( new PointerArea( image ) {
 			@Override
-			protected void onTouchDown(Touch touch) {
+			protected void onPointerDown( PointerEvent event ) {
 				image.brightness( 1.2f );
-			};
+			}
 			@Override
-			protected void onTouchUp(Touch touch) {
+			protected void onPointerUp( PointerEvent event ) {
 				image.brightness( 1.0f );
-			};
+			}
 			@Override
-			protected void onClick( Touch touch ) {
+			protected void onClick( PointerEvent event ) {
 				SimpleButton.this.onClick();
-			};
+			}
 		} );
 	}
 	

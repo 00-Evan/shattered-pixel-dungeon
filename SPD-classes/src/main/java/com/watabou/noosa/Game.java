@@ -36,7 +36,7 @@ import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.InputHandler;
-import com.watabou.input.Keys;
+import com.watabou.input.KeyEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.SystemTime;
 
@@ -132,8 +132,8 @@ public class Game extends AndroidApplication implements ApplicationListener {
 		
 		inputHandler = new InputHandler();
 		Gdx.input.setInputProcessor(inputHandler);
-		Gdx.input.setCatchKey(Keys.BACK, true);
-		Gdx.input.setCatchKey(Keys.MENU, true);
+		Gdx.input.setCatchKey(KeyEvent.BACK, true);
+		Gdx.input.setCatchKey(KeyEvent.MENU, true);
 		
 		//FIXME this doesn't seem to work quite right. That might not be due to LibGDX though.
 		Music.setMuteListener();

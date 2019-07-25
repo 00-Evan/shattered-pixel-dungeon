@@ -24,24 +24,23 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.input.Keys;
-import com.watabou.input.Keys.Key;
-import com.watabou.input.Touchscreen.Touch;
+import com.watabou.input.KeyEvent;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.PointerArea;
 import com.watabou.utils.Signal;
 
-public class Window extends Group implements Signal.Listener<Key> {
+public class Window extends Group implements Signal.Listener<KeyEvent> {
 
 	protected int width;
 	protected int height;
 
 	protected int yOffset;
 	
-	protected TouchArea blocker;
+	protected PointerArea blocker;
 	protected ShadowBox shadow;
 	protected NinePatch chrome;
 	
@@ -65,12 +64,12 @@ public class Window extends Group implements Signal.Listener<Key> {
 
 		this.yOffset = yOffset;
 		
-		blocker = new TouchArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
+		blocker = new PointerArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
 			@Override
-			protected void onClick( Touch touch ) {
+			protected void onClick( PointerEvent event ) {
 				if (Window.this.parent != null && !Window.this.chrome.overlapsScreenPoint(
-					(int)touch.current.x,
-					(int)touch.current.y )) {
+					(int) event.current.x,
+					(int) event.current.y )) {
 					
 					onBackPressed();
 				}
@@ -112,7 +111,7 @@ public class Window extends Group implements Signal.Listener<Key> {
 				camera.y / camera.zoom,
 				chrome.width(), chrome.height );
 
-		Keys.event.add( this );
+		KeyEvent.addKeyListener( this );
 	}
 	
 	public void resize( int w, int h ) {
@@ -151,23 +150,23 @@ public class Window extends Group implements Signal.Listener<Key> {
 		super.destroy();
 		
 		Camera.remove( camera );
-		Keys.event.remove( this );
+		KeyEvent.removeKeyListener( this );
 	}
 
 	@Override
-	public void onSignal( Key key ) {
-		if (key.pressed) {
-			switch (key.code) {
-			case Keys.BACK:
-				onBackPressed();
-				break;
-			case Keys.MENU:
-				onMenuPressed();
-				break;
+	public boolean onSignal( KeyEvent event ) {
+		if (event.pressed) {
+			switch (event.code) {
+				case KeyEvent.BACK:
+					onBackPressed();
+					return true;
+				case KeyEvent.MENU:
+					onMenuPressed();
+					return true;
 			}
 		}
 		
-		Keys.event.cancel();
+		return false;
 	}
 	
 	public void onBackPressed() {

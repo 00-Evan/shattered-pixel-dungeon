@@ -28,9 +28,9 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.input.Touchscreen.Touch;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.TouchArea;
+import com.watabou.noosa.PointerArea;
 import com.watabou.utils.SparseArray;
 
 public class WndStory extends Window {
@@ -74,9 +74,9 @@ public class WndStory extends Window {
 		tf.setPos(MARGIN, 0);
 		add( tf );
 		
-		add( new TouchArea( chrome ) {
+		add( new PointerArea( chrome ) {
 			@Override
-			protected void onClick( Touch touch ) {
+			protected void onClick( PointerEvent event ) {
 				hide();
 			}
 		} );
