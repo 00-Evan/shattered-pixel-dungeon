@@ -72,6 +72,7 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 			
 			if (Dungeon.level.water[target.pos] && target.HP < target.HT){
 				float healAmt = GameMath.gate( 1, target.HT/50f, left );
+				healAmt = Math.min(healAmt, target.HT - target.HP);
 				if (Random.Float() < (healAmt % 1)){
 					healAmt = (float)Math.ceil(healAmt);
 				} else {
