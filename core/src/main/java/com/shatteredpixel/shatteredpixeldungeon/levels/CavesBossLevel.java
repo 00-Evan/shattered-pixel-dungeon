@@ -203,10 +203,10 @@ public class CavesBossLevel extends Level {
 	
 	@Override
 	public int randomRespawnCell() {
-		int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
-		while (!passable[cell]){
+		int cell;
+		do {
 			cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
-		}
+		} while (!passable[cell] || Actor.findChar(cell) != null);
 		return cell;
 	}
 	

@@ -210,7 +210,12 @@ public class PrisonBossLevel extends Level {
 
 	@Override
 	public int randomRespawnCell() {
-		return 5+2*32 + PathFinder.NEIGHBOURS8[Random.Int(8)]; //random cell adjacent to the entrance.
+		int pos = 5+2*32; //random cell adjacent to the entrance.
+		int cell;
+		do {
+			cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+		} while (!passable[cell] || Actor.findChar(cell) != null);
+		return cell;
 	}
 	
 	@Override
