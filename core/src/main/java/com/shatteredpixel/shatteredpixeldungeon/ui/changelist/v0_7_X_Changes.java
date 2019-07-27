@@ -68,7 +68,51 @@ public class v0_7_X_Changes {
 		ChangeInfo changes = new ChangeInfo("v0.7.4", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
-
+		
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.4a", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_WARDING, null), "New Wand Adjustments",
+				"Wand of Warding:\n" +
+				"The direct power of this wand is working well, but is a bit too hard to access. I'm making a few tweaks to make it a bit easier to access that power:\n" +
+				"_-_ The wand of warding can now target any location the hero can see, even through walls.\n" +
+				"_-_ Rather than wasting a charge, the wand now 'fizzles' if ward capacity is reached.\n\n" +
+				"Wand of Living Earth:\n" +
+				"This wand is doing a bit too well at the moment, so I'm slightly scaling back its power at higher levels while very lightly buffing its base strength.\n" +
+				"_-_ Earth armor granted per shot reduced to 1x damage from 1.33x damage.\n" +
+				"_-_ Earth guardian max HP reduced to 16+8*lvl from 20+10*lvl.\n" +
+				"_-_ Wand base damage increased to 3-6 from 2-4.\n" +
+				"_-_ Earth guardian damage increased by 12.5%."));
+		
+		changes.addButton( new ChangeButton( new Image(Assets.MAGE, 0, 90, 12, 15), "Subclass Adjustments",
+				"The Warlock is intended to require a source of physical damage in addition to a wand to be successful. Upgradeable ally wands are problematic for warlock as you can get magical power and physical damage in one item, which makes his abilities absurdly useful with them. The warlock should synergize with allies, but I have scaled the amount down to more reasonable levels:\n\n" +
+				"_-_ Soul mark healing increased to 40% of damage from 33%\n" +
+				"_-_ Soul mark is now 2/5 as effective when the damage-dealer isn't the hero.\n\n" +
+				"I'm also making a few smaller adjustments to other subclasses which are overperforming:\n\n" +
+				"_-_ Berserker rate of rage loss over time increased by 33% (it is now 2/3 of what it was pre-0.7.3).\n\n" +
+				"_-_ Freerunner bonus evasion reduced by 20%."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Autotargeting now no longer targets ally characters, in any circumstances.\n\n" +
+				"_-_ Most scrolls with an area of affect now no longer affect allies. More destructive ones will still damage them though.\n\n" +
+				"_-_ Updated Translations."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.7.4):\n" +
+				"_-_ Various rare crash bugs\n\n" +
+				"Fixed (existed prior to 0.7.4):\n" +
+				"_-_ Minor visual errors with ranged enemy attacks.\n" +
+				"_-_ Heavy boomerangs being lost when inventory is full.\n" +
+				"_-_ NPCs rarely getting hit by ranged attacks.\n" +
+				"_-_ Enemies rarely spawning on top of each other on boss levels.\n" +
+				"_-_ Elixir of aquatic rejuvenation being able to heal slightly over max hp.\n" +
+				"_-_ Prismatic images not being affected by brimstone and antimagic glyphs."));
+		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
