@@ -537,8 +537,14 @@ public abstract class Mob extends Char {
 
 		if (buff(SoulMark.class) != null) {
 			int restoration = Math.min(damage, HP);
+			
+			//physical damage that doesn't come from the hero is less effective
+			if (enemy != Dungeon.hero){
+				restoration = Math.round(restoration * 0.4f);
+			}
+			
 			Buff.affect(Dungeon.hero, Hunger.class).satisfy(restoration);
-			Dungeon.hero.HP = (int)Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP+(restoration*0.33f)));
+			Dungeon.hero.HP = (int)Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP+(restoration*0.4f)));
 			Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
 		}
 

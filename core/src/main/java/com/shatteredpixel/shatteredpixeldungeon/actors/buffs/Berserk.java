@@ -98,7 +98,7 @@ public class Berserk extends Buff {
 				power = 0f;
 			}
 		} else if (state == State.NORMAL) {
-			power -= GameMath.gate(0.1f, power, 1f) * 0.05f * Math.pow((target.HP/(float)target.HT), 2);
+			power -= GameMath.gate(0.1f, power, 1f) * 0.067f * Math.pow((target.HP/(float)target.HT), 2);
 			
 			if (power <= 0){
 				detach();

@@ -63,8 +63,8 @@ public class Momentum extends Buff {
 	}
 	
 	public int evasionBonus( int excessArmorStr ){
-		//10 evasion, +2.5 evasion per excess str, at max stacks
-		return Math.round((1f + 0.25f*excessArmorStr) * stacks);
+		//8 evasion, +2 evasion per excess str, at max stacks
+		return Math.round((0.8f + 0.2f*excessArmorStr) * stacks);
 	}
 	
 	@Override
