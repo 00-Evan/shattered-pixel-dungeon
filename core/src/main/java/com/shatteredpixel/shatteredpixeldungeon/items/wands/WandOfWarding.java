@@ -15,7 +15,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WardSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
@@ -28,14 +27,16 @@ import com.watabou.utils.Random;
 public class WandOfWarding extends Wand {
 
 	{
-		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN;
+		collisionProperties = Ballistica.STOP_TARGET;
 
 		image = ItemSpriteSheet.WAND_WARDING;
 	}
-
+	
+	private boolean wardAvailable = true;
+	
 	@Override
-	protected void onZap(Ballistica bolt) {
-
+	public boolean tryToZap(Hero owner, int target) {
+		
 		int currentWardEnergy = 0;
 		for (Char ch : Actor.chars()){
 			if (ch instanceof Ward){
@@ -51,34 +52,50 @@ public class WandOfWarding extends Wand {
 				}
 			}
 		}
-
+		
+		wardAvailable = (currentWardEnergy < maxWardEnergy);
+		
+		Char ch = Actor.findChar(target);
+		if (ch instanceof Ward){
+			if (!wardAvailable && ((Ward) ch).tier <= 3){
+				GLog.w( Messages.get(this, "no_more_wards"));
+				return false;
+			}
+		} else {
+			if ((currentWardEnergy + 2) > maxWardEnergy){
+				GLog.w( Messages.get(this, "no_more_wards"));
+				return false;
+			}
+		}
+		
+		return super.tryToZap(owner, target);
+	}
+	
+	@Override
+	protected void onZap(Ballistica bolt) {
+		
 		Char ch = Actor.findChar(bolt.collisionPos);
-		if (ch != null){
+		if (!curUser.fieldOfView[bolt.collisionPos]){
+			GLog.w( Messages.get(this, "bad_location"));
+			
+		} else if (ch != null){
 			if (ch instanceof Ward){
-				if (currentWardEnergy < maxWardEnergy) {
+				if (wardAvailable) {
 					((Ward) ch).upgrade(level());
 				} else {
-					if (((Ward) ch).tier <= 3){
-						GLog.w( Messages.get(this, "no_more_wards"));
-					} else {
-						((Ward) ch).wandHeal( level() );
-					}
+					((Ward) ch).wandHeal( level() );
 				}
 				ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
 			} else {
 				GLog.w( Messages.get(this, "bad_location"));
 			}
 		} else if (canPlaceWard(bolt.collisionPos)){
-			if ((currentWardEnergy + 2) <= maxWardEnergy) {
-				Ward ward = new Ward();
-				ward.pos = bolt.collisionPos;
-				ward.wandLevel = level();
-				GameScene.add(ward, 1f);
-				Dungeon.level.press(ward.pos, ward);
-				ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
-			} else {
-				GLog.w( Messages.get(this, "no_more_wards"));
-			}
+			Ward ward = new Ward();
+			ward.pos = bolt.collisionPos;
+			ward.wandLevel = level();
+			GameScene.add(ward, 1f);
+			Dungeon.level.press(ward.pos, ward);
+			ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
 		} else {
 			GLog.w( Messages.get(this, "bad_location"));
 		}
