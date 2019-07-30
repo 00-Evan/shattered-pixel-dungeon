@@ -21,42 +21,30 @@
 
 package com.watabou.noosa;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.media.AudioManager;
-import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.os.Vibrator;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.View;
 
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.watabou.glscripts.Script;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
-import com.watabou.glwrap.ScreenConfigChooser;
 import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.input.InputHandler;
 import com.watabou.input.Keys;
-import com.watabou.input.Touchscreen;
 import com.watabou.noosa.audio.Music;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.BitmapCache;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.SystemTime;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
-public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTouchListener {
+public class Game extends AndroidApplication implements ApplicationListener {
 
 	public static Game instance;
 
@@ -95,13 +83,9 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	public static float timeTotal = 0f;
 	
 	protected GLSurfaceView view;
-	protected SurfaceHolder holder;
+	//protected SurfaceHolder holder;
 	
-	// Accumulated touch events
-	protected ArrayList<MotionEvent> motionEvents = new ArrayList<MotionEvent>();
-	
-	// Accumulated key events
-	protected ArrayList<KeyEvent> keysEvents = new ArrayList<KeyEvent>();
+	protected InputHandler inputHandler;
 	
 	public Game( Class<? extends Scene> c ) {
 		super();
@@ -112,17 +96,9 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	protected void onCreate( Bundle savedInstanceState ) {
 		super.onCreate( savedInstanceState );
 		
-		BitmapCache.context = TextureCache.context = instance = this;
-		
-		DisplayMetrics m = new DisplayMetrics();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-			getWindowManager().getDefaultDisplay().getRealMetrics( m );
-		else
-			getWindowManager().getDefaultDisplay().getMetrics( m );
-		density = m.density;
-		dispHeight = m.heightPixels;
-		dispWidth = m.widthPixels;
-		
+		instance = this;
+
+		//FIXME this should be moved into a separate class, once we start to move to multiplatform
 		try {
 			version = getPackageManager().getPackageInfo( getPackageName(), 0 ).versionName;
 		} catch (NameNotFoundException e) {
@@ -134,20 +110,33 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 			versionCode = 0;
 		}
 		
-		setVolumeControlStream( AudioManager.STREAM_MUSIC );
+		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+		config.depth = 0;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			//use rgb888 on more modern devices for better visuals
+			config.r = config.g = config.b = 8;
+		} else {
+			//and rgb565 (default) on older ones for better performance
+		}
 		
-		view = new GLSurfaceView( this );
-		view.setEGLContextClientVersion( 2 );
-
-		//Older devices are forced to RGB 565 for performance reasons.
-		//Otherwise try to use RGB888 for best quality, but use RGB565 if it is what's available.
-		view.setEGLConfigChooser( new ScreenConfigChooser(
-				DeviceCompat.legacyDevice(),
-						false ));
-
-		view.setRenderer( this );
-		view.setOnTouchListener( this );
-		setContentView( view );
+		config.useCompass = false;
+		config.useAccelerometer = false;
+		//TODO consider the following additional options, might be better than setting manually
+		//config.hideStatusBar
+		//config.useImmersiveMode
+		
+		initialize(this, config);
+		
+		//FIXME shouldn't have a reference to the view here, remove things which access this
+		view = (GLSurfaceView)graphics.getView();
+		
+		inputHandler = new InputHandler();
+		Gdx.input.setInputProcessor(inputHandler);
+		Gdx.input.setCatchKey(Keys.BACK, true);
+		Gdx.input.setCatchKey(Keys.MENU, true);
+		
+		//FIXME this doesn't seem to work quite right. That might not be due to LibGDX though.
+		Music.setMuteListener();
 		
 		//so first call to onstart/onresume calls correct logic.
 		paused = true;
@@ -155,138 +144,46 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	
 	private boolean paused;
 	
-	//Starting with honeycomb, android's lifecycle management changes slightly
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-			resumeGame();
-		}
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		
-		if (scene != null) {
-			scene.onResume();
-		}
-		
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
-			resumeGame();
-		}
-	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		
-		if (scene != null) {
-			scene.onPause();
-		}
-		
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
-			pauseGame();
-		}
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-			pauseGame();
-		}
-	}
-	
-	public void pauseGame(){
-		if (paused) return;
-		
-		paused = true;
-		view.onPause();
-		Script.reset();
-		
-		Music.INSTANCE.pause();
-		Sample.INSTANCE.pause();
-	}
-	
-	public void resumeGame(){
-		if (!paused) return;
-		
-		now = 0;
-		paused = false;
-		view.onResume();
-		
-		Music.INSTANCE.resume();
-		Sample.INSTANCE.resume();
-	}
-	
 	public boolean isPaused(){
 		return paused;
 	}
 	
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		destroyGame();
+	public void create() {
+		density = Gdx.graphics.getDensity();
+		dispHeight = Gdx.graphics.getDisplayMode().height;
+		dispWidth = Gdx.graphics.getDisplayMode().width;
 		
-		Music.INSTANCE.mute();
-		Sample.INSTANCE.reset();
-	}
-
-	@SuppressLint({ "Recycle", "ClickableViewAccessibility" })
-	@Override
-	public boolean onTouch( View view, MotionEvent event ) {
-		synchronized (motionEvents) {
-			motionEvents.add( MotionEvent.obtain( event ) );
-		}
-		return true;
+		Blending.useDefault();
+		
+		//refreshes texture and vertex data stored on the gpu
+		TextureCache.reload();
+		RenderedText.reloadCache();
+		Vertexbuffer.refreshAllBuffers();
 	}
 	
 	@Override
-	public boolean onKeyDown( int keyCode, KeyEvent event ) {
+	public void resize(int width, int height) {
+		Gdx.gl.glViewport(0, 0, width, height);
 		
-		if (keyCode != Keys.BACK &&
-				keyCode != Keys.MENU) {
-			return false;
+		if (height != Game.height || width != Game.width) {
+			
+			Game.width = width;
+			Game.height = height;
+			
+			resetScene();
 		}
-		
-		synchronized (motionEvents) {
-			keysEvents.add( event );
-		}
-		return true;
 	}
 	
 	@Override
-	public boolean onKeyUp( int keyCode, KeyEvent event ) {
-
-		if (keyCode != Keys.BACK &&
-				keyCode != Keys.MENU) {
-			return false;
-		}
-		
-		synchronized (motionEvents) {
-			keysEvents.add( event );
-		}
-		return true;
-	}
-	
-	@Override
-	public void onDrawFrame( GL10 gl ) {
-		
-		if (width == 0 || height == 0) {
-			return;
-		}
-		
+	public void render() {
 		NoosaScript.get().resetCamera();
 		NoosaScriptNoLighting.get().resetCamera();
-		GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
-		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glDisable(Gdx.gl.GL_SCISSOR_TEST);
+		Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 		draw();
 		
-		GLES20.glFlush();
+		Gdx.gl.glFlush();
 		
 		SystemTime.tick();
 		long rightNow = SystemClock.elapsedRealtime();
@@ -295,29 +192,39 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		
 		step();
 	}
-
+	
 	@Override
-	public void onSurfaceChanged( GL10 gl, int width, int height ) {
-
-		GLES20.glViewport(0, 0, width, height);
-
-		if (height != Game.height || width != Game.width) {
-
-			Game.width = width;
-			Game.height = height;
-
-			resetScene();
+	public void pause() {
+		paused = true;
+		
+		if (scene != null) {
+			scene.onPause();
 		}
+		
+		//view.onPause();
+		Script.reset();
+		
+		//Music.INSTANCE.pause();
+		//Sample.INSTANCE.pause();
 	}
-
+	
 	@Override
-	public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
-		Blending.useDefault();
-
-		//refreshes texture and vertex data stored on the gpu
-		TextureCache.reload();
-		RenderedText.reloadCache();
-		Vertexbuffer.refreshAllBuffers();
+	public void resume() {
+		paused = false;
+		
+		now = 0;
+		//view.onResume();
+		
+		//Music.INSTANCE.resume();
+		//Sample.INSTANCE.resume();
+	}
+	
+	@Override
+	public void dispose() {
+		destroyGame();
+		
+		//Music.INSTANCE.mute();
+		//Sample.INSTANCE.reset();
 	}
 	
 	protected void destroyGame() {
@@ -392,14 +299,7 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 		Game.elapsed = Game.timeScale * step * 0.001f;
 		Game.timeTotal += Game.elapsed;
 
-		synchronized (motionEvents) {
-			Touchscreen.processTouchEvents( motionEvents );
-			motionEvents.clear();
-		}
-		synchronized (keysEvents) {
-			Keys.processTouchEvents( keysEvents );
-			keysEvents.clear();
-		}
+		inputHandler.processAllEvents();
 		
 		scene.update();
 		Camera.updateAll();
@@ -410,11 +310,15 @@ public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTou
 	}
 	
 	protected void logException( Throwable tr ){
-		Log.e("GAME", Log.getStackTraceString(tr));
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		tr.printStackTrace(pw);
+		pw.flush();
+		Gdx.app.error("GAME", sw.toString());
 	}
 	
 	public static void vibrate( int milliseconds ) {
-		((Vibrator)instance.getSystemService( VIBRATOR_SERVICE )).vibrate( milliseconds );
+		Gdx.input.vibrate(milliseconds);
 	}
 
 	public interface SceneChangeCallback{

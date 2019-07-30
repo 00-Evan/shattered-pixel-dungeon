@@ -21,113 +21,79 @@
 
 package com.watabou.noosa.audio;
 
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
-import android.media.AudioManager;
-import android.media.SoundPool;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 
-import com.watabou.noosa.Game;
-
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
 
-public enum Sample implements SoundPool.OnLoadCompleteListener {
+public enum Sample {
 
 	INSTANCE;
 
-	public static final int MAX_STREAMS = 8;
-
-	protected SoundPool pool =
-			new SoundPool( MAX_STREAMS, AudioManager.STREAM_MUSIC, 0 );
-
-	protected HashMap<Object, Integer> ids =
-			new HashMap<>();
+	protected HashMap<Object, Sound> ids = new HashMap<>();
 
 	private boolean enabled = true;
-	private float volume = 1f;
-
-	private LinkedList<String> loadingQueue = new LinkedList<>();
+	private float globalVolume = 1f;
 
 	public void reset() {
 
+		for (Sound sound : ids.values()){
+			sound.dispose();
+		}
+		
 		ids.clear();
-		loadingQueue = new LinkedList<>();
-		pool.release();
-
-		pool = new SoundPool( MAX_STREAMS, AudioManager.STREAM_MUSIC, 0 );
-		pool.setOnLoadCompleteListener( this );
 
 	}
 
 	public void pause() {
-		if (pool != null) {
-			pool.autoPause();
+		for (Sound sound : ids.values()) {
+			sound.pause();
 		}
 	}
 
 	public void resume() {
-		if (pool != null) {
-			pool.autoResume();
+		for (Sound sound : ids.values()) {
+			sound.resume();
 		}
 	}
 
 	public void load( String... assets ) {
 
-		for (String asset : assets) {
-			loadingQueue.add( asset );
-		}
-		loadNext();
-	}
-
-	private void loadNext() {
-		final String asset = loadingQueue.poll();
-		if (asset != null) {
-			if (!ids.containsKey( asset )) {
-				try {
-					pool.setOnLoadCompleteListener( new SoundPool.OnLoadCompleteListener() {
-						@Override
-						public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-							loadNext();
-						}
-					} );
-
-					AssetManager manager = Game.instance.getAssets();
-					AssetFileDescriptor fd = manager.openFd( asset );
-					int streamID = pool.load( fd, 1 ) ;
-					ids.put( asset, streamID );
-					fd.close();
-				} catch (IOException e) {
-					loadNext();
-				} catch (NullPointerException e) {
-					// Do nothing (stop loading sounds)
-				}
-			} else {
-				loadNext();
+		//FIXME there used to be a queue here so that assets were loaded async.
+		//This was to prevent hanging on specific android versions (implement in vanilla v1.7.5)
+		//Maybe LibGDX already handles this?
+		for (String asset : assets){
+			if (!ids.containsKey(asset)){
+				ids.put(asset, Gdx.audio.newSound(Gdx.files.internal(asset)));
 			}
 		}
+		
 	}
 
 	public void unload( Object src ) {
-
 		if (ids.containsKey( src )) {
-
-			pool.unload( ids.get( src ) );
+			ids.get( src ).dispose();
 			ids.remove( src );
 		}
 	}
 
-	public int play( Object id ) {
+	public long play( Object id ) {
 		return play( id, 1 );
 	}
 
-	public int play( Object id, float volume ) {
+	public long play( Object id, float volume ) {
 		return play( id, volume, volume, 1 );
 	}
-
-	public int play( Object id, float leftVolume, float rightVolume, float rate ) {
+	
+	public long play( Object id, float volume, float pitch ) {
+		return play( id, volume, volume, pitch );
+	}
+	
+	public long play( Object id, float leftVolume, float rightVolume, float pitch ) {
+		float volume = Math.max(leftVolume, rightVolume);
+		float pan = rightVolume - leftVolume;
 		if (enabled && ids.containsKey( id )) {
-			return pool.play( ids.get( id ), leftVolume*volume, rightVolume*volume, 0, 0, rate );
+			return ids.get(id).play( globalVolume*volume, pitch, pan );
 		} else {
 			return -1;
 		}
@@ -138,14 +104,11 @@ public enum Sample implements SoundPool.OnLoadCompleteListener {
 	}
 
 	public void volume( float value ) {
-		this.volume = value;
+		globalVolume = value;
 	}
 
 	public boolean isEnabled() {
 		return enabled;
 	}
-
-	@Override
-	public void onLoadComplete( SoundPool soundPool, int sampleId, int status ) {
-	}
+	
 }

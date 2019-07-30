@@ -21,12 +21,10 @@
 
 package com.watabou.utils;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.watabou.noosa.Game;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 
 public class BitmapCache {
@@ -35,18 +33,11 @@ public class BitmapCache {
 	
 	private static HashMap<String,Layer> layers = new HashMap<String, BitmapCache.Layer>();
 	
-	private static BitmapFactory.Options opts = new BitmapFactory.Options();
-	static {
-		opts.inDither = false;
-	}
-	
-	public static Context context;
-	
-	public static Bitmap get( String assetName ) {
+	public static Pixmap get( String assetName ) {
 		return get( DEFAULT, assetName );
 	}
 	
-	public static Bitmap get( String layerName, String assetName ) {
+	public static Pixmap get( String layerName, String assetName ) {
 		
 		Layer layer;
 		if (!layers.containsKey( layerName )) {
@@ -61,22 +52,24 @@ public class BitmapCache {
 		} else {
 			
 			try {
-				InputStream stream = context.getResources().getAssets().open( assetName );
-				Bitmap bmp = BitmapFactory.decodeStream( stream, null, opts );
+				Pixmap bmp = new Pixmap( Gdx.files.internal(assetName) );
 				layer.put( assetName, bmp );
 				return bmp;
-			} catch (IOException e) {
+			} catch (Exception e) {
+				Game.reportException( e );
 				return null;
 			}
 			
 		}
 	}
 	
-	public static Bitmap get( int resID ) {
+	//Unused, LibGDX does not support resource Ids
+	/*
+	public static Pixmap get( int resID ) {
 		return get( DEFAULT, resID );
 	}
 	
-	public static Bitmap get( String layerName, int resID ) {
+	public static Pixmap get( String layerName, int resID ) {
 		
 		Layer layer;
 		if (!layers.containsKey( layerName )) {
@@ -95,7 +88,7 @@ public class BitmapCache {
 			return bmp;
 			
 		}
-	}
+	}*/
 	
 	public static void clear( String layerName ) {
 		if (layers.containsKey( layerName )) {
@@ -112,12 +105,12 @@ public class BitmapCache {
 	}
 	
 	@SuppressWarnings("serial")
-	private static class Layer extends HashMap<Object,Bitmap> {
+	private static class Layer extends HashMap<Object,Pixmap> {
 		
 		@Override
 		public void clear() {
-			for (Bitmap bmp:values()) {
-				bmp.recycle();
+			for (Pixmap bmp:values()) {
+				bmp.dispose();
 			}
 			super.clear();
 		}

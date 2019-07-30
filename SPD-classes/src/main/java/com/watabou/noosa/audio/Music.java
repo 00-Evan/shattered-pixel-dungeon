@@ -22,20 +22,18 @@
 package com.watabou.noosa.audio;
 
 import android.app.Activity;
-import android.content.res.AssetFileDescriptor;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
+import com.badlogic.gdx.Gdx;
 import com.watabou.noosa.Game;
 
 public enum Music {
 	
 	INSTANCE;
 	
-	private MediaPlayer player;
+	private com.badlogic.gdx.audio.Music player;
 	
 	private String lastPlayed;
 	private boolean looping;
@@ -58,25 +56,11 @@ public enum Music {
 			return;
 		}
 		
-		try {
-			
-			AssetFileDescriptor afd = Game.instance.getAssets().openFd( assetName );
-			
-			MediaPlayer mp = new MediaPlayer();
-			mp.setAudioStreamType( AudioManager.STREAM_MUSIC );
-			mp.setDataSource( afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength() );
-			mp.prepare();
-			player = mp;
-			player.start();
-			player.setLooping(looping);
-			player.setVolume(volume, volume);
-			
-		} catch (Exception e) {
-			
-			Game.reportException(e);
-			player = null;
-			
-		}
+		player = Gdx.audio.newMusic(Gdx.files.internal(assetName));
+		player.setLooping(looping);
+		player.setVolume(volume);
+		player.play();
+		
 	}
 	
 	public void mute() {
@@ -92,19 +76,15 @@ public enum Music {
 	
 	public void resume() {
 		if (player != null) {
-			player.start();
+			player.play();
 			player.setLooping(looping);
 		}
 	}
 	
 	public void stop() {
 		if (player != null) {
-			try {
-				player.stop();
-				player.release();
-			} catch ( Exception e ){
-				Game.reportException(e);
-			}
+			player.stop();
+			player.dispose();
 			player = null;
 		}
 	}
@@ -112,7 +92,7 @@ public enum Music {
 	public void volume( float value ) {
 		volume = value;
 		if (player != null) {
-			player.setVolume( value, value );
+			player.setVolume( value );
 		}
 	}
 	
@@ -134,30 +114,29 @@ public enum Music {
 		return enabled;
 	}
 	
-	public static final PhoneStateListener callMute = new PhoneStateListener(){
-		
-		@Override
-		public void onCallStateChanged(int state, String incomingNumber)
-		{
-			if( state == TelephonyManager.CALL_STATE_RINGING ) {
-				INSTANCE.pause();
-				
-			} else if( state == TelephonyManager.CALL_STATE_IDLE ) {
-				if (!Game.instance.isPaused()) {
-					INSTANCE.resume();
-				}
-			}
-			
-			super.onCallStateChanged(state, incomingNumber);
-		}
-	};
-	
+	//FIXME android-specific code, that is also broken by being part of this class.
 	public static void setMuteListener(){
 		//versions lower than this require READ_PHONE_STATE permission
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			TelephonyManager mgr =
 					(TelephonyManager) Game.instance.getSystemService(Activity.TELEPHONY_SERVICE);
-			mgr.listen(Music.callMute, PhoneStateListener.LISTEN_CALL_STATE);
+			mgr.listen(new PhoneStateListener(){
+				
+				@Override
+				public void onCallStateChanged(int state, String incomingNumber)
+				{
+					if( state == TelephonyManager.CALL_STATE_RINGING ) {
+						INSTANCE.pause();
+						
+					} else if( state == TelephonyManager.CALL_STATE_IDLE ) {
+						if (!Game.instance.isPaused()) {
+							INSTANCE.resume();
+						}
+					}
+					
+					super.onCallStateChanged(state, incomingNumber);
+				}
+			}, PhoneStateListener.LISTEN_CALL_STATE);
 		}
 	}
 }

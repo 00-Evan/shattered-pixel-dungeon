@@ -21,14 +21,17 @@
 
 package com.watabou.glwrap;
 
-import android.opengl.GLES20;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.BufferUtils;
+
+import java.nio.IntBuffer;
 
 public class Program {
 
 	private int handle;
 	
 	public Program() {
-		handle = GLES20.glCreateProgram();
+		handle = Gdx.gl.glCreateProgram();
 	}
 	
 	public int handle() {
@@ -36,33 +39,33 @@ public class Program {
 	}
 	
 	public void attach( Shader shader ) {
-		GLES20.glAttachShader( handle, shader.handle() );
+		Gdx.gl.glAttachShader( handle, shader.handle() );
 	}
 	
 	public void link() {
-		GLES20.glLinkProgram( handle );
+		Gdx.gl.glLinkProgram( handle );
 		
-		int[] status = new int[1];
-		GLES20.glGetProgramiv( handle, GLES20.GL_LINK_STATUS, status, 0 );
-		if (status[0] == GLES20.GL_FALSE) {
-			throw new Error( GLES20.glGetProgramInfoLog( handle ) );
+		IntBuffer status = BufferUtils.newIntBuffer(1);
+		Gdx.gl.glGetProgramiv( handle, Gdx.gl.GL_LINK_STATUS, status );
+		if (status.get() == Gdx.gl.GL_FALSE) {
+			throw new Error( Gdx.gl.glGetProgramInfoLog( handle ) );
 		}
 	}
 	
 	public Attribute attribute( String name ) {
-		return new Attribute( GLES20.glGetAttribLocation( handle, name ) );
+		return new Attribute( Gdx.gl.glGetAttribLocation( handle, name ) );
 	}
 	
 	public Uniform uniform( String name ) {
-		return new Uniform( GLES20.glGetUniformLocation( handle, name ) );
+		return new Uniform( Gdx.gl.glGetUniformLocation( handle, name ) );
 	}
 	
 	public void use() {
-		GLES20.glUseProgram( handle );
+		Gdx.gl.glUseProgram( handle );
 	}
 	
 	public void delete() {
-		GLES20.glDeleteProgram( handle );
+		Gdx.gl.glDeleteProgram( handle );
 	}
 	
 	public static Program create( Shader ...shaders ) {

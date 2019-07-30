@@ -21,12 +21,14 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
@@ -34,8 +36,6 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.DeviceCompat;
-
-import javax.microedition.khronos.opengles.GL10;
 
 public class ShatteredPixelDungeon extends Game {
 	
@@ -108,8 +108,8 @@ public class ShatteredPixelDungeon extends Game {
 	}
 	
 	@Override
-	protected void onCreate( Bundle savedInstanceState ) {
-		super.onCreate(savedInstanceState);
+	public void create() {
+		super.create();
 
 		updateSystemUI();
 		SPDSettings.landscape ( SPDSettings.landscape() );
@@ -118,8 +118,6 @@ public class ShatteredPixelDungeon extends Game {
 		Music.INSTANCE.volume( SPDSettings.musicVol()/10f );
 		Sample.INSTANCE.enable( SPDSettings.soundFx() );
 		Sample.INSTANCE.volume( SPDSettings.SFXVol()/10f );
-		
-		Music.setMuteListener();
 
 		Sample.INSTANCE.load(
 				Assets.SND_CLICK,
@@ -179,27 +177,6 @@ public class ShatteredPixelDungeon extends Game {
 		
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		if (scene instanceof PixelScene){
-			((PixelScene) scene).saveWindows();
-		}
-		super.onSaveInstanceState(outState);
-	}
-	
-	@Override
-	public void onWindowFocusChanged( boolean hasFocus ) {
-		super.onWindowFocusChanged( hasFocus );
-		if (hasFocus) updateSystemUI();
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
-		super.onMultiWindowModeChanged(isInMultiWindowMode);
-		updateSystemUI();
-	}
-
 	public static void switchNoFade(Class<? extends PixelScene> c){
 		switchNoFade(c, null);
 	}
@@ -231,14 +208,14 @@ public class ShatteredPixelDungeon extends Game {
 	}
 	
 	@Override
-	public void onSurfaceChanged( GL10 gl, int width, int height ) {
+	public void resize( int width, int height ) {
 		
 		if (scene instanceof PixelScene &&
 				(height != Game.height || width != Game.width)) {
 			((PixelScene) scene).saveWindows();
 		}
 
-		super.onSurfaceChanged( gl, width, height );
+		super.resize( width, height );
 
 		updateDisplaySize();
 
@@ -302,31 +279,42 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public static void updateSystemUI() {
-
-		boolean fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
-								|| !instance.isInMultiWindowMode();
-
-		if (fullscreen){
-			instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-					WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-		} else {
-			instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-					WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-		}
-
-		if (DeviceCompat.supportsFullScreen()){
-			if (fullscreen && SPDSettings.fullscreen()) {
-				instance.getWindow().getDecorView().setSystemUiVisibility(
-						View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-						View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-						View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-						View.SYSTEM_UI_FLAG_HIDE_NAVIGATION );
-			} else {
-				instance.getWindow().getDecorView().setSystemUiVisibility(
-						View.SYSTEM_UI_FLAG_LAYOUT_STABLE );
+		
+		instance.runOnUiThread(new Runnable() {
+			@SuppressLint("NewApi")
+			@Override
+			public void run() {
+				boolean fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
+						|| !instance.isInMultiWindowMode();
+				
+				if (fullscreen){
+					instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+							WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+				} else {
+					instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+							WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+				}
+				
+				if (DeviceCompat.supportsFullScreen()){
+					if (SPDSettings.fullscreen()) {
+						instance.getWindow().getDecorView().setSystemUiVisibility(
+								View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+										View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+										View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+										View.SYSTEM_UI_FLAG_HIDE_NAVIGATION );
+					} else {
+						instance.getWindow().getDecorView().setSystemUiVisibility(
+								View.SYSTEM_UI_FLAG_LAYOUT_STABLE );
+					}
+				}
 			}
-		}
+		});
 
 	}
 	
+	@Override
+	public void resume() {
+		super.resume();
+		updateSystemUI();
+	}
 }

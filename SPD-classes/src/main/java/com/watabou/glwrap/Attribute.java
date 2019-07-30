@@ -21,8 +21,7 @@
 
 package com.watabou.glwrap;
 
-import android.opengl.GLES20;
-import android.os.Build;
+import com.badlogic.gdx.Gdx;
 
 import java.nio.FloatBuffer;
 
@@ -39,18 +38,18 @@ public class Attribute {
 	}
 	
 	public void enable() {
-		GLES20.glEnableVertexAttribArray( location );
+		Gdx.gl.glEnableVertexAttribArray( location );
 	}
 	
 	public void disable() {
-		GLES20.glDisableVertexAttribArray( location );
+		Gdx.gl.glDisableVertexAttribArray( location );
 	}
 	
 	public void vertexPointer( int size, int stride, FloatBuffer ptr ) {
-		GLES20.glVertexAttribPointer( location, size, GLES20.GL_FLOAT, false, stride * 4, ptr );
+		Gdx.gl.glVertexAttribPointer( location, size, Gdx.gl.GL_FLOAT, false, stride * 4, ptr );
 	}
 
 	public void vertexBuffer( int size, int stride, int offset) {
-		GLES20.glVertexAttribPointer(location, size, GLES20.GL_FLOAT, false, stride * 4, offset * 4);
+		Gdx.gl.glVertexAttribPointer(location, size, Gdx.gl.GL_FLOAT, false, stride * 4, offset * 4);
 	}
 }

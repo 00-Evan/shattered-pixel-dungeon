@@ -26,6 +26,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Texture;
@@ -169,7 +170,18 @@ public class RenderedText extends Image {
 
 			canvas.drawText(r.text, (r.size/10f), r.size, painter);
 
-			r.texture = new SmartTexture(bitmap, Texture.NEAREST, Texture.CLAMP, true);
+			//FIXME really ugly and slow conversion between android bitmap and gdx pixmap
+			int[] pixels = new int[bitmap.getWidth()*bitmap.getHeight()];
+			bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+			// Convert from ARGB to RGBA
+			for (int i = 0; i< pixels.length; i++) {
+				int pixel = pixels[i];
+				pixels[i] = (pixel << 8) | ((pixel >> 24) & 0xFF);
+			}
+			Pixmap pixmap = new Pixmap(bitmap.getWidth(), bitmap.getHeight(), Pixmap.Format.RGBA8888);
+			pixmap.getPixels().asIntBuffer().put(pixels);
+			r.texture = new SmartTexture(pixmap, Texture.NEAREST, Texture.CLAMP, true);
+			bitmap.recycle();
 
 			RectF rect = r.texture.uvRect(0, 0, r.width, r.height);
 			r.frame(rect);

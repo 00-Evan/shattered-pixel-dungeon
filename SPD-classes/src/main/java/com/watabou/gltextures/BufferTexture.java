@@ -21,15 +21,15 @@
 
 package com.watabou.gltextures;
 
-import android.opengl.GLES20;
-
+import com.badlogic.gdx.Gdx;
 import com.watabou.glwrap.Texture;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-//provides a native intbuffer implementation because android.graphics.bitmap is too slow
+//provides a native intbuffer implementation because pixmap is too slow
+//TODO: should evaluate this again, seeing as I've moved to LibGDX
 public class BufferTexture extends SmartTexture {
 	
 	public IntBuffer pixels;
@@ -46,9 +46,7 @@ public class BufferTexture extends SmartTexture {
 	
 	@Override
 	protected void generate() {
-		int[] ids = new int[1];
-		GLES20.glGenTextures( 1, ids, 0 );
-		id = ids[0];
+		id = Gdx.gl.glGenTexture();
 	}
 	
 	@Override
@@ -62,15 +60,15 @@ public class BufferTexture extends SmartTexture {
 		filter( Texture.LINEAR, Texture.LINEAR );
 		wrap( Texture.CLAMP, Texture.CLAMP);
 		pixels.position(0);
-		GLES20.glTexImage2D(
-				GLES20.GL_TEXTURE_2D,
+		Gdx.gl.glTexImage2D(
+				Gdx.gl.GL_TEXTURE_2D,
 				0,
-				GLES20.GL_RGBA,
+				Gdx.gl.GL_RGBA,
 				width,
 				height,
 				0,
-				GLES20.GL_RGBA,
-				GLES20.GL_UNSIGNED_BYTE,
+				Gdx.gl.GL_RGBA,
+				Gdx.gl.GL_UNSIGNED_BYTE,
 				pixels );
 	}
 	
@@ -80,14 +78,14 @@ public class BufferTexture extends SmartTexture {
 		filter( Texture.LINEAR, Texture.LINEAR );
 		wrap( Texture.CLAMP, Texture.CLAMP);
 		pixels.position(top*width);
-		GLES20.glTexSubImage2D(GLES20.GL_TEXTURE_2D,
+		Gdx.gl.glTexSubImage2D(Gdx.gl.GL_TEXTURE_2D,
 				0,
 				0,
 				top,
 				width,
 				bottom - top,
-				GLES20.GL_RGBA,
-				GLES20.GL_UNSIGNED_BYTE,
+				Gdx.gl.GL_RGBA,
+				Gdx.gl.GL_UNSIGNED_BYTE,
 				pixels);
 	}
 }

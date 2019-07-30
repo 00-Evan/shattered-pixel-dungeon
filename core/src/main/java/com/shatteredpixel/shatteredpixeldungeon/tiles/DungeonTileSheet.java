@@ -431,9 +431,9 @@ public class DungeonTileSheet {
 	}
 
 	public static int getVisualWithAlts(int visual, int pos){
-		if (tileVariance[pos] >= 95 && rareAltVisuals.indexOfKey(visual) >= 0)
+		if (tileVariance[pos] >= 95 && rareAltVisuals.containsKey(visual))
 			return rareAltVisuals.get(visual);
-		else if (tileVariance[pos] >= 50 && commonAltVisuals.indexOfKey(visual) >= 0)
+		else if (tileVariance[pos] >= 50 && commonAltVisuals.containsKey(visual))
 			return commonAltVisuals.get(visual);
 		else
 			return visual;

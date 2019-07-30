@@ -21,34 +21,22 @@
 
 package com.watabou.input;
 
-import android.view.KeyEvent;
-
+import com.badlogic.gdx.Input;
 import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
 
+//TODO probably want to merge this into a central input processor class
 public class Keys {
 	
-	public static final int BACK		= KeyEvent.KEYCODE_BACK;
-	public static final int MENU		= KeyEvent.KEYCODE_MENU;
+	public static final int BACK		= Input.Keys.BACK;
+	public static final int MENU		= Input.Keys.MENU;
 
-	public static Signal<Key> event = new Signal<Key>( true );
+	public static Signal<Key> event = new Signal<>( true );
 	
-	public static void processTouchEvents( ArrayList<KeyEvent> events ) {
-		
-		int size = events.size();
-		for (int i=0; i < size; i++) {
-			
-			KeyEvent e = events.get( i );
-			
-			switch (e.getAction()) {
-			case KeyEvent.ACTION_DOWN:
-				event.dispatch( new Key( e.getKeyCode(), true ) );
-				break;
-			case KeyEvent.ACTION_UP:
-				event.dispatch( new Key( e.getKeyCode(), false ) );
-				break;
-			}
+	public static void processKeyEvents( ArrayList<Key> events ){
+		for (Key k : events){
+			event.dispatch(k);
 		}
 	}
 	

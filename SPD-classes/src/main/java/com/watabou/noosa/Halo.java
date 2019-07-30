@@ -21,10 +21,7 @@
 
 package com.watabou.noosa;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-
+import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 
@@ -41,14 +38,12 @@ public class Halo extends Image {
 		super();
 		
 		if (!TextureCache.contains( CACHE_KEY )) {
-			Bitmap bmp = Bitmap.createBitmap( RADIUS * 2, RADIUS * 2, Bitmap.Config.ARGB_8888 );
-			Canvas canvas = new Canvas( bmp );
-			Paint paint = new Paint();
-			paint.setColor( 0x0AFFFFFF );
+			Pixmap pixmap = new Pixmap(RADIUS * 2, RADIUS * 2, Pixmap.Format.RGBA8888);
+			pixmap.setColor( 0xFFFFFF0A );
 			for (int i = 0; i < 50; i++) {
-				canvas.drawCircle(RADIUS, RADIUS, RADIUS * (i+1)/50f, paint);
+				pixmap.fillCircle(RADIUS, RADIUS, (int)(RADIUS * (i+1)/50f));
 			}
-			TextureCache.add( CACHE_KEY, new SmartTexture( bmp ) );
+			TextureCache.add( CACHE_KEY, new SmartTexture( pixmap ) );
 		}
 		
 		texture( CACHE_KEY );

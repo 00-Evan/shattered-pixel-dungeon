@@ -21,8 +21,7 @@
 
 package com.watabou.noosa;
 
-import android.graphics.Bitmap;
-
+import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Matrix;
@@ -264,8 +263,8 @@ public class BitmapText extends Visual {
 			lineHeight = baseLine = height;
 		}
 
-		protected void splitBy( Bitmap bitmap, int height, int color, String chars ) {
-
+		protected void splitBy( Pixmap bitmap, int height, int color, String chars ) {
+			
 			int length = chars.length();
 			
 			int width = bitmap.getWidth();
@@ -302,7 +301,7 @@ public class BitmapText extends Visual {
 						}
 						found = false;
 						for (int j=line; j < line + height; j++) {
-							if (bitmap.getPixel( separator, j ) != color) {
+							if (colorNotMatch( bitmap, separator, j, color)) {
 								found = true;
 								break;
 							}
@@ -320,7 +319,7 @@ public class BitmapText extends Visual {
 						}
 						found = true;
 						for (int j=line; j < line + height; j++) {
-							if (bitmap.getPixel( separator, j ) != color) {
+							if (colorNotMatch( bitmap, separator, j, color)) {
 								found = false;
 								break;
 							}
@@ -335,13 +334,22 @@ public class BitmapText extends Visual {
 			lineHeight = baseLine = height( frames.get( chars.charAt( 0 ) ) );
 		}
 		
-		public static Font colorMarked( Bitmap bmp, int color, String chars ) {
+		//FIXME
+		private boolean colorNotMatch(Pixmap pixmap, int x, int y, int color) {
+			int pixel = pixmap.getPixel(x, y);
+			if ((pixel & 0xFF) == 0) {
+				return color != 0;
+			}
+			return pixel != color;
+		}
+		
+		public static Font colorMarked( Pixmap bmp, int color, String chars ) {
 			Font font = new Font( TextureCache.get( bmp ) );
 			font.splitBy( bmp, bmp.getHeight(), color, chars );
 			return font;
 		}
 		 
-		public static Font colorMarked( Bitmap bmp, int height, int color, String chars ) {
+		public static Font colorMarked( Pixmap bmp, int height, int color, String chars ) {
 			Font font = new Font( TextureCache.get( bmp ) );
 			font.splitBy( bmp, height, color, chars );
 			return font;

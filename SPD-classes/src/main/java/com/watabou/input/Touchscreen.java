@@ -21,71 +21,38 @@
 
 package com.watabou.input;
 
-import android.view.MotionEvent;
-
-import com.watabou.noosa.Game;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+//TODO integrate into a central input handler class
 public class Touchscreen {
 	
-	public static Signal<Touch> event = new Signal<Touch>( true );
+	public static Signal<Touch> event = new Signal<>( true );
 	
-	public static HashMap<Integer,Touch> pointers = new HashMap<Integer, Touch>();
+	public static HashMap<Integer,Touch> pointers = new HashMap<>();
 	
-	public static float x;
-	public static float y;
-	public static boolean touched;
-
-	public static void processTouchEvents( ArrayList<MotionEvent> events ) {
-		
-		int size = events.size();
-		for (int i=0; i < size; i++) {
-			
-			MotionEvent e = events.get( i );
-			Touch touch;
-			
-			switch (e.getAction() & MotionEvent.ACTION_MASK) {
-			
-			case MotionEvent.ACTION_DOWN:
-				touched = true;
-				touch = new Touch( e, 0 );
-				pointers.put( e.getPointerId( 0 ), touch );
-				event.dispatch( touch );
-				break;
-				
-			case MotionEvent.ACTION_POINTER_DOWN:
-				int index = e.getActionIndex();
-				touch = new Touch( e, index );
-				pointers.put( e.getPointerId( index ), touch );
-				event.dispatch( touch );
-				break;
-				
-			case MotionEvent.ACTION_MOVE:
-				int count = e.getPointerCount();
-				for (int j=0; j < count; j++) {
-					if (pointers.containsKey(e.getPointerId(j))) {
-						pointers.get(e.getPointerId(j)).update(e, j);
-					}
+	public static void processTouchEvents( ArrayList<Touch> events ) {
+		for (Touch t : events){
+			if (pointers.containsKey(t.id)){
+				Touch existing = pointers.get(t.id);
+				existing.current = t.current;
+				if (existing.down == t.down){
+					event.dispatch( null );
+				} else if (t.down) {
+					event.dispatch( existing );
+				} else {
+					pointers.remove(existing.id);
+					event.dispatch(existing.up());
 				}
-				event.dispatch( null );
-				break;
-				
-			case MotionEvent.ACTION_POINTER_UP:
-				event.dispatch( pointers.remove( e.getPointerId( e.getActionIndex() ) ).up() );
-				break;
-				
-			case MotionEvent.ACTION_UP:
-				touched = false;
-				event.dispatch( pointers.remove( e.getPointerId( 0 ) ).up() );
-				break;
-				
+			} else {
+				if (t.down) {
+					pointers.put(t.id, t);
+				}
+				event.dispatch(t);
 			}
-			
-			e.recycle();
 		}
 	}
 	
@@ -93,29 +60,20 @@ public class Touchscreen {
 		
 		public PointF start;
 		public PointF current;
+		public int id;
 		public boolean down;
 		
-		public Touch( MotionEvent e, int index ) {
-			
-			float x = e.getX( index );
-			float y = e.getY( index );
-
-			x /= (Game.dispWidth / (float)Game.width);
-			y /= (Game.dispHeight / (float)Game.height);
-			
-			start = new PointF( x, y );
-			current = new PointF( x, y );
-			
-			down = true;
+		public Touch( int x, int y, int id, boolean down){
+			start = current = new PointF(x, y);
+			this.id = id;
+			this.down = down;
 		}
 		
-		public void update( MotionEvent e, int index ) {
-			float x = e.getX( index );
-			float y = e.getY( index );
-
-			x /= (Game.dispWidth / (float)Game.width);
-			y /= (Game.dispHeight / (float)Game.height);
-
+		public void update( Touch other ){
+			this.current = other.current;
+		}
+		
+		public void update( int x, int y ){
 			current.set( x, y );
 		}
 		

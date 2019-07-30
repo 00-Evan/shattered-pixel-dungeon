@@ -21,22 +21,31 @@
 
 package com.watabou.utils;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.util.Log;
-
+import com.badlogic.gdx.Gdx;
 import com.watabou.BuildConfig;
-import com.watabou.noosa.Game;
 
 public class DeviceCompat {
 	
 	public static boolean supportsFullScreen(){
-		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+		switch (Gdx.app.getType()){
+			case Android:
+				//Android 4.4 KitKat and later, this is for immersive mode
+				return Gdx.app.getVersion() >= 19;
+			default:
+				//TODO implement functionality for other platforms here
+				return false;
+		}
 	}
 	
 	public static boolean legacyDevice(){
-		return Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN;
+		switch (Gdx.app.getType()){
+			case Android:
+				//Devices prior to Android 4.1 Jelly Bean
+				return Gdx.app.getVersion() < 16;
+			default:
+				//TODO implement functionality for other platforms here
+				return false;
+		}
 	}
 	
 	public static boolean isDebug(){
@@ -44,12 +53,11 @@ public class DeviceCompat {
 	}
 	
 	public static void openURI( String URI ){
-		Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( URI ) );
-		Game.instance.startActivity( intent );
+		Gdx.net.openURI( URI );
 	}
 	
 	public static void log( String tag, String message ){
-		Log.i( tag, message );
+		Gdx.app.log( tag, message );
 	}
 
 }

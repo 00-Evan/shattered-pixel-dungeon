@@ -21,7 +21,7 @@
 
 package com.watabou.glwrap;
 
-import android.opengl.GLES20;
+import com.badlogic.gdx.Gdx;
 
 public class Uniform {
 
@@ -36,30 +36,30 @@ public class Uniform {
 	}
 	
 	public void enable() {
-		GLES20.glEnableVertexAttribArray(location);
+		Gdx.gl.glEnableVertexAttribArray(location);
 	}
 	
 	public void disable() {
-		GLES20.glDisableVertexAttribArray(location);
+		Gdx.gl.glDisableVertexAttribArray(location);
 	}
 	
 	public void value1f(float value) {
-		GLES20.glUniform1f(location, value);
+		Gdx.gl.glUniform1f(location, value);
 	}
 	
 	public void value2f(float v1, float v2) {
-		GLES20.glUniform2f(location, v1, v2);
+		Gdx.gl.glUniform2f(location, v1, v2);
 	}
 	
 	public void value4f(float v1, float v2, float v3, float v4) {
-		GLES20.glUniform4f(location, v1, v2, v3, v4);
+		Gdx.gl.glUniform4f(location, v1, v2, v3, v4);
 	}
 	
 	public void valueM3(float[] value) {
-		GLES20.glUniformMatrix3fv(location, 1, false, value, 0);
+		Gdx.gl.glUniformMatrix3fv(location, 1, false, value, 0);
 	}
 	
 	public void valueM4(float[] value) {
-		GLES20.glUniformMatrix4fv(location, 1, false, value, 0);
+		Gdx.gl.glUniformMatrix4fv(location, 1, false, value, 0);
 	}
 }

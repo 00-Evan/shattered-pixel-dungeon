@@ -229,9 +229,8 @@ public class GameScene extends PixelScene {
 		heaps = new Group();
 		add( heaps );
 		
-		int size = Dungeon.level.heaps.size();
-		for (int i=0; i < size; i++) {
-			addHeapSprite( Dungeon.level.heaps.valueAt( i ) );
+		for ( Heap heap : Dungeon.level.heaps.values() ) {
+			addHeapSprite( heap );
 		}
 		
 		emitters = new Group();

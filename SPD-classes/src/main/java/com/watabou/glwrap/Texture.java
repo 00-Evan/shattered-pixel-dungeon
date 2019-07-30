@@ -21,9 +21,8 @@
 
 package com.watabou.glwrap;
 
-import android.graphics.Bitmap;
-import android.opengl.GLES20;
-import android.opengl.GLUtils;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -31,12 +30,12 @@ import java.nio.IntBuffer;
 
 public class Texture {
 
-	public static final int NEAREST	= GLES20.GL_NEAREST;
-	public static final int LINEAR	= GLES20.GL_LINEAR;
+	public static final int NEAREST	= Gdx.gl.GL_NEAREST;
+	public static final int LINEAR	= Gdx.gl.GL_LINEAR;
 	
-	public static final int REPEAT	= GLES20.GL_REPEAT;
-	public static final int MIRROR	= GLES20.GL_MIRRORED_REPEAT;
-	public static final int CLAMP	= GLES20.GL_CLAMP_TO_EDGE;
+	public static final int REPEAT	= Gdx.gl.GL_REPEAT;
+	public static final int MIRROR	= Gdx.gl.GL_MIRRORED_REPEAT;
+	public static final int CLAMP	= Gdx.gl.GL_CLAMP_TO_EDGE;
 	
 	public int id = -1;
 	private static int bound_id = 0; //id of the currently bound texture
@@ -44,13 +43,11 @@ public class Texture {
 	public boolean premultiplied = false;
 
 	protected void generate(){
-		int[] ids = new int[1];
-		GLES20.glGenTextures( 1, ids, 0 );
-		id = ids[0];
+		id = Gdx.gl.glGenTexture();
 	}
 	
 	public static void activate( int index ) {
-		GLES20.glActiveTexture( GLES20.GL_TEXTURE0 + index );
+		Gdx.gl.glActiveTexture( Gdx.gl.GL_TEXTURE0 + index );
 	}
 	
 	public void bind() {
@@ -58,32 +55,42 @@ public class Texture {
 			generate();
 		}
 		if (id != bound_id) {
-			GLES20.glBindTexture( GLES20.GL_TEXTURE_2D, id );
+			Gdx.gl.glBindTexture( Gdx.gl.GL_TEXTURE_2D, id );
 			bound_id = id;
 		}
 	}
 	
 	public void filter( int minMode, int maxMode ) {
 		bind();
-		GLES20.glTexParameterf( GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, minMode );
-		GLES20.glTexParameterf( GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, maxMode );
+		Gdx.gl.glTexParameterf( Gdx.gl.GL_TEXTURE_2D, Gdx.gl.GL_TEXTURE_MIN_FILTER, minMode );
+		Gdx.gl.glTexParameterf( Gdx.gl.GL_TEXTURE_2D, Gdx.gl.GL_TEXTURE_MAG_FILTER, maxMode );
 	}
 	
 	public void wrap( int s, int t ) {
 		bind();
-		GLES20.glTexParameterf( GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, s );
-		GLES20.glTexParameterf( GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, t );
+		Gdx.gl.glTexParameterf( Gdx.gl.GL_TEXTURE_2D, Gdx.gl.GL_TEXTURE_WRAP_S, s );
+		Gdx.gl.glTexParameterf( Gdx.gl.GL_TEXTURE_2D, Gdx.gl.GL_TEXTURE_WRAP_T, t );
 	}
 	
 	public void delete() {
 		if (bound_id == id) bound_id = 0;
-		int[] ids = {id};
-		GLES20.glDeleteTextures( 1, ids, 0 );
+		Gdx.gl.glDeleteTexture( id );
 	}
 	
-	public void bitmap( Bitmap bitmap ) {
+	public void bitmap( Pixmap pixmap ) {
 		bind();
-		GLUtils.texImage2D( GLES20.GL_TEXTURE_2D, 0, bitmap, 0 );
+		
+		Gdx.gl.glTexImage2D(
+				Gdx.gl.GL_TEXTURE_2D,
+				0,
+				pixmap.getGLInternalFormat(),
+				pixmap.getWidth(),
+				pixmap.getHeight(),
+				0,
+				pixmap.getGLFormat(),
+				pixmap.getGLType(),
+				pixmap.getPixels()
+		);
 		
 		premultiplied = true;
 	}
@@ -99,15 +106,15 @@ public class Texture {
 		imageBuffer.put( pixels );
 		imageBuffer.position( 0 );
 		
-		GLES20.glTexImage2D(
-			GLES20.GL_TEXTURE_2D,
+		Gdx.gl.glTexImage2D(
+			Gdx.gl.GL_TEXTURE_2D,
 			0,
-			GLES20.GL_RGBA,
+			Gdx.gl.GL_RGBA,
 			w,
 			h,
 			0,
-			GLES20.GL_RGBA,
-			GLES20.GL_UNSIGNED_BYTE,
+			Gdx.gl.GL_RGBA,
+			Gdx.gl.GL_UNSIGNED_BYTE,
 			imageBuffer );
 	}
 	
@@ -121,23 +128,24 @@ public class Texture {
 		imageBuffer.put( pixels );
 		imageBuffer.position( 0 );
 		
-		GLES20.glPixelStorei( GLES20.GL_UNPACK_ALIGNMENT, 1 );
+		Gdx.gl.glPixelStorei( Gdx.gl.GL_UNPACK_ALIGNMENT, 1 );
 
-		GLES20.glTexImage2D(
-			GLES20.GL_TEXTURE_2D,
+		Gdx.gl.glTexImage2D(
+			Gdx.gl.GL_TEXTURE_2D,
 			0,
-			GLES20.GL_ALPHA,
+			Gdx.gl.GL_ALPHA,
 			w,
 			h,
 			0,
-			GLES20.GL_ALPHA,
-			GLES20.GL_UNSIGNED_BYTE,
+			Gdx.gl.GL_ALPHA,
+			Gdx.gl.GL_UNSIGNED_BYTE,
 			imageBuffer );
 	}
 	
 	// If getConfig returns null (unsupported format?), GLUtils.texImage2D works
 	// incorrectly. In this case we need to load pixels manually
-	public void handMade( Bitmap bitmap, boolean recode ) {
+	//TODO this seems to be unused, and is dependant on android code, remove?
+	/*public void handMade( Bitmap bitmap, boolean recode ) {
 
 		int w = bitmap.getWidth();
 		int h = bitmap.getHeight();
@@ -159,11 +167,11 @@ public class Texture {
 		pixels( w, h, pixels );
 		
 		premultiplied = false;
-	}
+	}*/
 	
-	public static Texture create( Bitmap bmp ) {
+	public static Texture create( Pixmap pix ) {
 		Texture tex = new Texture();
-		tex.bitmap( bmp );
+		tex.bitmap( pix );
 		
 		return tex;
 	}
