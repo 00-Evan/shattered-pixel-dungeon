@@ -231,6 +231,12 @@ public class ShatteredPixelDungeon extends Game {
 
 		dispWidth = view.getMeasuredWidth();
 		dispHeight = view.getMeasuredHeight();
+		
+		if ((dispWidth > dispHeight) != landscape){
+			int tmp = dispWidth;
+			dispWidth = dispHeight;
+			dispHeight = tmp;
+		}
 
 		float dispRatio = dispWidth / (float)dispHeight;
 
