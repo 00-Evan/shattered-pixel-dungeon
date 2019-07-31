@@ -166,7 +166,7 @@ public class AlchemyScene extends PixelScene {
 			protected void createChildren() {
 				super.createChildren();
 				
-				arrow = Icons.get(Icons.RESUME);
+				arrow = Icons.get(Icons.ARROW);
 				add(arrow);
 			}
 			

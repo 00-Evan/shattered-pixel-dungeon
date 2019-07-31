@@ -42,7 +42,7 @@ public class ResumeIndicator extends Tag {
 	protected void createChildren() {
 		super.createChildren();
 
-		icon = Icons.get( Icons.RESUME );
+		icon = Icons.get( Icons.ARROW);
 		add( icon );
 	}
 

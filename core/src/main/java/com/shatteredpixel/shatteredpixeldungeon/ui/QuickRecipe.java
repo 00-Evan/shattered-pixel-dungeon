@@ -122,10 +122,10 @@ public class QuickRecipe extends Component {
 		}
 		
 		if (cost > 0) {
-			arrow = new arrow(Icons.get(Icons.RESUME), cost);
+			arrow = new arrow(Icons.get(Icons.ARROW), cost);
 			arrow.hardlightText(0x00CCFF);
 		} else {
-			arrow = new arrow(Icons.get(Icons.RESUME));
+			arrow = new arrow(Icons.get(Icons.ARROW));
 		}
 		if (hasInputs) {
 			arrow.icon.tint(1, 1, 0, 1);

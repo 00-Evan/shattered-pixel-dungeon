@@ -225,15 +225,17 @@ public class StartScene extends PixelScene {
 				name.y = y + (height - name.baseLine())/2f;
 				align(name);
 				
-				classIcon.x = x + width - classIcon.width() - 8;
+				classIcon.x = x + width - 24 + (16 - classIcon.width())/2f;
 				classIcon.y = y + (height - classIcon.height())/2f;
+				align(classIcon);
 				
 				level.x = classIcon.x + (classIcon.width() - level.width()) / 2f;
 				level.y = classIcon.y + (classIcon.height() - level.height()) / 2f + 1;
 				align(level);
 				
-				steps.x = classIcon.x - steps.width();
+				steps.x = x + width - 40 + (16 - steps.width())/2f;
 				steps.y = y + (height - steps.height())/2f;
+				align(steps);
 				
 				depth.x = steps.x + (steps.width() - depth.width()) / 2f;
 				depth.y = steps.y + (steps.height() - depth.height()) / 2f + 1;

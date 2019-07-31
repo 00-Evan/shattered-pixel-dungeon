@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -36,8 +37,8 @@ public class ExitButton extends Button {
 	public ExitButton() {
 		super();
 
-		width = image.width+4;
-		height = image.height+4;
+		width = 20;
+		height = 20;
 	}
 
 	@Override
@@ -52,8 +53,9 @@ public class ExitButton extends Button {
 	protected void layout() {
 		super.layout();
 
-		image.x = x+2;
-		image.y = y+2;
+		image.x = x + (width - image.width)/2f;
+		image.y = y + (height - image.height)/2f;
+		PixelScene.align(image);
 	}
 
 	@Override
