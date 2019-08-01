@@ -21,7 +21,6 @@
 
 package com.watabou.noosa;
 
-import com.badlogic.gdx.Gdx;
 import com.watabou.input.KeyEvent;
 import com.watabou.utils.Signal;
 

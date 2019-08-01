@@ -21,12 +21,14 @@
 
 package com.watabou.utils;
 
+import com.badlogic.gdx.utils.TimeUtils;
+
 public class SystemTime {
 
 	public static long now;
 	
 	public static void tick() {
-		now = System.currentTimeMillis();
+		now = TimeUtils.millis();
 	}
 }
 

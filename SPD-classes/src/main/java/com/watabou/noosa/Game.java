@@ -21,9 +21,6 @@
 
 package com.watabou.noosa;
 
-import android.opengl.GLSurfaceView;
-import android.os.SystemClock;
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.watabou.glscripts.Script;
@@ -75,9 +72,6 @@ public class Game implements ApplicationListener {
 	public static float timeScale = 1f;
 	public static float elapsed = 0f;
 	public static float timeTotal = 0f;
-	
-	protected GLSurfaceView view;
-	//protected SurfaceHolder holder;
 	
 	protected static InputHandler inputHandler;
 	
@@ -150,7 +144,7 @@ public class Game implements ApplicationListener {
 		Gdx.gl.glFlush();
 		
 		SystemTime.tick();
-		long rightNow = SystemClock.elapsedRealtime();
+		long rightNow = SystemTime.now;
 		step = (now == 0 ? 0 : rightNow - now);
 		now = rightNow;
 		

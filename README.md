@@ -22,6 +22,8 @@ https://github.com/00-Evan/pixel-dungeon-gradle
 
 # Compiling Shattered Pixel Dungeon
 
+**Note that Shattered Pixel Dungeon is currently in the process of being converted to use the multiplatform game library LibGDX. The codebase is fully functional, but still contains some code which depends on Android, and so cannot be built for other platforms yet.**
+
 To compile Shattered Pixel Dungeon you will need:
 - A computer which meets the [system requirements for Android Studio](https://developer.android.com/studio#Requirements)
 - (optional) a GitHub account to fork this repository, if you wish to use version control
@@ -69,7 +71,7 @@ An APK (Android PacKage) is a file used to distribute Android applications. The 
 
 Note that APKs must be signed with a signing key. If you are making a small personal modification to Shattered Pixel Dungeon then your signing key is not important, but if you intend to distribute your modification to other people and want them to be able to receive updates, then your signing key is critical. The Android studio website has [a guide on signing keys.](https://developer.android.com/studio/publish/app-signing.html#opt-out)
 
-Additionally, note that by default Shattered Pixel Dungeon uses R8 on release builds. R8 is a code optimizer which decreases the size of the APK and improves performance, but also makes error reports more difficult to read. You can disable R8 by setting minifyEnabled to false in 'core/build.grade'. If you wish to keep R8 enabled, you can learn more about it [here.](https://developer.android.com/studio/build/shrink-code)
+Additionally, note that by default Shattered Pixel Dungeon uses R8 on release builds. R8 is a code optimizer which decreases the size of the APK and improves performance, but also makes error reports more difficult to read. You can disable R8 by setting minifyEnabled to false in 'android/build.grade'. If you wish to keep R8 enabled, you can learn more about it [here.](https://developer.android.com/studio/build/shrink-code)
 
 #### 6. Distributing Your APK
 
