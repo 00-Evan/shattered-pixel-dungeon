@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon;
+package com.shatteredpixel.shatteredpixeldungeon.android;
 
 import android.annotation.TargetApi;
 import android.app.backup.BackupAgent;
@@ -28,13 +28,16 @@ import android.app.backup.BackupDataOutput;
 import android.app.backup.FullBackupDataOutput;
 import android.os.ParcelFileDescriptor;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Rankings;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.watabou.utils.FileUtils;
 
 import java.io.File;
 
 //a handler for android backup requests
-public class BackupHandler extends BackupAgent {
+public class AndroidBackupHandler extends BackupAgent {
 	
 	//Both of these do nothing. This handler is here to support use of android 4.0+ ADB backup
 	//and android 6.0+ auto-backup. It does not support android 2.2+ key-value backup

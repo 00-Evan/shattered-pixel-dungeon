@@ -21,13 +21,7 @@
 
 package com.watabou.noosa.audio;
 
-import android.app.Activity;
-import android.os.Build;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
-
 import com.badlogic.gdx.Gdx;
-import com.watabou.noosa.Game;
 
 public enum Music {
 	
@@ -114,29 +108,4 @@ public enum Music {
 		return enabled;
 	}
 	
-	//FIXME android-specific code, that is also broken by being part of this class.
-	public static void setMuteListener(){
-		//versions lower than this require READ_PHONE_STATE permission
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			TelephonyManager mgr =
-					(TelephonyManager) Game.instance.getSystemService(Activity.TELEPHONY_SERVICE);
-			mgr.listen(new PhoneStateListener(){
-				
-				@Override
-				public void onCallStateChanged(int state, String incomingNumber)
-				{
-					if( state == TelephonyManager.CALL_STATE_RINGING ) {
-						INSTANCE.pause();
-						
-					} else if( state == TelephonyManager.CALL_STATE_IDLE ) {
-						if (!Game.instance.isPaused()) {
-							INSTANCE.resume();
-						}
-					}
-					
-					super.onCallStateChanged(state, incomingNumber);
-				}
-			}, PhoneStateListener.LISTEN_CALL_STATE);
-		}
-	}
 }

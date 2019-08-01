@@ -73,7 +73,7 @@ public class Scene extends Group {
 	}
 	
 	protected void onBackPressed() {
-		Gdx.app.exit();
+		Game.instance.finish();
 	}
 	
 	protected void onMenuPressed() {

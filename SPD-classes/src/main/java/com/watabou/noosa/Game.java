@@ -21,30 +21,24 @@
 
 package com.watabou.noosa;
 
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.opengl.GLSurfaceView;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.SystemClock;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.watabou.glscripts.Script;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.InputHandler;
 import com.watabou.input.KeyEvent;
-import com.watabou.noosa.audio.Music;
+import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.SystemTime;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 
-public class Game extends AndroidApplication implements ApplicationListener {
+public class Game implements ApplicationListener {
 
 	public static Game instance;
 
@@ -85,62 +79,27 @@ public class Game extends AndroidApplication implements ApplicationListener {
 	protected GLSurfaceView view;
 	//protected SurfaceHolder holder;
 	
-	protected InputHandler inputHandler;
+	protected static InputHandler inputHandler;
 	
-	public Game( Class<? extends Scene> c ) {
-		super();
+	protected static PlatformSupport platform;
+	
+	public Game(Class<? extends Scene> c, PlatformSupport platform) {
 		sceneClass = c;
-	}
-	
-	@Override
-	protected void onCreate( Bundle savedInstanceState ) {
-		super.onCreate( savedInstanceState );
 		
 		instance = this;
-
-		//FIXME this should be moved into a separate class, once we start to move to multiplatform
-		try {
-			version = getPackageManager().getPackageInfo( getPackageName(), 0 ).versionName;
-		} catch (NameNotFoundException e) {
-			version = "???";
-		}
-		try {
-			versionCode = getPackageManager().getPackageInfo( getPackageName(), 0 ).versionCode;
-		} catch (NameNotFoundException e) {
-			versionCode = 0;
-		}
-		
-		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		config.depth = 0;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			//use rgb888 on more modern devices for better visuals
-			config.r = config.g = config.b = 8;
-		} else {
-			//and rgb565 (default) on older ones for better performance
-		}
-		
-		config.useCompass = false;
-		config.useAccelerometer = false;
-		//TODO consider the following additional options, might be better than setting manually
-		//config.hideStatusBar
-		//config.useImmersiveMode
-		
-		initialize(this, config);
+		this.platform = platform;
+	}
+	
+	/*@Override
+	protected void onCreate( Bundle savedInstanceState ) {
+		super.onCreate( savedInstanceState );
 		
 		//FIXME shouldn't have a reference to the view here, remove things which access this
 		view = (GLSurfaceView)graphics.getView();
 		
-		inputHandler = new InputHandler();
-		Gdx.input.setInputProcessor(inputHandler);
-		Gdx.input.setCatchKey(KeyEvent.BACK, true);
-		Gdx.input.setCatchKey(KeyEvent.MENU, true);
-		
-		//FIXME this doesn't seem to work quite right. That might not be due to LibGDX though.
-		Music.setMuteListener();
-		
 		//so first call to onstart/onresume calls correct logic.
-		paused = true;
-	}
+		//paused = true;
+	}*/
 	
 	private boolean paused;
 	
@@ -155,6 +114,11 @@ public class Game extends AndroidApplication implements ApplicationListener {
 		dispWidth = Gdx.graphics.getDisplayMode().width;
 		
 		Blending.useDefault();
+		
+		inputHandler = new InputHandler();
+		Gdx.input.setInputProcessor(inputHandler);
+		Gdx.input.setCatchKey(KeyEvent.BACK, true);
+		Gdx.input.setCatchKey(KeyEvent.MENU, true);
 		
 		//refreshes texture and vertex data stored on the gpu
 		TextureCache.reload();
@@ -217,6 +181,10 @@ public class Game extends AndroidApplication implements ApplicationListener {
 		
 		//Music.INSTANCE.resume();
 		//Sample.INSTANCE.resume();
+	}
+	
+	public void finish(){
+		Gdx.app.exit();
 	}
 	
 	@Override
@@ -325,4 +293,5 @@ public class Game extends AndroidApplication implements ApplicationListener {
 		void beforeCreate();
 		void afterCreate();
 	}
+	
 }

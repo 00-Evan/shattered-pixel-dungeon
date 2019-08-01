@@ -21,19 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import android.annotation.SuppressLint;
-import android.content.pm.ActivityInfo;
-import android.os.Build;
-import android.view.View;
-import android.view.WindowManager;
-
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.PlatformSupport;
 
 public class ShatteredPixelDungeon extends Game {
 	
@@ -46,8 +40,8 @@ public class ShatteredPixelDungeon extends Game {
 	public static final int v0_7_2d = 340;
 	public static final int v0_7_3  = 346;
 	
-	public ShatteredPixelDungeon() {
-		super( sceneClass == null ? WelcomeScene.class : sceneClass );
+	public ShatteredPixelDungeon( PlatformSupport platform ) {
+		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
 		
 		//v0.7.0
 		com.watabou.utils.Bundle.addAlias(
@@ -220,100 +214,11 @@ public class ShatteredPixelDungeon extends Game {
 	}
 
 	public void updateDisplaySize(){
-		boolean landscape = SPDSettings.landscape();
-		
-		instance.setRequestedOrientation(landscape ?
-				ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-				ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-		
-		if (view.getMeasuredWidth() == 0 || view.getMeasuredHeight() == 0)
-			return;
-
-		dispWidth = view.getMeasuredWidth();
-		dispHeight = view.getMeasuredHeight();
-		
-		if ((dispWidth > dispHeight) != landscape){
-			int tmp = dispWidth;
-			dispWidth = dispHeight;
-			dispHeight = tmp;
-		}
-
-		float dispRatio = dispWidth / (float)dispHeight;
-
-		float renderWidth = dispRatio > 1 ? PixelScene.MIN_WIDTH_L : PixelScene.MIN_WIDTH_P;
-		float renderHeight = dispRatio > 1 ? PixelScene.MIN_HEIGHT_L : PixelScene.MIN_HEIGHT_P;
-
-		//force power saver in this case as all devices must run at at least 2x scale.
-		if (dispWidth < renderWidth*2 || dispHeight < renderHeight*2)
-			SPDSettings.put( SPDSettings.KEY_POWER_SAVER, true );
-
-		if (SPDSettings.powerSaver()){
-
-			int maxZoom = (int)Math.min(dispWidth/renderWidth, dispHeight/renderHeight);
-
-			renderWidth *= Math.max( 2, Math.round(1f + maxZoom*0.4f));
-			renderHeight *= Math.max( 2, Math.round(1f + maxZoom*0.4f));
-
-			if (dispRatio > renderWidth / renderHeight){
-				renderWidth = renderHeight * dispRatio;
-			} else {
-				renderHeight = renderWidth / dispRatio;
-			}
-
-			final int finalW = Math.round(renderWidth);
-			final int finalH = Math.round(renderHeight);
-			if (finalW != width || finalH != height){
-
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						view.getHolder().setFixedSize(finalW, finalH);
-					}
-				});
-
-			}
-		} else {
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					view.getHolder().setSizeFromLayout();
-				}
-			});
-		}
+		platform.updateDisplaySize();
 	}
 
 	public static void updateSystemUI() {
-		
-		instance.runOnUiThread(new Runnable() {
-			@SuppressLint("NewApi")
-			@Override
-			public void run() {
-				boolean fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
-						|| !instance.isInMultiWindowMode();
-				
-				if (fullscreen){
-					instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-							WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-				} else {
-					instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-							WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-				}
-				
-				if (DeviceCompat.supportsFullScreen()){
-					if (SPDSettings.fullscreen()) {
-						instance.getWindow().getDecorView().setSystemUiVisibility(
-								View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-										View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-										View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-										View.SYSTEM_UI_FLAG_HIDE_NAVIGATION );
-					} else {
-						instance.getWindow().getDecorView().setSystemUiVisibility(
-								View.SYSTEM_UI_FLAG_LAYOUT_STABLE );
-					}
-				}
-			}
-		});
-
+		platform.updateSystemUI();
 	}
 	
 	@Override

@@ -58,12 +58,7 @@ public class SPDSettings extends GameSettings {
 	public static void fullscreen( boolean value ) {
 		put( KEY_FULLSCREEN, value );
 		
-		ShatteredPixelDungeon.instance.runOnUiThread( new Runnable() {
-			@Override
-			public void run() {
-				ShatteredPixelDungeon.updateSystemUI();
-			}
-		} );
+		ShatteredPixelDungeon.updateSystemUI();
 	}
 	
 	public static boolean fullscreen() {

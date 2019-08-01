@@ -24,6 +24,7 @@ package com.watabou.utils;
 import com.badlogic.gdx.Gdx;
 import com.watabou.BuildConfig;
 
+//TODO migrate to platformSupport class
 public class DeviceCompat {
 	
 	public static boolean supportsFullScreen(){

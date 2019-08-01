@@ -1,41 +1,15 @@
-apply plugin: 'com.android.application'
+//FIXME currently an android library while small amounts of android-specific code remain in SPD-classes
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion appAndroidCompileSDK
 
     defaultConfig {
-        manifestPlaceholders = [appName:appName]
-        applicationId appPackageName
-
-        versionCode appVersionCode
-        versionName appVersionName
-
         //noinspection MinSdkTooLow
         minSdkVersion appAndroidMinSDK
-        targetSdkVersion appAndroidTargetSDK
-
-        resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it",
-                "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
-    }
-
-    buildTypes {
-        debug {
-            applicationIdSuffix ".indev"
-            versionNameSuffix '-INDEV'
-        }
-        release {
-
-            //These lines enable R8, which is a code shrinker/optimizer/obfuscator.
-            //This makes release APKs smaller and more efficient, but also makes debugging trickier
-            //as the information produced in stack traces must be de-obfuscated.
-            //See here: https://developer.android.com/studio/build/shrink-code#decode-stack-trace
-            shrinkResources true
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
     }
 }
 
 dependencies {
-    implementation project(':SPD-classes')
+    api project(':SPD-classes')
 }

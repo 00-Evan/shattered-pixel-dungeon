@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.shatteredpixel.shatteredpixeldungeon.android"
+	android:installLocation="auto">
+	
+	<uses-feature
+		android:glEsVersion="0x00020000"/>
+
+	<!-- Note that the game doesn't truly support small screen resolutions,
+		it instead forces downscaling to work on these displays.-->
+	<supports-screens
+		android:smallScreens="true"
+		android:normalScreens="true"
+		android:largeScreens="true"
+		android:xlargeScreens="true"/>
+
+	<application
+		android:icon="@mipmap/ic_launcher"
+		android:label="${appName}"
+		android:theme="@android:style/Theme.Black.NoTitleBar"
+		android:resizeableActivity="true"
+		android:allowBackup="true"
+		android:fullBackupOnly="true"
+		android:backupAgent=".AndroidBackupHandler">
+		<activity
+			android:label="${appName}"
+			android:name=".AndroidLauncher"
+			android:screenOrientation="nosensor"
+			android:configChanges="keyboard|keyboardHidden|orientation">
+			<intent-filter >
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+
+	</application>
+
+</manifest>

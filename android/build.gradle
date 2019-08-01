@@ -1,0 +1,106 @@
+/*
+ * Pixel Dungeon
+ * Copyright (C) 2012-2015 Oleg Dolya
+ *
+ * Shattered Pixel Dungeon
+ * Copyright (C) 2014-2019 Evan Debenham
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion appAndroidCompileSDK
+
+    defaultConfig {
+        manifestPlaceholders = [appName:appName]
+        applicationId appPackageName
+
+        versionCode appVersionCode
+        versionName appVersionName
+
+        //noinspection MinSdkTooLow
+        minSdkVersion appAndroidMinSDK
+        targetSdkVersion appAndroidTargetSDK
+
+        resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it",
+                "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".indev"
+            versionNameSuffix '-INDEV'
+        }
+        release {
+
+            //These lines enable R8, which is a code shrinker/optimizer/obfuscator.
+            //This makes release APKs smaller and more efficient, but also makes debugging trickier
+            //as the information produced in stack traces must be de-obfuscated.
+            //See here: https://developer.android.com/studio/build/shrink-code#decode-stack-trace
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+configurations { natives }
+
+dependencies {
+    implementation project(':core')
+
+    implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+    implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
+}
+
+// called every time gradle gets executed, takes the native dependencies of
+// the natives configuration, and extracts them to the proper libs/ folders
+// so they get packed with the APK.
+task copyAndroidNatives() {
+    file("libs/armeabi/").mkdirs()
+    file("libs/armeabi-v7a/").mkdirs()
+    file("libs/arm64-v8a/").mkdirs()
+    file("libs/x86_64/").mkdirs()
+    file("libs/x86/").mkdirs()
+
+    configurations.natives.files.each { jar ->
+        def outputDir = null
+        if(jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
+        if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
+        if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
+        if(jar.name.endsWith("natives-x86_64.jar")) outputDir = file("libs/x86_64")
+        if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
+        if(outputDir != null) {
+            copy {
+                from zipTree(jar)
+                into outputDir
+                include "*.so"
+            }
+        }
+    }
+}
