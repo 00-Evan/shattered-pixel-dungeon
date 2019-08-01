@@ -21,7 +21,8 @@
 
 package com.watabou.utils;
 
-import com.watabou.noosa.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,17 +31,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+//TODO should consider migrating away from use of File.java here. Can probably just use strings
 public class FileUtils {
 	
 	// Files
 	
 	public static boolean fileExists( String name ){
-		File file = new File(Game.instance.getFilesDir(), name);
+		FileHandle file = Gdx.files.local(name);
 		return file.exists() && !file.isDirectory();
 	}
 	
 	public static File getFile( String name ){
-		return getFile( Game.instance.getFilesDir(), name);
+		return Gdx.files.local(name).file();
 	}
 	
 	public static File getFile( File base, String name ){
@@ -52,7 +54,7 @@ public class FileUtils {
 	}
 	
 	public static boolean deleteFile( String name ){
-		return Game.instance.deleteFile( name );
+		return Gdx.files.local(name).delete();
 	}
 	
 	public static boolean deleteFile( File file ){
@@ -63,13 +65,13 @@ public class FileUtils {
 	// Directories
 	
 	public static boolean dirExists( String name ){
-		File dir = new File(Game.instance.getFilesDir(), name);
+		FileHandle dir = Gdx.files.local( name );
 		return dir.exists() && dir.isDirectory();
 	}
 	
 	//base directory
 	public static File getDir( String name ){
-		return getDir( Game.instance.getFilesDir(), name);
+		return Gdx.files.local( name ).file();
 	}
 	
 	public static File getDir( File base, String name ){
@@ -106,7 +108,7 @@ public class FileUtils {
 	
 	//only works for base path
 	public static Bundle bundleFromFile( String fileName ) throws IOException{
-		return bundleFromStream(Game.instance.openFileInput( fileName ));
+		return bundleFromStream(Gdx.files.local(fileName).read());
 	}
 	
 	public static Bundle bundleFromFile( File file ) throws IOException{
@@ -123,7 +125,7 @@ public class FileUtils {
 	
 	//only works for base path
 	public static void bundleToFile( String fileName, Bundle bundle ) throws IOException{
-		bundleToStream( Game.instance.openFileOutput( fileName, Game.MODE_PRIVATE ), bundle);
+		bundleToStream( Gdx.files.local(fileName).write(false), bundle);
 	}
 	
 	public static void bundleToFile( File file, Bundle bundle ) throws IOException{

@@ -21,6 +21,7 @@
 
 package com.watabou.noosa;
 
+import com.badlogic.gdx.Gdx;
 import com.watabou.input.KeyEvent;
 import com.watabou.utils.Signal;
 
@@ -72,7 +73,7 @@ public class Scene extends Group {
 	}
 	
 	protected void onBackPressed() {
-		Game.instance.finish();
+		Gdx.app.exit();
 	}
 	
 	protected void onMenuPressed() {

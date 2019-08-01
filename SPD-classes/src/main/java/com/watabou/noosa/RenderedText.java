@@ -26,6 +26,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.glwrap.Matrix;
@@ -240,7 +242,7 @@ public class RenderedText extends Image {
 
 	public static void setFont(String asset){
 		if (asset == null) font = null;
-		else font = Typeface.createFromAsset(Game.instance.getAssets(), asset);
+		else font = Typeface.createFromAsset(((AndroidApplication)Gdx.app).getAssets(), asset);
 		clearCache();
 	}
 
