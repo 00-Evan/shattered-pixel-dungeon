@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,16 +52,16 @@ public class GamesInProgress {
 		return FileUtils.dirExists(Messages.format(GAME_FOLDER, slot));
 	}
 	
-	public static File gameFolder( int slot ){
-		return FileUtils.getDir(Messages.format(GAME_FOLDER, slot));
+	public static String gameFolder( int slot ){
+		return Messages.format(GAME_FOLDER, slot);
 	}
 	
-	public static File gameFile( int slot ){
-		return FileUtils.getFile(gameFolder( slot ), GAME_FILE);
+	public static String gameFile( int slot ){
+		return gameFolder(slot) + "/" + GAME_FILE;
 	}
 	
-	public static File depthFile( int slot, int depth ) {
-		return FileUtils.getFile( gameFolder(slot), Messages.format(DEPTH_FILE, depth));
+	public static String depthFile( int slot, int depth ) {
+		return gameFolder(slot) + "/" + Messages.format(DEPTH_FILE, depth);
 	}
 	
 	public static int firstEmpty(){

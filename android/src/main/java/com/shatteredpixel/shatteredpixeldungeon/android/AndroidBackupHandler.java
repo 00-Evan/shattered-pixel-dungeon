@@ -30,9 +30,7 @@ import android.os.ParcelFileDescriptor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
-import com.watabou.utils.FileUtils;
 
 import java.io.File;
 
@@ -52,12 +50,29 @@ public class AndroidBackupHandler extends BackupAgent {
 		//does not backup runs in progress, to prevent cheating.
 		
 		//store shared preferences
-		fullBackupFile(new File(getFilesDir().getParent() + "/shared_prefs/"+ ShatteredPixelDungeon.class.getCanonicalName() + ".xml"), data);
+		fullBackupFile(new File(getFilesDir().getParent() + "/shared_prefs/ShatteredPixelDungeon.xml"), data);
 		
 		//store game data
-		fullBackupFile(FileUtils.getFile( getFilesDir(), Rankings.RANKINGS_FILE ), data);
-		fullBackupFile(FileUtils.getFile( getFilesDir(), Badges.BADGES_FILE ), data);
-		fullBackupFile(FileUtils.getFile( getFilesDir(), Journal.JOURNAL_FILE ), data);
+		File file = getFile( getFilesDir(), Rankings.RANKINGS_FILE );
+		if (file != null){
+			fullBackupFile( file , data);
+		}
+		file = getFile( getFilesDir(), Badges.BADGES_FILE );
+		if (file != null){
+			fullBackupFile( file , data);
+		}
+		file = getFile( getFilesDir(), Journal.JOURNAL_FILE );
+		if (file != null){
+			fullBackupFile( file , data);
+		}
+	}
+	
+	private static File getFile( File base, String name ){
+		File file = new File(base, name);
+		if (!file.exists() || !file.isDirectory()){
+			return file;
+		}
+		return null;
 	}
 	
 }
