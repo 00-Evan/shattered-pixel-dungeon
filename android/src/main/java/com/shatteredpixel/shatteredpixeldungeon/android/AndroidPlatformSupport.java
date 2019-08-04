@@ -118,10 +118,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 				if (DeviceCompat.supportsFullScreen()){
 					if (SPDSettings.fullscreen()) {
 						AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
-								View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-										View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-										View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-										View.SYSTEM_UI_FLAG_HIDE_NAVIGATION );
+								View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+										| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
+										| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY );
 					} else {
 						AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
 								View.SYSTEM_UI_FLAG_LAYOUT_STABLE );

@@ -40,6 +40,8 @@ public class AndroidLauncher extends AndroidApplication {
 	public static AndroidApplication instance;
 	protected static GLSurfaceView view;
 	
+	private AndroidPlatformSupport support;
+	
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,11 +70,10 @@ public class AndroidLauncher extends AndroidApplication {
 		
 		config.useCompass = false;
 		config.useAccelerometer = false;
-		//TODO consider the following additional options, might be better than setting manually
-		//config.hideStatusBar
-		//config.useImmersiveMode
 		
-		initialize(new ShatteredPixelDungeon( new AndroidPlatformSupport() ), config);
+		support = new AndroidPlatformSupport();
+		
+		initialize(new ShatteredPixelDungeon(support), config);
 		
 		view = (GLSurfaceView)graphics.getView();
 		
@@ -99,4 +100,9 @@ public class AndroidLauncher extends AndroidApplication {
 		}
 	}
 	
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		support.updateSystemUI();
+	}
 }
