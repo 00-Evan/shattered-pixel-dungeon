@@ -76,6 +76,14 @@ public class SPDSettings extends GameSettings {
 		return getBoolean(KEY_LANDSCAPE, Game.dispWidth > Game.dispHeight);
 	}
 	
+	public static Boolean landscapeFromSettings(){
+		if (contains(KEY_LANDSCAPE)){
+			return getBoolean(KEY_LANDSCAPE, false);
+		} else {
+			return null;
+		}
+	}
+	
 	public static void powerSaver( boolean value ){
 		put( KEY_POWER_SAVER, value );
 		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).updateDisplaySize();

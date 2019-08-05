@@ -115,7 +115,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 							WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 				}
 				
-				if (DeviceCompat.supportsFullScreen()){
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
 					if (SPDSettings.fullscreen()) {
 						AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
 								View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

@@ -104,7 +104,6 @@ public class ShatteredPixelDungeon extends Game {
 		super.create();
 
 		updateSystemUI();
-		SPDSettings.landscape ( SPDSettings.landscape() );
 		
 		Music.INSTANCE.enable( SPDSettings.music() );
 		Music.INSTANCE.volume( SPDSettings.musicVol()/10f );
@@ -219,11 +218,5 @@ public class ShatteredPixelDungeon extends Game {
 
 	public static void updateSystemUI() {
 		platform.updateSystemUI();
-	}
-	
-	@Override
-	public void resume() {
-		super.resume();
-		updateSystemUI();
 	}
 }

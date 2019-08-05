@@ -21,19 +21,27 @@
 
 package com.watabou.utils;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 public class GameSettings {
 	
+	//TODO might want to rename this file. this is the auto-generated name for android atm
+	public static final String PREFS_FILE = "ShatteredPixelDungeon";
+	
 	private static Preferences prefs;
 	
 	private static Preferences get() {
 		if (prefs == null) {
-			//TODO might want to rename this file. this is the auto-generated name for android atm
-			prefs = Gdx.app.getPreferences("ShatteredPixelDungeon");
+			prefs = Gdx.app.getPreferences(PREFS_FILE);
 		}
 		return prefs;
+	}
+	
+	//allows setting up of preferences without Gdx.app being initialized
+	public static void setPrefsFromInstance (Application instance){
+		prefs = instance.getPreferences(PREFS_FILE);
 	}
 	
 	public static boolean contains( String key ){

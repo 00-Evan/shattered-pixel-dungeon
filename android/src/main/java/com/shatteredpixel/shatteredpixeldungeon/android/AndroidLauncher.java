@@ -32,6 +32,7 @@ import android.telephony.TelephonyManager;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
@@ -60,9 +61,13 @@ public class AndroidLauncher extends AndroidApplication {
 			Game.versionCode = 0;
 		}
 		
+		// grab preferences directly using our instance first
+		// so that we don't need to rely on Gdx.app, which isn't initialized yet.
+		SPDSettings.setPrefsFromInstance(instance);
+		
 		//set desired orientation (if it exists) before initializing the app.
-		if (getPreferences("ShatteredPixelDungeon").contains("landscape")) {
-			if (getPreferences("ShatteredPixelDungeon").getBoolean("landscape")){
+		if (SPDSettings.landscapeFromSettings() != null) {
+			if (SPDSettings.landscapeFromSettings()){
 				instance.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 			} else {
 				instance.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
@@ -82,6 +87,8 @@ public class AndroidLauncher extends AndroidApplication {
 		config.useAccelerometer = false;
 		
 		support = new AndroidPlatformSupport();
+		
+		support.updateSystemUI();
 		
 		initialize(new ShatteredPixelDungeon(support), config);
 		
@@ -113,6 +120,12 @@ public class AndroidLauncher extends AndroidApplication {
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
+		support.updateSystemUI();
+	}
+	
+	@Override
+	public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+		super.onMultiWindowModeChanged(isInMultiWindowMode);
 		support.updateSystemUI();
 	}
 }
