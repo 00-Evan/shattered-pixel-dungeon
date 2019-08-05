@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
@@ -57,6 +58,15 @@ public class AndroidLauncher extends AndroidApplication {
 			Game.versionCode = getPackageManager().getPackageInfo( getPackageName(), 0 ).versionCode;
 		} catch (PackageManager.NameNotFoundException e) {
 			Game.versionCode = 0;
+		}
+		
+		//set desired orientation (if it exists) before initializing the app.
+		if (getPreferences("ShatteredPixelDungeon").contains("landscape")) {
+			if (getPreferences("ShatteredPixelDungeon").getBoolean("landscape")){
+				instance.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+			} else {
+				instance.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+			}
 		}
 		
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
