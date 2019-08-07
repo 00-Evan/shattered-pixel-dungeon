@@ -334,7 +334,6 @@ public class BitmapText extends Visual {
 			lineHeight = baseLine = height( frames.get( chars.charAt( 0 ) ) );
 		}
 		
-		//FIXME
 		private boolean colorNotMatch(Pixmap pixmap, int x, int y, int color) {
 			int pixel = pixmap.getPixel(x, y);
 			if ((pixel & 0xFF) == 0) {

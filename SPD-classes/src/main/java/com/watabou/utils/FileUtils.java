@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-//TODO should consider migrating away from use of File.java here. Can probably just use strings
 public class FileUtils {
 	
 	// Files

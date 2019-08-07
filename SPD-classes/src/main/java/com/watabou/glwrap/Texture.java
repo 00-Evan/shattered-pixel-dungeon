@@ -142,33 +142,6 @@ public class Texture {
 			imageBuffer );
 	}
 	
-	// If getConfig returns null (unsupported format?), GLUtils.texImage2D works
-	// incorrectly. In this case we need to load pixels manually
-	//TODO this seems to be unused, and is dependant on android code, remove?
-	/*public void handMade( Bitmap bitmap, boolean recode ) {
-
-		int w = bitmap.getWidth();
-		int h = bitmap.getHeight();
-		
-		int[] pixels = new int[w * h];
-		bitmap.getPixels( pixels, 0, w, 0, 0, w, h );
-
-		// recode - components reordering is needed
-		if (recode) {
-			for (int i=0; i < pixels.length; i++) {
-				int color = pixels[i];
-				int ag = color & 0xFF00FF00;
-				int r = (color >> 16) & 0xFF;
-				int b = color & 0xFF;
-				pixels[i] = ag | (b << 16) | r;
-			}
-		}
-		
-		pixels( w, h, pixels );
-		
-		premultiplied = false;
-	}*/
-	
 	public static Texture create( Pixmap pix ) {
 		Texture tex = new Texture();
 		tex.bitmap( pix );
