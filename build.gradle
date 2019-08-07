@@ -14,8 +14,8 @@ allprojects {
         appName = 'Shattered Pixel Dungeon'
         appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
 
-        appVersionCode = 357
-        appVersionName = '0.7.4a'
+        appVersionCode = 360
+        appVersionName = '0.7.4b'
 
         appAndroidCompileSDK = 28
         appAndroidMinSDK = 9

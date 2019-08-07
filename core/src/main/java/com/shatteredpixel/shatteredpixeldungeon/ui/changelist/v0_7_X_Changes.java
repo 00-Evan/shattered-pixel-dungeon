@@ -69,9 +69,31 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.7.4b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "LibGDX",
+				"Large sections of Shattered's codebase is now using the multiplatform game library _LibGDX._ Making the game's codebase less heavily tied to Android is a big step towards making the game available on other platforms!\n\n" +
+				"Keyboard input handling and text rendering are still coupled to Android however. I will convert these game systems to use LibGDX in a later update.\n\n" +
+				"Note that Shattered will not immediately release on other platforms once LibGDX conversion is complete, but it is a big step towards that."));
+		
+		changes.addButton( new ChangeButton(new WandOfLivingEarth(),
+				"The wand of living earth is performing fairly reasonably now, but the staff of living earth continues to be really strong. This has led me to re-evaluate the battlemage living earth ability, and to nerf it significantly:\n\n" +
+				"_-_ Earthen armor generated from battlemage melee hits reduced to 0.25x damage from 1x damage.\n\n" +
+				"_-_ Battlemage can no longer stack earthen armor past the max HP of the earthen guardian."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Updated hero icons in rankings and saved game screens.\n\n" +
+				"_-_ Updated translations"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.7.4):\n" +
+				"_-_ Wards able to be placed in walls\n" +
+				"_-_ Allies incorrectly being lost after Tengu fight\n" +
+				"Fixed (existed prior to 0.7.4):\n" +
+				"_-_ Talisman of foresight warn effect not being saved/loaded\n" +
+				"_-_ Level visuals (e.g. prison torches) rarely bugging out"));
 		
 		changes = new ChangeInfo("v0.7.4a", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
