@@ -222,10 +222,10 @@ public class WandOfLivingEarth extends DamageWand {
 		private int wandLevel;
 		private int armor;
 
-		private void addArmor( int wandLevel, int armor ){
+		private void addArmor( int wandLevel, int toAdd ){
 			this.wandLevel = Math.max(this.wandLevel, wandLevel);
-			this.armor += armor;
-			this.armor = Math.min(armor, 2*armorToGuardian());
+			armor += toAdd;
+			armor = Math.min(armor, 2*armorToGuardian());
 		}
 
 		private int armorToGuardian(){
