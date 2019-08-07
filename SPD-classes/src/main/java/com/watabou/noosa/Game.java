@@ -29,6 +29,8 @@ import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.InputHandler;
 import com.watabou.input.KeyEvent;
+import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.SystemTime;
 
@@ -83,17 +85,6 @@ public class Game implements ApplicationListener {
 		instance = this;
 		this.platform = platform;
 	}
-	
-	/*@Override
-	protected void onCreate( Bundle savedInstanceState ) {
-		super.onCreate( savedInstanceState );
-		
-		//FIXME shouldn't have a reference to the view here, remove things which access this
-		view = (GLSurfaceView)graphics.getView();
-		
-		//so first call to onstart/onresume calls correct logic.
-		//paused = true;
-	}*/
 	
 	private boolean paused;
 	
@@ -159,11 +150,7 @@ public class Game implements ApplicationListener {
 			scene.onPause();
 		}
 		
-		//view.onPause();
 		Script.reset();
-		
-		//Music.INSTANCE.pause();
-		//Sample.INSTANCE.pause();
 	}
 	
 	@Override
@@ -171,10 +158,6 @@ public class Game implements ApplicationListener {
 		paused = false;
 		
 		now = 0;
-		//view.onResume();
-		
-		//Music.INSTANCE.resume();
-		//Sample.INSTANCE.resume();
 	}
 	
 	public void finish(){
@@ -183,19 +166,14 @@ public class Game implements ApplicationListener {
 	
 	@Override
 	public void dispose() {
-		destroyGame();
-		
-		//Music.INSTANCE.mute();
-		//Sample.INSTANCE.reset();
-	}
-	
-	protected void destroyGame() {
 		if (scene != null) {
 			scene.destroy();
 			scene = null;
 		}
 		
-		//instance = null;
+		sceneClass = null;
+		Music.INSTANCE.stop();
+		Sample.INSTANCE.reset();
 	}
 	
 	public static void resetScene() {
