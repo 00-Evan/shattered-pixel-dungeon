@@ -471,6 +471,7 @@ public abstract class Level implements Bundlable {
 			visuals = new Group();
 		} else {
 			visuals.clear();
+			visuals.camera = null;
 		}
 		for (int i=0; i < length(); i++) {
 			if (pit[i]) {
