@@ -432,13 +432,13 @@ public class PrisonBossLevel extends Level {
 					do{
 						m.pos = randomTenguArenaCell();
 					} while (findMob(m.pos) != null);
-					m.sprite().place(m.pos);
+					if (m.sprite != null) m.sprite.place(m.pos);
 					mobs.add(m);
 				}
 
 				tengu.die(Dungeon.hero);
 				
-				clearEntities((Room) new EmptyRoom().set(3, 26, 7, 30)); //arena is safe
+				clearEntities((Room) new EmptyRoom().set(2, 25, 8, 31)); //arena is safe
 
 				for (Item item : storedItems)
 					drop(item, randomTenguArenaCell());
