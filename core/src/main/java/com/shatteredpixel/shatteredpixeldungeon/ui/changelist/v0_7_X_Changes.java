@@ -81,7 +81,9 @@ public class v0_7_X_Changes {
 		changes.addButton( new ChangeButton(new WandOfLivingEarth(),
 				"The wand of living earth is performing fairly reasonably now, but the staff of living earth continues to be really strong. This has led me to re-evaluate the battlemage living earth ability, and to nerf it significantly:\n\n" +
 				"_-_ Earthen armor generated from battlemage melee hits reduced to 0.25x damage from 1x damage.\n\n" +
-				"_-_ Battlemage can no longer stack earthen armor past the max HP of the earthen guardian."));
+				"_-_ Battlemage can no longer stack earthen armor past the max HP of the earthen guardian.\n\n" +
+				"Additionally:\n" +
+				"_-_ Guardian armor is now equivalent to cloth armor when 'faith is my armor' challenge is enabled."));
 		
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
 				"_-_ Updated hero icons in rankings and saved game screens.\n\n" +
