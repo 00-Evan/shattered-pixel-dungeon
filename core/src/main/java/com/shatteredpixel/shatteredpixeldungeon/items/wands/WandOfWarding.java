@@ -103,11 +103,15 @@ public class WandOfWarding extends Wand {
 
 	@Override
 	protected void fx(Ballistica bolt, Callback callback) {
-		MagicMissile.boltFromChar(curUser.sprite.parent,
+		MagicMissile m = MagicMissile.boltFromChar(curUser.sprite.parent,
 				MagicMissile.WARD,
 				curUser.sprite,
 				bolt.collisionPos,
 				callback);
+		
+		if (bolt.dist > 10){
+			m.setSpeed(bolt.dist*20);
+		}
 		Sample.INSTANCE.play(Assets.SND_ZAP);
 	}
 
