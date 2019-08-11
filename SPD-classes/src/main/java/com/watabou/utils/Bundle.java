@@ -150,6 +150,9 @@ public class Bundle {
 		} catch (JSONException e) {
 			Game.reportException(e);
 			return enumClass.getEnumConstants()[0];
+		} catch (IllegalArgumentException e) {
+			Game.reportException(e);
+			return enumClass.getEnumConstants()[0];
 		}
 	}
 	

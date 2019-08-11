@@ -93,10 +93,10 @@ public class WndRanking extends WndTabbed {
 	public void update() {
 		super.update();
 		
-		if (thread != null && !thread.isAlive()) {
-			thread = null;
+		if (thread != null && !thread.isAlive() && busy != null) {
 			if (error == null) {
 				remove( busy );
+				busy = null;
 				if (Dungeon.hero != null) {
 					createControls();
 				} else {
@@ -107,6 +107,12 @@ public class WndRanking extends WndTabbed {
 				Game.scene().add( new WndError( error ) );
 			}
 		}
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		thread = null;
 	}
 	
 	private void createControls() {

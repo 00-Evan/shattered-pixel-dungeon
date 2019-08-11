@@ -35,7 +35,7 @@ public enum Music {
 	private boolean enabled = true;
 	private float volume = 1f;
 	
-	public void play( String assetName, boolean looping ) {
+	public synchronized void play( String assetName, boolean looping ) {
 		
 		if (isPlaying() && lastPlayed != null && lastPlayed.equals( assetName )) {
 			return;
@@ -57,25 +57,25 @@ public enum Music {
 		
 	}
 	
-	public void mute() {
+	public synchronized void mute() {
 		lastPlayed = null;
 		stop();
 	}
 	
-	public void pause() {
+	public synchronized void pause() {
 		if (player != null) {
 			player.pause();
 		}
 	}
 	
-	public void resume() {
+	public synchronized void resume() {
 		if (player != null) {
 			player.play();
 			player.setLooping(looping);
 		}
 	}
 	
-	public void stop() {
+	public synchronized void stop() {
 		if (player != null) {
 			player.stop();
 			player.dispose();
@@ -83,18 +83,18 @@ public enum Music {
 		}
 	}
 	
-	public void volume( float value ) {
+	public synchronized void volume( float value ) {
 		volume = value;
 		if (player != null) {
 			player.setVolume( value );
 		}
 	}
 	
-	public boolean isPlaying() {
+	public synchronized boolean isPlaying() {
 		return player != null && player.isPlaying();
 	}
 	
-	public void enable( boolean value ) {
+	public synchronized void enable( boolean value ) {
 		enabled = value;
 		if (isPlaying() && !value) {
 			stop();
@@ -104,7 +104,7 @@ public enum Music {
 		}
 	}
 	
-	public boolean isEnabled() {
+	public synchronized boolean isEnabled() {
 		return enabled;
 	}
 	

@@ -189,8 +189,8 @@ public class Tilemap extends Visual {
 
 	}
 
-	private int camX, camY, camW, camH;
-	private int topLeft, bottomRight, length;
+	//private int camX, camY, camW, camH;
+	//private int topLeft, bottomRight, length;
 
 	@Override
 	public void draw() {
@@ -214,8 +214,9 @@ public class Tilemap extends Visual {
 			topLeftUpdating = -1;
 			updating.setEmpty();
 		}
-
-		Camera c = Camera.main;
+		
+		//FIXME temporarily disabled this optimization as it is suspected to cause crashes
+		/*Camera c = Camera.main;
 		//we treat the position of the tilemap as (0,0) here
 		camX = (int)(c.scroll.x/cellW - x/cellW);
 		camY = (int)(c.scroll.y/cellH - y/cellH);
@@ -242,7 +243,7 @@ public class Tilemap extends Visual {
 			length = bottomRight - topLeft + 1;
 
 		if (length <= 0)
-			return;
+			return;*/
 
 		NoosaScript script = NoosaScriptNoLighting.get();
 
@@ -252,7 +253,7 @@ public class Tilemap extends Visual {
 
 		script.camera( camera );
 
-		script.drawQuadSet( buffer, length, topLeft );
+		script.drawQuadSet( buffer, size, 0 );
 
 	}
 

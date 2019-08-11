@@ -217,10 +217,15 @@ public class DriedRose extends Artifact {
 	@Override
 	public String status() {
 		if (ghost == null && ghostID != 0){
-			Actor a = Actor.findById(ghostID);
-			if (a != null){
-				ghost = (GhostHero)a;
-			} else {
+			try {
+				Actor a = Actor.findById(ghostID);
+				if (a != null) {
+					ghost = (GhostHero) a;
+				} else {
+					ghostID = 0;
+				}
+			} catch ( ClassCastException e ){
+				ShatteredPixelDungeon.reportException(e);
 				ghostID = 0;
 			}
 		}
