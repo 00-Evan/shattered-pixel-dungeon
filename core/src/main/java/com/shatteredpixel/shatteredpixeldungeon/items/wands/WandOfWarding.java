@@ -211,6 +211,7 @@ public class WandOfWarding extends Wand {
 				viewDistance++;
 				name = Messages.get(this, "name_" + tier );
 				updateSpriteState();
+				GameScene.updateFog(pos, viewDistance+1);
 			}
 		}
 
@@ -351,6 +352,7 @@ public class WandOfWarding extends Wand {
 		public void destroy() {
 			super.destroy();
 			Dungeon.observe();
+			GameScene.updateFog(pos, viewDistance+1);
 		}
 		
 		@Override
@@ -368,7 +370,6 @@ public class WandOfWarding extends Wand {
 				protected void onSelect(int index) {
 					if (index == 0){
 						die(null);
-						Dungeon.observe();
 					}
 				}
 			});
