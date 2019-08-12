@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -42,7 +43,8 @@ public class MageArmor extends ClassArmor {
 	public void doSpecial() {
 		
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-			if (Dungeon.level.heroFOV[mob.pos]) {
+			if (Dungeon.level.heroFOV[mob.pos]
+				&& mob.alignment != Char.Alignment.ALLY) {
 				Buff.affect( mob, Burning.class ).reignite( mob );
 				Buff.prolong( mob, Roots.class, 3 );
 			}

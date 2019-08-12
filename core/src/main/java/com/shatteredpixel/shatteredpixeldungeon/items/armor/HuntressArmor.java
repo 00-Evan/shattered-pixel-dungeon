@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
@@ -40,7 +41,7 @@ public class HuntressArmor extends ClassArmor {
 		image = ItemSpriteSheet.ARMOR_HUNTRESS;
 	}
 	
-	private HashMap<Callback, Mob> targets = new HashMap<Callback, Mob>();
+	private HashMap<Callback, Mob> targets = new HashMap<>();
 	
 	@Override
 	public void doSpecial() {
@@ -49,7 +50,8 @@ public class HuntressArmor extends ClassArmor {
 		
 		for (Mob mob : Dungeon.level.mobs) {
 			if (Dungeon.level.distance(curUser.pos, mob.pos) <= 12
-				&& Dungeon.level.heroFOV[mob.pos]) {
+				&& Dungeon.level.heroFOV[mob.pos]
+				&& mob.alignment != Char.Alignment.ALLY) {
 				
 				Callback callback = new Callback() {
 					@Override
