@@ -69,6 +69,24 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.4c", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Shots from the wand of warding now travel more quickly if they are going a great distance.\n\n" +
+				"_-_ Class armor abilities no longer affect allies"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.7.4):\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Software keyboard not automatically hiding correctly\n" +
+				"_-_ Various fog of war errors when distant wards die"));
+		
 		changes = new ChangeInfo("v0.7.4b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
