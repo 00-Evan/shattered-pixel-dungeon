@@ -19,46 +19,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret;
+package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss;
 
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
-import com.watabou.utils.Point;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.PerimeterRoom;
 
-public class SecretSummoningRoom extends SecretRoom {
-	
-	//minimum of 3x3 traps, max of 6x6 traps
-	
-	@Override
-	public int maxWidth() {
-		return 8;
-	}
-	
-	@Override
-	public int maxHeight() {
-		return 8;
-	}
+public class ThickPillarsGooRoom extends GooBossRoom {
 	
 	@Override
 	public void paint(Level level) {
-		Painter.fill(level, this, Terrain.WALL);
-		Painter.fill(level, this, 1, Terrain.SECRET_TRAP);
 		
-		Point center = center();
-		level.drop(Generator.random(), level.pointToCell(center)).setHauntedIfCursed(0.75f).type = Heap.Type.SKELETON;
+		Painter.fill( level, this, Terrain.WALL );
+		Painter.fill( level, this, 1 , Terrain.WATER );
 		
-		for (Point p : getPoints()){
-			int cell = level.pointToCell(p);
-			if (level.map[cell] == Terrain.SECRET_TRAP){
-				level.setTrap(new SummoningTrap().hide(), cell);
-			}
+		int pillarW = (width()-8)/2;
+		int pillarH = (height()-8)/2;
+		
+		Painter.fill(level, left+2, top+2, pillarW+1, pillarH+1, Terrain.WALL);
+		Painter.fill(level, left+2, bottom-2-pillarH, pillarW+1, pillarH+1, Terrain.WALL);
+		Painter.fill(level, right-2-pillarW, top+2, pillarW+1, pillarH+1, Terrain.WALL);
+		Painter.fill(level, right-2-pillarW, bottom-2-pillarH, pillarW+1, pillarH+1, Terrain.WALL);
+		
+		PerimeterRoom.fillPerimiterPaths(level, this, Terrain.EMPTY_SP);
+		
+		for (Door door : connected.values()) {
+			door.set(Door.Type.REGULAR);
 		}
 		
-		entrance().set(Door.Type.HIDDEN);
+		setupGooNest(level);
+		
+		Goo boss = new Goo();
+		boss.pos = level.pointToCell(center());
+		level.mobs.add( boss );
 	}
-	
 }

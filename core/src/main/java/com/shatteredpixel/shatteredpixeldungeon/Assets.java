@@ -122,6 +122,7 @@ public class Assets {
 	public static final String LOADING_HALLS	= "loading_halls.png";
 
 	public static final String WEAK_FLOOR   = "custom_tiles/weak_floor.png";
+	public static final String SEWER_BOSS  = "custom_tiles/sewer_boss.png";
 	public static final String PRISON_QUEST = "custom_tiles/prison_quests.png";
 	public static final String PRISON_EXIT  = "custom_tiles/prison_exit.png";
 	

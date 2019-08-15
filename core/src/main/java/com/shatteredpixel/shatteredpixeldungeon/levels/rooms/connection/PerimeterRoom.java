@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 
 import java.util.ArrayList;
@@ -34,14 +35,25 @@ public class PerimeterRoom extends ConnectionRoom {
 		
 		int floor = level.tunnelTile();
 		
+		fillPerimiterPaths(level, this, floor);
+		
+		for (Door door : connected.values()) {
+			door.set( Door.Type.TUNNEL );
+		}
+	}
+	
+	public static void fillPerimiterPaths( Level l, Room r, int floor ){
+		
+		corners = null;
+		
 		ArrayList<Point> pointsToFill = new ArrayList<>();
-		for (Point door : connected.values()) {
+		for (Point door : r.connected.values()) {
 			Point p = new Point(door);
-			if (p.y == top){
+			if (p.y == r.top){
 				p.y++;
-			} else if (p.y == bottom) {
+			} else if (p.y == r.bottom) {
 				p.y--;
-			} else if (p.x == left){
+			} else if (p.x == r.left){
 				p.x++;
 			} else {
 				p.x--;
@@ -58,7 +70,7 @@ public class PerimeterRoom extends ConnectionRoom {
 			shortestDistance = Integer.MAX_VALUE;
 			for (Point f : pointsFilled){
 				for (Point t : pointsToFill){
-					int dist = distanceBetweenPoints(f, t);
+					int dist = distanceBetweenPoints(r, f, t);
 					if (dist < shortestDistance){
 						from = f;
 						to = t;
@@ -66,46 +78,45 @@ public class PerimeterRoom extends ConnectionRoom {
 					}
 				}
 			}
-			fillBetweenPoints(level, from, to, floor);
+			fillBetweenPoints(l, r, from, to, floor);
 			pointsFilled.add(to);
 			pointsToFill.remove(to);
 		}
 		
-		for (Door door : connected.values()) {
-			door.set( Door.Type.TUNNEL );
-		}
 	}
 	
-	private int spaceBetween(int a, int b){
+	private static int spaceBetween(int a, int b){
 		return Math.abs(a - b)-1;
 	}
 	
 	//gets the path distance between two points
-	private int distanceBetweenPoints(Point a, Point b){
+	private static int distanceBetweenPoints(Room r, Point a, Point b){
 		//on the same side
-		if (a.y == b.y || a.x == b.x){
+		if (((a.x == r.left || a.x == r.right) && a.y == b.y)
+				|| ((a.y == r.top || a.y == r.bottom) && a.x == b.x)){
 			return Math.max(spaceBetween(a.x, b.x), spaceBetween(a.y, b.y));
 		}
 		
 		//otherwise...
 		//subtract 1 at the end to account for overlap
 		return
-				Math.min(spaceBetween(left, a.x) + spaceBetween(left, b.x),
-				spaceBetween(right, a.x) + spaceBetween(right, b.x))
+				Math.min(spaceBetween(r.left, a.x) + spaceBetween(r.left, b.x),
+				spaceBetween(r.right, a.x) + spaceBetween(r.right, b.x))
 				+
-				Math.min(spaceBetween(top, a.y) + spaceBetween(top, b.y),
-				spaceBetween(bottom, a.y) + spaceBetween(bottom, b.y))
+				Math.min(spaceBetween(r.top, a.y) + spaceBetween(r.top, b.y),
+				spaceBetween(r.bottom, a.y) + spaceBetween(r.bottom, b.y))
 				-
 				1;
 	}
 	
-	private Point[] corners;
+	private static Point[] corners;
 	
 	//picks the smallest path to fill between two points
-	private void fillBetweenPoints(Level level, Point from, Point to, int floor){
+	private static void fillBetweenPoints(Level level, Room r, Point from, Point to, int floor){
 		
 		//doors are along the same side
-		if (from.y == to.y || from.x == to.x){
+		if (((from.x == r.left || from.x == r.right) && from.y == to.y)
+				|| ((from.y == r.top || from.y == r.bottom) && from.x == to.x)){
 			Painter.fill(level,
 					Math.min(from.x, to.x),
 					Math.min(from.y, to.y),
@@ -118,10 +129,10 @@ public class PerimeterRoom extends ConnectionRoom {
 		//set up corners
 		if (corners == null){
 			corners = new Point[4];
-			corners[0] = new Point(left+1, top+1);
-			corners[1] = new Point(right-1, top+1);
-			corners[2] = new Point(right-1, bottom-1);
-			corners[3] = new Point(left+1, bottom-1);
+			corners[0] = new Point(r.left+1, r.top+1);
+			corners[1] = new Point(r.right-1, r.top+1);
+			corners[2] = new Point(r.right-1, r.bottom-1);
+			corners[3] = new Point(r.left+1, r.bottom-1);
 		}
 		
 		//doors on adjacent sides
@@ -135,26 +146,26 @@ public class PerimeterRoom extends ConnectionRoom {
 		
 		//doors on opposite sides
 		Point side;
-		if (from.y == top+1 || from.y == bottom-1){
+		if (from.y == r.top+1 || from.y == r.bottom-1){
 			//connect along the left, or right side
-			if (spaceBetween(left, from.x) + spaceBetween(left, to.x) <=
-				spaceBetween(right, from.x) + spaceBetween(right, to.x)){
-				side = new Point(left+1, top + height()/2);
+			if (spaceBetween(r.left, from.x) + spaceBetween(r.left, to.x) <=
+				spaceBetween(r.right, from.x) + spaceBetween(r.right, to.x)){
+				side = new Point(r.left+1, r.top + r.height()/2);
 			} else {
-				side = new Point(right-1, top + height()/2);
+				side = new Point(r.right-1, r.top + r.height()/2);
 			}
 		
 		} else {
 			//connect along the top, or bottom side
-			if (spaceBetween(top, from.y) + spaceBetween(top, to.y) <=
-				spaceBetween(bottom, from.y) + spaceBetween(bottom, to.y)){
-				side = new Point(left + width()/2, top+1);
+			if (spaceBetween(r.top, from.y) + spaceBetween(r.top, to.y) <=
+				spaceBetween(r.bottom, from.y) + spaceBetween(r.bottom, to.y)){
+				side = new Point(r.left + r.width()/2, r.top+1);
 			} else {
-				side = new Point(left + width()/2, bottom-1);
+				side = new Point(r.left + r.width()/2, r.bottom-1);
 			}
 		}
 		//treat this as two connections with adjacent sides
-		fillBetweenPoints(level, from, side, floor);
-		fillBetweenPoints(level, side, to, floor);
+		fillBetweenPoints(level, r, from, side, floor);
+		fillBetweenPoints(level, r, side, to, floor);
 	}
 }

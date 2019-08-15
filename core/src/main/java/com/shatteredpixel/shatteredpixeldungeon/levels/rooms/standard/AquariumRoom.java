@@ -64,8 +64,6 @@ public class AquariumRoom extends StandardRoom {
 		for (Door door : connected.values()) {
 			door.set( Door.Type.REGULAR );
 		}
-		
-		super.paint(level);
 	}
 	
 }

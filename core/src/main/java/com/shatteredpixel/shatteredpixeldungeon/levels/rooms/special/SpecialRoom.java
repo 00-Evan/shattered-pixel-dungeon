@@ -30,7 +30,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SpecialRoom extends Room {
+public abstract class SpecialRoom extends Room {
 	
 	@Override
 	public int minWidth() { return 5; }
@@ -41,12 +41,6 @@ public class SpecialRoom extends Room {
 		return 5;
 	}
 	public int maxHeight() { return 10; }
-	
-	@Override
-	public int minConnections(int direction) {
-		if (direction == ALL)   return 1;
-		else                    return 0;
-	}
 	
 	@Override
 	public int maxConnections(int direction) {

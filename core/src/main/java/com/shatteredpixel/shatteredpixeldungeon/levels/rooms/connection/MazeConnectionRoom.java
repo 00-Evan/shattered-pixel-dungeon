@@ -30,8 +30,6 @@ public class MazeConnectionRoom extends ConnectionRoom {
 	
 	@Override
 	public void paint(Level level) {
-		super.paint(level);
-		
 		Painter.fill(level, this, 1, Terrain.EMPTY);
 		
 		//true = space, false = wall

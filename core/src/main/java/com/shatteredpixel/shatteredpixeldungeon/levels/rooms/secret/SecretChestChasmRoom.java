@@ -57,8 +57,6 @@ public class SecretChestChasmRoom extends SecretRoom {
 	
 	@Override
 	public void paint(Level level) {
-		super.paint(level);
-		
 		Painter.fill(level, this, Terrain.WALL);
 		Painter.fill(level, this, 1, Terrain.CHASM);
 		

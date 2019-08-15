@@ -30,8 +30,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.RatKingRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerBossEntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.GooBossRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
@@ -55,17 +55,18 @@ public class SewerBossLevel extends SewerLevel {
 		
 		int standards = standardRooms();
 		for (int i = 0; i < standards; i++) {
-			initRooms.add(new EmptyRoom());
+			initRooms.add(StandardRoom.createRoom());
 		}
 		
+		initRooms.add(GooBossRoom.randomGooRoom());
 		initRooms.add(new RatKingRoom());
 		return initRooms;
 	}
 	
 	@Override
 	protected int standardRooms() {
-		//2 to 4, average 3
-		return 2+Random.chances(new float[]{1, 1, 1});
+		//2 to 3, average 2.5
+		return 2+Random.chances(new float[]{1, 1});
 	}
 	
 	protected Builder builder(){
@@ -100,13 +101,6 @@ public class SewerBossLevel extends SewerLevel {
 
 	@Override
 	protected void createMobs() {
-		Goo boss = new Goo();
-		Room room;
-		do {
-			room = randomRoom(StandardRoom.class);
-		} while (room == roomEntrance);
-		boss.pos = pointToCell(room.random());
-		mobs.add( boss );
 	}
 	
 	public Actor respawner() {

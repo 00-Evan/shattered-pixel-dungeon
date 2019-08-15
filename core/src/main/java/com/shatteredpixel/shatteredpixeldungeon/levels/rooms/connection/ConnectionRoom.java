@@ -46,12 +46,6 @@ public abstract class ConnectionRoom extends Room {
 	}
 	
 	@Override
-	public int maxConnections(int direction) {
-		if (direction == ALL)   return 16;
-		else                    return 4;
-	}
-	
-	@Override
 	public boolean canPlaceTrap(Point p) {
 		//traps cannot appear in connection rooms on floor 1
 		return super.canPlaceTrap(p) && Dungeon.depth > 1;
@@ -74,7 +68,7 @@ public abstract class ConnectionRoom extends Room {
 	static {
 		chances[1] =  new float[]{20, 1,    0, 2,       2, 1};
 		chances[4] =  chances[3] = chances[2] = chances[1];
-		chances[5] =  new float[]{18, 0,    0, 0,       7, 0};
+		chances[5] =  new float[]{20, 0,    0, 0,       0, 0};
 		
 		chances[6] =  new float[]{0, 0,     22, 3,      0, 0};
 		chances[10] = chances[9] = chances[8] = chances[7] = chances[6];
