@@ -574,9 +574,7 @@ public abstract class Char extends Actor {
 			sprite.visible = Dungeon.level.heroFOV[pos];
 		}
 		
-		if (!flying) {
-			Dungeon.level.press( pos, this );
-		}
+		Dungeon.level.occupyCell(this );
 	}
 	
 	public int distance( Char other ) {

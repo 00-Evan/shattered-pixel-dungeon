@@ -189,20 +189,20 @@ public class PrisonBossLevel extends Level {
 	}
 
 	@Override
-	public void press( int cell, Char ch ) {
-
-		super.press(cell, ch);
+	public void occupyCell( Char ch ) {
+		
+		super.occupyCell( ch );
 
 		if (ch == Dungeon.hero){
 			//hero enters tengu's chamber
 			if (state == State.START
-					&& (new EmptyRoom().set(2, 25, 8, 32)).inside(cellToPoint(cell))){
+					&& (new EmptyRoom().set(2, 25, 8, 32)).inside(cellToPoint(ch.pos))){
 				progress();
 			}
 
 			//hero finishes the maze
 			else if (state == State.MAZE
-					&& (new EmptyRoom().set(4, 0, 7, 4)).inside(cellToPoint(cell))){
+					&& (new EmptyRoom().set(4, 0, 7, 4)).inside(cellToPoint(ch.pos))){
 				progress();
 			}
 		}

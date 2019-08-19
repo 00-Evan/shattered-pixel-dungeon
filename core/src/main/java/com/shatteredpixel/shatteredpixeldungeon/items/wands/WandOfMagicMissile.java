@@ -57,7 +57,7 @@ public class WandOfMagicMissile extends DamageWand {
 			ch.sprite.burst(0xFFFFFFFF, level() / 2 + 2);
 
 		} else {
-			Dungeon.level.press(bolt.collisionPos, null, true);
+			Dungeon.level.pressCell(bolt.collisionPos);
 		}
 	}
 

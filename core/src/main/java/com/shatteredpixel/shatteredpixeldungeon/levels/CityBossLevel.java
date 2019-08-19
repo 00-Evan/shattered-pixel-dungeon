@@ -182,11 +182,11 @@ public class CityBossLevel extends Level {
 	}
 	
 	@Override
-	public void press( int cell, Char hero ) {
+	public void occupyCell( Char ch ) {
 		
-		super.press( cell, hero );
+		super.occupyCell( ch );
 		
-		if (!enteredArena && outsideEntraceRoom( cell ) && hero == Dungeon.hero) {
+		if (!enteredArena && outsideEntraceRoom( ch.pos ) && ch == Dungeon.hero) {
 			
 			enteredArena = true;
 			seal();

@@ -178,7 +178,7 @@ public class WandOfCorruption extends Wand {
 			processSoulMark(ch, chargesPerCast());
 			
 		} else {
-			Dungeon.level.press(bolt.collisionPos, null, true);
+			Dungeon.level.pressCell(bolt.collisionPos);
 		}
 	}
 	

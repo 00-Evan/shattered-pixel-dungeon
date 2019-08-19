@@ -172,7 +172,7 @@ public class LloydsBeacon extends Artifact {
 						}
 					}
 				}
-				Dungeon.level.press( returnPos, hero );
+				Dungeon.level.occupyCell(hero );
 				Dungeon.observe();
 				GameScene.updateFog();
 			} else {

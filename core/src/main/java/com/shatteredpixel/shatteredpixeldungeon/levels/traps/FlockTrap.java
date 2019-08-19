@@ -67,7 +67,7 @@ public class FlockTrap extends Trap {
 								t.reveal();
 								t.activate();
 							}
-							Dungeon.level.press(sheep.pos, sheep);
+							Dungeon.level.occupyCell(sheep);
 
 						}
 					}

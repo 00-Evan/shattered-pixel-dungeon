@@ -75,14 +75,8 @@ public class Swap extends Actor {
 			ch1.pos = ch2.pos;
 			ch2.pos = pos;
 
-			if (!ch1.flying) {
-				Dungeon.level.press( ch1.pos, ch1 );
-				
-			}
-			if (!ch2.flying) {
-				Dungeon.level.press( ch2.pos, ch2 );
-				
-			}
+			Dungeon.level.occupyCell(ch1 );
+			Dungeon.level.occupyCell(ch2 );
 
 			if (ch1 == Dungeon.hero || ch2 == Dungeon.hero) {
 				Dungeon.observe();

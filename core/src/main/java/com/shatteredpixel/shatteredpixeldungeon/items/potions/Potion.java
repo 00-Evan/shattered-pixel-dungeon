@@ -320,7 +320,7 @@ public class Potion extends Item {
 			
 		} else  {
 
-			Dungeon.level.press( cell, null, true );
+			Dungeon.level.pressCell( cell );
 			shatter( cell );
 			
 		}

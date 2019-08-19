@@ -172,11 +172,11 @@ public class HallsBossLevel extends Level {
 	}
 	
 	@Override
-	public void press( int cell, Char hero ) {
+	public void occupyCell( Char ch ) {
 		
-		super.press( cell, hero );
+		super.occupyCell( ch );
 		
-		if (!enteredArena && hero == Dungeon.hero && cell != entrance) {
+		if (!enteredArena && ch == Dungeon.hero && ch.pos != entrance) {
 			
 			enteredArena = true;
 			seal();

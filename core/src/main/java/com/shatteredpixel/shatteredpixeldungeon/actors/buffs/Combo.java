@@ -253,7 +253,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 										Actor.addDelayed( new Pushing( enemy, enemy.pos, newPos ), -1 );
 
 										enemy.pos = newPos;
-										Dungeon.level.press( newPos, enemy );
+										Dungeon.level.occupyCell(enemy );
 
 									}
 									break;

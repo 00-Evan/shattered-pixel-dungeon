@@ -131,7 +131,7 @@ public class Mimic extends Mob {
 				Actor.addDelayed( new Pushing( ch, ch.pos, newPos ), -1 );
 				
 				ch.pos = newPos;
-				Dungeon.level.press( newPos, ch );
+				Dungeon.level.occupyCell(ch );
 				
 			} else {
 				return null;

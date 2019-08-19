@@ -94,7 +94,7 @@ public class WandOfWarding extends Wand {
 			ward.pos = bolt.collisionPos;
 			ward.wandLevel = level();
 			GameScene.add(ward, 1f);
-			Dungeon.level.press(ward.pos, ward);
+			Dungeon.level.occupyCell(ward);
 			ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
 		} else {
 			GLog.w( Messages.get(this, "bad_location"));

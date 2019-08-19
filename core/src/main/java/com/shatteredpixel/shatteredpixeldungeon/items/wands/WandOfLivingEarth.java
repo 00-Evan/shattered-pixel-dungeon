@@ -127,7 +127,7 @@ public class WandOfLivingEarth extends DamageWand {
 				} else {
 					guardian.pos = closest;
 					GameScene.add(guardian, 1);
-					Dungeon.level.press(guardian.pos, guardian);
+					Dungeon.level.occupyCell(guardian);
 				}
 
 				if (ch.alignment == Char.Alignment.ENEMY || ch.buff(Amok.class) != null) {
@@ -137,7 +137,7 @@ public class WandOfLivingEarth extends DamageWand {
 			} else {
 				guardian.pos = bolt.collisionPos;
 				GameScene.add(guardian, 1);
-				Dungeon.level.press(guardian.pos, guardian);
+				Dungeon.level.occupyCell(guardian);
 			}
 
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + level()/2);
@@ -164,7 +164,7 @@ public class WandOfLivingEarth extends DamageWand {
 				}
 
 			} else {
-				Dungeon.level.press(bolt.collisionPos, null, true);
+				Dungeon.level.pressCell(bolt.collisionPos);
 			}
 		}
 

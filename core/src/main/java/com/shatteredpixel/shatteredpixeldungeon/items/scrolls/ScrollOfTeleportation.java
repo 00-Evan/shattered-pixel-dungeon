@@ -101,7 +101,7 @@ public class ScrollOfTeleportation extends Scroll {
 		}
 		
 		appear( hero, pos );
-		if (!hero.flying) Dungeon.level.press( pos, hero );
+		Dungeon.level.occupyCell(hero );
 		Dungeon.observe();
 		GameScene.updateFog();
 		
@@ -127,7 +127,7 @@ public class ScrollOfTeleportation extends Scroll {
 			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 			
 			appear( hero, pos );
-			if (!hero.flying) Dungeon.level.press( pos, hero );
+			Dungeon.level.occupyCell(hero );
 			Dungeon.observe();
 			GameScene.updateFog();
 			
@@ -192,7 +192,7 @@ public class ScrollOfTeleportation extends Scroll {
 			}
 			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
 			appear( hero, pos );
-			if (!hero.flying) Dungeon.level.press( pos, hero );
+			Dungeon.level.occupyCell(hero );
 			if (secretDoor && level.map[doorPos] == Terrain.SECRET_DOOR){
 				Sample.INSTANCE.play( Assets.SND_SECRET );
 				int oldValue = Dungeon.level.map[doorPos];

@@ -77,7 +77,7 @@ public class DisplacingDart extends TippedDart {
 			if (chosenDist != -1){
 				int pos = positions.get(chosenDist).get(Random.index(positions.get(chosenDist)));
 				ScrollOfTeleportation.appear( defender, pos );
-				Dungeon.level.press( pos, defender );
+				Dungeon.level.occupyCell(defender );
 			}
 		
 		}
