@@ -33,6 +33,7 @@ public class MazeRoom extends Room {
 		Painter.fill(level, this, 1, Terrain.EMPTY);
 
 		//true = space, false = wall
+		Maze.allowDiagonals = false;
 		boolean[][] maze = Maze.generate(this);
 
 		Painter.fill(level, this, 1, Terrain.EMPTY);

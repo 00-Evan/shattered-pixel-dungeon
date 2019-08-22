@@ -33,6 +33,7 @@ public class MazeConnectionRoom extends ConnectionRoom {
 		Painter.fill(level, this, 1, Terrain.EMPTY);
 		
 		//true = space, false = wall
+		Maze.allowDiagonals = false;
 		boolean[][] maze = Maze.generate(this);
 		
 		Painter.fill(level, this, 1, Terrain.EMPTY);
