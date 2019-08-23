@@ -23,6 +23,7 @@ package com.watabou.noosa;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.watabou.glscripts.Script;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
@@ -32,7 +33,6 @@ import com.watabou.input.KeyEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PlatformSupport;
-import com.watabou.utils.SystemTime;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -66,14 +66,10 @@ public class Game implements ApplicationListener {
 	// New scene class
 	protected static Class<? extends Scene> sceneClass;
 	
-	// Current time in milliseconds
-	protected long now;
-	// Milliseconds passed since previous update
-	protected long step;
-	
 	public static float timeScale = 1f;
 	public static float elapsed = 0f;
 	public static float timeTotal = 0f;
+	public static long realTime = 0;
 	
 	protected static InputHandler inputHandler;
 	
@@ -134,11 +130,6 @@ public class Game implements ApplicationListener {
 		
 		Gdx.gl.glFlush();
 		
-		SystemTime.tick();
-		long rightNow = SystemTime.now;
-		step = (now == 0 ? 0 : rightNow - now);
-		now = rightNow;
-		
 		step();
 	}
 	
@@ -156,8 +147,6 @@ public class Game implements ApplicationListener {
 	@Override
 	public void resume() {
 		paused = false;
-		
-		now = 0;
 	}
 	
 	public void finish(){
@@ -236,8 +225,10 @@ public class Game implements ApplicationListener {
 	}
 
 	protected void update() {
-		Game.elapsed = Game.timeScale * step * 0.001f;
+		Game.elapsed = Game.timeScale * Gdx.graphics.getDeltaTime();
 		Game.timeTotal += Game.elapsed;
+		
+		Game.realTime = TimeUtils.millis();
 
 		inputHandler.processAllEvents();
 		

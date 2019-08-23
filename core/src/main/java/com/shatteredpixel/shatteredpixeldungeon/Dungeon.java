@@ -474,7 +474,7 @@ public class Dungeon {
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
 	
-	public static void saveGame( int save ) throws IOException {
+	public static void saveGame( int save ) {
 		try {
 			Bundle bundle = new Bundle();
 

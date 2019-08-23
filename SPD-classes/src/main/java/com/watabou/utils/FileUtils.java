@@ -23,6 +23,7 @@ package com.watabou.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -81,7 +82,16 @@ public class FileUtils {
 	
 	//only works for base path
 	public static void bundleToFile( String fileName, Bundle bundle ) throws IOException{
-		bundleToStream( Gdx.files.local(fileName).write(false), bundle);
+		try {
+			bundleToStream(Gdx.files.local(fileName).write(false), bundle);
+		} catch (GdxRuntimeException e){
+			if (e.getCause() instanceof IOException){
+				//we want to throw the underlying IOException, not the GdxRuntimeException
+				throw (IOException)e.getCause();
+			} else {
+				throw e;
+			}
+		}
 	}
 	
 	private static void bundleToStream( OutputStream output, Bundle bundle ) throws IOException{

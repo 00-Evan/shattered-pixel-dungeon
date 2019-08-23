@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
@@ -238,7 +239,7 @@ public enum Rankings {
 		} catch (IOException e) {
 		}
 	}
-
+	
 	public static class Record implements Bundlable {
 
 		private static final String CAUSE   = "cause";
