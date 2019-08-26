@@ -69,9 +69,12 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.7.4d", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed a crash on start error some F-droid users were experiencing."));
 		
 		changes = new ChangeInfo("v0.7.4c", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
