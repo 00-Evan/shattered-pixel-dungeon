@@ -195,27 +195,30 @@ public abstract class RegularLevel extends Level {
 		Iterator<Room> stdRoomIter = stdRooms.iterator();
 
 		while (mobsToSpawn > 0) {
-			if (!stdRoomIter.hasNext())
-				stdRoomIter = stdRooms.iterator();
-			Room roomToSpawn = stdRoomIter.next();
-
 			Mob mob = createMob();
-			mob.pos = pointToCell(roomToSpawn.random());
+			Room roomToSpawn;
+			
+			if (!stdRoomIter.hasNext()) {
+				stdRoomIter = stdRooms.iterator();
+			}
+			roomToSpawn = stdRoomIter.next();
+			
+			do {
+				mob.pos = pointToCell(roomToSpawn.random());
+			} while (findMob(mob.pos) != null || !passable[mob.pos] || mob.pos == exit);
 
-			if (findMob(mob.pos) == null && passable[mob.pos] && mob.pos != exit) {
+			mobsToSpawn--;
+			mobs.add(mob);
+
+			if (mobsToSpawn > 0 && Random.Int(4) == 0){
+				mob = createMob();
+				
+				do {
+					mob.pos = pointToCell(roomToSpawn.random());
+				} while (findMob(mob.pos) != null || !passable[mob.pos] || mob.pos == exit);
+
 				mobsToSpawn--;
 				mobs.add(mob);
-
-				//TODO: perhaps externalize this logic into a method. Do I want to make mobs more likely to clump deeper down?
-				if (mobsToSpawn > 0 && Random.Int(4) == 0){
-					mob = createMob();
-					mob.pos = pointToCell(roomToSpawn.random());
-
-					if (findMob(mob.pos)  == null && passable[mob.pos] && mob.pos != exit) {
-						mobsToSpawn--;
-						mobs.add(mob);
-					}
-				}
 			}
 		}
 
