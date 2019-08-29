@@ -41,6 +41,6 @@ public class Sai extends MeleeWeapon {
 
 	@Override
 	public int defenseFactor( Char owner ) {
-		return 3;	//3 extra defence
+		return 2;	//2 extra defence
 	}
 }
