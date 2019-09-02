@@ -139,22 +139,6 @@ public abstract class RegularLevel extends Level {
 	
 	protected abstract Painter painter();
 	
-	protected float waterFill(){
-		return 0;
-	}
-	
-	protected int waterSmoothing(){
-		return 0;
-	}
-	
-	protected float grassFill(){
-		return 0;
-	}
-	
-	protected int grassSmoothing(){
-		return 0;
-	}
-	
 	protected int nTraps() {
 		return Random.NormalIntRange( 1, 3+(Dungeon.depth/3) );
 	}

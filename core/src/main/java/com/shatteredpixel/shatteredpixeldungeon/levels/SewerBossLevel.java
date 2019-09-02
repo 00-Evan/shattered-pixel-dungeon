@@ -23,15 +23,17 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Goo;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.FigureEightBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.SewerPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.RatKingRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.GooBossRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
@@ -51,14 +53,23 @@ public class SewerBossLevel extends SewerLevel {
 	@Override
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();
-		initRooms.add ( roomEntrance = roomExit = new SewerBossEntranceRoom());
+		
+		//TODO it would be nice for these rooms to have some custom tile visuals
+		initRooms.add( roomEntrance = new SewerBossEntranceRoom() );
+		initRooms.add( roomExit = new SewerBossExitRoom() );
 		
 		int standards = standardRooms();
 		for (int i = 0; i < standards; i++) {
-			initRooms.add(StandardRoom.createRoom());
+			StandardRoom s = StandardRoom.createRoom();
+			//force to normal size
+			s.setSizeCat(0, 0);
+			initRooms.add(s);
 		}
 		
-		initRooms.add(GooBossRoom.randomGooRoom());
+		//TODO need to improve the visual appearance of goo's nest
+		GooBossRoom gooRoom = GooBossRoom.randomGooRoom();
+		initRooms.add(gooRoom);
+		((FigureEightBuilder)builder).setLandmarkRoom(gooRoom);
 		initRooms.add(new RatKingRoom());
 		return initRooms;
 	}
@@ -70,29 +81,18 @@ public class SewerBossLevel extends SewerLevel {
 	}
 	
 	protected Builder builder(){
-		return new LoopBuilder()
+		return new FigureEightBuilder()
+				.setLoopShape( 2 , Random.Float(0.4f, 0.7f), Random.Float(0f, 0.5f))
 				.setPathLength(1f, new float[]{1})
-				.setTunnelLength(new float[]{0, 3, 1}, new float[]{1});
+				.setTunnelLength(new float[]{1, 2}, new float[]{1});
 	}
 	
 	@Override
-	protected float waterFill(){
-		return 0.50f;
-	}
-	
-	@Override
-	protected int waterSmoothing(){
-		return 5;
-	}
-	
-	@Override
-	protected float grassFill() {
-		return 0.20f;
-	}
-	
-	@Override
-	protected int grassSmoothing() {
-		return 4;
+	protected Painter painter() {
+		return new SewerPainter()
+				.setWater(0.50f, 5)
+				.setGrass(0.20f, 4)
+				.setTraps(nTraps(), trapClasses(), trapChances());
 	}
 	
 	protected int nTraps() {

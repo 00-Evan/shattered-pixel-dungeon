@@ -25,36 +25,38 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.watabou.utils.Point;
 
-public class SewerBossEntranceRoom extends EntranceRoom {
+public class SewerBossExitRoom extends ExitRoom {
+	
+	@Override
+	public int minWidth() {
+		return Math.max(super.minWidth(), 7);
+	}
 	
 	@Override
 	public int minHeight() {
-		return 6;
+		return Math.max(super.minHeight(), 7);
 	}
 	
-	public void paint(Level level ) {
+	public void paint(Level level) {
 		
 		Painter.fill( level, this, Terrain.WALL );
 		Painter.fill( level, this, 1, Terrain.EMPTY );
 		
-		Painter.fill( level, left+1, top+1, width()-2, 1, Terrain.WALL_DECO);
-		Painter.fill( level, left+1, top+2, width()-2, 1, Terrain.WATER);
-		
-		do {
-			level.entrance = level.pointToCell(random(3));
-		} while (level.findMob(level.entrance) != null);
-		Painter.set( level, level.entrance, Terrain.ENTRANCE );
-		
 		for (Room.Door door : connected.values()) {
 			door.set( Room.Door.Type.REGULAR );
-			
-			if (door.y == top || door.y == top+1){
-				Painter.drawInside( level, this, door, 1, Terrain.WATER);
-			}
 		}
+		
+		Point c = center();
+		
+		Painter.fill( level, c.x-1, c.y-1, 3, 1, Terrain.WALL );
+		Painter.fill( level, c.x-1, c.y  , 3, 1, Terrain.WALL_DECO );
+		Painter.fill( level, c.x-1, c.y+1, 3, 1, Terrain.WATER );
+		
+		level.exit = level.pointToCell(c);
+		Painter.set( level, level.exit, Terrain.LOCKED_EXIT );
 		
 	}
 	

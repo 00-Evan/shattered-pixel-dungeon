@@ -28,8 +28,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-//A builder with one core loop as its primary element
-public class LoopBuilder extends RegularBuilder {
+public class FigureEightBuilder extends RegularBuilder {
 	
 	//These methods allow for the adjusting of the shape of the loop
 	//by default the loop is a perfect circle, but it can be adjusted
@@ -46,7 +45,7 @@ public class LoopBuilder extends RegularBuilder {
 	// a common example, setting to 0.25 will make for a short fat oval instead of a long one.
 	private float curveOffset = 0;
 	
-	public LoopBuilder setLoopShape(int exponent, float intensity, float offset){
+	public FigureEightBuilder setLoopShape(int exponent, float intensity, float offset){
 		this.curveExponent = Math.abs(exponent);
 		curveIntensity = intensity % 1f;
 		curveOffset = offset % 0.5f;
@@ -56,7 +55,7 @@ public class LoopBuilder extends RegularBuilder {
 	private float targetAngle( float percentAlong ){
 		percentAlong += curveOffset;
 		return 360f * (float)(
-						curveIntensity * curveEquation(percentAlong)
+				curveIntensity * curveEquation(percentAlong)
 						+ (1-curveIntensity)*(percentAlong)
 						- curveOffset);
 	}
@@ -67,32 +66,44 @@ public class LoopBuilder extends RegularBuilder {
 				+ 0.25 + 0.5*Math.floor(2*x);
 	}
 	
-	private PointF loopCenter;
+	private Room landmarkRoom;
+	
+	public FigureEightBuilder setLandmarkRoom(Room room){
+		landmarkRoom = room;
+		return this;
+	}
+	
+	ArrayList<Room> firstLoop, secondLoop;
+	PointF firstLoopCenter, secondLoopCenter;
 	
 	@Override
 	public ArrayList<Room> build(ArrayList<Room> rooms) {
-		
 		setupRooms(rooms);
 		
-		if (entrance == null){
-			return null;
+		//TODO might want to make this able to work without an exit. Probably a random room would be landmark and the landmark room would become exit
+		if (landmarkRoom == null){
+			landmarkRoom = Random.element(multiConnections);
 		}
 		
-		entrance.setSize();
-		entrance.setPos(0, 0);
+		if (multiConnections.contains(landmarkRoom)){
+			multiConnections.remove(landmarkRoom);
+		}
 		
-		float startAngle = Random.Float(0, 360);
+		float startAngle = Random.Float(0, 180);
 		
-		ArrayList<Room> loop = new ArrayList<>();
 		int roomsOnLoop = (int)(multiConnections.size()*pathLength) + Random.chances(pathLenJitterChances);
 		roomsOnLoop = Math.min(roomsOnLoop, multiConnections.size());
 		
+		int roomsOnFirstLoop = roomsOnLoop/2;
+		if (roomsOnLoop % 2 == 1) roomsOnFirstLoop += Random.Int(2);
+		
+		firstLoop = new ArrayList<>();
 		float[] pathTunnels = pathTunnelChances.clone();
-		for (int i = 0; i <= roomsOnLoop; i++){
+		for (int i = 0; i <= roomsOnFirstLoop; i++){
 			if (i == 0)
-				loop.add(entrance);
+				firstLoop.add(landmarkRoom);
 			else
-				loop.add(multiConnections.remove(0));
+				firstLoop.add(multiConnections.remove(0));
 			
 			int tunnels = Random.chances(pathTunnels);
 			if (tunnels == -1){
@@ -102,17 +113,41 @@ public class LoopBuilder extends RegularBuilder {
 			pathTunnels[tunnels]--;
 			
 			for (int j = 0; j < tunnels; j++){
-				loop.add(ConnectionRoom.createRoom());
+				firstLoop.add(ConnectionRoom.createRoom());
 			}
 		}
+		if (entrance != null) firstLoop.add((firstLoop.size()+1)/2, entrance);
 		
-		if (exit != null) loop.add((loop.size()+1)/2, exit);
+		int roomsOnSecondLoop = roomsOnLoop - roomsOnFirstLoop;
 		
-		Room prev = entrance;
+		secondLoop = new ArrayList<>();
+		for (int i = 0; i <= roomsOnSecondLoop; i++){
+			if (i == 0)
+				secondLoop.add(landmarkRoom);
+			else
+				secondLoop.add(multiConnections.remove(0));
+			
+			int tunnels = Random.chances(pathTunnels);
+			if (tunnels == -1){
+				pathTunnels = pathTunnelChances.clone();
+				tunnels = Random.chances(pathTunnels);
+			}
+			pathTunnels[tunnels]--;
+			
+			for (int j = 0; j < tunnels; j++){
+				secondLoop.add(ConnectionRoom.createRoom());
+			}
+		}
+		if (exit != null) secondLoop.add((secondLoop.size()+1)/2, exit);
+		
+		landmarkRoom.setSize();
+		landmarkRoom.setPos(0, 0);
+		
+		Room prev = landmarkRoom;
 		float targetAngle;
-		for (int i = 1; i < loop.size(); i++){
-			Room r = loop.get(i);
-			targetAngle = startAngle + targetAngle( i / (float)loop.size());
+		for (int i = 1; i < firstLoop.size(); i++){
+			Room r = firstLoop.get(i);
+			targetAngle = startAngle + targetAngle( i / (float)firstLoop.size());
 			if (placeRoom(rooms, prev, r, targetAngle) != -1) {
 				prev = r;
 				if (!rooms.contains(prev))
@@ -125,13 +160,41 @@ public class LoopBuilder extends RegularBuilder {
 		
 		//FIXME this is still fairly chance reliant
 		// should just write a general function for stitching two rooms together in builder
-		while (!prev.connect(entrance)){
+		while (!prev.connect(landmarkRoom)){
 			
 			ConnectionRoom c = ConnectionRoom.createRoom();
-			if (placeRoom(loop, prev, c, angleBetweenRooms(prev, entrance)) == -1){
+			if (placeRoom(firstLoop, prev, c, angleBetweenRooms(prev, entrance)) == -1){
 				return null;
 			}
-			loop.add(c);
+			firstLoop.add(c);
+			rooms.add(c);
+			prev = c;
+		}
+		
+		prev = landmarkRoom;
+		startAngle += 180f;
+		for (int i = 1; i < secondLoop.size(); i++){
+			Room r = secondLoop.get(i);
+			targetAngle = startAngle + targetAngle( i / (float)secondLoop.size());
+			if (placeRoom(rooms, prev, r, targetAngle) != -1) {
+				prev = r;
+				if (!rooms.contains(prev))
+					rooms.add(prev);
+			} else {
+				//FIXME this is lazy, there are ways to do this without relying on chance
+				return null;
+			}
+		}
+		
+		//FIXME this is still fairly chance reliant
+		// should just write a general function for stitching two rooms together in builder
+		while (!prev.connect(landmarkRoom)){
+			
+			ConnectionRoom c = ConnectionRoom.createRoom();
+			if (placeRoom(secondLoop, prev, c, angleBetweenRooms(prev, entrance)) == -1){
+				return null;
+			}
+			secondLoop.add(c);
 			rooms.add(c);
 			prev = c;
 		}
@@ -140,21 +203,31 @@ public class LoopBuilder extends RegularBuilder {
 			float angle;
 			int tries = 10;
 			do {
-				angle = placeRoom(loop, entrance, shop, Random.Float(360f));
+				angle = placeRoom(firstLoop, entrance, shop, Random.Float(360f));
 				tries--;
 			} while (angle == -1 && tries >= 0);
 			if (angle == -1) return null;
 		}
 		
-		loopCenter = new PointF();
-		for (Room r : loop){
-			loopCenter.x += (r.left + r.right)/2f;
-			loopCenter.y += (r.top + r.bottom)/2f;
+		firstLoopCenter = new PointF();
+		for (Room r : firstLoop){
+			firstLoopCenter.x += (r.left + r.right)/2f;
+			firstLoopCenter.y += (r.top + r.bottom)/2f;
 		}
-		loopCenter.x /= loop.size();
-		loopCenter.y /= loop.size();
+		firstLoopCenter.x /= firstLoop.size();
+		firstLoopCenter.y /= firstLoop.size();
 		
-		ArrayList<Room> branchable = new ArrayList<>(loop);
+		secondLoopCenter = new PointF();
+		for (Room r : secondLoop){
+			secondLoopCenter.x += (r.left + r.right)/2f;
+			secondLoopCenter.y += (r.top + r.bottom)/2f;
+		}
+		secondLoopCenter.x /= secondLoop.size();
+		secondLoopCenter.y /= secondLoop.size();
+		
+		ArrayList<Room> branchable = new ArrayList<>(firstLoop);
+		branchable.addAll(secondLoop);
+		branchable.remove(landmarkRoom); //remove once so it isn't present twice
 		
 		ArrayList<Room> roomsToBranch = new ArrayList<>();
 		roomsToBranch.addAll(multiConnections);
@@ -178,11 +251,17 @@ public class LoopBuilder extends RegularBuilder {
 	
 	@Override
 	protected float randomBranchAngle( Room r ) {
-		if (loopCenter == null)
+		PointF center;
+		if (firstLoop.contains(r)){
+			center = firstLoopCenter;
+		} else {
+			center = secondLoopCenter;
+		}
+		if (center == null)
 			return super.randomBranchAngle( r );
 		else {
 			//generate four angles randomly and return the one which points closer to the center
-			float toCenter = angleBetweenPoints( new PointF((r.left + r.right)/2f, (r.top + r.bottom)/2f), loopCenter);
+			float toCenter = angleBetweenPoints( new PointF((r.left + r.right)/2f, (r.top + r.bottom)/2f), center);
 			if (toCenter < 0) toCenter += 360f;
 			
 			float currAngle = Random.Float(360f);
@@ -195,4 +274,5 @@ public class LoopBuilder extends RegularBuilder {
 			return currAngle;
 		}
 	}
+	
 }
