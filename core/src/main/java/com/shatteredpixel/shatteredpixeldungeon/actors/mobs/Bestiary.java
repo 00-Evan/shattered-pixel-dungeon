@@ -42,10 +42,10 @@ public class Bestiary {
 			
 			// Sewers
 			case 1: default:
-				//6x rat, 2x snake
+				//3x rat, 1x snake
 				return new ArrayList<>(Arrays.asList(
-						Rat.class, Rat.class, Rat.class, Rat.class,
-						Snake.class, Snake.class));
+						Rat.class, Rat.class, Rat.class,
+						Snake.class));
 			case 2:
 				//2x rat, 1x snake, 2x gnoll
 				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
@@ -214,6 +214,8 @@ public class Bestiary {
 				Class<? extends Mob> cl = rotation.get(i);
 				if (cl == Rat.class) {
 					cl = Albino.class;
+				} else if (cl == Slime.class) {
+					cl = CausticSlime.class;
 				} else if (cl == Thief.class) {
 					cl = Bandit.class;
 				} else if (cl == Brute.class) {
