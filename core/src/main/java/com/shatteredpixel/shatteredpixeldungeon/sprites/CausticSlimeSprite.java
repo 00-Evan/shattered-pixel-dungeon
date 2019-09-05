@@ -24,26 +24,28 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.TextureFilm;
 
-public class SlimeSprite extends MobSprite {
+public class CausticSlimeSprite extends MobSprite {
 	
-	public SlimeSprite() {
+	public CausticSlimeSprite() {
 		super();
 		
 		texture( Assets.SLIME );
 		
 		TextureFilm frames = new TextureFilm( texture, 14, 12 );
 		
+		int c = 9;
+		
 		idle = new Animation( 3, true );
-		idle.frames( frames, 0, 1, 1, 0 );
+		idle.frames( frames, c+0, c+1, c+1, c+0 );
 		
 		run = new Animation( 10, true );
-		run.frames( frames, 0, 2, 3, 3, 2, 0 );
+		run.frames( frames, c+0, c+2, c+3, c+3, c+2, c+0 );
 		
 		attack = new Animation( 10, false );
-		attack.frames( frames, 2, 3, 4, 5, 2 );
+		attack.frames( frames, c+2, c+3, c+4, c+5, c+2 );
 		
 		die = new Animation( 10, false );
-		die.frames( frames, 0, 5, 6, 7 );
+		die.frames( frames, c+0, c+5, c+6, c+7 );
 		
 		play(idle);
 	}

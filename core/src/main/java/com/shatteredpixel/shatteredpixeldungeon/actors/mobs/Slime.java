@@ -56,17 +56,6 @@ public class Slime extends Mob {
 	}
 	
 	@Override
-	public boolean act() {
-		
-		if (Dungeon.level.water[pos] && HP < HT) {
-			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-			HP++;
-		}
-		
-		return super.act();
-	}
-	
-	@Override
 	public void damage(int dmg, Object src) {
 		super.damage(Math.min(dmg, 6), src);
 	}
