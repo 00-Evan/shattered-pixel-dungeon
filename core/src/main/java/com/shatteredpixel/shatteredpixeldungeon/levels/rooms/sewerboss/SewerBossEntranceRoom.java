@@ -35,6 +35,11 @@ public class SewerBossEntranceRoom extends EntranceRoom {
 		return 6;
 	}
 	
+	@Override
+	public int minWidth() {
+		return 8;
+	}
+	
 	public void paint(Level level ) {
 		
 		Painter.fill( level, this, Terrain.WALL );

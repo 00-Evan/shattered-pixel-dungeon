@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBoss
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.noosa.Group;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -155,6 +156,14 @@ public class SewerBossLevel extends SewerLevel {
 			GameScene.updateMap( entrance );
 
 		}
+	}
+	
+	@Override
+	public Group addVisuals() {
+		super.addVisuals();
+		if (map[exit-1] != Terrain.WALL_DECO) visuals.add(new PrisonLevel.Torch(exit-1));
+		if (map[exit+1] != Terrain.WALL_DECO) visuals.add(new PrisonLevel.Torch(exit+1));
+		return visuals;
 	}
 	
 	private static final String STAIRS	= "stairs";
