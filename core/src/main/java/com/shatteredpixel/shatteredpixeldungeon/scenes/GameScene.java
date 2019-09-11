@@ -229,7 +229,7 @@ public class GameScene extends PixelScene {
 		heaps = new Group();
 		add( heaps );
 		
-		for ( Heap heap : Dungeon.level.heaps.values() ) {
+		for ( Heap heap : Dungeon.level.heaps.valueArray() ) {
 			addHeapSprite( heap );
 		}
 		

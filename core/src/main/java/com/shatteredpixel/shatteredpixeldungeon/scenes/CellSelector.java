@@ -65,7 +65,7 @@ public class CellSelector extends PointerArea {
 				}
 			}
 
-			for (Heap heap : Dungeon.level.heaps.values()){
+			for (Heap heap : Dungeon.level.heaps.valueArray()){
 				if (heap.sprite != null && heap.sprite.overlapsPoint( p.x, p.y)){
 					select( heap.pos );
 					return;
