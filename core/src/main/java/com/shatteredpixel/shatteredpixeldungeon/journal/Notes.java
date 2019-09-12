@@ -191,38 +191,43 @@ public class Notes {
 		}
 	}
 	
-	public static void add( Landmark landmark ) {
+	public static boolean add( Landmark landmark ) {
 		LandmarkRecord l = new LandmarkRecord( landmark, Dungeon.depth );
 		if (!records.contains(l)) {
-			records.add(new LandmarkRecord(landmark, Dungeon.depth));
+			boolean result = records.add(new LandmarkRecord(landmark, Dungeon.depth));
 			Collections.sort(records);
+			return result;
 		}
+		return false;
 	}
 	
-	public static void remove( Landmark landmark ) {
-		records.remove( new LandmarkRecord(landmark, Dungeon.depth) );
+	public static boolean remove( Landmark landmark ) {
+		return records.remove( new LandmarkRecord(landmark, Dungeon.depth) );
 	}
 	
-	public static void add( Key key ){
+	public static boolean add( Key key ){
 		KeyRecord k = new KeyRecord(key);
 		if (!records.contains(k)){
-			records.add(k);
+			boolean result = records.add(k);
 			Collections.sort(records);
+			return result;
 		} else {
 			k = (KeyRecord) records.get(records.indexOf(k));
 			k.quantity(k.quantity() + key.quantity());
+			return true;
 		}
 	}
 	
-	public static void remove( Key key ){
+	public static boolean remove( Key key ){
 		KeyRecord k = new KeyRecord( key );
 		if (records.contains(k)){
 			k = (KeyRecord) records.get(records.indexOf(k));
 			k.quantity(k.quantity() - key.quantity());
 			if (k.quantity() <= 0){
-				records.remove(k);
+				return records.remove(k);
 			}
 		}
+		return false;
 	}
 	
 	public static int keyCount( Key key ){

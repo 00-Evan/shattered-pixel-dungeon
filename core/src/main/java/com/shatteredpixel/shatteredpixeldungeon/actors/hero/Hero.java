@@ -1545,33 +1545,46 @@ public class Hero extends Char {
 
 			int doorCell = ((HeroAction.Unlock)curAction).dst;
 			int door = Dungeon.level.map[doorCell];
-
-			if (door == Terrain.LOCKED_DOOR){
-				Notes.remove(new IronKey(Dungeon.depth));
-				Level.set( doorCell, Terrain.DOOR );
-			} else {
-				Notes.remove(new SkeletonKey(Dungeon.depth));
-				Level.set( doorCell, Terrain.UNLOCKED_EXIT );
-			}
-			GameScene.updateKeyDisplay();
 			
-			Level.set( doorCell, door == Terrain.LOCKED_DOOR ? Terrain.DOOR : Terrain.UNLOCKED_EXIT );
-			GameScene.updateMap( doorCell );
-			spend( Key.TIME_TO_UNLOCK );
+			if (Dungeon.level.adjacent(pos, doorCell)) {
+				boolean hasKey = true;
+				if (door == Terrain.LOCKED_DOOR) {
+					hasKey = Notes.remove(new IronKey(Dungeon.depth));
+					if (hasKey) Level.set(doorCell, Terrain.DOOR);
+				} else {
+					hasKey = Notes.remove(new SkeletonKey(Dungeon.depth));
+					if (hasKey) Level.set(doorCell, Terrain.UNLOCKED_EXIT);
+				}
+				
+				if (hasKey) {
+					GameScene.updateKeyDisplay();
+					Level.set(doorCell, door == Terrain.LOCKED_DOOR ? Terrain.DOOR : Terrain.UNLOCKED_EXIT);
+					GameScene.updateMap(doorCell);
+					spend(Key.TIME_TO_UNLOCK);
+				}
+			}
 			
 		} else if (curAction instanceof HeroAction.OpenChest) {
-
+			
 			Heap heap = Dungeon.level.heaps.get( ((HeroAction.OpenChest)curAction).dst );
-			if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
-				Sample.INSTANCE.play( Assets.SND_BONES );
-			} else if (heap.type == Type.LOCKED_CHEST){
-				Notes.remove(new GoldenKey(Dungeon.depth));
-			} else if (heap.type == Type.CRYSTAL_CHEST){
-				Notes.remove(new CrystalKey(Dungeon.depth));
+			
+			if (Dungeon.level.adjacent(pos, heap.pos)){
+				boolean hasKey = true;
+				if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
+					Sample.INSTANCE.play( Assets.SND_BONES );
+				} else if (heap.type == Type.LOCKED_CHEST){
+					hasKey = Notes.remove(new GoldenKey(Dungeon.depth));
+				} else if (heap.type == Type.CRYSTAL_CHEST){
+					hasKey = Notes.remove(new CrystalKey(Dungeon.depth));
+				}
+				
+				if (hasKey) {
+					GameScene.updateKeyDisplay();
+					heap.open(this);
+					spend(Key.TIME_TO_UNLOCK);
+				}
 			}
-			GameScene.updateKeyDisplay();
-			heap.open( this );
-			spend( Key.TIME_TO_UNLOCK );
+			
 		}
 		curAction = null;
 
