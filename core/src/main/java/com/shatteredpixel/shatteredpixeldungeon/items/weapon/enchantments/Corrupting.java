@@ -47,12 +47,12 @@ public class Corrupting extends Weapon.Enchantment {
 		
 		int level = Math.max( 0, weapon.level() );
 		
-		// lvl 0 - 15%
-		// lvl 1 ~ 17%
-		// lvl 2 ~ 19%
+		// lvl 0 - 20%
+		// lvl 1 ~ 22.5%
+		// lvl 2 ~ 25%
 		if (damage >= defender.HP
 				&& !defender.isImmune(Corruption.class)
-				&& Random.Int( level + 40 ) >= 34){
+				&& Random.Int( level + 30 ) >= 24){
 			
 			Mob enemy = (Mob) defender;
 			Hero hero = (attacker instanceof Hero) ? (Hero) attacker : Dungeon.hero;
