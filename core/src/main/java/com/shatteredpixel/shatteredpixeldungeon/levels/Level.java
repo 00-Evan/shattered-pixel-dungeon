@@ -980,7 +980,7 @@ public abstract class Level implements Bundlable {
 			}
 			
 			if (c.buff( Awareness.class ) != null) {
-				for (Heap heap : heaps.valueArray()) {
+				for (Heap heap : heaps.valueList()) {
 					int p = heap.pos;
 					for (int i : PathFinder.NEIGHBOURS9)
 						fieldOfView[p+i] = true;
@@ -1005,7 +1005,7 @@ public abstract class Level implements Bundlable {
 		}
 
 		if (c == Dungeon.hero) {
-			for (Heap heap : heaps.valueArray())
+			for (Heap heap : heaps.valueList())
 				if (!heap.seen && fieldOfView[heap.pos])
 					heap.seen = true;
 		}

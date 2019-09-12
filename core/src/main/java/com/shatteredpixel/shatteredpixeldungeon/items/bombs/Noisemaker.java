@@ -52,7 +52,7 @@ public class Noisemaker extends Bomb {
 			mob.beckon( cell );
 		}
 
-		for (Heap heap : Dungeon.level.heaps.valueArray()) {
+		for (Heap heap : Dungeon.level.heaps.valueList()) {
 			if (heap.type == Heap.Type.MIMIC) {
 				Mimic m = Mimic.spawnAt( heap.pos, heap.items );
 				if (m != null) {

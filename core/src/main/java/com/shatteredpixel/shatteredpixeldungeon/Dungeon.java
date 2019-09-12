@@ -772,7 +772,7 @@ public class Dungeon {
 		}
 		
 		if (hero.buff(Awareness.class) != null){
-			for (Heap h : level.heaps.valueArray()){
+			for (Heap h : level.heaps.valueList()){
 				BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
 				BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );

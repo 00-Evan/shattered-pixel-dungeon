@@ -32,10 +32,6 @@ public class SparseArray<T> extends IntMap<T> {
 		return keys().toArray().toArray();
 	}
 	
-	public T[] valueArray(){
-		return values().toArray().toArray();
-	}
-	
 	public List<T> valueList() {
 		return Arrays.asList(values().toArray().toArray());
 	}
