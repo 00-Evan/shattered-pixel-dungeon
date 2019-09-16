@@ -105,8 +105,7 @@ public class DangerIndicator extends Tag {
 			TargetHealthIndicator.instance.target(target == TargetHealthIndicator.instance.target() ? null : target);
 
 			if (Dungeon.hero.curAction == null) {
-				Camera.main.target = null;
-				Camera.main.focusOn(target.sprite);
+				Camera.main.panTo(target.sprite.center(), 5f);
 			}
 		}
 	}

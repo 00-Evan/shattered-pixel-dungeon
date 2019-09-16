@@ -224,8 +224,9 @@ public class Notes {
 			k = (KeyRecord) records.get(records.indexOf(k));
 			k.quantity(k.quantity() - key.quantity());
 			if (k.quantity() <= 0){
-				return records.remove(k);
+				records.remove(k);
 			}
+			return true;
 		}
 		return false;
 	}

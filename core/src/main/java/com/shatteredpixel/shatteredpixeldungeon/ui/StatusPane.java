@@ -86,9 +86,7 @@ public class StatusPane extends Component {
 			@Override
 			protected void onClick( PointerEvent event ) {
 				Image sprite = Dungeon.hero.sprite;
-				if (!sprite.isVisible()) {
-					Camera.main.focusOn( sprite );
-				}
+				Camera.main.panTo( sprite.center(), 2f );
 				GameScene.show( new WndHero() );
 			}
 		} );

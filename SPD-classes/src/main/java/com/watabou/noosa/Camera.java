@@ -52,7 +52,6 @@ public class Camera extends Gizmo {
 	public float[] matrix;
 	
 	public PointF scroll;
-	public Visual target;
 	
 	private float shakeMagX		= 10f;
 	private float shakeMagY		= 10f;
@@ -130,7 +129,7 @@ public class Camera extends Gizmo {
 	
 	@Override
 	public void destroy() {
-		target = null;
+		panIntensity = 0f;
 	}
 	
 	public void zoom( float value ) {
@@ -145,7 +144,7 @@ public class Camera extends Gizmo {
 		width = (int)(screenWidth / zoom);
 		height = (int)(screenHeight / zoom);
 		
-		focusOn( fx, fy );
+		snapTo( fx, fy );
 	}
 	
 	public void resize( int width, int height ) {
@@ -155,12 +154,28 @@ public class Camera extends Gizmo {
 		screenHeight = (int)(height * zoom);
 	}
 	
+	Visual followTarget = null;
+	PointF panTarget;
+	//camera moves at a speed such that it will pan to its current target in 1/intensity seconds
+	//keep in mind though that this speed is constantly decreasing, so actual pan time is higher
+	float panIntensity = 0f;
+	
 	@Override
 	public void update() {
 		super.update();
 		
-		if (target != null) {
-			focusOn( target.x + target.width / 2, target.y + target.height / 2 );
+		if (followTarget != null){
+			panTarget = followTarget.center();
+		}
+		
+		if (panIntensity > 0f){
+			PointF panMove = new PointF();
+			panMove.x = panTarget.x - (scroll.x + width/2f);
+			panMove.y = panTarget.y - (scroll.y + height/2f);
+			
+			panMove.scale(Game.elapsed * panIntensity);
+			
+			scroll.offset(panMove);
 		}
 		
 		if ((shakeTime -= Game.elapsed) > 0) {
@@ -183,16 +198,30 @@ public class Camera extends Gizmo {
 		return x >= this.x && y >= this.y && x < this.x + screenWidth && y < this.y + screenHeight;
 	}
 	
-	public void focusOn( float x, float y ) {
+	public void shift( PointF point ){
+		scroll.offset(point);
+		panIntensity = 0f;
+	}
+	
+	public void snapTo(float x, float y ) {
 		scroll.set( x - width / 2, y - height / 2 );
+		panIntensity = 0f;
+		followTarget = null;
 	}
 	
-	public void focusOn( PointF point ) {
-		focusOn( point.x, point.y );
+	public void snapTo(PointF point ) {
+		snapTo( point.x, point.y );
 	}
 	
-	public void focusOn( Visual visual ) {
-		focusOn( visual.center() );
+	public void panTo( PointF dst, float intensity ){
+		panTarget = dst;
+		panIntensity = intensity;
+		followTarget = null;
+	}
+	
+	public void panFollow(Visual target, float intensity ){
+		followTarget = target;
+		panIntensity = intensity;
 	}
 	
 	public PointF screenToCamera( int x, int y ) {

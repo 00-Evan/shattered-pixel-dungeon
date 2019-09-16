@@ -160,8 +160,6 @@ public class CellSelector extends PointerArea {
 	
 	@Override
 	protected void onDrag( PointerEvent event ) {
-		 
-		camera.target = null;
 
 		if (pinching) {
 
@@ -180,7 +178,7 @@ public class CellSelector extends PointerArea {
 				lastPos.set( event.current );
 				
 			} else if (dragging) {
-				camera.scroll.offset( PointF.diff( lastPos, event.current ).invScale( camera.zoom ) );
+				camera.shift( PointF.diff( lastPos, event.current ).invScale( camera.zoom ) );
 				lastPos.set( event.current );
 			}
 		}

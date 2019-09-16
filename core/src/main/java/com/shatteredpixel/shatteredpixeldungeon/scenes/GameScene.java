@@ -413,7 +413,7 @@ public class GameScene extends PixelScene {
 
 		Dungeon.hero.next();
 
-		Camera.main.target = hero;
+		Camera.main.snapTo(hero.center());
 
 		if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
 			if (Dungeon.depth == Statistics.deepestFloor
