@@ -96,7 +96,7 @@ public class HeroSprite extends CharSprite {
 	@Override
 	public void place( int p ) {
 		super.place( p );
-		Camera.main.panTo(center(), 5f);
+		Camera.main.panTo(center(), 8f);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class HeroSprite extends CharSprite {
 		if (ch.flying) {
 			play( fly );
 		}
-		Camera.main.panFollow(this, 5f);
+		Camera.main.panFollow(this, 8f);
 	}
 
 	@Override
