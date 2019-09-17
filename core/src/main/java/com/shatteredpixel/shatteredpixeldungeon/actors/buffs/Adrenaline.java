@@ -29,6 +29,8 @@ public class Adrenaline extends FlavourBuff {
 	
 	{
 		type = buffType.POSITIVE;
+		
+		announced = true;
 	}
 	
 	public static final float DURATION	= 10f;

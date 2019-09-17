@@ -78,17 +78,19 @@ public class Bestiary {
 						Shaman.class,
 						Guard.class));
 			case 8:
-				//3x skeleton, 1x thief, 2x shaman, 2x guard
-				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
+				//2x skeleton, 1x thief, 2x shaman, 2x guard, 1x necromancer
+				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class,
 						Thief.class,
 						Shaman.class, Shaman.class,
-						Guard.class, Guard.class));
+						Guard.class, Guard.class,
+						Necromancer.class));
 			case 9: case 10:
-				//3x skeleton, 1x thief, 2x shaman, 3x guard
-				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
+				//1x skeleton, 1x thief, 2x shaman, 2x guard, 2x necromancer
+				return new ArrayList<>(Arrays.asList(Skeleton.class,
 						Thief.class,
 						Shaman.class, Shaman.class,
-						Guard.class, Guard.class, Guard.class));
+						Guard.class, Guard.class,
+						Necromancer.class, Necromancer.class));
 				
 			// Caves
 			case 11:
@@ -180,9 +182,6 @@ public class Bestiary {
 				return;
 				
 			// Prison
-			case 6:
-				if (Random.Float() < 0.2f)  rotation.add(Shaman.class);
-				return;
 			case 8:
 				if (Random.Float() < 0.02f) rotation.add(Bat.class);
 				return;
