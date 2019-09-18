@@ -100,6 +100,23 @@ public class Necromancer extends Mob {
 		return super.createLoot();
 	}
 	
+	@Override
+	public void die(Object cause) {
+		if (storedSkeletonID != -1){
+			Actor ch = Actor.findById(storedSkeletonID);
+			storedSkeletonID = -1;
+			if (ch instanceof NecroSkeleton){
+				mySkeleton = (NecroSkeleton) ch;
+			}
+		}
+		
+		if (mySkeleton != null && mySkeleton.isAlive()){
+			mySkeleton.die(null);
+		}
+		
+		super.die(cause);
+	}
+	
 	private static final String SUMMONING = "summoning";
 	private static final String SUMMONING_POS = "summoning_pos";
 	private static final String MY_SKELETON = "my_skeleton";
