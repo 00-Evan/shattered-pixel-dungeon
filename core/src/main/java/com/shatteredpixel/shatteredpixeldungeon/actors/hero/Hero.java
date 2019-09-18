@@ -1546,7 +1546,7 @@ public class Hero extends Char {
 			int doorCell = ((HeroAction.Unlock)curAction).dst;
 			int door = Dungeon.level.map[doorCell];
 			
-			if (Dungeon.level.adjacent(pos, doorCell)) {
+			if (Dungeon.level.distance(pos, doorCell) <= 1) {
 				boolean hasKey = true;
 				if (door == Terrain.LOCKED_DOOR) {
 					hasKey = Notes.remove(new IronKey(Dungeon.depth));
@@ -1568,7 +1568,7 @@ public class Hero extends Char {
 			
 			Heap heap = Dungeon.level.heaps.get( ((HeroAction.OpenChest)curAction).dst );
 			
-			if (Dungeon.level.adjacent(pos, heap.pos)){
+			if (Dungeon.level.distance(pos, heap.pos) <= 1){
 				boolean hasKey = true;
 				if (heap.type == Type.SKELETON || heap.type == Type.REMAINS) {
 					Sample.INSTANCE.play( Assets.SND_BONES );
