@@ -114,6 +114,11 @@ public class Necromancer extends Mob {
 			mySkeleton.die(null);
 		}
 		
+		if (summoningEmitter != null){
+			summoningEmitter.killAndErase();
+			summoningEmitter = null;
+		}
+		
 		super.die(cause);
 	}
 	
