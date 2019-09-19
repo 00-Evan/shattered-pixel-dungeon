@@ -115,8 +115,8 @@ public class PerimeterRoom extends ConnectionRoom {
 	private static void fillBetweenPoints(Level level, Room r, Point from, Point to, int floor){
 		
 		//doors are along the same side
-		if (((from.x == r.left || from.x == r.right) && from.y == to.y)
-				|| ((from.y == r.top || from.y == r.bottom) && from.x == to.x)){
+		if (((from.x == r.left+1 || from.x == r.right-1) && from.x == to.x)
+				|| ((from.y == r.top+1 || from.y == r.bottom-1) && from.y == to.y)){
 			Painter.fill(level,
 					Math.min(from.x, to.x),
 					Math.min(from.y, to.y),
