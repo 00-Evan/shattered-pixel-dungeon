@@ -41,12 +41,6 @@ public class WornDartTrap extends Trap {
 	}
 
 	@Override
-	public Trap hide() {
-		//this one can't be hidden
-		return reveal();
-	}
-
-	@Override
 	public void activate() {
 		Char target = Actor.findChar(pos);
 		

@@ -40,12 +40,8 @@ public class GrimTrap extends Trap {
 	{
 		color = GREY;
 		shape = LARGE_DOT;
-	}
-
-	@Override
-	public Trap hide() {
-		//cannot hide this trap
-		return reveal();
+		
+		canBeHidden = false;
 	}
 
 	@Override

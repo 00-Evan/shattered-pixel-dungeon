@@ -106,6 +106,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -1645,6 +1646,11 @@ public class Hero extends Char {
 					}
 					
 					if (Dungeon.level.secret[p]){
+						
+						Trap trap = Dungeon.level.traps.get( p );
+						if (trap != null && !trap.canBeSearched){
+							continue;
+						}
 						
 						float chance;
 						//intentional searches always succeed

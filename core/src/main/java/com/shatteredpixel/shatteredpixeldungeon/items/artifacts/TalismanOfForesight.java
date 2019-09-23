@@ -182,8 +182,11 @@ public class TalismanOfForesight extends Artifact {
 
 					if (Dungeon.level.heroFOV[p]
 							&& Dungeon.level.secret[p]
-							&& Dungeon.level.map[p] != Terrain.SECRET_DOOR)
+							&& Dungeon.level.map[p] != Terrain.SECRET_DOOR) {
+						if (Dungeon.level.traps.get(p) == null || Dungeon.level.traps.get(p).canBeSearched) {
 							smthFound = true;
+						}
+					}
 				}
 			}
 
