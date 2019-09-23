@@ -102,6 +102,12 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBossEntranceRoom.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.SewerBossEntranceRoom" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.OldPrisonBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.OldPrisonBossLevel" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldTengu.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu" );
 	}
 	
 	@Override
