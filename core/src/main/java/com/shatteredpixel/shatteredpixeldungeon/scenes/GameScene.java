@@ -753,6 +753,15 @@ public class GameScene extends PixelScene {
 		if (scene != null) scene.healthIndicators.add(indicator);
 	}
 	
+	public static void add( CustomTilemap t, boolean wall ){
+		if (scene == null) return;
+		if (wall){
+			scene.addCustomWall(t);
+		} else {
+			scene.addCustomTile(t);
+		}
+	}
+	
 	public static void effect( Visual effect ) {
 		scene.effects.add( effect );
 	}
