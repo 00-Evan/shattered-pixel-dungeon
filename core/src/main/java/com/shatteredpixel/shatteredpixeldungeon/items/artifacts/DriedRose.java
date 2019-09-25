@@ -443,6 +443,8 @@ public class DriedRose extends Artifact {
 
 		{
 			stackable = true;
+			dropsDownHeap = true;
+			
 			image = ItemSpriteSheet.PETAL;
 		}
 

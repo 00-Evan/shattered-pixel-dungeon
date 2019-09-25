@@ -69,6 +69,7 @@ public class Item implements Bundlable {
 	
 	public boolean stackable = false;
 	protected int quantity = 1;
+	public boolean dropsDownHeap = false;
 	
 	private int level = 0;
 

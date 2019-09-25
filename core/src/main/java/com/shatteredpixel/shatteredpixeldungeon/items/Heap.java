@@ -206,7 +206,7 @@ public class Heap implements Bundlable {
 			
 		}
 		
-		if ((item instanceof Dewdrop || item instanceof DriedRose.Petal) && type != Type.FOR_SALE) {
+		if (item.dropsDownHeap && type != Type.FOR_SALE) {
 			items.add( item );
 		} else {
 			items.addFirst( item );
@@ -226,6 +226,16 @@ public class Heap implements Bundlable {
 		if (index != -1) {
 			items.remove( index );
 			items.add( index, b );
+		}
+	}
+	
+	public void remove( Item a ){
+		items.remove(a);
+		if (items.isEmpty()){
+			destroy();
+		} else {
+			sprite.view( image(), glowing() );
+			sprite.place( pos );
 		}
 	}
 	
