@@ -429,9 +429,7 @@ public class NewPrisonBossLevel extends Level {
 				cleanMapState();
 				
 				tengu.state = tengu.HUNTING;
-				do {
-					tengu.pos = Random.Int(length());
-				} while (solid[tengu.pos] || distance(tengu.pos, Dungeon.hero.pos) < 6);
+				tengu.pos = (arena.left + arena.width()/2) + width()*(arena.top+2);
 				GameScene.add(tengu);
 				tengu.notice();
 				

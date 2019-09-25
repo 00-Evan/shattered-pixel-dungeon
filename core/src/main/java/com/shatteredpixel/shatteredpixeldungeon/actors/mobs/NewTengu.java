@@ -26,24 +26,48 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BlastParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SmokeParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+
+import java.util.HashSet;
 
 //TODO currently has attack/defence stats for testing, need to add those
 public class NewTengu extends Mob {
@@ -88,12 +112,7 @@ public class NewTengu extends Mob {
 	public void damage(int dmg, Object src) {
 		NewPrisonBossLevel.State state = ((NewPrisonBossLevel)Dungeon.level).state();
 		
-		int hpBracket;
-		if (state == NewPrisonBossLevel.State.FIGHT_START){
-			hpBracket = 20;
-		} else {
-			hpBracket = 20;
-		}
+		int hpBracket = 20;
 		
 		int beforeHitHP = HP;
 		super.damage(dmg, src);
@@ -131,7 +150,7 @@ public class NewTengu extends Mob {
 		
 		//phase 1 of the fight is over
 		if (state == NewPrisonBossLevel.State.FIGHT_START && HP <= HT/2){
-			HP = (HT/2)-1;
+			HP = (HT/2);
 			yell(Messages.get(this, "interesting"));
 			((NewPrisonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
@@ -202,7 +221,7 @@ public class NewTengu extends Mob {
 				
 				do {
 					newPos = ((NewPrisonBossLevel)Dungeon.level).randomTenguCellPos();
-				} while ( (level.distance(newPos, enemy.pos) <= 2 || Actor.findChar(newPos) != null));
+				} while ( (level.distance(newPos, enemy.pos) < 3 || Actor.findChar(newPos) != null));
 				
 				if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				
@@ -217,15 +236,15 @@ public class NewTengu extends Mob {
 				float fill = 0.9f - 0.5f*((HP-80)/80f);
 				level.placeTrapsInTenguCell(fill);
 				
-				return;
-				
-				//otherwise.. TODO!
+			//otherwise, jump in a larger possible area, as the room is bigger
 			} else {
 				do {
 					newPos = Random.Int(level.length());
 				} while (
 						level.solid[newPos] ||
-								level.distance(newPos, enemy.pos) < 6 ||
+								level.distance(newPos, enemy.pos) < 5 ||
+								level.distance(newPos, enemy.pos) > 7 ||
+								level.distance(newPos, pos) < 6 ||
 								Actor.findChar(newPos) != null);
 				
 				if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
@@ -311,5 +330,454 @@ public class NewTengu extends Mob {
 				
 			}
 		}
+	}
+	
+	//*****************************************************************************************
+	//***** Tengu abilities. These are expressed in game logic as buffs, blobs, and items *****
+	//*****************************************************************************************
+	
+	//******************
+	//***Bomb Ability***
+	//******************
+	
+	public static class BombAbility extends Buff {
+		
+		public int bombPos;
+		private int timer = 3;
+		
+		@Override
+		public boolean act() {
+			
+			PointF p = DungeonTilemap.raisedTileCenterToWorld(bombPos);
+			if (timer == 3) {
+				FloatingText.show(p.x, p.y, bombPos, "3...", CharSprite.NEUTRAL);
+				PathFinder.buildDistanceMap( bombPos, BArray.not( Dungeon.level.solid, null ), 2 );
+				for (int i = 0; i < PathFinder.distance.length; i++) {
+					if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+						GameScene.add(Blob.seed(i, 4, BombBlob.class));
+					}
+				}
+			} else if (timer == 2){
+				FloatingText.show(p.x, p.y, bombPos, "2...", CharSprite.WARNING);
+			} else if (timer == 1){
+				FloatingText.show(p.x, p.y, bombPos, "1...", CharSprite.NEGATIVE);
+			} else {
+				Heap h = Dungeon.level.heaps.get(bombPos);
+				if (h != null){
+					for (Item i : h.items.toArray(new Item[0])){
+						if (i instanceof BombItem){
+							h.remove(i);
+						}
+					}
+				}
+				detach();
+				return true;
+			}
+			
+			timer--;
+			spend(TICK);
+			return true;
+		}
+		
+		private static final String BOMB_POS = "bomb_pos";
+		private static final String TIMER = "timer";
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( BOMB_POS, bombPos );
+			bundle.put( TIMER, timer );
+		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			bombPos = bundle.getInt( BOMB_POS );
+			timer = bundle.getInt( TIMER );
+		}
+		
+		public static class BombBlob extends Blob {
+			{
+				actPriority = BUFF_PRIO - 1;
+			}
+			
+			@Override
+			protected void evolve() {
+				
+				boolean exploded = false;
+				
+				int cell;
+				for (int i = area.left; i < area.right; i++){
+					for (int j = area.top; j < area.bottom; j++){
+						cell = i + j* Dungeon.level.width();
+						off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
+						
+						if (off[cell] > 0) {
+							volume += off[cell];
+						}
+						
+						if (cur[cell] > 0 && off[cell] == 0){
+							
+							Char ch = Actor.findChar(cell);
+							if (ch != null){
+								int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth*2);
+								dmg -= ch.drRoll();
+								
+								if (dmg > 0) {
+									ch.damage(dmg, Bomb.class);
+								}
+								
+								if (ch == Dungeon.hero && !ch.isAlive()) {
+									Dungeon.fail(NewTengu.class);
+								}
+							}
+							
+							if (Dungeon.level.heroFOV[cell]) {
+								exploded = true;
+								CellEmitter.center(cell).burst(BlastParticle.FACTORY, 2);
+							}
+						}
+					}
+				}
+				
+				if (exploded){
+					Sample.INSTANCE.play(Assets.SND_BLAST);
+				}
+				
+			}
+			
+			@Override
+			public void use(BlobEmitter emitter) {
+				super.use(emitter);
+				
+				emitter.pour( SmokeParticle.FACTORY, 0.1f );
+			}
+			
+			@Override
+			public String tileDesc() {
+				return Messages.get(this, "desc");
+			}
+		}
+		
+		public static class BombItem extends Item {
+			
+			{
+				dropsDownHeap = true;
+				
+				image = ItemSpriteSheet.TENGU_BOMB;
+			}
+			
+			@Override
+			public boolean doPickUp( Hero hero ) {
+				GLog.w( Messages.get(this, "cant_pickup") );
+				return false;
+			}
+			
+			//TODO change for when tengu throws this
+			@Override
+			protected void onThrow(int cell) {
+				super.onThrow(cell);
+				Buff.append(curUser, BombAbility.class).bombPos = cell;
+			}
+			
+			@Override
+			public ItemSprite.Glowing glowing() {
+				return new ItemSprite.Glowing( 0xFF0000, 0.5f );
+			}
+		}
+	}
+	
+	//******************
+	//***Fire Ability***
+	//******************
+	
+	public static class FireAbility extends Buff {
+		
+		public int direction;
+		private int[] curCells;
+		
+		HashSet<Integer> toCells = new HashSet<>();
+		
+		@Override
+		public boolean act() {
+			
+			if (curCells == null){
+				curCells = new int[1];
+				curCells[0] = target.pos;
+			}
+			
+			toCells.clear();
+			
+			for (Integer c : curCells){
+				spreadFromCell( c );
+			}
+			
+			for (Integer c : curCells){
+				toCells.remove(c);
+			}
+			
+			if (toCells.isEmpty()){
+				detach();
+			} else {
+				curCells = new int[toCells.size()];
+				int i = 0;
+				for (Integer c : toCells){
+					GameScene.add(Blob.seed(c, 2, FireBlob.class));
+					curCells[i] = c;
+					i++;
+				}
+			}
+			
+			spend(TICK);
+			return true;
+		}
+		
+		private void spreadFromCell( int cell ){
+			if (!Dungeon.level.solid[cell + PathFinder.CIRCLE8[left(direction)]]){
+				toCells.add(cell + PathFinder.CIRCLE8[left(direction)]);
+			}
+			if (!Dungeon.level.solid[cell + PathFinder.CIRCLE8[direction]]){
+				toCells.add(cell + PathFinder.CIRCLE8[direction]);
+			}
+			if (!Dungeon.level.solid[cell + PathFinder.CIRCLE8[right(direction)]]){
+				toCells.add(cell + PathFinder.CIRCLE8[right(direction)]);
+			}
+		}
+		
+		private int left(int direction){
+			return direction == 0 ? 7 : direction-1;
+		}
+		
+		private int right(int direction){
+			return direction == 7 ? 0 : direction+1;
+		}
+		
+		private static final String DIRECTION = "direction";
+		private static final String CUR_CELLS = "cur_cells";
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( DIRECTION, direction );
+			bundle.put( CUR_CELLS, curCells );
+		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			direction = bundle.getInt( DIRECTION );
+			curCells = bundle.getIntArray( CUR_CELLS );
+		}
+		
+		public static class FireBlob extends Blob {
+			
+			{
+				
+				actPriority = BUFF_PRIO - 1;
+			}
+			
+			@Override
+			protected void evolve() {
+				
+				boolean observe = false;
+				boolean burned = false;
+				
+				int cell;
+				for (int i = area.left; i < area.right; i++){
+					for (int j = area.top; j < area.bottom; j++){
+						cell = i + j* Dungeon.level.width();
+						off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
+						
+						if (off[cell] > 0) {
+							volume += off[cell];
+						}
+						
+						if (cur[cell] > 0 && off[cell] == 0){
+							Fire.burn( cell );
+							
+							if (Dungeon.level.flamable[cell]){
+								Dungeon.level.destroy( cell );
+								
+								observe = true;
+								GameScene.updateMap( cell );
+							}
+							
+							if (Dungeon.level.heroFOV[cell]){
+								burned = true;
+								CellEmitter.get(cell).start(FlameParticle.FACTORY, 0.03f, 10);
+							}
+						}
+					}
+				}
+				
+				if (observe) {
+					Dungeon.observe();
+				}
+				
+				if (burned){
+					Sample.INSTANCE.play(Assets.SND_BURNING);
+				}
+			}
+			
+			@Override
+			public void use(BlobEmitter emitter) {
+				super.use(emitter);
+				
+				emitter.pour( Speck.factory( Speck.STEAM ), 0.2f );
+			}
+			
+			@Override
+			public String tileDesc() {
+				return Messages.get(this, "desc");
+			}
+		}
+	}
+	
+	//*********************
+	//***Shocker Ability***
+	//*********************
+	
+	public static class ShockerAbility extends Buff {
+	
+		public int shockerPos;
+		private Boolean shockingOrdinals = null;
+		
+		@Override
+		public boolean act() {
+			
+			if (shockingOrdinals == null){
+				shockingOrdinals = Random.Int(2) == 1;
+				
+				spreadblob();
+			} else if (shockingOrdinals){
+				
+				target.sprite.parent.add(new Lightning(shockerPos - 1 - Dungeon.level.width(), shockerPos + 1 + Dungeon.level.width(), null));
+				target.sprite.parent.add(new Lightning(shockerPos - 1 + Dungeon.level.width(), shockerPos + 1 - Dungeon.level.width(), null));
+				
+				if (Dungeon.level.distance(Dungeon.hero.pos, shockerPos) <= 1){
+					Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+				}
+				
+				shockingOrdinals = false;
+				spreadblob();
+			} else {
+				
+				target.sprite.parent.add(new Lightning(shockerPos - Dungeon.level.width(), shockerPos + Dungeon.level.width(), null));
+				target.sprite.parent.add(new Lightning(shockerPos - 1, shockerPos + 1, null));
+				
+				if (Dungeon.level.distance(Dungeon.hero.pos, shockerPos) <= 1){
+					Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+				}
+				
+				shockingOrdinals = true;
+				spreadblob();
+			}
+			
+			spend(TICK);
+			return true;
+		}
+		
+		private void spreadblob(){
+			GameScene.add(Blob.seed(shockerPos, 1, ShockerBlob.class));
+			for (int i = shockingOrdinals ? 0 : 1; i < PathFinder.CIRCLE8.length; i += 2){
+				if (!Dungeon.level.solid[shockerPos+PathFinder.CIRCLE8[i]]) {
+					GameScene.add(Blob.seed(shockerPos + PathFinder.CIRCLE8[i], 2, ShockerBlob.class));
+				}
+			}
+		}
+		
+		private static final String SHOCKER_POS = "shocker_pos";
+		private static final String SHOCKING_ORDINALS = "shocking_ordinals";
+		
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( SHOCKER_POS, shockerPos );
+			bundle.put( SHOCKING_ORDINALS, shockingOrdinals );
+		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			shockerPos = bundle.getInt( SHOCKER_POS );
+			shockingOrdinals = bundle.getBoolean( SHOCKING_ORDINALS );
+		}
+		
+		public static class ShockerBlob extends Blob {
+			
+			{
+				actPriority = BUFF_PRIO - 1;
+			}
+			
+			@Override
+			protected void evolve() {
+				
+				int cell;
+				for (int i = area.left; i < area.right; i++){
+					for (int j = area.top; j < area.bottom; j++){
+						cell = i + j* Dungeon.level.width();
+						off[cell] = cur[cell] > 0 ? cur[cell] - 1 : 0;
+						
+						if (off[cell] > 0) {
+							volume += off[cell];
+						}
+						
+						if (cur[cell] > 0 && off[cell] == 0){
+							
+							Char ch = Actor.findChar(cell);
+							if (ch != null){
+								ch.damage(2 + Dungeon.depth, Electricity.class);
+								
+								if (ch == Dungeon.hero && !ch.isAlive()) {
+									Dungeon.fail(NewTengu.class);
+								}
+							}
+							
+						}
+					}
+				}
+				
+			}
+			
+			@Override
+			public void use(BlobEmitter emitter) {
+				super.use(emitter);
+				
+				emitter.pour( SparkParticle.STATIC, 0.10f );
+			}
+			
+			@Override
+			public String tileDesc() {
+				return Messages.get(this, "desc");
+			}
+		}
+		
+		public static class ShockerItem extends Item {
+			
+			{
+				dropsDownHeap = true;
+				
+				image = ItemSpriteSheet.TENGU_SHOCKER;
+			}
+			
+			@Override
+			public boolean doPickUp( Hero hero ) {
+				GLog.w( Messages.get(this, "cant_pickup") );
+				return false;
+			}
+			
+			//TODO change for when tengu throws this
+			@Override
+			protected void onThrow(int cell) {
+				super.onThrow(cell);
+				Buff.append(curUser, ShockerAbility.class).shockerPos = cell;
+			}
+			
+			@Override
+			public ItemSprite.Glowing glowing() {
+				return new ItemSprite.Glowing( 0xFFFFFF, 0.5f );
+			}
+		}
+		
 	}
 }

@@ -36,7 +36,18 @@ public class SparkParticle extends PixelParticle {
 		@Override
 		public boolean lightMode() {
 			return true;
-		};
+		}
+	};
+	
+	public static final Emitter.Factory STATIC = new Factory() {
+		@Override
+		public void emit( Emitter emitter, int index, float x, float y ) {
+			((SparkParticle)emitter.recycle( SparkParticle.class )).resetStatic( x, y );
+		}
+		@Override
+		public boolean lightMode() {
+			return true;
+		}
 	};
 	
 	public SparkParticle() {
@@ -56,6 +67,15 @@ public class SparkParticle extends PixelParticle {
 		left = lifespan = Random.Float( 0.5f, 1.0f );
 		
 		speed.polar( -Random.Float( 3.1415926f ), Random.Float( 20, 40 ) );
+	}
+	
+	public void resetStatic( float x, float y){
+		reset(x, y);
+		
+		left = lifespan = Random.Float( 0.25f, 0.5f );
+		
+		acc.set( 0, 0 );
+		speed.set( 0, 0 );
 	}
 	
 	@Override
