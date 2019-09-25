@@ -21,10 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -47,6 +49,7 @@ public class ShockingDart extends TippedDart {
 			arcs.add(new Lightning.Arc(new PointF(s.x, s.y + s.height / 2), new PointF(s.x + s.width, s.y + s.height / 2)));
 			arcs.add(new Lightning.Arc(new PointF(s.x + s.width / 2, s.y), new PointF(s.x + s.width / 2, s.y + s.height)));
 			s.parent.add(new Lightning(arcs, null));
+			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 		}
 		
 		return super.proc(attacker, defender, damage);

@@ -21,13 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -72,8 +70,6 @@ public class Lightning extends Group {
 		this.callback = callback;
 		
 		life = DURATION;
-		
-		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 	}
 	
 	private static final double A = 180 / Math.PI;
