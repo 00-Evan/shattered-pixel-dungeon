@@ -55,7 +55,6 @@ public class SewerBossLevel extends SewerLevel {
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();
 		
-		//TODO it would be nice for these rooms to have some custom tile visuals
 		initRooms.add( roomEntrance = new SewerBossEntranceRoom() );
 		initRooms.add( roomExit = new SewerBossExitRoom() );
 		
@@ -67,7 +66,6 @@ public class SewerBossLevel extends SewerLevel {
 			initRooms.add(s);
 		}
 		
-		//TODO need to improve the visual appearance of goo's nest
 		GooBossRoom gooRoom = GooBossRoom.randomGooRoom();
 		initRooms.add(gooRoom);
 		((FigureEightBuilder)builder).setLandmarkRoom(gooRoom);

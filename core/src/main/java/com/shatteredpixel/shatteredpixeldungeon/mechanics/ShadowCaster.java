@@ -74,8 +74,6 @@ public final class ShadowCaster {
 
 	}
 	
-	//TODO this is slightly less permissive that the previous algorithm, decide if that's okay
-	
 	//scans a single 45 degree octant of the FOV.
 	//This can add up to a whole FOV by mirroring in X(mX), Y(mY), and X=Y(mXY)
 	private static void scanOctant(int distance, boolean[] fov, boolean[] blocking, int row,

@@ -69,7 +69,6 @@ public class RingOfElements extends Ring {
 		return new Resistance();
 	}
 
-	//FIXME probably should add wands here
 	public static final HashSet<Class> RESISTS = new HashSet<>();
 	static {
 		RESISTS.add( Burning.class );

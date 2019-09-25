@@ -77,8 +77,7 @@ public class Electricity extends Blob {
 							ch.damage(Math.round(Random.Float(2 + Dungeon.depth / 5f)), this);
 							if (!ch.isAlive() && ch == Dungeon.hero){
 								Dungeon.fail( getClass() );
-								//FIXME add other languages in next update
-								if (SPDSettings.language() == Languages.ENGLISH) GLog.n( Messages.get(this, "ondeath") );
+								GLog.n( Messages.get(this, "ondeath") );
 							}
 						}
 					}

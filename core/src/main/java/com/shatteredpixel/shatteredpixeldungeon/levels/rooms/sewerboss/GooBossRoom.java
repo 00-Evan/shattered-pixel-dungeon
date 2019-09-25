@@ -57,7 +57,6 @@ public abstract class GooBossRoom extends StandardRoom {
 		level.customTiles.add(nest);
 	}
 	
-	//TODO no texturing on this atm
 	public static class GooNest extends CustomTilemap {
 		
 		{

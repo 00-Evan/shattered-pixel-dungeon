@@ -104,7 +104,6 @@ public abstract class Recipe {
 			
 			int[] needed = inQuantity.clone();
 			
-			//TODO is this right?
 			for (Item ingredient : ingredients){
 				if (!ingredient.isIdentified()) return false;
 				for (int i = 0; i < inputs.length; i++){

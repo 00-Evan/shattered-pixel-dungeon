@@ -1306,9 +1306,11 @@ public class Hero extends Char {
 		
 		if (levelUp) {
 			
-			GLog.p( Messages.get(this, "new_level"), lvl );
-			sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
-			Sample.INSTANCE.play( Assets.SND_LEVELUP );
+			if (sprite != null) {
+				GLog.p( Messages.get(this, "new_level"), lvl );
+				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
+				Sample.INSTANCE.play( Assets.SND_LEVELUP );
+			}
 			
 			Item.updateQuickslot();
 			
