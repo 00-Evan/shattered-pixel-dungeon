@@ -69,6 +69,8 @@ public class Necromancer extends Mob {
 	private Emitter summoningEmitter = null;
 	private int summoningPos = -1;
 	
+	private boolean firstSummon = true;
+	
 	private NecroSkeleton mySkeleton;
 	private int storedSkeletonID = -1;
 	
@@ -123,13 +125,15 @@ public class Necromancer extends Mob {
 	}
 	
 	private static final String SUMMONING = "summoning";
+	private static final String FIRST_SUMMON = "first_summon";
 	private static final String SUMMONING_POS = "summoning_pos";
 	private static final String MY_SKELETON = "my_skeleton";
 	
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
-		bundle.put( SUMMONING, summoning);
+		bundle.put( SUMMONING, summoning );
+		bundle.put( FIRST_SUMMON, firstSummon );
 		if (summoning){
 			bundle.put( SUMMONING_POS, summoningPos);
 		}
@@ -142,6 +146,7 @@ public class Necromancer extends Mob {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		summoning = bundle.getBoolean( SUMMONING );
+		if (bundle.contains(FIRST_SUMMON)) firstSummon = bundle.getBoolean(FIRST_SUMMON);
 		if (summoning){
 			summoningPos = bundle.getInt( SUMMONING_POS );
 		}
@@ -191,7 +196,7 @@ public class Necromancer extends Mob {
 					}
 				}
 				
-				summoning = false;
+				summoning = firstSummon = false;
 				
 				mySkeleton = new NecroSkeleton();
 				mySkeleton.pos = summoningPos;
@@ -236,7 +241,7 @@ public class Necromancer extends Mob {
 					
 					((NecromancerSprite)sprite).charge(summoningPos);
 					
-					spend(TICK);
+					spend( firstSummon ? TICK : 2*TICK );
 				} else {
 					//wait for a turn
 					spend(TICK);
@@ -303,6 +308,7 @@ public class Necromancer extends Mob {
 		}
 	}
 	
+	//TODO should give this its own sprite
 	public static class NecroSkeleton extends Skeleton {
 		
 		{
@@ -318,8 +324,6 @@ public class Necromancer extends Mob {
 		private void teleportSpend(){
 			spend(TICK);
 		}
-		
-		//TODO sometimes skeleton can get blocked behind necromancer, might want to address that
 		
 	}
 }

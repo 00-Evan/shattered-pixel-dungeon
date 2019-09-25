@@ -34,7 +34,7 @@ public class Slime extends Mob {
 	{
 		spriteClass = SlimeSprite.class;
 		
-		HP = HT = 25;
+		HP = HT = 20;
 		defenseSkill = 5;
 		
 		EXP = 4;
@@ -53,14 +53,27 @@ public class Slime extends Mob {
 		return 12;
 	}
 	
+	private int reduceDamage( int incomingDamage ){
+		if (incomingDamage <= 4){
+			return incomingDamage;
+		} else {
+			//takes 5/6/7/8/9/10 dmg at 5/7/10/14/19/25 incoming dmg
+			return 4 + (int)(Math.sqrt(8*(incomingDamage - 4) + 1) - 1)/2;
+		}
+	}
+	
 	@Override
 	public void damage(int dmg, Object src) {
-		super.damage(Math.min(dmg, 6), src);
+		if (src instanceof Char) {
+			super.damage(dmg, src);
+		} else {
+			super.damage(reduceDamage(dmg), src);
+		}
 	}
 	
 	@Override
 	public int defenseProc(Char enemy, int damage) {
-		return super.defenseProc(enemy, Math.min(damage, 6));
+		return super.defenseProc(enemy, reduceDamage(damage));
 	}
 	
 	@Override
