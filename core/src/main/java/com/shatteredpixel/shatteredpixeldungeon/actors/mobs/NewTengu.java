@@ -29,7 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -56,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
@@ -63,13 +66,13 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-//TODO currently has attack/defence stats for testing, need to add those
 public class NewTengu extends Mob {
 	
 	{
@@ -77,7 +80,7 @@ public class NewTengu extends Mob {
 		
 		HP = HT = 160;
 		EXP = 20;
-		defenseSkill = 0;
+		defenseSkill = 15;
 		
 		HUNTING = new Hunting();
 		
@@ -95,17 +98,21 @@ public class NewTengu extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 0, 0 );
+		return Random.NormalIntRange( 6, 12 );
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 20;
+		if (target.invisible > 0){
+			return 12;
+		} else {
+			return 20;
+		}
 	}
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 0);
+		return Random.NormalIntRange(0, 5);
 	}
 	
 	@Override
@@ -238,19 +245,23 @@ public class NewTengu extends Mob {
 				
 			//otherwise, jump in a larger possible area, as the room is bigger
 			} else {
+				
 				do {
 					newPos = Random.Int(level.length());
 				} while (
 						level.solid[newPos] ||
-								level.distance(newPos, enemy.pos) < 5 ||
-								level.distance(newPos, enemy.pos) > 7 ||
+								level.distance(newPos, enemy.pos) < 6 ||
+								level.distance(newPos, enemy.pos) > 8 ||
 								level.distance(newPos, pos) < 6 ||
-								Actor.findChar(newPos) != null);
+								Actor.findChar(newPos) != null ||
+								Dungeon.level.heaps.get(newPos) != null);
 				
 				if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				
 				sprite.move( pos, newPos );
 				move( newPos );
+				
+				if (arenaJumps < 4) arenaJumps++;
 				
 				if (level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				Sample.INSTANCE.play( Assets.SND_PUFF );
@@ -284,7 +295,7 @@ public class NewTengu extends Mob {
 			BossHealthBar.assignBoss(this);
 			if (HP <= HT/2) BossHealthBar.bleed(true);
 			if (HP == HT) {
-				yell(Messages.get(this, "notice_mine", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_gotcha", Dungeon.hero.givenName()));
 				for (Char ch : Actor.chars()){
 					if (ch instanceof DriedRose.GhostHero){
 						GLog.n("\n");
@@ -292,25 +303,64 @@ public class NewTengu extends Mob {
 					}
 				}
 			} else {
-				yell(Messages.get(this, "notice_face", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_have", Dungeon.hero.givenName()));
 			}
 		}
+	}
+	
+	{
+		immunities.add( Blindness.class );
+	}
+	
+	private static final String LAST_ABILITY     = "last_ability";
+	private static final String ABILITIES_USED   = "abilities_used";
+	private static final String ARENA_JUMPS      = "arena_jumps";
+	private static final String ABILITY_COOLDOWN = "ability_cooldown";
+	
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put( LAST_ABILITY, lastAbility );
+		bundle.put( ABILITIES_USED, abilitiesUsed );
+		bundle.put( ARENA_JUMPS, arenaJumps );
+		bundle.put( ABILITY_COOLDOWN, abilityCooldown );
 	}
 	
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
+		lastAbility = bundle.getInt( LAST_ABILITY );
+		abilitiesUsed = bundle.getInt( ABILITIES_USED );
+		arenaJumps = bundle.getInt( ARENA_JUMPS );
+		abilityCooldown = bundle.getInt( ABILITY_COOLDOWN );
+		
 		BossHealthBar.assignBoss(this);
 		if (HP <= HT/2) BossHealthBar.bleed(true);
 	}
+	
+	//don't bother bundling this, as its purely cosmetic
+	private boolean yelledCoward = false;
 	
 	//tengu is always hunting
 	private class Hunting extends Mob.Hunting{
 		
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
+			
+			if (!enemyInFOV && fieldOfView[enemy.pos]){
+				if (!yelledCoward) {
+					yell(Messages.get(NewTengu.class, "coward"));
+					yelledCoward = true;
+				}
+				enemyInFOV = true;
+			}
+			
 			enemySeen = enemyInFOV;
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
+				
+				if (canUseAbility()){
+					return useAbility();
+				}
 				
 				return doAttack( enemy );
 				
@@ -336,9 +386,136 @@ public class NewTengu extends Mob {
 	//***** Tengu abilities. These are expressed in game logic as buffs, blobs, and items *****
 	//*****************************************************************************************
 	
+	//so that mobs can also use this
+	private static Char throwingChar;
+	
+	private int lastAbility = -1;
+	private int abilitiesUsed = 0;
+	private int arenaJumps = 0;
+	
+	//starts at 2, so one turn and then first ability
+	private int abilityCooldown = 2;
+	
+	private static final int BOMB_ABILITY    = 0;
+	private static final int FIRE_ABILITY    = 1;
+	private static final int SHOCKER_ABILITY = 2;
+	
+	//expects to be called once per turn;
+	public boolean canUseAbility(){
+		
+		if (HP > HT/2) return false;
+		
+		//1 base ability use, plus 2 uses per jump
+		int targetAbilityUses = 1 + 2*arenaJumps;
+		
+		//and ane extra 2 use for jumps 3 and 4
+		targetAbilityUses += Math.max(0, arenaJumps-2);
+		
+		if (abilitiesUsed >= targetAbilityUses){
+			return false;
+		} else {
+			
+			abilityCooldown--;
+			
+			if (targetAbilityUses - abilitiesUsed >= 5){
+				//Very behind in ability uses, use one right away!
+				abilityCooldown = 0;
+			} else if (targetAbilityUses - abilitiesUsed >= 3){
+				//moderately behind in uses, use one every other action.
+				if (abilityCooldown == -1 || abilityCooldown > 1) abilityCooldown = 1;
+				
+			} else {
+				//standard delay before ability use, 1-4 turns
+				if (abilityCooldown == -1) abilityCooldown = Random.IntRange(1, 4);
+			}
+			
+			if (abilityCooldown == 0){
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	
+	public boolean useAbility(){
+		boolean abilityUsed = false;
+		int abilityToUse = -1;
+		
+		while (!abilityUsed){
+			
+			if (abilitiesUsed == 0){
+				abilityToUse = BOMB_ABILITY;
+			} else if (abilitiesUsed == 1){
+				abilityToUse = SHOCKER_ABILITY;
+			} else {
+				abilityToUse = Random.Int(3);
+			}
+			
+			//If we roll the same ability as last time, 9/10 chance to reroll
+			if (abilityToUse != lastAbility || Random.Int(10) == 0){
+				switch (abilityToUse){
+					case BOMB_ABILITY : default:
+						abilityUsed = throwBomb(NewTengu.this, enemy);
+						break;
+					case FIRE_ABILITY:
+						abilityUsed = throwFire(NewTengu.this, enemy);
+						break;
+					case SHOCKER_ABILITY:
+						abilityUsed = throwShocker(NewTengu.this, enemy);
+						break;
+				}
+			}
+			
+		}
+		
+		lastAbility = abilityToUse;
+		abilitiesUsed++;
+		
+		spend(2 * TICK);
+		return lastAbility == FIRE_ABILITY;
+	}
+	
 	//******************
 	//***Bomb Ability***
 	//******************
+	
+	//returns true if bomb was thrown
+	public static boolean throwBomb(final Char thrower, final Char target){
+		
+		int targetCell = -1;
+		
+		//Targets closest cell which is adjacent to target, and at least 3 tiles away
+		for (int i : PathFinder.NEIGHBOURS8){
+			int cell = target.pos + i;
+			if (Dungeon.level.distance(cell, thrower.pos) >= 3){
+				if (targetCell == -1 ||
+						Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos)){
+					targetCell = cell;
+				}
+			}
+		}
+		
+		if (targetCell == -1){
+			return false;
+		}
+		
+		final int finalTargetCell = targetCell;
+		throwingChar = thrower;
+		final BombAbility.BombItem item = new BombAbility.BombItem();
+		thrower.sprite.zap(finalTargetCell);
+		((MissileSprite) thrower.sprite.parent.recycle(MissileSprite.class)).
+				reset(thrower.sprite,
+						finalTargetCell,
+						item,
+						new Callback() {
+							@Override
+							public void call() {
+								item.onThrow(finalTargetCell);
+								thrower.next();
+							}
+						});
+		return true;
+	}
 	
 	public static class BombAbility extends Buff {
 		
@@ -419,7 +596,7 @@ public class NewTengu extends Mob {
 						if (cur[cell] > 0 && off[cell] == 0){
 							
 							Char ch = Actor.findChar(cell);
-							if (ch != null){
+							if (ch != null && !(ch instanceof NewTengu)){
 								int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth*2);
 								dmg -= ch.drRoll();
 								
@@ -473,11 +650,15 @@ public class NewTengu extends Mob {
 				return false;
 			}
 			
-			//TODO change for when tengu throws this
 			@Override
 			protected void onThrow(int cell) {
 				super.onThrow(cell);
-				Buff.append(curUser, BombAbility.class).bombPos = cell;
+				if (throwingChar != null){
+					Buff.append(throwingChar, BombAbility.class).bombPos = cell;
+					throwingChar = null;
+				} else {
+					Buff.append(curUser, BombAbility.class).bombPos = cell;
+				}
 			}
 			
 			@Override
@@ -490,6 +671,23 @@ public class NewTengu extends Mob {
 	//******************
 	//***Fire Ability***
 	//******************
+	
+	public static boolean throwFire(final Char thrower, final Char target){
+		
+		Ballistica aim = new Ballistica(thrower.pos, target.pos, Ballistica.WONT_STOP);
+		
+		for (int i = 0; i < PathFinder.CIRCLE8.length; i++){
+			if (aim.sourcePos+PathFinder.CIRCLE8[i] == aim.path.get(1)){
+				thrower.sprite.zap(target.pos);
+				Buff.append(thrower, NewTengu.FireAbility.class).direction = i;
+				
+				thrower.sprite.emitter().start(Speck.factory(Speck.STEAM), .03f, 10);
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	
 	public static class FireAbility extends Buff {
 		
@@ -593,7 +791,11 @@ public class NewTengu extends Mob {
 						}
 						
 						if (cur[cell] > 0 && off[cell] == 0){
-							Fire.burn( cell );
+							
+							Char ch = Actor.findChar( cell );
+							if (ch != null && !ch.isImmune(Fire.class) && !(ch instanceof NewTengu)) {
+								Buff.affect( ch, Burning.class ).reignite( ch );
+							}
 							
 							if (Dungeon.level.flamable[cell]){
 								Dungeon.level.destroy( cell );
@@ -636,6 +838,50 @@ public class NewTengu extends Mob {
 	//*********************
 	//***Shocker Ability***
 	//*********************
+	
+	//returns true if shocker was thrown
+	public static boolean throwShocker(final Char thrower, final Char target){
+		
+		int targetCell = -1;
+		
+		//Targets closest cell which is adjacent to target, and not adjacent to thrower or another shocker
+		for (int i : PathFinder.NEIGHBOURS8){
+			int cell = target.pos + i;
+			if (Dungeon.level.distance(cell, thrower.pos) >= 2){
+				boolean validTarget = true;
+				for (ShockerAbility s : thrower.buffs(ShockerAbility.class)){
+					if (Dungeon.level.distance(cell, s.shockerPos) < 2){
+						validTarget = false;
+						break;
+					}
+				}
+				if (validTarget && Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos)){
+					targetCell = cell;
+				}
+			}
+		}
+		
+		if (targetCell == -1){
+			return false;
+		}
+		
+		final int finalTargetCell = targetCell;
+		throwingChar = thrower;
+		final ShockerAbility.ShockerItem item = new ShockerAbility.ShockerItem();
+		thrower.sprite.zap(finalTargetCell);
+		((MissileSprite) thrower.sprite.parent.recycle(MissileSprite.class)).
+				reset(thrower.sprite,
+						finalTargetCell,
+						item,
+						new Callback() {
+							@Override
+							public void call() {
+								item.onThrow(finalTargetCell);
+								thrower.next();
+							}
+						});
+		return true;
+	}
 	
 	public static class ShockerAbility extends Buff {
 	
@@ -725,7 +971,7 @@ public class NewTengu extends Mob {
 						if (cur[cell] > 0 && off[cell] == 0){
 							
 							Char ch = Actor.findChar(cell);
-							if (ch != null){
+							if (ch != null && !(ch instanceof NewTengu)){
 								ch.damage(2 + Dungeon.depth, Electricity.class);
 								
 								if (ch == Dungeon.hero && !ch.isAlive()) {
@@ -766,11 +1012,15 @@ public class NewTengu extends Mob {
 				return false;
 			}
 			
-			//TODO change for when tengu throws this
 			@Override
 			protected void onThrow(int cell) {
 				super.onThrow(cell);
-				Buff.append(curUser, ShockerAbility.class).shockerPos = cell;
+				if (throwingChar != null){
+					Buff.append(throwingChar, ShockerAbility.class).shockerPos = cell;
+					throwingChar = null;
+				} else {
+					Buff.append(curUser, ShockerAbility.class).shockerPos = cell;
+				}
 			}
 			
 			@Override

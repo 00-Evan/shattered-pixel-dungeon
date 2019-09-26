@@ -33,7 +33,7 @@ public class TenguDartTrap extends PoisonDartTrap {
 	
 	@Override
 	protected int poisonAmount() {
-		return 9; //21 damage total
+		return 8; //17 damage total
 	}
 	
 	@Override

@@ -487,7 +487,10 @@ public class NewPrisonBossLevel extends Level {
 				clearEntities(tenguCell);
 				
 				for (Item item : storedItems) {
-					drop(item, randomTenguCellPos());
+					if (!(item instanceof NewTengu.BombAbility.BombItem)
+						&& !(item instanceof NewTengu.ShockerAbility.ShockerItem)) {
+						drop(item, randomTenguCellPos());
+					}
 				}
 				
 				GameScene.flash(0xFFFFFF);
@@ -535,7 +538,7 @@ public class NewPrisonBossLevel extends Level {
 							FadingTraps f = new FadingTraps();
 							f.setCoveringArea(mazeCells[i]);
 							GameScene.add(f, false);
-							f.startFade(2.5f);
+							f.startFade( 3f );
 							
 							Sample.INSTANCE.play(Assets.SND_TELEPORT);
 							int roomCenter = (mazeCells[i].left + mazeCells[i].right)/2 +
@@ -629,7 +632,7 @@ public class NewPrisonBossLevel extends Level {
 		FadingTraps t = new FadingTraps();
 		t.setCoveringArea(tenguCell);
 		GameScene.add(t, false);
-		t.startFade( 2.5f );
+		t.startFade( 3f );
 	}
 	
 	@Override
