@@ -195,7 +195,7 @@ public class Thief extends Mob {
 					state = HUNTING;
 				} else if (item != null
 						&& !Dungeon.level.heroFOV[pos]
-						&& Dungeon.level.distance(Dungeon.hero.pos, pos) < 6) {
+						&& Dungeon.level.distance(Dungeon.hero.pos, pos) >= 6) {
 
 					int count = 32;
 					int newPos;
