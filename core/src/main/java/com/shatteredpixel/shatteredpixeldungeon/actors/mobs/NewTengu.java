@@ -347,7 +347,7 @@ public class NewTengu extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			
-			if (!enemyInFOV && fieldOfView[enemy.pos]){
+			if (enemy != null && !enemyInFOV && fieldOfView[enemy.pos]){
 				if (!yelledCoward) {
 					yell(Messages.get(NewTengu.class, "coward"));
 					yelledCoward = true;
@@ -456,6 +456,11 @@ public class NewTengu extends Mob {
 				switch (abilityToUse){
 					case BOMB_ABILITY : default:
 						abilityUsed = throwBomb(NewTengu.this, enemy);
+						//if Tengu cannot use his bomb ability first, use fire instead.
+						if (abilitiesUsed == 0 && !abilityUsed){
+							abilityToUse = FIRE_ABILITY;
+							abilityUsed = throwFire(NewTengu.this, enemy);
+						}
 						break;
 					case FIRE_ABILITY:
 						abilityUsed = throwFire(NewTengu.this, enemy);
