@@ -63,16 +63,6 @@ public class Sheep extends NPC {
 		return 100_000_000;
 	}
 	
-	//FIXME translate this
-	@Override
-	public String defenseVerb() {
-		if (SPDSettings.language() == Languages.ENGLISH){
-			return "Absorbed";
-		} else {
-			return super.defenseVerb();
-		}
-	}
-	
 	@Override
 	public void damage( int dmg, Object src ) {
 	}
