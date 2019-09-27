@@ -73,7 +73,7 @@ public class Game implements ApplicationListener {
 	
 	protected static InputHandler inputHandler;
 	
-	protected static PlatformSupport platform;
+	public static PlatformSupport platform;
 	
 	public Game(Class<? extends Scene> c, PlatformSupport platform) {
 		sceneClass = c;

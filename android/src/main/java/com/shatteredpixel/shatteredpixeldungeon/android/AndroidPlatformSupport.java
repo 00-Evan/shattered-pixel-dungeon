@@ -28,9 +28,9 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.android.windows.WndAndroidTextInput;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
-import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
 
 public class AndroidPlatformSupport extends PlatformSupport {
@@ -131,4 +131,13 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		
 	}
 	
+	@Override
+	public void promptTextInput(String title, String hintText, int maxLen, boolean multiLine, String posTxt, String negTxt, final TextCallback callback) {
+		Game.scene().addToFront(new WndAndroidTextInput(title, hintText, maxLen, multiLine, posTxt, negTxt){
+			@Override
+			protected void onSelect(boolean positive) {
+				callback.onSelect(positive, getText());
+			}
+		});
+	}
 }

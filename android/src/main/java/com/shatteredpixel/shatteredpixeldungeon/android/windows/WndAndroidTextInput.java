@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.shatteredpixel.shatteredpixeldungeon.windows;
+package com.shatteredpixel.shatteredpixeldungeon.android.windows;
 
 import android.app.Activity;
 import android.text.InputFilter;
@@ -47,8 +47,8 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 
 //This class makes use of the android EditText component to handle text input
-//TODO externalize android-specific code to SPD-classes
-public class WndTextInput extends Window {
+//FIXME this window is currently android-specific, should generalize it
+public class WndAndroidTextInput extends Window {
 
 	private EditText textInput;
 
@@ -61,12 +61,12 @@ public class WndTextInput extends Window {
 	private static final int MAX_LEN_SINGLE = 20;
 	private static final int MAX_LEN_MULTI 	= 2000;
 
-	public WndTextInput( String title, String initialValue, boolean multiLine, String posTxt, String negTxt){
+	public WndAndroidTextInput(String title, String initialValue, boolean multiLine, String posTxt, String negTxt){
 		this( title, initialValue, multiLine ? MAX_LEN_MULTI : MAX_LEN_SINGLE, multiLine, posTxt, negTxt);
 	}
 
-	public WndTextInput(final String title, final String initialValue, final int maxLength,
-	                    final boolean multiLine, final String posTxt, final String negTxt){
+	public WndAndroidTextInput(final String title, final String initialValue, final int maxLength,
+	                           final boolean multiLine, final String posTxt, final String negTxt){
 		super();
 
 		//need to offset to give space for the soft keyboard
@@ -192,7 +192,7 @@ public class WndTextInput extends Window {
 		return textInput.getText().toString().trim();
 	}
 
-	protected void onSelect( boolean positive ) {};
+	protected void onSelect( boolean positive ) {}
 
 	@Override
 	public void destroy() {
@@ -214,5 +214,10 @@ public class WndTextInput extends Window {
 				}
 			});
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		//Do nothing, prevents accidentally losing writing
 	}
 }
