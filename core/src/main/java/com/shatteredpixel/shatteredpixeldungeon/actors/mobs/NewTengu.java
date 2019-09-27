@@ -238,8 +238,6 @@ public class NewTengu extends Mob {
 				if (level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				Sample.INSTANCE.play( Assets.SND_PUFF );
 				
-				spend( 1 / speed() );
-				
 				float fill = 0.9f - 0.5f*((HP-80)/80f);
 				level.placeTrapsInTenguCell(fill);
 				
@@ -266,7 +264,6 @@ public class NewTengu extends Mob {
 				if (level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				Sample.INSTANCE.play( Assets.SND_PUFF );
 				
-				spend( 1 / speed() );
 			}
 			
 		//if we're on another type of level
@@ -283,7 +280,6 @@ public class NewTengu extends Mob {
 			if (level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
 			Sample.INSTANCE.play( Assets.SND_PUFF );
 			
-			spend( 1 / speed() );
 		}
 		
 	}
@@ -405,22 +401,17 @@ public class NewTengu extends Mob {
 		
 		if (HP > HT/2) return false;
 		
-		//1 base ability use, plus 2 uses per jump
-		int targetAbilityUses = 1 + 2*arenaJumps;
-		
-		//and ane extra 2 use for jumps 3 and 4
-		targetAbilityUses += Math.max(0, arenaJumps-2);
-		
-		if (abilitiesUsed >= targetAbilityUses){
+		if (abilitiesUsed >= targetAbilityUses()){
 			return false;
 		} else {
 			
 			abilityCooldown--;
 			
-			if (targetAbilityUses - abilitiesUsed >= 5){
+			if (targetAbilityUses() - abilitiesUsed >= 4){
 				//Very behind in ability uses, use one right away!
 				abilityCooldown = 0;
-			} else if (targetAbilityUses - abilitiesUsed >= 3){
+				
+			} else if (targetAbilityUses() - abilitiesUsed >= 3){
 				//moderately behind in uses, use one every other action.
 				if (abilityCooldown == -1 || abilityCooldown > 1) abilityCooldown = 1;
 				
@@ -435,6 +426,16 @@ public class NewTengu extends Mob {
 				return false;
 			}
 		}
+	}
+	
+	private int targetAbilityUses(){
+		//1 base ability use, plus 2 uses per jump
+		int targetAbilityUses = 1 + 2*arenaJumps;
+		
+		//and ane extra 2 use for jumps 3 and 4
+		targetAbilityUses += Math.max(0, arenaJumps-2);
+		
+		return targetAbilityUses;
 	}
 	
 	public boolean useAbility(){
@@ -473,10 +474,15 @@ public class NewTengu extends Mob {
 			
 		}
 		
+		//spend only 1 turn if seriously behind on ability uses
+		if (targetAbilityUses() - abilitiesUsed >= 4){
+			spend(TICK);
+		} else {
+			spend(2 * TICK);
+		}
+		
 		lastAbility = abilityToUse;
 		abilitiesUsed++;
-		
-		spend(2 * TICK);
 		return lastAbility == FIRE_ABILITY;
 	}
 	
