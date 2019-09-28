@@ -36,7 +36,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PushbackInputStream;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -92,7 +91,7 @@ public class Bundle {
 	}
 
 	public Class getClass( String key ) {
-		String clName =  getString(key).replace("class ", "");;
+		String clName =  getString(key).replace("class ", "");
 		if (!clName.equals("")){
 			if (aliases.containsKey( clName )) {
 				clName = aliases.get( clName );

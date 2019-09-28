@@ -68,22 +68,22 @@ public class ItemSlot extends Button {
 
 	// Special "virtual items"
 	public static final Item CHEST = new Item() {
-		public int image() { return ItemSpriteSheet.CHEST; };
+		public int image() { return ItemSpriteSheet.CHEST; }
 	};
 	public static final Item LOCKED_CHEST = new Item() {
-		public int image() { return ItemSpriteSheet.LOCKED_CHEST; };
+		public int image() { return ItemSpriteSheet.LOCKED_CHEST; }
 	};
 	public static final Item CRYSTAL_CHEST = new Item() {
-		public int image() { return ItemSpriteSheet.CRYSTAL_CHEST; };
+		public int image() { return ItemSpriteSheet.CRYSTAL_CHEST; }
 	};
 	public static final Item TOMB = new Item() {
-		public int image() { return ItemSpriteSheet.TOMB; };
+		public int image() { return ItemSpriteSheet.TOMB; }
 	};
 	public static final Item SKELETON = new Item() {
-		public int image() { return ItemSpriteSheet.BONES; };
+		public int image() { return ItemSpriteSheet.BONES; }
 	};
 	public static final Item REMAINS = new Item() {
-		public int image() { return ItemSpriteSheet.REMAINS; };
+		public int image() { return ItemSpriteSheet.REMAINS; }
 	};
 	
 	public ItemSlot() {

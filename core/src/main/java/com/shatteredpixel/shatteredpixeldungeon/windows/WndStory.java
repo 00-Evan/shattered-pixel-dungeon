@@ -57,7 +57,7 @@ public class WndStory extends Window {
 		CHAPTERS.put( ID_CAVES, "caves" );
 		CHAPTERS.put( ID_CITY, "city" );
 		CHAPTERS.put( ID_HALLS, "halls" );
-	};
+	}
 	
 	private RenderedTextMultiline tf;
 	

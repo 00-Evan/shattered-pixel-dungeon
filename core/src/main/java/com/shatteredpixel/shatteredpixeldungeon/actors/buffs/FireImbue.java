@@ -60,7 +60,7 @@ public class FireImbue extends Buff {
 
 	public void set( float duration ) {
 		this.left = duration;
-	};
+	}
 
 	@Override
 	public boolean act() {

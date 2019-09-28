@@ -84,8 +84,6 @@ public class Toolbar extends Component {
 				Dungeon.hero.rest(true);
 				return true;
 			}
-
-			;
 		});
 		
 		add(btnSearch = new Tool(44, 0, 20, 26) {
@@ -139,15 +137,11 @@ public class Toolbar extends Component {
 				add(gold);
 			}
 
-			;
-
 			@Override
 			protected void layout() {
 				super.layout();
 				gold.fill(this);
 			}
-
-			;
 		});
 
 		add(pickedUp = new PickedUpItem());

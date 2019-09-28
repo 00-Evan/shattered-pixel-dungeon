@@ -332,7 +332,6 @@ public class Dungeon {
 		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void switchLevel( final Level level, int pos ) {
 		
 		if (pos == -2){
@@ -412,7 +411,7 @@ public class Dungeon {
 
 	public static void dropToChasm( Item item ) {
 		int depth = Dungeon.depth + 1;
-		ArrayList<Item> dropped = (ArrayList<Item>)Dungeon.droppedItems.get( depth );
+		ArrayList<Item> dropped = Dungeon.droppedItems.get( depth );
 		if (dropped == null) {
 			Dungeon.droppedItems.put( depth, dropped = new ArrayList<Item>() );
 		}

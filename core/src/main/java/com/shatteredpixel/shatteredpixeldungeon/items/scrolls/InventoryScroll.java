@@ -63,7 +63,7 @@ public abstract class InventoryScroll extends Scroll {
 					break;
 				}
 			}
-			public void onBackPressed() {};
+			public void onBackPressed() {}
 		} );
 	}
 	

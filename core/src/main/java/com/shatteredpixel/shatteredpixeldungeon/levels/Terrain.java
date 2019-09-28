@@ -103,7 +103,7 @@ public class Terrain {
 		flags[BOOKSHELF]	= flags[BARRICADE];
 		flags[ALCHEMY]		= SOLID;
 
-	};
+	}
 
 	public static int discover( int terr ) {
 		switch (terr) {

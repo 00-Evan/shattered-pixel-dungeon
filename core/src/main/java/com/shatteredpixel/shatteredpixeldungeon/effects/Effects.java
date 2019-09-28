@@ -35,7 +35,7 @@ public class Effects {
 		DEATH_RAY,
 		LIGHT_RAY,
 		HEALTH_RAY
-	};
+	}
 	
 	public static Image get( Type type ) {
 		Image icon = new Image( Assets.EFFECTS );

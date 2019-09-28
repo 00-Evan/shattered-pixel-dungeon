@@ -99,7 +99,7 @@ public class WndItem extends Window {
 						hide();
 						if (owner != null && owner.parent != null) owner.hide();
 						if (Dungeon.hero.isAlive()) item.execute( Dungeon.hero, action );
-					};
+					}
 				};
 				btn.setSize( btn.reqWidth(), BUTTON_HEIGHT );
 				if (x + btn.width() > width || line.size() == 3) {

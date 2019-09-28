@@ -68,7 +68,7 @@ public class Pushing extends Actor {
 
 		//so that all pushing effects at the same time go simultaneously
 		for ( Actor actor : Actor.all() ){
-			if (actor instanceof Pushing && ((Pushing) actor).cooldown() == 0)
+			if (actor instanceof Pushing && actor.cooldown() == 0)
 				return true;
 		}
 		return false;

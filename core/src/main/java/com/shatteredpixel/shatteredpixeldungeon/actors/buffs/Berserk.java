@@ -36,7 +36,7 @@ import com.watabou.utils.GameMath;
 public class Berserk extends Buff {
 
 	private enum State{
-		NORMAL, BERSERK, RECOVERING;
+		NORMAL, BERSERK, RECOVERING
 	}
 	private State state = State.NORMAL;
 

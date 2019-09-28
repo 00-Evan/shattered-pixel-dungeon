@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Tilemap;
-import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 public abstract class GooBossRoom extends StandardRoom {

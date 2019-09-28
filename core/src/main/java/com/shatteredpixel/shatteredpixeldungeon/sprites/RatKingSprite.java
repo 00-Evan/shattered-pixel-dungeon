@@ -35,7 +35,8 @@ public class RatKingSprite extends MobSprite {
 
 		final Calendar calendar = Calendar.getInstance();
 		//once a year the rat king feels a bit festive!
-		festive = (calendar.get(Calendar.MONTH) == 11 && calendar.get(Calendar.WEEK_OF_MONTH) > 2);
+		festive = (calendar.get(Calendar.MONTH) == Calendar.DECEMBER
+				&& calendar.get(Calendar.WEEK_OF_MONTH) > 2);
 
 		final int c = festive ? 8 : 0;
 		

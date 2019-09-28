@@ -90,11 +90,11 @@ public class Skeleton extends Mob {
 	
 	@Override
 	protected Item createLoot() {
-		Item loot;
+		MeleeWeapon loot;
 		do {
 			loot = Generator.randomWeapon();
 		//50% chance of re-rolling tier 4 or 5 melee weapons
-		} while (((MeleeWeapon) loot).tier >= 4 && Random.Int(2) == 0);
+		} while (loot.tier >= 4 && Random.Int(2) == 0);
 		loot.level(0);
 		return loot;
 	}

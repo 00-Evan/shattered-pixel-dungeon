@@ -23,7 +23,6 @@ package com.watabou.glscripts;
 
 import com.watabou.glwrap.Program;
 import com.watabou.glwrap.Shader;
-import com.watabou.noosa.Game;
 import com.watabou.utils.Reflection;
 
 import java.util.HashMap;

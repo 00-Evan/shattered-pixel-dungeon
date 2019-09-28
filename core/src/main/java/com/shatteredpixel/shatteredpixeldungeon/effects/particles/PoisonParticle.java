@@ -37,7 +37,7 @@ public class PoisonParticle extends PixelParticle {
 		@Override
 		public boolean lightMode() {
 			return true;
-		};
+		}
 	};
 	
 	public static final Emitter.Factory SPLASH = new Factory() {
@@ -48,7 +48,7 @@ public class PoisonParticle extends PixelParticle {
 		@Override
 		public boolean lightMode() {
 			return true;
-		};
+		}
 	};
 	
 	public PoisonParticle() {

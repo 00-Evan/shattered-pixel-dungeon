@@ -88,7 +88,7 @@ public class Frost extends FlavourBuff {
 					((Potion) ((Thief) target).item).shatter(target.pos);
 					((Thief) target).item = null;
 				} else if (item instanceof MysteryMeat){
-					((Thief) target).item = new FrozenCarpaccio();;
+					((Thief) target).item = new FrozenCarpaccio();
 				}
 
 			}
