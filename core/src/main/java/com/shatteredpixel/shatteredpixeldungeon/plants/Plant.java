@@ -41,6 +41,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -150,17 +151,12 @@ public abstract class Plant implements Bundlable {
 		}
 		
 		public Plant couch( int pos, Level level ) {
-			try {
-				if (level != null && level.heroFOV != null && level.heroFOV[pos]) {
-					Sample.INSTANCE.play(Assets.SND_PLANT);
-				}
-				Plant plant = plantClass.newInstance();
-				plant.pos = pos;
-				return plant;
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
+			if (level != null && level.heroFOV != null && level.heroFOV[pos]) {
+				Sample.INSTANCE.play(Assets.SND_PLANT);
 			}
+			Plant plant = Reflection.newInstance(plantClass);
+			plant.pos = pos;
+			return plant;
 		}
 		
 		@Override

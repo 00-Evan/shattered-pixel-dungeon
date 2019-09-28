@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class WaterOfTransmutation extends WellWater {
 	
@@ -119,12 +120,7 @@ public class WaterOfTransmutation extends WellWater {
 		Category c = Generator.wepTiers[w.tier-1];
 
 		do {
-			try {
-				n = (MeleeWeapon)c.classes[Random.chances(c.probs)].newInstance();
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
-			}
+			n = (MeleeWeapon)Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 		} while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 
 		int level = w.level();

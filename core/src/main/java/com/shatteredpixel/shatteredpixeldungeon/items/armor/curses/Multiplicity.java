@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -72,30 +73,27 @@ public class Multiplicity extends Armor.Glyph {
 							|| attacker instanceof Mimic || attacker instanceof Statue){
 						m = Dungeon.level.createMob();
 					} else {
-						try {
-							Actor.fixTime();
+						Actor.fixTime();
+						
+						m = (Mob)Reflection.newInstance(attacker.getClass());
+						
+						if (m != null) {
 							
-							m = (Mob)attacker.getClass().newInstance();
 							Bundle store = new Bundle();
 							attacker.storeInBundle(store);
 							m.restoreFromBundle(store);
 							m.pos = 0;
 							m.HP = m.HT;
-							if (m.buff(PinCushion.class) != null){
+							if (m.buff(PinCushion.class) != null) {
 								m.remove(m.buff(PinCushion.class));
 							}
-
+							
 							//If a thief has stolen an item, that item is not duplicated.
-							if (m instanceof Thief){
+							if (m instanceof Thief) {
 								((Thief) m).item = null;
 							}
-
-						} catch (Exception e) {
-							ShatteredPixelDungeon.reportException(e);
-							m = null;
 						}
 					}
-
 				}
 
 				if (m != null) {

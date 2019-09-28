@@ -41,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,14 +73,10 @@ public class ArcaneCatalyst extends Spell {
 		detach( curUser.belongings.backpack );
 		updateQuickslot();
 		
-		try {
-			Scroll s = Random.chances(scrollChances).newInstance();
-			s.anonymize();
-			curItem = s;
-			s.doRead();
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
+		Scroll s = Reflection.newInstance(Random.chances(scrollChances));
+		s.anonymize();
+		curItem = s;
+		s.doRead();
 	}
 	
 	@Override

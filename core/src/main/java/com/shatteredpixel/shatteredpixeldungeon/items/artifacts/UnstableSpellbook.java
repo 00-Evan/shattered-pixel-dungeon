@@ -46,6 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -138,13 +139,9 @@ public class UnstableSpellbook extends Artifact {
 						@Override
 						protected void onSelect(int index) {
 							if (index == 1){
-								try {
-									Scroll scroll = ExoticScroll.regToExo.get(fScroll.getClass()).newInstance();
-									charge --;
-									scroll.doRead();
-								} catch ( Exception e) {
-									ShatteredPixelDungeon.reportException(e);
-								}
+								Scroll scroll = Reflection.newInstance(ExoticScroll.regToExo.get(fScroll.getClass()));
+								charge--;
+								scroll.doRead();
 							} else {
 								fScroll.doRead();
 							}

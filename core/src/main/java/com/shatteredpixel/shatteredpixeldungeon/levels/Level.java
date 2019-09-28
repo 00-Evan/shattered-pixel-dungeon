@@ -81,6 +81,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 import com.watabou.utils.SparseArray;
 
 import java.util.ArrayList;
@@ -439,15 +440,11 @@ public abstract class Level implements Bundlable {
 	private ArrayList<Class<?extends Mob>> mobsToSpawn = new ArrayList<>();
 	
 	public Mob createMob() {
-		if (mobsToSpawn == null || mobsToSpawn.isEmpty())
+		if (mobsToSpawn == null || mobsToSpawn.isEmpty()) {
 			mobsToSpawn = Bestiary.getMobRotation(Dungeon.depth);
-		
-		try {
-			return mobsToSpawn.remove(0).newInstance();
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
 		}
+		
+		return Reflection.newInstance(mobsToSpawn.remove(0));
 	}
 
 	abstract protected void createMobs();

@@ -171,6 +171,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -479,42 +480,24 @@ public class Generator {
 	}
 	
 	public static Item random( Category cat ) {
-		try {
-			
-			switch (cat) {
-			case ARMOR:
-				return randomArmor();
-			case WEAPON:
-				return randomWeapon();
-			case MISSILE:
-				return randomMissile();
-			case ARTIFACT:
-				Item item = randomArtifact();
-				//if we're out of artifacts, return a ring instead.
-				return item != null ? item : random(Category.RING);
-			default:
-				return ((Item)cat.classes[Random.chances( cat.probs )].newInstance()).random();
-			}
-			
-		} catch (Exception e) {
-
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-			
+		switch (cat) {
+		case ARMOR:
+			return randomArmor();
+		case WEAPON:
+			return randomWeapon();
+		case MISSILE:
+			return randomMissile();
+		case ARTIFACT:
+			Item item = randomArtifact();
+			//if we're out of artifacts, return a ring instead.
+			return item != null ? item : random(Category.RING);
+		default:
+			return ((Item) Reflection.newInstance(cat.classes[Random.chances( cat.probs )])).random();
 		}
 	}
 	
 	public static Item random( Class<? extends Item> cl ) {
-		try {
-			
-			return ((Item)cl.newInstance()).random();
-			
-		} catch (Exception e) {
-
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-			
-		}
+		return Reflection.newInstance(cl).random();
 	}
 
 	public static Armor randomArmor(){
@@ -524,15 +507,10 @@ public class Generator {
 	public static Armor randomArmor(int floorSet) {
 
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
-
-		try {
-			Armor a = (Armor)Category.ARMOR.classes[Random.chances(floorSetTierProbs[floorSet])].newInstance();
-			a.random();
-			return a;
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		
+		Armor a = (Armor)Reflection.newInstance(Category.ARMOR.classes[Random.chances(floorSetTierProbs[floorSet])]);
+		a.random();
+		return a;
 	}
 
 	public static final Category[] wepTiers = new Category[]{
@@ -550,16 +528,11 @@ public class Generator {
 	public static MeleeWeapon randomWeapon(int floorSet) {
 
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
-
-		try {
-			Category c = wepTiers[Random.chances(floorSetTierProbs[floorSet])];
-			MeleeWeapon w = (MeleeWeapon)c.classes[Random.chances(c.probs)].newInstance();
-			w.random();
-			return w;
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		
+		Category c = wepTiers[Random.chances(floorSetTierProbs[floorSet])];
+		MeleeWeapon w = (MeleeWeapon)Reflection.newInstance(c.classes[Random.chances(c.probs)]);
+		w.random();
+		return w;
 	}
 	
 	public static final Category[] misTiers = new Category[]{
@@ -578,43 +551,30 @@ public class Generator {
 		
 		floorSet = (int)GameMath.gate(0, floorSet, floorSetTierProbs.length-1);
 		
-		try {
-			Category c = misTiers[Random.chances(floorSetTierProbs[floorSet])];
-			MissileWeapon w = (MissileWeapon)c.classes[Random.chances(c.probs)].newInstance();
-			w.random();
-			return w;
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		Category c = misTiers[Random.chances(floorSetTierProbs[floorSet])];
+		MissileWeapon w = (MissileWeapon)Reflection.newInstance(c.classes[Random.chances(c.probs)]);
+		w.random();
+		return w;
 	}
 
 	//enforces uniqueness of artifacts throughout a run.
 	public static Artifact randomArtifact() {
 
-		try {
-			Category cat = Category.ARTIFACT;
-			int i = Random.chances( cat.probs );
+		Category cat = Category.ARTIFACT;
+		int i = Random.chances( cat.probs );
 
-			//if no artifacts are left, return null
-			if (i == -1){
-				return null;
-			}
-			
-			Class<?extends Artifact> art = (Class<? extends Artifact>) cat.classes[i];
+		//if no artifacts are left, return null
+		if (i == -1){
+			return null;
+		}
+		
+		Class<?extends Artifact> art = (Class<? extends Artifact>) cat.classes[i];
 
-			if (removeArtifact(art)) {
-				Artifact artifact = art.newInstance();
-				
-				artifact.random();
-				
-				return artifact;
-			} else {
-				return null;
-			}
-
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
+		if (removeArtifact(art)) {
+			Artifact artifact = Reflection.newInstance(art);
+			artifact.random();
+			return artifact;
+		} else {
 			return null;
 		}
 	}

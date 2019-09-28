@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.utils.Reflection;
 
 public class Recycle extends InventorySpell {
 	
@@ -54,22 +55,12 @@ public class Recycle extends InventorySpell {
 			if (item instanceof Potion) {
 				result = Generator.random(Generator.Category.POTION);
 				if (item instanceof ExoticPotion){
-					try {
-						result = ExoticPotion.regToExo.get(result.getClass()).newInstance();
-					} catch ( Exception e ){
-						ShatteredPixelDungeon.reportException(e);
-						result = item;
-					}
+					result = Reflection.newInstance(ExoticPotion.regToExo.get(result.getClass()));
 				}
 			} else if (item instanceof Scroll) {
 				result = Generator.random(Generator.Category.SCROLL);
 				if (item instanceof ExoticScroll){
-					try {
-						result = ExoticScroll.regToExo.get(result.getClass()).newInstance();
-					} catch ( Exception e ){
-						ShatteredPixelDungeon.reportException(e);
-						result = item;
-					}
+					result = Reflection.newInstance(ExoticScroll.regToExo.get(result.getClass()));
 				}
 			} else if (item instanceof Plant.Seed) {
 				result = Generator.random(Generator.Category.SEED);

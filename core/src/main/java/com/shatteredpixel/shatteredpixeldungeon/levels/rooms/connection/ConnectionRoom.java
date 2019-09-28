@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -86,11 +87,6 @@ public abstract class ConnectionRoom extends Room {
 	}
 	
 	public static ConnectionRoom createRoom(){
-		try {
-			return rooms.get(Random.chances(chances[Dungeon.depth])).newInstance();
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
 	}
 }

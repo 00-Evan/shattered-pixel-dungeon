@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class Ghost extends NPC {
 
@@ -287,15 +288,9 @@ public class Ghost extends NPC {
 					wepTier = 5;
 					armor = new PlateArmor();
 				}
-
-				try {
-					do {
-						weapon = (Weapon) Generator.wepTiers[wepTier - 1].classes[Random.chances(Generator.wepTiers[wepTier - 1].probs)].newInstance();
-					} while (!(weapon instanceof MeleeWeapon));
-				} catch (Exception e){
-					ShatteredPixelDungeon.reportException(e);
-					weapon = new Shortsword();
-				}
+				
+				Generator.Category c = Generator.wepTiers[wepTier - 1];
+				weapon = (MeleeWeapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 
 				//50%:+0, 30%:+1, 15%:+2, 5%:+3
 				float itemLevelRoll = Random.Float();

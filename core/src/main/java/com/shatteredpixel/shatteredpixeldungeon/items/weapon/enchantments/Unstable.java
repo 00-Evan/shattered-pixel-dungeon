@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class Unstable extends Weapon.Enchantment {
 
@@ -55,11 +56,7 @@ public class Unstable extends Weapon.Enchantment {
 			attacker.buff(Kinetic.ConservedDamage.class).detach();
 		}
 		
-		try {
-			damage = Random.oneOf(randomEnchants).newInstance().proc( weapon, attacker, defender, damage );
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
+		damage = Reflection.newInstance(Random.oneOf(randomEnchants)).proc( weapon, attacker, defender, damage );
 		
 		return damage + conservedDamage;
 	}

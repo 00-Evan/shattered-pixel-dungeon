@@ -55,6 +55,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -399,11 +400,7 @@ public class Bomb extends Item {
 			for (Item i : ingredients){
 				i.quantity(i.quantity()-1);
 				if (validIngredients.containsKey(i.getClass())){
-					try {
-						result = validIngredients.get(i.getClass()).newInstance();
-					} catch (Exception e) {
-						ShatteredPixelDungeon.reportException(e);
-					}
+					result = Reflection.newInstance(validIngredients.get(i.getClass()));
 				}
 			}
 			
@@ -414,11 +411,7 @@ public class Bomb extends Item {
 		public Item sampleOutput(ArrayList<Item> ingredients) {
 			for (Item i : ingredients){
 				if (validIngredients.containsKey(i.getClass())){
-					try {
-						return validIngredients.get(i.getClass()).newInstance();
-					} catch (Exception e) {
-						ShatteredPixelDungeon.reportException(e);
-					}
+					return Reflection.newInstance(validIngredients.get(i.getClass()));
 				}
 			}
 			return null;

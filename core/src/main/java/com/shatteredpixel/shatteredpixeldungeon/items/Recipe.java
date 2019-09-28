@@ -57,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.Recycle;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -86,15 +87,10 @@ public abstract class Recipe {
 		//gets a simple list of items based on inputs
 		public ArrayList<Item> getIngredients() {
 			ArrayList<Item> result = new ArrayList<>();
-			try {
-				for (int i = 0; i < inputs.length; i++) {
-					Item ingredient = inputs[i].newInstance();
-					ingredient.quantity(inQuantity[i]);
-					result.add(ingredient);
-				}
-			} catch (Exception e){
-				ShatteredPixelDungeon.reportException( e );
-				return null;
+			for (int i = 0; i < inputs.length; i++) {
+				Item ingredient = Reflection.newInstance(inputs[i]);
+				ingredient.quantity(inQuantity[i]);
+				result.add(ingredient);
 			}
 			return result;
 		}
@@ -154,7 +150,7 @@ public abstract class Recipe {
 		//ingredients are ignored, as output doesn't vary
 		public final Item sampleOutput(ArrayList<Item> ingredients){
 			try {
-				Item result = output.newInstance();
+				Item result = Reflection.newInstance(output);
 				result.quantity(outQuantity);
 				return result;
 			} catch (Exception e) {

@@ -41,6 +41,7 @@ import com.watabou.noosa.Scene;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.BitmapCache;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -152,7 +153,7 @@ public class PixelScene extends Scene {
 		if (getClass().equals(savedClass)){
 			for (Class<?extends Window> w : savedWindows){
 				try{
-					add(w.newInstance());
+					add(Reflection.newInstanceUnhandled(w));
 				} catch (Exception e){
 					//window has no public zero-arg constructor, just eat the exception
 				}

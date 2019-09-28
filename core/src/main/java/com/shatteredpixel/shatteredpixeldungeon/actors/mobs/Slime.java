@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SlimeSprite;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class Slime extends Mob {
 	
@@ -78,15 +79,10 @@ public class Slime extends Mob {
 	
 	@Override
 	protected Item createLoot() {
-		try {
-			Generator.Category c = Generator.Category.WEP_T2;
-			MeleeWeapon w = (MeleeWeapon)c.classes[Random.chances(c.probs)].newInstance();
-			w.random();
-			w.level(0);
-			return w;
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-			return null;
-		}
+		Generator.Category c = Generator.Category.WEP_T2;
+		MeleeWeapon w = (MeleeWeapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
+		w.random();
+		w.level(0);
+		return w;
 	}
 }

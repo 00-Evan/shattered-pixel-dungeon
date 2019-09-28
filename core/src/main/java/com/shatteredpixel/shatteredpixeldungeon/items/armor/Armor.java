@@ -65,6 +65,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -621,65 +622,45 @@ public class Armor extends EquipableItem {
 		
 		@SuppressWarnings("unchecked")
 		public static Glyph randomCommon( Class<? extends Glyph> ... toIgnore ){
-			try {
-				ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(common));
-				glyphs.removeAll(Arrays.asList(toIgnore));
-				if (glyphs.isEmpty()) {
-					return random();
-				} else {
-					return (Glyph) Random.element(glyphs).newInstance();
-				}
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
+			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(common));
+			glyphs.removeAll(Arrays.asList(toIgnore));
+			if (glyphs.isEmpty()) {
+				return random();
+			} else {
+				return (Glyph) Reflection.newInstance(Random.element(glyphs));
 			}
 		}
 		
 		@SuppressWarnings("unchecked")
 		public static Glyph randomUncommon( Class<? extends Glyph> ... toIgnore ){
-			try {
-				ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(uncommon));
-				glyphs.removeAll(Arrays.asList(toIgnore));
-				if (glyphs.isEmpty()) {
-					return random();
-				} else {
-					return (Glyph) Random.element(glyphs).newInstance();
-				}
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
+			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(uncommon));
+			glyphs.removeAll(Arrays.asList(toIgnore));
+			if (glyphs.isEmpty()) {
+				return random();
+			} else {
+				return (Glyph) Reflection.newInstance(Random.element(glyphs));
 			}
 		}
 		
 		@SuppressWarnings("unchecked")
 		public static Glyph randomRare( Class<? extends Glyph> ... toIgnore ){
-			try {
-				ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(rare));
-				glyphs.removeAll(Arrays.asList(toIgnore));
-				if (glyphs.isEmpty()) {
-					return random();
-				} else {
-					return (Glyph) Random.element(glyphs).newInstance();
-				}
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
+			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(rare));
+			glyphs.removeAll(Arrays.asList(toIgnore));
+			if (glyphs.isEmpty()) {
+				return random();
+			} else {
+				return (Glyph) Reflection.newInstance(Random.element(glyphs));
 			}
 		}
 		
 		@SuppressWarnings("unchecked")
 		public static Glyph randomCurse( Class<? extends Glyph> ... toIgnore ){
-			try {
-				ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(curses));
-				glyphs.removeAll(Arrays.asList(toIgnore));
-				if (glyphs.isEmpty()) {
-					return random();
-				} else {
-					return (Glyph) Random.element(glyphs).newInstance();
-				}
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
+			ArrayList<Class<?>> glyphs = new ArrayList<>(Arrays.asList(curses));
+			glyphs.removeAll(Arrays.asList(toIgnore));
+			if (glyphs.isEmpty()) {
+				return random();
+			} else {
+				return (Glyph) Reflection.newInstance(Random.element(glyphs));
 			}
 		}
 		

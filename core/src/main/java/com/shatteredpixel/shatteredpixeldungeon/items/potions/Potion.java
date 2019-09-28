@@ -73,6 +73,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -516,14 +517,7 @@ public class Potion extends Item {
 				result = Generator.random( Generator.Category.POTION );
 				
 			} else {
-				
-				Class<? extends Potion> itemClass = types.get(Random.element(ingredients).getClass());
-				try {
-					result = itemClass.newInstance();
-				} catch (Exception e) {
-					ShatteredPixelDungeon.reportException(e);
-					result = Generator.random( Generator.Category.POTION );
-				}
+				result = Reflection.newInstance(types.get(Random.element(ingredients).getClass()));
 				
 			}
 			

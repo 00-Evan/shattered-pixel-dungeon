@@ -33,6 +33,7 @@ import com.watabou.input.KeyEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PlatformSupport;
+import com.watabou.utils.Reflection;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -187,14 +188,10 @@ public class Game implements ApplicationListener {
 		
 		if (requestedReset) {
 			requestedReset = false;
-
-			try {
-				requestedScene = sceneClass.newInstance();
+			
+			requestedScene = Reflection.newInstance(sceneClass);
+			if (requestedScene != null){
 				switchScene();
-			} catch (InstantiationException e){
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
 			}
 
 		}

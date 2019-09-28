@@ -73,6 +73,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -254,14 +255,10 @@ public class QuickRecipe extends Component {
 			case 1:
 				Recipe r = new Scroll.ScrollToStone();
 				for (Class<?> cls : Generator.Category.SCROLL.classes){
-					try{
-						Scroll scroll = (Scroll) cls.newInstance();
-						if (!scroll.isKnown()) scroll.anonymize();
-						ArrayList<Item> in = new ArrayList<Item>(Arrays.asList(scroll));
-						result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
-					} catch (Exception e){
-						ShatteredPixelDungeon.reportException(e);
-					}
+					Scroll scroll = (Scroll) Reflection.newInstance(cls);
+					if (!scroll.isKnown()) scroll.anonymize();
+					ArrayList<Item> in = new ArrayList<Item>(Arrays.asList(scroll));
+					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 				}
 				return result;
 			case 2:
@@ -292,42 +289,30 @@ public class QuickRecipe extends Component {
 				r = new Bomb.EnhanceBomb();
 				int i = 0;
 				for (Class<?> cls : Bomb.EnhanceBomb.validIngredients.keySet()){
-					try{
-						if (i == 2){
-							result.add(null);
-							i = 0;
-						}
-						Item item = (Item) cls.newInstance();
-						ArrayList<Item> in = new ArrayList<Item>(Arrays.asList(new Bomb(), item));
-						result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
-						i++;
-					} catch (Exception e){
-						ShatteredPixelDungeon.reportException(e);
+					if (i == 2){
+						result.add(null);
+						i = 0;
 					}
+					Item item = (Item) Reflection.newInstance(cls);
+					ArrayList<Item> in = new ArrayList<Item>(Arrays.asList(new Bomb(), item));
+					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
+					i++;
 				}
 				return result;
 			case 4:
 				r = new ExoticPotion.PotionToExotic();
 				for (Class<?> cls : Generator.Category.POTION.classes){
-					try{
-						Potion pot = (Potion) cls.newInstance();
-						ArrayList<Item> in = new ArrayList<>(Arrays.asList(pot, new Plant.Seed.PlaceHolder().quantity(2)));
-						result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
-					} catch (Exception e){
-						ShatteredPixelDungeon.reportException(e);
-					}
+					Potion pot = (Potion) Reflection.newInstance(cls);
+					ArrayList<Item> in = new ArrayList<>(Arrays.asList(pot, new Plant.Seed.PlaceHolder().quantity(2)));
+					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 				}
 				return result;
 			case 5:
 				r = new ExoticScroll.ScrollToExotic();
 				for (Class<?> cls : Generator.Category.SCROLL.classes){
-					try{
-						Scroll scroll = (Scroll) cls.newInstance();
-						ArrayList<Item> in = new ArrayList<>(Arrays.asList(scroll, new Runestone.PlaceHolder().quantity(2)));
-						result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
-					} catch (Exception e){
-						ShatteredPixelDungeon.reportException(e);
-					}
+					Scroll scroll = (Scroll) Reflection.newInstance(cls);
+					ArrayList<Item> in = new ArrayList<>(Arrays.asList(scroll, new Runestone.PlaceHolder().quantity(2)));
+					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 				}
 				return result;
 			case 6:

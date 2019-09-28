@@ -34,6 +34,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -356,14 +357,10 @@ public abstract class RegularPainter extends Painter {
 			Integer trapPos = Random.element(validCells);
 			validCells.remove(trapPos); //removes the integer object, not at the index
 			
-			try {
-				Trap trap = trapClasses[Random.chances( trapChances )].newInstance().hide();
-				l.setTrap( trap, trapPos );
-				//some traps will not be hidden
-				l.map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			Trap trap = Reflection.newInstance(trapClasses[Random.chances( trapChances )]).hide();
+			l.setTrap( trap, trapPos );
+			//some traps will not be hidden
+			l.map[trapPos] = trap.visible ? Terrain.TRAP : Terrain.SECRET_TRAP;
 		}
 	}
 	

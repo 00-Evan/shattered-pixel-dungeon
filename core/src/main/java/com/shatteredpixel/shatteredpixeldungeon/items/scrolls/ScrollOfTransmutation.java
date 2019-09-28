@@ -48,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class ScrollOfTransmutation extends InventoryScroll {
 	
@@ -150,12 +151,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		}
 		
 		do {
-			try {
-				n = (Weapon)c.classes[Random.chances(c.probs)].newInstance();
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				return null;
-			}
+			n = (Weapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 		} while (Challenges.isItemBlocked(n) || n.getClass() == w.getClass());
 		
 		int level = w.level();
@@ -256,28 +252,18 @@ public class ScrollOfTransmutation extends InventoryScroll {
 	}
 	
 	private Scroll changeScroll( Scroll s ) {
-		try {
-			if (s instanceof ExoticScroll) {
-				return ExoticScroll.exoToReg.get(s.getClass()).newInstance();
-			} else {
-				return ExoticScroll.regToExo.get(s.getClass()).newInstance();
-			}
-		} catch ( Exception e ){
-			ShatteredPixelDungeon.reportException(e);
-			return null;
+		if (s instanceof ExoticScroll) {
+			return Reflection.newInstance(ExoticScroll.exoToReg.get(s.getClass()));
+		} else {
+			return Reflection.newInstance(ExoticScroll.regToExo.get(s.getClass()));
 		}
 	}
 	
 	private Potion changePotion( Potion p ) {
-		try {
-			if (p instanceof ExoticPotion) {
-				return ExoticPotion.exoToReg.get(p.getClass()).newInstance();
-			} else {
-				return ExoticPotion.regToExo.get(p.getClass()).newInstance();
-			}
-		} catch ( Exception e ){
-			ShatteredPixelDungeon.reportException(e);
-			return null;
+		if	(p instanceof ExoticPotion) {
+			return Reflection.newInstance(ExoticPotion.exoToReg.get(p.getClass()));
+		} else {
+			return Reflection.newInstance(ExoticPotion.regToExo.get(p.getClass()));
 		}
 	}
 	

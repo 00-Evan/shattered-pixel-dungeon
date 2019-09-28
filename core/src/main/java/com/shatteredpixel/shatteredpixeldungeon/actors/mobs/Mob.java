@@ -63,6 +63,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -153,13 +154,7 @@ public abstract class Mob extends Char {
 	}
 	
 	public CharSprite sprite() {
-		CharSprite sprite = null;
-		try {
-			sprite = spriteClass.newInstance();
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
-		return sprite;
+		return Reflection.newInstance(spriteClass);
 	}
 	
 	@Override

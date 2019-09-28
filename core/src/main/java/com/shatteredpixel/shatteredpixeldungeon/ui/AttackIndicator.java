@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 
@@ -134,21 +135,16 @@ public class AttackIndicator extends Tag {
 			sprite = null;
 		}
 		
-		try {
-			sprite = lastTarget.spriteClass.newInstance();
-			active = true;
-			sprite.linkVisuals(lastTarget);
-			sprite.idle();
-			sprite.paused = true;
-			add( sprite );
+		sprite = Reflection.newInstance(lastTarget.spriteClass);
+		active = true;
+		sprite.linkVisuals(lastTarget);
+		sprite.idle();
+		sprite.paused = true;
+		add( sprite );
 
-			sprite.x = x + (width - sprite.width()) / 2 + 1;
-			sprite.y = y + (height - sprite.height()) / 2;
-			PixelScene.align(sprite);
-			
-		} catch (Exception e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
+		sprite.x = x + (width - sprite.width()) / 2 + 1;
+		sprite.y = y + (height - sprite.height()) / 2;
+		PixelScene.align(sprite);
 	}
 	
 	private boolean enabled = true;

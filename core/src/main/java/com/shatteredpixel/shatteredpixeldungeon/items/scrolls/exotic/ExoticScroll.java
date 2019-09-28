@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,12 +119,7 @@ public abstract class ExoticScroll extends Scroll {
 	@Override
 	//20 gold more than its none-exotic equivalent
 	public int price() {
-		try {
-			return (exoToReg.get(getClass()).newInstance().price() + 20) * quantity;
-		} catch (Exception e){
-			ShatteredPixelDungeon.reportException(e);
-			return 0;
-		}
+		return (Reflection.newInstance(exoToReg.get(getClass())).price() + 20) * quantity;
 	}
 	
 	public static class ScrollToExotic extends Recipe {
@@ -156,11 +152,7 @@ public abstract class ExoticScroll extends Scroll {
 			for (Item i : ingredients){
 				i.quantity(i.quantity()-1);
 				if (regToExo.containsKey(i.getClass())) {
-					try {
-						result = regToExo.get(i.getClass()).newInstance();
-					} catch (Exception e) {
-						ShatteredPixelDungeon.reportException(e);
-					}
+					result = Reflection.newInstance(regToExo.get(i.getClass()));
 				}
 			}
 			return result;
@@ -170,11 +162,7 @@ public abstract class ExoticScroll extends Scroll {
 		public Item sampleOutput(ArrayList<Item> ingredients) {
 			for (Item i : ingredients){
 				if (regToExo.containsKey(i.getClass())) {
-					try {
-						return regToExo.get(i.getClass()).newInstance();
-					} catch (Exception e) {
-						ShatteredPixelDungeon.reportException(e);
-					}
+					return Reflection.newInstance(regToExo.get(i.getClass()));
 				}
 			}
 			return null;

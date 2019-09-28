@@ -46,6 +46,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -669,16 +670,12 @@ public class WndJournal extends WndTabbed {
 			
 			float pos = 0;
 			for (Class<? extends Item> itemClass : itemClasses) {
-				try{
-					CatalogItem item = new CatalogItem(itemClass.newInstance(), known.get(itemClass), Catalog.isSeen(itemClass));
-					item.setRect( 0, pos, width, ITEM_HEIGHT );
-					content.add( item );
-					items.add( item );
-					
-					pos += item.height();
-				} catch (Exception e) {
-					ShatteredPixelDungeon.reportException(e);
-				}
+				CatalogItem item = new CatalogItem(Reflection.newInstance(itemClass), known.get(itemClass), Catalog.isSeen(itemClass));
+				item.setRect( 0, pos, width, ITEM_HEIGHT );
+				content.add( item );
+				items.add( item );
+				
+				pos += item.height();
 			}
 			
 			content.setSize( width, pos );

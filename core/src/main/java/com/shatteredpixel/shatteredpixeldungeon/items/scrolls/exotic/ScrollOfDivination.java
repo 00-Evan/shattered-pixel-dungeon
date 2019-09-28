@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -78,47 +79,43 @@ public class ScrollOfDivination extends ExoticScroll {
 		float[] probs = baseProbs.clone();
 		
 		while (left > 0 && total > 0) {
-			try {
-				switch (Random.chances(probs)) {
-					default:
-						probs = baseProbs.clone();
+			switch (Random.chances(probs)) {
+				default:
+					probs = baseProbs.clone();
+					continue;
+				case 0:
+					if (potions.isEmpty()) {
+						probs[0] = 0;
 						continue;
-					case 0:
-						if (potions.isEmpty()) {
-							probs[0] = 0;
-							continue;
-						}
-						probs[0]--;
-						Potion p = Random.element(potions).newInstance();
-						p.setKnown();
-						IDed.add(p);
-						potions.remove(p.getClass());
-						break;
-					case 1:
-						if (scrolls.isEmpty()) {
-							probs[1] = 0;
-							continue;
-						}
-						probs[1]--;
-						Scroll s = Random.element(scrolls).newInstance();
-						s.setKnown();
-						IDed.add(s);
-						scrolls.remove(s.getClass());
-						break;
-					case 2:
-						if (rings.isEmpty()) {
-							probs[2] = 0;
-							continue;
-						}
-						probs[2]--;
-						Ring r = Random.element(rings).newInstance();
-						r.setKnown();
-						IDed.add(r);
-						rings.remove(r.getClass());
-						break;
-				}
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
+					}
+					probs[0]--;
+					Potion p = Reflection.newInstance(Random.element(potions));
+					p.setKnown();
+					IDed.add(p);
+					potions.remove(p.getClass());
+					break;
+				case 1:
+					if (scrolls.isEmpty()) {
+						probs[1] = 0;
+						continue;
+					}
+					probs[1]--;
+					Scroll s = Reflection.newInstance(Random.element(scrolls));
+					s.setKnown();
+					IDed.add(s);
+					scrolls.remove(s.getClass());
+					break;
+				case 2:
+					if (rings.isEmpty()) {
+						probs[2] = 0;
+						continue;
+					}
+					probs[2]--;
+					Ring r = Reflection.newInstance(Random.element(rings));
+					r.setKnown();
+					IDed.add(r);
+					rings.remove(r.getClass());
+					break;
 			}
 			left --;
 			total --;
