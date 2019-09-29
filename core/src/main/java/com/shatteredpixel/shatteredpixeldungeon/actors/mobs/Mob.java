@@ -211,8 +211,8 @@ public abstract class Mob extends Char {
 
 		//find a new enemy if..
 		boolean newEnemy = false;
-		//we have no enemy, or the current one is dead
-		if ( enemy == null || !enemy.isAlive() || state == WANDERING)
+		//we have no enemy, or the current one is dead/missing
+		if ( enemy == null || !enemy.isAlive() || !Actor.chars().contains(enemy) || state == WANDERING)
 			newEnemy = true;
 		//We are an ally, and current enemy is another ally.
 		else if (alignment == Alignment.ALLY && enemy.alignment == Alignment.ALLY)
