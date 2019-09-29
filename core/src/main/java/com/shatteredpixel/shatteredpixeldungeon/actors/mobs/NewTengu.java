@@ -56,7 +56,6 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
@@ -65,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -640,7 +640,7 @@ public class NewTengu extends Mob {
 			public void use(BlobEmitter emitter) {
 				super.use(emitter);
 				
-				emitter.pour( SmokeParticle.FACTORY, 0.1f );
+				emitter.pour( SmokeParticle.FACTORY, 0.25f );
 			}
 			
 			@Override
@@ -676,8 +676,12 @@ public class NewTengu extends Mob {
 			}
 			
 			@Override
-			public ItemSprite.Glowing glowing() {
-				return new ItemSprite.Glowing( 0xFF0000, 0.5f );
+			public Emitter emitter() {
+				Emitter emitter = new Emitter();
+				emitter.pos(7.5f, 3.5f);
+				emitter.fillTarget = false;
+				emitter.pour(SmokeParticle.SPEW, 0.05f);
+				return emitter;
 			}
 		}
 	}
@@ -1038,8 +1042,12 @@ public class NewTengu extends Mob {
 			}
 			
 			@Override
-			public ItemSprite.Glowing glowing() {
-				return new ItemSprite.Glowing( 0xFFFFFF, 0.5f );
+			public Emitter emitter() {
+				Emitter emitter = new Emitter();
+				emitter.pos(5, 5);
+				emitter.fillTarget = false;
+				emitter.pour(SparkParticle.FACTORY, 0.1f);
+				return emitter;
 			}
 		}
 		
