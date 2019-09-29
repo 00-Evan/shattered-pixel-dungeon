@@ -84,33 +84,6 @@ public class Heap implements Bundlable {
 	
 	public LinkedList<Item> items = new LinkedList<Item>();
 	
-	public int image() {
-		switch (type) {
-		case HEAP:
-		case FOR_SALE:
-			return size() > 0 ? items.peek().image() : 0;
-		case CHEST:
-		case MIMIC:
-			return ItemSpriteSheet.CHEST;
-		case LOCKED_CHEST:
-			return ItemSpriteSheet.LOCKED_CHEST;
-		case CRYSTAL_CHEST:
-			return ItemSpriteSheet.CRYSTAL_CHEST;
-		case TOMB:
-			return ItemSpriteSheet.TOMB;
-		case SKELETON:
-			return ItemSpriteSheet.BONES;
-		case REMAINS:
-			return ItemSpriteSheet.REMAINS;
-		default:
-			return 0;
-		}
-	}
-	
-	public ItemSprite.Glowing glowing() {
-		return (type == Type.HEAP || type == Type.FOR_SALE) && items.size() > 0 ? items.peek().glowing() : null;
-	}
-	
 	public void open( Hero hero ) {
 		switch (type) {
 		case MIMIC:
@@ -180,8 +153,7 @@ public class Heap implements Bundlable {
 		if (items.isEmpty()) {
 			destroy();
 		} else if (sprite != null) {
-			sprite.view( image(), glowing() );
-			sprite.place( pos );
+			sprite.view(this).place( pos );
 		}
 		
 		return item;
@@ -212,11 +184,7 @@ public class Heap implements Bundlable {
 		}
 		
 		if (sprite != null) {
-			if (type == Type.HEAP || type == Type.FOR_SALE)
-				sprite.view( items.peek() );
-			else
-				sprite.view( image(), glowing() );
-			sprite.place( pos );
+			sprite.view(this).place( pos );
 		}
 	}
 	
@@ -232,9 +200,8 @@ public class Heap implements Bundlable {
 		items.remove(a);
 		if (items.isEmpty()){
 			destroy();
-		} else {
-			sprite.view( image(), glowing() );
-			sprite.place( pos );
+		} else if (sprite != null) {
+			sprite.view(this).place( pos );
 		}
 	}
 	
@@ -292,7 +259,7 @@ public class Heap implements Bundlable {
 			if (isEmpty()) {
 				destroy();
 			} else if (sprite != null) {
-				sprite.view( items.peek() );
+				sprite.view(this).place( pos );
 			}
 			
 		}
@@ -339,7 +306,7 @@ public class Heap implements Bundlable {
 			if (isEmpty()){
 				destroy();
 			} else if (sprite != null) {
-				sprite.view( items.peek() );
+				sprite.view(this).place( pos );
 			}
 		}
 	}
@@ -377,7 +344,7 @@ public class Heap implements Bundlable {
 			if (isEmpty()) {
 				destroy();
 			} else if (sprite != null) {
-				sprite.view( items.peek() );
+				sprite.view(this).place( pos );
 			}
 		}
 	}

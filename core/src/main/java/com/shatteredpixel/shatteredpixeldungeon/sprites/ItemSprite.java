@@ -74,10 +74,14 @@ public class ItemSprite extends MovieClip {
 		this( ItemSpriteSheet.SOMETHING, null );
 	}
 	
+	public ItemSprite( Heap heap ){
+		super(Assets.ITEMS);
+		view( heap );
+	}
+	
 	public ItemSprite( Item item ) {
 		super(Assets.ITEMS);
-
-		view (item);
+		view( item );
 	}
 	
 	public ItemSprite( int image ){
@@ -100,7 +104,7 @@ public class ItemSprite extends MovieClip {
 	
 	public void link( Heap heap ) {
 		this.heap = heap;
-		view( heap.image(), heap.glowing() );
+		view(heap);
 		renderShadow = true;
 		place(heap.pos);
 	}
@@ -182,7 +186,7 @@ public class ItemSprite extends MovieClip {
 		}
 	}
 
-	public ItemSprite view(Item item){
+	public ItemSprite view( Item item ){
 		view(item.image(), item.glowing());
 		Emitter emitter = item.emitter();
 		if (emitter != null && parent != null) {
@@ -191,6 +195,32 @@ public class ItemSprite extends MovieClip {
 			this.emitter = emitter;
 		}
 		return this;
+	}
+	
+	public ItemSprite view( Heap heap ){
+		if (heap.size() <= 0 || heap.items == null){
+			return view( 0, null );
+		}
+		
+		switch (heap.type) {
+			case HEAP: case FOR_SALE:
+				return view( heap.peek() );
+			case CHEST:
+			case MIMIC:
+				return view( ItemSpriteSheet.CHEST, null );
+			case LOCKED_CHEST:
+				return view( ItemSpriteSheet.LOCKED_CHEST, null );
+			case CRYSTAL_CHEST:
+				return view( ItemSpriteSheet.CRYSTAL_CHEST, null );
+			case TOMB:
+				return view( ItemSpriteSheet.TOMB, null );
+			case SKELETON:
+				return view( ItemSpriteSheet.BONES, null );
+			case REMAINS:
+				return view( ItemSpriteSheet.REMAINS, null );
+			default:
+				return view( 0, null );
+		}
 	}
 	
 	public ItemSprite view( int image, Glowing glowing ) {

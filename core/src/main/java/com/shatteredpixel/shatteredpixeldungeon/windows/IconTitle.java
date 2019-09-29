@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -52,6 +53,13 @@ public class IconTitle extends Component {
 		icon( icon );
 		label( Messages.titleCase( item.toString() ) );
 		icon.view( item );
+	}
+	
+	public IconTitle( Heap heap ){
+		ItemSprite icon = new ItemSprite();
+		icon( icon );
+		label( Messages.titleCase( heap.toString() ) );
+		icon.view( heap );
 	}
 
 	public IconTitle( Image icon, String label ) {

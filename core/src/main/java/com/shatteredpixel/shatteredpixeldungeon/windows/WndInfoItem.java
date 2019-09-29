@@ -43,27 +43,39 @@ public class WndInfoItem extends Window {
 		super();
 		
 		if (heap.type == Heap.Type.HEAP || heap.type == Heap.Type.FOR_SALE) {
-			
-			Item item = heap.peek();
-			
-			int color = TITLE_COLOR;
-			if (item.levelKnown && item.level() > 0) {
-				color = ItemSlot.UPGRADED;
-			} else if (item.levelKnown && item.level() < 0) {
-				color = ItemSlot.DEGRADED;
-			}
-			fillFields( item.image(), item.glowing(), color, item.toString(), item.info() );
+			fillFields( heap.peek() );
 			
 		} else {
-
-			fillFields( heap.image(), heap.glowing(), TITLE_COLOR, heap.toString(), heap.info() );
+			fillFields( heap );
 			
 		}
 	}
 	
 	public WndInfoItem( Item item ) {
-		
 		super();
+		
+		fillFields( item );
+	}
+	
+	private void fillFields( Heap heap ) {
+		
+		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
+		
+		IconTitle titlebar = new IconTitle();
+		titlebar.icon( new ItemSprite(heap) );
+		titlebar.color( TITLE_COLOR );
+		titlebar.setRect( 0, 0, width, 0 );
+		add( titlebar );
+		
+		RenderedTextMultiline txtInfo = PixelScene.renderMultiline( heap.info(), 6 );
+		txtInfo.maxWidth(width);
+		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
+		add( txtInfo );
+		
+		resize( width, (int)(txtInfo.top() + txtInfo.height()) );
+	}
+	
+	private void fillFields( Item item ) {
 		
 		int color = TITLE_COLOR;
 		if (item.levelKnown && item.level() > 0) {
@@ -72,20 +84,14 @@ public class WndInfoItem extends Window {
 			color = ItemSlot.DEGRADED;
 		}
 		
-		fillFields( item.image(), item.glowing(), color, item.toString(), item.info() );
-	}
-	
-	private void fillFields( int image, ItemSprite.Glowing glowing, int titleColor, String title, String info ) {
-
 		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
 
-		IconTitle titlebar = new IconTitle();
-		titlebar.icon( new ItemSprite( image, glowing ) );
-		titlebar.label( Messages.titleCase( title ), titleColor );
+		IconTitle titlebar = new IconTitle( item );
+		titlebar.color( color );
 		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
 		
-		RenderedTextMultiline txtInfo = PixelScene.renderMultiline( info, 6 );
+		RenderedTextMultiline txtInfo = PixelScene.renderMultiline( item.info(), 6 );
 		txtInfo.maxWidth(width);
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );
