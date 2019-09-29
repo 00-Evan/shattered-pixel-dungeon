@@ -270,12 +270,12 @@ public class NewPrisonBossLevel extends Level {
 			W, e, e, e, e, e, e, e, e, W, W, W, W, W,
 			e, e, e, e, e, e, e, e, e, e, e, e, W, W,
 			e, e, e, e, e, e, e, e, e, e, e, e, e, W,
-			e, e, e, e, C, C, C, C, C, C, e, e, e, W,
-			e, W, C, C, C, C, C, C, C, C, C, e, e, W,
-			e, e, e, e, C, C, C, C, C, C, C, C, e, W,
-			e, e, e, e, e, e, e, C, C, C, C, C, e, W,
+			e, e, e, C, C, C, C, C, C, C, C, e, e, W,
+			e, W, C, C, C, C, C, C, C, C, C, C, e, W,
+			e, e, e, C, C, C, C, C, C, C, C, C, e, W,
+			e, e, e, e, e, C, C, C, C, C, C, C, e, W,
 			e, e, e, e, e, e, e, W, W, W, C, C, C, W,
-			e, e, e, e, e, e, W, W, W, W, C, C, C, W,
+			W, e, e, e, e, e, W, W, W, W, C, C, C, W,
 			W, e, e, e, e, W, W, W, W, W, W, C, C, W,
 			W, W, W, W, W, W, W, W, W, W, W, C, C, W,
 			W, W, W, W, W, W, W, W, W, W, W, C, C, W,
@@ -301,6 +301,16 @@ public class NewPrisonBossLevel extends Level {
 				h.destroy();
 			}
 		}
+		
+		CustomTilemap vis = new exitVisual();
+		vis.pos(11, 10);
+		customTiles.add(vis);
+		GameScene.add(vis, false);
+		
+		vis = new exitVisualWalls();
+		vis.pos(11, 10);
+		customWalls.add(vis);
+		GameScene.add(vis, true);
 		
 		Painter.set(this, tenguCell.left+4, tenguCell.top, Terrain.DOOR);
 		
@@ -442,16 +452,6 @@ public class NewPrisonBossLevel extends Level {
 			case FIGHT_ARENA:
 				
 				unseal();
-				
-				CustomTilemap vis = new exitVisual();
-				vis.pos(11, 9);
-				customTiles.add(vis);
-				GameScene.add(vis, false);
-				
-				vis = new exitVisualWalls();
-				vis.pos(12, 9);
-				customWalls.add(vis);
-				GameScene.add(vis, true);
 				
 				Dungeon.hero.interrupt();
 				Dungeon.hero.pos = tenguCell.left+4 + (tenguCell.top+2)*width();
@@ -731,19 +731,36 @@ public class NewPrisonBossLevel extends Level {
 		{
 			texture = Assets.PRISON_EXIT_NEW;
 			
-			tileW = 13;
-			tileH = 24;
+			tileW = 14;
+			tileH = 11;
 		}
 		
-		final int TEX_WIDTH = 512;
+		final int TEX_WIDTH = 256;
+		
+		private static byte[] render = new byte[]{
+				0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+				1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+				1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+				1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+				1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+				1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
+				1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+				1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0,
+				0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0
+		};
 		
 		@Override
 		public Tilemap create() {
 			Tilemap v = super.create();
-			v.map(mapSimpleImage(0, 0, TEX_WIDTH), tileW);
+			int[] data = mapSimpleImage(0, 0, TEX_WIDTH);
+			for (int i = 0; i < data.length; i++){
+				if (render[i] == 0) data[i] = -1;
+			}
+			v.map(data, tileW);
 			return v;
 		}
-		
 	}
 	
 	public static class exitVisualWalls extends CustomTilemap {
@@ -751,19 +768,47 @@ public class NewPrisonBossLevel extends Level {
 		{
 			texture = Assets.PRISON_EXIT_NEW;
 			
-			tileW = 13;
-			tileH = 24;
+			tileW = 14;
+			tileH = 22;
 		}
 		
-		final int TEX_WIDTH = 512;
+		final int TEX_WIDTH = 256;
+		
+		private static byte[] render = new byte[]{
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+				1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1,
+				0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+		};
 		
 		@Override
 		public Tilemap create() {
 			Tilemap v = super.create();
-			v.map(mapSimpleImage(13, 0, TEX_WIDTH), tileW);
+			int[] data = mapSimpleImage(0, 10, TEX_WIDTH);
+			for (int i = 0; i < data.length; i++){
+				if (render[i] == 0) data[i] = -1;
+			}
+			v.map(data, tileW);
 			return v;
 		}
-		
 	}
 	
 }
