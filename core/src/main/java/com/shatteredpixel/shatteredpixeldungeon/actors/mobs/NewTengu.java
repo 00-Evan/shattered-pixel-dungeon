@@ -651,6 +651,7 @@ public class NewTengu extends Mob {
 			
 			{
 				dropsDownHeap = true;
+				unique = true;
 				
 				image = ItemSpriteSheet.TENGU_BOMB;
 			}
@@ -781,7 +782,6 @@ public class NewTengu extends Mob {
 		public static class FireBlob extends Blob {
 			
 			{
-				
 				actPriority = BUFF_PRIO - 1;
 			}
 			
@@ -1013,6 +1013,7 @@ public class NewTengu extends Mob {
 			
 			{
 				dropsDownHeap = true;
+				unique = true;
 				
 				image = ItemSpriteSheet.TENGU_SHOCKER;
 			}
