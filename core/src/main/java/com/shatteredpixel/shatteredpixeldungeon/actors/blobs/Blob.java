@@ -119,7 +119,11 @@ public class Blob extends Actor {
 			cur = tmp;
 			
 		} else {
-			area.setEmpty();
+			if (!area.isEmpty()) {
+				area.setEmpty();
+				//clear any values remaining in off
+				System.arraycopy(cur, 0, off, 0, cur.length);
+			}
 		}
 		
 		return true;
