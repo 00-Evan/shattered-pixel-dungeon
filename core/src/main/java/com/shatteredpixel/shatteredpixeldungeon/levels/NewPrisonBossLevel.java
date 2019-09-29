@@ -520,11 +520,29 @@ public class NewPrisonBossLevel extends Level {
 						if (ch.pos == pointToCell(mazeCellDoors[i]) && !triggered[i]){
 							triggered[i] = true;
 							Maze.allowDiagonals = true;
-							boolean[][] maze = Maze.generate(mazeCells[i], map, width(), Terrain.WALL);
+							boolean[][] maze;
+							boolean validMaze;
+							
+							do {
+								maze = Maze.generate(mazeCells[i], map, width(), Terrain.WALL);
+								
+								//prevents a maze that is just a straight line from the door
+								validMaze = false;
+								for (int x = 1; x < maze.length-1; x++){
+									if (maze[x][3]){
+										int cell = mazeCells[i].left+x + width()*(mazeCells[i].top+3);
+										if (heaps.get(cell) == null) {
+											validMaze = true;
+											break;
+										}
+									}
+								}
+								
+							} while (!validMaze);
 							
 							for (int x = 1; x < maze.length-1; x++) {
 								for (int y = 1; y < maze[0].length-1; y++) {
-									if (maze[x][y] && !(x == 1 && y == 3)){
+									if (maze[x][y]){
 										int cell = mazeCells[i].left+x + width()*(mazeCells[i].top+y);
 										if (heaps.get(cell) == null){
 											setTrap(new TenguDartTrap().hide(), cell);
