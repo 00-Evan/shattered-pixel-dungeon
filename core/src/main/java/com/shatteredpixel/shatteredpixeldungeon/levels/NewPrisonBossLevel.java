@@ -555,8 +555,9 @@ public class NewPrisonBossLevel extends Level {
 							
 							FadingTraps f = new FadingTraps();
 							f.setCoveringArea(mazeCells[i]);
+							f.fadeDelay = 1f;
 							GameScene.add(f, false);
-							f.startFade( 3f );
+							customTiles.add(f);
 							
 							Sample.INSTANCE.play(Assets.SND_TELEPORT);
 							int roomCenter = (mazeCells[i].left + mazeCells[i].right)/2 +
@@ -648,9 +649,10 @@ public class NewPrisonBossLevel extends Level {
 		GameScene.updateMap();
 		
 		FadingTraps t = new FadingTraps();
+		t.fadeDelay = 1f;
 		t.setCoveringArea(tenguCell);
 		GameScene.add(t, false);
-		t.startFade( 3f );
+		customTiles.add(t);
 	}
 	
 	@Override
@@ -685,13 +687,18 @@ public class NewPrisonBossLevel extends Level {
 		}
 	}
 	
-	private class FadingTraps extends CustomTilemap {
+	//TODO consider making this external to the prison boss level
+	public static class FadingTraps extends CustomTilemap {
 		
 		{
 			texture = Assets.TERRAIN_FEATURES;
 		}
 		
 		Rect area;
+		
+		private float fadeDuration = 1f;
+		private float initialAlpha = .4f;
+		private float fadeDelay = 0f;
 		
 		public void setCoveringArea(Rect area){
 			tileX = area.left;
@@ -710,9 +717,9 @@ public class NewPrisonBossLevel extends Level {
 			Trap t;
 			int i = 0;
 			for (int y = tileY; y < tileY + tileH; y++){
-				cell = tileX + y*width();
+				cell = tileX + y*Dungeon.level.width();
 				for (int x = tileX; x < tileX + tileW; x++){
-					t = traps.get(cell);
+					t = Dungeon.level.traps.get(cell);
 					if (t != null){
 						data[i] = t.color + t.shape*16;
 					} else {
@@ -724,24 +731,61 @@ public class NewPrisonBossLevel extends Level {
 			}
 			
 			v.map( data, tileW );
+			setFade();
 			return v;
 		}
 		
-		public void startFade( float duration ){
-			if (vis == null || vis.parent == null){
+		@Override
+		public String name(int tileX, int tileY) {
+			int cell = (this.tileX+tileX) + Dungeon.level.width()*(this.tileY+tileY);
+			if (Dungeon.level.traps.get(cell) != null){
+				return Dungeon.level.traps.get(cell).name;
+			}
+			return super.name(tileX, tileY);
+		}
+		
+		@Override
+		public String desc(int tileX, int tileY) {
+			int cell = (this.tileX+tileX) + Dungeon.level.width()*(this.tileY+tileY);
+			if (Dungeon.level.traps.get(cell) != null){
+				return Dungeon.level.traps.get(cell).desc();
+			}
+			return super.desc(tileX, tileY);
+		}
+		
+		private void setFade( ){
+			if (vis == null){
 				return;
 			}
 			
-			vis.parent.add(new AlphaTweener(vis, 0f, duration){
-				@Override
-				protected void onComplete() {
-					super.onComplete();
-					vis.killAndErase();
-					killAndErase();
-					vis = null;
+			vis.alpha( initialAlpha );
+			Actor.addDelayed(new Actor() {
+				
+				{
+					actPriority = HERO_PRIO-1;
 				}
-			});
+				
+				@Override
+				protected boolean act() {
+					Actor.remove(this);
+					
+					if (vis != null && vis.parent != null) {
+						Dungeon.level.customTiles.remove(FadingTraps.this);
+						vis.parent.add(new AlphaTweener(vis, 0f, fadeDuration) {
+							@Override
+							protected void onComplete() {
+								super.onComplete();
+								vis.killAndErase();
+								killAndErase();
+							}
+						});
+					}
+					
+					return true;
+				}
+			}, fadeDelay);
 		}
+		
 	}
 	
 	public static class exitVisual extends CustomTilemap {
