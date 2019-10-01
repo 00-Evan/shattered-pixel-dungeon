@@ -61,8 +61,7 @@ public class WndInfoItem extends Window {
 		
 		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
 		
-		IconTitle titlebar = new IconTitle();
-		titlebar.icon( new ItemSprite(heap) );
+		IconTitle titlebar = new IconTitle( heap );
 		titlebar.color( TITLE_COLOR );
 		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
