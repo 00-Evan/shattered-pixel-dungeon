@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
@@ -198,23 +199,23 @@ public class WndLangs extends Window {
 					
 					creds = creds.substring(0, creds.length()-1);
 
-					Window credits = new Window();
+					Window credits = new Window( 0, 0, 0, Chrome.get(Chrome.Type.TOAST) );
 					
 					int w = wide? 135 : 65;
 
-					RenderedTextMultiline title = PixelScene.renderMultiline(9);
+					RenderedTextMultiline title = PixelScene.renderMultiline(6);
 					title.text(Messages.titleCase(Messages.get(WndLangs.class, "credits")) , w);
 					title.hardlight(SHPX_COLOR);
 					title.setPos((w - title.width())/2, 0);
 					credits.add(title);
 
-					RenderedTextMultiline text = PixelScene.renderMultiline(6);
+					RenderedTextMultiline text = PixelScene.renderMultiline(5);
 					text.text(creds, 65);
 					text.setPos(0, title.bottom() + 2);
 					credits.add(text);
 					
 					if (wide){
-						RenderedTextMultiline rightColumn = PixelScene.renderMultiline(6);
+						RenderedTextMultiline rightColumn = PixelScene.renderMultiline(5);
 						rightColumn.text(creds2, 65);
 						rightColumn.setPos(70, title.bottom() + 8.5f);
 						credits.add(rightColumn);
