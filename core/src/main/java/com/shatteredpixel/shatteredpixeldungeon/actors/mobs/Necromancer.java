@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.NecromancerSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
@@ -62,7 +63,7 @@ public class Necromancer extends Mob {
 		HUNTING = new Hunting();
 	}
 	
-	private boolean summoning = false;
+	public boolean summoning = false;
 	private Emitter summoningEmitter = null;
 	private int summoningPos = -1;
 	
@@ -78,7 +79,7 @@ public class Necromancer extends Mob {
 		if (summoning && summoningEmitter == null){
 			summoningEmitter = CellEmitter.get( summoningPos );
 			summoningEmitter.pour(Speck.factory(Speck.RATTLE), 0.2f);
-			((NecromancerSprite)sprite).charge( summoningPos );
+			sprite.zap( summoningPos );
 		}
 	}
 	
@@ -152,6 +153,28 @@ public class Necromancer extends Mob {
 		}
 	}
 	
+	public void onZapComplete(){
+		if (mySkeleton == null){
+			return;
+		}
+		
+		//heal skeleton first
+		if (mySkeleton.HP < mySkeleton.HT){
+			
+			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+			
+			mySkeleton.HP = Math.min(mySkeleton.HP + 5, mySkeleton.HT);
+			mySkeleton.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+			
+			//otherwise give it adrenaline
+		} else if (mySkeleton.buff(Adrenaline.class) == null) {
+			
+			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+			
+			Buff.affect(mySkeleton, Adrenaline.class, 3f);
+		}
+	}
+	
 	private class Hunting extends Mob.Hunting{
 		
 		@Override
@@ -218,7 +241,7 @@ public class Necromancer extends Mob {
 			}
 			
 			//if enemy is seen, and enemy is within range, and we haven no skeleton, summon a skeleton!
-			if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 4 && mySkeleton == null){
+			if (enemySeen && Dungeon.level.distance(pos, enemy.pos) <= 1 && mySkeleton == null){
 				
 				summoningPos = -1;
 				for (int c : PathFinder.NEIGHBOURS8){
@@ -236,7 +259,7 @@ public class Necromancer extends Mob {
 					summoningEmitter = CellEmitter.get(summoningPos);
 					summoningEmitter.pour(Speck.factory(Speck.RATTLE), 0.2f);
 					
-					((NecromancerSprite)sprite).charge(summoningPos);
+					sprite.zap( summoningPos );
 					
 					spend( firstSummon ? TICK : 2*TICK );
 				} else {
@@ -274,24 +297,11 @@ public class Necromancer extends Mob {
 					
 				} else {
 					
-					//heal skeleton first
-					if (mySkeleton.HP < mySkeleton.HT){
-						
+					//zap skeleton
+					if (mySkeleton.HP < mySkeleton.HT || mySkeleton.buff(Adrenaline.class) == null) {
 						sprite.zap(mySkeleton.pos);
-						sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
-						
-						int healRoll = Random.NormalIntRange(5, 8);
-						mySkeleton.HP = Math.min(mySkeleton.HP + healRoll, mySkeleton.HT);
-						mySkeleton.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-						
-					//otherwise give it adrenaline
-					} else if (mySkeleton.buff(Adrenaline.class) == null) {
-						
-						sprite.zap(mySkeleton.pos);
-						sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
-						
-						Buff.affect(mySkeleton, Adrenaline.class, 3f);
 					}
+					
 				}
 				
 				spend(TICK);
@@ -305,11 +315,12 @@ public class Necromancer extends Mob {
 		}
 	}
 	
-	//TODO should give this its own sprite
 	public static class NecroSkeleton extends Skeleton {
 		
 		{
 			state = WANDERING;
+			
+			spriteClass = NecroSkeletonSprite.class;
 			
 			//no loot or exp
 			maxLvl = -5;
@@ -320,6 +331,20 @@ public class Necromancer extends Mob {
 		
 		private void teleportSpend(){
 			spend(TICK);
+		}
+		
+		public static class NecroSkeletonSprite extends SkeletonSprite{
+			
+			public NecroSkeletonSprite(){
+				super();
+				brightness(0.75f);
+			}
+			
+			@Override
+			public void resetColor() {
+				super.resetColor();
+				brightness(0.75f);
+			}
 		}
 		
 	}

@@ -22,9 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.watabou.noosa.TextureFilm;
 
-//TODO placeholder graphics atm
 public class NecromancerSprite extends MobSprite {
 	
 	private Animation charging;
@@ -38,25 +38,24 @@ public class NecromancerSprite extends MobSprite {
 		idle = new Animation( 1, true );
 		idle.frames( film, 0, 0, 0, 1, 0, 0, 0, 0, 1 );
 		
-		run = new Animation( 10, true );
-		run.frames( film, 0, 2, 3, 4, 0 );
+		run = new Animation( 8, true );
+		run.frames( film, 0, 0, 0, 2, 3, 4 );
 		
-		zap = new Animation( 5, false );
-		zap.frames( film, 5, 1 );
+		zap = new Animation( 10, false );
+		zap.frames( film, 5, 6, 7, 8 );
 		
 		charging = new Animation( 5, true );
-		charging.frames( film, 1, 5 );
+		charging.frames( film, 7, 8 );
 		
 		die = new Animation( 10, false );
-		die.frames( film, 6, 7, 8, 9 );
+		die.frames( film, 9, 10, 11, 12 );
 		
 		attack = zap.clone();
 		
 		idle();
 	}
 	
-	public void charge( int pos ){
-		turnTo(ch.pos, pos);
+	public void charge(){
 		play(charging);
 	}
 	
@@ -64,7 +63,12 @@ public class NecromancerSprite extends MobSprite {
 	public void onComplete(Animation anim) {
 		super.onComplete(anim);
 		if (anim == zap){
-			idle();
+			if (((Necromancer) ch).summoning){
+				charge();
+			} else {
+				((Necromancer)ch).onZapComplete();
+				idle();
+			}
 		}
 	}
 }
