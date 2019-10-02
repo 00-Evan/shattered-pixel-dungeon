@@ -36,8 +36,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
+import com.watabou.noosa.ui.Button;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 
+import java.io.IOException;
 import java.util.Locale;
 
 public class WndGameInProgress extends Window {
@@ -66,6 +69,23 @@ public class WndGameInProgress extends Window {
 		title.color(Window.SHPX_COLOR);
 		title.setRect( 0, 0, WIDTH, 0 );
 		add(title);
+		
+		//manually produces debug information about a run, mainly useful for levelgen errors
+		Button debug = new Button(){
+			@Override
+			protected boolean onLongClick() {
+				try {
+					Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.gameFile(slot));
+					ShatteredPixelDungeon.scene().addToFront(new WndMessage("_Debug Info:_\n\n" +
+							"Version: " + Game.version + " (" + Game.versionCode + ")\n" +
+							"Seed: " + bundle.getLong("seed") + "\n" +
+							"Challenge Mask: " + info.challenges));
+				} catch (IOException ignored) { }
+				return true;
+			}
+		};
+		debug.setRect(0, 0, title.imIcon.width(), title.imIcon.height);
+		add(debug);
 		
 		if (info.challenges > 0) GAP -= 2;
 		
