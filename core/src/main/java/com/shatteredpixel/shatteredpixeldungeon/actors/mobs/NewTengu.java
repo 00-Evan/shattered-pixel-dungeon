@@ -470,6 +470,11 @@ public class NewTengu extends Mob {
 						break;
 					case SHOCKER_ABILITY:
 						abilityUsed = throwShocker(NewTengu.this, enemy);
+						//if Tengu cannot use his shocker ability second, use fire instead.
+						if (abilitiesUsed == 1 && !abilityUsed){
+							abilityToUse = FIRE_ABILITY;
+							abilityUsed = throwFire(NewTengu.this, enemy);
+						}
 						break;
 				}
 			}
