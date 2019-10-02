@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImag
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
@@ -57,106 +58,119 @@ import java.util.ArrayList;
 public class v0_7_X_Changes {
 	
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+		add_v0_7_5_Changes(changeInfos);
 		add_v0_7_4_Changes(changeInfos);
 		add_v0_7_3_Changes(changeInfos);
 		add_v0_7_2_Changes(changeInfos);
 		add_v0_7_1_Changes(changeInfos);
 		add_v0_7_0_Changes(changeInfos);
 	}
+	
+	public static void add_v0_7_5_Changes( ArrayList<ChangeInfo> changeInfos ){
+		ChangeInfo changes = new ChangeInfo("v0.7.5", true, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released October 2nd, 2019\n" +
+				"_-_ 76 days after Shattered v0.7.4" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SNAKE, 12, 0, 12, 11), "Sewer Enemies",
+				"Two new enemies have been added to the sewers!\n\n" +
+				"_- Snakes_ are an evasive enemy which mainly shows up on early floors, they help teach the importance of surprise attacks.\n" +
+				"_- Slimes_ primarily appear on floor 4, and are an enemy type which rewards defense over damage.\n\n" +
+				"Goo's level has also received significant changes. It now uses a new unique level layout pattern, and Goo itself always spawns in a new unique room type.\n\n" +
+				"I have also made slight balance changes to the Goo fight itself. 1x1 pillars have been mostly removed from Goo's arena to reduce surprise-attack spam, but Goo's damage has been reduced by 20% to compensate."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Prison Enemies",
+				"_Necromancers_ have been added to the prison! These powerful enemies fight by summoning and buffing undead.\n\n" +
+				"The _Tengu_ boss fight has been totally reworked! The fight still takes place over 3 stages, and has a similar core theme, but I have totally ditched the tedious maze and chasing mechanics from stages 2&3, and have given Tengu several new abilities. Watch your step!\n\n" +
+				"As a part of this rework, Tengu's stats have also been adjusted:\n" +
+				"_-_ HP up to 160 from 120\n" +
+				"_-_ Evasion reduced by 25%\n" +
+				"_-_ Damage reduced by 30%"));
+		
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.RAT, 0, 15, 16, 15), "Enemy Changes",
+				"_-_ Significantly improved the consistency of enemy spawns (large numbers of the same enemy and large enemy groups should be less common)\n\n" +
+				"_-_ Adjusted enemy spawn chances on floors 1-10 to make rooms for new enemies\n\n" +
+				"_-_ Skeletons no longer rarely appear on floor 4\n\n" +
+				"_-_ Guards no longer drop healing potions, they are now dropped by necromancers\n" +
+				"_-_ Guards now grant 7 exp, up from 6\n\n" +
+				"_-_ Albino rats now grant 2 exp, up from 1\n" +
+				"_-_ Albino rats now drop mystery meat"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ The game camera now smoothly follows the hero while they are moving, instead of snapping to their location.\n\n" +
+				"_-_ Standardized word use when attacks miss to reduce confusion. Enemies now always 'block' or 'dodge'.\n\n" +
+				"_-_ Various improvements to wording on the supporter menu for Google Play users.\n\n" +
+				"_-_ Various internal code improvements"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Various stability issues caused by the LibGDX conversion\n" +
+				"_-_ Area-based effects behaving oddly in rare cases\n" +
+				"_-_ Thieves not escaping when they should in many cases\n" +
+				"_-_ A rare crash bug involving boomerangs\n" +
+				"_-_ Sai and gauntlets giving 1 more defense than what their descriptions stated\n" +
+				"_-_ Players rarely opening containers/doors from a distance"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+				"Added new Language: Japanese!\n\n" +
+				"Updated Translations and Translator Credits!"));
+		
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_BLAST_WAVE, null), "Wand Buffs",
+				"Blast wave is an excellent sidearm wand, but not as good when invested in. I'm making the wand a bit stronger and less risky to hopefully make it more worthy of upgrades.\n" +
+				"_-_ Increased AOE damage from 67% to 100%, AOE knockback force is unchanged\n" +
+				"_-_ AOE no longer damages hero/allies, but still knocks them back\n\n" +
+				"Corrosion is a very powerful wand in the right hands, but is currently a bit too hard to use right. I'm lightly buffing it to make its power a bit more accessible.\n" +
+				"_-_ Corrosion gas starting damage increased to 2+lvl from 1+lvl"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST, null), "Ring Buffs",
+				"Based on their performance, I'm giving a light buff to ring of energy, and a more significant buff to ring of wealth:\n\n" +
+				"_-_ Ring of energy charge boost increased to 30% per level, from 25%\n\n" +
+				"_-_ Ring of wealth exclusive drops are 20% more common\n" +
+				"_-_ Rare ring of wealth exclusive drops are now 33% more common"));
+		
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONGSWORD, new ItemSprite.Glowing( 0x440066 )), "Glyph/Enchant Buffs",
+				"I'm giving some significant buffs to underperforming rare enchants/glyphs:\n\n" +
+				"_-_ Proc chance for corruption enchant increased by ~25% at all levels\n\n" +
+				"_-_ Proc chance for glyph of affection increased by ~50% at +0, scaling to ~10% at +10"));
+		
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(new WandOfLivingEarth(),
+				"I'm continuing to adjust the wand of living earth to make it less able to stand on its own as a run-winning item. It should excel at providing defensive power, but shouldn't also give good offense.\n\n" +
+				"_-_ Guardian average damage decreased by 33%\n" +
+				"_-_ Base wand damage up to 4-6 from 3-6\n" +
+				"_-_ Wand damage scaling down to 0-2 from 1-2"));
+		
+		changes.addButton( new ChangeButton(new WandOfCorruption(),
+				"Corruption is performing extremely well when invested in, so I'm adjusting debuff influence on corruption chance to make it more difficult to corrupt enemies.\n\n" +
+				"_-_ Corruption resistance reduction from minor debuffs reduced to 12.5% from 20%\n" +
+				"_-_ Corruption resistance reduction from major debuffs reduced to 25% from 33%"));
+		
+	}
 
 	public static void add_v0_7_4_Changes( ArrayList<ChangeInfo> changeInfos ){
 		ChangeInfo changes = new ChangeInfo("v0.7.4", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
-		
-		changes = new ChangeInfo("v0.7.4d", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed a crash on start error some F-droid users were experiencing."));
-		
-		changes = new ChangeInfo("v0.7.4c", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Shots from the wand of warding now travel more quickly if they are going a great distance.\n\n" +
-				"_-_ Class armor abilities no longer affect allies"));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by 0.7.4):\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Software keyboard not automatically hiding correctly\n" +
-				"_-_ Various fog of war errors when distant wards die"));
-		
-		changes = new ChangeInfo("v0.7.4b", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "LibGDX",
-				"Large sections of Shattered's codebase is now using the multiplatform game library _LibGDX._ Making the game's codebase less heavily tied to Android is a big step towards making the game available on other platforms!\n\n" +
-				"Keyboard input handling and text rendering are still coupled to Android however. I will convert these game systems to use LibGDX in a later update.\n\n" +
-				"Note that Shattered will not immediately release on other platforms once LibGDX conversion is complete, but it is a big step towards that."));
-		
-		changes.addButton( new ChangeButton(new WandOfLivingEarth(),
-				"The wand of living earth is performing fairly reasonably now, but the staff of living earth continues to be really strong. This has led me to re-evaluate the battlemage living earth ability, and to nerf it significantly:\n\n" +
-				"_-_ Earthen armor generated from battlemage melee hits reduced to 0.25x damage from 1x damage.\n\n" +
-				"_-_ Battlemage can no longer stack earthen armor past the max HP of the earthen guardian.\n\n" +
-				"Additionally:\n" +
-				"_-_ Guardian armor is now equivalent to cloth armor when 'faith is my armor' challenge is enabled."));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Updated hero icons in rankings and saved game screens.\n\n" +
-				"_-_ Updated translations"));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by 0.7.4):\n" +
-				"_-_ Wards able to be placed in walls\n" +
-				"_-_ Allies incorrectly being lost after Tengu fight\n" +
-				"Fixed (existed prior to 0.7.4):\n" +
-				"_-_ Talisman of foresight warn effect not being saved/loaded\n" +
-				"_-_ Level visuals (e.g. prison torches) rarely bugging out"));
-		
-		changes = new ChangeInfo("v0.7.4a", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-		
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_WARDING, null), "New Wand Adjustments",
-				"Wand of Warding:\n" +
-				"The direct power of this wand is working well, but is a bit too hard to access. I'm making a few tweaks to make it a bit easier to access that power:\n" +
-				"_-_ The wand of warding can now target any location the hero can see, even through walls.\n" +
-				"_-_ Rather than wasting a charge, the wand now 'fizzles' if ward capacity is reached.\n\n" +
-				"Wand of Living Earth:\n" +
-				"This wand is doing a bit too well at the moment, so I'm slightly scaling back its power at higher levels while very lightly buffing its base strength.\n" +
-				"_-_ Earth armor granted per shot reduced to 1x damage from 1.33x damage.\n" +
-				"_-_ Earth guardian max HP reduced to 16+8*lvl from 20+10*lvl.\n" +
-				"_-_ Wand base damage increased to 3-6 from 2-4.\n" +
-				"_-_ Earth guardian damage increased by 12.5%."));
-		
-		changes.addButton( new ChangeButton( new Image(Assets.MAGE, 0, 90, 12, 15), "Subclass Adjustments",
-				"The Warlock is intended to require a source of physical damage in addition to a wand to be successful. Upgradeable ally wands are problematic for warlock as you can get magical power and physical damage in one item, which makes his abilities absurdly useful with them. The warlock should synergize with allies, but I have scaled the amount down to more reasonable levels:\n\n" +
-				"_-_ Soul mark healing increased to 40% of damage from 33%\n" +
-				"_-_ Soul mark is now 2/5 as effective when the damage-dealer isn't the hero.\n\n" +
-				"I'm also making a few smaller adjustments to other subclasses which are overperforming:\n\n" +
-				"_-_ Berserker rate of rage loss over time increased by 33% (it is now 2/3 of what it was pre-0.7.3).\n\n" +
-				"_-_ Freerunner bonus evasion reduced by 20%."));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Autotargeting now no longer targets ally characters, in any circumstances.\n\n" +
-				"_-_ Most scrolls with an area of affect now no longer affect allies. More destructive ones will still damage them though.\n\n" +
-				"_-_ Updated Translations."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by 0.7.4):\n" +
-				"_-_ Various rare crash bugs\n\n" +
-				"Fixed (existed prior to 0.7.4):\n" +
-				"_-_ Minor visual errors with ranged enemy attacks.\n" +
-				"_-_ Heavy boomerangs being lost when inventory is full.\n" +
-				"_-_ NPCs rarely getting hit by ranged attacks.\n" +
-				"_-_ Enemies rarely spawning on top of each other on boss levels.\n" +
-				"_-_ Elixir of aquatic rejuvenation being able to heal slightly over max hp.\n" +
-				"_-_ Prismatic images not being affected by brimstone and antimagic glyphs."));
 		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -175,6 +189,11 @@ public class v0_7_X_Changes {
 		changes.addButton( new ChangeButton(new WandOfLivingEarth(),
 				"This new wand has a lower damage output, but grants significant defensive power. The rocks the wand shoots at enemies reform around the hero and absorb damage. If enough rock is built, it will form up into a rock guardian which fights with the player.\n\n" +
 				"The Wand of Living Earth is lacking in offensive output, but does a great job of pulling focus and damage away from the player."));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "LibGDX",
+				"Large sections of Shattered's codebase is now using the multiplatform game library _LibGDX._ Making the game's codebase less heavily tied to Android is a big step towards making the game available on other platforms!\n\n" +
+				"Keyboard input handling and text rendering are still coupled to Android however. I will convert these game systems to use LibGDX in a later update.\n\n" +
+				"Note that Shattered will not immediately release on other platforms once LibGDX conversion is complete, but it is a big step towards that."));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
 		changes.hardlight( CharSprite.WARNING );
@@ -187,15 +206,27 @@ public class v0_7_X_Changes {
 				"Lastly, the hero can now swap places with any ally, even unintelligent ones."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Overhauled main menu interface to allow for more expandability.\n\n" +
-				"_-_ Ring of elements and antimagic effects now apply to damage from wands.\n\n" +
+				"_-_ Overhauled main menu interface to allow for more expandability.\n" +
+				"_-_ Updated hero icons in rankings and saved game screens.\n\n" +
+				"_-_ Class armor abilities no longer affect allies\n" +
+				"_-_ Autotargeting now no longer targets ally characters, in any circumstances.\n" +
+				"_-_ Most scrolls with an area of affect now no longer affect allies. More destructive ones will still damage them though.\n" +
 				"_-_ Added a little surprise if you reach the surface with an upgraded ally item.\n\n" +
+				"_-_ Ring of elements and antimagic effects now apply to damage from wands.\n\n" +
 				"_-_ The great crab can now only block one enemy at a time.\n\n" +
-				"_-_ Shattered Pixel Dungeon now requires Android 2.3+ to run, up from Android 2.2+.\n\n" +
+				"_-_ Shattered Pixel Dungeon now requires Android 2.3+ to run, up from Android 2.2+.\n" +
 				"_-_ Google Play Games and sharing gameplay data now requires android 4.1+, up from 4.0+."));
 
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
+				"_-_ Talisman of foresight warn effect not being saved/loaded\n" +
+				"_-_ Level visuals (e.g. prison torches) rarely bugging out\n" +
+				"_-_ Minor visual errors with ranged enemy attacks.\n" +
+				"_-_ Heavy boomerangs being lost when inventory is full\n" +
+				"_-_ NPCs rarely getting hit by ranged attacks\n" +
+				"_-_ Enemies rarely spawning on top of each other on boss levels\n" +
+				"_-_ Elixir of aquatic rejuvenation being able to heal slightly over max hp\n" +
+				"_-_ Prismatic images not being affected by brimstone and antimagic glyphs\n" +
 				"_-_ Shattered pots being lost if the player has a full inventory\n" +
 				"_-_ Doors incorrectly closing when swapping places with an ally\n" +
 				"_-_ Various rare bugs with heavy boomerangs\n" +
@@ -241,6 +272,14 @@ public class v0_7_X_Changes {
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton( new Image(Assets.MAGE, 0, 90, 12, 15), "Subclass Adjustments",
+				"The Warlock is intended to require a source of physical damage in addition to a wand to be successful. Upgradeable ally wands are problematic for warlock as you can get magical power and physical damage in one item, which makes his abilities absurdly useful with them. The warlock should synergize with allies, but I have scaled the amount down to more reasonable levels:\n\n" +
+				"_-_ Soul mark healing increased to 40% of damage from 33%\n" +
+				"_-_ Soul mark is now 2/5 as effective when the damage-dealer isn't the hero.\n\n" +
+				"I'm also making a few smaller adjustments to other subclasses which are overperforming:\n\n" +
+				"_-_ Berserker rate of rage loss over time increased by 33% (it is now 2/3 of what it was pre-0.7.3).\n\n" +
+				"_-_ Freerunner bonus evasion reduced by 20%."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARMOR_MAIL, new ItemSprite.Glowing(0x88EEFF)), "Glyph Nerfs",
 				"_-_ Glyph of Thorns bleed amount reduced to 4+lvl from 4+2*lvl, proc rate increased.\n\n" +

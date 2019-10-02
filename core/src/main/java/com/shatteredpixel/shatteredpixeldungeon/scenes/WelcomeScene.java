@@ -43,7 +43,7 @@ import com.watabou.utils.FileUtils;
 
 public class WelcomeScene extends PixelScene {
 
-	private static int LATEST_UPDATE = 356;
+	private static int LATEST_UPDATE = ShatteredPixelDungeon.v0_7_5;
 
 	@Override
 	public void create() {
