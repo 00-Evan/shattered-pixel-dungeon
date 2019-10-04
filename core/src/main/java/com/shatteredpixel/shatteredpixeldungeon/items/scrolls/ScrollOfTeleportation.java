@@ -109,6 +109,11 @@ public class ScrollOfTeleportation extends Scroll {
 	
 	public static void teleportHero( Hero  hero ) {
 
+		if (Dungeon.bossLevel()){
+			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
+			return;
+		}
+		
 		int count = 10;
 		int pos;
 		do {
@@ -118,7 +123,7 @@ public class ScrollOfTeleportation extends Scroll {
 			}
 		} while (pos == -1);
 		
-		if (pos == -1 || Dungeon.bossLevel()) {
+		if (pos == -1) {
 			
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			
