@@ -34,6 +34,8 @@ public class CausticSlime extends Slime {
 	
 	{
 		spriteClass = CausticSlimeSprite.class;
+		
+		properties.add(Property.ACIDIC);
 	}
 	
 	@Override
