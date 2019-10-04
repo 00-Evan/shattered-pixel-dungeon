@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
     }
 }
 
@@ -17,9 +17,9 @@ allprojects {
         appVersionCode = 371
         appVersionName = '0.7.5'
 
-        appAndroidCompileSDK = 28
+        appAndroidCompileSDK = 29
         appAndroidMinSDK = 9
-        appAndroidTargetSDK = 28
+        appAndroidTargetSDK = 29
 
         gdxVersion = '1.9.10'
     }
