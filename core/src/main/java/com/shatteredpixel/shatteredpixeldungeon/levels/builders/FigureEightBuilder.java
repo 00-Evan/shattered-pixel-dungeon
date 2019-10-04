@@ -163,7 +163,7 @@ public class FigureEightBuilder extends RegularBuilder {
 		while (!prev.connect(landmarkRoom)){
 			
 			ConnectionRoom c = ConnectionRoom.createRoom();
-			if (placeRoom(firstLoop, prev, c, angleBetweenRooms(prev, entrance)) == -1){
+			if (placeRoom(rooms, prev, c, angleBetweenRooms(prev, landmarkRoom)) == -1){
 				return null;
 			}
 			firstLoop.add(c);
@@ -191,7 +191,7 @@ public class FigureEightBuilder extends RegularBuilder {
 		while (!prev.connect(landmarkRoom)){
 			
 			ConnectionRoom c = ConnectionRoom.createRoom();
-			if (placeRoom(secondLoop, prev, c, angleBetweenRooms(prev, entrance)) == -1){
+			if (placeRoom(rooms, prev, c, angleBetweenRooms(prev, landmarkRoom)) == -1){
 				return null;
 			}
 			secondLoop.add(c);
