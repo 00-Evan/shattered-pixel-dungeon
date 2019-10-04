@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -349,6 +350,10 @@ public class NewTengu extends Mob {
 				if (!yelledCoward) {
 					yell(Messages.get(NewTengu.class, "coward"));
 					yelledCoward = true;
+					//TODO translate
+					if (Messages.lang() == Languages.ENGLISH){
+						GLog.i("(Tengu can still attack if you are invisible, but his accuracy is reduced.)");
+					}
 				}
 				enemyInFOV = true;
 			}
