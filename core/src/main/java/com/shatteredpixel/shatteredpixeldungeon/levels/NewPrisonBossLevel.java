@@ -397,9 +397,23 @@ public class NewPrisonBossLevel extends Level {
 		switch (state){
 			case START:
 				
-				//if something is occupying Tengu's space, wait and do nothing.
-				if (Actor.findChar(pointToCell(tenguCellCenter)) != null){
-					return;
+				int tenguPos = pointToCell(tenguCellCenter);
+				
+				//if something is occupying Tengu's space, try to put him in an adjacent cell
+				if (Actor.findChar(tenguPos) != null){
+					ArrayList<Integer> candidates = new ArrayList<>();
+					for (int i : PathFinder.NEIGHBOURS8){
+						if (Actor.findChar(tenguPos + i) == null){
+							candidates.add(tenguPos + i);
+						}
+					}
+					
+					if (!candidates.isEmpty()){
+						tenguPos = Random.element(candidates);
+					//if there are no adjacent cells, wait and do nothing
+					} else {
+						return;
+					}
 				}
 				
 				seal();
@@ -416,7 +430,7 @@ public class NewPrisonBossLevel extends Level {
 				}
 				
 				tengu.state = tengu.HUNTING;
-				tengu.pos = pointToCell(tenguCellCenter); //in the middle of the fight room
+				tengu.pos = tenguPos;
 				GameScene.add( tengu );
 				tengu.notice();
 				
