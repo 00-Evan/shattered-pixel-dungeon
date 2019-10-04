@@ -294,7 +294,7 @@ public class QuickRecipe extends Component {
 						i = 0;
 					}
 					Item item = (Item) Reflection.newInstance(cls);
-					ArrayList<Item> in = new ArrayList<Item>(Arrays.asList(new Bomb(), item));
+					ArrayList<Item> in = new ArrayList<>(Arrays.asList(new Bomb(), item));
 					result.add(new QuickRecipe( r, in, r.sampleOutput(in)));
 					i++;
 				}

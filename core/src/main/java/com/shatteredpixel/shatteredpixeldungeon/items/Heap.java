@@ -82,7 +82,7 @@ public class Heap implements Bundlable {
 	public boolean seen = false;
 	public boolean haunted = false;
 	
-	public LinkedList<Item> items = new LinkedList<Item>();
+	public LinkedList<Item> items = new LinkedList<>();
 	
 	public void open( Hero hero ) {
 		switch (type) {
@@ -429,7 +429,7 @@ public class Heap implements Bundlable {
 		seen = bundle.getBoolean( SEEN );
 		type = Type.valueOf( bundle.getString( TYPE ) );
 		
-		items = new LinkedList<Item>( (Collection<Item>) ((Collection<?>) bundle.getCollection( ITEMS )) );
+		items = new LinkedList<>((Collection<Item>) ((Collection<?>) bundle.getCollection(ITEMS)));
 		items.removeAll(Collections.singleton(null));
 		
 		//remove any document pages that either don't exist anymore or that the player already has

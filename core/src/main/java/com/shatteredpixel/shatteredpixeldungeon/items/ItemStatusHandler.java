@@ -43,9 +43,9 @@ public class ItemStatusHandler<T extends Item> {
 
 		this.itemLabels = new HashMap<>();
 		this.labelImages = new HashMap<>(labelImages);
-		known = new HashSet<Class<? extends T>>();
+		known = new HashSet<>();
 
-		ArrayList<String> labelsLeft = new ArrayList<String>( labelImages.keySet() );
+		ArrayList<String> labelsLeft = new ArrayList<>(labelImages.keySet());
 
 		for (int i=0; i < items.length; i++) {
 
@@ -67,7 +67,7 @@ public class ItemStatusHandler<T extends Item> {
 		this.labelImages = new HashMap<>(labelImages);
 		known = new HashSet<>();
 
-		ArrayList<String> allLabels = new ArrayList<String>( labelImages.keySet() );
+		ArrayList<String> allLabels = new ArrayList<>(labelImages.keySet());
 
 		restore(bundle, allLabels);
 	}
@@ -203,7 +203,7 @@ public class ItemStatusHandler<T extends Item> {
 	}
 	
 	public HashSet<Class<? extends T>> unknown() {
-		HashSet<Class<? extends T>> result = new HashSet<Class<? extends T>>();
+		HashSet<Class<? extends T>> result = new HashSet<>();
 		for (Class<? extends T> i : items) {
 			if (!known.contains( i )) {
 				result.add( i );

@@ -35,8 +35,8 @@ import java.util.LinkedHashMap;
 
 public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
-	public ArrayList<Room> neigbours = new ArrayList<Room>();
-	public LinkedHashMap<Room, Door> connected = new LinkedHashMap<Room, Door>();
+	public ArrayList<Room> neigbours = new ArrayList<>();
+	public LinkedHashMap<Room, Door> connected = new LinkedHashMap<>();
 	
 	public int distance;
 	public int price = 1;

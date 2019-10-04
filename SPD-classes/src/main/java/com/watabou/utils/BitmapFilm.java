@@ -29,7 +29,7 @@ public class BitmapFilm {
 
 	public Pixmap bitmap;
 	
-	protected HashMap<Object,Rect> frames = new HashMap<Object, Rect>();
+	protected HashMap<Object,Rect> frames = new HashMap<>();
 	
 	public BitmapFilm( Pixmap bitmap ) {
 		this.bitmap = bitmap;

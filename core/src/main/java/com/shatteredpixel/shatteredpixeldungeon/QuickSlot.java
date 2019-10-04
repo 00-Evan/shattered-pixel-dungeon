@@ -105,7 +105,7 @@ public class QuickSlot {
 
 	public Item randomNonePlaceholder(){
 
-		ArrayList<Item> result = new ArrayList<Item>();
+		ArrayList<Item> result = new ArrayList<>();
 		for (int i = 0; i < SIZE; i ++)
 		if (getItem(i) != null && !isPlaceholder(i))
 				result.add(getItem(i));
@@ -123,7 +123,7 @@ public class QuickSlot {
 	 */
 
 	public void storePlaceholders(Bundle bundle){
-		ArrayList<Item> placeholders = new ArrayList<Item>(SIZE);
+		ArrayList<Item> placeholders = new ArrayList<>(SIZE);
 		boolean[] placements = new boolean[SIZE];
 
 		for (int i = 0; i < SIZE; i++)

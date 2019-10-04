@@ -42,7 +42,7 @@ public class Atlas {
 		this.tx = tx;
 		tx.atlas = this;
 		
-		namedFrames = new HashMap<Object, RectF>();
+		namedFrames = new HashMap<>();
 	}
 	
 	public void add( Object key, int left, int top, int right, int bottom ) {

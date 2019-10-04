@@ -36,7 +36,7 @@ public class TextureFilm {
 
 	private SmartTexture texture;
 	
-	protected HashMap<Object,RectF> frames = new HashMap<Object, RectF>();
+	protected HashMap<Object,RectF> frames = new HashMap<>();
 	
 	public TextureFilm( Object tx ) {
 		

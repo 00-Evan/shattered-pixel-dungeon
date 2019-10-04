@@ -30,7 +30,7 @@ import java.util.HashMap;
 public class Script extends Program {
 
 	private static final HashMap<Class<? extends Script>,Script> all =
-		new HashMap<Class<? extends Script>, Script>();
+			new HashMap<>();
 	
 	private static Script curScript = null;
 	private static Class<? extends Script> curScriptClass = null;

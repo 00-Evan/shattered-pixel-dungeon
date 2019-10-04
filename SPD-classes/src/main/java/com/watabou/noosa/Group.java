@@ -38,7 +38,7 @@ public class Group extends Gizmo {
 	public static boolean freezeEmitters = false;
 	
 	public Group() {
-		members = new ArrayList<Gizmo>();
+		members = new ArrayList<>();
 		length = 0;
 	}
 	

@@ -72,7 +72,7 @@ public class Swiftthistle extends Plant {
 		}
 		
 		private float left;
-		ArrayList<Integer> presses = new ArrayList<Integer>();
+		ArrayList<Integer> presses = new ArrayList<>();
 		
 		@Override
 		public int icon() {

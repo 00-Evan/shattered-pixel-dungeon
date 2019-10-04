@@ -131,7 +131,7 @@ public class DriedRose extends Artifact {
 			else if (charge != chargeCap)   GLog.i( Messages.get(this, "no_charge") );
 			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
 			else {
-				ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
+				ArrayList<Integer> spawnPoints = new ArrayList<>();
 				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 					int p = hero.pos + PathFinder.NEIGHBOURS8[i];
 					if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
@@ -371,7 +371,7 @@ public class DriedRose extends Artifact {
 				}
 			} else if (cursed && Random.Int(100) == 0) {
 
-				ArrayList<Integer> spawnPoints = new ArrayList<Integer>();
+				ArrayList<Integer> spawnPoints = new ArrayList<>();
 
 				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
 					int p = target.pos + PathFinder.NEIGHBOURS8[i];

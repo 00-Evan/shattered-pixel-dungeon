@@ -39,7 +39,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 	private RenderedTextMultiline lastEntry;
 	private int lastColor;
 
-	private static ArrayList<Entry> entries = new ArrayList<Entry>();
+	private static ArrayList<Entry> entries = new ArrayList<>();
 
 	public GameLog() {
 		super();

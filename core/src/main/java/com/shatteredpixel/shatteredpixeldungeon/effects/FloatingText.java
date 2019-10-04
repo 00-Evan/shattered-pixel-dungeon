@@ -42,7 +42,7 @@ public class FloatingText extends RenderedText {
 
 	private float cameraZoom = -1;
 
-	private static final SparseArray<ArrayList<FloatingText>> stacks = new SparseArray<ArrayList<FloatingText>>();
+	private static final SparseArray<ArrayList<FloatingText>> stacks = new SparseArray<>();
 	
 	public FloatingText() {
 		speed.y = - DISTANCE / LIFESPAN;
@@ -123,7 +123,7 @@ public class FloatingText extends RenderedText {
 			
 			ArrayList<FloatingText> stack = stacks.get(key);
 			if (stack == null) {
-				stack = new ArrayList<FloatingText>();
+				stack = new ArrayList<>();
 				stacks.put(key, stack);
 			}
 			

@@ -56,7 +56,7 @@ public class SpellSprite extends Image {
 	private float duration;
 	private float passed;
 	
-	private static HashMap<Char,SpellSprite> all = new HashMap<Char, SpellSprite>();
+	private static HashMap<Char,SpellSprite> all = new HashMap<>();
 	
 	public SpellSprite() {
 		super( Assets.SPELL_ICONS );

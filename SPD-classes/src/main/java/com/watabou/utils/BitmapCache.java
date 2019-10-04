@@ -31,7 +31,7 @@ public class BitmapCache {
 
 	private static final String DEFAULT	= "__default";
 	
-	private static HashMap<String,Layer> layers = new HashMap<String, BitmapCache.Layer>();
+	private static HashMap<String,Layer> layers = new HashMap<>();
 	
 	public static Pixmap get( String assetName ) {
 		return get( DEFAULT, assetName );

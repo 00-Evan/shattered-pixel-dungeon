@@ -191,7 +191,7 @@ public class Hero extends Char {
 		
 		belongings = new Belongings( this );
 		
-		visibleEnemies = new ArrayList<Mob>();
+		visibleEnemies = new ArrayList<>();
 	}
 	
 	public void updateHT( boolean boostHP ){
@@ -1459,7 +1459,7 @@ public class Hero extends Char {
 
 		int pos = Dungeon.hero.pos;
 
-		ArrayList<Integer> passable = new ArrayList<Integer>();
+		ArrayList<Integer> passable = new ArrayList<>();
 		for (Integer ofs : PathFinder.NEIGHBOURS8) {
 			int cell = pos + ofs;
 			if ((Dungeon.level.passable[cell] || Dungeon.level.avoid[cell]) && Dungeon.level.heaps.get( cell ) == null) {
@@ -1468,7 +1468,7 @@ public class Hero extends Char {
 		}
 		Collections.shuffle( passable );
 
-		ArrayList<Item> items = new ArrayList<Item>( Dungeon.hero.belongings.backpack.items );
+		ArrayList<Item> items = new ArrayList<>(Dungeon.hero.belongings.backpack.items);
 		for (Integer cell : passable) {
 			if (items.isEmpty()) {
 				break;

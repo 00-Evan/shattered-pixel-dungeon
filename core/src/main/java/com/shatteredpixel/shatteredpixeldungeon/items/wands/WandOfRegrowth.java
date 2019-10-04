@@ -292,7 +292,7 @@ public class WandOfRegrowth extends Wand {
 
 			int nDrops = Random.NormalIntRange(3, 6);
 
-			ArrayList<Integer> candidates = new ArrayList<Integer>();
+			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int i : PathFinder.NEIGHBOURS8){
 				if (Dungeon.level.passable[pos+i]
 						&& pos+i != Dungeon.level.entrance
@@ -328,7 +328,7 @@ public class WandOfRegrowth extends Wand {
 
 			int nSeeds = Random.NormalIntRange(2, 4);
 
-			ArrayList<Integer> candidates = new ArrayList<Integer>();
+			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int i : PathFinder.NEIGHBOURS8){
 				if (Dungeon.level.passable[pos+i]
 						&& pos+i != Dungeon.level.entrance

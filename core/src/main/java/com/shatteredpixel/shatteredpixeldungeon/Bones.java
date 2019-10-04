@@ -96,7 +96,7 @@ public class Bones {
 
 			Iterator<Item> iterator = hero.belongings.backpack.iterator();
 			Item curItem;
-			ArrayList<Item> items = new ArrayList<Item>();
+			ArrayList<Item> items = new ArrayList<>();
 			while (iterator.hasNext()){
 				curItem = iterator.next();
 				if (curItem.bones)
