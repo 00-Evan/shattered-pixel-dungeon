@@ -131,6 +131,18 @@ public class NewPrisonBossLevel extends Level {
 		}
 		
 		triggered = bundle.getBooleanArray(TRIGGERED);
+		
+		//compatibility with pre-0.7.5a saves
+		if (state == State.WON){
+			int cell = pointToCell(endStart);
+			int i = 0;
+			while (cell < length()){
+				System.arraycopy(endMap, i, map, cell, 14);
+				i += 14;
+				cell += width();
+			}
+			exit = pointToCell(levelExit);
+		}
 	}
 	
 	@Override
@@ -260,10 +272,11 @@ public class NewPrisonBossLevel extends Level {
 	private static int W = Terrain.WALL;
 	private static int D = Terrain.WALL_DECO;
 	private static int e = Terrain.EMPTY;
+	private static int E = Terrain.EXIT;
 	private static int C = Terrain.CHASM;
 	
 	private static final Point endStart = new Point( startHallway.left+2, startHallway.top+2);
-	private static final Point levelExit = new Point( endStart.x+12, endStart.y+8);
+	private static final Point levelExit = new Point( endStart.x+12, endStart.y+6);
 	private static final int[] endMap = new int[]{
 			W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 			W, e, e, e, W, W, W, W, W, W, W, W, W, W,
@@ -271,9 +284,9 @@ public class NewPrisonBossLevel extends Level {
 			e, e, e, e, e, e, e, e, e, e, e, e, W, W,
 			e, e, e, e, e, e, e, e, e, e, e, e, e, W,
 			e, e, e, C, C, C, C, C, C, C, C, e, e, W,
-			e, W, C, C, C, C, C, C, C, C, C, C, e, W,
-			e, e, e, C, C, C, C, C, C, C, C, C, e, W,
-			e, e, e, e, e, C, C, C, C, C, C, C, e, W,
+			e, W, C, C, C, C, C, C, C, C, C, E, E, W,
+			e, e, e, C, C, C, C, C, C, C, C, E, E, W,
+			e, e, e, e, e, C, C, C, C, C, C, E, E, W,
 			e, e, e, e, e, e, e, W, W, W, C, C, C, W,
 			W, e, e, e, e, e, W, W, W, W, C, C, C, W,
 			W, e, e, e, e, W, W, W, W, W, W, C, C, W,
@@ -323,7 +336,6 @@ public class NewPrisonBossLevel extends Level {
 		}
 		
 		exit = pointToCell(levelExit);
-		Painter.set(this, exit, Terrain.EXIT);
 	}
 	
 	//keep track of removed items as the level is changed. Dump them back into the level at the end.
@@ -806,9 +818,9 @@ public class NewPrisonBossLevel extends Level {
 				1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 				1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 				1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
-				1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-				1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0,
-				0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+				1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
+				1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0,
+				0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0,
 				0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0
 		};
@@ -841,24 +853,24 @@ public class NewPrisonBossLevel extends Level {
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
 				0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
 				1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1,
 				0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-				0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1
+				0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1
 		};
 		
 		@Override
