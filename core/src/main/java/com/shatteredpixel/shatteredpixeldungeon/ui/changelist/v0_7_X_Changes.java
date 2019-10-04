@@ -71,6 +71,29 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.5a", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		//misc:
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Improved the visibiltiy of the stairs going down after defeating Tengu.\n\n" +
+				"_-_ Added some clarifying Text when Tengu attacks an invisible hero.\n\n" +
+				"_-_ Tengu can now spawn in more places if the center of his cell is occupied."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.7.5):\n" +
+				"_-_ Necromancers incorrectly only summoning skeletons at melee range\n\n" +
+				"_-_ Rare cases where doors would appear incorrectly on floor 5\n" +
+				"_-_ Various rare crash bugs"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+				"Updated Translations and Translator Credits!"));
+		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
