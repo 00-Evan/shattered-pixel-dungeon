@@ -49,8 +49,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GhostSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSadGhost;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -114,20 +116,30 @@ public class Ghost extends NPC {
 		if (Quest.given) {
 			if (Quest.weapon != null) {
 				if (Quest.processed) {
-					GameScene.show(new WndSadGhost(this, Quest.type));
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							GameScene.show(new WndSadGhost(Ghost.this, Quest.type));
+						}
+					});
 				} else {
-					switch (Quest.type) {
-						case 1:
-						default:
-							GameScene.show(new WndQuest(this, Messages.get(this, "rat_2")));
-							break;
-						case 2:
-							GameScene.show(new WndQuest(this, Messages.get(this, "gnoll_2")));
-							break;
-						case 3:
-							GameScene.show(new WndQuest(this, Messages.get(this, "crab_2")));
-							break;
-					}
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							switch (Quest.type) {
+								case 1:
+								default:
+									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, "rat_2")));
+									break;
+								case 2:
+									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, "gnoll_2")));
+									break;
+								case 3:
+									GameScene.show(new WndQuest(Ghost.this, Messages.get(Ghost.this, "crab_2")));
+									break;
+							}
+						}
+					});
 
 					int newPos = -1;
 					for (int i = 0; i < 10; i++) {
@@ -165,9 +177,14 @@ public class Ghost extends NPC {
 
 			if (questBoss.pos != -1) {
 				GameScene.add(questBoss);
-				GameScene.show( new WndQuest( this, txt_quest ) );
 				Quest.given = true;
 				Notes.add( Notes.Landmark.GHOST );
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndQuest( Ghost.this, txt_quest ) );
+					}
+				});
 			}
 
 		}

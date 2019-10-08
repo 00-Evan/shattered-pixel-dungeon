@@ -47,7 +47,82 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 		recreateLines();
 	}
-
+	
+	private static ArrayList<String> textsToAdd = new ArrayList<>();
+	
+	@Override
+	public synchronized void update() {
+		for (String text : textsToAdd){
+			if (length != entries.size()){
+				clear();
+				recreateLines();
+			}
+			
+			int color = CharSprite.DEFAULT;
+			if (text.startsWith( GLog.POSITIVE )) {
+				text = text.substring( GLog.POSITIVE.length() );
+				color = CharSprite.POSITIVE;
+			} else
+			if (text.startsWith( GLog.NEGATIVE )) {
+				text = text.substring( GLog.NEGATIVE.length() );
+				color = CharSprite.NEGATIVE;
+			} else
+			if (text.startsWith( GLog.WARNING )) {
+				text = text.substring( GLog.WARNING.length() );
+				color = CharSprite.WARNING;
+			} else
+			if (text.startsWith( GLog.HIGHLIGHT )) {
+				text = text.substring( GLog.HIGHLIGHT.length() );
+				color = CharSprite.NEUTRAL;
+			}
+			
+			if (lastEntry != null && color == lastColor && lastEntry.nLines < MAX_LINES) {
+				
+				String lastMessage = lastEntry.text();
+				lastEntry.text( lastMessage.length() == 0 ? text : lastMessage + " " + text );
+				
+				entries.get( entries.size() - 1 ).text = lastEntry.text();
+				
+			} else {
+				
+				lastEntry = PixelScene.renderMultiline( text, 6 );
+				lastEntry.hardlight( color );
+				lastColor = color;
+				add( lastEntry );
+				
+				entries.add( new Entry( text, color ) );
+				
+			}
+			
+			if (length > 0) {
+				int nLines;
+				do {
+					nLines = 0;
+					for (int i = 0; i < length-1; i++) {
+						nLines += ((RenderedTextMultiline) members.get(i)).nLines;
+					}
+					
+					if (nLines > MAX_LINES) {
+						RenderedTextMultiline r = ((RenderedTextMultiline) members.get(0));
+						remove(r);
+						r.destroy();
+						
+						entries.remove( 0 );
+					}
+				} while (nLines > MAX_LINES);
+				if (entries.isEmpty()) {
+					lastEntry = null;
+				}
+			}
+		}
+		
+		if (!textsToAdd.isEmpty()){
+			layout();
+			textsToAdd.clear();
+		}
+		super.update();
+	}
+	
 	private synchronized void recreateLines() {
 		for (Entry entry : entries) {
 			lastEntry = PixelScene.renderMultiline( entry.text, 6 );
@@ -62,70 +137,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 	@Override
 	public synchronized boolean onSignal( String text ) {
-
-		if (length != entries.size()){
-			clear();
-			recreateLines();
-		}
-
-		int color = CharSprite.DEFAULT;
-		if (text.startsWith( GLog.POSITIVE )) {
-			text = text.substring( GLog.POSITIVE.length() );
-			color = CharSprite.POSITIVE;
-		} else
-		if (text.startsWith( GLog.NEGATIVE )) {
-			text = text.substring( GLog.NEGATIVE.length() );
-			color = CharSprite.NEGATIVE;
-		} else
-		if (text.startsWith( GLog.WARNING )) {
-			text = text.substring( GLog.WARNING.length() );
-			color = CharSprite.WARNING;
-		} else
-		if (text.startsWith( GLog.HIGHLIGHT )) {
-			text = text.substring( GLog.HIGHLIGHT.length() );
-			color = CharSprite.NEUTRAL;
-		}
-
-		if (lastEntry != null && color == lastColor && lastEntry.nLines < MAX_LINES) {
-
-			String lastMessage = lastEntry.text();
-			lastEntry.text( lastMessage.length() == 0 ? text : lastMessage + " " + text );
-
-			entries.get( entries.size() - 1 ).text = lastEntry.text();
-
-		} else {
-
-			lastEntry = PixelScene.renderMultiline( text, 6 );
-			lastEntry.hardlight( color );
-			lastColor = color;
-			add( lastEntry );
-
-			entries.add( new Entry( text, color ) );
-
-		}
-
-		if (length > 0) {
-			int nLines;
-			do {
-				nLines = 0;
-				for (int i = 0; i < length-1; i++) {
-					nLines += ((RenderedTextMultiline) members.get(i)).nLines;
-				}
-
-				if (nLines > MAX_LINES) {
-					RenderedTextMultiline r = ((RenderedTextMultiline) members.get(0));
-					remove(r);
-					r.destroy();
-
-					entries.remove( 0 );
-				}
-			} while (nLines > MAX_LINES);
-			if (entries.isEmpty()) {
-				lastEntry = null;
-			}
-		}
-
-		layout();
+		textsToAdd.add(text);
 		return false;
 	}
 

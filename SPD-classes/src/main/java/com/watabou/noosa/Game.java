@@ -32,6 +32,7 @@ import com.watabou.input.InputHandler;
 import com.watabou.input.KeyEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Reflection;
 
@@ -243,6 +244,15 @@ public class Game implements ApplicationListener {
 		tr.printStackTrace(pw);
 		pw.flush();
 		Gdx.app.error("GAME", sw.toString());
+	}
+	
+	public static void runOnRenderThread(Callback c){
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				c.call();
+			}
+		});
 	}
 	
 	public static void vibrate( int milliseconds ) {

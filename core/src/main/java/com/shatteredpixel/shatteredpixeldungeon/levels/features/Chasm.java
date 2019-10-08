@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 public class Chasm {
@@ -51,20 +52,25 @@ public class Chasm {
 	public static boolean jumpConfirmed = false;
 	
 	public static void heroJump( final Hero hero ) {
-		GameScene.show(
-			new WndOptions( Messages.get(Chasm.class, "chasm"),
-						Messages.get(Chasm.class, "jump"),
-						Messages.get(Chasm.class, "yes"),
-						Messages.get(Chasm.class, "no") ) {
-				@Override
-				protected void onSelect( int index ) {
-					if (index == 0) {
-						jumpConfirmed = true;
-						hero.resume();
-					}
-				}
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				GameScene.show(
+						new WndOptions( Messages.get(Chasm.class, "chasm"),
+								Messages.get(Chasm.class, "jump"),
+								Messages.get(Chasm.class, "yes"),
+								Messages.get(Chasm.class, "no") ) {
+							@Override
+							protected void onSelect( int index ) {
+								if (index == 0) {
+									jumpConfirmed = true;
+									hero.resume();
+								}
+							}
+						}
+				);
 			}
-		);
+		});
 	}
 	
 	public static void heroFall( int pos ) {

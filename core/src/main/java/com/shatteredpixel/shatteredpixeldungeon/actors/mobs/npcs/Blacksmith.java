@@ -43,8 +43,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBlacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -70,24 +72,29 @@ public class Blacksmith extends NPC {
 		
 		if (!Quest.given) {
 			
-			GameScene.show( new WndQuest( this,
-				Quest.alternative ? Messages.get(this, "blood_1") : Messages.get(this, "gold_1") ) {
-				
+			Game.runOnRenderThread(new Callback() {
 				@Override
-				public void onBackPressed() {
-					super.onBackPressed();
-					
-					Quest.given = true;
-					Quest.completed = false;
-					
-					Pickaxe pick = new Pickaxe();
-					if (pick.doPickUp( Dungeon.hero )) {
-						GLog.i( Messages.get(Dungeon.hero, "you_now_have", pick.name() ));
-					} else {
-						Dungeon.level.drop( pick, Dungeon.hero.pos ).sprite.drop();
-					}
+				public void call() {
+					GameScene.show( new WndQuest( Blacksmith.this,
+							Quest.alternative ? Messages.get(Blacksmith.this, "blood_1") : Messages.get(Blacksmith.this, "gold_1") ) {
+						
+						@Override
+						public void onBackPressed() {
+							super.onBackPressed();
+							
+							Quest.given = true;
+							Quest.completed = false;
+							
+							Pickaxe pick = new Pickaxe();
+							if (pick.doPickUp( Dungeon.hero )) {
+								GLog.i( Messages.get(Dungeon.hero, "you_now_have", pick.name() ));
+							} else {
+								Dungeon.level.drop( pick, Dungeon.hero.pos ).sprite.drop();
+							}
+						}
+					} );
 				}
-			} );
+			});
 			
 			Notes.add( Notes.Landmark.TROLL );
 			
@@ -133,7 +140,12 @@ public class Blacksmith extends NPC {
 			}
 		} else if (!Quest.reforged) {
 			
-			GameScene.show( new WndBlacksmith( this, Dungeon.hero ) );
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					GameScene.show( new WndBlacksmith( Blacksmith.this, Dungeon.hero ) );
+				}
+			});
 			
 		} else {
 			

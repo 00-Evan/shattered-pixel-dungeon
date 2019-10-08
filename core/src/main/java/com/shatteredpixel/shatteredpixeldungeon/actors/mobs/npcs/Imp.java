@@ -37,7 +37,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndImp;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -94,7 +96,12 @@ public class Imp extends NPC {
 			
 			DwarfToken tokens = Dungeon.hero.belongings.getItem( DwarfToken.class );
 			if (tokens != null && (tokens.quantity() >= 8 || (!Quest.alternative && tokens.quantity() >= 6))) {
-				GameScene.show( new WndImp( this, tokens ) );
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndImp( Imp.this, tokens ) );
+					}
+				});
 			} else {
 				tell( Quest.alternative ?
 						Messages.get(this, "monks_2", Dungeon.hero.givenName())
@@ -113,8 +120,12 @@ public class Imp extends NPC {
 	}
 	
 	private void tell( String text ) {
-		GameScene.show(
-			new WndQuest( this, text ));
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				GameScene.show( new WndQuest( Imp.this, text ));
+			}
+		});
 	}
 	
 	public void flee() {

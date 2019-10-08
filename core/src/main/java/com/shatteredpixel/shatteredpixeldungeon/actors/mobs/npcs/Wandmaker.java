@@ -42,7 +42,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WandmakerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndWandmaker;
+import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -100,11 +102,16 @@ public class Wandmaker extends NPC {
 			}
 
 			if (item != null) {
-				GameScene.show( new WndWandmaker( this, item ) );
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndWandmaker( Wandmaker.this, item ) );
+					}
+				});
 			} else {
-				String msg = "";
+				String msg;
 				switch(Quest.type){
-					case 1:
+					case 1: default:
 						msg = Messages.get(this, "reminder_dust", Dungeon.hero.givenName());
 						break;
 					case 2:
@@ -114,7 +121,12 @@ public class Wandmaker extends NPC {
 						msg = Messages.get(this, "reminder_berry", Dungeon.hero.givenName());
 						break;
 				}
-				GameScene.show(new WndQuest(this, msg));
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show(new WndQuest(Wandmaker.this, msg));
+					}
+				});
 			}
 			
 		} else {
@@ -151,14 +163,19 @@ public class Wandmaker extends NPC {
 			}
 
 			msg2 += Messages.get(this, "intro_2");
-			final String msg2final = msg2;
-			final NPC wandmaker = this;
-
-			GameScene.show(new WndQuest(wandmaker, msg1){
+			final String msg1Final = msg1;
+			final String msg2Final = msg2;
+			
+			Game.runOnRenderThread(new Callback() {
 				@Override
-				public void hide() {
-					super.hide();
-					GameScene.show(new WndQuest(wandmaker, msg2final));
+				public void call() {
+					GameScene.show(new WndQuest(Wandmaker.this, msg1Final){
+						@Override
+						public void hide() {
+							super.hide();
+							GameScene.show(new WndQuest(Wandmaker.this, msg2Final));
+						}
+					});
 				}
 			});
 

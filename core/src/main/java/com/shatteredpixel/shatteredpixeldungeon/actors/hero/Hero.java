@@ -127,6 +127,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -661,7 +662,12 @@ public class Hero extends Char {
 			
 			Heap heap = Dungeon.level.heaps.get( dst );
 			if (heap != null && heap.type == Type.FOR_SALE && heap.size() == 1) {
-				GameScene.show( new WndTradeItem( heap, true ) );
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndTradeItem( heap, true ) );
+					}
+				});
 			}
 
 			return false;
@@ -876,7 +882,12 @@ public class Hero extends Char {
 			if (Dungeon.depth == 1) {
 				
 				if (belongings.getItem( Amulet.class ) == null) {
-					GameScene.show( new WndMessage( Messages.get(this, "leave") ) );
+					Game.runOnRenderThread(new Callback() {
+						@Override
+						public void call() {
+							GameScene.show( new WndMessage( Messages.get(this, "leave") ) );
+						}
+					});
 					ready();
 				} else {
 					Badges.silentValidateHappyEnd();
@@ -1425,7 +1436,13 @@ public class Hero extends Char {
 		} else {
 			
 			Dungeon.deleteGame( GamesInProgress.curSlot, false );
-			GameScene.show( new WndResurrect( ankh, cause ) );
+			final Ankh finalAnkh = ankh;
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					GameScene.show( new WndResurrect( finalAnkh, cause ) );
+				}
+			});
 			
 		}
 	}

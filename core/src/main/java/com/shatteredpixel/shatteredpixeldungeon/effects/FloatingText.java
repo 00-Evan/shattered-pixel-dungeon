@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
+import com.watabou.utils.Callback;
 import com.watabou.utils.SparseArray;
 
 import java.util.ArrayList;
@@ -39,8 +40,6 @@ public class FloatingText extends RenderedText {
 	private float timeLeft;
 	
 	private int key = -1;
-
-	private float cameraZoom = -1;
 
 	private static final SparseArray<ArrayList<FloatingText>> stacks = new SparseArray<>();
 	
@@ -82,13 +81,9 @@ public class FloatingText extends RenderedText {
 	public void reset( float x, float y, String text, int color ) {
 		
 		revive();
-
-		if (cameraZoom != Camera.main.zoom) {
-			cameraZoom = Camera.main.zoom;
-			PixelScene.chooseFont( 9, cameraZoom );
-			size( 9 * (int)cameraZoom);
-			scale.set( 1 /cameraZoom );
-		}
+		
+		size( 9 * PixelScene.defaultZoom);
+		scale.set( 1 / (float)PixelScene.defaultZoom );
 
 		text( text );
 		hardlight( color );
@@ -102,18 +97,28 @@ public class FloatingText extends RenderedText {
 	/* STATIC METHODS */
 	
 	public static void show( float x, float y, String text, int color ) {
-		FloatingText txt = GameScene.status();
-		if (txt != null){
-			txt.reset(x, y, text, color);
-		}
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				FloatingText txt = GameScene.status();
+				if (txt != null){
+					txt.reset(x, y, text, color);
+				}
+			}
+		});
 	}
 	
 	public static void show( float x, float y, int key, String text, int color ) {
-		FloatingText txt = GameScene.status();
-		if (txt != null) {
-			txt.reset(x, y, text, color);
-			push(txt, key);
-		}
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				FloatingText txt = GameScene.status();
+				if (txt != null){
+					txt.reset(x, y, text, color);
+					push(txt, key);
+				}
+			}
+		});
 	}
 	
 	private static void push( FloatingText txt, int key ) {
