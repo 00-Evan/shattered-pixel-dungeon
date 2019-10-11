@@ -42,7 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndInfoItem;
@@ -75,8 +75,8 @@ public class AlchemyScene extends PixelScene {
 	private Emitter lowerBubbles;
 	private SkinnedBlock water;
 	
-	private RenderedTextMultiline energyLeft;
-	private RenderedTextMultiline energyCost;
+	private RenderedTextBlock energyLeft;
+	private RenderedTextBlock energyCost;
 	
 	private RedButton btnCombine;
 	
@@ -113,7 +113,7 @@ public class AlchemyScene extends PixelScene {
 		add(im);
 		
 		
-		RenderedTextMultiline title = PixelScene.renderMultiline( Messages.get(this, "title"), 9 );
+		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
 		title.setPos(
 				(Camera.main.width - title.width()) / 2f,
@@ -127,7 +127,7 @@ public class AlchemyScene extends PixelScene {
 		
 		int pos = (Camera.main.height - 100)/2;
 		
-		RenderedTextMultiline desc = PixelScene.renderMultiline(6);
+		RenderedTextBlock desc = PixelScene.renderTextBlock(6);
 		desc.maxWidth(w);
 		desc.text( Messages.get(AlchemyScene.class, "text") );
 		desc.setPos(left + (w - desc.width())/2, pos);
@@ -274,14 +274,14 @@ public class AlchemyScene extends PixelScene {
 		btnGuide.setRect(0, 0, 20, 20);
 		add(btnGuide);
 		
-		energyLeft = PixelScene.renderMultiline(Messages.get(AlchemyScene.class, "energy", availableEnergy()), 9);
+		energyLeft = PixelScene.renderTextBlock(Messages.get(AlchemyScene.class, "energy", availableEnergy()), 9);
 		energyLeft.setPos(
 				(Camera.main.width - energyLeft.width())/2,
 				Camera.main.height - 5 - energyLeft.height()
 		);
 		add(energyLeft);
 		
-		energyCost = PixelScene.renderMultiline(6);
+		energyCost = PixelScene.renderTextBlock(6);
 		add(energyCost);
 		
 		fadeIn();

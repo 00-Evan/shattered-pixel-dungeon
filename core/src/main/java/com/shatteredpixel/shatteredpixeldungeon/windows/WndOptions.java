@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class WndOptions extends Window {
@@ -40,13 +40,13 @@ public class WndOptions extends Window {
 
 		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
 
-		RenderedTextMultiline tfTitle = PixelScene.renderMultiline( title, 9 );
+		RenderedTextBlock tfTitle = PixelScene.renderTextBlock( title, 9 );
 		tfTitle.hardlight( TITLE_COLOR );
 		tfTitle.setPos(MARGIN, MARGIN);
 		tfTitle.maxWidth(width - MARGIN * 2);
 		add( tfTitle );
 		
-		RenderedTextMultiline tfMesage = PixelScene.renderMultiline( 6 );
+		RenderedTextBlock tfMesage = PixelScene.renderTextBlock( 6 );
 		tfMesage.text(message, width - MARGIN * 2);
 		tfMesage.setPos( MARGIN, tfTitle.top() + tfTitle.height() + MARGIN );
 		add( tfMesage );

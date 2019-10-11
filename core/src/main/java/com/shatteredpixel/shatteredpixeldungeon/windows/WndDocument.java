@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.BitmapText;
@@ -82,7 +82,7 @@ public class WndDocument extends Window {
 		line.y = pos;
 		content.add(line);
 		
-		RenderedTextMultiline title = PixelScene.renderMultiline(doc.title(), 9);
+		RenderedTextBlock title = PixelScene.renderTextBlock(doc.title(), 9);
 		title.hardlight(TITLE_COLOR);
 		title.maxWidth( w - 2 );
 		title.setPos( (w - title.width())/2f, pos + 1 + ((ITEM_HEIGHT) - title.height())/2f);
@@ -143,7 +143,7 @@ public class WndDocument extends Window {
 	
 	private static class ListItem extends Component {
 		
-		protected RenderedTextMultiline label;
+		protected RenderedTextBlock label;
 		protected BitmapText depth;
 		protected ColorBlock line;
 		protected Image icon;
@@ -172,7 +172,7 @@ public class WndDocument extends Window {
 		
 		@Override
 		protected void createChildren() {
-			label = PixelScene.renderMultiline( 7 );
+			label = PixelScene.renderTextBlock( 7 );
 			add( label );
 			
 			icon = new Image();

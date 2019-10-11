@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class WndTradeItem extends Window {
@@ -212,7 +212,7 @@ public class WndTradeItem extends Window {
 		}
 		
 		// Description
-		RenderedTextMultiline info = PixelScene.renderMultiline( item.info(), 6 );
+		RenderedTextBlock info = PixelScene.renderTextBlock( item.info(), 6 );
 		info.maxWidth(WIDTH);
 		info.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( info );

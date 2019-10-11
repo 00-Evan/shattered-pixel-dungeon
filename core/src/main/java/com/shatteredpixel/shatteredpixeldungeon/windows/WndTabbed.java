@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -196,7 +196,7 @@ public class WndTabbed extends Window {
 	
 	protected class LabeledTab extends Tab {
 		
-		private RenderedTextMultiline btLabel;
+		private RenderedTextBlock btLabel;
 		
 		public LabeledTab( String label ) {
 			
@@ -209,7 +209,7 @@ public class WndTabbed extends Window {
 		protected void createChildren() {
 			super.createChildren();
 			
-			btLabel = PixelScene.renderMultiline( 9 );
+			btLabel = PixelScene.renderTextBlock( 9 );
 			add( btLabel );
 		}
 		

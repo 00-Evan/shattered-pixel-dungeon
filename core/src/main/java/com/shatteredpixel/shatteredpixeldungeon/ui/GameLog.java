@@ -36,7 +36,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 
 	private static final Pattern PUNCTUATION = Pattern.compile( ".*[.,;?! ]$" );
 
-	private RenderedTextMultiline lastEntry;
+	private RenderedTextBlock lastEntry;
 	private int lastColor;
 
 	private static ArrayList<Entry> entries = new ArrayList<>();
@@ -85,7 +85,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 				
 			} else {
 				
-				lastEntry = PixelScene.renderMultiline( text, 6 );
+				lastEntry = PixelScene.renderTextBlock( text, 6 );
 				lastEntry.hardlight( color );
 				lastColor = color;
 				add( lastEntry );
@@ -99,11 +99,11 @@ public class GameLog extends Component implements Signal.Listener<String> {
 				do {
 					nLines = 0;
 					for (int i = 0; i < length-1; i++) {
-						nLines += ((RenderedTextMultiline) members.get(i)).nLines;
+						nLines += ((RenderedTextBlock) members.get(i)).nLines;
 					}
 					
 					if (nLines > MAX_LINES) {
-						RenderedTextMultiline r = ((RenderedTextMultiline) members.get(0));
+						RenderedTextBlock r = ((RenderedTextBlock) members.get(0));
 						remove(r);
 						r.destroy();
 						
@@ -125,7 +125,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 	
 	private synchronized void recreateLines() {
 		for (Entry entry : entries) {
-			lastEntry = PixelScene.renderMultiline( entry.text, 6 );
+			lastEntry = PixelScene.renderTextBlock( entry.text, 6 );
 			lastEntry.hardlight( lastColor = entry.color );
 			add( lastEntry );
 		}
@@ -145,7 +145,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 	protected void layout() {
 		float pos = y;
 		for (int i=length-1; i >= 0; i--) {
-			RenderedTextMultiline entry = (RenderedTextMultiline)members.get( i );
+			RenderedTextBlock entry = (RenderedTextBlock)members.get( i );
 			entry.maxWidth((int)width);
 			entry.setPos(x, pos-entry.height());
 			pos -= entry.height()+2;

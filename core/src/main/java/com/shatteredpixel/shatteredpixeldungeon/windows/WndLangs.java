@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -115,7 +115,7 @@ public class WndLangs extends Window {
 		add(separator);
 
 		//language info layout.
-		RenderedTextMultiline title = PixelScene.renderMultiline( Messages.titleCase(currLang.nativeName()) , 9 );
+		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.titleCase(currLang.nativeName()) , 9 );
 		title.setPos( textLeft + (textWidth - title.width())/2f, 0 );
 		title.hardlight(TITLE_COLOR);
 		PixelScene.align(title);
@@ -123,14 +123,14 @@ public class WndLangs extends Window {
 
 		if (currLang == Languages.ENGLISH){
 
-			RenderedTextMultiline info = PixelScene.renderMultiline(6);
+			RenderedTextBlock info = PixelScene.renderTextBlock(6);
 			info.text("This is the source language, written by the developer.", width - textLeft);
 			info.setPos(textLeft, title.bottom() + 4);
 			add(info);
 
 		} else {
 
-			RenderedTextMultiline info = PixelScene.renderMultiline(6);
+			RenderedTextBlock info = PixelScene.renderTextBlock(6);
 			switch (currLang.status()) {
 				case REVIEWED:
 					info.text(Messages.get(this, "completed"), width - textLeft);
@@ -201,19 +201,19 @@ public class WndLangs extends Window {
 					
 					int w = wide? 135 : 65;
 
-					RenderedTextMultiline title = PixelScene.renderMultiline(6);
+					RenderedTextBlock title = PixelScene.renderTextBlock(6);
 					title.text(Messages.titleCase(Messages.get(WndLangs.class, "credits")) , w);
 					title.hardlight(SHPX_COLOR);
 					title.setPos((w - title.width())/2, 0);
 					credits.add(title);
 
-					RenderedTextMultiline text = PixelScene.renderMultiline(5);
+					RenderedTextBlock text = PixelScene.renderTextBlock(5);
 					text.text(creds, 65);
 					text.setPos(0, title.bottom() + 2);
 					credits.add(text);
 					
 					if (wide){
-						RenderedTextMultiline rightColumn = PixelScene.renderMultiline(5);
+						RenderedTextBlock rightColumn = PixelScene.renderTextBlock(5);
 						rightColumn.text(creds2, 65);
 						rightColumn.setPos(70, title.bottom() + 8.5f);
 						credits.add(rightColumn);
@@ -227,7 +227,7 @@ public class WndLangs extends Window {
 			creditsBtn.setPos(textLeft + (textWidth - creditsBtn.width()) / 2f, y - 18);
 			add(creditsBtn);
 
-			RenderedTextMultiline transifex_text = PixelScene.renderMultiline(6);
+			RenderedTextBlock transifex_text = PixelScene.renderTextBlock(6);
 			transifex_text.text(Messages.get(this, "transifex"), width - textLeft);
 			transifex_text.setPos(textLeft, creditsBtn.top() - 2 - transifex_text.height());
 			add(transifex_text);

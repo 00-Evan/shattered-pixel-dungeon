@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.ui.Component;
 
@@ -32,10 +32,10 @@ public class ChangeInfo extends Component {
 	
 	protected ColorBlock line;
 	
-	private RenderedTextMultiline title;
+	private RenderedTextBlock title;
 	public boolean major;
 	
-	private RenderedTextMultiline text;
+	private RenderedTextBlock text;
 	
 	private ArrayList<ChangeButton> buttons = new ArrayList<>();
 	
@@ -43,11 +43,11 @@ public class ChangeInfo extends Component {
 		super();
 		
 		if (majorTitle){
-			this.title = PixelScene.renderMultiline( title, 9 );
+			this.title = PixelScene.renderTextBlock( title, 9 );
 			line = new ColorBlock( 1, 1, 0xFF222222);
 			add(line);
 		} else {
-			this.title = PixelScene.renderMultiline( title, 6 );
+			this.title = PixelScene.renderTextBlock( title, 6 );
 			line = new ColorBlock( 1, 1, 0xFF333333);
 			add(line);
 		}
@@ -56,7 +56,7 @@ public class ChangeInfo extends Component {
 		add(this.title);
 		
 		if (text != null && !text.equals("")){
-			this.text = PixelScene.renderMultiline(text, 6);
+			this.text = PixelScene.renderTextBlock(text, 6);
 			add(this.text);
 		}
 		

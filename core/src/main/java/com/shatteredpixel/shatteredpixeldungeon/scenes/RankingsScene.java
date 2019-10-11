@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndRanking;
@@ -72,7 +72,7 @@ public class RankingsScene extends PixelScene {
 		
 		Rankings.INSTANCE.load();
 
-		RenderedTextMultiline title = PixelScene.renderMultiline( Messages.get(this, "title"), 9);
+		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9);
 		title.hardlight(Window.TITLE_COLOR);
 		title.setPos(
 				(w - title.width()) / 2f,
@@ -107,7 +107,7 @@ public class RankingsScene extends PixelScene {
 			
 			if (Rankings.INSTANCE.totalNumber >= Rankings.TABLE_SIZE) {
 				
-				RenderedTextMultiline label = PixelScene.renderMultiline( 8 );
+				RenderedTextBlock label = PixelScene.renderTextBlock( 8 );
 				label.hardlight( 0xCCCCCC );
 				label.setHightlighting(true, Window.SHPX_COLOR);
 				label.text( Messages.get(this, "total") + " _" + Rankings.INSTANCE.wonNumber + "_/" + Rankings.INSTANCE.totalNumber );
@@ -123,7 +123,7 @@ public class RankingsScene extends PixelScene {
 			
 		} else {
 
-			RenderedTextMultiline noRec = PixelScene.renderMultiline(Messages.get(this, "no_games"), 8);
+			RenderedTextBlock noRec = PixelScene.renderTextBlock(Messages.get(this, "no_games"), 8);
 			noRec.hardlight( 0xCCCCCC );
 			noRec.setPos(
 					(w - noRec.width()) / 2,
@@ -160,7 +160,7 @@ public class RankingsScene extends PixelScene {
 		protected ItemSprite shield;
 		private Flare flare;
 		private BitmapText position;
-		private RenderedTextMultiline desc;
+		private RenderedTextBlock desc;
 		private Image steps;
 		private BitmapText depth;
 		private Image classIcon;
@@ -237,7 +237,7 @@ public class RankingsScene extends PixelScene {
 			position = new BitmapText( PixelScene.pixelFont);
 			add( position );
 			
-			desc = renderMultiline( 7 );
+			desc = renderTextBlock( 7 );
 			add( desc );
 
 			depth = new BitmapText( PixelScene.pixelFont);

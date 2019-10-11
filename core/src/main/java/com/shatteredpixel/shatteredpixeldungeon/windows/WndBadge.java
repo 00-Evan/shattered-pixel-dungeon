@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 
@@ -42,7 +42,7 @@ public class WndBadge extends Window {
 		add( icon );
 
 		//TODO: this used to be centered, should probably figure that out.
-		RenderedTextMultiline info = PixelScene.renderMultiline( badge.desc(), 8 );
+		RenderedTextBlock info = PixelScene.renderTextBlock( badge.desc(), 8 );
 		info.maxWidth(WIDTH - MARGIN * 2);
 		PixelScene.align(info);
 		add(info);

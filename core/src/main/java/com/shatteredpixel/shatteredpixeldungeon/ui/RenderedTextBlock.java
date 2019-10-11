@@ -28,7 +28,7 @@ import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
 
-public class RenderedTextMultiline extends Component {
+public class RenderedTextBlock extends Component {
 
 	private int maxWidth = Integer.MAX_VALUE;
 	public int nLines;
@@ -48,11 +48,11 @@ public class RenderedTextMultiline extends Component {
 	private int hightlightColor = Window.TITLE_COLOR;
 	private boolean highlightingEnabled = true;
 	
-	public RenderedTextMultiline(int size){
+	public RenderedTextBlock(int size){
 		this.size = size;
 	}
 
-	public RenderedTextMultiline(String text, int size){
+	public RenderedTextBlock(String text, int size){
 		this.size = size;
 		text(text);
 	}

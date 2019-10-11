@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
@@ -127,11 +127,11 @@ public class WndHero extends WndTabbed {
 
 		private void statSlot( String label, String value ) {
 			
-			RenderedTextMultiline txt = PixelScene.renderMultiline( label, 8 );
+			RenderedTextBlock txt = PixelScene.renderTextBlock( label, 8 );
 			txt.setPos(0, pos);
 			add( txt );
 			
-			txt = PixelScene.renderMultiline( value, 8 );
+			txt = PixelScene.renderTextBlock( value, 8 );
 			txt.setPos(WIDTH * 0.6f, pos);
 			PixelScene.align(txt);
 			add( txt );
@@ -197,7 +197,7 @@ public class WndHero extends WndTabbed {
 			private Buff buff;
 
 			Image icon;
-			RenderedTextMultiline txt;
+			RenderedTextBlock txt;
 
 			public BuffSlot( Buff buff ){
 				super();
@@ -210,7 +210,7 @@ public class WndHero extends WndTabbed {
 				icon.y = this.y;
 				add( icon );
 
-				txt = PixelScene.renderMultiline( buff.toString(), 8 );
+				txt = PixelScene.renderTextBlock( buff.toString(), 8 );
 				txt.setPos(
 						icon.width + GAP,
 						this.y + (icon.height - txt.height()) / 2

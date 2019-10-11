@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -58,7 +58,7 @@ public class WndInfoBuff extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 
-		RenderedTextMultiline txtInfo = PixelScene.renderMultiline(buff.desc(), 6);
+		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(buff.desc(), 6);
 		txtInfo.maxWidth(WIDTH);
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );

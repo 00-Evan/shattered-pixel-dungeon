@@ -40,7 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -59,7 +59,7 @@ public class WndStartGame extends Window {
 		Badges.loadGlobal();
 		Journal.loadGlobal();
 		
-		RenderedTextMultiline title = PixelScene.renderMultiline(Messages.get(this, "title"), 12 );
+		RenderedTextBlock title = PixelScene.renderTextBlock(Messages.get(this, "title"), 12 );
 		title.hardlight(Window.TITLE_COLOR);
 		title.setPos( (WIDTH - title.width())/2f, 2);
 		PixelScene.align(title);
@@ -227,7 +227,7 @@ public class WndStartGame extends Window {
 		private IconButton heroMisc;
 		private IconButton heroSubclass;
 		
-		private RenderedTextMultiline name;
+		private RenderedTextBlock name;
 		
 		private static final int BTN_SIZE = 20;
 		
@@ -283,7 +283,7 @@ public class WndStartGame extends Window {
 			heroSubclass.setSize(BTN_SIZE, BTN_SIZE);
 			add(heroSubclass);
 			
-			name = PixelScene.renderMultiline(12);
+			name = PixelScene.renderTextBlock(12);
 			add(name);
 			
 			visible = false;

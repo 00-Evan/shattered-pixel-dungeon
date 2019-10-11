@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class WndChallenges extends Window {
 
 		this.editable = editable;
 
-		RenderedTextMultiline title = PixelScene.renderMultiline( Messages.get(this, "title"), 12 );
+		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 12 );
 		title.hardlight( TITLE_COLOR );
 		title.setPos(
 				(WIDTH - title.width()) / 2,

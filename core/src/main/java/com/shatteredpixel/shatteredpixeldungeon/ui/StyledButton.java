@@ -33,7 +33,7 @@ import com.watabou.noosa.ui.Button;
 public class StyledButton extends Button {
 	
 	protected NinePatch bg;
-	protected RenderedTextMultiline text;
+	protected RenderedTextBlock text;
 	protected Image icon;
 	
 	public StyledButton(Chrome.Type type, String label ) {
@@ -46,7 +46,7 @@ public class StyledButton extends Button {
 		bg = Chrome.get( type );
 		addToBack( bg );
 		
-		text = PixelScene.renderMultiline( size );
+		text = PixelScene.renderTextBlock( size );
 		text.text( label );
 		add( text );
 	}

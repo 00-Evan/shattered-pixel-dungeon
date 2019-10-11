@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.FetidRatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GreatCrabSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 
@@ -46,22 +46,22 @@ public class WndSadGhost extends Window {
 		super();
 		
 		IconTitle titlebar = new IconTitle();
-		RenderedTextMultiline message;
+		RenderedTextBlock message;
 		switch (type){
 			case 1:default:
 				titlebar.icon( new FetidRatSprite() );
 				titlebar.label( Messages.get(this, "rat_title") );
-				message = PixelScene.renderMultiline( Messages.get(this, "rat")+Messages.get(this, "give_item"), 6 );
+				message = PixelScene.renderTextBlock( Messages.get(this, "rat")+Messages.get(this, "give_item"), 6 );
 				break;
 			case 2:
 				titlebar.icon( new GnollTricksterSprite() );
 				titlebar.label( Messages.get(this, "gnoll_title") );
-				message = PixelScene.renderMultiline( Messages.get(this, "gnoll")+Messages.get(this, "give_item"), 6 );
+				message = PixelScene.renderTextBlock( Messages.get(this, "gnoll")+Messages.get(this, "give_item"), 6 );
 				break;
 			case 3:
 				titlebar.icon( new GreatCrabSprite());
 				titlebar.label( Messages.get(this, "crab_title") );
-				message = PixelScene.renderMultiline( Messages.get(this, "crab")+Messages.get(this, "give_item"), 6 );
+				message = PixelScene.renderTextBlock( Messages.get(this, "crab")+Messages.get(this, "give_item"), 6 );
 				break;
 
 		}

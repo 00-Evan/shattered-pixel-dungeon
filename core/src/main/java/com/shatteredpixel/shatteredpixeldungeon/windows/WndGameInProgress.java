@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Button;
@@ -165,11 +165,11 @@ public class WndGameInProgress extends Window {
 	
 	private void statSlot( String label, String value ) {
 		
-		RenderedTextMultiline txt = PixelScene.renderMultiline( label, 8 );
+		RenderedTextBlock txt = PixelScene.renderTextBlock( label, 8 );
 		txt.setPos(0, pos);
 		add( txt );
 		
-		txt = PixelScene.renderMultiline( value, 8 );
+		txt = PixelScene.renderTextBlock( value, 8 );
 		txt.setPos(WIDTH * 0.6f, pos);
 		PixelScene.align(txt);
 		add( txt );

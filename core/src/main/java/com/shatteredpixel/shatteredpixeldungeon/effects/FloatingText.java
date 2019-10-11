@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
@@ -33,7 +33,7 @@ import com.watabou.utils.SparseArray;
 
 import java.util.ArrayList;
 
-public class FloatingText extends RenderedTextMultiline {
+public class FloatingText extends RenderedTextBlock {
 
 	private static final float LIFESPAN	= 1f;
 	private static final float DISTANCE	= DungeonTilemap.SIZE;

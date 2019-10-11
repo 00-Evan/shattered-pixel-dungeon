@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Sample;
@@ -60,7 +60,7 @@ public class WndBlacksmith extends Window {
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
 		
-		RenderedTextMultiline message = PixelScene.renderMultiline( Messages.get(this, "prompt"), 6 );
+		RenderedTextBlock message = PixelScene.renderTextBlock( Messages.get(this, "prompt"), 6 );
 		message.maxWidth( WIDTH);
 		message.setPos(0, titlebar.bottom() + GAP);
 		add( message );

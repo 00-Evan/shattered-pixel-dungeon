@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGameInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
@@ -69,7 +69,7 @@ public class StartScene extends PixelScene {
 		btnExit.setPos( w - btnExit.width(), 0 );
 		add( btnExit );
 		
-		RenderedTextMultiline title = PixelScene.renderMultiline( Messages.get(this, "title"), 9);
+		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9);
 		title.hardlight(Window.TITLE_COLOR);
 		title.setPos(
 				(w - title.width()) / 2f,
@@ -122,7 +122,7 @@ public class StartScene extends PixelScene {
 		private NinePatch bg;
 		
 		private Image hero;
-		private RenderedTextMultiline name;
+		private RenderedTextBlock name;
 		
 		private Image steps;
 		private BitmapText depth;
@@ -139,7 +139,7 @@ public class StartScene extends PixelScene {
 			bg = Chrome.get(Chrome.Type.GEM);
 			add( bg);
 			
-			name = PixelScene.renderMultiline(9);
+			name = PixelScene.renderTextBlock(9);
 			add(name);
 		}
 		

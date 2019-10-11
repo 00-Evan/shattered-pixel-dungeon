@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -50,9 +50,9 @@ public class AmuletScene extends PixelScene {
 	public void create() {
 		super.create();
 		
-		RenderedTextMultiline text = null;
+		RenderedTextBlock text = null;
 		if (!noText) {
-			text = renderMultiline( Messages.get(this, "text"), 8 );
+			text = renderTextBlock( Messages.get(this, "text"), 8 );
 			text.maxWidth(WIDTH);
 			add( text );
 		}

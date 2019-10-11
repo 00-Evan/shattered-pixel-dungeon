@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
@@ -211,11 +211,11 @@ public class WndRanking extends WndTabbed {
 		
 		private float statSlot( Group parent, String label, String value, float pos ) {
 			
-			RenderedTextMultiline txt = PixelScene.renderMultiline( label, 7 );
+			RenderedTextBlock txt = PixelScene.renderTextBlock( label, 7 );
 			txt.setPos(0, pos);
 			parent.add( txt );
 			
-			txt = PixelScene.renderMultiline( value, 7 );
+			txt = PixelScene.renderTextBlock( value, 7 );
 			txt.setPos(WIDTH * 0.7f, pos);
 			PixelScene.align(txt);
 			parent.add( txt );
@@ -295,7 +295,7 @@ public class WndRanking extends WndTabbed {
 		
 		private ItemSlot slot;
 		private ColorBlock bg;
-		private RenderedTextMultiline name;
+		private RenderedTextBlock name;
 		
 		public ItemButton( Item item ) {
 			
@@ -322,7 +322,7 @@ public class WndRanking extends WndTabbed {
 			slot = new ItemSlot();
 			add( slot );
 			
-			name = PixelScene.renderMultiline( 7 );
+			name = PixelScene.renderTextBlock( 7 );
 			add( name );
 			
 			super.createChildren();

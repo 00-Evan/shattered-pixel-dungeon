@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 public class WndInfoItem extends Window {
@@ -64,7 +64,7 @@ public class WndInfoItem extends Window {
 		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
 		
-		RenderedTextMultiline txtInfo = PixelScene.renderMultiline( heap.info(), 6 );
+		RenderedTextBlock txtInfo = PixelScene.renderTextBlock( heap.info(), 6 );
 		txtInfo.maxWidth(width);
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );
@@ -88,7 +88,7 @@ public class WndInfoItem extends Window {
 		titlebar.setRect( 0, 0, width, 0 );
 		add( titlebar );
 		
-		RenderedTextMultiline txtInfo = PixelScene.renderMultiline( item.info(), 6 );
+		RenderedTextBlock txtInfo = PixelScene.renderTextBlock( item.info(), 6 );
 		txtInfo.maxWidth(width);
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );

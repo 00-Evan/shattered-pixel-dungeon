@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.glwrap.Blending;
 import com.watabou.input.PointerEvent;
@@ -244,22 +244,12 @@ public class PixelScene extends Scene {
 		return result;
 	}
 
-	//public static RenderedText renderText( int size ) {
-	//	return renderText("", size);
-	//}
-
-	/*public static RenderedText renderText( String text, int size ) {
-		RenderedText result = new RenderedText( text, size*defaultZoom);
-		result.scale.set(1/(float)defaultZoom);
-		return result;
-	}*/
-
-	public static RenderedTextMultiline renderMultiline( int size ){
-		return renderMultiline("", size);
+	public static RenderedTextBlock renderTextBlock(int size ){
+		return renderTextBlock("", size);
 	}
 
-	public static RenderedTextMultiline renderMultiline( String text, int size ){
-		RenderedTextMultiline result = new RenderedTextMultiline( text, size*defaultZoom);
+	public static RenderedTextBlock renderTextBlock(String text, int size ){
+		RenderedTextBlock result = new RenderedTextBlock( text, size*defaultZoom);
 		result.zoom(1/(float)defaultZoom);
 		return result;
 	}

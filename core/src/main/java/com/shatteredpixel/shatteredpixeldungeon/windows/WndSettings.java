@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.OptionSlider;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -197,7 +197,7 @@ public class WndSettings extends WndTabbed {
 		public UITab(){
 			super();
 
-			RenderedTextMultiline barDesc = PixelScene.renderMultiline(Messages.get(this, "mode"), 9);
+			RenderedTextBlock barDesc = PixelScene.renderTextBlock(Messages.get(this, "mode"), 9);
 			barDesc.setPos((WIDTH-barDesc.width())/2f, GAP_TINY);
 			PixelScene.align(barDesc);
 			add(barDesc);

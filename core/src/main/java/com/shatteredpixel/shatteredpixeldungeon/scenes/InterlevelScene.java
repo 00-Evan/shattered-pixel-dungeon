@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.GameLog;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndError;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.watabou.gltextures.TextureCache;
@@ -80,7 +80,7 @@ public class InterlevelScene extends PixelScene {
 	private Phase phase;
 	private float timeLeft;
 	
-	private RenderedTextMultiline message;
+	private RenderedTextBlock message;
 	
 	private static Thread thread;
 	private static Exception error = null;
@@ -183,7 +183,7 @@ public class InterlevelScene extends PixelScene {
 
 		String text = Messages.get(Mode.class, mode.name());
 		
-		message = PixelScene.renderMultiline( text, 9 );
+		message = PixelScene.renderTextBlock( text, 9 );
 		message.setPos(
 				(Camera.main.width - message.width()) / 2,
 				(Camera.main.height - message.height()) / 2

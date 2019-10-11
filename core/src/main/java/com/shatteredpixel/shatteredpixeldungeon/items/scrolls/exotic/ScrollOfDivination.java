@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
@@ -133,7 +133,7 @@ public class ScrollOfDivination extends ExoticScroll {
 			cur.setRect(0, 0, WIDTH, 0);
 			add(cur);
 			
-			RenderedTextMultiline msg = PixelScene.renderMultiline(Messages.get(this, "desc"), 6);
+			RenderedTextBlock msg = PixelScene.renderTextBlock(Messages.get(this, "desc"), 6);
 			msg.maxWidth(120);
 			msg.setPos(0, cur.bottom() + 2);
 			add(msg);

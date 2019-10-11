@@ -33,7 +33,7 @@ public class Toast extends Component {
 
 	protected NinePatch bg;
 	protected SimpleButton close;
-	protected RenderedTextMultiline text;
+	protected RenderedTextBlock text;
 
 	public Toast( String text ) {
 		super();
@@ -57,7 +57,7 @@ public class Toast extends Component {
 		};
 		add( close );
 
-		text = PixelScene.renderMultiline(8);
+		text = PixelScene.renderTextBlock(8);
 		add( text );
 	}
 	

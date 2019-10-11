@@ -43,7 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.android.AndroidLauncher;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
 
@@ -87,7 +87,7 @@ public class WndAndroidTextInput extends Window {
 		((AndroidApplication)Gdx.app).runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				RenderedTextMultiline txtTitle = PixelScene.renderMultiline( title, 9 );
+				RenderedTextBlock txtTitle = PixelScene.renderTextBlock( title, 9 );
 				txtTitle.maxWidth( width );
 				txtTitle.hardlight( Window.TITLE_COLOR );
 				txtTitle.setPos( (width - txtTitle.width()) /2, 0);

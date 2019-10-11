@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
@@ -68,7 +68,7 @@ public class AboutScene extends PixelScene {
 
 		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
 
-		RenderedTextMultiline shpxtitle = renderMultiline( TTL_SHPX, 8 );
+		RenderedTextBlock shpxtitle = renderTextBlock( TTL_SHPX, 8 );
 		shpxtitle.hardlight( Window.SHPX_COLOR );
 		add( shpxtitle );
 
@@ -78,14 +78,14 @@ public class AboutScene extends PixelScene {
 		);
 		align(shpxtitle);
 
-		RenderedTextMultiline shpxtext = renderMultiline( TXT_SHPX, 8 );
+		RenderedTextBlock shpxtext = renderTextBlock( TXT_SHPX, 8 );
 		shpxtext.maxWidth((int)Math.min(colWidth, 120));
 		add( shpxtext );
 
 		shpxtext.setPos((colWidth - shpxtext.width()) / 2, shpxtitle.bottom() + 12);
 		align(shpxtext);
 
-		RenderedTextMultiline shpxlink = renderMultiline( LNK_SHPX, 8 );
+		RenderedTextBlock shpxlink = renderTextBlock( LNK_SHPX, 8 );
 		shpxlink.maxWidth(shpxtext.maxWidth());
 		shpxlink.hardlight( Window.SHPX_COLOR );
 		add( shpxlink );
@@ -111,7 +111,7 @@ public class AboutScene extends PixelScene {
 
 		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
 
-		RenderedTextMultiline wataTitle = renderMultiline( TTL_WATA, 8 );
+		RenderedTextBlock wataTitle = renderTextBlock( TTL_WATA, 8 );
 		wataTitle.hardlight(Window.TITLE_COLOR);
 		add( wataTitle );
 
@@ -121,7 +121,7 @@ public class AboutScene extends PixelScene {
 		);
 		align(wataTitle);
 
-		RenderedTextMultiline wataText = renderMultiline( TXT_WATA, 8 );
+		RenderedTextBlock wataText = renderTextBlock( TXT_WATA, 8 );
 		wataText.maxWidth((int)Math.min(colWidth, 120));
 		wataText.setHightlighting(false); //underscore in cube_code
 		add( wataText );
@@ -129,7 +129,7 @@ public class AboutScene extends PixelScene {
 		wataText.setPos(wataOffset + (colWidth - wataText.width()) / 2, wataTitle.bottom() + 12);
 		align(wataText);
 		
-		RenderedTextMultiline wataLink = renderMultiline( LNK_WATA, 8 );
+		RenderedTextBlock wataLink = renderTextBlock( LNK_WATA, 8 );
 		wataLink.maxWidth((int)Math.min(colWidth, 120));
 		wataLink.hardlight(Window.TITLE_COLOR);
 		add(wataLink);

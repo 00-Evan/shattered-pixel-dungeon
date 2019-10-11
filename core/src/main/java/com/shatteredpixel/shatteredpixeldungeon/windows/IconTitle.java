@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthBar;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
@@ -39,7 +39,7 @@ public class IconTitle extends Component {
 	private static final float GAP = 2;
 
 	protected Image imIcon;
-	protected RenderedTextMultiline tfLabel;
+	protected RenderedTextBlock tfLabel;
 	protected HealthBar health;
 
 	private float healthLvl = Float.NaN;
@@ -74,7 +74,7 @@ public class IconTitle extends Component {
 		imIcon = new Image();
 		add( imIcon );
 
-		tfLabel = PixelScene.renderMultiline( (int)FONT_SIZE );
+		tfLabel = PixelScene.renderTextBlock( (int)FONT_SIZE );
 		tfLabel.hardlight( Window.TITLE_COLOR );
 		add( tfLabel );
 

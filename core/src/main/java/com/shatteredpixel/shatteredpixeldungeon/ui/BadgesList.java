@@ -85,7 +85,7 @@ public class BadgesList extends ScrollPane {
 		private Badges.Badge badge;
 		
 		private Image icon;
-		private RenderedTextMultiline label;
+		private RenderedTextBlock label;
 		
 		public ListItem( Badges.Badge badge ) {
 			super();
@@ -100,7 +100,7 @@ public class BadgesList extends ScrollPane {
 			icon = new Image();
 			add( icon );
 			
-			label = PixelScene.renderMultiline( 6 );
+			label = PixelScene.renderTextBlock( 6 );
 			add( label );
 		}
 		
