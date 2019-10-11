@@ -162,22 +162,25 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	private PixmapPacker packer;
 	private boolean systemfont;
 	
-	//custom ttf or droid sans, for use with Latin and Cyrillic languages
-	private static FreeTypeFontGenerator latinAndCryllicFontGenerator;
-	private static HashMap<Integer, BitmapFont> pixelFonts = new HashMap<>();
+	//droid sans / roboto, or a custom pixel font, for use with Latin and Cyrillic languages
+	private static FreeTypeFontGenerator basicFontGenerator;
+	private static HashMap<Integer, BitmapFont> basicFonts = new HashMap<>();
 	
-	//droid sans, for use with hangul languages (Korean)
-	private static FreeTypeFontGenerator hangulFontGenerator;
-	private static HashMap<Integer, BitmapFont> hangulFonts = new HashMap<>();
+	//droid sans / nanum gothic / noto sans, for use with Korean
+	private static FreeTypeFontGenerator KRFontGenerator;
+	private static HashMap<Integer, BitmapFont> KRFonts = new HashMap<>();
 	
-	//droid sans, for use with han languages (Chinese, Japanese)
-	private static FreeTypeFontGenerator hanFontGenerator;
-	private static HashMap<Integer, BitmapFont> hanFonts = new HashMap<>();
+	//droid sans / noto sans, for use with Simplified Chinese
+	private static FreeTypeFontGenerator SCFontGenerator;
+	private static HashMap<Integer, BitmapFont> SCFonts = new HashMap<>();
+	
+	//droid sans / noto sans, for use with Japanese
+	private static FreeTypeFontGenerator JPFontGenerator;
+	private static HashMap<Integer, BitmapFont> JPFonts = new HashMap<>();
 	
 	private static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
 	
-	public static Pattern hanMatcher = Pattern.compile("\\p{InHiragana}|\\p{InKatakana}|\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}");
-	public static Pattern hangulMatcher = Pattern.compile("\\p{InHangul_Syllables}");
+	private boolean android6OTFPresent = false;
 	
 	@Override
 	public void setupFontGenerators(int pageSize, boolean systemfont) {
@@ -207,42 +210,53 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		fonts = new HashMap<>();
 		
 		if (systemfont){
-			latinAndCryllicFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSans.ttf"));
+			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSans.ttf"));
 		} else {
 			//FIXME need to add currency symbols
-			latinAndCryllicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixelfont.ttf"));
+			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixelfont.ttf"));
 		}
 		
 		//android 7.0+. Finally back to normalcy, everything nicely in one .ttc
 		if (Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc").exists()) {
-			//TODO why typeface #2 here? It seems to match DroidSansFallback.ttf the best, but why?
-			//might be that different languages prefer a different face, see about tweaking this?
-			hangulFontGenerator = hanFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc"), 2);
+			//typefaces are 1-JP, 2-KR, 3-SC, 3-TC.
+			int typeFace;
+			switch (SPDSettings.language()){
+				case JAPANESE:
+					typeFace = 1;
+					break;
+				case KOREAN:
+					typeFace = 2;
+					break;
+				case CHINESE: default:
+					typeFace = 3;
+			}
+			KRFontGenerator = SCFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc"), typeFace);
 		
 		//android 6.0. Fonts are split over multiple .otf files, very awkward
 		} else if (Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf").exists()) {
-			//FIXME all fonts are messed up here currently, need to fix this
-			hangulFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf"));
-			hanFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf"));
-		
+			KRFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf"));
+			SCFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf"));
+			JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansJP-Regular.otf"));
+			android6OTFPresent = true;
+			
 		//android 4.4-5.1. Korean no longer broken with the addition of NanumGothic.
 		} else if (Gdx.files.absolute("/system/fonts/NanumGothic.ttf").exists()){
-			hangulFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NanumGothic.ttf"));
-			hanFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
+			KRFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NanumGothic.ttf"));
+			SCFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
 		
 		//android 4.3-. Note that korean isn't in DroidSandFallback and is therefore unfixably broken on 4.2 and 4.3
 		} else if (Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf").exists()) {
-			hangulFontGenerator = hanFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
+			KRFontGenerator = SCFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
 		
-		//shouldn't ever trigger, but just incase
+		//shouldn't ever trigger, but just in case
 		} else {
-			hangulFontGenerator = hanFontGenerator = latinAndCryllicFontGenerator;
+			KRFontGenerator = SCFontGenerator = JPFontGenerator = basicFontGenerator;
 		}
 		
-		fonts.put(latinAndCryllicFontGenerator, pixelFonts);
-		fonts.put(hangulFontGenerator, hangulFonts);
-		fonts.put(hanFontGenerator, hanFonts);
-		fonts.put(kataFontGenerator, kataFonts);
+		fonts.put(basicFontGenerator, basicFonts);
+		fonts.put(KRFontGenerator, KRFonts);
+		fonts.put(SCFontGenerator, SCFonts);
+		fonts.put(JPFontGenerator, JPFonts);
 		
 		//use RGBA4444 to save memory. Extra precision isn't needed here.
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA4444, 1, false);
@@ -268,13 +282,19 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		setupFontGenerators(pageSize, systemfont);
 	}
 	
+	private static Pattern KRMatcher = Pattern.compile("\\p{InHangul_Syllables}");
+	private static Pattern SCMatcher = Pattern.compile("\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}");
+	private static Pattern JPMatcher = Pattern.compile("\\p{InHiragana}|\\p{InKatakana}");
+	
 	private static FreeTypeFontGenerator getGeneratorForString( String input ){
-		if (hanMatcher.matcher(input).find()){
-			return hanFontGenerator;
-		} else if (hangulMatcher.matcher(input).find()){
-			return hangulFontGenerator;
+		if (KRMatcher.matcher(input).find()){
+			return KRFontGenerator;
+		} else if (SCMatcher.matcher(input).find()){
+			return SCFontGenerator;
+		} else if (JPMatcher.matcher(input).find()){
+			return JPFontGenerator;
 		} else {
-			return latinAndCryllicFontGenerator;
+			return basicFontGenerator;
 		}
 	}
 	
@@ -298,5 +318,44 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		}
 		
 		return fonts.get(generator).get(size);
+	}
+	
+	//splits on newlines, underscores, and chinese/japaneses characters
+	private Pattern regularsplitter = Pattern.compile(
+			"(?<=\n)|(?=\n)|(?<=_)|(?=_)|" +
+					"(?<=\\p{InHiragana})|(?=\\p{InHiragana})|" +
+					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
+					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})");
+	
+	//additionally splits on words, so that each word can be arranged individually
+	private Pattern regularsplitterMultiline = Pattern.compile(
+			"(?<= )|(?= )|(?<=\n)|(?=\n)|(?<=_)|(?=_)|" +
+					"(?<=\\p{InHiragana})|(?=\\p{InHiragana})|" +
+					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
+					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})");
+	
+	//splits on each group of hangul syllables. Needed for weird android 6.0 font files
+	private Pattern android6KRSplitter = Pattern.compile(
+			"(?<= )|(?= )|(?<=\n)|(?=\n)|(?<=_)|(?=_)|" +
+					"(?!\\p{InHangul_Syllables})");
+	
+	@Override
+	public String[] splitforTextBlock(String text, boolean multiline) {
+		if (android6OTFPresent && getGeneratorForString(text) == KRFontGenerator){
+			return android6KRSplitter.split(text);
+		} else if (multiline) {
+			return regularsplitterMultiline.split(text);
+		} else {
+			return regularsplitter.split(text);
+		}
+	}
+	
+	public float getFontHeightOffset( BitmapFont font ){
+		//more weirdness with android 6 OTF fonts
+		if (android6OTFPresent && !basicFonts.containsValue(font)){
+			return -0.2f;
+		} else {
+			return 0.0f;
+		}
 	}
 }

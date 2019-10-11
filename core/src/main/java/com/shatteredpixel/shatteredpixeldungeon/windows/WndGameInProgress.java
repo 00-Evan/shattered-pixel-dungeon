@@ -33,9 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.StartScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
@@ -48,7 +48,7 @@ public class WndGameInProgress extends Window {
 	private static final int WIDTH    = 120;
 	private static final int HEIGHT   = 120;
 	
-	private int GAP	  = 5;
+	private int GAP	  = 6;
 	
 	private float pos;
 	
@@ -165,17 +165,16 @@ public class WndGameInProgress extends Window {
 	
 	private void statSlot( String label, String value ) {
 		
-		RenderedText txt = PixelScene.renderText( label, 8 );
-		txt.y = pos;
+		RenderedTextMultiline txt = PixelScene.renderMultiline( label, 8 );
+		txt.setPos(0, pos);
 		add( txt );
 		
-		txt = PixelScene.renderText( value, 8 );
-		txt.x = WIDTH * 0.6f;
-		txt.y = pos;
+		txt = PixelScene.renderMultiline( value, 8 );
+		txt.setPos(WIDTH * 0.6f, pos);
 		PixelScene.align(txt);
 		add( txt );
 		
-		pos += GAP + txt.baseLine();
+		pos += GAP + txt.height();
 	}
 	
 	private void statSlot( String label, int value ) {

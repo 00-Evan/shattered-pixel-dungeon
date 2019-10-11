@@ -56,7 +56,6 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -76,8 +75,8 @@ public class AlchemyScene extends PixelScene {
 	private Emitter lowerBubbles;
 	private SkinnedBlock water;
 	
-	private RenderedText energyLeft;
-	private RenderedText energyCost;
+	private RenderedTextMultiline energyLeft;
+	private RenderedTextMultiline energyCost;
 	
 	private RedButton btnCombine;
 	
@@ -114,10 +113,12 @@ public class AlchemyScene extends PixelScene {
 		add(im);
 		
 		
-		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
+		RenderedTextMultiline title = PixelScene.renderMultiline( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
-		title.x = (Camera.main.width - title.width()) / 2f;
-		title.y = (20 - title.baseLine()) / 2f;
+		title.setPos(
+				(Camera.main.width - title.width()) / 2f,
+				(20 - title.height()) / 2f
+		);
 		align(title);
 		add(title);
 		
@@ -273,12 +274,14 @@ public class AlchemyScene extends PixelScene {
 		btnGuide.setRect(0, 0, 20, 20);
 		add(btnGuide);
 		
-		energyLeft = PixelScene.renderText(Messages.get(AlchemyScene.class, "energy", availableEnergy()), 9);
-		energyLeft.y = Camera.main.height - 5 - energyLeft.baseLine();
-		energyLeft.x = (Camera.main.width - energyLeft.width())/2;
+		energyLeft = PixelScene.renderMultiline(Messages.get(AlchemyScene.class, "energy", availableEnergy()), 9);
+		energyLeft.setPos(
+				(Camera.main.width - energyLeft.width())/2,
+				Camera.main.height - 5 - energyLeft.height()
+		);
 		add(energyLeft);
 		
-		energyCost = PixelScene.renderText(6);
+		energyCost = PixelScene.renderMultiline(6);
 		add(energyCost);
 		
 		fadeIn();
@@ -350,8 +353,10 @@ public class AlchemyScene extends PixelScene {
 			output.visible = true;
 			
 			energyCost.text( Messages.get(AlchemyScene.class, "cost", cost) );
-			energyCost.y = btnCombine.top() - energyCost.baseLine();
-			energyCost.x = btnCombine.left() + (btnCombine.width() - energyCost.width())/2;
+			energyCost.setPos(
+					btnCombine.left() + (btnCombine.width() - energyCost.width())/2,
+					btnCombine.top() - energyCost.height()
+			);
 			
 			energyCost.visible = (cost > 0);
 			
@@ -360,7 +365,7 @@ public class AlchemyScene extends PixelScene {
 				energyCost.resetColor();
 			} else {
 				btnCombine.enable(false);
-				energyCost.hardlight(1, 0, 0);
+				energyCost.hardlight(0xFF0000);
 			}
 			
 		} else {
@@ -381,8 +386,10 @@ public class AlchemyScene extends PixelScene {
 		if (recipe != null){
 			provider.spendEnergy(recipe.cost(ingredients));
 			energyLeft.text(Messages.get(AlchemyScene.class, "energy", availableEnergy()));
-			energyLeft.y = Camera.main.height - 5 - energyLeft.baseLine();
-			energyLeft.x = (Camera.main.width - energyLeft.width())/2;
+			energyLeft.setPos(
+					(Camera.main.width - energyLeft.width())/2,
+					Camera.main.height - 5 - energyLeft.height()
+			);
 			
 			result = recipe.brew(ingredients);
 		}

@@ -54,12 +54,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 
 public class WndBag extends WndTabbed {
@@ -185,11 +185,13 @@ public class WndBag extends WndTabbed {
 	
 	protected void placeTitle( Bag bag, int width ){
 		
-		RenderedText txtTitle = PixelScene.renderText(
+		RenderedTextMultiline txtTitle = PixelScene.renderMultiline(
 				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 9 );
 		txtTitle.hardlight( TITLE_COLOR );
-		txtTitle.x = 1;
-		txtTitle.y = (int)(TITLE_HEIGHT - txtTitle.baseLine()) / 2f - 1;
+		txtTitle.setPos(
+				1,
+				(TITLE_HEIGHT - txtTitle.height()) / 2f - 1
+		);
 		PixelScene.align(txtTitle);
 		add( txtTitle );
 		

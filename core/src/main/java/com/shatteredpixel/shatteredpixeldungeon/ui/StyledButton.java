@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
 
@@ -34,7 +33,7 @@ import com.watabou.noosa.ui.Button;
 public class StyledButton extends Button {
 	
 	protected NinePatch bg;
-	protected RenderedText text;
+	protected RenderedTextMultiline text;
 	protected Image icon;
 	
 	public StyledButton(Chrome.Type type, String label ) {
@@ -47,7 +46,7 @@ public class StyledButton extends Button {
 		bg = Chrome.get( type );
 		addToBack( bg );
 		
-		text = PixelScene.renderText( size );
+		text = PixelScene.renderMultiline( size );
 		text.text( label );
 		add( text );
 	}
@@ -68,8 +67,10 @@ public class StyledButton extends Button {
 		if (text != null && !text.text().equals("")){
 			componentWidth += text.width() + 2;
 			
-			text.x = x + (width() + componentWidth)/2f - text.width() - 1;
-			text.y = y + (height() - text.baseLine()) / 2f;
+			text.setPos(
+					x + (width() + componentWidth)/2f - text.width() - 1,
+					y + (height() - text.height()) / 2f
+			);
 			PixelScene.align(text);
 			
 		}

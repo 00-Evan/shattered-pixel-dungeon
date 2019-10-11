@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.RenderedText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +72,7 @@ public class WndLangs extends Window {
 						@Override
 						public void beforeCreate() {
 							SPDSettings.language(langs.get(langIndex));
+							Game.platform.resetGenerators();
 						}
 						@Override
 						public void afterCreate() {
@@ -115,9 +115,8 @@ public class WndLangs extends Window {
 		add(separator);
 
 		//language info layout.
-		RenderedText title = PixelScene.renderText( Messages.titleCase(currLang.nativeName()) , 9 );
-		title.x = textLeft + (textWidth - title.width())/2f;
-		title.y = 0;
+		RenderedTextMultiline title = PixelScene.renderMultiline( Messages.titleCase(currLang.nativeName()) , 9 );
+		title.setPos( textLeft + (textWidth - title.width())/2f, 0 );
 		title.hardlight(TITLE_COLOR);
 		PixelScene.align(title);
 		add(title);
@@ -126,7 +125,7 @@ public class WndLangs extends Window {
 
 			RenderedTextMultiline info = PixelScene.renderMultiline(6);
 			info.text("This is the source language, written by the developer.", width - textLeft);
-			info.setPos(textLeft, title.height() + 2);
+			info.setPos(textLeft, title.bottom() + 4);
 			add(info);
 
 		} else {
@@ -143,7 +142,7 @@ public class WndLangs extends Window {
 					info.text(Messages.get(this, "unfinished"), width - textLeft);
 					break;
 			}
-			info.setPos(textLeft, title.height() + 2);
+			info.setPos(textLeft, title.bottom() + 4);
 			add(info);
 
 			RedButton creditsBtn = new RedButton(Messages.titleCase(Messages.get(this, "credits"))){

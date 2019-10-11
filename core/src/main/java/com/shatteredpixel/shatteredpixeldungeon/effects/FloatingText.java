@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
@@ -32,7 +33,7 @@ import com.watabou.utils.SparseArray;
 
 import java.util.ArrayList;
 
-public class FloatingText extends RenderedText {
+public class FloatingText extends RenderedTextMultiline {
 
 	private static final float LIFESPAN	= 1f;
 	private static final float DISTANCE	= DungeonTilemap.SIZE;
@@ -44,7 +45,7 @@ public class FloatingText extends RenderedText {
 	private static final SparseArray<ArrayList<FloatingText>> stacks = new SparseArray<>();
 	
 	public FloatingText() {
-		speed.y = - DISTANCE / LIFESPAN;
+		super(9*PixelScene.defaultZoom);
 	}
 	
 	@Override
@@ -57,6 +58,12 @@ public class FloatingText extends RenderedText {
 			} else {
 				float p = timeLeft / LIFESPAN;
 				alpha( p > 0.5f ? 1 : p * 2 );
+				
+				float yMove = (DISTANCE / LIFESPAN) * Game.elapsed;
+				y -= yMove;
+				for (RenderedText t : words){
+					t.y -= yMove;
+				}
 			}
 		}
 	}
@@ -82,14 +89,15 @@ public class FloatingText extends RenderedText {
 		
 		revive();
 		
-		size( 9 * PixelScene.defaultZoom);
-		scale.set( 1 / (float)PixelScene.defaultZoom );
+		zoom( 1 / (float)PixelScene.defaultZoom );
 
 		text( text );
 		hardlight( color );
 
-		this.x = PixelScene.align( Camera.main, x - width() / 2);
-		this.y = PixelScene.align( Camera.main, y - height());
+		setPos(
+			PixelScene.align( Camera.main, x - width() / 2),
+			PixelScene.align( Camera.main, y - height())
+		);
 		
 		timeLeft = LIFESPAN;
 	}
@@ -137,8 +145,8 @@ public class FloatingText extends RenderedText {
 				int aboveIndex = stack.size() - 1;
 				while (aboveIndex >= 0) {
 					FloatingText above = stack.get(aboveIndex);
-					if (above.y + above.height() > below.y) {
-						above.y = below.y - above.height();
+					if (above.bottom() + 4 > below.top()) {
+						above.setPos(above.left(), below.top() - above.height() - 4);
 						
 						below = above;
 						aboveIndex--;

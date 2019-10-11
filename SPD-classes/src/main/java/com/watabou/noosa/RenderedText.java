@@ -98,17 +98,15 @@ public class RenderedText extends Image {
 		
 		width = l.width;
 		
-		//TODO this is almost the same as old height, but old height was clearly a bit off
-		height = size*1.375f;
-		//height = l.height - fonts.get(fontGenerator).get(size).getDescent() + size/5f;
+		//this is identical to l.height in most cases, but we force this for consistency.
+		height = Math.round(size*0.75f);
 	}
 	
 	@Override
 	protected void updateMatrix() {
 		super.updateMatrix();
 		//the y value is set at the top of the character, not at the top of accents.
-		//FIXME this doesn't work for .otf fonts on android 6.0
-		Matrix.translate( matrix, 0, Math.round((baseLine()*0.1f)/scale.y) );
+		Matrix.translate( matrix, 0, Math.round((baseLine()*Game.platform.getFontHeightOffset(font))/scale.y) );
 	}
 	
 	private static TextRenderBatch textRenderer = new TextRenderBatch();

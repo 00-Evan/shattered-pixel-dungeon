@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class ChangeInfo extends Component {
 	
 	protected ColorBlock line;
 	
-	private RenderedText title;
+	private RenderedTextMultiline title;
 	public boolean major;
 	
 	private RenderedTextMultiline text;
@@ -44,11 +43,11 @@ public class ChangeInfo extends Component {
 		super();
 		
 		if (majorTitle){
-			this.title = PixelScene.renderText( title, 9 );
+			this.title = PixelScene.renderMultiline( title, 9 );
 			line = new ColorBlock( 1, 1, 0xFF222222);
 			add(line);
 		} else {
-			this.title = PixelScene.renderText( title, 6 );
+			this.title = PixelScene.renderMultiline( title, 6 );
 			line = new ColorBlock( 1, 1, 0xFF333333);
 			add(line);
 		}
@@ -87,13 +86,15 @@ public class ChangeInfo extends Component {
 	
 	@Override
 	protected void layout() {
-		float posY = this.y + 2;
+		float posY = this.y + 3;
 		if (major) posY += 2;
 		
-		title.x = x + (width - title.width()) / 2f;
-		title.y = posY;
+		title.setPos(
+				x + (width - title.width()) / 2f,
+				posY
+		);
 		PixelScene.align( title );
-		posY += title.baseLine() + 2;
+		posY += title.height() + 2;
 		
 		if (text != null) {
 			text.maxWidth((int) width());

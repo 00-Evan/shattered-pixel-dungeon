@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGameInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
@@ -39,7 +40,6 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Button;
 
 import java.util.ArrayList;
@@ -69,10 +69,12 @@ public class StartScene extends PixelScene {
 		btnExit.setPos( w - btnExit.width(), 0 );
 		add( btnExit );
 		
-		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9);
+		RenderedTextMultiline title = PixelScene.renderMultiline( Messages.get(this, "title"), 9);
 		title.hardlight(Window.TITLE_COLOR);
-		title.x = (w - title.width()) / 2f;
-		title.y = (20 - title.baseLine()) / 2f;
+		title.setPos(
+				(w - title.width()) / 2f,
+				(20 - title.height()) / 2f
+		);
 		align(title);
 		add(title);
 		
@@ -120,7 +122,7 @@ public class StartScene extends PixelScene {
 		private NinePatch bg;
 		
 		private Image hero;
-		private RenderedText name;
+		private RenderedTextMultiline name;
 		
 		private Image steps;
 		private BitmapText depth;
@@ -137,7 +139,7 @@ public class StartScene extends PixelScene {
 			bg = Chrome.get(Chrome.Type.GEM);
 			add( bg);
 			
-			name = PixelScene.renderText(9);
+			name = PixelScene.renderMultiline(9);
 			add(name);
 		}
 		
@@ -221,8 +223,10 @@ public class StartScene extends PixelScene {
 				hero.y = y + (height - hero.height())/2f;
 				align(hero);
 				
-				name.x = hero.x + hero.width() + 6;
-				name.y = y + (height - name.baseLine())/2f;
+				name.setPos(
+						hero.x + hero.width() + 6,
+						y + (height - name.height())/2f
+				);
 				align(name);
 				
 				classIcon.x = x + width - 24 + (16 - classIcon.width())/2f;
@@ -242,8 +246,10 @@ public class StartScene extends PixelScene {
 				align(depth);
 				
 			} else {
-				name.x = x + (width - name.width())/2f;
-				name.y = y + (height - name.baseLine())/2f;
+				name.setPos(
+						x + (width - name.width())/2f,
+						y + (height - name.height())/2f
+				);
 				align(name);
 			}
 			

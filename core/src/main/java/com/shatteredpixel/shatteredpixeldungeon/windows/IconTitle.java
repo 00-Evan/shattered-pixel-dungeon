@@ -95,9 +95,8 @@ public class IconTitle extends Component {
 		int imHeight = (int)Math.max(imIcon.height(), 16);
 
 		tfLabel.maxWidth((int)(width - (imWidth + GAP)));
-		tfLabel.setPos(x + imWidth + GAP, imHeight > tfLabel.height() ?
-						y +(imHeight - tfLabel.height()) / 2 :
-						y);
+		tfLabel.setPos(x + imWidth + GAP,
+						imHeight > tfLabel.height() ? y +(imHeight - tfLabel.height()) / 2 : y);
 		PixelScene.align(tfLabel);
 
 		if (health.visible) {

@@ -148,7 +148,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 			RenderedTextMultiline entry = (RenderedTextMultiline)members.get( i );
 			entry.maxWidth((int)width);
 			entry.setPos(x, pos-entry.height());
-			pos -= entry.height();
+			pos -= entry.height()+2;
 		}
 	}
 

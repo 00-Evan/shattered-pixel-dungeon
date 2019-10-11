@@ -40,11 +40,11 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Button;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
@@ -59,10 +59,10 @@ public class WndStartGame extends Window {
 		Badges.loadGlobal();
 		Journal.loadGlobal();
 		
-		RenderedText title = PixelScene.renderText(Messages.get(this, "title"), 12 );
+		RenderedTextMultiline title = PixelScene.renderMultiline(Messages.get(this, "title"), 12 );
 		title.hardlight(Window.TITLE_COLOR);
-		title.x = (WIDTH - title.width())/2f;
-		title.y = 2;
+		title.setPos( (WIDTH - title.width())/2f, 2);
+		PixelScene.align(title);
 		add(title);
 		
 		float heroBtnSpacing = (WIDTH - 4*HeroBtn.WIDTH)/5f;
@@ -78,7 +78,7 @@ public class WndStartGame extends Window {
 		ColorBlock separator = new ColorBlock(1, 1, 0xFF222222);
 		separator.size(WIDTH, 1);
 		separator.x = 0;
-		separator.y = title.baseLine() + 6 + HeroBtn.HEIGHT;
+		separator.y = title.bottom() + 6 + HeroBtn.HEIGHT;
 		add(separator);
 		
 		HeroPane ava = new HeroPane();
@@ -227,7 +227,7 @@ public class WndStartGame extends Window {
 		private IconButton heroMisc;
 		private IconButton heroSubclass;
 		
-		private RenderedText name;
+		private RenderedTextMultiline name;
 		
 		private static final int BTN_SIZE = 20;
 		
@@ -283,7 +283,7 @@ public class WndStartGame extends Window {
 			heroSubclass.setSize(BTN_SIZE, BTN_SIZE);
 			add(heroSubclass);
 			
-			name = PixelScene.renderText(12);
+			name = PixelScene.renderMultiline(12);
 			add(name);
 			
 			visible = false;
@@ -297,8 +297,10 @@ public class WndStartGame extends Window {
 			avatar.y = y + (height - avatar.height() - name.baseLine() - 2)/2f;
 			PixelScene.align(avatar);
 			
-			name.x = x + (avatar.width() - name.width())/2f;
-			name.y = avatar.y + avatar.height() + 2;
+			name.setPos(
+					x + (avatar.width() - name.width())/2f,
+					avatar.y + avatar.height() + 2
+			);
 			PixelScene.align(name);
 			
 			heroItem.setPos(x + width - BTN_SIZE, y);

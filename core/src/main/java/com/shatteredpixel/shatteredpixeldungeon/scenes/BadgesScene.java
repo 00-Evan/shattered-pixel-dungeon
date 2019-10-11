@@ -29,12 +29,12 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBadge;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
@@ -63,10 +63,12 @@ public class BadgesScene extends PixelScene {
 		float left = 5;
 		float top = 20;
 
-		RenderedText title = PixelScene.renderText( Messages.get(this, "title"), 9 );
+		RenderedTextMultiline title = PixelScene.renderMultiline( Messages.get(this, "title"), 9 );
 		title.hardlight(Window.TITLE_COLOR);
-		title.x = (w - title.width()) / 2f;
-		title.y = (top - title.baseLine()) / 2f;
+		title.setPos(
+				(w - title.width()) / 2f,
+				(top - title.height()) / 2f
+		);
 		align(title);
 		add(title);
 

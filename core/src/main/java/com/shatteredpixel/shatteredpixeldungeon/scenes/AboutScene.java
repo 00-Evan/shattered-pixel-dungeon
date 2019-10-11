@@ -33,7 +33,6 @@ import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.PointerArea;
-import com.watabou.noosa.RenderedText;
 import com.watabou.utils.DeviceCompat;
 
 public class AboutScene extends PixelScene {
@@ -69,19 +68,21 @@ public class AboutScene extends PixelScene {
 
 		new Flare( 7, 64 ).color( 0x225511, true ).show( shpx, 0 ).angularSpeed = +20;
 
-		RenderedText shpxtitle = renderText( TTL_SHPX, 8 );
+		RenderedTextMultiline shpxtitle = renderMultiline( TTL_SHPX, 8 );
 		shpxtitle.hardlight( Window.SHPX_COLOR );
 		add( shpxtitle );
 
-		shpxtitle.x = (colWidth - shpxtitle.width()) / 2;
-		shpxtitle.y = shpx.y + shpx.height + 5;
+		shpxtitle.setPos(
+				(colWidth - shpxtitle.width()) / 2,
+				shpx.y + shpx.height + 5
+		);
 		align(shpxtitle);
 
 		RenderedTextMultiline shpxtext = renderMultiline( TXT_SHPX, 8 );
 		shpxtext.maxWidth((int)Math.min(colWidth, 120));
 		add( shpxtext );
 
-		shpxtext.setPos((colWidth - shpxtext.width()) / 2, shpxtitle.y + shpxtitle.height() + 12);
+		shpxtext.setPos((colWidth - shpxtext.width()) / 2, shpxtitle.bottom() + 12);
 		align(shpxtext);
 
 		RenderedTextMultiline shpxlink = renderMultiline( LNK_SHPX, 8 );
@@ -110,19 +111,22 @@ public class AboutScene extends PixelScene {
 
 		new Flare( 7, 64 ).color( 0x112233, true ).show( wata, 0 ).angularSpeed = +20;
 
-		RenderedText wataTitle = renderText( TTL_WATA, 8 );
+		RenderedTextMultiline wataTitle = renderMultiline( TTL_WATA, 8 );
 		wataTitle.hardlight(Window.TITLE_COLOR);
 		add( wataTitle );
 
-		wataTitle.x = wataOffset + (colWidth - wataTitle.width()) / 2;
-		wataTitle.y = wata.y + wata.height + 11;
+		wataTitle.setPos(
+				wataOffset + (colWidth - wataTitle.width()) / 2,
+				wata.y + wata.height + 11
+		);
 		align(wataTitle);
 
 		RenderedTextMultiline wataText = renderMultiline( TXT_WATA, 8 );
 		wataText.maxWidth((int)Math.min(colWidth, 120));
+		wataText.setHightlighting(false); //underscore in cube_code
 		add( wataText );
 
-		wataText.setPos(wataOffset + (colWidth - wataText.width()) / 2, wataTitle.y + wataTitle.height() + 12);
+		wataText.setPos(wataOffset + (colWidth - wataText.width()) / 2, wataTitle.bottom() + 12);
 		align(wataText);
 		
 		RenderedTextMultiline wataLink = renderMultiline( LNK_WATA, 8 );

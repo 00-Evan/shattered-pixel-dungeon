@@ -22,9 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
-import com.watabou.noosa.BitmapTextMultiline;
-import com.watabou.noosa.RenderedText;
 
 public class WndList extends Window {
 	
@@ -46,19 +45,9 @@ public class WndList extends Window {
 				pos += GAP;
 			}
 			
-			RenderedText dot = PixelScene.renderText( "-", 6 );
-			dot.x = MARGIN;
-			dot.y = pos;
-			if (dotWidth == 0) {
-				dotWidth = dot.width();
-			}
-			add( dot );
-			
-			BitmapTextMultiline item = PixelScene.createMultiline( items[i], 6 );
-			item.x = dot.x + dotWidth;
-			item.y = pos;
-			item.maxWidth = (int)(WIDTH - MARGIN * 2 - dotWidth);
-			item.measure();
+			RenderedTextMultiline item = PixelScene.renderMultiline( "-" + items[i], 6 );
+			item.setPos( MARGIN, pos );
+			item.maxWidth(WIDTH - MARGIN*2);
 			add( item );
 			
 			pos += item.height();

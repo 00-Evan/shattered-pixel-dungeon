@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.GameSettings;
@@ -251,7 +250,6 @@ public class SPDSettings extends GameSettings {
 	
 	public static void systemFont(boolean value){
 		put(KEY_SYSTEMFONT, value);
-		ShatteredPixelDungeon.seamlessResetScene();
 	}
 	
 	public static boolean systemFont(){

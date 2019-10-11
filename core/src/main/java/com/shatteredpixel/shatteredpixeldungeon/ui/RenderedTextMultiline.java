@@ -22,33 +22,32 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-//TODO gdx-freetype can manage multi-line layouts for us, and is more efficient. Should consider migrating to that.
 public class RenderedTextMultiline extends Component {
 
 	private int maxWidth = Integer.MAX_VALUE;
 	public int nLines;
 
-	private String text;
-	private String[] tokens;
-	private ArrayList<RenderedText> words = new ArrayList<>();
+	private static final RenderedText SPACE = new RenderedText();
+	private static final RenderedText NEWLINE = new RenderedText();
+	
+	protected String text;
+	protected String[] tokens = null;
+	protected ArrayList<RenderedText> words = new ArrayList<>();
+	protected boolean multiline = false;
 
 	private int size;
 	private float zoom;
 	private int color = -1;
-
-	private static final String SPACE = " ";
-	private static final String NEWLINE = "\n";
-	private static final String UNDERSCORE = "_";
-
-	private boolean chinese = false;
-
+	
+	private int hightlightColor = Window.TITLE_COLOR;
+	private boolean highlightingEnabled = true;
+	
 	public RenderedTextMultiline(int size){
 		this.size = size;
 	}
@@ -62,21 +61,16 @@ public class RenderedTextMultiline extends Component {
 		this.text = text;
 
 		if (text != null && !text.equals("")) {
-			//conversion for chinese text
-
-			chinese = text.replaceAll("\\p{Han}", "").length() != text.length();
-
-			if (chinese){
-				tokens = text.split("");
-			} else {
-				tokens = text.split("(?<= )|(?= )|(?<=\n)|(?=\n)");
-			}
+			
+			tokens = Game.platform.splitforTextBlock(text, multiline);
+			
 			build();
 		}
 	}
 
 	public void text(String text, int maxWidth){
 		this.maxWidth = maxWidth;
+		multiline = true;
 		text(text);
 	}
 
@@ -91,7 +85,8 @@ public class RenderedTextMultiline extends Component {
 	public void maxWidth(int maxWidth){
 		if (this.maxWidth != maxWidth){
 			this.maxWidth = maxWidth;
-			layout();
+			multiline = true;
+			text(text);
 		}
 	}
 
@@ -100,39 +95,30 @@ public class RenderedTextMultiline extends Component {
 	}
 
 	private synchronized void build(){
+		if (tokens == null) return;
+		
 		clear();
 		words = new ArrayList<>();
 		boolean highlighting = false;
 		for (String str : tokens){
-			if (str.equals(UNDERSCORE)){
+			
+			if (str.equals("_") && highlightingEnabled){
 				highlighting = !highlighting;
-			} else if (str.equals(NEWLINE)){
-				words.add(null);
-			} else if (!str.equals(SPACE)){
-				RenderedText word;
-				if (str.startsWith(UNDERSCORE) && str.endsWith(UNDERSCORE)){
-					word = new RenderedText(str.substring(1, str.length()-1), size);
-					word.hardlight(0xFFFF44);
-				} else {
-					if (str.startsWith(UNDERSCORE)){
-						highlighting = !highlighting;
-						word = new RenderedText(str.substring(1, str.length()), size);
-					} else if (str.endsWith(UNDERSCORE)) {
-						word = new RenderedText(str.substring(0, str.length()-1), size);
-					} else {
-						word = new RenderedText(str, size);
-					}
-					if (highlighting) word.hardlight(0xFFFF44);
-					else if (color != -1) word.hardlight(color);
-
-					if (str.endsWith(UNDERSCORE)) highlighting = !highlighting;
-				}
+			} else if (str.equals("\n")){
+				words.add(NEWLINE);
+			} else if (str.equals(" ")){
+				words.add(SPACE);
+			} else {
+				RenderedText word = new RenderedText(str, size);
+				
+				if (highlighting) word.hardlight(hightlightColor);
+				else if (color != -1) word.hardlight(color);
 				word.scale.set(zoom);
+				
 				words.add(word);
 				add(word);
-
-				if (height < word.baseLine()) height = word.baseLine();
-
+				
+				if (height < word.height()) height = word.height();
 			}
 		}
 		layout();
@@ -143,12 +129,38 @@ public class RenderedTextMultiline extends Component {
 		for (RenderedText word : words) {
 			if (word != null) word.scale.set(zoom);
 		}
+		layout();
 	}
 
 	public synchronized void hardlight(int color){
 		this.color = color;
 		for (RenderedText word : words) {
 			if (word != null) word.hardlight( color );
+		}
+	}
+	
+	public synchronized void resetColor(){
+		this.color = -1;
+		for (RenderedText word : words) {
+			if (word != null) word.resetColor();
+		}
+	}
+	
+	public synchronized void alpha(float value){
+		for (RenderedText word : words) {
+			if (word != null) word.alpha( value );
+		}
+	}
+	
+	public synchronized void setHightlighting(boolean enabled){
+		setHightlighting(enabled, Window.TITLE_COLOR);
+	}
+	
+	public synchronized void setHightlighting(boolean enabled, int color){
+		if (enabled != highlightingEnabled || color != hightlightColor) {
+			hightlightColor = color;
+			highlightingEnabled = enabled;
+			build();
 		}
 	}
 
@@ -175,17 +187,20 @@ public class RenderedTextMultiline extends Component {
 		float height = 0;
 		nLines = 1;
 
+		width = 0;
 		for (RenderedText word : words){
-			if (word == null) {
+			if (word == SPACE){
+				x += 1.5f;
+			} else if (word == NEWLINE) {
 				//newline
-				y += height+0.5f;
+				y += height+2f;
 				x = this.x;
 				nLines++;
 			} else {
-				if (word.height() > height) height = word.baseLine();
+				if (word.height() > height) height = word.height();
 
 				if ((x - this.x) + word.width() > maxWidth){
-					y += height+0.5f;
+					y += height+2f;
 					x = this.x;
 					nLines++;
 				}
@@ -194,14 +209,15 @@ public class RenderedTextMultiline extends Component {
 				word.y = y;
 				PixelScene.align(word);
 				x += word.width();
-				
-				if (!chinese) x ++;
-				else      x -= 0.5f;
 
 				if ((x - this.x) > width) width = (x - this.x);
+				
+				//TODO spacing currently doesn't factor in halfwidth and fullwidth characters
+				//(e.g. Ideographic full stop)
+				x -= 0.5f;
 
 			}
 		}
-		this.height = (y - this.y) + height+0.5f;
+		this.height = (y - this.y) + height;
 	}
 }

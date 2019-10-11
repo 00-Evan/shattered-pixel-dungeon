@@ -45,5 +45,9 @@ public abstract class PlatformSupport {
 	public abstract void resetGenerators();
 	
 	public abstract BitmapFont getFont(int size, String text);
+	
+	public abstract String[] splitforTextBlock( String text, boolean multiline );
+	
+	public abstract float getFontHeightOffset( BitmapFont font );
 
 }

@@ -35,13 +35,13 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ScrollPane;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Button;
 
@@ -155,7 +155,7 @@ public class WndRanking extends WndTabbed {
 	
 	private class StatsTab extends Group {
 
-		private int GAP	= 4;
+		private int GAP	= 5;
 		
 		public StatsTab() {
 			super();
@@ -171,7 +171,7 @@ public class WndRanking extends WndTabbed {
 			title.setRect( 0, 0, WIDTH, 0 );
 			add( title );
 			
-			float pos = title.bottom();
+			float pos = title.bottom() + GAP;
 
 			if (Dungeon.challenges > 0) {
 				RedButton btnChallenges = new RedButton( Messages.get(this, "challenges") ) {
@@ -187,7 +187,7 @@ public class WndRanking extends WndTabbed {
 				pos = btnChallenges.bottom();
 			}
 
-			pos += GAP + GAP;
+			pos += GAP;
 			
 			pos = statSlot( this, Messages.get(this, "str"), Integer.toString( Dungeon.hero.STR() ), pos );
 			pos = statSlot( this, Messages.get(this, "health"), Integer.toString( Dungeon.hero.HT ), pos );
@@ -211,17 +211,16 @@ public class WndRanking extends WndTabbed {
 		
 		private float statSlot( Group parent, String label, String value, float pos ) {
 			
-			RenderedText txt = PixelScene.renderText( label, 7 );
-			txt.y = pos;
+			RenderedTextMultiline txt = PixelScene.renderMultiline( label, 7 );
+			txt.setPos(0, pos);
 			parent.add( txt );
 			
-			txt = PixelScene.renderText( value, 7 );
-			txt.x = WIDTH * 0.65f;
-			txt.y = pos;
+			txt = PixelScene.renderMultiline( value, 7 );
+			txt.setPos(WIDTH * 0.7f, pos);
 			PixelScene.align(txt);
 			parent.add( txt );
 			
-			return pos + GAP + txt.baseLine();
+			return pos + GAP + txt.height();
 		}
 	}
 	
@@ -296,7 +295,7 @@ public class WndRanking extends WndTabbed {
 		
 		private ItemSlot slot;
 		private ColorBlock bg;
-		private RenderedText name;
+		private RenderedTextMultiline name;
 		
 		public ItemButton( Item item ) {
 			
@@ -323,7 +322,7 @@ public class WndRanking extends WndTabbed {
 			slot = new ItemSlot();
 			add( slot );
 			
-			name = PixelScene.renderText( "?", 7 );
+			name = PixelScene.renderMultiline( 7 );
 			add( name );
 			
 			super.createChildren();
@@ -337,18 +336,13 @@ public class WndRanking extends WndTabbed {
 			slot.setRect( x, y, HEIGHT, HEIGHT );
 			PixelScene.align(slot);
 			
-			name.x = slot.right() + 2;
-			name.y = y + (height - name.baseLine()) / 2;
+			name.maxWidth((int)(width - slot.width() - 2));
+			name.text(Messages.titleCase(item.name()));
+			name.setPos(
+					slot.right()+2,
+					y + (height - name.height()) / 2
+			);
 			PixelScene.align(name);
-			
-			String str = Messages.titleCase( item.name() );
-			name.text( str );
-			if (name.width() > width - name.x) {
-				do {
-					str = str.substring( 0, str.length() - 1 );
-					name.text( str + "..." );
-				} while (name.width() > width - name.x);
-			}
 			
 			super.layout();
 		}

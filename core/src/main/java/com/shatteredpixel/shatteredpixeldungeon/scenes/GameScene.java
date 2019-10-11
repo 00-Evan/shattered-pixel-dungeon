@@ -586,9 +586,9 @@ public class GameScene extends PixelScene {
 		float tagLeft = SPDSettings.flipTags() ? 0 : uiCamera.width - scene.attack.width();
 
 		if (SPDSettings.flipTags()) {
-			scene.log.setRect(scene.attack.width(), scene.toolbar.top(), uiCamera.width - scene.attack.width(), 0);
+			scene.log.setRect(scene.attack.width(), scene.toolbar.top()-2, uiCamera.width - scene.attack.width(), 0);
 		} else {
-			scene.log.setRect(0, scene.toolbar.top(), uiCamera.width - scene.attack.width(),  0 );
+			scene.log.setRect(0, scene.toolbar.top()-2, uiCamera.width - scene.attack.width(),  0 );
 		}
 
 		float pos = scene.toolbar.top();

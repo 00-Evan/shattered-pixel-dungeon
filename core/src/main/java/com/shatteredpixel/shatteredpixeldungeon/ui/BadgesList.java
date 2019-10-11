@@ -28,7 +28,6 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBadge;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 
@@ -86,7 +85,7 @@ public class BadgesList extends ScrollPane {
 		private Badges.Badge badge;
 		
 		private Image icon;
-		private RenderedText label;
+		private RenderedTextMultiline label;
 		
 		public ListItem( Badges.Badge badge ) {
 			super();
@@ -101,7 +100,7 @@ public class BadgesList extends ScrollPane {
 			icon = new Image();
 			add( icon );
 			
-			label = PixelScene.renderText( 6 );
+			label = PixelScene.renderMultiline( 6 );
 			add( label );
 		}
 		
@@ -111,8 +110,10 @@ public class BadgesList extends ScrollPane {
 			icon.y = y + (height - icon.height) / 2;
 			PixelScene.align(icon);
 			
-			label.x = icon.x + icon.width + 2;
-			label.y = y + (height - label.baseLine()) / 2;
+			label.setPos(
+					icon.x + icon.width + 2,
+					y + (height - label.height()) / 2
+			);
 			PixelScene.align(label);
 		}
 		
