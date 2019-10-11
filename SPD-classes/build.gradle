@@ -8,5 +8,7 @@ dependencies {
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    implementation "org.json:json:20190722"
+
+    //noinspection GradleDependency , later JSON versions cause crashes on old versions of android
+    implementation "org.json:json:20170516"
 }
