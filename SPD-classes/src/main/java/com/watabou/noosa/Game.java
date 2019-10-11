@@ -105,7 +105,6 @@ public class Game implements ApplicationListener {
 		
 		//refreshes texture and vertex data stored on the gpu
 		TextureCache.reload();
-		RenderedText.reloadCache();
 		Vertexbuffer.refreshAllBuffers();
 	}
 	

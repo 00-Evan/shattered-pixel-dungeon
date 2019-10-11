@@ -29,13 +29,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//TODO gdx-freetype can manage multi-line layouts for us, and is more efficient. Should consider migrating to that.
 public class RenderedTextMultiline extends Component {
 
 	private int maxWidth = Integer.MAX_VALUE;
 	public int nLines;
 
 	private String text;
-	private List<String> tokens;
+	private String[] tokens;
 	private ArrayList<RenderedText> words = new ArrayList<>();
 
 	private int size;
@@ -66,9 +67,9 @@ public class RenderedTextMultiline extends Component {
 			chinese = text.replaceAll("\\p{Han}", "").length() != text.length();
 
 			if (chinese){
-				tokens = Arrays.asList(text.split(""));
+				tokens = text.split("");
 			} else {
-				tokens = Arrays.asList(text.split("(?<= )|(?= )|(?<=\n)|(?=\n)"));
+				tokens = text.split("(?<= )|(?= )|(?<=\n)|(?=\n)");
 			}
 			build();
 		}
@@ -81,6 +82,10 @@ public class RenderedTextMultiline extends Component {
 
 	public String text(){
 		return text;
+	}
+	
+	public float baseLine(){
+		return size * zoom;
 	}
 
 	public void maxWidth(int maxWidth){
@@ -189,8 +194,9 @@ public class RenderedTextMultiline extends Component {
 				word.y = y;
 				PixelScene.align(word);
 				x += word.width();
+				
 				if (!chinese) x ++;
-				else x--;
+				else      x -= 0.5f;
 
 				if ((x - this.x) > width) width = (x - this.x);
 

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.android.windows;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.TypedValue;
@@ -39,12 +40,12 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.android.AndroidLauncher;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.RenderedText;
 
 //This class makes use of the android EditText component to handle text input
 //FIXME this window is currently android-specific, should generalize it
@@ -96,7 +97,9 @@ public class WndAndroidTextInput extends Window {
 
 				textInput = new EditText((AndroidApplication)Gdx.app);
 				textInput.setText( initialValue );
-				textInput.setTypeface( RenderedText.getFont() );
+				if (!SPDSettings.systemFont()){
+					textInput.setTypeface( Typeface.createFromAsset(AndroidLauncher.instance.getAssets(), "pixelfont.ttf") );
+				}
 				textInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
 				textInput.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES );
 

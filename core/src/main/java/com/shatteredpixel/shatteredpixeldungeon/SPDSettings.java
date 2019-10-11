@@ -251,16 +251,12 @@ public class SPDSettings extends GameSettings {
 	
 	public static void systemFont(boolean value){
 		put(KEY_SYSTEMFONT, value);
-		if (!value) {
-			RenderedText.setFont("pixelfont.ttf");
-		} else {
-			RenderedText.setFont( null );
-		}
+		ShatteredPixelDungeon.seamlessResetScene();
 	}
 	
 	public static boolean systemFont(){
 		return getBoolean(KEY_SYSTEMFONT,
-				(language() == Languages.KOREAN || language() == Languages.CHINESE));
+				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
 	}
 	
 }

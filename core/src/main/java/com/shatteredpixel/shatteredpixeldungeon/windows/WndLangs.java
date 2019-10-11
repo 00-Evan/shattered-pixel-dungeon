@@ -73,7 +73,6 @@ public class WndLangs extends Window {
 						@Override
 						public void beforeCreate() {
 							SPDSettings.language(langs.get(langIndex));
-							RenderedText.clearCache();
 						}
 						@Override
 						public void afterCreate() {
@@ -237,5 +236,20 @@ public class WndLangs extends Window {
 		}
 
 	}
-
+	
+	@Override
+	public void hide() {
+		super.hide();
+		//resets generators because there's no need to retain chars for languages not selected
+		ShatteredPixelDungeon.seamlessResetScene(new Game.SceneChangeCallback() {
+			@Override
+			public void beforeCreate() {
+				Game.platform.resetGenerators();
+			}
+			@Override
+			public void afterCreate() {
+				//do nothing
+			}
+		});
+	}
 }

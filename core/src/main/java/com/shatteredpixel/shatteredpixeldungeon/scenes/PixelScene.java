@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BadgeBanner;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.glwrap.Blending;
@@ -133,6 +135,24 @@ public class PixelScene extends Scene {
 			font2x.tracking = -4;
 			font2x.texture.filter(Texture.LINEAR, Texture.NEAREST);*/
 		}
+		
+		//set up the texture size which rendered text will use for any new glyphs.
+		int renderedTextPageSize;
+		if (defaultZoom <= 3){
+			renderedTextPageSize = 256;
+		} else if (defaultZoom <= 8){
+			renderedTextPageSize = 512;
+		} else {
+			renderedTextPageSize = 1024;
+		}
+		//asian languages have many more unique characters, so increase texture size to anticipate that
+		if (Messages.lang() == Languages.KOREAN ||
+				Messages.lang() == Languages.CHINESE ||
+				Messages.lang() == Languages.JAPANESE){
+			renderedTextPageSize *= 2;
+		}
+		Game.platform.setupFontGenerators(renderedTextPageSize, SPDSettings.systemFont());
+		
 	}
 	
 	//FIXME this system currently only works for a subset of windows

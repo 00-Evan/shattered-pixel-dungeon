@@ -27,11 +27,19 @@ import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.PixmapPacker;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.android.windows.WndAndroidTextInput;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
+
+import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class AndroidPlatformSupport extends PlatformSupport {
 	
@@ -139,5 +147,148 @@ public class AndroidPlatformSupport extends PlatformSupport {
 				callback.onSelect(positive, getText());
 			}
 		});
+	}
+	
+	/* FONT SUPPORT */
+	
+	private int pageSize;
+	private PixmapPacker packer;
+	private boolean systemfont;
+	
+	//custom ttf or droid sans, for use with Latin and Cyrillic languages
+	private static FreeTypeFontGenerator latinAndCryllicFontGenerator;
+	private static HashMap<Integer, BitmapFont> pixelFonts = new HashMap<>();
+	
+	//droid sans, for use with hangul languages (Korean)
+	private static FreeTypeFontGenerator hangulFontGenerator;
+	private static HashMap<Integer, BitmapFont> hangulFonts = new HashMap<>();
+	
+	//droid sans, for use with han languages (Chinese, Japanese)
+	private static FreeTypeFontGenerator hanFontGenerator;
+	private static HashMap<Integer, BitmapFont> hanFonts = new HashMap<>();
+	
+	private static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
+	
+	public static Pattern hanMatcher = Pattern.compile("\\p{InHiragana}|\\p{InKatakana}|\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}");
+	public static Pattern hangulMatcher = Pattern.compile("\\p{InHangul_Syllables}");
+	
+	@Override
+	public void setupFontGenerators(int pageSize, boolean systemfont) {
+		//don't bother doing anything if nothing has changed
+		if (fonts != null && this.pageSize == pageSize && this.systemfont == systemfont){
+			return;
+		}
+		this.pageSize = pageSize;
+		this.systemfont = systemfont;
+		
+		if (fonts != null){
+			for (FreeTypeFontGenerator generator : fonts.keySet()){
+				for (BitmapFont f : fonts.get(generator).values()){
+					f.dispose();
+				}
+				fonts.get(generator).clear();
+				generator.dispose();
+			}
+			fonts.clear();
+			if (packer != null){
+				for (PixmapPacker.Page p : packer.getPages()){
+					p.getTexture().dispose();
+				}
+				packer.dispose();
+			}
+		}
+		fonts = new HashMap<>();
+		
+		if (systemfont){
+			latinAndCryllicFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSans.ttf"));
+		} else {
+			//FIXME need to add currency symbols
+			latinAndCryllicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixelfont.ttf"));
+		}
+		
+		//android 7.0+. Finally back to normalcy, everything nicely in one .ttc
+		if (Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc").exists()) {
+			//TODO why typeface #2 here? It seems to match DroidSansFallback.ttf the best, but why?
+			//might be that different languages prefer a different face, see about tweaking this?
+			hangulFontGenerator = hanFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc"), 2);
+		
+		//android 6.0. Fonts are split over multiple .otf files, very awkward
+		} else if (Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf").exists()) {
+			//FIXME all fonts are messed up here currently, need to fix this
+			hangulFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf"));
+			hanFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf"));
+		
+		//android 4.4-5.1. Korean no longer broken with the addition of NanumGothic.
+		} else if (Gdx.files.absolute("/system/fonts/NanumGothic.ttf").exists()){
+			hangulFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NanumGothic.ttf"));
+			hanFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
+		
+		//android 4.3-. Note that korean isn't in DroidSandFallback and is therefore unfixably broken on 4.2 and 4.3
+		} else if (Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf").exists()) {
+			hangulFontGenerator = hanFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
+		
+		//shouldn't ever trigger, but just incase
+		} else {
+			hangulFontGenerator = hanFontGenerator = latinAndCryllicFontGenerator;
+		}
+		
+		fonts.put(latinAndCryllicFontGenerator, pixelFonts);
+		fonts.put(hangulFontGenerator, hangulFonts);
+		fonts.put(hanFontGenerator, hanFonts);
+		
+		//use RGBA4444 to save memory. Extra precision isn't needed here.
+		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA4444, 1, false);
+	}
+	
+	@Override
+	public void resetGenerators() {
+		for (FreeTypeFontGenerator generator : fonts.keySet()){
+			for (BitmapFont f : fonts.get(generator).values()){
+				f.dispose();
+			}
+			fonts.get(generator).clear();
+			generator.dispose();
+		}
+		fonts.clear();
+		if (packer != null){
+			for (PixmapPacker.Page p : packer.getPages()){
+				p.getTexture().dispose();
+			}
+			packer.dispose();
+		}
+		fonts = null;
+		setupFontGenerators(pageSize, systemfont);
+	}
+	
+	private static FreeTypeFontGenerator getGeneratorForString( String input ){
+		if (hanMatcher.matcher(input).find()){
+			return hanFontGenerator;
+		} else if (hangulMatcher.matcher(input).find()){
+			return hangulFontGenerator;
+		} else {
+			return latinAndCryllicFontGenerator;
+		}
+	}
+	
+	@Override
+	public BitmapFont getFont(int size, String text) {
+		FreeTypeFontGenerator generator = getGeneratorForString(text);
+		
+		if (!fonts.get(generator).containsKey(size)) {
+			FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
+			parameters.size = size;
+			parameters.flip = true;
+			parameters.borderWidth = parameters.size / 10f;
+			parameters.renderCount = 3;
+			parameters.hinting = FreeTypeFontGenerator.Hinting.None;
+			parameters.spaceX = -(int) parameters.borderWidth;
+			parameters.incremental = true;
+			parameters.characters = "";
+			parameters.packer = packer;
+			
+			fonts.get(generator).put(size, generator.generateFont(parameters));
+		}
+		
+		return fonts.get(generator).get(size);
 	}
 }

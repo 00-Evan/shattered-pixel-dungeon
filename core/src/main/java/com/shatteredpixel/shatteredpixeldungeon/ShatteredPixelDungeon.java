@@ -173,11 +173,6 @@ public class ShatteredPixelDungeon extends Game {
 				Assets.SND_DEGRADE,
 				Assets.SND_MIMIC );
 
-		if (!SPDSettings.systemFont()) {
-			RenderedText.setFont("pixelfont.ttf");
-		} else {
-			RenderedText.setFont( null );
-		}
 		
 	}
 
