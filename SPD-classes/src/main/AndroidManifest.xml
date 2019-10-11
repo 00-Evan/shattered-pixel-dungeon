@@ -1,8 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.watabou">
-
-    <uses-permission android:name="android.permission.VIBRATE"/>
-
-    <uses-feature android:glEsVersion="0x00020000"/>
-
-</manifest>

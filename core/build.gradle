@@ -1,14 +1,6 @@
-//FIXME currently an android library while small amounts of android-specific code remain in SPD-classes
-apply plugin: 'com.android.library'
+apply plugin: 'java-library'
 
-android {
-    compileSdkVersion appAndroidCompileSDK
-
-    defaultConfig {
-        //noinspection MinSdkTooLow
-        minSdkVersion appAndroidMinSDK
-    }
-}
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
     api project(':SPD-classes')

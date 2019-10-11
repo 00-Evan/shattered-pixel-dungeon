@@ -22,7 +22,7 @@
 package com.watabou.utils;
 
 import com.badlogic.gdx.Gdx;
-import com.watabou.BuildConfig;
+import com.watabou.noosa.Game;
 
 //TODO migrate to platformSupport class
 public class DeviceCompat {
@@ -50,7 +50,7 @@ public class DeviceCompat {
 	}
 	
 	public static boolean isDebug(){
-		return BuildConfig.DEBUG;
+		return Game.version.contains("INDEV");
 	}
 	
 	public static void openURI( String URI ){

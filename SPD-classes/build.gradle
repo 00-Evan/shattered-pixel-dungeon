@@ -1,22 +1,12 @@
-//FIXME currently an android library while small amounts of android-specific code remain
-apply plugin: 'com.android.library'
+apply plugin: 'java-library'
 
-android {
-    compileSdkVersion appAndroidCompileSDK
-
-    defaultConfig {
-        //noinspection MinSdkTooLow
-        minSdkVersion appAndroidMinSDK
-    }
-}
-
-configurations { natives }
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
     //TODO migrate this to implementation from api
     //in order to do this I have to remove 100% of libGDX API access from core
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
-    api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    implementation "org.json:json:20190722"
 }
