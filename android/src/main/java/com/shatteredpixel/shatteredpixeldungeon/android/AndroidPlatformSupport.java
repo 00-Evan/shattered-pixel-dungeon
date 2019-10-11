@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.android.windows.WndAndroidTextInput;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PlatformSupport;
 
 import java.util.HashMap;
@@ -140,13 +141,19 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	}
 	
 	@Override
-	public void promptTextInput(String title, String hintText, int maxLen, boolean multiLine, String posTxt, String negTxt, final TextCallback callback) {
-		Game.scene().addToFront(new WndAndroidTextInput(title, hintText, maxLen, multiLine, posTxt, negTxt){
-			@Override
-			protected void onSelect(boolean positive) {
-				callback.onSelect(positive, getText());
-			}
-		});
+	public void promptTextInput(final String title, final String hintText, final int maxLen, final boolean multiLine, final String posTxt, final String negTxt, final TextCallback callback) {
+		Game.runOnRenderThread( new Callback() {
+					@Override
+					public void call() {
+						Game.scene().addToFront(new WndAndroidTextInput(title, hintText, maxLen, multiLine, posTxt, negTxt) {
+							@Override
+							protected void onSelect(boolean positive) {
+								callback.onSelect(positive, getText());
+							}
+						});
+					}
+				}
+		);
 	}
 	
 	/* FONT SUPPORT */
@@ -235,6 +242,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		fonts.put(latinAndCryllicFontGenerator, pixelFonts);
 		fonts.put(hangulFontGenerator, hangulFonts);
 		fonts.put(hanFontGenerator, hanFonts);
+		fonts.put(kataFontGenerator, kataFonts);
 		
 		//use RGBA4444 to save memory. Extra precision isn't needed here.
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA4444, 1, false);
