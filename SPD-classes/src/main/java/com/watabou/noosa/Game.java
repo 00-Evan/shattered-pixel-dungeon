@@ -110,7 +110,9 @@ public class Game implements ApplicationListener {
 	
 	@Override
 	public void resize(int width, int height) {
-		Gdx.gl.glViewport(0, 0, width, height);
+		Blending.useDefault();
+		TextureCache.reload();
+		Vertexbuffer.refreshAllBuffers();
 		
 		if (height != Game.height || width != Game.width) {
 			
