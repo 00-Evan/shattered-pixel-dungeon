@@ -33,7 +33,6 @@ import com.watabou.glwrap.Blending;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapText.Font;
-import com.watabou.noosa.BitmapTextMultiline;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -64,11 +63,8 @@ public class PixelScene extends Scene {
 
 	public static Camera uiCamera;
 
-	//stylized pixel font
+	//stylized 3x5 bitmapped pixel font. Only latin characters supported.
 	public static BitmapText.Font pixelFont;
-	//These represent various mipmaps of the same font
-	public static BitmapText.Font font1x;
-	public static BitmapText.Font font2x;
 
 	@Override
 	public void create() {
@@ -116,23 +112,7 @@ public class PixelScene extends Scene {
 				BitmapCache.get( Assets.PIXELFONT), 0x00000000, BitmapText.Font.LATIN_FULL );
 			pixelFont.baseLine = 6;
 			pixelFont.tracking = -1;
-
-			//Fonts disabled to save memory (~1mb of texture data just sitting there unused)
-			//uncomment if you wish to enable these again.
 			
-			// 9x15 (18)
-			/*font1x = Font.colorMarked(
-					BitmapCache.get( Assets.FONT1X), 22, 0x00000000, BitmapText.Font.LATIN_FULL );
-			font1x.baseLine = 17;
-			font1x.tracking = -2;
-			font1x.texture.filter(Texture.LINEAR, Texture.LINEAR);
-
-			//font1x double scaled
-			font2x = Font.colorMarked(
-					BitmapCache.get( Assets.FONT2X), 44, 0x00000000, BitmapText.Font.LATIN_FULL );
-			font2x.baseLine = 38;
-			font2x.tracking = -4;
-			font2x.texture.filter(Texture.LINEAR, Texture.NEAREST);*/
 		}
 		
 		//set up the texture size which rendered text will use for any new glyphs.
@@ -185,63 +165,6 @@ public class PixelScene extends Scene {
 	public void destroy() {
 		super.destroy();
 		PointerEvent.clearListeners();
-	}
-
-	public static BitmapText.Font font;
-	public static float scale;
-
-	public static void chooseFont( float size ) {
-		chooseFont( size, defaultZoom );
-	}
-
-	public static void chooseFont( float size, float zoom ) {
-
-		float pt = size * zoom;
-
-		if (pt >= 25) {
-
-			font = font2x;
-			scale = pt / 38f;
-
-		} else if (pt >= 12) {
-
-			font = font1x;
-			scale = pt / 19f;
-
-		} else {
-			font = pixelFont;
-			scale = 1f;
-		}
-
-		scale /= zoom;
-	}
-	
-	public static BitmapText createText( float size ) {
-		return createText( null, size );
-	}
-	
-	public static BitmapText createText( String text, float size ) {
-		
-		chooseFont( size );
-		
-		BitmapText result = new BitmapText( text, font );
-		result.scale.set( scale );
-		
-		return result;
-	}
-	
-	public static BitmapTextMultiline createMultiline( float size ) {
-		return createMultiline( null, size );
-	}
-	
-	public static BitmapTextMultiline createMultiline( String text, float size ) {
-		
-		chooseFont( size );
-		
-		BitmapTextMultiline result = new BitmapTextMultiline( text, font );
-		result.scale.set( scale );
-		
-		return result;
 	}
 
 	public static RenderedTextBlock renderTextBlock(int size ){
