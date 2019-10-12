@@ -25,7 +25,7 @@
 		android:backupAgent=".AndroidBackupHandler">
 		<activity
 			android:label="${appName}"
-			android:name=".AndroidLauncher"
+			android:name=".AndroidGame"
 			android:screenOrientation="nosensor"
 			android:configChanges="keyboard|keyboardHidden|orientation">
 			<intent-filter >

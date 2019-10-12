@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 
-public class AndroidLauncher extends AndroidApplication {
+public class AndroidGame extends AndroidApplication {
 	
 	public static AndroidApplication instance;
 	protected static GLSurfaceView view;

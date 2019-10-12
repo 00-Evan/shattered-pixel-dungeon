@@ -40,7 +40,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.android.AndroidLauncher;
+import com.shatteredpixel.shatteredpixeldungeon.android.AndroidGame;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -98,7 +98,7 @@ public class WndAndroidTextInput extends Window {
 				textInput = new EditText((AndroidApplication)Gdx.app);
 				textInput.setText( initialValue );
 				if (!SPDSettings.systemFont()){
-					textInput.setTypeface( Typeface.createFromAsset(AndroidLauncher.instance.getAssets(), "pixel_font.ttf") );
+					textInput.setTypeface( Typeface.createFromAsset(AndroidGame.instance.getAssets(), "pixel_font.ttf") );
 				}
 				textInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
 				textInput.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES );

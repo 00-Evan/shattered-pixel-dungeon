@@ -47,15 +47,15 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	public void updateDisplaySize(){
 		boolean landscape = SPDSettings.landscape();
 		
-		AndroidLauncher.instance.setRequestedOrientation(landscape ?
+		AndroidGame.instance.setRequestedOrientation(landscape ?
 				ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
 				ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 		
-		if (AndroidLauncher.view.getMeasuredWidth() == 0 || AndroidLauncher.view.getMeasuredHeight() == 0)
+		if (AndroidGame.view.getMeasuredWidth() == 0 || AndroidGame.view.getMeasuredHeight() == 0)
 			return;
 		
-		Game.dispWidth = AndroidLauncher.view.getMeasuredWidth();
-		Game.dispHeight = AndroidLauncher.view.getMeasuredHeight();
+		Game.dispWidth = AndroidGame.view.getMeasuredWidth();
+		Game.dispHeight = AndroidGame.view.getMeasuredHeight();
 		
 		if ((Game.dispWidth > Game.dispHeight) != landscape){
 			int tmp = Game.dispWidth;
@@ -89,19 +89,19 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			final int finalH = Math.round(renderHeight);
 			if (finalW != Game.width || finalH != Game.height){
 				
-				AndroidLauncher.instance.runOnUiThread(new Runnable() {
+				AndroidGame.instance.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						AndroidLauncher.view.getHolder().setFixedSize(finalW, finalH);
+						AndroidGame.view.getHolder().setFixedSize(finalW, finalH);
 					}
 				});
 				
 			}
 		} else {
-			AndroidLauncher.instance.runOnUiThread(new Runnable() {
+			AndroidGame.instance.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					AndroidLauncher.view.getHolder().setSizeFromLayout();
+					AndroidGame.view.getHolder().setSizeFromLayout();
 				}
 			});
 		}
@@ -109,29 +109,29 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	
 	public void updateSystemUI() {
 		
-		AndroidLauncher.instance.runOnUiThread(new Runnable() {
+		AndroidGame.instance.runOnUiThread(new Runnable() {
 			@SuppressLint("NewApi")
 			@Override
 			public void run() {
 				boolean fullscreen = Build.VERSION.SDK_INT < Build.VERSION_CODES.N
-						|| !AndroidLauncher.instance.isInMultiWindowMode();
+						|| !AndroidGame.instance.isInMultiWindowMode();
 				
 				if (fullscreen){
-					AndroidLauncher.instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+					AndroidGame.instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 							WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 				} else {
-					AndroidLauncher.instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+					AndroidGame.instance.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
 							WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 				}
 				
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
 					if (SPDSettings.fullscreen()) {
-						AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
+						AndroidGame.instance.getWindow().getDecorView().setSystemUiVisibility(
 								View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 										| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
 										| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY );
 					} else {
-						AndroidLauncher.instance.getWindow().getDecorView().setSystemUiVisibility(
+						AndroidGame.instance.getWindow().getDecorView().setSystemUiVisibility(
 								View.SYSTEM_UI_FLAG_LAYOUT_STABLE );
 					}
 				}
