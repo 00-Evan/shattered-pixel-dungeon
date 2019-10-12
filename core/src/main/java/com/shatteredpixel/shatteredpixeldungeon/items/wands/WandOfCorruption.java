@@ -139,8 +139,8 @@ public class WandOfCorruption extends Wand {
 			} else if (ch instanceof Piranha || ch instanceof Bee) {
 				enemyResist = 1 + Dungeon.depth/2f;
 			} else if (ch instanceof Wraith) {
-				//this is so low because wraiths are always at max hp
-				enemyResist = 0.5f + Dungeon.depth/8f;
+				//divide by 3 as wraiths are always at full HP and are therefore ~3x harder to corrupt
+				enemyResist = (1f + Dungeon.depth/3f) / 3f;
 			} else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
 				enemyResist = 1 + 30;
 			} else if (ch instanceof Yog.Larva || ch instanceof King.Undead){
