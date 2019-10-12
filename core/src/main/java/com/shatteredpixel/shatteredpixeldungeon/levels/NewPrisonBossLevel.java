@@ -765,7 +765,7 @@ public class NewPrisonBossLevel extends Level {
 		public String name(int tileX, int tileY) {
 			int cell = (this.tileX+tileX) + Dungeon.level.width()*(this.tileY+tileY);
 			if (Dungeon.level.traps.get(cell) != null){
-				return Dungeon.level.traps.get(cell).name;
+				return Messages.titleCase(Dungeon.level.traps.get(cell).name);
 			}
 			return super.name(tileX, tileY);
 		}
