@@ -326,8 +326,8 @@ public class Necromancer extends Mob {
 			//no loot or exp
 			maxLvl = -5;
 			
-			//15/25 health to start
-			HP = 15;
+			//20/25 health to start
+			HP = 20;
 		}
 		
 		private void teleportSpend(){

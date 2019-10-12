@@ -41,7 +41,7 @@ public class Snake extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 1, 5 );
+		return Random.NormalIntRange( 1, 4 );
 	}
 	
 	@Override

@@ -107,9 +107,9 @@ public class NewTengu extends Mob {
 	@Override
 	public int attackSkill( Char target ) {
 		if (target.invisible > 0){
-			return 12;
+			return 6;
 		} else {
-			return 20;
+			return 18;
 		}
 	}
 	
@@ -251,8 +251,8 @@ public class NewTengu extends Mob {
 					newPos = Random.Int(level.length());
 				} while (
 						level.solid[newPos] ||
-								level.distance(newPos, enemy.pos) < 6 ||
-								level.distance(newPos, enemy.pos) > 8 ||
+								level.distance(newPos, enemy.pos) < 5 ||
+								level.distance(newPos, enemy.pos) > 7 ||
 								level.distance(newPos, pos) < 6 ||
 								Actor.findChar(newPos) != null ||
 								Dungeon.level.heaps.get(newPos) != null);

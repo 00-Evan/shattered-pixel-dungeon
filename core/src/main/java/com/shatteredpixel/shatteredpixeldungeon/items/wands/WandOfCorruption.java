@@ -130,7 +130,7 @@ public class WandOfCorruption extends Wand {
 
 			Mob enemy = (Mob) ch;
 
-			float corruptingPower = 2 + level();
+			float corruptingPower = 3 + level()/2;
 			
 			//base enemy resistance is usually based on their exp, but in special cases it is based on other criteria
 			float enemyResist = 1 + enemy.EXP;
