@@ -93,7 +93,8 @@ public class RenderedText extends Image {
 		GlyphLayout glyphs = new GlyphLayout( font, text);
 		
 		for (char c : text.toCharArray()) {
-			if (font.getData().getGlyph(c) == null){
+			BitmapFont.Glyph g = font.getData().getGlyph(c);
+			if (g == null || (g.id != c)){
 				Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c));
 			}
 		}
@@ -101,7 +102,7 @@ public class RenderedText extends Image {
 		//We use the xadvance of the last glyph in some cases to fix issues
 		// with fullwidth punctuation marks in some asian scripts
 		BitmapFont.Glyph lastGlyph = font.getData().getGlyph(text.charAt(text.length()-1));
-		if (lastGlyph.xadvance > lastGlyph.width*1.5f){
+		if (lastGlyph != null && lastGlyph.xadvance > lastGlyph.width*1.5f){
 			width = glyphs.width - lastGlyph.width + lastGlyph.xadvance;
 		} else {
 			width = glyphs.width;

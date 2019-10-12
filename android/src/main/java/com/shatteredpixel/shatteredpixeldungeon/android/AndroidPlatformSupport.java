@@ -316,7 +316,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			parameters.characters = "";
 			parameters.packer = packer;
 			
-			fonts.get(generator).put(size, generator.generateFont(parameters));
+			BitmapFont font = generator.generateFont(parameters);
+			font.getData().missingGlyph = font.getData().getGlyph('�');
+			fonts.get(generator).put(size, font);
 		}
 		
 		return fonts.get(generator).get(size);
