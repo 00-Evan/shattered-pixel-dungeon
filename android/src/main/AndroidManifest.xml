@@ -25,13 +25,17 @@
 		android:backupAgent=".AndroidBackupHandler">
 		<activity
 			android:label="${appName}"
-			android:name=".AndroidGame"
-			android:screenOrientation="nosensor"
-			android:configChanges="keyboard|keyboardHidden|orientation">
+			android:name=".AndroidLauncher">
 			<intent-filter >
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
+		</activity>
+		<activity
+			android:label="${appName}"
+			android:name=".AndroidGame"
+			android:screenOrientation="nosensor"
+			android:configChanges="keyboard|keyboardHidden|orientation">
 		</activity>
 
 	</application>
