@@ -92,6 +92,12 @@ public class RenderedText extends Image {
 		
 		GlyphLayout l = new GlyphLayout( font, text);
 		
+		for (char c : text.toCharArray()) {
+			if (font.getData().getGlyph(c) == null){
+				Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c));
+			}
+		}
+		
 		width = l.width;
 		
 		//this is identical to l.height in most cases, but we force this for consistency.

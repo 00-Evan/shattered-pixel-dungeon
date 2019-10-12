@@ -218,7 +218,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		
 		//android 7.0+. Finally back to normalcy, everything nicely in one .ttc
 		if (Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc").exists()) {
-			//typefaces are 1-JP, 2-KR, 3-SC, 3-TC.
+			//typefaces are 1-JP, 2-KR, 3-SC, 4-TC.
 			int typeFace;
 			switch (SPDSettings.language()){
 				case JAPANESE:
@@ -246,6 +246,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		
 		//android 4.3-. Note that korean isn't in DroidSandFallback and is therefore unfixably broken on 4.2 and 4.3
 		} else if (Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf").exists()) {
+			//TODO consider setting KRFontGenerator to null here on android 4.3 to 4.2 to communicate that the font is broken.
 			KRFontGenerator = SCFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
 		
 		//shouldn't ever trigger, but just in case
@@ -314,7 +315,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			parameters.characters = "";
 			parameters.packer = packer;
 			
-			fonts.get(generator).put(size, generator.generateFont(parameters));
+			BitmapFont font = generator.generateFont(parameters);
+			font.getData().missingGlyph = font.getData().getGlyph('�');
+			fonts.get(generator).put(size, font);
 		}
 		
 		return fonts.get(generator).get(size);
@@ -325,14 +328,16 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			"(?<=\n)|(?=\n)|(?<=_)|(?=_)|" +
 					"(?<=\\p{InHiragana})|(?=\\p{InHiragana})|" +
 					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
-					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})");
+					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})|" +
+					"(?<=\\p{InCJK_Symbols_and_Punctuation})|(?=\\p{InCJK_Symbols_and_Punctuation})|");
 	
 	//additionally splits on words, so that each word can be arranged individually
 	private Pattern regularsplitterMultiline = Pattern.compile(
 			"(?<= )|(?= )|(?<=\n)|(?=\n)|(?<=_)|(?=_)|" +
 					"(?<=\\p{InHiragana})|(?=\\p{InHiragana})|" +
 					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
-					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})");
+					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})|" +
+					"(?<=\\p{InCJK_Symbols_and_Punctuation})|(?=\\p{InCJK_Symbols_and_Punctuation})|");
 	
 	//splits on each group of hangul syllables. Needed for weird android 6.0 font files
 	private Pattern android6KRSplitter = Pattern.compile(
