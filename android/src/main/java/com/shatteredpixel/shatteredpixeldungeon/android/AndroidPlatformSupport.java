@@ -212,8 +212,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		if (systemfont){
 			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSans.ttf"));
 		} else {
-			//FIXME need to add currency symbols
-			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixelfont.ttf"));
+			//FIXME should probably add more latin/cyrillic glyphs to this
+			//and go over translations
+			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixel_font.ttf"));
 		}
 		
 		//android 7.0+. Finally back to normalcy, everything nicely in one .ttc
