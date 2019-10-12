@@ -797,6 +797,10 @@ public abstract class Level implements Bundlable {
 			
 			//characters which are not the hero or a sheep 'soft' press cells
 			pressCell( ch.pos, ch instanceof Hero || ch instanceof Sheep);
+		} else {
+			if (map[ch.pos] == Terrain.DOOR){
+				Door.enter( ch.pos );
+			}
 		}
 	}
 	

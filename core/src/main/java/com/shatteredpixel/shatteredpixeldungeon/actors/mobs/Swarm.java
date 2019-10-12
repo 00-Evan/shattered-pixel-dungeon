@@ -102,9 +102,7 @@ public class Swarm extends Mob {
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
 				
-				if (Dungeon.level.map[clone.pos] == Terrain.DOOR) {
-					Door.enter( clone.pos );
-				}
+				Dungeon.level.occupyCell(clone);
 				
 				GameScene.add( clone, SPLIT_DELAY );
 				Actor.addDelayed( new Pushing( clone, pos, clone.pos ), -1 );

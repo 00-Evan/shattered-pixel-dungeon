@@ -568,10 +568,6 @@ public abstract class Char extends Actor {
 
 		pos = step;
 		
-		if (flying && Dungeon.level.map[pos] == Terrain.DOOR) {
-			Door.enter( pos );
-		}
-		
 		if (this != Dungeon.hero) {
 			sprite.visible = Dungeon.level.heroFOV[pos];
 		}
