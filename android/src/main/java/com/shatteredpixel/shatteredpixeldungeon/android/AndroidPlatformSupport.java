@@ -315,9 +315,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			parameters.characters = "";
 			parameters.packer = packer;
 			
-			BitmapFont font = generator.generateFont(parameters);
-			font.getData().missingGlyph = font.getData().getGlyph('�');
-			fonts.get(generator).put(size, font);
+			fonts.get(generator).put(size, generator.generateFont(parameters));
 		}
 		
 		return fonts.get(generator).get(size);
@@ -329,7 +327,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 					"(?<=\\p{InHiragana})|(?=\\p{InHiragana})|" +
 					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
 					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})|" +
-					"(?<=\\p{InCJK_Symbols_and_Punctuation})|(?=\\p{InCJK_Symbols_and_Punctuation})|");
+					"(?<=\\p{InCJK_Symbols_and_Punctuation})|(?=\\p{InCJK_Symbols_and_Punctuation})");
 	
 	//additionally splits on words, so that each word can be arranged individually
 	private Pattern regularsplitterMultiline = Pattern.compile(
@@ -337,7 +335,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 					"(?<=\\p{InHiragana})|(?=\\p{InHiragana})|" +
 					"(?<=\\p{InKatakana})|(?=\\p{InKatakana})|" +
 					"(?<=\\p{InCJK_Unified_Ideographs})|(?=\\p{InCJK_Unified_Ideographs})|" +
-					"(?<=\\p{InCJK_Symbols_and_Punctuation})|(?=\\p{InCJK_Symbols_and_Punctuation})|");
+					"(?<=\\p{InCJK_Symbols_and_Punctuation})|(?=\\p{InCJK_Symbols_and_Punctuation})");
 	
 	//splits on each group of hangul syllables. Needed for weird android 6.0 font files
 	private Pattern android6KRSplitter = Pattern.compile(
