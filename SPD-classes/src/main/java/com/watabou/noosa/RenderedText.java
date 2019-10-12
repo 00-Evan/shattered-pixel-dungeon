@@ -90,7 +90,7 @@ public class RenderedText extends Image {
 		
 		font = Game.platform.getFont(size, text);
 		
-		GlyphLayout l = new GlyphLayout( font, text);
+		GlyphLayout glyphs = new GlyphLayout( font, text);
 		
 		for (char c : text.toCharArray()) {
 			if (font.getData().getGlyph(c) == null){
@@ -98,7 +98,14 @@ public class RenderedText extends Image {
 			}
 		}
 		
-		width = l.width;
+		//We use the xadvance of the last glyph in some cases to fix issues
+		// with fullwidth punctuation marks in some asian scripts
+		BitmapFont.Glyph lastGlyph = font.getData().getGlyph(text.charAt(text.length()-1));
+		if (lastGlyph.xadvance > lastGlyph.width*1.5f){
+			width = glyphs.width - lastGlyph.width + lastGlyph.xadvance;
+		} else {
+			width = glyphs.width;
+		}
 		
 		//this is identical to l.height in most cases, but we force this for consistency.
 		height = Math.round(size*0.75f);
