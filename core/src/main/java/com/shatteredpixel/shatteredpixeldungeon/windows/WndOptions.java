@@ -48,10 +48,10 @@ public class WndOptions extends Window {
 		
 		RenderedTextBlock tfMesage = PixelScene.renderTextBlock( 6 );
 		tfMesage.text(message, width - MARGIN * 2);
-		tfMesage.setPos( MARGIN, tfTitle.top() + tfTitle.height() + MARGIN );
+		tfMesage.setPos( MARGIN, tfTitle.top() + tfTitle.height() + 2*MARGIN );
 		add( tfMesage );
 		
-		float pos = tfMesage.bottom() + MARGIN;
+		float pos = tfMesage.bottom() + 2*MARGIN;
 		
 		for (int i=0; i < options.length; i++) {
 			final int index = i;
