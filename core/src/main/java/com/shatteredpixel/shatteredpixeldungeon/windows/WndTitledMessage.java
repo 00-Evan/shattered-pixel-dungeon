@@ -54,6 +54,6 @@ public class WndTitledMessage extends Window {
 		text.setPos( titlebar.left(), titlebar.bottom() + GAP );
 		add( text );
 
-		resize( width, (int)text.bottom() );
+		resize( width, (int)text.bottom() + 2 );
 	}
 }

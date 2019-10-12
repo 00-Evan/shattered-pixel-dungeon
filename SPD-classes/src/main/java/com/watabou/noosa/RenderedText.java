@@ -73,10 +73,6 @@ public class RenderedText extends Image {
 		measure();
 	}
 	
-	public float baseLine(){
-		return size * scale.y;
-	}
-	
 	private synchronized void measure(){
 		
 		if (Thread.currentThread().getName().equals("SHPD Actor Thread")){
@@ -106,7 +102,7 @@ public class RenderedText extends Image {
 	protected void updateMatrix() {
 		super.updateMatrix();
 		//the y value is set at the top of the character, not at the top of accents.
-		Matrix.translate( matrix, 0, Math.round((baseLine()*Game.platform.getFontHeightOffset(font))/scale.y) );
+		Matrix.translate( matrix, 0, Math.round(size*Game.platform.getFontHeightOffset(font)));
 	}
 	
 	private static TextRenderBatch textRenderer = new TextRenderBatch();

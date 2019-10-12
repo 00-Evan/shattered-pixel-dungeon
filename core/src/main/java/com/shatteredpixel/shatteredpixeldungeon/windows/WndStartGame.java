@@ -61,7 +61,7 @@ public class WndStartGame extends Window {
 		
 		RenderedTextBlock title = PixelScene.renderTextBlock(Messages.get(this, "title"), 12 );
 		title.hardlight(Window.TITLE_COLOR);
-		title.setPos( (WIDTH - title.width())/2f, 2);
+		title.setPos( (WIDTH - title.width())/2f, 3);
 		PixelScene.align(title);
 		add(title);
 		
@@ -70,7 +70,7 @@ public class WndStartGame extends Window {
 		float curX = heroBtnSpacing;
 		for (HeroClass cl : HeroClass.values()){
 			HeroBtn button = new HeroBtn(cl);
-			button.setRect(curX, title.baseLine() + 4, HeroBtn.WIDTH, HeroBtn.HEIGHT);
+			button.setRect(curX, title.height() + 7, HeroBtn.WIDTH, HeroBtn.HEIGHT);
 			curX += HeroBtn.WIDTH + heroBtnSpacing;
 			add(button);
 		}
@@ -294,12 +294,12 @@ public class WndStartGame extends Window {
 			super.layout();
 			
 			avatar.x = x;
-			avatar.y = y + (height - avatar.height() - name.baseLine() - 2)/2f;
+			avatar.y = y + (height - avatar.height() - name.height() - 4)/2f;
 			PixelScene.align(avatar);
 			
 			name.setPos(
 					x + (avatar.width() - name.width())/2f,
-					avatar.y + avatar.height() + 2
+					avatar.y + avatar.height() + 3
 			);
 			PixelScene.align(name);
 			

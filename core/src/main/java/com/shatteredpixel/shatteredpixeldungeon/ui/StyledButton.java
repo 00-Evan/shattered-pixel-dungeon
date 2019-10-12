@@ -141,7 +141,7 @@ public class StyledButton extends Button {
 			reqHeight = Math.max(icon.height() + 4, reqHeight);
 		}
 		if (text != null && !text.text().equals("")){
-			reqHeight = Math.max(text.baseLine() + 4, reqHeight);
+			reqHeight = Math.max(text.height() + 4, reqHeight);
 		}
 		return reqHeight;
 	}

@@ -353,7 +353,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	public float getFontHeightOffset( BitmapFont font ){
 		//more weirdness with android 6 OTF fonts
 		if (android6OTFPresent && !basicFonts.containsValue(font)){
-			return -0.2f;
+			return -0.25f;
 		} else {
 			return 0.0f;
 		}
