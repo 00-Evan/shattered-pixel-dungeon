@@ -84,16 +84,38 @@ public class WndAndroidTextInput extends Window {
 			width = WIDTH;
 		}
 		
+		final RenderedTextBlock txtTitle = PixelScene.renderTextBlock( title, 9 );
+		txtTitle.maxWidth( width );
+		txtTitle.hardlight( Window.TITLE_COLOR );
+		txtTitle.setPos( (width - txtTitle.width()) /2, 2);
+		add(txtTitle);
+		
+		final RedButton positiveBtn = new RedButton( posTxt ) {
+			@Override
+			protected void onClick() {
+				onSelect( true );
+				hide();
+			}
+		};
+		
+		final RedButton negativeBtn;
+		if (negTxt != null) {
+			negativeBtn = new RedButton(negTxt) {
+				@Override
+				protected void onClick() {
+					onSelect(false);
+					hide();
+				}
+			};
+		} else {
+			negativeBtn = null;
+		}
+		
 		((AndroidApplication)Gdx.app).runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				RenderedTextBlock txtTitle = PixelScene.renderTextBlock( title, 9 );
-				txtTitle.maxWidth( width );
-				txtTitle.hardlight( Window.TITLE_COLOR );
-				txtTitle.setPos( (width - txtTitle.width()) /2, 0);
-				add(txtTitle);
 
-				float pos = txtTitle.bottom() + MARGIN;
+				float pos = txtTitle.bottom() + 2*MARGIN;
 
 				textInput = new EditText((AndroidApplication)Gdx.app);
 				textInput.setText( initialValue );
@@ -146,13 +168,7 @@ public class WndAndroidTextInput extends Window {
 				//We haven't added the textInput yet, but we can anticipate its height at this point.
 				pos += inputHeight + MARGIN;
 
-				RedButton positiveBtn = new RedButton( posTxt ) {
-					@Override
-					protected void onClick() {
-						onSelect( true );
-						hide();
-					}
-				};
+				
 				if (negTxt != null)
 					positiveBtn.setRect( MARGIN, pos, (width - MARGIN * 3) / 2, BUTTON_HEIGHT );
 				else
@@ -160,13 +176,6 @@ public class WndAndroidTextInput extends Window {
 				add( positiveBtn );
 
 				if (negTxt != null){
-					RedButton negativeBtn = new RedButton( negTxt ) {
-						@Override
-						protected void onClick() {
-							onSelect( false );
-							hide();
-						}
-					};
 					negativeBtn.setRect( positiveBtn.right() + MARGIN, pos, (width - MARGIN * 3) / 2, BUTTON_HEIGHT );
 					add( negativeBtn );
 				}
@@ -176,7 +185,7 @@ public class WndAndroidTextInput extends Window {
 				//The layout of the TextEdit is in display pixel space, not ingame pixel space
 				// resize the window first so we can know the screen-space coordinates for the text input.
 				resize( width, (int)pos );
-				final int inputTop = (int)(camera.cameraToScreen(0, txtTitle.bottom() + MARGIN).y * (Game.dispWidth / (float)Game.width));
+				final int inputTop = (int)(camera.cameraToScreen(0, txtTitle.bottom() + 2*MARGIN).y * (Game.dispWidth / (float)Game.width));
 
 				//The text input exists in a separate view ontop of the normal game view.
 				// It visually appears to be a part of the game window but is infact a separate
