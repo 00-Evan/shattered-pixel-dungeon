@@ -63,6 +63,6 @@ public class WndInfoBuff extends Window {
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );
 
-		resize( WIDTH, (int)(txtInfo.top() + txtInfo.height()) );
+		resize( WIDTH, (int)txtInfo.bottom() + 2 );
 	}
 }

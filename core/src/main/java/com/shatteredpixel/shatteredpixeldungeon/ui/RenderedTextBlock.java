@@ -77,10 +77,6 @@ public class RenderedTextBlock extends Component {
 	public String text(){
 		return text;
 	}
-	
-	public float baseLine(){
-		return size * zoom;
-	}
 
 	public void maxWidth(int maxWidth){
 		if (this.maxWidth != maxWidth){
