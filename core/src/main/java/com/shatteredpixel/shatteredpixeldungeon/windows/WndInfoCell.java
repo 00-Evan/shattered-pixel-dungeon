@@ -117,8 +117,8 @@ public class WndInfoCell extends Window {
 		
 		info.text( desc.length() == 0 ? Messages.get(this, "nothing") : desc );
 		info.maxWidth(WIDTH);
-		info.setPos(titlebar.left(), titlebar.bottom() + GAP);
+		info.setPos(titlebar.left(), titlebar.bottom() + 2*GAP);
 		
-		resize( WIDTH, (int)(info.top() + info.height()) );
+		resize( WIDTH, (int)info.bottom()+2 );
 	}
 }

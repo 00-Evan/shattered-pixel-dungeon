@@ -51,7 +51,7 @@ public class WndTitledMessage extends Window {
 
 		RenderedTextBlock text = PixelScene.renderTextBlock( 6 );
 		text.text( message, width );
-		text.setPos( titlebar.left(), titlebar.bottom() + GAP );
+		text.setPos( titlebar.left(), titlebar.bottom() + 2*GAP );
 		add( text );
 
 		resize( width, (int)text.bottom() + 2 );

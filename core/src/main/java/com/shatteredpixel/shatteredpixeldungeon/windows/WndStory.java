@@ -71,7 +71,7 @@ public class WndStory extends Window {
 					WIDTH_L - MARGIN * 2:
 					WIDTH_P - MARGIN *2);
 		tf.invert();
-		tf.setPos(MARGIN, 0);
+		tf.setPos(MARGIN, 2);
 		add( tf );
 		
 		add( new PointerArea( chrome ) {
@@ -81,7 +81,7 @@ public class WndStory extends Window {
 			}
 		} );
 		
-		resize( (int)(tf.width() + MARGIN * 2), (int)Math.min( tf.height(), 180 ) );
+		resize( (int)(tf.width() + MARGIN * 2), (int)Math.min( tf.height()+2, 180 ) );
 	}
 	
 	@Override

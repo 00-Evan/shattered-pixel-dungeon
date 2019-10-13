@@ -60,7 +60,7 @@ public class WndInfoBuff extends Window {
 
 		RenderedTextBlock txtInfo = PixelScene.renderTextBlock(buff.desc(), 6);
 		txtInfo.maxWidth(WIDTH);
-		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
+		txtInfo.setPos(titlebar.left(), titlebar.bottom() + 2*GAP);
 		add( txtInfo );
 
 		resize( WIDTH, (int)txtInfo.bottom() + 2 );
