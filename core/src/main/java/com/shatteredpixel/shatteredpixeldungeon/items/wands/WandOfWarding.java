@@ -17,6 +17,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WardSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
@@ -362,15 +363,20 @@ public class WandOfWarding extends Wand {
 
 		@Override
 		public boolean interact() {
-			GameScene.show(new WndOptions( Messages.get(this, "dismiss_title"),
-					Messages.get(this, "dismiss_body"),
-					Messages.get(this, "dismiss_confirm"),
-					Messages.get(this, "dismiss_cancel") ){
+			Game.runOnRenderThread(new Callback() {
 				@Override
-				protected void onSelect(int index) {
-					if (index == 0){
-						die(null);
-					}
+				public void call() {
+					GameScene.show(new WndOptions( Messages.get(this, "dismiss_title"),
+							Messages.get(this, "dismiss_body"),
+							Messages.get(this, "dismiss_confirm"),
+							Messages.get(this, "dismiss_cancel") ){
+						@Override
+						protected void onSelect(int index) {
+							if (index == 0){
+								die(null);
+							}
+						}
+					});
 				}
 			});
 			return true;
