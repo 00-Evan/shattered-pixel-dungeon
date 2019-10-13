@@ -157,7 +157,12 @@ public class Blacksmith extends NPC {
 	}
 	
 	private void tell( String text ) {
-		GameScene.show( new WndQuest( this, text ) );
+		Game.runOnRenderThread(new Callback() {
+			@Override
+			public void call() {
+				GameScene.show( new WndQuest( Blacksmith.this, text ) );
+			}
+		});
 	}
 	
 	public static String verify( Item item1, Item item2 ) {

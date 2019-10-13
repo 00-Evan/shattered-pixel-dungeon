@@ -63,8 +63,10 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBlacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndItem;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -697,7 +699,12 @@ public class DriedRose extends Artifact {
 			updateRose();
 			if (rose != null && !rose.talkedTo){
 				rose.talkedTo = true;
-				GameScene.show(new WndQuest(this, Messages.get(this, "introduce") ));
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show(new WndQuest(GhostHero.this, Messages.get(GhostHero.this, "introduce") ));
+					}
+				});
 				return false;
 			} else {
 				return super.interact();
