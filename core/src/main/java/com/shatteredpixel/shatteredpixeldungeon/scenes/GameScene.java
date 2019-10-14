@@ -465,8 +465,10 @@ public class GameScene extends PixelScene {
 
 			InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
-			fadeIn();
+			
 		}
+		
+		fadeIn();
 
 	}
 	
