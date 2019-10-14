@@ -173,6 +173,8 @@ public class Necromancer extends Mob {
 			
 			Buff.affect(mySkeleton, Adrenaline.class, 3f);
 		}
+		
+		next();
 	}
 	
 	private class Hunting extends Mob.Hunting{
@@ -273,6 +275,7 @@ public class Necromancer extends Mob {
 			} else if (enemySeen && mySkeleton != null){
 				
 				target = enemy.pos;
+				spend(TICK);
 				
 				if (!fieldOfView[mySkeleton.pos]){
 					
@@ -290,24 +293,36 @@ public class Necromancer extends Mob {
 						}
 						
 						if (telePos != -1){
-							sprite.zap(telePos);
+							
 							ScrollOfTeleportation.appear(mySkeleton, telePos);
 							mySkeleton.teleportSpend();
+							
+							if (sprite != null && sprite.visible){
+								sprite.zap(telePos);
+								return false;
+							} else {
+								onZapComplete();
+							}
 						}
 					}
+					
+					return true;
 					
 				} else {
 					
 					//zap skeleton
 					if (mySkeleton.HP < mySkeleton.HT || mySkeleton.buff(Adrenaline.class) == null) {
-						sprite.zap(mySkeleton.pos);
+						if (sprite != null && sprite.visible){
+							sprite.zap(mySkeleton.pos);
+							return false;
+						} else {
+							onZapComplete();
+						}
 					}
 					
 				}
 				
-				spend(TICK);
 				return true;
-				
 				
 			//otherwise, default to regular hunting behaviour
 			} else {
