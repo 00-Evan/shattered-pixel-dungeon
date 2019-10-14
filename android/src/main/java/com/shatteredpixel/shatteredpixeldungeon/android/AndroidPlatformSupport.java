@@ -338,12 +338,23 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			parameters.hinting = FreeTypeFontGenerator.Hinting.None;
 			parameters.spaceX = -(int) parameters.borderWidth;
 			parameters.incremental = true;
-			parameters.characters = "";
+			if (generator == basicFontGenerator){
+				//if we're using latin/cyrillic, we can safely pre-generate some common letters
+				//(we define common as >4% frequency in english)
+				parameters.characters = "�etaoinshrdl";
+			} else {
+				parameters.characters = "�";
+			}
 			parameters.packer = packer;
 			
-			BitmapFont font = generator.generateFont(parameters);
-			font.getData().missingGlyph = font.getData().getGlyph('�');
-			fonts.get(generator).put(size, font);
+			try {
+				BitmapFont font = generator.generateFont(parameters);
+				font.getData().missingGlyph = font.getData().getGlyph('�');
+				fonts.get(generator).put(size, font);
+			} catch ( Exception e ){
+				Game.reportException(e);
+				return null;
+			}
 		}
 		
 		return fonts.get(generator).get(size);
