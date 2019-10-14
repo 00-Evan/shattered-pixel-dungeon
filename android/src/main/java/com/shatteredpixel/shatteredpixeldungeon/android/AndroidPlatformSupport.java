@@ -276,8 +276,13 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		if (SCFontGenerator != null) fonts.put(SCFontGenerator, SCFonts);
 		if (JPFontGenerator != null) fonts.put(JPFontGenerator, JPFonts);
 		
-		//use RGBA4444 to save memory. Extra precision isn't needed here.
-		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA4444, 1, false);
+		String renderer = Gdx.gl.glGetString(Gdx.gl.GL_RENDERER);
+		//want to use RGBA4444 to save memory if we can, but this causes problems on Mali gpus
+		if (renderer.contains("Mali") || renderer.contains("mali")) {
+			packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
+		} else {
+			packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA4444, 1, false);
+		}
 	}
 	
 	@Override
