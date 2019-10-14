@@ -244,6 +244,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 				KRFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NanumGothic.ttf"));
 			} else if (Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf").exists()){
 				KRFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf"));
+				koreanAndroid6OTF = true;
 			}
 			
 			//Chinese font generators
