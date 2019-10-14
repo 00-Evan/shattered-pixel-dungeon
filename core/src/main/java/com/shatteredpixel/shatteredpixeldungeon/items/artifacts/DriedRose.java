@@ -147,6 +147,8 @@ public class DriedRose extends Artifact {
 					ghost.pos = Random.element(spawnPoints);
 
 					GameScene.add(ghost, 1f);
+					Dungeon.level.occupyCell(ghost);
+					
 					CellEmitter.get(ghost.pos).start( ShaftParticle.FACTORY, 0.3f, 4 );
 					CellEmitter.get(ghost.pos).start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
 
