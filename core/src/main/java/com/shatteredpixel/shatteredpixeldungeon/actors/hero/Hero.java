@@ -885,7 +885,7 @@ public class Hero extends Char {
 					Game.runOnRenderThread(new Callback() {
 						@Override
 						public void call() {
-							GameScene.show( new WndMessage( Messages.get(this, "leave") ) );
+							GameScene.show( new WndMessage( Messages.get(Hero.this, "leave") ) );
 						}
 					});
 					ready();
