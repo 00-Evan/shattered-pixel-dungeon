@@ -249,6 +249,10 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			//Chinese font generators
 			if (Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf").exists()){
 				SCFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf"));
+			} else if (Gdx.files.absolute("/system/fonts/NotoSansHans-Regular.otf").exists()){
+				//TODO this seems to also have a lot of JP characters.
+				// Might be cases where this font shows up and NotoSansJP is mostly empty =S
+				SCFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansHans-Regular.otf"));
 			}
 			
 			//Japaneses font generators
