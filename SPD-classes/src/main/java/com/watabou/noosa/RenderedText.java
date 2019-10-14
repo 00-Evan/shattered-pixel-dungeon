@@ -90,42 +90,51 @@ public class RenderedText extends Image {
 		
 		font = Game.platform.getFont(size, text);
 		
-		GlyphLayout glyphs = new GlyphLayout( font, text);
-		
-		for (char c : text.toCharArray()) {
-			BitmapFont.Glyph g = font.getData().getGlyph(c);
-			if (g == null || (g.id != c)){
-				Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c));
+		if (font != null){
+			GlyphLayout glyphs = new GlyphLayout( font, text);
+			
+			for (char c : text.toCharArray()) {
+				BitmapFont.Glyph g = font.getData().getGlyph(c);
+				if (g == null || (g.id != c)){
+					Game.reportException(new Throwable("font file " + font.toString() + " could not render " + c));
+				}
 			}
+			
+			//We use the xadvance of the last glyph in some cases to fix issues
+			// with fullwidth punctuation marks in some asian scripts
+			BitmapFont.Glyph lastGlyph = font.getData().getGlyph(text.charAt(text.length()-1));
+			if (lastGlyph != null && lastGlyph.xadvance > lastGlyph.width*1.5f){
+				width = glyphs.width - lastGlyph.width + lastGlyph.xadvance;
+			} else {
+				width = glyphs.width;
+			}
+			
+			//this is identical to l.height in most cases, but we force this for consistency.
+			height = Math.round(size*0.75f);
+			renderedHeight = glyphs.height;
 		}
-		
-		//We use the xadvance of the last glyph in some cases to fix issues
-		// with fullwidth punctuation marks in some asian scripts
-		BitmapFont.Glyph lastGlyph = font.getData().getGlyph(text.charAt(text.length()-1));
-		if (lastGlyph != null && lastGlyph.xadvance > lastGlyph.width*1.5f){
-			width = glyphs.width - lastGlyph.width + lastGlyph.xadvance;
-		} else {
-			width = glyphs.width;
-		}
-		
-		//this is identical to l.height in most cases, but we force this for consistency.
-		height = Math.round(size*0.75f);
 	}
+	
+	private float renderedHeight = 0;
 	
 	@Override
 	protected void updateMatrix() {
 		super.updateMatrix();
-		//the y value is set at the top of the character, not at the top of accents.
-		Matrix.translate( matrix, 0, Math.round(size*Game.platform.getFontHeightOffset(font)));
+		//sometimes the font is rendered oddly, so we offset here to put it in the correct spot
+		if (renderedHeight != height) {
+			Matrix.translate(matrix, 0, Math.round(height - renderedHeight));
+		}
 	}
 	
 	private static TextRenderBatch textRenderer = new TextRenderBatch();
 	
 	@Override
 	public synchronized void draw() {
-		updateMatrix();
-		TextRenderBatch.textBeingRendered = this;
-		font.draw(textRenderer, text, 0, 0);
+		if (font != null) {
+			updateMatrix();
+			TextRenderBatch.textBeingRendered = this;
+			font.draw(textRenderer, text, 0, 0);
+		}
 	}
 
 	//implements regular PD rendering within a LibGDX batch so that our rendering logic

@@ -180,7 +180,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	
 	private static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
 	
-	private boolean android6OTFPresent = false;
+	//special logic for handling korean android 6.0 font oddities
+	private static boolean koreanAndroid6OTF = false;
 	
 	@Override
 	public void setupFontGenerators(int pageSize, boolean systemfont) {
@@ -208,8 +209,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			}
 		}
 		fonts = new HashMap<>();
+		basicFontGenerator = KRFontGenerator = SCFontGenerator = JPFontGenerator = null;
 		
-		if (systemfont){
+		if (systemfont && Gdx.files.absolute("/system/fonts/DroidSans.ttf").exists()){
 			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSans.ttf"));
 		} else {
 			//FIXME should probably add more latin/cyrillic glyphs to this
@@ -217,48 +219,62 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixel_font.ttf"));
 		}
 		
-		//android 7.0+. Finally back to normalcy, everything nicely in one .ttc
+		//android 7.0+. all asian fonts are nicely contained in one spot
 		if (Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc").exists()) {
 			//typefaces are 0-JP, 1-KR, 2-SC, 3-TC.
 			int typeFace;
-			switch (SPDSettings.language()){
+			switch (SPDSettings.language()) {
 				case JAPANESE:
 					typeFace = 0;
 					break;
 				case KOREAN:
 					typeFace = 1;
 					break;
-				case CHINESE: default:
+				case CHINESE:
+				default:
 					typeFace = 2;
 			}
 			KRFontGenerator = SCFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc"), typeFace);
-		
-		//android 6.0. Fonts are split over multiple .otf files, very awkward
-		} else if (Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf").exists()) {
-			KRFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf"));
-			SCFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf"));
-			JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansJP-Regular.otf"));
-			android6OTFPresent = true;
 			
-		//android 4.4-5.1. Korean no longer broken with the addition of NanumGothic.
-		} else if (Gdx.files.absolute("/system/fonts/NanumGothic.ttf").exists()){
-			KRFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NanumGothic.ttf"));
-			SCFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
-		
-		//android 4.3-. Note that korean isn't in DroidSandFallback and is therefore unfixably broken on 4.2 and 4.3
-		} else if (Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf").exists()) {
-			//TODO consider setting KRFontGenerator to null here on android 4.3 to 4.2 to communicate that the font is broken.
-			KRFontGenerator = SCFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
-		
-		//shouldn't ever trigger, but just in case
+		//otherwise we have to go over a few possibilities.
 		} else {
-			KRFontGenerator = SCFontGenerator = JPFontGenerator = basicFontGenerator;
+			
+			//Korean font generators
+			if (Gdx.files.absolute("/system/fonts/NanumGothic.ttf").exists()){
+				KRFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NanumGothic.ttf"));
+			} else if (Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf").exists()){
+				KRFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansKR-Regular.otf"));
+			}
+			
+			//Chinese font generators
+			if (Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf").exists()){
+				SCFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf"));
+			}
+			
+			//Japaneses font generators
+			if (Gdx.files.absolute("/system/fonts/NotoSansJP-Regular.otf").exists()){
+				JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansJP-Regular.otf"));
+			}
+			
+			//set up a fallback generator for any remaining fonts
+			FreeTypeFontGenerator fallbackGenerator;
+			if (Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf").exists()){
+				fallbackGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSansFallback.ttf"));
+			} else {
+				//no fallback font, just set to null =/
+				fallbackGenerator = null;
+			}
+			
+			if (KRFontGenerator == null) KRFontGenerator = fallbackGenerator;
+			if (SCFontGenerator == null) SCFontGenerator = fallbackGenerator;
+			if (JPFontGenerator == null) JPFontGenerator = fallbackGenerator;
+			
 		}
 		
-		fonts.put(basicFontGenerator, basicFonts);
-		fonts.put(KRFontGenerator, KRFonts);
-		fonts.put(SCFontGenerator, SCFonts);
-		fonts.put(JPFontGenerator, JPFonts);
+		if (basicFontGenerator != null) fonts.put(basicFontGenerator, basicFonts);
+		if (KRFontGenerator != null) fonts.put(KRFontGenerator, KRFonts);
+		if (SCFontGenerator != null) fonts.put(SCFontGenerator, SCFonts);
+		if (JPFontGenerator != null) fonts.put(JPFontGenerator, JPFonts);
 		
 		//use RGBA4444 to save memory. Extra precision isn't needed here.
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA4444, 1, false);
@@ -303,6 +319,10 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	@Override
 	public BitmapFont getFont(int size, String text) {
 		FreeTypeFontGenerator generator = getGeneratorForString(text);
+		
+		if (generator == null){
+			return null;
+		}
 		
 		if (!fonts.get(generator).containsKey(size)) {
 			FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -349,7 +369,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 	
 	@Override
 	public String[] splitforTextBlock(String text, boolean multiline) {
-		if (android6OTFPresent && getGeneratorForString(text) == KRFontGenerator){
+		if (koreanAndroid6OTF && getGeneratorForString(text) == KRFontGenerator){
 			return android6KRSplitter.split(text);
 		} else if (multiline) {
 			return regularsplitterMultiline.split(text);
@@ -358,12 +378,4 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		}
 	}
 	
-	public float getFontHeightOffset( BitmapFont font ){
-		//more weirdness with android 6 OTF fonts
-		if (android6OTFPresent && !basicFonts.containsValue(font)){
-			return -0.25f;
-		} else {
-			return 0.0f;
-		}
-	}
 }
