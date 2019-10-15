@@ -71,23 +71,54 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.7.5b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "LibGDX Text Rendering!",
+				"The game's text renderer is now using LibGDX freetype. This looks almost identical to the existing text but is slightly crisper, platform-independent, and much more efficient!\n\n" +
+				"Text rendering was the last bit of android-dependant code, so the game's core code modules (~98% of its code) are now being compiled as general code and not android-specific code!\n\n" +
+				"_Some parts of the new text rendering are device-dependant, and it's impossible for me to test every device on my own. If you encounter any issues with text rendering please let me know!_\n\n" +
+				"Also updated translations"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Enemy Balance Adjustments",
+				"Tengu has been adjusted to be a bit less difficult for melee characters, in particular for the rogue:\n" +
+				"_-_ Tengu blink distance on phase 3 reduced by 1 tile\n" +
+				"_-_ Tengu accuracy reduced by 10%\n" +
+				"_-_ Tengu accuracy versus invisible characters reduced by 50%\n\n" +
+				"Additionally, some minor balance changes have been made to regular enemies:\n" +
+				"_-_ Snake damage down to 1-4 from 1-5\n" +
+				"_-_ Crab damage down to 1-7 from 1-8\n" +
+				"_-_ Slime damage down to 2-5 from 3-5\n" +
+				"_-_ Necromancer Skeleton HP on summon up to 20/25 from 15/25"));
+		
+		changes.addButton( new ChangeButton(new WandOfCorruption(),
+				"The nerfs to the wand of corruption in 0.7.5 had basically no effect on its winrate when upgraded, so I'm taking a different approach and buffing its base power but reducing its upgraded power. I'm also putting more emphasis on debuffs helping corruption chances:\n\n" +
+				"_-_ Corruption resistance reduction from minor debuffs up to 25% from 12.5% (was 20% prior to 0.7.5)\n" +
+				"_-_ Corruption resistance reduction from major debuffs up to 50% from 25% (was 33% prior to 0.7.5)\n" +
+				"_-_ Corruption power adjusted to 3+lvl/2 from 2+lvl\n\n" +
+				"_-_ Wraith corruption resistance reduced slightly, to put them into line with other uncommon enemies."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.7.5):\n" +
+				"_-_ Doors not opening when they should in some cases\n" +
+				"_-_ Necromancers rarely healing skeletons after they die\n\n" +
+				"Fixed (existed prior to 0.7.5):\n" +
+				"_-_ Black texture errors on older android devices\n" +
+				"_-_ Scenes not fading in when they should in certain cases"));
 		
 		changes = new ChangeInfo("v0.7.5a", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		//misc:
 		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Improved the visibiltiy of the stairs going down after defeating Tengu.\n\n" +
-				"_-_ Added some clarifying Text when Tengu attacks an invisible hero.\n\n" +
+				"_-_ Improved the visibility of the stairs going down after defeating Tengu.\n\n" +
+				"_-_ Added some clarifying text when Tengu attacks an invisible hero.\n\n" +
 				"_-_ Tengu can now spawn in more places if the center of his cell is occupied."));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed (caused by 0.7.5):\n" +
-				"_-_ Necromancers incorrectly only summoning skeletons at melee range\n\n" +
+				"_-_ Necromancers incorrectly only summoning skeletons at melee range\n" +
 				"_-_ Rare cases where doors would appear incorrectly on floor 5\n" +
 				"_-_ Various rare crash bugs"));
 		
