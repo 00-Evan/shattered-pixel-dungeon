@@ -383,10 +383,10 @@ public class AndroidPlatformSupport extends PlatformSupport {
 					"(?<=\\p{InCJK_Symbols_and_Punctuation})|(?=\\p{InCJK_Symbols_and_Punctuation})|" +
 					"(?<=\\p{InHalfwidth_and_Fullwidth_Forms})|(?=\\p{InHalfwidth_and_Fullwidth_Forms})");
 	
-	//splits on each group of hangul syllables. Needed for weird android 6.0 font files
+	//splits on each non-hangul character. Needed for weird android 6.0 font files
 	private Pattern android6KRSplitter = Pattern.compile(
 			"(?<= )|(?= )|(?<=\n)|(?=\n)|(?<=_)|(?=_)|" +
-					"(?!\\p{InHangul_Syllables})");
+					"(?!\\p{InHangul_Syllables})|(?<!\\p{InHangul_Syllables})");
 	
 	@Override
 	public String[] splitforTextBlock(String text, boolean multiline) {
