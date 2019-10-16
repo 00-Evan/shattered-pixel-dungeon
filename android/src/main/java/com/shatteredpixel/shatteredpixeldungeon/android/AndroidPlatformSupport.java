@@ -211,11 +211,11 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		fonts = new HashMap<>();
 		basicFontGenerator = KRFontGenerator = SCFontGenerator = JPFontGenerator = null;
 		
-		if (systemfont && Gdx.files.absolute("/system/fonts/DroidSans.ttf").exists()){
+		if (systemfont && Gdx.files.absolute("/system/fonts/Roboto-Regular.ttf").exists()) {
+			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/Roboto-Regular.ttf"));
+		} else if (systemfont && Gdx.files.absolute("/system/fonts/DroidSans.ttf").exists()){
 			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSans.ttf"));
 		} else {
-			//FIXME should probably add more latin/cyrillic glyphs to this
-			//and go over translations
 			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixel_font.ttf"));
 		}
 		
@@ -251,8 +251,6 @@ public class AndroidPlatformSupport extends PlatformSupport {
 			if (Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf").exists()){
 				SCFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansSC-Regular.otf"));
 			} else if (Gdx.files.absolute("/system/fonts/NotoSansHans-Regular.otf").exists()){
-				//TODO this seems to also have a lot of JP characters.
-				// Might be cases where this font shows up and NotoSansJP is mostly empty =S
 				SCFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansHans-Regular.otf"));
 			}
 			
@@ -281,13 +279,8 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		if (SCFontGenerator != null) fonts.put(SCFontGenerator, SCFonts);
 		if (JPFontGenerator != null) fonts.put(JPFontGenerator, JPFonts);
 		
-		String renderer = Gdx.gl.glGetString(Gdx.gl.GL_RENDERER);
-		//want to use RGBA4444 to save memory if we can, but this causes problems on Mali gpus
-		if (renderer.contains("Mali") || renderer.contains("mali")) {
-			packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
-		} else {
-			packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA4444, 1, false);
-		}
+		//would be nice to use RGBA4444 to save memory, but this causes problems on some gpus =S
+		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
 	}
 	
 	@Override
