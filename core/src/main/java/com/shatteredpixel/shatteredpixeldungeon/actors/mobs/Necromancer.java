@@ -154,7 +154,7 @@ public class Necromancer extends Mob {
 	}
 	
 	public void onZapComplete(){
-		if (mySkeleton == null){
+		if (mySkeleton == null || mySkeleton.sprite == null || !mySkeleton.isAlive()){
 			return;
 		}
 		
