@@ -71,6 +71,22 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
+		
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.5c", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.7.5):\n" +
+				"_-_ Letters failing to render in various specific cases\n" +
+				"_-_ Camera moving slower than intended when zoomed in\n" +
+				"_-_ Camera jittering at low framerates\n" +
+				"_-_ Rare crashes involving necromancers"));
+		
 		changes = new ChangeInfo("v0.7.5b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
@@ -78,7 +94,6 @@ public class v0_7_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.LIBGDX), "LibGDX Text Rendering!",
 				"The game's text renderer is now using LibGDX freetype. This looks almost identical to the existing text but is slightly crisper, platform-independent, and much more efficient!\n\n" +
 				"Text rendering was the last bit of android-dependant code, so the game's core code modules (~98% of its code) are now being compiled as general code and not android-specific code!\n\n" +
-				"_Some parts of the new text rendering are device-dependant, and it's impossible for me to test every device on my own. If you encounter any issues with text rendering please let me know!_\n\n" +
 				"Also updated translations"));
 		
 		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Enemy Balance Adjustments",
