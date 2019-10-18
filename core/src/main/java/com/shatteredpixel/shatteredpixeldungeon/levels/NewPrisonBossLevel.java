@@ -498,7 +498,6 @@ public class NewPrisonBossLevel extends Level {
 				}
 				
 				setMapEnd();
-				cleanMapState();
 				
 				for (Mob m : allies){
 					do{
@@ -511,6 +510,7 @@ public class NewPrisonBossLevel extends Level {
 				tengu.die(Dungeon.hero);
 				
 				clearEntities(tenguCell);
+				cleanMapState();
 				
 				for (Item item : storedItems) {
 					if (!(item instanceof NewTengu.BombAbility.BombItem)
@@ -849,6 +849,15 @@ public class NewPrisonBossLevel extends Level {
 			v.map(data, tileW);
 			return v;
 		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			tileX = 11;
+			tileY = 10;
+			tileW = 14;
+			tileH = 11;
+		}
 	}
 	
 	public static class exitVisualWalls extends CustomTilemap {
@@ -897,6 +906,16 @@ public class NewPrisonBossLevel extends Level {
 			v.map(data, tileW);
 			return v;
 		}
+		
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			tileX = 11;
+			tileY = 10;
+			tileW = 14;
+			tileH = 22;
+		}
+		
 	}
 	
 }
