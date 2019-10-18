@@ -161,7 +161,7 @@ public class WndLangs extends Window {
 					
 					int i;
 					if (reviewers.length > 0){
-						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "reviewers")) + "_\n";
+						creds += Messages.titleCase(Messages.get(WndLangs.class, "reviewers")) + "\n";
 						creds2 += "";
 						for ( i = 0; i < reviewers.length; i++){
 							if (wide && i % 2 == 1){
@@ -176,7 +176,7 @@ public class WndLangs extends Window {
 					}
 
 					if (reviewers.length > 0 || translators.length > 0){
-						creds += "_" + Messages.titleCase(Messages.get(WndLangs.class, "translators")) + "_\n";
+						creds += Messages.titleCase(Messages.get(WndLangs.class, "translators")) + "\n";
 						creds2 += "\n";
 						//reviewers are also translators
 						for ( i = 0; i < reviewers.length; i++){
@@ -208,12 +208,14 @@ public class WndLangs extends Window {
 					credits.add(title);
 
 					RenderedTextBlock text = PixelScene.renderTextBlock(5);
+					text.setHightlighting(false);
 					text.text(creds, 65);
 					text.setPos(0, title.bottom() + 2);
 					credits.add(text);
 					
 					if (wide){
 						RenderedTextBlock rightColumn = PixelScene.renderTextBlock(5);
+						rightColumn.setHightlighting(false);
 						rightColumn.text(creds2, 65);
 						rightColumn.setPos(70, title.bottom() + 8.5f);
 						credits.add(rightColumn);
