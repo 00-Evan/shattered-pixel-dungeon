@@ -86,6 +86,7 @@ public class GameLog extends Component implements Signal.Listener<String> {
 			} else {
 				
 				lastEntry = PixelScene.renderTextBlock( text, 6 );
+				lastEntry.setHightlighting( false );
 				lastEntry.hardlight( color );
 				lastColor = color;
 				add( lastEntry );
