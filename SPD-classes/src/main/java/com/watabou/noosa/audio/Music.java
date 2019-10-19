@@ -22,6 +22,7 @@
 package com.watabou.noosa.audio;
 
 import com.badlogic.gdx.Gdx;
+import com.watabou.noosa.Game;
 
 public enum Music {
 	
@@ -50,10 +51,15 @@ public enum Music {
 			return;
 		}
 		
-		player = Gdx.audio.newMusic(Gdx.files.internal(assetName));
-		player.setLooping(looping);
-		player.setVolume(volume);
-		player.play();
+		try {
+			player = Gdx.audio.newMusic(Gdx.files.internal(assetName));
+			player.setLooping(looping);
+			player.setVolume(volume);
+			player.play();
+		} catch (Exception e){
+			Game.reportException(e);
+			player = null;
+		}
 		
 	}
 	

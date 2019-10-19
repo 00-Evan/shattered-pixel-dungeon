@@ -52,10 +52,15 @@ public class Ballistica {
 	public Ballistica( int from, int to, int params ){
 		sourcePos = from;
 		build(from, to, (params & STOP_TARGET) > 0, (params & STOP_CHARS) > 0, (params & STOP_TERRAIN) > 0);
-		if (collisionPos != null)
-			dist = path.indexOf( collisionPos );
-		else
-			collisionPos = path.get( dist=path.size()-1 );
+		if (collisionPos != null) {
+			dist = path.indexOf(collisionPos);
+		} else if (!path.isEmpty()) {
+			collisionPos = path.get(dist = path.size() - 1);
+		} else {
+			path.add(from);
+			collisionPos = from;
+			dist = 0;
+		}
 	}
 
 	private void build( int from, int to, boolean stopTarget, boolean stopChars, boolean stopTerrain ) {
