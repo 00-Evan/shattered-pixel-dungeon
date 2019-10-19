@@ -106,7 +106,7 @@ public class HeroSprite extends CharSprite {
 		if (ch.flying) {
 			play( fly );
 		}
-		Camera.main.panFollow(this, 5f + 10f*(Camera.main.zoom/PixelScene.defaultZoom));
+		Camera.main.panFollow(this, 20f);
 	}
 
 	@Override
