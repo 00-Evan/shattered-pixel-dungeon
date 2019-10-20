@@ -71,10 +71,23 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		
-		changes = new ChangeInfo("", false, null);
+		changes = new ChangeInfo("v0.7.5d", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Made additional tweaks to camera movement speed when following hero, should be slightly faster in most cases."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.7.5):\n" +
+				"_-_ Various visual bugs on floor 10\n" +
+				"_-_ Text being highlighted when it shouldn't in specific cases\n" +
+				"_-_ Various rare crash bugs\n\n" +
+				"Fixed (existed prior to 0.7.5):\n" +
+				"_-_ Thrown weapons sticking to corrupted characters when they shouldn't"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+				"Updated Translations"));
 		
 		changes = new ChangeInfo("v0.7.5c", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
