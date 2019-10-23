@@ -42,9 +42,9 @@ public class DesktopLauncher {
 				PrintWriter pw = new PrintWriter(sw);
 				throwable.printStackTrace(pw);
 				pw.flush();
-				JOptionPane.showMessageDialog(null, "Shattered Pixel Dungeon has crashed! Sorry about that!\n\n" +
+				JOptionPane.showMessageDialog(null, "Shattered Pixel Dungeon has crashed, sorry about that!\n\n" +
 						"If you could, please email this error message to me and I'll get it fixed (Evan@ShatteredPixel.com):\n\n" +
-						sw.toString());
+						sw.toString(), "Game Crash!", JOptionPane.ERROR_MESSAGE);
 				Gdx.app.exit();
 			}
 		});
