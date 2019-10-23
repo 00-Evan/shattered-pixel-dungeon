@@ -99,6 +99,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTradeItem;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
@@ -521,7 +522,11 @@ public class GameScene extends PixelScene {
 			Actor.process();
 		}
 	};
-
+	
+	//sometimes UI changes can be prompted by the actor thread.
+	// We queue any removed element destruction, rather than destroying them in the actor thread.
+	private ArrayList<Gizmo> toDestroy = new ArrayList<>();
+	
 	@Override
 	public synchronized void update() {
 		if (Dungeon.hero == null || scene == null) {
@@ -574,6 +579,11 @@ public class GameScene extends PixelScene {
 		}
 
 		cellSelector.enable(Dungeon.hero.ready);
+		
+		for (Gizmo g : toDestroy){
+			g.destroy();
+		}
+		toDestroy.clear();
 	}
 
 	private boolean tagAttack    = false;
@@ -680,7 +690,7 @@ public class GameScene extends PixelScene {
 		
 		if (prompt != null) {
 			prompt.killAndErase();
-			prompt.destroy();
+			toDestroy.add(prompt);
 			prompt = null;
 		}
 		
