@@ -34,14 +34,14 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 	//if true, this PointerArea will always block input, even when it is inactive
 	public boolean blockWhenInactive = false;
 	
-	public PointerArea(Visual target ) {
+	public PointerArea( Visual target ) {
 		super( 0, 0, 0, 0 );
 		this.target = target;
 		
 		PointerEvent.addPointerListener( this );
 	}
 	
-	public PointerArea(float x, float y, float width, float height ) {
+	public PointerArea( float x, float y, float width, float height ) {
 		super( x, y, width, height );
 		this.target = this;
 		
@@ -99,17 +99,13 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 		}
 	}
 	
-	protected void onPointerDown( PointerEvent event ) {
-	}
+	protected void onPointerDown( PointerEvent event ) { }
 	
-	protected void onPointerUp( PointerEvent event) {
-	}
+	protected void onPointerUp( PointerEvent event) { }
 	
-	protected void onClick( PointerEvent event ) {
-	}
+	protected void onClick( PointerEvent event ) { }
 	
-	protected void onDrag( PointerEvent event ) {
-	}
+	protected void onDrag( PointerEvent event ) { }
 	
 	public void reset() {
 		curEvent = null;

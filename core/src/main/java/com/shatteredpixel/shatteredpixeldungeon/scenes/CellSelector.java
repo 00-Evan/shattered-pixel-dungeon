@@ -29,12 +29,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.input.PointerEvent;
+import com.watabou.input.ScrollEvent;
 import com.watabou.noosa.Camera;
-import com.watabou.noosa.PointerArea;
+import com.watabou.noosa.ScrollArea;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 
-public class CellSelector extends PointerArea {
+public class CellSelector extends ScrollArea {
 
 	public Listener listener = null;
 	
@@ -47,6 +48,22 @@ public class CellSelector extends PointerArea {
 		camera = map.camera();
 		
 		dragThreshold = PixelScene.defaultZoom * DungeonTilemap.SIZE / 2;
+		
+		mouseZoom = camera.zoom;
+	}
+	
+	private float mouseZoom;
+	
+	@Override
+	protected void onScroll( ScrollEvent event ) {
+		float diff = event.amount/10f;
+		
+		//scale zoom difference so zooming is consistent
+		diff /= ((camera.zoom+1)/camera.zoom)-1;
+		diff = Math.min(1, diff);
+		mouseZoom = GameMath.gate( PixelScene.minZoom, mouseZoom - diff, PixelScene.maxZoom );
+		
+		zoom( (int)Math.floor(mouseZoom) );
 	}
 	
 	@Override

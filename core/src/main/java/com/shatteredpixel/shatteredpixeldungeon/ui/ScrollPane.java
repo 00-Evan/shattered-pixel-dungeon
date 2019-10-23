@@ -23,9 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.input.PointerEvent;
+import com.watabou.input.ScrollEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.PointerArea;
+import com.watabou.noosa.ScrollArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
@@ -38,11 +39,6 @@ public class ScrollPane extends Component {
 	protected PointerController controller;
 	protected Component content;
 	protected ColorBlock thumb;
-
-	protected float minX;
-	protected float minY;
-	protected float maxX;
-	protected float maxY;
 
 	public ScrollPane( Component content ) {
 		super();
@@ -107,13 +103,21 @@ public class ScrollPane extends Component {
 	public void onClick( float x, float y ) {
 	}
 
-	public class PointerController extends PointerArea {
+	public class PointerController extends ScrollArea {
 
 		private float dragThreshold;
 
 		public PointerController() {
 			super( 0, 0, 0, 0 );
 			dragThreshold = PixelScene.defaultZoom * 8;
+		}
+		
+		@Override
+		protected void onScroll(ScrollEvent event) {
+			PointF newPt = new PointF(lastPos);
+			newPt.y -= event.amount * content.camera.zoom * 10;
+			scroll(newPt);
+			dragging = false;
 		}
 
 		@Override
@@ -138,25 +142,7 @@ public class ScrollPane extends Component {
 		protected void onDrag( PointerEvent event ) {
 			if (dragging) {
 
-				Camera c = content.camera;
-
-				c.shift( PointF.diff( lastPos, event.current ).invScale( c.zoom ) );
-				if (c.scroll.x + width > content.width()) {
-					c.scroll.x = content.width() - width;
-				}
-				if (c.scroll.x < 0) {
-					c.scroll.x = 0;
-				}
-				if (c.scroll.y + height > content.height()) {
-					c.scroll.y = content.height() - height;
-				}
-				if (c.scroll.y < 0) {
-					c.scroll.y = 0;
-				}
-
-				thumb.y = y + height * c.scroll.y / content.height();
-
-				lastPos.set( event.current );
+				scroll(event.current);
 
 			} else if (PointF.distance( event.current, event.start ) > dragThreshold) {
 
@@ -166,5 +152,30 @@ public class ScrollPane extends Component {
 
 			}
 		}
+		
+		private void scroll( PointF current ){
+			
+			Camera c = content.camera;
+			
+			c.shift( PointF.diff( lastPos, current ).invScale( c.zoom ) );
+			if (c.scroll.x + width > content.width()) {
+				c.scroll.x = content.width() - width;
+			}
+			if (c.scroll.x < 0) {
+				c.scroll.x = 0;
+			}
+			if (c.scroll.y + height > content.height()) {
+				c.scroll.y = content.height() - height;
+			}
+			if (c.scroll.y < 0) {
+				c.scroll.y = 0;
+			}
+			
+			thumb.y = y + height * c.scroll.y / content.height();
+			
+			lastPos.set( current );
+			
+		}
+		
 	}
 }
