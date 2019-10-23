@@ -22,7 +22,7 @@ https://github.com/00-Evan/pixel-dungeon-gradle
 
 # Compiling Shattered Pixel Dungeon
 
-**Note that Shattered Pixel Dungeon is currently in the process of being converted to use the multiplatform game library LibGDX. The codebase is fully functional, but still contains some code which depends on Android, and so cannot be built for other platforms yet.**
+**Note that Shattered Pixel Dungeon is currently in the process of being converted to use the multiplatform game library LibGDX. The game currently compiles for desktop but is missing several important desktop features. Desktop compiling is suitable for debugging but releasing desktop builds from this codebase is not advised at the moment.**
 
 To compile Shattered Pixel Dungeon you will need:
 - A computer which meets the [system requirements for Android Studio](https://developer.android.com/studio#Requirements)

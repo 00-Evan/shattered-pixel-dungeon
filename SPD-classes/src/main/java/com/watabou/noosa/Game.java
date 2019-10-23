@@ -21,6 +21,7 @@
 
 package com.watabou.noosa;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -118,6 +119,12 @@ public class Game implements ApplicationListener {
 			
 			Game.width = width;
 			Game.height = height;
+			
+			//TODO might be better to put this in platform support
+			if (Gdx.app.getType() != Application.ApplicationType.Android){
+				Game.dispWidth = Game.width;
+				Game.dispHeight = Game.height;
+			}
 			
 			resetScene();
 		}
