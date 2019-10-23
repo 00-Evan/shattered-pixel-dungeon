@@ -28,14 +28,25 @@ project.ext.assetsDir = new File("../android/src/main/assets")
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-task run(dependsOn: classes, type: JavaExec) {
+task debug(type: JavaExec) {
     main = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
     workingDir = project.assetsDir
     ignoreExitValue = true
 }
 
-//TODO add dist task to generate a .JAR
+task releaseJAR(type: Jar) {
+    from sourceSets.main.output
+    from project.assetsDir
+    from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
+
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+        attributes 'Specification-Name': appName
+        attributes 'Specification-Version': appVersionName
+        attributes 'Implementation-Version': appVersionCode
+    }
+}
 
 dependencies {
     implementation project(':core')

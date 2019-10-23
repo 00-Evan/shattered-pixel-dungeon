@@ -49,17 +49,6 @@ public class DesktopLauncher {
 			}
 		});
 		
-		String version = DesktopLauncher.class.getPackage().getSpecificationVersion();
-		if (version == null) {
-			Game.version = "0.7.5d";
-		}
-		
-		try {
-			Game.versionCode = Integer.parseInt(DesktopLauncher.class.getPackage().getImplementationVersion());
-		} catch (NumberFormatException e) {
-			Game.versionCode = 372;
-		}
-		
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		
 		config.width = 1920;
@@ -69,7 +58,23 @@ public class DesktopLauncher {
 		config.foregroundFPS = 0;
 		config.backgroundFPS = -1;
 		
-		config.title = "Shattered Pixel Dungeon";
+		//TODO rather than hardcoding these values when running debug
+		// it would be nice to be able to fetch them from gradle in some way
+		config.title = DesktopLauncher.class.getPackage().getSpecificationTitle();
+		if (config.title == null) {
+			config.title = "ShatteredPD INDEV";
+		}
+		
+		Game.version = DesktopLauncher.class.getPackage().getSpecificationVersion();
+		if (Game.version == null) {
+			Game.version = "0.7.5d-INDEV";
+		}
+		
+		try {
+			Game.versionCode = Integer.parseInt(DesktopLauncher.class.getPackage().getImplementationVersion());
+		} catch (NumberFormatException e) {
+			Game.versionCode = 380;
+		}
 		
 		new LwjglApplication(new ShatteredPixelDungeon(new DesktopPlatformSupport()), config);
 	}
