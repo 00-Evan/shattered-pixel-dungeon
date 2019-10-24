@@ -43,6 +43,8 @@ public class Blob extends Actor {
 	public BlobEmitter emitter;
 
 	public Rect area = new Rect();
+	
+	public boolean alwaysVisible = false;
 
 	private static final String CUR		= "cur";
 	private static final String START	= "start";

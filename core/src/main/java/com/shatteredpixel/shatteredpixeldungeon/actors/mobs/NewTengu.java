@@ -106,11 +106,7 @@ public class NewTengu extends Mob {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		if (target.invisible > 0){
-			return 6;
-		} else {
-			return 18;
-		}
+		return 18;
 	}
 	
 	@Override
@@ -346,18 +342,6 @@ public class NewTengu extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			
-			if (enemy != null && !enemyInFOV && fieldOfView[enemy.pos]){
-				if (!yelledCoward) {
-					yell(Messages.get(NewTengu.class, "coward"));
-					yelledCoward = true;
-					//TODO translate
-					if (Messages.lang() == Languages.ENGLISH){
-						GLog.i("(Tengu can still attack if you are invisible, but his accuracy is reduced.)");
-					}
-				}
-				enemyInFOV = true;
-			}
-			
 			enemySeen = enemyInFOV;
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
 				
@@ -373,9 +357,16 @@ public class NewTengu extends Mob {
 					target = enemy.pos;
 				} else {
 					chooseEnemy();
-					if (enemy != null) {
-						target = enemy.pos;
+					if (enemy == null){
+						//if nothing else can be targeted, target hero
+						enemy = Dungeon.hero;
 					}
+					target = enemy.pos;
+				}
+				
+				//if not charmed, attempt to use an ability, even if the enemy can't be seen
+				if (canUseAbility()){
+					return useAbility();
 				}
 				
 				spend( TICK );
@@ -599,6 +590,7 @@ public class NewTengu extends Mob {
 		public static class BombBlob extends Blob {
 			{
 				actPriority = BUFF_PRIO - 1;
+				alwaysVisible = true;
 			}
 			
 			@Override
@@ -632,10 +624,8 @@ public class NewTengu extends Mob {
 								}
 							}
 							
-							if (Dungeon.level.heroFOV[cell]) {
-								exploded = true;
-								CellEmitter.center(cell).burst(BlastParticle.FACTORY, 2);
-							}
+							exploded = true;
+							CellEmitter.center(cell).burst(BlastParticle.FACTORY, 2);
 						}
 					}
 				}
@@ -799,6 +789,7 @@ public class NewTengu extends Mob {
 			
 			{
 				actPriority = BUFF_PRIO - 1;
+				alwaysVisible = true;
 			}
 			
 			@Override
@@ -831,10 +822,8 @@ public class NewTengu extends Mob {
 								GameScene.updateMap( cell );
 							}
 							
-							if (Dungeon.level.heroFOV[cell]){
-								burned = true;
-								CellEmitter.get(cell).start(FlameParticle.FACTORY, 0.03f, 10);
-							}
+							burned = true;
+							CellEmitter.get(cell).start(FlameParticle.FACTORY, 0.03f, 10);
 						}
 					}
 				}
@@ -980,6 +969,7 @@ public class NewTengu extends Mob {
 			
 			{
 				actPriority = BUFF_PRIO - 1;
+				alwaysVisible = true;
 			}
 			
 			@Override
