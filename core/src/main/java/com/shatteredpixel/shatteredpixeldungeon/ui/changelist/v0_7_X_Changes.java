@@ -71,7 +71,39 @@ public class v0_7_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
-		changes = new ChangeInfo("v0.7.5d", false, null);
+		changes = new ChangeInfo("", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes = new ChangeInfo("v0.7.5e", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SNAKE, 12, 0, 12, 11), "Snake adjustments",
+				"Snakes are doing a good job of filling their role as an enemy that demands being surprise attacked, but they are a bit annoying if the player gets unlucky and has to surprise them multiple times.\n\n" +
+				"I'm tweaking them so that they are much more likely to die from a single surprise hit, but their danger otherwise should be very similar:\n" +
+				"_-_ Snake health reduced to 4 from 6\n" +
+				"_-_ Snake evasion increased by 25%\n\n" +
+				"Snakes now also have an item drop! They will occasionally drop a random seed."));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Tengu Adjustments",
+				"Tengu is in a much better place balance-wise since the changes in 0.7.5b, but he's still ruining the rogue's day a bit too often.\n\n" +
+				"I'm buffing invisibility versus Tengu again, so that it completely avoids his regular attacks, but doesn't totally trivialize him:\n" +
+				"_-_ Tengu now cannot attack invisible heroes\n" +
+				"_-_ Tengu can now use his 3rd phase abilities against heroes he cannot see\n" +
+				"_-_ VFX for Tengu's abilities now triggers even if the player can't see them"));
+		
+		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (existed prior to 0.7.5):\n" +
+				"_-_ Small amounts of stuttering when the hero moves\n" +
+				"_-_ Rare layout issues with buttons in item windows\n" +
+				"_-_ Bolts from wand of lightning not spreading in many cases where they should\n" +
+				"_-_ Various rare crash bugs"));
+		
+		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
+				"Updated Translations"));
+		
+		changes = new ChangeInfo("v0.7.5c&d", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
@@ -82,6 +114,9 @@ public class v0_7_X_Changes {
 				"Fixed (caused by 0.7.5):\n" +
 				"_-_ Various visual bugs on floor 10\n" +
 				"_-_ Text being highlighted when it shouldn't in specific cases\n" +
+				"_-_ Letters failing to render in various specific cases\n" +
+				"_-_ Camera moving slower than intended when zoomed in\n" +
+				"_-_ Camera jittering at low framerates\n" +
 				"_-_ Various rare crash bugs\n\n" +
 				"Fixed (existed prior to 0.7.5):\n" +
 				"_-_ Thrown weapons sticking to corrupted characters when they shouldn't"));
@@ -89,18 +124,7 @@ public class v0_7_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
 				"Updated Translations"));
 		
-		changes = new ChangeInfo("v0.7.5c", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by 0.7.5):\n" +
-				"_-_ Letters failing to render in various specific cases\n" +
-				"_-_ Camera moving slower than intended when zoomed in\n" +
-				"_-_ Camera jittering at low framerates\n" +
-				"_-_ Rare crashes involving necromancers"));
-		
-		changes = new ChangeInfo("v0.7.5b", false, null);
+		changes = new ChangeInfo("v0.7.5a&b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 		
@@ -129,29 +153,14 @@ public class v0_7_X_Changes {
 		
 		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed (caused by 0.7.5):\n" +
+				"_-_ Necromancers incorrectly only summoning skeletons at melee range\n" +
+				"_-_ Rare cases where doors would appear incorrectly on floor 5\n" +
 				"_-_ Doors not opening when they should in some cases\n" +
-				"_-_ Necromancers rarely healing skeletons after they die\n\n" +
+				"_-_ Necromancers rarely healing skeletons after they die\n" +
+				"_-_ Various rare crash bugs\n\n" +
 				"Fixed (existed prior to 0.7.5):\n" +
 				"_-_ Black texture errors on older android devices\n" +
 				"_-_ Scenes not fading in when they should in certain cases"));
-		
-		changes = new ChangeInfo("v0.7.5a", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Improved the visibility of the stairs going down after defeating Tengu.\n\n" +
-				"_-_ Added some clarifying text when Tengu attacks an invisible hero.\n\n" +
-				"_-_ Tengu can now spawn in more places if the center of his cell is occupied."));
-		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by 0.7.5):\n" +
-				"_-_ Necromancers incorrectly only summoning skeletons at melee range\n" +
-				"_-_ Rare cases where doors would appear incorrectly on floor 5\n" +
-				"_-_ Various rare crash bugs"));
-		
-		changes.addButton( new ChangeButton(Icons.get(Icons.LANGS), Messages.get(ChangesScene.class, "language"),
-				"Updated Translations and Translator Credits!"));
 		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
