@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class WndItem extends Window {
@@ -87,10 +86,9 @@ public class WndItem extends Window {
 		add( info );
 	
 		float y = info.top() + info.height() + GAP;
-		float x = 0;
 		
 		if (Dungeon.hero.isAlive() && options) {
-			ArrayList<RedButton> line = new ArrayList<>();
+			ArrayList<RedButton> buttons = new ArrayList<>();
 			for (final String action:item.actions( Dungeon.hero )) {
 				
 				RedButton btn = new RedButton( Messages.get(item, "ac_" + action), 8 ) {
@@ -102,72 +100,107 @@ public class WndItem extends Window {
 					}
 				};
 				btn.setSize( btn.reqWidth(), BUTTON_HEIGHT );
-				if (x + btn.width() > width || line.size() == 3) {
-					layoutButtons(line, width - x, y);
-					x = 0;
-					y += BUTTON_HEIGHT + 1;
-					line = new ArrayList<>();
-				}
-				x++;
+				buttons.add(btn);
 				add( btn );
-				line.add( btn );
 
 				if (action.equals(item.defaultAction)) {
 					btn.textColor( TITLE_COLOR );
 				}
-
-				x += btn.width();
+				
 			}
-			layoutButtons(line, width - x, y);
+			y = layoutButtons(buttons, width, y);
 		}
 		
-		resize( width, (int)(y + (x > 0 ? BUTTON_HEIGHT : 0)) );
+		resize( width, (int)(y) );
 	}
 
-	//this method assumes a max of 3 buttons per line
-	//FIXME: this is really messy for just trying to make buttons fill the window. Gotta be a cleaner way.
-	private static void layoutButtons(ArrayList<RedButton> line, float extraWidth, float y){
-		if (line == null || line.size() == 0 || extraWidth == 0) return;
-		if (line.size() == 1){
-			line.get(0).setSize(line.get(0).width()+extraWidth, BUTTON_HEIGHT);
-			line.get(0).setPos( 0 , y );
-			return;
-		}
-		ArrayList<RedButton> lineByWidths = new ArrayList<>(line);
-		Collections.sort(lineByWidths, widthComparator);
-		RedButton smallest, middle, largest;
-		smallest = lineByWidths.get(0);
-		middle = lineByWidths.get(1);
-		largest = null;
-		if (lineByWidths.size() == 3) {
-			largest = lineByWidths.get(2);
-		}
-
-		float btnDiff = middle.width() - smallest.width();
-		smallest.setSize(smallest.width() + Math.min(btnDiff, extraWidth), BUTTON_HEIGHT);
-		extraWidth -= btnDiff;
-		if (extraWidth > 0) {
-			if (largest == null) {
-				smallest.setSize(smallest.width() + extraWidth / 2, BUTTON_HEIGHT);
-				middle.setSize(middle.width() + extraWidth / 2, BUTTON_HEIGHT);
+	private static float layoutButtons(ArrayList<RedButton> buttons, float width, float y){
+		ArrayList<RedButton> curRow = new ArrayList<>();
+		float widthLeftThisRow = width;
+		
+		while( !buttons.isEmpty() ){
+			RedButton btn = buttons.get(0);
+			
+			widthLeftThisRow -= btn.width();
+			if (curRow.isEmpty()) {
+				curRow.add(btn);
+				buttons.remove(btn);
 			} else {
-				btnDiff = largest.width() - smallest.width();
-				smallest.setSize(smallest.width() + Math.min(btnDiff, extraWidth/2), BUTTON_HEIGHT);
-				middle.setSize(middle.width() + Math.min(btnDiff, extraWidth/2), BUTTON_HEIGHT);
-				extraWidth -= btnDiff*2;
-				if (extraWidth > 0){
-					smallest.setSize(smallest.width() + extraWidth / 3, BUTTON_HEIGHT);
-					middle.setSize(middle.width() + extraWidth / 3, BUTTON_HEIGHT);
-					largest.setSize(largest.width() + extraWidth / 3, BUTTON_HEIGHT);
+				widthLeftThisRow -= 1;
+				if (widthLeftThisRow >= 0) {
+					curRow.add(btn);
+					buttons.remove(btn);
 				}
 			}
+			
+			//layout current row. Currently forces a max of 3 buttons but can work with more
+			if (buttons.isEmpty() || widthLeftThisRow <= 0 || curRow.size() >= 3){
+				
+				//re-use this variable for laying out the buttons
+				widthLeftThisRow = width - (curRow.size()-1);
+				for (RedButton b : curRow){
+					widthLeftThisRow -= b.width();
+				}
+				
+				//while we still have space in this row, find the shortest button(s) and extend them
+				while (widthLeftThisRow > 0){
+					
+					ArrayList<RedButton> shortest = new ArrayList<>();
+					RedButton secondShortest = null;
+					
+					for (RedButton b : curRow) {
+						if (shortest.isEmpty()) {
+							shortest.add(b);
+						} else {
+							if (b.width() < shortest.get(0).width()) {
+								secondShortest = shortest.get(0);
+								shortest.clear();
+								shortest.add(b);
+							} else if (b.width() == shortest.get(0).width()) {
+								shortest.add(b);
+							} else if (secondShortest == null || secondShortest.width() > b.width()){
+								secondShortest = b;
+							}
+						}
+					}
+					
+					float widthToGrow;
+					
+					if (secondShortest == null){
+						widthToGrow = widthLeftThisRow / shortest.size();
+						widthLeftThisRow = 0;
+					} else {
+						widthToGrow = secondShortest.width() - shortest.get(0).width();
+						if ((widthToGrow * shortest.size()) >= widthLeftThisRow){
+							widthToGrow = widthLeftThisRow / shortest.size();
+							widthLeftThisRow = 0;
+						} else {
+							widthLeftThisRow -= widthToGrow * shortest.size();
+						}
+					}
+					
+					for (RedButton toGrow : shortest){
+						toGrow.setRect(0, 0, toGrow.width()+widthToGrow, toGrow.height());
+					}
+				}
+				
+				//finally set positions
+				float x = 0;
+				for (RedButton b : curRow){
+					b.setRect(x, y, b.width(), b.height());
+					x += b.width() + 1;
+				}
+				
+				//move to next line and reset variables
+				y += BUTTON_HEIGHT+1;
+				widthLeftThisRow = width;
+				curRow.clear();
+				
+			}
+			
 		}
-
-		float x = 0;
-		for (RedButton btn : line){
-			btn.setPos( x , y );
-			x += btn.width()+1;
-		}
+		
+		return y - 1;
 	}
 	
 	@Override
