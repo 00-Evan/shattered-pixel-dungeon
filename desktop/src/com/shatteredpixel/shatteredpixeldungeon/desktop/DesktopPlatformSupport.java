@@ -26,6 +26,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 
 import java.util.HashMap;
@@ -52,24 +53,34 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	private PixmapPacker packer;
 	private boolean systemfont;
 	
-	//droid sans / roboto, or a custom pixel font, for use with Latin and Cyrillic languages
+	//custom pixel font, for use with Latin and Cyrillic languages
 	private static FreeTypeFontGenerator basicFontGenerator;
 	private static HashMap<Integer, BitmapFont> basicFonts = new HashMap<>();
 	
+	//droid sans fallback, for asian fonts
+	private static FreeTypeFontGenerator asianFontGenerator;
+	private static HashMap<Integer, BitmapFont> asianFonts = new HashMap<>();
+	
+	private static HashMap<FreeTypeFontGenerator, HashMap<Integer, BitmapFont>> fonts;
+	
 	@Override
 	public void setupFontGenerators(int pageSize, boolean systemfont) {
-		if (basicFontGenerator != null && this.pageSize == pageSize && this.systemfont == systemfont){
+		//don't bother doing anything if nothing has changed
+		if (fonts != null && this.pageSize == pageSize && this.systemfont == systemfont){
 			return;
 		}
 		this.pageSize = pageSize;
 		this.systemfont = systemfont;
 		
-		if (basicFontGenerator != null){
-			for (BitmapFont f : basicFonts.values()){
-				f.dispose();
+		if (fonts != null){
+			for (FreeTypeFontGenerator generator : fonts.keySet()){
+				for (BitmapFont f : fonts.get(generator).values()){
+					f.dispose();
+				}
+				fonts.get(generator).clear();
+				generator.dispose();
 			}
-			basicFonts.clear();
-			basicFontGenerator.dispose();
+			fonts.clear();
 			if (packer != null){
 				for (PixmapPacker.Page p : packer.getPages()){
 					p.getTexture().dispose();
@@ -77,37 +88,59 @@ public class DesktopPlatformSupport extends PlatformSupport {
 				packer.dispose();
 			}
 		}
+		fonts = new HashMap<>();
 		
 		basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixel_font.ttf"));
+		asianFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSansFallback.ttf"));
+		
+		fonts.put(basicFontGenerator, basicFonts);
+		fonts.put(asianFontGenerator, asianFonts);
 		
 		packer = new PixmapPacker(pageSize, pageSize, Pixmap.Format.RGBA8888, 1, false);
 	}
 	
 	@Override
 	public void resetGenerators() {
-		if (basicFontGenerator != null) {
-			for (BitmapFont f : basicFonts.values()) {
+		for (FreeTypeFontGenerator generator : fonts.keySet()){
+			for (BitmapFont f : fonts.get(generator).values()){
 				f.dispose();
 			}
-			basicFonts.clear();
-			basicFontGenerator.dispose();
-		
-			if (packer != null) {
-				for (PixmapPacker.Page p : packer.getPages()) {
-					p.getTexture().dispose();
-				}
-				packer.dispose();
-			}
+			fonts.get(generator).clear();
+			generator.dispose();
 		}
-		basicFontGenerator = null;
+		fonts.clear();
+		if (packer != null){
+			for (PixmapPacker.Page p : packer.getPages()){
+				p.getTexture().dispose();
+			}
+			packer.dispose();
+		}
+		fonts = null;
 		setupFontGenerators(pageSize, systemfont);
 	}
 	
+	private static Pattern asianMatcher = Pattern.compile("\\p{InHangul_Syllables}|" +
+			"\\p{InCJK_Unified_Ideographs}|\\p{InCJK_Symbols_and_Punctuation}|\\p{InHalfwidth_and_Fullwidth_Forms}|" +
+			"\\p{InHiragana}|\\p{InKatakana}");
+	
+	private static FreeTypeFontGenerator getGeneratorForString( String input ){
+		if (asianMatcher.matcher(input).find()){
+			return asianFontGenerator;
+		} else {
+			return basicFontGenerator;
+		}
+	}
+	
+	
 	@Override
 	public BitmapFont getFont(int size, String text) {
-		FreeTypeFontGenerator generator = basicFontGenerator;
+		FreeTypeFontGenerator generator = getGeneratorForString(text);
 		
-		if (!basicFonts.containsKey(size)) {
+		if (generator == null){
+			return null;
+		}
+		
+		if (!fonts.get(generator).containsKey(size)) {
 			FreeTypeFontGenerator.FreeTypeFontParameter parameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
 			parameters.size = size;
 			parameters.flip = true;
@@ -116,15 +149,26 @@ public class DesktopPlatformSupport extends PlatformSupport {
 			parameters.hinting = FreeTypeFontGenerator.Hinting.None;
 			parameters.spaceX = -(int) parameters.borderWidth;
 			parameters.incremental = true;
-			parameters.characters = "";
+			if (generator == basicFontGenerator){
+				//if we're using latin/cyrillic, we can safely pre-generate some common letters
+				//(we define common as >4% frequency in english)
+				parameters.characters = "�etaoinshrdl";
+			} else {
+				parameters.characters = "�";
+			}
 			parameters.packer = packer;
 			
-			BitmapFont font = generator.generateFont(parameters);
-			font.getData().missingGlyph = font.getData().getGlyph('�');
-			basicFonts.put(size, font);
+			try {
+				BitmapFont font = generator.generateFont(parameters);
+				font.getData().missingGlyph = font.getData().getGlyph('�');
+				fonts.get(generator).put(size, font);
+			} catch ( Exception e ){
+				Game.reportException(e);
+				return null;
+			}
 		}
 		
-		return basicFonts.get(size);
+		return fonts.get(generator).get(size);
 	}
 	
 	//splits on newlines, underscores, and chinese/japaneses characters

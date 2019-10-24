@@ -23,25 +23,30 @@ apply plugin: "java"
 
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-project.ext.mainClassName = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
-project.ext.assetsDir = new File("../android/src/main/assets")
+ext {
+    mainClassName = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
+    //desktop-specific resources and shared resources
+    //TODO shared resources can probably be moved out of android module, right?
+    assetsDirs = ["../android/src/main/assets", "assets/"]
+}
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-task debug(type: JavaExec) {
-    main = project.mainClassName
+task runDebug(type: JavaExec) {
+    main = mainClassName
     classpath = sourceSets.main.runtimeClasspath
-    workingDir = project.assetsDir
+    sourceSets.main.resources.srcDirs = assetsDirs
+
     ignoreExitValue = true
 }
 
 task releaseJAR(type: Jar) {
     from sourceSets.main.output
-    from project.assetsDir
+    sourceSets.main.resources.srcDirs = assetsDirs
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
 
     manifest {
-        attributes 'Main-Class': project.mainClassName
+        attributes 'Main-Class': mainClassName
         attributes 'Specification-Name': appName
         attributes 'Specification-Version': appVersionName
         attributes 'Implementation-Version': appVersionCode
