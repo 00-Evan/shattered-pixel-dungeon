@@ -92,8 +92,6 @@ public class WandOfLightning extends DamageWand {
 	}
 
 	private void arc( Char ch ) {
-		
-		affected.add( ch );
 
 		int dist = (Dungeon.level.water[ch.pos] && !ch.flying) ? 2 : 1;
 
@@ -128,6 +126,7 @@ public class WandOfLightning extends DamageWand {
 
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
+			affected.add( ch );
 			arcs.add( new Lightning.Arc(curUser.sprite.center(), ch.sprite.center()));
 			arc(ch);
 		} else {
