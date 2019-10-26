@@ -166,7 +166,9 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 			}
 		}
 		
-		return false;
+		//TODO currently always eats the key event as windows always take full focus
+		// if they are ever made more flexible, might not want to do this in all cases
+		return true;
 	}
 	
 	public void onBackPressed() {

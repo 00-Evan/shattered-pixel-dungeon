@@ -988,6 +988,14 @@ public class GameScene extends PixelScene {
 		QuickSlotButton.cancel();
 		if (scene != null && scene.toolbar != null) scene.toolbar.examining = false;
 	}
+	
+	public static void checkKeyHold(){
+		cellSelector.processKeyHold();
+	}
+	
+	public static void resetKeyHold(){
+		cellSelector.resetKeyHold();
+	}
 
 	public static void examineCell( Integer cell ) {
 		if (cell == null

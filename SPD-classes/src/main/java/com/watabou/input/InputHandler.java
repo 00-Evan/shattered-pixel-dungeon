@@ -79,22 +79,14 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public synchronized boolean keyDown( int keyCode ) {
-		
-		if (keyCode != KeyEvent.BACK && keyCode != KeyEvent.MENU) {
-			return false;
-		}
-		
+		//TODO should check if key is mapped and ignore if it isn't?
 		KeyEvent.addKeyEvent( new KeyEvent(keyCode, true) );
 		return true;
 	}
 	
 	@Override
 	public synchronized boolean keyUp( int keyCode ) {
-		
-		if (keyCode != KeyEvent.BACK && keyCode != KeyEvent.MENU) {
-			return false;
-		}
-		
+		//TODO should check if key is mapped and ignore if it isn't?
 		KeyEvent.addKeyEvent( new KeyEvent(keyCode, false) );
 		return true;
 	}

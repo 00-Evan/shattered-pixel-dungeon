@@ -605,6 +605,7 @@ public class Hero extends Char {
 			lastAction = curAction;
 		}
 		curAction = null;
+		GameScene.resetKeyHold();
 	}
 	
 	public void resume() {
@@ -1557,6 +1558,11 @@ public class Hero extends Char {
 		curAction = null;
 
 		super.onAttackComplete();
+	}
+	
+	@Override
+	public void onMotionComplete() {
+		GameScene.checkKeyHold();
 	}
 	
 	@Override

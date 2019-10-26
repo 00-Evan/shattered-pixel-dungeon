@@ -21,19 +21,23 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.badlogic.gdx.Input;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.input.ScrollEvent;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.ScrollArea;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
+import com.watabou.utils.Signal;
 
 public class CellSelector extends ScrollArea {
 
@@ -50,6 +54,7 @@ public class CellSelector extends ScrollArea {
 		dragThreshold = PixelScene.defaultZoom * DungeonTilemap.SIZE / 2;
 		
 		mouseZoom = camera.zoom;
+		KeyEvent.addKeyListener(movementListener);
 	}
 	
 	private float mouseZoom;
@@ -202,6 +207,84 @@ public class CellSelector extends ScrollArea {
 		
 	}
 	
+	private KeyEvent heldKey = null;
+	private int heldKeyTurns = 0;
+	
+	private Signal.Listener<KeyEvent> movementListener = new Signal.Listener<KeyEvent>() {
+		@Override
+		public boolean onSignal(KeyEvent event) {
+			if (!event.pressed){
+				if (heldKey != null && heldKey.code == event.code) {
+					resetKeyHold();
+					return true;
+				}
+			} else if (moveFromKey(event)) {
+				heldKey = event;
+				return true;
+			}
+			
+			return false;
+		}
+	};
+	
+	private boolean moveFromKey(KeyEvent event){
+		boolean moved = true;
+		int cell = Dungeon.hero.pos;
+		//TODO implement game actions, instead of using keys directly
+		switch (event.code){
+			case Input.Keys.NUMPAD_7:
+				cell += -1-Dungeon.level.width();
+				break;
+			case Input.Keys.UP: case Input.Keys.NUMPAD_8:
+				cell += -Dungeon.level.width();
+				break;
+			case Input.Keys.NUMPAD_9:
+				cell += +1-Dungeon.level.width();
+				break;
+			case Input.Keys.RIGHT: case Input.Keys.NUMPAD_6:
+				cell += +1;
+				break;
+			case Input.Keys.NUMPAD_3:
+				cell += +1+Dungeon.level.width();
+				break;
+			case Input.Keys.DOWN: case Input.Keys.NUMPAD_2:
+				cell += +Dungeon.level.width();
+				break;
+			case Input.Keys.NUMPAD_1:
+				cell += -1+Dungeon.level.width();
+				break;
+			case Input.Keys.LEFT: case Input.Keys.NUMPAD_4:
+				cell += -1;
+				break;
+			default:
+				moved = false;
+		}
+		
+		if (moved){
+			//each step when keyboard moving takes 0.15s, 0.125s, 0.1s, 0.1s, ...
+			// this is to make it easier to move 1 or 2 steps without overshooting
+			CharSprite.setMoveInterval( CharSprite.DEFAULT_MOVE_INTERVAL +
+			                            Math.max(0, 0.05f - heldKeyTurns*0.025f));
+			select(cell);
+		}
+		
+		return moved;
+	}
+	
+	public void processKeyHold(){
+		if (heldKey != null){
+			enabled = true;
+			heldKeyTurns++;
+			moveFromKey(heldKey);
+		}
+	}
+	
+	public void resetKeyHold(){
+		heldKey = null;
+		heldKeyTurns = 0;
+		CharSprite.setMoveInterval( CharSprite.DEFAULT_MOVE_INTERVAL );
+	}
+	
 	public void cancel() {
 		
 		if (listener != null) {
@@ -227,7 +310,13 @@ public class CellSelector extends ScrollArea {
 			enabled = value;
 		}
 	}
-
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		KeyEvent.removeKeyListener(movementListener);
+	}
+	
 	public interface Listener {
 		void onSelect( Integer cell );
 		String prompt();
