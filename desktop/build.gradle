@@ -1,52 +1,24 @@
-/*
- * Pixel Dungeon
- * Copyright (C) 2012-2015 Oleg Dolya
- *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
-
 apply plugin: "java"
 
-sourceSets.main.java.srcDirs = [ "src/" ]
-
-ext {
-    mainClassName = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
-    //desktop-specific resources and shared resources
-    //TODO shared resources can probably be moved out of android module, right?
-    assetsDirs = ["../android/src/main/assets", "assets/"]
-}
-
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceCompatibility = targetCompatibility = appJavaCompatibility
 
-task runDebug(type: JavaExec) {
-    main = mainClassName
+sourceSets.main.resources.srcDirs = [new File(project(':core').projectDir, "/src/main/assets"),
+                                     new File(project(':desktop').projectDir,"/src/main/assets")]
+
+task runDebug(dependsOn: classes, type: JavaExec) {
+    main = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
     classpath = sourceSets.main.runtimeClasspath
-    sourceSets.main.resources.srcDirs = assetsDirs
 
     ignoreExitValue = true
 }
 
-task releaseJAR(type: Jar) {
+task releaseJAR(dependsOn: classes, type: Jar) {
     from sourceSets.main.output
-    sourceSets.main.resources.srcDirs = assetsDirs
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
 
     manifest {
-        attributes 'Main-Class': mainClassName
+        attributes 'Main-Class': "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
         attributes 'Specification-Name': appName
         attributes 'Specification-Version': appVersionName
         attributes 'Implementation-Version': appVersionCode
