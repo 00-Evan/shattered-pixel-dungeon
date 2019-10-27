@@ -218,7 +218,7 @@ public class Bestiary {
 				} else if (cl == Thief.class) {
 					cl = Bandit.class;
 				} else if (cl == Brute.class) {
-					cl = Shielded.class;
+					cl = ArmoredBrute.class;
 				} else if (cl == Monk.class) {
 					cl = Senior.class;
 				} else if (cl == Scorpio.class) {
