@@ -30,12 +30,14 @@ import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
+import com.watabou.utils.FileUtils;
 
 public class AndroidGame extends AndroidApplication {
 	
@@ -60,10 +62,12 @@ public class AndroidGame extends AndroidApplication {
 		} catch (PackageManager.NameNotFoundException e) {
 			Game.versionCode = 0;
 		}
-		
+
+		FileUtils.setDefaultFileProperties( Files.FileType.Local, "" );
+
 		// grab preferences directly using our instance first
 		// so that we don't need to rely on Gdx.app, which isn't initialized yet.
-		SPDSettings.setPrefsFromInstance(instance);
+		SPDSettings.set(instance.getPreferences("ShatteredPixelDungeon"));
 		
 		//set desired orientation (if it exists) before initializing the app.
 		if (SPDSettings.landscapeFromSettings() != null) {
