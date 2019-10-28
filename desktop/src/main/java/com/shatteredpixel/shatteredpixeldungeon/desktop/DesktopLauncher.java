@@ -58,7 +58,7 @@ public class DesktopLauncher {
 		
 		config.title = DesktopLauncher.class.getPackage().getSpecificationTitle();
 		if (config.title == null) {
-			config.title = System.getProperty("Specification-Name");
+			config.title = System.getProperty("Specification-Title");
 		}
 		
 		Game.version = DesktopLauncher.class.getPackage().getSpecificationVersion();

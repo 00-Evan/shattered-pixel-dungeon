@@ -12,7 +12,7 @@ task runDebug(dependsOn: classes, type: JavaExec) {
     ignoreExitValue = true
 
     main = mainClass
-    systemProperty 'Specification-Name', appName
+    systemProperty 'Specification-Title', appName
     systemProperty 'Specification-Version', appVersionName + "-INDEV"
     systemProperty 'Implementation-Version', appVersionCode
 }
@@ -23,7 +23,7 @@ task releaseJAR(dependsOn: classes, type: Jar) {
 
     manifest {
         attributes 'Main-Class': mainClass
-        attributes 'Specification-Name': appName
+        attributes 'Specification-Title': appName
         attributes 'Specification-Version': appVersionName
         attributes 'Implementation-Version': appVersionCode
     }
