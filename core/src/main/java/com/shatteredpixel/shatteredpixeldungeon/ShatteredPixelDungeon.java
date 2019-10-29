@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
@@ -224,7 +225,13 @@ public class ShatteredPixelDungeon extends Game {
 		updateDisplaySize();
 
 	}
-
+	
+	@Override
+	public void destroy(){
+		super.destroy();
+		GameScene.endActorThread();
+	}
+	
 	public void updateDisplaySize(){
 		platform.updateDisplaySize();
 	}
