@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -54,8 +53,8 @@ public class WndDocument extends Window {
 	
 	public WndDocument( Document doc ){
 		
-		int w = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
-		int h = SPDSettings.landscape() ? HEIGHT_L : HEIGHT_P;
+		int w = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
+		int h = PixelScene.landscape() ? HEIGHT_L : HEIGHT_P;
 		
 		resize(w, h);
 		

@@ -62,6 +62,10 @@ public class Scene extends Group {
 	
 	}
 	
+	public static boolean landscape(){
+		return Game.width > Game.height;
+	}
+	
 	@Override
 	public void update() {
 		super.update();

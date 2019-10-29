@@ -26,8 +26,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
+import com.watabou.utils.Point;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -36,12 +38,24 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	
 	@Override
 	public void updateDisplaySize() {
-	
+		if (!SPDSettings.fullscreen()) {
+			SPDSettings.windowResolution( new Point( Game.width, Game.height ) );
+		}
 	}
 	
 	@Override
 	public void updateSystemUI() {
-	
+		Gdx.app.postRunnable( new Runnable() {
+			@Override
+			public void run () {
+				if (SPDSettings.fullscreen()){
+					Gdx.graphics.setFullscreenMode( Gdx.graphics.getDisplayMode() );
+				} else {
+					Point p = SPDSettings.windowResolution();
+					Gdx.graphics.setWindowedMode( p.x, p.y );
+				}
+			}
+		} );
 	}
 	
 	@Override

@@ -45,11 +45,11 @@ import java.util.regex.Pattern;
 public class AndroidPlatformSupport extends PlatformSupport {
 	
 	public void updateDisplaySize(){
-		boolean landscape = SPDSettings.landscape();
-		
-		AndroidGame.instance.setRequestedOrientation(landscape ?
-				ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-				ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+		if (SPDSettings.landscape() != null) {
+			AndroidGame.instance.setRequestedOrientation( SPDSettings.landscape() ?
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
+		}
 		
 		if (AndroidGame.view.getMeasuredWidth() == 0 || AndroidGame.view.getMeasuredHeight() == 0)
 			return;
@@ -57,7 +57,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		Game.dispWidth = AndroidGame.view.getMeasuredWidth();
 		Game.dispHeight = AndroidGame.view.getMeasuredHeight();
 		
-		if ((Game.dispWidth > Game.dispHeight) != landscape){
+		if ((Game.dispWidth >= Game.dispHeight) != PixelScene.landscape()){
 			int tmp = Game.dispWidth;
 			Game.dispWidth = Game.dispHeight;
 			Game.dispHeight = tmp;

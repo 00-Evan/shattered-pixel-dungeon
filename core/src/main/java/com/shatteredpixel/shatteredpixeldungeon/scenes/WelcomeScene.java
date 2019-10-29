@@ -68,7 +68,7 @@ public class WelcomeScene extends PixelScene {
 		float topRegion = Math.max(title.height, h*0.45f);
 		
 		title.x = (w - title.width()) / 2f;
-		if (SPDSettings.landscape()) {
+		if (landscape()) {
 			title.y = (topRegion - title.height()) / 2f;
 		} else {
 			title.y = 20 + (topRegion - title.height() - 20) / 2f;

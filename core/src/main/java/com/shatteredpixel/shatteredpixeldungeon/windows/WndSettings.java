@@ -37,6 +37,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.DeviceCompat;
 
+//TODO seeing as a fair bit of this is platform-dependant, might be better to have a per-platform wndsettings
 public class WndSettings extends WndTabbed {
 
 	private static final int WIDTH		    = 112;
@@ -154,17 +155,17 @@ public class WndSettings extends WndTabbed {
 				add(chkSaver);
 			}
 
-			RedButton btnOrientation = new RedButton( SPDSettings.landscape() ?
+			//TODO need to disable this in some situations. (desktop, android splitscreen)
+			RedButton btnOrientation = new RedButton( PixelScene.landscape() ?
 					Messages.get(this, "portrait")
 					: Messages.get(this, "landscape") ) {
 				@Override
 				protected void onClick() {
-					SPDSettings.landscape(!SPDSettings.landscape());
+					SPDSettings.landscape(!PixelScene.landscape());
 				}
 			};
 			btnOrientation.setRect(0, chkSaver.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
 			add( btnOrientation );
-
 
 			OptionSlider brightness = new OptionSlider(Messages.get(this, "brightness"),
 					Messages.get(this, "dark"), Messages.get(this, "bright"), -2, 2) {
@@ -267,17 +268,20 @@ public class WndSettings extends WndTabbed {
 			slots.setRect(0, chkFlipTags.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
 			add(slots);
 
-			CheckBox chkImmersive = new CheckBox( Messages.get(this, "nav_bar") ) {
+			CheckBox chkFullscreen = new CheckBox( Messages.get(this, "nav_bar") ) {
 				@Override
 				protected void onClick() {
 					super.onClick();
 					SPDSettings.fullscreen(checked());
 				}
 			};
-			chkImmersive.setRect( 0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
-			chkImmersive.checked(SPDSettings.fullscreen());
-			chkImmersive.enable(DeviceCompat.supportsFullScreen());
-			add(chkImmersive);
+			chkFullscreen.setRect( 0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
+			chkFullscreen.checked(SPDSettings.fullscreen());
+			if (DeviceCompat.isDesktop()){
+				chkFullscreen.text( "Fullscreen" );
+			}
+			chkFullscreen.enable(DeviceCompat.supportsFullScreen());
+			add(chkFullscreen);
 
 			CheckBox chkFont = new CheckBox(Messages.get(this, "system_font")){
 				@Override
@@ -296,7 +300,7 @@ public class WndSettings extends WndTabbed {
 					});
 				}
 			};
-			chkFont.setRect(0, chkImmersive.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
+			chkFont.setRect(0, chkFullscreen.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
 			chkFont.checked(SPDSettings.systemFont());
 			add(chkFont);
 		}

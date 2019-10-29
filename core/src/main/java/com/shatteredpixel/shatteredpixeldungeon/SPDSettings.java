@@ -23,10 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.GameSettings;
+import com.watabou.utils.Point;
 
 import java.util.Locale;
 
@@ -69,13 +70,9 @@ public class SPDSettings extends GameSettings {
 		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).updateDisplaySize();
 	}
 	
-	//FIXME in certain multi-window cases this can disagree with the actual screen size
-	//there should be an option to check for landscape the setting, and actual screen size
-	public static boolean landscape() {
-		return getBoolean(KEY_LANDSCAPE, Game.dispWidth > Game.dispHeight);
-	}
-	
-	public static Boolean landscapeFromSettings(){
+	//can return null because we need to directly handle the case of landscape not being set
+	// as there are different defaults for different devices
+	public static Boolean landscape(){
 		if (contains(KEY_LANDSCAPE)){
 			return getBoolean(KEY_LANDSCAPE, false);
 		} else {
@@ -154,7 +151,7 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static String toolbarMode() {
-		return getString(KEY_BARMODE, !SPDSettings.landscape() ? "SPLIT" : "GROUP");
+		return getString(KEY_BARMODE, PixelScene.landscape() ? "GROUP" : "SPLIT");
 	}
 	
 	//Game State
@@ -257,4 +254,30 @@ public class SPDSettings extends GameSettings {
 				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
 	}
 	
+	//Window management (desktop only atm)
+
+	public static final String KEY_WINDOW_WIDTH     = "window_width";
+	public static final String KEY_WINDOW_HEIGHT    = "window_height";
+	public static final String KEY_WINDOW_MAXIMIZED = "window_maximized";
+
+	public static void windowResolution( Point p ){
+		put(KEY_WINDOW_WIDTH, p.x);
+		put(KEY_WINDOW_HEIGHT, p.y);
+	}
+
+	public static Point windowResolution(){
+		return new Point(
+				getInt( KEY_WINDOW_WIDTH, 960 ),
+				getInt( KEY_WINDOW_HEIGHT, 640 )
+		);
+	}
+
+	public static void windowMaximized( boolean value ){
+		put( KEY_WINDOW_MAXIMIZED, value );
+	}
+
+	public static boolean windowMaximized(){
+		return getBoolean( KEY_WINDOW_MAXIMIZED, false );
+	}
+
 }
