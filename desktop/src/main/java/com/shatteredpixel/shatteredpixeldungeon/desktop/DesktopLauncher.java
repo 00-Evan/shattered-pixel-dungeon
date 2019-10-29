@@ -23,14 +23,14 @@ package com.shatteredpixel.shatteredpixeldungeon.desktop;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.backends.lwjgl.LwjglPreferences;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Preferences;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
-import com.watabou.utils.GameSettings;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -40,7 +40,12 @@ import javax.swing.JOptionPane;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		
-		final LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		final String title;
+		if (DesktopLauncher.class.getPackage().getSpecificationTitle() == null){
+			title = System.getProperty("Specification-Title");
+		} else {
+			title = DesktopLauncher.class.getPackage().getSpecificationTitle();
+		}
 		
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
@@ -49,17 +54,12 @@ public class DesktopLauncher {
 				PrintWriter pw = new PrintWriter(sw);
 				throwable.printStackTrace(pw);
 				pw.flush();
-				JOptionPane.showMessageDialog(null, config.title + " has crashed, sorry about that!\n\n" +
-						"If you could, please email this error message to me and I'll get it fixed (Evan@ShatteredPixel.com):\n\n" +
-						sw.toString(), "Game Crash!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, title + " has run into an error it can't recover from and has crashed, sorry about that!\n\n" +
+						"If you could, please email this error message to the developer (Evan@ShatteredPixel.com):\n\n" +
+						sw.toString(), title + " Has Crashed!", JOptionPane.ERROR_MESSAGE);
 				Gdx.app.exit();
 			}
 		});
-		
-		config.title = DesktopLauncher.class.getPackage().getSpecificationTitle();
-		if (config.title == null) {
-			config.title = System.getProperty("Specification-Title");
-		}
 		
 		Game.version = DesktopLauncher.class.getPackage().getSpecificationVersion();
 		if (Game.version == null) {
@@ -72,30 +72,31 @@ public class DesktopLauncher {
 			Game.versionCode = Integer.parseInt(System.getProperty("Implementation-Version"));
 		}
 		
-		config.width = 1920;
-		config.height = 1080;
+		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		
-		//uncapped (but vsynced) framerate when focused, paused when not focused
-		config.foregroundFPS = 0;
-		config.backgroundFPS = -1;
+		config.setTitle( title );
 		
 		//TODO this is currently the same location and filenames as the old desktop codebase
 		// If I want to move it now would be the time
+		String basePath = "";
 		if (SharedLibraryLoader.isWindows) {
 			if (System.getProperties().getProperty("os.name").equals("Windows XP")) {
-				config.preferencesDirectory = "Application Data/.shatteredpixel/Shattered Pixel Dungeon/";
+				basePath = "Application Data/.shatteredpixel/Shattered Pixel Dungeon/";
 			} else {
-				config.preferencesDirectory = "AppData/Roaming/.shatteredpixel/Shattered Pixel Dungeon/";
+				basePath = "AppData/Roaming/.shatteredpixel/Shattered Pixel Dungeon/";
 			}
 		} else if (SharedLibraryLoader.isMac) {
-			config.preferencesDirectory = "Library/Application Support/Shattered Pixel Dungeon/";
+			basePath = "Library/Application Support/Shattered Pixel Dungeon/";
 		} else if (SharedLibraryLoader.isLinux) {
-			config.preferencesDirectory = ".shatteredpixel/shattered-pixel-dungeon/";
+			basePath = ".shatteredpixel/shattered-pixel-dungeon/";
 		}
-		GameSettings.set( new LwjglPreferences( "pd-prefs", config.preferencesDirectory) );
+		config.setPreferencesConfig( basePath, Files.FileType.External );
+		SPDSettings.set( new Lwjgl3Preferences( "pd-prefs", basePath) );
+		FileUtils.setDefaultFileProperties( Files.FileType.External, basePath );
 		
-		FileUtils.setDefaultFileProperties( Files.FileType.External, config.preferencesDirectory );
+		config.setWindowSizeLimits( 800, 450, -1, -1 );
+		config.setWindowedMode( 1920, 1080 );
 		
-		new LwjglApplication(new ShatteredPixelDungeon(new DesktopPlatformSupport()), config);
+		new Lwjgl3Application(new ShatteredPixelDungeon(new DesktopPlatformSupport()), config);
 	}
 }
