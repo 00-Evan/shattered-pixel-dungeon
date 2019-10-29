@@ -250,12 +250,12 @@ public class DriedRose extends Artifact {
 		if (ghost == null){
 			if (charge < chargeCap) {
 				charge += 4;
-				updateQuickslot();
 				if (charge >= chargeCap) {
 					charge = chargeCap;
 					partialCharge = 0;
 					GLog.p(Messages.get(DriedRose.class, "charged"));
 				}
+				updateQuickslot();
 			}
 		} else {
 			ghost.HP = Math.min( ghost.HT, ghost.HP + 1 + level()/3);

@@ -88,7 +88,9 @@ public class TeleportationTrap extends Trap {
 			Item item = heap.pickUp();
 
 			if (cell != -1) {
-				Dungeon.level.drop( item, cell );
+				Heap dropped = Dungeon.level.drop( item, cell );
+				dropped.type = heap.type;
+				dropped.sprite.view( dropped );
 			}
 		}
 	}

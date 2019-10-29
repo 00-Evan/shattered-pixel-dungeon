@@ -615,14 +615,9 @@ public class Hero extends Char {
 		next();
 	}
 	
-	//FIXME this is a fairly crude way to track this, really it would be nice to have a short
-	//history of hero actions
-	public boolean justMoved = false;
-	
 	private boolean actMove( HeroAction.Move action ) {
 
 		if (getCloser( action.dst )) {
-			justMoved = true;
 			return true;
 
 		} else {
@@ -852,7 +847,8 @@ public class Hero extends Char {
 	
 	private boolean actDescend( HeroAction.Descend action ) {
 		int stairs = action.dst;
-		if (pos == stairs) {
+		if (pos == stairs && (Dungeon.level.map[pos] == Terrain.EXIT
+						|| Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
 			
 			curAction = null;
 
@@ -878,7 +874,7 @@ public class Hero extends Char {
 	
 	private boolean actAscend( HeroAction.Ascend action ) {
 		int stairs = action.dst;
-		if (pos == stairs) {
+		if (pos == stairs && Dungeon.level.map[pos] == Terrain.ENTRANCE) {
 			
 			if (Dungeon.depth == 1) {
 				
@@ -1096,6 +1092,10 @@ public class Hero extends Char {
 	
 	private boolean walkingToVisibleTrapInFog = false;
 	
+	//FIXME this is a fairly crude way to track this, really it would be nice to have a short
+	//history of hero actions
+	public boolean justMoved = false;
+	
 	private boolean getCloser( final int target ) {
 
 		if (target == pos)
@@ -1179,6 +1179,7 @@ public class Hero extends Char {
 			move(step);
 
 			spend( 1 / speed );
+			justMoved = true;
 			
 			search(false);
 			

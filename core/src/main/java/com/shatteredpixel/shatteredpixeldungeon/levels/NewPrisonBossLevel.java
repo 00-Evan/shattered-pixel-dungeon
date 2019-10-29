@@ -441,13 +441,13 @@ public class NewPrisonBossLevel extends Level {
 				
 				clearEntities( tenguCell ); //clear anything not in tengu's cell
 				
+				setMapMazes();
+				cleanMapState();
+				
 				Actor.remove(tengu);
 				mobs.remove(tengu);
 				TargetHealthIndicator.instance.target(null);
 				tengu.sprite.kill();
-				
-				setMapMazes();
-				cleanMapState();
 				
 				GameScene.flash(0xFFFFFF);
 				Sample.INSTANCE.play(Assets.SND_BLAST);
@@ -571,8 +571,8 @@ public class NewPrisonBossLevel extends Level {
 									if (maze[x][y]){
 										int cell = mazeCells[i].left+x + width()*(mazeCells[i].top+y);
 										if (heaps.get(cell) == null){
+											Level.set( cell, Terrain.SECRET_TRAP );
 											setTrap(new TenguDartTrap().hide(), cell);
-											Painter.set(this, cell, Terrain.SECRET_TRAP);
 											CellEmitter.get(cell).burst(Speck.factory(Speck.LIGHT), 2);
 										}
 									}
