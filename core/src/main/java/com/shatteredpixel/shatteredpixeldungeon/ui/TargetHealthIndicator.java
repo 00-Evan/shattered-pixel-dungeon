@@ -42,7 +42,7 @@ public class TargetHealthIndicator extends HealthBar {
 		
 		if (target != null && target.isAlive() && target.sprite.visible) {
 			CharSprite sprite = target.sprite;
-			width = sprite.width;
+			width = sprite.width();
 			x = sprite.x;
 			y = sprite.y - 3;
 			level( target );

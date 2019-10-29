@@ -166,8 +166,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		final int csize = DungeonTilemap.SIZE;
 		
 		return new PointF(
-			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width * 0.5f),
-			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height - csize * perspectiveRaise)
+			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width() * 0.5f),
+			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height() - csize * perspectiveRaise)
 		);
 	}
 	
@@ -586,8 +586,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		super.updateMatrix();
 		Matrix.copy(matrix, shadowMatrix);
 		Matrix.translate(shadowMatrix,
-				(width() * (1f - shadowWidth)) / 2f,
-				(height() * (1f - shadowHeight)) + shadowOffset);
+				(width * (1f - shadowWidth)) / 2f,
+				(height * (1f - shadowHeight)) + shadowOffset);
 		Matrix.scale(shadowMatrix, shadowWidth, shadowHeight);
 	}
 
