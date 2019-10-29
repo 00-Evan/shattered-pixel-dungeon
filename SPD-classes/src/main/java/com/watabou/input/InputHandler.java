@@ -21,11 +21,18 @@
 
 package com.watabou.input;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.watabou.noosa.Game;
 import com.watabou.utils.PointF;
 
 public class InputHandler extends InputAdapter {
+	
+	public InputHandler( Input input ){
+		input.setInputProcessor( this );
+		input.setCatchKey( Input.Keys.BACK, true);
+		input.setCatchKey( Input.Keys.MENU, true);
+	}
 	
 	public void processAllEvents(){
 		PointerEvent.processPointerEvents();
@@ -79,16 +86,22 @@ public class InputHandler extends InputAdapter {
 	
 	@Override
 	public synchronized boolean keyDown( int keyCode ) {
-		//TODO should check if key is mapped and ignore if it isn't?
-		KeyEvent.addKeyEvent( new KeyEvent(keyCode, true) );
-		return true;
+		if (KeyBindings.isBound( keyCode )) {
+			KeyEvent.addKeyEvent( new KeyEvent( keyCode, true ) );
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	@Override
 	public synchronized boolean keyUp( int keyCode ) {
-		//TODO should check if key is mapped and ignore if it isn't?
-		KeyEvent.addKeyEvent( new KeyEvent(keyCode, false) );
-		return true;
+		if (KeyBindings.isBound( keyCode )) {
+			KeyEvent.addKeyEvent( new KeyEvent( keyCode, false ) );
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	// ********************

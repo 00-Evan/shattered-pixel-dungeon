@@ -99,10 +99,7 @@ public class Game implements ApplicationListener {
 		
 		Blending.useDefault();
 		
-		inputHandler = new InputHandler();
-		Gdx.input.setInputProcessor(inputHandler);
-		Gdx.input.setCatchKey(KeyEvent.BACK, true);
-		Gdx.input.setCatchKey(KeyEvent.MENU, true);
+		inputHandler = new InputHandler( Gdx.input );
 		
 		//refreshes texture and vertex data stored on the gpu
 		TextureCache.reload();

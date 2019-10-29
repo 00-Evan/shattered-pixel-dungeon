@@ -21,6 +21,7 @@
 
 package com.watabou.noosa;
 
+import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.utils.Signal;
 
@@ -33,13 +34,13 @@ public class Scene extends Group {
 			@Override
 			public boolean onSignal( KeyEvent event ) {
 				if (Game.instance != null && event.pressed) {
-					switch (event.code) {
-					case KeyEvent.BACK:
-						onBackPressed();
-						break;
-					case KeyEvent.MENU:
-						onMenuPressed();
-						break;
+					switch (KeyBindings.getBinding( event )) {
+						case BACK:
+							onBackPressed();
+							break;
+						case MENU:
+							onMenuPressed();
+							break;
 					}
 				}
 				return false;

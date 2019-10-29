@@ -21,7 +21,6 @@
 
 package com.watabou.input;
 
-import com.badlogic.gdx.Input;
 import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
@@ -39,9 +38,6 @@ public class KeyEvent {
 	// **********************
 	// *** Static members ***
 	// **********************
-	
-	public static final int BACK		= Input.Keys.BACK;
-	public static final int MENU		= Input.Keys.MENU;
 	
 	private static Signal<KeyEvent> keySignal = new Signal<>( true );
 	

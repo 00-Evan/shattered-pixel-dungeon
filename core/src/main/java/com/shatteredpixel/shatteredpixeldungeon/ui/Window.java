@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
@@ -156,11 +157,11 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	@Override
 	public boolean onSignal( KeyEvent event ) {
 		if (event.pressed) {
-			switch (event.code) {
-				case KeyEvent.BACK:
+			switch (KeyBindings.getBinding( event )) {
+				case BACK:
 					onBackPressed();
 					return true;
-				case KeyEvent.MENU:
+				case MENU:
 					onMenuPressed();
 					return true;
 			}

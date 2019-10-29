@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.input.ScrollEvent;
@@ -231,30 +232,30 @@ public class CellSelector extends ScrollArea {
 		boolean moved = true;
 		int cell = Dungeon.hero.pos;
 		//TODO implement game actions, instead of using keys directly
-		switch (event.code){
-			case Input.Keys.NUMPAD_7:
-				cell += -1-Dungeon.level.width();
-				break;
-			case Input.Keys.UP: case Input.Keys.NUMPAD_8:
+		switch (KeyBindings.getBinding( event )){
+			case N:
 				cell += -Dungeon.level.width();
 				break;
-			case Input.Keys.NUMPAD_9:
+			case NE:
 				cell += +1-Dungeon.level.width();
 				break;
-			case Input.Keys.RIGHT: case Input.Keys.NUMPAD_6:
+			case E:
 				cell += +1;
 				break;
-			case Input.Keys.NUMPAD_3:
+			case SE:
 				cell += +1+Dungeon.level.width();
 				break;
-			case Input.Keys.DOWN: case Input.Keys.NUMPAD_2:
+			case S:
 				cell += +Dungeon.level.width();
 				break;
-			case Input.Keys.NUMPAD_1:
+			case SW:
 				cell += -1+Dungeon.level.width();
 				break;
-			case Input.Keys.LEFT: case Input.Keys.NUMPAD_4:
+			case W:
 				cell += -1;
+				break;
+			case NW:
+				cell += -1-Dungeon.level.width();
 				break;
 			default:
 				moved = false;
