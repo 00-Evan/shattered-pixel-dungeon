@@ -72,23 +72,23 @@ public class Bestiary {
 						Thief.class,
 						Swarm.class));
 			case 7:
-				//3x skeleton, 1x thief, 1x shaman, 1x guard
+				//3x skeleton, 1x thief, 1x DM-100, 1x guard
 				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
 						Thief.class,
-						Shaman.class,
+						DM100.class,
 						Guard.class));
 			case 8:
-				//2x skeleton, 1x thief, 2x shaman, 2x guard, 1x necromancer
+				//2x skeleton, 1x thief, 2x DM-100, 2x guard, 1x necromancer
 				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class,
 						Thief.class,
-						Shaman.class, Shaman.class,
+						DM100.class, DM100.class,
 						Guard.class, Guard.class,
 						Necromancer.class));
 			case 9: case 10:
-				//1x skeleton, 1x thief, 2x shaman, 2x guard, 2x necromancer
+				//1x skeleton, 1x thief, 2x DM-100, 2x guard, 2x necromancer
 				return new ArrayList<>(Arrays.asList(Skeleton.class,
 						Thief.class,
-						Shaman.class, Shaman.class,
+						DM100.class, DM100.class,
 						Guard.class, Guard.class,
 						Necromancer.class, Necromancer.class));
 				
@@ -109,14 +109,14 @@ public class Bestiary {
 				return new ArrayList<>(Arrays.asList(
 						Bat.class,
 						Brute.class, Brute.class, Brute.class,
-						Shaman.class,
+						//DM100.class,
 						Spinner.class));
 			case 14: case 15:
 				//1x bat, 3x brute, 1x shaman, 4x spinner
 				return new ArrayList<>(Arrays.asList(
 						Bat.class,
 						Brute.class, Brute.class, Brute.class,
-						Shaman.class,
+						//DM100.class,
 						Spinner.class, Spinner.class, Spinner.class, Spinner.class));
 				
 			// City

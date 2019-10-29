@@ -28,18 +28,18 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DM100Sprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class Shaman extends Mob implements Callback {
+public class DM100 extends Mob implements Callback {
 
 	private static final float TIME_TO_ZAP	= 1f;
 	
 	{
-		spriteClass = ShamanSprite.class;
+		spriteClass = DM100Sprite.class;
 		
 		HP = HT = 18;
 		defenseSkill = 8;
@@ -51,6 +51,7 @@ public class Shaman extends Mob implements Callback {
 		lootChance = 0.33f;
 		
 		properties.add(Property.ELECTRIC);
+		properties.add(Property.INORGANIC);
 	}
 	
 	@Override

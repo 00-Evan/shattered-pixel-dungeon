@@ -24,35 +24,37 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 
-public class ShamanSprite extends MobSprite {
+//TODO currently just uses DM-300's sprite scaled to 60%
+public class DM100Sprite extends MobSprite {
 	
-	public ShamanSprite() {
+	public DM100Sprite () {
 		super();
 		
-		texture( Assets.SHAMAN );
+		texture( Assets.DM300 );
 		
-		TextureFilm frames = new TextureFilm( texture, 12, 15 );
+		TextureFilm frames = new TextureFilm( texture, 22, 20 );
 		
-		idle = new Animation( 2, true );
-		idle.frames( frames, 0, 0, 0, 1, 0, 0, 1, 1 );
+		idle = new Animation( 10, true );
+		idle.frames( frames, 0, 1 );
 		
-		run = new Animation( 12, true );
-		run.frames( frames, 4, 5, 6, 7 );
+		run = new Animation( 10, true );
+		run.frames( frames, 2, 3 );
 		
-		attack = new Animation( 12, false );
-		attack.frames( frames, 2, 3, 0 );
+		attack = new Animation( 15, false );
+		attack.frames( frames, 4, 5, 6, 0 );
 		
 		zap = attack.clone();
 		
-		die = new Animation( 12, false );
-		die.frames( frames, 8, 9, 10 );
+		die = new Animation( 20, false );
+		die.frames( frames, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 8 );
 		
 		play( idle );
+		scale.set( 0.6f );
 	}
 	
 	public void zap( int pos ) {
@@ -60,9 +62,9 @@ public class ShamanSprite extends MobSprite {
 		Char enemy = Actor.findChar(pos);
 
 		if (enemy != null) {
-			parent.add(new Lightning(center(), enemy.sprite.destinationCenter(), (Shaman) ch));
+			parent.add(new Lightning(center(), enemy.sprite.destinationCenter(), (DM100) ch));
 		} else {
-			parent.add(new Lightning(center(), pos, (Shaman) ch));
+			parent.add(new Lightning(center(), pos, (DM100) ch));
 		}
 		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 		

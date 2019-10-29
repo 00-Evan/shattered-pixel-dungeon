@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -69,7 +69,7 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( WandOfTransfusion.class );
 		RESISTS.add( WandOfWarding.Ward.class );
 		
-		RESISTS.add( Shaman.LightningBolt.class );
+		RESISTS.add( DM100.LightningBolt.class );
 		RESISTS.add( Warlock.DarkBolt.class );
 		RESISTS.add( Eye.DeathGaze.class );
 		RESISTS.add( Yog.BurningFist.DarkBolt.class );
