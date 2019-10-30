@@ -45,7 +45,7 @@ public class Viscosity extends Glyph {
 
 		//FIXME this glyph should really just proc after DR is accounted for.
 		//should build in functionality for that, but this works for now
-		int realDamage = damage - Random.NormalIntRange( armor.DRMin(), armor.DRMax());
+		int realDamage = damage - defender.drRoll();
 
 		if (realDamage <= 0) {
 			return 0;
