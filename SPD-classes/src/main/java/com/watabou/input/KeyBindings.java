@@ -32,14 +32,37 @@ public class KeyBindings {
 	static {
 		bindings = new HashMap<>();
 		
-		bindings.put( Input.Keys.BACK,  KeyAction.BACK );
-		bindings.put( Input.Keys.MENU,  KeyAction.MENU );
+		bindings.put( Input.Keys.BACK, KeyAction.BACK );
+		bindings.put( Input.Keys.MENU, KeyAction.MENU );
+		
+		bindings.put( Input.Keys.H, KeyAction.HERO_INFO );
+		bindings.put( Input.Keys.J, KeyAction.JOURNAL );
+		
+		bindings.put( Input.Keys.NUMPAD_5, KeyAction.WAIT );
+		bindings.put( Input.Keys.SPACE,    KeyAction.WAIT );
+		bindings.put( Input.Keys.S,        KeyAction.SEARCH );
+		
+		bindings.put( Input.Keys.I,  KeyAction.INVENTORY );
+		bindings.put( Input.Keys.Q,  KeyAction.QUICKSLOT_1 );
+		bindings.put( Input.Keys.W,  KeyAction.QUICKSLOT_2 );
+		bindings.put( Input.Keys.E,  KeyAction.QUICKSLOT_3 );
+		bindings.put( Input.Keys.R,  KeyAction.QUICKSLOT_4 );
+		
+		bindings.put( Input.Keys.A,     KeyAction.TAG_ATTACK );
+		bindings.put( Input.Keys.TAB,   KeyAction.TAG_DANGER );
+		bindings.put( Input.Keys.D,     KeyAction.TAG_ACTION );
+		bindings.put( Input.Keys.ENTER, KeyAction.TAG_LOOT );
+		bindings.put( Input.Keys.T,     KeyAction.TAG_RESUME );
+		
+		bindings.put( Input.Keys.PLUS,   KeyAction.ZOOM_IN );
+		bindings.put( Input.Keys.EQUALS, KeyAction.ZOOM_IN );
+		bindings.put( Input.Keys.MINUS,  KeyAction.ZOOM_OUT );
+		bindings.put( Input.Keys.SLASH,  KeyAction.ZOOM_DEFAULT );
 		
 		bindings.put( Input.Keys.UP,    KeyAction.N );
 		bindings.put( Input.Keys.RIGHT, KeyAction.E );
 		bindings.put( Input.Keys.DOWN,  KeyAction.S );
 		bindings.put( Input.Keys.LEFT,  KeyAction.W );
-		
 		bindings.put( Input.Keys.NUMPAD_8,  KeyAction.N );
 		bindings.put( Input.Keys.NUMPAD_9,  KeyAction.NE );
 		bindings.put( Input.Keys.NUMPAD_6,  KeyAction.E );

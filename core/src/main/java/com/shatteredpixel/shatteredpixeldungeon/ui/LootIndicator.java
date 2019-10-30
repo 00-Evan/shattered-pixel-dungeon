@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.watabou.input.KeyAction;
 
 public class LootIndicator extends Tag {
 	
@@ -38,6 +39,11 @@ public class LootIndicator extends Tag {
 		setSize( 24, 24 );
 		
 		visible = false;
+	}
+	
+	@Override
+	public KeyAction keyAction() {
+		return KeyAction.TAG_LOOT;
 	}
 	
 	@Override

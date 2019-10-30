@@ -21,11 +21,32 @@
 
 package com.watabou.input;
 
+//FIXME this is describing actions defined in the core module, it should probably be moved there.
 public enum KeyAction {
 	BACK,
 	MENU,
 	
-	N, NE, E, SE, S, SW, W, NW,
+	HERO_INFO,
+	JOURNAL,
 	
-	UNKNOWN
+	WAIT,
+	SEARCH,
+	
+	INVENTORY,
+	QUICKSLOT_1,
+	QUICKSLOT_2,
+	QUICKSLOT_3,
+	QUICKSLOT_4,
+	
+	TAG_ATTACK,
+	TAG_DANGER,
+	TAG_ACTION,
+	TAG_LOOT,
+	TAG_RESUME,
+	
+	ZOOM_IN,
+	ZOOM_OUT,
+	ZOOM_DEFAULT,
+	
+	N, NE, E, SE, S, SW, W, NW
 }

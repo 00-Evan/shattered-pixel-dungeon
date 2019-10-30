@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.input.KeyAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
@@ -45,6 +46,11 @@ public class DangerIndicator extends Tag {
 		setSize( 24, 16 );
 		
 		visible = false;
+	}
+	
+	@Override
+	public KeyAction keyAction() {
+		return KeyAction.TAG_DANGER;
 	}
 	
 	@Override
