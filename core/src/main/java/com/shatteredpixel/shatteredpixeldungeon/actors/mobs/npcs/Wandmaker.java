@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndWandmaker;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -272,9 +273,20 @@ public class Wandmaker extends NPC {
 				questRoomSpawned = false;
 				
 				Wandmaker npc = new Wandmaker();
+				boolean validPos;
+				//Do not spawn wandmaker on the entrance, or next to a door.
 				do {
+					validPos = true;
 					npc.pos = level.pointToCell(room.random());
-				} while (npc.pos == level.entrance);
+					if (npc.pos == level.entrance){
+						validPos = false;
+					}
+					for (Point door : room.connected.values()){
+						if (level.adjacent( npc.pos, level.pointToCell( door ) )){
+							validPos = false;
+						}
+					}
+				} while (!validPos);
 				level.mobs.add( npc );
 
 				spawned = true;

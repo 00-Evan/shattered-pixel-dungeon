@@ -184,16 +184,6 @@ public class WndBag extends WndTabbed {
 	
 	protected void placeTitle( Bag bag, int width ){
 		
-		RenderedTextBlock txtTitle = PixelScene.renderTextBlock(
-				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 9 );
-		txtTitle.hardlight( TITLE_COLOR );
-		txtTitle.setPos(
-				1,
-				(TITLE_HEIGHT - txtTitle.height()) / 2f - 1
-		);
-		PixelScene.align(txtTitle);
-		add( txtTitle );
-		
 		ItemSprite gold = new ItemSprite(ItemSpriteSheet.GOLD, null);
 		gold.x = width - gold.width() - 1;
 		gold.y = (TITLE_HEIGHT - gold.height())/2f - 1;
@@ -207,6 +197,17 @@ public class WndBag extends WndTabbed {
 		amt.y = (TITLE_HEIGHT - amt.baseLine())/2f - 1;
 		PixelScene.align(amt);
 		add(amt);
+		
+		RenderedTextBlock txtTitle = PixelScene.renderTextBlock(
+				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 8 );
+		txtTitle.hardlight( TITLE_COLOR );
+		txtTitle.maxWidth( (int)amt.x - 2 );
+		txtTitle.setPos(
+				1,
+				(TITLE_HEIGHT - txtTitle.height()) / 2f - 1
+		);
+		PixelScene.align(txtTitle);
+		add( txtTitle );
 	}
 	
 	protected void placeItems( Bag container ) {
