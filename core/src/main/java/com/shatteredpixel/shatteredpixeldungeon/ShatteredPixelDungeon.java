@@ -115,6 +115,9 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ArmoredBrute.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shielded");
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman");
 		
 	}
 	
