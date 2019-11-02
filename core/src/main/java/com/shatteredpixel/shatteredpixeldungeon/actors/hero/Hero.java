@@ -222,7 +222,7 @@ public class Hero extends Char {
 			STR += buff.boost();
 		}
 
-		return (buff(Weakness.class) != null) ? STR - 2 : STR;
+		return STR;
 	}
 
 	private static final String ATTACK		= "attackSkill";
@@ -956,6 +956,8 @@ public class Hero extends Char {
 	
 	@Override
 	public int attackProc( final Char enemy, int damage ) {
+		damage = super.attackProc( enemy, damage );
+		
 		KindOfWeapon wep = belongings.weapon;
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
@@ -982,7 +984,6 @@ public class Hero extends Char {
 			break;
 		default:
 		}
-
 		
 		return damage;
 	}

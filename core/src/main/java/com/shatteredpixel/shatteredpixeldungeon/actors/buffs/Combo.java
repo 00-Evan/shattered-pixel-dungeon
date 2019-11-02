@@ -235,6 +235,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			
 			dmg = enemy.defenseProc(target, dmg);
 			dmg -= enemy.drRoll();
+			
+			if ( enemy.buff( Vulnerable.class ) != null){
+				dmg *= 1.33f;
+			}
+			
 			dmg = target.attackProc(enemy, dmg);
 			enemy.damage( dmg, this );
 

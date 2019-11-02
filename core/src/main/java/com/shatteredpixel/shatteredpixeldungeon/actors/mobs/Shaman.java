@@ -24,51 +24,44 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.WarlockSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class Warlock extends Mob implements Callback {
-	
-	private static final float TIME_TO_ZAP	= 1f;
+//TODO decide on stats
+public abstract class Shaman extends Mob {
 	
 	{
-		spriteClass = WarlockSprite.class;
+		HP = HT = 18;
+		defenseSkill = 8;
 		
-		HP = HT = 70;
-		defenseSkill = 18;
+		EXP = 6;
+		maxLvl = 14;
 		
-		EXP = 11;
-		maxLvl = 21;
-		
-		loot = Generator.Category.POTION;
-		lootChance = 0.83f;
-
-		properties.add(Property.UNDEAD);
+		loot = Generator.Category.SCROLL;
+		lootChance = 0.33f;
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 16, 22 );
+		return Random.NormalIntRange( 2, 8 );
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 25;
+		return 11;
 	}
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 8);
+		return Random.NormalIntRange(0, 4);
 	}
 	
 	@Override
@@ -77,7 +70,7 @@ public class Warlock extends Mob implements Callback {
 	}
 	
 	protected boolean doAttack( Char enemy ) {
-
+		
 		if (Dungeon.level.adjacent( pos, enemy.pos )) {
 			
 			return super.doAttack( enemy );
@@ -95,19 +88,19 @@ public class Warlock extends Mob implements Callback {
 	}
 	
 	//used so resistances can differentiate between melee and magical attacks
-	public static class DarkBolt{}
+	public static class EarthenBolt{}
 	
 	private void zap() {
-		spend( TIME_TO_ZAP );
+		spend( 1f );
 		
 		if (hit( this, enemy, true )) {
+			
 			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
-				//TODO new debuff
-				//Buff.prolong( enemy, Weakness.class, Weakness.DURATION );
+				debuff( enemy );
 			}
 			
-			int dmg = Random.Int( 12, 18 );
-			enemy.damage( dmg, new DarkBolt() );
+			int dmg = Random.Int( 0, 0 );
+			enemy.damage( dmg, new EarthenBolt() );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
 				Dungeon.fail( getClass() );
@@ -118,35 +111,61 @@ public class Warlock extends Mob implements Callback {
 		}
 	}
 	
+	protected abstract void debuff( Char enemy );
+	
 	public void onZapComplete() {
 		zap();
 		next();
 	}
 	
 	@Override
-	public void call() {
-		next();
+	public String description() {
+		return super.description() + "\n\n" + Messages.get(this, "spell_desc");
 	}
-
-	@Override
-	public Item createLoot(){
-		Item loot = super.createLoot();
-
-		if (loot instanceof PotionOfHealing){
-
-			//count/10 chance of not dropping potion
-			if (Random.Float() < ((8f - Dungeon.LimitedDrops.WARLOCK_HP.count) / 8f)){
-				Dungeon.LimitedDrops.WARLOCK_HP.count++;
-			} else {
-				return null;
-			}
-
+	
+	public static class RedShaman extends Shaman {
+		{
+			spriteClass = ShamanSprite.Red.class;
 		}
-
-		return loot;
+		
+		@Override
+		protected void debuff( Char enemy ) {
+			Buff.prolong( enemy, Weakness.class, Weakness.DURATION );
+		}
 	}
-
-	{
-		resistances.add( Grim.class );
+	
+	public static class BlueShaman extends Shaman {
+		{
+			spriteClass = ShamanSprite.Blue.class;
+		}
+		
+		@Override
+		protected void debuff( Char enemy ) {
+			Buff.prolong( enemy, Vulnerable.class, Vulnerable.DURATION );
+		}
+	}
+	
+	public static class PurpleShaman extends Shaman {
+		{
+			spriteClass = ShamanSprite.Purple.class;
+		}
+		
+		@Override
+		protected void debuff( Char enemy ) {
+			Buff.prolong( enemy, Hex.class, Hex.DURATION );
+		}
+	}
+	
+	//TODO a rare variant that helps brutes?
+	
+	public static Class<? extends Shaman> random(){
+		float roll = Random.Float();
+		if (roll < 0.4f){
+			return RedShaman.class;
+		} else if (roll < 0.8f){
+			return BlueShaman.class;
+		} else {
+			return PurpleShaman.class;
+		}
 	}
 }

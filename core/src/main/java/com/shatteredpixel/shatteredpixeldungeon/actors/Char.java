@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
@@ -53,8 +54,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Stamina;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
@@ -243,6 +246,11 @@ public abstract class Char extends Actor {
 			
 			int effectiveDamage = enemy.defenseProc( this, dmg );
 			effectiveDamage = Math.max( effectiveDamage - dr, 0 );
+			
+			if ( enemy.buff( Vulnerable.class ) != null){
+				effectiveDamage *= 1.33f;
+			}
+			
 			effectiveDamage = attackProc( enemy, effectiveDamage );
 			
 			if (visibleFight) {
@@ -308,9 +316,13 @@ public abstract class Char extends Actor {
 	
 	public static boolean hit( Char attacker, Char defender, boolean magic ) {
 		float acuRoll = Random.Float( attacker.attackSkill( defender ) );
+		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
+		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
+		
 		float defRoll = Random.Float( defender.defenseSkill( attacker ) );
-		if (attacker.buff(Bless.class) != null) acuRoll *= 1.20f;
-		if (defender.buff(Bless.class) != null) defRoll *= 1.20f;
+		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
+		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
+		
 		return (magic ? acuRoll * 2 : acuRoll) >= defRoll;
 	}
 	
@@ -334,7 +346,13 @@ public abstract class Char extends Actor {
 		return 1;
 	}
 	
+	//TODO it would be nice to have a pre-armor and post-armor proc.
+	// atm attack is always post-armor and defence is already pre-armor
+	
 	public int attackProc( Char enemy, int damage ) {
+		if ( buff(Weakness.class) != null ){
+			damage *= 0.67f;
+		}
 		return damage;
 	}
 	

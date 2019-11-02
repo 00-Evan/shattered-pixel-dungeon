@@ -481,15 +481,6 @@ public abstract class Mob extends Char {
 	}
 	
 	@Override
-	public int attackProc(Char enemy, int damage) {
-		damage = super.attackProc(enemy, damage);
-		if (buff(Weakness.class) != null){
-			damage *= 0.67f;
-		}
-		return damage;
-	}
-	
-	@Override
 	public int defenseSkill( Char enemy ) {
 		boolean seen = (enemySeen && enemy.invisible == 0);
 		if (enemy == Dungeon.hero && !Dungeon.hero.canSurpriseAttack()) seen = true;

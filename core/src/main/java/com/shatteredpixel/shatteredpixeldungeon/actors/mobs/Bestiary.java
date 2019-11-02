@@ -109,14 +109,14 @@ public class Bestiary {
 				return new ArrayList<>(Arrays.asList(
 						Bat.class,
 						Brute.class, Brute.class, Brute.class,
-						//DM100.class,
+						Shaman.random(),
 						Spinner.class));
 			case 14: case 15:
 				//1x bat, 3x brute, 1x shaman, 4x spinner
 				return new ArrayList<>(Arrays.asList(
 						Bat.class,
 						Brute.class, Brute.class, Brute.class,
-						//DM100.class,
+						Shaman.random(),
 						Spinner.class, Spinner.class, Spinner.class, Spinner.class));
 				
 			// City
