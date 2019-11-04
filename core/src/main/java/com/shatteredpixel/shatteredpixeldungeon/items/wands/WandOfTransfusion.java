@@ -169,6 +169,15 @@ public class WandOfTransfusion extends Wand {
 		particle.radiateXY(0.5f);
 	}
 
+	@Override
+	public String statsDesc() {
+		int selfDMG = Math.round(Dungeon.hero.HT*0.10f);
+		if (levelKnown)
+			return Messages.get(this, "stats_desc", selfDMG, selfDMG + 3*level(), 5+2*level(), 3+level()/2, 6+level());
+		else
+			return Messages.get(this, "stats_desc", selfDMG, selfDMG, 5, 3, 6);
+	}
+
 	private static final String FREECHARGE = "freecharge";
 
 	@Override

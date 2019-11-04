@@ -1676,22 +1676,23 @@ public class Hero extends Char {
 					if (Dungeon.level.secret[p]){
 						
 						Trap trap = Dungeon.level.traps.get( p );
-						if (trap != null && !trap.canBeSearched){
-							continue;
-						}
-						
 						float chance;
-						//intentional searches always succeed
-						if (intentional){
+
+						//searches aided by foresight always succeed, even if trap isn't searchable
+						if (foresight){
+							chance = 1f;
+
+						//otherwise if the trap isn't searchable, searching always fails
+						} else if (trap != null && !trap.canBeSearched){
+							chance = 0f;
+
+						//intentional searches always succeed against regular traps and doors
+						} else if (intentional){
 							chance = 1f;
 						
 						//unintentional searches always fail with a cursed talisman
 						} else if (cursed) {
 							chance = 0f;
-							
-						//..and always succeed when affected by foresight buff
-						} else if (foresight){
-							chance = 1f;
 							
 						//unintentional trap detection scales from 40% at floor 0 to 30% at floor 25
 						} else if (Dungeon.level.map[p] == Terrain.SECRET_TRAP) {

@@ -107,7 +107,10 @@ public class WandOfPrismaticLight extends DamageWand {
 
 	private void affectMap(Ballistica beam){
 		boolean noticed = false;
-		for (int c: beam.subPath(0, beam.dist)){
+		for (int c : beam.subPath(0, beam.dist)){
+			if (!Dungeon.level.insideMap(c)){
+				continue;
+			}
 			for (int n : PathFinder.NEIGHBOURS9){
 				int cell = c+n;
 
