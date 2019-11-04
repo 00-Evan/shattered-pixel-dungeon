@@ -132,7 +132,15 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 		crossB.y = y + (height - crossB.height) / 2;
 		PixelScene.align(crossB);
 	}
-	
+
+	@Override
+	public void update() {
+		super.update();
+		if (targeting && lastTarget != null && lastTarget.sprite != null){
+			crossM.point(lastTarget.sprite.center(crossM));
+		}
+	}
+
 	@Override
 	public KeyAction keyAction() {
 		switch (slotNum){

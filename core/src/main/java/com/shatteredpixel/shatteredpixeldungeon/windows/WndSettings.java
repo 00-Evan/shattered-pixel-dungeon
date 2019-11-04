@@ -268,7 +268,7 @@ public class WndSettings extends WndTabbed {
 			slots.setRect(0, chkFlipTags.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
 			add(slots);
 
-			CheckBox chkFullscreen = new CheckBox( Messages.get(this, "nav_bar") ) {
+			CheckBox chkFullscreen = new CheckBox( Messages.get(this, "fullscreen") ) {
 				@Override
 				protected void onClick() {
 					super.onClick();
@@ -277,9 +277,6 @@ public class WndSettings extends WndTabbed {
 			};
 			chkFullscreen.setRect( 0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
 			chkFullscreen.checked(SPDSettings.fullscreen());
-			if (DeviceCompat.isDesktop()){
-				chkFullscreen.text( "Fullscreen" );
-			}
 			chkFullscreen.enable(DeviceCompat.supportsFullScreen());
 			add(chkFullscreen);
 
