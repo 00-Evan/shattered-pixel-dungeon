@@ -98,8 +98,9 @@ public class Dungeon {
 		COOKING_HP,
 		BLANDFRUIT_SEED,
 
-		//doesn't use Generator, so we have to enforce one armband drop here
-		THIEVES_ARMBAND,
+		//Other limited enemy drops
+		THEIF_MISC,
+		SHAMAN_WAND,
 
 		//containers
 		DEW_VIAL,

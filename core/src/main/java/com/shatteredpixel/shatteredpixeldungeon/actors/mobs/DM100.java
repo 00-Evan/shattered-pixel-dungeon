@@ -41,11 +41,11 @@ public class DM100 extends Mob implements Callback {
 	{
 		spriteClass = DM100Sprite.class;
 		
-		HP = HT = 18;
+		HP = HT = 20;
 		defenseSkill = 8;
 		
 		EXP = 6;
-		maxLvl = 14;
+		maxLvl = 13;
 		
 		loot = Generator.Category.SCROLL;
 		lootChance = 0.33f;
@@ -94,9 +94,6 @@ public class DM100 extends Mob implements Callback {
 			
 			if (hit( this, enemy, true )) {
 				int dmg = Random.NormalIntRange(3, 10);
-				if (Dungeon.level.water[enemy.pos] && !enemy.flying) {
-					dmg *= 1.5f;
-				}
 				enemy.damage( dmg, new LightningBolt() );
 				
 				enemy.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );

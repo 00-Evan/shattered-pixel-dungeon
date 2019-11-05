@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -35,41 +36,56 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
-//TODO decide on stats
+//TODO stats on these might be a bit weak
 public abstract class Shaman extends Mob {
 	
 	{
-		HP = HT = 18;
-		defenseSkill = 8;
+		HP = HT = 35;
+		defenseSkill = 15;
 		
-		EXP = 6;
-		maxLvl = 14;
+		EXP = 8;
+		maxLvl = 16;
 		
-		loot = Generator.Category.SCROLL;
-		lootChance = 0.33f;
+		loot = Generator.Category.WAND;
+		lootChance = 0.03f; //initially, see rollToDropLoot
 	}
 	
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 2, 8 );
+		return Random.NormalIntRange( 5, 12 );
 	}
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 11;
+		return 18;
 	}
 	
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0, 4);
+		return Random.NormalIntRange(0, 6);
 	}
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
 	}
-	
-	protected boolean doAttack( Char enemy ) {
+
+	@Override
+	public void rollToDropLoot() {
+		//each drop makes future drops 1/3 as likely
+		// so loot chance looks like: 1/33, 1/100, 1/300, 1/900, etc.
+		lootChance *= Math.pow(1/3f, Dungeon.LimitedDrops.SHAMAN_WAND.count);
+		super.rollToDropLoot();
+		super.rollToDropLoot();
+	}
+
+	@Override
+	protected Item createLoot() {
+		Dungeon.LimitedDrops.SHAMAN_WAND.count++;
+		return super.createLoot();
+	}
+
+	protected boolean doAttack(Char enemy ) {
 		
 		if (Dungeon.level.adjacent( pos, enemy.pos )) {
 			
@@ -99,7 +115,7 @@ public abstract class Shaman extends Mob {
 				debuff( enemy );
 			}
 			
-			int dmg = Random.Int( 0, 0 );
+			int dmg = Random.NormalIntRange( 6, 15 );
 			enemy.damage( dmg, new EarthenBolt() );
 			
 			if (!enemy.isAlive() && enemy == Dungeon.hero) {
