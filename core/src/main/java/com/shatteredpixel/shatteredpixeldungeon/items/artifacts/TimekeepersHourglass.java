@@ -283,6 +283,12 @@ public class TimekeepersHourglass extends Artifact {
 			activeBuff = null;
 			Dungeon.observe();
 		}
+
+		@Override
+		public void fx(boolean on) {
+			if (on) target.sprite.add( CharSprite.State.INVISIBLE );
+			else if (target.invisible == 0) target.sprite.remove( CharSprite.State.INVISIBLE );
+		}
 	}
 
 	public class timeFreeze extends ArtifactBuff {

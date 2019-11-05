@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewTengu;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -570,7 +572,9 @@ public class NewPrisonBossLevel extends Level {
 								for (int y = 1; y < maze[0].length-1; y++) {
 									if (maze[x][y]){
 										int cell = mazeCells[i].left+x + width()*(mazeCells[i].top+y);
-										if (heaps.get(cell) == null){
+										if (heaps.get(cell) == null
+												&& Blob.volumeAt(cell, StormCloud.class) == 0
+												&& Blob.volumeAt(cell, Regrowth.class) <= 9){
 											Level.set( cell, Terrain.SECRET_TRAP );
 											setTrap(new TenguDartTrap().hide(), cell);
 											CellEmitter.get(cell).burst(Speck.factory(Speck.LIGHT), 2);
@@ -664,11 +668,12 @@ public class NewPrisonBossLevel extends Level {
 				int x = i % 7;
 				int y = i / 7;
 				int cell = x+tenguCell.left+1 + (y+tenguCell.top+1)*width();
-				Level.set(cell, Terrain.SECRET_TRAP);
-				setTrap(new TenguDartTrap().hide(), cell);
-				CellEmitter.get(cell).burst(Speck.factory(Speck.LIGHT), 2);
-			} else {
-			
+				if (Blob.volumeAt(cell, StormCloud.class) == 0
+						&& Blob.volumeAt(cell, Regrowth.class) <= 9) {
+					Level.set(cell, Terrain.SECRET_TRAP);
+					setTrap(new TenguDartTrap().hide(), cell);
+					CellEmitter.get(cell).burst(Speck.factory(Speck.LIGHT), 2);
+				}
 			}
 		}
 		

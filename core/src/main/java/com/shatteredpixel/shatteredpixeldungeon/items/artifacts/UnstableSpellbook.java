@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.artifacts;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
@@ -121,15 +122,20 @@ public class UnstableSpellbook extends Artifact {
 							scroll instanceof ScrollOfMagicMapping) && Random.Int(2) == 0)
 						//don't roll teleportation scrolls on boss floors
 						|| (scroll instanceof ScrollOfTeleportation && Dungeon.bossLevel())
+						//cannot roll transmutation
 						|| (scroll instanceof ScrollOfTransmutation));
 				
 				scroll.anonymize();
 				curItem = scroll;
 				curUser = hero;
-				
-				//if there are changes left and the scroll has been given to the book
+
+				//if there are charges left and the scroll has been given to the book
 				if (charge > 0 && !scrolls.contains(scroll.getClass())) {
 					final Scroll fScroll = scroll;
+
+					final ExploitHandler handler = Buff.affect(hero, ExploitHandler.class);
+					handler.scroll = scroll;
+
 					GameScene.show(new WndOptions(
 							Messages.get(this, "prompt"),
 							Messages.get(this, "read_empowered"),
@@ -137,6 +143,7 @@ public class UnstableSpellbook extends Artifact {
 							Messages.get(ExoticScroll.regToExo.get(scroll.getClass()), "name")){
 						@Override
 						protected void onSelect(int index) {
+							handler.detach();
 							if (index == 1){
 								Scroll scroll = Reflection.newInstance(ExoticScroll.regToExo.get(fScroll.getClass()));
 								charge--;
@@ -159,6 +166,35 @@ public class UnstableSpellbook extends Artifact {
 
 		} else if (action.equals( AC_ADD )) {
 			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
+		}
+	}
+
+	//forces the reading of a regular scroll if the player tried to exploit by quitting the game when the menu was up
+	public static class ExploitHandler extends Buff {
+		{ actPriority = VFX_PRIO; }
+
+		public Scroll scroll;
+
+		@Override
+		public boolean act() {
+			curUser = Dungeon.hero;
+			curItem = scroll;
+			scroll.anonymize();
+			scroll.doRead();
+			detach();
+			return true;
+		}
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( "scroll", scroll );
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			scroll = (Scroll)bundle.get("scroll");
 		}
 	}
 
