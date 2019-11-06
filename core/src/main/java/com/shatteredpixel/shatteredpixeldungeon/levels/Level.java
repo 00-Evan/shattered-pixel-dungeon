@@ -169,7 +169,7 @@ public abstract class Level implements Bundlable {
 
 	public void create() {
 
-		Random.seed( Dungeon.seedCurDepth() );
+		Random.pushGenerator( Dungeon.seedCurDepth() );
 		
 		if (!(Dungeon.bossLevel() || Dungeon.depth == 21) /*final shop floor*/) {
 
@@ -261,7 +261,7 @@ public abstract class Level implements Bundlable {
 		createMobs();
 		createItems();
 
-		Random.seed();
+		Random.popGenerator();
 	}
 	
 	public void setSize(int w, int h){
