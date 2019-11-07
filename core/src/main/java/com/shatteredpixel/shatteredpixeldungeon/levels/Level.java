@@ -205,20 +205,6 @@ public abstract class Level implements Bundlable {
 			if ( Dungeon.depth == ((Dungeon.seed % 3) + 1)){
 				addItemToSpawn( new StoneOfIntuition() );
 			}
-
-			DriedRose rose = Dungeon.hero.belongings.getItem( DriedRose.class );
-			if (rose != null && rose.isIdentified() && !rose.cursed){
-				//aim to drop 1 petal every 2 floors
-				int petalsNeeded = (int) Math.ceil((float)((Dungeon.depth / 2) - rose.droppedPetals) / 3);
-
-				for (int i=1; i <= petalsNeeded; i++) {
-					//the player may miss a single petal and still max their rose.
-					if (rose.droppedPetals < 11) {
-						addItemToSpawn(new DriedRose.Petal());
-						rose.droppedPetals++;
-					}
-				}
-			}
 			
 			if (Dungeon.depth > 1) {
 				switch (Random.Int( 10 )) {
