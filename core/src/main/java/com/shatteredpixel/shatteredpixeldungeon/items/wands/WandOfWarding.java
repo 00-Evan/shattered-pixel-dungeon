@@ -5,6 +5,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -390,6 +391,10 @@ public class WandOfWarding extends Wand {
 		@Override
 		public String description() {
 			return Messages.get(this, "desc_" + tier, 2+wandLevel, 8 + 4*wandLevel );
+		}
+		
+		{
+			immunities.add( Corruption.class );
 		}
 
 		private static final String TIER = "tier";

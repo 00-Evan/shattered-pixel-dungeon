@@ -520,6 +520,10 @@ public class Potion extends Item {
 				
 			}
 			
+			if (seeds.size() == 1){
+				result.identify();
+			}
+			
 			while (result instanceof PotionOfHealing
 					&& (Dungeon.isChallenged(Challenges.NO_HEALING)
 					|| Random.Int(10) < Dungeon.LimitedDrops.COOKING_HP.count)) {

@@ -338,6 +338,7 @@ public abstract class Wand extends Item {
 			}
 		}
 		level(n);
+		curCharges += n;
 		
 		//30% chance to be cursed
 		if (Random.Float() < 0.3f) {
