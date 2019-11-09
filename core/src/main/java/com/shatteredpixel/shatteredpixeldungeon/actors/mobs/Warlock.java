@@ -84,7 +84,7 @@ public class Warlock extends Mob implements Callback {
 			
 		} else {
 			
-			if (sprite != null && sprite.visible) {
+			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 				sprite.zap( enemy.pos );
 				return false;
 			} else {

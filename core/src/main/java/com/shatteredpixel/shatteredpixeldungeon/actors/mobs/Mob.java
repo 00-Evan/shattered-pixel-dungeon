@@ -462,17 +462,16 @@ public abstract class Mob extends Char {
 	
 	protected boolean doAttack( Char enemy ) {
 		
-		boolean visible = Dungeon.level.heroFOV[pos];
-		
-		if (visible) {
+		if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 			sprite.attack( enemy.pos );
+			spend( attackDelay() );
+			return false;
+			
 		} else {
 			attack( enemy );
+			spend( attackDelay() );
+			return true;
 		}
-				
-		spend( attackDelay() );
-		
-		return !visible;
 	}
 	
 	@Override
