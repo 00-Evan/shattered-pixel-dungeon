@@ -69,7 +69,7 @@ public class CellSelector extends ScrollArea {
 		diff = Math.min(1, diff);
 		mouseZoom = GameMath.gate( PixelScene.minZoom, mouseZoom - diff, PixelScene.maxZoom );
 		
-		zoom( (int)Math.floor(mouseZoom) );
+		zoom( Math.round(mouseZoom) );
 	}
 	
 	@Override
