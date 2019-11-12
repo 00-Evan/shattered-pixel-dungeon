@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -96,8 +96,8 @@ public class CeremonialCandle extends Item {
 				heapRight.pickUp();
 				heapBottom.pickUp();
 				heapLeft.pickUp();
-
-				NewbornElemental elemental = new NewbornElemental();
+				
+				Elemental.NewbornFire elemental = new Elemental.NewbornFire();
 				Char ch = Actor.findChar( ritualPos );
 				if (ch != null) {
 					ArrayList<Integer> candidates = new ArrayList<>();

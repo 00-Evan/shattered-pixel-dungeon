@@ -21,33 +21,44 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.Embers;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
-public class Elemental extends Mob {
+import java.util.ArrayList;
+
+public abstract class Elemental extends Mob {
 
 	{
-		spriteClass = ElementalSprite.class;
-		
-		HP = HT = 65;
+		HP = HT = 60;
 		defenseSkill = 20;
 		
 		EXP = 10;
 		maxLvl = 20;
 		
 		flying = true;
-		
-		loot = new PotionOfLiquidFlame();
-		lootChance = 0.1f;
-		
-		properties.add(Property.FIERY);
 	}
 	
 	@Override
@@ -65,26 +76,258 @@ public class Elemental extends Mob {
 		return Random.NormalIntRange(0, 5);
 	}
 	
+	private int rangedCooldown = Random.NormalIntRange( 3, 5 );
+	
+	@Override
+	protected boolean act() {
+		if (state == HUNTING){
+			rangedCooldown--;
+		}
+		
+		return super.act();
+	}
+	
+	@Override
+	protected boolean canAttack( Char enemy ) {
+		if (rangedCooldown <= 0) {
+			return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos == enemy.pos;
+		} else {
+			return super.canAttack( enemy );
+		}
+	}
+	
+	protected boolean doAttack( Char enemy ) {
+		
+		if (Dungeon.level.adjacent( pos, enemy.pos )) {
+			
+			return super.doAttack( enemy );
+			
+		} else {
+			
+			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+				sprite.zap( enemy.pos );
+				return false;
+			} else {
+				zap();
+				return true;
+			}
+		}
+	}
+	
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
-		if (Random.Int( 2 ) == 0) {
-			Buff.affect( enemy, Burning.class ).reignite( enemy );
-		}
+		meleeProc( enemy, damage );
 		
 		return damage;
 	}
 	
+	private void zap() {
+		spend( 1f );
+		
+		if (hit( this, enemy, true )) {
+			
+			rangedProc( enemy );
+			rangedCooldown = Random.NormalIntRange( 3, 5 );
+			
+		} else {
+			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
+		}
+	}
+	
+	public void onZapComplete() {
+		zap();
+		next();
+	}
+	
 	@Override
 	public void add( Buff buff ) {
-		if (buff instanceof Frost || buff instanceof Chill) {
-				if (Dungeon.level.water[this.pos])
-					damage( Random.NormalIntRange( HT / 2, HT ), buff );
-				else
-					damage( Random.NormalIntRange( 1, HT * 2 / 3 ), buff );
+		if (harmfulBuffs.contains( buff.getClass() )) {
+			damage( Random.NormalIntRange( HT/2, HT * 3/5 ), buff );
 		} else {
 			super.add( buff );
 		}
 	}
 	
+	protected abstract void meleeProc( Char enemy, int damage );
+	protected abstract void rangedProc( Char enemy );
+	
+	protected ArrayList<Class<? extends Buff>> harmfulBuffs = new ArrayList<>();
+	
+	private static final String COOLDOWN = "cooldown";
+	
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( COOLDOWN, rangedCooldown );
+	}
+	
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		if (bundle.contains( COOLDOWN )){
+			rangedCooldown = bundle.getInt( COOLDOWN );
+		}
+	}
+	
+	public static class Fire extends Elemental {
+		
+		{
+			spriteClass = ElementalSprite.Fire.class;
+			
+			loot = new PotionOfLiquidFlame();
+			lootChance = 1/8f;
+			
+			properties.add( Property.FIERY );
+			
+			harmfulBuffs.add( com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost.class );
+			harmfulBuffs.add( Chill.class );
+		}
+		
+		@Override
+		protected void meleeProc( Char enemy, int damage ) {
+			if (Random.Int( 2 ) == 0 && !Dungeon.level.water[enemy.pos]) {
+				Buff.affect( enemy, Burning.class ).reignite( enemy );
+				Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+			}
+		}
+		
+		@Override
+		protected void rangedProc( Char enemy ) {
+			if (!Dungeon.level.water[enemy.pos]) {
+				Buff.affect( enemy, Burning.class ).reignite( enemy, 4f );
+			}
+			Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+		}
+	}
+	
+	//used in wandmaker quest
+	public static class NewbornFire extends Fire {
+		
+		{
+			spriteClass = ElementalSprite.NewbornFire.class;
+			
+			HT = 60;
+			HP = HT/2; //32
+			
+			defenseSkill = 12;
+			
+			EXP = 7;
+			
+			loot = new Embers();
+			lootChance = 1f;
+			
+			properties.add(Property.MINIBOSS);
+		}
+		
+	}
+	
+	public static class Frost extends Elemental {
+		
+		{
+			spriteClass = ElementalSprite.Frost.class;
+			
+			loot = new PotionOfFrost();
+			lootChance = 1/8f;
+			
+			properties.add( Property.ICY );
+			
+			harmfulBuffs.add( Burning.class );
+		}
+		
+		@Override
+		protected void meleeProc( Char enemy, int damage ) {
+			if (Random.Int( 3 ) == 0 || Dungeon.level.water[enemy.pos]) {
+				Freezing.freeze( enemy.pos );
+				Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+			}
+		}
+		
+		@Override
+		protected void rangedProc( Char enemy ) {
+			Freezing.freeze( enemy.pos );
+			Splash.at( enemy.sprite.center(), sprite.blood(), 5);
+		}
+	}
+	
+	public static class Shock extends Elemental {
+		
+		{
+			spriteClass = ElementalSprite.Shock.class;
+			
+			loot = new ScrollOfRecharging();
+			lootChance = 1/4f;
+			
+			properties.add( Property.ELECTRIC );
+		}
+		
+		@Override
+		protected void meleeProc( Char enemy, int damage ) {
+			ArrayList<Char> affected = new ArrayList<>();
+			ArrayList<Lightning.Arc> arcs = new ArrayList<>();
+			Shocking.arc( this, enemy, 2, affected, arcs );
+			
+			if (!Dungeon.level.water[enemy.pos]) {
+				affected.remove( enemy );
+			}
+			
+			for (Char ch : affected) {
+				ch.damage( Math.round( damage * 0.4f ), this );
+			}
+			
+			sprite.parent.addToFront( new Lightning( arcs, null ) );
+			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+		}
+		
+		@Override
+		protected void rangedProc( Char enemy ) {
+			Buff.affect( enemy, Blindness.class, 5f );
+			GameScene.flash( 0xFFFFFF );
+		}
+	}
+	
+	public static class Chaos extends Elemental {
+		
+		{
+			spriteClass = ElementalSprite.Chaos.class;
+			
+			loot = new ScrollOfTransmutation();
+			lootChance = 1f;
+		}
+		
+		@Override
+		protected void meleeProc( Char enemy, int damage ) {
+			CursedWand.cursedZap( null, this, new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ), new Callback() {
+				@Override
+				public void call() {
+					next();
+				}
+			} );
+		}
+		
+		@Override
+		protected void rangedProc( Char enemy ) {
+			CursedWand.cursedZap( null, this, new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ), new Callback() {
+				@Override
+				public void call() {
+					next();
+				}
+			} );
+		}
+	}
+	
+	public static Class<? extends Elemental> random(){
+		if (Random.Int( 50 ) == 0){
+			return Chaos.class;
+		}
+		
+		float roll = Random.Float();
+		if (roll < 0.4f){
+			return Fire.class;
+		} else if (roll < 0.8f){
+			return Frost.class;
+		} else {
+			return Shock.class;
+		}
+	}
 }
