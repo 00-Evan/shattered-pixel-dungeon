@@ -82,7 +82,7 @@ public class CursedWand {
 	private static float RARE_CHANCE = 0.09f;
 	private static float VERY_RARE_CHANCE = 0.01f;
 
-	public static void cursedZap(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
+	public static void cursedZap(final Item origin, final Char user, final Ballistica bolt, final Callback afterZap){
 		switch (Random.chances(new float[]{COMMON_CHANCE, UNCOMMON_CHANCE, RARE_CHANCE, VERY_RARE_CHANCE})){
 			case 0:
 			default:
@@ -100,7 +100,7 @@ public class CursedWand {
 		}
 	}
 
-	private static void commonEffect(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
+	private static void commonEffect(final Item origin, final Char user, final Ballistica bolt, final Callback afterZap){
 		switch(Random.Int(4)){
 
 			//anti-entropy
@@ -139,32 +139,15 @@ public class CursedWand {
 			case 2:
 				switch(Random.Int(2)){
 					case 0:
-						ScrollOfTeleportation.teleportHero(user);
+						ScrollOfTeleportation.teleportChar(user);
 						afterZap.call();
 						break;
 					case 1:
 						cursedFX(user, bolt, new Callback() {
 							public void call() {
 								Char ch = Actor.findChar( bolt.collisionPos );
-								if (ch == user){
-									ScrollOfTeleportation.teleportHero(user);
-								} else if (ch != null && !ch.properties().contains(Char.Property.IMMOVABLE)) {
-									int count = 10;
-									int pos;
-									do {
-										pos = Dungeon.level.randomRespawnCell();
-										if (count-- <= 0) {
-											break;
-										}
-									} while (pos == -1);
-									if (pos == -1 || Dungeon.bossLevel()) {
-										GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
-									} else {
-										ch.pos = pos;
-										if (((Mob) ch).state == ((Mob) ch).HUNTING)((Mob) ch).state = ((Mob) ch).WANDERING;
-										ch.sprite.place(ch.pos);
-										ch.sprite.visible = Dungeon.level.heroFOV[pos];
-									}
+								if (ch != null && !ch.properties().contains(Char.Property.IMMOVABLE)) {
+									ScrollOfTeleportation.teleportChar(user);
 								}
 								afterZap.call();
 							}
@@ -196,7 +179,7 @@ public class CursedWand {
 
 	}
 
-	private static void uncommonEffect(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
+	private static void uncommonEffect(final Item origin, final Char user, final Ballistica bolt, final Callback afterZap){
 		switch(Random.Int(4)){
 
 			//Random plant
@@ -228,25 +211,36 @@ public class CursedWand {
 				if (target != null) {
 					cursedFX(user, bolt, new Callback() {
 						public void call() {
-							int damage = user.lvl * 2;
+							int damage = Dungeon.depth * 2;
+							Char toHeal, toDamage;
+							
 							switch (Random.Int(2)) {
-								case 0:
-									user.HP = Math.min(user.HT, user.HP + damage);
-									user.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
-									target.damage(damage, origin);
-									target.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+								case 0: default:
+									toHeal = user;
+									toDamage = target;
 									break;
 								case 1:
-									user.damage( damage, this );
-									user.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
-									target.HP = Math.min(target.HT, target.HP + damage);
-									target.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
-									Sample.INSTANCE.play(Assets.SND_CURSED);
-									if (!user.isAlive() && origin != null) {
-										Dungeon.fail( origin.getClass() );
-										GLog.n(Messages.get(CursedWand.class, "ondeath", origin.name()));
-									}
+									toHeal = target;
+									toDamage = user;
 									break;
+							}
+							toHeal.HP = Math.min(toHeal.HT, toHeal.HP + damage);
+							toHeal.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
+							toDamage.damage(damage, origin == null ? toHeal : origin);
+							toDamage.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+							
+							if (toDamage == Dungeon.hero){
+								Sample.INSTANCE.play(Assets.SND_CURSED);
+								if (!toDamage.isAlive()) {
+									if (origin != null) {
+										Dungeon.fail( origin.getClass() );
+										GLog.n( Messages.get( CursedWand.class, "ondeath", origin.name() ) );
+									} else {
+										Dungeon.fail( toHeal.getClass() );
+									}
+								}
+							} else {
+								Sample.INSTANCE.play(Assets.SND_BURNING);
 							}
 							afterZap.call();
 						}
@@ -279,11 +273,16 @@ public class CursedWand {
 
 	}
 
-	private static void rareEffect(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
+	private static void rareEffect(final Item origin, final Char user, final Ballistica bolt, final Callback afterZap){
 		switch(Random.Int(4)){
 
 			//sheep transformation
 			case 0:
+				if (user != Dungeon.hero){
+					cursedZap(origin, user, bolt, afterZap);
+					return;
+				}
+				
 				cursedFX(user, bolt, new Callback() {
 					public void call() {
 						Char ch = Actor.findChar( bolt.collisionPos );
@@ -310,13 +309,13 @@ public class CursedWand {
 
 			//curses!
 			case 1:
-				CursingTrap.curse(user);
+				if (user instanceof Hero) CursingTrap.curse( (Hero) user );
 				afterZap.call();
 				break;
 
 			//inter-level teleportation
 			case 2:
-				if (Dungeon.depth > 1 && !Dungeon.bossLevel()) {
+				if (Dungeon.depth > 1 && !Dungeon.bossLevel() && user == Dungeon.hero) {
 
 					//each depth has 1 more weight than the previous depth.
 					float[] depths = new float[Dungeon.depth-1];
@@ -335,7 +334,7 @@ public class CursedWand {
 					Game.switchScene(InterlevelScene.class);
 
 				} else {
-					ScrollOfTeleportation.teleportHero(user);
+					ScrollOfTeleportation.teleportChar(user);
 
 				}
 				afterZap.call();
@@ -349,7 +348,7 @@ public class CursedWand {
 		}
 	}
 
-	private static void veryRareEffect(final Item origin, final Hero user, final Ballistica bolt, final Callback afterZap){
+	private static void veryRareEffect(final Item origin, final Char user, final Ballistica bolt, final Callback afterZap){
 		switch(Random.Int(4)){
 
 			//great forest fire!
@@ -394,6 +393,12 @@ public class CursedWand {
 
 			//crashes the game, yes, really.
 			case 2:
+				
+				if (user != Dungeon.hero){
+					cursedZap(origin, user, bolt, afterZap);
+					return;
+				}
+				
 				try {
 					Dungeon.saveAll();
 					if(Messages.lang() != Languages.ENGLISH){
@@ -427,11 +432,11 @@ public class CursedWand {
 			//random transmogrification
 			case 3:
 				//skips this effect if there is no item to transmogrify
-				if (origin == null || !Dungeon.hero.belongings.contains(origin)){
+				if (origin == null || user != Dungeon.hero || !Dungeon.hero.belongings.contains(origin)){
 					cursedZap(origin, user, bolt, afterZap);
 					return;
 				}
-				origin.detach(user.belongings.backpack);
+				origin.detach(Dungeon.hero.belongings.backpack);
 				Item result;
 				do {
 					result = Generator.random(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
@@ -450,7 +455,7 @@ public class CursedWand {
 		}
 	}
 
-	private static void cursedFX(final Hero user, final Ballistica bolt, final Callback callback){
+	private static void cursedFX(final Char user, final Ballistica bolt, final Callback callback){
 		MagicMissile.boltFromChar( user.sprite.parent,
 				MagicMissile.RAINBOW,
 				user.sprite,

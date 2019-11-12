@@ -50,9 +50,9 @@ public class Shocking extends Weapon.Enchantment {
 		if (Random.Int( level + 3 ) >= 2) {
 			
 			affected.clear();
-
 			arcs.clear();
-			arc(attacker, defender, 2);
+			
+			arc(attacker, defender, 2, affected, arcs);
 			
 			affected.remove(defender); //defender isn't hurt by lightning
 			for (Char ch : affected) {
@@ -77,7 +77,7 @@ public class Shocking extends Weapon.Enchantment {
 
 	private ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 	
-	private void arc( Char attacker, Char defender, int dist ) {
+	public static void arc( Char attacker, Char defender, int dist, ArrayList<Char> affected, ArrayList<Lightning.Arc> arcs ) {
 		
 		affected.add(defender);
 		
@@ -90,7 +90,7 @@ public class Shocking extends Weapon.Enchantment {
 				Char n = Actor.findChar(i);
 				if (n != null && n != attacker && !affected.contains(n)) {
 					arcs.add(new Lightning.Arc(defender.sprite.center(), n.sprite.center()));
-					arc(attacker, n, (Dungeon.level.water[n.pos] && !n.flying) ? 2 : 1);
+					arc(attacker, n, (Dungeon.level.water[n.pos] && !n.flying) ? 2 : 1, affected, arcs);
 				}
 			}
 		}

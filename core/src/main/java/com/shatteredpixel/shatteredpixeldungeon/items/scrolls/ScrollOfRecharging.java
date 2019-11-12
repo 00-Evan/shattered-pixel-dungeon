@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
@@ -62,8 +63,8 @@ public class ScrollOfRecharging extends Scroll {
 		Buff.append(curUser, Recharging.class, BUFF_DURATION/3f);
 	}
 	
-	public static void charge( Hero hero ) {
-		hero.sprite.centerEmitter().burst( EnergyParticle.FACTORY, 15 );
+	public static void charge( Char user ) {
+		user.sprite.centerEmitter().burst( EnergyParticle.FACTORY, 15 );
 	}
 	
 	@Override
