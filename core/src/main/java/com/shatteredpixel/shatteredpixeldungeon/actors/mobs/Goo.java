@@ -103,6 +103,11 @@ public class Goo extends Mob {
 
 	@Override
 	public boolean act() {
+		
+		//ensures goo warning blob acts at the correct times
+		//as normally blobs act one extra time when initialized if they normally act before
+		//whatever spawned them
+		GameScene.add(Blob.seed(pos, 0, GooWarn.class));
 
 		if (Dungeon.level.water[pos] && HP < HT) {
 			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
@@ -116,6 +121,9 @@ public class Goo extends Mob {
 		if (state != SLEEPING){
 			Dungeon.level.seal();
 		}
+		
+		//prevents goo pump animation from persisting when it shouldn't
+		sprite.idle();
 
 		return super.act();
 	}
@@ -147,7 +155,7 @@ public class Goo extends Mob {
 			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] < Integer.MAX_VALUE)
-					GameScene.add(Blob.seed(i, 2, GooWarn.class));
+					GameScene.add(Blob.seed(i, 1, GooWarn.class));
 			}
 			pumpedUp++;
 
@@ -181,7 +189,7 @@ public class Goo extends Mob {
 			for (int i=0; i < PathFinder.NEIGHBOURS9.length; i++) {
 				int j = pos + PathFinder.NEIGHBOURS9[i];
 				if (!Dungeon.level.solid[j]) {
-					GameScene.add(Blob.seed(j, 2, GooWarn.class));
+					GameScene.add(Blob.seed(j, 1, GooWarn.class));
 				}
 			}
 

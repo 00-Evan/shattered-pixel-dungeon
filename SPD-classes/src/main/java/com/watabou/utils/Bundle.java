@@ -372,7 +372,7 @@ public class Bundle {
 		try {
 			JSONArray jsonArray = new JSONArray();
 			for (int i=0; i < array.length; i++) {
-				jsonArray.put( i, array[i] );
+				jsonArray.put( i, array[i].getCanonicalName() );
 			}
 			data.put( key, jsonArray );
 		} catch (JSONException e) {
