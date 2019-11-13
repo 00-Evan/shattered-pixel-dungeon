@@ -619,7 +619,7 @@ public class NewPrisonBossLevel extends Level {
 	protected void createItems() {
 		Item item = Bones.get();
 		if (item != null) {
-			drop( item, randomRespawnCell() ).setHauntedIfCursed(1f).type = Heap.Type.REMAINS;
+			drop( item, randomRespawnCell() ).setHauntedIfCursed().type = Heap.Type.REMAINS;
 		}
 	}
 	
