@@ -489,6 +489,7 @@ public abstract class Char extends Actor {
 	}
 	
 	@SuppressWarnings("unchecked")
+	//returns all buffs assignable from the given buff class
 	public synchronized <T extends Buff> HashSet<T> buffs( Class<T> c ) {
 		HashSet<T> filtered = new HashSet<>();
 		for (Buff b : buffs) {
@@ -500,9 +501,10 @@ public abstract class Char extends Actor {
 	}
 
 	@SuppressWarnings("unchecked")
+	//returns an instance of the specific buff class, if it exists. Not just assignable
 	public synchronized  <T extends Buff> T buff( Class<T> c ) {
 		for (Buff b : buffs) {
-			if (c.isInstance( b )) {
+			if (b.getClass() == c) {
 				return (T)b;
 			}
 		}
