@@ -60,6 +60,6 @@ public class WebParticle extends PixelParticle {
 		
 		float p = left / lifespan;
 		am = p < 0.5f ? p : 1 - p;
-		scale.y = 16 + p * 8;
+		scale.y = 12 + p * 6;
 	}
 }

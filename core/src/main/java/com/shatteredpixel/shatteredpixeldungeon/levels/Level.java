@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.SmokeScreen;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
@@ -37,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -586,7 +588,14 @@ public abstract class Level implements Bundlable {
 		SmokeScreen s = (SmokeScreen)blobs.get(SmokeScreen.class);
 		if (s != null && s.volume > 0){
 			for (int i=0; i < length(); i++) {
-				losBlocking[i]	= losBlocking[i] || s.cur[i] > 0;
+				losBlocking[i] = losBlocking[i] || s.cur[i] > 0;
+			}
+		}
+
+		Web w = (Web) blobs.get(Web.class);
+		if (w != null && w.volume > 0){
+			for (int i=0; i < length(); i++) {
+				solid[i] = solid[i] || w.cur[i] > 0;
 			}
 		}
 		
@@ -770,6 +779,11 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public void occupyCell( Char ch ){
+		if (!ch.isImmune(Web.class) && Blob.volumeAt(ch.pos, Web.class) > 0){
+			blobs.get(Web.class).clear(ch.pos);
+			Web.affectChar( ch );
+		}
+
 		if (!ch.flying){
 			
 			if (pit[ch.pos]){
@@ -866,6 +880,10 @@ public abstract class Level implements Bundlable {
 		Plant plant = plants.get( cell );
 		if (plant != null) {
 			plant.trigger();
+		}
+
+		if (hard && Blob.volumeAt(cell, Web.class) > 0){
+			blobs.get(Web.class).clear(cell);
 		}
 	}
 	

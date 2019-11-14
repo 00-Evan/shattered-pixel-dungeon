@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Web;
@@ -28,8 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpinnerSprite;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class Spinner extends Mob {
@@ -38,7 +41,7 @@ public class Spinner extends Mob {
 		spriteClass = SpinnerSprite.class;
 
 		HP = HT = 50;
-		defenseSkill = 14;
+		defenseSkill = 17;
 
 		EXP = 9;
 		maxLvl = 17;
@@ -56,21 +59,35 @@ public class Spinner extends Mob {
 
 	@Override
 	public int attackSkill(Char target) {
-		return 20;
+		return 22;
 	}
 
 	@Override
 	public int drRoll() {
 		return Random.NormalIntRange(0, 6);
 	}
-
+	
+	private int webCoolDown = 0;
+	private int lastEnemyPos = -1;
+	
 	@Override
 	protected boolean act() {
 		boolean result = super.act();
-
+		
+		webCoolDown--;
+		if (shotWebVisually){
+			result = shotWebVisually = false;
+		} else {
+			if (enemy != null && enemySeen) {
+				lastEnemyPos = enemy.pos;
+			} else {
+				lastEnemyPos = -1;
+			}
+		}
+		
 		if (state == FLEEING && buff( Terror.class ) == null &&
 				enemy != null && enemySeen && enemy.buff( Poison.class ) == null) {
-				state = HUNTING;
+			state = HUNTING;
 		}
 		return result;
 	}
@@ -80,19 +97,87 @@ public class Spinner extends Mob {
 		damage = super.attackProc( enemy, damage );
 		if (Random.Int(2) == 0) {
 			Buff.affect(enemy, Poison.class).set(Random.Int(7, 9) );
+			webCoolDown = 0;
 			state = FLEEING;
 		}
 
 		return damage;
 	}
+	
+	private boolean shotWebVisually = false;
 
 	@Override
 	public void move(int step) {
-		int curWeb = Blob.volumeAt(pos, Web.class);
-		if (state == FLEEING && curWeb < 5) {
-			GameScene.add(Blob.seed(pos, Random.Int(5, 7) - curWeb, Web.class));
+		if (enemySeen && webCoolDown <= 0 && lastEnemyPos != -1){
+			if (webPos() != -1){
+				if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+					sprite.zap( webPos() );
+					shotWebVisually = true;
+				} else {
+					shootWeb();
+				}
+			}
 		}
 		super.move(step);
+	}
+	
+	public int webPos(){
+		
+		Ballistica b;
+		//aims web in direction enemy is moving, or between self and enemy if they aren't moving
+		if (lastEnemyPos == enemy.pos){
+			b = new Ballistica( enemy.pos, pos, Ballistica.WONT_STOP );
+		} else {
+			b = new Ballistica( lastEnemyPos, enemy.pos, Ballistica.WONT_STOP );
+		}
+		
+		int collisionIndex = 0;
+		for (int i = 0; i < b.path.size(); i++){
+			if (b.path.get(i) == enemy.pos){
+				collisionIndex = i;
+				break;
+			}
+		}
+		
+		int webPos = b.path.get( collisionIndex+1 );
+		
+		if (Dungeon.level.passable[webPos]){
+			return webPos;
+		} else {
+			return -1;
+		}
+		
+	}
+	
+	public void shootWeb(){
+		int webPos = webPos();
+		if (webPos != enemy.pos && webPos != -1){
+			int i;
+			for ( i = 0; i < PathFinder.CIRCLE8.length; i++){
+				if ((enemy.pos + PathFinder.CIRCLE8[i]) == webPos){
+					break;
+				}
+			}
+			
+			//spread to the tile hero was moving towards and the two adjacent ones
+			int leftPos = enemy.pos + PathFinder.CIRCLE8[left(i)];
+			int rightPos = enemy.pos + PathFinder.CIRCLE8[right(i)];
+			
+			if (Dungeon.level.passable[leftPos]) GameScene.add(Blob.seed(leftPos, 20, Web.class));
+			if (Dungeon.level.passable[webPos])  GameScene.add(Blob.seed(webPos, 20, Web.class));
+			if (Dungeon.level.passable[rightPos])GameScene.add(Blob.seed(rightPos, 20, Web.class));
+			
+			webCoolDown = 10;
+		}
+		next();
+	}
+	
+	private int left(int direction){
+		return direction == 0 ? 7 : direction-1;
+	}
+	
+	private int right(int direction){
+		return direction == 7 ? 0 : direction+1;
 	}
 
 	{
