@@ -506,7 +506,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	public static void endActorThread(){
-		if (actorThread.isAlive()){
+		if (actorThread != null && actorThread.isAlive()){
 			Actor.keepActorThreadAlive = false;
 			actorThread.interrupt();
 		}
@@ -523,12 +523,7 @@ public class GameScene extends PixelScene {
 		}
 	}
 
-	private static final Thread actorThread = new Thread() {
-		@Override
-		public void run() {
-			Actor.process();
-		}
-	};
+	private static Thread actorThread;
 	
 	//sometimes UI changes can be prompted by the actor thread.
 	// We queue any removed element destruction, rather than destroying them in the actor thread.
@@ -545,13 +540,22 @@ public class GameScene extends PixelScene {
 		if (!freezeEmitters) water.offset( 0, -5 * Game.elapsed );
 
 		if (!Actor.processing() && Dungeon.hero.isAlive()) {
-			if (!actorThread.isAlive()) {
+			if (actorThread == null || !actorThread.isAlive()) {
+				
+				actorThread = new Thread() {
+					@Override
+					public void run() {
+						Actor.process();
+					}
+				};
+				
 				//if cpu cores are limited, game should prefer drawing the current frame
 				if (Runtime.getRuntime().availableProcessors() == 1) {
 					actorThread.setPriority(Thread.NORM_PRIORITY - 1);
 				}
 				actorThread.setName("SHPD Actor Thread");
 				Thread.currentThread().setName("SHPD Render Thread");
+				Actor.keepActorThreadAlive = true;
 				actorThread.start();
 			} else {
 				synchronized (actorThread) {
