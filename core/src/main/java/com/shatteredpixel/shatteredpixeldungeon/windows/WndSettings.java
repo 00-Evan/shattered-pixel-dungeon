@@ -124,62 +124,68 @@ public class WndSettings extends WndTabbed {
 				scale.setRect(0, 0, WIDTH, SLIDER_HEIGHT);
 				add(scale);
 			}
+			
+			float bottom = scale.bottom();
 
-			CheckBox chkSaver = new CheckBox( Messages.get(this, "saver") ) {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					if (checked()) {
-						checked(!checked());
-						ShatteredPixelDungeon.scene().add(new WndOptions(
-								Messages.get(DisplayTab.class, "saver"),
-								Messages.get(DisplayTab.class, "saver_desc"),
-								Messages.get(DisplayTab.class, "okay"),
-								Messages.get(DisplayTab.class, "cancel")) {
-							@Override
-							protected void onSelect(int index) {
-								if (index == 0) {
-									checked(!checked());
-									SPDSettings.powerSaver(checked());
+			if (!DeviceCompat.isDesktop()) {
+				CheckBox chkSaver = new CheckBox( Messages.get( this, "saver" ) ) {
+					@Override
+					protected void onClick() {
+						super.onClick();
+						if (checked()) {
+							checked( !checked() );
+							ShatteredPixelDungeon.scene().add( new WndOptions(
+									Messages.get( DisplayTab.class, "saver" ),
+									Messages.get( DisplayTab.class, "saver_desc" ),
+									Messages.get( DisplayTab.class, "okay" ),
+									Messages.get( DisplayTab.class, "cancel" ) ) {
+								@Override
+								protected void onSelect( int index ) {
+									if (index == 0) {
+										checked( !checked() );
+										SPDSettings.powerSaver( checked() );
+									}
 								}
-							}
-						});
-					} else {
-						SPDSettings.powerSaver(checked());
+							} );
+						} else {
+							SPDSettings.powerSaver( checked() );
+						}
 					}
+				};
+				if (PixelScene.maxScreenZoom >= 2) {
+					chkSaver.setRect( 0, scale.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT );
+					chkSaver.checked( SPDSettings.powerSaver() );
+					add( chkSaver );
 				}
-			};
-			if (PixelScene.maxScreenZoom >= 2) {
-				chkSaver.setRect(0, scale.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
-				chkSaver.checked(SPDSettings.powerSaver());
-				add(chkSaver);
+				
+				//TODO also need to disable this in android splitscreen
+				RedButton btnOrientation = new RedButton( PixelScene.landscape() ?
+						Messages.get( this, "portrait" )
+						: Messages.get( this, "landscape" ) ) {
+					@Override
+					protected void onClick() {
+						SPDSettings.landscape( !PixelScene.landscape() );
+					}
+				};
+				btnOrientation.setRect( 0, chkSaver.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT );
+				add( btnOrientation );
+				
+				bottom = btnOrientation.bottom();
 			}
 
-			//TODO need to disable this in some situations. (desktop, android splitscreen)
-			RedButton btnOrientation = new RedButton( PixelScene.landscape() ?
-					Messages.get(this, "portrait")
-					: Messages.get(this, "landscape") ) {
-				@Override
-				protected void onClick() {
-					SPDSettings.landscape(!PixelScene.landscape());
-				}
-			};
-			btnOrientation.setRect(0, chkSaver.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
-			add( btnOrientation );
-
 			OptionSlider brightness = new OptionSlider(Messages.get(this, "brightness"),
-					Messages.get(this, "dark"), Messages.get(this, "bright"), -2, 2) {
+					Messages.get(this, "dark"), Messages.get(this, "bright"), -1, 1) {
 				@Override
 				protected void onChange() {
 					SPDSettings.brightness(getSelectedValue());
 				}
 			};
 			brightness.setSelectedValue(SPDSettings.brightness());
-			brightness.setRect(0, btnOrientation.bottom() + GAP_LRG, WIDTH, SLIDER_HEIGHT);
+			brightness.setRect(0, bottom + GAP_LRG, WIDTH, SLIDER_HEIGHT);
 			add(brightness);
 
 			OptionSlider tileGrid = new OptionSlider(Messages.get(this, "visual_grid"),
-					Messages.get(this, "off"), Messages.get(this, "high"), -1, 3) {
+					Messages.get(this, "off"), Messages.get(this, "high"), -1, 2) {
 				@Override
 				protected void onChange() {
 					SPDSettings.visualGrid(getSelectedValue());
@@ -188,7 +194,6 @@ public class WndSettings extends WndTabbed {
 			tileGrid.setSelectedValue(SPDSettings.visualGrid());
 			tileGrid.setRect(0, brightness.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
 			add(tileGrid);
-
 
 		}
 	}
@@ -257,7 +262,7 @@ public class WndSettings extends WndTabbed {
 			chkFlipTags.checked(SPDSettings.flipTags());
 			add(chkFlipTags);
 
-			OptionSlider slots = new OptionSlider(Messages.get(this, "quickslots"), "0", "4", 0, 4) {
+			/*OptionSlider slots = new OptionSlider(Messages.get(this, "quickslots"), "0", "4", 0, 4) {
 				@Override
 				protected void onChange() {
 					SPDSettings.quickSlots(getSelectedValue());
@@ -266,7 +271,7 @@ public class WndSettings extends WndTabbed {
 			};
 			slots.setSelectedValue(SPDSettings.quickSlots());
 			slots.setRect(0, chkFlipTags.bottom() + GAP_TINY, WIDTH, SLIDER_HEIGHT);
-			add(slots);
+			add(slots);*/
 
 			CheckBox chkFullscreen = new CheckBox( Messages.get(this, "fullscreen") ) {
 				@Override
@@ -275,7 +280,7 @@ public class WndSettings extends WndTabbed {
 					SPDSettings.fullscreen(checked());
 				}
 			};
-			chkFullscreen.setRect( 0, slots.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
+			chkFullscreen.setRect( 0, chkFlipTags.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT );
 			chkFullscreen.checked(SPDSettings.fullscreen());
 			chkFullscreen.enable(DeviceCompat.supportsFullScreen());
 			add(chkFullscreen);

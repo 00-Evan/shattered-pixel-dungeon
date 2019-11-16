@@ -111,7 +111,7 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static int brightness() {
-		return getInt( KEY_BRIGHTNESS, 0, -2, 2 );
+		return getInt( KEY_BRIGHTNESS, 0, -1, 1 );
 	}
 	
 	public static void visualGrid( int value ){
@@ -120,7 +120,7 @@ public class SPDSettings extends GameSettings {
 	}
 	
 	public static int visualGrid() {
-		return getInt( KEY_GRID, 0, -1, 3 );
+		return getInt( KEY_GRID, 0, -1, 2 );
 	}
 	
 	//Interface
