@@ -32,6 +32,8 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.UpdateImpl;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
 
@@ -58,9 +60,13 @@ public class AndroidGame extends AndroidApplication {
 		} catch (PackageManager.NameNotFoundException e) {
 			Game.versionCode = 0;
 		}
+		
+		if (UpdateImpl.supportsUpdates()){
+			Updates.service = UpdateImpl.getUpdateService();
+		}
 
 		FileUtils.setDefaultFileProperties( Files.FileType.Local, "" );
-
+		
 		// grab preferences directly using our instance first
 		// so that we don't need to rely on Gdx.app, which isn't initialized yet.
 		SPDSettings.set(instance.getPreferences("ShatteredPixelDungeon"));
@@ -91,7 +97,7 @@ public class AndroidGame extends AndroidApplication {
 		initialize(new ShatteredPixelDungeon(support), config);
 		
 		view = (GLSurfaceView)graphics.getView();
-
+		
 	}
 	
 	@Override

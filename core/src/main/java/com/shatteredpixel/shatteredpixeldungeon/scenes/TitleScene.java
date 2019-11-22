@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.LanguageButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.PrefsButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
+import com.shatteredpixel.shatteredpixeldungeon.ui.UpdateNotification;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
@@ -224,6 +225,10 @@ public class TitleScene extends PixelScene {
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( w - btnExit.width(), 0 );
 		add( btnExit );
+
+		UpdateNotification updInfo = new UpdateNotification();
+		updInfo.setRect(4, h-BTN_HEIGHT, updInfo.reqWidth() + 6, BTN_HEIGHT-4);
+		add(updInfo);
 
 		fadeIn();
 	}

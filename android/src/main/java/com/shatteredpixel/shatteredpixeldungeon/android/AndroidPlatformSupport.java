@@ -22,7 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
@@ -140,6 +143,23 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		
 	}
 	
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean connectedToUnmeteredNetwork() {
+		//Returns true if using unmetered connection, use shortcut method if available
+		ConnectivityManager cm = (ConnectivityManager) AndroidGame.instance.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+			return !cm.isActiveNetworkMetered();
+		} else {
+			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+			return activeNetwork != null && activeNetwork.isConnectedOrConnecting() &&
+					(activeNetwork.getType() == ConnectivityManager.TYPE_WIFI
+					|| activeNetwork.getType() == ConnectivityManager.TYPE_WIMAX
+					|| activeNetwork.getType() == ConnectivityManager.TYPE_BLUETOOTH
+					|| activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET);
+		}
+	}
+
 	@Override
 	public void promptTextInput(final String title, final String hintText, final int maxLen, final boolean multiLine, final String posTxt, final String negTxt, final TextCallback callback) {
 		Game.runOnRenderThread( new Callback() {

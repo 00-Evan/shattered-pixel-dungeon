@@ -20,6 +20,10 @@ task debug(dependsOn: classes, type: JavaExec) {
     systemProperty 'Specification-Title', appName
     systemProperty 'Specification-Version', appVersionName + "-INDEV"
     systemProperty 'Implementation-Version', appVersionCode
+
+    dependencies {
+        debugImplementation project(':services:updates:debugUpdates')
+    }
 }
 
 //need a separate task to compile dependencies first, seeing as we're setting them up in an odd way
@@ -38,6 +42,10 @@ task release(dependsOn: compileForRelease, type: Jar) {
         attributes 'Specification-Version': appVersionName
         attributes 'Implementation-Version': appVersionCode
     }
+
+    dependencies {
+        releaseImplementation project(':services:updates:githubUpdates')
+    }
 }
 
 dependencies {
@@ -47,4 +55,8 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+
+    //Need these at compile time to prevent errors there.
+    // The actual dependency used at runtime will vary based on source set.
+    compileOnly project(':services:updates:debugUpdates')
 }

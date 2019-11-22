@@ -29,6 +29,8 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Preferences;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.UpdateImpl;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.Point;
@@ -78,6 +80,10 @@ public class DesktopLauncher {
 			Game.versionCode = Integer.parseInt(DesktopLauncher.class.getPackage().getImplementationVersion());
 		} catch (NumberFormatException e) {
 			Game.versionCode = Integer.parseInt(System.getProperty("Implementation-Version"));
+		}
+
+		if (UpdateImpl.supportsUpdates()){
+			Updates.service = UpdateImpl.getUpdateService();
 		}
 		
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();

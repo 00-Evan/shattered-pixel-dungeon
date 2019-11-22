@@ -25,6 +25,9 @@ android {
         debug {
             applicationIdSuffix ".indev"
             versionNameSuffix '-INDEV'
+            dependencies {
+                debugImplementation project(':services:updates:debugUpdates')
+            }
         }
         release {
 
@@ -35,6 +38,10 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            dependencies {
+                releaseImplementation project(':services:updates:githubUpdates')
+            }
         }
     }
 

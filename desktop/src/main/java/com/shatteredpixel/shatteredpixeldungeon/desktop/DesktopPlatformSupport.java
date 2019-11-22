@@ -59,6 +59,11 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	}
 	
 	@Override
+	public boolean connectedToUnmeteredNetwork() {
+		return true; //no easy way to check this in desktop, just assume user doesn't care
+	}
+
+	@Override
 	public void promptTextInput(String title, String hintText, int maxLen, boolean multiLine, String posTxt, String negTxt, TextCallback callback) {
 	
 	}
