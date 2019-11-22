@@ -7,8 +7,13 @@ ext.mainClass = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLaunche
 sourceSets.main.resources.srcDirs = [new File(project(':core').projectDir, "/src/main/assets"),
                                      new File(project(':desktop').projectDir,"/src/main/assets")]
 
-task runDebug(dependsOn: classes, type: JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
+sourceSets {
+    debug
+    release
+}
+
+task debug(dependsOn: classes, type: JavaExec) {
+    classpath = sourceSets.debug.runtimeClasspath + sourceSets.main.runtimeClasspath
     ignoreExitValue = true
 
     main = mainClass
@@ -17,8 +22,14 @@ task runDebug(dependsOn: classes, type: JavaExec) {
     systemProperty 'Implementation-Version', appVersionCode
 }
 
-task releaseJAR(dependsOn: classes, type: Jar) {
+//need a separate task to compile dependencies first, seeing as we're setting them up in an odd way
+task compileForRelease(dependsOn: classes, type: JavaCompile){
+    classpath = sourceSets.release.runtimeClasspath + sourceSets.main.runtimeClasspath
+}
+
+task release(dependsOn: compileForRelease, type: Jar) {
     from sourceSets.main.output
+    from { sourceSets.release.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
 
     manifest {
