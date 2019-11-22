@@ -47,7 +47,7 @@ public class WndOptions extends Window {
 		
 		RenderedTextBlock tfMesage = PixelScene.renderTextBlock( 6 );
 		tfMesage.text(message, width - MARGIN * 2);
-		tfMesage.setPos( MARGIN, tfTitle.top() + tfTitle.height() + 2*MARGIN );
+		tfMesage.setPos( MARGIN, tfTitle.bottom() + 3*MARGIN );
 		add( tfMesage );
 		
 		float pos = tfMesage.bottom() + 2*MARGIN;
