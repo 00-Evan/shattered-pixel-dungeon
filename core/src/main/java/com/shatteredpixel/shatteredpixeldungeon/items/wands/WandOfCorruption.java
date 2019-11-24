@@ -130,7 +130,7 @@ public class WandOfCorruption extends Wand {
 
 			Mob enemy = (Mob) ch;
 
-			float corruptingPower = 3 + level()/2f;
+			float corruptingPower = 3 + buffedLvl()/2f;
 			
 			//base enemy resistance is usually based on their exp, but in special cases it is based on other criteria
 			float enemyResist = 1 + enemy.EXP;
@@ -202,7 +202,7 @@ public class WandOfCorruption extends Wand {
 		Class<?extends FlavourBuff> debuffCls = (Class<? extends FlavourBuff>) Random.chances(debuffs);
 		
 		if (debuffCls != null){
-			Buff.append(enemy, debuffCls, 6 + level()*3);
+			Buff.append(enemy, debuffCls, 6 + buffedLvl()*3);
 		} else {
 			//if no debuff can be applied (all are present), then go up one tier
 			if (category == MINOR_DEBUFFS)          debuffEnemy( enemy, MAJOR_DEBUFFS);
@@ -252,8 +252,8 @@ public class WandOfCorruption extends Wand {
 		// lvl 0 - 25%
 		// lvl 1 - 40%
 		// lvl 2 - 50%
-		if (Random.Int( level() + 4 ) >= 3){
-			Buff.prolong( defender, Amok.class, 4+level()*2);
+		if (Random.Int( buffedLvl() + 4 ) >= 3){
+			Buff.prolong( defender, Amok.class, 4+ buffedLvl()*2);
 		}
 	}
 

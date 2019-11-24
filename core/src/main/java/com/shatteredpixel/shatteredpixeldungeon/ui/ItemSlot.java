@@ -47,6 +47,7 @@ public class ItemSlot extends Button {
 	public static final int UPGRADED	= 0x44FF44;
 	public static final int FADED       = 0x999999;
 	public static final int WARNING		= 0xFF8800;
+	public static final int ENHANCED	= 0x3399FF;
 	
 	private static final float ENABLED	= 1.0f;
 	private static final float DISABLED	= 0.3f;
@@ -233,11 +234,16 @@ public class ItemSlot extends Button {
 		}
 
 		int level = item.visiblyUpgraded();
+		int buffedLvl = item.buffedVisiblyUpgraded();
 
-		if (level != 0) {
-			bottomRight.text( item.levelKnown ? Messages.format( TXT_LEVEL, level ) : TXT_CURSED );
+		if (buffedLvl != 0) {
+			bottomRight.text( Messages.format( TXT_LEVEL, buffedLvl ) );
 			bottomRight.measure();
-			bottomRight.hardlight( level > 0 ? UPGRADED : DEGRADED );
+			if (level == buffedLvl || buffedLvl <= 0) {
+				bottomRight.hardlight(buffedLvl > 0 ? UPGRADED : DEGRADED);
+			} else {
+				bottomRight.hardlight(buffedLvl > level ? ENHANCED : WARNING);
+			}
 		} else if (item instanceof Scroll || item instanceof Potion) {
 			bottomRight.text( null );
 

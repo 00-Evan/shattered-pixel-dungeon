@@ -52,9 +52,9 @@ public class WandOfCorrosion extends Wand {
 
 	@Override
 	protected void onZap(Ballistica bolt) {
-		CorrosiveGas gas = Blob.seed(bolt.collisionPos, 50 + 10 * level(), CorrosiveGas.class);
+		CorrosiveGas gas = Blob.seed(bolt.collisionPos, 50 + 10 * buffedLvl(), CorrosiveGas.class);
 		CellEmitter.center(bolt.collisionPos).burst( CorrosionParticle.SPLASH, 10 );
-		gas.setStrength(2 + level());
+		gas.setStrength(2 + buffedLvl());
 		GameScene.add(gas);
 
 		for (int i : PathFinder.NEIGHBOURS9) {
@@ -85,7 +85,7 @@ public class WandOfCorrosion extends Wand {
 		// lvl 0 - 33%
 		// lvl 1 - 50%
 		// lvl 2 - 60%
-		if (Random.Int( level() + 3 ) >= 2) {
+		if (Random.Int( buffedLvl() + 3 ) >= 2) {
 			
 			Buff.affect( defender, Ooze.class ).set( 20f );
 			CellEmitter.center(defender.pos).burst( CorrosionParticle.SPLASH, 5 );

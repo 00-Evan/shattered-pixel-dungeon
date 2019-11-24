@@ -54,7 +54,7 @@ public class WandOfMagicMissile extends DamageWand {
 			processSoulMark(ch, chargesPerCast());
 			ch.damage(damageRoll(), this);
 
-			ch.sprite.burst(0xFFFFFFFF, level() / 2 + 2);
+			ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
 
 		} else {
 			Dungeon.level.pressCell(bolt.collisionPos);
@@ -63,7 +63,7 @@ public class WandOfMagicMissile extends DamageWand {
 
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
-		Buff.prolong( attacker, Recharging.class, 1 + staff.level()/2f);
+		Buff.prolong( attacker, Recharging.class, 1 + staff.buffedLvl()/2f);
 		SpellSprite.show(attacker, SpellSprite.CHARGE);
 
 	}

@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 public class Viscosity extends Glyph {
 	
@@ -51,7 +50,7 @@ public class Viscosity extends Glyph {
 			return 0;
 		}
 
-		int level = Math.max( 0, armor.level() );
+		int level = Math.max( 0, armor.buffedLvl() );
 		
 		float percent = (level+1)/(float)(level+6);
 		int amount = (int)Math.ceil(realDamage * percent);

@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -289,8 +290,19 @@ public class Item implements Bundlable {
 
 	protected void onDetach(){}
 
+	//returns the true level of the item, only affected by modifiers which are persistent (e.g. curse infusion)
 	public int level(){
 		return level;
+	}
+	
+	//returns the level of the item, after it may have been modified by temporary boosts/reductions
+	//note that not all item properties should care about buffs/debuffs! (e.g. str requirement)
+	public int buffedLvl(){
+		if (Dungeon.hero.buff( Degrade.class ) != null) {
+			return Degrade.reduceLevel(level());
+		} else {
+			return level();
+		}
 	}
 
 	public void level( int value ){
@@ -333,6 +345,10 @@ public class Item implements Bundlable {
 	
 	public int visiblyUpgraded() {
 		return levelKnown ? level() : 0;
+	}
+
+	public int buffedVisiblyUpgraded() {
+		return levelKnown ? buffedLvl() : 0;
 	}
 	
 	public boolean visiblyCursed() {

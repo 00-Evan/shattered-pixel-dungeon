@@ -197,7 +197,13 @@ public class SpiritBow extends Weapon {
 		return (Dungeon.hero == null ? 0 : Dungeon.hero.lvl/5)
 				+ (curseInfusionBonus ? 1 : 0);
 	}
-	
+
+	@Override
+	public int buffedLvl() {
+		//level isn't affected by buffs/debuffs
+		return level();
+	}
+
 	//for fetching upgrades from a boomerang from pre-0.7.1
 	public int spentUpgrades() {
 		return super.level() - (curseInfusionBonus ? 1 : 0);

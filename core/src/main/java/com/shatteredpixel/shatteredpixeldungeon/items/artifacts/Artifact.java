@@ -117,6 +117,17 @@ public class Artifact extends KindofMisc {
 		return levelKnown ? Math.round((level()*10)/(float)levelCap): 0;
 	}
 
+	@Override
+	public int buffedVisiblyUpgraded() {
+		return visiblyUpgraded();
+	}
+
+	@Override
+	public int buffedLvl() {
+		//level isn't affected by buffs/debuffs
+		return level();
+	}
+
 	//transfers upgrades from another artifact, transfer level will equal the displayed level
 	public void transferUpgrade(int transferLvl) {
 		upgrade(Math.round((float)(transferLvl*levelCap)/10));

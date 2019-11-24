@@ -99,7 +99,7 @@ public class HighGrass {
 				//Camouflage
 				//FIXME doesn't work with sad ghost
 				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Camouflage.class, hero)) {
-					Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings.armor.level());
+					Buff.affect(hero, Camouflage.Camo.class).set(3 + hero.belongings.armor.buffedLvl());
 				}
 			}
 			

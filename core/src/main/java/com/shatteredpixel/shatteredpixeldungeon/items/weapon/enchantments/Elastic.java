@@ -37,7 +37,7 @@ public class Elastic extends Weapon.Enchantment {
 		// lvl 0 - 20%
 		// lvl 1 - 33%
 		// lvl 2 - 43%
-		int level = Math.max( 0, weapon.level() );
+		int level = Math.max( 0, weapon.buffedLvl() );
 		
 		if (Random.Int( level + 5 ) >= 4) {
 			//trace a ballistica to our target (which will also extend past them

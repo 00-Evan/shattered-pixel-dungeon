@@ -35,7 +35,7 @@ public class Thorns extends Armor.Glyph {
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max(0, armor.level());
+		int level = Math.max(0, armor.buffedLvl());
 
 		// lvl 0 - 16.7%
 		// lvl 1 - 28.6%

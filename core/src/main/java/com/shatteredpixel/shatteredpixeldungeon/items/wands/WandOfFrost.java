@@ -74,7 +74,7 @@ public class WandOfFrost extends DamageWand {
 				float chill = ch.buff(Chill.class).cooldown();
 				damage = (int)Math.round(damage * Math.pow(0.9f, chill));
 			} else {
-				ch.sprite.burst( 0xFF99CCFF, level() / 2 + 2 );
+				ch.sprite.burst( 0xFF99CCFF, buffedLvl() / 2 + 2 );
 			}
 
 			processSoulMark(ch, chargesPerCast());
@@ -82,9 +82,9 @@ public class WandOfFrost extends DamageWand {
 
 			if (ch.isAlive()){
 				if (Dungeon.level.water[ch.pos])
-					Buff.prolong(ch, Chill.class, 4+level());
+					Buff.prolong(ch, Chill.class, 4+buffedLvl());
 				else
-					Buff.prolong(ch, Chill.class, 2+level());
+					Buff.prolong(ch, Chill.class, 2+buffedLvl());
 			}
 		} else {
 			Dungeon.level.pressCell(bolt.collisionPos);

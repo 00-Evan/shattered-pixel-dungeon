@@ -59,7 +59,7 @@ public class WandOfDisintegration extends DamageWand {
 		
 		boolean terrainAffected = false;
 		
-		int level = level();
+		int level = buffedLvl();
 		
 		int maxDistance = Math.min(distance(), beam.dist);
 		

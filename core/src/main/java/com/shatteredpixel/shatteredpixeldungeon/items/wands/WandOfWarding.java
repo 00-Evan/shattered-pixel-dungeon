@@ -84,9 +84,9 @@ public class WandOfWarding extends Wand {
 		} else if (ch != null){
 			if (ch instanceof Ward){
 				if (wardAvailable) {
-					((Ward) ch).upgrade(level());
+					((Ward) ch).upgrade( buffedLvl() );
 				} else {
-					((Ward) ch).wandHeal( level() );
+					((Ward) ch).wandHeal( buffedLvl() );
 				}
 				ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
 			} else {
@@ -97,7 +97,7 @@ public class WandOfWarding extends Wand {
 		} else if (canPlaceWard(bolt.collisionPos)){
 			Ward ward = new Ward();
 			ward.pos = bolt.collisionPos;
-			ward.wandLevel = level();
+			ward.wandLevel = buffedLvl();
 			GameScene.add(ward, 1f);
 			Dungeon.level.occupyCell(ward);
 			ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
@@ -125,7 +125,7 @@ public class WandOfWarding extends Wand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, staff.level() );
+		int level = Math.max( 0, staff.buffedLvl() );
 
 		// lvl 0 - 20%
 		// lvl 1 - 33%
@@ -133,7 +133,7 @@ public class WandOfWarding extends Wand {
 		if (Random.Int( level + 5 ) >= 4) {
 			for (Char ch : Actor.chars()){
 				if (ch instanceof Ward){
-					((Ward) ch).wandHeal(staff.level());
+					((Ward) ch).wandHeal(staff.buffedLvl());
 					ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
 				}
 			}
