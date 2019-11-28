@@ -159,7 +159,7 @@ public abstract class RegularLevel extends Level {
 				//mobs are not randomly spawned on floor 1.
 				return 0;
 			default:
-				return 2 + Dungeon.depth % 5 + Random.Int(5);
+				return 3 + Dungeon.depth % 5 + Random.Int(3);
 		}
 	}
 	
