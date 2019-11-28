@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DistortionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlashingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
@@ -88,18 +88,18 @@ public class CityLevel extends RegularLevel {
 	
 	@Override
 	protected Class<?>[] trapClasses() {
-		return new Class[]{ FrostTrap.class, StormTrap.class, CorrosionTrap.class, BlazingTrap.class, DisintegrationTrap.class,
-				ExplosiveTrap.class, RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, WeakeningTrap.class,
-				SummoningTrap.class, WarpingTrap.class, CursingTrap.class,
-				PitfallTrap.class, DisarmingTrap.class };
+		return new Class[]{
+				FrostTrap.class, StormTrap.class, CorrosionTrap.class, BlazingTrap.class, DisintegrationTrap.class,
+				RockfallTrap.class, FlashingTrap.class, GuardianTrap.class, WeakeningTrap.class,
+				DisarmingTrap.class, SummoningTrap.class, WarpingTrap.class, CursingTrap.class, PitfallTrap.class, DistortionTrap.class };
 	}
 
 	@Override
 	protected float[] trapChances() {
-		return new float[]{ 8, 8, 8, 8, 8,
+		return new float[]{
 				4, 4, 4, 4, 4,
-				2, 2, 2,
-				1, 1 };
+				2, 2, 2, 2,
+				1, 1, 1, 1, 1, 1 };
 	}
 	
 	@Override

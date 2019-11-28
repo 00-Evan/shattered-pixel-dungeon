@@ -30,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CorrosionTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
@@ -96,18 +95,18 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	protected Class<?>[] trapClasses() {
-		return new Class[]{ BurningTrap.class, PoisonDartTrap.class, FrostTrap.class, StormTrap.class, CorrosionTrap.class,
-				GrippingTrap.class, ExplosiveTrap.class, RockfallTrap.class,  GuardianTrap.class,
-				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class,
-				PitfallTrap.class };
+		return new Class[]{
+				BurningTrap.class, PoisonDartTrap.class, FrostTrap.class, StormTrap.class, CorrosionTrap.class,
+				GrippingTrap.class, RockfallTrap.class,  GuardianTrap.class,
+				ConfusionTrap.class, SummoningTrap.class, WarpingTrap.class, PitfallTrap.class };
 	}
 
 	@Override
 	protected float[] trapChances() {
-		return new float[]{ 8, 8, 8, 8, 8,
-				4, 4, 4, 4,
+		return new float[]{
+				4, 4, 4, 4, 4,
 				2, 2, 2,
-				1 };
+				1, 1, 1, 1};
 	}
 	
 	@Override

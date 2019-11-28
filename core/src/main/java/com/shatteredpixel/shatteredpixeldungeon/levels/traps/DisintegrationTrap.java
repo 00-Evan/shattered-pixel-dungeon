@@ -29,8 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
@@ -76,24 +74,6 @@ public class DisintegrationTrap extends Trap {
 				if (!hero.isAlive()){
 					Dungeon.fail( getClass() );
 					GLog.n( Messages.get(this, "ondeath") );
-				} else {
-					Item item = hero.belongings.randomUnequipped();
-					Bag bag = hero.belongings.backpack;
-					//bags do not protect against this trap
-					if (item instanceof Bag){
-						bag = (Bag)item;
-						item = Random.element(bag.items);
-					}
-					if (item == null || item.level() > 0 || item.unique) return;
-					if (!item.stackable){
-						item.detachAll(bag);
-						GLog.w( Messages.get(this, "one", item.name()) );
-					} else {
-						int n = Random.NormalIntRange(1, (item.quantity()+1)/2);
-						for(int i = 1; i <= n; i++)
-							item.detach(bag);
-						GLog.w( Messages.get(this, "some", item.name()) );
-					}
 				}
 			}
 		}

@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -31,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.PathFinder;
 
 public class PitfallTrap extends Trap {
 
@@ -46,26 +49,57 @@ public class PitfallTrap extends Trap {
 			GLog.w(Messages.get(this, "no_pit"));
 			return;
 		}
-		
-		Heap heap = Dungeon.level.heaps.get( pos );
 
-		if (heap != null){
-			for (Item item : heap.items){
-				Dungeon.dropToChasm(item);
-			}
-			heap.sprite.kill();
-			GameScene.discard(heap);
-			Dungeon.level.heaps.remove( pos );
+		//TODO visuals
+		DelayedPit p = Buff.affect(Dungeon.hero, DelayedPit.class, 1);
+		p.depth = Dungeon.depth;
+		p.pos = pos;
+
+		if (pos == Dungeon.hero.pos){
+			GLog.n(Messages.get(this, "triggered_hero"));
+		} else if (Dungeon.level.heroFOV[pos]){
+			GLog.n(Messages.get(this, "triggered"));
 		}
 
-		Char ch = Actor.findChar( pos );
+	}
 
-		if (ch != null && !ch.flying) {
-			if (ch == Dungeon.hero) {
-				Chasm.heroFall(pos);
-			} else {
-				Chasm.mobFall((Mob) ch);
+	public static class DelayedPit extends FlavourBuff {
+
+		int pos;
+		int depth;
+
+		@Override
+		public boolean act() {
+			if (depth == Dungeon.depth) {
+				for (int i : PathFinder.NEIGHBOURS9) {
+					int cell = pos + i;
+
+					Heap heap = Dungeon.level.heaps.get(cell);
+
+					if (heap != null) {
+						for (Item item : heap.items) {
+							Dungeon.dropToChasm(item);
+						}
+						heap.sprite.kill();
+						GameScene.discard(heap);
+						Dungeon.level.heaps.remove(cell);
+					}
+
+					Char ch = Actor.findChar(cell);
+
+					if (ch != null && !ch.flying) {
+						if (ch == Dungeon.hero) {
+							Chasm.heroFall(cell);
+						} else {
+							Chasm.mobFall((Mob) ch);
+						}
+					}
+
+				}
 			}
+
+			detach();
+			return true;
 		}
 	}
 

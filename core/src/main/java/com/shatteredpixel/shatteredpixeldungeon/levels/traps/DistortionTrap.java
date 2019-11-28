@@ -22,37 +22,136 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
-import com.watabou.noosa.Game;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Acidic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Albino;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ArmoredBrute;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bandit;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CausticSlime;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Piranha;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Senior;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DistortionTrap extends Trap{
+
+	private static final float DELAY = 2f;
 
 	{
 		color = TEAL;
 		shape = LARGE_DOT;
 	}
 
+	private static final ArrayList<Class<?extends Mob>> RARE = new ArrayList<>(Arrays.asList(
+			Albino.class, CausticSlime.class,
+			Bandit.class,
+			ArmoredBrute.class,
+			Elemental.Chaos.class, Senior.class,
+			Acidic.class));
+
 	@Override
 	public void activate() {
-		InterlevelScene.returnDepth = Dungeon.depth;
-		Belongings belongings = Dungeon.hero.belongings;
-		
-		for (Notes.Record rec : Notes.getRecords()){
-			if (rec.depth() == Dungeon.depth){
-				Notes.remove(rec);
+
+		int nMobs = 3;
+		if (Random.Int( 2 ) == 0) {
+			nMobs++;
+			if (Random.Int( 2 ) == 0) {
+				nMobs++;
 			}
 		}
-		
-		for (Item i : belongings){
-			if (i instanceof LloydsBeacon && ((LloydsBeacon) i).returnDepth == Dungeon.depth)
-					((LloydsBeacon) i).returnDepth = -1;
+
+		ArrayList<Integer> candidates = new ArrayList<>();
+
+		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+			int p = pos + PathFinder.NEIGHBOURS8[i];
+			if (Actor.findChar( p ) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
+				candidates.add( p );
+			}
 		}
 
-		InterlevelScene.mode = InterlevelScene.Mode.RESET;
-		Game.switchScene(InterlevelScene.class);
+		ArrayList<Integer> respawnPoints = new ArrayList<>();
+
+		while (nMobs > 0 && candidates.size() > 0) {
+			int index = Random.index( candidates );
+
+			respawnPoints.add( candidates.remove( index ) );
+			nMobs--;
+		}
+
+		ArrayList<Mob> mobs = new ArrayList<>();
+
+		int summoned = 0;
+		for (Integer point : respawnPoints) {
+			summoned++;
+			Mob mob;
+			switch (summoned){
+				case 1:
+					if (Dungeon.depth != 5 && Random.Int(100) == 0){
+						mob = new RatKing();
+						break;
+					}
+				case 3: case 5 : default:
+					int floor;
+					do {
+						floor = Random.Int(25);
+					} while( Dungeon.bossLevel(floor));
+					mob = Reflection.newInstance(Bestiary.getMobRotation(floor).get(0));
+					break;
+				case 2:
+					switch (Random.Int(4)){
+						case 0: default:
+							Wraith.spawnAt(point);
+							continue; //wraiths spawn themselves, no need to do more
+						case 1:
+							//yes it's intended that these are likely to die right away
+							mob = new Piranha();
+							break;
+						case 2:
+							Mimic.spawnAt(point, new ArrayList<>());
+							continue; //mimics spawn themselves, no need to do more
+						case 3:
+							mob = new Statue();
+							break;
+					}
+					break;
+				case 4:
+					mob = Reflection.newInstance(Random.element(RARE));
+					break;
+			}
+
+			mob.maxLvl = Hero.MAX_LEVEL;
+			mob.state = mob.WANDERING;
+			mob.pos = point;
+			GameScene.add(mob, DELAY);
+			mobs.add(mob);
+		}
+
+		//important to process the visuals and pressing of cells last, so spawned mobs have a chance to occupy cells first
+		Trap t;
+		for (Mob mob : mobs){
+			//manually trigger traps first to avoid sfx spam
+			if ((t = Dungeon.level.traps.get(mob.pos)) != null && t.active){
+				t.disarm();
+				t.reveal();
+				t.activate();
+			}
+			ScrollOfTeleportation.appear(mob, mob.pos);
+			Dungeon.level.occupyCell(mob);
+		}
+
 	}
 }
