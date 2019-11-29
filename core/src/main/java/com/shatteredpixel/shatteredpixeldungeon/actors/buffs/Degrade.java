@@ -27,8 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Degrade extends FlavourBuff {
-	
-	public static final float DURATION = 50f;
+
+	public static final float DURATION = 30f;
 	
 	{
 		type = buffType.NEGATIVE;
