@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -57,7 +59,7 @@ public class Eye extends Mob {
 		HUNTING = new Hunting();
 		
 		loot = new Dewdrop();
-		lootChance = 0.5f;
+		lootChance = 1f;
 
 		properties.add(Property.DEMONIC);
 	}
@@ -195,6 +197,24 @@ public class Eye extends Mob {
 
 		beam = null;
 		beamTarget = -1;
+	}
+
+	//generates an average of 1 dew, 0.25 seeds, and 0.25 stones
+	@Override
+	protected Item createLoot() {
+		Item loot;
+		switch(Random.Int(4)){
+			case 0: case 1: default:
+				loot = new Dewdrop().quantity(2);
+				break;
+			case 3:
+				loot = Generator.random(Generator.Category.SEED);
+				break;
+			case 4:
+				loot = Generator.random(Generator.Category.STONE);
+				break;
+		}
+		return loot;
 	}
 
 	private static final String BEAM_TARGET     = "beamTarget";
