@@ -103,6 +103,8 @@ public class Assets {
 	public static final String SNAKE	= "snake.png";
 	public static final String NECRO	= "necromancer.png";
 	public static final String GHOUL	= "ghoul.png";
+	public static final String RIPPER	= "ripper.png";
+	public static final String SPAWNER	= "spawner.png";
 
 	public static final String ITEMS	        = "items.png";
 	public static final String TERRAIN_FEATURES	= "terrain_features.png";
