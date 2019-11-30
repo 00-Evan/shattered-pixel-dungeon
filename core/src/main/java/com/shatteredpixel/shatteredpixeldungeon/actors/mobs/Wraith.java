@@ -85,6 +85,11 @@ public class Wraith extends Mob {
 	}
 
 	@Override
+	public float spawningWeight() {
+		return 0f;
+	}
+
+	@Override
 	public boolean reset() {
 		state = WANDERING;
 		return true;

@@ -108,7 +108,12 @@ public class Mimic extends Mob {
 		}
 		super.rollToDropLoot();
 	}
-	
+
+	@Override
+	public float spawningWeight() {
+		return 0f;
+	}
+
 	@Override
 	public boolean reset() {
 		state = WANDERING;

@@ -492,11 +492,12 @@ public abstract class Level implements Bundlable {
 
 			@Override
 			protected boolean act() {
-				int count = 0;
+				float count = 0;
 
-				//TODO some mobs should count for less (ripper shouldn't count at all, ghouls should be 1/2, special enemies should be 0
 				for (Mob mob : mobs.toArray(new Mob[0])){
-					if (mob.alignment == Char.Alignment.ENEMY) count++;
+					if (mob.alignment == Char.Alignment.ENEMY && !mob.properties().contains(Char.Property.MINIBOSS)) {
+						count += mob.spawningWeight();
+					}
 				}
 				
 				if (count < nMobs()) {

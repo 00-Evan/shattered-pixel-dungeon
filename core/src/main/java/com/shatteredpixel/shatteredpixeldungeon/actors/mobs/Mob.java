@@ -671,6 +671,11 @@ public abstract class Mob extends Char {
 		}
 		return item;
 	}
+
+	//how many mobs this one should count as when determining spawning totals
+	public float spawningWeight(){
+		return 1;
+	}
 	
 	public boolean reset() {
 		return false;

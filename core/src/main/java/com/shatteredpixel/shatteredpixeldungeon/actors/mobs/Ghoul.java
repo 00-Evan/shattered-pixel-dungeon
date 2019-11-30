@@ -66,7 +66,12 @@ public class Ghoul extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 4);
 	}
-	
+
+	@Override
+	public float spawningWeight() {
+		return 0.5f;
+	}
+
 	private int partnerID = -1;
 	private static final String PARTNER_ID = "partner_id";
 	

@@ -140,7 +140,12 @@ public class Statue extends Mob {
 		Notes.remove( Notes.Landmark.STATUE );
 		super.destroy();
 	}
-	
+
+	@Override
+	public float spawningWeight() {
+		return 0f;
+	}
+
 	@Override
 	public boolean reset() {
 		state = PASSIVE;

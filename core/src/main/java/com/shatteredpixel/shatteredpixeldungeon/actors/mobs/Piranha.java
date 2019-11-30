@@ -104,7 +104,12 @@ public class Piranha extends Mob {
 		Statistics.piranhasKilled++;
 		Badges.validatePiranhasKilled();
 	}
-	
+
+	@Override
+	public float spawningWeight() {
+		return 0;
+	}
+
 	@Override
 	public boolean reset() {
 		return true;
