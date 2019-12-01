@@ -28,10 +28,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corrosion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
@@ -73,14 +76,18 @@ public class RingOfElements extends Ring {
 	public static final HashSet<Class> RESISTS = new HashSet<>();
 	static {
 		RESISTS.add( Burning.class );
-		RESISTS.add( Charm.class );
 		RESISTS.add( Chill.class );
 		RESISTS.add( Frost.class );
 		RESISTS.add( Ooze.class );
 		RESISTS.add( Paralysis.class );
 		RESISTS.add( Poison.class );
 		RESISTS.add( Corrosion.class );
+
+		RESISTS.add( Charm.class );
 		RESISTS.add( Weakness.class );
+		RESISTS.add( Vulnerable.class );
+		RESISTS.add( Hex.class );
+		RESISTS.add( Degrade.class );
 		
 		RESISTS.add( DisintegrationTrap.class );
 		RESISTS.add( GrimTrap.class );
