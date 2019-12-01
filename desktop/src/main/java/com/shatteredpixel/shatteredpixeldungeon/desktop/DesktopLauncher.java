@@ -60,6 +60,7 @@ public class DesktopLauncher {
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread thread, Throwable throwable) {
+				Game.reportException(throwable);
 				StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				throwable.printStackTrace(pw);
