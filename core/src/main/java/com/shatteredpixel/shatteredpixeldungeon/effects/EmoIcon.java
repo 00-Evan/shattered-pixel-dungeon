@@ -61,7 +61,7 @@ public class EmoIcon extends Image {
 				}
 			}
 			
-			x = owner.x + owner.width - width / 2;
+			x = owner.x + owner.width() - width / 2;
 			y = owner.y - height;
 		}
 	}

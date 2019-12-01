@@ -23,6 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -65,7 +70,7 @@ public class DemonSpawner extends Mob {
 		if (spawnCooldown <= 0){
 			ArrayList<Integer> candidates = new ArrayList<>();
 			for (int n : PathFinder.NEIGHBOURS8) {
-				if (!Dungeon.level.solid[pos+n] && Actor.findChar( pos+n ) == null) {
+				if (Dungeon.level.passable[pos+n] && Actor.findChar( pos+n ) == null) {
 					candidates.add( pos+n );
 				}
 			}
@@ -98,5 +103,13 @@ public class DemonSpawner extends Mob {
 		}
 		spawnCooldown -= dmg;
 		super.damage(dmg, src);
+	}
+
+	{
+		immunities.add( Paralysis.class );
+		immunities.add( Amok.class );
+		immunities.add( Sleep.class );
+		immunities.add( Terror.class );
+		immunities.add( Vertigo.class );
 	}
 }

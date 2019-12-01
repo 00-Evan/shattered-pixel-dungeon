@@ -43,8 +43,10 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -180,7 +182,12 @@ public class UnstableSpellbook extends Artifact {
 			curUser = Dungeon.hero;
 			curItem = scroll;
 			scroll.anonymize();
-			scroll.doRead();
+			Game.runOnRenderThread(new Callback() {
+				@Override
+				public void call() {
+					scroll.doRead();
+				}
+			});
 			detach();
 			return true;
 		}
