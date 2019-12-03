@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
@@ -206,6 +207,15 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		private void doAttack(final Char enemy){
 
 			AttackIndicator.target(enemy);
+
+			if (enemy.defenseSkill(target) >= Char.INFINITE_EVASION){
+				enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+				Sample.INSTANCE.play(Assets.SND_MISS);
+				detach();
+				ActionIndicator.clearAction(Combo.this);
+				((Hero)target).spendAndNext(((Hero)target).attackDelay());
+				return;
+			}
 
 			int dmg = target.damageRoll();
 

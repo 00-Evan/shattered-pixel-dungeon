@@ -315,13 +315,27 @@ public abstract class Char extends Actor {
 			
 		}
 	}
-	
+
+	public static int INFINITE_ACCURACY = 1_000_000;
+	public static int INFINITE_EVASION = 1_000_000;
+
 	public static boolean hit( Char attacker, Char defender, boolean magic ) {
-		float acuRoll = Random.Float( attacker.attackSkill( defender ) );
+		float acuStat = attacker.attackSkill( defender );
+		float defStat = defender.defenseSkill( attacker );
+
+		//if accuracy or evasion are large enough, treat them as infinite.
+		//note that infinite evasion beats infinite accuracy
+		if (defStat >= INFINITE_EVASION){
+			return false;
+		} else if (acuStat >= INFINITE_ACCURACY){
+			return true;
+		}
+
+		float acuRoll = Random.Float( acuStat );
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		
-		float defRoll = Random.Float( defender.defenseSkill( attacker ) );
+		float defRoll = Random.Float( defStat );
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		
