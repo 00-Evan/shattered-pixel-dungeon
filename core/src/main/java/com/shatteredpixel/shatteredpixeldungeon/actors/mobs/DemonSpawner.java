@@ -62,6 +62,11 @@ public class DemonSpawner extends Mob {
 		return Random.NormalIntRange(0, 12);
 	}
 
+	@Override
+	public void beckon(int cell) {
+		//do nothing
+	}
+
 	private float spawnCooldown = 50;
 
 	@Override

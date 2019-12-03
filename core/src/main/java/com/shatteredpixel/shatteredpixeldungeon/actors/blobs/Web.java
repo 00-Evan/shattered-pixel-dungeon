@@ -56,7 +56,13 @@ public class Web extends Blob {
 			}
 		}
 	}
-	
+
+	@Override
+	public void seed(Level level, int cell, int amount) {
+		super.seed(level, cell, amount);
+		level.solid[cell] = cur[cell] > 0 || (Terrain.flags[level.map[cell]] & Terrain.SOLID) != 0;
+	}
+
 	//affects characters as they step on it. See Level.OccupyCell and Level.PressCell
 	public static void affectChar( Char ch ){
 		Buff.prolong( ch, Roots.class, 5f );

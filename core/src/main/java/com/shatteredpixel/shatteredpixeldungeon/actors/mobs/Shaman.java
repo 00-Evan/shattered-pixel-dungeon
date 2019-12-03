@@ -76,7 +76,6 @@ public abstract class Shaman extends Mob {
 		// so loot chance looks like: 1/33, 1/100, 1/300, 1/900, etc.
 		lootChance *= Math.pow(1/3f, Dungeon.LimitedDrops.SHAMAN_WAND.count);
 		super.rollToDropLoot();
-		super.rollToDropLoot();
 	}
 
 	@Override

@@ -122,6 +122,8 @@ public class Spinner extends Mob {
 	}
 	
 	public int webPos(){
+
+		if (enemy == null) return -1;
 		
 		Ballistica b;
 		//aims web in direction enemy is moving, or between self and enemy if they aren't moving
@@ -151,7 +153,7 @@ public class Spinner extends Mob {
 	
 	public void shootWeb(){
 		int webPos = webPos();
-		if (webPos != enemy.pos && webPos != -1){
+		if (enemy != null && webPos != enemy.pos && webPos != -1){
 			int i;
 			for ( i = 0; i < PathFinder.CIRCLE8.length; i++){
 				if ((enemy.pos + PathFinder.CIRCLE8[i]) == webPos){

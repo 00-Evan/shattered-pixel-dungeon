@@ -77,7 +77,7 @@ public class Brute extends Mob {
 			if (!hasRaged){
 				triggerEnrage();
 			}
-			return buff(BruteRage.class) != null;
+			return !buffs(BruteRage.class).isEmpty();
 		}
 	}
 	

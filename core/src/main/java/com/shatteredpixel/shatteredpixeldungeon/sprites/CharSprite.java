@@ -181,9 +181,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				text = Messages.format( text, args );
 			}
 			if (ch != null) {
-				FloatingText.show( x + width * 0.5f, y, ch.pos, text, color );
+				FloatingText.show( x + width() * 0.5f, y, ch.pos, text, color );
 			} else {
-				FloatingText.show( x + width * 0.5f, y, text, color );
+				FloatingText.show( x + width() * 0.5f, y, text, color );
 			}
 		}
 	}
