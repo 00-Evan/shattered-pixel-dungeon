@@ -124,7 +124,7 @@ public class DistortionTrap extends Trap{
 							Mimic.spawnAt(point, new ArrayList<>());
 							continue; //mimics spawn themselves, no need to do more
 						case 3:
-							mob = new Statue();
+							mob = Statue.random();
 							break;
 					}
 					break;

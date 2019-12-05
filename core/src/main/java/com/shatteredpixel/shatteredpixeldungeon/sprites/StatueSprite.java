@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.GameMath;
 
 public class StatueSprite extends MobSprite {
 	
@@ -47,7 +48,23 @@ public class StatueSprite extends MobSprite {
 		
 		play( idle );
 	}
-	
+
+	private static int[] tierFrames = {0, 21, 32, 43, 54, 63};
+
+	public void setArmor( int tier ){
+		int c = tierFrames[(int)GameMath.gate(0, tier, 5)];
+
+		TextureFilm frames = new TextureFilm( texture, 12, 15 );
+
+		idle.frames( frames, 0+c, 0+c, 0+c, 0+c, 0+c, 1+c, 1+c );
+		run.frames( frames, 2+c, 3+c, 4+c, 5+c, 6+c, 7+c );
+		attack.frames( frames, 8+c, 9+c, 10+c );
+		//death animation is always armorless
+
+		play( idle, true );
+
+	}
+
 	@Override
 	public int blood() {
 		return 0xFFcdcdb7;
