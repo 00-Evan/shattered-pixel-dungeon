@@ -35,11 +35,10 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
 import com.watabou.utils.Point;
 
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -51,12 +50,6 @@ public class DesktopLauncher {
 			title = DesktopLauncher.class.getPackage().getSpecificationTitle();
 		}
 		
-		try {
-			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread thread, Throwable throwable) {
@@ -65,9 +58,20 @@ public class DesktopLauncher {
 				PrintWriter pw = new PrintWriter(sw);
 				throwable.printStackTrace(pw);
 				pw.flush();
-				JOptionPane.showMessageDialog(null, title + " has run into an error it can't recover from and has crashed, sorry about that!\n\n" +
+				String exceptionMsg = sw.toString();
+
+				//shorten/simplify exception message to make it easier to fit into a message box
+				exceptionMsg = exceptionMsg.replaceAll("\\(.*:([0-9]*)\\)", "($1)");
+				exceptionMsg = exceptionMsg.replace("com.shatteredpixel.shatteredpixeldungeon.", "");
+				exceptionMsg = exceptionMsg.replace("com.watabou.", "");
+				exceptionMsg = exceptionMsg.replace("com.badlogic.gdx.", "");
+				exceptionMsg = exceptionMsg.replace("\t", "    ");
+
+				TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
+						title + " has run into an error it can't recover from and has crashed, sorry about that!\n\n" +
 						"If you could, please email this error message to the developer (Evan@ShatteredPixel.com):\n\n" +
-						sw.toString(), title + " Has Crashed!", JOptionPane.ERROR_MESSAGE);
+						exceptionMsg,
+						"ok", "error", false );
 				Gdx.app.exit();
 			}
 		});

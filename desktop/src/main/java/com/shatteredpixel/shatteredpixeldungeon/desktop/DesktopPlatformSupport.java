@@ -31,6 +31,8 @@ import com.watabou.noosa.Game;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Point;
 
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
+
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -64,8 +66,17 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	}
 
 	@Override
+	//FIXME tinyfd_inputBox isn't a full solution for this. No support for multiline, looks ugly. Ideally we'd have an opengl-based input box
 	public void promptTextInput(String title, String hintText, int maxLen, boolean multiLine, String posTxt, String negTxt, TextCallback callback) {
-	
+		String result = TinyFileDialogs.tinyfd_inputBox(title, title, hintText);
+		if (result == null){
+			callback.onSelect(false, "");
+		} else {
+			if (result.contains("\r\n"))    result = result.substring(0, result.indexOf("\r\n"));
+			if (result.contains("\n"))      result = result.substring(0, result.indexOf("\n"));
+			if (result.length() > maxLen)   result = result.substring(0, maxLen);
+			callback.onSelect(true, result.replace("\r\n", "").replace("\n", ""));
+		}
 	}
 	
 	private int pageSize;
