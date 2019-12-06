@@ -128,11 +128,12 @@ public abstract class Elemental extends Mob {
 		if (hit( this, enemy, true )) {
 			
 			rangedProc( enemy );
-			rangedCooldown = Random.NormalIntRange( 3, 5 );
 			
 		} else {
 			enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
 		}
+
+		rangedCooldown = Random.NormalIntRange( 3, 5 );
 	}
 	
 	public void onZapComplete() {
@@ -282,7 +283,9 @@ public abstract class Elemental extends Mob {
 		@Override
 		protected void rangedProc( Char enemy ) {
 			Buff.affect( enemy, Blindness.class, 5f );
-			GameScene.flash( 0xFFFFFF );
+			if (enemy == Dungeon.hero) {
+				GameScene.flash(0xFFFFFF);
+			}
 		}
 	}
 	

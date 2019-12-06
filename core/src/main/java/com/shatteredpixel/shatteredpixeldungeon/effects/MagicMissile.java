@@ -94,8 +94,6 @@ public class MagicMissile extends Emitter {
 	public void reset( int type, PointF from, PointF to, Callback callback ) {
 		this.callback = callback;
 		
-		revive();
-		
 		this.to = to;
 		
 		x = from.x;
@@ -174,6 +172,8 @@ public class MagicMissile extends Emitter {
 				pour( LeafParticle.GENERAL, 0.03f );
 				break;
 		}
+
+		revive();
 	}
 	
 	public void size( float size ) {

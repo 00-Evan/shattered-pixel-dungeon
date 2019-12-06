@@ -175,7 +175,7 @@ public class ScrollOfTeleportation extends Scroll {
 			int cell;
 			for (Point p : r.charPlaceablePoints(level)){
 				cell = level.pointToCell(p);
-				if (level.passable[cell] && !level.visited[cell] && !level.secret[cell]){
+				if (level.passable[cell] && !level.visited[cell] && !level.secret[cell] && Actor.findChar(cell) == null){
 					candidates.add(cell);
 				}
 			}

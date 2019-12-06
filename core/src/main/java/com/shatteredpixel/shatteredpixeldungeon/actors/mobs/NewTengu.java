@@ -717,16 +717,18 @@ public class NewTengu extends Mob {
 		
 		@Override
 		public boolean act() {
-			
+
+			toCells.clear();
+
 			if (curCells == null){
 				curCells = new int[1];
 				curCells[0] = target.pos;
-			}
-			
-			toCells.clear();
-			
-			for (Integer c : curCells){
-				spreadFromCell( c );
+				spreadFromCell( curCells[0] );
+
+			} else {
+				for (Integer c : curCells) {
+					if (FireBlob.volumeAt(c, FireBlob.class) > 0) spreadFromCell(c);
+				}
 			}
 			
 			for (Integer c : curCells){

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -121,6 +122,15 @@ public class Bee extends Mob {
 			((Mob)enemy).aggro( this );
 		}
 		return damage;
+	}
+
+	@Override
+	public void add(Buff buff) {
+		super.add(buff);
+		if (buff instanceof Corruption){
+			intelligentAlly = false;
+			setPotInfo(-1, null);
+		}
 	}
 
 	@Override

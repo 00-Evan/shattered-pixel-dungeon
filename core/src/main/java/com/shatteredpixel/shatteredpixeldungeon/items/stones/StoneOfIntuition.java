@@ -125,7 +125,7 @@ public class StoneOfIntuition extends InventoryStone {
 			
 			IconTitle titlebar = new IconTitle();
 			titlebar.icon( new ItemSprite(ItemSpriteSheet.STONE_INTUITION, null) );
-			titlebar.label( Messages.get(StoneOfIntuition.class, "name") );
+			titlebar.label( Messages.titleCase(Messages.get(StoneOfIntuition.class, "name")) );
 			titlebar.setRect( 0, 0, WIDTH, 0 );
 			add( titlebar );
 			
@@ -226,7 +226,7 @@ public class StoneOfIntuition extends InventoryStone {
 					protected void onClick() {
 						curGuess = all[j];
 						guess.visible = true;
-						guess.text( Messages.get(curGuess, "name") );
+						guess.text( Messages.titleCase(Messages.get(curGuess, "name")) );
 						guess.enable(true);
 						super.onClick();
 					}
