@@ -248,7 +248,7 @@ public class OldTengu extends Mob {
 			BossHealthBar.assignBoss(this);
 			if (HP <= HT/2) BossHealthBar.bleed(true);
 			if (HP == HT) {
-				yell(Messages.get(this, "notice_mine", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_mine", Dungeon.hero.name()));
 				for (Char ch : Actor.chars()){
 					if (ch instanceof DriedRose.GhostHero){
 						GLog.n("\n");
@@ -256,7 +256,7 @@ public class OldTengu extends Mob {
 					}
 				}
 			} else {
-				yell(Messages.get(this, "notice_face", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_face", Dungeon.hero.name()));
 			}
 		}
 	}

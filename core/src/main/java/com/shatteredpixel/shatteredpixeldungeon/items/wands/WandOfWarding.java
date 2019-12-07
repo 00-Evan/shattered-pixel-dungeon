@@ -186,11 +186,14 @@ public class WandOfWarding extends Wand {
 
 			viewDistance = 3;
 			state = WANDERING;
-
-			name = Messages.get(this, "name_" + tier );
 		}
 
-		public void upgrade( int wandLevel ){
+		@Override
+		public String name() {
+			return Messages.get(this, "name_" + tier );
+		}
+
+		public void upgrade(int wandLevel ){
 			if (this.wandLevel < wandLevel){
 				this.wandLevel = wandLevel;
 			}
@@ -216,7 +219,6 @@ public class WandOfWarding extends Wand {
 			if (tier < 6){
 				tier++;
 				viewDistance++;
-				name = Messages.get(this, "name_" + tier );
 				updateSpriteState();
 				GameScene.updateFog(pos, viewDistance+1);
 			}
@@ -414,7 +416,6 @@ public class WandOfWarding extends Wand {
 			super.restoreFromBundle(bundle);
 			tier = bundle.getInt(TIER);
 			viewDistance = 2 + tier;
-			name = Messages.get(this, "name_" + tier );
 			wandLevel = bundle.getInt(WAND_LEVEL);
 			totalZaps = bundle.getInt(TOTAL_ZAPS);
 		}

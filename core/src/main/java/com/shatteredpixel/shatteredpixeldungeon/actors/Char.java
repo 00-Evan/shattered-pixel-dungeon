@@ -101,8 +101,6 @@ public abstract class Char extends Actor {
 	
 	public CharSprite sprite;
 	
-	public String name = "mob";
-	
 	public int HT;
 	public int HP;
 	
@@ -135,6 +133,10 @@ public abstract class Char extends Actor {
 		}
 		Dungeon.level.updateFieldOfView( this, fieldOfView );
 		return false;
+	}
+
+	public String name(){
+		return Messages.get(this, "name");
 	}
 
 	public boolean canInteract( Hero h ){
@@ -293,10 +295,10 @@ public abstract class Char extends Actor {
 					}
 
 					Dungeon.fail( getClass() );
-					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name)) );
+					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
 					
 				} else if (this == Dungeon.hero) {
-					GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)) );
+					GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name())) );
 				}
 			}
 			

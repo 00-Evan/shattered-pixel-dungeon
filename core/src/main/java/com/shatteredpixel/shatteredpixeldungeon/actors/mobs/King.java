@@ -163,7 +163,7 @@ public class King extends Mob {
 			beacon.upgrade();
 		}
 		
-		yell( Messages.get(this, "defeated", Dungeon.hero.givenName()) );
+		yell( Messages.get(this, "defeated", Dungeon.hero.name()) );
 	}
 
 	@Override

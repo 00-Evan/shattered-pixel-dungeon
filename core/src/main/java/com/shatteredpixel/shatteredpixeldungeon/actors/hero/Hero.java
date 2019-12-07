@@ -181,11 +181,10 @@ public class Hero extends Char {
 	//This list is maintained so that some logic checks can be skipped
 	// for enemies we know we aren't seeing normally, resultign in better performance
 	public ArrayList<Mob> mindVisionEnemies = new ArrayList<>();
-	
+
 	public Hero() {
 		super();
-		name = Messages.get(this, "name");
-		
+
 		HP = HT = 20;
 		STR = STARTING_STR;
 		
@@ -288,8 +287,9 @@ public class Hero extends Char {
 		return subClass == null || subClass == HeroSubClass.NONE ? heroClass.title() : subClass.title();
 	}
 
-	public String givenName(){
-		return name.equals(Messages.get(this, "name")) ? className() : name;
+	@Override
+	public String name(){
+		return className();
 	}
 	
 	public void live() {

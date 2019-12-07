@@ -58,7 +58,7 @@ public class Imp extends NPC {
 		
 		if (!Quest.given && Dungeon.level.heroFOV[pos]) {
 			if (!seenBefore) {
-				yell( Messages.get(this, "hey", Dungeon.hero.givenName() ) );
+				yell( Messages.get(this, "hey", Dungeon.hero.name() ) );
 			}
 			seenBefore = true;
 		} else {
@@ -104,8 +104,8 @@ public class Imp extends NPC {
 				});
 			} else {
 				tell( Quest.alternative ?
-						Messages.get(this, "monks_2", Dungeon.hero.givenName())
-						: Messages.get(this, "golems_2", Dungeon.hero.givenName()) );
+						Messages.get(this, "monks_2", Dungeon.hero.name())
+						: Messages.get(this, "golems_2", Dungeon.hero.name()) );
 			}
 			
 		} else {
@@ -130,7 +130,7 @@ public class Imp extends NPC {
 	
 	public void flee() {
 		
-		yell( Messages.get(this, "cya", Dungeon.hero.givenName()) );
+		yell( Messages.get(this, "cya", Dungeon.hero.name()) );
 		
 		destroy();
 		sprite.die();

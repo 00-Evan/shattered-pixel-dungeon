@@ -290,7 +290,7 @@ public class NewTengu extends Mob {
 			BossHealthBar.assignBoss(this);
 			if (HP <= HT/2) BossHealthBar.bleed(true);
 			if (HP == HT) {
-				yell(Messages.get(this, "notice_gotcha", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_gotcha", Dungeon.hero.name()));
 				for (Char ch : Actor.chars()){
 					if (ch instanceof DriedRose.GhostHero){
 						GLog.n("\n");
@@ -298,7 +298,7 @@ public class NewTengu extends Mob {
 					}
 				}
 			} else {
-				yell(Messages.get(this, "notice_have", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_have", Dungeon.hero.name()));
 			}
 		}
 	}
