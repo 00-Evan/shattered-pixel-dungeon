@@ -68,8 +68,10 @@ public class DisarmingTrap extends Trap{
 			if (weapon != null && !weapon.cursed) {
 
 				int cell;
+				int tries = 20;
 				do {
 					cell = Dungeon.level.randomRespawnCell();
+					if (tries-- < 0 && cell != -1) break;
 
 					PathFinder.buildDistanceMap(pos, Dungeon.level.passable);
 				} while (cell == -1 || PathFinder.distance[cell] < 10 || PathFinder.distance[cell] > 20);
