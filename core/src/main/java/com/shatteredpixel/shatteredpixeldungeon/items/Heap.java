@@ -275,6 +275,10 @@ public class Heap implements Bundlable {
 					items.remove(item);
 					((Potion) item).shatter(pos);
 
+				} else if (item instanceof Honeypot.ShatteredPot) {
+					items.remove(item);
+					((Honeypot.ShatteredPot) item).destroyPot(pos);
+
 				} else if (item instanceof Bomb) {
 					items.remove( item );
 					((Bomb) item).explode(pos);

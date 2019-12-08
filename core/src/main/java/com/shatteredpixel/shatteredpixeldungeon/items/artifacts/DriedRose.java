@@ -619,6 +619,10 @@ public class DriedRose extends Artifact {
 			damage = super.attackProc(enemy, damage);
 			if (rose != null && rose.weapon != null) {
 				damage = rose.weapon.proc( this, enemy, damage );
+				if (!enemy.isAlive() && enemy == Dungeon.hero){
+					Dungeon.fail(getClass());
+					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+				}
 			}
 			return damage;
 		}

@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -120,7 +121,12 @@ public class Statue extends Mob {
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
-		return weapon.proc( this, enemy, damage );
+		damage = weapon.proc( this, enemy, damage );
+		if (!enemy.isAlive() && enemy == Dungeon.hero){
+			Dungeon.fail(getClass());
+			GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+		}
+		return damage;
 	}
 	
 	@Override
