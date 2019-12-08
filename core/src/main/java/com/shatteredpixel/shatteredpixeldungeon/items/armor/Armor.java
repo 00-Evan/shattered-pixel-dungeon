@@ -74,8 +74,8 @@ public class Armor extends EquipableItem {
 	protected static final String AC_DETACH       = "DETACH";
 	
 	public enum Augment {
-		EVASION (1.5f , -1f),
-		DEFENSE (-1.5f, 1f),
+		EVASION (2f , -1f),
+		DEFENSE (-2f, 1f),
 		NONE	(0f   ,  0f);
 		
 		private float evasionFactor;
