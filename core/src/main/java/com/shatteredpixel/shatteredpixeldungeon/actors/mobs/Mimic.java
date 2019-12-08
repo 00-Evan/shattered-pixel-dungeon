@@ -31,17 +31,22 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -53,6 +58,12 @@ public class Mimic extends Mob {
 		spriteClass = MimicSprite.class;
 
 		properties.add(Property.DEMONIC);
+
+		EXP = 0;
+		
+		//mimics are neutral when hidden
+		alignment = Alignment.NEUTRAL;
+		state = PASSIVE;
 	}
 	
 	public ArrayList<Item> items;
@@ -75,24 +86,111 @@ public class Mimic extends Mob {
 		}
 		adjustStats( bundle.getInt( LEVEL ) );
 		super.restoreFromBundle(bundle);
+		if (state != PASSIVE && alignment == Alignment.NEUTRAL){
+			alignment = Alignment.ENEMY;
+		}
 	}
-	
+
+	@Override
+	public String name() {
+		if (alignment == Alignment.NEUTRAL){
+			return Messages.get(Heap.class, "chest");
+		} else {
+			return super.name();
+		}
+	}
+
+	@Override
+	public String description() {
+		if (alignment == Alignment.NEUTRAL){
+			return Messages.get(Heap.class, "chest_desc");
+		} else {
+			return super.description();
+		}
+	}
+
+	@Override
+	public CharSprite sprite() {
+		MimicSprite sprite = (MimicSprite) super.sprite();
+		if (alignment == Alignment.NEUTRAL) sprite.hideMimic();
+		return sprite;
+	}
+
+	@Override
+	public boolean interact() {
+		if (alignment != Alignment.NEUTRAL){
+			return super.interact();
+		}
+		stopHiding();
+		doAttack(Dungeon.hero);
+		Dungeon.hero.busy();
+		Dungeon.hero.sprite.operate(pos);
+		return false;
+	}
+
+	@Override
+	public void onAttackComplete() {
+		super.onAttackComplete();
+		if (alignment == Alignment.NEUTRAL){
+			alignment = Alignment.ENEMY;
+			Dungeon.hero.spendAndNext(1f);
+		}
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
+		if (state == PASSIVE){
+			alignment = Alignment.ENEMY;
+			stopHiding();
+		}
+		super.damage(dmg, src);
+	}
+
+	public void stopHiding(){
+		state = HUNTING;
+		if (Dungeon.level.heroFOV[pos] && Actor.chars().contains(this)) {
+			enemy = Dungeon.hero;
+			target = Dungeon.hero.pos;
+			enemySeen = true;
+			GLog.w(Messages.get(this, "reveal") );
+			CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
+			Sample.INSTANCE.play(Assets.SND_MIMIC);
+		}
+	}
+
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( HT / 10, HT / 4 );
+		if (alignment == Alignment.NEUTRAL){
+			return Random.NormalIntRange( 2*level, 2 + 3*level);
+		} else {
+			return Random.NormalIntRange( 1 + level, 2 + 2*level);
+		}
 	}
-	
+
+	@Override
+	public int drRoll() {
+		return Random.NormalIntRange(0, 1 + level/2);
+	}
+
+	@Override
+	public void beckon( int cell ) {
+		// Do nothing
+	}
+
 	@Override
 	public int attackSkill( Char target ) {
-		return 9 + level;
+		if (target != null && alignment == Alignment.NEUTRAL){
+			return INFINITE_ACCURACY;
+		} else {
+			return 9 + level;
+		}
 	}
 	
 	public void adjustStats( int level ) {
 		this.level = level;
 		
 		HP = HT = (1 + level) * 6;
-		EXP = 2 + 2 * (level - 1) / 5;
-		defenseSkill = attackSkill( null ) / 2;
+		defenseSkill = 2 + level/2;
 		
 		enemySeen = true;
 	}
@@ -120,42 +218,16 @@ public class Mimic extends Mob {
 		return true;
 	}
 
+	public static Mimic spawnAt( int pos, Item item ){
+		return spawnAt( pos, Arrays.asList(item));
+	}
+
 	public static Mimic spawnAt( int pos, List<Item> items ) {
-		if (Dungeon.level.pit[pos]) return null;
-		Char ch = Actor.findChar( pos );
-		if (ch != null) {
-			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int n : PathFinder.NEIGHBOURS8) {
-				int cell = pos + n;
-				if ((Dungeon.level.passable[cell] || Dungeon.level.avoid[cell]) && Actor.findChar( cell ) == null) {
-					candidates.add( cell );
-				}
-			}
-			if (candidates.size() > 0) {
-				int newPos = Random.element( candidates );
-				Actor.addDelayed( new Pushing( ch, ch.pos, newPos ), -1 );
-				
-				ch.pos = newPos;
-				Dungeon.level.occupyCell(ch );
-				
-			} else {
-				return null;
-			}
-		}
 		
 		Mimic m = new Mimic();
 		m.items = new ArrayList<>( items );
 		m.adjustStats( Dungeon.depth );
 		m.pos = pos;
-		m.state = m.HUNTING;
-		GameScene.add( m, 1 );
-		
-		m.sprite.turnTo( pos, Dungeon.hero.pos );
-		
-		if (Dungeon.level.heroFOV[m.pos]) {
-			CellEmitter.get( pos ).burst( Speck.factory( Speck.STAR ), 10 );
-			Sample.INSTANCE.play( Assets.SND_MIMIC );
-		}
 
 		//generate an extra reward for killing the mimic
 		Item reward = null;

@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlowParticle;
@@ -375,6 +376,14 @@ public abstract class Level implements Bundlable {
 		
 		buildFlagMaps();
 		cleanWalls();
+
+		//compat with pre-0.8.0 saves
+		for (Heap h : heaps.valueList()){
+			if (h.type == Heap.Type.MIMIC){
+				heaps.remove(h.pos);
+				mobs.add(Mimic.spawnAt(h.pos, h.items));
+			}
+		}
 	}
 	
 	@Override

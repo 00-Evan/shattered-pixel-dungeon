@@ -72,7 +72,7 @@ public class Heap implements Bundlable {
 		TOMB,
 		SKELETON,
 		REMAINS,
-		MIMIC
+		MIMIC //remains for pre-0.8.0 compatibility. There are converted to mimics on level load
 	}
 	public Type type = Type.HEAP;
 	
@@ -87,11 +87,7 @@ public class Heap implements Bundlable {
 	public void open( Hero hero ) {
 		switch (type) {
 		case MIMIC:
-			if (Mimic.spawnAt(pos, items) != null) {
-				destroy();
-			} else {
-				type = Type.CHEST;
-			}
+			type = Type.CHEST;
 			break;
 		case TOMB:
 			Wraith.spawnAround( hero.pos );
@@ -207,15 +203,6 @@ public class Heap implements Bundlable {
 	
 	public void burn() {
 
-		if (type == Type.MIMIC) {
-			Mimic m = Mimic.spawnAt( pos, items );
-			if (m != null) {
-				Buff.affect( m, Burning.class ).reignite( m );
-				m.sprite.emitter().burst( FlameParticle.FACTORY, 5 );
-				destroy();
-			}
-		}
-
 		if (type != Type.HEAP) {
 			return;
 		}
@@ -285,7 +272,7 @@ public class Heap implements Bundlable {
 			for (Item item : items.toArray( new Item[0] )) {
 
 				if (item instanceof Potion) {
-					items.remove( item );
+					items.remove(item);
 					((Potion) item).shatter(pos);
 
 				} else if (item instanceof Bomb) {
@@ -312,14 +299,6 @@ public class Heap implements Bundlable {
 	}
 	
 	public void freeze() {
-
-		if (type == Type.MIMIC) {
-			Mimic m = Mimic.spawnAt( pos, items );
-			if (m != null) {
-				Buff.prolong( m, Frost.class, Frost.duration( m ) * Random.Float( 1.0f, 1.5f ) );
-				destroy();
-			}
-		}
 
 		if (type != Type.HEAP) {
 			return;

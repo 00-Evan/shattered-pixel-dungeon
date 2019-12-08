@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.traps;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Acidic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Albino;
@@ -121,8 +122,10 @@ public class DistortionTrap extends Trap{
 							mob = new Piranha();
 							break;
 						case 2:
-							Mimic.spawnAt(point, new ArrayList<>());
-							continue; //mimics spawn themselves, no need to do more
+							mob = Mimic.spawnAt(point, new ArrayList<>());
+							((Mimic)mob).stopHiding();
+							mob.alignment = Char.Alignment.ENEMY;
+							break;
 						case 3:
 							mob = Statue.random();
 							break;

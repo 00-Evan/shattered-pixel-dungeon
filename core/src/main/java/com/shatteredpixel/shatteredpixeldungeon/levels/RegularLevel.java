@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -277,6 +278,16 @@ public abstract class RegularLevel extends Level {
 		int nItems = 3 + Random.chances(new float[]{6, 3, 1});
 		
 		for (int i=0; i < nItems; i++) {
+
+			Item toDrop = Generator.random();
+			if (toDrop == null) continue;
+
+			int cell = randomDropCell();
+			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+				map[cell] = Terrain.GRASS;
+				losBlocking[cell] = false;
+			}
+
 			Heap.Type type = null;
 			switch (Random.Int( 20 )) {
 			case 0:
@@ -289,21 +300,17 @@ public abstract class RegularLevel extends Level {
 				type = Heap.Type.CHEST;
 				break;
 			case 5:
-				type = Dungeon.depth > 1 ? Heap.Type.MIMIC : Heap.Type.CHEST;
+				if (Dungeon.depth > 1 && findMob(cell) == null){
+					mobs.add(Mimic.spawnAt(cell, toDrop));
+					continue;
+				}
+				type = Heap.Type.CHEST;
 				break;
 			default:
 				type = Heap.Type.HEAP;
 			}
-			int cell = randomDropCell();
-			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
-				map[cell] = Terrain.GRASS;
-				losBlocking[cell] = false;
-			}
-			
-			Item toDrop = Generator.random();
 
-			if (toDrop == null) continue;
-
+			//TODO gold mimics
 			if ((toDrop instanceof Artifact && Random.Int(2) == 0) ||
 					(toDrop.isUpgradable() && Random.Int(4 - toDrop.level()) == 0)){
 				Heap dropped = drop( toDrop, cell );

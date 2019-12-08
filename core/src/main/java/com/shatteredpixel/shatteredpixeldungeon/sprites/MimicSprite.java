@@ -22,34 +22,57 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.watabou.noosa.TextureFilm;
 
 public class MimicSprite extends MobSprite {
-	
+
+	private Animation hiding;
+
 	public MimicSprite() {
 		super();
-		
+
 		texture( Assets.MIMIC );
-		
+
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
-		
+
+		hiding = new Animation( 1, true );
+		hiding.frames( frames, 0, 0, 0, 0, 0, 0, 1);
+
 		idle = new Animation( 5, true );
-		idle.frames( frames, 0, 0, 0, 1, 1 );
-		
+		idle.frames( frames, 2, 2, 2, 3, 3 );
+
 		run = new Animation( 10, true );
-		run.frames( frames, 0, 1, 2, 3, 3, 2, 1 );
-		
+		run.frames( frames, 2, 3, 4, 5, 5, 4, 3 );
+
 		attack = new Animation( 10, false );
-		attack.frames( frames, 0, 4, 5, 6 );
-		
+		attack.frames( frames, 2, 6, 7, 8 );
+
 		die = new Animation( 5, false );
-		die.frames( frames, 7, 8, 9 );
-		
+		die.frames( frames, 9, 10, 11 );
+
 		play( idle );
 	}
 	
 	@Override
-	public int blood() {
-		return 0xFFcb9700;
+	public void linkVisuals(Char ch) {
+		super.linkVisuals(ch);
+		if (ch.alignment == Char.Alignment.NEUTRAL) {
+			hideMimic();
+		}
 	}
+
+	public void hideMimic(){
+		play(hiding);
+		hideSleep();
+	}
+
+	@Override
+	public synchronized void showSleep() {
+		if (curAnim == hiding){
+			return;
+		}
+		super.showSleep();
+	}
+
 }
