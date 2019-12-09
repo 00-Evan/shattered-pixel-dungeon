@@ -219,12 +219,28 @@ public class Mimic extends Mob {
 	}
 
 	public static Mimic spawnAt( int pos, Item item ){
-		return spawnAt( pos, Arrays.asList(item));
+		return spawnAt( pos, Arrays.asList(item), Mimic.class);
+	}
+
+	public static Mimic spawnAt( int pos, Item item, Class mimicType ){
+		return spawnAt( pos, Arrays.asList(item), mimicType);
 	}
 
 	public static Mimic spawnAt( int pos, List<Item> items ) {
-		
-		Mimic m = new Mimic();
+		return spawnAt( pos, items, Mimic.class);
+	}
+
+	public static Mimic spawnAt( int pos, List<Item> items, Class mimicType ) {
+
+		Mimic m;
+		if (mimicType == GoldenMimic.class){
+			m = new GoldenMimic();
+		} else if (mimicType == CrystalMimic.class) {
+			m = new CrystalMimic();
+		} else {
+			m = new Mimic();
+		}
+
 		m.items = new ArrayList<>( items );
 		m.adjustStats( Dungeon.depth );
 		m.pos = pos;

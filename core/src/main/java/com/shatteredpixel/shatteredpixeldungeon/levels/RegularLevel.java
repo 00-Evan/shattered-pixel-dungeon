@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -306,17 +307,19 @@ public abstract class RegularLevel extends Level {
 				}
 				type = Heap.Type.CHEST;
 				break;
-			default:
-				type = Heap.Type.HEAP;
 			}
 
-			//TODO gold mimics
 			if ((toDrop instanceof Artifact && Random.Int(2) == 0) ||
 					(toDrop.isUpgradable() && Random.Int(4 - toDrop.level()) == 0)){
-				Heap dropped = drop( toDrop, cell );
-				if (heaps.get(cell) == dropped) {
-					dropped.type = Heap.Type.LOCKED_CHEST;
-					addItemToSpawn(new GoldenKey(Dungeon.depth));
+
+				if (Random.Int(5) == 0 && findMob(cell) == null){
+					mobs.add(Mimic.spawnAt(cell, toDrop, GoldenMimic.class));
+				} else {
+					Heap dropped = drop(toDrop, cell);
+					if (heaps.get(cell) == dropped) {
+						dropped.type = Heap.Type.LOCKED_CHEST;
+						addItemToSpawn(new GoldenKey(Dungeon.depth));
+					}
 				}
 			} else {
 				Heap dropped = drop( toDrop, cell );

@@ -29,27 +29,33 @@ public class MimicSprite extends MobSprite {
 
 	private Animation hiding;
 
+	protected int texOffset(){
+		return 0;
+	}
+
 	public MimicSprite() {
 		super();
+
+		int c = texOffset();
 
 		texture( Assets.MIMIC );
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 
 		hiding = new Animation( 1, true );
-		hiding.frames( frames, 0, 0, 0, 0, 0, 0, 1);
+		hiding.frames( frames, 0+c, 0+c, 0+c, 0+c, 0+c, 0+c, 1+c);
 
 		idle = new Animation( 5, true );
-		idle.frames( frames, 2, 2, 2, 3, 3 );
+		idle.frames( frames, 2+c, 2+c, 2+c, 3+c, 3+c );
 
 		run = new Animation( 10, true );
-		run.frames( frames, 2, 3, 4, 5, 5, 4, 3 );
+		run.frames( frames, 2+c, 3+c, 4+c, 5+c, 5+c, 4+c, 3+c );
 
 		attack = new Animation( 10, false );
-		attack.frames( frames, 2, 6, 7, 8 );
+		attack.frames( frames, 2+c, 6+c, 7+c, 8+c );
 
 		die = new Animation( 5, false );
-		die.frames( frames, 9, 10, 11 );
+		die.frames( frames, 9+c, 10+c, 11+c );
 
 		play( idle );
 	}
@@ -73,6 +79,20 @@ public class MimicSprite extends MobSprite {
 			return;
 		}
 		super.showSleep();
+	}
+
+	public static class Golden extends MimicSprite{
+		@Override
+		protected int texOffset() {
+			return 16;
+		}
+	}
+
+	public static class Crystal extends MimicSprite{
+		@Override
+		protected int texOffset() {
+			return 32;
+		}
 	}
 
 }
