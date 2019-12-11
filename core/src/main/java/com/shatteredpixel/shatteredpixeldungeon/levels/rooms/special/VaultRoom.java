@@ -41,6 +41,11 @@ import java.util.Arrays;
 
 public class VaultRoom extends SpecialRoom {
 
+	//size is reduced slightly to remove rare AI issues with crystal mimics
+	@Override
+	public int maxHeight() { return 8; }
+	public int maxWidth() { return 8; }
+
 	public void paint( Level level ) {
 
 		Painter.fill( level, this, Terrain.WALL );

@@ -300,7 +300,7 @@ public abstract class RegularLevel extends Level {
 			case 4:
 				type = Heap.Type.CHEST;
 				break;
-			case 5:
+			case 5: default:
 				if (Dungeon.depth > 1 && findMob(cell) == null){
 					mobs.add(Mimic.spawnAt(cell, toDrop));
 					continue;
@@ -312,7 +312,7 @@ public abstract class RegularLevel extends Level {
 			if ((toDrop instanceof Artifact && Random.Int(2) == 0) ||
 					(toDrop.isUpgradable() && Random.Int(4 - toDrop.level()) == 0)){
 
-				if (Random.Int(5) == 0 && findMob(cell) == null){
+				if (Dungeon.depth > 1 && Random.Int(10) == 0 && findMob(cell) == null){
 					mobs.add(Mimic.spawnAt(cell, toDrop, GoldenMimic.class));
 				} else {
 					Heap dropped = drop(toDrop, cell);

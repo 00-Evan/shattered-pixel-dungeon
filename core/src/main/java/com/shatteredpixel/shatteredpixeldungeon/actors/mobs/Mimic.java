@@ -161,7 +161,7 @@ public class Mimic extends Mob {
 	@Override
 	public int damageRoll() {
 		if (alignment == Alignment.NEUTRAL){
-			return Random.NormalIntRange( 2*level, 2 + 3*level);
+			return Random.NormalIntRange( 2 + 2*level, 3 + 3*level);
 		} else {
 			return Random.NormalIntRange( 1 + level, 2 + 2*level);
 		}
@@ -182,7 +182,7 @@ public class Mimic extends Mob {
 		if (target != null && alignment == Alignment.NEUTRAL){
 			return INFINITE_ACCURACY;
 		} else {
-			return 9 + level;
+			return 6 + level;
 		}
 	}
 	
@@ -246,6 +246,12 @@ public class Mimic extends Mob {
 		m.pos = pos;
 
 		//generate an extra reward for killing the mimic
+		m.generatePrize();
+		
+		return m;
+	}
+
+	protected void generatePrize(){
 		Item reward = null;
 		do {
 			switch (Random.Int(5)) {
@@ -266,9 +272,7 @@ public class Mimic extends Mob {
 					break;
 			}
 		} while (reward == null || Challenges.isItemBlocked(reward));
-		m.items.add(reward);
-		
-		return m;
+		items.add(reward);
 	}
 	
 	{

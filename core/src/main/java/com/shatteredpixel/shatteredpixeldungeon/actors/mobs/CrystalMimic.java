@@ -24,22 +24,37 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class CrystalMimic extends Mimic {
 
 	{
 		spriteClass = MimicSprite.Crystal.class;
+
+		FLEEING = new Fleeing();
 	}
 
 	@Override
@@ -54,7 +69,6 @@ public class CrystalMimic extends Mimic {
 	@Override
 	public String description() {
 		if (alignment == Alignment.NEUTRAL){
-			//TODO variable based on contents
 			for (Item i : items){
 				if (i instanceof Artifact){
 					return Messages.get(Heap.class, "crystal_chest_desc", Messages.get(Heap.class, "artifact"));
@@ -70,8 +84,27 @@ public class CrystalMimic extends Mimic {
 		}
 	}
 
+	//does not deal bonus damage, steals instead. See attackProc
+	@Override
+	public int damageRoll() {
+		if (alignment == Alignment.NEUTRAL) {
+			alignment = Alignment.ENEMY;
+			int dmg = super.damageRoll();
+			alignment = Alignment.NEUTRAL;
+			return dmg;
+		} else {
+			return super.damageRoll();
+		}
+	}
+
 	public void stopHiding(){
-		state = HUNTING;
+		state = FLEEING;
+		//haste for 2 turns if attacking
+		if (alignment == Alignment.NEUTRAL){
+			Buff.affect(this, Haste.class, 2f);
+		} else {
+			Buff.affect(this, Haste.class, 1f);
+		}
 		if (Dungeon.level.heroFOV[pos] && Actor.chars().contains(this)) {
 			enemy = Dungeon.hero;
 			target = Dungeon.hero.pos;
@@ -82,6 +115,82 @@ public class CrystalMimic extends Mimic {
 		}
 	}
 
-	//TODO different AI
+	@Override
+	public int attackProc(Char enemy, int damage) {
+		if (alignment == Alignment.NEUTRAL && enemy == Dungeon.hero){
+			steal( Dungeon.hero );
+
+		} else {
+			ArrayList<Integer> candidates = new ArrayList<>();
+			for (int i : PathFinder.NEIGHBOURS8){
+				if (Dungeon.level.passable[pos+i] && Actor.findChar(pos+i) == null){
+					candidates.add(pos + i);
+				}
+			}
+
+			if (!candidates.isEmpty()){
+				ScrollOfTeleportation.appear(enemy, Random.element(candidates));
+			}
+
+			if (alignment == Alignment.ENEMY) state = FLEEING;
+		}
+		return super.attackProc(enemy, damage);
+	}
+
+	protected void steal( Hero hero ) {
+
+		int tries = 10;
+		Item item;
+		do {
+			item = hero.belongings.randomUnequipped();
+		} while (tries-- > 0 && (item == null || item.unique || item.level() > 0));
+
+		if (item != null && !item.unique && item.level() < 1 ) {
+
+			GLog.w( Messages.get(this, "ate", item.name()) );
+			if (!item.stackable) {
+				Dungeon.quickslot.convertToPlaceholder(item);
+			}
+			item.updateQuickslot();
+
+			if (item instanceof Honeypot){
+				items.add(((Honeypot)item).shatter(this, this.pos));
+				item.detach( hero.belongings.backpack );
+			} else {
+				items.add(item.detach( hero.belongings.backpack ));
+				if ( item instanceof Honeypot.ShatteredPot)
+					((Honeypot.ShatteredPot)item).pickupPot(this);
+			}
+
+		}
+	}
+
+	@Override
+	protected void generatePrize() {
+		//Crystal mimic already contains a prize item. Just guarantee it isn't cursed.
+		for (Item i : items){
+			i.cursed = false;
+			i.cursedKnown = true;
+		}
+	}
+
+	private class Fleeing extends Mob.Fleeing{
+		@Override
+		protected void nowhereToRun() {
+			if (buff( Terror.class ) == null && buff( Corruption.class ) == null) {
+				if (enemySeen) {
+					sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Mob.class, "rage"));
+					state = HUNTING;
+				} else {
+					GLog.n( Messages.get(CrystalMimic.class, "escaped"));
+					if (Dungeon.level.heroFOV[pos]) CellEmitter.get(pos).burst(Speck.factory(Speck.WOOL), 6);
+					destroy();
+					sprite.killAndErase();
+				}
+			} else {
+				super.nowhereToRun();
+			}
+		}
+	}
 
 }

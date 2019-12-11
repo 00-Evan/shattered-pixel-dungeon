@@ -26,13 +26,17 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
-//TODO should enhance the reward from these a bit, as they are much harder
 public class GoldenMimic extends Mimic {
 
 	{
@@ -71,6 +75,24 @@ public class GoldenMimic extends Mimic {
 
 	@Override
 	public void adjustStats(int level) {
-		super.adjustStats((int)Math.ceil(level*1.5f));
+		super.adjustStats(Math.round(level*1.33f));
+	}
+
+	@Override
+	protected void generatePrize() {
+		super.generatePrize();
+		//all existing prize items are guaranteed uncursed
+		for (Item i : items){
+			if (i instanceof EquipableItem || i instanceof Wand){
+				i.cursed = false;
+				i.cursedKnown = true;
+				if (i instanceof Weapon && ((Weapon) i).hasCurseEnchant()){
+					((Weapon) i).enchant(null);
+				}
+				if (i instanceof Armor && ((Armor) i).hasCurseGlyph()){
+					((Armor) i).inscribe(null);
+				}
+			}
+		}
 	}
 }
