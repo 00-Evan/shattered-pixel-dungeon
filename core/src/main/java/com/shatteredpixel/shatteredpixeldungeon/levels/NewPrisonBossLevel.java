@@ -585,7 +585,7 @@ public class NewPrisonBossLevel extends Level {
 							
 							FadingTraps f = new FadingTraps();
 							f.setCoveringArea(mazeCells[i]);
-							f.fadeDelay = 1f;
+							f.fadeDelay = 2f;
 							GameScene.add(f, false);
 							customTiles.add(f);
 							
@@ -680,7 +680,7 @@ public class NewPrisonBossLevel extends Level {
 		GameScene.updateMap();
 		
 		FadingTraps t = new FadingTraps();
-		t.fadeDelay = 1f;
+		t.fadeDelay = 2f;
 		t.setCoveringArea(tenguCell);
 		GameScene.add(t, false);
 		customTiles.add(t);
@@ -795,7 +795,7 @@ public class NewPrisonBossLevel extends Level {
 			Actor.addDelayed(new Actor() {
 				
 				{
-					actPriority = HERO_PRIO-1;
+					actPriority = HERO_PRIO+1;
 				}
 				
 				@Override
