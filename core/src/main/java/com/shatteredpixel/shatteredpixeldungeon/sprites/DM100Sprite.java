@@ -71,4 +71,12 @@ public class DM100Sprite extends MobSprite {
 		turnTo( ch.pos, pos );
 		play( zap );
 	}
+
+	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			idle();
+		}
+		super.onComplete( anim );
+	}
 }

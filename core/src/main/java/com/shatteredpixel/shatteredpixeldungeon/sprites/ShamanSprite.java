@@ -77,6 +77,14 @@ public abstract class ShamanSprite extends MobSprite {
 				} );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
+
+	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			idle();
+		}
+		super.onComplete( anim );
+	}
 	
 	public static class Red extends ShamanSprite {
 		{

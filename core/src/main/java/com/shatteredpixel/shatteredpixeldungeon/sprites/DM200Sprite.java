@@ -75,4 +75,12 @@ public class DM200Sprite extends MobSprite {
 		Sample.INSTANCE.play( Assets.SND_PUFF );
 	}
 
+	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			idle();
+		}
+		super.onComplete( anim );
+	}
+
 }
