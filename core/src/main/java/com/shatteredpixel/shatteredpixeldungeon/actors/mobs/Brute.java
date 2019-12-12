@@ -53,10 +53,9 @@ public class Brute extends Mob {
 	
 	@Override
 	public int damageRoll() {
-		//TODO final balance decisions on these numbers
 		return buff(BruteRage.class) != null ?
-			Random.NormalIntRange( 15, 45 ) :
-			Random.NormalIntRange( 6, 26 );
+			Random.NormalIntRange( 15, 40 ) :
+			Random.NormalIntRange( 5, 25 );
 	}
 	
 	@Override

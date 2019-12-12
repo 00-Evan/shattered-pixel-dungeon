@@ -59,7 +59,7 @@ public class ScrollOfRetribution extends Scroll {
 			}
 		}
 		
-		Buff.prolong(curUser, Weakness.class, Weakness.DURATION/2f);
+		Buff.prolong(curUser, Weakness.class, Weakness.DURATION);
 		Buff.prolong(curUser, Blindness.class, Math.round(6 + power));
 		Dungeon.observe();
 		

@@ -24,11 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
-//TODO need to re-evaluate various cases cases where this was used
-// now that warlocks give a different debuff and shamen have 3 different ones
 public class Weakness extends FlavourBuff {
 
-	public static final float DURATION = 30f;
+	public static final float DURATION = 20f;
 
 	{
 		type = buffType.NEGATIVE;
