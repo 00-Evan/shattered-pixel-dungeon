@@ -95,7 +95,7 @@ public class Imp extends NPC {
 		if (Quest.given) {
 			
 			DwarfToken tokens = Dungeon.hero.belongings.getItem( DwarfToken.class );
-			if (tokens != null && (tokens.quantity() >= 8 || (!Quest.alternative && tokens.quantity() >= 6))) {
+			if (tokens != null && (tokens.quantity() >= 5 || (!Quest.alternative && tokens.quantity() >= 4))) {
 				Game.runOnRenderThread(new Callback() {
 					@Override
 					public void call() {
@@ -207,7 +207,19 @@ public class Imp extends NPC {
 				level.mobs.add( npc );
 				
 				spawned = true;
-				alternative = Random.Int( 2 ) == 0;
+
+				//always assigns monks on floor 17, golems on floor 19, and 50/50 between either on 18
+				switch (Dungeon.depth){
+					case 17: default:
+						alternative = true;
+						break;
+					case 18:
+						alternative = Random.Int(2) == 0;
+						break;
+					case 19:
+						alternative = false;
+						break;
+				}
 				
 				given = false;
 				
