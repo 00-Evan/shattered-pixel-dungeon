@@ -88,7 +88,7 @@ public class RingOfMight extends Ring {
 	}
 	
 	public static float HTMultiplier( Char target ){
-		return (float)Math.pow(1.035, getBonus(target, Might.class));
+		return (float)Math.pow(1.035, getBuffedBonus(target, Might.class));
 	}
 
 	public class Might extends RingBuff {

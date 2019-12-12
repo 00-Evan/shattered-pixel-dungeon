@@ -114,11 +114,11 @@ public class RingOfElements extends Ring {
 	}
 	
 	public static float resist( Char target, Class effect ){
-		if (getBonus(target, Resistance.class) == 0) return 1f;
+		if (getBuffedBonus(target, Resistance.class) == 0) return 1f;
 		
 		for (Class c : RESISTS){
 			if (c.isAssignableFrom(effect)){
-				return (float)Math.pow(0.80, getBonus(target, Resistance.class));
+				return (float)Math.pow(0.80, getBuffedBonus(target, Resistance.class));
 			}
 		}
 		

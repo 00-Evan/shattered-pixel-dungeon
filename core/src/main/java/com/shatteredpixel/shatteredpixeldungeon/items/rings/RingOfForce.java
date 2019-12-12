@@ -35,7 +35,7 @@ public class RingOfForce extends Ring {
 	}
 	
 	public static int armedDamageBonus( Char ch ){
-		return getBonus( ch, Force.class);
+		return getBuffedBonus( ch, Force.class);
 	}
 	
 	
@@ -52,7 +52,7 @@ public class RingOfForce extends Ring {
 
 	public static int damageRoll( Hero hero ){
 		if (hero.buff(Force.class) != null) {
-			int level = getBonus(hero, Force.class);
+			int level = getBuffedBonus(hero, Force.class);
 			float tier = tier(hero.STR());
 			return Random.NormalIntRange(min(level, tier), max(level, tier));
 		} else {

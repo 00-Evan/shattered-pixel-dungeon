@@ -42,7 +42,7 @@ public class RingOfEnergy extends Ring {
 	}
 	
 	public static float wandChargeMultiplier( Char target ){
-		return (float)Math.pow(1.30, getBonus(target, Energy.class));
+		return (float)Math.pow(1.30, getBuffedBonus(target, Energy.class));
 	}
 	
 	public class Energy extends RingBuff {
