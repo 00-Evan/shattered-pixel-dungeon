@@ -129,7 +129,7 @@ public class PathFinder {
 	
 	public static int getStepBack( int cur, int from, boolean[] passable ) {
 
-		int d = buildEscapeDistanceMap( cur, from, 2f, passable );
+		int d = buildEscapeDistanceMap( cur, from, 5f, passable );
 		for (int i=0; i < size; i++) {
 			goals[i] = distance[i] == d;
 		}
