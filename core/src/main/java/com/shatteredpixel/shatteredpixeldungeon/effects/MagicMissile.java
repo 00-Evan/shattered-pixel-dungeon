@@ -66,6 +66,7 @@ public class MagicMissile extends Emitter {
 	public static final int SHAMAN_RED      = 11;
 	public static final int SHAMAN_BLUE     = 12;
 	public static final int SHAMAN_PURPLE   = 13;
+	public static final int TOXIC_VENT      = 14;
 
 	public static final int FIRE_CONE       = 100;
 	public static final int FOLIAGE_CONE    = 101;
@@ -161,6 +162,10 @@ public class MagicMissile extends Emitter {
 			case SHAMAN_PURPLE:
 				size( 2 );
 				pour( ShamanParticle.PURPLE, 0.01f );
+				break;
+			case TOXIC_VENT:
+				size( 10 );
+				pour( Speck.factory(Speck.TOXIC), 0.02f );
 				break;
 
 			case FIRE_CONE:
