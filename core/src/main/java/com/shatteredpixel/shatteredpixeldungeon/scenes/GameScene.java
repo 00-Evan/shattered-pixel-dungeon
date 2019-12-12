@@ -379,7 +379,7 @@ public class GameScene extends PixelScene {
 		ArrayList<Item> dropped = Dungeon.droppedItems.get( Dungeon.depth );
 		if (dropped != null) {
 			for (Item item : dropped) {
-				int pos = Dungeon.level.randomRespawnCell();
+				int pos = Dungeon.level.randomRespawnCell( null );
 				if (item instanceof Potion) {
 					((Potion)item).shatter( pos );
 				} else if (item instanceof Plant.Seed) {
@@ -401,7 +401,7 @@ public class GameScene extends PixelScene {
 			//try to find a tile with no heap, otherwise just stick items onto a heap.
 			int tries = 100;
 			do {
-				pos = Dungeon.level.randomRespawnCell();
+				pos = Dungeon.level.randomRespawnCell( null );
 				tries--;
 			} while (tries > 0 && Dungeon.level.heaps.get(pos) != null);
 			for (Item item : ported) {

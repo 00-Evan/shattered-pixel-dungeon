@@ -143,7 +143,7 @@ public class Ghost extends NPC {
 
 					int newPos = -1;
 					for (int i = 0; i < 10; i++) {
-						newPos = Dungeon.level.randomRespawnCell();
+						newPos = Dungeon.level.randomRespawnCell( this );
 						if (newPos != -1) {
 							break;
 						}
@@ -173,7 +173,7 @@ public class Ghost extends NPC {
 					txt_quest = Messages.get(this, "crab_1", Dungeon.hero.name()); break;
 			}
 
-			questBoss.pos = Dungeon.level.randomRespawnCell();
+			questBoss.pos = Dungeon.level.randomRespawnCell( this );
 
 			if (questBoss.pos != -1) {
 				GameScene.add(questBoss);
@@ -273,7 +273,7 @@ public class Ghost extends NPC {
 				
 				Ghost ghost = new Ghost();
 				do {
-					ghost.pos = level.randomRespawnCell();
+					ghost.pos = level.randomRespawnCell( ghost );
 				} while (ghost.pos == -1);
 				level.mobs.add( ghost );
 				

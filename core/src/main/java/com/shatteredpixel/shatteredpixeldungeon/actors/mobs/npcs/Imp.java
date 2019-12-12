@@ -195,7 +195,7 @@ public class Imp extends NPC {
 				
 				Imp npc = new Imp();
 				do {
-					npc.pos = level.randomRespawnCell();
+					npc.pos = level.randomRespawnCell( npc );
 				} while (
 						npc.pos == -1 ||
 						level.heaps.get( npc.pos ) != null ||

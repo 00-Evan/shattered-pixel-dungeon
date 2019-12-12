@@ -269,7 +269,7 @@ public class NewTengu extends Mob {
 		} else {
 			Level level = Dungeon.level;
 			
-			newPos = level.randomRespawnCell();
+			newPos = level.randomRespawnCell( this );
 			
 			if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 			

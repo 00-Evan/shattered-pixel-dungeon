@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -130,11 +131,13 @@ public class LastLevel extends Level {
 	}
 
 	@Override
-	public int randomRespawnCell() {
+	public int randomRespawnCell( Char ch ) {
 		int cell;
 		do {
 			cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
-		} while (!passable[cell] || Actor.findChar(cell) != null);
+		} while (!passable[cell]
+				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
+				|| Actor.findChar(cell) != null);
 		return cell;
 	}
 

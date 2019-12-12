@@ -121,7 +121,7 @@ public class ScrollOfTeleportation extends Scroll {
 		int count = 10;
 		int pos;
 		do {
-			pos = Dungeon.level.randomRespawnCell();
+			pos = Dungeon.level.randomRespawnCell( ch );
 			if (count-- <= 0) {
 				break;
 			}

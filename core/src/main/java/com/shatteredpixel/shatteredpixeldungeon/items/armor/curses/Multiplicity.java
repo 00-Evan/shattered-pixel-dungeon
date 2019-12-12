@@ -96,8 +96,19 @@ public class Multiplicity extends Armor.Glyph {
 				}
 
 				if (m != null) {
-					GameScene.add(m);
-					ScrollOfTeleportation.appear(m, Random.element(spawnPoints));
+
+					if (Char.hasProp(m, Char.Property.LARGE)){
+						for ( int i : spawnPoints){
+							if (!Dungeon.level.openSpace[i]){
+								spawnPoints.remove(i);
+							}
+						}
+					}
+
+					if (!spawnPoints.isEmpty()) {
+						GameScene.add(m);
+						ScrollOfTeleportation.appear(m, Random.element(spawnPoints));
+					}
 				}
 
 			}

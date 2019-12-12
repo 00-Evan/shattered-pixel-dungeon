@@ -139,7 +139,9 @@ public class EtherealChains extends Artifact {
 		int bestPos = -1;
 		for (int i : chain.subPath(1, chain.dist)){
 			//prefer to the earliest point on the path
-			if (!Dungeon.level.solid[i] && Actor.findChar(i) == null){
+			if (!Dungeon.level.solid[i]
+					&& Actor.findChar(i) == null
+					&& (!Char.hasProp(enemy, Char.Property.LARGE) || Dungeon.level.openSpace[i])){
 				bestPos = i;
 				break;
 			}

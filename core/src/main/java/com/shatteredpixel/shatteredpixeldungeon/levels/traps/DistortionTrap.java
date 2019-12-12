@@ -136,6 +136,10 @@ public class DistortionTrap extends Trap{
 					break;
 			}
 
+			if (Char.hasProp(mob, Char.Property.LARGE) && !Dungeon.level.openSpace[point]){
+				continue;
+			}
+
 			mob.maxLvl = Hero.MAX_LEVEL;
 			mob.state = mob.WANDERING;
 			mob.pos = point;

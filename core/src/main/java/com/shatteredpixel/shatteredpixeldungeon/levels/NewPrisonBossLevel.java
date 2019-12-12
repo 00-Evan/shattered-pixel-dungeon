@@ -619,7 +619,7 @@ public class NewPrisonBossLevel extends Level {
 	protected void createItems() {
 		Item item = Bones.get();
 		if (item != null) {
-			drop( item, randomRespawnCell() ).setHauntedIfCursed().type = Heap.Type.REMAINS;
+			drop( item, randomRespawnCell( null ) ).setHauntedIfCursed().type = Heap.Type.REMAINS;
 		}
 	}
 	
@@ -687,12 +687,14 @@ public class NewPrisonBossLevel extends Level {
 	}
 	
 	@Override
-	public int randomRespawnCell() {
+	public int randomRespawnCell( Char ch ) {
 		int pos = ENTRANCE_POS; //random cell adjacent to the entrance.
 		int cell;
 		do {
 			cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-		} while (!passable[cell] || Actor.findChar(cell) != null);
+		} while (!passable[cell]
+				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
+				|| Actor.findChar(cell) != null);
 		return cell;
 	}
 	

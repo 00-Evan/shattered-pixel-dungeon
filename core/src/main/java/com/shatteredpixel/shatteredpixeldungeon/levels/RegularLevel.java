@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GoldenMimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -220,7 +221,7 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	@Override
-	public int randomRespawnCell() {
+	public int randomRespawnCell( Char ch ) {
 		int count = 0;
 		int cell = -1;
 		
@@ -239,6 +240,7 @@ public abstract class RegularLevel extends Level {
 			if (!heroFOV[cell]
 					&& Actor.findChar( cell ) == null
 					&& passable[cell]
+					&& (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])
 					&& room.canPlaceCharacter(cellToPoint(cell), this)
 					&& cell != exit) {
 				return cell;

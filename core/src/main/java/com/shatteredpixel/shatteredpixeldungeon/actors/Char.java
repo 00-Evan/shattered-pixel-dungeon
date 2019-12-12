@@ -149,6 +149,10 @@ public abstract class Char extends Actor {
 		if (!Dungeon.level.passable[pos] && !Dungeon.hero.flying){
 			return true;
 		}
+
+		if (properties.contains(Property.LARGE) && !Dungeon.level.openSpace[Dungeon.hero.pos]){
+			return true;
+		}
 		
 		int curPos = pos;
 		
@@ -697,6 +701,7 @@ public abstract class Char extends Actor {
 				new HashSet<Class>( Arrays.asList(Ooze.class))),
 		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class, Electricity.class, ShockingDart.class, Elemental.Shock.class )),
 				new HashSet<Class>()),
+		LARGE,
 		IMMOVABLE;
 		
 		private HashSet<Class> resistances;
@@ -718,5 +723,10 @@ public abstract class Char extends Actor {
 		public HashSet<Class> immunities(){
 			return new HashSet<>(immunities);
 		}
+
+	}
+
+	public static boolean hasProp( Char ch, Property p){
+		return (ch != null && ch.properties.contains(p));
 	}
 }

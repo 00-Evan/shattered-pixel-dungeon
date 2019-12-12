@@ -209,7 +209,7 @@ public class Thief extends Mob {
 					int count = 32;
 					int newPos;
 					do {
-						newPos = Dungeon.level.randomRespawnCell();
+						newPos = Dungeon.level.randomRespawnCell( Thief.this );
 						if (count-- <= 0) {
 							break;
 						}

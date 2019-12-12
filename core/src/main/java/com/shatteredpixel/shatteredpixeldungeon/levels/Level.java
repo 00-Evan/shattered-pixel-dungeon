@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Shadows;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
@@ -54,7 +53,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
@@ -128,6 +126,8 @@ public abstract class Level implements Bundlable {
 	public boolean[] avoid;
 	public boolean[] water;
 	public boolean[] pit;
+
+	public boolean[] openSpace;
 	
 	public Feeling feeling = Feeling.NONE;
 	
@@ -275,6 +275,8 @@ public abstract class Level implements Bundlable {
 		avoid		= new boolean[length];
 		water		= new boolean[length];
 		pit			= new boolean[length];
+
+		openSpace   = new boolean[length];
 		
 		PathFinder.setMapSize(w, h);
 	}
@@ -513,7 +515,7 @@ public abstract class Level implements Bundlable {
 
 					Mob mob = createMob();
 					mob.state = mob.WANDERING;
-					mob.pos = randomRespawnCell();
+					mob.pos = randomRespawnCell( mob );
 					if (Dungeon.hero.isAlive() && mob.pos != -1 && distance(Dungeon.hero.pos, mob.pos) >= 4) {
 						GameScene.add( mob );
 						if (Statistics.amuletObtained) {
@@ -537,12 +539,13 @@ public abstract class Level implements Bundlable {
 		}
 	}
 	
-	public int randomRespawnCell() {
+	public int randomRespawnCell( Char ch ) {
 		int cell;
 		do {
 			cell = Random.Int( length() );
 		} while ((Dungeon.level == this && heroFOV[cell])
 				|| !passable[cell]
+				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
 				|| Actor.findChar( cell ) != null);
 		return cell;
 	}
@@ -614,16 +617,25 @@ public abstract class Level implements Bundlable {
 		int lastRow = length() - width();
 		for (int i=0; i < width(); i++) {
 			passable[i] = avoid[i] = false;
-			losBlocking[i] = true;
+			losBlocking[i] = solid[i] = true;
 			passable[lastRow + i] = avoid[lastRow + i] = false;
-			losBlocking[lastRow + i] = true;
+			losBlocking[lastRow + i] = solid[lastRow + i] = true;
 		}
 		for (int i=width(); i < lastRow; i += width()) {
 			passable[i] = avoid[i] = false;
-			losBlocking[i] = true;
+			losBlocking[i] = solid[i] = true;
 			passable[i + width()-1] = avoid[i + width()-1] = false;
-			losBlocking[i + width()-1] = true;
+			losBlocking[i + width()-1] = solid[i + width()-1] = true;
 		}
+
+		//an open space is large enough to fit large mobs. A space is open when it is not solid
+		// and there also aren't solid spaces above&below, or left&right
+		for (int i=0; i < length(); i++) {
+			openSpace[i] = !solid[i] &&
+					(!solid[i-1] || !solid[i+1]) &&
+					(!solid[i-width()] || !solid[i+width()]);
+		}
+
 	}
 
 	public void destroy( int pos ) {
@@ -669,6 +681,12 @@ public abstract class Level implements Bundlable {
 		level.avoid[cell]			= (flags & Terrain.AVOID) != 0;
 		level.pit[cell]			    = (flags & Terrain.PIT) != 0;
 		level.water[cell]			= terrain == Terrain.WATER;
+
+		for (int i : PathFinder.NEIGHBOURS9){
+			level.openSpace[cell+i] = !level.solid[cell+i] &&
+					(!level.solid[cell+i-1] || !level.solid[cell+i+1]) &&
+					(!level.solid[cell+i-level.width()] || !level.solid[cell+i+level.width()]);
+		}
 		
 		SmokeScreen s = (SmokeScreen)level.blobs.get(SmokeScreen.class);
 		if (s != null && s.volume > 0){
@@ -783,7 +801,7 @@ public abstract class Level implements Bundlable {
 	public int fallCell( boolean fallIntoPit ) {
 		int result;
 		do {
-			result = randomRespawnCell();
+			result = randomRespawnCell( null );
 		} while (traps.get(result) != null
 				|| findMob(result) != null
 				|| heaps.get(result) != null);

@@ -339,8 +339,9 @@ public abstract class Mob extends Char {
 
 			path = null;
 
-			if (Actor.findChar( target ) == null &&
-					(Dungeon.level.passable[target] || (flying && Dungeon.level.avoid[target]))) {
+			if (Actor.findChar( target ) == null
+					&& (Dungeon.level.passable[target] || (flying && Dungeon.level.avoid[target]))
+					&& (!Char.hasProp(this, Char.Property.LARGE) || Dungeon.level.openSpace[target])) {
 				step = target;
 			}
 
@@ -397,7 +398,10 @@ public abstract class Mob extends Char {
 				int lookAhead = (int)GameMath.gate(1, path.size()-1, 4);
 				for (int i = 0; i < lookAhead; i++) {
 					int cell = path.get(i);
-					if (!Dungeon.level.passable[cell] || ( fieldOfView[cell] && Actor.findChar(cell) != null)) {
+					if (!Dungeon.level.passable[cell]
+							|| (!flying && Dungeon.level.avoid[target])
+							|| (Char.hasProp(this, Char.Property.LARGE) && !Dungeon.level.openSpace[cell])
+							|| (fieldOfView[cell] && Actor.findChar(cell) != null)) {
 						newPath = true;
 						break;
 					}
