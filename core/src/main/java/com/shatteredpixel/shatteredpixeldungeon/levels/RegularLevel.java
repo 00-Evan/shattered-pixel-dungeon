@@ -250,7 +250,7 @@ public abstract class RegularLevel extends Level {
 	}
 	
 	@Override
-	public int randomDestination() {
+	public int randomDestination( Char ch ) {
 		
 		int count = 0;
 		int cell = -1;
@@ -267,7 +267,7 @@ public abstract class RegularLevel extends Level {
 			}
 			
 			cell = pointToCell(room.random());
-			if (passable[cell]) {
+			if (passable[cell] && (!Char.hasProp(ch, Char.Property.LARGE) || openSpace[cell])) {
 				return cell;
 			}
 			

@@ -357,7 +357,7 @@ public class CursedWand {
 					GameScene.add( Blob.seed(i, 15, Regrowth.class));
 				}
 				do {
-					GameScene.add(Blob.seed(Dungeon.level.randomDestination(), 10, Fire.class));
+					GameScene.add(Blob.seed(Dungeon.level.randomDestination(null), 10, Fire.class));
 				} while (Random.Int(5) != 0);
 				new Flare(8, 32).color(0xFFFF66, true).show(user.sprite, 2f);
 				Sample.INSTANCE.play(Assets.SND_TELEPORT);
