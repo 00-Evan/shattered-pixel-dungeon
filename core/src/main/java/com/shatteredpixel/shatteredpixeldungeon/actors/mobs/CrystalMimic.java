@@ -69,16 +69,23 @@ public class CrystalMimic extends Mimic {
 	@Override
 	public String description() {
 		if (alignment == Alignment.NEUTRAL){
+			String desc = null;
 			for (Item i : items){
 				if (i instanceof Artifact){
-					return Messages.get(Heap.class, "crystal_chest_desc", Messages.get(Heap.class, "artifact"));
+					desc = Messages.get(Heap.class, "crystal_chest_desc", Messages.get(Heap.class, "artifact"));
+					break;
 				} else if (i instanceof Ring){
-					return Messages.get(Heap.class, "crystal_chest_desc", Messages.get(Heap.class, "ring"));
+					desc = Messages.get(Heap.class, "crystal_chest_desc", Messages.get(Heap.class, "ring"));
+					break;
 				} else if (i instanceof Wand){
-					return Messages.get(Heap.class, "crystal_chest_desc", Messages.get(Heap.class, "wand"));
+					desc = Messages.get(Heap.class, "crystal_chest_desc", Messages.get(Heap.class, "wand"));
+					break;
 				}
 			}
-			return Messages.get(Heap.class, "locked_chest_desc");
+			if (desc == null) {
+				desc = Messages.get(Heap.class, "locked_chest_desc");
+			}
+			return desc + "\n\n" + Messages.get(this, "hidden_hint");
 		} else {
 			return super.description();
 		}

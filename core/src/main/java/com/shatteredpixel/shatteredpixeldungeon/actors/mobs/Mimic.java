@@ -103,7 +103,7 @@ public class Mimic extends Mob {
 	@Override
 	public String description() {
 		if (alignment == Alignment.NEUTRAL){
-			return Messages.get(Heap.class, "chest_desc");
+			return Messages.get(Heap.class, "chest_desc") + "\n\n" + Messages.get(this, "hidden_hint");
 		} else {
 			return super.description();
 		}
@@ -179,7 +179,7 @@ public class Mimic extends Mob {
 
 	@Override
 	public int attackSkill( Char target ) {
-		if (target != null && alignment == Alignment.NEUTRAL){
+		if (target != null && alignment == Alignment.NEUTRAL && target.invisible <= 0){
 			return INFINITE_ACCURACY;
 		} else {
 			return 6 + level;
