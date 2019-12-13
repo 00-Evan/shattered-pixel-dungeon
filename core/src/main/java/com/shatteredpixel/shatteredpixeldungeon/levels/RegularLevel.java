@@ -302,12 +302,15 @@ public abstract class RegularLevel extends Level {
 			case 4:
 				type = Heap.Type.CHEST;
 				break;
-			case 5: default:
+			case 5:
 				if (Dungeon.depth > 1 && findMob(cell) == null){
 					mobs.add(Mimic.spawnAt(cell, toDrop));
 					continue;
 				}
 				type = Heap.Type.CHEST;
+				break;
+			default:
+				type = Heap.Type.HEAP;
 				break;
 			}
 
