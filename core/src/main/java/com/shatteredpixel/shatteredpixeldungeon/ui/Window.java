@@ -22,9 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.input.KeyAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
@@ -159,10 +159,10 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	public boolean onSignal( KeyEvent event ) {
 		if (event.pressed) {
 			switch (KeyBindings.getBinding( event )) {
-				case KeyAction.BACK:
+				case SPDAction.BACK:
 					onBackPressed();
 					return true;
-				case KeyAction.MENU:
+				case SPDAction.MENU:
 					onMenuPressed();
 					return true;
 			}

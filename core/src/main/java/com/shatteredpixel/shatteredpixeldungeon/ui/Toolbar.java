@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -32,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
-import com.watabou.input.KeyAction;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
@@ -89,7 +89,7 @@ public class Toolbar extends Component {
 			
 			@Override
 			public int keyAction() {
-				return KeyAction.WAIT;
+				return SPDAction.WAIT;
 			}
 			
 			protected boolean onLongClick() {
@@ -113,7 +113,7 @@ public class Toolbar extends Component {
 			
 			@Override
 			public int keyAction() {
-				return KeyAction.SEARCH;
+				return SPDAction.SEARCH;
 			}
 			
 			@Override
@@ -133,7 +133,7 @@ public class Toolbar extends Component {
 			
 			@Override
 			public int keyAction() {
-				return KeyAction.INVENTORY;
+				return SPDAction.INVENTORY;
 			}
 			
 			@Override

@@ -22,8 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.input.KeyAction;
 import com.watabou.noosa.Image;
 
 public class ResumeIndicator extends Tag {
@@ -41,7 +41,7 @@ public class ResumeIndicator extends Tag {
 	
 	@Override
 	public int keyAction() {
-		return KeyAction.TAG_RESUME;
+		return SPDAction.TAG_RESUME;
 	}
 
 	@Override

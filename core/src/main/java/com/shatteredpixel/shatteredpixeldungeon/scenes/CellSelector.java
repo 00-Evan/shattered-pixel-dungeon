@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -29,7 +30,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.watabou.input.KeyAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
@@ -208,7 +208,7 @@ public class CellSelector extends ScrollArea {
 		
 	}
 	
-	private int heldAction = KeyAction.NONE;
+	private int heldAction = SPDAction.NONE;
 	private int heldTurns = 0;
 	
 	private Signal.Listener<KeyEvent> keyListener = new Signal.Listener<KeyEvent>() {
@@ -222,13 +222,13 @@ public class CellSelector extends ScrollArea {
 					return true;
 				} else {
 					switch (action){
-						case KeyAction.ZOOM_IN:
+						case SPDAction.ZOOM_IN:
 							zoom( camera.zoom+1 );
 							return true;
-						case KeyAction.ZOOM_OUT:
+						case SPDAction.ZOOM_OUT:
 							zoom( camera.zoom-1 );
 							return true;
-						case KeyAction.ZOOM_DEFAULT:
+						case SPDAction.ZOOM_DEFAULT:
 							zoom( PixelScene.defaultZoom );
 							return true;
 					}
@@ -245,30 +245,29 @@ public class CellSelector extends ScrollArea {
 	private boolean moveFromKey(int event){
 		boolean moved = true;
 		int cell = Dungeon.hero.pos;
-		//TODO implement game actions, instead of using keys directly
 		switch (event){
-			case KeyAction.N:
+			case SPDAction.N:
 				cell += -Dungeon.level.width();
 				break;
-			case KeyAction.NE:
+			case SPDAction.NE:
 				cell += +1-Dungeon.level.width();
 				break;
-			case KeyAction.E:
+			case SPDAction.E:
 				cell += +1;
 				break;
-			case KeyAction.SE:
+			case SPDAction.SE:
 				cell += +1+Dungeon.level.width();
 				break;
-			case KeyAction.S:
+			case SPDAction.S:
 				cell += +Dungeon.level.width();
 				break;
-			case KeyAction.SW:
+			case SPDAction.SW:
 				cell += -1+Dungeon.level.width();
 				break;
-			case KeyAction.W:
+			case SPDAction.W:
 				cell += -1;
 				break;
-			case KeyAction.NW:
+			case SPDAction.NW:
 				cell += -1-Dungeon.level.width();
 				break;
 			default:
@@ -287,7 +286,7 @@ public class CellSelector extends ScrollArea {
 	}
 	
 	public void processKeyHold(){
-		if (heldAction != KeyAction.NONE){
+		if (heldAction != SPDAction.NONE){
 			enabled = true;
 			heldTurns++;
 			moveFromKey(heldAction);
@@ -295,7 +294,7 @@ public class CellSelector extends ScrollArea {
 	}
 	
 	public void resetKeyHold(){
-		heldAction = KeyAction.NONE;
+		heldAction = SPDAction.NONE;
 		heldTurns = 0;
 		CharSprite.setMoveInterval( CharSprite.DEFAULT_MOVE_INTERVAL );
 	}

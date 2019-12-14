@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -32,7 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
-import com.watabou.input.KeyAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -90,7 +90,7 @@ public class StatusPane extends Component {
 			
 			@Override
 			public int keyAction() {
-				return KeyAction.HERO_INFO;
+				return SPDAction.HERO_INFO;
 			}
 		}.setRect( 0, 1, 30, 30 ));
 
@@ -265,7 +265,7 @@ public class StatusPane extends Component {
 		
 		@Override
 		public int keyAction() {
-			return KeyAction.JOURNAL;
+			return SPDAction.JOURNAL;
 		}
 		
 		@Override

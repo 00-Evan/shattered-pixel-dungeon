@@ -22,9 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.watabou.input.KeyAction;
 
 public class LootIndicator extends Tag {
 	
@@ -43,7 +43,7 @@ public class LootIndicator extends Tag {
 	
 	@Override
 	public int keyAction() {
-		return KeyAction.TAG_LOOT;
+		return SPDAction.TAG_LOOT;
 	}
 	
 	@Override
