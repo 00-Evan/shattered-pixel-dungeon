@@ -29,6 +29,13 @@ public class MimicSprite extends MobSprite {
 
 	private Animation hiding;
 
+	{
+		//adjust shadow slightly to account for 1 empty bottom pixel (used for border while hiding)
+		perspectiveRaise    = 5 / 16f; //5 pixels
+		shadowWidth         = 1f;
+		shadowOffset        = -0.4f;
+	}
+
 	protected int texOffset(){
 		return 0;
 	}
