@@ -135,6 +135,8 @@ public class WandOfBlastWave extends DamageWand {
 			collided = true;
 		}
 
+		if (dist < 0) return;
+
 		final int newPos = trajectory.path.get(dist);
 
 		if (newPos == ch.pos) return;
