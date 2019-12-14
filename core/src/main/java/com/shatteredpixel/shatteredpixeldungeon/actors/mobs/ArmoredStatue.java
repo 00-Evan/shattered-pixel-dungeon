@@ -98,8 +98,10 @@ public class ArmoredStatue extends Statue {
 	}
 
 	@Override
-	public boolean isImmune(Class effect) {
-		return super.isImmune(effect);
+	public void die( Object cause ) {
+		armor.identify();
+		Dungeon.level.drop( armor, pos ).sprite.drop();
+		super.die( cause );
 	}
 
 	@Override

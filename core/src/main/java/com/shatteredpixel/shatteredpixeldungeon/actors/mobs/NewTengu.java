@@ -502,7 +502,7 @@ public class NewTengu extends Mob {
 		//Targets closest cell which is adjacent to target, and at least 3 tiles away
 		for (int i : PathFinder.NEIGHBOURS8){
 			int cell = target.pos + i;
-			if (Dungeon.level.distance(cell, thrower.pos) >= 3){
+			if (Dungeon.level.distance(cell, thrower.pos) >= 3 && !Dungeon.level.solid[cell]){
 				if (targetCell == -1 ||
 						Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos)){
 					targetCell = cell;
@@ -866,7 +866,7 @@ public class NewTengu extends Mob {
 		//Targets closest cell which is adjacent to target, and not adjacent to thrower or another shocker
 		for (int i : PathFinder.NEIGHBOURS8){
 			int cell = target.pos + i;
-			if (Dungeon.level.distance(cell, thrower.pos) >= 2){
+			if (Dungeon.level.distance(cell, thrower.pos) >= 2 && !Dungeon.level.solid[cell]){
 				boolean validTarget = true;
 				for (ShockerAbility s : thrower.buffs(ShockerAbility.class)){
 					if (Dungeon.level.distance(cell, s.shockerPos) < 2){
