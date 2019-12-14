@@ -208,27 +208,27 @@ public class CellSelector extends ScrollArea {
 		
 	}
 	
-	private KeyAction heldAction = null;
+	private int heldAction = KeyAction.NONE;
 	private int heldTurns = 0;
 	
 	private Signal.Listener<KeyEvent> keyListener = new Signal.Listener<KeyEvent>() {
 		@Override
 		public boolean onSignal(KeyEvent event) {
-			KeyAction action = KeyBindings.getBinding( event );
+			int action = KeyBindings.getBinding( event );
 			if (!event.pressed){
 				
-				if (heldAction != null && heldAction == action) {
+				if (heldAction != -1 && heldAction == action) {
 					resetKeyHold();
 					return true;
 				} else {
 					switch (action){
-						case ZOOM_IN:
+						case KeyAction.ZOOM_IN:
 							zoom( camera.zoom+1 );
 							return true;
-						case ZOOM_OUT:
+						case KeyAction.ZOOM_OUT:
 							zoom( camera.zoom-1 );
 							return true;
-						case ZOOM_DEFAULT:
+						case KeyAction.ZOOM_DEFAULT:
 							zoom( PixelScene.defaultZoom );
 							return true;
 					}
@@ -242,33 +242,33 @@ public class CellSelector extends ScrollArea {
 		}
 	};
 	
-	private boolean moveFromKey(KeyAction event){
+	private boolean moveFromKey(int event){
 		boolean moved = true;
 		int cell = Dungeon.hero.pos;
 		//TODO implement game actions, instead of using keys directly
 		switch (event){
-			case N:
+			case KeyAction.N:
 				cell += -Dungeon.level.width();
 				break;
-			case NE:
+			case KeyAction.NE:
 				cell += +1-Dungeon.level.width();
 				break;
-			case E:
+			case KeyAction.E:
 				cell += +1;
 				break;
-			case SE:
+			case KeyAction.SE:
 				cell += +1+Dungeon.level.width();
 				break;
-			case S:
+			case KeyAction.S:
 				cell += +Dungeon.level.width();
 				break;
-			case SW:
+			case KeyAction.SW:
 				cell += -1+Dungeon.level.width();
 				break;
-			case W:
+			case KeyAction.W:
 				cell += -1;
 				break;
-			case NW:
+			case KeyAction.NW:
 				cell += -1-Dungeon.level.width();
 				break;
 			default:
@@ -287,7 +287,7 @@ public class CellSelector extends ScrollArea {
 	}
 	
 	public void processKeyHold(){
-		if (heldAction != null){
+		if (heldAction != KeyAction.NONE){
 			enabled = true;
 			heldTurns++;
 			moveFromKey(heldAction);
@@ -295,7 +295,7 @@ public class CellSelector extends ScrollArea {
 	}
 	
 	public void resetKeyHold(){
-		heldAction = null;
+		heldAction = KeyAction.NONE;
 		heldTurns = 0;
 		CharSprite.setMoveInterval( CharSprite.DEFAULT_MOVE_INTERVAL );
 	}

@@ -38,7 +38,6 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Button;
@@ -90,7 +89,7 @@ public class StatusPane extends Component {
 			}
 			
 			@Override
-			public KeyAction keyAction() {
+			public int keyAction() {
 				return KeyAction.HERO_INFO;
 			}
 		}.setRect( 0, 1, 30, 30 ));
@@ -265,7 +264,7 @@ public class StatusPane extends Component {
 		}
 		
 		@Override
-		public KeyAction keyAction() {
+		public int keyAction() {
 			return KeyAction.JOURNAL;
 		}
 		

@@ -30,7 +30,7 @@ import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.InputHandler;
-import com.watabou.input.KeyEvent;
+import com.watabou.input.KeyAction;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -100,6 +100,7 @@ public class Game implements ApplicationListener {
 		Blending.useDefault();
 		
 		inputHandler = new InputHandler( Gdx.input );
+		KeyAction.initialize();
 		
 		//refreshes texture and vertex data stored on the gpu
 		TextureCache.reload();

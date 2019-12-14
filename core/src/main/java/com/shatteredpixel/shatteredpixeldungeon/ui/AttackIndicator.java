@@ -59,7 +59,7 @@ public class AttackIndicator extends Tag {
 	}
 	
 	@Override
-	public KeyAction keyAction() {
+	public int keyAction() {
 		return KeyAction.TAG_ATTACK;
 	}
 	

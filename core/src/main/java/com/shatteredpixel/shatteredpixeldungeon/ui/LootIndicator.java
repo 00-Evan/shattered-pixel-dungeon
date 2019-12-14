@@ -42,7 +42,7 @@ public class LootIndicator extends Tag {
 	}
 	
 	@Override
-	public KeyAction keyAction() {
+	public int keyAction() {
 		return KeyAction.TAG_LOOT;
 	}
 	

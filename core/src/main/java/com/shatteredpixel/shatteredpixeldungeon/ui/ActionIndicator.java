@@ -43,7 +43,7 @@ public class ActionIndicator extends Tag {
 	}
 	
 	@Override
-	public KeyAction keyAction() {
+	public int keyAction() {
 		return KeyAction.TAG_ACTION;
 	}
 	
