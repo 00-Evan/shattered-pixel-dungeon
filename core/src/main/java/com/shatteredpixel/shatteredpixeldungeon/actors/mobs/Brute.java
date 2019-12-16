@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BruteSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -67,7 +68,16 @@ public class Brute extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 8);
 	}
-	
+
+	@Override
+	public void die(Object cause) {
+		super.die(cause);
+
+		if (cause == Chasm.class){
+			hasRaged = true; //don't let enrage trigger for chasm deaths
+		}
+	}
+
 	@Override
 	public boolean isAlive() {
 		if (HP > 0){

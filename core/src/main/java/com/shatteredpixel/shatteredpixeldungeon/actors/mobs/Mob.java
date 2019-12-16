@@ -638,10 +638,10 @@ public abstract class Mob extends Char {
 			if (bonus != null && !bonus.isEmpty()) {
 				for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
 				if (RingOfWealth.latestDropWasRare){
-					if (sprite != null) new Flare(8, 48).color(0xAA00FF, true).show(sprite, 3f);
+					new Flare(8, 48).color(0xAA00FF, true).show(sprite, 3f);
 					RingOfWealth.latestDropWasRare = false;
 				} else {
-					if (sprite != null) new Flare(8, 24).color(0xFFFFFF, true).show(sprite, 3f);
+					new Flare(8, 24).color(0xFFFFFF, true).show(sprite, 3f);
 				}
 			}
 		}

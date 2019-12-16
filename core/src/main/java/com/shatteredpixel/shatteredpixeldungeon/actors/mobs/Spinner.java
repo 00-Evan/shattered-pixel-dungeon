@@ -193,9 +193,10 @@ public class Spinner extends Mob {
 			if (Dungeon.level.passable[rightPos])GameScene.add(Blob.seed(rightPos, 20, Web.class));
 			
 			webCoolDown = 10;
-		}
-		if (Dungeon.level.heroFOV[enemy.pos]){
-			Dungeon.hero.interrupt();
+
+			if (Dungeon.level.heroFOV[enemy.pos]){
+				Dungeon.hero.interrupt();
+			}
 		}
 		next();
 	}

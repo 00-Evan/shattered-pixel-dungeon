@@ -140,7 +140,7 @@ public abstract class Char extends Actor {
 	}
 
 	public boolean canInteract( Hero h ){
-		return Dungeon.level.adjacent( pos, h.pos );
+		return Dungeon.level.adjacent( pos, h.pos ) && h.buff(Vertigo.class) == null;
 	}
 	
 	//swaps places by default
