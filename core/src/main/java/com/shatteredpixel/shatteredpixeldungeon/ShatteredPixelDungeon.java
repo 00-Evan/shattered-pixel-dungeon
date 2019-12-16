@@ -230,6 +230,7 @@ public class ShatteredPixelDungeon extends Game {
 
 		if (scene instanceof PixelScene &&
 				(height != Game.height || width != Game.width)) {
+			PixelScene.noFade = true;
 			((PixelScene) scene).saveWindows();
 		}
 
