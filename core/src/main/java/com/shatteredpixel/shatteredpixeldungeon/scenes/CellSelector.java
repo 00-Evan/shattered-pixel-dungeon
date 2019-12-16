@@ -228,9 +228,6 @@ public class CellSelector extends ScrollArea {
 						case SPDAction.ZOOM_OUT:
 							zoom( camera.zoom-1 );
 							return true;
-						case SPDAction.ZOOM_DEFAULT:
-							zoom( PixelScene.defaultZoom );
-							return true;
 					}
 				}
 			} else if (moveFromKey(action)) {

@@ -21,11 +21,16 @@
 
 package com.watabou.input;
 
-import java.util.HashMap;
+import com.badlogic.gdx.Input;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+//TODO maybe just move to game action?
 public class KeyBindings {
 
-	private static HashMap<Integer, Integer> bindings = new HashMap<>();
+	private static LinkedHashMap<Integer, Integer> bindings = new LinkedHashMap<>();
 	private static HashMap<Integer, String> names = new HashMap<>();
 
 	public static void addBinding( int keyCode, int keyAction){
@@ -38,6 +43,26 @@ public class KeyBindings {
 	
 	public static int getBinding( KeyEvent event ){
 		return bindings.get( event.code );
+	}
+
+	public static ArrayList<Integer> getBindings( int gameAction ){
+		ArrayList<Integer> result = new ArrayList<>();
+		for( int i : bindings.keySet()){
+			if (bindings.get(i) == gameAction){
+				result.add(i);
+			}
+		}
+		return result;
+	}
+
+	public static String getKeyName( int keyCode ){
+		String result = Input.Keys.toString(keyCode);
+
+		if (result.equals("Plus")){
+			return "+";
+		} else {
+			return result;
+		}
 	}
 
 	public static void addName( int keyAction, String name ){

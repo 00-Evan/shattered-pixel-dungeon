@@ -132,7 +132,7 @@ public class ShatteredPixelDungeon extends Game {
 		super.create();
 
 		updateSystemUI();
-		SPDAction.initialize();
+		SPDAction.initDefaults();
 		
 		Music.INSTANCE.enable( SPDSettings.music() );
 		Music.INSTANCE.volume( SPDSettings.musicVol()/10f );

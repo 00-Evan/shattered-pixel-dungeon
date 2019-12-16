@@ -54,18 +54,19 @@ public class SPDAction extends GameAction {
 
 	public static final int ZOOM_IN     = 17;
 	public static final int ZOOM_OUT    = 18;
-	public static final int ZOOM_DEFAULT= 19;
 
-	public static final int N           = 20;
-	public static final int NE          = 21;
-	public static final int E           = 22;
-	public static final int SE          = 23;
-	public static final int S           = 24;
+	public static final int N           = 19;
+	public static final int E           = 20;
+	public static final int S           = 21;
+	public static final int W           = 22;
+	public static final int NE          = 23;
+	public static final int SE          = 24;
 	public static final int SW          = 25;
-	public static final int W           = 26;
-	public static final int NW          = 27;
+	public static final int NW          = 26;
 
-	public static void initialize() {
+	public static final int TOTAL_ACTIONS = 27;
+
+	public static void initDefaults() {
 
 		KeyBindings.addName(NONE,           "none");
 
@@ -92,16 +93,15 @@ public class SPDAction extends GameAction {
 
 		KeyBindings.addName(ZOOM_IN,        "zoom_in");
 		KeyBindings.addName(ZOOM_OUT,       "zoom_out");
-		KeyBindings.addName(ZOOM_DEFAULT,   "zoom_default");
 
-		KeyBindings.addName(N,              "none");
-		KeyBindings.addName(NE,             "none");
-		KeyBindings.addName(E,              "none");
-		KeyBindings.addName(SE,             "none");
-		KeyBindings.addName(S,              "none");
-		KeyBindings.addName(SW,             "none");
-		KeyBindings.addName(W,              "none");
-		KeyBindings.addName(NW,             "none");
+		KeyBindings.addName(N,              "n");
+		KeyBindings.addName(E,              "e");
+		KeyBindings.addName(S,              "s");
+		KeyBindings.addName(W,              "w");
+		KeyBindings.addName(NE,             "ne");
+		KeyBindings.addName(SE,             "se");
+		KeyBindings.addName(SW,             "sw");
+		KeyBindings.addName(NW,             "nw");
 
 		//default key bindings
 		KeyBindings.addBinding( Input.Keys.BACK, GameAction.BACK );
@@ -110,7 +110,6 @@ public class SPDAction extends GameAction {
 		KeyBindings.addBinding( Input.Keys.H, SPDAction.HERO_INFO );
 		KeyBindings.addBinding( Input.Keys.J, SPDAction.JOURNAL );
 
-		KeyBindings.addBinding( Input.Keys.NUMPAD_5, SPDAction.WAIT );
 		KeyBindings.addBinding( Input.Keys.SPACE,    SPDAction.WAIT );
 		KeyBindings.addBinding( Input.Keys.S,        SPDAction.SEARCH );
 
@@ -129,12 +128,13 @@ public class SPDAction extends GameAction {
 		KeyBindings.addBinding( Input.Keys.PLUS,   SPDAction.ZOOM_IN );
 		KeyBindings.addBinding( Input.Keys.EQUALS, SPDAction.ZOOM_IN );
 		KeyBindings.addBinding( Input.Keys.MINUS,  SPDAction.ZOOM_OUT );
-		KeyBindings.addBinding( Input.Keys.SLASH,  SPDAction.ZOOM_DEFAULT );
 
 		KeyBindings.addBinding( Input.Keys.UP,    SPDAction.N );
 		KeyBindings.addBinding( Input.Keys.RIGHT, SPDAction.E );
 		KeyBindings.addBinding( Input.Keys.DOWN,  SPDAction.S );
 		KeyBindings.addBinding( Input.Keys.LEFT,  SPDAction.W );
+
+		KeyBindings.addBinding( Input.Keys.NUMPAD_5,  SPDAction.WAIT );
 		KeyBindings.addBinding( Input.Keys.NUMPAD_8,  SPDAction.N );
 		KeyBindings.addBinding( Input.Keys.NUMPAD_9,  SPDAction.NE );
 		KeyBindings.addBinding( Input.Keys.NUMPAD_6,  SPDAction.E );
@@ -143,6 +143,16 @@ public class SPDAction extends GameAction {
 		KeyBindings.addBinding( Input.Keys.NUMPAD_1,  SPDAction.SW );
 		KeyBindings.addBinding( Input.Keys.NUMPAD_4,  SPDAction.W );
 		KeyBindings.addBinding( Input.Keys.NUMPAD_7,  SPDAction.NW );
+
+	}
+
+	//file name? perhaps
+
+	public static void loadBindings(){
+
+	}
+
+	public static void saveBindings(){
 
 	}
 

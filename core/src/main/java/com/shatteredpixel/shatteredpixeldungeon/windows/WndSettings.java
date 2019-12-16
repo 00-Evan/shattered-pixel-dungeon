@@ -280,7 +280,7 @@ public class WndSettings extends WndTabbed {
 					SPDSettings.fullscreen(checked());
 				}
 			};
-			chkFullscreen.setRect( 0, chkFlipTags.bottom() + GAP_LRG, WIDTH, BTN_HEIGHT );
+			chkFullscreen.setRect( 0, chkFlipTags.bottom() + GAP_SML, WIDTH, BTN_HEIGHT );
 			chkFullscreen.checked(SPDSettings.fullscreen());
 			chkFullscreen.enable(DeviceCompat.supportsFullScreen());
 			add(chkFullscreen);
@@ -305,6 +305,19 @@ public class WndSettings extends WndTabbed {
 			chkFont.setRect(0, chkFullscreen.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);
 			chkFont.checked(SPDSettings.systemFont());
 			add(chkFont);
+
+			if (DeviceCompat.isDesktop()){
+				RedButton btnKeyBindings = new RedButton(Messages.get(this, "key_bindings")){
+					@Override
+					protected void onClick() {
+						super.onClick();
+						ShatteredPixelDungeon.scene().addToFront(new WndKeyBindings());
+					}
+				};
+
+				btnKeyBindings.setRect(0, chkFont.bottom() + GAP_SML, WIDTH, BTN_HEIGHT);
+				add(btnKeyBindings);
+			}
 		}
 
 	}
