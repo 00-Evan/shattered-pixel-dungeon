@@ -24,31 +24,28 @@ package com.watabou.input;
 import com.badlogic.gdx.Input;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-//TODO maybe just move to game action?
 public class KeyBindings {
 
-	private static LinkedHashMap<Integer, Integer> bindings = new LinkedHashMap<>();
-	private static HashMap<Integer, String> names = new HashMap<>();
+	private static LinkedHashMap<Integer, GameAction> bindings = new LinkedHashMap<>();
 
-	public static void addBinding( int keyCode, int keyAction){
-		bindings.put(keyCode, keyAction);
+	public static void addKeyBinding(int keyCode, GameAction action){
+		bindings.put(keyCode, action);
 	}
 	
-	public static boolean isBound( int keyCode ){
-		return bindings.keySet().contains( keyCode );
+	public static boolean isKeyBound(int keyCode ){
+		return bindings.containsKey( keyCode );
 	}
 	
-	public static int getBinding( KeyEvent event ){
+	public static GameAction getActionForKey(KeyEvent event ){
 		return bindings.get( event.code );
 	}
 
-	public static ArrayList<Integer> getBindings( int gameAction ){
+	public static ArrayList<Integer> getKeysForAction(GameAction action ){
 		ArrayList<Integer> result = new ArrayList<>();
 		for( int i : bindings.keySet()){
-			if (bindings.get(i) == gameAction){
+			if (bindings.get(i) == action){
 				result.add(i);
 			}
 		}
@@ -63,14 +60,6 @@ public class KeyBindings {
 		} else {
 			return result;
 		}
-	}
-
-	public static void addName( int keyAction, String name ){
-		names.put(keyAction, name);
-	}
-
-	public static String getName( int keyAction ){
-		return names.get( keyAction );
 	}
 
 }

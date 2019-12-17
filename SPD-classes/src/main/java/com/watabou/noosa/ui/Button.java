@@ -67,7 +67,7 @@ public class Button extends Component {
 			@Override
 			public boolean onSignal ( KeyEvent event ) {
 				if ( active && !event.pressed
-						&& KeyBindings.getBinding( event ) == keyAction()){
+						&& KeyBindings.getActionForKey( event ) == keyAction()){
 					onClick();
 					return true;
 				}
@@ -78,7 +78,7 @@ public class Button extends Component {
 	
 	private Signal.Listener<KeyEvent> keyListener;
 	
-	public int keyAction(){
+	public GameAction keyAction(){
 		return GameAction.NONE;
 	}
 	

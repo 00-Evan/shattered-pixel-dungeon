@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
@@ -208,29 +209,29 @@ public class CellSelector extends ScrollArea {
 		
 	}
 	
-	private int heldAction = SPDAction.NONE;
+	private GameAction heldAction = SPDAction.NONE;
 	private int heldTurns = 0;
 	
 	private Signal.Listener<KeyEvent> keyListener = new Signal.Listener<KeyEvent>() {
 		@Override
 		public boolean onSignal(KeyEvent event) {
-			int action = KeyBindings.getBinding( event );
+			GameAction action = KeyBindings.getActionForKey( event );
 			if (!event.pressed){
 				
-				if (heldAction != -1 && heldAction == action) {
+				if (heldAction != SPDAction.NONE && heldAction == action) {
 					resetKeyHold();
 					return true;
 				} else {
-					switch (action){
-						case SPDAction.ZOOM_IN:
-							zoom( camera.zoom+1 );
-							return true;
-						case SPDAction.ZOOM_OUT:
-							zoom( camera.zoom-1 );
-							return true;
+					if (action == SPDAction.ZOOM_IN){
+						zoom( camera.zoom+1 );
+						return true;
+
+					} else if (action == SPDAction.ZOOM_OUT){
+						zoom( camera.zoom-1 );
+						return true;
 					}
 				}
-			} else if (moveFromKey(action)) {
+			} else if (moveFromAction(action)) {
 				heldAction = action;
 				return true;
 			}
@@ -239,54 +240,37 @@ public class CellSelector extends ScrollArea {
 		}
 	};
 	
-	private boolean moveFromKey(int event){
-		boolean moved = true;
+	private boolean moveFromAction(GameAction action){
 		int cell = Dungeon.hero.pos;
-		switch (event){
-			case SPDAction.N:
-				cell += -Dungeon.level.width();
-				break;
-			case SPDAction.NE:
-				cell += +1-Dungeon.level.width();
-				break;
-			case SPDAction.E:
-				cell += +1;
-				break;
-			case SPDAction.SE:
-				cell += +1+Dungeon.level.width();
-				break;
-			case SPDAction.S:
-				cell += +Dungeon.level.width();
-				break;
-			case SPDAction.SW:
-				cell += -1+Dungeon.level.width();
-				break;
-			case SPDAction.W:
-				cell += -1;
-				break;
-			case SPDAction.NW:
-				cell += -1-Dungeon.level.width();
-				break;
-			default:
-				moved = false;
-		}
+
+		if (action == SPDAction.N)  cell += -Dungeon.level.width();
+		if (action == SPDAction.NE) cell += +1-Dungeon.level.width();
+		if (action == SPDAction.E)  cell += +1;
+		if (action == SPDAction.SE) cell += +1+Dungeon.level.width();
+		if (action == SPDAction.S)  cell += +Dungeon.level.width();
+		if (action == SPDAction.SW) cell += -1+Dungeon.level.width();
+		if (action == SPDAction.W)  cell += -1;
+		if (action == SPDAction.NW) cell += -1-Dungeon.level.width();
 		
-		if (moved){
+		if (cell != Dungeon.hero.pos){
 			//each step when keyboard moving takes 0.15s, 0.125s, 0.1s, 0.1s, ...
 			// this is to make it easier to move 1 or 2 steps without overshooting
 			CharSprite.setMoveInterval( CharSprite.DEFAULT_MOVE_INTERVAL +
 			                            Math.max(0, 0.05f - heldTurns *0.025f));
 			select(cell);
+			return true;
+
+		} else {
+			return false;
 		}
-		
-		return moved;
+
 	}
 	
 	public void processKeyHold(){
 		if (heldAction != SPDAction.NONE){
 			enabled = true;
 			heldTurns++;
-			moveFromKey(heldAction);
+			moveFromAction(heldAction);
 		}
 	}
 	

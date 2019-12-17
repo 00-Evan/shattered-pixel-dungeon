@@ -21,13 +21,47 @@
 
 package com.watabou.input;
 
+import java.util.ArrayList;
+
+//This is similar to an enum, but we don't use that because subclasses should be able to add actions
 public class GameAction {
 
-	public static final int NONE        = 0;
+	private static final ArrayList<GameAction> ALL_ACTIONS = new ArrayList<>();
 
-	public static final int BACK        = 1;
-	public static final int MENU        = 2;
+	private int code;
+	private String name;
 
-	public static final int TOTAL_ACTIONS = 3;
+	protected GameAction( String name ){
+		code = ALL_ACTIONS.size();
+		this.name = name;
+
+		ALL_ACTIONS.add(this);
+	}
+
+	public int code(){
+		return code;
+	}
+
+	public String name(){
+		return name;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof GameAction && ((GameAction) o).code == code;
+	}
+
+	public static final GameAction NONE = new GameAction( "none" );
+
+	public static final GameAction BACK = new GameAction( "back" );
+	public static final GameAction MENU = new GameAction( "menu" );
+
+	public static ArrayList<GameAction> allActions(){
+		return new ArrayList<>(ALL_ACTIONS);
+	}
+
+	public static int totalActions(){
+		return ALL_ACTIONS.size();
+	}
 
 }

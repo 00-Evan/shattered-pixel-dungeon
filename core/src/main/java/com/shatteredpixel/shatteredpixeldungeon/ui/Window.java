@@ -158,13 +158,12 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	@Override
 	public boolean onSignal( KeyEvent event ) {
 		if (event.pressed) {
-			switch (KeyBindings.getBinding( event )) {
-				case SPDAction.BACK:
-					onBackPressed();
-					return true;
-				case SPDAction.MENU:
-					onMenuPressed();
-					return true;
+			if (KeyBindings.getActionForKey( event ) == SPDAction.BACK){
+				onBackPressed();
+
+			} else if (KeyBindings.getActionForKey( event ) == SPDAction.MENU){
+				onMenuPressed();
+
 			}
 		}
 		

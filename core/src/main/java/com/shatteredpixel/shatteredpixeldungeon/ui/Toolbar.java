@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
@@ -88,7 +89,7 @@ public class Toolbar extends Component {
 			}
 			
 			@Override
-			public int keyAction() {
+			public GameAction keyAction() {
 				return SPDAction.WAIT;
 			}
 			
@@ -112,7 +113,7 @@ public class Toolbar extends Component {
 			}
 			
 			@Override
-			public int keyAction() {
+			public GameAction keyAction() {
 				return SPDAction.SEARCH;
 			}
 			
@@ -132,7 +133,7 @@ public class Toolbar extends Component {
 			}
 			
 			@Override
-			public int keyAction() {
+			public GameAction keyAction() {
 				return SPDAction.INVENTORY;
 			}
 			

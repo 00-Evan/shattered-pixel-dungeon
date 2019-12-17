@@ -27,122 +27,89 @@ import com.watabou.input.KeyBindings;
 
 public class SPDAction extends GameAction {
 
-	//--Existing actions from GameAction
-	public static final int NONE        = GameAction.NONE;
+	protected SPDAction( String name ){
+		super( name );
+	}
 
-	public static final int BACK        = GameAction.BACK;
-	public static final int MENU        = GameAction.MENU;
+	//--New references to existing actions from GameAction
+	public static final GameAction NONE  = GameAction.NONE;
+
+	public static final GameAction BACK  = GameAction.BACK;
+	public static final GameAction MENU  = GameAction.MENU;
 	//--
 
-	public static final int HERO_INFO   = 3;
-	public static final int JOURNAL     = 4;
+	public static final GameAction HERO_INFO   = new SPDAction("hero_info");
+	public static final GameAction JOURNAL     = new SPDAction("journal");
 
-	public static final int WAIT        = 5;
-	public static final int SEARCH      = 6;
+	public static final GameAction WAIT        = new SPDAction("wait");
+	public static final GameAction SEARCH      = new SPDAction("search");
 
-	public static final int INVENTORY   = 7;
-	public static final int QUICKSLOT_1 = 8;
-	public static final int QUICKSLOT_2 = 9;
-	public static final int QUICKSLOT_3 = 10;
-	public static final int QUICKSLOT_4 = 11;
+	public static final GameAction INVENTORY   = new SPDAction("inventory");
+	public static final GameAction QUICKSLOT_1 = new SPDAction("quickslot_1");
+	public static final GameAction QUICKSLOT_2 = new SPDAction("quickslot_2");
+	public static final GameAction QUICKSLOT_3 = new SPDAction("quickslot_3");
+	public static final GameAction QUICKSLOT_4 = new SPDAction("quickslot_4");
 
-	public static final int TAG_ATTACK  = 12;
-	public static final int TAG_DANGER  = 13;
-	public static final int TAG_ACTION  = 14;
-	public static final int TAG_LOOT    = 15;
-	public static final int TAG_RESUME  = 16;
+	public static final GameAction TAG_ATTACK  = new SPDAction("tag_attack");
+	public static final GameAction TAG_DANGER  = new SPDAction("tag_danger");
+	public static final GameAction TAG_ACTION  = new SPDAction("tag_action");
+	public static final GameAction TAG_LOOT    = new SPDAction("tag_loot");
+	public static final GameAction TAG_RESUME  = new SPDAction("tag_resume");
 
-	public static final int ZOOM_IN     = 17;
-	public static final int ZOOM_OUT    = 18;
+	public static final GameAction ZOOM_IN     = new SPDAction("zoom_in");
+	public static final GameAction ZOOM_OUT    = new SPDAction("zoom_out");
 
-	public static final int N           = 19;
-	public static final int E           = 20;
-	public static final int S           = 21;
-	public static final int W           = 22;
-	public static final int NE          = 23;
-	public static final int SE          = 24;
-	public static final int SW          = 25;
-	public static final int NW          = 26;
-
-	public static final int TOTAL_ACTIONS = 27;
+	public static final GameAction N           = new SPDAction("n");
+	public static final GameAction E           = new SPDAction("e");
+	public static final GameAction S           = new SPDAction("s");
+	public static final GameAction W           = new SPDAction("w");
+	public static final GameAction NE          = new SPDAction("ne");
+	public static final GameAction SE          = new SPDAction("se");
+	public static final GameAction SW          = new SPDAction("sw");
+	public static final GameAction NW          = new SPDAction("nw");
 
 	public static void initDefaults() {
 
-		KeyBindings.addName(NONE,           "none");
-
-		KeyBindings.addName(BACK,           "back");
-		KeyBindings.addName(MENU,           "menu");
-
-		KeyBindings.addName(HERO_INFO,      "hero_info");
-		KeyBindings.addName(JOURNAL,        "journal");
-
-		KeyBindings.addName(WAIT,           "wait");
-		KeyBindings.addName(SEARCH,         "search");
-
-		KeyBindings.addName(INVENTORY,      "inventory");
-		KeyBindings.addName(QUICKSLOT_1,    "quickslot_1");
-		KeyBindings.addName(QUICKSLOT_2,    "quickslot_2");
-		KeyBindings.addName(QUICKSLOT_3,    "quickslot_3");
-		KeyBindings.addName(QUICKSLOT_4,    "quickslot_4");
-
-		KeyBindings.addName(TAG_ATTACK,     "tag_attack");
-		KeyBindings.addName(TAG_DANGER,     "tag_danger");
-		KeyBindings.addName(TAG_ACTION,     "tag_action");
-		KeyBindings.addName(TAG_LOOT,       "tag_loot");
-		KeyBindings.addName(TAG_RESUME,     "tag_resume");
-
-		KeyBindings.addName(ZOOM_IN,        "zoom_in");
-		KeyBindings.addName(ZOOM_OUT,       "zoom_out");
-
-		KeyBindings.addName(N,              "n");
-		KeyBindings.addName(E,              "e");
-		KeyBindings.addName(S,              "s");
-		KeyBindings.addName(W,              "w");
-		KeyBindings.addName(NE,             "ne");
-		KeyBindings.addName(SE,             "se");
-		KeyBindings.addName(SW,             "sw");
-		KeyBindings.addName(NW,             "nw");
-
 		//default key bindings
-		KeyBindings.addBinding( Input.Keys.BACK, GameAction.BACK );
-		KeyBindings.addBinding( Input.Keys.MENU, GameAction.MENU );
+		KeyBindings.addKeyBinding( Input.Keys.BACK,        SPDAction.BACK );
+		KeyBindings.addKeyBinding( Input.Keys.MENU,        SPDAction.MENU );
 
-		KeyBindings.addBinding( Input.Keys.H, SPDAction.HERO_INFO );
-		KeyBindings.addBinding( Input.Keys.J, SPDAction.JOURNAL );
+		KeyBindings.addKeyBinding( Input.Keys.H,           SPDAction.HERO_INFO );
+		KeyBindings.addKeyBinding( Input.Keys.J,           SPDAction.JOURNAL );
 
-		KeyBindings.addBinding( Input.Keys.SPACE,    SPDAction.WAIT );
-		KeyBindings.addBinding( Input.Keys.S,        SPDAction.SEARCH );
+		KeyBindings.addKeyBinding( Input.Keys.SPACE,       SPDAction.WAIT );
+		KeyBindings.addKeyBinding( Input.Keys.S,           SPDAction.SEARCH );
 
-		KeyBindings.addBinding( Input.Keys.I,  SPDAction.INVENTORY );
-		KeyBindings.addBinding( Input.Keys.Q,  SPDAction.QUICKSLOT_1 );
-		KeyBindings.addBinding( Input.Keys.W,  SPDAction.QUICKSLOT_2 );
-		KeyBindings.addBinding( Input.Keys.E,  SPDAction.QUICKSLOT_3 );
-		KeyBindings.addBinding( Input.Keys.R,  SPDAction.QUICKSLOT_4 );
+		KeyBindings.addKeyBinding( Input.Keys.I,           SPDAction.INVENTORY );
+		KeyBindings.addKeyBinding( Input.Keys.Q,           SPDAction.QUICKSLOT_1 );
+		KeyBindings.addKeyBinding( Input.Keys.W,           SPDAction.QUICKSLOT_2 );
+		KeyBindings.addKeyBinding( Input.Keys.E,           SPDAction.QUICKSLOT_3 );
+		KeyBindings.addKeyBinding( Input.Keys.R,           SPDAction.QUICKSLOT_4 );
 
-		KeyBindings.addBinding( Input.Keys.A,     SPDAction.TAG_ATTACK );
-		KeyBindings.addBinding( Input.Keys.TAB,   SPDAction.TAG_DANGER );
-		KeyBindings.addBinding( Input.Keys.D,     SPDAction.TAG_ACTION );
-		KeyBindings.addBinding( Input.Keys.ENTER, SPDAction.TAG_LOOT );
-		KeyBindings.addBinding( Input.Keys.T,     SPDAction.TAG_RESUME );
+		KeyBindings.addKeyBinding( Input.Keys.A,           SPDAction.TAG_ATTACK );
+		KeyBindings.addKeyBinding( Input.Keys.TAB,         SPDAction.TAG_DANGER );
+		KeyBindings.addKeyBinding( Input.Keys.D,           SPDAction.TAG_ACTION );
+		KeyBindings.addKeyBinding( Input.Keys.ENTER,       SPDAction.TAG_LOOT );
+		KeyBindings.addKeyBinding( Input.Keys.T,           SPDAction.TAG_RESUME );
 
-		KeyBindings.addBinding( Input.Keys.PLUS,   SPDAction.ZOOM_IN );
-		KeyBindings.addBinding( Input.Keys.EQUALS, SPDAction.ZOOM_IN );
-		KeyBindings.addBinding( Input.Keys.MINUS,  SPDAction.ZOOM_OUT );
+		KeyBindings.addKeyBinding( Input.Keys.PLUS,        SPDAction.ZOOM_IN );
+		KeyBindings.addKeyBinding( Input.Keys.EQUALS,      SPDAction.ZOOM_IN );
+		KeyBindings.addKeyBinding( Input.Keys.MINUS,       SPDAction.ZOOM_OUT );
 
-		KeyBindings.addBinding( Input.Keys.UP,    SPDAction.N );
-		KeyBindings.addBinding( Input.Keys.RIGHT, SPDAction.E );
-		KeyBindings.addBinding( Input.Keys.DOWN,  SPDAction.S );
-		KeyBindings.addBinding( Input.Keys.LEFT,  SPDAction.W );
+		KeyBindings.addKeyBinding( Input.Keys.UP,          SPDAction.N );
+		KeyBindings.addKeyBinding( Input.Keys.RIGHT,       SPDAction.E );
+		KeyBindings.addKeyBinding( Input.Keys.DOWN,        SPDAction.S );
+		KeyBindings.addKeyBinding( Input.Keys.LEFT,        SPDAction.W );
 
-		KeyBindings.addBinding( Input.Keys.NUMPAD_5,  SPDAction.WAIT );
-		KeyBindings.addBinding( Input.Keys.NUMPAD_8,  SPDAction.N );
-		KeyBindings.addBinding( Input.Keys.NUMPAD_9,  SPDAction.NE );
-		KeyBindings.addBinding( Input.Keys.NUMPAD_6,  SPDAction.E );
-		KeyBindings.addBinding( Input.Keys.NUMPAD_3,  SPDAction.SE );
-		KeyBindings.addBinding( Input.Keys.NUMPAD_2,  SPDAction.S );
-		KeyBindings.addBinding( Input.Keys.NUMPAD_1,  SPDAction.SW );
-		KeyBindings.addBinding( Input.Keys.NUMPAD_4,  SPDAction.W );
-		KeyBindings.addBinding( Input.Keys.NUMPAD_7,  SPDAction.NW );
+		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_5,    SPDAction.WAIT );
+		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_8,    SPDAction.N );
+		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_9,    SPDAction.NE );
+		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_6,    SPDAction.E );
+		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_3,    SPDAction.SE );
+		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_2,    SPDAction.S );
+		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_1,    SPDAction.SW );
+		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_4,    SPDAction.W );
+		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_7,    SPDAction.NW );
 
 	}
 

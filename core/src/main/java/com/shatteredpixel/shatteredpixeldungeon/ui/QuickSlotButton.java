@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
@@ -95,7 +96,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 			}
 			
 			@Override
-			public int keyAction() {
+			public GameAction keyAction() {
 				return QuickSlotButton.this.keyAction();
 			}
 			@Override
@@ -142,7 +143,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	}
 
 	@Override
-	public int keyAction() {
+	public GameAction keyAction() {
 		switch (slotNum){
 			case 0:
 				return SPDAction.QUICKSLOT_1;

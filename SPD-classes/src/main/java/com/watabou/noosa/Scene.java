@@ -35,13 +35,12 @@ public class Scene extends Group {
 			@Override
 			public boolean onSignal( KeyEvent event ) {
 				if (Game.instance != null && event.pressed) {
-					switch (KeyBindings.getBinding( event )) {
-						case GameAction.BACK:
-							onBackPressed();
-							break;
-						case GameAction.MENU:
-							onMenuPressed();
-							break;
+					if (KeyBindings.getActionForKey( event ) == GameAction.BACK){
+						onBackPressed();
+
+					} else if (KeyBindings.getActionForKey( event ) == GameAction.MENU){
+						onMenuPressed();
+
 					}
 				}
 				return false;

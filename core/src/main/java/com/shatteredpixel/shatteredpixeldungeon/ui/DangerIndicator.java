@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
@@ -49,7 +50,7 @@ public class DangerIndicator extends Tag {
 	}
 	
 	@Override
-	public int keyAction() {
+	public GameAction keyAction() {
 		return SPDAction.TAG_DANGER;
 	}
 	
