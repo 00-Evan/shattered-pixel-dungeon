@@ -25,7 +25,9 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3FileHandle;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Preferences;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.SharedLibraryLoader;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -100,8 +102,6 @@ public class DesktopLauncher {
 		
 		config.setTitle( title );
 		
-		//TODO this is currently the same location and filenames as the old desktop codebase
-		// If I want to move it now would be the time
 		String basePath = "";
 		if (SharedLibraryLoader.isWindows) {
 			if (System.getProperties().getProperty("os.name").equals("Windows XP")) {
@@ -114,8 +114,16 @@ public class DesktopLauncher {
 		} else if (SharedLibraryLoader.isLinux) {
 			basePath = ".shatteredpixel/shattered-pixel-dungeon/";
 		}
+
+		//copy over prefs from old file location from legacy desktop codebase
+		FileHandle oldPrefs = new Lwjgl3FileHandle(basePath + "pd-prefs", Files.FileType.External);
+		FileHandle newPrefs = new Lwjgl3FileHandle(basePath + SPDSettings.DEFAULT_PREFS_FILE, Files.FileType.External);
+		if (oldPrefs.exists() && !newPrefs.exists()){
+			oldPrefs.copyTo(newPrefs);
+		}
+
 		config.setPreferencesConfig( basePath, Files.FileType.External );
-		SPDSettings.set( new Lwjgl3Preferences( "pd-prefs", basePath) );
+		SPDSettings.set( new Lwjgl3Preferences( SPDSettings.DEFAULT_PREFS_FILE, basePath) );
 		FileUtils.setDefaultFileProperties( Files.FileType.External, basePath );
 		
 		config.setWindowSizeLimits( 960, 640, -1, -1 );

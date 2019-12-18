@@ -26,8 +26,7 @@ import com.badlogic.gdx.Preferences;
 
 public class GameSettings {
 	
-	//TODO might want to rename this file. this is the auto-generated name for android atm
-	public static final String DEFAULT_PREFS_FILE = "ShatteredPixelDungeon";
+	public static final String DEFAULT_PREFS_FILE = "settings.xml";
 	
 	private static Preferences prefs;
 	
