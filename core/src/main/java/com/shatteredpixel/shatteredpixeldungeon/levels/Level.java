@@ -630,11 +630,21 @@ public abstract class Level implements Bundlable {
 		}
 
 		//an open space is large enough to fit large mobs. A space is open when it is not solid
-		// and there also aren't solid spaces above&below, or left&right
+		// and there is a group of 3 or more adjacent cells which aren't solid
 		for (int i=0; i < length(); i++) {
-			openSpace[i] = !solid[i] &&
-					(!solid[i-1] || !solid[i+1]) &&
-					(!solid[i-width()] || !solid[i+width()]);
+			if (solid[i]){
+				openSpace[i] = false;
+			} else {
+				for (int j = 0; j < PathFinder.CIRCLE8.length; j++){
+					if (solid[i+PathFinder.CIRCLE8[j]]) {
+						openSpace[i] = false;
+					} else if (!solid[i+PathFinder.CIRCLE8[(j+1)%8]]
+							&& !solid[i+PathFinder.CIRCLE8[(j+2)%8]]){
+						openSpace[i] = true;
+						break;
+					}
+				}
+			}
 		}
 
 	}
@@ -693,6 +703,8 @@ public abstract class Level implements Bundlable {
 		if (s != null && s.volume > 0){
 			level.losBlocking[cell] = level.losBlocking[cell] || s.cur[cell] > 0;
 		}
+
+		//TODO update openSpace here too
 	}
 	
 	public Heap drop( Item item, int cell ) {

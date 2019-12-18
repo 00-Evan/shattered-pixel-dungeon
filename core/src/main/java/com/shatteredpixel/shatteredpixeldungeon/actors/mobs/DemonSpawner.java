@@ -67,6 +67,11 @@ public class DemonSpawner extends Mob {
 		//do nothing
 	}
 
+	@Override
+	public boolean reset() {
+		return true;
+	}
+
 	private float spawnCooldown = 50;
 
 	@Override

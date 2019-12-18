@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShaftParticle;
+import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.DewVial;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -71,6 +72,9 @@ public class WaterOfHealth extends WellWater {
 			CellEmitter.get( pos ).start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
 		} else if (ScrollOfRemoveCurse.uncurse( null, item )){
 			CellEmitter.get( pos ).start( ShadowParticle.UP, 0.05f, 10 );
+		} if ( item instanceof Ankh && !(((Ankh) item).isBlessed())){
+			((Ankh) item).bless();
+			CellEmitter.get( pos ).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
 		}
 		Sample.INSTANCE.play( Assets.SND_DRINK );
 		return item;
