@@ -25,6 +25,8 @@ import com.badlogic.gdx.Input;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 
+import java.util.LinkedHashMap;
+
 public class SPDAction extends GameAction {
 
 	protected SPDAction( String name ){
@@ -68,49 +70,56 @@ public class SPDAction extends GameAction {
 	public static final GameAction SW          = new SPDAction("sw");
 	public static final GameAction NW          = new SPDAction("nw");
 
-	public static void initDefaults() {
+	private static final LinkedHashMap<Integer, GameAction> defaultBindings = new LinkedHashMap<>();
+	static {
+		defaultBindings.put( Input.Keys.BACK,        SPDAction.BACK );
+		defaultBindings.put( Input.Keys.MENU,        SPDAction.MENU );
 
-		//default key bindings
-		KeyBindings.addKeyBinding( Input.Keys.BACK,        SPDAction.BACK );
-		KeyBindings.addKeyBinding( Input.Keys.MENU,        SPDAction.MENU );
+		defaultBindings.put( Input.Keys.H,           SPDAction.HERO_INFO );
+		defaultBindings.put( Input.Keys.J,           SPDAction.JOURNAL );
 
-		KeyBindings.addKeyBinding( Input.Keys.H,           SPDAction.HERO_INFO );
-		KeyBindings.addKeyBinding( Input.Keys.J,           SPDAction.JOURNAL );
+		defaultBindings.put( Input.Keys.SPACE,       SPDAction.WAIT );
+		defaultBindings.put( Input.Keys.S,           SPDAction.SEARCH );
 
-		KeyBindings.addKeyBinding( Input.Keys.SPACE,       SPDAction.WAIT );
-		KeyBindings.addKeyBinding( Input.Keys.S,           SPDAction.SEARCH );
+		defaultBindings.put( Input.Keys.I,           SPDAction.INVENTORY );
+		defaultBindings.put( Input.Keys.Q,           SPDAction.QUICKSLOT_1 );
+		defaultBindings.put( Input.Keys.W,           SPDAction.QUICKSLOT_2 );
+		defaultBindings.put( Input.Keys.E,           SPDAction.QUICKSLOT_3 );
+		defaultBindings.put( Input.Keys.R,           SPDAction.QUICKSLOT_4 );
 
-		KeyBindings.addKeyBinding( Input.Keys.I,           SPDAction.INVENTORY );
-		KeyBindings.addKeyBinding( Input.Keys.Q,           SPDAction.QUICKSLOT_1 );
-		KeyBindings.addKeyBinding( Input.Keys.W,           SPDAction.QUICKSLOT_2 );
-		KeyBindings.addKeyBinding( Input.Keys.E,           SPDAction.QUICKSLOT_3 );
-		KeyBindings.addKeyBinding( Input.Keys.R,           SPDAction.QUICKSLOT_4 );
+		defaultBindings.put( Input.Keys.A,           SPDAction.TAG_ATTACK );
+		defaultBindings.put( Input.Keys.TAB,         SPDAction.TAG_DANGER );
+		defaultBindings.put( Input.Keys.D,           SPDAction.TAG_ACTION );
+		defaultBindings.put( Input.Keys.ENTER,       SPDAction.TAG_LOOT );
+		defaultBindings.put( Input.Keys.T,           SPDAction.TAG_RESUME );
 
-		KeyBindings.addKeyBinding( Input.Keys.A,           SPDAction.TAG_ATTACK );
-		KeyBindings.addKeyBinding( Input.Keys.TAB,         SPDAction.TAG_DANGER );
-		KeyBindings.addKeyBinding( Input.Keys.D,           SPDAction.TAG_ACTION );
-		KeyBindings.addKeyBinding( Input.Keys.ENTER,       SPDAction.TAG_LOOT );
-		KeyBindings.addKeyBinding( Input.Keys.T,           SPDAction.TAG_RESUME );
+		defaultBindings.put( Input.Keys.PLUS,        SPDAction.ZOOM_IN );
+		defaultBindings.put( Input.Keys.EQUALS,      SPDAction.ZOOM_IN );
+		defaultBindings.put( Input.Keys.MINUS,       SPDAction.ZOOM_OUT );
 
-		KeyBindings.addKeyBinding( Input.Keys.PLUS,        SPDAction.ZOOM_IN );
-		KeyBindings.addKeyBinding( Input.Keys.EQUALS,      SPDAction.ZOOM_IN );
-		KeyBindings.addKeyBinding( Input.Keys.MINUS,       SPDAction.ZOOM_OUT );
+		defaultBindings.put( Input.Keys.UP,          SPDAction.N );
+		defaultBindings.put( Input.Keys.RIGHT,       SPDAction.E );
+		defaultBindings.put( Input.Keys.DOWN,        SPDAction.S );
+		defaultBindings.put( Input.Keys.LEFT,        SPDAction.W );
 
-		KeyBindings.addKeyBinding( Input.Keys.UP,          SPDAction.N );
-		KeyBindings.addKeyBinding( Input.Keys.RIGHT,       SPDAction.E );
-		KeyBindings.addKeyBinding( Input.Keys.DOWN,        SPDAction.S );
-		KeyBindings.addKeyBinding( Input.Keys.LEFT,        SPDAction.W );
+		defaultBindings.put( Input.Keys.NUMPAD_5,    SPDAction.WAIT );
+		defaultBindings.put( Input.Keys.NUMPAD_8,    SPDAction.N );
+		defaultBindings.put( Input.Keys.NUMPAD_9,    SPDAction.NE );
+		defaultBindings.put( Input.Keys.NUMPAD_6,    SPDAction.E );
+		defaultBindings.put( Input.Keys.NUMPAD_3,    SPDAction.SE );
+		defaultBindings.put( Input.Keys.NUMPAD_2,    SPDAction.S );
+		defaultBindings.put( Input.Keys.NUMPAD_1,    SPDAction.SW );
+		defaultBindings.put( Input.Keys.NUMPAD_4,    SPDAction.W );
+		defaultBindings.put( Input.Keys.NUMPAD_7,    SPDAction.NW );
+	}
 
-		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_5,    SPDAction.WAIT );
-		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_8,    SPDAction.N );
-		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_9,    SPDAction.NE );
-		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_6,    SPDAction.E );
-		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_3,    SPDAction.SE );
-		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_2,    SPDAction.S );
-		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_1,    SPDAction.SW );
-		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_4,    SPDAction.W );
-		KeyBindings.addKeyBinding( Input.Keys.NUMPAD_7,    SPDAction.NW );
+	public static LinkedHashMap<Integer, GameAction> getDefaults() {
+		return new LinkedHashMap(defaultBindings);
+	}
 
+	//TODO save functionality for changed keys
+	public static void initialize(){
+		KeyBindings.setAllBindings(getDefaults());
 	}
 
 	//file name? perhaps
