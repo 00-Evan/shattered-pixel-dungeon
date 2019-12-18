@@ -26,6 +26,8 @@ import com.badlogic.gdx.Input;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+//FIXME at lot of the logic here, in WndKeyBindings, and SPDAction is fairly messy
+// should see about doing some refactoring to clean this up
 public class KeyBindings {
 
 	private static LinkedHashMap<Integer, GameAction> bindings = new LinkedHashMap<>();

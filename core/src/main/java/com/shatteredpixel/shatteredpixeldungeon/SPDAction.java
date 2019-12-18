@@ -24,7 +24,10 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.badlogic.gdx.Input;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 
 public class SPDAction extends GameAction {
@@ -114,21 +117,123 @@ public class SPDAction extends GameAction {
 	}
 
 	public static LinkedHashMap<Integer, GameAction> getDefaults() {
-		return new LinkedHashMap(defaultBindings);
+		return new LinkedHashMap<>(defaultBindings);
 	}
 
-	//TODO save functionality for changed keys
-	public static void initialize(){
-		KeyBindings.setAllBindings(getDefaults());
-	}
-
-	//file name? perhaps
+	//we only save/loads keys which differ from the default configuration.
+	private static final String BINDINGS_FILE = "keybinds.dat";
 
 	public static void loadBindings(){
+
+		try {
+			Bundle b = FileUtils.bundleFromFile(BINDINGS_FILE);
+
+			Bundle firstKeys = b.getBundle("first_keys");
+			Bundle secondKeys = b.getBundle("second_keys");
+
+			LinkedHashMap<Integer, GameAction> defaults = getDefaults();
+			LinkedHashMap<Integer, GameAction> custom = new LinkedHashMap<>();
+
+			for (GameAction a : allActions()) {
+				if (firstKeys.contains(a.name())) {
+					if (firstKeys.getInt(a.name()) == 0){
+						for (int i : defaults.keySet()){
+							if (defaults.get(i) == a){
+								defaults.remove(i);
+								break;
+							}
+						}
+					} else {
+						custom.put(firstKeys.getInt(a.name()), a);
+						defaults.remove(firstKeys.getInt(a.name()));
+					}
+				}
+
+				//we store any custom second keys in defaults for the moment to preserve order
+				//incase the 2nd key is custom but the first one isn't
+				if (secondKeys.contains(a.name())) {
+					if (secondKeys.getInt(a.name()) == 0){
+						int last = 0;
+						for (int i : defaults.keySet()){
+							if (defaults.get(i) == a){
+								last = i;
+							}
+						}
+						defaults.remove(last);
+					} else {
+						defaults.remove(secondKeys.getInt(a.name()));
+						defaults.put(secondKeys.getInt(a.name()), a);
+					}
+				}
+
+			}
+
+			//now merge them and store
+			for( int i : defaults.keySet()){
+				if (i != 0) {
+					custom.put(i, defaults.get(i));
+				}
+			}
+
+			KeyBindings.setAllBindings(custom);
+
+		} catch (Exception e){
+			KeyBindings.setAllBindings(getDefaults());
+		}
 
 	}
 
 	public static void saveBindings(){
+
+		Bundle b = new Bundle();
+
+		Bundle firstKeys = new Bundle();
+		Bundle secondKeys = new Bundle();
+
+		for (GameAction a : allActions()){
+			int firstCur = 0;
+			int secondCur = 0;
+			int firstDef = 0;
+			int secondDef = 0;
+
+			for (int i : defaultBindings.keySet()){
+				if (defaultBindings.get(i) == a){
+					if(firstDef == 0){
+						firstDef = i;
+					} else {
+						secondDef = i;
+					}
+				}
+			}
+
+			LinkedHashMap<Integer, GameAction> curBindings = KeyBindings.getAllBindings();
+			for (int i : curBindings.keySet()){
+				if (curBindings.get(i) == a){
+					if(firstCur == 0){
+						firstCur = i;
+					} else {
+						secondCur = i;
+					}
+				}
+			}
+
+			if (firstCur != firstDef){
+				firstKeys.put(a.name(), firstCur);
+			}
+			if (secondCur != secondDef){
+				secondKeys.put(a.name(), secondCur);
+			}
+
+		}
+
+		b.put("first_keys", firstKeys);
+		b.put("second_keys", secondKeys);
+
+		try {
+			FileUtils.bundleToFile(BINDINGS_FILE, b);
+		} catch (IOException e) {
+			ShatteredPixelDungeon.reportException(e);
+		}
 
 	}
 
