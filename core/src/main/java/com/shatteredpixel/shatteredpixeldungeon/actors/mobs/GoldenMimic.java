@@ -32,10 +32,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class GoldenMimic extends Mimic {
 
@@ -81,7 +83,7 @@ public class GoldenMimic extends Mimic {
 	@Override
 	protected void generatePrize() {
 		super.generatePrize();
-		//all existing prize items are guaranteed uncursed
+		//all existing prize items are guaranteed uncursed, and have a 50% chance to be +1 if they were +0
 		for (Item i : items){
 			if (i instanceof EquipableItem || i instanceof Wand){
 				i.cursed = false;
@@ -91,6 +93,9 @@ public class GoldenMimic extends Mimic {
 				}
 				if (i instanceof Armor && ((Armor) i).hasCurseGlyph()){
 					((Armor) i).inscribe(null);
+				}
+				if (!(i instanceof MissileWeapon) && i.level() == 0 && Random.Int(2) == 0){
+					i.upgrade();
 				}
 			}
 		}

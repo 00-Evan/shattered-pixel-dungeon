@@ -51,7 +51,7 @@ public class RipperDemon extends Mob {
 
 	@Override
 	public int attackSkill( Char target ) {
-		return 35;
+		return 30;
 	}
 
 	@Override
