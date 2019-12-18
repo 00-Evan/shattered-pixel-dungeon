@@ -117,8 +117,7 @@ public class Monk extends Mob {
 			return super.defenseVerb();
 		} else {
 			f.detach();
-			//TODO this might be a bit too fast
-			focusCooldown = Random.NormalFloat( 4, 6 );
+			focusCooldown = Random.NormalFloat( 6, 7 );
 			return Messages.get(this, "parried");
 		}
 	}
