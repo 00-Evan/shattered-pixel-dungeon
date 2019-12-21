@@ -41,12 +41,7 @@ public class LootIndicator extends Tag {
 		
 		visible = false;
 	}
-	
-	@Override
-	public GameAction keyAction() {
-		return SPDAction.TAG_LOOT;
-	}
-	
+
 	@Override
 	protected void createChildren() {
 		super.createChildren();
@@ -57,6 +52,11 @@ public class LootIndicator extends Tag {
 					Dungeon.hero.next();
 				}
 
+			}
+
+			@Override
+			public GameAction keyAction() {
+				return SPDAction.TAG_LOOT;
 			}
 		};
 		slot.showParams( true, false, false );

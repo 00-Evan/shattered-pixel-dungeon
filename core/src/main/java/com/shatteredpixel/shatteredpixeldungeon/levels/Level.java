@@ -630,12 +630,12 @@ public abstract class Level implements Bundlable {
 		}
 
 		//an open space is large enough to fit large mobs. A space is open when it is not solid
-		// and there is a group of 3 or more adjacent cells which aren't solid
+		// and there is and open corner with both adjacent cells opens
 		for (int i=0; i < length(); i++) {
 			if (solid[i]){
 				openSpace[i] = false;
 			} else {
-				for (int j = 0; j < PathFinder.CIRCLE8.length; j++){
+				for (int j = 1; j < PathFinder.CIRCLE8.length; j += 2){
 					if (solid[i+PathFinder.CIRCLE8[j]]) {
 						openSpace[i] = false;
 					} else if (!solid[i+PathFinder.CIRCLE8[(j+1)%8]]
