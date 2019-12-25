@@ -122,11 +122,6 @@ public class Monk extends Mob {
 		}
 	}
 	
-	{
-		immunities.add( Amok.class );
-		immunities.add( Terror.class );
-	}
-	
 	private static String FOCUS_COOLDOWN = "focus_cooldown";
 	
 	@Override

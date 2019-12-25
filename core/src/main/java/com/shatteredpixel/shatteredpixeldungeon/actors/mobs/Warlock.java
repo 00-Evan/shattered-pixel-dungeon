@@ -150,8 +150,4 @@ public class Warlock extends Mob implements Callback {
 
 		return loot;
 	}
-
-	{
-		resistances.add( Grim.class );
-	}
 }

@@ -45,15 +45,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HandAxe;
@@ -62,11 +58,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Mace;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Shortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WarHammer;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Bolas;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.FishingSpear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Javelin;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Kunai;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingClub;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingHammer;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Tomahawk;
@@ -80,6 +75,7 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ShopRoom extends SpecialRoom {
 
@@ -172,7 +168,7 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Shortsword().identify() : new HandAxe()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
 					new FishingSpear().quantity(2) :
-					new Shuriken().quantity(2));
+					new ThrowingClub().quantity(2));
 			itemsToSpawn.add( new LeatherArmor().identify() );
 			break;
 			
@@ -180,7 +176,7 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add( (Random.Int( 2 ) == 0 ? new Sword().identify() : new Mace()).identify() );
 			itemsToSpawn.add( Random.Int( 2 ) == 0 ?
 					new ThrowingSpear().quantity(2) :
-					new Bolas().quantity(2));
+					new Kunai().quantity(2));
 			itemsToSpawn.add( new MailArmor().identify() );
 			break;
 			
@@ -297,48 +293,36 @@ public class ShopRoom extends SpecialRoom {
 	}
 
 	protected static Bag ChooseBag(Belongings pack){
-	
-		//0=pouch, 1=holder, 2=bandolier, 3=holster
-		int[] bagItems = new int[4];
+
+		//generate a hashmap of all valid bags.
+		HashMap<Bag, Integer> bags = new HashMap<>();
+		if (!Dungeon.LimitedDrops.VELVET_POUCH.dropped()) bags.put(new VelvetPouch(), 1);
+		if (!Dungeon.LimitedDrops.SCROLL_HOLDER.dropped()) bags.put(new ScrollHolder(), 0);
+		if (!Dungeon.LimitedDrops.POTION_BANDOLIER.dropped()) bags.put(new PotionBandolier(), 0);
+		if (!Dungeon.LimitedDrops.MAGICAL_HOLSTER.dropped()) bags.put(new MagicalHolster(), 0);
+
+		if (bags.isEmpty()) return null;
 
 		//count up items in the main bag
 		for (Item item : pack.backpack.items) {
-			if (item instanceof Plant.Seed || item instanceof Runestone)    bagItems[0]++;
-			if (item instanceof Scroll)                                     bagItems[1]++;
-			if (item instanceof Potion)                                     bagItems[2]++;
-			if (item instanceof Wand || item instanceof MissileWeapon)      bagItems[3]++;
-		}
-		
-		//disqualify bags that have already been dropped
-		if (Dungeon.LimitedDrops.VELVET_POUCH.dropped())                    bagItems[0] = -1;
-		if (Dungeon.LimitedDrops.SCROLL_HOLDER.dropped())                   bagItems[1] = -1;
-		if (Dungeon.LimitedDrops.POTION_BANDOLIER.dropped())                bagItems[2] = -1;
-		if (Dungeon.LimitedDrops.MAGICAL_HOLSTER.dropped())                 bagItems[3] = -1;
-		
-		//find the best bag to drop. This does give a preference to later bags, if counts are equal
-		int bestBagIdx = 0;
-		for (int i = 1; i <= 3; i++){
-			if (bagItems[bestBagIdx] <= bagItems[i]){
-				bestBagIdx = i;
+			for (Bag bag : bags.keySet()){
+				if (bag.grab(item)){
+					bags.put(bag, bags.get(bag)+1);
+				}
 			}
 		}
-		
-		//drop it, or return nothing if no bag works
-		if (bagItems[bestBagIdx] == -1) return null;
-		switch (bestBagIdx){
-			case 0: default:
-				Dungeon.LimitedDrops.VELVET_POUCH.drop();
-				return new VelvetPouch();
-			case 1:
-				Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
-				return new ScrollHolder();
-			case 2:
-				Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
-				return new PotionBandolier();
-			case 3:
-				Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
-				return new MagicalHolster();
+
+		//find which bag will result in most inventory savings, drop that.
+		Bag bestBag = null;
+		for (Bag bag : bags.keySet()){
+			if (bestBag == null){
+				bestBag = bag;
+			} else if (bags.get(bag) > bags.get(bestBag)){
+				bestBag = bag;
+			}
 		}
+
+		return bestBag;
 
 	}
 

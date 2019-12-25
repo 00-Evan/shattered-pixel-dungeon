@@ -191,11 +191,6 @@ public class Ghost extends NPC {
 
 		return false;
 	}
-	
-	{
-		immunities.add( Paralysis.class );
-		immunities.add( Roots.class );
-	}
 
 	public static class Quest {
 		

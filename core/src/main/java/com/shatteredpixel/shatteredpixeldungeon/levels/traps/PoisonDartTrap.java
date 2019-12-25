@@ -105,7 +105,7 @@ public class PoisonDartTrap extends Trap {
 					}
 				});
 			} else {
-				finalTarget.damage(Random.NormalIntRange(1, 4) - finalTarget.drRoll(), trap);
+				finalTarget.damage(Random.NormalIntRange(4, 8) - finalTarget.drRoll(), trap);
 				Buff.affect( finalTarget, Poison.class ).set( poisonAmount() );
 			}
 		}

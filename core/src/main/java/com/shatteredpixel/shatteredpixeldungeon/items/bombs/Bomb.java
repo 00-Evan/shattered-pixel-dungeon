@@ -172,6 +172,12 @@ public class Bomb extends Item {
 			}
 			
 			for (Char ch : affected){
+
+				//if they have already been killed by another bomb
+				if(!ch.isAlive()){
+					continue;
+				}
+
 				int dmg = Random.NormalIntRange(5 + Dungeon.depth, 10 + Dungeon.depth*2);
 
 				//those not at the center of the blast take less damage

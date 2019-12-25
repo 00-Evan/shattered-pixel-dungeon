@@ -164,7 +164,6 @@ public class Succubus extends Mob {
 	}
 
 	{
-		immunities.add( Sleep.class );
 		immunities.add( Charm.class );
 	}
 }

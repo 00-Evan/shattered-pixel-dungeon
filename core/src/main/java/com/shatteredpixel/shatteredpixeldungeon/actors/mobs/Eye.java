@@ -240,7 +240,6 @@ public class Eye extends Mob {
 
 	{
 		resistances.add( WandOfDisintegration.class );
-		resistances.add( Grim.class );
 	}
 	
 	{

@@ -210,10 +210,5 @@ public class Golem extends Mob {
 			}
 		}
 	}
-	
-	{
-		immunities.add( Amok.class );
-		immunities.add( Terror.class );
-		immunities.add( Sleep.class );
-	}
+
 }

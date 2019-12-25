@@ -33,6 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -227,7 +229,12 @@ public class Blacksmith extends NPC {
 		if (first instanceof MissileWeapon && first.quantity() > 1){
 			first = first.split(1);
 		}
-		first.level(first.level()+1); //prevents on-upgrade effects like enchant/glyph removal
+		int level = first.level();
+		//adjust for curse infusion
+		if (first instanceof Weapon && ((Weapon) first).curseInfusionBonus) level--;
+		if (first instanceof Armor && ((Armor) first).curseInfusionBonus) level--;
+		if (first instanceof Wand && ((Wand) first).curseInfusionBonus) level--;
+		first.level(level+1); //prevents on-upgrade effects like enchant/glyph removal
 		if (first instanceof MissileWeapon && !Dungeon.hero.belongings.contains(first)) {
 			if (!first.collect()){
 				Dungeon.level.drop( first, Dungeon.hero.pos );

@@ -113,10 +113,6 @@ public class Brute extends Mob {
 		hasRaged = bundle.getBoolean(HAS_RAGED);
 	}
 	
-	{
-		immunities.add( Terror.class );
-	}
-	
 	public static class BruteRage extends ShieldBuff {
 		
 		{
@@ -156,6 +152,9 @@ public class Brute extends Mob {
 		public String desc () {
 			return Messages.get(this, "desc", shielding());
 		}
-		
+
+		{
+			immunities.add(Terror.class);
+		}
 	}
 }

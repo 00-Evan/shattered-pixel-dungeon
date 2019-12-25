@@ -148,7 +148,6 @@ public class Piranha extends Mob {
 	
 	{
 		immunities.add( Burning.class );
-		immunities.add( Vertigo.class );
 	}
 	
 	//if there is not a path to the enemy, piranhas act as if they can't see them

@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -240,9 +241,8 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				
 				//just attack them then!
 				if (Dungeon.hero.canAttack(enemy)){
-					if (Dungeon.hero.handle( cell )) {
-						Dungeon.hero.next();
-					}
+					Dungeon.hero.curAction = new HeroAction.Attack( enemy );
+					Dungeon.hero.next();
 					return;
 				}
 				
@@ -282,10 +282,9 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, cell);
 				CellEmitter.get( Dungeon.hero.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				Sample.INSTANCE.play( Assets.SND_PUFF );
-				
-				if (Dungeon.hero.handle( cell )) {
-					Dungeon.hero.next();
-				}
+
+				Dungeon.hero.curAction = new HeroAction.Attack( enemy );
+				Dungeon.hero.next();
 			}
 		}
 		

@@ -199,9 +199,4 @@ public class Bee extends Mob {
 			return super.description();
 		}
 	}
-	
-	{
-		immunities.add( Poison.class );
-		immunities.add( Amok.class );
-	}
 }

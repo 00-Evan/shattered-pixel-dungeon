@@ -123,9 +123,5 @@ public class Wraith extends Mob {
 			return null;
 		}
 	}
-	
-	{
-		immunities.add( Grim.class );
-		immunities.add( Terror.class );
-	}
+
 }

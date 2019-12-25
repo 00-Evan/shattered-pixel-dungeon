@@ -33,10 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -133,10 +132,19 @@ public class Mimic extends Mob {
 			return super.interact();
 		}
 		stopHiding();
-		doAttack(Dungeon.hero);
+
 		Dungeon.hero.busy();
 		Dungeon.hero.sprite.operate(pos);
-		return false;
+		if (Dungeon.hero.invisible <= 0
+				&& Dungeon.hero.buff(Swiftthistle.TimeBubble.class) == null
+				&& Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) == null){
+			return doAttack(Dungeon.hero);
+		} else {
+			sprite.idle();
+			alignment = Alignment.ENEMY;
+			Dungeon.hero.spendAndNext(1f);
+			return true;
+		}
 	}
 
 	@Override
@@ -285,9 +293,5 @@ public class Mimic extends Mob {
 		} while (reward == null || Challenges.isItemBlocked(reward));
 		items.add(reward);
 	}
-	
-	{
-		immunities.add( ScrollOfRetribution.class );
-		immunities.add( ScrollOfPsionicBlast.class );
-	}
+
 }

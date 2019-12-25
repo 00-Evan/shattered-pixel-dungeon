@@ -450,7 +450,8 @@ public abstract class RegularLevel extends Level {
 				int pos = pointToCell(room.random());
 				if (passable[pos]
 						&& pos != exit
-						&& heaps.get(pos) == null) {
+						&& heaps.get(pos) == null
+						&& Actor.findChar(pos) == null) {
 					
 					Trap t = traps.get(pos);
 					
