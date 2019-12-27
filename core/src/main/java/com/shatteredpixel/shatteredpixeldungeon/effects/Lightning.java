@@ -137,6 +137,8 @@ public class Lightning extends Group {
 			arc2 = new Image(Effects.get(Effects.Type.LIGHTNING));
 			arc2.origin.set( 0, arc2.height()/2 );
 			add( arc2 );
+
+			update();
 		}
 
 		public void alpha(float alpha) {
