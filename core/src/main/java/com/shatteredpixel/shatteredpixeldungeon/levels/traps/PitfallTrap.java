@@ -27,12 +27,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PitfallParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 
 public class PitfallTrap extends Trap {
@@ -50,10 +53,15 @@ public class PitfallTrap extends Trap {
 			return;
 		}
 
-		//TODO visuals
 		DelayedPit p = Buff.affect(Dungeon.hero, DelayedPit.class, 1);
 		p.depth = Dungeon.depth;
 		p.pos = pos;
+
+		for (int i : PathFinder.NEIGHBOURS9){
+			if (!Dungeon.level.solid[pos+i] || Dungeon.level.passable[pos+i]){
+				CellEmitter.floor(pos+i).burst(PitfallParticle.FACTORY4, 8);
+			}
+		}
 
 		if (pos == Dungeon.hero.pos){
 			GLog.n(Messages.get(this, "triggered_hero"));
@@ -72,7 +80,14 @@ public class PitfallTrap extends Trap {
 		public boolean act() {
 			if (depth == Dungeon.depth) {
 				for (int i : PathFinder.NEIGHBOURS9) {
+
 					int cell = pos + i;
+
+					if (Dungeon.level.solid[pos+i] && !Dungeon.level.passable[pos+i]){
+						continue;
+					}
+
+					CellEmitter.floor(pos+i).burst(PitfallParticle.FACTORY8, 12);
 
 					Heap heap = Dungeon.level.heaps.get(cell);
 
@@ -101,6 +116,24 @@ public class PitfallTrap extends Trap {
 			detach();
 			return true;
 		}
+
+		private static final String POS = "pos";
+		private static final String DEPTH = "depth";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(POS, pos);
+			bundle.put(DEPTH, depth);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			pos = bundle.getInt(POS);
+			depth = bundle.getInt(DEPTH);
+		}
+
 	}
 
 	//TODO these used to become chasms when disarmed, but the functionality was problematic

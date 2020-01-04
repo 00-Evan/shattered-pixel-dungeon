@@ -147,6 +147,7 @@ public class GameScene extends PixelScene {
 	private Group traps;
 	private Group heaps;
 	private Group mobs;
+	private Group floorEmitters;
 	private Group emitters;
 	private Group effects;
 	private Group gases;
@@ -226,14 +227,17 @@ public class GameScene extends PixelScene {
 		
 		levelVisuals = Dungeon.level.addVisuals();
 		add(levelVisuals);
-		
+
+		floorEmitters = new Group();
+		add(floorEmitters);
+
 		heaps = new Group();
 		add( heaps );
 		
 		for ( Heap heap : Dungeon.level.heaps.valueList() ) {
 			addHeapSprite( heap );
 		}
-		
+
 		emitters = new Group();
 		effects = new Group();
 		healthIndicators = new Group();
@@ -808,6 +812,16 @@ public class GameScene extends PixelScene {
 	public static Emitter emitter() {
 		if (scene != null) {
 			Emitter emitter = (Emitter)scene.emitters.recycle( Emitter.class );
+			emitter.revive();
+			return emitter;
+		} else {
+			return null;
+		}
+	}
+
+	public static Emitter floorEmitter() {
+		if (scene != null) {
+			Emitter emitter = (Emitter)scene.floorEmitters.recycle( Emitter.class );
 			emitter.revive();
 			return emitter;
 		} else {
