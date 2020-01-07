@@ -693,18 +693,27 @@ public abstract class Level implements Bundlable {
 		level.pit[cell]			    = (flags & Terrain.PIT) != 0;
 		level.water[cell]			= terrain == Terrain.WATER;
 
-		for (int i : PathFinder.NEIGHBOURS9){
-			level.openSpace[cell+i] = !level.solid[cell+i] &&
-					(!level.solid[cell+i-1] || !level.solid[cell+i+1]) &&
-					(!level.solid[cell+i-level.width()] || !level.solid[cell+i+level.width()]);
-		}
-		
 		SmokeScreen s = (SmokeScreen)level.blobs.get(SmokeScreen.class);
 		if (s != null && s.volume > 0){
 			level.losBlocking[cell] = level.losBlocking[cell] || s.cur[cell] > 0;
 		}
 
-		//TODO update openSpace here too
+		for (int i : PathFinder.NEIGHBOURS9){
+			i = cell + i;
+			if (level.solid[i]){
+				level.openSpace[i] = false;
+			} else {
+				for (int j = 1; j < PathFinder.CIRCLE8.length; j += 2){
+					if (level.solid[i+PathFinder.CIRCLE8[j]]) {
+						level.openSpace[i] = false;
+					} else if (!level.solid[i+PathFinder.CIRCLE8[(j+1)%8]]
+							&& !level.solid[i+PathFinder.CIRCLE8[(j+2)%8]]){
+						level.openSpace[i] = true;
+						break;
+					}
+				}
+			}
+		}
 	}
 	
 	public Heap drop( Item item, int cell ) {

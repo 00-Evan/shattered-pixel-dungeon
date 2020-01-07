@@ -222,6 +222,10 @@ public class ScrollOfTeleportation extends Scroll {
 
 		ch.sprite.interruptMotion();
 
+		if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[ch.pos]){
+			Sample.INSTANCE.play(Assets.SND_TELEPORT);
+		}
+
 		ch.move( pos );
 		if (ch.pos == pos) ch.sprite.place( pos );
 
@@ -230,8 +234,9 @@ public class ScrollOfTeleportation extends Scroll {
 			ch.sprite.parent.add( new AlphaTweener( ch.sprite, 1, 0.4f ) );
 		}
 
-		ch.sprite.emitter().start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
+		if (Dungeon.level.heroFOV[pos] || ch == Dungeon.hero ) {
+			ch.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+		}
 	}
 	
 	@Override

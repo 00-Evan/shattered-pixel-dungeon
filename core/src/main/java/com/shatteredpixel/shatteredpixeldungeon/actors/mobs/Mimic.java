@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -87,6 +88,16 @@ public class Mimic extends Mob {
 		super.restoreFromBundle(bundle);
 		if (state != PASSIVE && alignment == Alignment.NEUTRAL){
 			alignment = Alignment.ENEMY;
+		}
+	}
+
+	@Override
+	public void add(Buff buff) {
+		super.add(buff);
+		if (buff.type == Buff.buffType.NEGATIVE && alignment == Alignment.NEUTRAL){
+			alignment = Alignment.ENEMY;
+			stopHiding();
+			if (sprite != null) sprite.idle();
 		}
 	}
 
