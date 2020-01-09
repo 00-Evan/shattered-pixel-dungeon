@@ -26,35 +26,36 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 
-//TODO currently just uses DM-300's sprite scaled to 60%
+//TODO sprite still needs work
 public class DM100Sprite extends MobSprite {
 	
 	public DM100Sprite () {
 		super();
 		
-		texture( Assets.DM300 );
+		texture( Assets.DM100 );
 		
-		TextureFilm frames = new TextureFilm( texture, 22, 20 );
+		TextureFilm frames = new TextureFilm( texture, 14, 14 );
 		
-		idle = new Animation( 10, true );
+		idle = new Animation( 1, true );
 		idle.frames( frames, 0, 1 );
+
+		run = new Animation( 12, true );
+		run.frames( frames, 6, 7, 8, 9 );
 		
-		run = new Animation( 10, true );
-		run.frames( frames, 2, 3 );
-		
-		attack = new Animation( 15, false );
-		attack.frames( frames, 4, 5, 6, 0 );
-		
-		zap = attack.clone();
-		
-		die = new Animation( 20, false );
-		die.frames( frames, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 8 );
+		attack = new Animation( 12, false );
+		attack.frames( frames, 2, 3, 4, 0 );
+
+		zap = new Animation( 8, false );
+		zap.frames( frames, 5, 5, 1 );
+
+		die = new Animation( 8, false );
+		die.frames( frames, 10, 11, 12 );
 		
 		play( idle );
-		scale.set( 0.6f );
 	}
 	
 	public void zap( int pos ) {
@@ -69,7 +70,14 @@ public class DM100Sprite extends MobSprite {
 		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 		
 		turnTo( ch.pos, pos );
+		flash();
 		play( zap );
+	}
+
+	@Override
+	public void die() {
+		emitter().burst( Speck.factory( Speck.WOOL ), 5 );
+		super.die();
 	}
 
 	@Override
