@@ -846,8 +846,10 @@ public class Hero extends Char {
 	
 	private boolean actDescend( HeroAction.Descend action ) {
 		int stairs = action.dst;
-		if (pos == stairs && (Dungeon.level.map[pos] == Terrain.EXIT
-						|| Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
+
+		//there can be multiple exit tiles, so descend on any of them
+		//TODO this is slightly brittle, it assumes there are no disjointed sets of exit tiles
+		if ((Dungeon.level.map[pos] == Terrain.EXIT || Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
 			
 			curAction = null;
 
@@ -873,7 +875,10 @@ public class Hero extends Char {
 	
 	private boolean actAscend( HeroAction.Ascend action ) {
 		int stairs = action.dst;
-		if (pos == stairs && Dungeon.level.map[pos] == Terrain.ENTRANCE) {
+
+		//there can be multiple entrance tiles, so descend on any of them
+		//TODO this is slightly brittle, it assumes there are no disjointed sets of entrance tiles
+		if (Dungeon.level.map[pos] == Terrain.ENTRANCE) {
 			
 			if (Dungeon.depth == 1) {
 				

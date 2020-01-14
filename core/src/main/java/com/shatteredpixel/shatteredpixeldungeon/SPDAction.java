@@ -38,9 +38,7 @@ public class SPDAction extends GameAction {
 
 	//--New references to existing actions from GameAction
 	public static final GameAction NONE  = GameAction.NONE;
-
 	public static final GameAction BACK  = GameAction.BACK;
-	public static final GameAction MENU  = GameAction.MENU;
 	//--
 
 	public static final GameAction HERO_INFO   = new SPDAction("hero_info");
@@ -75,8 +73,8 @@ public class SPDAction extends GameAction {
 
 	private static final LinkedHashMap<Integer, GameAction> defaultBindings = new LinkedHashMap<>();
 	static {
-		defaultBindings.put( Input.Keys.BACK,        SPDAction.BACK );
-		defaultBindings.put( Input.Keys.MENU,        SPDAction.MENU );
+		defaultBindings.put( Input.Keys.ESCAPE,      SPDAction.BACK );
+		defaultBindings.put( Input.Keys.BACKSPACE,   SPDAction.BACK );
 
 		defaultBindings.put( Input.Keys.H,           SPDAction.HERO_INFO );
 		defaultBindings.put( Input.Keys.J,           SPDAction.JOURNAL );
@@ -118,6 +116,12 @@ public class SPDAction extends GameAction {
 
 	public static LinkedHashMap<Integer, GameAction> getDefaults() {
 		return new LinkedHashMap<>(defaultBindings);
+	}
+
+	//hard bindings for android devices
+	static {
+		KeyBindings.addHardBinding( Input.Keys.BACK, SPDAction.BACK );
+		KeyBindings.addHardBinding( Input.Keys.MENU, SPDAction.INVENTORY );
 	}
 
 	//we only save/loads keys which differ from the default configuration.

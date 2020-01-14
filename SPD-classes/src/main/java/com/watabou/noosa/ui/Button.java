@@ -66,8 +66,7 @@ public class Button extends Component {
 		KeyEvent.addKeyListener( keyListener = new Signal.Listener<KeyEvent>() {
 			@Override
 			public boolean onSignal ( KeyEvent event ) {
-				if ( active && !event.pressed
-						&& KeyBindings.getActionForKey( event ) == keyAction()){
+				if ( active && event.pressed && KeyBindings.getActionForKey( event ) == keyAction()){
 					onClick();
 					return true;
 				}

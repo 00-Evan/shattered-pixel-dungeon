@@ -160,10 +160,6 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 		if (event.pressed) {
 			if (KeyBindings.getActionForKey( event ) == SPDAction.BACK){
 				onBackPressed();
-
-			} else if (KeyBindings.getActionForKey( event ) == SPDAction.MENU){
-				onMenuPressed();
-
 			}
 		}
 		
@@ -175,7 +171,5 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	public void onBackPressed() {
 		hide();
 	}
-	
-	public void onMenuPressed() {
-	}
+
 }

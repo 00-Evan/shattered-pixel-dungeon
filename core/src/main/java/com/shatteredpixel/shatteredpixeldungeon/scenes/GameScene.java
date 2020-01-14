@@ -650,13 +650,6 @@ public class GameScene extends PixelScene {
 			add( new WndGame() );
 		}
 	}
-	
-	@Override
-	protected void onMenuPressed() {
-		if (Dungeon.hero.ready) {
-			selectItem( null, WndBag.Mode.ALL, null );
-		}
-	}
 
 	public void addCustomTile( CustomTilemap visual){
 		customTiles.add( visual.create() );

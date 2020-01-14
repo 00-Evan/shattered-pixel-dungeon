@@ -180,10 +180,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			if (args.length > 0) {
 				text = Messages.format( text, args );
 			}
+			float x = destinationCenter().x;
+			float y = destinationCenter().y - height()/2f;
 			if (ch != null) {
-				FloatingText.show( x + width() * 0.5f, y, ch.pos, text, color );
+				FloatingText.show( x, y, ch.pos, text, color );
 			} else {
-				FloatingText.show( x + width() * 0.5f, y, text, color );
+				FloatingText.show( x, y, text, color );
 			}
 		}
 	}

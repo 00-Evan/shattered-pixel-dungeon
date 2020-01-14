@@ -32,14 +32,6 @@ public class KeyBindings {
 
 	private static LinkedHashMap<Integer, GameAction> bindings = new LinkedHashMap<>();
 
-	public static void addKeyBinding(int keyCode, GameAction action){
-		bindings.put(keyCode, action);
-	}
-
-	public static void clearKeyBindings(){
-		bindings.clear();
-	}
-
 	public static LinkedHashMap<Integer, GameAction> getAllBindings(){
 		return new LinkedHashMap<>(bindings);
 	}
@@ -48,20 +40,32 @@ public class KeyBindings {
 		bindings = new LinkedHashMap<>(newBindings);
 	}
 
+	//these are special keybinding that are not user-configurable
+	private static LinkedHashMap<Integer, GameAction> hardBindings = new LinkedHashMap<>();
+
+	public static void addHardBinding(int keyCode, GameAction action){
+		hardBindings.put(keyCode, action);
+	}
+
 	public static boolean acceptUnbound = false;
 
 	public static boolean isKeyBound(int keyCode){
 		if (keyCode <= 0 || keyCode > 255){
 			return false;
 		}
-		return acceptUnbound || bindings.containsKey( keyCode );
+		return acceptUnbound || bindings.containsKey( keyCode ) || hardBindings.containsKey( keyCode );
 	}
 	
 	public static GameAction getActionForKey(KeyEvent event){
-		return bindings.get( event.code );
+		if (bindings.containsKey( event.code )){
+			return bindings.get( event.code );
+		} else if (hardBindings.containsKey( event.code )) {
+			return hardBindings.get( event.code );
+		}
+		return GameAction.NONE;
 	}
 
-	public static ArrayList<Integer> getKeysForAction(GameAction action){
+	public static ArrayList<Integer> getBoundKeysForAction(GameAction action){
 		ArrayList<Integer> result = new ArrayList<>();
 		for( int i : bindings.keySet()){
 			if (bindings.get(i) == action){
@@ -76,6 +80,10 @@ public class KeyBindings {
 			return "None";
 		} else if (keyCode == Input.Keys.PLUS){
 			return "+";
+		} else if (keyCode == Input.Keys.BACKSPACE) {
+			return "Backspace";
+		} else if (keyCode == Input.Keys.FORWARD_DEL) {
+			return "Delete";
 		} else {
 			return Input.Keys.toString(keyCode);
 		}

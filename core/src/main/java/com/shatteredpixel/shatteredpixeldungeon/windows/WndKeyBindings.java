@@ -99,8 +99,8 @@ public class WndKeyBindings extends Window {
 
 		int y = 0;
 		for (GameAction action : GameAction.allActions()){
-			//start at 3. No bindings for NONE, BACK, and MENU atm
-			if (action.code() < 3) continue;
+			//start at 1. No bindings for NONE
+			if (action.code() < 1) continue;
 
 			BindingItem item = new BindingItem(action);
 			item.setRect(0, y, WIDTH, BindingItem.HEIGHT);
@@ -192,7 +192,7 @@ public class WndKeyBindings extends Window {
 			actionName.setHightlighting(false);
 			add(actionName);
 
-			ArrayList<Integer> keys = KeyBindings.getKeysForAction(action);
+			ArrayList<Integer> keys = KeyBindings.getBoundKeysForAction(action);
 			origKey1 = key1 = keys.isEmpty() ? 0 : keys.remove(0);
 			origKey2 = key2 = keys.isEmpty() ? 0 : keys.remove(0);
 

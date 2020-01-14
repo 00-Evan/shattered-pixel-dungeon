@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -55,6 +56,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -244,11 +247,14 @@ public class WndBag extends WndTabbed {
 		
 		count++;
 	}
-	
+
 	@Override
-	public void onMenuPressed() {
-		if (listener == null) {
+	public boolean onSignal(KeyEvent event) {
+		if (event.pressed && KeyBindings.getActionForKey( event ) == SPDAction.INVENTORY) {
 			hide();
+			return true;
+		} else {
+			return super.onSignal(event);
 		}
 	}
 	

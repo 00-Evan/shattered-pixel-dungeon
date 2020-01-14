@@ -52,9 +52,7 @@ public class GameAction {
 	}
 
 	public static final GameAction NONE = new GameAction( "none" );
-
 	public static final GameAction BACK = new GameAction( "back" );
-	public static final GameAction MENU = new GameAction( "menu" );
 
 	public static ArrayList<GameAction> allActions(){
 		return new ArrayList<>(ALL_ACTIONS);
