@@ -22,8 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -62,7 +62,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 
 		boolean procced = uncurse( curUser, item );
 
-		Weakness.detach( curUser, Weakness.class );
+		Degrade.detach( curUser, Degrade.class );
 
 		if (procced) {
 			GLog.p( Messages.get(this, "cleansed") );
