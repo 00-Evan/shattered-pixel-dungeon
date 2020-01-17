@@ -165,17 +165,8 @@ public class WndStartGame extends Window {
 			super();
 			
 			this.cl = cl;
-			
-			if (cl == HeroClass.WARRIOR){
-				hero = new Image(Assets.WARRIOR, 0, 90, 12, 15);
-			} else if (cl == HeroClass.MAGE){
-				hero = new Image(Assets.MAGE, 0, 90, 12, 15);
-			} else if (cl == HeroClass.ROGUE){
-				hero = new Image(Assets.ROGUE, 0, 90, 12, 15);
-			} else if (cl == HeroClass.HUNTRESS){
-				hero = new Image(Assets.HUNTRESS, 0, 90, 12, 15);
-			}
-			add(hero);
+
+			add(hero = new Image(cl.spritesheet(), 0, 90, 12, 15));
 			
 		}
 		
