@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -42,7 +43,7 @@ public class DemonSpawner extends Mob {
 	{
 		spriteClass = SpawnerSprite.class;
 
-		HP = HT = 150;
+		HP = HT = 120;
 		defenseSkill = 0;
 
 		EXP = 25;
@@ -72,7 +73,7 @@ public class DemonSpawner extends Mob {
 		return true;
 	}
 
-	private float spawnCooldown = 50;
+	private float spawnCooldown = 60;
 
 	@Override
 	protected boolean act() {
@@ -98,7 +99,7 @@ public class DemonSpawner extends Mob {
 					Actor.addDelayed(new Pushing(spawn, pos, spawn.pos), -1);
 				}
 
-				spawnCooldown += 50;
+				spawnCooldown += 60;
 			}
 		}
 		return super.act();
@@ -106,13 +107,27 @@ public class DemonSpawner extends Mob {
 
 	@Override
 	public void damage(int dmg, Object src) {
-		if (dmg >= 25){
-			//takes 25/26/27/28/29/30/31/32/33/34/35 dmg
-			// at   25/27/30/34/39/45/52/60/69/79/90 incoming dmg
-			dmg = 24 + (int)(Math.sqrt(8*(dmg - 24) + 1) - 1)/2;
+		if (dmg >= 20){
+			//takes 20/21/22/23/24/25/26/27/28/29/30 dmg
+			// at   20/22/25/29/34/40/47/55/64/74/85 incoming dmg
+			dmg = 19 + (int)(Math.sqrt(8*(dmg - 19) + 1) - 1)/2;
 		}
 		spawnCooldown -= dmg;
 		super.damage(dmg, src);
+	}
+
+	public static final String SPAWN_COOLDOWN = "spawn_cooldown";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(SPAWN_COOLDOWN, spawnCooldown);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		spawnCooldown = bundle.getFloat(SPAWN_COOLDOWN);
 	}
 
 	{

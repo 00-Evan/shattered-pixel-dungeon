@@ -49,7 +49,8 @@ public class DemonSpawnerRoom extends SpecialRoom {
 		spawner.pos = cx + cy * level.width();
 		level.mobs.add( spawner );
 
-		int rippers = Random.IntRange(1, 2);
+		//2/3 chance for 1, 1/3 chance for 2
+		int rippers = Random.chances( new float[]{0, 2, 1});
 
 		for (int i = 0; i < rippers; i++){
 			int pos;

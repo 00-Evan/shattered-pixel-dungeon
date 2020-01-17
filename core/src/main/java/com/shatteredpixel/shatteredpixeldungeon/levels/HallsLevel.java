@@ -76,7 +76,13 @@ public class HallsLevel extends RegularLevel {
 
 		return rooms;
 	}
-	
+
+	@Override
+	public int nMobs() {
+		//remove one mob to account for ripper demon spawners
+		return super.nMobs()-1;
+	}
+
 	@Override
 	protected int standardRooms() {
 		//8 to 10, average 8.67

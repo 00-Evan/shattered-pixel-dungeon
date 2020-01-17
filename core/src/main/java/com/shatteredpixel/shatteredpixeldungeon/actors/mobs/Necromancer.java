@@ -50,7 +50,7 @@ public class Necromancer extends Mob {
 		spriteClass = NecromancerSprite.class;
 		
 		HP = HT = 35;
-		defenseSkill = 11;
+		defenseSkill = 13;
 		
 		EXP = 7;
 		maxLvl = 14;
