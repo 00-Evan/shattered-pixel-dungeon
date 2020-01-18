@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldDM300;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -47,7 +47,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
-public class CavesBossLevel extends Level {
+public class OldCavesBossLevel extends Level {
 	
 	{
 		color1 = 0x534f3e;
@@ -231,7 +231,7 @@ public class CavesBossLevel extends Level {
 				}
 			}
 			
-			DM300 boss = new DM300();
+			OldDM300 boss = new OldDM300();
 			boss.state = boss.WANDERING;
 			do {
 				boss.pos = Random.Int( length() );

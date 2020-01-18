@@ -124,6 +124,14 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.NewbornFire.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental");
+
+		//v0.8.0
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldDM300.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300");
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.OldCavesBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel" );
 		
 	}
 	
