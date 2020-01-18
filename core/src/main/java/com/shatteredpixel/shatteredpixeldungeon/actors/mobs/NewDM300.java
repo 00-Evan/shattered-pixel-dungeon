@@ -315,6 +315,7 @@ public class NewDM300 extends Mob {
 	}
 
 	public void ventGas( Char target ){
+		Dungeon.hero.interrupt();
 
 		int gasVented = 0;
 
@@ -344,6 +345,7 @@ public class NewDM300 extends Mob {
 
 	public void dropRocks( Char target ) {
 
+		Dungeon.hero.interrupt();
 		int rockCenter = target.pos;
 
 		if (Dungeon.level.adjacent(pos, target.pos)){
