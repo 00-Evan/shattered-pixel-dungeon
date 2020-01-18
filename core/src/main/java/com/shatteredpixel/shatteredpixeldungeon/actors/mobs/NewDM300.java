@@ -409,6 +409,7 @@ public class NewDM300 extends Mob {
 		spend(3f);
 		yell(Messages.get(this, "charging"));
 		sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "immune"));
+		sprite.resetColor();
 		chargeAnnounced = false;
 	}
 
