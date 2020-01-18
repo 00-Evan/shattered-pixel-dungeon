@@ -109,6 +109,10 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power){
+		throwChar(ch, trajectory, power, true);
+	}
+
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power, boolean collideDmg){
 		if (ch.properties().contains(Char.Property.BOSS)) {
 			power /= 2;
 		}
@@ -142,7 +146,7 @@ public class WandOfBlastWave extends DamageWand {
 		if (newPos == ch.pos) return;
 
 		final int finalDist = dist;
-		final boolean finalCollided = collided;
+		final boolean finalCollided = collided && collideDmg;
 		final int initialpos = ch.pos;
 
 		Actor.addDelayed(new Pushing(ch, ch.pos, newPos, new Callback() {

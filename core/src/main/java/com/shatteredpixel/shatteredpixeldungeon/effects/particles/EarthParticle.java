@@ -66,8 +66,9 @@ public class EarthParticle extends PixelParticle {
 		left = lifespan = 1f;
 		size = 8;
 
-		acc.y = 15;
-		speed.y = 0;
+		acc.y = 30;
+		speed.y = -5;
+		angularSpeed = Random.Float(-90, 90);
 	}
 	
 	@Override

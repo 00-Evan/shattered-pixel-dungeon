@@ -106,6 +106,7 @@ public class Assets {
 	public static final String RIPPER	= "ripper.png";
 	public static final String SPAWNER	= "spawner.png";
 	public static final String DM100	= "dm100.png";
+	public static final String PYLON	= "pylon.png";
 
 	public static final String ITEMS	        = "items.png";
 	public static final String TERRAIN_FEATURES	= "terrain_features.png";
@@ -133,6 +134,7 @@ public class Assets {
 	public static final String PRISON_QUEST     = "custom_tiles/prison_quests.png";
 	public static final String PRISON_EXIT_OLD  = "custom_tiles/prison_exit_old.png";
 	public static final String PRISON_EXIT_NEW  = "custom_tiles/prison_exit_new.png";
+	public static final String CAVES_BOSS       = "custom_tiles/caves_boss.png";
 	
 	public static final String BUFFS_SMALL	= "buffs.png";
 	public static final String BUFFS_LARGE	= "large_buffs.png";
