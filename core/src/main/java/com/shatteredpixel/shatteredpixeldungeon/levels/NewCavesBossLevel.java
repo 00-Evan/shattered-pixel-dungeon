@@ -449,14 +449,14 @@ public class NewCavesBossLevel extends Level {
 	private static short[] corner2 = {
 			W, W, W, W, W, W, W, W, W, W,
 			W, s, s, s, W, W, W, W, W, W,
-			W, s, s, s, e, e, e, e, e, e,
-			W, s, s, s, W, W, W, W, W, e,
+			W, s, s, s, e, e, e, e, e, W,
+			W, s, s, s, W, W, W, W, e, e,
 			W, W, e, W, W, W, W, W, W, e,
 			W, W, e, W, W, W, W, n, n, n,
 			W, W, e, W, W, W, n, n, n, n,
 			W, W, e, W, W, n, n, n, n, n,
-			W, W, e, W, W, n, n, n, n, n,
-			W, W, e, e, e, n, n, n, n, n,
+			W, W, e, e, W, n, n, n, n, n,
+			W, W, W, e, e, n, n, n, n, n,
 	};
 
 	private static short[] corner3 = {
