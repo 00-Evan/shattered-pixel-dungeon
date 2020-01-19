@@ -176,9 +176,9 @@ public class NewDM300 extends Mob {
 				}
 			} else {
 
-				if (!canReach){
+				if (enemy == null) enemy = Dungeon.hero;
 
-					if (enemy == null) enemy = Dungeon.hero;
+				if (!canReach){
 
 					if (fieldOfView[enemy.pos] && turnsSinceLastAbility >= MIN_COOLDOWN){
 
@@ -371,6 +371,10 @@ public class NewDM300 extends Mob {
 		for (int y = 0; y < 7; y++) {
 			pos = start + Dungeon.level.width() * y;
 			for (int x = 0; x < 7; x++) {
+				if (!Dungeon.level.insideMap(pos)) {
+					pos++;
+					continue;
+				}
 				if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
 					GameScene.add(Blob.seed(pos, 1, FallingRocks.class));
 				}

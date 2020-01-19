@@ -304,6 +304,16 @@ public class ShopRoom extends SpecialRoom {
 			}
 		}
 
+		if (bestBag instanceof VelvetPouch){
+			Dungeon.LimitedDrops.VELVET_POUCH.drop();
+		} else if (bestBag instanceof ScrollHolder){
+			Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
+		} else if (bestBag instanceof PotionBandolier){
+			Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
+		} else if (bestBag instanceof MagicalHolster){
+			Dungeon.LimitedDrops.MAGICAL_HOLSTER.drop();
+		}
+
 		return bestBag;
 
 	}
