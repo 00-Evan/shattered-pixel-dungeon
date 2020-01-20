@@ -753,6 +753,9 @@ public class NewCavesBossLevel extends Level {
 							energySourceSprite = c.sprite;
 						}
 					}
+					if (energySourceSprite == null){
+						return;
+					}
 				}
 
 				float dist = Math.abs(energySourceSprite.x - x) + Math.abs(energySourceSprite.y - y);
