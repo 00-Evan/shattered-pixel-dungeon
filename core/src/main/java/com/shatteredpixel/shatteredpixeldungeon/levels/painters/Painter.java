@@ -137,6 +137,29 @@ public abstract class Painter {
 		}
 
 	}
+
+	public static void fillDiamond(Level level, Rect rect, int value ) {
+		fillDiamond( level, rect.left, rect.top, rect.width(), rect.height(), value );
+	}
+
+	public static void fillDiamond(Level level, Rect rect, int m, int value ) {
+		fillDiamond( level, rect.left + m, rect.top + m, rect.width() - m*2, rect.height() - m*2, value );
+	}
+
+	public static void fillDiamond(Level level, int x, int y, int w, int h, int value){
+
+		//we want the end width to be w, and the width will grow by a total of (h-2 - h%2)
+		int diamondWidth = w - (h-2 - h%2);
+		//but starting width cannot be smaller than 2 on even width, 3 on odd width.
+		diamondWidth = Math.max(diamondWidth, w%2 == 0 ? 2 : 3);
+
+		for (int i = 0; i <= h; i++){
+			Painter.fill( level, x + (w - diamondWidth)/2, y+i, diamondWidth, h-2*i, value);
+			diamondWidth += 2;
+			if (diamondWidth > w) break;
+		}
+
+	}
 	
 	public static Point drawInside( Level level, Room room, Point from, int n, int value ) {
 		
