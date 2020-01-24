@@ -264,6 +264,15 @@ public class NewDM300 extends Mob {
 	}
 
 	@Override
+	protected Char chooseEnemy() {
+		Char enemy = super.chooseEnemy();
+		if (supercharged && enemy == null){
+			enemy = Dungeon.hero;
+		}
+		return enemy;
+	}
+
+	@Override
 	public void move(int step) {
 		super.move(step);
 
@@ -485,7 +494,7 @@ public class NewDM300 extends Mob {
 				return true;
 			}
 
-			if (!supercharged || state != HUNTING){
+			if (!supercharged || state != HUNTING || Dungeon.level.adjacent(pos, target)){
 				return false;
 			}
 

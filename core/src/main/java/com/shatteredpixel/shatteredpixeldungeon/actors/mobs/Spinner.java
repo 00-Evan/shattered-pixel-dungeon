@@ -160,7 +160,7 @@ public class Spinner extends Mob {
 		}
 
 		//in case target is at the edge of the map and there are no more cells in the path
-		if (b.path.size() <= collisionIndex){
+		if (b.path.size() <= collisionIndex+1){
 			return -1;
 		}
 
