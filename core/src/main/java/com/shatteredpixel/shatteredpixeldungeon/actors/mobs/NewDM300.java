@@ -30,9 +30,17 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -515,7 +523,7 @@ public class NewDM300 extends Mob {
 				}
 				Dungeon.level.cleanWalls();
 				Dungeon.observe();
-				spend(2f);
+				spend(2.5f);
 
 				for (int i : PathFinder.NEIGHBOURS8){
 					if (Actor.findChar(pos+i) == null &&
@@ -547,6 +555,15 @@ public class NewDM300 extends Mob {
 
 	{
 		immunities.add(Sleep.class);
+
+		resistances.add(Terror.class);
+		resistances.add(Charm.class);
+		resistances.add(Vertigo.class);
+		resistances.add(Cripple.class);
+		resistances.add(Chill.class);
+		resistances.add(Frost.class);
+		resistances.add(Roots.class);
+		resistances.add(Slow.class);
 	}
 
 	public static class FallingRocks extends Blob {

@@ -719,7 +719,7 @@ public class NewCavesBossLevel extends Level {
 							Char ch = Actor.findChar(cell);
 							if (ch != null && !(ch instanceof NewDM300)) {
 								Sample.INSTANCE.play( Assets.SND_LIGHTNING );
-								ch.damage( Random.NormalIntRange(5, 15), Electricity.class);
+								ch.damage( Random.NormalIntRange(6, 12), Electricity.class);
 								ch.sprite.flash();
 
 								if (ch == Dungeon.hero && !ch.isAlive()) {
@@ -758,12 +758,12 @@ public class NewCavesBossLevel extends Level {
 					}
 				}
 
-				float dist = Math.abs(energySourceSprite.x - x) + Math.abs(energySourceSprite.y - y);
-				dist /= DungeonTilemap.SIZE;
-
 				SparkParticle s = ((SparkParticle) emitter.recycle(SparkParticle.class));
-				s.reset(x, y);
-				s.setMaxSize( 8 - dist/6 );
+				s.resetStatic(x, y);
+				s.speed.set((energySourceSprite.x + energySourceSprite.width/2f) - x,
+						(energySourceSprite.y + energySourceSprite.height/2f) - y);
+				s.speed.normalize().scale(DungeonTilemap.SIZE/2);
+				s.acc.set(s.speed);
 			}
 
 			@Override
@@ -781,7 +781,7 @@ public class NewCavesBossLevel extends Level {
 		public void use( BlobEmitter emitter ) {
 			super.use( emitter );
 			energySourceSprite = null;
-			emitter.bound.set( 4/16f, 4/16f, 12/16f, 12/16f);
+			//emitter.bound.set( 4/16f, 4/16f, 12/16f, 12/16f);
 			emitter.pour(DIRECTED_SPARKS, 0.2f);
 		}
 
