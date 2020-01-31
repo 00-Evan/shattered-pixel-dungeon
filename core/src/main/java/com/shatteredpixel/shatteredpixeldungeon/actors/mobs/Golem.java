@@ -139,6 +139,7 @@ public class Golem extends Mob {
 			ScrollOfTeleportation.appear(enemy, bestPos);
 			if (enemy instanceof Hero){
 				((Hero) enemy).interrupt();
+				Dungeon.observe();
 			}
 		}
 

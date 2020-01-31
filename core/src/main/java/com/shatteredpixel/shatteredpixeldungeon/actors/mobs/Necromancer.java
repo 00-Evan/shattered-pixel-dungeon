@@ -344,7 +344,12 @@ public class Necromancer extends Mob {
 			//20/25 health to start
 			HP = 20;
 		}
-		
+
+		@Override
+		public float spawningWeight() {
+			return 0;
+		}
+
 		private void teleportSpend(){
 			spend(TICK);
 		}

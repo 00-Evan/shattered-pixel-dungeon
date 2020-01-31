@@ -113,9 +113,22 @@ public class NewTengu extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 5);
 	}
-	
+
+	//Tengu is immune to debuffs and damage when removed from the level
+	@Override
+	public void add(Buff buff) {
+		if (!Dungeon.level.mobs.contains(this)){
+			return;
+		}
+		super.add(buff);
+	}
+
 	@Override
 	public void damage(int dmg, Object src) {
+		if (!Dungeon.level.mobs.contains(this)){
+			return;
+		}
+
 		NewPrisonBossLevel.State state = ((NewPrisonBossLevel)Dungeon.level).state();
 		
 		int hpBracket = 20;
@@ -171,7 +184,7 @@ public class NewTengu extends Mob {
 	public boolean isAlive() {
 		return HP > 0 || Dungeon.level.mobs.contains(this); //Tengu has special death rules, see prisonbosslevel.progress()
 	}
-	
+
 	@Override
 	public void die( Object cause ) {
 		
