@@ -135,6 +135,7 @@ public class Assets {
 	public static final String PRISON_EXIT_OLD  = "custom_tiles/prison_exit_old.png";
 	public static final String PRISON_EXIT_NEW  = "custom_tiles/prison_exit_new.png";
 	public static final String CAVES_BOSS       = "custom_tiles/caves_boss.png";
+	public static final String CITY_BOSS        = "custom_tiles/city_boss.png";
 	
 	public static final String BUFFS_SMALL	= "buffs.png";
 	public static final String BUFFS_LARGE	= "large_buffs.png";

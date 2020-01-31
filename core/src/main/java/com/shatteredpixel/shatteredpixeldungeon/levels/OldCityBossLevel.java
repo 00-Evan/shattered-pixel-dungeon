@@ -41,7 +41,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-public class CityBossLevel extends Level {
+public class OldCityBossLevel extends Level {
 	
 	{
 		color1 = 0x4b6636;

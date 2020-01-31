@@ -44,7 +44,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
@@ -53,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
@@ -272,10 +272,22 @@ public class Dungeon {
 			level = new CityLevel();
 			break;
 		case 20:
-			level = new CityBossLevel();
+			level = new NewCityBossLevel();
 			break;
 		case 21:
-			level = new LastShopLevel();
+			//logic for old city boss levels, need to spawn a shop on floor 21
+			try {
+				Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(GamesInProgress.curSlot, 20));
+				Class cls = bundle.getBundle(LEVEL).getClass("__className");
+				if (cls == NewCityBossLevel.class) {
+					level = new HallsLevel();
+				} else {
+					level = new LastShopLevel();
+				}
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+				level = new HallsLevel();
+			}
 			break;
 		case 22:
 		case 23:

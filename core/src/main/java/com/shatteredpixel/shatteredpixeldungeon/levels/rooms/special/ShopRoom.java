@@ -68,14 +68,17 @@ public class ShopRoom extends SpecialRoom {
 	
 	@Override
 	public int minWidth() {
-		if (itemsToSpawn == null) itemsToSpawn = generateItems();
-		return Math.max(7, (int)(Math.sqrt(itemsToSpawn.size())+3));
+		return Math.max(7, (int)(Math.sqrt(itemCount())+3));
 	}
 	
 	@Override
 	public int minHeight() {
+		return Math.max(7, (int)(Math.sqrt(itemCount())+3));
+	}
+
+	public int itemCount(){
 		if (itemsToSpawn == null) itemsToSpawn = generateItems();
-		return Math.max(7, (int)(Math.sqrt(itemsToSpawn.size())+3));
+		return itemsToSpawn.size();
 	}
 	
 	public void paint( Level level ) {
@@ -105,8 +108,9 @@ public class ShopRoom extends SpecialRoom {
 
 	protected void placeItems( Level level ){
 
-		if (itemsToSpawn == null)
+		if (itemsToSpawn == null){
 			itemsToSpawn = generateItems();
+		}
 
 		Point itemPlacement = new Point(entrance());
 		if (itemPlacement.y == top){
@@ -167,8 +171,8 @@ public class ShopRoom extends SpecialRoom {
 			itemsToSpawn.add( Generator.random(Generator.misTiers[3]).quantity(2).identify() );
 			itemsToSpawn.add( new ScaleArmor().identify() );
 			break;
-			
-		case 21:
+
+		case 20: case 21:
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
 			itemsToSpawn.add( Generator.random(Generator.misTiers[4]).quantity(2).identify() );
 			itemsToSpawn.add( new PlateArmor().identify() );
@@ -178,6 +182,7 @@ public class ShopRoom extends SpecialRoom {
 			break;
 		}
 		w.enchant(null);
+		w.cursed = false;
 		w.level(0);
 		w.identify();
 		itemsToSpawn.add(w);
@@ -236,7 +241,7 @@ public class ShopRoom extends SpecialRoom {
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.25f ); break;
 				case 16:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.50f ); break;
-				case 21:
+				case 20: case 21:
 					bags = (int)Math.ceil(( 5-hourglass.sandBags) * 0.80f ); break;
 			}
 
