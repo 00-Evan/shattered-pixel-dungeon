@@ -32,6 +32,9 @@ import com.watabou.noosa.ui.Component;
 public class BossHealthBar extends Component {
 
 	private Image bar;
+
+	private Image rawShielding;
+	private Image shieldedHP;
 	private Image hp;
 
 	private static Mob boss;
@@ -58,6 +61,13 @@ public class BossHealthBar extends Component {
 		width = bar.width;
 		height = bar.height;
 
+		rawShielding = new Image(asset, 15, 25, 47, 4);
+		rawShielding.alpha(0.5f);
+		add(rawShielding);
+
+		shieldedHP = new Image(asset, 15, 25, 47, 4);
+		add(shieldedHP);
+
 		hp = new Image(asset, 15, 19, 47, 4);
 		add(hp);
 
@@ -77,8 +87,8 @@ public class BossHealthBar extends Component {
 		bar.x = x;
 		bar.y = y;
 
-		hp.x = bar.x+15;
-		hp.y = bar.y+6;
+		hp.x = shieldedHP.x = rawShielding.x = bar.x+15;
+		hp.y = shieldedHP.y = rawShielding.y = bar.y+6;
 
 		skull.x = bar.x+5;
 		skull.y = bar.y+5;
@@ -92,7 +102,15 @@ public class BossHealthBar extends Component {
 				boss = null;
 				visible = active = false;
 			} else {
-				hp.scale.x = (float)boss.HP/boss.HT;
+
+				float health = boss.HP;
+				float shield = boss.shielding();
+				float max = boss.HT;
+
+				hp.scale.x = Math.max( 0, (health-shield)/max);
+				shieldedHP.scale.x = health/max;
+				rawShielding.scale.x = shield/max;
+
 				if (hp.scale.x < 0.25f) bleed( true );
 
 				if (bleeding != blood.on){
