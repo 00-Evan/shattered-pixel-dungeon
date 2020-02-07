@@ -116,7 +116,7 @@ public class NewCityBossLevel extends Level {
 		Painter.fillDiamond(this, arena, 1, Terrain.EMPTY);
 
 		Painter.fill(this, arena, 5, Terrain.EMPTY_SP);
-		Painter.fill(this, arena, 6, Terrain.STATUE_SP);
+		Painter.fill(this, arena, 6, Terrain.SIGN);
 
 		c = arena.center();
 		Painter.set(this, c.x-3, c.y, Terrain.STATUE);
@@ -134,8 +134,8 @@ public class NewCityBossLevel extends Level {
 		//exit hallway
 		Painter.fill(this, end, Terrain.CHASM);
 		Painter.fill(this, end.left+4, end.top+5, 7, 18, Terrain.EMPTY);
-		Painter.fill(this, end.left+4, end.top+5, 7, 3, Terrain.EXIT);
-		exit = end.left+7 + (end.top+7)*width();
+		Painter.fill(this, end.left+4, end.top+5, 7, 2, Terrain.EXIT);
+		exit = end.left+7 + (end.top+6)*width();
 
 		impShop = new ImpShopRoom();
 		impShop.set(end.left+3, end.top+12, end.left+11, end.top+20);
@@ -313,7 +313,7 @@ public class NewCityBossLevel extends Level {
 			tileH = 48;
 		}
 
-		private static final int STAIR_ROWS = 8;
+		private static final int STAIR_ROWS = 7;
 
 		@Override
 		public Tilemap create() {
@@ -328,7 +328,7 @@ public class NewCityBossLevel extends Level {
 			for (int i = tileW; i < tileW*22; i++){
 
 				if (map[i] == Terrain.EXIT && stairsTop == -1){
-					stairsTop = i - tileW;
+					stairsTop = i;
 				}
 
 				//pillars
@@ -342,15 +342,15 @@ public class NewCityBossLevel extends Level {
 					data[i] = 15*8 + 6;
 					data[++i] = 15*8 + 7;
 
-					//imp's pedestal
+				//imp's pedestal
 				} else if (map[i] == Terrain.PEDESTAL) {
-					data[i] = 12*8 + 5;
-
-					//skull piles
-				} else if (map[i] == Terrain.STATUE) {
 					data[i] = 13*8 + 5;
 
-					//ground tiles
+				//skull piles
+				} else if (map[i] == Terrain.STATUE) {
+					data[i] = 15*8 + 5;
+
+				//ground tiles
 				} else if (map[i] == Terrain.EMPTY || map[i] == Terrain.EMPTY_DECO){
 
 					//final ground stiching with city tiles
@@ -383,21 +383,9 @@ public class NewCityBossLevel extends Level {
 			}
 
 			//custom for stairs
-			int[] rowData = null;
 			for (int i = 0; i < STAIR_ROWS; i++){
-				if (i == 0){
-					rowData = new int[]{-1, -1, 7*8+2, 7*8+3, 7*8+4, -1, -1};
-				} else if (i == 1){
-					rowData = new int[]{8*8+0, 8*8+1, 8*8+2, 8*8+3, 8*8+4, 8*8+5, 8*8+6};
-				} else if (i < STAIR_ROWS-2){
-					rowData = new int[]{9*8+0, 8*8+3, 8*8+3, 8*8+3, 8*8+3, 8*8+3, 9*8+6};
-				} else if (i == STAIR_ROWS-2){
-					rowData = new int[]{9*8+0, 9*8+1, 9*8+2, 9*8+3, 9*8+4, 9*8+5, 9*8+6};
-				} else {
-					rowData = new int[]{10*8+0, 10*8+1, 10*8+2, 10*8+3, 10*8+4, 10*8+5, 10*8+6};
-				}
-				for (int j = 0; j < rowData.length; j++){
-					data[stairsTop+j] = rowData[j];
+				for (int j = 0; j < 7; j++){
+					data[stairsTop+j] = (i+4)*8 + j;
 				}
 				stairsTop += tileW;
 			}
@@ -409,11 +397,11 @@ public class NewCityBossLevel extends Level {
 				if (map[i] == Terrain.PEDESTAL){
 					data[i] = 13*8 + 4;
 
-					//statues that should face left instead of right
+				//statues that should face left instead of right
 				} else if (map[i] == Terrain.STATUE && i%tileW > 7) {
 					data[i] = 15 * 8 + 4;
 
-					//carpet tiles
+				//carpet tiles
 				} else if (map[i] == Terrain.EMPTY_SP) {
 					//top row of DK's throne
 					if (map[i + 1] == Terrain.EMPTY_SP && map[i + tileW] == Terrain.EMPTY_SP) {
@@ -422,9 +410,9 @@ public class NewCityBossLevel extends Level {
 						data[++i] = 13 * 8 + 3;
 
 						//mid row of DK's throne
-					}else if (map[i + 1] == Terrain.STATUE_SP) {
+					}else if (map[i + 1] == Terrain.SIGN) {
 						data[i] = 14 * 8 + 1;
-						data[++i] = 15 * 8 + 5;
+						data[++i] = 14 * 8 + 2; //TODO finalize throne visuals
 						data[++i] = 14 * 8 + 3;
 
 						//bottom row of DK's throne
@@ -433,7 +421,7 @@ public class NewCityBossLevel extends Level {
 						data[++i] = 15*8 + 2;
 						data[++i] = 15*8 + 3;
 
-						//otherwise entrance carpet
+					//otherwise entrance carpet
 					} else if (map[i-tileW] != Terrain.EMPTY_SP){
 						data[i] = 13*8 + 0;
 					} else if (map[i+tileW] != Terrain.EMPTY_SP){
@@ -451,6 +439,54 @@ public class NewCityBossLevel extends Level {
 			v.map( data, tileW );
 			return v;
 		}
+
+		@Override
+		public String name(int tileX, int tileY) {
+			int cell = (this.tileX + tileX) + (this.tileY + tileY)*tileW;
+
+			//demon halls tiles
+			if (cell < Dungeon.level.width*22){
+				if (Dungeon.level.map[cell] == Terrain.STATUE){
+					return Messages.get(HallsLevel.class, "statue_name");
+				}
+
+				//DK arena tiles
+			} else {
+				if (Dungeon.level.map[cell] == Terrain.SIGN){
+					return Messages.get(NewCityBossLevel.class, "throne_name");
+				} else if (Dungeon.level.map[cell] == Terrain.PEDESTAL){
+					return Messages.get(NewCityBossLevel.class, "summoning_name");
+				}
+			}
+
+			return super.name(tileX, tileY);
+		}
+
+		@Override
+		public String desc(int tileX, int tileY) {
+			int cell = (this.tileX + tileX) + (this.tileY + tileY)*tileW;
+
+			//demon halls tiles
+			if (cell < Dungeon.level.width*22){
+				if (Dungeon.level.map[cell] == Terrain.EXIT){
+					return Messages.get(HallsLevel.class, "exit_desc");
+				} else if (Dungeon.level.map[cell] == Terrain.STATUE){
+					return Messages.get(HallsLevel.class, "statue_desc");
+				} else if (Dungeon.level.map[cell] == Terrain.EMPTY_DECO){
+					return "";
+				}
+
+			//DK arena tiles
+			} else {
+				if (Dungeon.level.map[cell] == Terrain.SIGN){
+					return Messages.get(NewCityBossLevel.class, "throne_desc");
+				} else if (Dungeon.level.map[cell] == Terrain.PEDESTAL){
+					return Messages.get(NewCityBossLevel.class, "summoning_desc");
+				}
+			}
+
+			return super.desc(tileX, tileY);
+		}
 	}
 
 	public static class CustomWallVisuals extends CustomTilemap {
@@ -467,13 +503,13 @@ public class NewCityBossLevel extends Level {
 
 			int[] map = Dungeon.level.map;
 
-			int stairsTop = -1;
+			int shadowTop = -1;
 
 			//upper part of the level, mostly demon halls tiles
 			for (int i = tileW; i < tileW*21; i++) {
 
-				if (map[i] == Terrain.EXIT && stairsTop == -1){
-					stairsTop = i - tileW;
+				if (map[i] == Terrain.EXIT && shadowTop == -1){
+					shadowTop = i - tileW*4;
 				}
 
 				//pillars
@@ -481,41 +517,42 @@ public class NewCityBossLevel extends Level {
 					data[i] = 12*8 + 6;
 					data[++i] = 12*8 + 7;
 				} else if (map[i] == Terrain.WALL && map[i-tileW] == Terrain.CHASM) {
-					data[i] = 13*8 + 6;
-					data[++i] = 13*8 + 7;
+					data[i] = 13 * 8 + 6;
+					data[++i] = 13 * 8 + 7;
 
-					//otherwise no tile here
+				//skull tops
+				} else if (map[i+tileW] == Terrain.STATUE) {
+					data[i] = 14*8 + 5;
+
+				//otherwise no tile here
 				} else {
 					data[i] = -1;
 				}
 			}
 
-			//custom shadow (and skull tops) for stairs
-			//TODO this doesn't look so great. Should try baking some of the shadow into the stairs themselves
-			for (int i = 0; i < CustomGroundVisuals.STAIR_ROWS; i++){
-				if (i == CustomGroundVisuals.STAIR_ROWS-1){
-					data[stairsTop] = i*8 + 0;
-					data[stairsTop+1] = i*8 + 1;
-					data[stairsTop+2] = data[stairsTop+3] = data[stairsTop+4] = -1;
-					data[stairsTop+5] = i*8 + 5;
-					data[stairsTop+6] = i*8 + 6;
+			//custom shadow  for stairs
+			for (int i = 0; i < 8; i++){
+				if (i < 4){
+					data[shadowTop] = i*8 + 0;
+					data[shadowTop+1] = data[shadowTop+2] = data[shadowTop+3] = data[shadowTop+4] =
+							data[shadowTop+5] = data[shadowTop+6] = i*8 + 1;
+					data[shadowTop+7] = i*8 + 2;
 				} else {
-					for (int j = 0; j < 7; j++) {
-						data[stairsTop + j] = i*8 + j;
-					}
+					int j = i - 4;
+					data[shadowTop] = j*8 + 3;
+					data[shadowTop+1] = data[shadowTop+2] = data[shadowTop+3] = data[shadowTop+4] =
+							data[shadowTop+5] = data[shadowTop+6] = j*8 + 4;
+					data[shadowTop+7] = j*8 + 5;
 				}
-				stairsTop += tileW;
+
+				shadowTop += tileW;
 			}
 
 			//lower part. Just need to handle statue tiles here
 			for (int i = tileW*21; i < tileW * tileH; i++){
 
-				//DK's throne
-				if (map[i] == Terrain.STATUE_SP){
-					data[i-tileW] = 14*8 + 5;
-
-					//Statues that need to face left instead of right
-				} else if (map[i] == Terrain.STATUE && i%tileW > 7){
+				//Statues that need to face left instead of right
+				if (map[i] == Terrain.STATUE && i%tileW > 7){
 					data[i-tileW] = 14*8 + 4;
 				}
 

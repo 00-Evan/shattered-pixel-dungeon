@@ -23,9 +23,16 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.KingSprite;
 
 //TODO currently just regular DK but with no summoning ability
-public class DwarfKing extends King {
+public class DwarfKing extends Mob {
+
+	{
+		spriteClass = KingSprite.class;
+
+		HP = HT = 1;
+	}
 
 	protected boolean canTryToSummon() {
 		return false;
