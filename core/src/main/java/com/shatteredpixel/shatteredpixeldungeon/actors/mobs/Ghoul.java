@@ -42,8 +42,8 @@ public class Ghoul extends Mob {
 	{
 		spriteClass = GhoulSprite.class;
 		
-		HP = HT = 5;
-		defenseSkill = 0;
+		HP = HT = 45;
+		defenseSkill = 20;
 		
 		EXP = 5;
 		maxLvl = 20;
@@ -313,7 +313,7 @@ public class Ghoul extends Mob {
 			super.detach();
 			Ghoul newHost = searchForHost(ghoul);
 			if (newHost != null){
-				newHost.add(this);
+				attachTo(newHost);
 			} else {
 				ghoul.die(this);
 			}

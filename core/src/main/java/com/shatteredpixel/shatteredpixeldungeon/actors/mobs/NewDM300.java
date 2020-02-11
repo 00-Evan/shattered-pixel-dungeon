@@ -490,6 +490,10 @@ public class NewDM300 extends Mob {
 			return true;
 		} else {
 
+			if (rooted || target == pos) {
+				return false;
+			}
+
 			int bestpos = pos;
 			for (int i : PathFinder.NEIGHBOURS8){
 				if (Dungeon.level.openSpace[pos+i] && Actor.findChar(pos+i) == null &&

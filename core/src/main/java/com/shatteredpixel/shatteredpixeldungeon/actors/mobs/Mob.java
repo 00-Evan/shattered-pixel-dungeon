@@ -107,6 +107,7 @@ public abstract class Mob extends Char {
 	private static final String STATE	= "state";
 	private static final String SEEN	= "seen";
 	private static final String TARGET	= "target";
+	private static final String MAX_LVL	= "max_lvl";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -126,6 +127,7 @@ public abstract class Mob extends Char {
 		}
 		bundle.put( SEEN, enemySeen );
 		bundle.put( TARGET, target );
+		bundle.put( MAX_LVL, maxLvl );
 	}
 	
 	@Override
@@ -149,6 +151,8 @@ public abstract class Mob extends Char {
 		enemySeen = bundle.getBoolean( SEEN );
 
 		target = bundle.getInt( TARGET );
+
+		if (bundle.contains(MAX_LVL)) maxLvl = bundle.getInt(MAX_LVL);
 	}
 	
 	public CharSprite sprite() {
