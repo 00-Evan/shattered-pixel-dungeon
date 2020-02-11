@@ -154,7 +154,12 @@ public class Bestiary {
 						Golem.class, Golem.class, Golem.class));
 				
 			// Halls
-			case 21: case 22:
+			case 21:
+				//2x succubus, 1x evil eye
+				return new ArrayList<>(Arrays.asList(
+						Succubus.class, Succubus.class,
+						Eye.class));
+			case 22:
 				//1x succubus, 1x evil eye
 				return new ArrayList<>(Arrays.asList(
 						Succubus.class,

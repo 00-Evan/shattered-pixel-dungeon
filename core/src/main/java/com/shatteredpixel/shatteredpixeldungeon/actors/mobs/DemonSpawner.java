@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
@@ -73,10 +74,17 @@ public class DemonSpawner extends Mob {
 		return true;
 	}
 
-	private float spawnCooldown = 60;
+	private float spawnCooldown = 0;
+
+	private boolean spawnRecorded = false;
 
 	@Override
 	protected boolean act() {
+		if (!spawnRecorded){
+			Statistics.spawnersAlive++;
+			spawnRecorded = true;
+		}
+
 		spawnCooldown--;
 		if (spawnCooldown <= 0){
 			ArrayList<Integer> candidates = new ArrayList<>();
@@ -100,6 +108,10 @@ public class DemonSpawner extends Mob {
 				}
 
 				spawnCooldown += 60;
+				if (Dungeon.depth > 21){
+					//60/53.33/46.67/40 turns to spawn on floor 21/22/23/24
+					spawnCooldown -= Math.max(40, (Dungeon.depth-21)*6.67);
+				}
 			}
 		}
 		return super.act();
@@ -116,18 +128,29 @@ public class DemonSpawner extends Mob {
 		super.damage(dmg, src);
 	}
 
+	@Override
+	public void die(Object cause) {
+		if (spawnRecorded){
+			Statistics.spawnersAlive--;
+		}
+		super.die(cause);
+	}
+
 	public static final String SPAWN_COOLDOWN = "spawn_cooldown";
+	public static final String SPAWN_RECORDED = "spawn_recorded";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(SPAWN_COOLDOWN, spawnCooldown);
+		bundle.put(SPAWN_RECORDED, spawnRecorded);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		spawnCooldown = bundle.getFloat(SPAWN_COOLDOWN);
+		spawnRecorded = bundle.getBoolean(SPAWN_RECORDED);
 	}
 
 	{

@@ -70,9 +70,6 @@ public class HallsLevel extends RegularLevel {
 		ArrayList<Room> rooms = super.initRooms();
 
 		rooms.add(new DemonSpawnerRoom());
-		if (Dungeon.depth == 24){
-			rooms.add(new DemonSpawnerRoom());
-		}
 
 		return rooms;
 	}

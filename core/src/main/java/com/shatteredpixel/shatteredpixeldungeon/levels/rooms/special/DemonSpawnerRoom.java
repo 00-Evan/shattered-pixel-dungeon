@@ -49,21 +49,6 @@ public class DemonSpawnerRoom extends SpecialRoom {
 		spawner.pos = cx + cy * level.width();
 		level.mobs.add( spawner );
 
-		//2/3 chance for 1, 1/3 chance for 2
-		int rippers = Random.chances( new float[]{0, 2, 1});
-
-		for (int i = 0; i < rippers; i++){
-			int pos;
-			do {
-				pos = level.pointToCell(random(1));
-			} while (level.solid[pos] || level.findMob(pos) != null);
-
-			RipperDemon ripper = new RipperDemon();
-			ripper.pos = pos;
-			ripper.state = ripper.HUNTING;
-			level.mobs.add( ripper );
-		}
-
 	}
 
 	@Override
