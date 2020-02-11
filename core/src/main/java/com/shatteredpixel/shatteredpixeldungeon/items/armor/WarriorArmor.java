@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -40,7 +41,7 @@ import com.watabou.utils.PathFinder;
 public class WarriorArmor extends ClassArmor {
 	
 	private static int LEAP_TIME	= 1;
-	private static int SHOCK_TIME	= 3;
+	private static int SHOCK_TIME	= 5;
 
 	{
 		image = ItemSpriteSheet.ARMOR_WARRIOR;
@@ -51,7 +52,7 @@ public class WarriorArmor extends ClassArmor {
 		GameScene.selectCell( leaper );
 	}
 	
-	protected static CellSelector.Listener leaper = new  CellSelector.Listener() {
+	protected CellSelector.Listener leaper = new  CellSelector.Listener() {
 		
 		@Override
 		public void onSelect( Integer target ) {
@@ -65,7 +66,9 @@ public class WarriorArmor extends ClassArmor {
 					cell = route.path.get(route.dist-1);
 
 
-				curUser.HP -= (curUser.HP / 3);
+				Invisibility.dispel();
+				charge -= 35;
+				updateQuickslot();
 
 				final int dest = cell;
 				curUser.busy();
