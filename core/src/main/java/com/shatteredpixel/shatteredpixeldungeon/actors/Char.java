@@ -423,7 +423,7 @@ public abstract class Char extends Actor {
 					link.detach();
 				}
 			}
-			dmg /= (links.size()+1);
+			dmg = (int)Math.ceil(dmg / (float)(links.size()+1));
 			for (LifeLink link : links){
 				Char ch = (Char)Actor.findById(link.object);
 				ch.damage(dmg, LifeLink.class);
