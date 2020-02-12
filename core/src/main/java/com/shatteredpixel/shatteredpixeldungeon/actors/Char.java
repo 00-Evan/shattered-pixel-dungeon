@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FrostImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
@@ -413,6 +414,25 @@ public abstract class Char extends Actor {
 		if (!isAlive() || dmg < 0) {
 			return;
 		}
+
+		if (src != LifeLink.class && buff(LifeLink.class) != null){
+			HashSet<LifeLink> links = buffs(LifeLink.class);
+			for (LifeLink link : links.toArray(new LifeLink[0])){
+				if (Actor.findById(link.object) == null){
+					links.remove(link);
+					link.detach();
+				}
+			}
+			dmg /= (links.size()+1);
+			for (LifeLink link : links){
+				Char ch = (Char)Actor.findById(link.object);
+				ch.damage(dmg, LifeLink.class);
+				if (!ch.isAlive()){
+					link.detach();
+				}
+			}
+		}
+
 		Terror t = buff(Terror.class);
 		if (t != null){
 			t.recover();
