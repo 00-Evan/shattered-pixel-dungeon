@@ -46,6 +46,9 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public class NewCityBossLevel extends Level {
 
 	{
@@ -53,12 +56,25 @@ public class NewCityBossLevel extends Level {
 		color2 = 0xf2f2f2;
 	}
 
+	private static int WIDTH = 15;
+	private static int HEIGHT = 48;
+
 	private static final Rect entry = new Rect(1, 37, 14, 48);
 	private static final Rect arena = new Rect(1, 25, 14, 38);
 	private static final Rect end = new Rect(0, 0, 15, 22);
 
 	private static final int bottomDoor = 7 + (arena.bottom-1)*15;
 	private static final int topDoor = 7 + arena.top*15;
+
+	private static final int[] pedestals = new int[4];
+
+	static{
+		Point c = arena.center();
+		pedestals[0] = c.x-3 + (c.y-3) * WIDTH;
+		pedestals[1] = c.x+3 + (c.y-3) * WIDTH;
+		pedestals[2] = c.x+3 + (c.y+3) * WIDTH;
+		pedestals[3] = c.x-3 + (c.y+3) * WIDTH;
+	}
 
 	private ImpShopRoom impShop;
 
@@ -90,7 +106,7 @@ public class NewCityBossLevel extends Level {
 	@Override
 	protected boolean build() {
 
-		setSize(15, 48);
+		setSize(WIDTH, HEIGHT);
 
 		//entrance room
 		Painter.fill(this, entry, Terrain.WALL);
@@ -124,10 +140,10 @@ public class NewCityBossLevel extends Level {
 		Painter.set(this, c.x+3, c.y, Terrain.STATUE);
 		Painter.set(this, c.x+4, c.y, Terrain.STATUE);
 
-		Painter.set(this, c.x-3, c.y-3, Terrain.PEDESTAL);
-		Painter.set(this, c.x+3, c.y-3, Terrain.PEDESTAL);
-		Painter.set(this, c.x+3, c.y+3, Terrain.PEDESTAL);
-		Painter.set(this, c.x-3, c.y+3, Terrain.PEDESTAL);
+		Painter.set(this, pedestals[0], Terrain.PEDESTAL);
+		Painter.set(this, pedestals[1], Terrain.PEDESTAL);
+		Painter.set(this, pedestals[2], Terrain.PEDESTAL);
+		Painter.set(this, pedestals[3], Terrain.PEDESTAL);
 
 		Painter.set(this, c.x, arena.top, Terrain.LOCKED_DOOR);
 
@@ -172,6 +188,37 @@ public class NewCityBossLevel extends Level {
 		customWalls.add(customVisuals);
 
 		return true;
+	}
+
+	//returns a random pedestal that doesn't already have a summon inbound on it
+	public int getSummoningPos(){
+		Mob king = getKing();
+		HashSet<DwarfKing.Summoning> summons = king.buffs(DwarfKing.Summoning.class);
+		ArrayList<Integer> positions = new ArrayList<>();
+		for (int pedestal : pedestals) {
+			boolean clear = true;
+			for (DwarfKing.Summoning s : summons) {
+				if (s.getPos() == pedestal) {
+					clear = false;
+					break;
+				}
+			}
+			if (clear) {
+				positions.add(pedestal);
+			}
+		}
+		if (positions.isEmpty()){
+			return -1;
+		} else {
+			return Random.element(positions);
+		}
+	}
+
+	private Mob getKing(){
+		for (Mob m : mobs){
+			if (m instanceof DwarfKing) return m;
+		}
+		return null;
 	}
 
 	@Override

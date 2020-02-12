@@ -95,6 +95,10 @@ public class Ghoul extends Mob {
 		partnerID = bundle.getInt( PARTNER_ID );
 		timesDowned = bundle.getInt( TIMES_DOWNED );
 	}
+
+	public void setSolo(){
+		partnerID = -2;
+	}
 	
 	@Override
 	protected boolean act() {
