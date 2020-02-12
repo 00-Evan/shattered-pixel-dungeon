@@ -118,13 +118,12 @@ public class NewCavesBossLevel extends Level {
 		//set up main boss arena
 		Painter.fillEllipse(this, mainArena, Terrain.EMPTY);
 
-		boolean[] patch = Patch.generate( width, height-14, 0.20f, 2, true );
+		boolean[] patch = Patch.generate( width, height-14, 0.15f, 2, true );
 		for (int i= 14*width(); i < length(); i++) {
 			if (map[i] == Terrain.EMPTY) {
 				if (patch[i - 14*width()]){
 					map[i] = Terrain.WATER;
-				} else if (Random.Int(6) == 0){
-					map[i] = Terrain.INACTIVE_TRAP;
+				} else if (Random.Int(8) == 0){
 					map[i] = Terrain.INACTIVE_TRAP;
 				}
 			}
@@ -370,13 +369,13 @@ public class NewCavesBossLevel extends Level {
 
 	private static short[] entrance2 = {
 			n, n, n, n, n, n, n, n,
-			n, n, n, n, n, n, W, W,
-			n, n, n, n, n, n, e, e,
-			n, n, n, n, e, W, W, W,
-			n, n, n, e, e, e, e, e,
+			n, n, n, n, n, n, n, n,
+			n, n, n, n, n, e, e, e,
 			n, n, n, W, e, W, W, e,
-			n, W, e, W, e, W, e, e,
-			n, W, e, W, e, e, e, e
+			n, n, n, e, e, e, e, e,
+			n, n, e, W, e, W, W, e,
+			n, n, e, W, e, W, e, e,
+			n, n, e, e, e, e, e, e
 	};
 
 	private static short[] entrance3 = {
@@ -461,13 +460,13 @@ public class NewCavesBossLevel extends Level {
 
 	private static short[] corner3 = {
 			W, W, W, W, W, W, W, W, W, W,
-			W, s, s, s, W, e, e, e, W, W,
-			W, s, s, s, e, e, W, e, W, W,
+			W, s, s, s, W, W, W, W, W, W,
+			W, s, s, s, e, e, e, e, W, W,
 			W, s, s, s, W, W, W, e, W, W,
 			W, W, e, W, W, W, W, e, W, n,
-			W, e, e, W, W, W, W, e, e, n,
-			W, e, W, W, W, W, n, n, n, n,
-			W, e, e, e, e, e, n, n, n, n,
+			W, W, e, W, W, W, W, e, e, n,
+			W, W, e, W, W, W, n, n, n, n,
+			W, W, e, e, e, e, n, n, n, n,
 			W, W, W, W, W, e, n, n, n, n,
 			W, W, W, W, n, n, n, n, n, n,
 	};
@@ -762,7 +761,7 @@ public class NewCavesBossLevel extends Level {
 				s.resetStatic(x, y);
 				s.speed.set((energySourceSprite.x + energySourceSprite.width/2f) - x,
 						(energySourceSprite.y + energySourceSprite.height/2f) - y);
-				s.speed.normalize().scale(DungeonTilemap.SIZE/2);
+				s.speed.normalize().scale(DungeonTilemap.SIZE);
 				s.acc.set(s.speed);
 			}
 
