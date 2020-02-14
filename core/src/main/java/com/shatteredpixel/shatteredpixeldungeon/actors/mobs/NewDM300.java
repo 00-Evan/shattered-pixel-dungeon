@@ -406,7 +406,8 @@ public class NewDM300 extends Mob {
 	@Override
 	public void damage(int dmg, Object src) {
 		if (supercharged){
-			dmg = 0;
+			sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "immune") );
+			return;
 		}
 
 		super.damage(dmg, src);
