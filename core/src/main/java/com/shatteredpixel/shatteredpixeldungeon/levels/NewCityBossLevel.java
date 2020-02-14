@@ -66,10 +66,12 @@ public class NewCityBossLevel extends Level {
 	private static final int bottomDoor = 7 + (arena.bottom-1)*15;
 	private static final int topDoor = 7 + arena.top*15;
 
+	public static final int throne;
 	private static final int[] pedestals = new int[4];
 
-	static{
+	static {
 		Point c = arena.center();
+		throne = c.x + (c.y) * WIDTH;
 		pedestals[0] = c.x-3 + (c.y-3) * WIDTH;
 		pedestals[1] = c.x+3 + (c.y-3) * WIDTH;
 		pedestals[2] = c.x+3 + (c.y+3) * WIDTH;
@@ -391,7 +393,7 @@ public class NewCityBossLevel extends Level {
 
 				//imp's pedestal
 				} else if (map[i] == Terrain.PEDESTAL) {
-					data[i] = 13*8 + 5;
+					data[i] = 12*8 + 5;
 
 				//skull piles
 				} else if (map[i] == Terrain.STATUE) {
@@ -595,12 +597,14 @@ public class NewCityBossLevel extends Level {
 				shadowTop += tileW;
 			}
 
-			//lower part. Just need to handle statue tiles here
+			//lower part. Statues and DK's throne
 			for (int i = tileW*21; i < tileW * tileH; i++){
 
 				//Statues that need to face left instead of right
 				if (map[i] == Terrain.STATUE && i%tileW > 7){
 					data[i-tileW] = 14*8 + 4;
+				} else if (map[i] == Terrain.SIGN){
+					data[i-tileW] = 13*8 + 5;
 				}
 
 				//always no tile here (as the above statements are modifying previous tiles)

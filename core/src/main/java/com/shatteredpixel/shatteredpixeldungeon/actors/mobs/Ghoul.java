@@ -146,19 +146,25 @@ public class Ghoul extends Mob {
 				timesDowned++;
 				Buff.append(nearby, GhoulLifeLink.class).set(timesDowned*5, this);
 				((GhoulSprite)sprite).crumple();
-			} else {
-				super.die(cause);
+				return;
 			}
-		} else {
-			super.die(cause);
 		}
+
+		Buff b = buff(Corruption.class);
+		if (b != null) b.detach();
+		b = buff(DwarfKing.KingDamager.class);
+		if (b != null) b.detach();
+
+		super.die(cause);
 	}
 
 	@Override
 	protected synchronized void onRemove() {
 		for (Buff buff : buffs()) {
-			//corruption is preserved
-			if (!(buff instanceof Corruption)) buff.detach();
+			//corruption and king damager are preserved when removed
+			//instead they are detached when the ghoul actually dies
+			if (!(buff instanceof Corruption) && !(buff instanceof DwarfKing.KingDamager))
+				buff.detach();
 		}
 	}
 
@@ -291,6 +297,7 @@ public class Ghoul extends Mob {
 				Actor.add(ghoul);
 				Dungeon.level.mobs.add(ghoul);
 				Dungeon.level.occupyCell( ghoul );
+				ghoul.sprite.idle();
 				super.detach();
 				return true;
 			}
@@ -318,6 +325,7 @@ public class Ghoul extends Mob {
 			Ghoul newHost = searchForHost(ghoul);
 			if (newHost != null){
 				attachTo(newHost);
+				spend(-cooldown());
 			} else {
 				ghoul.die(this);
 			}
