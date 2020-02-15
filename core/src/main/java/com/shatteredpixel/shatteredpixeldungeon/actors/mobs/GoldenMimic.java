@@ -65,7 +65,7 @@ public class GoldenMimic extends Mimic {
 
 	public void stopHiding(){
 		state = HUNTING;
-		if (Dungeon.level.heroFOV[pos] && Actor.chars().contains(this)) {
+		if (Actor.chars().contains(this) && Dungeon.level.heroFOV[pos]) {
 			enemy = Dungeon.hero;
 			target = Dungeon.hero.pos;
 			enemySeen = true;

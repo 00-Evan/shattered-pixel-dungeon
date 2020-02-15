@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LifeLink;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
@@ -40,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
+import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -270,6 +272,8 @@ public class DwarfKing extends Mob {
 	}
 
 	private boolean teleportSubject(){
+		if (enemy == null) return false;
+
 		Mob furthest = null;
 
 		for (Mob m : getSubjects()){
@@ -355,6 +359,10 @@ public class DwarfKing extends Mob {
 		}
 		int preHP = HP;
 		super.damage(dmg, src);
+
+		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
+		if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg/3);
+
 		if (phase == 1) {
 			int dmgTaken = preHP - HP;
 			abilityCooldown -= dmgTaken/8f;
@@ -396,7 +404,13 @@ public class DwarfKing extends Mob {
 	public void die(Object cause) {
 
 		GameScene.bossSlain();
-		Dungeon.level.drop( new ArmorKit(), pos ).sprite.drop();
+
+		if (!Dungeon.level.solid[pos]) {
+			Dungeon.level.drop(new ArmorKit(), pos).sprite.drop();
+		} else {
+			//if the king is on his throne, drop the toolkit below
+			Dungeon.level.drop( new ArmorKit(), pos + Dungeon.level.width() ).sprite.drop( pos );
+		}
 
 		super.die( cause );
 

@@ -101,7 +101,8 @@ public class WandOfWarding extends Wand {
 			GameScene.add(ward, 1f);
 			Dungeon.level.occupyCell(ward);
 			ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
-			
+			Dungeon.level.pressCell(bolt.collisionPos);
+
 		} else {
 			GLog.w( Messages.get(this, "bad_location"));
 			Dungeon.level.pressCell(bolt.collisionPos);
@@ -186,6 +187,12 @@ public class WandOfWarding extends Wand {
 
 			viewDistance = 3;
 			state = WANDERING;
+		}
+
+		@Override
+		protected boolean act() {
+			throwItem();
+			return super.act();
 		}
 
 		@Override
