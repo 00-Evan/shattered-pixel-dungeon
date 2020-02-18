@@ -160,16 +160,20 @@ public class Necromancer extends Mob {
 		
 		//heal skeleton first
 		if (mySkeleton.HP < mySkeleton.HT){
-			
-			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+
+			if (sprite.visible || mySkeleton.sprite.visible) {
+				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+			}
 			
 			mySkeleton.HP = Math.min(mySkeleton.HP + 5, mySkeleton.HT);
 			mySkeleton.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			
 			//otherwise give it adrenaline
 		} else if (mySkeleton.buff(Adrenaline.class) == null) {
-			
-			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+
+			if (sprite.visible || mySkeleton.sprite.visible) {
+				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+			}
 			
 			Buff.affect(mySkeleton, Adrenaline.class, 3f);
 		}
