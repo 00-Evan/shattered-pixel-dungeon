@@ -211,18 +211,21 @@ public class DriedRose extends Artifact {
 				if (level() < levelCap)
 					desc+= "\n\n" + Messages.get(this, "desc_hint");
 
-			} else
+			} else {
 				desc += "\n\n" + Messages.get(this, "desc_cursed");
-		}
-		
-		desc += "\n";
-		
-		if (weapon != null){
-			desc += "\n" + Messages.get(this, "desc_weapon", weapon.toString());
+			}
 		}
 
-		if (armor != null){
-			desc += "\n" + Messages.get(this, "desc_armor", armor.toString());
+		if (weapon != null || armor != null) {
+			desc += "\n";
+
+			if (weapon != null) {
+				desc += "\n" + Messages.get(this, "desc_weapon", weapon.toString());
+			}
+
+			if (armor != null) {
+				desc += "\n" + Messages.get(this, "desc_armor", armor.toString());
+			}
 		}
 		
 		return desc;
