@@ -572,7 +572,7 @@ public class NewCavesBossLevel extends Level {
 		private static short[] entryWay = new short[]{
 				 0,  7,  7,  7,  4,
 				 0, 15, 15, 15,  4,
-				 8, 23, 23, 23, 12,
+				-1, 23, 23, 23, -1,
 				-1, -1, -1, -1, -1,
 				-1,  6, -1, 14, -1,
 				-1, -1, -1, -1, -1,

@@ -173,12 +173,6 @@ public class Ghoul extends Mob {
 		}
 	}
 
-	@Override
-	protected void onAdd() {
-		spend(-cooldown());
-		super.onAdd();
-	}
-
 	private class Sleeping extends Mob.Sleeping {
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
@@ -300,6 +294,7 @@ public class Ghoul extends Mob {
 					}
 				}
 				Actor.add(ghoul);
+				ghoul.spend(-ghoul.cooldown());
 				Dungeon.level.mobs.add(ghoul);
 				Dungeon.level.occupyCell( ghoul );
 				ghoul.sprite.idle();

@@ -112,7 +112,7 @@ public class CrystalMimic extends Mimic {
 		} else {
 			Buff.affect(this, Haste.class, 1f);
 		}
-		if (Dungeon.level.heroFOV[pos] && Actor.chars().contains(this)) {
+		if (Actor.chars().contains(this) && Dungeon.level.heroFOV[pos]) {
 			enemy = Dungeon.hero;
 			target = Dungeon.hero.pos;
 			enemySeen = true;
