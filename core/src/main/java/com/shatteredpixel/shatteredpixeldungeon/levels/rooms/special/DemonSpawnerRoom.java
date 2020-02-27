@@ -21,15 +21,17 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DemonSpawner;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RipperDemon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 
 public class DemonSpawnerRoom extends SpecialRoom {
 	@Override
@@ -49,6 +51,10 @@ public class DemonSpawnerRoom extends SpecialRoom {
 		spawner.pos = cx + cy * level.width();
 		level.mobs.add( spawner );
 
+		CustomFloor vis = new CustomFloor();
+		vis.setRect(left+1, top+1, width()-2, height()-2);
+		level.customTiles.add(vis);
+
 	}
 
 	@Override
@@ -56,5 +62,37 @@ public class DemonSpawnerRoom extends SpecialRoom {
 		//cannot connect to entrance, otherwise works normally
 		if (room instanceof EntranceRoom) return false;
 		else                              return super.connect(room);
+	}
+
+	@Override
+	public boolean canPlaceTrap(Point p) {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceWater(Point p) {
+		return false;
+	}
+
+	private static class CustomFloor extends CustomTilemap {
+
+		{
+			texture = Assets.HALLS_SP;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int top = tileX + tileY* Dungeon.level.width();
+			int[] map = Dungeon.level.map;
+			int[] data = new int[tileW*tileH];
+			for (int i = 0; i < data.length; i++){
+				if (map[i+top] == Terrain.EMPTY_DECO) data[i] = 1;
+				else                                  data[i] = 0;
+			}
+			v.map( data, tileW );
+			return v;
+		}
+
 	}
 }
