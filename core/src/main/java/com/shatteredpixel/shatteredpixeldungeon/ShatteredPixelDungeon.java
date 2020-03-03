@@ -135,6 +135,9 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.levels.OldCityBossLevel.class,
 				"com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.OldHallsBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel" );
 		
 	}
 	

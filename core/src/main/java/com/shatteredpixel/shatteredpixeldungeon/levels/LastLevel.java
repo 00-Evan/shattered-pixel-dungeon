@@ -22,13 +22,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -40,6 +43,8 @@ public class LastLevel extends Level {
 	{
 		color1 = 0x801500;
 		color2 = 0xa68521;
+
+		viewDistance = Math.min(4, viewDistance);
 	}
 
 	private int pedestal;
@@ -64,7 +69,20 @@ public class LastLevel extends Level {
 				solid[i] = true;
 			}
 		}
+		for (int i = (height-ROOM_TOP+2)*width; i < length; i++){
+			passable[i] = avoid[i] = false;
+			solid[i] = true;
+		}
+		for (int i = (height-ROOM_TOP+1)*width; i < length; i++){
+			if (i % width < 4 || i % width > 12 || i >= (length-width)){
+				discoverable[i] = false;
+			} else {
+				visited[i] = true;
+			}
+		}
 	}
+
+	private static final int ROOM_TOP = 10;
 
 	@Override
 	protected boolean build() {
@@ -72,42 +90,45 @@ public class LastLevel extends Level {
 		setSize(16, 64);
 		Arrays.fill( map, Terrain.CHASM );
 
-		int mid = width/2;
+		final int MID = width/2;
 
 		Painter.fill( this, 0, height-1, width, 1, Terrain.WALL );
-		Painter.fill( this, mid - 1, 10, 3, (height-11), Terrain.EMPTY);
-		Painter.fill( this, mid - 2, height - 3, 5, 1, Terrain.EMPTY);
-		Painter.fill( this, mid - 3, height - 2, 7, 1, Terrain.EMPTY);
+		Painter.fill( this, MID - 1, 10, 3, (height-11), Terrain.EMPTY);
+		Painter.fill( this, MID - 2, height - 3, 5, 1, Terrain.EMPTY);
+		Painter.fill( this, MID - 3, height - 2, 7, 1, Terrain.EMPTY);
 
-		Painter.fill( this, mid - 2, 9, 5, 7, Terrain.EMPTY);
-		Painter.fill( this, mid - 3, 10, 7, 5, Terrain.EMPTY);
+		Painter.fill( this, MID - 2, 9, 5, 7, Terrain.EMPTY);
+		Painter.fill( this, MID - 3, 10, 7, 5, Terrain.EMPTY);
 
-		entrance = (height-2) * width() + mid;
+		entrance = (height-ROOM_TOP) * width() + MID;
+		Painter.fill(this, 0, height - ROOM_TOP, width, 2, Terrain.WALL);
 		map[entrance] = Terrain.ENTRANCE;
+		map[entrance+width] = Terrain.ENTRANCE;
+		Painter.fill(this, 0, height - ROOM_TOP + 2, width, 8, Terrain.EMPTY);
+		Painter.fill(this, MID-1, height - ROOM_TOP + 2, 3, 1, Terrain.ENTRANCE);
 
-		pedestal = 12*(width()) + mid;
-		map[pedestal] = Terrain.PEDESTAL;
-		map[pedestal-1-width()] = map[pedestal+1-width()] = map[pedestal-1+width()] = map[pedestal+1+width()] = Terrain.STATUE_SP;
-
+		pedestal = 12*(width()) + MID;
 		exit = pedestal;
 
-		int pos = pedestal;
-
-		map[pos-width()] = map[pos-1] = map[pos+1] = map[pos-2] = map[pos+2] = Terrain.WATER;
-		pos+=width();
-		map[pos] = map[pos-2] = map[pos+2] = map[pos-3] = map[pos+3] = Terrain.WATER;
-		pos+=width();
-		map[pos-3] = map[pos-2] = map[pos-1] = map[pos] = map[pos+1] = map[pos+2] = map[pos+3] = Terrain.WATER;
-		pos+=width();
-		map[pos-2] = map[pos+2] = Terrain.WATER;
-		
 		for (int i=0; i < length(); i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
+			if (map[i] == Terrain.EMPTY && Random.Int( 5 ) == 0) {
 				map[i] = Terrain.EMPTY_DECO;
 			}
 		}
 
 		feeling = Feeling.NONE;
+
+		CustomTilemap vis = new CustomFloor();
+		vis.setRect( 5, 0, 7, height - ROOM_TOP);
+		customTiles.add(vis);
+
+		vis = new CenterPieceVisuals();
+		vis.pos(0, height - ROOM_TOP);
+		customTiles.add(vis);
+
+		vis = new CenterPieceWalls();
+		vis.pos(0, height - ROOM_TOP-1);
+		customWalls.add(vis);
 
 		return true;
 	}
@@ -189,6 +210,110 @@ public class LastLevel extends Level {
 				passable[i] = avoid[i] = false;
 				solid[i] = true;
 			}
+		}
+		for (int i = (height-ROOM_TOP+2)*width; i < length; i++){
+			passable[i] = avoid[i] = false;
+			solid[i] = true;
+		}
+		for (int i = (height-ROOM_TOP+1)*width; i < length; i++){
+			if (i % width < 4 || i % width > 12 || i >= (length-width)){
+				discoverable[i] = false;
+			} else {
+				visited[i] = true;
+			}
+		}
+	}
+
+	public static class CustomFloor extends CustomTilemap {
+
+		{
+			texture = Assets.HALLS_SP;
+		}
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			int cell = tileX + tileY * Dungeon.level.width();
+			int[] map = Dungeon.level.map;
+			int[] data = new int[tileW*tileH];
+			for (int i = 0; i < data.length; i++){
+				if (i % tileW == 0){
+					cell = tileX + (tileY + i / tileW) * Dungeon.level.width();
+				}
+				if (map[cell] == Terrain.EMPTY_DECO) {
+					data[i] = 27;
+				} else if (map[cell] == Terrain.EMPTY) {
+					data[i] = 19;
+					if (map[cell+Dungeon.level.width] == Terrain.CHASM) {
+						data[i+tileW] = 6;
+					}
+				} else if (data[i] == 0) {
+					data[i] = -1;
+				}
+				cell++;
+			}
+			v.map( data, tileW );
+			return v;
+		}
+
+	}
+
+	public static class CenterPieceVisuals extends CustomTilemap {
+
+		{
+			texture = Assets.HALLS_SP;
+
+			tileW = 16;
+			tileH = 10;
+		}
+
+		private static final int[] map = new int[]{
+				-1, -1, -1, -1, -1, -1, -1, -1, 19, -1, -1, -1, -1, -1, -1, -1,
+				 0,  0,  0,  0,  8,  9, 10, 11, 19, 11, 12, 13, 14,  0,  0,  0,
+				 0,  0,  0,  0, 16, 17, 18, 19, 19, 19, 20, 21, 22,  0,  0,  0,
+				 0,  0,  0,  0, 24, 25, 26, 27, 19, 27, 28, 29, 30,  0,  0,  0,
+				 0,  0,  0,  0, 24, 25, 26, 19, 19, 19, 28, 29, 30,  0,  0,  0,
+				 0,  0,  0,  0, 24, 25, 26, 27, 19, 27, 28, 29, 30,  0,  0,  0,
+				 0,  0,  0,  0, 24, 25, 34, 35, 35, 35, 34, 29, 30,  0,  0,  0,
+				 0,  0,  0,  0, 40, 41, 36, 36, 36, 36, 36, 40, 41,  0,  0,  0,
+				 0,  0,  0,  0, 48, 49, 36, 36, 36, 36, 36, 48, 49,  0,  0,  0,
+				 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+		};
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			v.map(map, tileW);
+			return v;
+		}
+	}
+
+	public static class CenterPieceWalls extends CustomTilemap {
+
+		{
+			texture = Assets.HALLS_SP;
+
+			tileW = 16;
+			tileH = 9;
+		}
+
+		private static final int[] map = new int[]{
+				 4,  4,  4,  4,  4,  4,  4,  5,  7,  3,  4,  4,  4,  4,  4,  4,
+				 0,  0,  0,  0,  0,  0,  0,  1, 15,  2,  0,  0,  0,  0,  0,  0,
+				-1, -1, -1, -1, -1, -1, -1, -1, 23, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, -1, 32, 33, -1, -1, -1, -1, -1, 32, 33, -1, -1, -1,
+				-1, -1, -1, -1, 40, 41, -1, -1, -1, -1, -1, 40, 41, -1, -1, -1,
+		};
+
+		@Override
+		public Tilemap create() {
+			Tilemap v = super.create();
+			v.map(map, tileW);
+			return v;
 		}
 	}
 }

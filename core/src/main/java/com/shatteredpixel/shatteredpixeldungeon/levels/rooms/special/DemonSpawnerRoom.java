@@ -83,12 +83,16 @@ public class DemonSpawnerRoom extends SpecialRoom {
 		@Override
 		public Tilemap create() {
 			Tilemap v = super.create();
-			int top = tileX + tileY* Dungeon.level.width();
+			int cell = tileX + tileY * Dungeon.level.width();
 			int[] map = Dungeon.level.map;
 			int[] data = new int[tileW*tileH];
 			for (int i = 0; i < data.length; i++){
-				if (map[i+top] == Terrain.EMPTY_DECO) data[i] = 1;
-				else                                  data[i] = 0;
+				if (i % tileW == 0){
+					cell = tileX + (tileY + i / tileW) * Dungeon.level.width();
+				}
+				if (map[cell] == Terrain.EMPTY_DECO)    data[i] = 27;
+				else                                    data[i] = 19;
+				cell++;
 			}
 			v.map( data, tileW );
 			return v;
