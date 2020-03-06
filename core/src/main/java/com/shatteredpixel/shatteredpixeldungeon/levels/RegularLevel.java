@@ -451,7 +451,7 @@ public abstract class RegularLevel extends Level {
 				if (passable[pos]
 						&& pos != exit
 						&& heaps.get(pos) == null
-						&& Actor.findChar(pos) == null) {
+						&& findMob(pos) == null) {
 					
 					Trap t = traps.get(pos);
 					

@@ -50,7 +50,7 @@ public class BannerSprites {
 				icon.frame( icon.texture.uvRect( 0, 160, 128, 181 ) );
 				break;
 			case PIXEL_DUNGEON_SIGNS:
-				icon.frame( icon.texture.uvRect( 133, 0, 255, 90 ) );
+				icon.frame( icon.texture.uvRect( 132, 0, 256, 90 ) );
 				break;
 		}
 		return icon;

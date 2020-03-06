@@ -94,8 +94,8 @@ public class ImpShopRoom extends ShopRoom {
 
 	public void spawnShop(Level level){
 		impSpawned = true;
-		placeItems(level);
 		placeShopkeeper(level);
+		placeItems(level);
 	}
 
 	private static final String IMP = "imp_spawned";
