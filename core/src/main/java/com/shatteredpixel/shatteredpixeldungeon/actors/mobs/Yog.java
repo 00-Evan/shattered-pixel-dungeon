@@ -49,10 +49,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.BurningFistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.FistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.LarvaSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.RottingFistSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.YogSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -214,7 +213,7 @@ public class Yog extends Mob {
 		private static final int REGENERATION	= 4;
 		
 		{
-			spriteClass = RottingFistSprite.class;
+			spriteClass = FistSprite.Rotting.class;
 			
 			HP = HT = 300;
 			defenseSkill = 25;
@@ -286,7 +285,7 @@ public class Yog extends Mob {
 	public static class BurningFist extends Mob {
 		
 		{
-			spriteClass = BurningFistSprite.class;
+			spriteClass = FistSprite.Burning.class;
 			
 			HP = HT = 200;
 			defenseSkill = 25;
@@ -322,37 +321,49 @@ public class Yog extends Mob {
 		
 		//used so resistances can differentiate between melee and magical attacks
 		public static class DarkBolt{}
-		
-		@Override
-		public boolean attack( Char enemy ) {
-			
-			if (!Dungeon.level.adjacent( pos, enemy.pos )) {
-				spend( attackDelay() );
-				
-				if (hit( this, enemy, true )) {
-					
-					int dmg =  damageRoll();
-					enemy.damage( dmg, new DarkBolt() );
-					
-					enemy.sprite.bloodBurstA( sprite.center(), dmg );
-					enemy.sprite.flash();
-					
-					if (!enemy.isAlive() && enemy == Dungeon.hero) {
-						Dungeon.fail( getClass() );
-						GLog.n( Messages.get(Char.class, "kill", name()) );
-					}
-					return true;
-					
-				} else {
-					
-					enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
-					return false;
-				}
+
+		protected boolean doAttack( Char enemy ) {
+
+			if (Dungeon.level.adjacent( pos, enemy.pos )) {
+
+				return super.doAttack( enemy );
+
 			} else {
-				return super.attack( enemy );
+
+				if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+					sprite.zap( enemy.pos );
+					return false;
+				} else {
+					zap();
+					return true;
+				}
 			}
 		}
-		
+
+		private void zap() {
+			spend( 1f );
+
+			if (hit( this, enemy, true )) {
+
+				int dmg = damageRoll();
+				enemy.damage( dmg, new DarkBolt() );
+
+				if (!enemy.isAlive() && enemy == Dungeon.hero) {
+					Dungeon.fail( getClass() );
+					GLog.n( Messages.get(Char.class, "kill", name()) );
+				}
+
+			} else {
+
+				enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
+			}
+		}
+
+		public void onZapComplete() {
+			zap();
+			next();
+		}
+
 		@Override
 		public boolean act() {
 			

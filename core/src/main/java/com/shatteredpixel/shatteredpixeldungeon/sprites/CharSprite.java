@@ -273,10 +273,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 
 	public void jump( int from, int to, Callback callback ) {
+		float distance = Dungeon.level.trueDistance( from, to );
+		jump( from, to, callback, distance * 2, distance * 0.1f );
+	}
+
+	public void jump( int from, int to, Callback callback, float height, float duration ) {
 		jumpCallback = callback;
 
-		float distance = Dungeon.level.trueDistance( from, to );
-		jumpTweener = new JumpTweener( this, worldToCamera( to ), distance * 2, distance * 0.1f );
+		jumpTweener = new JumpTweener( this, worldToCamera( to ), height, duration );
 		jumpTweener.listener = this;
 		parent.add( jumpTweener );
 
