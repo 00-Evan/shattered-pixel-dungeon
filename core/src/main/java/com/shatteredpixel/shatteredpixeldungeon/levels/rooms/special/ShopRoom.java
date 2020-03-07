@@ -176,8 +176,9 @@ public class ShopRoom extends SpecialRoom {
 			w = (MeleeWeapon) Generator.random(Generator.wepTiers[4]);
 			itemsToSpawn.add( Generator.random(Generator.misTiers[4]).quantity(2).identify() );
 			itemsToSpawn.add( new PlateArmor().identify() );
-			itemsToSpawn.add( new Torch().quantity(2) );
-			itemsToSpawn.add( new Torch().quantity(2) );
+			itemsToSpawn.add( new Torch() );
+			itemsToSpawn.add( new Torch() );
+			itemsToSpawn.add( new Torch() );
 			break;
 		}
 		w.enchant(null);
