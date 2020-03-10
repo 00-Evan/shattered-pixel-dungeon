@@ -930,11 +930,15 @@ public class GameScene extends PixelScene {
 			}
 		}
 	}
-	
+
 	public static void flash( int color ) {
-		scene.fadeIn( 0xFF000000 | color, true );
+		flash( color, true);
 	}
-	
+
+	public static void flash( int color, boolean lightmode ) {
+		scene.fadeIn( 0xFF000000 | color, lightmode );
+	}
+
 	public static void gameOver() {
 		Banner gameOver = new Banner( BannerSprites.get( BannerSprites.Type.GAME_OVER ) );
 		gameOver.show( 0x000000, 1f );

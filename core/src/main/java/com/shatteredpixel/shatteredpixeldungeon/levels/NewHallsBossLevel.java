@@ -27,7 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -164,7 +163,7 @@ public class NewHallsBossLevel extends Level {
 		if (item != null) {
 			int pos;
 			do {
-				pos = Random.IntRange( ROOM_LEFT, ROOM_RIGHT ) + Random.IntRange( ROOM_TOP + 1, ROOM_BOTTOM ) * width();
+				pos = randomRespawnCell(null);
 			} while (pos == entrance);
 			drop( item, pos ).setHauntedIfCursed().type = Heap.Type.REMAINS;
 		}
@@ -201,10 +200,9 @@ public class NewHallsBossLevel extends Level {
 
 		Dungeon.observe();
 
-		Yog boss = new YogDzewa();
+		YogDzewa boss = new YogDzewa();
 		boss.pos = exit + width*3;
 		GameScene.add( boss );
-		//boss.spawnFists();
 	}
 
 	@Override
@@ -218,7 +216,6 @@ public class NewHallsBossLevel extends Level {
 		CellEmitter.get(exit-1).burst(ShadowParticle.UP, 25);
 		CellEmitter.get(exit).burst(ShadowParticle.UP, 100);
 		CellEmitter.get(exit+1).burst(ShadowParticle.UP, 25);
-		GameScene.flash(0);
 		for( CustomTilemap t : customTiles){
 			if (t instanceof CenterPieceVisuals){
 				((CenterPieceVisuals) t).updateState();

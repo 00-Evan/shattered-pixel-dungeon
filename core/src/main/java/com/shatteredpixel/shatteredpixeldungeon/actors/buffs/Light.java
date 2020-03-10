@@ -56,6 +56,10 @@ public class Light extends FlavourBuff {
 		Dungeon.observe();
 		super.detach();
 	}
+
+	public void weaken( int amount ){
+		spend(-amount);
+	}
 	
 	@Override
 	public int icon() {

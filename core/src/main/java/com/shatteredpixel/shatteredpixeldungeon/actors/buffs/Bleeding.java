@@ -39,6 +39,10 @@ public class Bleeding extends Buff {
 	}
 	
 	protected float level;
+
+	public float level(){
+		return level;
+	}
 	
 	private static final String LEVEL	= "level";
 	

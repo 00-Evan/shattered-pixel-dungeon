@@ -24,9 +24,16 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Yog;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogFist;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.CorrosionParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
-import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
@@ -124,7 +131,12 @@ public abstract class FistSprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						((Yog.BurningFist)ch).onZapComplete();
+						//pre-0.8.0 saves
+						if (ch instanceof Yog.BurningFist){
+							((Yog.BurningFist)ch).onZapComplete();
+						} else {
+							((YogFist)ch).onZapComplete();
+						}
 					}
 				} );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
@@ -160,12 +172,35 @@ public abstract class FistSprite extends MobSprite {
 
 		@Override
 		public int blood() {
-			return 0xFFFFBB33;
+			return 0xFFFFDD34;
 		}
 
 	}
 
-	///
+	public static class Soiled extends FistSprite {
+
+		{
+			boltType = MagicMissile.FOLIAGE;
+		}
+
+		@Override
+		protected int texOffset() {
+			return 10;
+		}
+
+		@Override
+		protected Emitter createEmitter() {
+			Emitter emitter = emitter();
+			emitter.pour( LeafParticle.GENERAL, 0.06f );
+			return emitter;
+		}
+
+		@Override
+		public int blood() {
+			return 0xFF7F5424;
+		}
+
+	}
 
 	public static class Rotting extends FistSprite {
 
@@ -181,13 +216,96 @@ public abstract class FistSprite extends MobSprite {
 		@Override
 		protected Emitter createEmitter() {
 			Emitter emitter = emitter();
-			//emitter.pour( SewerLevel.WaterParticle.FACTORY, 0.06f );
+			emitter.pour(Speck.factory(Speck.TOXIC), 0.25f );
 			return emitter;
 		}
 
 		@Override
 		public int blood() {
-			return 0xFFFFBB33;
+			return 0xFFB8BBA1;
+		}
+
+	}
+
+	public static class Rusted extends FistSprite {
+
+		{
+			boltType = MagicMissile.CORROSION;
+		}
+
+		@Override
+		protected int texOffset() {
+			return 30;
+		}
+
+		@Override
+		protected Emitter createEmitter() {
+			Emitter emitter = emitter();
+			emitter.pour(CorrosionParticle.MISSILE, 0.06f );
+			return emitter;
+		}
+
+		@Override
+		public int blood() {
+			return 0xFF7F7F7F;
+		}
+
+	}
+
+	public static class Bright extends FistSprite {
+
+		{
+			boltType = MagicMissile.RAINBOW;
+		}
+
+		@Override
+		protected int texOffset() {
+			return 40;
+		}
+
+		@Override
+		protected Emitter createEmitter() {
+			Emitter emitter = emitter();
+			emitter.pour(SparkParticle.STATIC, 0.06f );
+			return emitter;
+		}
+
+		@Override
+		public void zap( int cell ) {
+			turnTo( ch.pos , cell );
+			play( zap );
+
+			((YogFist)ch).onZapComplete();
+			parent.add( new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
+		}
+		@Override
+		public int blood() {
+			return 0xFFFFFFFF;
+		}
+
+	}
+
+	public static class Dark extends FistSprite {
+
+		{
+			boltType = MagicMissile.SHADOW;
+		}
+
+		@Override
+		protected int texOffset() {
+			return 50;
+		}
+
+		@Override
+		protected Emitter createEmitter() {
+			Emitter emitter = emitter();
+			emitter.pour(ShadowParticle.MISSILE, 0.06f );
+			return emitter;
+		}
+
+		@Override
+		public int blood() {
+			return 0xFF4A2F53;
 		}
 
 	}
