@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.TextureFilm;
 
-//TODO currently just a recolored monk sprite
 public class GhoulSprite extends MobSprite {
 
 	private Animation crumple;
@@ -34,22 +33,25 @@ public class GhoulSprite extends MobSprite {
 		
 		texture( Assets.GHOUL );
 		
-		TextureFilm frames = new TextureFilm( texture, 15, 14 );
-		
-		idle = new Animation( 6, true );
-		idle.frames( frames, 1, 0, 1, 2 );
-		
+		TextureFilm frames = new TextureFilm( texture, 12, 14 );
+
+		idle = new Animation( 2, true );
+		idle.frames( frames, 0, 0, 0, 1 );
+
 		run = new Animation( 15, true );
-		run.frames( frames, 11, 12, 13, 14, 15, 16 );
-		
+		run.frames( frames, 0, 2, 3, 4 );
+
+		run = new Animation( 12, true );
+		run.frames( frames, 2, 3, 4, 5, 6, 7 );
+
 		attack = new Animation( 12, false );
-		attack.frames( frames, 3, 4, 3, 4 );
+		attack.frames( frames, 0, 8, 9 );
 
 		crumple = new Animation( 15, false);
-		crumple.frames( frames, 1, 7, 8 );
+		crumple.frames( frames, 0, 10, 11, 12 );
 
 		die = new Animation( 15, false );
-		die.frames( frames, 7, 8, 8, 9, 10 );
+		die.frames( frames, 0, 10, 11, 12, 13 );
 		
 		play( idle );
 	}
@@ -61,5 +63,13 @@ public class GhoulSprite extends MobSprite {
 		}
 		play(crumple);
 	}
-	
+
+	@Override
+	public void die() {
+		if (curAnim == crumple){
+			//causes the sprite to not rise then fall again when dieing.
+			die.frames[0] = die.frames[1] = die.frames[2] = die.frames[3];
+		}
+		super.die();
+	}
 }
