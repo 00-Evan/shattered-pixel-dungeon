@@ -29,8 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PointF;
 
-//TODO sprite still needs work
+//TODO sprite still needs some color tweaking?
 public class DM100Sprite extends MobSprite {
 	
 	public DM100Sprite () {
@@ -38,7 +39,7 @@ public class DM100Sprite extends MobSprite {
 		
 		texture( Assets.DM100 );
 		
-		TextureFilm frames = new TextureFilm( texture, 14, 14 );
+		TextureFilm frames = new TextureFilm( texture, 16, 14 );
 		
 		idle = new Animation( 1, true );
 		idle.frames( frames, 0, 1 );
@@ -62,10 +63,19 @@ public class DM100Sprite extends MobSprite {
 
 		Char enemy = Actor.findChar(pos);
 
-		if (enemy != null) {
-			parent.add(new Lightning(center(), enemy.sprite.destinationCenter(), (DM100) ch));
+		//shoot lightning from eye, not sprite center.
+		PointF origin = center();
+		if (flipHorizontal){
+			origin.y -= 6*scale.y;
+			origin.x -= 1*scale.x;
 		} else {
-			parent.add(new Lightning(center(), pos, (DM100) ch));
+			origin.y -= 8*scale.y;
+			origin.x += 1*scale.x;
+		}
+		if (enemy != null) {
+			parent.add(new Lightning(origin, enemy.sprite.destinationCenter(), (DM100) ch));
+		} else {
+			parent.add(new Lightning(origin, pos, (DM100) ch));
 		}
 		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
 		
