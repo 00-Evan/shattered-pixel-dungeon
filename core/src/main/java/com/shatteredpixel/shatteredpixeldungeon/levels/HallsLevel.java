@@ -196,6 +196,11 @@ public class HallsLevel extends RegularLevel {
 		
 		@Override
 		public void update() {
+
+			if (!Dungeon.level.water[pos]){
+				killAndErase();
+				return;
+			}
 			
 			if (visible = (pos < Dungeon.level.heroFOV.length && Dungeon.level.heroFOV[pos])) {
 				
