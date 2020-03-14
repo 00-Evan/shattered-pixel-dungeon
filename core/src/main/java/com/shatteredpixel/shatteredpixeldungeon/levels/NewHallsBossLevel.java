@@ -279,7 +279,7 @@ public class NewHallsBossLevel extends Level {
 		}
 
 		private static final int[] map = new int[]{
-				8,  9, 10, 11, 11, 11, 12, 13, 14,
+				 8,  9, 10, 11, 11, 11, 12, 13, 14,
 				16, 17, 18, 19, 19, 19, 20, 21, 22,
 				24, 25, 26, 27, 19, 27, 28, 29, 30,
 				24, 25, 26, 19, 19, 19, 28, 29, 30,
@@ -301,6 +301,7 @@ public class NewHallsBossLevel extends Level {
 				int[] data = map.clone();
 				if (Dungeon.level.map[Dungeon.level.exit] == Terrain.EXIT) {
 					data[4] = 19;
+					data[21] = data[23] = data[39] = data[41] = 31;
 				}
 				vis.map(data, tileW);
 			}

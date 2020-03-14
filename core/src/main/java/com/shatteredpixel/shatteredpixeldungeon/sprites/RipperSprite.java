@@ -32,22 +32,25 @@ public class RipperSprite extends MobSprite {
 
 		texture( Assets.RIPPER );
 
-		TextureFilm frames = new TextureFilm( texture, 12, 15 );
+		TextureFilm frames = new TextureFilm( texture, 12, 14 );
 
 		idle = new Animation( 2, true );
-		idle.frames( frames, 0, 0, 0, 1, 0, 0, 1, 1 );
+		idle.frames( frames, 0, 0, 0, 1 );
 
 		run = new Animation( 15, true );
 		run.frames( frames, 0, 2, 3, 4 );
 
-		//TODO shoudl probably have 2 attack animations, like monks
+		run = new Animation( 18, true );
+		run.frames( frames, 2, 3, 4, 5, 6, 7 );
+
+		//TODO should probably have 2 attack animations, like monks
 		attack = new Animation( 12, false );
-		attack.frames( frames, 0, 5, 6 );
+		attack.frames( frames, 0, 8, 9 );
 
 		zap = attack.clone();
 
 		die = new Animation( 15, false );
-		die.frames( frames, 0, 7, 8, 8, 9, 10 );
+		die.frames( frames, 0, 10, 11, 12, 13 );
 
 		play( idle );
 	}
