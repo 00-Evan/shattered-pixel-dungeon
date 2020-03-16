@@ -21,8 +21,22 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
+import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RipperSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 public class RipperDemon extends Mob {
@@ -36,7 +50,9 @@ public class RipperDemon extends Mob {
 		EXP = 9; //for corrupting
 		maxLvl = -2;
 
-		baseSpeed = 2f;
+		HUNTING = new Hunting();
+
+		baseSpeed = 1f;
 	}
 
 	@Override
@@ -63,4 +79,156 @@ public class RipperDemon extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 4);
 	}
+
+	private static final String LAST_ENEMY_POS = "last_enemy_pos";
+	private static final String LEAP_POS = "leap_pos";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(LAST_ENEMY_POS, lastEnemyPos);
+		bundle.put(LEAP_POS, leapPos);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		//pre beta-5.0
+		if (bundle.contains(LAST_ENEMY_POS)) {
+			lastEnemyPos = bundle.getInt(LAST_ENEMY_POS);
+			leapPos = bundle.getInt(LEAP_POS);
+		}
+	}
+
+	private int lastEnemyPos = -1;
+
+	@Override
+	protected boolean act() {
+		AiState lastState = state;
+		boolean result = super.act();
+
+		//if state changed from wandering to hunting, we haven't acted yet, don't update.
+		if (!(lastState == WANDERING && state == HUNTING)) {
+			if (enemy != null) {
+				lastEnemyPos = enemy.pos;
+			} else {
+				lastEnemyPos = Dungeon.hero.pos;
+			}
+		}
+
+		return result;
+	}
+
+	private int leapPos = -1;
+
+	public class Hunting extends Mob.Hunting {
+
+		@Override
+		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+
+			if (leapPos != -1){
+				//do leap
+				sprite.visible = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[leapPos];
+				sprite.jump(pos, leapPos, new Callback() {
+					@Override
+					public void call() {
+
+						Char ch = Actor.findChar(leapPos);
+						if (ch != null){
+							if (alignment != ch.alignment){
+								Buff.affect(ch, Bleeding.class).set(Math.max(damageRoll(), damageRoll()));
+								ch.sprite.flash();
+								Sample.INSTANCE.play(Assets.SND_HIT);
+							}
+							//bounce to a random safe pos(if possible)
+							int bouncepos = leapPos;
+							for (int i : PathFinder.NEIGHBOURS8){
+								if (Dungeon.level.trueDistance(pos, leapPos+i) < Dungeon.level.trueDistance(pos, bouncepos)
+										&& Actor.findChar(leapPos+i) == null && Dungeon.level.passable[leapPos+i]){
+									bouncepos = leapPos+i;
+								}
+							}
+							pos = bouncepos;
+							Actor.addDelayed(new Pushing(RipperDemon.this, leapPos, bouncepos), -1);
+						} else {
+							pos = leapPos;
+						}
+
+						leapPos = -1;
+						Dungeon.level.occupyCell(RipperDemon.this);
+						next();
+					}
+				});
+				return false;
+			}
+
+			enemySeen = enemyInFOV;
+			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
+
+				return doAttack( enemy );
+
+			} else {
+
+				if (enemyInFOV) {
+					target = enemy.pos;
+				} else if (enemy == null) {
+					state = WANDERING;
+					target = Dungeon.level.randomDestination( RipperDemon.this );
+					return true;
+				}
+
+				if (Dungeon.level.distance(pos, enemy.pos) >= 3) {
+
+					int targetPos = enemy.pos;
+					if (lastEnemyPos != enemy.pos){
+						int closestIdx = 0;
+						for (int i = 1; i < PathFinder.CIRCLE8.length; i++){
+							if (Dungeon.level.trueDistance(lastEnemyPos, enemy.pos+PathFinder.CIRCLE8[i])
+									< Dungeon.level.trueDistance(lastEnemyPos, enemy.pos+PathFinder.CIRCLE8[closestIdx])){
+								closestIdx = i;
+							}
+						}
+						targetPos = enemy.pos + PathFinder.CIRCLE8[(closestIdx+4)%8];
+					}
+
+					Ballistica b = new Ballistica(pos, targetPos, Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN);
+					//try aiming directly at hero if aiming near them doesn't work
+					if (b.collisionPos != targetPos && targetPos != enemy.pos){
+						targetPos = enemy.pos;
+						b = new Ballistica(pos, targetPos, Ballistica.STOP_TARGET | Ballistica.STOP_TERRAIN);
+					}
+					if (b.collisionPos == targetPos){
+						//get ready to leap
+						leapPos = targetPos;
+						spend(TICK);
+						if (Dungeon.level.heroFOV[leapPos]) {
+							sprite.parent.addToBack(new TargetedCell(leapPos, 0xFF0000));
+						}
+						if (Dungeon.level.heroFOV[pos]){
+							GLog.w(Messages.get(RipperDemon.this, "leap"));
+						}
+						return true;
+					}
+				}
+
+				int oldPos = pos;
+				if (target != -1 && getCloser( target )) {
+
+					spend( 1 / speed() );
+					return moveSprite( oldPos,  pos );
+
+				} else {
+					spend( TICK );
+					if (!enemyInFOV) {
+						sprite.showLost();
+						state = WANDERING;
+						target = Dungeon.level.randomDestination( RipperDemon.this );
+					}
+					return true;
+				}
+			}
+		}
+
+	}
+
 }
