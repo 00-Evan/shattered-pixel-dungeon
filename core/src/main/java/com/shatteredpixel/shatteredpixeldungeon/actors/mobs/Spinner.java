@@ -90,16 +90,20 @@ public class Spinner extends Mob {
 	
 	@Override
 	protected boolean act() {
+		AiState lastState = state;
 		boolean result = super.act();
-		
-		webCoolDown--;
-		if (shotWebVisually){
-			result = shotWebVisually = false;
-		} else {
-			if (enemy != null && enemySeen) {
-				lastEnemyPos = enemy.pos;
+
+		//if state changed from wandering to hunting, we haven't acted yet, don't update.
+		if (!(lastState == WANDERING && state == HUNTING)) {
+			webCoolDown--;
+			if (shotWebVisually){
+				result = shotWebVisually = false;
 			} else {
-				lastEnemyPos = -1;
+				if (enemy != null && enemySeen) {
+					lastEnemyPos = enemy.pos;
+				} else {
+					lastEnemyPos = Dungeon.hero.pos;
+				}
 			}
 		}
 		
