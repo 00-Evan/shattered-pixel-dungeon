@@ -76,7 +76,7 @@ public class Ghoul extends Mob {
 	}
 
 	private int timesDowned = 0;
-	private int partnerID = -1;
+	protected int partnerID = -1;
 
 	private static final String PARTNER_ID = "partner_id";
 	private static final String TIMES_DOWNED = "times_downed";
@@ -93,10 +93,6 @@ public class Ghoul extends Mob {
 		super.restoreFromBundle( bundle );
 		partnerID = bundle.getInt( PARTNER_ID );
 		timesDowned = bundle.getInt( TIMES_DOWNED );
-	}
-
-	public void setSolo(){
-		partnerID = -2;
 	}
 	
 	@Override
