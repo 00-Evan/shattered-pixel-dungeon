@@ -272,6 +272,9 @@ public class Visual extends Gizmo {
 
 		if (c == null || !visible) return false;
 
+		//FIXME, the below calculations ignore angle, so assume visible if angle != 0
+		if (angle != 0) return true;
+
 		//x coord
 		if (x > c.scroll.x + c.width)
 			return false;

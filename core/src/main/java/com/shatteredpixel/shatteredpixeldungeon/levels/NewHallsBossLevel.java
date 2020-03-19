@@ -127,10 +127,9 @@ public class NewHallsBossLevel extends Level {
 		Painter.fill(this, ROOM_LEFT, ROOM_BOTTOM-1, 2, 2, Terrain.WALL_DECO );
 		Painter.fill(this, ROOM_RIGHT-1, ROOM_BOTTOM-1, 2, 2, Terrain.WALL_DECO );
 
-		Painter.fill(this, ROOM_LEFT+3, ROOM_TOP+3, 3, 3, Terrain.EMPTY );
+		Painter.fill(this, ROOM_LEFT+3, ROOM_TOP+2, 3, 4, Terrain.EMPTY );
 
 		exit = width/2 + ((ROOM_TOP+1) * width);
-		//map[exit] = Terrain.EXIT;
 
 		CustomTilemap vis = new CenterPieceVisuals();
 		vis.pos(ROOM_LEFT, ROOM_TOP+1);
@@ -186,14 +185,14 @@ public class NewHallsBossLevel extends Level {
 		super.occupyCell( ch );
 
 		if (map[entrance] == Terrain.ENTRANCE && map[exit] != Terrain.EXIT
-				&& ch == Dungeon.hero && ch.pos != entrance) {
-
+				&& ch == Dungeon.hero && Dungeon.level.distance(ch.pos, entrance) >= 2) {
 			seal();
 		}
 	}
 
 	@Override
 	public void seal() {
+		super.seal();
 		set( entrance, Terrain.EMPTY_SP );
 		GameScene.updateMap( entrance );
 		CellEmitter.get( entrance ).start( FlameParticle.FACTORY, 0.1f, 10 );
@@ -280,10 +279,10 @@ public class NewHallsBossLevel extends Level {
 
 		private static final int[] map = new int[]{
 				 8,  9, 10, 11, 11, 11, 12, 13, 14,
-				16, 17, 18, 19, 19, 19, 20, 21, 22,
-				24, 25, 26, 27, 19, 27, 28, 29, 30,
+				16, 17, 18, 27, 19, 27, 20, 21, 22,
 				24, 25, 26, 19, 19, 19, 28, 29, 30,
-				24, 25, 26, 27, 19, 27, 28, 29, 30,
+				24, 25, 26, 19, 19, 19, 28, 29, 30,
+				24, 25, 26, 19, 19, 19, 28, 29, 30,
 				24, 25, 34, 35, 35, 35, -1, 29, 30,
 				40, 41, 36, 36, 36, 36, 36, 40, 41,
 				48, 49, 36, 36, 36, 36, 36, 48, 49
@@ -301,7 +300,7 @@ public class NewHallsBossLevel extends Level {
 				int[] data = map.clone();
 				if (Dungeon.level.map[Dungeon.level.exit] == Terrain.EXIT) {
 					data[4] = 19;
-					data[21] = data[23] = data[39] = data[41] = 31;
+					data[12] = data[14] = 31;
 				}
 				vis.map(data, tileW);
 			}

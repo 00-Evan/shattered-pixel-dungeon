@@ -31,8 +31,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -57,6 +59,7 @@ public class DemonSpawner extends Mob {
 
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.MINIBOSS);
+		properties.add(Property.DEMONIC);
 	}
 
 	@Override
@@ -76,7 +79,7 @@ public class DemonSpawner extends Mob {
 
 	private float spawnCooldown = 0;
 
-	private boolean spawnRecorded = false;
+	public boolean spawnRecorded = false;
 
 	@Override
 	protected boolean act() {
@@ -133,6 +136,7 @@ public class DemonSpawner extends Mob {
 		if (spawnRecorded){
 			Statistics.spawnersAlive--;
 		}
+		GLog.h(Messages.get(this, "on_death"));
 		super.die(cause);
 	}
 
