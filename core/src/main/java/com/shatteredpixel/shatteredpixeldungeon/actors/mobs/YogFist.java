@@ -63,7 +63,7 @@ public abstract class YogFist extends Mob {
 
 		state = WANDERING;
 
-		properties.add(Property.BOSS);
+		properties.add(Property.MINIBOSS);
 		properties.add(Property.DEMONIC);
 	}
 

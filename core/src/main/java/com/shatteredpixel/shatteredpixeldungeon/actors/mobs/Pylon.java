@@ -57,7 +57,7 @@ public class Pylon extends Mob {
 
 		maxLvl = -2;
 
-		properties.add(Property.BOSS);
+		properties.add(Property.MINIBOSS);
 		properties.add(Property.INORGANIC);
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.IMMOVABLE);
