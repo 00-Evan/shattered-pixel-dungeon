@@ -68,9 +68,13 @@ public class Blacksmith extends NPC {
 	}
 	
 	@Override
-	public boolean interact() {
+	public boolean interact(Char c) {
 		
-		sprite.turnTo( pos, Dungeon.hero.pos );
+		sprite.turnTo( pos, c.pos );
+
+		if (c != Dungeon.hero){
+			return true;
+		}
 		
 		if (!Quest.given) {
 			
@@ -155,7 +159,7 @@ public class Blacksmith extends NPC {
 			
 		}
 
-		return false;
+		return true;
 	}
 	
 	private void tell( String text ) {

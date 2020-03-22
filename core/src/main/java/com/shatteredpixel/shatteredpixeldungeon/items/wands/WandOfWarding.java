@@ -372,12 +372,15 @@ public class WandOfWarding extends Wand {
 		}
 		
 		@Override
-		public boolean canInteract(Hero h) {
+		public boolean canInteract(Char c) {
 			return true;
 		}
 
 		@Override
-		public boolean interact() {
+		public boolean interact( Char c ) {
+			if (c != Dungeon.hero){
+				return true;
+			}
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {

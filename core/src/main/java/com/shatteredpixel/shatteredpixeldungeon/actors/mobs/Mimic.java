@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -138,9 +139,9 @@ public class Mimic extends Mob {
 	}
 
 	@Override
-	public boolean interact() {
-		if (alignment != Alignment.NEUTRAL){
-			return super.interact();
+	public boolean interact(Char c) {
+		if (alignment != Alignment.NEUTRAL || c != Dungeon.hero){
+			return super.interact(c);
 		}
 		stopHiding();
 

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
@@ -101,13 +102,16 @@ public class Shopkeeper extends NPC {
 	};
 
 	@Override
-	public boolean interact() {
+	public boolean interact(Char c) {
+		if (c != Dungeon.hero) {
+			return true;
+		}
 		Game.runOnRenderThread(new Callback() {
 			@Override
 			public void call() {
 				sell();
 			}
 		});
-		return false;
+		return true;
 	}
 }

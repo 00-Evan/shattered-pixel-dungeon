@@ -140,18 +140,27 @@ public abstract class Char extends Actor {
 		return Messages.get(this, "name");
 	}
 
-	public boolean canInteract( Hero h ){
-		return Dungeon.level.adjacent( pos, h.pos ) && h.buff(Vertigo.class) == null;
+	public boolean canInteract(Char c){
+		return Dungeon.level.adjacent( pos, c.pos );
 	}
 	
 	//swaps places by default
-	public boolean interact(){
-		
-		if (!Dungeon.level.passable[pos] && !Dungeon.hero.flying){
+	public boolean interact(Char c){
+
+		//can't spawn places if one char has restricted movement
+		if (rooted || c.rooted || buff(Vertigo.class) != null || c.buff(Vertigo.class) != null){
 			return true;
 		}
 
-		if (properties.contains(Property.LARGE) && !Dungeon.level.openSpace[Dungeon.hero.pos]){
+		//don't allow char to swap onto hazard unless they're flying
+		//you can swap onto a hazard though, as you're not the one instigating the swap
+		if (!Dungeon.level.passable[pos] && !c.flying){
+			return true;
+		}
+
+		//can't swap into a space without room
+		if (properties.contains(Property.LARGE) && !Dungeon.level.openSpace[c.pos]
+			|| c.properties.contains(Property.LARGE) && !Dungeon.level.openSpace[pos]){
 			return true;
 		}
 		

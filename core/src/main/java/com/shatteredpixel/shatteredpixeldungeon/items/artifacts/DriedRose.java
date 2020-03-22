@@ -714,9 +714,9 @@ public class DriedRose extends Artifact {
 		}
 
 		@Override
-		public boolean interact() {
+		public boolean interact(Char c) {
 			updateRose();
-			if (rose != null && !rose.talkedTo){
+			if (c == Dungeon.hero && rose != null && !rose.talkedTo){
 				rose.talkedTo = true;
 				Game.runOnRenderThread(new Callback() {
 					@Override
@@ -724,9 +724,9 @@ public class DriedRose extends Artifact {
 						GameScene.show(new WndQuest(GhostHero.this, Messages.get(GhostHero.this, "introduce") ));
 					}
 				});
-				return false;
+				return true;
 			} else {
-				return super.interact();
+				return super.interact(c);
 			}
 		}
 

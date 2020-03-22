@@ -108,10 +108,14 @@ public class Ghost extends NPC {
 	}
 	
 	@Override
-	public boolean interact() {
-		sprite.turnTo( pos, Dungeon.hero.pos );
+	public boolean interact(Char c) {
+		sprite.turnTo( pos, c.pos );
 		
 		Sample.INSTANCE.play( Assets.SND_GHOST );
+
+		if (c != Dungeon.hero){
+			return super.interact(c);
+		}
 		
 		if (Quest.given) {
 			if (Quest.weapon != null) {
@@ -189,7 +193,7 @@ public class Ghost extends NPC {
 
 		}
 
-		return false;
+		return true;
 	}
 
 	public static class Quest {
