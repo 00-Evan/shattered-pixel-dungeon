@@ -120,9 +120,12 @@ public class DesktopPlatformSupport extends PlatformSupport {
 		}
 		fonts = new HashMap<>();
 
-		//FIXME systemfont setting is currently ignored as DroidSandFallback.ttf is missing key characters
-		basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixel_font.ttf"));
-		asianFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSansFallback.ttf"));
+		if (systemfont) {
+			basicFontGenerator = asianFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSansFallback.ttf"));
+		} else {
+			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixel_font.ttf"));
+			asianFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("DroidSansFallback.ttf"));
+		}
 		
 		fonts.put(basicFontGenerator, basicFonts);
 		fonts.put(asianFontGenerator, asianFonts);
