@@ -76,9 +76,8 @@ public class GoldenMimic extends Mimic {
 	}
 
 	@Override
-	public void adjustStats(int level) {
-		//FIXME this causes level to keep increasing over save/load
-		super.adjustStats(Math.round(level*1.33f));
+	public void setLevel(int level) {
+		super.setLevel(Math.round(level*1.33f));
 	}
 
 	@Override

@@ -85,7 +85,8 @@ public class Mimic extends Mob {
 		if (bundle.contains( ITEMS )) {
 			items = new ArrayList<>((Collection<Item>) ((Collection<?>) bundle.getCollection(ITEMS)));
 		}
-		adjustStats( bundle.getInt( LEVEL ) );
+		level = bundle.getInt( LEVEL );
+		adjustStats(level);
 		super.restoreFromBundle(bundle);
 		if (state != PASSIVE && alignment == Alignment.NEUTRAL){
 			alignment = Alignment.ENEMY;
@@ -216,10 +217,13 @@ public class Mimic extends Mob {
 			return 6 + level;
 		}
 	}
+
+	public void setLevel( int level ){
+		this.level = level;
+		adjustStats(level);
+	}
 	
 	public void adjustStats( int level ) {
-		this.level = level;
-		
 		HP = HT = (1 + level) * 6;
 		defenseSkill = 2 + level/2;
 		
@@ -273,7 +277,7 @@ public class Mimic extends Mob {
 		}
 
 		m.items = new ArrayList<>( items );
-		m.adjustStats( Dungeon.depth );
+		m.setLevel( Dungeon.depth );
 		m.pos = pos;
 
 		//generate an extra reward for killing the mimic
