@@ -63,6 +63,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.RectF;
@@ -393,10 +394,11 @@ public class NewDM300 extends Mob {
 					pos++;
 					continue;
 				}
-				if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
-					GameScene.add(Blob.seed(pos, 1, FallingRocks.class));
-				}
 				//add rock cell to pos, if it is not solid, and isn't the safecell
+				if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
+					//don't want to overly punish players with slow move or attack speed
+					GameScene.add(Blob.seed(pos, (int)GameMath.gate(TICK, (float)Math.ceil(target.cooldown()), 3*TICK), FallingRocks.class));
+				}
 				pos++;
 			}
 		}

@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -87,10 +88,12 @@ public class YogDzewa extends Mob {
 
 	private ArrayList<Class> fistSummons = new ArrayList<>();
 	{
-		fistSummons.add(Random.Int(2) == 0 ? YogFist.Burning.class : YogFist.Soiled.class);
-		fistSummons.add(Random.Int(2) == 0 ? YogFist.Rotting.class : YogFist.Rusted.class);
-		fistSummons.add(Random.Int(2) == 0 ? YogFist.Bright.class : YogFist.Dark.class);
-		Random.shuffle(fistSummons);
+		Random.pushGenerator(Dungeon.seedCurDepth());
+			fistSummons.add(Random.Int(2) == 0 ? YogFist.Burning.class : YogFist.Soiled.class);
+			fistSummons.add(Random.Int(2) == 0 ? YogFist.Rotting.class : YogFist.Rusted.class);
+			fistSummons.add(Random.Int(2) == 0 ? YogFist.Bright.class : YogFist.Dark.class);
+			Random.shuffle(fistSummons);
+		Random.popGenerator();
 	}
 
 	private static final int SUMMON_DECK_SIZE = 4;
@@ -130,38 +133,41 @@ public class YogDzewa extends Mob {
 
 			boolean terrainAffected = false;
 			HashSet<Char> affected = new HashSet<>();
-			for (int i : targetedCells){
-				Ballistica b = new Ballistica(pos, i, Ballistica.WONT_STOP);
-				//shoot beams
-				sprite.parent.add(new Beam.DeathRay(sprite.center(), DungeonTilemap.raisedTileCenterToWorld(b.collisionPos)));
-				for (int p : b.path){
-					Char ch = Actor.findChar(p);
-					if (ch != null && ch.alignment != alignment){
-						affected.add(ch);
-					}
-					if (Dungeon.level.flamable[p]){
-						Dungeon.level.destroy( p );
-						GameScene.updateMap( p );
-						terrainAffected = true;
+			//delay fire on a rooted hero
+			if (!Dungeon.hero.rooted) {
+				for (int i : targetedCells) {
+					Ballistica b = new Ballistica(pos, i, Ballistica.WONT_STOP);
+					//shoot beams
+					sprite.parent.add(new Beam.DeathRay(sprite.center(), DungeonTilemap.raisedTileCenterToWorld(b.collisionPos)));
+					for (int p : b.path) {
+						Char ch = Actor.findChar(p);
+						if (ch != null && ch.alignment != alignment) {
+							affected.add(ch);
+						}
+						if (Dungeon.level.flamable[p]) {
+							Dungeon.level.destroy(p);
+							GameScene.updateMap(p);
+							terrainAffected = true;
+						}
 					}
 				}
-			}
-			if (terrainAffected){
-				Dungeon.observe();
-			}
-			for (Char ch : affected){
-				ch.damage(Random.NormalIntRange(20, 40), new Eye.DeathGaze());
+				if (terrainAffected) {
+					Dungeon.observe();
+				}
+				for (Char ch : affected) {
+					ch.damage(Random.NormalIntRange(20, 40), new Eye.DeathGaze());
 
-				if (Dungeon.level.heroFOV[pos]) {
-					ch.sprite.flash();
-					CellEmitter.center( pos ).burst( PurpleParticle.BURST, Random.IntRange( 1, 2 ) );
+					if (Dungeon.level.heroFOV[pos]) {
+						ch.sprite.flash();
+						CellEmitter.center(pos).burst(PurpleParticle.BURST, Random.IntRange(1, 2));
+					}
+					if (!ch.isAlive() && ch == Dungeon.hero) {
+						Dungeon.fail(getClass());
+						GLog.n(Messages.get(Char.class, "kill", name()));
+					}
 				}
-				if (!ch.isAlive() && ch == Dungeon.hero) {
-					Dungeon.fail( getClass() );
-					GLog.n( Messages.get(Char.class, "kill", name()) );
-				}
+				targetedCells.clear();
 			}
-			targetedCells.clear();
 
 			if (abilityCooldown <= 0){
 
@@ -200,18 +206,15 @@ public class YogDzewa extends Mob {
 					}
 				}
 
-				//wait extra time to let a crippled/rooted hero evade
-				if (Dungeon.hero.buff(Cripple.class) != null){
-					spend(TICK);
-				} else if (Dungeon.hero.buff(Roots.class) != null){
-					spend(Dungeon.hero.buff(Roots.class).cooldown());
-				}
-
+				//don't want to overly punish players with slow move or attack speed
+				spend(GameMath.gate(TICK, Dungeon.hero.cooldown(), 3*TICK));
 				Dungeon.hero.interrupt();
 
 				abilityCooldown += Random.NormalFloat(MIN_ABILITY_CD, MAX_ABILITY_CD);
 				abilityCooldown -= phase;
 
+			} else {
+				spend(TICK);
 			}
 
 			while (summonCooldown <= 0){
@@ -257,7 +260,6 @@ public class YogDzewa extends Mob {
 			summonCooldown = 3;
 		}
 
-		spend(TICK);
 		return true;
 	}
 

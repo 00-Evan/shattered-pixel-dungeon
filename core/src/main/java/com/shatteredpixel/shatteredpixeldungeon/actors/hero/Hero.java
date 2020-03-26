@@ -1045,7 +1045,18 @@ public class Hero extends Char {
 			dmg -= AntiMagic.drRoll(belongings.armor.buffedLvl());
 		}
 
+		int preHP = HP + shielding();
 		super.damage( dmg, src );
+		int effectiveDamage = preHP - (HP + shielding());
+
+		//flash red when hit for 1/4 of your remaining HP or higher.
+		// Intensity increases the more injured the player is.
+		if (preHP > 0 && effectiveDamage >= preHP/4f){
+			//08%/11%/16%/33% intensity at
+			//75%/50%/25%/00% health
+			float divisor = 3 + 12*((HP + shielding()) / (float)(HT + shielding()));
+			GameScene.flash( (int)(0xFF/divisor) << 16 );
+		}
 	}
 	
 	public void checkVisibleMobs() {

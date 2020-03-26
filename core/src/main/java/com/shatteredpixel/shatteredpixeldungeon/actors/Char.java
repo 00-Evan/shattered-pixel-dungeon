@@ -281,14 +281,6 @@ public abstract class Char extends Actor {
 				return true;
 			}
 
-			//TODO: consider revisiting this and shaking in more cases.
-			float shake = 0f;
-			if (enemy == Dungeon.hero)
-				shake = effectiveDamage / (enemy.HT / 4);
-
-			if (shake > 1f)
-				Camera.main.shake( GameMath.gate( 1, shake, 5), 0.3f );
-
 			enemy.damage( effectiveDamage, this );
 
 			if (buff(FireImbue.class) != null)
