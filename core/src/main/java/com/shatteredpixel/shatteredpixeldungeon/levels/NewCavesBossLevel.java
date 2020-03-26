@@ -209,13 +209,6 @@ public class NewCavesBossLevel extends Level {
 	public void seal() {
 		super.seal();
 
-		NewDM300 boss = new NewDM300();
-		boss.state = boss.WANDERING;
-		do {
-			boss.pos = pointToCell(Random.element(mainArena.getPoints()));
-		} while (!openSpace[boss.pos] || map[boss.pos] == Terrain.EMPTY_SP);
-		GameScene.add( boss );
-
 		set( entrance, Terrain.WALL );
 		GameScene.updateMap( entrance );
 		Dungeon.observe();
@@ -223,6 +216,13 @@ public class NewCavesBossLevel extends Level {
 		CellEmitter.get( entrance ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
 		Camera.main.shake( 3, 0.7f );
 		Sample.INSTANCE.play( Assets.SND_ROCKS );
+
+		NewDM300 boss = new NewDM300();
+		boss.state = boss.WANDERING;
+		do {
+			boss.pos = pointToCell(Random.element(mainArena.getPoints()));
+		} while (!openSpace[boss.pos] || map[boss.pos] == Terrain.EMPTY_SP);
+		GameScene.add( boss );
 
 		for (int i : pylonPositions) {
 			Pylon pylon = new Pylon();

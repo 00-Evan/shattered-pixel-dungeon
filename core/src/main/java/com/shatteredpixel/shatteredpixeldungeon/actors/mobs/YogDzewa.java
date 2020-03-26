@@ -239,6 +239,8 @@ public class YogDzewa extends Mob {
 					if (findFist() != null){
 						summonCooldown += MIN_SUMMON_CD - phase;
 					}
+				} else {
+					break;
 				}
 			}
 

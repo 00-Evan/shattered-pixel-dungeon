@@ -146,15 +146,19 @@ public class RipperDemon extends Mob {
 								Sample.INSTANCE.play(Assets.SND_HIT);
 							}
 							//bounce to a random safe pos(if possible)
-							int bouncepos = leapPos;
+							int bouncepos = -1;
 							for (int i : PathFinder.NEIGHBOURS8){
-								if (Dungeon.level.trueDistance(pos, leapPos+i) < Dungeon.level.trueDistance(pos, bouncepos)
+								if ((bouncepos == -1 || Dungeon.level.trueDistance(pos, leapPos+i) < Dungeon.level.trueDistance(pos, bouncepos))
 										&& Actor.findChar(leapPos+i) == null && Dungeon.level.passable[leapPos+i]){
 									bouncepos = leapPos+i;
 								}
 							}
-							pos = bouncepos;
-							Actor.addDelayed(new Pushing(RipperDemon.this, leapPos, bouncepos), -1);
+							if (bouncepos != -1) {
+								pos = bouncepos;
+								Actor.addDelayed(new Pushing(RipperDemon.this, leapPos, bouncepos), -1);
+							} else {
+								pos = leapPos;
+							}
 						} else {
 							pos = leapPos;
 						}

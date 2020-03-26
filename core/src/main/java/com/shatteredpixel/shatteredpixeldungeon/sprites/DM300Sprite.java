@@ -128,12 +128,11 @@ public class DM300Sprite extends MobSprite {
 	public void update() {
 		super.update();
 
-		if (ch instanceof NewDM300){
-			superchargeSparks.on = ((NewDM300) ch).isSupercharged();
-		}
-
 		if (superchargeSparks != null){
 			superchargeSparks.visible = visible;
+			if (ch instanceof NewDM300){
+				superchargeSparks.on = ((NewDM300) ch).isSupercharged();
+			}
 		}
 	}
 

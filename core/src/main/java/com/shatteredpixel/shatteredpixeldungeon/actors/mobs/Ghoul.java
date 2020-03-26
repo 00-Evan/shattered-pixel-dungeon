@@ -277,7 +277,7 @@ public class Ghoul extends Mob {
 					ArrayList<Integer> candidates = new ArrayList<>();
 					for (int n : PathFinder.NEIGHBOURS8) {
 						int cell = ghoul.pos + n;
-						if ((Dungeon.level.passable[cell] || Dungeon.level.avoid[cell]) && Actor.findChar( cell ) == null) {
+						if (Dungeon.level.passable[cell] && Actor.findChar( cell ) == null) {
 							candidates.add( cell );
 						}
 					}

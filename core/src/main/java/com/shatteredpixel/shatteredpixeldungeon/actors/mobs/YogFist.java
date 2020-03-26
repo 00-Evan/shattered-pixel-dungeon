@@ -475,7 +475,7 @@ public abstract class YogFist extends Mob {
 			super.damage(dmg, src);
 			if (isAlive() && beforeHP > HT/2 && HP < HT/2){
 				HP = HT/2;
-				Buff.prolong( enemy, Blindness.class, 30f );
+				Buff.prolong( Dungeon.hero, Blindness.class, 30f );
 				int i;
 				do {
 					i = Random.Int(Dungeon.level.length());
@@ -485,7 +485,7 @@ public abstract class YogFist extends Mob {
 				GameScene.flash(0xFFFFFF);
 				GLog.w( Messages.get( this, "teleport" ));
 			} else if (!isAlive()){
-				Buff.prolong( enemy, Blindness.class, 50f );
+				Buff.prolong( Dungeon.hero, Blindness.class, 50f );
 				GameScene.flash(0xFFFFFF);
 			}
 		}

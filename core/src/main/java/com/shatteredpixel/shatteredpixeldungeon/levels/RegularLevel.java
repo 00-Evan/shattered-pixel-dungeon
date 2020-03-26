@@ -190,23 +190,32 @@ public abstract class RegularLevel extends Level {
 				stdRoomIter = stdRooms.iterator();
 			}
 			roomToSpawn = stdRoomIter.next();
-			
+
+			int tries = 30;
 			do {
 				mob.pos = pointToCell(roomToSpawn.random());
-			} while (findMob(mob.pos) != null || !passable[mob.pos] || mob.pos == exit);
+				tries--;
+			} while (tries >= 0 && (findMob(mob.pos) != null || !passable[mob.pos] || mob.pos == exit));
 
-			mobsToSpawn--;
-			mobs.add(mob);
-
-			if (mobsToSpawn > 0 && Random.Int(4) == 0){
-				mob = createMob();
-				
-				do {
-					mob.pos = pointToCell(roomToSpawn.random());
-				} while (findMob(mob.pos) != null || !passable[mob.pos] || mob.pos == exit);
-
+			if (tries >= 0) {
 				mobsToSpawn--;
 				mobs.add(mob);
+
+				//add a second mob to this room
+				if (mobsToSpawn > 0 && Random.Int(4) == 0){
+					mob = createMob();
+
+					tries = 30;
+					do {
+						mob.pos = pointToCell(roomToSpawn.random());
+						tries--;
+					} while (tries >= 0 && findMob(mob.pos) != null || !passable[mob.pos] || mob.pos == exit);
+
+					if (tries >= 0) {
+						mobsToSpawn--;
+						mobs.add(mob);
+					}
+				}
 			}
 		}
 

@@ -444,7 +444,7 @@ public class GameScene extends PixelScene {
 				}
 
 				int spawnersAbove = Statistics.spawnersAlive;
-				if (spawnersAbove > 0) {
+				if (spawnersAbove > 0 && Dungeon.depth <= 25) {
 					for (Mob m : Dungeon.level.mobs) {
 						if (m instanceof DemonSpawner && ((DemonSpawner) m).spawnRecorded) {
 							spawnersAbove--;

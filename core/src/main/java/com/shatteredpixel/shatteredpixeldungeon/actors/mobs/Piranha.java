@@ -65,7 +65,6 @@ public class Piranha extends Mob {
 		
 		if (!Dungeon.level.water[pos]) {
 			die( null );
-			sprite.killAndErase();
 			return true;
 		} else {
 			return super.act();

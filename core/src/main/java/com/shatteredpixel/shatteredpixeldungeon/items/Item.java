@@ -178,7 +178,9 @@ public class Item implements Bundlable {
 		
 		for (Item item:items) {
 			if (item instanceof Bag && ((Bag)item).grab( this )) {
-				return collect( (Bag)item );
+				if (collect( (Bag)item )){
+					return true;
+				}
 			}
 		}
 		
@@ -206,7 +208,7 @@ public class Item implements Bundlable {
 			
 		} else {
 			
-			GLog.n( Messages.get(Item.class, "pack_full", name()) );
+			GLog.n( Messages.get(Item.class, "pack_full", container.name()) );
 			return false;
 			
 		}
