@@ -78,6 +78,7 @@ public class Web extends Blob {
 	@Override
 	public void clear(int cell) {
 		super.clear(cell);
+		if (volume == 0) return;
 		Level l = Dungeon.level;
 		l.solid[cell] = cur[cell] > 0 || (Terrain.flags[l.map[cell]] & Terrain.SOLID) != 0;
 	}
