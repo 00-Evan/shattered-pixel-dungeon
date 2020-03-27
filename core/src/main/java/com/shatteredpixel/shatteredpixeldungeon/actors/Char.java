@@ -416,6 +416,11 @@ public abstract class Char extends Actor {
 			return;
 		}
 
+		if(isInvulnerable(src.getClass())){
+			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
+			return;
+		}
+
 		if (!(src instanceof LifeLink) && buff(LifeLink.class) != null){
 			HashSet<LifeLink> links = buffs(LifeLink.class);
 			for (LifeLink link : links.toArray(new LifeLink[0])){
@@ -694,6 +699,12 @@ public abstract class Char extends Actor {
 				return true;
 			}
 		}
+		return false;
+	}
+
+	//similar to isImmune, but only factors in damage.
+	//Is used in AI decision-making
+	public boolean isInvulnerable( Class effect ){
 		return false;
 	}
 

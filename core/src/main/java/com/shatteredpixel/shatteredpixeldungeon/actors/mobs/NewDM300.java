@@ -407,12 +407,10 @@ public class NewDM300 extends Mob {
 
 	@Override
 	public void damage(int dmg, Object src) {
-		if (supercharged){
-			sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "immune") );
+		super.damage(dmg, src);
+		if (isInvulnerable(src.getClass())){
 			return;
 		}
-
-		super.damage(dmg, src);
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
 		if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg);
@@ -426,6 +424,11 @@ public class NewDM300 extends Mob {
 
 	}
 
+	@Override
+	public boolean isInvulnerable(Class effect) {
+		return supercharged;
+	}
+
 	public void supercharge(){
 		supercharged = true;
 		((NewCavesBossLevel)Dungeon.level).activatePylon();
@@ -433,7 +436,7 @@ public class NewDM300 extends Mob {
 
 		spend(3f);
 		yell(Messages.get(this, "charging"));
-		sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "immune"));
+		sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 		sprite.resetColor();
 		chargeAnnounced = false;
 	}

@@ -73,8 +73,9 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 	
 	public void hit( Char enemy ) {
-		
-		count++;
+
+		//doesn't increment combo count if enemy invulnerable
+		if (!enemy.isInvulnerable(target.getClass())) count++;
 		comboTime = 4f;
 		misses = 0;
 		BuffIndicator.refreshHero();

@@ -91,7 +91,7 @@ public abstract class YogFist extends Mob {
 		}
 	}
 
-	boolean immuneWarned = false;
+	boolean invulnWarned = false;
 
 	protected boolean isNearYog(){
 		int yogPos = Dungeon.level.exit + 3*Dungeon.level.width();
@@ -99,14 +99,17 @@ public abstract class YogFist extends Mob {
 	}
 
 	@Override
+	public boolean isInvulnerable(Class effect) {
+		return isNearYog();
+	}
+
+	@Override
 	public void damage(int dmg, Object src) {
-		if (isNearYog()){
-			sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "immune"));
-			if (!immuneWarned){
-				immuneWarned = true;
-				GLog.w(Messages.get(this, "immune_hint"));
+		if (isInvulnerable(src.getClass())){
+			if (!invulnWarned){
+				invulnWarned = true;
+				GLog.w(Messages.get(this, "invuln_warn"));
 			}
-			return;
 		}
 		super.damage(dmg, src);
 	}
@@ -344,15 +347,7 @@ public abstract class YogFist extends Mob {
 
 		@Override
 		public void damage(int dmg, Object src) {
-			if (isNearYog()){
-				sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "immune"));
-				if (!immuneWarned){
-					immuneWarned = true;
-					GLog.w(Messages.get(this, "immune_hint"));
-				}
-				return;
-			}
-			if (!(src instanceof Bleeding)){
+			if (!isInvulnerable(src.getClass()) && !(src instanceof Bleeding)){
 				Bleeding b = buff(Bleeding.class);
 				if (b == null){
 					b = new Bleeding();
@@ -406,15 +401,7 @@ public abstract class YogFist extends Mob {
 
 		@Override
 		public void damage(int dmg, Object src) {
-			if (isNearYog()){
-				sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "immune"));
-				if (!immuneWarned){
-					immuneWarned = true;
-					GLog.w(Messages.get(this, "immune_hint"));
-				}
-				return;
-			}
-			if (!(src instanceof Viscosity.DeferedDamage)){
+			if (!isInvulnerable(src.getClass()) && !(src instanceof Viscosity.DeferedDamage)){
 				Buff.affect(this, Viscosity.DeferedDamage.class).prolong(dmg);
 				sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", dmg) );
 			} else{
