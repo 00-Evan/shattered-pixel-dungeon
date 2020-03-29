@@ -251,7 +251,6 @@ public class OldTengu extends Mob {
 				yell(Messages.get(this, "notice_mine", Dungeon.hero.name()));
 				for (Char ch : Actor.chars()){
 					if (ch instanceof DriedRose.GhostHero){
-						GLog.n("\n");
 						((DriedRose.GhostHero) ch).sayBoss();
 					}
 				}

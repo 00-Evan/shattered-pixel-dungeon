@@ -720,6 +720,7 @@ public abstract class Mob extends Char {
 	}
 	
 	public void yell( String str ) {
+		GLog.newLine();
 		GLog.n( "%s: \"%s\" ", Messages.titleCase(name()), str );
 	}
 

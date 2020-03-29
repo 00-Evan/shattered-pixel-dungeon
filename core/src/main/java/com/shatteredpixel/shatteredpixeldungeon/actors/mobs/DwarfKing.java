@@ -347,7 +347,6 @@ public class DwarfKing extends Mob {
 			yell(Messages.get(this, "notice"));
 			for (Char ch : Actor.chars()){
 				if (ch instanceof DriedRose.GhostHero){
-					GLog.n("\n");
 					((DriedRose.GhostHero) ch).sayBoss();
 				}
 			}
