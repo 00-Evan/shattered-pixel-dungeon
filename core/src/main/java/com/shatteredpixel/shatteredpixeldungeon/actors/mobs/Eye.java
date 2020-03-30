@@ -155,7 +155,7 @@ public class Eye extends Mob {
 			return;
 
 		beamCharged = false;
-		beamCooldown = Random.IntRange(3, 6);
+		beamCooldown = Random.IntRange(4, 6);
 
 		boolean terrainAffected = false;
 

@@ -72,7 +72,7 @@ public class Web extends Blob {
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
 		
-		emitter.pour( WebParticle.FACTORY, 0.4f );
+		emitter.pour( WebParticle.FACTORY, 0.25f );
 	}
 
 	@Override

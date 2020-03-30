@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -40,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SuccubusSprite;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -47,10 +47,8 @@ import com.watabou.utils.Reflection;
 import java.util.ArrayList;
 
 public class Succubus extends Mob {
-	
-	private static final int BLINK_DELAY	= 5;
-	
-	private int delay = 0;
+
+	private int blinkCooldown = 0;
 	
 	{
 		spriteClass = SuccubusSprite.class;
@@ -99,15 +97,15 @@ public class Succubus extends Mob {
 	
 	@Override
 	protected boolean getCloser( int target ) {
-		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && delay <= 0) {
+		if (fieldOfView[target] && Dungeon.level.distance( pos, target ) > 2 && blinkCooldown <= 0) {
 			
 			blink( target );
 			spend( -1 / speed() );
 			return true;
 			
 		} else {
-			
-			delay--;
+
+			blinkCooldown--;
 			return super.getCloser( target );
 			
 		}
@@ -133,14 +131,14 @@ public class Succubus extends Mob {
 			if (candidates.size() > 0)
 				cell = Random.element(candidates);
 			else {
-				delay = BLINK_DELAY;
+				blinkCooldown = Random.IntRange(4, 6);
 				return;
 			}
 		}
 		
 		ScrollOfTeleportation.appear( this, cell );
-		
-		delay = BLINK_DELAY;
+
+		blinkCooldown = Random.IntRange(4, 6);
 	}
 	
 	@Override
@@ -165,5 +163,19 @@ public class Succubus extends Mob {
 
 	{
 		immunities.add( Charm.class );
+	}
+
+	private static final String BLINK_CD = "blink_cd";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(BLINK_CD, blinkCooldown);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		blinkCooldown = bundle.getInt(BLINK_CD);
 	}
 }

@@ -198,7 +198,8 @@ public class NewCavesBossLevel extends Level {
 
 		//seal the level when the hero moves off the entrance, the level isn't already sealed, and the gate hasn't been destroyed
 		int gatePos = pointToCell(new Point(gate.left, gate.top));
-		if (ch == Dungeon.hero && ch.pos != entrance && !locked && solid[gatePos]){
+		if (ch == Dungeon.hero && (Dungeon.level.distance(ch.pos, entrance) > 1)
+				&& !locked && solid[gatePos]){
 
 			seal();
 

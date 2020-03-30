@@ -1328,6 +1328,7 @@ public class Hero extends Char {
 				Buff.prolong(this, Bless.class, 30f);
 				this.exp = 0;
 
+				GLog.newLine();
 				GLog.p( Messages.get(this, "level_cap"));
 				Sample.INSTANCE.play( Assets.SND_LEVELUP );
 			}
@@ -1337,6 +1338,7 @@ public class Hero extends Char {
 		if (levelUp) {
 			
 			if (sprite != null) {
+				GLog.newLine();
 				GLog.p( Messages.get(this, "new_level"), lvl );
 				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
 				Sample.INSTANCE.play( Assets.SND_LEVELUP );
