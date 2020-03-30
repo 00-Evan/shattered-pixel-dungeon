@@ -214,7 +214,7 @@ public class YogDzewa extends Mob {
 				Dungeon.hero.interrupt();
 
 				abilityCooldown += Random.NormalFloat(MIN_ABILITY_CD, MAX_ABILITY_CD);
-				abilityCooldown -= phase;
+				abilityCooldown -= (phase - 1);
 
 			} else {
 				spend(TICK);
@@ -242,9 +242,9 @@ public class YogDzewa extends Mob {
 					summon.beckon(Dungeon.hero.pos);
 
 					summonCooldown += Random.NormalFloat(MIN_SUMMON_CD, MAX_SUMMON_CD);
-					summonCooldown -= phase;
+					summonCooldown -= (phase - 1);
 					if (findFist() != null){
-						summonCooldown += MIN_SUMMON_CD - phase;
+						summonCooldown += MIN_SUMMON_CD - (phase - 1);
 					}
 				} else {
 					break;
@@ -317,7 +317,7 @@ public class YogDzewa extends Mob {
 				fist.pos = targetPos+1;
 			}
 
-			GameScene.add(fist, 3);
+			GameScene.add(fist, 4);
 			Actor.addDelayed( new Pushing( fist, Dungeon.level.exit, fist.pos ), -1 );
 			phase++;
 		}

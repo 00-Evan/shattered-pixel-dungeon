@@ -79,12 +79,12 @@ public class DwarfKing extends Mob {
 
 	@Override
 	public int damageRoll() {
-		return Random.NormalIntRange( 15, 30 );
+		return Random.NormalIntRange( 15, 25 );
 	}
 
 	@Override
 	public int attackSkill( Char target ) {
-		return 28;
+		return 26;
 	}
 
 	@Override
@@ -207,10 +207,10 @@ public class DwarfKing extends Mob {
 				sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
 				Sample.INSTANCE.play( Assets.SND_CHALLENGE );
 				yell(Messages.get(this, "wave_3"));
-				summonSubject(3, DKWarlock.class);
-				summonSubject(3, DKMonk.class);
-				summonSubject(3, DKGhoul.class);
-				summonSubject(3, DKGhoul.class);
+				summonSubject(4, DKWarlock.class);
+				summonSubject(4, DKMonk.class);
+				summonSubject(4, DKGhoul.class);
+				summonSubject(4, DKGhoul.class);
 				summonsMade = 12;
 				spend(TICK);
 				return true;
@@ -286,7 +286,6 @@ public class DwarfKing extends Mob {
 		Mob furthest = null;
 
 		for (Mob m : getSubjects()){
-			//TODO avoid warlocks?
 			if (furthest == null || Dungeon.level.distance(pos, furthest.pos) < Dungeon.level.distance(pos, m.pos)){
 				furthest = m;
 			}
@@ -401,7 +400,7 @@ public class DwarfKing extends Mob {
 		} else if (phase == 2 && shielding() == 0) {
 			properties.remove(Property.IMMOVABLE);
 			phase = 3;
-			summonsMade = 3; //opens with a monk/warlock
+			summonsMade = 1; //monk/warlock on 3rd summon
 			sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
 			Sample.INSTANCE.play( Assets.SND_CHALLENGE );
 			yell(  Messages.get(this, "enraged", Dungeon.hero.name()) );

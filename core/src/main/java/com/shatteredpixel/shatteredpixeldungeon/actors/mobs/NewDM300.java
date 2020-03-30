@@ -438,6 +438,8 @@ public class NewDM300 extends Mob {
 		sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 		sprite.resetColor();
 		chargeAnnounced = false;
+
+		GLog.h(Messages.get(this, "charging_hint"));
 	}
 
 	public boolean isSupercharged(){
