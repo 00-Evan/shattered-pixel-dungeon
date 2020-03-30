@@ -37,7 +37,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -239,18 +238,22 @@ public abstract class Mob extends Char {
 			if ( buff(Amok.class) != null) {
 				//try to find an enemy mob to attack first.
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ENEMY && mob != this && fieldOfView[mob.pos])
-							enemies.add(mob);
+					if (mob.alignment == Alignment.ENEMY && mob != this
+							&& fieldOfView[mob.pos] && mob.invisible <= 0) {
+						enemies.add(mob);
+					}
 				
 				if (enemies.isEmpty()) {
 					//try to find ally mobs to attack second.
 					for (Mob mob : Dungeon.level.mobs)
-						if (mob.alignment == Alignment.ALLY && mob != this && fieldOfView[mob.pos])
+						if (mob.alignment == Alignment.ALLY && mob != this
+								&& fieldOfView[mob.pos] && mob.invisible <= 0) {
 							enemies.add(mob);
+						}
 					
 					if (enemies.isEmpty()) {
 						//try to find the hero third
-						if (fieldOfView[Dungeon.hero.pos]) {
+						if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0) {
 							enemies.add(Dungeon.hero);
 						}
 					}
@@ -260,7 +263,8 @@ public abstract class Mob extends Char {
 			} else if ( alignment == Alignment.ALLY ) {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos])
+					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos]
+							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()))
 						//intelligent allies do not target mobs which are passive, wandering, or asleep
 						if (!intelligentAlly ||
 								(mob.state != mob.SLEEPING && mob.state != mob.PASSIVE && mob.state != mob.WANDERING)) {
@@ -271,11 +275,11 @@ public abstract class Mob extends Char {
 			} else if (alignment == Alignment.ENEMY) {
 				//look for ally mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
-					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos])
+					if (mob.alignment == Alignment.ALLY && fieldOfView[mob.pos] && mob.invisible <= 0 && !mob.isInvulnerable(getClass()))
 						enemies.add(mob);
 
 				//and look for the hero
-				if (fieldOfView[Dungeon.hero.pos]) {
+				if (fieldOfView[Dungeon.hero.pos] && Dungeon.hero.invisible <= 0 && !Dungeon.hero.isInvulnerable(getClass())) {
 					enemies.add(Dungeon.hero);
 				}
 				
@@ -286,15 +290,6 @@ public abstract class Mob extends Char {
 				Char source = (Char)Actor.findById( charm.object );
 				if (source != null && enemies.contains(source) && enemies.size() > 1){
 					enemies.remove(source);
-				}
-			}
-
-			//if we are not amoked, remove any enemies which are invulnerable to us.
-			if (buff(Amok.class) == null) {
-				for (Char enemy : enemies.toArray(new Char[0])) {
-					if (enemy.isInvulnerable(getClass())){
-						enemies.remove(enemy);
-					}
 				}
 			}
 
@@ -437,6 +432,7 @@ public abstract class Mob extends Char {
 			// of a temporary blockage, and therefore waiting for it to clear is the best option.
 			if (path == null ||
 					(state == HUNTING && path.size() > Math.max(9, 2*Dungeon.level.distance(pos, target)))) {
+				//
 				return false;
 			}
 
@@ -739,7 +735,7 @@ public abstract class Mob extends Char {
 
 		@Override
 		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-			if (enemyInFOV && Random.Float( distance( enemy ) + enemy.stealth() + (enemy.flying ? 2 : 0) ) < 1) {
+			if (enemyInFOV && Random.Float( distance( enemy ) + enemy.stealth() ) < 1) {
 
 				enemySeen = true;
 
@@ -861,6 +857,7 @@ public abstract class Mob extends Char {
 		}
 	}
 
+	//FIXME this works fairly well but is coded poorly. Should refactor
 	protected class Fleeing implements AiState {
 
 		public static final String TAG	= "FLEEING";
