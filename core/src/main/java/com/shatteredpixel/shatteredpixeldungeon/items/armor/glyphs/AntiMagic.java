@@ -82,8 +82,8 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( Warlock.DarkBolt.class );
 		RESISTS.add( Eye.DeathGaze.class );
 		RESISTS.add( Yog.BurningFist.DarkBolt.class );
-		RESISTS.add( YogFist.Bright.LightBeam.class );
-		RESISTS.add( YogFist.Dark.DarkBolt.class );
+		RESISTS.add( YogFist.BrightFist.LightBeam.class );
+		RESISTS.add( YogFist.DarkFist.DarkBolt.class );
 	}
 	
 	@Override

@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
@@ -175,7 +176,7 @@ public abstract class YogFist extends Mob {
 		rangedCooldown = bundle.getFloat(RANGED_COOLDOWN);
 	}
 
-	public static class Burning extends YogFist {
+	public static class BurningFist extends YogFist {
 
 		{
 			spriteClass = FistSprite.Burning.class;
@@ -220,7 +221,7 @@ public abstract class YogFist extends Mob {
 				GameScene.updateMap( enemy.pos );
 				CellEmitter.get( enemy.pos ).burst( Speck.factory( Speck.STEAM ), 10 );
 			} else {
-				Buff.affect( enemy, com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning.class ).reignite( enemy );
+				Buff.affect( enemy, Burning.class ).reignite( enemy );
 			}
 
 			for (int i : PathFinder.NEIGHBOURS9){
@@ -236,7 +237,7 @@ public abstract class YogFist extends Mob {
 
 	}
 
-	public static class Soiled extends YogFist {
+	public static class SoiledFist extends YogFist {
 
 		{
 			spriteClass = FistSprite.Soiled.class;
@@ -324,7 +325,7 @@ public abstract class YogFist extends Mob {
 
 	}
 
-	public static class Rotting extends YogFist {
+	public static class RottingFist extends YogFist {
 
 		{
 			spriteClass = FistSprite.Rotting.class;
@@ -385,7 +386,7 @@ public abstract class YogFist extends Mob {
 
 	}
 
-	public static class Rusted extends YogFist {
+	public static class RustedFist extends YogFist {
 
 		{
 			spriteClass = FistSprite.Rusted.class;
@@ -417,7 +418,7 @@ public abstract class YogFist extends Mob {
 
 	}
 
-	public static class Bright extends YogFist {
+	public static class BrightFist extends YogFist {
 
 		{
 			spriteClass = FistSprite.Bright.class;
@@ -479,7 +480,7 @@ public abstract class YogFist extends Mob {
 
 	}
 
-	public static class Dark extends YogFist {
+	public static class DarkFist extends YogFist {
 
 		{
 			spriteClass = FistSprite.Dark.class;

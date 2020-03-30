@@ -110,8 +110,8 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldTengu.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu" );
-		
-		//v0.7.6
+
+		//v0.8.0
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ArmoredBrute.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shielded");
@@ -119,13 +119,11 @@ public class ShatteredPixelDungeon extends Game {
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman");
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.Fire.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.FireElemental.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental");
 		com.watabou.utils.Bundle.addAlias(
-				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.NewbornFire.class,
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.NewbornFireElemental.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental");
-
-		//v0.8.0
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldDM300.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300");

@@ -27,10 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
@@ -90,9 +88,9 @@ public class YogDzewa extends Mob {
 	private ArrayList<Class> fistSummons = new ArrayList<>();
 	{
 		Random.pushGenerator(Dungeon.seedCurDepth());
-			fistSummons.add(Random.Int(2) == 0 ? YogFist.Burning.class : YogFist.Soiled.class);
-			fistSummons.add(Random.Int(2) == 0 ? YogFist.Rotting.class : YogFist.Rusted.class);
-			fistSummons.add(Random.Int(2) == 0 ? YogFist.Bright.class : YogFist.Dark.class);
+			fistSummons.add(Random.Int(2) == 0 ? YogFist.BurningFist.class : YogFist.SoiledFist.class);
+			fistSummons.add(Random.Int(2) == 0 ? YogFist.RottingFist.class : YogFist.RustedFist.class);
+			fistSummons.add(Random.Int(2) == 0 ? YogFist.BrightFist.class : YogFist.DarkFist.class);
 			Random.shuffle(fistSummons);
 		Random.popGenerator();
 	}

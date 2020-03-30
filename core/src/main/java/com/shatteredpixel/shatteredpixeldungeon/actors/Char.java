@@ -85,11 +85,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
@@ -725,13 +723,13 @@ public abstract class Char extends Actor {
 				new HashSet<Class>( Arrays.asList(Bleeding.class, ToxicGas.class, Poison.class) )),
 		BLOB_IMMUNE ( new HashSet<Class>(),
 				new HashSet<Class>( Arrays.asList(Blob.class) )),
-		FIERY ( new HashSet<Class>( Arrays.asList(WandOfFireblast.class, Elemental.Fire.class)),
+		FIERY ( new HashSet<Class>( Arrays.asList(WandOfFireblast.class, Elemental.FireElemental.class)),
 				new HashSet<Class>( Arrays.asList(Burning.class, Blazing.class))),
-		ICY ( new HashSet<Class>( Arrays.asList(WandOfFrost.class, Elemental.Frost.class)),
+		ICY ( new HashSet<Class>( Arrays.asList(WandOfFrost.class, Elemental.FrostElemental.class)),
 				new HashSet<Class>( Arrays.asList(Frost.class, Chill.class))),
 		ACIDIC ( new HashSet<Class>( Arrays.asList(Corrosion.class)),
 				new HashSet<Class>( Arrays.asList(Ooze.class))),
-		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class, Electricity.class, ShockingDart.class, Elemental.Shock.class )),
+		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class, Electricity.class, ShockingDart.class, Elemental.ShockElemental.class )),
 				new HashSet<Class>()),
 		LARGE,
 		IMMOVABLE;

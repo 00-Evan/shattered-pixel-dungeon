@@ -171,7 +171,7 @@ public abstract class Elemental extends Mob {
 		}
 	}
 	
-	public static class Fire extends Elemental {
+	public static class FireElemental extends Elemental {
 		
 		{
 			spriteClass = ElementalSprite.Fire.class;
@@ -203,7 +203,7 @@ public abstract class Elemental extends Mob {
 	}
 	
 	//used in wandmaker quest
-	public static class NewbornFire extends Fire {
+	public static class NewbornFireElemental extends FireElemental {
 		
 		{
 			spriteClass = ElementalSprite.NewbornFire.class;
@@ -228,7 +228,7 @@ public abstract class Elemental extends Mob {
 		
 	}
 	
-	public static class Frost extends Elemental {
+	public static class FrostElemental extends Elemental {
 		
 		{
 			spriteClass = ElementalSprite.Frost.class;
@@ -256,7 +256,7 @@ public abstract class Elemental extends Mob {
 		}
 	}
 	
-	public static class Shock extends Elemental {
+	public static class ShockElemental extends Elemental {
 		
 		{
 			spriteClass = ElementalSprite.Shock.class;
@@ -294,7 +294,7 @@ public abstract class Elemental extends Mob {
 		}
 	}
 	
-	public static class Chaos extends Elemental {
+	public static class ChaosElemental extends Elemental {
 		
 		{
 			spriteClass = ElementalSprite.Chaos.class;
@@ -326,16 +326,16 @@ public abstract class Elemental extends Mob {
 	
 	public static Class<? extends Elemental> random(){
 		if (Random.Int( 50 ) == 0){
-			return Chaos.class;
+			return ChaosElemental.class;
 		}
 		
 		float roll = Random.Float();
 		if (roll < 0.4f){
-			return Fire.class;
+			return FireElemental.class;
 		} else if (roll < 0.8f){
-			return Frost.class;
+			return FrostElemental.class;
 		} else {
-			return Shock.class;
+			return ShockElemental.class;
 		}
 	}
 }

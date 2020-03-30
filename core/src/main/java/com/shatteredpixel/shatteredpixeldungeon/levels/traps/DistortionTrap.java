@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ArmoredBrute;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bandit;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CausticSlime;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM201;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -60,8 +61,8 @@ public class DistortionTrap extends Trap{
 	private static final ArrayList<Class<?extends Mob>> RARE = new ArrayList<>(Arrays.asList(
 			Albino.class, CausticSlime.class,
 			Bandit.class,
-			ArmoredBrute.class,
-			Elemental.Chaos.class, Senior.class,
+			ArmoredBrute.class, DM201.class,
+			Elemental.ChaosElemental.class, Senior.class,
 			Acidic.class));
 
 	@Override

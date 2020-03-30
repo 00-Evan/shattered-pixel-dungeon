@@ -97,7 +97,7 @@ public class CeremonialCandle extends Item {
 				heapBottom.pickUp();
 				heapLeft.pickUp();
 				
-				Elemental.NewbornFire elemental = new Elemental.NewbornFire();
+				Elemental.NewbornFireElemental elemental = new Elemental.NewbornFireElemental();
 				Char ch = Actor.findChar( ritualPos );
 				if (ch != null) {
 					ArrayList<Integer> candidates = new ArrayList<>();
