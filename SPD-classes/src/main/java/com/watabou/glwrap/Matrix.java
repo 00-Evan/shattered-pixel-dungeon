@@ -100,7 +100,7 @@ public class Matrix {
 		m[13] += m[1] * x + m[5] * y;
 	}
 	
-	public static void multiply( float[] left, float right[], float[] result ) {
+	public static void multiply( float[] left, float[] right, float[] result ) {
 		final float ax1 = left[0];
 		final float ay1 = left[1];
 		final float az1 = left[2];
