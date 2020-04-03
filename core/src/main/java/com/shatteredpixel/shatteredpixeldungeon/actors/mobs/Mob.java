@@ -377,21 +377,21 @@ public abstract class Mob extends Char {
 						//shorten for a closer one
 						if (Dungeon.level.adjacent(target, pos)) {
 							path.add(target);
-							//extend the path for a further target
+						//extend the path for a further target
 						} else {
 							path.add(last);
 							path.add(target);
 						}
 
-					} else if (!path.isEmpty()) {
+					} else {
 						//if the new target is simply 1 earlier in the path shorten the path
 						if (path.getLast() == target) {
 
-							//if the new target is closer/same, need to modify end of path
+						//if the new target is closer/same, need to modify end of path
 						} else if (Dungeon.level.adjacent(target, path.getLast())) {
 							path.add(target);
 
-							//if the new target is further away, need to extend the path
+						//if the new target is further away, need to extend the path
 						} else {
 							path.add(last);
 							path.add(target);
@@ -404,39 +404,65 @@ public abstract class Mob extends Char {
 
 			}
 
-
+			//checks if the next cell along the current path can be stepped into
 			if (!newPath) {
-				//looks ahead for path validity, up to length-1 or 4, but always at least 1.
-				int lookAhead = (int)GameMath.gate(1, path.size()-1, 4);
-				for (int i = 0; i < lookAhead; i++) {
-					int cell = path.get(i);
-					if (!Dungeon.level.passable[cell]
-							|| (!flying && Dungeon.level.avoid[target])
-							|| (Char.hasProp(this, Char.Property.LARGE) && !Dungeon.level.openSpace[cell])
-							|| (fieldOfView[cell] && Actor.findChar(cell) != null)) {
-						newPath = true;
-						break;
+				int nextCell = path.removeFirst();
+				if (!Dungeon.level.passable[nextCell]
+						|| (!flying && Dungeon.level.avoid[nextCell])
+						|| (Char.hasProp(this, Char.Property.LARGE) && !Dungeon.level.openSpace[nextCell])
+						|| Actor.findChar(nextCell) != null) {
+
+					newPath = true;
+					//If the next cell on the path can't be moved into, see if there is another cell that could replace it
+					if (!path.isEmpty()) {
+						for (int i : PathFinder.NEIGHBOURS8) {
+							if (Dungeon.level.adjacent(pos, nextCell + i) && Dungeon.level.adjacent(nextCell + i, path.getFirst())) {
+								if (Dungeon.level.passable[nextCell+i]
+										&& (flying || !Dungeon.level.avoid[nextCell+i])
+										&& (!Char.hasProp(this, Char.Property.LARGE) || Dungeon.level.openSpace[nextCell+i])
+										&& Actor.findChar(nextCell+i) == null){
+									path.addFirst(nextCell+i);
+									newPath = false;
+									break;
+								}
+							}
+						}
+					}
+				} else {
+					path.addFirst(nextCell);
+				}
+			}
+
+			//generate a new path
+			if (newPath) {
+				//If we aren't hunting, always take a full path
+				PathFinder.Path full = Dungeon.findPath(this, target, Dungeon.level.passable, fieldOfView, true);
+				if (state != HUNTING){
+					path = full;
+				} else {
+					//otherwise, check if other characters are forcing us to take a very slow route
+					// and don't try to go around them yet in response, basically assume their blockage is temporary
+					PathFinder.Path ignoreChars = Dungeon.findPath(this, target, Dungeon.level.passable, fieldOfView, false);
+					if (full == null || full.size() > 2*ignoreChars.size()){
+						//check if first cell of shorter path is valid. If it is, use new shorter path. Otherwise do nothing and wait.
+						path = ignoreChars;
+						if (!Dungeon.level.passable[ignoreChars.getFirst()]
+								|| (!flying && Dungeon.level.avoid[ignoreChars.getFirst()])
+								|| (Char.hasProp(this, Char.Property.LARGE) && !Dungeon.level.openSpace[ignoreChars.getFirst()])
+								|| Actor.findChar(ignoreChars.getFirst()) != null) {
+							return false;
+						}
+					} else {
+						path = full;
 					}
 				}
 			}
 
-			if (newPath) {
-				path = Dungeon.findPath(this, pos, target,
-						Dungeon.level.passable,
-						fieldOfView);
-			}
-
-			//if hunting something, don't follow a path that is extremely inefficient
-			//FIXME this is fairly brittle, primarily it assumes that hunting mobs can't see through
-			// permanent terrain, such that if their path is inefficient it's always because
-			// of a temporary blockage, and therefore waiting for it to clear is the best option.
-			if (path == null ||
-					(state == HUNTING && path.size() > Math.max(9, 2*Dungeon.level.distance(pos, target)))) {
-				//
+			if (path != null) {
+				step = path.removeFirst();
+			} else {
 				return false;
 			}
-
-			step = path.removeFirst();
 		}
 		if (step != -1) {
 			move( step );
@@ -451,9 +477,7 @@ public abstract class Mob extends Char {
 			return false;
 		}
 		
-		int step = Dungeon.flee( this, pos, target,
-			Dungeon.level.passable,
-			fieldOfView );
+		int step = Dungeon.flee( this, target, Dungeon.level.passable, fieldOfView, true );
 		if (step != -1) {
 			move( step );
 			return true;
@@ -845,6 +869,17 @@ public abstract class Mob extends Char {
 					return moveSprite( oldPos,  pos );
 
 				} else {
+
+					//if moving towards an enemy isn't possible, try to switch targets to another enemy that is closer
+					Char oldEnemy = enemy;
+					enemy = null;
+					enemy = chooseEnemy();
+					if (enemy != null && enemy != oldEnemy){
+						return act(enemyInFOV, justAlerted);
+					} else {
+						enemy = oldEnemy;
+					}
+
 					spend( TICK );
 					if (!enemyInFOV) {
 						sprite.showLost();

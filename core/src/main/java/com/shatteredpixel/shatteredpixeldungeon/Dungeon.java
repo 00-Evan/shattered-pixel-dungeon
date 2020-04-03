@@ -808,7 +808,7 @@ public class Dungeon {
 			BArray.setFalse(passable);
 	}
 
-	public static PathFinder.Path findPath(Char ch, int from, int to, boolean pass[], boolean[] visible ) {
+	public static PathFinder.Path findPath(Char ch, int to, boolean[] pass, boolean[] vis, boolean chars) {
 
 		setupPassable();
 		if (ch.flying || ch.buff( Amok.class ) != null) {
@@ -821,19 +821,21 @@ public class Dungeon {
 			BArray.and( pass, Dungeon.level.openSpace, passable );
 		}
 
-		for (Char c : Actor.chars()) {
-			if (visible[c.pos]) {
-				passable[c.pos] = false;
+		if (chars) {
+			for (Char c : Actor.chars()) {
+				if (vis[c.pos]) {
+					passable[c.pos] = false;
+				}
 			}
 		}
 
-		return PathFinder.find( from, to, passable );
+		return PathFinder.find( ch.pos, to, passable );
 
 	}
 	
-	public static int findStep(Char ch, int from, int to, boolean pass[], boolean[] visible ) {
+	public static int findStep(Char ch, int to, boolean[] pass, boolean[] visible, boolean chars ) {
 
-		if (Dungeon.level.adjacent( from, to )) {
+		if (Dungeon.level.adjacent( ch.pos, to )) {
 			return Actor.findChar( to ) == null && (pass[to] || Dungeon.level.avoid[to]) ? to : -1;
 		}
 
@@ -847,18 +849,20 @@ public class Dungeon {
 		if (Char.hasProp(ch, Char.Property.LARGE)){
 			BArray.and( pass, Dungeon.level.openSpace, passable );
 		}
-		
-		for (Char c : Actor.chars()) {
-			if (visible[c.pos]) {
-				passable[c.pos] = false;
+
+		if (chars){
+			for (Char c : Actor.chars()) {
+				if (visible[c.pos]) {
+					passable[c.pos] = false;
+				}
 			}
 		}
 		
-		return PathFinder.getStep( from, to, passable );
+		return PathFinder.getStep( ch.pos, to, passable );
 
 	}
 	
-	public static int flee( Char ch, int cur, int from, boolean pass[], boolean[] visible ) {
+	public static int flee( Char ch, int from, boolean[] pass, boolean[] visible, boolean chars ) {
 
 		setupPassable();
 		if (ch.flying) {
@@ -870,15 +874,17 @@ public class Dungeon {
 		if (Char.hasProp(ch, Char.Property.LARGE)){
 			BArray.and( pass, Dungeon.level.openSpace, passable );
 		}
-		
-		for (Char c : Actor.chars()) {
-			if (visible[c.pos]) {
-				passable[c.pos] = false;
+
+		if (chars) {
+			for (Char c : Actor.chars()) {
+				if (visible[c.pos]) {
+					passable[c.pos] = false;
+				}
 			}
 		}
-		passable[cur] = true;
+		passable[ch.pos] = true;
 		
-		return PathFinder.getStepBack( cur, from, passable );
+		return PathFinder.getStepBack( ch.pos, from, passable );
 		
 	}
 

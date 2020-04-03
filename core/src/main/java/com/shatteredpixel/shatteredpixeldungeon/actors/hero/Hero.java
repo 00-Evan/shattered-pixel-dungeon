@@ -1156,15 +1156,8 @@ public class Hero extends Char {
 			else if (path.getLast() != target)
 				newPath = true;
 			else {
-				//looks ahead for path validity, up to length-1 or 2.
-				//Note that this is shorter than for mobs, so that mobs usually yield to the hero
-				int lookAhead = (int) GameMath.gate(0, path.size()-1, 2);
-				for (int i = 0; i < lookAhead; i++){
-					int cell = path.get(i);
-					if (!Dungeon.level.passable[cell] || (fieldOfView[cell] && Actor.findChar(cell) != null)) {
-						newPath = true;
-						break;
-					}
+				if (!Dungeon.level.passable[path.get(0)] || Actor.findChar(path.get(0)) != null) {
+					newPath = true;
 				}
 			}
 
@@ -1179,7 +1172,12 @@ public class Hero extends Char {
 					passable[i] = p[i] && (v[i] || m[i]);
 				}
 
-				path = Dungeon.findPath(this, pos, target, passable, fieldOfView);
+				PathFinder.Path newpath = Dungeon.findPath(this, target, passable, fieldOfView, true);
+				if (newpath != null && path != null && newpath.size() > 2*path.size()){
+					path = null;
+				} else {
+					path = newpath;
+				}
 			}
 
 			if (path == null) return false;
