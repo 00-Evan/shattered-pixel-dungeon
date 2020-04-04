@@ -106,6 +106,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -737,6 +738,20 @@ public class Hero extends Char {
 					
 					curAction = null;
 				} else {
+
+					if (item instanceof Dewdrop
+							|| item instanceof TimekeepersHourglass.sandBag
+							|| item instanceof DriedRose.Petal
+							|| item instanceof Key) {
+						//Do Nothing
+					} else {
+						//TODO temporary until 0.8.0a, when all languages will get this phrase
+						if (Messages.lang() == Languages.ENGLISH) {
+							GLog.newLine();
+							GLog.n(Messages.get(this, "you_cant_have", item.name()));
+						}
+					}
+
 					heap.sprite.drop();
 					ready();
 				}

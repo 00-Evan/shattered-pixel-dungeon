@@ -142,7 +142,7 @@ public class YogDzewa extends Mob {
 					sprite.parent.add(new Beam.DeathRay(sprite.center(), DungeonTilemap.raisedTileCenterToWorld(b.collisionPos)));
 					for (int p : b.path) {
 						Char ch = Actor.findChar(p);
-						if (ch != null && ch.alignment != alignment) {
+						if (ch != null && (ch.alignment != alignment || ch instanceof Bee)) {
 							affected.add(ch);
 						}
 						if (Dungeon.level.flamable[p]) {
@@ -336,6 +336,16 @@ public class YogDzewa extends Mob {
 
 	@Override
 	public void beckon( int cell ) {
+	}
+
+	@Override
+	public void aggro(Char ch) {
+		for (Mob mob : (Iterable<Mob>)Dungeon.level.mobs.clone()) {
+			if (Dungeon.level.distance(pos, mob.pos) <= 4 &&
+					(mob instanceof Larva || mob instanceof RipperDemon)) {
+				mob.aggro(ch);
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")

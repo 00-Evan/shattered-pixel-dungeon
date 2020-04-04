@@ -188,11 +188,13 @@ public abstract class RegularPainter extends Painter {
 					} else {
 						d.type = Room.Door.Type.UNLOCKED;
 					}
-				}
 
-				//entrance doors on floor 2 are hidden if the player hasn't beaten the first boss
-				if (Dungeon.depth == 2 && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1) && r instanceof EntranceRoom){
-					d.type = Room.Door.Type.HIDDEN;
+					//entrance doors on floor 2 are hidden if the player hasn't beaten the first boss
+					if (Dungeon.depth == 2
+							&& !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)
+							&& r instanceof EntranceRoom){
+						d.type = Room.Door.Type.HIDDEN;
+					}
 				}
 				
 				switch (d.type) {
