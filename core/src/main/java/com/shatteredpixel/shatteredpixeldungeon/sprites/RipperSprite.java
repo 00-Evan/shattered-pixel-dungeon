@@ -23,36 +23,71 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
-//TODO currently just a reskinned warlock sprite
 public class RipperSprite extends MobSprite {
+
+	private Animation stab;
+	private Animation prep;
+	private Animation leap;
+
+	private boolean alt = Random.Int(2) == 0;
 
 	public RipperSprite() {
 		super();
 
 		texture( Assets.RIPPER );
 
-		TextureFilm frames = new TextureFilm( texture, 12, 14 );
+		TextureFilm frames = new TextureFilm( texture, 15, 14 );
 
-		idle = new Animation( 2, true );
-		idle.frames( frames, 0, 0, 0, 1 );
+		idle = new Animation( 4, true );
+		idle.frames( frames, 1, 0, 1, 2 );
 
 		run = new Animation( 15, true );
-		run.frames( frames, 0, 2, 3, 4 );
+		run.frames( frames, 3, 4, 5, 6, 7, 8 );
 
-		run = new Animation( 18, true );
-		run.frames( frames, 2, 3, 4, 5, 6, 7 );
-
-		//TODO should probably have 2 attack animations, like monks
 		attack = new Animation( 12, false );
-		attack.frames( frames, 0, 8, 9 );
+		attack.frames( frames, 0, 9, 10, 9 );
 
-		zap = attack.clone();
+		stab = new Animation( 12, false );
+		stab.frames( frames, 0, 9, 11, 9 );
+
+		prep = new Animation( 1, true );
+		prep.frames( frames, 9 );
+
+		leap = new Animation( 1, true );
+		leap.frames( frames, 12 );
 
 		die = new Animation( 15, false );
-		die.frames( frames, 0, 10, 11, 12, 13 );
+		die.frames( frames, 1, 13, 14, 15, 16 );
 
 		play( idle );
+	}
+
+	public void leapPrep( int cell ){
+		turnTo( ch.pos, cell );
+		play( prep );
+	}
+
+	@Override
+	public void jump(int from, int to, Callback callback) {
+		super.jump(from, to, callback);
+		play( leap );
+	}
+
+	@Override
+	public void attack( int cell ) {
+		super.attack( cell );
+		if (alt) {
+			play( stab );
+		}
+		alt = !alt;
+	}
+
+	@Override
+	public void onComplete( Animation anim ) {
+		super.onComplete( anim == stab ? attack : anim );
 	}
 
 }
