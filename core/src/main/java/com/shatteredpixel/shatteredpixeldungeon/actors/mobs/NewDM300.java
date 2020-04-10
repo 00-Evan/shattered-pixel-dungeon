@@ -364,7 +364,7 @@ public class NewDM300 extends Mob {
 	public void dropRocks( Char target ) {
 
 		Dungeon.hero.interrupt();
-		int rockCenter = target.pos;
+		final int rockCenter;
 
 		if (Dungeon.level.adjacent(pos, target.pos)){
 			int oppositeAdjacent = target.pos + (target.pos - pos);
@@ -374,33 +374,51 @@ public class NewDM300 extends Mob {
 				Dungeon.hero.interrupt();
 			}
 			rockCenter = trajectory.path.get(Math.min(trajectory.dist, 2));
+		} else {
+			rockCenter = target.pos;
 		}
 
-		//pick an adjacent cell to the hero as a safe cell. This cell is less likely to be in a wall or containing hazards
-		int safeCell;
-		do {
-			safeCell = rockCenter + PathFinder.NEIGHBOURS8[Random.Int(8)];
-		} while (safeCell == pos
-				|| (Dungeon.level.solid[safeCell] && Random.Int(2) == 0)
-				|| (Blob.volumeAt(safeCell, NewCavesBossLevel.PylonEnergy.class) > 0 && Random.Int(2) == 0));
+		//we handle this through an actor as it gives us fine-grainted control over when the blog acts vs. when the hero acts
+		//FIXME this is really messy to just get some fine-grained control. would be nice to build this into blob functionality, or just not use blobs for this at all
+		Actor a = new Actor() {
 
-		int start = rockCenter - Dungeon.level.width() * 3 - 3;
-		int pos;
-		for (int y = 0; y < 7; y++) {
-			pos = start + Dungeon.level.width() * y;
-			for (int x = 0; x < 7; x++) {
-				if (!Dungeon.level.insideMap(pos)) {
-					pos++;
-					continue;
-				}
-				//add rock cell to pos, if it is not solid, and isn't the safecell
-				if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
-					//don't want to overly punish players with slow move or attack speed
-					GameScene.add(Blob.seed(pos, (int)GameMath.gate(TICK, (float)Math.ceil(target.cooldown()), 3*TICK), FallingRocks.class));
-				}
-				pos++;
+			{
+				actPriority = HERO_PRIO+1;
 			}
-		}
+
+			@Override
+			protected boolean act() {
+
+				//pick an adjacent cell to the hero as a safe cell. This cell is less likely to be in a wall or containing hazards
+				int safeCell;
+				do {
+					safeCell = rockCenter + PathFinder.NEIGHBOURS8[Random.Int(8)];
+				} while (safeCell == pos
+						|| (Dungeon.level.solid[safeCell] && Random.Int(2) == 0)
+						|| (Blob.volumeAt(safeCell, NewCavesBossLevel.PylonEnergy.class) > 0 && Random.Int(2) == 0));
+
+				int start = rockCenter - Dungeon.level.width() * 3 - 3;
+				int pos;
+				for (int y = 0; y < 7; y++) {
+					pos = start + Dungeon.level.width() * y;
+					for (int x = 0; x < 7; x++) {
+						if (!Dungeon.level.insideMap(pos)) {
+							pos++;
+							continue;
+						}
+						//add rock cell to pos, if it is not solid, and isn't the safecell
+						if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
+							//don't want to overly punish players with slow move or attack speed
+							GameScene.add(Blob.seed(pos, 1, FallingRocks.class));
+						}
+						pos++;
+					}
+				}
+				Actor.remove(this);
+				return true;
+			}
+		};
+		Actor.addDelayed(a, Math.min(target.cooldown(), 3*TICK));
 
 	}
 
