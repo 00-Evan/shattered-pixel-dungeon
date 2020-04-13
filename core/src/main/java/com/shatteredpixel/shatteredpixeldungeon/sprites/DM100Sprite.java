@@ -31,7 +31,6 @@ import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PointF;
 
-//TODO sprite still needs some color tweaking?
 public class DM100Sprite extends MobSprite {
 	
 	public DM100Sprite () {
@@ -53,8 +52,8 @@ public class DM100Sprite extends MobSprite {
 		zap = new Animation( 8, false );
 		zap.frames( frames, 5, 5, 1 );
 
-		die = new Animation( 8, false );
-		die.frames( frames, 10, 11, 12 );
+		die = new Animation( 12, false );
+		die.frames( frames, 10, 11, 12, 13, 14, 15 );
 		
 		play( idle );
 	}
