@@ -24,40 +24,49 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM201;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
-//TODO currently just DM-200s with treads chopped off
 public class DM201Sprite extends MobSprite {
 
 	public DM201Sprite () {
 		super();
 
-		texture( Assets.DM300 );
+		texture( Assets.DM200 );
 
-		TextureFilm frames = new TextureFilm( texture, 22, 16 );
+		TextureFilm frames = new TextureFilm( texture, 21, 18 );
+
+		int c = 12;
 
 		idle = new Animation( 2, true );
-		idle.frames( frames, 0, 1 );
+		idle.frames( frames, c+0, c+1 );
 
 		run = idle.clone();
 
 		attack = new Animation( 15, false );
-		attack.frames( frames, 4, 5, 6, 0 );
+		attack.frames( frames, c+4, c+5, c+6 );
 
-		zap = attack.clone();
+		zap = new Animation( 15, false );
+		zap.frames( frames, c+7, c+8, c+8, c+7 );
 
-		die = new Animation( 20, false );
-		die.frames( frames, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 0, 7, 8 );
+		die = new Animation( 8, false );
+		die.frames( frames, c+9, c+10, c+11 );
 
 		play( idle );
-		scale.set( 0.8f );
 	}
 
 	@Override
-	public void resetColor() {
-		super.resetColor();
+	public void place(int cell) {
+		if (parent != null) parent.bringToFront(this);
+		super.place(cell);
+	}
+
+	@Override
+	public void die() {
+		emitter().burst( Speck.factory( Speck.WOOL ), 8 );
+		super.die();
 	}
 
 	public void zap( int cell ) {
@@ -77,6 +86,14 @@ public class DM201Sprite extends MobSprite {
 					}
 				} );
 		Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+	}
+
+	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			idle();
+		}
+		super.onComplete( anim );
 	}
 
 }

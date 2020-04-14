@@ -106,6 +106,7 @@ public class Assets {
 	public static final String SPAWNER	= "spawner.png";
 	public static final String DM100	= "dm100.png";
 	public static final String PYLON	= "pylon.png";
+	public static final String DM200	= "dm200.png";
 
 	public static final String ITEMS	        = "items.png";
 	public static final String TERRAIN_FEATURES	= "terrain_features.png";
