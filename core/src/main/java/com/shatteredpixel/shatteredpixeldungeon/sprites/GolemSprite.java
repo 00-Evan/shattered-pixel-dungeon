@@ -33,14 +33,14 @@ import com.watabou.utils.Callback;
 
 public class GolemSprite extends MobSprite {
 
-	Emitter teleParticles;
+	private Emitter teleParticles;
 	
 	public GolemSprite() {
 		super();
 		
 		texture( Assets.GOLEM );
 		
-		TextureFilm frames = new TextureFilm( texture, 16, 16 );
+		TextureFilm frames = new TextureFilm( texture, 17, 19 );
 		
 		idle = new Animation( 4, true );
 		idle.frames( frames, 0, 1 );
