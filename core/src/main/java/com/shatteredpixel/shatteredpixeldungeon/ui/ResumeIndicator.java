@@ -22,7 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
 
 public class ResumeIndicator extends Tag {
@@ -36,6 +38,11 @@ public class ResumeIndicator extends Tag {
 
 		visible = false;
 
+	}
+	
+	@Override
+	public GameAction keyAction() {
+		return SPDAction.TAG_RESUME;
 	}
 
 	@Override

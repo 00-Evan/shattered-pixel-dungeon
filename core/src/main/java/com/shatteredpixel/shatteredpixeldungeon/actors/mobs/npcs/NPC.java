@@ -39,7 +39,7 @@ public abstract class NPC extends Mob {
 
 	protected void throwItem() {
 		Heap heap = Dungeon.level.heaps.get( pos );
-		if (heap != null) {
+		if (heap != null && heap.type == Heap.Type.HEAP) {
 			int n;
 			do {
 				n = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];

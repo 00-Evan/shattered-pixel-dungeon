@@ -28,6 +28,16 @@ import com.watabou.utils.PointF;
 
 public class CellEmitter {
 
+	public static Emitter floor( int cell ) {
+
+		PointF p = DungeonTilemap.tileToWorld( cell );
+
+		Emitter emitter = GameScene.floorEmitter();
+		emitter.pos( p.x, p.y, DungeonTilemap.SIZE, DungeonTilemap.SIZE );
+
+		return emitter;
+	}
+
 	public static Emitter get( int cell ) {
 		
 		PointF p = DungeonTilemap.tileToWorld( cell );

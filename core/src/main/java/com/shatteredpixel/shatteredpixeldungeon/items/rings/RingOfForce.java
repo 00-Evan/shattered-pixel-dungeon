@@ -35,7 +35,7 @@ public class RingOfForce extends Ring {
 	}
 	
 	public static int armedDamageBonus( Char ch ){
-		return getBonus( ch, Force.class);
+		return getBuffedBonus( ch, Force.class);
 	}
 	
 	
@@ -52,7 +52,7 @@ public class RingOfForce extends Ring {
 
 	public static int damageRoll( Hero hero ){
 		if (hero.buff(Force.class) != null) {
-			int level = getBonus(hero, Force.class);
+			int level = getBuffedBonus(hero, Force.class);
 			float tier = tier(hero.STR());
 			return Random.NormalIntRange(min(level, tier), max(level, tier));
 		} else {
@@ -81,7 +81,8 @@ public class RingOfForce extends Ring {
 	public String statsInfo() {
 		float tier = tier(Dungeon.hero.STR());
 		if (isIdentified()) {
-			return Messages.get(this, "stats", min(soloBonus(), tier), max(soloBonus(), tier), soloBonus());
+			int level = soloBuffedBonus();
+			return Messages.get(this, "stats", min(level, tier), max(level, tier), level);
 		} else {
 			return Messages.get(this, "typical_stats", min(1, tier), max(1, tier), 1);
 		}

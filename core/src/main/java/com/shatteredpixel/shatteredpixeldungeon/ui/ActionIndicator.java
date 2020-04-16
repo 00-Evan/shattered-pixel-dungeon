@@ -22,7 +22,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
 
 public class ActionIndicator extends Tag {
@@ -40,7 +42,12 @@ public class ActionIndicator extends Tag {
 		setSize( 24, 24 );
 		visible = false;
 	}
-
+	
+	@Override
+	public GameAction keyAction() {
+		return SPDAction.TAG_ACTION;
+	}
+	
 	@Override
 	public void destroy() {
 		super.destroy();

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
@@ -45,7 +46,11 @@ public class HuntressArmor extends ClassArmor {
 	
 	@Override
 	public void doSpecial() {
-		
+
+		Invisibility.dispel();
+		charge -= 35;
+		updateQuickslot();
+
 		Item proto = new Shuriken();
 		
 		for (Mob mob : Dungeon.level.mobs) {
@@ -75,8 +80,6 @@ public class HuntressArmor extends ClassArmor {
 			GLog.w( Messages.get(this, "no_enemies") );
 			return;
 		}
-		
-		curUser.HP -= (curUser.HP / 3);
 		
 		curUser.sprite.zap( curUser.pos );
 		curUser.busy();

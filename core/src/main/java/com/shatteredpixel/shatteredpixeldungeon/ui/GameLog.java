@@ -57,6 +57,11 @@ public class GameLog extends Component implements Signal.Listener<String> {
 				clear();
 				recreateLines();
 			}
+
+			if (text.equals( GLog.NEW_LINE )){
+				lastEntry = null;
+				continue;
+			}
 			
 			int color = CharSprite.DEFAULT;
 			if (text.startsWith( GLog.POSITIVE )) {

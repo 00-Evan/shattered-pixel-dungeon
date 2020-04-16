@@ -112,7 +112,7 @@ public class InterlevelScene extends PixelScene {
 					if (!(Statistics.deepestFloor < loadingDepth)) {
 						fadeTime = FAST_FADE;
 					} else if (loadingDepth == 6 || loadingDepth == 11
-							|| loadingDepth == 16 || loadingDepth == 22) {
+							|| loadingDepth == 16 || loadingDepth == 21) {
 						fadeTime = SLOW_FADE;
 					}
 				}
@@ -135,7 +135,7 @@ public class InterlevelScene extends PixelScene {
 		if (loadingDepth <= 5)          loadingAsset = Assets.LOADING_SEWERS;
 		else if (loadingDepth <= 10)    loadingAsset = Assets.LOADING_PRISON;
 		else if (loadingDepth <= 15)    loadingAsset = Assets.LOADING_CAVES;
-		else if (loadingDepth <= 21)    loadingAsset = Assets.LOADING_CITY;
+		else if (loadingDepth <= 20)    loadingAsset = Assets.LOADING_CITY;
 		else if (loadingDepth <= 25)    loadingAsset = Assets.LOADING_HALLS;
 		else                            loadingAsset = Assets.SHADOW;
 		

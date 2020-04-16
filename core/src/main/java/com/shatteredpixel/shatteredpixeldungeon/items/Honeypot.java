@@ -190,6 +190,12 @@ public class Honeypot extends Item {
 			}
 		}
 
+		public void destroyPot( int potPos ){
+			for (Bee bee : findBees(potPos)){
+				updateBee(bee, -1, null);
+			}
+		}
+
 		private void updateBee( Bee bee, int cell, Char holder ){
 			if (bee != null && bee.alignment == Char.Alignment.ENEMY)
 				bee.setPotInfo( cell, holder );

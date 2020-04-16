@@ -71,14 +71,14 @@ public class WndAndroidTextInput extends Window {
 		super();
 
 		//need to offset to give space for the soft keyboard
-		if (SPDSettings.landscape()) {
+		if (PixelScene.landscape()) {
 			offset( multiLine ? -45 : -45 );
 		} else {
 			offset( multiLine ? -60 : -45 );
 		}
 
 		final int width;
-		if (SPDSettings.landscape() && multiLine){
+		if (PixelScene.landscape() && multiLine){
 			width = W_LAND_MULTI; //more editing space for landscape users
 		} else {
 			width = WIDTH;

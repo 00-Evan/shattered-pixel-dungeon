@@ -21,6 +21,7 @@
 
 package com.watabou.utils;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.watabou.noosa.Game;
 
@@ -34,8 +35,12 @@ public class DeviceCompat {
 				return Gdx.app.getVersion() >= 19;
 			default:
 				//TODO implement functionality for other platforms here
-				return false;
+				return true;
 		}
+	}
+	
+	public static boolean isDesktop(){
+		return Gdx.app.getType() == Application.ApplicationType.Desktop;
 	}
 	
 	public static boolean legacyDevice(){

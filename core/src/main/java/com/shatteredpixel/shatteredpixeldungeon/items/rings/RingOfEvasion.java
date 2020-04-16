@@ -30,7 +30,7 @@ public class RingOfEvasion extends Ring {
 	
 	public String statsInfo() {
 		if (isIdentified()){
-			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.15f, soloBonus()) - 1f)));
+			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.15f, soloBuffedBonus()) - 1f)));
 		} else {
 			return Messages.get(this, "typical_stats", new DecimalFormat("#.##").format(15f));
 		}
@@ -42,7 +42,7 @@ public class RingOfEvasion extends Ring {
 	}
 	
 	public static float evasionMultiplier( Char target ){
-		return (float) Math.pow( 1.15, getBonus(target, Evasion.class));
+		return (float) Math.pow( 1.15, getBuffedBonus(target, Evasion.class));
 	}
 
 	public class Evasion extends RingBuff {

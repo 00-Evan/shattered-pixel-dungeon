@@ -50,7 +50,7 @@ public class Necromancer extends Mob {
 		spriteClass = NecromancerSprite.class;
 		
 		HP = HT = 35;
-		defenseSkill = 11;
+		defenseSkill = 13;
 		
 		EXP = 7;
 		maxLvl = 14;
@@ -160,16 +160,20 @@ public class Necromancer extends Mob {
 		
 		//heal skeleton first
 		if (mySkeleton.HP < mySkeleton.HT){
-			
-			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+
+			if (sprite.visible || mySkeleton.sprite.visible) {
+				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+			}
 			
 			mySkeleton.HP = Math.min(mySkeleton.HP + 5, mySkeleton.HT);
 			mySkeleton.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			
 			//otherwise give it adrenaline
 		} else if (mySkeleton.buff(Adrenaline.class) == null) {
-			
-			sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+
+			if (sprite.visible || mySkeleton.sprite.visible) {
+				sprite.parent.add(new Beam.HealthRay(sprite.center(), mySkeleton.sprite.center()));
+			}
 			
 			Buff.affect(mySkeleton, Adrenaline.class, 3f);
 		}
@@ -344,7 +348,12 @@ public class Necromancer extends Mob {
 			//20/25 health to start
 			HP = 20;
 		}
-		
+
+		@Override
+		public float spawningWeight() {
+			return 0;
+		}
+
 		private void teleportSpend(){
 			spend(TICK);
 		}

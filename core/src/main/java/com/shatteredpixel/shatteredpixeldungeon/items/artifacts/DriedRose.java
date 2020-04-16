@@ -157,7 +157,7 @@ public class DriedRose extends Artifact {
 					hero.sprite.operate(hero.pos);
 
 					if (!firstSummon) {
-						ghost.yell( Messages.get(GhostHero.class, "hello", Dungeon.hero.givenName()) );
+						ghost.yell( Messages.get(GhostHero.class, "hello", Dungeon.hero.name()) );
 						Sample.INSTANCE.play( Assets.SND_GHOST );
 						firstSummon = true;
 						
@@ -211,10 +211,23 @@ public class DriedRose extends Artifact {
 				if (level() < levelCap)
 					desc+= "\n\n" + Messages.get(this, "desc_hint");
 
-			} else
+			} else {
 				desc += "\n\n" + Messages.get(this, "desc_cursed");
+			}
 		}
 
+		if (weapon != null || armor != null) {
+			desc += "\n";
+
+			if (weapon != null) {
+				desc += "\n" + Messages.get(this, "desc_weapon", weapon.toString());
+			}
+
+			if (armor != null) {
+				desc += "\n" + Messages.get(this, "desc_armor", armor.toString());
+			}
+		}
+		
 		return desc;
 	}
 	
@@ -250,12 +263,12 @@ public class DriedRose extends Artifact {
 		if (ghost == null){
 			if (charge < chargeCap) {
 				charge += 4;
-				updateQuickslot();
 				if (charge >= chargeCap) {
 					charge = chargeCap;
 					partialCharge = 0;
 					GLog.p(Messages.get(DriedRose.class, "charged"));
 				}
+				updateQuickslot();
 			}
 		} else {
 			ghost.HP = Math.min( ghost.HT, ghost.HP + 1 + level()/3);
@@ -609,6 +622,10 @@ public class DriedRose extends Artifact {
 			damage = super.attackProc(enemy, damage);
 			if (rose != null && rose.weapon != null) {
 				damage = rose.weapon.proc( this, enemy, damage );
+				if (!enemy.isAlive() && enemy == Dungeon.hero){
+					Dungeon.fail(getClass());
+					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+				}
 			}
 			return damage;
 		}
@@ -697,9 +714,9 @@ public class DriedRose extends Artifact {
 		}
 
 		@Override
-		public boolean interact() {
+		public boolean interact(Char c) {
 			updateRose();
-			if (rose != null && !rose.talkedTo){
+			if (c == Dungeon.hero && rose != null && !rose.talkedTo){
 				rose.talkedTo = true;
 				Game.runOnRenderThread(new Callback() {
 					@Override
@@ -707,9 +724,9 @@ public class DriedRose extends Artifact {
 						GameScene.show(new WndQuest(GhostHero.this, Messages.get(GhostHero.this, "introduce") ));
 					}
 				});
-				return false;
+				return true;
 			} else {
-				return super.interact();
+				return super.interact(c);
 			}
 		}
 

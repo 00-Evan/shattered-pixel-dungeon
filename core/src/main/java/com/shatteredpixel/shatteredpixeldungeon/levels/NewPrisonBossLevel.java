@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Regrowth;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewTengu;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -441,13 +443,13 @@ public class NewPrisonBossLevel extends Level {
 				
 				clearEntities( tenguCell ); //clear anything not in tengu's cell
 				
+				setMapMazes();
+				cleanMapState();
+				
 				Actor.remove(tengu);
 				mobs.remove(tengu);
 				TargetHealthIndicator.instance.target(null);
 				tengu.sprite.kill();
-				
-				setMapMazes();
-				cleanMapState();
 				
 				GameScene.flash(0xFFFFFF);
 				Sample.INSTANCE.play(Assets.SND_BLAST);
@@ -570,9 +572,11 @@ public class NewPrisonBossLevel extends Level {
 								for (int y = 1; y < maze[0].length-1; y++) {
 									if (maze[x][y]){
 										int cell = mazeCells[i].left+x + width()*(mazeCells[i].top+y);
-										if (heaps.get(cell) == null){
+										if (heaps.get(cell) == null
+												&& Blob.volumeAt(cell, StormCloud.class) == 0
+												&& Blob.volumeAt(cell, Regrowth.class) <= 9){
+											Level.set( cell, Terrain.SECRET_TRAP );
 											setTrap(new TenguDartTrap().hide(), cell);
-											Painter.set(this, cell, Terrain.SECRET_TRAP);
 											CellEmitter.get(cell).burst(Speck.factory(Speck.LIGHT), 2);
 										}
 									}
@@ -581,7 +585,7 @@ public class NewPrisonBossLevel extends Level {
 							
 							FadingTraps f = new FadingTraps();
 							f.setCoveringArea(mazeCells[i]);
-							f.fadeDelay = 1f;
+							f.fadeDelay = 2f;
 							GameScene.add(f, false);
 							customTiles.add(f);
 							
@@ -615,7 +619,7 @@ public class NewPrisonBossLevel extends Level {
 	protected void createItems() {
 		Item item = Bones.get();
 		if (item != null) {
-			drop( item, randomRespawnCell() ).setHauntedIfCursed(1f).type = Heap.Type.REMAINS;
+			drop( item, randomRespawnCell( null ) ).setHauntedIfCursed().type = Heap.Type.REMAINS;
 		}
 	}
 	
@@ -664,30 +668,33 @@ public class NewPrisonBossLevel extends Level {
 				int x = i % 7;
 				int y = i / 7;
 				int cell = x+tenguCell.left+1 + (y+tenguCell.top+1)*width();
-				Level.set(cell, Terrain.SECRET_TRAP);
-				setTrap(new TenguDartTrap().hide(), cell);
-				CellEmitter.get(cell).burst(Speck.factory(Speck.LIGHT), 2);
-			} else {
-			
+				if (Blob.volumeAt(cell, StormCloud.class) == 0
+						&& Blob.volumeAt(cell, Regrowth.class) <= 9) {
+					Level.set(cell, Terrain.SECRET_TRAP);
+					setTrap(new TenguDartTrap().hide(), cell);
+					CellEmitter.get(cell).burst(Speck.factory(Speck.LIGHT), 2);
+				}
 			}
 		}
 		
 		GameScene.updateMap();
 		
 		FadingTraps t = new FadingTraps();
-		t.fadeDelay = 1f;
+		t.fadeDelay = 2f;
 		t.setCoveringArea(tenguCell);
 		GameScene.add(t, false);
 		customTiles.add(t);
 	}
 	
 	@Override
-	public int randomRespawnCell() {
+	public int randomRespawnCell( Char ch ) {
 		int pos = ENTRANCE_POS; //random cell adjacent to the entrance.
 		int cell;
 		do {
 			cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-		} while (!passable[cell] || Actor.findChar(cell) != null);
+		} while (!passable[cell]
+				|| (Char.hasProp(ch, Char.Property.LARGE) && !openSpace[cell])
+				|| Actor.findChar(cell) != null);
 		return cell;
 	}
 	
@@ -788,7 +795,7 @@ public class NewPrisonBossLevel extends Level {
 			Actor.addDelayed(new Actor() {
 				
 				{
-					actPriority = HERO_PRIO-1;
+					actPriority = HERO_PRIO+1;
 				}
 				
 				@Override

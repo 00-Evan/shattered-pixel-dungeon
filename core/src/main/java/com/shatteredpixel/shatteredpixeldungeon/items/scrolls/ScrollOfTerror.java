@@ -65,7 +65,7 @@ public class ScrollOfTerror extends Scroll {
 			GLog.i( Messages.get(this, "none") );
 			break;
 		case 1:
-			GLog.i( Messages.get(this, "one", affected.name) );
+			GLog.i( Messages.get(this, "one", affected.name()) );
 			break;
 		default:
 			GLog.i( Messages.get(this, "many") );

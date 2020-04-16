@@ -49,7 +49,7 @@ public class WndInfoMob extends WndTitledMessage {
 		
 		public MobTitle( Mob mob ) {
 			
-			name = PixelScene.renderTextBlock( Messages.titleCase( mob.name ), 9 );
+			name = PixelScene.renderTextBlock( Messages.titleCase( mob.name() ), 9 );
 			name.hardlight( TITLE_COLOR );
 			add( name );
 			
@@ -68,14 +68,14 @@ public class WndInfoMob extends WndTitledMessage {
 		protected void layout() {
 			
 			image.x = 0;
-			image.y = Math.max( 0, name.height() + health.height() - image.height );
+			image.y = Math.max( 0, name.height() + health.height() - image.height() );
 
 			name.setPos(x + image.width + GAP,
-					image.height > name.height() ? y +(image.height() - name.height()) / 2 : y);
+					image.height() > name.height() ? y +(image.height() - name.height()) / 2 : y);
 
-			float w = width - image.width - GAP;
+			float w = width - image.width() - GAP;
 
-			health.setRect(image.width + GAP, name.bottom() + GAP, w, health.height());
+			health.setRect(image.width() + GAP, name.bottom() + GAP, w, health.height());
 
 			buffs.setPos(
 				name.right() + GAP-1,

@@ -230,7 +230,7 @@ public class LloydsBeacon extends Artifact {
 										int count = 10;
 										int pos;
 										do {
-											pos = Dungeon.level.randomRespawnCell();
+											pos = Dungeon.level.randomRespawnCell( ch );
 											if (count-- <= 0) {
 												break;
 											}

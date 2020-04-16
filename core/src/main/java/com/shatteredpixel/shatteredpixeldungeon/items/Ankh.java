@@ -46,7 +46,7 @@ public class Ankh extends Item {
 		bones = true;
 	}
 
-	private Boolean blessed = false;
+	private boolean blessed = false;
 	
 	@Override
 	public boolean isUpgradable() {
@@ -98,8 +98,12 @@ public class Ankh extends Item {
 			return super.desc();
 	}
 
-	public Boolean isBlessed(){
+	public boolean isBlessed(){
 		return blessed;
+	}
+
+	public void bless(){
+		blessed = true;
 	}
 
 	private static final Glowing WHITE = new Glowing( 0xFFFFCC );

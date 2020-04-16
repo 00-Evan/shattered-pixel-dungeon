@@ -23,8 +23,13 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 
+//TODO improvements here
 public class SpinnerSprite extends MobSprite {
 	
 	public SpinnerSprite() {
@@ -45,6 +50,8 @@ public class SpinnerSprite extends MobSprite {
 		attack = new Animation( 12, false );
 		attack.frames( frames, 0, 4, 5, 0 );
 		
+		zap = attack.clone();
+		
 		die = new Animation( 12, false );
 		die.frames( frames, 6, 7, 8, 9 );
 		
@@ -56,6 +63,32 @@ public class SpinnerSprite extends MobSprite {
 		super.link(ch);
 		if (parent != null) parent.sendToBack(this);
 		renderShadow = false;
+	}
+	
+	public void zap( int cell ) {
+		
+		turnTo( ch.pos , cell );
+		play( zap );
+		
+		MagicMissile.boltFromChar( parent,
+				MagicMissile.MAGIC_MISSILE,
+				this,
+				cell,
+				new Callback() {
+					@Override
+					public void call() {
+						((Spinner)ch).shootWeb();
+					}
+				} );
+		Sample.INSTANCE.play( Assets.SND_MISS );
+	}
+	
+	@Override
+	public void onComplete( Animation anim ) {
+		if (anim == zap) {
+			play( run );
+		}
+		super.onComplete( anim );
 	}
 
 	@Override

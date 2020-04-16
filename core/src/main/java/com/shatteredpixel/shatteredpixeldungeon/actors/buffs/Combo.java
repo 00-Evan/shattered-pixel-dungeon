@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
@@ -72,7 +73,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 	
 	public void hit( Char enemy ) {
-		
+
 		count++;
 		comboTime = 4f;
 		misses = 0;
@@ -207,6 +208,22 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 			AttackIndicator.target(enemy);
 
+			if (enemy.defenseSkill(target) >= Char.INFINITE_EVASION){
+				enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+				Sample.INSTANCE.play(Assets.SND_MISS);
+				detach();
+				ActionIndicator.clearAction(Combo.this);
+				((Hero)target).spendAndNext(((Hero)target).attackDelay());
+				return;
+			} else if (enemy.isInvulnerable(target.getClass())){
+				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Char.class, "invulnerable") );
+				Sample.INSTANCE.play(Assets.SND_MISS);
+				detach();
+				ActionIndicator.clearAction(Combo.this);
+				((Hero)target).spendAndNext(((Hero)target).attackDelay());
+				return;
+			}
+
 			int dmg = target.damageRoll();
 
 			//variance in damage dealt
@@ -235,6 +252,11 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			
 			dmg = enemy.defenseProc(target, dmg);
 			dmg -= enemy.drRoll();
+			
+			if ( enemy.buff( Vulnerable.class ) != null){
+				dmg *= 1.33f;
+			}
+			
 			dmg = target.attackProc(enemy, dmg);
 			enemy.damage( dmg, this );
 
@@ -248,7 +270,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 								if (enemy.pos - target.pos == ofs) {
 									int newPos = enemy.pos + ofs;
 									if ((Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])
-											&& Actor.findChar( newPos ) == null) {
+											&& Actor.findChar( newPos ) == null
+											&& (!Char.hasProp(enemy, Char.Property.LARGE) || Dungeon.level.openSpace[newPos])) {
 
 										Actor.addDelayed( new Pushing( enemy, enemy.pos, newPos ), -1 );
 
@@ -286,7 +309,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			enemy.sprite.flash();
 
 			if (!enemy.isAlive()){
-				GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name)) );
+				GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name())) );
 			}
 
 			Hero hero = (Hero)target;

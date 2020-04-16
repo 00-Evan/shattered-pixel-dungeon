@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -124,6 +125,15 @@ public class Bee extends Mob {
 	}
 
 	@Override
+	public void add(Buff buff) {
+		super.add(buff);
+		if (buff instanceof Corruption){
+			intelligentAlly = false;
+			setPotInfo(-1, null);
+		}
+	}
+
+	@Override
 	protected Char chooseEnemy() {
 		//if the pot is no longer present, default to regular AI behaviour
 		if (alignment == Alignment.ALLY || (potHolder == -1 && potPos == -1)){
@@ -137,7 +147,7 @@ public class Bee extends Mob {
 		}else {
 			
 			//try to find a new enemy in these circumstances
-			if (enemy == null || !enemy.isAlive() || state == WANDERING
+			if (enemy == null || !enemy.isAlive() || !Actor.chars().contains(enemy) || state == WANDERING
 					|| Dungeon.level.distance(enemy.pos, potPos) > 3
 					|| (alignment == Alignment.ALLY && enemy.alignment == Alignment.ALLY)){
 				
@@ -147,6 +157,7 @@ public class Bee extends Mob {
 					if (!(mob == this)
 							&& Dungeon.level.distance(mob.pos, potPos) <= 3
 							&& mob.alignment != Alignment.NEUTRAL
+							&& !mob.isInvulnerable(getClass())
 							&& !(alignment == Alignment.ALLY && mob.alignment == Alignment.ALLY)) {
 						enemies.add(mob);
 					}
@@ -188,10 +199,5 @@ public class Bee extends Mob {
 		} else {
 			return super.description();
 		}
-	}
-	
-	{
-		immunities.add( Poison.class );
-		immunities.add( Amok.class );
 	}
 }

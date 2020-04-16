@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.windows;
 
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -57,7 +56,7 @@ public class WndInfoItem extends Window {
 	
 	private void fillFields( Heap heap ) {
 		
-		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
 		
 		IconTitle titlebar = new IconTitle( heap );
 		titlebar.color( TITLE_COLOR );
@@ -69,7 +68,7 @@ public class WndInfoItem extends Window {
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );
 		
-		resize( width, (int)(txtInfo.top() + txtInfo.height()) );
+		resize( width, (int)(txtInfo.bottom() + 2) );
 	}
 	
 	private void fillFields( Item item ) {
@@ -81,7 +80,7 @@ public class WndInfoItem extends Window {
 			color = ItemSlot.DEGRADED;
 		}
 		
-		int width = SPDSettings.landscape() ? WIDTH_L : WIDTH_P;
+		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
 
 		IconTitle titlebar = new IconTitle( item );
 		titlebar.color( color );
@@ -93,6 +92,6 @@ public class WndInfoItem extends Window {
 		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
 		add( txtInfo );
 		
-		resize( width, (int)(txtInfo.top() + txtInfo.height()) );
+		resize( width, (int)(txtInfo.bottom() + 2) );
 	}
 }

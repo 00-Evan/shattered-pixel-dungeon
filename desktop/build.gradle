@@ -1,55 +1,50 @@
-/*
- * Pixel Dungeon
- * Copyright (C) 2012-2015 Oleg Dolya
- *
- * Shattered Pixel Dungeon
- * Copyright (C) 2014-2019 Evan Debenham
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
-
 apply plugin: "java"
 
-sourceSets.main.java.srcDirs = [ "src/" ]
-
-ext {
-    mainClassName = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
-    //desktop-specific resources and shared resources
-    //TODO shared resources can probably be moved out of android module, right?
-    assetsDirs = ["../android/src/main/assets", "assets/"]
-}
-
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceCompatibility = targetCompatibility = appJavaCompatibility
 
-task runDebug(type: JavaExec) {
-    main = mainClassName
-    classpath = sourceSets.main.runtimeClasspath
-    sourceSets.main.resources.srcDirs = assetsDirs
+ext.mainClass = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
+sourceSets.main.resources.srcDirs = [new File(project(':core').projectDir, "/src/main/assets"),
+                                     new File(project(':desktop').projectDir,"/src/main/assets")]
 
-    ignoreExitValue = true
+sourceSets {
+    debug
+    release
 }
 
-task releaseJAR(type: Jar) {
+task debug(dependsOn: classes, type: JavaExec) {
+    classpath = sourceSets.debug.runtimeClasspath + sourceSets.main.runtimeClasspath
+    ignoreExitValue = true
+
+    main = mainClass
+    systemProperty 'Specification-Title', appName
+    systemProperty 'Specification-Version', appVersionName + "-INDEV"
+    systemProperty 'Implementation-Version', appVersionCode
+
+    dependencies {
+        debugImplementation project(':services:updates:debugUpdates')
+    }
+}
+
+//need a separate task to compile dependencies first, seeing as we're setting them up in an odd way
+task compileForRelease(dependsOn: classes, type: JavaCompile){
+    classpath = sourceSets.release.runtimeClasspath + sourceSets.main.runtimeClasspath
+}
+
+task release(dependsOn: compileForRelease, type: Jar) {
     from sourceSets.main.output
-    sourceSets.main.resources.srcDirs = assetsDirs
+    from { sourceSets.release.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
 
     manifest {
-        attributes 'Main-Class': mainClassName
-        attributes 'Specification-Name': appName
+        attributes 'Main-Class': mainClass
+        attributes 'Specification-Title': appName
         attributes 'Specification-Version': appVersionName
         attributes 'Implementation-Version': appVersionCode
+    }
+
+    dependencies {
+        releaseImplementation project(':services:updates:githubUpdates')
     }
 }
 
@@ -57,7 +52,17 @@ dependencies {
     implementation project(':core')
 
     implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+
+    //we use LWJGL tinyFD directly to display crash messages and (for now) single-line text input
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1:natives-windows"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1:natives-macos"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1:natives-linux"
+
+    //Need these at compile time to prevent errors there.
+    // The actual dependency used at runtime will vary based on source set.
+    compileOnly project(':services:updates:debugUpdates')
 }

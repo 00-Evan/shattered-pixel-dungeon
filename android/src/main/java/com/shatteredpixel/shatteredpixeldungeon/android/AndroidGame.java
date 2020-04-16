@@ -21,21 +21,21 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.android;
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.UpdateImpl;
+import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Music;
+import com.watabou.utils.FileUtils;
 
 public class AndroidGame extends AndroidApplication {
 	
@@ -61,17 +61,23 @@ public class AndroidGame extends AndroidApplication {
 			Game.versionCode = 0;
 		}
 		
+		if (UpdateImpl.supportsUpdates()){
+			Updates.service = UpdateImpl.getUpdateService();
+		}
+
+		FileUtils.setDefaultFileProperties( Files.FileType.Local, "" );
+		
 		// grab preferences directly using our instance first
 		// so that we don't need to rely on Gdx.app, which isn't initialized yet.
-		SPDSettings.setPrefsFromInstance(instance);
+		// Note that we use a different prefs name on android for legacy purposes,
+		// this is the default prefs filename given to an android app (.xml is automatically added to it)
+		SPDSettings.set(instance.getPreferences("ShatteredPixelDungeon"));
 		
 		//set desired orientation (if it exists) before initializing the app.
-		if (SPDSettings.landscapeFromSettings() != null) {
-			if (SPDSettings.landscapeFromSettings()){
-				instance.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-			} else {
-				instance.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-			}
+		if (SPDSettings.landscape() != null) {
+			AndroidGame.instance.setRequestedOrientation( SPDSettings.landscape() ?
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
+					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
 		}
 		
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
@@ -94,27 +100,6 @@ public class AndroidGame extends AndroidApplication {
 		
 		view = (GLSurfaceView)graphics.getView();
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			TelephonyManager mgr =
-					(TelephonyManager) instance.getSystemService(Activity.TELEPHONY_SERVICE);
-			mgr.listen(new PhoneStateListener(){
-				
-				@Override
-				public void onCallStateChanged(int state, String incomingNumber)
-				{
-					if( state == TelephonyManager.CALL_STATE_RINGING ) {
-						Music.INSTANCE.pause();
-						
-					} else if( state == TelephonyManager.CALL_STATE_IDLE ) {
-						if (!Game.instance.isPaused()) {
-							Music.INSTANCE.resume();
-						}
-					}
-					
-					super.onCallStateChanged(state, incomingNumber);
-				}
-			}, PhoneStateListener.LISTEN_CALL_STATE);
-		}
 	}
 	
 	@Override

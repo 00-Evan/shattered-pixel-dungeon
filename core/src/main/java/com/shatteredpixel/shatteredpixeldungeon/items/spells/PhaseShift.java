@@ -48,7 +48,7 @@ public class PhaseShift extends TargetedSpell {
 			int count = 10;
 			int pos;
 			do {
-				pos = Dungeon.level.randomRespawnCell();
+				pos = Dungeon.level.randomRespawnCell( hero );
 				if (count-- <= 0) {
 					break;
 				}

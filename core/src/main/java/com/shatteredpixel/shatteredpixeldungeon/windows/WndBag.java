@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
@@ -56,6 +56,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.gltextures.TextureCache;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
@@ -131,7 +133,7 @@ public class WndBag extends WndTabbed {
 		lastMode = mode;
 		lastBag = bag;
 
-		nCols = SPDSettings.landscape() ? COLS_L : COLS_P;
+		nCols = PixelScene.landscape() ? COLS_L : COLS_P;
 		nRows = (int)Math.ceil((Belongings.BACKPACK_SIZE + 4) / (float)nCols);
 
 		int slotsWidth = SLOT_WIDTH * nCols + SLOT_MARGIN * (nCols - 1);
@@ -185,16 +187,6 @@ public class WndBag extends WndTabbed {
 	
 	protected void placeTitle( Bag bag, int width ){
 		
-		RenderedTextBlock txtTitle = PixelScene.renderTextBlock(
-				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 9 );
-		txtTitle.hardlight( TITLE_COLOR );
-		txtTitle.setPos(
-				1,
-				(TITLE_HEIGHT - txtTitle.height()) / 2f - 1
-		);
-		PixelScene.align(txtTitle);
-		add( txtTitle );
-		
 		ItemSprite gold = new ItemSprite(ItemSpriteSheet.GOLD, null);
 		gold.x = width - gold.width() - 1;
 		gold.y = (TITLE_HEIGHT - gold.height())/2f - 1;
@@ -208,6 +200,17 @@ public class WndBag extends WndTabbed {
 		amt.y = (TITLE_HEIGHT - amt.baseLine())/2f - 1;
 		PixelScene.align(amt);
 		add(amt);
+		
+		RenderedTextBlock txtTitle = PixelScene.renderTextBlock(
+				title != null ? Messages.titleCase(title) : Messages.titleCase( bag.name() ), 8 );
+		txtTitle.hardlight( TITLE_COLOR );
+		txtTitle.maxWidth( (int)amt.x - 2 );
+		txtTitle.setPos(
+				1,
+				(TITLE_HEIGHT - txtTitle.height()) / 2f - 1
+		);
+		PixelScene.align(txtTitle);
+		add( txtTitle );
 	}
 	
 	protected void placeItems( Bag container ) {
@@ -244,11 +247,14 @@ public class WndBag extends WndTabbed {
 		
 		count++;
 	}
-	
+
 	@Override
-	public void onMenuPressed() {
-		if (listener == null) {
+	public boolean onSignal(KeyEvent event) {
+		if (event.pressed && KeyBindings.getActionForKey( event ) == SPDAction.INVENTORY) {
 			hide();
+			return true;
+		} else {
+			return super.onSignal(event);
 		}
 	}
 	

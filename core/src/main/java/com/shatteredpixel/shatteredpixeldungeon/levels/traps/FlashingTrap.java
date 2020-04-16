@@ -66,7 +66,7 @@ public class FlashingTrap extends Trap {
 			
 			if (c instanceof Mob) {
 				if (((Mob)c).state == ((Mob)c).HUNTING) ((Mob)c).state = ((Mob)c).WANDERING;
-				((Mob)c).beckon( Dungeon.level.randomDestination() );
+				((Mob)c).beckon( Dungeon.level.randomDestination( c ) );
 			}
 		}
 		

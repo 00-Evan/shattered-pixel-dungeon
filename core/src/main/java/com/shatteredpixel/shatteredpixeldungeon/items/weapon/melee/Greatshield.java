@@ -41,12 +41,12 @@ public class Greatshield extends MeleeWeapon {
 
 	@Override
 	public int defenseFactor( Char owner ) {
-		return 10+3*level();    //10 extra defence, plus 3 per level;
+		return 10+3*buffedLvl();    //10 extra defence, plus 3 per level;
 	}
 	
 	public String statsInfo(){
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", 10+3*level());
+			return Messages.get(this, "stats_desc", 10+3*buffedLvl());
 		} else {
 			return Messages.get(this, "typical_stats_desc", 10);
 		}

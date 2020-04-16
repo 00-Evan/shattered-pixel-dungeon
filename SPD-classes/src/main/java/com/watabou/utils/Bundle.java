@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -35,7 +36,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PushbackInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,6 +45,8 @@ import java.util.zip.GZIPOutputStream;
 public class Bundle {
 
 	private static final String CLASS_NAME = "__className";
+
+	public static final String DEFAULT_KEY = "key";
 	
 	private static HashMap<String,String> aliases = new HashMap<>();
 	
@@ -223,6 +225,25 @@ public class Bundle {
 			return null;
 		}
 	}
+
+	public Bundle[] getBundleArray(){
+		return getBundleArray( DEFAULT_KEY );
+	}
+
+	public Bundle[] getBundleArray( String key ){
+		try {
+			JSONArray array = data.getJSONArray( key );
+			int length = array.length();
+			Bundle[] result = new Bundle[length];
+			for (int i=0; i < length; i++) {
+				result[i] = new Bundle( array.getJSONObject( i ) );
+			}
+			return result;
+		} catch (JSONException e) {
+			Game.reportException(e);
+			return null;
+		}
+	}
 	
 	public Collection<Bundlable> getCollection( String key ) {
 		
@@ -372,7 +393,7 @@ public class Bundle {
 		try {
 			JSONArray jsonArray = new JSONArray();
 			for (int i=0; i < array.length; i++) {
-				jsonArray.put( i, array[i] );
+				jsonArray.put( i, array[i].getName() );
 			}
 			data.put( key, jsonArray );
 		} catch (JSONException e) {
@@ -410,22 +431,32 @@ public class Bundle {
 	public static Bundle read( InputStream stream ) throws IOException {
 
 		try {
-			BufferedReader reader;
+			if (!stream.markSupported()){
+				stream = new BufferedInputStream( stream, 2 );
+			}
 
 			//determines if we're reading a regular, or compressed file
-			PushbackInputStream pb = new PushbackInputStream( stream, 2 );
+			stream.mark( 2 );
 			byte[] header = new byte[2];
-			pb.unread(header, 0, pb.read(header));
+			stream.read( header );
+			stream.reset();
+			
 			//GZIP header is 0x1f8b
-			if( header[ 0 ] == (byte) 0x1f && header[ 1 ] == (byte) 0x8b )
-				reader = new BufferedReader( new InputStreamReader( new GZIPInputStream( pb, GZIP_BUFFER ) ) );
-			else
-				reader = new BufferedReader( new InputStreamReader( pb ) );
+			if( header[ 0 ] == (byte) 0x1f && header[ 1 ] == (byte) 0x8b ) {
+				stream = new GZIPInputStream( stream, GZIP_BUFFER );
+			}
 
-			JSONObject json = (JSONObject)new JSONTokener( reader.readLine() ).nextValue();
+			//cannot just tokenize the stream directly as that constructor doesn't exist on Android
+			BufferedReader reader = new BufferedReader( new InputStreamReader( stream ));
+			Object json = new JSONTokener( reader.readLine() ).nextValue();
 			reader.close();
 
-			return new Bundle( json );
+			//if the data is an array, put it in a fresh object with the default key
+			if (json instanceof JSONArray){
+				json = new JSONObject().put( DEFAULT_KEY, json );
+			}
+
+			return new Bundle( (JSONObject) json );
 		} catch (Exception e) {
 			Game.reportException(e);
 			throw new IOException();

@@ -27,11 +27,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class MageArmor extends ClassArmor {
 	
@@ -41,23 +43,28 @@ public class MageArmor extends ClassArmor {
 	
 	@Override
 	public void doSpecial() {
-		
+
+		Invisibility.dispel();
+		charge -= 35;
+		updateQuickslot();
+
 		for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
 			if (Dungeon.level.heroFOV[mob.pos]
 				&& mob.alignment != Char.Alignment.ALLY) {
 				Buff.affect( mob, Burning.class ).reignite( mob );
-				Buff.prolong( mob, Roots.class, 3 );
+				Buff.prolong( mob, Roots.class, 5 );
+				mob.damage(Random.NormalIntRange(4, 16 + Dungeon.depth), new Burning());
 			}
 		}
-
-		curUser.HP -= (curUser.HP / 3);
 		
 		curUser.spend( Actor.TICK );
 		curUser.sprite.operate( curUser.pos );
 		curUser.busy();
 		
-		curUser.sprite.centerEmitter().start( ElmoParticle.FACTORY, 0.15f, 4 );
-		Sample.INSTANCE.play( Assets.SND_READ );
+		curUser.sprite.emitter().start( ElmoParticle.FACTORY, 0.025f, 20 );
+		Sample.INSTANCE.play( Assets.SND_BURNING );
+		Sample.INSTANCE.play( Assets.SND_BURNING );
+		Sample.INSTANCE.play( Assets.SND_BURNING );
 	}
 
 }

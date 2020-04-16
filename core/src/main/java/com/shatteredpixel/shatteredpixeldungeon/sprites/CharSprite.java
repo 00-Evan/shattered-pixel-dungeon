@@ -65,7 +65,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public static final int WARNING		= 0xFF8800;
 	public static final int NEUTRAL		= 0xFFFF00;
 	
-	private static final float MOVE_INTERVAL	= 0.1f;
+	public static final float DEFAULT_MOVE_INTERVAL = 0.1f;
+	private static float moveInterval = DEFAULT_MOVE_INTERVAL;
 	private static final float FLASH_INTERVAL	= 0.05f;
 
 	//the amount the sprite is raised from flat when viewed in a raised perspective
@@ -165,8 +166,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		final int csize = DungeonTilemap.SIZE;
 		
 		return new PointF(
-			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width * 0.5f),
-			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height - csize * perspectiveRaise)
+			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width() * 0.5f),
+			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height() - csize * perspectiveRaise)
 		);
 	}
 	
@@ -179,10 +180,12 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			if (args.length > 0) {
 				text = Messages.format( text, args );
 			}
+			float x = destinationCenter().x;
+			float y = destinationCenter().y - height()/2f;
 			if (ch != null) {
-				FloatingText.show( x + width * 0.5f, y, ch.pos, text, color );
+				FloatingText.show( x, y, ch.pos, text, color );
 			} else {
-				FloatingText.show( x + width * 0.5f, y, text, color );
+				FloatingText.show( x, y, text, color );
 			}
 		}
 	}
@@ -196,7 +199,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 		play( run );
 		
-		motion = new PosTweener( this, worldToCamera( to ), MOVE_INTERVAL );
+		motion = new PosTweener( this, worldToCamera( to ), moveInterval );
 		motion.listener = this;
 		parent.add( motion );
 
@@ -206,6 +209,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 			GameScene.ripple( from );
 		}
 
+	}
+	
+	public static void setMoveInterval( float interval){
+		moveInterval = interval;
 	}
 	
 	//returns where the center of this sprite will be after it completes any motion in progress
@@ -266,10 +273,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 
 	public void jump( int from, int to, Callback callback ) {
+		float distance = Dungeon.level.trueDistance( from, to );
+		jump( from, to, callback, distance * 2, distance * 0.1f );
+	}
+
+	public void jump( int from, int to, Callback callback, float height, float duration ) {
 		jumpCallback = callback;
 
-		int distance = Dungeon.level.distance( from, to );
-		jumpTweener = new JumpTweener( this, worldToCamera( to ), distance * 4, distance * 0.1f );
+		jumpTweener = new JumpTweener( this, worldToCamera( to ), height, duration );
 		jumpTweener.listener = this;
 		parent.add( jumpTweener );
 
@@ -581,8 +592,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		super.updateMatrix();
 		Matrix.copy(matrix, shadowMatrix);
 		Matrix.translate(shadowMatrix,
-				(width() * (1f - shadowWidth)) / 2f,
-				(height() * (1f - shadowHeight)) + shadowOffset);
+				(width * (1f - shadowWidth)) / 2f,
+				(height * (1f - shadowHeight)) + shadowOffset);
 		Matrix.scale(shadowMatrix, shadowWidth, shadowHeight);
 	}
 
@@ -674,14 +685,14 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	private static class JumpTweener extends Tweener {
 
-		public Visual visual;
+		public CharSprite visual;
 
 		public PointF start;
 		public PointF end;
 
 		public float height;
 
-		public JumpTweener( Visual visual, PointF pos, float height, float time ) {
+		public JumpTweener( CharSprite visual, PointF pos, float height, float time ) {
 			super( visual, time );
 
 			this.visual = visual;
@@ -693,7 +704,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 		@Override
 		protected void updateValues( float progress ) {
-			visual.point( PointF.inter( start, end, progress ).offset( 0, -height * 4 * progress * (1 - progress) ) );
+			float hVal = -height * 4 * progress * (1 - progress);
+			visual.point( PointF.inter( start, end, progress ).offset( 0, hVal ) );
+			visual.shadowOffset = 0.25f - hVal*0.8f;
 		}
 	}
 }

@@ -37,7 +37,7 @@ public class Grim extends Weapon.Enchantment {
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
 
-		int level = Math.max( 0, weapon.level() );
+		int level = Math.max( 0, weapon.buffedLvl() );
 
 		int enemyHealth = defender.HP - damage;
 		if (enemyHealth <= 0) return damage; //no point in proccing if they're already dead.

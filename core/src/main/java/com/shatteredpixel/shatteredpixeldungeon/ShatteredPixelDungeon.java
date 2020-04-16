@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.WelcomeScene;
 import com.watabou.noosa.Game;
@@ -39,7 +40,9 @@ public class ShatteredPixelDungeon extends Game {
 	public static final int v0_7_2d = 340;
 	public static final int v0_7_3b = 349;
 	public static final int v0_7_4c = 362;
-	public static final int v0_7_5  = 371;
+	public static final int v0_7_5e = 382;
+
+	public static final int v0_8_0  = 412;
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );
@@ -109,6 +112,33 @@ public class ShatteredPixelDungeon extends Game {
 		com.watabou.utils.Bundle.addAlias(
 				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldTengu.class,
 				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu" );
+
+		//v0.8.0
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.ArmoredBrute.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shielded");
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman");
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.FireElemental.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental");
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental.NewbornFireElemental.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewbornElemental");
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.actors.mobs.OldDM300.class,
+				"com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM300");
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.OldCavesBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.OldCityBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel" );
+		com.watabou.utils.Bundle.addAlias(
+				com.shatteredpixel.shatteredpixeldungeon.levels.OldHallsBossLevel.class,
+				"com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel" );
+		
 	}
 	
 	@Override
@@ -116,6 +146,7 @@ public class ShatteredPixelDungeon extends Game {
 		super.create();
 
 		updateSystemUI();
+		SPDAction.loadBindings();
 		
 		Music.INSTANCE.enable( SPDSettings.music() );
 		Music.INSTANCE.volume( SPDSettings.musicVol()/10f );
@@ -207,9 +238,13 @@ public class ShatteredPixelDungeon extends Game {
 	
 	@Override
 	public void resize( int width, int height ) {
-		
+		if (width == 0 || height == 0){
+			return;
+		}
+
 		if (scene instanceof PixelScene &&
 				(height != Game.height || width != Game.width)) {
+			PixelScene.noFade = true;
 			((PixelScene) scene).saveWindows();
 		}
 
@@ -218,7 +253,13 @@ public class ShatteredPixelDungeon extends Game {
 		updateDisplaySize();
 
 	}
-
+	
+	@Override
+	public void destroy(){
+		super.destroy();
+		GameScene.endActorThread();
+	}
+	
 	public void updateDisplaySize(){
 		platform.updateDisplaySize();
 	}

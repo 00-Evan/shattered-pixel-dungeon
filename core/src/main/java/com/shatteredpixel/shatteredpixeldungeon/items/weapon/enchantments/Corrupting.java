@@ -45,7 +45,7 @@ public class Corrupting extends Weapon.Enchantment {
 	public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
 		if (defender.buff(Corruption.class) != null || !(defender instanceof Mob)) return damage;
 		
-		int level = Math.max( 0, weapon.level() );
+		int level = Math.max( 0, weapon.buffedLvl() );
 		
 		// lvl 0 - 20%
 		// lvl 1 ~ 22.5%

@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
 
@@ -63,6 +64,14 @@ public class WallBlockingTilemap extends Tilemap {
 	
 	@Override
 	public synchronized void updateMapCell(int cell) {
+
+		//FIXME this is to address the wall blocking looking odd on the new yog floor.
+		// The true solution is to improve the fog of war so the blockers aren't necessary.
+		if (Dungeon.level instanceof NewHallsBossLevel){
+			data[cell] = CLEARED;
+			super.updateMapCell(cell);
+			return;
+		}
 		
 		//TODO should doors be considered? currently the blocking is a bit permissive around doors
 

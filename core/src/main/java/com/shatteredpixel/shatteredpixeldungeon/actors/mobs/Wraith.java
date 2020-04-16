@@ -85,6 +85,11 @@ public class Wraith extends Mob {
 	}
 
 	@Override
+	public float spawningWeight() {
+		return 0f;
+	}
+
+	@Override
 	public boolean reset() {
 		state = WANDERING;
 		return true;
@@ -118,9 +123,5 @@ public class Wraith extends Mob {
 			return null;
 		}
 	}
-	
-	{
-		immunities.add( Grim.class );
-		immunities.add( Terror.class );
-	}
+
 }

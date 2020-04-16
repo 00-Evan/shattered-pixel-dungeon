@@ -21,19 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gauntlet;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MonkSprite;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -80,53 +76,86 @@ public class Monk extends Mob {
 		
 		super.rollToDropLoot();
 	}
-
-	private int hitsToDisarm = 0;
+	
+	protected float focusCooldown = 0;
 	
 	@Override
-	public int attackProc( Char enemy, int damage ) {
-		damage = super.attackProc( enemy, damage );
+	protected boolean act() {
+		boolean result = super.act();
+		if (buff(Focus.class) == null && state == HUNTING && focusCooldown <= 0) {
+			Buff.affect( this, Focus.class );
+		}
+		return result;
+	}
+	
+	@Override
+	protected void spend( float time ) {
+		focusCooldown -= time;
+		super.spend( time );
+	}
+	
+	@Override
+	public void move( int step ) {
+		// moving reduces cooldown by an additional 0.67, giving a total reduction of 1.67f.
+		// basically monks will become focused notably faster if you kite them.
+		focusCooldown -= 0.67f;
+		super.move( step );
+	}
+	
+	@Override
+	public int defenseSkill( Char enemy ) {
+		if (buff(Focus.class) != null && paralysed == 0 && state != SLEEPING){
+			return INFINITE_EVASION;
+		}
+		return super.defenseSkill( enemy );
+	}
+	
+	@Override
+	public String defenseVerb() {
+		Focus f = buff(Focus.class);
+		if (f == null) {
+			return super.defenseVerb();
+		} else {
+			f.detach();
+			focusCooldown = Random.NormalFloat( 6, 7 );
+			return Messages.get(this, "parried");
+		}
+	}
+	
+	private static String FOCUS_COOLDOWN = "focus_cooldown";
+	
+	@Override
+	public void storeInBundle( Bundle bundle ) {
+		super.storeInBundle( bundle );
+		bundle.put( FOCUS_COOLDOWN, focusCooldown );
+	}
+	
+	@Override
+	public void restoreFromBundle( Bundle bundle ) {
+		super.restoreFromBundle( bundle );
+		focusCooldown = bundle.getInt( FOCUS_COOLDOWN );
+	}
+	
+	public static class Focus extends Buff {
 		
-		if (enemy == Dungeon.hero) {
-			
-			Hero hero = Dungeon.hero;
-			KindOfWeapon weapon = hero.belongings.weapon;
-			
-			if (weapon != null
-					&& !(weapon instanceof Gloves)
-					&& !(weapon instanceof Gauntlet)
-					&& !weapon.cursed) {
-				if (hitsToDisarm == 0) hitsToDisarm = Random.NormalIntRange(4, 8);
-
-				if (--hitsToDisarm == 0) {
-					hero.belongings.weapon = null;
-					Dungeon.quickslot.convertToPlaceholder(weapon);
-					weapon.updateQuickslot();
-					Dungeon.level.drop(weapon, hero.pos).sprite.drop();
-					GLog.w(Messages.get(this, "disarm", weapon.name()));
-				}
-			}
+		{
+			type = buffType.POSITIVE;
+			announced = true;
 		}
 		
-		return damage;
-	}
-	
-	{
-		immunities.add( Amok.class );
-		immunities.add( Terror.class );
-	}
-
-	private static String DISARMHITS = "hitsToDisarm";
-
-	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put(DISARMHITS, hitsToDisarm);
-	}
-
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		hitsToDisarm = bundle.getInt(DISARMHITS);
+		@Override
+		public int icon() {
+			return BuffIndicator.MIND_VISION;
+		}
+		
+		@Override
+		public String toString() {
+			return Messages.get(this, "name");
+		}
+		
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc");
+		}
 	}
 }

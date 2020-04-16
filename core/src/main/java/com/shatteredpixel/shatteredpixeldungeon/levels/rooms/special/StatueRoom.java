@@ -67,7 +67,7 @@ public class StatueRoom extends SpecialRoom {
 			
 		}
 		
-		Statue statue = new Statue();
+		Statue statue = Statue.random();
 		statue.pos = cx + cy * level.width();
 		level.mobs.add( statue );
 	}

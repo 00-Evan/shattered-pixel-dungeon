@@ -70,9 +70,9 @@ public class WandOfPrismaticLight extends DamageWand {
 		
 		if (Dungeon.level.viewDistance < 6 ){
 			if (Dungeon.isChallenged(Challenges.DARKNESS)){
-				Buff.prolong( curUser, Light.class, 2f + level());
+				Buff.prolong( curUser, Light.class, 2f + buffedLvl());
 			} else {
-				Buff.prolong( curUser, Light.class, 10f+level()*5);
+				Buff.prolong( curUser, Light.class, 10f+buffedLvl()*5);
 			}
 		}
 		
@@ -87,18 +87,18 @@ public class WandOfPrismaticLight extends DamageWand {
 		int dmg = damageRoll();
 
 		//three in (5+lvl) chance of failing
-		if (Random.Int(5+level()) >= 3) {
-			Buff.prolong(ch, Blindness.class, 2f + (level() * 0.333f));
+		if (Random.Int(5+buffedLvl()) >= 3) {
+			Buff.prolong(ch, Blindness.class, 2f + (buffedLvl() * 0.333f));
 			ch.sprite.emitter().burst(Speck.factory(Speck.LIGHT), 6 );
 		}
 
 		if (ch.properties().contains(Char.Property.DEMONIC) || ch.properties().contains(Char.Property.UNDEAD)){
-			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+level() );
+			ch.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10+buffedLvl() );
 			Sample.INSTANCE.play(Assets.SND_BURNING);
 
 			ch.damage(Math.round(dmg*1.333f), this);
 		} else {
-			ch.sprite.centerEmitter().burst( RainbowParticle.BURST, 10+level() );
+			ch.sprite.centerEmitter().burst( RainbowParticle.BURST, 10+buffedLvl() );
 
 			ch.damage(dmg, this);
 		}
@@ -107,7 +107,10 @@ public class WandOfPrismaticLight extends DamageWand {
 
 	private void affectMap(Ballistica beam){
 		boolean noticed = false;
-		for (int c: beam.subPath(0, beam.dist)){
+		for (int c : beam.subPath(0, beam.dist)){
+			if (!Dungeon.level.insideMap(c)){
+				continue;
+			}
 			for (int n : PathFinder.NEIGHBOURS9){
 				int cell = c+n;
 
@@ -144,7 +147,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//cripples enemy
-		Buff.prolong( defender, Cripple.class, 1f+staff.level());
+		Buff.prolong( defender, Cripple.class, 1f+staff.buffedLvl());
 	}
 
 	@Override

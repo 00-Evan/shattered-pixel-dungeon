@@ -43,16 +43,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
@@ -94,13 +94,14 @@ public class Dungeon {
 		NECRO_HP,
 		BAT_HP,
 		WARLOCK_HP,
-		SCORPIO_HP,
+		//Demon spawners are already limited in their spawnrate, no need to limit their health drops
 		//alchemy
 		COOKING_HP,
 		BLANDFRUIT_SEED,
 
-		//doesn't use Generator, so we have to enforce one armband drop here
-		THIEVES_ARMBAND,
+		//Other limited enemy drops
+		THEIF_MISC,
+		SHAMAN_WAND,
 
 		//containers
 		DEW_VIAL,
@@ -173,7 +174,7 @@ public class Dungeon {
 		Actor.clear();
 		Actor.resetNextID();
 		
-		Random.seed( seed );
+		Random.pushGenerator( seed );
 
 			Scroll.initLabels();
 			Potion.initColors();
@@ -182,7 +183,7 @@ public class Dungeon {
 			SpecialRoom.initForRun();
 			SecretRoom.initForRun();
 
-		Random.seed();
+		Random.resetGenerators();
 		
 		Statistics.reset();
 		Notes.reset();
@@ -263,7 +264,7 @@ public class Dungeon {
 			level = new CavesLevel();
 			break;
 		case 15:
-			level = new CavesBossLevel();
+			level = new NewCavesBossLevel();
 			break;
 		case 16:
 		case 17:
@@ -272,10 +273,22 @@ public class Dungeon {
 			level = new CityLevel();
 			break;
 		case 20:
-			level = new CityBossLevel();
+			level = new NewCityBossLevel();
 			break;
 		case 21:
-			level = new LastShopLevel();
+			//logic for old city boss levels, need to spawn a shop on floor 21
+			try {
+				Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(GamesInProgress.curSlot, 20));
+				Class cls = bundle.getBundle(LEVEL).getClass("__className");
+				if (cls == NewCityBossLevel.class) {
+					level = new HallsLevel();
+				} else {
+					level = new LastShopLevel();
+				}
+			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
+				level = new HallsLevel();
+			}
 			break;
 		case 22:
 		case 23:
@@ -283,7 +296,7 @@ public class Dungeon {
 			level = new HallsLevel();
 			break;
 		case 25:
-			level = new HallsBossLevel();
+			level = new NewHallsBossLevel();
 			break;
 		case 26:
 			level = new LastLevel();
@@ -313,11 +326,14 @@ public class Dungeon {
 	}
 
 	public static long seedForDepth(int depth){
-		Random.seed( seed );
-		for (int i = 0; i < depth; i ++)
-			Random.Long(); //we don't care about these values, just need to go through them
-		long result = Random.Long();
-		Random.seed();
+		Random.pushGenerator( seed );
+
+			for (int i = 0; i < depth; i ++) {
+				Random.Long(); //we don't care about these values, just need to go through them
+			}
+			long result = Random.Long();
+
+		Random.popGenerator();
 		return result;
 	}
 	
@@ -794,7 +810,7 @@ public class Dungeon {
 			BArray.setFalse(passable);
 	}
 
-	public static PathFinder.Path findPath(Char ch, int from, int to, boolean pass[], boolean[] visible ) {
+	public static PathFinder.Path findPath(Char ch, int to, boolean[] pass, boolean[] vis, boolean chars) {
 
 		setupPassable();
 		if (ch.flying || ch.buff( Amok.class ) != null) {
@@ -803,19 +819,25 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
 
-		for (Char c : Actor.chars()) {
-			if (visible[c.pos]) {
-				passable[c.pos] = false;
+		if (Char.hasProp(ch, Char.Property.LARGE)){
+			BArray.and( pass, Dungeon.level.openSpace, passable );
+		}
+
+		if (chars) {
+			for (Char c : Actor.chars()) {
+				if (vis[c.pos]) {
+					passable[c.pos] = false;
+				}
 			}
 		}
 
-		return PathFinder.find( from, to, passable );
+		return PathFinder.find( ch.pos, to, passable );
 
 	}
 	
-	public static int findStep(Char ch, int from, int to, boolean pass[], boolean[] visible ) {
+	public static int findStep(Char ch, int to, boolean[] pass, boolean[] visible, boolean chars ) {
 
-		if (Dungeon.level.adjacent( from, to )) {
+		if (Dungeon.level.adjacent( ch.pos, to )) {
 			return Actor.findChar( to ) == null && (pass[to] || Dungeon.level.avoid[to]) ? to : -1;
 		}
 
@@ -825,18 +847,24 @@ public class Dungeon {
 		} else {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
-		
-		for (Char c : Actor.chars()) {
-			if (visible[c.pos]) {
-				passable[c.pos] = false;
+
+		if (Char.hasProp(ch, Char.Property.LARGE)){
+			BArray.and( pass, Dungeon.level.openSpace, passable );
+		}
+
+		if (chars){
+			for (Char c : Actor.chars()) {
+				if (visible[c.pos]) {
+					passable[c.pos] = false;
+				}
 			}
 		}
 		
-		return PathFinder.getStep( from, to, passable );
+		return PathFinder.getStep( ch.pos, to, passable );
 
 	}
 	
-	public static int flee( Char ch, int cur, int from, boolean pass[], boolean[] visible ) {
+	public static int flee( Char ch, int from, boolean[] pass, boolean[] visible, boolean chars ) {
 
 		setupPassable();
 		if (ch.flying) {
@@ -844,15 +872,21 @@ public class Dungeon {
 		} else {
 			System.arraycopy( pass, 0, passable, 0, Dungeon.level.length() );
 		}
-		
-		for (Char c : Actor.chars()) {
-			if (visible[c.pos]) {
-				passable[c.pos] = false;
+
+		if (Char.hasProp(ch, Char.Property.LARGE)){
+			BArray.and( pass, Dungeon.level.openSpace, passable );
+		}
+
+		if (chars) {
+			for (Char c : Actor.chars()) {
+				if (visible[c.pos]) {
+					passable[c.pos] = false;
+				}
 			}
 		}
-		passable[cur] = true;
+		passable[ch.pos] = true;
 		
-		return PathFinder.getStepBack( cur, from, passable );
+		return PathFinder.getStepBack( ch.pos, from, passable );
 		
 	}
 

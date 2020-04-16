@@ -30,14 +30,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.EquipableItem;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +75,7 @@ public class CursingTrap extends Trap {
 		ArrayList<Item> canCurse = new ArrayList<>();
 
 		KindOfWeapon weapon = hero.belongings.weapon;
-		if (weapon instanceof Weapon && !weapon.cursed){
+		if (weapon instanceof Weapon && !(weapon instanceof MagesStaff)){
 			if (((Weapon) weapon).enchantment == null)
 				priorityCurse.add(weapon);
 			else
@@ -84,34 +83,20 @@ public class CursingTrap extends Trap {
 		}
 
 		Armor armor = hero.belongings.armor;
-		if (armor != null && !armor.cursed){
+		if (armor != null){
 			if (armor.glyph == null)
 				priorityCurse.add(armor);
 			else
 				canCurse.add(armor);
 		}
 
-		KindofMisc misc1 = hero.belongings.misc1;
-		if (misc1 != null){
-			canCurse.add(misc1);
-		}
-
-		KindofMisc misc2 = hero.belongings.misc2;
-		if (misc2 != null){
-			canCurse.add(misc2);
-		}
-
 		Collections.shuffle(priorityCurse);
 		Collections.shuffle(canCurse);
 
-		int numCurses = Random.Int(2) == 0 ? 1 : 2;
-
-		for (int i = 0; i < numCurses; i++){
-			if (!priorityCurse.isEmpty()){
-				curse(priorityCurse.remove(0));
-			} else if (!canCurse.isEmpty()){
-				curse(canCurse.remove(0));
-			}
+		if (!priorityCurse.isEmpty()){
+			curse(priorityCurse.remove(0));
+		} else if (!canCurse.isEmpty()){
+			curse(canCurse.remove(0));
 		}
 
 		EquipableItem.equipCursed(hero);

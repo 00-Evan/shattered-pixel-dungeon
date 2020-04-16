@@ -22,10 +22,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -55,6 +57,11 @@ public class AttackIndicator extends Tag {
 		setSize( 24, 24 );
 		visible( false );
 		enable( false );
+	}
+	
+	@Override
+	public GameAction keyAction() {
+		return SPDAction.TAG_ATTACK;
 	}
 	
 	@Override

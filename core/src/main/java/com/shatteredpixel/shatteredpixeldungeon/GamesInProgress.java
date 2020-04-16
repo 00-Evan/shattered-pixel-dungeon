@@ -140,7 +140,7 @@ public class GamesInProgress {
 		
 		info.goldCollected = Statistics.goldCollected;
 		info.maxDepth = Statistics.deepestFloor;
-		
+
 		slotStates.put( slot, info );
 	}
 	

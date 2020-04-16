@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -50,7 +51,7 @@ public class RogueArmor extends ClassArmor {
 		GameScene.selectCell( teleporter );
 	}
 	
-	protected static CellSelector.Listener teleporter = new  CellSelector.Listener() {
+	protected CellSelector.Listener teleporter = new  CellSelector.Listener() {
 		
 		@Override
 		public void onSelect( Integer target ) {
@@ -67,18 +68,20 @@ public class RogueArmor extends ClassArmor {
 					return;
 				}
 
-				curUser.HP -= (curUser.HP / 3);
+				charge -= 35;
+				updateQuickslot();
 				
 				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (Dungeon.level.heroFOV[mob.pos] && mob.alignment != Char.Alignment.ALLY) {
-						Buff.prolong( mob, Blindness.class, 2 );
+					if (Dungeon.level.adjacent(mob.pos, curUser.pos) && mob.alignment != Char.Alignment.ALLY) {
+						Buff.prolong( mob, Blindness.class, 5 );
 						if (mob.state == mob.HUNTING) mob.state = mob.WANDERING;
 						mob.sprite.emitter().burst( Speck.factory( Speck.LIGHT ), 4 );
 					}
 				}
-				
+				Buff.affect(curUser, Invisibility.class, 10f);
+
+				CellEmitter.get( curUser.pos ).burst( Speck.factory( Speck.WOOL ), 10 );
 				ScrollOfTeleportation.appear( curUser, target );
-				CellEmitter.get( target ).burst( Speck.factory( Speck.WOOL ), 10 );
 				Sample.INSTANCE.play( Assets.SND_PUFF );
 				Dungeon.level.occupyCell(curUser );
 				Dungeon.observe();

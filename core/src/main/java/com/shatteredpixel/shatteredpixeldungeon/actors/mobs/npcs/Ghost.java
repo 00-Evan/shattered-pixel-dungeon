@@ -81,7 +81,7 @@ public class Ghost extends NPC {
 
 	@Override
 	public int defenseSkill( Char enemy ) {
-		return 100_000_000;
+		return INFINITE_EVASION;
 	}
 	
 	@Override
@@ -108,10 +108,14 @@ public class Ghost extends NPC {
 	}
 	
 	@Override
-	public boolean interact() {
-		sprite.turnTo( pos, Dungeon.hero.pos );
+	public boolean interact(Char c) {
+		sprite.turnTo( pos, c.pos );
 		
 		Sample.INSTANCE.play( Assets.SND_GHOST );
+
+		if (c != Dungeon.hero){
+			return super.interact(c);
+		}
 		
 		if (Quest.given) {
 			if (Quest.weapon != null) {
@@ -143,7 +147,7 @@ public class Ghost extends NPC {
 
 					int newPos = -1;
 					for (int i = 0; i < 10; i++) {
-						newPos = Dungeon.level.randomRespawnCell();
+						newPos = Dungeon.level.randomRespawnCell( this );
 						if (newPos != -1) {
 							break;
 						}
@@ -164,16 +168,16 @@ public class Ghost extends NPC {
 			switch (Quest.type){
 				case 1: default:
 					questBoss = new FetidRat();
-					txt_quest = Messages.get(this, "rat_1", Dungeon.hero.givenName()); break;
+					txt_quest = Messages.get(this, "rat_1", Dungeon.hero.name()); break;
 				case 2:
 					questBoss = new GnollTrickster();
-					txt_quest = Messages.get(this, "gnoll_1", Dungeon.hero.givenName()); break;
+					txt_quest = Messages.get(this, "gnoll_1", Dungeon.hero.name()); break;
 				case 3:
 					questBoss = new GreatCrab();
-					txt_quest = Messages.get(this, "crab_1", Dungeon.hero.givenName()); break;
+					txt_quest = Messages.get(this, "crab_1", Dungeon.hero.name()); break;
 			}
 
-			questBoss.pos = Dungeon.level.randomRespawnCell();
+			questBoss.pos = Dungeon.level.randomRespawnCell( this );
 
 			if (questBoss.pos != -1) {
 				GameScene.add(questBoss);
@@ -189,12 +193,7 @@ public class Ghost extends NPC {
 
 		}
 
-		return false;
-	}
-	
-	{
-		immunities.add( Paralysis.class );
-		immunities.add( Roots.class );
+		return true;
 	}
 
 	public static class Quest {
@@ -273,7 +272,7 @@ public class Ghost extends NPC {
 				
 				Ghost ghost = new Ghost();
 				do {
-					ghost.pos = level.randomRespawnCell();
+					ghost.pos = level.randomRespawnCell( ghost );
 				} while (ghost.pos == -1);
 				level.mobs.add( ghost );
 				

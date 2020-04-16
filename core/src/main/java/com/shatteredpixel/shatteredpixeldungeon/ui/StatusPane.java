@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -32,13 +33,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
-import com.watabou.input.PointerEvent;
+import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Button;
@@ -82,14 +82,18 @@ public class StatusPane extends Component {
 		bg = new NinePatch( Assets.STATUS, 0, 0, 128, 36, 85, 0, 45, 0 );
 		add( bg );
 
-		add( new PointerArea( 0, 1, 31, 31 ) {
+		add( new Button(){
 			@Override
-			protected void onClick( PointerEvent event ) {
-				Image sprite = Dungeon.hero.sprite;
-				Camera.main.panTo( sprite.center(), 5f );
+			protected void onClick () {
+				Camera.main.panTo( Dungeon.hero.sprite.center(), 5f );
 				GameScene.show( new WndHero() );
 			}
-		} );
+			
+			@Override
+			public GameAction keyAction() {
+				return SPDAction.HERO_INFO;
+			}
+		}.setRect( 0, 1, 30, 30 ));
 
 		btnJournal = new JournalButton();
 		add( btnJournal );
@@ -259,7 +263,12 @@ public class StatusPane extends Component {
 			width = bg.width + 13; //includes the depth display to the left
 			height = bg.height + 4;
 		}
-
+		
+		@Override
+		public GameAction keyAction() {
+			return SPDAction.JOURNAL;
+		}
+		
 		@Override
 		protected void createChildren() {
 			super.createChildren();

@@ -29,8 +29,8 @@ import com.watabou.glscripts.Script;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.input.GameAction;
 import com.watabou.input.InputHandler;
-import com.watabou.input.KeyEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -99,10 +99,7 @@ public class Game implements ApplicationListener {
 		
 		Blending.useDefault();
 		
-		inputHandler = new InputHandler();
-		Gdx.input.setInputProcessor(inputHandler);
-		Gdx.input.setCatchKey(KeyEvent.BACK, true);
-		Gdx.input.setCatchKey(KeyEvent.MENU, true);
+		inputHandler = new InputHandler( Gdx.input );
 		
 		//refreshes texture and vertex data stored on the gpu
 		TextureCache.reload();
@@ -111,6 +108,10 @@ public class Game implements ApplicationListener {
 	
 	@Override
 	public void resize(int width, int height) {
+		if (width == 0 || height == 0){
+			return;
+		}
+
 		Blending.useDefault();
 		TextureCache.reload();
 		Vertexbuffer.refreshAllBuffers();
@@ -161,10 +162,10 @@ public class Game implements ApplicationListener {
 	
 	public void finish(){
 		Gdx.app.exit();
+		
 	}
 	
-	@Override
-	public void dispose() {
+	public void destroy(){
 		if (scene != null) {
 			scene.destroy();
 			scene = null;
@@ -173,6 +174,11 @@ public class Game implements ApplicationListener {
 		sceneClass = null;
 		Music.INSTANCE.stop();
 		Sample.INSTANCE.reset();
+	}
+	
+	@Override
+	public void dispose() {
+		destroy();
 	}
 	
 	public static void resetScene() {

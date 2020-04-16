@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -66,9 +67,11 @@ public class WandOfBlastWave extends DamageWand {
 		Sample.INSTANCE.play( Assets.SND_BLAST );
 		BlastWave.blast(bolt.collisionPos);
 
-		//presses all tiles in the AOE first
+		//presses all tiles in the AOE first, with the exception of tengu dart traps
 		for (int i : PathFinder.NEIGHBOURS9){
-			Dungeon.level.pressCell( bolt.collisionPos+i );
+			if (!(Dungeon.level.traps.get(bolt.collisionPos+i) instanceof TenguDartTrap)) {
+				Dungeon.level.pressCell(bolt.collisionPos + i);
+			}
 		}
 
 		//throws other chars around the center.
@@ -81,7 +84,7 @@ public class WandOfBlastWave extends DamageWand {
 
 				if (ch.isAlive()) {
 					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
-					int strength = 1 + Math.round(level() / 2f);
+					int strength = 1 + Math.round(buffedLvl() / 2f);
 					throwChar(ch, trajectory, strength);
 				} else if (ch == Dungeon.hero){
 					Dungeon.fail( getClass() );
@@ -98,7 +101,7 @@ public class WandOfBlastWave extends DamageWand {
 
 			if (ch.isAlive() && bolt.path.size() > bolt.dist+1) {
 				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
-				int strength = level() + 3;
+				int strength = buffedLvl() + 3;
 				throwChar(ch, trajectory, strength);
 			}
 		}
@@ -106,22 +109,44 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	public static void throwChar(final Char ch, final Ballistica trajectory, int power){
+		throwChar(ch, trajectory, power, true);
+	}
+
+	public static void throwChar(final Char ch, final Ballistica trajectory, int power, boolean collideDmg){
+		if (ch.properties().contains(Char.Property.BOSS)) {
+			power /= 2;
+		}
+
 		int dist = Math.min(trajectory.dist, power);
 
-		if (ch.properties().contains(Char.Property.BOSS))
-			dist /= 2;
+		boolean collided = dist == trajectory.dist;
 
 		if (dist == 0 || ch.properties().contains(Char.Property.IMMOVABLE)) return;
 
+		//large characters cannot be moved into non-open space
+		if (Char.hasProp(ch, Char.Property.LARGE)) {
+			for (int i = 1; i <= dist; i++) {
+				if (!Dungeon.level.openSpace[trajectory.path.get(i)]){
+					dist = i-1;
+					collided = true;
+					break;
+				}
+			}
+		}
+
 		if (Actor.findChar(trajectory.path.get(dist)) != null){
 			dist--;
+			collided = true;
 		}
+
+		if (dist < 0) return;
 
 		final int newPos = trajectory.path.get(dist);
 
 		if (newPos == ch.pos) return;
 
 		final int finalDist = dist;
+		final boolean finalCollided = collided && collideDmg;
 		final int initialpos = ch.pos;
 
 		Actor.addDelayed(new Pushing(ch, ch.pos, newPos, new Callback() {
@@ -132,7 +157,7 @@ public class WandOfBlastWave extends DamageWand {
 					return;
 				}
 				ch.pos = newPos;
-				if (ch.pos == trajectory.collisionPos && ch.isAlive()) {
+				if (finalCollided && ch.isAlive()) {
 					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
 					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
 				}

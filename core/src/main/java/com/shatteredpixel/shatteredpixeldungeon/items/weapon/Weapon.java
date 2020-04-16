@@ -213,6 +213,16 @@ abstract public class Weapon extends KindOfWeapon {
 		return super.level() + (curseInfusionBonus ? 1 : 0);
 	}
 	
+	//overrides as other things can equip these
+	@Override
+	public int buffedLvl() {
+		if (isEquipped( Dungeon.hero ) || Dungeon.hero.belongings.contains( this )){
+			return super.buffedLvl();
+		} else {
+			return level();
+		}
+	}
+	
 	@Override
 	public Item upgrade() {
 		return upgrade(false);

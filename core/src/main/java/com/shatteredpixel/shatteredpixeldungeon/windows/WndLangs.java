@@ -94,18 +94,18 @@ public class WndLangs extends Window {
 				}
 			}
 			btn.setSize(BTN_WIDTH, BTN_HEIGHT);
-			if (SPDSettings.landscape() && i % 2 == 1){
+			if (PixelScene.landscape() && i % 2 == 1){
 				btn.setPos(BTN_WIDTH+1, y-(BTN_HEIGHT + 1));
 			} else {
 				btn.setPos(0, y);
 				y += BTN_HEIGHT;
-				if (SPDSettings.landscape()) y++;
+				if (PixelScene.landscape()) y++;
 			}
 
 			add(btn);
 		}
 		y = Math.max(MIN_HEIGHT, y);
-		resize(SPDSettings.landscape() ? WIDTH_L : WIDTH_P, y);
+		resize(PixelScene.landscape() ? WIDTH_L : WIDTH_P, y);
 
 		int textLeft = width - 65;
 		int textWidth = width - textLeft;
@@ -154,10 +154,7 @@ public class WndLangs extends Window {
 					String[] reviewers = currLang.reviewers();
 					String[] translators = currLang.translators();
 					
-					boolean wide = false;
-					if (SPDSettings.landscape() && (reviewers.length + translators.length) > 10){
-						wide = true;
-					}
+					boolean wide = (2*reviewers.length + translators.length) > (PixelScene.landscape() ? 15 : 30);
 					
 					int i;
 					if (reviewers.length > 0){
@@ -221,7 +218,7 @@ public class WndLangs extends Window {
 						credits.add(rightColumn);
 					}
 
-					credits.resize(w, (int)text.bottom());
+					credits.resize(w, (int)text.bottom()+2);
 					parent.add(credits);
 				}
 			};

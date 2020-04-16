@@ -60,8 +60,8 @@ public class ChangeButton extends Component {
 	protected void layout() {
 		super.layout();
 		
-		icon.x = x + (width - icon.width) / 2f;
-		icon.y = y + (height - icon.height) / 2f;
+		icon.x = x + (width - icon.width()) / 2f;
+		icon.y = y + (height - icon.height()) / 2f;
 		PixelScene.align(icon);
 	}
 }

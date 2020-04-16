@@ -161,7 +161,7 @@ public abstract class Wand extends Item {
 	}
 
 	protected void processSoulMark(Char target, int chargesUsed){
-		processSoulMark(target, level(), chargesUsed);
+		processSoulMark(target, buffedLvl(), chargesUsed);
 	}
 
 	protected static void processSoulMark(Char target, int wandLevel, int chargesUsed){
@@ -338,6 +338,7 @@ public abstract class Wand extends Item {
 			}
 		}
 		level(n);
+		curCharges += n;
 		
 		//30% chance to be cursed
 		if (Random.Float() < 0.3f) {

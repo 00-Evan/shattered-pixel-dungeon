@@ -65,7 +65,6 @@ public class Piranha extends Mob {
 		
 		if (!Dungeon.level.water[pos]) {
 			die( null );
-			sprite.killAndErase();
 			return true;
 		} else {
 			return super.act();
@@ -104,7 +103,12 @@ public class Piranha extends Mob {
 		Statistics.piranhasKilled++;
 		Badges.validatePiranhasKilled();
 	}
-	
+
+	@Override
+	public float spawningWeight() {
+		return 0;
+	}
+
 	@Override
 	public boolean reset() {
 		return true;
@@ -117,9 +121,7 @@ public class Piranha extends Mob {
 			return false;
 		}
 		
-		int step = Dungeon.findStep( this, pos, target,
-			Dungeon.level.water,
-			fieldOfView );
+		int step = Dungeon.findStep( this, target, Dungeon.level.water, fieldOfView, true );
 		if (step != -1) {
 			move( step );
 			return true;
@@ -130,9 +132,7 @@ public class Piranha extends Mob {
 	
 	@Override
 	protected boolean getFurther( int target ) {
-		int step = Dungeon.flee( this, pos, target,
-			Dungeon.level.water,
-			fieldOfView );
+		int step = Dungeon.flee( this, target, Dungeon.level.water, fieldOfView, true );
 		if (step != -1) {
 			move( step );
 			return true;
@@ -143,7 +143,6 @@ public class Piranha extends Mob {
 	
 	{
 		immunities.add( Burning.class );
-		immunities.add( Vertigo.class );
 	}
 	
 	//if there is not a path to the enemy, piranhas act as if they can't see them

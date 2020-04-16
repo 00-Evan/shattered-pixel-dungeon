@@ -21,9 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SnakeSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Random;
 
 public class Snake extends Mob {
@@ -50,5 +53,16 @@ public class Snake extends Mob {
 	public int attackSkill( Char target ) {
 		return 10;
 	}
-	
+
+	private static int dodges = 0;
+
+	@Override
+	public String defenseVerb() {
+		dodges++;
+		if (dodges >= 5 && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)){
+			GLog.w(Messages.get(this, "hint"));
+			dodges = 0;
+		}
+		return super.defenseVerb();
+	}
 }

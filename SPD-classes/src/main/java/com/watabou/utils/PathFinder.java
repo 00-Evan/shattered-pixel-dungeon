@@ -129,7 +129,7 @@ public class PathFinder {
 	
 	public static int getStepBack( int cur, int from, boolean[] passable ) {
 
-		int d = buildEscapeDistanceMap( cur, from, 2f, passable );
+		int d = buildEscapeDistanceMap( cur, from, 5, passable );
 		for (int i=0; i < size; i++) {
 			goals[i] = distance[i] == d;
 		}
@@ -285,7 +285,7 @@ public class PathFinder {
 		return pathFound;
 	}
 	
-	private static int buildEscapeDistanceMap( int cur, int from, float factor, boolean[] passable ) {
+	private static int buildEscapeDistanceMap( int cur, int from, int lookAhead, boolean[] passable ) {
 		
 		System.arraycopy(maxVal, 0, distance, 0, maxVal.length);
 		
@@ -311,7 +311,7 @@ public class PathFinder {
 			}
 			
 			if (step == cur) {
-				destDist = (int)(dist * factor) + 1;
+				destDist = dist + lookAhead;
 			}
 			
 			int nextDistance = dist + 1;

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -28,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.utils.Graph;
 import com.watabou.utils.PathFinder;
@@ -185,6 +187,13 @@ public abstract class RegularPainter extends Painter {
 						}
 					} else {
 						d.type = Room.Door.Type.UNLOCKED;
+					}
+
+					//entrance doors on floor 2 are hidden if the player hasn't beaten the first boss
+					if (Dungeon.depth == 2
+							&& !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1)
+							&& r instanceof EntranceRoom){
+						d.type = Room.Door.Type.HIDDEN;
 					}
 				}
 				

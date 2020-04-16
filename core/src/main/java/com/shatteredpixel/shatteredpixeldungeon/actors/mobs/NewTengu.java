@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
@@ -53,7 +54,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -113,9 +113,21 @@ public class NewTengu extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 5);
 	}
-	
+
+	//Tengu is immune to debuffs and damage when removed from the level
+	@Override
+	public void add(Buff buff) {
+		if (Actor.chars().contains(this)){
+			super.add(buff);
+		}
+	}
+
 	@Override
 	public void damage(int dmg, Object src) {
+		if (!Dungeon.level.mobs.contains(this)){
+			return;
+		}
+
 		NewPrisonBossLevel.State state = ((NewPrisonBossLevel)Dungeon.level).state();
 		
 		int hpBracket = 20;
@@ -171,7 +183,7 @@ public class NewTengu extends Mob {
 	public boolean isAlive() {
 		return HP > 0 || Dungeon.level.mobs.contains(this); //Tengu has special death rules, see prisonbosslevel.progress()
 	}
-	
+
 	@Override
 	public void die( Object cause ) {
 		
@@ -269,7 +281,7 @@ public class NewTengu extends Mob {
 		} else {
 			Level level = Dungeon.level;
 			
-			newPos = level.randomRespawnCell();
+			newPos = level.randomRespawnCell( this );
 			
 			if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 			
@@ -290,21 +302,21 @@ public class NewTengu extends Mob {
 			BossHealthBar.assignBoss(this);
 			if (HP <= HT/2) BossHealthBar.bleed(true);
 			if (HP == HT) {
-				yell(Messages.get(this, "notice_gotcha", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_gotcha", Dungeon.hero.name()));
 				for (Char ch : Actor.chars()){
 					if (ch instanceof DriedRose.GhostHero){
-						GLog.n("\n");
 						((DriedRose.GhostHero) ch).sayBoss();
 					}
 				}
 			} else {
-				yell(Messages.get(this, "notice_have", Dungeon.hero.givenName()));
+				yell(Messages.get(this, "notice_have", Dungeon.hero.name()));
 			}
 		}
 	}
 	
 	{
 		immunities.add( Blindness.class );
+		immunities.add( Terror.class );
 	}
 	
 	private static final String LAST_ABILITY     = "last_ability";
@@ -501,7 +513,7 @@ public class NewTengu extends Mob {
 		//Targets closest cell which is adjacent to target, and at least 3 tiles away
 		for (int i : PathFinder.NEIGHBOURS8){
 			int cell = target.pos + i;
-			if (Dungeon.level.distance(cell, thrower.pos) >= 3){
+			if (Dungeon.level.distance(cell, thrower.pos) >= 3 && !Dungeon.level.solid[cell]){
 				if (targetCell == -1 ||
 						Dungeon.level.trueDistance(cell, thrower.pos) < Dungeon.level.trueDistance(targetCell, thrower.pos)){
 					targetCell = cell;
@@ -716,16 +728,18 @@ public class NewTengu extends Mob {
 		
 		@Override
 		public boolean act() {
-			
+
+			toCells.clear();
+
 			if (curCells == null){
 				curCells = new int[1];
 				curCells[0] = target.pos;
-			}
-			
-			toCells.clear();
-			
-			for (Integer c : curCells){
-				spreadFromCell( c );
+				spreadFromCell( curCells[0] );
+
+			} else {
+				for (Integer c : curCells) {
+					if (FireBlob.volumeAt(c, FireBlob.class) > 0) spreadFromCell(c);
+				}
 			}
 			
 			for (Integer c : curCells){
@@ -863,7 +877,7 @@ public class NewTengu extends Mob {
 		//Targets closest cell which is adjacent to target, and not adjacent to thrower or another shocker
 		for (int i : PathFinder.NEIGHBOURS8){
 			int cell = target.pos + i;
-			if (Dungeon.level.distance(cell, thrower.pos) >= 2){
+			if (Dungeon.level.distance(cell, thrower.pos) >= 2 && !Dungeon.level.solid[cell]){
 				boolean validTarget = true;
 				for (ShockerAbility s : thrower.buffs(ShockerAbility.class)){
 					if (Dungeon.level.distance(cell, s.shockerPos) < 2){
@@ -989,7 +1003,7 @@ public class NewTengu extends Mob {
 							
 							Char ch = Actor.findChar(cell);
 							if (ch != null && !(ch instanceof NewTengu)){
-								ch.damage(2 + Dungeon.depth, Electricity.class);
+								ch.damage(2 + Dungeon.depth, new Electricity());
 								
 								if (ch == Dungeon.hero && !ch.isAlive()) {
 									Dungeon.fail(NewTengu.class);

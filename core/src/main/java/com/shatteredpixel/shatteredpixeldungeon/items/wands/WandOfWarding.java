@@ -5,6 +5,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -78,27 +79,33 @@ public class WandOfWarding extends Wand {
 		Char ch = Actor.findChar(bolt.collisionPos);
 		if (!curUser.fieldOfView[bolt.collisionPos] || !Dungeon.level.passable[bolt.collisionPos]){
 			GLog.w( Messages.get(this, "bad_location"));
+			Dungeon.level.pressCell(bolt.collisionPos);
 			
 		} else if (ch != null){
 			if (ch instanceof Ward){
 				if (wardAvailable) {
-					((Ward) ch).upgrade(level());
+					((Ward) ch).upgrade( buffedLvl() );
 				} else {
-					((Ward) ch).wandHeal( level() );
+					((Ward) ch).wandHeal( buffedLvl() );
 				}
 				ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
 			} else {
 				GLog.w( Messages.get(this, "bad_location"));
+				Dungeon.level.pressCell(bolt.collisionPos);
 			}
+			
 		} else if (canPlaceWard(bolt.collisionPos)){
 			Ward ward = new Ward();
 			ward.pos = bolt.collisionPos;
-			ward.wandLevel = level();
+			ward.wandLevel = buffedLvl();
 			GameScene.add(ward, 1f);
 			Dungeon.level.occupyCell(ward);
 			ward.sprite.emitter().burst(MagicMissile.WardParticle.UP, ward.tier);
+			Dungeon.level.pressCell(bolt.collisionPos);
+
 		} else {
 			GLog.w( Messages.get(this, "bad_location"));
+			Dungeon.level.pressCell(bolt.collisionPos);
 		}
 	}
 
@@ -119,7 +126,7 @@ public class WandOfWarding extends Wand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, staff.level() );
+		int level = Math.max( 0, staff.buffedLvl() );
 
 		// lvl 0 - 20%
 		// lvl 1 - 33%
@@ -127,7 +134,7 @@ public class WandOfWarding extends Wand {
 		if (Random.Int( level + 5 ) >= 4) {
 			for (Char ch : Actor.chars()){
 				if (ch instanceof Ward){
-					((Ward) ch).wandHeal(staff.level());
+					((Ward) ch).wandHeal(staff.buffedLvl());
 					ch.sprite.emitter().burst(MagicMissile.WardParticle.UP, ((Ward) ch).tier);
 				}
 			}
@@ -180,11 +187,20 @@ public class WandOfWarding extends Wand {
 
 			viewDistance = 3;
 			state = WANDERING;
-
-			name = Messages.get(this, "name_" + tier );
 		}
 
-		public void upgrade( int wandLevel ){
+		@Override
+		protected boolean act() {
+			throwItem();
+			return super.act();
+		}
+
+		@Override
+		public String name() {
+			return Messages.get(this, "name_" + tier );
+		}
+
+		public void upgrade(int wandLevel ){
 			if (this.wandLevel < wandLevel){
 				this.wandLevel = wandLevel;
 			}
@@ -210,7 +226,6 @@ public class WandOfWarding extends Wand {
 			if (tier < 6){
 				tier++;
 				viewDistance++;
-				name = Messages.get(this, "name_" + tier );
 				updateSpriteState();
 				GameScene.updateFog(pos, viewDistance+1);
 			}
@@ -357,12 +372,15 @@ public class WandOfWarding extends Wand {
 		}
 		
 		@Override
-		public boolean canInteract(Hero h) {
+		public boolean canInteract(Char c) {
 			return true;
 		}
 
 		@Override
-		public boolean interact() {
+		public boolean interact( Char c ) {
+			if (c != Dungeon.hero){
+				return true;
+			}
 			Game.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
@@ -386,6 +404,10 @@ public class WandOfWarding extends Wand {
 		public String description() {
 			return Messages.get(this, "desc_" + tier, 2+wandLevel, 8 + 4*wandLevel );
 		}
+		
+		{
+			immunities.add( Corruption.class );
+		}
 
 		private static final String TIER = "tier";
 		private static final String WAND_LEVEL = "wand_level";
@@ -404,7 +426,6 @@ public class WandOfWarding extends Wand {
 			super.restoreFromBundle(bundle);
 			tier = bundle.getInt(TIER);
 			viewDistance = 2 + tier;
-			name = Messages.get(this, "name_" + tier );
 			wandLevel = bundle.getInt(WAND_LEVEL);
 			totalZaps = bundle.getInt(TOTAL_ZAPS);
 		}

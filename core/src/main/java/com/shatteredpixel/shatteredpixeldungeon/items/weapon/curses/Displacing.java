@@ -41,7 +41,7 @@ public class Displacing extends Weapon.Enchantment {
 			int count = 10;
 			int newPos;
 			do {
-				newPos = Dungeon.level.randomRespawnCell();
+				newPos = Dungeon.level.randomRespawnCell( defender );
 				if (count-- <= 0) {
 					break;
 				}

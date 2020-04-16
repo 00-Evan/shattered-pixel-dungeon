@@ -107,7 +107,11 @@ public class ScrollOfTeleportation extends Scroll {
 		
 	}
 	
-	public static void teleportHero( Hero  hero ) {
+	public static void teleportHero( Hero hero ) {
+		teleportChar( hero );
+	}
+	
+	public static void teleportChar( Char ch ) {
 
 		if (Dungeon.bossLevel()){
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
@@ -117,11 +121,11 @@ public class ScrollOfTeleportation extends Scroll {
 		int count = 10;
 		int pos;
 		do {
-			pos = Dungeon.level.randomRespawnCell();
+			pos = Dungeon.level.randomRespawnCell( ch );
 			if (count-- <= 0) {
 				break;
 			}
-		} while (pos == -1);
+		} while (pos == -1 || Dungeon.level.secret[pos]);
 		
 		if (pos == -1) {
 			
@@ -129,12 +133,15 @@ public class ScrollOfTeleportation extends Scroll {
 			
 		} else {
 			
-			GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
+			appear( ch, pos );
+			Dungeon.level.occupyCell( ch );
 			
-			appear( hero, pos );
-			Dungeon.level.occupyCell(hero );
-			Dungeon.observe();
-			GameScene.updateFog();
+			if (ch == Dungeon.hero) {
+				GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
+				
+				Dungeon.observe();
+				GameScene.updateFog();
+			}
 			
 		}
 	}
@@ -168,7 +175,7 @@ public class ScrollOfTeleportation extends Scroll {
 			int cell;
 			for (Point p : r.charPlaceablePoints(level)){
 				cell = level.pointToCell(p);
-				if (level.passable[cell] && !level.visited[cell] && Actor.findChar(cell) == null){
+				if (level.passable[cell] && !level.visited[cell] && !level.secret[cell] && Actor.findChar(cell) == null){
 					candidates.add(cell);
 				}
 			}
@@ -215,6 +222,10 @@ public class ScrollOfTeleportation extends Scroll {
 
 		ch.sprite.interruptMotion();
 
+		if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[ch.pos]){
+			Sample.INSTANCE.play(Assets.SND_TELEPORT);
+		}
+
 		ch.move( pos );
 		if (ch.pos == pos) ch.sprite.place( pos );
 
@@ -223,8 +234,9 @@ public class ScrollOfTeleportation extends Scroll {
 			ch.sprite.parent.add( new AlphaTweener( ch.sprite, 1, 0.4f ) );
 		}
 
-		ch.sprite.emitter().start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
+		if (Dungeon.level.heroFOV[pos] || ch == Dungeon.hero ) {
+			ch.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.2f, 3);
+		}
 	}
 	
 	@Override

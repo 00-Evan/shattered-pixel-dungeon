@@ -58,7 +58,7 @@ public class Sheep extends NPC {
 
 	@Override
 	public int defenseSkill(Char enemy) {
-		return 100_000_000;
+		return INFINITE_EVASION;
 	}
 	
 	@Override
@@ -70,9 +70,9 @@ public class Sheep extends NPC {
 	}
 
 	@Override
-	public boolean interact() {
+	public boolean interact(Char c) {
 		sprite.showStatus( CharSprite.NEUTRAL, Messages.get(this, Random.element( LINE_KEYS )) );
-		Dungeon.hero.spendAndNext(1f);
-		return false;
+		if (c == Dungeon.hero) Dungeon.hero.spendAndNext(1f);
+		return true;
 	}
 }

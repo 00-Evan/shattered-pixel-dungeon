@@ -33,8 +33,8 @@ public class GooWarn extends Blob {
 	//cosmetic blob, used to warn noobs that goo's pump up should, infact, be avoided.
 
 	{
-		//this one needs to act after the Goo
-		actPriority = MOB_PRIO - 1;
+		//this one needs to act just before the Goo
+		actPriority = MOB_PRIO + 1;
 	}
 
 	protected int pos;

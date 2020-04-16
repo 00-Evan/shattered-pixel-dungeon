@@ -22,8 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.effects.ShadowBox;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Camera;
@@ -156,23 +158,18 @@ public class Window extends Group implements Signal.Listener<KeyEvent> {
 	@Override
 	public boolean onSignal( KeyEvent event ) {
 		if (event.pressed) {
-			switch (event.code) {
-				case KeyEvent.BACK:
-					onBackPressed();
-					return true;
-				case KeyEvent.MENU:
-					onMenuPressed();
-					return true;
+			if (KeyBindings.getActionForKey( event ) == SPDAction.BACK){
+				onBackPressed();
 			}
 		}
 		
-		return false;
+		//TODO currently always eats the key event as windows always take full focus
+		// if they are ever made more flexible, might not want to do this in all cases
+		return true;
 	}
 	
 	public void onBackPressed() {
 		hide();
 	}
-	
-	public void onMenuPressed() {
-	}
+
 }

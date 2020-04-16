@@ -83,8 +83,7 @@ public class Assets {
 	public static final String EYE		= "eye.png";
 	public static final String SUCCUBUS	= "succubus.png";
 	public static final String SCORPIO	= "scorpio.png";
-	public static final String ROTTING	= "rotting_fist.png";
-	public static final String BURNING	= "burning_fist.png";
+	public static final String FISTS	= "yog_fists.png";
 	public static final String YOG		= "yog.png";
 	public static final String LARVA	= "larva.png";
 	public static final String GHOST	= "ghost.png";
@@ -102,6 +101,12 @@ public class Assets {
 	public static final String SLIME	= "slime.png";
 	public static final String SNAKE	= "snake.png";
 	public static final String NECRO	= "necromancer.png";
+	public static final String GHOUL	= "ghoul.png";
+	public static final String RIPPER	= "ripper.png";
+	public static final String SPAWNER	= "spawner.png";
+	public static final String DM100	= "dm100.png";
+	public static final String PYLON	= "pylon.png";
+	public static final String DM200	= "dm200.png";
 
 	public static final String ITEMS	        = "items.png";
 	public static final String TERRAIN_FEATURES	= "terrain_features.png";
@@ -129,6 +134,9 @@ public class Assets {
 	public static final String PRISON_QUEST     = "custom_tiles/prison_quests.png";
 	public static final String PRISON_EXIT_OLD  = "custom_tiles/prison_exit_old.png";
 	public static final String PRISON_EXIT_NEW  = "custom_tiles/prison_exit_new.png";
+	public static final String CAVES_BOSS       = "custom_tiles/caves_boss.png";
+	public static final String CITY_BOSS        = "custom_tiles/city_boss.png";
+	public static final String HALLS_SP         = "custom_tiles/halls_special.png";
 	
 	public static final String BUFFS_SMALL	= "buffs.png";
 	public static final String BUFFS_LARGE	= "large_buffs.png";

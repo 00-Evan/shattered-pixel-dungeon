@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 
@@ -42,7 +43,7 @@ public class TargetHealthIndicator extends HealthBar {
 		
 		if (target != null && target.isAlive() && target.sprite.visible) {
 			CharSprite sprite = target.sprite;
-			width = sprite.width;
+			width = sprite.width();
 			x = sprite.x;
 			y = sprite.y - 3;
 			level( target );

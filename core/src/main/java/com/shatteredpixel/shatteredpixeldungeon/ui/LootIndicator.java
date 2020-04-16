@@ -22,8 +22,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.watabou.input.GameAction;
 
 public class LootIndicator extends Tag {
 	
@@ -39,7 +41,7 @@ public class LootIndicator extends Tag {
 		
 		visible = false;
 	}
-	
+
 	@Override
 	protected void createChildren() {
 		super.createChildren();
@@ -50,6 +52,11 @@ public class LootIndicator extends Tag {
 					Dungeon.hero.next();
 				}
 
+			}
+
+			@Override
+			public GameAction keyAction() {
+				return SPDAction.TAG_LOOT;
 			}
 		};
 		slot.showParams( true, false, false );

@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.CorrosionParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
@@ -62,6 +63,12 @@ public class MagicMissile extends Emitter {
 	public static final int RAINBOW         = 8;
 	public static final int EARTH           = 9;
 	public static final int WARD            = 10;
+	
+	public static final int SHAMAN_RED      = 11;
+	public static final int SHAMAN_BLUE     = 12;
+	public static final int SHAMAN_PURPLE   = 13;
+	public static final int TOXIC_VENT      = 14;
+	public static final int ELMO            = 15;
 
 	public static final int FIRE_CONE       = 100;
 	public static final int FOLIAGE_CONE    = 101;
@@ -89,8 +96,6 @@ public class MagicMissile extends Emitter {
 
 	public void reset( int type, PointF from, PointF to, Callback callback ) {
 		this.callback = callback;
-		
-		revive();
 		
 		this.to = to;
 		
@@ -147,6 +152,27 @@ public class MagicMissile extends Emitter {
 				size( 4 );
 				pour( WardParticle.FACTORY, 0.01f );
 				break;
+				
+			case SHAMAN_RED:
+				size( 2 );
+				pour( ShamanParticle.RED, 0.01f );
+				break;
+			case SHAMAN_BLUE:
+				size( 2 );
+				pour( ShamanParticle.BLUE, 0.01f );
+				break;
+			case SHAMAN_PURPLE:
+				size( 2 );
+				pour( ShamanParticle.PURPLE, 0.01f );
+				break;
+			case TOXIC_VENT:
+				size( 10 );
+				pour( Speck.factory(Speck.TOXIC), 0.02f );
+				break;
+			case ELMO:
+				size( 5 );
+				pour( ElmoParticle.FACTORY, 0.01f );
+				break;
 
 			case FIRE_CONE:
 				size( 10 );
@@ -157,6 +183,8 @@ public class MagicMissile extends Emitter {
 				pour( LeafParticle.GENERAL, 0.03f );
 				break;
 		}
+
+		revive();
 	}
 	
 	public void size( float size ) {
@@ -300,7 +328,7 @@ public class MagicMissile extends Emitter {
 			size = 4;
 			
 			if (Random.Int(10) == 0){
-				color(ColorMath.random(0xFFF568, 0x80791A));
+				color(ColorMath.random(0xFFF266, 0x80771A));
 			} else {
 				color(ColorMath.random(0x805500, 0x332500));
 			}
@@ -323,6 +351,60 @@ public class MagicMissile extends Emitter {
 			this.y = y - speed.y * lifespan;
 			
 			acc.set( 0, 0 );
+		}
+	}
+	
+	public static class ShamanParticle extends EarthParticle{
+		
+		public static final Emitter.Factory RED = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((ShamanParticle)emitter.recycle( ShamanParticle.class ))
+						.reset( x, y, ColorMath.random(0xFF4D4D, 0x801A1A) );
+			}
+		};
+		
+		public static final Emitter.Factory BLUE = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((ShamanParticle)emitter.recycle( ShamanParticle.class ))
+						.reset( x, y, ColorMath.random(0x6699FF, 0x1A3C80) );
+			}
+		};
+		
+		public static final Emitter.Factory PURPLE = new Factory() {
+			@Override
+			public void emit( Emitter emitter, int index, float x, float y ) {
+				((ShamanParticle)emitter.recycle( ShamanParticle.class ))
+						.reset( x, y, ColorMath.random(0xBB33FF, 0x5E1A80) );
+			}
+		};
+		
+		int startColor;
+		int endColor;
+		
+		public ShamanParticle() {
+			super();
+			
+			lifespan = 0.6f;
+			acc.set( 0, 0 );
+		}
+		
+		public void reset( float x, float y, int endColor ){
+			super.reset( x, y );
+			
+			size( 1 );
+			
+			this.endColor = endColor;
+			startColor = ColorMath.random(0x805500, 0x332500);
+			
+			speed.set( Random.Float( -10, +10 ), Random.Float( -10, +10 ) );
+		}
+		
+		@Override
+		public void update() {
+			super.update();
+			color( ColorMath.interpolate( endColor, startColor, (left / lifespan) ));
 		}
 	}
 	

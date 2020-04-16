@@ -33,6 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -66,9 +68,13 @@ public class Blacksmith extends NPC {
 	}
 	
 	@Override
-	public boolean interact() {
+	public boolean interact(Char c) {
 		
-		sprite.turnTo( pos, Dungeon.hero.pos );
+		sprite.turnTo( pos, c.pos );
+
+		if (c != Dungeon.hero){
+			return true;
+		}
 		
 		if (!Quest.given) {
 			
@@ -153,7 +159,7 @@ public class Blacksmith extends NPC {
 			
 		}
 
-		return false;
+		return true;
 	}
 	
 	private void tell( String text ) {
@@ -208,6 +214,18 @@ public class Blacksmith extends NPC {
 		Sample.INSTANCE.play( Assets.SND_EVOKE );
 		ScrollOfUpgrade.upgrade( Dungeon.hero );
 		Item.evoke( Dungeon.hero );
+
+		if (second.isEquipped( Dungeon.hero )) {
+			((EquipableItem)second).doUnequip( Dungeon.hero, false );
+		}
+		second.detach( Dungeon.hero.belongings.backpack );
+
+		if (second instanceof Armor){
+			BrokenSeal seal = ((Armor) second).checkSeal();
+			if (seal != null){
+				Dungeon.level.drop( seal, Dungeon.hero.pos );
+			}
+		}
 		
 		if (first.isEquipped( Dungeon.hero )) {
 			((EquipableItem)first).doUnequip( Dungeon.hero, true );
@@ -215,7 +233,12 @@ public class Blacksmith extends NPC {
 		if (first instanceof MissileWeapon && first.quantity() > 1){
 			first = first.split(1);
 		}
-		first.level(first.level()+1); //prevents on-upgrade effects like enchant/glyph removal
+		int level = first.level();
+		//adjust for curse infusion
+		if (first instanceof Weapon && ((Weapon) first).curseInfusionBonus) level--;
+		if (first instanceof Armor && ((Armor) first).curseInfusionBonus) level--;
+		if (first instanceof Wand && ((Wand) first).curseInfusionBonus) level--;
+		first.level(level+1); //prevents on-upgrade effects like enchant/glyph removal
 		if (first instanceof MissileWeapon && !Dungeon.hero.belongings.contains(first)) {
 			if (!first.collect()){
 				Dungeon.level.drop( first, Dungeon.hero.pos );
@@ -224,18 +247,6 @@ public class Blacksmith extends NPC {
 		Dungeon.hero.spendAndNext( 2f );
 		Badges.validateItemLevelAquired( first );
 		
-		if (second.isEquipped( Dungeon.hero )) {
-			((EquipableItem)second).doUnequip( Dungeon.hero, false );
-		}
-		second.detach( Dungeon.hero.belongings.backpack );
-		
-		if (second instanceof Armor){
-			BrokenSeal seal = ((Armor) second).checkSeal();
-			if (seal != null){
-				Dungeon.level.drop( seal, Dungeon.hero.pos );
-			}
-		}
-		
 		Quest.reforged = true;
 		
 		Notes.remove( Notes.Landmark.TROLL );
@@ -243,7 +254,7 @@ public class Blacksmith extends NPC {
 	
 	@Override
 	public int defenseSkill( Char enemy ) {
-		return 100_000_000;
+		return INFINITE_EVASION;
 	}
 	
 	@Override

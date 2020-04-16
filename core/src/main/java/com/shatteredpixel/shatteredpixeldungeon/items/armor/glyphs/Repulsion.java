@@ -35,7 +35,7 @@ public class Repulsion extends Armor.Glyph {
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
 
-		int level = Math.max( 0, armor.level() );
+		int level = Math.max( 0, armor.buffedLvl() );
 
 		if (Random.Int( level + 5 ) >= 4){
 			int oppositeHero = attacker.pos + (attacker.pos - defender.pos);

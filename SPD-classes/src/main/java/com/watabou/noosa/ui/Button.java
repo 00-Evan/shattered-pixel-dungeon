@@ -21,9 +21,13 @@
 
 package com.watabou.noosa.ui;
 
+import com.watabou.input.GameAction;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.PointerArea;
+import com.watabou.utils.Signal;
 
 public class Button extends Component {
 
@@ -33,9 +37,8 @@ public class Button extends Component {
 	
 	protected boolean pressed;
 	protected float pressTime;
-	
 	protected boolean processed;
-	
+
 	@Override
 	protected void createChildren() {
 		hotArea = new PointerArea( 0, 0, 0, 0 ) {
@@ -59,6 +62,23 @@ public class Button extends Component {
 			}
 		};
 		add( hotArea );
+		
+		KeyEvent.addKeyListener( keyListener = new Signal.Listener<KeyEvent>() {
+			@Override
+			public boolean onSignal ( KeyEvent event ) {
+				if ( active && event.pressed && KeyBindings.getActionForKey( event ) == keyAction()){
+					onClick();
+					return true;
+				}
+				return false;
+			}
+		});
+	}
+	
+	private Signal.Listener<KeyEvent> keyListener;
+	
+	public GameAction keyAction(){
+		return null;
 	}
 	
 	@Override
@@ -96,4 +116,11 @@ public class Button extends Component {
 		hotArea.width = width;
 		hotArea.height = height;
 	}
+	
+	@Override
+	public synchronized void destroy () {
+		super.destroy();
+		KeyEvent.removeKeyListener( keyListener );
+	}
+	
 }

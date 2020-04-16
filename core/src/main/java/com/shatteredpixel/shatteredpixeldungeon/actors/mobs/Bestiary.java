@@ -72,93 +72,104 @@ public class Bestiary {
 						Thief.class,
 						Swarm.class));
 			case 7:
-				//3x skeleton, 1x thief, 1x shaman, 1x guard
+				//3x skeleton, 1x thief, 1x DM-100, 1x guard
 				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class, Skeleton.class,
 						Thief.class,
-						Shaman.class,
+						DM100.class,
 						Guard.class));
 			case 8:
-				//2x skeleton, 1x thief, 2x shaman, 2x guard, 1x necromancer
+				//2x skeleton, 1x thief, 2x DM-100, 2x guard, 1x necromancer
 				return new ArrayList<>(Arrays.asList(Skeleton.class, Skeleton.class,
 						Thief.class,
-						Shaman.class, Shaman.class,
+						DM100.class, DM100.class,
 						Guard.class, Guard.class,
 						Necromancer.class));
 			case 9: case 10:
-				//1x skeleton, 1x thief, 2x shaman, 2x guard, 2x necromancer
+				//1x skeleton, 1x thief, 2x DM-100, 2x guard, 2x necromancer
 				return new ArrayList<>(Arrays.asList(Skeleton.class,
 						Thief.class,
-						Shaman.class, Shaman.class,
+						DM100.class, DM100.class,
 						Guard.class, Guard.class,
 						Necromancer.class, Necromancer.class));
 				
 			// Caves
 			case 11:
-				//5x bat, 1x brute
+				//3x bat, 1x brute, 1x shaman
 				return new ArrayList<>(Arrays.asList(
-						Bat.class, Bat.class, Bat.class, Bat.class, Bat.class,
-						Brute.class));
+						Bat.class, Bat.class, Bat.class,
+						Brute.class,
+						Shaman.random()));
 			case 12:
-				//5x bat, 5x brute, 1x spinner
+				//2x bat, 2x brute, 1x shaman, 1x spinner
 				return new ArrayList<>(Arrays.asList(
-						Bat.class, Bat.class, Bat.class, Bat.class, Bat.class,
-						Brute.class, Brute.class, Brute.class, Brute.class, Brute.class,
+						Bat.class, Bat.class,
+						Brute.class, Brute.class,
+						Shaman.random(),
 						Spinner.class));
 			case 13:
-				//1x bat, 3x brute, 1x shaman, 1x spinner
+				//1x bat, 2x brute, 2x shaman, 2x spinner, 1x DM-200
 				return new ArrayList<>(Arrays.asList(
 						Bat.class,
-						Brute.class, Brute.class, Brute.class,
-						Shaman.class,
-						Spinner.class));
+						Brute.class, Brute.class,
+						Shaman.random(), Shaman.random(),
+						Spinner.class, Spinner.class,
+						DM200.class));
 			case 14: case 15:
-				//1x bat, 3x brute, 1x shaman, 4x spinner
+				//1x bat, 1x brute, 2x shaman, 2x spinner, 2x DM-300
 				return new ArrayList<>(Arrays.asList(
 						Bat.class,
-						Brute.class, Brute.class, Brute.class,
-						Shaman.class,
-						Spinner.class, Spinner.class, Spinner.class, Spinner.class));
+						Brute.class,
+						Shaman.random(), Shaman.random(),
+						Spinner.class, Spinner.class,
+						DM200.class, DM200.class));
 				
 			// City
 			case 16:
-				//5x elemental, 5x warlock, 1x monk
+				//2x ghoul, 2x elemental, 1x warlock
 				return new ArrayList<>(Arrays.asList(
-						Elemental.class, Elemental.class, Elemental.class, Elemental.class, Elemental.class,
-						Warlock.class, Warlock.class, Warlock.class, Warlock.class, Warlock.class,
-						Monk.class));
+						Ghoul.class, Ghoul.class,
+						Elemental.random(), Elemental.random(),
+						Warlock.class));
 			case 17:
-				//2x elemental, 2x warlock, 2x monk
+				//1x ghoul, 2x elemental, 1x warlock, 1x monk
 				return new ArrayList<>(Arrays.asList(
-						Elemental.class, Elemental.class,
-						Warlock.class, Warlock.class,
-						Monk.class, Monk.class));
-			case 18:
-				//1x elemental, 1x warlock, 2x monk, 1x golem
-				return new ArrayList<>(Arrays.asList(
-						Elemental.class,
+						Ghoul.class,
+						Elemental.random(), Elemental.random(),
 						Warlock.class,
+						Monk.class));
+			case 18:
+				//1x ghoul, 1x elemental, 2x warlock, 2x monk, 1x golem
+				return new ArrayList<>(Arrays.asList(
+						Ghoul.class,
+						Elemental.random(),
+						Warlock.class, Warlock.class,
 						Monk.class, Monk.class,
 						Golem.class));
 			case 19: case 20:
-				//1x elemental, 1x warlock, 2x monk, 3x golem
+				//1x elemental, 2x warlock, 2x monk, 3x golem
 				return new ArrayList<>(Arrays.asList(
-						Elemental.class,
-						Warlock.class,
+						Elemental.random(),
+						Warlock.class, Warlock.class,
 						Monk.class, Monk.class,
 						Golem.class, Golem.class, Golem.class));
 				
 			// Halls
-			case 21: case 22:
-				//3x succubus, 3x evil eye
-				return new ArrayList<>(Arrays.asList(
-						Succubus.class, Succubus.class, Succubus.class,
-						Eye.class, Eye.class, Eye.class));
-			case 23:
-				//2x succubus, 4x evil eye, 2x scorpio
+			case 21:
+				//2x succubus, 1x evil eye
 				return new ArrayList<>(Arrays.asList(
 						Succubus.class, Succubus.class,
-						Eye.class, Eye.class, Eye.class, Eye.class,
-						Scorpio.class, Scorpio.class));
+						Eye.class));
+			case 22:
+				//1x succubus, 1x evil eye
+				return new ArrayList<>(Arrays.asList(
+						Succubus.class,
+						Eye.class));
+			case 23:
+				//1x succubus, 2x evil eye, 1x scorpio
+				return new ArrayList<>(Arrays.asList(
+						Succubus.class,
+						Eye.class, Eye.class,
+						Scorpio.class));
 			case 24: case 25: case 26:
 				//1x succubus, 2x evil eye, 3x scorpio
 				return new ArrayList<>(Arrays.asList(
@@ -182,26 +193,18 @@ public class Bestiary {
 				return;
 				
 			// Prison
-			case 8:
-				if (Random.Float() < 0.02f) rotation.add(Bat.class);
-				return;
 			case 9:
-				if (Random.Float() < 0.02f) rotation.add(Bat.class);
-				if (Random.Float() < 0.01f) rotation.add(Brute.class);
+				if (Random.Float() < 0.025f) rotation.add(Bat.class);
 				return;
 				
 			// Caves
-			case 13:
-				if (Random.Float() < 0.02f) rotation.add(Elemental.class);
-				return;
 			case 14:
-				if (Random.Float() < 0.02f) rotation.add(Elemental.class);
-				if (Random.Float() < 0.01f) rotation.add(Monk.class);
+				if (Random.Float() < 0.025f) rotation.add(Ghoul.class);
 				return;
 				
 			// City
 			case 19:
-				if (Random.Float() < 0.02f) rotation.add(Succubus.class);
+				if (Random.Float() < 0.025f) rotation.add(Succubus.class);
 				return;
 		}
 	}
@@ -218,7 +221,9 @@ public class Bestiary {
 				} else if (cl == Thief.class) {
 					cl = Bandit.class;
 				} else if (cl == Brute.class) {
-					cl = Shielded.class;
+					cl = ArmoredBrute.class;
+				} else if (cl == DM200.class) {
+					cl = DM201.class;
 				} else if (cl == Monk.class) {
 					cl = Senior.class;
 				} else if (cl == Scorpio.class) {

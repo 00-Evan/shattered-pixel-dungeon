@@ -69,7 +69,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int min() {
-		return Math.max(0, min( level() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
+		return Math.max(0, min( buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ abstract public class MissileWeapon extends Weapon {
 	
 	@Override
 	public int max() {
-		return Math.max(0, max( level() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
+		return Math.max(0, max( buffedLvl() + RingOfSharpshooting.levelDamageBonus(Dungeon.hero) ));
 	}
 	
 	@Override
@@ -99,6 +99,7 @@ abstract public class MissileWeapon extends Weapon {
 	//FIXME some logic here assumes the items are in the player's inventory. Might need to adjust
 	public Item upgrade() {
 		if (!bundleRestoring) {
+			durability = MAX_DURABILITY;
 			if (quantity > 1) {
 				MissileWeapon upgraded = (MissileWeapon) split(1);
 				upgraded.parent = null;
@@ -112,7 +113,6 @@ abstract public class MissileWeapon extends Weapon {
 				updateQuickslot();
 				return upgraded;
 			} else {
-				durability = MAX_DURABILITY;
 				super.upgrade();
 				
 				Item similar = Dungeon.hero.belongings.getSimilar(this);

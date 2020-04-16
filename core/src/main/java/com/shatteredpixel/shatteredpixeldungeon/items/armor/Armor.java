@@ -74,8 +74,8 @@ public class Armor extends EquipableItem {
 	protected static final String AC_DETACH       = "DETACH";
 	
 	public enum Augment {
-		EVASION (1.5f , -1f),
-		DEFENSE (-1.5f, 1f),
+		EVASION (2f , -1f),
+		DEFENSE (-2f, 1f),
 		NONE	(0f   ,  0f);
 		
 		private float evasionFactor;
@@ -265,7 +265,7 @@ public class Armor extends EquipableItem {
 	}
 
 	public final int DRMax(){
-		return DRMax(level());
+		return DRMax(buffedLvl());
 	}
 
 	public int DRMax(int lvl){
@@ -278,7 +278,7 @@ public class Armor extends EquipableItem {
 	}
 
 	public final int DRMin(){
-		return DRMin(level());
+		return DRMin(buffedLvl());
 	}
 
 	public int DRMin(int lvl){
@@ -306,7 +306,7 @@ public class Armor extends EquipableItem {
 			}
 		}
 		
-		return evasion + augment.evasionFactor(level());
+		return evasion + augment.evasionFactor(buffedLvl());
 	}
 	
 	public float speedFactor( Char owner, float speed ){
@@ -324,7 +324,7 @@ public class Armor extends EquipableItem {
 					break;
 				}
 			}
-			if (!enemyNear) speed *= (1.2f + 0.04f * level());
+			if (!enemyNear) speed *= (1.2f + 0.04f * buffedLvl());
 		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
 			speed *= 2f;
 		}
@@ -342,7 +342,7 @@ public class Armor extends EquipableItem {
 	public float stealthFactor( Char owner, float stealth ){
 		
 		if (hasGlyph(Obfuscation.class, owner)){
-			stealth += 1 + level()/3f;
+			stealth += 1 + buffedLvl()/3f;
 		}
 		
 		return stealth;
@@ -351,6 +351,16 @@ public class Armor extends EquipableItem {
 	@Override
 	public int level() {
 		return super.level() + (curseInfusionBonus ? 1 : 0);
+	}
+	
+	//other things can equip these, for now we assume only the hero can be affected by levelling debuffs
+	@Override
+	public int buffedLvl() {
+		if (isEquipped( Dungeon.hero ) || Dungeon.hero.belongings.contains( this )){
+			return super.buffedLvl();
+		} else {
+			return level();
+		}
 	}
 	
 	@Override

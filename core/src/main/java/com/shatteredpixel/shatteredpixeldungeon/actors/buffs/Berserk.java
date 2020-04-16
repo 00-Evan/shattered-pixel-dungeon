@@ -79,12 +79,15 @@ public class Berserk extends Buff {
 		if (berserking()){
 			ShieldBuff buff = target.buff(WarriorShield.class);
 			if (target.HP <= 0) {
+				int dmg = 1 + (int)Math.ceil(target.shielding() * 0.1f);
 				if (buff != null && buff.shielding() > 0) {
-					buff.absorbDamage(1 + (int)Math.ceil(target.shielding() * 0.1f));
+					buff.absorbDamage(dmg);
 				} else {
 					//if there is no shield buff, or it is empty, then try to remove from other shielding buffs
-					buff = target.buff(ShieldBuff.class);
-					if (buff != null) buff.absorbDamage(1 + (int)Math.ceil(target.shielding() * 0.1f));
+					for (ShieldBuff s : target.buffs(ShieldBuff.class)){
+						dmg = s.absorbDamage(dmg);
+						if (dmg == 0) break;
+					}
 				}
 				if (target.shielding() <= 0) {
 					target.die(this);
