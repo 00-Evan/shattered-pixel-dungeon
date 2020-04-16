@@ -33,11 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.Group;
-<<<<<<< HEAD
-import com.watabou.noosa.audio.Music;
-=======
 import com.watabou.noosa.Tilemap;
->>>>>>> de448a09932fe6510deefdf5ffe23994b6b368f0
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;

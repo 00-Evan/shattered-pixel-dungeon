@@ -39,11 +39,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_4_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_5_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_6_X_Changes;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_7_X_Changes;
-<<<<<<< HEAD
-import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_X_Changes;
-=======
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_8_X_Changes;
->>>>>>> de448a09932fe6510deefdf5ffe23994b6b368f0
+import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.v0_X_Changes;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.audio.Music;
@@ -92,11 +89,8 @@ public class ChangesScene extends PixelScene {
 		
 		switch (changesSelected){
 			case 0: default:
-<<<<<<< HEAD
 				v0_X_Changes.addAllChanges(changeInfos);
-=======
 				v0_8_X_Changes.addAllChanges(changeInfos);
->>>>>>> de448a09932fe6510deefdf5ffe23994b6b368f0
 				break;
 			case 1:
 				v0_7_X_Changes.addAllChanges(changeInfos);
