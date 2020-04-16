@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -51,6 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
+import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -59,6 +61,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public abstract class RegularLevel extends Level {
+
+	{
+		theme = Assets.TUNE;
+	}
 	
 	protected ArrayList<Room> rooms;
 	
@@ -68,7 +74,12 @@ public abstract class RegularLevel extends Level {
 	protected Room roomExit;
 	
 	public int secretDoors;
-	
+
+	@Override
+	public void playTheme() {
+		Music.INSTANCE.play(theme, true);
+	}
+
 	@Override
 	protected boolean build() {
 		

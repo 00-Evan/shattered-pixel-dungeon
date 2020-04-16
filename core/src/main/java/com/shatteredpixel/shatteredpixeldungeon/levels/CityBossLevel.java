@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -61,7 +62,7 @@ public class CityBossLevel extends Level {
 	private int arenaDoor;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
-	
+
 	@Override
 	public String tilesTex() {
 		return Assets.TILES_CITY;

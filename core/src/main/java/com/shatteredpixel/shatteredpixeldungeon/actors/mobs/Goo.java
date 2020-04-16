@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Camera;
+import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -261,6 +262,7 @@ public class Goo extends Mob {
 				}
 			}
 		}
+		Music.INSTANCE.play(Assets.HAPPY, true);
 	}
 
 	private final String PUMPEDUP = "pumpedup";

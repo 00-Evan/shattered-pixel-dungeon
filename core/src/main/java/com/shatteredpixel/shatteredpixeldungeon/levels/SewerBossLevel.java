@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -37,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.sewerboss.SewerBoss
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.Group;
+import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -47,10 +49,17 @@ public class SewerBossLevel extends SewerLevel {
 	{
 		color1 = 0x48763c;
 		color2 = 0x59994a;
+
+		theme = Assets.TUNE;
 	}
 	
 	private int stairs = 0;
-	
+
+	@Override
+	public void playTheme() {
+		Music.INSTANCE.stop();
+	}
+
 	@Override
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();

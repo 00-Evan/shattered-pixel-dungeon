@@ -170,8 +170,8 @@ public class GameScene extends PixelScene {
 			ShatteredPixelDungeon.switchNoFade(TitleScene.class);
 			return;
 		}
-		
-		Music.INSTANCE.play( Assets.TUNE, true );
+
+		Dungeon.level.playTheme();
 
 		SPDSettings.lastClass(Dungeon.hero.heroClass.ordinal());
 		
@@ -920,7 +920,7 @@ public class GameScene extends PixelScene {
 		
 		Sample.INSTANCE.play( Assets.SND_DEATH );
 	}
-	
+
 	public static void bossSlain() {
 		if (Dungeon.hero.isAlive()) {
 			Banner bossSlain = new Banner( BannerSprites.get( BannerSprites.Type.BOSS_SLAIN ) );
@@ -928,6 +928,7 @@ public class GameScene extends PixelScene {
 			scene.showBanner( bossSlain );
 			
 			Sample.INSTANCE.play( Assets.SND_BOSS );
+			Music.INSTANCE.stop();
 		}
 	}
 	
