@@ -238,8 +238,18 @@ public abstract class Char extends Actor {
 		if (enemy == null) return false;
 		
 		boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
-		
-		if (hit( this, enemy, false )) {
+
+		if (enemy.isInvulnerable(getClass())) {
+
+			if (visibleFight) {
+				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "invulnerable") );
+
+				Sample.INSTANCE.play(Assets.SND_MISS);
+			}
+
+			return false;
+
+		} else if (hit( this, enemy, false )) {
 			
 			int dr = enemy.drRoll();
 			

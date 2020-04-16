@@ -105,7 +105,7 @@ public class DemonSpawner extends Mob {
 
 				Dungeon.level.occupyCell(spawn);
 
-				GameScene.add( spawn );
+				GameScene.add( spawn, 1 );
 				if (sprite.visible) {
 					Actor.addDelayed(new Pushing(spawn, pos, spawn.pos), -1);
 				}

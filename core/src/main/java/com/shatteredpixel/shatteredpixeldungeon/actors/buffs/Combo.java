@@ -74,8 +74,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	
 	public void hit( Char enemy ) {
 
-		//doesn't increment combo count if enemy invulnerable
-		if (!enemy.isInvulnerable(target.getClass())) count++;
+		count++;
 		comboTime = 4f;
 		misses = 0;
 		BuffIndicator.refreshHero();
@@ -211,6 +210,13 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 			if (enemy.defenseSkill(target) >= Char.INFINITE_EVASION){
 				enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
+				Sample.INSTANCE.play(Assets.SND_MISS);
+				detach();
+				ActionIndicator.clearAction(Combo.this);
+				((Hero)target).spendAndNext(((Hero)target).attackDelay());
+				return;
+			} else if (enemy.isInvulnerable(target.getClass())){
+				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Char.class, "invulnerable") );
 				Sample.INSTANCE.play(Assets.SND_MISS);
 				detach();
 				ActionIndicator.clearAction(Combo.this);
