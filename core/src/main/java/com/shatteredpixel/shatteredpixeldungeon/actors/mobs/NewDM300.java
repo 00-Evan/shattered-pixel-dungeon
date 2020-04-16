@@ -454,7 +454,7 @@ public class NewDM300 extends Mob {
 		spend(3f);
 		yell(Messages.get(this, "charging"));
 		sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
-		sprite.resetColor();
+		((DM300Sprite)sprite).charge();
 		chargeAnnounced = false;
 
 		GLog.h(Messages.get(this, "charging_hint"));

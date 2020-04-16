@@ -64,8 +64,13 @@ public class PylonSprite extends MobSprite {
 		if (ch instanceof Pylon && ch.alignment == Char.Alignment.ENEMY){
 			activate();
 		}
-		if (parent != null) parent.bringToFront(this);
 		renderShadow = false;
+	}
+
+	@Override
+	public void place(int cell) {
+		if (parent != null) parent.bringToFront(this);
+		super.place(cell);
 	}
 
 	public void activate(){
