@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
@@ -43,7 +44,7 @@ import com.watabou.utils.FileUtils;
 
 public class WelcomeScene extends PixelScene {
 
-	private static int LATEST_UPDATE = ShatteredPixelDungeon.v0_7_5;
+	private static int LATEST_UPDATE = ShatteredPixelDungeon.v0_8_0;
 
 	@Override
 	public void create() {
