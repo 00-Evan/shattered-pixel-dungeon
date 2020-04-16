@@ -154,10 +154,7 @@ public class WndLangs extends Window {
 					String[] reviewers = currLang.reviewers();
 					String[] translators = currLang.translators();
 					
-					boolean wide = false;
-					if (PixelScene.landscape() && (reviewers.length + translators.length) > 10){
-						wide = true;
-					}
+					boolean wide = (2*reviewers.length + translators.length) > (PixelScene.landscape() ? 15 : 30);
 					
 					int i;
 					if (reviewers.length > 0){
@@ -221,7 +218,7 @@ public class WndLangs extends Window {
 						credits.add(rightColumn);
 					}
 
-					credits.resize(w, (int)text.bottom());
+					credits.resize(w, (int)text.bottom()+2);
 					parent.add(credits);
 				}
 			};
