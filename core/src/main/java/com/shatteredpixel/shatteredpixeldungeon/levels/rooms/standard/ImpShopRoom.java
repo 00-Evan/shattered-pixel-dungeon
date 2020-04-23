@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Point;
 
 //shops probably shouldn't extend special room, because of cases like this.
 public class ImpShopRoom extends ShopRoom {
@@ -76,6 +77,13 @@ public class ImpShopRoom extends ShopRoom {
 
 		int pos = level.pointToCell(center());
 
+		for (Point p : getPoints()){
+			if (level.map[level.pointToCell(p)] == Terrain.PEDESTAL){
+				pos = level.pointToCell(p);
+				break;
+			}
+		}
+
 		Mob shopkeeper = new ImpShopkeeper();
 		shopkeeper.pos = pos;
 		if (ShatteredPixelDungeon.scene() instanceof GameScene) {
@@ -96,6 +104,10 @@ public class ImpShopRoom extends ShopRoom {
 		impSpawned = true;
 		placeShopkeeper(level);
 		placeItems(level);
+	}
+
+	public boolean shopSpawned(){
+		return impSpawned;
 	}
 
 	private static final String IMP = "imp_spawned";

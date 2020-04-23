@@ -102,7 +102,9 @@ public class NewCityBossLevel extends Level {
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		impShop = (ImpShopRoom) bundle.get( IMP_SHOP );
-		if (map[topDoor] != Terrain.LOCKED_DOOR) impShop.onLevelLoad(this);
+		if (map[topDoor] != Terrain.LOCKED_DOOR && Imp.Quest.isCompleted() && !impShop.shopSpawned()){
+			spawnShop();
+		}
 	}
 
 	@Override
@@ -157,9 +159,6 @@ public class NewCityBossLevel extends Level {
 
 		impShop = new ImpShopRoom();
 		impShop.set(end.left+3, end.top+12, end.left+11, end.top+20);
-		if (impShop.itemCount() > (7*7)){
-			impShop.bottom += 2;
-		}
 		Painter.set(this, impShop.center(), Terrain.PEDESTAL);
 
 		Painter.set(this, impShop.left+2, impShop.top, Terrain.STATUE);
@@ -307,9 +306,16 @@ public class NewCityBossLevel extends Level {
 		GameScene.updateMap( topDoor );
 
 		if (Imp.Quest.isCompleted()) {
-			impShop.spawnShop(this);
+			spawnShop();
 		}
 		Dungeon.observe();
+	}
+
+	private void spawnShop(){
+		while (impShop.itemCount() >= 7*(impShop.height()-2)){
+			impShop.bottom++;
+		}
+		impShop.spawnShop(this);
 	}
 
 	@Override
