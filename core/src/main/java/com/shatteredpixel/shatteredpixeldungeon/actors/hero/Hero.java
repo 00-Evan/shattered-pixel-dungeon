@@ -1062,15 +1062,18 @@ public class Hero extends Char {
 
 		int preHP = HP + shielding();
 		super.damage( dmg, src );
-		int effectiveDamage = preHP - (HP + shielding());
+		int postHP = HP + shielding();
+		int effectiveDamage = preHP - postHP;
 
-		//flash red when hit for 1/4 of your remaining HP or higher.
-		// Intensity increases the more injured the player is.
-		if (preHP > 0 && effectiveDamage >= preHP/4f){
-			//08%/11%/16%/33% intensity at
-			//75%/50%/25%/00% health
-			float divisor = 3 + 12*((HP + shielding()) / (float)(HT + shielding()));
-			GameScene.flash( (int)(0xFF/divisor) << 16 );
+		//flash red when hit for serious damage.
+		float percentDMG = effectiveDamage / (float)preHP; //percent of current HP that was taken
+		float percentHP = 1 - ((HT - postHP) / (float)HT); //percent health after damage was taken
+		// The flash intensity increases primarily based on damage taken and secondarily on missing HP.
+		float flashIntensity = 0.25f * (percentDMG * percentDMG) / percentHP;
+		//if the intensity is very low don't flash at all
+		if (flashIntensity >= 0.05f){
+			flashIntensity = Math.min(1/3f, flashIntensity); //cap intensity at 1/3
+			GameScene.flash( (int)(0xFF*flashIntensity) << 16 );
 		}
 	}
 	
