@@ -193,6 +193,17 @@ public class NewCavesBossLevel extends Level {
 	}
 
 	@Override
+	public boolean setCellToWater(boolean includeTraps, int cell) {
+		for (int i : pylonPositions){
+			if (Dungeon.level.distance(cell, i) <= 1){
+				return false;
+			}
+		}
+
+		return super.setCellToWater(includeTraps, cell);
+	}
+
+	@Override
 	public void occupyCell(Char ch) {
 		super.occupyCell(ch);
 
@@ -707,25 +718,28 @@ public class NewCavesBossLevel extends Level {
 
 		@Override
 		protected void evolve() {
-			int cell;
-			for (int i=area.top-1; i <= area.bottom; i++) {
-				for (int j = area.left-1; j <= area.right; j++) {
-					cell = j + i* Dungeon.level.width();
-					if (Dungeon.level.insideMap(cell)) {
-						off[cell] = cur[cell];
-						volume += off[cell];
-						if (off[cell] > 0){
+			for (int cell = 0; cell < Dungeon.level.length(); cell++) {
+				if (Dungeon.level.insideMap(cell)) {
+					off[cell] = cur[cell];
 
-							Char ch = Actor.findChar(cell);
-							if (ch != null && !(ch instanceof NewDM300)) {
-								Sample.INSTANCE.play( Assets.SND_LIGHTNING );
-								ch.damage( Random.NormalIntRange(6, 12), Electricity.class);
-								ch.sprite.flash();
+					//instantly spreads to water cells
+					if (off[cell] == 0 && Dungeon.level.water[cell]){
+						off[cell]++;
+					}
 
-								if (ch == Dungeon.hero && !ch.isAlive()) {
-									Dungeon.fail(NewDM300.class);
-									GLog.n( Messages.get(Electricity.class, "ondeath") );
-								}
+					volume += off[cell];
+
+					if (off[cell] > 0){
+
+						Char ch = Actor.findChar(cell);
+						if (ch != null && !(ch instanceof NewDM300)) {
+							Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+							ch.damage( Random.NormalIntRange(6, 12), Electricity.class);
+							ch.sprite.flash();
+
+							if (ch == Dungeon.hero && !ch.isAlive()) {
+								Dungeon.fail(NewDM300.class);
+								GLog.n( Messages.get(Electricity.class, "ondeath") );
 							}
 						}
 					}

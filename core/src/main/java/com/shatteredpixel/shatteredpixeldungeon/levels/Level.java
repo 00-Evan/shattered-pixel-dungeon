@@ -822,6 +822,41 @@ public abstract class Level implements Bundlable {
 			trap.reveal();
 		GameScene.updateMap( cell );
 	}
+
+	public boolean setCellToWater( boolean includeTraps, int cell ){
+		Point p = cellToPoint(cell);
+
+		//if a custom tilemap is over that cell, don't put water there
+		for (CustomTilemap cust : customTiles){
+			Point custPoint = new Point(p);
+			custPoint.x -= cust.tileX;
+			custPoint.y -= cust.tileY;
+			if (custPoint.x >= 0 && custPoint.y >= 0
+					&& custPoint.x < cust.tileW && custPoint.y < cust.tileH){
+				if (cust.image(custPoint.x, custPoint.y) != null){
+					return false;
+				}
+			}
+		}
+
+		int terr = map[cell];
+		if (terr == Terrain.EMPTY || terr == Terrain.GRASS ||
+				terr == Terrain.EMBERS || terr == Terrain.EMPTY_SP ||
+				terr == Terrain.HIGH_GRASS || terr == Terrain.FURROWED_GRASS
+				|| terr == Terrain.EMPTY_DECO){
+			set(cell, Terrain.WATER);
+			GameScene.updateMap(cell);
+			return true;
+		} else if (includeTraps && (terr == Terrain.SECRET_TRAP ||
+				terr == Terrain.TRAP || terr == Terrain.INACTIVE_TRAP)){
+			set(cell, Terrain.WATER);
+			Dungeon.level.traps.remove(cell);
+			GameScene.updateMap(cell);
+			return true;
+		}
+
+		return false;
+	}
 	
 	public int fallCell( boolean fallIntoPit ) {
 		int result;
