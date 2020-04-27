@@ -126,7 +126,7 @@ public class DesktopLauncher {
 		SPDSettings.set( new Lwjgl3Preferences( SPDSettings.DEFAULT_PREFS_FILE, basePath) );
 		FileUtils.setDefaultFileProperties( Files.FileType.External, basePath );
 		
-		config.setWindowSizeLimits( 960, 640, -1, -1 );
+		config.setWindowSizeLimits( 480, 320, -1, -1 );
 		Point p = SPDSettings.windowResolution();
 		config.setWindowedMode( p.x, p.y );
 		config.setAutoIconify( true );
