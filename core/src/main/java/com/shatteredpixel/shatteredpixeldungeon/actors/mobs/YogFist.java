@@ -248,17 +248,22 @@ public abstract class YogFist extends Mob {
 
 			boolean result = super.act();
 
-			int cell = pos + PathFinder.NEIGHBOURS9[Random.Int(9)];
-			if (Dungeon.level.map[cell] == Terrain.GRASS){
-				Level.set( cell, Terrain.FURROWED_GRASS);
-				GameScene.updateMap( cell );
-				CellEmitter.get( cell ).burst( LeafParticle.GENERAL, 10 );
+			//1.33 grass tiles on average
+			int furrowedTiles = Random.chances(new float[]{0, 2, 1});
+
+			for (int i = 0; i < furrowedTiles; i++) {
+				int cell = pos + PathFinder.NEIGHBOURS9[Random.Int(9)];
+				if (Dungeon.level.map[cell] == Terrain.GRASS) {
+					Level.set(cell, Terrain.FURROWED_GRASS);
+					GameScene.updateMap(cell);
+					CellEmitter.get(cell).burst(LeafParticle.GENERAL, 10);
+				}
 			}
 
 			Dungeon.observe();
 
 			for (int i : PathFinder.NEIGHBOURS9) {
-				cell = pos + i;
+				int cell = pos + i;
 				if (canSpreadGrass(cell)){
 					Level.set(pos+i, Terrain.GRASS);
 					GameScene.updateMap( pos + i );
@@ -290,11 +295,6 @@ public abstract class YogFist extends Mob {
 
 				Buff.affect( enemy, Roots.class, 3f );
 
-				if (!enemy.isAlive() && enemy == Dungeon.hero) {
-					Dungeon.fail( getClass() );
-					GLog.n( Messages.get(Char.class, "kill", name()) );
-				}
-
 			} else {
 
 				enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
@@ -322,6 +322,11 @@ public abstract class YogFist extends Mob {
 			return Dungeon.level.distance(cell, yogPos) > 4 && !Dungeon.level.solid[cell]
 					&& !(Dungeon.level.map[cell] == Terrain.FURROWED_GRASS || Dungeon.level.map[cell] == Terrain.HIGH_GRASS);
 		}
+
+		{
+			resistances.add(Burning.class);
+		}
+
 
 	}
 
@@ -397,7 +402,7 @@ public abstract class YogFist extends Mob {
 
 		@Override
 		public int damageRoll() {
-			return Random.NormalIntRange( 20, 40 );
+			return Random.NormalIntRange( 22, 44 );
 		}
 
 		@Override
@@ -463,7 +468,7 @@ public abstract class YogFist extends Mob {
 			super.damage(dmg, src);
 			if (isAlive() && beforeHP > HT/2 && HP < HT/2){
 				HP = HT/2;
-				Buff.prolong( Dungeon.hero, Blindness.class, 30f );
+				Buff.prolong( Dungeon.hero, Blindness.class, 15f );
 				int i;
 				do {
 					i = Random.Int(Dungeon.level.length());
@@ -473,7 +478,7 @@ public abstract class YogFist extends Mob {
 				GameScene.flash(0xFFFFFF);
 				GLog.w( Messages.get( this, "teleport" ));
 			} else if (!isAlive()){
-				Buff.prolong( Dungeon.hero, Blindness.class, 50f );
+				Buff.prolong( Dungeon.hero, Blindness.class, 30f );
 				GameScene.flash(0xFFFFFF);
 			}
 		}
@@ -502,7 +507,7 @@ public abstract class YogFist extends Mob {
 
 			if (hit( this, enemy, true )) {
 
-				enemy.damage( Random.NormalIntRange(15, 30), new DarkBolt() );
+				enemy.damage( Random.NormalIntRange(12, 24), new DarkBolt() );
 
 				Light l = enemy.buff(Light.class);
 				if (l != null){
