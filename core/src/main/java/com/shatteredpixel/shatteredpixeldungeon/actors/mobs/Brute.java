@@ -79,9 +79,9 @@ public class Brute extends Mob {
 	}
 
 	@Override
-	public boolean isAlive() {
+	public synchronized boolean isAlive() {
 		if (HP > 0){
-			return  true;
+			return true;
 		} else {
 			if (!hasRaged){
 				triggerEnrage();

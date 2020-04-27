@@ -183,6 +183,10 @@ public class NewCavesBossLevel extends Level {
 
 	@Override
 	public int randomRespawnCell( Char ch ) {
+		//this check is mainly here for DM-300, to prevent an infinite loop
+		if (Char.hasProp(ch, Char.Property.LARGE) && map[entrance] != Terrain.ENTRANCE){
+			return -1;
+		}
 		int cell;
 		do {
 			cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
