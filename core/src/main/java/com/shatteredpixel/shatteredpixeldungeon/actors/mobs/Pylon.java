@@ -157,9 +157,9 @@ public class Pylon extends Mob {
 		if (alignment == Alignment.NEUTRAL){
 			return;
 		}
-		if (dmg >= 5){
-			//takes 10/11/12/13/14/15 dmg at 10/12/15/19/24/31 incoming dmg
-			dmg = 9 + (int)(Math.sqrt(8*(dmg - 9) + 1) - 1)/2;
+		if (dmg >= 15){
+			//takes 15/16/17/18/19/20 dmg at 15/17/20/24/29/36 incoming dmg
+			dmg = 14 + (int)(Math.sqrt(8*(dmg - 14) + 1) - 1)/2;
 		}
 		super.damage(dmg, src);
 	}

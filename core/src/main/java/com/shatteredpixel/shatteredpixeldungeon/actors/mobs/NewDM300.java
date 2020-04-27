@@ -552,7 +552,7 @@ public class NewDM300 extends Mob {
 				}
 				Dungeon.level.cleanWalls();
 				Dungeon.observe();
-				spend(2.5f);
+				spend(3f);
 
 				for (int i : PathFinder.NEIGHBOURS8){
 					if (Actor.findChar(pos+i) == null &&
