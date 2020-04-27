@@ -154,8 +154,8 @@ public class NewCityBossLevel extends Level {
 		//exit hallway
 		Painter.fill(this, end, Terrain.CHASM);
 		Painter.fill(this, end.left+4, end.top+5, 7, 18, Terrain.EMPTY);
-		Painter.fill(this, end.left+4, end.top+5, 7, 2, Terrain.EXIT);
-		exit = end.left+7 + (end.top+6)*width();
+		Painter.fill(this, end.left+4, end.top+5, 7, 4, Terrain.EXIT);
+		exit = end.left+7 + (end.top+8)*width();
 
 		impShop = new ImpShopRoom();
 		impShop.set(end.left+3, end.top+12, end.left+11, end.top+20);
