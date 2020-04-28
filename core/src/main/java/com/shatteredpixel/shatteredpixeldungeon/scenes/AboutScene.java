@@ -137,7 +137,7 @@ public class AboutScene extends PixelScene {
 		PointerArea hotArea = new PointerArea( wataLink.left(), wataLink.top(), wataLink.width(), wataLink.height() ) {
 			@Override
 			protected void onClick( PointerEvent event ) {
-				DeviceCompat.openURI( "https://" + LNK_WATA );
+				DeviceCompat.openURI( "http://" + LNK_WATA );
 			}
 		};
 		add( hotArea );
