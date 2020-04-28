@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -61,6 +62,54 @@ public class v0_8_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 
+		changes = new ChangeInfo( "", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo( "0.8.0a", false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+
+		Image i = new Image(new YogSprite());
+		i.scale.set(0.8f);
+		changes.addButton( new ChangeButton(i, "Enemy and Boss adjustments",
+				"Based on player feedback and gameplay data, I'm making the following tweaks to enemy/boss balance. These changes mainly make particular enemies/bosses a bit easier:\n\n" +
+				"_-_ Turns taken for DM-300 to dig through rock increased to 3 from 2.5\n" +
+				"_-_ DM-300 pylons now resist damage above 15, up from 10\n\n" +
+				"_-_ Ripper Demon leap ability now has a short cooldown\n" +
+				"_-_ Ripper Demon damage reduced by ~8%\n" +
+				"_-_ Ripper Demon leap now deals large bleed damage less often\n\n" +
+				"_-_ Yog's laser damage reduced by ~8%\n" +
+				"_-_ Bright fist blind duration reduced by 40%\n" +
+				"_-_ Dark fist ranged damage reduced by 20%\n" +
+				"_-_ Soiled fist now spreads slightly more furrowed grass\n" +
+				"_-_ Soiled fist now resists burning\n" +
+				"_-_ Rusted fist melee damage increased by 10%"));
+
+		changes.addButton( new ChangeButton(new SpiritBow(),
+				"Sniper shot is currently performing quite poorly versus the sniper's other abilities, so I'm giving it a significant buff:\n\n" +
+				"_-_ Base sniper shot damage increased by 20%\n" +
+				"_-_ Sniper shot damage scaling with distance increased. At high distance sniper shot will deal up to 40% more total damage."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"Following feedback I've tweaked the sensitivity of the new 'red flash' effect. It should now trigger in far fewer cases where the hero isn't taking serious damage, but should still trigger when the hero is at risk of death.\n\n" +
+				"I've tweaked the behaviour of ranged enemies slightly, which should eliminate cases where they don't follow the hero through a door despite seeing them go through it.\n\n" +
+				"_-_ Increased the size of the descending region at the end of Dwarf King's level.\n\n" +
+				"_-_ Decreased the minimum window size for desktop users.\n\n" +
+				"_-_ Updated translations"));
+
+		changes.addButton( new ChangeButton(new Image( Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.8.0):\n" +
+				"_-_ Various errors/crashed caused by new imp shop\n" +
+				"_-_ Several cases where water could spread to tiles that it shouldn't spread to.\n" +
+				"_-_ Water of health being used up on items that cannot be cursed\n" +
+				"_-_ Golems being able to teleport immovable characters\n" +
+				"_-_ Armored statues appearing in faith is my armor challenge\n" +
+				"_-_ Yog-dzewa being able to totally blind the player if into darkness is enabled\n" +
+				"_-_ Large enemies being able to move into enclosed spaces when vertigoed\n" +
+				"_-_ Infinite loop bug when attempting to teleport DM-300\n" +
+				"_-_ Various rare crash bugs"));
+
 		changes = new ChangeInfo( Messages.get( ChangesScene.class, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
@@ -89,7 +138,7 @@ public class v0_8_X_Changes {
 				"_Spinners_ are now 20% more evasive, 10% more accurate, and now spit their webs toward the hero from a distance. Their webs block projectiles, but can be cleared.\n\n" +
 				"_DM-200s_ are a new enemy in the later parts of the caves. They are too big to move into tunnels and doors, but make up for it with high stats and a toxic gas attack."));
 
-		Image i = new Image(new DM300Sprite());
+		i = new Image(new DM300Sprite());
 		i.scale.set(PixelScene.align(0.74f));
 		changes.addButton( new ChangeButton(i, Messages.get(NewDM300.class, "name"),
 				"The DM-300 fight has been reworked! DM-300 now has redesigned abilities, a new boss arena, and multiple phases!\n\n" +
