@@ -79,7 +79,7 @@ public class DesktopLauncher {
 						"If you could, please email this error message to the developer (Evan@ShatteredPixel.com):\n\n" +
 						exceptionMsg,
 						"ok", "error", false );
-				Gdx.app.exit();
+				if (Gdx.app != null) Gdx.app.exit();
 			}
 		});
 		
