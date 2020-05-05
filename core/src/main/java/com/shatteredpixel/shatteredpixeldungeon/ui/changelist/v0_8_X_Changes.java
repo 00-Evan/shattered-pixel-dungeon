@@ -62,9 +62,20 @@ public class v0_8_X_Changes {
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
 
-		changes = new ChangeInfo( "", false, null);
+		changes = new ChangeInfo( "0.8.0b", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ Yog-Dzewa's fists are now considered bosses, not minibosses.\n\n" +
+				"_-_ Updated translations."));
+
+		changes.addButton( new ChangeButton(new Image( Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed (caused by 0.8.0):\n" +
+				"_-_ Various rare freezes when descending\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Yog-Dzewa fight glitching in rare cases where the eye and last fist are killed at the same time\n" +
+				"_-_ Bright/Dark fist very rarely teleporting into enclosed spaces"));
 
 		changes = new ChangeInfo( "0.8.0a", false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -96,7 +107,7 @@ public class v0_8_X_Changes {
 				"I've tweaked the behaviour of ranged enemies slightly, which should eliminate cases where they don't follow the hero through a door despite seeing them go through it.\n\n" +
 				"_-_ Increased the size of the descending region at the end of Dwarf King's level.\n\n" +
 				"_-_ Decreased the minimum window size for desktop users.\n\n" +
-				"_-_ Updated translations"));
+				"_-_ Updated translations."));
 
 		changes.addButton( new ChangeButton(new Image( Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed (caused by 0.8.0):\n" +
