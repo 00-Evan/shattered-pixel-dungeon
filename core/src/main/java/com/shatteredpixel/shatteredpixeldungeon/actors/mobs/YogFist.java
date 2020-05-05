@@ -66,7 +66,7 @@ public abstract class YogFist extends Mob {
 
 		state = HUNTING;
 
-		properties.add(Property.MINIBOSS);
+		properties.add(Property.BOSS);
 		properties.add(Property.DEMONIC);
 	}
 
@@ -472,7 +472,10 @@ public abstract class YogFist extends Mob {
 				int i;
 				do {
 					i = Random.Int(Dungeon.level.length());
-				} while (Dungeon.level.heroFOV[i] || Dungeon.level.solid[i] || Actor.findChar(i) != null);
+				} while (Dungeon.level.heroFOV[i]
+						|| Dungeon.level.solid[i]
+						|| Actor.findChar(i) != null
+						|| Dungeon.findStep(this, Dungeon.level.exit, Dungeon.level.passable, fieldOfView, false) == -1);
 				ScrollOfTeleportation.appear(this, i);
 				state = WANDERING;
 				GameScene.flash(0xFFFFFF);
@@ -539,7 +542,10 @@ public abstract class YogFist extends Mob {
 				int i;
 				do {
 					i = Random.Int(Dungeon.level.length());
-				} while (Dungeon.level.heroFOV[i] || Dungeon.level.solid[i] || Actor.findChar(i) != null);
+				} while (Dungeon.level.heroFOV[i]
+						|| Dungeon.level.solid[i]
+						|| Actor.findChar(i) != null
+						|| Dungeon.findStep(this, Dungeon.level.exit, Dungeon.level.passable, fieldOfView, false) == -1);
 				ScrollOfTeleportation.appear(this, i);
 				state = WANDERING;
 				GameScene.flash(0, false);

@@ -630,7 +630,7 @@ public abstract class Mob extends Char {
 	
 	@Override
 	public void die( Object cause ) {
-		
+
 		if (hitWithRanged){
 			Statistics.thrownAssists++;
 			Badges.validateHuntressUnlock();
