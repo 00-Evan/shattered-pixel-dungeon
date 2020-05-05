@@ -26,7 +26,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -100,11 +99,12 @@ public class FileUtils {
 	
 	//only works for base path
 	public static Bundle bundleFromFile( String fileName ) throws IOException{
-		FileHandle file = getFileHandle( fileName );
-		if (!file.exists()){
-			throw new FileNotFoundException("file not found: " + file.path());
-		} else {
+		try {
+			FileHandle file = getFileHandle( fileName );
 			return bundleFromStream(file.read());
+		} catch (GdxRuntimeException e){
+			//game classes expect an IO exception, so wrap the GDX exception in that
+			throw new IOException(e);
 		}
 	}
 	
@@ -121,12 +121,8 @@ public class FileUtils {
 		try {
 			bundleToStream(getFileHandle( fileName ).write(false), bundle);
 		} catch (GdxRuntimeException e){
-			if (e.getCause() instanceof IOException){
-				//we want to throw the underlying IOException, not the GdxRuntimeException
-				throw (IOException)e.getCause();
-			} else {
-				throw e;
-			}
+			//game classes expect an IO exception, so wrap the GDX exception in that
+			throw new IOException(e);
 		}
 	}
 	
