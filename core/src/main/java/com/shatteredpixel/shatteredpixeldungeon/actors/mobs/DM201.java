@@ -54,6 +54,13 @@ public class DM201 extends DM200 {
 
 	@Override
 	protected boolean act() {
+
+		//in case DM-201 hasn't been able to act yet
+		if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
+			fieldOfView = new boolean[Dungeon.level.length()];
+			Dungeon.level.updateFieldOfView( this, fieldOfView );
+		}
+
 		GameScene.add(Blob.seed(pos, 0, CorrosiveGas.class));
 		if (state == HUNTING && enemy != null && enemySeen
 				&& threatened && !Dungeon.level.adjacent(pos, enemy.pos)){

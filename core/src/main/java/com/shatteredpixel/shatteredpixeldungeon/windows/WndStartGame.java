@@ -125,8 +125,10 @@ public class WndStartGame extends Window {
 					ShatteredPixelDungeon.scene().addToFront(new WndChallenges(SPDSettings.challenges(), true) {
 						public void onBackPressed() {
 							super.onBackPressed();
-							icon( Icons.get( SPDSettings.challenges() > 0 ?
-									Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF ) );
+							if (parent != null) {
+								icon(Icons.get(SPDSettings.challenges() > 0 ?
+										Icons.CHALLENGE_ON : Icons.CHALLENGE_OFF));
+							}
 						}
 					} );
 				}
