@@ -278,7 +278,7 @@ public class Wandmaker extends NPC {
 				
 				Wandmaker npc = new Wandmaker();
 				boolean validPos;
-				//Do not spawn wandmaker on the entrance, or next to a door.
+				//Do not spawn wandmaker on the entrance, or in front of a door.
 				do {
 					validPos = true;
 					npc.pos = level.pointToCell(room.random());
@@ -286,7 +286,7 @@ public class Wandmaker extends NPC {
 						validPos = false;
 					}
 					for (Point door : room.connected.values()){
-						if (level.adjacent( npc.pos, level.pointToCell( door ) )){
+						if (level.trueDistance( npc.pos, level.pointToCell( door ) ) <= 1){
 							validPos = false;
 						}
 					}

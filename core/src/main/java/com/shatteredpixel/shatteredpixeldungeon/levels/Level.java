@@ -863,8 +863,7 @@ public abstract class Level implements Bundlable {
 		do {
 			result = randomRespawnCell( null );
 		} while (traps.get(result) != null
-				|| findMob(result) != null
-				|| heaps.get(result) != null);
+				|| findMob(result) != null);
 		return result;
 	}
 	
