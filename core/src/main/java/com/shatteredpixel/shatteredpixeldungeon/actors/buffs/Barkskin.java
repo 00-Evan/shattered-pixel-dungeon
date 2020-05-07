@@ -77,7 +77,7 @@ public class Barkskin extends Buff {
 
 	@Override
 	public String desc() {
-		return Messages.get(this, "desc", level, dispTurns(cooldown()+1));
+		return Messages.get(this, "desc", level, dispTurns(visualcooldown()));
 	}
 	
 	private static final String LEVEL	    = "level";

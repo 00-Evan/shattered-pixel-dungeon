@@ -26,7 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 
 public class Recharging extends FlavourBuff {
-	
+
+	public static final float DURATION = 30f;
+
 	{
 		type = buffType.POSITIVE;
 	}
@@ -35,10 +37,10 @@ public class Recharging extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.RECHARGING;
 	}
-	
+
 	@Override
-	public void tintIcon(Image icon) {
-		FlavourBuff.greyIcon(icon, 5f, cooldown());
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 	
 	@Override

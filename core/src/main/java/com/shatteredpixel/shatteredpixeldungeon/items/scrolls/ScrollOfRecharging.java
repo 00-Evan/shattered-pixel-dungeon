@@ -35,8 +35,6 @@ import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfRecharging extends Scroll {
 
-	public static final float BUFF_DURATION = 30f;
-
 	{
 		initials = 6;
 	}
@@ -44,7 +42,7 @@ public class ScrollOfRecharging extends Scroll {
 	@Override
 	public void doRead() {
 
-		Buff.affect(curUser, Recharging.class, BUFF_DURATION);
+		Buff.affect(curUser, Recharging.class, Recharging.DURATION);
 		charge(curUser);
 		
 		Sample.INSTANCE.play( Assets.SND_READ );
@@ -60,7 +58,7 @@ public class ScrollOfRecharging extends Scroll {
 	@Override
 	public void empoweredRead() {
 		doRead();
-		Buff.append(curUser, Recharging.class, BUFF_DURATION/3f);
+		Buff.append(curUser, Recharging.class, Recharging.DURATION/3f);
 	}
 	
 	public static void charge( Char user ) {

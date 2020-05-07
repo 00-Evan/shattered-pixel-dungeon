@@ -81,15 +81,13 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 				target.HP += healAmt;
 				left -= healAmt;
 				target.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+				BuffIndicator.refreshHero();
 			}
 			
 			if (left <= 0){
 				detach();
 			} else {
 				spend(TICK);
-				if (left <= target.HT/4f){
-					BuffIndicator.refreshHero();
-				}
 			}
 			return true;
 		}
@@ -98,10 +96,16 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 		public int icon() {
 			return BuffIndicator.HEALING;
 		}
-		
+
 		@Override
 		public void tintIcon(Image icon) {
-			FlavourBuff.greyIcon(icon, target.HT/4f, left);
+			icon.hardlight(0, 1, 1);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			float max = Math.round(target.HT * 1.5f);
+			return Math.max(0, (max - left) / max);
 		}
 		
 		@Override

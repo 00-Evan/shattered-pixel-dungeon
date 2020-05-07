@@ -197,6 +197,7 @@ public class BuffIndicator extends Component {
 		private Buff buff;
 
 		public Image icon;
+		public Image grey;
 
 		public BuffIcon( Buff buff ){
 			super();
@@ -205,18 +206,24 @@ public class BuffIndicator extends Component {
 			icon = new Image( texture );
 			icon.frame( film.get( buff.icon() ) );
 			add( icon );
+
+			grey = new Image( TextureCache.createSolid(0xCC808080));
+			add( grey );
 		}
 		
 		public void updateIcon(){
 			icon.frame( film.get( buff.icon() ) );
 			buff.tintIcon(icon);
+			//logic here rounds down to the nearest pixel
+			float zoom = (camera() != null) ? camera().zoom : 1;
+			grey.scale.set( icon.width(), (float)Math.floor(zoom*icon.height()*buff.iconFadePercent())/zoom);
 		}
 
 		@Override
 		protected void layout() {
 			super.layout();
-			icon.x = this.x+1;
-			icon.y = this.y+2;
+			grey.x = icon.x = this.x+1;
+			grey.y = icon.y = this.y+2;
 		}
 
 		@Override

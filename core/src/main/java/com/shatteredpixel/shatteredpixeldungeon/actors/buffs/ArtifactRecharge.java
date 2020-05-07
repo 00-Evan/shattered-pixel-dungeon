@@ -29,13 +29,14 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
-//TODO this may be very powerful, consider balancing
 public class ArtifactRecharge extends Buff {
-	
+
+	public static final float DURATION = 30f;
+
 	{
 		type = buffType.POSITIVE;
 	}
-	
+
 	private int left;
 	
 	@Override
@@ -79,7 +80,12 @@ public class ArtifactRecharge extends Buff {
 	public void tintIcon(Image icon) {
 		icon.hardlight(0, 1f, 0);
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - left) / DURATION);
+	}
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");

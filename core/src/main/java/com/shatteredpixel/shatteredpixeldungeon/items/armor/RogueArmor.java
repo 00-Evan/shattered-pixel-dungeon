@@ -78,7 +78,7 @@ public class RogueArmor extends ClassArmor {
 						mob.sprite.emitter().burst( Speck.factory( Speck.LIGHT ), 4 );
 					}
 				}
-				Buff.affect(curUser, Invisibility.class, 10f);
+				Buff.affect(curUser, Invisibility.class, Invisibility.DURATION/2f);
 
 				CellEmitter.get( curUser.pos ).burst( Speck.factory( Speck.WOOL ), 10 );
 				ScrollOfTeleportation.appear( curUser, target );

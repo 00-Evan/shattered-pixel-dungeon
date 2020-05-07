@@ -124,10 +124,10 @@ public class Earthroot extends Plant {
 		public int icon() {
 			return BuffIndicator.ARMOR;
 		}
-		
+
 		@Override
-		public void tintIcon(Image icon) {
-			FlavourBuff.greyIcon(icon, target.HT/4f, level);
+		public float iconFadePercent() {
+			return Math.max(0, (target.HT - level) / target.HT);
 		}
 		
 		@Override

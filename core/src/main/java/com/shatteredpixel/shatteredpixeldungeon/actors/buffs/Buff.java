@@ -89,11 +89,18 @@ public class Buff extends Actor {
 	public int icon() {
 		return BuffIndicator.NONE;
 	}
-	
+
+	//some buffs may want to tint the base texture color of their icon
 	public void tintIcon( Image icon ){
 		//do nothing by default
 	}
 
+	//percent (0-1) to fade out out the buff icon, usually if buff is expiring
+	public float iconFadePercent(){
+		return 0;
+	}
+
+	//visual effect usually attached to the sprite of the character the buff is attacked to
 	public void fx(boolean on) {
 		//do nothing by default
 	}
@@ -109,6 +116,11 @@ public class Buff extends Actor {
 	//to handle the common case of showing how many turns are remaining in a buff description.
 	protected String dispTurns(float input){
 		return new DecimalFormat("#.##").format(input);
+	}
+
+	//buffs act after the hero, so it is often useful to use cooldown+1 when display buff time remaining
+	public float visualcooldown(){
+		return cooldown()+1f;
 	}
 
 	//creates a fresh instance of the buff and attaches that, this allows duplication.

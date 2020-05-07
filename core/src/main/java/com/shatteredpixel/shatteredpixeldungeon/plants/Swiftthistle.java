@@ -78,10 +78,10 @@ public class Swiftthistle extends Plant {
 		public int icon() {
 			return BuffIndicator.SLOW;
 		}
-		
+
 		@Override
-		public void tintIcon(Image icon) {
-			FlavourBuff.greyIcon(icon, 5f, left);
+		public float iconFadePercent() {
+			return Math.max(0, (6f - left) / 6f);
 		}
 		
 		public void reset(){

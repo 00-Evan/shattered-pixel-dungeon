@@ -1341,7 +1341,7 @@ public class Hero extends Char {
 				defenseSkill++;
 
 			} else {
-				Buff.prolong(this, Bless.class, 30f);
+				Buff.prolong(this, Bless.class, Bless.DURATION);
 				this.exp = 0;
 
 				GLog.newLine();

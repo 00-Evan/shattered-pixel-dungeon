@@ -78,10 +78,10 @@ public class ToxicImbue extends Buff {
 	public int icon() {
 		return BuffIndicator.IMMUNITY;
 	}
-	
+
 	@Override
-	public void tintIcon(Image icon) {
-		FlavourBuff.greyIcon(icon, 5f, left);
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - left) / DURATION);
 	}
 
 	@Override

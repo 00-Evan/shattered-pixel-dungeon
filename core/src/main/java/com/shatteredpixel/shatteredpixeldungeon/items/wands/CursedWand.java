@@ -264,7 +264,7 @@ public class CursedWand {
 			//shock and recharge
 			case 3:
 				new ShockingTrap().set( user.pos ).activate();
-				Buff.prolong(user, Recharging.class, 20f);
+				Buff.prolong(user, Recharging.class, Recharging.DURATION);
 				ScrollOfRecharging.charge(user);
 				SpellSprite.show(user, SpellSprite.CHARGE);
 				afterZap.call();

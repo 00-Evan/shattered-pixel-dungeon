@@ -50,7 +50,7 @@ public class Dreamfoil extends Plant {
 				PotionOfHealing.cure(ch);
 				
 				if (((Hero) ch).subClass == HeroSubClass.WARDEN){
-					Buff.affect(ch, BlobImmunity.class, 10f);
+					Buff.affect(ch, BlobImmunity.class, BlobImmunity.DURATION/2f);
 				}
 				
 			}

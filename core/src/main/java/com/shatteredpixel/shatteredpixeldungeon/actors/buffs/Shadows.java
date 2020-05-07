@@ -98,10 +98,10 @@ public class Shadows extends Invisibility {
 	public int icon() {
 		return BuffIndicator.SHADOWS;
 	}
-	
+
 	@Override
-	public void tintIcon(Image icon) {
-		icon.resetColor();
+	public float iconFadePercent() {
+		return 0;
 	}
 	
 	@Override

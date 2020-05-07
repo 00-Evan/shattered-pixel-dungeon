@@ -91,10 +91,10 @@ public class FireImbue extends Buff {
 	public int icon() {
 		return BuffIndicator.FIRE;
 	}
-	
+
 	@Override
-	public void tintIcon(Image icon) {
-		FlavourBuff.greyIcon(icon, 5f, left);
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - left+1) / DURATION);
 	}
 
 	@Override

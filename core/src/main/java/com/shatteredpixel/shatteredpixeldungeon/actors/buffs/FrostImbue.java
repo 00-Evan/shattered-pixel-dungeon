@@ -45,10 +45,10 @@ public class FrostImbue extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.FROST;
 	}
-	
+
 	@Override
-	public void tintIcon(Image icon) {
-		greyIcon(icon, 5f, cooldown());
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 	
 	@Override
