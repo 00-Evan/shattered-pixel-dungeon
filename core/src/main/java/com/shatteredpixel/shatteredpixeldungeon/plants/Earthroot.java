@@ -107,7 +107,6 @@ public class Earthroot extends Plant {
 				return damage - block;
 			} else {
 				level -= block;
-				BuffIndicator.refreshHero();
 				return damage - block;
 			}
 		}
@@ -115,7 +114,6 @@ public class Earthroot extends Plant {
 		public void level( int value ) {
 			if (level < value) {
 				level = value;
-				BuffIndicator.refreshHero();
 			}
 			pos = target.pos;
 		}

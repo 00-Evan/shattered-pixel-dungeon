@@ -240,7 +240,6 @@ public class WandOfLivingEarth extends DamageWand {
 				return damage - armor;
 			} else {
 				armor -= block;
-				BuffIndicator.refreshHero();
 				return damage - block;
 			}
 		}

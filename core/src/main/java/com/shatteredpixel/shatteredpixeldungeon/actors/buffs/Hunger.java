@@ -82,27 +82,20 @@ public class Hunger extends Buff implements Hero.Doom {
 			} else {
 
 				float newLevel = level + STEP;
-				boolean statusUpdated = false;
 				if (newLevel >= STARVING) {
 
 					GLog.n( Messages.get(this, "onstarving") );
 					hero.resting = false;
 					hero.damage( 1, this );
-					statusUpdated = true;
 
 					hero.interrupt();
 
 				} else if (newLevel >= HUNGRY && level < HUNGRY) {
 
 					GLog.w( Messages.get(this, "onhungry") );
-					statusUpdated = true;
 
 				}
 				level = newLevel;
-
-				if (statusUpdated) {
-					BuffIndicator.refreshHero();
-				}
 
 			}
 			
@@ -140,7 +133,6 @@ public class Hunger extends Buff implements Hero.Doom {
 			partialDamage += excess * (target.HT/1000f);
 		}
 
-		BuffIndicator.refreshHero();
 	}
 
 	public boolean isStarving() {

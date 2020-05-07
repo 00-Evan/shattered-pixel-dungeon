@@ -107,7 +107,6 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 			if (AttackLevel.getLvl(turnsInvis).blinkDistance > 0 && target == Dungeon.hero){
 				ActionIndicator.setAction(this);
 			}
-			BuffIndicator.refreshHero();
 			spend(TICK);
 		} else {
 			detach();

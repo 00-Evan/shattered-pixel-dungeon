@@ -67,8 +67,6 @@ public class ToxicImbue extends Buff {
 		left -= TICK;
 		if (left <= 0){
 			detach();
-		} else if (left < 5){
-			BuffIndicator.refreshHero();
 		}
 
 		return true;

@@ -203,7 +203,6 @@ public class TalismanOfForesight extends Artifact {
 					warn --;
 				}
 			}
-			BuffIndicator.refreshHero();
 
 			//fully charges in 2000 turns at lvl=0, scaling to 667 turns at lvl = 10.
 			LockedFloor lock = target.buff(LockedFloor.class);

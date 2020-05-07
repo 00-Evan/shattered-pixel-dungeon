@@ -107,8 +107,6 @@ public class Sungrass extends Plant {
 			
 			if (level <= 0) {
 				detach();
-			} else {
-				BuffIndicator.refreshHero();
 			}
 			spend( STEP );
 			return true;

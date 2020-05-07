@@ -81,7 +81,6 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 				target.HP += healAmt;
 				left -= healAmt;
 				target.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-				BuffIndicator.refreshHero();
 			}
 			
 			if (left <= 0){

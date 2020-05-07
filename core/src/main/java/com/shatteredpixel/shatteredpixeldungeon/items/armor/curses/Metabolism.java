@@ -50,10 +50,9 @@ public class Metabolism extends Glyph {
 				
 				Hunger hunger = Buff.affect(defender, Hunger.class);
 				
-				if (hunger != null && !hunger.isStarving()) {
+				if (!hunger.isStarving()) {
 					
 					hunger.reduceHunger( healing * -10 );
-					BuffIndicator.refreshHero();
 					
 					defender.HP += healing;
 					defender.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );

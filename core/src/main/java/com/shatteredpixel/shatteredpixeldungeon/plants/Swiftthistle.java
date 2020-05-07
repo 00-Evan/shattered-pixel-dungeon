@@ -101,8 +101,6 @@ public class Swiftthistle extends Plant {
 		public void processTime(float time){
 			left -= time;
 			
-			BuffIndicator.refreshHero();
-			
 			if (left <= 0){
 				detach();
 			}
