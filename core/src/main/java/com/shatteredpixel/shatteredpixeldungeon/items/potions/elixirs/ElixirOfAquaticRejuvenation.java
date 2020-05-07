@@ -98,7 +98,7 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 
 		@Override
 		public void tintIcon(Image icon) {
-			icon.hardlight(0, 1, 1);
+			icon.hardlight(0, 0.75f, 0.75f);
 		}
 
 		@Override

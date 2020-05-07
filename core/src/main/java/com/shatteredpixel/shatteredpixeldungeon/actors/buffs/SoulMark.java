@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 public class SoulMark extends FlavourBuff {
 
@@ -37,6 +38,16 @@ public class SoulMark extends FlavourBuff {
 	@Override
 	public int icon() {
 		return BuffIndicator.CORRUPT;
+	}
+
+	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(0.5f, 0.5f, 0.5f);
+	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 
 	@Override

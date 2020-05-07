@@ -70,7 +70,12 @@ public class Blocking extends Weapon.Enchantment {
 		
 		@Override
 		public void tintIcon(Image icon) {
-			icon.tint(0, 0.5f, 1, 0.5f);
+			icon.hardlight(0.5f, 1f, 2f);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (5f - visualcooldown()) / 5f);
 		}
 		
 		@Override

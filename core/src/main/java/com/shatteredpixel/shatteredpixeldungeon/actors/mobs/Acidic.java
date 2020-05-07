@@ -40,14 +40,14 @@ public class Acidic extends Scorpio {
 	}
 	@Override
 	public int attackProc(Char enemy, int damage) {
-		Buff.affect(enemy, Ooze.class).set( 20f );
+		Buff.affect(enemy, Ooze.class).set( Ooze.DURATION );
 		return super.attackProc(enemy, damage);
 	}
 
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 		if (Dungeon.level.adjacent(pos, enemy.pos)){
-			Buff.affect(enemy, Ooze.class).set( 20f );
+			Buff.affect(enemy, Ooze.class).set( Ooze.DURATION );
 		}
 		return super.defenseProc( enemy, damage );
 	}

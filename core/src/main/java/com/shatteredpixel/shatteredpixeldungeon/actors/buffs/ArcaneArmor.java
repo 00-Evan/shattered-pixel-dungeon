@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
@@ -74,7 +75,16 @@ public class ArcaneArmor extends Buff {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		icon.tint(0.5f, 0, 1, 0.5f);
+		icon.hardlight(1f, 0.5f, 2f);
+	}
+
+	@Override
+	public float iconFadePercent() {
+		if (target instanceof Hero){
+			float max = ((Hero) target).lvl/2 + 5;
+			return (max-level)/max;
+		}
+		return 0;
 	}
 	
 	@Override

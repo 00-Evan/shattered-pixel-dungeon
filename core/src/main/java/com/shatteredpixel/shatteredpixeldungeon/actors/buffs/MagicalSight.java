@@ -44,6 +44,11 @@ public class MagicalSight extends FlavourBuff {
 	}
 
 	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(1f, 1.67f, 1f);
+	}
+
+	@Override
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}

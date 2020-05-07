@@ -45,7 +45,7 @@ public class ScrollOfAffection extends ExoticScroll {
 		
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (Dungeon.level.heroFOV[mob.pos]) {
-				Buff.affect( mob, Charm.class, 20f ).object = curUser.id();
+				Buff.affect( mob, Charm.class, Charm.DURATION*2f ).object = curUser.id();
 				mob.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			}
 		}

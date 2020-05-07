@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Blindness extends FlavourBuff {
 
+	public static final float DURATION = 10f;
+
 	{
 		type = buffType.NEGATIVE;
 		announced = true;
@@ -42,7 +44,12 @@ public class Blindness extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.BLINDNESS;
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+	}
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");

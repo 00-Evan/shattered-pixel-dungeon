@@ -73,7 +73,7 @@ public class RogueArmor extends ClassArmor {
 				
 				for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
 					if (Dungeon.level.adjacent(mob.pos, curUser.pos) && mob.alignment != Char.Alignment.ALLY) {
-						Buff.prolong( mob, Blindness.class, 5 );
+						Buff.prolong( mob, Blindness.class, Blindness.DURATION/2f );
 						if (mob.state == mob.HUNTING) mob.state = mob.WANDERING;
 						mob.sprite.emitter().burst( Speck.factory( Speck.LIGHT ), 4 );
 					}

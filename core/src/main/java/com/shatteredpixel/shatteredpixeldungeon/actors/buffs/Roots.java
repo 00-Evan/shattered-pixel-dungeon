@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Roots extends FlavourBuff {
 
+	public static final float DURATION = 5f;
+
 	{
 		type = buffType.NEGATIVE;
 		announced = true;
@@ -51,6 +53,11 @@ public class Roots extends FlavourBuff {
 	@Override
 	public int icon() {
 		return BuffIndicator.ROOTS;
+	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
 	
 	@Override

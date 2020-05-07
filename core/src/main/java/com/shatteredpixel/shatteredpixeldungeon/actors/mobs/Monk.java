@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MonkSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -147,7 +148,12 @@ public class Monk extends Mob {
 		public int icon() {
 			return BuffIndicator.MIND_VISION;
 		}
-		
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(0.25f, 1.5f, 1f);
+		}
+
 		@Override
 		public String toString() {
 			return Messages.get(this, "name");

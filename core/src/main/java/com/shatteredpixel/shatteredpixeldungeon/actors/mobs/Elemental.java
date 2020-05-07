@@ -287,7 +287,7 @@ public abstract class Elemental extends Mob {
 		
 		@Override
 		protected void rangedProc( Char enemy ) {
-			Buff.affect( enemy, Blindness.class, 5f );
+			Buff.affect( enemy, Blindness.class, Blindness.DURATION/2f );
 			if (enemy == Dungeon.hero) {
 				GameScene.flash(0xFFFFFF);
 			}

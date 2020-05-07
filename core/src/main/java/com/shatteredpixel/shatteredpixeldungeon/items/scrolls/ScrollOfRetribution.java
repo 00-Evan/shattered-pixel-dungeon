@@ -54,13 +54,13 @@ public class ScrollOfRetribution extends Scroll {
 				//deals 10%HT, plus 0-90%HP based on scaling
 				mob.damage(Math.round(mob.HT/10f + (mob.HP * power * 0.225f)), this);
 				if (mob.isAlive()) {
-					Buff.prolong(mob, Blindness.class, Math.round(6 + power));
+					Buff.prolong(mob, Blindness.class, Blindness.DURATION);
 				}
 			}
 		}
 		
 		Buff.prolong(curUser, Weakness.class, Weakness.DURATION);
-		Buff.prolong(curUser, Blindness.class, Math.round(6 + power));
+		Buff.prolong(curUser, Blindness.class, Blindness.DURATION);
 		Dungeon.observe();
 		
 		setKnown();

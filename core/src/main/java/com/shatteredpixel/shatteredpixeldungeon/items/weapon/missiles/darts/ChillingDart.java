@@ -37,7 +37,7 @@ public class ChillingDart extends TippedDart {
 	public int proc(Char attacker, Char defender, int damage) {
 		
 		if (Dungeon.level.water[defender.pos]){
-			Buff.prolong(defender, Chill.class, 10f);
+			Buff.prolong(defender, Chill.class, Chill.DURATION);
 		} else {
 			Buff.prolong(defender, Chill.class, 6f);
 		}

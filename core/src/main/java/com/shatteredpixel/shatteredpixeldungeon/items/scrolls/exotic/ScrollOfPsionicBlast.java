@@ -53,15 +53,15 @@ public class ScrollOfPsionicBlast extends ExoticScroll {
 				targets ++;
 				mob.damage(Math.round(mob.HT/2f + mob.HP/2f), this);
 				if (mob.isAlive()) {
-					Buff.prolong(mob, Blindness.class, 10);
+					Buff.prolong(mob, Blindness.class, Blindness.DURATION);
 				}
 			}
 		}
 		
 		curUser.damage(Math.max(0, Math.round(curUser.HT*(0.5f * (float)Math.pow(0.9, targets)))), this);
 		if (curUser.isAlive()) {
-			Buff.prolong(curUser, Blindness.class, 10);
-			Buff.prolong(curUser, Weakness.class, 100);
+			Buff.prolong(curUser, Blindness.class, Blindness.DURATION);
+			Buff.prolong(curUser, Weakness.class, Weakness.DURATION*5f);
 			Dungeon.observe();
 			readAnimation();
 		} else {

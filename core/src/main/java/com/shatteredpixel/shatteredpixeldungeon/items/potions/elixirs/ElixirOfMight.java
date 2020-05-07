@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 public class ElixirOfMight extends Elixir {
@@ -111,6 +112,16 @@ public class ElixirOfMight extends Elixir {
 		@Override
 		public int icon() {
 			return BuffIndicator.HEALING;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(1f, 0.5f, 0f);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return (5f - left) / 5f;
 		}
 		
 		@Override

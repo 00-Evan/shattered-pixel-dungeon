@@ -40,7 +40,7 @@ public class ScrollOfForesight extends ExoticScroll {
 		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();
 		
-		Buff.affect(curUser, Foresight.class, 600f);
+		Buff.affect(curUser, Foresight.class, Foresight.DURATION);
 		
 		setKnown();
 		

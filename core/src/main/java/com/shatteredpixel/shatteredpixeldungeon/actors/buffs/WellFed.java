@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
 public class WellFed extends Buff {
-	
+
 	{
 		type = buffType.POSITIVE;
 		announced = true;
@@ -57,6 +57,11 @@ public class WellFed extends Buff {
 	@Override
 	public int icon() {
 		return BuffIndicator.WELL_FED;
+	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (Hunger.STARVING - left) / Hunger.STARVING);
 	}
 	
 	@Override

@@ -112,12 +112,12 @@ public class CursedWand {
 								case 0:
 									if (target != null)
 										Buff.affect(target, Burning.class).reignite(target);
-									Buff.affect(user, Frost.class, Frost.duration(user) * Random.Float(3f, 5f));
+									Buff.affect(user, Frost.class, Frost.DURATION);
 									break;
 								case 1:
 									Buff.affect(user, Burning.class).reignite(user);
 									if (target != null)
-										Buff.affect(target, Frost.class, Frost.duration(target) * Random.Float(3f, 5f));
+										Buff.affect(target, Frost.class, Frost.DURATION);
 									break;
 							}
 							afterZap.call();

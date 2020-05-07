@@ -221,6 +221,11 @@ public class CloakOfShadows extends Artifact {
 		}
 
 		@Override
+		public float iconFadePercent() {
+			return (5f - turnsToCost) / 5f;
+		}
+
+		@Override
 		public boolean attachTo( Char target ) {
 			if (super.attachTo( target )) {
 				target.invisible++;

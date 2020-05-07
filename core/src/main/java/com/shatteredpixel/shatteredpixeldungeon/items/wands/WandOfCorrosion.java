@@ -87,7 +87,7 @@ public class WandOfCorrosion extends Wand {
 		// lvl 2 - 60%
 		if (Random.Int( buffedLvl() + 3 ) >= 2) {
 			
-			Buff.affect( defender, Ooze.class ).set( 20f );
+			Buff.affect( defender, Ooze.class ).set( Ooze.DURATION );
 			CellEmitter.center(defender.pos).burst( CorrosionParticle.SPLASH, 5 );
 			
 		}

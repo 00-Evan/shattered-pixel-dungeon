@@ -45,7 +45,7 @@ public class AntiEntropy extends Glyph {
 		if (Random.Int( 8 ) == 0) {
 
 			if (Dungeon.level.adjacent( attacker.pos, defender.pos )) {
-				Buff.prolong(attacker, Frost.class, Frost.duration(attacker) * Random.Float(0.5f, 1f));
+				Buff.prolong(attacker, Frost.class, Frost.DURATION);
 				CellEmitter.get(attacker.pos).start(SnowParticle.FACTORY, 0.2f, 6);
 			}
 			

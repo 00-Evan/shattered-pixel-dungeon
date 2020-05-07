@@ -38,13 +38,11 @@ public class Friendly extends Weapon.Enchantment {
 		
 		if (Random.Int(10) == 0){
 			
-			int base = Random.IntRange(3, 5);
-			
-			Buff.affect( attacker, Charm.class, base + 10 ).object = defender.id();
+			Buff.affect( attacker, Charm.class, Charm.DURATION ).object = defender.id();
 			attacker.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			
-			//5 turns will be reduced by the attack, so effectively lasts for base turns
-			Buff.affect( defender, Charm.class, base + 5 ).object = attacker.id();
+			//5 turns will be reduced by the attack, so effectively lasts for Charm.DURATION-5 turns
+			Buff.affect( defender, Charm.class, Charm.DURATION ).object = attacker.id();
 			defender.sprite.centerEmitter().start( Speck.factory( Speck.HEART ), 0.2f, 5 );
 			
 		}

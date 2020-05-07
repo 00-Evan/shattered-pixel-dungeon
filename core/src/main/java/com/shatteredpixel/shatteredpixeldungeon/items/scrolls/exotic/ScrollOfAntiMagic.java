@@ -37,7 +37,7 @@ public class ScrollOfAntiMagic extends ExoticScroll {
 		
 		Invisibility.dispel();
 		
-		Buff.affect( curUser, MagicImmune.class, 20f );
+		Buff.affect( curUser, MagicImmune.class, MagicImmune.DURATION );
 		new Flare( 5, 32 ).color( 0xFF0000, true ).show( curUser.sprite, 2f );
 		
 		setKnown();

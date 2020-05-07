@@ -378,7 +378,7 @@ public abstract class YogFist extends Mob {
 			damage = super.attackProc( enemy, damage );
 
 			if (Random.Int( 2 ) == 0) {
-				Buff.affect( enemy, Ooze.class ).set( 20f );
+				Buff.affect( enemy, Ooze.class ).set( Ooze.DURATION );
 				enemy.sprite.burst( 0xFF000000, 5 );
 			}
 
@@ -448,7 +448,7 @@ public abstract class YogFist extends Mob {
 			if (hit( this, enemy, true )) {
 
 				enemy.damage( Random.NormalIntRange(12, 24), new LightBeam() );
-				Buff.prolong( enemy, Blindness.class, 4f );
+				Buff.prolong( enemy, Blindness.class, Blindness.DURATION/2f );
 
 				if (!enemy.isAlive() && enemy == Dungeon.hero) {
 					Dungeon.fail( getClass() );
@@ -468,7 +468,7 @@ public abstract class YogFist extends Mob {
 			super.damage(dmg, src);
 			if (isAlive() && beforeHP > HT/2 && HP < HT/2){
 				HP = HT/2;
-				Buff.prolong( Dungeon.hero, Blindness.class, 15f );
+				Buff.prolong( Dungeon.hero, Blindness.class, Blindness.DURATION*1.5f );
 				int i;
 				do {
 					i = Random.Int(Dungeon.level.length());
@@ -481,7 +481,7 @@ public abstract class YogFist extends Mob {
 				GameScene.flash(0xFFFFFF);
 				GLog.w( Messages.get( this, "teleport" ));
 			} else if (!isAlive()){
-				Buff.prolong( Dungeon.hero, Blindness.class, 30f );
+				Buff.prolong( Dungeon.hero, Blindness.class, Blindness.DURATION*3f );
 				GameScene.flash(0xFFFFFF);
 			}
 		}

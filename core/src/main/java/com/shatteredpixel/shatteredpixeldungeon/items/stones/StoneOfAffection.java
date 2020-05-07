@@ -49,7 +49,7 @@ public class StoneOfAffection extends Runestone {
 			Char ch = Actor.findChar( cell + i );
 			
 			if (ch != null && ch.alignment == Char.Alignment.ENEMY){
-				Buff.prolong(ch, Charm.class, 10f).object = curUser.id();
+				Buff.prolong(ch, Charm.class, Charm.DURATION).object = curUser.id();
 			}
 		}
 		

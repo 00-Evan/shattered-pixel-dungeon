@@ -37,6 +37,11 @@ public class Hex extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.HEX;
 	}
+
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+	}
 	
 	@Override
 	public String toString() {

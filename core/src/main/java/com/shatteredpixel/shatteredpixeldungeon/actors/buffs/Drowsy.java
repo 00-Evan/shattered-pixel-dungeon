@@ -28,6 +28,8 @@ import com.watabou.utils.Random;
 
 public class Drowsy extends Buff {
 
+	public static final float DURATION = 5f;
+
 	{
 		type = buffType.NEUTRAL;
 		announced = true;
@@ -38,10 +40,16 @@ public class Drowsy extends Buff {
 		return BuffIndicator.DROWSY;
 	}
 
-	public boolean attachTo( Char target ) {
+	@Override
+	public float iconFadePercent() {
+		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+	}
+
+	public boolean attachTo(Char target ) {
 		if (!target.isImmune(Sleep.class) && super.attachTo(target)) {
-			if (cooldown() == 0)
-				spend(Random.Int(3, 6));
+			if (cooldown() == 0) {
+				spend(DURATION);
+			}
 			return true;
 		}
 		return false;

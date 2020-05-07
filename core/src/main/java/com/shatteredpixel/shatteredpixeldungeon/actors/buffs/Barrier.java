@@ -59,7 +59,7 @@ public class Barrier extends ShieldBuff {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		icon.tint(0, 0.5f, 1, 0.5f);
+		icon.hardlight(0.5f, 1f, 2f);
 	}
 	
 	@Override
