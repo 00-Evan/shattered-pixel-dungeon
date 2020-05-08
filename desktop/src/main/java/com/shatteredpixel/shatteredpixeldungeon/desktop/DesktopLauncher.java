@@ -77,6 +77,7 @@ public class DesktopLauncher {
 				TinyFileDialogs.tinyfd_messageBox(title + " Has Crashed!",
 						title + " has run into an error it can't recover from and has crashed, sorry about that!\n\n" +
 						"If you could, please email this error message to the developer (Evan@ShatteredPixel.com):\n\n" +
+						"version: " + Game.version + "\n" +
 						exceptionMsg,
 						"ok", "error", false );
 				if (Gdx.app != null) Gdx.app.exit();
@@ -137,7 +138,7 @@ public class DesktopLauncher {
 		
 		config.setWindowIcon("icons/icon_16.png", "icons/icon_32.png", "icons/icon_64.png",
 				"icons/icon_128.png", "icons/icon_256.png");
-		
+
 		new Lwjgl3Application(new ShatteredPixelDungeon(new DesktopPlatformSupport()), config);
 	}
 }
