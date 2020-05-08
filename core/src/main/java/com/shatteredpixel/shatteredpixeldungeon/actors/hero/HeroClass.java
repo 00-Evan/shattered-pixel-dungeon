@@ -27,45 +27,31 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
-import com.shatteredpixel.shatteredpixeldungeon.items.Torch;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Affection;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.PotionBandolier;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.ScrollHolder;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAquaticRejuvenation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfDragonsBlood;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfHolyFuror;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfMagicalSight;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blocking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingKnife;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingStone;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.plants.Firebloom;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
 
@@ -107,7 +93,7 @@ public enum HeroClass {
 				initHuntress( hero );
 				break;
 		}
-		
+
 	}
 
 	private static void initCommon( Hero hero ) {
@@ -120,35 +106,8 @@ public enum HeroClass {
 		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
 			new SmallRation().collect();
 		}
-		
+
 		new ScrollOfIdentify().identify();
-
-		//hero.earnExp(2500, null);
-		new WandOfFireblast().upgrade(50).collect();
-
-		new TomeOfMastery().collect();
-		new WandOfFrost().upgrade(5).collect();
-
-		new PotionOfLiquidFlame().collect();
-
-		new Firebloom.Seed().collect();
-		new ElixirOfDragonsBlood().collect();
-
-		new PotionOfHolyFuror().collect();
-
-		new Torch().quantity(30).collect();
-		new ScrollOfUpgrade().quantity(5).collect();
-		new WandOfPrismaticLight().identify().collect();
-
-		new PotionOfMindVision().collect();
-
-		new PotionOfMagicalSight().collect();
-
-		new ElixirOfAquaticRejuvenation().collect();
-
-		new PotionOfFrost().collect();
-
-		hero.belongings.armor.inscribe(new Affection());
 
 	}
 
@@ -168,7 +127,6 @@ public enum HeroClass {
 
 	private static void initWarrior( Hero hero ) {
 		(hero.belongings.weapon = new WornShortsword()).identify();
-		((MeleeWeapon)hero.belongings.weapon).enchant(new Blocking());
 		ThrowingStone stones = new ThrowingStone();
 		stones.quantity(3).collect();
 		Dungeon.quickslot.setSlot(0, stones);
@@ -176,17 +134,17 @@ public enum HeroClass {
 		if (hero.belongings.armor != null){
 			hero.belongings.armor.affixSeal(new BrokenSeal());
 		}
-		
+
 		new PotionBandolier().collect();
 		Dungeon.LimitedDrops.POTION_BANDOLIER.drop();
-		
+
 		new PotionOfHealing().identify();
 		new ScrollOfRage().identify();
 	}
 
 	private static void initMage( Hero hero ) {
 		MagesStaff staff;
-		
+
 		staff = new MagesStaff(new WandOfMagicMissile());
 
 		(hero.belongings.weapon = staff).identify();
@@ -196,7 +154,7 @@ public enum HeroClass {
 
 		new ScrollHolder().collect();
 		Dungeon.LimitedDrops.SCROLL_HOLDER.drop();
-		
+
 		new ScrollOfUpgrade().identify();
 		new PotionOfLiquidFlame().identify();
 	}
@@ -216,7 +174,7 @@ public enum HeroClass {
 
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
-		
+
 		new ScrollOfMagicMapping().identify();
 		new PotionOfInvisibility().identify();
 	}
@@ -231,19 +189,19 @@ public enum HeroClass {
 
 		new VelvetPouch().collect();
 		Dungeon.LimitedDrops.VELVET_POUCH.drop();
-		
+
 		new PotionOfMindVision().identify();
 		new ScrollOfLullaby().identify();
 	}
-	
+
 	public String title() {
 		return Messages.get(HeroClass.class, title);
 	}
-	
+
 	public HeroSubClass[] subClasses() {
 		return subClasses;
 	}
-	
+
 	public String spritesheet() {
 		switch (this) {
 			case WARRIOR: default:
