@@ -111,7 +111,7 @@ public class Pickaxe extends Weapon {
 						public void call() {
 
 							CellEmitter.center( pos ).burst( Speck.factory( Speck.STAR ), 7 );
-							Sample.INSTANCE.play( Assets.SND_EVOKE );
+							Sample.INSTANCE.play( Assets.Sounds.EVOKE );
 							
 							Level.set( pos, Terrain.WALL );
 							GameScene.updateMap( pos );

@@ -56,7 +56,7 @@ public class ScrollOfTeleportation extends Scroll {
 	@Override
 	public void doRead() {
 
-		Sample.INSTANCE.play( Assets.SND_READ );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Invisibility.dispel();
 		
 		teleportPreferringUnseen( curUser );
@@ -206,7 +206,7 @@ public class ScrollOfTeleportation extends Scroll {
 			appear( hero, pos );
 			Dungeon.level.occupyCell(hero );
 			if (secretDoor && level.map[doorPos] == Terrain.SECRET_DOOR){
-				Sample.INSTANCE.play( Assets.SND_SECRET );
+				Sample.INSTANCE.play( Assets.Sounds.SECRET );
 				int oldValue = Dungeon.level.map[doorPos];
 				GameScene.discoverTile( doorPos, oldValue );
 				Dungeon.level.discover( doorPos );
@@ -223,7 +223,7 @@ public class ScrollOfTeleportation extends Scroll {
 		ch.sprite.interruptMotion();
 
 		if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[ch.pos]){
-			Sample.INSTANCE.play(Assets.SND_TELEPORT);
+			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 		}
 
 		ch.move( pos );

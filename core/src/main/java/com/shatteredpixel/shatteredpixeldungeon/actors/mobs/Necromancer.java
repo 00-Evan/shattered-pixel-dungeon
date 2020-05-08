@@ -228,7 +228,7 @@ public class Necromancer extends Mob {
 				mySkeleton.pos = summoningPos;
 				GameScene.add( mySkeleton );
 				Dungeon.level.occupyCell( mySkeleton );
-				Sample.INSTANCE.play(Assets.SND_BONES);
+				Sample.INSTANCE.play(Assets.Sounds.BONES);
 				summoningEmitter.burst( Speck.factory( Speck.RATTLE ), 5 );
 				sprite.idle();
 				

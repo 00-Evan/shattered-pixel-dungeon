@@ -71,7 +71,7 @@ public class RitualSiteRoom extends StandardRoom {
 	public static class RitualMarker extends CustomTilemap {
 		
 		{
-			texture = Assets.PRISON_QUEST;
+			texture = Assets.Environment.PRISON_QUEST;
 			
 			tileW = tileH = 3;
 		}

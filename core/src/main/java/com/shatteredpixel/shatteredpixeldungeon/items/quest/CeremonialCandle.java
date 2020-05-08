@@ -121,7 +121,7 @@ public class CeremonialCandle extends Item {
 				for (int i : PathFinder.NEIGHBOURS9){
 					CellEmitter.get(ritualPos+i).burst(ElmoParticle.FACTORY, 10);
 				}
-				Sample.INSTANCE.play(Assets.SND_BURNING);
+				Sample.INSTANCE.play(Assets.Sounds.BURNING);
 			}
 		}
 

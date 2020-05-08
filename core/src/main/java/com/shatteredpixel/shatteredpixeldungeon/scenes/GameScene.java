@@ -173,7 +173,7 @@ public class GameScene extends PixelScene {
 			return;
 		}
 		
-		Music.INSTANCE.play( Assets.TUNE, true );
+		Music.INSTANCE.play( Assets.Music.GAME, true );
 
 		SPDSettings.lastClass(Dungeon.hero.heroClass.ordinal());
 		
@@ -435,7 +435,7 @@ public class GameScene extends PixelScene {
 			if (Dungeon.depth == Statistics.deepestFloor
 					&& (InterlevelScene.mode == InterlevelScene.Mode.DESCEND || InterlevelScene.mode == InterlevelScene.Mode.FALL)) {
 				GLog.h(Messages.get(this, "descend"), Dungeon.depth);
-				Sample.INSTANCE.play(Assets.SND_DESCEND);
+				Sample.INSTANCE.play(Assets.Sounds.DESCEND);
 				
 				for (Char ch : Actor.chars()){
 					if (ch instanceof DriedRose.GhostHero){
@@ -962,7 +962,7 @@ public class GameScene extends PixelScene {
 		gameOver.show( 0x000000, 1f );
 		scene.showBanner( gameOver );
 		
-		Sample.INSTANCE.play( Assets.SND_DEATH );
+		Sample.INSTANCE.play( Assets.Sounds.DEATH );
 	}
 	
 	public static void bossSlain() {
@@ -971,7 +971,7 @@ public class GameScene extends PixelScene {
 			bossSlain.show( 0xFFFFFF, 0.3f, 5f );
 			scene.showBanner( bossSlain );
 			
-			Sample.INSTANCE.play( Assets.SND_BOSS );
+			Sample.INSTANCE.play( Assets.Sounds.BOSS );
 		}
 	}
 	

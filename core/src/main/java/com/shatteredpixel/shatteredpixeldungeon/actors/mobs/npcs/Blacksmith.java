@@ -211,7 +211,7 @@ public class Blacksmith extends NPC {
 			second = item2;
 		}
 
-		Sample.INSTANCE.play( Assets.SND_EVOKE );
+		Sample.INSTANCE.play( Assets.Sounds.EVOKE );
 		ScrollOfUpgrade.upgrade( Dungeon.hero );
 		Item.evoke( Dungeon.hero );
 

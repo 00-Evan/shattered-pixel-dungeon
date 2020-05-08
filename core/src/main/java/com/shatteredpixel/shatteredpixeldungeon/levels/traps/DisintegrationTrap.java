@@ -65,7 +65,7 @@ public class DisintegrationTrap extends Trap {
 		
 		if (target != null) {
 			if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[target.pos]) {
-				Sample.INSTANCE.play(Assets.SND_RAY);
+				Sample.INSTANCE.play(Assets.Sounds.RAY);
 				ShatteredPixelDungeon.scene().add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos), target.sprite.center()));
 			}
 			target.damage( Random.NormalIntRange(30, 50) + Dungeon.depth, this );

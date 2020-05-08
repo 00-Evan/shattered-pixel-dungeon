@@ -37,7 +37,7 @@ public class RipperSprite extends MobSprite {
 	public RipperSprite() {
 		super();
 
-		texture( Assets.RIPPER );
+		texture( Assets.Sprites.RIPPER );
 
 		TextureFilm frames = new TextureFilm( texture, 15, 14 );
 

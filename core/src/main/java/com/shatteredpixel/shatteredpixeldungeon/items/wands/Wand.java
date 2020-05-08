@@ -295,7 +295,7 @@ public abstract class Wand extends Item {
 				curUser.sprite,
 				bolt.collisionPos,
 				callback);
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 
 	public void staffFx( MagesStaff.StaffParticle particle ){

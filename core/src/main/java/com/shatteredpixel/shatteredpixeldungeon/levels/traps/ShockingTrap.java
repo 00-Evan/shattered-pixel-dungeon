@@ -40,7 +40,7 @@ public class ShockingTrap extends Trap {
 	public void activate() {
 		
 		if (Dungeon.level.heroFOV[pos]){
-			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		}
 		
 		for( int i : PathFinder.NEIGHBOURS9) {

@@ -47,7 +47,7 @@ public class CausticBrew extends Brew {
 		
 		if (Dungeon.level.heroFOV[cell]) {
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 3 );

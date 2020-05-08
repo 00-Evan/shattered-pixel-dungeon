@@ -86,7 +86,7 @@ public class CloakOfShadows extends Artifact {
 					stealthed = true;
 					hero.spend( 1f );
 					hero.busy();
-					Sample.INSTANCE.play(Assets.SND_MELD);
+					Sample.INSTANCE.play(Assets.Sounds.MELD);
 					activeBuff = activeBuff();
 					activeBuff.attachTo(hero);
 					if (hero.sprite.parent != null) {

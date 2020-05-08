@@ -151,7 +151,7 @@ public class v0_2_X_Changes {
 				"_-_ Key ring and unstackable keys\n" +
 				"_-_ Blindweed has not been removed"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 112, 112, 16, 16), "New Plants",
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TERRAIN_FEATURES, 112, 112, 16, 16), "New Plants",
 				"Added two new plants:\n" +
 				"_-_ Stormvine, which brews into levitation\n" +
 				"_-_ Dreamfoil, which brews into purity\n\n" +
@@ -181,13 +181,13 @@ public class v0_2_X_Changes {
 				"\n" +
 				"Dev commentary will be added here in the future."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.GHOST, 0, 0, 14, 15), "New Sewer Quests",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.GHOST, 0, 0, 14, 15), "New Sewer Quests",
 				"_-_ Removed the dried rose quest (the rose will return...)\n\n" +
 				"_-_ Tweaked the mechanics of the fetid rat quest\n\n" +
 				"_-_ Added a gnoll trickster quest\n\n" +
 				"_-_ Added a great crab quest"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.GOO, 43, 3, 14, 11), "Goo Changes",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.GOO, 43, 3, 14, 11), "Goo Changes",
 				"Goo's animations have been overhauled, including a particle effect for the area of its pumped up attack.\n\n" +
 				"Goo's arena has been updated to give more room to maneuver, and to be more variable."));
 		

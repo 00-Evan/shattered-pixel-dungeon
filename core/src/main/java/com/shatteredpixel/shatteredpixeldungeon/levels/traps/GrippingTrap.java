@@ -43,7 +43,7 @@ public class GrippingTrap extends Trap {
 	@Override
 	public void trigger() {
 		if (Dungeon.level.heroFOV[pos]){
-			Sample.INSTANCE.play(Assets.SND_TRAP);
+			Sample.INSTANCE.play(Assets.Sounds.TRAP);
 		}
 		//this trap is not disarmed by being triggered
 		reveal();

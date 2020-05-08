@@ -43,7 +43,7 @@ public class ShockingBrew extends Brew {
 	public void shatter(int cell) {
 		if (Dungeon.level.heroFOV[cell]) {
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), 2 );
 		for (int i = 0; i < PathFinder.distance.length; i++) {
@@ -51,7 +51,7 @@ public class ShockingBrew extends Brew {
 				GameScene.add(Blob.seed(i, 20, Electricity.class));
 			}
 		}
-		Sample.INSTANCE.play(Assets.SND_LIGHTNING);
+		Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 	}
 	
 	@Override

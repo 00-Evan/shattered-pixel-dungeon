@@ -307,7 +307,7 @@ public class UnstableSpellbook extends Artifact {
 						hero.sprite.operate( hero.pos );
 						hero.busy();
 						hero.spend( 2f );
-						Sample.INSTANCE.play(Assets.SND_BURNING);
+						Sample.INSTANCE.play(Assets.Sounds.BURNING);
 						hero.sprite.emitter().burst( ElmoParticle.FACTORY, 12 );
 
 						scrolls.remove(i);

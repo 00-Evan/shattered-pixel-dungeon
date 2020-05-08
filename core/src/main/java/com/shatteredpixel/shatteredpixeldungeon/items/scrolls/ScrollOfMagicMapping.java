@@ -76,11 +76,11 @@ public class ScrollOfMagicMapping extends Scroll {
 		
 		GLog.i( Messages.get(this, "layout") );
 		if (noticed) {
-			Sample.INSTANCE.play( Assets.SND_SECRET );
+			Sample.INSTANCE.play( Assets.Sounds.SECRET );
 		}
 		
 		SpellSprite.show( curUser, SpellSprite.MAP );
-		Sample.INSTANCE.play( Assets.SND_READ );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Invisibility.dispel();
 		
 		setKnown();

@@ -311,7 +311,7 @@ public class Toolbar extends Component {
 		protected void createChildren() {
 			super.createChildren();
 			
-			base = new Image( Assets.TOOLBAR );
+			base = new Image( Assets.Interfaces.TOOLBAR );
 			add( base );
 		}
 		

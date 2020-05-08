@@ -59,7 +59,7 @@ public abstract class GooBossRoom extends StandardRoom {
 	public static class GooNest extends CustomTilemap {
 		
 		{
-			texture = Assets.SEWER_BOSS;
+			texture = Assets.Environment.SEWER_BOSS;
 		}
 		
 		@Override

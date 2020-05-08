@@ -298,7 +298,7 @@ public class SpiritBow extends Weapon {
 				
 				user.busy();
 				
-				Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+				Sample.INSTANCE.play( Assets.Sounds.MISS, 0.6f, 0.6f, 1.5f );
 				
 				((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
 						reset(user.sprite,

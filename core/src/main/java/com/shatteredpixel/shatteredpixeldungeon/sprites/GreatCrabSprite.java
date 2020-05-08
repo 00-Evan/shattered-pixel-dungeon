@@ -30,7 +30,7 @@ public class GreatCrabSprite extends MobSprite {
 	public GreatCrabSprite() {
 		super();
 
-		texture( Assets.CRAB );
+		texture( Assets.Sprites.CRAB );
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

@@ -79,7 +79,7 @@ public class Food extends Item {
 			hero.sprite.operate( hero.pos );
 			hero.busy();
 			SpellSprite.show( hero, SpellSprite.FOOD );
-			Sample.INSTANCE.play( Assets.SND_EAT );
+			Sample.INSTANCE.play( Assets.Sounds.EAT );
 			
 			hero.spend( TIME_TO_EAT );
 			

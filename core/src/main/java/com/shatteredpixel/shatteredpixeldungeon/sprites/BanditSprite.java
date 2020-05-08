@@ -29,7 +29,7 @@ public class BanditSprite extends MobSprite {
 	public BanditSprite() {
 		super();
 		
-		texture( Assets.THIEF );
+		texture( Assets.Sprites.THIEF );
 		TextureFilm film = new TextureFilm( texture, 12, 13 );
 		
 		idle = new Animation( 1, true );

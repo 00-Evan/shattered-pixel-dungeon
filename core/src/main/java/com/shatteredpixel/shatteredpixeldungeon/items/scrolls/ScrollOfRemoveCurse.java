@@ -51,7 +51,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 				item.cursedKnown = true;
 			}
 		}
-		Sample.INSTANCE.play( Assets.SND_READ );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Invisibility.dispel();
 		doRead();
 	}

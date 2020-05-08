@@ -54,7 +54,7 @@ public class AndroidLauncher extends Activity {
 					e.getMessage());
 			text.setTextSize(16);
 			text.setTextColor(0xFFFFFFFF);
-			text.setTypeface(Typeface.createFromAsset(getAssets(), "pixel_font.ttf"));
+			text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/pixel_font.ttf"));
 			text.setGravity(Gravity.CENTER_VERTICAL);
 			text.setPadding(10, 10, 10, 10);
 			setContentView(text);

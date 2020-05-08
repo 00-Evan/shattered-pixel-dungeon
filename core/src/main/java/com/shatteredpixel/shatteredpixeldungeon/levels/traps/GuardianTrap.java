@@ -52,7 +52,7 @@ public class GuardianTrap extends Trap {
 			CellEmitter.center(pos).start( Speck.factory(Speck.SCREAM), 0.3f, 3 );
 		}
 
-		Sample.INSTANCE.play( Assets.SND_ALERT );
+		Sample.INSTANCE.play( Assets.Sounds.ALERT );
 
 		for (int i = 0; i < (Dungeon.depth - 5)/5; i++){
 			Guardian guardian = new Guardian();

@@ -45,7 +45,7 @@ public class MimicSprite extends MobSprite {
 
 		int c = texOffset();
 
-		texture( Assets.MIMIC );
+		texture( Assets.Sprites.MIMIC );
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

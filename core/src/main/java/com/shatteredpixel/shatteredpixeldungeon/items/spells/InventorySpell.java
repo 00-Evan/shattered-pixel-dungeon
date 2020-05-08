@@ -60,7 +60,7 @@ public abstract class InventorySpell extends Spell {
 				curUser.busy();
 				(curUser.sprite).operate( curUser.pos );
 				
-				Sample.INSTANCE.play( Assets.SND_READ );
+				Sample.INSTANCE.play( Assets.Sounds.READ );
 				Invisibility.dispel();
 				
 			} else {

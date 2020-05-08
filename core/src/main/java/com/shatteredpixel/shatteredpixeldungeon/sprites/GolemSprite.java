@@ -38,7 +38,7 @@ public class GolemSprite extends MobSprite {
 	public GolemSprite() {
 		super();
 		
-		texture( Assets.GOLEM );
+		texture( Assets.Sprites.GOLEM );
 		
 		TextureFilm frames = new TextureFilm( texture, 17, 19 );
 		
@@ -117,7 +117,7 @@ public class GolemSprite extends MobSprite {
 						((Golem)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 
 	@Override

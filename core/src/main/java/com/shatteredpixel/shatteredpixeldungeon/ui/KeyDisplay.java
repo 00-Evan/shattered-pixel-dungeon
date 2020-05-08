@@ -46,7 +46,7 @@ public class KeyDisplay extends Visual {
 	private FloatBuffer quads;
 	private Vertexbuffer buffer;
 	
-	private SmartTexture tx = TextureCache.get(Assets.MENU);
+	private SmartTexture tx = TextureCache.get(Assets.Interfaces.MENU);
 	
 	private boolean dirty = true;
 	private int[] keys;

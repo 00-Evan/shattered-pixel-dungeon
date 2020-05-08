@@ -56,7 +56,7 @@ public abstract class FistSprite extends MobSprite {
 
 		int c = texOffset();
 
-		texture( Assets.FISTS );
+		texture( Assets.Sprites.FISTS );
 
 		TextureFilm frames = new TextureFilm( texture, 24, 17 );
 
@@ -139,7 +139,7 @@ public abstract class FistSprite extends MobSprite {
 						}
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 
 	@Override

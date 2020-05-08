@@ -46,7 +46,7 @@ public class Noisemaker extends Bomb {
 		Buff.affect(Dungeon.hero, Trigger.class).set(cell);
 
 		CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-		Sample.INSTANCE.play( Assets.SND_ALERT );
+		Sample.INSTANCE.play( Assets.Sounds.ALERT );
 
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			mob.beckon( cell );
@@ -106,7 +106,7 @@ public class Noisemaker extends Bomb {
 
 				if (left <= 0){
 					CellEmitter.center( cell ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-					Sample.INSTANCE.play( Assets.SND_ALERT );
+					Sample.INSTANCE.play( Assets.Sounds.ALERT );
 
 					for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 						mob.beckon( cell );

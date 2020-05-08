@@ -126,7 +126,7 @@ public class BuffIndicator extends Component {
 	
 	@Override
 	protected void createChildren() {
-		texture = TextureCache.get( Assets.BUFFS_SMALL );
+		texture = TextureCache.get( Assets.Interfaces.BUFFS_SMALL );
 		film = new TextureFilm( texture, SIZE, SIZE );
 	}
 	

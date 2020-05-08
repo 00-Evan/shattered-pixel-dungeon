@@ -81,7 +81,7 @@ public class SurfaceScene extends PixelScene {
 		
 		super.create();
 		
-		Music.INSTANCE.play( Assets.HAPPY, true );
+		Music.INSTANCE.play( Assets.Music.SURFACE, true );
 		
 		uiCamera.visible = false;
 		
@@ -211,7 +211,7 @@ public class SurfaceScene extends PixelScene {
 			window.add( patch );
 		}
 		
-		Image frame = new Image( Assets.SURFACE );
+		Image frame = new Image( Assets.Interfaces.SURFACE );
 
 		frame.frame( 0, 0, FRAME_WIDTH, FRAME_HEIGHT );
 		frame.x = vx - FRAME_MARGIN_X;
@@ -319,7 +319,7 @@ public class SurfaceScene extends PixelScene {
 		private static int lastIndex = -1;
 		
 		public Cloud( float y, boolean dayTime ) {
-			super( Assets.SURFACE );
+			super( Assets.Interfaces.SURFACE );
 			
 			int index;
 			do {
@@ -371,7 +371,7 @@ public class SurfaceScene extends PixelScene {
 		private static final int HEIGHT	= 32;
 		
 		public Avatar( HeroClass cl ) {
-			super( Assets.AVATARS );
+			super( Assets.Sprites.AVATARS );
 			frame( new TextureFilm( texture, WIDTH, HEIGHT ).get( cl.ordinal() ) );
 		}
 	}
@@ -405,7 +405,7 @@ public class SurfaceScene extends PixelScene {
 		
 		public GrassPatch( float tx, float ty, boolean forward ) {
 			
-			super( Assets.SURFACE );
+			super( Assets.Interfaces.SURFACE );
 			
 			frame( 88 + Random.Int( 4 ) * WIDTH, 60, WIDTH, HEIGHT );
 			

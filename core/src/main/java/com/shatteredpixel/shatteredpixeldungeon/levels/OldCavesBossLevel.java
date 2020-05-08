@@ -70,12 +70,12 @@ public class OldCavesBossLevel extends Level {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_CAVES;
+		return Assets.Environment.TILES_CAVES;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_CAVES;
+		return Assets.Environment.WATER_CAVES;
 	}
 	
 	private static final String DOOR	= "door";
@@ -247,7 +247,7 @@ public class OldCavesBossLevel extends Level {
 			
 			CellEmitter.get( arenaDoor ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
 			Camera.main.shake( 3, 0.7f );
-			Sample.INSTANCE.play( Assets.SND_ROCKS );
+			Sample.INSTANCE.play( Assets.Sounds.ROCKS );
 		}
 	}
 	

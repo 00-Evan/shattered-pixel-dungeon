@@ -179,7 +179,7 @@ public class SandalsOfNature extends Artifact {
 
 					Hero hero = Dungeon.hero;
 					hero.sprite.operate( hero.pos );
-					Sample.INSTANCE.play( Assets.SND_PLANT );
+					Sample.INSTANCE.play( Assets.Sounds.PLANT );
 					hero.busy();
 					hero.spend( 2f );
 					if (seeds.size() >= 3+(level()*3)){

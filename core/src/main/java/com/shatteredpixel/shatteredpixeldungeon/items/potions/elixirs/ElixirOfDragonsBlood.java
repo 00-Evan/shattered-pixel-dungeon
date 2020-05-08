@@ -41,7 +41,7 @@ public class ElixirOfDragonsBlood extends Elixir {
 	@Override
 	public void apply(Hero hero) {
 		Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
-		Sample.INSTANCE.play( Assets.SND_BURNING );
+		Sample.INSTANCE.play( Assets.Sounds.BURNING );
 		hero.sprite.emitter().burst(FlameParticle.FACTORY, 10);
 	}
 	

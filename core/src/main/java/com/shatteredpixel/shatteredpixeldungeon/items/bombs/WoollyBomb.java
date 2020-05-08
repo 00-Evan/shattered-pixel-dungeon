@@ -60,7 +60,7 @@ public class WoollyBomb extends Bomb {
 			}
 		}
 		
-		Sample.INSTANCE.play(Assets.SND_PUFF);
+		Sample.INSTANCE.play(Assets.Sounds.PUFF);
 		
 		
 	}

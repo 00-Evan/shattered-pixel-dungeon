@@ -78,7 +78,7 @@ public enum Icons {
 	}
 	
 	public static Image get( Icons type ) {
-		Image icon = new Image( Assets.ICONS );
+		Image icon = new Image( Assets.Interfaces.ICONS );
 		switch (type) {
 		case CHECKED:
 			icon.frame( icon.texture.uvRect( 0, 0, 12, 12 ) );

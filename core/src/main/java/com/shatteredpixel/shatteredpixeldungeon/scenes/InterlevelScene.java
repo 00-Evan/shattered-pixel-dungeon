@@ -132,12 +132,12 @@ public class InterlevelScene extends PixelScene {
 				scrollSpeed = returnDepth > Dungeon.depth ? 15 : -15;
 				break;
 		}
-		if (loadingDepth <= 5)          loadingAsset = Assets.LOADING_SEWERS;
-		else if (loadingDepth <= 10)    loadingAsset = Assets.LOADING_PRISON;
-		else if (loadingDepth <= 15)    loadingAsset = Assets.LOADING_CAVES;
-		else if (loadingDepth <= 20)    loadingAsset = Assets.LOADING_CITY;
-		else if (loadingDepth <= 25)    loadingAsset = Assets.LOADING_HALLS;
-		else                            loadingAsset = Assets.SHADOW;
+		if (loadingDepth <= 5)          loadingAsset = Assets.Interfaces.LOADING_SEWERS;
+		else if (loadingDepth <= 10)    loadingAsset = Assets.Interfaces.LOADING_PRISON;
+		else if (loadingDepth <= 15)    loadingAsset = Assets.Interfaces.LOADING_CAVES;
+		else if (loadingDepth <= 20)    loadingAsset = Assets.Interfaces.LOADING_CITY;
+		else if (loadingDepth <= 25)    loadingAsset = Assets.Interfaces.LOADING_HALLS;
+		else                            loadingAsset = Assets.Interfaces.SHADOW;
 		
 		//speed up transition when debugging
 		if (DeviceCompat.isDebug()){
@@ -231,7 +231,7 @@ public class InterlevelScene extends PixelScene {
 						}
 						
 						if ((Dungeon.depth % 5) == 0) {
-							Sample.INSTANCE.load(Assets.SND_BOSS);
+							Sample.INSTANCE.load(Assets.Sounds.BOSS);
 						}
 						
 					} catch (Exception e) {

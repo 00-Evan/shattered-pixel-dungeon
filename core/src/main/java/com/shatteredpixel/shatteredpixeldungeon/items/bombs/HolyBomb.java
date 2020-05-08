@@ -73,7 +73,7 @@ public class HolyBomb extends Bomb {
 			}
 		}
 		
-		Sample.INSTANCE.play( Assets.SND_READ );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 	}
 	
 	@Override

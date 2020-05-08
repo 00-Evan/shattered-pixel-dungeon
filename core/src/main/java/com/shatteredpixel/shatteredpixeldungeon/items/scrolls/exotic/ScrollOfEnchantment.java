@@ -77,7 +77,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 							GLog.p(Messages.get(StoneOfEnchantment.class, "weapon"));
 							((ScrollOfEnchantment)curItem).readAnimation();
 							
-							Sample.INSTANCE.play( Assets.SND_READ );
+							Sample.INSTANCE.play( Assets.Sounds.READ );
 							Invisibility.dispel();
 							Enchanting.show(curUser, item);
 						}
@@ -114,7 +114,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 							GLog.p(Messages.get(StoneOfEnchantment.class, "armor"));
 							((ScrollOfEnchantment)curItem).readAnimation();
 							
-							Sample.INSTANCE.play( Assets.SND_READ );
+							Sample.INSTANCE.play( Assets.Sounds.READ );
 							Invisibility.dispel();
 							Enchanting.show(curUser, item);
 						}

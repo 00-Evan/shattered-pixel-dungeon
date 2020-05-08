@@ -34,7 +34,7 @@ public class DM201Sprite extends MobSprite {
 	public DM201Sprite () {
 		super();
 
-		texture( Assets.DM200 );
+		texture( Assets.Sprites.DM200 );
 
 		TextureFilm frames = new TextureFilm( texture, 21, 18 );
 
@@ -81,11 +81,11 @@ public class DM201Sprite extends MobSprite {
 				new Callback() {
 					@Override
 					public void call() {
-						Sample.INSTANCE.play( Assets.SND_PUFF );
+						Sample.INSTANCE.play( Assets.Sounds.PUFF );
 						((DM201)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_MISS, 0.6f, 0.6f, 1.5f );
+		Sample.INSTANCE.play( Assets.Sounds.MISS, 0.6f, 0.6f, 1.5f );
 	}
 
 	@Override

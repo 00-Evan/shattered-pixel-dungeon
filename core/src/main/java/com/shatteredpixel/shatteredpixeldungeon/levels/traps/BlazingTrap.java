@@ -52,6 +52,6 @@ public class BlazingTrap extends Trap {
 				CellEmitter.get(i).burst(FlameParticle.FACTORY, 5);
 			}
 		}
-		Sample.INSTANCE.play(Assets.SND_BURNING);
+		Sample.INSTANCE.play(Assets.Sounds.BURNING);
 	}
 }

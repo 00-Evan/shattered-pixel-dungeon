@@ -58,7 +58,7 @@ public class StoneOfFlock extends Runestone {
 			}
 		}
 		CellEmitter.get(cell).burst(Speck.factory(Speck.WOOL), 4);
-		Sample.INSTANCE.play(Assets.SND_PUFF);
+		Sample.INSTANCE.play(Assets.Sounds.PUFF);
 		
 	}
 	

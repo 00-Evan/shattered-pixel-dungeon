@@ -54,7 +54,7 @@ public class ScrollOfIdentify extends InventoryScroll {
 		
 		if (unIDed.size() > 1) {
 			Random.element(unIDed).identify();
-			Sample.INSTANCE.play( Assets.SND_TELEPORT );
+			Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 		}
 		
 		doRead();

@@ -17,7 +17,7 @@ public class WardSprite extends MobSprite {
 	public WardSprite(){
 		super();
 
-		texture(Assets.WARDS);
+		texture(Assets.Sprites.WARDS);
 
 		tierIdles[1] = new Animation( 1, true );
 		tierIdles[1].frames(texture.uvRect(0, 0, 9, 10));

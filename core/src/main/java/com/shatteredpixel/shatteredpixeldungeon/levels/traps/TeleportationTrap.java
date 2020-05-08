@@ -47,7 +47,7 @@ public class TeleportationTrap extends Trap {
 	public void activate() {
 
 		CellEmitter.get(pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
+		Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 
 		Char ch = Actor.findChar( pos);
 		if (ch != null && !ch.flying) {

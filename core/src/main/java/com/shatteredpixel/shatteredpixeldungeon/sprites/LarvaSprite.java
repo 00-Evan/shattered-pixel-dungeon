@@ -30,7 +30,7 @@ public class LarvaSprite extends MobSprite {
 	public LarvaSprite() {
 		super();
 		
-		texture( Assets.LARVA );
+		texture( Assets.Sprites.LARVA );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 8 );
 		

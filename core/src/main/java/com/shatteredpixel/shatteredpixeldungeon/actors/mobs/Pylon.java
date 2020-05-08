@@ -94,7 +94,7 @@ public class Pylon extends Mob {
 					DungeonTilemap.raisedTileCenterToWorld(cell2), null));
 			CellEmitter.get(cell1).burst(SparkParticle.FACTORY, 3);
 			CellEmitter.get(cell2).burst(SparkParticle.FACTORY, 3);
-			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		}
 
 		shockChar(Actor.findChar(cell1));

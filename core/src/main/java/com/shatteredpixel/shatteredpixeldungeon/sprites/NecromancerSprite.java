@@ -32,7 +32,7 @@ public class NecromancerSprite extends MobSprite {
 	public NecromancerSprite(){
 		super();
 		
-		texture( Assets.NECRO );
+		texture( Assets.Sprites.NECRO );
 		TextureFilm film = new TextureFilm( texture, 16, 16 );
 		
 		idle = new Animation( 1, true );

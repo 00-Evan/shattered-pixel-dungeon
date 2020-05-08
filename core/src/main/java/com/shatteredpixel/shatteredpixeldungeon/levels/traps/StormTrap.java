@@ -41,7 +41,7 @@ public class StormTrap extends Trap {
 	public void activate() {
 		
 		if (Dungeon.level.heroFOV[pos]){
-			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		}
 		
 		PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );

@@ -120,7 +120,7 @@ public class WandOfWarding extends Wand {
 		if (bolt.dist > 10){
 			m.setSpeed(bolt.dist*20);
 		}
-		Sample.INSTANCE.play(Assets.SND_ZAP);
+		Sample.INSTANCE.play(Assets.Sounds.ZAP);
 	}
 
 	@Override

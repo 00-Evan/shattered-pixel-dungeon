@@ -29,7 +29,7 @@ public class SlimeSprite extends MobSprite {
 	public SlimeSprite() {
 		super();
 		
-		texture( Assets.SLIME );
+		texture( Assets.Sprites.SLIME );
 		
 		TextureFilm frames = new TextureFilm( texture, 14, 12 );
 		

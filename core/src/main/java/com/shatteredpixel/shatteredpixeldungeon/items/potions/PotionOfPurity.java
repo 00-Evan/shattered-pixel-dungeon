@@ -88,7 +88,7 @@ public class PotionOfPurity extends Potion {
 		
 		if (Dungeon.level.heroFOV[cell]) {
 			splash(cell);
-			Sample.INSTANCE.play(Assets.SND_SHATTER);
+			Sample.INSTANCE.play(Assets.Sounds.SHATTER);
 			
 			setKnown();
 			GLog.i(Messages.get(this, "freshness"));

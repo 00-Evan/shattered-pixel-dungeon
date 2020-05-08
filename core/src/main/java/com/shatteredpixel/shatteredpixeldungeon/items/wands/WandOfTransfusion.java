@@ -111,7 +111,7 @@ public class WandOfTransfusion extends Wand {
 				} else {
 					ch.damage(Random.NormalIntRange(3 + buffedLvl()/2, 6+buffedLvl()), this);
 					ch.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10 + buffedLvl());
-					Sample.INSTANCE.play(Assets.SND_BURNING);
+					Sample.INSTANCE.play(Assets.Sounds.BURNING);
 				}
 				
 				//and grants a self shield

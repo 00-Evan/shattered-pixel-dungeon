@@ -61,7 +61,7 @@ public class WndHero extends WndTabbed {
 		
 		resize( WIDTH, HEIGHT );
 		
-		icons = TextureCache.get( Assets.BUFFS_LARGE );
+		icons = TextureCache.get( Assets.Interfaces.BUFFS_LARGE );
 		film = new TextureFilm( icons, 16, 16 );
 		
 		stats = new StatsTab();

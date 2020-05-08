@@ -49,6 +49,6 @@ public class AlarmTrap extends Trap {
 			CellEmitter.center( pos ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
 		}
 
-		Sample.INSTANCE.play( Assets.SND_ALERT );
+		Sample.INSTANCE.play( Assets.Sounds.ALERT );
 	}
 }

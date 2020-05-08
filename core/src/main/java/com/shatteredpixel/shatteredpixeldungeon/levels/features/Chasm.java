@@ -77,7 +77,7 @@ public class Chasm {
 		
 		jumpConfirmed = false;
 				
-		Sample.INSTANCE.play( Assets.SND_FALLING );
+		Sample.INSTANCE.play( Assets.Sounds.FALLING );
 
 		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
 		if (buff != null) buff.detach();

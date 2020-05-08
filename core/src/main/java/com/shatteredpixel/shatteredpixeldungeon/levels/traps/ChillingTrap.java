@@ -41,7 +41,7 @@ public class ChillingTrap extends Trap{
 	public void activate() {
 		if (Dungeon.level.heroFOV[ pos ]){
 			Splash.at( pos, 0xFFB2D6FF, 5);
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
 		for( int i : PathFinder.NEIGHBOURS9) {

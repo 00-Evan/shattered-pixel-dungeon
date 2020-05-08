@@ -79,7 +79,7 @@ public class StatusPane extends Component {
 	@Override
 	protected void createChildren() {
 
-		bg = new NinePatch( Assets.STATUS, 0, 0, 128, 36, 85, 0, 45, 0 );
+		bg = new NinePatch( Assets.Interfaces.STATUS, 0, 0, 128, 36, 85, 0, 45, 0 );
 		add( bg );
 
 		add( new Button(){
@@ -107,17 +107,17 @@ public class StatusPane extends Component {
 		compass = new Compass( Statistics.amuletObtained ? Dungeon.level.entrance : Dungeon.level.exit );
 		add( compass );
 
-		rawShielding = new Image( Assets.SHLD_BAR );
+		rawShielding = new Image( Assets.Interfaces.SHLD_BAR );
 		rawShielding.alpha(0.5f);
 		add(rawShielding);
 
-		shieldedHP = new Image( Assets.SHLD_BAR );
+		shieldedHP = new Image( Assets.Interfaces.SHLD_BAR );
 		add(shieldedHP);
 
-		hp = new Image( Assets.HP_BAR );
+		hp = new Image( Assets.Interfaces.HP_BAR );
 		add( hp );
 
-		exp = new Image( Assets.XP_BAR );
+		exp = new Image( Assets.Interfaces.XP_BAR );
 		add( exp );
 
 		bossHP = new BossHealthBar();
@@ -273,10 +273,10 @@ public class StatusPane extends Component {
 		protected void createChildren() {
 			super.createChildren();
 
-			bg = new Image( Assets.MENU, 2, 2, 13, 11 );
+			bg = new Image( Assets.Interfaces.MENU, 2, 2, 13, 11 );
 			add( bg );
 			
-			journalIcon = new Image( Assets.MENU, 31, 0, 11, 7);
+			journalIcon = new Image( Assets.Interfaces.MENU, 31, 0, 11, 7);
 			add( journalIcon );
 			
 			keyIcon = new KeyDisplay();
@@ -331,7 +331,7 @@ public class StatusPane extends Component {
 		@Override
 		protected void onPointerDown() {
 			bg.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.SND_CLICK );
+			Sample.INSTANCE.play( Assets.Sounds.CLICK );
 		}
 
 		@Override
@@ -368,7 +368,7 @@ public class StatusPane extends Component {
 		protected void createChildren() {
 			super.createChildren();
 
-			image = new Image( Assets.MENU, 17, 2, 12, 11 );
+			image = new Image( Assets.Interfaces.MENU, 17, 2, 12, 11 );
 			add( image );
 		}
 
@@ -383,7 +383,7 @@ public class StatusPane extends Component {
 		@Override
 		protected void onPointerDown() {
 			image.brightness( 1.5f );
-			Sample.INSTANCE.play( Assets.SND_CLICK );
+			Sample.INSTANCE.play( Assets.Sounds.CLICK );
 		}
 
 		@Override

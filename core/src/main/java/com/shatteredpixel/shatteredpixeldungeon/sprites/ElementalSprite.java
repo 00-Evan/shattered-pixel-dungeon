@@ -50,7 +50,7 @@ public abstract class ElementalSprite extends MobSprite {
 		
 		int c = texOffset();
 		
-		texture( Assets.ELEMENTAL );
+		texture( Assets.Sprites.ELEMENTAL );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 14 );
 		
@@ -120,7 +120,7 @@ public abstract class ElementalSprite extends MobSprite {
 						((Elemental)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 	
 	@Override
@@ -242,7 +242,7 @@ public abstract class ElementalSprite extends MobSprite {
 			play( zap );
 			
 			((Elemental)ch).onZapComplete();
-			Sample.INSTANCE.play( Assets.SND_ZAP );
+			Sample.INSTANCE.play( Assets.Sounds.ZAP );
 		}
 		
 		@Override

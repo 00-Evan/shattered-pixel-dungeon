@@ -39,7 +39,7 @@ public abstract class ShamanSprite extends MobSprite {
 		
 		int c = texOffset();
 		
-		texture( Assets.SHAMAN );
+		texture( Assets.Sprites.SHAMAN );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
 		
@@ -75,7 +75,7 @@ public abstract class ShamanSprite extends MobSprite {
 						((Shaman)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 
 	@Override

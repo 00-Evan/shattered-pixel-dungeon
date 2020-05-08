@@ -135,7 +135,7 @@ public class Bomb extends Item {
 		//We're blowing up, so no need for a fuse anymore.
 		this.fuse = null;
 
-		Sample.INSTANCE.play( Assets.SND_BLAST );
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 
 		if (explodesDestructively()) {
 			

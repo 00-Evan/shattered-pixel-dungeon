@@ -151,7 +151,7 @@ public abstract class Plant implements Bundlable {
 		
 		public Plant couch( int pos, Level level ) {
 			if (level != null && level.heroFOV != null && level.heroFOV[pos]) {
-				Sample.INSTANCE.play(Assets.SND_PLANT);
+				Sample.INSTANCE.play(Assets.Sounds.PLANT);
 			}
 			Plant plant = Reflection.newInstance(plantClass);
 			plant.pos = pos;

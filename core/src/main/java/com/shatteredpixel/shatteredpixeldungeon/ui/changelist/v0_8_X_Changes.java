@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Golem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
@@ -70,7 +69,7 @@ public class v0_8_X_Changes {
 				"_-_ Yog-Dzewa's fists are now considered bosses, not minibosses.\n\n" +
 				"_-_ Updated translations."));
 
-		changes.addButton( new ChangeButton(new Image( Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image( Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed (caused by 0.8.0):\n" +
 				"_-_ Various rare freezes when descending\n" +
 				"_-_ Various rare crash bugs\n" +
@@ -109,7 +108,7 @@ public class v0_8_X_Changes {
 				"_-_ Decreased the minimum window size for desktop users.\n\n" +
 				"_-_ Updated translations."));
 
-		changes.addButton( new ChangeButton(new Image( Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image( Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed (caused by 0.8.0):\n" +
 				"_-_ Various errors/crashed caused by new imp shop\n" +
 				"_-_ Several cases where water could spread to tiles that it shouldn't spread to.\n" +
@@ -196,7 +195,7 @@ public class v0_8_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 64, 96, 16, 16), "Trap Adjustments",
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TERRAIN_FEATURES, 64, 96, 16, 16), "Trap Adjustments",
 				"I've re-evaluated several lategame traps, and trap spawning frequency. My hope with these changes is to make traps less oppressive in the lategame, while still keeping their general effect wherever possible.\n\n" +
 				"Traps now show up ~10% more in the sewers, scaling down to ~25% less in the demon halls.\n\n" +
 				"_-_ Worn dart traps now deal more damage\n" +
@@ -287,7 +286,7 @@ public class v0_8_X_Changes {
 				"\n" +
 				"_-_ Updated translations and translator credits"));
 
-		changes.addButton( new ChangeButton(new Image( Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image( Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Rare freeze bugs when enemies make ranged attacks\n" +
 				"_-_ Loading screens very rarely freezing\n" +
@@ -304,7 +303,7 @@ public class v0_8_X_Changes {
 				"_-_ Wand of prismatic light rarely revealing areas it shouldn't\n" +
 				"_-_ Upgraded wands not spawning fully charged"));
 
-		changes.addButton( new ChangeButton(new Image( Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image( Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Invisibility not applying if the hero is also shadowmelded\n" +
 				"_-_ Landscape/portrait modes working incorrectly in rare cases\n" +
@@ -331,7 +330,7 @@ public class v0_8_X_Changes {
 				"_-_ Doubled corruption resistance reduction from debuffs, as it was 50% weaker than intended. It is now as strong as listed in 0.7.5 changelog (50% for major debuffs, 25% for minor)\n\n" +
 				"Additionally, corruption is getting access to two of the new debuffs added in 0.8.0: _Hex,_ and _Weakness._"));
 
-		changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 80, 32, 16, 16), "Bless changes",
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 80, 32, 16, 16), "Bless changes",
 				"Accuracy and evasion bonuses from blessed buff increased to 25% from 20%." ));
 
 		changes.addButton( new ChangeButton(new StoneOfAugmentation(),

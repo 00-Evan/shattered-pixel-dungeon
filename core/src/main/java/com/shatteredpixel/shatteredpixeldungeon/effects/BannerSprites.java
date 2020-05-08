@@ -35,7 +35,7 @@ public class BannerSprites {
 	}
 
 	public static Image get( Type type ) {
-		Image icon = new Image( Assets.BANNERS );
+		Image icon = new Image( Assets.Interfaces.BANNERS );
 		switch (type) {
 			case PIXEL_DUNGEON:
 				icon.frame( icon.texture.uvRect( 0, 0, 132, 90 ) );

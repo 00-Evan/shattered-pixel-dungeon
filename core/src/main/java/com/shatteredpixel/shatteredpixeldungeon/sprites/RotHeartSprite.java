@@ -37,7 +37,7 @@ public class RotHeartSprite extends MobSprite {
 
 		perspectiveRaise = 0.2f;
 
-		texture( Assets.ROT_HEART );
+		texture( Assets.Sprites.ROT_HEART );
 
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 

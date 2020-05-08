@@ -182,7 +182,7 @@ public class DwarfKing extends Mob {
 			if (summonsMade < 4){
 				if (summonsMade == 0){
 					sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
-					Sample.INSTANCE.play( Assets.SND_CHALLENGE );
+					Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 					yell(Messages.get(this, "wave_1"));
 				}
 				summonSubject(3, DKGhoul.class);
@@ -192,7 +192,7 @@ public class DwarfKing extends Mob {
 			} else if (shielding() <= 200 && summonsMade < 8){
 				if (summonsMade == 4){
 					sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
-					Sample.INSTANCE.play( Assets.SND_CHALLENGE );
+					Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 					yell(Messages.get(this, "wave_2"));
 				}
 				if (summonsMade == 7){
@@ -205,7 +205,7 @@ public class DwarfKing extends Mob {
 				return true;
 			} else if (shielding() <= 100 && summonsMade < 12) {
 				sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
-				Sample.INSTANCE.play( Assets.SND_CHALLENGE );
+				Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 				yell(Messages.get(this, "wave_3"));
 				summonSubject(4, DKWarlock.class);
 				summonSubject(4, DKMonk.class);
@@ -402,7 +402,7 @@ public class DwarfKing extends Mob {
 			phase = 3;
 			summonsMade = 1; //monk/warlock on 3rd summon
 			sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
-			Sample.INSTANCE.play( Assets.SND_CHALLENGE );
+			Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 			yell(  Messages.get(this, "enraged", Dungeon.hero.name()) );
 		} else if (phase == 3 && preHP > 20 && HP < 20){
 			yell( Messages.get(this, "losing") );
@@ -503,13 +503,13 @@ public class DwarfKing extends Mob {
 
 				if (summon == DKWarlock.class){
 					particles.burst(ShadowParticle.CURSE, 10);
-					Sample.INSTANCE.play(Assets.SND_CURSED);
+					Sample.INSTANCE.play(Assets.Sounds.CURSED);
 				} else if (summon == DKMonk.class){
 					particles.burst(ElmoParticle.FACTORY, 10);
-					Sample.INSTANCE.play(Assets.SND_BURNING);
+					Sample.INSTANCE.play(Assets.Sounds.BURNING);
 				} else {
 					particles.burst(Speck.factory(Speck.BONE), 10);
-					Sample.INSTANCE.play(Assets.SND_BONES);
+					Sample.INSTANCE.play(Assets.Sounds.BONES);
 				}
 				particles = null;
 

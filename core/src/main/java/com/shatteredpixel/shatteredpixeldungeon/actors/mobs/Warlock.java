@@ -106,7 +106,7 @@ public class Warlock extends Mob implements Callback {
 			//TODO would be nice for this to work on ghost/statues too
 			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
 				if (enemy.buff( Degrade.class ) == null){
-					Sample.INSTANCE.play( Assets.SND_DEGRADE );
+					Sample.INSTANCE.play( Assets.Sounds.DEGRADE );
 				}
 				Buff.prolong( enemy, Degrade.class, Degrade.DURATION );
 			}

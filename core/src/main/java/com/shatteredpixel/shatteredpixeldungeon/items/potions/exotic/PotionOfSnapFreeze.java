@@ -45,7 +45,7 @@ public class PotionOfSnapFreeze extends ExoticPotion {
 			setKnown();
 			
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
 		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );

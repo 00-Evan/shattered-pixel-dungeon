@@ -362,7 +362,7 @@ public class WndSettings extends WndTabbed {
 				protected void onClick() {
 					super.onClick();
 					SPDSettings.soundFx(!checked());
-					Sample.INSTANCE.play( Assets.SND_CLICK );
+					Sample.INSTANCE.play( Assets.Sounds.CLICK );
 				}
 			};
 			btnSound.setRect(0, SFXVol.bottom() + GAP_TINY, WIDTH, BTN_HEIGHT);

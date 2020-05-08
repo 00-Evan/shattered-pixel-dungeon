@@ -29,7 +29,7 @@ public class CausticSlimeSprite extends MobSprite {
 	public CausticSlimeSprite() {
 		super();
 		
-		texture( Assets.SLIME );
+		texture( Assets.Sprites.SLIME );
 		
 		TextureFilm frames = new TextureFilm( texture, 14, 12 );
 		

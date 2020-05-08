@@ -32,7 +32,7 @@ public class SpawnerSprite extends MobSprite {
 	public SpawnerSprite() {
 		super();
 
-		texture( Assets.SPAWNER );
+		texture( Assets.Sprites.SPAWNER );
 
 		perspectiveRaise = 8 / 16f;
 		shadowOffset = 1.25f;

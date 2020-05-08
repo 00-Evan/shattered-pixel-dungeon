@@ -146,7 +146,7 @@ public class RipperDemon extends Mob {
 							if (alignment != ch.alignment){
 								Buff.affect(ch, Bleeding.class).set(0.75f*damageRoll());
 								ch.sprite.flash();
-								Sample.INSTANCE.play(Assets.SND_HIT);
+								Sample.INSTANCE.play(Assets.Sounds.HIT);
 							}
 							//bounce to a random safe pos(if possible)
 							int bouncepos = -1;

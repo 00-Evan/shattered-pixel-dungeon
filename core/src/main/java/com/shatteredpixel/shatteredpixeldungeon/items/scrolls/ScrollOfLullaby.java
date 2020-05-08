@@ -42,7 +42,7 @@ public class ScrollOfLullaby extends Scroll {
 	public void doRead() {
 		
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.NOTE ), 0.3f, 5 );
-		Sample.INSTANCE.play( Assets.SND_LULLABY );
+		Sample.INSTANCE.play( Assets.Sounds.LULLABY );
 		Invisibility.dispel();
 
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {

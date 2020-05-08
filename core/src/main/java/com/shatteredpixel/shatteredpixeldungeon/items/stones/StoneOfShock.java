@@ -47,7 +47,7 @@ public class StoneOfShock extends Runestone {
 	@Override
 	protected void activate(int cell) {
 		
-		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		
 		ArrayList<Lightning.Arc> arcs = new ArrayList<>();
 		int hits = 0;
@@ -69,7 +69,7 @@ public class StoneOfShock extends Runestone {
 		if (hits > 0) {
 			curUser.sprite.parent.addToFront( new Lightning( arcs, null ) );
 			curUser.sprite.centerEmitter().burst(EnergyParticle.FACTORY, 10);
-			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 			
 			curUser.belongings.charge(1f + hits);
 		}

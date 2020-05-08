@@ -29,7 +29,7 @@ public class BeeSprite extends MobSprite {
 	public BeeSprite() {
 		super();
 		
-		texture( Assets.BEE );
+		texture( Assets.Sprites.BEE );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 		

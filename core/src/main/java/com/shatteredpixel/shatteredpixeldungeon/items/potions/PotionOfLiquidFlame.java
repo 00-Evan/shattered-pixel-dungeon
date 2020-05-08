@@ -42,7 +42,7 @@ public class PotionOfLiquidFlame extends Potion {
 			setKnown();
 
 			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 
 		for (int offset : PathFinder.NEIGHBOURS9){

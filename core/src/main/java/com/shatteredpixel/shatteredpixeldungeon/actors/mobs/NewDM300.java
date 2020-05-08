@@ -202,7 +202,7 @@ public class NewDM300 extends Mob {
 							return false;
 						} else {
 							ventGas(enemy);
-							Sample.INSTANCE.play(Assets.SND_PUFF);
+							Sample.INSTANCE.play(Assets.Sounds.PUFF);
 							return true;
 						}
 
@@ -237,7 +237,7 @@ public class NewDM300 extends Mob {
 								return false;
 							} else {
 								ventGas(enemy);
-								Sample.INSTANCE.play(Assets.SND_PUFF);
+								Sample.INSTANCE.play(Assets.Sounds.PUFF);
 								return true;
 							}
 						} else {
@@ -247,7 +247,7 @@ public class NewDM300 extends Mob {
 								return false;
 							} else {
 								dropRocks(enemy);
-								Sample.INSTANCE.play(Assets.SND_PUFF);
+								Sample.INSTANCE.play(Assets.Sounds.PUFF);
 								return true;
 							}
 						}
@@ -298,7 +298,7 @@ public class NewDM300 extends Mob {
 				if (buff(Barrier.class) == null) {
 					GLog.w(Messages.get(this, "shield"));
 				}
-				Sample.INSTANCE.play(Assets.SND_LIGHTNING);
+				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 				sprite.emitter().start(SparkParticle.STATIC, 0.05f, 20);
 			}
 
@@ -542,7 +542,7 @@ public class NewDM300 extends Mob {
 				}
 			}
 			if (bestpos != pos){
-				Sample.INSTANCE.play( Assets.SND_ROCKS );
+				Sample.INSTANCE.play( Assets.Sounds.ROCKS );
 
 				for (int i : PathFinder.NEIGHBOURS9){
 					if (Dungeon.level.map[pos+i] == Terrain.WALL || Dungeon.level.map[pos+i] == Terrain.WALL_DECO){
@@ -632,7 +632,7 @@ public class NewDM300 extends Mob {
 
 			if (rocksFell){
 				Camera.main.shake( 3, 0.7f );
-				Sample.INSTANCE.play(Assets.SND_ROCKS);
+				Sample.INSTANCE.play(Assets.Sounds.ROCKS);
 			}
 
 		}

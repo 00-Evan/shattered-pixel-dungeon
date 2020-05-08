@@ -37,7 +37,7 @@ public class SpinnerSprite extends MobSprite {
 
 		perspectiveRaise = 0f;
 
-		texture( Assets.SPINNER );
+		texture( Assets.Sprites.SPINNER );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 		
@@ -80,7 +80,7 @@ public class SpinnerSprite extends MobSprite {
 						((Spinner)ch).shootWeb();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.SND_MISS );
+		Sample.INSTANCE.play( Assets.Sounds.MISS );
 	}
 	
 	@Override

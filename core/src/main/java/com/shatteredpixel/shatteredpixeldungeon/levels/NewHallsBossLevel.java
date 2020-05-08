@@ -60,12 +60,12 @@ public class NewHallsBossLevel extends Level {
 
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_HALLS;
+		return Assets.Environment.TILES_HALLS;
 	}
 
 	@Override
 	public String waterTex() {
-		return Assets.WATER_HALLS;
+		return Assets.Environment.WATER_HALLS;
 	}
 
 	@Override
@@ -271,7 +271,7 @@ public class NewHallsBossLevel extends Level {
 	public static class CenterPieceVisuals extends CustomTilemap {
 
 		{
-			texture = Assets.HALLS_SP;
+			texture = Assets.Environment.HALLS_SP;
 
 			tileW = 9;
 			tileH = 8;
@@ -310,7 +310,7 @@ public class NewHallsBossLevel extends Level {
 	public static class CenterPieceWalls extends CustomTilemap {
 
 		{
-			texture = Assets.HALLS_SP;
+			texture = Assets.Environment.HALLS_SP;
 
 			tileW = 9;
 			tileH = 9;

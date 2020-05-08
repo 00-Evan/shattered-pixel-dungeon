@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
 import com.watabou.noosa.TextureFilm;
@@ -39,7 +40,7 @@ public class WallBlockingTilemap extends Tilemap {
 	private static final int BLOCK_BELOW    = 3;
 
 	public WallBlockingTilemap() {
-		super("wall_blocking.png", new TextureFilm( "wall_blocking.png", SIZE, SIZE ) );
+		super(Assets.Environment.WALL_BLOCKING, new TextureFilm( Assets.Environment.WALL_BLOCKING, SIZE, SIZE ) );
 		map( new int[Dungeon.level.length()], Dungeon.level.width());
 	}
 

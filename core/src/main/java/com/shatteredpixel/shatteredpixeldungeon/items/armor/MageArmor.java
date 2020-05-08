@@ -62,9 +62,9 @@ public class MageArmor extends ClassArmor {
 		curUser.busy();
 		
 		curUser.sprite.emitter().start( ElmoParticle.FACTORY, 0.025f, 20 );
-		Sample.INSTANCE.play( Assets.SND_BURNING );
-		Sample.INSTANCE.play( Assets.SND_BURNING );
-		Sample.INSTANCE.play( Assets.SND_BURNING );
+		Sample.INSTANCE.play( Assets.Sounds.BURNING );
+		Sample.INSTANCE.play( Assets.Sounds.BURNING );
+		Sample.INSTANCE.play( Assets.Sounds.BURNING );
 	}
 
 }

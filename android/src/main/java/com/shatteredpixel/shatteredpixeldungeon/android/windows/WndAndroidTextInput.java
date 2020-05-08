@@ -120,7 +120,7 @@ public class WndAndroidTextInput extends Window {
 				textInput = new EditText((AndroidApplication)Gdx.app);
 				textInput.setText( initialValue );
 				if (!SPDSettings.systemFont()){
-					textInput.setTypeface( Typeface.createFromAsset(AndroidGame.instance.getAssets(), "pixel_font.ttf") );
+					textInput.setTypeface( Typeface.createFromAsset(AndroidGame.instance.getAssets(), "fonts/pixel_font.ttf") );
 				}
 				textInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
 				textInput.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES );

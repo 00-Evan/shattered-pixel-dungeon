@@ -38,7 +38,7 @@ public class Door {
 
 		if (Dungeon.level.heroFOV[pos]) {
 			Dungeon.observe();
-			Sample.INSTANCE.play( Assets.SND_OPEN );
+			Sample.INSTANCE.play( Assets.Sounds.OPEN );
 		}
 	}
 

@@ -37,12 +37,12 @@ public class DeadEndLevel extends Level {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_CAVES;
+		return Assets.Environment.TILES_CAVES;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_HALLS;
+		return Assets.Environment.WATER_HALLS;
 	}
 	
 	@Override

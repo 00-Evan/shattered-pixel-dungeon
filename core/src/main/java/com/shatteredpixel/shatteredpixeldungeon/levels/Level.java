@@ -941,7 +941,7 @@ public abstract class Level implements Bundlable {
 			
 			if (bubble != null){
 				
-				Sample.INSTANCE.play(Assets.SND_TRAP);
+				Sample.INSTANCE.play(Assets.Sounds.TRAP);
 				
 				discover(cell);
 				
@@ -949,7 +949,7 @@ public abstract class Level implements Bundlable {
 				
 			} else if (timeFreeze != null){
 				
-				Sample.INSTANCE.play(Assets.SND_TRAP);
+				Sample.INSTANCE.play(Assets.Sounds.TRAP);
 				
 				discover(cell);
 				

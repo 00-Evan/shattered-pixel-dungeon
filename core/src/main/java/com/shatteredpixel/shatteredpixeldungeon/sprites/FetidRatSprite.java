@@ -34,7 +34,7 @@ public class FetidRatSprite extends MobSprite {
 	public FetidRatSprite() {
 		super();
 
-		texture( Assets.RAT );
+		texture( Assets.Sprites.RAT );
 
 		TextureFilm frames = new TextureFilm( texture, 16, 15 );
 

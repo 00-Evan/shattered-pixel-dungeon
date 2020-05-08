@@ -38,7 +38,7 @@ public class Effects {
 	}
 	
 	public static Image get( Type type ) {
-		Image icon = new Image( Assets.EFFECTS );
+		Image icon = new Image( Assets.Effects.EFFECTS );
 		switch (type) {
 			case RIPPLE:
 				icon.frame(icon.texture.uvRect(0, 0, 16, 16));

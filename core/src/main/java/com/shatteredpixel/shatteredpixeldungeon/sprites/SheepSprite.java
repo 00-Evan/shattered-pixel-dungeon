@@ -30,7 +30,7 @@ public class SheepSprite extends MobSprite {
 	public SheepSprite() {
 		super();
 		
-		texture( Assets.SHEEP );
+		texture( Assets.Sprites.SHEEP );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 15 );
 		

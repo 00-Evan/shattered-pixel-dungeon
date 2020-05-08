@@ -64,7 +64,7 @@ public class WandOfBlastWave extends DamageWand {
 
 	@Override
 	protected void onZap(Ballistica bolt) {
-		Sample.INSTANCE.play( Assets.SND_BLAST );
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		BlastWave.blast(bolt.collisionPos);
 
 		//presses all tiles in the AOE first, with the exception of tengu dart traps
@@ -182,7 +182,7 @@ public class WandOfBlastWave extends DamageWand {
 				curUser.sprite,
 				bolt.collisionPos,
 				callback);
-		Sample.INSTANCE.play(Assets.SND_ZAP);
+		Sample.INSTANCE.play(Assets.Sounds.ZAP);
 	}
 
 	@Override

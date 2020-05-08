@@ -184,7 +184,7 @@ public class WandOfFireblast extends DamageWand {
 				curUser.sprite,
 				bolt.path.get(dist/2),
 				callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 
 	@Override

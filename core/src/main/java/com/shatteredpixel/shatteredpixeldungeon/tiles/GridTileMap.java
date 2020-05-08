@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -28,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 public class GridTileMap extends DungeonTilemap {
 
 	public GridTileMap() {
-		super("visual_grid.png");
+		super( Assets.Environment.VISUAL_GRID );
 
 		map( Dungeon.level.map, Dungeon.level.width() );
 	}

@@ -47,7 +47,7 @@ public class WaterOfHealth extends WellWater {
 		
 		if (!hero.isAlive()) return false;
 		
-		Sample.INSTANCE.play( Assets.SND_DRINK );
+		Sample.INSTANCE.play( Assets.Sounds.DRINK );
 
 		hero.HP = hero.HT;
 		hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
@@ -70,18 +70,18 @@ public class WaterOfHealth extends WellWater {
 		if (item instanceof DewVial && !((DewVial)item).isFull()) {
 			((DewVial)item).fill();
 			CellEmitter.get( pos ).start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
-			Sample.INSTANCE.play( Assets.SND_DRINK );
+			Sample.INSTANCE.play( Assets.Sounds.DRINK );
 			return item;
 		} else if ( item instanceof Ankh && !(((Ankh) item).isBlessed())){
 			((Ankh) item).bless();
 			CellEmitter.get( pos ).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
-			Sample.INSTANCE.play( Assets.SND_DRINK );
+			Sample.INSTANCE.play( Assets.Sounds.DRINK );
 			return item;
 		} else if (ScrollOfRemoveCurse.uncursable(item)) {
 			if (ScrollOfRemoveCurse.uncurse( null, item )){
 				CellEmitter.get( pos ).start( ShadowParticle.UP, 0.05f, 10 );
 			}
-			Sample.INSTANCE.play( Assets.SND_DRINK );
+			Sample.INSTANCE.play( Assets.Sounds.DRINK );
 			return item;
 		}
 		return null;

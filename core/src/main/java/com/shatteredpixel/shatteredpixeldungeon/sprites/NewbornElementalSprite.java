@@ -32,7 +32,7 @@ public class NewbornElementalSprite extends MobSprite{
 	public NewbornElementalSprite() {
 		super();
 
-		texture( Assets.ELEMENTAL );
+		texture( Assets.Sprites.ELEMENTAL );
 
 		int ofs = 21;
 

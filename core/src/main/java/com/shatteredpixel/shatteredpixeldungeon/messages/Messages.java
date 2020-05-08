@@ -23,8 +23,10 @@ package com.shatteredpixel.shatteredpixeldungeon.messages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.watabou.utils.FileUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,17 +56,16 @@ public class Messages {
 	 * Setup Methods
 	 */
 
-	//TODO probably want to move these to assets now
 	private static String[] prop_files = new String[]{
-			"com/shatteredpixel/shatteredpixeldungeon/messages/actors/actors",
-			"com/shatteredpixel/shatteredpixeldungeon/messages/items/items",
-			"com/shatteredpixel/shatteredpixeldungeon/messages/journal/journal",
-			"com/shatteredpixel/shatteredpixeldungeon/messages/levels/levels",
-			"com/shatteredpixel/shatteredpixeldungeon/messages/plants/plants",
-			"com/shatteredpixel/shatteredpixeldungeon/messages/scenes/scenes",
-			"com/shatteredpixel/shatteredpixeldungeon/messages/ui/ui",
-			"com/shatteredpixel/shatteredpixeldungeon/messages/windows/windows",
-			"com/shatteredpixel/shatteredpixeldungeon/messages/misc/misc"
+			Assets.Messages.ACTORS,
+			Assets.Messages.ITEMS,
+			Assets.Messages.JOURNAL,
+			Assets.Messages.LEVELS,
+			Assets.Messages.MISC,
+			Assets.Messages.PLANTS,
+			Assets.Messages.SCENES,
+			Assets.Messages.UI,
+			Assets.Messages.WINDOWS
 	};
 
 	static{
@@ -80,7 +81,7 @@ public class Messages {
 		Locale locale = new Locale(lang.code());
 
 		for (String file : prop_files) {
-			bundles.add(I18NBundle.createBundle(Gdx.files.classpath(file), locale));
+			bundles.add(I18NBundle.createBundle(Gdx.files.internal(file), locale));
 		}
 	}
 

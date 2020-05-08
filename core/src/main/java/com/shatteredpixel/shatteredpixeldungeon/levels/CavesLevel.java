@@ -83,12 +83,12 @@ public class CavesLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_CAVES;
+		return Assets.Environment.TILES_CAVES;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_CAVES;
+		return Assets.Environment.WATER_CAVES;
 	}
 	
 	@Override

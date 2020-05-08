@@ -30,7 +30,7 @@ public class StatueSprite extends MobSprite {
 	public StatueSprite() {
 		super();
 		
-		texture( Assets.STATUE );
+		texture( Assets.Sprites.STATUE );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
 		

@@ -51,7 +51,7 @@ public abstract class Key extends Item {
 		GameScene.pickUpJournal(this, hero.pos);
 		WndJournal.last_index = 2;
 		Notes.add(this);
-		Sample.INSTANCE.play( Assets.SND_ITEM );
+		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );
 		GameScene.updateKeyDisplay();
 		return true;

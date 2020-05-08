@@ -244,7 +244,7 @@ public abstract class Char extends Actor {
 			if (visibleFight) {
 				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "invulnerable") );
 
-				Sample.INSTANCE.play(Assets.SND_MISS);
+				Sample.INSTANCE.play(Assets.Sounds.MISS);
 			}
 
 			return false;
@@ -280,7 +280,7 @@ public abstract class Char extends Actor {
 			effectiveDamage = attackProc( enemy, effectiveDamage );
 			
 			if (visibleFight) {
-				Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
+				Sample.INSTANCE.play( Assets.Sounds.HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
 			}
 
 			// If the enemy is already dead, interrupt the attack.
@@ -324,7 +324,7 @@ public abstract class Char extends Actor {
 				String defense = enemy.defenseVerb();
 				enemy.sprite.showStatus( CharSprite.NEUTRAL, defense );
 				
-				Sample.INSTANCE.play(Assets.SND_MISS);
+				Sample.INSTANCE.play(Assets.Sounds.MISS);
 			}
 			
 			return false;

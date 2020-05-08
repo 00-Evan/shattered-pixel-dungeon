@@ -55,7 +55,7 @@ public class ScrollOfRage extends Scroll {
 		setKnown();
 		
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-		Sample.INSTANCE.play( Assets.SND_CHALLENGE );
+		Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
 		Invisibility.dispel();
 
 		readAnimation();
@@ -72,7 +72,7 @@ public class ScrollOfRage extends Scroll {
 		setKnown();
 		
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-		Sample.INSTANCE.play( Assets.SND_READ );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Invisibility.dispel();
 		
 		readAnimation();

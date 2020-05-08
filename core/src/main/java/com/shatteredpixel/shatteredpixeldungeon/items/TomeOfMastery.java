@@ -116,7 +116,7 @@ public class TomeOfMastery extends Item {
 		curUser.subClass = way;
 		
 		curUser.sprite.operate( curUser.pos );
-		Sample.INSTANCE.play( Assets.SND_MASTERY );
+		Sample.INSTANCE.play( Assets.Sounds.MASTERY );
 		
 		SpellSprite.show( curUser, SpellSprite.MASTERY );
 		curUser.sprite.emitter().burst( Speck.factory( Speck.MASTERY ), 12 );

@@ -208,14 +208,14 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 			if (enemy.defenseSkill(target) >= Char.INFINITE_EVASION){
 				enemy.sprite.showStatus( CharSprite.NEUTRAL, enemy.defenseVerb() );
-				Sample.INSTANCE.play(Assets.SND_MISS);
+				Sample.INSTANCE.play(Assets.Sounds.MISS);
 				detach();
 				ActionIndicator.clearAction(Combo.this);
 				((Hero)target).spendAndNext(((Hero)target).attackDelay());
 				return;
 			} else if (enemy.isInvulnerable(target.getClass())){
 				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(Char.class, "invulnerable") );
-				Sample.INSTANCE.play(Assets.SND_MISS);
+				Sample.INSTANCE.play(Assets.Sounds.MISS);
 				detach();
 				ActionIndicator.clearAction(Combo.this);
 				((Hero)target).spendAndNext(((Hero)target).attackDelay());
@@ -302,7 +302,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			if (target.buff(FrostImbue.class) != null)
 				target.buff(FrostImbue.class).proc(enemy);
 
-			Sample.INSTANCE.play( Assets.SND_HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
+			Sample.INSTANCE.play( Assets.Sounds.HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
 			enemy.sprite.bloodBurstA( target.sprite.center(), dmg );
 			enemy.sprite.flash();
 

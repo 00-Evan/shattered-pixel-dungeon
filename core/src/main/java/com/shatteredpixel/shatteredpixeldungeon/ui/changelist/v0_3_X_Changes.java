@@ -59,7 +59,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"Dev commentary will be added here in the future."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 15, 12, 15), "Warrior Rework!",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 15, 12, 15), "Warrior Rework!",
 				"Warrior Rework:\n" +
 				"_-_ Starting STR down to 10, from 11\n" +
 				"_-_ Short sword dmg down to 1-10, from 1-12\n" +
@@ -69,7 +69,7 @@ public class v0_3_X_Changes {
 				"_-_ Seal grants shielding ontop of health\n" +
 				"_-_ Seal allows for one upgrade transfer"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Warrior Subclass Rework!",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Warrior Subclass Rework!",
 				"Berserker Rework:\n" +
 				"_-_ Bonus damage now scales with lost HP, instead of a flat 50% at 50% hp\n" +
 				"_-_ Berserker can now endure through death for a short time, with caveats\n" +
@@ -172,7 +172,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"Dev commentary will be added here in the future."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.TENGU, 0, 0, 14, 16), "Prison Rework",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.TENGU, 0, 0, 14, 16), "Prison Rework",
 				"_-_ Tengu boss fight completely redone\n" +
 				"_-_ Corpse dust quest overhauled\n" +
 				"_-_ Rotberry quest overhauled\n" +
@@ -225,13 +225,13 @@ public class v0_3_X_Changes {
 				"\n" +
 				"Dev commentary will be added here in the future."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.TERRAIN_FEATURES, 112, 96, 16, 16), "Trap Overhaul",
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TERRAIN_FEATURES, 112, 96, 16, 16), "Trap Overhaul",
 				"_-_ Over 20 new traps + tweaks to existing ones\n" +
 				"_-_ Trap visuals overhauled\n" +
 				"_-_ Traps now get trickier deeper in the dungeon\n" +
 				"_-_ Trap room reworked to make use of new traps"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.MENU, 15, 0, 16, 15), "Interface Improvements",
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.MENU, 15, 0, 16, 15), "Interface Improvements",
 				"_-_ Adjusted display scaling\n" +
 				"_-_ Search and Examine merged into one button (double tap to search)\n" +
 				"_-_ New max of 4 Quickslots!\n" +
@@ -270,7 +270,7 @@ public class v0_3_X_Changes {
 				"\n" +
 				"Dev commentary will be added here in the future."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 15, 12, 15), "Mage Rework!",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.MAGE, 0, 15, 12, 15), "Mage Rework!",
 				"_-_ No longer starts with knuckledusters or a wand\n" +
 				"_-_ Can no longer equip wands\n" +
 				"_-_ Now starts with a unique mages staff, empowered with magic missile to start.\n\n" +

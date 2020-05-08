@@ -44,7 +44,7 @@ public class ScrollOfPsionicBlast extends ExoticScroll {
 		
 		GameScene.flash( 0xFFFFFF );
 		
-		Sample.INSTANCE.play( Assets.SND_BLAST );
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		Invisibility.dispel();
 		
 		int targets = 0;

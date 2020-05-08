@@ -57,7 +57,7 @@ public class ScrollOfDivination extends ExoticScroll {
 		readAnimation();
 		setKnown();
 		
-		Sample.INSTANCE.play( Assets.SND_READ );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Invisibility.dispel();
 		
 		HashSet<Class<? extends Potion>> potions = Potion.getUnknown();

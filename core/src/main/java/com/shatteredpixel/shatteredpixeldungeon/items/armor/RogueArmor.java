@@ -82,7 +82,7 @@ public class RogueArmor extends ClassArmor {
 
 				CellEmitter.get( curUser.pos ).burst( Speck.factory( Speck.WOOL ), 10 );
 				ScrollOfTeleportation.appear( curUser, target );
-				Sample.INSTANCE.play( Assets.SND_PUFF );
+				Sample.INSTANCE.play( Assets.Sounds.PUFF );
 				Dungeon.level.occupyCell(curUser );
 				Dungeon.observe();
 				GameScene.updateFog();

@@ -86,12 +86,12 @@ public class OldPrisonBossLevel extends Level {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_PRISON;
+		return Assets.Environment.TILES_PRISON;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_PRISON;
+		return Assets.Environment.WATER_PRISON;
 	}
 	
 	private static final String STATE	        = "state";
@@ -362,7 +362,7 @@ public class OldPrisonBossLevel extends Level {
 				GameScene.resetMap();
 
 				GameScene.flash(0xFFFFFF);
-				Sample.INSTANCE.play(Assets.SND_BLAST);
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
 				state = State.MAZE;
 				break;
@@ -393,7 +393,7 @@ public class OldPrisonBossLevel extends Level {
 				tengu.notice();
 				
 				GameScene.flash(0xFFFFFF);
-				Sample.INSTANCE.play(Assets.SND_BLAST);
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 
 				state = State.FIGHT_ARENA;
 				break;
@@ -447,7 +447,7 @@ public class OldPrisonBossLevel extends Level {
 					drop(item, randomTenguArenaCell());
 				
 				GameScene.flash(0xFFFFFF);
-				Sample.INSTANCE.play(Assets.SND_BLAST);
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 				
 				state = State.WON;
 				break;
@@ -616,7 +616,7 @@ public class OldPrisonBossLevel extends Level {
 	public static class exitVisual extends CustomTilemap {
 		
 		{
-			texture = Assets.PRISON_EXIT_OLD;
+			texture = Assets.Environment.PRISON_EXIT_OLD;
 			
 			tileW = 12;
 			tileH = 14;
@@ -659,7 +659,7 @@ public class OldPrisonBossLevel extends Level {
 	public static class exitVisualWalls extends CustomTilemap {
 		
 		{
-			texture = Assets.PRISON_EXIT_OLD;
+			texture = Assets.Environment.PRISON_EXIT_OLD;
 			
 			tileW = 12;
 			tileH = 14;

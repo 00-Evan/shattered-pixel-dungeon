@@ -71,7 +71,7 @@ public class GoldenMimic extends Mimic {
 			enemySeen = true;
 			GLog.w(Messages.get(this, "reveal") );
 			CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
-			Sample.INSTANCE.play(Assets.SND_MIMIC, 1, 0.85f);
+			Sample.INSTANCE.play(Assets.Sounds.MIMIC, 1, 0.85f);
 		}
 	}
 

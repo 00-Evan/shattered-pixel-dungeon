@@ -74,6 +74,6 @@ public class ForceCube extends MissileWeapon {
 		rangedHit( null, cell );
 		
 		WandOfBlastWave.BlastWave.blast(cell);
-		Sample.INSTANCE.play( Assets.SND_BLAST );
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 	}
 }

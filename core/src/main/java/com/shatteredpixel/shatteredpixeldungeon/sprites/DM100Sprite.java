@@ -36,7 +36,7 @@ public class DM100Sprite extends MobSprite {
 	public DM100Sprite () {
 		super();
 		
-		texture( Assets.DM100 );
+		texture( Assets.Sprites.DM100 );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 14 );
 		
@@ -76,7 +76,7 @@ public class DM100Sprite extends MobSprite {
 		} else {
 			parent.add(new Lightning(origin, pos, (DM100) ch));
 		}
-		Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		
 		turnTo( ch.pos, pos );
 		flash();

@@ -348,7 +348,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				burning = emitter();
 				burning.pour( FlameParticle.FACTORY, 0.06f );
 				if (visible) {
-					Sample.INSTANCE.play( Assets.SND_BURNING );
+					Sample.INSTANCE.play( Assets.Sounds.BURNING );
 				}
 				break;
 			case LEVITATING:

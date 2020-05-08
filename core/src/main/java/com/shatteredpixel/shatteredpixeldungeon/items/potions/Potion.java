@@ -307,7 +307,7 @@ public class Potion extends Item {
 		hero.busy();
 		apply( hero );
 		
-		Sample.INSTANCE.play( Assets.SND_DRINK );
+		Sample.INSTANCE.play( Assets.Sounds.DRINK );
 		
 		hero.sprite.operate( hero.pos );
 	}
@@ -333,7 +333,7 @@ public class Potion extends Item {
 	public void shatter( int cell ) {
 		if (Dungeon.level.heroFOV[cell]) {
 			GLog.i( Messages.get(Potion.class, "shatter") );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 			splash( cell );
 		}
 	}

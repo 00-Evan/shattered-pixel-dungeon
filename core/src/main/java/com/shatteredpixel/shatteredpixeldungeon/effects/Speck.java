@@ -82,7 +82,7 @@ public class Speck extends Image {
 	public Speck() {
 		super();
 		
-		texture( Assets.SPECKS );
+		texture( Assets.Effects.SPECKS );
 		if (film == null) {
 			film = new TextureFilm( texture, SIZE, SIZE );
 		}

@@ -240,7 +240,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		} else if (systemfont && Gdx.files.absolute("/system/fonts/DroidSans.ttf").exists()){
 			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/DroidSans.ttf"));
 		} else {
-			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("pixel_font.ttf"));
+			basicFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/pixel_font.ttf"));
 		}
 		
 		//android 7.0+. all asian fonts are nicely contained in one spot

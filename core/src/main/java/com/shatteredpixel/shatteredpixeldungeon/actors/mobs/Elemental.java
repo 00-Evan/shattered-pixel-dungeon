@@ -282,7 +282,7 @@ public abstract class Elemental extends Mob {
 			}
 			
 			sprite.parent.addToFront( new Lightning( arcs, null ) );
-			Sample.INSTANCE.play( Assets.SND_LIGHTNING );
+			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		}
 		
 		@Override

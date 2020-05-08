@@ -31,7 +31,7 @@ public class SuccubusSprite extends MobSprite {
 	public SuccubusSprite() {
 		super();
 		
-		texture( Assets.SUCCUBUS );
+		texture( Assets.Sprites.SUCCUBUS );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 15 );
 		

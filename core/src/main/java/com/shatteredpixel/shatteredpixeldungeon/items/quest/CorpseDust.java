@@ -108,7 +108,7 @@ public class CorpseDust extends Item {
 				} while (tries > 0 && (!Dungeon.level.heroFOV[pos] || !Dungeon.level.passable[pos] || Actor.findChar( pos ) != null));
 				if (tries > 0) {
 					Wraith.spawnAt(pos);
-					Sample.INSTANCE.play(Assets.SND_CURSED);
+					Sample.INSTANCE.play(Assets.Sounds.CURSED);
 				}
 			}
 

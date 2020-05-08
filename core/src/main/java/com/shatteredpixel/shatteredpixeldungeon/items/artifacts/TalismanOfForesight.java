@@ -74,7 +74,7 @@ public class TalismanOfForesight extends Artifact {
 			else {
 				hero.sprite.operate(hero.pos);
 				hero.busy();
-				Sample.INSTANCE.play(Assets.SND_BEACON);
+				Sample.INSTANCE.play(Assets.Sounds.BEACON);
 				charge = 0;
 				for (int i = 0; i < Dungeon.level.length(); i++) {
 

@@ -51,7 +51,7 @@ public abstract class TargetedSpell extends Spell {
 				curUser.sprite,
 				bolt.collisionPos,
 				callback);
-		Sample.INSTANCE.play( Assets.SND_ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 	
 	private  static CellSelector.Listener targeter = new  CellSelector.Listener(){

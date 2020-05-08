@@ -75,12 +75,12 @@ public class ItemSprite extends MovieClip {
 	}
 	
 	public ItemSprite( Heap heap ){
-		super(Assets.ITEMS);
+		super(Assets.Sprites.ITEMS);
 		view( heap );
 	}
 	
 	public ItemSprite( Item item ) {
-		super(Assets.ITEMS);
+		super(Assets.Sprites.ITEMS);
 		view( item );
 	}
 	
@@ -89,7 +89,7 @@ public class ItemSprite extends MovieClip {
 	}
 	
 	public ItemSprite( int image, Glowing glowing ) {
-		super( Assets.ITEMS );
+		super( Assets.Sprites.ITEMS );
 		
 		view(image, glowing);
 	}
@@ -166,7 +166,7 @@ public class ItemSprite extends MovieClip {
 		
 		if (heap != null && heap.seen && heap.peek() instanceof Gold) {
 			CellEmitter.center( heap.pos ).burst( Speck.factory( Speck.COIN ), 5 );
-			Sample.INSTANCE.play( Assets.SND_GOLD, 1, 1, Random.Float( 0.9f, 1.1f ) );
+			Sample.INSTANCE.play( Assets.Sounds.GOLD, 1, 1, Random.Float( 0.9f, 1.1f ) );
 		}
 	}
 	
@@ -328,7 +328,7 @@ public class ItemSprite extends MovieClip {
 					}
 
 					if (!(heap.peek() instanceof Gold)) {
-						Sample.INSTANCE.play(water ? Assets.SND_WATER : Assets.SND_STEP, 0.8f, 0.8f, 1.2f);
+						Sample.INSTANCE.play(water ? Assets.Sounds.WATER : Assets.Sounds.STEP, 0.8f, 0.8f, 1.2f);
 					}
 				}
 			}
@@ -357,7 +357,7 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public static int pick( int index, int x, int y ) {
-		SmartTexture tx = TextureCache.get( Assets.ITEMS );
+		SmartTexture tx = TextureCache.get( Assets.Sprites.ITEMS );
 		int rows = tx.width / SIZE;
 		int row = index / rows;
 		int col = index % rows;

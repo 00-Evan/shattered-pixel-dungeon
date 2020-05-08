@@ -236,7 +236,7 @@ public class OldTengu extends Mob {
 		move( newPos );
 		
 		if (level.heroFOV[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
-		Sample.INSTANCE.play( Assets.SND_PUFF );
+		Sample.INSTANCE.play( Assets.Sounds.PUFF );
 		
 		spend( 1 / speed() );
 	}

@@ -58,7 +58,7 @@ public class MerchantsBeacon extends Item {
 		if (action.equals(AC_USE)) {
 			detach( hero.belongings.backpack );
 			Shopkeeper.sell();
-			Sample.INSTANCE.play( Assets.SND_BEACON );
+			Sample.INSTANCE.play( Assets.Sounds.BEACON );
 		}
 
 	}

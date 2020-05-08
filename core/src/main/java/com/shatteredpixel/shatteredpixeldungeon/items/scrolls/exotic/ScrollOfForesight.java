@@ -37,7 +37,7 @@ public class ScrollOfForesight extends ExoticScroll {
 	@Override
 	public void doRead() {
 		SpellSprite.show( curUser, SpellSprite.MAP );
-		Sample.INSTANCE.play( Assets.SND_READ );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Invisibility.dispel();
 		
 		Buff.affect(curUser, Foresight.class, Foresight.DURATION);

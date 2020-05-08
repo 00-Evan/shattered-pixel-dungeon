@@ -75,7 +75,7 @@ public class WeakFloorRoom extends SpecialRoom {
 	public static class HiddenWell extends CustomTilemap {
 
 		{
-			texture = Assets.WEAK_FLOOR;
+			texture = Assets.Environment.WEAK_FLOOR;
 			tileW = tileH = 1;
 		}
 

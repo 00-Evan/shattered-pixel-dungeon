@@ -105,7 +105,7 @@ public class RockfallTrap extends Trap {
 		
 		if (seen){
 			Camera.main.shake(3, 0.7f);
-			Sample.INSTANCE.play(Assets.SND_ROCKS);
+			Sample.INSTANCE.play(Assets.Sounds.ROCKS);
 		}
 
 	}

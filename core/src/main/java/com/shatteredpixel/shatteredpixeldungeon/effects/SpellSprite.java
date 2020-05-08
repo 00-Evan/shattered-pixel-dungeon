@@ -59,7 +59,7 @@ public class SpellSprite extends Image {
 	private static HashMap<Char,SpellSprite> all = new HashMap<>();
 	
 	public SpellSprite() {
-		super( Assets.SPELL_ICONS );
+		super( Assets.Effects.SPELL_ICONS );
 		
 		if (film == null) {
 			film = new TextureFilm( texture, SIZE );

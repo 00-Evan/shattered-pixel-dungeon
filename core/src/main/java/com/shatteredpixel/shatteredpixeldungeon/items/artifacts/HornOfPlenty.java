@@ -99,7 +99,7 @@ public class HornOfPlenty extends Artifact {
 				hero.sprite.operate(hero.pos);
 				hero.busy();
 				SpellSprite.show(hero, SpellSprite.FOOD);
-				Sample.INSTANCE.play(Assets.SND_EAT);
+				Sample.INSTANCE.play(Assets.Sounds.EAT);
 				GLog.i( Messages.get(this, "eat") );
 
 				hero.spend(Food.TIME_TO_EAT);

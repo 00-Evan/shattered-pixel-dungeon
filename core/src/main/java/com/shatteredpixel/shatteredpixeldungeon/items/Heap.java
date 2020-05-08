@@ -104,7 +104,7 @@ public class Heap implements Bundlable {
 				hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
 				hero.damage( hero.HP / 2, this );
 			}
-			Sample.INSTANCE.play( Assets.SND_CURSED );
+			Sample.INSTANCE.play( Assets.Sounds.CURSED );
 		}
 
 		if (type != Type.MIMIC) {
@@ -334,7 +334,7 @@ public class Heap implements Bundlable {
 	
 	public static void burnFX( int pos ) {
 		CellEmitter.get( pos ).burst( ElmoParticle.FACTORY, 6 );
-		Sample.INSTANCE.play( Assets.SND_BURNING );
+		Sample.INSTANCE.play( Assets.Sounds.BURNING );
 	}
 	
 	public static void evaporateFX( int pos ) {

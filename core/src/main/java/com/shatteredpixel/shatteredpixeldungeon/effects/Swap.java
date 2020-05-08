@@ -51,7 +51,7 @@ public class Swap extends Actor {
 
 		eff1 = new Effect( ch1.sprite, ch1.pos, ch2.pos );
 		eff2 = new Effect( ch2.sprite, ch2.pos, ch1.pos );
-		Sample.INSTANCE.play( Assets.SND_TELEPORT );
+		Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 	}
 
 	@Override

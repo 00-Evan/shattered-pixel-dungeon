@@ -189,7 +189,7 @@ public class WndTabbed extends Window {
 		
 		@Override
 		protected void onClick() {
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
+			Sample.INSTANCE.play( Assets.Sounds.CLICK, 0.7f, 0.7f, 1.2f );
 			WndTabbed.this.onClick( this );
 		}
 	}

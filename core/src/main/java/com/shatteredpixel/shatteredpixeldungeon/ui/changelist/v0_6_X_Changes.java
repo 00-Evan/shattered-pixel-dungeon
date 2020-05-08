@@ -106,7 +106,7 @@ public class v0_6_X_Changes {
 				"_-_ 'Death by glyph' badge is now 'death by deferred damage'.\n\n" +
 				"_-_ Removed rare monster slayer badge."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Berserker",
 				"Even with recent nerfs the berserker is still much stronger than other subclasses. Rather than continually nerfing his existing mechanics, which makes the subclass unfun, I have instead opted to give him a small rework.\n\n" +
 				"These changes focus on giving the berserker some of his old power back, but making it more difficult to access that power.\n\n" +
 				"_-_ Rage is built by taking physical damage\n" +
@@ -139,7 +139,7 @@ public class v0_6_X_Changes {
 				"_-_ Loading screen transitions are now faster in many cases\n\n" +
 				"_-_ Improved the layout of translator credits in landscape"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various rare crash bugs\n" +
 				"_-_ Antimagic applying to elemental damage\n" +
@@ -169,13 +169,13 @@ public class v0_6_X_Changes {
 				"_-_ Base chance to deal 2x damage reduced to 50% from 60%\n" +
 				"_-_ Each time 0x damage is dealt, the next hit will be much more likely to deal 2x damage"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.MAGE, 0, 90, 12, 15), "Warlock",
 				"Soul mark chance changed. Now has a 10% chance to activate per wand level, stacking multiplicatively, with a base of 10% at +0.\n" +
 				"e.g. +0 is 10%, +1 is 19%, +2 is 27%, etc.\n\n" +
 				"Previous soul mark chance was 9% at base plus 6% per level, stacking linearly.\n\n" +
 				"This substantially increases soul mark chance at wand levels +1 to +5"));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress",
 				"Huntress ranged weapon durability boost now stacks with magical holster durability boost, for a total of 180% durability."));
 		
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
@@ -186,7 +186,7 @@ public class v0_6_X_Changes {
 				"Wayward's accuracy penalty was very extreme, often making it impossible to win fights without doors. Wayward should punish non-guaranteed attacks, but this extent of this has been lessened.\n\n" +
 				"_-_ Reduced wayward accuracy penalty by 50%"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SKELETON, 0, 0, 12, 15), "Skeletons",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SKELETON, 0, 0, 12, 15), "Skeletons",
 				"Skeletons have been adjusted to be more counterable with armor, and to give less inventory-clogging loot.\n\n" +
 				"_-_ Bone explosion damage up to 6-12 from 2-10\n" +
 				"_-_ Armor is now 2x effective against bone explosion, up from 0.5x\n\n" +
@@ -273,7 +273,7 @@ public class v0_6_X_Changes {
 				"\n" +
 				"_-_ Made adjustments to sending gameplay data. Data use should be slightly reduced."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Crashes involving corrupted mimics\n" +
 				"_-_ Various rare crash bugs\n" +
@@ -309,14 +309,14 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 64, 0, 16, 16), "Paralysis changes",
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 64, 0, 16, 16), "Paralysis changes",
 				"Paralysis is an extremely powerful debuff, and its ability to completely immobilize the player or an enemy while they are killed needs to be adjusted.\n" +
 				"\n" +
 				"Chance to resist paralysis is now based on all recent damage taken while paralyzed, instead of each specific instance of damage separately.\n" +
 				"\n" +
 				"This means that after taking around half current HP in damage, breaking from paralysis becomes very likely, and immediately re-applying paralysis will not reset this resist chance."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.TILES_SEWERS, 48, 48, 16, 16), "Chasm changes",
+		changes.addButton( new ChangeButton(new Image(Assets.Environment.TILES_SEWERS, 48, 48, 16, 16), "Chasm changes",
 				"Dropping enemies into chasms is a very fun way to deal with enemies, but killing an enemy instantly and getting almost the full reward is simply too strong. This change should keep killing via chasms fun and useful, without it being as strong.\n" +
 				"\n" +
 				"_-_ Enemies killed via chasms now only award 50% exp"));
@@ -363,7 +363,7 @@ public class v0_6_X_Changes {
 				"_-_ Existing ranged weapons reworked, 5 new ranged weapons added.\n\n" +
 				"_-_ Warrior now starts with throwing stones, rogue starts with throwing knives"));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.HUNTRESS, 0, 15, 12, 15), "Huntress",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.HUNTRESS, 0, 15, 12, 15), "Huntress",
 				"Huntress adjusted due to ranged weapon changes (note that this is not a full class rework):\n\n" +
 				"_-_ Huntress no longer has a chance to reclaim a single ranged weapon.\n\n" +
 				"_-_ Missile weapons now have 50% greater durability when used by the huntress.\n\n" +
@@ -388,7 +388,7 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.WARNING );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.BUFFS_LARGE, 32, 0, 16, 16), "Changes to debuffs and resistances",
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 32, 0, 16, 16), "Changes to debuffs and resistances",
 				"The game's resistance system has been totally overhauled, to allow for more flexibility and consistency.\n\n" +
 				"Previously, if a character was resistant to something, its effect would be reduced by a random amount between 0% and 100%.\n\n" +
 				"Now, resistances are much less random, applying a specific reduction to harmful effects. Currently all resistances are 50%.\n\n" +
@@ -412,7 +412,7 @@ public class v0_6_X_Changes {
 				"_-_ Starting weapons can no longer appear in hero's remains\n\n" +
 				"_-_ The ghost hero is no longer unaffected by all buffs, and is also immune to corruption"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various crash bugs\n" +
 				"_-_ Serious memory leaks on android 8.0+\n" +
@@ -440,7 +440,7 @@ public class v0_6_X_Changes {
 				"_-_ Rather than granting a chance to resist elemental/magic damage, ring now grants a set percentage resistance to these effects, which increases each level.\n\n" +
 				"_-_ Ring now applies to more elemental/magical effects than before."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.MAGE, 0, 90, 12, 15), "Warlock",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.MAGE, 0, 90, 12, 15), "Warlock",
 				"The warlock is underperforming relative to the battlemage at the moment, and so he is getting an adjustment to his ability.\n\n" +
 				"This should hopefully both increase his power, and further encourage investing upgrades in wands.\n\n" +
 				"_-_ Reduced the base soul mark chance by 40%\n" +
@@ -470,7 +470,7 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Berserker",
 				"The previous berserker nerf from 0.6.2 had little effect on his overall winrate, so I'm trying again with a different approach, based around having a permanent penalty for each use of berserk.\n\n" +
 				"_-_ Reverted exhaustion nerf from 0.6.2\n\n" +
 				"_-_ Decreased lvls to recover rage to 2 from 3\n" +
@@ -508,7 +508,7 @@ public class v0_6_X_Changes {
 				"_-_ Searching now consumes 6 turns of hunger, up from 2.\n\n" +
 				"This is a big adjustment to how secrets work in the dungeon. The goal is to make secrets more interesting, harder to find, and also more optional."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.ROGUE, 0, 15, 12, 15), "Rogue Rework!",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE, 0, 15, 12, 15), "Rogue Rework!",
 				"The rogue has been reworked! His abilities have received a number of changes to make his strengths more pronounced and focused.\n\n" +
 				"These abilities have been _removed:_\n" +
 				"_-_ Gains evasion from excess strength on armor\n" +
@@ -520,7 +520,7 @@ public class v0_6_X_Changes {
 				"_-_ Is able to find more secrets in the dungeon\n\n" +
 				"Make sure to check out the Cloak of Shadows and Dagger changes as well."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.ROGUE, 0, 90, 12, 15), "Rogue Subclasses Rework!",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Rogue Subclasses Rework!",
 				"Both of the rogue's subclasses has been reworked, with an emphasis on more powerful abilities that need more interaction from the player.\n\n" +
 				"_The Assassin:_\n" +
 				"_-_ No longer gains a free +25% damage on surprise attacks\n" +
@@ -532,7 +532,7 @@ public class v0_6_X_Changes {
 				"_-_ Momentum is rapidly lost when standing still.\n" +
 				"_-_ Evasion gained from momentum scales with excess strength on armor."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.TERRAIN_FEATURES, 16, 0, 16, 16), "Trap Overhaul!",
+		changes.addButton( new ChangeButton( new Image(Assets.Environment.TERRAIN_FEATURES, 16, 0, 16, 16), "Trap Overhaul!",
 				"Most of the game's traps have received changes, some have been overhauled entirely!\n\n" +
 				"_-_ Removed Spear and Paralytic Gas Traps\n" +
 				"_-_ Lightning Trap is now Shocking and Storm traps\n" +
@@ -567,7 +567,7 @@ public class v0_6_X_Changes {
 				"_-_ Corrupted enemies award exp immediately as they are corrupted.\n\n" +
 				"These changes are aimed at making the wand more powerful, and also less of an all-in wand. Wand of Corruption is now useful even if it doesn't corrupt an enemy."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.STATUE, 0, 0, 12, 15), "AI and Enemy Changes",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.STATUE, 0, 0, 12, 15), "AI and Enemy Changes",
 				"_-_ Characters now have an internal alignment and choose enemies based on that. Friendly characters should now never attack eachother.\n\n" +
 				"_-_ Injured characters will now always have a persistent health bar, even if they aren't being targeted.\n\n" +
 				"_-_ Improved enemy emote visuals, they now appear more frequently and there is now one for losing a target.\n\n" +
@@ -587,7 +587,7 @@ public class v0_6_X_Changes {
 				"_-_ Improved older updates in the changes list.\n" +
 				"_-_ Game now mutes during phone calls on android 6.0+"));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Various crash bugs\n" +
 				"_-_ Various exploits players could use to determine map shape\n" +
@@ -656,7 +656,7 @@ public class v0_6_X_Changes {
 		changes.hardlight( CharSprite.NEGATIVE );
 		changeInfos.add(changes);
 		
-		changes.addButton( new ChangeButton(new Image(Assets.WARRIOR, 0, 90, 12, 15), "Berserker",
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.WARRIOR, 0, 90, 12, 15), "Berserker",
 				"The Berserker's survivability and power have been reduced to help bring him into line with the other subclasses:\n\n" +
 				"_-_ Bonus damage from low health reduced significantly when below 50% HP. 2x damage while berserking is unchanged.\n\n" +
 				"_-_ Turns of exhaustion after berserking increased to 60 from 40. Damage reduction from exhaustion stays higher for longer."));
@@ -745,11 +745,11 @@ public class v0_6_X_Changes {
 				"_-_ Dew will always be collected into an available vial, even if the hero is below full HP.\n\n" +
 				"_-_ When drinking from the vial, the hero will now only drink as many drops as they need to reach full HP."));
 		
-		changes.addButton( new ChangeButton( new Image(Assets.STATUE, 0, 0, 12, 15), "AI Changes",
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.STATUE, 0, 0, 12, 15), "AI Changes",
 				"_-_ Improvements to pathfinding. Characters are now more prone to take efficient paths to their targets, and will prefer to wait instead of taking a very inefficient path.\n\n" +
 				"_-_ Characters will now more consistently decide who to attack based on distance and who they are being attacked by."));
 		
-		changes.addButton( new ChangeButton(new Image(Assets.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed:\n" +
 				"_-_ Issues with Android 7.0+ multi-window\n" +
 				"_-_ Rare stability issues on certain devices\n" +

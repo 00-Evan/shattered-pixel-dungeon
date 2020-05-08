@@ -32,7 +32,7 @@ public class MonkSprite extends MobSprite {
 	public MonkSprite() {
 		super();
 		
-		texture( Assets.MONK );
+		texture( Assets.Sprites.MONK );
 		
 		TextureFilm frames = new TextureFilm( texture, 15, 14 );
 		

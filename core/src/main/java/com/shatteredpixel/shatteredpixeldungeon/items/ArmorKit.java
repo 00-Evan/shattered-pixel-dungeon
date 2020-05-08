@@ -105,7 +105,7 @@ public class ArmorKit extends Item {
 		}
 		
 		curUser.sprite.operate( curUser.pos );
-		Sample.INSTANCE.play( Assets.SND_EVOKE );
+		Sample.INSTANCE.play( Assets.Sounds.EVOKE );
 	}
 	
 	private final WndBag.Listener itemSelector = new WndBag.Listener() {

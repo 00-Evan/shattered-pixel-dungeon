@@ -52,7 +52,7 @@ public class CursingTrap extends Trap {
 	public void activate() {
 		if (Dungeon.level.heroFOV[ pos ]) {
 			CellEmitter.get(pos).burst(ShadowParticle.UP, 5);
-			Sample.INSTANCE.play(Assets.SND_CURSED);
+			Sample.INSTANCE.play(Assets.Sounds.CURSED);
 		}
 
 		Heap heap = Dungeon.level.heaps.get( pos );

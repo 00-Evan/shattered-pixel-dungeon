@@ -29,7 +29,7 @@ public class WraithSprite extends MobSprite {
 	public WraithSprite() {
 		super();
 		
-		texture( Assets.WRAITH );
+		texture( Assets.Sprites.WRAITH );
 		
 		TextureFilm frames = new TextureFilm( texture, 14, 15 );
 		

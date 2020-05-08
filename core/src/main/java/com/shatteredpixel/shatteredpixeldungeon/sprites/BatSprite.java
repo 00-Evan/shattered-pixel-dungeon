@@ -29,7 +29,7 @@ public class BatSprite extends MobSprite {
 	public BatSprite() {
 		super();
 		
-		texture( Assets.BAT );
+		texture( Assets.Sprites.BAT );
 		
 		TextureFilm frames = new TextureFilm( texture, 15, 15 );
 		

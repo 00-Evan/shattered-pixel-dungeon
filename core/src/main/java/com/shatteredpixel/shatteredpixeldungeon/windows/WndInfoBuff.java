@@ -46,7 +46,7 @@ public class WndInfoBuff extends Window {
 
 		IconTitle titlebar = new IconTitle();
 
-		icons = TextureCache.get( Assets.BUFFS_LARGE );
+		icons = TextureCache.get( Assets.Interfaces.BUFFS_LARGE );
 		film = new TextureFilm( icons, 16, 16 );
 
 		Image buffIcon = new Image( icons );

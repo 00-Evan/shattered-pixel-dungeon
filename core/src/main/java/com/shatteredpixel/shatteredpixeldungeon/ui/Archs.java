@@ -46,7 +46,7 @@ public class Archs extends Component {
 
 	@Override
 	protected void createChildren() {
-		arcsBg = new SkinnedBlock( 1, 1, Assets.ARCS_BG ){
+		arcsBg = new SkinnedBlock( 1, 1, Assets.Interfaces.ARCS_BG ){
 			@Override
 			protected NoosaScript script() {
 				return NoosaScriptNoLighting.get();
@@ -64,7 +64,7 @@ public class Archs extends Component {
 		arcsBg.offsetTo( 0,  offsB );
 		add( arcsBg );
 
-		arcsFg = new SkinnedBlock( 1, 1, Assets.ARCS_FG ){
+		arcsFg = new SkinnedBlock( 1, 1, Assets.Interfaces.ARCS_FG ){
 			@Override
 			protected NoosaScript script() {
 				return NoosaScriptNoLighting.get();

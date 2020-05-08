@@ -54,7 +54,7 @@ public class IconButton extends Button {
 	@Override
 	protected void onPointerDown() {
 		if (icon != null) icon.brightness( 1.5f );
-		Sample.INSTANCE.play( Assets.SND_CLICK );
+		Sample.INSTANCE.play( Assets.Sounds.CLICK );
 	}
 	
 	@Override

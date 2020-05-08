@@ -35,7 +35,7 @@ public class WandmakerSprite extends MobSprite {
 	public WandmakerSprite() {
 		super();
 		
-		texture( Assets.MAKER );
+		texture( Assets.Sprites.MAKER );
 		
 		TextureFilm frames = new TextureFilm( texture, 12, 14 );
 		
@@ -65,7 +65,7 @@ public class WandmakerSprite extends MobSprite {
 		emitter().start( ElmoParticle.FACTORY, 0.03f, 60 );
 
 		if (visible) {
-			Sample.INSTANCE.play( Assets.SND_BURNING );
+			Sample.INSTANCE.play( Assets.Sounds.BURNING );
 		}
 	}
 

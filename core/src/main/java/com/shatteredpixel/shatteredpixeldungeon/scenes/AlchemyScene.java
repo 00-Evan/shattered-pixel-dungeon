@@ -396,7 +396,7 @@ public class AlchemyScene extends PixelScene {
 		if (result != null){
 			bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
 			smokeEmitter.burst(Speck.factory( Speck.WOOL ), 10 );
-			Sample.INSTANCE.play( Assets.SND_PUFF );
+			Sample.INSTANCE.play( Assets.Sounds.PUFF );
 			
 			output.item(result);
 			if (!(result instanceof AlchemistsToolkit)) {
@@ -507,7 +507,7 @@ public class AlchemyScene extends PixelScene {
 				@Override
 				protected void onPointerDown() {
 					bg.brightness( 1.2f );
-					Sample.INSTANCE.play( Assets.SND_CLICK );
+					Sample.INSTANCE.play( Assets.Sounds.CLICK );
 				}
 				@Override
 				protected void onPointerUp() {

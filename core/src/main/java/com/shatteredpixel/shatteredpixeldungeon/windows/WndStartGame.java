@@ -227,7 +227,7 @@ public class WndStartGame extends Window {
 		protected void createChildren() {
 			super.createChildren();
 			
-			avatar = new Image(Assets.AVATARS);
+			avatar = new Image(Assets.Sprites.AVATARS);
 			avatar.scale.set(2f);
 			add(avatar);
 			
@@ -330,7 +330,7 @@ public class WndStartGame extends Window {
 						case HUNTRESS:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.GLOVES, null));
-							heroMisc.icon(new Image(Assets.TILES_SEWERS, 112, 96, 16, 16 ));
+							heroMisc.icon(new Image(Assets.Environment.TILES_SEWERS, 112, 96, 16, 16 ));
 							break;
 					}
 					

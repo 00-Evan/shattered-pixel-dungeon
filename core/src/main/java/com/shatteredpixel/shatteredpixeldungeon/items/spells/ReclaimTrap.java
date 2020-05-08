@@ -53,7 +53,7 @@ public class ReclaimTrap extends TargetedSpell {
 			if (t != null && t.active && t.visible) {
 				t.disarm();
 				
-				Sample.INSTANCE.play(Assets.SND_LIGHTNING);
+				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 				ScrollOfRecharging.charge(hero);
 				storedTrap = t.getClass();
 				

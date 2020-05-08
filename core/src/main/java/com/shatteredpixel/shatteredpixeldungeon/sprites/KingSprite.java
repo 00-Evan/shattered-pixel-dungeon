@@ -29,7 +29,7 @@ public class KingSprite extends MobSprite {
 	public KingSprite() {
 		super();
 		
-		texture( Assets.KING );
+		texture( Assets.Sprites.KING );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 		

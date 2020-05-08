@@ -158,7 +158,7 @@ public class DriedRose extends Artifact {
 
 					if (!firstSummon) {
 						ghost.yell( Messages.get(GhostHero.class, "hello", Dungeon.hero.name()) );
-						Sample.INSTANCE.play( Assets.SND_GHOST );
+						Sample.INSTANCE.play( Assets.Sounds.GHOST );
 						firstSummon = true;
 						
 					} else {
@@ -399,7 +399,7 @@ public class DriedRose extends Artifact {
 
 				if (spawnPoints.size() > 0) {
 					Wraith.spawnAt(Random.element(spawnPoints));
-					Sample.INSTANCE.play(Assets.SND_CURSED);
+					Sample.INSTANCE.play(Assets.Sounds.CURSED);
 				}
 
 			}
@@ -416,7 +416,7 @@ public class DriedRose extends Artifact {
 		public void onSelect(Integer cell) {
 			if (cell == null) return;
 			
-			Sample.INSTANCE.play( Assets.SND_GHOST );
+			Sample.INSTANCE.play( Assets.Sounds.GHOST );
 			
 			if (!Dungeon.level.heroFOV[cell]
 					|| Actor.findChar(cell) == null
@@ -484,7 +484,7 @@ public class DriedRose extends Artifact {
 				} else
 					GLog.i( Messages.get(this, "levelup") );
 
-				Sample.INSTANCE.play( Assets.SND_DEWDROP );
+				Sample.INSTANCE.play( Assets.Sounds.DEWDROP );
 				hero.spendAndNext(TIME_TO_PICK_UP);
 				return true;
 
@@ -773,7 +773,7 @@ public class DriedRose extends Artifact {
 					break;
 			}
 			if (ShatteredPixelDungeon.scene() instanceof GameScene) {
-				Sample.INSTANCE.play( Assets.SND_GHOST );
+				Sample.INSTANCE.play( Assets.Sounds.GHOST );
 			}
 		}
 		
@@ -797,7 +797,7 @@ public class DriedRose extends Artifact {
 					yell( Messages.get( this, "seen_yog_" + Random.IntRange(1, 3) ));
 					break;
 			}
-			Sample.INSTANCE.play( Assets.SND_GHOST );
+			Sample.INSTANCE.play( Assets.Sounds.GHOST );
 		}
 		
 		public void sayDefeated(){
@@ -806,7 +806,7 @@ public class DriedRose extends Artifact {
 			} else {
 				yell( Messages.get( this, "defeated_by_enemy_" + Random.IntRange(1, 3) ));
 			}
-			Sample.INSTANCE.play( Assets.SND_GHOST );
+			Sample.INSTANCE.play( Assets.Sounds.GHOST );
 		}
 		
 		public void sayHeroKilled(){
@@ -815,12 +815,12 @@ public class DriedRose extends Artifact {
 			} else {
 				yell( Messages.get( this, "hero_killed_" + Random.IntRange(1, 3) ));
 			}
-			Sample.INSTANCE.play( Assets.SND_GHOST );
+			Sample.INSTANCE.play( Assets.Sounds.GHOST );
 		}
 		
 		public void sayAnhk(){
 			yell( Messages.get( this, "blessed_ankh_" + Random.IntRange(1, 3) ));
-			Sample.INSTANCE.play( Assets.SND_GHOST );
+			Sample.INSTANCE.play( Assets.Sounds.GHOST );
 		}
 		
 		private static final String DEFEND_POS = "defend_pos";

@@ -253,7 +253,7 @@ public class PrismaticImage extends NPC {
 				destroy();
 				CellEmitter.get(pos).start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
 				sprite.die();
-				Sample.INSTANCE.play( Assets.SND_TELEPORT );
+				Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 				return true;
 			} else {
 				return super.act(enemyInFOV, justAlerted);

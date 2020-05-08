@@ -68,7 +68,7 @@ public class Camouflage extends Armor.Glyph {
 		public void set(int time){
 			left = time;
 			pos = target.pos;
-			Sample.INSTANCE.play( Assets.SND_MELD );
+			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
 
 		@Override

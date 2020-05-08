@@ -89,12 +89,12 @@ public class NewPrisonBossLevel extends Level {
 	
 	@Override
 	public String tilesTex() {
-		return Assets.TILES_PRISON;
+		return Assets.Environment.TILES_PRISON;
 	}
 	
 	@Override
 	public String waterTex() {
-		return Assets.WATER_PRISON;
+		return Assets.Environment.WATER_PRISON;
 	}
 	
 	private static final String STATE	        = "state";
@@ -441,7 +441,7 @@ public class NewPrisonBossLevel extends Level {
 				tengu.sprite.kill();
 				
 				GameScene.flash(0xFFFFFF);
-				Sample.INSTANCE.play(Assets.SND_BLAST);
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 				
 				state = State.TRAP_MAZES;
 				break;
@@ -461,7 +461,7 @@ public class NewPrisonBossLevel extends Level {
 				tengu.notice();
 				
 				GameScene.flash(0xFFFFFF);
-				Sample.INSTANCE.play(Assets.SND_BLAST);
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 				
 				state = State.FIGHT_ARENA;
 				break;
@@ -511,7 +511,7 @@ public class NewPrisonBossLevel extends Level {
 				}
 				
 				GameScene.flash(0xFFFFFF);
-				Sample.INSTANCE.play(Assets.SND_BLAST);
+				Sample.INSTANCE.play(Assets.Sounds.BLAST);
 				
 				state = State.WON;
 				break;
@@ -578,7 +578,7 @@ public class NewPrisonBossLevel extends Level {
 							GameScene.add(f, false);
 							customTiles.add(f);
 							
-							Sample.INSTANCE.play(Assets.SND_TELEPORT);
+							Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 							int roomCenter = (mazeCells[i].left + mazeCells[i].right)/2 +
 									(mazeCells[i].top + mazeCells[i].bottom)/2 * width();
 							Camera.main.panTo(DungeonTilemap.tileCenterToWorld(roomCenter), 5f);
@@ -713,7 +713,7 @@ public class NewPrisonBossLevel extends Level {
 	public static class FadingTraps extends CustomTilemap {
 		
 		{
-			texture = Assets.TERRAIN_FEATURES;
+			texture = Assets.Environment.TERRAIN_FEATURES;
 		}
 		
 		Rect area;
@@ -813,7 +813,7 @@ public class NewPrisonBossLevel extends Level {
 	public static class exitVisual extends CustomTilemap {
 		
 		{
-			texture = Assets.PRISON_EXIT_NEW;
+			texture = Assets.Environment.PRISON_EXIT_NEW;
 			
 			tileW = 14;
 			tileH = 11;
@@ -859,7 +859,7 @@ public class NewPrisonBossLevel extends Level {
 	public static class exitVisualWalls extends CustomTilemap {
 		
 		{
-			texture = Assets.PRISON_EXIT_NEW;
+			texture = Assets.Environment.PRISON_EXIT_NEW;
 			
 			tileW = 14;
 			tileH = 22;

@@ -40,7 +40,7 @@ public class RatKingSprite extends MobSprite {
 
 		final int c = festive ? 8 : 0;
 		
-		texture( Assets.RATKING );
+		texture( Assets.Sprites.RATKING );
 		
 		TextureFilm frames = new TextureFilm( texture, 16, 17 );
 		

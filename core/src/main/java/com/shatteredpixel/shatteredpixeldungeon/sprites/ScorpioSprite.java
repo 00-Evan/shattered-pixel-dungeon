@@ -34,7 +34,7 @@ public class ScorpioSprite extends MobSprite {
 	public ScorpioSprite() {
 		super();
 		
-		texture( Assets.SCORPIO );
+		texture( Assets.Sprites.SCORPIO );
 		
 		TextureFilm frames = new TextureFilm( texture, 18, 17 );
 		

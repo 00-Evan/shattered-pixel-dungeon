@@ -254,7 +254,7 @@ public class ItemSlot extends Button {
 				iconInt = ((Potion) item).initials();
 			}
 			if (iconInt != null && iconVisible) {
-				bottomRightIcon = new Image(Assets.CONS_ICONS);
+				bottomRightIcon = new Image(Assets.Interfaces.CONS_ICONS);
 				int left = iconInt*7;
 				int top;
 				if (item instanceof Potion){
