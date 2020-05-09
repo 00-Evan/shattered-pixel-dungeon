@@ -106,7 +106,11 @@ public class NewTengu extends Mob {
 	
 	@Override
 	public int attackSkill( Char target ) {
-		return 18;
+		if (Dungeon.level.adjacent(pos, target.pos)){
+			return 12;
+		} else {
+			return 18;
+		}
 	}
 	
 	@Override
@@ -138,7 +142,7 @@ public class NewTengu extends Mob {
 		
 		//tengu cannot be hit through multiple brackets at a time
 		if ((beforeHitHP/hpBracket - HP/hpBracket) >= 2){
-			HP = hpBracket * ((beforeHitHP/hpBracket)-1);
+			HP = hpBracket * ((beforeHitHP/hpBracket)-1) + 1;
 		}
 		
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
@@ -239,7 +243,7 @@ public class NewTengu extends Mob {
 				
 				do {
 					newPos = ((NewPrisonBossLevel)Dungeon.level).randomTenguCellPos();
-				} while ( (level.distance(newPos, enemy.pos) < 3 || Actor.findChar(newPos) != null));
+				} while ( (level.trueDistance(newPos, enemy.pos) <= 4 || Actor.findChar(newPos) != null));
 				
 				if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 				
