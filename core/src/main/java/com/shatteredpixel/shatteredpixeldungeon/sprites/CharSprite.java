@@ -342,7 +342,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		flashTime = FLASH_INTERVAL;
 	}
 	
-	public void add( State state ) {
+	public synchronized void add( State state ) {
 		switch (state) {
 			case BURNING:
 				burning = emitter();
@@ -396,7 +396,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 	
-	public void remove( State state ) {
+	public synchronized void remove( State state ) {
 		switch (state) {
 			case BURNING:
 				if (burning != null) {
