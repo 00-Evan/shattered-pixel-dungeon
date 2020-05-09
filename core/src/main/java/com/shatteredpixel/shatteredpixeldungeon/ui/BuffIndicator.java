@@ -153,7 +153,8 @@ public class BuffIndicator extends Component {
 		for (Buff buff : buffIcons.keySet().toArray(new Buff[0])){
 			if (!newBuffs.contains(buff)){
 				Image icon = buffIcons.get( buff ).icon;
-				icon.origin.set( SIZE / 2 );
+				icon.origin.set( SIZE / 2f );
+				icon.alpha(0.6f);
 				add( icon );
 				add( new AlphaTweener( icon, 0, 0.6f ) {
 					@Override
@@ -207,7 +208,7 @@ public class BuffIndicator extends Component {
 			icon.frame( film.get( buff.icon() ) );
 			add( icon );
 
-			grey = new Image( TextureCache.createSolid(0xCC808080));
+			grey = new Image( TextureCache.createSolid(0xCC666666));
 			add( grey );
 		}
 		
