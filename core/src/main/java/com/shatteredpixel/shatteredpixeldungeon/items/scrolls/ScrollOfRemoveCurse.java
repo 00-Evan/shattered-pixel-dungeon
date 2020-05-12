@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
@@ -40,7 +41,7 @@ import com.watabou.noosa.audio.Sample;
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	{
-		initials = 7;
+		icon = ItemSpriteSheet.Icons.SCROLL_REMCURSE;
 		mode = WndBag.Mode.UNCURSABLE;
 	}
 	
@@ -117,6 +118,8 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			return ((Weapon)item).hasCurseEnchant();
 		} else if (item instanceof Armor){
 			return ((Armor)item).hasCurseGlyph();
+		} else if (item.level() != item.buffedLvl()) {
+			return true;
 		} else {
 			return false;
 		}

@@ -67,6 +67,7 @@ public class Item implements Bundlable {
 	
 	protected String name = Messages.get(this, "name");
 	public int image = 0;
+	public int icon = -1; //used as an identifier for items with randomized images
 	
 	public boolean stackable = false;
 	protected int quantity = 1;

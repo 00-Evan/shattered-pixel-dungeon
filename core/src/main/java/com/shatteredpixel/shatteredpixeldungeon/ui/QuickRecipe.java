@@ -114,10 +114,10 @@ public class QuickRecipe extends Component {
 			}
 			
 			if (quantity < in.quantity()) {
-				curr.icon.alpha(0.3f);
+				curr.sprite.alpha(0.3f);
 				hasInputs = false;
 			}
-			curr.showParams(true, false, true);
+			curr.showExtraInfo(false);
 			add(curr);
 			this.inputs.add(curr);
 		}
@@ -147,9 +147,9 @@ public class QuickRecipe extends Component {
 			}
 		};
 		if (!hasInputs){
-			this.output.icon.alpha(0.3f);
+			this.output.sprite.alpha(0.3f);
 		}
-		this.output.showParams(true, false, true);
+		this.output.showExtraInfo(false);
 		add(this.output);
 		
 		layout();

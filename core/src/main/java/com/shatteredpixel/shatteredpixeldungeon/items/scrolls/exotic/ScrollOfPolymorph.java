@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -38,7 +39,7 @@ import com.watabou.utils.Random;
 public class ScrollOfPolymorph extends ExoticScroll {
 	
 	{
-		initials = 10;
+		icon = ItemSpriteSheet.Icons.SCROLL_POLYMORPH;
 	}
 	
 	@Override

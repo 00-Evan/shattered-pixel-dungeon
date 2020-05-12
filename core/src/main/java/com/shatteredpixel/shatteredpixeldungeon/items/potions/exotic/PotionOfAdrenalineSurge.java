@@ -24,11 +24,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AdrenalineSurge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfAdrenalineSurge extends ExoticPotion {
 	
 	{
-		initials = 10;
+		icon = ItemSpriteSheet.Icons.POTION_ARENSURGE;
 	}
 	
 	@Override

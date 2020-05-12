@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 public class ScrollOfIdentify extends InventoryScroll {
 
 	{
-		initials = 0;
+		icon = ItemSpriteSheet.Icons.SCROLL_IDENTIFY;
 		mode = WndBag.Mode.UNIDENTIFED;
 
 		bones = true;

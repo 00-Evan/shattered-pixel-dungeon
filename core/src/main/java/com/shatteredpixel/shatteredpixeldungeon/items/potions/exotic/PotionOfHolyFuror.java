@@ -24,11 +24,12 @@ package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfHolyFuror extends ExoticPotion {
 	
 	{
-		initials = 0;
+		icon = ItemSpriteSheet.Icons.POTION_HOLYFUROR;
 	}
 	
 	@Override

@@ -22,11 +22,12 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.potions;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionOfExperience extends Potion {
 
 	{
-		initials = 0;
+		icon = ItemSpriteSheet.Icons.POTION_EXP;
 
 		bones = true;
 	}

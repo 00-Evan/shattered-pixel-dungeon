@@ -87,8 +87,6 @@ public class Potion extends Item {
 
 	private static final float TIME_TO_DRINK = 1f;
 
-	protected Integer initials;
-
 	private static final Class<?>[] potions = {
 			PotionOfHealing.class,
 			PotionOfExperience.class,
@@ -381,10 +379,6 @@ public class Potion extends Item {
 	@Override
 	public String info() {
 		return isKnown() ? desc() : Messages.get(this, "unknown_desc");
-	}
-
-	public Integer initials(){
-		return isKnown() ? initials : null;
 	}
 	
 	@Override

@@ -45,7 +45,7 @@ public class LootIndicator extends Tag {
 	@Override
 	protected void createChildren() {
 		super.createChildren();
-		
+
 		slot = new ItemSlot() {
 			protected void onClick() {
 				if (Dungeon.hero.handle(Dungeon.hero.pos)){
@@ -59,7 +59,7 @@ public class LootIndicator extends Tag {
 				return SPDAction.TAG_LOOT;
 			}
 		};
-		slot.showParams( true, false, false );
+		slot.showExtraInfo( false );
 		add( slot );
 	}
 	
@@ -67,7 +67,7 @@ public class LootIndicator extends Tag {
 	protected void layout() {
 		super.layout();
 		
-		slot.setRect( x + 2, y + 3, width - 2, height - 6 );
+		slot.setRect( x + 2, y + 3, width - 3, height - 6 );
 	}
 	
 	@Override

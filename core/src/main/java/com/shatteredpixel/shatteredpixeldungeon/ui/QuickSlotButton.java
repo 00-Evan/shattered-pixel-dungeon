@@ -105,14 +105,14 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 			}
 			@Override
 			protected void onPointerDown() {
-				icon.lightness( 0.7f );
+				sprite.lightness( 0.7f );
 			}
 			@Override
 			protected void onPointerUp() {
-				icon.resetColor();
+				sprite.resetColor();
 			}
 		};
-		slot.showParams( true, false, true );
+		slot.showExtraInfo( false );
 		add( slot );
 		
 		crossB = Icons.TARGET.get();
@@ -212,7 +212,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 			sprite.parent.addToFront( crossM );
 			crossM.point(sprite.center(crossM));
 
-			crossB.point(slot.icon.center(crossB));
+			crossB.point(slot.sprite.center(crossB));
 			crossB.visible = true;
 
 		} else {

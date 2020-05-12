@@ -23,34 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHaste;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfInvisibility;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMirrorImage;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ExoticScroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -65,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.IconTitle;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Reflection;
 
 import java.util.HashSet;
 
@@ -83,38 +61,7 @@ public class StoneOfIntuition extends InventoryStone {
 		
 	}
 	
-	//in order of their consumable icon
-	public static Class[] potions = new Class[]{
-			PotionOfExperience.class,
-			PotionOfFrost.class,
-			PotionOfHaste.class,
-			PotionOfHealing.class,
-			PotionOfInvisibility.class,
-			PotionOfLevitation.class,
-			PotionOfLiquidFlame.class,
-			PotionOfMindVision.class,
-			PotionOfParalyticGas.class,
-			PotionOfPurity.class,
-			PotionOfStrength.class,
-			PotionOfToxicGas.class
-	};
-	
-	public static Class[] scrolls = new Class[]{
-			ScrollOfIdentify.class,
-			ScrollOfLullaby.class,
-			ScrollOfMagicMapping.class,
-			ScrollOfMirrorImage.class,
-			ScrollOfRetribution.class,
-			ScrollOfRage.class,
-			ScrollOfRecharging.class,
-			ScrollOfRemoveCurse.class,
-			ScrollOfTeleportation.class,
-			ScrollOfTerror.class,
-			ScrollOfTransmutation.class,
-			ScrollOfUpgrade.class
-	};
-	
-	static Class curGuess = null;
+	private static Class curGuess = null;
 	
 	public class WndGuess extends Window {
 		
@@ -163,17 +110,15 @@ public class StoneOfIntuition extends InventoryStone {
 			int placed = 0;
 			
 			HashSet<Class<?extends Item>> unIDed = new HashSet<>();
-			final Class[] all;
-			
-			final int row;
+			final Class<?extends Item>[] all;
+
 			if (item.isIdentified()){
 				hide();
 				return;
 			} else if (item instanceof Potion){
 				unIDed.addAll(Potion.getUnknown());
-				all = potions.clone();
+				all = (Class<? extends Item>[]) Generator.Category.POTION.classes.clone();
 				if (item instanceof ExoticPotion){
-					row = 8;
 					for (int i = 0; i < all.length; i++){
 						all[i] = ExoticPotion.regToExo.get(all[i]);
 					}
@@ -182,24 +127,19 @@ public class StoneOfIntuition extends InventoryStone {
 						exoUID.add(ExoticPotion.regToExo.get(i));
 					}
 					unIDed = exoUID;
-				} else {
-					row = 0;
 				}
 			} else if (item instanceof Scroll){
 				unIDed.addAll(Scroll.getUnknown());
-				all = scrolls.clone();
-				if (item instanceof ExoticScroll){
-					row = 24;
-					for (int i = 0; i < all.length; i++){
+				all = (Class<? extends Item>[]) Generator.Category.SCROLL.classes.clone();
+				if (item instanceof ExoticScroll) {
+					for (int i = 0; i < all.length; i++) {
 						all[i] = ExoticScroll.regToExo.get(all[i]);
 					}
-					HashSet<Class<?extends Item>> exoUID = new HashSet<>();
-					for (Class<?extends Item> i : unIDed){
+					HashSet<Class<? extends Item>> exoUID = new HashSet<>();
+					for (Class<? extends Item> i : unIDed) {
 						exoUID.add(ExoticScroll.regToExo.get(i));
 					}
 					unIDed = exoUID;
-				} else {
-					row = 16;
 				}
 			} else {
 				hide();
@@ -231,7 +171,8 @@ public class StoneOfIntuition extends InventoryStone {
 						super.onClick();
 					}
 				};
-				Image im = new Image(Assets.Interfaces.CONS_ICONS, 7*i, row, 7, 8);
+				Image im = new Image(Assets.Sprites.ITEM_ICONS);
+				im.frame(ItemSpriteSheet.Icons.film.get(Reflection.newInstance(all[i]).icon));
 				im.scale.set(2f);
 				btn.icon(im);
 				btn.setRect(left + placed*BTN_SIZE, top, BTN_SIZE, BTN_SIZE);
