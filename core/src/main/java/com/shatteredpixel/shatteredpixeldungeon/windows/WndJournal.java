@@ -409,7 +409,7 @@ public class WndJournal extends WndTabbed {
 			ArrayList<QuickRecipe> toAdd = QuickRecipe.getRecipes(currentPageIdx);
 			
 			float left;
-			float top = body.bottom();
+			float top = body.bottom()+1;
 			int w;
 			ArrayList<QuickRecipe> toAddThisRow = new ArrayList<>();
 			while (!toAdd.isEmpty()){
