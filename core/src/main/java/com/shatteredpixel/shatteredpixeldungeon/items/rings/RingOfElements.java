@@ -36,12 +36,17 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.text.DecimalFormat;
 import java.util.HashSet;
 
 public class RingOfElements extends Ring {
-	
+
+	{
+		icon = ItemSpriteSheet.Icons.RING_ELEMENTS;
+	}
+
 	public String statsInfo() {
 		if (isIdentified()){
 			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (1f - Math.pow(0.80f, soloBuffedBonus()))));

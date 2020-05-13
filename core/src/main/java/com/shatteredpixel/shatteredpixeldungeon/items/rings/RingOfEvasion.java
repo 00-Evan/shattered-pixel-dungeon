@@ -23,11 +23,16 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.text.DecimalFormat;
 
 public class RingOfEvasion extends Ring {
-	
+
+	{
+		icon = ItemSpriteSheet.Icons.RING_EVASION;
+	}
+
 	public String statsInfo() {
 		if (isIdentified()){
 			return Messages.get(this, "stats", new DecimalFormat("#.##").format(100f * (Math.pow(1.15f, soloBuffedBonus()) - 1f)));

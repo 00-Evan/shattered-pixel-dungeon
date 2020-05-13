@@ -26,10 +26,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.text.DecimalFormat;
 
 public class RingOfMight extends Ring {
+
+	{
+		icon = ItemSpriteSheet.Icons.RING_MIGHT;
+	}
 
 	@Override
 	public boolean doEquip(Hero hero) {

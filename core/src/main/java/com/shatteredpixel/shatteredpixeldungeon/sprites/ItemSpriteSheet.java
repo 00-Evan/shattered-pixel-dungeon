@@ -699,6 +699,22 @@ public class ItemSpriteSheet {
 		}
 
 		private static final int RINGS          =                            xy(1, 1);  //16 slots
+		public static final int RING_ACCURACY   = RINGS+0;
+		public static final int RING_ELEMENTS   = RINGS+1;
+		public static final int RING_ENERGY     = RINGS+2;
+		public static final int RING_EVASION    = RINGS+3;
+		public static final int RING_FORCE      = RINGS+4;
+		public static final int RING_FUROR      = RINGS+5;
+		public static final int RING_HASTE      = RINGS+6;
+		public static final int RING_MIGHT      = RINGS+7;
+		public static final int RING_SHARPSHOOT = RINGS+8;
+		public static final int RING_TENACITY   = RINGS+9;
+		public static final int RING_WEALTH     = RINGS+10;
+		public static final int RING_UNUSED     = RINGS+11;
+		static {
+			for (int i = RINGS; i < RINGS+16; i++)
+				assignIconRect(i, 8, 8);
+		}
 
 		                                                                                //16 free slots
 

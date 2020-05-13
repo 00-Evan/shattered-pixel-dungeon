@@ -23,11 +23,16 @@ package com.shatteredpixel.shatteredpixeldungeon.items.rings;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 import java.text.DecimalFormat;
 
 public class RingOfSharpshooting extends Ring {
-	
+
+	{
+		icon = ItemSpriteSheet.Icons.RING_SHARPSHOOT;
+	}
+
 	public String statsInfo() {
 		if (isIdentified()){
 			return Messages.get(this, "stats", soloBuffedBonus(), new DecimalFormat("#.##").format(100f * (Math.pow(1.2, soloBonus()) - 1f)));
