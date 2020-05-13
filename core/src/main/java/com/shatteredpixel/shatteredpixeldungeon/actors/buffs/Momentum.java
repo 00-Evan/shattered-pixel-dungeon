@@ -72,13 +72,14 @@ public class Momentum extends Buff {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		if (stacks <= 5) {
-			icon.hardlight(0.2f * (stacks - 1), 1f, 0f);
-		} else {
-			icon.hardlight(1f, 1f - 0.2f*(stacks - 6), 0f);
-		}
+		icon.invert();
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		return (10-stacks)/10f;
+	}
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");

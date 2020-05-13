@@ -39,6 +39,11 @@ public class Haste extends FlavourBuff {
 	}
 
 	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(1f, 0.8f, 0f);
+	}
+
+	@Override
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}

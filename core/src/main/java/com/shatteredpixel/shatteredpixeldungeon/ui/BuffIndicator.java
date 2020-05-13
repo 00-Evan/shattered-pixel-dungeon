@@ -215,9 +215,14 @@ public class BuffIndicator extends Component {
 		public void updateIcon(){
 			icon.frame( film.get( buff.icon() ) );
 			buff.tintIcon(icon);
-			//logic here rounds down to the nearest pixel
+			//round up to the nearest pixel if <50% faded, otherwise round down
+			float fadeHeight = buff.iconFadePercent() * icon.height();
 			float zoom = (camera() != null) ? camera().zoom : 1;
-			grey.scale.set( icon.width(), (float)Math.floor(zoom*icon.height()*buff.iconFadePercent())/zoom);
+			if (fadeHeight < icon.height()/2f){
+				grey.scale.set( icon.width(), (float)Math.ceil(zoom*fadeHeight)/zoom);
+			} else {
+				grey.scale.set( icon.width(), (float)Math.floor(zoom*fadeHeight)/zoom);
+			}
 		}
 
 		@Override

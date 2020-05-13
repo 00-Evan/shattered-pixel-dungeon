@@ -136,6 +136,7 @@ public class Berserk extends Buff {
 	public void damage(int damage){
 		if (state == State.RECOVERING) return;
 		power = Math.min(1.1f, power + (damage/(float)target.HT)/3f );
+		BuffIndicator.refreshHero(); //show new power immediately
 	}
 
 	public void recover(float percent){
@@ -157,19 +158,30 @@ public class Berserk extends Buff {
 	public void tintIcon(Image icon) {
 		switch (state){
 			case NORMAL: default:
-				if (power < 0.5f)       icon.hardlight(1f, 1f, 1f - 2*(power));
-				else if (power < 1f)    icon.hardlight(1f, 1.5f - power, 0f);
-				else                    icon.hardlight(1f, 0f, 0f);
+				if (power < 1f) icon.hardlight(1f, 0.5f, 0f);
+				else            icon.hardlight(1f, 0f, 0f);
 				break;
 			case BERSERK:
 				icon.hardlight(1f, 0f, 0f);
 				break;
 			case RECOVERING:
-				icon.hardlight(1f - (levelRecovery*0.5f), 1f - (levelRecovery*0.3f), 1f);
+				icon.hardlight(0, 0, 1f);
 				break;
 		}
 	}
 	
+	@Override
+	public float iconFadePercent() {
+		switch (state){
+			case NORMAL: default:
+				return Math.max(0f, 1f - power);
+			case BERSERK:
+				return 0f;
+			case RECOVERING:
+				return 1f - levelRecovery/2f;
+		}
+	}
+
 	@Override
 	public String toString() {
 		switch (state){

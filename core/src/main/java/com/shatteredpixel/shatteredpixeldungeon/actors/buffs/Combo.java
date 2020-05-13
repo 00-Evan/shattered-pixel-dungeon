@@ -60,13 +60,19 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	
 	@Override
 	public void tintIcon(Image icon) {
-		if (comboTime >= 3f){
-			icon.resetColor();
-		} else {
-			icon.tint(0xb3b3b3, 0.5f + 0.5f*(3f + 1 - comboTime)/3f);
-		}
+		if (count >= 10)    icon.hardlight(1f, 0f, 0f);
+		else if (count >= 8)icon.hardlight(1f, 0.8f, 0f);
+		else if (count >= 6)icon.hardlight(1f, 1f, 0f);
+		else if (count >= 4)icon.hardlight(0.8f, 1f, 0f);
+		else if (count >= 2)icon.hardlight(0f, 1f, 0f);
+		else                icon.resetColor();
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		return (4 - comboTime)/4f;
+	}
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");
@@ -86,6 +92,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			GLog.p( Messages.get(this, "combo", count) );
 			
 		}
+
+		BuffIndicator.refreshHero(); //refresh the buff visually on-hit
 
 	}
 

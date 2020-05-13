@@ -157,7 +157,20 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				break;
 		}
 	}
-	
+
+	@Override
+	public float iconFadePercent() {
+		if (AttackLevel.getLvl(turnsInvis) == AttackLevel.LVL_5){
+			return 0;
+		} else {
+			float turnsForCur = AttackLevel.getLvl(turnsInvis).turnsReq;
+			float turnsForNext = AttackLevel.values()[AttackLevel.getLvl(turnsInvis).ordinal()+1].turnsReq;
+			turnsForNext -= turnsForCur;
+			float turnsToNext = turnsInvis - turnsForCur;
+			return Math.min(1, (turnsForNext - turnsToNext)/(turnsForNext));
+		}
+	}
+
 	@Override
 	public String toString() {
 		return Messages.get(this, "name");

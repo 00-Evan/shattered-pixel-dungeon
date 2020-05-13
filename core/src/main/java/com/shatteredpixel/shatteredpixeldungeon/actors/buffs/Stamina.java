@@ -39,6 +39,11 @@ public class Stamina extends FlavourBuff {
 	}
 
 	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(0.5f, 1f, 0.5f);
+	}
+
+	@Override
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
