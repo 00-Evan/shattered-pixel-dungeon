@@ -3,7 +3,6 @@ apply plugin: "java"
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 sourceCompatibility = targetCompatibility = appJavaCompatibility
 
-ext.mainClass = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
 sourceSets.main.resources.srcDirs = [new File(project(':core').projectDir, "/src/main/assets"),
                                      new File(project(':desktop').projectDir,"/src/main/assets")]
 
@@ -16,7 +15,7 @@ task debug(dependsOn: classes, type: JavaExec) {
     classpath = sourceSets.debug.runtimeClasspath + sourceSets.main.runtimeClasspath
     ignoreExitValue = true
 
-    main = mainClass
+    mainClass = "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
     systemProperty 'Specification-Title', appName
     systemProperty 'Specification-Version', appVersionName + "-INDEV"
     systemProperty 'Implementation-Version', appVersionCode
@@ -37,7 +36,7 @@ task release(dependsOn: compileForRelease, type: Jar) {
     from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } }
 
     manifest {
-        attributes 'Main-Class': mainClass
+        attributes 'Main-Class': "com.shatteredpixel.shatteredpixeldungeon.desktop.DesktopLauncher"
         attributes 'Specification-Title': appName
         attributes 'Specification-Version': appVersionName
         attributes 'Implementation-Version': appVersionCode
