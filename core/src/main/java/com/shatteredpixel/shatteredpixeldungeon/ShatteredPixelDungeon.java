@@ -153,56 +153,7 @@ public class ShatteredPixelDungeon extends Game {
 		Sample.INSTANCE.enable( SPDSettings.soundFx() );
 		Sample.INSTANCE.volume( SPDSettings.SFXVol()/10f );
 
-		Sample.INSTANCE.load(
-				Assets.Sounds.CLICK,
-				Assets.Sounds.BADGE,
-				Assets.Sounds.GOLD,
-
-				Assets.Sounds.STEP,
-				Assets.Sounds.WATER,
-				Assets.Sounds.OPEN,
-				Assets.Sounds.UNLOCK,
-				Assets.Sounds.ITEM,
-				Assets.Sounds.DEWDROP,
-				Assets.Sounds.HIT,
-				Assets.Sounds.MISS,
-
-				Assets.Sounds.DESCEND,
-				Assets.Sounds.EAT,
-				Assets.Sounds.READ,
-				Assets.Sounds.LULLABY,
-				Assets.Sounds.DRINK,
-				Assets.Sounds.SHATTER,
-				Assets.Sounds.ZAP,
-				Assets.Sounds.LIGHTNING,
-				Assets.Sounds.LEVELUP,
-				Assets.Sounds.DEATH,
-				Assets.Sounds.CHALLENGE,
-				Assets.Sounds.CURSED,
-				Assets.Sounds.EVOKE,
-				Assets.Sounds.TRAP,
-				Assets.Sounds.TOMB,
-				Assets.Sounds.ALERT,
-				Assets.Sounds.MELD,
-				Assets.Sounds.BOSS,
-				Assets.Sounds.BLAST,
-				Assets.Sounds.PLANT,
-				Assets.Sounds.RAY,
-				Assets.Sounds.BEACON,
-				Assets.Sounds.TELEPORT,
-				Assets.Sounds.CHARMS,
-				Assets.Sounds.MASTERY,
-				Assets.Sounds.PUFF,
-				Assets.Sounds.ROCKS,
-				Assets.Sounds.BURNING,
-				Assets.Sounds.FALLING,
-				Assets.Sounds.GHOST,
-				Assets.Sounds.SECRET,
-				Assets.Sounds.BONES,
-				Assets.Sounds.BEE,
-				Assets.Sounds.DEGRADE,
-				Assets.Sounds.MIMIC );
-
+		Sample.INSTANCE.load( Assets.Sounds.all );
 		
 	}
 

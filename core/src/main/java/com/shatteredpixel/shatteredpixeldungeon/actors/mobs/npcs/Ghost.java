@@ -65,12 +65,6 @@ public class Ghost extends NPC {
 		
 		state = WANDERING;
 	}
-	
-	public Ghost() {
-		super();
-
-		Sample.INSTANCE.load( Assets.Sounds.GHOST );
-	}
 
 	@Override
 	protected boolean act() {

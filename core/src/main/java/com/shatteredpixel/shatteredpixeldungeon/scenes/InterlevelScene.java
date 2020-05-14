@@ -230,10 +230,6 @@ public class InterlevelScene extends PixelScene {
 								break;
 						}
 						
-						if ((Dungeon.depth % 5) == 0) {
-							Sample.INSTANCE.load(Assets.Sounds.BOSS);
-						}
-						
 					} catch (Exception e) {
 						
 						error = e;
