@@ -40,13 +40,6 @@ public class SmartTexture extends Texture {
 	
 	public Atlas atlas;
 
-	protected SmartTexture( ) {
-		//useful for subclasses which want to manage their own texture data
-		// in cases where pixmaps isn't fast enough.
-
-		//subclasses which use this MUST also override some mix of reload/generate/bind
-	}
-	
 	public SmartTexture( Pixmap bitmap ) {
 		this( bitmap, NEAREST, CLAMP, false );
 	}

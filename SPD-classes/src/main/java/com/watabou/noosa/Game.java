@@ -140,7 +140,6 @@ public class Game implements ApplicationListener {
 		draw();
 
 		Gdx.gl.glDisable( Gdx.gl.GL_SCISSOR_TEST );
-		Gdx.gl.glFlush();
 		
 		step();
 	}
