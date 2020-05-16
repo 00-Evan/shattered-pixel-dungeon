@@ -21,9 +21,12 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -43,7 +46,8 @@ public class DM200 extends Mob {
 		EXP = 9;
 		maxLvl = 17;
 
-		//TODO loot?
+		loot = Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR);
+		lootChance = 0.125f; //initially, see rollToDropLoot
 
 		properties.add(Property.INORGANIC);
 		properties.add(Property.LARGE);
@@ -64,6 +68,23 @@ public class DM200 extends Mob {
 	@Override
 	public int drRoll() {
 		return Random.NormalIntRange(0, 8);
+	}
+
+	@Override
+	public void rollToDropLoot() {
+		//each drop makes future drops 1/2 as likely
+		// so loot chance looks like: 1/8, 1/16, 1/32, 1/64, etc.
+		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.DM200_EQUIP.count);
+		super.rollToDropLoot();
+	}
+
+	protected Item createLoot() {
+		//uses probability tables for dwarf city
+		if (loot == Generator.Category.WEAPON){
+			return Generator.randomWeapon(4);
+		} else {
+			return Generator.randomArmor(4);
+		}
 	}
 
 	private int ventCooldown = 0;

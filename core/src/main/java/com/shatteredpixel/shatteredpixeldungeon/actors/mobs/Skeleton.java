@@ -47,7 +47,7 @@ public class Skeleton extends Mob {
 		maxLvl = 10;
 
 		loot = Generator.Category.WEAPON;
-		lootChance = 0.125f;
+		lootChance = 0.1667f; //by default, see rollToDropLoot()
 
 		properties.add(Property.UNDEAD);
 		properties.add(Property.INORGANIC);
@@ -87,16 +87,13 @@ public class Skeleton extends Mob {
 			GLog.n( Messages.get(this, "explo_kill") );
 		}
 	}
-	
+
 	@Override
-	protected Item createLoot() {
-		MeleeWeapon loot;
-		do {
-			loot = Generator.randomWeapon();
-		//50% chance of re-rolling tier 4 or 5 melee weapons
-		} while (loot.tier >= 4 && Random.Int(2) == 0);
-		loot.level(0);
-		return loot;
+	public void rollToDropLoot() {
+		//each drop makes future drops 1/2 as likely
+		// so loot chance looks like: 1/6, 1/12, 1/24, 1/48, etc.
+		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.SKELE_WEP.count);
+		super.rollToDropLoot();
 	}
 	
 	@Override

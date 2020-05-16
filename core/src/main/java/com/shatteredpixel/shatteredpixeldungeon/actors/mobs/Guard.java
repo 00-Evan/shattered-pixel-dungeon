@@ -53,7 +53,7 @@ public class Guard extends Mob {
 		maxLvl = 14;
 
 		loot = Generator.Category.ARMOR;
-		lootChance = 0.1667f;
+		lootChance = 0.2f; //by default, see rollToDropLoot()
 
 		properties.add(Property.UNDEAD);
 		
@@ -124,14 +124,11 @@ public class Guard extends Mob {
 	}
 
 	@Override
-	protected Item createLoot() {
-		Armor loot;
-		do{
-			loot = Generator.randomArmor();
-		//50% chance of re-rolling tier 4 or 5 items
-		} while (loot.tier >= 4 && Random.Int(2) == 0);
-		loot.level(0);
-		return loot;
+	public void rollToDropLoot() {
+		//each drop makes future drops 1/2 as likely
+		// so loot chance looks like: 1/5, 1/10, 1/20, 1/40, etc.
+		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.GUARD_ARM.count);
+		super.rollToDropLoot();
 	}
 
 	private final String CHAINSUSED = "chainsused";

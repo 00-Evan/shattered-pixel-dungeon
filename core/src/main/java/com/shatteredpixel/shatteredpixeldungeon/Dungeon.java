@@ -99,8 +99,13 @@ public class Dungeon {
 		BLANDFRUIT_SEED,
 
 		//Other limited enemy drops
+		SLIME_WEP,
+		SKELE_WEP,
 		THEIF_MISC,
+		GUARD_ARM,
 		SHAMAN_WAND,
+		DM200_EQUIP,
+		GOLEM_EQUIP,
 
 		//containers
 		DEW_VIAL,

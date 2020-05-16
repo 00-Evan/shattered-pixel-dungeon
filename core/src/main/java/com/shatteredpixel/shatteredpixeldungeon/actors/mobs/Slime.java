@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -40,7 +41,7 @@ public class Slime extends Mob {
 		EXP = 4;
 		maxLvl = 9;
 		
-		lootChance = 0.1f;
+		lootChance = 0.2f; //by default, see rollToDropLoot()
 	}
 	
 	@Override
@@ -61,9 +62,18 @@ public class Slime extends Mob {
 		}
 		super.damage(dmg, src);
 	}
+
+	@Override
+	public void rollToDropLoot() {
+		//each drop makes future drops 1/2 as likely
+		// so loot chance looks like: 1/5, 1/10, 1/20, 1/40, etc.
+		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.SLIME_WEP.count);
+		super.rollToDropLoot();
+	}
 	
 	@Override
 	protected Item createLoot() {
+		Dungeon.LimitedDrops.SLIME_WEP.count++;
 		Generator.Category c = Generator.Category.WEP_T2;
 		MeleeWeapon w = (MeleeWeapon) Reflection.newInstance(c.classes[Random.chances(c.probs)]);
 		w.random();
