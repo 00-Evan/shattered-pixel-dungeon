@@ -78,7 +78,7 @@ public class UnstableSpellbook extends Artifact {
 		super();
 
 		Class<?>[] scrollClasses = Generator.Category.SCROLL.classes;
-		float[] probs = Generator.Category.SCROLL.probs.clone(); //array of primitives, clone gives deep copy.
+		float[] probs = Generator.Category.SCROLL.defaultProbs.clone(); //array of primitives, clone gives deep copy.
 		int i = Random.chances(probs);
 
 		while (i != -1){
@@ -116,7 +116,7 @@ public class UnstableSpellbook extends Artifact {
 
 				Scroll scroll;
 				do {
-					scroll = (Scroll) Generator.random(Generator.Category.SCROLL);
+					scroll = (Scroll) Generator.randomUsingDefaults(Generator.Category.SCROLL);
 				} while (scroll == null
 						//reduce the frequency of these scrolls by half
 						||((scroll instanceof ScrollOfIdentify ||

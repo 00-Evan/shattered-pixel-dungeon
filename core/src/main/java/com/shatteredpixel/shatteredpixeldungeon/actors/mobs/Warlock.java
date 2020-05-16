@@ -134,12 +134,13 @@ public class Warlock extends Mob implements Callback {
 	}
 
 	@Override
+	//TODO refactor warlock drops, they shouldn't pull from regular healing potion pool
 	public Item createLoot(){
 		Item loot = super.createLoot();
 
 		if (loot instanceof PotionOfHealing){
 
-			//count/10 chance of not dropping potion
+			//count/8 chance of not dropping potion
 			if (Random.Float() < ((8f - Dungeon.LimitedDrops.WARLOCK_HP.count) / 8f)){
 				Dungeon.LimitedDrops.WARLOCK_HP.count++;
 			} else {

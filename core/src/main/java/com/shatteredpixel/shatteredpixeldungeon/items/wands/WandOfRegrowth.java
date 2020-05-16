@@ -159,7 +159,7 @@ public class WandOfRegrowth extends Wand {
 		Level floor = Dungeon.level;
 
 		while(cells.hasNext() && Random.Float() <= numPlants){
-			Plant.Seed seed = (Plant.Seed) Generator.random(Generator.Category.SEED);
+			Plant.Seed seed = (Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED);
 			floor.plant(seed, cells.next());
 
 			numPlants --;

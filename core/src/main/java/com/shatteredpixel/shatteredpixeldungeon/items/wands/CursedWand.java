@@ -198,7 +198,7 @@ public class CursedWand {
 								pos == Terrain.GRASS ||
 								pos == Terrain.HIGH_GRASS ||
 								pos == Terrain.FURROWED_GRASS) {
-							Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), pos);
+							Dungeon.level.plant((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED), pos);
 						}
 						afterZap.call();
 					}

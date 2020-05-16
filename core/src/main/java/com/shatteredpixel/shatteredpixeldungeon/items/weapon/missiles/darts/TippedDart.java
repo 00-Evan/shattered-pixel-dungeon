@@ -162,7 +162,7 @@ public abstract class TippedDart extends Dart {
 	public static TippedDart randomTipped( int quantity ){
 		Plant.Seed s;
 		do{
-			s = (Plant.Seed) Generator.random(Generator.Category.SEED);
+			s = (Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED);
 		} while (!types.containsKey(s.getClass()));
 		
 		return getTipped(s, quantity );

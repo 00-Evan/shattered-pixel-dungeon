@@ -45,8 +45,8 @@ public class Overgrowth extends Armor.Glyph {
 			
 			Plant.Seed s;
 			do{
-				s = (Plant.Seed) Generator.random(Generator.Category.SEED);
-			} while (s instanceof BlandfruitBush.Seed || s instanceof Starflower.Seed);
+				s = (Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED);
+			} while (s instanceof Starflower.Seed);
 			
 			Plant p = s.couch(defender.pos, null);
 			

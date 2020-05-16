@@ -93,7 +93,7 @@ public class RegrowthBomb extends Bomb {
 		for (int i = 0; i < plants; i++) {
 			Integer plantPos = Random.element(plantCandidates);
 			if (plantPos != null) {
-				Dungeon.level.plant((Plant.Seed) Generator.random(Generator.Category.SEED), plantPos);
+				Dungeon.level.plant((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED), plantPos);
 				plantCandidates.remove(plantPos);
 			}
 		}

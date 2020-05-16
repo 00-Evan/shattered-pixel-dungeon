@@ -99,7 +99,7 @@ public class PlantsRoom extends StandardRoom {
 	private static Plant.Seed randomSeed(){
 		Plant.Seed result;
 		do {
-			result = (Plant.Seed) Generator.random(Generator.Category.SEED);
+			result = (Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED);
 		} while (result instanceof Firebloom.Seed);
 		return result;
 	}
