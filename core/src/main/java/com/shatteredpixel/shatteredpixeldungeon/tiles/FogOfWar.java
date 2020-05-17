@@ -49,9 +49,9 @@ public class FogOfWar extends Image {
 			0x55000000
 			}, {
 			//mapped
-			0xCC442211,
-			0x99663319,
-			0x55884422
+			0xCC112244,
+			0x99193366,
+			0x55224488
 			}, {
 			//invisible
 			0xFF000000,
