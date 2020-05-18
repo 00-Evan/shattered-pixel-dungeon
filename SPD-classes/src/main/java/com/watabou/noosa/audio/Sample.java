@@ -57,16 +57,21 @@ public enum Sample {
 		}
 	}
 
-	public void load( String... assets ) {
+	public void load( final String... assets ) {
 
-		//FIXME there used to be a queue here so that assets were loaded async.
-		//This was to prevent hanging on specific android versions (implement in vanilla v1.7.5)
-		//Maybe LibGDX already handles this?
-		for (String asset : assets){
-			if (!ids.containsKey(asset)){
-				ids.put(asset, Gdx.audio.newSound(Gdx.files.internal(asset)));
+		//load in a separate thread to prevent this blocking the UI
+		new Thread(){
+			@Override
+			public void run() {
+				synchronized (Sample.class) {
+					for (String asset : assets) {
+						if (!ids.containsKey(asset)) {
+							ids.put(asset, Gdx.audio.newSound(Gdx.files.internal(asset)));
+						}
+					}
+				}
 			}
-		}
+		}.start();
 		
 	}
 
