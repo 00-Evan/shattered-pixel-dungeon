@@ -639,6 +639,15 @@ public class NewTengu extends Mob {
 									Dungeon.fail(NewTengu.class);
 								}
 							}
+
+							Heap h = Dungeon.level.heaps.get(cell);
+							if (h != null){
+								for (Item it : h.items.toArray(new Item[0])){
+									if (it instanceof BombItem){
+										h.remove(it);
+									}
+								}
+							}
 							
 							exploded = true;
 							CellEmitter.center(cell).burst(BlastParticle.FACTORY, 2);

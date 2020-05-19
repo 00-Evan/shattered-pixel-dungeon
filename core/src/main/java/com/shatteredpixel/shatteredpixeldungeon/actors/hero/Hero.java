@@ -860,9 +860,13 @@ public class Hero extends Char {
 	private boolean actDescend( HeroAction.Descend action ) {
 		int stairs = action.dst;
 
+		if (rooted) {
+			Camera.main.shake(1, 1f);
+			ready();
+			return false;
 		//there can be multiple exit tiles, so descend on any of them
 		//TODO this is slightly brittle, it assumes there are no disjointed sets of exit tiles
-		if ((Dungeon.level.map[pos] == Terrain.EXIT || Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
+		} else if ((Dungeon.level.map[pos] == Terrain.EXIT || Dungeon.level.map[pos] == Terrain.UNLOCKED_EXIT)) {
 			
 			curAction = null;
 
@@ -889,9 +893,14 @@ public class Hero extends Char {
 	private boolean actAscend( HeroAction.Ascend action ) {
 		int stairs = action.dst;
 
+
+		if (rooted){
+			Camera.main.shake( 1, 1f );
+			ready();
+			return false;
 		//there can be multiple entrance tiles, so descend on any of them
 		//TODO this is slightly brittle, it assumes there are no disjointed sets of entrance tiles
-		if (Dungeon.level.map[pos] == Terrain.ENTRANCE) {
+		} else if (Dungeon.level.map[pos] == Terrain.ENTRANCE) {
 			
 			if (Dungeon.depth == 1) {
 				
@@ -1108,7 +1117,10 @@ public class Hero extends Char {
 		
 		if (newMob) {
 			interrupt();
-			resting = false;
+			if (resting){
+				Dungeon.observe();
+				resting = false;
+			}
 		}
 
 		visibleEnemies = visible;

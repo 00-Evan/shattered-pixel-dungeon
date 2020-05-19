@@ -92,16 +92,6 @@ public class NewCavesBossLevel extends Level {
 
 		setSize(WIDTH, HEIGHT);
 
-		//Painter.fill(this, 0, 0, width(), height(), Terrain.EMBERS);
-
-		//setup exit area above main boss arena
-		Painter.fill(this, 0, 3, width(), 4, Terrain.CHASM);
-		Painter.fill(this, 6, 7, 21, 1, Terrain.CHASM);
-		Painter.fill(this, 10, 8, 13, 1, Terrain.CHASM);
-		Painter.fill(this, 12, 9, 9, 1, Terrain.CHASM);
-		Painter.fill(this, 13, 10, 7, 1, Terrain.CHASM);
-		Painter.fill(this, 14, 3, 5, 10, Terrain.EMPTY);
-
 		//fill in special floor, statues, and exits
 		Painter.fill(this, 15, 2, 3, 3, Terrain.EMPTY_SP);
 		Painter.fill(this, 15, 5, 3, 1, Terrain.STATUE);
@@ -132,6 +122,16 @@ public class NewCavesBossLevel extends Level {
 		buildEntrance();
 		buildCorners();
 
+		new CavesPainter().paint(this, null);
+
+		//setup exit area above main boss arena
+		Painter.fill(this, 0, 3, width(), 4, Terrain.CHASM);
+		Painter.fill(this, 6, 7, 21, 1, Terrain.CHASM);
+		Painter.fill(this, 10, 8, 13, 1, Terrain.CHASM);
+		Painter.fill(this, 12, 9, 9, 1, Terrain.CHASM);
+		Painter.fill(this, 13, 10, 7, 1, Terrain.CHASM);
+		Painter.fill(this, 14, 3, 5, 10, Terrain.EMPTY);
+
 		CustomTilemap customVisuals = new CityEntrance();
 		customVisuals.setRect(0, 0, width(), 11);
 		customTiles.add(customVisuals);
@@ -143,8 +143,6 @@ public class NewCavesBossLevel extends Level {
 		customVisuals = customArenaVisuals = new ArenaVisuals();
 		customVisuals.setRect(0, 12, width(), 27);
 		customTiles.add(customVisuals);
-
-		new CavesPainter().paint(this, null);
 
 		return true;
 
@@ -248,6 +246,26 @@ public class NewCavesBossLevel extends Level {
 		super.seal();
 
 		set( entrance, Terrain.WALL );
+
+		Heap heap = Dungeon.level.heaps.get( entrance );
+		if (heap != null) {
+			int n;
+			do {
+				n = entrance + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+			} while (!Dungeon.level.passable[n]);
+			Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( entrance );
+		}
+
+		Char ch = Actor.findChar( entrance );
+		if (ch != null) {
+			int n;
+			do {
+				n = entrance + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+			} while (!Dungeon.level.passable[n]);
+			ch.pos = n;
+			ch.sprite.place(n);
+		}
+
 		GameScene.updateMap( entrance );
 		Dungeon.observe();
 
