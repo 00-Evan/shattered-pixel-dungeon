@@ -109,20 +109,18 @@ public class FogOfWar extends Image {
 		}
 		
 		float size = DungeonTilemap.SIZE / PIX_PER_TILE;
-		width = width2 * size;
-		height = height2 * size;
+		width = pWidth * size;
+		height = pHeight * size;
 
 		//TODO might be nice to compartmentalize the pixmap access and modification into texture/texturecache
-		Pixmap px = new Pixmap(width2, height2, Pixmap.Format.RGBA8888);
+		Pixmap px = new Pixmap(pWidth, pHeight, Pixmap.Format.RGBA8888);
 		px.setBlending(Pixmap.Blending.None);
 		px.fill();
 		SmartTexture tx = new SmartTexture(px, Texture.LINEAR, Texture.CLAMP, false);
 		TextureCache.add(FogOfWar.class, tx);
 		texture( tx );
 		
-		scale.set(
-			DungeonTilemap.SIZE / PIX_PER_TILE,
-			DungeonTilemap.SIZE / PIX_PER_TILE);
+		scale.set( size, size );
 
 		toUpdate = new ArrayList<>();
 		toUpdate.add(new Rect(0, 0, mapWidth, mapHeight));
@@ -193,9 +191,9 @@ public class FogOfWar extends Image {
 		int cell;
 		
 		for (Rect update : updating) {
-			for (int i = update.top; i <= update.bottom; i++) {
+			for (int i = update.top; i < update.bottom; i++) {
 				cell = mapWidth * i + update.left;
-				for (int j = update.left; j <= update.right; j++) {
+				for (int j = update.left; j < update.right; j++) {
 					
 					if (cell >= Dungeon.level.length()) continue; //do nothing
 					
