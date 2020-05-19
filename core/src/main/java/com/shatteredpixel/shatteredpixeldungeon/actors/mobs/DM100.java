@@ -48,7 +48,7 @@ public class DM100 extends Mob implements Callback {
 		maxLvl = 13;
 		
 		loot = Generator.Category.SCROLL;
-		lootChance = 0.33f;
+		lootChance = 0.25f;
 		
 		properties.add(Property.ELECTRIC);
 		properties.add(Property.INORGANIC);

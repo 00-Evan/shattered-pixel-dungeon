@@ -53,7 +53,7 @@ public class Warlock extends Mob implements Callback {
 		maxLvl = 21;
 		
 		loot = Generator.Category.POTION;
-		lootChance = 0.83f;
+		lootChance = 0.5f;
 
 		properties.add(Property.UNDEAD);
 	}
@@ -134,21 +134,31 @@ public class Warlock extends Mob implements Callback {
 	}
 
 	@Override
-	//TODO refactor warlock drops, they shouldn't pull from regular healing potion pool
 	public Item createLoot(){
-		Item loot = super.createLoot();
 
-		if (loot instanceof PotionOfHealing){
-
-			//count/8 chance of not dropping potion
-			if (Random.Float() < ((8f - Dungeon.LimitedDrops.WARLOCK_HP.count) / 8f)){
-				Dungeon.LimitedDrops.WARLOCK_HP.count++;
-			} else {
-				return null;
+		// 1/6 chance for healing, scaling to 0 over 8 drops
+		if (Random.Int(2) == 0 && Random.Int(8) > Dungeon.LimitedDrops.WARLOCK_HP.count ){
+			Dungeon.LimitedDrops.WARLOCK_HP.drop();
+			return new PotionOfHealing();
+		} else {
+			Item i = Generator.random(Generator.Category.POTION);
+			int healingTried = 0;
+			while (i instanceof PotionOfHealing){
+				healingTried++;
+				i = Generator.random(Generator.Category.POTION);
 			}
 
+			//return the attempted healing potion drops to the pool
+			if (healingTried > 0){
+				for (int j = 0; j < Generator.Category.POTION.classes.length; j++){
+					if (Generator.Category.POTION.classes[j] == PotionOfHealing.class){
+						Generator.Category.POTION.probs[j] += healingTried;
+					}
+				}
+			}
+
+			return i;
 		}
 
-		return loot;
 	}
 }
