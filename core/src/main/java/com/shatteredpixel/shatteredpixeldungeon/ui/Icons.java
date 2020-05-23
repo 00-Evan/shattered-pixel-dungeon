@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Image;
 
 public enum Icons {
@@ -71,7 +72,14 @@ public enum Icons {
 	//misc icons
 	LIBGDX,
 	WATA,
-	WARNING;
+	WARNING,
+
+	//32x32 icons for credits
+	CUBE_CODE,
+	PURIGRO,
+	ARCNOR,
+	ALEKS,
+	CHARLIE;
 
 	public Image get() {
 		return get( this );
@@ -192,6 +200,29 @@ public enum Icons {
 		case WARNING:
 			icon.frame( icon.texture.uvRect( 34, 81, 48, 95 ) );
 			break;
+
+		//32*32 icons are scaled down to match game's size
+		case ALEKS:
+			icon.frame( icon.texture.uvRect( 0, 96, 32, 128 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+		case CHARLIE:
+			icon.frame( icon.texture.uvRect( 32, 96, 64, 128 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+		case ARCNOR:
+			icon.frame( icon.texture.uvRect( 64, 96, 96, 128 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+		case PURIGRO:
+			icon.frame( icon.texture.uvRect( 96, 96, 128, 128 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+		case CUBE_CODE:
+			icon.frame( icon.texture.uvRect( 101, 39, 128, 69 ) );
+			icon.scale.set(PixelScene.align(0.49f));
+			break;
+
 		}
 		return icon;
 	}

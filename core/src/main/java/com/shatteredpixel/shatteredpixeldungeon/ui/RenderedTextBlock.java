@@ -211,7 +211,7 @@ public class RenderedTextBlock extends Component {
 			} else {
 				if (word.height() > height) height = word.height();
 
-				if ((x - this.x) + word.width() > maxWidth){
+				if ((x - this.x) + word.width() > maxWidth && !curLine.isEmpty()){
 					y += height+2f;
 					x = this.x;
 					nLines++;

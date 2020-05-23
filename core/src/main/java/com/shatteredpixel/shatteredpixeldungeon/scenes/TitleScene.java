@@ -174,7 +174,7 @@ public class TitleScene extends PixelScene {
 		TitleButton btnAbout = new TitleButton(Messages.get(this, "about")){
 			@Override
 			protected void onClick() {
-				ShatteredPixelDungeon.switchNoFade( AboutScene.class );
+				ShatteredPixelDungeon.switchScene( AboutScene.class );
 			}
 		};
 		btnAbout.icon(Icons.get(Icons.SHPX));
