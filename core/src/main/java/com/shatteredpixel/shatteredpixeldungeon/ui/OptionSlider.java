@@ -108,7 +108,7 @@ public abstract class OptionSlider extends Component {
 			protected void onPointerDown( PointerEvent event ) {
 				pressed = true;
 				PointF p = camera().screenToCamera((int) event.current.x, (int) event.current.y);
-				sliderNode.x = GameMath.gate(sliderBG.x-2, p.x, sliderBG.x+sliderBG.width()-2);
+				sliderNode.x = GameMath.gate(sliderBG.x-2, p.x - sliderNode.width()/2, sliderBG.x+sliderBG.width()-2);
 				sliderNode.brightness(1.5f);
 			}
 
@@ -116,7 +116,7 @@ public abstract class OptionSlider extends Component {
 			protected void onPointerUp( PointerEvent event ) {
 				if (pressed) {
 					PointF p = camera().screenToCamera((int) event.current.x, (int) event.current.y);
-					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x, sliderBG.x + sliderBG.width() - 2);
+					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x - sliderNode.width()/2, sliderBG.x + sliderBG.width() - 2);
 					sliderNode.resetColor();
 					
 					//sets the selected value
@@ -131,7 +131,7 @@ public abstract class OptionSlider extends Component {
 			protected void onDrag( PointerEvent event ) {
 				if (pressed) {
 					PointF p = camera().screenToCamera((int) event.current.x, (int) event.current.y);
-					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x, sliderBG.x + sliderBG.width() - 2);
+					sliderNode.x = GameMath.gate(sliderBG.x - 2, p.x - sliderNode.width()/2, sliderBG.x + sliderBG.width() - 2);
 				}
 			}
 		};
