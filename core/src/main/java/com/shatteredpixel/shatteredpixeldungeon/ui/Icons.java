@@ -104,13 +104,13 @@ public enum Icons {
 			icon.frame( icon.texture.uvRect( 64, 0, 78, 12 ) );
 			break;
 		case PREFS:
-			icon.frame( icon.texture.uvRect( 80, 0, 92, 12 ) );
+			icon.frame( icon.texture.uvRect( 80, 0, 94, 14 ) );
 			break;
 		case LANGS:
-			icon.frame( icon.texture.uvRect( 96, 0, 108, 9 ) );
+			icon.frame( icon.texture.uvRect( 96, 0, 110, 11 ) );
 			break;
 		case EXIT:
-			icon.frame( icon.texture.uvRect( 112, 0, 125, 9 ) );
+			icon.frame( icon.texture.uvRect( 112, 0, 127, 11 ) );
 			break;
 		case CLOSE:
 			icon.frame( icon.texture.uvRect( 0, 16, 11, 27 ) );

@@ -64,11 +64,11 @@ public class LanguageButton extends Button {
 		flashing = false;
 		switch(Messages.lang().status()){
 			case INCOMPLETE:
-				image.tint(1, 0, 0, .5f);
+				image.hardlight(1.5f, 0, 0);
 				flashing = true;
 				break;
 			case UNREVIEWED:
-				image.tint(1, .5f, 0, .5f);
+				image.hardlight(1.5f, 0.75f, 0f);
 				break;
 		}
 	}
