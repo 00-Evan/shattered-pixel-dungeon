@@ -70,9 +70,8 @@ public class WandOfFrost extends DamageWand {
 				return; //do nothing, can't affect a frozen target
 			}
 			if (ch.buff(Chill.class) != null){
-				//7.5% less damage per turn of chill remaining
-				float chill = ch.buff(Chill.class).cooldown();
-				damage = (int)Math.round(damage * Math.pow(0.9f, chill));
+				//5% less damage per turn of chill remaining
+				damage = (int)Math.round(damage * Math.pow(0.95f, ch.buff(Chill.class).cooldown()));
 			} else {
 				ch.sprite.burst( 0xFF99CCFF, buffedLvl() / 2 + 2 );
 			}
@@ -104,7 +103,7 @@ public class WandOfFrost extends DamageWand {
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		Chill chill = defender.buff(Chill.class);
-		if (chill != null && Random.IntRange(2, (int)Chill.DURATION) <= chill.cooldown()){
+		if (chill != null && chill.cooldown() >= Chill.DURATION){
 			//need to delay this through an actor so that the freezing isn't broken by taking damage from the staff hit.
 			new FlavourBuff(){
 				{actPriority = VFX_PRIO;}

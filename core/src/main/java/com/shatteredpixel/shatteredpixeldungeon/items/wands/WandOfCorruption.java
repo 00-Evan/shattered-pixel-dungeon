@@ -76,7 +76,6 @@ import com.watabou.utils.Random;
 
 import java.util.HashMap;
 
-//TODO need to consider other balance adjustments here. Might want to put more emphasis into debuffs rather than less
 public class WandOfCorruption extends Wand {
 
 	{
@@ -143,8 +142,8 @@ public class WandOfCorruption extends Wand {
 			} else if (ch instanceof Piranha || ch instanceof Bee) {
 				enemyResist = 1 + Dungeon.depth/2f;
 			} else if (ch instanceof Wraith) {
-				//divide by 3 as wraiths are always at full HP and are therefore ~3x harder to corrupt
-				enemyResist = (1f + Dungeon.depth/3f) / 3f;
+				//divide by 5 as wraiths are always at full HP and are therefore ~5x harder to corrupt
+				enemyResist = (1f + Dungeon.depth/3f) / 5f;
 			} else if (ch instanceof Yog.BurningFist || ch instanceof Yog.RottingFist) {
 				enemyResist = 1 + 30;
 			} else if (ch instanceof Yog.Larva || ch instanceof King.Undead){
@@ -154,8 +153,8 @@ public class WandOfCorruption extends Wand {
 				enemyResist = 1 + 3;
 			}
 			
-			//100% health: 3x resist   75%: 2.1x resist   50%: 1.5x resist   25%: 1.1x resist
-			enemyResist *= 1 + 2*Math.pow(enemy.HP/(float)enemy.HT, 2);
+			//100% health: 5x resist   75%: 3.25x resist   50%: 2x resist   25%: 1.25x resist
+			enemyResist *= 1 + 4*Math.pow(enemy.HP/(float)enemy.HT, 2);
 			
 			//debuffs placed on the enemy reduce their resistance
 			for (Buff buff : enemy.buffs()){

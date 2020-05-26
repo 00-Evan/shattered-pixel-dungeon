@@ -71,12 +71,19 @@ public class WandOfLightning extends DamageWand {
 		if (Dungeon.level.water[bolt.collisionPos]) multipler = 1f;
 
 		for (Char ch : affected){
-			processSoulMark(ch, chargesPerCast());
-			ch.damage(Math.round(damageRoll() * multipler), this);
-
 			if (ch == Dungeon.hero) Camera.main.shake( 2, 0.3f );
 			ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
 			ch.sprite.flash();
+
+			if (ch != curUser && ch.alignment == curUser.alignment && ch.pos != bolt.collisionPos){
+				continue;
+			}
+			processSoulMark(ch, chargesPerCast());
+			if (ch == curUser) {
+				ch.damage(Math.round(damageRoll() * multipler * 0.67f), this);
+			} else {
+				ch.damage(Math.round(damageRoll() * multipler), this);
+			}
 		}
 
 		if (!curUser.isAlive()) {
