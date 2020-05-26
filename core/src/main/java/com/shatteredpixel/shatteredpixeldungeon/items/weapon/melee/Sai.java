@@ -39,8 +39,4 @@ public class Sai extends MeleeWeapon {
 				lvl*Math.round(0.5f*(tier+1));  //+2 per level, down from +4
 	}
 
-	@Override
-	public int defenseFactor( Char owner ) {
-		return 2;	//2 extra defence
-	}
 }

@@ -42,12 +42,12 @@ public class Shocking extends Weapon.Enchantment {
 
 	@Override
 	public int proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		// lvl 0 - 33%
-		// lvl 1 - 50%
-		// lvl 2 - 60%
+		// lvl 0 - 25%
+		// lvl 1 - 40%
+		// lvl 2 - 50%
 		int level = Math.max( 0, weapon.buffedLvl() );
 		
-		if (Random.Int( level + 3 ) >= 2) {
+		if (Random.Int( level + 4 ) >= 3) {
 			
 			affected.clear();
 			arcs.clear();
@@ -56,7 +56,9 @@ public class Shocking extends Weapon.Enchantment {
 			
 			affected.remove(defender); //defender isn't hurt by lightning
 			for (Char ch : affected) {
-				ch.damage(Math.round(damage*0.4f), this);
+				if (ch.alignment != attacker.alignment) {
+					ch.damage(Math.round(damage * 0.4f), this);
+				}
 			}
 
 			attacker.sprite.parent.addToFront( new Lightning( arcs, null ) );

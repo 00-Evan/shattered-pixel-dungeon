@@ -38,9 +38,5 @@ public class Gauntlet extends MeleeWeapon {
 		return  Math.round(2.5f*(tier+1)) +     //15 base, down from 30
 				lvl*Math.round(0.5f*(tier+1));  //+3 per level, down from +6
 	}
-	
-	@Override
-	public int defenseFactor( Char owner ) {
-		return 4;	//4 extra defence
-	}
+
 }
