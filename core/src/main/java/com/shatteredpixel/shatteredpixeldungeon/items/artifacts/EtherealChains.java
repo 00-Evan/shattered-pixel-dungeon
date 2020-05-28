@@ -295,8 +295,8 @@ public class EtherealChains extends Artifact {
 			}
 			partialCharge += levelPortion*10f;
 
-			if (exp > 100+level()*50 && level() < levelCap){
-				exp -= 100+level()*50;
+			if (exp > 100+level()*100 && level() < levelCap){
+				exp -= 100+level()*100;
 				GLog.p( Messages.get(this, "levelup") );
 				upgrade();
 			}
