@@ -31,6 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Elastic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -156,10 +158,14 @@ public class WandOfBlastWave extends DamageWand {
 					ch.sprite.place(ch.pos);
 					return;
 				}
+				int oldPos = ch.pos;
 				ch.pos = newPos;
 				if (finalCollided && ch.isAlive()) {
 					ch.damage(Random.NormalIntRange((finalDist + 1) / 2, finalDist), this);
 					Paralysis.prolong(ch, Paralysis.class, Random.NormalIntRange((finalDist + 1) / 2, finalDist));
+				}
+				if (Dungeon.level.map[oldPos] == Terrain.OPEN_DOOR){
+					Door.leave(oldPos);
 				}
 				Dungeon.level.occupyCell(ch);
 				if (ch == Dungeon.hero){
