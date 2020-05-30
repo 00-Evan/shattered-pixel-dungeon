@@ -63,4 +63,4 @@ A JAR (Java ARchive) is a file used to distribute Java applications. Just as wit
 
 Note that by distributing your modification of Shattered Pixel Dungeon, you are bound by the terms of the GPLv3 license, which requires that you make any modifications you have made open-source. If you followed this guide and are using version control, that is already set up for you as your forked repository is publicly hosted on GitHub. Just make sure to push any changes you make back to that repository.
 
-Note that JAR files will require a (Java runtime enviroment)[https://java.com/en/download/win10.jsp] to be installed on a user's computer in order to work. In future this codebase will likely be expanded to allow bundling a java runtime with the application, so that a simple runnable EXE file can be generated.
+Note that JAR files will require a [Java runtime enviroment](https://java.com/en/download/win10.jsp) to be installed on a user's computer in order to work. In future this codebase will likely be expanded to allow bundling a java runtime with the application, so that a simple runnable EXE file can be generated.
