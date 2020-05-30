@@ -78,7 +78,9 @@ public class SandalsOfNature extends Artifact {
 
 		if (action.equals(AC_FEED)){
 
+			selectingFootwear = this;
 			GameScene.selectItem(itemSelector, mode, Messages.get(this, "prompt"));
+			selectingFootwear = null;
 
 		} else if (action.equals(AC_ROOT) && level() > 0){
 
@@ -136,6 +138,15 @@ public class SandalsOfNature extends Artifact {
 		else if (level() >= 2)  image = ItemSpriteSheet.ARTIFACT_GREAVES;
 		name = Messages.get(this, "name_" + (level()+1));
 		return super.upgrade();
+	}
+
+	private static SandalsOfNature selectingFootwear = null;
+
+	public static boolean canUseSeed(Item item){
+		if (item instanceof Plant.Seed){
+			return selectingFootwear == null || !selectingFootwear.seeds.contains(item.getClass());
+		}
+		return false;
 	}
 
 
