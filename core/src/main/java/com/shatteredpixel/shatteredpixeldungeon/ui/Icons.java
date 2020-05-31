@@ -75,11 +75,11 @@ public enum Icons {
 	WARNING,
 
 	//32x32 icons for credits
+	ALEKS,
+	CHARLIE,
 	CUBE_CODE,
 	PURIGRO,
-	ARCNOR,
-	ALEKS,
-	CHARLIE;
+	ARCNOR;
 
 	public Image get() {
 		return get( this );
