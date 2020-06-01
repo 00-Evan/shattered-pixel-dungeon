@@ -170,19 +170,24 @@ public class Item implements Bundlable {
 	}
 	
 	public boolean collect( Bag container ) {
-		
+
 		ArrayList<Item> items = container.items;
-		
-		if (items.contains( this )) {
-			return true;
-		}
-		
+
 		for (Item item:items) {
-			if (item instanceof Bag && ((Bag)item).grab( this )) {
+			if (item instanceof Bag && ((Bag)item).canHold( this )) {
 				if (collect( (Bag)item )){
 					return true;
 				}
 			}
+		}
+
+		if (!container.canHold(this)){
+			GLog.n( Messages.get(Item.class, "pack_full", container.name()) );
+			return false;
+		}
+
+		if (items.contains( this )) {
+			return true;
 		}
 		
 		if (stackable) {
@@ -194,25 +199,17 @@ public class Item implements Bundlable {
 				}
 			}
 		}
-		
-		if (items.size() < container.size) {
-			
-			if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
-				Badges.validateItemLevelAquired( this );
-			}
-			
-			items.add( this );
-			Dungeon.quickslot.replacePlaceholder(this);
-			updateQuickslot();
-			Collections.sort( items, itemComparator );
-			return true;
-			
-		} else {
-			
-			GLog.n( Messages.get(Item.class, "pack_full", container.name()) );
-			return false;
-			
+
+		if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
+			Badges.validateItemLevelAquired( this );
 		}
+
+		items.add( this );
+		Dungeon.quickslot.replacePlaceholder(this);
+		updateQuickslot();
+		Collections.sort( items, itemComparator );
+		return true;
+
 	}
 	
 	public boolean collect() {

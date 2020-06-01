@@ -41,8 +41,6 @@ import java.util.Iterator;
 
 public class Belongings implements Iterable<Item> {
 
-	public static final int BACKPACK_SIZE	= 20;
-	
 	private Hero owner;
 	
 	public Bag backpack;
@@ -55,10 +53,20 @@ public class Belongings implements Iterable<Item> {
 	public Belongings( Hero owner ) {
 		this.owner = owner;
 		
-		backpack = new Bag() {{
-			name = Messages.get(Bag.class, "name");
-			size = BACKPACK_SIZE;
-		}};
+		backpack = new Bag() {
+			{
+				name = Messages.get(Bag.class, "name");
+			}
+			public int capacity(){
+				int cap = super.capacity();
+				for (Item item : items){
+					if (item instanceof Bag){
+						cap++;
+					}
+				}
+				return cap;
+			}
+		};
 		backpack.owner = owner;
 	}
 	

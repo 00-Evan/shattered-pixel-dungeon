@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -50,13 +51,14 @@ public abstract class KindofMisc extends EquipableItem {
 						protected void onSelect(int index) {
 
 							KindofMisc equipped = (index == 0 ? m1 : m2);
-							//temporarily give 1 extra backpack spot to support swapping with a full inventory
-							hero.belongings.backpack.size++;
+							int slot = Dungeon.quickslot.getSlot(KindofMisc.this);
+							detach(hero.belongings.backpack);
 							if (equipped.doUnequip(hero, true, false)) {
-								//fully re-execute rather than just call doEquip as we want to preserve quickslot
-								execute(hero, AC_EQUIP);
+								doEquip(hero);
+							} else {
+								collect();
 							}
-							hero.belongings.backpack.size--;
+							if (slot != -1) Dungeon.quickslot.setSlot(slot, KindofMisc.this);
 						}
 					});
 

@@ -22,20 +22,25 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.bags;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class PotionBandolier extends Bag {
 
 	{
 		image = ItemSpriteSheet.BANDOLIER;
-
-		size = 20;
 	}
 
 	@Override
-	public boolean grab( Item item ) {
-		return item instanceof Potion;
+	public boolean canHold( Item item ) {
+		if (item instanceof Potion){
+			return super.canHold(item);
+		} else {
+			return false;
+		}
 	}
 
 	@Override

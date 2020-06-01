@@ -49,8 +49,10 @@ public class Bag extends Item implements Iterable<Item> {
 	public Char owner;
 	
 	public ArrayList<Item> items = new ArrayList<>();
-	
-	public int size = 1;
+
+	public int capacity(){
+		return 20; // default container size
+	}
 	
 	@Override
 	public void execute( Hero hero, String action ) {
@@ -68,7 +70,7 @@ public class Bag extends Item implements Iterable<Item> {
 	public boolean collect( Bag container ) {
 
 		for (Item item : container.items.toArray( new Item[0] )) {
-			if (grab( item )) {
+			if (canHold( item )) {
 				int slot = Dungeon.quickslot.getSlot(item);
 				item.detachAll(container);
 				if (!item.collect(this)) {
@@ -146,8 +148,17 @@ public class Bag extends Item implements Iterable<Item> {
 		}
 		return false;
 	}
-	
-	public boolean grab( Item item ) {
+
+	public boolean canHold( Item item ){
+		if (items.contains(item) || item instanceof Bag || items.size() < capacity()){
+			return true;
+		} else {
+			for (Item i : items) {
+				if (item.isSimilar( i )) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 

@@ -292,7 +292,7 @@ public class ShopRoom extends SpecialRoom {
 		//count up items in the main bag
 		for (Item item : pack.backpack.items) {
 			for (Bag bag : bags.keySet()){
-				if (bag.grab(item)){
+				if (bag.canHold(item)){
 					bags.put(bag, bags.get(bag)+1);
 				}
 			}
