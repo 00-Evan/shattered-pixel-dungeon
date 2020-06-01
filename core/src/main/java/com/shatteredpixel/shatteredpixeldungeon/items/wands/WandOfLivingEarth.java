@@ -251,7 +251,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 		@Override
 		public float iconFadePercent() {
-			return Math.max(0, (armorToGuardian() - armor) / armorToGuardian());
+			return Math.max(0, (armorToGuardian() - armor) / (float)armorToGuardian());
 		}
 
 		@Override
