@@ -121,7 +121,8 @@ public abstract class OptionSlider extends Component {
 					
 					//sets the selected value
 					selectedVal = minVal + Math.round(sliderNode.x / tickDist);
-					sliderNode.x = (int) (x + tickDist * (selectedVal - minVal));
+					sliderNode.x = x + tickDist * (selectedVal - minVal);
+					PixelScene.align(sliderNode);
 					onChange();
 					pressed = false;
 				}
@@ -152,7 +153,8 @@ public abstract class OptionSlider extends Component {
 		tickDist = sliderBG.width()/(maxVal - minVal);
 		for (int i = 0; i < sliderTicks.length; i++){
 			sliderTicks[i].y = sliderBG.y-5;
-			sliderTicks[i].x = (int)(x + 2 + (tickDist*i));
+			sliderTicks[i].x = x + 2 + (tickDist*i);
+			PixelScene.align(sliderTicks[i]);
 		}
 
 		minTxt.setPos(
@@ -164,8 +166,9 @@ public abstract class OptionSlider extends Component {
 				sliderBG.y-6-minTxt.height()
 		);
 
-		sliderNode.x = (int)(x + tickDist*(selectedVal-minVal));
+		sliderNode.x = x + tickDist*(selectedVal-minVal);
 		sliderNode.y = sliderBG.y-4;
+		PixelScene.align(sliderNode);
 
 		pointerArea.x = x;
 		pointerArea.y = y;

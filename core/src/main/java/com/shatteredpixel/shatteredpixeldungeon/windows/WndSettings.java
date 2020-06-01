@@ -360,7 +360,7 @@ public class WndSettings extends WndTabbed {
 								Assets.Sounds.ITEM,
 								Assets.Sounds.SHATTER,
 								Assets.Sounds.EVOKE,
-								Assets.Sounds.TELEPORT));
+								Assets.Sounds.SECRET));
 					}
 				}
 			};
