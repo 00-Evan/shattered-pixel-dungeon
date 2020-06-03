@@ -47,9 +47,6 @@ public class Starflower extends Plant {
 			}
 		}
 
-		if (Random.Int(5) == 0){
-			Dungeon.level.drop(new Seed(), pos).sprite.drop();
-		}
 	}
 
 	public static class Seed extends Plant.Seed{

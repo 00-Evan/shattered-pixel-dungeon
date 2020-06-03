@@ -270,7 +270,7 @@ public class Generator {
 					Earthroot.Seed.class,
 					Dreamfoil.Seed.class,
 					Starflower.Seed.class};
-			SEED.defaultProbs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1 };
+			SEED.defaultProbs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2 };
 			SEED.probs = SEED.defaultProbs.clone();
 			
 			SCROLL.classes = new Class<?>[]{
