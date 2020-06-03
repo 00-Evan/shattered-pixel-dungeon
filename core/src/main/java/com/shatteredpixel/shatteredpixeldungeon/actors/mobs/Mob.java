@@ -674,12 +674,7 @@ public abstract class Mob extends Char {
 			ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(Dungeon.hero, rolls);
 			if (bonus != null && !bonus.isEmpty()) {
 				for (Item b : bonus) Dungeon.level.drop(b, pos).sprite.drop();
-				if (RingOfWealth.latestDropWasRare){
-					new Flare(8, 48).color(0xAA00FF, true).show(sprite, 3f);
-					RingOfWealth.latestDropWasRare = false;
-				} else {
-					new Flare(8, 24).color(0xFFFFFF, true).show(sprite, 3f);
-				}
+				RingOfWealth.showFlareForBonusDrop(sprite);
 			}
 		}
 		
