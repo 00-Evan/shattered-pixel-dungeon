@@ -65,9 +65,9 @@ public class Slime extends Mob {
 
 	@Override
 	public void rollToDropLoot() {
-		//each drop makes future drops 1/2 as likely
-		// so loot chance looks like: 1/5, 1/10, 1/20, 1/40, etc.
-		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.SLIME_WEP.count);
+		//each drop makes future drops 1/3 as likely
+		// so loot chance looks like: 1/5, 1/15, 1/45, 1/135, etc.
+		lootChance *= Math.pow(1/3f, Dungeon.LimitedDrops.SLIME_WEP.count);
 		super.rollToDropLoot();
 	}
 	
