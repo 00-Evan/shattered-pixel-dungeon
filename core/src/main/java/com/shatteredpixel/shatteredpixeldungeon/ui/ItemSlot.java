@@ -225,7 +225,7 @@ public class ItemSlot extends Button {
 		int trueLvl = item.visiblyUpgraded();
 		int buffedLvl = item.buffedVisiblyUpgraded();
 
-		if (trueLvl != 0 && buffedLvl != 0) {
+		if (trueLvl != 0 || buffedLvl != 0) {
 			level.text( Messages.format( TXT_LEVEL, buffedLvl ) );
 			level.measure();
 			if (trueLvl == buffedLvl || buffedLvl <= 0) {

@@ -39,6 +39,11 @@ public class Recharging extends FlavourBuff {
 	}
 
 	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(1, 1, 0);
+	}
+
+	@Override
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}

@@ -275,7 +275,19 @@ public abstract class Wand extends Item {
 		
 		return this;
 	}
-	
+
+	@Override
+	public int buffedLvl() {
+		int lvl = super.buffedLvl();
+		if (curUser != null && !(this instanceof WandOfMagicMissile)) {
+			WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
+			if (buff != null && buff.level() > lvl){
+				return buff.level();
+			}
+		}
+		return lvl;
+	}
+
 	public void updateLevel() {
 		maxCharges = Math.min( initialCharges() + level(), 10 );
 		curCharges = Math.min( curCharges, maxCharges );
@@ -318,6 +330,11 @@ public abstract class Wand extends Item {
 		}
 		
 		curCharges -= cursed ? 1 : chargesPerCast();
+
+		WandOfMagicMissile.MagicCharge buff = curUser.buff(WandOfMagicMissile.MagicCharge.class);
+		if (buff != null && buff.level() > super.buffedLvl()){
+			buff.detach();
+		}
 		
 		if (curUser.heroClass == HeroClass.MAGE) levelKnown = true;
 		updateQuickslot();

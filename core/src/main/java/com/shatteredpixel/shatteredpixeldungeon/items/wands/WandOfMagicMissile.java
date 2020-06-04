@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -56,6 +57,14 @@ public class WandOfMagicMissile extends DamageWand {
 
 			ch.sprite.burst(0xFFFFFFFF, buffedLvl() / 2 + 2);
 
+			//apply the magic charge buff if we have another wand in inventory of a lower level, or already have the buff
+			for (Wand.Charger wandCharger : curUser.buffs(Wand.Charger.class)){
+				if (wandCharger.wand().buffedLvl() < buffedLvl() || curUser.buff(MagicCharge.class) != null){
+					Buff.prolong(curUser, MagicCharge.class, MagicCharge.DURATION).setLevel(buffedLvl());
+					break;
+				}
+			}
+
 		} else {
 			Dungeon.level.pressCell(bolt.collisionPos);
 		}
@@ -70,6 +79,57 @@ public class WandOfMagicMissile extends DamageWand {
 	
 	protected int initialCharges() {
 		return 3;
+	}
+
+	public static class MagicCharge extends FlavourBuff {
+
+		{
+			type = buffType.POSITIVE;
+			announced = true;
+		}
+
+		public static float DURATION = 4f;
+
+		private int level = 0;
+
+		public void setLevel(int level){
+			this.level = Math.max(level, this.level);
+		}
+
+		@Override
+		public void detach() {
+			super.detach();
+			QuickSlotButton.refresh();
+		}
+
+		public int level(){
+			return this.level;
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.RECHARGING;
+		}
+
+		@Override
+		public void tintIcon(Image icon) {
+			icon.hardlight(0.2f, 0.6f, 1f);
+		}
+
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (DURATION - visualcooldown()) / DURATION);
+		}
+
+		@Override
+		public String toString() {
+			return Messages.get(this, "name");
+		}
+
+		@Override
+		public String desc() {
+			return Messages.get(this, "desc", level(), dispTurns());
+		}
 	}
 
 }
