@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -63,35 +64,27 @@ public class WandOfFireblast extends DamageWand {
 		return (6+2*lvl) * chargesPerCast();
 	}
 
-	//the actual affected cells
-	private HashSet<Integer> affectedCells;
-	//the cells to trace fire shots to, for visual effects.
-	private HashSet<Integer> visualCells;
-	private int direction = 0;
-	
+	ConeAOE cone;
+
 	@Override
 	protected void onZap( Ballistica bolt ) {
-		
+
 		ArrayList<Char> affectedChars = new ArrayList<>();
-		for( int cell : affectedCells){
-			
+		for( int cell : cone.cells ){
+
 			//ignore caster cell
 			if (cell == bolt.sourcePos){
 				continue;
 			}
-			
-			//only ignite cells directly near caster if they are flammable
-			if (!Dungeon.level.adjacent(bolt.sourcePos, cell)
-					|| Dungeon.level.flamable[cell]){
-				GameScene.add( Blob.seed( cell, 1+chargesPerCast(), Fire.class ) );
-			}
-			
+
+			GameScene.add( Blob.seed( cell, 1+chargesPerCast(), Fire.class ) );
+
 			Char ch = Actor.findChar( cell );
 			if (ch != null) {
 				affectedChars.add(ch);
 			}
 		}
-		
+
 		for ( Char ch : affectedChars ){
 			processSoulMark(ch, chargesPerCast());
 			ch.damage(damageRoll(), this);
@@ -107,30 +100,6 @@ public class WandOfFireblast extends DamageWand {
 		}
 	}
 
-	//burn... BURNNNNN!.....
-	private void spreadFlames(int cell, float strength){
-		if (strength >= 0 && (Dungeon.level.passable[cell] || Dungeon.level.flamable[cell])){
-			affectedCells.add(cell);
-			if (strength >= 1.5f) {
-				visualCells.remove(cell);
-				spreadFlames(cell + PathFinder.CIRCLE8[left(direction)], strength - 1.5f);
-				spreadFlames(cell + PathFinder.CIRCLE8[direction], strength - 1.5f);
-				spreadFlames(cell + PathFinder.CIRCLE8[right(direction)], strength - 1.5f);
-			} else {
-				visualCells.add(cell);
-			}
-		} else if (!Dungeon.level.passable[cell])
-			visualCells.add(cell);
-	}
-
-	private int left(int direction){
-		return direction == 0 ? 7 : direction-1;
-	}
-
-	private int right(int direction){
-		return direction == 7 ? 0 : direction+1;
-	}
-
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {
 		//acts like blazing enchantment
@@ -140,45 +109,27 @@ public class WandOfFireblast extends DamageWand {
 	@Override
 	protected void fx( Ballistica bolt, Callback callback ) {
 		//need to perform flame spread logic here so we can determine what cells to put flames in.
-		affectedCells = new HashSet<>();
-		visualCells = new HashSet<>();
 
 		// 4/6/8 distance
 		int maxDist = 2 + 2*chargesPerCast();
 		int dist = Math.min(bolt.dist, maxDist);
 
-		for (int i = 0; i < PathFinder.CIRCLE8.length; i++){
-			if (bolt.sourcePos+PathFinder.CIRCLE8[i] == bolt.path.get(1)){
-				direction = i;
-				break;
-			}
-		}
+		cone = new ConeAOE( bolt.sourcePos, bolt.path.get(dist),
+				maxDist,
+				30 + 20*chargesPerCast(),
+				collisionProperties | Ballistica.STOP_TARGET);
 
-		float strength = maxDist;
-		for (int c : bolt.subPath(1, dist)) {
-			strength--; //as we start at dist 1, not 0.
-			affectedCells.add(c);
-			if (strength > 1) {
-				spreadFlames(c + PathFinder.CIRCLE8[left(direction)], strength - 1);
-				spreadFlames(c + PathFinder.CIRCLE8[direction], strength - 1);
-				spreadFlames(c + PathFinder.CIRCLE8[right(direction)], strength - 1);
-			} else {
-				visualCells.add(c);
-			}
-		}
-
-		//going to call this one manually
-		visualCells.remove(bolt.path.get(dist));
-
-		for (int cell : visualCells){
-			//this way we only get the cells at the tip, much better performance.
+		//cast to cells at the tip, rather than all cells, better performance.
+		for (Ballistica ray : cone.rays){
 			((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
 					MagicMissile.FIRE_CONE,
 					curUser.sprite,
-					cell,
+					ray.path.get(ray.dist),
 					null
 			);
 		}
+
+		//final zap at half distance, for timing of the actual wand effect
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.FIRE_CONE,
 				curUser.sprite,
