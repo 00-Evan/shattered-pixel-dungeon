@@ -48,7 +48,7 @@ public class CheckedCell extends Image {
 		this( pos );
 		delay = (Dungeon.level.trueDistance(pos, visSource)-1f);
 		//steadily accelerates as distance increases
-		if (delay > 0) delay = (float)Math.pow(delay, 0.75f)/10f;
+		if (delay > 0) delay = (float)Math.pow(delay, 0.67f)/10f;
 	}
 	
 	@Override
