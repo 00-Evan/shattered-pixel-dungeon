@@ -17,7 +17,7 @@ allprojects {
         appVersionCode = 414
         appVersionName = '0.8.0b'
 
-        appJavaCompatibility = 1.8
+        appJavaCompatibility = JavaVersion.VERSION_1_8
 
         appAndroidCompileSDK = 29
         appAndroidMinSDK = 9
