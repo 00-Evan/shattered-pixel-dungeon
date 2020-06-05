@@ -91,8 +91,8 @@ public class HighGrass {
 			}
 			
 			if (naturalismLevel >= 0) {
-				// Seed, scales from 1/20 to 1/4
-				if (Random.Int(20 - (naturalismLevel * 4)) == 0) {
+				// Seed, scales from 1/25 to 1/5
+				if (Random.Int(25 - (naturalismLevel * 5)) == 0) {
 					level.drop(Generator.random(Generator.Category.SEED), pos).sprite.drop();
 				}
 				
