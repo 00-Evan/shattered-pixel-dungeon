@@ -123,6 +123,12 @@ public class StyledButton extends Button {
 	public Image icon(){
 		return icon;
 	}
+
+	public void alpha(float value){
+		if (icon != null) icon.alpha(value);
+		if (bg != null)   bg.alpha(value);
+		if (text != null) text.alpha(value);
+	}
 	
 	public float reqWidth() {
 		float reqWidth = 0;
