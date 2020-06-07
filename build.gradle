@@ -4,18 +4,18 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.0.0'
     }
 }
 
 allprojects {
 
     ext {
-        appName = 'Shattered Pixel Dungeon'
-        appPackageName = 'com.shatteredpixel.shatteredpixeldungeon'
+        appName = 'Pixel Dungeon Rescue'
+        appPackageName = 'net.casiello.pixeldungeonrescue'
 
         appVersionCode = 414
-        appVersionName = '0.8.0b'
+        appVersionName = '0.1.0'
 
         appJavaCompatibility = 1.8
 
