@@ -29,6 +29,7 @@ public class Chrome {
 		TOAST,
 		TOAST_TR,
 		WINDOW,
+		WINDOW_SILVER,
 		RED_BUTTON,
 		GREY_BUTTON,
 		GREY_BUTTON_TR,
@@ -45,6 +46,8 @@ public class Chrome {
 		switch (type) {
 		case WINDOW:
 			return new NinePatch( Asset, 0, 0, 20, 20, 6 );
+		case WINDOW_SILVER:
+			return new NinePatch( Asset, 86, 0, 22, 22, 7 );
 		case TOAST:
 			return new NinePatch( Asset, 22, 0, 18, 18, 5 );
 		case TOAST_TR:
