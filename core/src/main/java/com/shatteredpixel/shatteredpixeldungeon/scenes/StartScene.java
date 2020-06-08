@@ -258,7 +258,9 @@ public class StartScene extends PixelScene {
 		@Override
 		protected void onClick() {
 			if (newGame) {
-				ShatteredPixelDungeon.scene().add( new WndStartGame(slot));
+				GamesInProgress.selectedClass = null;
+				GamesInProgress.curSlot = slot;
+				ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 			} else {
 				ShatteredPixelDungeon.scene().add( new WndGameInProgress(slot));
 			}

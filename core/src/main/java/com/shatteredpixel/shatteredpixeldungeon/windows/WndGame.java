@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.HeroSelectScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.RankingsScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.TitleScene;
@@ -73,9 +74,10 @@ public class WndGame extends Window {
 			addButton( btnStart = new RedButton( Messages.get(this, "start") ) {
 				@Override
 				protected void onClick() {
-					GamesInProgress.selectedClass = Dungeon.hero.heroClass;
 					InterlevelScene.noStory = true;
-					GameScene.show(new WndStartGame(GamesInProgress.firstEmpty()));
+					GamesInProgress.selectedClass = Dungeon.hero.heroClass;
+					GamesInProgress.curSlot = GamesInProgress.firstEmpty();
+					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 				}
 			} );
 			btnStart.textColor(Window.TITLE_COLOR);

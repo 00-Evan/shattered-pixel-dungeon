@@ -103,7 +103,9 @@ public class TitleScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				if (GamesInProgress.checkAll().size() == 0){
-					TitleScene.this.add( new WndStartGame(1) );
+					GamesInProgress.selectedClass = null;
+					GamesInProgress.curSlot = 1;
+					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 				} else {
 					ShatteredPixelDungeon.switchNoFade( StartScene.class );
 				}
@@ -113,7 +115,10 @@ public class TitleScene extends PixelScene {
 			protected boolean onLongClick() {
 				//making it easier to start runs quickly while debugging
 				if (DeviceCompat.isDebug()) {
-					TitleScene.this.add( new WndStartGame(1) );
+					GamesInProgress.selectedClass = null;
+					GamesInProgress.curSlot = 1;
+					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
+					//TitleScene.this.add( new WndStartGame(1) );
 					return true;
 				}
 				return super.onLongClick();

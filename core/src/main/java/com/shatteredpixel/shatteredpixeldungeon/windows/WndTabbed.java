@@ -49,7 +49,7 @@ public class WndTabbed extends Window {
 		tab.setPos( tabs.size() == 0 ?
 			-chrome.marginLeft() + 1 :
 			tabs.get( tabs.size() - 1 ).right(), height );
-		tab.select( false );
+		tab.select( tab.selected );
 		super.add( tab );
 		
 		tabs.add( tab );

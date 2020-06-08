@@ -214,6 +214,19 @@ public enum HeroClass {
 				return Assets.Sprites.HUNTRESS;
 		}
 	}
+
+	public String splashArt(){
+		switch (this) {
+			case WARRIOR: default:
+				return Assets.Splashes.WARRIOR;
+			case MAGE:
+				return Assets.Splashes.MAGE;
+			case ROGUE:
+				return Assets.Splashes.ROGUE;
+			case HUNTRESS:
+				return Assets.Splashes.HUNTRESS;
+		}
+	}
 	
 	public String[] perks() {
 		switch (this) {

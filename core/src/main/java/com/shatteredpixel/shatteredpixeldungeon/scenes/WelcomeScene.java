@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Rankings;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -102,7 +103,9 @@ public class WelcomeScene extends PixelScene {
 				super.onClick();
 				if (previousVersion == 0){
 					SPDSettings.version(ShatteredPixelDungeon.versionCode);
-					WelcomeScene.this.add(new WndStartGame(1));
+					GamesInProgress.selectedClass = null;
+					GamesInProgress.curSlot = 1;
+					ShatteredPixelDungeon.switchScene(HeroSelectScene.class);
 				} else {
 					updateVersion(previousVersion);
 					ShatteredPixelDungeon.switchScene(TitleScene.class);
