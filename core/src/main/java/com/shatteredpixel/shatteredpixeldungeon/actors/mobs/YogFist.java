@@ -188,11 +188,16 @@ public abstract class YogFist extends Mob {
 				CellEmitter.get( pos ).burst( Speck.factory( Speck.STEAM ), 10 );
 			}
 
-			int cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
-			if (Dungeon.level.map[cell] == Terrain.WATER){
-				Level.set( cell, Terrain.EMPTY);
-				GameScene.updateMap( cell );
-				CellEmitter.get( cell ).burst( Speck.factory( Speck.STEAM ), 10 );
+			//1.33 evaporated tiles on average
+			int evaporatedTiles = Random.chances(new float[]{0, 2, 1});
+
+			for (int i = 0; i < evaporatedTiles; i++) {
+				int cell = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+				if (Dungeon.level.map[cell] == Terrain.WATER){
+					Level.set( cell, Terrain.EMPTY);
+					GameScene.updateMap( cell );
+					CellEmitter.get( cell ).burst( Speck.factory( Speck.STEAM ), 10 );
+				}
 			}
 
 			for (int i : PathFinder.NEIGHBOURS9) {
@@ -440,7 +445,7 @@ public abstract class YogFist extends Mob {
 
 			if (hit( this, enemy, true )) {
 
-				enemy.damage( Random.NormalIntRange(12, 24), new LightBeam() );
+				enemy.damage( Random.NormalIntRange(10, 20), new LightBeam() );
 				Buff.prolong( enemy, Blindness.class, Blindness.DURATION/2f );
 
 				if (!enemy.isAlive() && enemy == Dungeon.hero) {
@@ -503,7 +508,7 @@ public abstract class YogFist extends Mob {
 
 			if (hit( this, enemy, true )) {
 
-				enemy.damage( Random.NormalIntRange(12, 24), new DarkBolt() );
+				enemy.damage( Random.NormalIntRange(10, 20), new DarkBolt() );
 
 				Light l = enemy.buff(Light.class);
 				if (l != null){

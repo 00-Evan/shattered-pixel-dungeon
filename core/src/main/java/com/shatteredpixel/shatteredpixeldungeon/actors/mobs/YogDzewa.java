@@ -161,7 +161,7 @@ public class YogDzewa extends Mob {
 					Dungeon.observe();
 				}
 				for (Char ch : affected) {
-					ch.damage(Random.NormalIntRange(20, 35), new Eye.DeathGaze());
+					ch.damage(Random.NormalIntRange(20, 30), new Eye.DeathGaze());
 
 					if (Dungeon.level.heroFOV[pos]) {
 						ch.sprite.flash();
