@@ -265,7 +265,7 @@ public abstract class Char extends Actor {
 			int dmg;
 			Preparation prep = buff(Preparation.class);
 			if (prep != null){
-				dmg = prep.damageRoll(this, enemy);
+				dmg = prep.damageRoll(this);
 			} else {
 				dmg = damageRoll();
 			}
@@ -297,6 +297,11 @@ public abstract class Char extends Actor {
 				buff(EarthImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null)
 				buff(FrostImbue.class).proc(enemy);
+
+			if (prep != null && prep.canKO(enemy)){
+				enemy.die(this);
+				enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
+			}
 
 			enemy.sprite.bloodBurstA( sprite.center(), effectiveDamage );
 			enemy.sprite.flash();

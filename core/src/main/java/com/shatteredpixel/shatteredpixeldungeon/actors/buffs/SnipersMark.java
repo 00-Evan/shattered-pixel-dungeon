@@ -41,7 +41,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 
 	private static final String OBJECT    = "object";
 
-	public static final float DURATION = 2f;
+	public static final float DURATION = 4f;
 
 	{
 		type = buffType.POSITIVE;
