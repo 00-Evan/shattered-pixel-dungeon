@@ -2,6 +2,10 @@
 -keepnames class com.shatteredpixel.** { *; }
 -keepnames class com.watabou.** { *; }
 
+# For some reason optimizing shader classes causes visual errors on AGP 4.0
+# TODO check this every so often, might be a bug that gets resolved
+-keep class com.watabou.noosa.NoosaScript* { *; }
+
 # retained to support meaningful stack traces
 # note that the mapping file must be referenced in order to make sense of line numbers
 # mapping file can be found in core/build/outputs/mapping after running a release build
