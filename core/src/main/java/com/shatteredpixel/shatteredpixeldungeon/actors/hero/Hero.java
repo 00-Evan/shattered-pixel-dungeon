@@ -1719,7 +1719,7 @@ public class Hero extends Char {
 				if (fieldOfView[p] && p != pos) {
 					
 					if (intentional) {
-						sprite.parent.addToBack(new CheckedCell(p, pos));
+						GameScene.effectOverFog(new CheckedCell(p, pos));
 					}
 					
 					if (Dungeon.level.secret[p]){

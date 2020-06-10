@@ -155,6 +155,7 @@ public class GameScene extends PixelScene {
 	private Group spells;
 	private Group statuses;
 	private Group emoicons;
+	private Group overFogEffects;
 	private Group healthIndicators;
 	
 	private Toolbar toolbar;
@@ -243,6 +244,7 @@ public class GameScene extends PixelScene {
 		effects = new Group();
 		healthIndicators = new Group();
 		emoicons = new Group();
+		overFogEffects = new Group();
 		
 		mobs = new Group();
 		add( mobs );
@@ -292,6 +294,8 @@ public class GameScene extends PixelScene {
 
 		spells = new Group();
 		add( spells );
+
+		add(overFogEffects);
 		
 		statuses = new Group();
 		add( statuses );
@@ -808,6 +812,10 @@ public class GameScene extends PixelScene {
 	
 	public static void effect( Visual effect ) {
 		scene.effects.add( effect );
+	}
+
+	public static void effectOverFog( Visual effect ) {
+		scene.overFogEffects.add( effect );
 	}
 	
 	public static Ripple ripple( int pos ) {

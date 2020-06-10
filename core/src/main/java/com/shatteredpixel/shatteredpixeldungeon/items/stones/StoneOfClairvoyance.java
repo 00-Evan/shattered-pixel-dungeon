@@ -62,7 +62,7 @@ public class StoneOfClairvoyance extends Runestone {
 			left = Math.max(0, left);
 			for (curr = left + y * Dungeon.level.width(); curr <= right + y * Dungeon.level.width(); curr++){
 
-				curUser.sprite.parent.addToBack( new CheckedCell( curr, cell ) );
+				GameScene.effectOverFog( new CheckedCell( curr, cell ) );
 				Dungeon.level.mapped[curr] = true;
 				
 				if (Dungeon.level.secret[curr]) {
