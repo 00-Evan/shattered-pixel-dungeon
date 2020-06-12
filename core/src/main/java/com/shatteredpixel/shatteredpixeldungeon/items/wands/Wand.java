@@ -425,6 +425,10 @@ public abstract class Wand extends Item {
 		usesLeftToID = USES_TO_ID;
 		availableUsesToID = USES_TO_ID/2f;
 	}
+
+	protected int collisionProperties( int target ){
+		return collisionProperties;
+	}
 	
 	protected static CellSelector.Listener zapper = new  CellSelector.Listener() {
 		
@@ -442,7 +446,7 @@ public abstract class Wand extends Item {
 					return;
 				}
 
-				final Ballistica shot = new Ballistica( curUser.pos, target, curWand.collisionProperties);
+				final Ballistica shot = new Ballistica( curUser.pos, target, curWand.collisionProperties(target));
 				int cell = shot.collisionPos;
 				
 				if (target == curUser.pos || cell == curUser.pos) {
