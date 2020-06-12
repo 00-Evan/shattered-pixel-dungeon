@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -797,6 +798,22 @@ public class Dungeon {
 				BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );
 				GameScene.updateFog(h.pos, 2);
 			}
+		}
+
+		for (TalismanOfForesight.CharAwareness c : hero.buffs(TalismanOfForesight.CharAwareness.class)){
+			Char ch = (Char) Actor.findById(c.charID);
+			if (ch == null) continue;
+			BArray.or( level.visited, level.heroFOV, ch.pos - 1 - level.width(), 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, ch.pos - 1, 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, ch.pos - 1 + level.width(), 3, level.visited );
+			GameScene.updateFog(ch.pos, 2);
+		}
+
+		for (TalismanOfForesight.HeapAwareness h : hero.buffs(TalismanOfForesight.HeapAwareness.class)){
+			BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
+			BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );
+			GameScene.updateFog(h.pos, 2);
 		}
 
 		GameScene.afterObserve();
