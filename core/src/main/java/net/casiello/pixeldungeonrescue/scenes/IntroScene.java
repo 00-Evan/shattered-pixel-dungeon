@@ -25,20 +25,22 @@ import net.casiello.pixeldungeonrescue.messages.Messages;
 import net.casiello.pixeldungeonrescue.windows.WndStory;
 import com.watabou.noosa.Game;
 
+
 public class IntroScene extends PixelScene {
-	
+
 	@Override
 	public void create() {
 		super.create();
-		
+
 		add( new WndStory( Messages.get(this, "text") ) {
 			@Override
 			public void hide() {
 				super.hide();
-				Game.switchScene( InterlevelScene.class );
+				Game.switchScene( IntroScene2.class );
 			}
 		} );
-		
+
 		fadeIn();
 	}
 }
+
