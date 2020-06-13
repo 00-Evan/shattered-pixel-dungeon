@@ -70,7 +70,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public float iconFadePercent() {
-		return (4 - comboTime)/4f;
+		return Math.max(0, (4 - comboTime)/4f);
 	}
 
 	@Override
