@@ -162,7 +162,7 @@ public class Toolbar extends Component {
 
 		for(int i = 0; i < QuickSlot.MAX_QUICKSLOT_COUNT; i++) {
 			if (i == 0 && !SPDSettings.flipToolbar() ||
-				i == QuickSlot.MAX_QUICKSLOT_COUNT - 1 && SPDSettings.flipToolbar()){
+					i == QuickSlot.MAX_QUICKSLOT_COUNT - 1 && SPDSettings.flipToolbar()){
 				btnQuick[i].border(0, 2);
 				btnQuick[i].frame(106, 0, 19, 24);
 			} else if (i == 0 && SPDSettings.flipToolbar() ||
