@@ -109,12 +109,13 @@ public class FogOfWar extends Image {
 		}
 		
 		float size = DungeonTilemap.SIZE / PIX_PER_TILE;
-		width = pWidth * size;
-		height = pHeight * size;
+		width = width2 * size;
+		height = height2 * size;
 
 		//TODO might be nice to compartmentalize the pixmap access and modification into texture/texturecache
-		Pixmap px = new Pixmap(pWidth, pHeight, Pixmap.Format.RGBA8888);
+		Pixmap px = new Pixmap(width2, height2, Pixmap.Format.RGBA8888);
 		px.setBlending(Pixmap.Blending.None);
+		px.setColor(0x000000FF);
 		px.fill();
 		SmartTexture tx = new SmartTexture(px, Texture.LINEAR, Texture.CLAMP, false);
 		TextureCache.add(FogOfWar.class, tx);
