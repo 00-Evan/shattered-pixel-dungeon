@@ -37,8 +37,8 @@ public class QuickSlot {
 	 * which can happen for a stackable item that has been 'used up', these are refered to a placeholders.
 	 */
 
-	// max size is defined in Toolbar.SLOT_COUNT
-	private Item[] slots = new Item[Toolbar.SLOT_COUNT];
+	// max size is defined in Toolbar.QUICKSLOT_COUNT
+	private Item[] slots = new Item[Toolbar.QUICKSLOT_COUNT];
 
 
 	//direct array interaction methods, everything should build from these methods.
@@ -52,7 +52,7 @@ public class QuickSlot {
 	}
 
 	public void reset(){
-		slots = new Item[Toolbar.SLOT_COUNT];
+		slots = new Item[Toolbar.QUICKSLOT_COUNT];
 	}
 
 	public Item getItem(int slot){
@@ -62,7 +62,7 @@ public class QuickSlot {
 
 	//utility methods, for easier use of the internal array.
 	public int getSlot(Item item) {
-		for (int i = 0; i < Toolbar.SLOT_COUNT; i++)
+		for (int i = 0; i < Toolbar.QUICKSLOT_COUNT; i++)
 			if (getItem(i) == item)
 				return i;
 		return -1;
@@ -86,7 +86,7 @@ public class QuickSlot {
 	}
 
 	public void replacePlaceholder(Item item){
-		for (int i = 0; i < Toolbar.SLOT_COUNT; i++)
+		for (int i = 0; i < Toolbar.QUICKSLOT_COUNT; i++)
 			if (isPlaceholder(i) && item.isSimilar(getItem(i)))
 				setSlot( i , item );
 	}
@@ -97,7 +97,7 @@ public class QuickSlot {
 			Item placeholder = item.virtual();
 			if (placeholder == null) return;
 			
-			for (int i = 0; i < Toolbar.SLOT_COUNT; i++) {
+			for (int i = 0; i < Toolbar.QUICKSLOT_COUNT; i++) {
 				if (getItem(i) == item) setSlot(i, placeholder);
 			}
 		}
@@ -106,7 +106,7 @@ public class QuickSlot {
 	public Item randomNonePlaceholder(){
 
 		ArrayList<Item> result = new ArrayList<>();
-		for (int i = 0; i < Toolbar.SLOT_COUNT; i ++)
+		for (int i = 0; i < Toolbar.QUICKSLOT_COUNT; i ++)
 		if (getItem(i) != null && !isPlaceholder(i))
 				result.add(getItem(i));
 
@@ -123,10 +123,10 @@ public class QuickSlot {
 	 */
 
 	public void storePlaceholders(Bundle bundle){
-		ArrayList<Item> placeholders = new ArrayList<>(Toolbar.SLOT_COUNT);
-		boolean[] placements = new boolean[Toolbar.SLOT_COUNT];
+		ArrayList<Item> placeholders = new ArrayList<>(Toolbar.QUICKSLOT_COUNT);
+		boolean[] placements = new boolean[Toolbar.QUICKSLOT_COUNT];
 
-		for (int i = 0; i < Toolbar.SLOT_COUNT; i++)
+		for (int i = 0; i < Toolbar.QUICKSLOT_COUNT; i++)
 			if (isPlaceholder(i)) {
 				placeholders.add(getItem(i));
 				placements[i] = true;

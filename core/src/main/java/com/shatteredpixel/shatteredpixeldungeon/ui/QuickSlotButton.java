@@ -32,15 +32,15 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 
 public class QuickSlotButton extends Button implements WndBag.Listener {
 	
-	private static QuickSlotButton[] instance = new QuickSlotButton[Toolbar.SLOT_COUNT];
+	private static QuickSlotButton[] instance = new QuickSlotButton[Toolbar.QUICKSLOT_COUNT];
 	private int slotNum;
 
 	private ItemSlot slot;
@@ -67,7 +67,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	}
 
 	public static void reset() {
-		instance = new QuickSlotButton[Toolbar.SLOT_COUNT];
+		instance = new QuickSlotButton[Toolbar.QUICKSLOT_COUNT];
 
 		lastTarget = null;
 	}
