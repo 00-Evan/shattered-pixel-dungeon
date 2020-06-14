@@ -86,16 +86,19 @@ public class Toolbar extends Component {
 				examining = false;
 				Dungeon.hero.rest(false);
 			}
+				
 			@Override
 			public GameAction keyAction() {
 				return SPDAction.WAIT;
 			}
+				
 			protected boolean onLongClick() {
 				examining = false;
 				Dungeon.hero.rest(true);
 				return true;
 			}
 		});
+		
 		add(btnSearch = new Tool(44, 0, 20, 26) {
 			@Override
 			protected void onClick() {

@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
-import java.util.HashMap;
 import com.badlogic.gdx.Input;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;

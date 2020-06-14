@@ -36,14 +36,14 @@ public class QuickSlot {
 	 * which can happen for a stackable item that has been 'used up', these are refered to a placeholders.
 	 */
 
-	// the laergerst value that QUICKSLOT_COUNT may be safely set. to
-	// increase this value, change the number here and update the values
+	// this is the largerst value that QUICKSLOT_COUNT may be safely set. to
+	// increase this value, change the number here, and update the values
 	// in:
 	//
 	//   resources/com/shatteredpixel/shatteredpixeldungeon/messages/windows/windows.properties
 	public static int MAX_QUICKSLOT_COUNT = 8;
 
-	// the actual number of rendered quick slots, this is intended to be
+	// the actual number of rendered quick slots, and  intended to be
 	// the single source of truth for this value.
 	public static int QUICKSLOT_COUNT = 4;
 	private Item[] slots = new Item[QUICKSLOT_COUNT];
