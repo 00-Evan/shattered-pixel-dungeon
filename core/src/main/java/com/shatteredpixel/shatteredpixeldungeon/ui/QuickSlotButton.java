@@ -36,10 +36,12 @@ import com.watabou.input.GameAction;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
+
 
 public class QuickSlotButton extends Button implements WndBag.Listener {
 	
-	private static QuickSlotButton[] instance = new QuickSlotButton[4];
+	private static QuickSlotButton[] instance = new QuickSlotButton[Toolbar.SLOT_COUNT];
 	private int slotNum;
 
 	private ItemSlot slot;
@@ -66,7 +68,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	}
 
 	public static void reset() {
-		instance = new QuickSlotButton[4];
+		instance = new QuickSlotButton[Toolbar.SLOT_COUNT];
 
 		lastTarget = null;
 	}
@@ -153,6 +155,14 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 				return SPDAction.QUICKSLOT_3;
 			case 3:
 				return SPDAction.QUICKSLOT_4;
+			case 4:
+				return SPDAction.QUICKSLOT_5;
+			case 5:
+				return SPDAction.QUICKSLOT_6;
+			case 6:
+				return SPDAction.QUICKSLOT_7;
+			case 7:
+				return SPDAction.QUICKSLOT_8;
 			default:
 				return super.keyAction();
 		}

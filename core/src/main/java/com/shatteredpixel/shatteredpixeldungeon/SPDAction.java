@@ -52,6 +52,10 @@ public class SPDAction extends GameAction {
 	public static final GameAction QUICKSLOT_2 = new SPDAction("quickslot_2");
 	public static final GameAction QUICKSLOT_3 = new SPDAction("quickslot_3");
 	public static final GameAction QUICKSLOT_4 = new SPDAction("quickslot_4");
+	public static final GameAction QUICKSLOT_5 = new SPDAction("quickslot_5");
+	public static final GameAction QUICKSLOT_6 = new SPDAction("quickslot_6");
+	public static final GameAction QUICKSLOT_7 = new SPDAction("quickslot_7");
+	public static final GameAction QUICKSLOT_8 = new SPDAction("quickslot_8");
 
 	public static final GameAction TAG_ATTACK  = new SPDAction("tag_attack");
 	public static final GameAction TAG_DANGER  = new SPDAction("tag_danger");
@@ -83,6 +87,7 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.S,           SPDAction.SEARCH );
 
 		defaultBindings.put( Input.Keys.I,           SPDAction.INVENTORY );
+
 		defaultBindings.put( Input.Keys.Q,           SPDAction.QUICKSLOT_1 );
 		defaultBindings.put( Input.Keys.W,           SPDAction.QUICKSLOT_2 );
 		defaultBindings.put( Input.Keys.E,           SPDAction.QUICKSLOT_3 );
