@@ -36,7 +36,7 @@ public class QuickSlot {
 	 * which can happen for a stackable item that has been 'used up', these are refered to a placeholders.
 	 */
 
-	// this is the largerst value that which QUICKSLOT_COUNT may be safely set.
+	// this is the largest value that QUICKSLOT_COUNT may be safely set to.
 	// to increase this value, change the number here, and update the values
 	// in:
 	//
