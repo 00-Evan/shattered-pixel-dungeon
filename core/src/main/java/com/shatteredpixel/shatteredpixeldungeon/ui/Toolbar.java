@@ -63,6 +63,7 @@ public class Toolbar extends Component {
 		GROUP,
 		CENTER
 	}
+	
 	public Toolbar() {
 		super();
 
@@ -70,7 +71,7 @@ public class Toolbar extends Component {
 
 		height = btnInventory.height();
 	}
-
+	
 	@Override
 	protected void createChildren() {
 
