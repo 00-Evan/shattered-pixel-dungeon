@@ -187,6 +187,14 @@ public abstract class Char extends Actor {
 			return true;
 		}
 	}
+
+	public void hitSound( float pitch ){
+		Sample.INSTANCE.play(Assets.Sounds.HIT, 1, pitch);
+	}
+
+	public boolean blockSound( float pitch ) {
+		return false;
+	}
 	
 	protected static final String POS       = "pos";
 	protected static final String TAG_HP    = "HP";
@@ -244,7 +252,7 @@ public abstract class Char extends Actor {
 			if (visibleFight) {
 				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "invulnerable") );
 
-				Sample.INSTANCE.play(Assets.Sounds.MISS);
+				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1f, Random.Float(0.96f, 1.05f));
 			}
 
 			return false;
@@ -280,7 +288,9 @@ public abstract class Char extends Actor {
 			effectiveDamage = attackProc( enemy, effectiveDamage );
 			
 			if (visibleFight) {
-				Sample.INSTANCE.play( Assets.Sounds.HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
+				if (effectiveDamage > 0 || !enemy.blockSound(Random.Float(0.96f, 1.05f))) {
+					hitSound(Random.Float(0.87f, 1.15f));
+				}
 			}
 
 			// If the enemy is already dead, interrupt the attack.
@@ -328,7 +338,8 @@ public abstract class Char extends Actor {
 			if (visibleFight) {
 				String defense = enemy.defenseVerb();
 				enemy.sprite.showStatus( CharSprite.NEUTRAL, defense );
-				
+
+				//TODO enemy.defenseSound? currently miss plays for monks/crab even when the parry
 				Sample.INSTANCE.play(Assets.Sounds.MISS);
 			}
 			

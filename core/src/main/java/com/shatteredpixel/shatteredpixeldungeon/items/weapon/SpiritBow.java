@@ -274,7 +274,12 @@ public class SpiritBow extends Weapon {
 				if (sniperSpecial && SpiritBow.this.augment != Augment.SPEED) sniperSpecial = false;
 			}
 		}
-		
+
+		@Override
+		public void throwSound() {
+			Sample.INSTANCE.play( Assets.Sounds.ATK_SPIRITBOW );
+		}
+
 		int flurryCount = -1;
 		
 		@Override

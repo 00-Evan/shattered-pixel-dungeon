@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -28,12 +29,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 abstract public class KindOfWeapon extends EquipableItem {
 	
 	protected static final float TIME_TO_EQUIP = 1f;
+
+	protected String hitSound = Assets.Sounds.HIT;
+	protected float hitSoundPitch = 1f;
 	
 	@Override
 	public boolean isEquipped( Hero hero ) {
@@ -130,6 +135,10 @@ abstract public class KindOfWeapon extends EquipableItem {
 	
 	public int proc( Char attacker, Char defender, int damage ) {
 		return damage;
+	}
+
+	public void hitSound( float pitch ){
+		Sample.INSTANCE.play(hitSound, 1, pitch * hitSoundPitch);
 	}
 	
 }

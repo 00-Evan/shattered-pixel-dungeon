@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -30,6 +31,8 @@ public class Tomahawk extends MissileWeapon {
 
 	{
 		image = ItemSpriteSheet.TOMAHAWK;
+		hitSound = Assets.Sounds.HIT_SLASH;
+		hitSoundPitch = 0.9f;
 
 		tier = 4;
 		baseUses = 5;

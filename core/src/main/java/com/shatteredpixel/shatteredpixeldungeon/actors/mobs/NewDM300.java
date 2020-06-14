@@ -354,6 +354,8 @@ public class NewDM300 extends Mob {
 
 		}
 
+		Sample.INSTANCE.play(Assets.Sounds.GAS);
+
 	}
 
 	public void onSlamComplete(){

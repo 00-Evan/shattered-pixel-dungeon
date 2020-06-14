@@ -21,12 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Mace extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.MACE;
+		hitSound = Assets.Sounds.HIT_CRUSH;
+		hitSoundPitch = 1f;
 
 		tier = 3;
 		ACC = 1.28f; //28% boost to accuracy

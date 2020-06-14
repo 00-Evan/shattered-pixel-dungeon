@@ -21,12 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class WarHammer extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.WAR_HAMMER;
+		hitSound = Assets.Sounds.HIT_CRUSH;
+		hitSoundPitch = 1f;
 
 		tier = 5;
 		ACC = 1.20f; //20% boost to accuracy

@@ -45,8 +45,9 @@ public class ScrollOfRecharging extends Scroll {
 
 		Buff.affect(curUser, Recharging.class, Recharging.DURATION);
 		charge(curUser);
-		
+
 		Sample.INSTANCE.play( Assets.Sounds.READ );
+		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 		Invisibility.dispel();
 
 		GLog.i( Messages.get(this, "surge") );

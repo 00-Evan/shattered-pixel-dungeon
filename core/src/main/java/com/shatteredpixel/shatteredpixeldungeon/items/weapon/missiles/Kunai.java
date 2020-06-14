@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -32,6 +33,8 @@ public class Kunai extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.KUNAI;
+		hitSound = Assets.Sounds.HIT_STAB;
+		hitSoundPitch = 1.1f;
 		
 		tier = 3;
 		baseUses = 5;

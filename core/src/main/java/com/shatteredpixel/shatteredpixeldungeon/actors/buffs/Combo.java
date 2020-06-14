@@ -311,7 +311,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			if (target.buff(FrostImbue.class) != null)
 				target.buff(FrostImbue.class).proc(enemy);
 
-			Sample.INSTANCE.play( Assets.Sounds.HIT, 1, 1, Random.Float( 0.8f, 1.25f ) );
+			target.hitSound(Random.Float(0.87f, 1.15f));
+			if (type != finisherType.FURY) Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 			enemy.sprite.bloodBurstA( target.sprite.center(), dmg );
 			enemy.sprite.flash();
 
@@ -348,6 +349,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 						});
 					} else {
 						detach();
+						Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 						ActionIndicator.clearAction(Combo.this);
 						hero.spendAndNext(hero.attackDelay());
 					}

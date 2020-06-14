@@ -94,6 +94,7 @@ public class WandOfLivingEarth extends DamageWand {
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
 			guardian.setInfo(curUser, buffedLvl(), armorToAdd);
 			processSoulMark(guardian, chargesPerCast());
+			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.9f * Random.Float(0.87f, 1.15f) );
 
 		//shooting the guardian at a location
 		} else if ( guardian == null && buff != null && buff.armor >= buff.armorToGuardian()){
@@ -143,6 +144,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 			guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl()/2);
 			buff.detach();
+			Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.9f * Random.Float(0.87f, 1.15f) );
 
 		//shooting at a location/enemy with no guardian being shot
 		} else {
@@ -153,6 +155,7 @@ public class WandOfLivingEarth extends DamageWand {
 
 				processSoulMark(ch, chargesPerCast());
 				ch.damage(damage, this);
+				Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, 0.8f * Random.Float(0.87f, 1.15f) );
 				
 				if (guardian == null) {
 					curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);

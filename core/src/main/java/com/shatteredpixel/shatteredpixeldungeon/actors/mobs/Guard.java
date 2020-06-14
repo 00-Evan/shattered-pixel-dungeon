@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GuardSprite;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -90,6 +92,8 @@ public class Guard extends Mob {
 				final int newPosFinal = newPos;
 				this.target = newPos;
 				yell( Messages.get(this, "scorpion") );
+				new Item().throwSound();
+				Sample.INSTANCE.play( Assets.Sounds.CHAINS );
 				sprite.parent.add(new Chains(sprite.center(), enemy.sprite.center(), new Callback() {
 					public void call() {
 						Actor.addDelayed(new Pushing(enemy, enemy.pos, newPosFinal, new Callback(){

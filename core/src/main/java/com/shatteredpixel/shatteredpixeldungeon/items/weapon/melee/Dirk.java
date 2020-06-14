@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -31,6 +32,8 @@ public class Dirk extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.DIRK;
+		hitSound = Assets.Sounds.HIT_STAB;
+		hitSoundPitch = 1f;
 
 		tier = 2;
 	}

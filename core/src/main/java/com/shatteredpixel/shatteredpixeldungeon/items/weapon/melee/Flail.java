@@ -21,12 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Flail extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.FLAIL;
+		hitSound = Assets.Sounds.HIT_CRUSH;
+		hitSoundPitch = 0.8f;
 
 		tier = 4;
 		ACC = 0.9f; //0.9x accuracy

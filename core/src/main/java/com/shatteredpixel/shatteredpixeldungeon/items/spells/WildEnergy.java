@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.spells;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
@@ -32,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMys
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
 public class WildEnergy extends TargetedSpell {
@@ -51,6 +53,8 @@ public class WildEnergy extends TargetedSpell {
 		CursedWand.cursedZap(this, hero, bolt, new Callback() {
 			@Override
 			public void call() {
+				Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
+				Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 				ScrollOfRecharging.charge(hero);
 
 				hero.belongings.charge(1f);

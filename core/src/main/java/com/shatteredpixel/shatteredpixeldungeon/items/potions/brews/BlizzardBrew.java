@@ -42,6 +42,7 @@ public class BlizzardBrew extends Brew {
 		if (Dungeon.level.heroFOV[cell]) {
 			splash( cell );
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
+			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
 		
 		GameScene.add( Blob.seed( cell, 1000, Blizzard.class ) );

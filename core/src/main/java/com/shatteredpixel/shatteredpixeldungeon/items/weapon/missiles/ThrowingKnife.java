@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -32,6 +33,8 @@ public class ThrowingKnife extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.THROWING_KNIFE;
+		hitSound = Assets.Sounds.HIT_SLASH;
+		hitSoundPitch = 1.2f;
 		
 		bones = false;
 		

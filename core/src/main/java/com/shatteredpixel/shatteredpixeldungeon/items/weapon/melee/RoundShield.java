@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -29,6 +30,8 @@ public class RoundShield extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.ROUND_SHIELD;
+		hitSound = Assets.Sounds.HIT;
+		hitSoundPitch = 1f;
 
 		tier = 3;
 	}

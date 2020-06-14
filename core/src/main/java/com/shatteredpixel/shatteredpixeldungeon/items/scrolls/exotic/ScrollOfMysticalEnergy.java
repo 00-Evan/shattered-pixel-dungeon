@@ -41,8 +41,9 @@ public class ScrollOfMysticalEnergy extends ExoticScroll {
 		
 		//append buff
 		Buff.affect(curUser, ArtifactRecharge.class).set( 30 );
-		
+
 		Sample.INSTANCE.play( Assets.Sounds.READ );
+		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 		Invisibility.dispel();
 		
 		SpellSprite.show( curUser, SpellSprite.CHARGE );

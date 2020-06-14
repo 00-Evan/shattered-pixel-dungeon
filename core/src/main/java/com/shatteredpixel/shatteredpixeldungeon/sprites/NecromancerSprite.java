@@ -24,6 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
 
 public class NecromancerSprite extends MobSprite {
 	
@@ -58,7 +60,15 @@ public class NecromancerSprite extends MobSprite {
 	public void charge(){
 		play(charging);
 	}
-	
+
+	@Override
+	public void zap(int cell) {
+		super.zap(cell);
+		if (visible && ch instanceof Necromancer && ((Necromancer) ch).summoning){
+			Sample.INSTANCE.play( Assets.Sounds.CHARGEUP, 1f, 0.8f );
+		}
+	}
+
 	@Override
 	public void onComplete(Animation anim) {
 		super.onComplete(anim);

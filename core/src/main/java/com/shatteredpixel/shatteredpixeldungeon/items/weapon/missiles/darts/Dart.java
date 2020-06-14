@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.noosa.audio.Sample;
 
 import java.util.ArrayList;
 
@@ -41,6 +43,8 @@ public class Dart extends MissileWeapon {
 
 	{
 		image = ItemSpriteSheet.DART;
+		hitSound = Assets.Sounds.HIT_STAB;
+		hitSoundPitch = 1.3f;
 		
 		tier = 1;
 		
@@ -121,6 +125,16 @@ public class Dart extends MissileWeapon {
 	protected void onThrow(int cell) {
 		updateCrossbow();
 		super.onThrow(cell);
+	}
+
+	@Override
+	public void throwSound() {
+		updateCrossbow();
+		if (bow != null) {
+			Sample.INSTANCE.play(Assets.Sounds.ATK_CROSSBOW);
+		} else {
+			super.throwSound();
+		}
 	}
 	
 	@Override

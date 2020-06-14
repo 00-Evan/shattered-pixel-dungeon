@@ -21,12 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sword extends MeleeWeapon {
 	
 	{
 		image = ItemSpriteSheet.SWORD;
+		hitSound = Assets.Sounds.HIT_SLASH;
+		hitSoundPitch = 1f;
 
 		tier = 3;
 	}

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -28,6 +29,8 @@ public class Quarterstaff extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.QUARTERSTAFF;
+		hitSound = Assets.Sounds.HIT_CRUSH;
+		hitSoundPitch = 1f;
 
 		tier = 2;
 	}

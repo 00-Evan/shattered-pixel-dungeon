@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -36,6 +37,8 @@ public class HeavyBoomerang extends MissileWeapon {
 	
 	{
 		image = ItemSpriteSheet.BOOMERANG;
+		hitSound = Assets.Sounds.HIT_CRUSH;
+		hitSoundPitch = 1f;
 		
 		tier = 4;
 		sticky = false;

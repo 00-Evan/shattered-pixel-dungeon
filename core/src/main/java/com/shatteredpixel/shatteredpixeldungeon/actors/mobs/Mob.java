@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -57,8 +58,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -546,6 +547,7 @@ public abstract class Mob extends Char {
 				&& enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack()) {
 			Statistics.sneakAttacks++;
 			Badges.validateRogueUnlock();
+			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 			if (enemy.buff(Preparation.class) != null) {
 				Wound.hit(this);
 			} else {

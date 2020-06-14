@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -28,6 +29,8 @@ public class Gauntlet extends MeleeWeapon {
 	
 	{
 		image = ItemSpriteSheet.GAUNTLETS;
+		hitSound = Assets.Sounds.HIT_CRUSH;
+		hitSoundPitch = 1.2f;
 		
 		tier = 5;
 		DLY = 0.5f; //2x speed

@@ -21,12 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class BattleAxe extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.BATTLE_AXE;
+		hitSound = Assets.Sounds.HIT_SLASH;
+		hitSoundPitch = 0.9f;
 
 		tier = 4;
 		ACC = 1.24f; //24% boost to accuracy

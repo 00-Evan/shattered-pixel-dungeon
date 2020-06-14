@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
@@ -28,6 +29,8 @@ public class Sai extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.SAI;
+		hitSound = Assets.Sounds.HIT_STAB;
+		hitSoundPitch = 1.3f;
 
 		tier = 3;
 		DLY = 0.5f; //2x speed

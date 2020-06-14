@@ -507,6 +507,10 @@ public class Item implements Bundlable {
 	public int throwPos( Hero user, int dst){
 		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
 	}
+
+	public void throwSound(){
+		Sample.INSTANCE.play(Assets.Sounds.MISS, 0.6f, 0.6f, 1.5f);
+	}
 	
 	public void cast( final Hero user, final int dst ) {
 		
@@ -514,7 +518,7 @@ public class Item implements Bundlable {
 		user.sprite.zap( cell );
 		user.busy();
 
-		Sample.INSTANCE.play( Assets.Sounds.MISS, 0.6f, 0.6f, 1.5f );
+		throwSound();
 
 		Char enemy = Actor.findChar( cell );
 		QuickSlotButton.target(enemy);

@@ -21,12 +21,15 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class Whip extends MeleeWeapon {
 
 	{
 		image = ItemSpriteSheet.WHIP;
+		hitSound = Assets.Sounds.HIT;
+		hitSoundPitch = 1.1f;
 
 		tier = 3;
 		RCH = 3;    //lots of extra reach

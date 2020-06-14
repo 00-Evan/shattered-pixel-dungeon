@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShamanSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 //TODO stats on these might be a bit weak
@@ -112,6 +114,7 @@ public abstract class Shaman extends Mob {
 			
 			if (enemy == Dungeon.hero && Random.Int( 2 ) == 0) {
 				debuff( enemy );
+				Sample.INSTANCE.play( Assets.Sounds.DEBUFF );
 			}
 			
 			int dmg = Random.NormalIntRange( 6, 15 );
