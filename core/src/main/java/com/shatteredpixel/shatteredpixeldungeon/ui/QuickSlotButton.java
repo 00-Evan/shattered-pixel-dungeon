@@ -40,7 +40,7 @@ import com.watabou.utils.PathFinder;
 
 public class QuickSlotButton extends Button implements WndBag.Listener {
 	
-	private static QuickSlotButton[] instance = new QuickSlotButton[QuickSlot.MAX_QUICKSLOT_COUNT];
+	private static QuickSlotButton[] instance = new QuickSlotButton[QuickSlot.QUICKSLOT_COUNT];
 	private int slotNum;
 
 	private ItemSlot slot;
@@ -67,7 +67,7 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 	}
 
 	public static void reset() {
-		instance = new QuickSlotButton[QuickSlot.MAX_QUICKSLOT_COUNT];
+		instance = new QuickSlotButton[QuickSlot.QUICKSLOT_COUNT];
 
 		lastTarget = null;
 	}

@@ -36,13 +36,17 @@ public class QuickSlot {
 	 * which can happen for a stackable item that has been 'used up', these are refered to a placeholders.
 	 */
 
-	// maximum number of supported quickslots. to increase this value, change the number here
-	// and in update the values in:
+	// the laergerst value that QUICKSLOT_COUNT may be safely set. to
+	// increase this value, change the number here and update the values
+	// in:
 	//
-	// resources/com/shatteredpixel/shatteredpixeldungeon/messages/windows/windows.properties
+	//   resources/com/shatteredpixel/shatteredpixeldungeon/messages/windows/windows.properties
 	public static int MAX_QUICKSLOT_COUNT = 8;
-	private Item[] slots = new Item[MAX_QUICKSLOT_COUNT];
 
+	// the actual number of rendered quick slots, this is intended to be
+	// the single source of truth for this value.
+	public static int QUICKSLOT_COUNT = 4;
+	private Item[] slots = new Item[QUICKSLOT_COUNT];
 
 	//direct array interaction methods, everything should build from these methods.
 	public void setSlot(int slot, Item item){
@@ -55,7 +59,7 @@ public class QuickSlot {
 	}
 
 	public void reset(){
-		slots = new Item[MAX_QUICKSLOT_COUNT];
+		slots = new Item[QUICKSLOT_COUNT];
 	}
 
 	public Item getItem(int slot){
@@ -65,7 +69,7 @@ public class QuickSlot {
 
 	//utility methods, for easier use of the internal array.
 	public int getSlot(Item item) {
-		for (int i = 0; i < MAX_QUICKSLOT_COUNT; i++)
+		for (int i = 0; i < QUICKSLOT_COUNT; i++)
 			if (getItem(i) == item)
 				return i;
 		return -1;
@@ -89,7 +93,7 @@ public class QuickSlot {
 	}
 
 	public void replacePlaceholder(Item item){
-		for (int i = 0; i < MAX_QUICKSLOT_COUNT; i++)
+		for (int i = 0; i < QUICKSLOT_COUNT; i++)
 			if (isPlaceholder(i) && item.isSimilar(getItem(i)))
 				setSlot( i , item );
 	}
@@ -100,7 +104,7 @@ public class QuickSlot {
 			Item placeholder = item.virtual();
 			if (placeholder == null) return;
 			
-			for (int i = 0; i < MAX_QUICKSLOT_COUNT; i++) {
+			for (int i = 0; i < QUICKSLOT_COUNT; i++) {
 				if (getItem(i) == item) setSlot(i, placeholder);
 			}
 		}
@@ -109,7 +113,7 @@ public class QuickSlot {
 	public Item randomNonePlaceholder(){
 
 		ArrayList<Item> result = new ArrayList<>();
-		for (int i = 0; i < MAX_QUICKSLOT_COUNT; i ++)
+		for (int i = 0; i < QUICKSLOT_COUNT; i ++)
 		if (getItem(i) != null && !isPlaceholder(i))
 				result.add(getItem(i));
 
@@ -126,10 +130,10 @@ public class QuickSlot {
 	 */
 
 	public void storePlaceholders(Bundle bundle){
-		ArrayList<Item> placeholders = new ArrayList<>(MAX_QUICKSLOT_COUNT);
-		boolean[] placements = new boolean[MAX_QUICKSLOT_COUNT];
+		ArrayList<Item> placeholders = new ArrayList<>(QUICKSLOT_COUNT);
+		boolean[] placements = new boolean[QUICKSLOT_COUNT];
 
-		for (int i = 0; i < MAX_QUICKSLOT_COUNT; i++)
+		for (int i = 0; i < QUICKSLOT_COUNT; i++)
 			if (isPlaceholder(i)) {
 				placeholders.add(getItem(i));
 				placements[i] = true;
