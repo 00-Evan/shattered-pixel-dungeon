@@ -36,8 +36,8 @@ public class QuickSlot {
 	 * which can happen for a stackable item that has been 'used up', these are refered to a placeholders.
 	 */
 
-	// this is the largerst value that QUICKSLOT_COUNT may be safely set. to
-	// increase this value, change the number here, and update the values
+	// this is the largerst value that which QUICKSLOT_COUNT may be safely set.
+	// to increase this value, change the number here, and update the values
 	// in:
 	//
 	//   resources/com/shatteredpixel/shatteredpixeldungeon/messages/windows/windows.properties
