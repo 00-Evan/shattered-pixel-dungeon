@@ -79,7 +79,7 @@ public class Toolbar extends Component {
 
 		for(int i = 0; i < SLOT_COUNT; i++) {
 			add( btnQuick[i] = new QuickslotTool(64, 0, 22, 24, i) );
-    }
+		}
 
 		add(btnWait = new Tool(24, 0, 20, 26) {
 			@Override
