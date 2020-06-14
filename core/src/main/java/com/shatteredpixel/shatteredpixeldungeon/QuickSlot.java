@@ -41,7 +41,7 @@ public class QuickSlot {
 	// in:
 	//
 	//   resources/com/shatteredpixel/shatteredpixeldungeon/messages/windows/windows.properties
-	public static int MAX_QUICKSLOT_COUNT = 8;
+	public static int MAX_QUICKSLOT_COUNT = 12;
 
 	// the actual number of rendered quick slots, and is intended to be
 	// the single source of truth for the value.
