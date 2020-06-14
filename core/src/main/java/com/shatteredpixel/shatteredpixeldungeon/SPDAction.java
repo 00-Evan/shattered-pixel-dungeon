@@ -21,11 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon;
 
+import java.util.HashMap;
 import com.badlogic.gdx.Input;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
+import com.shatteredpixel.shatteredpixeldungeon.QuickSlot;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -48,14 +50,6 @@ public class SPDAction extends GameAction {
 	public static final GameAction SEARCH      = new SPDAction("search");
 
 	public static final GameAction INVENTORY   = new SPDAction("inventory");
-	public static final GameAction QUICKSLOT_1 = new SPDAction("quickslot_1");
-	public static final GameAction QUICKSLOT_2 = new SPDAction("quickslot_2");
-	public static final GameAction QUICKSLOT_3 = new SPDAction("quickslot_3");
-	public static final GameAction QUICKSLOT_4 = new SPDAction("quickslot_4");
-	public static final GameAction QUICKSLOT_5 = new SPDAction("quickslot_5");
-	public static final GameAction QUICKSLOT_6 = new SPDAction("quickslot_6");
-	public static final GameAction QUICKSLOT_7 = new SPDAction("quickslot_7");
-	public static final GameAction QUICKSLOT_8 = new SPDAction("quickslot_8");
 
 	public static final GameAction TAG_ATTACK  = new SPDAction("tag_attack");
 	public static final GameAction TAG_DANGER  = new SPDAction("tag_danger");
@@ -75,8 +69,17 @@ public class SPDAction extends GameAction {
 	public static final GameAction SW          = new SPDAction("sw");
 	public static final GameAction NW          = new SPDAction("nw");
 
+	public static final Integer[] DEFAULT_QUICKSLOT_KEYS = {
+		Input.Keys.Q,
+		Input.Keys.W,
+		Input.Keys.E,
+		Input.Keys.R,
+	};
+
+	public static final LinkedHashMap<Integer, GameAction> QuickSlotActions = new LinkedHashMap<>();
 	private static final LinkedHashMap<Integer, GameAction> defaultBindings = new LinkedHashMap<>();
 	static {
+
 		defaultBindings.put( Input.Keys.ESCAPE,      SPDAction.BACK );
 		defaultBindings.put( Input.Keys.BACKSPACE,   SPDAction.BACK );
 
@@ -87,10 +90,14 @@ public class SPDAction extends GameAction {
 		defaultBindings.put( Input.Keys.S,           SPDAction.SEARCH );
 
 		defaultBindings.put( Input.Keys.I,           SPDAction.INVENTORY );
-		defaultBindings.put( Input.Keys.Q,           SPDAction.QUICKSLOT_1 );
-		defaultBindings.put( Input.Keys.W,           SPDAction.QUICKSLOT_2 );
-		defaultBindings.put( Input.Keys.E,           SPDAction.QUICKSLOT_3 );
-		defaultBindings.put( Input.Keys.R,           SPDAction.QUICKSLOT_4 );
+
+		for(int i = 0; i < QuickSlot.QUICKSLOT_COUNT; i++) {
+			GameAction quickSlotAction = new SPDAction(String.format("quickslot_%d", i + 1));
+			QuickSlotActions.put(i, quickSlotAction);
+			if (i < DEFAULT_QUICKSLOT_KEYS.length) {
+				defaultBindings.put(DEFAULT_QUICKSLOT_KEYS[i], quickSlotAction);
+			}
+		}
 
 		defaultBindings.put( Input.Keys.A,           SPDAction.TAG_ATTACK );
 		defaultBindings.put( Input.Keys.TAB,         SPDAction.TAG_DANGER );

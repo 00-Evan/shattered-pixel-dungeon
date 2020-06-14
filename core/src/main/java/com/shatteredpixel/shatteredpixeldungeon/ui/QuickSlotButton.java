@@ -145,26 +145,9 @@ public class QuickSlotButton extends Button implements WndBag.Listener {
 
 	@Override
 	public GameAction keyAction() {
-		switch (slotNum){
-			case 0:
-				return SPDAction.QUICKSLOT_1;
-			case 1:
-				return SPDAction.QUICKSLOT_2;
-			case 2:
-				return SPDAction.QUICKSLOT_3;
-			case 3:
-				return SPDAction.QUICKSLOT_4;
-			case 4:
-				return SPDAction.QUICKSLOT_5;
-			case 5:
-				return SPDAction.QUICKSLOT_6;
-			case 6:
-				return SPDAction.QUICKSLOT_7;
-			case 7:
-				return SPDAction.QUICKSLOT_8;
-			default:
-				return super.keyAction();
-		}
+		return SPDAction.QuickSlotActions.containsKey(slotNum)
+			? SPDAction.QuickSlotActions.get(slotNum)
+			: super.keyAction();
 	}
 	
 	@Override
