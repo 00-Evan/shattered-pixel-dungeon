@@ -62,7 +62,6 @@ public class Toolbar extends Component {
 		GROUP,
 		CENTER
 	}
-
 	public Toolbar() {
 		super();
 
@@ -71,7 +70,7 @@ public class Toolbar extends Component {
 		height = btnInventory.height();
 	}
 
-  public static int SLOT_COUNT = 8;
+	public static int SLOT_COUNT = 8;
 
 	@Override
 	protected void createChildren() {
@@ -79,7 +78,7 @@ public class Toolbar extends Component {
 		btnQuick = new QuickslotTool[SLOT_COUNT];
 
 		for(int i = 0; i < SLOT_COUNT; i++) {
-      add( btnQuick[i] = new QuickslotTool(64, 0, 22, 24, i) );
+			add( btnQuick[i] = new QuickslotTool(64, 0, 22, 24, i) );
     }
 
 		add(btnWait = new Tool(24, 0, 20, 26) {
@@ -88,19 +87,16 @@ public class Toolbar extends Component {
 				examining = false;
 				Dungeon.hero.rest(false);
 			}
-
 			@Override
 			public GameAction keyAction() {
 				return SPDAction.WAIT;
 			}
-
 			protected boolean onLongClick() {
 				examining = false;
 				Dungeon.hero.rest(true);
 				return true;
 			}
 		});
-
 		add(btnSearch = new Tool(44, 0, 20, 26) {
 			@Override
 			protected void onClick() {
@@ -188,10 +184,10 @@ public class Toolbar extends Component {
 
 				btnInventory.setPos(right - btnInventory.width(), y);
 
-        for(int i = 0; i < SLOT_COUNT; i++) {
-          float previouse = i == 0 ? btnInventory.left() : btnQuick[i - 1].left();
-          btnQuick[i].setPos(previouse - btnQuick[i].width(), y+2);
-        }
+				for(int i = 0; i < SLOT_COUNT; i++) {
+					float previouse = i == 0 ? btnInventory.left() : btnQuick[i - 1].left();
+					btnQuick[i].setPos(previouse - btnQuick[i].width(), y+2);
+				}
 
 				//center the quickslots if they
 				if (btnQuick[SLOT_COUNT - 1].left() < btnSearch.right()){
@@ -216,10 +212,10 @@ public class Toolbar extends Component {
 				btnSearch.setPos(btnWait.left() - btnSearch.width(), y);
 				btnInventory.setPos(btnSearch.left() - btnInventory.width(), y);
 
-        for(int i = 0; i < SLOT_COUNT; i++) {
-          float previouse = i == 0 ? btnInventory.left() : btnQuick[i - 1].left();
-          btnQuick[i].setPos(previouse - btnQuick[i].width(), y+2);
-        }
+				for(int i = 0; i < SLOT_COUNT; i++) {
+					float previouse = i == 0 ? btnInventory.left() : btnQuick[i - 1].left();
+					btnQuick[i].setPos(previouse - btnQuick[i].width(), y+2);
+				}
 				
 				if (btnQuick[SLOT_COUNT - 1].left() < 0){
 					float diff = -Math.round(btnQuick[SLOT_COUNT - 1].left())/2;

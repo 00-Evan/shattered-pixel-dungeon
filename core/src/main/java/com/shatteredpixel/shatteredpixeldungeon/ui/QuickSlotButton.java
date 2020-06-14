@@ -38,7 +38,6 @@ import com.watabou.noosa.ui.Button;
 import com.watabou.utils.PathFinder;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Toolbar;
 
-
 public class QuickSlotButton extends Button implements WndBag.Listener {
 	
 	private static QuickSlotButton[] instance = new QuickSlotButton[Toolbar.SLOT_COUNT];
