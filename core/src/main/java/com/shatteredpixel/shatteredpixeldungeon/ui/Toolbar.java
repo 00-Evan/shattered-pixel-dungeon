@@ -87,12 +87,12 @@ public class Toolbar extends Component {
 				examining = false;
 				Dungeon.hero.rest(false);
 			}
-				
+
 			@Override
 			public GameAction keyAction() {
 				return SPDAction.WAIT;
 			}
-				
+
 			protected boolean onLongClick() {
 				examining = false;
 				Dungeon.hero.rest(true);
