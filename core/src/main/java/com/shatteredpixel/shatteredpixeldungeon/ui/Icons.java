@@ -39,6 +39,9 @@ public enum Icons {
 	EXIT,
 	CLOSE,
 	ARROW,
+	DISPLAY,
+	//TODO UI,
+	AUDIO,
 	
 	//ingame UI icons
 	SKULL,
@@ -117,6 +120,13 @@ public enum Icons {
 			break;
 		case ARROW:
 			icon.frame( icon.texture.uvRect( 16, 16, 27, 27 ) );
+			break;
+		case DISPLAY:
+			icon.frame( icon.texture.uvRect( 32, 16, 45, 32 ) );
+			break;
+		//TODO UI icon?
+		case AUDIO:
+			icon.frame( icon.texture.uvRect( 64, 16, 77, 28 ) );
 			break;
 			
 		case SKULL:

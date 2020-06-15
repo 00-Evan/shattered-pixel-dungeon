@@ -268,6 +268,7 @@ public class WndTabbed extends Window {
 					icon.y = y + CUT;
 				}
 			}
+			PixelScene.align(icon);
 		}
 		
 		@Override
