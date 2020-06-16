@@ -31,9 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 public class WndInfoItem extends Window {
 	
 	private static final float GAP	= 2;
-	
-	private static final int WIDTH_P = 120;
-	private static final int WIDTH_L = 144;
+
+	private static final int WIDTH_MIN = 120;
+	private static final int WIDTH_MAX = 220;
 	
 	public WndInfoItem( Heap heap ) {
 		
@@ -56,19 +56,12 @@ public class WndInfoItem extends Window {
 	
 	private void fillFields( Heap heap ) {
 		
-		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
-		
 		IconTitle titlebar = new IconTitle( heap );
 		titlebar.color( TITLE_COLOR );
-		titlebar.setRect( 0, 0, width, 0 );
-		add( titlebar );
 		
 		RenderedTextBlock txtInfo = PixelScene.renderTextBlock( heap.info(), 6 );
-		txtInfo.maxWidth(width);
-		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
-		add( txtInfo );
-		
-		resize( width, (int)(txtInfo.bottom() + 2) );
+
+		layoutFields(titlebar, txtInfo);
 	}
 	
 	private void fillFields( Item item ) {
@@ -79,19 +72,34 @@ public class WndInfoItem extends Window {
 		} else if (item.levelKnown && item.level() < 0) {
 			color = ItemSlot.DEGRADED;
 		}
-		
-		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
 
 		IconTitle titlebar = new IconTitle( item );
 		titlebar.color( color );
-		titlebar.setRect( 0, 0, width, 0 );
-		add( titlebar );
 		
 		RenderedTextBlock txtInfo = PixelScene.renderTextBlock( item.info(), 6 );
-		txtInfo.maxWidth(width);
-		txtInfo.setPos(titlebar.left(), titlebar.bottom() + GAP);
-		add( txtInfo );
 		
-		resize( width, (int)(txtInfo.bottom() + 2) );
+		layoutFields(titlebar, txtInfo);
+	}
+
+	private void layoutFields(IconTitle title, RenderedTextBlock info){
+		int width = WIDTH_MIN;
+
+		info.maxWidth(width);
+
+		//window can go out of the screen on landscape, so widen it as appropriate
+		while (PixelScene.landscape()
+				&& info.height() > 100
+				&& width < WIDTH_MAX){
+			width += 20;
+			info.maxWidth(width);
+		}
+
+		title.setRect( 0, 0, width, 0 );
+		add( title );
+
+		info.setPos(title.left(), title.bottom() + GAP);
+		add( info );
+
+		resize( width, (int)(info.bottom() + 2) );
 	}
 }

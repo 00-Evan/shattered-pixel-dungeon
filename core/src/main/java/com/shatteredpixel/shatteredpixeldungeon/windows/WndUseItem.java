@@ -24,71 +24,33 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ItemSlot;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
-public class WndItem extends Window {
+public class WndUseItem extends WndInfoItem {
 	
-	//only one wnditem can appear at a time
-	private static WndItem INSTANCE;
+	//only one wnduseitem can appear at a time
+	private static WndUseItem INSTANCE;
 
 	private static final float BUTTON_HEIGHT	= 16;
 	
 	private static final float GAP	= 2;
 	
-	private static final int WIDTH_MIN = 120;
-	private static final int WIDTH_MAX = 220;
-
-	public WndItem( final WndBag owner, final Item item ){
-		this( owner, item, owner != null );
-	}
-	
-	public WndItem( final WndBag owner, final Item item , final boolean options ) {
+	public WndUseItem(final WndBag owner, final Item item ) {
 		
-		super();
+		super(item);
 		
 		if( INSTANCE != null ){
 			INSTANCE.hide();
 		}
 		INSTANCE = this;
-
-		int width = WIDTH_MIN;
-		
-		RenderedTextBlock info = PixelScene.renderTextBlock( item.info(), 6 );
-		info.maxWidth(width);
-		
-		//info box can go out of the screen on landscape, so widen it
-		while (PixelScene.landscape()
-				&& info.height() > 100
-				&& width < WIDTH_MAX){
-			width += 20;
-			info.maxWidth(width);
-		}
-		
-		IconTitle titlebar = new IconTitle( item );
-		titlebar.setRect( 0, 0, width, 0 );
-		add( titlebar );
-
-		if (item.levelKnown && item.level() > 0) {
-			titlebar.color( ItemSlot.UPGRADED );
-		} else if (item.levelKnown && item.level() < 0) {
-			titlebar.color( ItemSlot.DEGRADED );
-		}
-		
-		info.setPos(titlebar.left(), titlebar.bottom() + GAP);
-		add( info );
 	
-		float y = info.top() + info.height() + GAP;
+		float y = height + GAP;
 		
-		if (Dungeon.hero.isAlive() && options) {
+		if (Dungeon.hero.isAlive()) {
 			ArrayList<RedButton> buttons = new ArrayList<>();
-			for (final String action:item.actions( Dungeon.hero )) {
+			for (final String action : item.actions( Dungeon.hero )) {
 				
 				RedButton btn = new RedButton( Messages.get(item, "ac_" + action), 8 ) {
 					@Override
@@ -209,17 +171,5 @@ public class WndItem extends Window {
 			INSTANCE = null;
 		}
 	}
-	
-	private static Comparator<RedButton> widthComparator = new Comparator<RedButton>() {
-		@Override
-		public int compare(RedButton lhs, RedButton rhs) {
-			if (lhs.width() < rhs.width()){
-				return -1;
-			} else if (lhs.width() == rhs.width()){
-				return 0;
-			} else {
-				return 1;
-			}
-		}
-	};
+
 }
