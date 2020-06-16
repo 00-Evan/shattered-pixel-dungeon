@@ -35,13 +35,13 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndStartGame;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.FileUtils;
+
+import java.util.ArrayList;
 
 public class WelcomeScene extends PixelScene {
 
@@ -169,10 +169,21 @@ public class WelcomeScene extends PixelScene {
 		if (previousVersion < LATEST_UPDATE){
 			try {
 				Rankings.INSTANCE.load();
+				for (Rankings.Record rec : Rankings.INSTANCE.records.toArray(new Rankings.Record[0])){
+					try {
+						Rankings.INSTANCE.loadGameData(rec);
+						Rankings.INSTANCE.saveGameData(rec);
+					} catch (Exception e) {
+						//if we encounter a fatal per-record error, then clear that record
+						Rankings.INSTANCE.records.remove(rec);
+						ShatteredPixelDungeon.reportException(e);
+					}
+				}
 				Rankings.INSTANCE.save();
 			} catch (Exception e) {
 				//if we encounter a fatal error, then just clear the rankings
 				FileUtils.deleteFile( Rankings.RANKINGS_FILE );
+				ShatteredPixelDungeon.reportException(e);
 			}
 		}
 		

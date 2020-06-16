@@ -70,7 +70,6 @@ public class Assets {
 		public static final String BANNERS	= "interfaces/banners.png";
 		public static final String BADGES	= "interfaces/badges.png";
 		public static final String LOCKED	= "interfaces/locked_badge.png";
-		public static final String AMULET	= "interfaces/amulet.png";
 
 		public static final String CHROME	= "interfaces/chrome.png";
 		public static final String ICONS	= "interfaces/icons.png";
@@ -215,6 +214,7 @@ public class Assets {
 		public static final String HUNTRESS	= "sprites/huntress.png";
 		public static final String AVATARS	= "sprites/avatars.png";
 		public static final String PET		= "sprites/pet.png";
+		public static final String AMULET	= "sprites/amulet.png";
 
 		public static final String RAT		= "sprites/rat.png";
 		public static final String BRUTE	= "sprites/brute.png";

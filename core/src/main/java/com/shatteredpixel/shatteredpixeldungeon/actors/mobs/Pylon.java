@@ -130,6 +130,11 @@ public class Pylon extends Mob {
 	}
 
 	@Override
+	public void notice() {
+		//do nothing
+	}
+
+	@Override
 	public String description() {
 		if (alignment == Alignment.NEUTRAL){
 			return Messages.get(this, "desc_inactive");

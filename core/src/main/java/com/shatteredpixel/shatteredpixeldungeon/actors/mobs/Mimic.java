@@ -249,7 +249,7 @@ public class Mimic extends Mob {
 
 	@Override
 	public boolean reset() {
-		state = WANDERING;
+		if (state != PASSIVE) state = WANDERING;
 		return true;
 	}
 

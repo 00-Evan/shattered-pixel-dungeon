@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
@@ -57,11 +58,10 @@ public class RogueArmor extends ClassArmor {
 		public void onSelect( Integer target ) {
 			if (target != null) {
 				
-				PathFinder.buildDistanceMap(curUser.pos, Dungeon.level.passable, 8);
+				PathFinder.buildDistanceMap(curUser.pos, BArray.not(Dungeon.level.solid,null), 8);
 				
 				if ( PathFinder.distance[target] == Integer.MAX_VALUE ||
 					!Dungeon.level.heroFOV[target] ||
-					!(Dungeon.level.passable[target] || Dungeon.level.avoid[target]) ||
 					Actor.findChar( target ) != null) {
 					
 					GLog.w( Messages.get(RogueArmor.class, "fov") );
