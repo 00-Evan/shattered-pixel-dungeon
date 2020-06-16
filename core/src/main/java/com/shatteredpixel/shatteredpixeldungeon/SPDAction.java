@@ -46,6 +46,7 @@ public class SPDAction extends GameAction {
 
 	public static final GameAction WAIT        = new SPDAction("wait");
 	public static final GameAction SEARCH      = new SPDAction("search");
+	public static final GameAction REST        = new SPDAction("rest");
 
 	public static final GameAction INVENTORY   = new SPDAction("inventory");
 	public static final GameAction QUICKSLOT_1 = new SPDAction("quickslot_1");
@@ -81,6 +82,7 @@ public class SPDAction extends GameAction {
 
 		defaultBindings.put( Input.Keys.SPACE,       SPDAction.WAIT );
 		defaultBindings.put( Input.Keys.S,           SPDAction.SEARCH );
+		defaultBindings.put( Input.Keys.Z,           SPDAction.REST );
 
 		defaultBindings.put( Input.Keys.I,           SPDAction.INVENTORY );
 		defaultBindings.put( Input.Keys.Q,           SPDAction.QUICKSLOT_1 );
