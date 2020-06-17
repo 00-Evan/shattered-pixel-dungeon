@@ -543,8 +543,7 @@ public abstract class Mob extends Char {
 			hitWithRanged = true;
 		}
 		
-		if ((!enemySeen || enemy.invisible > 0)
-				&& enemy == Dungeon.hero && Dungeon.hero.canSurpriseAttack()) {
+		if (surprisedBy(enemy) && Dungeon.hero.canSurpriseAttack()) {
 			Statistics.sneakAttacks++;
 			Badges.validateRogueUnlock();
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
@@ -579,7 +578,7 @@ public abstract class Mob extends Char {
 	}
 
 	public boolean surprisedBy( Char enemy ){
-		return (!enemySeen || enemy.invisible > 0) && enemy == Dungeon.hero;
+		return enemy == Dungeon.hero && (enemy.invisible > 0 || (!enemySeen && state != PASSIVE));
 	}
 
 	public void aggro( Char ch ) {
