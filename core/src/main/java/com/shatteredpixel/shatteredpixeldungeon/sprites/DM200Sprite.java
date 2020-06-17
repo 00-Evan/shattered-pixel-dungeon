@@ -71,7 +71,7 @@ public class DM200Sprite extends MobSprite {
 						((DM200)ch).onZapComplete();
 					}
 				} );
-		Sample.INSTANCE.play( Assets.Sounds.PUFF );
+		Sample.INSTANCE.play( Assets.Sounds.GAS );
 	}
 
 	@Override
