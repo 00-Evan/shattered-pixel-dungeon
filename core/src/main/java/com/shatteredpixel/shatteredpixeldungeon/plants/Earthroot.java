@@ -40,6 +40,7 @@ public class Earthroot extends Plant {
 	
 	{
 		image = 8;
+		seedClass = Seed.class;
 	}
 	
 	@Override

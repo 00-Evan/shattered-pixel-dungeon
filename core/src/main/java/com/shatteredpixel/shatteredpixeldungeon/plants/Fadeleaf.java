@@ -41,6 +41,7 @@ public class Fadeleaf extends Plant {
 	
 	{
 		image = 10;
+		seedClass = Seed.class;
 	}
 	
 	@Override

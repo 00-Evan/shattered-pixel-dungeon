@@ -35,6 +35,7 @@ public class Starflower extends Plant {
 
 	{
 		image = 9;
+		seedClass = Seed.class;
 	}
 
 	@Override

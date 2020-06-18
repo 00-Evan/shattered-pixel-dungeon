@@ -61,6 +61,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -791,6 +792,15 @@ public abstract class Level implements Bundlable {
 		plants.put( pos, plant );
 		
 		GameScene.plantSeed( pos );
+
+		for (Char ch : Actor.chars()){
+			if (ch instanceof WandOfRegrowth.Lotus
+					&& ((WandOfRegrowth.Lotus) ch).inRange(pos)
+					&& Actor.findChar(pos) != null){
+				plant.trigger();
+				return null;
+			}
+		}
 		
 		return plant;
 	}
@@ -1100,19 +1110,19 @@ public abstract class Level implements Bundlable {
 					fieldOfView[p+i] = true;
 			}
 
-			for (Mob ward : mobs){
-				if (ward instanceof WandOfWarding.Ward){
-					if (ward.fieldOfView == null || ward.fieldOfView.length != length()){
-						ward.fieldOfView = new boolean[length()];
-						Dungeon.level.updateFieldOfView( ward, ward.fieldOfView );
+			for (Mob m : mobs){
+				if (m instanceof WandOfWarding.Ward || m instanceof WandOfRegrowth.Lotus){
+					if (m.fieldOfView == null || m.fieldOfView.length != length()){
+						m.fieldOfView = new boolean[length()];
+						Dungeon.level.updateFieldOfView( m, m.fieldOfView );
 					}
-					for (Mob m : mobs){
-						if (ward.fieldOfView[m.pos] && !fieldOfView[m.pos] &&
-								!Dungeon.hero.mindVisionEnemies.contains(m)){
-							Dungeon.hero.mindVisionEnemies.add(m);
+					for (Mob m1 : mobs){
+						if (m.fieldOfView[m1.pos] && !fieldOfView[m1.pos] &&
+								!Dungeon.hero.mindVisionEnemies.contains(m1)){
+							Dungeon.hero.mindVisionEnemies.add(m1);
 						}
 					}
-					BArray.or(fieldOfView, ward.fieldOfView, fieldOfView);
+					BArray.or(fieldOfView, m.fieldOfView, fieldOfView);
 				}
 			}
 		}

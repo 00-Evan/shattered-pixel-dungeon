@@ -38,6 +38,7 @@ public class Firebloom extends Plant {
 	
 	{
 		image = 1;
+		seedClass = Seed.class;
 	}
 	
 	@Override
