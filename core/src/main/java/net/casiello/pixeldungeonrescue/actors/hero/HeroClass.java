@@ -57,17 +57,23 @@ import com.watabou.utils.DeviceCompat;
 
 public enum HeroClass {
 
-	WARRIOR( "warrior", HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
-	MAGE( "mage", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
-	ROGUE( "rogue", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
-	HUNTRESS( "huntress", HeroSubClass.SNIPER, HeroSubClass.WARDEN );
+	WARRIOR_F( HeroType.WARRIOR, "F", HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
+	MAGE_F( HeroType.MAGE, "F", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
+	ROGUE_F( HeroType.ROGUE, "F", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
+	HUNTER_F( HeroType.HUNTER, "F", HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
+	WARRIOR_M( HeroType.WARRIOR, "M", HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR ),
+	MAGE_M( HeroType.MAGE, "M", HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
+	ROGUE_M( HeroType.ROGUE, "M", HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
+	HUNTER_M( HeroType.HUNTER, "M", HeroSubClass.SNIPER, HeroSubClass.WARDEN );
 
-	private String title;
+	private HeroType heroType;
 	private HeroSubClass[] subClasses;
+	private String heroSex;
 
-	HeroClass( String title, HeroSubClass...subClasses ) {
-		this.title = title;
+	HeroClass( HeroType type, String sex, HeroSubClass...subClasses ) {
+		this.heroType = type;
 		this.subClasses = subClasses;
+		this.heroSex = sex;
 	}
 
 	public void initHero( Hero hero ) {
@@ -77,19 +83,23 @@ public enum HeroClass {
 		initCommon( hero );
 
 		switch (this) {
-			case WARRIOR:
+			case WARRIOR_F:
+			case WARRIOR_M:
 				initWarrior( hero );
 				break;
 
-			case MAGE:
+			case MAGE_F:
+			case MAGE_M:
 				initMage( hero );
 				break;
 
-			case ROGUE:
+			case ROGUE_F:
+			case ROGUE_M:
 				initRogue( hero );
 				break;
 
-			case HUNTRESS:
+			case HUNTER_F:
+			case HUNTER_M:
 				initHuntress( hero );
 				break;
 		}
@@ -113,13 +123,17 @@ public enum HeroClass {
 
 	public Badges.Badge masteryBadge() {
 		switch (this) {
-			case WARRIOR:
+			case WARRIOR_F:
+			case WARRIOR_M:
 				return Badges.Badge.MASTERY_WARRIOR;
-			case MAGE:
+			case MAGE_F:
+			case MAGE_M:
 				return Badges.Badge.MASTERY_MAGE;
-			case ROGUE:
+			case ROGUE_F:
+			case ROGUE_M:
 				return Badges.Badge.MASTERY_ROGUE;
-			case HUNTRESS:
+			case HUNTER_F:
+			case HUNTER_M:
 				return Badges.Badge.MASTERY_HUNTRESS;
 		}
 		return null;
@@ -193,9 +207,10 @@ public enum HeroClass {
 		new PotionOfMindVision().identify();
 		new ScrollOfLullaby().identify();
 	}
-	
+
+	public HeroType heroType() { return heroType; }
 	public String title() {
-		return Messages.get(HeroClass.class, title);
+		return Messages.get(HeroClass.class, heroType.title());
 	}
 	
 	public HeroSubClass[] subClasses() {
@@ -204,19 +219,27 @@ public enum HeroClass {
 	
 	public String spritesheet() {
 		switch (this) {
-			case WARRIOR: default:
-				return Assets.WARRIOR;
-			case MAGE:
-				return Assets.MAGE;
-			case ROGUE:
-				return Assets.ROGUE;
-			case HUNTRESS:
-				return Assets.HUNTRESS;
+			case WARRIOR_F: default:
+				return Assets.WARRIOR_F;
+			case WARRIOR_M:
+				return Assets.WARRIOR_M;
+			case MAGE_F:
+				return Assets.MAGE_F;
+			case MAGE_M:
+				return Assets.MAGE_M;
+			case ROGUE_F:
+				return Assets.ROGUE_F;
+			case ROGUE_M:
+				return Assets.ROGUE_M;
+			case HUNTER_F:
+				return Assets.HUNTER_F;
+			case HUNTER_M:
+				return Assets.HUNTER_M;
 		}
 	}
 	
 	public String[] perks() {
-		switch (this) {
+		switch (this.heroType) {
 			case WARRIOR: default:
 				return new String[]{
 						Messages.get(HeroClass.class, "warrior_perk1"),
@@ -241,7 +264,7 @@ public enum HeroClass {
 						Messages.get(HeroClass.class, "rogue_perk4"),
 						Messages.get(HeroClass.class, "rogue_perk5"),
 				};
-			case HUNTRESS:
+			case HUNTER:
 				return new String[]{
 						Messages.get(HeroClass.class, "huntress_perk1"),
 						Messages.get(HeroClass.class, "huntress_perk2"),
@@ -256,27 +279,27 @@ public enum HeroClass {
 		//always unlock on debug builds
 		if (DeviceCompat.isDebug()) return true;
 		
-		switch (this){
+		switch (this.heroType){
 			case WARRIOR: default:
 				return true;
 			case MAGE:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_MAGE);
 			case ROGUE:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ROGUE);
-			case HUNTRESS:
-				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTRESS);
+			case HUNTER:
+				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTER);
 		}
 	}
 	
 	public String unlockMsg() {
-		switch (this){
+		switch (this.heroType){
 			case WARRIOR: default:
 				return "";
 			case MAGE:
 				return Messages.get(HeroClass.class, "mage_unlock");
 			case ROGUE:
 				return Messages.get(HeroClass.class, "rogue_unlock");
-			case HUNTRESS:
+			case HUNTER:
 				return Messages.get(HeroClass.class, "huntress_unlock");
 		}
 	}
@@ -289,6 +312,6 @@ public enum HeroClass {
 	
 	public static HeroClass restoreInBundle( Bundle bundle ) {
 		String value = bundle.getString( CLASS );
-		return value.length() > 0 ? valueOf( value ) : ROGUE;
+		return value.length() > 0 ? valueOf( value ) : ROGUE_F;
 	}
 }

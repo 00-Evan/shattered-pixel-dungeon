@@ -25,6 +25,7 @@ import net.casiello.pixeldungeonrescue.Assets;
 import net.casiello.pixeldungeonrescue.Rankings;
 import net.casiello.pixeldungeonrescue.ShatteredPixelDungeon;
 import net.casiello.pixeldungeonrescue.actors.hero.HeroClass;
+import net.casiello.pixeldungeonrescue.actors.hero.HeroType;
 import net.casiello.pixeldungeonrescue.effects.Flare;
 import net.casiello.pixeldungeonrescue.messages.Messages;
 import net.casiello.pixeldungeonrescue.sprites.ItemSprite;
@@ -220,7 +221,7 @@ public class RankingsScene extends PixelScene {
 			}
 			
 			classIcon.copy( Icons.get( rec.heroClass ) );
-			if (rec.heroClass == HeroClass.ROGUE){
+			if (rec.heroClass.heroType() == HeroType.ROGUE){
 				//cloak of shadows needs to be brightened a bit
 				classIcon.brightness(2f);
 			}
