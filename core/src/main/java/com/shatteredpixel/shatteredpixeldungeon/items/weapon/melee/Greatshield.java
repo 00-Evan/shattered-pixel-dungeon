@@ -46,9 +46,9 @@ public class Greatshield extends MeleeWeapon {
 	
 	public String statsInfo(){
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", 10+3*buffedLvl());
+			return Messages.get(this, "stats_desc", 6+3*buffedLvl());
 		} else {
-			return Messages.get(this, "typical_stats_desc", 10);
+			return Messages.get(this, "typical_stats_desc", 6);
 		}
 	}
 }

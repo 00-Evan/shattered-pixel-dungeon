@@ -50,9 +50,9 @@ public class RoundShield extends MeleeWeapon {
 	
 	public String statsInfo(){
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", 5+2*buffedLvl());
+			return Messages.get(this, "stats_desc", 4+2*buffedLvl());
 		} else {
-			return Messages.get(this, "typical_stats_desc", 5);
+			return Messages.get(this, "typical_stats_desc", 4);
 		}
 	}
 }

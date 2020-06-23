@@ -152,7 +152,7 @@ public class Bag extends Item implements Iterable<Item> {
 	public boolean canHold( Item item ){
 		if (items.contains(item) || item instanceof Bag || items.size() < capacity()){
 			return true;
-		} else {
+		} else if (item.stackable) {
 			for (Item i : items) {
 				if (item.isSimilar( i )) {
 					return true;

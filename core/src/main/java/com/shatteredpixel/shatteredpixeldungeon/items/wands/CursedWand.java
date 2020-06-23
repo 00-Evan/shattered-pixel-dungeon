@@ -171,6 +171,7 @@ public class CursedWand {
 								GameScene.add( Blob.seed( bolt.collisionPos, 200, ParalyticGas.class ) );
 								break;
 						}
+						Sample.INSTANCE.play( Assets.Sounds.GAS );
 						afterZap.call();
 					}
 				});

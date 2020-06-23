@@ -309,7 +309,13 @@ public abstract class Char extends Actor {
 				buff(FrostImbue.class).proc(enemy);
 
 			if (enemy.isAlive() && prep != null && prep.canKO(enemy)){
-				enemy.die(this);
+				enemy.HP = 0;
+				if (!enemy.isAlive()) {
+					enemy.die(this);
+				} else {
+					//helps with triggering any on-damage effects that need to activate
+					enemy.damage(-1, this);
+				}
 				enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
 			}
 

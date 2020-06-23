@@ -72,9 +72,9 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		public boolean canKO(Char defender){
 			if (defender.properties().contains(Char.Property.MINIBOSS)
 					|| defender.properties().contains(Char.Property.BOSS)){
-				return (defender.HP/(float)defender.HT) <= (KOThreshold/5f);
+				return (defender.HP/(float)defender.HT) < (KOThreshold/5f);
 			} else {
-				return (defender.HP/(float)defender.HT) <= KOThreshold;
+				return (defender.HP/(float)defender.HT) < KOThreshold;
 			}
 		}
 		

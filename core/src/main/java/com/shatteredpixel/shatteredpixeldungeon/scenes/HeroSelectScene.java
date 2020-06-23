@@ -270,6 +270,11 @@ public class HeroSelectScene extends PixelScene {
 		uiAlpha = 2f;
 	}
 
+	@Override
+	protected void onBackPressed() {
+		ShatteredPixelDungeon.switchScene( TitleScene.class );
+	}
+
 	private class HeroBtn extends StyledButton {
 
 		private HeroClass cl;

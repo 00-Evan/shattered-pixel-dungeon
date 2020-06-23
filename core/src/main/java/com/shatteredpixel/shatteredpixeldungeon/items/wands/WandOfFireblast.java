@@ -77,7 +77,10 @@ public class WandOfFireblast extends DamageWand {
 				continue;
 			}
 
-			GameScene.add( Blob.seed( cell, 1+chargesPerCast(), Fire.class ) );
+			//only ignite cells directly near caster if they are flammable
+			if (!Dungeon.level.adjacent(bolt.sourcePos, cell) || Dungeon.level.flamable[cell]){
+				GameScene.add( Blob.seed( cell, 1+chargesPerCast(), Fire.class ) );
+			}
 
 			Char ch = Actor.findChar( cell );
 			if (ch != null) {
