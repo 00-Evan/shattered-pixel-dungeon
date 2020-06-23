@@ -82,6 +82,7 @@ public class Golem extends Mob {
 	}
 
 	protected Item createLoot() {
+		Dungeon.LimitedDrops.GOLEM_EQUIP.count++;
 		//uses probability tables for demon halls
 		if (loot == Generator.Category.WEAPON){
 			return Generator.randomWeapon(5);

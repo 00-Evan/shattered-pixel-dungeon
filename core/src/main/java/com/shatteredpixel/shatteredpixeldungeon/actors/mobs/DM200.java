@@ -81,6 +81,7 @@ public class DM200 extends Mob {
 	}
 
 	protected Item createLoot() {
+		Dungeon.LimitedDrops.DM200_EQUIP.count++;
 		//uses probability tables for dwarf city
 		if (loot == Generator.Category.WEAPON){
 			return Generator.randomWeapon(4);

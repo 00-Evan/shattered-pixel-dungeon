@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Doom;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -121,7 +122,7 @@ public class NewTengu extends Mob {
 	//Tengu is immune to debuffs and damage when removed from the level
 	@Override
 	public void add(Buff buff) {
-		if (Actor.chars().contains(this)){
+		if (Actor.chars().contains(this) || buff instanceof Doom){
 			super.add(buff);
 		}
 	}

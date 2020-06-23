@@ -135,6 +135,12 @@ public class Guard extends Mob {
 		super.rollToDropLoot();
 	}
 
+	@Override
+	protected Item createLoot() {
+		Dungeon.LimitedDrops.GUARD_ARM.count++;
+		return super.createLoot();
+	}
+
 	private final String CHAINSUSED = "chainsused";
 
 	@Override

@@ -95,7 +95,13 @@ public class Skeleton extends Mob {
 		lootChance *= Math.pow(1/2f, Dungeon.LimitedDrops.SKELE_WEP.count);
 		super.rollToDropLoot();
 	}
-	
+
+	@Override
+	protected Item createLoot() {
+		Dungeon.LimitedDrops.SKELE_WEP.count++;
+		return super.createLoot();
+	}
+
 	@Override
 	public int attackSkill( Char target ) {
 		return 12;
