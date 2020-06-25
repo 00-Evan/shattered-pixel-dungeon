@@ -43,6 +43,7 @@ public class GitHubUpdates extends UpdateService {
 
 		if (!Game.platform.connectedToUnmeteredNetwork()){
 			callback.onConnectionFailed();
+			return;
 		}
 
 		Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);

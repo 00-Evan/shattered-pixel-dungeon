@@ -571,9 +571,9 @@ public class NewPrisonBossLevel extends Level {
 			PathFinder.buildDistanceMap(tenguPos, BArray.not(trapsPatch, null));
 			//note that the effective range of fill is 40%-90%
 			//so distance to tengu starts at 3-6 tiles and scales up to 7-8 as fill increases
-		} while (PathFinder.distance[heroPos] > Math.ceil(4 + 4*fill)
-				|| PathFinder.distance[heroPos] < Math.ceil(7*fill));
-		
+		} while (((PathFinder.distance[heroPos] < Math.ceil(7*fill))
+				|| (PathFinder.distance[heroPos] > Math.ceil(4 + 4*fill))));
+
 		PathFinder.setMapSize(width(), height());
 		
 		for (int i = 0; i < trapsPatch.length; i++){

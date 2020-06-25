@@ -246,6 +246,7 @@ public class Blacksmith extends NPC {
 		}
 		Dungeon.hero.spendAndNext( 2f );
 		Badges.validateItemLevelAquired( first );
+		Item.updateQuickslot();
 		
 		Quest.reforged = true;
 		

@@ -91,14 +91,18 @@ public class WandOfFireblast extends DamageWand {
 		for ( Char ch : affectedChars ){
 			processSoulMark(ch, chargesPerCast());
 			ch.damage(damageRoll(), this);
-			Buff.affect( ch, Burning.class ).reignite( ch );
-			switch(chargesPerCast()){
-				case 1:
-					break; //no effects
-				case 2:
-					Buff.affect(ch, Cripple.class, 4f); break;
-				case 3:
-					Buff.affect(ch, Paralysis.class, 4f); break;
+			if (ch.isAlive()) {
+				Buff.affect(ch, Burning.class).reignite(ch);
+				switch (chargesPerCast()) {
+					case 1:
+						break; //no effects
+					case 2:
+						Buff.affect(ch, Cripple.class, 4f);
+						break;
+					case 3:
+						Buff.affect(ch, Paralysis.class, 4f);
+						break;
+				}
 			}
 		}
 	}
@@ -139,6 +143,7 @@ public class WandOfFireblast extends DamageWand {
 				bolt.path.get(dist/2),
 				callback );
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
+		Sample.INSTANCE.play( Assets.Sounds.BURNING );
 	}
 
 	@Override
