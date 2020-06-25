@@ -115,7 +115,7 @@ public class TalismanOfForesight extends Artifact {
 	}
 
 	private float maxDist(){
-		return Math.min(5 + 2*level(), (charge-3)/0.88f);
+		return Math.min(5 + 2*level(), (charge-3)/1.08f);
 	}
 
 	private CellSelector.Listener scry = new CellSelector.Listener(){
@@ -194,15 +194,16 @@ public class TalismanOfForesight extends Artifact {
 				}
 
 				exp += earnedExp;
-				if (exp >= 100 + 50*level() && level() < levelCap) {
-					exp -= 100 + 50*level();
+				if (exp >= 50 + 50*level() && level() < levelCap) {
+					exp -= 50 + 50*level();
 					upgrade();
 					GLog.p( Messages.get(TalismanOfForesight.class, "levelup") );
 				}
 				updateQuickslot();
 
-				charge -= 3 + dist*0.88f;
-				partialCharge -= (dist*0.88f)%1f;
+				//5 charge at 2 tiles, up to 30 charge at 25 tiles
+				charge -= 3 + dist*1.08f;
+				partialCharge -= (dist*1.08f)%1f;
 				if (partialCharge < 0 && charge > 0){
 					partialCharge ++;
 					charge --;
