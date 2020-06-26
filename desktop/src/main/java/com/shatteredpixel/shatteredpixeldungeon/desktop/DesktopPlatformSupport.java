@@ -135,21 +135,23 @@ public class DesktopPlatformSupport extends PlatformSupport {
 	
 	@Override
 	public void resetGenerators() {
-		for (FreeTypeFontGenerator generator : fonts.keySet()){
-			for (BitmapFont f : fonts.get(generator).values()){
-				f.dispose();
+		if (fonts != null) {
+			for (FreeTypeFontGenerator generator : fonts.keySet()) {
+				for (BitmapFont f : fonts.get(generator).values()) {
+					f.dispose();
+				}
+				fonts.get(generator).clear();
+				generator.dispose();
 			}
-			fonts.get(generator).clear();
-			generator.dispose();
-		}
-		fonts.clear();
-		if (packer != null){
-			for (PixmapPacker.Page p : packer.getPages()){
-				p.getTexture().dispose();
+			fonts.clear();
+			if (packer != null) {
+				for (PixmapPacker.Page p : packer.getPages()) {
+					p.getTexture().dispose();
+				}
+				packer.dispose();
 			}
-			packer.dispose();
+			fonts = null;
 		}
-		fonts = null;
 		setupFontGenerators(pageSize, systemfont);
 	}
 	
