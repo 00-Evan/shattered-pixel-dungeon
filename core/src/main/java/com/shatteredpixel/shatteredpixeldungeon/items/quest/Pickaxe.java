@@ -53,6 +53,8 @@ public class Pickaxe extends Weapon {
 	
 	{
 		image = ItemSpriteSheet.PICKAXE;
+
+		levelKnown = true;
 		
 		unique = true;
 		bones = false;
