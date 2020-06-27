@@ -33,7 +33,6 @@ import com.watabou.noosa.particles.Emitter;
 
 import java.util.ArrayList;
 
-//TODO implement on WIP sprite
 public class LotusSprite extends MobSprite {
 
 	private ArrayList<Emitter> grassVfx;
@@ -41,11 +40,11 @@ public class LotusSprite extends MobSprite {
 	public LotusSprite(){
 		super();
 
-		perspectiveRaise = 0.2f;
+		perspectiveRaise = 0f;
 
 		texture( Assets.Sprites.LOTUS );
 
-		TextureFilm frames = new TextureFilm( texture, 17, 14 );
+		TextureFilm frames = new TextureFilm( texture, 19, 16 );
 
 		idle = new MovieClip.Animation( 1, true );
 		idle.frames( frames, 0 );
@@ -79,6 +78,12 @@ public class LotusSprite extends MobSprite {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void place(int cell) {
+		if (parent != null) parent.sendToBack(this);
+		super.place(cell);
 	}
 
 	@Override
