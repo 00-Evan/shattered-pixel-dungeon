@@ -33,6 +33,7 @@ import net.casiello.pixeldungeonrescue.ui.RenderedTextBlock;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Random;
 
 public class AmuletScene extends PixelScene {
@@ -64,7 +65,11 @@ public class AmuletScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				Dungeon.win( Amulet.class );
-				Dungeon.deleteGame( GamesInProgress.curSlot, true );
+
+				// Don't delete saves in debug mode
+				if (DeviceCompat.isDebug() == false) {
+					Dungeon.deleteGame(GamesInProgress.curSlot, true);
+				}
 				Game.switchScene( RankingsScene.class );
 			}
 		};

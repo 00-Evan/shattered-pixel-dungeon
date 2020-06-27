@@ -100,7 +100,7 @@ public class Terrain {
 		flags[WELL]			= AVOID;
 		flags[STATUE]		= SOLID;
 		flags[STATUE_SP]	= flags[STATUE];
-		flags[BOOKSHELF]	= flags[BARRICADE];
+		flags[BOOKSHELF]	= PASSABLE | FLAMABLE | SOLID | LOS_BLOCKING;
 		flags[ALCHEMY]		= SOLID;
 
 	}
