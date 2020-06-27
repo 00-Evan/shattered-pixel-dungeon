@@ -114,15 +114,16 @@ public class WandOfRegrowth extends Wand {
 		if (chargesPerCast() >= 3){
 			Lotus l = new Lotus();
 			l.setLevel(buffedLvl());
-			if (cells.contains(target)){
+			if (cells.contains(target) && Actor.findChar(target) == null){
 				cells.remove((Integer)target);
 				l.pos = target;
 				GameScene.add(l);
 			} else {
 				for (int i = bolt.path.size()-1; i >= 0; i--){
-					if (cells.contains(bolt.path.get(i))){
-						cells.remove((Integer)bolt.path.get(i));
-						l.pos = bolt.path.get(i);
+					int c = bolt.path.get(i);
+					if (cells.contains(c) && Actor.findChar(c) == null){
+						cells.remove((Integer)c);
+						l.pos = c;
 						GameScene.add(l);
 						break;
 					}
