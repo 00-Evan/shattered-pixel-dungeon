@@ -24,8 +24,12 @@ package com.shatteredpixel.shatteredpixeldungeon.ui.changelist;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.NewDM300;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TalismanOfForesight;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
@@ -53,72 +57,222 @@ import java.util.ArrayList;
 public class v0_8_X_Changes {
 	
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+		add_v0_8_1_Changes(changeInfos);
 		add_v0_8_0_Changes(changeInfos);
+	}
+
+	public static void add_v0_8_1_Changes( ArrayList<ChangeInfo> changeInfos ){
+		ChangeInfo changes = new ChangeInfo("v0.8.1", true, "");
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo( Messages.get( ChangesScene.class, "new"), false, null);
+		changes.hardlight( Window.TITLE_COLOR );
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released June 27th, 2020\n" +
+				"_-_ 72 days after Shattered v0.8.0\n" +
+				"\n" +
+				"Dev commentary will be added here in the future."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "New Hero Select!",
+				"The game's hero select screen has been completely overhauled, and how shows off the heroes in more detail than ever before.\n\n" +
+				"The new hero select features a minimal UI that retains all the old functionality while trying to keep out of the way as much as possible. The centerpiece of hero select is now the heroes themselves, who are depicted with _new detailed splash arts_ by Aleksandar Komitov! _Make sure check out their credits listing in the new about page!_"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.AUDIO), "Sound Effects",
+				"_15+ new sound effects_ have been added to the game, courtesy of Charlie! _Make sure check out their credits listing in the new about page!_\n\n" +
+				"These sounds cover movement, combat, and a bunch of miscellanious situations:\n" +
+				"_-_ Grass now crunches underfoot (extra loud if it's tall grass), and solid floors now have a more solid sound.\n" +
+				"_-_ The default hitsound has been remastered, and weapons can now produce slashing, stabbing, or crushing sounds.\n" +
+				"_-_ Bows, crossbows, and projectile wands have new shooting/hitting sounds.\n" +
+				"_-_ A new heavy impact sound plays when you land a surprise attack, and a new blocking sound when damage is negated by parrying or shields.\n" +
+				"_-_ Some misc sounds have also been added for: gas spewing, chains being thrown, magical effects charging up, and the player being hit to low health.\n\n" +
+				"I've also remastered the title and ending music tracks to improve their quality and volume."));
+
+		changes.addButton( new ChangeButton(new Image(Assets.Interfaces.BUFFS_LARGE, 0, 0, 16, 16), "Item and Buff Icons",
+				"_Buff icons now have a new fading behaviour_ that much more accurately communicates how much of their duration is left. Several duplicated buff icons have also been recolored so they are distinct.\n\n" +
+				"_Item icons have been added to rings!_ To accommodate this, item icons now appear in the top-right of an item's inventory slot. Several existing item icons have also been improved."));
+
+		changes.addButton( new ChangeButton(new TalismanOfForesight(),
+				"The _Talisman of Foresight_ has received a rework to make its active ability more useful and interactive!\n\n" +
+				"A few changes have been made to passive trap detection:\n" +
+				"_-_ Talisman no longer gains EXP from the hero finding secrets\n" +
+				"_-_ 'uneasy' status no longer lingers when traps aren't in range\n" +
+				"_-_ Passive charge speed at max level reduced by 33%\n\n" +
+				"The talisman's scry active ability has been redesigned:\n" +
+				"_-_ Scry now projects outward in a cone, in a direction and distance of the player's choice.\n" +
+				"_-_ Everything within scry's range is revealed, including the map, secrets, and enemies/items.\n" +
+				"_-_ The player gets temporary mind vision on revealed enemies/items.\n" +
+				"_-_ The talisman gains exp based on what it reveals. Secrets are worth the most EXP.\n" +
+				"_-_ As the talisman levels, max scry distance and mind vision duration increase."));
+
+		changes.addButton( new ChangeButton(new WandOfRegrowth(),
+				"The _Wand of Regrowth_ has been reworked, with the goal of making it useful for more than just farming:\n\n" +
+				"_-_ Initial charges increased to 2 from 1.\n" +
+				"_-_ Regrowth now attacks in the same pattern as fireblast, no longer consumes all charges at once.\n" +
+				"_-_ Rebalanced rooting time, AOE size, farming cap, grass and plant spawning frequency, and upgrade scaling.\n" +
+				"_-_ Added a new unique plant that is only summoned when spending 3 charges of regrowth.\n\n" +
+				"_Starflower_ is no longer a special regrowth plant, so it's getting a few changes:\n" +
+				"_-_ Starflower no longer has a 1/5 chance to drop its own seed.\n" +
+				"_-_ Starflower is now 2.5x as rare as other seeds, down from 10x."));
+
+		changes.addButton( new ChangeButton(new WandOfMagicMissile(),
+				"The _Wand of Magic Missile_ has received a new ability that lets it better synergize with other wands!\n\n" +
+				"After zapping with an upgraded magic missile wand, the hero becomes 'magically charged' for a few turns. When the hero zaps with another lower-level wand, the charge is consumed and that wand will act as if it is the same level as the wand of magic missile!\n\n" +
+				"My hope with this change is to make magic missile more worthy of upgrades if the player is going for a sort of 'wandslinger' build, while still maintaining the wands weakness when used solo.\n\n" +
+				"I intend to closely watch how this change plays out, and make adjustments if it ends up messing with the Mage too much. As a start to this, the _Battlemage_ on-hit effect for magic missile has been toned down, to prevent a magic missile staff plus a single low-level wand being stronger than just imbuing that wand."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+		changes.hardlight( CharSprite.WARNING );
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.POUCH), "Item Droprate and Inventory Managment",
+				"I'm making several changes primarily targeted at reducing inventory clutter. These shouldn't have a significant impact on game balance, but should reduce the likelihood of the player's inventory being clogged with low-value items.\n\n" +
+				"_-_ Bags now appear inside of themselves, rather than taking up main inventory space.\n" +
+				"_-_ Consumable drops are now slightly rarer, but the game is now much more likely to give a variety of consumables over the course of a run.\n" +
+				"_-_ Equipment drops are now slightly rarer, but are also higher in quality on average. In particular enemy equipment drops can now be above +0.\n" +
+				"_-_ Item drops have been added to DM-200s, Ghouls, and Golems."));
+
+		changes.addButton( new ChangeButton(new Image(Assets.Sprites.TENGU, 0, 0, 14, 16), "Boss Changes",
+				"I'm making some design and balance changes to bosses based on analytics data and feedback:\n\n" +
+				"_Tengu_'s second phase has been removed due to its overall negative reception. In exchange, the traps in Tengu's first phase are now more maze-like. Tengu now also receives an accuracy penalty when attacking at melee range.\n\n" +
+				"_DM-300_'s boss fight now starts after the player explores its arena, the supercharge sparks now move more quickly, and several dialogue lines have been tweaked. This will hopefully make it easier for the player to understand what to do when DM-300 becomes supercharged.\n\n" +
+				"_Yog-Dzewa_ is receiving some smaller balance tweaks:\n" +
+				"_-_ Yog laser damage down to 20-30 from 20-35\n" +
+				"_-_ Bright/Dark fist ranged damage down to 10-20 from 12-24\n" +
+				"_-_ Burning fist now evaporates slightly more water tiles"));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY), "Interface Adjustments",
+				"Aside from the new hero select, several other interfaces have been adjusted as well:\n" +
+				"_-_ The about scene has been expanded with more credits listings and links.\n" +
+				"_-_ Small improvements to icon style and button layout on the title screen.\n" +
+				"_-_ The layout of the language selection window has been improved.\n" +
+				"_-_ The settings window now uses icons for its tabs, instead of text.\n" +
+				"_-_ Adjusted the layout of buying and selling windows slightly."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_-_ The game's startup time has been substantially improved on devices with slower storage.\n" +
+				"_-_ Volume sliders are now more sensetive at the lower range.\n" +
+				"_-_ A keybinding has been added for resting.\n\n" +
+				"_-_ Passive enemies are no longer automatically surprise attacked.\n" +
+				"_-_ Several buff durations have been slightly tweaked to be more consistent.\n" +
+				"_-_ The footwear of nature now only lets you select seeds that you haven't fed to it already.\n\n" +
+				"_-_ Cell checking visual effects have been improved.\n\n" +
+				"_-_ Updated translations."));
+
+		changes.addButton( new ChangeButton(new Image( Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed:\n" +
+				"_-_ Various visual/textual errors\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Levitation applying ground pressing effects before actually ending\n" +
+				"_-_ Ascend/descend working while rooted\n" +
+				"_-_ Scroll of remove curse not being usable while degraded\n" +
+				"_-_ Stone glyph not clamping negative accuracy or evasion\n" +
+				"_-_ Incorrect interactions between corrupting and on-kill effects\n" +
+				"_-_ Unblessed ankh revives waking up mimics\n" +
+				"_-_ Rogue armor's blink not going over terrain in some cases\n" +
+				"_-_ DM-300 being able to drill out of its arena in rare cases\n" +
+				"_-_ Dark & bright fists rarely teleporting to unreachable places\n" +
+				"_-_ Summoning traps failing to summon anything in some cases\n" +
+				"_-_ Debuffs being incorrectly persisted in rankings\n" +
+				"_-_ Tengu cleansing doomed debuff between first and second phase\n" +
+				"_-_ Gasses being examinable when not visible\n" +
+				"_-_ Fireblast applying debuffs to dead enemies\n" +
+				"_-_ Update checker using data on metered networks"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
+		changes.hardlight( CharSprite.POSITIVE );
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST), "Ring of Wealth and Lucky Enchant",
+				"The _Ring of Wealth_ has been substantially buffed to make it more worth investing upgrades in:\n" +
+				"_-_ Regular drop chance boost up to 25% from 20%.\n" +
+				"_-_ Special ring of wealth drops now increase in value, not frequency, as the ring levels.\n" +
+				"_-_ Removed guaranteed +0 weapons/armor from special ring of wealth drops.\n" +
+				"_-_ Added new vfx to special ring of wealth drops to better indicate how rare a drop was.\n\n" +
+				"The _Lucky_ Enchantment is also being buffed:\n" +
+				"_-_ Lucky now gives low and medium value drops from ring of wealth's special reward pool."));
+
+		changes.addButton( new ChangeButton( new Image(Assets.Sprites.ROGUE, 0, 90, 12, 15), "Assassin and Sniper",
+				"The _Assassin_ is having a little trouble now that more enemies have tools to counter raw damage, so he's getting a boost:\n" +
+				"_-_ Preparation now gives a +15% damage bonus at 1/3/6/11 turns, up from a +10% damage bonus at 1/3/6/11/16 turns.\n" +
+				"_-_ Preparation now executes low health enemies, rather than dealing more damage.\n" +
+				"_-_ Preparation can now execute bosses if they are very weak.\n\n" +
+				"The _Sniper_ is also having trouble after 0.8.0, so she's getting a boost as well:\n" +
+				"_-_ Sniper's mark now lasts 4 turns, up from 2.\n" +
+				"_-_ Sniper shot damage scaling with distance increased, now caps at 3x damage, up from 2.5x."));
+
+		changes.addButton( new ChangeButton(new WandOfWarding(),
+				"The _Wand of Warding_ has received a variety of changes focused around making it more powerful and easier to use:\n" +
+				"_-_ Wards/sentries are now inorganic\n" +
+				"_-_ Ward/sentry energy cost and warding energy capacity reduced by 1\n" +
+				"_-_ Ward/sentry vision range increased by 1\n" +
+				"_-_ Ward/sentry attack speed standardized to 0.5x/1x\n" +
+				"_-_ Greater wards now get 5 zaps, up from 4\n" +
+				"_-_ Lesser sentries now start with 4 less HP for each zap they used as a ward\n" +
+				"_-_ Upgrading a sentry now always grants it the largest possible health boost\n" +
+				"_-_ Sentry healing up to 8/10/15 from 6/8/12\n\n" +
+				"_-_ Ward sprites now visually darken as they use up charges\n" +
+				"_-_ Sentries now show how much they are being healed\n" +
+				"_-_ Wards can now be adjacent to eachother\n" +
+				"_-_ Wards can now be summoned out of FOV if nothing is in the way\n" +
+				"_-_ Wards now spawn adjacent to an enemy/wall if shot at one"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_DISINTEGRATION), "Various Item Buffs",
+				"I'm buffing items that are performing poorly after v0.8.0:\n\n" +
+				"Several wands need a boost as raw damage is now less effective:\n" +
+				"_- Disintegration_ base range up to 6 from 4.\n" +
+				"_- Lightning_ no longer harms allies, self-damage down to 67% from 100%.\n" +
+				"_- Frost_ chill damage reduction down to 5% per turn from 10%.\n" +
+				"_- Fireblast_ now spreads fire in a wider cone shape.\n" +
+				"_- Potion of Dragon's Breath_ uses this wider cone too.\n\n" +
+				"With more ranged enemies, knockback needs more utility:\n" +
+				"_- Knockback effects_ now close doors if the knockback target was inside one.\n\n" +
+				"Various other items/enchants are also being buffed:\n" +
+				"_- Horn of Plenty_ charge rate increased by 25%\n" +
+				"_- Shocking_ no longer harms allies\n" +
+				"_- Camouflage_ now applies regular invisibility\n" +
+				"_- Flow_ speed multiplier increased to 2 + 0.25xlvl from 2.\n" +
+				"_- Corrupting_ proc rate scaling increased by ~20%"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false, null);
+		changes.hardlight( CharSprite.NEGATIVE );
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_CORRUPTION), "Various Item Nerfs",
+				"I'm nerfing items that are overperforming due to v0.8.0:\n\n" +
+				"The _Wand of Corruption_ is once again overpowered, so I'm trying out making it more dependant on enemy health:\n" +
+				"_-_ Enemies now have 5x resistance at full HP, up from 3x.\n\n" +
+				"As _Wand of Frost_ was buffed, I'm scaling back the battlemage's frost ability a bit:\n" +
+				"_-_ Battlemage frost on-hit now only freezes at 10+ turns of chill, rather than at 2-10 turns.\n\n" +
+				"Magic defense items are being scaled back due to the increased number of magical enemies:\n" +
+				"_- Ring of Elements_ resist per level down to 17.5% from 20%\n" +
+				"_- Antimagic_ defense reduced by ~20%\n\n" +
+				"A few other items/enchants are being adjusted as well:\n" +
+				"_- Ethereal chains_ levelling speed reduced\n" +
+				"_- Timekeeper's Hourglass_ sand cost doubled\n" +
+				"_- Chilling_ and _Shocking_ proc rate reduced\n" +
+				"_- Swiftness_ now requires 2 tiles of space, up from 1\n" +
+				"_- Thorns_ proc rate scaling reduced by ~50%"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.GREATAXE), "Various Weapon Nerfs",
+				"A few weapons are also being toned down:\n\n" +
+				"As warlocks no longer reduce hero strength, the greataxe is now much easier to use and is too strong as a result:\n" +
+				"_- Greataxe_ base dmg reduced to 5-45 from 5-50\n\n" +
+				"Defense is now much more useful overall, so several defense-granting weapons are performing better than intended:\n" +
+				"_- Greatshield_ base block down to 0-6 from 0-10\n" +
+				"_- Gauntlet_ blocking reduced to 0 from 0-4\n" +
+				"_- Roundshield_ base dmg down to 3-10 from 3-12\n" +
+				"_- Roundshield_ base block down to 0-4 from 0-5\n" +
+				"_- Sai_ blocking reduced to 0 from 0-2"));
+
 	}
 	
 	public static void add_v0_8_0_Changes( ArrayList<ChangeInfo> changeInfos ){
 		ChangeInfo changes = new ChangeInfo("v0.8.0", true, "");
 		changes.hardlight( Window.TITLE_COLOR );
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo( "0.8.0b", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Yog-Dzewa's fists are now considered bosses, not minibosses.\n\n" +
-				"_-_ Updated translations."));
-
-		changes.addButton( new ChangeButton(new Image( Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by 0.8.0):\n" +
-				"_-_ Various rare freezes when descending\n" +
-				"_-_ Various rare crash bugs\n" +
-				"_-_ Yog-Dzewa fight glitching in rare cases where the eye and last fist are killed at the same time\n" +
-				"_-_ Bright/Dark fist very rarely teleporting into enclosed spaces"));
-
-		changes = new ChangeInfo( "0.8.0a", false, null);
-		changes.hardlight( Window.TITLE_COLOR );
-		changeInfos.add(changes);
-
-		Image i = new Image(new YogSprite());
-		i.scale.set(0.8f);
-		changes.addButton( new ChangeButton(i, "Enemy and Boss adjustments",
-				"Based on player feedback and gameplay data, I'm making the following tweaks to enemy/boss balance. These changes mainly make particular enemies/bosses a bit easier:\n\n" +
-				"_-_ Turns taken for DM-300 to dig through rock increased to 3 from 2.5\n" +
-				"_-_ DM-300 pylons now resist damage above 15, up from 10\n\n" +
-				"_-_ Ripper Demon leap ability now has a short cooldown\n" +
-				"_-_ Ripper Demon damage reduced by ~8%\n" +
-				"_-_ Ripper Demon leap now deals large bleed damage less often\n\n" +
-				"_-_ Yog's laser damage reduced by ~8%\n" +
-				"_-_ Bright fist blind duration reduced by 40%\n" +
-				"_-_ Dark fist ranged damage reduced by 20%\n" +
-				"_-_ Soiled fist now spreads slightly more furrowed grass\n" +
-				"_-_ Soiled fist now resists burning\n" +
-				"_-_ Rusted fist melee damage increased by 10%"));
-
-		changes.addButton( new ChangeButton(new SpiritBow(),
-				"Sniper shot is currently performing quite poorly versus the sniper's other abilities, so I'm giving it a significant buff:\n\n" +
-				"_-_ Base sniper shot damage increased by 20%\n" +
-				"_-_ Sniper shot damage scaling with distance increased. At high distance sniper shot will deal up to 40% more total damage."));
-
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"Following feedback I've tweaked the sensitivity of the new 'red flash' effect. It should now trigger in far fewer cases where the hero isn't taking serious damage, but should still trigger when the hero is at risk of death.\n\n" +
-				"I've tweaked the behaviour of ranged enemies slightly, which should eliminate cases where they don't follow the hero through a door despite seeing them go through it.\n\n" +
-				"_-_ Increased the size of the descending region at the end of Dwarf King's level.\n\n" +
-				"_-_ Decreased the minimum window size for desktop users.\n\n" +
-				"_-_ Updated translations."));
-
-		changes.addButton( new ChangeButton(new Image( Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed (caused by 0.8.0):\n" +
-				"_-_ Various errors/crashed caused by new imp shop\n" +
-				"_-_ Several cases where water could spread to tiles that it shouldn't spread to.\n" +
-				"_-_ Water of health being used up on items that cannot be cursed\n" +
-				"_-_ Golems being able to teleport immovable characters\n" +
-				"_-_ Armored statues appearing in faith is my armor challenge\n" +
-				"_-_ Yog-dzewa being able to totally blind the player if into darkness is enabled\n" +
-				"_-_ Large enemies being able to move into enclosed spaces when vertigoed\n" +
-				"_-_ Infinite loop bug when attempting to teleport DM-300\n" +
-				"_-_ Various rare crash bugs"));
 
 		changes = new ChangeInfo( Messages.get( ChangesScene.class, "new"), false, null);
 		changes.hardlight( Window.TITLE_COLOR );
@@ -148,7 +302,7 @@ public class v0_8_X_Changes {
 				"_Spinners_ are now 20% more evasive, 10% more accurate, and now spit their webs toward the hero from a distance. Their webs block projectiles, but can be cleared.\n\n" +
 				"_DM-200s_ are a new enemy in the later parts of the caves. They are too big to move into tunnels and doors, but make up for it with high stats and a toxic gas attack."));
 
-		i = new Image(new DM300Sprite());
+		Image i = new Image(new DM300Sprite());
 		i.scale.set(PixelScene.align(0.74f));
 		changes.addButton( new ChangeButton(i, Messages.get(NewDM300.class, "name"),
 				"The DM-300 fight has been reworked! DM-300 now has redesigned abilities, a new boss arena, and multiple phases!\n\n" +
@@ -323,7 +477,12 @@ public class v0_8_X_Changes {
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false, null);
 		changes.hardlight( CharSprite.POSITIVE );
 		changeInfos.add(changes);
-		
+
+		changes.addButton( new ChangeButton(new SpiritBow(),
+				"Sniper shot is currently performing quite poorly versus the sniper's other abilities, so I'm giving it a significant buff:\n\n" +
+				"_-_ Base sniper shot damage increased by 20%\n" +
+				"_-_ Sniper shot damage scaling with distance increased. At high distance sniper shot will deal up to 40% more total damage."));
+
 		changes.addButton( new ChangeButton(new WandOfCorruption(),
 				"This is actually a bugfix, but is so significant that I'm listing it as a buff for clarity:\n\n" +
 				"_-_ Fixed Wand of corruption acting as if it were one level weaker than it was in some cases.\n\n" +

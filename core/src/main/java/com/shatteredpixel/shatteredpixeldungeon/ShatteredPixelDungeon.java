@@ -43,6 +43,7 @@ public class ShatteredPixelDungeon extends Game {
 	public static final int v0_7_5e = 382;
 
 	public static final int v0_8_0  = 412;
+	public static final int v0_8_1  = 420;
 	
 	public ShatteredPixelDungeon( PlatformSupport platform ) {
 		super( sceneClass == null ? WelcomeScene.class : sceneClass, platform );

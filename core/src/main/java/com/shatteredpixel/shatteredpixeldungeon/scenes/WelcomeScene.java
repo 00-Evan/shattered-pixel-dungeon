@@ -45,7 +45,7 @@ import java.util.ArrayList;
 
 public class WelcomeScene extends PixelScene {
 
-	private static int LATEST_UPDATE = ShatteredPixelDungeon.v0_8_0;
+	private static int LATEST_UPDATE = ShatteredPixelDungeon.v0_8_1;
 
 	@Override
 	public void create() {
