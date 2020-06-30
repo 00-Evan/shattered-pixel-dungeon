@@ -45,7 +45,18 @@ public class Bestiary {
 				//3x rat, 1x snake
 				return new ArrayList<>(Arrays.asList(
 						Rat.class, Rat.class, Rat.class,
-						Snake.class));
+						Snake.class,
+						Slime.random(),
+						Slime.random(),
+						Slime.random(),
+						Slime.random(),
+						Slime.random(),
+						Slime.random(),
+						Slime.random(),
+						Slime.random(),
+						Slime.random(),
+						Slime.random()
+						));
 			case 2:
 				//2x rat, 1x snake, 2x gnoll
 				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class,
@@ -63,7 +74,7 @@ public class Bestiary {
 				return new ArrayList<>(Arrays.asList(Gnoll.class,
 						Swarm.class,
 						Crab.class, Crab.class,
-						Slime.class, Slime.class));
+						Slime.random(), Slime.random()));
 				
 			// Prison
 			case 6:
