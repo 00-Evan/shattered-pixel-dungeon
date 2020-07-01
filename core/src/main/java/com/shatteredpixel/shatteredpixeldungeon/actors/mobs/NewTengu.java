@@ -244,8 +244,8 @@ public class NewTengu extends Mob {
 				
 				do {
 					newPos = ((NewPrisonBossLevel)Dungeon.level).randomTenguCellPos();
-				} while ( level.trueDistance(newPos, enemy.pos) <= 4
-						|| level.trueDistance(newPos, Dungeon.hero.pos) <= 4
+				} while ( level.trueDistance(newPos, enemy.pos) <= 3.5f
+						|| level.trueDistance(newPos, Dungeon.hero.pos) <= 3.5f
 						|| Actor.findChar(newPos) != null);
 				
 				if (level.heroFOV[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );

@@ -68,7 +68,8 @@ public class Multiplicity extends Armor.Glyph {
 
 				} else {
 					//FIXME should probably have a mob property for this
-					if (attacker.properties().contains(Char.Property.BOSS) || attacker.properties().contains(Char.Property.MINIBOSS)
+					if (!(attacker instanceof Mob)
+							|| attacker.properties().contains(Char.Property.BOSS) || attacker.properties().contains(Char.Property.MINIBOSS)
 							|| attacker instanceof Mimic || attacker instanceof Statue){
 						m = Dungeon.level.createMob();
 					} else {

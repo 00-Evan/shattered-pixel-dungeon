@@ -801,6 +801,7 @@ public class Dungeon {
 		}
 
 		for (TalismanOfForesight.CharAwareness c : hero.buffs(TalismanOfForesight.CharAwareness.class)){
+			if (Dungeon.depth != c.depth) continue;
 			Char ch = (Char) Actor.findById(c.charID);
 			if (ch == null) continue;
 			BArray.or( level.visited, level.heroFOV, ch.pos - 1 - level.width(), 3, level.visited );
@@ -810,6 +811,7 @@ public class Dungeon {
 		}
 
 		for (TalismanOfForesight.HeapAwareness h : hero.buffs(TalismanOfForesight.HeapAwareness.class)){
+			if (Dungeon.depth != h.depth) continue;
 			BArray.or( level.visited, level.heroFOV, h.pos - 1 - level.width(), 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, h.pos - 1, 3, level.visited );
 			BArray.or( level.visited, level.heroFOV, h.pos - 1 + level.width(), 3, level.visited );
