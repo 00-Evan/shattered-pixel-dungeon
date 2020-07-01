@@ -54,10 +54,7 @@ public class GhoulSprite extends MobSprite {
 	}
 
 	public void crumple(){
-		if (emo != null){
-			emo.killAndErase();
-			emo = null;
-		}
+		hideEmo();
 		play(crumple);
 	}
 

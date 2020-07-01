@@ -81,7 +81,7 @@ public class MimicSprite extends MobSprite {
 	}
 
 	@Override
-	public synchronized void showSleep() {
+	public void showSleep() {
 		if (curAnim == hiding){
 			return;
 		}
